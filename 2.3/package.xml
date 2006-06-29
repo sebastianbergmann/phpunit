@@ -1,0 +1,373 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE package SYSTEM "http://pear.php.net/dtd/package-1.0">
+<package version="1.0">
+  <name>PHPUnit2</name>
+  <summary>Regression testing framework for unit tests.</summary>
+  <description>PHPUnit is a regression testing framework used by the developer who implements unit tests in PHP. This is the version to be used with PHP 5.</description>
+  <maintainers>
+    <maintainer>
+      <user>sebastian</user>
+      <name>Sebastian Bergmann</name>
+      <email>sb@sebastian-bergmann.de</email>
+    </maintainer>
+  </maintainers>
+  <license>BSD License</license>
+  <release>
+    <version>2.3.6</version>
+    <state>stable</state>
+    <date>2006-05-31</date>
+<notes><![CDATA[
+* Fixed bug #7100: Install fails with xdebug.2.0.0rc1-dev.
+]]></notes>
+    <filelist>
+      <dir name="/" baseinstalldir="PHPUnit2">
+        <dir name="Extensions" role="php">
+          <file name="ExceptionTestCase.php">
+            <replace type="package-info" from="@package_version@" to="version"/>
+          </file>
+          <file name="PerformanceTestCase.php">
+            <replace type="package-info" from="@package_version@" to="version"/>
+          </file>
+          <file name="RepeatedTest.php">
+            <replace type="package-info" from="@package_version@" to="version"/>
+          </file>
+          <file name="TestDecorator.php">
+            <replace type="package-info" from="@package_version@" to="version"/>
+          </file>
+          <file name="TestSetup.php">
+            <replace type="package-info" from="@package_version@" to="version"/>
+          </file>
+        </dir>
+
+        <dir name="Framework" role="php">
+          <file name="Assert.php">
+            <replace type="package-info" from="@package_version@" to="version"/>
+          </file>
+          <file name="AssertionFailedError.php">
+            <replace type="package-info" from="@package_version@" to="version"/>
+          </file>
+          <file name="Error.php">
+            <replace type="package-info" from="@package_version@" to="version"/>
+          </file>
+          <file name="ComparisonFailure.php">
+            <replace type="package-info" from="@package_version@" to="version"/>
+          </file>
+          <file name="IncompleteTest.php">
+            <replace type="package-info" from="@package_version@" to="version"/>
+          </file>
+          <file name="IncompleteTestError.php">
+            <replace type="package-info" from="@package_version@" to="version"/>
+          </file>
+          <file name="Test.php">
+            <replace type="package-info" from="@package_version@" to="version"/>
+          </file>
+          <file name="TestCase.php">
+            <replace type="package-info" from="@package_version@" to="version"/>
+          </file>
+          <file name="TestFailure.php">
+            <replace type="package-info" from="@package_version@" to="version"/>
+          </file>
+          <file name="TestListener.php">
+            <replace type="package-info" from="@package_version@" to="version"/>
+          </file>
+          <file name="TestResult.php">
+            <replace type="package-info" from="@package_version@" to="version"/>
+          </file>
+          <file name="TestSuite.php">
+            <replace type="package-info" from="@package_version@" to="version"/>
+          </file>
+          <file name="Warning.php">
+            <replace type="package-info" from="@package_version@" to="version"/>
+          </file>
+        </dir>
+
+        <dir name="Runner" role="php">
+          <file name="BaseTestRunner.php">
+            <replace type="package-info" from="@package_version@" to="version"/>
+          </file>
+          <file name="IncludePathTestCollector.php">
+            <replace type="package-info" from="@package_version@" to="version"/>
+          </file>
+          <file name="StandardTestSuiteLoader.php">
+            <replace type="package-info" from="@package_version@" to="version"/>
+          </file>
+          <file name="TestCollector.php">
+            <replace type="package-info" from="@package_version@" to="version"/>
+          </file>
+          <file name="TestSuiteLoader.php">
+            <replace type="package-info" from="@package_version@" to="version"/>
+          </file>
+          <file name="Version.php">
+            <replace type="package-info" from="@package_version@" to="version"/>
+          </file>
+        </dir>
+
+        <dir name="Samples" role="doc">
+          <dir name="BankAccount">
+            <file name="BankAccount.php">
+              <replace type="package-info" from="@package_version@" to="version"/>
+            </file>
+            <file name="BankAccountTest.php">
+              <replace type="package-info" from="@package_version@" to="version"/>
+            </file>
+          </dir>
+
+          <dir name="Money">
+            <file name="IMoney.php">
+              <replace type="package-info" from="@package_version@" to="version"/>
+            </file>
+            <file name="Money.php">
+              <replace type="package-info" from="@package_version@" to="version"/>
+            </file>
+            <file name="MoneyBag.php">
+              <replace type="package-info" from="@package_version@" to="version"/>
+            </file>
+            <file name="MoneyTest.php">
+              <replace type="package-info" from="@package_version@" to="version"/>
+            </file>
+          </dir>
+        </dir>
+
+        <dir name="Tests" role="test">
+          <dir name="Framework">
+            <file name="AllTests.php">
+              <replace type="package-info" from="@package_version@" to="version"/>
+            </file>
+            <file name="AssertTest.php">
+              <replace type="package-info" from="@package_version@" to="version"/>
+            </file>
+            <file name="ComparisonFailureTest.php">
+              <replace type="package-info" from="@package_version@" to="version"/>
+            </file>
+            <file name="SuiteTest.php">
+              <replace type="package-info" from="@package_version@" to="version"/>
+            </file>
+            <file name="TestCaseTest.php">
+              <replace type="package-info" from="@package_version@" to="version"/>
+            </file>
+            <file name="TestImplementorTest.php">
+              <replace type="package-info" from="@package_version@" to="version"/>
+            </file>
+            <file name="TestListenerTest.php">
+              <replace type="package-info" from="@package_version@" to="version"/>
+            </file>
+          </dir>
+
+          <dir name="Extensions">
+            <file name="AllTests.php">
+              <replace type="package-info" from="@package_version@" to="version"/>
+            </file>
+            <file name="ExceptionTestCaseTest.php">
+              <replace type="package-info" from="@package_version@" to="version"/>
+            </file>
+            <file name="ExtensionTest.php">
+              <replace type="package-info" from="@package_version@" to="version"/>
+            </file>
+            <file name="PerformanceTestCaseTest.php">
+              <replace type="package-info" from="@package_version@" to="version"/>
+            </file>
+            <file name="RepeatedTestTest.php">
+              <replace type="package-info" from="@package_version@" to="version"/>
+            </file>
+          </dir>
+
+          <dir name="Runner">
+            <file name="AllTests.php">
+              <replace type="package-info" from="@package_version@" to="version"/>
+            </file>
+            <file name="BaseTestRunnerTest.php">
+              <replace type="package-info" from="@package_version@" to="version"/>
+            </file>
+          </dir>
+
+          <dir name="Util">
+            <dir name="TestDox">
+              <file name="AllTests.php">
+                <replace type="package-info" from="@package_version@" to="version"/>
+              </file>
+              <file name="NamePrettifierTest.php">
+                <replace type="package-info" from="@package_version@" to="version"/>
+              </file>
+            </dir>
+          </dir>
+
+          <file name="AllTests.php">
+            <replace type="package-info" from="@package_version@" to="version"/>
+          </file>
+          <file name="DoubleTestCase.php">
+            <replace type="package-info" from="@package_version@" to="version"/>
+          </file>
+          <file name="Error.php">
+            <replace type="package-info" from="@package_version@" to="version"/>
+          </file>
+          <file name="Failure.php">
+            <replace type="package-info" from="@package_version@" to="version"/>
+          </file>
+          <file name="InheritedTestCase.php">
+            <replace type="package-info" from="@package_version@" to="version"/>
+          </file>
+          <file name="MockRunner.php">
+            <replace type="package-info" from="@package_version@" to="version"/>
+          </file>
+          <file name="NoArgTestCaseTest.php">
+            <replace type="package-info" from="@package_version@" to="version"/>
+          </file>
+          <file name="NonStatic.php">
+            <replace type="package-info" from="@package_version@" to="version"/>
+          </file>
+          <file name="NoTestCaseClass.php">
+            <replace type="package-info" from="@package_version@" to="version"/>
+          </file>
+          <file name="NoTestCases.php">
+            <replace type="package-info" from="@package_version@" to="version"/>
+          </file>
+          <file name="NotPublicTestCase.php">
+            <replace type="package-info" from="@package_version@" to="version"/>
+          </file>
+          <file name="NotVoidTestCase.php">
+            <replace type="package-info" from="@package_version@" to="version"/>
+          </file>
+          <file name="OneTestCase.php">
+            <replace type="package-info" from="@package_version@" to="version"/>
+          </file>
+          <file name="OverrideTestCase.php">
+            <replace type="package-info" from="@package_version@" to="version"/>
+          </file>
+          <file name="SetupFailure.php">
+            <replace type="package-info" from="@package_version@" to="version"/>
+          </file>
+          <file name="Sleep.php">
+            <replace type="package-info" from="@package_version@" to="version"/>
+          </file>
+          <file name="Success.php">
+            <replace type="package-info" from="@package_version@" to="version"/>
+          </file>
+          <file name="TearDownFailure.php">
+            <replace type="package-info" from="@package_version@" to="version"/>
+          </file>
+          <file name="TestIterator.php">
+            <replace type="package-info" from="@package_version@" to="version"/>
+          </file>
+          <file name="ThrowExceptionTestCase.php">
+            <replace type="package-info" from="@package_version@" to="version"/>
+          </file>
+          <file name="ThrowNoExceptionTestCase.php">
+            <replace type="package-info" from="@package_version@" to="version"/>
+          </file>
+          <file name="TornDown.php">
+            <replace type="package-info" from="@package_version@" to="version"/>
+          </file>
+          <file name="TornDown2.php">
+            <replace type="package-info" from="@package_version@" to="version"/>
+          </file>
+          <file name="TornDown3.php">
+            <replace type="package-info" from="@package_version@" to="version"/>
+          </file>
+          <file name="TornDown4.php">
+            <replace type="package-info" from="@package_version@" to="version"/>
+          </file>
+          <file name="TornDown5.php">
+            <replace type="package-info" from="@package_version@" to="version"/>
+          </file>
+          <file name="TornDown6.php">
+            <replace type="package-info" from="@package_version@" to="version"/>
+          </file>
+          <file name="WasRun.php">
+            <replace type="package-info" from="@package_version@" to="version"/>
+          </file>
+        </dir>
+
+        <dir name="TextUI" role="php">
+          <file name="ResultPrinter.php">
+            <replace type="package-info" from="@package_version@" to="version"/>
+          </file>
+          <file name="TestRunner.php">
+            <replace type="package-info" from="@package_version@" to="version"/>
+          </file>
+        </dir>
+
+        <dir name="Util" role="php">
+          <dir name="CodeCoverage">
+            <dir name="Renderer">
+              <file name="HTML.php">
+                <replace type="package-info" from="@package_version@" to="version"/>
+              </file>
+              <file name="Text.php">
+                <replace type="package-info" from="@package_version@" to="version"/>
+              </file>
+            </dir>
+
+            <file name="Renderer.php">
+              <replace type="package-info" from="@package_version@" to="version"/>
+            </file>
+          </dir>
+
+          <dir name="Log">
+            <file name="PEAR.php">
+              <replace type="package-info" from="@package_version@" to="version"/>
+            </file>
+            <file name="XML.php">
+              <replace type="package-info" from="@package_version@" to="version"/>
+            </file>
+          </dir>
+
+          <dir name="TestDox">
+            <dir name="ResultPrinter">
+                <file name="HTML.php">
+                  <replace type="package-info" from="@package_version@" to="version"/>
+                </file>
+                <file name="Text.php">
+                  <replace type="package-info" from="@package_version@" to="version"/>
+                </file>
+            </dir>
+
+            <file name="NamePrettifier.php">
+              <replace type="package-info" from="@package_version@" to="version"/>
+            </file>
+            <file name="ResultPrinter.php">
+              <replace type="package-info" from="@package_version@" to="version"/>
+            </file>
+          </dir>
+
+          <file name="ErrorHandler.php">
+            <replace type="package-info" from="@package_version@" to="version"/>
+          </file>
+          <file name="Fileloader.php">
+            <replace type="package-info" from="@package_version@" to="version"/>
+          </file>
+          <file name="Filter.php">
+            <replace type="package-info" from="@package_version@" to="version"/>
+          </file>
+          <file name="Printer.php">
+            <replace type="package-info" from="@package_version@" to="version"/>
+          </file>
+          <file name="Skeleton.php">
+            <replace type="package-info" from="@package_version@" to="version"/>
+          </file>
+        </dir>
+
+        <file role="script" baseinstalldir="/" install-as="phpunit" name="pear-phpunit">
+          <replace type="pear-config" from="@php_bin@" to="php_bin"/>
+          <replace type="package-info" from="@package_version@" to="version"/>
+        </file>
+
+        <file role="script" baseinstalldir="/" platform="windows" install-as="phpunit.bat" name="pear-phpunit.bat">
+          <replace type="pear-config" from="@php_bin@" to="php_bin"/>
+          <replace type="pear-config" from="@php_dir@" to="php_dir"/>
+          <replace type="package-info" from="@package_version@" to="version"/>
+        </file>
+      </dir>
+    </filelist>
+    <deps>
+      <dep type="php" rel="ge" version="5.0.2" />
+      <dep type="ext" rel="has">dom</dep>
+      <dep type="ext" rel="has">pcre</dep>
+      <dep type="ext" rel="has">spl</dep>
+      <dep type="ext" rel="has" optional="yes">xdebug</dep>
+      <dep type="pkg" rel="has">Benchmark</dep>
+      <dep type="pkg" rel="has">Console_Getopt</dep>
+      <dep type="pkg" rel="has" optional="yes">Log</dep>
+      <dep type="pkg" rel="has">PEAR</dep>
+    </deps>
+  </release>
+</package>
