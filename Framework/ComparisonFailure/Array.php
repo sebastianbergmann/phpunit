@@ -43,14 +43,14 @@
  * @copyright  2002-2006 Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    SVN: $Id$
- * @link       http://pear.php.net/package/PHPUnit2
+ * @link       http://www.phpunit.de/
  * @since      File available since Release 3.0.0
  */
 
-require_once 'PHPUnit2/Framework.php';
-require_once 'PHPUnit2/Util/Filter.php';
+require_once 'PHPUnit/Framework.php';
+require_once 'PHPUnit/Util/Filter.php';
 
-PHPUnit2_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
+PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
 
 /**
  * Thrown when an assertion for array equality failed.
@@ -62,10 +62,10 @@ PHPUnit2_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
  * @copyright  2002-2006 Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    Release: @package_version@
- * @link       http://pear.php.net/package/PHPUnit2
+ * @link       http://www.phpunit.de/
  * @since      Class available since Release 3.0.0
  */
-class PHPUnit2_Framework_ComparisonFailure_Array extends PHPUnit2_Framework_ComparisonFailure
+class PHPUnit_Framework_ComparisonFailure_Array extends PHPUnit_Framework_ComparisonFailure
 {
     /**
      * Returns a string describing the difference between the expected and the
@@ -87,7 +87,7 @@ class PHPUnit2_Framework_ComparisonFailure_Array extends PHPUnit2_Framework_Comp
 
             if ($expectedValue === $this->actual[$expectedKey]) continue;
 
-            $diffObject = PHPUnit2_Framework_ComparisonFailure::diffIdentical($expectedValue, $this->actual[$expectedKey], $this->message . "array key <{$expectedKey}>: ");
+            $diffObject = PHPUnit_Framework_ComparisonFailure::diffIdentical($expectedValue, $this->actual[$expectedKey], $this->message . "array key <{$expectedKey}>: ");
             $diff .= $diffObject->toString() . "\n";
         }
 

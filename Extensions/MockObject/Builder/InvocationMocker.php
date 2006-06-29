@@ -43,16 +43,16 @@
  * @copyright  2002-2006 Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    SVN: $Id$
- * @link       http://pear.php.net/package/PHPUnit2
+ * @link       http://www.phpunit.de/
  * @since      File available since Release 3.0.0
  */
 
-require_once 'PHPUnit2/Util/Filter.php';
-require_once 'PHPUnit2/Extensions/MockObject/Builder/MethodNameMatch.php';
-require_once 'PHPUnit2/Extensions/MockObject/Matcher.php';
-require_once 'PHPUnit2/Extensions/MockObject/Stub.php';
+require_once 'PHPUnit/Util/Filter.php';
+require_once 'PHPUnit/Extensions/MockObject/Builder/MethodNameMatch.php';
+require_once 'PHPUnit/Extensions/MockObject/Matcher.php';
+require_once 'PHPUnit/Extensions/MockObject/Stub.php';
 
-PHPUnit2_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
+PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
 
 /**
  * Builder for mocked or stubbed invocations.
@@ -60,7 +60,7 @@ PHPUnit2_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
  * Provides methods for building expectations without having to resort to
  * instantiating the various matchers manually. These methods also form a
  * more natural way of reading the expectation. This class should be together
- * with the test case PHPUnit2_Extensions_MockObject_TestCase.
+ * with the test case PHPUnit_Extensions_MockObject_TestCase.
  *
  * @category   Testing
  * @package    PHPUnit2
@@ -69,19 +69,19 @@ PHPUnit2_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
  * @copyright  2002-2006 Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    Release: @package_version@
- * @link       http://pear.php.net/package/PHPUnit2
+ * @link       http://www.phpunit.de/
  * @since      Class available since Release 3.0.0
  */
-class PHPUnit2_Extensions_MockObject_Builder_InvocationMocker implements PHPUnit2_Extensions_MockObject_Builder_MethodNameMatch
+class PHPUnit_Extensions_MockObject_Builder_InvocationMocker implements PHPUnit_Extensions_MockObject_Builder_MethodNameMatch
 {
     private $collection;
 
     private $matcher;
 
-    public function __construct(PHPUnit2_Extensions_MockObject_Stub_MatcherCollection $collection, PHPUnit2_Extensions_MockObject_Matcher_Invocation $invocationMatcher)
+    public function __construct(PHPUnit_Extensions_MockObject_Stub_MatcherCollection $collection, PHPUnit_Extensions_MockObject_Matcher_Invocation $invocationMatcher)
     {
         $this->collection = $collection;
-        $this->matcher    = new PHPUnit2_Extensions_MockObject_Matcher($invocationMatcher);
+        $this->matcher    = new PHPUnit_Extensions_MockObject_Matcher($invocationMatcher);
 
         $this->collection->addMatcher($this->matcher);
     }
@@ -98,7 +98,7 @@ class PHPUnit2_Extensions_MockObject_Builder_InvocationMocker implements PHPUnit
         return $this;
     }
 
-    public function will(PHPUnit2_Extensions_MockObject_Stub $stub)
+    public function will(PHPUnit_Extensions_MockObject_Stub $stub)
     {
         $this->matcher->stub = $stub;
 
@@ -124,7 +124,7 @@ class PHPUnit2_Extensions_MockObject_Builder_InvocationMocker implements PHPUnit
             throw new RuntimeException('Parameter matcher is already defined, cannot redefine');
         }
 
-        $this->matcher->parametersMatcher = new PHPUnit2_Extensions_MockObject_Matcher_Parameters($args);
+        $this->matcher->parametersMatcher = new PHPUnit_Extensions_MockObject_Matcher_Parameters($args);
 
         return $this;
     }
@@ -139,7 +139,7 @@ class PHPUnit2_Extensions_MockObject_Builder_InvocationMocker implements PHPUnit
             throw new RuntimeException('Parameter matcher is already defined, cannot redefine');
         }
 
-        $this->matcher->parametersMatcher = new PHPUnit2_Extensions_MockObject_Matcher_AnyParameters();
+        $this->matcher->parametersMatcher = new PHPUnit_Extensions_MockObject_Matcher_AnyParameters();
 
         return $this;
     }
@@ -150,7 +150,7 @@ class PHPUnit2_Extensions_MockObject_Builder_InvocationMocker implements PHPUnit
             throw new RuntimeException('Method name matcher is already defined, cannot redefine');
         }
 
-        $this->matcher->methodNameMatcher = new PHPUnit2_Extensions_MockObject_Matcher_MethodName($constraint);
+        $this->matcher->methodNameMatcher = new PHPUnit_Extensions_MockObject_Matcher_MethodName($constraint);
 
         return $this;
     }

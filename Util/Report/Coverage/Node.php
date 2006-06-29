@@ -42,16 +42,16 @@
  * @copyright  2002-2006 Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    SVN: $Id$
- * @link       http://pear.php.net/package/PHPUnit2
+ * @link       http://www.phpunit.de/
  * @since      File available since Release 3.0.0
  */
 
-require_once 'PHPUnit2/Framework.php';
-require_once 'PHPUnit2/Util/Filter.php';
-require_once 'PHPUnit2/Util/Filesystem.php';
-require_once 'PHPUnit2/Util/Test.php';
+require_once 'PHPUnit/Framework.php';
+require_once 'PHPUnit/Util/Filter.php';
+require_once 'PHPUnit/Util/Filesystem.php';
+require_once 'PHPUnit/Util/Test.php';
 
-PHPUnit2_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
+PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
 
 /**
  * Base class for nodes in the code coverage information tree.
@@ -62,10 +62,10 @@ PHPUnit2_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
  * @copyright  2002-2006 Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    Release: @package_version@
- * @link       http://pear.php.net/package/PHPUnit2
+ * @link       http://www.phpunit.de/
  * @since      Class available since Release 3.0.0
  */
-abstract class PHPUnit2_Util_Report_Coverage_Node
+abstract class PHPUnit_Util_Report_Coverage_Node
 {
     /**
      * @var    array
@@ -80,7 +80,7 @@ abstract class PHPUnit2_Util_Report_Coverage_Node
     protected $name;
 
     /**
-     * @var    PHPUnit2_Util_CodeCoverage_Node
+     * @var    PHPUnit_Util_CodeCoverage_Node
      * @access protected
      */
     protected $parent;
@@ -89,10 +89,10 @@ abstract class PHPUnit2_Util_Report_Coverage_Node
      * Constructor.
      *
      * @param  string                          $name
-     * @param  PHPUnit2_Util_CodeCoverage_Node $parent
+     * @param  PHPUnit_Util_CodeCoverage_Node $parent
      * @access public
      */
-    public function __construct($name, PHPUnit2_Util_Report_Coverage_Node $parent = NULL)
+    public function __construct($name, PHPUnit_Util_Report_Coverage_Node $parent = NULL)
     {
         $this->name    = $name;
         $this->parent  = $parent;
@@ -184,7 +184,7 @@ abstract class PHPUnit2_Util_Report_Coverage_Node
             $name = $this->name;
         }
         
-        $cleanId = PHPUnit2_Util_Filesystem::getSafeFilename($this->getId());
+        $cleanId = PHPUnit_Util_Filesystem::getSafeFilename($this->getId());
 
         if ($full) {
             if ($this->parent !== NULL) {
@@ -233,11 +233,11 @@ abstract class PHPUnit2_Util_Report_Coverage_Node
     }
 
     /**
-     * @param  PHPUnit2_Util_Template $template
+     * @param  PHPUnit_Util_Template $template
      * @param  string                 $title
      * @access public
      */
-   protected function setTemplateVars(PHPUnit2_Util_Template $template, $title)
+   protected function setTemplateVars(PHPUnit_Util_Template $template, $title)
     {
         $template->setVar(
           array(
@@ -257,7 +257,7 @@ abstract class PHPUnit2_Util_Report_Coverage_Node
             $this->getNumExecutedLines(),
             $this->getExecutedPercent(),
             date('D M j G:i:s T Y'),
-            PHPUnit2_Runner_Version::id(),
+            PHPUnit_Runner_Version::id(),
             phpversion('xdebug')
           )
         );

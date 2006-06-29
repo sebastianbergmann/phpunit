@@ -42,16 +42,16 @@
  * @copyright  2002-2006 Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    SVN: $Id$
- * @link       http://pear.php.net/package/PHPUnit2
+ * @link       http://www.phpunit.de/
  * @since      File available since Release 2.0.0
  */
 
-require_once 'PHPUnit2/Framework.php';
-require_once 'PHPUnit2/Util/Filter.php';
+require_once 'PHPUnit/Framework.php';
+require_once 'PHPUnit/Util/Filter.php';
 
-PHPUnit2_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
+PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
 
-if (!class_exists('PHPUnit2_Framework_TestFailure')) {
+if (!class_exists('PHPUnit_Framework_TestFailure')) {
 
 /**
  * A TestFailure collects a failed test together with the caught exception.
@@ -62,13 +62,13 @@ if (!class_exists('PHPUnit2_Framework_TestFailure')) {
  * @copyright  2002-2006 Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    Release: @package_version@
- * @link       http://pear.php.net/package/PHPUnit2
+ * @link       http://www.phpunit.de/
  * @since      Class available since Release 2.0.0
  */
-class PHPUnit2_Framework_TestFailure
+class PHPUnit_Framework_TestFailure
 {
     /**
-     * @var    PHPUnit2_Framework_Test
+     * @var    PHPUnit_Framework_Test
      * @access protected
      */
     protected $failedTest;
@@ -82,11 +82,11 @@ class PHPUnit2_Framework_TestFailure
     /**
      * Constructs a TestFailure with the given test and exception.
      *
-     * @param  PHPUnit2_Framework_Test $failedTest
+     * @param  PHPUnit_Framework_Test $failedTest
      * @param  Exception               $thrownException
      * @access public
      */
-    public function __construct(PHPUnit2_Framework_Test $failedTest, Exception $thrownException)
+    public function __construct(PHPUnit_Framework_Test $failedTest, Exception $thrownException)
     {
         $this->failedTest      = $failedTest;
         $this->thrownException = $thrownException;
@@ -150,7 +150,7 @@ class PHPUnit2_Framework_TestFailure
      */
     public function isFailure()
     {
-        return ($this->thrownException() instanceof PHPUnit2_Framework_AssertionFailedError);
+        return ($this->thrownException() instanceof PHPUnit_Framework_AssertionFailedError);
     }
 }
 

@@ -42,13 +42,13 @@
  * @copyright  2002-2006 Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    SVN: $Id$
- * @link       http://pear.php.net/package/PHPUnit2
+ * @link       http://www.phpunit.de/
  * @since      File available since Release 2.3.0
  */
 
-require_once 'PHPUnit2/Framework/TestCase.php';
+require_once 'PHPUnit/Framework/TestCase.php';
 
-require_once 'PHPUnit2/Util/TestDox/NamePrettifier.php';
+require_once 'PHPUnit/Util/TestDox/NamePrettifier.php';
 
 /**
  * 
@@ -59,16 +59,16 @@ require_once 'PHPUnit2/Util/TestDox/NamePrettifier.php';
  * @copyright  2002-2006 Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    Release: @package_version@
- * @link       http://pear.php.net/package/PHPUnit2
+ * @link       http://www.phpunit.de/
  * @since      Class available since Release 2.1.0
  */
-class Util_TestDox_NamePrettifierTest extends PHPUnit2_Framework_TestCase
+class Util_TestDox_NamePrettifierTest extends PHPUnit_Framework_TestCase
 {
     private $namePrettifier;
 
     protected function setUp()
     {
-        $this->namePrettifier = new PHPUnit2_Util_TestDox_NamePrettifier;
+        $this->namePrettifier = new PHPUnit_Util_TestDox_NamePrettifier;
     }
 
     public function testTitleHasSensibleDefaults()

@@ -42,32 +42,32 @@
  * @copyright  2002-2006 Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    SVN: $Id$
- * @link       http://pear.php.net/package/PHPUnit2
+ * @link       http://www.phpunit.de/
  * @since      File available since Release 2.0.0
  */
 
-if (!defined('PHPUnit2_MAIN_METHOD')) {
-    define('PHPUnit2_MAIN_METHOD', 'PHPUnit2_TextUI_TestRunner::main');
+if (!defined('PHPUnit_MAIN_METHOD')) {
+    define('PHPUnit_MAIN_METHOD', 'PHPUnit_TextUI_TestRunner::main');
 }
 
-require_once 'PHPUnit2/Framework.php';
-require_once 'PHPUnit2/Runner/BaseTestRunner.php';
-require_once 'PHPUnit2/Extensions/RepeatedTest.php';
-require_once 'PHPUnit2/Runner/StandardTestSuiteLoader.php';
-require_once 'PHPUnit2/Runner/Version.php';
-require_once 'PHPUnit2/TextUI/ResultPrinter.php';
-require_once 'PHPUnit2/Util/TestDox/ResultPrinter.php';
-require_once 'PHPUnit2/Util/Fileloader.php';
-require_once 'PHPUnit2/Util/Getopt.php';
-require_once 'PHPUnit2/Util/Report.php';
-require_once 'PHPUnit2/Util/Timer.php';
-require_once 'PHPUnit2/Util/Skeleton.php';
-require_once 'PHPUnit2/Util/Log/Eclipse.php';
-require_once 'PHPUnit2/Util/Log/GraphViz.php';
-require_once 'PHPUnit2/Util/Log/TAP.php';
-require_once 'PHPUnit2/Util/Log/XML.php';
+require_once 'PHPUnit/Framework.php';
+require_once 'PHPUnit/Runner/BaseTestRunner.php';
+require_once 'PHPUnit/Extensions/RepeatedTest.php';
+require_once 'PHPUnit/Runner/StandardTestSuiteLoader.php';
+require_once 'PHPUnit/Runner/Version.php';
+require_once 'PHPUnit/TextUI/ResultPrinter.php';
+require_once 'PHPUnit/Util/TestDox/ResultPrinter.php';
+require_once 'PHPUnit/Util/Fileloader.php';
+require_once 'PHPUnit/Util/Getopt.php';
+require_once 'PHPUnit/Util/Report.php';
+require_once 'PHPUnit/Util/Timer.php';
+require_once 'PHPUnit/Util/Skeleton.php';
+require_once 'PHPUnit/Util/Log/Eclipse.php';
+require_once 'PHPUnit/Util/Log/GraphViz.php';
+require_once 'PHPUnit/Util/Log/TAP.php';
+require_once 'PHPUnit/Util/Log/XML.php';
 
-PHPUnit2_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
+PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
 
 /**
  * A TestRunner for the Command Line Interface (CLI)
@@ -79,23 +79,23 @@ PHPUnit2_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
  * @copyright  2002-2006 Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    Release: @package_version@
- * @link       http://pear.php.net/package/PHPUnit2
+ * @link       http://www.phpunit.de/
  * @since      Class available since Release 2.0.0
  */
-class PHPUnit2_TextUI_TestRunner extends PHPUnit2_Runner_BaseTestRunner
+class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
 {
     const SUCCESS_EXIT   = 0;
     const FAILURE_EXIT   = 1;
     const EXCEPTION_EXIT = 2;
 
     /**
-     * @var    PHPUnit2_Runner_TestSuiteLoader
+     * @var    PHPUnit_Runner_TestSuiteLoader
      * @access private
      */
     private $loader = NULL;
 
     /**
-     * @var    PHPUnit2_TextUI_ResultPrinter
+     * @var    PHPUnit_TextUI_ResultPrinter
      * @access private
      */
     private $printer = NULL;
@@ -113,7 +113,7 @@ class PHPUnit2_TextUI_TestRunner extends PHPUnit2_Runner_BaseTestRunner
      */
     public static function main()
     {
-        $aTestRunner = new PHPUnit2_TextUI_TestRunner;
+        $aTestRunner = new PHPUnit_TextUI_TestRunner;
 
         try {
             $result = $aTestRunner->start($_SERVER['argv']);
@@ -164,7 +164,7 @@ class PHPUnit2_TextUI_TestRunner extends PHPUnit2_Runner_BaseTestRunner
         }
 
         try {
-            $options = PHPUnit2_Util_Getopt::getopt(
+            $options = PHPUnit_Util_Getopt::getopt(
               $arguments,
               '',
               $possibleOptions
@@ -214,7 +214,7 @@ class PHPUnit2_TextUI_TestRunner extends PHPUnit2_Runner_BaseTestRunner
                 case '--printer': {
                     switch (strtolower($option[1])) {
                         case 'tap': {
-                            $parameters['printer'] = new PHPUnit2_Util_Log_TAP;
+                            $parameters['printer'] = new PHPUnit_Util_Log_TAP;
                         }
                         break;
                     }
@@ -270,13 +270,13 @@ class PHPUnit2_TextUI_TestRunner extends PHPUnit2_Runner_BaseTestRunner
         }
 
         if (!isset($parameters['printer'])) {
-            $printer = new PHPUnit2_TextUI_ResultPrinter;
+            $printer = new PHPUnit_TextUI_ResultPrinter;
         }
 
         $test = $this->getTest($test, $testFile);
 
         if ($repeat !== FALSE) {
-            $test = new PHPUnit2_Extensions_RepeatedTest($test, $repeat);
+            $test = new PHPUnit_Extensions_RepeatedTest($test, $repeat);
         }
 
         try {
@@ -302,11 +302,11 @@ class PHPUnit2_TextUI_TestRunner extends PHPUnit2_Runner_BaseTestRunner
     public static function run($test, Array $parameters = array())
     {
         if ($test instanceof ReflectionClass) {
-            $test = new PHPUnit2_Framework_TestSuite($test);
+            $test = new PHPUnit_Framework_TestSuite($test);
         }
 
-        if ($test instanceof PHPUnit2_Framework_Test) {
-            $aTestRunner = new PHPUnit2_TextUI_TestRunner;
+        if ($test instanceof PHPUnit_Framework_Test) {
+            $aTestRunner = new PHPUnit_TextUI_TestRunner;
 
             return $aTestRunner->doRun(
               $test,
@@ -318,13 +318,13 @@ class PHPUnit2_TextUI_TestRunner extends PHPUnit2_Runner_BaseTestRunner
     /**
      * Runs a single test and waits until the user types RETURN.
      *
-     * @param  PHPUnit2_Framework_Test $suite
+     * @param  PHPUnit_Framework_Test $suite
      * @access public
      * @static
      */
-    public static function runAndWait(PHPUnit2_Framework_Test $suite)
+    public static function runAndWait(PHPUnit_Framework_Test $suite)
     {
-        $aTestRunner = new PHPUnit2_TextUI_TestRunner;
+        $aTestRunner = new PHPUnit_TextUI_TestRunner;
 
         $aTestRunner->doRun(
           $suite,
@@ -336,21 +336,21 @@ class PHPUnit2_TextUI_TestRunner extends PHPUnit2_Runner_BaseTestRunner
     }
 
     /**
-     * @return PHPUnit2_Framework_TestResult
+     * @return PHPUnit_Framework_TestResult
      * @access protected
      */
     protected function createTestResult()
     {
-        return new PHPUnit2_Framework_TestResult;
+        return new PHPUnit_Framework_TestResult;
     }
 
     /**
-     * @param  PHPUnit2_Framework_Test $suite
+     * @param  PHPUnit_Framework_Test $suite
      * @param  array                   $parameters
-     * @return PHPUnit2_Framework_TestResult
+     * @return PHPUnit_Framework_TestResult
      * @access public
      */
-    public function doRun(PHPUnit2_Framework_Test $suite, Array $parameters = array())
+    public function doRun(PHPUnit_Framework_Test $suite, Array $parameters = array())
     {
         if (isset($parameters['graphvizDirectory'])) {
             $parameters['graphvizDirectory'] = $this->getDirectory($parameters['graphvizDirectory']);
@@ -363,22 +363,22 @@ class PHPUnit2_TextUI_TestRunner extends PHPUnit2_Runner_BaseTestRunner
         $result = $this->createTestResult();
 
         if ($this->printer === NULL) {
-            if (isset($parameters['printer']) && $parameters instanceof PHPUnit2_Util_Printer) {
+            if (isset($parameters['printer']) && $parameters instanceof PHPUnit_Util_Printer) {
                 $this->printer = $parameters['printer'];
             } else {
-                $this->printer = new PHPUnit2_TextUI_ResultPrinter;
+                $this->printer = new PHPUnit_TextUI_ResultPrinter;
             }
         }
 
         $this->printer->write(
-          PHPUnit2_Runner_Version::getVersionString() . "\n\n"
+          PHPUnit_Runner_Version::getVersionString() . "\n\n"
         );
 
         $result->addListener($this->printer);
 
         if (isset($parameters['testdoxHTMLFile'])) {
             $result->addListener(
-              PHPUnit2_Util_TestDox_ResultPrinter::factory(
+              PHPUnit_Util_TestDox_ResultPrinter::factory(
                 'HTML',
                 $parameters['testdoxHTMLFile']
               )
@@ -387,7 +387,7 @@ class PHPUnit2_TextUI_TestRunner extends PHPUnit2_Runner_BaseTestRunner
 
         if (isset($parameters['testdoxTextFile'])) {
             $result->addListener(
-              PHPUnit2_Util_TestDox_ResultPrinter::factory(
+              PHPUnit_Util_TestDox_ResultPrinter::factory(
                 'Text',
                 $parameters['testdoxTextFile']
               )
@@ -396,13 +396,13 @@ class PHPUnit2_TextUI_TestRunner extends PHPUnit2_Runner_BaseTestRunner
 
         if (isset($parameters['graphvizDirectory'])) {
             $result->addListener(
-              new PHPUnit2_Util_Log_GraphViz($parameters['graphvizDirectory'])
+              new PHPUnit_Util_Log_GraphViz($parameters['graphvizDirectory'])
             );
         }
 
         if (isset($parameters['reportDirectory'])) {
             $result->addListener(
-              new PHPUnit2_Util_Log_GraphViz($parameters['reportDirectory'])
+              new PHPUnit_Util_Log_GraphViz($parameters['reportDirectory'])
             );
 
             $result->collectCodeCoverageInformation(TRUE);
@@ -410,35 +410,35 @@ class PHPUnit2_TextUI_TestRunner extends PHPUnit2_Runner_BaseTestRunner
 
         if (isset($parameters['eclipseLogfile'])) {
             $result->addListener(
-              new PHPUnit2_Util_Log_Eclipse($parameters['eclipseLogfile'])
+              new PHPUnit_Util_Log_Eclipse($parameters['eclipseLogfile'])
             );
         }
 
         if (isset($parameters['tapLogfile'])) {
             $result->addListener(
-              new PHPUnit2_Util_Log_TAP($parameters['tapLogfile'])
+              new PHPUnit_Util_Log_TAP($parameters['tapLogfile'])
             );
         }
 
         if (isset($parameters['xmlLogfile'])) {
             $result->addListener(
-              new PHPUnit2_Util_Log_XML($parameters['xmlLogfile'])
+              new PHPUnit_Util_Log_XML($parameters['xmlLogfile'])
             );
         }
 
-        PHPUnit2_Util_Timer::start();
+        PHPUnit_Util_Timer::start();
         $suite->run($result);
-        $timeElapsed = PHPUnit2_Util_Timer::stop();
+        $timeElapsed = PHPUnit_Util_Timer::stop();
 
         $result->flushListeners();
 
         if (isset($parameters['reportDirectory'])) {
-            PHPUnit2_Util_Report::render($result, $parameters['reportDirectory']);
+            PHPUnit_Util_Report::render($result, $parameters['reportDirectory']);
         }
 
         $this->pause($parameters['wait']);
 
-        if ($this->printer instanceof PHPUnit2_TextUI_ResultPrinter) {
+        if ($this->printer instanceof PHPUnit_TextUI_ResultPrinter) {
             $this->printer->printResult($result, $timeElapsed);
         }
 
@@ -448,14 +448,14 @@ class PHPUnit2_TextUI_TestRunner extends PHPUnit2_Runner_BaseTestRunner
     /**
      * Returns the loader to be used.
      *
-     * @return PHPUnit2_Runner_TestSuiteLoader
+     * @return PHPUnit_Runner_TestSuiteLoader
      * @access public
      * @since  Method available since Release 2.2.0
      */
     public function getLoader()
     {
         if ($this->loader === NULL) {
-            $this->loader = new PHPUnit2_Runner_StandardTestSuiteLoader;
+            $this->loader = new PHPUnit_Runner_StandardTestSuiteLoader;
         }
 
         return $this->loader;
@@ -514,7 +514,7 @@ class PHPUnit2_TextUI_TestRunner extends PHPUnit2_Runner_BaseTestRunner
             return;
         }
 
-        if ($this->printer instanceof PHPUnit2_TextUI_ResultPrinter) {
+        if ($this->printer instanceof PHPUnit_TextUI_ResultPrinter) {
             $this->printer->printWaitPrompt();
         }
 
@@ -522,10 +522,10 @@ class PHPUnit2_TextUI_TestRunner extends PHPUnit2_Runner_BaseTestRunner
     }
 
     /**
-     * @param  PHPUnit2_TextUI_ResultPrinter $resultPrinter
+     * @param  PHPUnit_TextUI_ResultPrinter $resultPrinter
      * @access public
      */
-    public function setPrinter(PHPUnit2_TextUI_ResultPrinter $resultPrinter)
+    public function setPrinter(PHPUnit_TextUI_ResultPrinter $resultPrinter)
     {
         $this->printer = $resultPrinter;
     }
@@ -554,11 +554,11 @@ class PHPUnit2_TextUI_TestRunner extends PHPUnit2_Runner_BaseTestRunner
      * A test failed.
      *
      * @param  integer                                 $status
-     * @param  PHPUnit2_Framework_Test                 $test
-     * @param  PHPUnit2_Framework_AssertionFailedError $e
+     * @param  PHPUnit_Framework_Test                 $test
+     * @param  PHPUnit_Framework_AssertionFailedError $e
      * @access public
      */
-    public function testFailed($status, PHPUnit2_Framework_Test $test, PHPUnit2_Framework_AssertionFailedError $e)
+    public function testFailed($status, PHPUnit_Framework_Test $test, PHPUnit_Framework_AssertionFailedError $e)
     {
     }
 
@@ -588,7 +588,7 @@ class PHPUnit2_TextUI_TestRunner extends PHPUnit2_Runner_BaseTestRunner
             self::printVersionString();
 
             try {
-                $skeleton = new PHPUnit2_Util_Skeleton($test, $testFile);
+                $skeleton = new PHPUnit_Util_Skeleton($test, $testFile);
                 $skeleton->write();
             }
 
@@ -622,7 +622,7 @@ class PHPUnit2_TextUI_TestRunner extends PHPUnit2_Runner_BaseTestRunner
     private function handleLoader($loaderName)
     {
         if (!class_exists($loaderName)) {
-            PHPUnit2_Util_Fileloader::checkAndLoad(
+            PHPUnit_Util_Fileloader::checkAndLoad(
               str_replace('_', '/', $loaderName) . '.php'
             );
         }
@@ -630,7 +630,7 @@ class PHPUnit2_TextUI_TestRunner extends PHPUnit2_Runner_BaseTestRunner
         if (class_exists($loaderName)) {
             $class = new ReflectionClass($loaderName);
 
-            if ($class->implementsInterface('PHPUnit2_Runner_TestSuiteLoader') &&
+            if ($class->implementsInterface('PHPUnit_Runner_TestSuiteLoader') &&
                 $class->isInstantiable()) {
                 $this->loader = $class->newInstance();
             }
@@ -654,7 +654,7 @@ class PHPUnit2_TextUI_TestRunner extends PHPUnit2_Runner_BaseTestRunner
     private static function printVersionString()
     {
         if (!self::$versionStringPrinted) {
-            print PHPUnit2_Runner_Version::getVersionString() . "\n\n";
+            print PHPUnit_Runner_Version::getVersionString() . "\n\n";
             self::$versionStringPrinted = TRUE;
         }
     }
@@ -673,9 +673,11 @@ class PHPUnit2_TextUI_TestRunner extends PHPUnit2_Runner_BaseTestRunner
     }
 }
 
-if (PHPUnit2_MAIN_METHOD == 'PHPUnit2_TextUI_TestRunner::main') {
-    PHPUnit2_TextUI_TestRunner::main();
+if (PHPUnit_MAIN_METHOD == 'PHPUnit_TextUI_TestRunner::main') {
+    PHPUnit_TextUI_TestRunner::main();
 }
+
+class PHPUnit2_TextUI_TestRunner extends PHPUnit_TextUI_TestRunner {}
 
 /*
  * Local variables:

@@ -42,15 +42,15 @@
  * @copyright  2002-2006 Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    SVN: $Id$
- * @link       http://pear.php.net/package/PHPUnit2
+ * @link       http://www.phpunit.de/
  * @since      File available since Release 2.0.0
  */
 
-require_once 'PHPUnit2/Framework.php';
-require_once 'PHPUnit2/Util/Filter.php';
-require_once 'PHPUnit2/Util/Printer.php';
+require_once 'PHPUnit/Framework.php';
+require_once 'PHPUnit/Util/Filter.php';
+require_once 'PHPUnit/Util/Printer.php';
 
-PHPUnit2_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
+PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
 
 /**
  * Prints the result of a TextUI TestRunner run.
@@ -61,10 +61,10 @@ PHPUnit2_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
  * @copyright  2002-2006 Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    Release: @package_version@
- * @link       http://pear.php.net/package/PHPUnit2
+ * @link       http://www.phpunit.de/
  * @since      Class available since Release 2.0.0
  */
-class PHPUnit2_TextUI_ResultPrinter extends PHPUnit2_Util_Printer implements PHPUnit2_Framework_TestListener
+class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUnit_Framework_TestListener
 {
     /**
      * @var    integer
@@ -79,11 +79,11 @@ class PHPUnit2_TextUI_ResultPrinter extends PHPUnit2_Util_Printer implements PHP
     private $lastTestFailed = FALSE;
 
     /**
-     * @param  PHPUnit2_Framework_TestResult $result
+     * @param  PHPUnit_Framework_TestResult $result
      * @param  float                         $timeElapsed
      * @access public
      */
-    public function printResult(PHPUnit2_Framework_TestResult $result, $timeElapsed)
+    public function printResult(PHPUnit_Framework_TestResult $result, $timeElapsed)
     {
         $this->printHeader($timeElapsed);
         $this->printErrors($result);
@@ -124,27 +124,27 @@ class PHPUnit2_TextUI_ResultPrinter extends PHPUnit2_Util_Printer implements PHP
     }
 
     /**
-     * @param  PHPUnit2_Framework_TestFailure $defect
+     * @param  PHPUnit_Framework_TestFailure $defect
      * @param  integer                        $count
      * @access protected
      */
-    protected function printDefect(PHPUnit2_Framework_TestFailure $defect, $count)
+    protected function printDefect(PHPUnit_Framework_TestFailure $defect, $count)
     {
         $this->printDefectHeader($defect, $count);
         $this->printDefectTrace($defect);
     }
 
     /**
-     * @param  PHPUnit2_Framework_TestFailure $defect
+     * @param  PHPUnit_Framework_TestFailure $defect
      * @param  integer                        $count
      * @access protected
      */
-    protected function printDefectHeader(PHPUnit2_Framework_TestFailure $defect, $count)
+    protected function printDefectHeader(PHPUnit_Framework_TestFailure $defect, $count)
     {
         $failedTest = $defect->failedTest();
         $message    = '';
 
-        if ($failedTest instanceof PHPUnit2_Framework_SelfDescribing) {
+        if ($failedTest instanceof PHPUnit_Framework_SelfDescribing) {
             $message = $failedTest->toString();
         }
 
@@ -159,14 +159,14 @@ class PHPUnit2_TextUI_ResultPrinter extends PHPUnit2_Util_Printer implements PHP
     }
 
     /**
-     * @param  PHPUnit2_Framework_TestFailure $defect
+     * @param  PHPUnit_Framework_TestFailure $defect
      * @access protected
      */
-    protected function printDefectTrace(PHPUnit2_Framework_TestFailure $defect)
+    protected function printDefectTrace(PHPUnit_Framework_TestFailure $defect)
     {
         $e = $defect->thrownException();
 
-        if ($e instanceof PHPUnit2_Framework_SelfDescribing) {
+        if ($e instanceof PHPUnit_Framework_SelfDescribing) {
             $message = $e->toString();
         } else {
             $message = $e->getMessage();
@@ -175,7 +175,7 @@ class PHPUnit2_TextUI_ResultPrinter extends PHPUnit2_Util_Printer implements PHP
         $this->write($message . "\n");
 
         $this->write(
-          PHPUnit2_Util_Filter::getFilteredStacktrace(
+          PHPUnit_Util_Filter::getFilteredStacktrace(
             $defect->thrownException(),
             FALSE
           )
@@ -183,38 +183,38 @@ class PHPUnit2_TextUI_ResultPrinter extends PHPUnit2_Util_Printer implements PHP
     }
 
     /**
-     * @param  PHPUnit2_Framework_TestResult  $result
+     * @param  PHPUnit_Framework_TestResult  $result
      * @access protected
      */
-    protected function printErrors(PHPUnit2_Framework_TestResult $result)
+    protected function printErrors(PHPUnit_Framework_TestResult $result)
     {
         $this->printDefects($result->errors(), $result->errorCount(), 'error');
     }
 
     /**
-     * @param  PHPUnit2_Framework_TestResult  $result
+     * @param  PHPUnit_Framework_TestResult  $result
      * @access protected
      */
-    protected function printFailures(PHPUnit2_Framework_TestResult $result)
+    protected function printFailures(PHPUnit_Framework_TestResult $result)
     {
         $this->printDefects($result->failures(), $result->failureCount(), 'failure');
     }
 
     /**
-     * @param  PHPUnit2_Framework_TestResult  $result
+     * @param  PHPUnit_Framework_TestResult  $result
      * @access protected
      */
-    protected function printIncompletes(PHPUnit2_Framework_TestResult $result)
+    protected function printIncompletes(PHPUnit_Framework_TestResult $result)
     {
         $this->printDefects($result->notImplemented(), $result->notImplementedCount(), 'incomplete test');
     }
 
     /**
-     * @param  PHPUnit2_Framework_TestResult  $result
+     * @param  PHPUnit_Framework_TestResult  $result
      * @access protected
      * @since  Method available since Release 3.0.0
      */
-    protected function printSkipped(PHPUnit2_Framework_TestResult $result)
+    protected function printSkipped(PHPUnit_Framework_TestResult $result)
     {
         $this->printDefects($result->skipped(), $result->skippedCount(), 'skipped test');
     }
@@ -238,10 +238,10 @@ class PHPUnit2_TextUI_ResultPrinter extends PHPUnit2_Util_Printer implements PHP
     }
 
     /**
-     * @param  PHPUnit2_Framework_TestResult  $result
+     * @param  PHPUnit_Framework_TestResult  $result
      * @access protected
      */
-    protected function printFooter(PHPUnit2_Framework_TestResult $result)
+    protected function printFooter(PHPUnit_Framework_TestResult $result)
     {
         if ($result->wasSuccessful() &&
             $result->allCompletlyImplemented() &&
@@ -321,11 +321,11 @@ class PHPUnit2_TextUI_ResultPrinter extends PHPUnit2_Util_Printer implements PHP
     /**
      * An error occurred.
      *
-     * @param  PHPUnit2_Framework_Test $test
+     * @param  PHPUnit_Framework_Test $test
      * @param  Exception               $e
      * @access public
      */
-    public function addError(PHPUnit2_Framework_Test $test, Exception $e)
+    public function addError(PHPUnit_Framework_Test $test, Exception $e)
     {
         $this->write('E');
         $this->nextColumn();
@@ -336,11 +336,11 @@ class PHPUnit2_TextUI_ResultPrinter extends PHPUnit2_Util_Printer implements PHP
     /**
      * A failure occurred.
      *
-     * @param  PHPUnit2_Framework_Test                 $test
-     * @param  PHPUnit2_Framework_AssertionFailedError $e
+     * @param  PHPUnit_Framework_Test                 $test
+     * @param  PHPUnit_Framework_AssertionFailedError $e
      * @access public
      */
-    public function addFailure(PHPUnit2_Framework_Test $test, PHPUnit2_Framework_AssertionFailedError $e)
+    public function addFailure(PHPUnit_Framework_Test $test, PHPUnit_Framework_AssertionFailedError $e)
     {
         $this->write('F');
         $this->nextColumn();
@@ -351,11 +351,11 @@ class PHPUnit2_TextUI_ResultPrinter extends PHPUnit2_Util_Printer implements PHP
     /**
      * Incomplete test.
      *
-     * @param  PHPUnit2_Framework_Test $test
+     * @param  PHPUnit_Framework_Test $test
      * @param  Exception               $e
      * @access public
      */
-    public function addIncompleteTest(PHPUnit2_Framework_Test $test, Exception $e)
+    public function addIncompleteTest(PHPUnit_Framework_Test $test, Exception $e)
     {
         $this->write('I');
         $this->nextColumn();
@@ -366,12 +366,12 @@ class PHPUnit2_TextUI_ResultPrinter extends PHPUnit2_Util_Printer implements PHP
     /**
      * Skipped test.
      *
-     * @param  PHPUnit2_Framework_Test $test
+     * @param  PHPUnit_Framework_Test $test
      * @param  Exception               $e
      * @access public
      * @since  Method available since Release 3.0.0
      */
-    public function addSkippedTest(PHPUnit2_Framework_Test $test, Exception $e)
+    public function addSkippedTest(PHPUnit_Framework_Test $test, Exception $e)
     {
         $this->write('S');
         $this->nextColumn();
@@ -382,42 +382,42 @@ class PHPUnit2_TextUI_ResultPrinter extends PHPUnit2_Util_Printer implements PHP
     /**
      * A testsuite started.
      *
-     * @param  PHPUnit2_Framework_TestSuite $suite
+     * @param  PHPUnit_Framework_TestSuite $suite
      * @access public
      * @since  Method available since Release 2.2.0
      */
-    public function startTestSuite(PHPUnit2_Framework_TestSuite $suite)
+    public function startTestSuite(PHPUnit_Framework_TestSuite $suite)
     {
     }
 
     /**
      * A testsuite ended.
      *
-     * @param  PHPUnit2_Framework_TestSuite $suite
+     * @param  PHPUnit_Framework_TestSuite $suite
      * @access public
      * @since  Method available since Release 2.2.0
      */
-    public function endTestSuite(PHPUnit2_Framework_TestSuite $suite)
+    public function endTestSuite(PHPUnit_Framework_TestSuite $suite)
     {
     }
 
     /**
      * A test started.
      *
-     * @param  PHPUnit2_Framework_Test $test
+     * @param  PHPUnit_Framework_Test $test
      * @access public
      */
-    public function startTest(PHPUnit2_Framework_Test $test)
+    public function startTest(PHPUnit_Framework_Test $test)
     {
     }
 
     /**
      * A test ended.
      *
-     * @param  PHPUnit2_Framework_Test $test
+     * @param  PHPUnit_Framework_Test $test
      * @access public
      */
-    public function endTest(PHPUnit2_Framework_Test $test)
+    public function endTest(PHPUnit_Framework_Test $test)
     {
         if (!$this->lastTestFailed) {
             $this->write('.');

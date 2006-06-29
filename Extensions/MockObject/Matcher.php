@@ -43,16 +43,16 @@
  * @copyright  2002-2006 Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    SVN: $Id$
- * @link       http://pear.php.net/package/PHPUnit2
+ * @link       http://www.phpunit.de/
  * @since      File available since Release 3.0.0
  */
 
-require_once 'PHPUnit2/Framework.php';
-require_once 'PHPUnit2/Util/Filter.php';
-require_once 'PHPUnit2/Extensions/MockObject/Matcher/Invocation.php';
-require_once 'PHPUnit2/Extensions/MockObject/Invocation.php';
+require_once 'PHPUnit/Framework.php';
+require_once 'PHPUnit/Util/Filter.php';
+require_once 'PHPUnit/Extensions/MockObject/Matcher/Invocation.php';
+require_once 'PHPUnit/Extensions/MockObject/Invocation.php';
 
-PHPUnit2_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
+PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
 
 /**
  * Main matcher which defines a full expectation using method, parameter and invocation matchers.
@@ -70,10 +70,10 @@ PHPUnit2_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
  * @copyright  2002-2006 Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    Release: @package_version@
- * @link       http://pear.php.net/package/PHPUnit2
+ * @link       http://www.phpunit.de/
  * @since      Class available since Release 3.0.0
  */
-class PHPUnit2_Extensions_MockObject_Matcher implements PHPUnit2_Extensions_MockObject_Matcher_Invocation
+class PHPUnit_Extensions_MockObject_Matcher implements PHPUnit_Extensions_MockObject_Matcher_Invocation
 {
     public $invocationMatcher;
 
@@ -87,7 +87,7 @@ class PHPUnit2_Extensions_MockObject_Matcher implements PHPUnit2_Extensions_Mock
 
     public $stub = NULL;
 
-    public function __construct(PHPUnit2_Extensions_MockObject_Matcher_Invocation $invocationMatcher)
+    public function __construct(PHPUnit_Extensions_MockObject_Matcher_Invocation $invocationMatcher)
     {
         $this->invocationMatcher = $invocationMatcher;
     }
@@ -119,7 +119,7 @@ class PHPUnit2_Extensions_MockObject_Matcher implements PHPUnit2_Extensions_Mock
         return join(' ', $list);
     }
 
-    public function invoked(PHPUnit2_Extensions_MockObject_Invocation $invocation)
+    public function invoked(PHPUnit_Extensions_MockObject_Invocation $invocation)
     {
         if ($this->invocationMatcher === NULL) {
             throw new RuntimeException('No invocation matcher is set');
@@ -158,8 +158,8 @@ class PHPUnit2_Extensions_MockObject_Matcher implements PHPUnit2_Extensions_Mock
             }
         }
 
-        catch (PHPUnit2_Framework_ExpectationFailedException $e) {
-            throw new PHPUnit2_Framework_ExpectationFailedException(
+        catch (PHPUnit_Framework_ExpectationFailedException $e) {
+            throw new PHPUnit_Framework_ExpectationFailedException(
               sprintf(
                 "Expectation failed for %s when %s\n%s",
 
@@ -178,7 +178,7 @@ class PHPUnit2_Extensions_MockObject_Matcher implements PHPUnit2_Extensions_Mock
         return NULL;
     }
 
-    public function matches(PHPUnit2_Extensions_MockObject_Invocation $invocation)
+    public function matches(PHPUnit_Extensions_MockObject_Invocation $invocation)
     {
         if ($this->afterMatchBuilderId !== NULL) {
             $builder = $invocation->object->getInvocationMocker()->lookupId($this->afterMatchBuilderId);
@@ -222,8 +222,8 @@ class PHPUnit2_Extensions_MockObject_Matcher implements PHPUnit2_Extensions_Mock
             }
         }
 
-        catch (PHPUnit2_Framework_ExpectationFailedException $e) {
-            throw new PHPUnit2_Framework_ExpectationFailedException(
+        catch (PHPUnit_Framework_ExpectationFailedException $e) {
+            throw new PHPUnit_Framework_ExpectationFailedException(
               sprintf(
                 "Expectation failed for %s when %s\n%s",
 
@@ -260,8 +260,8 @@ class PHPUnit2_Extensions_MockObject_Matcher implements PHPUnit2_Extensions_Mock
             }
         }
 
-        catch (PHPUnit2_Framework_ExpectationFailedException $e) {
-            throw new PHPUnit2_Framework_ExpectationFailedException(
+        catch (PHPUnit_Framework_ExpectationFailedException $e) {
+            throw new PHPUnit_Framework_ExpectationFailedException(
               sprintf(
                 "Expectation failed for %s when %s\n%s",
 
@@ -275,14 +275,14 @@ class PHPUnit2_Extensions_MockObject_Matcher implements PHPUnit2_Extensions_Mock
     }
 }
 
-require_once 'PHPUnit2/Extensions/MockObject/Matcher/AnyParameters.php';
-require_once 'PHPUnit2/Extensions/MockObject/Matcher/InvokedAtIndex.php';
-require_once 'PHPUnit2/Extensions/MockObject/Matcher/InvokedAtLeastOnce.php';
-require_once 'PHPUnit2/Extensions/MockObject/Matcher/InvokedCount.php';
-require_once 'PHPUnit2/Extensions/MockObject/Matcher/InvokedRecorder.php';
-require_once 'PHPUnit2/Extensions/MockObject/Matcher/MethodName.php';
-require_once 'PHPUnit2/Extensions/MockObject/Matcher/Parameters.php';
-require_once 'PHPUnit2/Extensions/MockObject/Matcher/StatelessInvocation.php';
+require_once 'PHPUnit/Extensions/MockObject/Matcher/AnyParameters.php';
+require_once 'PHPUnit/Extensions/MockObject/Matcher/InvokedAtIndex.php';
+require_once 'PHPUnit/Extensions/MockObject/Matcher/InvokedAtLeastOnce.php';
+require_once 'PHPUnit/Extensions/MockObject/Matcher/InvokedCount.php';
+require_once 'PHPUnit/Extensions/MockObject/Matcher/InvokedRecorder.php';
+require_once 'PHPUnit/Extensions/MockObject/Matcher/MethodName.php';
+require_once 'PHPUnit/Extensions/MockObject/Matcher/Parameters.php';
+require_once 'PHPUnit/Extensions/MockObject/Matcher/StatelessInvocation.php';
 
 /*
  * Local variables:

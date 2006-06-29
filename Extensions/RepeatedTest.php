@@ -42,15 +42,15 @@
  * @copyright  2002-2006 Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    SVN: $Id$
- * @link       http://pear.php.net/package/PHPUnit2
+ * @link       http://www.phpunit.de/
  * @since      File available since Release 2.0.0
  */
 
-require_once 'PHPUnit2/Framework.php';
-require_once 'PHPUnit2/Extensions/TestDecorator.php';
-require_once 'PHPUnit2/Util/Filter.php';
+require_once 'PHPUnit/Framework.php';
+require_once 'PHPUnit/Extensions/TestDecorator.php';
+require_once 'PHPUnit/Util/Filter.php';
 
-PHPUnit2_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
+PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
 
 /**
  * A Decorator that runs a test repeatedly.
@@ -61,10 +61,10 @@ PHPUnit2_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
  * @copyright  2002-2006 Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    Release: @package_version@
- * @link       http://pear.php.net/package/PHPUnit2
+ * @link       http://www.phpunit.de/
  * @since      Class available since Release 2.0.0
  */
-class PHPUnit2_Extensions_RepeatedTest extends PHPUnit2_Extensions_TestDecorator
+class PHPUnit_Extensions_RepeatedTest extends PHPUnit_Extensions_TestDecorator
 {
     /**
      * @var    integer
@@ -75,12 +75,12 @@ class PHPUnit2_Extensions_RepeatedTest extends PHPUnit2_Extensions_TestDecorator
     /**
      * Constructor.
      *
-     * @param  PHPUnit2_Framework_Test $test
+     * @param  PHPUnit_Framework_Test $test
      * @param  integer                 $timesRepeat
      * @throws InvalidArgumentException
      * @access public
      */
-    public function __construct(PHPUnit2_Framework_Test $test, $timesRepeat = 1)
+    public function __construct(PHPUnit_Framework_Test $test, $timesRepeat = 1)
     {
         parent::__construct($test);
 
@@ -110,12 +110,12 @@ class PHPUnit2_Extensions_RepeatedTest extends PHPUnit2_Extensions_TestDecorator
      * Runs the decorated test and collects the
      * result in a TestResult.
      *
-     * @param  PHPUnit2_Framework_TestResult $result
-     * @return PHPUnit2_Framework_TestResult
+     * @param  PHPUnit_Framework_TestResult $result
+     * @return PHPUnit_Framework_TestResult
      * @throws InvalidArgumentException
      * @access public
      */
-    public function run(PHPUnit2_Framework_TestResult $result = NULL)
+    public function run(PHPUnit_Framework_TestResult $result = NULL)
     {
         if ($result === NULL) {
             $result = $this->createResult();

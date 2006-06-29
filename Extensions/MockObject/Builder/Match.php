@@ -43,14 +43,14 @@
  * @copyright  2002-2006 Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    SVN: $Id$
- * @link       http://pear.php.net/package/PHPUnit2
+ * @link       http://www.phpunit.de/
  * @since      File available since Release 3.0.0
  */
 
-require_once 'PHPUnit2/Util/Filter.php';
-require_once 'PHPUnit2/Extensions/MockObject/Builder/Stub.php';
+require_once 'PHPUnit/Util/Filter.php';
+require_once 'PHPUnit/Extensions/MockObject/Builder/Stub.php';
 
-PHPUnit2_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
+PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
 
 /**
  * Builder interface for invocation order matches.
@@ -62,17 +62,17 @@ PHPUnit2_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
  * @copyright  2002-2006 Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    Release: @package_version@
- * @link       http://pear.php.net/package/PHPUnit2
+ * @link       http://www.phpunit.de/
  * @since      Interface available since Release 3.0.0
  */
-interface PHPUnit2_Extensions_MockObject_Builder_Match extends PHPUnit2_Extensions_MockObject_Builder_Stub
+interface PHPUnit_Extensions_MockObject_Builder_Match extends PHPUnit_Extensions_MockObject_Builder_Stub
 {
     /**
      * Defines the expectation which must occur before the current is valid.
      *
      * @param string $id The identification of the expectation that should
      *                   occur before this one.
-     * @return PHPUnit2_Extensions_MockObject_Builder_Stub
+     * @return PHPUnit_Extensions_MockObject_Builder_Stub
      */
     public function after($id);
 }

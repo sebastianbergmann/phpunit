@@ -42,23 +42,23 @@
  * @copyright  2002-2006 Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    SVN: $Id$
- * @link       http://pear.php.net/package/PHPUnit2
+ * @link       http://www.phpunit.de/
  * @since      File available since Release 2.0.0
  */
 
-require_once 'PHPUnit2/Framework.php';
-require_once 'PHPUnit2/Util/Filter.php';
+require_once 'PHPUnit/Framework.php';
+require_once 'PHPUnit/Util/Filter.php';
 
-PHPUnit2_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
+PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
 
-if (!class_exists('PHPUnit2_Framework_TestCase')) {
+if (!class_exists('PHPUnit_Framework_TestCase')) {
 
 /**
  * A TestCase defines the fixture to run multiple tests.
  *
  * To define a TestCase
  *
- *   1) Implement a subclass of PHPUnit2_Framework_TestCase.
+ *   1) Implement a subclass of PHPUnit_Framework_TestCase.
  *   2) Define instance variables that store the state of the fixture.
  *   3) Initialize the fixture state by overriding setUp().
  *   4) Clean-up after a test by overriding tearDown().
@@ -70,9 +70,9 @@ if (!class_exists('PHPUnit2_Framework_TestCase')) {
  *
  * <code>
  * <?php
- * require_once 'PHPUnit2/Framework/TestCase.php';
+ * require_once 'PHPUnit/Framework/TestCase.php';
  *
- * class MathTest extends PHPUnit2_Framework_TestCase
+ * class MathTest extends PHPUnit_Framework_TestCase
  * {
  *     public $value1;
  *     public $value2;
@@ -105,11 +105,11 @@ if (!class_exists('PHPUnit2_Framework_TestCase')) {
  * @copyright  2002-2006 Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    Release: @package_version@
- * @link       http://pear.php.net/package/PHPUnit2
+ * @link       http://www.phpunit.de/
  * @since      Class available since Release 2.0.0
  * @abstract
  */
-abstract class PHPUnit2_Framework_TestCase extends PHPUnit2_Framework_Assert implements PHPUnit2_Framework_Test, PHPUnit2_Framework_SelfDescribing
+abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert implements PHPUnit_Framework_Test, PHPUnit_Framework_SelfDescribing
 {
     /**
      * The name of the test case.
@@ -188,12 +188,12 @@ abstract class PHPUnit2_Framework_TestCase extends PHPUnit2_Framework_Assert imp
      * Runs the test case and collects the results in a TestResult object.
      * If no TestResult object is passed a new one will be created.
      *
-     * @param  PHPUnit2_Framework_TestResult $result
-     * @return PHPUnit2_Framework_TestResult
+     * @param  PHPUnit_Framework_TestResult $result
+     * @return PHPUnit_Framework_TestResult
      * @throws InvalidArgumentException
      * @access public
      */
-    public function run(PHPUnit2_Framework_TestResult $result = NULL)
+    public function run(PHPUnit_Framework_TestResult $result = NULL)
     {
         if ($result === NULL) {
             $result = $this->createResult();
@@ -252,14 +252,14 @@ abstract class PHPUnit2_Framework_TestCase extends PHPUnit2_Framework_Assert imp
     /**
      * Override to run the test and assert its state.
      *
-     * @throws PHPUnit2_Framework_Error
+     * @throws PHPUnit_Framework_Error
      * @access protected
      */
     protected function runTest()
     {
         if ($this->name === NULL) {
-            throw new PHPUnit2_Framework_Error(
-              'PHPUnit2_Framework_TestCase::$name must not be NULL.'
+            throw new PHPUnit_Framework_Error(
+              'PHPUnit_Framework_TestCase::$name must not be NULL.'
             );
         }
 
@@ -330,7 +330,7 @@ abstract class PHPUnit2_Framework_TestCase extends PHPUnit2_Framework_Assert imp
             throw new InvalidArgumentException;
         }
 
-        $mock       = PHPUnit2_Extensions_MockObject_Mock::generate($className, $methods, $mockClassName);
+        $mock       = PHPUnit_Extensions_MockObject_Mock::generate($className, $methods, $mockClassName);
         $mockClass  = new ReflectionClass($mock->mockClassName);
         $mockObject = $mockClass->newInstanceArgs($arguments);
 
@@ -342,83 +342,83 @@ abstract class PHPUnit2_Framework_TestCase extends PHPUnit2_Framework_Assert imp
     /**
      * 
      *
-     * @return PHPUnit2_Extensions_MockObject_Matcher_InvokedCount
+     * @return PHPUnit_Extensions_MockObject_Matcher_InvokedCount
      * @access protected
      * @since  Method available since Release 3.0.0
      */
     protected function never()
     {
-        return new PHPUnit2_Extensions_MockObject_Matcher_InvokedCount(0);
+        return new PHPUnit_Extensions_MockObject_Matcher_InvokedCount(0);
     }
 
     /**
      * 
      *
-     * @return PHPUnit2_Extensions_MockObject_Matcher_InvokedAtLeastOnce
+     * @return PHPUnit_Extensions_MockObject_Matcher_InvokedAtLeastOnce
      * @access protected
      * @since  Method available since Release 3.0.0
      */
     protected function atLeastOnce()
     {
-        return new PHPUnit2_Extensions_MockObject_Matcher_InvokedAtLeastOnce;
+        return new PHPUnit_Extensions_MockObject_Matcher_InvokedAtLeastOnce;
     }
 
     /**
      * 
      *
-     * @return PHPUnit2_Extensions_MockObject_Matcher_InvokedCount
+     * @return PHPUnit_Extensions_MockObject_Matcher_InvokedCount
      * @access protected
      * @since  Method available since Release 3.0.0
      */
     protected function once()
     {
-        return new PHPUnit2_Extensions_MockObject_Matcher_InvokedCount(1);
+        return new PHPUnit_Extensions_MockObject_Matcher_InvokedCount(1);
     }
 
     /**
      * 
      *
      * @param  integer $count
-     * @return PHPUnit2_Extensions_MockObject_Matcher_InvokedCount
+     * @return PHPUnit_Extensions_MockObject_Matcher_InvokedCount
      * @access protected
      * @since  Method available since Release 3.0.0
      */
     protected function exactly($count)
     {
-        return new PHPUnit2_Extensions_MockObject_Matcher_InvokedCount($count);
+        return new PHPUnit_Extensions_MockObject_Matcher_InvokedCount($count);
     }
 
     /**
      * 
      *
      * @param  integer $index
-     * @return PHPUnit2_Extensions_MockObject_Matcher_InvokedAtIndex
+     * @return PHPUnit_Extensions_MockObject_Matcher_InvokedAtIndex
      * @access protected
      * @since  Method available since Release 3.0.0
      */
     protected function at($index)
     {
-        return new PHPUnit2_Extensions_MockObject_Matcher_InvokedAtIndex($index);
+        return new PHPUnit_Extensions_MockObject_Matcher_InvokedAtIndex($index);
     }
 
     /**
      * 
      *
      * @param  mixed $value
-     * @return PHPUnit2_Extensions_MockObject_Stub_Return
+     * @return PHPUnit_Extensions_MockObject_Stub_Return
      * @access protected
      * @since  Method available since Release 3.0.0
      */
     protected function returnValue($value)
     {
-        return new PHPUnit2_Extensions_MockObject_Stub_Return($value);
+        return new PHPUnit_Extensions_MockObject_Stub_Return($value);
     }
 
     /**
      * 
      *
      * @param  mixed $value, ...
-     * @return PHPUnit2_Extensions_MockObject_Stub_ConsecutiveCalls
+     * @return PHPUnit_Extensions_MockObject_Stub_ConsecutiveCalls
      * @access protected
      * @since  Method available since Release 3.0.0
      */
@@ -426,18 +426,18 @@ abstract class PHPUnit2_Framework_TestCase extends PHPUnit2_Framework_Assert imp
     {
         $args = func_get_args();
 
-        return new PHPUnit2_Extensions_MockObject_Stub_ConsecutiveCalls($args);
+        return new PHPUnit_Extensions_MockObject_Stub_ConsecutiveCalls($args);
     }
 
     /**
      * Creates a default TestResult object.
      *
-     * @return PHPUnit2_Framework_TestResult
+     * @return PHPUnit_Framework_TestResult
      * @access protected
      */
     protected function createResult()
     {
-        return new PHPUnit2_Framework_TestResult;
+        return new PHPUnit_Framework_TestResult;
     }
 
     /**
@@ -460,6 +460,8 @@ abstract class PHPUnit2_Framework_TestCase extends PHPUnit2_Framework_Assert imp
     {
     }
 }
+
+class PHPUnit2_Framework_TestCase extends PHPUnit_Framework_TestCase {}
 
 }
 

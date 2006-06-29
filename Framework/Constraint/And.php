@@ -43,14 +43,14 @@
  * @copyright  2002-2006 Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    SVN: $Id$
- * @link       http://pear.php.net/package/PHPUnit2
+ * @link       http://www.phpunit.de/
  * @since      File available since Release 3.0.0
  */
 
-require_once 'PHPUnit2/Framework.php';
-require_once 'PHPUnit2/Util/Filter.php';
+require_once 'PHPUnit/Framework.php';
+require_once 'PHPUnit/Util/Filter.php';
 
-PHPUnit2_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
+PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
 
 /**
  * Constraint which will only evaluate to true if all sub-constraints does the same.
@@ -65,10 +65,10 @@ PHPUnit2_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
  * @copyright  2002-2006 Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    Release: @package_version@
- * @link       http://pear.php.net/package/PHPUnit2
+ * @link       http://www.phpunit.de/
  * @since      Class available since Release 3.0.0
  */
-class PHPUnit2_Framework_Constraint_And implements PHPUnit2_Framework_Constraint
+class PHPUnit_Framework_Constraint_And implements PHPUnit_Framework_Constraint
 {
     private $constraints = array();
 
@@ -79,7 +79,7 @@ class PHPUnit2_Framework_Constraint_And implements PHPUnit2_Framework_Constraint
         $this->constraints = array();
 
         foreach($constraints as $key => $constraint) {
-            if (!($constraint instanceof PHPUnit2_Framework_Constraint)) {
+            if (!($constraint instanceof PHPUnit_Framework_Constraint)) {
                 throw new InvalidArgumentException('All parameters to ' . __CLASS__ . ' must be a constraint object.');
             }
 
@@ -114,7 +114,7 @@ class PHPUnit2_Framework_Constraint_And implements PHPUnit2_Framework_Constraint
      *                         constraint check.
      * @param   string  $description A string with extra description of what was
      *                               going on while the evaluation failed.
-     * @throws  PHPUnit2_Framework_ExpectationFailedException
+     * @throws  PHPUnit_Framework_ExpectationFailedException
      */
     public function fail($other, $description)
     {
@@ -125,7 +125,7 @@ class PHPUnit2_Framework_Constraint_And implements PHPUnit2_Framework_Constraint
               'Expected that <' . $other . '> ' . $this->toString()
             );
         } else {
-            throw new PHPUnit2_Framework_ExpectationFailedException(
+            throw new PHPUnit_Framework_ExpectationFailedException(
               sprintf(
                 "%s\nExpected that <%s> %s",
 

@@ -42,12 +42,12 @@
  * @copyright  2002-2006 Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    SVN: $Id$
- * @link       http://pear.php.net/package/PHPUnit2
+ * @link       http://www.phpunit.de/
  * @since      File available since Release 2.0.0
  */
 
-require_once 'PHPUnit2/Framework/ComparisonFailure.php';
-require_once 'PHPUnit2/Framework/TestCase.php';
+require_once 'PHPUnit/Framework/ComparisonFailure.php';
+require_once 'PHPUnit/Framework/TestCase.php';
 
 /**
  * 
@@ -58,14 +58,14 @@ require_once 'PHPUnit2/Framework/TestCase.php';
  * @copyright  2002-2006 Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    Release: @package_version@
- * @link       http://pear.php.net/package/PHPUnit2
+ * @link       http://www.phpunit.de/
  * @since      Class available since Release 2.0.0
  */
-class Framework_ComparisonFailureTest extends PHPUnit2_Framework_TestCase
+class Framework_ComparisonFailureTest extends PHPUnit_Framework_TestCase
 {
     public function testComparisonErrorMessage()
     {
-        $failure = PHPUnit2_Framework_ComparisonFailure::diffEqual('a', 'b', 'c');
+        $failure = PHPUnit_Framework_ComparisonFailure::diffEqual('a', 'b', 'c');
 
         $this->assertEquals(
           "c expected string <a>\n  difference      <x>\n  got string      <b>",
@@ -75,7 +75,7 @@ class Framework_ComparisonFailureTest extends PHPUnit2_Framework_TestCase
 
     public function testComparisonErrorStartSame()
     {
-        $failure = PHPUnit2_Framework_ComparisonFailure::diffEqual('ba', 'bc');
+        $failure = PHPUnit_Framework_ComparisonFailure::diffEqual('ba', 'bc');
 
         $this->assertEquals(
           "expected string <ba>\ndifference      < x>\ngot string      <bc>",
@@ -85,7 +85,7 @@ class Framework_ComparisonFailureTest extends PHPUnit2_Framework_TestCase
 
     public function testComparisonErrorEndSame()
     {
-        $failure = PHPUnit2_Framework_ComparisonFailure::diffEqual('ab', 'cb');
+        $failure = PHPUnit_Framework_ComparisonFailure::diffEqual('ab', 'cb');
 
         $this->assertEquals(
           "expected string <ab>\ndifference      <x>\ngot string      <cb>",
@@ -95,7 +95,7 @@ class Framework_ComparisonFailureTest extends PHPUnit2_Framework_TestCase
 
     public function testComparisonErrorStartAndEndSame()
     {
-        $failure = PHPUnit2_Framework_ComparisonFailure::diffEqual('abc', 'adc');
+        $failure = PHPUnit_Framework_ComparisonFailure::diffEqual('abc', 'adc');
 
         $this->assertEquals(
           "expected string <abc>\ndifference      < x>\ngot string      <adc>",
@@ -105,7 +105,7 @@ class Framework_ComparisonFailureTest extends PHPUnit2_Framework_TestCase
 
     public function testComparisonErrorStartSameComplete()
     {
-        $failure = PHPUnit2_Framework_ComparisonFailure::diffEqual('ab', 'abc');
+        $failure = PHPUnit_Framework_ComparisonFailure::diffEqual('ab', 'abc');
 
         $this->assertEquals(
           "expected string <ab>\ndifference      <  ?>\ngot string      <abc>",
@@ -115,7 +115,7 @@ class Framework_ComparisonFailureTest extends PHPUnit2_Framework_TestCase
 
     public function testComparisonErrorEndSameComplete()
     {
-        $failure = PHPUnit2_Framework_ComparisonFailure::diffEqual('bc', 'abc');
+        $failure = PHPUnit_Framework_ComparisonFailure::diffEqual('bc', 'abc');
 
         $this->assertEquals(
           "expected string <bc>\ndifference      <xx?>\ngot string      <abc>",
@@ -125,7 +125,7 @@ class Framework_ComparisonFailureTest extends PHPUnit2_Framework_TestCase
 
     public function testComparisonErrorOverlapingMatches()
     {
-        $failure = PHPUnit2_Framework_ComparisonFailure::diffEqual('abc', 'abbc');
+        $failure = PHPUnit_Framework_ComparisonFailure::diffEqual('abc', 'abbc');
 
         $this->assertEquals(
           "expected string <abc>\ndifference      <  x?>\ngot string      <abbc>",
@@ -135,7 +135,7 @@ class Framework_ComparisonFailureTest extends PHPUnit2_Framework_TestCase
 
     public function testComparisonErrorOverlapingMatches2()
     {
-        $failure = PHPUnit2_Framework_ComparisonFailure::diffEqual('abcdde', 'abcde');
+        $failure = PHPUnit_Framework_ComparisonFailure::diffEqual('abcdde', 'abcde');
 
         $this->assertEquals(
           "expected string <abcdde>\ndifference      <    x?>\ngot string      <abcde>",

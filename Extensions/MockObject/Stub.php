@@ -43,15 +43,15 @@
  * @copyright  2002-2006 Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    SVN: $Id$
- * @link       http://pear.php.net/package/PHPUnit2
+ * @link       http://www.phpunit.de/
  * @since      File available since Release 3.0.0
  */
 
-require_once 'PHPUnit2/Framework.php';
-require_once 'PHPUnit2/Util/Filter.php';
-require_once 'PHPUnit2/Extensions/MockObject/Invocation.php';
+require_once 'PHPUnit/Framework.php';
+require_once 'PHPUnit/Util/Filter.php';
+require_once 'PHPUnit/Extensions/MockObject/Invocation.php';
 
-PHPUnit2_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
+PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
 
 /**
  * An object that stubs the process of a normal method for a mock object.
@@ -66,25 +66,25 @@ PHPUnit2_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
  * @copyright  2002-2006 Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    Release: @package_version@
- * @link       http://pear.php.net/package/PHPUnit2
+ * @link       http://www.phpunit.de/
  * @since      Interface available since Release 3.0.0
  */
-interface PHPUnit2_Extensions_MockObject_Stub extends PHPUnit2_Framework_SelfDescribing
+interface PHPUnit_Extensions_MockObject_Stub extends PHPUnit_Framework_SelfDescribing
 {
     /**
      * Fakes the processesing of the invocation $invocation by returning a
      * specific value.
      *
      * @return mixed
-     * @param PHPUnit2_Extensions_MockObject_Invocation $invocation The invocation which was mocked
+     * @param PHPUnit_Extensions_MockObject_Invocation $invocation The invocation which was mocked
      *                                                  and matched by the current method
      *                                                  and argument matchers.
      */
-    public function invoke(PHPUnit2_Extensions_MockObject_Invocation $invocation);
+    public function invoke(PHPUnit_Extensions_MockObject_Invocation $invocation);
 }
 
-require_once 'PHPUnit2/Extensions/MockObject/Stub/MatcherCollection.php';
-require_once 'PHPUnit2/Extensions/MockObject/Stub/Return.php';
+require_once 'PHPUnit/Extensions/MockObject/Stub/MatcherCollection.php';
+require_once 'PHPUnit/Extensions/MockObject/Stub/Return.php';
 
 /*
  * Local variables:

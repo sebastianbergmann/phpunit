@@ -43,19 +43,19 @@
  * @copyright  2002-2006 Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    SVN: $Id$
- * @link       http://pear.php.net/package/PHPUnit2
+ * @link       http://www.phpunit.de/
  * @since      File available since Release 3.0.0
  */
 
-require_once 'PHPUnit2/Util/Filter.php';
-require_once 'PHPUnit2/Extensions/MockObject/Builder/Match.php';
+require_once 'PHPUnit/Util/Filter.php';
+require_once 'PHPUnit/Extensions/MockObject/Builder/Match.php';
 
-PHPUnit2_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
+PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
 
 /**
  * Interface for builders which can register builders with a given identification.
  *
- * This interface relates to PHPUnit2_Extensions_MockObject_Builder_Identity.
+ * This interface relates to PHPUnit_Extensions_MockObject_Builder_Identity.
  *
  * @category   Testing
  * @package    PHPUnit2
@@ -64,16 +64,16 @@ PHPUnit2_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
  * @copyright  2002-2006 Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    Release: @package_version@
- * @link       http://pear.php.net/package/PHPUnit2
+ * @link       http://www.phpunit.de/
  * @since      Interface available since Release 3.0.0
  */
-interface PHPUnit2_Extensions_MockObject_Builder_Namespace
+interface PHPUnit_Extensions_MockObject_Builder_Namespace
 {
     /**
      * Looks up the match builder with identification $id and returns it.
      *
      * @param string $id The identifiction of the match builder.
-     * @return PHPUnit2_Extensions_MockObject_Builder_Match
+     * @return PHPUnit_Extensions_MockObject_Builder_Match
      */
     public function lookupId($id);
 
@@ -83,9 +83,9 @@ interface PHPUnit2_Extensions_MockObject_Builder_Namespace
      * has been invoked.
      *
      * @param string $id The identification of the match builder.
-     * @param PHPUnit2_Extensions_MockObject_Builder_Match $builder The builder which is being registered.
+     * @param PHPUnit_Extensions_MockObject_Builder_Match $builder The builder which is being registered.
      */
-    public function registerId($id, PHPUnit2_Extensions_MockObject_Builder_Match $builder);
+    public function registerId($id, PHPUnit_Extensions_MockObject_Builder_Match $builder);
 }
 
 /*

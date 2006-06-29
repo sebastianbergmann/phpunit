@@ -43,15 +43,15 @@
  * @copyright  2002-2006 Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    SVN: $Id$
- * @link       http://pear.php.net/package/PHPUnit2
+ * @link       http://www.phpunit.de/
  * @since      File available since Release 3.0.0
  */
 
-require_once 'PHPUnit2/Util/Filter.php';
-require_once 'PHPUnit2/Extensions/MockObject/Invocation.php';
-require_once 'PHPUnit2/Extensions/MockObject/Stub.php';
+require_once 'PHPUnit/Util/Filter.php';
+require_once 'PHPUnit/Extensions/MockObject/Invocation.php';
+require_once 'PHPUnit/Extensions/MockObject/Stub.php';
 
-PHPUnit2_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
+PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
 
 /**
  * Stubs a method by returning a user-defined stack of values.
@@ -63,10 +63,10 @@ PHPUnit2_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
  * @copyright  2002-2006 Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    Release: @package_version@
- * @link       http://pear.php.net/package/PHPUnit2
+ * @link       http://www.phpunit.de/
  * @since      Class available since Release 3.0.0
  */
-class PHPUnit2_Extensions_MockObject_Stub_ConsecutiveCalls implements PHPUnit2_Extensions_MockObject_Stub
+class PHPUnit_Extensions_MockObject_Stub_ConsecutiveCalls implements PHPUnit_Extensions_MockObject_Stub
 {
     private $stack;
     private $value;
@@ -76,11 +76,11 @@ class PHPUnit2_Extensions_MockObject_Stub_ConsecutiveCalls implements PHPUnit2_E
         $this->stack = $stack;
     }
 
-    public function invoke(PHPUnit2_Extensions_MockObject_Invocation $invocation)
+    public function invoke(PHPUnit_Extensions_MockObject_Invocation $invocation)
     {
         $this->value = array_shift($this->stack);
 
-        if ($this->value instanceof PHPUnit2_Extensions_MockObject_Stub) {
+        if ($this->value instanceof PHPUnit_Extensions_MockObject_Stub) {
             $this->value = $this->value->invoke($invocation);
         }
 

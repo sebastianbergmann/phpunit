@@ -42,13 +42,13 @@
  * @copyright  2002-2006 Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    SVN: $Id$
- * @link       http://pear.php.net/package/PHPUnit2
+ * @link       http://www.phpunit.de/
  * @since      File available since Release 2.0.0
  */
 
-require_once 'PHPUnit2/Framework/TestCase.php';
-require_once 'PHPUnit2/Framework/TestListener.php';
-require_once 'PHPUnit2/Framework/TestResult.php';
+require_once 'PHPUnit/Framework/TestCase.php';
+require_once 'PHPUnit/Framework/TestListener.php';
+require_once 'PHPUnit/Framework/TestResult.php';
 
 require_once '_files/Error.php';
 require_once '_files/Failure.php';
@@ -63,10 +63,10 @@ require_once '_files/Success.php';
  * @copyright  2002-2006 Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    Release: @package_version@
- * @link       http://pear.php.net/package/PHPUnit2
+ * @link       http://www.phpunit.de/
  * @since      Class available since Release 2.0.0
  */
-class Framework_TestListenerTest extends PHPUnit2_Framework_TestCase implements PHPUnit2_Framework_TestListener
+class Framework_TestListenerTest extends PHPUnit_Framework_TestCase implements PHPUnit_Framework_TestListener
 {
     private $endCount;
     private $errorCount;
@@ -76,47 +76,47 @@ class Framework_TestListenerTest extends PHPUnit2_Framework_TestCase implements 
     private $result;
     private $startCount;
 
-    public function addError(PHPUnit2_Framework_Test $test, Exception $e)
+    public function addError(PHPUnit_Framework_Test $test, Exception $e)
     {
         $this->errorCount++;
     }
 
-    public function addFailure(PHPUnit2_Framework_Test $test, PHPUnit2_Framework_AssertionFailedError $e)
+    public function addFailure(PHPUnit_Framework_Test $test, PHPUnit_Framework_AssertionFailedError $e)
     {
         $this->failureCount++;
     }
 
-    public function addIncompleteTest(PHPUnit2_Framework_Test $test, Exception $e)
+    public function addIncompleteTest(PHPUnit_Framework_Test $test, Exception $e)
     {
         $this->notImplementedCount++;
     }
 
-    public function addSkippedTest(PHPUnit2_Framework_Test $test, Exception $e)
+    public function addSkippedTest(PHPUnit_Framework_Test $test, Exception $e)
     {
         $this->skippedCount++;
     }
 
-    public function startTestSuite(PHPUnit2_Framework_TestSuite $suite)
+    public function startTestSuite(PHPUnit_Framework_TestSuite $suite)
     {
     }
 
-    public function endTestSuite(PHPUnit2_Framework_TestSuite $suite)
+    public function endTestSuite(PHPUnit_Framework_TestSuite $suite)
     {
     }
 
-    public function startTest(PHPUnit2_Framework_Test $test)
+    public function startTest(PHPUnit_Framework_Test $test)
     {
         $this->startCount++;
     }
 
-    public function endTest(PHPUnit2_Framework_Test $test)
+    public function endTest(PHPUnit_Framework_Test $test)
     {
         $this->endCount++;
     }
 
     protected function setUp()
     {
-        $this->result = new PHPUnit2_Framework_TestResult;
+        $this->result = new PHPUnit_Framework_TestResult;
         $this->result->addListener($this);
 
         $this->endCount            = 0;

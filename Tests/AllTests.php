@@ -42,21 +42,21 @@
  * @copyright  2002-2006 Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    SVN: $Id$
- * @link       http://pear.php.net/package/PHPUnit2
+ * @link       http://www.phpunit.de/
  * @since      File available since Release 2.0.0
  */
 
-if (!defined('PHPUnit2_MAIN_METHOD')) {
-    define('PHPUnit2_MAIN_METHOD', 'AllTests::main');
+if (!defined('PHPUnit_MAIN_METHOD')) {
+    define('PHPUnit_MAIN_METHOD', 'AllTests::main');
     chdir(dirname(__FILE__));
 }
 
-if (!defined('PHPUnit2_INSIDE_OWN_TESTSUITE')) {
-    define('PHPUnit2_INSIDE_OWN_TESTSUITE', TRUE);
+if (!defined('PHPUnit_INSIDE_OWN_TESTSUITE')) {
+    define('PHPUnit_INSIDE_OWN_TESTSUITE', TRUE);
 }
 
-require_once 'PHPUnit2/Framework/TestSuite.php';
-require_once 'PHPUnit2/TextUI/TestRunner.php';
+require_once 'PHPUnit/Framework/TestSuite.php';
+require_once 'PHPUnit/TextUI/TestRunner.php';
 
 require_once 'Framework/AllTests.php';
 require_once 'Extensions/AllTests.php';
@@ -72,19 +72,19 @@ require_once 'Util/AllTests.php';
  * @copyright  2002-2006 Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    Release: @package_version@
- * @link       http://pear.php.net/package/PHPUnit2
+ * @link       http://www.phpunit.de/
  * @since      Class available since Release 2.0.0
  */
 class AllTests
 {
     public static function main()
     {
-        PHPUnit2_TextUI_TestRunner::run(self::suite());
+        PHPUnit_TextUI_TestRunner::run(self::suite());
     }
 
     public static function suite()
     {
-        $suite = new PHPUnit2_Framework_TestSuite('PHPUnit2');
+        $suite = new PHPUnit_Framework_TestSuite('PHPUnit2');
 
         $suite->addTest(Framework_AllTests::suite());
         $suite->addTest(Extensions_AllTests::suite());
@@ -95,7 +95,7 @@ class AllTests
     }
 }
 
-if (PHPUnit2_MAIN_METHOD == 'AllTests::main') {
+if (PHPUnit_MAIN_METHOD == 'AllTests::main') {
     AllTests::main();
 }
 

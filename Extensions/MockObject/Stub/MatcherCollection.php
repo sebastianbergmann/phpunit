@@ -43,14 +43,14 @@
  * @copyright  2002-2006 Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    SVN: $Id$
- * @link       http://pear.php.net/package/PHPUnit2
+ * @link       http://www.phpunit.de/
  * @since      File available since Release 3.0.0
  */
 
-require_once 'PHPUnit2/Util/Filter.php';
-require_once 'PHPUnit2/Extensions/MockObject/Matcher.php';
+require_once 'PHPUnit/Util/Filter.php';
+require_once 'PHPUnit/Extensions/MockObject/Matcher.php';
 
-PHPUnit2_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
+PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
 
 /**
  * Stubs a method by returning a user-defined value.
@@ -62,18 +62,18 @@ PHPUnit2_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
  * @copyright  2002-2006 Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    Release: @package_version@
- * @link       http://pear.php.net/package/PHPUnit2
+ * @link       http://www.phpunit.de/
  * @since      Interface available since Release 3.0.0
  */
-interface PHPUnit2_Extensions_MockObject_Stub_MatcherCollection
+interface PHPUnit_Extensions_MockObject_Stub_MatcherCollection
 {
     /**
      * Adds a new matcher to the collection which can be used as an expectation
      * or a stub.
      *
-     * @param PHPUnit2_Extensions_MockObject_Matcher_Invocation $matcher Matcher for invocations to mock objects.
+     * @param PHPUnit_Extensions_MockObject_Matcher_Invocation $matcher Matcher for invocations to mock objects.
      */
-    public function addMatcher(PHPUnit2_Extensions_MockObject_Matcher_Invocation $matcher);
+    public function addMatcher(PHPUnit_Extensions_MockObject_Matcher_Invocation $matcher);
 }
 
 /*

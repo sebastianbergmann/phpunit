@@ -42,14 +42,14 @@
  * @copyright  2002-2006 Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    SVN: $Id$
- * @link       http://pear.php.net/package/PHPUnit2
+ * @link       http://www.phpunit.de/
  * @since      File available since Release 2.0.0
  */
 
-require_once 'PHPUnit2/Framework.php';
-require_once 'PHPUnit2/Util/Filter.php';
+require_once 'PHPUnit/Framework.php';
+require_once 'PHPUnit/Util/Filter.php';
 
-PHPUnit2_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
+PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
 
 /**
  * A Decorator for Tests.
@@ -64,10 +64,10 @@ PHPUnit2_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
  * @copyright  2002-2006 Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    Release: @package_version@
- * @link       http://pear.php.net/package/PHPUnit2
+ * @link       http://www.phpunit.de/
  * @since      Class available since Release 2.0.0
  */
-class PHPUnit2_Extensions_TestDecorator extends PHPUnit2_Framework_Assert implements PHPUnit2_Framework_Test, PHPUnit2_Framework_SelfDescribing
+class PHPUnit_Extensions_TestDecorator extends PHPUnit_Framework_Assert implements PHPUnit_Framework_Test, PHPUnit_Framework_SelfDescribing
 {
     /**
      * The Test to be decorated.
@@ -80,10 +80,10 @@ class PHPUnit2_Extensions_TestDecorator extends PHPUnit2_Framework_Assert implem
     /**
      * Constructor.
      *
-     * @param  PHPUnit2_Framework_Test $test
+     * @param  PHPUnit_Framework_Test $test
      * @access public
      */
-    public function __construct(PHPUnit2_Framework_Test $test)
+    public function __construct(PHPUnit_Framework_Test $test)
     {
         $this->test = $test;
     }
@@ -103,10 +103,10 @@ class PHPUnit2_Extensions_TestDecorator extends PHPUnit2_Framework_Assert implem
      * Runs the test and collects the
      * result in a TestResult.
      *
-     * @param  PHPUnit2_Framework_TestResult $result
+     * @param  PHPUnit_Framework_TestResult $result
      * @access public
      */
-    public function basicRun(PHPUnit2_Framework_TestResult $result)
+    public function basicRun(PHPUnit_Framework_TestResult $result)
     {
         $this->test->run($result);
     }
@@ -126,18 +126,18 @@ class PHPUnit2_Extensions_TestDecorator extends PHPUnit2_Framework_Assert implem
     /**
      * Creates a default TestResult object.
      *
-     * @return PHPUnit2_Framework_TestResult
+     * @return PHPUnit_Framework_TestResult
      * @access protected
      */
     protected function createResult()
     {
-        return new PHPUnit2_Framework_TestResult;
+        return new PHPUnit_Framework_TestResult;
     }
 
     /**
      * Returns the test to be run.
      *
-     * @return PHPUnit2_Framework_Test
+     * @return PHPUnit_Framework_Test
      * @access public
      */
     public function getTest()
@@ -149,12 +149,12 @@ class PHPUnit2_Extensions_TestDecorator extends PHPUnit2_Framework_Assert implem
      * Runs the decorated test and collects the
      * result in a TestResult.
      *
-     * @param  PHPUnit2_Framework_TestResult $result
-     * @return PHPUnit2_Framework_TestResult
+     * @param  PHPUnit_Framework_TestResult $result
+     * @return PHPUnit_Framework_TestResult
      * @throws InvalidArgumentException
      * @access public
      */
-    public function run(PHPUnit2_Framework_TestResult $result = NULL)
+    public function run(PHPUnit_Framework_TestResult $result = NULL)
     {
         if ($result === NULL) {
             $result = $this->createResult();

@@ -42,15 +42,15 @@
  * @copyright  2002-2006 Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    SVN: $Id$
- * @link       http://pear.php.net/package/PHPUnit2
+ * @link       http://www.phpunit.de/
  * @since      File available since Release 2.0.0
  */
 
-require_once 'PHPUnit2/Util/Filter.php';
-require_once 'PHPUnit2/Runner/TestSuiteLoader.php';
-require_once 'PHPUnit2/Util/Fileloader.php';
+require_once 'PHPUnit/Util/Filter.php';
+require_once 'PHPUnit/Runner/TestSuiteLoader.php';
+require_once 'PHPUnit/Util/Fileloader.php';
 
-PHPUnit2_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
+PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
 
 /**
  * The standard test suite loader.
@@ -61,10 +61,10 @@ PHPUnit2_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
  * @copyright  2002-2006 Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    Release: @package_version@
- * @link       http://pear.php.net/package/PHPUnit2
+ * @link       http://www.phpunit.de/
  * @since      Class available since Release 2.0.0
  */
-class PHPUnit2_Runner_StandardTestSuiteLoader implements PHPUnit2_Runner_TestSuiteLoader
+class PHPUnit_Runner_StandardTestSuiteLoader implements PHPUnit_Runner_TestSuiteLoader
 {
     /**
      * @param  string  $suiteClassName
@@ -80,7 +80,7 @@ class PHPUnit2_Runner_StandardTestSuiteLoader implements PHPUnit2_Runner_TestSui
 
         if (!class_exists($suiteClassName)) {
             if(!file_exists($suiteClassFile)) {
-                $includePaths = PHPUnit2_Util_Fileloader::getIncludePaths();
+                $includePaths = PHPUnit_Util_Fileloader::getIncludePaths();
 
                 foreach ($includePaths as $includePath) {
                     $file = $includePath . DIRECTORY_SEPARATOR . $suiteClassFile;
@@ -92,7 +92,7 @@ class PHPUnit2_Runner_StandardTestSuiteLoader implements PHPUnit2_Runner_TestSui
                 }
             }
 
-            PHPUnit2_Util_Fileloader::checkAndLoad($suiteClassFile);
+            PHPUnit_Util_Fileloader::checkAndLoad($suiteClassFile);
         }
 
         if (class_exists($suiteClassName)) {

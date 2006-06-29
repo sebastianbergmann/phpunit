@@ -42,16 +42,16 @@
  * @copyright  2002-2006 Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    SVN: $Id$
- * @link       http://pear.php.net/package/PHPUnit2
+ * @link       http://www.phpunit.de/
  * @since      File available since Release 3.0.0
  */
 
-require_once 'PHPUnit2/Framework.php';
-require_once 'PHPUnit2/Util/Filter.php';
-require_once 'PHPUnit2/Util/Printer.php';
-require_once 'PHPUnit2/Util/Timer.php';
+require_once 'PHPUnit/Framework.php';
+require_once 'PHPUnit/Util/Filter.php';
+require_once 'PHPUnit/Util/Printer.php';
+require_once 'PHPUnit/Util/Timer.php';
 
-PHPUnit2_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
+PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
 
 /**
  * A TestListener that passes a log of the test execution as a JSON string
@@ -64,10 +64,10 @@ PHPUnit2_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
  * @copyright  2002-2006 Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    Release: @package_version@
- * @link       http://pear.php.net/package/PHPUnit2
+ * @link       http://www.phpunit.de/
  * @since      Class available since Release 3.0.0
  */
-class PHPUnit2_Util_Log_Eclipse extends PHPUnit2_Util_Printer implements PHPUnit2_Framework_TestListener
+class PHPUnit_Util_Log_Eclipse extends PHPUnit_Util_Printer implements PHPUnit_Framework_TestListener
 {
     /**
      * @var    string
@@ -164,11 +164,11 @@ class PHPUnit2_Util_Log_Eclipse extends PHPUnit2_Util_Printer implements PHPUnit
     /**
      * An error occurred.
      *
-     * @param  PHPUnit2_Framework_Test $test
+     * @param  PHPUnit_Framework_Test $test
      * @param  Exception               $e
      * @access public
      */
-    public function addError(PHPUnit2_Framework_Test $test, Exception $e)
+    public function addError(PHPUnit_Framework_Test $test, Exception $e)
     {
         $this->writeCase(
           'error',
@@ -185,11 +185,11 @@ class PHPUnit2_Util_Log_Eclipse extends PHPUnit2_Util_Printer implements PHPUnit
     /**
      * A failure occurred.
      *
-     * @param  PHPUnit2_Framework_Test                 $test
-     * @param  PHPUnit2_Framework_AssertionFailedError $e
+     * @param  PHPUnit_Framework_Test                 $test
+     * @param  PHPUnit_Framework_AssertionFailedError $e
      * @access public
      */
-    public function addFailure(PHPUnit2_Framework_Test $test, PHPUnit2_Framework_AssertionFailedError $e)
+    public function addFailure(PHPUnit_Framework_Test $test, PHPUnit_Framework_AssertionFailedError $e)
     {
         $location = $e->getLocation();
 
@@ -210,11 +210,11 @@ class PHPUnit2_Util_Log_Eclipse extends PHPUnit2_Util_Printer implements PHPUnit
     /**
      * Incomplete test.
      *
-     * @param  PHPUnit2_Framework_Test $test
+     * @param  PHPUnit_Framework_Test $test
      * @param  Exception               $e
      * @access public
      */
-    public function addIncompleteTest(PHPUnit2_Framework_Test $test, Exception $e)
+    public function addIncompleteTest(PHPUnit_Framework_Test $test, Exception $e)
     {
         $this->writeCase('error', 'Incomplete Test');
 
@@ -224,11 +224,11 @@ class PHPUnit2_Util_Log_Eclipse extends PHPUnit2_Util_Printer implements PHPUnit
     /**
      * Skipped test.
      *
-     * @param  PHPUnit2_Framework_Test $test
+     * @param  PHPUnit_Framework_Test $test
      * @param  Exception               $e
      * @access public
      */
-    public function addSkippedTest(PHPUnit2_Framework_Test $test, Exception $e)
+    public function addSkippedTest(PHPUnit_Framework_Test $test, Exception $e)
     {
         $this->writeCase('error', 'Skipped Test');
 
@@ -238,11 +238,11 @@ class PHPUnit2_Util_Log_Eclipse extends PHPUnit2_Util_Printer implements PHPUnit
     /**
      * A testsuite started.
      *
-     * @param  PHPUnit2_Framework_TestSuite $suite
+     * @param  PHPUnit_Framework_TestSuite $suite
      * @access public
      * @since  Method available since Release 2.2.0
      */
-    public function startTestSuite(PHPUnit2_Framework_TestSuite $suite)
+    public function startTestSuite(PHPUnit_Framework_TestSuite $suite)
     {
         $this->currentTestSuiteName  = $this->escapeValue($suite->getName());
         $this->currentTestCaseName   = '';
@@ -252,11 +252,11 @@ class PHPUnit2_Util_Log_Eclipse extends PHPUnit2_Util_Printer implements PHPUnit
     /**
      * A testsuite ended.
      *
-     * @param  PHPUnit2_Framework_TestSuite $suite
+     * @param  PHPUnit_Framework_TestSuite $suite
      * @access public
      * @since  Method available since Release 2.2.0
      */
-    public function endTestSuite(PHPUnit2_Framework_TestSuite $suite)
+    public function endTestSuite(PHPUnit_Framework_TestSuite $suite)
     {
         $this->currentTestCaseName   = '';
         $this->currentTestMethodName = '';
@@ -266,10 +266,10 @@ class PHPUnit2_Util_Log_Eclipse extends PHPUnit2_Util_Printer implements PHPUnit
     /**
      * A test started.
      *
-     * @param  PHPUnit2_Framework_Test $test
+     * @param  PHPUnit_Framework_Test $test
      * @access public
      */
-    public function startTest(PHPUnit2_Framework_Test $test)
+    public function startTest(PHPUnit_Framework_Test $test)
     {
         $this->currentTestCaseName   = $this->escapeValue(get_class($test));
         $this->currentTestMethodName = $this->escapeValue($test->getName());
@@ -279,10 +279,10 @@ class PHPUnit2_Util_Log_Eclipse extends PHPUnit2_Util_Printer implements PHPUnit
     /**
      * A test ended.
      *
-     * @param  PHPUnit2_Framework_Test $test
+     * @param  PHPUnit_Framework_Test $test
      * @access public
      */
-    public function endTest(PHPUnit2_Framework_Test $test)
+    public function endTest(PHPUnit_Framework_Test $test)
     {
         if ($this->currentTestCasePass) {
             $this->writeCase('pass');

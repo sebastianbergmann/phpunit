@@ -43,16 +43,16 @@
  * @copyright  2002-2006 Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    SVN: $Id$
- * @link       http://pear.php.net/package/PHPUnit2
+ * @link       http://www.phpunit.de/
  * @since      File available since Release 3.0.0
  */
 
-require_once 'PHPUnit2/Framework.php';
-require_once 'PHPUnit2/Util/Filter.php';
-require_once 'PHPUnit2/Extensions/MockObject/Invocation.php';
-require_once 'PHPUnit2/Extensions/MockObject/Verifiable.php';
+require_once 'PHPUnit/Framework.php';
+require_once 'PHPUnit/Util/Filter.php';
+require_once 'PHPUnit/Extensions/MockObject/Invocation.php';
+require_once 'PHPUnit/Extensions/MockObject/Verifiable.php';
 
-PHPUnit2_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
+PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
 
 /**
  * Interface for classes which matches an invocation based on its
@@ -65,10 +65,10 @@ PHPUnit2_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
  * @copyright  2002-2006 Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    Release: @package_version@
- * @link       http://pear.php.net/package/PHPUnit2
+ * @link       http://www.phpunit.de/
  * @since      Interface available since Release 3.0.0
  */
-interface PHPUnit2_Extensions_MockObject_Matcher_Invocation extends PHPUnit2_Framework_SelfDescribing, PHPUnit2_Extensions_MockObject_Verifiable
+interface PHPUnit_Extensions_MockObject_Matcher_Invocation extends PHPUnit_Framework_SelfDescribing, PHPUnit_Extensions_MockObject_Verifiable
 {
     /**
      * Registers the invocation $invocation in the object as being invoked.
@@ -81,22 +81,22 @@ interface PHPUnit2_Extensions_MockObject_Matcher_Invocation extends PHPUnit2_Fra
      *
      * If the matcher is a stub it will also have a return value.
      *
-     * @param PHPUnit2_Extensions_MockObject_Invocation Object containing information on a mocked or
+     * @param PHPUnit_Extensions_MockObject_Invocation Object containing information on a mocked or
      *                                                  stubbed method which was invoked.
      * @return mixed
      */
-    public function invoked(PHPUnit2_Extensions_MockObject_Invocation $invocation);
+    public function invoked(PHPUnit_Extensions_MockObject_Invocation $invocation);
 
     /**
      * Checks if the invocation $invocation matches the current rules. If it does
      * the matcher will get the invoked() method called which should check if an
      * expectation is met.
      *
-     * @param PHPUnit2_Extensions_MockObject_Invocation Object containing information on a mocked or
+     * @param PHPUnit_Extensions_MockObject_Invocation Object containing information on a mocked or
      *                                                  stubbed method which was invoked.
      * @return bool
      */
-    public function matches(PHPUnit2_Extensions_MockObject_Invocation $invocation);
+    public function matches(PHPUnit_Extensions_MockObject_Invocation $invocation);
 }
 
 /*

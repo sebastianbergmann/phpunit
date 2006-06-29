@@ -42,18 +42,18 @@
  * @copyright  2002-2006 Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    SVN: $Id$
- * @link       http://pear.php.net/package/PHPUnit2
+ * @link       http://www.phpunit.de/
  * @since      File available since Release 2.0.0
  */
 
-require_once 'PHPUnit2/Framework.php';
-require_once 'PHPUnit2/Runner/BaseTestRunner.php';
-require_once 'PHPUnit2/Util/Fileloader.php';
-require_once 'PHPUnit2/Util/Filter.php';
+require_once 'PHPUnit/Framework.php';
+require_once 'PHPUnit/Runner/BaseTestRunner.php';
+require_once 'PHPUnit/Util/Fileloader.php';
+require_once 'PHPUnit/Util/Filter.php';
 
-PHPUnit2_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
+PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
 
-if (!class_exists('PHPUnit2_Framework_TestSuite')) {
+if (!class_exists('PHPUnit_Framework_TestSuite')) {
 
 /**
  * A TestSuite is a composite of Tests. It runs a collection of test cases.
@@ -62,19 +62,19 @@ if (!class_exists('PHPUnit2_Framework_TestSuite')) {
  *
  * <code>
  * <?php
- * $suite = new PHPUnit2_Framework_TestSuite;
+ * $suite = new PHPUnit_Framework_TestSuite;
  * $suite->addTest(new MathTest('testPass'));
  * ?>
  * </code>
  *
  * Alternatively, a TestSuite can extract the tests to be run automatically.
  * To do so you pass a ReflectionClass instance for your
- * PHPUnit2_Framework_TestCase class to the PHPUnit2_Framework_TestSuite
+ * PHPUnit_Framework_TestCase class to the PHPUnit_Framework_TestSuite
  * constructor.
  *
  * <code>
  * <?php
- * $suite = new PHPUnit2_Framework_TestSuite(
+ * $suite = new PHPUnit_Framework_TestSuite(
  *   new ReflectionClass('MathTest')
  * );
  * ?>
@@ -89,10 +89,10 @@ if (!class_exists('PHPUnit2_Framework_TestSuite')) {
  * @copyright  2002-2006 Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    Release: @package_version@
- * @link       http://pear.php.net/package/PHPUnit2
+ * @link       http://www.phpunit.de/
  * @since      Class available since Release 2.0.0
  */
-class PHPUnit2_Framework_TestSuite implements PHPUnit2_Framework_Test, PHPUnit2_Framework_SelfDescribing
+class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Framework_SelfDescribing
 {
     /**
      * The name of the test suite.
@@ -121,16 +121,16 @@ class PHPUnit2_Framework_TestSuite implements PHPUnit2_Framework_Test, PHPUnit2_
     /**
      * Constructs a new TestSuite:
      *
-     *   - PHPUnit2_Framework_TestSuite() constructs an empty TestSuite.
+     *   - PHPUnit_Framework_TestSuite() constructs an empty TestSuite.
      *
-     *   - PHPUnit2_Framework_TestSuite(ReflectionClass) constructs a
+     *   - PHPUnit_Framework_TestSuite(ReflectionClass) constructs a
      *     TestSuite from the given class.
      *
-     *   - PHPUnit2_Framework_TestSuite(ReflectionClass, String)
+     *   - PHPUnit_Framework_TestSuite(ReflectionClass, String)
      *     constructs a TestSuite from the given class with the given
      *     name.
      *
-     *   - PHPUnit2_Framework_TestSuite(String) either constructs a
+     *   - PHPUnit_Framework_TestSuite(String) either constructs a
      *     TestSuite from the given class (if the passed string is the
      *     name of an existing class) or constructs an empty TestSuite
      *     with the given name.
@@ -168,7 +168,7 @@ class PHPUnit2_Framework_TestSuite implements PHPUnit2_Framework_Test, PHPUnit2_
             throw new InvalidArgumentException;
         }
 
-        PHPUnit2_Util_Filter::addFileToFilter(
+        PHPUnit_Util_Filter::addFileToFilter(
           realpath($theClass->getFilename()),
           'TESTS'
         );
@@ -229,10 +229,10 @@ class PHPUnit2_Framework_TestSuite implements PHPUnit2_Framework_Test, PHPUnit2_
     /**
      * Adds a test to the suite.
      *
-     * @param  PHPUnit2_Framework_Test $test
+     * @param  PHPUnit_Framework_Test $test
      * @access public
      */
-    public function addTest(PHPUnit2_Framework_Test $test)
+    public function addTest(PHPUnit_Framework_Test $test)
     {
         $this->tests[]  = $test;
         $this->numTests = -1;
@@ -253,7 +253,7 @@ class PHPUnit2_Framework_TestSuite implements PHPUnit2_Framework_Test, PHPUnit2_
 
         if (is_object($testClass) &&
             $testClass instanceof ReflectionClass) {
-            $this->addTest(new PHPUnit2_Framework_TestSuite($testClass));
+            $this->addTest(new PHPUnit_Framework_TestSuite($testClass));
         }
 
         $this->numTests = -1;
@@ -264,7 +264,7 @@ class PHPUnit2_Framework_TestSuite implements PHPUnit2_Framework_Test, PHPUnit2_
      * as well as the separate import statements for the user's convenience.
      *
      * If the named file cannot be read or there are no new tests that can be
-     * added, a <code>PHPUnit2_Framework_Warning</code> will be created instead,
+     * added, a <code>PHPUnit_Framework_Warning</code> will be created instead,
      * leaving the current test run untouched.
      *
      * @param  string  $filename
@@ -280,7 +280,7 @@ class PHPUnit2_Framework_TestSuite implements PHPUnit2_Framework_Test, PHPUnit2_
         }
 
         if (!file_exists($filename)) {
-            $includePaths = PHPUnit2_Util_Fileloader::getIncludePaths();
+            $includePaths = PHPUnit_Util_Fileloader::getIncludePaths();
 
             foreach ($includePaths as $includePath) {
                 $file = $includePath . DIRECTORY_SEPARATOR . $filename;
@@ -294,7 +294,7 @@ class PHPUnit2_Framework_TestSuite implements PHPUnit2_Framework_Test, PHPUnit2_
 
         $declaredClasses = get_declared_classes();
 
-        PHPUnit2_Util_Fileloader::checkAndLoad($filename);
+        PHPUnit_Util_Fileloader::checkAndLoad($filename);
 
         $newClasses = array_values(
           array_diff(get_declared_classes(), $declaredClasses)
@@ -306,7 +306,7 @@ class PHPUnit2_Framework_TestSuite implements PHPUnit2_Framework_Test, PHPUnit2_
             if (preg_match('"Tests?$"', $class)) {
                 try {
                     $suiteMethod = new ReflectionMethod(
-                      $class, PHPUnit2_Runner_BaseTestRunner::SUITE_METHODNAME
+                      $class, PHPUnit_Runner_BaseTestRunner::SUITE_METHODNAME
                     );
 
                     $this->addTest($suiteMethod->invoke(NULL));
@@ -320,7 +320,7 @@ class PHPUnit2_Framework_TestSuite implements PHPUnit2_Framework_Test, PHPUnit2_
 
         if ($testsFound == 0) {
             $this->addTest(
-              new PHPUnit2_Framework_Warning('No tests found in file ' . $filename)
+              new PHPUnit_Framework_Warning('No tests found in file ' . $filename)
             );
         }
 
@@ -366,7 +366,7 @@ class PHPUnit2_Framework_TestSuite implements PHPUnit2_Framework_Test, PHPUnit2_
     /**
      * @param  ReflectionClass $theClass
      * @param  string          $name
-     * @return PHPUnit2_Framework_Test
+     * @return PHPUnit_Framework_Test
      * @access public
      * @static
      */
@@ -389,7 +389,7 @@ class PHPUnit2_Framework_TestSuite implements PHPUnit2_Framework_Test, PHPUnit2_
             if (count($parameters) == 0) {
                 $test = $theClass->newInstance();
 
-                if ($test instanceof PHPUnit2_Framework_TestCase) {
+                if ($test instanceof PHPUnit_Framework_TestCase) {
                     $test->setName($name);
                 }
             }
@@ -415,12 +415,12 @@ class PHPUnit2_Framework_TestSuite implements PHPUnit2_Framework_Test, PHPUnit2_
     /**
      * Creates a default TestResult object.
      *
-     * @return PHPUnit2_Framework_TestResult
+     * @return PHPUnit_Framework_TestResult
      * @access protected
      */
     protected function createResult()
     {
-        return new PHPUnit2_Framework_TestResult;
+        return new PHPUnit_Framework_TestResult;
     }
 
     /**
@@ -437,12 +437,12 @@ class PHPUnit2_Framework_TestSuite implements PHPUnit2_Framework_Test, PHPUnit2_
     /**
      * Runs the tests and collects their result in a TestResult.
      *
-     * @param  PHPUnit2_Framework_TestResult $result
-     * @return PHPUnit2_Framework_TestResult
+     * @param  PHPUnit_Framework_TestResult $result
+     * @return PHPUnit_Framework_TestResult
      * @throws InvalidArgumentException
      * @access public
      */
-    public function run(PHPUnit2_Framework_TestResult $result = NULL)
+    public function run(PHPUnit_Framework_TestResult $result = NULL)
     {
         if ($result === NULL) {
             $result = $this->createResult();
@@ -466,11 +466,11 @@ class PHPUnit2_Framework_TestSuite implements PHPUnit2_Framework_Test, PHPUnit2_
     /**
      * Runs a test.
      *
-     * @param  PHPUnit2_Framework_Test        $test
-     * @param  PHPUnit2_Framework_TestResult  $testResult
+     * @param  PHPUnit_Framework_Test        $test
+     * @param  PHPUnit_Framework_TestResult  $testResult
      * @access public
      */
-    public function runTest(PHPUnit2_Framework_Test $test, PHPUnit2_Framework_TestResult $result)
+    public function runTest(PHPUnit_Framework_Test $test, PHPUnit_Framework_TestResult $result)
     {
         $test->run($result);
     }
@@ -490,7 +490,7 @@ class PHPUnit2_Framework_TestSuite implements PHPUnit2_Framework_Test, PHPUnit2_
      * Returns the test at the given index.
      *
      * @param  integer
-     * @return PHPUnit2_Framework_Test
+     * @return PHPUnit_Framework_Test
      * @access public
      */
     public function testAt($index)
@@ -585,14 +585,16 @@ class PHPUnit2_Framework_TestSuite implements PHPUnit2_Framework_Test, PHPUnit2_
 
     /**
      * @param  string  $message
-     * @return PHPUnit2_Framework_Warning
+     * @return PHPUnit_Framework_Warning
      * @access private
      */
     private static function warning($message)
     {
-        return new PHPUnit2_Framework_Warning($message);
+        return new PHPUnit_Framework_Warning($message);
     }
 }
+
+class PHPUnit2_Framework_TestSuite extends PHPUnit_Framework_TestSuite {}
 
 }
 

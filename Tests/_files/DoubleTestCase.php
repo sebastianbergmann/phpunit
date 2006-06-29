@@ -42,14 +42,14 @@
  * @copyright  2002-2006 Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    SVN: $Id$
- * @link       http://pear.php.net/package/PHPUnit2
+ * @link       http://www.phpunit.de/
  * @since      File available since Release 2.0.0
  */
 
-require_once 'PHPUnit2/Framework.php';
-require_once 'PHPUnit2/Util/Filter.php';
+require_once 'PHPUnit/Framework.php';
+require_once 'PHPUnit/Util/Filter.php';
 
-PHPUnit2_Util_Filter::addFileToFilter(__FILE__);
+PHPUnit_Util_Filter::addFileToFilter(__FILE__);
 
 /**
  * 
@@ -60,14 +60,14 @@ PHPUnit2_Util_Filter::addFileToFilter(__FILE__);
  * @copyright  2002-2006 Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    Release: @package_version@
- * @link       http://pear.php.net/package/PHPUnit2
+ * @link       http://www.phpunit.de/
  * @since      Class available since Release 2.0.0
  */
-class DoubleTestCase implements PHPUnit2_Framework_Test
+class DoubleTestCase implements PHPUnit_Framework_Test
 {
     private $testCase;
 
-    public function __construct(PHPUnit2_Framework_TestCase $testCase)
+    public function __construct(PHPUnit_Framework_TestCase $testCase)
     {
         $this->testCase = $testCase;
     }
@@ -77,7 +77,7 @@ class DoubleTestCase implements PHPUnit2_Framework_Test
         return 2;
     }
 
-    public function run(PHPUnit2_Framework_TestResult $result = NULL)
+    public function run(PHPUnit_Framework_TestResult $result = NULL)
     {
         $result->startTest($this);
 

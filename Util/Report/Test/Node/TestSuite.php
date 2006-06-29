@@ -42,23 +42,23 @@
  * @copyright  2002-2006 Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    SVN: $Id$
- * @link       http://pear.php.net/package/PHPUnit2
+ * @link       http://www.phpunit.de/
  * @since      File available since Release 3.0.0
  */
  
 @include_once 'Image/GraphViz.php';
 
-require_once 'PHPUnit2/Framework.php';
-require_once 'PHPUnit2/Util/Filter.php';
-require_once 'PHPUnit2/Runner/BaseTestRunner.php';
-require_once 'PHPUnit2/Util/Report/Test/Node.php';
-require_once 'PHPUnit2/Util/Report/Test/Node/Test.php';
-require_once 'PHPUnit2/Util/Filesystem.php';
+require_once 'PHPUnit/Framework.php';
+require_once 'PHPUnit/Util/Filter.php';
+require_once 'PHPUnit/Runner/BaseTestRunner.php';
+require_once 'PHPUnit/Util/Report/Test/Node.php';
+require_once 'PHPUnit/Util/Report/Test/Node/Test.php';
+require_once 'PHPUnit/Util/Filesystem.php';
 
-PHPUnit2_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
+PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
 
 /**
- * Represents a PHPUnit2_Framework_TestSuite object in the test hierarchy.
+ * Represents a PHPUnit_Framework_TestSuite object in the test hierarchy.
  *
  * @category   Testing
  * @package    PHPUnit2
@@ -66,25 +66,25 @@ PHPUnit2_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
  * @copyright  2002-2006 Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    Release: @package_version@
- * @link       http://pear.php.net/package/PHPUnit2
+ * @link       http://www.phpunit.de/
  * @since      Class available since Release 3.0.0
  */
-class PHPUnit2_Util_Report_Test_Node_TestSuite extends PHPUnit2_Util_Report_Test_Node
+class PHPUnit_Util_Report_Test_Node_TestSuite extends PHPUnit_Util_Report_Test_Node
 {
     /**
-     * @var    PHPUnit2_Util_Report_Test_Node[]
+     * @var    PHPUnit_Util_Report_Test_Node[]
      * @access protected
      */
     protected $children = array();
 
     /**
-     * @var    PHPUnit2_Util_Report_Test_Node_TestSuite[]
+     * @var    PHPUnit_Util_Report_Test_Node_TestSuite[]
      * @access protected
      */
     protected $suites = array();
 
     /**
-     * @var    PHPUnit2_Util_Report_Test_Node_Test[]
+     * @var    PHPUnit_Util_Report_Test_Node_Test[]
      * @access protected
      */
     protected $tests = array();
@@ -93,12 +93,12 @@ class PHPUnit2_Util_Report_Test_Node_TestSuite extends PHPUnit2_Util_Report_Test
      * Adds a new test suite.
      *
      * @param  string $name
-     * @return PHPUnit2_Util_Report_Test_Node_TestSuite
+     * @return PHPUnit_Util_Report_Test_Node_TestSuite
      * @access public
      */
     public function addTestSuite($name)
     {
-        $suite = new PHPUnit2_Util_Report_Test_Node_TestSuite($name, $this);
+        $suite = new PHPUnit_Util_Report_Test_Node_TestSuite($name, $this);
 
         $this->children[] = $suite;
         $this->suites[]   = &$this->children[count($this->children)-1];
@@ -110,27 +110,27 @@ class PHPUnit2_Util_Report_Test_Node_TestSuite extends PHPUnit2_Util_Report_Test
      * Adds a new test.
      *
      * @param  string                  $name
-     * @param  PHPUnit2_Framework_Test $object
+     * @param  PHPUnit_Framework_Test $object
      * @param  mixed                   $result
      * @access public
      */
-    public function addTest($name, PHPUnit2_Framework_Test $object, $result)
+    public function addTest($name, PHPUnit_Framework_Test $object, $result)
     {
-        $test = new PHPUnit2_Util_Report_Test_Node_Test($name, $this, $object, $result);
+        $test = new PHPUnit_Util_Report_Test_Node_Test($name, $this, $object, $result);
 
         $this->children[] = $test;
         $this->tests[]    = &$this->children[count($this->children)-1];
     }
 
     /**
-     * Returns the corresponding PHPUnit2_Util_Report_Test_Node_Test object
-     * for a given PHPUnit2_Framework_Test object.
+     * Returns the corresponding PHPUnit_Util_Report_Test_Node_Test object
+     * for a given PHPUnit_Framework_Test object.
      *
-     * @param  PHPUnit2_Framework_Test $test
-     * @return PHPUnit2_Util_Report_Test_Node_Test
+     * @param  PHPUnit_Framework_Test $test
+     * @return PHPUnit_Util_Report_Test_Node_Test
      * @access public
      */
-    public function lookupTest(PHPUnit2_Framework_Test $test)
+    public function lookupTest(PHPUnit_Framework_Test $test)
     {
         /*
         foreach ($this->tests as $child) {
@@ -175,10 +175,10 @@ class PHPUnit2_Util_Report_Test_Node_TestSuite extends PHPUnit2_Util_Report_Test
      */
     protected function doRender($target, $title)
     {
-        $file = $target . PHPUnit2_Util_Filesystem::getSafeFilename($this->getName()) . '-test.htm';
+        $file = $target . PHPUnit_Util_Filesystem::getSafeFilename($this->getName()) . '-test.htm';
 
-        $template = new PHPUnit2_Util_Template(
-          PHPUnit2_Util_Report::getTemplatePath() .
+        $template = new PHPUnit_Util_Template(
+          PHPUnit_Util_Report::getTemplatePath() .
           'testsuite.htm'
         );
 
@@ -210,23 +210,23 @@ class PHPUnit2_Util_Report_Test_Node_TestSuite extends PHPUnit2_Util_Report_Test
         $result = '';
 
         foreach ($this->tests as $item) {
-            $itemTemplate = new PHPUnit2_Util_Template(
-              PHPUnit2_Util_Report::getTemplatePath() .
+            $itemTemplate = new PHPUnit_Util_Template(
+              PHPUnit_Util_Report::getTemplatePath() .
               'testsuite_item.htm'
             );
             
             $resultCode = $item->getResult();
 
-            if ($resultCode instanceof PHPUnit2_Framework_TestFailure) {
+            if ($resultCode instanceof PHPUnit_Framework_TestFailure) {
                 if ($resultCode->isFailure()) {
                     $testResult = 'Failure';
                 }
 
-                else if ($resultCode->thrownException() instanceof PHPUnit2_Framework_SkippedTest) {
+                else if ($resultCode->thrownException() instanceof PHPUnit_Framework_SkippedTest) {
                     $testResult = 'Skipped';
                 }
 
-                else if ($resultCode->thrownException() instanceof PHPUnit2_Framework_IncompleteTest) {
+                else if ($resultCode->thrownException() instanceof PHPUnit_Framework_IncompleteTest) {
                     $testResult = 'Incomplete';
                 }
 
@@ -235,7 +235,7 @@ class PHPUnit2_Util_Report_Test_Node_TestSuite extends PHPUnit2_Util_Report_Test
                 }
             }
 
-            else if ($resultCode === PHPUnit2_Runner_BaseTestRunner::STATUS_PASSED) {
+            else if ($resultCode === PHPUnit_Runner_BaseTestRunner::STATUS_PASSED) {
                 $testResult = 'Passed';
             }
 
@@ -282,15 +282,15 @@ class PHPUnit2_Util_Report_Test_Node_TestSuite extends PHPUnit2_Util_Report_Test
     }
 
     /**
-     * @param  PHPUnit2_Util_Template $template
+     * @param  PHPUnit_Util_Template $template
      * @param  string                 $target
      * @access public
      */
-    protected function setGraphVizTemplateVars(PHPUnit2_Util_Template $template, $target)
+    protected function setGraphVizTemplateVars(PHPUnit_Util_Template $template, $target)
     {
         $testmap = '';
         $testmap_image = 'snow.png';
-        $safeName = PHPUnit2_Util_Filesystem::getSafeFilename($this->getName());
+        $safeName = PHPUnit_Util_Filesystem::getSafeFilename($this->getName());
         $dotFile = $target . $safeName . '.dot';
         
         if (file_exists($dotFile)) {

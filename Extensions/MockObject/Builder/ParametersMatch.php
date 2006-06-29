@@ -43,14 +43,14 @@
  * @copyright  2002-2006 Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    SVN: $Id$
- * @link       http://pear.php.net/package/PHPUnit2
+ * @link       http://www.phpunit.de/
  * @since      File available since Release 3.0.0
  */
 
-require_once 'PHPUnit2/Util/Filter.php';
-require_once 'PHPUnit2/Extensions/MockObject/Builder/Match.php';
+require_once 'PHPUnit/Util/Filter.php';
+require_once 'PHPUnit/Extensions/MockObject/Builder/Match.php';
 
-PHPUnit2_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
+PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
 
 /**
  * Builder interface for parameter matchers.
@@ -62,27 +62,27 @@ PHPUnit2_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
  * @copyright  2002-2006 Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    Release: @package_version@
- * @link       http://pear.php.net/package/PHPUnit2
+ * @link       http://www.phpunit.de/
  * @since      Interface available since Release 3.0.0
  */
-interface PHPUnit2_Extensions_MockObject_Builder_ParametersMatch extends PHPUnit2_Extensions_MockObject_Builder_Match
+interface PHPUnit_Extensions_MockObject_Builder_ParametersMatch extends PHPUnit_Extensions_MockObject_Builder_Match
 {
     /**
      * Sets the parameters to match for, each parameter to this funtion will
      * be part of match. To perform specific matches or constraints create a
-     * new PHPUnit2_Framework_Constraint and use it for the parameter.
+     * new PHPUnit_Framework_Constraint and use it for the parameter.
      * If the parameter value is not a constraint it will use the
-     * PHPUnit2_Framework_Constraint_IsEqual for the value.
+     * PHPUnit_Framework_Constraint_IsEqual for the value.
      *
      * Some examples:
      * <code>
      * // match first parameter with value 2
      * $b->with(2);
      * // match first parameter with value 'smock' and second identical to 42
-     * $b->with('smock', new PHPUnit2_Framework_Constraint_IsEqual(42));
+     * $b->with('smock', new PHPUnit_Framework_Constraint_IsEqual(42));
      * </code>
      *
-     * @return PHPUnit2_Extensions_MockObject_Builder_ParametersMatch
+     * @return PHPUnit_Extensions_MockObject_Builder_ParametersMatch
      */
     public function with();
 
@@ -95,7 +95,7 @@ interface PHPUnit2_Extensions_MockObject_Builder_ParametersMatch extends PHPUnit
      * $b->withAnyParamers();
      * </code>
      *
-     * @return PHPUnit2_Extensions_MockObject_Matcher_AnyParameters
+     * @return PHPUnit_Extensions_MockObject_Matcher_AnyParameters
      */
     public function withAnyParameters();
 }

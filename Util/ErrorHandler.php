@@ -42,29 +42,29 @@
  * @copyright  2002-2006 Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    SVN: $Id$
- * @link       http://pear.php.net/package/PHPUnit2
+ * @link       http://www.phpunit.de/
  * @since      File available since Release 2.3.0
  */
 
-require_once 'PHPUnit2/Framework.php';
-require_once 'PHPUnit2/Util/Filter.php';
+require_once 'PHPUnit/Framework.php';
+require_once 'PHPUnit/Util/Filter.php';
 
-PHPUnit2_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
+PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
 
 /**
  * @param  integer $errno
  * @param  string  $errstr
  * @param  string  $errfile
  * @param  integer $errline
- * @throws PHPUnit2_Framework_Error
+ * @throws PHPUnit_Framework_Error
  * @since  Function available since Release 2.3.0
  */
-function PHPUnit2_Util_ErrorHandler($errno, $errstr, $errfile, $errline)
+function PHPUnit_Util_ErrorHandler($errno, $errstr, $errfile, $errline)
 {
     $trace = debug_backtrace();
     array_shift($trace);
 
-    throw new PHPUnit2_Framework_Error(
+    throw new PHPUnit_Framework_Error(
       $errstr,
       $errno,
       $errfile,

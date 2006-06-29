@@ -42,32 +42,32 @@
  * @copyright  2002-2006 Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    SVN: $Id$
- * @link       http://pear.php.net/package/PHPUnit2
+ * @link       http://www.phpunit.de/
  * @since      File available since Release 3.0.0
  */
 
-require_once 'PHPUnit2/Util/Filter.php';
+require_once 'PHPUnit/Util/Filter.php';
 
-PHPUnit2_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
+PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
 
-require 'PHPUnit2/Framework/SelfDescribing.php';
-require 'PHPUnit2/Framework/AssertionFailedError.php';
-require 'PHPUnit2/Framework/Assert.php';
-require 'PHPUnit2/Framework/Error.php';
-require 'PHPUnit2/Framework/IncompleteTest.php';
-require 'PHPUnit2/Framework/SkippedTest.php';
-require 'PHPUnit2/Framework/Test.php';
-require 'PHPUnit2/Framework/TestFailure.php';
-require 'PHPUnit2/Framework/TestListener.php';
-require 'PHPUnit2/Framework/TestResult.php';
-require 'PHPUnit2/Framework/ExpectationFailedException.php';
-require 'PHPUnit2/Framework/IncompleteTestError.php';
-require 'PHPUnit2/Framework/SkippedTestError.php';
-require 'PHPUnit2/Framework/TestCase.php';
-require 'PHPUnit2/Framework/TestSuite.php';
-require 'PHPUnit2/Framework/Warning.php';
-require 'PHPUnit2/Framework/Constraint.php';
-require 'PHPUnit2/Framework/ComparisonFailure.php';
+require 'PHPUnit/Framework/SelfDescribing.php';
+require 'PHPUnit/Framework/AssertionFailedError.php';
+require 'PHPUnit/Framework/Assert.php';
+require 'PHPUnit/Framework/Error.php';
+require 'PHPUnit/Framework/IncompleteTest.php';
+require 'PHPUnit/Framework/SkippedTest.php';
+require 'PHPUnit/Framework/Test.php';
+require 'PHPUnit/Framework/TestFailure.php';
+require 'PHPUnit/Framework/TestListener.php';
+require 'PHPUnit/Framework/TestResult.php';
+require 'PHPUnit/Framework/ExpectationFailedException.php';
+require 'PHPUnit/Framework/IncompleteTestError.php';
+require 'PHPUnit/Framework/SkippedTestError.php';
+require 'PHPUnit/Framework/TestCase.php';
+require 'PHPUnit/Framework/TestSuite.php';
+require 'PHPUnit/Framework/Warning.php';
+require 'PHPUnit/Framework/Constraint.php';
+require 'PHPUnit/Framework/ComparisonFailure.php';
 
 /*
  * Local variables:

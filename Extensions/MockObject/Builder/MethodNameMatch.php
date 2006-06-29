@@ -43,14 +43,14 @@
  * @copyright  2002-2006 Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    SVN: $Id$
- * @link       http://pear.php.net/package/PHPUnit2
+ * @link       http://www.phpunit.de/
  * @since      File available since Release 3.0.0
  */
 
-require_once 'PHPUnit2/Util/Filter.php';
-require_once 'PHPUnit2/Extensions/MockObject/Builder/ParametersMatch.php';
+require_once 'PHPUnit/Util/Filter.php';
+require_once 'PHPUnit/Extensions/MockObject/Builder/ParametersMatch.php';
 
-PHPUnit2_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
+PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
 
 /**
  * Builder interface for matcher of method names.
@@ -62,19 +62,19 @@ PHPUnit2_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
  * @copyright  2002-2006 Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    Release: @package_version@
- * @link       http://pear.php.net/package/PHPUnit2
+ * @link       http://www.phpunit.de/
  * @since      Interface available since Release 3.0.0
  */
-interface PHPUnit2_Extensions_MockObject_Builder_MethodNameMatch extends PHPUnit2_Extensions_MockObject_Builder_ParametersMatch
+interface PHPUnit_Extensions_MockObject_Builder_MethodNameMatch extends PHPUnit_Extensions_MockObject_Builder_ParametersMatch
 {
     /**
      * Adds a new method name match and returns the parameter match object for
      * further matching possibilities.
      *
-     * @param PHPUnit2_Framework_Constraint $name Constraint for matching method, if a
+     * @param PHPUnit_Framework_Constraint $name Constraint for matching method, if a
      *                                                  string is passed it will use the
-     *                                                  PHPUnit2_Framework_Constraint_IsEqual.
-     * @return PHPUnit2_Extensions_MockObject_Builder_ParametersMatch
+     *                                                  PHPUnit_Framework_Constraint_IsEqual.
+     * @return PHPUnit_Extensions_MockObject_Builder_ParametersMatch
      */
     public function method($name);
 }

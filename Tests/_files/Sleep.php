@@ -42,15 +42,15 @@
  * @copyright  2002-2006 Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    SVN: $Id$
- * @link       http://pear.php.net/package/PHPUnit2
+ * @link       http://www.phpunit.de/
  * @since      File available since Release 2.0.0
  */
 
-require_once 'PHPUnit2/Util/Filter.php';
+require_once 'PHPUnit/Util/Filter.php';
 
-PHPUnit2_Util_Filter::addFileToFilter(__FILE__);
+PHPUnit_Util_Filter::addFileToFilter(__FILE__);
 
-require_once 'PHPUnit2/Extensions/PerformanceTestCase.php';
+require_once 'PHPUnit/Extensions/PerformanceTestCase.php';
 
 /**
  * 
@@ -61,10 +61,10 @@ require_once 'PHPUnit2/Extensions/PerformanceTestCase.php';
  * @copyright  2002-2006 Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    Release: @package_version@
- * @link       http://pear.php.net/package/PHPUnit2
+ * @link       http://www.phpunit.de/
  * @since      Class available since Release 2.0.0
  */
-class Sleep extends PHPUnit2_Extensions_PerformanceTestCase
+class Sleep extends PHPUnit_Extensions_PerformanceTestCase
 {
     public function testSleepTwoSeconds()
     {

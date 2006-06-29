@@ -42,16 +42,16 @@
  * @copyright  2002-2006 Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    SVN: $Id$
- * @link       http://pear.php.net/package/PHPUnit2
+ * @link       http://www.phpunit.de/
  * @since      File available since Release 3.0.0
  */
 
-require_once 'PHPUnit2/Framework.php';
-require_once 'PHPUnit2/Util/Filter.php';
-require_once 'PHPUnit2/Util/Report/Coverage/Factory.php';
-require_once 'PHPUnit2/Util/Report/Test/Factory.php';
+require_once 'PHPUnit/Framework.php';
+require_once 'PHPUnit/Util/Filter.php';
+require_once 'PHPUnit/Util/Report/Coverage/Factory.php';
+require_once 'PHPUnit/Util/Report/Test/Factory.php';
 
-PHPUnit2_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
+PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
 
 /**
  *
@@ -62,24 +62,24 @@ PHPUnit2_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
  * @copyright  2002-2006 Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    Release: @package_version@
- * @link       http://pear.php.net/package/PHPUnit2
+ * @link       http://www.phpunit.de/
  * @since      Class available since Release 3.0.0
  * @abstract
  */
-abstract class PHPUnit2_Util_Report
+abstract class PHPUnit_Util_Report
 {
     /**
      * Renders the report.
      *
-     * @param  PHPUnit2_Framework_TestResult $result
+     * @param  PHPUnit_Framework_TestResult $result
      * @param  string $target
      * @access public
      * @static
      */
-    public static function render(PHPUnit2_Framework_TestResult $result, $target)
+    public static function render(PHPUnit_Framework_TestResult $result, $target)
     {
-        $tests    = PHPUnit2_Util_Report_Test_Factory::create($result);
-        $coverage = PHPUnit2_Util_Report_Coverage_Factory::create($result, $tests);
+        $tests    = PHPUnit_Util_Report_Test_Factory::create($result);
+        $coverage = PHPUnit_Util_Report_Coverage_Factory::create($result, $tests);
 
         $coverage->render($target, $result->topTestSuite()->getName());
         $tests->render($target, $result->topTestSuite()->getName());

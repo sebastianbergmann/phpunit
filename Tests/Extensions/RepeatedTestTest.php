@@ -42,14 +42,14 @@
  * @copyright  2002-2006 Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    SVN: $Id$
- * @link       http://pear.php.net/package/PHPUnit2
+ * @link       http://www.phpunit.de/
  * @since      File available since Release 2.0.0
  */
 
-require_once 'PHPUnit2/Framework/TestCase.php';
-require_once 'PHPUnit2/Framework/TestResult.php';
-require_once 'PHPUnit2/Framework/TestSuite.php';
-require_once 'PHPUnit2/Extensions/RepeatedTest.php';
+require_once 'PHPUnit/Framework/TestCase.php';
+require_once 'PHPUnit/Framework/TestResult.php';
+require_once 'PHPUnit/Framework/TestSuite.php';
+require_once 'PHPUnit/Extensions/RepeatedTest.php';
 
 require_once '_files/Success.php';
 
@@ -62,16 +62,16 @@ require_once '_files/Success.php';
  * @copyright  2002-2006 Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    Release: @package_version@
- * @link       http://pear.php.net/package/PHPUnit2
+ * @link       http://www.phpunit.de/
  * @since      Class available since Release 2.0.0
  */
-class Extensions_RepeatedTestTest extends PHPUnit2_Framework_TestCase
+class Extensions_RepeatedTestTest extends PHPUnit_Framework_TestCase
 {
     private $suite;
 
     public function __construct()
     {
-        $this->suite = new PHPUnit2_Framework_TestSuite;
+        $this->suite = new PHPUnit_Framework_TestSuite;
 
         $this->suite->addTest(new Success);
         $this->suite->addTest(new Success);
@@ -79,7 +79,7 @@ class Extensions_RepeatedTestTest extends PHPUnit2_Framework_TestCase
 
     public function testRepeatedOnce()
     {
-        $test = new PHPUnit2_Extensions_RepeatedTest($this->suite, 1);
+        $test = new PHPUnit_Extensions_RepeatedTest($this->suite, 1);
         $this->assertEquals(2, count($test));
 
         $result = $test->run();
@@ -88,7 +88,7 @@ class Extensions_RepeatedTestTest extends PHPUnit2_Framework_TestCase
 
     public function testRepeatedMoreThanOnce()
     {
-        $test = new PHPUnit2_Extensions_RepeatedTest($this->suite, 3);
+        $test = new PHPUnit_Extensions_RepeatedTest($this->suite, 3);
         $this->assertEquals(6, count($test));
 
         $result = $test->run();
@@ -97,7 +97,7 @@ class Extensions_RepeatedTestTest extends PHPUnit2_Framework_TestCase
 
     public function testRepeatedZero()
     {
-        $test = new PHPUnit2_Extensions_RepeatedTest($this->suite, 0);
+        $test = new PHPUnit_Extensions_RepeatedTest($this->suite, 0);
         $this->assertEquals(0, count($test));
 
         $result = $test->run();
@@ -107,7 +107,7 @@ class Extensions_RepeatedTestTest extends PHPUnit2_Framework_TestCase
     public function testRepeatedNegative()
     {
         try {
-            $test = new PHPUnit2_Extensions_RepeatedTest($this->suite, -1);
+            $test = new PHPUnit_Extensions_RepeatedTest($this->suite, -1);
         }
 
         catch (Exception $e) {

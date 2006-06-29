@@ -42,15 +42,15 @@
  * @copyright  2002-2006 Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    SVN: $Id$
- * @link       http://pear.php.net/package/PHPUnit2
+ * @link       http://www.phpunit.de/
  * @since      File available since Release 2.1.0
  */
 
-require_once 'PHPUnit2/Util/Filter.php';
-require_once 'PHPUnit2/Runner/TestCollector.php';
-require_once 'PHPUnit2/Runner/TestFilterIterator.php';
+require_once 'PHPUnit/Util/Filter.php';
+require_once 'PHPUnit/Runner/TestCollector.php';
+require_once 'PHPUnit/Runner/TestFilterIterator.php';
 
-PHPUnit2_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
+PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
 
 /**
  * An implementation of a TestCollector that consults the
@@ -62,11 +62,11 @@ PHPUnit2_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
  * @copyright  2002-2006 Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    Release: @package_version@
- * @link       http://pear.php.net/package/PHPUnit2
+ * @link       http://www.phpunit.de/
  * @since      Class available since Release 2.1.0
  */
 
-class PHPUnit2_Runner_IncludePathTestCollector implements PHPUnit2_Runner_TestCollector
+class PHPUnit_Runner_IncludePathTestCollector implements PHPUnit_Runner_TestCollector
 {
     /**
      * @var    string
@@ -83,7 +83,7 @@ class PHPUnit2_Runner_IncludePathTestCollector implements PHPUnit2_Runner_TestCo
         $includePathsIterator = new AppendIterator;
         $result = array();
 
-        $includePaths = PHPUnit2_Util_Fileloader::getIncludePaths();
+        $includePaths = PHPUnit_Util_Fileloader::getIncludePaths();
 
         foreach ($includePaths as $includePath) {
             $includePathsIterator->append(
@@ -93,7 +93,7 @@ class PHPUnit2_Runner_IncludePathTestCollector implements PHPUnit2_Runner_TestCo
             );
         }
 
-        $filterIterator = new PHPUnit2_Runner_TestFilterIterator(
+        $filterIterator = new PHPUnit_Runner_TestFilterIterator(
           $includePathsIterator
         );
 

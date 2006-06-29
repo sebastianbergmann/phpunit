@@ -42,18 +42,18 @@
  * @copyright  2002-2006 Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    SVN: $Id$
- * @link       http://pear.php.net/package/PHPUnit2
+ * @link       http://www.phpunit.de/
  * @since      File available since Release 3.0.0
  */
 
-require_once 'PHPUnit2/Framework.php';
-require_once 'PHPUnit2/Util/Filter.php';
-require_once 'PHPUnit2/Util/Array.php';
-require_once 'PHPUnit2/Util/Report/Coverage/Node/Directory.php';
-require_once 'PHPUnit2/Util/Report/Coverage/Node/File.php';
-require_once 'PHPUnit2/Util/Report/Test/Node/TestSuite.php';
+require_once 'PHPUnit/Framework.php';
+require_once 'PHPUnit/Util/Filter.php';
+require_once 'PHPUnit/Util/Array.php';
+require_once 'PHPUnit/Util/Report/Coverage/Node/Directory.php';
+require_once 'PHPUnit/Util/Report/Coverage/Node/File.php';
+require_once 'PHPUnit/Util/Report/Test/Node/TestSuite.php';
 
-PHPUnit2_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
+PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
 
 /**
  * Factory for a code coverage information tree.
@@ -64,26 +64,26 @@ PHPUnit2_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
  * @copyright  2002-2006 Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    Release: @package_version@
- * @link       http://pear.php.net/package/PHPUnit2
+ * @link       http://www.phpunit.de/
  * @since      Class available since Release 3.0.0
  */
-abstract class PHPUnit2_Util_Report_Coverage_Factory
+abstract class PHPUnit_Util_Report_Coverage_Factory
 {
     /**
      * Creates a new Code Coverage information tree.
      *
-     * @param  PHPUnit2_Framework_TestResult            $result
-     * @param  PHPUnit2_Util_Report_Test_Node_TestSuite $testSuite
-     * @return PHPUnit2_Util_Report_Coverage_Node_Directory
+     * @param  PHPUnit_Framework_TestResult            $result
+     * @param  PHPUnit_Util_Report_Test_Node_TestSuite $testSuite
+     * @return PHPUnit_Util_Report_Coverage_Node_Directory
      * @access public
      * @static
      */
-    public static function create(PHPUnit2_Framework_TestResult $result, PHPUnit2_Util_Report_Test_Node_TestSuite $testSuite)
+    public static function create(PHPUnit_Framework_TestResult $result, PHPUnit_Util_Report_Test_Node_TestSuite $testSuite)
     {
         $files      = self::getSummary($result);
         $commonPath = self::reducePaths($files);
         $items      = self::buildDirectoryStructure($files);
-        $root       = new PHPUnit2_Util_Report_Coverage_Node_Directory($commonPath);
+        $root       = new PHPUnit_Util_Report_Coverage_Node_Directory($commonPath);
 
         self::addItems($root, $items, $testSuite, $files);
 
@@ -91,14 +91,14 @@ abstract class PHPUnit2_Util_Report_Coverage_Factory
     }
 
     /**
-     * @param  PHPUnit2_Util_Report_Coverage_Node_Directory $root
+     * @param  PHPUnit_Util_Report_Coverage_Node_Directory $root
      * @param  array                                        $items
-     * @param  PHPUnit2_Util_Report_Test_Node_TestSuite     $testSuite
+     * @param  PHPUnit_Util_Report_Test_Node_TestSuite     $testSuite
      * @param  array                                        $files
      * @access protected
      * @static
      */
-    protected static function addItems(PHPUnit2_Util_Report_Coverage_Node_Directory $root, Array $items, PHPUnit2_Util_Report_Test_Node_TestSuite $testSuite, Array $files)
+    protected static function addItems(PHPUnit_Util_Report_Coverage_Node_Directory $root, Array $items, PHPUnit_Util_Report_Test_Node_TestSuite $testSuite, Array $files)
     {
         foreach ($items as $key => $value) {
             if (substr($key, -2) == '/f') {
@@ -130,17 +130,17 @@ abstract class PHPUnit2_Util_Report_Coverage_Factory
      * )
      * </code>
      *
-     * @param  PHPUnit2_Framework_TestResult $result
+     * @param  PHPUnit_Framework_TestResult $result
      * @return array
      * @access protected
      * @static
      * @since  Method available since Release 2.2.0
      */
-    protected static function getSummary(PHPUnit2_Framework_TestResult $result)
+    protected static function getSummary(PHPUnit_Framework_TestResult $result)
     {
         $summary = array();
 
-        if (!defined('PHPUnit2_INSIDE_OWN_TESTSUITE')) {
+        if (!defined('PHPUnit_INSIDE_OWN_TESTSUITE')) {
             $codeCoverageInformation = $result->getCodeCoverageInformation();
         } else {
             $codeCoverageInformation = $result->getCodeCoverageInformation(TRUE, FALSE);
@@ -249,12 +249,12 @@ abstract class PHPUnit2_Util_Report_Coverage_Factory
      * <code>
      * Array
      * (
-     *     [/home/sb/PHPUnit2/Samples/Money/Money.php] => Array
+     *     [/home/sb/PHPUnit/Samples/Money/Money.php] => Array
      *         (
      *             ...
      *         )
      * 
-     *     [/home/sb/PHPUnit2/Samples/Money/MoneyBag.php] => Array
+     *     [/home/sb/PHPUnit/Samples/Money/MoneyBag.php] => Array
      *         (
      *             ...
      *         )
@@ -342,7 +342,7 @@ abstract class PHPUnit2_Util_Report_Coverage_Factory
             unset($files[$original[$i]]);
         }
 
-        $files = PHPUnit2_Util_Array::sortRecursively($files);
+        $files = PHPUnit_Util_Array::sortRecursively($files);
 
         return $commonPath;
     }

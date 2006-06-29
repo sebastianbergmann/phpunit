@@ -42,15 +42,15 @@
  * @copyright  2002-2006 Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    SVN: $Id$
- * @link       http://pear.php.net/package/PHPUnit2
+ * @link       http://www.phpunit.de/
  * @since      File available since Release 2.0.0
  */
 
-require_once 'PHPUnit2/Framework.php';
-require_once 'PHPUnit2/Util/Filter.php';
-require_once 'PHPUnit2/Runner/StandardTestSuiteLoader.php';
+require_once 'PHPUnit/Framework.php';
+require_once 'PHPUnit/Util/Filter.php';
+require_once 'PHPUnit/Runner/StandardTestSuiteLoader.php';
 
-PHPUnit2_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
+PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
 
 /**
  * Base class for all test runners.
@@ -61,11 +61,11 @@ PHPUnit2_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
  * @copyright  2002-2006 Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    Release: @package_version@
- * @link       http://pear.php.net/package/PHPUnit2
+ * @link       http://www.phpunit.de/
  * @since      Class available since Release 2.0.0
  * @abstract
  */
-abstract class PHPUnit2_Runner_BaseTestRunner implements PHPUnit2_Framework_TestListener
+abstract class PHPUnit_Runner_BaseTestRunner implements PHPUnit_Framework_TestListener
 {
     const STATUS_PASSED     = 0;
     const STATUS_ERROR      = 1;
@@ -77,11 +77,11 @@ abstract class PHPUnit2_Runner_BaseTestRunner implements PHPUnit2_Framework_Test
     /**
      * An error occurred.
      *
-     * @param  PHPUnit2_Framework_Test $test
+     * @param  PHPUnit_Framework_Test $test
      * @param  Exception               $e
      * @access public
      */
-    public function addError(PHPUnit2_Framework_Test $test, Exception $e)
+    public function addError(PHPUnit_Framework_Test $test, Exception $e)
     {
         $this->testFailed(self::STATUS_ERROR, $test, $e);
     }
@@ -89,11 +89,11 @@ abstract class PHPUnit2_Runner_BaseTestRunner implements PHPUnit2_Framework_Test
     /**
      * A failure occurred.
      *
-     * @param  PHPUnit2_Framework_Test                 $test
-     * @param  PHPUnit2_Framework_AssertionFailedError $e
+     * @param  PHPUnit_Framework_Test                 $test
+     * @param  PHPUnit_Framework_AssertionFailedError $e
      * @access public
      */
-    public function addFailure(PHPUnit2_Framework_Test $test, PHPUnit2_Framework_AssertionFailedError $e)
+    public function addFailure(PHPUnit_Framework_Test $test, PHPUnit_Framework_AssertionFailedError $e)
     {
         $this->testFailed(self::STATUS_FAILURE, $test, $e);
     }
@@ -101,11 +101,11 @@ abstract class PHPUnit2_Runner_BaseTestRunner implements PHPUnit2_Framework_Test
     /**
      * Incomplete test.
      *
-     * @param  PHPUnit2_Framework_Test $test
+     * @param  PHPUnit_Framework_Test $test
      * @param  Exception               $e
      * @access public
      */
-    public function addIncompleteTest(PHPUnit2_Framework_Test $test, Exception $e)
+    public function addIncompleteTest(PHPUnit_Framework_Test $test, Exception $e)
     {
         $this->testFailed(self::STATUS_INCOMPLETE, $test, $e);
     }
@@ -113,12 +113,12 @@ abstract class PHPUnit2_Runner_BaseTestRunner implements PHPUnit2_Framework_Test
     /**
      * Skipped test.
      *
-     * @param  PHPUnit2_Framework_Test $test
+     * @param  PHPUnit_Framework_Test $test
      * @param  Exception               $e
      * @access public
      * @since  Method available since Release 3.0.0
      */
-    public function addSkippedTest(PHPUnit2_Framework_Test $test, Exception $e)
+    public function addSkippedTest(PHPUnit_Framework_Test $test, Exception $e)
     {
         $this->testFailed(self::STATUS_SKIPPED, $test, $e);
     }
@@ -126,32 +126,32 @@ abstract class PHPUnit2_Runner_BaseTestRunner implements PHPUnit2_Framework_Test
     /**
      * A testsuite started.
      *
-     * @param  PHPUnit2_Framework_TestSuite $suite
+     * @param  PHPUnit_Framework_TestSuite $suite
      * @access public
      * @since  Method available since Release 2.2.0
      */
-    public function startTestSuite(PHPUnit2_Framework_TestSuite $suite)
+    public function startTestSuite(PHPUnit_Framework_TestSuite $suite)
     {
     }
 
     /**
      * A testsuite ended.
      *
-     * @param  PHPUnit2_Framework_TestSuite $suite
+     * @param  PHPUnit_Framework_TestSuite $suite
      * @access public
      * @since  Method available since Release 2.2.0
      */
-    public function endTestSuite(PHPUnit2_Framework_TestSuite $suite)
+    public function endTestSuite(PHPUnit_Framework_TestSuite $suite)
     {
     }
 
     /**
      * A test started.
      *
-     * @param  PHPUnit2_Framework_Test  $test
+     * @param  PHPUnit_Framework_Test  $test
      * @access public
      */
-    public function startTest(PHPUnit2_Framework_Test $test)
+    public function startTest(PHPUnit_Framework_Test $test)
     {
         $this->testStarted($test->getName());
     }
@@ -159,10 +159,10 @@ abstract class PHPUnit2_Runner_BaseTestRunner implements PHPUnit2_Framework_Test
     /**
      * A test ended.
      *
-     * @param  PHPUnit2_Framework_Test  $test
+     * @param  PHPUnit_Framework_Test  $test
      * @access public
      */
-    public function endTest(PHPUnit2_Framework_Test $test)
+    public function endTest(PHPUnit_Framework_Test $test)
     {
         $this->testEnded($test->getName());
     }
@@ -170,12 +170,12 @@ abstract class PHPUnit2_Runner_BaseTestRunner implements PHPUnit2_Framework_Test
     /**
      * Returns the loader to be used.
      *
-     * @return PHPUnit2_Runner_TestSuiteLoader
+     * @return PHPUnit_Runner_TestSuiteLoader
      * @access public
      */
     public function getLoader()
     {
-        return new PHPUnit2_Runner_StandardTestSuiteLoader;
+        return new PHPUnit_Runner_StandardTestSuiteLoader;
     }
 
     /**
@@ -185,7 +185,7 @@ abstract class PHPUnit2_Runner_BaseTestRunner implements PHPUnit2_Framework_Test
      *
      * @param  string  $suiteClassName
      * @param  string  $suiteClassFile
-     * @return PHPUnit2_Framework_Test
+     * @return PHPUnit_Framework_Test
      * @access public
      */
     public function getTest($suiteClassName, $suiteClassFile = '')
@@ -232,7 +232,7 @@ abstract class PHPUnit2_Runner_BaseTestRunner implements PHPUnit2_Framework_Test
         }
 
         catch (ReflectionException $e) {
-            $test = new PHPUnit2_Framework_TestSuite($testClass);
+            $test = new PHPUnit_Framework_TestSuite($testClass);
         }
 
         $this->clearStatus();
@@ -294,12 +294,12 @@ abstract class PHPUnit2_Runner_BaseTestRunner implements PHPUnit2_Framework_Test
      * A test failed.
      *
      * @param  integer                                 $status
-     * @param  PHPUnit2_Framework_Test                 $test
-     * @param  PHPUnit2_Framework_AssertionFailedError $e
+     * @param  PHPUnit_Framework_Test                 $test
+     * @param  PHPUnit_Framework_AssertionFailedError $e
      * @access public
      * @abstract
      */
-    abstract public function testFailed($status, PHPUnit2_Framework_Test $test, PHPUnit2_Framework_AssertionFailedError $e);
+    abstract public function testFailed($status, PHPUnit_Framework_Test $test, PHPUnit_Framework_AssertionFailedError $e);
 }
 
 /*

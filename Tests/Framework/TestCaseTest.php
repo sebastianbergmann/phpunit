@@ -42,11 +42,11 @@
  * @copyright  2002-2006 Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    SVN: $Id$
- * @link       http://pear.php.net/package/PHPUnit2
+ * @link       http://www.phpunit.de/
  * @since      File available since Release 2.0.0
  */
 
-require_once 'PHPUnit2/Framework/TestCase.php';
+require_once 'PHPUnit/Framework/TestCase.php';
 
 require_once '_files/Error.php';
 require_once '_files/Failure.php';
@@ -69,10 +69,10 @@ require_once '_files/WasRun.php';
  * @copyright  2002-2006 Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    Release: @package_version@
- * @link       http://pear.php.net/package/PHPUnit2
+ * @link       http://www.phpunit.de/
  * @since      Class available since Release 2.0.0
  */
-class Framework_TestCaseTest extends PHPUnit2_Framework_TestCase
+class Framework_TestCaseTest extends PHPUnit_Framework_TestCase
 {
     public function testCaseToString()
     {
@@ -89,7 +89,7 @@ class Framework_TestCaseTest extends PHPUnit2_Framework_TestCase
 
     public function testExceptionRunningAndTearDown()
     {
-        $result = new PHPUnit2_Framework_TestResult();
+        $result = new PHPUnit_Framework_TestResult();
         $t      = new TornDown5;
 
         $t->run($result);
@@ -115,8 +115,8 @@ class Framework_TestCaseTest extends PHPUnit2_Framework_TestCase
 
     public function testNoArgTestCasePasses()
     {
-        $result = new PHPUnit2_Framework_TestResult();
-        $t      = new PHPUnit2_Framework_TestSuite('NoArgTestCaseTest');
+        $result = new PHPUnit_Framework_TestResult();
+        $t      = new PHPUnit_Framework_TestSuite('NoArgTestCaseTest');
 
         $t->run($result);
 
@@ -172,7 +172,7 @@ class Framework_TestCaseTest extends PHPUnit2_Framework_TestCase
         $this->assertTrue($test->wasRun);
     }
 
-    protected function verifyError(PHPUnit2_Framework_TestCase $test)
+    protected function verifyError(PHPUnit_Framework_TestCase $test)
     {
         $result = $test->run();
 
@@ -181,7 +181,7 @@ class Framework_TestCaseTest extends PHPUnit2_Framework_TestCase
         $this->assertEquals(1, count($result));
     }
 
-    protected function verifyFailure(PHPUnit2_Framework_TestCase $test)
+    protected function verifyFailure(PHPUnit_Framework_TestCase $test)
     {
         $result = $test->run();
 
@@ -190,7 +190,7 @@ class Framework_TestCaseTest extends PHPUnit2_Framework_TestCase
         $this->assertEquals(1, count($result));
     }
 
-    protected function verifySuccess(PHPUnit2_Framework_TestCase $test)
+    protected function verifySuccess(PHPUnit_Framework_TestCase $test)
     {
         $result = $test->run();
 

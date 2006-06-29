@@ -37,5 +37,5 @@
  * $Id$
  */
 
-require 'PHPUnit2/TextUI/TestRunner.php';
+require 'PHPUnit/TextUI/TestRunner.php';
 ?>

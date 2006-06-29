@@ -43,24 +43,24 @@
  * @copyright  2002-2006 Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    SVN: $Id$
- * @link       http://pear.php.net/package/PHPUnit2
+ * @link       http://www.phpunit.de/
  * @since      File available since Release 3.0.0
  */
 
-require_once 'PHPUnit2/Util/Filter.php';
-require_once 'PHPUnit2/Extensions/MockObject/Builder/InvocationMocker.php';
-require_once 'PHPUnit2/Extensions/MockObject/Builder/Match.php';
-require_once 'PHPUnit2/Extensions/MockObject/Builder/Namespace.php';
-require_once 'PHPUnit2/Extensions/MockObject/Matcher.php';
-require_once 'PHPUnit2/Extensions/MockObject/Stub.php';
-require_once 'PHPUnit2/Extensions/MockObject/Invocation.php';
-require_once 'PHPUnit2/Extensions/MockObject/Invokable.php';
+require_once 'PHPUnit/Util/Filter.php';
+require_once 'PHPUnit/Extensions/MockObject/Builder/InvocationMocker.php';
+require_once 'PHPUnit/Extensions/MockObject/Builder/Match.php';
+require_once 'PHPUnit/Extensions/MockObject/Builder/Namespace.php';
+require_once 'PHPUnit/Extensions/MockObject/Matcher.php';
+require_once 'PHPUnit/Extensions/MockObject/Stub.php';
+require_once 'PHPUnit/Extensions/MockObject/Invocation.php';
+require_once 'PHPUnit/Extensions/MockObject/Invokable.php';
 
-PHPUnit2_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
+PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
 
 /**
  * Mocker for invocations which are sent from
- * PHPUnit2_Extensions_MockObject_MockObject objects.
+ * PHPUnit_Extensions_MockObject_MockObject objects.
  *
  * Keeps track of all expectations and stubs as well as registering
  * identifications for builders.
@@ -72,16 +72,16 @@ PHPUnit2_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
  * @copyright  2002-2006 Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    Release: @package_version@
- * @link       http://pear.php.net/package/PHPUnit2
+ * @link       http://www.phpunit.de/
  * @since      Class available since Release 3.0.0
  */
-class PHPUnit2_Extensions_MockObject_InvocationMocker implements PHPUnit2_Extensions_MockObject_Stub_MatcherCollection, PHPUnit2_Extensions_MockObject_Invokable, PHPUnit2_Extensions_MockObject_Builder_Namespace
+class PHPUnit_Extensions_MockObject_InvocationMocker implements PHPUnit_Extensions_MockObject_Stub_MatcherCollection, PHPUnit_Extensions_MockObject_Invokable, PHPUnit_Extensions_MockObject_Builder_Namespace
 {
     private $matchers = array();
 
     private $builderMap = array();
 
-    public function addMatcher(PHPUnit2_Extensions_MockObject_Matcher_Invocation $matcher)
+    public function addMatcher(PHPUnit_Extensions_MockObject_Matcher_Invocation $matcher)
     {
         $this->matchers[] = $matcher;
     }
@@ -95,7 +95,7 @@ class PHPUnit2_Extensions_MockObject_InvocationMocker implements PHPUnit2_Extens
         return NULL;
     }
 
-    public function registerId($id, PHPUnit2_Extensions_MockObject_Builder_Match $builder)
+    public function registerId($id, PHPUnit_Extensions_MockObject_Builder_Match $builder)
     {
         if (isset($this->builderMap[$id])) {
             throw new RuntimeException("Match builder with id <{$id}> is already registered.");
@@ -104,14 +104,14 @@ class PHPUnit2_Extensions_MockObject_InvocationMocker implements PHPUnit2_Extens
         $this->builderMap[$id] = $builder;
     }
 
-    public function expects(PHPUnit2_Extensions_MockObject_Matcher_Invocation $matcher)
+    public function expects(PHPUnit_Extensions_MockObject_Matcher_Invocation $matcher)
     {
-        $builder = new PHPUnit2_Extensions_MockObject_Builder_InvocationMocker($this, $matcher);
+        $builder = new PHPUnit_Extensions_MockObject_Builder_InvocationMocker($this, $matcher);
 
         return $builder;
     }
 
-    public function invoke(PHPUnit2_Extensions_MockObject_Invocation $invocation)
+    public function invoke(PHPUnit_Extensions_MockObject_Invocation $invocation)
     {
         $hasReturnValue = FALSE;
         $returnValue    = NULL;
@@ -130,7 +130,7 @@ class PHPUnit2_Extensions_MockObject_InvocationMocker implements PHPUnit2_Extens
         return $returnValue;
     }
 
-    public function matches(PHPUnit2_Extensions_MockObject_Invocation $invocation)
+    public function matches(PHPUnit_Extensions_MockObject_Invocation $invocation)
     {
         foreach($this->matchers as $matcher) {
             if (!$matcher->matches($invocation)) {

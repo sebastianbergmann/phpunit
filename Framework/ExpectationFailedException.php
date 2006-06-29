@@ -43,22 +43,22 @@
  * @copyright  2002-2006 Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    SVN: $Id$
- * @link       http://pear.php.net/package/PHPUnit2
+ * @link       http://www.phpunit.de/
  * @since      File available since Release 3.0.0
  */
 
-require_once 'PHPUnit2/Framework.php';
-require_once 'PHPUnit2/Util/Filter.php';
+require_once 'PHPUnit/Framework.php';
+require_once 'PHPUnit/Util/Filter.php';
 
-PHPUnit2_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
+PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
 
-if (!class_exists('PHPUnit2_Framework_ExpectationFailedException')) {
+if (!class_exists('PHPUnit_Framework_ExpectationFailedException')) {
 
 /**
  * Exception for expectations which failed their check.
  *
  * The exception contains the error message and optionally a
- * PHPUnit2_Framework_ComparisonFailure which is used to
+ * PHPUnit_Framework_ComparisonFailure which is used to
  * generate diff output of the failed expectations.
  *
  * @category   Testing
@@ -68,15 +68,15 @@ if (!class_exists('PHPUnit2_Framework_ExpectationFailedException')) {
  * @copyright  2002-2006 Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    Release: @package_version@
- * @link       http://pear.php.net/package/PHPUnit2
+ * @link       http://www.phpunit.de/
  * @since      Class available since Release 3.0.0
  */
-class PHPUnit2_Framework_ExpectationFailedException extends PHPUnit2_Framework_AssertionFailedError
+class PHPUnit_Framework_ExpectationFailedException extends PHPUnit_Framework_AssertionFailedError
 {
     private $comparisonFailure;
     private $description;
 
-    public function __construct($message, PHPUnit2_Framework_ComparisonFailure $comparisonFailure = NULL)
+    public function __construct($message, PHPUnit_Framework_ComparisonFailure $comparisonFailure = NULL)
     {
         $this->comparisonFailure = $comparisonFailure;
         $this->description       = $message;

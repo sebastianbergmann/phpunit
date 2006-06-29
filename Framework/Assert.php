@@ -42,22 +42,22 @@
  * @copyright  2002-2006 Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    SVN: $Id$
- * @link       http://pear.php.net/package/PHPUnit2
+ * @link       http://www.phpunit.de/
  * @since      File available since Release 2.0.0
  */
 
-require_once 'PHPUnit2/Framework.php';
-require_once 'PHPUnit2/Util/Filter.php';
-require_once 'PHPUnit2/Extensions/MockObject/Mock.php';
-require_once 'PHPUnit2/Extensions/MockObject/Matcher/InvokedAtLeastOnce.php';
-require_once 'PHPUnit2/Extensions/MockObject/Matcher/InvokedAtIndex.php';
-require_once 'PHPUnit2/Extensions/MockObject/Matcher/InvokedCount.php';
-require_once 'PHPUnit2/Extensions/MockObject/Stub/ConsecutiveCalls.php';
-require_once 'PHPUnit2/Extensions/MockObject/Stub/Return.php';
+require_once 'PHPUnit/Framework.php';
+require_once 'PHPUnit/Util/Filter.php';
+require_once 'PHPUnit/Extensions/MockObject/Mock.php';
+require_once 'PHPUnit/Extensions/MockObject/Matcher/InvokedAtLeastOnce.php';
+require_once 'PHPUnit/Extensions/MockObject/Matcher/InvokedAtIndex.php';
+require_once 'PHPUnit/Extensions/MockObject/Matcher/InvokedCount.php';
+require_once 'PHPUnit/Extensions/MockObject/Stub/ConsecutiveCalls.php';
+require_once 'PHPUnit/Extensions/MockObject/Stub/Return.php';
 
-PHPUnit2_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
+PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
 
-if (!class_exists('PHPUnit2_Framework_Assert')) {
+if (!class_exists('PHPUnit_Framework_Assert')) {
 
 /**
  * A set of assert methods.
@@ -68,11 +68,11 @@ if (!class_exists('PHPUnit2_Framework_Assert')) {
  * @copyright  2002-2006 Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    Release: @package_version@
- * @link       http://pear.php.net/package/PHPUnit2
+ * @link       http://www.phpunit.de/
  * @since      Class available since Release 2.0.0
  * @static
  */
-class PHPUnit2_Framework_Assert
+class PHPUnit_Framework_Assert
 {
     /**
      * Protect constructor since it is a static only class.
@@ -99,7 +99,7 @@ class PHPUnit2_Framework_Assert
             throw new InvalidArgumentException;
         }
 
-        $constraint = new PHPUnit2_Framework_Constraint_ArrayHasKey($key);
+        $constraint = new PHPUnit_Framework_Constraint_ArrayHasKey($key);
 
         if (!$constraint->evaluate($array)) {
             self::failConstraint($constraint, $array, $message);
@@ -122,8 +122,8 @@ class PHPUnit2_Framework_Assert
             throw new InvalidArgumentException;
         }
 
-        $constraint = new PHPUnit2_Framework_Constraint_Not(
-          new PHPUnit2_Framework_Constraint_ArrayHasKey($key)
+        $constraint = new PHPUnit_Framework_Constraint_Not(
+          new PHPUnit_Framework_Constraint_ArrayHasKey($key)
         );
 
         if (!$constraint->evaluate($array)) {
@@ -145,11 +145,11 @@ class PHPUnit2_Framework_Assert
     {
         if (is_array($haystack) ||
             is_object($haystack) && $haystack instanceof Iterator) {
-            $constraint = new PHPUnit2_Framework_Constraint_TraversableContains($needle);
+            $constraint = new PHPUnit_Framework_Constraint_TraversableContains($needle);
         }
 
         else if (is_string($haystack)) {
-            $constraint = new PHPUnit2_Framework_Constraint_StringContains($needle);
+            $constraint = new PHPUnit_Framework_Constraint_StringContains($needle);
         }
 
         else {
@@ -200,14 +200,14 @@ class PHPUnit2_Framework_Assert
     {
         if (is_array($haystack) ||
             is_object($haystack) && $haystack instanceof Iterator) {
-            $constraint = new PHPUnit2_Framework_Constraint_Not(
-              new PHPUnit2_Framework_Constraint_TraversableContains($needle)
+            $constraint = new PHPUnit_Framework_Constraint_Not(
+              new PHPUnit_Framework_Constraint_TraversableContains($needle)
             );
         }
 
         else if (is_string($haystack)) {
-            $constraint = new PHPUnit2_Framework_Constraint_Not(
-              new PHPUnit2_Framework_Constraint_StringContains($needle)
+            $constraint = new PHPUnit_Framework_Constraint_Not(
+              new PHPUnit_Framework_Constraint_StringContains($needle)
             );
         }
 
@@ -257,7 +257,7 @@ class PHPUnit2_Framework_Assert
      */
     public static function assertEquals($expected, $actual, $message = '', $delta = 0)
     {
-        $constraint = new PHPUnit2_Framework_Constraint_IsEqual($expected, $delta);
+        $constraint = new PHPUnit_Framework_Constraint_IsEqual($expected, $delta);
 
         if (!$constraint->evaluate($actual)) {
             self::failConstraint($constraint, $actual, $message);
@@ -302,8 +302,8 @@ class PHPUnit2_Framework_Assert
      */
     public static function assertNotEquals($expected, $actual, $message = '', $delta = 0)
     {
-        $constraint = new PHPUnit2_Framework_Constraint_Not(
-          new PHPUnit2_Framework_Constraint_IsEqual($expected, $delta)
+        $constraint = new PHPUnit_Framework_Constraint_Not(
+          new PHPUnit_Framework_Constraint_IsEqual($expected, $delta)
         );
 
         if (!$constraint->evaluate($actual)) {
@@ -351,7 +351,7 @@ class PHPUnit2_Framework_Assert
             throw new InvalidArgumentException;
         }
 
-        $constraint = new PHPUnit2_Framework_Constraint_FileExists;
+        $constraint = new PHPUnit_Framework_Constraint_FileExists;
 
         if (!$constraint->evaluate($filename)) {
             self::failConstraint($constraint, $filename, $message);
@@ -373,8 +373,8 @@ class PHPUnit2_Framework_Assert
             throw new InvalidArgumentException;
         }
 
-        $constraint = new PHPUnit2_Framework_Constraint_Not(
-          new PHPUnit2_Framework_Constraint_FileExists
+        $constraint = new PHPUnit_Framework_Constraint_Not(
+          new PHPUnit_Framework_Constraint_FileExists
         );
 
         if (!$constraint->evaluate($filename)) {
@@ -387,7 +387,7 @@ class PHPUnit2_Framework_Assert
      *
      * @param  boolean $condition
      * @param  string  $message
-     * @throws PHPUnit2_Framework_ComparisonFailure
+     * @throws PHPUnit_Framework_ComparisonFailure
      * @throws InvalidArgumentException
      * @access public
      * @static
@@ -398,7 +398,7 @@ class PHPUnit2_Framework_Assert
             throw new InvalidArgumentException;
         }
 
-        $constraint = new PHPUnit2_Framework_Constraint_IsIdentical(TRUE);
+        $constraint = new PHPUnit_Framework_Constraint_IsIdentical(TRUE);
 
         if (!$constraint->evaluate($condition)) {
             self::failConstraint($constraint, $condition, $message, TRUE);
@@ -410,7 +410,7 @@ class PHPUnit2_Framework_Assert
      *
      * @param  boolean  $condition
      * @param  string   $message
-     * @throws PHPUnit2_Framework_ComparisonFailure
+     * @throws PHPUnit_Framework_ComparisonFailure
      * @throws InvalidArgumentException
      * @access public
      * @static
@@ -421,7 +421,7 @@ class PHPUnit2_Framework_Assert
             throw new InvalidArgumentException;
         }
 
-        $constraint = new PHPUnit2_Framework_Constraint_IsIdentical(FALSE);
+        $constraint = new PHPUnit_Framework_Constraint_IsIdentical(FALSE);
 
         if (!$constraint->evaluate($condition)) {
             self::failConstraint($constraint, $condition, $message, TRUE);
@@ -438,8 +438,8 @@ class PHPUnit2_Framework_Assert
      */
     public static function assertNotNull($actual, $message = '')
     {
-        $constraint = new PHPUnit2_Framework_Constraint_Not(
-          new PHPUnit2_Framework_Constraint_IsIdentical(NULL)
+        $constraint = new PHPUnit_Framework_Constraint_Not(
+          new PHPUnit_Framework_Constraint_IsIdentical(NULL)
         );
 
         if (!$constraint->evaluate($actual)) {
@@ -457,7 +457,7 @@ class PHPUnit2_Framework_Assert
      */
     public static function assertNull($actual, $message = '')
     {
-        $constraint = new PHPUnit2_Framework_Constraint_IsIdentical(NULL);
+        $constraint = new PHPUnit_Framework_Constraint_IsIdentical(NULL);
 
         if (!$constraint->evaluate($actual)) {
             self::failConstraint($constraint, $actual, $message, TRUE);
@@ -480,7 +480,7 @@ class PHPUnit2_Framework_Assert
             throw new InvalidArgumentException;
         }
 
-        $constraint = new PHPUnit2_Framework_Constraint_ObjectHasAttribute($attributeName);
+        $constraint = new PHPUnit_Framework_Constraint_ObjectHasAttribute($attributeName);
 
         if (!$constraint->evaluate($object)) {
             self::failConstraint($constraint, $object, $message);
@@ -503,8 +503,8 @@ class PHPUnit2_Framework_Assert
             throw new InvalidArgumentException;
         }
 
-        $constraint = new PHPUnit2_Framework_Constraint_Not(
-          new PHPUnit2_Framework_Constraint_ObjectHasAttribute($attributeName)
+        $constraint = new PHPUnit_Framework_Constraint_Not(
+          new PHPUnit_Framework_Constraint_ObjectHasAttribute($attributeName)
         );
 
         if (!$constraint->evaluate($object)) {
@@ -525,7 +525,7 @@ class PHPUnit2_Framework_Assert
      */
     public static function assertSame($expected, $actual, $message = '')
     {
-        $constraint = new PHPUnit2_Framework_Constraint_IsIdentical($expected);
+        $constraint = new PHPUnit_Framework_Constraint_IsIdentical($expected);
 
         if (!$constraint->evaluate($actual)) {
             self::failConstraint($constraint, $actual, $message, TRUE);
@@ -569,8 +569,8 @@ class PHPUnit2_Framework_Assert
      */
     public static function assertNotSame($expected, $actual, $message = '')
     {
-        $constraint = new PHPUnit2_Framework_Constraint_Not(
-          new PHPUnit2_Framework_Constraint_IsIdentical($expected)
+        $constraint = new PHPUnit_Framework_Constraint_Not(
+          new PHPUnit_Framework_Constraint_IsIdentical($expected)
         );
 
         if (!$constraint->evaluate($actual)) {
@@ -616,11 +616,11 @@ class PHPUnit2_Framework_Assert
         if (is_string($expected)) {
             if (class_exists($expected) || interface_exists($expected)) {
                 $constraint = self::logicalAnd(
-                  new PHPUnit2_Framework_Constraint_IsType('object'),
-                  new PHPUnit2_Framework_Constraint_IsInstanceOf($expected)
+                  new PHPUnit_Framework_Constraint_IsType('object'),
+                  new PHPUnit_Framework_Constraint_IsInstanceOf($expected)
                 );
             } else {
-                $constraint = new PHPUnit2_Framework_Constraint_IsType($expected);
+                $constraint = new PHPUnit_Framework_Constraint_IsType($expected);
             }
         } else {
             throw new InvalidArgumentException;
@@ -645,15 +645,15 @@ class PHPUnit2_Framework_Assert
     {
         if (is_string($expected)) {
             if (class_exists($expected) || interface_exists($expected)) {
-                $constraint = new PHPUnit2_Framework_Constraint_Not(
+                $constraint = new PHPUnit_Framework_Constraint_Not(
                   self::logicalAnd(
-                    new PHPUnit2_Framework_Constraint_IsType('object'),
-                    new PHPUnit2_Framework_Constraint_IsInstanceOf($expected)
+                    new PHPUnit_Framework_Constraint_IsType('object'),
+                    new PHPUnit_Framework_Constraint_IsInstanceOf($expected)
                   )
                 );
             } else {
-                $constraint = new PHPUnit2_Framework_Constraint_Not(
-                  new PHPUnit2_Framework_Constraint_IsType($expected)
+                $constraint = new PHPUnit_Framework_Constraint_Not(
+                  new PHPUnit_Framework_Constraint_IsType($expected)
                 );
             }
         } else {
@@ -680,7 +680,7 @@ class PHPUnit2_Framework_Assert
             throw new InvalidArgumentException;
         }
 
-        $constraint = new PHPUnit2_Framework_Constraint_PCREMatch($pattern);
+        $constraint = new PHPUnit_Framework_Constraint_PCREMatch($pattern);
 
         if (!$constraint->evaluate($string)) {
             $constraint->fail(
@@ -712,8 +712,8 @@ class PHPUnit2_Framework_Assert
             throw new InvalidArgumentException;
         }
 
-        $constraint = new PHPUnit2_Framework_Constraint_Not(
-          new PHPUnit2_Framework_Constraint_PCREMatch($pattern)
+        $constraint = new PHPUnit_Framework_Constraint_Not(
+          new PHPUnit_Framework_Constraint_PCREMatch($pattern)
         );
 
         if (!$constraint->evaluate($string)) {
@@ -725,13 +725,13 @@ class PHPUnit2_Framework_Assert
      *
      *
      * @param  mixed                         $value
-     * @param  PHPUnit2_Framework_Constraint $constraint
+     * @param  PHPUnit_Framework_Constraint $constraint
      * @param  string                        $message
      * @access public
      * @static
      * @since  Method available since Release 3.0.0
      */
-    public static function assertThat($value, PHPUnit2_Framework_Constraint $constraint, $message = '')
+    public static function assertThat($value, PHPUnit_Framework_Constraint $constraint, $message = '')
     {
         if (!$constraint->evaluate($value)) {
             self::failConstraint($constraint, $value, $message, TRUE);
@@ -741,7 +741,7 @@ class PHPUnit2_Framework_Assert
     /**
      * Logical AND.
      *
-     * @return PHPUnit2_Framework_Constraint_And
+     * @return PHPUnit_Framework_Constraint_And
      * @access public
      * @since  Method available since Release 3.0.0
      * @static
@@ -750,7 +750,7 @@ class PHPUnit2_Framework_Assert
     {
         $constraints = func_get_args();
 
-        $constraint = new PHPUnit2_Framework_Constraint_And;
+        $constraint = new PHPUnit_Framework_Constraint_And;
         $constraint->setConstraints($constraints);
 
         return $constraint;
@@ -759,7 +759,7 @@ class PHPUnit2_Framework_Assert
     /**
      * Logical OR.
      *
-     * @return PHPUnit2_Framework_Constraint_Or
+     * @return PHPUnit_Framework_Constraint_Or
      * @access public
      * @since  Method available since Release 3.0.0
      * @static
@@ -768,7 +768,7 @@ class PHPUnit2_Framework_Assert
     {
         $constraints = func_get_args();
 
-        $constraint = new PHPUnit2_Framework_Constraint_Or;
+        $constraint = new PHPUnit_Framework_Constraint_Or;
         $constraint->setConstraints($constraints);
 
         return $constraint;
@@ -777,56 +777,56 @@ class PHPUnit2_Framework_Assert
     /**
      * Logical NOT.
      *
-     * @param  PHPUnit2_Framework_Constraint $constraint
-     * @return PHPUnit2_Framework_Constraint_Not
+     * @param  PHPUnit_Framework_Constraint $constraint
+     * @return PHPUnit_Framework_Constraint_Not
      * @access public
      * @since  Method available since Release 3.0.0
      * @static
      */
-    public static function logicalNot(PHPUnit2_Framework_Constraint $constraint)
+    public static function logicalNot(PHPUnit_Framework_Constraint $constraint)
     {
-        return new PHPUnit2_Framework_Constraint_Not($constraint);
+        return new PHPUnit_Framework_Constraint_Not($constraint);
     }
 
     /**
      *
      *
-     * @return PHPUnit2_Framework_Constraint_IsAnything
+     * @return PHPUnit_Framework_Constraint_IsAnything
      * @access public
      * @since  Method available since Release 3.0.0
      * @static
      */
     public static function anything()
     {
-        return new PHPUnit2_Framework_Constraint_IsAnything;
+        return new PHPUnit_Framework_Constraint_IsAnything;
     }
 
     /**
      *
      *
      * @param  mixed $value
-     * @return PHPUnit2_Framework_Constraint_TraversableContains
+     * @return PHPUnit_Framework_Constraint_TraversableContains
      * @access public
      * @since  Method available since Release 3.0.0
      * @static
      */
     public static function arrayContains($value)
     {
-        return new PHPUnit2_Framework_Constraint_TraversableContains($value);
+        return new PHPUnit_Framework_Constraint_TraversableContains($value);
     }
 
     /**
      *
      *
      * @param  mixed $key
-     * @return PHPUnit2_Framework_Constraint_ArrayHasKey
+     * @return PHPUnit_Framework_Constraint_ArrayHasKey
      * @access public
      * @since  Method available since Release 3.0.0
      * @static
      */
     public static function arrayHasKey($key)
     {
-        return new PHPUnit2_Framework_Constraint_ArrayHasKey($key);
+        return new PHPUnit_Framework_Constraint_ArrayHasKey($key);
     }
 
     /**
@@ -834,125 +834,125 @@ class PHPUnit2_Framework_Assert
      *
      * @param  mixed $value
      * @param  mixed $delta
-     * @return PHPUnit2_Framework_Constraint_IsEqual
+     * @return PHPUnit_Framework_Constraint_IsEqual
      * @access public
      * @since  Method available since Release 3.0.0
      * @static
      */
     public static function equalTo($value, $delta = 0)
     {
-        return new PHPUnit2_Framework_Constraint_IsEqual($value, $delta);
+        return new PHPUnit_Framework_Constraint_IsEqual($value, $delta);
     }
 
     /**
      *
      *
-     * @return PHPUnit2_Framework_Constraint_FileExists
+     * @return PHPUnit_Framework_Constraint_FileExists
      * @access public
      * @since  Method available since Release 3.0.0
      * @static
      */
     public static function fileExists()
     {
-        return new PHPUnit2_Framework_Constraint_FileExists;
+        return new PHPUnit_Framework_Constraint_FileExists;
     }
 
     /**
      *
      *
      * @param  mixed $value
-     * @return PHPUnit2_Framework_Constraint_GreaterThan
+     * @return PHPUnit_Framework_Constraint_GreaterThan
      * @access public
      * @since  Method available since Release 3.0.0
      * @static
      */
     public static function greaterThan($value)
     {
-        return new PHPUnit2_Framework_Constraint_GreaterThan($value);
+        return new PHPUnit_Framework_Constraint_GreaterThan($value);
     }
 
     /**
      *
      *
      * @param  string $attributeName
-     * @return PHPUnit2_Framework_Constraint_ObjectHasAttribute
+     * @return PHPUnit_Framework_Constraint_ObjectHasAttribute
      * @access public
      * @since  Method available since Release 3.0.0
      * @static
      */
     public static function objectHasAttribute($attributeName)
     {
-        return new PHPUnit2_Framework_Constraint_ObjectHasAttribute($attributeName);
+        return new PHPUnit_Framework_Constraint_ObjectHasAttribute($attributeName);
     }
 
     /**
      *
      *
      * @param  mixed $value
-     * @return PHPUnit2_Framework_Constraint_IsIdentical
+     * @return PHPUnit_Framework_Constraint_IsIdentical
      * @access public
      * @since  Method available since Release 3.0.0
      * @static
      */
     public static function identicalTo($value)
     {
-        return new PHPUnit2_Framework_Constraint_IsIdentical($value);
+        return new PHPUnit_Framework_Constraint_IsIdentical($value);
     }
 
     /**
      *
      *
      * @param  string $className
-     * @return PHPUnit2_Framework_Constraint_IsInstanceOf
+     * @return PHPUnit_Framework_Constraint_IsInstanceOf
      * @access public
      * @since  Method available since Release 3.0.0
      * @static
      */
     public static function isInstanceOf($className)
     {
-        return new PHPUnit2_Framework_Constraint_IsInstanceOf($className);
+        return new PHPUnit_Framework_Constraint_IsInstanceOf($className);
     }
 
     /**
      *
      *
      * @param  string $type
-     * @return PHPUnit2_Framework_Constraint_IsType
+     * @return PHPUnit_Framework_Constraint_IsType
      * @access public
      * @since  Method available since Release 3.0.0
      * @static
      */
     public static function isType($type)
     {
-        return new PHPUnit2_Framework_Constraint_IsType($type);
+        return new PHPUnit_Framework_Constraint_IsType($type);
     }
 
     /**
      *
      *
      * @param  mixed $value
-     * @return PHPUnit2_Framework_Constraint_LessThan
+     * @return PHPUnit_Framework_Constraint_LessThan
      * @access public
      * @since  Method available since Release 3.0.0
      * @static
      */
     public static function lessThan($value)
     {
-        return new PHPUnit2_Framework_Constraint_LessThan($value);
+        return new PHPUnit_Framework_Constraint_LessThan($value);
     }
 
     /**
      *
      *
      * @param  string $pattern
-     * @return PHPUnit2_Framework_Constraint_PCREMatch
+     * @return PHPUnit_Framework_Constraint_PCREMatch
      * @access public
      * @since  Method available since Release 3.0.0
      * @static
      */
     public static function matchesRegularExpression($pattern)
     {
-        return new PHPUnit2_Framework_Constraint_PCREMatch($pattern);
+        return new PHPUnit_Framework_Constraint_PCREMatch($pattern);
     }
 
     /**
@@ -960,14 +960,14 @@ class PHPUnit2_Framework_Assert
      *
      * @param  string  $string
      * @param  boolean $case
-     * @return PHPUnit2_Framework_Constraint_StringContains
+     * @return PHPUnit_Framework_Constraint_StringContains
      * @access public
      * @since  Method available since Release 3.0.0
      * @static
      */
     public static function stringContains($string, $case)
     {
-        return new PHPUnit2_Framework_Constraint_StringContains($string, $case);
+        return new PHPUnit_Framework_Constraint_StringContains($string, $case);
     }
 
 
@@ -975,28 +975,28 @@ class PHPUnit2_Framework_Assert
      * Fails a test with the given message.
      *
      * @param  string $message
-     * @throws PHPUnit2_Framework_AssertionFailedError
+     * @throws PHPUnit_Framework_AssertionFailedError
      * @access public
      * @static
      */
     public static function fail($message = '')
     {
-        throw new PHPUnit2_Framework_AssertionFailedError($message);
+        throw new PHPUnit_Framework_AssertionFailedError($message);
     }
 
     /**
      * Fails a test based on a failed constraint.
      *
-     * @param  PHPUnit2_Framework_Constraint $constraint
+     * @param  PHPUnit_Framework_Constraint $constraint
      * @param  mixed                         $value
      * @param  string                        $message
      * @param  boolean                       $type
-     * @throws PHPUnit2_Framework_ExpectationFailedException
+     * @throws PHPUnit_Framework_ExpectationFailedException
      * @access public
      * @static
      * @since  Method available since Release 3.0.0
      */
-    public static function failConstraint(PHPUnit2_Framework_Constraint $constraint, $value, $message, $type = FALSE)
+    public static function failConstraint(PHPUnit_Framework_Constraint $constraint, $value, $message, $type = FALSE)
     {
         $constraint->fail(
           $value,
@@ -1058,30 +1058,32 @@ class PHPUnit2_Framework_Assert
      * Mark the test as incomplete.
      *
      * @param  string  $message
-     * @throws PHPUnit2_Framework_IncompleteTestError
+     * @throws PHPUnit_Framework_IncompleteTestError
      * @access public
      * @static
      * @since  Method available since Release 3.0.0
      */
     public static function markTestIncomplete($message = '')
     {
-        throw new PHPUnit2_Framework_IncompleteTestError($message);
+        throw new PHPUnit_Framework_IncompleteTestError($message);
     }
 
     /**
      * Mark the test as skipped.
      *
      * @param  string  $message
-     * @throws PHPUnit2_Framework_SkippedTestError
+     * @throws PHPUnit_Framework_SkippedTestError
      * @access public
      * @static
      * @since  Method available since Release 3.0.0
      */
     public static function markTestSkipped($message = '')
     {
-        throw new PHPUnit2_Framework_SkippedTestError($message);
+        throw new PHPUnit_Framework_SkippedTestError($message);
     }
 }
+
+class PHPUnit2_Framework_Assert extends PHPUnit_Framework_Assert {}
 
 }
 

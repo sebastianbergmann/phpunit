@@ -42,16 +42,16 @@
  * @copyright  2002-2006 Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    SVN: $Id$
- * @link       http://pear.php.net/package/PHPUnit2
+ * @link       http://www.phpunit.de/
  * @since      File available since Release 2.0.0
  */
 
-require_once 'PHPUnit2/Framework.php';
-require_once 'PHPUnit2/Util/Filter.php';
+require_once 'PHPUnit/Framework.php';
+require_once 'PHPUnit/Util/Filter.php';
 
-PHPUnit2_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
+PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
 
-if (!interface_exists('PHPUnit2_Framework_Test')) {
+if (!interface_exists('PHPUnit_Framework_Test')) {
 
 /**
  * A Test can be run and collect its results.
@@ -62,20 +62,22 @@ if (!interface_exists('PHPUnit2_Framework_Test')) {
  * @copyright  2002-2006 Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    Release: @package_version@
- * @link       http://pear.php.net/package/PHPUnit2
+ * @link       http://www.phpunit.de/
  * @since      Interface available since Release 2.0.0
  */
-interface PHPUnit2_Framework_Test extends Countable
+interface PHPUnit_Framework_Test extends Countable
 {
     /**
      * Runs a test and collects its result in a TestResult instance.
      *
-     * @param  PHPUnit2_Framework_TestResult $result
-     * @return PHPUnit2_Framework_TestResult
+     * @param  PHPUnit_Framework_TestResult $result
+     * @return PHPUnit_Framework_TestResult
      * @access public
      */
-    public function run(PHPUnit2_Framework_TestResult $result = NULL);
+    public function run(PHPUnit_Framework_TestResult $result = NULL);
 }
+
+interface PHPUnit2_Framework_Test extends PHPUnit_Framework_Test {}
 
 }
 

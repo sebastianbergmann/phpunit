@@ -42,15 +42,15 @@
  * @copyright  2002-2006 Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    SVN: $Id$
- * @link       http://pear.php.net/package/PHPUnit2
+ * @link       http://www.phpunit.de/
  * @since      File available since Release 3.0.0
  */
 
-require_once 'PHPUnit2/Framework.php';
-require_once 'PHPUnit2/Util/Filter.php';
-require_once 'PHPUnit2/Util/Filesystem.php';
+require_once 'PHPUnit/Framework.php';
+require_once 'PHPUnit/Util/Filter.php';
+require_once 'PHPUnit/Util/Filesystem.php';
 
-PHPUnit2_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
+PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
 
 /**
  * Base class for nodes in the test information tree.
@@ -61,10 +61,10 @@ PHPUnit2_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
  * @copyright  2002-2006 Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    Release: @package_version@
- * @link       http://pear.php.net/package/PHPUnit2
+ * @link       http://www.phpunit.de/
  * @since      Class available since Release 3.0.0
  */
-abstract class PHPUnit2_Util_Report_Test_Node
+abstract class PHPUnit_Util_Report_Test_Node
 {
     /**
      * @var    string
@@ -73,7 +73,7 @@ abstract class PHPUnit2_Util_Report_Test_Node
     protected $name;
 
     /**
-     * @var    PHPUnit2_Util_Test_Node
+     * @var    PHPUnit_Util_Test_Node
      * @access protected
      */
     protected $parent;
@@ -88,10 +88,10 @@ abstract class PHPUnit2_Util_Report_Test_Node
      * Constructor.
      *
      * @param  string                  $name
-     * @param  PHPUnit2_Util_Test_Node $parent
+     * @param  PHPUnit_Util_Test_Node $parent
      * @access public
      */
-    public function __construct($name, PHPUnit2_Util_Report_Test_Node $parent = NULL)
+    public function __construct($name, PHPUnit_Util_Report_Test_Node $parent = NULL)
     {
         $this->name   = $name;
         $this->parent = $parent;
@@ -134,25 +134,25 @@ abstract class PHPUnit2_Util_Report_Test_Node
               '%s / <a href="%s-test.htm">%s</a>',
 
               $this->parent->getLink(TRUE),
-              PHPUnit2_Util_Filesystem::getSafeFilename($this->getName()),
+              PHPUnit_Util_Filesystem::getSafeFilename($this->getName()),
               $this->getName()
             );
         } else {
             return sprintf(
               '<a href="%s-test.htm">%s</a>',
 
-              PHPUnit2_Util_Filesystem::getSafeFilename($this->getName()),
+              PHPUnit_Util_Filesystem::getSafeFilename($this->getName()),
               $this->getName()
             );
         }
     }
 
     /**
-     * @param  PHPUnit2_Util_Template $template
+     * @param  PHPUnit_Util_Template $template
      * @param  string                 $title
      * @access public
      */  
-   protected function setTemplateVars(PHPUnit2_Util_Template $template, $title)
+   protected function setTemplateVars(PHPUnit_Util_Template $template, $title)
     {
         $template->setVar(
           array(
@@ -166,7 +166,7 @@ abstract class PHPUnit2_Util_Report_Test_Node
             $title,
             $this->getLink(TRUE),
             date('D M j G:i:s T Y'),
-            PHPUnit2_Runner_Version::id(),
+            PHPUnit_Runner_Version::id(),
             phpversion('xdebug')
           )
         );

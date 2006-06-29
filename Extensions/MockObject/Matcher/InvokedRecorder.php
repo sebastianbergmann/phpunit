@@ -43,15 +43,15 @@
  * @copyright  2002-2006 Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    SVN: $Id$
- * @link       http://pear.php.net/package/PHPUnit2
+ * @link       http://www.phpunit.de/
  * @since      File available since Release 3.0.0
  */
 
-require_once 'PHPUnit2/Util/Filter.php';
-require_once 'PHPUnit2/Extensions/MockObject/Matcher/Invocation.php';
-require_once 'PHPUnit2/Extensions/MockObject/Invocation.php';
+require_once 'PHPUnit/Util/Filter.php';
+require_once 'PHPUnit/Extensions/MockObject/Matcher/Invocation.php';
+require_once 'PHPUnit/Extensions/MockObject/Invocation.php';
 
-PHPUnit2_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
+PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
 
 /**
  * Records invocations and provides convenience methods for checking them later on.
@@ -66,11 +66,11 @@ PHPUnit2_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
  * @copyright  2002-2006 Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    Release: @package_version@
- * @link       http://pear.php.net/package/PHPUnit2
+ * @link       http://www.phpunit.de/
  * @since      Class available since Release 3.0.0
  * @abstract
  */
-abstract class PHPUnit2_Extensions_MockObject_Matcher_InvokedRecorder implements PHPUnit2_Extensions_MockObject_Matcher_Invocation
+abstract class PHPUnit_Extensions_MockObject_Matcher_InvokedRecorder implements PHPUnit_Extensions_MockObject_Matcher_Invocation
 {
     private $invocations = array();
 
@@ -89,12 +89,12 @@ abstract class PHPUnit2_Extensions_MockObject_Matcher_InvokedRecorder implements
         return count($this->invocations) > 0;
     }
 
-    public function invoked(PHPUnit2_Extensions_MockObject_Invocation $invocation)
+    public function invoked(PHPUnit_Extensions_MockObject_Invocation $invocation)
     {
         $this->invocations[] = $invocation;
     }
 
-    public function matches(PHPUnit2_Extensions_MockObject_Invocation $invocation)
+    public function matches(PHPUnit_Extensions_MockObject_Invocation $invocation)
     {
         return TRUE;
     }

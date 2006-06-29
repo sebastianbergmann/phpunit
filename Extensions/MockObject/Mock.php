@@ -43,23 +43,23 @@
  * @copyright  2002-2006 Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    SVN: $Id$
- * @link       http://pear.php.net/package/PHPUnit2
+ * @link       http://www.phpunit.de/
  * @since      File available since Release 3.0.0
  */
 
-require_once 'PHPUnit2/Util/Filter.php';
-require_once 'PHPUnit2/Extensions/MockObject/Matcher.php';
-require_once 'PHPUnit2/Extensions/MockObject/Invocation.php';
-require_once 'PHPUnit2/Extensions/MockObject/MockObject.php';
+require_once 'PHPUnit/Util/Filter.php';
+require_once 'PHPUnit/Extensions/MockObject/Matcher.php';
+require_once 'PHPUnit/Extensions/MockObject/Invocation.php';
+require_once 'PHPUnit/Extensions/MockObject/MockObject.php';
 
-PHPUnit2_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
+PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
 
 /**
  * Provides generation of mock classes and objects from existing classes.
  *
  * The mocked class will contain all the methods of the original class but with
  * a different implementation which will call the current
- * PHPUnit2_Extensions_MockObject_InvocationMocker object, this objects takes
+ * PHPUnit_Extensions_MockObject_InvocationMocker object, this objects takes
  * care of checking expectations and stubs.
  * It is also possible to define which methods are mocked by passing an array
  * of method names.
@@ -67,14 +67,14 @@ PHPUnit2_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
  * The simplest way to define a mock object is to do:
  *
  * <code>
- * PHPUnit2_Extensions_MockObject_Mock::generate('MyClass');
+ * PHPUnit_Extensions_MockObject_Mock::generate('MyClass');
  * $o = new Mock_MyClass;
  * </code>
  *
  * The generate() method returns an object which can be queried.
  *
  * <code>
- * $m = PHPUnit2_Extensions_MockObject::generate('MyClass');
+ * $m = PHPUnit_Extensions_MockObject::generate('MyClass');
  * $o = new $m->mockClassName;
  * print "original class was: . $m->className;
  * </code>
@@ -86,10 +86,10 @@ PHPUnit2_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
  * @copyright  2002-2006 Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    Release: @package_version@
- * @link       http://pear.php.net/package/PHPUnit2
+ * @link       http://www.phpunit.de/
  * @since      Class available since Release 3.0.0
  */
-class PHPUnit2_Extensions_MockObject_Mock
+class PHPUnit_Extensions_MockObject_Mock
 {
     public $mockClassName;
     public $className;
@@ -118,7 +118,7 @@ class PHPUnit2_Extensions_MockObject_Mock
 
     public static function generate($className, Array $methods = array(), $mockClassName = '')
     {
-        $mock = new PHPUnit2_Extensions_MockObject_Mock($className, $methods, $mockClassName);
+        $mock = new PHPUnit_Extensions_MockObject_Mock($className, $methods, $mockClassName);
 
         if (!class_exists($mock->mockClassName, FALSE)) {
             $mock->generateClass();
@@ -155,9 +155,9 @@ class PHPUnit2_Extensions_MockObject_Mock
         $code = 'class ';
 
         if ($class->isInterface()) {
-            $code .= "{$this->mockClassName} implements {$this->className}, PHPUnit2_Extensions_MockObject_MockObject {\n";
+            $code .= "{$this->mockClassName} implements {$this->className}, PHPUnit_Extensions_MockObject_MockObject {\n";
         } else {
-            $code .= "{$this->mockClassName} extends {$this->className} implements PHPUnit2_Extensions_MockObject_MockObject {\n";
+            $code .= "{$this->mockClassName} extends {$this->className} implements PHPUnit_Extensions_MockObject_MockObject {\n";
         }
         $code .= $this->generateMockApi($class);
 
@@ -225,7 +225,7 @@ class PHPUnit2_Extensions_MockObject_Mock
         $code .= sprintf(
           "%s(%s) {\n" .
           "        \$args = func_get_args();\n" .
-          "        return \$this->invocationMocker->invoke(new PHPUnit2_Extensions_MockObject_Invocation(\$this, %s, %s, \$args));\n" .
+          "        return \$this->invocationMocker->invoke(new PHPUnit_Extensions_MockObject_Invocation(\$this, %s, %s, \$args));\n" .
           "    }\n",
 
           $method->getName(),
@@ -246,7 +246,7 @@ class PHPUnit2_Extensions_MockObject_Mock
           "    public function getInvocationMocker() {\n" .
           "        return \$this->invocationMocker;\n" .
           "    }\n\n" .
-          "    public function expects(PHPUnit2_Extensions_MockObject_Matcher_Invocation \$matcher) {\n" .
+          "    public function expects(PHPUnit_Extensions_MockObject_Matcher_Invocation \$matcher) {\n" .
           "        return \$this->invocationMocker->expects(\$matcher);\n" .
           "    }\n\n" .
           "    public function verify() {\n" .
@@ -265,7 +265,7 @@ class PHPUnit2_Extensions_MockObject_Mock
         if ($constructor) {
             return sprintf(
               "    public function __construct(%s) {\n" .
-              "        \$this->invocationMocker = new PHPUnit2_Extensions_MockObject_InvocationMocker(\$this);\n" .
+              "        \$this->invocationMocker = new PHPUnit_Extensions_MockObject_InvocationMocker(\$this);\n" .
               "        parent::%s(%s);\n" .
               "    }\n\n",
 
@@ -275,7 +275,7 @@ class PHPUnit2_Extensions_MockObject_Mock
             );
         } else {
             return "    public function __construct() {\n" .
-                   "        \$this->invocationMocker = new PHPUnit2_Extensions_MockObject_InvocationMocker(\$this);\n" .
+                   "        \$this->invocationMocker = new PHPUnit_Extensions_MockObject_InvocationMocker(\$this);\n" .
                    "    }\n\n";
         }
     }

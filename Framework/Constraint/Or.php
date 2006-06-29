@@ -43,14 +43,14 @@
  * @copyright  2002-2006 Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    SVN: $Id$
- * @link       http://pear.php.net/package/PHPUnit2
+ * @link       http://www.phpunit.de/
  * @since      File available since Release 3.0.0
  */
 
-require_once 'PHPUnit2/Framework.php';
-require_once 'PHPUnit2/Util/Filter.php';
+require_once 'PHPUnit/Framework.php';
+require_once 'PHPUnit/Util/Filter.php';
 
-PHPUnit2_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
+PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
 
 /**
  * Constraint which will only evaluate to true if at least one of the sub-constraints does the same.
@@ -65,10 +65,10 @@ PHPUnit2_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
  * @copyright  2002-2006 Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    Release: @package_version@
- * @link       http://pear.php.net/package/PHPUnit2
+ * @link       http://www.phpunit.de/
  * @since      Class available since Release 3.0.0
  */
-class PHPUnit2_Framework_Constraint_Or implements PHPUnit2_Framework_Constraint
+class PHPUnit_Framework_Constraint_Or implements PHPUnit_Framework_Constraint
 {
     private $constraints = array();
 
@@ -77,8 +77,8 @@ class PHPUnit2_Framework_Constraint_Or implements PHPUnit2_Framework_Constraint
         $this->constraints = array();
 
         foreach($constraints as $key => $constraint) {
-            if (!($constraint instanceof PHPUnit2_Framework_Constraint)) {
-                $constraint = new PHPUnit2_Framework_Constraint_IsEqual($constraint);
+            if (!($constraint instanceof PHPUnit_Framework_Constraint)) {
+                $constraint = new PHPUnit_Framework_Constraint_IsEqual($constraint);
             }
 
             $this->constraints[] = $constraint;
@@ -108,11 +108,11 @@ class PHPUnit2_Framework_Constraint_Or implements PHPUnit2_Framework_Constraint
      *                         constraint check.
      * @param   string  $description A string with extra description of what was
      *                               going on while the evaluation failed.
-     * @throws  PHPUnit2_Framework_ExpectationFailedException
+     * @throws  PHPUnit_Framework_ExpectationFailedException
      */
     public function fail($other, $description)
     {
-        throw new PHPUnit2_Framework_ExpectationFailedException(
+        throw new PHPUnit_Framework_ExpectationFailedException(
           sprintf(
             "%s\nexpected <%s> %s",
 

@@ -42,19 +42,19 @@
  * @copyright  2002-2006 Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    SVN: $Id$
- * @link       http://pear.php.net/package/PHPUnit2
+ * @link       http://www.phpunit.de/
  * @since      File available since Release 3.0.0
  */
 
-require_once 'PHPUnit2/Framework.php';
-require_once 'PHPUnit2/Util/Filter.php';
-require_once 'PHPUnit2/Util/Report/Test/Node/Test.php';
-require_once 'PHPUnit2/Util/Report/Test/Node/TestSuite.php';
-require_once 'PHPUnit2/Util/Filter.php';
-require_once 'PHPUnit2/Util/Array.php';
-require_once 'PHPUnit2/Util/Test.php';
+require_once 'PHPUnit/Framework.php';
+require_once 'PHPUnit/Util/Filter.php';
+require_once 'PHPUnit/Util/Report/Test/Node/Test.php';
+require_once 'PHPUnit/Util/Report/Test/Node/TestSuite.php';
+require_once 'PHPUnit/Util/Filter.php';
+require_once 'PHPUnit/Util/Array.php';
+require_once 'PHPUnit/Util/Test.php';
 
-PHPUnit2_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
+PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
 
 /**
  * Factory for a test information tree.
@@ -65,24 +65,24 @@ PHPUnit2_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
  * @copyright  2002-2006 Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    Release: @package_version@
- * @link       http://pear.php.net/package/PHPUnit2
+ * @link       http://www.phpunit.de/
  * @since      Class available since Release 3.0.0
  */
-abstract class PHPUnit2_Util_Report_Test_Factory
+abstract class PHPUnit_Util_Report_Test_Factory
 {
     /**
      * Creates a new test information tree.
      *
-     * @param  PHPUnit2_Framework_TestResult $result
-     * @return PHPUnit2_Util_Report_Test_Node_TestSuite
+     * @param  PHPUnit_Framework_TestResult $result
+     * @return PHPUnit_Util_Report_Test_Node_TestSuite
      * @access public
      * @static
      */
-    public static function create(PHPUnit2_Framework_TestResult $result)
+    public static function create(PHPUnit_Framework_TestResult $result)
     {
         $tests = self::getTests($result);
         $keys  = array_keys($tests);
-        $root  = new PHPUnit2_Util_Report_Test_Node_TestSuite($keys[0]);
+        $root  = new PHPUnit_Util_Report_Test_Node_TestSuite($keys[0]);
 
         self::addTests($tests[$keys[0]], $root);
 
@@ -91,11 +91,11 @@ abstract class PHPUnit2_Util_Report_Test_Factory
 
     /**
      * @param  array                                    $tests
-     * @param  PHPUnit2_Util_Report_Test_Node_TestSuite $root
+     * @param  PHPUnit_Util_Report_Test_Node_TestSuite $root
      * @access protected
      * @static
      */
-    protected static function addTests(Array $tests, PHPUnit2_Util_Report_Test_Node_TestSuite $root)
+    protected static function addTests(Array $tests, PHPUnit_Util_Report_Test_Node_TestSuite $root)
     {
         foreach ($tests as $key => $value) {
             if (is_int($key)) {
@@ -110,13 +110,13 @@ abstract class PHPUnit2_Util_Report_Test_Factory
     }
 
     /**
-     * @param  PHPUnit2_Framework_TestResult $result
-     * @param  PHPUnit2_Framework_TestSuite  $testSuite
+     * @param  PHPUnit_Framework_TestResult $result
+     * @param  PHPUnit_Framework_TestSuite  $testSuite
      * @return array
      * @access protected
      * @since  Method available since Release 3.0.0
      */
-    protected static function getTests(PHPUnit2_Framework_TestResult $result, PHPUnit2_Framework_TestSuite $testSuite = NULL)
+    protected static function getTests(PHPUnit_Framework_TestResult $result, PHPUnit_Framework_TestSuite $testSuite = NULL)
     {
         if ($testSuite === NULL) {
             $testSuite = $result->topTestSuite();
@@ -125,18 +125,18 @@ abstract class PHPUnit2_Util_Report_Test_Factory
         $tests = array();
 
         foreach ($testSuite->tests() as $test) {
-            if ($test instanceof PHPUnit2_Framework_TestSuite) {
+            if ($test instanceof PHPUnit_Framework_TestSuite) {
                 $tests = array_merge(
                   $tests,
                   self::getTests($result, $test)
                 );
             } else {
-                $testName = PHPUnit2_Util_Test::describe($test, FALSE);
+                $testName = PHPUnit_Util_Test::describe($test, FALSE);
 
                 $tests[] = array(
                   'name'   => $testName[1],
                   'object' => $test,
-                  'result' => PHPUnit2_Util_Test::lookupResult($test, $result)
+                  'result' => PHPUnit_Util_Test::lookupResult($test, $result)
                 );
             }
         }

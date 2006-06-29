@@ -43,16 +43,16 @@
  * @copyright  2002-2006 Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    SVN: $Id$
- * @link       http://pear.php.net/package/PHPUnit2
+ * @link       http://www.phpunit.de/
  * @since      File available since Release 3.0.0
  */
 
-require_once 'PHPUnit2/Framework.php';
-require_once 'PHPUnit2/Util/Filter.php';
-require_once 'PHPUnit2/Extensions/MockObject/Matcher/Invocation.php';
-require_once 'PHPUnit2/Extensions/MockObject/Invocation.php';
+require_once 'PHPUnit/Framework.php';
+require_once 'PHPUnit/Util/Filter.php';
+require_once 'PHPUnit/Extensions/MockObject/Matcher/Invocation.php';
+require_once 'PHPUnit/Extensions/MockObject/Invocation.php';
 
-PHPUnit2_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
+PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
 
 /**
  * Invocation matcher which checks if a method was invoked at a certain index.
@@ -71,10 +71,10 @@ PHPUnit2_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
  * @copyright  2002-2006 Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    Release: @package_version@
- * @link       http://pear.php.net/package/PHPUnit2
+ * @link       http://www.phpunit.de/
  * @since      Class available since Release 3.0.0
  */
-class PHPUnit2_Extensions_MockObject_Matcher_InvokedAtIndex implements PHPUnit2_Extensions_MockObject_Matcher_Invocation
+class PHPUnit_Extensions_MockObject_Matcher_InvokedAtIndex implements PHPUnit_Extensions_MockObject_Matcher_Invocation
 {
     private $sequenceIndex;
 
@@ -90,27 +90,27 @@ class PHPUnit2_Extensions_MockObject_Matcher_InvokedAtIndex implements PHPUnit2_
         return 'invoked at sequence index ' . $this->sequenceIndex;
     }
 
-    public function matches(PHPUnit2_Extensions_MockObject_Invocation $invocation)
+    public function matches(PHPUnit_Extensions_MockObject_Invocation $invocation)
     {
         ++$this->currentIndex;
 
         return $this->currentIndex == $this->sequenceIndex;
     }
 
-    public function invoked(PHPUnit2_Extensions_MockObject_Invocation $invocation)
+    public function invoked(PHPUnit_Extensions_MockObject_Invocation $invocation)
     {
     }
 
     public function verify()
     {
         if ($this->currentIndex < $this->sequenceIndex) {
-            throw new PHPUnit2_Framework_ExpectationFailedException(
+            throw new PHPUnit_Framework_ExpectationFailedException(
               sprintf(
                 'The expected invocation at index %s was never reached.',
 
                 $this->sequenceIndex
               ),
-              new PHPUnit2_Framework_ComparisonFailure_Scalar($this->sequenceIndex, $this->currentIndex)
+              new PHPUnit_Framework_ComparisonFailure_Scalar($this->sequenceIndex, $this->currentIndex)
             );
         }
     }

@@ -37,4 +37,4 @@ REM $Id: pear-phpunit.bat,v 1.7 2006/03/15 09:12:07 sebastian Exp $
 REM
 
 set PHPBIN=@php_bin@
-"@php_bin@" "@php_dir@/PHPUnit2/TextUI/TestRunner.php" %*
+"@php_bin@" "@php_dir@/PHPUnit/TextUI/TestRunner.php" %*

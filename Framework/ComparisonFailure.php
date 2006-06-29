@@ -43,16 +43,16 @@
  * @copyright  2002-2006 Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    SVN: $Id$
- * @link       http://pear.php.net/package/PHPUnit2
+ * @link       http://www.phpunit.de/
  * @since      File available since Release 2.0.0
  */
 
-require_once 'PHPUnit2/Framework.php';
-require_once 'PHPUnit2/Util/Filter.php';
+require_once 'PHPUnit/Framework.php';
+require_once 'PHPUnit/Util/Filter.php';
 
-PHPUnit2_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
+PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
 
-if (!class_exists('PHPUnit2_Framework_ComparisonFailure')) {
+if (!class_exists('PHPUnit_Framework_ComparisonFailure')) {
 
 /**
  * Thrown when an assertion for string equality failed.
@@ -64,10 +64,10 @@ if (!class_exists('PHPUnit2_Framework_ComparisonFailure')) {
  * @copyright  2002-2006 Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    Release: @package_version@
- * @link       http://pear.php.net/package/PHPUnit2
+ * @link       http://www.phpunit.de/
  * @since      Class available since Release 2.0.0
  */
-abstract class PHPUnit2_Framework_ComparisonFailure extends PHPUnit2_Framework_AssertionFailedError
+abstract class PHPUnit_Framework_ComparisonFailure extends PHPUnit_Framework_AssertionFailedError
 {
     /**
      * Expected value of the retrieval which does not match $actual.
@@ -113,28 +113,28 @@ abstract class PHPUnit2_Framework_ComparisonFailure extends PHPUnit2_Framework_A
      * @param mixed $actual Actual value retrieved.
      * @param string $message A string which is prefixed on all returned lines
      *                       in the difference output.
-     * @return PHPUnit2_Framework_ComparisonFailure
+     * @return PHPUnit_Framework_ComparisonFailure
      */
     public static function diffIdentical($expected, $actual, $message = '')
     {
         if (gettype($expected) !== gettype($actual)) {
-            return new PHPUnit2_Framework_ComparisonFailure_Type($expected, $actual, $message);
+            return new PHPUnit_Framework_ComparisonFailure_Type($expected, $actual, $message);
         }
 
         elseif (is_string($expected)) {
-            return new PHPUnit2_Framework_ComparisonFailure_String($expected, $actual, $message);
+            return new PHPUnit_Framework_ComparisonFailure_String($expected, $actual, $message);
         }
 
         elseif (is_bool($expected) || is_int($expected) || is_float($expected)) {
-            return new PHPUnit2_Framework_ComparisonFailure_Scalar($expected, $actual, $message);
+            return new PHPUnit_Framework_ComparisonFailure_Scalar($expected, $actual, $message);
         }
 
         elseif (is_array($expected)) {
-            return new PHPUnit2_Framework_ComparisonFailure_Array($expected, $actual, $message);
+            return new PHPUnit_Framework_ComparisonFailure_Array($expected, $actual, $message);
         }
 
         elseif (is_object($expected)) {
-            return new PHPUnit2_Framework_ComparisonFailure_Object($expected, $actual, $message);
+            return new PHPUnit_Framework_ComparisonFailure_Object($expected, $actual, $message);
         }
     }
 
@@ -148,7 +148,7 @@ abstract class PHPUnit2_Framework_ComparisonFailure extends PHPUnit2_Framework_A
      * @param mixed $actual Actual value retrieved.
      * @param string $message A string which is prefixed on all returned lines
      *                       in the difference output.
-     * @return PHPUnit2_Framework_ComparisonFailure
+     * @return PHPUnit_Framework_ComparisonFailure
      */
     public static function diffEqual($expected, $actual, $message = '')
     {
@@ -158,19 +158,19 @@ abstract class PHPUnit2_Framework_ComparisonFailure extends PHPUnit2_Framework_A
         }
 
         if (is_string($expected)) {
-            return new PHPUnit2_Framework_ComparisonFailure_String($expected, $actual, $message);
+            return new PHPUnit_Framework_ComparisonFailure_String($expected, $actual, $message);
         }
 
         elseif (is_bool($expected) || is_int($expected) || is_float($expected)) {
-            return new PHPUnit2_Framework_ComparisonFailure_Scalar($expected, $actual, $message);
+            return new PHPUnit_Framework_ComparisonFailure_Scalar($expected, $actual, $message);
         }
 
         elseif (is_array($expected)) {
-            return new PHPUnit2_Framework_ComparisonFailure_Array($expected, $actual, $message);
+            return new PHPUnit_Framework_ComparisonFailure_Array($expected, $actual, $message);
         }
 
         elseif (is_object($expected)) {
-            return new PHPUnit2_Framework_ComparisonFailure_Object($expected, $actual, $message);
+            return new PHPUnit_Framework_ComparisonFailure_Object($expected, $actual, $message);
         }
     }
 
@@ -262,11 +262,11 @@ abstract class PHPUnit2_Framework_ComparisonFailure extends PHPUnit2_Framework_A
 
 }
 
-require_once 'PHPUnit2/Framework/ComparisonFailure/Array.php';
-require_once 'PHPUnit2/Framework/ComparisonFailure/Object.php';
-require_once 'PHPUnit2/Framework/ComparisonFailure/Scalar.php';
-require_once 'PHPUnit2/Framework/ComparisonFailure/String.php';
-require_once 'PHPUnit2/Framework/ComparisonFailure/Type.php';
+require_once 'PHPUnit/Framework/ComparisonFailure/Array.php';
+require_once 'PHPUnit/Framework/ComparisonFailure/Object.php';
+require_once 'PHPUnit/Framework/ComparisonFailure/Scalar.php';
+require_once 'PHPUnit/Framework/ComparisonFailure/String.php';
+require_once 'PHPUnit/Framework/ComparisonFailure/Type.php';
 
 /*
  * Local variables:

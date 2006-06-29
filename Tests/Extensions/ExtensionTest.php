@@ -42,13 +42,13 @@
  * @copyright  2002-2006 Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    SVN: $Id$
- * @link       http://pear.php.net/package/PHPUnit2
+ * @link       http://www.phpunit.de/
  * @since      File available since Release 2.0.0
  */
 
-require_once 'PHPUnit2/Extensions/TestSetup.php';
-require_once 'PHPUnit2/Framework/TestCase.php';
-require_once 'PHPUnit2/Framework/TestSuite.php';
+require_once 'PHPUnit/Extensions/TestSetup.php';
+require_once 'PHPUnit/Framework/TestCase.php';
+require_once 'PHPUnit/Framework/TestSuite.php';
 
 require_once '_files/Error.php';
 require_once '_files/Failure.php';
@@ -65,14 +65,14 @@ require_once '_files/WasRun.php';
  * @copyright  2002-2006 Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    Release: @package_version@
- * @link       http://pear.php.net/package/PHPUnit2
+ * @link       http://www.phpunit.de/
  * @since      Class available since Release 2.0.0
  */
-class Extensions_ExtensionTest extends PHPUnit2_Framework_TestCase
+class Extensions_ExtensionTest extends PHPUnit_Framework_TestCase
 {
     public function testRunningErrorInTestSetup()
     {
-        $wrapper = new PHPUnit2_Extensions_TestSetup(new Failure);
+        $wrapper = new PHPUnit_Extensions_TestSetup(new Failure);
         $result  = $wrapper->run();
 
         $this->assertFalse($result->wasSuccessful());
@@ -80,11 +80,11 @@ class Extensions_ExtensionTest extends PHPUnit2_Framework_TestCase
 
     public function testRunningErrorsInTestSetup()
     {
-        $suite = new PHPUnit2_Framework_TestSuite;
+        $suite = new PHPUnit_Framework_TestSuite;
         $suite->addTest(new Error);
         $suite->addTest(new Failure);
 
-        $wrapper = new PHPUnit2_Extensions_TestSetup($suite);
+        $wrapper = new PHPUnit_Extensions_TestSetup($suite);
         $result  = $wrapper->run();
 
         $this->assertEquals(1, $result->errorCount());

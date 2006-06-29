@@ -43,16 +43,16 @@
  * @copyright  2002-2006 Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    SVN: $Id$
- * @link       http://pear.php.net/package/PHPUnit2
+ * @link       http://www.phpunit.de/
  * @since      File available since Release 3.0.0
  */
 
-require_once 'PHPUnit2/Framework.php';
-require_once 'PHPUnit2/Util/Filter.php';
+require_once 'PHPUnit/Framework.php';
+require_once 'PHPUnit/Util/Filter.php';
 
-PHPUnit2_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
+PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
 
-if (!interface_exists('PHPUnit2_Framework_Constraint')) {
+if (!interface_exists('PHPUnit_Framework_Constraint')) {
 
 /**
  * Interface for constraints which are placed upon any value.
@@ -72,10 +72,10 @@ if (!interface_exists('PHPUnit2_Framework_Constraint')) {
  * @copyright  2002-2006 Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    Release: @package_version@
- * @link       http://pear.php.net/package/PHPUnit2
+ * @link       http://www.phpunit.de/
  * @since      Interface available since Release 3.0.0
  */
-interface PHPUnit2_Framework_Constraint extends PHPUnit2_Framework_SelfDescribing
+interface PHPUnit_Framework_Constraint extends PHPUnit_Framework_SelfDescribing
 {
     /**
      * Evaluates the constraint for parameter $other. Returns TRUE if the
@@ -94,29 +94,29 @@ interface PHPUnit2_Framework_Constraint extends PHPUnit2_Framework_SelfDescribin
      *                         constraint check.
      * @param   string  $description A string with extra description of what was
      *                               going on while the evaluation failed.
-     * @throws  PHPUnit2_Framework_ExpectationFailedException
+     * @throws  PHPUnit_Framework_ExpectationFailedException
      */
     public function fail($other, $description);
 }
 
 }
 
-require_once 'PHPUnit2/Framework/Constraint/And.php';
-require_once 'PHPUnit2/Framework/Constraint/ArrayHasKey.php';
-require_once 'PHPUnit2/Framework/Constraint/FileExists.php';
-require_once 'PHPUnit2/Framework/Constraint/GreaterThan.php';
-require_once 'PHPUnit2/Framework/Constraint/IsAnything.php';
-require_once 'PHPUnit2/Framework/Constraint/IsEqual.php';
-require_once 'PHPUnit2/Framework/Constraint/IsIdentical.php';
-require_once 'PHPUnit2/Framework/Constraint/IsInstanceOf.php';
-require_once 'PHPUnit2/Framework/Constraint/IsType.php';
-require_once 'PHPUnit2/Framework/Constraint/LessThan.php';
-require_once 'PHPUnit2/Framework/Constraint/Not.php';
-require_once 'PHPUnit2/Framework/Constraint/ObjectHasAttribute.php';
-require_once 'PHPUnit2/Framework/Constraint/Or.php';
-require_once 'PHPUnit2/Framework/Constraint/PCREMatch.php';
-require_once 'PHPUnit2/Framework/Constraint/StringContains.php';
-require_once 'PHPUnit2/Framework/Constraint/TraversableContains.php';
+require_once 'PHPUnit/Framework/Constraint/And.php';
+require_once 'PHPUnit/Framework/Constraint/ArrayHasKey.php';
+require_once 'PHPUnit/Framework/Constraint/FileExists.php';
+require_once 'PHPUnit/Framework/Constraint/GreaterThan.php';
+require_once 'PHPUnit/Framework/Constraint/IsAnything.php';
+require_once 'PHPUnit/Framework/Constraint/IsEqual.php';
+require_once 'PHPUnit/Framework/Constraint/IsIdentical.php';
+require_once 'PHPUnit/Framework/Constraint/IsInstanceOf.php';
+require_once 'PHPUnit/Framework/Constraint/IsType.php';
+require_once 'PHPUnit/Framework/Constraint/LessThan.php';
+require_once 'PHPUnit/Framework/Constraint/Not.php';
+require_once 'PHPUnit/Framework/Constraint/ObjectHasAttribute.php';
+require_once 'PHPUnit/Framework/Constraint/Or.php';
+require_once 'PHPUnit/Framework/Constraint/PCREMatch.php';
+require_once 'PHPUnit/Framework/Constraint/StringContains.php';
+require_once 'PHPUnit/Framework/Constraint/TraversableContains.php';
 
 /*
  * Local variables:

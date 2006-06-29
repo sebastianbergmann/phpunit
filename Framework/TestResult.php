@@ -42,19 +42,19 @@
  * @copyright  2002-2006 Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    SVN: $Id$
- * @link       http://pear.php.net/package/PHPUnit2
+ * @link       http://www.phpunit.de/
  * @since      File available since Release 2.0.0
  */
 
-require_once 'PHPUnit2/Framework.php';
-require_once 'PHPUnit2/Util/ErrorHandler.php';
-require_once 'PHPUnit2/Util/Filter.php';
-require_once 'PHPUnit2/Util/Printer.php';
-require_once 'PHPUnit2/Util/Test.php';
+require_once 'PHPUnit/Framework.php';
+require_once 'PHPUnit/Util/ErrorHandler.php';
+require_once 'PHPUnit/Util/Filter.php';
+require_once 'PHPUnit/Util/Printer.php';
+require_once 'PHPUnit/Util/Test.php';
 
-PHPUnit2_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
+PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
 
-if (!class_exists('PHPUnit2_Framework_TestResult')) {
+if (!class_exists('PHPUnit_Framework_TestResult')) {
 
 /**
  * A TestResult collects the results of executing a test case.
@@ -65,10 +65,10 @@ if (!class_exists('PHPUnit2_Framework_TestResult')) {
  * @copyright  2002-2006 Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    Release: @package_version@
- * @link       http://pear.php.net/package/PHPUnit2
+ * @link       http://www.phpunit.de/
  * @since      Class available since Release 2.0.0
  */
-class PHPUnit2_Framework_TestResult implements Countable
+class PHPUnit_Framework_TestResult implements Countable
 {
     /**
      * @var    array
@@ -107,7 +107,7 @@ class PHPUnit2_Framework_TestResult implements Countable
     protected $runTests = 0;
 
     /**
-     * @var    PHPUnit2_Framework_TestSuite
+     * @var    PHPUnit_Framework_TestSuite
      * @access protected
      */
     protected $topTestSuite = NULL;
@@ -135,10 +135,10 @@ class PHPUnit2_Framework_TestResult implements Countable
     /**
      * Registers a TestListener.
      *
-     * @param  PHPUnit2_Framework_TestListener
+     * @param  PHPUnit_Framework_TestListener
      * @access public
      */
-    public function addListener(PHPUnit2_Framework_TestListener $listener)
+    public function addListener(PHPUnit_Framework_TestListener $listener)
     {
         $this->listeners[] = $listener;
     }
@@ -146,10 +146,10 @@ class PHPUnit2_Framework_TestResult implements Countable
     /**
      * Unregisters a TestListener.
      *
-     * @param  PHPUnit2_Framework_TestListener $listener
+     * @param  PHPUnit_Framework_TestListener $listener
      * @access public
      */
-    public function removeListener(PHPUnit2_Framework_TestListener $listener)
+    public function removeListener(PHPUnit_Framework_TestListener $listener)
     {
         $max = count($this->listeners);
 
@@ -169,7 +169,7 @@ class PHPUnit2_Framework_TestResult implements Countable
     public function flushListeners()
     {
         foreach ($this->listeners as $listener) {
-            if ($listener instanceof PHPUnit2_Util_Printer) {
+            if ($listener instanceof PHPUnit_Util_Printer) {
                 $listener->flush();
             }
         }
@@ -179,22 +179,22 @@ class PHPUnit2_Framework_TestResult implements Countable
      * Adds an error to the list of errors.
      * The passed in exception caused the error.
      *
-     * @param  PHPUnit2_Framework_Test $test
+     * @param  PHPUnit_Framework_Test $test
      * @param  Exception               $e
      * @access public
      */
-    public function addError(PHPUnit2_Framework_Test $test, Exception $e)
+    public function addError(PHPUnit_Framework_Test $test, Exception $e)
     {
-        if ($e instanceof PHPUnit2_Framework_IncompleteTest) {
-            $this->notImplemented[] = new PHPUnit2_Framework_TestFailure($test, $e);
+        if ($e instanceof PHPUnit_Framework_IncompleteTest) {
+            $this->notImplemented[] = new PHPUnit_Framework_TestFailure($test, $e);
 
             foreach ($this->listeners as $listener) {
                 $listener->addIncompleteTest($test, $e);
             }
         }
         
-        else if ($e instanceof PHPUnit2_Framework_SkippedTest) {
-            $this->skipped[] = new PHPUnit2_Framework_TestFailure($test, $e);
+        else if ($e instanceof PHPUnit_Framework_SkippedTest) {
+            $this->skipped[] = new PHPUnit_Framework_TestFailure($test, $e);
 
             foreach ($this->listeners as $listener) {
                 $listener->addSkippedTest($test, $e);
@@ -202,7 +202,7 @@ class PHPUnit2_Framework_TestResult implements Countable
         }
 
         else {
-            $this->errors[] = new PHPUnit2_Framework_TestFailure($test, $e);
+            $this->errors[] = new PHPUnit_Framework_TestFailure($test, $e);
 
             foreach ($this->listeners as $listener) {
                 $listener->addError($test, $e);
@@ -214,22 +214,22 @@ class PHPUnit2_Framework_TestResult implements Countable
      * Adds a failure to the list of failures.
      * The passed in exception caused the failure.
      *
-     * @param  PHPUnit2_Framework_Test                  $test
-     * @param  PHPUnit2_Framework_AssertionFailedError  $e
+     * @param  PHPUnit_Framework_Test                  $test
+     * @param  PHPUnit_Framework_AssertionFailedError  $e
      * @access public
      */
-    public function addFailure(PHPUnit2_Framework_Test $test, PHPUnit2_Framework_AssertionFailedError $e)
+    public function addFailure(PHPUnit_Framework_Test $test, PHPUnit_Framework_AssertionFailedError $e)
     {
-        if ($e instanceof PHPUnit2_Framework_IncompleteTest) {
-            $this->notImplemented[] = new PHPUnit2_Framework_TestFailure($test, $e);
+        if ($e instanceof PHPUnit_Framework_IncompleteTest) {
+            $this->notImplemented[] = new PHPUnit_Framework_TestFailure($test, $e);
 
             foreach ($this->listeners as $listener) {
                 $listener->addIncompleteTest($test, $e);
             }
         }
 
-        else if ($e instanceof PHPUnit2_Framework_SkippedTest) {
-            $this->skipped[] = new PHPUnit2_Framework_TestFailure($test, $e);
+        else if ($e instanceof PHPUnit_Framework_SkippedTest) {
+            $this->skipped[] = new PHPUnit_Framework_TestFailure($test, $e);
 
             foreach ($this->listeners as $listener) {
                 $listener->addSkippedTest($test, $e);
@@ -237,7 +237,7 @@ class PHPUnit2_Framework_TestResult implements Countable
         }
 
         else {
-            $this->failures[] = new PHPUnit2_Framework_TestFailure($test, $e);
+            $this->failures[] = new PHPUnit_Framework_TestFailure($test, $e);
 
             foreach ($this->listeners as $listener) {
                 $listener->addFailure($test, $e);
@@ -248,11 +248,11 @@ class PHPUnit2_Framework_TestResult implements Countable
     /**
      * Informs the result that a testsuite will be started.
      *
-     * @param  PHPUnit2_Framework_TestSuite $suite
+     * @param  PHPUnit_Framework_TestSuite $suite
      * @access public
      * @since  Method available since Release 2.2.0
      */
-    public function startTestSuite(PHPUnit2_Framework_TestSuite $suite)
+    public function startTestSuite(PHPUnit_Framework_TestSuite $suite)
     {
         if ($this->topTestSuite === NULL) {
             $this->topTestSuite = $suite;
@@ -266,11 +266,11 @@ class PHPUnit2_Framework_TestResult implements Countable
     /**
      * Informs the result that a testsuite was completed.
      *
-     * @param  PHPUnit2_Framework_TestSuite $suite
+     * @param  PHPUnit_Framework_TestSuite $suite
      * @access public
      * @since  Method available since Release 2.2.0
      */
-    public function endTestSuite(PHPUnit2_Framework_TestSuite $suite)
+    public function endTestSuite(PHPUnit_Framework_TestSuite $suite)
     {
         foreach ($this->listeners as $listener) {
             $listener->endTestSuite($suite);
@@ -280,10 +280,10 @@ class PHPUnit2_Framework_TestResult implements Countable
     /**
      * Informs the result that a test will be started.
      *
-     * @param  PHPUnit2_Framework_Test $test
+     * @param  PHPUnit_Framework_Test $test
      * @access public
      */
-    public function startTest(PHPUnit2_Framework_Test $test)
+    public function startTest(PHPUnit_Framework_Test $test)
     {
         $this->runTests += count($test);
 
@@ -295,10 +295,10 @@ class PHPUnit2_Framework_TestResult implements Countable
     /**
      * Informs the result that a test was completed.
      *
-     * @param  PHPUnit2_Framework_Test
+     * @param  PHPUnit_Framework_Test
      * @access public
      */
-    public function endTest(PHPUnit2_Framework_Test $test)
+    public function endTest(PHPUnit_Framework_Test $test)
     {
         foreach ($this->listeners as $listener) {
             $listener->endTest($test);
@@ -421,7 +421,7 @@ class PHPUnit2_Framework_TestResult implements Countable
     /**
      * Returns the (top) test suite.
      *
-     * @return PHPUnit2_Framework_TestSuite
+     * @return PHPUnit_Framework_TestSuite
      * @access public
      * @since  Method available since Release 3.0.0
      */
@@ -455,7 +455,7 @@ class PHPUnit2_Framework_TestResult implements Countable
      * <code>
      * array(
      *   array(
-     *     'test'  => PHPUnit2_Framework_Test
+     *     'test'  => PHPUnit_Framework_Test
      *     'files' => array(
      *       "/tested/code.php" => array(
      *         linenumber => flag
@@ -475,7 +475,7 @@ class PHPUnit2_Framework_TestResult implements Countable
      */
     public function getCodeCoverageInformation($filterTests = TRUE, $filterPHPUnit = TRUE)
     {
-        return PHPUnit2_Util_Filter::getFilteredCodeCoverage(
+        return PHPUnit_Util_Filter::getFilteredCodeCoverage(
           $this->codeCoverageInformation,
           $filterTests,
           $filterPHPUnit
@@ -485,15 +485,15 @@ class PHPUnit2_Framework_TestResult implements Countable
     /**
      * Runs a TestCase.
      *
-     * @param  PHPUnit2_Framework_Test $test
+     * @param  PHPUnit_Framework_Test $test
      * @access public
      */
-    public function run(PHPUnit2_Framework_Test $test)
+    public function run(PHPUnit_Framework_Test $test)
     {
         $this->startTest($test);
 
         $errorHandlerSet = FALSE;
-        $oldErrorHandler = set_error_handler('PHPUnit2_Util_ErrorHandler', E_USER_ERROR);
+        $oldErrorHandler = set_error_handler('PHPUnit_Util_ErrorHandler', E_USER_ERROR);
 
         if ($oldErrorHandler === NULL) {
             $errorHandlerSet = TRUE;
@@ -513,7 +513,7 @@ class PHPUnit2_Framework_TestResult implements Countable
             $test->runBare();
         }
 
-        catch (PHPUnit2_Framework_AssertionFailedError $e) {
+        catch (PHPUnit_Framework_AssertionFailedError $e) {
             $this->addFailure($test, $e);
         }
 

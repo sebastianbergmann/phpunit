@@ -42,19 +42,19 @@
  * @copyright  2002-2006 Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    SVN: $Id$
- * @link       http://pear.php.net/package/PHPUnit2
+ * @link       http://www.phpunit.de/
  * @since      File available since Release 3.0.0
  */
 
-require_once 'PHPUnit2/Framework.php';
-require_once 'PHPUnit2/Util/Filter.php';
-require_once 'PHPUnit2/Util/Report/Coverage/Node/File.php';
-require_once 'PHPUnit2/Util/Report/Test/Node.php';
+require_once 'PHPUnit/Framework.php';
+require_once 'PHPUnit/Util/Filter.php';
+require_once 'PHPUnit/Util/Report/Coverage/Node/File.php';
+require_once 'PHPUnit/Util/Report/Test/Node.php';
 
-PHPUnit2_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
+PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
 
 /**
- * Represents a PHPUnit2_Framework_Test object in the test hierarchy.
+ * Represents a PHPUnit_Framework_Test object in the test hierarchy.
  *
  * @category   Testing
  * @package    PHPUnit2
@@ -62,10 +62,10 @@ PHPUnit2_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
  * @copyright  2002-2006 Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    Release: @package_version@
- * @link       http://pear.php.net/package/PHPUnit2
+ * @link       http://www.phpunit.de/
  * @since      Class available since Release 3.0.0
  */
-class PHPUnit2_Util_Report_Test_Node_Test extends PHPUnit2_Util_Report_Test_Node
+class PHPUnit_Util_Report_Test_Node_Test extends PHPUnit_Util_Report_Test_Node
 {
     /**
      * @var    array
@@ -74,7 +74,7 @@ class PHPUnit2_Util_Report_Test_Node_Test extends PHPUnit2_Util_Report_Test_Node
     protected $coveredFiles;
 
     /**
-     * @var    PHPUnit2_Framework_Test
+     * @var    PHPUnit_Framework_Test
      * @access protected
      */
     protected $object;
@@ -89,12 +89,12 @@ class PHPUnit2_Util_Report_Test_Node_Test extends PHPUnit2_Util_Report_Test_Node
      * Constructor.
      *
      * @param  string                  $name
-     * @param  PHPUnit2_Util_Test_Node $parent
-     * @param  PHPUnit2_Framework_Test $object
+     * @param  PHPUnit_Util_Test_Node $parent
+     * @param  PHPUnit_Framework_Test $object
      * @param  mixed                   $result
      * @access public
      */
-    public function __construct($name, PHPUnit2_Util_Report_Test_Node $parent, PHPUnit2_Framework_Test $object, $result)
+    public function __construct($name, PHPUnit_Util_Report_Test_Node $parent, PHPUnit_Framework_Test $object, $result)
     {
         static $testId = 0;
 
@@ -110,18 +110,18 @@ class PHPUnit2_Util_Report_Test_Node_Test extends PHPUnit2_Util_Report_Test_Node
     /**
      * Adds a file that is covered by the test that is represented by this node.
      *
-     * @param  PHPUnit2_Util_Report_Coverage_Node_File $file
+     * @param  PHPUnit_Util_Report_Coverage_Node_File $file
      * @access public
      */
-    public function addCoveredFile(PHPUnit2_Util_Report_Coverage_Node_File $file)
+    public function addCoveredFile(PHPUnit_Util_Report_Coverage_Node_File $file)
     {
         $this->coveredFiles[] = $file;
     }
 
     /**
-     * Returns the PHPUnit2_Framework_Test object that is represented by this node.
+     * Returns the PHPUnit_Framework_Test object that is represented by this node.
      *
-     * @return PHPUnit2_Framework_Test
+     * @return PHPUnit_Framework_Test
      * @access public
      */
     public function getObject()
@@ -130,7 +130,7 @@ class PHPUnit2_Util_Report_Test_Node_Test extends PHPUnit2_Util_Report_Test_Node
     }
 
     /**
-     * Returns the result of the PHPUnit2_Framework_Test object that is
+     * Returns the result of the PHPUnit_Framework_Test object that is
      * represented by this node.
      *
      * @return mixed

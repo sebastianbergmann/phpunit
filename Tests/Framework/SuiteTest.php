@@ -42,13 +42,13 @@
  * @copyright  2002-2006 Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    SVN: $Id$
- * @link       http://pear.php.net/package/PHPUnit2
+ * @link       http://www.phpunit.de/
  * @since      File available since Release 2.0.0
  */
 
-require_once 'PHPUnit2/Framework/TestCase.php';
-require_once 'PHPUnit2/Framework/TestResult.php';
-require_once 'PHPUnit2/Framework/TestSuite.php';
+require_once 'PHPUnit/Framework/TestCase.php';
+require_once 'PHPUnit/Framework/TestResult.php';
+require_once 'PHPUnit/Framework/TestSuite.php';
 
 require_once '_files/InheritedTestCase.php';
 require_once '_files/NoTestCaseClass.php';
@@ -67,20 +67,20 @@ require_once '_files/OverrideTestCase.php';
  * @copyright  2002-2006 Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    Release: @package_version@
- * @link       http://pear.php.net/package/PHPUnit2
+ * @link       http://www.phpunit.de/
  * @since      Class available since Release 2.0.0
  */
-class Framework_SuiteTest extends PHPUnit2_Framework_TestCase {
+class Framework_SuiteTest extends PHPUnit_Framework_TestCase {
     protected $result;
 
     protected function setUp()
     {
-        $this->result = new PHPUnit2_Framework_TestResult;
+        $this->result = new PHPUnit_Framework_TestResult;
     }
 
     public static function suite()
     {
-        $suite = new PHPUnit2_Framework_TestSuite;
+        $suite = new PHPUnit_Framework_TestSuite;
 
         $suite->addTest(new Framework_SuiteTest('testAddTestSuite'));
         $suite->addTest(new Framework_SuiteTest('testInheritedTests'));
@@ -97,7 +97,7 @@ class Framework_SuiteTest extends PHPUnit2_Framework_TestCase {
 
     public function testAddTestSuite()
     {
-        $suite = new PHPUnit2_Framework_TestSuite(
+        $suite = new PHPUnit_Framework_TestSuite(
           'OneTestCase'
         );
 
@@ -108,7 +108,7 @@ class Framework_SuiteTest extends PHPUnit2_Framework_TestCase {
 
     public function testInheritedTests()
     {
-        $suite = new PHPUnit2_Framework_TestSuite(
+        $suite = new PHPUnit_Framework_TestSuite(
           'InheritedTestCase'
         );
 
@@ -120,7 +120,7 @@ class Framework_SuiteTest extends PHPUnit2_Framework_TestCase {
 
     public function testNoTestCases()
     {
-        $suite = new PHPUnit2_Framework_TestSuite(
+        $suite = new PHPUnit_Framework_TestSuite(
           'NoTestCases'
         );
 
@@ -133,7 +133,7 @@ class Framework_SuiteTest extends PHPUnit2_Framework_TestCase {
 
     public function testNoTestCaseClass()
     {
-        $suite = new PHPUnit2_Framework_TestSuite(
+        $suite = new PHPUnit_Framework_TestSuite(
           'NoTestCaseClass'
         );
 
@@ -156,7 +156,7 @@ class Framework_SuiteTest extends PHPUnit2_Framework_TestCase {
 
     public function testNotPublicTestCase()
     {
-        $suite = new PHPUnit2_Framework_TestSuite(
+        $suite = new PHPUnit_Framework_TestSuite(
           'NotPublicTestCase'
         );
 
@@ -165,7 +165,7 @@ class Framework_SuiteTest extends PHPUnit2_Framework_TestCase {
 
     public function testNotVoidTestCase()
     {
-        $suite = new PHPUnit2_Framework_TestSuite(
+        $suite = new PHPUnit_Framework_TestSuite(
           'NotVoidTestCase'
         );
 
@@ -174,7 +174,7 @@ class Framework_SuiteTest extends PHPUnit2_Framework_TestCase {
 
     public function testOneTestCase()
     {
-        $suite = new PHPUnit2_Framework_TestSuite(
+        $suite = new PHPUnit_Framework_TestSuite(
           'OneTestCase'
         );
 
@@ -188,7 +188,7 @@ class Framework_SuiteTest extends PHPUnit2_Framework_TestCase {
 
     public function testShadowedTests()
     {
-        $suite = new PHPUnit2_Framework_TestSuite(
+        $suite = new PHPUnit_Framework_TestSuite(
           'OverrideTestCase'
         );
 

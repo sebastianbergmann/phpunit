@@ -42,19 +42,19 @@
  * @copyright  2002-2006 Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    SVN: $Id$
- * @link       http://pear.php.net/package/PHPUnit2
+ * @link       http://www.phpunit.de/
  * @since      File available since Release 3.0.0
  */
 
 @include_once 'Image/GraphViz.php';
 
-require_once 'PHPUnit2/Framework.php';
-require_once 'PHPUnit2/Util/Filter.php';
-require_once 'PHPUnit2/Util/Filesystem.php';
-require_once 'PHPUnit2/Util/Test.php';
-require_once 'PHPUnit2/Util/Timer.php';
+require_once 'PHPUnit/Framework.php';
+require_once 'PHPUnit/Util/Filter.php';
+require_once 'PHPUnit/Util/Filesystem.php';
+require_once 'PHPUnit/Util/Test.php';
+require_once 'PHPUnit/Util/Timer.php';
 
-PHPUnit2_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
+PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
 
 /**
  * A TestListener that generates maps of the executed tests
@@ -66,10 +66,10 @@ PHPUnit2_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
  * @copyright  2002-2006 Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    Release: @package_version@
- * @link       http://pear.php.net/package/PHPUnit2
+ * @link       http://www.phpunit.de/
  * @since      Class available since Release 3.0.0
  */
-class PHPUnit2_Util_Log_GraphViz implements PHPUnit2_Framework_TestListener
+class PHPUnit_Util_Log_GraphViz implements PHPUnit_Framework_TestListener
 {
     /**
      * @var    Image_GraphViz[]
@@ -127,11 +127,11 @@ class PHPUnit2_Util_Log_GraphViz implements PHPUnit2_Framework_TestListener
     /**
      * An error occurred.
      *
-     * @param  PHPUnit2_Framework_Test $test
+     * @param  PHPUnit_Framework_Test $test
      * @param  Exception               $e
      * @access public
      */
-    public function addError(PHPUnit2_Framework_Test $test, Exception $e)
+    public function addError(PHPUnit_Framework_Test $test, Exception $e)
     {
         $this->addTestNode($test, 'red');
         $this->testSuiteFailureOrErrorCount[$this->testSuiteLevel]++;
@@ -142,11 +142,11 @@ class PHPUnit2_Util_Log_GraphViz implements PHPUnit2_Framework_TestListener
     /**
      * A failure occurred.
      *
-     * @param  PHPUnit2_Framework_Test                 $test
-     * @param  PHPUnit2_Framework_AssertionFailedError $e
+     * @param  PHPUnit_Framework_Test                 $test
+     * @param  PHPUnit_Framework_AssertionFailedError $e
      * @access public
      */
-    public function addFailure(PHPUnit2_Framework_Test $test, PHPUnit2_Framework_AssertionFailedError $e)
+    public function addFailure(PHPUnit_Framework_Test $test, PHPUnit_Framework_AssertionFailedError $e)
     {
         $this->addTestNode($test, 'red');
         $this->testSuiteFailureOrErrorCount[$this->testSuiteLevel]++;
@@ -157,11 +157,11 @@ class PHPUnit2_Util_Log_GraphViz implements PHPUnit2_Framework_TestListener
     /**
      * Incomplete test.
      *
-     * @param  PHPUnit2_Framework_Test $test
+     * @param  PHPUnit_Framework_Test $test
      * @param  Exception               $e
      * @access public
      */
-    public function addIncompleteTest(PHPUnit2_Framework_Test $test, Exception $e)
+    public function addIncompleteTest(PHPUnit_Framework_Test $test, Exception $e)
     {
         $this->addTestNode($test, 'yellow');
         $this->testSuiteIncompleteOrSkippedCount[$this->testSuiteLevel]++;
@@ -172,11 +172,11 @@ class PHPUnit2_Util_Log_GraphViz implements PHPUnit2_Framework_TestListener
     /**
      * Skipped test.
      *
-     * @param  PHPUnit2_Framework_Test $test
+     * @param  PHPUnit_Framework_Test $test
      * @param  Exception               $e
      * @access public
      */
-    public function addSkippedTest(PHPUnit2_Framework_Test $test, Exception $e)
+    public function addSkippedTest(PHPUnit_Framework_Test $test, Exception $e)
     {
         $this->addTestNode($test, 'yellow');
         $this->testSuiteIncompleteOrSkippedCount[$this->testSuiteLevel]++;
@@ -187,10 +187,10 @@ class PHPUnit2_Util_Log_GraphViz implements PHPUnit2_Framework_TestListener
     /**
      * A testsuite started.
      *
-     * @param  PHPUnit2_Framework_TestSuite $suite
+     * @param  PHPUnit_Framework_TestSuite $suite
      * @access public
      */
-    public function startTestSuite(PHPUnit2_Framework_TestSuite $suite)
+    public function startTestSuite(PHPUnit_Framework_TestSuite $suite)
     {
         $this->testSuiteLevel++;
         $this->testSuites[$this->testSuiteLevel]                        = $suite->getName();
@@ -213,7 +213,7 @@ class PHPUnit2_Util_Log_GraphViz implements PHPUnit2_Framework_TestListener
             $this->graphs[$this->testSuiteLevel]->addNode(
               $this->testSuites[$this->testSuiteLevel - 1],
               array(
-                'URL' => PHPUnit2_Util_Filesystem::getSafeFilename($this->testSuites[$this->testSuiteLevel - 1]) . '-test.htm'
+                'URL' => PHPUnit_Util_Filesystem::getSafeFilename($this->testSuites[$this->testSuiteLevel - 1]) . '-test.htm'
               )
             );
 
@@ -236,10 +236,10 @@ class PHPUnit2_Util_Log_GraphViz implements PHPUnit2_Framework_TestListener
     /**
      * A testsuite ended.
      *
-     * @param  PHPUnit2_Framework_TestSuite $suite
+     * @param  PHPUnit_Framework_TestSuite $suite
      * @access public
      */
-    public function endTestSuite(PHPUnit2_Framework_TestSuite $suite)
+    public function endTestSuite(PHPUnit_Framework_TestSuite $suite)
     {
         $color = 'red';
 
@@ -253,7 +253,7 @@ class PHPUnit2_Util_Log_GraphViz implements PHPUnit2_Framework_TestListener
             $color = 'yellow';
         }
         
-        $safeSuiteName = PHPUnit2_Util_Filesystem::getSafeFilename($suite->getName());
+        $safeSuiteName = PHPUnit_Util_Filesystem::getSafeFilename($suite->getName());
 
         $this->graphs[$this->testSuiteLevel]->addNode(
           $this->testSuites[$this->testSuiteLevel],
@@ -286,10 +286,10 @@ class PHPUnit2_Util_Log_GraphViz implements PHPUnit2_Framework_TestListener
     /**
      * A test started.
      *
-     * @param  PHPUnit2_Framework_Test $test
+     * @param  PHPUnit_Framework_Test $test
      * @access public
      */
-    public function startTest(PHPUnit2_Framework_Test $test)
+    public function startTest(PHPUnit_Framework_Test $test)
     {
         $this->currentTestSuccess = TRUE;
     }
@@ -297,10 +297,10 @@ class PHPUnit2_Util_Log_GraphViz implements PHPUnit2_Framework_TestListener
     /**
      * A test ended.
      *
-     * @param  PHPUnit2_Framework_Test $test
+     * @param  PHPUnit_Framework_Test $test
      * @access public
      */
-    public function endTest(PHPUnit2_Framework_Test $test)
+    public function endTest(PHPUnit_Framework_Test $test)
     {
         if ($this->currentTestSuccess) {
             $this->addTestNode($test, 'green');
@@ -308,13 +308,13 @@ class PHPUnit2_Util_Log_GraphViz implements PHPUnit2_Framework_TestListener
     }
 
     /**
-     * @param  PHPUnit2_Framework_Test $test
+     * @param  PHPUnit_Framework_Test $test
      * @param  string                  $color
      * @access private
      */
-    private function addTestNode(PHPUnit2_Framework_Test $test, $color)
+    private function addTestNode(PHPUnit_Framework_Test $test, $color)
     {
-        $name = PHPUnit2_Util_Test::describe($test, FALSE);
+        $name = PHPUnit_Util_Test::describe($test, FALSE);
 
         $this->graphs[$this->testSuiteLevel]->addNode(
           $name[1],
@@ -323,7 +323,7 @@ class PHPUnit2_Util_Log_GraphViz implements PHPUnit2_Framework_TestListener
             'URL'   => sprintf(
               '%s-test.htm#%s',
 
-              PHPUnit2_Util_Filesystem::getSafeFilename($name[0]),
+              PHPUnit_Util_Filesystem::getSafeFilename($name[0]),
               $name[1]
             )
           ),
