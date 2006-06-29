@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE package SYSTEM "http://pear.php.net/dtd/package-1.0">
+<package version="1.0">
+  <name>PHPUnit2</name>
+  <summary>Regression testing framework for unit tests.</summary>
+  <description>PHPUnit is a regression testing framework used by the developer
+who implements unit tests in PHP. It is based upon JUnit, which
+can be found at http://www.junit.org/.</description>
+  <maintainers>
+    <maintainer>
+      <user>sebastian</user>
+      <name>Sebastian Bergmann</name>
+      <email>sb@sebastian-bergmann.de</email>
+      <role>lead</role>
+    </maintainer>
+  </maintainers>
+  <release>
+    <version>2.0.1</version>
+    <date>2004-08-23</date>
+    <license>PHP License</license>
+    <state>stable</state>
+    <notes>* Removed a workaround for a bug in the Reflection API in PHP 5.0.0 in
+  PHPUnit2_Framework_TestCase::runTest().
+
+- Removed references to the PHPUnit2_TestDox package which has been merged
+  into the PHPUnit2 package for the upcoming PHPUnit2-2.1.X release family.
+
+! PHPUnit now requires PHP 5.0.1 (or higher).</notes>
+    <deps>
+      <dep type="php" rel="ge" version="5.0.1"/>
+      <dep type="ext" rel="has" optional="yes">Xdebug</dep>
+      <dep type="pkg" rel="has" optional="yes">Benchmark</dep>
+    </deps>
+    <filelist>
+      <file role="php" baseinstalldir="PHPUnit2" name="Extensions/ExceptionTestCase.php"/>
+      <file role="php" baseinstalldir="PHPUnit2" name="Extensions/RepeatedTest.php"/>
+      <file role="php" baseinstalldir="PHPUnit2" name="Extensions/TestDecorator.php"/>
+      <file role="php" baseinstalldir="PHPUnit2" name="Extensions/TestSetup.php"/>
+      <file role="php" baseinstalldir="PHPUnit2" name="Framework/Assert.php"/>
+      <file role="php" baseinstalldir="PHPUnit2" name="Framework/AssertionFailedError.php"/>
+      <file role="php" baseinstalldir="PHPUnit2" name="Framework/ComparisonFailure.php"/>
+      <file role="php" baseinstalldir="PHPUnit2" name="Framework/IncompleteTest.php"/>
+      <file role="php" baseinstalldir="PHPUnit2" name="Framework/IncompleteTestError.php"/>
+      <file role="php" baseinstalldir="PHPUnit2" name="Framework/Test.php"/>
+      <file role="php" baseinstalldir="PHPUnit2" name="Framework/TestCase.php"/>
+      <file role="php" baseinstalldir="PHPUnit2" name="Framework/TestFailure.php"/>
+      <file role="php" baseinstalldir="PHPUnit2" name="Framework/TestListener.php"/>
+      <file role="php" baseinstalldir="PHPUnit2" name="Framework/TestResult.php"/>
+      <file role="php" baseinstalldir="PHPUnit2" name="Framework/TestSuite.php"/>
+      <file role="php" baseinstalldir="PHPUnit2" name="Framework/Warning.php"/>
+      <file role="php" baseinstalldir="PHPUnit2" name="Runner/BaseTestRunner.php"/>
+      <file role="php" baseinstalldir="PHPUnit2" name="Runner/StandardTestSuiteLoader.php"/>
+      <file role="php" baseinstalldir="PHPUnit2" name="Runner/TestCollector.php"/>
+      <file role="php" baseinstalldir="PHPUnit2" name="Runner/TestRunListener.php"/>
+      <file role="php" baseinstalldir="PHPUnit2" name="Runner/TestSuiteLoader.php"/>
+      <file role="php" baseinstalldir="PHPUnit2" name="Runner/Version.php">
+        <replace type="package-info" from="@version@" to="version"/>
+      </file>
+      <file role="php" baseinstalldir="PHPUnit2" name="Tests/Framework/AllTests.php"/>
+      <file role="php" baseinstalldir="PHPUnit2" name="Tests/Framework/AssertTest.php"/>
+      <file role="php" baseinstalldir="PHPUnit2" name="Tests/Framework/ComparisonFailureTest.php"/>
+      <file role="php" baseinstalldir="PHPUnit2" name="Tests/Framework/SuiteTest.php"/>
+      <file role="php" baseinstalldir="PHPUnit2" name="Tests/Framework/TestCaseTest.php"/>
+      <file role="php" baseinstalldir="PHPUnit2" name="Tests/Framework/TestImplementorTest.php"/>
+      <file role="php" baseinstalldir="PHPUnit2" name="Tests/Framework/TestListenerTest.php"/>
+      <file role="php" baseinstalldir="PHPUnit2" name="Tests/Extensions/AllTests.php"/>
+      <file role="php" baseinstalldir="PHPUnit2" name="Tests/Extensions/ExceptionTestCaseTest.php"/>
+      <file role="php" baseinstalldir="PHPUnit2" name="Tests/Extensions/ExtensionTest.php"/>
+      <file role="php" baseinstalldir="PHPUnit2" name="Tests/Extensions/RepeatedTestTest.php"/>
+      <file role="php" baseinstalldir="PHPUnit2" name="Tests/Runner/AllTests.php"/>
+      <file role="php" baseinstalldir="PHPUnit2" name="Tests/Runner/BaseTestRunnerTest.php"/>
+      <file role="php" baseinstalldir="PHPUnit2" name="Tests/AllTests.php"/>
+      <file role="php" baseinstalldir="PHPUnit2" name="Tests/DoubleTestCase.php"/>
+      <file role="php" baseinstalldir="PHPUnit2" name="Tests/Error.php"/>
+      <file role="php" baseinstalldir="PHPUnit2" name="Tests/Failure.php"/>
+      <file role="php" baseinstalldir="PHPUnit2" name="Tests/InheritedTestCase.php"/>
+      <file role="php" baseinstalldir="PHPUnit2" name="Tests/MockRunner.php"/>
+      <file role="php" baseinstalldir="PHPUnit2" name="Tests/NoArgTestCaseTest.php"/>
+      <file role="php" baseinstalldir="PHPUnit2" name="Tests/NonStatic.php"/>
+      <file role="php" baseinstalldir="PHPUnit2" name="Tests/NoTestCaseClass.php"/>
+      <file role="php" baseinstalldir="PHPUnit2" name="Tests/NoTestCases.php"/>
+      <file role="php" baseinstalldir="PHPUnit2" name="Tests/NotPublicTestCase.php"/>
+      <file role="php" baseinstalldir="PHPUnit2" name="Tests/NotVoidTestCase.php"/>
+      <file role="php" baseinstalldir="PHPUnit2" name="Tests/OneTestCase.php"/>
+      <file role="php" baseinstalldir="PHPUnit2" name="Tests/OverrideTestCase.php"/>
+      <file role="php" baseinstalldir="PHPUnit2" name="Tests/SetupFailure.php"/>
+      <file role="php" baseinstalldir="PHPUnit2" name="Tests/Success.php"/>
+      <file role="php" baseinstalldir="PHPUnit2" name="Tests/TearDownFailure.php"/>
+      <file role="php" baseinstalldir="PHPUnit2" name="Tests/ThrowExceptionTestCase.php"/>
+      <file role="php" baseinstalldir="PHPUnit2" name="Tests/ThrowNoExceptionTestCase.php"/>
+      <file role="php" baseinstalldir="PHPUnit2" name="Tests/TornDown.php"/>
+      <file role="php" baseinstalldir="PHPUnit2" name="Tests/TornDown2.php"/>
+      <file role="php" baseinstalldir="PHPUnit2" name="Tests/TornDown3.php"/>
+      <file role="php" baseinstalldir="PHPUnit2" name="Tests/TornDown4.php"/>
+      <file role="php" baseinstalldir="PHPUnit2" name="Tests/TornDown5.php"/>
+      <file role="php" baseinstalldir="PHPUnit2" name="Tests/WasRun.php"/>
+      <file role="php" baseinstalldir="PHPUnit2" name="TextUI/ResultPrinter.php"/>
+      <file role="php" baseinstalldir="PHPUnit2" name="TextUI/TestRunner.php"/>
+      <file role="php" baseinstalldir="PHPUnit2" name="Util/Filter.php"/>
+      <file role="php" baseinstalldir="PHPUnit2" name="Util/Printer.php"/>
+      <file role="script" baseinstalldir="/" install-as="phpunit" name="pear-phpunit">
+        <replace type="pear-config" from="@php_bin@" to="php_bin"/>
+      </file>
+      <file role="script" baseinstalldir="/" platform="windows" install-as="phpunit.bat" name="pear-phpunit.bat">
+        <replace type="pear-config" from="@php_bin@" to="php_bin"/>
+        <replace type="pear-config" from="@php_dir@" to="php_dir"/>
+      </file>
+    </filelist>
+  </release>
+  <changelog>
+    <release>
+      <version>2.0.0</version>
+      <date>2004-07-14</date>
+      <state>stable</state>
+      <notes>* Fixed a bug in PHPUnit2_Framework_TestCase::runTest().
+
+* Fixed a bug in PHPUnit2_Framework_ComparisonFailure::toString().
+
+* Fixed a bug in PHPUnit2_TextUI_TestRunner::start().
+
+! First stable release of PHPUnit2, the PHPUnit branch for PHP 5.
+
+      
+</notes>
+    </release>
+    <release>
+      <version>2.0.0beta2</version>
+      <date>2004-05-26</date>
+      <state>beta</state>
+      <notes>+ Implemented the functionality of junitour (http://junitour.sourceforge.net/).
+
++ Added scripts for convenient CLI invocation of the PHPUnit2_TextUI.
+
+* PHPUnit2_Framework_Assert::assertType() can now be used with
+  objects as well.
+
+  (Patch by Jeremiah Jacks &lt;jjacks@tamiya.com&gt;)
+
+* Changed Reflection_* class names to Reflection* to accomodate
+  Reflection API changes in PHP 5.0.0-RC2.
+
+* Changed PHPUnit_* class names to PHPUnit2_* and the base installation
+  directory from &quot;PHPUnit&quot; to &quot;PHPUnit2&quot; to allow for parallel installation
+  of PHPUnit 1.x and PHPUnit 2.x.
+
+! PHP 5.0.0-RC2 (or later) is now required.
+
+      
+</notes>
+    </release>
+    <release>
+      <version>2.0.0beta1</version>
+      <date>2004-03-19</date>
+      <state>beta</state>
+      <notes>* Rewritten from scratch.
+
+! PHPUnit now requires PHP 5 / Zend Engine 2.
+
+      
+</notes>
+    </release>
+  </changelog>
+</package>
