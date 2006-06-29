@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE package SYSTEM "http://pear.php.net/dtd/package-1.0">
+<package version="1.0">
+  <name>PHPUnit</name>
+  <summary>Regression testing framework for unit tests.</summary>
+  <description>PHPUnit is a regression testing framework used by the developer who implements unit tests in PHP.</description>
+  <maintainers>
+    <maintainer>
+      <user>sebastian</user>
+      <name>Sebastian Bergmann</name>
+      <email>sb@sebastian-bergmann.de</email>
+      <role>lead</role>
+    </maintainer>
+  </maintainers>
+  <release>
+    <version>1.1.1</version>
+    <date>2004-11-05</date>
+    <license>PHP License</license>
+    <state>stable</state>
+    <notes>Fixed bug #2701.</notes>
+    <filelist>
+      <file role="php" baseinstalldir="/" md5sum="a4509b6735bf305689b93db9795ab57d" name="PHPUnit.php"/>
+      <file role="php" md5sum="38d89fd5e012527430004a792e9f6bda" name="PHPUnit/GUI/HTML.php"/>
+      <file role="php" md5sum="5c7ca5bf8904fd3fd011337813d1ef1a" name="PHPUnit/GUI/HTML.tpl"/>
+      <file role="php" md5sum="b5a8f6292d7f9dccc7fed5ea95dac14d" name="PHPUnit/GUI/SetupDecorator.php"/>
+      <file role="php" md5sum="c6869efc76fbcb0813bd74fa72528d02" name="PHPUnit/Assert.php"/>
+      <file role="php" md5sum="897f1aa81927b502e317457df73f8f8b" name="PHPUnit/RepeatedTest.php"/>
+      <file role="php" md5sum="1bbc254aaba45a7c0d15e4997fa8b79c" name="PHPUnit/Skeleton.php"/>
+      <file role="php" md5sum="bf1ee6658d2747cbbd541cff01e3e3cd" name="PHPUnit/TestCase.php"/>
+      <file role="php" md5sum="e08bafd8e1d598dac7527bf0a32e9ca6" name="PHPUnit/TestDecorator.php"/>
+      <file role="php" md5sum="f09f2d883ceb31bb33fc6e3b3b949a50" name="PHPUnit/TestFailure.php"/>
+      <file role="php" md5sum="da0d3a9a83a08983d951225df3fd050a" name="PHPUnit/TestListener.php"/>
+      <file role="php" md5sum="8608b769a4abdf27363bc94877cb59c1" name="PHPUnit/TestResult.php"/>
+      <file role="php" md5sum="edf46e5cefe8c46776523b40638e127a" name="PHPUnit/TestSuite.php"/>
+    </filelist>
+  </release>
+  <changelog>
+    <release>
+      <version>1.1.0</version>
+      <date>2004-09-29</date>
+      <state>stable</state>
+      <notes>+ Added PHPUnit_Skeleton class for creating a PHPUnit_TestCase skeleton file. (Patch by Scott Mattocks &lt;scott@crisscott.com&gt;)
+
++ Added PHPUnit_Assert::assertContains() and PHPUnit_Assert::assertNotContains() methods to assert that an array contains (or not contains) a given value or that a string contains (or not contains) a given substring.
+
++ Added PHPUnit_Assert::assertNotRegexp() to assert that a string does not match a given regular expression.
+
+- Removed PHPUnit_Assert::assertSame() and PHPUnit_Assert::assertNotSame() since these assertion methods do not work with PHP 4.
+
+      
+</notes>
+    </release>
+    <release>
+      <version>1.0.2</version>
+      <date>2004-09-21</date>
+      <state>stable</state>
+      <notes>* Added/fixed phpDocumentor code documentation.
+
+      
+</notes>
+    </release>
+    <release>
+      <version>1.0.1</version>
+      <date>2004-04-17</date>
+      <state>stable</state>
+      <notes>* Fixed a bug that let the HTML GUI fail for expected and/or actual results with newline characters. (Patch by Thiemo Maettig &lt;thiemo.maettig@gmx.de&gt;)
+
+* Fixed bug #1169.
+
+      
+</notes>
+    </release>
+    <release>
+      <version>1.0.0</version>
+      <date>2004-03-15</date>
+      <state>stable</state>
+      <notes>* No functional changes since PHPUnit-0.6.2.
+
+      
+</notes>
+    </release>
+    <release>
+      <version>0.6.2</version>
+      <date>2003-06-21</date>
+      <notes>* Fixed PHPUnit_Assert::assertType().
+
+      
+</notes>
+    </release>
+    <release>
+      <version>0.6.1</version>
+      <date>2003-05-15</date>
+      <notes>+ Added assertType() assertion method.
+
+* Fixed parse error in GUI/HTML.php that occured with PHP 5.
+
+* Fixed a layout issue in the HTML GUI.
+
+      
+</notes>
+    </release>
+    <release>
+      <version>0.6</version>
+      <date>2003-04-25</date>
+      <notes>* Fixed bug that caused the constructor detection in PHPUnit_TestSuite to fail with upper-case class names.
+
+* Fixed bug with multiple assertions per Test Case.
+
+* call_user_func() was called with a copy instead of a reference in PHPUnit_TestCase::runTest().
+
+* Assertion methods append the generated actual/expected message to a user-defined message, rather than overwriting it.
+
+* Constructors are now excluded from automatic TestCase creation in TestSuite::addTestSuite(). (Patch by Wolfram Kriesing &lt;wolfram@kriesing.de&gt;.)
+
+* serialize() was called twice in PHPUnit_Assert::assertEquals().
+
+      
+</notes>
+    </release>
+    <release>
+      <version>0.5</version>
+      <date>2003-03-26</date>
+      <notes>+ Added new HTML GUI. (Patch by Wolfram Kriesing &lt;wolfram@kriesing.de&gt;.)
+
++ Added &quot;loosely typed&quot; mode to assertEquals() that can be turned on/off using setLooselyTyped(). When activated, array elements are cast to strings before comparison.
+
+* Allow multiple assertions per Test Case.
+
+* Use call_user_func() instead of $object-&gt;$method().
+
+      
+</notes>
+    </release>
+    <release>
+      <version>0.4</version>
+      <date>2002-09-25</date>
+      <notes>+ Added PHPUnit_Assert::assertFalse() and PHPUnit_Assert::assertNotSame(). JUnit introduced those two convenience methods in the JUnit 3.8 release.
+
+* Fixed directory structure.
+
+      
+</notes>
+    </release>
+    <release>
+      <version>0.3</version>
+      <date>2002-07-12</date>
+      <notes>* Added PHPUnit_TestDecorator and PHPUnit_RepeatedTest.
+
+* Implemented PHPUnit_TestResult::addListener() and PHPUnit_TestResult::removeListener().
+
+* Added object support to PHPUnit_Assert::assertEquals().
+
+* Implemented PHPUnit_Assert::assertSame() using Zend Engine 2 object handles.
+
+      
+</notes>
+    </release>
+    <release>
+      <version>0.2</version>
+      <date>2002-07-11</date>
+      <notes>* Added Array support to PHPUnit_Assert::equals(). (Patch by Wolfram Kriesing &lt;wolfram@kriesing.de&gt;)
+
+* Added PHPUnit_Assert::assertRegExp(). (Patch by M@rms &lt;marms@marms.com&gt;)
+
+      
+</notes>
+    </release>
+    <release>
+      <version>0.1</version>
+      <date>2002-04-06</date>
+      <notes>First release.
+
+      
+</notes>
+    </release>
+  </changelog>
+</package>
