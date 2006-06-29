@@ -1,0 +1,314 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE package SYSTEM "http://pear.php.net/dtd/package-1.0">
+<package version="1.0">
+  <name>PHPUnit2</name>
+  <summary>Regression testing framework for unit tests.</summary>
+  <description>PHPUnit is a regression testing framework used by the developer who implements unit tests in PHP. This is the version to be used with PHP 5.</description>
+  <maintainers>
+    <maintainer>
+      <user>sebastian</user>
+      <name>Sebastian Bergmann</name>
+      <email>sb@sebastian-bergmann.de</email>
+      <role>lead</role>
+    </maintainer>
+  </maintainers>
+  <release>
+    <version>2.3.1</version>
+    <date>2005-10-20</date>
+    <license>PHP License</license>
+    <state>stable</state>
+    <notes>* Workaround for bugs #3402, #5720.</notes>
+    <deps>
+      <dep type="php" rel="ge" version="5.0.2"/>
+      <dep type="ext" rel="has">dom</dep>
+      <dep type="ext" rel="has">pcre</dep>
+      <dep type="ext" rel="has">spl</dep>
+      <dep type="ext" rel="ge" version="2.0.0beta2" optional="yes">xdebug</dep>
+      <dep type="pkg" rel="has">Benchmark</dep>
+      <dep type="pkg" rel="has">Console_Getopt</dep>
+      <dep type="pkg" rel="has" optional="yes">Log</dep>
+      <dep type="pkg" rel="has">PEAR</dep>
+    </deps>
+    <filelist>
+      <file role="php" baseinstalldir="PHPUnit2" md5sum="6a0a4a3b1af64b348627e8c72dacbd91" name="Extensions/ExceptionTestCase.php">
+        <replace type="package-info" from="@package_version@" to="version"/>
+      </file>
+      <file role="php" baseinstalldir="PHPUnit2" md5sum="5788731e7da78a11966e43f7bc2fb9ac" name="Extensions/PerformanceTestCase.php">
+        <replace type="package-info" from="@package_version@" to="version"/>
+      </file>
+      <file role="php" baseinstalldir="PHPUnit2" md5sum="91c08c5a37495d48c86c0c6303361859" name="Extensions/RepeatedTest.php">
+        <replace type="package-info" from="@package_version@" to="version"/>
+      </file>
+      <file role="php" baseinstalldir="PHPUnit2" md5sum="e1781de8c39b72faaacb340f4e436f9e" name="Extensions/TestDecorator.php">
+        <replace type="package-info" from="@package_version@" to="version"/>
+      </file>
+      <file role="php" baseinstalldir="PHPUnit2" md5sum="2c1006dc9c60d24cc00fc434637ea7a0" name="Extensions/TestSetup.php">
+        <replace type="package-info" from="@package_version@" to="version"/>
+      </file>
+      <file role="php" baseinstalldir="PHPUnit2" md5sum="6ba72e38b50c11772144c6ccd5b8a800" name="Framework/Assert.php">
+        <replace type="package-info" from="@package_version@" to="version"/>
+      </file>
+      <file role="php" baseinstalldir="PHPUnit2" md5sum="dfd02e3d11bea7f3f55ef2ed9dd39d6c" name="Framework/AssertionFailedError.php">
+        <replace type="package-info" from="@package_version@" to="version"/>
+      </file>
+      <file role="php" baseinstalldir="PHPUnit2" md5sum="625360b2e1525f852b6911ccf37128a8" name="Framework/Error.php">
+        <replace type="package-info" from="@package_version@" to="version"/>
+      </file>
+      <file role="php" baseinstalldir="PHPUnit2" md5sum="2bf03c36f539a8a9486a029c32516cf9" name="Framework/ComparisonFailure.php">
+        <replace type="package-info" from="@package_version@" to="version"/>
+      </file>
+      <file role="php" baseinstalldir="PHPUnit2" md5sum="ccfff99ee34a84e76edbb136402c5e84" name="Framework/IncompleteTest.php">
+        <replace type="package-info" from="@package_version@" to="version"/>
+      </file>
+      <file role="php" baseinstalldir="PHPUnit2" md5sum="e1c5f11934b6df2cc12cb84c06f7461c" name="Framework/IncompleteTestError.php">
+        <replace type="package-info" from="@package_version@" to="version"/>
+      </file>
+      <file role="php" baseinstalldir="PHPUnit2" md5sum="25ec6c91cd39cd65881adeac055ed6bf" name="Framework/Test.php">
+        <replace type="package-info" from="@package_version@" to="version"/>
+      </file>
+      <file role="php" baseinstalldir="PHPUnit2" md5sum="9aaf4fa057b143c2fa3a6680e89234a8" name="Framework/TestCase.php">
+        <replace type="package-info" from="@package_version@" to="version"/>
+      </file>
+      <file role="php" baseinstalldir="PHPUnit2" md5sum="bbc87bb50e9495485993f3ad3621a1dd" name="Framework/TestFailure.php">
+        <replace type="package-info" from="@package_version@" to="version"/>
+      </file>
+      <file role="php" baseinstalldir="PHPUnit2" md5sum="a73acce4bb699f22456f58e9ba9c7b7f" name="Framework/TestListener.php">
+        <replace type="package-info" from="@package_version@" to="version"/>
+      </file>
+      <file role="php" baseinstalldir="PHPUnit2" md5sum="199a2b1141b0539dd6d23c4f0b558ddb" name="Framework/TestResult.php">
+        <replace type="package-info" from="@package_version@" to="version"/>
+      </file>
+      <file role="php" baseinstalldir="PHPUnit2" md5sum="c9b7bd6535b0ce78f0bda9b6bd344ec3" name="Framework/TestSuite.php">
+        <replace type="package-info" from="@package_version@" to="version"/>
+      </file>
+      <file role="php" baseinstalldir="PHPUnit2" md5sum="4c64448f9010aa1a8d6e9f76656131b0" name="Framework/Warning.php">
+        <replace type="package-info" from="@package_version@" to="version"/>
+      </file>
+      <file role="php" baseinstalldir="PHPUnit2" md5sum="41f09e4bcb04117a87d509458340ef4e" name="Runner/BaseTestRunner.php">
+        <replace type="package-info" from="@package_version@" to="version"/>
+      </file>
+      <file role="php" baseinstalldir="PHPUnit2" md5sum="f6d8b4a2263c9eb7376822a3cf847660" name="Runner/IncludePathTestCollector.php">
+        <replace type="package-info" from="@package_version@" to="version"/>
+      </file>
+      <file role="php" baseinstalldir="PHPUnit2" md5sum="f80da53b0cdc05f4ef7f1bfedcf58c4e" name="Runner/StandardTestSuiteLoader.php">
+        <replace type="package-info" from="@package_version@" to="version"/>
+      </file>
+      <file role="php" baseinstalldir="PHPUnit2" md5sum="bfce21e8996a2c940ece626ad0fbad6b" name="Runner/TestCollector.php">
+        <replace type="package-info" from="@package_version@" to="version"/>
+      </file>
+      <file role="php" baseinstalldir="PHPUnit2" md5sum="ba9229d71a6ee86431e10f0eeeba0ff2" name="Runner/TestSuiteLoader.php">
+        <replace type="package-info" from="@package_version@" to="version"/>
+      </file>
+      <file role="php" baseinstalldir="PHPUnit2" md5sum="a5ae281360db8223741b9dab373fd67a" name="Runner/Version.php">
+        <replace type="package-info" from="@package_version@" to="version"/>
+      </file>
+      <file role="doc" baseinstalldir="PHPUnit2" md5sum="c734482ceaacfc21770f46c79619c158" name="Samples/BankAccount/BankAccount.php">
+        <replace type="package-info" from="@package_version@" to="version"/>
+      </file>
+      <file role="doc" baseinstalldir="PHPUnit2" md5sum="0c3b1c06806388695da78d61eb77d57b" name="Samples/BankAccount/BankAccountTest.php">
+        <replace type="package-info" from="@package_version@" to="version"/>
+      </file>
+      <file role="doc" baseinstalldir="PHPUnit2" md5sum="76ce8b9e2537a1a35f497c4919c7931f" name="Samples/Money/IMoney.php">
+        <replace type="package-info" from="@package_version@" to="version"/>
+      </file>
+      <file role="doc" baseinstalldir="PHPUnit2" md5sum="8ca0975a58939d7ba03c68d7e50a4a62" name="Samples/Money/Money.php">
+        <replace type="package-info" from="@package_version@" to="version"/>
+      </file>
+      <file role="doc" baseinstalldir="PHPUnit2" md5sum="0f62e03278f4309a03ed70050fc3b043" name="Samples/Money/MoneyBag.php">
+        <replace type="package-info" from="@package_version@" to="version"/>
+      </file>
+      <file role="doc" baseinstalldir="PHPUnit2" md5sum="0c37893f5c7d1240c40a444e76761576" name="Samples/Money/MoneyTest.php">
+        <replace type="package-info" from="@package_version@" to="version"/>
+      </file>
+      <file role="test" baseinstalldir="PHPUnit2" md5sum="6b7b4c4be6d1ac303412d78e66b99f98" name="Tests/Framework/AllTests.php">
+        <replace type="package-info" from="@package_version@" to="version"/>
+      </file>
+      <file role="test" baseinstalldir="PHPUnit2" md5sum="c492d5bc51c843748fe021b9256c124c" name="Tests/Framework/AssertTest.php">
+        <replace type="package-info" from="@package_version@" to="version"/>
+      </file>
+      <file role="test" baseinstalldir="PHPUnit2" md5sum="6f7e95210441d65dc7783645b7c27ba6" name="Tests/Framework/ComparisonFailureTest.php">
+        <replace type="package-info" from="@package_version@" to="version"/>
+      </file>
+      <file role="test" baseinstalldir="PHPUnit2" md5sum="7fe31195df848990ca91d0005eae88d6" name="Tests/Framework/SuiteTest.php">
+        <replace type="package-info" from="@package_version@" to="version"/>
+      </file>
+      <file role="test" baseinstalldir="PHPUnit2" md5sum="de60627b5dfa79d73ca95f550113cf1e" name="Tests/Framework/TestCaseTest.php">
+        <replace type="package-info" from="@package_version@" to="version"/>
+      </file>
+      <file role="test" baseinstalldir="PHPUnit2" md5sum="cb033d9f2b951f27c4dff6ffa6985dc6" name="Tests/Framework/TestImplementorTest.php">
+        <replace type="package-info" from="@package_version@" to="version"/>
+      </file>
+      <file role="test" baseinstalldir="PHPUnit2" md5sum="6e15b7fb5d274bc81dfd59265f22c40f" name="Tests/Framework/TestListenerTest.php">
+        <replace type="package-info" from="@package_version@" to="version"/>
+      </file>
+      <file role="test" baseinstalldir="PHPUnit2" md5sum="6cacbdef9a723567c22d25072dc15328" name="Tests/Extensions/AllTests.php">
+        <replace type="package-info" from="@package_version@" to="version"/>
+      </file>
+      <file role="test" baseinstalldir="PHPUnit2" md5sum="109716b52b34960111fec12bbf847086" name="Tests/Extensions/ExceptionTestCaseTest.php">
+        <replace type="package-info" from="@package_version@" to="version"/>
+      </file>
+      <file role="test" baseinstalldir="PHPUnit2" md5sum="b9272e020f6e1bdec0de5f01ed662813" name="Tests/Extensions/ExtensionTest.php">
+        <replace type="package-info" from="@package_version@" to="version"/>
+      </file>
+      <file role="test" baseinstalldir="PHPUnit2" md5sum="203320e033eb03de83861bf2083fb6b8" name="Tests/Extensions/PerformanceTestCaseTest.php">
+        <replace type="package-info" from="@package_version@" to="version"/>
+      </file>
+      <file role="test" baseinstalldir="PHPUnit2" md5sum="ee317d231ba4971db0af94c1419667d2" name="Tests/Extensions/RepeatedTestTest.php">
+        <replace type="package-info" from="@package_version@" to="version"/>
+      </file>
+      <file role="test" baseinstalldir="PHPUnit2" md5sum="1d7bb315700712e6e6866cc67c475986" name="Tests/Runner/AllTests.php">
+        <replace type="package-info" from="@package_version@" to="version"/>
+      </file>
+      <file role="test" baseinstalldir="PHPUnit2" md5sum="266ffc344b93a22f7009370c6a736aa9" name="Tests/Runner/BaseTestRunnerTest.php">
+        <replace type="package-info" from="@package_version@" to="version"/>
+      </file>
+      <file role="test" baseinstalldir="PHPUnit2" md5sum="4a2c5ed51624859c8472708069eefa51" name="Tests/Util/TestDox/AllTests.php">
+        <replace type="package-info" from="@package_version@" to="version"/>
+      </file>
+      <file role="test" baseinstalldir="PHPUnit2" md5sum="5bed80c15a566d4c163209532a292183" name="Tests/Util/TestDox/NamePrettifierTest.php">
+        <replace type="package-info" from="@package_version@" to="version"/>
+      </file>
+      <file role="test" baseinstalldir="PHPUnit2" md5sum="29d420a1048aa3eb903c32cc77d250ac" name="Tests/AllTests.php">
+        <replace type="package-info" from="@package_version@" to="version"/>
+      </file>
+      <file role="test" baseinstalldir="PHPUnit2" md5sum="5bd75be8a56bf2949ee5bc937713fcdc" name="Tests/DoubleTestCase.php">
+        <replace type="package-info" from="@package_version@" to="version"/>
+      </file>
+      <file role="test" baseinstalldir="PHPUnit2" md5sum="7cceee715b827841046f62b4975db2c0" name="Tests/Error.php">
+        <replace type="package-info" from="@package_version@" to="version"/>
+      </file>
+      <file role="test" baseinstalldir="PHPUnit2" md5sum="d9452448438f2ddb985e2895a1f83735" name="Tests/Failure.php">
+        <replace type="package-info" from="@package_version@" to="version"/>
+      </file>
+      <file role="test" baseinstalldir="PHPUnit2" md5sum="e85d8d35184d07298723a31c7eedd618" name="Tests/InheritedTestCase.php">
+        <replace type="package-info" from="@package_version@" to="version"/>
+      </file>
+      <file role="test" baseinstalldir="PHPUnit2" md5sum="faf66e6b0fb54181339b77cca0fc5440" name="Tests/MockRunner.php">
+        <replace type="package-info" from="@package_version@" to="version"/>
+      </file>
+      <file role="test" baseinstalldir="PHPUnit2" md5sum="f92c2751cb33492f14c6893d34a976c8" name="Tests/NoArgTestCaseTest.php">
+        <replace type="package-info" from="@package_version@" to="version"/>
+      </file>
+      <file role="test" baseinstalldir="PHPUnit2" md5sum="99234b23f825a87b6863f2bd6a58fba8" name="Tests/NonStatic.php">
+        <replace type="package-info" from="@package_version@" to="version"/>
+      </file>
+      <file role="test" baseinstalldir="PHPUnit2" md5sum="3249d6799a41275e4f40b18ec352e417" name="Tests/NoTestCaseClass.php">
+        <replace type="package-info" from="@package_version@" to="version"/>
+      </file>
+      <file role="test" baseinstalldir="PHPUnit2" md5sum="59578a6ae0373e0d1b55c3e07bbab5fd" name="Tests/NoTestCases.php">
+        <replace type="package-info" from="@package_version@" to="version"/>
+      </file>
+      <file role="test" baseinstalldir="PHPUnit2" md5sum="1c0f64a534cec895b5859e91b21b89bd" name="Tests/NotPublicTestCase.php">
+        <replace type="package-info" from="@package_version@" to="version"/>
+      </file>
+      <file role="test" baseinstalldir="PHPUnit2" md5sum="0a7513a4653e7698e8742a777de2729c" name="Tests/NotVoidTestCase.php">
+        <replace type="package-info" from="@package_version@" to="version"/>
+      </file>
+      <file role="test" baseinstalldir="PHPUnit2" md5sum="46522057c30b3127181268e01978abcf" name="Tests/OneTestCase.php">
+        <replace type="package-info" from="@package_version@" to="version"/>
+      </file>
+      <file role="test" baseinstalldir="PHPUnit2" md5sum="e6cafb089ed4c36baa6908a80556db4e" name="Tests/OverrideTestCase.php">
+        <replace type="package-info" from="@package_version@" to="version"/>
+      </file>
+      <file role="test" baseinstalldir="PHPUnit2" md5sum="006120b2537167acbd91fc490b4cf18c" name="Tests/SetupFailure.php">
+        <replace type="package-info" from="@package_version@" to="version"/>
+      </file>
+      <file role="test" baseinstalldir="PHPUnit2" md5sum="3fe6f981342a04f4777124f2ccfe37d1" name="Tests/Sleep.php">
+        <replace type="package-info" from="@package_version@" to="version"/>
+      </file>
+      <file role="test" baseinstalldir="PHPUnit2" md5sum="82c5f7daa9a7b51c7b9134c24a9b2755" name="Tests/Success.php">
+        <replace type="package-info" from="@package_version@" to="version"/>
+      </file>
+      <file role="test" baseinstalldir="PHPUnit2" md5sum="32527da23607936545b42db947886290" name="Tests/TearDownFailure.php">
+        <replace type="package-info" from="@package_version@" to="version"/>
+      </file>
+      <file role="test" baseinstalldir="PHPUnit2" md5sum="f819cacd4b9a3ef70f4d301c777c518d" name="Tests/TestIterator.php">
+        <replace type="package-info" from="@package_version@" to="version"/>
+      </file>
+      <file role="test" baseinstalldir="PHPUnit2" md5sum="bd609aed37d894c7f480170382e11424" name="Tests/ThrowExceptionTestCase.php">
+        <replace type="package-info" from="@package_version@" to="version"/>
+      </file>
+      <file role="test" baseinstalldir="PHPUnit2" md5sum="097133b7c5ca96be714a76c2e3f4d097" name="Tests/ThrowNoExceptionTestCase.php">
+        <replace type="package-info" from="@package_version@" to="version"/>
+      </file>
+      <file role="test" baseinstalldir="PHPUnit2" md5sum="b65e3a3810c0ad64849d8e24ae894318" name="Tests/TornDown.php">
+        <replace type="package-info" from="@package_version@" to="version"/>
+      </file>
+      <file role="test" baseinstalldir="PHPUnit2" md5sum="ae75ef60b9baf7eddd94723b26cee31f" name="Tests/TornDown2.php">
+        <replace type="package-info" from="@package_version@" to="version"/>
+      </file>
+      <file role="test" baseinstalldir="PHPUnit2" md5sum="f8dd12c7351301542b5263347752e561" name="Tests/TornDown3.php">
+        <replace type="package-info" from="@package_version@" to="version"/>
+      </file>
+      <file role="test" baseinstalldir="PHPUnit2" md5sum="e30ef423f368093d04e47e4d11a33622" name="Tests/TornDown4.php">
+        <replace type="package-info" from="@package_version@" to="version"/>
+      </file>
+      <file role="test" baseinstalldir="PHPUnit2" md5sum="a3b3e182771c4d6972d24e36d60cad99" name="Tests/TornDown5.php">
+        <replace type="package-info" from="@package_version@" to="version"/>
+      </file>
+      <file role="test" baseinstalldir="PHPUnit2" md5sum="2656b8ccec8089d091a708c185abeb2e" name="Tests/TornDown6.php">
+        <replace type="package-info" from="@package_version@" to="version"/>
+      </file>
+      <file role="test" baseinstalldir="PHPUnit2" md5sum="107d00e879db68a805f672642758a1ea" name="Tests/WasRun.php">
+        <replace type="package-info" from="@package_version@" to="version"/>
+      </file>
+      <file role="php" baseinstalldir="PHPUnit2" md5sum="4bf5ada5f1cbb29b5f766bbaa083294e" name="TextUI/ResultPrinter.php">
+        <replace type="package-info" from="@package_version@" to="version"/>
+      </file>
+      <file role="php" baseinstalldir="PHPUnit2" md5sum="f8da1b304ffd7dc16e0cb29d18b3d3e9" name="TextUI/TestRunner.php">
+        <replace type="package-info" from="@package_version@" to="version"/>
+      </file>
+      <file role="php" baseinstalldir="PHPUnit2" md5sum="e0bd2cb8cb43c348769d319697b91a31" name="Util/CodeCoverage/Renderer/HTML.php">
+        <replace type="package-info" from="@package_version@" to="version"/>
+      </file>
+      <file role="php" baseinstalldir="PHPUnit2" md5sum="79d7c953ed157e50132676dce5acbb45" name="Util/CodeCoverage/Renderer/Text.php">
+        <replace type="package-info" from="@package_version@" to="version"/>
+      </file>
+      <file role="php" baseinstalldir="PHPUnit2" md5sum="c2ea9d6ad0fb4ff0daf00d5a442e5594" name="Util/CodeCoverage/Renderer.php">
+        <replace type="package-info" from="@package_version@" to="version"/>
+      </file>
+      <file role="php" baseinstalldir="PHPUnit2" md5sum="46ca03d5f12a9b407c6f07601628b45b" name="Util/Log/PEAR.php">
+        <replace type="package-info" from="@package_version@" to="version"/>
+      </file>
+      <file role="php" baseinstalldir="PHPUnit2" md5sum="52acf365b9ee16fd89e064c59c08fb13" name="Util/Log/XML.php">
+        <replace type="package-info" from="@package_version@" to="version"/>
+      </file>
+      <file role="php" baseinstalldir="PHPUnit2" md5sum="a757a417b0033a807cea72e9b998d60f" name="Util/TestDox/ResultPrinter/HTML.php">
+        <replace type="package-info" from="@package_version@" to="version"/>
+      </file>
+      <file role="php" baseinstalldir="PHPUnit2" md5sum="9f3498dcbdb8076292e0147b2ecfad47" name="Util/TestDox/ResultPrinter/Text.php">
+        <replace type="package-info" from="@package_version@" to="version"/>
+      </file>
+      <file role="php" baseinstalldir="PHPUnit2" md5sum="951007b16ecfddd9cdd39c7033e7216f" name="Util/TestDox/NamePrettifier.php">
+        <replace type="package-info" from="@package_version@" to="version"/>
+      </file>
+      <file role="php" baseinstalldir="PHPUnit2" md5sum="abfc94dfe9511ff1a8acaa2b6131f816" name="Util/TestDox/ResultPrinter.php">
+        <replace type="package-info" from="@package_version@" to="version"/>
+      </file>
+      <file role="php" baseinstalldir="PHPUnit2" md5sum="50518efa51f7708c51fb671c1344b539" name="Util/ErrorHandler.php">
+        <replace type="package-info" from="@package_version@" to="version"/>
+      </file>
+      <file role="php" baseinstalldir="PHPUnit2" md5sum="c2214bdb08ef4e22a8a62547d69a5fdc" name="Util/Fileloader.php">
+        <replace type="package-info" from="@package_version@" to="version"/>
+      </file>
+      <file role="php" baseinstalldir="PHPUnit2" md5sum="42df173acc466eba7665c18f4449a46c" name="Util/Filter.php">
+        <replace type="package-info" from="@package_version@" to="version"/>
+      </file>
+      <file role="php" baseinstalldir="PHPUnit2" md5sum="68d5a7af38196ff6c8c50bb5516961dc" name="Util/Printer.php">
+        <replace type="package-info" from="@package_version@" to="version"/>
+      </file>
+      <file role="php" baseinstalldir="PHPUnit2" md5sum="a5fcc4127a657a0a5c30d6283ea74ba7" name="Util/Skeleton.php">
+        <replace type="package-info" from="@package_version@" to="version"/>
+      </file>
+      <file role="script" baseinstalldir="/" md5sum="84801630fe3a7604ce4ef35682c9f435" install-as="phpunit" name="pear-phpunit">
+        <replace type="pear-config" from="@php_bin@" to="php_bin"/>
+        <replace type="package-info" from="@package_version@" to="version"/>
+      </file>
+      <file role="script" baseinstalldir="/" md5sum="f6a491b023740ad2ae57ed608d8465ca" platform="windows" install-as="phpunit.bat" name="pear-phpunit.bat">
+        <replace type="pear-config" from="@php_bin@" to="php_bin"/>
+        <replace type="pear-config" from="@php_dir@" to="php_dir"/>
+        <replace type="package-info" from="@package_version@" to="version"/>
+      </file>
+    </filelist>
+  </release>
+</package>
