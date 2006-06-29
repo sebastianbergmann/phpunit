@@ -1,0 +1,608 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE package SYSTEM "http://pear.php.net/dtd/package-1.0">
+<package version="1.0" packagerversion="1.4.2">
+ <name>PHPUnit2</name>
+ <summary>Regression testing framework for unit tests.</summary>
+ <description>PHPUnit is a regression testing framework used by the developer who implements unit tests in PHP. This is the version to be used with PHP 5.
+ </description>
+ <maintainers>
+  <maintainer>
+   <user>sebastian</user>
+   <name>Sebastian Bergmann</name>
+   <email>sb@sebastian-bergmann.de</email>
+   <role>lead</role>
+  </maintainer>
+  </maintainers>
+ <release>
+  <version>2.3.3</version>
+  <date>2005-11-10</date>
+  <license>BSD License</license>
+  <state>stable</state>
+  <notes>* Fixed bug #5824: Fatal error on running tests.
+
+! Changed license from PHP License to BSD Style License.
+  </notes>
+  <deps>
+   <dep type="php" rel="ge" version="5.0.2"/>
+   <dep type="ext" rel="has">dom</dep>
+   <dep type="ext" rel="has">pcre</dep>
+   <dep type="ext" rel="has">spl</dep>
+   <dep type="ext" rel="ge" version="2.0.0beta2" optional="yes">xdebug</dep>
+   <dep type="pkg" rel="has">Benchmark</dep>
+   <dep type="pkg" rel="has">Console_Getopt</dep>
+   <dep type="pkg" rel="has" optional="yes">Log</dep>
+   <dep type="pkg" rel="has">PEAR</dep>
+  </deps>
+  <provides type="class" name="PHPUnit2_Extensions_ExceptionTestCase" extends="PHPUnit2_Framework_TestCase" />
+  <provides type="function" name="PHPUnit2_Extensions_ExceptionTestCase::getExpectedException" />
+  <provides type="function" name="PHPUnit2_Extensions_ExceptionTestCase::setExpectedException" />
+  <provides type="function" name="PHPUnit2_Extensions_ExceptionTestCase::runTest" />
+  <provides type="class" name="PHPUnit2_Extensions_PerformanceTestCase" extends="PHPUnit2_Framework_TestCase" />
+  <provides type="function" name="PHPUnit2_Extensions_PerformanceTestCase::runTest" />
+  <provides type="function" name="PHPUnit2_Extensions_PerformanceTestCase::setMaxRunningTime" />
+  <provides type="function" name="PHPUnit2_Extensions_PerformanceTestCase::getMaxRunningTime" />
+  <provides type="class" name="PHPUnit2_Extensions_RepeatedTest" extends="PHPUnit2_Extensions_TestDecorator" />
+  <provides type="function" name="PHPUnit2_Extensions_RepeatedTest::countTestCases" />
+  <provides type="function" name="PHPUnit2_Extensions_RepeatedTest::run" />
+  <provides type="class" name="PHPUnit2_Extensions_TestDecorator" extends="PHPUnit2_Framework_Assert" />
+  <provides type="function" name="PHPUnit2_Extensions_TestDecorator::toString" />
+  <provides type="function" name="PHPUnit2_Extensions_TestDecorator::basicRun" />
+  <provides type="function" name="PHPUnit2_Extensions_TestDecorator::countTestCases" />
+  <provides type="function" name="PHPUnit2_Extensions_TestDecorator::createResult" />
+  <provides type="function" name="PHPUnit2_Extensions_TestDecorator::getTest" />
+  <provides type="function" name="PHPUnit2_Extensions_TestDecorator::run" />
+  <provides type="class" name="PHPUnit2_Extensions_TestSetup" extends="PHPUnit2_Extensions_TestDecorator" />
+  <provides type="function" name="PHPUnit2_Extensions_TestSetup::run" />
+  <provides type="function" name="PHPUnit2_Extensions_TestSetup::copyFixtureToTest" />
+  <provides type="function" name="PHPUnit2_Extensions_TestSetup::doCopyFixtureToTest" />
+  <provides type="function" name="PHPUnit2_Extensions_TestSetup::setUp" />
+  <provides type="function" name="PHPUnit2_Extensions_TestSetup::tearDown" />
+  <provides type="class" name="PHPUnit2_Framework_Assert" />
+  <provides type="function" name="PHPUnit2_Framework_Assert::assertContains" />
+  <provides type="function" name="PHPUnit2_Framework_Assert::assertNotContains" />
+  <provides type="function" name="PHPUnit2_Framework_Assert::doAssertContains" />
+  <provides type="function" name="PHPUnit2_Framework_Assert::assertEquals" />
+  <provides type="function" name="PHPUnit2_Framework_Assert::assertNotEquals" />
+  <provides type="function" name="PHPUnit2_Framework_Assert::doAssertEquals" />
+  <provides type="function" name="PHPUnit2_Framework_Assert::assertTrue" />
+  <provides type="function" name="PHPUnit2_Framework_Assert::assertFalse" />
+  <provides type="function" name="PHPUnit2_Framework_Assert::assertNotNull" />
+  <provides type="function" name="PHPUnit2_Framework_Assert::assertNull" />
+  <provides type="function" name="PHPUnit2_Framework_Assert::assertSame" />
+  <provides type="function" name="PHPUnit2_Framework_Assert::assertNotSame" />
+  <provides type="function" name="PHPUnit2_Framework_Assert::assertType" />
+  <provides type="function" name="PHPUnit2_Framework_Assert::assertNotType" />
+  <provides type="function" name="PHPUnit2_Framework_Assert::doAssertType" />
+  <provides type="function" name="PHPUnit2_Framework_Assert::assertRegExp" />
+  <provides type="function" name="PHPUnit2_Framework_Assert::assertNotRegExp" />
+  <provides type="function" name="PHPUnit2_Framework_Assert::doAssertRegExp" />
+  <provides type="function" name="PHPUnit2_Framework_Assert::fail" />
+  <provides type="function" name="PHPUnit2_Framework_Assert::failSame" />
+  <provides type="function" name="PHPUnit2_Framework_Assert::failNotSame" />
+  <provides type="function" name="PHPUnit2_Framework_Assert::format" />
+  <provides type="function" name="PHPUnit2_Framework_Assert::setLooselyTyped" />
+  <provides type="function" name="PHPUnit2_Framework_Assert::convertToString" />
+  <provides type="function" name="PHPUnit2_Framework_Assert::objectToString" />
+  <provides type="function" name="PHPUnit2_Framework_Assert::sortArrayRecursively" />
+  <provides type="class" name="PHPUnit2_Framework_AssertionFailedError" extends="Exception" />
+  <provides type="function" name="PHPUnit2_Framework_AssertionFailedError::toString" />
+  <provides type="class" name="PHPUnit2_Framework_Error" extends="Exception" />
+  <provides type="class" name="PHPUnit2_Framework_ComparisonFailure" extends="PHPUnit2_Framework_AssertionFailedError" />
+  <provides type="function" name="PHPUnit2_Framework_ComparisonFailure::toString" />
+  <provides type="class" name="PHPUnit2_Framework_IncompleteTestError" extends="PHPUnit2_Framework_AssertionFailedError" />
+  <provides type="function" name="PHPUnit2_Framework_Test::countTestCases" />
+  <provides type="function" name="PHPUnit2_Framework_Test::run" />
+  <provides type="class" name="PHPUnit2_Framework_TestCase" extends="PHPUnit2_Framework_Assert" />
+  <provides type="function" name="PHPUnit2_Framework_TestCase::toString" />
+  <provides type="function" name="PHPUnit2_Framework_TestCase::countTestCases" />
+  <provides type="function" name="PHPUnit2_Framework_TestCase::getName" />
+  <provides type="function" name="PHPUnit2_Framework_TestCase::run" />
+  <provides type="function" name="PHPUnit2_Framework_TestCase::runBare" />
+  <provides type="function" name="PHPUnit2_Framework_TestCase::runTest" />
+  <provides type="function" name="PHPUnit2_Framework_TestCase::setName" />
+  <provides type="function" name="PHPUnit2_Framework_TestCase::createResult" />
+  <provides type="function" name="PHPUnit2_Framework_TestCase::setUp" />
+  <provides type="function" name="PHPUnit2_Framework_TestCase::tearDown" />
+  <provides type="class" name="PHPUnit2_Framework_TestFailure" />
+  <provides type="function" name="PHPUnit2_Framework_TestFailure::toString" />
+  <provides type="function" name="PHPUnit2_Framework_TestFailure::failedTest" />
+  <provides type="function" name="PHPUnit2_Framework_TestFailure::thrownException" />
+  <provides type="function" name="PHPUnit2_Framework_TestFailure::exceptionMessage" />
+  <provides type="function" name="PHPUnit2_Framework_TestFailure::isFailure" />
+  <provides type="function" name="PHPUnit2_Framework_TestListener::addError" />
+  <provides type="function" name="PHPUnit2_Framework_TestListener::addFailure" />
+  <provides type="function" name="PHPUnit2_Framework_TestListener::addIncompleteTest" />
+  <provides type="function" name="PHPUnit2_Framework_TestListener::startTestSuite" />
+  <provides type="function" name="PHPUnit2_Framework_TestListener::endTestSuite" />
+  <provides type="function" name="PHPUnit2_Framework_TestListener::startTest" />
+  <provides type="function" name="PHPUnit2_Framework_TestListener::endTest" />
+  <provides type="class" name="PHPUnit2_Framework_TestResult" />
+  <provides type="function" name="PHPUnit2_Framework_TestResult::addListener" />
+  <provides type="function" name="PHPUnit2_Framework_TestResult::removeListener" />
+  <provides type="function" name="PHPUnit2_Framework_TestResult::addError" />
+  <provides type="function" name="PHPUnit2_Framework_TestResult::addFailure" />
+  <provides type="function" name="PHPUnit2_Framework_TestResult::startTestSuite" />
+  <provides type="function" name="PHPUnit2_Framework_TestResult::endTestSuite" />
+  <provides type="function" name="PHPUnit2_Framework_TestResult::startTest" />
+  <provides type="function" name="PHPUnit2_Framework_TestResult::endTest" />
+  <provides type="function" name="PHPUnit2_Framework_TestResult::allCompletlyImplemented" />
+  <provides type="function" name="PHPUnit2_Framework_TestResult::notImplementedCount" />
+  <provides type="function" name="PHPUnit2_Framework_TestResult::notImplemented" />
+  <provides type="function" name="PHPUnit2_Framework_TestResult::errorCount" />
+  <provides type="function" name="PHPUnit2_Framework_TestResult::errors" />
+  <provides type="function" name="PHPUnit2_Framework_TestResult::failureCount" />
+  <provides type="function" name="PHPUnit2_Framework_TestResult::failures" />
+  <provides type="function" name="PHPUnit2_Framework_TestResult::collectCodeCoverageInformation" />
+  <provides type="function" name="PHPUnit2_Framework_TestResult::getCodeCoverageInformation" />
+  <provides type="function" name="PHPUnit2_Framework_TestResult::run" />
+  <provides type="function" name="PHPUnit2_Framework_TestResult::runCount" />
+  <provides type="function" name="PHPUnit2_Framework_TestResult::shouldStop" />
+  <provides type="function" name="PHPUnit2_Framework_TestResult::stop" />
+  <provides type="function" name="PHPUnit2_Framework_TestResult::wasSuccessful" />
+  <provides type="class" name="PHPUnit2_Framework_TestSuite" />
+  <provides type="function" name="PHPUnit2_Framework_TestSuite::toString" />
+  <provides type="function" name="PHPUnit2_Framework_TestSuite::addTest" />
+  <provides type="function" name="PHPUnit2_Framework_TestSuite::addTestSuite" />
+  <provides type="function" name="PHPUnit2_Framework_TestSuite::addTestFile" />
+  <provides type="function" name="PHPUnit2_Framework_TestSuite::addTestFiles" />
+  <provides type="function" name="PHPUnit2_Framework_TestSuite::countTestCases" />
+  <provides type="function" name="PHPUnit2_Framework_TestSuite::createTest" />
+  <provides type="function" name="PHPUnit2_Framework_TestSuite::createResult" />
+  <provides type="function" name="PHPUnit2_Framework_TestSuite::getName" />
+  <provides type="function" name="PHPUnit2_Framework_TestSuite::run" />
+  <provides type="function" name="PHPUnit2_Framework_TestSuite::runTest" />
+  <provides type="function" name="PHPUnit2_Framework_TestSuite::setName" />
+  <provides type="function" name="PHPUnit2_Framework_TestSuite::testAt" />
+  <provides type="function" name="PHPUnit2_Framework_TestSuite::testCount" />
+  <provides type="function" name="PHPUnit2_Framework_TestSuite::tests" />
+  <provides type="function" name="PHPUnit2_Framework_TestSuite::addTestMethod" />
+  <provides type="function" name="PHPUnit2_Framework_TestSuite::isPublicTestMethod" />
+  <provides type="function" name="PHPUnit2_Framework_TestSuite::isTestMethod" />
+  <provides type="function" name="PHPUnit2_Framework_TestSuite::warning" />
+  <provides type="class" name="PHPUnit2_Framework_Warning" extends="PHPUnit2_Framework_TestCase" />
+  <provides type="function" name="PHPUnit2_Framework_Warning::runTest" />
+  <provides type="class" name="PHPUnit2_Runner_BaseTestRunner" />
+  <provides type="function" name="PHPUnit2_Runner_BaseTestRunner::addError" />
+  <provides type="function" name="PHPUnit2_Runner_BaseTestRunner::addFailure" />
+  <provides type="function" name="PHPUnit2_Runner_BaseTestRunner::addIncompleteTest" />
+  <provides type="function" name="PHPUnit2_Runner_BaseTestRunner::startTestSuite" />
+  <provides type="function" name="PHPUnit2_Runner_BaseTestRunner::endTestSuite" />
+  <provides type="function" name="PHPUnit2_Runner_BaseTestRunner::startTest" />
+  <provides type="function" name="PHPUnit2_Runner_BaseTestRunner::endTest" />
+  <provides type="function" name="PHPUnit2_Runner_BaseTestRunner::getLoader" />
+  <provides type="function" name="PHPUnit2_Runner_BaseTestRunner::getTest" />
+  <provides type="function" name="PHPUnit2_Runner_BaseTestRunner::runFailed" />
+  <provides type="function" name="PHPUnit2_Runner_BaseTestRunner::loadSuiteClass" />
+  <provides type="function" name="PHPUnit2_Runner_BaseTestRunner::clearStatus" />
+  <provides type="function" name="PHPUnit2_Runner_BaseTestRunner::testStarted" />
+  <provides type="function" name="PHPUnit2_Runner_BaseTestRunner::testEnded" />
+  <provides type="function" name="PHPUnit2_Runner_BaseTestRunner::testFailed" />
+  <provides type="class" name="AppendIterator" />
+  <provides type="class" name="PHPUnit2_Runner_IncludePathTestCollector" />
+  <provides type="function" name="AppendIterator::append" />
+  <provides type="function" name="AppendIterator::getInnerIterator" />
+  <provides type="function" name="AppendIterator::rewind" />
+  <provides type="function" name="AppendIterator::valid" />
+  <provides type="function" name="AppendIterator::current" />
+  <provides type="function" name="AppendIterator::key" />
+  <provides type="function" name="AppendIterator::next" />
+  <provides type="function" name="PHPUnit2_Runner_IncludePathTestCollector::collectTests" />
+  <provides type="function" name="PHPUnit2_Runner_IncludePathTestCollector::isTestClass" />
+  <provides type="class" name="PHPUnit2_Runner_StandardTestSuiteLoader" />
+  <provides type="function" name="PHPUnit2_Runner_StandardTestSuiteLoader::load" />
+  <provides type="function" name="PHPUnit2_Runner_StandardTestSuiteLoader::reload" />
+  <provides type="function" name="PHPUnit2_Runner_TestCollector::collectTests" />
+  <provides type="function" name="PHPUnit2_Runner_TestSuiteLoader::load" />
+  <provides type="function" name="PHPUnit2_Runner_TestSuiteLoader::reload" />
+  <provides type="class" name="PHPUnit2_Runner_Version" />
+  <provides type="function" name="PHPUnit2_Runner_Version::id" />
+  <provides type="function" name="PHPUnit2_Runner_Version::getVersionString" />
+  <provides type="class" name="PHPUnit2_TextUI_ResultPrinter" extends="PHPUnit2_Util_Printer" />
+  <provides type="function" name="PHPUnit2_TextUI_ResultPrinter::printResult" />
+  <provides type="function" name="PHPUnit2_TextUI_ResultPrinter::printDefects" />
+  <provides type="function" name="PHPUnit2_TextUI_ResultPrinter::printDefect" />
+  <provides type="function" name="PHPUnit2_TextUI_ResultPrinter::printDefectHeader" />
+  <provides type="function" name="PHPUnit2_TextUI_ResultPrinter::printDefectTrace" />
+  <provides type="function" name="PHPUnit2_TextUI_ResultPrinter::printErrors" />
+  <provides type="function" name="PHPUnit2_TextUI_ResultPrinter::printFailures" />
+  <provides type="function" name="PHPUnit2_TextUI_ResultPrinter::printIncompletes" />
+  <provides type="function" name="PHPUnit2_TextUI_ResultPrinter::printHeader" />
+  <provides type="function" name="PHPUnit2_TextUI_ResultPrinter::printFooter" />
+  <provides type="function" name="PHPUnit2_TextUI_ResultPrinter::printWaitPrompt" />
+  <provides type="function" name="PHPUnit2_TextUI_ResultPrinter::addError" />
+  <provides type="function" name="PHPUnit2_TextUI_ResultPrinter::addFailure" />
+  <provides type="function" name="PHPUnit2_TextUI_ResultPrinter::addIncompleteTest" />
+  <provides type="function" name="PHPUnit2_TextUI_ResultPrinter::startTestSuite" />
+  <provides type="function" name="PHPUnit2_TextUI_ResultPrinter::endTestSuite" />
+  <provides type="function" name="PHPUnit2_TextUI_ResultPrinter::startTest" />
+  <provides type="function" name="PHPUnit2_TextUI_ResultPrinter::endTest" />
+  <provides type="function" name="PHPUnit2_TextUI_ResultPrinter::nextColumn" />
+  <provides type="class" name="PHPUnit2_TextUI_TestRunner" extends="PHPUnit2_Runner_BaseTestRunner" />
+  <provides type="function" name="PHPUnit2_TextUI_TestRunner::main" />
+  <provides type="function" name="PHPUnit2_TextUI_TestRunner::start" />
+  <provides type="function" name="PHPUnit2_TextUI_TestRunner::run" />
+  <provides type="function" name="PHPUnit2_TextUI_TestRunner::runAndWait" />
+  <provides type="function" name="PHPUnit2_TextUI_TestRunner::createTestResult" />
+  <provides type="function" name="PHPUnit2_TextUI_TestRunner::doRun" />
+  <provides type="function" name="PHPUnit2_TextUI_TestRunner::getLoader" />
+  <provides type="function" name="PHPUnit2_TextUI_TestRunner::handleCodeCoverageInformation" />
+  <provides type="function" name="PHPUnit2_TextUI_TestRunner::showError" />
+  <provides type="function" name="PHPUnit2_TextUI_TestRunner::showHelp" />
+  <provides type="function" name="PHPUnit2_TextUI_TestRunner::pause" />
+  <provides type="function" name="PHPUnit2_TextUI_TestRunner::setPrinter" />
+  <provides type="function" name="PHPUnit2_TextUI_TestRunner::testStarted" />
+  <provides type="function" name="PHPUnit2_TextUI_TestRunner::testEnded" />
+  <provides type="function" name="PHPUnit2_TextUI_TestRunner::testFailed" />
+  <provides type="function" name="PHPUnit2_TextUI_TestRunner::runFailed" />
+  <provides type="function" name="PHPUnit2_TextUI_TestRunner::printVersionString" />
+  <provides type="class" name="PHPUnit2_Util_CodeCoverage_Renderer_HTML" extends="PHPUnit2_Util_CodeCoverage_Renderer" />
+  <provides type="function" name="PHPUnit2_Util_CodeCoverage_Renderer_HTML::header" />
+  <provides type="function" name="PHPUnit2_Util_CodeCoverage_Renderer_HTML::footer" />
+  <provides type="function" name="PHPUnit2_Util_CodeCoverage_Renderer_HTML::startSourceFile" />
+  <provides type="function" name="PHPUnit2_Util_CodeCoverage_Renderer_HTML::endSourceFile" />
+  <provides type="function" name="PHPUnit2_Util_CodeCoverage_Renderer_HTML::renderSourceFile" />
+  <provides type="class" name="PHPUnit2_Util_CodeCoverage_Renderer_Text" extends="PHPUnit2_Util_CodeCoverage_Renderer" />
+  <provides type="function" name="PHPUnit2_Util_CodeCoverage_Renderer_Text::startSourceFile" />
+  <provides type="function" name="PHPUnit2_Util_CodeCoverage_Renderer_Text::endSourceFile" />
+  <provides type="function" name="PHPUnit2_Util_CodeCoverage_Renderer_Text::renderSourceFile" />
+  <provides type="class" name="PHPUnit2_Util_CodeCoverage_Renderer" />
+  <provides type="function" name="PHPUnit2_Util_CodeCoverage_Renderer::factory" />
+  <provides type="function" name="PHPUnit2_Util_CodeCoverage_Renderer::render" />
+  <provides type="function" name="PHPUnit2_Util_CodeCoverage_Renderer::renderToFile" />
+  <provides type="function" name="PHPUnit2_Util_CodeCoverage_Renderer::getSummary" />
+  <provides type="function" name="PHPUnit2_Util_CodeCoverage_Renderer::header" />
+  <provides type="function" name="PHPUnit2_Util_CodeCoverage_Renderer::footer" />
+  <provides type="function" name="PHPUnit2_Util_CodeCoverage_Renderer::startSourceFile" />
+  <provides type="function" name="PHPUnit2_Util_CodeCoverage_Renderer::endSourceFile" />
+  <provides type="function" name="PHPUnit2_Util_CodeCoverage_Renderer::renderSourceFile" />
+  <provides type="class" name="PHPUnit2_Util_Log_PEAR" />
+  <provides type="function" name="PHPUnit2_Util_Log_PEAR::addError" />
+  <provides type="function" name="PHPUnit2_Util_Log_PEAR::addFailure" />
+  <provides type="function" name="PHPUnit2_Util_Log_PEAR::addIncompleteTest" />
+  <provides type="function" name="PHPUnit2_Util_Log_PEAR::startTestSuite" />
+  <provides type="function" name="PHPUnit2_Util_Log_PEAR::endTestSuite" />
+  <provides type="function" name="PHPUnit2_Util_Log_PEAR::startTest" />
+  <provides type="function" name="PHPUnit2_Util_Log_PEAR::endTest" />
+  <provides type="class" name="PHPUnit2_Util_Log_XML" extends="PHPUnit2_Util_Printer" />
+  <provides type="function" name="PHPUnit2_Util_Log_XML::addError" />
+  <provides type="function" name="PHPUnit2_Util_Log_XML::addFailure" />
+  <provides type="function" name="PHPUnit2_Util_Log_XML::addIncompleteTest" />
+  <provides type="function" name="PHPUnit2_Util_Log_XML::startTestSuite" />
+  <provides type="function" name="PHPUnit2_Util_Log_XML::endTestSuite" />
+  <provides type="function" name="PHPUnit2_Util_Log_XML::startTest" />
+  <provides type="function" name="PHPUnit2_Util_Log_XML::endTest" />
+  <provides type="function" name="PHPUnit2_Util_Log_XML::getXML" />
+  <provides type="function" name="PHPUnit2_Util_Log_XML::setWriteDocument" />
+  <provides type="class" name="PHPUnit2_Util_TestDox_ResultPrinter_HTML" extends="PHPUnit2_Util_TestDox_ResultPrinter" />
+  <provides type="function" name="PHPUnit2_Util_TestDox_ResultPrinter_HTML::startRun" />
+  <provides type="function" name="PHPUnit2_Util_TestDox_ResultPrinter_HTML::startClass" />
+  <provides type="function" name="PHPUnit2_Util_TestDox_ResultPrinter_HTML::onTest" />
+  <provides type="function" name="PHPUnit2_Util_TestDox_ResultPrinter_HTML::endClass" />
+  <provides type="function" name="PHPUnit2_Util_TestDox_ResultPrinter_HTML::endRun" />
+  <provides type="class" name="PHPUnit2_Util_TestDox_ResultPrinter_Text" extends="PHPUnit2_Util_TestDox_ResultPrinter" />
+  <provides type="function" name="PHPUnit2_Util_TestDox_ResultPrinter_Text::startClass" />
+  <provides type="function" name="PHPUnit2_Util_TestDox_ResultPrinter_Text::onTest" />
+  <provides type="function" name="PHPUnit2_Util_TestDox_ResultPrinter_Text::endClass" />
+  <provides type="class" name="PHPUnit2_Util_TestDox_NamePrettifier" />
+  <provides type="function" name="PHPUnit2_Util_TestDox_NamePrettifier::isATestMethod" />
+  <provides type="function" name="PHPUnit2_Util_TestDox_NamePrettifier::prettifyTestClass" />
+  <provides type="function" name="PHPUnit2_Util_TestDox_NamePrettifier::prettifyTestMethod" />
+  <provides type="function" name="PHPUnit2_Util_TestDox_NamePrettifier::setPrefix" />
+  <provides type="function" name="PHPUnit2_Util_TestDox_NamePrettifier::setSuffix" />
+  <provides type="class" name="PHPUnit2_Util_TestDox_ResultPrinter" extends="PHPUnit2_Util_Printer" />
+  <provides type="function" name="PHPUnit2_Util_TestDox_ResultPrinter::factory" />
+  <provides type="function" name="PHPUnit2_Util_TestDox_ResultPrinter::addError" />
+  <provides type="function" name="PHPUnit2_Util_TestDox_ResultPrinter::addFailure" />
+  <provides type="function" name="PHPUnit2_Util_TestDox_ResultPrinter::addIncompleteTest" />
+  <provides type="function" name="PHPUnit2_Util_TestDox_ResultPrinter::startTestSuite" />
+  <provides type="function" name="PHPUnit2_Util_TestDox_ResultPrinter::endTestSuite" />
+  <provides type="function" name="PHPUnit2_Util_TestDox_ResultPrinter::startTest" />
+  <provides type="function" name="PHPUnit2_Util_TestDox_ResultPrinter::endTest" />
+  <provides type="function" name="PHPUnit2_Util_TestDox_ResultPrinter::doEndClass" />
+  <provides type="function" name="PHPUnit2_Util_TestDox_ResultPrinter::startRun" />
+  <provides type="function" name="PHPUnit2_Util_TestDox_ResultPrinter::startClass" />
+  <provides type="function" name="PHPUnit2_Util_TestDox_ResultPrinter::onTest" />
+  <provides type="function" name="PHPUnit2_Util_TestDox_ResultPrinter::endClass" />
+  <provides type="function" name="PHPUnit2_Util_TestDox_ResultPrinter::endRun" />
+  <provides type="function" name="PHPUnit2_Util_ErrorHandler" />
+  <provides type="class" name="PHPUnit2_Util_Fileloader" />
+  <provides type="function" name="PHPUnit2_Util_Fileloader::checkAndLoad" />
+  <provides type="class" name="PHPUnit2_Util_Filter" />
+  <provides type="function" name="PHPUnit2_Util_Filter::addFileToFilter" />
+  <provides type="function" name="PHPUnit2_Util_Filter::removeFileFromFilter" />
+  <provides type="function" name="PHPUnit2_Util_Filter::getFilteredCodeCoverage" />
+  <provides type="function" name="PHPUnit2_Util_Filter::getFilteredStacktrace" />
+  <provides type="function" name="PHPUnit2_Util_Filter::getCanonicalFilename" />
+  <provides type="function" name="PHPUnit2_Util_Filter::isFiltered" />
+  <provides type="class" name="PHPUnit2_Util_Printer" />
+  <provides type="function" name="PHPUnit2_Util_Printer::write" />
+  <provides type="class" name="PHPUnit2_Util_Skeleton" />
+  <provides type="function" name="PHPUnit2_Util_Skeleton::generate" />
+  <provides type="function" name="PHPUnit2_Util_Skeleton::write" />
+  <provides type="function" name="PHPUnit2_Util_Skeleton::setTemplates" />
+  <provides type="function" name="PHPUnit2_Util_Skeleton::testClassHeader" />
+  <provides type="function" name="PHPUnit2_Util_Skeleton::testClassFooter" />
+  <provides type="function" name="PHPUnit2_Util_Skeleton::testMethod" />
+  <filelist>
+   <file role="php" baseinstalldir="PHPUnit2" md5sum="b593cbeb57f3bb09a35d9ed63bb24f69" name="Extensions/ExceptionTestCase.php">
+    <replace type="package-info" from="@package_version@" to="version"/>
+   </file>
+   <file role="php" baseinstalldir="PHPUnit2" md5sum="463d9351963bfd5ab7a203f5590df3bd" name="Extensions/PerformanceTestCase.php">
+    <replace type="package-info" from="@package_version@" to="version"/>
+   </file>
+   <file role="php" baseinstalldir="PHPUnit2" md5sum="f66a1dc6f0c468e1513ec11a6ca615e7" name="Extensions/RepeatedTest.php">
+    <replace type="package-info" from="@package_version@" to="version"/>
+   </file>
+   <file role="php" baseinstalldir="PHPUnit2" md5sum="c87656b94306c63d0f1aef5f3a067fd7" name="Extensions/TestDecorator.php">
+    <replace type="package-info" from="@package_version@" to="version"/>
+   </file>
+   <file role="php" baseinstalldir="PHPUnit2" md5sum="ae3c4f233afd34295b735e6d17c56c5b" name="Extensions/TestSetup.php">
+    <replace type="package-info" from="@package_version@" to="version"/>
+   </file>
+   <file role="php" baseinstalldir="PHPUnit2" md5sum="68bfa832424fb0aece3bd77d5e802e84" name="Framework/Assert.php">
+    <replace type="package-info" from="@package_version@" to="version"/>
+   </file>
+   <file role="php" baseinstalldir="PHPUnit2" md5sum="6494bd0efb3b141cbb8a0f07e6895fe7" name="Framework/AssertionFailedError.php">
+    <replace type="package-info" from="@package_version@" to="version"/>
+   </file>
+   <file role="php" baseinstalldir="PHPUnit2" md5sum="a98889da0aa741ad74e5d9b725f3c883" name="Framework/Error.php">
+    <replace type="package-info" from="@package_version@" to="version"/>
+   </file>
+   <file role="php" baseinstalldir="PHPUnit2" md5sum="0635b9e5152832e72ac4496d50809221" name="Framework/ComparisonFailure.php">
+    <replace type="package-info" from="@package_version@" to="version"/>
+   </file>
+   <file role="php" baseinstalldir="PHPUnit2" md5sum="5cd56c92a545f5fdb2b5d15108051a26" name="Framework/IncompleteTest.php">
+    <replace type="package-info" from="@package_version@" to="version"/>
+   </file>
+   <file role="php" baseinstalldir="PHPUnit2" md5sum="46acbc0eadd7b7485ba9f074abd0d6b2" name="Framework/IncompleteTestError.php">
+    <replace type="package-info" from="@package_version@" to="version"/>
+   </file>
+   <file role="php" baseinstalldir="PHPUnit2" md5sum="eac2af0d744451c5207dc0a6fb01e89c" name="Framework/Test.php">
+    <replace type="package-info" from="@package_version@" to="version"/>
+   </file>
+   <file role="php" baseinstalldir="PHPUnit2" md5sum="15d93607fd4246b4424e3b24e8fe2d0a" name="Framework/TestCase.php">
+    <replace type="package-info" from="@package_version@" to="version"/>
+   </file>
+   <file role="php" baseinstalldir="PHPUnit2" md5sum="9e1c8ca9e96e86c97c347831df3d3948" name="Framework/TestFailure.php">
+    <replace type="package-info" from="@package_version@" to="version"/>
+   </file>
+   <file role="php" baseinstalldir="PHPUnit2" md5sum="f3c6feb3ab438fe0c854b4c77c47e5d6" name="Framework/TestListener.php">
+    <replace type="package-info" from="@package_version@" to="version"/>
+   </file>
+   <file role="php" baseinstalldir="PHPUnit2" md5sum="4d16ea0a8eb5bcd1d9bbbe34031a6b14" name="Framework/TestResult.php">
+    <replace type="package-info" from="@package_version@" to="version"/>
+   </file>
+   <file role="php" baseinstalldir="PHPUnit2" md5sum="91def30b3ab49336be4ebdd5d216c5bb" name="Framework/TestSuite.php">
+    <replace type="package-info" from="@package_version@" to="version"/>
+   </file>
+   <file role="php" baseinstalldir="PHPUnit2" md5sum="d65cae97254f98c4fc31be7bf610f8c3" name="Framework/Warning.php">
+    <replace type="package-info" from="@package_version@" to="version"/>
+   </file>
+   <file role="php" baseinstalldir="PHPUnit2" md5sum="d58485577900bbe5ccbc1859d97a8557" name="Runner/BaseTestRunner.php">
+    <replace type="package-info" from="@package_version@" to="version"/>
+   </file>
+   <file role="php" baseinstalldir="PHPUnit2" md5sum="a8345b15887c7c48120ef0409901792e" name="Runner/IncludePathTestCollector.php">
+    <replace type="package-info" from="@package_version@" to="version"/>
+   </file>
+   <file role="php" baseinstalldir="PHPUnit2" md5sum="6861c5bea833162a47e27d38b5257822" name="Runner/StandardTestSuiteLoader.php">
+    <replace type="package-info" from="@package_version@" to="version"/>
+   </file>
+   <file role="php" baseinstalldir="PHPUnit2" md5sum="cb272ab7667805f62f0ae8e402c3c85c" name="Runner/TestCollector.php">
+    <replace type="package-info" from="@package_version@" to="version"/>
+   </file>
+   <file role="php" baseinstalldir="PHPUnit2" md5sum="d89a206f4da5b1a5952fca967f0eb182" name="Runner/TestSuiteLoader.php">
+    <replace type="package-info" from="@package_version@" to="version"/>
+   </file>
+   <file role="php" baseinstalldir="PHPUnit2" md5sum="f8fad1042ec119f2ceffa6fbda45a264" name="Runner/Version.php">
+    <replace type="package-info" from="@package_version@" to="version"/>
+   </file>
+   <file role="doc" baseinstalldir="PHPUnit2" md5sum="a2d1daa66eaffafe4960be8640b07e1f" name="Samples/BankAccount/BankAccount.php">
+    <replace type="package-info" from="@package_version@" to="version"/>
+   </file>
+   <file role="doc" baseinstalldir="PHPUnit2" md5sum="19035b18cb5b656c7a64e969d97047ed" name="Samples/BankAccount/BankAccountTest.php">
+    <replace type="package-info" from="@package_version@" to="version"/>
+   </file>
+   <file role="doc" baseinstalldir="PHPUnit2" md5sum="85e78dea16df9c6fef3d59ba932c2997" name="Samples/Money/IMoney.php">
+    <replace type="package-info" from="@package_version@" to="version"/>
+   </file>
+   <file role="doc" baseinstalldir="PHPUnit2" md5sum="25fdb102eae1b149b7d3a149a348d020" name="Samples/Money/Money.php">
+    <replace type="package-info" from="@package_version@" to="version"/>
+   </file>
+   <file role="doc" baseinstalldir="PHPUnit2" md5sum="77efe77f2e9bbfda1ae71face77127c2" name="Samples/Money/MoneyBag.php">
+    <replace type="package-info" from="@package_version@" to="version"/>
+   </file>
+   <file role="doc" baseinstalldir="PHPUnit2" md5sum="2040b14602a236d6c52c7515c77d6407" name="Samples/Money/MoneyTest.php">
+    <replace type="package-info" from="@package_version@" to="version"/>
+   </file>
+   <file role="test" baseinstalldir="PHPUnit2" md5sum="37e8536e6cc6c32b4e20bd7691f610a6" name="Tests/Framework/AllTests.php">
+    <replace type="package-info" from="@package_version@" to="version"/>
+   </file>
+   <file role="test" baseinstalldir="PHPUnit2" md5sum="cdf308f8fa937dc6e9e284451c39f794" name="Tests/Framework/AssertTest.php">
+    <replace type="package-info" from="@package_version@" to="version"/>
+   </file>
+   <file role="test" baseinstalldir="PHPUnit2" md5sum="86cfcf6e4a8751c9c64243b6e80786ab" name="Tests/Framework/ComparisonFailureTest.php">
+    <replace type="package-info" from="@package_version@" to="version"/>
+   </file>
+   <file role="test" baseinstalldir="PHPUnit2" md5sum="cdbf3a457168ef2aba282069d14e96c1" name="Tests/Framework/SuiteTest.php">
+    <replace type="package-info" from="@package_version@" to="version"/>
+   </file>
+   <file role="test" baseinstalldir="PHPUnit2" md5sum="96e74bb631369cfc078b9c89522a1f9c" name="Tests/Framework/TestCaseTest.php">
+    <replace type="package-info" from="@package_version@" to="version"/>
+   </file>
+   <file role="test" baseinstalldir="PHPUnit2" md5sum="c9e599995367923995e7c4f89b7fea1f" name="Tests/Framework/TestImplementorTest.php">
+    <replace type="package-info" from="@package_version@" to="version"/>
+   </file>
+   <file role="test" baseinstalldir="PHPUnit2" md5sum="d136b1857c7f792b000edf39dc9455ab" name="Tests/Framework/TestListenerTest.php">
+    <replace type="package-info" from="@package_version@" to="version"/>
+   </file>
+   <file role="test" baseinstalldir="PHPUnit2" md5sum="9ec339ac1aaf4b7d6fb3815e7aaa5e5c" name="Tests/Extensions/AllTests.php">
+    <replace type="package-info" from="@package_version@" to="version"/>
+   </file>
+   <file role="test" baseinstalldir="PHPUnit2" md5sum="8356dec752e095244e4980bd6db2accf" name="Tests/Extensions/ExceptionTestCaseTest.php">
+    <replace type="package-info" from="@package_version@" to="version"/>
+   </file>
+   <file role="test" baseinstalldir="PHPUnit2" md5sum="1ff7607a474a2dd222808c9ce0779718" name="Tests/Extensions/ExtensionTest.php">
+    <replace type="package-info" from="@package_version@" to="version"/>
+   </file>
+   <file role="test" baseinstalldir="PHPUnit2" md5sum="e6b49c0c6efadd1be34b8dc309cec3b6" name="Tests/Extensions/PerformanceTestCaseTest.php">
+    <replace type="package-info" from="@package_version@" to="version"/>
+   </file>
+   <file role="test" baseinstalldir="PHPUnit2" md5sum="5df139263ce4149786239661d56d8806" name="Tests/Extensions/RepeatedTestTest.php">
+    <replace type="package-info" from="@package_version@" to="version"/>
+   </file>
+   <file role="test" baseinstalldir="PHPUnit2" md5sum="2310616a82bc804022e8b0449dd7545f" name="Tests/Runner/AllTests.php">
+    <replace type="package-info" from="@package_version@" to="version"/>
+   </file>
+   <file role="test" baseinstalldir="PHPUnit2" md5sum="1a8b026d05d6c8431f1fe0ef06a99a7c" name="Tests/Runner/BaseTestRunnerTest.php">
+    <replace type="package-info" from="@package_version@" to="version"/>
+   </file>
+   <file role="test" baseinstalldir="PHPUnit2" md5sum="3579496ddb6ce6acc4ea76c685298a41" name="Tests/Util/TestDox/AllTests.php">
+    <replace type="package-info" from="@package_version@" to="version"/>
+   </file>
+   <file role="test" baseinstalldir="PHPUnit2" md5sum="1407f434ed38954996156775a16f8f7b" name="Tests/Util/TestDox/NamePrettifierTest.php">
+    <replace type="package-info" from="@package_version@" to="version"/>
+   </file>
+   <file role="test" baseinstalldir="PHPUnit2" md5sum="fa658348b2b8b54dd0ee9556ab9042aa" name="Tests/AllTests.php">
+    <replace type="package-info" from="@package_version@" to="version"/>
+   </file>
+   <file role="test" baseinstalldir="PHPUnit2" md5sum="2b0b37a392c527070b9a61c87f9fb014" name="Tests/DoubleTestCase.php">
+    <replace type="package-info" from="@package_version@" to="version"/>
+   </file>
+   <file role="test" baseinstalldir="PHPUnit2" md5sum="5d4ceee837780950d5766af1342cc284" name="Tests/Error.php">
+    <replace type="package-info" from="@package_version@" to="version"/>
+   </file>
+   <file role="test" baseinstalldir="PHPUnit2" md5sum="097fa273701a955622c88e0c1ec645f5" name="Tests/Failure.php">
+    <replace type="package-info" from="@package_version@" to="version"/>
+   </file>
+   <file role="test" baseinstalldir="PHPUnit2" md5sum="50baa2ea74d42a9f17bc2e20e84f699d" name="Tests/InheritedTestCase.php">
+    <replace type="package-info" from="@package_version@" to="version"/>
+   </file>
+   <file role="test" baseinstalldir="PHPUnit2" md5sum="395ae0b63b9adeae803b49fae7e9ced6" name="Tests/MockRunner.php">
+    <replace type="package-info" from="@package_version@" to="version"/>
+   </file>
+   <file role="test" baseinstalldir="PHPUnit2" md5sum="1ba0a04837e8d671400da73fc146ba28" name="Tests/NoArgTestCaseTest.php">
+    <replace type="package-info" from="@package_version@" to="version"/>
+   </file>
+   <file role="test" baseinstalldir="PHPUnit2" md5sum="a3d22d54194ed8d2843111a3f7783eba" name="Tests/NonStatic.php">
+    <replace type="package-info" from="@package_version@" to="version"/>
+   </file>
+   <file role="test" baseinstalldir="PHPUnit2" md5sum="02d3dee913b284cc4778f574006350b1" name="Tests/NoTestCaseClass.php">
+    <replace type="package-info" from="@package_version@" to="version"/>
+   </file>
+   <file role="test" baseinstalldir="PHPUnit2" md5sum="af7e741142cee0b32b59b4cbfb9ab735" name="Tests/NoTestCases.php">
+    <replace type="package-info" from="@package_version@" to="version"/>
+   </file>
+   <file role="test" baseinstalldir="PHPUnit2" md5sum="5df576b93bc53f9d76cdcfd77149d585" name="Tests/NotPublicTestCase.php">
+    <replace type="package-info" from="@package_version@" to="version"/>
+   </file>
+   <file role="test" baseinstalldir="PHPUnit2" md5sum="9d01ba4f2d71050f72205dcaa6b03bcd" name="Tests/NotVoidTestCase.php">
+    <replace type="package-info" from="@package_version@" to="version"/>
+   </file>
+   <file role="test" baseinstalldir="PHPUnit2" md5sum="811a8dca22480a6969eeb2bc15bedc57" name="Tests/OneTestCase.php">
+    <replace type="package-info" from="@package_version@" to="version"/>
+   </file>
+   <file role="test" baseinstalldir="PHPUnit2" md5sum="52578a50b430515865045da477af48aa" name="Tests/OverrideTestCase.php">
+    <replace type="package-info" from="@package_version@" to="version"/>
+   </file>
+   <file role="test" baseinstalldir="PHPUnit2" md5sum="c048e3b8aa138a020eb2cd5fb1512a50" name="Tests/SetupFailure.php">
+    <replace type="package-info" from="@package_version@" to="version"/>
+   </file>
+   <file role="test" baseinstalldir="PHPUnit2" md5sum="413e774c030c93add65a0571b7a434ee" name="Tests/Sleep.php">
+    <replace type="package-info" from="@package_version@" to="version"/>
+   </file>
+   <file role="test" baseinstalldir="PHPUnit2" md5sum="71d9b9774eb4ad915b4a0c0181a5f4f0" name="Tests/Success.php">
+    <replace type="package-info" from="@package_version@" to="version"/>
+   </file>
+   <file role="test" baseinstalldir="PHPUnit2" md5sum="e41426b8c187a50b2f4b81b93759ee1c" name="Tests/TearDownFailure.php">
+    <replace type="package-info" from="@package_version@" to="version"/>
+   </file>
+   <file role="test" baseinstalldir="PHPUnit2" md5sum="ab9ab330375be359b6763e20fe781b47" name="Tests/TestIterator.php">
+    <replace type="package-info" from="@package_version@" to="version"/>
+   </file>
+   <file role="test" baseinstalldir="PHPUnit2" md5sum="03c337383a9d0cfe5c1e1a488b176e13" name="Tests/ThrowExceptionTestCase.php">
+    <replace type="package-info" from="@package_version@" to="version"/>
+   </file>
+   <file role="test" baseinstalldir="PHPUnit2" md5sum="c6f9dcbe793f3bb73f3e44a30f3ab2d1" name="Tests/ThrowNoExceptionTestCase.php">
+    <replace type="package-info" from="@package_version@" to="version"/>
+   </file>
+   <file role="test" baseinstalldir="PHPUnit2" md5sum="4d66f3f5549de2230b24bb8e28f0386c" name="Tests/TornDown.php">
+    <replace type="package-info" from="@package_version@" to="version"/>
+   </file>
+   <file role="test" baseinstalldir="PHPUnit2" md5sum="8c2ee8997bbe6191ec65d3939e398607" name="Tests/TornDown2.php">
+    <replace type="package-info" from="@package_version@" to="version"/>
+   </file>
+   <file role="test" baseinstalldir="PHPUnit2" md5sum="e455acde73bd78fe5075de254f548d51" name="Tests/TornDown3.php">
+    <replace type="package-info" from="@package_version@" to="version"/>
+   </file>
+   <file role="test" baseinstalldir="PHPUnit2" md5sum="08d79e76842bdac8911b53f51a3d40b9" name="Tests/TornDown4.php">
+    <replace type="package-info" from="@package_version@" to="version"/>
+   </file>
+   <file role="test" baseinstalldir="PHPUnit2" md5sum="ecc18f53995a1e7ada2f5374d911bb3b" name="Tests/TornDown5.php">
+    <replace type="package-info" from="@package_version@" to="version"/>
+   </file>
+   <file role="test" baseinstalldir="PHPUnit2" md5sum="b2fd6cec116811e9c83aba7aec1bca30" name="Tests/TornDown6.php">
+    <replace type="package-info" from="@package_version@" to="version"/>
+   </file>
+   <file role="test" baseinstalldir="PHPUnit2" md5sum="c4a933d170bf97eb7167fdcf6bd9ba45" name="Tests/WasRun.php">
+    <replace type="package-info" from="@package_version@" to="version"/>
+   </file>
+   <file role="php" baseinstalldir="PHPUnit2" md5sum="de6ab7a3c950b330fbd7ecfe590a3131" name="TextUI/ResultPrinter.php">
+    <replace type="package-info" from="@package_version@" to="version"/>
+   </file>
+   <file role="php" baseinstalldir="PHPUnit2" md5sum="bc0d58d4a4c371c4eaa57ff1207799ee" name="TextUI/TestRunner.php">
+    <replace type="package-info" from="@package_version@" to="version"/>
+   </file>
+   <file role="php" baseinstalldir="PHPUnit2" md5sum="50f0eeaca5336e60fcc0cf6215322315" name="Util/CodeCoverage/Renderer/HTML.php">
+    <replace type="package-info" from="@package_version@" to="version"/>
+   </file>
+   <file role="php" baseinstalldir="PHPUnit2" md5sum="3da53f107e880980a8d666039e31dca2" name="Util/CodeCoverage/Renderer/Text.php">
+    <replace type="package-info" from="@package_version@" to="version"/>
+   </file>
+   <file role="php" baseinstalldir="PHPUnit2" md5sum="b72a72004ad307640bf8a136c278b9dc" name="Util/CodeCoverage/Renderer.php">
+    <replace type="package-info" from="@package_version@" to="version"/>
+   </file>
+   <file role="php" baseinstalldir="PHPUnit2" md5sum="656a4648fb3ecb2529ca59b1b2ada742" name="Util/Log/PEAR.php">
+    <replace type="package-info" from="@package_version@" to="version"/>
+   </file>
+   <file role="php" baseinstalldir="PHPUnit2" md5sum="81964ca6424c93b27022e8d09a87facb" name="Util/Log/XML.php">
+    <replace type="package-info" from="@package_version@" to="version"/>
+   </file>
+   <file role="php" baseinstalldir="PHPUnit2" md5sum="a9c55cecf30971ee9e3a850798d52533" name="Util/TestDox/ResultPrinter/HTML.php">
+    <replace type="package-info" from="@package_version@" to="version"/>
+   </file>
+   <file role="php" baseinstalldir="PHPUnit2" md5sum="7ba7fb55aedc1f53c84ef1e4f8b7b232" name="Util/TestDox/ResultPrinter/Text.php">
+    <replace type="package-info" from="@package_version@" to="version"/>
+   </file>
+   <file role="php" baseinstalldir="PHPUnit2" md5sum="1bd47fb092480be8536505d66c5bccde" name="Util/TestDox/NamePrettifier.php">
+    <replace type="package-info" from="@package_version@" to="version"/>
+   </file>
+   <file role="php" baseinstalldir="PHPUnit2" md5sum="87a328357fc60b75c653a6d35d9c00d3" name="Util/TestDox/ResultPrinter.php">
+    <replace type="package-info" from="@package_version@" to="version"/>
+   </file>
+   <file role="php" baseinstalldir="PHPUnit2" md5sum="dc825da6288cec41ef26d06d9106adb9" name="Util/ErrorHandler.php">
+    <replace type="package-info" from="@package_version@" to="version"/>
+   </file>
+   <file role="php" baseinstalldir="PHPUnit2" md5sum="6da2eadc90b782c4facaf098c0682ffb" name="Util/Fileloader.php">
+    <replace type="package-info" from="@package_version@" to="version"/>
+   </file>
+   <file role="php" baseinstalldir="PHPUnit2" md5sum="05d5c950f42026ac44223aed5df87625" name="Util/Filter.php">
+    <replace type="package-info" from="@package_version@" to="version"/>
+   </file>
+   <file role="php" baseinstalldir="PHPUnit2" md5sum="cf74e796207bbb93e45e6a553299472c" name="Util/Printer.php">
+    <replace type="package-info" from="@package_version@" to="version"/>
+   </file>
+   <file role="php" baseinstalldir="PHPUnit2" md5sum="9c92ad30de7843615f5ba1559ae9dcea" name="Util/Skeleton.php">
+    <replace type="package-info" from="@package_version@" to="version"/>
+   </file>
+   <file role="script" baseinstalldir="/" md5sum="484397bf59da8c84d36a5cc648fa9e39" install-as="phpunit" name="pear-phpunit">
+    <replace type="pear-config" from="@php_bin@" to="php_bin"/>
+    <replace type="package-info" from="@package_version@" to="version"/>
+   </file>
+   <file role="script" baseinstalldir="/" md5sum="19b79b2c350bc4abf32d5435ff9d7a51" platform="windows" install-as="phpunit.bat" name="pear-phpunit.bat">
+    <replace type="pear-config" from="@php_bin@" to="php_bin"/>
+    <replace type="pear-config" from="@php_dir@" to="php_dir"/>
+    <replace type="package-info" from="@package_version@" to="version"/>
+   </file>
+  </filelist>
+ </release>
+</package>
