@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE package SYSTEM "http://pear.php.net/dtd/package-1.0">
+<package version="1.0">
+  <name>PHPUnit</name>
+  <summary>Regression testing framework for unit tests.</summary>
+  <description>PHPUnit is a regression testing framework used by the developer who implements unit tests in PHP.</description>
+  <maintainers>
+    <maintainer>
+      <user>sebastian</user>
+      <name>Sebastian Bergmann</name>
+      <email>sb@sebastian-bergmann.de</email>
+      <role>lead</role>
+    </maintainer>
+  </maintainers>
+  <release>
+    <version>1.1.0</version>
+    <date>2004-09-29</date>
+    <license>PHP License</license>
+    <state>stable</state>
+    <notes>+ Added PHPUnit_Skeleton class for creating a PHPUnit_TestCase skeleton file. (Patch by Scott Mattocks &lt;scott@crisscott.com&gt;)
+
++ Added PHPUnit_Assert::assertContains() and PHPUnit_Assert::assertNotContains() methods to assert that an array contains (or not contains) a given object or string or that a string contains (or not contains) a given substring.
+
++ Added PHPUnit_Assert::assertNotRegexp() to assert that a string does not match a given regular expression.
+
+- Removed PHPUnit_Assert::assertSame() and PHPUnit_Assert::assertNotSame() since these assertion methods do not work with PHP 4.</notes>
+    <filelist>
+      <file role="php" baseinstalldir="/" md5sum="a9515753e2a9bbe17aebe708ff76eec9" name="PHPUnit.php"/>
+      <file role="php" md5sum="fed5d25b638c3e75b1216ddc665fe5a2" name="PHPUnit/GUI/HTML.php"/>
+      <file role="php" md5sum="5c7ca5bf8904fd3fd011337813d1ef1a" name="PHPUnit/GUI/HTML.tpl"/>
+      <file role="php" md5sum="3f5bc3cfb275623f1ad24a6d6bd25fa2" name="PHPUnit/GUI/SetupDecorator.php"/>
+      <file role="php" md5sum="b8fbf31651da67c5716b8bdd9589c433" name="PHPUnit/Assert.php"/>
+      <file role="php" md5sum="697cf9905edab57659c334b9b7fd1baa" name="PHPUnit/RepeatedTest.php"/>
+      <file role="php" md5sum="9b18353ec5b68b40a3e130a138c85576" name="PHPUnit/Skeleton.php"/>
+      <file role="php" md5sum="5aa302cd5f77439947a1e077e5e41e9b" name="PHPUnit/TestCase.php"/>
+      <file role="php" md5sum="ada2b895392d28ac6527f0576870baca" name="PHPUnit/TestDecorator.php"/>
+      <file role="php" md5sum="f15f9a49d294c23f651f0c8a93d03f3e" name="PHPUnit/TestFailure.php"/>
+      <file role="php" md5sum="06d667b80867554ed67eb61c6a85aa31" name="PHPUnit/TestListener.php"/>
+      <file role="php" md5sum="f580b0e2f6a0a823b986c65470912841" name="PHPUnit/TestResult.php"/>
+      <file role="php" md5sum="1fd0cfd02197cc7f848133636761ab1f" name="PHPUnit/TestSuite.php"/>
+    </filelist>
+  </release>
+  <changelog>
+    <release>
+      <version>1.0.2</version>
+      <date>2004-09-21</date>
+      <state>stable</state>
+      <notes>* Added/fixed phpDocumentor code documentation.
+
+      
+</notes>
+    </release>
+    <release>
+      <version>1.0.1</version>
+      <date>2004-04-17</date>
+      <state>stable</state>
+      <notes>* Fixed a bug that let the HTML GUI fail for expected and/or actual results with newline characters. (Patch by Thiemo Maettig &lt;thiemo.maettig@gmx.de&gt;)
+
+* Fixed bug #1169.
+
+      
+</notes>
+    </release>
+    <release>
+      <version>1.0.0</version>
+      <date>2004-03-15</date>
+      <state>stable</state>
+      <notes>* No functional changes since PHPUnit-0.6.2.
+
+      
+</notes>
+    </release>
+    <release>
+      <version>0.6.2</version>
+      <date>2003-06-21</date>
+      <notes>* Fixed PHPUnit_Assert::assertType().
+
+      
+</notes>
+    </release>
+    <release>
+      <version>0.6.1</version>
+      <date>2003-05-15</date>
+      <notes>+ Added assertType() assertion method.
+
+* Fixed parse error in GUI/HTML.php that occured with PHP 5.
+
+* Fixed a layout issue in the HTML GUI.
+
+      
+</notes>
+    </release>
+    <release>
+      <version>0.6</version>
+      <date>2003-04-25</date>
+      <notes>* Fixed bug that caused the constructor detection in PHPUnit_TestSuite to fail with upper-case class names.
+
+* Fixed bug with multiple assertions per Test Case.
+
+* call_user_func() was called with a copy instead of a reference in PHPUnit_TestCase::runTest().
+
+* Assertion methods append the generated actual/expected message to a user-defined message, rather than overwriting it.
+
+* Constructors are now excluded from automatic TestCase creation in TestSuite::addTestSuite(). (Patch by Wolfram Kriesing &lt;wolfram@kriesing.de&gt;.)
+
+* serialize() was called twice in PHPUnit_Assert::assertEquals().
+
+      
+</notes>
+    </release>
+    <release>
+      <version>0.5</version>
+      <date>2003-03-26</date>
+      <notes>+ Added new HTML GUI. (Patch by Wolfram Kriesing &lt;wolfram@kriesing.de&gt;.)
+
++ Added &quot;loosely typed&quot; mode to assertEquals() that can be turned on/off using setLooselyTyped(). When activated, array elements are cast to strings before comparison.
+
+* Allow multiple assertions per Test Case.
+
+* Use call_user_func() instead of $object-&gt;$method().
+
+      
+</notes>
+    </release>
+    <release>
+      <version>0.4</version>
+      <date>2002-09-25</date>
+      <notes>+ Added PHPUnit_Assert::assertFalse() and PHPUnit_Assert::assertNotSame(). JUnit introduced those two convenience methods in the JUnit 3.8 release.
+
+* Fixed directory structure.
+
+      
+</notes>
+    </release>
+    <release>
+      <version>0.3</version>
+      <date>2002-07-12</date>
+      <notes>* Added PHPUnit_TestDecorator and PHPUnit_RepeatedTest.
+
+* Implemented PHPUnit_TestResult::addListener() and PHPUnit_TestResult::removeListener().
+
+* Added object support to PHPUnit_Assert::assertEquals().
+
+* Implemented PHPUnit_Assert::assertSame() using Zend Engine 2 object handles.
+
+      
+</notes>
+    </release>
+    <release>
+      <version>0.2</version>
+      <date>2002-07-11</date>
+      <notes>* Added Array support to PHPUnit_Assert::equals(). (Patch by Wolfram Kriesing &lt;wolfram@kriesing.de&gt;)
+
+* Added PHPUnit_Assert::assertRegExp(). (Patch by M@rms &lt;marms@marms.com&gt;)
+
+      
+</notes>
+    </release>
+    <release>
+      <version>0.1</version>
+      <date>2002-04-06</date>
+      <notes>First release.
+
+      
+</notes>
+    </release>
+  </changelog>
+</package>
