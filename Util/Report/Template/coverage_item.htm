@@ -1,0 +1,14 @@
+        <tr>
+          <td class="coverFile">{link}</td>
+          <td class="coverBar" align="center">
+            <table border="0" cellspacing="0" cellpadding="1">
+              <tr>
+                <td class="coverBarOutline"><img src="{color}.png" width="{executed_width}" height="10" alt="{executed_percent} %"><img src="snow.png" width="{not_executed_width}" height="10" alt="{executed_percent}%"></td>
+              </tr>
+            </table>
+          </td>
+    
+          <td class="coverPer{level}">{executed_percent}%</td>
+          <td class="coverNum{level}">{executed_lines} / {executable_lines} lines</td>
+        </tr>
+{details}
