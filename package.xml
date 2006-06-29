@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE package SYSTEM "http://pear.php.net/dtd/package-1.0">
+<package version="1.0">
+  <name>PHPUnit2</name>
+  <summary>Regression testing framework for unit tests.</summary>
+  <description>PHPUnit is a regression testing framework used by the developer
+who implements unit tests in PHP. It is based upon JUnit, which
+can be found at http://www.junit.org/.</description>
+  <maintainers>
+    <maintainer>
+      <user>sebastian</user>
+      <name>Sebastian Bergmann</name>
+      <email>sb@sebastian-bergmann.de</email>
+      <role>lead</role>
+    </maintainer>
+  </maintainers>
+  <release>
+    <version>2.0.0</version>
+    <date>2004-07-14</date>
+    <license>PHP License</license>
+    <state>stable</state>
+    <notes>* Fixed a bug in PHPUnit2_Framework_TestCase::runTest().
+
+* Fixed a bug in PHPUnit2_Framework_ComparisonFailure::toString().
+
+* Fixed a bug in PHPUnit2_TextUI_TestRunner::start().
+
+! First stable release.</notes>
+    <deps>
+      <dep type="php" rel="ge" version="5"/>
+      <dep type="ext" rel="has" optional="yes">Xdebug</dep>
+      <dep type="pkg" rel="has" optional="yes">Benchmark</dep>
+      <dep type="pkg" rel="has" optional="yes">PHPUnit2_TestDox</dep>
+    </deps>
+    <filelist>
+      <file role="php" baseinstalldir="PHPUnit2" md5sum="8ace49861dbcc849674a86a796523ae1" name="Extensions/ExceptionTestCase.php"/>
+      <file role="php" baseinstalldir="PHPUnit2" md5sum="2e2f8ba32084259111102d3dc6396c95" name="Extensions/RepeatedTest.php"/>
+      <file role="php" baseinstalldir="PHPUnit2" md5sum="3ecfcbb707ae28cece46f4d9c0133774" name="Extensions/TestDecorator.php"/>
+      <file role="php" baseinstalldir="PHPUnit2" md5sum="68f049998ffcbe0f97315385b19730be" name="Extensions/TestSetup.php"/>
+      <file role="php" baseinstalldir="PHPUnit2" md5sum="c1d2b3443cd08e871d1f49b9eab9609d" name="Framework/Assert.php"/>
+      <file role="php" baseinstalldir="PHPUnit2" md5sum="657f5871bc9c86d0e37d247b284bfd37" name="Framework/AssertionFailedError.php"/>
+      <file role="php" baseinstalldir="PHPUnit2" md5sum="9ea21f8d72dd1e29150521b8151bb74a" name="Framework/ComparisonFailure.php"/>
+      <file role="php" baseinstalldir="PHPUnit2" md5sum="58c506c6d57322ca46fe100f0f1f60e8" name="Framework/IncompleteTest.php"/>
+      <file role="php" baseinstalldir="PHPUnit2" md5sum="877ed8ef47332f79dd6a858a063f54b0" name="Framework/IncompleteTestError.php"/>
+      <file role="php" baseinstalldir="PHPUnit2" md5sum="d9dcc4062acfb3ec42ceefd7a70208a2" name="Framework/Test.php"/>
+      <file role="php" baseinstalldir="PHPUnit2" md5sum="e0d4c4233336e5ae041d594da32457a6" name="Framework/TestCase.php"/>
+      <file role="php" baseinstalldir="PHPUnit2" md5sum="4ca0fae50328c54df4029cdfd55dd6e9" name="Framework/TestFailure.php"/>
+      <file role="php" baseinstalldir="PHPUnit2" md5sum="1e9fd6da1ca0ec885d4991ebfe07b72c" name="Framework/TestListener.php"/>
+      <file role="php" baseinstalldir="PHPUnit2" md5sum="bc0dd39b4bb0d0f4ddd036ca055b41c6" name="Framework/TestResult.php"/>
+      <file role="php" baseinstalldir="PHPUnit2" md5sum="96b8bf3c001bc5826f81426d60218a46" name="Framework/TestSuite.php"/>
+      <file role="php" baseinstalldir="PHPUnit2" md5sum="3476f27cabcd59f4f972c3cf566659c8" name="Framework/Warning.php"/>
+      <file role="php" baseinstalldir="PHPUnit2" md5sum="0e5885a3bac2acc348eb95475dbf67e5" name="Runner/BaseTestRunner.php"/>
+      <file role="php" baseinstalldir="PHPUnit2" md5sum="9ffaa60589dcf920d767eaf3dee4f7a1" name="Runner/StandardTestSuiteLoader.php"/>
+      <file role="php" baseinstalldir="PHPUnit2" md5sum="298a324e439910e704cc9221c7785a93" name="Runner/TestCollector.php"/>
+      <file role="php" baseinstalldir="PHPUnit2" md5sum="03991a179c2f95a214b140f65ec1883d" name="Runner/TestRunListener.php"/>
+      <file role="php" baseinstalldir="PHPUnit2" md5sum="f9ba448c64716e26be9e8f12a20787bc" name="Runner/TestSuiteLoader.php"/>
+      <file role="php" baseinstalldir="PHPUnit2" md5sum="a7588f5138ad9ddec4d913eabb8ef952" name="Runner/Version.php">
+        <replace type="package-info" from="@version@" to="version"/>
+      </file>
+      <file role="php" baseinstalldir="PHPUnit2" md5sum="dc0fa1c2d85e3fb278a90379e7551af2" name="Tests/Framework/AllTests.php"/>
+      <file role="php" baseinstalldir="PHPUnit2" md5sum="2da6e480318a96e72c1bea525f2b9dcf" name="Tests/Framework/AssertTest.php"/>
+      <file role="php" baseinstalldir="PHPUnit2" md5sum="e8ba097d4cf0578db9903ef66abe0f7a" name="Tests/Framework/ComparisonFailureTest.php"/>
+      <file role="php" baseinstalldir="PHPUnit2" md5sum="85bf057c58e3a99c449795babc474b15" name="Tests/Framework/NoArgTestCaseTest.php"/>
+      <file role="php" baseinstalldir="PHPUnit2" md5sum="79eee5f4ea0553ad132991479b1289bf" name="Tests/Framework/SuiteTest.php"/>
+      <file role="php" baseinstalldir="PHPUnit2" md5sum="dafa43159992e59f03c17835c9451a45" name="Tests/Framework/TestCaseTest.php"/>
+      <file role="php" baseinstalldir="PHPUnit2" md5sum="00f8fb55088de3a550924d72688f415e" name="Tests/Framework/TestImplementorTest.php"/>
+      <file role="php" baseinstalldir="PHPUnit2" md5sum="2658f2b9d9c923ea5c50e60d3607cf73" name="Tests/Framework/TestListenerTest.php"/>
+      <file role="php" baseinstalldir="PHPUnit2" md5sum="764ba5daa6ae0320cbd485fea6f4a548" name="Tests/Extensions/AllTests.php"/>
+      <file role="php" baseinstalldir="PHPUnit2" md5sum="53381fa3820c691434d78836fcc13389" name="Tests/Extensions/ExceptionTestCaseTest.php"/>
+      <file role="php" baseinstalldir="PHPUnit2" md5sum="b3025f08b8bb4b2bf6b24f9d5525bd7e" name="Tests/Extensions/ExtensionTest.php"/>
+      <file role="php" baseinstalldir="PHPUnit2" md5sum="5c575069a332c4122884b7add179af7e" name="Tests/Extensions/RepeatedTestTest.php"/>
+      <file role="php" baseinstalldir="PHPUnit2" md5sum="90a83d85fc14c4409e9f0b9fd5eab21a" name="Tests/Runner/AllTests.php"/>
+      <file role="php" baseinstalldir="PHPUnit2" md5sum="1d62a1f4989925542d9a35511861ecdd" name="Tests/Runner/BaseTestRunnerTest.php"/>
+      <file role="php" baseinstalldir="PHPUnit2" md5sum="0c99f956116b85b302555ab947a752cb" name="Tests/AllTests.php"/>
+      <file role="php" baseinstalldir="PHPUnit2" md5sum="b6bf54a5568208b0a8b6866c6d625c0f" name="Tests/DoubleTestCase.php"/>
+      <file role="php" baseinstalldir="PHPUnit2" md5sum="bff392ae1ff692231d509f48d8f23a03" name="Tests/Error.php"/>
+      <file role="php" baseinstalldir="PHPUnit2" md5sum="2e5dd47946c0d7c0411951969ec20177" name="Tests/Failure.php"/>
+      <file role="php" baseinstalldir="PHPUnit2" md5sum="0442295f39e5a9404de3a6a708c93233" name="Tests/InheritedTestCase.php"/>
+      <file role="php" baseinstalldir="PHPUnit2" md5sum="8384f7be1d132126ef134051263f3f06" name="Tests/MockRunner.php"/>
+      <file role="php" baseinstalldir="PHPUnit2" md5sum="1b5c74508c3975d9adbd8fc5df888398" name="Tests/NonStatic.php"/>
+      <file role="php" baseinstalldir="PHPUnit2" md5sum="6354f727ca784abb274a5fe445b511dd" name="Tests/NoTestCaseClass.php"/>
+      <file role="php" baseinstalldir="PHPUnit2" md5sum="0dc1e7ff9efe3bc44eebd3172cfae007" name="Tests/NoTestCases.php"/>
+      <file role="php" baseinstalldir="PHPUnit2" md5sum="1649bf0278b67f86a2f08627e1c98fdd" name="Tests/NotPublicTestCase.php"/>
+      <file role="php" baseinstalldir="PHPUnit2" md5sum="b79d170542154e97361e186b53e7bc4d" name="Tests/NotVoidTestCase.php"/>
+      <file role="php" baseinstalldir="PHPUnit2" md5sum="83ac1cb821a6d5ea6d351871b792d950" name="Tests/OneTestCase.php"/>
+      <file role="php" baseinstalldir="PHPUnit2" md5sum="a96fb0c64e2bbf0faf6df8cf7fb5cdd3" name="Tests/OverrideTestCase.php"/>
+      <file role="php" baseinstalldir="PHPUnit2" md5sum="acf9f16da4ceb8f002edd92fde03b30b" name="Tests/SetupFailure.php"/>
+      <file role="php" baseinstalldir="PHPUnit2" md5sum="39badecb77f8abc30a0ea547bd1777c3" name="Tests/Success.php"/>
+      <file role="php" baseinstalldir="PHPUnit2" md5sum="ec0b8040816660a82150c6bdac1ba944" name="Tests/TearDownFailure.php"/>
+      <file role="php" baseinstalldir="PHPUnit2" md5sum="4f49ddd36962d9045c8ed09aff1df335" name="Tests/ThrowExceptionTestCase.php"/>
+      <file role="php" baseinstalldir="PHPUnit2" md5sum="db650357aa5810be9c93bf2cd4423cf6" name="Tests/ThrowNoExceptionTestCase.php"/>
+      <file role="php" baseinstalldir="PHPUnit2" md5sum="6f6f3800e5696157d9280a8984a356ed" name="Tests/TornDown.php"/>
+      <file role="php" baseinstalldir="PHPUnit2" md5sum="ec2a29c0d0022a3b1971b4ec3b377ac7" name="Tests/TornDown2.php"/>
+      <file role="php" baseinstalldir="PHPUnit2" md5sum="257eb178349e137bcf8c3e6b9f18a252" name="Tests/TornDown3.php"/>
+      <file role="php" baseinstalldir="PHPUnit2" md5sum="96435dff2e22454d8d2ca6254d7c1f6b" name="Tests/TornDown4.php"/>
+      <file role="php" baseinstalldir="PHPUnit2" md5sum="e9d6a5d69d7ebd57683ef5655f095585" name="Tests/TornDown5.php"/>
+      <file role="php" baseinstalldir="PHPUnit2" md5sum="382c850211ca2558041538a362f06afc" name="Tests/WasRun.php"/>
+      <file role="php" baseinstalldir="PHPUnit2" md5sum="b64744a8e970a25709a5d5868adba4bd" name="TextUI/ResultPrinter.php"/>
+      <file role="php" baseinstalldir="PHPUnit2" md5sum="c921fcbf77450da158b27f1b4692c070" name="TextUI/TestRunner.php"/>
+      <file role="php" baseinstalldir="PHPUnit2" md5sum="a20eb955984c2c20ebf433f7bec66253" name="Util/Filter.php"/>
+      <file role="php" baseinstalldir="PHPUnit2" md5sum="e4c9dac118777ec4c26f10828c76b6d8" name="Util/Printer.php"/>
+      <file role="script" baseinstalldir="/" md5sum="84801630fe3a7604ce4ef35682c9f435" install-as="phpunit" name="pear-phpunit">
+        <replace type="pear-config" from="@php_bin@" to="php_bin"/>
+      </file>
+      <file role="script" baseinstalldir="/" md5sum="7100bd95ea50791bd7370c9614b776e1" platform="windows" install-as="phpunit.bat" name="pear-phpunit.bat">
+        <replace type="pear-config" from="@php_bin@" to="php_bin"/>
+        <replace type="pear-config" from="@php_dir@" to="php_dir"/>
+      </file>
+    </filelist>
+  </release>
+  <changelog>
+    <release>
+      <version>2.0.0beta2</version>
+      <date>2004-05-26</date>
+      <state>beta</state>
+      <notes>+ Implemented the functionality of junitour (http://junitour.sourceforge.net/).
+
++ Added scripts for convenient CLI invocation of the PHPUnit2_TextUI.
+
+* PHPUnit2_Framework_Assert::assertType() can now be used with
+  objects as well.
+
+  (Patch by Jeremiah Jacks &lt;jjacks@tamiya.com&gt;)
+
+* Changed Reflection_* class names to Reflection* to accomodate
+  Reflection API changes in PHP 5.0.0-RC2.
+
+* Changed PHPUnit_* class names to PHPUnit2_* and the base installation
+  directory from &quot;PHPUnit&quot; to &quot;PHPUnit2&quot; to allow for parallel installation
+  of PHPUnit 1.x and PHPUnit 2.x.
+
+! PHP 5.0.0-RC2 (or later) is now required.
+
+      
+</notes>
+    </release>
+    <release>
+      <version>2.0.0beta1</version>
+      <date>2004-03-19</date>
+      <state>beta</state>
+      <notes>* Rewritten from scratch.
+
+! PHPUnit now requires PHP 5 / Zend Engine 2.
+
+      
+</notes>
+    </release>
+  </changelog>
+</package>
