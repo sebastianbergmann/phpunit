@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE package SYSTEM "http://pear.php.net/dtd/package-1.0">
+<package version="1.0" packagerversion="1.4.2">
+ <name>PHPUnit</name>
+ <summary>Regression testing framework for unit tests.</summary>
+ <description>PHPUnit is a regression testing framework used by the developer who implements unit tests in PHP. This is the version to be used with PHP 4.
+ </description>
+ <maintainers>
+  <maintainer>
+   <user>sebastian</user>
+   <name>Sebastian Bergmann</name>
+   <email>sb@sebastian-bergmann.de</email>
+   <role>lead</role>
+  </maintainer>
+  </maintainers>
+ <release>
+  <version>1.3.2</version>
+  <date>2005-11-10</date>
+  <license>BSD License</license>
+  <state>stable</state>
+  <notes>! Changed license from PHP License to BSD Style License.
+  </notes>
+  <deps>
+   <dep type="php" rel="ge" version="4.1.0"/>
+   <dep type="php" rel="ge" version="4.3.0" optional="yes"/>
+   <dep type="pkg" rel="has" optional="yes">PHP_Compat</dep>
+  </deps>
+  <provides type="class" name="PHPUnit_GUI_Gtk" />
+  <provides type="function" name="PHPUnit_GUI_Gtk::main" />
+  <provides type="function" name="PHPUnit_GUI_Gtk::about" />
+  <provides type="function" name="PHPUnit_GUI_Gtk::loadTest" />
+  <provides type="function" name="PHPUnit_GUI_Gtk::runTest" />
+  <provides type="function" name="PHPUnit_GUI_Gtk::run" />
+  <provides type="function" name="PHPUnit_GUI_Gtk::show" />
+  <provides type="function" name="PHPUnit_GUI_Gtk::addSuites" />
+  <provides type="class" name="PHPUnit_GUI_HTML" />
+  <provides type="function" name="PHPUnit_GUI_HTML::addSuites" />
+  <provides type="function" name="PHPUnit_GUI_HTML::show" />
+  <provides type="class" name="PHPUnit_GUI_SetupDecorator" />
+  <provides type="function" name="PHPUnit_GUI_SetupDecorator::show" />
+  <provides type="function" name="PHPUnit_GUI_SetupDecorator::getSuitesFromDir" />
+  <provides type="class" name="PHPUnit_Assert" />
+  <provides type="function" name="PHPUnit_Assert::assertContains" />
+  <provides type="function" name="PHPUnit_Assert::assertNotContains" />
+  <provides type="function" name="PHPUnit_Assert::assertEquals" />
+  <provides type="function" name="PHPUnit_Assert::assertSame" />
+  <provides type="function" name="PHPUnit_Assert::assertNotSame" />
+  <provides type="function" name="PHPUnit_Assert::assertNotNull" />
+  <provides type="function" name="PHPUnit_Assert::assertNull" />
+  <provides type="function" name="PHPUnit_Assert::assertTrue" />
+  <provides type="function" name="PHPUnit_Assert::assertFalse" />
+  <provides type="function" name="PHPUnit_Assert::assertRegExp" />
+  <provides type="function" name="PHPUnit_Assert::assertNotRegExp" />
+  <provides type="function" name="PHPUnit_Assert::assertType" />
+  <provides type="function" name="PHPUnit_Assert::setLooselyTyped" />
+  <provides type="function" name="PHPUnit_Assert::fail" />
+  <provides type="class" name="PHPUnit_RepeatedTest" extends="PHPUnit_TestDecorator" />
+  <provides type="function" name="PHPUnit_RepeatedTest::countTestCases" />
+  <provides type="function" name="PHPUnit_RepeatedTest::run" />
+  <provides type="class" name="PHPUnit_Skeleton" />
+  <provides type="function" name="PHPUnit_Skeleton::setConfigFile" />
+  <provides type="function" name="PHPUnit_Skeleton::createTestClass" />
+  <provides type="function" name="PHPUnit_Skeleton::writeTestClass" />
+  <provides type="class" name="PHPUnit_TestCase" extends="PHPUnit_Assert" />
+  <provides type="function" name="PHPUnit_TestCase::countTestCases" />
+  <provides type="function" name="PHPUnit_TestCase::getName" />
+  <provides type="function" name="PHPUnit_TestCase::run" />
+  <provides type="function" name="PHPUnit_TestCase::runBare" />
+  <provides type="function" name="PHPUnit_TestCase::runTest" />
+  <provides type="function" name="PHPUnit_TestCase::setName" />
+  <provides type="function" name="PHPUnit_TestCase::toString" />
+  <provides type="function" name="PHPUnit_TestCase::createResult" />
+  <provides type="function" name="PHPUnit_TestCase::fail" />
+  <provides type="function" name="PHPUnit_TestCase::pass" />
+  <provides type="function" name="PHPUnit_TestCase::setUp" />
+  <provides type="function" name="PHPUnit_TestCase::tearDown" />
+  <provides type="class" name="PHPUnit_TestDecorator" />
+  <provides type="function" name="PHPUnit_TestDecorator::basicRun" />
+  <provides type="function" name="PHPUnit_TestDecorator::countTestCases" />
+  <provides type="function" name="PHPUnit_TestDecorator::getTest" />
+  <provides type="function" name="PHPUnit_TestDecorator::run" />
+  <provides type="function" name="PHPUnit_TestDecorator::toString" />
+  <provides type="class" name="PHPUnit_TestFailure" />
+  <provides type="function" name="PHPUnit_TestFailure::failedTest" />
+  <provides type="function" name="PHPUnit_TestFailure::thrownException" />
+  <provides type="function" name="PHPUnit_TestFailure::toString" />
+  <provides type="class" name="PHPUnit_TestListener" />
+  <provides type="function" name="PHPUnit_TestListener::addError" />
+  <provides type="function" name="PHPUnit_TestListener::addFailure" />
+  <provides type="function" name="PHPUnit_TestListener::endTest" />
+  <provides type="function" name="PHPUnit_TestListener::startTest" />
+  <provides type="class" name="PHPUnit_TestResult" />
+  <provides type="function" name="PHPUnit_TestResult::addError" />
+  <provides type="function" name="PHPUnit_TestResult::addFailure" />
+  <provides type="function" name="PHPUnit_TestResult::addListener" />
+  <provides type="function" name="PHPUnit_TestResult::addPassedTest" />
+  <provides type="function" name="PHPUnit_TestResult::endTest" />
+  <provides type="function" name="PHPUnit_TestResult::errorCount" />
+  <provides type="function" name="PHPUnit_TestResult::errors" />
+  <provides type="function" name="PHPUnit_TestResult::failureCount" />
+  <provides type="function" name="PHPUnit_TestResult::failures" />
+  <provides type="function" name="PHPUnit_TestResult::passedTests" />
+  <provides type="function" name="PHPUnit_TestResult::removeListener" />
+  <provides type="function" name="PHPUnit_TestResult::run" />
+  <provides type="function" name="PHPUnit_TestResult::runCount" />
+  <provides type="function" name="PHPUnit_TestResult::shouldStop" />
+  <provides type="function" name="PHPUnit_TestResult::startTest" />
+  <provides type="function" name="PHPUnit_TestResult::stop" />
+  <provides type="function" name="PHPUnit_TestResult::toHTML" />
+  <provides type="function" name="PHPUnit_TestResult::toString" />
+  <provides type="function" name="PHPUnit_TestResult::wasSuccessful" />
+  <provides type="class" name="PHPUnit_TestSuite" />
+  <provides type="function" name="PHPUnit_TestSuite::addTest" />
+  <provides type="function" name="PHPUnit_TestSuite::addTestSuite" />
+  <provides type="function" name="PHPUnit_TestSuite::countTestCases" />
+  <provides type="function" name="PHPUnit_TestSuite::getName" />
+  <provides type="function" name="PHPUnit_TestSuite::run" />
+  <provides type="function" name="PHPUnit_TestSuite::runTest" />
+  <provides type="function" name="PHPUnit_TestSuite::setName" />
+  <provides type="function" name="PHPUnit_TestSuite::testAt" />
+  <provides type="function" name="PHPUnit_TestSuite::testCount" />
+  <provides type="function" name="PHPUnit_TestSuite::tests" />
+  <provides type="function" name="PHPUnit_TestSuite::toString" />
+  <provides type="class" name="PHPUnit" />
+  <provides type="function" name="PHPUnit::run" />
+  <filelist>
+   <file role="php" md5sum="e57e6644b043ae974b89268ce89bb576" name="PHPUnit/GUI/Gtk.php">
+    <replace type="package-info" from="@package_version@" to="version"/>
+   </file>
+   <file role="php" md5sum="2b1756e603e9a4e4a1bdb654cae6837c" name="PHPUnit/GUI/HTML.php">
+    <replace type="package-info" from="@package_version@" to="version"/>
+   </file>
+   <file role="php" md5sum="222a8fef6537f8fb1653f68f1b1d6a28" name="PHPUnit/GUI/HTML.tpl">
+    <replace type="package-info" from="@package_version@" to="version"/>
+   </file>
+   <file role="php" md5sum="b62644ac4b38205de01f61f01787a596" name="PHPUnit/GUI/SetupDecorator.php">
+    <replace type="package-info" from="@package_version@" to="version"/>
+   </file>
+   <file role="php" md5sum="a91d6a8665f0e4f9b0d0410f709ef301" name="PHPUnit/Assert.php">
+    <replace type="package-info" from="@package_version@" to="version"/>
+   </file>
+   <file role="php" md5sum="0c93c179012a12b59a9593c663c6df44" name="PHPUnit/RepeatedTest.php">
+    <replace type="package-info" from="@package_version@" to="version"/>
+   </file>
+   <file role="php" md5sum="63b5fc6d78543c479e5c4cfe03ea0d44" name="PHPUnit/Skeleton.php">
+    <replace type="package-info" from="@package_version@" to="version"/>
+   </file>
+   <file role="php" md5sum="04a3d577c0c825bd8a8b37093908e1dd" name="PHPUnit/TestCase.php">
+    <replace type="package-info" from="@package_version@" to="version"/>
+   </file>
+   <file role="php" md5sum="ed9b9582c79e917e913684cf35ebb633" name="PHPUnit/TestDecorator.php">
+    <replace type="package-info" from="@package_version@" to="version"/>
+   </file>
+   <file role="php" md5sum="d53ccc6d2a88d34f4417018c712a3b56" name="PHPUnit/TestFailure.php">
+    <replace type="package-info" from="@package_version@" to="version"/>
+   </file>
+   <file role="php" md5sum="2bc4c412b0115c7adb15f152ed28e6a1" name="PHPUnit/TestListener.php">
+    <replace type="package-info" from="@package_version@" to="version"/>
+   </file>
+   <file role="php" md5sum="46d759fb973a0c65129c20e980bf631a" name="PHPUnit/TestResult.php">
+    <replace type="package-info" from="@package_version@" to="version"/>
+   </file>
+   <file role="php" md5sum="e89861604921672b4cffc6fc09d3a282" name="PHPUnit/TestSuite.php">
+    <replace type="package-info" from="@package_version@" to="version"/>
+   </file>
+   <file role="php" md5sum="0978fff218527ae3ac88c4cf1aa68d4c" name="PHPUnit.php">
+    <replace type="package-info" from="@package_version@" to="version"/>
+   </file>
+  </filelist>
+ </release>
+</package>
