@@ -46,7 +46,7 @@
  * @since      File available since Release 2.0.0
  */
 
-if (!defined('PHPUnit_MAIN_METHOD')) {
+if (!defined('PHPUnit_MAIN_METHOD') && !defined('PHPUnit2_MAIN_METHOD')) {
     define('PHPUnit_MAIN_METHOD', 'PHPUnit_TextUI_TestRunner::main');
 }
 
