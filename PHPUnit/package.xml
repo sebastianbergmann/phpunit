@@ -809,7 +809,7 @@
       <dep type="ext" rel="has">reflection</dep>
       <dep type="ext" rel="has">spl</dep>
       <dep type="ext" rel="has" optional="yes">tokenizer</dep>
-      <dep type="ext" rel="ge" version="2.0.0" optional="yes">xdebug</dep>
+      <dep type="ext" rel="ge" version="2.0.0beta6" optional="yes">xdebug</dep>
       <dep type="pkg" rel="ge" version="1.2.1" optional="yes">Image_GraphViz</dep>
       <dep type="pkg" rel="has" optional="yes">Log</dep>
     </deps>
