@@ -184,6 +184,10 @@ class PHPUnit_Extensions_MockObject_Mock
             return FALSE;
         }
 
+        if ($method->isFinal()) {
+            return FALSE;
+        }
+
         if (substr($method->getName(), 0, 2) == '__') {
             return FALSE;
         }
