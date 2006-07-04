@@ -461,8 +461,6 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
     }
 }
 
-class PHPUnit2_Framework_TestCase extends PHPUnit_Framework_TestCase {}
-
 }
 
 /*

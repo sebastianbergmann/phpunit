@@ -677,8 +677,6 @@ if (PHPUnit_MAIN_METHOD == 'PHPUnit_TextUI_TestRunner::main') {
     PHPUnit_TextUI_TestRunner::main();
 }
 
-class PHPUnit2_TextUI_TestRunner extends PHPUnit_TextUI_TestRunner {}
-
 /*
  * Local variables:
  * tab-width: 4

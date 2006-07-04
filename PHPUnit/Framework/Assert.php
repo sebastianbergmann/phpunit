@@ -1083,8 +1083,6 @@ class PHPUnit_Framework_Assert
     }
 }
 
-class PHPUnit2_Framework_Assert extends PHPUnit_Framework_Assert {}
-
 }
 
 /*
