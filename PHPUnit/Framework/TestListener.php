@@ -139,8 +139,6 @@ interface PHPUnit_Framework_TestListener
     public function endTest(PHPUnit_Framework_Test $test);
 }
 
-interface PHPUnit2_Framework_TestListener extends PHPUnit_Framework_TestListener {}
-
 }
 
 /*

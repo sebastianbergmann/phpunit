@@ -594,8 +594,6 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
     }
 }
 
-class PHPUnit2_Framework_TestSuite extends PHPUnit_Framework_TestSuite {}
-
 }
 
 /*
