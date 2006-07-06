@@ -37,7 +37,7 @@
  * POSSIBILITY OF SUCH DAMAGE.
  *
  * @category   Testing
- * @package    PHPUnit2
+ * @package    PHPUnit
  * @author     Jan Borsodi <jb@ez.no>
  *             Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @copyright  2002-2006 Sebastian Bergmann <sb@sebastian-bergmann.de>
@@ -62,7 +62,7 @@ if (!class_exists('PHPUnit_Framework_ExpectationFailedException')) {
  * generate diff output of the failed expectations.
  *
  * @category   Testing
- * @package    PHPUnit2
+ * @package    PHPUnit
  * @author     Jan Borsodi <jb@ez.no>
  *             Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @copyright  2002-2006 Sebastian Bergmann <sb@sebastian-bergmann.de>

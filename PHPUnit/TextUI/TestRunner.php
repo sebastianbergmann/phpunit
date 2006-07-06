@@ -37,7 +37,7 @@
  * POSSIBILITY OF SUCH DAMAGE.
  *
  * @category   Testing
- * @package    PHPUnit2
+ * @package    PHPUnit
  * @author     Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @copyright  2002-2006 Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
@@ -46,7 +46,7 @@
  * @since      File available since Release 2.0.0
  */
 
-if (!defined('PHPUnit_MAIN_METHOD') && !defined('PHPUnit2_MAIN_METHOD')) {
+if (!defined('PHPUnit_MAIN_METHOD') && !defined('PHPUnit_MAIN_METHOD')) {
     define('PHPUnit_MAIN_METHOD', 'PHPUnit_TextUI_TestRunner::main');
 }
 
@@ -74,7 +74,7 @@ PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
  * PHP SAPI Module.
  *
  * @category   Testing
- * @package    PHPUnit2
+ * @package    PHPUnit
  * @author     Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @copyright  2002-2006 Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License

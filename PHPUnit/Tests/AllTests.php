@@ -37,7 +37,7 @@
  * POSSIBILITY OF SUCH DAMAGE.
  *
  * @category   Testing
- * @package    PHPUnit2
+ * @package    PHPUnit
  * @author     Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @copyright  2002-2006 Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
@@ -67,7 +67,7 @@ require_once 'Util/AllTests.php';
  * 
  *
  * @category   Testing
- * @package    PHPUnit2
+ * @package    PHPUnit
  * @author     Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @copyright  2002-2006 Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
@@ -84,7 +84,7 @@ class AllTests
 
     public static function suite()
     {
-        $suite = new PHPUnit_Framework_TestSuite('PHPUnit2');
+        $suite = new PHPUnit_Framework_TestSuite('PHPUnit');
 
         $suite->addTest(Framework_AllTests::suite());
         $suite->addTest(Extensions_AllTests::suite());
