@@ -86,6 +86,12 @@ class PHPUnit_Extensions_MockObject_Invocation implements PHPUnit_Framework_Self
         $this->className  = $className;
         $this->methodName = $methodName;
         $this->parameters = $parameters;
+
+        foreach ($this->parameters as $key => $value) {
+            if (is_object($value)) {
+                $this->parameters[$key] = clone $value;
+            }
+        }
     }
 
     public function toString()
