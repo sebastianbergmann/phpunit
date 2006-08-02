@@ -128,11 +128,10 @@ class PHPUnit_Util_Filter
     {
         if (isset(self::$filteredFiles[$group])) {
             $filename = self::getCanonicalFilename($filename);
-            $max      = count(self::$filteredFiles[$group]);
 
-            for ($i = 0; $i < $max; $i++) {
-                if (self::$filteredFiles[$group][$i] == $filename) {
-                    unset(self::$filteredFiles[$group][$i]);
+            foreach (self::$filteredFiles[$group] as $key => $_filename) {
+                if ($filename == $_filename) {
+                    unset(self::$filteredFiles[$group][$key]);
                 }
             }
         }

@@ -151,11 +151,9 @@ class PHPUnit_Framework_TestResult implements Countable
      */
     public function removeListener(PHPUnit_Framework_TestListener $listener)
     {
-        $max = count($this->listeners);
-
-        for ($i = 0; $i < $max; $i++) {
-            if ($this->listeners[$i] === $listener) {
-                unset($this->listeners[$i]);
+        foreach ($this->listeners as $key => $_listener) {
+            if ($listener === $_listener) {
+                unset($this->listeners[$key]);
             }
         }
     }
