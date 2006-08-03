@@ -140,8 +140,11 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
     protected function start(Array $arguments)
     {
         $loaderName = FALSE;
-        $parameters = array();
         $repeat     = FALSE;
+
+        $parameters = array(
+          'wait' => FALSE
+        );
 
         $possibleOptions = array(
           'help',
