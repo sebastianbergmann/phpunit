@@ -25,79 +25,89 @@
     <date>2006-06-13</date>
     <notes>
 <![CDATA[
-+ Added support for Mock Objects, inspired by jMock, initially developed by Jan Borsodi and contributed by eZ systems AS.
+(+ Added, * Changed, - Removed, ! Note)
 
-+ Added new Code Coverage / Test report generator (invoked through the new --report option of the command-line test runner), loosely based on the layout of LCOV.
+User-Visible Changes
 
-+ Added PHPUnit_Extensions_OutputTestCase which uses PHP's output buffering to test output.
+  + Added support for Mock Objects, inspired by jMock, initially developed by Jan Borsodi and contributed by eZ systems AS.
 
-+ Added PHPUnit_Framework_SkippedTest interface and PHPUnit_Framework_SkippedTestError as its default implementation to mark a test as being skipped.
+  + Added new Code Coverage / Test report generator (invoked through the new --report option of the command-line test runner), loosely based on the layout of LCOV.
 
-+ Added PHPUnit_Framework_Assert::assertFileExists(), PHPUnit_Framework_Assert::assertFileNotExists(), PHPUnit_Framework_Assert::assertArrayHasKey(), PHPUnit_Framework_Assert::assertArrayNotHasKey(), PHPUnit_Framework_Assert::assertHasProperty(), and PHPUnit_Framework_Assert::assertHasNotProperty().
+  + Added PHPUnit_Extensions_OutputTestCase which uses PHP's output buffering to test output.
 
-+ Added PHPUnit_Framework_Assert::assertThat() which evaluates arbitrary constraints, based upon the new PHPUnit_Framework_Constraint infrastructure.
+  + Added PHPUnit_Framework_SkippedTest interface and PHPUnit_Framework_SkippedTestError as its default implementation to mark a test as being skipped.
 
-+ Added PHPUnit_Framework_Assert::markTestIncomplete() and PHPUnit_Framework_Assert::markTestSkipped() to mark a test as being incomplete or skipped, respectively.
+  + Added PHPUnit_Framework_Assert::assertFileExists(), PHPUnit_Framework_Assert::assertFileNotExists(), PHPUnit_Framework_Assert::assertArrayHasKey(), PHPUnit_Framework_Assert::assertArrayNotHasKey(), PHPUnit_Framework_Assert::assertHasProperty(), and PHPUnit_Framework_Assert::assertHasNotProperty().
 
-+ Added PHPUnit_Framework_Assert::getNonPublicProperty() method to read non-public properties from objects.
+  + Added PHPUnit_Framework_Assert::assertThat() which evaluates arbitrary constraints, based upon the new PHPUnit_Framework_Constraint infrastructure.
 
-+ Added PHPUnit_Framework_TestCase::iniSet() as a wrapper for the ini_set() function that automatically resets the modified php.ini setting to its original value after the test is run.
+  + Added PHPUnit_Framework_Assert::markTestIncomplete() and PHPUnit_Framework_Assert::markTestSkipped() to mark a test as being incomplete or skipped, respectively.
 
-+ Added a TestListener that talks via a socket connection to Eclipse, developed by Steven Balthazor.
+  + Added PHPUnit_Framework_Assert::getNonPublicProperty() method to read non-public properties from objects.
 
-+ Added a TestListener that generates a map of the executed tests in GraphViz markup.
+  + Added PHPUnit_Framework_TestCase::iniSet() as a wrapper for the ini_set() function that automatically resets the modified php.ini setting to its original value after the test is run.
 
-+ Added a TestListener that generates a logfile of the test execution using the Test Anything Protocol (TAP).
+  + Added a TestListener that talks via a socket connection to Eclipse, developed by Steven Balthazor.
 
-+ Added the "--repeat <times>" command-line option to the TextUI test runner to run the test(s) repeatedly.
+  + Added a TestListener that generates a map of the executed tests in GraphViz markup.
 
-* PHPUnit_Framework_Assert::assertContains() and PHPUnit_Framework_Assert::assertNotContains() can now work on strings.
+  + Added a TestListener that generates a logfile of the test execution using the Test Anything Protocol (TAP).
 
-* PHPUnit_Framework_ComparisonFailure has been refactored into PHPUnit_Framework_ComparisonFailure, PHPUnit_Framework_ComparisonFailure_Array, PHPUnit_Framework_ComparisonFailure_Object, PHPUnit_Framework_ComparisonFailure_Scalar, PHPUnit_Framework_ComparisonFailure_String, and PHPUnit_Framework_ComparisonFailure_Type to improve discrepancy visualization, initially developed by Jan Borsodi and contributed by eZ systems AS.
+  + Added the "--repeat <times>" command-line option to the TextUI test runner to run the test(s) repeatedly.
 
-* Changed PHPUnit_TextUI_ResultPrinter::printHeader() to sanely format the time elapsed as MM:SS.
+  * PHPUnit_Framework_Assert::assertContains() and PHPUnit_Framework_Assert::assertNotContains() can now work on strings.
 
-* PHPUnit_Runner_IncludePathTestCollector can now utilize a FilterIterator.
+  * Changed PHPUnit_TextUI_ResultPrinter::printHeader() to sanely format the time elapsed as MM:SS.
 
-* PHPUnit_Framework_TestResult no longer registers an error handler if the code under test already registered one.
+  * Implemented RFE #5546: Make filtering and/or filtering on the current file optional.
 
-* The PHPUnit_Framework_Test interface now extends and its implementors as well as the PHPUnit_Framework_TestResult class now implement the Standard PHP Library (SPL)'s Countable interface.
+  * Implemented RFE #5860: Missing parse errors after lint.
 
-* PHPUnit2 now uses the Standard PHP Library (SPL)'s specialized exceptions InvalidArgumentException and RuntimeException instead of the generic Exception exception class.
+  * Fixed bug #5053: Problems with global variables.
 
-* Implemented RFE #5546: Make filtering and/or filtering on the current file optional.
+  * Fixed bug #5933: PHPUnit_Framework_TestSuite::addTestFile() and non-working directories.
 
-* Implemented RFE #5860: Missing parse errors after lint.
+  * Fixed bug #6613: AllTests.php have relative include paths that don't work.
 
-* Fixed bug #5053: Problems with global variables.
+  * Fixed bug #7106: phpunit --skeleton does not seem to handle PEARified names.
 
-* Fixed bug #5933: PHPUnit_Framework_TestSuite::addTestFile() and non-working directories.
+  * Fixed bug #7107: Platform-specific skeleton line endings.
 
-* Fixed bug #6613: AllTests.php have relative include paths that don't work.
+  * Fixed bug #7373: Unexpected "syntax error" in safe mode.
 
-* Fixed bug #7106: phpunit --skeleton does not seem to handle PEARified names.
+  * Fixed bug #7770: TextUI/TestRunner::doSkeleton $skeleton not always an object.
 
-* Fixed bug #7107: Platform-specific skeleton line endings.
+  - Removed --coverage-data, --coverage-html, and --coverage-text options from the command-line test runner.
 
-* Fixed bug #7373: Unexpected "syntax error" in safe mode.
+  - Removed PHPUnit_Framework_Assert::setLooselyTyped().
 
-* Fixed bug #7770: TextUI/TestRunner::doSkeleton $skeleton not always an object.
+  ! PHP 5.1.4 (or greater) is now required.
 
-- Removed --coverage-data, --coverage-html, and --coverage-text options from the command-line test runner.
 
-- Removed PHPUnit_Framework_Assert::setLooselyTyped().
+Developer-Visible Changes
 
-- Removed dependency on the Benchmark_Timer, Console_Getopt, and PEAR_Config PEAR classes.
+  ! The countTestCases() method of the PHPUnit_Framework_Test interface has been renamed to count().
 
-! The countTestCases() method of the PHPUnit_Framework_Test interface has been renamed to count().
+  ! The runCount() method of the PHPUnit_Framework_TestResult class has been renamed to count().
 
-! The runCount() method of the PHPUnit_Framework_TestResult class has been renamed to count().
+  ! A new method, addSkippedTest(), has been added to the PHPUnit_Framework_TestListener interface.
 
-! A new method, addSkippedTest(), has been added to the PHPUnit_Framework_TestListener interface.
+  ! The run() and doRun() methods of the PHPUnit_TextUI_TestRunner class now accept an associative array for test run parameters.
 
-! The run() and doRun() methods of the PHPUnit_TextUI_TestRunner class now accept an associative array for test run parameters.
 
-! PHP 5.1.4 (or greater) is now required.
+Internal Changes
+
+  * PHPUnit_Framework_ComparisonFailure has been refactored into PHPUnit_Framework_ComparisonFailure, PHPUnit_Framework_ComparisonFailure_Array, PHPUnit_Framework_ComparisonFailure_Object, PHPUnit_Framework_ComparisonFailure_Scalar, PHPUnit_Framework_ComparisonFailure_String, and PHPUnit_Framework_ComparisonFailure_Type to improve discrepancy visualization, initially developed by Jan Borsodi and contributed by eZ systems AS.
+
+  * The PHPUnit_Framework_Test interface now extends and the PHPUnit_Framework_TestResult class now implements the Standard PHP Library (SPL)'s Countable interface.
+
+  * PHPUnit2 now uses the Standard PHP Library (SPL)'s specialized exceptions InvalidArgumentException and RuntimeException instead of the generic Exception exception class.
+
+  * PHPUnit_Runner_IncludePathTestCollector can now utilize a FilterIterator.
+
+  * PHPUnit_Framework_TestResult no longer registers an error handler if the code under test already registered one.
+
+  - Removed dependency on the Benchmark_Timer, Console_Getopt, and PEAR_Config PEAR classes.
 ]]>
     </notes>
     <filelist>
