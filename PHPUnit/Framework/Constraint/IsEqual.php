@@ -53,7 +53,7 @@ require_once 'PHPUnit/Util/Filter.php';
 
 PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
 
-if (!class_exists('DualIterator')) {
+if (!class_exists('DualIterator', FALSE)) {
 class DualIterator implements Iterator
 {
     const CURRENT_LHS   = 0x01;
