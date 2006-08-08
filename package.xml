@@ -47,6 +47,8 @@ User-Visible Changes
 
   + Added PHPUnit_Framework_TestCase::iniSet() as a wrapper for the ini_set() function that automatically resets the modified php.ini setting to its original value after the test is run.
 
+  + Added PHPUnit_Framework_TestCase::hasFailed() which can be used in a tearDown() method, for instance, to check whether the current test has failed.
+
   + Added a TestListener that talks via a socket connection to Eclipse, developed by Steven Balthazor.
 
   + Added a TestListener that generates a map of the executed tests in GraphViz markup.

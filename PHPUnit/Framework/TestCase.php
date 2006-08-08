@@ -119,6 +119,12 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
      */
     private $name = NULL;
 
+    /*
+     * @var    boolean
+     * @access private
+     */
+    private $failed = FALSE;
+
     /**
      * @var    Array
      * @access private
@@ -185,6 +191,17 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
     }
 
     /**
+     * Returns whether or not this test has failed.
+     *
+     * @return boolean
+     * @since  Method available since Release 3.0.0
+     */
+    public function hasFailed()
+    {
+        return $this->failed;
+    }
+
+    /**
      * Runs the test case and collects the results in a TestResult object.
      * If no TestResult object is passed a new one will be created.
      *
@@ -231,6 +248,10 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
 
         catch (Exception $e) {
             $catchedException = $e;
+        }
+
+        if ($catchedException !== NULL) {
+	    $this->failed = TRUE;
         }
 
         // Tear down the fixture.
