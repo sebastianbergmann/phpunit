@@ -3,7 +3,7 @@
  * File containing the ezcConsoleInput class.
  *
  * @package ConsoleTools
- * @version 1.1
+ * @version 1.1.1
  * @copyright Copyright (C) 2005, 2006 eZ systems as. All rights reserved.
  * @license http://ez.no/licenses/new_bsd New BSD License
  * @filesource
@@ -103,7 +103,7 @@
  * </code>
  * 
  * @package ConsoleTools
- * @version 1.1
+ * @version 1.1.1
  */
 class ezcConsoleInput
 {
@@ -164,7 +164,7 @@ class ezcConsoleInput
 
 
     /**
-     * Indecates if an option was submitted, that has the isHelpOption flag set.
+     * Indicates if an option was submitted, that has the isHelpOption flag set.
      * 
      * @var bool
      */
@@ -636,7 +636,7 @@ class ezcConsoleInput
      *                                   for, default is all.
      * @return ezcConsoleTable           The filled table.
      */
-    public function getHelpTable( ezcConsoleTable $table, $long = false, array $params = null )
+    public function getHelpTable( ezcConsoleTable $table, $long = false, array $params = array() )
     {
         $help = $this->getHelp( $long, $params );
         $i = 0;
@@ -933,6 +933,11 @@ class ezcConsoleInput
             // Not set and not mandatory? No checking.
             if ( $option->value === false || is_array( $option->value ) && count( $option->value ) === 0 )
             {
+                // Default value to set?
+                if ( $option->default !== null )
+                {
+                    $option->value = $option->default;
+                }
                 // Parameter was not set so ignore it's rules.
                 continue;
             }
