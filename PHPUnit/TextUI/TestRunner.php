@@ -195,7 +195,7 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
                 break;
 
                 case '--log-eclipse': {
-                    $$parameters['eclipseLogfile'] = $option[1];
+                    $parameters['eclipseLogfile'] = $option[1];
                 }
                 break;
 
