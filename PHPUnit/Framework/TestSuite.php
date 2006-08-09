@@ -438,11 +438,12 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
      * Runs the tests and collects their result in a TestResult.
      *
      * @param  PHPUnit_Framework_TestResult $result
+     * @param  mixed                        $filter
      * @return PHPUnit_Framework_TestResult
      * @throws InvalidArgumentException
      * @access public
      */
-    public function run(PHPUnit_Framework_TestResult $result = NULL)
+    public function run(PHPUnit_Framework_TestResult $result = NULL, $filter = FALSE)
     {
         if ($result === NULL) {
             $result = $this->createResult();
@@ -455,7 +456,17 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
                 break;
             }
 
-            $this->runTest($test, $result);
+            $name    = $test->getName();
+            $runTest = TRUE;
+
+            if ($name !== NULL && !$test instanceof PHPUnit_Framework_TestSuite &&
+                $filter !== FALSE && preg_match($filter, $name) == 0) {
+                $runTest = FALSE;
+            }
+
+            if ($runTest) {
+                $this->runTest($test, $result);
+            }
         }
 
         $result->endTestSuite($this);

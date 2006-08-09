@@ -55,6 +55,8 @@ User-Visible Changes
 
   + Added a TestListener that generates a logfile of the test execution using the Test Anything Protocol (TAP).
 
+  + Added the "--filter <pattern>" command-line option to selectively run the tests of a test suite.
+
   + Added the "--repeat <times>" command-line option to the TextUI test runner to run the test(s) repeatedly.
 
   * PHPUnit_Framework_Assert::assertContains() and PHPUnit_Framework_Assert::assertNotContains() can now work on strings.

@@ -148,6 +148,7 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
 
         $possibleOptions = array(
           'help',
+          'filter=',
           'loader=',
           'log-eclipse=',
           'log-tap=',
@@ -186,6 +187,15 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
                 case '--help': {
                     $this->showHelp();
                     exit(self::SUCCESS_EXIT);
+                }
+                break;
+
+                case '--filter': {
+                    if (preg_match('/[a-zA-Z0-9_]/', $option[1])) {
+                        $parameters['filter'] = '/^' . $option[1] . '$/';
+                    } else {
+                        $parameters['filter'] = $option[1];
+                    }
                 }
                 break;
 
@@ -355,6 +365,8 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
      */
     public function doRun(PHPUnit_Framework_Test $suite, Array $parameters = array())
     {
+        $parameters['filter'] = isset($parameters['filter']) ? $parameters['filter'] : FALSE;
+
         if (isset($parameters['graphvizDirectory'])) {
             $parameters['graphvizDirectory'] = $this->getDirectory($parameters['graphvizDirectory']);
         }
@@ -430,7 +442,7 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
         }
 
         PHPUnit_Util_Timer::start();
-        $suite->run($result);
+        $suite->run($result, $parameters['filter']);
         $timeElapsed = PHPUnit_Util_Timer::stop();
 
         $result->flushListeners();
@@ -481,7 +493,9 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
     public function showHelp()
     {
         self::printVersionString();
-        print "Usage: phpunit [switches] UnitTest [UnitTest.php]\n\n";
+
+        print "Usage: phpunit [switches] UnitTest [UnitTest.php]\n\n" .
+              "  --filter <pattern>     Filter which tests to run.\n\n";
 
         if (class_exists('Image_GraphViz')) {
             print "  --log-graphviz <dir>   Log test execution in GraphViz markup.\n";
