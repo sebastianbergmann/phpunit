@@ -697,6 +697,9 @@ Internal Changes
             <file name="Array.php">
               <replace type="package-info" from="@package_version@" to="version"/>
             </file>
+            <file name="DualIterator.php">
+              <replace type="package-info" from="@package_version@" to="version"/>
+            </file>
             <file name="ErrorHandler.php">
               <replace type="package-info" from="@package_version@" to="version"/>
             </file>
@@ -710,6 +713,9 @@ Internal Changes
               <replace type="package-info" from="@package_version@" to="version"/>
             </file>
             <file name="Getopt.php">
+              <replace type="package-info" from="@package_version@" to="version"/>
+            </file>
+            <file name="RecursiveDualIterator.php">
               <replace type="package-info" from="@package_version@" to="version"/>
             </file>
             <file name="Report.php">
