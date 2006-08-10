@@ -105,7 +105,7 @@ class PHPUnit_Framework_Constraint_IsInstanceOf implements PHPUnit_Framework_Con
                 $description,
                 $this->className,
                 gettype($other),
-                var_export($other, TRUE)
+                print_r($other, TRUE)
               )
             );
         } else {

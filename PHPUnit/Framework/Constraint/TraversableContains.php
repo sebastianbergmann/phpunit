@@ -108,8 +108,8 @@ class PHPUnit_Framework_Constraint_TraversableContains implements PHPUnit_Framew
 
             $description,
             gettype($this->value),
-            var_export($this->value, TRUE),
-            var_export($other, TRUE)
+            print_r($this->value, TRUE),
+            print_r($other, TRUE)
           )
         );
     }
@@ -126,7 +126,7 @@ class PHPUnit_Framework_Constraint_TraversableContains implements PHPUnit_Framew
           'contains value <%s:%s>',
 
           gettype($this->value),
-          var_export($this->value, TRUE)
+          print_r($this->value, TRUE)
         );
     }
 }

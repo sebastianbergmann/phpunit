@@ -85,7 +85,7 @@ class PHPUnit_Extensions_MockObject_Stub_Return implements PHPUnit_Extensions_Mo
         return sprintf(
           'return the user-specified value <%s>',
 
-          var_export($this->value)
+          print_r($this->value, TRUE)
         );
     }
 }

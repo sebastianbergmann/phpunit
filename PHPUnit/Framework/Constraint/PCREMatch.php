@@ -105,9 +105,9 @@ class PHPUnit_Framework_Constraint_PCREMatch implements PHPUnit_Framework_Constr
             "%s\nPCRE pattern <%s> did not find a match in value <%s:%s>",
 
             $description,
-            var_export($this->pattern, TRUE),
+            print_r($this->pattern, TRUE),
             gettype($other),
-            var_export($other, TRUE)
+            print_r($other, TRUE)
           )
         );
     }
@@ -123,7 +123,7 @@ class PHPUnit_Framework_Constraint_PCREMatch implements PHPUnit_Framework_Constr
         return sprintf(
           'matches PCRE pattern <%s>',
 
-          var_export($this->pattern, TRUE)
+          print_r($this->pattern, TRUE)
         );
     }
 }

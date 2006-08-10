@@ -108,11 +108,11 @@ class PHPUnit_Framework_Constraint_StringContains implements PHPUnit_Framework_C
     public function fail($other, $description)
     {
         if ($this->case) {
-            $string      = var_export($this->string, TRUE);
-            $otherString = var_export($other, TRUE);
+            $string      = print_r($this->string, TRUE);
+            $otherString = print_r($other, TRUE);
         } else {
-            $string      = var_export(strtolower($this->string), TRUE);
-            $otherString = var_export(strtolower($other), TRUE);
+            $string      = print_r(strtolower($this->string), TRUE);
+            $otherString = print_r(strtolower($other), TRUE);
         }
 
         throw new PHPUnit_Framework_ExpectationFailedException(
@@ -135,9 +135,9 @@ class PHPUnit_Framework_Constraint_StringContains implements PHPUnit_Framework_C
     public function toString()
     {
         if ($this->case) {
-            $string = var_export($this->string, TRUE);
+            $string = print_r($this->string, TRUE);
         } else {
-            $string = var_export(strtolower($this->string), TRUE);
+            $string = print_r(strtolower($this->string), TRUE);
         }
 
         return sprintf(

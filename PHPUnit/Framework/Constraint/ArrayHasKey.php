@@ -106,8 +106,8 @@ class PHPUnit_Framework_Constraint_ArrayHasKey implements PHPUnit_Framework_Cons
 
             $description,
             gettype($this->key),
-            var_export($this->key, TRUE),
-            var_export($other, TRUE)
+            print_r($this->key, TRUE),
+            print_r($other, TRUE)
           )
         );
     }
@@ -124,7 +124,7 @@ class PHPUnit_Framework_Constraint_ArrayHasKey implements PHPUnit_Framework_Cons
           'has key <%s:%s>',
 
           gettype($this->key),
-          var_export($this->key, TRUE)
+          print_r($this->key, TRUE)
         );
     }
 }

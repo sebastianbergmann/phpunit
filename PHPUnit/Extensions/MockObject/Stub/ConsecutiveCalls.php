@@ -92,7 +92,7 @@ class PHPUnit_Extensions_MockObject_Stub_ConsecutiveCalls implements PHPUnit_Ext
         return sprintf(
           'return the user-specified value <%s>',
 
-          var_export($this->value)
+          print_r($this->value, TRUE)
         );
     }
 }

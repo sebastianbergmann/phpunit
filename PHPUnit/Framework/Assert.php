@@ -689,7 +689,7 @@ class PHPUnit_Framework_Assert
                 '%sfailed asserting that string <%s> %s',
 
                 $message,
-                var_export($string, TRUE),
+                print_r($string, TRUE),
                 $constraint->toString()
               )
             );
@@ -1005,7 +1005,7 @@ class PHPUnit_Framework_Assert
 
             $message,
             $type ? gettype($value) . ':' : '',
-            var_export($value, TRUE),
+            print_r($value, TRUE),
             $constraint->toString()
           )
         );

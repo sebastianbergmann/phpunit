@@ -80,17 +80,17 @@ class PHPUnit_Framework_ComparisonFailure_Scalar extends PHPUnit_Framework_Compa
 
               $this->message,
               ($this->message != '') ? ' ' : '',
-              var_export($this->expected, TRUE),
+              print_r($this->expected, TRUE),
               ($this->message != '') ? str_repeat(' ', strlen($this->message) + 1) : '',
-              var_export($this->actual, TRUE)
+              print_r($this->actual, TRUE)
             );
         }
 
         elseif (is_int($this->expected) || is_float($this->expected)) {
             $type             = gettype($this->expected);
-            $expectedString   = var_export($this->expected, TRUE);
-            $actualString     = var_export($this->actual, TRUE);
-            $differenceString = var_export(abs($this->actual - $this->expected), TRUE);
+            $expectedString   = print_r($this->expected, TRUE);
+            $actualString     = print_r($this->actual, TRUE);
+            $differenceString = print_r(abs($this->actual - $this->expected), TRUE);
 
             $expectedLen      = strlen($expectedString);
             $actualLen        = strlen($actualString);

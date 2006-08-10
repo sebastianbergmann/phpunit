@@ -130,7 +130,7 @@ class PHPUnit_Framework_Constraint_And implements PHPUnit_Framework_Constraint
                 "%s\nExpected that <%s> %s",
 
                 $description,
-                var_export($other, 1),
+                print_r($other, 1),
                 $this->toString()
               )
             );

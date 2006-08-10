@@ -104,8 +104,8 @@ class PHPUnit_Framework_Constraint_ObjectHasAttribute implements PHPUnit_Framewo
 
             $description,
             gettype($this->attributeName),
-            var_export($this->attributeName, TRUE),
-            var_export($other, TRUE)
+            print_r($this->attributeName, TRUE),
+            print_r($other, TRUE)
           )
         );
     }
@@ -122,7 +122,7 @@ class PHPUnit_Framework_Constraint_ObjectHasAttribute implements PHPUnit_Framewo
           'has attribute <%s:%s>',
 
           gettype($this->attributeName),
-          var_export($this->attributeName, TRUE)
+          print_r($this->attributeName, TRUE)
         );
     }
 }

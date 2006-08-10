@@ -120,7 +120,7 @@ class PHPUnit_Framework_Constraint_LessThan implements PHPUnit_Framework_Constra
         return sprintf(
           'is less than <%s>',
 
-          $type  . var_export($this->value, TRUE)
+          $type  . print_r($this->value, TRUE)
         );
     }
 }

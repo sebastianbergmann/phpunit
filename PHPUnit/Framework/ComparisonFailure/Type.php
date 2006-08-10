@@ -113,7 +113,7 @@ class PHPUnit_Framework_ComparisonFailure_Type extends PHPUnit_Framework_Compari
         $actualValue = '';
 
         if (is_string($this->actual) || is_bool($this->actual) || is_int($this->actual) || is_float($this->actual)) {
-            $actualValue = '<' . var_export($this->actual, TRUE) . '>';
+            $actualValue = '<' . print_r($this->actual, TRUE) . '>';
         }
 
         elseif (is_object($this->actual)) {
@@ -126,7 +126,7 @@ class PHPUnit_Framework_ComparisonFailure_Type extends PHPUnit_Framework_Compari
             $expectedValue = '<' . $this->expected . '>';
         } else {
             if (is_string($this->expected) || is_bool($this->expected) || is_int($this->expected) || is_float($this->expected)) {
-                $expectedValue = '<' . var_export($this->expected, TRUE) . '>';
+                $expectedValue = '<' . print_r($this->expected, TRUE) . '>';
             }
 
             elseif (is_object($this->expected)) {

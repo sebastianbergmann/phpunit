@@ -120,7 +120,7 @@ class PHPUnit_Framework_Constraint_GreaterThan implements PHPUnit_Framework_Cons
         return sprintf(
           'is greater than <%s>',
 
-          $type  . var_export($this->value, TRUE)
+          $type  . print_r($this->value, TRUE)
         );
     }
 }

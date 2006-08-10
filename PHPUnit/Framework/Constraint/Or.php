@@ -117,7 +117,7 @@ class PHPUnit_Framework_Constraint_Or implements PHPUnit_Framework_Constraint
             "%s\nexpected <%s> %s",
 
             $description,
-            var_export($other, 1),
+            print_r($other, TRUE),
             $this->toString()
           )
         );

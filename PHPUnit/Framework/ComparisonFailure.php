@@ -202,7 +202,7 @@ abstract class PHPUnit_Framework_ComparisonFailure extends PHPUnit_Framework_Ass
             elseif (is_array($v1)) {
                 $v1 = 'array(...)';
             } else {
-                $v1 = var_export($v1, TRUE);
+                $v1 = print_r($v1, TRUE);
             }
 
             $a2 = false;
@@ -219,14 +219,14 @@ abstract class PHPUnit_Framework_ComparisonFailure extends PHPUnit_Framework_Ass
                 elseif (is_array($v2)) {
                     $v2 = 'array(...)';
                 } else {
-                    $v2 = var_export($v2, TRUE);
+                    $v2 = print_r($v2, TRUE);
                 }
             }
 
-            $text = 'array( ' . var_export($k1, TRUE) . ' => ' . $v1;
+            $text = 'array( ' . print_r($k1, TRUE) . ' => ' . $v1;
 
             if ($a2 !== FALSE) {
-                $text .= ', ..., ' . var_export($k2, TRUE) . ' => ' . $v2 . ' )';
+                $text .= ', ..., ' . print_r($k2, TRUE) . ' => ' . $v2 . ' )';
             } else {
                 $text .= ' )';
             }
@@ -238,7 +238,7 @@ abstract class PHPUnit_Framework_ComparisonFailure extends PHPUnit_Framework_Ass
             return 'class ' . get_class($value) . '(...)';
         }
 
-        return var_export($value, TRUE);
+        return print_r($value, TRUE);
     }
 
     /**
@@ -253,9 +253,9 @@ abstract class PHPUnit_Framework_ComparisonFailure extends PHPUnit_Framework_Ass
         $string = preg_replace('#\n|\r\n|\r#', ' ', $string);
 
         if (strlen($string) > 14) {
-            return var_export(substr($string, 0, 7), TRUE) . '...' . var_export(substr($string, -7), TRUE);
+            return print_r(substr($string, 0, 7), TRUE) . '...' . print_r(substr($string, -7), TRUE);
         } else {
-            return var_export($string, TRUE);
+            return print_r($string, TRUE);
         }
     }
 }

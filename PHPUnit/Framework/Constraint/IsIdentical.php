@@ -125,7 +125,7 @@ class PHPUnit_Framework_Constraint_IsIdentical implements PHPUnit_Framework_Cons
           'is identical to <%s%s>',
 
           $type,
-          var_export($this->value, TRUE)
+          print_r($this->value, TRUE)
         );
     }
 }
