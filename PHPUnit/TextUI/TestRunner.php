@@ -142,10 +142,6 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
         $loaderName = FALSE;
         $repeat     = FALSE;
 
-        $parameters = array(
-          'wait' => FALSE
-        );
-
         $possibleOptions = array(
           'help',
           'filter=',
@@ -366,6 +362,7 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
     public function doRun(PHPUnit_Framework_Test $suite, Array $parameters = array())
     {
         $parameters['filter'] = isset($parameters['filter']) ? $parameters['filter'] : FALSE;
+        $parameters['wait']   = isset($parameters['wait'])   ? $parameters['wait']   : FALSE;
 
         if (isset($parameters['graphvizDirectory'])) {
             $parameters['graphvizDirectory'] = $this->getDirectory($parameters['graphvizDirectory']);
