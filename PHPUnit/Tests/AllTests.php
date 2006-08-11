@@ -46,6 +46,8 @@
  * @since      File available since Release 2.0.0
  */
 
+error_reporting(E_ALL | E_STRICT);
+
 if (!defined('PHPUnit_MAIN_METHOD')) {
     define('PHPUnit_MAIN_METHOD', 'AllTests::main');
     chdir(dirname(__FILE__));
