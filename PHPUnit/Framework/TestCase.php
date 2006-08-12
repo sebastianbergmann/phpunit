@@ -251,7 +251,7 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
         }
 
         if ($catchedException !== NULL) {
-	    $this->failed = TRUE;
+            $this->failed = TRUE;
         }
 
         // Tear down the fixture.
