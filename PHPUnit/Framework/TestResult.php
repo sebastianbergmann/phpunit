@@ -491,7 +491,12 @@ class PHPUnit_Framework_TestResult implements Countable
         $this->startTest($test);
 
         $errorHandlerSet = FALSE;
-        $oldErrorHandler = set_error_handler('PHPUnit_Util_ErrorHandler', E_USER_ERROR);
+
+        if (version_compare(phpversion(), '5.2.0RC1', '>=')) {
+            $oldErrorHandler = set_error_handler('PHPUnit_Util_ErrorHandler', E_RECOVERABLE_ERROR | E_USER_ERROR);
+        } else {
+            $oldErrorHandler = set_error_handler('PHPUnit_Util_ErrorHandler', E_USER_ERROR);
+        }
 
         if ($oldErrorHandler === NULL) {
             $errorHandlerSet = TRUE;
