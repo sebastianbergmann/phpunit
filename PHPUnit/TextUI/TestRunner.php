@@ -142,7 +142,7 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
         $loaderName = FALSE;
         $repeat     = FALSE;
 
-        $possibleOptions = array(
+        $longOptions = array(
           'help',
           'filter=',
           'loader=',
@@ -160,14 +160,14 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
         );
 
         if (class_exists('Image_GraphViz')) {
-            $possibleOptions[] = 'log-graphviz=';
+            $longOptions[] = 'log-graphviz=';
         }
 
         try {
             $options = PHPUnit_Util_Getopt::getopt(
               $arguments,
-              '',
-              $possibleOptions
+              'd:',
+              $longOptions
             );
         }
 
@@ -180,6 +180,19 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
 
         foreach ($options[0] as $option) {
             switch ($option[0]) {
+                case 'd': {
+                    $ini = explode('=', $option[1]);
+
+                    if (isset($ini[0])) {
+                        if (isset($ini[1])) {
+                            ini_set($ini[0], $ini[1]);
+                        } else {
+                            ini_set($ini[0], TRUE);
+                        }
+                    }
+                }
+                break;
+
                 case '--help': {
                     $this->showHelp();
                     exit(self::SUCCESS_EXIT);
@@ -515,7 +528,8 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
               "  --repeat <times>       Runs the test(s) repeatedly.\n" .
               "  --wait                 Waits for a keystroke after each test.\n\n" .
               "  --help                 Prints this usage information.\n" .
-              "  --version              Prints the version and exits.\n";
+              "  --version              Prints the version and exits.\n\n" .
+              "  -d key[=value]         Sets a php.ini value.\n";
     }
 
     /**
