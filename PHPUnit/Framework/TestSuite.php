@@ -300,25 +300,31 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
           array_diff(get_declared_classes(), $declaredClasses)
         );
 
-        $testsFound = 0;
+        $testsFound = FALSE;
 
-        foreach ($newClasses as $class) {
-            if (preg_match('"Tests?$"', $class)) {
-                try {
-                    $suiteMethod = new ReflectionMethod(
-                      $class, PHPUnit_Runner_BaseTestRunner::SUITE_METHODNAME
-                    );
+        foreach ($newClasses as $className) {
+            $class = new ReflectionClass($className);
 
-                    $this->addTest($suiteMethod->invoke(NULL));
-                } catch (ReflectionException $e) {
-                    $this->addTestSuite(new ReflectionClass($class));
+            if ($class->hasMethod(PHPUnit_Runner_BaseTestRunner::SUITE_METHODNAME)) {
+                $method = $class->getMethod(
+                  PHPUnit_Runner_BaseTestRunner::SUITE_METHODNAME
+                );
+
+                if ($method->isStatic()) {
+                    $this->addTest($method->invoke(NULL));
+
+                    $testsFound = TRUE;
                 }
+            }
 
-                $testsFound++;
+            else if ($class->implementsInterface('PHPUnit_Framework_Test')) {
+                $this->addTestSuite($class);
+
+                $testsFound = TRUE;
             }
         }
 
-        if ($testsFound == 0) {
+        if (!$testsFound) {
             $this->addTest(
               new PHPUnit_Framework_Warning('No tests found in file ' . $filename)
             );
