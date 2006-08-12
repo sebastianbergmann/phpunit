@@ -141,6 +141,7 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
     {
         $loaderName = FALSE;
         $repeat     = FALSE;
+        $parameters = array();
 
         $longOptions = array(
           'help',
