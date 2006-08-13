@@ -13,7 +13,7 @@
  *
  *   * Redistributions of source code must retain the above copyright
  *     notice, this list of conditions and the following disclaimer.
- * 
+ *
  *   * Redistributions in binary form must reproduce the above copyright
  *     notice, this list of conditions and the following disclaimer in
  *     the documentation and/or other materials provided with the
@@ -255,7 +255,7 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
               )
             );
         }
-        
+
         else if ((!$result->allCompletlyImplemented() ||
                   !$result->noneSkipped())&&
                  $result->wasSuccessful()) {
@@ -269,8 +269,8 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
                 $this->getCountString($result->skippedCount(), 'Skipped')
               )
             );
-        }        
-        
+        }
+
         else {
             $this->write(
               sprintf(

@@ -13,7 +13,7 @@
  *
  *   * Redistributions of source code must retain the above copyright
  *     notice, this list of conditions and the following disclaimer.
- * 
+ *
  *   * Redistributions in binary form must reproduce the above copyright
  *     notice, this list of conditions and the following disclaimer in
  *     the documentation and/or other materials provided with the
@@ -132,7 +132,7 @@ class PHPUnit_Util_TestDox_NamePrettifier
 
         for ($i = 4; $i < $max; $i++) {
             if ($i > 4 &&
-                ord($testMethodName[$i]) >= 65 && 
+                ord($testMethodName[$i]) >= 65 &&
                 ord($testMethodName[$i]) <= 90) {
                 $buffer .= ' ' . strtolower($testMethodName[$i]);
             } else {

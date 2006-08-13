@@ -13,7 +13,7 @@
  *
  *   * Redistributions of source code must retain the above copyright
  *     notice, this list of conditions and the following disclaimer.
- * 
+ *
  *   * Redistributions in binary form must reproduce the above copyright
  *     notice, this list of conditions and the following disclaimer in
  *     the documentation and/or other materials provided with the
@@ -51,12 +51,12 @@ require_once 'PHPUnit/Framework/TestCase.php';
 require_once '_files/AnInterface.php';
 
 /**
- * 
+ *
  *
  * @category   Testing
  * @package    PHPUnit
  * @author     Sebastian Bergmann <sb@sebastian-bergmann.de>
- * @author     Patrick Müller <elias0@gmx.net>
+ * @author     Patrick M??ller <elias0@gmx.net>
  * @copyright  2002-2006 Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    Release: @package_version@
@@ -75,7 +75,7 @@ class Extensions_MockObjectTest extends PHPUnit_Framework_TestCase
                    ->method('doSomething')
                    ->with($this->equalTo('something')
         );
- 
+
         $mockObject->doSomething('something');
     }
 
@@ -89,7 +89,7 @@ class Extensions_MockObjectTest extends PHPUnit_Framework_TestCase
                    ->method('doSomething')
                    ->with($this->equalTo('something')
         );
- 
+
         try {
             $mockObject->doSomething('anything');
         }

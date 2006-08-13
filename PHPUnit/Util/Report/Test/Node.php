@@ -13,7 +13,7 @@
  *
  *   * Redistributions of source code must retain the above copyright
  *     notice, this list of conditions and the following disclaimer.
- * 
+ *
  *   * Redistributions in binary form must reproduce the above copyright
  *     notice, this list of conditions and the following disclaimer in
  *     the documentation and/or other materials provided with the
@@ -151,7 +151,7 @@ abstract class PHPUnit_Util_Report_Test_Node
      * @param  PHPUnit_Util_Template $template
      * @param  string                 $title
      * @access public
-     */  
+     */
    protected function setTemplateVars(PHPUnit_Util_Template $template, $title)
     {
         $template->setVar(
@@ -171,7 +171,7 @@ abstract class PHPUnit_Util_Report_Test_Node
           )
         );
     }
-    
+
     /**
      * Renders this node.
      *

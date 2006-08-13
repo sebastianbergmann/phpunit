@@ -13,7 +13,7 @@
  *
  *   * Redistributions of source code must retain the above copyright
  *     notice, this list of conditions and the following disclaimer.
- * 
+ *
  *   * Redistributions in binary form must reproduce the above copyright
  *     notice, this list of conditions and the following disclaimer in
  *     the documentation and/or other materials provided with the
@@ -79,7 +79,7 @@ class MoneyBag implements IMoney
         return $m->addMoneyBag($this);
     }
 
-    public function addMoney(Money $m) 
+    public function addMoney(Money $m)
     {
         return MoneyBag::create($m, $this);
     }
@@ -144,7 +144,7 @@ class MoneyBag implements IMoney
             if (count($anObject->monies()) != count($this->fMonies)) {
                 return FALSE;
             }
-        
+
             foreach ($this->fMonies as $m) {
                 if (!$anObject->contains($m)) {
                     return FALSE;

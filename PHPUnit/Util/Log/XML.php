@@ -13,7 +13,7 @@
  *
  *   * Redistributions of source code must retain the above copyright
  *     notice, this list of conditions and the following disclaimer.
- * 
+ *
  *   * Redistributions in binary form must reproduce the above copyright
  *     notice, this list of conditions and the following disclaimer in
  *     the documentation and/or other materials provided with the
@@ -263,7 +263,7 @@ class PHPUnit_Util_Log_XML extends PHPUnit_Util_Printer implements PHPUnit_Frame
 
         catch (ReflectionException $e) {
         }
-        
+
         if ($this->testSuiteLevel > 0) {
             $this->testSuites[$this->testSuiteLevel]->appendChild($testSuite);
         } else {

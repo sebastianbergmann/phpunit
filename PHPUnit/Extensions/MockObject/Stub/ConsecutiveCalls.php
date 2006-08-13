@@ -38,7 +38,7 @@
  *
  * @category   Testing
  * @package    PHPUnit
- * @author     Patrick Müller <elias0@gmx.net>
+ * @author     Patrick MÃ¼ller <elias0@gmx.net>
  * @author     Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @copyright  2002-2006 Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
@@ -58,7 +58,7 @@ PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
  *
  * @category   Testing
  * @package    PHPUnit
- * @author     Patrick Müller <elias0@gmx.net>
+ * @author     Patrick MÃ¼ller <elias0@gmx.net>
  * @author     Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @copyright  2002-2006 Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License

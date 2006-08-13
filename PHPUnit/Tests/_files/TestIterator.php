@@ -13,7 +13,7 @@
  *
  *   * Redistributions of source code must retain the above copyright
  *     notice, this list of conditions and the following disclaimer.
- * 
+ *
  *   * Redistributions in binary form must reproduce the above copyright
  *     notice, this list of conditions and the following disclaimer in
  *     the documentation and/or other materials provided with the
@@ -51,7 +51,7 @@ require_once 'PHPUnit/Util/Filter.php';
 PHPUnit_Util_Filter::addFileToFilter(__FILE__);
 
 /**
- * 
+ *
  *
  * @category   Testing
  * @package    PHPUnit
@@ -66,32 +66,32 @@ class TestIterator implements Iterator
 {
     private $array;
     private $position;
-  
+
     public function __construct($array = array())
     {
         $this->array = $array;
     }
-  
+
     public function rewind()
     {
         $this->position = 0;
     }
-  
+
     public function valid()
     {
         return $this->position < count($this->array);
     }
-  
+
     public function key()
     {
         return $this->position;
     }
-  
+
     public function current()
     {
         return $this->array[$this->position];
     }
-  
+
     public function next()
     {
         $this->position++;

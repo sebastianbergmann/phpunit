@@ -13,7 +13,7 @@
  *
  *   * Redistributions of source code must retain the above copyright
  *     notice, this list of conditions and the following disclaimer.
- * 
+ *
  *   * Redistributions in binary form must reproduce the above copyright
  *     notice, this list of conditions and the following disclaimer in
  *     the documentation and/or other materials provided with the
@@ -252,7 +252,7 @@ class PHPUnit_Util_Log_GraphViz implements PHPUnit_Framework_TestListener
                  $this->testSuiteIncompleteOrSkippedCount[$this->testSuiteLevel] > 0) {
             $color = 'yellow';
         }
-        
+
         $safeSuiteName = PHPUnit_Util_Filesystem::getSafeFilename($suite->getName());
 
         $this->graphs[$this->testSuiteLevel]->addNode(

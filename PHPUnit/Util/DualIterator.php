@@ -13,7 +13,7 @@
  *
  *   * Redistributions of source code must retain the above copyright
  *     notice, this list of conditions and the following disclaimer.
- * 
+ *
  *   * Redistributions in binary form must reproduce the above copyright
  *     notice, this list of conditions and the following disclaimer in
  *     the documentation and/or other materials provided with the
@@ -38,6 +38,8 @@
  *
  * @category   Testing
  * @package    PHPUnit
+ * @author     Marcus Börger <helly@php.net>
+ * @author     Kore Nordmann <mail@kore-nordmann.de>
  * @author     Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @copyright  2002-2006 Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
@@ -51,7 +53,7 @@ require_once 'PHPUnit/Util/Filter.php';
 PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
 
 /**
- * 
+ *
  *
  * @category   Testing
  * @package    PHPUnit
@@ -75,9 +77,9 @@ class PHPUnit_Util_DualIterator implements Iterator
     const KEY_RHS   = 0x20;
     const KEY_ARRAY = 0x30;
     const KEY_0     = 0x00;
-    
+
     const DEFAULT_FLAGS = 0x33;
-    
+
     private $lhs;
     private $rhs;
     private $flags;
@@ -112,12 +114,12 @@ class PHPUnit_Util_DualIterator implements Iterator
     public function rewind()
     {
         $this->lhs->rewind();
-        $this->rhs->rewind();    
+        $this->rhs->rewind();
     }
 
     public function valid()
     {
-        return $this->lhs->valid() && $this->rhs->valid();    
+        return $this->lhs->valid() && $this->rhs->valid();
     }
 
     public function current()
@@ -182,7 +184,7 @@ class PHPUnit_Util_DualIterator implements Iterator
     {
         return $this->valid()
              ? $this->lhs->key() == $this->rhs->key()
-            && (  $this->lhs->current() == $this->rhs->current() 
+            && (  $this->lhs->current() == $this->rhs->current()
                   || (  is_float($this->lhs->current())
                      && is_float($this->rhs->current())
                      && abs($this->lhs->current() - $this->rhs->current()) < $delta

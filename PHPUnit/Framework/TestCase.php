@@ -13,7 +13,7 @@
  *
  *   * Redistributions of source code must retain the above copyright
  *     notice, this list of conditions and the following disclaimer.
- * 
+ *
  *   * Redistributions in binary form must reproduce the above copyright
  *     notice, this list of conditions and the following disclaimer in
  *     the documentation and/or other materials provided with the
@@ -326,14 +326,14 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
         }
 
         $currentValue = ini_set($varName, $newValue);
-        
+
         if ($currentValue !== FALSE) {
             $this->iniSettings[$varName] = $currentValue;
         } else {
             throw new RuntimeException;
         }
     }
- 
+
     /**
      * Returns a mock object for the specified class.
      *
@@ -361,7 +361,7 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
     }
 
     /**
-     * 
+     *
      *
      * @return PHPUnit_Extensions_MockObject_Matcher_InvokedCount
      * @access protected
@@ -373,7 +373,7 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
     }
 
     /**
-     * 
+     *
      *
      * @return PHPUnit_Extensions_MockObject_Matcher_InvokedAtLeastOnce
      * @access protected
@@ -385,7 +385,7 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
     }
 
     /**
-     * 
+     *
      *
      * @return PHPUnit_Extensions_MockObject_Matcher_InvokedCount
      * @access protected
@@ -397,7 +397,7 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
     }
 
     /**
-     * 
+     *
      *
      * @param  integer $count
      * @return PHPUnit_Extensions_MockObject_Matcher_InvokedCount
@@ -410,7 +410,7 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
     }
 
     /**
-     * 
+     *
      *
      * @param  integer $index
      * @return PHPUnit_Extensions_MockObject_Matcher_InvokedAtIndex
@@ -423,7 +423,7 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
     }
 
     /**
-     * 
+     *
      *
      * @param  mixed $value
      * @return PHPUnit_Extensions_MockObject_Stub_Return
@@ -436,7 +436,7 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
     }
 
     /**
-     * 
+     *
      *
      * @param  mixed $value, ...
      * @return PHPUnit_Extensions_MockObject_Stub_ConsecutiveCalls

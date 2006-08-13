@@ -13,7 +13,7 @@
  *
  *   * Redistributions of source code must retain the above copyright
  *     notice, this list of conditions and the following disclaimer.
- * 
+ *
  *   * Redistributions in binary form must reproduce the above copyright
  *     notice, this list of conditions and the following disclaimer in
  *     the documentation and/or other materials provided with the
@@ -72,7 +72,7 @@ class MoneyTest extends PHPUnit_Framework_TestCase
 
     private $fMB1;
     private $fMB2;
-    
+
     protected function setUp()
     {
         $this->f12EUR = new Money(12, 'EUR');
@@ -124,7 +124,7 @@ class MoneyTest extends PHPUnit_Framework_TestCase
 
     public function testIsZero()
     {
-        //$this->assertTrue($this->fMB1->subtract($this->fMB1)->isZero()); 
+        //$this->assertTrue($this->fMB1->subtract($this->fMB1)->isZero());
         $this->assertTrue(MoneyBag::create(new Money (0, 'EUR'), new Money (0, 'USD'))->isZero());
     }
 
@@ -145,8 +145,8 @@ class MoneyTest extends PHPUnit_Framework_TestCase
 
     public function testMoneyBagEquals()
     {
-        $this->assertTrue(!$this->fMB1->equals(NULL)); 
-        
+        $this->assertTrue(!$this->fMB1->equals(NULL));
+
         $this->assertTrue($this->fMB1->equals($this->fMB1));
         $equal = MoneyBag::create(new Money(12, 'EUR'), new Money(7, 'USD'));
         $this->assertTrue($this->fMB1->equals($equal));
@@ -163,7 +163,7 @@ class MoneyTest extends PHPUnit_Framework_TestCase
 
     public function testMoneyEquals()
     {
-        $this->assertTrue(!$this->f12EUR->equals(NULL)); 
+        $this->assertTrue(!$this->f12EUR->equals(NULL));
         $equalMoney = new Money(12, 'EUR');
         $this->assertTrue($this->f12EUR->equals($this->f12EUR));
         $this->assertTrue($this->f12EUR->equals($equalMoney));

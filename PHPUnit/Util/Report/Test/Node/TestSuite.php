@@ -13,7 +13,7 @@
  *
  *   * Redistributions of source code must retain the above copyright
  *     notice, this list of conditions and the following disclaimer.
- * 
+ *
  *   * Redistributions in binary form must reproduce the above copyright
  *     notice, this list of conditions and the following disclaimer in
  *     the documentation and/or other materials provided with the
@@ -45,7 +45,7 @@
  * @link       http://www.phpunit.de/
  * @since      File available since Release 3.0.0
  */
- 
+
 @include_once 'Image/GraphViz.php';
 
 require_once 'PHPUnit/Framework.php';
@@ -168,7 +168,7 @@ class PHPUnit_Util_Report_Test_Node_TestSuite extends PHPUnit_Util_Report_Test_N
             $child->render($target, $title);
         }
     }
-    
+
     /**
      * @param  string   $target
      * @access protected
@@ -200,7 +200,7 @@ class PHPUnit_Util_Report_Test_Node_TestSuite extends PHPUnit_Util_Report_Test_N
 
         $template->renderTo($file);
     }
-    
+
     /**
      * @return string
      * @access protected
@@ -214,7 +214,7 @@ class PHPUnit_Util_Report_Test_Node_TestSuite extends PHPUnit_Util_Report_Test_N
               PHPUnit_Util_Report::getTemplatePath() .
               'testsuite_item.htm'
             );
-            
+
             $resultCode = $item->getResult();
 
             if ($resultCode instanceof PHPUnit_Framework_TestFailure) {
@@ -242,7 +242,7 @@ class PHPUnit_Util_Report_Test_Node_TestSuite extends PHPUnit_Util_Report_Test_N
             else {
                 $testResult = 'Error';
             }
-            
+
             switch ($testResult) {
                 case 'Passed':
                 case 'Skipped': {
@@ -292,19 +292,19 @@ class PHPUnit_Util_Report_Test_Node_TestSuite extends PHPUnit_Util_Report_Test_N
         $testmap_image = 'snow.png';
         $safeName = PHPUnit_Util_Filesystem::getSafeFilename($this->getName());
         $dotFile = $target . $safeName . '.dot';
-        
+
         if (file_exists($dotFile)) {
             $pngFile = $target . $safeName . '.png';
             $mapFile = $target . $safeName . '.map';
-            
+
             $graphviz = new Image_GraphViz(TRUE);
-            
+
             $success = $graphviz->renderDotFile($dotFile, $pngFile, 'png');
 
             if ($success) {
                 $testmap_image = basename($pngFile);
             }
-            
+
             $success = $graphviz->renderDotFile($dotFile, $mapFile, 'cmapx');
 
             if ($success) {
@@ -323,7 +323,7 @@ class PHPUnit_Util_Report_Test_Node_TestSuite extends PHPUnit_Util_Report_Test_N
             $testmap_image
           )
         );
-    }    
+    }
 }
 
 /*

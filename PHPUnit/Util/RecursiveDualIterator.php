@@ -13,7 +13,7 @@
  *
  *   * Redistributions of source code must retain the above copyright
  *     notice, this list of conditions and the following disclaimer.
- * 
+ *
  *   * Redistributions in binary form must reproduce the above copyright
  *     notice, this list of conditions and the following disclaimer in
  *     the documentation and/or other materials provided with the
@@ -38,6 +38,7 @@
  *
  * @category   Testing
  * @package    PHPUnit
+ * @author     Marcus Börger <helly@php.net>
  * @author     Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @copyright  2002-2006 Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
@@ -52,7 +53,7 @@ require_once 'PHPUnit/Util/DualIterator.php';
 PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
 
 /**
- * 
+ *
  *
  * @category   Testing
  * @package    PHPUnit
@@ -75,7 +76,7 @@ class PHPUnit_Util_RecursiveDualIterator extends PHPUnit_Util_DualIterator imple
 
     public function hasChildren()
     {
-        return $this->getLHS()->hasChildren() && $this->getRHS()->hasChildren();	
+        return $this->getLHS()->hasChildren() && $this->getRHS()->hasChildren();
     }
 
     public function getChildren()
