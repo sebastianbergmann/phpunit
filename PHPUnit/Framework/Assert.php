@@ -401,7 +401,7 @@ class PHPUnit_Framework_Assert
         $constraint = new PHPUnit_Framework_Constraint_IsIdentical(TRUE);
 
         if (!$constraint->evaluate($condition)) {
-            self::failConstraint($constraint, $condition, $message, TRUE);
+            self::failConstraint($constraint, $condition, $message);
         }
     }
 
@@ -424,7 +424,7 @@ class PHPUnit_Framework_Assert
         $constraint = new PHPUnit_Framework_Constraint_IsIdentical(FALSE);
 
         if (!$constraint->evaluate($condition)) {
-            self::failConstraint($constraint, $condition, $message, TRUE);
+            self::failConstraint($constraint, $condition, $message);
         }
     }
 
@@ -443,7 +443,7 @@ class PHPUnit_Framework_Assert
         );
 
         if (!$constraint->evaluate($actual)) {
-            self::failConstraint($constraint, $actual, $message, TRUE);
+            self::failConstraint($constraint, $actual, $message);
         }
     }
 
@@ -460,7 +460,7 @@ class PHPUnit_Framework_Assert
         $constraint = new PHPUnit_Framework_Constraint_IsIdentical(NULL);
 
         if (!$constraint->evaluate($actual)) {
-            self::failConstraint($constraint, $actual, $message, TRUE);
+            self::failConstraint($constraint, $actual, $message);
         }
     }
 
@@ -528,7 +528,7 @@ class PHPUnit_Framework_Assert
         $constraint = new PHPUnit_Framework_Constraint_IsIdentical($expected);
 
         if (!$constraint->evaluate($actual)) {
-            self::failConstraint($constraint, $actual, $message, TRUE);
+            self::failConstraint($constraint, $actual, $message);
         }
     }
 
@@ -574,7 +574,7 @@ class PHPUnit_Framework_Assert
         );
 
         if (!$constraint->evaluate($actual)) {
-            self::failConstraint($constraint, $actual, $message, TRUE);
+            self::failConstraint($constraint, $actual, $message);
         }
     }
 
@@ -734,7 +734,7 @@ class PHPUnit_Framework_Assert
     public static function assertThat($value, PHPUnit_Framework_Constraint $constraint, $message = '')
     {
         if (!$constraint->evaluate($value)) {
-            self::failConstraint($constraint, $value, $message, TRUE);
+            self::failConstraint($constraint, $value, $message);
         }
     }
 
@@ -990,21 +990,20 @@ class PHPUnit_Framework_Assert
      * @param  PHPUnit_Framework_Constraint $constraint
      * @param  mixed                         $value
      * @param  string                        $message
-     * @param  boolean                       $type
      * @throws PHPUnit_Framework_ExpectationFailedException
      * @access public
      * @static
      * @since  Method available since Release 3.0.0
      */
-    public static function failConstraint(PHPUnit_Framework_Constraint $constraint, $value, $message, $type = FALSE)
+    public static function failConstraint(PHPUnit_Framework_Constraint $constraint, $value, $message)
     {
         $constraint->fail(
           $value,
           sprintf(
-            '%sfailed asserting that <%s%s> %s',
+            '%sfailed asserting that <%s:%s> %s',
 
             $message,
-            $type ? gettype($value) . ':' : '',
+            gettype($value),
             print_r($value, TRUE),
             $constraint->toString()
           )
