@@ -50,6 +50,7 @@ require_once 'PHPUnit/Framework/TestCase.php';
 
 require_once '_files/ClassWithNonPublicAttributes.php';
 require_once '_files/SampleClass.php';
+require_once '_files/Struct.php';
 require_once '_files/TestIterator.php';
 require_once '_files/WasRun.php';
 
@@ -349,6 +350,96 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
 
         try {
             $this->assertNotEquals(2.3, 2.5, '', 0.5);
+        }
+
+        catch (PHPUnit_Framework_AssertionFailedError $e) {
+            return;
+        }
+
+        $this->fail();
+    }
+
+    public function testAssertEqualsArrayFloatDelta()
+    {
+        $this->assertEquals(array(2.3), array(2.5), '', 0.5);
+
+        try {
+            $this->assertEquals(array(2.3), array(4.2), '', 0.5);
+        }
+
+        catch (PHPUnit_Framework_AssertionFailedError $e) {
+            return;
+        }
+
+        $this->fail();
+    }
+
+    public function testAssertNotEqualsArrayFloatDelta()
+    {
+        $this->assertNotEquals(array(2.3), array(4.2), '', 0.5);
+
+        try {
+            $this->assertNotEquals(array(2.3), array(2.5), '', 0.5);
+        }
+
+        catch (PHPUnit_Framework_AssertionFailedError $e) {
+            return;
+        }
+
+        $this->fail();
+    }
+
+    public function testAssertEqualsStructFloatDelta()
+    {
+        $this->assertEquals(new Struct(2.3), new Struct(2.5), '', 0.5);
+
+        try {
+            $this->assertEquals(new Struct(2.3), new Struct(4.2), '', 0.5);
+        }
+
+        catch (PHPUnit_Framework_AssertionFailedError $e) {
+            return;
+        }
+
+        $this->fail();
+    }
+
+    public function testAssertNotEqualsStructFloatDelta()
+    {
+        $this->assertNotEquals(new Struct(2.3), new Struct(4.2), '', 0.5);
+
+        try {
+            $this->assertNotEquals(new Struct(2.3), new Struct(2.5), '', 0.5);
+        }
+
+        catch (PHPUnit_Framework_AssertionFailedError $e) {
+            return;
+        }
+
+        $this->fail();
+    }
+
+    public function testAssertEqualsArrayStructFloatDelta()
+    {
+        $this->assertEquals(array(new Struct(2.3)), array(new Struct(2.5)), '', 0.5);
+
+        try {
+            $this->assertEquals(array(new Struct(2.3)), array(new Struct(4.2)), '', 0.5);
+        }
+
+        catch (PHPUnit_Framework_AssertionFailedError $e) {
+            return;
+        }
+
+        $this->fail();
+    }
+
+    public function testAssertNotEqualsArrayStructFloatDelta()
+    {
+        $this->assertNotEquals(array(new Struct(2.3)), array(new Struct(4.2)), '', 0.5);
+
+        try {
+            $this->assertNotEquals(array(new Struct(2.3)), array(new Struct(2.5)), '', 0.5);
         }
 
         catch (PHPUnit_Framework_AssertionFailedError $e) {
