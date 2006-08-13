@@ -68,15 +68,28 @@ class PHPUnit_Util_Array
      * Sorts an array recursively by its keys.
      *
      * @param  array $array
+     * @throws InvalidArgumentException
      * @access public
      * @static
      */
-    public static function sortRecursively(Array $array)
+    public static function sortRecursively($array)
     {
+        if (is_object($array)) {
+            $array = (array) $array;
+        }
+
+        if (!is_array($array)) {
+            throw new InvalidArgumentException;
+        }
+
         ksort($array);
 
         foreach($array as $k => $v) {
-            if (is_array($v)) {
+            if (is_object($array[$k])) {
+                $array[$k] = (array) $array[$k];
+            }
+
+            if (is_array($array[$k])) {
                 $array[$k] = self::sortRecursively($array[$k]);
             }
         }

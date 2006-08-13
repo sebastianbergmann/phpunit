@@ -102,13 +102,13 @@ class PHPUnit_Framework_Constraint_IsEqual implements PHPUnit_Framework_Constrai
             return PHPUnit_Util_DualIterator::compareIterators(
               new RecursiveIteratorIterator(
                 new RecursiveArrayIterator(
-                  PHPUnit_Util_Array::sortRecursively((array) $this->value)
+                  PHPUnit_Util_Array::sortRecursively($this->value)
                 ),
                 RecursiveIteratorIterator::SELF_FIRST
               ),
               new RecursiveIteratorIterator(
                 new RecursiveArrayIterator(
-                  PHPUnit_Util_Array::sortRecursively((array) $other)
+                  PHPUnit_Util_Array::sortRecursively($other)
                 ),
                 RecursiveIteratorIterator::SELF_FIRST
               ),
@@ -167,7 +167,7 @@ class PHPUnit_Framework_Constraint_IsEqual implements PHPUnit_Framework_Constrai
         return sprintf(
           'is equal to <%s>%s',
 
-          $type  . print_r($this->value, TRUE),
+          $type . print_r($this->value, TRUE),
           $delta
         );
     }
