@@ -670,6 +670,9 @@
      </file>
     </dir>
     <dir name="TextUI">
+     <file baseinstalldir="/" name="ResultPrinter.php" role="php">
+      <tasks:replace from="@package_version@" to="version" type="package-info" />
+     </file>
      <file baseinstalldir="/" name="TestRunner.php" role="php">
       <tasks:replace from="@package_version@" to="version" type="package-info" />
      </file>
