@@ -156,6 +156,7 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
           'skeleton',
           'testdox-html=',
           'testdox-text=',
+          'verbose',
           'version',
           'wait'
         );
@@ -269,6 +270,11 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
                 }
                 break;
 
+                case '--verbose': {
+                    $parameters['verbose'] = TRUE;
+                }
+                break;
+
                 case '--version': {
                     self::printVersionString();
                     exit(self::SUCCESS_EXIT);
@@ -290,10 +296,6 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
 
         if ($loaderName !== FALSE) {
             $this->handleLoader($loaderName);
-        }
-
-        if (!isset($parameters['printer'])) {
-            $printer = new PHPUnit_TextUI_ResultPrinter;
         }
 
         $test = $this->getTest($test, $testFile);
@@ -375,8 +377,9 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
      */
     public function doRun(PHPUnit_Framework_Test $suite, Array $parameters = array())
     {
-        $parameters['filter'] = isset($parameters['filter']) ? $parameters['filter'] : FALSE;
-        $parameters['wait']   = isset($parameters['wait'])   ? $parameters['wait']   : FALSE;
+        $parameters['filter']  = isset($parameters['filter'])  ? $parameters['filter']  : FALSE;
+        $parameters['verbose'] = isset($parameters['verbose']) ? $parameters['verbose'] : FALSE;
+        $parameters['wait']    = isset($parameters['wait'])    ? $parameters['wait']    : FALSE;
 
         if (isset($parameters['graphvizDirectory'])) {
             $parameters['graphvizDirectory'] = $this->getDirectory($parameters['graphvizDirectory']);
@@ -392,7 +395,7 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
             if (isset($parameters['printer']) && $parameters instanceof PHPUnit_Util_Printer) {
                 $this->printer = $parameters['printer'];
             } else {
-                $this->printer = new PHPUnit_TextUI_ResultPrinter;
+                $this->printer = new PHPUnit_TextUI_ResultPrinter(NULL, $parameters['verbose']);
             }
         }
 
@@ -530,6 +533,7 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
               "  --wait                 Waits for a keystroke after each test.\n\n" .
               "  --help                 Prints this usage information.\n" .
               "  --version              Prints the version and exits.\n\n" .
+              "  --verbose              Output more verbose information.\n\n" .
               "  -d key[=value]         Sets a php.ini value.\n";
     }
 

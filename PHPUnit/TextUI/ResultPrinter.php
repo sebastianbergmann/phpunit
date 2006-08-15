@@ -79,8 +79,34 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
     private $lastTestFailed = FALSE;
 
     /**
+     * @var    boolean
+     * @access private
+     */
+    private $verbose = FALSE;
+
+    /**
+     * Constructor.
+     *
+     * @param  mixed   $out
+     * @param  boolean $verbose
+     * @throws InvalidArgumentException
+     * @access public
+     * @since  Method available since Release 3.0.0
+     */
+    public function __construct($out = NULL, $verbose = FALSE)
+    {
+        parent::__construct($out);
+
+        if (is_bool($verbose)) {
+            $this->verbose = $verbose;
+        } else {
+            throw new InvalidArgumentException;
+        }
+    }
+
+    /**
      * @param  PHPUnit_Framework_TestResult $result
-     * @param  float                         $timeElapsed
+     * @param  float                        $timeElapsed
      * @access public
      */
     public function printResult(PHPUnit_Framework_TestResult $result, $timeElapsed)
@@ -88,8 +114,12 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
         $this->printHeader($timeElapsed);
         $this->printErrors($result);
         $this->printFailures($result);
-        $this->printIncompletes($result);
-        $this->printSkipped($result);
+
+        if ($this->verbose) {
+            $this->printIncompletes($result);
+            $this->printSkipped($result);
+        }
+
         $this->printFooter($result);
     }
 
