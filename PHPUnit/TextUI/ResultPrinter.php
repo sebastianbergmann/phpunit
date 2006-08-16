@@ -199,7 +199,7 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
         if ($e instanceof PHPUnit_Framework_SelfDescribing) {
             $message = $e->toString();
         } else {
-            $message = $e->getMessage();
+            $message = get_class($e) . ': ' . $e->getMessage();
         }
 
         $this->write($message . "\n");
