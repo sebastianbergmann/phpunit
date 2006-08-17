@@ -181,7 +181,7 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
         $result = $this->createTestResult();
 
         if ($this->printer === NULL) {
-            if (isset($parameters['printer']) && $parameters instanceof PHPUnit_Util_Printer) {
+            if (isset($parameters['printer']) && $parameters['printer'] instanceof PHPUnit_Util_Printer) {
                 $this->printer = $parameters['printer'];
             } else {
                 $this->printer = new PHPUnit_TextUI_ResultPrinter(NULL, $parameters['verbose']);
