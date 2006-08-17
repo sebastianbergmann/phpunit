@@ -46,10 +46,6 @@
  * @since      File available since Release 2.0.0
  */
 
-if (!defined('PHPUnit_MAIN_METHOD') && !defined('PHPUnit2_MAIN_METHOD')) {
-    define('PHPUnit_MAIN_METHOD', 'PHPUnit_TextUI_TestRunner::main');
-}
-
 require_once 'PHPUnit/Framework.php';
 require_once 'PHPUnit/Runner/BaseTestRunner.php';
 require_once 'PHPUnit/Extensions/RepeatedTest.php';
@@ -57,11 +53,9 @@ require_once 'PHPUnit/Runner/StandardTestSuiteLoader.php';
 require_once 'PHPUnit/Runner/Version.php';
 require_once 'PHPUnit/TextUI/ResultPrinter.php';
 require_once 'PHPUnit/Util/TestDox/ResultPrinter.php';
-require_once 'PHPUnit/Util/Fileloader.php';
-require_once 'PHPUnit/Util/Getopt.php';
+require_once 'PHPUnit/Util/Filter.php';
 require_once 'PHPUnit/Util/Report.php';
 require_once 'PHPUnit/Util/Timer.php';
-require_once 'PHPUnit/Util/Skeleton.php';
 require_once 'PHPUnit/Util/Log/Eclipse.php';
 require_once 'PHPUnit/Util/Log/GraphViz.php';
 require_once 'PHPUnit/Util/Log/TAP.php';
@@ -91,8 +85,9 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
     /**
      * @var    PHPUnit_Runner_TestSuiteLoader
      * @access private
+     * @static
      */
-    private $loader = NULL;
+    private static $loader = NULL;
 
     /**
      * @var    PHPUnit_TextUI_ResultPrinter
@@ -106,217 +101,6 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
      * @static
      */
     private static $versionStringPrinted = FALSE;
-
-    /**
-     * @access public
-     * @static
-     */
-    public static function main()
-    {
-        $aTestRunner = new PHPUnit_TextUI_TestRunner;
-
-        try {
-            $result = $aTestRunner->start($_SERVER['argv']);
-
-            if (!$result->wasSuccessful()) {
-                exit(self::FAILURE_EXIT);
-            }
-
-            exit(self::SUCCESS_EXIT);
-        }
-
-        catch (Exception $e) {
-            self::printVersionString();
-            print $e->getMessage();
-            exit(self::EXCEPTION_EXIT);
-        }
-    }
-
-    /**
-     * @param  array $arguments
-     * @throws RuntimeException
-     * @access protected
-     */
-    protected function start(Array $arguments)
-    {
-        $loaderName = FALSE;
-        $repeat     = FALSE;
-        $parameters = array();
-
-        $longOptions = array(
-          'help',
-          'filter=',
-          'loader=',
-          'log-eclipse=',
-          'log-tap=',
-          'log-xml=',
-          'printer=',
-          'repeat=',
-          'report=',
-          'skeleton',
-          'testdox-html=',
-          'testdox-text=',
-          'verbose',
-          'version',
-          'wait'
-        );
-
-        if (class_exists('Image_GraphViz')) {
-            $longOptions[] = 'log-graphviz=';
-        }
-
-        try {
-            $options = PHPUnit_Util_Getopt::getopt(
-              $arguments,
-              'd:',
-              $longOptions
-            );
-        }
-
-        catch (RuntimeException $e) {
-            $this->showError($e->getMessage());
-        }
-
-        $test     = isset($options[1][0]) ? $options[1][0] : FALSE;
-        $testFile = isset($options[1][1]) ? $options[1][1] : $test . '.php';
-
-        foreach ($options[0] as $option) {
-            switch ($option[0]) {
-                case 'd': {
-                    $ini = explode('=', $option[1]);
-
-                    if (isset($ini[0])) {
-                        if (isset($ini[1])) {
-                            ini_set($ini[0], $ini[1]);
-                        } else {
-                            ini_set($ini[0], TRUE);
-                        }
-                    }
-                }
-                break;
-
-                case '--help': {
-                    $this->showHelp();
-                    exit(self::SUCCESS_EXIT);
-                }
-                break;
-
-                case '--filter': {
-                    if (preg_match('/[a-zA-Z0-9_]/', $option[1])) {
-                        $parameters['filter'] = '/^' . $option[1] . '$/';
-                    } else {
-                        $parameters['filter'] = $option[1];
-                    }
-                }
-                break;
-
-                case '--loader': {
-                    $loaderName = $option[1];
-                }
-                break;
-
-                case '--log-eclipse': {
-                    $parameters['eclipseLogfile'] = $option[1];
-                }
-                break;
-
-                case '--log-graphviz': {
-                    $parameters['graphvizDirectory'] = $option[1];
-                }
-                break;
-
-                case '--log-tap': {
-                    $parameters['tapLogfile'] = $option[1];
-                }
-                break;
-
-                case '--log-xml': {
-                    $parameters['xmlLogfile'] = $option[1];
-                }
-                break;
-
-                case '--printer': {
-                    switch (strtolower($option[1])) {
-                        case 'tap': {
-                            $parameters['printer'] = new PHPUnit_Util_Log_TAP;
-                        }
-                        break;
-                    }
-                }
-                break;
-
-                case '--repeat': {
-                    $repeat = (int)$option[1];
-                }
-                break;
-
-                case '--report': {
-                    $parameters['reportDirectory'] = $option[1];
-                }
-                break;
-
-                case '--skeleton': {
-                    $this->doSkeleton($test, $testFile);
-                }
-                break;
-
-                case '--testdox-html': {
-                    $parameters['testdoxHTMLFile'] = $option[1];
-                }
-                break;
-
-                case '--testdox-text': {
-                    $parameters['testdoxTextFile'] = $option[1];
-                }
-                break;
-
-                case '--verbose': {
-                    $parameters['verbose'] = TRUE;
-                }
-                break;
-
-                case '--version': {
-                    self::printVersionString();
-                    exit(self::SUCCESS_EXIT);
-                }
-                break;
-
-                case '--wait': {
-                    $parameters['wait'] = TRUE;
-                }
-                break;
-            }
-        }
-
-        if ($test === FALSE) {
-            $this->showHelp();
-
-            exit(self::SUCCESS_EXIT);
-        }
-
-        if ($loaderName !== FALSE) {
-            $this->handleLoader($loaderName);
-        }
-
-        $test = $this->getTest($test, $testFile);
-
-        if ($repeat !== FALSE) {
-            $test = new PHPUnit_Extensions_RepeatedTest($test, $repeat);
-        }
-
-        try {
-            return $this->doRun(
-              $test,
-              $parameters
-            );
-        }
-
-        catch (Exception $e) {
-            throw new RuntimeException(
-              'Could not create and run test suite: ' . $e->getMessage()
-            );
-        }
-    }
 
     /**
      * @param  mixed $test
@@ -377,9 +161,14 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
      */
     public function doRun(PHPUnit_Framework_Test $suite, Array $parameters = array())
     {
+        $parameters['repeat']  = isset($parameters['repeat'])  ? $parameters['repeat']  : FALSE;
         $parameters['filter']  = isset($parameters['filter'])  ? $parameters['filter']  : FALSE;
         $parameters['verbose'] = isset($parameters['verbose']) ? $parameters['verbose'] : FALSE;
         $parameters['wait']    = isset($parameters['wait'])    ? $parameters['wait']    : FALSE;
+
+        if (is_integer($parameters['repeat'])) {
+            $suite = new PHPUnit_Extensions_RepeatedTest($suite, $parameters['repeat']);
+        }
 
         if (isset($parameters['graphvizDirectory'])) {
             $parameters['graphvizDirectory'] = $this->getDirectory($parameters['graphvizDirectory']);
@@ -475,69 +264,6 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
     }
 
     /**
-     * Returns the loader to be used.
-     *
-     * @return PHPUnit_Runner_TestSuiteLoader
-     * @access public
-     * @since  Method available since Release 2.2.0
-     */
-    public function getLoader()
-    {
-        if ($this->loader === NULL) {
-            $this->loader = new PHPUnit_Runner_StandardTestSuiteLoader;
-        }
-
-        return $this->loader;
-    }
-
-    /**
-     * @access public
-     */
-    public function showError($message)
-    {
-        self::printVersionString();
-        print $message . "\n";
-
-        exit(self::FAILURE_EXIT);
-    }
-
-    /**
-     * @access public
-     */
-    public function showHelp()
-    {
-        self::printVersionString();
-
-        print "Usage: phpunit [switches] UnitTest [UnitTest.php]\n\n" .
-              "  --filter <pattern>     Filter which tests to run.\n\n";
-
-        if (class_exists('Image_GraphViz')) {
-            print "  --log-graphviz <dir>   Log test execution in GraphViz markup.\n";
-        }
-
-        print "  --log-tap <file>       Log test execution in TAP format to file.\n" .
-              "  --log-xml <file>       Log test execution in XML format to file.\n\n";
-
-        if (extension_loaded('xdebug')) {
-            print "  --report <dir>         Generate combined test/coverage report in HTML format.\n";
-        } else {
-            print "  --report <dir>         Generate test report in HTML format.\n";
-        }
-
-        print "  --testdox-html <file>  Write agile documentation in HTML format to file.\n" .
-              "  --testdox-text <file>  Write agile documentation in Text format to file.\n\n" .
-              "  --printer {dots|tap}   Report test execution progress in DOTS or TAP format.\n" .
-              "  --loader <loader>      TestSuiteLoader implementation to use.\n\n" .
-              "  --skeleton             Generate skeleton UnitTest class for Unit in Unit.php.\n\n" .
-              "  --repeat <times>       Runs the test(s) repeatedly.\n" .
-              "  --wait                 Waits for a keystroke after each test.\n\n" .
-              "  --help                 Prints this usage information.\n" .
-              "  --version              Prints the version and exits.\n\n" .
-              "  --verbose              Output more verbose information.\n\n" .
-              "  -d key[=value]         Sets a php.ini value.\n";
-    }
-
-    /**
      * @param  boolean $wait
      * @access protected
      */
@@ -610,89 +336,6 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
     }
 
     /**
-     * @param  string  $test
-     * @param  string  $testFile
-     * @access private
-     * @since  Method available since Release 3.0.0
-     */
-    private function doSkeleton($test, $testFile)
-    {
-        if ($test !== FALSE) {
-            self::printVersionString();
-
-            try {
-                $skeleton = new PHPUnit_Util_Skeleton($test, $testFile);
-                $skeleton->write();
-            }
-
-            catch (Exception $e) {
-                print $e->getMessage() . "\n";
-
-                printf(
-                  "Could not write test class skeleton for %s to %s.\n",
-                  $test,
-                  $testFile
-                );
-
-                exit(self::FAILURE_EXIT);
-            }
-
-            printf(
-              "Wrote test class skeleton for %s to %s.\n",
-              $test,
-              $skeleton->getTestSourceFile()
-            );
-
-            exit(self::SUCCESS_EXIT);
-        }
-    }
-
-    /**
-     * @param  string  $loaderName
-     * @access private
-     * @since  Method available since Release 3.0.0
-     */
-    private function handleLoader($loaderName)
-    {
-        if (!class_exists($loaderName)) {
-            PHPUnit_Util_Fileloader::checkAndLoad(
-              str_replace('_', '/', $loaderName) . '.php'
-            );
-        }
-
-        if (class_exists($loaderName)) {
-            $class = new ReflectionClass($loaderName);
-
-            if ($class->implementsInterface('PHPUnit_Runner_TestSuiteLoader') &&
-                $class->isInstantiable()) {
-                $this->loader = $class->newInstance();
-            }
-        }
-
-        if ($this->loader === NULL) {
-            $this->showError(
-              sprintf(
-                'Could not use "%s" as loader.',
-
-                $loaderName
-              )
-            );
-        }
-    }
-
-    /**
-     * @access private
-     * @since  Method available since Release 2.2.0
-     */
-    private static function printVersionString()
-    {
-        if (!self::$versionStringPrinted) {
-            print PHPUnit_Runner_Version::getVersionString() . "\n\n";
-            self::$versionStringPrinted = TRUE;
-        }
-    }
-
-    /**
      * @access private
      * @since  Method available since Release 3.0.0
      */
@@ -704,10 +347,59 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
 
         return $directory;
     }
-}
 
-if (PHPUnit_MAIN_METHOD == 'PHPUnit_TextUI_TestRunner::main') {
-    PHPUnit_TextUI_TestRunner::main();
+    /**
+     * Returns the loader to be used.
+     *
+     * @return PHPUnit_Runner_TestSuiteLoader
+     * @access public
+     * @since  Method available since Release 2.2.0
+     */
+    public function getLoader()
+    {
+        if (self::$loader === NULL) {
+            self::$loader = new PHPUnit_Runner_StandardTestSuiteLoader;
+        }
+
+        return self::$loader;
+    }
+
+    /**
+     * Sets the loader to be used.
+     *
+     * @param PHPUnit_Runner_TestSuiteLoader $loader
+     * @access public
+     * @static
+     * @since  Method available since Release 3.0.0
+     */
+    public static function setLoader(PHPUnit_Runner_TestSuiteLoader $loader)
+    {
+        self::$loader = $loader;
+    }
+
+    /**
+     * @access public
+     */
+    public static function showError($message)
+    {
+        self::printVersionString();
+        print $message . "\n";
+
+        exit(self::FAILURE_EXIT);
+    }
+
+
+    /**
+     * @access public
+     * @static
+     */
+    public static function printVersionString()
+    {
+        if (!self::$versionStringPrinted) {
+            print PHPUnit_Runner_Version::getVersionString() . "\n\n";
+            self::$versionStringPrinted = TRUE;
+        }
+    }
 }
 
 /*
