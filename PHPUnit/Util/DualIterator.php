@@ -182,15 +182,21 @@ class PHPUnit_Util_DualIterator implements Iterator
 
     public function areEqual($delta)
     {
-        return $this->valid()
-             ? $this->lhs->key() == $this->rhs->key()
-            && (  $this->lhs->current() == $this->rhs->current()
-                  || (  is_float($this->lhs->current())
-                     && is_float($this->rhs->current())
-                     && abs($this->lhs->current() - $this->rhs->current()) < $delta
-                  )
-               )
-             : $this->lhs->valid() == $this->rhs->valid();
+        if ($this->valid()) {
+            if ($this->lhs->key() == $this->rhs->key()) {
+                if ($this->lhs->current() == $this->rhs->current()) {
+                    return TRUE;
+                }
+
+                if (is_numeric($this->lhs->current()) &&
+                    is_numeric($this->rhs->current()) &&
+                    abs($this->lhs->current() - $this->rhs->current()) <= $delta) {
+                    return TRUE;
+                }
+            }
+        } else {
+            return $this->lhs->valid() == $this->rhs->valid();
+        }
     }
 
     public static function compareIterators(Iterator $lhs, Iterator $rhs, $identical = FALSE, $delta = .0)
