@@ -95,20 +95,27 @@ class PHPUnit_Framework_Constraint_IsEqual implements PHPUnit_Framework_Constrai
     {
         if  ((is_array($this->value)  && is_array($other)) ||
              (is_object($this->value) && is_object($other))) {
-            if (count($this->value) != count($other)) {
+            if (is_object($this->value) && is_object($other)) {
+                $value = (array) $this->value;
+                $other = (array) $other;
+            } else {
+                $value = $this->value;
+            }
+
+            if (count($value) != count($other)) {
                 return FALSE;
             }
 
             return PHPUnit_Util_DualIterator::compareIterators(
               new RecursiveIteratorIterator(
                 new RecursiveArrayIterator(
-                  PHPUnit_Util_Array::sortRecursively((array) $this->value)
+                  PHPUnit_Util_Array::sortRecursively($value)
                 ),
                 RecursiveIteratorIterator::SELF_FIRST
               ),
               new RecursiveIteratorIterator(
                 new RecursiveArrayIterator(
-                  PHPUnit_Util_Array::sortRecursively((array) $other)
+                  PHPUnit_Util_Array::sortRecursively($other)
                 ),
                 RecursiveIteratorIterator::SELF_FIRST
               ),
