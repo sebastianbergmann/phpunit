@@ -139,8 +139,8 @@ class PHPUnit_Framework_ComparisonFailure_String extends PHPUnit_Framework_Compa
         unlink($expectedFile);
         unlink($actualFile);
 
-        $buffer[0] = "--- Expected string";
-        $buffer[1] = "+++ Actual string";
+        $buffer[0] = "--- Expected";
+        $buffer[1] = "+++ Actual";
 
         return implode("\n", $buffer);
     }
