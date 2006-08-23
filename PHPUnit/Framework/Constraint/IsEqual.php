@@ -158,25 +158,38 @@ class PHPUnit_Framework_Constraint_IsEqual implements PHPUnit_Framework_Constrai
     {
         $delta = '';
         $type  = '';
+        $value = $this->value;
 
-        if ($this->delta != 0) {
-            $delta = sprintf(
-              ' with delta <%d>',
+        if (is_string($value)) {
+            if (strpos($value, "\n") !== FALSE) {
+                return 'is equal to <text>';
+            } else {
+                return sprintf(
+                  'is equal to <string:%s>',
 
-              $this->delta
+                  $value
+                );
+            }
+        } else {
+            if ($this->delta != 0) {
+                $delta = sprintf(
+                  ' with delta <%d>',
+
+                  $this->delta
+                );
+            }
+
+            if (!is_null($value)) {
+                $type = gettype($value) . ':';
+            }
+
+            return sprintf(
+              'is equal to <%s>%s',
+
+              $type  . print_r($value, TRUE),
+              $delta
             );
         }
-
-        if (!is_null($this->value)) {
-            $type = gettype($this->value) . ':';
-        }
-
-        return sprintf(
-          'is equal to <%s>%s',
-
-          $type  . print_r($this->value, TRUE),
-          $delta
-        );
     }
 }
 

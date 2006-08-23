@@ -76,6 +76,12 @@ class PHPUnit_Framework_ComparisonFailure_String extends PHPUnit_Framework_Compa
         $expected = (string)$this->expected;
         $actual   = (string)$this->actual;
 
+        if (substr(php_uname('s'), 0, 7) != 'Windows' &&
+           (strpos($expected, "\n") !== FALSE ||
+            strpos($actual, "\n")   !== FALSE)) {
+            return $this->diff($expected, $actual);
+        }
+
         $expectedLen = strlen($expected);
         $actualLen   = strlen($actual);
         $minLen      = min($expectedLen, $actualLen);
@@ -109,6 +115,34 @@ class PHPUnit_Framework_ComparisonFailure_String extends PHPUnit_Framework_Compa
           ($this->message != '') ? str_repeat(' ', strlen($this->message) + 1) : '',
           $actual
         );
+    }
+
+    private function diff($expected, $actual)
+    {
+        $expectedFile = tempnam('/tmp', 'expected');
+        file_put_contents($expectedFile, $expected);
+
+        $actualFile = tempnam('/tmp', 'actual');
+        file_put_contents($actualFile, $actual);
+
+        $buffer = explode(
+          "\n",
+          shell_exec(
+            sprintf(
+              'diff -u %s %s',
+              $expectedFile,
+              $actualFile
+            )
+          )
+        );
+
+        unlink($expectedFile);
+        unlink($actualFile);
+
+        $buffer[0] = "--- Expected string";
+        $buffer[1] = "+++ Actual string";
+
+        return implode("\n", $buffer);
     }
 }
 

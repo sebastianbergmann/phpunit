@@ -997,14 +997,19 @@ class PHPUnit_Framework_Assert
      */
     public static function failConstraint(PHPUnit_Framework_Constraint $constraint, $value, $message)
     {
+        if (is_string($value) && strpos($value, "\n") !== FALSE) {
+            $_value = 'text';
+        } else {
+            $_value = gettype($value) . ':' . print_r($value, TRUE);
+        }
+
         $constraint->fail(
           $value,
           sprintf(
-            '%sfailed asserting that <%s:%s> %s',
+            '%sfailed asserting that <%s> %s',
 
             $message,
-            gettype($value),
-            print_r($value, TRUE),
+            $_value,
             $constraint->toString()
           )
         );
