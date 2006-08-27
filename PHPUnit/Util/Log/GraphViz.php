@@ -213,7 +213,7 @@ class PHPUnit_Util_Log_GraphViz implements PHPUnit_Framework_TestListener
             $this->graphs[$this->testSuiteLevel]->addNode(
               $this->testSuites[$this->testSuiteLevel - 1],
               array(
-                'URL' => PHPUnit_Util_Filesystem::getSafeFilename($this->testSuites[$this->testSuiteLevel - 1]) . '-test.htm'
+                'URL' => PHPUnit_Util_Filesystem::getSafeFilename($this->testSuites[$this->testSuiteLevel - 1]) . '-test.html'
               )
             );
 
@@ -259,7 +259,7 @@ class PHPUnit_Util_Log_GraphViz implements PHPUnit_Framework_TestListener
           $this->testSuites[$this->testSuiteLevel],
           array(
             'color' => $color,
-            'URL'   => $safeSuiteName . '-test.htm'
+            'URL'   => $safeSuiteName . '-test.html'
           )
         );
 
@@ -268,7 +268,7 @@ class PHPUnit_Util_Log_GraphViz implements PHPUnit_Framework_TestListener
               $this->testSuites[$this->testSuiteLevel],
               array(
                 'color' => $color,
-                'URL'   => $safeSuiteName . '-test.htm'
+                'URL'   => $safeSuiteName . '-test.html'
               )
             );
 
@@ -321,7 +321,7 @@ class PHPUnit_Util_Log_GraphViz implements PHPUnit_Framework_TestListener
           array(
             'color' => $color,
             'URL'   => sprintf(
-              '%s-test.htm#%s',
+              '%s-test.html#%s',
 
               PHPUnit_Util_Filesystem::getSafeFilename($name[0]),
               $name[1]

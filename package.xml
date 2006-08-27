@@ -529,17 +529,17 @@
       <dir name="Template">
        <file baseinstalldir="/" name="butter.png" role="php" />
        <file baseinstalldir="/" name="chameleon.png" role="php" />
-       <file baseinstalldir="/" name="coverage_directory.htm" role="php" />
-       <file baseinstalldir="/" name="coverage_file.htm" role="php" />
-       <file baseinstalldir="/" name="coverage_item.htm" role="php" />
-       <file baseinstalldir="/" name="coverage_item_details.htm" role="php" />
-       <file baseinstalldir="/" name="coverage_item_details_header.htm" role="php" />
+       <file baseinstalldir="/" name="coverage_directory.html" role="php" />
+       <file baseinstalldir="/" name="coverage_file.html" role="php" />
+       <file baseinstalldir="/" name="coverage_item.html" role="php" />
+       <file baseinstalldir="/" name="coverage_item_details.html" role="php" />
+       <file baseinstalldir="/" name="coverage_item_details_header.html" role="php" />
        <file baseinstalldir="/" name="glass.png" role="php" />
        <file baseinstalldir="/" name="scarlet_red.png" role="php" />
        <file baseinstalldir="/" name="snow.png" role="php" />
        <file baseinstalldir="/" name="style.css" role="php" />
-       <file baseinstalldir="/" name="testsuite.htm" role="php" />
-       <file baseinstalldir="/" name="testsuite_item.htm" role="php" />
+       <file baseinstalldir="/" name="testsuite.html" role="php" />
+       <file baseinstalldir="/" name="testsuite_item.html" role="php" />
       </dir>
       <dir name="Test">
        <dir name="Node">

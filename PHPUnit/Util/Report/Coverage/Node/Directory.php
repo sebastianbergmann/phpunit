@@ -248,24 +248,24 @@ class PHPUnit_Util_Report_Coverage_Node_Directory extends PHPUnit_Util_Report_Co
         $file = $target . $cleanId;
 
         if ($includeDetails) {
-            $file .= '-details.htm';
+            $file .= '-details.html';
 
             $detailsLink = sprintf(
-              '(<a class="detail" href="%s.htm">hide details</a>)',
+              '(<a class="detail" href="%s.html">hide details</a>)',
               $cleanId
             );
         } else {
-            $file .= '.htm';
+            $file .= '.html';
 
             $detailsLink = sprintf(
-              '(<a class="detail" href="%s-details.htm">show details</a>)',
+              '(<a class="detail" href="%s-details.html">show details</a>)',
               $cleanId
             );
         }
 
         $template = new PHPUnit_Util_Template(
           PHPUnit_Util_Report::getTemplatePath() .
-          'coverage_directory.htm'
+          'coverage_directory.html'
         );
 
         $this->setTemplateVars($template, $title);
@@ -310,7 +310,7 @@ class PHPUnit_Util_Report_Coverage_Node_Directory extends PHPUnit_Util_Report_Co
         foreach ($items as $item) {
             $itemTemplate = new PHPUnit_Util_Template(
               PHPUnit_Util_Report::getTemplatePath() .
-              'coverage_item.htm'
+              'coverage_item.html'
             );
 
             $details = '';
@@ -319,13 +319,13 @@ class PHPUnit_Util_Report_Coverage_Node_Directory extends PHPUnit_Util_Report_Co
                 foreach ($item->getCoveringTests() as $suite => $tests) {
                     $detailsHeaderTemplate = new PHPUnit_Util_Template(
                       PHPUnit_Util_Report::getTemplatePath() .
-                      'coverage_item_details_header.htm'
+                      'coverage_item_details_header.html'
                     );
 
                     $detailsHeaderTemplate->setVar(
                       'link',
                       sprintf(
-                        '<a href="%s-test.htm">%s</a>',
+                        '<a href="%s-test.html">%s</a>',
 
                         PHPUnit_Util_Filesystem::getSafeFilename($suite),
                         $suite
@@ -337,7 +337,7 @@ class PHPUnit_Util_Report_Coverage_Node_Directory extends PHPUnit_Util_Report_Co
                     foreach ($tests as $test => $_test) {
                         $detailsTemplate = new PHPUnit_Util_Template(
                           PHPUnit_Util_Report::getTemplatePath() .
-                          'coverage_item_details.htm'
+                          'coverage_item_details.html'
                         );
 
                         if ($_test['object']->getResult() !== PHPUnit_Runner_BaseTestRunner::STATUS_PASSED) {

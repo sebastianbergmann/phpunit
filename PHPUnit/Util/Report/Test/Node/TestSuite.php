@@ -175,11 +175,11 @@ class PHPUnit_Util_Report_Test_Node_TestSuite extends PHPUnit_Util_Report_Test_N
      */
     protected function doRender($target, $title)
     {
-        $file = $target . PHPUnit_Util_Filesystem::getSafeFilename($this->getName()) . '-test.htm';
+        $file = $target . PHPUnit_Util_Filesystem::getSafeFilename($this->getName()) . '-test.html';
 
         $template = new PHPUnit_Util_Template(
           PHPUnit_Util_Report::getTemplatePath() .
-          'testsuite.htm'
+          'testsuite.html'
         );
 
         $this->setTemplateVars($template, $title);
@@ -212,7 +212,7 @@ class PHPUnit_Util_Report_Test_Node_TestSuite extends PHPUnit_Util_Report_Test_N
         foreach ($this->tests as $item) {
             $itemTemplate = new PHPUnit_Util_Template(
               PHPUnit_Util_Report::getTemplatePath() .
-              'testsuite_item.htm'
+              'testsuite_item.html'
             );
 
             $resultCode = $item->getResult();

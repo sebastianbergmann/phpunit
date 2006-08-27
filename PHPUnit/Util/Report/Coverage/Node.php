@@ -194,7 +194,7 @@ abstract class PHPUnit_Util_Report_Coverage_Node
             }
 
             return sprintf(
-              '%s<a href="%s%s.htm">%s</a>',
+              '%s<a href="%s%s.html">%s</a>',
               $parent,
               $cleanId,
               $details ? '-details' : '',
@@ -202,7 +202,7 @@ abstract class PHPUnit_Util_Report_Coverage_Node
             );
         } else {
             return sprintf(
-              '<a href="%s%s.htm">%s</a>',
+              '<a href="%s%s.html">%s</a>',
               $cleanId,
               $details ? '-details' : '',
               $name

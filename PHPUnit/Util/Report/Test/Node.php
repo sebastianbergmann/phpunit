@@ -131,7 +131,7 @@ abstract class PHPUnit_Util_Report_Test_Node
     {
         if ($full && $this->parent !== NULL) {
             return sprintf(
-              '%s / <a href="%s-test.htm">%s</a>',
+              '%s / <a href="%s-test.html">%s</a>',
 
               $this->parent->getLink(TRUE),
               PHPUnit_Util_Filesystem::getSafeFilename($this->getName()),
@@ -139,7 +139,7 @@ abstract class PHPUnit_Util_Report_Test_Node
             );
         } else {
             return sprintf(
-              '<a href="%s-test.htm">%s</a>',
+              '<a href="%s-test.html">%s</a>',
 
               PHPUnit_Util_Filesystem::getSafeFilename($this->getName()),
               $this->getName()

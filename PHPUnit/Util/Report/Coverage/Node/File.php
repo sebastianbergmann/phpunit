@@ -328,7 +328,7 @@ class PHPUnit_Util_Report_Coverage_Node_File extends PHPUnit_Util_Report_Coverag
     {
         $template = new PHPUnit_Util_Template(
           PHPUnit_Util_Report::getTemplatePath() .
-          'coverage_file.htm'
+          'coverage_file.html'
         );
 
         $i     = 1;
@@ -362,7 +362,7 @@ class PHPUnit_Util_Report_Coverage_Node_File extends PHPUnit_Util_Report_Coverag
         $template->setVar('lines', $lines);
 
         $cleanId = PHPUnit_Util_Filesystem::getSafeFilename($this->getId());
-        $template->renderTo($target . $cleanId . '.htm');
+        $template->renderTo($target . $cleanId . '.html');
     }
 }
 
