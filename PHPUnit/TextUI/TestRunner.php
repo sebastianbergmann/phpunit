@@ -336,6 +336,9 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
     }
 
     /**
+     * @param  string $directory
+     * @return string
+     * @throws RuntimeException
      * @access private
      * @since  Method available since Release 3.0.0
      */
@@ -345,7 +348,16 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
             $directory .= DIRECTORY_SEPARATOR;
         }
 
-        return $directory;
+        if (is_dir($directory)) {
+            return $directory;
+        } else {
+            throw new RuntimeException(
+              sprintf(
+                'Directory "%s" does not exist.',
+                $directory
+              )
+            );
+        }
     }
 
     /**
