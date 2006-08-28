@@ -134,15 +134,6 @@ class PHPUnit_Util_Report_Coverage_Node_File extends PHPUnit_Util_Report_Coverag
             $line = trim($line);
 
             switch ($line) {
-                case '{':
-                case '}': {
-                    $this->executedLines[$i] = 1;
-
-                    $i++;
-                    continue 2;
-                }
-                break;
-
                 case '<?':
                 case '<?php':
                 case '?>': {
