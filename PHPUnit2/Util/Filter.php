@@ -54,6 +54,8 @@ trigger_error(
 
 require_once 'PHPUnit/Util/Filter.php';
 
+PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
+
 class PHPUnit2_Util_Filter extends PHPUnit_Util_Filter {
 }
 

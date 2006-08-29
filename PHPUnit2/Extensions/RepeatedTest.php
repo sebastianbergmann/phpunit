@@ -46,6 +46,10 @@
  * @since      File available since Release 3.0.0
  */
 
+require_once 'PHPUnit/Util/Filter.php';
+
+PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
+
 trigger_error(
   "Class PHPUnit2_Extensions_RepeatedTest is deprecated. ".
   "It will be removed in PHPUnit 3.1. ".
