@@ -345,8 +345,7 @@ class PHPUnit_TextUI_Command
     {
         PHPUnit_TextUI_TestRunner::printVersionString();
 
-        print "Usage: phpunit [switches] UnitTest [UnitTest.php]\n\n" .
-              "  --filter <pattern>     Filter which tests to run.\n\n";
+        print "Usage: phpunit [switches] UnitTest [UnitTest.php]\n\n";
 
         if (class_exists('Image_GraphViz')) {
             print "  --log-graphviz <dir>   Log test execution in GraphViz markup.\n";
@@ -366,6 +365,7 @@ class PHPUnit_TextUI_Command
               "  --printer {dots|tap}   Report test execution progress in DOTS or TAP format.\n" .
               "  --loader <loader>      TestSuiteLoader implementation to use.\n\n" .
               "  --skeleton             Generate skeleton UnitTest class for Unit in Unit.php.\n\n" .
+              "  --filter <pattern>     Filter which tests to run.\n" .
               "  --repeat <times>       Runs the test(s) repeatedly.\n" .
               "  --wait                 Waits for a keystroke after each test.\n\n" .
               "  --help                 Prints this usage information.\n" .
