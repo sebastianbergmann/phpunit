@@ -68,6 +68,9 @@ PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
  */
 class PHPUnit_Util_Report_Coverage_Node_Directory extends PHPUnit_Util_Report_Coverage_Node
 {
+    const LOW_UPPER_BOUND  = 35;
+    const HIGH_LOWER_BOUND = 70;
+
     /**
      * @var    PHPUnit_Util_Report_Coverage_Node[]
      * @access protected
@@ -273,11 +276,15 @@ class PHPUnit_Util_Report_Coverage_Node_Directory extends PHPUnit_Util_Report_Co
         $template->setVar(
           array(
             'items',
-            'details_link'
+            'details_link',
+            'low_upper_bound',
+            'high_lower_bound'
           ),
           array(
             $this->renderItems($includeDetails),
-            $detailsLink
+            $detailsLink,
+            self::LOW_UPPER_BOUND,
+            self::HIGH_LOWER_BOUND
           )
         );
 
@@ -375,12 +382,13 @@ class PHPUnit_Util_Report_Coverage_Node_Directory extends PHPUnit_Util_Report_Co
 
             $floorPercent = floor($item->getExecutedPercent());
 
-            if ($floorPercent < 15) {
+            if ($floorPercent < self::LOW_UPPER_BOUND) {
                 $color = 'scarlet_red';
                 $level = 'Lo';
             }
 
-            else if ($floorPercent >= 15 && $floorPercent < 50) {
+            else if ($floorPercent >= self::LOW_UPPER_BOUND &&
+                     $floorPercent <  self::HIGH_LOWER_BOUND) {
                 $color = 'butter';
                 $level = 'Med';
             }
