@@ -50,7 +50,8 @@ require_once 'PHPUnit/Util/Filter.php';
 
 PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
 
-ini_set('xdebug.show_local_vars', 1);
+// Needed for xdebug_get_declared_vars().
+ini_set('xdebug.collect_vars', 1);
 
 /**
  *
