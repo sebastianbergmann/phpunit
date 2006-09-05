@@ -242,6 +242,7 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
      * Adds the tests from the given class to the suite.
      *
      * @param  mixed $testClass
+     * @throws InvalidArgumentException
      * @access public
      */
     public function addTestSuite($testClass)
@@ -251,12 +252,18 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
             $testClass = new ReflectionClass($testClass);
         }
 
-        if (is_object($testClass) &&
+        if ($testClass instanceof PHPUnit_Framework_TestSuite) {
+            $this->addTest($testClass);
+        }
+
+        else if (is_object($testClass) &&
             $testClass instanceof ReflectionClass) {
             $this->addTest(new PHPUnit_Framework_TestSuite($testClass));
         }
 
-        $this->numTests = -1;
+        else {
+            throw new InvalidArgumentException;
+        }
     }
 
     /**
