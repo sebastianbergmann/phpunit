@@ -1316,6 +1316,110 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
 
         $this->fail();
     }
+
+    public function testAssertThatAnything()
+    {
+        $constraint = $this->anything();
+        $value      = 'anything';
+
+        $this->assertThat($value, $constraint);
+    }
+
+    public function testAssertThatContains()
+    {
+        $constraint = $this->contains('foo');
+        $value      = array('foo');
+
+        $this->assertThat($value, $constraint);
+    }
+
+    public function testAssertThatStringContains()
+    {
+        $constraint = $this->stringContains('foo');
+        $value      = 'barfoobar';
+
+        $this->assertThat($value, $constraint);
+    }
+
+    public function testAssertThatArrayHasKey()
+    {
+        $constraint = $this->arrayHasKey('foo');
+        $value      = array('foo' => 'bar');
+
+        $this->assertThat($value, $constraint);
+    }
+
+    public function testAssertThatObjectHasAttribute()
+    {
+        $constraint = $this->objectHasAttribute('publicAttribute');
+        $value      = new ClassWithNonPublicAttributes;
+
+        $this->assertThat($value, $constraint);
+    }
+
+    public function testAssertThatEqualTo()
+    {
+        $constraint = $this->equalTo('foo');
+        $value      = 'foo';
+
+        $this->assertThat($value, $constraint);
+    }
+
+    public function testAssertThatIdenticalTo()
+    {
+        $value      = new StdClass;
+        $constraint = $this->identicalTo($value);
+
+        $this->assertThat($value, $constraint);
+    }
+
+    public function testAssertThatIsInstanceOf()
+    {
+        $constraint = $this->isInstanceOf('StdClass');
+        $value      = new StdClass;
+
+        $this->assertThat($value, $constraint);
+    }
+
+    public function testAssertThatIsType()
+    {
+        $constraint = $this->isType('string');
+        $value      = 'string';
+
+        $this->assertThat($value, $constraint);
+    }
+
+    public function testAssertThatFileExists()
+    {
+        $constraint = $this->fileExists();
+        $value      = dirname(__FILE__) . DIRECTORY_SEPARATOR . 'AllTests.php';
+
+        $this->assertThat($value, $constraint);
+    }
+
+    public function testAssertThatGreaterThan()
+    {
+        $constraint = $this->greaterThan(1);
+        $value      = 2;
+
+        $this->assertThat($value, $constraint);
+    }
+
+    public function testAssertThatLessThan()
+    {
+        $constraint = $this->lessThan(2);
+        $value      = 1;
+
+        $this->assertThat($value, $constraint);
+    }
+
+    public function testAssertThatMatchesRegularExpression()
+    {
+        $constraint = $this->matchesRegularExpression('/foo/');
+        $value      = 'foobar';
+
+        $this->assertThat($value, $constraint);
+    }
 }
 
 /*
