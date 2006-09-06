@@ -965,7 +965,7 @@ class PHPUnit_Framework_Assert
      * @since  Method available since Release 3.0.0
      * @static
      */
-    public static function stringContains($string, $case)
+    public static function stringContains($string, $case = TRUE)
     {
         return new PHPUnit_Framework_Constraint_StringContains($string, $case);
     }
