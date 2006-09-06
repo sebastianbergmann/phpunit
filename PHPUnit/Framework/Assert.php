@@ -810,7 +810,7 @@ class PHPUnit_Framework_Assert
      * @since  Method available since Release 3.0.0
      * @static
      */
-    public static function arrayContains($value)
+    public static function contains($value)
     {
         return new PHPUnit_Framework_Constraint_TraversableContains($value);
     }
