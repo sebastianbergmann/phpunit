@@ -1,373 +1,410 @@
-<?xml version="1.0" encoding="ISO-8859-1" ?>
-<!DOCTYPE package SYSTEM "http://pear.php.net/dtd/package-1.0">
-<package version="1.0">
-  <name>PHPUnit2</name>
-  <summary>Regression testing framework for unit tests.</summary>
-  <description>PHPUnit is a regression testing framework used by the developer who implements unit tests in PHP. This is the version to be used with PHP 5.</description>
-  <maintainers>
-    <maintainer>
-      <user>sebastian</user>
-      <name>Sebastian Bergmann</name>
-      <email>sb@sebastian-bergmann.de</email>
-    </maintainer>
-  </maintainers>
-  <license>BSD License</license>
-  <release>
-    <version>2.3.6</version>
-    <state>stable</state>
-    <date>2006-05-31</date>
-<notes><![CDATA[
-* Fixed bug #7100: Install fails with xdebug.2.0.0rc1-dev.
-]]></notes>
-    <filelist>
-      <dir name="/" baseinstalldir="PHPUnit2">
-        <dir name="Extensions" role="php">
-          <file name="ExceptionTestCase.php">
-            <replace type="package-info" from="@package_version@" to="version"/>
-          </file>
-          <file name="PerformanceTestCase.php">
-            <replace type="package-info" from="@package_version@" to="version"/>
-          </file>
-          <file name="RepeatedTest.php">
-            <replace type="package-info" from="@package_version@" to="version"/>
-          </file>
-          <file name="TestDecorator.php">
-            <replace type="package-info" from="@package_version@" to="version"/>
-          </file>
-          <file name="TestSetup.php">
-            <replace type="package-info" from="@package_version@" to="version"/>
-          </file>
-        </dir>
-
-        <dir name="Framework" role="php">
-          <file name="Assert.php">
-            <replace type="package-info" from="@package_version@" to="version"/>
-          </file>
-          <file name="AssertionFailedError.php">
-            <replace type="package-info" from="@package_version@" to="version"/>
-          </file>
-          <file name="Error.php">
-            <replace type="package-info" from="@package_version@" to="version"/>
-          </file>
-          <file name="ComparisonFailure.php">
-            <replace type="package-info" from="@package_version@" to="version"/>
-          </file>
-          <file name="IncompleteTest.php">
-            <replace type="package-info" from="@package_version@" to="version"/>
-          </file>
-          <file name="IncompleteTestError.php">
-            <replace type="package-info" from="@package_version@" to="version"/>
-          </file>
-          <file name="Test.php">
-            <replace type="package-info" from="@package_version@" to="version"/>
-          </file>
-          <file name="TestCase.php">
-            <replace type="package-info" from="@package_version@" to="version"/>
-          </file>
-          <file name="TestFailure.php">
-            <replace type="package-info" from="@package_version@" to="version"/>
-          </file>
-          <file name="TestListener.php">
-            <replace type="package-info" from="@package_version@" to="version"/>
-          </file>
-          <file name="TestResult.php">
-            <replace type="package-info" from="@package_version@" to="version"/>
-          </file>
-          <file name="TestSuite.php">
-            <replace type="package-info" from="@package_version@" to="version"/>
-          </file>
-          <file name="Warning.php">
-            <replace type="package-info" from="@package_version@" to="version"/>
-          </file>
-        </dir>
-
-        <dir name="Runner" role="php">
-          <file name="BaseTestRunner.php">
-            <replace type="package-info" from="@package_version@" to="version"/>
-          </file>
-          <file name="IncludePathTestCollector.php">
-            <replace type="package-info" from="@package_version@" to="version"/>
-          </file>
-          <file name="StandardTestSuiteLoader.php">
-            <replace type="package-info" from="@package_version@" to="version"/>
-          </file>
-          <file name="TestCollector.php">
-            <replace type="package-info" from="@package_version@" to="version"/>
-          </file>
-          <file name="TestSuiteLoader.php">
-            <replace type="package-info" from="@package_version@" to="version"/>
-          </file>
-          <file name="Version.php">
-            <replace type="package-info" from="@package_version@" to="version"/>
-          </file>
-        </dir>
-
-        <dir name="Samples" role="doc">
-          <dir name="BankAccount">
-            <file name="BankAccount.php">
-              <replace type="package-info" from="@package_version@" to="version"/>
-            </file>
-            <file name="BankAccountTest.php">
-              <replace type="package-info" from="@package_version@" to="version"/>
-            </file>
-          </dir>
-
-          <dir name="Money">
-            <file name="IMoney.php">
-              <replace type="package-info" from="@package_version@" to="version"/>
-            </file>
-            <file name="Money.php">
-              <replace type="package-info" from="@package_version@" to="version"/>
-            </file>
-            <file name="MoneyBag.php">
-              <replace type="package-info" from="@package_version@" to="version"/>
-            </file>
-            <file name="MoneyTest.php">
-              <replace type="package-info" from="@package_version@" to="version"/>
-            </file>
-          </dir>
-        </dir>
-
-        <dir name="Tests" role="test">
-          <dir name="Framework">
-            <file name="AllTests.php">
-              <replace type="package-info" from="@package_version@" to="version"/>
-            </file>
-            <file name="AssertTest.php">
-              <replace type="package-info" from="@package_version@" to="version"/>
-            </file>
-            <file name="ComparisonFailureTest.php">
-              <replace type="package-info" from="@package_version@" to="version"/>
-            </file>
-            <file name="SuiteTest.php">
-              <replace type="package-info" from="@package_version@" to="version"/>
-            </file>
-            <file name="TestCaseTest.php">
-              <replace type="package-info" from="@package_version@" to="version"/>
-            </file>
-            <file name="TestImplementorTest.php">
-              <replace type="package-info" from="@package_version@" to="version"/>
-            </file>
-            <file name="TestListenerTest.php">
-              <replace type="package-info" from="@package_version@" to="version"/>
-            </file>
-          </dir>
-
-          <dir name="Extensions">
-            <file name="AllTests.php">
-              <replace type="package-info" from="@package_version@" to="version"/>
-            </file>
-            <file name="ExceptionTestCaseTest.php">
-              <replace type="package-info" from="@package_version@" to="version"/>
-            </file>
-            <file name="ExtensionTest.php">
-              <replace type="package-info" from="@package_version@" to="version"/>
-            </file>
-            <file name="PerformanceTestCaseTest.php">
-              <replace type="package-info" from="@package_version@" to="version"/>
-            </file>
-            <file name="RepeatedTestTest.php">
-              <replace type="package-info" from="@package_version@" to="version"/>
-            </file>
-          </dir>
-
-          <dir name="Runner">
-            <file name="AllTests.php">
-              <replace type="package-info" from="@package_version@" to="version"/>
-            </file>
-            <file name="BaseTestRunnerTest.php">
-              <replace type="package-info" from="@package_version@" to="version"/>
-            </file>
-          </dir>
-
-          <dir name="Util">
-            <dir name="TestDox">
-              <file name="AllTests.php">
-                <replace type="package-info" from="@package_version@" to="version"/>
-              </file>
-              <file name="NamePrettifierTest.php">
-                <replace type="package-info" from="@package_version@" to="version"/>
-              </file>
-            </dir>
-          </dir>
-
-          <file name="AllTests.php">
-            <replace type="package-info" from="@package_version@" to="version"/>
-          </file>
-          <file name="DoubleTestCase.php">
-            <replace type="package-info" from="@package_version@" to="version"/>
-          </file>
-          <file name="Error.php">
-            <replace type="package-info" from="@package_version@" to="version"/>
-          </file>
-          <file name="Failure.php">
-            <replace type="package-info" from="@package_version@" to="version"/>
-          </file>
-          <file name="InheritedTestCase.php">
-            <replace type="package-info" from="@package_version@" to="version"/>
-          </file>
-          <file name="MockRunner.php">
-            <replace type="package-info" from="@package_version@" to="version"/>
-          </file>
-          <file name="NoArgTestCaseTest.php">
-            <replace type="package-info" from="@package_version@" to="version"/>
-          </file>
-          <file name="NonStatic.php">
-            <replace type="package-info" from="@package_version@" to="version"/>
-          </file>
-          <file name="NoTestCaseClass.php">
-            <replace type="package-info" from="@package_version@" to="version"/>
-          </file>
-          <file name="NoTestCases.php">
-            <replace type="package-info" from="@package_version@" to="version"/>
-          </file>
-          <file name="NotPublicTestCase.php">
-            <replace type="package-info" from="@package_version@" to="version"/>
-          </file>
-          <file name="NotVoidTestCase.php">
-            <replace type="package-info" from="@package_version@" to="version"/>
-          </file>
-          <file name="OneTestCase.php">
-            <replace type="package-info" from="@package_version@" to="version"/>
-          </file>
-          <file name="OverrideTestCase.php">
-            <replace type="package-info" from="@package_version@" to="version"/>
-          </file>
-          <file name="SetupFailure.php">
-            <replace type="package-info" from="@package_version@" to="version"/>
-          </file>
-          <file name="Sleep.php">
-            <replace type="package-info" from="@package_version@" to="version"/>
-          </file>
-          <file name="Success.php">
-            <replace type="package-info" from="@package_version@" to="version"/>
-          </file>
-          <file name="TearDownFailure.php">
-            <replace type="package-info" from="@package_version@" to="version"/>
-          </file>
-          <file name="TestIterator.php">
-            <replace type="package-info" from="@package_version@" to="version"/>
-          </file>
-          <file name="ThrowExceptionTestCase.php">
-            <replace type="package-info" from="@package_version@" to="version"/>
-          </file>
-          <file name="ThrowNoExceptionTestCase.php">
-            <replace type="package-info" from="@package_version@" to="version"/>
-          </file>
-          <file name="TornDown.php">
-            <replace type="package-info" from="@package_version@" to="version"/>
-          </file>
-          <file name="TornDown2.php">
-            <replace type="package-info" from="@package_version@" to="version"/>
-          </file>
-          <file name="TornDown3.php">
-            <replace type="package-info" from="@package_version@" to="version"/>
-          </file>
-          <file name="TornDown4.php">
-            <replace type="package-info" from="@package_version@" to="version"/>
-          </file>
-          <file name="TornDown5.php">
-            <replace type="package-info" from="@package_version@" to="version"/>
-          </file>
-          <file name="TornDown6.php">
-            <replace type="package-info" from="@package_version@" to="version"/>
-          </file>
-          <file name="WasRun.php">
-            <replace type="package-info" from="@package_version@" to="version"/>
-          </file>
-        </dir>
-
-        <dir name="TextUI" role="php">
-          <file name="ResultPrinter.php">
-            <replace type="package-info" from="@package_version@" to="version"/>
-          </file>
-          <file name="TestRunner.php">
-            <replace type="package-info" from="@package_version@" to="version"/>
-          </file>
-        </dir>
-
-        <dir name="Util" role="php">
-          <dir name="CodeCoverage">
-            <dir name="Renderer">
-              <file name="HTML.php">
-                <replace type="package-info" from="@package_version@" to="version"/>
-              </file>
-              <file name="Text.php">
-                <replace type="package-info" from="@package_version@" to="version"/>
-              </file>
-            </dir>
-
-            <file name="Renderer.php">
-              <replace type="package-info" from="@package_version@" to="version"/>
-            </file>
-          </dir>
-
-          <dir name="Log">
-            <file name="PEAR.php">
-              <replace type="package-info" from="@package_version@" to="version"/>
-            </file>
-            <file name="XML.php">
-              <replace type="package-info" from="@package_version@" to="version"/>
-            </file>
-          </dir>
-
-          <dir name="TestDox">
-            <dir name="ResultPrinter">
-                <file name="HTML.php">
-                  <replace type="package-info" from="@package_version@" to="version"/>
-                </file>
-                <file name="Text.php">
-                  <replace type="package-info" from="@package_version@" to="version"/>
-                </file>
-            </dir>
-
-            <file name="NamePrettifier.php">
-              <replace type="package-info" from="@package_version@" to="version"/>
-            </file>
-            <file name="ResultPrinter.php">
-              <replace type="package-info" from="@package_version@" to="version"/>
-            </file>
-          </dir>
-
-          <file name="ErrorHandler.php">
-            <replace type="package-info" from="@package_version@" to="version"/>
-          </file>
-          <file name="Fileloader.php">
-            <replace type="package-info" from="@package_version@" to="version"/>
-          </file>
-          <file name="Filter.php">
-            <replace type="package-info" from="@package_version@" to="version"/>
-          </file>
-          <file name="Printer.php">
-            <replace type="package-info" from="@package_version@" to="version"/>
-          </file>
-          <file name="Skeleton.php">
-            <replace type="package-info" from="@package_version@" to="version"/>
-          </file>
-        </dir>
-
-        <file role="script" baseinstalldir="/" install-as="phpunit" name="pear-phpunit">
-          <replace type="pear-config" from="@php_bin@" to="php_bin"/>
-          <replace type="package-info" from="@package_version@" to="version"/>
-        </file>
-
-        <file role="script" baseinstalldir="/" platform="windows" install-as="phpunit.bat" name="pear-phpunit.bat">
-          <replace type="pear-config" from="@php_bin@" to="php_bin"/>
-          <replace type="pear-config" from="@php_dir@" to="php_dir"/>
-          <replace type="package-info" from="@package_version@" to="version"/>
-        </file>
-      </dir>
-    </filelist>
-    <deps>
-      <dep type="php" rel="ge" version="5.0.2" />
-      <dep type="ext" rel="has">dom</dep>
-      <dep type="ext" rel="has">pcre</dep>
-      <dep type="ext" rel="has">spl</dep>
-      <dep type="ext" rel="has" optional="yes">xdebug</dep>
-      <dep type="pkg" rel="has">Benchmark</dep>
-      <dep type="pkg" rel="has">Console_Getopt</dep>
-      <dep type="pkg" rel="has" optional="yes">Log</dep>
-      <dep type="pkg" rel="has">PEAR</dep>
-    </deps>
-  </release>
+<?xml version="1.0" encoding="UTF-8"?>
+<package packagerversion="1.4.10" version="2.0"
+  xmlns="http://pear.php.net/dtd/package-2.0"
+  xmlns:tasks="http://pear.php.net/dtd/tasks-1.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://pear.php.net/dtd/tasks-1.0
+                      http://pear.php.net/dtd/tasks-1.0.xsd
+                      http://pear.php.net/dtd/package-2.0
+                      http://pear.php.net/dtd/package-2.0.xsd">
+ <name>PHPUnit</name>
+ <channel>pear.phpunit.de</channel>
+ <summary>Regression testing framework for unit tests.</summary>
+ <description>PHPUnit is a regression testing framework used by the developer who implements unit tests in PHP. This is the version to be used with PHP 5.
+ </description>
+ <lead>
+  <name>Sebastian Bergmann</name>
+  <user>sb</user>
+  <email>sb@sebastian-bergmann.de</email>
+  <active>yes</active>
+ </lead>
+ <date>2006-05-31</date>
+ <version>
+  <release>2.3.6</release>
+  <api>2.3</api>
+ </version>
+ <stability>
+  <release>stable</release>
+  <api>stable</api>
+ </stability>
+ <license>BSD License</license>
+ <notes>* Fixed bug #7100: Install fails with xdebug.2.0.0rc1-dev.</notes>
+ <contents>
+  <dir name="/">
+   <dir name="Extensions">
+    <file baseinstalldir="PHPUnit2" name="ExceptionTestCase.php" role="php">
+     <tasks:replace from="@package_version@" to="version" type="package-info" />
+    </file>
+    <file baseinstalldir="PHPUnit2" name="PerformanceTestCase.php" role="php">
+     <tasks:replace from="@package_version@" to="version" type="package-info" />
+    </file>
+    <file baseinstalldir="PHPUnit2" name="RepeatedTest.php" role="php">
+     <tasks:replace from="@package_version@" to="version" type="package-info" />
+    </file>
+    <file baseinstalldir="PHPUnit2" name="TestDecorator.php" role="php">
+     <tasks:replace from="@package_version@" to="version" type="package-info" />
+    </file>
+    <file baseinstalldir="PHPUnit2" name="TestSetup.php" role="php">
+     <tasks:replace from="@package_version@" to="version" type="package-info" />
+    </file>
+   </dir> <!-- /Extensions -->
+   <dir name="Framework">
+    <file baseinstalldir="PHPUnit2" name="Assert.php" role="php">
+     <tasks:replace from="@package_version@" to="version" type="package-info" />
+    </file>
+    <file baseinstalldir="PHPUnit2" name="AssertionFailedError.php" role="php">
+     <tasks:replace from="@package_version@" to="version" type="package-info" />
+    </file>
+    <file baseinstalldir="PHPUnit2" name="ComparisonFailure.php" role="php">
+     <tasks:replace from="@package_version@" to="version" type="package-info" />
+    </file>
+    <file baseinstalldir="PHPUnit2" name="Error.php" role="php">
+     <tasks:replace from="@package_version@" to="version" type="package-info" />
+    </file>
+    <file baseinstalldir="PHPUnit2" name="IncompleteTest.php" role="php">
+     <tasks:replace from="@package_version@" to="version" type="package-info" />
+    </file>
+    <file baseinstalldir="PHPUnit2" name="IncompleteTestError.php" role="php">
+     <tasks:replace from="@package_version@" to="version" type="package-info" />
+    </file>
+    <file baseinstalldir="PHPUnit2" name="Test.php" role="php">
+     <tasks:replace from="@package_version@" to="version" type="package-info" />
+    </file>
+    <file baseinstalldir="PHPUnit2" name="TestCase.php" role="php">
+     <tasks:replace from="@package_version@" to="version" type="package-info" />
+    </file>
+    <file baseinstalldir="PHPUnit2" name="TestFailure.php" role="php">
+     <tasks:replace from="@package_version@" to="version" type="package-info" />
+    </file>
+    <file baseinstalldir="PHPUnit2" name="TestListener.php" role="php">
+     <tasks:replace from="@package_version@" to="version" type="package-info" />
+    </file>
+    <file baseinstalldir="PHPUnit2" name="TestResult.php" role="php">
+     <tasks:replace from="@package_version@" to="version" type="package-info" />
+    </file>
+    <file baseinstalldir="PHPUnit2" name="TestSuite.php" role="php">
+     <tasks:replace from="@package_version@" to="version" type="package-info" />
+    </file>
+    <file baseinstalldir="PHPUnit2" name="Warning.php" role="php">
+     <tasks:replace from="@package_version@" to="version" type="package-info" />
+    </file>
+   </dir> <!-- /Framework -->
+   <dir name="Runner">
+    <file baseinstalldir="PHPUnit2" name="BaseTestRunner.php" role="php">
+     <tasks:replace from="@package_version@" to="version" type="package-info" />
+    </file>
+    <file baseinstalldir="PHPUnit2" name="IncludePathTestCollector.php" role="php">
+     <tasks:replace from="@package_version@" to="version" type="package-info" />
+    </file>
+    <file baseinstalldir="PHPUnit2" name="StandardTestSuiteLoader.php" role="php">
+     <tasks:replace from="@package_version@" to="version" type="package-info" />
+    </file>
+    <file baseinstalldir="PHPUnit2" name="TestCollector.php" role="php">
+     <tasks:replace from="@package_version@" to="version" type="package-info" />
+    </file>
+    <file baseinstalldir="PHPUnit2" name="TestSuiteLoader.php" role="php">
+     <tasks:replace from="@package_version@" to="version" type="package-info" />
+    </file>
+    <file baseinstalldir="PHPUnit2" name="Version.php" role="php">
+     <tasks:replace from="@package_version@" to="version" type="package-info" />
+    </file>
+   </dir> <!-- /Runner -->
+   <dir name="Samples">
+    <dir name="BankAccount">
+     <file baseinstalldir="PHPUnit2" name="BankAccount.php" role="doc">
+      <tasks:replace from="@package_version@" to="version" type="package-info" />
+     </file>
+     <file baseinstalldir="PHPUnit2" name="BankAccountTest.php" role="doc">
+      <tasks:replace from="@package_version@" to="version" type="package-info" />
+     </file>
+    </dir> <!-- /Samples/BankAccount -->
+    <dir name="Money">
+     <file baseinstalldir="PHPUnit2" name="IMoney.php" role="doc">
+      <tasks:replace from="@package_version@" to="version" type="package-info" />
+     </file>
+     <file baseinstalldir="PHPUnit2" name="Money.php" role="doc">
+      <tasks:replace from="@package_version@" to="version" type="package-info" />
+     </file>
+     <file baseinstalldir="PHPUnit2" name="MoneyBag.php" role="doc">
+      <tasks:replace from="@package_version@" to="version" type="package-info" />
+     </file>
+     <file baseinstalldir="PHPUnit2" name="MoneyTest.php" role="doc">
+      <tasks:replace from="@package_version@" to="version" type="package-info" />
+     </file>
+    </dir> <!-- /Samples/Money -->
+   </dir> <!-- /Samples -->
+   <dir name="Tests">
+    <dir name="Extensions">
+     <file baseinstalldir="PHPUnit2" name="AllTests.php" role="test">
+      <tasks:replace from="@package_version@" to="version" type="package-info" />
+     </file>
+     <file baseinstalldir="PHPUnit2" name="ExceptionTestCaseTest.php" role="test">
+      <tasks:replace from="@package_version@" to="version" type="package-info" />
+     </file>
+     <file baseinstalldir="PHPUnit2" name="ExtensionTest.php" role="test">
+      <tasks:replace from="@package_version@" to="version" type="package-info" />
+     </file>
+     <file baseinstalldir="PHPUnit2" name="PerformanceTestCaseTest.php" role="test">
+      <tasks:replace from="@package_version@" to="version" type="package-info" />
+     </file>
+     <file baseinstalldir="PHPUnit2" name="RepeatedTestTest.php" role="test">
+      <tasks:replace from="@package_version@" to="version" type="package-info" />
+     </file>
+    </dir> <!-- /Tests/Extensions -->
+    <dir name="Framework">
+     <file baseinstalldir="PHPUnit2" name="AllTests.php" role="test">
+      <tasks:replace from="@package_version@" to="version" type="package-info" />
+     </file>
+     <file baseinstalldir="PHPUnit2" name="AssertTest.php" role="test">
+      <tasks:replace from="@package_version@" to="version" type="package-info" />
+     </file>
+     <file baseinstalldir="PHPUnit2" name="ComparisonFailureTest.php" role="test">
+      <tasks:replace from="@package_version@" to="version" type="package-info" />
+     </file>
+     <file baseinstalldir="PHPUnit2" name="SuiteTest.php" role="test">
+      <tasks:replace from="@package_version@" to="version" type="package-info" />
+     </file>
+     <file baseinstalldir="PHPUnit2" name="TestCaseTest.php" role="test">
+      <tasks:replace from="@package_version@" to="version" type="package-info" />
+     </file>
+     <file baseinstalldir="PHPUnit2" name="TestImplementorTest.php" role="test">
+      <tasks:replace from="@package_version@" to="version" type="package-info" />
+     </file>
+     <file baseinstalldir="PHPUnit2" name="TestListenerTest.php" role="test">
+      <tasks:replace from="@package_version@" to="version" type="package-info" />
+     </file>
+    </dir> <!-- /Tests/Framework -->
+    <dir name="Runner">
+     <file baseinstalldir="PHPUnit2" name="AllTests.php" role="test">
+      <tasks:replace from="@package_version@" to="version" type="package-info" />
+     </file>
+     <file baseinstalldir="PHPUnit2" name="BaseTestRunnerTest.php" role="test">
+      <tasks:replace from="@package_version@" to="version" type="package-info" />
+     </file>
+    </dir> <!-- /Tests/Runner -->
+    <dir name="Util">
+     <dir name="TestDox">
+      <file baseinstalldir="PHPUnit2" name="AllTests.php" role="test">
+       <tasks:replace from="@package_version@" to="version" type="package-info" />
+      </file>
+      <file baseinstalldir="PHPUnit2" name="NamePrettifierTest.php" role="test">
+       <tasks:replace from="@package_version@" to="version" type="package-info" />
+      </file>
+     </dir> <!-- /Tests/Util/TestDox -->
+    </dir> <!-- /Tests/Util -->
+    <file baseinstalldir="PHPUnit2" name="AllTests.php" role="test">
+     <tasks:replace from="@package_version@" to="version" type="package-info" />
+    </file>
+    <file baseinstalldir="PHPUnit2" name="DoubleTestCase.php" role="test">
+     <tasks:replace from="@package_version@" to="version" type="package-info" />
+    </file>
+    <file baseinstalldir="PHPUnit2" name="Error.php" role="test">
+     <tasks:replace from="@package_version@" to="version" type="package-info" />
+    </file>
+    <file baseinstalldir="PHPUnit2" name="Failure.php" role="test">
+     <tasks:replace from="@package_version@" to="version" type="package-info" />
+    </file>
+    <file baseinstalldir="PHPUnit2" name="InheritedTestCase.php" role="test">
+     <tasks:replace from="@package_version@" to="version" type="package-info" />
+    </file>
+    <file baseinstalldir="PHPUnit2" name="MockRunner.php" role="test">
+     <tasks:replace from="@package_version@" to="version" type="package-info" />
+    </file>
+    <file baseinstalldir="PHPUnit2" name="NoArgTestCaseTest.php" role="test">
+     <tasks:replace from="@package_version@" to="version" type="package-info" />
+    </file>
+    <file baseinstalldir="PHPUnit2" name="NonStatic.php" role="test">
+     <tasks:replace from="@package_version@" to="version" type="package-info" />
+    </file>
+    <file baseinstalldir="PHPUnit2" name="NoTestCaseClass.php" role="test">
+     <tasks:replace from="@package_version@" to="version" type="package-info" />
+    </file>
+    <file baseinstalldir="PHPUnit2" name="NoTestCases.php" role="test">
+     <tasks:replace from="@package_version@" to="version" type="package-info" />
+    </file>
+    <file baseinstalldir="PHPUnit2" name="NotPublicTestCase.php" role="test">
+     <tasks:replace from="@package_version@" to="version" type="package-info" />
+    </file>
+    <file baseinstalldir="PHPUnit2" name="NotVoidTestCase.php" role="test">
+     <tasks:replace from="@package_version@" to="version" type="package-info" />
+    </file>
+    <file baseinstalldir="PHPUnit2" name="OneTestCase.php" role="test">
+     <tasks:replace from="@package_version@" to="version" type="package-info" />
+    </file>
+    <file baseinstalldir="PHPUnit2" name="OverrideTestCase.php" role="test">
+     <tasks:replace from="@package_version@" to="version" type="package-info" />
+    </file>
+    <file baseinstalldir="PHPUnit2" name="SetupFailure.php" role="test">
+     <tasks:replace from="@package_version@" to="version" type="package-info" />
+    </file>
+    <file baseinstalldir="PHPUnit2" name="Sleep.php" role="test">
+     <tasks:replace from="@package_version@" to="version" type="package-info" />
+    </file>
+    <file baseinstalldir="PHPUnit2" name="Success.php" role="test">
+     <tasks:replace from="@package_version@" to="version" type="package-info" />
+    </file>
+    <file baseinstalldir="PHPUnit2" name="TearDownFailure.php" role="test">
+     <tasks:replace from="@package_version@" to="version" type="package-info" />
+    </file>
+    <file baseinstalldir="PHPUnit2" name="TestIterator.php" role="test">
+     <tasks:replace from="@package_version@" to="version" type="package-info" />
+    </file>
+    <file baseinstalldir="PHPUnit2" name="ThrowExceptionTestCase.php" role="test">
+     <tasks:replace from="@package_version@" to="version" type="package-info" />
+    </file>
+    <file baseinstalldir="PHPUnit2" name="ThrowNoExceptionTestCase.php" role="test">
+     <tasks:replace from="@package_version@" to="version" type="package-info" />
+    </file>
+    <file baseinstalldir="PHPUnit2" name="TornDown.php" role="test">
+     <tasks:replace from="@package_version@" to="version" type="package-info" />
+    </file>
+    <file baseinstalldir="PHPUnit2" name="TornDown2.php" role="test">
+     <tasks:replace from="@package_version@" to="version" type="package-info" />
+    </file>
+    <file baseinstalldir="PHPUnit2" name="TornDown3.php" role="test">
+     <tasks:replace from="@package_version@" to="version" type="package-info" />
+    </file>
+    <file baseinstalldir="PHPUnit2" name="TornDown4.php" role="test">
+     <tasks:replace from="@package_version@" to="version" type="package-info" />
+    </file>
+    <file baseinstalldir="PHPUnit2" name="TornDown5.php" role="test">
+     <tasks:replace from="@package_version@" to="version" type="package-info" />
+    </file>
+    <file baseinstalldir="PHPUnit2" name="TornDown6.php" role="test">
+     <tasks:replace from="@package_version@" to="version" type="package-info" />
+    </file>
+    <file baseinstalldir="PHPUnit2" name="WasRun.php" role="test">
+     <tasks:replace from="@package_version@" to="version" type="package-info" />
+    </file>
+   </dir> <!-- /Tests -->
+   <dir name="TextUI">
+    <file baseinstalldir="PHPUnit2" name="ResultPrinter.php" role="php">
+     <tasks:replace from="@package_version@" to="version" type="package-info" />
+    </file>
+    <file baseinstalldir="PHPUnit2" name="TestRunner.php" role="php">
+     <tasks:replace from="@package_version@" to="version" type="package-info" />
+    </file>
+   </dir> <!-- /TextUI -->
+   <dir name="Util">
+    <dir name="CodeCoverage">
+     <dir name="Renderer">
+      <file baseinstalldir="PHPUnit2" name="HTML.php" role="php">
+       <tasks:replace from="@package_version@" to="version" type="package-info" />
+      </file>
+      <file baseinstalldir="PHPUnit2" name="Text.php" role="php">
+       <tasks:replace from="@package_version@" to="version" type="package-info" />
+      </file>
+     </dir> <!-- /Util/CodeCoverage/Renderer -->
+     <file baseinstalldir="PHPUnit2" name="Renderer.php" role="php">
+      <tasks:replace from="@package_version@" to="version" type="package-info" />
+     </file>
+    </dir> <!-- /Util/CodeCoverage -->
+    <dir name="Log">
+     <file baseinstalldir="PHPUnit2" name="PEAR.php" role="php">
+      <tasks:replace from="@package_version@" to="version" type="package-info" />
+     </file>
+     <file baseinstalldir="PHPUnit2" name="XML.php" role="php">
+      <tasks:replace from="@package_version@" to="version" type="package-info" />
+     </file>
+    </dir> <!-- /Util/Log -->
+    <dir name="TestDox">
+     <dir name="ResultPrinter">
+      <file baseinstalldir="PHPUnit2" name="HTML.php" role="php">
+       <tasks:replace from="@package_version@" to="version" type="package-info" />
+      </file>
+      <file baseinstalldir="PHPUnit2" name="Text.php" role="php">
+       <tasks:replace from="@package_version@" to="version" type="package-info" />
+      </file>
+     </dir> <!-- /Util/TestDox/ResultPrinter -->
+     <file baseinstalldir="PHPUnit2" name="NamePrettifier.php" role="php">
+      <tasks:replace from="@package_version@" to="version" type="package-info" />
+     </file>
+     <file baseinstalldir="PHPUnit2" name="ResultPrinter.php" role="php">
+      <tasks:replace from="@package_version@" to="version" type="package-info" />
+     </file>
+    </dir> <!-- /Util/TestDox -->
+    <file baseinstalldir="PHPUnit2" name="ErrorHandler.php" role="php">
+     <tasks:replace from="@package_version@" to="version" type="package-info" />
+    </file>
+    <file baseinstalldir="PHPUnit2" name="Fileloader.php" role="php">
+     <tasks:replace from="@package_version@" to="version" type="package-info" />
+    </file>
+    <file baseinstalldir="PHPUnit2" name="Filter.php" role="php">
+     <tasks:replace from="@package_version@" to="version" type="package-info" />
+    </file>
+    <file baseinstalldir="PHPUnit2" name="Printer.php" role="php">
+     <tasks:replace from="@package_version@" to="version" type="package-info" />
+    </file>
+    <file baseinstalldir="PHPUnit2" name="Skeleton.php" role="php">
+     <tasks:replace from="@package_version@" to="version" type="package-info" />
+    </file>
+   </dir> <!-- /Util -->
+   <file baseinstalldir="/" name="pear-phpunit" role="script">
+    <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+    <tasks:replace from="@package_version@" to="version" type="package-info" />
+   </file>
+   <file baseinstalldir="/" name="pear-phpunit.bat" role="script">
+    <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
+    <tasks:replace from="@php_dir@" to="php_dir" type="pear-config" />
+    <tasks:replace from="@package_version@" to="version" type="package-info" />
+   </file>
+  </dir> <!-- / -->
+ </contents>
+ <dependencies>
+  <required>
+   <php>
+    <min>5.0.2</min>
+   </php>
+   <pearinstaller>
+    <min>1.4.0b1</min>
+   </pearinstaller>
+   <package>
+    <name>Benchmark</name>
+    <channel>pear.php.net</channel>
+   </package>
+   <package>
+    <name>Console_Getopt</name>
+    <channel>pear.php.net</channel>
+   </package>
+   <package>
+    <name>PEAR</name>
+    <channel>pear.php.net</channel>
+   </package>
+   <extension>
+    <name>dom</name>
+   </extension>
+   <extension>
+    <name>pcre</name>
+   </extension>
+   <extension>
+    <name>spl</name>
+   </extension>
+  </required>
+  <optional>
+   <package>
+    <name>Log</name>
+    <channel>pear.php.net</channel>
+   </package>
+   <extension>
+    <name>xdebug</name>
+   </extension>
+  </optional>
+ </dependencies>
+ <phprelease>
+  <installconditions>
+   <os>
+    <name>windows</name>
+   </os>
+  </installconditions>
+  <filelist>
+   <install as="phpunit" name="pear-phpunit" />
+   <install as="phpunit.bat" name="pear-phpunit.bat" />
+  </filelist>
+ </phprelease>
+ <phprelease>
+  <filelist>
+   <install as="phpunit" name="pear-phpunit" />
+   <ignore name="pear-phpunit.bat" />
+  </filelist>
+ </phprelease>
 </package>
