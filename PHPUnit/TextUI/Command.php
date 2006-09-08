@@ -345,14 +345,14 @@ class PHPUnit_TextUI_Command
     {
         PHPUnit_TextUI_TestRunner::printVersionString();
 
-        print "Usage: phpunit [switches] UnitTest [UnitTest.php]\n\n";
+        print "Usage: phpunit [switches] UnitTest [UnitTest.php]\n\n" .
+              "  --log-eclipse <file>   Log test execution in Eclipse/JSON format to file.\n";
 
         if (class_exists('Image_GraphViz')) {
             print "  --log-graphviz <dir>   Log test execution in GraphViz markup.\n";
         }
 
-        print "  --log-eclipse <file>   Log test execution in Eclipse/JSON format to file.\n" .
-              "  --log-tap <file>       Log test execution in TAP format to file.\n" .
+        print "  --log-tap <file>       Log test execution in TAP format to file.\n" .
               "  --log-xml <file>       Log test execution in XML format to file.\n\n";
 
         if (extension_loaded('xdebug')) {
