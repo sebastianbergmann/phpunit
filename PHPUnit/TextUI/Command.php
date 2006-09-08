@@ -109,10 +109,10 @@ class PHPUnit_TextUI_Command
           'log-eclipse=',
           'log-tap=',
           'log-xml=',
-          'printer=',
           'repeat=',
           'report=',
           'skeleton',
+          'tap',
           'testdox-html=',
           'testdox-text=',
           'verbose',
@@ -203,16 +203,6 @@ class PHPUnit_TextUI_Command
                 }
                 break;
 
-                case '--printer': {
-                    switch (strtolower($option[1])) {
-                        case 'tap': {
-                            $arguments['printer'] = new PHPUnit_Util_Log_TAP;
-                        }
-                        break;
-                    }
-                }
-                break;
-
                 case '--repeat': {
                     $arguments['repeat'] = (int)$option[1];
                 }
@@ -225,6 +215,11 @@ class PHPUnit_TextUI_Command
 
                 case '--skeleton': {
                     self::doSkeleton($arguments['test'], $arguments['testFile']);
+                }
+                break;
+
+                case '--tap': {
+                    $arguments['printer'] = new PHPUnit_Util_Log_TAP;
                 }
                 break;
 
@@ -363,15 +358,15 @@ class PHPUnit_TextUI_Command
 
         print "  --testdox-html <file>  Write agile documentation in HTML format to file.\n" .
               "  --testdox-text <file>  Write agile documentation in Text format to file.\n\n" .
-              "  --printer {dots|tap}   Report test execution progress in DOTS or TAP format.\n" .
-              "  --loader <loader>      TestSuiteLoader implementation to use.\n\n" .
-              "  --skeleton             Generate skeleton UnitTest class for Unit in Unit.php.\n\n" .
               "  --filter <pattern>     Filter which tests to run.\n" .
+              "  --loader <loader>      TestSuiteLoader implementation to use.\n" .
               "  --repeat <times>       Runs the test(s) repeatedly.\n" .
+              "  --tap                  Report test execution progress in TAP format.\n" .
+              "  --verbose              Output more verbose information.\n" .
               "  --wait                 Waits for a keystroke after each test.\n\n" .
+              "  --skeleton             Generate skeleton UnitTest class for Unit in Unit.php.\n\n" .
               "  --help                 Prints this usage information.\n" .
               "  --version              Prints the version and exits.\n\n" .
-              "  --verbose              Output more verbose information.\n\n" .
               "  -d key[=value]         Sets a php.ini value.\n";
     }
 }
