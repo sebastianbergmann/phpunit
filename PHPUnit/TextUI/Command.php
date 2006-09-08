@@ -351,7 +351,8 @@ class PHPUnit_TextUI_Command
             print "  --log-graphviz <dir>   Log test execution in GraphViz markup.\n";
         }
 
-        print "  --log-tap <file>       Log test execution in TAP format to file.\n" .
+        print "  --log-eclipse <file>   Log test execution in Eclipse/JSON format to file.\n" .
+              "  --log-tap <file>       Log test execution in TAP format to file.\n" .
               "  --log-xml <file>       Log test execution in XML format to file.\n\n";
 
         if (extension_loaded('xdebug')) {
