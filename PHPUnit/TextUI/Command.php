@@ -92,6 +92,8 @@ class PHPUnit_TextUI_Command
               'Could not create and run test suite: ' . $e->getMessage()
             );
         }
+
+        exit(PHPUnit_TextUI_TestRunner::SUCCESS_EXIT);
     }
 
     /**
