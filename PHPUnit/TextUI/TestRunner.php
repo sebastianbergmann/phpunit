@@ -213,15 +213,19 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
         }
 
         if (isset($parameters['graphvizDirectory'])) {
-            $result->addListener(
-              new PHPUnit_Util_Log_GraphViz($parameters['graphvizDirectory'])
-            );
+            if (class_exists('Image_GraphViz')) {
+                $result->addListener(
+                  new PHPUnit_Util_Log_GraphViz($parameters['graphvizDirectory'])
+                );
+            }
         }
 
         if (isset($parameters['reportDirectory'])) {
-            $result->addListener(
-              new PHPUnit_Util_Log_GraphViz($parameters['reportDirectory'])
-            );
+            if (class_exists('Image_GraphViz')) {
+                $result->addListener(
+                  new PHPUnit_Util_Log_GraphViz($parameters['reportDirectory'])
+                );
+            }
 
             $result->collectCodeCoverageInformation(TRUE);
         }

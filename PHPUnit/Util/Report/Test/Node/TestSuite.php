@@ -293,7 +293,7 @@ class PHPUnit_Util_Report_Test_Node_TestSuite extends PHPUnit_Util_Report_Test_N
         $safeName = PHPUnit_Util_Filesystem::getSafeFilename($this->getName());
         $dotFile = $target . $safeName . '.dot';
 
-        if (file_exists($dotFile)) {
+        if (file_exists($dotFile) && class_exists('Image_GraphViz')) {
             $pngFile = $target . $safeName . '.png';
             $mapFile = $target . $safeName . '.map';
 
