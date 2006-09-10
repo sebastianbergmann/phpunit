@@ -81,7 +81,7 @@ class PHPUnit_TextUI_Command
         $test      = $runner->getTest($arguments['test'], $arguments['testFile']);
 
         try {
-            $runner->doRun(
+            $result = $runner->doRun(
               $test,
               $arguments
             );
@@ -93,7 +93,17 @@ class PHPUnit_TextUI_Command
             );
         }
 
-        exit(PHPUnit_TextUI_TestRunner::SUCCESS_EXIT);
+        if ($result->wasSuccessful()) {
+            exit(PHPUnit_TextUI_TestRunner::SUCCESS_EXIT);
+        }
+
+        else if($result->errorCount() > 0) {
+            exit(PHPUnit_TextUI_TestRunner::EXCEPTION_EXIT);
+        }
+
+        else {
+            exit(PHPUnit_TextUI_TestRunner::FAILURE_EXIT);
+        }
     }
 
     /**
