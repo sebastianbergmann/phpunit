@@ -81,7 +81,7 @@ class PHPUnit_TextUI_Command
         $test      = $runner->getTest($arguments['test'], $arguments['testFile']);
 
         try {
-            return $runner->doRun(
+            $runner->doRun(
               $test,
               $arguments
             );
