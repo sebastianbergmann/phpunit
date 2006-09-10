@@ -36,5 +36,5 @@ REM
 REM $Id$
 REM
 
-set PHPBIN=@php_bin@
+set PHPBIN="@php_bin@"
 "@php_bin@" "@php_dir@/PHPUnit/TextUI/Command.php" %*
