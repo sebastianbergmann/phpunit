@@ -350,7 +350,7 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
             $directory .= DIRECTORY_SEPARATOR;
         }
 
-        if (is_dir($directory)) {
+        if (is_dir($directory) || mkdir($directory, 0777, TRUE)) {
             return $directory;
         } else {
             throw new RuntimeException(
