@@ -1,6 +1,4 @@
 <?php
-/* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
-
 /**
  * PHPUnit
  *
@@ -283,12 +281,4 @@ require_once 'PHPUnit/Extensions/MockObject/Matcher/InvokedRecorder.php';
 require_once 'PHPUnit/Extensions/MockObject/Matcher/MethodName.php';
 require_once 'PHPUnit/Extensions/MockObject/Matcher/Parameters.php';
 require_once 'PHPUnit/Extensions/MockObject/Matcher/StatelessInvocation.php';
-
-/*
- * Local variables:
- * tab-width: 4
- * c-basic-offset: 4
- * c-hanging-comment-ender-p: nil
- * End:
- */
 ?>

@@ -1,6 +1,4 @@
 <?php
-/* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
-
 /**
  * PHPUnit
  *
@@ -103,12 +101,4 @@ class Extensions_AllTests
 if (PHPUnit_MAIN_METHOD == 'Extensions_AllTests::main') {
     Extensions_AllTests::main();
 }
-
-/*
- * Local variables:
- * tab-width: 4
- * c-basic-offset: 4
- * c-hanging-comment-ender-p: nil
- * End:
- */
 ?>

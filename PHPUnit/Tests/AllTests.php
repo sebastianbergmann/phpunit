@@ -1,6 +1,4 @@
 <?php
-/* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
-
 /**
  * PHPUnit
  *
@@ -81,7 +79,7 @@ class AllTests
 {
     public static function main()
     {
-        PHPUnit_TextUI_TestRunner::run(self::suite());
+        PHPUnit_TextUI_TestRunner::run(self::suite(), array('reportDirectory' => '/home/sb/report'));
     }
 
     public static function suite()
@@ -100,12 +98,4 @@ class AllTests
 if (PHPUnit_MAIN_METHOD == 'AllTests::main') {
     AllTests::main();
 }
-
-/*
- * Local variables:
- * tab-width: 4
- * c-basic-offset: 4
- * c-hanging-comment-ender-p: nil
- * End:
- */
 ?>

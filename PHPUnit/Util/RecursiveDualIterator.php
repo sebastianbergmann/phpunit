@@ -1,6 +1,4 @@
 <?php
-/* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
-
 /**
  * PHPUnit
  *
@@ -103,12 +101,4 @@ class PHPUnit_Util_RecursiveDualIterator extends PHPUnit_Util_DualIterator imple
         return $this->getLHS()->hasChildren() === $this->getRHS()->hasChildren() && parent::areEqual($delta);
     }
 }
-
-/*
- * Local variables:
- * tab-width: 4
- * c-basic-offset: 4
- * c-hanging-comment-ender-p: nil
- * End:
- */
 ?>
