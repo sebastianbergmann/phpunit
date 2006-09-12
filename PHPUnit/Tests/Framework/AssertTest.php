@@ -447,6 +447,36 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
         $this->fail();
     }
 
+    public function testAssertEqualsArrayOfArrayFloatDelta()
+    {
+        $this->assertEquals(array(array(2.3)), array(array(2.5)), '', 0.5);
+
+        try {
+            $this->assertEquals(array(array(2.3)), array(array(4.2)), '', 0.5);
+        }
+
+        catch (PHPUnit_Framework_AssertionFailedError $e) {
+            return;
+        }
+
+        $this->fail();
+    }
+
+    public function testAssertNotEqualsArrayOfArrayFloatDelta()
+    {
+        $this->assertEquals(array(array(2.3)), array(array(4.2)), '', 0.5);
+
+        try {
+            $this->assertEquals(array(array(2.3)), array(array(2.5)), '', 0.5);
+        }
+
+        catch (PHPUnit_Framework_AssertionFailedError $e) {
+            return;
+        }
+
+        $this->fail();
+    }
+
     public function testAssertEqualsInteger()
     {
         $this->assertEquals(23, 23);
