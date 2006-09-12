@@ -502,13 +502,13 @@ class PHPUnit_Framework_TestResult implements Countable
             restore_error_handler();
         }
 
+        $globalsBackup = $GLOBALS;
+
         $useXdebug = (extension_loaded('xdebug') && $this->collectCodeCoverageInformation);
 
-        if ($useXdebug) {
+        if ($useXdebug && !defined('PHPUnit_INSIDE_OWN_TESTSUITE')) {
             xdebug_start_code_coverage(XDEBUG_CC_UNUSED);
         }
-
-        $globalsBackup = $GLOBALS;
 
         try {
             $test->runBare();
@@ -522,8 +522,6 @@ class PHPUnit_Framework_TestResult implements Countable
             $this->addError($test, $e);
         }
 
-        $GLOBALS = $globalsBackup;
-
         if ($useXdebug) {
             $this->codeCoverageInformation[] = array(
               'test'  => $test,
@@ -531,7 +529,13 @@ class PHPUnit_Framework_TestResult implements Countable
             );
 
             xdebug_stop_code_coverage();
+
+            if (defined('PHPUnit_INSIDE_OWN_TESTSUITE')) {
+                xdebug_start_code_coverage(XDEBUG_CC_UNUSED);
+            }
         }
+
+        $GLOBALS = $globalsBackup;
 
         if ($errorHandlerSet === TRUE) {
             restore_error_handler();
