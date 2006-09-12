@@ -253,6 +253,8 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
         $result->flushListeners();
 
         if (isset($parameters['reportDirectory'])) {
+            $this->printer->write("\n\nGenerating report, this may take a moment.");
+
             PHPUnit_Util_Report::render($result, $parameters['reportDirectory']);
         }
 
