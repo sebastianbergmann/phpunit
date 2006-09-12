@@ -46,6 +46,10 @@
 
 error_reporting(E_ALL | E_STRICT);
 
+require_once 'PHPUnit/Util/Filter.php';
+
+PHPUnit_Util_Filter::addFileToFilter(__FILE__);
+
 if (!defined('PHPUnit_MAIN_METHOD')) {
     define('PHPUnit_MAIN_METHOD', 'AllTests::main');
     chdir(dirname(__FILE__));

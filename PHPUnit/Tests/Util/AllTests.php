@@ -44,6 +44,10 @@
  * @since      File available since Release 2.3.0
  */
 
+require_once 'PHPUnit/Util/Filter.php';
+
+PHPUnit_Util_Filter::addFileToFilter(__FILE__);
+
 if (!defined('PHPUnit_MAIN_METHOD')) {
     define('PHPUnit_MAIN_METHOD', 'Util_AllTests::main');
     chdir(dirname(dirname(__FILE__)));
