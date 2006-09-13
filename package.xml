@@ -585,9 +585,6 @@
      <file baseinstalldir="/" name="Array.php" role="php">
       <tasks:replace from="@package_version@" to="version" type="package-info" />
      </file>
-     <file baseinstalldir="/" name="DualIterator.php" role="php">
-      <tasks:replace from="@package_version@" to="version" type="package-info" />
-     </file>
      <file baseinstalldir="/" name="ErrorHandler.php" role="php">
       <tasks:replace from="@package_version@" to="version" type="package-info" />
      </file>
@@ -604,9 +601,6 @@
       <tasks:replace from="@package_version@" to="version" type="package-info" />
      </file>
      <file baseinstalldir="/" name="Printer.php" role="php">
-      <tasks:replace from="@package_version@" to="version" type="package-info" />
-     </file>
-     <file baseinstalldir="/" name="RecursiveDualIterator.php" role="php">
       <tasks:replace from="@package_version@" to="version" type="package-info" />
      </file>
      <file baseinstalldir="/" name="Report.php" role="php">

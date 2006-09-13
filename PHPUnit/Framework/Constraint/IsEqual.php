@@ -47,7 +47,6 @@
 
 require_once 'PHPUnit/Framework.php';
 require_once 'PHPUnit/Util/Array.php';
-require_once 'PHPUnit/Util/DualIterator.php';
 require_once 'PHPUnit/Util/Filter.php';
 
 PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
@@ -63,7 +62,7 @@ PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
  *
  * @category   Testing
  * @package    PHPUnit
- * @author     Jan Borsodi <jb@ez.no>
+ * @author     Kore Nordmann <kn@ez.no>
  * @author     Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @copyright  2002-2006 Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
@@ -75,6 +74,7 @@ class PHPUnit_Framework_Constraint_IsEqual implements PHPUnit_Framework_Constrai
 {
     private $value;
     private $delta = 0;
+    private $maxDepth = 10;
 
     public function __construct($value, $delta = 0)
     {
@@ -91,44 +91,7 @@ class PHPUnit_Framework_Constraint_IsEqual implements PHPUnit_Framework_Constrai
      */
     public function evaluate($other)
     {
-        if  ((is_array($this->value)  && is_array($other)) ||
-             (is_object($this->value) && is_object($other))) {
-            if (is_object($this->value) && is_object($other)) {
-                $value = (array) $this->value;
-                $other = (array) $other;
-            } else {
-                $value = $this->value;
-            }
-
-            if (count($value) != count($other)) {
-                return FALSE;
-            }
-
-            return PHPUnit_Util_DualIterator::compareIterators(
-              new RecursiveIteratorIterator(
-                new RecursiveArrayIterator(
-                  PHPUnit_Util_Array::sortRecursively($value)
-                ),
-                RecursiveIteratorIterator::SELF_FIRST
-              ),
-              new RecursiveIteratorIterator(
-                new RecursiveArrayIterator(
-                  PHPUnit_Util_Array::sortRecursively($other)
-                ),
-                RecursiveIteratorIterator::SELF_FIRST
-              ),
-              FALSE,
-              $this->delta
-            );
-        }
-
-        else if (is_float($this->value) && is_float($other) && is_float($this->delta)) {
-            return (abs($this->value - $other) <= $this->delta);
-        }
-
-        else {
-            return $this->value == $other;
-        }
+        return $this->recursiveComparison($this->value, $other);
     }
 
     /**
@@ -187,6 +150,84 @@ class PHPUnit_Framework_Constraint_IsEqual implements PHPUnit_Framework_Constrai
               $type  . print_r($value, TRUE),
               $delta
             );
+        }
+    }
+
+    /**
+     * Perform the actual recursive comparision of two values
+     * 
+     * @param mixed $a First value
+     * @param mixed $b Second value
+     * @param int $depth Depth
+     * @return bool
+     */
+    protected function recursiveComparison($a, $b, $depth = 0)
+    {
+        if ($depth >= $this->maxDepth) {
+            return TRUE;
+        }
+
+        // Normal comparision for scalar values.
+        if ((!is_array($a) && !is_object($a)) ||
+            (!is_array($b) && !is_object($b))) {
+            if (is_numeric($a) && is_numeric($b)) {
+                // Optionally apply delta on numeric values.
+                return $this->numericComparison($a, $b);
+            } else {
+                return ($a == $b);
+            }
+        }
+
+        if (is_object($a) XOR is_object($b)) {
+            return FALSE;
+        }
+
+        if (is_object($a) && is_object($b) &&
+           (get_class($a) !== get_class($b))) {
+            return FALSE;
+        }
+
+        if (is_object($a)) {
+            $a = (array) $a;
+            $b = (array) $b;
+        }
+
+        foreach ($a as $key => $v) {
+            if (!isset($b[$key])) {
+                // Abort on missing key in $b.
+                return FALSE;
+            }
+
+            if (!$this->recursiveComparison($a[$key], $b[$key], $depth + 1)) {
+                // FALSE, if child comparision fails.
+                return FALSE;
+            }
+
+            // Unset key to check whether all keys of b are compared.
+            unset($b[$key]);
+        }
+
+        if (count($b)) {
+            // There is something in $b, that is missing in $a.
+            return FALSE;
+        }
+
+        return TRUE;
+    }
+
+    /**
+     * Compares two numeric values - use delta if applieable
+     * 
+     * @param mixed $a First value
+     * @param mixed $b Second value
+     * @return bool
+     */
+    protected function numericComparison($a, $b)
+    {
+        if ($this->delta === FALSE) {
+            return ($a == $b);
+        } else {
+            return (abs($a - $b) <= $this->delta);
         }
     }
 }
