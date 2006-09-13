@@ -257,7 +257,7 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
 
         $this->write(
           sprintf(
-            "\n\nTime: %02d:%02d\n",
+            "\n\nTime: %02d:%02d\n\n",
 
             $minutes,
             $timeElapsed - $minutes * 60
