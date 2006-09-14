@@ -246,16 +246,21 @@ class PHPUnit_Framework_Assert
     /**
      * Asserts that two variables are equal.
      *
-     * @param  mixed  $expected
-     * @param  mixed  $actual
-     * @param  string $message
-     * @param  mixed  $delta
+     * @param  mixed   $expected
+     * @param  mixed   $actual
+     * @param  string  $message
+     * @param  float   $delta
+     * @param  integer $maxDepth
      * @access public
      * @static
      */
-    public static function assertEquals($expected, $actual, $message = '', $delta = 0)
+    public static function assertEquals($expected, $actual, $message = '', $delta = 0, $maxDepth = 10)
     {
-        $constraint = new PHPUnit_Framework_Constraint_IsEqual($expected, $delta);
+        $constraint = new PHPUnit_Framework_Constraint_IsEqual(
+          $expected,
+          $delta,
+          $maxDepth
+        );
 
         if (!$constraint->evaluate($actual)) {
             self::failConstraint($constraint, $actual, $message);
@@ -265,15 +270,16 @@ class PHPUnit_Framework_Assert
     /**
      * Asserts that a variable is equal to an attribute of an object.
      *
-     * @param  mixed  $expected
-     * @param  string $actualAttributeName
-     * @param  string $actualObject
-     * @param  string $message
-     * @param  mixed  $delta
+     * @param  mixed   $expected
+     * @param  string  $actualAttributeName
+     * @param  string  $actualObject
+     * @param  string  $message
+     * @param  float   $delta
+     * @param  integer $maxDepth
      * @access public
      * @static
      */
-    public static function assertAttributeEquals($expected, $actualAttributeName, $actualObject, $message = '', $delta = 0)
+    public static function assertAttributeEquals($expected, $actualAttributeName, $actualObject, $message = '', $delta = 0, $maxDepth = 10)
     {
         if (!is_string($actualAttributeName) || !is_object($actualObject)) {
             throw new InvalidArgumentException;
@@ -283,25 +289,31 @@ class PHPUnit_Framework_Assert
           $expected,
           self::getAttribute($actualObject, $actualAttributeName),
           $message,
-          $delta
+          $delta,
+          $maxDepth
         );
     }
 
     /**
      * Asserts that two variables are not equal.
      *
-     * @param  mixed  $expected
-     * @param  mixed  $actual
-     * @param  string $message
-     * @param  mixed  $delta
+     * @param  mixed   $expected
+     * @param  mixed   $actual
+     * @param  string  $message
+     * @param  float   $delta
+     * @param  integer $maxDepth
      * @access public
      * @static
      * @since  Method available since Release 2.3.0
      */
-    public static function assertNotEquals($expected, $actual, $message = '', $delta = 0)
+    public static function assertNotEquals($expected, $actual, $message = '', $delta = 0, $maxDepth = 10)
     {
         $constraint = new PHPUnit_Framework_Constraint_Not(
-          new PHPUnit_Framework_Constraint_IsEqual($expected, $delta)
+          new PHPUnit_Framework_Constraint_IsEqual(
+            $expected,
+            $delta,
+            $maxDepth
+          )
         );
 
         if (!$constraint->evaluate($actual)) {
@@ -312,15 +324,16 @@ class PHPUnit_Framework_Assert
     /**
      * Asserts that a variable is not equal to an attribute of an object.
      *
-     * @param  mixed  $expected
-     * @param  string $actualAttributeName
-     * @param  string $actualObject
-     * @param  string $message
-     * @param  mixed  $delta
+     * @param  mixed   $expected
+     * @param  string  $actualAttributeName
+     * @param  string  $actualObject
+     * @param  string  $message
+     * @param  float   $delta
+     * @param  integer $maxDepth
      * @access public
      * @static
      */
-    public static function assertAttributeNotEquals($expected, $actualAttributeName, $actualObject, $message = '', $delta = 0)
+    public static function assertAttributeNotEquals($expected, $actualAttributeName, $actualObject, $message = '', $delta = 0, $maxDepth = 10)
     {
         if (!is_string($actualAttributeName) || !is_object($actualObject)) {
             throw new InvalidArgumentException;
@@ -330,7 +343,8 @@ class PHPUnit_Framework_Assert
           $expected,
           self::getAttribute($actualObject, $actualAttributeName),
           $message,
-          $delta
+          $delta,
+          $maxDepth
         );
     }
 
@@ -830,16 +844,17 @@ class PHPUnit_Framework_Assert
     /**
      *
      *
-     * @param  mixed $value
-     * @param  mixed $delta
+     * @param  mixed   $value
+     * @param  float   $delta
+     * @param  integer $maxDepth
      * @return PHPUnit_Framework_Constraint_IsEqual
      * @access public
      * @since  Method available since Release 3.0.0
      * @static
      */
-    public static function equalTo($value, $delta = 0)
+    public static function equalTo($value, $delta = 0, $maxDepth = 10)
     {
-        return new PHPUnit_Framework_Constraint_IsEqual($value, $delta);
+        return new PHPUnit_Framework_Constraint_IsEqual($value, $delta, $maxDepth);
     }
 
     /**

@@ -76,10 +76,11 @@ class PHPUnit_Framework_Constraint_IsEqual implements PHPUnit_Framework_Constrai
     private $delta = 0;
     private $maxDepth = 10;
 
-    public function __construct($value, $delta = 0)
+    public function __construct($value, $delta = 0, $maxDepth = 10)
     {
-        $this->value = $value;
-        $this->delta = $delta;
+        $this->value    = $value;
+        $this->delta    = $delta;
+        $this->maxDepth = $maxDepth;
     }
 
     /**
