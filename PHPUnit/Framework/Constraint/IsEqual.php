@@ -194,7 +194,7 @@ class PHPUnit_Framework_Constraint_IsEqual implements PHPUnit_Framework_Constrai
         }
 
         foreach ($a as $key => $v) {
-            if (!isset($b[$key])) {
+            if (!array_key_exists($key, $b)) {
                 // Abort on missing key in $b.
                 return FALSE;
             }
