@@ -88,7 +88,7 @@ class PHPUnit_Extensions_ExceptionTestCase extends PHPUnit_Framework_TestCase
      */
     public function setExpectedException($exceptionName)
     {
-        if ((is_string($exceptionName) && class_exists($exceptionName)) || $exceptionName === NULL) {
+        if ((is_string($exceptionName) && class_exists($exceptionName, FALSE)) || $exceptionName === NULL) {
             $this->expectedException = $exceptionName;
         }
     }

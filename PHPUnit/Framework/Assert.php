@@ -55,7 +55,7 @@ require_once 'PHPUnit/Extensions/MockObject/Stub/Return.php';
 
 PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
 
-if (!class_exists('PHPUnit_Framework_Assert')) {
+if (!class_exists('PHPUnit_Framework_Assert', FALSE)) {
 
 /**
  * A set of assert methods.

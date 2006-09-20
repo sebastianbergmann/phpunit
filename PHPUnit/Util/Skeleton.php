@@ -113,7 +113,7 @@ class PHPUnit_Util_Skeleton
 
         @include_once $this->classSourceFile;
 
-        if (class_exists($className)) {
+        if (class_exists($className, FALSE)) {
             $this->className = $className;
         } else {
             throw new RuntimeException(

@@ -49,7 +49,7 @@ require_once 'PHPUnit/Util/Filter.php';
 
 PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
 
-if (!class_exists('PHPUnit_Framework_TestFailure')) {
+if (!class_exists('PHPUnit_Framework_TestFailure', FALSE)) {
 
 /**
  * A TestFailure collects a failed test together with the caught exception.

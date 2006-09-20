@@ -49,7 +49,7 @@ require_once 'PHPUnit/Util/Filter.php';
 
 PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
 
-if (!class_exists('PHPUnit_Framework_SkippedTestError')) {
+if (!class_exists('PHPUnit_Framework_SkippedTestError', FALSE)) {
 
 /**
  * Extension to PHPUnit_Framework_AssertionFailedError to mark the special

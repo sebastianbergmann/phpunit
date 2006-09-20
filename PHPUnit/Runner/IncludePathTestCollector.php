@@ -116,7 +116,7 @@ class PHPUnit_Runner_IncludePathTestCollector implements PHPUnit_Runner_TestColl
      */
     public function setFilterIterator($filterIterator)
     {
-        if (is_string($filterIterator) && class_exists($filterIterator)) {
+        if (is_string($filterIterator) && class_exists($filterIterator, FALSE)) {
             try {
                 $class = new ReflectionClass($filterIterator);
 

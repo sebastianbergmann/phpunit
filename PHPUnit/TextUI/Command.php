@@ -130,7 +130,7 @@ class PHPUnit_TextUI_Command
           'wait'
         );
 
-        if (class_exists('Image_GraphViz')) {
+        if (class_exists('Image_GraphViz', FALSE)) {
             $longOptions[] = 'log-graphviz=';
         }
 
@@ -314,13 +314,13 @@ class PHPUnit_TextUI_Command
      */
     protected static function handleLoader($loaderName)
     {
-        if (!class_exists($loaderName)) {
+        if (!class_exists($loaderName, FALSE)) {
             PHPUnit_Util_Fileloader::checkAndLoad(
               str_replace('_', '/', $loaderName) . '.php'
             );
         }
 
-        if (class_exists($loaderName)) {
+        if (class_exists($loaderName, FALSE)) {
             $class = new ReflectionClass($loaderName);
 
             if ($class->implementsInterface('PHPUnit_Runner_TestSuiteLoader') &&
@@ -353,7 +353,7 @@ class PHPUnit_TextUI_Command
         print "Usage: phpunit [switches] UnitTest [UnitTest.php]\n\n" .
               "  --log-eclipse <file>   Log test execution in Eclipse/JSON format to file.\n";
 
-        if (class_exists('Image_GraphViz')) {
+        if (class_exists('Image_GraphViz', FALSE)) {
             print "  --log-graphviz <file>  Log test execution in GraphViz markup.\n";
         }
 

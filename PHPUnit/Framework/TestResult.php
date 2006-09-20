@@ -52,7 +52,7 @@ require_once 'PHPUnit/Util/Test.php';
 
 PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
 
-if (!class_exists('PHPUnit_Framework_TestResult')) {
+if (!class_exists('PHPUnit_Framework_TestResult', FALSE)) {
 
 /**
  * A TestResult collects the results of executing a test case.

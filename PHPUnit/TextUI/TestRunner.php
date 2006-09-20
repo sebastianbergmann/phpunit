@@ -208,7 +208,7 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
         }
 
         if (isset($parameters['graphvizLogfile'])) {
-            if (class_exists('Image_GraphViz')) {
+            if (class_exists('Image_GraphViz', FALSE)) {
                 $result->addListener(
                   new PHPUnit_Util_Log_GraphViz($parameters['graphvizLogfile'])
                 );
@@ -216,7 +216,7 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
         }
 
         if (isset($parameters['reportDirectory'])) {
-            if (class_exists('Image_GraphViz')) {
+            if (class_exists('Image_GraphViz', FALSE)) {
                 $result->addListener(
                   new PHPUnit_Util_Report_GraphViz($parameters['reportDirectory'])
                 );

@@ -51,7 +51,7 @@ require_once 'PHPUnit/Util/Filter.php';
 
 PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
 
-if (!class_exists('PHPUnit_Framework_TestSuite')) {
+if (!class_exists('PHPUnit_Framework_TestSuite', FALSE)) {
 
 /**
  * A TestSuite is a composite of Tests. It runs a collection of test cases.

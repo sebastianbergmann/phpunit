@@ -108,7 +108,7 @@ class PHPUnit_Util_Fileloader
 
         @include_once 'PEAR/Config.php';
 
-        if (class_exists('PEAR_Config')) {
+        if (class_exists('PEAR_Config', FALSE)) {
             $config         = new PEAR_Config;
             $includePaths[] = $config->get('test_dir');
         }
