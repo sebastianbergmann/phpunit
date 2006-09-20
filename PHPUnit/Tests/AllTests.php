@@ -86,7 +86,7 @@ class AllTests
         $parameters = array();
 
         if (PHPUNIT_TESTSUITE_GENERATE_REPORT && extension_loaded('xdebug')) {
-            $parameters = array('reportDirectory' => PHPUNIT_TESTSUITE_REPORT_TARGET);
+            $parameters['reportDirectory'] = PHPUNIT_TESTSUITE_REPORT_TARGET;
         }
 
         PHPUnit_TextUI_TestRunner::run(self::suite(), $parameters);
