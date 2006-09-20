@@ -557,6 +557,9 @@
         <tasks:replace from="@package_version@" to="version" type="package-info" />
        </file>
       </dir>
+      <file baseinstalldir="/" name="GraphViz.php" role="php">
+       <tasks:replace from="@package_version@" to="version" type="package-info" />
+      </file>
      </dir>
      <dir name="Skeleton">
       <file baseinstalldir="/" name="TestClass.php" role="php">

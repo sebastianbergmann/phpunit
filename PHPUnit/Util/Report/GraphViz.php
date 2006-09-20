@@ -49,7 +49,6 @@
 require_once 'PHPUnit/Framework.php';
 require_once 'PHPUnit/Util/Filter.php';
 require_once 'PHPUnit/Util/Filesystem.php';
-require_once 'PHPUnit/Util/Printer.php';
 require_once 'PHPUnit/Util/Test.php';
 require_once 'PHPUnit/Util/Timer.php';
 
@@ -68,13 +67,19 @@ PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
  * @link       http://www.phpunit.de/
  * @since      Class available since Release 3.0.0
  */
-class PHPUnit_Util_Log_GraphViz extends PHPUnit_Util_Printer implements PHPUnit_Framework_TestListener
+class PHPUnit_Util_Report_GraphViz implements PHPUnit_Framework_TestListener
 {
     /**
-     * @var    Image_GraphViz
+     * @var    Image_GraphViz[]
      * @access private
      */
-    private $graph;
+    private $graphs = array();
+
+    /**
+     * @var    string
+     * @access private
+     */
+    private $target;
 
     /**
      * @var    boolean
@@ -109,34 +114,12 @@ class PHPUnit_Util_Log_GraphViz extends PHPUnit_Util_Printer implements PHPUnit_
     /**
      * Constructor.
      *
-     * @param  mixed $out
+     * @param  string $target
      * @access public
      */
-    public function __construct($out = NULL)
+    public function __construct($target)
     {
-        $this->graph = new Image_GraphViz(
-          TRUE,
-          array(
-            'overlap'  => 'scale',
-            'splines'  => 'true',
-            'sep'      => '.1',
-            'fontsize' => '8'
-          )
-        );
-
-        parent::__construct($out);
-    }
-
-    /**
-     * Flush buffer and close output.
-     *
-     * @access public
-     */
-    public function flush()
-    {
-        $this->write($this->graph->parse());
-
-        parent::flush();
+        $this->target = $target;
     }
 
     /**
@@ -207,20 +190,45 @@ class PHPUnit_Util_Log_GraphViz extends PHPUnit_Util_Printer implements PHPUnit_
      */
     public function startTestSuite(PHPUnit_Framework_TestSuite $suite)
     {
-        $this->graph->addNode($suite->getName());
-
-        if ($this->testSuiteLevel > 0) {
-            $this->graph->addEdge(
-              array(
-                $this->testSuites[$this->testSuiteLevel] => $suite->getName()
-              )
-            );
-        }
-
         $this->testSuiteLevel++;
         $this->testSuites[$this->testSuiteLevel]                        = $suite->getName();
         $this->testSuiteFailureOrErrorCount[$this->testSuiteLevel]      = 0;
         $this->testSuiteIncompleteOrSkippedCount[$this->testSuiteLevel] = 0;
+
+        $this->graphs[$this->testSuiteLevel] = new Image_GraphViz(
+          TRUE,
+          array(
+            'overlap'  => 'scale',
+            'splines'  => 'true',
+            'sep'      => '.1',
+            'fontsize' => '8'
+          )
+        );
+
+        $this->graphs[$this->testSuiteLevel]->addNode($suite->getName());
+
+        if ($this->testSuiteLevel > 1) {
+            $this->graphs[$this->testSuiteLevel]->addNode(
+              $this->testSuites[$this->testSuiteLevel - 1],
+              array(
+                'URL' => PHPUnit_Util_Filesystem::getSafeFilename($this->testSuites[$this->testSuiteLevel - 1]) . '-test.html'
+              )
+            );
+
+            $this->graphs[$this->testSuiteLevel]->addEdge(
+              array(
+                $this->testSuites[$this->testSuiteLevel - 1] => $suite->getName()
+              )
+            );
+
+            $this->graphs[$this->testSuiteLevel - 1]->addNode($suite->getName());
+
+            $this->graphs[$this->testSuiteLevel - 1]->addEdge(
+              array(
+                $this->testSuites[$this->testSuiteLevel - 1] => $suite->getName()
+              )
+            );
+        }
     }
 
     /**
@@ -243,15 +251,32 @@ class PHPUnit_Util_Log_GraphViz extends PHPUnit_Util_Printer implements PHPUnit_
             $color = 'yellow';
         }
 
-        $this->graph->addNode(
+        $safeSuiteName = PHPUnit_Util_Filesystem::getSafeFilename($suite->getName());
+
+        $this->graphs[$this->testSuiteLevel]->addNode(
           $this->testSuites[$this->testSuiteLevel],
-          array('color' => $color)
+          array(
+            'color' => $color,
+            'URL'   => $safeSuiteName . '-test.html'
+          )
         );
 
         if ($this->testSuiteLevel > 1) {
+            $this->graphs[$this->testSuiteLevel - 1]->addNode(
+              $this->testSuites[$this->testSuiteLevel],
+              array(
+                'color' => $color,
+                'URL'   => $safeSuiteName . '-test.html'
+              )
+            );
+
             $this->testSuiteFailureOrErrorCount[$this->testSuiteLevel - 1]      += $this->testSuiteFailureOrErrorCount[$this->testSuiteLevel];
             $this->testSuiteIncompleteOrSkippedCount[$this->testSuiteLevel - 1] += $this->testSuiteIncompleteOrSkippedCount[$this->testSuiteLevel];
         }
+
+        $fp = fopen($this->target . $safeSuiteName . '.dot', 'wt');
+        fputs($fp, $this->graphs[$this->testSuiteLevel]->parse());
+        fclose($fp);
 
         $this->testSuiteLevel--;
     }
@@ -289,13 +314,21 @@ class PHPUnit_Util_Log_GraphViz extends PHPUnit_Util_Printer implements PHPUnit_
     {
         $name = PHPUnit_Util_Test::describe($test, FALSE);
 
-        $this->graph->addNode(
+        $this->graphs[$this->testSuiteLevel]->addNode(
           $name[1],
-          array('color' => $color),
+          array(
+            'color' => $color,
+            'URL'   => sprintf(
+              '%s-test.html#%s',
+
+              PHPUnit_Util_Filesystem::getSafeFilename($name[0]),
+              $name[1]
+            )
+          ),
           $this->testSuites[$this->testSuiteLevel]
         );
 
-        $this->graph->addEdge(
+        $this->graphs[$this->testSuiteLevel]->addEdge(
           array(
             $this->testSuites[$this->testSuiteLevel] => $name[1]
           )

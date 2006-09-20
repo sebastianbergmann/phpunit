@@ -53,6 +53,7 @@ require_once 'PHPUnit/TextUI/ResultPrinter.php';
 require_once 'PHPUnit/Util/TestDox/ResultPrinter.php';
 require_once 'PHPUnit/Util/Filter.php';
 require_once 'PHPUnit/Util/Report.php';
+require_once 'PHPUnit/Util/Report/GraphViz.php';
 require_once 'PHPUnit/Util/Timer.php';
 require_once 'PHPUnit/Util/Log/Eclipse.php';
 require_once 'PHPUnit/Util/Log/GraphViz.php';
@@ -168,10 +169,6 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
             $suite = new PHPUnit_Extensions_RepeatedTest($suite, $parameters['repeat']);
         }
 
-        if (isset($parameters['graphvizDirectory'])) {
-            $parameters['graphvizDirectory'] = $this->getDirectory($parameters['graphvizDirectory']);
-        }
-
         if (isset($parameters['reportDirectory'])) {
             $parameters['reportDirectory'] = $this->getDirectory($parameters['reportDirectory']);
         }
@@ -210,10 +207,10 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
             );
         }
 
-        if (isset($parameters['graphvizDirectory'])) {
+        if (isset($parameters['graphvizLogfile'])) {
             if (class_exists('Image_GraphViz')) {
                 $result->addListener(
-                  new PHPUnit_Util_Log_GraphViz($parameters['graphvizDirectory'])
+                  new PHPUnit_Util_Log_GraphViz($parameters['graphvizLogfile'])
                 );
             }
         }
@@ -221,7 +218,7 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
         if (isset($parameters['reportDirectory'])) {
             if (class_exists('Image_GraphViz')) {
                 $result->addListener(
-                  new PHPUnit_Util_Log_GraphViz($parameters['reportDirectory'])
+                  new PHPUnit_Util_Report_GraphViz($parameters['reportDirectory'])
                 );
             }
 

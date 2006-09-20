@@ -199,7 +199,7 @@ class PHPUnit_TextUI_Command
                 break;
 
                 case '--log-graphviz': {
-                    $arguments['graphvizDirectory'] = $option[1];
+                    $arguments['graphvizLogfile'] = $option[1];
                 }
                 break;
 
@@ -354,7 +354,7 @@ class PHPUnit_TextUI_Command
               "  --log-eclipse <file>   Log test execution in Eclipse/JSON format to file.\n";
 
         if (class_exists('Image_GraphViz')) {
-            print "  --log-graphviz <dir>   Log test execution in GraphViz markup.\n";
+            print "  --log-graphviz <file>  Log test execution in GraphViz markup.\n";
         }
 
         print "  --log-tap <file>       Log test execution in TAP format to file.\n" .
