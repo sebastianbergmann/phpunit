@@ -1277,6 +1277,42 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
         $this->fail();
     }
 
+    public function testObjectHasOnTheFlyAttribute()
+    {
+        $obj = new StdClass;
+        $obj->foo = 'bar';
+
+        $this->assertObjectHasAttribute('foo', $obj);
+
+        try {
+            $this->assertObjectHasAttribute('bar', $obj);
+        }
+
+        catch (PHPUnit_Framework_AssertionFailedError $e) {
+            return;
+        }
+
+        $this->fail();
+    }
+
+    public function testObjectNotHasOnTheFlyAttribute()
+    {
+        $obj = new StdClass;
+        $obj->foo = 'bar';
+
+        $this->assertObjectNotHasAttribute('bar', $obj);
+
+        try {
+            $this->assertObjectNotHasAttribute('foo', $obj);
+        }
+
+        catch (PHPUnit_Framework_AssertionFailedError $e) {
+            return;
+        }
+
+        $this->fail();
+    }
+
     public function testObjectHasProtectedAttribute()
     {
         $obj = new ClassWithNonPublicAttributes;
