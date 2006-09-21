@@ -204,7 +204,13 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
                     $this->write($string . "\n");
                 }
             }
-        } else {
+        }
+
+        else if ($e instanceof PHPUnit_Framework_Error) {
+            $this->write($e->getMessage() . "\n");
+        }
+
+        else {
             $this->write(get_class($e) . ': ' . $e->getMessage() . "\n");
         }
 
