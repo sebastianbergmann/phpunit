@@ -64,8 +64,12 @@ class PHPUnit_Util_Type
 {
     public static function toString($value)
     {
+        if (is_array($value) || is_object($value)) {
+            return "\n" . print_r($value, TRUE);
+        }
+
         if (is_string($value) && strpos($value, "\n") !== FALSE) {
-            return 'text';
+            return '<text>';
         }
 
         if (!is_null($value)) {
@@ -84,11 +88,7 @@ class PHPUnit_Util_Type
             }
         }
 
-        if (is_object($value)) {
-            $value = get_class($value);
-        }
-
-        return $type . $value;
+        return '<' . $type . $value . '>';
     }
 }
 ?>

@@ -1014,7 +1014,7 @@ class PHPUnit_Framework_Assert
         $constraint->fail(
           $value,
           sprintf(
-            '%sfailed asserting that <%s> %s',
+            '%sfailed asserting that %s %s',
 
             $message,
             PHPUnit_Util_Type::toString($value),

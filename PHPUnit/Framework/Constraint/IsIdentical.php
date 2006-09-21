@@ -115,7 +115,7 @@ class PHPUnit_Framework_Constraint_IsIdentical implements PHPUnit_Framework_Cons
     public function toString()
     {
         return sprintf(
-          'is identical to <%s>',
+          'is identical to %s',
 
             PHPUnit_Util_Type::toString($this->value)
         );

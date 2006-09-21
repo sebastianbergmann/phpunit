@@ -141,7 +141,7 @@ class PHPUnit_Framework_Constraint_IsEqual implements PHPUnit_Framework_Constrai
             }
 
             return sprintf(
-              'is equal to <%s>%s',
+              'is equal to %s%s',
 
               PHPUnit_Util_Type::toString($this->value),
               $delta
