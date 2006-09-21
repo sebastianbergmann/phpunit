@@ -200,12 +200,21 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
             if ($e instanceof PHPUnit_Framework_ExpectationFailedException) {
                 $comparisonFailure = $e->getComparisonFailure();
 
-                if ($this->verbose || $comparisonFailure instanceof PHPUnit_Framework_ComparisonFailure_String) {
-                    $string = $comparisonFailure->toString();
+                $string = '';
 
-                    if (!empty($string)) {
-                        $this->write($string . "\n");
-                    }
+                if ($this->verbose ||
+                    $comparisonFailure instanceof PHPUnit_Framework_ComparisonFailure_String) {
+                    $string = $comparisonFailure->toString();
+                }
+
+                if (!$this->verbose &&
+                    $comparisonFailure instanceof PHPUnit_Framework_ComparisonFailure_String &&
+                    strpos($string, 'expected string <') !== FALSE) {
+                    $string = '';
+                }
+
+                if (!empty($string)) {
+                    $this->write($string . "\n");
                 }
             }
         }
