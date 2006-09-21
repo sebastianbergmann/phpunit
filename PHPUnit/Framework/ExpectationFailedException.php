@@ -79,10 +79,6 @@ class PHPUnit_Framework_ExpectationFailedException extends PHPUnit_Framework_Ass
         $this->comparisonFailure = $comparisonFailure;
         $this->description       = $message;
 
-        if ($comparisonFailure !== NULL) {
-            $message .= "\n" . $comparisonFailure->toString();
-        }
-
         parent::__construct($message);
     }
 

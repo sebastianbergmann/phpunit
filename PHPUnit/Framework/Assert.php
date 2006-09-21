@@ -46,6 +46,7 @@
 
 require_once 'PHPUnit/Framework.php';
 require_once 'PHPUnit/Util/Filter.php';
+require_once 'PHPUnit/Util/Type.php';
 require_once 'PHPUnit/Extensions/MockObject/Mock.php';
 require_once 'PHPUnit/Extensions/MockObject/Matcher/InvokedAtLeastOnce.php';
 require_once 'PHPUnit/Extensions/MockObject/Matcher/InvokedAtIndex.php';
@@ -1010,19 +1011,13 @@ class PHPUnit_Framework_Assert
      */
     public static function failConstraint(PHPUnit_Framework_Constraint $constraint, $value, $message)
     {
-        if (is_string($value) && strpos($value, "\n") !== FALSE) {
-            $_value = 'text';
-        } else {
-            $_value = gettype($value) . ':' . print_r($value, TRUE);
-        }
-
         $constraint->fail(
           $value,
           sprintf(
             '%sfailed asserting that <%s> %s',
 
             $message,
-            $_value,
+            PHPUnit_Util_Type::toString($value),
             $constraint->toString()
           )
         );

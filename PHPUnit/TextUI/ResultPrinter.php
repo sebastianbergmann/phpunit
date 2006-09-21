@@ -178,7 +178,7 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
 
         $this->write(
           sprintf(
-            "%d) %s\n",
+            "\n%d) %s\n",
 
             $count,
             $message
@@ -195,12 +195,18 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
         $e = $defect->thrownException();
 
         if ($e instanceof PHPUnit_Framework_SelfDescribing) {
-            $message = $e->toString();
-        } else {
-            $message = get_class($e) . ': ' . $e->getMessage();
-        }
+            $this->write($e->toString() . "\n");
 
-        $this->write($message . "\n");
+            if ($e instanceof PHPUnit_Framework_ExpectationFailedException && $verbose) {
+                $string = $e->getComparisonFailure()->toString();
+
+                if (!empty($string)) {
+                    $this->write($string . "\n");
+                }
+            }
+        } else {
+            $this->write(get_class($e) . ': ' . $e->getMessage() . "\n");
+        }
 
         $this->write(
           PHPUnit_Util_Filter::getFilteredStacktrace(

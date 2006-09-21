@@ -47,6 +47,7 @@
 
 require_once 'PHPUnit/Framework.php';
 require_once 'PHPUnit/Util/Filter.php';
+require_once 'PHPUnit/Util/Type.php';
 
 PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
 
@@ -113,17 +114,10 @@ class PHPUnit_Framework_Constraint_IsIdentical implements PHPUnit_Framework_Cons
      */
     public function toString()
     {
-        $type = '';
-
-        if (!is_null($this->value)) {
-            $type = gettype($this->value) . ':';
-        }
-
         return sprintf(
-          'is identical to <%s%s>',
+          'is identical to <%s>',
 
-          $type,
-          print_r($this->value, TRUE)
+            PHPUnit_Util_Type::toString($this->value)
         );
     }
 }

@@ -48,6 +48,7 @@
 require_once 'PHPUnit/Framework.php';
 require_once 'PHPUnit/Util/Array.php';
 require_once 'PHPUnit/Util/Filter.php';
+require_once 'PHPUnit/Util/Type.php';
 
 PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
 
@@ -119,17 +120,15 @@ class PHPUnit_Framework_Constraint_IsEqual implements PHPUnit_Framework_Constrai
     public function toString()
     {
         $delta = '';
-        $type  = '';
-        $value = $this->value;
 
-        if (is_string($value)) {
-            if (strpos($value, "\n") !== FALSE) {
+        if (is_string($this->value)) {
+            if (strpos($this->value, "\n") !== FALSE) {
                 return 'is equal to <text>';
             } else {
                 return sprintf(
                   'is equal to <string:%s>',
 
-                  $value
+                  $this->value
                 );
             }
         } else {
@@ -141,14 +140,10 @@ class PHPUnit_Framework_Constraint_IsEqual implements PHPUnit_Framework_Constrai
                 );
             }
 
-            if (!is_null($value)) {
-                $type = gettype($value) . ':';
-            }
-
             return sprintf(
               'is equal to <%s>%s',
 
-              $type  . print_r($value, TRUE),
+              PHPUnit_Util_Type::toString($this->value),
               $delta
             );
         }
