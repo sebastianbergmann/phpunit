@@ -309,6 +309,9 @@
        <tasks:replace from="@package_version@" to="version" type="package-info" />
       </file>
      </dir>
+     <file baseinstalldir="/" name="FailureTest.php" role="doc">
+      <tasks:replace from="@package_version@" to="version" type="package-info" />
+     </file>
     </dir>
     <dir name="Tests">
      <dir name="Extensions">
