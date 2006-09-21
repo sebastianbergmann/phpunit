@@ -197,7 +197,7 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
         if ($e instanceof PHPUnit_Framework_SelfDescribing) {
             $this->write($e->toString() . "\n");
 
-            if ($e instanceof PHPUnit_Framework_ExpectationFailedException && $verbose) {
+            if ($e instanceof PHPUnit_Framework_ExpectationFailedException && $this->verbose) {
                 $string = $e->getComparisonFailure()->toString();
 
                 if (!empty($string)) {
