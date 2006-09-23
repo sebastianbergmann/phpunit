@@ -152,8 +152,8 @@ class PHPUnit_Util_Report_Coverage_Node_File extends PHPUnit_Util_Report_Coverag
 
             $found = FALSE;
 
-            foreach ($this->coveringTests[$name[0]] as $_name => $coveringTest) {
-                if ($coveringTest['object'] === $test) {
+            foreach ($this->coveringTests[$name[0]] as $_name => $existingTest) {
+                if ($existingTest['object'] === $test) {
                     $found = TRUE;
 
                     break;
