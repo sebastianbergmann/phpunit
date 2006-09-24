@@ -141,8 +141,9 @@ class PHPUnit_Util_Skeleton
      */
     public function generate()
     {
-        $class   = new ReflectionClass($this->className);
-        $methods = '';
+        $class             = new ReflectionClass($this->className);
+        $methods           = '';
+        $incompleteMethods = '';
 
         foreach ($class->getMethods() as $method) {
             if (!$method->isConstructor() &&
@@ -260,7 +261,7 @@ class PHPUnit_Util_Skeleton
                       ucfirst($method->getName())
                     );
 
-                    $methods .= $methodTemplate->render();
+                    $incompleteMethods .= $methodTemplate->render();
                 }
             }
         }
@@ -286,7 +287,7 @@ class PHPUnit_Util_Skeleton
           array(
             $this->className,
             $this->classSourceFile,
-            $methods,
+            !empty($methods) ? $methods : $incompleteMethods,
             date('Y-m-d'),
             date('H:i:s')
           )
