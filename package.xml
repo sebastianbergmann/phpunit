@@ -776,6 +776,9 @@
     <channel>pear.php.net</channel>
    </package>
    <extension>
+    <name>docblock</name>
+   </extension>
+   <extension>
     <name>tokenizer</name>
    </extension>
    <extension>
