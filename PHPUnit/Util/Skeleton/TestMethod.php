@@ -1,10 +1,8 @@
 
     /**
-     * @todo Implement test{methodName}().
+     * Generated from @test {annotation}.
      */
     public function test{methodName}() {
-        // Remove the following line when you implement this test.
-        $this->markTestIncomplete(
-          "This test has not been implemented yet."
-        );
+        $o = new {class};
+        $this->assert{assertion}({expected}, $o->{origMethodName}({arguments}));
     }

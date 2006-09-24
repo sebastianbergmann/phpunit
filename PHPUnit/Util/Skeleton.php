@@ -82,6 +82,12 @@ class PHPUnit_Util_Skeleton
     protected $testSourceFile;
 
     /**
+     * @var    array
+     * @access protected
+     */
+    protected $methodNameCounter = array();
+
+    /**
      * Constructor.
      *
      * @param  string  $className
@@ -144,22 +150,118 @@ class PHPUnit_Util_Skeleton
                  $method->isUserDefined() &&
                  $method->isPublic() &&
                  $method->getDeclaringClass()->getName() == $this->className) {
-                $methodTemplate = new PHPUnit_Util_Template(
-                  sprintf(
-                    '%s%sSkeleton%sTestMethod.php',
+                 $testTagFound = FALSE;
 
-                    dirname(__FILE__),
-                    DIRECTORY_SEPARATOR,
-                    DIRECTORY_SEPARATOR
-                  )
-                );
+                 if (extension_loaded('docblock')) {
+                    $tokens    = docblock_tokenize($method->getDocComment());
+                    $inTestTag = FALSE;
 
-                $methodTemplate->setVar(
-                  'methodName',
-                  ucfirst($method->getName())
-                );
+                    foreach ($tokens as $token) {
+                        if ($inTestTag == FALSE &&
+                            $token[0]  == DOCBLOCK_TAG &&
+                            $token[1]  == '@test') {
+                            $inTestTag = TRUE;
+                        }
 
-                $methods .= $methodTemplate->render();
+                        else if ($inTestTag == TRUE && $token[0] == DOCBLOCK_TEXT) {
+                            if (preg_match('/\((.*)\) (.*) (.*)/', $token[1], $matches)) {
+                                switch ($matches[2]) {
+                                    case '==': {
+                                        $assertion = 'Equals';
+                                    }
+                                    break;
+
+                                    case '!=': {
+                                        $assertion = 'NotEquals';
+                                    }
+                                    break;
+
+                                    case '===': {
+                                        $assertion = 'Same';
+                                    }
+                                    break;
+
+                                    case '!==': {
+                                        $assertion = 'NotSame';
+                                    }
+                                    break;
+
+                                    default: {
+                                        throw new RuntimeException;
+                                    }
+                                }
+
+                                $methodTemplate = new PHPUnit_Util_Template(
+                                  sprintf(
+                                    '%s%sSkeleton%sTestMethod.php',
+
+                                    dirname(__FILE__),
+                                    DIRECTORY_SEPARATOR,
+                                    DIRECTORY_SEPARATOR
+                                  )
+                                );
+
+                                $origMethodName = $method->getName();
+                                $methodName     = ucfirst($origMethodName);
+
+                                if (isset($this->methodNameCounter[$methodName])) {
+                                    $this->methodNameCounter[$methodName]++;
+                                } else {
+                                    $this->methodNameCounter[$methodName] = 1;
+                                }
+
+                                if ($this->methodNameCounter[$methodName] > 1) {
+                                    $methodName .= $this->methodNameCounter[$methodName];
+                                }
+
+                                $methodTemplate->setVar(
+                                  array(
+                                    'annotation',
+                                    'arguments',
+                                    'assertion',
+                                    'class',
+                                    'expected',
+                                    'origMethodName',
+                                    'methodName'
+                                  ),
+                                  array(
+                                    trim($token[1]),
+                                    $matches[1],
+                                    $assertion,
+                                    $this->className,
+                                    $matches[3],
+                                    $origMethodName,
+                                    $methodName
+                                  )
+                                );
+
+                                $methods .= $methodTemplate->render();
+                            }
+
+                            $inTestTag    = FALSE;
+                            $testTagFound = TRUE;
+                        }
+                    }
+                }
+
+                if (!$testTagFound) {
+                    $methodTemplate = new PHPUnit_Util_Template(
+                      sprintf(
+                        '%s%sSkeleton%sIncompleteTestMethod.php',
+
+                        dirname(__FILE__),
+                        DIRECTORY_SEPARATOR,
+                        DIRECTORY_SEPARATOR
+                      )
+                    );
+
+                    $methodTemplate->setVar(
+                      'methodName',
+                      ucfirst($method->getName())
+                    );
+
+                    $methods .= $methodTemplate->render();
+                }
             }
         }
 

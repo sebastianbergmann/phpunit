@@ -565,6 +565,9 @@
       </file>
      </dir>
      <dir name="Skeleton">
+      <file baseinstalldir="/" name="IncompleteTestMethod.php" role="php">
+       <tasks:replace from="@package_version@" to="version" type="package-info" />
+      </file>
       <file baseinstalldir="/" name="TestClass.php" role="php">
        <tasks:replace from="@package_version@" to="version" type="package-info" />
       </file>
