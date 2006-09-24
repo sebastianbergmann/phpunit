@@ -179,12 +179,12 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
 
         $constructor = $theClass->getConstructor();
 
-        if ($constructor === NULL ||
+        if ($constructor !== NULL &&
             !$constructor->isPublic()) {
             $this->addTest(
               self::warning(
                 sprintf(
-                  'Class %s has no public constructor',
+                  'Class "%s" has no public constructor.',
 
                   $theClass->getName()
                 )
@@ -204,7 +204,7 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
             $this->addTest(
               self::warning(
                 sprintf(
-                  'No tests found in %s',
+                  'No tests found in class "%s".',
 
                   $theClass->getName()
                 )
@@ -333,7 +333,9 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
 
         if (!$testsFound) {
             $this->addTest(
-              new PHPUnit_Framework_Warning('No tests found in file ' . $filename)
+              new PHPUnit_Framework_Warning(
+                'No tests found in file "' . $filename . '".'
+              )
             );
         }
 
@@ -388,7 +390,7 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
         if (!$theClass->isInstantiable()) {
             return self::warning(
               sprintf(
-                'Cannot instantiate test case %s.',
+                'Cannot instantiate class "%s".',
                 $theClass->getName()
               )
             );
@@ -415,7 +417,7 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
             else {
                 return self::warning(
                   sprintf(
-                    'Constructor of class %s is not TestCase($name) or TestCase().',
+                    'Constructor of class "%s" is not TestCase($name) or TestCase().',
                     $theClass->getName()
                   )
                 );
@@ -577,7 +579,7 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
             $this->addTest(
               self::warning(
                 sprintf(
-                  'Test method is not public: %s',
+                  'Test method "%s" is not public.',
 
                   $name
                 )
