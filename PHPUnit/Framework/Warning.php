@@ -88,6 +88,16 @@ class PHPUnit_Framework_Warning extends PHPUnit_Framework_TestCase
     {
         $this->fail($this->message);
     }
+
+    /**
+     * @return string
+     * @access public
+     * @since  Method available since Release 3.0.0
+     */
+    public function getMessage()
+    {
+        return $this->message;
+    }
 }
 
 }
