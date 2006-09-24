@@ -289,7 +289,7 @@ class PHPUnit_TextUI_Command
                 print $e->getMessage() . "\n";
 
                 printf(
-                  "Could not write test class skeleton for %s to %s.\n",
+                  'Could not write test class skeleton for "%s" to "%s".' . "\n",
                   $test,
                   $testFile
                 );
@@ -298,7 +298,7 @@ class PHPUnit_TextUI_Command
             }
 
             printf(
-              "Wrote test class skeleton for %s to %s.\n",
+              'Wrote test class skeleton for "%s" to "%s".' . "\n",
               $test,
               $skeleton->getTestSourceFile()
             );
