@@ -136,10 +136,11 @@ class PHPUnit_Util_Skeleton
     /**
      * Generates the test class' source.
      *
-     * @return string
+     * @param  boolean $verbose
+     * @return mixed
      * @access public
      */
-    public function generate()
+    public function generate($verbose = FALSE)
     {
         $class             = new ReflectionClass($this->className);
         $methods           = '';
@@ -293,7 +294,14 @@ class PHPUnit_Util_Skeleton
           )
         );
 
-        return $classTemplate->render();
+        if (!$verbose) {
+            return $classTemplate->render();
+        } else {
+            return array(
+              'code'       => $classTemplate->render(),
+              'incomplete' => empty($methods)
+            );
+        }
     }
 
     /**

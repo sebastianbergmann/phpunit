@@ -76,11 +76,26 @@ class PHPUnit_TextUI_Command
     {
         $arguments = self::handleArguments();
         $runner    = new PHPUnit_TextUI_TestRunner;
-        $test      = $runner->getTest($arguments['test'], $arguments['testFile']);
+        $suite     = $runner->getTest($arguments['test'], $arguments['testFile']);
+
+        if ($suite->testAt(0) instanceof PHPUnit_Framework_Warning &&
+            strpos($suite->testAt(0)->getMessage(), 'No tests found in class') !== FALSE) {
+            $skeleton = new PHPUnit_Util_Skeleton(
+                $arguments['test'],
+                $arguments['testFile']
+            );
+
+            $result = $skeleton->generate(TRUE);
+
+            if (!$result['incomplete']) {
+                eval(str_replace(array('<?php', '?>'), '', $result['code']));
+                $suite = new PHPUnit_Framework_TestSuite($arguments['test'] . 'Test');
+            }
+        }
 
         try {
             $result = $runner->doRun(
-              $test,
+              $suite,
               $arguments
             );
         }
