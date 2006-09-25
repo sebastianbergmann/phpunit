@@ -346,7 +346,7 @@ span.lineNoCov
 /* Source code view: format for lines which are dead code */
 span.lineDeadCode
 {
-  background-color: #cc0000;
+  background-color: #fcaf3e;
 }
 
 /* Source code view: format for NoCov legend */
