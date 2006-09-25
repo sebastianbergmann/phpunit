@@ -152,15 +152,11 @@ abstract class PHPUnit_Util_Report_Coverage_Factory
 
                 foreach ($lines as $line => $flag) {
                     if (!isset($summary[$file][$line])) {
-                        if ($flag < 0) {
-                            $summary[$file][$line] = array();
-                        } else {
-                            $summary[$file][$line] = array($test['test']);
-                        }
-                    } else {
-                        if ($flag > 0) {
-                            $summary[$file][$line][] = $test['test'];
-                        }
+                        $summary[$file][$line] = array();
+                    }
+
+                    if ($flag > 0) {
+                        $summary[$file][$line][] = $test['test'];
                     }
                 }
             }
