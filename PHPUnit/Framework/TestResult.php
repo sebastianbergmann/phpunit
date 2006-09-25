@@ -507,7 +507,7 @@ class PHPUnit_Framework_TestResult implements Countable
         $useXdebug = (extension_loaded('xdebug') && $this->collectCodeCoverageInformation);
 
         if ($useXdebug && !defined('PHPUnit_INSIDE_OWN_TESTSUITE')) {
-            xdebug_start_code_coverage(XDEBUG_CC_UNUSED);
+            xdebug_start_code_coverage(XDEBUG_CC_UNUSED | XDEBUG_CC_DEAD_CODE);
         }
 
         try {
@@ -531,7 +531,7 @@ class PHPUnit_Framework_TestResult implements Countable
             xdebug_stop_code_coverage();
 
             if (defined('PHPUnit_INSIDE_OWN_TESTSUITE')) {
-                xdebug_start_code_coverage(XDEBUG_CC_UNUSED);
+                xdebug_start_code_coverage(XDEBUG_CC_UNUSED | XDEBUG_CC_DEAD_CODE);
             }
         }
 

@@ -151,12 +151,20 @@ abstract class PHPUnit_Util_Report_Coverage_Factory
                 }
 
                 foreach ($lines as $line => $flag) {
-                    if (!isset($summary[$file][$line])) {
-                        $summary[$file][$line] = array();
+                    // +1: Line is executable and was executed.
+                    if ($flag == 1) {
+                        if (!isset($summary[$file][$line]) ||
+                            !is_array($summary[$file][$line])) {
+                            $summary[$file][$line] = array();
+                        }
+
+                        $summary[$file][$line][] = $test['test'];
                     }
 
-                    if ($flag > 0) {
-                        $summary[$file][$line][] = $test['test'];
+                    // -1: Line is executable and was not executed.
+                    // -2: Line is dead code.
+                    else if (!(isset($summary[$file][$line]) && is_array($summary[$file][$line]))) {
+                        $summary[$file][$line] = $flag;
                     }
                 }
             }

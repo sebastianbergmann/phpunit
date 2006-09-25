@@ -89,6 +89,12 @@ class PHPUnit_Util_Report_Coverage_Node_File extends PHPUnit_Util_Report_Coverag
      * @var    integer
      * @access protected
      */
+    protected $numExecutableLines = -1;
+
+    /**
+     * @var    integer
+     * @access protected
+     */
     protected $numExecutedLines = -1;
 
     /**
@@ -128,13 +134,15 @@ class PHPUnit_Util_Report_Coverage_Node_File extends PHPUnit_Util_Report_Coverag
         foreach ($files as $file => $lines) {
             if ($thisName == $file) {
                 foreach ($lines as $line => $tests) {
-                    foreach ($tests as $test) {
-                        $testId = $test->__testNode->testId;
+                    if (is_array($tests)) {
+                        foreach ($tests as $test) {
+                            $testId = $test->__testNode->testId;
 
-                        if (!isset($testCase[$testId])) {
-                            $testCase[$testId] = array('numLinesExecuted' => 1, 'object' => $test);
-                        } else {
-                            $testCase[$testId]['numLinesExecuted']++;
+                            if (!isset($testCase[$testId])) {
+                                $testCase[$testId] = array('numLinesExecuted' => 1, 'object' => $test);
+                            } else {
+                                $testCase[$testId]['numLinesExecuted']++;
+                            }
                         }
                     }
                 }
@@ -194,7 +202,11 @@ class PHPUnit_Util_Report_Coverage_Node_File extends PHPUnit_Util_Report_Coverag
      */
     public function getNumExecutableLines()
     {
-        return count($this->executedLines);
+        if ($this->numExecutableLines == -1) {
+            $this->countLines();
+        }
+
+        return $this->numExecutableLines;
     }
 
     /**
@@ -206,16 +218,34 @@ class PHPUnit_Util_Report_Coverage_Node_File extends PHPUnit_Util_Report_Coverag
     public function getNumExecutedLines()
     {
         if ($this->numExecutedLines == -1) {
-            $this->numExecutedLines = 0;
-
-            foreach ($this->executedLines as $line) {
-                if (count($line) > 0) {
-                    $this->numExecutedLines++;
-                }
-            }
+            $this->countLines();
         }
 
         return $this->numExecutedLines;
+    }
+
+    /**
+     * Counts the executable and executed lines.
+     *
+     * @access private
+     */
+    private function countLines()
+    {
+        $this->numExecutableLines = 0;
+        $this->numExecutedLines = 0;
+
+        foreach ($this->executedLines as $line) {
+            // Array: Line is executable and was executed.
+            if (is_array($line)) {
+                $this->numExecutableLines++;
+                $this->numExecutedLines++;
+            }
+
+            // -1: Line is executable and was not executed.
+            else if ($line == -1) {
+                $this->numExecutableLines++;
+            }
+        }
     }
 
     /**
@@ -239,11 +269,32 @@ class PHPUnit_Util_Report_Coverage_Node_File extends PHPUnit_Util_Report_Coverag
             $css = '';
 
             if (isset($this->executedLines[$i])) {
-                $css = sprintf(
-                  '<span class="%s">       %8d : ',
+                $count = '';
 
-                  count($this->executedLines[$i]) > 0 ? 'lineCov' : 'lineNoCov',
-                  count($this->executedLines[$i])
+                // Array: Line is executable and was executed.
+                // count(Array) = Number of tests that hit this line.
+                if (is_array($this->executedLines[$i])) {
+                    $color = 'lineCov';
+                    $count = sprintf('%8d', count($this->executedLines[$i]));
+                }
+
+                // -1: Line is executable and was not executed.
+                else if ($this->executedLines[$i] == -1) {
+                    $color = 'lineNoCov';
+                    $count = sprintf('%8d', 0);
+                }
+
+                // -2: Line is dead code.
+                else {
+                    $color = 'lineDeadCode';
+                    $count = '        ';
+                }
+
+                $css = sprintf(
+                  '<span class="%s">       %s : ',
+
+                  $color,
+                  $count
                 );
             }
 

@@ -112,7 +112,7 @@ if (is_readable('TestConfiguration.php')) {
 }
 
 if (PHPUNIT_TESTSUITE_GENERATE_REPORT && extension_loaded('xdebug')) {
-    xdebug_start_code_coverage(XDEBUG_CC_UNUSED);
+    xdebug_start_code_coverage(XDEBUG_CC_UNUSED | XDEBUG_CC_DEAD_CODE);
 }
 
 if (PHPUnit_MAIN_METHOD == 'AllTests::main') {
