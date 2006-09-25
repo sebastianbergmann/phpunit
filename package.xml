@@ -779,9 +779,6 @@
     <name>docblock</name>
    </extension>
    <extension>
-    <name>tokenizer</name>
-   </extension>
-   <extension>
     <name>xdebug</name>
     <min>2.0.0beta6</min>
    </extension>
