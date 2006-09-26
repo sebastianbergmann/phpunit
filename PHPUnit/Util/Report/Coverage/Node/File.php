@@ -262,6 +262,17 @@ class PHPUnit_Util_Report_Coverage_Node_File extends PHPUnit_Util_Report_Coverag
           'coverage_file.html'
         );
 
+        $lines = count($this->codeLines);
+        $width = 0;
+
+        for ($i = 0; $i < $lines; $i++) {
+            $this->codeLines[$i] = rtrim($this->codeLines[$i]);
+
+            if (strlen($this->codeLines[$i]) > $width) {
+                $width = strlen($this->codeLines[$i]);
+            }
+        }
+
         $i     = 1;
         $lines = '';
 
@@ -303,7 +314,7 @@ class PHPUnit_Util_Report_Coverage_Node_File extends PHPUnit_Util_Report_Coverag
 
               $i,
               !empty($css) ? $css : '                : ',
-              htmlspecialchars(rtrim($line)),
+              htmlspecialchars($line) . str_repeat(' ', $width - strlen($line)),
               !empty($css) ? '</span>' : ''
             );
 
