@@ -343,12 +343,6 @@ span.lineNoCov
   background-color: #ef2929;
 }
 
-/* Source code view: format for lines which are dead code */
-span.lineDeadCode
-{
-  background-color: #fcaf3e;
-}
-
 /* Source code view: format for NoCov legend */
 span.LegendNoCov
 {
@@ -357,4 +351,20 @@ span.LegendNoCov
   padding-right:    10px;
   margin-right:     2px;
   background-color: #ef2929;
+}
+
+/* Source code view: format for lines which are dead code */
+span.lineDeadCode
+{
+  background-color: #fcaf3e;
+}
+
+/* Source code view: format for NoCov legend */
+span.LegendDeadCode
+{
+  text-align:       center;
+  padding-left:     10px;
+  padding-right:    10px;
+  margin-right:     2px;
+  background-color: #fcaf3e;
 }
