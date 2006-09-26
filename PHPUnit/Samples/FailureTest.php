@@ -81,6 +81,11 @@ class FailureTest extends PHPUnit_Framework_TestCase
         $this->assertEquals($a, $b);
     }
 
+    public function testAssertNullEqualsString()
+    {
+        $this->assertEquals(NULL, 'bar');
+    }
+
     public function testAssertStringEqualsString()
     {
         $this->assertEquals('foo', 'bar');

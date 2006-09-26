@@ -75,7 +75,8 @@ class PHPUnit_Util_Type
         if (!is_null($value)) {
             $type = gettype($value) . ':';
         } else {
-            $type = '';
+            $type  = '';
+            $value = 'null';
         }
 
         if (is_bool($value)) {
