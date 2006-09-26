@@ -776,9 +776,6 @@
     <channel>pear.php.net</channel>
    </package>
    <extension>
-    <name>docblock</name>
-   </extension>
-   <extension>
     <name>xdebug</name>
     <min>2.0.0beta6</min>
    </extension>
