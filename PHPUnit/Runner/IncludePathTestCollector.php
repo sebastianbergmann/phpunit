@@ -46,7 +46,7 @@
 
 require_once 'PHPUnit/Util/Filter.php';
 require_once 'PHPUnit/Runner/TestCollector.php';
-require_once 'PHPUnit/Runner/TestFilterIterator.php';
+require_once 'PHPUnit/Util/FilterIterator.php';
 
 PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
 
@@ -91,7 +91,7 @@ class PHPUnit_Runner_IncludePathTestCollector implements PHPUnit_Runner_TestColl
             );
         }
 
-        $filterIterator = new PHPUnit_Runner_TestFilterIterator(
+        $filterIterator = new PHPUnit_Util_FilterIterator(
           $includePathsIterator
         );
 

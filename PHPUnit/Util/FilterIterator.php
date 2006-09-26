@@ -61,19 +61,32 @@ PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
  * @since      Class available since Release 3.0.0
  */
 
-class PHPUnit_Runner_TestFilterIterator extends FilterIterator
+class PHPUnit_Util_FilterIterator extends FilterIterator
 {
     /**
-     * Considers a file to contain a test class when its name ends with
-     * "Test.php".
-     *
-     * @param  string  $classFileName
+     * @var    string
+     * @access private
+     */
+    private $suffix;
+
+    /**
+     * @param  Iterator $iterator
+     * @param  string   $suffix
+     * @access public
+     */
+    public function __construct(Iterator $iterator, $suffix = 'Test.php')
+    {
+        parent::__construct($iterator);
+        $this->suffix = $suffix;
+    }
+
+    /**
      * @return boolean
      * @access public
      */
     public function accept()
     {
-        return substr($this->getInnerIterator()->current(), -8) == 'Test.php';
+        return substr($this->getInnerIterator()->current(), -1 * strlen($this->suffix)) == $this->suffix;
     }
 }
 ?>
