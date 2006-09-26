@@ -366,7 +366,7 @@ class PHPUnit_TextUI_Command
         PHPUnit_TextUI_TestRunner::printVersionString();
 
         print "Usage: phpunit [switches] UnitTest [UnitTest.php]\n\n" .
-              "  --log-eclipse <file>   Log test execution in Eclipse/JSON format to file.\n";
+              "  --log-eclipse <socket> Log test execution in Eclipse/JSON format to socket.\n";
 
         if (class_exists('Image_GraphViz', FALSE)) {
             print "  --log-graphviz <file>  Log test execution in GraphViz markup.\n";
