@@ -77,6 +77,12 @@ class PHPUnit_Util_Report_Coverage_Node_File extends PHPUnit_Util_Report_Coverag
      * @var    array
      * @access protected
      */
+    protected $codeLinesFillup = array();
+
+    /**
+     * @var    array
+     * @access protected
+     */
     protected $coveringTests = array();
 
     /**
@@ -100,9 +106,9 @@ class PHPUnit_Util_Report_Coverage_Node_File extends PHPUnit_Util_Report_Coverag
     /**
      * Constructor.
      *
-     * @param  string                          $name
+     * @param  string                         $name
      * @param  PHPUnit_Util_CodeCoverage_Node $parent
-     * @param  array                           $lines
+     * @param  array                          $lines
      * @throws RuntimeException
      * @access public
      */
@@ -116,7 +122,7 @@ class PHPUnit_Util_Report_Coverage_Node_File extends PHPUnit_Util_Report_Coverag
             throw new RuntimeException;
         }
 
-        $this->codeLines     = file($path);
+        $this->codeLines     = $this->highlightFile($path);
         $this->executedLines = $executedLines;
     }
 
@@ -262,17 +268,6 @@ class PHPUnit_Util_Report_Coverage_Node_File extends PHPUnit_Util_Report_Coverag
           'coverage_file.html'
         );
 
-        $lines = count($this->codeLines);
-        $width = 0;
-
-        for ($i = 0; $i < $lines; $i++) {
-            $this->codeLines[$i] = rtrim($this->codeLines[$i]);
-
-            if (strlen($this->codeLines[$i]) > $width) {
-                $width = strlen($this->codeLines[$i]);
-            }
-        }
-
         $i     = 1;
         $lines = '';
 
@@ -314,7 +309,7 @@ class PHPUnit_Util_Report_Coverage_Node_File extends PHPUnit_Util_Report_Coverag
 
               $i,
               !empty($css) ? $css : '                : ',
-              htmlspecialchars($line) . str_repeat(' ', $width - strlen($line)),
+              $line . str_repeat(' ', array_shift($this->codeLinesFillup)),
               !empty($css) ? '</span>' : ''
             );
 
@@ -326,6 +321,176 @@ class PHPUnit_Util_Report_Coverage_Node_File extends PHPUnit_Util_Report_Coverag
 
         $cleanId = PHPUnit_Util_Filesystem::getSafeFilename($this->getId());
         $template->renderTo($target . $cleanId . '.html');
+    }
+
+    /**
+     * @author Aidan Lister <aidan@php.net>
+     * @author Sebastian Bergmann <sb@sebastian-bergmann.de>
+     * @param  string $file
+     * @return array
+     * @access private
+     */
+    private function highlightFile($file)
+    {
+        $lines    = file($file);
+        $numLines = count($lines);
+        $width    = 0;
+
+        for ($i = 0; $i < $numLines; $i++) {
+            $lines[$i] = rtrim($lines[$i]);
+
+            if (strlen($lines[$i]) > $width) {
+                $width = strlen($lines[$i]);
+            }
+        }
+
+        for ($i = 0; $i < $numLines; $i++) {
+            $this->codeLinesFillup[$i] = $width - strlen($lines[$i]);
+        }
+
+        $tokens     = token_get_all(file_get_contents($file));
+        $i          = 0;
+        $result     = array();
+        $result[$i] = '';
+
+        foreach ($tokens as $j => $token) {
+            if (is_string($token)) {
+                $result[$i] .= sprintf(
+                  '<span class="keyword">%s</span>',
+
+                  htmlspecialchars($token)
+                );
+
+                list($tb) = isset($tokens[$j - 1]) ? $tokens[$j - 1] : FALSE;
+
+                if ($tb == T_END_HEREDOC) {
+                    $result[++$i] = '';
+                }
+
+                continue;
+            }
+
+            list ($token, $value) = $token;
+
+            $value = str_replace(
+              array("\t", ' '),
+              array('&nbsp;&nbsp;&nbsp;&nbsp;', '&nbsp;'),
+              htmlspecialchars($value)
+            );
+
+            if ($value === "\n") {
+                $result[++$i] = '';
+            } else {
+                $lines = explode("\n", $value);              
+
+                foreach ($lines as $jj => $line) {
+                    $line = trim($line);
+
+                    if ($line !== '') {
+                        $result[$i] .= sprintf(
+                          '<span class="%s">%s</span>',
+
+                          $this->tokenToColor($token),
+                          $line
+                        );
+                    }
+
+                    if (isset($lines[$jj + 1])) {
+                        $result[++$i] = '';
+                    }
+                }
+            }
+        }
+
+        return $result;
+    }
+
+    /**
+     * @author Aidan Lister <aidan@php.net>
+     * @author Sebastian Bergmann <sb@sebastian-bergmann.de>
+     * @param  string $token
+     * @return string
+     * @access private
+     */
+    private function tokenToColor($token)
+    {
+        switch ($token) {
+            case T_CONSTANT_ENCAPSED_STRING: return 'string';
+            case T_INLINE_HTML: return 'html';
+            case T_COMMENT:
+            case T_DOC_COMMENT: return 'comment';
+            case T_ABSTRACT:
+            case T_ARRAY:
+            case T_ARRAY_CAST:
+            case T_AS:
+            case T_BOOLEAN_AND:
+            case T_BOOLEAN_OR:
+            case T_BOOL_CAST:
+            case T_BREAK:
+            case T_CASE:
+            case T_CATCH:
+            case T_CLASS:
+            case T_CLONE:
+            case T_CONCAT_EQUAL:
+            case T_CONTINUE:
+            case T_DEFAULT:
+            case T_DOUBLE_ARROW:
+            case T_DOUBLE_CAST:
+            case T_ECHO:
+            case T_ELSE:
+            case T_ELSEIF:
+            case T_EMPTY:
+            case T_ENDDECLARE:
+            case T_ENDFOR:
+            case T_ENDFOREACH:
+            case T_ENDIF:
+            case T_ENDSWITCH:
+            case T_ENDWHILE:
+            case T_END_HEREDOC:
+            case T_EXIT:
+            case T_EXTENDS:
+            case T_FINAL:
+            case T_FOREACH:
+            case T_FUNCTION:
+            case T_GLOBAL:
+            case T_IF:
+            case T_INC:
+            case T_INCLUDE:
+            case T_INCLUDE_ONCE:
+            case T_INSTANCEOF:
+            case T_INT_CAST:
+            case T_ISSET:
+            case T_IS_EQUAL:
+            case T_IS_IDENTICAL:
+            case T_IS_NOT_IDENTICAL:
+            case T_IS_SMALLER_OR_EQUAL:
+            case T_NEW:
+            case T_OBJECT_CAST:
+            case T_OBJECT_OPERATOR:
+            case T_PAAMAYIM_NEKUDOTAYIM:
+            case T_PRIVATE:
+            case T_PROTECTED:
+            case T_PUBLIC:
+            case T_REQUIRE:
+            case T_REQUIRE_ONCE:
+            case T_RETURN:
+            case T_SL:
+            case T_SL_EQUAL:
+            case T_SR:
+            case T_SR_EQUAL:
+            case T_START_HEREDOC:
+            case T_STATIC:
+            case T_STRING_CAST:
+            case T_THROW:
+            case T_TRY:
+            case T_UNSET_CAST:
+            case T_VAR:
+            case T_WHILE: return 'keyword';
+            case T_CLOSE_TAG:
+            case T_OPEN_TAG:
+            case T_OPEN_TAG_WITH_ECHO:
+            default: return 'default';
+        }
     }
 }
 ?>

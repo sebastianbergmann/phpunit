@@ -368,3 +368,24 @@ span.LegendDeadCode
   margin-right:     2px;
   background-color: #fcaf3e;
 }
+
+pre span.comment {
+  color: #888a85;
+}
+
+pre span.default {
+  color: #000000;
+}
+
+pre span.html {
+  color: #888a85;
+}
+
+pre span.keyword {
+  color: #000000;
+  font-weight: bold;
+}
+
+pre span.string {
+  color: #000000;
+}
