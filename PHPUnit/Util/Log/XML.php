@@ -242,24 +242,26 @@ class PHPUnit_Util_Log_XML extends PHPUnit_Util_Printer implements PHPUnit_Frame
         $testSuite = $this->document->createElement('testsuite');
         $testSuite->setAttribute('name', $suite->getName());
 
-        try {
-            $class      = new ReflectionClass($suite->getName());
-            $docComment = $class->getDocComment();
+        if (class_exists($suite->getName(), FALSE)) {
+            try {
+                $class      = new ReflectionClass($suite->getName());
+                $docComment = $class->getDocComment();
 
-            if (preg_match('/@category[\s]+([\.\w]+)/', $docComment, $matches)) {
-                $testSuite->setAttribute('category', $matches[1]);
+                if (preg_match('/@category[\s]+([\.\w]+)/', $docComment, $matches)) {
+                    $testSuite->setAttribute('category', $matches[1]);
+                }
+
+                if (preg_match('/@package[\s]+([\.\w]+)/', $docComment, $matches)) {
+                    $testSuite->setAttribute('package', $matches[1]);
+                }
+
+                if (preg_match('/@subpackage[\s]+([\.\w]+)/', $docComment, $matches)) {
+                    $testSuite->setAttribute('subpackage', $matches[1]);
+                }
             }
 
-            if (preg_match('/@package[\s]+([\.\w]+)/', $docComment, $matches)) {
-                $testSuite->setAttribute('package', $matches[1]);
+            catch (ReflectionException $e) {
             }
-
-            if (preg_match('/@subpackage[\s]+([\.\w]+)/', $docComment, $matches)) {
-                $testSuite->setAttribute('subpackage', $matches[1]);
-            }
-        }
-
-        catch (ReflectionException $e) {
         }
 
         if ($this->testSuiteLevel > 0) {
