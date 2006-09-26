@@ -295,20 +295,26 @@ class PHPUnit_Util_Report_Test_Node_TestSuite extends PHPUnit_Util_Report_Test_N
             $pngFile = $target . $safeName . '.png';
             $mapFile = $target . $safeName . '.map';
 
-            $graphviz = new Image_GraphViz(TRUE);
+            shell_exec(
+              sprintf(
+                'neato -T png -o %s -T cmapx -o %s %s',
+                
+                $pngFile,
+                $mapFile,
+                $dotFile
+              )
+            );
 
-            $success = $graphviz->renderDotFile($dotFile, $pngFile, 'png');
-
-            if ($success) {
+            if (file_exists($pngFile)) {
                 $testmap_image = basename($pngFile);
             }
 
-            $success = $graphviz->renderDotFile($dotFile, $mapFile, 'cmapx');
-
-            if ($success) {
+            if (file_exists($mapFile)) {
                 $testmap = file_get_contents($mapFile);
                 unlink($mapFile);
             }
+
+            unlink($dotFile);
         }
 
         $template->setVar(
