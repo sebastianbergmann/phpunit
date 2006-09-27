@@ -89,6 +89,12 @@ class PHPUnit_Util_Report_Coverage_Node_File extends PHPUnit_Util_Report_Coverag
      * @var    array
      * @access protected
      */
+    protected $coveringTestsByLine = array();
+
+    /**
+     * @var    array
+     * @access protected
+     */
     protected $executedLines;
 
     /**
@@ -149,6 +155,24 @@ class PHPUnit_Util_Report_Coverage_Node_File extends PHPUnit_Util_Report_Coverag
                         );
                     } else {
                         $testCase[$testId]['numLinesExecuted']++;
+                    }
+
+                    if (!isset($this->coveringTestsByLine[$line])) {
+                        $this->coveringTestsByLine[$line] = array();
+                    }
+
+                    $found = FALSE;
+
+                    foreach ($this->coveringTestsByLine[$line] as $_test) {
+                        if ($_test === $test) {
+                            $found = TRUE;
+                        }
+
+                        break;
+                    }
+
+                    if (!$found) {
+                        $this->coveringTestsByLine[$line][] = $test;
                     }
                 }
             }
