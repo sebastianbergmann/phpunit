@@ -137,19 +137,18 @@ class PHPUnit_Util_Report_Coverage_Node_File extends PHPUnit_Util_Report_Coverag
         $testCase = array();
         $thisName = $this->getName(TRUE);
 
-        foreach ($files as $file => $lines) {
-            if ($thisName == $file) {
-                foreach ($lines as $line => $tests) {
-                    if (is_array($tests)) {
-                        foreach ($tests as $test) {
-                            $testId = $test->__testNode->testId;
+        foreach ($files[$thisName] as $line => $tests) {
+            if (is_array($tests)) {
+                foreach ($tests as $test) {
+                    $testId = $test->__testNode->testId;
 
-                            if (!isset($testCase[$testId])) {
-                                $testCase[$testId] = array('numLinesExecuted' => 1, 'object' => $test);
-                            } else {
-                                $testCase[$testId]['numLinesExecuted']++;
-                            }
-                        }
+                    if (!isset($testCase[$testId])) {
+                        $testCase[$testId] = array(
+                          'numLinesExecuted' => 1,
+                          'object' => $test
+                        );
+                    } else {
+                        $testCase[$testId]['numLinesExecuted']++;
                     }
                 }
             }
