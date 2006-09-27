@@ -304,8 +304,10 @@ class PHPUnit_Util_Report_Coverage_Node_File extends PHPUnit_Util_Report_Coverag
             }
 
             $lines .= sprintf(
-              '<span class="lineNum">%8d </span>%s%s%s' . "\n",
+              '<span class="lineNum"><a name="%d"></a><a href="#%d">%8d</a> </span>%s%s%s' . "\n",
 
+              $i,
+              $i,
               $i,
               !empty($css) ? $css : '                : ',
               $line . str_repeat(' ', array_shift($this->codeLinesFillup)),

@@ -321,6 +321,10 @@ span.lineNum
   background-color: #e9b96e;
 }
 
+span.lineNum a {
+  text-decoration: none;
+}
+
 /* Source code view: format for lines which were executed */
 span.lineCov
 {
