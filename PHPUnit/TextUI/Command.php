@@ -135,7 +135,6 @@ class PHPUnit_TextUI_Command
           'log-tap=',
           'log-xml=',
           'repeat=',
-          'report=',
           'skeleton',
           'tap',
           'testdox-html=',
@@ -147,6 +146,10 @@ class PHPUnit_TextUI_Command
 
         if (class_exists('Image_GraphViz', FALSE)) {
             $longOptions[] = 'log-graphviz=';
+        }
+
+        if (extension_loaded('xdebug')) {
+            $longOptions[] = 'report=';
         }
 
         try {
@@ -377,8 +380,6 @@ class PHPUnit_TextUI_Command
 
         if (extension_loaded('xdebug')) {
             print "  --report <dir>         Generate combined test/coverage report in HTML format.\n";
-        } else {
-            print "  --report <dir>         Generate test report in HTML format.\n";
         }
 
         print "  --testdox-html <file>  Write agile documentation in HTML format to file.\n" .

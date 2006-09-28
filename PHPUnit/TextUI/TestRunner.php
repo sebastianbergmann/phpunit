@@ -215,7 +215,8 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
             }
         }
 
-        if (isset($parameters['reportDirectory'])) {
+        if (isset($parameters['reportDirectory']) &&
+            extension_loaded('xdebug')) {
             if (class_exists('Image_GraphViz', FALSE)) {
                 $result->addListener(
                   new PHPUnit_Util_Report_GraphViz($parameters['reportDirectory'])
@@ -253,7 +254,8 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
             $this->printer->printResult($result, $timeElapsed);
         }
 
-        if (isset($parameters['reportDirectory'])) {
+        if (isset($parameters['reportDirectory']) &&
+            extension_loaded('xdebug')) {
             $this->printer->write("\nGenerating report, this may take a moment.");
             PHPUnit_Util_Report::render($result, $parameters['reportDirectory']);
             $this->printer->write("\n");
