@@ -47,12 +47,6 @@
 require_once 'PHPUnit/Framework.php';
 require_once 'PHPUnit/Util/Filter.php';
 require_once 'PHPUnit/Util/Type.php';
-require_once 'PHPUnit/Framework/MockObject/Mock.php';
-require_once 'PHPUnit/Framework/MockObject/Matcher/InvokedAtLeastOnce.php';
-require_once 'PHPUnit/Framework/MockObject/Matcher/InvokedAtIndex.php';
-require_once 'PHPUnit/Framework/MockObject/Matcher/InvokedCount.php';
-require_once 'PHPUnit/Framework/MockObject/Stub/ConsecutiveCalls.php';
-require_once 'PHPUnit/Framework/MockObject/Stub/Return.php';
 
 PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
 
