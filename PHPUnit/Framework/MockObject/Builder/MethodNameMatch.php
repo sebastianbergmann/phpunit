@@ -36,71 +36,44 @@
  *
  * @category   Testing
  * @package    PHPUnit
+ * @author     Jan Borsodi <jb@ez.no>
  * @author     Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @copyright  2002-2006 Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    SVN: $Id$
  * @link       http://www.phpunit.de/
- * @since      File available since Release 2.0.0
+ * @since      File available since Release 3.0.0
  */
 
 require_once 'PHPUnit/Util/Filter.php';
+require_once 'PHPUnit/Framework/MockObject/Builder/ParametersMatch.php';
 
-PHPUnit_Util_Filter::addFileToFilter(__FILE__);
-
-if (!defined('PHPUnit_MAIN_METHOD')) {
-    define('PHPUnit_MAIN_METHOD', 'Extensions_AllTests::main');
-    chdir(dirname(dirname(__FILE__)));
-}
-
-if (!defined('PHPUnit_INSIDE_OWN_TESTSUITE')) {
-    define('PHPUnit_INSIDE_OWN_TESTSUITE', TRUE);
-}
-
-require_once 'PHPUnit/Framework/TestSuite.php';
-require_once 'PHPUnit/TextUI/TestRunner.php';
-require_once 'PHPUnit/Util/Filter.php';
-
-require_once 'Extensions/ExceptionTestCaseTest.php';
-require_once 'Extensions/ExtensionTest.php';
-require_once 'Extensions/OutputTestCaseTest.php';
-require_once 'Extensions/PerformanceTestCaseTest.php';
-require_once 'Extensions/RepeatedTestTest.php';
+PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
 
 /**
- *
+ * Builder interface for matcher of method names.
  *
  * @category   Testing
  * @package    PHPUnit
+ * @author     Jan Borsodi <jb@ez.no>
  * @author     Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @copyright  2002-2006 Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    Release: @package_version@
  * @link       http://www.phpunit.de/
- * @since      Class available since Release 2.0.0
+ * @since      Interface available since Release 3.0.0
  */
-class Extensions_AllTests
+interface PHPUnit_Framework_MockObject_Builder_MethodNameMatch extends PHPUnit_Framework_MockObject_Builder_ParametersMatch
 {
-    public static function main()
-    {
-        PHPUnit_TextUI_TestRunner::run(self::suite());
-    }
-
-    public static function suite()
-    {
-        $suite = new PHPUnit_Framework_TestSuite('PHPUnit_Extensions');
-
-        $suite->addTestSuite('Extensions_ExceptionTestCaseTest');
-        $suite->addTestSuite('Extensions_ExtensionTest');
-        $suite->addTestSuite('Extensions_OutputTestCaseTest');
-        $suite->addTestSuite('Extensions_PerformanceTestCaseTest');
-        $suite->addTestSuite('Extensions_RepeatedTestTest');
-
-        return $suite;
-    }
-}
-
-if (PHPUnit_MAIN_METHOD == 'Extensions_AllTests::main') {
-    Extensions_AllTests::main();
+    /**
+     * Adds a new method name match and returns the parameter match object for
+     * further matching possibilities.
+     *
+     * @param PHPUnit_Framework_Constraint $name Constraint for matching method, if a
+     *                                                  string is passed it will use the
+     *                                                  PHPUnit_Framework_Constraint_IsEqual.
+     * @return PHPUnit_Framework_MockObject_Builder_ParametersMatch
+     */
+    public function method($name);
 }
 ?>

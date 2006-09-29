@@ -36,71 +36,51 @@
  *
  * @category   Testing
  * @package    PHPUnit
+ * @author     Jan Borsodi <jb@ez.no>
  * @author     Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @copyright  2002-2006 Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    SVN: $Id$
  * @link       http://www.phpunit.de/
- * @since      File available since Release 2.0.0
+ * @since      File available since Release 3.0.0
  */
 
+require_once 'PHPUnit/Framework.php';
 require_once 'PHPUnit/Util/Filter.php';
+require_once 'PHPUnit/Framework/MockObject/Invocation.php';
 
-PHPUnit_Util_Filter::addFileToFilter(__FILE__);
-
-if (!defined('PHPUnit_MAIN_METHOD')) {
-    define('PHPUnit_MAIN_METHOD', 'Extensions_AllTests::main');
-    chdir(dirname(dirname(__FILE__)));
-}
-
-if (!defined('PHPUnit_INSIDE_OWN_TESTSUITE')) {
-    define('PHPUnit_INSIDE_OWN_TESTSUITE', TRUE);
-}
-
-require_once 'PHPUnit/Framework/TestSuite.php';
-require_once 'PHPUnit/TextUI/TestRunner.php';
-require_once 'PHPUnit/Util/Filter.php';
-
-require_once 'Extensions/ExceptionTestCaseTest.php';
-require_once 'Extensions/ExtensionTest.php';
-require_once 'Extensions/OutputTestCaseTest.php';
-require_once 'Extensions/PerformanceTestCaseTest.php';
-require_once 'Extensions/RepeatedTestTest.php';
+PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
 
 /**
+ * An object that stubs the process of a normal method for a mock object.
  *
+ * The stub object will replace the code for the stubbed method and return a
+ * specific value instead of the original value.
  *
  * @category   Testing
  * @package    PHPUnit
+ * @author     Jan Borsodi <jb@ez.no>
  * @author     Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @copyright  2002-2006 Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    Release: @package_version@
  * @link       http://www.phpunit.de/
- * @since      Class available since Release 2.0.0
+ * @since      Interface available since Release 3.0.0
  */
-class Extensions_AllTests
+interface PHPUnit_Framework_MockObject_Stub extends PHPUnit_Framework_SelfDescribing
 {
-    public static function main()
-    {
-        PHPUnit_TextUI_TestRunner::run(self::suite());
-    }
-
-    public static function suite()
-    {
-        $suite = new PHPUnit_Framework_TestSuite('PHPUnit_Extensions');
-
-        $suite->addTestSuite('Extensions_ExceptionTestCaseTest');
-        $suite->addTestSuite('Extensions_ExtensionTest');
-        $suite->addTestSuite('Extensions_OutputTestCaseTest');
-        $suite->addTestSuite('Extensions_PerformanceTestCaseTest');
-        $suite->addTestSuite('Extensions_RepeatedTestTest');
-
-        return $suite;
-    }
+    /**
+     * Fakes the processesing of the invocation $invocation by returning a
+     * specific value.
+     *
+     * @return mixed
+     * @param PHPUnit_Framework_MockObject_Invocation $invocation The invocation which was mocked
+     *                                                  and matched by the current method
+     *                                                  and argument matchers.
+     */
+    public function invoke(PHPUnit_Framework_MockObject_Invocation $invocation);
 }
 
-if (PHPUnit_MAIN_METHOD == 'Extensions_AllTests::main') {
-    Extensions_AllTests::main();
-}
+require_once 'PHPUnit/Framework/MockObject/Stub/MatcherCollection.php';
+require_once 'PHPUnit/Framework/MockObject/Stub/Return.php';
 ?>

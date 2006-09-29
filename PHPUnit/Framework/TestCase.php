@@ -349,7 +349,7 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
             throw new InvalidArgumentException;
         }
 
-        $mock       = PHPUnit_Extensions_MockObject_Mock::generate($className, $methods, $mockClassName);
+        $mock       = PHPUnit_Framework_MockObject_Mock::generate($className, $methods, $mockClassName);
         $mockClass  = new ReflectionClass($mock->mockClassName);
         $mockObject = $mockClass->newInstanceArgs($arguments);
 
@@ -361,83 +361,83 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
     /**
      *
      *
-     * @return PHPUnit_Extensions_MockObject_Matcher_InvokedCount
+     * @return PHPUnit_Framework_MockObject_Matcher_InvokedCount
      * @access protected
      * @since  Method available since Release 3.0.0
      */
     protected function never()
     {
-        return new PHPUnit_Extensions_MockObject_Matcher_InvokedCount(0);
+        return new PHPUnit_Framework_MockObject_Matcher_InvokedCount(0);
     }
 
     /**
      *
      *
-     * @return PHPUnit_Extensions_MockObject_Matcher_InvokedAtLeastOnce
+     * @return PHPUnit_Framework_MockObject_Matcher_InvokedAtLeastOnce
      * @access protected
      * @since  Method available since Release 3.0.0
      */
     protected function atLeastOnce()
     {
-        return new PHPUnit_Extensions_MockObject_Matcher_InvokedAtLeastOnce;
+        return new PHPUnit_Framework_MockObject_Matcher_InvokedAtLeastOnce;
     }
 
     /**
      *
      *
-     * @return PHPUnit_Extensions_MockObject_Matcher_InvokedCount
+     * @return PHPUnit_Framework_MockObject_Matcher_InvokedCount
      * @access protected
      * @since  Method available since Release 3.0.0
      */
     protected function once()
     {
-        return new PHPUnit_Extensions_MockObject_Matcher_InvokedCount(1);
+        return new PHPUnit_Framework_MockObject_Matcher_InvokedCount(1);
     }
 
     /**
      *
      *
      * @param  integer $count
-     * @return PHPUnit_Extensions_MockObject_Matcher_InvokedCount
+     * @return PHPUnit_Framework_MockObject_Matcher_InvokedCount
      * @access protected
      * @since  Method available since Release 3.0.0
      */
     protected function exactly($count)
     {
-        return new PHPUnit_Extensions_MockObject_Matcher_InvokedCount($count);
+        return new PHPUnit_Framework_MockObject_Matcher_InvokedCount($count);
     }
 
     /**
      *
      *
      * @param  integer $index
-     * @return PHPUnit_Extensions_MockObject_Matcher_InvokedAtIndex
+     * @return PHPUnit_Framework_MockObject_Matcher_InvokedAtIndex
      * @access protected
      * @since  Method available since Release 3.0.0
      */
     protected function at($index)
     {
-        return new PHPUnit_Extensions_MockObject_Matcher_InvokedAtIndex($index);
+        return new PHPUnit_Framework_MockObject_Matcher_InvokedAtIndex($index);
     }
 
     /**
      *
      *
      * @param  mixed $value
-     * @return PHPUnit_Extensions_MockObject_Stub_Return
+     * @return PHPUnit_Framework_MockObject_Stub_Return
      * @access protected
      * @since  Method available since Release 3.0.0
      */
     protected function returnValue($value)
     {
-        return new PHPUnit_Extensions_MockObject_Stub_Return($value);
+        return new PHPUnit_Framework_MockObject_Stub_Return($value);
     }
 
     /**
      *
      *
      * @param  mixed $value, ...
-     * @return PHPUnit_Extensions_MockObject_Stub_ConsecutiveCalls
+     * @return PHPUnit_Framework_MockObject_Stub_ConsecutiveCalls
      * @access protected
      * @since  Method available since Release 3.0.0
      */
@@ -445,7 +445,7 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
     {
         $args = func_get_args();
 
-        return new PHPUnit_Extensions_MockObject_Stub_ConsecutiveCalls($args);
+        return new PHPUnit_Framework_MockObject_Stub_ConsecutiveCalls($args);
     }
 
     /**

@@ -36,71 +36,53 @@
  *
  * @category   Testing
  * @package    PHPUnit
+ * @author     Jan Borsodi <jb@ez.no>
  * @author     Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @copyright  2002-2006 Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    SVN: $Id$
  * @link       http://www.phpunit.de/
- * @since      File available since Release 2.0.0
+ * @since      File available since Release 3.0.0
  */
 
 require_once 'PHPUnit/Util/Filter.php';
+require_once 'PHPUnit/Framework/MockObject/Builder/Match.php';
 
-PHPUnit_Util_Filter::addFileToFilter(__FILE__);
-
-if (!defined('PHPUnit_MAIN_METHOD')) {
-    define('PHPUnit_MAIN_METHOD', 'Extensions_AllTests::main');
-    chdir(dirname(dirname(__FILE__)));
-}
-
-if (!defined('PHPUnit_INSIDE_OWN_TESTSUITE')) {
-    define('PHPUnit_INSIDE_OWN_TESTSUITE', TRUE);
-}
-
-require_once 'PHPUnit/Framework/TestSuite.php';
-require_once 'PHPUnit/TextUI/TestRunner.php';
-require_once 'PHPUnit/Util/Filter.php';
-
-require_once 'Extensions/ExceptionTestCaseTest.php';
-require_once 'Extensions/ExtensionTest.php';
-require_once 'Extensions/OutputTestCaseTest.php';
-require_once 'Extensions/PerformanceTestCaseTest.php';
-require_once 'Extensions/RepeatedTestTest.php';
+PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
 
 /**
+ * Interface for builders which can register builders with a given identification.
  *
+ * This interface relates to PHPUnit_Framework_MockObject_Builder_Identity.
  *
  * @category   Testing
  * @package    PHPUnit
+ * @author     Jan Borsodi <jb@ez.no>
  * @author     Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @copyright  2002-2006 Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    Release: @package_version@
  * @link       http://www.phpunit.de/
- * @since      Class available since Release 2.0.0
+ * @since      Interface available since Release 3.0.0
  */
-class Extensions_AllTests
+interface PHPUnit_Framework_MockObject_Builder_Namespace
 {
-    public static function main()
-    {
-        PHPUnit_TextUI_TestRunner::run(self::suite());
-    }
+    /**
+     * Looks up the match builder with identification $id and returns it.
+     *
+     * @param string $id The identifiction of the match builder.
+     * @return PHPUnit_Framework_MockObject_Builder_Match
+     */
+    public function lookupId($id);
 
-    public static function suite()
-    {
-        $suite = new PHPUnit_Framework_TestSuite('PHPUnit_Extensions');
-
-        $suite->addTestSuite('Extensions_ExceptionTestCaseTest');
-        $suite->addTestSuite('Extensions_ExtensionTest');
-        $suite->addTestSuite('Extensions_OutputTestCaseTest');
-        $suite->addTestSuite('Extensions_PerformanceTestCaseTest');
-        $suite->addTestSuite('Extensions_RepeatedTestTest');
-
-        return $suite;
-    }
-}
-
-if (PHPUnit_MAIN_METHOD == 'Extensions_AllTests::main') {
-    Extensions_AllTests::main();
+    /**
+     * Registers the match builder $builder with the identification $id. The
+     * builder can later be looked up using lookupId() to figure out if it
+     * has been invoked.
+     *
+     * @param string $id The identification of the match builder.
+     * @param PHPUnit_Framework_MockObject_Builder_Match $builder The builder which is being registered.
+     */
+    public function registerId($id, PHPUnit_Framework_MockObject_Builder_Match $builder);
 }
 ?>

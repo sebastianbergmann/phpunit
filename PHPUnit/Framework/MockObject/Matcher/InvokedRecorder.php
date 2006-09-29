@@ -36,71 +36,65 @@
  *
  * @category   Testing
  * @package    PHPUnit
+ * @author     Jan Borsodi <jb@ez.no>
  * @author     Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @copyright  2002-2006 Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    SVN: $Id$
  * @link       http://www.phpunit.de/
- * @since      File available since Release 2.0.0
+ * @since      File available since Release 3.0.0
  */
 
 require_once 'PHPUnit/Util/Filter.php';
+require_once 'PHPUnit/Framework/MockObject/Matcher/Invocation.php';
+require_once 'PHPUnit/Framework/MockObject/Invocation.php';
 
-PHPUnit_Util_Filter::addFileToFilter(__FILE__);
-
-if (!defined('PHPUnit_MAIN_METHOD')) {
-    define('PHPUnit_MAIN_METHOD', 'Extensions_AllTests::main');
-    chdir(dirname(dirname(__FILE__)));
-}
-
-if (!defined('PHPUnit_INSIDE_OWN_TESTSUITE')) {
-    define('PHPUnit_INSIDE_OWN_TESTSUITE', TRUE);
-}
-
-require_once 'PHPUnit/Framework/TestSuite.php';
-require_once 'PHPUnit/TextUI/TestRunner.php';
-require_once 'PHPUnit/Util/Filter.php';
-
-require_once 'Extensions/ExceptionTestCaseTest.php';
-require_once 'Extensions/ExtensionTest.php';
-require_once 'Extensions/OutputTestCaseTest.php';
-require_once 'Extensions/PerformanceTestCaseTest.php';
-require_once 'Extensions/RepeatedTestTest.php';
+PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
 
 /**
+ * Records invocations and provides convenience methods for checking them later on.
  *
+ * This abstract class can be implemented by matchers which needs to check the
+ * number of times an invocation has occured.
  *
  * @category   Testing
  * @package    PHPUnit
+ * @author     Jan Borsodi <jb@ez.no>
  * @author     Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @copyright  2002-2006 Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    Release: @package_version@
  * @link       http://www.phpunit.de/
- * @since      Class available since Release 2.0.0
+ * @since      Class available since Release 3.0.0
+ * @abstract
  */
-class Extensions_AllTests
+abstract class PHPUnit_Framework_MockObject_Matcher_InvokedRecorder implements PHPUnit_Framework_MockObject_Matcher_Invocation
 {
-    public static function main()
+    private $invocations = array();
+
+    public function getInvocationCount()
     {
-        PHPUnit_TextUI_TestRunner::run(self::suite());
+        return count($this->invocations);
     }
 
-    public static function suite()
+    public function getInvocations()
     {
-        $suite = new PHPUnit_Framework_TestSuite('PHPUnit_Extensions');
-
-        $suite->addTestSuite('Extensions_ExceptionTestCaseTest');
-        $suite->addTestSuite('Extensions_ExtensionTest');
-        $suite->addTestSuite('Extensions_OutputTestCaseTest');
-        $suite->addTestSuite('Extensions_PerformanceTestCaseTest');
-        $suite->addTestSuite('Extensions_RepeatedTestTest');
-
-        return $suite;
+        return $this->invocations;
     }
-}
 
-if (PHPUnit_MAIN_METHOD == 'Extensions_AllTests::main') {
-    Extensions_AllTests::main();
+    public function hasBeenInvoked()
+    {
+        return count($this->invocations) > 0;
+    }
+
+    public function invoked(PHPUnit_Framework_MockObject_Invocation $invocation)
+    {
+        $this->invocations[] = $invocation;
+    }
+
+    public function matches(PHPUnit_Framework_MockObject_Invocation $invocation)
+    {
+        return TRUE;
+    }
 }
 ?>

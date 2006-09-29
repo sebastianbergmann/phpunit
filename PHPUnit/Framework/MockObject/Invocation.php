@@ -36,71 +36,71 @@
  *
  * @category   Testing
  * @package    PHPUnit
+ * @author     Jan Borsodi <jb@ez.no>
  * @author     Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @copyright  2002-2006 Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    SVN: $Id$
  * @link       http://www.phpunit.de/
- * @since      File available since Release 2.0.0
+ * @since      File available since Release 3.0.0
  */
 
+require_once 'PHPUnit/Framework.php';
 require_once 'PHPUnit/Util/Filter.php';
 
-PHPUnit_Util_Filter::addFileToFilter(__FILE__);
-
-if (!defined('PHPUnit_MAIN_METHOD')) {
-    define('PHPUnit_MAIN_METHOD', 'Extensions_AllTests::main');
-    chdir(dirname(dirname(__FILE__)));
-}
-
-if (!defined('PHPUnit_INSIDE_OWN_TESTSUITE')) {
-    define('PHPUnit_INSIDE_OWN_TESTSUITE', TRUE);
-}
-
-require_once 'PHPUnit/Framework/TestSuite.php';
-require_once 'PHPUnit/TextUI/TestRunner.php';
-require_once 'PHPUnit/Util/Filter.php';
-
-require_once 'Extensions/ExceptionTestCaseTest.php';
-require_once 'Extensions/ExtensionTest.php';
-require_once 'Extensions/OutputTestCaseTest.php';
-require_once 'Extensions/PerformanceTestCaseTest.php';
-require_once 'Extensions/RepeatedTestTest.php';
+PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
 
 /**
+ * Encapsulates information on a method invocation which can be passed to matchers.
  *
+ * The invocation consists of the object it occured from, the class name, the
+ * method name and all the parameters. The mock object must instantiate this
+ * class with the values from the mocked method and pass it to an object of
+ * PHPUnit_Framework_MockObject_Invokable.
  *
  * @category   Testing
  * @package    PHPUnit
+ * @author     Jan Borsodi <jb@ez.no>
  * @author     Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @copyright  2002-2006 Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    Release: @package_version@
  * @link       http://www.phpunit.de/
- * @since      Class available since Release 2.0.0
+ * @since      Class available since Release 3.0.0
  */
-class Extensions_AllTests
+class PHPUnit_Framework_MockObject_Invocation implements PHPUnit_Framework_SelfDescribing
 {
-    public static function main()
+    public $object;
+
+    public $className;
+
+    public $methodName;
+
+    public $parameters;
+
+    public function __construct($object, $className, $methodName, $parameters)
     {
-        PHPUnit_TextUI_TestRunner::run(self::suite());
+        $this->object     = $object;
+        $this->className  = $className;
+        $this->methodName = $methodName;
+        $this->parameters = $parameters;
+
+        foreach ($this->parameters as $key => $value) {
+            if (is_object($value)) {
+                $this->parameters[$key] = clone $value;
+            }
+        }
     }
 
-    public static function suite()
+    public function toString()
     {
-        $suite = new PHPUnit_Framework_TestSuite('PHPUnit_Extensions');
+        return sprintf(
+          "%s::%s(%s)",
 
-        $suite->addTestSuite('Extensions_ExceptionTestCaseTest');
-        $suite->addTestSuite('Extensions_ExtensionTest');
-        $suite->addTestSuite('Extensions_OutputTestCaseTest');
-        $suite->addTestSuite('Extensions_PerformanceTestCaseTest');
-        $suite->addTestSuite('Extensions_RepeatedTestTest');
-
-        return $suite;
+          $this->className,
+          $this->methodName,
+          join(', ', array_map(create_function('$a', 'return PHPUnit_Framework_ComparisonFailure::shortenedExport($a);'), $this->parameters))
+        );
     }
-}
-
-if (PHPUnit_MAIN_METHOD == 'Extensions_AllTests::main') {
-    Extensions_AllTests::main();
 }
 ?>
