@@ -166,9 +166,8 @@ class PHPUnit_Util_Report_Coverage_Node_File extends PHPUnit_Util_Report_Coverag
                     foreach ($this->coveringTestsByLine[$line] as $_test) {
                         if ($_test === $test) {
                             $found = TRUE;
+                            break;
                         }
-
-                        break;
                     }
 
                     if (!$found) {
