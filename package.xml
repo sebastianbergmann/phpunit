@@ -321,9 +321,6 @@
       <file baseinstalldir="/" name="ExtensionTest.php" role="test">
        <tasks:replace from="@package_version@" to="version" type="package-info" />
       </file>
-      <file baseinstalldir="/" name="MockObjectTest.php" role="test">
-       <tasks:replace from="@package_version@" to="version" type="package-info" />
-      </file>
       <file baseinstalldir="/" name="OutputTestCaseTest.php" role="test">
        <tasks:replace from="@package_version@" to="version" type="package-info" />
       </file>
@@ -342,6 +339,9 @@
        <tasks:replace from="@package_version@" to="version" type="package-info" />
       </file>
       <file baseinstalldir="/" name="ComparisonFailureTest.php" role="test">
+       <tasks:replace from="@package_version@" to="version" type="package-info" />
+      </file>
+      <file baseinstalldir="/" name="MockObjectTest.php" role="test">
        <tasks:replace from="@package_version@" to="version" type="package-info" />
       </file>
       <file baseinstalldir="/" name="SuiteTest.php" role="test">
