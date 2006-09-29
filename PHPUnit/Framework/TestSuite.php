@@ -471,16 +471,22 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
                 break;
             }
 
-            $name    = $test->getName();
-            $runTest = TRUE;
+            if ($test instanceof PHPUnit_Framework_TestSuite) {
+                $test->run($result, $filter);
+            } else {
+                $runTest = TRUE;
 
-            if ($name !== NULL && !$test instanceof PHPUnit_Framework_TestSuite &&
-                $filter !== FALSE && preg_match($filter, $name) == 0) {
-                $runTest = FALSE;
-            }
+                if ($filter !== FALSE ) {
+                    $name = $test->getName();
 
-            if ($runTest) {
-                $this->runTest($test, $result);
+                    if ($name !== NULL && preg_match($filter, $name) == 0) {
+                        $runTest = FALSE;
+                    }
+                }
+
+                if ($runTest) {
+                    $this->runTest($test, $result);
+                }
             }
         }
 
