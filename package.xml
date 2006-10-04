@@ -44,6 +44,9 @@
      <file baseinstalldir="/" name="RepeatedTest.php" role="php">
       <tasks:replace from="@package_version@" to="version" type="package-info" />
      </file>
+     <file baseinstalldir="/" name="SeleniumTestCase.php" role="php">
+      <tasks:replace from="@package_version@" to="version" type="package-info" />
+     </file>
      <file baseinstalldir="/" name="TestDecorator.php" role="php">
       <tasks:replace from="@package_version@" to="version" type="package-info" />
      </file>
