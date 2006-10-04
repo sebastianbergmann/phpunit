@@ -253,7 +253,7 @@ class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_TestCase
 
     public function waitForPopUp($windowId, $timeout = NULL)
     {
-        return $this->selenium->waitForPopUp($windowId, $timeout = NULL);
+        return $this->selenium->waitForPopUp($windowId, $timeout);
     }
 
     public function chooseCancelOnNextConfirmation()
@@ -468,12 +468,102 @@ class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_TestCase
 
     public function waitForCondition($script, $timeout = NULL)
     {
-        return $this->selenium->waitForCondition($script, $timeout = NULL);
+        return $this->selenium->waitForCondition($script, $timeout);
     }
 
     public function waitForPageToLoad($timeout = NULL)
     {
-        return $this->selenium->waitForPageToLoad($timeout = NULL);
+        return $this->selenium->waitForPageToLoad($timeout);
+    }
+
+    public function assertTitleEquals($title)
+    {
+        $this->assertEquals($title, $this->getTitle());
+    }
+
+    public function assertTitleNotEquals($title)
+    {
+        $this->assertNotEquals($title, $this->getTitle());
+    }
+
+    public function assertAlertPresent()
+    {
+        $this->assertTrue($this->isAlertPresent());
+    }
+
+    public function assertAlertNotPresent()
+    {
+        $this->assertFalse($this->isAlertPresent());
+    }
+
+    public function assertPromptPresent()
+    {
+        $this->assertTrue($this->isPromptPresent());
+    }
+
+    public function assertPromptNotPresent()
+    {
+        $this->assertFalse($this->isPromptPresent());
+    }
+
+    public function assertConfirmationPresent()
+    {
+        $this->assertTrue($this->isConfirmationPresent());
+    }
+
+    public function assertConfirmationNotPresent()
+    {
+        $this->assertFalse($this->isConfirmationPresent());
+    }
+
+    public function assertChecked($locator)
+    {
+        $this->assertTrue($this->isChecked($locator));
+    }
+
+    public function assertNotChecked($locator)
+    {
+        $this->assertFalse($this->isChecked($locator));
+    }
+
+    public function assertSomethingSelected($selectLocator)
+    {
+        $this->assertTrue($this->isSomethingSelected($selectLocator));
+    }
+
+    public function assertNothingSelected($selectLocator)
+    {
+        $this->assertFalse($this->isSomethingSelected($selectLocator));
+    }
+
+    public function assertElementPresent($locator)
+    {
+        $this->assertTrue($this->isElementPresent($locator));
+    }
+
+    public function assertElementNotPresent($locator)
+    {
+        $this->assertFalse($this->isElementPresent($locator));
+    }
+
+    public function assertVisible($locator)
+    {
+        $this->assertTrue($this->isVisible($locator));
+    }
+
+    public function assertNotVisible($locator)
+    {
+        $this->assertFalse($this->isVisible($locator));
+    }
+
+    public function assertEditable($locator)
+    {
+        $this->assertTrue($this->isEditable($locator));
+    }
+
+    public function assertNotEditable($locator)
+    {
+        $this->assertFalse($this->isEditable($locator));
     }
 
     /**
