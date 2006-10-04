@@ -778,6 +778,11 @@
     <name>Log</name>
     <channel>pear.php.net</channel>
    </package>
+   <package>
+    <name>Selenium</name>
+    <channel>pear.php.net</channel>
+    <min>0.1.4</min>
+   </package>
    <extension>
     <name>xdebug</name>
     <min>2.0.0beta6</min>
