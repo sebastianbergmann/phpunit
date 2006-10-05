@@ -64,11 +64,28 @@ PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
  */
 class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUnit_Framework_TestListener
 {
+    const EVENT_TEST_START      = 0;
+    const EVENT_TEST_END        = 1;
+    const EVENT_TESTSUITE_START = 2;
+    const EVENT_TESTSUITE_END   = 3;
+
     /**
      * @var    integer
      * @access private
      */
     private $column = 0;
+
+    /**
+     * @var    integer
+     * @access private
+     */
+    private $depth = 0;
+
+    /**
+     * @var    integer
+     * @access private
+     */
+    private $lastEvent = -1;
 
     /**
      * @var    boolean
@@ -375,14 +392,12 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
      * An error occurred.
      *
      * @param  PHPUnit_Framework_Test $test
-     * @param  Exception               $e
+     * @param  Exception              $e
      * @access public
      */
     public function addError(PHPUnit_Framework_Test $test, Exception $e)
     {
-        $this->write('E');
-        $this->nextColumn();
-
+        $this->writeProgress('E');
         $this->lastTestFailed = TRUE;
     }
 
@@ -395,9 +410,7 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
      */
     public function addFailure(PHPUnit_Framework_Test $test, PHPUnit_Framework_AssertionFailedError $e)
     {
-        $this->write('F');
-        $this->nextColumn();
-
+        $this->writeProgress('F');
         $this->lastTestFailed = TRUE;
     }
 
@@ -410,9 +423,7 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
      */
     public function addIncompleteTest(PHPUnit_Framework_Test $test, Exception $e)
     {
-        $this->write('I');
-        $this->nextColumn();
-
+        $this->writeProgress('I');
         $this->lastTestFailed = TRUE;
     }
 
@@ -426,9 +437,7 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
      */
     public function addSkippedTest(PHPUnit_Framework_Test $test, Exception $e)
     {
-        $this->write('S');
-        $this->nextColumn();
-
+        $this->writeProgress('S');
         $this->lastTestFailed = TRUE;
     }
 
@@ -441,6 +450,26 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
      */
     public function startTestSuite(PHPUnit_Framework_TestSuite $suite)
     {
+        if ($this->verbose) {
+            $name = $suite->getName();
+
+            if (empty($name)) {
+                $name = 'Test Suite';
+            }
+
+            $this->write(
+              sprintf(
+                "%s%s%s\n",
+
+                $this->lastEvent == self::EVENT_TESTSUITE_END ? "\n" : '',
+                str_repeat(' ', $this->depth),
+                $name
+              )
+            );
+
+            $this->depth++;
+            $this->lastEvent = self::EVENT_TESTSUITE_START;
+        }
     }
 
     /**
@@ -452,6 +481,17 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
      */
     public function endTestSuite(PHPUnit_Framework_TestSuite $suite)
     {
+        if ($this->verbose) {
+            $this->depth--;
+        }
+
+        $this->column = 0;
+
+        if ($this->lastEvent != self::EVENT_TESTSUITE_END) {
+            $this->write("\n");
+        }
+
+        $this->lastEvent = self::EVENT_TESTSUITE_END;
     }
 
     /**
@@ -462,6 +502,7 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
      */
     public function startTest(PHPUnit_Framework_Test $test)
     {
+        $this->lastEvent = self::EVENT_TEST_START;
     }
 
     /**
@@ -473,19 +514,26 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
     public function endTest(PHPUnit_Framework_Test $test)
     {
         if (!$this->lastTestFailed) {
-            $this->write('.');
-            $this->nextColumn();
+            $this->writeProgress('.');
         }
 
+        $this->lastEvent = self::EVENT_TEST_END;
         $this->lastTestFailed = FALSE;
     }
 
     /**
+     * @param  string $progress
      * @access protected
      */
-    protected function nextColumn()
+    protected function writeProgress($progress)
     {
-        if ($this->column++ >= 40) {
+        if ($this->column == 0) {
+            $this->write(str_repeat(' ', $this->depth - 1));
+        }
+
+        $this->write($progress);
+
+        if ($this->column++ >= 40 - $this->depth) {
             $this->column = 0;
             $this->write("\n");
         }
