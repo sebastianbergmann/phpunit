@@ -528,7 +528,7 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
     protected function writeProgress($progress)
     {
         if ($this->column == 0) {
-            $this->write(str_repeat(' ', $this->depth - 1));
+            $this->write(str_repeat(' ', max(0, $this->depth - 1)));
         }
 
         $this->write($progress);
