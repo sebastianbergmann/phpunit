@@ -468,8 +468,9 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
             );
 
             $this->depth++;
-            $this->lastEvent = self::EVENT_TESTSUITE_START;
         }
+
+        $this->lastEvent = self::EVENT_TESTSUITE_START;
     }
 
     /**
@@ -483,12 +484,12 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
     {
         if ($this->verbose) {
             $this->depth--;
-        }
 
-        $this->column = 0;
+            $this->column = 0;
 
-        if ($this->lastEvent != self::EVENT_TESTSUITE_END) {
-            $this->write("\n");
+            if ($this->lastEvent != self::EVENT_TESTSUITE_END) {
+                $this->write("\n");
+            }
         }
 
         $this->lastEvent = self::EVENT_TESTSUITE_END;
