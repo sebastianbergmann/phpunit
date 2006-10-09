@@ -785,7 +785,7 @@
    </package>
    <extension>
     <name>xdebug</name>
-    <min>2.0.0beta6</min>
+    <min>2.0.0RC1</min>
    </extension>
   </optional>
  </dependencies>
