@@ -93,7 +93,7 @@ class PHPUnit_Runner_StandardTestSuiteLoader implements PHPUnit_Runner_TestSuite
             PHPUnit_Util_Fileloader::checkAndLoad($suiteClassFile);
         }
 
-        if (class_exists($suiteClassName)) {
+        if (class_exists($suiteClassName, FALSE)) {
             return new ReflectionClass($suiteClassName);
         } else {
             throw new RuntimeException(

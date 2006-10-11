@@ -147,7 +147,8 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
             $argumentsValid = TRUE;
         }
 
-        else if (is_string($theClass) && $theClass !== '' && class_exists($theClass)) {
+        else if (is_string($theClass) && $theClass !== ''
+                 && class_exists($theClass, FALSE)) {
             $argumentsValid = TRUE;
 
             if ($name == '') {
@@ -245,7 +246,7 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
      */
     public function addTestSuite($testClass)
     {
-        if (is_string($testClass) && class_exists($testClass)) {
+        if (is_string($testClass) && class_exists($testClass, FALSE)) {
             $testClass = new ReflectionClass($testClass);
         }
 
