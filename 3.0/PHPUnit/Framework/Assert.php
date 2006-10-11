@@ -621,7 +621,8 @@ class PHPUnit_Framework_Assert
     public static function assertType($expected, $actual, $message = '')
     {
         if (is_string($expected)) {
-            if (class_exists($expected) || interface_exists($expected)) {
+            if (class_exists($expected, FALSE) ||
+                interface_exists($expected, FALSE)) {
                 $constraint = self::logicalAnd(
                   new PHPUnit_Framework_Constraint_IsType('object'),
                   new PHPUnit_Framework_Constraint_IsInstanceOf($expected)
@@ -651,7 +652,8 @@ class PHPUnit_Framework_Assert
     public static function assertNotType($expected, $actual, $message = '')
     {
         if (is_string($expected)) {
-            if (class_exists($expected) || interface_exists($expected)) {
+            if (class_exists($expected, FALSE) ||
+                interface_exists($expected, FALSE)) {
                 $constraint = new PHPUnit_Framework_Constraint_Not(
                   self::logicalAnd(
                     new PHPUnit_Framework_Constraint_IsType('object'),
