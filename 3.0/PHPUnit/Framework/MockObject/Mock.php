@@ -186,11 +186,19 @@ class PHPUnit_Framework_MockObject_Mock
             return FALSE;
         }
 
-        if (substr($method->getName(), 0, 2) == '__') {
-            return FALSE;
-        }
+        switch ($method->getName())
+        {
+            case '__construct':
+            case '__destruct':
+            case '__clone': {
+                return FALSE;
+            }
+            break;
 
-        return TRUE;
+            default: {
+                return TRUE;
+            }
+        }
     }
 
     protected function shouldMockMethod(ReflectionMethod $method)
