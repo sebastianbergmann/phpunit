@@ -146,32 +146,34 @@ class PHPUnit_Util_Report_Coverage_Node_File extends PHPUnit_Util_Report_Coverag
         foreach ($files[$thisName] as $line => $tests) {
             if (is_array($tests)) {
                 foreach ($tests as $test) {
-                    $testId = $test->__testNode->testId;
+                    if (isset($test->__testNode->testId)) {
+                        $testId = $test->__testNode->testId;
 
-                    if (!isset($testCase[$testId])) {
-                        $testCase[$testId] = array(
-                          'numLinesExecuted' => 1,
-                          'object' => $test
-                        );
-                    } else {
-                        $testCase[$testId]['numLinesExecuted']++;
-                    }
-
-                    if (!isset($this->coveringTestsByLine[$line])) {
-                        $this->coveringTestsByLine[$line] = array();
-                    }
-
-                    $found = FALSE;
-
-                    foreach ($this->coveringTestsByLine[$line] as $_test) {
-                        if ($_test === $test) {
-                            $found = TRUE;
-                            break;
+                        if (!isset($testCase[$testId])) {
+                            $testCase[$testId] = array(
+                              'numLinesExecuted' => 1,
+                              'object' => $test
+                            );
+                        } else {
+                            $testCase[$testId]['numLinesExecuted']++;
                         }
-                    }
 
-                    if (!$found) {
-                        $this->coveringTestsByLine[$line][] = $test;
+                        if (!isset($this->coveringTestsByLine[$line])) {
+                            $this->coveringTestsByLine[$line] = array();
+                        }
+
+                        $found = FALSE;
+
+                        foreach ($this->coveringTestsByLine[$line] as $_test) {
+                            if ($_test === $test) {
+                                $found = TRUE;
+                                break;
+                            }
+                        }
+
+                        if (!$found) {
+                            $this->coveringTestsByLine[$line][] = $test;
+                        }
                     }
                 }
             }
