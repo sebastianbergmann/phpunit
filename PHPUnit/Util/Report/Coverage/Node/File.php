@@ -179,7 +179,7 @@ class PHPUnit_Util_Report_Coverage_Node_File extends PHPUnit_Util_Report_Coverag
 
         foreach ($testCase as $coveringTest) {
             $test = $coveringTest['object'];
-            $test = $testSuite->lookupTest($test);
+            $test = $test->__testNode;
             $name = $test->getName(TRUE);
 
             if (!isset($this->coveringTests[$name[0]])) {

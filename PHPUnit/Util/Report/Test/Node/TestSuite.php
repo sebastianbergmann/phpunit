@@ -121,37 +121,6 @@ class PHPUnit_Util_Report_Test_Node_TestSuite extends PHPUnit_Util_Report_Test_N
     }
 
     /**
-     * Returns the corresponding PHPUnit_Util_Report_Test_Node_Test object
-     * for a given PHPUnit_Framework_Test object.
-     *
-     * @param  PHPUnit_Framework_Test $test
-     * @return PHPUnit_Util_Report_Test_Node_Test
-     * @access public
-     */
-    public function lookupTest(PHPUnit_Framework_Test $test)
-    {
-        /*
-        foreach ($this->tests as $child) {
-            if ($test === $child->getObject()) {
-                return $child;
-            }
-        }
-
-        foreach ($this->suites as $child) {
-            $result = $child->lookupTest($test);
-
-            if ($result !== FALSE) {
-                return $result;
-            }
-        }
-
-        return FALSE;
-        */
-
-        return $test->__testNode;
-    }
-
-    /**
      * Renders this node.
      *
      * @param string $target
