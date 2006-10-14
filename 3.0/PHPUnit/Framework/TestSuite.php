@@ -313,22 +313,24 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
         foreach ($newClasses as $className) {
             $class = new ReflectionClass($className);
 
-            if ($class->hasMethod(PHPUnit_Runner_BaseTestRunner::SUITE_METHODNAME)) {
-                $method = $class->getMethod(
-                  PHPUnit_Runner_BaseTestRunner::SUITE_METHODNAME
-                );
+            if (!$class->isAbstract()) {
+                if ($class->hasMethod(PHPUnit_Runner_BaseTestRunner::SUITE_METHODNAME)) {
+                    $method = $class->getMethod(
+                      PHPUnit_Runner_BaseTestRunner::SUITE_METHODNAME
+                    );
 
-                if ($method->isStatic()) {
-                    $this->addTest($method->invoke(NULL));
+                    if ($method->isStatic()) {
+                        $this->addTest($method->invoke(NULL));
+
+                        $testsFound = TRUE;
+                    }
+                }
+
+                else if ($class->implementsInterface('PHPUnit_Framework_Test')) {
+                    $this->addTestSuite($class);
 
                     $testsFound = TRUE;
                 }
-            }
-
-            else if ($class->implementsInterface('PHPUnit_Framework_Test')) {
-                $this->addTestSuite($class);
-
-                $testsFound = TRUE;
             }
         }
 
