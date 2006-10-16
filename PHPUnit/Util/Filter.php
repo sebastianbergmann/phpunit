@@ -94,6 +94,8 @@ class PHPUnit_Util_Filter
         'Log/syslog.php',
         'Log/win.php',
         'Log.php',
+        'Selenium/Exception.php',
+        'Selenium.php',
         'PEAR/Config.php',
         'PEAR.php'
       )
