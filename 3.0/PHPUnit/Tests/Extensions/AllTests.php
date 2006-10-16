@@ -66,6 +66,7 @@ require_once 'Extensions/ExtensionTest.php';
 require_once 'Extensions/OutputTestCaseTest.php';
 require_once 'Extensions/PerformanceTestCaseTest.php';
 require_once 'Extensions/RepeatedTestTest.php';
+require_once 'Extensions/SeleniumTestCaseTest.php';
 
 /**
  *
@@ -95,6 +96,7 @@ class Extensions_AllTests
         $suite->addTestSuite('Extensions_OutputTestCaseTest');
         $suite->addTestSuite('Extensions_PerformanceTestCaseTest');
         $suite->addTestSuite('Extensions_RepeatedTestTest');
+        $suite->addTestSuite('Extensions_SeleniumTestCaseTest');
 
         return $suite;
     }
