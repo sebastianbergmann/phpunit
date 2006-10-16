@@ -333,6 +333,9 @@
       <file baseinstalldir="/" name="RepeatedTestTest.php" role="test">
        <tasks:replace from="@package_version@" to="version" type="package-info" />
       </file>
+      <file baseinstalldir="/" name="SeleniumTestCaseTest.php" role="test">
+       <tasks:replace from="@package_version@" to="version" type="package-info" />
+      </file>
      </dir>
      <dir name="Framework">
       <file baseinstalldir="/" name="AllTests.php" role="test">
