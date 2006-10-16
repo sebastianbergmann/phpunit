@@ -324,6 +324,28 @@ class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_TestCase
     }
 
     /**
+     * 
+     *
+     * @param  string  $location
+     * @access public
+     */
+    public function assertLocationEquals($location)
+    {
+        $this->assertEquals($location, $this->getLocation());
+    }
+
+    /**
+     * 
+     *
+     * @param  string  $location
+     * @access public
+     */
+    public function assertLocationNotEquals($location)
+    {
+        $this->assertNotEquals($location, $this->getLocation());
+    }
+
+    /**
      * Asserts than a prompt is present.
      *
      * @access public
@@ -890,7 +912,9 @@ class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_TestCase
      */
     public function stop()
     {
-        return $this->selenium->stop();
+        if ($this->selenium !== NULL) {
+            return $this->selenium->stop();
+        }
     }
 
     /**
