@@ -782,9 +782,9 @@
     <channel>pear.php.net</channel>
    </package>
    <package>
-    <name>Selenium</name>
+    <name>Testing_Selenium</name>
     <channel>pear.php.net</channel>
-    <min>0.1.5</min>
+    <min>0.2.0</min>
    </package>
    <extension>
     <name>xdebug</name>

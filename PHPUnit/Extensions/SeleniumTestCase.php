@@ -46,7 +46,7 @@
 
 require_once 'PHPUnit/Framework.php';
 require_once 'PHPUnit/Util/Filter.php';
-require_once 'Selenium.php';
+require_once 'Testing/Selenium.php';
 
 PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
 
@@ -66,7 +66,7 @@ PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
 class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_TestCase
 {
     /**
-     * @var    Selenium
+     * @var    Testing_Selenium
      * @access private
      */
     private $selenium = NULL;
@@ -112,7 +112,7 @@ class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_TestCase
             $driver = 'native';
         }
 
-        $this->selenium = new Selenium(
+        $this->selenium = new Testing_Selenium(
           $this->browser,
           $this->browserUrl,
           $this->host,
