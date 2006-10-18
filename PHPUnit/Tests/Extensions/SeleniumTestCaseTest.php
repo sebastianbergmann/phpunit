@@ -72,7 +72,7 @@ class Extensions_SeleniumTestCaseTest extends PHPUnit_Extensions_SeleniumTestCas
             );
         }
 
-        if (!class_exists('Selenium')) {
+        if (!class_exists('Testing_Selenium')) {
             $this->markTestSkipped(
               'The PHP bindings for Selenium RC are not installed.'
             );
