@@ -302,6 +302,54 @@ class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_TestCase
     }
 
     /**
+     * Asserts that an element's value is equal to a given string.
+     *
+     * @param  string  $locator
+     * @param  string  $text
+     * @access public
+     */
+    public function assertElementValueEquals($locator, $text)
+    {
+        $this->assertEquals($text, $this->getValue($locator));
+    }
+
+    /**
+     * Asserts that an element's value is not equal to a given string.
+     *
+     * @param  string  $locator
+     * @param  string  $text
+     * @access public
+     */
+    public function assertElementValueNotEquals($locator, $text)
+    {
+        $this->assertNotEquals($text, $this->getValue($locator));
+    }
+
+    /**
+     * Asserts that an element contains a given string.
+     *
+     * @param  string  $locator
+     * @param  string  $text
+     * @access public
+     */
+    public function assertElementContainsText($locator, $text)
+    {
+        $this->assertEquals($text, $this->getText($locator));
+    }
+
+    /**
+     * Asserts that an element does not contain a given string.
+     *
+     * @param  string  $locator
+     * @param  string  $text
+     * @access public
+     */
+    public function assertElementNotContainsText($locator, $text)
+    {
+        $this->assertNotEquals($text, $this->getText($locator));
+    }
+
+    /**
      * Asserts than an element is present.
      *
      * @param  string  $locator
@@ -975,6 +1023,21 @@ class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_TestCase
     public function click($locator)
     {
         return $this->selenium->click($locator);
+    }
+
+    /**
+     * Clicks on a link, button, checkbox or radio button. 
+     * Calls waitForPageToLoad.
+     *
+     * @param  string  $locator
+     * @return string
+     * @access public
+     */
+    public function clickAndWait($locator)
+    {
+        $click = $this->selenium->click($locator);
+        $this->waitForPageToLoad();
+        return $click;
     }
 
     /**
