@@ -105,7 +105,7 @@ abstract class PHPUnit_Util_Printer
     public function write($buffer)
     {
         if ($this->out !== NULL) {
-            fputs($this->out, $buffer);
+            fwrite($this->out, $buffer);
         } else {
             print $buffer;
         }

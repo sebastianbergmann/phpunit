@@ -305,7 +305,7 @@ class PHPUnit_Util_Skeleton
         }
 
         if ($fp = @fopen($file, 'wt')) {
-            @fputs($fp, $this->generate());
+            @fwrite($fp, $this->generate());
             @fclose($fp);
         }
     }
