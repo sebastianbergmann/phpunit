@@ -275,7 +275,7 @@ class PHPUnit_Util_Report_GraphViz implements PHPUnit_Framework_TestListener
         }
 
         $fp = fopen($this->target . $safeSuiteName . '.dot', 'wt');
-        fputs($fp, $this->graphs[$this->testSuiteLevel]->parse());
+        fwrite($fp, $this->graphs[$this->testSuiteLevel]->parse());
         fclose($fp);
 
         $this->testSuiteLevel--;
