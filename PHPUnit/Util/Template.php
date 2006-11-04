@@ -146,7 +146,7 @@ class PHPUnit_Util_Template
      */
     public function renderTo($target) {
         if ($fp = @fopen($target, 'wt')) {
-            fputs($fp, $this->render());
+            fwrite($fp, $this->render());
             fclose($fp);
         } else {
             throw new RuntimeException('Could not write to ' . $target . '.');
