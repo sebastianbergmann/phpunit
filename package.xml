@@ -499,10 +499,10 @@
     </dir>
     <dir name="Util">
      <dir name="Log">
-      <file baseinstalldir="/" name="Eclipse.php" role="php">
+      <file baseinstalldir="/" name="GraphViz.php" role="php">
        <tasks:replace from="@package_version@" to="version" type="package-info" />
       </file>
-      <file baseinstalldir="/" name="GraphViz.php" role="php">
+      <file baseinstalldir="/" name="JSON.php" role="php">
        <tasks:replace from="@package_version@" to="version" type="package-info" />
       </file>
       <file baseinstalldir="/" name="PEAR.php" role="php">
@@ -786,6 +786,9 @@
     <channel>pear.php.net</channel>
     <min>0.2.0</min>
    </package>
+   <extension>
+    <name>json</name>
+   </extension>
    <extension>
     <name>xdebug</name>
     <min>2.0.0RC1</min>

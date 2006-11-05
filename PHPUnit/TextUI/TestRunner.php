@@ -55,8 +55,8 @@ require_once 'PHPUnit/Util/Filter.php';
 require_once 'PHPUnit/Util/Report.php';
 require_once 'PHPUnit/Util/Report/GraphViz.php';
 require_once 'PHPUnit/Util/Timer.php';
-require_once 'PHPUnit/Util/Log/Eclipse.php';
 require_once 'PHPUnit/Util/Log/GraphViz.php';
+require_once 'PHPUnit/Util/Log/JSON.php';
 require_once 'PHPUnit/Util/Log/TAP.php';
 require_once 'PHPUnit/Util/Log/XML.php';
 
@@ -226,9 +226,9 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
             $result->collectCodeCoverageInformation(TRUE);
         }
 
-        if (isset($parameters['eclipseLogfile'])) {
+        if (isset($parameters['jsonLogfile'])) {
             $result->addListener(
-              new PHPUnit_Util_Log_Eclipse($parameters['eclipseLogfile'])
+              new PHPUnit_Util_Log_JSON($parameters['jsonLogfile'])
             );
         }
 

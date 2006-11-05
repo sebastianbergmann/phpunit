@@ -131,7 +131,7 @@ class PHPUnit_TextUI_Command
           'help',
           'filter=',
           'loader=',
-          'log-eclipse=',
+          'log-json=',
           'log-tap=',
           'log-xml=',
           'repeat=',
@@ -211,8 +211,8 @@ class PHPUnit_TextUI_Command
                 }
                 break;
 
-                case '--log-eclipse': {
-                    $arguments['eclipseLogfile'] = $option[1];
+                case '--log-json': {
+                    $arguments['jsonLogfile'] = $option[1];
                 }
                 break;
 
@@ -368,14 +368,14 @@ class PHPUnit_TextUI_Command
     {
         PHPUnit_TextUI_TestRunner::printVersionString();
 
-        print "Usage: phpunit [switches] UnitTest [UnitTest.php]\n\n" .
-              "  --log-eclipse <socket> Log test execution in Eclipse/JSON format to socket.\n";
+        print "Usage: phpunit [switches] UnitTest [UnitTest.php]\n\n";
 
         if (class_exists('Image_GraphViz', FALSE)) {
             print "  --log-graphviz <file>  Log test execution in GraphViz markup.\n";
         }
 
-        print "  --log-tap <file>       Log test execution in TAP format to file.\n" .
+        print "  --log-json <file>      Log test execution in JSON format.\n" .
+              "  --log-tap <file>       Log test execution in TAP format to file.\n" .
               "  --log-xml <file>       Log test execution in XML format to file.\n\n";
 
         if (extension_loaded('xdebug')) {
