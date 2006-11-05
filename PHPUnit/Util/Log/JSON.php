@@ -47,17 +47,15 @@
 require_once 'PHPUnit/Framework.php';
 require_once 'PHPUnit/Util/Filter.php';
 require_once 'PHPUnit/Util/Printer.php';
-require_once 'PHPUnit/Util/Timer.php';
+require_once 'PHPUnit/Util/Test.php';
 
 PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
 
 /**
- * A TestListener that passes a log of the test execution as a JSON string
- * to Eclipse via a socket connection.
+ * A TestListener that generates JSON messages.
  *
  * @category   Testing
  * @package    PHPUnit
- * @author     Steven Balthazor <stevenbalthazor@gmail.com>
  * @author     Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @copyright  2002-2006 Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
@@ -65,7 +63,7 @@ PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
  * @link       http://www.phpunit.de/
  * @since      Class available since Release 3.0.0
  */
-class PHPUnit_Util_Log_Eclipse extends PHPUnit_Util_Printer implements PHPUnit_Framework_TestListener
+class PHPUnit_Util_Log_JSON extends PHPUnit_Util_Printer implements PHPUnit_Framework_TestListener
 {
     /**
      * @var    string
@@ -77,87 +75,13 @@ class PHPUnit_Util_Log_Eclipse extends PHPUnit_Util_Printer implements PHPUnit_F
      * @var    string
      * @access private
      */
-    private $currentTestCaseName = '';
-
-    /**
-     * @var    string
-     * @access private
-     */
-    private $currentTestMethodName = '';
+    private $currentTestName = '';
 
     /**
      * @var     boolean
      * @access  private
      */
-    private $currentTestCasePass = TRUE;
-
-    /**
-     * Constructor.
-     *
-     * @param  mixed $out
-     * @access public
-     */
-    public function __construct($out = NULL)
-    {
-        $this->out = @fsockopen('127.0.0.1', $out, $errnum, $error, 10);
-
-        if (!$this->out){
-            throw new RuntimeException(
-              sprintf(
-                'Error opening socket %s : %s (%s)',
-
-                $out,
-                $error,
-                $errnum
-              )
-            );
-        }
-    }
-
-    /**
-     * @param  string $buffer
-     * @access public
-     */
-    public function write($buffer)
-    {
-        if ($this->out !== NULL) {
-            fwrite($this->out, $buffer);
-        }
-    }
-
-    /**
-     * @param string $status
-     * @param string $message
-     * @access private
-     */
-    private function writeCase($status, $message = '')
-    {
-        $this->write(
-          sprintf(
-            '{status:"%s",message:"%s",group:"%s",case:"%s",method:"%s"}',
-
-            $status,
-            $this->escapeValue($message),
-            $this->currentTestSuiteName,
-            $this->currentTestCaseName,
-            $this->currentTestMethodName
-          )
-        );
-    }
-
-    /**
-     * @param  string $value
-     * @return string
-     * @access private
-     */
-    private function escapeValue($value)
-    {
-        return str_replace(
-          array("\\","\"","/","\b","\f","\n","\r","\t"),
-          array('\\\\','\"','\/','\b','\f','\n','\r','\t'),
-          $value
-        );
-    }
+    private $currentTestPass = TRUE;
 
     /**
      * An error occurred.
@@ -177,7 +101,7 @@ class PHPUnit_Util_Log_Eclipse extends PHPUnit_Util_Printer implements PHPUnit_F
           )
         );
 
-        $this->currentTestCasePass = FALSE;
+        $this->currentTestPass = FALSE;
     }
 
     /**
@@ -202,7 +126,7 @@ class PHPUnit_Util_Log_Eclipse extends PHPUnit_Util_Printer implements PHPUnit_F
           )
         );
 
-        $this->currentTestCasePass = FALSE;
+        $this->currentTestPass = FALSE;
     }
 
     /**
@@ -216,7 +140,7 @@ class PHPUnit_Util_Log_Eclipse extends PHPUnit_Util_Printer implements PHPUnit_F
     {
         $this->writeCase('error', 'Incomplete Test');
 
-        $this->currentTestCasePass = FALSE;
+        $this->currentTestPass = FALSE;
     }
 
     /**
@@ -230,7 +154,7 @@ class PHPUnit_Util_Log_Eclipse extends PHPUnit_Util_Printer implements PHPUnit_F
     {
         $this->writeCase('error', 'Skipped Test');
 
-        $this->currentTestCasePass = FALSE;
+        $this->currentTestPass = FALSE;
     }
 
     /**
@@ -238,13 +162,11 @@ class PHPUnit_Util_Log_Eclipse extends PHPUnit_Util_Printer implements PHPUnit_F
      *
      * @param  PHPUnit_Framework_TestSuite $suite
      * @access public
-     * @since  Method available since Release 2.2.0
      */
     public function startTestSuite(PHPUnit_Framework_TestSuite $suite)
     {
-        $this->currentTestSuiteName  = $this->escapeValue($suite->getName());
-        $this->currentTestCaseName   = '';
-        $this->currentTestMethodName = '';
+        $this->currentTestSuiteName = $suite->getName();
+        $this->currentTestName      = '';
     }
 
     /**
@@ -252,13 +174,11 @@ class PHPUnit_Util_Log_Eclipse extends PHPUnit_Util_Printer implements PHPUnit_F
      *
      * @param  PHPUnit_Framework_TestSuite $suite
      * @access public
-     * @since  Method available since Release 2.2.0
      */
     public function endTestSuite(PHPUnit_Framework_TestSuite $suite)
     {
-        $this->currentTestCaseName   = '';
-        $this->currentTestMethodName = '';
-        $this->currentTestSuiteName  = '';
+        $this->currentTestSuiteName = '';
+        $this->currentTestName      = '';
     }
 
     /**
@@ -269,9 +189,8 @@ class PHPUnit_Util_Log_Eclipse extends PHPUnit_Util_Printer implements PHPUnit_F
      */
     public function startTest(PHPUnit_Framework_Test $test)
     {
-        $this->currentTestCaseName   = $this->escapeValue(get_class($test));
-        $this->currentTestMethodName = $this->escapeValue($test->getName());
-        $this->currentTestCasePass   = TRUE;
+        $this->currentTestName = PHPUnit_Util_Test::describe($test);
+        $this->currentTestPass = TRUE;
     }
 
     /**
@@ -282,9 +201,55 @@ class PHPUnit_Util_Log_Eclipse extends PHPUnit_Util_Printer implements PHPUnit_F
      */
     public function endTest(PHPUnit_Framework_Test $test)
     {
-        if ($this->currentTestCasePass) {
+        if ($this->currentTestPass) {
             $this->writeCase('pass');
         }
+    }
+
+    /**
+     * @param string $status
+     * @param string $message
+     * @access private
+     */
+    private function writeCase($status, $message = '')
+    {
+        if (function_exists('json_encode')) {
+            $this->write(
+              json_encode(
+                array(
+                  'suite'   => $this->currentTestSuiteName,
+                  'test'    => $this->currentTestName,
+                  'status'  => $status,
+                  'message' => $message
+                )
+              )
+            );
+        } else {
+            $this->write(
+              sprintf(
+                '{suite:"%s",test:"%s",status:"%s",message:"%s"}',
+
+                $this->escapeValue($this->currentTestSuiteName),
+                $this->escapeValue($this->currentTestName),
+                $this->escapeValue($status),
+                $this->escapeValue($message)
+              )
+            );            
+        }
+    }
+
+    /**
+     * @param  string $value
+     * @return string
+     * @access private
+     */
+    private function escapeValue($value)
+    {
+        return str_replace(
+          array("\\",   "\"", "/",  "\b", "\f", "\n", "\r", "\t"),
+          array('\\\\', '\"', '\/', '\b', '\f', '\n', '\r', '\t'),
+          $value
+        );
     }
 }
 ?>
