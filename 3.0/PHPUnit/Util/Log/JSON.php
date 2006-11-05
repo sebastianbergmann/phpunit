@@ -87,18 +87,20 @@ class PHPUnit_Util_Log_JSON extends PHPUnit_Util_Printer implements PHPUnit_Fram
      * An error occurred.
      *
      * @param  PHPUnit_Framework_Test $test
-     * @param  Exception               $e
+     * @param  Exception              $e
      * @access public
      */
     public function addError(PHPUnit_Framework_Test $test, Exception $e)
     {
         $this->writeCase(
           'error',
-          sprintf(
-            '%s:%s',
-            get_class($e),
-            $e->getMessage()
-          )
+          PHPUnit_Util_Filter::getFilteredStacktrace(
+            $e->getTrace(),
+            TRUE,
+            TRUE,
+            FALSE
+          ),
+          $e->getMessage()
         );
 
         $this->currentTestPass = FALSE;
@@ -113,17 +115,15 @@ class PHPUnit_Util_Log_JSON extends PHPUnit_Util_Printer implements PHPUnit_Fram
      */
     public function addFailure(PHPUnit_Framework_Test $test, PHPUnit_Framework_AssertionFailedError $e)
     {
-        $location = $e->getLocation();
-
         $this->writeCase(
           'fail',
-          sprintf(
-            '%s[%s line %s]',
-
-            $e->getMessage(),
-            $location['file'],
-            $location['line']
-          )
+          PHPUnit_Util_Filter::getFilteredStacktrace(
+            $e->getTrace(),
+            TRUE,
+            TRUE,
+            FALSE
+          ),
+          $e->getMessage()
         );
 
         $this->currentTestPass = FALSE;
@@ -133,7 +133,7 @@ class PHPUnit_Util_Log_JSON extends PHPUnit_Util_Printer implements PHPUnit_Fram
      * Incomplete test.
      *
      * @param  PHPUnit_Framework_Test $test
-     * @param  Exception               $e
+     * @param  Exception              $e
      * @access public
      */
     public function addIncompleteTest(PHPUnit_Framework_Test $test, Exception $e)
@@ -168,26 +168,13 @@ class PHPUnit_Util_Log_JSON extends PHPUnit_Util_Printer implements PHPUnit_Fram
         $this->currentTestSuiteName = $suite->getName();
         $this->currentTestName      = '';
 
-        if (function_exists('json_encode')) {
-            $this->write(
-              json_encode(
-                array(
-                  'event' => 'suiteStart',
-                  'suite' => $this->currentTestSuiteName,
-                  'tests' => count($suite)
-                )
-              )
-            );
-        } else {
-            $this->write(
-              sprintf(
-                '{event:"suiteStart",suite:"%s",tests:"%s"}',
+        $message = array(
+          'event' => 'suiteStart',
+          'suite' => $this->currentTestSuiteName,
+          'tests' => count($suite)
+        );
 
-                $this->escapeValue($this->currentTestSuiteName),
-                count($suite)
-              )
-            );            
-        }
+        $this->write($this->encode($message));
     }
 
     /**
@@ -229,35 +216,59 @@ class PHPUnit_Util_Log_JSON extends PHPUnit_Util_Printer implements PHPUnit_Fram
 
     /**
      * @param string $status
+     * @param array  $trace
      * @param string $message
      * @access private
      */
-    private function writeCase($status, $message = '')
+    private function writeCase($status, Array $trace = array(), $message = '')
+    {
+        $message = array(
+          'event'   => 'test',
+          'suite'   => $this->currentTestSuiteName,
+          'test'    => $this->currentTestName,
+          'status'  => $status,
+          'trace'   => $trace,
+          'message' => $message
+        );
+
+        $this->write($this->encode($message));
+    }
+
+    /**
+     * @param  array $message
+     * @return string
+     * @access private
+     */
+    private function encode($message)
     {
         if (function_exists('json_encode')) {
-            $this->write(
-              json_encode(
-                array(
-                  'event'   => 'test',
-                  'suite'   => $this->currentTestSuiteName,
-                  'test'    => $this->currentTestName,
-                  'status'  => $status,
-                  'message' => $message
-                )
-              )
-            );
-        } else {
-            $this->write(
-              sprintf(
-                '{event:"test",suite:"%s",test:"%s",status:"%s",message:"%s"}',
-
-                $this->escapeValue($this->currentTestSuiteName),
-                $this->escapeValue($this->currentTestName),
-                $this->escapeValue($status),
-                $this->escapeValue($message)
-              )
-            );            
+            return json_encode($message);
         }
+
+        $first  = TRUE;
+        $result = '';
+
+        if (is_scalar($message)) {
+            $message = array ($message);
+        }
+
+        foreach ($message as $key => $value) {
+            if (!$first) {
+                $result .= ',';
+            } else {
+                $first = FALSE;
+            }
+
+            $result .= sprintf('"%s":', $this->escape($key));
+
+            if (is_array($value) || is_object($value)) {
+                $result .= sprintf('%s', $this->encode($value));
+            } else {
+                $result .= sprintf('"%s"', $this->escape($value));
+            }
+        }
+
+        return '{' . $result . '}';
     }
 
     /**
@@ -265,7 +276,7 @@ class PHPUnit_Util_Log_JSON extends PHPUnit_Util_Printer implements PHPUnit_Fram
      * @return string
      * @access private
      */
-    private function escapeValue($value)
+    private function escape($value)
     {
         return str_replace(
           array("\\",   "\"", "/",  "\b", "\f", "\n", "\r", "\t"),
