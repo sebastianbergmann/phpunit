@@ -167,6 +167,27 @@ class PHPUnit_Util_Log_JSON extends PHPUnit_Util_Printer implements PHPUnit_Fram
     {
         $this->currentTestSuiteName = $suite->getName();
         $this->currentTestName      = '';
+
+        if (function_exists('json_encode')) {
+            $this->write(
+              json_encode(
+                array(
+                  'event' => 'suiteStart',
+                  'suite' => $this->currentTestSuiteName,
+                  'tests' => count($suite)
+                )
+              )
+            );
+        } else {
+            $this->write(
+              sprintf(
+                '{event:"suiteStart",suite:"%s",tests:"%s"}',
+
+                $this->escapeValue($this->currentTestSuiteName),
+                count($suite)
+              )
+            );            
+        }
     }
 
     /**
@@ -217,6 +238,7 @@ class PHPUnit_Util_Log_JSON extends PHPUnit_Util_Printer implements PHPUnit_Fram
             $this->write(
               json_encode(
                 array(
+                  'event'   => 'test',
                   'suite'   => $this->currentTestSuiteName,
                   'test'    => $this->currentTestName,
                   'status'  => $status,
@@ -227,7 +249,7 @@ class PHPUnit_Util_Log_JSON extends PHPUnit_Util_Printer implements PHPUnit_Fram
         } else {
             $this->write(
               sprintf(
-                '{suite:"%s",test:"%s",status:"%s",message:"%s"}',
+                '{event:"test",suite:"%s",test:"%s",status:"%s",message:"%s"}',
 
                 $this->escapeValue($this->currentTestSuiteName),
                 $this->escapeValue($this->currentTestName),
