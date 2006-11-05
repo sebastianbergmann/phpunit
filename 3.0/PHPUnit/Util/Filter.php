@@ -170,22 +170,31 @@ class PHPUnit_Util_Filter
      * @param  Exception $e
      * @param  boolean   $filterTests
      * @param  boolean   $filterPHPUnit
+     * @param  boolean   $asString
      * @return string
      * @access public
      * @static
      */
-    public static function getFilteredStacktrace(Exception $e, $filterTests = TRUE, $filterPHPUnit = TRUE)
+    public static function getFilteredStacktrace(Exception $e, $filterTests = TRUE, $filterPHPUnit = TRUE, $asString = TRUE)
     {
-        $filteredStacktrace = '';
+        if ($asString === TRUE) {
+            $filteredStacktrace = '';
+        } else {
+            $filteredStacktrace = array();
+        }
 
         foreach ($e->getTrace() as $frame) {
             if (!self::$filter || (isset($frame['file']) && !self::isFiltered($frame['file'], $filterTests, $filterPHPUnit))) {
-                $filteredStacktrace .= sprintf(
-                  "%s:%s\n",
+                if ($asString === TRUE) {
+                    $filteredStacktrace .= sprintf(
+                      "%s:%s\n",
 
-                  $frame['file'],
-                  isset($frame['line']) ? $frame['line'] : '?'
-                );
+                      $frame['file'],
+                      isset($frame['line']) ? $frame['line'] : '?'
+                    );
+                } else {
+                    $filteredStacktrace[] = $frame;
+                }
             }
         }
 
