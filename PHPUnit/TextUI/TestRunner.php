@@ -244,14 +244,12 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
             );
         }
 
-        PHPUnit_Util_Timer::start();
         $suite->run($result, $parameters['filter']);
-        $timeElapsed = PHPUnit_Util_Timer::stop();
 
         $result->flushListeners();
 
         if ($this->printer instanceof PHPUnit_TextUI_ResultPrinter) {
-            $this->printer->printResult($result, $timeElapsed);
+            $this->printer->printResult($result);
         }
 
         if (isset($parameters['reportDirectory']) &&

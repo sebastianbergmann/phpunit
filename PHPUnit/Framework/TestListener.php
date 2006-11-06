@@ -132,9 +132,10 @@ interface PHPUnit_Framework_TestListener
      * A test ended.
      *
      * @param  PHPUnit_Framework_Test $test
+     * @param  float                  $time
      * @access public
      */
-    public function endTest(PHPUnit_Framework_Test $test);
+    public function endTest(PHPUnit_Framework_Test $test, $time);
 }
 
 }
