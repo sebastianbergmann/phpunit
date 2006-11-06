@@ -182,16 +182,17 @@ class PHPUnit_Framework_TestResult implements Countable
      * The passed in exception caused the error.
      *
      * @param  PHPUnit_Framework_Test $test
-     * @param  Exception               $e
+     * @param  Exception              $e
+     * @param  float                  $time
      * @access public
      */
-    public function addError(PHPUnit_Framework_Test $test, Exception $e)
+    public function addError(PHPUnit_Framework_Test $test, Exception $e, $time)
     {
         if ($e instanceof PHPUnit_Framework_IncompleteTest) {
             $this->notImplemented[] = new PHPUnit_Framework_TestFailure($test, $e);
 
             foreach ($this->listeners as $listener) {
-                $listener->addIncompleteTest($test, $e);
+                $listener->addIncompleteTest($test, $e, $time);
             }
         }
 
@@ -199,7 +200,7 @@ class PHPUnit_Framework_TestResult implements Countable
             $this->skipped[] = new PHPUnit_Framework_TestFailure($test, $e);
 
             foreach ($this->listeners as $listener) {
-                $listener->addSkippedTest($test, $e);
+                $listener->addSkippedTest($test, $e, $time);
             }
         }
 
@@ -207,7 +208,7 @@ class PHPUnit_Framework_TestResult implements Countable
             $this->errors[] = new PHPUnit_Framework_TestFailure($test, $e);
 
             foreach ($this->listeners as $listener) {
-                $listener->addError($test, $e);
+                $listener->addError($test, $e, $time);
             }
         }
     }
@@ -216,17 +217,18 @@ class PHPUnit_Framework_TestResult implements Countable
      * Adds a failure to the list of failures.
      * The passed in exception caused the failure.
      *
-     * @param  PHPUnit_Framework_Test                  $test
-     * @param  PHPUnit_Framework_AssertionFailedError  $e
+     * @param  PHPUnit_Framework_Test                 $test
+     * @param  PHPUnit_Framework_AssertionFailedError $e
+     * @param  float                                  $time
      * @access public
      */
-    public function addFailure(PHPUnit_Framework_Test $test, PHPUnit_Framework_AssertionFailedError $e)
+    public function addFailure(PHPUnit_Framework_Test $test, PHPUnit_Framework_AssertionFailedError $e, $time)
     {
         if ($e instanceof PHPUnit_Framework_IncompleteTest) {
             $this->notImplemented[] = new PHPUnit_Framework_TestFailure($test, $e);
 
             foreach ($this->listeners as $listener) {
-                $listener->addIncompleteTest($test, $e);
+                $listener->addIncompleteTest($test, $e, $time);
             }
         }
 
@@ -234,7 +236,7 @@ class PHPUnit_Framework_TestResult implements Countable
             $this->skipped[] = new PHPUnit_Framework_TestFailure($test, $e);
 
             foreach ($this->listeners as $listener) {
-                $listener->addSkippedTest($test, $e);
+                $listener->addSkippedTest($test, $e, $time);
             }
         }
 
@@ -242,7 +244,7 @@ class PHPUnit_Framework_TestResult implements Countable
             $this->failures[] = new PHPUnit_Framework_TestFailure($test, $e);
 
             foreach ($this->listeners as $listener) {
-                $listener->addFailure($test, $e);
+                $listener->addFailure($test, $e, $time);
             }
         }
     }
@@ -493,6 +495,9 @@ class PHPUnit_Framework_TestResult implements Countable
      */
     public function run(PHPUnit_Framework_Test $test)
     {
+        $error   = FALSE;
+        $failure = FALSE;
+
         $this->startTest($test);
 
         $errorHandlerSet = FALSE;
@@ -524,11 +529,11 @@ class PHPUnit_Framework_TestResult implements Countable
         }
 
         catch (PHPUnit_Framework_AssertionFailedError $e) {
-            $this->addFailure($test, $e);
+            $failure = TRUE;
         }
 
         catch (Exception $e) {
-            $this->addError($test, $e);
+            $error = TRUE;
         }
 
         $time = PHPUnit_Util_Timer::stop();
@@ -550,6 +555,14 @@ class PHPUnit_Framework_TestResult implements Countable
 
         if ($errorHandlerSet === TRUE) {
             restore_error_handler();
+        }
+
+        if ($error === TRUE) {
+            $this->addError($test, $e, $time);
+        }
+
+        else if ($failure === TRUE) {
+            $this->addFailure($test, $e, $time);
         }
 
         $this->endTest($test, $time);

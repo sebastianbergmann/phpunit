@@ -142,10 +142,11 @@ class PHPUnit_Util_Log_GraphViz extends PHPUnit_Util_Printer implements PHPUnit_
      * An error occurred.
      *
      * @param  PHPUnit_Framework_Test $test
-     * @param  Exception               $e
+     * @param  Exception              $e
+     * @param  float                  $time
      * @access public
      */
-    public function addError(PHPUnit_Framework_Test $test, Exception $e)
+    public function addError(PHPUnit_Framework_Test $test, Exception $e, $time)
     {
         $this->addTestNode($test, 'red');
         $this->testSuiteFailureOrErrorCount[$this->testSuiteLevel]++;
@@ -158,9 +159,10 @@ class PHPUnit_Util_Log_GraphViz extends PHPUnit_Util_Printer implements PHPUnit_
      *
      * @param  PHPUnit_Framework_Test                 $test
      * @param  PHPUnit_Framework_AssertionFailedError $e
+     * @param  float                                  $time
      * @access public
      */
-    public function addFailure(PHPUnit_Framework_Test $test, PHPUnit_Framework_AssertionFailedError $e)
+    public function addFailure(PHPUnit_Framework_Test $test, PHPUnit_Framework_AssertionFailedError $e, $time)
     {
         $this->addTestNode($test, 'red');
         $this->testSuiteFailureOrErrorCount[$this->testSuiteLevel]++;
@@ -172,10 +174,11 @@ class PHPUnit_Util_Log_GraphViz extends PHPUnit_Util_Printer implements PHPUnit_
      * Incomplete test.
      *
      * @param  PHPUnit_Framework_Test $test
-     * @param  Exception               $e
+     * @param  Exception              $e
+     * @param  float                  $time
      * @access public
      */
-    public function addIncompleteTest(PHPUnit_Framework_Test $test, Exception $e)
+    public function addIncompleteTest(PHPUnit_Framework_Test $test, Exception $e, $time)
     {
         $this->addTestNode($test, 'yellow');
         $this->testSuiteIncompleteOrSkippedCount[$this->testSuiteLevel]++;
@@ -187,10 +190,11 @@ class PHPUnit_Util_Log_GraphViz extends PHPUnit_Util_Printer implements PHPUnit_
      * Skipped test.
      *
      * @param  PHPUnit_Framework_Test $test
-     * @param  Exception               $e
+     * @param  Exception              $e
+     * @param  float                  $time
      * @access public
      */
-    public function addSkippedTest(PHPUnit_Framework_Test $test, Exception $e)
+    public function addSkippedTest(PHPUnit_Framework_Test $test, Exception $e, $time)
     {
         $this->addTestNode($test, 'yellow');
         $this->testSuiteIncompleteOrSkippedCount[$this->testSuiteLevel]++;
