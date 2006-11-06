@@ -160,10 +160,11 @@ class PHPUnit_Util_Log_XML extends PHPUnit_Util_Printer implements PHPUnit_Frame
      * An error occurred.
      *
      * @param  PHPUnit_Framework_Test $test
-     * @param  Exception               $e
+     * @param  Exception              $e
+     * @param  float                  $time
      * @access public
      */
-    public function addError(PHPUnit_Framework_Test $test, Exception $e)
+    public function addError(PHPUnit_Framework_Test $test, Exception $e, $time)
     {
         $error = $this->document->createElement('error', PHPUnit_Util_Filter::getFilteredStacktrace($e, FALSE));
         $error->setAttribute('message', $e->getMessage());
@@ -179,9 +180,10 @@ class PHPUnit_Util_Log_XML extends PHPUnit_Util_Printer implements PHPUnit_Frame
      *
      * @param  PHPUnit_Framework_Test                 $test
      * @param  PHPUnit_Framework_AssertionFailedError $e
+     * @param  float                                  $time
      * @access public
      */
-    public function addFailure(PHPUnit_Framework_Test $test, PHPUnit_Framework_AssertionFailedError $e)
+    public function addFailure(PHPUnit_Framework_Test $test, PHPUnit_Framework_AssertionFailedError $e, $time)
     {
         $failure = $this->document->createElement('failure', PHPUnit_Util_Filter::getFilteredStacktrace($e, FALSE));
         $failure->setAttribute('message', $e->getMessage());
@@ -196,10 +198,11 @@ class PHPUnit_Util_Log_XML extends PHPUnit_Util_Printer implements PHPUnit_Frame
      * Incomplete test.
      *
      * @param  PHPUnit_Framework_Test $test
-     * @param  Exception               $e
+     * @param  Exception              $e
+     * @param  float                  $time
      * @access public
      */
-    public function addIncompleteTest(PHPUnit_Framework_Test $test, Exception $e)
+    public function addIncompleteTest(PHPUnit_Framework_Test $test, Exception $e, $time)
     {
         $error = $this->document->createElement('error', PHPUnit_Util_Filter::getFilteredStacktrace($e, FALSE));
         $error->setAttribute('message', 'Incomplete Test');
@@ -214,11 +217,12 @@ class PHPUnit_Util_Log_XML extends PHPUnit_Util_Printer implements PHPUnit_Frame
      * Skipped test.
      *
      * @param  PHPUnit_Framework_Test $test
-     * @param  Exception               $e
+     * @param  Exception              $e
+     * @param  float                  $time
      * @access public
      * @since  Method available since Release 3.0.0
      */
-    public function addSkippedTest(PHPUnit_Framework_Test $test, Exception $e)
+    public function addSkippedTest(PHPUnit_Framework_Test $test, Exception $e, $time)
     {
         $error = $this->document->createElement('error', PHPUnit_Util_Filter::getFilteredStacktrace($e, FALSE));
         $error->setAttribute('message', 'Skipped Test');
