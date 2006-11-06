@@ -95,6 +95,7 @@ class PHPUnit_Util_Log_JSON extends PHPUnit_Util_Printer implements PHPUnit_Fram
     {
         $this->writeCase(
           'error',
+          $time,
           PHPUnit_Util_Filter::getFilteredStacktrace(
             $e->getTrace(),
             TRUE,
@@ -119,6 +120,7 @@ class PHPUnit_Util_Log_JSON extends PHPUnit_Util_Printer implements PHPUnit_Fram
     {
         $this->writeCase(
           'fail',
+          $time,
           PHPUnit_Util_Filter::getFilteredStacktrace(
             $e->getTrace(),
             TRUE,
@@ -141,7 +143,7 @@ class PHPUnit_Util_Log_JSON extends PHPUnit_Util_Printer implements PHPUnit_Fram
      */
     public function addIncompleteTest(PHPUnit_Framework_Test $test, Exception $e, $time)
     {
-        $this->writeCase('error', 'Incomplete Test');
+        $this->writeCase('error', $time, 'Incomplete Test');
 
         $this->currentTestPass = FALSE;
     }
@@ -156,7 +158,7 @@ class PHPUnit_Util_Log_JSON extends PHPUnit_Util_Printer implements PHPUnit_Fram
      */
     public function addSkippedTest(PHPUnit_Framework_Test $test, Exception $e, $time)
     {
-        $this->writeCase('error', 'Skipped Test');
+        $this->writeCase('error', $time, 'Skipped Test');
 
         $this->currentTestPass = FALSE;
     }
@@ -215,23 +217,25 @@ class PHPUnit_Util_Log_JSON extends PHPUnit_Util_Printer implements PHPUnit_Fram
     public function endTest(PHPUnit_Framework_Test $test, $time)
     {
         if ($this->currentTestPass) {
-            $this->writeCase('pass');
+            $this->writeCase('pass', $time);
         }
     }
 
     /**
      * @param string $status
+     * @param float  $time
      * @param array  $trace
      * @param string $message
      * @access private
      */
-    private function writeCase($status, Array $trace = array(), $message = '')
+    private function writeCase($status, $time, Array $trace = array(), $message = '')
     {
         $message = array(
           'event'   => 'test',
           'suite'   => $this->currentTestSuiteName,
           'test'    => $this->currentTestName,
           'status'  => $status,
+          'time'    => $time,
           'trace'   => $trace,
           'message' => $message
         );
