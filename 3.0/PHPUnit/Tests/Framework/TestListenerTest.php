@@ -107,7 +107,7 @@ class Framework_TestListenerTest extends PHPUnit_Framework_TestCase implements P
         $this->startCount++;
     }
 
-    public function endTest(PHPUnit_Framework_Test $test)
+    public function endTest(PHPUnit_Framework_Test $test, $time)
     {
         $this->endCount++;
     }
