@@ -82,7 +82,7 @@ class DoubleTestCase implements PHPUnit_Framework_Test
         $this->testCase->runBare();
         $this->testCase->runBare();
 
-        $result->endTest($this);
+        $result->endTest($this, 0);
     }
 }
 ?>

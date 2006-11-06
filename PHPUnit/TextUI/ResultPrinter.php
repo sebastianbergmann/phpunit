@@ -121,12 +121,11 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
 
     /**
      * @param  PHPUnit_Framework_TestResult $result
-     * @param  float                        $timeElapsed
      * @access public
      */
-    public function printResult(PHPUnit_Framework_TestResult $result, $timeElapsed)
+    public function printResult(PHPUnit_Framework_TestResult $result)
     {
-        $this->printHeader($timeElapsed);
+        $this->printHeader($result->time());
         $this->printErrors($result);
         $this->printFailures($result);
 
@@ -510,9 +509,10 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
      * A test ended.
      *
      * @param  PHPUnit_Framework_Test $test
+     * @param  float                  $time
      * @access public
      */
-    public function endTest(PHPUnit_Framework_Test $test)
+    public function endTest(PHPUnit_Framework_Test $test, $time)
     {
         if (!$this->lastTestFailed) {
             $this->writeProgress('.');

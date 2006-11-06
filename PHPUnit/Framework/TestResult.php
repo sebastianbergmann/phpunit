@@ -105,6 +105,12 @@ class PHPUnit_Framework_TestResult implements Countable
     protected $runTests = 0;
 
     /**
+     * @var    float
+     * @access protected
+     */
+    protected $time = 0;
+
+    /**
      * @var    PHPUnit_Framework_TestSuite
      * @access protected
      */
@@ -291,13 +297,14 @@ class PHPUnit_Framework_TestResult implements Countable
     /**
      * Informs the result that a test was completed.
      *
-     * @param  PHPUnit_Framework_Test
+     * @param  PHPUnit_Framework_Test $test
+     * @param  float                  $time
      * @access public
      */
-    public function endTest(PHPUnit_Framework_Test $test)
+    public function endTest(PHPUnit_Framework_Test $test, $time)
     {
         foreach ($this->listeners as $listener) {
-            $listener->endTest($test);
+            $listener->endTest($test, $time);
         }
     }
 
@@ -510,6 +517,8 @@ class PHPUnit_Framework_TestResult implements Countable
             xdebug_start_code_coverage(XDEBUG_CC_UNUSED | XDEBUG_CC_DEAD_CODE);
         }
 
+        PHPUnit_Util_Timer::start();
+
         try {
             $test->runBare();
         }
@@ -521,6 +530,8 @@ class PHPUnit_Framework_TestResult implements Countable
         catch (Exception $e) {
             $this->addError($test, $e);
         }
+
+        $time = PHPUnit_Util_Timer::stop();
 
         if ($useXdebug) {
             $this->codeCoverageInformation[] = array(
@@ -541,7 +552,9 @@ class PHPUnit_Framework_TestResult implements Countable
             restore_error_handler();
         }
 
-        $this->endTest($test);
+        $this->endTest($test, $time);
+
+        $this->time += $time;
     }
 
     /**
@@ -574,6 +587,17 @@ class PHPUnit_Framework_TestResult implements Countable
     public function stop()
     {
         $this->stop = TRUE;
+    }
+
+    /**
+     * Returns the time spent running the tests.
+     *
+     * @return float
+     * @access public
+     */
+    public function time()
+    {
+        return $this->time;
     }
 
     /**

@@ -47,7 +47,6 @@
 require_once 'PHPUnit/Framework.php';
 require_once 'PHPUnit/Util/Filter.php';
 require_once 'PHPUnit/Util/Printer.php';
-require_once 'PHPUnit/Util/Timer.php';
 
 PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
 
@@ -318,20 +317,17 @@ class PHPUnit_Util_Log_XML extends PHPUnit_Util_Printer implements PHPUnit_Frame
         $this->currentTestCase = $testCase;
 
         $this->testSuiteTests[$this->testSuiteLevel]++;
-
-        PHPUnit_Util_Timer::start();
     }
 
     /**
      * A test ended.
      *
      * @param  PHPUnit_Framework_Test $test
+     * @param  float                  $time
      * @access public
      */
-    public function endTest(PHPUnit_Framework_Test $test)
+    public function endTest(PHPUnit_Framework_Test $test, $time)
     {
-        $time = PHPUnit_Util_Timer::stop();
-
         $this->currentTestCase->setAttribute('time', $time);
         $this->testSuiteTimes[$this->testSuiteLevel] += $time;
 
