@@ -1012,7 +1012,7 @@ class PHPUnit_Framework_Assert
           sprintf(
             '%sfailed asserting that %s %s',
 
-            $message,
+            !empty($message) ? $message . ' ' : '',
             PHPUnit_Util_Type::toString($value),
             $constraint->toString()
           )
