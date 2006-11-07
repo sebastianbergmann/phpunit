@@ -73,13 +73,24 @@ abstract class PHPUnit_Util_Printer
      * Constructor.
      *
      * @param  mixed $out
+     * @throws InvalidArgumentException
      * @access public
      */
     public function __construct($out = NULL)
     {
         if ($out !== NULL) {
             if (is_string($out)) {
-                $this->out = fopen($out, 'wt');
+                if (strpos($out, 'socket://') === 0) {
+                    $out = explode(':', str_replace('socket://', '', $out));
+
+                    if (sizeof($out) != 2) {
+                        throw new InvalidArgumentException;
+                    }                    
+
+                    $this->out = fsockopen($out[0], $out[1]);
+                } else {
+                    $this->out = fopen($out, 'wt');
+                }
             } else {
                 $this->out = $out;
             }
