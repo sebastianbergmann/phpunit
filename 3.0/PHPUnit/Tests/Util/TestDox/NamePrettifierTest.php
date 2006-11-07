@@ -103,12 +103,5 @@ class Util_TestDox_NamePrettifierTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('This2 is a test', $this->namePrettifier->prettifyTestMethod('testThis2IsATest'));
         $this->assertEquals('database_column_spec is set correctly', $this->namePrettifier->prettifyTestMethod('testdatabase_column_specIsSetCorrectly'));
     }
-
-    public function testIsATestIsFalseForNonTestMethods()
-    {
-        $this->assertFalse($this->namePrettifier->isATestMethod('setUp'));
-        $this->assertFalse($this->namePrettifier->isATestMethod('tearDown'));
-        $this->assertFalse($this->namePrettifier->isATestMethod('foo'));
-    }
 }
 ?>
