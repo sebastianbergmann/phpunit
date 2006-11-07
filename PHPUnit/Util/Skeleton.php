@@ -154,7 +154,7 @@ class PHPUnit_Util_Skeleton
                  $method->getDeclaringClass()->getName() == $this->className) {
                 $testTagFound = FALSE;
 
-                if (preg_match_all('/@test(.*)$/Um', $method->getDocComment(), $annotations)) {
+                if (preg_match_all('/@assert(.*)$/Um', $method->getDocComment(), $annotations)) {
                     foreach ($annotations[1] as $annotation) {
                         if (preg_match('/\((.*)\) (.*) (.*)/', $annotation, $matches)) {
                             switch ($matches[2]) {
