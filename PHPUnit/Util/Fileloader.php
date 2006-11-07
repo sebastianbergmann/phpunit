@@ -83,7 +83,7 @@ class PHPUnit_Util_Fileloader
         if (!is_readable($filename)) {
             throw new RuntimeException(
               sprintf(
-                '%s could not be found or is not readable.',
+                'File "%s" could not be found or is not readable.',
 
                 str_replace('./', '', $filename)
               )
