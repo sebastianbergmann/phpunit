@@ -97,37 +97,50 @@ class PHPUnit_Util_Skeleton
      */
     public function __construct($className, $classSourceFile = '')
     {
-        if (file_exists($className . '.php')) {
+        $this->className      = $className;
+        $this->testSourceFile = $className . 'Test.php';
+
+        if (empty($classSourceFile) && is_file($className . '.php')) {
             $this->classSourceFile = $className . '.php';
-            $this->testSourceFile  = $className . 'Test.php';
         }
 
-        else if (file_exists(str_replace('_', '/', $className) . '.php')) {
+        else if (empty($classSourceFile) &&
+                 is_file(str_replace('_', '/', $className) . '.php')) {
             $this->classSourceFile = str_replace('_', '/', $className) . '.php';
             $this->testSourceFile  = str_replace('_', '/', $className) . 'Test.php';
         }
 
-        else {
+        else if (empty($classSourceFile)) {
             throw new RuntimeException(
               sprintf(
-                'Could not open %s.',
-
-                $classSourceFile
+                'Neither "%s.php" nor "%s.php" could be opened.',
+                $className,
+                str_replace('_', '/', $className)
               )
             );
         }
 
-        @include_once $this->classSourceFile;
-
-        if (class_exists($className, FALSE)) {
-            $this->className = $className;
-        } else {
+        else if (!is_file($classSourceFile)) {
             throw new RuntimeException(
               sprintf(
-                'Could not find class "%s" in %s.',
+                '"%s" could not be opened.',
+
+                $classSourceFile
+              )
+            );
+        } else {
+            $this->classSourceFile = $classSourceFile;
+        }
+
+        include_once $this->classSourceFile;
+
+        if (!class_exists($className)) {
+            throw new RuntimeException(
+              sprintf(
+                'Could not find class "%s" in "%s".',
 
                 $className,
-                $this->classSourceFile
+                realpath($this->classSourceFile)
               )
             );
         }
