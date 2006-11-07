@@ -75,22 +75,6 @@ class PHPUnit_Util_TestDox_NamePrettifier
     protected $suffix = 'Test';
 
     /**
-     * Tests if a method is a test method.
-     *
-     * @param  string  $testMethodName
-     * @return boolean
-     * @access public
-     */
-    public function isATestMethod($testMethodName)
-    {
-        if (substr($testMethodName, 0, 4) == 'test') {
-            return TRUE;
-        }
-
-        return FALSE;
-    }
-
-    /**
      * Prettifies the name of a test class.
      *
      * @param  string  $testClassName
@@ -128,8 +112,15 @@ class PHPUnit_Util_TestDox_NamePrettifier
         $testMethodName = preg_replace('#\d+$#', '', $testMethodName);
         $max            = strlen($testMethodName);
 
-        for ($i = 4; $i < $max; $i++) {
-            if ($i > 4 &&
+        if (substr($testMethodName, 0, 4) == 'test') {
+            $offset = 4;
+        } else {
+            $offset = 0;
+            $testMethodName[0] = strtoupper($testMethodName[0]);
+        }
+
+        for ($i = $offset; $i < $max; $i++) {
+            if ($i > $offset &&
                 ord($testMethodName[$i]) >= 65 &&
                 ord($testMethodName[$i]) <= 90) {
                 $buffer .= ' ' . strtolower($testMethodName[$i]);
