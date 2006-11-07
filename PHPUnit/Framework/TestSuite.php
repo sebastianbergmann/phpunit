@@ -615,7 +615,11 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
      */
     private function isTestMethod(ReflectionMethod $method)
     {
-        return (substr($method->name, 0, 4) == 'test');
+        if (substr($method->name, 0, 4) == 'test') {
+            return TRUE;
+        }
+
+        return strpos($method->getDocComment(), '@test') !== FALSE;
     }
 
     /**
