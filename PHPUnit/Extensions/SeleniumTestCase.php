@@ -224,7 +224,10 @@ class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_TestCase
      */
     public function assertAlertPresent()
     {
-        $this->assertTrue($this->isAlertPresent());
+        $this->assertTrue(
+          $this->isAlertPresent(),
+          'No alert present.'
+        );
     }
 
     /**
@@ -234,7 +237,10 @@ class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_TestCase
      */
     public function assertNoAlertPresent()
     {
-        $this->assertFalse($this->isAlertPresent());
+        $this->assertFalse(
+          $this->isAlertPresent(),
+          'Alert present.'
+        );
     }
 
     /**
@@ -245,7 +251,13 @@ class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_TestCase
      */
     public function assertChecked($locator)
     {
-        $this->assertTrue($this->isChecked($locator));
+        $this->assertTrue(
+          $this->isChecked($locator),
+          sprintf(
+            '"%s" not checked.',
+            $locator
+          )
+        );
     }
 
     /**
@@ -256,7 +268,13 @@ class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_TestCase
      */
     public function assertNotChecked($locator)
     {
-        $this->assertFalse($this->isChecked($locator));
+        $this->assertFalse(
+          $this->isChecked($locator),
+          sprintf(
+            '"%s" checked.',
+            $locator
+          )
+        );
     }
 
     /**
@@ -266,7 +284,10 @@ class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_TestCase
      */
     public function assertConfirmationPresent()
     {
-        $this->assertTrue($this->isConfirmationPresent());
+        $this->assertTrue(
+          $this->isConfirmationPresent(),
+          'No confirmation present.'
+        );
     }
 
     /**
@@ -276,7 +297,10 @@ class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_TestCase
      */
     public function assertNoConfirmationPresent()
     {
-        $this->assertFalse($this->isConfirmationPresent());
+        $this->assertFalse(
+          $this->isConfirmationPresent(),
+          'Confirmation present.'
+        );
     }
 
     /**
@@ -287,7 +311,13 @@ class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_TestCase
      */
     public function assertEditable($locator)
     {
-        $this->assertTrue($this->isEditable($locator));
+        $this->assertTrue(
+          $this->isEditable($locator),
+          sprintf(
+            '"%s" not editable.',
+            $locator
+          )
+        );
     }
 
     /**
@@ -298,7 +328,13 @@ class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_TestCase
      */
     public function assertNotEditable($locator)
     {
-        $this->assertFalse($this->isEditable($locator));
+        $this->assertFalse(
+          $this->isEditable($locator),
+          sprintf(
+            '"%s" editable.',
+            $locator
+          )
+        );
     }
 
     /**
@@ -357,7 +393,13 @@ class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_TestCase
      */
     public function assertElementPresent($locator)
     {
-        $this->assertTrue($this->isElementPresent($locator));
+        $this->assertTrue(
+          $this->isElementPresent($locator),
+          sprintf(
+            'Element "%s" not present.',
+            $locator
+          )
+        );
     }
 
     /**
@@ -368,7 +410,13 @@ class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_TestCase
      */
     public function assertElementNotPresent($locator)
     {
-        $this->assertFalse($this->isElementPresent($locator));
+        $this->assertFalse(
+          $this->isElementPresent($locator),
+          sprintf(
+            'Element "%s" present.',
+            $locator
+          )
+        );
     }
 
     /**
@@ -400,7 +448,10 @@ class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_TestCase
      */
     public function assertPromptPresent()
     {
-        $this->assertTrue($this->isPromptPresent());
+        $this->assertTrue(
+          $this->isPromptPresent(),
+          'No prompt present.'
+        );
     }
 
     /**
@@ -410,7 +461,10 @@ class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_TestCase
      */
     public function assertNoPromptPresent()
     {
-        $this->assertFalse($this->isPromptPresent());
+        $this->assertFalse(
+          $this->isPromptPresent(),
+          'Prompt present.'
+        );
     }
 
     /**
@@ -421,7 +475,13 @@ class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_TestCase
      */
     public function assertSomethingSelected($selectLocator)
     {
-        $this->assertTrue($this->isSomethingSelected($selectLocator));
+        $this->assertTrue(
+          $this->isSomethingSelected($selectLocator),
+          sprintf(
+            'Nothing selected from "%s".',
+            $selectLocator
+          )
+        );
     }
 
     /**
@@ -432,7 +492,13 @@ class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_TestCase
      */
     public function assertNothingSelected($selectLocator)
     {
-        $this->assertFalse($this->isSomethingSelected($selectLocator));
+        $this->assertFalse(
+          $this->isSomethingSelected($selectLocator),
+          sprintf(
+            'Something selected from "%s".',
+            $selectLocator
+          )
+        );
     }
 
     /**
@@ -443,7 +509,13 @@ class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_TestCase
      */
     public function assertTextPresent($pattern)
     {
-        $this->assertTrue($this->isTextPresent($pattern));
+        $this->assertTrue(
+          $this->isTextPresent($pattern),
+          sprintf(
+            '"%s" not present.',
+            $pattern
+          )
+        );
     }
 
     /**
@@ -454,7 +526,13 @@ class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_TestCase
      */
     public function assertTextNotPresent($pattern)
     {
-        $this->assertFalse($this->isTextPresent($pattern));
+        $this->assertFalse(
+          $this->isTextPresent($pattern),
+          sprintf(
+            '"%s" present.',
+            $pattern
+          )
+        );
     }
 
     /**
@@ -487,9 +565,14 @@ class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_TestCase
      */
     public function assertVisible($locator)
     {
-        $this->assertTrue($this->isVisible($locator));
+        $this->assertTrue(
+          $this->isVisible($locator),
+          sprintf(
+            '"%s" not visible.',
+            $locator
+          )
+        );
     }
-
 
     /**
      * Asserts that something is not visible.
@@ -499,7 +582,13 @@ class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_TestCase
      */
     public function assertNotVisible($locator)
     {
-        $this->assertFalse($this->isVisible($locator));
+        $this->assertFalse(
+          $this->isVisible($locator),
+          sprintf(
+            '"%s" visible.',
+            $locator
+          )
+        );
     }
 
     /**
