@@ -69,6 +69,11 @@ class PHPUnit_Util_Timer
         array_push(self::$startTimes, microtime(TRUE));
     }
 
+    public static function current()
+    {
+        return microtime(TRUE) - self::$startTimes[count(self::$startTimes)-1];
+    }
+
     public static function stop()
     {
         return microtime(TRUE) - array_pop(self::$startTimes);
