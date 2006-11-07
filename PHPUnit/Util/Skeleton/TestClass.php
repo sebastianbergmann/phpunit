@@ -5,9 +5,7 @@ if (!defined("PHPUnit_MAIN_METHOD")) {
 }
 
 require_once "PHPUnit/Framework/TestCase.php";
-require_once "PHPUnit/Framework/TestSuite.php";
-
-require_once "{classFile}";
+require_once "PHPUnit/Framework/TestSuite.php";{requireClassFile}
 
 /**
  * Test class for {className}.

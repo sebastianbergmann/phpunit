@@ -100,7 +100,11 @@ class PHPUnit_Util_Skeleton
         $this->className      = $className;
         $this->testSourceFile = $className . 'Test.php';
 
-        if (empty($classSourceFile) && is_file($className . '.php')) {
+        if (class_exists($className)) {
+            $this->classSourceFile = '<internal>';
+        }
+
+        else if (empty($classSourceFile) && is_file($className . '.php')) {
             $this->classSourceFile = $className . '.php';
         }
 
@@ -132,7 +136,9 @@ class PHPUnit_Util_Skeleton
             $this->classSourceFile = $classSourceFile;
         }
 
-        include_once $this->classSourceFile;
+        if ($this->classSourceFile != '<internal>') {
+            include_once $this->classSourceFile;
+        }
 
         if (!class_exists($className)) {
             throw new RuntimeException(
@@ -162,7 +168,6 @@ class PHPUnit_Util_Skeleton
         foreach ($class->getMethods() as $method) {
             if (!$method->isConstructor() &&
                 !$method->isAbstract() &&
-                 $method->isUserDefined() &&
                  $method->isPublic() &&
                  $method->getDeclaringClass()->getName() == $this->className) {
                 $testTagFound = FALSE;
@@ -278,17 +283,27 @@ class PHPUnit_Util_Skeleton
           )
         );
 
+        if ($this->classSourceFile != '<internal>') {
+            $requireClassFile = sprintf(
+              "\n\nrequire_once '%s';",
+
+              $this->classSourceFile
+            );
+        } else {
+            $requireClassFile = '';
+        }
+
         $classTemplate->setVar(
           array(
             'className',
-            'classFile',
+            'requireClassFile',
             'methods',
             'date',
             'time'
           ),
           array(
             $this->className,
-            $this->classSourceFile,
+            $requireClassFile,
             !empty($methods) ? $methods : $incompleteMethods,
             date('Y-m-d'),
             date('H:i:s')
