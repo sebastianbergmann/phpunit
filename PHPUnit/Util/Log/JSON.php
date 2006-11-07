@@ -97,7 +97,7 @@ class PHPUnit_Util_Log_JSON extends PHPUnit_Util_Printer implements PHPUnit_Fram
           'error',
           $time,
           PHPUnit_Util_Filter::getFilteredStacktrace(
-            $e->getTrace(),
+            $e,
             TRUE,
             TRUE,
             FALSE
@@ -122,7 +122,7 @@ class PHPUnit_Util_Log_JSON extends PHPUnit_Util_Printer implements PHPUnit_Fram
           'fail',
           $time,
           PHPUnit_Util_Filter::getFilteredStacktrace(
-            $e->getTrace(),
+            $e,
             TRUE,
             TRUE,
             FALSE
