@@ -1,6 +1,6 @@
 
     /**
-     * Generated from @test {annotation}.
+     * Generated from @assert {annotation}.
      */
     public function test{methodName}() {
         $o = new {class};
