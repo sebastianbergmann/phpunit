@@ -370,7 +370,7 @@ class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_TestCase
      */
     public function assertElementContainsText($locator, $text)
     {
-        $this->assertEquals($text, $this->getText($locator));
+        $this->assertContains($text, $this->getText($locator));
     }
 
     /**
@@ -382,7 +382,7 @@ class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_TestCase
      */
     public function assertElementNotContainsText($locator, $text)
     {
-        $this->assertNotEquals($text, $this->getText($locator));
+        $this->assertNotContains($text, $this->getText($locator));
     }
 
     /**
@@ -593,7 +593,7 @@ class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_TestCase
 
     /**
      * Retrieves the message of a JavaScript alert generated during
-     * the previous action
+     * the previous action.
      *
      * @return string
      * @access public
@@ -637,7 +637,7 @@ class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * Gets the entire text of the page.
+     * Returns the entire text of the page.
      *
      * @return string
      * @access public
@@ -648,7 +648,7 @@ class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * Retrieves the message of a JavaScript confirmation dialog
+     * Returns the message of a JavaScript confirmation dialog
      * generated during the previous action.
      *
      * @return string
@@ -660,7 +660,7 @@ class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * Retrieves the text cursor position in the given input element
+     * Returns the text cursor position in the given input element
      * or textarea.
      *
      * @param  string  $locator
@@ -687,7 +687,7 @@ class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * Gets the value of an element attribute.
+     * Returns the value of an element attribute.
      *
      * Note: This method should be named getAttribute(), but that
      *       method is already defined in PHPUnit_Framework_Assert.
@@ -702,7 +702,7 @@ class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * Gets the result of evaluating the specified JavaScript snippet.
+     * Returns the result of evaluating the specified JavaScript snippet.
      *
      * @param  string  $script
      * @return string
@@ -738,7 +738,7 @@ class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * Gets the absolute URL of the current page.
+     * Returns the absolute URL of the current page.
      *
      * @return string
      * @access public
@@ -749,7 +749,7 @@ class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * Retrieves the message of a JavaScript question prompt dialog
+     * Returns the message of a JavaScript question prompt dialog
      * generated during the previous action.
      *
      * @return string
@@ -761,7 +761,7 @@ class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * Gets option element ID for selected option in the specified
+     * Returns option element ID for selected option in the specified
      * select element.
      *
      * @param  string  $selectLocator
@@ -774,7 +774,7 @@ class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * Gets all option element IDs for selected options in the specified
+     * Returns all option element IDs for selected options in the specified
      * select or multi-select element.
      *
      * @param  string  $selectLocator
@@ -787,7 +787,7 @@ class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * Gets option index (option number, starting at 0) for selected
+     * Returns option index (option number, starting at 0) for selected
      * option in the specified select element.
      *
      * @param  string  $selectLocator
@@ -800,7 +800,7 @@ class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * Gets all option indexes (option number, starting at 0) for selected
+     * Returns all option indexes (option number, starting at 0) for selected
      * options in the specified select or multi-select element.
      *
      * @param  string  $selectLocator
@@ -813,7 +813,7 @@ class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * Gets all option labels (visible text) for selected options
+     * Returns all option labels (visible text) for selected options
      * in the specified selector multi-select element.
      *
      * @param  string  $selectLocator
@@ -826,7 +826,7 @@ class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * Gets all option labels (visible text) for selected options
+     * Returns all option labels (visible text) for selected options
      * in the specified select or multi-select element.
      *
      * @param  string  $selectLocator
@@ -839,7 +839,7 @@ class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * Gets option value (value attribute) for selected option
+     * Returns option value (value attribute) for selected option
      * in the specified select element.
      *
      * @param  string  $selectLocator
@@ -852,7 +852,7 @@ class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * Gets all option values (value attributes) for selected options
+     * Returns all option values (value attributes) for selected options
      * in the specified select or multi-select element.
      *
      * @param  string  $selectLocator
@@ -865,7 +865,7 @@ class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * Gets all option labels in the specified select drop-down.
+     * Returns all option labels in the specified select drop-down.
      *
      * @param  string  $selectLocator
      * @return array
@@ -877,7 +877,7 @@ class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * Gets the text from a cell of a table.
+     * Returns the text from a cell of a table.
      *
      * @param  string  $tableCellAddress
      * @return string
@@ -889,7 +889,7 @@ class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * Gets the text of an element.
+     * Returns the text of an element.
      *
      * @param  string  $locator
      * @return string
@@ -901,7 +901,7 @@ class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * Gets the title of the current page.
+     * Returns the title of the current page.
      *
      * @return string
      * @access public
@@ -912,7 +912,7 @@ class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * Gets the (whitespace-trimmed) value of an input field
+     * Returns the (whitespace-trimmed) value of an input field
      * (or anything else with a value parameter).
      *
      * @param  string  $locator
@@ -925,7 +925,7 @@ class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * Has an alert occured?
+     * Determines whether an alert occured.
      *
      * @return boolean
      * @access public
@@ -948,7 +948,7 @@ class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * Has confirm() been called?
+     * Determines whether confirm() has been called.
      *
      * @return boolean
      * @access public
@@ -971,7 +971,7 @@ class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * Verifies that the specified element is somewhere on the page.
+     * Determines whether the specified element is somewhere on the page.
      *
      * @param  string  $locator
      * @return boolean
@@ -983,7 +983,7 @@ class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * Has a prompt occured?
+     * Determines whether a prompt is present.
      *
      * @return boolean
      * @access public
@@ -1006,7 +1006,7 @@ class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * Verifies that the specified text pattern appears somewhere
+     * Determines whether the specified text pattern appears somewhere
      * on the rendered page shown to the user.
      *
      * @param  string  $pattern
@@ -1067,7 +1067,7 @@ class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * Simulates the user clicking the "close" button" in the titlebar
+     * Simulates the user clicking the "close" button in the titlebar
      * of a popup window or tab.
      *
      * @return string
@@ -1103,7 +1103,7 @@ class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_TestCase
     /**
      * Clicks on a link, button, checkbox or radio button. 
      * If the click action causes a new page to load,
-     * call waitForPageToLoad.
+     * call waitForPageToLoad().
      *
      * @param  string  $locator
      * @return string
@@ -1115,8 +1115,8 @@ class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * Clicks on a link, button, checkbox or radio button. 
-     * Calls waitForPageToLoad.
+     * Clicks on a link, button, checkbox or radio button.
+     * Calls waitForPageToLoad().
      *
      * @param  string  $locator
      * @return string
