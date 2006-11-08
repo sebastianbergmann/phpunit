@@ -133,13 +133,13 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
      * @var    Array
      * @access private
      */
-    private $iniSettings = Array();
+    private $iniSettings = array();
 
     /**
      * @var    Array
      * @access private
      */
-    private $mockObjects = Array();
+    private $mockObjects = array();
 
     /**
      * Constructs a test case with the given name.
@@ -247,7 +247,7 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
                 $mockObject->verify();
             }
 
-            $this->mockObjects = Array();
+            $this->mockObjects = array();
         }
 
         catch (Exception $e) {
@@ -266,7 +266,7 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
             ini_set($varName, $oldValue);
         }
 
-        $this->iniSettings = Array();
+        $this->iniSettings = array();
 
         // Workaround for missing "finally".
         if ($catchedException !== NULL) {
@@ -349,7 +349,7 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
      * @access protected
      * @since  Method available since Release 3.0.0
      */
-    protected function getMock($className, Array $methods = array(), Array $arguments = array(), $mockClassName = '')
+    protected function getMock($className, array $methods = array(), array $arguments = array(), $mockClassName = '')
     {
         if (!is_string($className) || !is_string($mockClassName)) {
             throw new InvalidArgumentException;

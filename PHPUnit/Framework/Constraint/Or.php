@@ -70,7 +70,7 @@ class PHPUnit_Framework_Constraint_Or implements PHPUnit_Framework_Constraint
 {
     private $constraints = array();
 
-    public function setConstraints(Array $constraints)
+    public function setConstraints(array $constraints)
     {
         $this->constraints = array();
 

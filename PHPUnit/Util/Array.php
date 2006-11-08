@@ -69,7 +69,7 @@ class PHPUnit_Util_Array
      * @access public
      * @static
      */
-    public static function sortRecursively(Array $array)
+    public static function sortRecursively(array $array)
     {
         ksort($array);
 

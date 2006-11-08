@@ -107,7 +107,7 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
      * @access public
      * @static
      */
-    public static function run($test, Array $parameters = array())
+    public static function run($test, array $parameters = array())
     {
         if ($test instanceof ReflectionClass) {
             $test = new PHPUnit_Framework_TestSuite($test);
@@ -158,7 +158,7 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
      * @return PHPUnit_Framework_TestResult
      * @access public
      */
-    public function doRun(PHPUnit_Framework_Test $suite, Array $parameters = array())
+    public function doRun(PHPUnit_Framework_Test $suite, array $parameters = array())
     {
         $parameters['repeat']  = isset($parameters['repeat'])  ? $parameters['repeat']  : FALSE;
         $parameters['filter']  = isset($parameters['filter'])  ? $parameters['filter']  : FALSE;

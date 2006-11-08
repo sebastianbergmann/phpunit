@@ -63,7 +63,7 @@ PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
  * @abstract
  */
 class PHPUnit_Util_Getopt {
-    public static function getopt(Array $args, $short_options, $long_options = null)
+    public static function getopt(array $args, $short_options, $long_options = null)
     {
         if (empty($args)) {
             return array(array(), array());

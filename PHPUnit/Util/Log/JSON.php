@@ -228,7 +228,7 @@ class PHPUnit_Util_Log_JSON extends PHPUnit_Util_Printer implements PHPUnit_Fram
      * @param string $message
      * @access private
      */
-    private function writeCase($status, $time, Array $trace = array(), $message = '')
+    private function writeCase($status, $time, array $trace = array(), $message = '')
     {
         $message = array(
           'event'   => 'test',

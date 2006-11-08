@@ -86,7 +86,7 @@ class PHPUnit_Framework_Assert
      * @static
      * @since  Method available since Release 3.0.0
      */
-    public static function assertArrayHasKey($key, Array $array, $message = '')
+    public static function assertArrayHasKey($key, array $array, $message = '')
     {
         if (!(is_integer($key) || is_string($key))) {
             throw new InvalidArgumentException;
@@ -109,7 +109,7 @@ class PHPUnit_Framework_Assert
      * @static
      * @since  Method available since Release 3.0.0
      */
-    public static function assertArrayNotHasKey($key, Array $array, $message = '')
+    public static function assertArrayNotHasKey($key, array $array, $message = '')
     {
         if (!(is_integer($key) || is_string($key))) {
             throw new InvalidArgumentException;
