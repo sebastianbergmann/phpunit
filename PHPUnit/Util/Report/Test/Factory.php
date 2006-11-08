@@ -93,7 +93,7 @@ abstract class PHPUnit_Util_Report_Test_Factory
      * @access protected
      * @static
      */
-    protected static function addTests(Array $tests, PHPUnit_Util_Report_Test_Node_TestSuite $root)
+    protected static function addTests(array $tests, PHPUnit_Util_Report_Test_Node_TestSuite $root)
     {
         foreach ($tests as $key => $value) {
             if (is_int($key)) {

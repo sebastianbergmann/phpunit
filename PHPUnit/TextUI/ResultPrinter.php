@@ -143,7 +143,7 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
      * @param  string  $type
      * @access protected
      */
-    protected function printDefects(Array $defects, $count, $type)
+    protected function printDefects(array $defects, $count, $type)
     {
         if ($count == 0) {
             return;

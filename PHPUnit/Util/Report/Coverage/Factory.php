@@ -96,7 +96,7 @@ abstract class PHPUnit_Util_Report_Coverage_Factory
      * @access protected
      * @static
      */
-    protected static function addItems(PHPUnit_Util_Report_Coverage_Node_Directory $root, Array $items, PHPUnit_Util_Report_Test_Node_TestSuite $testSuite, Array $files)
+    protected static function addItems(PHPUnit_Util_Report_Coverage_Node_Directory $root, array $items, PHPUnit_Util_Report_Test_Node_TestSuite $testSuite, array $files)
     {
         foreach ($items as $key => $value) {
             if (substr($key, -2) == '/f') {

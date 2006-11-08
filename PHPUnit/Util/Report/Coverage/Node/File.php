@@ -118,7 +118,7 @@ class PHPUnit_Util_Report_Coverage_Node_File extends PHPUnit_Util_Report_Coverag
      * @throws RuntimeException
      * @access public
      */
-    public function __construct($name, PHPUnit_Util_Report_Coverage_Node $parent, Array $executedLines)
+    public function __construct($name, PHPUnit_Util_Report_Coverage_Node $parent, array $executedLines)
     {
         parent::__construct($name, $parent);
 
