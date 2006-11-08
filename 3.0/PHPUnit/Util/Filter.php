@@ -147,7 +147,7 @@ class PHPUnit_Util_Filter
      * @access public
      * @static
      */
-    public static function getFilteredCodeCoverage(Array $codeCoverageInformation, $filterTests = TRUE, $filterPHPUnit = TRUE)
+    public static function getFilteredCodeCoverage(array $codeCoverageInformation, $filterTests = TRUE, $filterPHPUnit = TRUE)
     {
         if (self::$filter) {
             $max = count($codeCoverageInformation);

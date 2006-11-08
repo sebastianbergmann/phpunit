@@ -72,7 +72,7 @@ class PHPUnit_Framework_Constraint_And implements PHPUnit_Framework_Constraint
 
     private $failedConstraint = NULL;
 
-    public function setConstraints(Array $constraints)
+    public function setConstraints(array $constraints)
     {
         $this->constraints = array();
 

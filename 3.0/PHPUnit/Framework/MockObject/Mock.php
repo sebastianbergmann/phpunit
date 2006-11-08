@@ -93,7 +93,7 @@ class PHPUnit_Framework_MockObject_Mock
     public $className;
     public $methods;
 
-    public function __construct($className, Array $methods = array(), $mockClassName = '')
+    public function __construct($className, array $methods = array(), $mockClassName = '')
     {
         $this->mockClassName = $mockClassName;
 
@@ -114,7 +114,7 @@ class PHPUnit_Framework_MockObject_Mock
         $this->methods   = $methods;
     }
 
-    public static function generate($className, Array $methods = array(), $mockClassName = '')
+    public static function generate($className, array $methods = array(), $mockClassName = '')
     {
         $mock = new PHPUnit_Framework_MockObject_Mock($className, $methods, $mockClassName);
 
@@ -317,7 +317,7 @@ class PHPUnit_Framework_MockObject_Mock
                 $typeHint = '';
 
                 if ($parameter->isArray()) {
-                    $typeHint = 'Array ';
+                    $typeHint = 'array ';
                 } else {
                     $class = $parameter->getClass();
 

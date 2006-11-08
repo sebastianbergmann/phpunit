@@ -127,7 +127,7 @@ class PHPUnit_Util_Report_Coverage_Node_Directory extends PHPUnit_Util_Report_Co
      * @throws RuntimeException
      * @access public
      */
-    public function addFile($name, Array $lines)
+    public function addFile($name, array $lines)
     {
         $file = new PHPUnit_Util_Report_Coverage_Node_File(
           $name,
@@ -308,7 +308,7 @@ class PHPUnit_Util_Report_Coverage_Node_Directory extends PHPUnit_Util_Report_Co
      * @return string
      * @access protected
      */
-    protected function doRenderItems(Array $items, $includeDetails)
+    protected function doRenderItems(array $items, $includeDetails)
     {
         $result = '';
 
