@@ -152,13 +152,7 @@ class PHPUnit_Util_Fileloader
      */
     protected static function syntaxCheck($filename)
     {
-        if (isset($_SERVER['PHPBIN'])) {
-            $phpbin = $_SERVER['PHPBIN'];
-        } else {
-            $phpbin = 'php';
-        }
-
-        $output = shell_exec($phpbin . ' -l ' . escapeshellarg($filename));
+        $output = shell_exec('php -l ' . escapeshellarg($filename));
 
         if (strpos($output, 'Errors parsing') === TRUE) {
             throw new RuntimeException($output);
