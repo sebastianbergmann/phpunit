@@ -76,8 +76,6 @@ class PHPUnit_Framework_ExpectationFailedException extends PHPUnit_Framework_Ass
 
     public function __construct($message, PHPUnit_Framework_ComparisonFailure $comparisonFailure = NULL)
     {
-        $message = str_replace('> not is', '> is not', $message);
-
         $this->comparisonFailure = $comparisonFailure;
         $this->description       = $message;
 

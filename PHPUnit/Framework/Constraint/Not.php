@@ -114,7 +114,11 @@ class PHPUnit_Framework_Constraint_Not implements PHPUnit_Framework_Constraint
      */
     public function toString()
     {
-        return 'not ' . $this->constraint->toString();
+        return str_replace(
+          'not is',
+          'is not',
+          'not ' . $this->constraint->toString()
+        );
     }
 }
 ?>
