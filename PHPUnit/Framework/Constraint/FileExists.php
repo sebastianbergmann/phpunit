@@ -84,13 +84,18 @@ class PHPUnit_Framework_Constraint_FileExists implements PHPUnit_Framework_Const
      *                         constraint check.
      * @param   string  $description A string with extra description of what was
      *                               going on while the evaluation failed.
+     * @param   boolean $not Flag to indicate negation.
      * @throws  PHPUnit_Framework_ExpectationFailedException
      */
-    public function fail($other, $description)
+    public function fail($other, $description, $not = FALSE)
     {
+        if (!empty($description)) {
+            $description .= "\n";
+        }
+
         throw new PHPUnit_Framework_ExpectationFailedException(
           sprintf(
-            "%s\nfile <%s> does not exist",
+            '%sFile "%s" does not exist.',
 
             $description,
             $other

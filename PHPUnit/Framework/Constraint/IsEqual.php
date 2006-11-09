@@ -101,14 +101,21 @@ class PHPUnit_Framework_Constraint_IsEqual implements PHPUnit_Framework_Constrai
      *                         constraint check.
      * @param   string  $description A string with extra description of what was
      *                               going on while the evaluation failed.
+     * @param   boolean $not Flag to indicate negation.
      * @throws  PHPUnit_Framework_ExpectationFailedException
      */
-    public function fail($other, $description)
+    public function fail($other, $description, $not = FALSE)
     {
-        throw new PHPUnit_Framework_ExpectationFailedException(
-            $description,
-            PHPUnit_Framework_ComparisonFailure::diffIdentical($this->value, $other)
-        );
+        if (!$not) {
+            throw new PHPUnit_Framework_ExpectationFailedException(
+              $description,
+              PHPUnit_Framework_ComparisonFailure::diffIdentical($this->value, $other)
+            );
+        } else {
+            throw new PHPUnit_Framework_ExpectationFailedException(
+              $description
+            );
+        }
     }
 
     /**

@@ -47,6 +47,7 @@
 
 require_once 'PHPUnit/Framework.php';
 require_once 'PHPUnit/Util/Filter.php';
+require_once 'PHPUnit/Util/Type.php';
 
 PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
 
@@ -94,18 +95,22 @@ class PHPUnit_Framework_Constraint_ArrayHasKey implements PHPUnit_Framework_Cons
      *                         constraint check.
      * @param   string  $description A string with extra description of what was
      *                               going on while the evaluation failed.
+     * @param   boolean $not Flag to indicate negation.
      * @throws  PHPUnit_Framework_ExpectationFailedException
      */
-    public function fail($other, $description)
+    public function fail($other, $description, $not = FALSE)
     {
+        if (!empty($description)) {
+            $description .= "\n";
+        }
+
         throw new PHPUnit_Framework_ExpectationFailedException(
           sprintf(
-            "%s\nexpected array key <%s:%s> not found in array <%s>",
+            '%sExpected array key %s not found in %s.',
 
             $description,
-            gettype($this->key),
-            print_r($this->key, TRUE),
-            print_r($other, TRUE)
+            PHPUnit_Util_Type::toString($this->key),
+            PHPUnit_Util_Type::toString($other)
           )
         );
     }
@@ -119,10 +124,9 @@ class PHPUnit_Framework_Constraint_ArrayHasKey implements PHPUnit_Framework_Cons
     public function toString()
     {
         return sprintf(
-          'has key <%s:%s>',
+          'array has key %s',
 
-          gettype($this->key),
-          print_r($this->key, TRUE)
+          PHPUnit_Util_Type::toString($this->key)
         );
     }
 }
