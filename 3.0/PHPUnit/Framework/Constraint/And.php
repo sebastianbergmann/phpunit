@@ -47,6 +47,7 @@
 
 require_once 'PHPUnit/Framework.php';
 require_once 'PHPUnit/Util/Filter.php';
+require_once 'PHPUnit/Util/Type.php';
 
 PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
 
@@ -112,25 +113,31 @@ class PHPUnit_Framework_Constraint_And implements PHPUnit_Framework_Constraint
      *                         constraint check.
      * @param   string  $description A string with extra description of what was
      *                               going on while the evaluation failed.
+     * @param   boolean $not Flag to indicate negation.
      * @throws  PHPUnit_Framework_ExpectationFailedException
      */
-    public function fail($other, $description)
+    public function fail($other, $description, $not = FALSE)
     {
+        if (!empty($description)) {
+            $description .= "\n";
+        }
+
+        $description = sprintf(
+          "%sExpected that %s %s",
+
+          $description,
+          PHPUnit_Util_Type::toString($other),
+          $this->toString()
+        );
+
         if ($this->failedConstraint !== NULL) {
             $this->failedConstraint->fail(
               $other,
-              $description . "\n" .
-              'Expected that <' . $other . '> ' . $this->toString()
+              $description
             );
         } else {
             throw new PHPUnit_Framework_ExpectationFailedException(
-              sprintf(
-                "%s\nExpected that <%s> %s",
-
-                $description,
-                print_r($other, 1),
-                $this->toString()
-              )
+              $description
             );
         }
     }

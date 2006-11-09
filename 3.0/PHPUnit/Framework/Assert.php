@@ -692,16 +692,7 @@ class PHPUnit_Framework_Assert
         $constraint = new PHPUnit_Framework_Constraint_PCREMatch($pattern);
 
         if (!$constraint->evaluate($string)) {
-            $constraint->fail(
-              $string,
-              sprintf(
-                '%sfailed asserting that string <%s> %s',
-
-                $message,
-                print_r($string, TRUE),
-                $constraint->toString()
-              )
-            );
+            self::failConstraint($constraint, $string, $message);
         }
     }
 
@@ -1007,12 +998,16 @@ class PHPUnit_Framework_Assert
      */
     public static function failConstraint(PHPUnit_Framework_Constraint $constraint, $value, $message)
     {
+        if (!empty($message)) {
+            $message .= "\n";
+        }
+
         $constraint->fail(
           $value,
           sprintf(
-            '%sfailed asserting that %s %s',
+            '%sFailed asserting that %s %s.',
 
-            !empty($message) ? $message . ' ' : '',
+            $message,
             PHPUnit_Util_Type::toString($value),
             $constraint->toString()
           )

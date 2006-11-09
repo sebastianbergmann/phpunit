@@ -99,11 +99,12 @@ class PHPUnit_Framework_Constraint_Not implements PHPUnit_Framework_Constraint
      *                         constraint check.
      * @param   string  $description A string with extra description of what was
      *                               going on while the evaluation failed.
+     * @param   boolean $not Flag to indicate negation.
      * @throws  PHPUnit_Framework_ExpectationFailedException
      */
-    public function fail($other, $description)
+    public function fail($other, $description, $not = FALSE)
     {
-        $this->constraint->fail($other, $description);
+        $this->constraint->fail($other, $description, TRUE);
     }
 
     /**

@@ -96,9 +96,10 @@ class PHPUnit_Framework_Constraint_TraversableContains implements PHPUnit_Framew
      *                         constraint check.
      * @param   string  $description A string with extra description of what was
      *                               going on while the evaluation failed.
+     * @param   boolean $not Flag to indicate negation.
      * @throws  PHPUnit_Framework_ExpectationFailedException
      */
-    public function fail($other, $description)
+    public function fail($other, $description, $not = FALSE)
     {
         throw new PHPUnit_Framework_ExpectationFailedException(
           sprintf(

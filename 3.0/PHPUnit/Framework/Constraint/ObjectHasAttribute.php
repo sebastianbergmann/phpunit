@@ -47,6 +47,7 @@
 
 require_once 'PHPUnit/Framework.php';
 require_once 'PHPUnit/Util/Filter.php';
+require_once 'PHPUnit/Util/Type.php';
 
 PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
 
@@ -92,18 +93,22 @@ class PHPUnit_Framework_Constraint_ObjectHasAttribute implements PHPUnit_Framewo
      *                         constraint check.
      * @param   string  $description A string with extra description of what was
      *                               going on while the evaluation failed.
+     * @param   boolean $not Flag to indicate negation.
      * @throws  PHPUnit_Framework_ExpectationFailedException
      */
-    public function fail($other, $description)
+    public function fail($other, $description, $not = FALSE)
     {
+        if (!empty($description)) {
+            $description .= "\n";
+        }
+
         throw new PHPUnit_Framework_ExpectationFailedException(
           sprintf(
-            "%s\nexpected attribute <%s:%s> not found in object <%s>",
+            '%sExpected attribute "%s" not found in %s.',
 
             $description,
-            gettype($this->attributeName),
-            print_r($this->attributeName, TRUE),
-            print_r($other, TRUE)
+            $this->attributeName,
+            PHPUnit_Util_Type::toString($other)
           )
         );
     }
@@ -117,10 +122,9 @@ class PHPUnit_Framework_Constraint_ObjectHasAttribute implements PHPUnit_Framewo
     public function toString()
     {
         return sprintf(
-          'has attribute <%s:%s>',
+          'object has attribute "%s"',
 
-          gettype($this->attributeName),
-          print_r($this->attributeName, TRUE)
+          $this->attributeName
         );
     }
 }
