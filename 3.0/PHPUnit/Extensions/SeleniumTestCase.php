@@ -813,8 +813,8 @@ class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * Returns all option labels (visible text) for selected options
-     * in the specified selector multi-select element.
+     * Returns all option labels (visible text) for selected options in the
+     * specified select element.
      *
      * @param  string  $selectLocator
      * @return string
