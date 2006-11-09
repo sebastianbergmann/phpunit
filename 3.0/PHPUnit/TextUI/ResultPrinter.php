@@ -218,8 +218,9 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
 
                 $string = '';
 
-                if ($this->verbose ||
-                    $comparisonFailure instanceof PHPUnit_Framework_ComparisonFailure_String) {
+                if ($comparisonFailure !== NULL &&
+                   ($this->verbose ||
+                    $comparisonFailure instanceof PHPUnit_Framework_ComparisonFailure_String)) {
                     $string = $comparisonFailure->toString();
                 }
 
