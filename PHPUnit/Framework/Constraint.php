@@ -92,9 +92,10 @@ interface PHPUnit_Framework_Constraint extends PHPUnit_Framework_SelfDescribing
      *                         constraint check.
      * @param   string  $description A string with extra description of what was
      *                               going on while the evaluation failed.
+     * @param   boolean $not Flag to indicate negation.
      * @throws  PHPUnit_Framework_ExpectationFailedException
      */
-    public function fail($other, $description);
+    public function fail($other, $description, $not = FALSE);
 }
 
 }

@@ -145,52 +145,13 @@ class PHPUnit_Framework_Constraint_IsType implements PHPUnit_Framework_Constrain
      *                         constraint check.
      * @param   string  $description A string with extra description of what was
      *                               going on while the evaluation failed.
+     * @param   boolean $not Flag to indicate negation.
      * @throws  PHPUnit_Framework_ExpectationFailedException
      */
-    public function fail($other, $description)
+    public function fail($other, $description, $not = FALSE)
     {
-        switch ($this->type) {
-            case 'integer':
-            case 'int': {
-              $expected = 1;
-            }
-            break;
-
-            case 'float': {
-              $expected = 1.1;
-            }
-            break;
-
-            case 'string': {
-              $expected = 'str';
-            }
-            break;
-
-            case 'boolean':
-            case 'bool': {
-              $expected = TRUE;
-            }
-            break;
-
-            case 'null': {
-              $expected = NULL;
-            }
-            break;
-
-            case 'array': {
-              $expected = array(1);
-            }
-            break;
-
-            case 'object': {
-              $expected = new Exception();
-            }
-            break;
-        }
-
         throw new PHPUnit_Framework_ExpectationFailedException(
-          $description,
-          new PHPUnit_Framework_ComparisonFailure_Type($expected, $other)
+          $description
         );
     }
 

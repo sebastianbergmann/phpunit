@@ -82,8 +82,9 @@ class PHPUnit_Framework_Constraint_IsAnything implements PHPUnit_Framework_Const
      *                         constraint check.
      * @param   string  $description A string with extra description of what was
      *                               going on while the evaluation failed.
+     * @param   boolean $not Flag to indicate negation.
      */
-    public function fail($other, $description)
+    public function fail($other, $description, $not = FALSE)
     {
     }
 

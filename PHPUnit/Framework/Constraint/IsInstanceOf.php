@@ -47,6 +47,7 @@
 
 require_once 'PHPUnit/Framework.php';
 require_once 'PHPUnit/Util/Filter.php';
+require_once 'PHPUnit/Util/Type.php';
 
 PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
 
@@ -91,25 +92,29 @@ class PHPUnit_Framework_Constraint_IsInstanceOf implements PHPUnit_Framework_Con
      *                         constraint check.
      * @param   string  $description A string with extra description of what was
      *                               going on while the evaluation failed.
+     * @param   boolean $not Flag to indicate negation.
      * @throws  PHPUnit_Framework_ExpectationFailedException
      */
-    public function fail($other, $description)
+    public function fail($other, $description, $not = FALSE)
     {
+        if (!empty($description)) {
+            $description .= "\n";
+        }
+
         if (!is_object($other)) {
             throw new PHPUnit_Framework_ExpectationFailedException(
               sprintf(
-                "%s\nexpected object instance of class <%s>, got %s <%s>",
+                '%sExpected object of class "%s", got %s.',
 
                 $description,
                 $this->className,
-                gettype($other),
-                print_r($other, TRUE)
+                PHPUnit_Util_Type::toString($other)
               )
             );
         } else {
             throw new PHPUnit_Framework_ExpectationFailedException(
               sprintf(
-                "%s\nexpected object instance of class <%s>, got class <%s>",
+                '%sExpected object of class "%s", got object of class "%s".',
 
                 $description,
                 $this->className,

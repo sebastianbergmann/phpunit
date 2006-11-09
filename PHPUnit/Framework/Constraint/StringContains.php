@@ -47,6 +47,7 @@
 
 require_once 'PHPUnit/Framework.php';
 require_once 'PHPUnit/Util/Filter.php';
+require_once 'PHPUnit/Util/Type.php';
 
 PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
 
@@ -101,25 +102,30 @@ class PHPUnit_Framework_Constraint_StringContains implements PHPUnit_Framework_C
      *                         constraint check.
      * @param   string  $description A string with extra description of what was
      *                               going on while the evaluation failed.
+     * @param   boolean $not Flag to indicate negation.
      * @throws  PHPUnit_Framework_ExpectationFailedException
      */
-    public function fail($other, $description)
+    public function fail($other, $description, $not = FALSE)
     {
         if ($this->case) {
-            $string      = print_r($this->string, TRUE);
-            $otherString = print_r($other, TRUE);
+            $string      = $this->string;
+            $otherString = $other;
         } else {
-            $string      = print_r(strtolower($this->string), TRUE);
-            $otherString = print_r(strtolower($other), TRUE);
+            $string      = strtolower($this->string);
+            $otherString = strtolower($other);
+        }
+
+        if (!empty($description)) {
+            $description .= "\n";
         }
 
         throw new PHPUnit_Framework_ExpectationFailedException(
           sprintf(
-            "%s\nexpected string <%s> not found in string <%s>",
+            '%sExpected %s not found in %s.',
 
             $description,
-            $string,
-            $otherString
+            PHPUnit_Util_Type::toString($string),
+            PHPUnit_Util_Type::toString($otherString)
           )
         );
     }
@@ -133,15 +139,15 @@ class PHPUnit_Framework_Constraint_StringContains implements PHPUnit_Framework_C
     public function toString()
     {
         if ($this->case) {
-            $string = print_r($this->string, TRUE);
+            $string = $this->string;
         } else {
-            $string = print_r(strtolower($this->string), TRUE);
+            $string = strtolower($this->string);
         }
 
         return sprintf(
-          'contains string <%s>',
+          'contains %s',
 
-          $string
+          PHPUnit_Util_Type::toString($string)
         );
     }
 }

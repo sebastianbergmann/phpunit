@@ -47,6 +47,7 @@
 
 require_once 'PHPUnit/Framework.php';
 require_once 'PHPUnit/Util/Filter.php';
+require_once 'PHPUnit/Util/Type.php';
 
 PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
 
@@ -94,20 +95,26 @@ class PHPUnit_Framework_Constraint_PCREMatch implements PHPUnit_Framework_Constr
      *                         constraint check.
      * @param   string  $description A string with extra description of what was
      *                               going on while the evaluation failed.
+     * @param   boolean $not Flag to indicate negation.
      * @throws  PHPUnit_Framework_ExpectationFailedException
      */
-    public function fail($other, $description)
+    public function fail($other, $description, $not = FALSE)
     {
-        throw new PHPUnit_Framework_ExpectationFailedException(
-          sprintf(
-            "%s\nPCRE pattern <%s> did not find a match in value <%s:%s>",
+        if (empty($description)) {
+            throw new PHPUnit_Framework_ExpectationFailedException(
+              sprintf(
+                '%sPCRE pattern "%s" did not find a match in %s',
 
-            $description,
-            print_r($this->pattern, TRUE),
-            gettype($other),
-            print_r($other, TRUE)
-          )
-        );
+                $description,
+                $this->pattern,
+                PHPUnit_Util_Type::toString($other)
+              )
+            );
+        } else {
+            throw new PHPUnit_Framework_ExpectationFailedException(
+              $description
+            );
+        }
     }
 
     /**
@@ -119,9 +126,9 @@ class PHPUnit_Framework_Constraint_PCREMatch implements PHPUnit_Framework_Constr
     public function toString()
     {
         return sprintf(
-          'matches PCRE pattern <%s>',
+          'string matches PCRE pattern "%s"',
 
-          print_r($this->pattern, TRUE)
+          $this->pattern
         );
     }
 }
