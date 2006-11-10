@@ -19,11 +19,11 @@
  </lead>
  <date>2006-11-08</date>
  <version>
-  <release>3.0.0RC1</release>
+  <release>3.0.0beta4</release>
   <api>3.0.0</api>
  </version>
  <stability>
-  <release>stable</release>
+  <release>beta</release>
   <api>stable</api>
  </stability>
  <license>BSD License</license>
