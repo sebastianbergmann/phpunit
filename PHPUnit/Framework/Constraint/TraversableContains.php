@@ -80,16 +80,13 @@ class PHPUnit_Framework_Constraint_TraversableContains extends PHPUnit_Framework
      */
     public function evaluate($other)
     {
-        $found = FALSE;
-
         foreach ($other as $straw) {
             if ($straw === $this->value) {
-                $found = TRUE;
-                break;
+                return TRUE;
             }
         }
 
-        return $found;
+        return FALSE;
     }
 
     /**
