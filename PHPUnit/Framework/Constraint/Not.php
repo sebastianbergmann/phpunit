@@ -126,7 +126,6 @@ class PHPUnit_Framework_Constraint_Not extends PHPUnit_Framework_Constraint
             default: {
                 return str_replace(
                   array(
-                    'anything ',
                     'contains ',
                     'exists ',
                     'has ',
@@ -134,7 +133,6 @@ class PHPUnit_Framework_Constraint_Not extends PHPUnit_Framework_Constraint
                     'matches '
                   ),
                   array(
-                    'nothing ',
                     'not contains ',
                     'not exists ',
                     'has not ',
