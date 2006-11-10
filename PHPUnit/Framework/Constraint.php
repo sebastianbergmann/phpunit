@@ -103,27 +103,32 @@ abstract class PHPUnit_Framework_Constraint implements PHPUnit_Framework_SelfDes
         );
 
         if ($not) {
-            $failureDescription = str_replace(
-              array(
-                'contains ',
-                'exists ',
-                'has ',
-                'is ',
-                'matches '
-              ),
-              array(
-                'not contains ',
-                'not exists ',
-                'has not ',
-                'is not ',
-                'not matches '
-              ),
-              $failureDescription
-            );
+            $failureDescription = self::negate($failureDescription);
         }
 
         throw new PHPUnit_Framework_ExpectationFailedException(
           $failureDescription
+        );
+    }
+
+    public static function negate($string)
+    {
+        return str_replace(
+          array(
+            'contains ',
+            'exists ',
+            'has ',
+            'is ',
+            'matches '
+          ),
+          array(
+            'not contains ',
+            'not exists ',
+            'has not ',
+            'is not ',
+            'not matches '
+          ),
+          $string
         );
     }
 }
