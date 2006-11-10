@@ -89,17 +89,22 @@ class PHPUnit_Framework_Constraint_FileExists extends PHPUnit_Framework_Constrai
      */
     public function fail($other, $description, $not = FALSE)
     {
+        $failureDescription = sprintf(
+          'Failed asserting that file "%s" exists.',
+
+           $other
+        );
+
+        if ($not) {
+            $failureDescription = self::negate($failureDescription);
+        }
+
         if (!empty($description)) {
-            $description .= "\n";
+            $failureDescription = $description . "\n" . $failureDescription;
         }
 
         throw new PHPUnit_Framework_ExpectationFailedException(
-          sprintf(
-            '%sFailed asserting that file "%s" exists.',
-
-             $description,
-             $other
-          )
+          $failureDescription
         );
     }
 

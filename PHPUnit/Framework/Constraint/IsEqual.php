@@ -106,16 +106,10 @@ class PHPUnit_Framework_Constraint_IsEqual extends PHPUnit_Framework_Constraint
      */
     public function fail($other, $description, $not = FALSE)
     {
-        if (!empty($description)) {
-            $description .= "\n";
-        }
-
-        $failureDescription = sprintf(
-          '%sFailed asserting that %s %s.',
-
-           $description,
-           PHPUnit_Util_Type::toString($other),
-           $this->toString()
+        $failureDescription = $this->failureDescription(
+          $other,
+          $description,
+          $not
         );
 
         if (!$not) {
@@ -124,8 +118,6 @@ class PHPUnit_Framework_Constraint_IsEqual extends PHPUnit_Framework_Constraint
               PHPUnit_Framework_ComparisonFailure::diffEqual($this->value, $other)
             );
         } else {
-            $failureDescription = self::negate($failureDescription);
-
             throw new PHPUnit_Framework_ExpectationFailedException(
               $failureDescription
             );
