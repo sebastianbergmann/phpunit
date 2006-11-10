@@ -47,6 +47,7 @@
 
 require_once 'PHPUnit/Framework.php';
 require_once 'PHPUnit/Util/Filter.php';
+require_once 'PHPUnit/Util/Type.php';
 
 PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
 
@@ -65,7 +66,7 @@ PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
  * @link       http://www.phpunit.de/
  * @since      Class available since Release 3.0.0
  */
-class PHPUnit_Framework_Constraint_LessThan implements PHPUnit_Framework_Constraint
+class PHPUnit_Framework_Constraint_LessThan extends PHPUnit_Framework_Constraint
 {
     private $value;
 
@@ -78,34 +79,12 @@ class PHPUnit_Framework_Constraint_LessThan implements PHPUnit_Framework_Constra
      * Evaluates the constraint for parameter $other. Returns TRUE if the
      * constraint is met, FALSE otherwise.
      *
-     * @parameter mixed $other Value or object to evaluate.
+     * @param mixed $other Value or object to evaluate.
      * @return bool
      */
     public function evaluate($other)
     {
         return $this->value > $other;
-    }
-
-    /**
-     * @param   mixed   $other The value passed to evaluate() which failed the
-     *                         constraint check.
-     * @param   string  $description A string with extra description of what was
-     *                               going on while the evaluation failed.
-     * @param   boolean $not Flag to indicate negation.
-     * @throws  PHPUnit_Framework_ExpectationFailedException
-     */
-    public function fail($other, $description, $not = FALSE)
-    {
-        if (!$not) {
-            throw new PHPUnit_Framework_ExpectationFailedException(
-              $description,
-              PHPUnit_Framework_ComparisonFailure::diffIdentical($this->value, $other)
-            );
-        } else {
-            throw new PHPUnit_Framework_ExpectationFailedException(
-              $description
-            );
-        }
     }
 
     /**
@@ -116,17 +95,7 @@ class PHPUnit_Framework_Constraint_LessThan implements PHPUnit_Framework_Constra
      */
     public function toString()
     {
-        $type = '';
-
-        if (!is_null($this->value)) {
-            $type = gettype($this->value) . ':';
-        }
-
-        return sprintf(
-          'is less than <%s>',
-
-          $type  . print_r($this->value, TRUE)
-        );
+        return 'is less than ' . PHPUnit_Util_Type::toString($this->value);
     }
 }
 ?>

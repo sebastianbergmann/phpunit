@@ -95,7 +95,7 @@ class PHPUnit_Framework_Assert
         $constraint = new PHPUnit_Framework_Constraint_ArrayHasKey($key);
 
         if (!$constraint->evaluate($array)) {
-            self::failConstraint($constraint, $array, $message);
+            $constraint->fail($array, $message);
         }
     }
 
@@ -120,7 +120,7 @@ class PHPUnit_Framework_Assert
         );
 
         if (!$constraint->evaluate($array)) {
-            self::failConstraint($constraint, $array, $message);
+            $constraint->fail($array, $message);
         }
     }
 
@@ -150,7 +150,7 @@ class PHPUnit_Framework_Assert
         }
 
         if (!$constraint->evaluate($haystack)) {
-            self::failConstraint($constraint, $haystack, $message);
+            $constraint->fail($haystack, $message);
         }
     }
 
@@ -209,7 +209,7 @@ class PHPUnit_Framework_Assert
         }
 
         if (!$constraint->evaluate($haystack)) {
-            self::failConstraint($constraint, $haystack, $message);
+            $constraint->fail($haystack, $message);
         }
     }
 
@@ -258,7 +258,7 @@ class PHPUnit_Framework_Assert
         );
 
         if (!$constraint->evaluate($actual)) {
-            self::failConstraint($constraint, $actual, $message);
+            $constraint->fail($actual, $message);
         }
     }
 
@@ -312,7 +312,7 @@ class PHPUnit_Framework_Assert
         );
 
         if (!$constraint->evaluate($actual)) {
-            self::failConstraint($constraint, $actual, $message);
+            $constraint->fail($actual, $message);
         }
     }
 
@@ -361,7 +361,7 @@ class PHPUnit_Framework_Assert
         $constraint = new PHPUnit_Framework_Constraint_FileExists;
 
         if (!$constraint->evaluate($filename)) {
-            self::failConstraint($constraint, $filename, $message);
+            $constraint->fail($filename, $message);
         }
     }
 
@@ -385,7 +385,7 @@ class PHPUnit_Framework_Assert
         );
 
         if (!$constraint->evaluate($filename)) {
-            self::failConstraint($constraint, $filename, $message);
+            $constraint->fail($filename, $message);
         }
     }
 
@@ -408,7 +408,7 @@ class PHPUnit_Framework_Assert
         $constraint = new PHPUnit_Framework_Constraint_IsIdentical(TRUE);
 
         if (!$constraint->evaluate($condition)) {
-            self::failConstraint($constraint, $condition, $message);
+            $constraint->fail($condition, $message);
         }
     }
 
@@ -431,7 +431,7 @@ class PHPUnit_Framework_Assert
         $constraint = new PHPUnit_Framework_Constraint_IsIdentical(FALSE);
 
         if (!$constraint->evaluate($condition)) {
-            self::failConstraint($constraint, $condition, $message);
+            $constraint->fail($condition, $message);
         }
     }
 
@@ -450,7 +450,7 @@ class PHPUnit_Framework_Assert
         );
 
         if (!$constraint->evaluate($actual)) {
-            self::failConstraint($constraint, $actual, $message);
+            $constraint->fail($actual, $message);
         }
     }
 
@@ -467,7 +467,7 @@ class PHPUnit_Framework_Assert
         $constraint = new PHPUnit_Framework_Constraint_IsIdentical(NULL);
 
         if (!$constraint->evaluate($actual)) {
-            self::failConstraint($constraint, $actual, $message);
+            $constraint->fail($actual, $message);
         }
     }
 
@@ -490,7 +490,7 @@ class PHPUnit_Framework_Assert
         $constraint = new PHPUnit_Framework_Constraint_ObjectHasAttribute($attributeName);
 
         if (!$constraint->evaluate($object)) {
-            self::failConstraint($constraint, $object, $message);
+            $constraint->fail($object, $message);
         }
     }
 
@@ -515,7 +515,7 @@ class PHPUnit_Framework_Assert
         );
 
         if (!$constraint->evaluate($object)) {
-            self::failConstraint($constraint, $object, $message);
+            $constraint->fail($object, $message);
         }
     }
 
@@ -535,7 +535,7 @@ class PHPUnit_Framework_Assert
         $constraint = new PHPUnit_Framework_Constraint_IsIdentical($expected);
 
         if (!$constraint->evaluate($actual)) {
-            self::failConstraint($constraint, $actual, $message);
+            $constraint->fail($actual, $message);
         }
     }
 
@@ -581,7 +581,7 @@ class PHPUnit_Framework_Assert
         );
 
         if (!$constraint->evaluate($actual)) {
-            self::failConstraint($constraint, $actual, $message);
+            $constraint->fail($actual, $message);
         }
     }
 
@@ -623,9 +623,8 @@ class PHPUnit_Framework_Assert
         if (is_string($expected)) {
             if (class_exists($expected, FALSE) ||
                 interface_exists($expected, FALSE)) {
-                $constraint = self::logicalAnd(
-                  new PHPUnit_Framework_Constraint_IsType('object'),
-                  new PHPUnit_Framework_Constraint_IsInstanceOf($expected)
+                $constraint = new PHPUnit_Framework_Constraint_IsInstanceOf(
+                  $expected
                 );
             } else {
                 $constraint = new PHPUnit_Framework_Constraint_IsType($expected);
@@ -635,7 +634,7 @@ class PHPUnit_Framework_Assert
         }
 
         if (!$constraint->evaluate($actual)) {
-            self::failConstraint($constraint, $actual, $message);
+            $constraint->fail($actual, $message);
         }
     }
 
@@ -655,10 +654,7 @@ class PHPUnit_Framework_Assert
             if (class_exists($expected, FALSE) ||
                 interface_exists($expected, FALSE)) {
                 $constraint = new PHPUnit_Framework_Constraint_Not(
-                  self::logicalAnd(
-                    new PHPUnit_Framework_Constraint_IsType('object'),
-                    new PHPUnit_Framework_Constraint_IsInstanceOf($expected)
-                  )
+                  new PHPUnit_Framework_Constraint_IsInstanceOf($expected)
                 );
             } else {
                 $constraint = new PHPUnit_Framework_Constraint_Not(
@@ -670,7 +666,7 @@ class PHPUnit_Framework_Assert
         }
 
         if (!$constraint->evaluate($actual)) {
-            self::failConstraint($constraint, $actual, $message);
+            $constraint->fail($actual, $message);
         }
     }
 
@@ -692,7 +688,7 @@ class PHPUnit_Framework_Assert
         $constraint = new PHPUnit_Framework_Constraint_PCREMatch($pattern);
 
         if (!$constraint->evaluate($string)) {
-            self::failConstraint($constraint, $string, $message);
+            $constraint->fail($string, $message);
         }
     }
 
@@ -717,7 +713,7 @@ class PHPUnit_Framework_Assert
         );
 
         if (!$constraint->evaluate($string)) {
-            self::failConstraint($constraint, $string, $message);
+            $constraint->fail($string, $message);
         }
     }
 
@@ -734,7 +730,7 @@ class PHPUnit_Framework_Assert
     public static function assertThat($value, PHPUnit_Framework_Constraint $constraint, $message = '')
     {
         if (!$constraint->evaluate($value)) {
-            self::failConstraint($constraint, $value, $message);
+            $constraint->fail($value, $message);
         }
     }
 
@@ -983,35 +979,6 @@ class PHPUnit_Framework_Assert
     public static function fail($message = '')
     {
         throw new PHPUnit_Framework_AssertionFailedError($message);
-    }
-
-    /**
-     * Fails a test based on a failed constraint.
-     *
-     * @param  PHPUnit_Framework_Constraint $constraint
-     * @param  mixed                         $value
-     * @param  string                        $message
-     * @throws PHPUnit_Framework_ExpectationFailedException
-     * @access public
-     * @static
-     * @since  Method available since Release 3.0.0
-     */
-    public static function failConstraint(PHPUnit_Framework_Constraint $constraint, $value, $message)
-    {
-        if (!empty($message)) {
-            $message .= "\n";
-        }
-
-        $constraint->fail(
-          $value,
-          sprintf(
-            '%sFailed asserting that %s %s.',
-
-            $message,
-            PHPUnit_Util_Type::toString($value),
-            $constraint->toString()
-          )
-        );
     }
 
     /**

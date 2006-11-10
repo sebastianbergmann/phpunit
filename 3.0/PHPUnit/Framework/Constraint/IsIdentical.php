@@ -70,7 +70,7 @@ PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
  * @link       http://www.phpunit.de/
  * @since      Class available since Release 3.0.0
  */
-class PHPUnit_Framework_Constraint_IsIdentical implements PHPUnit_Framework_Constraint
+class PHPUnit_Framework_Constraint_IsIdentical extends PHPUnit_Framework_Constraint
 {
     private $value;
 
@@ -83,7 +83,7 @@ class PHPUnit_Framework_Constraint_IsIdentical implements PHPUnit_Framework_Cons
      * Evaluates the constraint for parameter $other. Returns TRUE if the
      * constraint is met, FALSE otherwise.
      *
-     * @parameter mixed $other Value or object to evaluate.
+     * @param mixed $other Value or object to evaluate.
      * @return bool
      */
     public function evaluate($other)
@@ -101,14 +101,26 @@ class PHPUnit_Framework_Constraint_IsIdentical implements PHPUnit_Framework_Cons
      */
     public function fail($other, $description, $not = FALSE)
     {
+        if (!empty($description)) {
+            $description .= "\n";
+        }
+
+        $failDescription = sprintf(
+          '%sFailed asserting that %s %s.',
+
+           $description,
+           PHPUnit_Util_Type::toString($other),
+           $this->toString()
+        );
+
         if (!$not) {
             throw new PHPUnit_Framework_ExpectationFailedException(
-              $description,
+              $failDescription,
               PHPUnit_Framework_ComparisonFailure::diffIdentical($this->value, $other)
             );
         } else {
             throw new PHPUnit_Framework_ExpectationFailedException(
-              $description
+              $failDescription
             );
         }
     }
@@ -121,11 +133,7 @@ class PHPUnit_Framework_Constraint_IsIdentical implements PHPUnit_Framework_Cons
      */
     public function toString()
     {
-        return sprintf(
-          'is identical to %s',
-
-            PHPUnit_Util_Type::toString($this->value)
-        );
+        return 'is identical to ' . PHPUnit_Util_Type::toString($this->value);
     }
 }
 ?>

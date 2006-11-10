@@ -69,7 +69,7 @@ PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
  * @link       http://www.phpunit.de/
  * @since      Class available since Release 3.0.0
  */
-class PHPUnit_Framework_Constraint_ArrayHasKey implements PHPUnit_Framework_Constraint
+class PHPUnit_Framework_Constraint_ArrayHasKey extends PHPUnit_Framework_Constraint
 {
     private $key;
 
@@ -82,37 +82,12 @@ class PHPUnit_Framework_Constraint_ArrayHasKey implements PHPUnit_Framework_Cons
      * Evaluates the constraint for parameter $other. Returns TRUE if the
      * constraint is met, FALSE otherwise.
      *
-     * @parameter mixed $other Value or object to evaluate.
+     * @param mixed $other Value or object to evaluate.
      * @return bool
      */
     public function evaluate($other)
     {
         return array_key_exists($this->key, $other);
-    }
-
-    /**
-     * @param   mixed   $other The value passed to evaluate() which failed the
-     *                         constraint check.
-     * @param   string  $description A string with extra description of what was
-     *                               going on while the evaluation failed.
-     * @param   boolean $not Flag to indicate negation.
-     * @throws  PHPUnit_Framework_ExpectationFailedException
-     */
-    public function fail($other, $description, $not = FALSE)
-    {
-        if (!empty($description)) {
-            $description .= "\n";
-        }
-
-        throw new PHPUnit_Framework_ExpectationFailedException(
-          sprintf(
-            '%sExpected array key %s not found in %s.',
-
-            $description,
-            PHPUnit_Util_Type::toString($this->key),
-            PHPUnit_Util_Type::toString($other)
-          )
-        );
     }
 
     /**
@@ -123,11 +98,7 @@ class PHPUnit_Framework_Constraint_ArrayHasKey implements PHPUnit_Framework_Cons
      */
     public function toString()
     {
-        return sprintf(
-          'array has key %s',
-
-          PHPUnit_Util_Type::toString($this->key)
-        );
+        return 'has key ' . PHPUnit_Util_Type::toString($this->key);
     }
 }
 ?>
