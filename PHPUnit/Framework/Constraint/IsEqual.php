@@ -110,7 +110,7 @@ class PHPUnit_Framework_Constraint_IsEqual extends PHPUnit_Framework_Constraint
             $description .= "\n";
         }
 
-        $failDescription = sprintf(
+        $failureDescription = sprintf(
           '%sFailed asserting that %s %s.',
 
            $description,
@@ -120,12 +120,14 @@ class PHPUnit_Framework_Constraint_IsEqual extends PHPUnit_Framework_Constraint
 
         if (!$not) {
             throw new PHPUnit_Framework_ExpectationFailedException(
-              $failDescription,
+              $failureDescription,
               PHPUnit_Framework_ComparisonFailure::diffEqual($this->value, $other)
             );
         } else {
+            $failureDescription = self::negate($failureDescription);
+
             throw new PHPUnit_Framework_ExpectationFailedException(
-              $failDescription
+              $failureDescription
             );
         }
     }
