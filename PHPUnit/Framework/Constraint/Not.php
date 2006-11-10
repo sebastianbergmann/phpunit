@@ -124,21 +124,7 @@ class PHPUnit_Framework_Constraint_Not extends PHPUnit_Framework_Constraint
             break;
 
             default: {
-                return str_replace(
-                  array(
-                    'contains ',
-                    'exists ',
-                    'has ',
-                    'is ',
-                    'matches '
-                  ),
-                  array(
-                    'not contains ',
-                    'not exists ',
-                    'has not ',
-                    'is not ',
-                    'not matches '
-                  ),
+                return PHPUnit_Framework_Constraint::negate(
                   $this->constraint->toString()
                 );
             }
