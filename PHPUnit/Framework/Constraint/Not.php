@@ -69,7 +69,7 @@ PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
  * @since      Class available since Release 3.0.0
  */
 
-class PHPUnit_Framework_Constraint_Not implements PHPUnit_Framework_Constraint
+class PHPUnit_Framework_Constraint_Not extends PHPUnit_Framework_Constraint
 {
     private $constraint;
 
@@ -86,7 +86,7 @@ class PHPUnit_Framework_Constraint_Not implements PHPUnit_Framework_Constraint
      * Evaluates the constraint for parameter $other. Returns TRUE if the
      * constraint is met, FALSE otherwise.
      *
-     * @parameter mixed $other Value or object to evaluate.
+     * @param mixed $other Value or object to evaluate.
      * @return bool
      */
     public function evaluate($other)
@@ -115,11 +115,36 @@ class PHPUnit_Framework_Constraint_Not implements PHPUnit_Framework_Constraint
      */
     public function toString()
     {
-        return str_replace(
-          'not is',
-          'is not',
-          'not ' . $this->constraint->toString()
-        );
+        switch (get_class($this->constraint)) {
+            case 'PHPUnit_Framework_Constraint_And':
+            case 'PHPUnit_Framework_Constraint_Not':
+            case 'PHPUnit_Framework_Constraint_Or': {
+                return 'not( ' . $this->constraint->toString() . ' )';
+            }
+            break;
+
+            default: {
+                return str_replace(
+                  array(
+                    ' anything ',
+                    ' contains ',
+                    ' exists ',
+                    ' has ',
+                    ' is ',
+                    ' matches '
+                  ),
+                  array(
+                    ' nothing ',
+                    ' not contains ',
+                    ' not exists ',
+                    ' has not ',
+                    ' is not ',
+                    ' not matches '
+                  ),
+                  $this->constraint->toString()
+                );
+            }
+        }
     }
 }
 ?>

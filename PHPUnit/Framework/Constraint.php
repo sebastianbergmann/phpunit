@@ -53,15 +53,7 @@ PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
 if (!interface_exists('PHPUnit_Framework_Constraint')) {
 
 /**
- * Interface for constraints which are placed upon any value.
- *
- * The constraint can be used in method name matching and parameter value matching
- * to perform more advanced checking than simply matching two values with ==.
- *
- * A constraint must provides the following methods:
- * - evaluate() check if a given object meets the constraint. If it does
- *              not, fail() can be called to create an exception.
- * - toStrint() returns a description of the constraint.
+ * Abstract base class for constraints. which are placed upon any value.
  *
  * @category   Testing
  * @package    PHPUnit
@@ -73,16 +65,17 @@ if (!interface_exists('PHPUnit_Framework_Constraint')) {
  * @link       http://www.phpunit.de/
  * @since      Interface available since Release 3.0.0
  */
-interface PHPUnit_Framework_Constraint extends PHPUnit_Framework_SelfDescribing
+abstract class PHPUnit_Framework_Constraint implements PHPUnit_Framework_SelfDescribing
 {
     /**
      * Evaluates the constraint for parameter $other. Returns TRUE if the
      * constraint is met, FALSE otherwise.
      *
-     * @parameter mixed $other Value or object to evaluate.
+     * @param mixed $other Value or object to evaluate.
      * @return bool
+     * @abstract
      */
-    public function evaluate($other);
+    abstract public function evaluate($other);
 
     /**
      * Creates the appropriate exception for the constraint which can be caught
@@ -95,7 +88,46 @@ interface PHPUnit_Framework_Constraint extends PHPUnit_Framework_SelfDescribing
      * @param   boolean $not Flag to indicate negation.
      * @throws  PHPUnit_Framework_ExpectationFailedException
      */
-    public function fail($other, $description, $not = FALSE);
+    public function fail($other, $description, $not = FALSE)
+    {
+        if (!empty($description)) {
+            $description .= "\n";
+        }
+
+        $failureDescription = sprintf(
+          '%sFailed asserting that %s %s.',
+
+           $description,
+           PHPUnit_Util_Type::toString($other),
+           $this->toString()
+        );
+
+        if ($not) {
+            $failureDescription = str_replace(
+              array(
+                ' anything ',
+                ' contains ',
+                ' exists ',
+                ' has ',
+                ' is ',
+                ' matches '
+              ),
+              array(
+                ' nothing ',
+                ' not contains ',
+                ' not exists ',
+                ' has not ',
+                ' is not ',
+                ' not matches '
+              ),
+              $failureDescription
+            );
+        }
+
+        throw new PHPUnit_Framework_ExpectationFailedException(
+          $failureDescription
+        );
+    }
 }
 
 }

@@ -65,7 +65,7 @@ PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
  * @link       http://www.phpunit.de/
  * @since      Class available since Release 3.0.0
  */
-class PHPUnit_Framework_Constraint_IsType implements PHPUnit_Framework_Constraint
+class PHPUnit_Framework_Constraint_IsType extends PHPUnit_Framework_Constraint
 {
     private $type;
 
@@ -102,7 +102,7 @@ class PHPUnit_Framework_Constraint_IsType implements PHPUnit_Framework_Constrain
      * Evaluates the constraint for parameter $other. Returns TRUE if the
      * constraint is met, FALSE otherwise.
      *
-     * @parameter mixed $other Value or object to evaluate.
+     * @param mixed $other Value or object to evaluate.
      * @return bool
      */
     public function evaluate($other)
@@ -141,21 +141,6 @@ class PHPUnit_Framework_Constraint_IsType implements PHPUnit_Framework_Constrain
     }
 
     /**
-     * @param   mixed   $other The value passed to evaluate() which failed the
-     *                         constraint check.
-     * @param   string  $description A string with extra description of what was
-     *                               going on while the evaluation failed.
-     * @param   boolean $not Flag to indicate negation.
-     * @throws  PHPUnit_Framework_ExpectationFailedException
-     */
-    public function fail($other, $description, $not = FALSE)
-    {
-        throw new PHPUnit_Framework_ExpectationFailedException(
-          $description
-        );
-    }
-
-    /**
      * Returns a string representation of the constraint.
      *
      * @return string
@@ -164,7 +149,7 @@ class PHPUnit_Framework_Constraint_IsType implements PHPUnit_Framework_Constrain
     public function toString()
     {
         return sprintf(
-          'is type <%s>',
+          'is of type "%s"',
 
           $this->type
         );

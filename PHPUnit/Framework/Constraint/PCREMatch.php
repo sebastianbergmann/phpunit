@@ -69,7 +69,7 @@ PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
  * @link       http://www.phpunit.de/
  * @since      Class available since Release 3.0.0
  */
-class PHPUnit_Framework_Constraint_PCREMatch implements PHPUnit_Framework_Constraint
+class PHPUnit_Framework_Constraint_PCREMatch extends PHPUnit_Framework_Constraint
 {
     private $pattern;
 
@@ -82,39 +82,12 @@ class PHPUnit_Framework_Constraint_PCREMatch implements PHPUnit_Framework_Constr
      * Evaluates the constraint for parameter $other. Returns TRUE if the
      * constraint is met, FALSE otherwise.
      *
-     * @parameter mixed $other Value or object to evaluate.
+     * @param mixed $other Value or object to evaluate.
      * @return bool
      */
     public function evaluate($other)
     {
         return preg_match($this->pattern, $other);
-    }
-
-    /**
-     * @param   mixed   $other The value passed to evaluate() which failed the
-     *                         constraint check.
-     * @param   string  $description A string with extra description of what was
-     *                               going on while the evaluation failed.
-     * @param   boolean $not Flag to indicate negation.
-     * @throws  PHPUnit_Framework_ExpectationFailedException
-     */
-    public function fail($other, $description, $not = FALSE)
-    {
-        if (empty($description)) {
-            throw new PHPUnit_Framework_ExpectationFailedException(
-              sprintf(
-                '%sPCRE pattern "%s" did not find a match in %s',
-
-                $description,
-                $this->pattern,
-                PHPUnit_Util_Type::toString($other)
-              )
-            );
-        } else {
-            throw new PHPUnit_Framework_ExpectationFailedException(
-              $description
-            );
-        }
     }
 
     /**
@@ -126,7 +99,7 @@ class PHPUnit_Framework_Constraint_PCREMatch implements PHPUnit_Framework_Constr
     public function toString()
     {
         return sprintf(
-          'string matches PCRE pattern "%s"',
+          'matches PCRE pattern "%s"',
 
           $this->pattern
         );
