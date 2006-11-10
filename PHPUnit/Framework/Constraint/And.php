@@ -67,11 +67,11 @@ PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
  * @link       http://www.phpunit.de/
  * @since      Class available since Release 3.0.0
  */
-class PHPUnit_Framework_Constraint_And implements PHPUnit_Framework_Constraint
+class PHPUnit_Framework_Constraint_And extends PHPUnit_Framework_Constraint
 {
     private $constraints = array();
 
-    private $failedConstraint = NULL;
+    private $lastConstraint = NULL;
 
     public function setConstraints(array $constraints)
     {
@@ -90,17 +90,17 @@ class PHPUnit_Framework_Constraint_And implements PHPUnit_Framework_Constraint
      * Evaluates the constraint for parameter $other. Returns TRUE if the
      * constraint is met, FALSE otherwise.
      *
-     * @parameter mixed $other Value or object to evaluate.
+     * @param mixed $other Value or object to evaluate.
      * @return bool
      */
     public function evaluate($other)
     {
-        $this->failedConstraint = NULL;
+        $this->lastConstraint = NULL;
 
-        foreach($this->constraints as $key => $constraint) {
+        foreach($this->constraints as $constraint) {
+            $this->lastConstraint = $constraint;
+
             if (!$constraint->evaluate($other)) {
-                $this->failedConstraint = $constraint;
-
                 return FALSE;
             }
         }
@@ -118,28 +118,7 @@ class PHPUnit_Framework_Constraint_And implements PHPUnit_Framework_Constraint
      */
     public function fail($other, $description, $not = FALSE)
     {
-        if (!empty($description)) {
-            $description .= "\n";
-        }
-
-        $description = sprintf(
-          "%sExpected that %s %s",
-
-          $description,
-          PHPUnit_Util_Type::toString($other),
-          $this->toString()
-        );
-
-        if ($this->failedConstraint !== NULL) {
-            $this->failedConstraint->fail(
-              $other,
-              $description
-            );
-        } else {
-            throw new PHPUnit_Framework_ExpectationFailedException(
-              $description
-            );
-        }
+        $this->lastConstraint->fail($other, $description, $not);
     }
 
     /**

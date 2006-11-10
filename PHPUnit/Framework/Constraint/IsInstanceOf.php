@@ -66,7 +66,7 @@ PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
  * @link       http://www.phpunit.de/
  * @since      Class available since Release 3.0.0
  */
-class PHPUnit_Framework_Constraint_IsInstanceOf implements PHPUnit_Framework_Constraint
+class PHPUnit_Framework_Constraint_IsInstanceOf extends PHPUnit_Framework_Constraint
 {
     private $className;
 
@@ -79,49 +79,12 @@ class PHPUnit_Framework_Constraint_IsInstanceOf implements PHPUnit_Framework_Con
      * Evaluates the constraint for parameter $other. Returns TRUE if the
      * constraint is met, FALSE otherwise.
      *
-     * @parameter mixed $other Value or object to evaluate.
+     * @param mixed $other Value or object to evaluate.
      * @return bool
      */
     public function evaluate($other)
     {
         return ($other instanceof $this->className);
-    }
-
-    /**
-     * @param   mixed   $other The value passed to evaluate() which failed the
-     *                         constraint check.
-     * @param   string  $description A string with extra description of what was
-     *                               going on while the evaluation failed.
-     * @param   boolean $not Flag to indicate negation.
-     * @throws  PHPUnit_Framework_ExpectationFailedException
-     */
-    public function fail($other, $description, $not = FALSE)
-    {
-        if (!empty($description)) {
-            $description .= "\n";
-        }
-
-        if (!is_object($other)) {
-            throw new PHPUnit_Framework_ExpectationFailedException(
-              sprintf(
-                '%sExpected object of class "%s", got %s.',
-
-                $description,
-                $this->className,
-                PHPUnit_Util_Type::toString($other)
-              )
-            );
-        } else {
-            throw new PHPUnit_Framework_ExpectationFailedException(
-              sprintf(
-                '%sExpected object of class "%s", got object of class "%s".',
-
-                $description,
-                $this->className,
-                get_class($other)
-              )
-            );
-        }
     }
 
     /**
@@ -133,7 +96,7 @@ class PHPUnit_Framework_Constraint_IsInstanceOf implements PHPUnit_Framework_Con
     public function toString()
     {
         return sprintf(
-          'is instance of <%s>',
+          'is instance of class "%s"',
 
           $this->className
         );

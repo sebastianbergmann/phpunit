@@ -46,6 +46,7 @@
 
 require_once 'PHPUnit/Framework.php';
 require_once 'PHPUnit/Util/Filter.php';
+require_once 'PHPUnit/Util/Type.php';
 
 PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
 
@@ -61,7 +62,7 @@ PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
  * @link       http://www.phpunit.de/
  * @since      Class available since Release 3.0.0
  */
-class PHPUnit_Framework_Constraint_TraversableContains implements PHPUnit_Framework_Constraint
+class PHPUnit_Framework_Constraint_TraversableContains extends PHPUnit_Framework_Constraint
 {
     private $value;
 
@@ -74,7 +75,7 @@ class PHPUnit_Framework_Constraint_TraversableContains implements PHPUnit_Framew
      * Evaluates the constraint for parameter $other. Returns TRUE if the
      * constraint is met, FALSE otherwise.
      *
-     * @parameter mixed $other Value or object to evaluate.
+     * @param mixed $other Value or object to evaluate.
      * @return bool
      */
     public function evaluate($other)
@@ -92,28 +93,6 @@ class PHPUnit_Framework_Constraint_TraversableContains implements PHPUnit_Framew
     }
 
     /**
-     * @param   mixed   $other The value passed to evaluate() which failed the
-     *                         constraint check.
-     * @param   string  $description A string with extra description of what was
-     *                               going on while the evaluation failed.
-     * @param   boolean $not Flag to indicate negation.
-     * @throws  PHPUnit_Framework_ExpectationFailedException
-     */
-    public function fail($other, $description, $not = FALSE)
-    {
-        throw new PHPUnit_Framework_ExpectationFailedException(
-          sprintf(
-            "%s\nexpected value <%s:%s> not found in object <%s>",
-
-            $description,
-            gettype($this->value),
-            print_r($this->value, TRUE),
-            print_r($other, TRUE)
-          )
-        );
-    }
-
-    /**
      * Returns a string representation of the constraint.
      *
      * @return string
@@ -121,12 +100,7 @@ class PHPUnit_Framework_Constraint_TraversableContains implements PHPUnit_Framew
      */
     public function toString()
     {
-        return sprintf(
-          'contains value <%s:%s>',
-
-          gettype($this->value),
-          print_r($this->value, TRUE)
-        );
+        return 'contains ' . PHPUnit_Util_Type::toString($this->value);
     }
 }
 ?>

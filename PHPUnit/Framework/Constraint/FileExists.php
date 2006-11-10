@@ -65,13 +65,13 @@ PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
  * @link       http://www.phpunit.de/
  * @since      Class available since Release 3.0.0
  */
-class PHPUnit_Framework_Constraint_FileExists implements PHPUnit_Framework_Constraint
+class PHPUnit_Framework_Constraint_FileExists extends PHPUnit_Framework_Constraint
 {
     /**
      * Evaluates the constraint for parameter $other. Returns TRUE if the
      * constraint is met, FALSE otherwise.
      *
-     * @parameter mixed $other Value or object to evaluate.
+     * @param mixed $other Value or object to evaluate.
      * @return bool
      */
     public function evaluate($other)
@@ -95,10 +95,10 @@ class PHPUnit_Framework_Constraint_FileExists implements PHPUnit_Framework_Const
 
         throw new PHPUnit_Framework_ExpectationFailedException(
           sprintf(
-            '%sFile "%s" does not exist.',
+            '%sFailed asserting that file "%s" exists.',
 
-            $description,
-            $other
+             $description,
+             $other
           )
         );
     }

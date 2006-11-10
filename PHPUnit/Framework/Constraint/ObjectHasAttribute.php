@@ -65,7 +65,7 @@ PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
  * @link       http://www.phpunit.de/
  * @since      Class available since Release 3.0.0
  */
-class PHPUnit_Framework_Constraint_ObjectHasAttribute implements PHPUnit_Framework_Constraint
+class PHPUnit_Framework_Constraint_ObjectHasAttribute extends PHPUnit_Framework_Constraint
 {
     private $attributeName;
 
@@ -78,7 +78,7 @@ class PHPUnit_Framework_Constraint_ObjectHasAttribute implements PHPUnit_Framewo
      * Evaluates the constraint for parameter $other. Returns TRUE if the
      * constraint is met, FALSE otherwise.
      *
-     * @parameter mixed $other Value or object to evaluate.
+     * @param mixed $other Value or object to evaluate.
      * @return bool
      */
     public function evaluate($other)
@@ -86,31 +86,6 @@ class PHPUnit_Framework_Constraint_ObjectHasAttribute implements PHPUnit_Framewo
         $object = new ReflectionObject($other);
 
         return $object->hasProperty($this->attributeName);
-    }
-
-    /**
-     * @param   mixed   $other The value passed to evaluate() which failed the
-     *                         constraint check.
-     * @param   string  $description A string with extra description of what was
-     *                               going on while the evaluation failed.
-     * @param   boolean $not Flag to indicate negation.
-     * @throws  PHPUnit_Framework_ExpectationFailedException
-     */
-    public function fail($other, $description, $not = FALSE)
-    {
-        if (!empty($description)) {
-            $description .= "\n";
-        }
-
-        throw new PHPUnit_Framework_ExpectationFailedException(
-          sprintf(
-            '%sExpected attribute "%s" not found in %s.',
-
-            $description,
-            $this->attributeName,
-            PHPUnit_Util_Type::toString($other)
-          )
-        );
     }
 
     /**
@@ -122,7 +97,7 @@ class PHPUnit_Framework_Constraint_ObjectHasAttribute implements PHPUnit_Framewo
     public function toString()
     {
         return sprintf(
-          'object has attribute "%s"',
+          'has attribute "%s"',
 
           $this->attributeName
         );
