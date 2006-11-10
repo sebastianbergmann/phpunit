@@ -126,20 +126,20 @@ class PHPUnit_Framework_Constraint_Not extends PHPUnit_Framework_Constraint
             default: {
                 return str_replace(
                   array(
-                    ' anything ',
-                    ' contains ',
-                    ' exists ',
-                    ' has ',
-                    ' is ',
-                    ' matches '
+                    'anything ',
+                    'contains ',
+                    'exists ',
+                    'has ',
+                    'is ',
+                    'matches '
                   ),
                   array(
-                    ' nothing ',
-                    ' not contains ',
-                    ' not exists ',
-                    ' has not ',
-                    ' is not ',
-                    ' not matches '
+                    'nothing ',
+                    'not contains ',
+                    'not exists ',
+                    'has not ',
+                    'is not ',
+                    'not matches '
                   ),
                   $this->constraint->toString()
                 );
