@@ -105,20 +105,18 @@ abstract class PHPUnit_Framework_Constraint implements PHPUnit_Framework_SelfDes
         if ($not) {
             $failureDescription = str_replace(
               array(
-                ' anything ',
-                ' contains ',
-                ' exists ',
-                ' has ',
-                ' is ',
-                ' matches '
+                'contains ',
+                'exists ',
+                'has ',
+                'is ',
+                'matches '
               ),
               array(
-                ' nothing ',
-                ' not contains ',
-                ' not exists ',
-                ' has not ',
-                ' is not ',
-                ' not matches '
+                'not contains ',
+                'not exists ',
+                'has not ',
+                'is not ',
+                'not matches '
               ),
               $failureDescription
             );
