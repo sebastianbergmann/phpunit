@@ -141,7 +141,7 @@ class PHPUnit_Framework_Constraint_IsEqual implements PHPUnit_Framework_Constrai
         } else {
             if ($this->delta != 0) {
                 $delta = sprintf(
-                  ' with delta <%d>',
+                  ' with delta <%f>',
 
                   $this->delta
                 );
