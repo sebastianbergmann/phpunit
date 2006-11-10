@@ -90,14 +90,16 @@ abstract class PHPUnit_Framework_Constraint implements PHPUnit_Framework_SelfDes
      */
     public function fail($other, $description, $not = FALSE)
     {
-        if (!empty($description)) {
-            $description .= "\n";
-        }
+        throw new PHPUnit_Framework_ExpectationFailedException(
+          $this->failureDescription($other, $description, $not)
+        );
+    }
 
+    protected function failureDescription($other, $description, $not)
+    {
         $failureDescription = sprintf(
-          '%sFailed asserting that %s %s.',
+          'Failed asserting that %s %s.',
 
-           $description,
            PHPUnit_Util_Type::toString($other),
            $this->toString()
         );
@@ -106,9 +108,11 @@ abstract class PHPUnit_Framework_Constraint implements PHPUnit_Framework_SelfDes
             $failureDescription = self::negate($failureDescription);
         }
 
-        throw new PHPUnit_Framework_ExpectationFailedException(
-          $failureDescription
-        );
+        if (!empty($description)) {
+            $failureDescription = $description . "\n" . $failureDescription;
+        }
+
+        return $failureDescription;
     }
 
     public static function negate($string)
@@ -122,11 +126,11 @@ abstract class PHPUnit_Framework_Constraint implements PHPUnit_Framework_SelfDes
             'matches '
           ),
           array(
-            'not contains ',
-            'not exists ',
-            'has not ',
+            'does not contain ',
+            'does not exist ',
+            'does not have ',
             'is not ',
-            'not matches '
+            'does not match '
           ),
           $string
         );
