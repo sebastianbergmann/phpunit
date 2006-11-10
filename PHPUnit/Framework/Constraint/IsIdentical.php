@@ -105,7 +105,7 @@ class PHPUnit_Framework_Constraint_IsIdentical extends PHPUnit_Framework_Constra
             $description .= "\n";
         }
 
-        $failDescription = sprintf(
+        $failureDescription = sprintf(
           '%sFailed asserting that %s %s.',
 
            $description,
@@ -115,12 +115,12 @@ class PHPUnit_Framework_Constraint_IsIdentical extends PHPUnit_Framework_Constra
 
         if (!$not) {
             throw new PHPUnit_Framework_ExpectationFailedException(
-              $failDescription,
+              $failureDescription,
               PHPUnit_Framework_ComparisonFailure::diffIdentical($this->value, $other)
             );
         } else {
             throw new PHPUnit_Framework_ExpectationFailedException(
-              $failDescription
+              $failureDescription
             );
         }
     }
