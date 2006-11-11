@@ -111,7 +111,11 @@ class PHPUnit_Framework_Constraint_StringContains extends PHPUnit_Framework_Cons
             $string = strtolower($this->string);
         }
 
-        return 'contains ' . PHPUnit_Util_Type::toString($string);
+        return sprintf(
+          'contains "%s"',
+
+          $string
+        );
     }
 }
 ?>
