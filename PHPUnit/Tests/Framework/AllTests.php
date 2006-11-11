@@ -63,6 +63,7 @@ require_once 'PHPUnit/Util/Filter.php';
 
 require_once 'Framework/AssertTest.php';
 require_once 'Framework/ComparisonFailureTest.php';
+require_once 'Framework/ConstraintTest.php';
 require_once 'Framework/MockObjectTest.php';
 require_once 'Framework/SuiteTest.php';
 require_once 'Framework/TestCaseTest.php';
@@ -94,6 +95,7 @@ class Framework_AllTests
 
         $suite->addTestSuite('Framework_AssertTest');
         $suite->addTestSuite('Framework_ComparisonFailureTest');
+        $suite->addTestSuite('Framework_ConstraintTest');
         $suite->addTestSuite('Framework_MockObjectTest');
         $suite->addTestSuite('Framework_SuiteTest');
         $suite->addTestSuite('Framework_TestCaseTest');
