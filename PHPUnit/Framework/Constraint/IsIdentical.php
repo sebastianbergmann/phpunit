@@ -114,7 +114,7 @@ class PHPUnit_Framework_Constraint_IsIdentical extends PHPUnit_Framework_Constra
             );
         } else {
             throw new PHPUnit_Framework_ExpectationFailedException(
-              self::negate($failureDescription)
+              $failureDescription
             );
         }
     }
