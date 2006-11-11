@@ -120,14 +120,14 @@ abstract class PHPUnit_Framework_Constraint implements PHPUnit_Framework_SelfDes
         return str_replace(
           array(
             'contains ',
-            'exists ',
+            'exists',
             'has ',
             'is ',
             'matches '
           ),
           array(
             'does not contain ',
-            'does not exist ',
+            'does not exist',
             'does not have ',
             'is not ',
             'does not match '
