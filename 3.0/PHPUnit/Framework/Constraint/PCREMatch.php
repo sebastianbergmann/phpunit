@@ -87,7 +87,7 @@ class PHPUnit_Framework_Constraint_PCREMatch extends PHPUnit_Framework_Constrain
      */
     public function evaluate($other)
     {
-        return preg_match($this->pattern, $other);
+        return preg_match($this->pattern, $other) > 0;
     }
 
     /**
