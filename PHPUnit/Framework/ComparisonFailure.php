@@ -47,6 +47,7 @@
 
 require_once 'PHPUnit/Framework.php';
 require_once 'PHPUnit/Util/Filter.php';
+require_once 'PHPUnit/Util/Type.php';
 
 PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
 
@@ -200,7 +201,7 @@ abstract class PHPUnit_Framework_ComparisonFailure extends PHPUnit_Framework_Ass
             elseif (is_array($v1)) {
                 $v1 = 'array(...)';
             } else {
-                $v1 = print_r($v1, TRUE);
+                $v1 = PHPUnit_Util_Type::toString($v1);
             }
 
             $a2 = false;
@@ -217,14 +218,14 @@ abstract class PHPUnit_Framework_ComparisonFailure extends PHPUnit_Framework_Ass
                 elseif (is_array($v2)) {
                     $v2 = 'array(...)';
                 } else {
-                    $v2 = print_r($v2, TRUE);
+                    $v2 = PHPUnit_Util_Type::toString($v2);
                 }
             }
 
-            $text = 'array( ' . print_r($k1, TRUE) . ' => ' . $v1;
+            $text = 'array( ' . PHPUnit_Util_Type::toString($k1) . ' => ' . $v1;
 
             if ($a2 !== FALSE) {
-                $text .= ', ..., ' . print_r($k2, TRUE) . ' => ' . $v2 . ' )';
+                $text .= ', ..., ' . PHPUnit_Util_Type::toString($k2) . ' => ' . $v2 . ' )';
             } else {
                 $text .= ' )';
             }
@@ -236,7 +237,7 @@ abstract class PHPUnit_Framework_ComparisonFailure extends PHPUnit_Framework_Ass
             return 'class ' . get_class($value) . '(...)';
         }
 
-        return print_r($value, TRUE);
+        return PHPUnit_Util_Type::toString($value);
     }
 
     /**
@@ -251,9 +252,9 @@ abstract class PHPUnit_Framework_ComparisonFailure extends PHPUnit_Framework_Ass
         $string = preg_replace('#\n|\r\n|\r#', ' ', $string);
 
         if (strlen($string) > 14) {
-            return print_r(substr($string, 0, 7), TRUE) . '...' . print_r(substr($string, -7), TRUE);
+            return PHPUnit_Util_Type::toString(substr($string, 0, 7) . '...' . substr($string, -7));
         } else {
-            return print_r($string, TRUE);
+            return PHPUnit_Util_Type::toString($string);
         }
     }
 }
