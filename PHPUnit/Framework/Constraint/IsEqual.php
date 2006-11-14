@@ -176,15 +176,8 @@ class PHPUnit_Framework_Constraint_IsEqual extends PHPUnit_Framework_Constraint
             return TRUE;
         }
 
-        // Normal comparision for scalar values.
-        if ((!is_array($a) && !is_object($a)) ||
-            (!is_array($b) && !is_object($b))) {
-            if (is_numeric($a) && is_numeric($b)) {
-                // Optionally apply delta on numeric values.
-                return $this->numericComparison($a, $b);
-            } else {
-                return ($a == $b);
-            }
+        if (is_array($a) XOR is_array($b)) {
+            return FALSE;
         }
 
         if (is_object($a) XOR is_object($b)) {
@@ -194,6 +187,17 @@ class PHPUnit_Framework_Constraint_IsEqual extends PHPUnit_Framework_Constraint
         if (is_object($a) && is_object($b) &&
            (get_class($a) !== get_class($b))) {
             return FALSE;
+        }
+
+        // Normal comparision for scalar values.
+        if ((!is_array($a) && !is_object($a)) ||
+            (!is_array($b) && !is_object($b))) {
+            if (is_numeric($a) && is_numeric($b)) {
+                // Optionally apply delta on numeric values.
+                return $this->numericComparison($a, $b);
+            } else {
+                return ($a == $b);
+            }
         }
 
         if (is_object($a)) {
