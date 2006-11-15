@@ -37,7 +37,7 @@
  * @category   Testing
  * @package    PHPUnit
  * @author     Jan Borsodi <jb@ez.no>
- *             Sebastian Bergmann <sb@sebastian-bergmann.de>
+ * @author     Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @copyright  2002-2006 Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    SVN: $Id$
@@ -47,40 +47,69 @@
 
 require_once 'PHPUnit/Framework.php';
 require_once 'PHPUnit/Util/Filter.php';
+require_once 'PHPUnit/Util/Type.php';
 
 PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
 
-if (!interface_exists('PHPUnit_Framework_Constraint')) {
-
 /**
- * Abstract base class for constraints. which are placed upon any value.
+ * Constraint which will only evaluate to true if only one of the sub-constraints does the same.
+ *
+ * This means the constraint behaves like a logical xor. All parameters passed
+ * to the constructor will be considered a constraint to check.
  *
  * @category   Testing
  * @package    PHPUnit
  * @author     Jan Borsodi <jb@ez.no>
- *             Sebastian Bergmann <sb@sebastian-bergmann.de>
+ * @author     Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @copyright  2002-2006 Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    Release: @package_version@
  * @link       http://www.phpunit.de/
- * @since      Interface available since Release 3.0.0
+ * @since      Class available since Release 3.0.0
  */
-abstract class PHPUnit_Framework_Constraint implements PHPUnit_Framework_SelfDescribing
+class PHPUnit_Framework_Constraint_Xor extends PHPUnit_Framework_Constraint
 {
+    private $constraints = array();
+
+    public function setConstraints(array $constraints)
+    {
+        $this->constraints = array();
+
+        foreach($constraints as $key => $constraint) {
+            if (!($constraint instanceof PHPUnit_Framework_Constraint)) {
+                $constraint = new PHPUnit_Framework_Constraint_IsEqual($constraint);
+            }
+
+            $this->constraints[] = $constraint;
+        }
+    }
+
     /**
      * Evaluates the constraint for parameter $other. Returns TRUE if the
      * constraint is met, FALSE otherwise.
      *
      * @param mixed $other Value or object to evaluate.
      * @return bool
-     * @abstract
      */
-    abstract public function evaluate($other);
+    public function evaluate($other)
+    {
+        $result = FALSE;
+
+        foreach($this->constraints as $constraint) {
+            if ($constraint->evaluate($other)) {
+                if ( $result )
+                {
+                    return FALSE;
+                }
+
+                $result = TRUE;
+            }
+        }
+
+        return $result;
+    }
 
     /**
-     * Creates the appropriate exception for the constraint which can be caught
-     * by the unit test system. This can be called if a call to evaluate() fails.
-     *
      * @param   mixed   $other The value passed to evaluate() which failed the
      *                         constraint check.
      * @param   string  $description A string with extra description of what was
@@ -90,70 +119,39 @@ abstract class PHPUnit_Framework_Constraint implements PHPUnit_Framework_SelfDes
      */
     public function fail($other, $description, $not = FALSE)
     {
-        throw new PHPUnit_Framework_ExpectationFailedException(
-          $this->failureDescription($other, $description, $not)
-        );
-    }
-
-    protected function failureDescription($other, $description, $not)
-    {
-        $failureDescription = sprintf(
-          'Failed asserting that %s %s.',
-
-           PHPUnit_Util_Type::toString($other),
-           $this->toString()
-        );
-
-        if ($not) {
-            $failureDescription = self::negate($failureDescription);
-        }
-
         if (!empty($description)) {
-            $failureDescription = $description . "\n" . $failureDescription;
+            $description .= "\n";
         }
 
-        return $failureDescription;
-    }
+        throw new PHPUnit_Framework_ExpectationFailedException(
+          sprintf(
+            '%sFailed asserting that %s.',
 
-    public static function negate($string)
-    {
-        return str_replace(
-          array(
-            'contains ',
-            'exists',
-            'has ',
-            'is ',
-            'matches '
-          ),
-          array(
-            'does not contain ',
-            'does not exist',
-            'does not have ',
-            'is not ',
-            'does not match '
-          ),
-          $string
+             $description,
+             $this->toString()
+          )
         );
     }
-}
 
-}
+    /**
+     * Returns a string representation of the constraint.
+     *
+     * @return string
+     * @access public
+     */
+    public function toString()
+    {
+        $text = '';
 
-require_once 'PHPUnit/Framework/Constraint/And.php';
-require_once 'PHPUnit/Framework/Constraint/ArrayHasKey.php';
-require_once 'PHPUnit/Framework/Constraint/FileExists.php';
-require_once 'PHPUnit/Framework/Constraint/GreaterThan.php';
-require_once 'PHPUnit/Framework/Constraint/IsAnything.php';
-require_once 'PHPUnit/Framework/Constraint/IsEqual.php';
-require_once 'PHPUnit/Framework/Constraint/IsIdentical.php';
-require_once 'PHPUnit/Framework/Constraint/IsInstanceOf.php';
-require_once 'PHPUnit/Framework/Constraint/IsType.php';
-require_once 'PHPUnit/Framework/Constraint/LessThan.php';
-require_once 'PHPUnit/Framework/Constraint/Not.php';
-require_once 'PHPUnit/Framework/Constraint/ObjectHasAttribute.php';
-require_once 'PHPUnit/Framework/Constraint/Or.php';
-require_once 'PHPUnit/Framework/Constraint/PCREMatch.php';
-require_once 'PHPUnit/Framework/Constraint/StringContains.php';
-require_once 'PHPUnit/Framework/Constraint/TraversableContains.php';
-require_once 'PHPUnit/Framework/Constraint/Xor.php';
+        foreach($this->constraints as $key => $constraint) {
+            if ($key > 0) {
+                $text .= ' xor ';
+            }
+
+            $text .= $constraint->toString();
+        }
+
+        return $text;
+    }
+}
 ?>
