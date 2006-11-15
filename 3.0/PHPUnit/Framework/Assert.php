@@ -94,9 +94,7 @@ class PHPUnit_Framework_Assert
 
         $constraint = new PHPUnit_Framework_Constraint_ArrayHasKey($key);
 
-        if (!$constraint->evaluate($array)) {
-            $constraint->fail($array, $message);
-        }
+        self::assertThat($array, $constraint, $message);
     }
 
     /**
@@ -119,9 +117,7 @@ class PHPUnit_Framework_Assert
           new PHPUnit_Framework_Constraint_ArrayHasKey($key)
         );
 
-        if (!$constraint->evaluate($array)) {
-            $constraint->fail($array, $message);
-        }
+        self::assertThat($array, $constraint, $message);
     }
 
     /**
@@ -149,9 +145,7 @@ class PHPUnit_Framework_Assert
             throw new InvalidArgumentException;
         }
 
-        if (!$constraint->evaluate($haystack)) {
-            $constraint->fail($haystack, $message);
-        }
+        self::assertThat($haystack, $constraint, $message);
     }
 
     /**
@@ -208,9 +202,7 @@ class PHPUnit_Framework_Assert
             throw new InvalidArgumentException;
         }
 
-        if (!$constraint->evaluate($haystack)) {
-            $constraint->fail($haystack, $message);
-        }
+        self::assertThat($haystack, $constraint, $message);
     }
 
     /**
@@ -257,9 +249,7 @@ class PHPUnit_Framework_Assert
           $maxDepth
         );
 
-        if (!$constraint->evaluate($actual)) {
-            $constraint->fail($actual, $message);
-        }
+        self::assertThat($actual, $constraint, $message);
     }
 
     /**
@@ -311,9 +301,7 @@ class PHPUnit_Framework_Assert
           )
         );
 
-        if (!$constraint->evaluate($actual)) {
-            $constraint->fail($actual, $message);
-        }
+        self::assertThat($actual, $constraint, $message);
     }
 
     /**
@@ -360,9 +348,7 @@ class PHPUnit_Framework_Assert
 
         $constraint = new PHPUnit_Framework_Constraint_FileExists;
 
-        if (!$constraint->evaluate($filename)) {
-            $constraint->fail($filename, $message);
-        }
+        self::assertThat($filename, $constraint, $message);
     }
 
     /**
@@ -384,9 +370,7 @@ class PHPUnit_Framework_Assert
           new PHPUnit_Framework_Constraint_FileExists
         );
 
-        if (!$constraint->evaluate($filename)) {
-            $constraint->fail($filename, $message);
-        }
+        self::assertThat($filename, $constraint, $message);
     }
 
     /**
@@ -407,9 +391,7 @@ class PHPUnit_Framework_Assert
 
         $constraint = new PHPUnit_Framework_Constraint_IsIdentical(TRUE);
 
-        if (!$constraint->evaluate($condition)) {
-            $constraint->fail($condition, $message);
-        }
+        self::assertThat($condition, $constraint, $message);
     }
 
     /**
@@ -430,9 +412,7 @@ class PHPUnit_Framework_Assert
 
         $constraint = new PHPUnit_Framework_Constraint_IsIdentical(FALSE);
 
-        if (!$constraint->evaluate($condition)) {
-            $constraint->fail($condition, $message);
-        }
+        self::assertThat($condition, $constraint, $message);
     }
 
     /**
@@ -449,9 +429,7 @@ class PHPUnit_Framework_Assert
           new PHPUnit_Framework_Constraint_IsIdentical(NULL)
         );
 
-        if (!$constraint->evaluate($actual)) {
-            $constraint->fail($actual, $message);
-        }
+        self::assertThat($actual, $constraint, $message);
     }
 
     /**
@@ -466,9 +444,7 @@ class PHPUnit_Framework_Assert
     {
         $constraint = new PHPUnit_Framework_Constraint_IsIdentical(NULL);
 
-        if (!$constraint->evaluate($actual)) {
-            $constraint->fail($actual, $message);
-        }
+        self::assertThat($actual, $constraint, $message);
     }
 
     /**
@@ -489,9 +465,7 @@ class PHPUnit_Framework_Assert
 
         $constraint = new PHPUnit_Framework_Constraint_ObjectHasAttribute($attributeName);
 
-        if (!$constraint->evaluate($object)) {
-            $constraint->fail($object, $message);
-        }
+        self::assertThat($object, $constraint, $message);
     }
 
     /**
@@ -514,9 +488,7 @@ class PHPUnit_Framework_Assert
           new PHPUnit_Framework_Constraint_ObjectHasAttribute($attributeName)
         );
 
-        if (!$constraint->evaluate($object)) {
-            $constraint->fail($object, $message);
-        }
+        self::assertThat($object, $constraint, $message);
     }
 
     /**
@@ -534,9 +506,7 @@ class PHPUnit_Framework_Assert
     {
         $constraint = new PHPUnit_Framework_Constraint_IsIdentical($expected);
 
-        if (!$constraint->evaluate($actual)) {
-            $constraint->fail($actual, $message);
-        }
+        self::assertThat($actual, $constraint, $message);
     }
 
     /**
@@ -580,9 +550,7 @@ class PHPUnit_Framework_Assert
           new PHPUnit_Framework_Constraint_IsIdentical($expected)
         );
 
-        if (!$constraint->evaluate($actual)) {
-            $constraint->fail($actual, $message);
-        }
+        self::assertThat($actual, $constraint, $message);
     }
 
     /**
@@ -633,9 +601,7 @@ class PHPUnit_Framework_Assert
             throw new InvalidArgumentException;
         }
 
-        if (!$constraint->evaluate($actual)) {
-            $constraint->fail($actual, $message);
-        }
+        self::assertThat($actual, $constraint, $message);
     }
 
     /**
@@ -665,9 +631,7 @@ class PHPUnit_Framework_Assert
             throw new InvalidArgumentException;
         }
 
-        if (!$constraint->evaluate($actual)) {
-            $constraint->fail($actual, $message);
-        }
+        self::assertThat($actual, $constraint, $message);
     }
 
     /**
@@ -687,9 +651,7 @@ class PHPUnit_Framework_Assert
 
         $constraint = new PHPUnit_Framework_Constraint_PCREMatch($pattern);
 
-        if (!$constraint->evaluate($string)) {
-            $constraint->fail($string, $message);
-        }
+        self::assertThat($string, $constraint, $message);
     }
 
     /**
@@ -712,9 +674,7 @@ class PHPUnit_Framework_Assert
           new PHPUnit_Framework_Constraint_PCREMatch($pattern)
         );
 
-        if (!$constraint->evaluate($string)) {
-            $constraint->fail($string, $message);
-        }
+        self::assertThat($string, $constraint, $message);
     }
 
     /**
