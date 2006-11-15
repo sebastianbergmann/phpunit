@@ -745,6 +745,24 @@ class PHPUnit_Framework_Assert
     }
 
     /**
+     * Logical XOR.
+     *
+     * @return PHPUnit_Framework_Constraint_Xor
+     * @access public
+     * @since  Method available since Release 3.0.0
+     * @static
+     */
+    public static function logicalXor()
+    {
+        $constraints = func_get_args();
+
+        $constraint = new PHPUnit_Framework_Constraint_Xor;
+        $constraint->setConstraints($constraints);
+
+        return $constraint;
+    }
+
+    /**
      *
      *
      * @return PHPUnit_Framework_Constraint_IsAnything
