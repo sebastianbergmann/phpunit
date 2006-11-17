@@ -51,7 +51,7 @@ require_once 'PHPUnit/Util/Filter.php';
 PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
 
 /**
- * Constraint which checks if a given file exists.
+ * Constraint that checks if the file(name) that it is evaluated for exists.
  *
  * The file path to check is passed as $other in evaluate().
  *

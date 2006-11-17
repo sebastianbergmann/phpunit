@@ -52,7 +52,8 @@ require_once 'PHPUnit/Util/Type.php';
 PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
 
 /**
- * Constraint which performas a PCRE pattern match with another value.
+ * Constraint that asserts that the string it is evaluated for matches
+ * a regular expression.
  *
  * Checks a given value using the Perl Compatible Regular Expression extension
  * in PHP. The pattern is matched by executing preg_match().
