@@ -51,7 +51,8 @@ require_once 'PHPUnit/Util/Type.php';
 PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
 
 /**
- *
+ * Constraint that asserts that the Traversable it is applied to contains
+ * a given value.
  *
  * @category   Testing
  * @package    PHPUnit
