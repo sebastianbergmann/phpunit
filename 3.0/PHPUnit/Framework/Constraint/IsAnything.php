@@ -51,7 +51,7 @@ require_once 'PHPUnit/Util/Filter.php';
 PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
 
 /**
- * Constraint which accepts any input value.
+ * Constraint that accepts any input value.
  *
  * @category   Testing
  * @package    PHPUnit

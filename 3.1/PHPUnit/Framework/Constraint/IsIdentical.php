@@ -52,7 +52,7 @@ require_once 'PHPUnit/Util/Type.php';
 PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
 
 /**
- * Constraint which checks if one value is identical to another.
+ * Constraint that asserts that one value is identical to another.
  *
  * Identical check is performed with PHP's === operator, the operator is explained
  * in detail at {@url http://www.php.net/manual/en/types.comparisons.php}.

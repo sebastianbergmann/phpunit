@@ -52,9 +52,8 @@ require_once 'PHPUnit/Util/Type.php';
 PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
 
 /**
- * Constraint which checks if one value is less than another.
- *
- * The expected value is passed in the constructor.
+ * Constraint that asserts that the value it is evaluated for is less than
+ * a given value.
  *
  * @category   Testing
  * @package    PHPUnit

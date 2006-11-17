@@ -51,12 +51,7 @@ require_once 'PHPUnit/Util/Filter.php';
 PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
 
 /**
- * Constraint which inverts the evaluation result of a sub-constraint.
- *
- * This class will evaluate the sub-constraint and invert (not) the value,
- * this means true becomes false and false becomes true.
- *
- * The sub-constrainted is passed in the constructor.
+ * Logical NOT.
  *
  * @category   Testing
  * @package    PHPUnit

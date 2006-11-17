@@ -52,7 +52,8 @@ require_once 'PHPUnit/Util/Type.php';
 PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
 
 /**
- * Constraint which checks if a certain string is found in the input string.
+ * Constraint that asserts that the string it is evaluated for contains
+ * a given string.
  *
  * Uses strpos() to find the position of the string in the input, if not found
  * the evaluaton fails.

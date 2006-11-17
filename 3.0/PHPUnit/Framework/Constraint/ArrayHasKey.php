@@ -52,7 +52,7 @@ require_once 'PHPUnit/Util/Type.php';
 PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
 
 /**
- * Constraint which checks if a certain key is found in the input array.
+ * Constraint that asserts that the array it is evaluated for has a given key.
  *
  * Uses array_key_exists() to check if the key is found in the input array, if not
  * found the evaluaton fails.

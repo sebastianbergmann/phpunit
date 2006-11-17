@@ -52,7 +52,8 @@ require_once 'PHPUnit/Util/Type.php';
 PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
 
 /**
- * Constraint which checks if an object has a certain attribute.
+ * Constraint that asserts that the object it is evaluated for has a given
+ * attribute.
  *
  * The attribute name is passed in the constructor.
  *
