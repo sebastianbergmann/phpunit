@@ -52,7 +52,8 @@ require_once 'PHPUnit/Util/Type.php';
 PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
 
 /**
- * Constraint which checks if one object is and instance of a given class.
+ * Constraint that asserts that the object it is evaluated for is an instance
+ * of a given class.
  *
  * The expected class name is passed in the constructor.
  *

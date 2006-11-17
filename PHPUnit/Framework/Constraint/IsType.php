@@ -51,7 +51,8 @@ require_once 'PHPUnit/Util/Filter.php';
 PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
 
 /**
- * Constraint which checks if a value is of a specified type.
+ * Constraint that asserts that the value it is evaluated for is of a
+ * specified type.
  *
  * The expected value is passed in the constructor.
  *

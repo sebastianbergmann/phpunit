@@ -52,10 +52,7 @@ require_once 'PHPUnit/Util/Type.php';
 PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
 
 /**
- * Constraint which will only evaluate to true if at least one of the sub-constraints does the same.
- *
- * This means the constraint behaves like a logical or. All parameters passed
- * to the constructor will be considered a constraint to check.
+ * Logical OR.
  *
  * @category   Testing
  * @package    PHPUnit
