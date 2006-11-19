@@ -273,6 +273,7 @@ class PHPUnit_Framework_MockObject_Matcher implements PHPUnit_Framework_MockObje
     }
 }
 
+require_once 'PHPUnit/Framework/MockObject/Matcher/AnyInvokedCount.php';
 require_once 'PHPUnit/Framework/MockObject/Matcher/AnyParameters.php';
 require_once 'PHPUnit/Framework/MockObject/Matcher/InvokedAtIndex.php';
 require_once 'PHPUnit/Framework/MockObject/Matcher/InvokedAtLeastOnce.php';
