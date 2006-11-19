@@ -70,7 +70,7 @@ class PHPUnit_Framework_MockObject_Matcher_InvokedAtLeastOnce extends PHPUnit_Fr
 {
     public function toString()
     {
-        return 'invoke at least once';
+        return 'invoked at least once';
     }
 
     public function verify()
