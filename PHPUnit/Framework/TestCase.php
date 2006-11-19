@@ -366,6 +366,19 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
 
     /**
      * Returns a matcher that matches when the method it is evaluated for
+     * is executed zero or more times.
+     *
+     * @return PHPUnit_Framework_MockObject_Matcher_AnyInvokedCount
+     * @access protected
+     * @since  Method available since Release 3.0.0
+     */
+    protected function any()
+    {
+        return new PHPUnit_Framework_MockObject_Matcher_AnyInvokedCount;
+    }
+
+    /**
+     * Returns a matcher that matches when the method it is evaluated for
      * is never executed.
      *
      * @return PHPUnit_Framework_MockObject_Matcher_InvokedCount
