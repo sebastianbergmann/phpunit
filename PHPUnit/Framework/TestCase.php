@@ -365,7 +365,8 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
     }
 
     /**
-     *
+     * Returns a matcher that matches when the method it is evaluated for
+     * is never executed.
      *
      * @return PHPUnit_Framework_MockObject_Matcher_InvokedCount
      * @access protected
@@ -377,7 +378,8 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
     }
 
     /**
-     *
+     * Returns a matcher that matches when the method it is evaluated for
+     * is executed at least once.
      *
      * @return PHPUnit_Framework_MockObject_Matcher_InvokedAtLeastOnce
      * @access protected
@@ -389,7 +391,8 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
     }
 
     /**
-     *
+     * Returns a matcher that matches when the method it is evaluated for
+     * is executed exactly once.
      *
      * @return PHPUnit_Framework_MockObject_Matcher_InvokedCount
      * @access protected
@@ -401,7 +404,8 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
     }
 
     /**
-     *
+     * Returns a matcher that matches when the method it is evaluated for
+     * is executed exactly $count times.
      *
      * @param  integer $count
      * @return PHPUnit_Framework_MockObject_Matcher_InvokedCount
@@ -414,7 +418,8 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
     }
 
     /**
-     *
+     * Returns a matcher that matches when the method it is evaluated for
+     * is invoked at the given $index.
      *
      * @param  integer $index
      * @return PHPUnit_Framework_MockObject_Matcher_InvokedAtIndex
