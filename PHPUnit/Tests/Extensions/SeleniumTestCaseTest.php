@@ -45,12 +45,10 @@
  * @since      File available since Release 3.0.0
  */
 
-require_once 'PHPUnit/Framework/TestCase.php';
-
 require_once 'PHPUnit/Extensions/SeleniumTestCase.php';
 
 /**
- *
+ * Tests for PHPUnit_Extensions_SeleniumTestCase.
  *
  * @category   Testing
  * @package    PHPUnit
@@ -72,7 +70,7 @@ class Extensions_SeleniumTestCaseTest extends PHPUnit_Extensions_SeleniumTestCas
             );
         }
 
-        if (!class_exists('Testing_Selenium')) {
+        if (!class_exists('Testing_Selenium', FALSE)) {
             $this->markTestSkipped(
               'The PHP bindings for Selenium RC are not installed.'
             );
@@ -81,18 +79,46 @@ class Extensions_SeleniumTestCaseTest extends PHPUnit_Extensions_SeleniumTestCas
         $this->setHost(PHPUNIT_TESTSUITE_EXTENSION_SELENIUM_HOST);
         $this->setPort(PHPUNIT_TESTSUITE_EXTENSION_SELENIUM_PORT);
         $this->setBrowser(PHPUNIT_TESTSUITE_EXTENSION_SELENIUM_BROWSER);
-        $this->setBrowserUrl('http://www.example.com/');
+        $this->setBrowserUrl('http://www.openqa.org/');
         $this->setTimeout(10000);
     }
 
-    public function testAssertLocationEquals()
+    public function testOpen()
     {
-        $this->open('http://www.example.com/');
+        $this->open('http://www.openqa.org/selenium-core/demo/passing/html/test_open.html');
+        $this->assertTextPresent('This is a test of the open command.');
+    }
 
-        $this->assertLocationEquals('http://www.example.com/');
+    public function testClick()
+    {
+        $this->open('http://www.openqa.org/selenium-core/demo/passing/html/test_click_page1.html');
+        $this->assertElementContainsText('nextPage', 'Click here for next page');
+        $this->clickAndWait('nextPage');
+        $this->assertLocationEquals('http://www.openqa.org/selenium-core/demo/passing/html/test_click_page2.html');
+        $this->assertTextPresent('This is a test of the click command.');
+        $this->clickAndWait('previousPage');
+        $this->assertLocationEquals('http://www.openqa.org/selenium-core/demo/passing/html/test_click_page1.html');
+    }
+
+    public function testType()
+    {
+        $this->open('http://www.openqa.org/selenium-core/demo/passing/html/test_type_page1.html');
+        $this->assertElementPresent('username');
+        $this->type('username', 'TestUser');
+        $this->assertElementValueEquals('username', 'TestUser');
+        $this->assertElementPresent('password');
+        $this->type('password', 'testUserPassword');
+        $this->assertElementValueEquals('password', 'testUserPassword');
+        $this->clickAndWait('submitButton');
+        $this->assertTextPresent('Welcome, TestUser!');
+    }
+
+    public function testOpenFail()
+    {
+        $this->open('http://www.openqa.org/selenium-core/demo/failing/html/test_open.html');
 
         try {
-            $this->assertLocationEquals('http://www.beispiel.de/');
+            $this->assertTextPresent('This test has been modified so it will fail.');
         }
 
         catch (Exception $e) {
@@ -102,89 +128,43 @@ class Extensions_SeleniumTestCaseTest extends PHPUnit_Extensions_SeleniumTestCas
         $this->fail();
     }
 
-    public function testAssertLocationNotEquals()
+    public function testTypeFail()
     {
-        $this->open('http://www.example.com/');
-
-        $this->assertLocationNotEquals('http://www.beispiel.de/');
+        $this->open('http://www.openqa.org/selenium-core/demo/failing/html/test_type_page1.html');
+        $this->assertElementPresent('username');
+        $this->type('username', 'TestUser');
+        $this->assertElementValueEquals('username', 'TestUser');
+        $this->assertElementPresent('password');
+        $this->type('password', 'usersPassword');
 
         try {
-            $this->assertLocationNotEquals('http://www.example.com/');
+            $this->assertElementValueEquals('password', 'testUserPassword');
         }
 
         catch (Exception $e) {
             return;
         }
 
-        $this->fail();
+        $this->fail();  
     }
 
-    public function testAssertTitleEquals()
+    public function testInPlaceEditor()
     {
-        $this->open('http://www.example.com/');
-
-        $this->assertTitleEquals('Example Web Page');
-
-        try {
-            $this->assertTitleEquals('Beispiel Web Seite');
-        }
-
-        catch (Exception $e) {
-            return;
-        }
-
-        $this->fail();
-    }
-
-    public function testAssertTitleNotEquals()
-    {
-        $this->open('http://www.example.com/');
-
-        $this->assertTitleNotEquals('Beispiel Web Seite');
-
-        try {
-            $this->assertTitleNotEquals('Example Web Page');
-        }
-
-        catch (Exception $e) {
-            return;
-        }
-
-        $this->fail();
-    }
-
-    public function testAssertTextPresent()
-    {
-        $this->open('http://www.example.com/');
-
-        $this->assertTextPresent('example.com');
-
-        try {
-            $this->assertTextPresent('beispiel.de');
-        }
-
-        catch (Exception $e) {
-            return;
-        }
-
-        $this->fail();
-    }
-
-    public function testAssertTextNotPresent()
-    {
-        $this->open('http://www.example.com/');
-
-        $this->assertTextNotPresent('beispiel.de');
-
-        try {
-            $this->assertTextNotPresent('example.com');
-        }
-
-        catch (Exception $e) {
-            return;
-        }
-
-        $this->fail();
+        $this->open('http://www.openqa.org/selenium-core/ajaxdemo/scriptaculous-js-1.6.1/test/functional/ajax_inplaceeditor_test.html');
+        $this->mouseOver('tobeedited');
+        $this->click('tobeedited');
+        $this->assertNotVisible('tobeedited');
+        $this->assertElementPresent('tobeedited-inplaceeditor');
+        $this->click('link=cancel');
+        $this->assertElementContainsText('tobeedited', 'To be edited');
+        $this->assertVisible('tobeedited');
+        $this->click('tobeedited');
+        $this->click("//input[@class='editor_ok_button']");
+        $this->assertVisible('tobeedited');
+#       $this->waitForText('tobeedited', 'Server received: To be edited');
+        // Workaround for not yet implemented waitForText
+        sleep(1);
+        $this->assertElementContainsText('tobeedited', 'Server received: To be edited');
     }
 }
 ?>
