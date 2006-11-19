@@ -150,6 +150,9 @@
        </file>
       </dir>
       <dir name="Matcher">
+       <file baseinstalldir="/" name="AnyInvokedCount.php" role="php">
+        <tasks:replace from="@package_version@" to="version" type="package-info" />
+       </file>
        <file baseinstalldir="/" name="AnyParameters.php" role="php">
         <tasks:replace from="@package_version@" to="version" type="package-info" />
        </file>
