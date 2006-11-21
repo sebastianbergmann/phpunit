@@ -254,7 +254,7 @@ abstract class PHPUnit_Util_Report_Coverage_Node
             $this->getNumExecutableLines(),
             $this->getNumExecutedLines(),
             $this->getExecutedPercent(),
-            date('D M j G:i:s T Y'),
+            $template->getDate(),
             PHPUnit_Runner_Version::id(),
             phpversion('xdebug')
           )
