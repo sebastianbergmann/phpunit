@@ -163,7 +163,7 @@ abstract class PHPUnit_Util_Report_Test_Node
           array(
             $title,
             $this->getLink(TRUE),
-            date('D M j G:i:s T Y'),
+            $template->getDate(),
             PHPUnit_Runner_Version::id(),
             phpversion('xdebug')
           )
