@@ -164,7 +164,7 @@ class PHPUnit_Util_Template
      *
      * @return string
      * @access public
-     * @since  Method available since Release 3.1.0
+     * @since  Method available since Release 3.0.1
      */
     public static function getDate() {
         if (self::$date == '') {
