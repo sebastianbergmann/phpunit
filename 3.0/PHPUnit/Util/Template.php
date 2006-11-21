@@ -63,7 +63,13 @@ PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
 class PHPUnit_Util_Template
 {
     /**
-     * @var    array
+     * @var    string
+     * @access private
+     */
+    private static $date = '';
+
+    /**
+     * @var    string
      * @access private
      */
     private $template = '';
@@ -151,6 +157,21 @@ class PHPUnit_Util_Template
         } else {
             throw new RuntimeException('Could not write to ' . $target . '.');
         }
+    }
+
+    /**
+     * Returns the cached result of date('D M j G:i:s T Y').
+     *
+     * @return string
+     * @access public
+     * @since  Method available since Release 3.1.0
+     */
+    public static function getDate() {
+        if (self::$date == '') {
+            self::$date = date('D M j G:i:s T Y');
+        }
+
+        return self::$date;
     }
 }
 ?>
