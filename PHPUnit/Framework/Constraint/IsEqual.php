@@ -36,7 +36,7 @@
  *
  * @category   Testing
  * @package    PHPUnit
- * @author     Jan Borsodi <jb@ez.no>
+ * @author     Kore Nordmann <kn@ez.no>
  * @author     Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @copyright  2002-2006 Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
