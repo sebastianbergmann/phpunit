@@ -169,7 +169,7 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
 
     /**
      * @param  PHPUnit_Framework_TestFailure $defect
-     * @param  integer                        $count
+     * @param  integer                       $count
      * @access protected
      */
     protected function printDefect(PHPUnit_Framework_TestFailure $defect, $count)
@@ -180,16 +180,17 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
 
     /**
      * @param  PHPUnit_Framework_TestFailure $defect
-     * @param  integer                        $count
+     * @param  integer                       $count
      * @access protected
      */
     protected function printDefectHeader(PHPUnit_Framework_TestFailure $defect, $count)
     {
         $failedTest = $defect->failedTest();
-        $message    = '';
 
         if ($failedTest instanceof PHPUnit_Framework_SelfDescribing) {
-            $message = $failedTest->toString();
+            $testName = $failedTest->toString();
+        } else {
+            $testName = get_class($failedTest);
         }
 
         $this->write(
@@ -197,7 +198,7 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
             "\n%d) %s\n",
 
             $count,
-            $message
+            $testName
           )
         );
     }
