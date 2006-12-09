@@ -73,6 +73,13 @@ class PHPUnit_Framework_ComparisonFailure_Array extends PHPUnit_Framework_Compar
      */
     public function toString()
     {
+        if ($this->hasDiff()) {
+            return $this->diff(
+              print_r($this->expected, TRUE),
+              print_r($this->actual, TRUE)
+            );
+        }
+
         $expectedOnly = array();
         $actualOnly   = array();
         $diff         = '';
