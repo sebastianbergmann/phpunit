@@ -88,6 +88,11 @@ abstract class PHPUnit_Framework_ComparisonFailure extends PHPUnit_Framework_Ass
     protected $message;
 
     /**
+     * @var boolean
+     */
+    private static $hasDiff = NULL;
+
+    /**
      * Initialises with the expected value and the actual value.
      *
      * @param mixed $expected Expected value retrieved.
@@ -238,6 +243,63 @@ abstract class PHPUnit_Framework_ComparisonFailure extends PHPUnit_Framework_Ass
         }
 
         return PHPUnit_Util_Type::toString($value);
+    }
+
+    protected function diff($expected, $actual)
+    {
+        $expectedFile = tempnam('/tmp', 'expected');
+        file_put_contents($expectedFile, $expected);
+
+        $actualFile = tempnam('/tmp', 'actual');
+        file_put_contents($actualFile, $actual);
+
+        $buffer = explode(
+          "\n",
+          shell_exec(
+            sprintf(
+              'diff -u %s %s',
+              $expectedFile,
+              $actualFile
+            )
+          )
+        );
+
+        unlink($expectedFile);
+        unlink($actualFile);
+
+        $buffer[0] = "--- Expected";
+        $buffer[1] = "+++ Actual";
+
+        return implode("\n", $buffer);
+    }
+
+    public static function hasDiff()
+    {
+        if (self::$hasDiff === NULL)
+        {
+            self::$hasDiff = FALSE;
+
+            $binary = 'diff';
+
+            if (substr(php_uname('s'), 0, 7) == 'Windows')
+            {
+                $binary .= '.exe';
+            }
+
+            $paths = explode(PATH_SEPARATOR, $_ENV['PATH']);
+
+            foreach ($paths as $path) {
+                print $path . DIRECTORY_SEPARATOR . $binary."\n";
+                if (file_exists($path . DIRECTORY_SEPARATOR . $binary) &&
+                    is_executable($path . DIRECTORY_SEPARATOR . $binary))
+                {
+                    self::$hasDiff = TRUE;
+                    break;
+                }
+            }
+        }
+
+        return self::$hasDiff;
     }
 
     /**
