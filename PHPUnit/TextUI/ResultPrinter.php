@@ -212,40 +212,44 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
         $e = $defect->thrownException();
 
         if ($e instanceof PHPUnit_Framework_SelfDescribing) {
-            $this->write($e->toString() . "\n");
+            $buffer = $e->toString() . "\n";
 
             if ($e instanceof PHPUnit_Framework_ExpectationFailedException) {
                 $comparisonFailure = $e->getComparisonFailure();
 
-                $string = '';
+                if ($comparisonFailure !== NULL) {
+                    if (PHPUnit_Framework_ComparisonFailure::hasDiff() &&
+                       ($comparisonFailure instanceof PHPUnit_Framework_ComparisonFailure_Array ||
+                        $comparisonFailure instanceof PHPUnit_Framework_ComparisonFailure_Object ||
+                        $comparisonFailure instanceof PHPUnit_Framework_ComparisonFailure_String)) {
+                        $buffer = sprintf(
+                          "Failed asserting that two %ss are equal.\n%s\n",
 
-                if ($comparisonFailure !== NULL &&
-                   ($this->verbose ||
-                    $comparisonFailure instanceof PHPUnit_Framework_ComparisonFailure_String)) {
-                    $string = $comparisonFailure->toString();
-                }
+                          strtolower(substr(get_class($comparisonFailure), 36)),
+                          $comparisonFailure->toString()
+                        );
+                    }
 
-                if (!$this->verbose &&
-                    $comparisonFailure instanceof PHPUnit_Framework_ComparisonFailure_String &&
-                    strpos($string, 'expected string <') !== FALSE) {
-                    $string = '';
-                }
-
-                if (!empty($string)) {
-                    $this->write($string . "\n");
+                    if ($this->verbose &&
+                       !$comparisonFailure instanceof PHPUnit_Framework_ComparisonFailure_Array &&
+                       !$comparisonFailure instanceof PHPUnit_Framework_ComparisonFailure_Object &&
+                       !$comparisonFailure instanceof PHPUnit_Framework_ComparisonFailure_String) {
+                        $buffer .= $comparisonFailure->toString() . "\n";
+                    }
                 }
             }
         }
 
         else if ($e instanceof PHPUnit_Framework_Error) {
-            $this->write($e->getMessage() . "\n");
+            $buffer = $e->getMessage() . "\n";
         }
 
         else {
-            $this->write(get_class($e) . ': ' . $e->getMessage() . "\n");
+            $buffer = get_class($e) . ': ' . $e->getMessage() . "\n";
         }
 
         $this->write(
+          $buffer .
           PHPUnit_Util_Filter::getFilteredStacktrace(
             $defect->thrownException(),
             FALSE
