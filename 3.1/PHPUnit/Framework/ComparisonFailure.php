@@ -289,7 +289,6 @@ abstract class PHPUnit_Framework_ComparisonFailure extends PHPUnit_Framework_Ass
             $paths = explode(PATH_SEPARATOR, $_ENV['PATH']);
 
             foreach ($paths as $path) {
-                print $path . DIRECTORY_SEPARATOR . $binary."\n";
                 if (file_exists($path . DIRECTORY_SEPARATOR . $binary) &&
                     is_executable($path . DIRECTORY_SEPARATOR . $binary))
                 {
