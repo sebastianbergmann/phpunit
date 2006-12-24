@@ -702,7 +702,7 @@
    </extension>
    <extension>
     <name>xdebug</name>
-    <min>2.0.0RC1</min>
+    <min>2.0.0RC2</min>
    </extension>
   </optional>
  </dependencies>
