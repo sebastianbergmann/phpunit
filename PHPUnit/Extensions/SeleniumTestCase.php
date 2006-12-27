@@ -46,7 +46,7 @@
 
 require_once 'PHPUnit/Framework.php';
 require_once 'PHPUnit/Util/Filter.php';
-require_once 'Testing/Selenium.php';
+@include_once 'Testing/Selenium.php';
 
 PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
 
@@ -110,6 +110,10 @@ class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_TestCase
             $driver = 'curl';
         } else {
             $driver = 'native';
+        }
+
+        if (!class_exists('Testing_Selenium')) {
+            throw new RuntimeException('The Testing_Selenium package is not installed.');
         }
 
         $this->selenium = new Testing_Selenium(
