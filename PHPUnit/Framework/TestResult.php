@@ -517,14 +517,7 @@ class PHPUnit_Framework_TestResult implements Countable
 
         $globalsBackup = $GLOBALS;
 
-        $xdebugLoaded  = extension_loaded('xdebug');
-        $xdebugEnabled = $xdebugLoaded && xdebug_is_enabled();
-
-        if ($xdebugEnabled) {
-            xdebug_disable();
-        }
-
-        $useXdebug = ($xdebugLoaded && $this->collectCodeCoverageInformation);
+        $useXdebug = (extension_loaded('xdebug') && $this->collectCodeCoverageInformation);
 
         if ($useXdebug && !defined('PHPUnit_INSIDE_OWN_TESTSUITE')) {
             xdebug_start_code_coverage(XDEBUG_CC_UNUSED | XDEBUG_CC_DEAD_CODE);
@@ -557,10 +550,6 @@ class PHPUnit_Framework_TestResult implements Countable
             if (defined('PHPUnit_INSIDE_OWN_TESTSUITE')) {
                 xdebug_start_code_coverage(XDEBUG_CC_UNUSED | XDEBUG_CC_DEAD_CODE);
             }
-        }
-
-        if ($xdebugEnabled) {
-            xdebug_enable();
         }
 
         $GLOBALS = $globalsBackup;
