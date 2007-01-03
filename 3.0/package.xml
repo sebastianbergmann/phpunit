@@ -17,9 +17,9 @@
   <email>sb@sebastian-bergmann.de</email>
   <active>yes</active>
  </lead>
- <date>2006-11-19</date>
+ <date>2007-01-03</date>
  <version>
-  <release>3.0.0</release>
+  <release>3.0.1</release>
   <api>3.0.0</api>
  </version>
  <stability>
@@ -800,7 +800,7 @@
    </extension>
    <extension>
     <name>xdebug</name>
-    <min>2.0.0RC1</min>
+    <min>2.0.0RC2</min>
    </extension>
   </optional>
  </dependencies>
