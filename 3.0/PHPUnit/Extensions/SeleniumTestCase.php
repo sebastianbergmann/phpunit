@@ -112,7 +112,7 @@ class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_TestCase
             $driver = 'native';
         }
 
-        if (!class_exists('Testing_Selenium')) {
+        if (!class_exists('Testing_Selenium', FALSE)) {
             throw new RuntimeException('The Testing_Selenium package is not installed.');
         }
 
