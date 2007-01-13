@@ -286,7 +286,17 @@ abstract class PHPUnit_Framework_ComparisonFailure extends PHPUnit_Framework_Ass
                 $binary .= '.exe';
             }
 
-            $paths = explode(PATH_SEPARATOR, $_ENV['PATH']);
+            if (isset($_ENV['PATH'])) {
+                $paths = explode(PATH_SEPARATOR, $_ENV['PATH']);
+            }
+
+            else if (isset($_SERVER['PATH'])) {
+                $paths = explode(PATH_SEPARATOR, $_SERVER['PATH']);
+            }
+
+            else {
+                $paths = array();
+            }
 
             foreach ($paths as $path) {
                 if (file_exists($path . DIRECTORY_SEPARATOR . $binary) &&
