@@ -1067,7 +1067,11 @@ class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_TestCase
      */
     public function open($url)
     {
-        return $this->selenium->open($url);
+        $result = $this->selenium->open($url);
+
+        $this->defaultAssertions('open');
+
+        return $result;
     }
 
     /**
@@ -1079,7 +1083,11 @@ class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_TestCase
      */
     public function close()
     {
-        return $this->selenium->close();
+        $result = $this->selenium->close();
+
+        $this->defaultAssertions('close');
+
+        return $result;
     }
 
     /**
@@ -1090,7 +1098,11 @@ class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_TestCase
      */
     public function goBack()
     {
-        return $this->selenium->goBack();
+        $result = $this->selenium->goBack();
+
+        $this->defaultAssertions('goBack');
+
+        return $result;
     }
 
     /**
@@ -1101,7 +1113,11 @@ class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_TestCase
      */
     public function refresh()
     {
-        return $this->selenium->refresh();
+        $result = $this->selenium->refresh();
+
+        $this->defaultAssertions('refresh');
+
+        return $result;
     }
 
     /**
@@ -1115,7 +1131,11 @@ class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_TestCase
      */
     public function click($locator)
     {
-        return $this->selenium->click($locator);
+        $result = $this->selenium->click($locator);
+
+        $this->defaultAssertions('click');
+
+        return $result;
     }
 
     /**
@@ -1143,7 +1163,11 @@ class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_TestCase
      */
     public function fireEvent($locator, $eventName)
     {
-        return $this->selenium->fireEvent($locator, $eventName);
+        $result = $this->selenium->fireEvent($locator, $eventName);
+
+        $this->defaultAssertions('fireEvent');
+
+        return $result;
     }
 
     /**
@@ -1156,7 +1180,11 @@ class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_TestCase
      */
     public function keyDown($locator, $keycode)
     {
-        return $this->selenium->keyDown($locator, $keycode);
+        $result = $this->selenium->keyDown($locator, $keycode);
+
+        $this->defaultAssertions('keyDown');
+
+        return $result;
     }
 
     /**
@@ -1169,7 +1197,11 @@ class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_TestCase
      */
     public function keyPress($locator, $keycode)
     {
-        return $this->selenium->keyPress($locator, $keycode);
+        $result = $this->selenium->keyPress($locator, $keycode);
+
+        $this->defaultAssertions('keyPress');
+
+        return $result;
     }
 
     /**
@@ -1182,7 +1214,11 @@ class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_TestCase
      */
     public function keyUp($locator, $keycode)
     {
-        return $this->selenium->keyUp($locator, $keycode);
+        $result = $this->selenium->keyUp($locator, $keycode);
+
+        $this->defaultAssertions('keyUp');
+
+        return $result;
     }
 
     /**
@@ -1195,7 +1231,11 @@ class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_TestCase
      */
     public function mouseDown($locator)
     {
-        return $this->selenium->mouseDown($locator);
+        $result = $this->selenium->mouseDown($locator);
+
+        $this->defaultAssertions('mouseDown');
+
+        return $result;
     }
 
     /**
@@ -1207,7 +1247,11 @@ class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_TestCase
      */
     public function mouseOver($locator)
     {
-        return $this->selenium->mouseOver($locator);
+        $result = $this->selenium->mouseOver($locator);
+
+        $this->defaultAssertions('mouseOver');
+
+        return $result;
     }
 
     /**
@@ -1219,7 +1263,11 @@ class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_TestCase
      */
     public function check($locator)
     {
-        return $this->selenium->check($locator);
+        $result = $this->selenium->check($locator);
+
+        $this->defaultAssertions('check');
+
+        return $result;
     }
 
     /**
@@ -1231,7 +1279,11 @@ class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_TestCase
      */
     public function uncheck($locator)
     {
-        return $this->selenium->uncheck($locator);
+        $result = $this->selenium->uncheck($locator);
+
+        $this->defaultAssertions('uncheck');
+
+        return $result;
     }
 
     /**
@@ -1244,7 +1296,11 @@ class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_TestCase
      */
     public function addSelection($locator, $optionLocator)
     {
-        return $this->selenium->addSelection($locator, $optionLocator);
+        $result = $this->selenium->addSelection($locator, $optionLocator);
+
+        $this->defaultAssertions('addSelection');
+
+        return $result;
     }
 
     /**
@@ -1257,7 +1313,11 @@ class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_TestCase
      */
     public function removeSelection($locator, $optionLocator)
     {
-        return $this->selenium->removeSelection($locator, $optionLocator);
+        $result = $this->selenium->removeSelection($locator, $optionLocator);
+
+        $this->defaultAssertions('removeSelection');
+
+        return $result;
     }
 
     /**
@@ -1269,7 +1329,11 @@ class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_TestCase
      */
     public function select($selectLocator, $optionLocator)
     {
-        return $this->selenium->select($selectLocator, $optionLocator);
+        $result = $this->selenium->select($selectLocator, $optionLocator);
+
+        $this->defaultAssertions('select');
+
+        return $result;
     }
 
     /**
@@ -1281,7 +1345,11 @@ class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_TestCase
      */
     public function submit($locator)
     {
-        return $this->selenium->submit($locator);
+        $result = $this->selenium->submit($locator);
+
+        $this->defaultAssertions('submit');
+
+        return $result;
     }
 
     /**
@@ -1294,7 +1362,11 @@ class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_TestCase
      */
     public function type($locator, $value)
     {
-        return $this->selenium->type($locator, $value);
+        $result = $this->selenium->type($locator, $value);
+
+        $this->defaultAssertions('type');
+
+        return $result;
     }
 
     /**
@@ -1308,7 +1380,11 @@ class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_TestCase
      */
     public function selectWindow($windowId)
     {
-        return $this->selenium->selectWindow($windowId);
+        $result = $this->selenium->selectWindow($windowId);
+
+        $this->defaultAssertions('selectWindow');
+
+        return $result;
     }
 
     /**
@@ -1322,7 +1398,11 @@ class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_TestCase
      */
     public function setContext($context, $logLevelThreshold)
     {
-        return $this->selenium->setContext($context, $logLevelThreshold);
+        $result = $this->selenium->setContext($context, $logLevelThreshold);
+
+        $this->defaultAssertions('setContext');
+
+        return $result;
     }
 
     /**
@@ -1375,7 +1455,11 @@ class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_TestCase
      */
     public function waitForPageToLoad($timeout = NULL)
     {
-        return $this->selenium->waitForPageToLoad($timeout);
+        $result = $this->selenium->waitForPageToLoad($timeout);
+
+        $this->defaultAssertions('waitForPageToLoad');
+
+        return $result;
     }
 
     /**
@@ -1388,7 +1472,21 @@ class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_TestCase
      */
     public function waitForPopUp($windowId, $timeout = NULL)
     {
-        return $this->selenium->waitForPopUp($windowId, $timeout);
+        $result = $this->selenium->waitForPopUp($windowId, $timeout);
+
+        $this->defaultAssertions('waitForPopUp');
+
+        return $result;
+    }
+
+    /**
+     * Template Method that is called after Selenium actions.
+     *
+     * @param  string $action
+     * @access protected
+     */
+    protected function defaultAssertions($action)
+    {
     }
 }
 ?>
