@@ -48,9 +48,6 @@ require_once 'PHPUnit/Util/Filter.php';
 
 PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
 
-// Needed for xdebug_get_declared_vars().
-ini_set('xdebug.collect_vars', 1);
-
 /**
  *
  *
@@ -124,13 +121,16 @@ class PHPUnit_Util_Fileloader
      */
     protected static function load($filename)
     {
-        if (function_exists('xdebug_get_declared_vars')) {
+        $xdebugLoaded      = extension_loaded('xdebug');
+        $xdebugCollectVars = $xdebugLoaded && ini_get('xdebug.collect_vars') == '1';
+
+        if ($xdebugCollectVars) {
             $variables = array('variables', xdebug_get_declared_vars());
         }
 
         include_once $filename;
 
-        if (function_exists('xdebug_get_declared_vars')) {
+        if ($xdebugCollectVars) {
             $variables = array_values(
               array_diff(xdebug_get_declared_vars(), $variables)
             );
