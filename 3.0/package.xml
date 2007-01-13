@@ -577,13 +577,13 @@
       </file>
      </dir>
      <dir name="Skeleton">
-      <file baseinstalldir="/" name="IncompleteTestMethod.php" role="php">
+      <file baseinstalldir="/" name="IncompleteTestMethod.tpl" role="php">
        <tasks:replace from="@package_version@" to="version" type="package-info" />
       </file>
-      <file baseinstalldir="/" name="TestClass.php" role="php">
+      <file baseinstalldir="/" name="TestClass.tpl" role="php">
        <tasks:replace from="@package_version@" to="version" type="package-info" />
       </file>
-      <file baseinstalldir="/" name="TestMethod.php" role="php">
+      <file baseinstalldir="/" name="TestMethod.tpl" role="php">
        <tasks:replace from="@package_version@" to="version" type="package-info" />
       </file>
      </dir>

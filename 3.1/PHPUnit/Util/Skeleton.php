@@ -203,7 +203,7 @@ class PHPUnit_Util_Skeleton
 
                             $methodTemplate = new PHPUnit_Util_Template(
                                 sprintf(
-                                '%s%sSkeleton%sTestMethod.php',
+                                '%s%sSkeleton%sTestMethod.tpl',
 
                                 dirname(__FILE__),
                                 DIRECTORY_SEPARATOR,
@@ -255,7 +255,7 @@ class PHPUnit_Util_Skeleton
                 if (!$testTagFound) {
                     $methodTemplate = new PHPUnit_Util_Template(
                       sprintf(
-                        '%s%sSkeleton%sIncompleteTestMethod.php',
+                        '%s%sSkeleton%sIncompleteTestMethod.tpl',
 
                         dirname(__FILE__),
                         DIRECTORY_SEPARATOR,
@@ -275,7 +275,7 @@ class PHPUnit_Util_Skeleton
 
         $classTemplate = new PHPUnit_Util_Template(
           sprintf(
-            '%s%sSkeleton%sTestClass.php',
+            '%s%sSkeleton%sTestClass.tpl',
 
             dirname(__FILE__),
             DIRECTORY_SEPARATOR,
