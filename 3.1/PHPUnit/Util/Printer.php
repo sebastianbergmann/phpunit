@@ -118,6 +118,10 @@ abstract class PHPUnit_Util_Printer
         if ($this->out !== NULL) {
             fwrite($this->out, $buffer);
         } else {
+            if (php_sapi_name() != 'cli') {
+                $buffer = htmlentities($buffer);
+            }
+
             print $buffer;
         }
     }
