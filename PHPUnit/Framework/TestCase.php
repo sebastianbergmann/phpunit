@@ -242,6 +242,9 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
         try {
             $this->runTest();
 
+            // Perform assertions shared by all tests of a test case.
+            $this->sharedAssertions();
+
             // Verify Mock Object conditions.
             foreach ($this->mockObjects as $mockObject) {
                 $mockObject->verify();
@@ -490,6 +493,19 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
      * @access protected
      */
     protected function setUp()
+    {
+    }
+
+    /**
+     * Performs assertions shared by all tests of a test case.
+     *
+     * This method is called before the execution of a test ends
+     * and before tearDown() is called.
+     *
+     * @access protected
+     * @since  Method available since Release 3.0.0
+     */
+    protected function sharedAssertions()
     {
     }
 
