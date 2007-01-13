@@ -49,7 +49,7 @@ require_once 'PHPUnit/Util/Filter.php';
 
 PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
 
-if (!interface_exists('PHPUnit_Framework_TestListener')) {
+if (!interface_exists('PHPUnit_Framework_TestListener', FALSE)) {
 
 /**
  * A Listener for test progress.

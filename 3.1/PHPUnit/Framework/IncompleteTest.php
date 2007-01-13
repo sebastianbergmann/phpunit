@@ -48,7 +48,7 @@ require_once 'PHPUnit/Util/Filter.php';
 
 PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
 
-if (!interface_exists('PHPUnit_Framework_IncompleteTest')) {
+if (!interface_exists('PHPUnit_Framework_IncompleteTest', FALSE)) {
 
 /**
  * A marker interface for marking any exception/error as result of an unit

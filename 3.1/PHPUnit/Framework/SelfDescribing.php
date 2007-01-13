@@ -49,7 +49,7 @@ require_once 'PHPUnit/Util/Filter.php';
 
 PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
 
-if (!interface_exists('PHPUnit_Framework_SelfDescribing')) {
+if (!interface_exists('PHPUnit_Framework_SelfDescribing', FALSE)) {
 
 /**
  * Interface for classes that can return a description of itself.
