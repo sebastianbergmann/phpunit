@@ -62,7 +62,6 @@ require_once 'PHPUnit/TextUI/TestRunner.php';
 require_once 'PHPUnit/Util/Filter.php';
 
 require_once 'Extensions/ExceptionTestCaseTest.php';
-require_once 'Extensions/ExtensionTest.php';
 require_once 'Extensions/OutputTestCaseTest.php';
 require_once 'Extensions/PerformanceTestCaseTest.php';
 require_once 'Extensions/RepeatedTestTest.php';
@@ -92,7 +91,6 @@ class Extensions_AllTests
         $suite = new PHPUnit_Framework_TestSuite('PHPUnit_Extensions');
 
         $suite->addTestSuite('Extensions_ExceptionTestCaseTest');
-        $suite->addTestSuite('Extensions_ExtensionTest');
         $suite->addTestSuite('Extensions_OutputTestCaseTest');
         $suite->addTestSuite('Extensions_PerformanceTestCaseTest');
         $suite->addTestSuite('Extensions_RepeatedTestTest');

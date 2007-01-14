@@ -93,6 +93,14 @@ if (!class_exists('PHPUnit_Framework_TestSuite', FALSE)) {
 class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Framework_SelfDescribing
 {
     /**
+     * Fixture that is shared between the tests of this test suite.
+     *
+     * @var    mixed
+     * @access protected
+     */
+    protected $sharedFixture;
+
+    /**
      * The name of the test suite.
      *
      * @var    string
@@ -475,6 +483,7 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
             }
 
             if ($test instanceof PHPUnit_Framework_TestSuite) {
+                $test->setSharedFixture($this->sharedFixture);
                 $test->run($result, $filter);
             } else {
                 $runTest = TRUE;
@@ -488,6 +497,10 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
                 }
 
                 if ($runTest) {
+                    if ($test instanceof PHPUnit_Framework_TestCase) {
+                        $test->setSharedFixture($this->sharedFixture);
+                    }
+
                     $this->runTest($test, $result);
                 }
             }
@@ -630,6 +643,18 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
     private static function warning($message)
     {
         return new PHPUnit_Framework_Warning($message);
+    }
+
+    /**
+     * Sets the shared fixture for the tests of this test suite.
+     *
+     * @param  mixed $sharedFixture
+     * @access public
+     * @since  Method available since Release 3.1.0
+     */
+    public function setSharedFixture($sharedFixture)
+    {
+        $this->sharedFixture = $sharedFixture;
     }
 }
 

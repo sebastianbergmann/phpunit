@@ -50,6 +50,12 @@ require_once 'PHPUnit/Util/Filter.php';
 
 PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
 
+trigger_error(
+  "Class PHPUnit_Extensions_TestSetup is deprecated. ".
+  "It will be removed in PHPUnit 3.2. ".
+  "Please use the new functionality in PHPUnit_Framework_TestSuite instead."
+);
+
 /**
  * A Decorator to set up and tear down additional fixture state.
  * Subclass TestSetup and insert it into your tests when you want
