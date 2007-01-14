@@ -476,6 +476,7 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
         }
 
         $result->startTestSuite($this);
+        $this->setUp();
 
         foreach ($this->tests as $test) {
             if ($result->shouldStop()) {
@@ -506,6 +507,7 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
             }
         }
 
+        $this->tearDown();
         $result->endTestSuite($this);
 
         return $result;
@@ -655,6 +657,28 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
     public function setSharedFixture($sharedFixture)
     {
         $this->sharedFixture = $sharedFixture;
+    }
+
+    /**
+     * Template Method that is called before the tests
+     * of this test suite are run.
+     *
+     * @access protected
+     * @since  Method available since Release 3.1.0
+     */
+    protected function setUp()
+    {
+    }
+
+    /**
+     * Template Method that is called after the tests
+     * of this test suite have finished running.
+     *
+     * @access protected
+     * @since  Method available since Release 3.1.0
+     */
+    protected function tearDown()
+    {
     }
 }
 
