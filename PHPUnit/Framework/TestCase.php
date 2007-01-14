@@ -116,6 +116,14 @@ if (!class_exists('PHPUnit_Framework_TestCase', FALSE)) {
 abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert implements PHPUnit_Framework_Test, PHPUnit_Framework_SelfDescribing
 {
     /**
+     * Fixture that is shared between the tests of a test suite.
+     *
+     * @var    mixed
+     * @access protected
+     */
+    protected $sharedFixture;
+
+    /**
      * The name of the test case.
      *
      * @var    string
@@ -312,6 +320,18 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
     public function setName($name)
     {
         $this->name = $name;
+    }
+
+    /**
+     * Sets the shared fixture.
+     *
+     * @param  mixed $sharedFixture
+     * @access public
+     * @since  Method available since Release 3.1.0
+     */
+    public function setSharedFixture($sharedFixture)
+    {
+        $this->sharedFixture = $sharedFixture;
     }
 
     /**
