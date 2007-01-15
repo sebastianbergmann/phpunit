@@ -475,8 +475,17 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
             $result = $this->createResult();
         }
 
+        try {
+            $this->setUp();
+        }
+
+        catch (PHPUnit_Framework_SkippedTestSuiteError $e) {
+            $result->addFailure($this, $e, 0);
+
+            return $result;
+        }
+
         $result->startTestSuite($this);
-        $this->setUp();
 
         foreach ($this->tests as $test) {
             if ($result->shouldStop()) {
@@ -507,8 +516,8 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
             }
         }
 
-        $this->tearDown();
         $result->endTestSuite($this);
+        $this->tearDown();
 
         return $result;
     }
@@ -572,6 +581,19 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
     public function tests()
     {
         return $this->tests;
+    }
+
+    /**
+     * Mark the test suite as skipped.
+     *
+     * @param  string  $message
+     * @throws PHPUnit_Framework_SkippedTestSuiteError
+     * @access public
+     * @since  Method available since Release 3.0.0
+     */
+    public function markTestSuiteSkipped($message = '')
+    {
+        throw new PHPUnit_Framework_SkippedTestSuiteError($message);
     }
 
     /**
