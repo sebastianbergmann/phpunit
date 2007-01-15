@@ -168,7 +168,7 @@ class PHPUnit_Framework_MockObject_Mock
             );
         } else {
             $code .= sprintf(
-              "%s extends %s implements %s {\n",
+              "%s extends %s implements PHPUnit_Framework_MockObject_MockObject {\n",
               $this->mockClassName,
               $this->className
             );
