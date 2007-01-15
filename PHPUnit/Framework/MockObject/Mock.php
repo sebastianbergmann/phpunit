@@ -95,23 +95,20 @@ class PHPUnit_Framework_MockObject_Mock
 
     public function __construct($className, array $methods = array(), $mockClassName = '')
     {
-        $this->mockClassName = $mockClassName;
-
-        if ($this->mockClassName === '') {
+        if ($mockClassName === '') {
             do {
-                $random = substr(md5(microtime()), 0, 8);
+                $mockClassName = 'Mock_' . $className . '_' . substr(md5(microtime()), 0, 8);
             }
-            while (class_exists('Mock_' . $className . '_' . $random, FALSE));
-
-            $this->mockClassName = 'Mock_' . $className . '_' . $random;
+            while (class_exists($mockClassName, FALSE));
         }
 
         if (empty($methods)) {
             $methods = get_class_methods($className);
         }
 
-        $this->className = $className;
-        $this->methods   = $methods;
+        $this->mockClassName = $mockClassName;
+        $this->className     = $className;
+        $this->methods       = $methods;
     }
 
     public static function generate($className, array $methods = array(), $mockClassName = '')
