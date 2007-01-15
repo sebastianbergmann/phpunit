@@ -250,6 +250,9 @@
      <file baseinstalldir="/" name="SkippedTestError.php" role="php">
       <tasks:replace from="@package_version@" to="version" type="package-info" />
      </file>
+     <file baseinstalldir="/" name="SkippedTestSuiteError.php" role="php">
+      <tasks:replace from="@package_version@" to="version" type="package-info" />
+     </file>
      <file baseinstalldir="/" name="Test.php" role="php">
       <tasks:replace from="@package_version@" to="version" type="package-info" />
      </file>

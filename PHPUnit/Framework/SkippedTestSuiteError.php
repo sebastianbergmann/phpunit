@@ -41,30 +41,32 @@
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    SVN: $Id$
  * @link       http://www.phpunit.de/
- * @since      File available since Release 3.0.0
+ * @since      File available since Release 3.1.0
  */
 
+require_once 'PHPUnit/Framework.php';
 require_once 'PHPUnit/Util/Filter.php';
 
 PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
 
-require 'PHPUnit/Framework/SelfDescribing.php';
-require 'PHPUnit/Framework/AssertionFailedError.php';
-require 'PHPUnit/Framework/Assert.php';
-require 'PHPUnit/Framework/Error.php';
-require 'PHPUnit/Framework/IncompleteTest.php';
-require 'PHPUnit/Framework/SkippedTest.php';
-require 'PHPUnit/Framework/Test.php';
-require 'PHPUnit/Framework/TestFailure.php';
-require 'PHPUnit/Framework/TestListener.php';
-require 'PHPUnit/Framework/TestResult.php';
-require 'PHPUnit/Framework/ExpectationFailedException.php';
-require 'PHPUnit/Framework/IncompleteTestError.php';
-require 'PHPUnit/Framework/SkippedTestError.php';
-require 'PHPUnit/Framework/SkippedTestSuiteError.php';
-require 'PHPUnit/Framework/TestCase.php';
-require 'PHPUnit/Framework/TestSuite.php';
-require 'PHPUnit/Framework/Warning.php';
-require 'PHPUnit/Framework/Constraint.php';
-require 'PHPUnit/Framework/ComparisonFailure.php';
+if (!class_exists('PHPUnit_Framework_SkippedTestSuiteError', FALSE)) {
+
+/**
+ * Extension to PHPUnit_Framework_AssertionFailedError to mark the special
+ * case of a skipped test suite.
+ *
+ * @category   Testing
+ * @package    PHPUnit
+ * @author     Sebastian Bergmann <sb@sebastian-bergmann.de>
+ * @copyright  2002-2007 Sebastian Bergmann <sb@sebastian-bergmann.de>
+ * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
+ * @version    Release: @package_version@
+ * @link       http://www.phpunit.de/
+ * @since      Class available since Release 3.1.0
+ */
+class PHPUnit_Framework_SkippedTestSuiteError extends PHPUnit_Framework_AssertionFailedError implements PHPUnit_Framework_SkippedTest
+{
+}
+
+}
 ?>
