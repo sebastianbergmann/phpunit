@@ -130,6 +130,10 @@ class PHPUnit_Framework_MockObject_Mock
 
     protected function generateClass()
     {
+        if (!class_exists($this->className, FALSE) && !interface_exists($this->className, FALSE)) {
+            eval('class ' . $this->className . ' {}');
+        }
+
         try {
             $class = new ReflectionClass($this->className);
 
