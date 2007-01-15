@@ -102,6 +102,15 @@ class PHPUnit_Framework_MockObject_Mock
             while (class_exists($mockClassName, FALSE));
         }
 
+        else if (class_exists($mockClassName, FALSE)) {
+            throw new RuntimeException(
+              sprintf(
+                'Class "%s" already exists.',
+                $mockClassName
+              )
+            );
+        }
+
         if (empty($methods)) {
             $methods = get_class_methods($className);
         }
@@ -114,34 +123,36 @@ class PHPUnit_Framework_MockObject_Mock
     public static function generate($className, array $methods = array(), $mockClassName = '')
     {
         $mock = new PHPUnit_Framework_MockObject_Mock($className, $methods, $mockClassName);
-
-        if (!class_exists($mock->mockClassName, FALSE)) {
-            $mock->generateClass();
-        }
+        $mock->generateClass();
 
         return $mock;
     }
 
     protected function generateClass()
     {
-        if (class_exists($this->mockClassName, FALSE)) {
-            throw new RuntimeException("Mock class <{$this->mockClassName}> already exists, cannot generate");
-        }
-
         try {
             $class = new ReflectionClass($this->className);
 
             if ($class->isFinal()) {
-                throw new RuntimeException("Class <{$this->className}> is a finalized class, cannot make mock version of it");
+                throw new RuntimeException(
+                  sprintf(
+                    'Class "%s" is declared "final" and cannot be mocked.',
+                    $this->className
+                  )
+                );
             }
 
-            $code = $this->generateClassDefinition($class);
-
-            eval($code);
+            eval($this->generateClassDefinition($class));
         }
 
         catch (Exception $e) {
-            throw new RuntimeException("Failed to generate mock class <{$this->mockClassName}> for class <{$this->className}>, caught an exception:\n" . $e->getMessage());
+            throw new RuntimeException(
+              sprintf(
+                'Failed to generate mock class "%s" for class "%s".\n%s',
+                $this->mockClassName,
+                $this->className
+              )
+            );
         }
     }
 
@@ -150,9 +161,17 @@ class PHPUnit_Framework_MockObject_Mock
         $code = 'class ';
 
         if ($class->isInterface()) {
-            $code .= "{$this->mockClassName} implements {$this->className}, PHPUnit_Framework_MockObject_MockObject {\n";
+            $code .= sprintf(
+              "%s implements %s, PHPUnit_Framework_MockObject_MockObject {\n",
+              $this->mockClassName,
+              $this->className
+            );
         } else {
-            $code .= "{$this->mockClassName} extends {$this->className} implements PHPUnit_Framework_MockObject_MockObject {\n";
+            $code .= sprintf(
+              "%s extends %s implements %s {\n",
+              $this->mockClassName,
+              $this->className
+            );
         }
 
         $code .= $this->generateMockApi($class);
@@ -239,7 +258,9 @@ class PHPUnit_Framework_MockObject_Mock
         return sprintf(
           "\n    %s function %s%s(%s) {\n" .
           "        \$args = func_get_args();\n" .
-          "        return \$this->invocationMocker->invoke(new PHPUnit_Framework_MockObject_Invocation(\$this, \"%s\", \"%s\", \$args));\n" .
+          "        return \$this->invocationMocker->invoke(\n" .
+          "          new PHPUnit_Framework_MockObject_Invocation(\$this, \"%s\", \"%s\", \$args)\n" .
+          "        );\n" .
           "    }\n",
 
           $modifier,
