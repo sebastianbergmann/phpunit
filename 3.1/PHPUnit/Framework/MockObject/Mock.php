@@ -157,18 +157,21 @@ class PHPUnit_Framework_MockObject_Mock
         } else {
             $code .= "{$this->mockClassName} extends {$this->className} implements PHPUnit_Framework_MockObject_MockObject {\n";
         }
+
         $code .= $this->generateMockApi($class);
 
-        foreach($class->getMethods() as $method) {
-            if (!$this->canMockMethod($method)) {
-                continue;
+        foreach ($this->methods as $methodName) {
+            try {
+                $method = $class->getMethod($methodName);
+
+                if ($this->canMockMethod($method)) {
+                    $code .= $this->generateMethodDefinitionFromExisting($method);
+                }
             }
 
-            if (!$this->shouldMockMethod($method)) {
-                continue;
+            catch (ReflectionException $e) {
+                $code .= $this->generateMethodDefinition($class->getName(), $methodName, 'public');
             }
-
-            $code .= $this->generateMethodDefinition($method);
         }
 
         $code .= "}\n";
@@ -201,50 +204,54 @@ class PHPUnit_Framework_MockObject_Mock
         }
     }
 
-    protected function shouldMockMethod(ReflectionMethod $method)
+    protected function generateMethodDefinitionFromExisting(ReflectionMethod $method)
     {
-        return in_array($method->getName(), $this->methods);
-    }
-
-    protected function generateMethodDefinition(ReflectionMethod $method)
-    {
-        $code = "\n    ";
-
         if ($method->isPrivate()) {
-            $code .= 'private ';
+            $modifier = 'private';
         }
 
         else if ($method->isProtected()) {
-            $code .= 'protected ';
+            $modifier = 'protected';
         }
 
         else {
-            $code .= 'public ';
+            $modifier = 'public';
         }
 
         if ($method->isStatic()) {
-            $code .= 'static ';
+            $modifier .= ' static';
         }
-
-        $code .= 'function ';
 
         if ($method->returnsReference()) {
-            $code .= '&';
+            $reference = '&';
+        } else {
+            $reference = '';
         }
 
-        $code .= sprintf(
-          "%s(%s) {\n" .
+        return $this->generateMethodDefinition(
+          $method->getDeclaringClass()->getName(),
+          $method->getName(),
+          $modifier,
+          $reference,
+          $this->generateMethodParameters($method)
+        );
+    }
+
+    protected function generateMethodDefinition($className, $methodName, $modifier, $reference = '', $parameters = '')
+    {
+        return sprintf(
+          "\n    %s function %s%s(%s) {\n" .
           "        \$args = func_get_args();\n" .
-          "        return \$this->invocationMocker->invoke(new PHPUnit_Framework_MockObject_Invocation(\$this, %s, %s, \$args));\n" .
+          "        return \$this->invocationMocker->invoke(new PHPUnit_Framework_MockObject_Invocation(\$this, \"%s\", \"%s\", \$args));\n" .
           "    }\n",
 
-          $method->getName(),
-          $this->generateMethodParameters($method),
-          var_export($method->getDeclaringClass()->getName(), TRUE),
-          var_export($method->getName(), TRUE)
+          $modifier,
+          $reference,
+          $methodName,
+          $parameters,
+          $className,
+          $methodName
         );
-
-        return $code;
     }
 
     protected function generateMockApi(ReflectionClass $class)
