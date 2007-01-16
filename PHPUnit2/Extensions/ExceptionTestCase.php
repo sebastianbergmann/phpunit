@@ -58,7 +58,7 @@ trigger_error(
 
 require_once 'PHPUnit/Extensions/ExceptionTestCase.php';
 
-class PHPUnit2_Extensions_ExceptionTestCase extends PHPUnit_Extensions_ExceptionTestCase {
+abstract class PHPUnit2_Extensions_ExceptionTestCase extends PHPUnit_Extensions_ExceptionTestCase {
 }
 
 /*
