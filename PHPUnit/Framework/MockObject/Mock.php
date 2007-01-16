@@ -337,7 +337,7 @@ class PHPUnit_Framework_MockObject_Mock
     {
         $list = array();
 
-        foreach($method->getParameters() as $parameter) {
+        foreach ($method->getParameters() as $parameter) {
             $name = '$' . $parameter->getName();
 
             if ($asCall) {
