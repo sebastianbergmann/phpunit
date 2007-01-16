@@ -1059,6 +1059,29 @@ class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_TestCase
     }
 
     /**
+     * Set execution speed (delay after each Selenium action in milliseconds).
+     *
+     * @param  string $value
+     * @return string
+     * @access public
+     */
+    public function setSpeed($value)
+    {
+        return $this->selenium->setSpeed($value);
+    }
+
+    /**
+     * Get execution speed (delay after each Selenium action in milliseconds).
+     *
+     * @return string
+     * @access public
+     */
+    public function getSpeed()
+    {
+        return $this->selenium->getSpeed();
+    }
+
+    /**
      * Open the URL in the test frame.
      *
      * @param  string  $url
