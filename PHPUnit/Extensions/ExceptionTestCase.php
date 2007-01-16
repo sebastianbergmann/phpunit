@@ -61,7 +61,7 @@ PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
  * @link       http://www.phpunit.de/
  * @since      Class available since Release 2.0.0
  */
-class PHPUnit_Extensions_ExceptionTestCase extends PHPUnit_Framework_TestCase
+abstract class PHPUnit_Extensions_ExceptionTestCase extends PHPUnit_Framework_TestCase
 {
     /**
      * The name of the expected Exception.
