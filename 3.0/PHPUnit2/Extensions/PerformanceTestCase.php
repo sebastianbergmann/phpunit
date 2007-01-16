@@ -58,7 +58,7 @@ trigger_error(
 
 require_once 'PHPUnit/Extensions/PerformanceTestCase.php';
 
-class PHPUnit2_Extensions_PerformanceTestCase extends PHPUnit_Extensions_PerformanceTestCase {
+abstract class PHPUnit2_Extensions_PerformanceTestCase extends PHPUnit_Extensions_PerformanceTestCase {
 }
 
 /*

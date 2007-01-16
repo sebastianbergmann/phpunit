@@ -63,7 +63,7 @@ PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
  * @link       http://www.phpunit.de/
  * @since      Class available since Release 3.0.0
  */
-class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_TestCase
+abstract class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_TestCase
 {
     /**
      * @var    Testing_Selenium
