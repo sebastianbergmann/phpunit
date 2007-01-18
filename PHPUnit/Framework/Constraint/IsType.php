@@ -81,7 +81,8 @@ class PHPUnit_Framework_Constraint_IsType extends PHPUnit_Framework_Constraint
             case 'bool':
             case 'null':
             case 'array':
-            case 'object': {
+            case 'object':
+            case 'resource': {
               break;
             }
 
@@ -137,6 +138,10 @@ class PHPUnit_Framework_Constraint_IsType extends PHPUnit_Framework_Constraint
 
             case 'object': {
               return is_object($other);
+            }
+
+            case 'resource': {
+              return is_resource($other);
             }
         }
     }
