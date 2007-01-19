@@ -36,52 +36,55 @@
  *
  * @category   Testing
  * @package    PHPUnit
- * @author     Jan Borsodi <jb@ez.no>
+ * @author     Oliver Schlicht <o.schlicht@bitExpert.de>
  * @author     Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @copyright  2002-2007 Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    SVN: $Id$
  * @link       http://www.phpunit.de/
- * @since      File available since Release 3.0.0
+ * @since      File available since Release 3.1.0
  */
 
-require_once 'PHPUnit/Framework.php';
 require_once 'PHPUnit/Util/Filter.php';
 require_once 'PHPUnit/Framework/MockObject/Invocation.php';
+require_once 'PHPUnit/Framework/MockObject/Stub.php';
 
 PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
 
 /**
- * An object that stubs the process of a normal method for a mock object.
- *
- * The stub object will replace the code for the stubbed method and return a
- * specific value instead of the original value.
+ * Stubs a method by raising a user-defined exception.
  *
  * @category   Testing
  * @package    PHPUnit
- * @author     Jan Borsodi <jb@ez.no>
+ * @author     Oliver Schlicht <o.schlicht@bitExpert.de>
  * @author     Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @copyright  2002-2007 Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    Release: @package_version@
  * @link       http://www.phpunit.de/
- * @since      Interface available since Release 3.0.0
+ * @since      Class available since Release 3.1.0
  */
-interface PHPUnit_Framework_MockObject_Stub extends PHPUnit_Framework_SelfDescribing
+class PHPUnit_Framework_MockObject_Stub_Exception implements PHPUnit_Framework_MockObject_Stub
 {
-    /**
-     * Fakes the processesing of the invocation $invocation by returning a
-     * specific value.
-     *
-     * @return mixed
-     * @param PHPUnit_Framework_MockObject_Invocation $invocation The invocation which was mocked
-     *                                                  and matched by the current method
-     *                                                  and argument matchers.
-     */
-    public function invoke(PHPUnit_Framework_MockObject_Invocation $invocation);
-}
+    private $exception;
 
-require_once 'PHPUnit/Framework/MockObject/Stub/Exception.php';
-require_once 'PHPUnit/Framework/MockObject/Stub/MatcherCollection.php';
-require_once 'PHPUnit/Framework/MockObject/Stub/Return.php';
+    public function __construct(Exception $exception)
+    {
+        $this->exception = $exception;
+    }
+
+    public function invoke(PHPUnit_Framework_MockObject_Invocation $invocation)
+    {
+        throw $this->exception;
+    }
+
+    public function toString()
+    {
+        return sprintf(
+          'raise user-specified exception %s',
+
+          PHPUnit_Util_Type::toString($this->exception)
+        );
+    }
+}
 ?>

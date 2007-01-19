@@ -49,8 +49,7 @@ require_once 'PHPUnit/Framework/MockObject/Mock.php';
 require_once 'PHPUnit/Framework/MockObject/Matcher/InvokedAtLeastOnce.php';
 require_once 'PHPUnit/Framework/MockObject/Matcher/InvokedAtIndex.php';
 require_once 'PHPUnit/Framework/MockObject/Matcher/InvokedCount.php';
-require_once 'PHPUnit/Framework/MockObject/Stub/ConsecutiveCalls.php';
-require_once 'PHPUnit/Framework/MockObject/Stub/Return.php';
+require_once 'PHPUnit/Framework/MockObject/Stub.php';
 require_once 'PHPUnit/Util/Filter.php';
 
 PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
@@ -478,6 +477,19 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
     protected function returnValue($value)
     {
         return new PHPUnit_Framework_MockObject_Stub_Return($value);
+    }
+
+    /**
+     * 
+     *
+     * @param  Exception $exception
+     * @return PHPUnit_Framework_MockObject_Stub_Exception
+     * @access protected
+     * @since  Method available since Release 3.1.0
+     */
+    protected function throwException(Exception $exception)
+    {
+        return new PHPUnit_Framework_MockObject_Stub_Exception($exception);
     }
 
     /**
