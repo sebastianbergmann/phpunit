@@ -480,7 +480,11 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
         }
 
         catch (PHPUnit_Framework_SkippedTestSuiteError $e) {
-            $result->addFailure($this, $e, 0);
+            $numTests = count($this);
+
+            for ($i = 0; $i < $numTests; $i++) {
+                $result->addFailure($this, $e, 0);
+            }
 
             return $result;
         }
