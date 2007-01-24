@@ -494,6 +494,9 @@
      <file baseinstalldir="/" name="AllTests.php" role="test">
       <tasks:replace from="@package_version@" to="version" type="package-info" />
      </file>
+     <file baseinstalldir="/" name="TestConfiguration.php.dist" role="test">
+      <tasks:replace from="@package_version@" to="version" type="package-info" />
+     </file>
     </dir>
     <dir name="TextUI">
      <file baseinstalldir="/" name="Command.php" role="php">
