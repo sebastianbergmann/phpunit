@@ -17,9 +17,9 @@
   <email>sb@sebastian-bergmann.de</email>
   <active>yes</active>
  </lead>
- <date>2007-01-13</date>
+ <date>2007-01-28</date>
  <version>
-  <release>3.0.2</release>
+  <release>3.0.3</release>
   <api>3.0.0</api>
  </version>
  <stability>
