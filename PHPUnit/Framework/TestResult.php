@@ -515,8 +515,6 @@ class PHPUnit_Framework_TestResult implements Countable
             restore_error_handler();
         }
 
-        $globalsBackup = $GLOBALS;
-
         $xdebugLoaded  = extension_loaded('xdebug');
         $xdebugEnabled = $xdebugLoaded && xdebug_is_enabled();
 
@@ -562,8 +560,6 @@ class PHPUnit_Framework_TestResult implements Countable
         if ($xdebugEnabled) {
             xdebug_enable();
         }
-
-        $GLOBALS = $globalsBackup;
 
         if ($errorHandlerSet === TRUE) {
             restore_error_handler();
