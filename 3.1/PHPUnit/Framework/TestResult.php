@@ -504,9 +504,9 @@ class PHPUnit_Framework_TestResult implements Countable
         $errorHandlerSet = FALSE;
 
         if (version_compare(phpversion(), '5.2.0RC1', '>=')) {
-            $oldErrorHandler = set_error_handler('PHPUnit_Util_ErrorHandler', E_RECOVERABLE_ERROR | E_USER_ERROR);
+            $oldErrorHandler = set_error_handler('PHPUnit_Util_ErrorHandler', E_RECOVERABLE_ERROR | E_USER_ERROR | E_NOTICE | E_STRICT);
         } else {
-            $oldErrorHandler = set_error_handler('PHPUnit_Util_ErrorHandler', E_USER_ERROR);
+            $oldErrorHandler = set_error_handler('PHPUnit_Util_ErrorHandler', E_USER_ERROR | E_NOTICE | E_STRICT);
         }
 
         if ($oldErrorHandler === NULL) {

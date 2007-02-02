@@ -244,6 +244,9 @@
      <file baseinstalldir="/" name="IncompleteTestError.php" role="php">
       <tasks:replace from="@package_version@" to="version" type="package-info" />
      </file>
+     <file baseinstalldir="/" name="Notice.php" role="php">
+      <tasks:replace from="@package_version@" to="version" type="package-info" />
+     </file>
      <file baseinstalldir="/" name="SelfDescribing.php" role="php">
       <tasks:replace from="@package_version@" to="version" type="package-info" />
      </file>
