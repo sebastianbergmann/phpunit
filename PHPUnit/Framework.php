@@ -52,6 +52,7 @@ require 'PHPUnit/Framework/SelfDescribing.php';
 require 'PHPUnit/Framework/AssertionFailedError.php';
 require 'PHPUnit/Framework/Assert.php';
 require 'PHPUnit/Framework/Error.php';
+require 'PHPUnit/Framework/Notice.php';
 require 'PHPUnit/Framework/IncompleteTest.php';
 require 'PHPUnit/Framework/SkippedTest.php';
 require 'PHPUnit/Framework/Test.php';

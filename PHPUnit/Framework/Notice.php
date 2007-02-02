@@ -41,39 +41,30 @@
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    SVN: $Id$
  * @link       http://www.phpunit.de/
- * @since      File available since Release 2.3.0
+ * @since      File available since Release 3.1.0
  */
 
-require_once 'PHPUnit/Framework.php';
 require_once 'PHPUnit/Util/Filter.php';
 
 PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
 
+if (!class_exists('PHPUnit_Framework_Notice', FALSE)) {
+
 /**
- * @param  integer $errno
- * @param  string  $errstr
- * @param  string  $errfile
- * @param  integer $errline
- * @throws PHPUnit_Framework_Error
- * @since  Function available since Release 2.3.0
+ * Wrapper for PHP notices.
+ *
+ * @category   Testing
+ * @package    PHPUnit
+ * @author     Sebastian Bergmann <sb@sebastian-bergmann.de>
+ * @copyright  2002-2007 Sebastian Bergmann <sb@sebastian-bergmann.de>
+ * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
+ * @version    Release: @package_version@
+ * @link       http://www.phpunit.de/
+ * @since      Class available since Release 3.1.0
  */
-function PHPUnit_Util_ErrorHandler($errno, $errstr, $errfile, $errline)
+class PHPUnit_Framework_Notice extends PHPUnit_Framework_Error
 {
-    $trace = debug_backtrace();
-    array_shift($trace);
+}
 
-    if ($errno == E_NOTICE || $errno == E_STRICT) {
-        $exception = 'PHPUnit_Framework_Notice';
-    } else {
-        $exception = 'PHPUnit_Framework_Error';
-    }
-
-    throw new $exception(
-      $errstr,
-      $errno,
-      $errfile,
-      $errline,
-      $trace
-    );
 }
 ?>
