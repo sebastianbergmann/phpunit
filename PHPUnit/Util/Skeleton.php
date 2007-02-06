@@ -108,7 +108,7 @@ class PHPUnit_Util_Skeleton
             $this->classSourceFile = $className . '.php';
         }
 
-        else if (empty($classSourceFile) &&
+        else if (empty($classSourceFile) ||
                  is_file(str_replace('_', '/', $className) . '.php')) {
             $this->classSourceFile = str_replace('_', '/', $className) . '.php';
             $this->testSourceFile  = str_replace('_', '/', $className) . 'Test.php';
