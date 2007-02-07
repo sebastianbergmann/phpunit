@@ -65,38 +65,13 @@ class Framework_MockObjectTest extends PHPUnit_Framework_TestCase
 {
     public function testMockedMethodIsCalledOnceWithCorrectParameter()
     {
-        $mock       = PHPUnit_Framework_MockObject_Mock::generate('AnInterface');
-        $mockClass  = new ReflectionClass($mock->mockClassName);
-        $mockObject = $mockClass->newInstance();
-
-        $mockObject->expects($this->once())
-                   ->method('doSomething')
-                   ->with($this->equalTo('something')
+        $mock = $this->getMock('AnInterface');
+        $mock->expects($this->once())
+             ->method('doSomething')
+             ->with($this->equalTo('something')
         );
 
-        $mockObject->doSomething('something');
-    }
-
-    public function testMockedMethodIsCalledOnceWithWrongParameter()
-    {
-        $mock       = PHPUnit_Framework_MockObject_Mock::generate('AnInterface');
-        $mockClass  = new ReflectionClass($mock->mockClassName);
-        $mockObject = $mockClass->newInstance();
-
-        $mockObject->expects($this->once())
-                   ->method('doSomething')
-                   ->with($this->equalTo('something')
-        );
-
-        try {
-            $mockObject->doSomething('anything');
-        }
-
-        catch (Exception $e) {
-            return;
-        }
-
-        $this->fail();
+        $mock->doSomething('something');
     }
 }
 ?>
