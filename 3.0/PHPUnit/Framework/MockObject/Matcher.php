@@ -238,10 +238,6 @@ class PHPUnit_Framework_MockObject_Matcher implements PHPUnit_Framework_MockObje
 
     public function verify()
     {
-        if ($this->stub !== NULL) {
-            return;
-        }
-
         if ($this->invocationMatcher === NULL) {
             throw new RuntimeException('No invocation matcher is set');
         }
