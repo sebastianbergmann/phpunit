@@ -118,24 +118,6 @@ class Framework_MockObjectTest extends PHPUnit_Framework_TestCase
         $mock->doSomething();
     }
 
-    public function testStubbedException()
-    {
-        $mock = $this->getMock('AnInterface');
-        $mock->expects($this->any())
-             ->method('doSomething')
-             ->will($this->throwException(new Exception));
-
-        try {
-            $mock->doSomething();
-        }
-
-        catch (Exception $e) {
-            return;
-        }
-
-        $this->fail();
-    }
-
     public function testStubbedReturnValue()
     {
         $mock = $this->getMock('AnInterface');
