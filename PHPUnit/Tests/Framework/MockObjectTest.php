@@ -63,15 +63,59 @@ require_once '_files/AnInterface.php';
  */
 class Framework_MockObjectTest extends PHPUnit_Framework_TestCase
 {
-    public function testMockedMethodIsCalledOnceWithCorrectParameter()
+    public function testMockedMethodIsNeverCalled()
+    {
+        $mock = $this->getMock('AnInterface');
+        $mock->expects($this->never())
+             ->method('doSomething');
+    }
+
+    public function testMockedMethodIsCalledAtLeastOnce()
+    {
+        $mock = $this->getMock('AnInterface');
+        $mock->expects($this->atLeastOnce())
+             ->method('doSomething');
+
+        $mock->doSomething();
+    }
+
+    public function testMockedMethodIsCalledAtLeastOnce2()
+    {
+        $mock = $this->getMock('AnInterface');
+        $mock->expects($this->atLeastOnce())
+             ->method('doSomething');
+
+        $mock->doSomething();
+        $mock->doSomething();
+    }
+
+    public function testMockedMethodIsCalledOnce()
+    {
+        $mock = $this->getMock('AnInterface');
+        $mock->expects($this->once())
+             ->method('doSomething');
+
+        $mock->doSomething();
+    }
+
+    public function testMockedMethodIsCalledOnceWithParameter()
     {
         $mock = $this->getMock('AnInterface');
         $mock->expects($this->once())
              ->method('doSomething')
-             ->with($this->equalTo('something')
-        );
+             ->with($this->equalTo('something'));
 
         $mock->doSomething('something');
+    }
+
+    public function testMockedMethodIsCalledExactly()
+    {
+        $mock = $this->getMock('AnInterface');
+        $mock->expects($this->exactly(2))
+             ->method('doSomething');
+
+        $mock->doSomething();
+        $mock->doSomething();
     }
 }
 ?>
