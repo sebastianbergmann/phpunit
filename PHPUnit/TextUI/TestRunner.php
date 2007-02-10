@@ -223,6 +223,14 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
                 );
             }
 
+            $result->addListener(
+              new PHPUnit_TextUI_ResultPrinter($parameters['reportDirectory'] . '/logfile.txt', TRUE)
+            );
+
+            $result->addListener(
+              new PHPUnit_Util_Log_XML($parameters['reportDirectory'] . '/logfile.xml')
+            );
+
             $result->collectCodeCoverageInformation(TRUE);
         }
 
