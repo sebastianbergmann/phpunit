@@ -106,6 +106,9 @@
       <file baseinstalldir="/" name="Not.php" role="php">
        <tasks:replace from="@package_version@" to="version" type="package-info" />
       </file>
+      <file baseinstalldir="/" name="ObjectAttributeIsEqual.php" role="php">
+       <tasks:replace from="@package_version@" to="version" type="package-info" />
+      </file>
       <file baseinstalldir="/" name="ObjectHasAttribute.php" role="php">
        <tasks:replace from="@package_version@" to="version" type="package-info" />
       </file>

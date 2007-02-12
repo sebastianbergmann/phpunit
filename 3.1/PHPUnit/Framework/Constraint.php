@@ -150,6 +150,7 @@ require_once 'PHPUnit/Framework/Constraint/IsInstanceOf.php';
 require_once 'PHPUnit/Framework/Constraint/IsType.php';
 require_once 'PHPUnit/Framework/Constraint/LessThan.php';
 require_once 'PHPUnit/Framework/Constraint/Not.php';
+require_once 'PHPUnit/Framework/Constraint/ObjectAttributeIsEqual.php';
 require_once 'PHPUnit/Framework/Constraint/ObjectHasAttribute.php';
 require_once 'PHPUnit/Framework/Constraint/Or.php';
 require_once 'PHPUnit/Framework/Constraint/PCREMatch.php';
