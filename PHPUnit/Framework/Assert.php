@@ -979,7 +979,7 @@ class PHPUnit_Framework_Assert
 
         self::assertObjectHasAttribute($attributeName, $object);
 
-        $class     = new ReflectionClass($object);
+        $class     = new ReflectionObject($object);
         $attribute = $class->getProperty($attributeName);
 
         if ($attribute->isPublic()) {
