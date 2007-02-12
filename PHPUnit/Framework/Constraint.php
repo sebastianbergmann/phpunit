@@ -141,6 +141,7 @@ abstract class PHPUnit_Framework_Constraint implements PHPUnit_Framework_SelfDes
 
 require_once 'PHPUnit/Framework/Constraint/And.php';
 require_once 'PHPUnit/Framework/Constraint/ArrayHasKey.php';
+require_once 'PHPUnit/Framework/Constraint/ClassHasAttribute.php';
 require_once 'PHPUnit/Framework/Constraint/FileExists.php';
 require_once 'PHPUnit/Framework/Constraint/GreaterThan.php';
 require_once 'PHPUnit/Framework/Constraint/IsAnything.php';

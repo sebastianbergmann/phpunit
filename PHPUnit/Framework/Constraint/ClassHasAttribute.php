@@ -42,7 +42,7 @@
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    SVN: $Id$
  * @link       http://www.phpunit.de/
- * @since      File available since Release 3.0.0
+ * @since      File available since Release 3.1.0
  */
 
 require_once 'PHPUnit/Framework.php';
@@ -52,7 +52,7 @@ require_once 'PHPUnit/Util/Type.php';
 PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
 
 /**
- * Constraint that asserts that the object it is evaluated for has a given
+ * Constraint that asserts that the class it is evaluated for has a given
  * attribute.
  *
  * The attribute name is passed in the constructor.
@@ -64,10 +64,17 @@ PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    Release: @package_version@
  * @link       http://www.phpunit.de/
- * @since      Class available since Release 3.0.0
+ * @since      Class available since Release 3.1.0
  */
-class PHPUnit_Framework_Constraint_ObjectHasAttribute extends PHPUnit_Framework_Constraint_ClassHasAttribute
+class PHPUnit_Framework_Constraint_ClassHasAttribute extends PHPUnit_Framework_Constraint
 {
+    protected $attributeName;
+
+    public function __construct($attributeName)
+    {
+        $this->attributeName = $attributeName;
+    }
+
     /**
      * Evaluates the constraint for parameter $other. Returns TRUE if the
      * constraint is met, FALSE otherwise.
@@ -77,9 +84,24 @@ class PHPUnit_Framework_Constraint_ObjectHasAttribute extends PHPUnit_Framework_
      */
     public function evaluate($other)
     {
-        $object = new ReflectionObject($other);
+        $class = new ReflectionClass($other);
 
-        return $object->hasProperty($this->attributeName);
+        return $class->hasProperty($this->attributeName);
+    }
+
+    /**
+     * Returns a string representation of the constraint.
+     *
+     * @return string
+     * @access public
+     */
+    public function toString()
+    {
+        return sprintf(
+          'has attribute "%s"',
+
+          $this->attributeName
+        );
     }
 }
 ?>
