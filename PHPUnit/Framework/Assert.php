@@ -266,17 +266,14 @@ class PHPUnit_Framework_Assert
      */
     public static function assertAttributeEquals($expected, $actualAttributeName, $actualObject, $message = '', $delta = 0, $maxDepth = 10)
     {
-        if (!is_string($actualAttributeName) || !is_object($actualObject)) {
-            throw new InvalidArgumentException;
-        }
-
-        self::assertEquals(
+        $constraint = new PHPUnit_Framework_Constraint_ObjectAttributeIsEqual(
+          $actualAttributeName,
           $expected,
-          self::getAttribute($actualObject, $actualAttributeName),
-          $message,
           $delta,
           $maxDepth
         );
+
+        self::assertThat($actualObject, $constraint, $message);
     }
 
     /**
@@ -318,17 +315,16 @@ class PHPUnit_Framework_Assert
      */
     public static function assertAttributeNotEquals($expected, $actualAttributeName, $actualObject, $message = '', $delta = 0, $maxDepth = 10)
     {
-        if (!is_string($actualAttributeName) || !is_object($actualObject)) {
-            throw new InvalidArgumentException;
-        }
-
-        self::assertNotEquals(
-          $expected,
-          self::getAttribute($actualObject, $actualAttributeName),
-          $message,
-          $delta,
-          $maxDepth
+        $constraint = new PHPUnit_Framework_Constraint_Not(
+          new PHPUnit_Framework_Constraint_ObjectAttributeIsEqual(
+            $actualAttributeName,
+            $expected,
+            $delta,
+            $maxDepth
+          )
         );
+
+        self::assertThat($actualObject, $constraint, $message);
     }
 
     /**
