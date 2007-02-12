@@ -46,6 +46,8 @@
 
 require_once 'PHPUnit/Framework/TestCase.php';
 
+require_once '_files/ClassWithNonPublicAttributes.php';
+
 /**
  *
  *
@@ -522,6 +524,40 @@ class Framework_ConstraintTest extends PHPUnit_Framework_TestCase
         catch (PHPUnit_Framework_ExpectationFailedException $e) {
             $this->assertEquals(
               "Failed asserting that \nstdClass Object\n(\n    [foo] => bar\n)\n does not have attribute \"foo\".",
+              $e->getDescription()
+            );
+
+            return;
+        }
+
+        $this->fail();
+    }
+
+    public function testConstraintObjectAttributeIsEqual()
+    {
+        $constraint = new PHPUnit_Framework_Constraint_ObjectAttributeIsEqual(
+          'protectedAttribute', 'bar'
+        );
+
+        $obj = new ClassWithNonPublicAttributes;
+        $this->assertTrue($constraint->evaluate($obj));
+
+        $this->assertEquals(
+          'has attribute "protectedAttribute" that is equal to <string:bar>',
+          $constraint->toString()
+        );
+
+        $constraint = new PHPUnit_Framework_Constraint_ObjectAttributeIsEqual(
+          'foo', 'bar'
+        );
+
+        try {
+            $constraint->fail(new stdClass, '');
+        }
+
+        catch (PHPUnit_Framework_ExpectationFailedException $e) {
+            $this->assertEquals(
+              "Failed asserting that \nstdClass Object\n(\n)\n has attribute \"foo\" that is equal to <string:bar>.",
               $e->getDescription()
             );
 
