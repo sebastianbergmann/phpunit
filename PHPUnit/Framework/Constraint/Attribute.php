@@ -39,21 +39,18 @@
  * @author     Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @copyright  2002-2007 Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
- * @version    SVN: $Id$
+ * @version    SVN: $Id: Not.php 398 2006-12-24 17:50:40Z sb $
  * @link       http://www.phpunit.de/
  * @since      File available since Release 3.1.0
  */
 
 require_once 'PHPUnit/Framework.php';
-require_once 'PHPUnit/Util/Array.php';
 require_once 'PHPUnit/Util/Filter.php';
-require_once 'PHPUnit/Util/Type.php';
 
 PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
 
 /**
- * Constraint that asserts that the class it is evaluated for has a given
- * static attribute with a given value.
+ * 
  *
  * @category   Testing
  * @package    PHPUnit
@@ -64,23 +61,16 @@ PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
  * @link       http://www.phpunit.de/
  * @since      Class available since Release 3.1.0
  */
-class PHPUnit_Framework_Constraint_StaticAttributeIsEqual extends PHPUnit_Framework_Constraint
+
+class PHPUnit_Framework_Constraint_Attribute extends PHPUnit_Framework_Constraint
 {
     private $attributeName;
-    private $hasAttribute;
-    private $isEqual;
+    private $constraint;
 
-    public function __construct($attributeName, $value, $delta = 0, $maxDepth = 10)
+    public function __construct(PHPUnit_Framework_Constraint $constraint, $attributeName)
     {
         $this->attributeName = $attributeName;
-
-        $this->hasAttribute = new PHPUnit_Framework_Constraint_ClassHasStaticAttribute(
-          $attributeName
-        );
-
-        $this->isEqual = new PHPUnit_Framework_Constraint_IsEqual(
-          $value, $delta, $maxDepth
-        );
+        $this->constraint    = $constraint;
     }
 
     /**
@@ -92,18 +82,30 @@ class PHPUnit_Framework_Constraint_StaticAttributeIsEqual extends PHPUnit_Framew
      */
     public function evaluate($other)
     {
-        if ($this->hasAttribute->evaluate($other)) {
-            $attribute = PHPUnit_Framework_Assert::getStaticAttribute(
-              $other,
-              $this->attributeName
-            );
+        $this->constraint->evaluate(
+          PHPUnit_Framework_Assert::getAttribute(
+            $other, $attributeName
+          )
+        );
+    }
 
-            if ($this->isEqual->evaluate($attribute)) {
-                return TRUE;
-            }
-        }
-
-        return FALSE;
+    /**
+     * @param   mixed   $other The value passed to evaluate() which failed the
+     *                         constraint check.
+     * @param   string  $description A string with extra description of what was
+     *                               going on while the evaluation failed.
+     * @param   boolean $not Flag to indicate negation.
+     * @throws  PHPUnit_Framework_ExpectationFailedException
+     */
+    public function fail($other, $description, $not = FALSE)
+    {
+        parent::fail(
+          PHPUnit_Framework_Assert::getAttribute(
+            $other, $attributeName
+          ),
+          $description,
+          $not
+        );
     }
 
     /**
@@ -114,12 +116,7 @@ class PHPUnit_Framework_Constraint_StaticAttributeIsEqual extends PHPUnit_Framew
      */
     public function toString()
     {
-        return sprintf(
-          'has static attribute "%s" that %s',
-
-          $this->attributeName,
-          $this->isEqual->toString()
-        );
+        return $this->constraint->toString();
     }
 }
 ?>
