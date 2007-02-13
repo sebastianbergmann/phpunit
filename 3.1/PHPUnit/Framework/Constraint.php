@@ -141,6 +141,7 @@ abstract class PHPUnit_Framework_Constraint implements PHPUnit_Framework_SelfDes
 
 require_once 'PHPUnit/Framework/Constraint/And.php';
 require_once 'PHPUnit/Framework/Constraint/ArrayHasKey.php';
+require_once 'PHPUnit/Framework/Constraint/Attribute.php';
 require_once 'PHPUnit/Framework/Constraint/ClassHasAttribute.php';
 require_once 'PHPUnit/Framework/Constraint/ClassHasStaticAttribute.php';
 require_once 'PHPUnit/Framework/Constraint/FileExists.php';
@@ -152,11 +153,9 @@ require_once 'PHPUnit/Framework/Constraint/IsInstanceOf.php';
 require_once 'PHPUnit/Framework/Constraint/IsType.php';
 require_once 'PHPUnit/Framework/Constraint/LessThan.php';
 require_once 'PHPUnit/Framework/Constraint/Not.php';
-require_once 'PHPUnit/Framework/Constraint/ObjectAttributeIsEqual.php';
 require_once 'PHPUnit/Framework/Constraint/ObjectHasAttribute.php';
 require_once 'PHPUnit/Framework/Constraint/Or.php';
 require_once 'PHPUnit/Framework/Constraint/PCREMatch.php';
-require_once 'PHPUnit/Framework/Constraint/StaticAttributeIsEqual.php';
 require_once 'PHPUnit/Framework/Constraint/StringContains.php';
 require_once 'PHPUnit/Framework/Constraint/TraversableContains.php';
 require_once 'PHPUnit/Framework/Constraint/Xor.php';
