@@ -886,6 +886,44 @@ class PHPUnit_Framework_Assert
     /**
      *
      *
+     * @param  string  $attributeName
+     * @param  mixed   $value
+     * @param  float   $delta
+     * @param  integer $maxDepth
+     * @return PHPUnit_Framework_Constraint_ObjectAttributeIsEqual
+     * @access public
+     * @since  Method available since Release 3.1.0
+     * @static
+     */
+    public static function objectAttributeEqualTo($attributeName, $value, $delta = 0, $maxDepth = 10)
+    {
+        return new PHPUnit_Framework_Constraint_ObjectAttributeIsEqual(
+          $attributeName, $value, $delta, $maxDepth
+        );
+    }
+
+    /**
+     *
+     *
+     * @param  string  $attributeName
+     * @param  mixed   $value
+     * @param  float   $delta
+     * @param  integer $maxDepth
+     * @return PHPUnit_Framework_Constraint_StaticAttributeIsEqual
+     * @access public
+     * @since  Method available since Release 3.1.0
+     * @static
+     */
+    public static function staticAttributeEqualTo($attributeName, $value, $delta = 0, $maxDepth = 10)
+    {
+        return new PHPUnit_Framework_Constraint_StaticAttributeIsEqual(
+          $attributeName, $value, $delta, $maxDepth
+        );
+    }
+
+    /**
+     *
+     *
      * @return PHPUnit_Framework_Constraint_FileExists
      * @access public
      * @since  Method available since Release 3.0.0
