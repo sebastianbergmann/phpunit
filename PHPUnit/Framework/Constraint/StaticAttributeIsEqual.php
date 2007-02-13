@@ -41,15 +41,19 @@
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    SVN: $Id$
  * @link       http://www.phpunit.de/
- * @since      File available since Release 3.0.0
+ * @since      File available since Release 3.1.0
  */
 
+require_once 'PHPUnit/Framework.php';
+require_once 'PHPUnit/Util/Array.php';
 require_once 'PHPUnit/Util/Filter.php';
+require_once 'PHPUnit/Util/Type.php';
 
-PHPUnit_Util_Filter::addFileToFilter(__FILE__);
+PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
 
 /**
- *
+ * Constraint that asserts that the class it is evaluated for has a given
+ * static attribute with a given value.
  *
  * @category   Testing
  * @package    PHPUnit
@@ -58,20 +62,64 @@ PHPUnit_Util_Filter::addFileToFilter(__FILE__);
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    Release: @package_version@
  * @link       http://www.phpunit.de/
- * @since      Class available since Release 3.0.0
+ * @since      Class available since Release 3.1.0
  */
-class ClassWithNonPublicAttributes
+class PHPUnit_Framework_Constraint_StaticAttributeIsEqual extends PHPUnit_Framework_Constraint
 {
-    public static $publicStaticAttribute = 'foo';
-    protected static $protectedStaticAttribute = 'bar';
-    private static $privateStaticAttribute = 'baz';
+    private $attributeName;
+    private $hasAttribute;
+    private $isEqual;
 
-    public $publicAttribute = 'foo';
-    protected $protectedAttribute = 'bar';
-    private $privateAttribute = 'baz';
+    public function __construct($attributeName, $value, $delta = 0, $maxDepth = 10)
+    {
+        $this->attributeName = $attributeName;
 
-    public $publicArray = array('foo');
-    public $protectedArray = array('bar');
-    public $privateArray = array('baz');
+        $this->hasAttribute = new PHPUnit_Framework_Constraint_ClassHasStaticAttribute(
+          $attributeName
+        );
+
+        $this->isEqual = new PHPUnit_Framework_Constraint_IsEqual(
+          $value, $delta, $maxDepth
+        );
+    }
+
+    /**
+     * Evaluates the constraint for parameter $other. Returns TRUE if the
+     * constraint is met, FALSE otherwise.
+     *
+     * @param mixed $other Value or object to evaluate.
+     * @return bool
+     */
+    public function evaluate($other)
+    {
+        if ($this->hasAttribute->evaluate($other)) {
+            $attribute = PHPUnit_Framework_Assert::getStaticAttribute(
+              $other,
+              $this->attributeName
+            );
+
+            if ($this->isEqual->evaluate($attribute)) {
+                return TRUE;
+            }
+        }
+
+        return FALSE;
+    }
+
+    /**
+     * Returns a string representation of the constraint.
+     *
+     * @return string
+     * @access public
+     */
+    public function toString()
+    {
+        return sprintf(
+          'has static attribute "%s" that %s',
+
+          $this->attributeName,
+          $this->isEqual->toString()
+        );
+    }
 }
 ?>

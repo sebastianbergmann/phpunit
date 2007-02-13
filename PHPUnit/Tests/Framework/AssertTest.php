@@ -1039,6 +1039,13 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('baz', $this->getAttribute($obj, 'privateAttribute'));
     }
 
+    public function testGetStaticAttribute()
+    {
+        $this->assertEquals('foo', $this->getStaticAttribute('ClassWithNonPublicAttributes', 'publicStaticAttribute'));
+        $this->assertEquals('bar', $this->getStaticAttribute('ClassWithNonPublicAttributes', 'protectedStaticAttribute'));
+        $this->assertEquals('baz', $this->getStaticAttribute('ClassWithNonPublicAttributes', 'privateStaticAttribute'));
+    }
+
     public function testAssertPublicAttributeContains()
     {
         $obj = new ClassWithNonPublicAttributes;
@@ -1234,6 +1241,96 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
 
         try {
             $this->assertAttributeNotEquals('baz', 'privateAttribute', $obj);
+        }
+
+        catch (PHPUnit_Framework_AssertionFailedError $e) {
+            return;
+        }
+
+        $this->fail();
+    }
+
+    public function testAssertPublicStaticAttributeEquals()
+    {
+        $this->assertAttributeEquals('foo', 'publicStaticAttribute', 'ClassWithNonPublicAttributes');
+
+        try {
+            $this->assertAttributeEquals('bar', 'publicStaticAttribute', 'ClassWithNonPublicAttributes');
+        }
+
+        catch (PHPUnit_Framework_AssertionFailedError $e) {
+            return;
+        }
+
+        $this->fail();
+    }
+
+    public function testAssertPublicStaticAttributeNotEquals()
+    {
+        $this->assertAttributeNotEquals('bar', 'publicStaticAttribute', 'ClassWithNonPublicAttributes');
+
+        try {
+            $this->assertAttributeNotEquals('foo', 'publicStaticAttribute', 'ClassWithNonPublicAttributes');
+        }
+
+        catch (PHPUnit_Framework_AssertionFailedError $e) {
+            return;
+        }
+
+        $this->fail();
+    }
+
+    public function testAssertProtectedStaticAttributeEquals()
+    {
+        $this->assertAttributeEquals('bar', 'protectedStaticAttribute', 'ClassWithNonPublicAttributes');
+
+        try {
+            $this->assertAttributeEquals('foo', 'protectedStaticAttribute', 'ClassWithNonPublicAttributes');
+        }
+
+        catch (PHPUnit_Framework_AssertionFailedError $e) {
+            return;
+        }
+
+        $this->fail();
+    }
+
+    public function testAssertProtectedStaticAttributeNotEquals()
+    {
+        $this->assertAttributeNotEquals('foo', 'protectedStaticAttribute', 'ClassWithNonPublicAttributes');
+
+        try {
+            $this->assertAttributeNotEquals('bar', 'protectedStaticAttribute', 'ClassWithNonPublicAttributes');
+        }
+
+        catch (PHPUnit_Framework_AssertionFailedError $e) {
+            return;
+        }
+
+        $this->fail();
+    }
+
+    public function testAssertPrivateStaticAttributeEquals()
+    {
+        $this->assertAttributeEquals('baz', 'privateStaticAttribute', 'ClassWithNonPublicAttributes');
+
+        try {
+            $this->assertAttributeEquals('foo', 'privateStaticAttribute', 'ClassWithNonPublicAttributes');
+        }
+
+        catch (PHPUnit_Framework_AssertionFailedError $e) {
+            return;
+        }
+
+        $this->fail();
+    }
+
+    public function testAssertPrivateStaticAttributeNotEquals()
+    {
+        $this->assertAttributeNotEquals('foo', 'privateStaticAttribute', 'ClassWithNonPublicAttributes');
+
+        try {
+            $this->assertAttributeNotEquals('baz', 'privateStaticAttribute', 'ClassWithNonPublicAttributes');
         }
 
         catch (PHPUnit_Framework_AssertionFailedError $e) {

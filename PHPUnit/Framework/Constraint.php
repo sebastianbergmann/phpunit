@@ -156,6 +156,7 @@ require_once 'PHPUnit/Framework/Constraint/ObjectAttributeIsEqual.php';
 require_once 'PHPUnit/Framework/Constraint/ObjectHasAttribute.php';
 require_once 'PHPUnit/Framework/Constraint/Or.php';
 require_once 'PHPUnit/Framework/Constraint/PCREMatch.php';
+require_once 'PHPUnit/Framework/Constraint/StaticAttributeIsEqual.php';
 require_once 'PHPUnit/Framework/Constraint/StringContains.php';
 require_once 'PHPUnit/Framework/Constraint/TraversableContains.php';
 require_once 'PHPUnit/Framework/Constraint/Xor.php';
