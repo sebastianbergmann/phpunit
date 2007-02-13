@@ -914,6 +914,34 @@ class PHPUnit_Framework_Assert
      *
      *
      * @param  string $attributeName
+     * @return PHPUnit_Framework_Constraint_ClassHasAttribute
+     * @access public
+     * @since  Method available since Release 3.1.0
+     * @static
+     */
+    public static function classHasAttribute($attributeName)
+    {
+        return new PHPUnit_Framework_Constraint_ClassHasAttribute($attributeName);
+    }
+
+    /**
+     *
+     *
+     * @param  string $attributeName
+     * @return PHPUnit_Framework_Constraint_ClassHasStaticAttribute
+     * @access public
+     * @since  Method available since Release 3.1.0
+     * @static
+     */
+    public static function classHasStaticAttribute($attributeName)
+    {
+        return new PHPUnit_Framework_Constraint_ClassHasStaticAttribute($attributeName);
+    }
+
+    /**
+     *
+     *
+     * @param  string $attributeName
      * @return PHPUnit_Framework_Constraint_ObjectHasAttribute
      * @access public
      * @since  Method available since Release 3.0.0
