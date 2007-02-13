@@ -164,7 +164,7 @@ class PHPUnit_Framework_Assert
     {
         self::assertContains(
           $needle,
-          self::getAttributeForAssertion($haystackClassOrObject, $haystackAttributeName),
+          self::getAttribute($haystackClassOrObject, $haystackAttributeName),
           $message
         );
     }
@@ -217,7 +217,7 @@ class PHPUnit_Framework_Assert
     {
         self::assertNotContains(
           $needle,
-          self::getAttributeForAssertion($haystackClassOrObject, $haystackAttributeName),
+          self::getAttribute($haystackClassOrObject, $haystackAttributeName),
           $message
         );
     }
@@ -260,7 +260,7 @@ class PHPUnit_Framework_Assert
     {
         self::assertEquals(
           $expected,
-          self::getAttributeForAssertion($actualClassOrObject, $actualAttributeName),
+          self::getAttribute($actualClassOrObject, $actualAttributeName),
           $message,
           $delta,
           $maxDepth
@@ -308,7 +308,7 @@ class PHPUnit_Framework_Assert
     {
         self::assertNotEquals(
           $expected,
-          self::getAttributeForAssertion($actualClassOrObject, $actualAttributeName),
+          self::getAttribute($actualClassOrObject, $actualAttributeName),
           $message,
           $delta,
           $maxDepth
@@ -596,7 +596,7 @@ class PHPUnit_Framework_Assert
     {
         self::assertSame(
           $expected,
-          self::getAttributeForAssertion($actualClassOrObject, $actualAttributeName),
+          self::getAttribute($actualClassOrObject, $actualAttributeName),
           $message
         );
     }
@@ -636,7 +636,7 @@ class PHPUnit_Framework_Assert
     {
         self::assertNotSame(
           $expected,
-          self::getAttributeForAssertion($actualClassOrObject, $actualAttributeName),
+          self::getAttribute($actualClassOrObject, $actualAttributeName),
           $message
         );
     }
@@ -1090,50 +1090,47 @@ class PHPUnit_Framework_Assert
     }
 
     /**
-     * Returns the value of an object's attribute.
+     * Returns the value of an attribute of a class or an object.
      * This also works for attributes that are declared protected or private.
      *
-     * @param  object  $object
+     * @param  mixed   $classOrObject
      * @param  string  $attributeName
      * @return mixed
      * @throws InvalidArgumentException
-     * @access public
+     * @access protected
      * @static
-     * @since  Method available since Release 3.0.0
      */
-    public static function getAttribute($object, $attributeName)
+    public static function getAttribute($classOrObject, $attributeName)
     {
-        if (!is_object($object) || !is_string($attributeName)) {
+        if (!is_string($attributeName)) {
             throw new InvalidArgumentException;
         }
 
-        self::assertObjectHasAttribute($attributeName, $object);
-
-        $class     = new ReflectionObject($object);
-        $attribute = $class->getProperty($attributeName);
-
-        if ($attribute->isPublic()) {
-            return $object->$attributeName;
-        } else {
-            if ($attribute->isProtected()) {
-                $attributeName = "\0*\0" . $attributeName;
-            } else {
-                $attributeName = sprintf(
-                    "\0%s\0%s",
-
-                    get_class($object),
-                    $attributeName
-                );
+        if (is_string($classOrObject)) {
+            if (!class_exists($classOrObject, FALSE)) {
+                throw new InvalidArgumentException;
             }
 
-            $tmp = (array) $object;
+            return self::getStaticAttribute(
+              $classOrObject,
+              $attributeName
+            );
+        }
+        
+        else if (is_object($classOrObject)) {
+            return self::getObjectAttribute(
+              $classOrObject,
+              $attributeName
+            );
+        }
 
-            return $tmp[$attributeName];
+        else {
+            throw new InvalidArgumentException;
         }
     }
 
     /**
-     * Returns the value of an object's attribute.
+     * Returns the value of a static attribute.
      * This also works for attributes that are declared protected or private.
      *
      * @param  string  $className
@@ -1175,40 +1172,45 @@ class PHPUnit_Framework_Assert
     }
 
     /**
-     * @param  mixed   $classOrObject
+     * Returns the value of an object's attribute.
+     * This also works for attributes that are declared protected or private.
+     *
+     * @param  object  $object
      * @param  string  $attributeName
      * @return mixed
      * @throws InvalidArgumentException
-     * @access protected
+     * @access public
      * @static
      * @since  Method available since Release 3.1.0
      */
-    protected static function getAttributeForAssertion($classOrObject, $attributeName)
+    public static function getObjectAttribute($object, $attributeName)
     {
-        if (!is_string($attributeName)) {
+        if (!is_object($object) || !is_string($attributeName)) {
             throw new InvalidArgumentException;
         }
 
-        if (is_string($classOrObject)) {
-            if (!class_exists($classOrObject, FALSE)) {
-                throw new InvalidArgumentException;
+        self::assertObjectHasAttribute($attributeName, $object);
+
+        $class     = new ReflectionObject($object);
+        $attribute = $class->getProperty($attributeName);
+
+        if ($attribute->isPublic()) {
+            return $object->$attributeName;
+        } else {
+            if ($attribute->isProtected()) {
+                $attributeName = "\0*\0" . $attributeName;
+            } else {
+                $attributeName = sprintf(
+                    "\0%s\0%s",
+
+                    get_class($object),
+                    $attributeName
+                );
             }
 
-            return self::getStaticAttribute(
-              $classOrObject,
-              $attributeName
-            );
-        }
-        
-        else if (is_object($classOrObject)) {
-            return self::getAttribute(
-              $classOrObject,
-              $attributeName
-            );
-        }
+            $tmp = (array) $object;
 
-        else {
-            throw new InvalidArgumentException;
+            return $tmp[$attributeName];
         }
     }
 
