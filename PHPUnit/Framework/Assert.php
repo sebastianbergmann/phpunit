@@ -840,6 +840,23 @@ class PHPUnit_Framework_Assert
     }
 
     /**
+     * 
+     *
+     * @param  PHPUnit_Framework_Constraint $constraint
+     * @param  string                       $attributeName
+     * @return PHPUnit_Framework_Constraint_Attribute
+     * @access public
+     * @since  Method available since Release 3.1.0
+     * @static
+     */
+    public static function attribute(PHPUnit_Framework_Constraint $constraint, $attributeName)
+    {
+        return new PHPUnit_Framework_Constraint_Attribute(
+          $constraint, $attributeName
+        );
+    }
+
+    /**
      *
      *
      * @param  mixed $value
