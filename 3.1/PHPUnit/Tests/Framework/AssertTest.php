@@ -1540,50 +1540,66 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
 
     public function testAssertThatAnything()
     {
-        $constraint = $this->anything();
-        $value      = 'anything';
+        $this->assertThat('anything', $this->anything());
+    }
 
-        $this->assertThat($value, $constraint);
+    public function testAssertThatAnythingAndAnything()
+    {
+        $this->assertThat(
+          'anything',
+          $this->logicalAnd(
+            $this->anything(), $this->anything()
+          )
+        );
+    }
+
+    public function testAssertThatAnythingOrAnything()
+    {
+        $this->assertThat(
+          'anything',
+          $this->logicalOr(
+            $this->anything(), $this->anything()
+          )
+        );
+    }
+
+    public function testAssertThatAnythingXorNotAnything()
+    {
+        $this->assertThat(
+          'anything',
+          $this->logicalXor(
+            $this->anything(),
+            $this->logicalNot($this->anything())
+          )
+        );
     }
 
     public function testAssertThatContains()
     {
-        $constraint = $this->contains('foo');
-        $value      = array('foo');
-
-        $this->assertThat($value, $constraint);
+        $this->assertThat(array('foo'), $this->contains('foo'));
     }
 
     public function testAssertThatStringContains()
     {
-        $constraint = $this->stringContains('foo');
-        $value      = 'barfoobar';
-
-        $this->assertThat($value, $constraint);
+        $this->assertThat('barfoobar', $this->stringContains('foo'));
     }
 
     public function testAssertThatArrayHasKey()
     {
-        $constraint = $this->arrayHasKey('foo');
-        $value      = array('foo' => 'bar');
-
-        $this->assertThat($value, $constraint);
+        $this->assertThat(array('foo' => 'bar'), $this->arrayHasKey('foo'));
     }
 
     public function testAssertThatObjectHasAttribute()
     {
-        $constraint = $this->objectHasAttribute('publicAttribute');
-        $value      = new ClassWithNonPublicAttributes;
-
-        $this->assertThat($value, $constraint);
+        $this->assertThat(
+          new ClassWithNonPublicAttributes,
+          $this->objectHasAttribute('publicAttribute')
+        );
     }
 
     public function testAssertThatEqualTo()
     {
-        $constraint = $this->equalTo('foo');
-        $value      = 'foo';
-
-        $this->assertThat($value, $constraint);
+        $this->assertThat('foo', $this->equalTo('foo'));
     }
 
     public function testAssertThatIdenticalTo()
@@ -1596,50 +1612,35 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
 
     public function testAssertThatIsInstanceOf()
     {
-        $constraint = $this->isInstanceOf('StdClass');
-        $value      = new StdClass;
-
-        $this->assertThat($value, $constraint);
+        $this->assertThat(new StdClass, $this->isInstanceOf('StdClass'));
     }
 
     public function testAssertThatIsType()
     {
-        $constraint = $this->isType('string');
-        $value      = 'string';
-
-        $this->assertThat($value, $constraint);
+        $this->assertThat('string', $this->isType('string'));
     }
 
     public function testAssertThatFileExists()
     {
-        $constraint = $this->fileExists();
-        $value      = dirname(__FILE__) . DIRECTORY_SEPARATOR . 'AllTests.php';
-
-        $this->assertThat($value, $constraint);
+        $this->assertThat(
+          dirname(__FILE__) . DIRECTORY_SEPARATOR . 'AllTests.php',
+          $this->fileExists()
+        );
     }
 
     public function testAssertThatGreaterThan()
     {
-        $constraint = $this->greaterThan(1);
-        $value      = 2;
-
-        $this->assertThat($value, $constraint);
+        $this->assertThat(2, $this->greaterThan(1));
     }
 
     public function testAssertThatLessThan()
     {
-        $constraint = $this->lessThan(2);
-        $value      = 1;
-
-        $this->assertThat($value, $constraint);
+        $this->assertThat(1, $this->lessThan(2));
     }
 
     public function testAssertThatMatchesRegularExpression()
     {
-        $constraint = $this->matchesRegularExpression('/foo/');
-        $value      = 'foobar';
-
-        $this->assertThat($value, $constraint);
+        $this->assertThat('foobar', $this->matchesRegularExpression('/foo/'));
     }
 }
 ?>
