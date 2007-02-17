@@ -383,21 +383,30 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
     /**
      * Returns a mock object for the specified class.
      *
-     * @param  string $className
-     * @param  array  $methods
-     * @param  array  $arguments
-     * @param  string $mockClassName
+     * @param  string  $className
+     * @param  array   $methods
+     * @param  array   $arguments
+     * @param  string  $mockClassName
+     * @param  boolean $callOriginalConstructor
+     * @param  boolean $callOriginalClone
      * @return object
      * @access protected
      * @since  Method available since Release 3.0.0
      */
-    protected function getMock($className, array $methods = array(), array $arguments = array(), $mockClassName = '')
+    protected function getMock($className, array $methods = array(), array $arguments = array(), $mockClassName = '', $callOriginalConstructor = TRUE, $callOriginalClone = TRUE)
     {
         if (!is_string($className) || !is_string($mockClassName)) {
             throw new InvalidArgumentException;
         }
 
-        $mock       = PHPUnit_Framework_MockObject_Mock::generate($className, $methods, $mockClassName);
+        $mock = PHPUnit_Framework_MockObject_Mock::generate(
+          $className,
+          $methods,
+          $mockClassName,
+          $callOriginalConstructor,
+          $callOriginalClone
+        );
+
         $mockClass  = new ReflectionClass($mock->mockClassName);
         $mockObject = $mockClass->newInstanceArgs($arguments);
 
