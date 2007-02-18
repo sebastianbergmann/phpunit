@@ -48,6 +48,7 @@ require_once 'PHPUnit/Framework.php';
 require_once 'PHPUnit/Runner/BaseTestRunner.php';
 require_once 'PHPUnit/Util/Fileloader.php';
 require_once 'PHPUnit/Util/Filter.php';
+require_once 'PHPUnit/Util/TestSuiteIterator.php';
 
 PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
 
@@ -90,7 +91,7 @@ if (!class_exists('PHPUnit_Framework_TestSuite', FALSE)) {
  * @link       http://www.phpunit.de/
  * @since      Class available since Release 2.0.0
  */
-class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Framework_SelfDescribing
+class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Framework_SelfDescribing, IteratorAggregate
 {
     /**
      * Fixture that is shared between the tests of this test suite.
@@ -683,6 +684,20 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
     public function setSharedFixture($sharedFixture)
     {
         $this->sharedFixture = $sharedFixture;
+    }
+
+    /**
+     * Returns an iterator for this test suite.
+     *
+     * @return RecursiveIteratorIterator
+     * @access public
+     * @since  Method available since Release 3.1.0
+     */
+    public function getIterator()
+    {
+        return new RecursiveIteratorIterator(
+          new PHPUnit_Util_TestSuiteIterator($this)
+        );
     }
 
     /**

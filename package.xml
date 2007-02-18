@@ -657,6 +657,9 @@
      <file baseinstalldir="/" name="Test.php" role="php">
       <tasks:replace from="@package_version@" to="version" type="package-info" />
      </file>
+     <file baseinstalldir="/" name="TestSuiteIterator.php" role="php">
+      <tasks:replace from="@package_version@" to="version" type="package-info" />
+     </file>
      <file baseinstalldir="/" name="Timer.php" role="php">
       <tasks:replace from="@package_version@" to="version" type="package-info" />
      </file>
