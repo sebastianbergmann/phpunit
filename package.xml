@@ -547,9 +547,6 @@
       <file baseinstalldir="/" name="TornDown5.php" role="test">
        <tasks:replace from="@package_version@" to="version" type="package-info" />
       </file>
-      <file baseinstalldir="/" name="TornDown6.php" role="test">
-       <tasks:replace from="@package_version@" to="version" type="package-info" />
-      </file>
       <file baseinstalldir="/" name="WasRun.php" role="test">
        <tasks:replace from="@package_version@" to="version" type="package-info" />
       </file>
