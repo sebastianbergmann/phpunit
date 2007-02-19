@@ -19,8 +19,8 @@
  </lead>
  <date>2007-MM-DD</date>
  <version>
-  <release>3.1.0-dev</release>
-  <api>3.1.0</api>
+  <release>3.2.0-dev</release>
+  <api>3.2.0</api>
  </version>
  <stability>
   <release>devel</release>
@@ -48,9 +48,6 @@
       <tasks:replace from="@package_version@" to="version" type="package-info" />
      </file>
      <file baseinstalldir="/" name="TestDecorator.php" role="php">
-      <tasks:replace from="@package_version@" to="version" type="package-info" />
-     </file>
-     <file baseinstalldir="/" name="TestSetup.php" role="php">
       <tasks:replace from="@package_version@" to="version" type="package-info" />
      </file>
     </dir>
@@ -287,6 +284,54 @@
       <tasks:replace from="@package_version@" to="version" type="package-info" />
      </file>
      <file baseinstalldir="/" name="Warning.php" role="php">
+      <tasks:replace from="@package_version@" to="version" type="package-info" />
+     </file>
+    </dir>
+    <dir name="GtkUI">
+     <dir name="Controller">
+      <file baseinstalldir="/" name="FileChooser.php" role="php">
+       <tasks:replace from="@package_version@" to="version" type="package-info" />
+      </file>
+      <file baseinstalldir="/" name="MainWindow.php" role="php">
+       <tasks:replace from="@package_version@" to="version" type="package-info" />
+      </file>
+      <file baseinstalldir="/" name="StatusTree.php" role="php">
+       <tasks:replace from="@package_version@" to="version" type="package-info" />
+      </file>
+      <file baseinstalldir="/" name="SuiteTree.php" role="php">
+       <tasks:replace from="@package_version@" to="version" type="package-info" />
+      </file>
+     </dir>
+     <dir name="glade">
+      <file baseinstalldir="/" name="testrunner.glade" role="php">
+       <tasks:replace from="@package_version@" to="version" type="package-info" />
+      </file>
+     </dir>
+     <dir name="img">
+      <file baseinstalldir="/" name="empty.png" role="php" />
+      <file baseinstalldir="/" name="error.png" role="php" />
+      <file baseinstalldir="/" name="failed.png" role="php" />
+      <file baseinstalldir="/" name="info.png" role="php" />
+      <file baseinstalldir="/" name="skipped.png" role="php" />
+      <file baseinstalldir="/" name="success.png" role="php" />
+      <file baseinstalldir="/" name="warning.png" role="php" />
+     </dir>
+     <file baseinstalldir="/" name="FileFilter.php" role="php">
+      <tasks:replace from="@package_version@" to="version" type="package-info" />
+     </file>
+     <file baseinstalldir="/" name="Main.php" role="php">
+      <tasks:replace from="@package_version@" to="version" type="package-info" />
+     </file>
+     <file baseinstalldir="/" name="SuiteTreeModel.php" role="php">
+      <tasks:replace from="@package_version@" to="version" type="package-info" />
+     </file>
+     <file baseinstalldir="/" name="TestListener.php" role="php">
+      <tasks:replace from="@package_version@" to="version" type="package-info" />
+     </file>
+     <file baseinstalldir="/" name="TestRunner.php" role="php">
+      <tasks:replace from="@package_version@" to="version" type="package-info" />
+     </file>
+     <file baseinstalldir="/" name="TestStatusMapper.php" role="php">
       <tasks:replace from="@package_version@" to="version" type="package-info" />
      </file>
     </dir>
@@ -723,6 +768,10 @@
    </package>
    <extension>
     <name>json</name>
+   </extension>
+   <extension>
+    <name>php-gtk</name>
+    <min>2.0.0dev</min>
    </extension>
    <extension>
     <name>pdo</name>
