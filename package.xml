@@ -728,6 +728,12 @@
     <name>json</name>
    </extension>
    <extension>
+    <name>pdo</name>
+   </extension>
+   <extension>
+    <name>pdo_sqlite</name>
+   </extension>
+   <extension>
     <name>xdebug</name>
     <min>2.0.0RC2</min>
    </extension>
