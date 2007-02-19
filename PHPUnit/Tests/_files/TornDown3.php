@@ -48,7 +48,7 @@ require_once 'PHPUnit/Util/Filter.php';
 
 PHPUnit_Util_Filter::addFileToFilter(__FILE__);
 
-require_once 'TornDown2.php';
+require_once 'TornDown.php';
 
 /**
  *
@@ -62,15 +62,9 @@ require_once 'TornDown2.php';
  * @link       http://www.phpunit.de/
  * @since      Class available since Release 2.0.0
  */
-class TornDown3 extends TornDown2
+class TornDown3 extends TornDown
 {
-    protected function tearDown()
-    {
-        parent::tearDown();
-        throw new Exception;
-    }
-
-    protected function runTest()
+    protected function setUp()
     {
         throw new Exception;
     }

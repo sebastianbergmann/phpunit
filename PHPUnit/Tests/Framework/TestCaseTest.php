@@ -52,10 +52,10 @@ require_once '_files/NoArgTestCaseTest.php';
 require_once '_files/SetupFailure.php';
 require_once '_files/Success.php';
 require_once '_files/TearDownFailure.php';
+require_once '_files/TornDown.php';
 require_once '_files/TornDown2.php';
 require_once '_files/TornDown3.php';
 require_once '_files/TornDown4.php';
-require_once '_files/TornDown5.php';
 require_once '_files/WasRun.php';
 
 /**
@@ -88,7 +88,7 @@ class Framework_TestCaseTest extends PHPUnit_Framework_TestCase
     public function testExceptionRunningAndTearDown()
     {
         $result = new PHPUnit_Framework_TestResult();
-        $t      = new TornDown5;
+        $t      = new TornDown4;
 
         $t->run($result);
 
@@ -125,7 +125,7 @@ class Framework_TestCaseTest extends PHPUnit_Framework_TestCase
 
     public function testRunAndTearDownFails()
     {
-        $fails = new TornDown3;
+        $fails = new TornDown2;
 
 		    $this->verifyError($fails);
 		    $this->assertTrue($fails->tornDown);
@@ -143,7 +143,7 @@ class Framework_TestCaseTest extends PHPUnit_Framework_TestCase
 
     public function testTearDownAfterError()
     {
-        $fails = new TornDown2;
+        $fails = new TornDown;
 
 		    $this->verifyError($fails);
 		    $this->assertTrue($fails->tornDown);
@@ -156,7 +156,7 @@ class Framework_TestCaseTest extends PHPUnit_Framework_TestCase
 
     public function testTearDownSetupFails()
     {
-        $fails = new TornDown4;
+        $fails = new TornDown3;
 
 		    $this->verifyError($fails);
 		    $this->assertFalse($fails->tornDown);

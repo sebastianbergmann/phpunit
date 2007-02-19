@@ -48,7 +48,7 @@ require_once 'PHPUnit/Util/Filter.php';
 
 PHPUnit_Util_Filter::addFileToFilter(__FILE__);
 
-require_once 'PHPUnit/Extensions/TestSetup.php';
+require_once 'PHPUnit/Framework/TestCase.php';
 
 /**
  *
@@ -62,13 +62,18 @@ require_once 'PHPUnit/Extensions/TestSetup.php';
  * @link       http://www.phpunit.de/
  * @since      Class available since Release 2.0.0
  */
-class TornDown extends PHPUnit_Extensions_TestSetup
+class TornDown extends PHPUnit_Framework_TestCase
 {
-    private $tornDown = FALSE;
+    public $tornDown = FALSE;
 
     protected function tearDown()
     {
         $this->tornDown = TRUE;
+    }
+
+    protected function runTest()
+    {
+        throw new Exception;
     }
 }
 ?>
