@@ -776,6 +776,10 @@
     <name>json</name>
    </extension>
    <extension>
+    <name>php-gtk</name>
+    <min>2.0.0dev</min>
+   </extension>
+   <extension>
     <name>pdo</name>
    </extension>
    <extension>
