@@ -47,6 +47,7 @@
 require_once 'PHPUnit/Framework.php';
 require_once 'PHPUnit/Util/Filter.php';
 require_once 'PHPUnit/Util/Array.php';
+require_once 'PHPUnit/Util/CodeCoverage.php';
 require_once 'PHPUnit/Util/Report/Coverage/Node/Directory.php';
 require_once 'PHPUnit/Util/Report/Coverage/Node/File.php';
 require_once 'PHPUnit/Util/Report/Test/Node/TestSuite.php';
@@ -78,7 +79,13 @@ abstract class PHPUnit_Util_Report_Coverage_Factory
      */
     public static function create(PHPUnit_Framework_TestResult $result, PHPUnit_Util_Report_Test_Node_TestSuite $testSuite)
     {
-        $files      = self::getSummary($result);
+        if (!defined('PHPUnit_INSIDE_OWN_TESTSUITE')) {
+            $codeCoverageInformation = $result->getCodeCoverageInformation();
+        } else {
+            $codeCoverageInformation = $result->getCodeCoverageInformation(TRUE, FALSE);
+        }
+
+        $files      = PHPUnit_Util_CodeCoverage::getSummary($codeCoverageInformation);
         $commonPath = self::reducePaths($files);
         $items      = self::buildDirectoryStructure($files);
         $root       = new PHPUnit_Util_Report_Coverage_Node_Directory($commonPath);
@@ -113,64 +120,6 @@ abstract class PHPUnit_Util_Report_Coverage_Factory
                 self::addItems($child, $value, $testSuite, $files);
             }
         }
-    }
-
-    /**
-     * Returns summarized Code Coverage data.
-     *
-     * Format of the result array:
-     *
-     * <code>
-     * array(
-     *   "/tested/code.php" => array(
-     *     linenumber => number of tests that executed the line
-     *   )
-     * )
-     * </code>
-     *
-     * @param  PHPUnit_Framework_TestResult $result
-     * @return array
-     * @access protected
-     * @static
-     * @since  Method available since Release 2.2.0
-     */
-    protected static function getSummary(PHPUnit_Framework_TestResult $result)
-    {
-        $summary = array();
-
-        if (!defined('PHPUnit_INSIDE_OWN_TESTSUITE')) {
-            $codeCoverageInformation = $result->getCodeCoverageInformation();
-        } else {
-            $codeCoverageInformation = $result->getCodeCoverageInformation(TRUE, FALSE);
-        }
-
-        foreach ($codeCoverageInformation as $test) {
-            foreach ($test['files'] as $file => $lines) {
-                if (strpos($file, 'eval()\'d code') || strpos($file, 'runtime-created function')) {
-                    continue;
-                }
-
-                foreach ($lines as $line => $flag) {
-                    // +1: Line is executable and was executed.
-                    if ($flag == 1) {
-                        if (!isset($summary[$file][$line]) ||
-                            !is_array($summary[$file][$line])) {
-                            $summary[$file][$line] = array();
-                        }
-
-                        $summary[$file][$line][] = $test['test'];
-                    }
-
-                    // -1: Line is executable and was not executed.
-                    // -2: Line is dead code.
-                    else if (!(isset($summary[$file][$line]) && is_array($summary[$file][$line]))) {
-                        $summary[$file][$line] = $flag;
-                    }
-                }
-            }
-        }
-
-        return $summary;
     }
 
     /**
