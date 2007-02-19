@@ -150,6 +150,12 @@ class PHPUnit_TextUI_Command
 
         if (extension_loaded('xdebug')) {
             $longOptions[] = 'report=';
+
+            if (extension_loaded('pdo')) {
+                $longOptions[] = 'log-pdo-dsn=';
+                $longOptions[] = 'log-pdo-rev=';
+                $longOptions[] = 'log-pdo-info=';
+            }
         }
 
         try {
@@ -236,6 +242,21 @@ class PHPUnit_TextUI_Command
                 }
                 break;
 
+                case '--log-pdo-dsn': {
+                    $arguments['pdoDSN'] = $option[1];
+                }
+                break;
+
+                case '--log-pdo-rev': {
+                    $arguments['pdoRevision'] = $option[1];
+                }
+                break;
+
+                case '--log-pdo-info': {
+                    $arguments['pdoInfo'] = $option[1];
+                }
+                break;
+
                 case '--report': {
                     $arguments['reportDirectory'] = $option[1];
                 }
@@ -279,7 +300,8 @@ class PHPUnit_TextUI_Command
             }
         }
 
-        if (!isset($arguments['test'])) {
+        if (!isset($arguments['test']) ||
+            (isset($arguments['pdoDSN']) XOR isset($arguments['pdoRevision']))) {
             self::showHelp();
             exit(PHPUnit_TextUI_TestRunner::SUCCESS_EXIT);
         }
@@ -374,8 +396,15 @@ class PHPUnit_TextUI_Command
             print "  --log-graphviz <file>  Log test execution in GraphViz markup.\n";
         }
 
-        print "  --log-json <file>      Log test execution in JSON format.\n" .
-              "  --log-tap <file>       Log test execution in TAP format to file.\n" .
+        print "  --log-json <file>      Log test execution in JSON format.\n";
+
+        if (extension_loaded('pdo') && extension_loaded('xdebug')) {
+            print "  --log-pdo-dsn <dsn>    Log test execution to a database.\n" .
+                  "    --log-pdo-rev <rev>  Revision information for database logging.\n" .
+                  "    --log-pdo-info ...   Additional information for database logging.\n";
+        }
+
+        print "  --log-tap <file>       Log test execution in TAP format to file.\n" .
               "  --log-xml <file>       Log test execution in XML format to file.\n\n";
 
         if (extension_loaded('xdebug')) {

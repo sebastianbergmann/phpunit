@@ -57,6 +57,7 @@ require_once 'PHPUnit/Util/Report/GraphViz.php';
 require_once 'PHPUnit/Util/Timer.php';
 require_once 'PHPUnit/Util/Log/GraphViz.php';
 require_once 'PHPUnit/Util/Log/JSON.php';
+require_once 'PHPUnit/Util/Log/PDO.php';
 require_once 'PHPUnit/Util/Log/TAP.php';
 require_once 'PHPUnit/Util/Log/XML.php';
 
@@ -252,12 +253,29 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
             );
         }
 
+        if (isset($parameters['pdoDSN']) && isset($parameters['pdoRevision']) &&
+            extension_loaded('pdo') && extension_loaded('xdebug')) {
+            $pdoListener = new PHPUnit_Util_Log_PDO(
+              $parameters['pdoDSN'],
+              $parameters['pdoRevision'],
+              isset($parameters['pdoInfo']) ? $parameters['pdoInfo'] : ''
+            );
+
+            $result->addListener($pdoListener);
+            $result->collectCodeCoverageInformation(TRUE);
+        }
+
         $suite->run($result, $parameters['filter']);
 
         $result->flushListeners();
 
         if ($this->printer instanceof PHPUnit_TextUI_ResultPrinter) {
             $this->printer->printResult($result);
+        }
+
+        if (isset($parameters['pdoDSN']) &&
+            extension_loaded('pdo') && extension_loaded('xdebug')) {
+            $pdoListener->storeCodeCoverage($result);
         }
 
         if (isset($parameters['reportDirectory']) &&
