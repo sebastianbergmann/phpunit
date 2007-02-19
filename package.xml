@@ -731,6 +731,9 @@
     <name>pdo</name>
    </extension>
    <extension>
+    <name>pdo_mysql</name>
+   </extension>
+   <extension>
     <name>pdo_sqlite</name>
    </extension>
    <extension>

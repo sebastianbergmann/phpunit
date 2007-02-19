@@ -64,6 +64,55 @@ PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
  */
 class PHPUnit_Util_Log_PDO implements PHPUnit_Framework_TestListener
 {
+    const schemaMySQL = '
+CREATE TABLE IF NOT EXISTS run(
+  run_id      INTEGER UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
+  timestamp   INTEGER UNSIGNED NOT NULL,
+  revision    INTEGER UNSIGNED NOT NULL,
+  information TEXT             NOT NULL
+) ENGINE=InnoDB;
+
+CREATE TABLE IF NOT EXISTS test(
+  run_id              INTEGER UNSIGNED NOT NULL REFERENCES run.run_id,
+  test_id             INTEGER UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
+  test_name           CHAR(128)        NOT NULL,
+  test_result         TEXT             NOT NULL,
+  test_execution_time FLOAT   UNSIGNED NOT NULL,
+  node_root           INTEGER UNSIGNED NOT NULL,
+  node_left           INTEGER UNSIGNED NOT NULL,
+  node_right          INTEGER UNSIGNED NOT NULL,
+
+  INDEX (run_id),
+  INDEX (node_root),
+  INDEX (node_left),
+  INDEX (node_right)
+) ENGINE=InnoDB;
+
+CREATE TABLE IF NOT EXISTS code_file(
+  run_id         INTEGER UNSIGNED NOT NULL REFERENCES run.run_id,
+  code_file_id   INTEGER UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
+  code_file_name CHAR(255),
+
+  INDEX (run_id)
+) ENGINE=InnoDB;
+
+CREATE TABLE IF NOT EXISTS code_line(
+  code_file_id      INTEGER UNSIGNED NOT NULL REFERENCES code_file.code_file_id,
+  code_line_id      INTEGER UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
+  code_line_number  INTEGER UNSIGNED NOT NULL,
+  code_line         TEXT,
+  code_line_covered TINYINT UNSIGNED NOT NULL,
+
+  INDEX (code_file_id)
+) ENGINE=InnoDB;
+
+CREATE TABLE IF NOT EXISTS code_coverage(
+  test_id      INTEGER UNSIGNED NOT NULL REFERENCES test.test_id,
+  code_line_id INTEGER UNSIGNED NOT NULL REFERENCES code_line.code_line_id,
+
+  PRIMARY KEY (test_id, code_line_id)
+) ENGINE=InnoDB;';
+
     const schemaSQLite = '
 CREATE TABLE IF NOT EXISTS run(
   run_id      INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -152,6 +201,11 @@ CREATE UNIQUE INDEX IF NOT EXISTS code_coverage_test_id_code_line_id ON code_cov
         $this->dbh = new PDO($dsn);
 
         switch ($this->dbh->getAttribute(PDO::ATTR_DRIVER_NAME)) {
+            case 'mysql': {
+                $this->dbh->exec(self::schemaMySQL);
+            }
+            break;
+
             case 'sqlite': {
                 $this->dbh->exec(self::schemaSQLite);
             }
