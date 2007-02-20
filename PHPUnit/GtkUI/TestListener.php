@@ -192,7 +192,7 @@ class PHPUnit_GtkUI_TestListener implements PHPUnit_Framework_TestListener
 
     public function endTest( PHPUnit_Framework_Test $test, $time )
     {
-        PHPUnit_GtkUI_TestRunnerSuiteTreeController::getInstance()->markTest(
+        PHPUnit_GtkUI_Controller_SuiteTree::getInstance()->markTest(
           $test, $this->lastTestStatus
         );
 
