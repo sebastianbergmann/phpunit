@@ -65,8 +65,8 @@ PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
  */
 class PHPUnit_GtkUI_TestStatusMapper
 {
-    protected $map = array();
-    protected static $instance;
+    private $map = array();
+    private static $instance;
 
     public static function getInstance()
     {

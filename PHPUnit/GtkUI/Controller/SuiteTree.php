@@ -69,9 +69,9 @@ PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
 class PHPUnit_GtkUI_Controller_SuiteTree
 {
     public $model;
-    protected $view;
-    protected $parent;
-    protected static $instance;
+    private $view;
+    private $parent;
+    private static $instance;
 
     public function __get($attributeName)
     {
@@ -98,7 +98,7 @@ class PHPUnit_GtkUI_Controller_SuiteTree
         return self::$instance;
     }
 
-    protected function init()
+    private function init()
     {
         $this->view = PHPUnit_GtkUI_Main::getInstance()->glade->get_widget(
           'tvSuites'
@@ -162,7 +162,7 @@ class PHPUnit_GtkUI_Controller_SuiteTree
         $this->model->setTestStatus($this->model->getTestIter($test), $status);
     }
 
-    protected function toggleRecursive($iter, $value)
+    private function toggleRecursive($iter, $value)
     {
         $this->model->set($iter, 1, $value);
 

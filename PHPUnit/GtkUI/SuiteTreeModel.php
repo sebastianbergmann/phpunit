@@ -68,9 +68,9 @@ PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
  */
 class PHPUnit_GtkUI_SuiteTreeModel extends GtkTreeStore
 {
-    protected $knownTests = array();
-    protected $controller;
-    protected $master;
+    private $knownTests = array();
+    private $controller;
+    private $master;
         
     public function __construct($controller)
     {
@@ -150,7 +150,7 @@ class PHPUnit_GtkUI_SuiteTreeModel extends GtkTreeStore
         );
     }
 
-    protected function addTest($parentNode, $test, $parentStatus = NULL)
+    private function addTest($parentNode, $test, $parentStatus = NULL)
     {
         if (isset($this->knownTests[$test->toString()])) {
             return;
