@@ -46,6 +46,7 @@
 
 require_once 'PHPUnit/Util/Filter.php';
 require_once 'PHPUnit/Runner/TestSuiteLoader.php';
+require_once 'PHPUnit/Util/Class.php';
 require_once 'PHPUnit/Util/Fileloader.php';
 
 PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
@@ -83,7 +84,7 @@ class PHPUnit_Runner_StandardTestSuiteLoader implements PHPUnit_Runner_TestSuite
           $suiteClassName, $suiteClassFile
         );
 
-        $classes = get_declared_classes();
+        PHPUnit_Util_Class::collectStart();
 
         if (!class_exists($suiteClassName, FALSE)) {
             if(!file_exists($suiteClassFile)) {
@@ -101,22 +102,7 @@ class PHPUnit_Runner_StandardTestSuiteLoader implements PHPUnit_Runner_TestSuite
 
             PHPUnit_Util_Fileloader::checkAndLoad($suiteClassFile);
 
-            $this->loaded[$suiteClassName] = array_values(
-              array_diff(get_declared_classes(), $classes)
-            );
-
-            $count = count($this->loaded[$suiteClassName]);
-
-            for ($i = 0; $i < $count; $i++) {
-                $class = new ReflectionClass($this->loaded[$suiteClassName][$i]);
-                $file  = $class->getFileName();
-
-                if (file_exists($file)) {
-                    $this->loaded[$suiteClassName][$i] = $file;
-                } else {
-                    unset($this->loaded[$suiteClassName][$i]);
-                }
-            }
+            $this->loaded[$suiteClassName] = PHPUnit_Util_Class::collectEndAsFiles();
         }
 
         if (class_exists($suiteClassName, FALSE)) {
@@ -153,9 +139,20 @@ class PHPUnit_Runner_StandardTestSuiteLoader implements PHPUnit_Runner_TestSuite
         );
 
         if (isset($this->loaded[$suiteClassName])) {
+            PHPUnit_Util_Class::collectStart();
+
             foreach ($this->loaded[$suiteClassName] as $file) {
-                runkit_import($file);
+                if (file_exists($file)) {
+                    runkit_import($file);
+                }
             }
+
+            $this->loaded[$suiteClassName] = array_unique(
+              array_merge(
+                $this->loaded[$suiteClassName],
+                PHPUnit_Util_Class::collectEndAsFiles()
+              )
+            );
 
             if (class_exists($suiteClassName, FALSE)) {
                 return new ReflectionClass($suiteClassName);
