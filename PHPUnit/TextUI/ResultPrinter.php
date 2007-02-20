@@ -300,16 +300,33 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
      */
     protected function printHeader($timeElapsed)
     {
-        $minutes = ($timeElapsed >= 60) ? floor($timeElapsed / 60) : 0;
+        $buffer = "\n\nTime: ";
 
-        $this->write(
-          sprintf(
-            "\n\nTime: %02d:%02d\n\n",
+        $hours   = sprintf('%02d', ($timeElapsed >= 3600) ? floor($timeElapsed / 3600) : 0);
+        $minutes = sprintf('%02d', ($timeElapsed >= 60)   ? floor($timeElapsed /   60) - 60 * $hours : 0);
+        $seconds = sprintf('%02d', $timeElapsed - 60 * 60 * $hours - 60 * $minutes);
 
-            $minutes,
-            $timeElapsed - $minutes * 60
-          )
-        );
+        if ($hours == 0 && $minutes == 0) {
+            $seconds = sprintf('%1d', $seconds);
+
+            $buffer .= $seconds . ' second';
+
+            if ($seconds != '1') {
+                $buffer .= 's';
+            }
+        } else {
+            if ($hours > 0) {
+                $buffer = $hours;
+            }
+
+            if ($minutes > 0) {
+                $buffer .= $minutes;
+            }
+
+            $buffer .= $seconds;
+        }
+
+        $this->write($buffer . "\n\n");
     }
 
     /**
