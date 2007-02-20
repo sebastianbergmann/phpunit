@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE glade-interface SYSTEM "glade-2.0.dtd">
-<!--Generated with glade3 3.1.4 on Tue Feb 20 11:30:54 2007 by dotxp@tango-->
+<!--Generated with glade3 3.1.4 on Tue Feb 20 11:38:22 2007 by dotxp@tango-->
 <glade-interface>
   <widget class="GtkFileChooserDialog" id="wndFileOpen">
     <property name="border_width">5</property>
+    <property name="title" translatable="yes">Open PHPUnit test suite</property>
     <property name="modal">True</property>
-    <property name="default_width">704</property>
-    <property name="default_height">402</property>
     <property name="type_hint">GDK_WINDOW_TYPE_HINT_DIALOG</property>
     <property name="has_separator">False</property>
     <child internal-child="vbox">
@@ -15,13 +14,7 @@
         <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK | GDK_ENTER_NOTIFY_MASK</property>
         <property name="spacing">2</property>
         <child>
-          <widget class="GtkLabel" id="label5">
-            <property name="visible">True</property>
-            <property name="label" translatable="yes">Select a PHP file containing a class that extends PHPUnit_Framework_TestSuite to load it into the runner.</property>
-          </widget>
-          <packing>
-            <property name="position">2</property>
-          </packing>
+          <placeholder/>
         </child>
         <child internal-child="action_area">
           <widget class="GtkHButtonBox" id="dialog-action_area1">
@@ -396,7 +389,7 @@ Sebastian Bergmann &lt;sb@sebastian-bergmann.de&gt;</property>
               <widget class="GtkLabel" id="label7">
                 <property name="visible">True</property>
                 <property name="xalign">0.05000000074505806</property>
-                <property name="label" translatable="yes">Select a folder to search for your tests suits in. Enter the file name you want to search for. Hit "Search" and select the files you want to load.</property>
+                <property name="label" translatable="yes">Select a folder to search for your tests suits in. Enter the file pattern you want to search for. Hit "Search" and select the files you want to load.</property>
                 <property name="wrap">True</property>
               </widget>
               <packing>
