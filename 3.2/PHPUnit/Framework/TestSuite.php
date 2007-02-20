@@ -46,6 +46,7 @@
 
 require_once 'PHPUnit/Framework.php';
 require_once 'PHPUnit/Runner/BaseTestRunner.php';
+require_once 'PHPUnit/Util/Class.php';
 require_once 'PHPUnit/Util/Fileloader.php';
 require_once 'PHPUnit/Util/Filter.php';
 require_once 'PHPUnit/Util/TestSuiteIterator.php';
@@ -309,13 +310,9 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
             }
         }
 
-        $declaredClasses = get_declared_classes();
-
+        PHPUnit_Util_Class::collectStart();
         PHPUnit_Util_Fileloader::checkAndLoad($filename);
-
-        $newClasses = array_values(
-          array_diff(get_declared_classes(), $declaredClasses)
-        );
+        $newClasses = PHPUnit_Util_Class::collectEnd();
 
         $testsFound = FALSE;
 
