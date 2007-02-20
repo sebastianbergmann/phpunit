@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE glade-interface SYSTEM "glade-2.0.dtd">
-<!--Generated with glade3 3.1.4 on Tue Feb 20 11:38:22 2007 by dotxp@tango-->
+<!--Generated with glade3 3.1.4 on Tue Feb 20 11:41:02 2007 by dotxp@tango-->
 <glade-interface>
   <widget class="GtkFileChooserDialog" id="wndFileOpen">
     <property name="border_width">5</property>
@@ -50,8 +50,8 @@
   </widget>
   <widget class="GtkWindow" id="wndMain">
     <property name="title" translatable="yes">PHPUnit PHP-GTK2 Testrunner</property>
-    <property name="default_width">822</property>
-    <property name="default_height">732</property>
+    <property name="default_width">790</property>
+    <property name="default_height">550</property>
     <signal name="destroy" handler="Gtk::main_quit"/>
     <child>
       <widget class="GtkVBox" id="vbox2">
@@ -235,7 +235,7 @@
         <child>
           <widget class="GtkVPaned" id="vpaned1">
             <property name="visible">True</property>
-            <property name="position">422</property>
+            <property name="position">291</property>
             <property name="position_set">True</property>
             <child>
               <widget class="GtkScrolledWindow" id="scrolledwindow1">
