@@ -85,6 +85,20 @@ class PHPUnit_GtkUI_Main
 
     private function init()
     {
+
+        if (substr(php_sapi_name(), 0, 3) !== "cli") {
+            throw new RuntimeException("This program does only work with the PHP CLI SAPI.");
+        }
+        if (!extension_loaded("php-gtk")) {
+            throw new RuntimeException("This program requires ext/php-gtk for running.");
+        }
+
+        // Autoload inclusion hack
+        // TODO: This should be handled somehow from the GUI
+        if (isset($_SERVER["argv"][1]) === true && function_exists("__autoload") === false) {
+            require_once $_SERVER["argv"][1];
+        }
+
         $this->glade = new GladeXML(
             dirname(__FILE__) . '/glade/testrunner.glade'
         );
