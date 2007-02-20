@@ -74,11 +74,12 @@ class PHPUnit_Runner_StandardTestSuiteLoader implements PHPUnit_Runner_TestSuite
     /**
      * @param  string  $suiteClassName
      * @param  string  $suiteClassFile
+     * @param  boolean $syntaxCheck
      * @return ReflectionClass
      * @throws RuntimeException
      * @access public
      */
-    public function load($suiteClassName, $suiteClassFile = '')
+    public function load($suiteClassName, $suiteClassFile = '', $syntaxCheck = TRUE)
     {
         list($suiteClassName, $suiteClassFile) = $this->parseArguments(
           $suiteClassName, $suiteClassFile
@@ -100,7 +101,7 @@ class PHPUnit_Runner_StandardTestSuiteLoader implements PHPUnit_Runner_TestSuite
                 }
             }
 
-            PHPUnit_Util_Fileloader::checkAndLoad($suiteClassFile);
+            PHPUnit_Util_Fileloader::checkAndLoad($suiteClassFile, $syntaxCheck);
 
             $this->loaded[$suiteClassName] = PHPUnit_Util_Class::collectEndAsFiles();
         }
@@ -128,12 +129,6 @@ class PHPUnit_Runner_StandardTestSuiteLoader implements PHPUnit_Runner_TestSuite
      */
     public function reload($suiteClassName, $suiteClassFile = '')
     {
-        if (!extension_loaded('runkit')) {
-            throw new RuntimeException(
-              'The Runkit extension is required for class reloading.'
-            );
-        }
-
         list($suiteClassName, $suiteClassFile) = $this->parseArguments(
           $suiteClassName, $suiteClassFile
         );
@@ -142,9 +137,9 @@ class PHPUnit_Runner_StandardTestSuiteLoader implements PHPUnit_Runner_TestSuite
             PHPUnit_Util_Class::collectStart();
 
             foreach ($this->loaded[$suiteClassName] as $file) {
-                if (file_exists($file)) {
-                    runkit_import($file);
-                }
+                PHPUnit_Util_Fileloader::checkAndLoad(
+                  $suiteClassFile, $syntaxCheck, TRUE
+                );
             }
 
             $this->loaded[$suiteClassName] = array_unique(
