@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE glade-interface SYSTEM "glade-2.0.dtd">
-<!--Generated with glade3 3.1.4 on Tue Feb 20 11:52:00 2007 by dotxp@tango-->
+<!--Generated with glade3 3.1.4 on Tue Feb 20 11:53:16 2007 by dotxp@tango-->
 <glade-interface>
   <widget class="GtkFileChooserDialog" id="wndFileOpen">
     <property name="border_width">5</property>
@@ -137,7 +137,7 @@
                 <property name="visible">True</property>
                 <property name="extension_events">GDK_EXTENSION_EVENTS_CURSOR</property>
                 <property name="tooltip" translatable="yes">The test case was not run, yet.</property>
-                <property name="pixbuf">.</property>
+                <property name="stock">gtk-missing-image</property>
               </widget>
             </child>
             <child>
