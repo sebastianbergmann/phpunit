@@ -332,6 +332,7 @@
     </child>
   </widget>
   <widget class="GtkAboutDialog" id="wndAbout">
+    <property name="name">PHPUnit PHP-GTK2 Testrunner</property>
     <property name="border_width">5</property>
     <property name="has_separator">False</property>
     <property name="version">3.1</property>
