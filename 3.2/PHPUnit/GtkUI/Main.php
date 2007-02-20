@@ -69,9 +69,10 @@ PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
 class PHPUnit_GtkUI_Main
 {
     protected $testRunner;
-    protected static $instance;
     protected $glade;
 
+    protected static $instance;
+    
     public static function getInstance()
     {
         if (self::$instance === NULL) {
@@ -85,7 +86,7 @@ class PHPUnit_GtkUI_Main
     protected function init()
     {
         $this->glade = new GladeXML(
-          dirname(__FILE__) . '/glade/testrunner.glade'
+            dirname(__FILE__) . '/glade/testrunner.glade'
         );
 
         $this->glade->signal_autoconnect_instance($this);
