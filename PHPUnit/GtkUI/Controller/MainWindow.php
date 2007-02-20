@@ -68,8 +68,8 @@ PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
  */
 class PHPUnit_GtkUI_Controller_MainWindow
 {
-    protected static $statuses = array();
-    protected static $instance;
+    private static $statuses = array();
+    private static $instance;
 
     public static function getInstance()
     {
@@ -81,7 +81,7 @@ class PHPUnit_GtkUI_Controller_MainWindow
         return self::$instance;
     }
 
-    protected function init()
+    private function init()
     {
         PHPUnit_GtkUI_Controller_SuiteTree::getInstance();
         PHPUnit_GtkUI_Controller_StatusTree::getInstance();

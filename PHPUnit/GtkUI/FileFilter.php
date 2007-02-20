@@ -64,7 +64,7 @@ PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
  */
 class PHPUnit_GtkUI_FileFilter extends FilterIterator
 {
-    protected $pattern;
+    private $pattern;
 
     public function __construct(Iterator $it, $pattern)
     {

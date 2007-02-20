@@ -74,9 +74,9 @@ class PHPUnit_GtkUI_TestRunner
     const STATUS_FAILED  = 4;
     const STATUS_ERROR   = 5;
 
-    protected $testResult;
-    protected $listener;
-    protected $tests;
+    private $testResult;
+    private $listener;
+    private $tests;
 
     public function __construct()
     {

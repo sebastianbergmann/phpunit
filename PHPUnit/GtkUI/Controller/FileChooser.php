@@ -66,13 +66,13 @@ PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
  */
 class PHPUnit_GtkUI_Controller_FileChooser extends GtkDialog
 {
-    protected static $instance;
-    protected $view;
-    protected $fileList;
-    protected $fileChooser;
-    protected $filePattern;
-    protected $searchProgress;
-    protected $selectedFiles = array();
+    private static $instance;
+    private $view;
+    private $fileList;
+    private $fileChooser;
+    private $filePattern;
+    private $searchProgress;
+    private $selectedFiles = array();
 
     public static function getInstance()
     {
@@ -84,7 +84,7 @@ class PHPUnit_GtkUI_Controller_FileChooser extends GtkDialog
         return self::$instance;
     }
 
-    protected function init()
+    private function init()
     {
         $main = PHPUnit_GtkUI_Main::getInstance();
 
@@ -130,7 +130,7 @@ class PHPUnit_GtkUI_Controller_FileChooser extends GtkDialog
         $this->toggleSelectRecursive($iter);
     }
 
-    protected function toggleSelectRecursive($iter)
+    private function toggleSelectRecursive($iter)
     {
         $this->fileList->get_model()->set(
           $iter, 1, !$this->fileList->get_model()->get_value($iter, 1)
@@ -184,7 +184,7 @@ class PHPUnit_GtkUI_Controller_FileChooser extends GtkDialog
         }
     }
 
-    protected function initFileList()
+    private function initFileList()
     {
         $this->fileList = PHPUnit_GtkUI_Main::getInstance()->glade->get_widget(
           'tvFiles'
