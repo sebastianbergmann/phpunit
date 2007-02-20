@@ -669,6 +669,9 @@
      <file baseinstalldir="/" name="Array.php" role="php">
       <tasks:replace from="@package_version@" to="version" type="package-info" />
      </file>
+     <file baseinstalldir="/" name="Class.php" role="php">
+      <tasks:replace from="@package_version@" to="version" type="package-info" />
+     </file>
      <file baseinstalldir="/" name="CodeCoverage.php" role="php">
       <tasks:replace from="@package_version@" to="version" type="package-info" />
      </file>
