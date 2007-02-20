@@ -72,45 +72,6 @@ class PHPUnit_GtkUI_Main
     protected static $instance;
     protected $glade;
 
-    public function __call($signal, $arguments)
-    {
-        switch ($signal) {
-            case 'suite_open': {
-                $this->loadSuite();
-            }
-            break;
-
-            case 'suites_open': {
-                $this->loadMultipleSuites();
-            }
-            break;
-
-            case 'run_suites': {
-                $this->runTests();
-            }
-            break;
-                    
-            case 'show_about': {
-                $this->showAbout();
-            }
-            break;
-        }
-    }
-    
-    public function __get($attributeName)
-    {
-        switch ($attributeName) {
-            case 'glade': {
-                return $this->glade;
-            }
-            break;
-            
-            default: {
-                throw new RuntimeException;
-            }
-        }
-    }
-
     public static function getInstance()
     {
         if (self::$instance === NULL) {
@@ -185,11 +146,46 @@ class PHPUnit_GtkUI_Main
         PHPUnit_GtkUI_Controller_MainWindow::getInstance()->indicateProgress($fraction);
         self::processEvents();
     }
-
-    public function getGladeXml()
+    
+    public function __call($signal, $arguments)
     {
-        return $this->glade;
+        switch ($signal) {
+            case 'suite_open': {
+                $this->loadSuite();
+            }
+            break;
+
+            case 'suites_open': {
+                $this->loadMultipleSuites();
+            }
+            break;
+
+            case 'run_suites': {
+                $this->runTests();
+            }
+            break;
+                    
+            case 'show_about': {
+                $this->showAbout();
+            }
+            break;
+        }
     }
+    
+    public function __get($attributeName)
+    {
+        switch ($attributeName) {
+            case 'glade': {
+                return $this->glade;
+            }
+            break;
+            
+            default: {
+                throw new RuntimeException;
+            }
+        }
+    }
+
 
     protected function showAbout()
     {
