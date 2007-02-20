@@ -188,17 +188,20 @@ abstract class PHPUnit_Runner_BaseTestRunner implements PHPUnit_Framework_TestLi
      *
      * @param  string  $suiteClassName
      * @param  string  $suiteClassFile
+     * @param  boolean $syntaxCheck
      * @return PHPUnit_Framework_Test
      * @access public
      */
-    public function getTest($suiteClassName, $suiteClassFile = '')
+    public function getTest($suiteClassName, $suiteClassFile = '', $syntaxCheck = TRUE)
     {
         if ($suiteClassFile == $suiteClassName . '.php') {
             $suiteClassFile = '';
         }
 
         try {
-            $testClass = $this->loadSuiteClass($suiteClassName, $suiteClassFile);
+            $testClass = $this->loadSuiteClass(
+              $suiteClassName, $suiteClassFile, $syntaxCheck
+            );
         }
 
         catch (Exception $e) {
@@ -258,12 +261,19 @@ abstract class PHPUnit_Runner_BaseTestRunner implements PHPUnit_Framework_TestLi
      *
      * @param  string  $suiteClassName
      * @param  string  $suiteClassFile
+     * @param  boolean $syntaxCheck
      * @return ReflectionClass
      * @access protected
      */
-    protected function loadSuiteClass($suiteClassName, $suiteClassFile = '')
+    protected function loadSuiteClass($suiteClassName, $suiteClassFile = '', $syntaxCheck = TRUE)
     {
-        return $this->getLoader()->load($suiteClassName, $suiteClassFile);
+        $loader = $this->getLoader();
+
+        if ($loader instanceof PHPUnit_Runner_StandardTestSuiteLoader) {
+            return $loader->load($suiteClassName, $suiteClassFile, $syntaxCheck);
+        } else {
+            return $loader->load($suiteClassName, $suiteClassFile);
+        }
     }
 
     /**
