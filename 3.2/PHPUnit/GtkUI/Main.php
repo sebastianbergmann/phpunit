@@ -68,10 +68,10 @@ PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
  */
 class PHPUnit_GtkUI_Main
 {
-    protected $testRunner;
-    protected $glade;
+    private $testRunner;
+    private $glade;
 
-    protected static $instance;
+    private static $instance;
     
     public static function getInstance()
     {
@@ -83,7 +83,7 @@ class PHPUnit_GtkUI_Main
         return self::$instance;
     }
 
-    protected function init()
+    private function init()
     {
         $this->glade = new GladeXML(
             dirname(__FILE__) . '/glade/testrunner.glade'
@@ -188,7 +188,7 @@ class PHPUnit_GtkUI_Main
     }
 
 
-    protected function showAbout()
+    private function showAbout()
     {
         $this->glade->get_widget('wndAbout')->run();
     }

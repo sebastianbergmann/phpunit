@@ -68,9 +68,9 @@ PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
  */
 class PHPUnit_GtkUI_TestListener implements PHPUnit_Framework_TestListener
 {
-    protected $lastTestStatus;
-    protected $parentStatus;
-    protected $globalStatus;
+    private $lastTestStatus;
+    private $parentStatus;
+    private $globalStatus;
 
     public function setGlobalStatus($status)
     {

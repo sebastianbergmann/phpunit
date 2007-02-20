@@ -67,9 +67,9 @@ PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
 class PHPUnit_GtkUI_Controller_StatusTree
 {
     public $model;
-    protected $view;
-    protected $parent;
-    protected static $instance;
+    private $view;
+    private $parent;
+    private static $instance;
 
     public static function getInstance()
     {
@@ -81,7 +81,7 @@ class PHPUnit_GtkUI_Controller_StatusTree
         return self::$instance;
     }
 
-    protected function init()
+    private function init()
     {
         $this->view  = PHPUnit_GtkUI_Main::getInstance()->glade->get_widget(
           'tvStatuses'
@@ -158,7 +158,7 @@ class PHPUnit_GtkUI_Controller_StatusTree
         PHPUnit_GtkUI_Main::processEvents();
     }
 
-    protected function updateStatusesRecursive($iter, $status)
+    private function updateStatusesRecursive($iter, $status)
     {
         if ($this->model->get_value($iter, 0) < $status) {
             $this->model->set($iter, 0, $status);
