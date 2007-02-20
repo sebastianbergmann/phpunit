@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE glade-interface SYSTEM "glade-2.0.dtd">
-<!--Generated with glade3 3.1.5 on Mon Feb 19 18:05:37 2007 by sb@vmware-->
+<!--Generated with glade3 3.1.4 on Tue Feb 20 11:30:54 2007 by dotxp@tango-->
 <glade-interface>
   <widget class="GtkFileChooserDialog" id="wndFileOpen">
     <property name="border_width">5</property>
@@ -56,7 +56,7 @@
     </child>
   </widget>
   <widget class="GtkWindow" id="wndMain">
-    <property name="title" translatable="yes">PHPUnit-GTK</property>
+    <property name="title" translatable="yes">PHPUnit PHP-GTK2 Testrunner</property>
     <property name="default_width">822</property>
     <property name="default_height">732</property>
     <signal name="destroy" handler="Gtk::main_quit"/>
@@ -351,7 +351,7 @@
     <property name="border_width">5</property>
     <property name="has_separator">False</property>
     <property name="version">3.1</property>
-    <property name="copyright" translatable="yes">Copyright (C) 2002-2007 Sebastian Bergmann.</property>
+    <property name="copyright" translatable="yes">Copyright (C) 2007 Tobias Schlitt.</property>
     <property name="comments" translatable="yes">A PHP-GTK2 test runner for PHPUnit.</property>
     <property name="website">http://www.phpunit.de/</property>
     <property name="authors">Tobias Schlitt &lt;toby@php.net&gt;
