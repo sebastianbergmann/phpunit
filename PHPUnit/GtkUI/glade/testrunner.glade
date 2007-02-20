@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE glade-interface SYSTEM "glade-2.0.dtd">
-<!--Generated with glade3 3.1.4 on Tue Feb 20 11:47:41 2007 by dotxp@tango-->
+<!--Generated with glade3 3.1.4 on Tue Feb 20 11:52:00 2007 by dotxp@tango-->
 <glade-interface>
   <widget class="GtkFileChooserDialog" id="wndFileOpen">
     <property name="border_width">5</property>
@@ -496,26 +496,6 @@ Sebastian Bergmann &lt;sb@sebastian-bergmann.de&gt;</property>
           </packing>
         </child>
       </widget>
-    </child>
-  </widget>
-  <widget class="GtkWindow" id="window1">
-    <child>
-      <placeholder/>
-    </child>
-  </widget>
-  <widget class="GtkWindow" id="window2">
-    <child>
-      <placeholder/>
-    </child>
-  </widget>
-  <widget class="GtkWindow" id="window3">
-    <child>
-      <placeholder/>
-    </child>
-  </widget>
-  <widget class="GtkWindow" id="window4">
-    <child>
-      <placeholder/>
     </child>
   </widget>
 </glade-interface>
