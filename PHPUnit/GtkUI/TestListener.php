@@ -1,8 +1,8 @@
 <?php
 /**
- * PHPUnit
+ * PHP-GTK2 Test Runner for PHPUnit
  *
- * Copyright (c) 2002-2007, Sebastian Bergmann <sb@sebastian-bergmann.de>.
+ * Copyright (c) 2007, Tobias Schlitt <toby@php.net>.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -17,7 +17,7 @@
  *     the documentation and/or other materials provided with the
  *     distribution.
  *
- *   * Neither the name of Sebastian Bergmann nor the names of his
+ *   * Neither the name of Tobias Schlitt nor the names of his
  *     contributors may be used to endorse or promote products derived
  *     from this software without specific prior written permission.
  *
@@ -38,11 +38,11 @@
  * @package    PHPUnit
  * @author     Tobias Schlitt <toby@php.net>
  * @author     Sebastian Bergmann <sb@sebastian-bergmann.de>
- * @copyright  2002-2007 Sebastian Bergmann <sb@sebastian-bergmann.de>
+ * @copyright  2007 Tobias Schlitt <toby@php.net>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    SVN: $Id$
  * @link       http://www.phpunit.de/
- * @since      File available since Release 3.1.0
+ * @since      File available since Release 3.2.0
  */
 
 require_once 'PHPUnit/Framework.php';
@@ -60,11 +60,11 @@ PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
  * @package    PHPUnit
  * @author     Tobias Schlitt <toby@php.net>
  * @author     Sebastian Bergmann <sb@sebastian-bergmann.de>
- * @copyright  2002-2007 Sebastian Bergmann <sb@sebastian-bergmann.de>
+ * @copyright  2007 Tobias Schlitt <toby@php.net>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    Release: @package_version@
  * @link       http://www.phpunit.de/
- * @since      Class available since Release 3.1.0
+ * @since      Class available since Release 3.2.0
  */
 class PHPUnit_GtkUI_TestListener implements PHPUnit_Framework_TestListener
 {
