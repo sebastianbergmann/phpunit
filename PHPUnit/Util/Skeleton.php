@@ -225,7 +225,7 @@ class PHPUnit_Util_Skeleton
                             }
 
                             $methodTemplate->setVar(
-                                array(
+                              array(
                                 'annotation',
                                 'arguments',
                                 'assertion',
@@ -233,8 +233,8 @@ class PHPUnit_Util_Skeleton
                                 'expected',
                                 'origMethodName',
                                 'methodName'
-                                ),
-                                array(
+                              ),
+                              array(
                                 trim($token[1]),
                                 $matches[1],
                                 $assertion,
@@ -242,7 +242,7 @@ class PHPUnit_Util_Skeleton
                                 $matches[3],
                                 $origMethodName,
                                 $methodName
-                                )
+                              )
                             );
 
                             $methods .= $methodTemplate->render();
