@@ -69,8 +69,10 @@ PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
 class PHPUnit_GtkUI_Controller_SuiteTree
 {
     public $model;
+    
     private $view;
     private $parent;
+    
     private static $instance;
 
     public function __get($attributeName)
@@ -179,7 +181,7 @@ class PHPUnit_GtkUI_Controller_SuiteTree
         $model  = $view->get_model();
         $iter   = $model->get_iter($path);
         $status = PHPUnit_GtkUI_TestStatusMapper::getInstance()->getStatusIter(
-          $model->get_value($iter, 0)
+            $model->get_value($iter, 0)
         );
 
         if ($status !== NULL) {
