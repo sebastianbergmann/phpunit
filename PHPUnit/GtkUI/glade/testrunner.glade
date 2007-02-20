@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE glade-interface SYSTEM "glade-2.0.dtd">
-<!--Generated with glade3 3.1.4 on Tue Feb 20 11:41:02 2007 by dotxp@tango-->
+<!--Generated with glade3 3.1.4 on Tue Feb 20 11:47:41 2007 by dotxp@tango-->
 <glade-interface>
   <widget class="GtkFileChooserDialog" id="wndFileOpen">
     <property name="border_width">5</property>
@@ -238,17 +238,32 @@
             <property name="position">291</property>
             <property name="position_set">True</property>
             <child>
-              <widget class="GtkScrolledWindow" id="scrolledwindow1">
+              <widget class="GtkVBox" id="vbox1">
                 <property name="visible">True</property>
-                <property name="hscrollbar_policy">GTK_POLICY_AUTOMATIC</property>
-                <property name="vscrollbar_policy">GTK_POLICY_AUTOMATIC</property>
                 <child>
-                  <widget class="GtkTreeView" id="tvSuites">
+                  <widget class="GtkScrolledWindow" id="scrolledwindow3">
                     <property name="visible">True</property>
-                    <property name="tooltip" translatable="yes">Select the test cases you want to run.</property>
-                    <property name="headers_clickable">True</property>
-                    <property name="enable_tree_lines">True</property>
+                    <property name="hscrollbar_policy">GTK_POLICY_AUTOMATIC</property>
+                    <property name="vscrollbar_policy">GTK_POLICY_AUTOMATIC</property>
+                    <child>
+                      <widget class="GtkTreeView" id="tvSuites">
+                        <property name="visible">True</property>
+                        <property name="tooltip" translatable="yes">Select the test cases you want to run.</property>
+                        <property name="headers_clickable">True</property>
+                        <property name="enable_tree_lines">True</property>
+                      </widget>
+                    </child>
                   </widget>
+                </child>
+                <child>
+                  <widget class="GtkProgressBar" id="prgTests">
+                    <property name="visible">True</property>
+                    <property name="show_text">True</property>
+                  </widget>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="position">1</property>
+                  </packing>
                 </child>
               </widget>
               <packing>
@@ -261,32 +276,8 @@
                 <property name="hscrollbar_policy">GTK_POLICY_AUTOMATIC</property>
                 <property name="vscrollbar_policy">GTK_POLICY_AUTOMATIC</property>
                 <child>
-                  <widget class="GtkVBox" id="vbox1">
+                  <widget class="GtkTreeView" id="tvStatuses">
                     <property name="visible">True</property>
-                    <child>
-                      <widget class="GtkProgressBar" id="prgTests">
-                        <property name="visible">True</property>
-                        <property name="show_text">True</property>
-                      </widget>
-                      <packing>
-                        <property name="expand">False</property>
-                      </packing>
-                    </child>
-                    <child>
-                      <widget class="GtkScrolledWindow" id="scrolledwindow3">
-                        <property name="visible">True</property>
-                        <property name="hscrollbar_policy">GTK_POLICY_AUTOMATIC</property>
-                        <property name="vscrollbar_policy">GTK_POLICY_AUTOMATIC</property>
-                        <child>
-                          <widget class="GtkTreeView" id="tvStatuses">
-                            <property name="visible">True</property>
-                          </widget>
-                        </child>
-                      </widget>
-                      <packing>
-                        <property name="position">1</property>
-                      </packing>
-                    </child>
                   </widget>
                 </child>
               </widget>
@@ -505,6 +496,26 @@ Sebastian Bergmann &lt;sb@sebastian-bergmann.de&gt;</property>
           </packing>
         </child>
       </widget>
+    </child>
+  </widget>
+  <widget class="GtkWindow" id="window1">
+    <child>
+      <placeholder/>
+    </child>
+  </widget>
+  <widget class="GtkWindow" id="window2">
+    <child>
+      <placeholder/>
+    </child>
+  </widget>
+  <widget class="GtkWindow" id="window3">
+    <child>
+      <placeholder/>
+    </child>
+  </widget>
+  <widget class="GtkWindow" id="window4">
+    <child>
+      <placeholder/>
     </child>
   </widget>
 </glade-interface>
