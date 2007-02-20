@@ -235,7 +235,7 @@ class PHPUnit_Util_Skeleton
                                 'methodName'
                               ),
                               array(
-                                trim($token[1]),
+                                trim($annotation),
                                 $matches[1],
                                 $assertion,
                                 $this->className,
