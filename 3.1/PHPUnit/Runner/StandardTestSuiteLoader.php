@@ -65,6 +65,12 @@ PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
 class PHPUnit_Runner_StandardTestSuiteLoader implements PHPUnit_Runner_TestSuiteLoader
 {
     /**
+     * @var    array
+     * @access protected
+     */
+    protected $loaded = array();
+
+    /**
      * @param  string  $suiteClassName
      * @param  string  $suiteClassFile
      * @return ReflectionClass
@@ -73,8 +79,11 @@ class PHPUnit_Runner_StandardTestSuiteLoader implements PHPUnit_Runner_TestSuite
      */
     public function load($suiteClassName, $suiteClassFile = '')
     {
-        $suiteClassName = str_replace('.php', '', $suiteClassName);
-        $suiteClassFile = !empty($suiteClassFile) ? $suiteClassFile : str_replace('_', '/', $suiteClassName) . '.php';
+        list($suiteClassName, $suiteClassFile) = $this->parseArguments(
+          $suiteClassName, $suiteClassFile
+        );
+
+        $classes = get_declared_classes();
 
         if (!class_exists($suiteClassName, FALSE)) {
             if(!file_exists($suiteClassFile)) {
@@ -91,6 +100,23 @@ class PHPUnit_Runner_StandardTestSuiteLoader implements PHPUnit_Runner_TestSuite
             }
 
             PHPUnit_Util_Fileloader::checkAndLoad($suiteClassFile);
+
+            $this->loaded[$suiteClassName] = array_values(
+              array_diff(get_declared_classes(), $classes)
+            );
+
+            $count = count($this->loaded[$suiteClassName]);
+
+            for ($i = 0; $i < $count; $i++) {
+                $class = new ReflectionClass($this->loaded[$suiteClassName][$i]);
+                $file  = $class->getFileName();
+
+                if (file_exists($file)) {
+                    $this->loaded[$suiteClassName][$i] = $file;
+                } else {
+                    unset($this->loaded[$suiteClassName][$i]);
+                }
+            }
         }
 
         if (class_exists($suiteClassName, FALSE)) {
@@ -108,13 +134,57 @@ class PHPUnit_Runner_StandardTestSuiteLoader implements PHPUnit_Runner_TestSuite
     }
 
     /**
-     * @param  ReflectionClass  $aClass
+     * @param  string  $suiteClassName
+     * @param  string  $suiteClassFile
      * @return ReflectionClass
+     * @throws RuntimeException
      * @access public
      */
-    public function reload(ReflectionClass $aClass)
+    public function reload($suiteClassName, $suiteClassFile = '')
     {
-        return $aClass;
+        if (!extension_loaded('runkit')) {
+            throw new RuntimeException(
+              'The Runkit extension is required for class reloading.'
+            );
+        }
+
+        list($suiteClassName, $suiteClassFile) = $this->parseArguments(
+          $suiteClassName, $suiteClassFile
+        );
+
+        if (isset($this->loaded[$suiteClassName])) {
+            foreach ($this->loaded[$suiteClassName] as $file) {
+                runkit_import($file);
+            }
+
+            if (class_exists($suiteClassName, FALSE)) {
+                return new ReflectionClass($suiteClassName);
+            } else {
+                throw new RuntimeException(
+                  sprintf(
+                    'Could not reload test suite "%s".',
+
+                    $suiteClassName
+                  )
+                );
+            }
+        } else {
+            return $this->load($suiteClassName, $suiteClassFile);
+        }
+    }
+
+    /**
+     * @param  string  $suiteClassName
+     * @param  string  $suiteClassFile
+     * @return array
+     * @access protected
+     */
+    protected function parseArguments($suiteClassName, $suiteClassFile)
+    {
+        return array(
+          str_replace('.php', '', $suiteClassName),
+          !empty($suiteClassFile) ? $suiteClassFile : str_replace('_', '/', $suiteClassName) . '.php'
+        );
     }
 }
 ?>
