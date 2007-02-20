@@ -165,7 +165,7 @@ class PHPUnit_GtkUI_SuiteTreeModel extends GtkTreeStore
 
         if ($test instanceof PHPUnit_Framework_TestSuite) {
             $parentStatus = PHPUnit_GtkUI_Controller_StatusTree::getInstance()->appendMessage(
-              tsTestRunner::STATUS_INFO,
+              PHPUnit_GtkUI_TestRunner::STATUS_INFO,
               'Adding test suite ' . $test->getName(),
               $parentStatus
             );
