@@ -70,7 +70,6 @@ class PHPUnit_GtkUI_SuiteTreeModel extends GtkTreeStore
 {
     private $knownTests = array();
     private $controller;
-    private $master;
         
     public function __construct($controller)
     {
@@ -82,13 +81,6 @@ class PHPUnit_GtkUI_SuiteTreeModel extends GtkTreeStore
 
         $this->controller = $controller;
 
-        $this->master = $this->append(
-          NULL,
-          array(
-            'All test suites', FALSE, PHPUnit_GtkUI_TestRunner::STATUS_NOTRUN
-          )
-        );
-
         $this->update();
     }
 
@@ -96,10 +88,7 @@ class PHPUnit_GtkUI_SuiteTreeModel extends GtkTreeStore
     {
         foreach (get_declared_classes() as $class) {
             if (is_subclass_of($class, 'PHPUnit_Framework_TestSuite')) {
-                $this->addTest($this->master, new $class());
-                $this->controller->view->expand_row(
-                  $this->get_path($this->master), FALSE
-                );
+                $this->addTest(null, new $class());
             }
         }
     }
