@@ -76,7 +76,12 @@ class PHPUnit_TextUI_Command
     {
         $arguments = self::handleArguments();
         $runner    = new PHPUnit_TextUI_TestRunner;
-        $suite     = $runner->getTest($arguments['test'], $arguments['testFile']);
+
+        $suite = $runner->getTest(
+          $arguments['test'],
+          $arguments['testFile'],
+          $arguments['syntaxCheck']
+        );
 
         if ($suite->testAt(0) instanceof PHPUnit_Framework_Warning &&
             strpos($suite->testAt(0)->getMessage(), 'No tests found in class') !== FALSE) {
@@ -125,7 +130,7 @@ class PHPUnit_TextUI_Command
      */
     protected static function handleArguments()
     {
-        $arguments = array();
+        $arguments = array('syntaxCheck' => TRUE);
 
         $longOptions = array(
           'help',
@@ -139,6 +144,7 @@ class PHPUnit_TextUI_Command
           'tap',
           'testdox-html=',
           'testdox-text=',
+          'no-syntax-check',
           'verbose',
           'version',
           'wait'
@@ -282,6 +288,11 @@ class PHPUnit_TextUI_Command
                 }
                 break;
 
+                case '--no-syntax-check': {
+                    $arguments['syntaxCheck'] = FALSE;
+                }
+                break;
+
                 case '--verbose': {
                     $arguments['verbose'] = TRUE;
                 }
@@ -417,6 +428,7 @@ class PHPUnit_TextUI_Command
               "  --loader <loader>      TestSuiteLoader implementation to use.\n" .
               "  --repeat <times>       Runs the test(s) repeatedly.\n" .
               "  --tap                  Report test execution progress in TAP format.\n" .
+              "  --no-syntax-check      Disable syntax check of test source files.\n" .
               "  --verbose              Output more verbose information.\n" .
               "  --wait                 Waits for a keystroke after each test.\n\n" .
               "  --skeleton             Generate skeleton UnitTest class for Unit in Unit.php.\n\n" .

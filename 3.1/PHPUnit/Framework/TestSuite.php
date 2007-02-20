@@ -286,12 +286,13 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
      * leaving the current test run untouched.
      *
      * @param  string  $filename
+     * @param  boolean $syntaxCheck
      * @throws InvalidArgumentException
      * @access public
      * @since  Method available since Release 2.3.0
      * @author Stefano F. Rausch <stefano@rausch-e.net>
      */
-    public function addTestFile($filename)
+    public function addTestFile($filename, $syntaxCheck = TRUE)
     {
         if (!is_string($filename)) {
             throw new InvalidArgumentException;
@@ -311,7 +312,7 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
         }
 
         PHPUnit_Util_Class::collectStart();
-        PHPUnit_Util_Fileloader::checkAndLoad($filename);
+        PHPUnit_Util_Fileloader::checkAndLoad($filename, $syntaxCheck);
         $newClasses = PHPUnit_Util_Class::collectEnd();
 
         $testsFound = FALSE;

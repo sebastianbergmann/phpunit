@@ -66,12 +66,14 @@ class PHPUnit_Util_Fileloader
      * Checks if a PHP sourcefile is readable and contains no syntax errors.
      * If that is the case, the sourcefile is loaded through include_once().
      *
-     * @param  string   $filename
+     * @param  string  $filename
+     * @param  boolean $syntaxCheck
+     * @param  boolean $reload
      * @throws RuntimeException
      * @access public
      * @static
      */
-    public static function checkAndLoad($filename)
+    public static function checkAndLoad($filename, $syntaxCheck = TRUE, $reload = FALSE)
     {
         if (!is_readable($filename)) {
             $filename = './' . $filename;
@@ -87,8 +89,11 @@ class PHPUnit_Util_Fileloader
             );
         }
 
-        self::syntaxCheck($filename);
-        self::load($filename);
+        if ($syntaxCheck) {
+            self::syntaxCheck($filename);
+        }
+
+        self::load($filename, $reload);
     }
 
     /**
@@ -114,12 +119,13 @@ class PHPUnit_Util_Fileloader
     }
 
     /**
-     * @param  string   $filename
+     * @param  string  $filename
+     * @param  boolean $reload
      * @access protected
      * @static
      * @since  Method available since Release 3.0.0
      */
-    protected static function load($filename)
+    protected static function load($filename, $reload = FALSE)
     {
         $xdebugLoaded      = extension_loaded('xdebug');
         $xdebugCollectVars = $xdebugLoaded && ini_get('xdebug.collect_vars') == '1';
@@ -128,7 +134,17 @@ class PHPUnit_Util_Fileloader
             $variables = array('variables', xdebug_get_declared_vars());
         }
 
-        include_once $filename;
+        if (!$reload) {
+            include_once $filename;
+        } else {
+            if (!extension_loaded('runkit')) {
+                throw new RuntimeException(
+                  'The Runkit extension is required for class reloading.'
+                );
+            }
+
+            runkit_import($filename);
+        }
 
         if ($xdebugCollectVars) {
             $variables = array_values(
