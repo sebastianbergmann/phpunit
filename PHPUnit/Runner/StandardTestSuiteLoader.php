@@ -81,9 +81,8 @@ class PHPUnit_Runner_StandardTestSuiteLoader implements PHPUnit_Runner_TestSuite
      */
     public function load($suiteClassName, $suiteClassFile = '', $syntaxCheck = TRUE)
     {
-        list($suiteClassName, $suiteClassFile) = $this->parseArguments(
-          $suiteClassName, $suiteClassFile
-        );
+        $suiteClassName = str_replace('.php', '', $suiteClassName);
+        $suiteClassFile = !empty($suiteClassFile) ? $suiteClassFile : str_replace('_', '/', $suiteClassName) . '.php';
 
         PHPUnit_Util_Class::collectStart();
 
@@ -121,17 +120,14 @@ class PHPUnit_Runner_StandardTestSuiteLoader implements PHPUnit_Runner_TestSuite
     }
 
     /**
-     * @param  string  $suiteClassName
-     * @param  string  $suiteClassFile
+     * @param  ReflectionClass  $aClass
      * @return ReflectionClass
-     * @throws RuntimeException
      * @access public
      */
-    public function reload($suiteClassName, $suiteClassFile = '')
+    public function reload(ReflectionClass $aClass)
     {
-        list($suiteClassName, $suiteClassFile) = $this->parseArguments(
-          $suiteClassName, $suiteClassFile
-        );
+        $suiteClassName = $aClass->getName();
+        $suiteClassFile = $aClass->getFileName();
 
         if (isset($this->loaded[$suiteClassName])) {
             PHPUnit_Util_Class::collectStart();
@@ -161,22 +157,8 @@ class PHPUnit_Runner_StandardTestSuiteLoader implements PHPUnit_Runner_TestSuite
                 );
             }
         } else {
-            return $this->load($suiteClassName, $suiteClassFile);
+            return $aClass;
         }
-    }
-
-    /**
-     * @param  string  $suiteClassName
-     * @param  string  $suiteClassFile
-     * @return array
-     * @access protected
-     */
-    protected function parseArguments($suiteClassName, $suiteClassFile)
-    {
-        return array(
-          str_replace('.php', '', $suiteClassName),
-          !empty($suiteClassFile) ? $suiteClassFile : str_replace('_', '/', $suiteClassName) . '.php'
-        );
     }
 }
 ?>
