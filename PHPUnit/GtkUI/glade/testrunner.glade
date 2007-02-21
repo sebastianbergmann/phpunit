@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE glade-interface SYSTEM "glade-2.0.dtd">
-<!--Generated with glade3 3.1.4 on Tue Feb 20 11:53:16 2007 by dotxp@tango-->
+<!--Generated with glade3 3.1.5 on Thu Feb 22 00:20:37 2007 by dotxp@tango-->
 <glade-interface>
   <widget class="GtkFileChooserDialog" id="wndFileOpen">
     <property name="border_width">5</property>
     <property name="title" translatable="yes">Open PHPUnit test suite</property>
     <property name="modal">True</property>
+    <property name="icon">icon.png</property>
     <property name="type_hint">GDK_WINDOW_TYPE_HINT_DIALOG</property>
     <property name="has_separator">False</property>
     <child internal-child="vbox">
@@ -52,6 +53,7 @@
     <property name="title" translatable="yes">PHPUnit PHP-GTK2 Testrunner</property>
     <property name="default_width">790</property>
     <property name="default_height">550</property>
+    <property name="icon">icon.png</property>
     <signal name="destroy" handler="Gtk::main_quit"/>
     <child>
       <widget class="GtkVBox" id="vbox2">
@@ -332,9 +334,10 @@
     </child>
   </widget>
   <widget class="GtkAboutDialog" id="wndAbout">
-    <property name="name">PHPUnit PHP-GTK2 Testrunner</property>
     <property name="border_width">5</property>
+    <property name="icon">icon.png</property>
     <property name="has_separator">False</property>
+    <property name="name">PHPUnit PHP-GTK2 Testrunner</property>
     <property name="version">3.1</property>
     <property name="copyright" translatable="yes">Copyright (C) 2007 Tobias Schlitt.</property>
     <property name="comments" translatable="yes">A PHP-GTK2 test runner for PHPUnit.</property>
@@ -368,6 +371,7 @@ Sebastian Bergmann &lt;sb@sebastian-bergmann.de&gt;</property>
     <property name="border_width">5</property>
     <property name="default_width">526</property>
     <property name="default_height">516</property>
+    <property name="icon">icon.png</property>
     <property name="has_separator">False</property>
     <child internal-child="vbox">
       <widget class="GtkVBox" id="dialog-vbox3">
