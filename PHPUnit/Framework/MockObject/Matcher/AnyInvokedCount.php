@@ -52,12 +52,12 @@ require_once 'PHPUnit/Framework/MockObject/Matcher/InvokedRecorder.php';
 PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
 
 /**
- * Invocation matcher which checks if a method has been invoked zero or more times.
- *
- * This matcher will always match.
+ * Invocation matcher which checks if a method has been invoked zero or more
+ * times. This matcher will always match.
  *
  * @category   Testing
  * @package    PHPUnit
+ * @author     Jan Borsodi <jb@ez.no>
  * @author     Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @copyright  2002-2007 Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
