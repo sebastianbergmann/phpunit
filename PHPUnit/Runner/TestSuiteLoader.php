@@ -71,11 +71,10 @@ interface PHPUnit_Runner_TestSuiteLoader
     public function load($suiteClassName, $suiteClassFile = '');
 
     /**
-     * @param  string  $suiteClassName
-     * @param  string  $suiteClassFile
+     * @param  ReflectionClass $aClass
      * @return ReflectionClass
      * @access public
      */
-    public function reload($suiteClassName, $suiteClassFile = '');
+    public function reload(ReflectionClass $aClass);
 }
 ?>

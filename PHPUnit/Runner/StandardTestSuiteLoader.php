@@ -46,7 +46,6 @@
 
 require_once 'PHPUnit/Util/Filter.php';
 require_once 'PHPUnit/Runner/TestSuiteLoader.php';
-require_once 'PHPUnit/Util/Class.php';
 require_once 'PHPUnit/Util/Fileloader.php';
 
 PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
@@ -66,26 +65,16 @@ PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
 class PHPUnit_Runner_StandardTestSuiteLoader implements PHPUnit_Runner_TestSuiteLoader
 {
     /**
-     * @var    array
-     * @access protected
-     */
-    protected $loaded = array();
-
-    /**
      * @param  string  $suiteClassName
      * @param  string  $suiteClassFile
-     * @param  boolean $syntaxCheck
      * @return ReflectionClass
      * @throws RuntimeException
      * @access public
      */
-    public function load($suiteClassName, $suiteClassFile = '', $syntaxCheck = TRUE)
+    public function load($suiteClassName, $suiteClassFile = '')
     {
-        list($suiteClassName, $suiteClassFile) = $this->parseArguments(
-          $suiteClassName, $suiteClassFile
-        );
-
-        PHPUnit_Util_Class::collectStart();
+        $suiteClassName = str_replace('.php', '', $suiteClassName);
+        $suiteClassFile = !empty($suiteClassFile) ? $suiteClassFile : str_replace('_', '/', $suiteClassName) . '.php';
 
         if (!class_exists($suiteClassName, FALSE)) {
             if(!file_exists($suiteClassFile)) {
@@ -101,9 +90,7 @@ class PHPUnit_Runner_StandardTestSuiteLoader implements PHPUnit_Runner_TestSuite
                 }
             }
 
-            PHPUnit_Util_Fileloader::checkAndLoad($suiteClassFile, $syntaxCheck);
-
-            $this->loaded[$suiteClassName] = PHPUnit_Util_Class::collectEndAsFiles();
+            PHPUnit_Util_Fileloader::checkAndLoad($suiteClassFile);
         }
 
         if (class_exists($suiteClassName, FALSE)) {
@@ -121,62 +108,13 @@ class PHPUnit_Runner_StandardTestSuiteLoader implements PHPUnit_Runner_TestSuite
     }
 
     /**
-     * @param  string  $suiteClassName
-     * @param  string  $suiteClassFile
+     * @param  ReflectionClass  $aClass
      * @return ReflectionClass
-     * @throws RuntimeException
      * @access public
      */
-    public function reload($suiteClassName, $suiteClassFile = '')
+    public function reload(ReflectionClass $aClass)
     {
-        list($suiteClassName, $suiteClassFile) = $this->parseArguments(
-          $suiteClassName, $suiteClassFile
-        );
-
-        if (isset($this->loaded[$suiteClassName])) {
-            PHPUnit_Util_Class::collectStart();
-
-            foreach ($this->loaded[$suiteClassName] as $file) {
-                PHPUnit_Util_Fileloader::checkAndLoad(
-                  $suiteClassFile, $syntaxCheck, TRUE
-                );
-            }
-
-            $this->loaded[$suiteClassName] = array_unique(
-              array_merge(
-                $this->loaded[$suiteClassName],
-                PHPUnit_Util_Class::collectEndAsFiles()
-              )
-            );
-
-            if (class_exists($suiteClassName, FALSE)) {
-                return new ReflectionClass($suiteClassName);
-            } else {
-                throw new RuntimeException(
-                  sprintf(
-                    'Could not reload test suite "%s".',
-
-                    $suiteClassName
-                  )
-                );
-            }
-        } else {
-            return $this->load($suiteClassName, $suiteClassFile);
-        }
-    }
-
-    /**
-     * @param  string  $suiteClassName
-     * @param  string  $suiteClassFile
-     * @return array
-     * @access protected
-     */
-    protected function parseArguments($suiteClassName, $suiteClassFile)
-    {
-        return array(
-          str_replace('.php', '', $suiteClassName),
-          !empty($suiteClassFile) ? $suiteClassFile : str_replace('_', '/', $suiteClassName) . '.php'
-        );
+        return $aClass;
     }
 }
 ?>
