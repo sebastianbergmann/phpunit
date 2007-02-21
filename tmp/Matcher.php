@@ -246,9 +246,9 @@ class PHPUnit_Framework_MockObject_Matcher implements PHPUnit_Framework_MockObje
             throw new RuntimeException('No method matcher is set');
         }
 
-        $this->invocationMatcher->verify();
-
         try {
+            $this->invocationMatcher->verify();
+
             if ($this->parametersMatcher !== NULL) {
                 $this->parametersMatcher->verify();
             }
@@ -257,7 +257,7 @@ class PHPUnit_Framework_MockObject_Matcher implements PHPUnit_Framework_MockObje
         catch (PHPUnit_Framework_ExpectationFailedException $e) {
             throw new PHPUnit_Framework_ExpectationFailedException(
               sprintf(
-                "Expectation failed for %s when %s\n%s",
+                "Expectation failed for %s when %s.\n%s",
 
                 $this->methodNameMatcher->toString(),
                 $this->invocationMatcher->toString(),
