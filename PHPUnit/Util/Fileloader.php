@@ -68,12 +68,11 @@ class PHPUnit_Util_Fileloader
      *
      * @param  string  $filename
      * @param  boolean $syntaxCheck
-     * @param  boolean $reload
      * @throws RuntimeException
      * @access public
      * @static
      */
-    public static function checkAndLoad($filename, $syntaxCheck = TRUE, $reload = FALSE)
+    public static function checkAndLoad($filename, $syntaxCheck = TRUE)
     {
         if (!is_readable($filename)) {
             $filename = './' . $filename;
@@ -93,7 +92,7 @@ class PHPUnit_Util_Fileloader
             self::syntaxCheck($filename);
         }
 
-        self::load($filename, $reload);
+        self::load($filename);
     }
 
     /**
@@ -120,12 +119,11 @@ class PHPUnit_Util_Fileloader
 
     /**
      * @param  string  $filename
-     * @param  boolean $reload
      * @access protected
      * @static
      * @since  Method available since Release 3.0.0
      */
-    protected static function load($filename, $reload = FALSE)
+    protected static function load($filename)
     {
         $xdebugLoaded      = extension_loaded('xdebug');
         $xdebugCollectVars = $xdebugLoaded && ini_get('xdebug.collect_vars') == '1';
@@ -134,17 +132,7 @@ class PHPUnit_Util_Fileloader
             $variables = array('variables', xdebug_get_declared_vars());
         }
 
-        if (!$reload) {
-            include_once $filename;
-        } else {
-            if (!extension_loaded('runkit')) {
-                throw new RuntimeException(
-                  'The Runkit extension is required for class reloading.'
-                );
-            }
-
-            runkit_import($filename);
-        }
+        include_once $filename;
 
         if ($xdebugCollectVars) {
             $variables = array_values(
