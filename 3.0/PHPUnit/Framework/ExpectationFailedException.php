@@ -37,7 +37,7 @@
  * @category   Testing
  * @package    PHPUnit
  * @author     Jan Borsodi <jb@ez.no>
- *             Sebastian Bergmann <sb@sebastian-bergmann.de>
+ * @author     Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @copyright  2002-2007 Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    SVN: $Id$
@@ -62,7 +62,7 @@ if (!class_exists('PHPUnit_Framework_ExpectationFailedException', FALSE)) {
  * @category   Testing
  * @package    PHPUnit
  * @author     Jan Borsodi <jb@ez.no>
- *             Sebastian Bergmann <sb@sebastian-bergmann.de>
+ * @author     Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @copyright  2002-2007 Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    Release: @package_version@
