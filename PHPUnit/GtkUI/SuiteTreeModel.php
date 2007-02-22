@@ -74,9 +74,10 @@ class PHPUnit_GtkUI_SuiteTreeModel extends GtkTreeStore
     public function __construct($controller)
     {
         parent::__construct(
-            Gtk::TYPE_PHP_VALUE,
-            Gtk::TYPE_BOOLEAN,
-            Gtk::TYPE_DOUBLE
+            Gtk::TYPE_PHP_VALUE,    // PHPUnit_Framework_Test
+            Gtk::TYPE_BOOLEAN,      // Selected for run?
+            Gtk::TYPE_DOUBLE        // PHPUnit_GtkUI_Runner::STATUS_*
+            // Gtk::TYPE_STRING        // File the class resides in
         );
 
         $this->controller = $controller;
@@ -147,14 +148,14 @@ class PHPUnit_GtkUI_SuiteTreeModel extends GtkTreeStore
 
         $testRow = $this->append(
           $parentNode,
-          array($test, FALSE, PHPUnit_GtkUI_TestRunner::STATUS_NOTRUN)
+          array($test, FALSE, PHPUnit_GtkUI_Runner::STATUS_NOTRUN)
         );
 
         $this->knownTests[$test->toString()] = $testRow;
 
         if ($test instanceof PHPUnit_Framework_TestSuite) {
             $parentStatus = PHPUnit_GtkUI_Controller_StatusTree::getInstance()->appendMessage(
-              PHPUnit_GtkUI_TestRunner::STATUS_INFO,
+              PHPUnit_GtkUI_Runner::STATUS_INFO,
               'Adding test suite ' . $test->getName(),
               $parentStatus
             );
