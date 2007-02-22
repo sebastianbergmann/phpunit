@@ -254,7 +254,7 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
         }
 
         if (isset($parameters['pdoDSN']) && isset($parameters['pdoRevision']) &&
-            extension_loaded('pdo') && extension_loaded('xdebug')) {
+            extension_loaded('pdo')) {
             $pdoListener = new PHPUnit_Util_Log_PDO(
               $parameters['pdoDSN'],
               $parameters['pdoRevision'],
@@ -275,7 +275,9 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
 
         if (isset($parameters['pdoDSN']) &&
             extension_loaded('pdo') && extension_loaded('xdebug')) {
+            $this->printer->write("\nStoring code coverage data in database, this may take a moment.");
             $pdoListener->storeCodeCoverage($result);
+            $this->printer->write("\n");
         }
 
         if (isset($parameters['reportDirectory']) &&
