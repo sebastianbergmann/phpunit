@@ -99,7 +99,16 @@ class PHPUnit_Framework_MockObject_Invocation implements PHPUnit_Framework_SelfD
 
           $this->className,
           $this->methodName,
-          join(', ', array_map(create_function('$a', 'return PHPUnit_Framework_ComparisonFailure::shortenedExport($a);'), $this->parameters))
+          join(
+            ', ',
+            array_map(
+              create_function(
+                '$a',
+                'return PHPUnit_Util_Type::shortenedExport($a);'
+              ),
+              $this->parameters
+            )
+          )
         );
     }
 }
