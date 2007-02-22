@@ -74,9 +74,9 @@ class PHPUnit_GtkUI_SuiteTreeModel extends GtkTreeStore
     public function __construct($controller)
     {
         parent::__construct(
-          Gtk::TYPE_PHP_VALUE,
-          Gtk::TYPE_BOOLEAN,
-          Gtk::TYPE_DOUBLE
+            Gtk::TYPE_PHP_VALUE,
+            Gtk::TYPE_BOOLEAN,
+            Gtk::TYPE_DOUBLE
         );
 
         $this->controller = $controller;
@@ -132,10 +132,10 @@ class PHPUnit_GtkUI_SuiteTreeModel extends GtkTreeStore
     public function showTestStausPixbuf($column, $cell, $model, $iter)
     {
         $cell->set_property(
-          'pixbuf',
-          PHPUnit_GtkUI_Controller_MainWindow::getStatusPixbuf(
-            $model->get_value($iter, 2)
-          )
+            'pixbuf',
+            PHPUnit_GtkUI_Controller_MainWindow::getStatusPixbuf(
+                $model->get_value($iter, 2)
+            )
         );
     }
 
