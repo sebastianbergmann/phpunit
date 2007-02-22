@@ -154,14 +154,14 @@ class PHPUnit_TextUI_Command
             $longOptions[] = 'log-graphviz=';
         }
 
+        if (extension_loaded('pdo')) {
+            $longOptions[] = 'log-pdo-dsn=';
+            $longOptions[] = 'log-pdo-rev=';
+            $longOptions[] = 'log-pdo-info=';
+        }
+
         if (extension_loaded('xdebug')) {
             $longOptions[] = 'report=';
-
-            if (extension_loaded('pdo')) {
-                $longOptions[] = 'log-pdo-dsn=';
-                $longOptions[] = 'log-pdo-rev=';
-                $longOptions[] = 'log-pdo-info=';
-            }
         }
 
         try {
@@ -409,7 +409,7 @@ class PHPUnit_TextUI_Command
 
         print "  --log-json <file>      Log test execution in JSON format.\n";
 
-        if (extension_loaded('pdo') && extension_loaded('xdebug')) {
+        if (extension_loaded('pdo')) {
             print "  --log-pdo-dsn <dsn>    Log test execution to a database.\n" .
                   "    --log-pdo-rev <rev>  Revision information for database logging.\n" .
                   "    --log-pdo-info ...   Additional information for database logging.\n";
