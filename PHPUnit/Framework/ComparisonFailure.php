@@ -178,73 +178,6 @@ abstract class PHPUnit_Framework_ComparisonFailure extends PHPUnit_Framework_Ass
         }
     }
 
-    /**
-     * Exports the value $value to a string but in a shortened form.
-     *
-     * @param mixed $value The value to export as string.
-     * @return string
-     */
-    public static function shortenedExport($value)
-    {
-        if (is_string($value)) {
-            return self::shortenedString($value);
-        }
-
-        elseif (is_array($value)) {
-            if (count($value) == 0) {
-                return 'array()';
-            }
-
-            $a1 = array_slice($value, 0, 1, TRUE);
-            $k1 = key($a1);
-            $v1 = $a1[$k1];
-
-            if (is_string($v1)) {
-                $v1 = self::shortenedString($v1);
-            }
-
-            elseif (is_array($v1)) {
-                $v1 = 'array(...)';
-            } else {
-                $v1 = PHPUnit_Util_Type::toString($v1);
-            }
-
-            $a2 = false;
-
-            if (count($value) > 1) {
-                $a2 = array_slice($value, -1, 1, TRUE);
-                $k2 = key($a2);
-                $v2 = $a2[$k2];
-
-                if (is_string($v2)) {
-                    $v2 = self::shortenedString($v2);
-                }
-
-                elseif (is_array($v2)) {
-                    $v2 = 'array(...)';
-                } else {
-                    $v2 = PHPUnit_Util_Type::toString($v2);
-                }
-            }
-
-            $text = 'array( ' . PHPUnit_Util_Type::toString($k1) . ' => ' . $v1;
-
-            if ($a2 !== FALSE) {
-                $text .= ', ..., ' . PHPUnit_Util_Type::toString($k2) . ' => ' . $v2 . ' )';
-            } else {
-                $text .= ' )';
-            }
-
-            return $text;
-        }
-
-        elseif (is_object($value)) {
-            return 'class ' . get_class($value) . '(...)';
-        }
-
-        return PHPUnit_Util_Type::toString($value);
-    }
-
     protected function diff($expected, $actual)
     {
         $expectedFile = tempnam('/tmp', 'expected');
@@ -309,24 +242,6 @@ abstract class PHPUnit_Framework_ComparisonFailure extends PHPUnit_Framework_Ass
         }
 
         return self::$hasDiff;
-    }
-
-    /**
-     * Shortens the string $string and returns it. If the string is already short
-     * enough it is returned as it was.
-     *
-     * @param string $string The string value which must be shortened.
-     * @return string
-     */
-    private static function shortenedString($string)
-    {
-        $string = preg_replace('#\n|\r\n|\r#', ' ', $string);
-
-        if (strlen($string) > 14) {
-            return PHPUnit_Util_Type::toString(substr($string, 0, 7) . '...' . substr($string, -7));
-        } else {
-            return PHPUnit_Util_Type::toString($string);
-        }
     }
 }
 
