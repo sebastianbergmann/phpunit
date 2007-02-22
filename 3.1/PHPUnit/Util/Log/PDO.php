@@ -216,8 +216,6 @@ CREATE UNIQUE INDEX IF NOT EXISTS code_coverage_test_id_code_line_id ON code_cov
             }
         }
 
-        $this->dbh->beginTransaction();
-
         $this->dbh->query(
           sprintf(
             'INSERT INTO run
@@ -377,6 +375,8 @@ CREATE UNIQUE INDEX IF NOT EXISTS code_coverage_test_id_code_line_id ON code_cov
         $files        = array_keys($summary);
 
         foreach ($files as $file) {
+            $this->dbh->beginTransaction();
+
             $this->dbh->query(
               sprintf(
                 'INSERT INTO code_file
@@ -431,9 +431,9 @@ CREATE UNIQUE INDEX IF NOT EXISTS code_coverage_test_id_code_line_id ON code_cov
 
                 $i++;
             }
-        }
 
-        $this->dbh->commit();
+            $this->dbh->commit();
+        }
     }
 
     /**
@@ -445,6 +445,8 @@ CREATE UNIQUE INDEX IF NOT EXISTS code_coverage_test_id_code_line_id ON code_cov
      */
     protected function insertRootNode($name)
     {
+        $this->dbh->beginTransaction();
+
         $this->dbh->query(
           sprintf(
             'INSERT INTO test
@@ -468,6 +470,8 @@ CREATE UNIQUE INDEX IF NOT EXISTS code_coverage_test_id_code_line_id ON code_cov
             $this->rootId
           )
         );
+
+        $this->dbh->commit();
     }
 
     /**
@@ -483,6 +487,8 @@ CREATE UNIQUE INDEX IF NOT EXISTS code_coverage_test_id_code_line_id ON code_cov
     protected function insertNode(PHPUnit_Framework_Test $test, $result = '', $time = 0)
     {
         $right = $this->right[count($this->right)-1];
+
+        $this->dbh->beginTransaction();
 
         $this->dbh->query(
           sprintf(
@@ -528,6 +534,8 @@ CREATE UNIQUE INDEX IF NOT EXISTS code_coverage_test_id_code_line_id ON code_cov
         if (!$test instanceof PHPUnit_Framework_TestSuite) {
             $test->__db_id = $this->dbh->lastInsertId();
         }
+
+        $this->dbh->commit();
 
         return $right + 1;
     }
