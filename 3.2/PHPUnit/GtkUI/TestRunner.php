@@ -46,8 +46,6 @@
  */
 
 require_once 'PHPUnit/Framework.php';
-require_once 'PHPUnit/GtkUI/Main.php';
-require_once 'PHPUnit/GtkUI/TestListener.php';
 require_once 'PHPUnit/Util/Filter.php';
 
 PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
@@ -65,7 +63,7 @@ PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
  * @link       http://www.phpunit.de/
  * @since      Class available since Release 3.2.0
  */
-class PHPUnit_GtkUI_TestRunner
+abstract class PHPUnit_GtkUI_Runner
 {
     const STATUS_INFO    = 0;
     const STATUS_NOTRUN  = 1;
@@ -78,111 +76,12 @@ class PHPUnit_GtkUI_TestRunner
     private $listener;
     private $tests;
 
-    public function __construct()
-    {
-        $this->listener = new PHPUnit_GtkUI_TestListener;
-    }
+    public abstract function __construct();
 
-    public function loadSuite($filename)
-    {
-        if ($filename !== NULL &&
-            file_exists($filename) && is_readable($filename)) {
-            require_once $filename;
-        }
-    }
+    public abstract function loadSuite($filename);
     
-    public function loadSuites(array $filenames)
-    {
-        foreach ($filenames as $filename) {
-            $this->loadSuite($filename);
-        }
-    }
+    public abstract function loadSuites(array $filenames);
 
-    public function doRun($suitesTree)
-    {
-        $this->result = new PHPUnit_Framework_TestResult;
-        $this->result->addListener($this->listener);
-
-        $this->tests = array();
-        $suitesTree->foreach(array($this, 'fetchTests'));
-
-        if (count($this->tests) < 1) {
-            PHPUnit_GtkUI_Main::getInstance()->statusMessage(
-              'No test selected for run!',
-              self::STATUS_ERROR
-            );
-
-            return;
-        }
-
-        $fraction = (100 / count($this->tests)) / 100;
-        $progress = 0;
-
-        PHPUnit_GtkUI_Main::getInstance()->testProgress($progress);
-
-        $status = PHPUnit_GtkUI_Main::getInstance()->statusMessage(
-          'Started run of ' . count($this->tests) . ' test cases.',
-          self::STATUS_INFO
-        );
-
-        $this->listener->setGlobalStatus($status);
-
-        foreach ($this->tests as $test) {
-            $test->run($this->result);
-            $progress += $fraction;
-            PHPUnit_GtkUI_Main::getInstance()->testProgress($progress);
-        }
-
-        $infoParent = PHPUnit_GtkUI_Main::getInstance()->statusMessage(
-          'End of test run.',
-          self::STATUS_INFO,
-          $status
-        );
-
-        PHPUnit_GtkUI_Main::getInstance()->statusMessage(
-          'Ran ' . $this->result->count() . ' test cases.',
-          self::STATUS_INFO,
-          $infoParent
-        );
-
-        PHPUnit_GtkUI_Main::getInstance()->statusMessage(
-          $this->result->skippedCount() . ' test cases were skipped.',
-          self::STATUS_INFO,
-          $infoParent
-        );
-
-        PHPUnit_GtkUI_Main::getInstance()->statusMessage(
-          $this->result->errorCount() . ' test cases resulted in an error.',
-          self::STATUS_INFO,
-          $infoParent
-        );
-
-        PHPUnit_GtkUI_Main::getInstance()->statusMessage(
-          $this->result->failureCount() . ' test cases failed.',
-          self::STATUS_INFO,
-          $infoParent
-        );
-
-        $successCount = $this->result->count()
-          - $this->result->skippedCount()
-          - $this->result->errorCount()
-          - $this->result->failureCount();
-
-        PHPUnit_GtkUI_Main::getInstance()->statusMessage(
-          "$successCount test cases ran successfully.",
-          self::STATUS_INFO,
-          $infoParent
-        );
-    }
-
-    public function fetchTests($model, $path, $iter)
-    {
-        $test = $model->get_value($iter, 0);
-
-        if ($test instanceof PHPUnit_Framework_TestCase &&
-            $model->get_value($iter, 1) === TRUE) {
-            $this->tests[] = $test;
-        }
-    }
+    public abstract function doRun();
 }
 ?>

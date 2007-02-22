@@ -79,16 +79,16 @@ class PHPUnit_GtkUI_TestListener implements PHPUnit_Framework_TestListener
 
     public function addError(PHPUnit_Framework_Test $test, Exception $e, $time)
     {
-        $this->lastTestStatus = PHPUnit_GtkUI_TestRunner::STATUS_ERROR;
+        $this->lastTestStatus = PHPUnit_GtkUI_Runner::STATUS_ERROR;
 
         $parent = PHPUnit_GtkUI_Controller_StatusTree::getInstance()->appendMessage(
-          PHPUnit_GtkUI_TestRunner::STATUS_ERROR,
+          PHPUnit_GtkUI_Runner::STATUS_ERROR,
           'Test produced error.',
           $this->parentStatus
         );
 
         $status = PHPUnit_GtkUI_Controller_StatusTree::getInstance()->appendMessage(
-          PHPUnit_GtkUI_TestRunner::STATUS_ERROR,
+          PHPUnit_GtkUI_Runner::STATUS_ERROR,
           $e->getMessage(),
           $parent
         );
@@ -100,16 +100,16 @@ class PHPUnit_GtkUI_TestListener implements PHPUnit_Framework_TestListener
 
     public function addFailure( PHPUnit_Framework_Test $test, PHPUnit_Framework_AssertionFailedError $e, $time )
     {
-        $this->lastTestStatus = PHPUnit_GtkUI_TestRunner::STATUS_FAILED;
+        $this->lastTestStatus = PHPUnit_GtkUI_Runner::STATUS_FAILED;
 
         $parent = PHPUnit_GtkUI_Controller_StatusTree::getInstance()->appendMessage(
-          PHPUnit_GtkUI_TestRunner::STATUS_FAILED,
+          PHPUnit_GtkUI_Runner::STATUS_FAILED,
           'Test failed.',
           $this->parentStatus
         );
 
         $status = PHPUnit_GtkUI_Controller_StatusTree::getInstance()->appendMessage(
-          PHPUnit_GtkUI_TestRunner::STATUS_FAILED,
+          PHPUnit_GtkUI_Runner::STATUS_FAILED,
           $e->toString(),
           $parent
         );
@@ -121,16 +121,16 @@ class PHPUnit_GtkUI_TestListener implements PHPUnit_Framework_TestListener
     
     public function addIncompleteTest( PHPUnit_Framework_Test $test, Exception $e, $time )
     {
-        $this->lastTestStatus = PHPUnit_GtkUI_TestRunner::STATUS_ERROR;
+        $this->lastTestStatus = PHPUnit_GtkUI_Runner::STATUS_ERROR;
 
         $parent = PHPUnit_GtkUI_Controller_StatusTree::getInstance()->appendMessage(
-          PHPUnit_GtkUI_TestRunner::STATUS_ERROR,
+          PHPUnit_GtkUI_Runner::STATUS_ERROR,
           'Test incomplete.',
           $this->parentStatus
         );
 
         $status = PHPUnit_GtkUI_Controller_StatusTree::getInstance()->appendMessage(
-          PHPUnit_GtkUI_TestRunner::STATUS_ERROR,
+          PHPUnit_GtkUI_Runner::STATUS_ERROR,
           $e->getMessage(),
           $parent
         );
@@ -142,16 +142,16 @@ class PHPUnit_GtkUI_TestListener implements PHPUnit_Framework_TestListener
     
     public function addSkippedTest( PHPUnit_Framework_Test $test, Exception $e, $time )
     {
-        $this->lastTestStatus = PHPUnit_GtkUI_TestRunner::STATUS_SKIPPED;
+        $this->lastTestStatus = PHPUnit_GtkUI_Runner::STATUS_SKIPPED;
 
         $parent = PHPUnit_GtkUI_Controller_StatusTree::getInstance()->appendMessage(
-          PHPUnit_GtkUI_TestRunner::STATUS_SKIPPED,
+          PHPUnit_GtkUI_Runner::STATUS_SKIPPED,
           'Skipped test.',
           $this->parentStatus
         );
 
         $status = PHPUnit_GtkUI_Controller_StatusTree::getInstance()->appendMessage(
-          PHPUnit_GtkUI_TestRunner::STATUS_SKIPPED,
+          PHPUnit_GtkUI_Runner::STATUS_SKIPPED,
           $e->getMessage(),
           $parent
         );
@@ -171,16 +171,16 @@ class PHPUnit_GtkUI_TestListener implements PHPUnit_Framework_TestListener
 
     public function startTest( PHPUnit_Framework_Test $test )
     {
-        $this->lastTestStatus = PHPUnit_GtkUI_TestRunner::STATUS_OK;
+        $this->lastTestStatus = PHPUnit_GtkUI_Runner::STATUS_OK;
 
         $this->parentStatus = PHPUnit_GtkUI_Controller_StatusTree::getInstance()->appendMessage(
-          PHPUnit_GtkUI_TestRunner::STATUS_INFO,
+          PHPUnit_GtkUI_Runner::STATUS_INFO,
           "Run of {$test->toString()}.",
           $this->globalStatus
         );
 
         $status = PHPUnit_GtkUI_Controller_StatusTree::getInstance()->appendMessage(
-          PHPUnit_GtkUI_TestRunner::STATUS_INFO,
+          PHPUnit_GtkUI_Runner::STATUS_INFO,
           'Test run started.',
           $this->parentStatus
         );
@@ -197,7 +197,7 @@ class PHPUnit_GtkUI_TestListener implements PHPUnit_Framework_TestListener
         );
 
         PHPUnit_GtkUI_Controller_StatusTree::getInstance()->appendMessage(
-          PHPUnit_GtkUI_TestRunner::STATUS_INFO,
+          PHPUnit_GtkUI_Runner::STATUS_INFO,
           "Test run finished after $time seconds.",
           $this->parentStatus
         );

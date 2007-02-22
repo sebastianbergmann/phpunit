@@ -86,18 +86,18 @@ class PHPUnit_GtkUI_Controller_MainWindow
         PHPUnit_GtkUI_Controller_SuiteTree::getInstance();
         PHPUnit_GtkUI_Controller_StatusTree::getInstance();
 
-        self::$statuses[PHPUnit_GtkUI_TestRunner::STATUS_INFO]    = GdkPixbuf::new_from_file(dirname(__FILE__) . '/../img/info.png');
-        self::$statuses[PHPUnit_GtkUI_TestRunner::STATUS_NOTRUN]  = GdkPixbuf::new_from_file(dirname(__FILE__) . '/../img/empty.png');
-        self::$statuses[PHPUnit_GtkUI_TestRunner::STATUS_OK]      = GdkPixbuf::new_from_file(dirname(__FILE__) . '/../img/success.png');
-        self::$statuses[PHPUnit_GtkUI_TestRunner::STATUS_FAILED]  = GdkPixbuf::new_from_file(dirname(__FILE__) . '/../img/failed.png');
-        self::$statuses[PHPUnit_GtkUI_TestRunner::STATUS_SKIPPED] = GdkPixbuf::new_from_file(dirname(__FILE__) . '/../img/skipped.png');
-        self::$statuses[PHPUnit_GtkUI_TestRunner::STATUS_ERROR]   = GdkPixbuf::new_from_file(dirname(__FILE__) . '/../img/error.png');
+        self::$statuses[PHPUnit_GtkUI_Runner::STATUS_INFO]    = GdkPixbuf::new_from_file(dirname(__FILE__) . '/../img/info.png');
+        self::$statuses[PHPUnit_GtkUI_Runner::STATUS_NOTRUN]  = GdkPixbuf::new_from_file(dirname(__FILE__) . '/../img/empty.png');
+        self::$statuses[PHPUnit_GtkUI_Runner::STATUS_OK]      = GdkPixbuf::new_from_file(dirname(__FILE__) . '/../img/success.png');
+        self::$statuses[PHPUnit_GtkUI_Runner::STATUS_FAILED]  = GdkPixbuf::new_from_file(dirname(__FILE__) . '/../img/failed.png');
+        self::$statuses[PHPUnit_GtkUI_Runner::STATUS_SKIPPED] = GdkPixbuf::new_from_file(dirname(__FILE__) . '/../img/skipped.png');
+        self::$statuses[PHPUnit_GtkUI_Runner::STATUS_ERROR]   = GdkPixbuf::new_from_file(dirname(__FILE__) . '/../img/error.png');
         
-        PHPUnit_GtkUI_Main::getInstance()->glade->get_widget('imgStatusNotRun')->set_from_pixbuf(self::getStatusPixbuf(PHPUnit_GtkUI_TestRunner::STATUS_NOTRUN));
-        PHPUnit_GtkUI_Main::getInstance()->glade->get_widget('imgStatusOk')->set_from_pixbuf(self::getStatusPixbuf(PHPUnit_GtkUI_TestRunner::STATUS_OK));
-        PHPUnit_GtkUI_Main::getInstance()->glade->get_widget('imgStatusSkipped')->set_from_pixbuf(self::getStatusPixbuf(PHPUnit_GtkUI_TestRunner::STATUS_SKIPPED));
-        PHPUnit_GtkUI_Main::getInstance()->glade->get_widget('imgStatusFailed')->set_from_pixbuf(self::getStatusPixbuf(PHPUnit_GtkUI_TestRunner::STATUS_FAILED));
-        PHPUnit_GtkUI_Main::getInstance()->glade->get_widget('imgStatusError')->set_from_pixbuf(self::getStatusPixbuf(PHPUnit_GtkUI_TestRunner::STATUS_ERROR));
+        PHPUnit_GtkUI_Main::getInstance()->glade->get_widget('imgStatusNotRun')->set_from_pixbuf(self::getStatusPixbuf(PHPUnit_GtkUI_Runner::STATUS_NOTRUN));
+        PHPUnit_GtkUI_Main::getInstance()->glade->get_widget('imgStatusOk')->set_from_pixbuf(self::getStatusPixbuf(PHPUnit_GtkUI_Runner::STATUS_OK));
+        PHPUnit_GtkUI_Main::getInstance()->glade->get_widget('imgStatusSkipped')->set_from_pixbuf(self::getStatusPixbuf(PHPUnit_GtkUI_Runner::STATUS_SKIPPED));
+        PHPUnit_GtkUI_Main::getInstance()->glade->get_widget('imgStatusFailed')->set_from_pixbuf(self::getStatusPixbuf(PHPUnit_GtkUI_Runner::STATUS_FAILED));
+        PHPUnit_GtkUI_Main::getInstance()->glade->get_widget('imgStatusError')->set_from_pixbuf(self::getStatusPixbuf(PHPUnit_GtkUI_Runner::STATUS_ERROR));
     }
 
     public static function getStatusPixbuf($status)
