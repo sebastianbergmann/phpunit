@@ -54,7 +54,7 @@ require_once 'PHPUnit/Util/Filter.php';
 PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
 
 /**
- * A TestRunner that uses PHP-GTK2.
+ * A Runner that uses PHP-GTK2.
  *
  * @category   Testing
  * @package    PHPUnit
@@ -110,7 +110,7 @@ class PHPUnit_GtkUI_Main
         $this->testRunner = new PHPUnit_GtkUI_Runner_Simple;
     }
 
-    public function getTestRunner()
+    public function getRunner()
     {
         return $this->testRunner;
     }

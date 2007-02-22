@@ -40,7 +40,7 @@
  * @author     Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @copyright  2007 Tobias Schlitt <toby@php.net>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
- * @version    SVN: $Id: TestRunner.php 497 2007-02-20 08:54:30Z dotxp $
+ * @version    SVN: $Id: Runner.php 497 2007-02-20 08:54:30Z dotxp $
  * @link       http://www.phpunit.de/
  * @since      File available since Release 3.2.0
  */
@@ -48,7 +48,7 @@
 require_once 'PHPUnit/Framework.php';
 require_once 'PHPUnit/GtkUI/Main.php';
 require_once 'PHPUnit/GtkUI/TestListener.php';
-require_once 'PHPUnit/GtkUI/TestRunner.php';
+require_once 'PHPUnit/GtkUI/Runner.php';
 require_once 'PHPUnit/Util/Filter.php';
 
 PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
