@@ -48,7 +48,7 @@
 require_once 'PHPUnit/GtkUI/Controller/FileChooser.php';
 require_once 'PHPUnit/GtkUI/Controller/MainWindow.php';
 require_once 'PHPUnit/GtkUI/Controller/SuiteTree.php';
-require_once 'PHPUnit/GtkUI/TestRunner.php';
+require_once 'PHPUnit/GtkUI/Runner/Simple.php';
 require_once 'PHPUnit/Util/Filter.php';
 
 PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
@@ -107,7 +107,12 @@ class PHPUnit_GtkUI_Main
 
         PHPUnit_GtkUI_Controller_MainWindow::getInstance()->show();
 
-        $this->testRunner = new PHPUnit_GtkUI_TestRunner;
+        $this->testRunner = new PHPUnit_GtkUI_Runner_Simple;
+    }
+
+    public function getTestRunner()
+    {
+        return $this->testRunner;
     }
 
     public function loadSuite()
