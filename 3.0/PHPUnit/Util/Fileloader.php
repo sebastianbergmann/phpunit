@@ -125,7 +125,7 @@ class PHPUnit_Util_Fileloader
         $xdebugCollectVars = $xdebugLoaded && ini_get('xdebug.collect_vars') == '1';
 
         if ($xdebugCollectVars) {
-            $variables = array('variables', xdebug_get_declared_vars());
+            $variables = xdebug_get_declared_vars();
         }
 
         include_once $filename;
