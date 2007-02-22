@@ -48,7 +48,7 @@
 require_once 'PHPUnit/GtkUI/Controller/SuiteTree.php';
 require_once 'PHPUnit/GtkUI/Controller/StatusTree.php';
 require_once 'PHPUnit/GtkUI/Main.php';
-require_once 'PHPUnit/GtkUI/TestRunner.php';
+require_once 'PHPUnit/GtkUI/Runner.php';
 require_once 'PHPUnit/Util/Filter.php';
 
 PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
