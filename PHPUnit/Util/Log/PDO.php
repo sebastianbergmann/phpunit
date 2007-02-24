@@ -46,6 +46,7 @@
 
 require_once 'PHPUnit/Framework.php';
 require_once 'PHPUnit/Util/CodeCoverage.php';
+require_once 'PHPUnit/Util/Filesystem.php';
 require_once 'PHPUnit/Util/Filter.php';
 
 PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
@@ -370,9 +371,16 @@ CREATE UNIQUE INDEX IF NOT EXISTS code_coverage_test_id_code_line_id ON code_cov
      */
     public function storeCodeCoverage(PHPUnit_Framework_TestResult $result)
     {
-        $codeCoverage = $result->getCodeCoverageInformation(false, false);
+        if (defined('PHPUnit_INSIDE_OWN_TESTSUITE')) {
+            $filterPHPUnit = FALSE;
+        } else {
+            $filterPHPUnit = TRUE;
+        }
+
+        $codeCoverage = $result->getCodeCoverageInformation(TRUE, $filterPHPUnit);
         $summary      = PHPUnit_Util_CodeCoverage::getSummary($codeCoverage);
         $files        = array_keys($summary);
+        $commonPath   = PHPUnit_Util_Filesystem::getCommonPath($files);
 
         foreach ($files as $file) {
             $this->dbh->beginTransaction();
@@ -384,7 +392,7 @@ CREATE UNIQUE INDEX IF NOT EXISTS code_coverage_test_id_code_line_id ON code_cov
                        VALUES(%d, "%s");',
 
                 $this->runId,
-                $file
+                str_replace($commonPath, '', $file)
               )
             );
 
