@@ -70,7 +70,7 @@ class PHPUnit_Util_Filesystem
      * @return string
      * @access public
      * @static
-     * @since  Method available since Release 3.0.0
+     * @since  Method available since Release 3.1.0
      */
     public static function getCommonPath(array $paths)
     {
