@@ -950,6 +950,23 @@ class PHPUnit_Framework_Assert
     /**
      *
      *
+     * @param  mixed $value
+     * @return PHPUnit_Framework_Constraint_Or
+     * @access public
+     * @since  Method available since Release 3.1.0
+     * @static
+     */
+    public static function greaterThanOrEqual($value)
+    {
+        return self::logicalOr(
+          new PHPUnit_Framework_Constraint_IsEqual($value),
+          new PHPUnit_Framework_Constraint_GreaterThan($value)
+        );
+    }
+
+    /**
+     *
+     *
      * @param  string $attributeName
      * @return PHPUnit_Framework_Constraint_ClassHasAttribute
      * @access public
@@ -1043,6 +1060,23 @@ class PHPUnit_Framework_Assert
     public static function lessThan($value)
     {
         return new PHPUnit_Framework_Constraint_LessThan($value);
+    }
+
+    /**
+     *
+     *
+     * @param  mixed $value
+     * @return PHPUnit_Framework_Constraint_Or
+     * @access public
+     * @since  Method available since Release 3.1.0
+     * @static
+     */
+    public static function lessThanOrEqual($value)
+    {
+        return self::logicalOr(
+          new PHPUnit_Framework_Constraint_IsEqual($value),
+          new PHPUnit_Framework_Constraint_LessThan($value)
+        );
     }
 
     /**

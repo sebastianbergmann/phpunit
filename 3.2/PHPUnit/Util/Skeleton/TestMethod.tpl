@@ -3,6 +3,9 @@
      * Generated from @assert {annotation}.
      */
     public function test{methodName}() {
-        $o = new {class};
-        $this->assert{assertion}({expected}, $o->{origMethodName}({arguments}));
+        $object = new {class};
+        $this->assert{assertion}(
+          {expected},
+          $object->{origMethodName}({arguments})
+        );
     }
