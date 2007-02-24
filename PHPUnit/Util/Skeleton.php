@@ -196,6 +196,26 @@ class PHPUnit_Util_Skeleton
                                 }
                                 break;
 
+                                case '>': {
+                                    $constraint = 'greaterThan';
+                                }
+                                break;
+
+                                case '>=': {
+                                    $constraint = 'greaterThanOrEqual';
+                                }
+                                break;
+
+                                case '<': {
+                                    $constraint = 'lessThan';
+                                }
+                                break;
+
+                                case '<=': {
+                                    $constraint = 'lessThanOrEqual';
+                                }
+                                break;
+
                                 default: {
                                     throw new RuntimeException;
                                 }
@@ -203,11 +223,12 @@ class PHPUnit_Util_Skeleton
 
                             $methodTemplate = new PHPUnit_Util_Template(
                                 sprintf(
-                                '%s%sSkeleton%sTestMethod.tpl',
+                                '%s%sSkeleton%sTestMethod%s.tpl',
 
                                 dirname(__FILE__),
                                 DIRECTORY_SEPARATOR,
-                                DIRECTORY_SEPARATOR
+                                DIRECTORY_SEPARATOR,
+                                isset($constraint) ? 'Constraint' : ''
                                 )
                             );
 
@@ -230,6 +251,7 @@ class PHPUnit_Util_Skeleton
                                 'arguments',
                                 'assertion',
                                 'class',
+                                'constraint',
                                 'expected',
                                 'origMethodName',
                                 'methodName'
@@ -237,8 +259,9 @@ class PHPUnit_Util_Skeleton
                               array(
                                 trim($annotation),
                                 $matches[1],
-                                $assertion,
+                                isset($assertion) ? $assertion : '',
                                 $this->className,
+                                isset($constraint) ? $constraint : '',
                                 $matches[3],
                                 $origMethodName,
                                 $methodName
