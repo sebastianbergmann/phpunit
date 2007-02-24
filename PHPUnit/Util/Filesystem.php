@@ -37,7 +37,6 @@
  * @category   Testing
  * @package    PHPUnit
  * @author     Sebastian Bergmann <sb@sebastian-bergmann.de>
- * @author     Michael Lively Jr. <m@digitalsandwich.com>
  * @copyright  2002-2007 Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    SVN: $Id$
@@ -55,7 +54,6 @@ PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
  * @category   Testing
  * @package    PHPUnit
  * @author     Sebastian Bergmann <sb@sebastian-bergmann.de>
- * @author     Michael Lively Jr. <m@digitalsandwich.com>
  * @copyright  2002-2007 Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    Release: @package_version@
@@ -66,13 +64,70 @@ PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
 class PHPUnit_Util_Filesystem
 {
     /**
+     * Returns the common path of a set of files.
+     *
+     * @param  array $paths
+     * @return string
+     * @access public
+     * @static
+     * @since  Method available since Release 3.0.0
+     */
+    public static function getCommonPath(array $paths)
+    {
+        $count = count($paths);
+
+        if ($count == 1) {
+            return dirname($paths[0]) . DIRECTORY_SEPARATOR;
+        }
+
+        $_paths = array();
+
+        for ($i = 0; $i < $count; $i++) {
+            $_paths[$i] = explode(DIRECTORY_SEPARATOR, $paths[$i]);
+
+            if (empty($_paths[$i][0])) {
+                $_paths[$i][0] = DIRECTORY_SEPARATOR;
+            }
+        }
+
+        $common = '';
+        $done   = FALSE;
+        $j      = 0;
+        $count--;
+
+        while (!$done) {
+            for ($i = 0; $i < $count; $i++) {
+                if ($_paths[$i][$j] != $_paths[$i+1][$j]) {
+                    $done = TRUE;
+                    break;
+                }
+            }
+
+            if (!$done) {
+                $common .= $_paths[0][$j];
+
+                if ($j > 0) {
+                    $common .= DIRECTORY_SEPARATOR;
+                }
+            }
+
+            $j++;
+        }
+
+        return $common;
+    }
+
+    /**
      * Returns a filesystem safe version of the passed filename.
      * This function does not operate on full paths, just filenames.
      *
      * @param  string $filename
+     * @return string
      * @access public
+     * @static
+     * @author Michael Lively Jr. <m@digitalsandwich.com>
      */
-    static public function getSafeFilename($filename)
+    public static function getSafeFilename($filename)
     {
         /* characters allowed: A-Z, a-z, 0-9, _ and . */
         return preg_replace('#[^\w.]#', '_', $filename);
