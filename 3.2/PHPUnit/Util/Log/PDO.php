@@ -418,6 +418,7 @@ CREATE UNIQUE INDEX IF NOT EXISTS code_coverage_test_id_code_line_id ON code_cov
     {
         if (defined('PHPUnit_INSIDE_OWN_TESTSUITE')) {
             $filterPHPUnit = FALSE;
+            xdebug_stop_code_coverage();
         } else {
             $filterPHPUnit = TRUE;
         }
