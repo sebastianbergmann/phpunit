@@ -472,6 +472,42 @@ abstract class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_Tes
     }
 
     /**
+     * Asserts that a specific value is selected.
+     *
+     * @param  string  $selectLocator
+     * @param  string  $value
+     * @access public
+     */
+    public function assertIsSelected($selectLocator, $value)
+    {
+        $this->assertEquals(
+          $value, $this->getSelectedValue($selectLocator),
+          sprintf(
+            '%s not selected in "%s".',
+            $value, $selectLocator
+          )
+        );
+    }
+
+    /**
+     * Asserts that a specific value is not selected.
+     *
+     * @param  string  $selectLocator
+     * @param  string  $value
+     * @access public
+     */
+    public function assertIsNotSelected($selectLocator, $value)
+    {
+        $this->assertNotEquals(
+          $value, $this->getSelectedValue($selectLocator),
+          sprintf(
+            '%s not selected in "%s".',
+            $value, $selectLocator
+          )
+        );
+    }
+
+    /**
      * Asserts that something is selected.
      *
      * @param  string  $selectLocator
