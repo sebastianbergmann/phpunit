@@ -63,6 +63,7 @@ PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
 class PHPUnit_Util_Class
 {
     protected static $buffer = array();
+    protected static $fileClassMap = array();
 
     public static function collectStart()
     {
@@ -83,16 +84,51 @@ class PHPUnit_Util_Class
 
         for ($i = 0; $i < $count; $i++) {
             $class = new ReflectionClass($result[$i]);
-            $file  = $class->getFileName();
 
-            if (file_exists($file)) {
-                $result[$i] = $file;
-            } else {
-                unset($result[$i]);
+            if ($class->isUserDefined()) {
+                $file = $class->getFileName();
+
+                if (file_exists($file)) {
+                    $result[$i] = $file;
+                } else {
+                    unset($result[$i]);
+                }
             }
         }
 
         return $result;
+    }
+
+    public static function getClassesInFile($filename, $commonPath = '', $clearCache = FALSE)
+    {
+        if ($clearCache) {
+            self::$fileClassMap = array();
+        }
+
+        if (empty(self::$fileClassMap)) {
+            $classes = get_declared_classes();
+            $count   = count($classes);
+            
+            for ($i = 0; $i < $count; $i++) {
+                $class = new ReflectionClass($classes[$i]);
+
+                if ($class->isUserDefined()) {
+                    $file = $class->getFileName();
+
+                    if ($commonPath != '') {
+                        $file = str_replace($commonPath, '', $file);
+                    }
+
+                    if (!isset(self::$fileClassMap[$file])) {
+                        self::$fileClassMap[$file] = array($class);
+                    } else {
+                        self::$fileClassMap[$file][] = $class;
+                    }
+                }
+            }
+        }
+
+        return isset(self::$fileClassMap[$file]) ? self::$fileClassMap[$file] : array();
     }
 }
 ?>
