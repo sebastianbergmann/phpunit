@@ -45,6 +45,7 @@
  */
 
 require_once 'PHPUnit/Framework.php';
+require_once 'PHPUnit/Util/Class.php';
 require_once 'PHPUnit/Util/CodeCoverage.php';
 require_once 'PHPUnit/Util/Filesystem.php';
 require_once 'PHPUnit/Util/Filter.php';
@@ -97,14 +98,36 @@ CREATE TABLE IF NOT EXISTS code_file(
   INDEX (run_id)
 ) ENGINE=InnoDB;
 
+CREATE TABLE IF NOT EXISTS code_class(
+  code_file_id          INTEGER UNSIGNED NOT NULL REFERENCES code_file.code_file_id,
+  code_class_id         INTEGER UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
+  code_class_name       CHAR(255),
+  code_class_start_line INTEGER UNSIGNED NOT NULL,
+  code_class_end_line   INTEGER UNSIGNED NOT NULL,
+
+  INDEX (code_file_id)
+) ENGINE=InnoDB;
+
+CREATE TABLE IF NOT EXISTS code_method(
+  code_class_id          INTEGER UNSIGNED NOT NULL REFERENCES code_class.code_class_id,
+  code_method_id         INTEGER UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
+  code_method_name       CHAR(255),
+  code_method_start_line INTEGER UNSIGNED NOT NULL,
+  code_method_end_line   INTEGER UNSIGNED NOT NULL,
+
+  INDEX (code_class_id)
+) ENGINE=InnoDB;
+
 CREATE TABLE IF NOT EXISTS code_line(
   code_file_id      INTEGER UNSIGNED NOT NULL REFERENCES code_file.code_file_id,
+  code_method_id    INTEGER UNSIGNED NOT NULL REFERENCES code_method.code_method_id,
   code_line_id      INTEGER UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
   code_line_number  INTEGER UNSIGNED NOT NULL,
   code_line         TEXT,
   code_line_covered TINYINT UNSIGNED NOT NULL,
 
-  INDEX (code_file_id)
+  INDEX (code_file_id),
+  INDEX (code_method_id)
 ) ENGINE=InnoDB;
 
 CREATE TABLE IF NOT EXISTS code_coverage(
@@ -146,8 +169,29 @@ CREATE TABLE IF NOT EXISTS code_file(
 
 CREATE INDEX IF NOT EXISTS code_file_run_id ON code_file (run_id);
 
+CREATE TABLE IF NOT EXISTS code_class(
+  code_file_id          INTEGER,
+  code_class_id         INTEGER PRIMARY KEY AUTOINCREMENT,
+  code_class_name       TEXT,
+  code_class_start_line INTEGER,
+  code_class_end_line   INTEGER
+);
+
+CREATE INDEX IF NOT EXISTS code_file_id ON code_class (code_file_id);
+
+CREATE TABLE IF NOT EXISTS code_method(
+  code_class_id          INTEGER,
+  code_method_id         INTEGER PRIMARY KEY AUTOINCREMENT,
+  code_method_name       TEXT,
+  code_method_start_line INTEGER,
+  code_method_end_line   INTEGER
+);
+
+CREATE INDEX IF NOT EXISTS code_class_id ON code_method (code_class_id);
+
 CREATE TABLE IF NOT EXISTS code_line(
   code_file_id      INTEGER,
+  code_method_id    INTEGER,
   code_line_id      INTEGER PRIMARY KEY AUTOINCREMENT,
   code_line_number  INTEGER,
   code_line         TEXT,
@@ -155,6 +199,7 @@ CREATE TABLE IF NOT EXISTS code_line(
 );
 
 CREATE INDEX IF NOT EXISTS code_line_code_file_id ON code_line (code_file_id);
+CREATE INDEX IF NOT EXISTS code_line_code_method_id ON code_line (code_method_id);
 
 CREATE TABLE IF NOT EXISTS code_coverage(
   test_id      INTEGER,
@@ -396,7 +441,53 @@ CREATE UNIQUE INDEX IF NOT EXISTS code_coverage_test_id_code_line_id ON code_cov
               )
             );
 
-            $fileId = $this->dbh->lastInsertId();
+            $fileId    = $this->dbh->lastInsertId();
+            $classes   = PHPUnit_Util_Class::getClassesInFile($file, $commonPath);
+            $methodMap = array();
+
+            foreach ($classes as $class) {
+                $this->dbh->query(
+                  sprintf(
+                    'INSERT INTO code_class
+                                 (code_file_id, code_class_name,
+                                  code_class_start_line, code_class_end_line)
+                           VALUES(%d, "%s", %d, %d);',
+
+                    $fileId,
+                    $class->getName(),
+                    $class->getStartLine(),
+                    $class->getEndLine()
+                  )
+                );
+
+                $classId = $this->dbh->lastInsertId();
+
+                foreach ($class->getMethods() as $method) {
+                    $startLine = $method->getStartLine();
+                    $endLine   = $method->getEndLine();
+
+                    $this->dbh->query(
+                      sprintf(
+                        'INSERT INTO code_method
+                                     (code_class_id, code_method_name,
+                                      code_method_start_line, code_method_end_line)
+                               VALUES(%d, "%s", %d, %d);',
+
+                        $classId,
+                        $method->getName(),
+                        $startLine,
+                        $endLine
+                      )
+                    );
+
+                    $methodId = $this->dbh->lastInsertId();
+
+                    for ($i = $startLine; $i <= $endLine; $i++) {
+                        $methodMap[$i] = $methodId;
+                    }
+                }
+            }
+
             $i      = 1;
             $lines  = file($file);
 
@@ -406,11 +497,12 @@ CREATE UNIQUE INDEX IF NOT EXISTS code_coverage_test_id_code_line_id ON code_cov
                 $this->dbh->query(
                   sprintf(
                     'INSERT INTO code_line
-                                 (code_file_id, code_line_number, code_line,
-                                  code_line_covered)
-                           VALUES(%d, %d, "%s", %d);',
+                                 (code_file_id, code_method_id, code_line_number,
+                                  code_line, code_line_covered)
+                           VALUES(%d, %d, %d, "%s", %d);',
 
                     $fileId,
+                    isset($methodMap[$i]) ? $methodMap[$i] : 0,
                     $i,
                     trim($line),
                     $covered
