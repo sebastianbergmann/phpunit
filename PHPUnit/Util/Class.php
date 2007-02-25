@@ -101,6 +101,10 @@ class PHPUnit_Util_Class
 
     public static function getClassesInFile($filename, $commonPath = '', $clearCache = FALSE)
     {
+        if ($commonPath != '') {
+            $filename = str_replace($commonPath, '', $filename);
+        }
+
         if ($clearCache) {
             self::$fileClassMap = array();
         }
