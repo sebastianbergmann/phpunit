@@ -19,12 +19,12 @@
  </lead>
  <date>2007-02-25</date>
  <version>
-  <release>3.1.0alpha1</release>
+  <release>3.1.0beta1</release>
   <api>3.1.0</api>
  </version>
  <stability>
-  <release>alpha</release>
-  <api>alpha</api>
+  <release>beta</release>
+  <api>beta</api>
  </stability>
  <license>BSD License</license>
  <notes>http://www.phpunit.de/wiki/ChangeLog</notes>
