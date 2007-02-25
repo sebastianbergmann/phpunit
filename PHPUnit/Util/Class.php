@@ -128,7 +128,7 @@ class PHPUnit_Util_Class
             }
         }
 
-        return isset(self::$fileClassMap[$file]) ? self::$fileClassMap[$file] : array();
+        return isset(self::$fileClassMap[$filename]) ? self::$fileClassMap[$filename] : array();
     }
 }
 ?>
