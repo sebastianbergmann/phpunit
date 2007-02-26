@@ -47,8 +47,8 @@
 
 require_once 'PHPUnit/Framework.php';
 require_once 'PHPUnit/GtkUI/Main.php';
-require_once 'PHPUnit/GtkUI/TestListener.php';
 require_once 'PHPUnit/GtkUI/Runner.php';
+require_once 'PHPUnit/GtkUI/Listener/Simple.php';
 require_once 'PHPUnit/Util/Filter.php';
 
 PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
@@ -72,7 +72,7 @@ class PHPUnit_GtkUI_Runner_Simple extends PHPUnit_GtkUI_Runner
 
     public function __construct()
     {
-        $this->listener = new PHPUnit_GtkUI_TestListener;
+        $this->listener = new PHPUnit_GtkUI_Listener_Simple;
     }
 
     public function loadSuite($filename)
