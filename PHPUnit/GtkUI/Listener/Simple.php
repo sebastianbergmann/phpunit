@@ -66,7 +66,7 @@ PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
  * @link       http://www.phpunit.de/
  * @since      Class available since Release 3.2.0
  */
-class PHPUnit_GtkUI_TestListener implements PHPUnit_Framework_TestListener
+class PHPUnit_GtkUI_Listener_Simple implements PHPUnit_Framework_TestListener
 {
     private $lastTestStatus;
     private $parentStatus;
