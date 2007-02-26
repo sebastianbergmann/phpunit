@@ -45,6 +45,7 @@
  */
 
 require_once 'PHPUnit/Framework.php';
+require_once 'PHPUnit/Runner/BaseTestRunner.php';
 require_once 'PHPUnit/Util/Class.php';
 require_once 'PHPUnit/Util/CodeCoverage.php';
 require_once 'PHPUnit/Util/Filesystem.php';
@@ -78,13 +79,15 @@ CREATE TABLE IF NOT EXISTS test(
   run_id              INTEGER UNSIGNED NOT NULL REFERENCES run.run_id,
   test_id             INTEGER UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
   test_name           CHAR(128)        NOT NULL,
-  test_result         TEXT             NOT NULL,
-  test_execution_time FLOAT   UNSIGNED NOT NULL,
+  test_result         TINYINT UNSIGNED NOT NULL DEFAULT 0,
+  test_message        TEXT             NOT NULL DEFAULT "",
+  test_execution_time FLOAT   UNSIGNED NOT NULL DEFAULT 0,
   node_root           INTEGER UNSIGNED NOT NULL,
   node_left           INTEGER UNSIGNED NOT NULL,
   node_right          INTEGER UNSIGNED NOT NULL,
 
   INDEX (run_id),
+  INDEX (test_result),
   INDEX (node_root),
   INDEX (node_left),
   INDEX (node_right)
@@ -149,14 +152,16 @@ CREATE TABLE IF NOT EXISTS test(
   run_id              INTEGER,
   test_id             INTEGER PRIMARY KEY AUTOINCREMENT,
   test_name           TEXT,
-  test_result         TEXT,
-  test_execution_time REAL,
+  test_result         INTEGER DEFAULT 0,
+  test_message        TEXT    DEFAULT "",
+  test_execution_time REAL    DEFAULT 0,
   node_root           INTEGER,
   node_left           INTEGER,
   node_right          INTEGER
 );
 
 CREATE INDEX IF NOT EXISTS test_run_id     ON test (run_id);
+CREATE INDEX IF NOT EXISTS test_result     ON test (test_result);
 CREATE INDEX IF NOT EXISTS test_node_root  ON test (node_root);
 CREATE INDEX IF NOT EXISTS test_node_left  ON test (node_left);
 CREATE INDEX IF NOT EXISTS test_node_right ON test (node_right);
@@ -289,8 +294,9 @@ CREATE UNIQUE INDEX IF NOT EXISTS code_coverage_test_id_code_line_id ON code_cov
     {
         $this->insertNode(
           $test,
-          'Error: ' . $e->getMessage(),
-          $time
+          PHPUnit_Runner_BaseTestRunner::STATUS_ERROR,
+          $time,
+          $e->getMessage()
         );
 
         $this->currentTestSuccess = FALSE;
@@ -308,8 +314,9 @@ CREATE UNIQUE INDEX IF NOT EXISTS code_coverage_test_id_code_line_id ON code_cov
     {
         $this->insertNode(
           $test,
-          'Failure: ' . $e->getMessage(),
-          $time
+          PHPUnit_Runner_BaseTestRunner::STATUS_FAILURE,
+          $time,
+          $e->getMessage()
         );
 
         $this->currentTestSuccess = FALSE;
@@ -327,8 +334,9 @@ CREATE UNIQUE INDEX IF NOT EXISTS code_coverage_test_id_code_line_id ON code_cov
     {
         $this->insertNode(
           $test,
-          'Incomplete: ' . $e->getMessage(),
-          $time
+          PHPUnit_Runner_BaseTestRunner::STATUS_INCOMPLETE,
+          $time,
+          $e->getMessage()
         );
 
         $this->currentTestSuccess = FALSE;
@@ -346,8 +354,9 @@ CREATE UNIQUE INDEX IF NOT EXISTS code_coverage_test_id_code_line_id ON code_cov
     {
         $this->insertNode(
           $test,
-          'Skipped: ' . $e->getMessage(),
-          $time
+          PHPUnit_Runner_BaseTestRunner::STATUS_SKIPPED,
+          $time,
+          $e->getMessage()
         );
 
         $this->currentTestSuccess = FALSE;
@@ -404,7 +413,9 @@ CREATE UNIQUE INDEX IF NOT EXISTS code_coverage_test_id_code_line_id ON code_cov
     public function endTest(PHPUnit_Framework_Test $test, $time)
     {
         if ($this->currentTestSuccess) {
-            $this->insertNode($test, 'OK', $time);
+            $this->insertNode(
+              $test, PHPUnit_Runner_BaseTestRunner::STATUS_PASSED, $time
+            );
         }
     }
 
@@ -579,13 +590,14 @@ CREATE UNIQUE INDEX IF NOT EXISTS code_coverage_test_id_code_line_id ON code_cov
      * Inserts a node into the tree.
      *
      * @param  PHPUnit_Framework_Test $test
-     * @param  string                 $result
+     * @param  integer                $result
      * @param  float                  $time
+     * @param  string                 $message
      * @return integer
      * @throws PDOException
      * @access protected
      */
-    protected function insertNode(PHPUnit_Framework_Test $test, $result = '', $time = 0)
+    protected function insertNode(PHPUnit_Framework_Test $test, $result = PHPUnit_Runner_BaseTestRunner::STATUS_PASSED, $time = 0, $message = '')
     {
         $right = $this->right[count($this->right)-1];
 
@@ -618,13 +630,14 @@ CREATE UNIQUE INDEX IF NOT EXISTS code_coverage_test_id_code_line_id ON code_cov
         $this->dbh->query(
           sprintf(
             'INSERT INTO test
-                         (run_id, test_name, test_result, test_execution_time,
-                          node_root, node_left, node_right)
-                   VALUES(%d, "%s", "%s", %f, %d, %d, %d);',
+                         (run_id, test_name, test_result, test_message,
+                          test_execution_time, node_root, node_left, node_right)
+                   VALUES(%d, "%s", %d, "%s", %f, %d, %d, %d);',
 
             $this->runId,
             $test->getName(),
             $result,
+            $message,
             $time,
             $this->rootId,
             $right,
