@@ -59,6 +59,10 @@ PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
  */
 function PHPUnit_Util_ErrorHandler($errno, $errstr, $errfile, $errline)
 {
+    if (!($errno & error_reporting())) {
+        return;
+    }
+
     $trace = debug_backtrace();
     array_shift($trace);
 
