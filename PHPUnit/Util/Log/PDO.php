@@ -514,16 +514,19 @@ CREATE UNIQUE INDEX IF NOT EXISTS code_coverage_test_id_code_line_id ON code_cov
                 if ($covered > 0) {
                     $lineId = $this->dbh->lastInsertId();
 
-                    foreach ($codeCoverage as $test) {
-                        if (isset($test['files'][$file][$i]) &&
-                            $test['files'][$file][$i] > 0) {
+                    $coveringTests = PHPUnit_Util_CodeCoverage::getCoveringTests(
+                      $codeCoverage, $file, $i
+                    );
+
+                    if (is_array($coveringTests)) {
+                        foreach ($coveringTests as $test) {
                             $this->dbh->exec(
                               sprintf(
                                 'INSERT INTO code_coverage
                                              (test_id, code_line_id)
-                                       VALUES(%d, %d);',
+                                        VALUES(%d, %d);',
 
-                                $test['test']->__db_id,
+                                $test->__db_id,
                                 $lineId
                               )
                             );
