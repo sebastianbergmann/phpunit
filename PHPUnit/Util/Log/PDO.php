@@ -220,12 +220,6 @@ CREATE UNIQUE INDEX IF NOT EXISTS code_coverage_test_id_code_line_id ON code_cov
     protected $runId;
 
     /**
-     * @var    integer
-     * @access protected
-     */
-    protected $rootId;
-
-    /**
      * @var    integer[]
      * @access protected
      */
