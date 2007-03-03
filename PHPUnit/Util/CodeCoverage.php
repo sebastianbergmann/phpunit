@@ -63,6 +63,8 @@ PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
  */
 abstract class PHPUnit_Util_CodeCoverage
 {
+    protected static $lineToTestMap = array();
+
     /**
      * Returns the names of the covered files.
      *
@@ -86,6 +88,42 @@ abstract class PHPUnit_Util_CodeCoverage
         }
 
         return $files;
+    }
+
+    /**
+     * Returns the tests that cover a given line.
+     *
+     * @param  array   $codeCoverageInformation
+     * @param  string  $file
+     * @param  string  $line
+     * @param  boolean $clear
+     * @return array
+     * @access public
+     * @static
+     */
+    public static function getCoveringTests(array $codeCoverageInformation, $file, $line, $clear = FALSE)
+    {
+        if (empty(self::$lineToTestMap) || $clear) {
+            foreach ($codeCoverageInformation as $test) {
+                foreach ($test['files'] as $_file => $lines) {
+                    foreach ($lines as $_line => $flag) {
+                        if ($flag > 0) {
+                            if (!isset(self::$lineToTestMap[$_file][$_line])) {
+                                self::$lineToTestMap[$_file][$_line] = array($test['test']);
+                            } else {
+                                self::$lineToTestMap[$_file][$_line][] = $test['test'];
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        if (isset(self::$lineToTestMap[$file][$line])) {
+            return self::$lineToTestMap[$file][$line];
+        } else {
+            return FALSE;
+        }
     }
 
     /**
