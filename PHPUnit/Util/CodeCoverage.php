@@ -68,16 +68,16 @@ abstract class PHPUnit_Util_CodeCoverage
     /**
      * Returns the names of the covered files.
      *
-     * @param  array $codeCoverageInformation
+     * @param  array $data
      * @return array
      * @access public
      * @static
      */
-    public static function getCoveredFiles(array $codeCoverageInformation)
+    public static function getCoveredFiles(array &$data)
     {
         $files = array();
 
-        foreach ($codeCoverageInformation as $test) {
+        foreach ($data as $test) {
             $_files = array_keys($test['files']);
 
             foreach ($_files as $file) {
@@ -93,7 +93,7 @@ abstract class PHPUnit_Util_CodeCoverage
     /**
      * Returns the tests that cover a given line.
      *
-     * @param  array   $codeCoverageInformation
+     * @param  array   $data
      * @param  string  $file
      * @param  string  $line
      * @param  boolean $clear
@@ -101,10 +101,10 @@ abstract class PHPUnit_Util_CodeCoverage
      * @access public
      * @static
      */
-    public static function getCoveringTests(array $codeCoverageInformation, $file, $line, $clear = FALSE)
+    public static function getCoveringTests(array &$data, $file, $line, $clear = FALSE)
     {
         if (empty(self::$lineToTestMap) || $clear) {
-            foreach ($codeCoverageInformation as $test) {
+            foreach ($data as $test) {
                 foreach ($test['files'] as $_file => $lines) {
                     foreach ($lines as $_line => $flag) {
                         if ($flag > 0) {
@@ -139,16 +139,16 @@ abstract class PHPUnit_Util_CodeCoverage
      * )
      * </code>
      *
-     * @param  array $codeCoverageInformation
+     * @param  array $data
      * @return array
      * @access public
      * @static
      */
-    public static function getSummary(array $codeCoverageInformation)
+    public static function getSummary(array &$data)
     {
         $summary = array();
 
-        foreach ($codeCoverageInformation as $test) {
+        foreach ($data as $test) {
             foreach ($test['files'] as $file => $lines) {
                 if (!self::isFile($file)) {
                     continue;
