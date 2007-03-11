@@ -106,12 +106,6 @@ abstract class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_Tes
      */
     protected function runTest()
     {
-        if (extension_loaded('curl')) {
-            $driver = 'curl';
-        } else {
-            $driver = 'native';
-        }
-
         if (!class_exists('Testing_Selenium', FALSE)) {
             throw new RuntimeException('The Testing_Selenium package is not installed.');
         }
@@ -122,7 +116,7 @@ abstract class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_Tes
           $this->host,
           $this->port,
           $this->timeout,
-          $driver
+          'native'
         );
 
         $this->start();
