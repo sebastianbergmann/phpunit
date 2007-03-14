@@ -111,7 +111,7 @@ class PHPUnit_Framework_MockObject_Mock
             );
         }
 
-        if (empty($methods) && class_exists($className, FALSE)) {
+        if (empty($methods) && (class_exists($className, FALSE) || interface_exists($className, FALSE))) {
             $methods = get_class_methods($className);
         }
 
