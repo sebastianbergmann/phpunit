@@ -522,7 +522,7 @@ class PHPUnit_Framework_TestResult implements Countable
             xdebug_disable();
         }
 
-        $useXdebug = ($xdebugLoaded && $this->collectCodeCoverageInformation);
+        $useXdebug = ($xdebugLoaded && $this->collectCodeCoverageInformation && !$test instanceof PHPUnit_Extensions_SeleniumTestCase);
 
         if ($useXdebug && !defined('PHPUnit_INSIDE_OWN_TESTSUITE')) {
             xdebug_start_code_coverage(XDEBUG_CC_UNUSED | XDEBUG_CC_DEAD_CODE);
