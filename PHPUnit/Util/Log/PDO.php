@@ -97,6 +97,7 @@ CREATE TABLE IF NOT EXISTS code_file(
   run_id         INTEGER UNSIGNED NOT NULL REFERENCES run.run_id,
   code_file_id   INTEGER UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
   code_file_name CHAR(255),
+  code_file_md5  CHAR(32),
 
   INDEX (run_id)
 ) ENGINE=InnoDB;
@@ -169,7 +170,8 @@ CREATE INDEX IF NOT EXISTS test_node_right ON test (node_right);
 CREATE TABLE IF NOT EXISTS code_file(
   run_id         INTEGER,
   code_file_id   INTEGER PRIMARY KEY AUTOINCREMENT,
-  code_file_name TEXT
+  code_file_name TEXT,
+  code_file_md5  TEXT
 );
 
 CREATE INDEX IF NOT EXISTS code_file_run_id ON code_file (run_id);
@@ -435,11 +437,12 @@ CREATE UNIQUE INDEX IF NOT EXISTS code_coverage_test_id_code_line_id ON code_cov
             $this->dbh->exec(
               sprintf(
                 'INSERT INTO code_file
-                             (run_id, code_file_name)
-                       VALUES(%d, "%s");',
+                             (run_id, code_file_name, code_file_md5)
+                       VALUES(%d, "%s", "%s");',
 
                 $this->runId,
-                str_replace($commonPath, '', $file)
+                str_replace($commonPath, '', $file),
+                md5_file($file)
               )
             );
 
