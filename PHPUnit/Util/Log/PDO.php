@@ -82,12 +82,14 @@ CREATE TABLE IF NOT EXISTS test(
   test_result         TINYINT UNSIGNED NOT NULL DEFAULT 0,
   test_message        TEXT             NOT NULL DEFAULT "",
   test_execution_time FLOAT   UNSIGNED NOT NULL DEFAULT 0,
+  code_method_id      INTEGER UNSIGNED          REFERENCES code_method.code_method_id,
   node_root           INTEGER UNSIGNED NOT NULL,
   node_left           INTEGER UNSIGNED NOT NULL,
   node_right          INTEGER UNSIGNED NOT NULL,
 
   INDEX (run_id),
   INDEX (test_result),
+  INDEX (code_method_id),
   INDEX (node_root),
   INDEX (node_left),
   INDEX (node_right)
@@ -156,16 +158,18 @@ CREATE TABLE IF NOT EXISTS test(
   test_result         INTEGER DEFAULT 0,
   test_message        TEXT    DEFAULT "",
   test_execution_time REAL    DEFAULT 0,
+  code_method_id      INTEGER,
   node_root           INTEGER,
   node_left           INTEGER,
   node_right          INTEGER
 );
 
-CREATE INDEX IF NOT EXISTS test_run_id     ON test (run_id);
-CREATE INDEX IF NOT EXISTS test_result     ON test (test_result);
-CREATE INDEX IF NOT EXISTS test_node_root  ON test (node_root);
-CREATE INDEX IF NOT EXISTS test_node_left  ON test (node_left);
-CREATE INDEX IF NOT EXISTS test_node_right ON test (node_right);
+CREATE INDEX IF NOT EXISTS test_run_id         ON test (run_id);
+CREATE INDEX IF NOT EXISTS test_result         ON test (test_result);
+CREATE INDEX IF NOT EXISTS test_code_method_id ON test (code_method_id);
+CREATE INDEX IF NOT EXISTS test_node_root      ON test (node_root);
+CREATE INDEX IF NOT EXISTS test_node_left      ON test (node_left);
+CREATE INDEX IF NOT EXISTS test_node_right     ON test (node_right);
 
 CREATE TABLE IF NOT EXISTS code_file(
   run_id         INTEGER,
@@ -531,7 +535,7 @@ CREATE UNIQUE INDEX IF NOT EXISTS code_coverage_test_id_code_line_id ON code_cov
                               sprintf(
                                 'INSERT INTO code_coverage
                                              (test_id, code_line_id)
-                                        VALUES(%d, %d);',
+                                       VALUES(%d, %d);',
 
                                 $test->__db_id,
                                 $lineId
@@ -542,6 +546,37 @@ CREATE UNIQUE INDEX IF NOT EXISTS code_coverage_test_id_code_line_id ON code_cov
                 }
 
                 $i++;
+            }
+
+            foreach ($result->topTestSuite() as $test) {
+                if ($test instanceof PHPUnit_Framework_TestCase) {
+                    $stmt = $this->dbh->query(
+                      sprintf(
+                        'SELECT code_method.code_method_id
+                           FROM code_class, code_method
+                          WHERE code_class.code_class_id     = code_method.code_class_id
+                            AND code_class.code_class_name   = "%s"
+                            AND code_method.code_method_name = "%s";',
+
+                        get_class($test),
+                        $test->getName()
+                      )
+                    );
+
+                    $methodId = (int)$stmt->fetchColumn();
+                    unset($stmt);
+
+                    $this->dbh->exec(
+                      sprintf(
+                        'UPDATE test
+                            SET code_method_id = %d
+                          WHERE test_id = %d;',
+
+                        $methodId,
+                        $test->__db_id
+                      )
+                    );
+                }
             }
 
             $this->dbh->commit();
