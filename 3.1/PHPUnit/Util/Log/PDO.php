@@ -468,6 +468,10 @@ CREATE UNIQUE INDEX IF NOT EXISTS code_coverage_test_id_code_line_id ON code_cov
                 $classId = $this->dbh->lastInsertId();
 
                 foreach ($class->getMethods() as $method) {
+                    if ($class->getName() != $method->getDeclaringClass()->getName()) {
+                        continue;
+                    }
+
                     $startLine = $method->getStartLine();
                     $endLine   = $method->getEndLine();
 
