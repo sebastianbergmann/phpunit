@@ -722,11 +722,6 @@
     <name>Log</name>
     <channel>pear.php.net</channel>
    </package>
-   <package>
-    <name>Testing_Selenium</name>
-    <channel>pear.php.net</channel>
-    <min>0.3.0</min>
-   </package>
    <extension>
     <name>json</name>
    </extension>
