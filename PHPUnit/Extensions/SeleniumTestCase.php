@@ -46,7 +46,6 @@
 
 require_once 'PHPUnit/Framework.php';
 require_once 'PHPUnit/Util/Filter.php';
-@include_once 'Testing/Selenium.php';
 
 PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
 
@@ -65,12 +64,6 @@ PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
  */
 abstract class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_TestCase
 {
-    /**
-     * @var    Testing_Selenium
-     * @access private
-     */
-    private $selenium = NULL;
-
     /**
      * @var    string
      * @access private
@@ -106,19 +99,6 @@ abstract class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_Tes
      */
     protected function runTest()
     {
-        if (!class_exists('Testing_Selenium', FALSE)) {
-            throw new RuntimeException('The Testing_Selenium package is not installed.');
-        }
-
-        $this->selenium = new Testing_Selenium(
-          $this->browser,
-          $this->browserUrl,
-          $this->host,
-          $this->port,
-          $this->timeout,
-          'native'
-        );
-
         $this->start();
 
         parent::runTest();
@@ -127,22 +107,44 @@ abstract class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_Tes
             $this->stop();
         }
 
-        catch (Selenium_Exception $e) {
+        catch (RuntimeException $e) {
         }
-
-        $this->selenium = NULL;
     }
 
+    /**
+     * @access protected
+     */
     protected function tearDown()
     {
         try {
             $this->stop();
         }
 
-        catch (Selenium_Exception $e) {
+        catch (RuntimeException $e) {
         }
+    }
 
-        $this->selenium = NULL;
+    /**
+     * @return  string
+     * @access public
+     */
+    public function start()
+    {
+        $this->sessionId = $this->getString(
+          'getNewBrowserSession',
+          array($this->browser, $this->browserUrl)
+        );
+
+        return $this->sessionId;
+    }
+
+    /**
+     * @access public
+     */
+    public function stop()
+    {
+        $this->doCommand('testComplete');
+        $this->sessionId = NULL;
     }
 
     /**
@@ -216,6 +218,168 @@ abstract class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_Tes
     }
 
     /**
+     * This method (and the next) implement the Selenium RC protocol.
+     *
+     * @param  string $command
+     * @param  array  $arguments
+     * @return mixed
+     * @access public
+     */
+    public function __call($command, $arguments)
+    {
+        switch ($command) {
+            case 'addSelection':
+            case 'altKeyDown':
+            case 'altKeyUp':
+            case 'answerOnNextPrompt':
+            case 'check':
+            case 'chooseCancelOnNextConfirmation':
+            case 'click':
+            case 'clickAt':
+            case 'close':
+            case 'controlKeyDown':
+            case 'controlKeyUp':
+            case 'createCookie':
+            case 'deleteCookie':
+            case 'doubleClick':
+            case 'doubleClickAt':
+            case 'dragAndDrop':
+            case 'dragAndDropToObject':
+            case 'dragDrop':
+            case 'fireEvent':
+            case 'getSpeed':
+            case 'goBack':
+            case 'highlight':
+            case 'keyDown':
+            case 'keyPress':
+            case 'keyUp':
+            case 'metaKeyDown':
+            case 'metaKeyUp':
+            case 'mouseDown':
+            case 'mouseDownAt':
+            case 'mouseMove':
+            case 'mouseMoveAt':
+            case 'mouseOut':
+            case 'mouseOver':
+            case 'mouseUp':
+            case 'mouseUpAt':
+            case 'open':
+            case 'openWindow':
+            case 'refresh':
+            case 'removeAllSelections':
+            case 'removeSelection':
+            case 'select':
+            case 'selectFrame':
+            case 'selectWindow':
+            case 'setContext':
+            case 'setCursorPosition':
+            case 'setMouseSpeed':
+            case 'setSpeed':
+            case 'setTimeout':
+            case 'shiftKeyDown':
+            case 'shiftKeyUp':
+            case 'submit':
+            case 'type':
+            case 'typeKeys':
+            case 'uncheck':
+            case 'waitForCondition':
+            case 'waitForPageToLoad':
+            case 'waitForPopUp':
+            case 'windowFocus':
+            case 'windowMaximize': {
+                $this->doCommand($command, $arguments);
+                $this->defaultAssertions($command);
+            }
+            break;
+
+            case 'getWhetherThisFrameMatchFrameExpression':
+            case 'getWhetherThisWindowMatchWindowExpression':
+            case 'isAlertPresent':
+            case 'isChecked':
+            case 'isConfirmationPresent':
+            case 'isEditable':
+            case 'isElementPresent':
+            case 'isOrdered':
+            case 'isPromptPresent':
+            case 'isSomethingSelected':
+            case 'isTextPresent':
+            case 'isVisible': {
+                return $this->getBoolean($command, $arguments);
+            }
+            break;
+
+            case 'getCursorPosition':
+            case 'getElementHeight':
+            case 'getElementIndex':
+            case 'getElementPositionLeft':
+            case 'getElementPositionTop':
+            case 'getElementWidth':
+            case 'getMouseSpeed': {
+                return $this->getNumber($command, $arguments);
+            }
+            break;
+
+            case 'getAlert':
+            case 'getBodyText':
+            case 'getConfirmation':
+            case 'getCookie':
+            case 'getEval':
+            case 'getExpression':
+            case 'getHtmlSource':
+            case 'getLocation':
+            case 'getLogMessages':
+            case 'getPrompt':
+            case 'getSelectedId':
+            case 'getSelectedIndex':
+            case 'getSelectedLabel':
+            case 'getSelectedValue':
+            case 'getTable':
+            case 'getText':
+            case 'getTitle':
+            case 'getValue': {
+                return $this->getString($command, $arguments);
+            }
+            break;
+
+            case 'getAllButtons':
+            case 'getAllFields':
+            case 'getAllLinks':
+            case 'getAllWindowIds':
+            case 'getAllWindowNames':
+            case 'getAllWindowTitles':
+            case 'getAttributeFromAllWindows':
+            case 'getSelectedIds':
+            case 'getSelectedIndexes':
+            case 'getSelectedLabels':
+            case 'getSelectedValues':
+            case 'getSelectOptions': {
+                return $this->getStringArray($command, $arguments);
+            }
+            break;
+
+            case 'clickAndWait': {
+                $this->doCommand('click', $arguments);
+                $this->doCommand('waitForPageToLoad', array($this->timeout));
+                $this->defaultAssertions($command);
+            }
+            break;
+        }
+    }
+
+    /**
+     * The Selenium command "getAttribute" clashes with
+     * PHPUnit_Framework_Assert::getAttribute().
+     *
+     * @param  string $attributeLocator
+     * @reutn  string
+     * @access public
+     */
+    public function getElementAttribute($attributeLocator)
+    {
+        return $this->getString('getAttribute', array($attributeLocator));
+    }
+
+    /**
      * Asserts that an alert is present.
      *
      * @access public
@@ -242,7 +406,7 @@ abstract class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_Tes
     }
 
     /**
-     * 
+     * Asserts that an option is checked.
      *
      * @param  string  $locator
      * @access public
@@ -259,7 +423,7 @@ abstract class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_Tes
     }
 
     /**
-     * 
+     * Asserts that an option is not checked.
      *
      * @param  string  $locator
      * @access public
@@ -302,7 +466,7 @@ abstract class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_Tes
     }
 
     /**
-     * 
+     * Asserts that an input field is editable.
      *
      * @param  string  $locator
      * @access public
@@ -319,7 +483,7 @@ abstract class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_Tes
     }
 
     /**
-     * 
+     * Asserts that an input field is not editable.
      *
      * @param  string  $locator
      * @access public
@@ -418,7 +582,7 @@ abstract class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_Tes
     }
 
     /**
-     * 
+     * Asserts that the location is equal to a specified one.
      *
      * @param  string  $location
      * @access public
@@ -429,7 +593,7 @@ abstract class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_Tes
     }
 
     /**
-     * 
+     * Asserts that the location is not equal to a specified one.
      *
      * @param  string  $location
      * @access public
@@ -626,913 +790,6 @@ abstract class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_Tes
     }
 
     /**
-     * Retrieves the message of a JavaScript alert generated during
-     * the previous action.
-     *
-     * @return string
-     * @access public
-     */
-    public function getAlert()
-    {
-        return $this->selenium->getAlert();
-    }
-
-    /**
-     * Returns the IDs of all buttons on the page.
-     *
-     * @return array
-     * @access public
-     */
-    public function getAllButtons()
-    {
-        return $this->selenium->getAllButtons();
-    }
-
-    /**
-     * Returns the IDs of all input fields on the page.
-     *
-     * @return array
-     * @access public
-     */
-    public function getAllFields()
-    {
-        return $this->selenium->getAllFields();
-    }
-
-    /**
-     * Returns the IDs of all links on the page.
-     *
-     * @return array
-     * @access public
-     */
-    public function getAllLinks()
-    {
-        return $this->selenium->getAllLinks();
-    }
-
-    /**
-     * Returns the entire text of the page.
-     *
-     * @return string
-     * @access public
-     */
-    public function getBodyText()
-    {
-        return $this->selenium->getBodyText();
-    }
-
-    /**
-     * Returns the message of a JavaScript confirmation dialog
-     * generated during the previous action.
-     *
-     * @return string
-     * @access public
-     */
-    public function getConfirmation()
-    {
-        return $this->selenium->getConfirmation();
-    }
-
-    /**
-     * Returns the text cursor position in the given input element
-     * or textarea.
-     *
-     * @param  string  $locator
-     * @return integer
-     * @access public
-     */
-    public function getCursorPosition($locator)
-    {
-        return $this->selenium->getCursorPosition($locator);
-    }
-
-    /**
-     * Moves the text cursor to the specified position in the given
-     * input element or textarea.
-     *
-     * @param  string  $locator
-     * @param  integer $position
-     * @return string
-     * @access public
-     */
-    public function setCursorPosition($locator, $position)
-    {
-        return $this->selenium->setCursorPosition($locator, $position);
-    }
-
-    /**
-     * Returns the value of an element attribute.
-     *
-     * Note: This method should be named getAttribute(), but that
-     *       method is already defined in PHPUnit_Framework_Assert.
-     *
-     * @param  string  $attributeLocator
-     * @return string
-     * @access public
-     */
-    public function getElementAttribute($attributeLocator)
-    {
-        return $this->selenium->getAttribute($attributeLocator);
-    }
-
-    /**
-     * Returns the result of evaluating the specified JavaScript snippet.
-     *
-     * @param  string  $script
-     * @return string
-     * @access public
-     */
-    public function getEval($script)
-    {
-        return $this->selenium->getEval($script);
-    }
-
-    /**
-     * Returns the specified expression.
-     *
-     * @param  string  $expression
-     * @return string
-     * @access public
-     */
-    public function getExpression($expression)
-    {
-        return $this->selenium->getExpression($expression);
-    }
-
-    /**
-     * Returns the entire HTML source between the opening and
-     * closing "html" tags.
-     *
-     * @return string
-     * @access public
-     */
-    public function getHtmlSource()
-    {
-        return $this->selenium->getHtmlSource();
-    }
-
-    /**
-     * Returns the absolute URL of the current page.
-     *
-     * @return string
-     * @access public
-     */
-    public function getLocation()
-    {
-        return $this->selenium->getLocation();
-    }
-
-    /**
-     * Returns the message of a JavaScript question prompt dialog
-     * generated during the previous action.
-     *
-     * @return string
-     * @access public
-     */
-    public function getPrompt()
-    {
-        return $this->selenium->getPrompt();
-    }
-
-    /**
-     * Returns option element ID for selected option in the specified
-     * select element.
-     *
-     * @param  string  $selectLocator
-     * @return string
-     * @access public
-     */
-    public function getSelectedId($selectLocator)
-    {
-        return $this->selenium->getSelectedId($selectLocator);
-    }
-
-    /**
-     * Returns all option element IDs for selected options in the specified
-     * select or multi-select element.
-     *
-     * @param  string  $selectLocator
-     * @return array
-     * @access public
-     */
-    public function getSelectedIds($selectLocator)
-    {
-        return $this->selenium->getSelectedIds($selectLocator);
-    }
-
-    /**
-     * Returns option index (option number, starting at 0) for selected
-     * option in the specified select element.
-     *
-     * @param  string  $selectLocator
-     * @return string
-     * @access public
-     */
-    public function getSelectedIndex($selectLocator)
-    {
-        return $this->selenium->getSelectedIndex($selectLocator);
-    }
-
-    /**
-     * Returns all option indexes (option number, starting at 0) for selected
-     * options in the specified select or multi-select element.
-     *
-     * @param  string  $selectLocator
-     * @return array
-     * @access public
-     */
-    public function getSelectedIndexes($selectLocator)
-    {
-        return $this->selenium->getSelectedIndexes($selectLocator);
-    }
-
-    /**
-     * Returns all option labels (visible text) for selected options in the
-     * specified select element.
-     *
-     * @param  string  $selectLocator
-     * @return string
-     * @access public
-     */
-    public function getSelectedLabel($selectLocator)
-    {
-        return $this->selenium->getSelectedLabel($selectLocator);
-    }
-
-    /**
-     * Returns all option labels (visible text) for selected options
-     * in the specified select or multi-select element.
-     *
-     * @param  string  $selectLocator
-     * @return array
-     * @access public
-     */
-    public function getSelectedLabels($selectLocator)
-    {
-        return $this->selenium->getSelectedLabels($selectLocator);
-    }
-
-    /**
-     * Returns option value (value attribute) for selected option
-     * in the specified select element.
-     *
-     * @param  string  $selectLocator
-     * @return string
-     * @access public
-     */
-    public function getSelectedValue($selectLocator)
-    {
-        return $this->selenium->getSelectedValue($selectLocator);
-    }
-
-    /**
-     * Returns all option values (value attributes) for selected options
-     * in the specified select or multi-select element.
-     *
-     * @param  string  $selectLocator
-     * @return array
-     * @access public
-     */
-    public function getSelectedValues($selectLocator)
-    {
-        return $this->selenium->getSelectedValues($selectLocator);
-    }
-
-    /**
-     * Returns all option labels in the specified select drop-down.
-     *
-     * @param  string  $selectLocator
-     * @return array
-     * @access public
-     */
-    public function getSelectOptions($selectLocator)
-    {
-        return $this->selenium->getSelectOptions($selectLocator);
-    }
-
-    /**
-     * Returns the text from a cell of a table.
-     *
-     * @param  string  $tableCellAddress
-     * @return string
-     * @access public
-     */
-    public function getTable($tableCellAddress)
-    {
-        return $this->selenium->getTable($tableCellAddress);
-    }
-
-    /**
-     * Returns the text of an element.
-     *
-     * @param  string  $locator
-     * @return string
-     * @access public
-     */
-    public function getText($locator)
-    {
-        return $this->selenium->getText($locator);
-    }
-
-    /**
-     * Returns the title of the current page.
-     *
-     * @return string
-     * @access public
-     */
-    public function getTitle()
-    {
-        return $this->selenium->getTitle();
-    }
-
-    /**
-     * Returns the (whitespace-trimmed) value of an input field
-     * (or anything else with a value parameter).
-     *
-     * @param  string  $locator
-     * @return string
-     * @access public
-     */
-    public function getValue($locator)
-    {
-        return $this->selenium->getValue($locator);
-    }
-
-    /**
-     * Determines whether an alert occured.
-     *
-     * @return boolean
-     * @access public
-     */
-    public function isAlertPresent()
-    {
-        return $this->selenium->isAlertPresent();
-    }
-
-    /**
-     * Determines whether a toggle-button (checkbox/radio) is checked.
-     *
-     * @param  string  $locator
-     * @return boolean
-     * @access public
-     */
-    public function isChecked($locator)
-    {
-        return $this->selenium->isChecked($locator);
-    }
-
-    /**
-     * Determines whether confirm() has been called.
-     *
-     * @return boolean
-     * @access public
-     */
-    public function isConfirmationPresent()
-    {
-        return $this->selenium->isConfirmationPresent();
-    }
-
-    /**
-     * Determines whether the specified input element is editable.
-     *
-     * @param  string  $locator
-     * @return boolean
-     * @access public
-     */
-    public function isEditable($locator)
-    {
-        return $this->selenium->isEditable($locator);
-    }
-
-    /**
-     * Determines whether the specified element is somewhere on the page.
-     *
-     * @param  string  $locator
-     * @return boolean
-     * @access public
-     */
-    public function isElementPresent($locator)
-    {
-        return $this->selenium->isElementPresent($locator);
-    }
-
-    /**
-     * Determines whether a prompt is present.
-     *
-     * @return boolean
-     * @access public
-     */
-    public function isPromptPresent()
-    {
-        return $this->selenium->isPromptPresent();
-    }
-
-    /**
-     * Determines whether some option in a drop-down menu is selected.
-     *
-     * @param  string  $selectLocator
-     * @return boolean
-     * @access public
-     */
-    public function isSomethingSelected($selectLocator)
-    {
-        return $this->selenium->isSomethingSelected($selectLocator);
-    }
-
-    /**
-     * Determines whether the specified text pattern appears somewhere
-     * on the rendered page shown to the user.
-     *
-     * @param  string  $pattern
-     * @return boolean
-     * @access public
-     */
-    public function isTextPresent($pattern)
-    {
-        return $this->selenium->isTextPresent($pattern);
-    }
-
-    /**
-     * Determines if the specified element is visible.
-     *
-     * @param  string  $locator
-     * @return string
-     * @access public
-     */
-    public function isVisible($locator)
-    {
-        return $this->selenium->isVisible($locator);
-    }
-
-    /**
-     * Run the browser and set session id.
-     *
-     * @return string
-     * @access public
-     */
-    public function start()
-    {
-        return $this->selenium->start();
-    }
-
-    /**
-     * Close the browser and set session to NULL.
-     *
-     * @return string
-     * @access public
-     */
-    public function stop()
-    {
-        if ($this->selenium !== NULL) {
-            return $this->selenium->stop();
-        }
-    }
-
-    /**
-     * Set execution speed (delay after each Selenium action in milliseconds).
-     *
-     * @param  string $value
-     * @return string
-     * @access public
-     */
-    public function setSpeed($value)
-    {
-        return $this->selenium->setSpeed($value);
-    }
-
-    /**
-     * Get execution speed (delay after each Selenium action in milliseconds).
-     *
-     * @return string
-     * @access public
-     */
-    public function getSpeed()
-    {
-        return $this->selenium->getSpeed();
-    }
-
-    /**
-     * Open the URL in the test frame.
-     *
-     * @param  string  $url
-     * @return string
-     * @access public
-     */
-    public function open($url)
-    {
-        $result = $this->selenium->open($url);
-
-        $this->defaultAssertions('open');
-
-        return $result;
-    }
-
-    /**
-     * Simulates the user clicking the "close" button in the titlebar
-     * of a popup window or tab.
-     *
-     * @return string
-     * @access public
-     */
-    public function close()
-    {
-        $result = $this->selenium->close();
-
-        $this->defaultAssertions('close');
-
-        return $result;
-    }
-
-    /**
-     * Simulates clicking on the browser's "go back" button.
-     *
-     * @return string
-     * @access public
-     */
-    public function goBack()
-    {
-        $result = $this->selenium->goBack();
-
-        $this->defaultAssertions('goBack');
-
-        return $result;
-    }
-
-    /**
-     * Simulates clicking on the browser's "refresh" button.
-     *
-     * @return string
-     * @access public
-     */
-    public function refresh()
-    {
-        $result = $this->selenium->refresh();
-
-        $this->defaultAssertions('refresh');
-
-        return $result;
-    }
-
-    /**
-     * Clicks on a link, button, checkbox or radio button. 
-     * If the click action causes a new page to load,
-     * call waitForPageToLoad().
-     *
-     * @param  string  $locator
-     * @return string
-     * @access public
-     */
-    public function click($locator)
-    {
-        $result = $this->selenium->click($locator);
-
-        $this->defaultAssertions('click');
-
-        return $result;
-    }
-
-    /**
-     * Clicks on a link, button, checkbox or radio button.
-     * Calls waitForPageToLoad().
-     *
-     * @param  string  $locator
-     * @return string
-     * @access public
-     */
-    public function clickAndWait($locator)
-    {
-        $click = $this->selenium->click($locator);
-        $this->waitForPageToLoad();
-        return $click;
-    }
-
-    /**
-     * Simulate an event to trigger the corresponding "onEvent" handler.
-     *
-     * @param  string  $locator
-     * @param  string  $eventName
-     * @return string
-     * @access public
-     */
-    public function fireEvent($locator, $eventName)
-    {
-        $result = $this->selenium->fireEvent($locator, $eventName);
-
-        $this->defaultAssertions('fireEvent');
-
-        return $result;
-    }
-
-    /**
-     * Simulates a user pressing and holding a key.
-     *
-     * @param  string  $locator
-     * @param  string  $keycode
-     * @return string
-     * @access public
-     */
-    public function keyDown($locator, $keycode)
-    {
-        $result = $this->selenium->keyDown($locator, $keycode);
-
-        $this->defaultAssertions('keyDown');
-
-        return $result;
-    }
-
-    /**
-     * Simulates a user pressing and releasing a key.
-     *
-     * @param  string  $locator
-     * @param  string  $keycode
-     * @return string
-     * @access public
-     */
-    public function keyPress($locator, $keycode)
-    {
-        $result = $this->selenium->keyPress($locator, $keycode);
-
-        $this->defaultAssertions('keyPress');
-
-        return $result;
-    }
-
-    /**
-     * Simulates a user releasing a key.
-     *
-     * @param  string  $locator
-     * @param  string  $keycode
-     * @return string
-     * @access public
-     */
-    public function keyUp($locator, $keycode)
-    {
-        $result = $this->selenium->keyUp($locator, $keycode);
-
-        $this->defaultAssertions('keyUp');
-
-        return $result;
-    }
-
-    /**
-     * Simulates a user pressing and holding the mouse button on
-     * the specified element.
-     *
-     * @param  string  $locator
-     * @return string
-     * @access public
-     */
-    public function mouseDown($locator)
-    {
-        $result = $this->selenium->mouseDown($locator);
-
-        $this->defaultAssertions('mouseDown');
-
-        return $result;
-    }
-
-    /**
-     * Simulates a user hovering a mouse over the specified element.
-     *
-     * @param  string  $locator
-     * @return string
-     * @access public
-     */
-    public function mouseOver($locator)
-    {
-        $result = $this->selenium->mouseOver($locator);
-
-        $this->defaultAssertions('mouseOver');
-
-        return $result;
-    }
-
-    /**
-     * Check a toggle-button (checkbox/radio).
-     *
-     * @param  string  $locator
-     * @return string
-     * @access public
-     */
-    public function check($locator)
-    {
-        $result = $this->selenium->check($locator);
-
-        $this->defaultAssertions('check');
-
-        return $result;
-    }
-
-    /**
-     * Uncheck a toggle-button (checkbox/radio).
-     *
-     * @param  string  $locator
-     * @return string
-     * @access public
-     */
-    public function uncheck($locator)
-    {
-        $result = $this->selenium->uncheck($locator);
-
-        $this->defaultAssertions('uncheck');
-
-        return $result;
-    }
-
-    /**
-     * Add a selection to the set of selected options in a multi-select
-     * element using an option locator.
-     *
-     * @param  string  $locator
-     * @return string
-     * @access public
-     */
-    public function addSelection($locator, $optionLocator)
-    {
-        $result = $this->selenium->addSelection($locator, $optionLocator);
-
-        $this->defaultAssertions('addSelection');
-
-        return $result;
-    }
-
-    /**
-     * Remove a selection to the set of selected options in a multi-select
-     * element using an option locator.
-     *
-     * @param  string  $locator
-     * @return string
-     * @access public
-     */
-    public function removeSelection($locator, $optionLocator)
-    {
-        $result = $this->selenium->removeSelection($locator, $optionLocator);
-
-        $this->defaultAssertions('removeSelection');
-
-        return $result;
-    }
-
-    /**
-     * Select an option from a drop-down using an option locator.
-     *
-     * @param  string  $locator
-     * @return string
-     * @access public
-     */
-    public function select($selectLocator, $optionLocator)
-    {
-        $result = $this->selenium->select($selectLocator, $optionLocator);
-
-        $this->defaultAssertions('select');
-
-        return $result;
-    }
-
-    /**
-     * Submit the specified form.
-     *
-     * @param  string  $locator
-     * @return string
-     * @access public
-     */
-    public function submit($locator)
-    {
-        $result = $this->selenium->submit($locator);
-
-        $this->defaultAssertions('submit');
-
-        return $result;
-    }
-
-    /**
-     * Type into an input field.
-     *
-     * @param  string  $locator
-     * @param  string  $value
-     * @return string
-     * @access public
-     */
-    public function type($locator, $value)
-    {
-        $result = $this->selenium->type($locator, $value);
-
-        $this->defaultAssertions('type');
-
-        return $result;
-    }
-
-    /**
-     * Selects a popup window; once a popup window has been selected,
-     * all commands go to that window. To select the main window again,
-     * use "null" as the target.
-     *
-     * @param  string  $windowId
-     * @return string
-     * @access public
-     */
-    public function selectWindow($windowId)
-    {
-        $result = $this->selenium->selectWindow($windowId);
-
-        $this->defaultAssertions('selectWindow');
-
-        return $result;
-    }
-
-    /**
-     * Writes a message to the status bar and adds a note
-     * to the browser-side log.
-     *
-     * @param  string  $context
-     * @param  string  $logLevelThreshold
-     * @return string
-     * @access public
-     */
-    public function setContext($context, $logLevelThreshold)
-    {
-        $result = $this->selenium->setContext($context, $logLevelThreshold);
-
-        $this->defaultAssertions('setContext');
-
-        return $result;
-    }
-
-    /**
-     * Instructs Selenium to return the specified answer string
-     * in response to the next JavaScript prompt [window.prompt()].
-     *
-     * @param  string  $answer
-     * @return string
-     * @access public
-     */
-    public function answerOnNextPrompt($answer)
-    {
-        return $this->selenium->answerOnNextPrompt($answer);
-    }
-
-    /**
-     * By default, Selenium's overridden window.confirm() function will
-     * return true, as if the user had manually clicked OK.  After running
-     * this command, the next call to confirm() will return false, as if
-     * the user had clicked Cancel.
-     *
-     * @return string
-     * @access public
-     */
-    public function chooseCancelOnNextConfirmation()
-    {
-        return $this->selenium->chooseCancelOnNextConfirmation();
-    }
-
-    /**
-     * Runs the specified JavaScript snippet repeatedly 
-     * until it evaluates to "true".
-     *
-     * @param  string  $script
-     * @param  integer $timeout
-     * @return string
-     * @access public
-     */
-    public function waitForCondition($script, $timeout = NULL)
-    {
-        return $this->selenium->waitForCondition($script, $timeout);
-    }
-
-    /**
-     * Waits for a new page to load.
-     *
-     * @param  integer  $timeout
-     * @return string
-     * @access public
-     */
-    public function waitForPageToLoad($timeout = NULL)
-    {
-        $result = $this->selenium->waitForPageToLoad($timeout);
-
-        $this->defaultAssertions('waitForPageToLoad');
-
-        return $result;
-    }
-
-    /**
-     * Wait for a popup window to appear and load up.
-     *
-     * @param  string  $windowId
-     * @param  integer $timeout
-     * @return 
-     * @access public
-     */
-    public function waitForPopUp($windowId, $timeout = NULL)
-    {
-        $result = $this->selenium->waitForPopUp($windowId, $timeout);
-
-        $this->defaultAssertions('waitForPopUp');
-
-        return $result;
-    }
-
-    /**
      * Template Method that is called after Selenium actions.
      *
      * @param  string $action
@@ -1540,6 +797,169 @@ abstract class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_Tes
      */
     protected function defaultAssertions($action)
     {
+    }
+
+    /**
+     * Send a command to the Selenium RC server.
+     *
+     * @param  string $command
+     * @param  array  $arguments
+     * @return string
+     * @access private
+     * @author Shin Ohno <ganchiku@gmail.com>
+     * @author Bjoern Schotte <schotte@mayflower.de>
+     */
+    private function doCommand($command, array $arguments = array())
+    {
+        $url = sprintf(
+          'http://%s:%s/selenium-server/driver/?cmd=%s',
+          $this->host,
+          $this->port,
+          urlencode($command)
+        );
+
+        for ($i = 0; $i < count($arguments); $i++) {
+            $argNum = strval($i + 1);
+            $url .= sprintf('&%s=%s', $argNum, urlencode(trim($arguments[$i])));
+        }
+
+        if (isset($this->sessionId)) {
+            $url .= sprintf('&%s=%s', 'sessionId', $this->sessionId);
+        }
+
+        if (!$handle = fopen($url, 'r')) {
+            throw new RuntimeException(
+              'Could not connect to Selenium RC server.'
+            );
+        }
+
+        stream_set_blocking($handle, FALSE);
+        $response = stream_get_contents($handle);
+        fclose($handle);
+
+        if (!preg_match('/^OK/', $response)) {
+            throw new RuntimeException(
+              'The Response from the Selenium RC server is invalid: ' . $response
+            );
+        }
+
+        return $response;
+    }
+
+    /**
+     * Send a command to the Selenium RC server and treat the result
+     * as a boolean.
+     *
+     * @param  string $command
+     * @param  array  $arguments
+     * @return boolean
+     * @access private
+     * @author Shin Ohno <ganchiku@gmail.com>
+     * @author Bjoern Schotte <schotte@mayflower.de>
+     */
+    private function getBoolean($command, array $arguments)
+    {
+        $result = $this->getString($command, $arguments);
+
+        switch ($result) {
+            case 'true':  return TRUE;
+            case 'false': return FALSE;
+            default: throw new RuntimeException(
+              'Result is neither "true" nor "false": ' . $result
+            );
+        }
+    }
+
+    /**
+     * Send a command to the Selenium RC server and treat the result
+     * as a number.
+     *
+     * @param  string $command
+     * @param  array  $arguments
+     * @return numeric
+     * @access private
+     * @author Shin Ohno <ganchiku@gmail.com>
+     * @author Bjoern Schotte <schotte@mayflower.de>
+     */
+    private function getNumber($command, array $arguments)
+    {
+        $result = $this->getString($command, $arguments);
+
+        if (!is_numeric($result)) {
+            throw new RuntimeException('Result is not numeric.');
+        }
+
+        return $result;
+    }
+
+    /**
+     * Send a command to the Selenium RC server and treat the result
+     * as a string.
+     *
+     * @param  string $command
+     * @param  array  $arguments
+     * @return string
+     * @access private
+     * @author Shin Ohno <ganchiku@gmail.com>
+     * @author Bjoern Schotte <schotte@mayflower.de>
+     */
+    private function getString($command, array $arguments)
+    {
+        try {
+            $result = $this->doCommand($command, $arguments);
+        }
+
+        catch (RuntimeException $e) {
+            return $e;
+        }
+
+        return substr($result, 3);
+    }
+
+    /**
+     * Send a command to the Selenium RC server and treat the result
+     * as an array of strings.
+     *
+     * @param  string $command
+     * @param  array  $arguments
+     * @return array
+     * @access private
+     * @author Shin Ohno <ganchiku@gmail.com>
+     * @author Bjoern Schotte <schotte@mayflower.de>
+     */
+    private function getStringArray($command, array $arguments)
+    {
+        $csv     = $this->getString($command, $arguments);
+        $token   = '';
+        $tokens  = array();
+        $letters = preg_split('//', $csv, -1, PREG_SPLIT_NO_EMPTY);
+
+        for ($i = 0; $i < count($letters); $i++) {
+            $letter = $letters[$i];
+
+            switch($letter) {
+                case '\\': {
+                    $i++;
+                    $letter = $letters[$i];
+                    $token = $token . $letter;
+                }
+                break;
+
+                case ',': {
+                    array_push($tokens, $token);
+                    $token = '';
+                }
+                break;
+
+                default: {
+                    $token = $token . $letter;
+                }
+            }
+        }
+
+        array_push($tokens, $token);
+
+        return $tokens;
     }
 }
 ?>
