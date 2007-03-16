@@ -426,7 +426,7 @@ CREATE UNIQUE INDEX IF NOT EXISTS code_coverage_test_id_code_line_id ON code_cov
             $filterPHPUnit = TRUE;
         }
 
-        $codeCoverage = $result->getCodeCoverageInformation(TRUE, $filterPHPUnit);
+        $codeCoverage = $result->getCodeCoverageInformation(FALSE, $filterPHPUnit);
         $summary      = PHPUnit_Util_CodeCoverage::getSummary($codeCoverage);
         $files        = array_keys($summary);
         $commonPath   = PHPUnit_Util_Filesystem::getCommonPath($files);
