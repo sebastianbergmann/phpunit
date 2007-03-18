@@ -134,5 +134,24 @@ class PHPUnit_Util_Class
 
         return isset(self::$fileClassMap[$filename]) ? self::$fileClassMap[$filename] : array();
     }
+
+    public static function getHierarchy($className)
+    {
+        $classes = array($className);
+        $done    = FALSE;
+
+        while (!$done) {
+            $class  = new ReflectionClass($classes[count($classes)-1]);
+            $parent = $class->getParentClass();
+
+            if ($parent !== FALSE) {
+                $classes[] = $parent->getName();
+            } else {
+                $done = TRUE;
+            }
+        }
+
+        return $classes;
+    }
 }
 ?>
