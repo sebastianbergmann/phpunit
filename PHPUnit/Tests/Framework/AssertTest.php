@@ -1037,6 +1037,7 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('foo', $this->getAttribute($obj, 'publicAttribute'));
         $this->assertEquals('bar', $this->getAttribute($obj, 'protectedAttribute'));
         $this->assertEquals('baz', $this->getAttribute($obj, 'privateAttribute'));
+        $this->assertEquals('parent', $this->getAttribute($obj, 'privateParentAttribute'));
     }
 
     public function testGetStaticAttribute()
@@ -1044,6 +1045,7 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('foo', $this->getAttribute('ClassWithNonPublicAttributes', 'publicStaticAttribute'));
         $this->assertEquals('bar', $this->getAttribute('ClassWithNonPublicAttributes', 'protectedStaticAttribute'));
         $this->assertEquals('baz', $this->getAttribute('ClassWithNonPublicAttributes', 'privateStaticAttribute'));
+        $this->assertEquals('parent', $this->getAttribute('ClassWithNonPublicAttributes', 'privateStaticParentAttribute'));
     }
 
     public function testAssertPublicAttributeContains()
