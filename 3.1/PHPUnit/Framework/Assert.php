@@ -1180,8 +1180,6 @@ class PHPUnit_Framework_Assert
             throw new InvalidArgumentException;
         }
 
-        self::assertClassHasStaticAttribute($attributeName, $className);
-
         $class      = new ReflectionClass($className);
         $attributes = $class->getStaticProperties();
 
@@ -1199,9 +1197,28 @@ class PHPUnit_Framework_Assert
             return $attributes[$protectedName];
         }
 
-        $privateName = sprintf("\0%s\0%s", $className, $attributeName);
+        $classes = PHPUnit_Util_Class::getHierarchy($className);
 
-        return $attributes[$privateName];
+        foreach ($classes as $class) {
+            $privateName = sprintf(
+              "\0%s\0%s",
+
+              $class,
+              $attributeName
+            );
+
+            if (isset($attributes[$privateName])) {
+                return $attributes[$privateName];
+            }
+        }
+
+        throw new RuntimeException(
+          sprintf(
+            'Attribute "%s" not found in class.',
+
+            $attributeName
+          )
+        );
     }
 
     /**
@@ -1224,27 +1241,39 @@ class PHPUnit_Framework_Assert
 
         self::assertObjectHasAttribute($attributeName, $object);
 
-        $class     = new ReflectionObject($object);
-        $attribute = $class->getProperty($attributeName);
-
-        if ($attribute->isPublic()) {
+        if (isset($object->$attributeName)) {
             return $object->$attributeName;
         } else {
-            if ($attribute->isProtected()) {
-                $attributeName = "\0*\0" . $attributeName;
+            $array         = (array) $object;
+            $protectedName = "\0*\0" . $attributeName;
+
+            if (isset($array[$protectedName])) {
+                return $array[$protectedName];
             } else {
-                $attributeName = sprintf(
-                    "\0%s\0%s",
+                $classes = PHPUnit_Util_Class::getHierarchy(get_class($object));
 
-                    get_class($object),
-                    $attributeName
-                );
+                foreach ($classes as $class) {
+                    $privateName = sprintf(
+                      "\0%s\0%s",
+
+                      $class,
+                      $attributeName
+                    );
+
+                    if (isset($array[$privateName])) {
+                        return $array[$privateName];
+                    }
+                }
             }
-
-            $tmp = (array) $object;
-
-            return $tmp[$attributeName];
         }
+
+        throw new RuntimeException(
+          sprintf(
+            'Attribute "%s" not found in object.',
+
+            $attributeName
+          )
+        );
     }
 
     /**

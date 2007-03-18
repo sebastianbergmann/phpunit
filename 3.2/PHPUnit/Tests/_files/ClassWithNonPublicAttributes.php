@@ -60,7 +60,13 @@ PHPUnit_Util_Filter::addFileToFilter(__FILE__);
  * @link       http://www.phpunit.de/
  * @since      Class available since Release 3.0.0
  */
-class ClassWithNonPublicAttributes
+class ParentClassWithPrivateAttributes
+{
+    private static $privateStaticParentAttribute = 'parent';
+    private $privateParentAttribute = 'parent';
+}
+
+class ClassWithNonPublicAttributes extends ParentClassWithPrivateAttributes
 {
     public static $publicStaticAttribute = 'foo';
     protected static $protectedStaticAttribute = 'bar';
