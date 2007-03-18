@@ -67,7 +67,7 @@ class ClassWithNonPublicAttributes
     private $privateAttribute = 'baz';
 
     public $publicArray = array('foo');
-    public $protectedArray = array('bar');
-    public $privateArray = array('baz');
+    protected $protectedArray = array('bar');
+    private $privateArray = array('baz');
 }
 ?>
