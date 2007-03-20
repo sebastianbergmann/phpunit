@@ -794,6 +794,7 @@ abstract class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_Tes
      *
      * @param  string $action
      * @access protected
+     * @since  Method available since Release 3.1.0
      */
     protected function defaultAssertions($action)
     {
@@ -808,6 +809,7 @@ abstract class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_Tes
      * @access private
      * @author Shin Ohno <ganchiku@gmail.com>
      * @author Bjoern Schotte <schotte@mayflower.de>
+     * @since  Method available since Release 3.1.0
      */
     private function doCommand($command, array $arguments = array())
     {
@@ -829,7 +831,7 @@ abstract class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_Tes
 
         if (!$handle = fopen($url, 'r')) {
             throw new RuntimeException(
-              'Could not connect to Selenium RC server.'
+              'Could not connect to the Selenium RC server.'
             );
         }
 
@@ -839,7 +841,7 @@ abstract class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_Tes
 
         if (!preg_match('/^OK/', $response)) {
             throw new RuntimeException(
-              'The Response from the Selenium RC server is invalid: ' . $response
+              'The response from the Selenium RC server is invalid: ' . $response
             );
         }
 
@@ -856,6 +858,7 @@ abstract class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_Tes
      * @access private
      * @author Shin Ohno <ganchiku@gmail.com>
      * @author Bjoern Schotte <schotte@mayflower.de>
+     * @since  Method available since Release 3.1.0
      */
     private function getBoolean($command, array $arguments)
     {
@@ -880,6 +883,7 @@ abstract class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_Tes
      * @access private
      * @author Shin Ohno <ganchiku@gmail.com>
      * @author Bjoern Schotte <schotte@mayflower.de>
+     * @since  Method available since Release 3.1.0
      */
     private function getNumber($command, array $arguments)
     {
@@ -902,6 +906,7 @@ abstract class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_Tes
      * @access private
      * @author Shin Ohno <ganchiku@gmail.com>
      * @author Bjoern Schotte <schotte@mayflower.de>
+     * @since  Method available since Release 3.1.0
      */
     private function getString($command, array $arguments)
     {
@@ -926,6 +931,7 @@ abstract class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_Tes
      * @access private
      * @author Shin Ohno <ganchiku@gmail.com>
      * @author Bjoern Schotte <schotte@mayflower.de>
+     * @since  Method available since Release 3.1.0
      */
     private function getStringArray($command, array $arguments)
     {
@@ -933,31 +939,31 @@ abstract class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_Tes
         $token   = '';
         $tokens  = array();
         $letters = preg_split('//', $csv, -1, PREG_SPLIT_NO_EMPTY);
+        $count   = count($letters);
 
-        for ($i = 0; $i < count($letters); $i++) {
+        for ($i = 0; $i < $count; $i++) {
             $letter = $letters[$i];
 
             switch($letter) {
                 case '\\': {
-                    $i++;
-                    $letter = $letters[$i];
-                    $token = $token . $letter;
+                    $letter = $letters[++$i];
+                    $token .= $letter;
                 }
                 break;
 
                 case ',': {
-                    array_push($tokens, $token);
-                    $token = '';
+                    $tokens[] = $token;
+                    $token    = '';
                 }
                 break;
 
                 default: {
-                    $token = $token . $letter;
+                    $token .= $letter;
                 }
             }
         }
 
-        array_push($tokens, $token);
+        $tokens[] = $token;
 
         return $tokens;
     }
