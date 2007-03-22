@@ -95,6 +95,12 @@ abstract class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_Tes
     private $timeout = 30000;
 
     /**
+     * @var    string
+     * @access private
+     */
+    private $sessionId = NULL;
+
+    /**
      * @access protected
      */
     protected function runTest()
