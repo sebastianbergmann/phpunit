@@ -255,7 +255,7 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
 
         if (isset($parameters['pdoDSN']) && isset($parameters['pdoRevision']) &&
             extension_loaded('pdo')) {
-            $pdoListener = new PHPUnit_Util_Log_PDO(
+            $pdoListener = PHPUnit_Util_Log_PDO::getInstance(
               $parameters['pdoDSN'],
               $parameters['pdoRevision'],
               isset($parameters['pdoInfo']) ? $parameters['pdoInfo'] : ''

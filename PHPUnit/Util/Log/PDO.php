@@ -220,6 +220,19 @@ CREATE TABLE IF NOT EXISTS code_coverage(
 CREATE UNIQUE INDEX IF NOT EXISTS code_coverage_test_id_code_line_id ON code_coverage (test_id, code_line_id);';
 
     /**
+     * @var    PHPUnit_Util_Log_PDO
+     * @access protected
+     * @static
+     */
+    protected static $instance = NULL;
+
+    /**
+     * @var    integer
+     * @access protected
+     */
+    protected $currentTestId;
+
+    /**
      * @var    integer
      * @access protected
      */
@@ -245,9 +258,9 @@ CREATE UNIQUE INDEX IF NOT EXISTS code_coverage_test_id_code_line_id ON code_cov
      * @param  string  $information
      * @throws PDOException
      * @throws RuntimeException
-     * @access public
+     * @access protected
      */
-    public function __construct($dsn, $revision, $information = '')
+    protected function __construct($dsn, $revision, $information = '')
     {
         $this->dbh = new PDO($dsn);
 
@@ -283,6 +296,64 @@ CREATE UNIQUE INDEX IF NOT EXISTS code_coverage_test_id_code_line_id ON code_cov
     }
 
     /**
+     * @param  string  $dsn
+     * @param  integer $revision
+     * @param  string  $information
+     * @return PHPUnit_Util_Log_PDO
+     * @throws InvalidArgumentException
+     * @throws PDOException
+     * @throws RuntimeException
+     * @access public
+     * @static
+     */
+    public static function getInstance($dsn = '', $revision = '', $information = '')
+    {
+        if (empty($dsn)) {
+            if (self::$instance != NULL) {
+                return self::$instance;
+            } else {
+                return FALSE;
+            }
+        }
+
+        if (self::$instance != NULL) {
+            throw new RuntimeException;
+        }
+
+        if (empty($revision)) {
+            throw new InvalidArgumentException;
+        }
+
+        self::$instance = new PHPUnit_Util_Log_PDO(
+          $dsn, $revision, $information
+        );
+
+        return self::$instance;
+    }
+
+    /**
+     * Returns the ID of the current test.
+     *
+     * @return integer
+     * @access public
+     */
+    public function getCurrentTestId()
+    {
+        return $this->currentTestId;
+    }
+
+    /**
+     * Returns the ID of this test run.
+     *
+     * @return integer
+     * @access public
+     */
+    public function getRunId()
+    {
+        return $this->runId;
+    }
+
+    /**
      * An error occurred.
      *
      * @param  PHPUnit_Framework_Test $test
@@ -292,8 +363,7 @@ CREATE UNIQUE INDEX IF NOT EXISTS code_coverage_test_id_code_line_id ON code_cov
      */
     public function addError(PHPUnit_Framework_Test $test, Exception $e, $time)
     {
-        $this->insertNode(
-          $test,
+        $this->storeResult(
           PHPUnit_Runner_BaseTestRunner::STATUS_ERROR,
           $time,
           $e->getMessage()
@@ -312,8 +382,7 @@ CREATE UNIQUE INDEX IF NOT EXISTS code_coverage_test_id_code_line_id ON code_cov
      */
     public function addFailure(PHPUnit_Framework_Test $test, PHPUnit_Framework_AssertionFailedError $e, $time)
     {
-        $this->insertNode(
-          $test,
+        $this->storeResult(
           PHPUnit_Runner_BaseTestRunner::STATUS_FAILURE,
           $time,
           $e->getMessage()
@@ -332,8 +401,7 @@ CREATE UNIQUE INDEX IF NOT EXISTS code_coverage_test_id_code_line_id ON code_cov
      */
     public function addIncompleteTest(PHPUnit_Framework_Test $test, Exception $e, $time)
     {
-        $this->insertNode(
-          $test,
+        $this->storeResult(
           PHPUnit_Runner_BaseTestRunner::STATUS_INCOMPLETE,
           $time,
           $e->getMessage()
@@ -352,8 +420,7 @@ CREATE UNIQUE INDEX IF NOT EXISTS code_coverage_test_id_code_line_id ON code_cov
      */
     public function addSkippedTest(PHPUnit_Framework_Test $test, Exception $e, $time)
     {
-        $this->insertNode(
-          $test,
+        $this->storeResult(
           PHPUnit_Runner_BaseTestRunner::STATUS_SKIPPED,
           $time,
           $e->getMessage()
@@ -396,6 +463,7 @@ CREATE UNIQUE INDEX IF NOT EXISTS code_coverage_test_id_code_line_id ON code_cov
      */
     public function startTest(PHPUnit_Framework_Test $test)
     {
+        $this->insertNode($test);
         $this->currentTestSuccess = TRUE;
     }
 
@@ -409,8 +477,8 @@ CREATE UNIQUE INDEX IF NOT EXISTS code_coverage_test_id_code_line_id ON code_cov
     public function endTest(PHPUnit_Framework_Test $test, $time)
     {
         if ($this->currentTestSuccess) {
-            $this->insertNode(
-              $test, PHPUnit_Runner_BaseTestRunner::STATUS_PASSED, $time
+            $this->storeResult(
+              PHPUnit_Runner_BaseTestRunner::STATUS_PASSED, $time
             );
         }
     }
@@ -628,14 +696,10 @@ CREATE UNIQUE INDEX IF NOT EXISTS code_coverage_test_id_code_line_id ON code_cov
      * Inserts a node into the tree.
      *
      * @param  PHPUnit_Framework_Test $test
-     * @param  integer                $result
-     * @param  float                  $time
-     * @param  string                 $message
-     * @return integer
      * @throws PDOException
      * @access protected
      */
-    protected function insertNode(PHPUnit_Framework_Test $test, $result = PHPUnit_Runner_BaseTestRunner::STATUS_PASSED, $time = 0, $message = '')
+    protected function insertNode(PHPUnit_Framework_Test $test)
     {
         $this->dbh->beginTransaction();
 
@@ -681,28 +745,50 @@ CREATE UNIQUE INDEX IF NOT EXISTS code_coverage_test_id_code_line_id ON code_cov
             'INSERT INTO test
                          (run_id, test_name, test_result, test_message,
                           test_execution_time, node_root, node_left, node_right)
-                   VALUES(%d, "%s", %d, "%s", %f, %d, %d, %d);',
+                   VALUES(%d, "%s", 0, "", 0, %d, %d, %d);',
 
             $this->runId,
             $test->getName(),
-            $result,
-            $message,
-            $time,
             $this->testSuites[0],
             $right,
             $right + 1
           )
         );
 
-        $testId = $this->dbh->lastInsertId();
+        $this->currentTestId = $this->dbh->lastInsertId();
 
         $this->dbh->commit();
 
         if (!$test instanceof PHPUnit_Framework_TestSuite) {
-            $test->__db_id = $testId;
+            $test->__db_id = $this->currentTestId;
         }
+    }
 
-        return $testId;
+    /**
+     * Stores a test result.
+     *
+     * @param  integer $result
+     * @param  float   $time
+     * @param  string  $message
+     * @throws PDOException
+     * @access protected
+     */
+    protected function storeResult($result = PHPUnit_Runner_BaseTestRunner::STATUS_PASSED, $time = 0, $message = '')
+    {
+        $this->dbh->exec(
+          sprintf(
+            'UPDATE test
+                SET test_result         = %d,
+                    test_message        = "%s",
+                    test_execution_time = %f
+              WHERE test_id             = %d;',
+
+            $result,
+            $message,
+            $time,
+            $this->currentTestId
+          )
+        );
     }
 }
 ?>
