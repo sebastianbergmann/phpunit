@@ -101,6 +101,18 @@ abstract class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_Tes
     private $sessionId = NULL;
 
     /**
+     * @var    integer
+     * @access private
+     */
+    private $runId = NULL;
+
+    /**
+     * @var    integer
+     * @access private
+     */
+    private $testId = NULL;
+
+    /**
      * @access protected
      */
     protected function runTest()
@@ -140,6 +152,40 @@ abstract class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_Tes
           'getNewBrowserSession',
           array($this->browser, $this->browserUrl)
         );
+
+        if ($this->runId === NULL) {
+            $pdoListener = PHPUnit_Util_Log_PDO::getInstance();
+
+            if ($pdoListener !== FALSE) {
+                $this->runId  = $pdoListener->getRunId();
+                $this->testId = $pdoListener->getCurrentTestId();
+            } else {
+                $this->runId  = FALSE;
+                $this->testId = FALSE;
+            }
+        }
+
+        if ($this->runId !== FALSE && $this->runId !== NULL) {
+            $this->createCookie(
+              'PHPUNIT_SELENIUM_RUN_ID=' . $this->runId,
+              'path=/'
+            );
+
+            $this->createCookie(
+              'PHPUNIT_SELENIUM_SESSION_ID=' . $this->sessionId,
+              'path=/'
+            );
+
+            $this->createCookie(
+              'PHPUNIT_SELENIUM_TEST_ID=' . $this->testId,
+              'path=/'
+            );
+
+            $this->createCookie(
+              'PHPUNIT_SELENIUM_TEST_NAME=' . $this->getName(),
+              'path=/'
+            );
+        }
 
         return $this->sessionId;
     }
