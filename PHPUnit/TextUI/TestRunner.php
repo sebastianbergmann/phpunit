@@ -51,13 +51,14 @@ require_once 'PHPUnit/Runner/StandardTestSuiteLoader.php';
 require_once 'PHPUnit/Runner/Version.php';
 require_once 'PHPUnit/TextUI/ResultPrinter.php';
 require_once 'PHPUnit/Util/TestDox/ResultPrinter.php';
+require_once 'PHPUnit/Util/Database.php';
 require_once 'PHPUnit/Util/Filter.php';
 require_once 'PHPUnit/Util/Report.php';
 require_once 'PHPUnit/Util/Report/GraphViz.php';
 require_once 'PHPUnit/Util/Timer.php';
+require_once 'PHPUnit/Util/Log/Database.php';
 require_once 'PHPUnit/Util/Log/GraphViz.php';
 require_once 'PHPUnit/Util/Log/JSON.php';
-require_once 'PHPUnit/Util/Log/PDO.php';
 require_once 'PHPUnit/Util/Log/TAP.php';
 require_once 'PHPUnit/Util/Log/XML.php';
 
@@ -253,15 +254,24 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
             );
         }
 
-        if (isset($parameters['pdoDSN']) && isset($parameters['pdoRevision']) &&
+        if (isset($parameters['testDatabaseDSN']) &&
+            isset($parameters['testDatabaseLogRevision']) &&
             extension_loaded('pdo')) {
-            $pdoListener = PHPUnit_Util_Log_PDO::getInstance(
-              $parameters['pdoDSN'],
-              $parameters['pdoRevision'],
-              isset($parameters['pdoInfo']) ? $parameters['pdoInfo'] : ''
+            $writeToTestDatabase = TRUE;
+        } else {
+            $writeToTestDatabase = FALSE;
+        }
+
+        if ($writeToTestDatabase) {
+            $dbh = new PDO($parameters['testDatabaseDSN']);
+
+            $dbListener = PHPUnit_Util_Log_Database::getInstance(
+              $dbh,
+              $parameters['testDatabaseLogRevision'],
+              isset($parameters['testDatabaseLogInfo']) ? $parameters['testDatabaseLogInfo'] : ''
             );
 
-            $result->addListener($pdoListener);
+            $result->addListener($dbListener);
             $result->collectCodeCoverageInformation(TRUE);
         }
 
@@ -273,10 +283,12 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
             $this->printer->printResult($result);
         }
 
-        if (isset($parameters['pdoDSN']) &&
-            extension_loaded('pdo') && extension_loaded('xdebug')) {
+        if ($writeToTestDatabase && extension_loaded('xdebug')) {
             $this->printer->write("\nStoring code coverage data in database, this may take a moment.");
-            $pdoListener->storeCodeCoverage($result);
+
+            $testDb = new PHPUnit_Util_Database($dbh);
+            $testDb->storeCodeCoverage($result, $dbListener->getRunId());
+
             $this->printer->write("\n");
         }
 
