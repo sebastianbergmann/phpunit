@@ -155,9 +155,9 @@ class PHPUnit_TextUI_Command
         }
 
         if (extension_loaded('pdo')) {
-            $longOptions[] = 'log-pdo-dsn=';
-            $longOptions[] = 'log-pdo-rev=';
-            $longOptions[] = 'log-pdo-info=';
+            $longOptions[] = 'test-db-dsn=';
+            $longOptions[] = 'test-db-log-rev=';
+            $longOptions[] = 'test-db-log-info=';
         }
 
         if (extension_loaded('xdebug')) {
@@ -248,18 +248,18 @@ class PHPUnit_TextUI_Command
                 }
                 break;
 
-                case '--log-pdo-dsn': {
-                    $arguments['pdoDSN'] = $option[1];
+                case '--test-db-dsn': {
+                    $arguments['testDatabaseDSN'] = $option[1];
                 }
                 break;
 
-                case '--log-pdo-rev': {
-                    $arguments['pdoRevision'] = $option[1];
+                case '--test-db-log-rev': {
+                    $arguments['testDatabaseLogRevision'] = $option[1];
                 }
                 break;
 
-                case '--log-pdo-info': {
-                    $arguments['pdoInfo'] = $option[1];
+                case '--test-db-log-info': {
+                    $arguments['testDatabaseLogInfo'] = $option[1];
                 }
                 break;
 
@@ -312,7 +312,7 @@ class PHPUnit_TextUI_Command
         }
 
         if (!isset($arguments['test']) ||
-            (isset($arguments['pdoDSN']) XOR isset($arguments['pdoRevision']))) {
+            (isset($arguments['testDatabaseLogRevision']) && !isset($arguments['testDatabaseDSN']))) {
             self::showHelp();
             exit(PHPUnit_TextUI_TestRunner::SUCCESS_EXIT);
         }
@@ -407,19 +407,18 @@ class PHPUnit_TextUI_Command
             print "  --log-graphviz <file>  Log test execution in GraphViz markup.\n";
         }
 
-        print "  --log-json <file>      Log test execution in JSON format.\n";
-
-        if (extension_loaded('pdo')) {
-            print "  --log-pdo-dsn <dsn>    Log test execution to a database.\n" .
-                  "    --log-pdo-rev <rev>  Revision information for database logging.\n" .
-                  "    --log-pdo-info ...   Additional information for database logging.\n";
-        }
-
-        print "  --log-tap <file>       Log test execution in TAP format to file.\n" .
+        print "  --log-json <file>      Log test execution in JSON format.\n" .
+              "  --log-tap <file>       Log test execution in TAP format to file.\n" .
               "  --log-xml <file>       Log test execution in XML format to file.\n\n";
 
         if (extension_loaded('xdebug')) {
-            print "  --report <dir>         Generate combined test/coverage report in HTML format.\n";
+            print "  --report <dir>         Generate combined test/coverage report in HTML format.\n\n";
+        }
+
+        if (extension_loaded('pdo')) {
+            print "  --test-db-dsn <dsn>    DSN for the test database.\n" .
+                  "  --test-db-log-rev <r>  Revision information for database logging.\n" .
+                  "  --test-db-log-info ... Additional information for database logging.\n\n";
         }
 
         print "  --testdox-html <file>  Write agile documentation in HTML format to file.\n" .
