@@ -64,12 +64,10 @@ CREATE TABLE IF NOT EXISTS test(
 ) ENGINE=InnoDB;
 
 CREATE TABLE IF NOT EXISTS code_file(
-  run_id         INTEGER UNSIGNED NOT NULL REFERENCES run.run_id,
   code_file_id   INTEGER UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
   code_file_name CHAR(255),
   code_file_md5  CHAR(32),
-
-  INDEX (run_id)
+  revision       INTEGER UNSIGNED NOT NULL
 ) ENGINE=InnoDB;
 
 CREATE TABLE IF NOT EXISTS code_class(
@@ -98,7 +96,6 @@ CREATE TABLE IF NOT EXISTS code_line(
   code_line_id      INTEGER UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
   code_line_number  INTEGER UNSIGNED NOT NULL,
   code_line         TEXT,
-  code_line_covered TINYINT UNSIGNED NOT NULL,
 
   INDEX (code_file_id),
   INDEX (code_method_id)

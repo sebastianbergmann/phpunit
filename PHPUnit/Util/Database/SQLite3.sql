@@ -64,13 +64,11 @@ CREATE INDEX IF NOT EXISTS test_node_left      ON test (node_left);
 CREATE INDEX IF NOT EXISTS test_node_right     ON test (node_right);
 
 CREATE TABLE IF NOT EXISTS code_file(
-  run_id         INTEGER,
   code_file_id   INTEGER PRIMARY KEY AUTOINCREMENT,
   code_file_name TEXT,
-  code_file_md5  TEXT
+  code_file_md5  TEXT,
+  revision       INTEGER
 );
-
-CREATE INDEX IF NOT EXISTS code_file_run_id ON code_file (run_id);
 
 CREATE TABLE IF NOT EXISTS code_class(
   code_file_id          INTEGER,
@@ -97,8 +95,7 @@ CREATE TABLE IF NOT EXISTS code_line(
   code_method_id    INTEGER,
   code_line_id      INTEGER PRIMARY KEY AUTOINCREMENT,
   code_line_number  INTEGER,
-  code_line         TEXT,
-  code_line_covered INTEGER
+  code_line         TEXT
 );
 
 CREATE INDEX IF NOT EXISTS code_line_code_file_id ON code_line (code_file_id);

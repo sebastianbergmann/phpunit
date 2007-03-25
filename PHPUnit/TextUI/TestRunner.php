@@ -287,7 +287,9 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
             $this->printer->write("\nStoring code coverage data in database, this may take a moment.");
 
             $testDb = new PHPUnit_Util_Database($dbh);
-            $testDb->storeCodeCoverage($result, $dbListener->getRunId());
+            $testDb->storeCodeCoverage(
+              $result, $parameters['testDatabaseLogRevision']
+            );
 
             $this->printer->write("\n");
         }
