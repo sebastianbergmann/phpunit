@@ -88,10 +88,10 @@ class PHPUnit_Util_Database
      * Stores code coverage information.
      *
      * @param  PHPUnit_Framework_TestResult $result
-     * @param  integer                      $runId
+     * @param  integer                      $revision
      * @access public
      */
-    public function storeCodeCoverage(PHPUnit_Framework_TestResult $result, $runId)
+    public function storeCodeCoverage(PHPUnit_Framework_TestResult $result, $revision)
     {
         if (defined('PHPUnit_INSIDE_OWN_TESTSUITE')) {
             $filterPHPUnit = FALSE;
@@ -105,152 +105,186 @@ class PHPUnit_Util_Database
         $files        = array_keys($summary);
         $commonPath   = PHPUnit_Util_Filesystem::getCommonPath($files);
 
+        $this->dbh->beginTransaction();
+
         foreach ($files as $file) {
-            $this->dbh->beginTransaction();
+            $filename = str_replace($commonPath, '', $file);
+            $fileId   = FALSE;
+            $lines    = file($file);
+            $numLines = count($lines);
 
-            $this->dbh->exec(
+            $stmt = $this->dbh->query(
               sprintf(
-                'INSERT INTO code_file
-                             (run_id, code_file_name, code_file_md5)
-                       VALUES(%d, "%s", "%s");',
+                'SELECT code_file_id
+                   FROM code_file
+                  WHERE code_file_name = "%s"
+                    AND revision       = %d;',
 
-                $runId,
-                str_replace($commonPath, '', $file),
-                md5_file($file)
+                $filename,
+                $revision
               )
             );
 
-            $fileId    = $this->dbh->lastInsertId();
-            $classes   = PHPUnit_Util_Class::getClassesInFile($file, $commonPath);
-            $methodMap = array();
+            if ($stmt) {
+                $fileId = (int)$stmt->fetchColumn();
+            }
 
-            foreach ($classes as $class) {
+            unset($stmt);
+
+            if ($fileId == 0) {
                 $this->dbh->exec(
                   sprintf(
-                    'INSERT INTO code_class
-                                 (code_file_id, code_class_name,
-                                  code_class_start_line, code_class_end_line)
-                           VALUES(%d, "%s", %d, %d);',
+                    'INSERT INTO code_file
+                                 (code_file_name, code_file_md5, revision)
+                           VALUES("%s", "%s", %d);',
 
-                    $fileId,
-                    $class->getName(),
-                    $class->getStartLine(),
-                    $class->getEndLine()
+                    $filename,
+                    md5_file($file),
+                    $revision
                   )
                 );
 
-                $classId = $this->dbh->lastInsertId();
+                $fileId    = $this->dbh->lastInsertId();
+                $classes   = PHPUnit_Util_Class::getClassesInFile($file, $commonPath);
+                $methodMap = array();
 
-                foreach ($class->getMethods() as $method) {
-                    if ($class->getName() != $method->getDeclaringClass()->getName()) {
-                        continue;
-                    }
-
-                    $startLine = $method->getStartLine();
-                    $endLine   = $method->getEndLine();
-
+                foreach ($classes as $class) {
                     $this->dbh->exec(
                       sprintf(
-                        'INSERT INTO code_method
-                                     (code_class_id, code_method_name,
-                                      code_method_start_line, code_method_end_line)
+                        'INSERT INTO code_class
+                                     (code_file_id, code_class_name,
+                                      code_class_start_line, code_class_end_line)
                                VALUES(%d, "%s", %d, %d);',
 
-                        $classId,
-                        $method->getName(),
-                        $startLine,
-                        $endLine
+                        $fileId,
+                        $class->getName(),
+                        $class->getStartLine(),
+                        $class->getEndLine()
                       )
                     );
 
-                    $methodId = $this->dbh->lastInsertId();
+                    $classId = $this->dbh->lastInsertId();
 
-                    for ($i = $startLine; $i <= $endLine; $i++) {
-                        $methodMap[$i] = $methodId;
-                    }
-                }
-            }
+                    foreach ($class->getMethods() as $method) {
+                        if ($class->getName() != $method->getDeclaringClass()->getName()) {
+                            continue;
+                        }
 
-            $i      = 1;
-            $lines  = file($file);
+                        $startLine = $method->getStartLine();
+                        $endLine   = $method->getEndLine();
 
-            foreach ($lines as $line) {
-                $covered = isset($summary[$file][$i]) ? $summary[$file][$i] : 0;
+                        $this->dbh->exec(
+                          sprintf(
+                            'INSERT INTO code_method
+                                         (code_class_id, code_method_name,
+                                          code_method_start_line, code_method_end_line)
+                                   VALUES(%d, "%s", %d, %d);',
 
-                $this->dbh->exec(
-                  sprintf(
-                    'INSERT INTO code_line
-                                 (code_file_id, code_method_id, code_line_number,
-                                  code_line, code_line_covered)
-                           VALUES(%d, %d, %d, "%s", %d);',
+                            $classId,
+                            $method->getName(),
+                            $startLine,
+                            $endLine
+                          )
+                        );
 
-                    $fileId,
-                    isset($methodMap[$i]) ? $methodMap[$i] : 0,
-                    $i,
-                    trim($line),
-                    $covered
-                  )
-                );
+                        $methodId = $this->dbh->lastInsertId();
 
-                if ($covered > 0) {
-                    $lineId = $this->dbh->lastInsertId();
-
-                    $coveringTests = PHPUnit_Util_CodeCoverage::getCoveringTests(
-                      $codeCoverage, $file, $i
-                    );
-
-                    if (is_array($coveringTests)) {
-                        foreach ($coveringTests as $test) {
-                            $this->dbh->exec(
-                              sprintf(
-                                'INSERT INTO code_coverage
-                                             (test_id, code_line_id)
-                                       VALUES(%d, %d);',
-
-                                $test->__db_id,
-                                $lineId
-                              )
-                            );
+                        for ($i = $startLine; $i <= $endLine; $i++) {
+                            $methodMap[$i] = $methodId;
                         }
                     }
                 }
 
-                $i++;
-            }
+                $i = 1;
 
-            foreach ($result->topTestSuite() as $test) {
-                if ($test instanceof PHPUnit_Framework_TestCase) {
-                    $stmt = $this->dbh->query(
-                      sprintf(
-                        'SELECT code_method.code_method_id
-                           FROM code_class, code_method
-                          WHERE code_class.code_class_id     = code_method.code_class_id
-                            AND code_class.code_class_name   = "%s"
-                            AND code_method.code_method_name = "%s";',
-
-                        get_class($test),
-                        $test->getName()
-                      )
-                    );
-
-                    $methodId = (int)$stmt->fetchColumn();
-                    unset($stmt);
-
+                foreach ($lines as $line) {
                     $this->dbh->exec(
                       sprintf(
-                        'UPDATE test
-                            SET code_method_id = %d
-                          WHERE test_id = %d;',
+                        'INSERT INTO code_line
+                                     (code_file_id, code_method_id,
+                                      code_line_number, code_line)
+                               VALUES(%d, %d, %d, "%s");',
 
-                        $methodId,
-                        $test->__db_id
+                        $fileId,
+                        isset($methodMap[$i]) ? $methodMap[$i] : 0,
+                        $i,
+                        trim($line)
                       )
                     );
+
+                    $i++;
                 }
             }
 
-            $this->dbh->commit();
+            for ($lineNumber = 1; $lineNumber <= $numLines; $lineNumber++) {
+                $coveringTests = PHPUnit_Util_CodeCoverage::getCoveringTests(
+                  $codeCoverage, $file, $lineNumber
+                );
+
+                if (is_array($coveringTests)) {
+                    $stmt = $this->dbh->query(
+                      sprintf(
+                        'SELECT code_line_id
+                           FROM code_line
+                          WHERE code_file_id     = %d
+                            AND code_line_number = %d;',
+
+                        $fileId,
+                        $lineNumber
+                      )
+                    );
+
+                    $codeLineId = (int)$stmt->fetchColumn();
+                    unset($stmt);
+
+                    foreach ($coveringTests as $test) {
+                        $this->dbh->exec(
+                          sprintf(
+                            'INSERT INTO code_coverage
+                                         (test_id, code_line_id)
+                                   VALUES(%d, %d);',
+
+                            $test->__db_id,
+                            $codeLineId
+                          )
+                        );
+                    }
+                }
+            }
         }
+
+        foreach ($result->topTestSuite() as $test) {
+            if ($test instanceof PHPUnit_Framework_TestCase) {
+                $stmt = $this->dbh->query(
+                  sprintf(
+                    'SELECT code_method.code_method_id
+                       FROM code_class, code_method
+                      WHERE code_class.code_class_id     = code_method.code_class_id
+                        AND code_class.code_class_name   = "%s"
+                        AND code_method.code_method_name = "%s";',
+
+                    get_class($test),
+                    $test->getName()
+                  )
+                );
+
+                $methodId = (int)$stmt->fetchColumn();
+                unset($stmt);
+
+                $this->dbh->exec(
+                  sprintf(
+                    'UPDATE test
+                        SET code_method_id = %d
+                      WHERE test_id = %d;',
+
+                    $methodId,
+                    $test->__db_id
+                  )
+                );
+            }
+        }
+
+        $this->dbh->commit();
     }
 }
 ?>
