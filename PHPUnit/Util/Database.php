@@ -202,13 +202,15 @@ class PHPUnit_Util_Database
                       sprintf(
                         'INSERT INTO code_line
                                      (code_file_id, code_method_id,
-                                      code_line_number, code_line)
-                               VALUES(%d, %d, %d, "%s");',
+                                      code_line_number, code_line,
+                                      code_line_covered)
+                               VALUES(%d, %d, %d, "%s", %d);',
 
                         $fileId,
                         isset($methodMap[$i]) ? $methodMap[$i] : 0,
                         $i,
-                        trim($line)
+                        trim($line),
+                        isset($summary[$file][$i]) ? $summary[$file][$i] : 0
                       )
                     );
 
@@ -224,7 +226,7 @@ class PHPUnit_Util_Database
                 if (is_array($coveringTests)) {
                     $stmt = $this->dbh->query(
                       sprintf(
-                        'SELECT code_line_id
+                        'SELECT code_line_id, code_line_covered
                            FROM code_line
                           WHERE code_file_id     = %d
                             AND code_line_number = %d;',
@@ -234,8 +236,25 @@ class PHPUnit_Util_Database
                       )
                     );
 
-                    $codeLineId = (int)$stmt->fetchColumn();
+                    $codeLineId      = (int)$stmt->fetchColumn(0);
+                    $oldCoverageFlag = (int)$stmt->fetchColumn(1);
                     unset($stmt);
+
+                    $newCoverageFlag = $summary[$file][$lineNumber];
+
+                    if (($oldCoverageFlag == 0 && $newCoverageFlag != 0) ||
+                        ($oldCoverageFlag <  0 && $newCoverageFlag >  0)) {
+                        $this->dbh->exec(
+                          sprintf(
+                            'UPDATE code_line
+                                SET code_line_covered = %d
+                              WHERE code_line_id      = %d;',
+
+                            $newCoverageFlag,
+                            $codeLineId
+                          )
+                        );
+                    }
 
                     foreach ($coveringTests as $test) {
                         $this->dbh->exec(
