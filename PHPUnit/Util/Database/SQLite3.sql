@@ -95,7 +95,8 @@ CREATE TABLE IF NOT EXISTS code_line(
   code_method_id    INTEGER,
   code_line_id      INTEGER PRIMARY KEY AUTOINCREMENT,
   code_line_number  INTEGER,
-  code_line         TEXT
+  code_line         TEXT,
+  code_line_covered INTEGER
 );
 
 CREATE INDEX IF NOT EXISTS code_line_code_file_id ON code_line (code_file_id);
