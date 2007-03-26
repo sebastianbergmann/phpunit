@@ -45,6 +45,7 @@
  */
 
 require_once 'PHPUnit/Framework.php';
+require_once 'PHPUnit/Util/Log/Database.php';
 require_once 'PHPUnit/Util/Filter.php';
 
 PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
@@ -154,11 +155,11 @@ abstract class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_Tes
         );
 
         if ($this->runId === NULL) {
-            $pdoListener = PHPUnit_Util_Log_PDO::getInstance();
+            $dbListener = PHPUnit_Util_Log_Database::getInstance();
 
-            if ($pdoListener !== FALSE) {
-                $this->runId  = $pdoListener->getRunId();
-                $this->testId = $pdoListener->getCurrentTestId();
+            if ($dbListener !== FALSE) {
+                $this->runId  = $dbListener->getRunId();
+                $this->testId = $dbListener->getCurrentTestId();
             } else {
                 $this->runId  = FALSE;
                 $this->testId = FALSE;
