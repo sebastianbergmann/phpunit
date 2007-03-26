@@ -93,7 +93,7 @@ class PHPUnit_Framework_MockObject_Mock
     public $className;
     public $methods;
 
-    public function __construct($className, array $methods = array(), $mockClassName = '', $callOriginalConstructor = TRUE, $callOriginalClone = TRUE, $callAutoload = FALSE)
+    public function __construct($className, array $methods = array(), $mockClassName = '', $callOriginalConstructor = TRUE, $callOriginalClone = TRUE, $callAutoload = TRUE)
     {
         if ($mockClassName === '') {
             do {
@@ -122,7 +122,7 @@ class PHPUnit_Framework_MockObject_Mock
         $this->callOriginalClone       = $callOriginalClone;
     }
 
-    public static function generate($className, array $methods = array(), $mockClassName = '', $callOriginalConstructor = TRUE, $callOriginalClone = TRUE, $callAutoload = FALSE)
+    public static function generate($className, array $methods = array(), $mockClassName = '', $callOriginalConstructor = TRUE, $callOriginalClone = TRUE, $callAutoload = TRUE)
     {
         $mock = new PHPUnit_Framework_MockObject_Mock(
           $className,
