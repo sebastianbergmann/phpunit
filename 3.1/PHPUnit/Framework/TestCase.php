@@ -389,11 +389,12 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
      * @param  string  $mockClassName
      * @param  boolean $callOriginalConstructor
      * @param  boolean $callOriginalClone
+     * @param  boolean $callAutoload
      * @return object
      * @access protected
      * @since  Method available since Release 3.0.0
      */
-    protected function getMock($className, array $methods = array(), array $arguments = array(), $mockClassName = '', $callOriginalConstructor = TRUE, $callOriginalClone = TRUE)
+    protected function getMock($className, array $methods = array(), array $arguments = array(), $mockClassName = '', $callOriginalConstructor = TRUE, $callOriginalClone = TRUE, $callAutoload = FALSE)
     {
         if (!is_string($className) || !is_string($mockClassName)) {
             throw new InvalidArgumentException;
@@ -404,7 +405,8 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
           $methods,
           $mockClassName,
           $callOriginalConstructor,
-          $callOriginalClone
+          $callOriginalClone,
+          $callAutoload
         );
 
         $mockClass  = new ReflectionClass($mock->mockClassName);
