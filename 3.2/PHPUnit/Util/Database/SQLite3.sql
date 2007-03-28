@@ -92,7 +92,6 @@ CREATE INDEX IF NOT EXISTS code_class_id ON code_method (code_class_id);
 
 CREATE TABLE IF NOT EXISTS code_line(
   code_file_id      INTEGER,
-  code_method_id    INTEGER,
   code_line_id      INTEGER PRIMARY KEY AUTOINCREMENT,
   code_line_number  INTEGER,
   code_line         TEXT,
@@ -100,7 +99,6 @@ CREATE TABLE IF NOT EXISTS code_line(
 );
 
 CREATE INDEX IF NOT EXISTS code_line_code_file_id ON code_line (code_file_id);
-CREATE INDEX IF NOT EXISTS code_line_code_method_id ON code_line (code_method_id);
 
 CREATE TABLE IF NOT EXISTS code_coverage(
   test_id      INTEGER,
