@@ -146,7 +146,6 @@ class PHPUnit_Util_Database
 
                 $fileId    = $this->dbh->lastInsertId();
                 $classes   = PHPUnit_Util_Class::getClassesInFile($file, $commonPath);
-                $methodMap = array();
 
                 foreach ($classes as $class) {
                     $this->dbh->exec(
@@ -170,9 +169,6 @@ class PHPUnit_Util_Database
                             continue;
                         }
 
-                        $startLine = $method->getStartLine();
-                        $endLine   = $method->getEndLine();
-
                         $this->dbh->exec(
                           sprintf(
                             'INSERT INTO code_method
@@ -182,16 +178,10 @@ class PHPUnit_Util_Database
 
                             $classId,
                             $method->getName(),
-                            $startLine,
-                            $endLine
+                            $method->getStartLine(),
+                            $method->getEndLine()
                           )
                         );
-
-                        $methodId = $this->dbh->lastInsertId();
-
-                        for ($i = $startLine; $i <= $endLine; $i++) {
-                            $methodMap[$i] = $methodId;
-                        }
                     }
                 }
 
@@ -201,13 +191,11 @@ class PHPUnit_Util_Database
                     $this->dbh->exec(
                       sprintf(
                         'INSERT INTO code_line
-                                     (code_file_id, code_method_id,
-                                      code_line_number, code_line,
+                                     (code_file_id, code_line_number, code_line,
                                       code_line_covered)
-                               VALUES(%d, %d, %d, "%s", %d);',
+                               VALUES(%d, %d, "%s", %d);',
 
                         $fileId,
-                        isset($methodMap[$i]) ? $methodMap[$i] : 0,
                         $i,
                         trim($line),
                         isset($summary[$file][$i]) ? $summary[$file][$i] : 0

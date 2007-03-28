@@ -92,14 +92,12 @@ CREATE TABLE IF NOT EXISTS code_method(
 
 CREATE TABLE IF NOT EXISTS code_line(
   code_file_id      INTEGER UNSIGNED NOT NULL REFERENCES code_file.code_file_id,
-  code_method_id    INTEGER UNSIGNED NOT NULL REFERENCES code_method.code_method_id,
   code_line_id      INTEGER UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
   code_line_number  INTEGER UNSIGNED NOT NULL,
   code_line         TEXT,
   code_line_covered TINYINT UNSIGNED NOT NULL,
 
-  INDEX (code_file_id),
-  INDEX (code_method_id)
+  INDEX (code_file_id)
 ) ENGINE=InnoDB;
 
 CREATE TABLE IF NOT EXISTS code_coverage(
