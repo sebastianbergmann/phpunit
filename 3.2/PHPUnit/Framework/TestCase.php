@@ -50,6 +50,7 @@ require_once 'PHPUnit/Framework/MockObject/Matcher/InvokedAtLeastOnce.php';
 require_once 'PHPUnit/Framework/MockObject/Matcher/InvokedAtIndex.php';
 require_once 'PHPUnit/Framework/MockObject/Matcher/InvokedCount.php';
 require_once 'PHPUnit/Framework/MockObject/Stub.php';
+require_once 'PHPUnit/Runner/BaseTestRunner.php';
 require_once 'PHPUnit/Util/Filter.php';
 
 PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
@@ -141,10 +142,10 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
     private $name = NULL;
 
     /*
-     * @var    boolean
+     * @var    Exception
      * @access private
      */
-    private $failed = FALSE;
+    private $exception = NULL;
 
     /**
      * @var    Array
@@ -212,6 +213,33 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
     }
 
     /**
+     * Returns the status of this test.
+     *
+     * @return integer
+     * @since  Method available since Release 3.1.0
+     */
+    public function getStatus()
+    {
+        if ($this->exception === NULL) {
+            return PHPUnit_Runner_BaseTestRunner::STATUS_PASSED;
+        }
+
+        if ($this->exception instanceof PHPUnit_Framework_IncompleteTest) {
+            return PHPUnit_Runner_BaseTestRunner::STATUS_INCOMPLETE;
+        }
+
+        if ($this->exception instanceof PHPUnit_Framework_SkippedTest) {
+            return PHPUnit_Runner_BaseTestRunner::STATUS_SKIPPED;
+        }
+
+        if ($this->exception instanceof PHPUnit_Framework_AssertionFailedError) {
+            return PHPUnit_Runner_BaseTestRunner::STATUS_FAILURE;
+        }
+
+        return PHPUnit_Runner_BaseTestRunner::STATUS_ERROR;
+    }
+
+    /**
      * Returns whether or not this test has failed.
      *
      * @return boolean
@@ -219,7 +247,10 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
      */
     public function hasFailed()
     {
-        return $this->failed;
+        $status = $this->getStatus();
+
+        return $status == PHPUnit_Runner_BaseTestRunner::STATUS_FAILURE ||
+               $status == PHPUnit_Runner_BaseTestRunner::STATUS_ERROR;
     }
 
     /**
@@ -249,9 +280,6 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
      */
     public function runBare()
     {
-        // Workaround for missing "finally".
-        $catchedException = NULL;
-
         // Backup the $GLOBALS array.
         if ($this->backupGlobals === TRUE) {
             $globalsBackup = $GLOBALS;
@@ -276,11 +304,7 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
         }
 
         catch (Exception $e) {
-            $catchedException = $e;
-        }
-
-        if ($catchedException !== NULL) {
-            $this->failed = TRUE;
+            $this->exception = $e;
         }
 
         // Tear down the fixture.
@@ -299,8 +323,8 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
         $this->iniSettings = array();
 
         // Workaround for missing "finally".
-        if ($catchedException !== NULL) {
-            throw $catchedException;
+        if ($this->exception !== NULL) {
+            throw $this->exception;
         }
     }
 
