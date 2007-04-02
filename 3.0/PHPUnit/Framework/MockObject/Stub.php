@@ -81,6 +81,7 @@ interface PHPUnit_Framework_MockObject_Stub extends PHPUnit_Framework_SelfDescri
     public function invoke(PHPUnit_Framework_MockObject_Invocation $invocation);
 }
 
+require_once 'PHPUnit/Framework/MockObject/Stub/ConsecutiveCalls.php';
 require_once 'PHPUnit/Framework/MockObject/Stub/MatcherCollection.php';
 require_once 'PHPUnit/Framework/MockObject/Stub/Return.php';
 ?>
