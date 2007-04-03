@@ -41,7 +41,7 @@
  * @author     Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @copyright  2002-2005 Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @version    SVN: $Id$
- * @version    CVS: $Id$
+ * @version    SVN: $Id$
  * @link       http://pear.php.net/package/PHPUnit
  * @since      File available since Release 1.0.0
  */
