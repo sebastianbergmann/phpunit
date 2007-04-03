@@ -82,7 +82,7 @@ class PHPUnit_Framework_Constraint_Attribute extends PHPUnit_Framework_Constrain
      */
     public function evaluate($other)
     {
-        $this->constraint->evaluate(
+        return $this->constraint->evaluate(
           PHPUnit_Framework_Assert::getAttribute(
             $other, $this->attributeName
           )
