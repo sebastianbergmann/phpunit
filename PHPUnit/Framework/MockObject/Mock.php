@@ -94,6 +94,7 @@ class PHPUnit_Framework_MockObject_Mock
     public $methods;
     private $callOriginalConstructor;
     private $callOriginalClone;
+    private $callAutoload;
 
     public function __construct($className, array $methods = array(), $mockClassName = '', $callOriginalConstructor = TRUE, $callOriginalClone = TRUE, $callAutoload = TRUE)
     {
@@ -122,6 +123,7 @@ class PHPUnit_Framework_MockObject_Mock
         $this->methods                 = $methods;
         $this->callOriginalConstructor = $callOriginalConstructor;
         $this->callOriginalClone       = $callOriginalClone;
+        $this->callAutoload            = $callAutoload;
     }
 
     public static function generate($className, array $methods = array(), $mockClassName = '', $callOriginalConstructor = TRUE, $callOriginalClone = TRUE, $callAutoload = TRUE)
@@ -142,7 +144,7 @@ class PHPUnit_Framework_MockObject_Mock
 
     protected function generateClass()
     {
-        if (!class_exists($this->className, FALSE) && !interface_exists($this->className, FALSE)) {
+        if (!class_exists($this->className, $this->callAutoload) && !interface_exists($this->className, $this->callAutoload)) {
             eval('class ' . $this->className . ' {}');
         }
 
