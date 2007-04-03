@@ -92,6 +92,8 @@ class PHPUnit_Framework_MockObject_Mock
     public $mockClassName;
     public $className;
     public $methods;
+    private $callOriginalConstructor;
+    private $callOriginalClone;
 
     public function __construct($className, array $methods = array(), $mockClassName = '', $callOriginalConstructor = TRUE, $callOriginalClone = TRUE, $callAutoload = TRUE)
     {
