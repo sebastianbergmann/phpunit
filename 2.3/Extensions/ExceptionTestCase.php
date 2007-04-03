@@ -41,7 +41,7 @@
  * @author     Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @copyright  2002-2006 Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
- * @version    CVS: $Id: ExceptionTestCase.php,v 1.15.2.6 2006/02/20 07:42:59 sebastian Exp $
+ * @version    SVN: $Id$
  * @link       http://pear.php.net/package/PHPUnit2
  * @since      File available since Release 2.0.0
  */
