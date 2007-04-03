@@ -1241,13 +1241,13 @@ class PHPUnit_Framework_Assert
 
         self::assertObjectHasAttribute($attributeName, $object);
 
-        if (isset($object->$attributeName)) {
+        if (property_exists($object, $attributeName)) {
             return $object->$attributeName;
         } else {
             $array         = (array) $object;
             $protectedName = "\0*\0" . $attributeName;
 
-            if (isset($array[$protectedName])) {
+            if (array_key_exists($protectedName, $array)) {
                 return $array[$protectedName];
             } else {
                 $classes = PHPUnit_Util_Class::getHierarchy(get_class($object));
@@ -1260,7 +1260,7 @@ class PHPUnit_Framework_Assert
                       $attributeName
                     );
 
-                    if (isset($array[$privateName])) {
+                    if (array_key_exists($privateName, $array)) {
                         return $array[$privateName];
                     }
                 }
