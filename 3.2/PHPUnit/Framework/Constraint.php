@@ -50,7 +50,7 @@ require_once 'PHPUnit/Util/Filter.php';
 
 PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
 
-if (!interface_exists('PHPUnit_Framework_Constraint', FALSE)) {
+if (!class_exists('PHPUnit_Framework_Constraint', FALSE)) {
 
 /**
  * Abstract base class for constraints. which are placed upon any value.
