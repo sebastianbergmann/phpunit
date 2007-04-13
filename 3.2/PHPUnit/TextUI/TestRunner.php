@@ -233,6 +233,10 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
               new PHPUnit_Util_Log_XML($parameters['reportDirectory'] . '/logfile.xml')
             );
 
+            $result->addListener(
+              new PHPUnit_Util_Log_TAP($parameters['reportDirectory'] . '/logfile.tap')
+            );
+
             $result->collectCodeCoverageInformation(TRUE);
         }
 
