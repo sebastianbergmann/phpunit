@@ -116,16 +116,6 @@ if (!class_exists('PHPUnit_Framework_TestCase', FALSE)) {
 abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert implements PHPUnit_Framework_Test, PHPUnit_Framework_SelfDescribing
 {
     /**
-     * Enable or disable the backup and restoration of the $GLOBALS array.
-     * Overwrite this attribute in a child class of TestCase.
-     * Setting this attribute in setUp() has no effect!
-     *
-     * @var    boolean
-     * @access protected
-     */
-    protected $backupGlobals = TRUE;
-
-    /**
      * Fixture that is shared between the tests of a test suite.
      *
      * @var    mixed
@@ -280,11 +270,6 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
      */
     public function runBare()
     {
-        // Backup the $GLOBALS array.
-        if ($this->backupGlobals === TRUE) {
-            $globalsBackup = $GLOBALS;
-        }
-
         // Set up the fixture.
         $this->setUp();
 
@@ -309,11 +294,6 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
 
         // Tear down the fixture.
         $this->tearDown();
-
-        // Restore the $GLOBALS array.
-        if ($this->backupGlobals === TRUE) {
-            $GLOBALS = $globalsBackup;
-        }
 
         // Clean up INI settings.
         foreach ($this->iniSettings as $varName => $oldValue) {
