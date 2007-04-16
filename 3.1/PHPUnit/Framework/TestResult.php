@@ -70,14 +70,6 @@ if (!class_exists('PHPUnit_Framework_TestResult', FALSE)) {
 class PHPUnit_Framework_TestResult implements Countable
 {
     /**
-     * Enable or disable the backup and restoration of the $GLOBALS array.
-     *
-     * @var    boolean
-     * @access protected
-     */
-    protected $backupGlobals = TRUE;
-
-    /**
      * @var    array
      * @access protected
      */
@@ -445,23 +437,6 @@ class PHPUnit_Framework_TestResult implements Countable
     }
 
     /**
-     * Enables or disables the backup and restoration of the $GLOBALS array.
-     *
-     * @param  boolean $flag
-     * @throws InvalidArgumentException
-     * @access public
-     * @since  Method available since Release 3.1.0
-     */
-    public function backupGlobals($flag)
-    {
-        if (is_bool($flag)) {
-            $this->backupGlobals = $flag;
-        } else {
-            throw new InvalidArgumentException;
-        }
-    }
-
-    /**
      * Enables or disables the collection of Code Coverage information.
      *
      * @param  boolean $flag
@@ -540,11 +515,6 @@ class PHPUnit_Framework_TestResult implements Countable
             restore_error_handler();
         }
 
-        // Backup the $GLOBALS array.
-        if ($this->backupGlobals === TRUE) {
-            $globalsBackup = $GLOBALS;
-        }
-
         $xdebugLoaded  = extension_loaded('xdebug');
         $xdebugEnabled = $xdebugLoaded && xdebug_is_enabled();
 
@@ -589,11 +559,6 @@ class PHPUnit_Framework_TestResult implements Countable
 
         if ($xdebugEnabled) {
             xdebug_enable();
-        }
-
-        // Restore the $GLOBALS array.
-        if ($this->backupGlobals === TRUE) {
-            $GLOBALS = $globalsBackup;
         }
 
         if ($errorHandlerSet === TRUE) {
