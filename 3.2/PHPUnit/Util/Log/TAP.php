@@ -130,7 +130,7 @@ class PHPUnit_Util_Log_TAP extends PHPUnit_Util_Printer implements PHPUnit_Frame
     {
         $this->write(
           sprintf(
-            "ok %s - # SKIP%s\n",
+            "ok %d - # SKIP%s\n",
 
             $this->testNumber,
             $e->getMessage() != '' ? ' ' . $e->getMessage() : ''
@@ -149,7 +149,7 @@ class PHPUnit_Util_Log_TAP extends PHPUnit_Util_Printer implements PHPUnit_Frame
         if ($this->testNumber == 0) {
             $this->write(
               sprintf(
-                "1..%s\n",
+                "1..%d\n",
 
                 count($suite)
               )
@@ -206,7 +206,7 @@ class PHPUnit_Util_Log_TAP extends PHPUnit_Util_Printer implements PHPUnit_Frame
         if ($this->testSuccessful === TRUE) {
             $this->write(
               sprintf(
-                "ok %s - %s\n",
+                "ok %d - %s\n",
 
                 $this->testNumber,
                 PHPUnit_Util_Test::describe($test)
@@ -225,7 +225,7 @@ class PHPUnit_Util_Log_TAP extends PHPUnit_Util_Printer implements PHPUnit_Frame
     {
         $this->write(
           sprintf(
-            "not ok %s - %s%s%s\n",
+            "not ok %d - %s%s%s\n",
 
             $this->testNumber,
             $prefix != '' ? $prefix . ': ' : '',
