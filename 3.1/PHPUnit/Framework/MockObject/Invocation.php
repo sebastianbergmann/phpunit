@@ -87,7 +87,7 @@ class PHPUnit_Framework_MockObject_Invocation implements PHPUnit_Framework_SelfD
 
         foreach ($this->parameters as $key => $value) {
             if (is_object($value)) {
-                $this->parameters[$key] = clone $value;
+                $this->parameters[$key] = $this->cloneObject($value);
             }
         }
     }
@@ -110,6 +110,29 @@ class PHPUnit_Framework_MockObject_Invocation implements PHPUnit_Framework_SelfD
             )
           )
         );
+    }
+
+    protected function cloneObject($original)
+    {
+        $object = new ReflectionObject($original);
+
+        if ($object->hasMethod('__clone')) {
+            $method = $object->getMethod('__clone');
+
+            if (!$method->isPublic()) {
+                return $original;
+            }
+
+            try {
+                return clone $original;
+            }
+
+            catch (Exception $e) {
+                return $original;
+            }
+        }
+
+        return clone $original;
     }
 }
 ?>
