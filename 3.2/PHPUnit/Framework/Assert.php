@@ -316,6 +316,146 @@ class PHPUnit_Framework_Assert
     }
 
     /**
+     * Asserts that a value is greater than another value.
+     *
+     * @param  mixed   $expected
+     * @param  mixed   $actual
+     * @param  string  $message
+     * @access public
+     * @static
+     * @since  Method available since Release 3.1.0
+     */
+    public static function assertGreaterThan($expected, $actual, $message = '')
+    {
+        self::assertThat($actual, $this->greaterThan($expected), $message);
+    }
+
+    /**
+     * Asserts that an attribute is greater than another value.
+     *
+     * @param  mixed   $expected
+     * @param  string  $actualAttributeName
+     * @param  string  $actualClassOrObject
+     * @param  string  $message
+     * @access public
+     * @static
+     * @since  Method available since Release 3.1.0
+     */
+    public static function assertAttributeGreaterThan($expected, $actualAttributeName, $actualClassOrObject, $message = '')
+    {
+        self::assertGreaterThan(
+          $expected,
+          self::getAttribute($actualClassOrObject, $actualAttributeName),
+          $message
+        );
+    }
+
+    /**
+     * Asserts that a value is greater than or equal to another value.
+     *
+     * @param  mixed   $expected
+     * @param  mixed   $actual
+     * @param  string  $message
+     * @access public
+     * @static
+     * @since  Method available since Release 3.1.0
+     */
+    public static function assertGreaterThanOrEqual($expected, $actual, $message = '')
+    {
+        self::assertThat($actual, $this->greaterThanOrEqual($expected), $message);
+    }
+
+    /**
+     * Asserts that an attribute is greater than or equal to another value.
+     *
+     * @param  mixed   $expected
+     * @param  string  $actualAttributeName
+     * @param  string  $actualClassOrObject
+     * @param  string  $message
+     * @access public
+     * @static
+     * @since  Method available since Release 3.1.0
+     */
+    public static function assertAttributeGreaterThanOrEqual($expected, $actualAttributeName, $actualClassOrObject, $message = '')
+    {
+        self::assertGreaterThanOrEqual(
+          $expected,
+          self::getAttribute($actualClassOrObject, $actualAttributeName),
+          $message
+        );
+    }
+
+    /**
+     * Asserts that a value is smaller than another value.
+     *
+     * @param  mixed   $expected
+     * @param  mixed   $actual
+     * @param  string  $message
+     * @access public
+     * @static
+     * @since  Method available since Release 3.1.0
+     */
+    public static function assertLessThan($expected, $actual, $message = '')
+    {
+        self::assertThat($actual, $this->lessThan($expected), $message);
+    }
+
+    /**
+     * Asserts that an attribute is smaller than another value.
+     *
+     * @param  mixed   $expected
+     * @param  string  $actualAttributeName
+     * @param  string  $actualClassOrObject
+     * @param  string  $message
+     * @access public
+     * @static
+     * @since  Method available since Release 3.1.0
+     */
+    public static function assertAttributeLessThan($expected, $actualAttributeName, $actualClassOrObject, $message = '')
+    {
+        self::assertLessThan(
+          $expected,
+          self::getAttribute($actualClassOrObject, $actualAttributeName),
+          $message
+        );
+    }
+
+    /**
+     * Asserts that a value is smaller than or equal to another value.
+     *
+     * @param  mixed   $expected
+     * @param  mixed   $actual
+     * @param  string  $message
+     * @access public
+     * @static
+     * @since  Method available since Release 3.1.0
+     */
+    public static function assertLessThanOrEqual($expected, $actual, $message = '')
+    {
+        self::assertThat($actual, $this->lessThanOrEqual($expected), $message);
+    }
+
+    /**
+     * Asserts that an attribute is smaller than or equal to another value.
+     *
+     * @param  mixed   $expected
+     * @param  string  $actualAttributeName
+     * @param  string  $actualClassOrObject
+     * @param  string  $message
+     * @access public
+     * @static
+     * @since  Method available since Release 3.1.0
+     */
+    public static function assertAttributeLessThanOrEqual($expected, $actualAttributeName, $actualClassOrObject, $message = '')
+    {
+        self::assertLessThanOrEqual(
+          $expected,
+          self::getAttribute($actualClassOrObject, $actualAttributeName),
+          $message
+        );
+    }
+
+    /**
      * Asserts that a file exists.
      *
      * @param  string $filename
