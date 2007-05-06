@@ -129,7 +129,7 @@ abstract class PHPUnit_Framework_ComparisonFailure extends PHPUnit_Framework_Ass
             return new PHPUnit_Framework_ComparisonFailure_String($expected, $actual, $message);
         }
 
-        elseif (is_bool($expected) || is_int($expected) || is_float($expected)) {
+        elseif (is_null($expected) || is_scalar($expected)) {
             return new PHPUnit_Framework_ComparisonFailure_Scalar($expected, $actual, $message);
         }
 
@@ -156,16 +156,11 @@ abstract class PHPUnit_Framework_ComparisonFailure extends PHPUnit_Framework_Ass
      */
     public static function diffEqual($expected, $actual, $message = '')
     {
-        if (gettype($expected) !== gettype($actual)) {
-            $expected = (string)$expected;
-            $actual = (string)$actual;
-        }
-
         if (is_string($expected)) {
             return new PHPUnit_Framework_ComparisonFailure_String($expected, $actual, $message);
         }
 
-        elseif (is_bool($expected) || is_int($expected) || is_float($expected)) {
+        elseif (is_null($expected) || is_scalar($expected)) {
             return new PHPUnit_Framework_ComparisonFailure_Scalar($expected, $actual, $message);
         }
 
