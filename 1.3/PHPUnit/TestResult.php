@@ -329,6 +329,39 @@ class PHPUnit_TestResult {
     }
 
     /**
+     * Returns a summary of all test executions
+     * 
+     * @param boolean $html return HTML output rather than just text
+     * @return string
+     * @access public
+     */
+    function reportTestSummary($html = false) {
+        $result = "\n";
+        $result .= "TESTS   :  " . $this->runCount() . " test(s) executed.\n";
+        $result .= "ERRORS  :  " . $this->errorCount() . " error(s) occurred.\n";
+        $result .= "FAILURES:  " . $this->failureCount() . " failures occurred.\n";
+        $result .= "\n";
+        if ($html) return "<pre>" . htmlspecialchars($result) . "</pre>";
+        else return $result;
+    }
+
+    /**
+     * Returns a listing of all test failures
+     * 
+     * @param boolean $html return HTML output rather than just text
+     * @return string
+     * @access public
+     */
+    function reportFailureListing($html = false) {
+        $result = "\n";
+        if ($this->failureCount() > 0) {
+            $result .= "FAILURE LISTING:\n" . $this->toString(false);
+        }
+        if ($html) return "<pre>" . htmlspecialchars($result) . "</pre>";
+        else return $result;        
+    }
+
+    /**     
      * Returns whether the entire test was successful or not.
      *
      * @return boolean
