@@ -290,29 +290,35 @@ class PHPUnit_TestResult {
     /**
      * Returns a HTML representation of the test result.
      *
+     * @param boolean $showPasses whether or not to print passing test results
+     *             (defaults to TRUE for backward compatibility)
      * @return string
      * @access public
      */
-    function toHTML() {
-        return '<pre>' . htmlspecialchars($this->toString()) . '</pre>';
+    function toHTML($showPasses = true) {
+        return '<pre>' . htmlspecialchars($this->toString($showPasses)) . '</pre>';
     }
 
     /**
      * Returns a text representation of the test result.
      *
+     * @param boolean $showPasses whether or not to print passing test results
+     *             (defaults to TRUE for backward compatibility)
      * @return string
      * @access public
      */
-    function toString() {
+    function toString($showPasses = true) {
         $result = '';
 
-        foreach ($this->_passedTests as $passedTest) {
-            $result .= sprintf(
-              "TestCase %s->%s() passed\n",
-
-              get_class($passedTest),
-              $passedTest->getName()
-            );
+        if ($showPasses) {
+            foreach ($this->_passedTests as $passedTest) {
+                $result .= sprintf(
+                  "TestCase %s->%s() passed\n",
+    
+                  get_class($passedTest),
+                  $passedTest->getName()
+                );
+            }
         }
 
         foreach ($this->_failures as $failedTest) {
