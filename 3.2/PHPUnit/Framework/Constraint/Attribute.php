@@ -83,7 +83,7 @@ class PHPUnit_Framework_Constraint_Attribute extends PHPUnit_Framework_Constrain
     public function evaluate($other)
     {
         return $this->constraint->evaluate(
-          PHPUnit_Framework_Assert::getAttribute(
+          PHPUnit_Framework_Assert::readAttribute(
             $other, $this->attributeName
           )
         );
@@ -100,7 +100,7 @@ class PHPUnit_Framework_Constraint_Attribute extends PHPUnit_Framework_Constrain
     public function fail($other, $description, $not = FALSE)
     {
         parent::fail(
-          PHPUnit_Framework_Assert::getAttribute(
+          PHPUnit_Framework_Assert::readAttribute(
             $other, $this->attributeName
           ),
           $description,

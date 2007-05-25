@@ -373,6 +373,7 @@ abstract class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_Tes
             break;
 
             case 'getAlert':
+            case 'getAttribute':
             case 'getBodyText':
             case 'getConfirmation':
             case 'getCookie':
@@ -417,19 +418,6 @@ abstract class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_Tes
             }
             break;
         }
-    }
-
-    /**
-     * The Selenium command "getAttribute" clashes with
-     * PHPUnit_Framework_Assert::getAttribute().
-     *
-     * @param  string $attributeLocator
-     * @reutn  string
-     * @access public
-     */
-    public function getElementAttribute($attributeLocator)
-    {
-        return $this->getString('getAttribute', array($attributeLocator));
     }
 
     /**
