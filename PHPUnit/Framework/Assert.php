@@ -164,7 +164,7 @@ class PHPUnit_Framework_Assert
     {
         self::assertContains(
           $needle,
-          self::getAttribute($haystackClassOrObject, $haystackAttributeName),
+          self::readAttribute($haystackClassOrObject, $haystackAttributeName),
           $message
         );
     }
@@ -217,7 +217,7 @@ class PHPUnit_Framework_Assert
     {
         self::assertNotContains(
           $needle,
-          self::getAttribute($haystackClassOrObject, $haystackAttributeName),
+          self::readAttribute($haystackClassOrObject, $haystackAttributeName),
           $message
         );
     }
@@ -260,7 +260,7 @@ class PHPUnit_Framework_Assert
     {
         self::assertEquals(
           $expected,
-          self::getAttribute($actualClassOrObject, $actualAttributeName),
+          self::readAttribute($actualClassOrObject, $actualAttributeName),
           $message,
           $delta,
           $maxDepth
@@ -308,7 +308,7 @@ class PHPUnit_Framework_Assert
     {
         self::assertNotEquals(
           $expected,
-          self::getAttribute($actualClassOrObject, $actualAttributeName),
+          self::readAttribute($actualClassOrObject, $actualAttributeName),
           $message,
           $delta,
           $maxDepth
@@ -345,7 +345,7 @@ class PHPUnit_Framework_Assert
     {
         self::assertGreaterThan(
           $expected,
-          self::getAttribute($actualClassOrObject, $actualAttributeName),
+          self::readAttribute($actualClassOrObject, $actualAttributeName),
           $message
         );
     }
@@ -380,7 +380,7 @@ class PHPUnit_Framework_Assert
     {
         self::assertGreaterThanOrEqual(
           $expected,
-          self::getAttribute($actualClassOrObject, $actualAttributeName),
+          self::readAttribute($actualClassOrObject, $actualAttributeName),
           $message
         );
     }
@@ -415,7 +415,7 @@ class PHPUnit_Framework_Assert
     {
         self::assertLessThan(
           $expected,
-          self::getAttribute($actualClassOrObject, $actualAttributeName),
+          self::readAttribute($actualClassOrObject, $actualAttributeName),
           $message
         );
     }
@@ -450,7 +450,7 @@ class PHPUnit_Framework_Assert
     {
         self::assertLessThanOrEqual(
           $expected,
-          self::getAttribute($actualClassOrObject, $actualAttributeName),
+          self::readAttribute($actualClassOrObject, $actualAttributeName),
           $message
         );
     }
@@ -736,7 +736,7 @@ class PHPUnit_Framework_Assert
     {
         self::assertSame(
           $expected,
-          self::getAttribute($actualClassOrObject, $actualAttributeName),
+          self::readAttribute($actualClassOrObject, $actualAttributeName),
           $message
         );
     }
@@ -776,7 +776,7 @@ class PHPUnit_Framework_Assert
     {
         self::assertNotSame(
           $expected,
-          self::getAttribute($actualClassOrObject, $actualAttributeName),
+          self::readAttribute($actualClassOrObject, $actualAttributeName),
           $message
         );
     }
@@ -1273,7 +1273,7 @@ class PHPUnit_Framework_Assert
      * @access protected
      * @static
      */
-    public static function getAttribute($classOrObject, $attributeName)
+    public static function readAttribute($classOrObject, $attributeName)
     {
         if (!is_string($attributeName)) {
             throw new InvalidArgumentException;
