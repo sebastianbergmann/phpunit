@@ -90,7 +90,7 @@ class PHPUnit_Framework_MockObject_Matcher_InvokedAtIndex implements PHPUnit_Fra
 
     public function matches(PHPUnit_Framework_MockObject_Invocation $invocation)
     {
-        ++$this->currentIndex;
+        $this->currentIndex++;
 
         return $this->currentIndex == $this->sequenceIndex;
     }
