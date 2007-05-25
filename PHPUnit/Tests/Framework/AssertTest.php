@@ -1034,18 +1034,18 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
     {
         $obj = new ClassWithNonPublicAttributes;
 
-        $this->assertEquals('foo', $this->getAttribute($obj, 'publicAttribute'));
-        $this->assertEquals('bar', $this->getAttribute($obj, 'protectedAttribute'));
-        $this->assertEquals('baz', $this->getAttribute($obj, 'privateAttribute'));
-        $this->assertEquals('parent', $this->getAttribute($obj, 'privateParentAttribute'));
+        $this->assertEquals('foo', $this->readAttribute($obj, 'publicAttribute'));
+        $this->assertEquals('bar', $this->readAttribute($obj, 'protectedAttribute'));
+        $this->assertEquals('baz', $this->readAttribute($obj, 'privateAttribute'));
+        $this->assertEquals('parent', $this->readAttribute($obj, 'privateParentAttribute'));
     }
 
     public function testGetStaticAttribute()
     {
-        $this->assertEquals('foo', $this->getAttribute('ClassWithNonPublicAttributes', 'publicStaticAttribute'));
-        $this->assertEquals('bar', $this->getAttribute('ClassWithNonPublicAttributes', 'protectedStaticAttribute'));
-        $this->assertEquals('baz', $this->getAttribute('ClassWithNonPublicAttributes', 'privateStaticAttribute'));
-        $this->assertEquals('parent', $this->getAttribute('ClassWithNonPublicAttributes', 'privateStaticParentAttribute'));
+        $this->assertEquals('foo', $this->readAttribute('ClassWithNonPublicAttributes', 'publicStaticAttribute'));
+        $this->assertEquals('bar', $this->readAttribute('ClassWithNonPublicAttributes', 'protectedStaticAttribute'));
+        $this->assertEquals('baz', $this->readAttribute('ClassWithNonPublicAttributes', 'privateStaticAttribute'));
+        $this->assertEquals('parent', $this->readAttribute('ClassWithNonPublicAttributes', 'privateStaticParentAttribute'));
     }
 
     public function testAssertPublicAttributeContains()
