@@ -178,6 +178,74 @@ class PHPUnit_Assert {
     }
 
     /**
+     * Asserts that two variables are not equal.
+     *
+     * @param  mixed
+     * @param  mixed
+     * @param  string
+     * @param  mixed
+     * @access public
+     */
+    function assertNotEquals($expected, $actual, $message = '', $delta = 0) {
+        if ((is_array($actual)  && is_array($expected)) ||
+            (is_object($actual) && is_object($expected))) {
+            if (is_array($actual) && is_array($expected)) {
+                ksort($actual);
+                ksort($expected);
+            }
+
+            if ($this->_looselyTyped) {
+                $actual   = $this->_convertToString($actual);
+                $expected = $this->_convertToString($expected);
+            }
+
+            $actual   = serialize($actual);
+            $expected = serialize($expected);
+
+            $message = sprintf(
+              '%sexpected %s, actual %s',
+
+              !empty($message) ? $message . ' ' : '',
+              $expected,
+              $actual
+            );
+
+            if ($actual == $expected) {
+                return $this->fail($message);
+            }
+        }
+
+        elseif (is_numeric($actual) && is_numeric($expected)) {
+            $message = sprintf(
+              '%sexpected %s%s, actual %s',
+
+              !empty($message) ? $message . ' ' : '',
+              $expected,
+              ($delta != 0) ? ('+/- ' . $delta) : '',
+              $actual
+            );
+
+            if (($actual >= ($expected - $delta) && $actual <= ($expected + $delta))) {
+                return $this->fail($message);
+            }
+        }
+
+        else {
+            $message = sprintf(
+              '%sexpected %s, actual %s',
+
+              !empty($message) ? $message . ' ' : '',
+              $expected,
+              $actual
+            );
+
+            if ($actual == $expected) {
+                return $this->fail($message);
+            }
+        }
+    }
+    
+    /**
      * Asserts that two variables reference the same object.
      * This requires the Zend Engine 2 to work.
      *
