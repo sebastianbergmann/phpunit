@@ -337,7 +337,7 @@ class PHPUnit_TestResult {
         $result = "\n";
         $result .= "TESTS   :  " . $this->runCount() . " test(s) executed.\n";
         $result .= "ERRORS  :  " . $this->errorCount() . " error(s) occurred.\n";
-        $result .= "FAILURES:  " . $this->failureCount() . " failures occurred.\n";
+        $result .= "FAILURES:  " . $this->failureCount() . " failure(s) occurred.\n";
         $result .= "\n";
         if ($html) return "<pre>" . htmlspecialchars($result) . "</pre>";
         else return $result;
