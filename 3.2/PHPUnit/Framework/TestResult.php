@@ -515,7 +515,12 @@ class PHPUnit_Framework_TestResult implements Countable
             restore_error_handler();
         }
 
-        $xdebugLoaded = extension_loaded('xdebug');
+        $xdebugLoaded  = extension_loaded('xdebug');
+        $xdebugEnabled = $xdebugLoaded && xdebug_is_enabled();
+
+        if ($xdebugEnabled) {
+            xdebug_disable();
+        }
 
         $useXdebug = ($xdebugLoaded && $this->collectCodeCoverageInformation && !$test instanceof PHPUnit_Extensions_SeleniumTestCase);
 
@@ -550,6 +555,10 @@ class PHPUnit_Framework_TestResult implements Countable
             if (defined('PHPUnit_INSIDE_OWN_TESTSUITE')) {
                 xdebug_start_code_coverage(XDEBUG_CC_UNUSED | XDEBUG_CC_DEAD_CODE);
             }
+        }
+
+        if ($xdebugEnabled) {
+            xdebug_enable();
         }
 
         if ($errorHandlerSet === TRUE) {
