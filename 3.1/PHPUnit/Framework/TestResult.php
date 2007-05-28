@@ -69,6 +69,11 @@ if (!class_exists('PHPUnit_Framework_TestResult', FALSE)) {
  */
 class PHPUnit_Framework_TestResult implements Countable
 {
+    protected static $isPHP52 = null;
+    protected static $xdebugLoaded = null;
+    protected static $xdebugEnabled = null;
+    protected static $useXdebug = null;
+
     /**
      * @var    array
      * @access protected
@@ -503,7 +508,15 @@ class PHPUnit_Framework_TestResult implements Countable
 
         $errorHandlerSet = FALSE;
 
-        if (version_compare(phpversion(), '5.2.0RC1', '>=')) {
+        if (self::$isPHP52 === NULL) {
+            if (version_compare(phpversion(), '5.2.0RC1', '>=')) {
+                self::$isPHP52 = TRUE;
+            } else {
+                self::$isPHP52 = FALSE;
+            }
+        }
+
+        if (self::$isPHP52) {
             $oldErrorHandler = set_error_handler('PHPUnit_Util_ErrorHandler', E_RECOVERABLE_ERROR | E_USER_ERROR | E_NOTICE | E_STRICT);
         } else {
             $oldErrorHandler = set_error_handler('PHPUnit_Util_ErrorHandler', E_USER_ERROR | E_NOTICE | E_STRICT);
@@ -515,16 +528,19 @@ class PHPUnit_Framework_TestResult implements Countable
             restore_error_handler();
         }
 
-        $xdebugLoaded  = extension_loaded('xdebug');
-        $xdebugEnabled = $xdebugLoaded && xdebug_is_enabled();
+        if (self::$xdebugLoaded === NULL) {
+            self::$xdebugLoaded  = extension_loaded('xdebug');
+            self::$xdebugEnabled = self::$xdebugLoaded && xdebug_is_enabled();
+            self::$useXdebug = self::$xdebugLoaded && !defined('PHPUnit_INSIDE_OWN_TESTSUITE');
+        }
 
-        if ($xdebugEnabled) {
+        if (self::$xdebugEnabled) {
             xdebug_disable();
         }
 
-        $useXdebug = ($xdebugLoaded && $this->collectCodeCoverageInformation && !$test instanceof PHPUnit_Extensions_SeleniumTestCase);
+        $useXdebug = self::$useXdebug && $this->collectCodeCoverageInformation && !$test instanceof PHPUnit_Extensions_SeleniumTestCase;
 
-        if ($useXdebug && !defined('PHPUnit_INSIDE_OWN_TESTSUITE')) {
+        if ($useXdebug) {
             xdebug_start_code_coverage(XDEBUG_CC_UNUSED | XDEBUG_CC_DEAD_CODE);
         }
 
@@ -557,7 +573,7 @@ class PHPUnit_Framework_TestResult implements Countable
             }
         }
 
-        if ($xdebugEnabled) {
+        if (self::$xdebugEnabled) {
             xdebug_enable();
         }
 
