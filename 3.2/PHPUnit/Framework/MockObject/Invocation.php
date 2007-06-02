@@ -45,18 +45,12 @@
  * @since      File available since Release 3.0.0
  */
 
-require_once 'PHPUnit/Framework.php';
 require_once 'PHPUnit/Util/Filter.php';
 
 PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
 
 /**
- * Encapsulates information on a method invocation which can be passed to matchers.
- *
- * The invocation consists of the object it occured from, the class name, the
- * method name and all the parameters. The mock object must instantiate this
- * class with the values from the mocked method and pass it to an object of
- * PHPUnit_Framework_MockObject_Invokable.
+ * Interface for invocations.
  *
  * @category   Testing
  * @package    PHPUnit
@@ -66,73 +60,12 @@ PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    Release: @package_version@
  * @link       http://www.phpunit.de/
- * @since      Class available since Release 3.0.0
+ * @since      Interface available since Release 3.1.0
  */
-class PHPUnit_Framework_MockObject_Invocation implements PHPUnit_Framework_SelfDescribing
+interface PHPUnit_Framework_MockObject_Invocation
 {
-    public $object;
-
-    public $className;
-
-    public $methodName;
-
-    public $parameters;
-
-    public function __construct($object, $className, $methodName, $parameters)
-    {
-        $this->object     = $object;
-        $this->className  = $className;
-        $this->methodName = $methodName;
-        $this->parameters = $parameters;
-
-        foreach ($this->parameters as $key => $value) {
-            if (is_object($value)) {
-                $this->parameters[$key] = $this->cloneObject($value);
-            }
-        }
-    }
-
-    public function toString()
-    {
-        return sprintf(
-          "%s::%s(%s)",
-
-          $this->className,
-          $this->methodName,
-          join(
-            ', ',
-            array_map(
-              create_function(
-                '$a',
-                'return PHPUnit_Util_Type::shortenedExport($a);'
-              ),
-              $this->parameters
-            )
-          )
-        );
-    }
-
-    protected function cloneObject($original)
-    {
-        $object = new ReflectionObject($original);
-
-        if ($object->hasMethod('__clone')) {
-            $method = $object->getMethod('__clone');
-
-            if (!$method->isPublic()) {
-                return $original;
-            }
-
-            try {
-                return clone $original;
-            }
-
-            catch (Exception $e) {
-                return $original;
-            }
-        }
-
-        return clone $original;
-    }
 }
+
+require_once 'PHPUnit/Framework/MockObject/StaticInvocation.php';
+require_once 'PHPUnit/Framework/MockObject/ObjectInvocation.php';
 ?>
