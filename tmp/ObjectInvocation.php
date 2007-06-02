@@ -45,12 +45,18 @@
  * @since      File available since Release 3.0.0
  */
 
+require_once 'PHPUnit/Framework.php';
 require_once 'PHPUnit/Util/Filter.php';
 
 PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
 
 /**
- * Interface for invocations.
+ * Encapsulates information on a method invocation which can be passed to matchers.
+ *
+ * The invocation consists of the object it occured from, the class name, the
+ * method name and all the parameters. The mock object must instantiate this
+ * class with the values from the mocked method and pass it to an object of
+ * PHPUnit_Framework_MockObject_Invokable.
  *
  * @category   Testing
  * @package    PHPUnit
@@ -60,12 +66,17 @@ PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    Release: @package_version@
  * @link       http://www.phpunit.de/
- * @since      Interface available since Release 3.1.0
+ * @since      Class available since Release 3.0.0
  */
-interface PHPUnit_Framework_MockObject_Invocation
+class PHPUnit_Framework_MockObject_ObjectInvocation extends PHPUnit_Framework_MockObject_StaticInvocation
 {
-}
+    public $object;
 
-require_once 'PHPUnit/Framework/MockObject/StaticInvocation.php';
-require_once 'PHPUnit/Framework/MockObject/ObjectInvocation.php';
+    public function __construct($className, $methodName, $parameters, $object)
+    {
+        parent::__construct($className, $methodName, $parameters);
+
+        $this->object = $object;
+    }
+}
 ?>
