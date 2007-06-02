@@ -160,6 +160,7 @@ class PHPUnit_Framework_MockObject_Mock
                 );
             }
 
+            //print $this->generateClassDefinition($class);
             eval($this->generateClassDefinition($class));
         }
 
@@ -208,7 +209,8 @@ class PHPUnit_Framework_MockObject_Mock
             }
         }
 
-        $code .= "}\n";
+        $code .= "}\n\n" .
+                 $this->mockClassName . '::$staticInvocationMocker = new PHPUnit_Framework_MockObject_InvocationMocker;';
 
         return $code;
     }
@@ -258,11 +260,21 @@ class PHPUnit_Framework_MockObject_Mock
 
     protected function generateMethodDefinition($className, $methodName, $modifier, $reference = '', $parameters = '')
     {
+        if (strpos($modifier, 'static') === FALSE) {
+            $invocationClass  = 'PHPUnit_Framework_MockObject_ObjectInvocation';
+            $invocationMocker = '$this->invocationMocker';
+            $objectReference  = ', $this';
+        } else {
+            $invocationClass  = 'PHPUnit_Framework_MockObject_StaticInvocation';
+            $invocationMocker = 'self::$staticInvocationMocker';
+            $objectReference  = '';
+        }
+
         return sprintf(
           "\n    %s function %s%s(%s) {\n" .
           "        \$args = func_get_args();\n" .
-          "        return \$this->invocationMocker->invoke(\n" .
-          "          new PHPUnit_Framework_MockObject_Invocation(\$this, \"%s\", \"%s\", \$args)\n" .
+          "        return %s->invoke(\n" .
+          "          new %s(\"%s\", \"%s\", \$args%s)\n" .
           "        );\n" .
           "    }\n",
 
@@ -270,8 +282,11 @@ class PHPUnit_Framework_MockObject_Mock
           $reference,
           $methodName,
           $parameters,
+          $invocationMocker,
+          $invocationClass,
           $className,
-          $methodName
+          $methodName,
+          $objectReference
         );
     }
 
@@ -290,7 +305,8 @@ class PHPUnit_Framework_MockObject_Mock
         }
 
         return sprintf(
-          "    private \$invocationMocker;\n\n" .
+          "    private \$invocationMocker;\n" .
+          "    public static \$staticInvocationMocker;\n\n" .
           "%s" .
           "%s" .
           "    public function getInvocationMocker() {\n" .
@@ -299,7 +315,11 @@ class PHPUnit_Framework_MockObject_Mock
           "    public function expects(PHPUnit_Framework_MockObject_Matcher_Invocation \$matcher) {\n" .
           "        return \$this->invocationMocker->expects(\$matcher);\n" .
           "    }\n\n" .
+          "    public function staticExpects(PHPUnit_Framework_MockObject_Matcher_Invocation \$matcher) {\n" .
+          "        return self::\$staticInvocationMocker->expects(\$matcher);\n" .
+          "    }\n\n" .
           "    public function verify() {\n" .
+          "        self::\$staticInvocationMocker->verify();\n" .
           "        \$this->invocationMocker->verify();\n" .
           "    }\n",
 
@@ -311,7 +331,7 @@ class PHPUnit_Framework_MockObject_Mock
     protected function generateConstructorCode()
     {
         return "    public function __construct() {\n" .
-               "        \$this->invocationMocker = new PHPUnit_Framework_MockObject_InvocationMocker(\$this);\n" .
+               "        \$this->invocationMocker = new PHPUnit_Framework_MockObject_InvocationMocker;\n" .
                "    }\n\n";
     }
 
@@ -322,7 +342,7 @@ class PHPUnit_Framework_MockObject_Mock
         if ($constructor) {
             return sprintf(
               "    public function __construct(%s) {\n" .
-              "        \$this->invocationMocker = new PHPUnit_Framework_MockObject_InvocationMocker(\$this);\n" .
+              "        \$this->invocationMocker = new PHPUnit_Framework_MockObject_InvocationMocker;\n" .
               "        parent::%s(%s);\n" .
               "    }\n\n",
 
