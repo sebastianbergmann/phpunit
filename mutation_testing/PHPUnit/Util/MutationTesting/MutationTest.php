@@ -82,7 +82,7 @@ include ("Console/Getopt.php");
 				echo $mutant->getSource () . "\n";
 			}
 			
-			genericRun ($mutants, $original, $arguments[2]);
+			genericRun ($mutants, $original, $arguments[1]);
 			
 		} catch (Exception $e) {
 			echo $e->getMessage () . "\n";
@@ -119,8 +119,8 @@ include ("Console/Getopt.php");
 		{
 			$arg = array ();
 			$cg = new Console_Getopt ();
-			$allowedShortOptions = "f:t:sh";
-			$allowedLongOptions = array ("file=", "tests=", "stats==", "help");
+			$allowedShortOptions = "f:t:h";
+			$allowedLongOptions = array ("file=", "tests=", "help");
 			$args = $cg->readPHPArgv ();
 			$ret = $cg->getopt ($args, $allowedShortOptions, $allowedLongOptions);
 		
@@ -136,21 +136,17 @@ include ("Console/Getopt.php");
 						case '--file':
 							$arg[0] = $o[1];
 							break;
-						case 's':
-						case '--stats':
-							$arg[1] = TRUE;
-							break;
 						case '-t':
 						case '--tests':
-							$arg[2] = $o[2];
+							$arg[1] = $o[1];
 							break;
 						case 'h':
 						case '--help':
 							echo "Usage:\n MutationTest.php -f <file>";
-							echo " -[s]\n";
+							echo " -t <testFile>\n";
 							echo "<file> indicates the path to the file ";
-							echo "to be tested. -[s] enables the display ";
-							echo "of statistics.\n";
+							echo "to be tested. <testFile> indicates the file";
+							echo " that is used for unit testing.\n";
 							exit (0);
 							break;
 				}
@@ -168,6 +164,7 @@ include ("Console/Getopt.php");
 		$testSrc = stripRequire ($source->toString (), $testFile);
 		
 		foreach ($mutants as $mutant) {
+			echo $mutant->getSource () . "\n";
 			$fn = "tempTest.php";
 			if ( ($fh = fopen ($fn, 'w+')) == FALSE)
 				die ("Error: Unable to write to test file!\n");
