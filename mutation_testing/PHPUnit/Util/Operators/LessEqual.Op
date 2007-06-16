@@ -1,0 +1,3 @@
+T_IS_EQUAL,==,restriction1:restriction2
+T_IS_NOT_EQUAL,!=,rest1:rest2
+T_IS_GREATER_OR_EQUAL,>=,rest1:restr2

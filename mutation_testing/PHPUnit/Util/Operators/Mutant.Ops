@@ -1,0 +1,5 @@
+T_IS_EQUAL,==,Equal.Op
+T_IS_GREATER_OR_EQUAL,>=,GreaterEqual.Op
+T_IS_LESS_OR_EQUAL,<=,LessEqual.Op
+T_IS_NOT_EQUAL,!=,NotEqual.Op
+
