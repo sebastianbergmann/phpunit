@@ -73,8 +73,8 @@ include ("Console/Getopt.php");
 			die ("Error: Please enter a filename. (--help for info).\n");
 		try {			
 			$original = new PHPUnit_Util_Source ($arguments[0]);
-			$pt = new PHPUnit_Util_ParseTree ($original->getSource (), "mutantWrite.xsl");
-			$operators = getOps ("Mutant.Ops");
+			$pt = new PHPUnit_Util_ParseTree ($original->getSource (), "XSL/mutantWrite.xsl");
+			$operators = getOps ("Operators/Mutant.Ops");
 			
 			$mutants = PHPUnit_Util_Scanner::scan ($pt, $operators);
 			foreach ($mutants as $mutant) { 
