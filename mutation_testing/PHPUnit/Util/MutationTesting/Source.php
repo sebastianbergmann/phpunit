@@ -99,7 +99,7 @@ class PHPUnit_Util_MutationTesting_Source
         }
         
         $this->sourceFile = $fileName;
-        $this->sourceCode = file_get_contents ($code);
+        $this->sourceCode = file_get_contents ($fileName);
     }
     
     /**
