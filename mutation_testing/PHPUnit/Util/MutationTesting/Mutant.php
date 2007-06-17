@@ -45,7 +45,7 @@
  */
 
 /**
- * PHPUnit_Util_Mutant contains a mutated source file and a description of the mutation.
+ * PHPUnit_Util_MutationTesting_Mutant contains a mutated source file and a description of the mutation.
  *
  * @category   Testing
  * @package    PHPUnit
@@ -56,12 +56,12 @@
  * @link       http://www.phpunit.de/
  * @since      Class available since Release 4.0.0
  */
-class PHPUnit_Util_MutationTesting_Mutant extends PHPUnit_Util_Source
+class PHPUnit_Util_MutationTesting_Mutant extends PHPUnit_Util_MutationTesting_Source
 {
     /**
      * The mutant operator used to create the mutant.
      *
-     * @var    PHPUnit_Util_MutantOperator
+     * @var    PHPUnit_Util_MutationTesting_MutantOperator
      * @access private
      */
     private $mutantOp;
@@ -86,7 +86,7 @@ class PHPUnit_Util_MutationTesting_Mutant extends PHPUnit_Util_Source
      * Constructor.
      *
      * @param  string $fileName
-     * @param  PHPUnit_Util_MutantOperator $mutantOperator
+     * @param  PHPUnit_Util_MutationTesting_MutantOperator $mutantOperator
      * @param  int $line
      * @param  string $replaced
      * @access public
@@ -126,7 +126,7 @@ class PHPUnit_Util_MutationTesting_Mutant extends PHPUnit_Util_Source
     /**
      * Returns the mutant operator.
      *
-     * @return PHPUnit_Util_MutantOperator
+     * @return PHPUnit_Util_MutationTesting_MutantOperator
      * @access public
      */     
     public function getMutantOp()

@@ -63,7 +63,7 @@ require_once 'Scanner.php';
  * @link       http://www.phpunit.de/
  * @since      Class available since Release 4.0.0
  */
-class PHPUnit_Util_MutationTest
+class PHPUnit_Util_MutationTesting_MutationTest
 {
     public static function mutate(PHPUnit_TextUI_TestRunner $runner, $arguments)
     {

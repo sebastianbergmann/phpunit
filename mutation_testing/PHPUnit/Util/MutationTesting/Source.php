@@ -45,7 +45,7 @@
  */
 
 /**
- * PHPUnit_Util_Source contains a source file and methods to track
+ * PHPUnit_Util_MutationTesting_Source contains a source file and methods to track
  * tests run on that source.
  *
  * @category   Testing

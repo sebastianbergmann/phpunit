@@ -45,7 +45,7 @@
  */
 
 /**
- * PHPUnit_Util_MutantOperator describes a mutant operator and how it should be applied.
+ * PHPUnit_Util_MutationTesting_MutantOperator describes a mutant operator and how it should be applied.
  *
  * @category   Testing
  * @package    PHPUnit

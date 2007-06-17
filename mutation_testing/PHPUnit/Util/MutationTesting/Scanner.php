@@ -45,7 +45,7 @@
  */
 
 /**
- * PHPUnit_Util_Scanner searches a parse tree for potential mutants and creates them.
+ * PHPUnit_Util_MutationTesting_Scanner searches a parse tree for potential mutants and creates them.
  *
  * @category   Testing
  * @package    PHPUnit
@@ -61,7 +61,7 @@
     /**
      * Scans the given parse tree for potential mutants and creates them.
      *
-     * @param  PHPUnit_Util_ParseTree $pt
+     * @param  PHPUnit_Util_MutationTesting_ParseTree $pt
      * @param  array $operators
      * @return array
      * @access public

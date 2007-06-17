@@ -52,7 +52,7 @@ if (!extension_loaded('sqlite')) {
 define('LIBXML_OPTIONS', LIBXML_DTDLOAD | LIBXML_NOENT | LIBXML_DTDATTR | LIBXML_NOCDATA);
 
 /**
- * PHPUnit_Util_ParseTree describes a PHP source code in BNF form.
+ * PHPUnit_Util_MutationTesting_ParseTree describes a PHP source code in BNF form.
  *
  * @category   Testing
  * @package    PHPUnit
