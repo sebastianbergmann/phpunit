@@ -52,7 +52,7 @@ if (!extension_loaded('sqlite')) {
 define('LIBXML_OPTIONS', LIBXML_DTDLOAD | LIBXML_NOENT | LIBXML_DTDATTR | LIBXML_NOCDATA);
 
 /**
- * PHPUnit_Util_MutationTesting_ParseTree describes a PHP source code in BNF form.
+ * PHPUnit_Util_MutationTesting_ParseTree describes a PHP source code in Baukus-Naur Form.
  *
  * @category   Testing
  * @package    PHPUnit
@@ -91,20 +91,23 @@ define('LIBXML_OPTIONS', LIBXML_DTDLOAD | LIBXML_NOENT | LIBXML_DTDATTR | LIBXML
     public function __construct($fileName, $toSourceStyle) 
     {
         if (!is_readable ($fileName)) {
-            throw new RuntimeException("PHPUnit_Util_ParseTree: $fileName not found.");
+            throw new RuntimeException 
+                ("PHPUnit_Util_MutationTesting_ParseTree: $fileName not found.");
         }
 
         if (!is_readable($toSourceStyle)) {
-            throw new Exception ("PHPUnit_Util_ParseTree: $toSourceStyle not found.");
+            throw new RuntimeException 
+                ("PHPUnit_Util_MutationTesting_ParseTree: $toSourceStyle not found.");
         }
 
-        $this->parseTree = new DOMDocument;
-        $xml = new DOMDocument;
+        $this->parseTree      = new DOMDocument;
+        $xml                  = new DOMDocument;
         $this->toMutantSource = new XSLTProcessor;
 
         /* Load the parse tree DOM using the "parse_tree" package. */
-        if ($this->parseTree->loadXML(parse_tree_from_file($fileName), LIBXML_OPTIONS) == FALSE) {
-            throw new RuntimeException("PHPUnit_Util_ParseTree: Error loading XML from string.");
+        if ($this->parseTree->loadXML(parse_tree_from_file($fileName), LIBXML_OPTIONS) === FALSE) {
+            throw new RuntimeException
+                ("PHPUnit_Util_MutationTesting_ParseTree: Error loading XML from string.");
         }
 
         /* Set up the XSLTProcessor. */
@@ -115,8 +118,8 @@ define('LIBXML_OPTIONS', LIBXML_DTDLOAD | LIBXML_NOENT | LIBXML_DTDATTR | LIBXML
     /**
      * Fetches the elements in the parse tree with the given tag name. 
      *
-     * @param    string $name
-     * @return    DOMNodeList
+     * @param  string $name
+     * @return DOMNodeList
      * @access public
      */        
     public function getElements($name)
@@ -129,13 +132,14 @@ define('LIBXML_OPTIONS', LIBXML_DTDLOAD | LIBXML_NOENT | LIBXML_DTDATTR | LIBXML
      * mutant operator and save to $fileName.
      *
      * @param  string $fileName
-     * @param  array $params
+     * @param  array  $params
      * @access public
      */
     public function replaceAndSave ($fileName, array $params)
     {
         if (($fh = fopen($fileName, 'w')) === FALSE) {
-            throw new RuntimeException("PHPUnit_Util_ParseTree: Error opening file $fileName.");
+            throw new RuntimeException
+                ("PHPUnit_Util_MutationTesting_ParseTree: Error opening file $fileName.");
         }
 
         $ns = $this->parseTree->firstChild->namespaceURI;
@@ -145,7 +149,8 @@ define('LIBXML_OPTIONS', LIBXML_DTDLOAD | LIBXML_NOENT | LIBXML_DTDATTR | LIBXML
 
         /* Save the transformed results. */
         if (fwrite($fh, $this->toMutantSource->transformToXML($this->parseTree)) === FALSE) {
-            throw new RuntimeException("PHPUnit_Util_ParseTree: Error saving mutated source.");
+            throw new RuntimeException
+                ("PHPUnit_Util_MutationTesting_ParseTree: Error saving mutated source.");
         }
     }
 

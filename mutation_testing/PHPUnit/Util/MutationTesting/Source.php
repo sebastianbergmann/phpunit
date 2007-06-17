@@ -84,7 +84,8 @@ class PHPUnit_Util_MutationTesting_Source
     public function __construct($fileName)
     {
         if (!file_exists ($fileName)) {
-            throw new RuntimeException("PHPUnit_Util_Source: $fileName not found.");
+            throw new RuntimeException
+                ("PHPUnit_Util_MutationTesting_Source: $fileName not found.");
         }
 
         $this->sourceFile = $fileName;
@@ -105,12 +106,19 @@ class PHPUnit_Util_MutationTesting_Source
         if (count($results) == count($testResults)) {
             /* compare results here */
         } else {
-            throw new RuntimeException("PHPUnit_Util_Source: Mismatching results arrays in compareResults.");
+            throw new RuntimeException
+                ("PHPUnit_Util_MutationTestng_Source: Mismatching results arrays in compareResults.");
         }
 
         return $diff;
     } 
 
+    /**
+     * toString returns a string representation of the source code.
+     *
+     * @return string
+     * @access public
+     */
     public function toString()
     {
         return file_get_contents($this->sourceFile);
@@ -137,7 +145,8 @@ class PHPUnit_Util_MutationTesting_Source
     public function setFile($fileName)
     {
         if (!file_exists ($fileName)) {
-            throw new RuntimeException ("PHPUnit_Util_Source: $fileName not found.");
+            throw new RuntimeException 
+                ("PHPUnit_Util_MutationTesting_Source: $fileName not found.");
         }
 
         $this->sourceFile = $fileName;

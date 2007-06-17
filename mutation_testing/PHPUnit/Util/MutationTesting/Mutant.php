@@ -85,13 +85,14 @@ class PHPUnit_Util_MutationTesting_Mutant extends PHPUnit_Util_MutationTesting_S
     /**
      * Constructor.
      *
-     * @param  string $fileName
+     * @param  string                                      $fileName
      * @param  PHPUnit_Util_MutationTesting_MutantOperator $mutantOperator
-     * @param  int $line
-     * @param  string $replaced
+     * @param  int                                         $line
+     * @param  string                                      $replaced
      * @access public
      */
-    public function __construct($fileName, PHPUnit_Util_MutationTesting_MutantOperator $mutantOperator, $line, $replaced)
+    public function __construct($fileName, PHPUnit_Util_MutationTesting_MutantOperator
+                                $mutantOperator, $line, $replaced)
     {
         $this->setFile($fileName);
 
@@ -103,12 +104,13 @@ class PHPUnit_Util_MutationTesting_Mutant extends PHPUnit_Util_MutationTesting_S
     /**
      * Unlinks the source file of the killed mutant.
      *
-     * @access    public
+     * @access public
      */
     public function kill()
     {
         if (unlink(parent::source) === FALSE) {
-            throw new RuntimeException("PHPUnit_Util_Mutant: Error deleting temporary file.");
+            throw new RuntimeException
+                ("PHPUnit_Util_MutationTesting_Mutant: Error deleting temporary file.");
         }
     }
 

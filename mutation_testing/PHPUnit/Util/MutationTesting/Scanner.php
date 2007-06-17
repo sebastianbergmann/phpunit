@@ -83,8 +83,9 @@
 
                     foreach ($operator->getReplaceWith () as $mutantOp) {
                         /* Make a temporary file for the mutated source file. */
-                        if (($tmpFile = tempnam('/mutants', 'MUTANT')) == FALSE) {
-                            throw new RuntimeException("PHPUnit_Util_Scanner: Error creating temp file.");
+                        if (($tmpFile = tempnam('/mutants', 'MUTANT')) === FALSE) {
+                            throw new RuntimeException
+                                ("PHPUnit_Util_MutationTesting_Scanner: Error creating temp file.");
                         }
 
                         /* Replace the operator and save it to the temp file. */

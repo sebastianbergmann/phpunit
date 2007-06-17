@@ -71,7 +71,7 @@ class PHPUnit_Util_MutationTesting_MutantOperator extends PHPUnit_Util_MutationT
      *
      * @param  string $operator
      * @param  string $token
-     * @param  array $restr
+     * @param  array  $restr
      * @access public
      */
     public function __construct($operator, $token, array $restr = array())

@@ -87,7 +87,6 @@ class PHPUnit_Util_MutationTesting_Operator
      *
      * @param  string $operator
      * @param  string $token
-     * @param  array $restr
      * @param  string $mutantFile
      * @access public
      */

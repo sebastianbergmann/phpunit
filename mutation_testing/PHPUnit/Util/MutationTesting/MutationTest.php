@@ -65,6 +65,15 @@ require_once 'Scanner.php';
  */
 class PHPUnit_Util_MutationTesting_MutationTest
 {
+    
+    /**
+     * mutate drives the creation and testing of mutants.
+     *  
+     * @param  PHPUnit_TextUI_TestRunner $runner
+     * @param  array                     $arguments
+     * @access public
+     * @static
+     */
     public static function mutate(PHPUnit_TextUI_TestRunner $runner, $arguments)
     {
         try {
@@ -84,6 +93,13 @@ class PHPUnit_Util_MutationTesting_MutationTest
         }
     }
 
+    /**
+     * mutateSuite modifies the test suite so that it points to the mutated file.
+     * 
+     * @param  PHPUnit_Util_MutationTesting_Mutant $mutant
+     * @return PHPUnit_Framework_TestSuite 
+     * @access private 
+     */
     private function mutateSuite(PHPUnit_Util_MutationTesting_Mutant $mutant)
     {
         return $this->runner->getTest($mutant->getName(), $mutant->getSource());
@@ -103,7 +119,8 @@ class PHPUnit_Util_MutationTesting_MutationTest
         $lines = file($fileName, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
 
         if ($lines === FALSE) {
-            throw new RuntimeException("PHPUnit_Util_MutationTest: Error reading $fileName.");
+            throw new RuntimeException
+                ("PHPUnit_Util_MutationTesting_MutationTest: Error reading $fileName.");
         }
 
         $ops = array();
