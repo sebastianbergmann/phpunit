@@ -57,7 +57,7 @@
  * @link		http://www.phpunit.de/
  * @since		Class available since
  */
- class PHPUnit_Util_Operator 
+ class PHPUnit_Util_MutationTesting_Operator 
  {
  
      /**
@@ -93,7 +93,7 @@
 	 * @param	string $mutantFile
 	 * @access	public
 	 */
-	 function PHPUnit_Util_Operator ($op, $token, $mutantFile)
+	 function PHPUnit_Util_MutationTesting_Operator ($op, $token, $mutantFile)
 	 {
 		$this->operator = $op;
 		$this->tokenType = $token;
@@ -149,7 +149,8 @@
 		$i = 0;
 		foreach ($lines as $line) {
 			$params = split (",", $line);
-			$mutOps[$i++] = new PHPUnit_Util_MutantOperator ($params[1], $params[0], $this->_restrictionArray ($params[2]));
+			$mutOps[$i++] = new PHPUnit_Util_MutationTesting_MutantOperator 
+				($params[1], $params[0], $this->_restrictionArray ($params[2]));
 		}		
 		return ($mutOps);
 	}

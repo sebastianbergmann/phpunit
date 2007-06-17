@@ -63,7 +63,7 @@ define('LIBXML_OPTIONS', LIBXML_DTDLOAD | LIBXML_NOENT | LIBXML_DTDATTR | LIBXML
  * @link		http://www.phpunit.de/
  * @since		Class available since
  */
- class PHPUnit_Util_ParseTree
+ class PHPUnit_Util_MutationTesting_ParseTree
  {
     /**
 	 * Describes a PHP source in BNF. 
@@ -89,7 +89,7 @@ define('LIBXML_OPTIONS', LIBXML_DTDLOAD | LIBXML_NOENT | LIBXML_DTDATTR | LIBXML
 	 * @param	string $toSourceStyle
 	 * @access	public
 	 */
-	 function PHPUnit_Util_ParseTree ($fileName, $toSourceStyle) 
+	 function PHPUnit_Util_MutationTesting_ParseTree ($fileName, $toSourceStyle) 
 	 {
 		if (!is_readable ($fileName))
 			throw new Exception ("PHPUnit_Util_ParseTree: $fileName not found.");

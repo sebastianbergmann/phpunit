@@ -57,7 +57,7 @@
  * @link		http://www.phpunit.de/
  * @since		Class available since
  */
- class PHPUnit_Util_MutantOperator extends PHPUnit_Util_Operator
+ class PHPUnit_Util_MutationTesting_MutantOperator extends PHPUnit_Util_MutationTesting_Operator
  {
 	
     /**
@@ -77,7 +77,7 @@
 	 * @param	array $restr
 	 * @access	public
 	 */
-	 function PHPUnit_Util_MutantOperator ($op, $token, array $restr = array())
+	 function PHPUnit_Util_MutationTesting_MutantOperator ($op, $token, array $restr = array())
 	 {
 			$this->operator = $op;
 			$this->tokenType = $token;

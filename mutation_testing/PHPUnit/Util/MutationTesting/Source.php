@@ -58,7 +58,7 @@
  * @link		http://www.phpunit.de/
  * @since		Class available since
  */
-class PHPUnit_Util_Source 
+class PHPUnit_Util_MutationTesting_Source 
 {
 
     /**
@@ -83,7 +83,7 @@ class PHPUnit_Util_Source
 	 * @param	string $fileName
 	 * @access	public
 	 */
-	function PHPUnit_Util_Source ($fileName) 
+	function PHPUnit_Util_MutationTesting_Source ($fileName) 
 	{
 		if (!file_exists ($fileName)) 
 			throw new Exception ("PHPUnit_Util_Source: $fileName not found.");

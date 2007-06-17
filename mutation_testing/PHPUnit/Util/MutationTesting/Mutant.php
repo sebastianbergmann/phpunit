@@ -57,7 +57,7 @@
  * @link		http://www.phpunit.de/
  * @since		Class available since Alpha
  */
- class PHPUnit_Util_Mutant extends PHPUnit_Util_Source
+ class PHPUnit_Util_MutationTesting_Mutant extends PHPUnit_Util_Source
  {
  
     /**
@@ -93,7 +93,7 @@
 	 * @param	string $replaced
 	 * @access	public
 	 */
-	 function PHPUnit_Util_Mutant ($fileName, PHPUnit_Util_MutantOperator $MO, $line, $replaced)
+	 function PHPUnit_Util_MutationTesting_Mutant ($fileName, PHPUnit_Util_MutationTesting_MutantOperator $MO, $line, $replaced)
 	 {
 		$this->setFile ($fileName);
 		$this->mutantOp = $MO;

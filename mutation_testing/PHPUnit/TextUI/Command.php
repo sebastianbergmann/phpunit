@@ -50,6 +50,7 @@ require_once 'PHPUnit/Util/Fileloader.php';
 require_once 'PHPUnit/Util/Filter.php';
 require_once 'PHPUnit/Util/Getopt.php';
 require_once 'PHPUnit/Util/Skeleton.php';
+require_once 'PHPUnit/Util/MutationTesting/MutationTest.php';
 
 PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
 
@@ -139,6 +140,7 @@ class PHPUnit_TextUI_Command
           'log-json=',
           'log-tap=',
           'log-xml=',
+		  'mutation',
           'repeat=',
           'skeleton',
           'tap',
@@ -243,6 +245,10 @@ class PHPUnit_TextUI_Command
                 }
                 break;
 
+				case '--mutation': {
+					$arguments['mutation'] = TRUE;
+				}
+				break;
                 case '--repeat': {
                     $arguments['repeat'] = (int)$option[1];
                 }

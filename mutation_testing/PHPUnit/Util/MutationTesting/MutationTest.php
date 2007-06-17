@@ -53,7 +53,6 @@ require_once ("Operator.php");
 require_once ("MutantOperator.php");
 require_once ("Scanner.php");
 
-include ("Console/Getopt.php");
 
 /**
  * The main class for mutation testing.
@@ -67,116 +66,61 @@ include ("Console/Getopt.php");
  * @since		Class available since
  */
 
-
-		$arguments = handleArguments ();
-		if (!isset ($arguments[0]))
-			die ("Error: Please enter a filename. (--help for info).\n");
-		try {			
-			$original = new PHPUnit_Util_Source ($arguments[0]);
+class PHPUnit_Util_MutationTest
+{
+	public static function mutate (PHPUnit_TextUI_TestRunner $runner, $arguments)
+	{
+		// create PHPUnit_Util_Source from $testFile
+		// record original run information
+		// mutate on Source to create PHPUnit_Util_Mutants
+		// foreach mutant, create a new suite and run tests
+		try {
+			$original = new PHPUnit_Util_MutationTesting_Source ($arguments['testFile']);
 			$pt = new PHPUnit_Util_ParseTree ($original->getSource (), "XSL/mutantWrite.xsl");
 			$operators = getOps ("Operators/Mutant.Ops");
 			
-			$mutants = PHPUnit_Util_Scanner::scan ($pt, $operators);
-			foreach ($mutants as $mutant) { 
-				echo "Replaced: " . $mutant->getReplacedOp ();
-				echo $mutant->getSource () . "\n";
-			}
 			
-			genericRun ($mutants, $original, $arguments[1]);
+			$mutants = PHPUnit_Util_MutationTesting_Scanner::scan ($pt, $operators);
+			foreach ($mutants as $mutant) {
+				$testSuite = mutateSuite ($mutant);
+				$runner->doRun ($testSuite, $arguments);
+			}
 			
 		} catch (Exception $e) {
 			echo $e->getMessage () . "\n";
 		}
+	}
+	
+	
+	function mutateSuite (PHPUnit_Util_MutationTesting_Mutant $mutant)
+	{
+		return ($this->runner->getTest ($mutant->getName (), $mutant->getSource ()));
+	}
+	
 		
-		
-		
-		/**
-		 * Reads from $fileName to create mutant operators. Mutant operator information 
-		 * is delimited by newline characters. Each line is comma delimited and contains 
-		 * the token type, a string representation of the operator, and a set of restrictions.
-		 *
-		 * @param	string $fileName
-		 * @return	array
-		 * access	public
-		 */
-		function getOps ($fileName) 
-		{
-			//$ops = array ();
-			$lines = file ($fileName, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
-			if ($lines == FALSE)
-				throw new Exception ("PHPUnit_Util_MutationTest: Error reading $fileName.");
+	/**
+	 * Reads from $fileName to create mutant operators. Mutant operator information 
+	 * is delimited by newline characters. Each line is comma delimited and contains 
+	 * the token type, a string representation of the operator, and a set of restrictions.
+	 *
+	 * @param	string $fileName
+	 * @return	array
+	 * access	public
+	 */
+	function getOps ($fileName) 
+	{
+		$lines = file ($fileName, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
+		if ($lines == FALSE)
+			throw new Exception ("PHPUnit_Util_MutationTest: Error reading $fileName.");
 				
-			$ops = array ();
-			$i = 0;
-			foreach ($lines as $line) {
-				$params = split (",", $line);
-				$ops[$i++] = new PHPUnit_Util_Operator ($params[1], $params[0], $params[2]);
-			}
-			return ($ops);
+		$ops = array ();
+		$i = 0;
+		foreach ($lines as $line) {
+			$params = split (",", $line);
+			$ops[$i++] = new PHPUnit_Util_MutationTesting_Operator ($params[1], $params[0], $params[2]);
 		}
+		return ($ops);
+	}	
 
-		function handleArguments ()
-		{
-			$arg = array ();
-			$cg = new Console_Getopt ();
-			$allowedShortOptions = "f:t:h";
-			$allowedLongOptions = array ("file=", "tests=", "help");
-			$args = $cg->readPHPArgv ();
-			$ret = $cg->getopt ($args, $allowedShortOptions, $allowedLongOptions);
-		
-			if (PEAR::isError ($ret)) {
-				die ("Error in command line: " . $ret->getMessage () . "\n");
-			}
-
-			$opts = $ret[0];
-			if (sizeof($opts) > 0) {
-				foreach ($opts as $o) {
-					switch ($o[0]) {
-						case 'f':
-						case '--file':
-							$arg[0] = $o[1];
-							break;
-						case '-t':
-						case '--tests':
-							$arg[1] = $o[1];
-							break;
-						case 'h':
-						case '--help':
-							echo "Usage:\n MutationTest.php -f <file>";
-							echo " -t <testFile>\n";
-							echo "<file> indicates the path to the file ";
-							echo "to be tested. <testFile> indicates the file";
-							echo " that is used for unit testing.\n";
-							exit (0);
-							break;
-				}
-					
-			}
-		}
-		return $arg;
-	}
-	
-	
-	
-	function genericRun ($mutants, $source, $testFile)
-	{
-		
-		$testSrc = stripRequire ($source->toString (), $testFile);
-		
-		foreach ($mutants as $mutant) {
-			echo $mutant->getSource () . "\n";
-			$fn = "tempTest.php";
-			if ( ($fh = fopen ($fn, 'w+')) == FALSE)
-				die ("Error: Unable to write to test file!\n");
-			fwrite ($fh, $mutant->toString () . "\n" . $testSrc);
-			`phpunit $fn`;
-		}
-	}
-	
-	function stripRequire ($str, $requireFile)
-	{
-		$newString = str_replace ("require%". basename ($requireFile) ."%);", "", $str);
-		return $str;
-	}
-		
+}
 ?>

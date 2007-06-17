@@ -58,7 +58,7 @@
  * @link		http://www.phpunit.de/
  * @since		Class available since
  */
- class PHPUnit_Util_Scanner
+ class PHPUnit_Util_MutationTesting_Scanner
  {
  
 	/**
@@ -70,7 +70,7 @@
 	 * @access	public
 	 * @static
 	 */
-	 public static function scan (PHPUnit_Util_ParseTree $pt, array $operators) 
+	 public static function scan (PHPUnit_Util_MutationTesting_ParseTree $pt, array $operators) 
 	 {
 		$mutants = array ();
 		$i = 0;
@@ -89,7 +89,8 @@
 						$params = array ('searchID' => $replaceID, 'mutantOperator' => $mutantOp->getOperator ());
 						$pt->replaceAndSave ($tmpFile, $params); 
 						/* Create a new mutant. */
-						$mutants[$i++] = new PHPUnit_Util_Mutant ($tmpFile, $mutantOp, 0, $operator->getOperator ());
+						$mutants[$i++] = new PHPUnit_Util_MutationTesting_Mutant 
+							($tmpFile, $mutantOp, 0, $operator->getOperator ());
 					} 
 				}
 			}
