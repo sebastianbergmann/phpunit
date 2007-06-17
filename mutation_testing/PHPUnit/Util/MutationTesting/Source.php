@@ -83,7 +83,7 @@ class PHPUnit_Util_MutationTesting_Source
 	 * @param  string $fileName
 	 * @access public
 	 */
-	public function __constructor ($fileName) 
+	public function __construct ($fileName) 
 	{
 		if (!file_exists ($fileName)) 
 			throw new Exception ("PHPUnit_Util_Source: $fileName not found.");

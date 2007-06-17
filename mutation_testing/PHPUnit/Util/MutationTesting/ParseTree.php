@@ -89,7 +89,7 @@ define('LIBXML_OPTIONS', LIBXML_DTDLOAD | LIBXML_NOENT | LIBXML_DTDATTR | LIBXML
 	 * @param  string $toSourceStyle
 	 * @access public
 	 */
-	public function __constructor ($fileName, $toSourceStyle) 
+	public function __construct ($fileName, $toSourceStyle) 
 	{
 		if (!is_readable ($fileName))
 			throw new Exception ("PHPUnit_Util_ParseTree: $fileName not found.");

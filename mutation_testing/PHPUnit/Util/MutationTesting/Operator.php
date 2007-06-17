@@ -93,7 +93,7 @@
 	 * @param  string $mutantFile
 	 * @access public
 	 */
-	public function __constructor ($op, $token, $mutantFile)
+	public function __construct ($op, $token, $mutantFile)
 	{
 		$this->operator = $op;
 		$this->tokenType = $token;

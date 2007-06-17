@@ -77,7 +77,7 @@
 	 * @param  array $restr
 	 * @access public
 	 */
-	public function __constructor ($op, $token, array $restr = array())
+	public function __construct ($op, $token, array $restr = array())
 	{
 		$this->operator = $op;
 		$this->tokenType = $token;
