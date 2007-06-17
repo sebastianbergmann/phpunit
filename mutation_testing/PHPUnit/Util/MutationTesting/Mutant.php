@@ -49,52 +49,52 @@
 /**
  * PHPUnit_Util_Mutant contains a mutated source file and a description of the mutation.
  *
- * @category	Testing
- * @package		PHPUnit
- * @author		Mike Lewis <lewismic@grinnell.edu>
- * @copyright	2007 Mike Lewis <lewismic@grinnell.edu>
- * @version		Alpha
- * @link		http://www.phpunit.de/
- * @since		Class available since Alpha
+ * @category    Testing
+ * @package     PHPUnit
+ * @author      Mike Lewis <lewismic@grinnell.edu>
+ * @copyright   2007 Mike Lewis <lewismic@grinnell.edu>
+ * @version
+ * @link        http://www.phpunit.de/
+ * @since
  */
  class PHPUnit_Util_MutationTesting_Mutant extends PHPUnit_Util_Source
  {
  
-    /**
+	/**
 	 * The mutant operator used to create the mutant.
 	 *
-	 * @var		PHPUnit_Util_MutantOperator
-	 * @access	private
+	 * @var    PHPUnit_Util_MutantOperator
+	 * @access private
 	 */
 	private $mutantOp;
 	
     /**
 	 * The line on which the mutation took place.
 	 *
-	 * @var		int
-	 * @access	private
+	 * @var    int
+	 * @access private
 	 */
 	private $mutatedLine;
 	
     /**
 	 * The replaced operator.
 	 *
-	 * @var		string
-	 * @access	private
+	 * @var    string
+	 * @access private
 	 */
 	private $replacedOp;
 	
 	/**
 	 * Constructor.
 	 *
-	 * @param	string $fileName
-	 * @param	PHPUnit_Util_MutantOperator $MO
-	 * @param	int $line
-	 * @param	string $replaced
-	 * @access	public
+	 * @param  string $fileName
+	 * @param  PHPUnit_Util_MutantOperator $MO
+	 * @param  int $line
+	 * @param  string $replaced
+	 * @access public
 	 */
-	 function PHPUnit_Util_MutationTesting_Mutant ($fileName, PHPUnit_Util_MutationTesting_MutantOperator $MO, $line, $replaced)
-	 {
+	public function __construct ($fileName, PHPUnit_Util_MutationTesting_MutantOperator $MO, $line, $replaced)
+	{
 		$this->setFile ($fileName);
 		$this->mutantOp = $MO;
 		$this->mutatedLine = $line;
@@ -106,44 +106,44 @@
 	 *
 	 * @access	public
 	 */
-	 public function kill () 
-	 {
+	public function kill () 
+	{
 		if (unlink (parent::source) == FALSE)
 			throw new Exception ("PHPUnit_Util_Mutant: Error deleting temporary file.");
-	 }
+	}
 	 
 	/**
 	 * Returns the line on which the mutation took place.
 	 *
-	 * @return	int
-	 * @access	public
+	 * @return int
+	 * @access public
 	 */
-	 public function getLine () 
-	 {
+	public function getLine () 
+	{
 		return ($this->mutatedLine);
-	 }
+	}
 
 	/**
 	 * Returns the mutant operator.
 	 *
-	 * @return	PHPUnit_Util_MutantOperator
-	 * @access	public
+	 * @return PHPUnit_Util_MutantOperator
+	 * @access public
 	 */	 
-	 public function getMutantOp () 
-	 {
+	public function getMutantOp () 
+	{
 		return ($this->mutantOp);
-	 }
+	}
 	 
 	/**
 	 * Returns the replaced operator.
 	 *
-	 * @return	string
-	 * @access	public
+	 * @return string
+	 * @access public
 	 */
-	 public function getReplacedOp () 
-	 {
+	public function getReplacedOp () 
+	{
 		return ($this->replacedOp);
-	 }
+	}
 	 
 }
 ?>

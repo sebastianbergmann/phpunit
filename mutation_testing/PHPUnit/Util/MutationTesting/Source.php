@@ -50,13 +50,13 @@
  * PHPUnit_Util_Source contains a source file and methods to track
  * tests run on that source.
  *
- * @category	Testing
- * @package		PHPUnit
- * @author		Mike Lewis <lewismic@grinnell.edu>
- * @copyright	2007 Mike Lewis <lewismic@grinnell.edu>
+ * @category    Testing
+ * @package     PHPUnit
+ * @author      Mike Lewis <lewismic@grinnell.edu>
+ * @copyright   2007 Mike Lewis <lewismic@grinnell.edu>
  * @version		
- * @link		http://www.phpunit.de/
- * @since		Class available since
+ * @link        http://www.phpunit.de/
+ * @since       Class available since
  */
 class PHPUnit_Util_MutationTesting_Source 
 {
@@ -64,26 +64,26 @@ class PHPUnit_Util_MutationTesting_Source
     /**
 	 * The path to the PHP source file.
 	 *
-	 * @var		string
-	 * @access	protected
+	 * @var    string
+	 * @access protected
 	 */
 	protected $sourceFile;
 	
     /**
 	 * The array of test results run on $sourceFile.
 	 *
-	 * @var		array
-	 * @access	protected
+	 * @var    array
+	 * @access protected
 	 */
 	protected $testResults = array ();
 	
 	/**
 	 * Constructor.
 	 *
-	 * @param	string $fileName
-	 * @access	public
+	 * @param  string $fileName
+	 * @access public
 	 */
-	function PHPUnit_Util_MutationTesting_Source ($fileName) 
+	public function __constructor ($fileName) 
 	{
 		if (!file_exists ($fileName)) 
 			throw new Exception ("PHPUnit_Util_Source: $fileName not found.");
@@ -95,9 +95,9 @@ class PHPUnit_Util_MutationTesting_Source
 	 * Returns the differences between the given test results and the
 	 * test results of $this. Not implemented.
 	 *
-	 * @param	array $results
-	 * @return	array
-	 * @access	public
+	 * @param  array $results
+	 * @return array
+	 * @access public
 	 */
 	public function compareResults (array $results) 
 	{
@@ -121,9 +121,9 @@ class PHPUnit_Util_MutationTesting_Source
 	 * Runs the given test cases on $this and saves the results
 	 * in an array. Not implemented.
 	 *
-	 * @param	array $results
-	 * @return	array
-	 * @access	public
+	 * @param  array $results
+	 * @return array
+	 * @access public
 	 */
 	public function runTestCases ($testFile) 
 	{
@@ -134,25 +134,25 @@ class PHPUnit_Util_MutationTesting_Source
 	/**
 	 * Sets the path to the source file.
 	 *
-	 * @param	string $fileName
-	 * @access	public
+	 * @param  string $fileName
+	 * @access public
 	 */
-	 public function setFile ($fileName) 
-	 {
+	public function setFile ($fileName) 
+	{
 		if (!file_exists ($fileName))
 			throw new Exception ("PHPUnit_Util_Source: $fileName not found.");
 		else
 			$this->sourceFile = $fileName;
-	 }
+	}
 	
 	/**
 	 * Returns the path to the source file.
-	 * @return	string
-	 * @access	public
+	 * @return string
+	 * @access public
 	 */
-	 public function getSource () 
-	 {
+	public function getSource () 
+	{
 		return ($this->sourceFile);
-	 }
+	}
 } 
 ?>

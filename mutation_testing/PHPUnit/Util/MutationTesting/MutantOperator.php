@@ -49,13 +49,13 @@
 /**
  * PHPUnit_Util_MutantOperator describes a mutant operator and how it should be applied.
  *
- * @category	Testing
- * @package		PHPUnit
- * @author		Mike Lewis <lewismic@grinnell.edu>
- * @copyright	2007 Mike Lewis <lewismic@grinnell.edu>
+ * @category    Testing
+ * @package     PHPUnit
+ * @author      Mike Lewis <lewismic@grinnell.edu>
+ * @copyright   2007 Mike Lewis <lewismic@grinnell.edu>
  * @version		
- * @link		http://www.phpunit.de/
- * @since		Class available since
+ * @link        http://www.phpunit.de/
+ * @since       Class available since
  */
  class PHPUnit_Util_MutationTesting_MutantOperator extends PHPUnit_Util_MutationTesting_Operator
  {
@@ -63,8 +63,8 @@
     /**
 	 * An array describing the limits of application for the operator.
 	 *
-	 * @var		array
-	 * @access	private
+	 * @var	   array
+	 * @access private
 	 */
 	private $restrictions = array ();
 	
@@ -72,29 +72,29 @@
 	/**
 	 * Constructor.
 	 *
-	 * @param	string $op
-	 * @param	string $token
-	 * @param	array $restr
-	 * @access	public
+	 * @param  string $op
+	 * @param  string $token
+	 * @param  array $restr
+	 * @access public
 	 */
-	 function PHPUnit_Util_MutationTesting_MutantOperator ($op, $token, array $restr = array())
-	 {
-			$this->operator = $op;
-			$this->tokenType = $token;
-			$this->restrictions = $restr;
+	public function __constructor ($op, $token, array $restr = array())
+	{
+		$this->operator = $op;
+		$this->tokenType = $token;
+		$this->restrictions = $restr;
 	}
 	
 	 
 	/**
 	 * Returns true if the mutant is trivial. Not implemented. 
 	 *
-	 * @param	string $token
-	 * @return	boolean
-	 * @access	public
+	 * @param  string $token
+	 * @return boolean
+	 * @access public
 	 */
-	 public function isTrivial () 
-	 {
+	public function isTrivial () 
+	{
 
-	 }
+	}
 }
 ?>

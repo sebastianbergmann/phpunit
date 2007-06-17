@@ -50,13 +50,13 @@
 /**
  * PHPUnit_Util_Scanner searches a parse tree for potential mutants and creates them.
  *
- * @category	Testing
- * @package		PHPUnit
- * @author		Mike Lewis <lewismic@grinnell.edu>
- * @copyright	2007 Mike Lewis <lewismic@grinnell.edu>
+ * @category    Testing
+ * @package     PHPUnit
+ * @author      Mike Lewis <lewismic@grinnell.edu>
+ * @copyright   2007 Mike Lewis <lewismic@grinnell.edu>
  * @version		
- * @link		http://www.phpunit.de/
- * @since		Class available since
+ * @link        http://www.phpunit.de/
+ * @since       Class available since
  */
  class PHPUnit_Util_MutationTesting_Scanner
  {
@@ -64,14 +64,14 @@
 	/**
 	 * Scans the given parse tree for potential mutants and creates them.
 	 *
-	 * @param	PHPUnit_Util_ParseTree $pt
-	 * @param	array $operators
-	 * @return	array
-	 * @access	public
+	 * @param  PHPUnit_Util_ParseTree $pt
+	 * @param  array $operators
+	 * @return array
+	 * @access public
 	 * @static
 	 */
-	 public static function scan (PHPUnit_Util_MutationTesting_ParseTree $pt, array $operators) 
-	 {
+	public static function scan (PHPUnit_Util_MutationTesting_ParseTree $pt, array $operators) 
+	{
 		$mutants = array ();
 		$i = 0;
 		foreach ($operators as $operator) {
@@ -96,6 +96,6 @@
 			}
 		}
 		return ($mutants);
-	 }
+	}
 }
 ?>

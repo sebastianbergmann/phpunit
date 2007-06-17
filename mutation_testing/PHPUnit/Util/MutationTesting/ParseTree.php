@@ -55,29 +55,29 @@ define('LIBXML_OPTIONS', LIBXML_DTDLOAD | LIBXML_NOENT | LIBXML_DTDATTR | LIBXML
 /**
  * PHPUnit_Util_ParseTree describes a PHP source code in BNF form.
  *
- * @category	Testing
- * @package		PHPUnit
- * @author		Mike Lewis <lewismic@grinnell.edu>
- * @copyright	2007 Mike Lewis <lewismic@grinnell.edu>
+ * @category    Testing
+ * @package     PHPUnit
+ * @author      Mike Lewis <lewismic@grinnell.edu>
+ * @copyright   2007 Mike Lewis <lewismic@grinnell.edu>
  * @version		
- * @link		http://www.phpunit.de/
- * @since		Class available since
+ * @link        http://www.phpunit.de/
+ * @since       Class available since
  */
  class PHPUnit_Util_MutationTesting_ParseTree
  {
     /**
 	 * Describes a PHP source in BNF. 
 	 *
-	 * @var		DOMDocument
-	 * @access	private
+	 * @var    DOMDocument
+	 * @access private
 	 */
 	private $parseTree;
 	
     /**
 	 * Used to transform a parse tree to a mutated PHP source file.
 	 *
-	 * @var		XSLTProcessor
-	 * @access	private
+	 * @var    XSLTProcessor
+	 * @access private
 	 */
 	private $toMutantSource;
 	
@@ -85,12 +85,12 @@ define('LIBXML_OPTIONS', LIBXML_DTDLOAD | LIBXML_NOENT | LIBXML_DTDATTR | LIBXML
 	/**
 	 * Constructor.
 	 *
-	 * @param	string $fileName
-	 * @param	string $toSourceStyle
-	 * @access	public
+	 * @param  string $fileName
+	 * @param  string $toSourceStyle
+	 * @access public
 	 */
-	 function PHPUnit_Util_MutationTesting_ParseTree ($fileName, $toSourceStyle) 
-	 {
+	public function __constructor ($fileName, $toSourceStyle) 
+	{
 		if (!is_readable ($fileName))
 			throw new Exception ("PHPUnit_Util_ParseTree: $fileName not found.");
 		else if (!is_readable ($toSourceStyle))
@@ -108,30 +108,30 @@ define('LIBXML_OPTIONS', LIBXML_DTDLOAD | LIBXML_NOENT | LIBXML_DTDATTR | LIBXML
 			$xml->load ($toSourceStyle, LIBXML_OPTIONS);
 			$this->toMutantSource->importStyleSheet ($xml);
 		}
-	 }
+	}
 	 
-	 /**
-	  * Fetches the elements in the parse tree with the given tag name. 
-	  *
-	  * @param	string $name
-	  * @return	DOMNodeList
-	  * @access	public
-	  */		
-	  public function getElements ($name) 
-	  {
+	/**
+	 * Fetches the elements in the parse tree with the given tag name. 
+	 *
+	 * @param	string $name
+	 * @return	DOMNodeList
+	 * @access public
+	 */		
+	public function getElements ($name) 
+	{
 		return ($this->parseTree->getElementsByTagName ($name));
-	  }
+	}
 	  
-	 /**
-	  * Replaces the node pointed to by $ID in the parse tree with the given
-	  * mutant operator and save to $fileName.
-	  *
-	  * @param	string $fileName
-	  * @param	array $params
-	  * @access	public
-	  */
-	  public function replaceAndSave ($fileName, array $params)
-	  {
+	/**
+	 * Replaces the node pointed to by $ID in the parse tree with the given
+	 * mutant operator and save to $fileName.
+	 *
+	 * @param  string $fileName
+	 * @param  array $params
+	 * @access public
+	 */
+	public function replaceAndSave ($fileName, array $params)
+	{
 		if ( ($fh = fopen ($fileName, 'w')) == FALSE)
 			throw new Exception ("PHPUnit_Util_ParseTree: Error opening file $fileName.");
 			
@@ -143,10 +143,10 @@ define('LIBXML_OPTIONS', LIBXML_DTDLOAD | LIBXML_NOENT | LIBXML_DTDATTR | LIBXML
 		/* Save the transformed results. */
 		if (fwrite ($fh, $this->toMutantSource->transformToXML ($this->parseTree)) == FALSE)
 			throw new Exception ("PHPUnit_Util_ParseTree: Error saving mutated source.");
-	  }
+	}
 
 
-	private function _traverse ($n, $level) {
+	private function traverse ($n, $level) {
 		for ($i=0;$i<$level;$i++)
 			echo " ";
 		if ($n->nodeType == XML_ELEMENT_NODE)
@@ -156,7 +156,7 @@ define('LIBXML_OPTIONS', LIBXML_DTDLOAD | LIBXML_NOENT | LIBXML_DTDATTR | LIBXML
 		if ($n->hasChildNodes ()) {
 			$level++;
 			foreach ($n->childNodes as $child)
-				$this->_traverse ($child, $level);
+				$this->traverse ($child, $level);
 		}
 	}
 }

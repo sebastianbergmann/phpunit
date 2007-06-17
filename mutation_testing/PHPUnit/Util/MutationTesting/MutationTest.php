@@ -46,12 +46,12 @@
  */
 
 
-require_once ("Source.php");
-require_once ("Mutant.php");
-require_once ("ParseTree.php");
-require_once ("Operator.php");
-require_once ("MutantOperator.php");
-require_once ("Scanner.php");
+require_once 'Source.php"';
+require_once 'Mutant.php';
+require_once 'ParseTree.php';
+require_once 'Operator.php';
+require_once 'MutantOperator.php';
+require_once 'Scanner.php';
 
 
 /**
@@ -68,17 +68,13 @@ require_once ("Scanner.php");
 
 class PHPUnit_Util_MutationTest
 {
+	
 	public static function mutate (PHPUnit_TextUI_TestRunner $runner, $arguments)
 	{
-		// create PHPUnit_Util_Source from $testFile
-		// record original run information
-		// mutate on Source to create PHPUnit_Util_Mutants
-		// foreach mutant, create a new suite and run tests
 		try {
 			$original = new PHPUnit_Util_MutationTesting_Source ($arguments['testFile']);
 			$pt = new PHPUnit_Util_ParseTree ($original->getSource (), "XSL/mutantWrite.xsl");
 			$operators = getOps ("Operators/Mutant.Ops");
-			
 			
 			$mutants = PHPUnit_Util_MutationTesting_Scanner::scan ($pt, $operators);
 			foreach ($mutants as $mutant) {
@@ -92,7 +88,7 @@ class PHPUnit_Util_MutationTest
 	}
 	
 	
-	function mutateSuite (PHPUnit_Util_MutationTesting_Mutant $mutant)
+	private function mutateSuite (PHPUnit_Util_MutationTesting_Mutant $mutant)
 	{
 		return ($this->runner->getTest ($mutant->getName (), $mutant->getSource ()));
 	}
@@ -103,11 +99,11 @@ class PHPUnit_Util_MutationTest
 	 * is delimited by newline characters. Each line is comma delimited and contains 
 	 * the token type, a string representation of the operator, and a set of restrictions.
 	 *
-	 * @param	string $fileName
-	 * @return	array
-	 * access	public
+	 * @param  string $fileName
+	 * @return array
+	 * @access public
 	 */
-	function getOps ($fileName) 
+	private function getOps ($fileName) 
 	{
 		$lines = file ($fileName, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
 		if ($lines == FALSE)
