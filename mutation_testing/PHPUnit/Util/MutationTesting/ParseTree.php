@@ -1,5 +1,4 @@
 <?php
-
 /**
  * PHPUnit
  *
@@ -37,12 +36,12 @@
  *
  * @category   Testing
  * @package    PHPUnit
- * @author     Sebastian Bergmann <sb@sebastian-bergmann.de>
+ * @author     Mike Lewis <lewismic@grinnell.edu>
  * @copyright  2002-2007 Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
- * @version    
+ * @version    Release: @package_version@
  * @link       http://www.phpunit.de/
- * @since      
+ * @since      File available since Release 4.0.0
  */
 
 if (!extension_loaded('sqlite')) {
@@ -55,110 +54,122 @@ define('LIBXML_OPTIONS', LIBXML_DTDLOAD | LIBXML_NOENT | LIBXML_DTDATTR | LIBXML
 /**
  * PHPUnit_Util_ParseTree describes a PHP source code in BNF form.
  *
- * @category    Testing
- * @package     PHPUnit
- * @author      Mike Lewis <lewismic@grinnell.edu>
- * @copyright   2007 Mike Lewis <lewismic@grinnell.edu>
- * @version		
- * @link        http://www.phpunit.de/
- * @since       Class available since
+ * @category   Testing
+ * @package    PHPUnit
+ * @author     Mike Lewis <lewismic@grinnell.edu>
+ * @copyright  2002-2007 Sebastian Bergmann <sb@sebastian-bergmann.de>
+ * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
+ * @version    Release: @package_version@
+ * @link       http://www.phpunit.de/
+ * @since      Class available since Release 4.0.0
  */
  class PHPUnit_Util_MutationTesting_ParseTree
  {
     /**
-	 * Describes a PHP source in BNF. 
-	 *
-	 * @var    DOMDocument
-	 * @access private
-	 */
-	private $parseTree;
-	
+     * Describes a PHP source in BNF. 
+     *
+     * @var    DOMDocument
+     * @access private
+     */
+    private $parseTree;
+
     /**
-	 * Used to transform a parse tree to a mutated PHP source file.
-	 *
-	 * @var    XSLTProcessor
-	 * @access private
-	 */
-	private $toMutantSource;
-	
-	
-	/**
-	 * Constructor.
-	 *
-	 * @param  string $fileName
-	 * @param  string $toSourceStyle
-	 * @access public
-	 */
-	public function __construct ($fileName, $toSourceStyle) 
-	{
-		if (!is_readable ($fileName))
-			throw new Exception ("PHPUnit_Util_ParseTree: $fileName not found.");
-		else if (!is_readable ($toSourceStyle))
-			throw new Exception ("PHPUnit_Util_ParseTree: $toSourceStyle not found.");
-		else {
-			$this->parseTree = new DOMDocument ();
-			$xml = new DOMDocument ();
-			$this->toMutantSource = new XSLTProcessor ();	
-			
-			/* Load the parse tree DOM using the "parse_tree" package. */
-			if ($this->parseTree->loadXML (parse_tree_from_file ($fileName), LIBXML_OPTIONS) == FALSE)
-				throw new Exception ("PHPUnit_Util_ParseTree: Error loading XML from string.");
+     * Used to transform a parse tree to a mutated PHP source file.
+     *
+     * @var    XSLTProcessor
+     * @access private
+     */
+    private $toMutantSource;
 
-			/* Set up the XSLTProcessor. */
-			$xml->load ($toSourceStyle, LIBXML_OPTIONS);
-			$this->toMutantSource->importStyleSheet ($xml);
-		}
-	}
-	 
-	/**
-	 * Fetches the elements in the parse tree with the given tag name. 
-	 *
-	 * @param	string $name
-	 * @return	DOMNodeList
-	 * @access public
-	 */		
-	public function getElements ($name) 
-	{
-		return ($this->parseTree->getElementsByTagName ($name));
-	}
-	  
-	/**
-	 * Replaces the node pointed to by $ID in the parse tree with the given
-	 * mutant operator and save to $fileName.
-	 *
-	 * @param  string $fileName
-	 * @param  array $params
-	 * @access public
-	 */
-	public function replaceAndSave ($fileName, array $params)
-	{
-		if ( ($fh = fopen ($fileName, 'w')) == FALSE)
-			throw new Exception ("PHPUnit_Util_ParseTree: Error opening file $fileName.");
-			
-		$ns = $this->parseTree->firstChild->namespaceURI;
-		/* Set the $searchID parameter in the toMutantSource XSL Stylesheet. */
-		$this->toMutantSource->setParameter ($ns, $params);
+    /**
+     * Constructor.
+     *
+     * @param  string $fileName
+     * @param  string $toSourceStyle
+     * @access public
+     */
+    public function __construct($fileName, $toSourceStyle) 
+    {
+        if (!is_readable ($fileName)) {
+            throw new RuntimeException("PHPUnit_Util_ParseTree: $fileName not found.");
+        }
 
-		
-		/* Save the transformed results. */
-		if (fwrite ($fh, $this->toMutantSource->transformToXML ($this->parseTree)) == FALSE)
-			throw new Exception ("PHPUnit_Util_ParseTree: Error saving mutated source.");
-	}
+        if (!is_readable($toSourceStyle)) {
+            throw new Exception ("PHPUnit_Util_ParseTree: $toSourceStyle not found.");
+        }
 
+        $this->parseTree = new DOMDocument;
+        $xml = new DOMDocument;
+        $this->toMutantSource = new XSLTProcessor;
 
-	private function traverse ($n, $level) {
-		for ($i=0;$i<$level;$i++)
-			echo " ";
-		if ($n->nodeType == XML_ELEMENT_NODE)
-			echo $n->nodeName . " > " . $n->nodeType . "\n";
-		else if ($n->data != "")
-			echo $n->data . " > " . $n->nodeType . "\n";
-		if ($n->hasChildNodes ()) {
-			$level++;
-			foreach ($n->childNodes as $child)
-				$this->traverse ($child, $level);
-		}
-	}
+        /* Load the parse tree DOM using the "parse_tree" package. */
+        if ($this->parseTree->loadXML(parse_tree_from_file($fileName), LIBXML_OPTIONS) == FALSE) {
+            throw new RuntimeException("PHPUnit_Util_ParseTree: Error loading XML from string.");
+        }
+
+        /* Set up the XSLTProcessor. */
+        $xml->load($toSourceStyle, LIBXML_OPTIONS);
+        $this->toMutantSource->importStyleSheet($xml);
+    }
+
+    /**
+     * Fetches the elements in the parse tree with the given tag name. 
+     *
+     * @param    string $name
+     * @return    DOMNodeList
+     * @access public
+     */        
+    public function getElements($name)
+    {
+        return $this->parseTree->getElementsByTagName($name);
+    }
+
+    /**
+     * Replaces the node pointed to by $ID in the parse tree with the given
+     * mutant operator and save to $fileName.
+     *
+     * @param  string $fileName
+     * @param  array $params
+     * @access public
+     */
+    public function replaceAndSave ($fileName, array $params)
+    {
+        if (($fh = fopen($fileName, 'w')) === FALSE) {
+            throw new RuntimeException("PHPUnit_Util_ParseTree: Error opening file $fileName.");
+        }
+
+        $ns = $this->parseTree->firstChild->namespaceURI;
+
+        /* Set the $searchID parameter in the toMutantSource XSL Stylesheet. */
+        $this->toMutantSource->setParameter ($ns, $params);
+
+        /* Save the transformed results. */
+        if (fwrite($fh, $this->toMutantSource->transformToXML($this->parseTree)) === FALSE) {
+            throw new RuntimeException("PHPUnit_Util_ParseTree: Error saving mutated source.");
+        }
+    }
+
+    private function traverse ($n, $level)
+    {
+        for ($i = 0; $i < $level; $i++) {
+            print ' ';
+        }
+
+        if ($n->nodeType == XML_ELEMENT_NODE) {
+            print $n->nodeName . ' > ' . $n->nodeType . "\n";
+        }
+
+        else if ($n->data != '') {
+            print $n->data . ' > ' . $n->nodeType . "\n";
+        }
+
+        if ($n->hasChildNodes()) {
+            $level++;
+
+            foreach ($n->childNodes as $child) {
+                $this->traverse($child, $level);
+            }
+        }
+    }
 }
 ?>
-	 

@@ -1,5 +1,4 @@
 <?php
-
 /**
  * PHPUnit
  *
@@ -37,122 +36,121 @@
  *
  * @category   Testing
  * @package    PHPUnit
- * @author     Sebastian Bergmann <sb@sebastian-bergmann.de>
+ * @author     Mike Lewis <lewismic@grinnell.edu>
  * @copyright  2002-2007 Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
- * @version    
+ * @version    Release: @package_version@
  * @link       http://www.phpunit.de/
- * @since      
+ * @since      File available since Release 4.0.0
  */
-
 
 /**
  * PHPUnit_Util_Source contains a source file and methods to track
  * tests run on that source.
  *
- * @category    Testing
- * @package     PHPUnit
- * @author      Mike Lewis <lewismic@grinnell.edu>
- * @copyright   2007 Mike Lewis <lewismic@grinnell.edu>
- * @version		
- * @link        http://www.phpunit.de/
- * @since       Class available since
+ * @category   Testing
+ * @package    PHPUnit
+ * @author     Mike Lewis <lewismic@grinnell.edu>
+ * @copyright  2002-2007 Sebastian Bergmann <sb@sebastian-bergmann.de>
+ * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
+ * @version    Release: @package_version@
+ * @link       http://www.phpunit.de/
+ * @since      Class available since Release 4.0.0
  */
 class PHPUnit_Util_MutationTesting_Source 
 {
+    /**
+     * The path to the PHP source file.
+     *
+     * @var    string
+     * @access protected
+     */
+    protected $sourceFile;
 
     /**
-	 * The path to the PHP source file.
-	 *
-	 * @var    string
-	 * @access protected
-	 */
-	protected $sourceFile;
-	
+     * The array of test results run on $sourceFile.
+     *
+     * @var    array
+     * @access protected
+     */
+    protected $testResults = array();
+
     /**
-	 * The array of test results run on $sourceFile.
-	 *
-	 * @var    array
-	 * @access protected
-	 */
-	protected $testResults = array ();
-	
-	/**
-	 * Constructor.
-	 *
-	 * @param  string $fileName
-	 * @access public
-	 */
-	public function __construct ($fileName) 
-	{
-		if (!file_exists ($fileName)) 
-			throw new Exception ("PHPUnit_Util_Source: $fileName not found.");
-		else
-			$this->sourceFile = $fileName;
-	}
-	
-	/**
-	 * Returns the differences between the given test results and the
-	 * test results of $this. Not implemented.
-	 *
-	 * @param  array $results
-	 * @return array
-	 * @access public
-	 */
-	public function compareResults (array $results) 
-	{
-		$diff = array ();
-		
-		if (count ($results) == count ($testResults)) {
-			/* compare results here */
-			
-		} else 
-			throw new Exception ("PHPUnit_Util_Source: Mismatching results arrays in compareResults.");
-		
-		return ($diff);
-	} 
-	
-	public function toString () 
-	{
-		return (file_get_contents ($this->sourceFile));
-	}
-	
-	/**
-	 * Runs the given test cases on $this and saves the results
-	 * in an array. Not implemented.
-	 *
-	 * @param  array $results
-	 * @return array
-	 * @access public
-	 */
-	public function runTestCases ($testFile) 
-	{
-	
-		
-	}
-	
-	/**
-	 * Sets the path to the source file.
-	 *
-	 * @param  string $fileName
-	 * @access public
-	 */
-	public function setFile ($fileName) 
-	{
-		if (!file_exists ($fileName))
-			throw new Exception ("PHPUnit_Util_Source: $fileName not found.");
-		else
-			$this->sourceFile = $fileName;
-	}
-	
-	/**
-	 * Returns the path to the source file.
-	 * @return string
-	 * @access public
-	 */
-	public function getSource () 
-	{
-		return ($this->sourceFile);
-	}
+     * Constructor.
+     *
+     * @param  string $fileName
+     * @access public
+     */
+    public function __construct($fileName)
+    {
+        if (!file_exists ($fileName)) {
+            throw new RuntimeException("PHPUnit_Util_Source: $fileName not found.");
+        }
+
+        $this->sourceFile = $fileName;
+    }
+    
+    /**
+     * Returns the differences between the given test results and the
+     * test results of $this. Not implemented.
+     *
+     * @param  array $results
+     * @return array
+     * @access public
+     */
+    public function compareResults(array $results)
+    {
+        $diff = array();
+
+        if (count($results) == count($testResults)) {
+            /* compare results here */
+        } else {
+            throw new RuntimeException("PHPUnit_Util_Source: Mismatching results arrays in compareResults.");
+        }
+
+        return $diff;
+    } 
+
+    public function toString()
+    {
+        return file_get_contents($this->sourceFile);
+    }
+
+    /**
+     * Runs the given test cases on $this and saves the results
+     * in an array. Not implemented.
+     *
+     * @param  array $results
+     * @return array
+     * @access public
+     */
+    public function runTestCases($testFile)
+    {
+    }
+
+    /**
+     * Sets the path to the source file.
+     *
+     * @param  string $fileName
+     * @access public
+     */
+    public function setFile($fileName)
+    {
+        if (!file_exists ($fileName)) {
+            throw new RuntimeException ("PHPUnit_Util_Source: $fileName not found.");
+        }
+
+        $this->sourceFile = $fileName;
+    }
+
+    /**
+     * Returns the path to the source file.
+     * @return string
+     * @access public
+     */
+    public function getSource()
+    {
+        return $this->sourceFile;
+    }
 } 
 ?>

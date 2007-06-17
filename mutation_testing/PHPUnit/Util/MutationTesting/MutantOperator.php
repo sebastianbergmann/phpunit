@@ -1,5 +1,4 @@
 <?php
-
 /**
  * PHPUnit
  *
@@ -37,64 +36,60 @@
  *
  * @category   Testing
  * @package    PHPUnit
- * @author     Sebastian Bergmann <sb@sebastian-bergmann.de>
+ * @author     Mike Lewis <lewismic@grinnell.edu>
  * @copyright  2002-2007 Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
- * @version    
+ * @version    Release: @package_version@
  * @link       http://www.phpunit.de/
- * @since      
+ * @since      File available since Release 4.0.0
  */
-
 
 /**
  * PHPUnit_Util_MutantOperator describes a mutant operator and how it should be applied.
  *
- * @category    Testing
- * @package     PHPUnit
- * @author      Mike Lewis <lewismic@grinnell.edu>
- * @copyright   2007 Mike Lewis <lewismic@grinnell.edu>
- * @version		
- * @link        http://www.phpunit.de/
- * @since       Class available since
+ * @category   Testing
+ * @package    PHPUnit
+ * @author     Mike Lewis <lewismic@grinnell.edu>
+ * @copyright  2002-2007 Sebastian Bergmann <sb@sebastian-bergmann.de>
+ * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
+ * @version    Release: @package_version@
+ * @link       http://www.phpunit.de/
+ * @since      Class available since Release 4.0.0
  */
- class PHPUnit_Util_MutationTesting_MutantOperator extends PHPUnit_Util_MutationTesting_Operator
- {
-	
+class PHPUnit_Util_MutationTesting_MutantOperator extends PHPUnit_Util_MutationTesting_Operator
+{
     /**
-	 * An array describing the limits of application for the operator.
-	 *
-	 * @var	   array
-	 * @access private
-	 */
-	private $restrictions = array ();
-	
-	
-	/**
-	 * Constructor.
-	 *
-	 * @param  string $op
-	 * @param  string $token
-	 * @param  array $restr
-	 * @access public
-	 */
-	public function __construct ($op, $token, array $restr = array())
-	{
-		$this->operator = $op;
-		$this->tokenType = $token;
-		$this->restrictions = $restr;
-	}
-	
-	 
-	/**
-	 * Returns true if the mutant is trivial. Not implemented. 
-	 *
-	 * @param  string $token
-	 * @return boolean
-	 * @access public
-	 */
-	public function isTrivial () 
-	{
+     * An array describing the limits of application for the operator.
+     *
+     * @var       array
+     * @access private
+     */
+    private $restrictions = array();
 
-	}
+    /**
+     * Constructor.
+     *
+     * @param  string $operator
+     * @param  string $token
+     * @param  array $restr
+     * @access public
+     */
+    public function __construct($operator, $token, array $restr = array())
+    {
+        $this->operator     = $operator;
+        $this->tokenType    = $token;
+        $this->restrictions = $restr;
+    }
+
+    /**
+     * Returns true if the mutant is trivial. Not implemented. 
+     *
+     * @param  string $token
+     * @return boolean
+     * @access public
+     */
+    public function isTrivial()
+    {
+    }
 }
 ?>

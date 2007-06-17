@@ -1,5 +1,4 @@
 <?php
-
 /**
  * PHPUnit
  *
@@ -37,65 +36,75 @@
  *
  * @category   Testing
  * @package    PHPUnit
- * @author     Sebastian Bergmann <sb@sebastian-bergmann.de>
+ * @author     Mike Lewis <lewismic@grinnell.edu>
  * @copyright  2002-2007 Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
- * @version    
+ * @version    Release: @package_version@
  * @link       http://www.phpunit.de/
- * @since      
+ * @since      File available since Release 4.0.0
  */
-
-
 
 /**
  * PHPUnit_Util_Scanner searches a parse tree for potential mutants and creates them.
  *
- * @category    Testing
- * @package     PHPUnit
- * @author      Mike Lewis <lewismic@grinnell.edu>
- * @copyright   2007 Mike Lewis <lewismic@grinnell.edu>
- * @version		
- * @link        http://www.phpunit.de/
- * @since       Class available since
+ * @category   Testing
+ * @package    PHPUnit
+ * @author     Mike Lewis <lewismic@grinnell.edu>
+ * @copyright  2002-2007 Sebastian Bergmann <sb@sebastian-bergmann.de>
+ * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
+ * @version    Release: @package_version@
+ * @link       http://www.phpunit.de/
+ * @since      Class available since Release 4.0.0
  */
  class PHPUnit_Util_MutationTesting_Scanner
  {
- 
-	/**
-	 * Scans the given parse tree for potential mutants and creates them.
-	 *
-	 * @param  PHPUnit_Util_ParseTree $pt
-	 * @param  array $operators
-	 * @return array
-	 * @access public
-	 * @static
-	 */
-	public static function scan (PHPUnit_Util_MutationTesting_ParseTree $pt, array $operators) 
-	{
-		$mutants = array ();
-		$i = 0;
-		foreach ($operators as $operator) {
-			/* Search the tree for a mutatable token type. */
-			$nodeList = $pt->getElements ($operator->getTokenType ());
-			foreach ($nodeList as $node) {
-				if ($node->nodeType == XML_ELEMENT_NODE) {
-					/* Get the ID of the node to replace. */
-					$replaceID = $node->getAttribute ("id");
-					foreach ($operator->getReplaceWith () as $mutantOp) {
-						/* Make a temporary file for the mutated source file. */
-						if ( ($tmpFile = tempnam ("/mutants", "MUTANT")) == FALSE)
-							throw new Exception ("PHPUnit_Util_Scanner: Error creating temp file.");
-						/* Replace the operator and save it to the temp file. */
-						$params = array ('searchID' => $replaceID, 'mutantOperator' => $mutantOp->getOperator ());
-						$pt->replaceAndSave ($tmpFile, $params); 
-						/* Create a new mutant. */
-						$mutants[$i++] = new PHPUnit_Util_MutationTesting_Mutant 
-							($tmpFile, $mutantOp, 0, $operator->getOperator ());
-					} 
-				}
-			}
-		}
-		return ($mutants);
-	}
+    /**
+     * Scans the given parse tree for potential mutants and creates them.
+     *
+     * @param  PHPUnit_Util_ParseTree $pt
+     * @param  array $operators
+     * @return array
+     * @access public
+     * @static
+     */
+    public static function scan (PHPUnit_Util_MutationTesting_ParseTree $pt, array $operators) 
+    {
+        $mutants = array ();
+        $i       = 0;
+
+        foreach ($operators as $operator) {
+            /* Search the tree for a mutatable token type. */
+            $nodeList = $pt->getElements($operator->getTokenType());
+
+            foreach ($nodeList as $node) {
+                if ($node->nodeType == XML_ELEMENT_NODE) {
+                    /* Get the ID of the node to replace. */
+                    $replaceID = $node->getAttribute('id');
+
+                    foreach ($operator->getReplaceWith () as $mutantOp) {
+                        /* Make a temporary file for the mutated source file. */
+                        if (($tmpFile = tempnam('/mutants', 'MUTANT')) == FALSE) {
+                            throw new RuntimeException("PHPUnit_Util_Scanner: Error creating temp file.");
+                        }
+
+                        /* Replace the operator and save it to the temp file. */
+                        $params = array(
+                          'searchID'       => $replaceID,
+                          'mutantOperator' => $mutantOp->getOperator()
+                        );
+
+                        $pt->replaceAndSave($tmpFile, $params); 
+
+                        /* Create a new mutant. */
+                        $mutants[$i++] = new PHPUnit_Util_MutationTesting_Mutant(
+                          $tmpFile, $mutantOp, 0, $operator->getOperator ()
+                        );
+                    } 
+                }
+            }
+        }
+
+        return $mutants;
+    }
 }
 ?>

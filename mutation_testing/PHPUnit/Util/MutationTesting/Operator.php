@@ -1,5 +1,4 @@
 <?php
-
 /**
  * PHPUnit
  *
@@ -37,140 +36,147 @@
  *
  * @category   Testing
  * @package    PHPUnit
- * @author     Sebastian Bergmann <sb@sebastian-bergmann.de>
+ * @author     Mike Lewis <lewismic@grinnell.edu>
  * @copyright  2002-2007 Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
- * @version    
+ * @version    Release: @package_version@
  * @link       http://www.phpunit.de/
- * @since      
+ * @since      File available since Release 4.0.0
  */
-
 
 /**
  * PHPUnit_Util_Operator describes an operator. 
  *
- * @category    Testing
- * @package     PHPUnit
- * @author      Mike Lewis <lewismic@grinnell.edu>
- * @copyright   2007 Mike Lewis <lewismic@grinnell.edu>
- * @version		
- * @link        http://www.phpunit.de/
- * @since       Class available since
+ * @category   Testing
+ * @package    PHPUnit
+ * @author     Mike Lewis <lewismic@grinnell.edu>
+ * @copyright  2002-2007 Sebastian Bergmann <sb@sebastian-bergmann.de>
+ * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
+ * @version    Release: @package_version@
+ * @link       http://www.phpunit.de/
+ * @since      Class available since Release 4.0.0
  */
- class PHPUnit_Util_MutationTesting_Operator 
- {
- 
-	/**
-	 * The string representation of the operator.
-	 *
-	 * @var    string
-	 * @access protected
-	 */
-	protected $operator;
-	
+class PHPUnit_Util_MutationTesting_Operator 
+{
     /**
-	 * The token type of the operator.
-	 *
-	 * @var    string
-	 * @access protected
-	 */
-	protected $tokenType;
-	
-    /**
-	 * An array describing mutant operators to replace the current operator with.
-	 *
-	 * @var    array
-	 * @access private
-	 */
-	private $replaceWith = array ();
- 
- 	/**
-	 * Constructor.
-	 *
-	 * @param  string $op
-	 * @param  string $token
-	 * @param  array $restr
-	 * @param  string $mutantFile
-	 * @access public
-	 */
-	public function __construct ($op, $token, $mutantFile)
-	{
-		$this->operator = $op;
-		$this->tokenType = $token;
-		$this->replaceWith = $this->getMutantOps ($mutantFile);
-	}
+     * The string representation of the operator.
+     *
+     * @var    string
+     * @access protected
+     */
+    protected $operator;
 
-	/**
-	 * Returns the string representation of the mutation operator (lexeme).
-	 *
-	 * @return string
-	 * @access public
-	 */
-	public function getOperator () 
-	{
-		return ($this->operator);
-	}
-	 
-	/**
-	 * Returns the token type of the mutation operator.
-	 *
-	 * @return string
-	 * @access public
-	 */
-	public function getTokenType () 
-	{
-		return ($this->tokenType);
-	}
-	 
-	/**
-	 * Returns an array of mutant operators to place the current operator with.
-	 *
-	 * @return string
-	 * @access public
-	 */
-	public function getReplaceWith () 
-	{
-		return ($this->replaceWith);
-	}
-	 
- 	/**
-	 * Returns an array of mutant operators as read from the mutant file.
-	 *
-	 * @param  string $fileName
-	 * @return array
-	 * @access private
-	 */	
-	private function getMutantOps ($fileName) 
-	{
-		$lines = file ($fileName, FILE_SKIP_EMPTY_LINES);
-		if ($lines == FALSE)
-			throw new Exception ("PHPUnit_Util_MutationTest: Error reading $fileName.");
-		$mutOps = array ();			
-		$i = 0;
-		foreach ($lines as $line) {
-			$params = split (",", $line);
-			$mutOps[$i++] = new PHPUnit_Util_MutationTesting_MutantOperator 
-				($params[1], $params[0], $this->restrictionArray ($params[2]));
-		}		
-		return ($mutOps);
-	}
-	
-	/**
-	 * Splits the string of restriction read from the mutant ops file into an array.
-	 * 
-	 * @param  string $str
-	 * @return array
-	 * @access private
-	 */
-	private function restrictionArray ($str) 
-	{
-		$results = array ();
-		if (strpos ($str, ":")) 
-			$results = split (":", $str);
-		else
-			$results [0] = $str;
-			
-		return ($results);
-	}
+    /**
+     * The token type of the operator.
+     *
+     * @var    string
+     * @access protected
+     */
+    protected $tokenType;
+
+    /**
+     * An array describing mutant operators to replace the current operator with.
+     *
+     * @var    array
+     * @access private
+     */
+    private $replaceWith = array();
+
+    /**
+     * Constructor.
+     *
+     * @param  string $operator
+     * @param  string $token
+     * @param  array $restr
+     * @param  string $mutantFile
+     * @access public
+     */
+    public function __construct($operator, $token, $mutantFile)
+    {
+        $this->operator    = $operator;
+        $this->tokenType   = $token;
+        $this->replaceWith = $this->getMutantOps($mutantFile);
+    }
+
+    /**
+     * Returns the string representation of the mutation operator (lexeme).
+     *
+     * @return string
+     * @access public
+     */
+    public function getOperator()
+    {
+        return $this->operator;
+    }
+     
+    /**
+     * Returns the token type of the mutation operator.
+     *
+     * @return string
+     * @access public
+     */
+    public function getTokenType()
+    {
+        return $this->tokenType;
+    }
+
+    /**
+     * Returns an array of mutant operators to place the current operator with.
+     *
+     * @return string
+     * @access public
+     */
+    public function getReplaceWith()
+    {
+        return $this->replaceWith;
+    }
+
+    /**
+     * Returns an array of mutant operators as read from the mutant file.
+     *
+     * @param  string $fileName
+     * @return array
+     * @access private
+     */    
+    private function getMutantOps($fileName)
+    {
+        $lines = file($fileName, FILE_SKIP_EMPTY_LINES);
+
+        if ($lines === FALSE) {
+            throw new RuntimeException("PHPUnit_Util_MutationTest: Error reading $fileName.");
+        }
+
+        $mutOps = array();
+        $i      = 0;
+
+        foreach ($lines as $line) {
+            $params       = split (',', $line);
+            $mutOps[$i++] = new PHPUnit_Util_MutationTesting_MutantOperator(
+              $params[1], $params[0], $this->restrictionArray($params[2])
+            );
+        }        
+
+        return $mutOps;
+    }
+
+    /**
+     * Splits the string of restriction read from the mutant ops file into an array.
+     * 
+     * @param  string $str
+     * @return array
+     * @access private
+     */
+    private function restrictionArray($str)
+    {
+        $results = array();
+
+        if (strpos ($str, ':')) {
+            $results = split (':', $str);
+        } else {
+            $results[0] = $str;
+        }
+
+        return $results;
+    }
 }
 ?>

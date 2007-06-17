@@ -1,5 +1,4 @@
 <?php
-
 /**
  * PHPUnit
  *
@@ -37,14 +36,13 @@
  *
  * @category   Testing
  * @package    PHPUnit
- * @author     Sebastian Bergmann <sb@sebastian-bergmann.de>
+ * @author     Mike Lewis <lewismic@grinnell.edu>
  * @copyright  2002-2007 Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
- * @version    
+ * @version    Release: @package_version@
  * @link       http://www.phpunit.de/
- * @since      
+ * @since      File available since Release 4.0.0
  */
-
 
 require_once 'Source.php"';
 require_once 'Mutant.php';
@@ -53,70 +51,72 @@ require_once 'Operator.php';
 require_once 'MutantOperator.php';
 require_once 'Scanner.php';
 
-
 /**
  * The main class for mutation testing.
  *
- * @category	Testing
- * @package		PHPUnit
- * @author		Mike Lewis <lewismic@grinnell.edu>
- * @copyright	2007 Mike Lewis <lewismic@grinnell.edu>
- * @version		
- * @link		http://www.phpunit.de/
- * @since		Class available since
+ * @category   Testing
+ * @package    PHPUnit
+ * @author     Mike Lewis <lewismic@grinnell.edu>
+ * @copyright  2002-2007 Sebastian Bergmann <sb@sebastian-bergmann.de>
+ * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
+ * @version    Release: @package_version@
+ * @link       http://www.phpunit.de/
+ * @since      Class available since Release 4.0.0
  */
-
 class PHPUnit_Util_MutationTest
 {
-	
-	public static function mutate (PHPUnit_TextUI_TestRunner $runner, $arguments)
-	{
-		try {
-			$original = new PHPUnit_Util_MutationTesting_Source ($arguments['testFile']);
-			$pt = new PHPUnit_Util_ParseTree ($original->getSource (), "XSL/mutantWrite.xsl");
-			$operators = getOps ("Operators/Mutant.Ops");
-			
-			$mutants = PHPUnit_Util_MutationTesting_Scanner::scan ($pt, $operators);
-			foreach ($mutants as $mutant) {
-				$testSuite = mutateSuite ($mutant);
-				$runner->doRun ($testSuite, $arguments);
-			}
-			
-		} catch (Exception $e) {
-			echo $e->getMessage () . "\n";
-		}
-	}
-	
-	
-	private function mutateSuite (PHPUnit_Util_MutationTesting_Mutant $mutant)
-	{
-		return ($this->runner->getTest ($mutant->getName (), $mutant->getSource ()));
-	}
-	
-		
-	/**
-	 * Reads from $fileName to create mutant operators. Mutant operator information 
-	 * is delimited by newline characters. Each line is comma delimited and contains 
-	 * the token type, a string representation of the operator, and a set of restrictions.
-	 *
-	 * @param  string $fileName
-	 * @return array
-	 * @access public
-	 */
-	private function getOps ($fileName) 
-	{
-		$lines = file ($fileName, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
-		if ($lines == FALSE)
-			throw new Exception ("PHPUnit_Util_MutationTest: Error reading $fileName.");
-				
-		$ops = array ();
-		$i = 0;
-		foreach ($lines as $line) {
-			$params = split (",", $line);
-			$ops[$i++] = new PHPUnit_Util_MutationTesting_Operator ($params[1], $params[0], $params[2]);
-		}
-		return ($ops);
-	}	
+    public static function mutate(PHPUnit_TextUI_TestRunner $runner, $arguments)
+    {
+        try {
+            $original  = new PHPUnit_Util_MutationTesting_Source($arguments['testFile']);
+            $pt        = new PHPUnit_Util_ParseTree($original->getSource(), 'XSL/mutantWrite.xsl');
+            $operators = $this->getOps('Operators/Mutant.Ops');
+            $mutants   = PHPUnit_Util_MutationTesting_Scanner::scan($pt, $operators);
 
+            foreach ($mutants as $mutant) {
+                $testSuite = mutateSuite ($mutant);
+                $runner->doRun($testSuite, $arguments);
+            }
+        }
+
+        catch (Exception $e) {
+            print $e->getMessage() . "\n";
+        }
+    }
+
+    private function mutateSuite(PHPUnit_Util_MutationTesting_Mutant $mutant)
+    {
+        return $this->runner->getTest($mutant->getName(), $mutant->getSource());
+    }
+
+    /**
+     * Reads from $fileName to create mutant operators. Mutant operator information 
+     * is delimited by newline characters. Each line is comma delimited and contains 
+     * the token type, a string representation of the operator, and a set of restrictions.
+     *
+     * @param  string $fileName
+     * @return array
+     * @access public
+     */
+    private function getOps($fileName) 
+    {
+        $lines = file($fileName, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
+
+        if ($lines === FALSE) {
+            throw new RuntimeException("PHPUnit_Util_MutationTest: Error reading $fileName.");
+        }
+
+        $ops = array();
+        $i   = 0;
+
+        foreach ($lines as $line) {
+            $params    = split (',', $line);
+            $ops[$i++] = new PHPUnit_Util_MutationTesting_Operator(
+              $params[1], $params[0], $params[2]
+            );
+        }
+
+        return $ops;
+    }    
 }
 ?>
