@@ -99,6 +99,10 @@ class PHPUnit_TextUI_Command
             }
         }
 
+		if ($arguments['mutation'] == TRUE) {
+			PHPUnit_Util_MutationTesting_MutationTest::mutate ($runner, $arguments);
+		}
+
         try {
             $result = $runner->doRun(
               $suite,
