@@ -82,23 +82,17 @@
                     $replaceID = $node->getAttribute('id');
 
                     foreach ($operator->getReplaceWith () as $mutantOp) {
-                        /* Make a temporary file for the mutated source file. */
-                        if (($tmpFile = tempnam('/mutants', 'MUTANT')) === FALSE) {
-                            throw new RuntimeException
-                                ("PHPUnit_Util_MutationTesting_Scanner: Error creating temp file.");
-                        }
-
-                        /* Replace the operator and save it to the temp file. */
+                        /* Replace the operator. */
                         $params = array(
                           'searchID'       => $replaceID,
                           'mutantOperator' => $mutantOp->getOperator()
                         );
 
-                        $pt->replaceAndSave($tmpFile, $params); 
+                        $mutantCode = $pt->replace($params); 
 
                         /* Create a new mutant. */
                         $mutants[$i++] = new PHPUnit_Util_MutationTesting_Mutant(
-                          $tmpFile, $mutantOp, 0, $operator->getOperator ()
+                          $mutantCode, $mutantOp, 0, $operator->getOperator ()
                         );
                     } 
                 }

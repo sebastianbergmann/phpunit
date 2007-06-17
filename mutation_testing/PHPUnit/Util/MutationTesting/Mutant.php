@@ -85,37 +85,33 @@ class PHPUnit_Util_MutationTesting_Mutant extends PHPUnit_Util_MutationTesting_S
     /**
      * Constructor.
      *
-     * @param  string                                      $fileName
+     * @param  string                                      $code
      * @param  PHPUnit_Util_MutationTesting_MutantOperator $mutantOperator
      * @param  int                                         $line
      * @param  string                                      $replaced
      * @access public
      */
-    public function __construct($fileName, PHPUnit_Util_MutationTesting_MutantOperator
+    public function __construct($code, PHPUnit_Util_MutationTesting_MutantOperator
                                 $mutantOperator, $line, $replaced)
     {
-        $this->setFile($fileName);
-
+        parent::sourceCode = $code;
         $this->mutantOp    = $mutantOperator;
         $this->mutatedLine = $line;
         $this->replacedOp  = $replaced;
      }
 
     /**
-     * Unlinks the source file of the killed mutant.
+     * Kills a mutant. Not implemented.
      *
      * @access public
      */
     public function kill()
     {
-        if (unlink(parent::source) === FALSE) {
-            throw new RuntimeException
-                ("PHPUnit_Util_MutationTesting_Mutant: Error deleting temporary file.");
-        }
+
     }
 
     /**
-     * Returns the line on which the mutation took place.
+     * Returns the line on which the mutation took place. Not implemented.
      *
      * @return int
      * @access public

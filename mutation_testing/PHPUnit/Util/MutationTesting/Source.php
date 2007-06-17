@@ -59,13 +59,23 @@
  */
 class PHPUnit_Util_MutationTesting_Source 
 {
+    
+    
     /**
-     * The path to the PHP source file.
+     * The path to the source file.
      *
      * @var    string
      * @access protected
      */
     protected $sourceFile;
+     
+    /**
+     * A string representation of the source code.
+     *
+     * @var    string
+     * @access protected
+     */
+    protected $sourceCode;
 
     /**
      * The array of test results run on $sourceFile.
@@ -78,17 +88,18 @@ class PHPUnit_Util_MutationTesting_Source
     /**
      * Constructor.
      *
-     * @param  string $fileName
+     * @param  string $code
      * @access public
      */
     public function __construct($fileName)
     {
-        if (!file_exists ($fileName)) {
+        if (!is_readable ($fileName)) {
             throw new RuntimeException
                 ("PHPUnit_Util_MutationTesting_Source: $fileName not found.");
         }
-
+        
         $this->sourceFile = $fileName;
+        $this->sourceCode = file_get_contents ($code);
     }
     
     /**
@@ -114,17 +125,6 @@ class PHPUnit_Util_MutationTesting_Source
     } 
 
     /**
-     * toString returns a string representation of the source code.
-     *
-     * @return string
-     * @access public
-     */
-    public function toString()
-    {
-        return file_get_contents($this->sourceFile);
-    }
-
-    /**
      * Runs the given test cases on $this and saves the results
      * in an array. Not implemented.
      *
@@ -137,22 +137,6 @@ class PHPUnit_Util_MutationTesting_Source
     }
 
     /**
-     * Sets the path to the source file.
-     *
-     * @param  string $fileName
-     * @access public
-     */
-    public function setFile($fileName)
-    {
-        if (!file_exists ($fileName)) {
-            throw new RuntimeException 
-                ("PHPUnit_Util_MutationTesting_Source: $fileName not found.");
-        }
-
-        $this->sourceFile = $fileName;
-    }
-
-    /**
      * Returns the path to the source file.
      * @return string
      * @access public
@@ -160,6 +144,16 @@ class PHPUnit_Util_MutationTesting_Source
     public function getSource()
     {
         return $this->sourceFile;
+    }
+    
+    /*
+     * Returns the string representation of the source code.
+     * @return string
+     * @access public
+     */
+    public function getSourceCode () 
+    {
+        return $this->sourceCode;    
     }
 } 
 ?>

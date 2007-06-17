@@ -76,6 +76,17 @@ class PHPUnit_Util_MutationTesting_MutationTest
      */
     public static function mutate(PHPUnit_TextUI_TestRunner $runner, $arguments)
     {
+        /*  - We want to create a temp file to hold the contents of the source file
+         *    and the test file.
+         *  - We will run the tests on the original source code first to gather
+         *    information.
+         *  - We will mutate the temp file to contain the mutated source and the 
+         *    original test file.
+         *  - This mutated temp file will be tested. Testing will halt at the point
+         *    where the result of a test differs form the result of the original test.
+         *    At this point we consider the mutant killed.
+         *  - The process will be repeated for each mutant. 
+         */
         try {
             $original  = new PHPUnit_Util_MutationTesting_Source($arguments['testFile']);
             $pt        = new PHPUnit_Util_ParseTree($original->getSource(), 'XSL/mutantWrite.xsl');

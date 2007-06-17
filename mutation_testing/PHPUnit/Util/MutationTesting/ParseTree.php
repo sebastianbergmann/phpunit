@@ -129,29 +129,21 @@ define('LIBXML_OPTIONS', LIBXML_DTDLOAD | LIBXML_NOENT | LIBXML_DTDATTR | LIBXML
 
     /**
      * Replaces the node pointed to by $ID in the parse tree with the given
-     * mutant operator and save to $fileName.
+     * mutant operator.
      *
-     * @param  string $fileName
-     * @param  array  $params
+     * @param  array $params
+     * @return string
      * @access public
      */
-    public function replaceAndSave ($fileName, array $params)
+    public function replace (array $params)
     {
-        if (($fh = fopen($fileName, 'w')) === FALSE) {
-            throw new RuntimeException
-                ("PHPUnit_Util_MutationTesting_ParseTree: Error opening file $fileName.");
-        }
-
         $ns = $this->parseTree->firstChild->namespaceURI;
 
         /* Set the $searchID parameter in the toMutantSource XSL Stylesheet. */
         $this->toMutantSource->setParameter ($ns, $params);
 
-        /* Save the transformed results. */
-        if (fwrite($fh, $this->toMutantSource->transformToXML($this->parseTree)) === FALSE) {
-            throw new RuntimeException
-                ("PHPUnit_Util_MutationTesting_ParseTree: Error saving mutated source.");
-        }
+        /* Return the transformed results. */
+        return $this->toMutantSource->transformToXML($this->parseTree)
     }
 
     private function traverse ($n, $level)
