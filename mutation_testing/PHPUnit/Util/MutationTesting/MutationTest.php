@@ -79,7 +79,7 @@ class PHPUnit_Util_MutationTesting_MutationTest
         /*  - We want to create a temp file to hold the contents of the source file
          *    and the test file.
          *  - We will run the tests on the original source code first to gather
-         *    information.
+         *    information with MutationListener.php (a TestListener).
          *  - We will mutate the temp file to contain the mutated source and the 
          *    original test file.
          *  - This mutated temp file will be tested. Testing will halt at the point
@@ -87,33 +87,48 @@ class PHPUnit_Util_MutationTesting_MutationTest
          *    At this point we consider the mutant killed.
          *  - The process will be repeated for each mutant. 
          */
-        try {
-            $original  = new PHPUnit_Util_MutationTesting_Source($arguments['testFile']);
-            $pt        = new PHPUnit_Util_ParseTree($original->getSource(), 'XSL/mutantWrite.xsl');
-            $operators = $this->getOps('Operators/Mutant.Ops');
-            $mutants   = PHPUnit_Util_MutationTesting_Scanner::scan($pt, $operators);
-
-            foreach ($mutants as $mutant) {
-                $testSuite = mutateSuite ($mutant);
-                $runner->doRun($testSuite, $arguments);
-            }
-        }
-
-        catch (Exception $e) {
-            print $e->getMessage() . "\n";
-        }
+        $original     = new PHPUnit_Util_MutationTesting_Source ($arguments['mutateFile']);
+        $pt           = new PHPUnit_Util_ParseTree($original->getSource(), 'XSL/mutantWrite.xsl');
+        $operators    = $this->getOps('Operators/Mutant.Ops');
+        $mutants      = PHPUnit_Util_MutationTesting_Scanner::scan($pt, $operators);
+        $testSource   = stripRequire ($arguments['testFile']), $arguments['mutateFile']);
+        $tempTestFile = "tempTest.php";
+        
+        /* Do initial test run. */
+        $suite = generateSuite (/* class name */, $original->getSourceCode (),
+                                $testSource, $tempTestFile);
+                                
+        $runner->doRun ($suite, $arguments);
+        
+        /* Run for each mutant. */ 
+        foreach ($mutants as $mutant) {
+            $testSuite = generateSuite (/* className */, $mutant->getSourceCode (), 
+                                        $testSource, $tempTestFile);
+            $runner->doRun($suite, $arguments);
+         }
     }
 
     /**
-     * mutateSuite modifies the test suite so that it points to the mutated file.
+     * generateSuite modifies the test suite so that it points to the new file.
      * 
-     * @param  PHPUnit_Util_MutationTesting_Mutant $mutant
+     * @param  string   $class
+     * @param  string   $sourceCode
+     * @param  string   $testCode
+     * @param  string   $fileName
      * @return PHPUnit_Framework_TestSuite 
      * @access private 
      */
-    private function mutateSuite(PHPUnit_Util_MutationTesting_Mutant $mutant)
+    private function generateSuite($class, $sourceCode, $testCode, $fileName)
     {
-        return $this->runner->getTest($mutant->getName(), $mutant->getSource());
+        $source = $sourceCode . "\n" . $testCode;
+        $fh     = fopen ($fileName, 'w+');
+        
+        if ( (fwrite ($fh, $source) === FALSE) {
+            throw new RuntimeException
+                ("PHPUnit_Util_MutationTesting_MutationTest: Could not write to $fileName.");
+        }       
+        
+        return $this->runner->getTest($class, $fileName);
     }
 
     /**
@@ -146,5 +161,26 @@ class PHPUnit_Util_MutationTesting_MutationTest
 
         return $ops;
     }    
+
+    /**
+     * Reads from the file pointed to by $fileName and returns the contents
+     * stripped of the require statement containing $match.
+     *
+     * @param  string $fileName
+     * @param  string $match
+     * @return string
+     * @access private
+     */
+    private function stripRequire ($fileName, $match)
+    {
+        if (!is_readable ($fileName)) {
+            throw new RuntimeException
+                ("PHPunit_Util_MutationTesting_MutationTest: $fileName not found.");   
+        }   
+        $search   = "require%" . $match . "%;"; 
+        $stripped = str_replace ($search,"",file_get_contents ($fileName);
+        
+        return $stripped;
+    }
 }
 ?>
