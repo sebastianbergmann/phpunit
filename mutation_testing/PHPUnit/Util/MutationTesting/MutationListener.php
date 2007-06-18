@@ -207,8 +207,8 @@ require_once 'PHPUnit/Framework/TestListener.php';
      */
     public function endTestSuite(PHPUnit_Framework_TestSuite $suite)
     {
-        if ($record) {
-            $record = FALSE;   
+        if ($this->record) {
+            $this->record = FALSE;   
         }
     }
 
