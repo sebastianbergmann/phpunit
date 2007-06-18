@@ -44,12 +44,22 @@
  * @since      File available since Release 2.0.0
  */
 
+require_once 'PHPUnit/Framework.php';
+require_once 'PHPUnit/Extensions/TestDecorator.php';
 require_once 'PHPUnit/Util/Filter.php';
 
 PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
 
+trigger_error(
+  "Class PHPUnit_Extensions_TestSetup is deprecated. ".
+  "It will be removed in PHPUnit 3.2. ".
+  "Please use the new functionality in PHPUnit_Framework_TestSuite instead."
+);
+
 /**
- * An interface to define how a test suite should be loaded.
+ * A Decorator to set up and tear down additional fixture state.
+ * Subclass TestSetup and insert it into your tests when you want
+ * to set up additional state once before the tests are run.
  *
  * @category   Testing
  * @package    PHPUnit
@@ -58,23 +68,85 @@ PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    Release: @package_version@
  * @link       http://www.phpunit.de/
- * @since      Interface available since Release 2.0.0
+ * @since      Class available since Release 2.0.0
  */
-interface PHPUnit_Runner_TestSuiteLoader
+class PHPUnit_Extensions_TestSetup extends PHPUnit_Extensions_TestDecorator
 {
     /**
-     * @param  string  $suiteClassName
-     * @param  string  $suiteClassFile
-     * @return ReflectionClass
+     * Runs the decorated test and collects the
+     * result in a TestResult.
+     *
+     * @param  PHPUnit_Framework_TestResult $result
+     * @return PHPUnit_Framework_TestResult
+     * @throws InvalidArgumentException
      * @access public
      */
-    public function load($suiteClassName, $suiteClassFile = '');
+    public function run(PHPUnit_Framework_TestResult $result = NULL)
+    {
+        if ($result === NULL) {
+            $result = $this->createResult();
+        }
+
+        $this->setUp();
+        $this->copyFixtureToTest();
+        $this->basicRun($result);
+        $this->tearDown();
+
+        return $result;
+    }
 
     /**
-     * @param  ReflectionClass  $aClass
-     * @return ReflectionClass
-     * @access public
+     * Copies the fixture set up by setUp() to the test.
+     *
+     * @access private
+     * @since  Method available since Release 2.3.0
      */
-    public function reload(ReflectionClass $aClass);
+    private function copyFixtureToTest()
+    {
+        $object = new ReflectionClass($this);
+
+        foreach ($object->getProperties() as $attribute) {
+            $name = $attribute->getName();
+
+            if ($name != 'test') {
+                $this->doCopyFixtureToTest($this->test, $name, $this->$name);
+            }
+        }
+    }
+
+    /**
+     * @access private
+     * @since  Method available since Release 2.3.0
+     */
+    private function doCopyFixtureToTest($object, $name, &$value)
+    {
+        if ($object instanceof PHPUnit_Framework_TestSuite) {
+            foreach ($object->tests() as $test) {
+                $this->doCopyFixtureToTest($test, $name, $value);
+            }
+        } else {
+            $object->$name =& $value;
+        }
+    }
+
+    /**
+     * Sets up the fixture. Override to set up additional fixture
+     * state.
+     *
+     * @access protected
+     */
+    protected function setUp()
+    {
+    }
+
+    /**
+     * Tears down the fixture. Override to tear down the additional
+     * fixture state.
+     *
+     * @access protected
+     */
+    protected function tearDown()
+    {
+    }
 }
 ?>

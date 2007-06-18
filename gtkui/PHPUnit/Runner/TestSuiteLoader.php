@@ -41,11 +41,15 @@
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    SVN: $Id$
  * @link       http://www.phpunit.de/
- * @since      File available since Release 2.3.0
+ * @since      File available since Release 2.0.0
  */
 
+require_once 'PHPUnit/Util/Filter.php';
+
+PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
+
 /**
- * A Bank Account.
+ * An interface to define how a test suite should be loaded.
  *
  * @category   Testing
  * @package    PHPUnit
@@ -54,75 +58,23 @@
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    Release: @package_version@
  * @link       http://www.phpunit.de/
- * @since      Class available since Release 2.3.0
+ * @since      Interface available since Release 2.0.0
  */
-class BankAccount
+interface PHPUnit_Runner_TestSuiteLoader
 {
     /**
-     * The bank account's balance.
-     *
-     * @var    float
-     * @access private
-     */
-    private $balance = 0;
-
-    /**
-     * Returns the bank account's balance.
-     *
-     * @return float
+     * @param  string  $suiteClassName
+     * @param  string  $suiteClassFile
+     * @return ReflectionClass
      * @access public
      */
-    public function getBalance()
-    {
-        return $this->balance;
-    }
+    public function load($suiteClassName, $suiteClassFile = '');
 
     /**
-     * Sets the bank account's balance.
-     *
-     * @param  float $balance
-     * @throws InvalidArgumentException
+     * @param  ReflectionClass $aClass
+     * @return ReflectionClass
      * @access public
      */
-    public function setBalance($balance)
-    {
-        if ($balance >= 0) {
-            $this->balance = $balance;
-        } else {
-            throw new InvalidArgumentException;
-        }
-    }
-
-    /**
-     * Deposits an amount of money to the bank account.
-     *
-     * @param  float $balance
-     * @throws InvalidArgumentException
-     * @access public
-     */
-    public function depositMoney($amount)
-    {
-        if ($amount >= 0) {
-            $this->balance += $amount;
-        } else {
-            throw new InvalidArgumentException;
-        }
-    }
-
-    /**
-     * Withdraws an amount of money from the bank account.
-     *
-     * @param  float $balance
-     * @throws InvalidArgumentException
-     * @access public
-     */
-    public function withdrawMoney($amount)
-    {
-        if ($amount >= 0 && $this->balance >= $amount) {
-            $this->balance -= $amount;
-        } else {
-            throw new InvalidArgumentException;
-        }
-    }
+    public function reload(ReflectionClass $aClass);
 }
 ?>

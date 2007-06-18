@@ -19,8 +19,8 @@
  </lead>
  <date>2007-MM-DD</date>
  <version>
-  <release>3.2.0-dev</release>
-  <api>3.2.0</api>
+  <release>3.1.0-gtkui</release>
+  <api>3.1.0</api>
  </version>
  <stability>
   <release>devel</release>
@@ -48,6 +48,9 @@
       <tasks:replace from="@package_version@" to="version" type="package-info" />
      </file>
      <file baseinstalldir="/" name="TestDecorator.php" role="php">
+      <tasks:replace from="@package_version@" to="version" type="package-info" />
+     </file>
+     <file baseinstalldir="/" name="TestSetup.php" role="php">
       <tasks:replace from="@package_version@" to="version" type="package-info" />
      </file>
     </dir>
@@ -789,9 +792,6 @@
    </extension>
    <extension>
     <name>pdo_sqlite</name>
-   </extension>
-   <extension>
-    <name>runkit</name>
    </extension>
    <extension>
     <name>xdebug</name>

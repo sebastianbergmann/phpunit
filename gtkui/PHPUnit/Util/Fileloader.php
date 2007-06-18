@@ -44,11 +44,12 @@
  * @since      File available since Release 2.3.0
  */
 
-require_once 'PHPUnit/Framework/TestCase.php';
-require_once 'BankAccount.php';
+require_once 'PHPUnit/Util/Filter.php';
+
+PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
 
 /**
- * Tests for the BankAccount class.
+ *
  *
  * @category   Testing
  * @package    PHPUnit
@@ -59,88 +60,107 @@ require_once 'BankAccount.php';
  * @link       http://www.phpunit.de/
  * @since      Class available since Release 2.3.0
  */
-class BankAccountTest extends PHPUnit_Framework_TestCase
+class PHPUnit_Util_Fileloader
 {
     /**
-     * BankAccount object used as the tests' fixture.
+     * Checks if a PHP sourcefile is readable and contains no syntax errors.
+     * If that is the case, the sourcefile is loaded through include_once().
      *
-     * @var    BankAccount
-     * @access private
+     * @param  string  $filename
+     * @param  boolean $syntaxCheck
+     * @throws RuntimeException
+     * @access public
+     * @static
      */
-    private $ba;
+    public static function checkAndLoad($filename, $syntaxCheck = TRUE)
+    {
+        if (!is_readable($filename)) {
+            $filename = './' . $filename;
+        }
+
+        if (!is_readable($filename)) {
+            throw new RuntimeException(
+              sprintf(
+                'File "%s" could not be found or is not readable.',
+
+                str_replace('./', '', $filename)
+              )
+            );
+        }
+
+        if ($syntaxCheck) {
+            self::syntaxCheck($filename);
+        }
+
+        self::load($filename);
+    }
 
     /**
-     * Sets up the test fixture.
      *
+     *
+     * @return Array
+     * @access public
+     * @static
+     * @since  Method available since Release 3.0.0
+     */
+    public static function getIncludePaths()
+    {
+        $includePaths = explode(PATH_SEPARATOR, get_include_path());
+
+        @include_once 'PEAR/Config.php';
+
+        if (class_exists('PEAR_Config', FALSE)) {
+            $config         = new PEAR_Config;
+            $includePaths[] = $config->get('test_dir');
+        }
+
+        return $includePaths;
+    }
+
+    /**
+     * @param  string  $filename
      * @access protected
+     * @static
+     * @since  Method available since Release 3.0.0
      */
-    protected function setUp()
+    protected static function load($filename)
     {
-        $this->ba = new BankAccount;
+        $xdebugLoaded      = extension_loaded('xdebug');
+        $xdebugCollectVars = $xdebugLoaded && ini_get('xdebug.collect_vars') == '1';
+
+        if ($xdebugCollectVars) {
+            $variables = xdebug_get_declared_vars();
+        }
+
+        include_once $filename;
+
+        if ($xdebugCollectVars) {
+            $variables = array_values(
+              array_diff(xdebug_get_declared_vars(), $variables)
+            );
+
+            foreach ($variables as $variable) {
+                if (isset($$variable)) {
+                    $GLOBALS[$variable] = $$variable;
+                }
+            }
+        }
     }
 
     /**
-     * Asserts that the balance is initially zero.
-     *
-     * @access public
+     * @param  string   $filename
+     * @throws RuntimeException
+     * @access protected
+     * @static
+     * @since  Method available since Release 3.0.0
      */
-    public function testBalanceIsInitiallyZero()
+    protected static function syntaxCheck($filename)
     {
-        $this->assertEquals(0, $this->ba->getBalance());
-    }
+        $output = shell_exec('php -l ' . escapeshellarg($filename));
 
-    /**
-     * Asserts that the balance cannot become negative.
-     *
-     * @access public
-     */
-    public function testBalanceCannotBecomeNegative()
-    {
-        try {
-            $this->ba->withdrawMoney(1);
+        if (strpos($output, 'Errors parsing') === TRUE) {
+            throw new RuntimeException($output);
         }
-
-        catch (InvalidArgumentException $e) {
-            return;
-        }
-
-        $this->fail();
-    }
-
-    /**
-     * Asserts that the balance cannot become negative.
-     *
-     * @access public
-     */
-    public function testBalanceCannotBecomeNegative2()
-    {
-        try {
-            $this->ba->depositMoney(-1);
-        }
-
-        catch (InvalidArgumentException $e) {
-            return;
-        }
-
-        $this->fail();
-    }
-
-    /**
-     * Asserts that the balance cannot become negative.
-     *
-     * @access public
-     */
-    public function testBalanceCannotBecomeNegative3()
-    {
-        try {
-            $this->ba->setBalance(-1);
-        }
-
-        catch (InvalidArgumentException $e) {
-            return;
-        }
-
-        $this->fail();
     }
 }
 ?>
