@@ -142,6 +142,12 @@ class PHPUnit_Framework_TestResult implements Countable
     private $stop = FALSE;
 
     /**
+     * @var    boolean
+     * @access protected
+     */
+    protected $stopOnFailure = FALSE;
+
+    /**
      * Registers a TestListener.
      *
      * @param  PHPUnit_Framework_TestListener
@@ -215,6 +221,10 @@ class PHPUnit_Framework_TestResult implements Countable
             foreach ($this->listeners as $listener) {
                 $listener->addError($test, $e, $time);
             }
+
+            if ($this->stopOnFailure) {
+                $this->stop();
+            }
         }
     }
 
@@ -250,6 +260,10 @@ class PHPUnit_Framework_TestResult implements Countable
 
             foreach ($this->listeners as $listener) {
                 $listener->addFailure($test, $e, $time);
+            }
+
+            if ($this->stopOnFailure) {
+                $this->stop();
             }
         }
     }
@@ -614,6 +628,23 @@ class PHPUnit_Framework_TestResult implements Countable
     public function stop()
     {
         $this->stop = TRUE;
+    }
+
+    /**
+     * Enables or disables the stopping when a failure or error occurs.
+     *
+     * @param  boolean $flag
+     * @throws InvalidArgumentException
+     * @access public
+     * @since  Method available since Release 3.1.0
+     */
+    public function stopOnFailure($flag)
+    {
+        if (is_bool($flag)) {
+            $this->stopOnFailure = $flag;
+        } else {
+            throw new InvalidArgumentException;
+        }
     }
 
     /**

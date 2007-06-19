@@ -162,10 +162,11 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
      */
     public function doRun(PHPUnit_Framework_Test $suite, array $parameters = array())
     {
-        $parameters['repeat']  = isset($parameters['repeat'])  ? $parameters['repeat']  : FALSE;
-        $parameters['filter']  = isset($parameters['filter'])  ? $parameters['filter']  : FALSE;
-        $parameters['verbose'] = isset($parameters['verbose']) ? $parameters['verbose'] : FALSE;
-        $parameters['wait']    = isset($parameters['wait'])    ? $parameters['wait']    : FALSE;
+        $parameters['filter']        = isset($parameters['filter'])         ? $parameters['filter']       : FALSE;
+        $parameters['stopOnFailure'] = isset($parameters['stopOnFailure'])  ? $parameters['stopOnFailure']: FALSE;
+        $parameters['repeat']        = isset($parameters['repeat'])         ? $parameters['repeat']       : FALSE;
+        $parameters['verbose']       = isset($parameters['verbose'])        ? $parameters['verbose']      : FALSE;
+        $parameters['wait']          = isset($parameters['wait'])           ? $parameters['wait']         : FALSE;
 
         if (is_integer($parameters['repeat'])) {
             $suite = new PHPUnit_Extensions_RepeatedTest($suite, $parameters['repeat']);
@@ -176,6 +177,10 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
         }
 
         $result = $this->createTestResult();
+
+        if ($parameters['stopOnFailure']) {
+            $result->stopOnFailure(TRUE);
+        }
 
         if ($this->printer === NULL) {
             if (isset($parameters['printer']) && $parameters['printer'] instanceof PHPUnit_Util_Printer) {
