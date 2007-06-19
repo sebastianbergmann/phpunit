@@ -168,7 +168,8 @@ class PHPUnit_Framework_MockObject_Mock
               sprintf(
                 'Failed to generate mock class "%s" for class "%s".\n%s',
                 $this->mockClassName,
-                $this->className
+                $this->className,
+                $e->getMessage()
               )
             );
         }
@@ -341,9 +342,9 @@ class PHPUnit_Framework_MockObject_Mock
         if ($constructor) {
             return sprintf(
               "    public function __construct(%s) {\n" .
-              "        $args = func_get_args();\n" .
+              "        \$args = func_get_args();\n" .
               "        \$this->invocationMocker = new PHPUnit_Framework_MockObject_InvocationMocker;\n" .
-              "        call_user_func_array(array($this, 'parent::%s'), $args);\n" .
+              "        call_user_func_array(array(\$this, 'parent::%s'), \$args);\n" .
               "    }\n\n",
 
               $this->generateMethodParameters($constructor),
