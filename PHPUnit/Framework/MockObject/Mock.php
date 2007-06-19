@@ -160,7 +160,6 @@ class PHPUnit_Framework_MockObject_Mock
                 );
             }
 
-            //print $this->generateClassDefinition($class);
             eval($this->generateClassDefinition($class));
         }
 
