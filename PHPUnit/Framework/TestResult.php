@@ -201,30 +201,25 @@ class PHPUnit_Framework_TestResult implements Countable
     {
         if ($e instanceof PHPUnit_Framework_IncompleteTest) {
             $this->notImplemented[] = new PHPUnit_Framework_TestFailure($test, $e);
-
-            foreach ($this->listeners as $listener) {
-                $listener->addIncompleteTest($test, $e, $time);
-            }
+            $notifyMethod           = 'addIncompleteTest';
         }
 
         else if ($e instanceof PHPUnit_Framework_SkippedTest) {
             $this->skipped[] = new PHPUnit_Framework_TestFailure($test, $e);
-
-            foreach ($this->listeners as $listener) {
-                $listener->addSkippedTest($test, $e, $time);
-            }
+            $notifyMethod    = 'addSkippedTest';
         }
 
         else {
             $this->errors[] = new PHPUnit_Framework_TestFailure($test, $e);
-
-            foreach ($this->listeners as $listener) {
-                $listener->addError($test, $e, $time);
-            }
+            $notifyMethod   = 'addError';
 
             if ($this->stopOnFailure) {
                 $this->stop();
             }
+        }
+
+        foreach ($this->listeners as $listener) {
+            $listener->$notifyMethod($test, $e, $time);
         }
     }
 
@@ -241,30 +236,25 @@ class PHPUnit_Framework_TestResult implements Countable
     {
         if ($e instanceof PHPUnit_Framework_IncompleteTest) {
             $this->notImplemented[] = new PHPUnit_Framework_TestFailure($test, $e);
-
-            foreach ($this->listeners as $listener) {
-                $listener->addIncompleteTest($test, $e, $time);
-            }
+            $notifyMethod           = 'addIncompleteTest';
         }
 
         else if ($e instanceof PHPUnit_Framework_SkippedTest) {
             $this->skipped[] = new PHPUnit_Framework_TestFailure($test, $e);
-
-            foreach ($this->listeners as $listener) {
-                $listener->addSkippedTest($test, $e, $time);
-            }
+            $notifyMethod    = 'addSkippedTest';
         }
 
         else {
             $this->failures[] = new PHPUnit_Framework_TestFailure($test, $e);
-
-            foreach ($this->listeners as $listener) {
-                $listener->addFailure($test, $e, $time);
-            }
+            $notifyMethod     = 'addFailure';
 
             if ($this->stopOnFailure) {
                 $this->stop();
             }
+        }
+
+        foreach ($this->listeners as $listener) {
+            $listener->$notifyMethod($test, $e, $time);
         }
     }
 
