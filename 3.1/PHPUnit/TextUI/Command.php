@@ -141,6 +141,7 @@ class PHPUnit_TextUI_Command
           'log-xml=',
           'repeat=',
           'skeleton',
+          'stop-on-failure',
           'tap',
           'testdox-html=',
           'testdox-text=',
@@ -245,6 +246,11 @@ class PHPUnit_TextUI_Command
 
                 case '--repeat': {
                     $arguments['repeat'] = (int)$option[1];
+                }
+                break;
+
+                case '--stop-on-failure': {
+                    $arguments['stopOnFailure'] = TRUE;
                 }
                 break;
 
@@ -427,6 +433,7 @@ class PHPUnit_TextUI_Command
               "  --loader <loader>      TestSuiteLoader implementation to use.\n" .
               "  --repeat <times>       Runs the test(s) repeatedly.\n" .
               "  --tap                  Report test execution progress in TAP format.\n" .
+              "  --stop-on-failure      Stop execution upon first error or failure.\n" .
               "  --no-syntax-check      Disable syntax check of test source files.\n" .
               "  --verbose              Output more verbose information.\n" .
               "  --wait                 Waits for a keystroke after each test.\n\n" .
