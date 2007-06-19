@@ -114,6 +114,12 @@ abstract class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_Tes
     private $testId = NULL;
 
     /**
+     * @var    integer
+     * @access private
+     */
+    private $sleep = 0;
+
+    /**
      * @access protected
      */
     protected function runTest()
@@ -271,7 +277,21 @@ abstract class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_Tes
     }
 
     /**
-     * This method (and the next) implement the Selenium RC protocol.
+     * @param  integer  $seconds
+     * @throws InvalidArgumentException
+     * @access public
+     */
+    public function setSleep($seconds)
+    {
+        if (!is_int($seconds)) {
+            throw new InvalidArgumentException;
+        }
+
+        $this->sleep = $seconds;
+    }
+
+    /**
+     * This method implements the Selenium RC protocol.
      *
      * @param  string $command
      * @param  array  $arguments
@@ -341,6 +361,11 @@ abstract class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_Tes
             case 'windowFocus':
             case 'windowMaximize': {
                 $this->doCommand($command, $arguments);
+
+                if ($this->sleep > 0) {
+                    sleep($this->sleep);
+                }
+
                 $this->defaultAssertions($command);
             }
             break;
@@ -414,6 +439,11 @@ abstract class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_Tes
             case 'clickAndWait': {
                 $this->doCommand('click', $arguments);
                 $this->doCommand('waitForPageToLoad', array($this->timeout));
+
+                if ($this->sleep > 0) {
+                    sleep($this->sleep);
+                }
+
                 $this->defaultAssertions($command);
             }
             break;
