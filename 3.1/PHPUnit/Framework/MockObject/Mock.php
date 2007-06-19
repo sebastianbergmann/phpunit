@@ -341,13 +341,13 @@ class PHPUnit_Framework_MockObject_Mock
         if ($constructor) {
             return sprintf(
               "    public function __construct(%s) {\n" .
+              "        $args = func_get_args();\n" .
               "        \$this->invocationMocker = new PHPUnit_Framework_MockObject_InvocationMocker;\n" .
-              "        parent::%s(%s);\n" .
+              "        call_user_func_array(array($this, 'parent::%s'), $args);\n" .
               "    }\n\n",
 
               $this->generateMethodParameters($constructor),
-              $constructor->getName(),
-              $this->generateMethodParameters($constructor, TRUE)
+              $constructor->getName()
             );
         } else {
             return $this->generateConstructorCode();
@@ -369,43 +369,38 @@ class PHPUnit_Framework_MockObject_Mock
                "    }\n\n";
     }
 
-    protected function generateMethodParameters(ReflectionMethod $method, $asCall = FALSE)
+    protected function generateMethodParameters(ReflectionMethod $method)
     {
         $list = array();
 
         foreach ($method->getParameters() as $parameter) {
-            $name = '$' . $parameter->getName();
+            $name     = '$' . $parameter->getName();
+            $typeHint = '';
 
-            if ($asCall) {
-                $list[] = $name;
+            if ($parameter->isArray()) {
+                $typeHint = 'array ';
             } else {
-                $typeHint = '';
+                $class = $parameter->getClass();
 
-                if ($parameter->isArray()) {
-                    $typeHint = 'array ';
-                } else {
-                    $class = $parameter->getClass();
-
-                    if ($class) {
-                        $typeHint = $class->getName() . ' ';
-                    }
+                if ($class) {
+                    $typeHint = $class->getName() . ' ';
                 }
-
-                $default = '';
-
-                if ($parameter->isDefaultValueAvailable()) {
-                    $value   = $parameter->getDefaultValue();
-                    $default = ' = ' . var_export($value, TRUE);
-                }
-
-                $ref = '';
-
-                if ($parameter->isPassedByReference()) {
-                    $ref = '&';
-                }
-
-                $list[] = $typeHint . $ref . $name . $default;
             }
+
+            $default = '';
+
+            if ($parameter->isDefaultValueAvailable()) {
+                $value   = $parameter->getDefaultValue();
+                $default = ' = ' . var_export($value, TRUE);
+            }
+
+            $ref = '';
+
+            if ($parameter->isPassedByReference()) {
+                $ref = '&';
+            }
+
+            $list[] = $typeHint . $ref . $name . $default;
         }
 
         return join(', ', $list);
