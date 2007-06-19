@@ -66,13 +66,13 @@ class PHPUnit_Util_Filter
     private static $filter = TRUE;
 
     /**
-     * Source files that are to be filtered.
+     * Source files that are blacklisted.
      *
      * @var    array
      * @access protected
      * @static
      */
-    protected static $filteredFiles = array(
+    protected static $blacklistedFiles = array(
       'DEFAULT' => array(),
       'PHPUNIT' => array(),
       'TESTS' => array(),
@@ -100,7 +100,16 @@ class PHPUnit_Util_Filter
     );
 
     /**
-     * Adds a new file to be filtered.
+     * Source files that are whitelisted.
+     *
+     * @var    array
+     * @access protected
+     * @static
+     */
+    protected static $whitelistedFiles = array();
+
+    /**
+     * Adds a new file to be filtered (blacklist).
      *
      * @param  string $filename
      * @param  string $group
@@ -110,11 +119,11 @@ class PHPUnit_Util_Filter
      */
     public static function addFileToFilter($filename, $group = 'DEFAULT')
     {
-        self::$filteredFiles[$group][] = self::getCanonicalFilename($filename);
+        self::$blacklistedFiles[$group][] = self::getCanonicalFilename($filename);
     }
 
     /**
-     * Removes a file from the filter.
+     * Removes a file from the filter (blacklist).
      *
      * @param  string $filename
      * @param  string $group
@@ -124,13 +133,48 @@ class PHPUnit_Util_Filter
      */
     public static function removeFileFromFilter($filename, $group = 'DEFAULT')
     {
-        if (isset(self::$filteredFiles[$group])) {
+        if (isset(self::$blacklistedFiles[$group])) {
             $filename = self::getCanonicalFilename($filename);
 
-            foreach (self::$filteredFiles[$group] as $key => $_filename) {
+            foreach (self::$blacklistedFiles[$group] as $key => $_filename) {
                 if ($filename == $_filename) {
-                    unset(self::$filteredFiles[$group][$key]);
+                    unset(self::$blacklistedFiles[$group][$key]);
                 }
+            }
+        }
+    }
+
+    /**
+     * Adds a new file to the whitelist.
+     *
+     * When the whitelist is empty (default), blacklisting is used.
+     * When the whitelist is not empty, whitelisting is used.
+     *
+     * @param  string $filename
+     * @access public
+     * @static
+     * @since  Method available since Release 3.1.0
+     */
+    public static function addFileToWhitelist($filename)
+    {
+        self::$whitelistedFiles[] = self::getCanonicalFilename($filename);
+    }
+
+    /**
+     * Removes a file from the whitelist.
+     *
+     * @param  string $filename
+     * @access public
+     * @static
+     * @since  Method available since Release 3.1.0
+     */
+    public static function removeFileFromWhitelist($filename)
+    {
+        $filename = self::getCanonicalFilename($filename);
+
+        foreach (self::$whitelistedFiles as $key => $_filename) {
+            if ($filename == $_filename) {
+                unset(self::$whitelistedFiles[$key]);
             }
         }
     }
@@ -243,36 +287,49 @@ class PHPUnit_Util_Filter
     {
         $filename = self::getCanonicalFilename($filename);
 
-        $filteredFiles = array_merge(
-          self::$filteredFiles['DEFAULT'],
-          self::$filteredFiles['PEAR']
-        );
-
-        if ($filterTests) {
-            $filteredFiles = array_merge(
-              $filteredFiles,
-              self::$filteredFiles['TESTS']
+        // Use blacklist.
+        if (empty(self::$whitelistedFiles)) {
+            $blacklistedFiles = array_merge(
+              self::$blacklistedFiles['DEFAULT'],
+              self::$blacklistedFiles['PEAR']
             );
-        }
 
-        if ($filterPHPUnit) {
-            $filteredFiles = array_merge(
-              $filteredFiles,
-              self::$filteredFiles['PHPUNIT']
-            );
-        }
+            if ($filterTests) {
+                $blacklistedFiles = array_merge(
+                  $blacklistedFiles,
+                  self::$blacklistedFiles['TESTS']
+                );
+            }
 
-        if (in_array($filename, $filteredFiles)) {
-            return TRUE;
-        }
+            if ($filterPHPUnit) {
+                $blacklistedFiles = array_merge(
+                  $blacklistedFiles,
+                  self::$blacklistedFiles['PHPUNIT']
+                );
+            }
 
-        foreach ($filteredFiles as $filteredFile) {
-            if (strpos($filename, $filteredFile) !== FALSE) {
+            if (in_array($filename, $blacklistedFiles)) {
                 return TRUE;
             }
+
+            foreach ($blacklistedFiles as $filteredFile) {
+                if (strpos($filename, $filteredFile) !== FALSE) {
+                    return TRUE;
+                }
+            }
+
+            return FALSE;
         }
 
-        return FALSE;
+        // Use whitelist.
+        else
+        {
+            if (in_array($filename, self::$whitelistedFiles)) {
+                return FALSE;
+            }
+
+            return TRUE;
+        }
     }
 }
 
