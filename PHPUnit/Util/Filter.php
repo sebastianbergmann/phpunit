@@ -119,7 +119,11 @@ class PHPUnit_Util_Filter
      */
     public static function addFileToFilter($filename, $group = 'DEFAULT')
     {
-        self::$blacklistedFiles[$group][] = self::getCanonicalFilename($filename);
+        $filename = self::getCanonicalFilename($filename);
+
+        if (!in_array($filename, self::$blacklistedFiles[$group])) {
+            self::$blacklistedFiles[$group][] = $filename;
+        }
     }
 
     /**
@@ -157,7 +161,11 @@ class PHPUnit_Util_Filter
      */
     public static function addFileToWhitelist($filename)
     {
-        self::$whitelistedFiles[] = self::getCanonicalFilename($filename);
+        $filename = self::getCanonicalFilename($filename);
+
+        if (!in_array($filename, self::$whitelistedFiles)) {
+            self::$whitelistedFiles[] = $filename;
+        }
     }
 
     /**
@@ -185,19 +193,49 @@ class PHPUnit_Util_Filter
      * @param  array   $codeCoverageInformation
      * @param  boolean $filterTests
      * @param  boolean $filterPHPUnit
+     * @param  boolean $addUncoveredFilesFromWhitelist
      * @return array
      * @access public
      * @static
      */
-    public static function getFilteredCodeCoverage(array $codeCoverageInformation, $filterTests = TRUE, $filterPHPUnit = TRUE)
+    public static function getFilteredCodeCoverage(array $codeCoverageInformation, $filterTests = TRUE, $filterPHPUnit = TRUE, $addUncoveredFilesFromWhitelist = TRUE)
     {
         if (self::$filter) {
-            $max = count($codeCoverageInformation);
+            $coveredFiles = array();
+            $max          = count($codeCoverageInformation);
 
             for ($i = 0; $i < $max; $i++) {
                 foreach (array_keys($codeCoverageInformation[$i]['files']) as $file) {
                     if (self::isFiltered($file, $filterTests, $filterPHPUnit)) {
                         unset($codeCoverageInformation[$i]['files'][$file]);
+                    } else {
+                        $coveredFiles[] = $file;
+                    }
+                }
+            }
+
+            if ($addUncoveredFilesFromWhitelist) {
+                $coveredFiles = array_unique($coveredFiles);
+
+                foreach (self::$whitelistedFiles as $whitelistedFile) {
+                    if (!in_array($whitelistedFile, $coveredFiles)) {
+                        if (file_exists($whitelistedFile)) {
+                            xdebug_start_code_coverage(XDEBUG_CC_UNUSED | XDEBUG_CC_DEAD_CODE);
+                            include_once $whitelistedFile;
+                            $coverage = xdebug_get_code_coverage();
+                            xdebug_stop_code_coverage();
+
+                            if (isset($coverage[$whitelistedFile])) {
+                                $codeCoverageInformation[] = array(
+                                  'test' => NULL,
+                                  'files' => array(
+                                    $whitelistedFile => $coverage[$whitelistedFile]
+                                  )
+                                );
+
+                                $coveredFiles[] = $whitelistedFile;
+                            }
+                        }
                     }
                 }
             }
