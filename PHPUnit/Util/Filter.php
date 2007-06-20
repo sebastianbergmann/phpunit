@@ -226,6 +226,12 @@ class PHPUnit_Util_Filter
                             xdebug_stop_code_coverage();
 
                             if (isset($coverage[$whitelistedFile])) {
+                                foreach ($coverage[$whitelistedFile] as $line => $flag) {
+                                    if ($flag > 0) {
+                                        $coverage[$whitelistedFile][$line] = -1;
+                                    }
+                                }
+
                                 $codeCoverageInformation[] = array(
                                   'test' => NULL,
                                   'files' => array(
