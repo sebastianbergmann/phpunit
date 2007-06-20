@@ -44,8 +44,9 @@
  * @since      File available since Release 4.0.0
  */
 
-require_once 'Source.php"';
+require_once 'Source.php';
 require_once 'Mutant.php';
+require_once 'OriginalSource.php';
 require_once 'ParseTree.php';
 require_once 'Operator.php';
 require_once 'MutantOperator.php';
@@ -74,7 +75,7 @@ class PHPUnit_Util_MutationTesting_MutationTest
      * @access public
      * @static
      */
-    public static function mutate(PHPUnit_TextUI_TestRunner $runner, $arguments)
+    public static function mutate(PHPUnit_TextUI_TestRunner $runner, $arguments, $testSuite)
     {
         /*  - We want to create a temp file to hold the contents of the source file
          *    and the test file.
@@ -87,11 +88,13 @@ class PHPUnit_Util_MutationTesting_MutationTest
          *    At this point we consider the mutant killed.
          *  - The process will be repeated for each mutant. 
          */
-        $original     = new PHPUnit_Util_MutationTesting_Source ($arguments['mutateFile']);
-        $pt           = new PHPUnit_Util_ParseTree($original->getSource(), 'XSL/mutantWrite.xsl');
-        $operators    = $this->getOps('Operators/Mutant.Ops');
-        $mutants      = PHPUnit_Util_MutationTesting_Scanner::scan($pt, $operators);
-        $testSource   = stripRequire ($arguments['testFile']), $arguments['mutateFile']);
+        if ($testSuite
+         
+        $original     = new PHPUnit_Util_MutationTesting_OriginalSource
+                            ($mutateFile, 'XSL/mutantWrite.xsl');
+        $operators    = self::getOps('Operators/Mutant.Ops');
+        $mutants      = PHPUnit_Util_MutationTesting_Scanner::scan($original, $operators);
+        $testSource   = self::stripRequire ($testFile, $mutateFile);
         $tempTestFile = "tempTest.php";
         
         /* Do initial test run. */

@@ -67,14 +67,15 @@
      * @access public
      * @static
      */
-    public static function scan (PHPUnit_Util_MutationTesting_ParseTree $pt, array $operators) 
+    public static function scan (PHPUnit_Util_MutationTesting_OrignalSource $original, 
+                                    array $operators) 
     {
         $mutants = array ();
         $i       = 0;
 
         foreach ($operators as $operator) {
             /* Search the tree for a mutatable token type. */
-            $nodeList = $pt->getElements($operator->getTokenType());
+            $nodeList = $original->getElements($operator->getTokenType());
 
             foreach ($nodeList as $node) {
                 if ($node->nodeType == XML_ELEMENT_NODE) {
@@ -88,8 +89,9 @@
                           'mutantOperator' => $mutantOp->getOperator()
                         );
 
-                        $mutantCode = $pt->replace($params); 
-
+                        $original->replace($params); 
+                        $mutantCode = $original->getSourceCode ();    
+                            
                         /* Create a new mutant. */
                         $mutants[$i++] = new PHPUnit_Util_MutationTesting_Mutant(
                           $mutantCode, $mutantOp, 0, $operator->getOperator ()

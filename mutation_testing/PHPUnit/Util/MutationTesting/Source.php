@@ -67,7 +67,7 @@ class PHPUnit_Util_MutationTesting_Source
      * @var    string
      * @access protected
      */
-    protected $sourceFile;
+    protected $file;
      
     /**
      * A string representation of the source code.
@@ -75,54 +75,7 @@ class PHPUnit_Util_MutationTesting_Source
      * @var    string
      * @access protected
      */
-    protected $sourceCode;
-
-    /**
-     * The array of test results run on $sourceFile.
-     *
-     * @var    array
-     * @access protected
-     */
-    protected $testResults = array();
-
-    /**
-     * Constructor.
-     *
-     * @param  string $code
-     * @access public
-     */
-    public function __construct($fileName)
-    {
-        if (!is_readable ($fileName)) {
-            throw new RuntimeException
-                ("PHPUnit_Util_MutationTesting_Source: $fileName not found.");
-        }
-        
-        $this->sourceFile = $fileName;
-        $this->sourceCode = file_get_contents ($fileName);
-    }
-    
-    /**
-     * Returns the differences between the given test results and the
-     * test results of $this. Not implemented.
-     *
-     * @param  array $results
-     * @return array
-     * @access public
-     */
-    public function compareResults(array $results)
-    {
-        $diff = array();
-
-        if (count($results) == count($testResults)) {
-            /* compare results here */
-        } else {
-            throw new RuntimeException
-                ("PHPUnit_Util_MutationTestng_Source: Mismatching results arrays in compareResults.");
-        }
-
-        return $diff;
-    } 
+    protected $code;
 
     /**
      * Runs the given test cases on $this and saves the results
@@ -130,30 +83,31 @@ class PHPUnit_Util_MutationTesting_Source
      *
      * @param  array $results
      * @return array
-     * @access public
+     * @access protected
      */
-    public function runTestCases($testFile)
+    protected function runTestCases(PHPUnit_Framework_TestSuite $testSuite, 
+                                 PHPUnit_TextUI_TestRunner $runner)
     {
     }
 
     /**
      * Returns the path to the source file.
      * @return string
-     * @access public
+     * @access protected
      */
-    public function getSource()
+    protected function getSourceFile()
     {
-        return $this->sourceFile;
+        return $this->file;
     }
     
     /*
      * Returns the string representation of the source code.
      * @return string
-     * @access public
+     * @access protected
      */
-    public function getSourceCode () 
+    protected function getSourceCode () 
     {
-        return $this->sourceCode;    
+        return $this->code;    
     }
 } 
 ?>
