@@ -116,5 +116,48 @@ class PHPUnit_Util_MutationTesting_OriginalSource extends PHPUnit_Util_MutationT
     {
         parent::code = $this->parseTree->replace ($parameters);
     }
+    
+    /**
+     * Scans a parse tree for potential mutants and creates them.
+     *
+     * @param  array $operators
+     * @return array $mutants
+     * @access public
+     */
+    public static function scan (array $operators) 
+    {
+        $mutants = array ();
+        $i       = 0;
+
+        foreach ($operators as $operator) {
+            /* Search the tree for a mutatable token type. */
+            $nodeList = $this->getElements($operator->getTokenType());
+
+            foreach ($nodeList as $node) {
+                if ($node->nodeType == XML_ELEMENT_NODE) {
+                    /* Get the ID of the node to replace. */
+                    $replaceID = $node->getAttribute('id');
+
+                    foreach ($operator->getReplaceWith () as $mutantOp) {
+                        /* Replace the operator. */
+                        $params = array(
+                          'searchID'       => $replaceID,
+                          'mutantOperator' => $mutantOp->getOperator()
+                        );
+
+                        $this->replace($params); 
+                        $mutantCode = parent::getSourceCode ();    
+                            
+                        /* Create a new mutant. */
+                        $mutants[$i++] = new PHPUnit_Util_MutationTesting_Mutant(
+                          $mutantCode, $mutantOp, 0, $operator->getOperator ()
+                        );
+                    } 
+                }
+            }
+        }
+
+        return $mutants;
+    }
 }
 ?>

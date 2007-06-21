@@ -50,7 +50,6 @@ require_once 'OriginalSource.php';
 require_once 'ParseTree.php';
 require_once 'Operator.php';
 require_once 'MutantOperator.php';
-require_once 'Scanner.php';
 
 /**
  * The main class for mutation testing.
@@ -93,7 +92,7 @@ class PHPUnit_Util_MutationTesting_MutationTest
         $original     = new PHPUnit_Util_MutationTesting_OriginalSource
                             ($mutateFile, 'XSL/mutantWrite.xsl');
         $operators    = self::getOps('Operators/Mutant.Ops');
-        $mutants      = PHPUnit_Util_MutationTesting_Scanner::scan($original, $operators);
+        $mutants      = $original->scan ($operators);
         $testSource   = self::stripRequire ($testFile, $mutateFile);
         $tempTestFile = "tempTest.php";
         
