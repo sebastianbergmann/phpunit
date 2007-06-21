@@ -157,6 +157,12 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
      * @var    Array
      * @access private
      */
+    private $locale = array();
+
+    /**
+     * @var    Array
+     * @access private
+     */
     private $mockObjects = array();
 
     /**
@@ -320,6 +326,11 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
             ini_set($varName, $oldValue);
         }
 
+        // Clean up locale settings.
+        foreach ($this->locale as $category => $locale) {
+            setlocale($category, $locale);
+        }
+
         $this->iniSettings = array();
 
         // Workaround for missing "finally".
@@ -402,6 +413,31 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
         } else {
             throw new RuntimeException;
         }
+    }
+
+    /**
+     * This method is a wrapper for the setlocate() function that automatically
+     * resets the locale to its original value after the test is run.
+     *
+     * @param  integer $category
+     * @param  string  $locale
+     * @throws InvalidArgumentException
+     * @throws RuntimeException
+     * @access protected
+     * @since  Method available since Release 3.1.0
+     */
+    protected function setLocale($category, $locale)
+    {
+        if (!in_array($category, array(LC_ALL, LC_COLLATE, LC_CTYPE, LC_MONETARY, LC_NUMERIC, LC_TIME, LC_MESSAGES))) {
+            throw new InvalidArgumentException;
+        }
+
+        if (!is_array($locale) && !is_string($locale)) {
+            throw new InvalidArgumentException;
+        }
+
+        $this->locale[$category] = setlocale($category, NULL);
+        setlocale($category, $locale);
     }
 
     /**
