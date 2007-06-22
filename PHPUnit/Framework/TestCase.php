@@ -426,8 +426,17 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
      * @access protected
      * @since  Method available since Release 3.1.0
      */
-    protected function setLocale($category, $locale)
+    protected function setLocale()
     {
+        $args = func_get_args();
+
+        if (count($args) < 2) {
+            throw new InvalidArgumentException;
+        }
+
+        $category = $args[0];
+        $locale   = $args[1];
+
         if (!in_array($category, array(LC_ALL, LC_COLLATE, LC_CTYPE, LC_MONETARY, LC_NUMERIC, LC_TIME, LC_MESSAGES))) {
             throw new InvalidArgumentException;
         }
@@ -437,7 +446,7 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
         }
 
         $this->locale[$category] = setlocale($category, NULL);
-        setlocale($category, $locale);
+        call_user_func_array( 'setlocale', $args );
     }
 
     /**
