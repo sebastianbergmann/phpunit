@@ -193,19 +193,28 @@ class PHPUnit_Framework_MockObject_Mock
             );
         }
 
-        $code .= $this->generateMockApi($class);
+        $code   .= $this->generateMockApi($class);
+        $methods = array_unique(array_merge($this->methods, get_class_methods($class->getName())));
 
-        foreach ($this->methods as $methodName) {
-            try {
-                $method = $class->getMethod($methodName);
+        foreach ($methods as $methodName) {
+            if (in_array($methodName, $this->methods)) {
+                try {
+                    $method = $class->getMethod($methodName);
 
-                if ($this->canMockMethod($method)) {
-                    $code .= $this->generateMethodDefinitionFromExisting($method);
+                    if ($this->canMockMethod($method)) {
+                        $code .= $this->generateMethodDefinitionFromExisting($method);
+                    }
                 }
-            }
 
-            catch (ReflectionException $e) {
-                $code .= $this->generateMethodDefinition($class->getName(), $methodName, 'public');
+                catch (ReflectionException $e) {
+                    $code .= $this->generateMethodDefinition($this->className, $methodName, 'public');
+                }
+            } else {
+                $code .= "\n" . str_replace(
+                  array($this->className . '::', 'self::'),
+                  $this->mockClassName . '::',
+                  PHPUnit_Util_Class::getMethodSource($this->className, $methodName)
+                );
             }
         }
 
