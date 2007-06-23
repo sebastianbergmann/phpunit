@@ -153,5 +153,18 @@ class PHPUnit_Util_Class
 
         return $classes;
     }
+
+    public static function getMethodSource($className, $methodName)
+    {
+        $method = new ReflectionMethod($className, $methodName);
+        $file   = file($method->getFileName());
+        $result = '';
+
+        for ($line = $method->getStartLine() - 1; $line <= $method->getEndLine() - 1; $line++) {
+            $result .= $file[$line];
+        }
+
+        return $result;
+    }
 }
 ?>
