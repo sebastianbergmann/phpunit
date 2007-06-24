@@ -210,11 +210,15 @@ class PHPUnit_Framework_MockObject_Mock
                     $code .= $this->generateMethodDefinition($this->className, $methodName, 'public');
                 }
             } else {
-                $code .= "\n" . str_replace(
-                  array($this->className . '::', 'self::'),
-                  $this->mockClassName . '::',
-                  PHPUnit_Util_Class::getMethodSource($this->className, $methodName)
-                );
+                $method = $class->getMethod($methodName);
+
+                if (!$method->isInternal()) {
+                    $code .= "\n" . str_replace(
+                      array($this->className . '::', 'self::'),
+                      $this->mockClassName . '::',
+                      PHPUnit_Util_Class::getMethodSource($this->className, $methodName)
+                    );
+                }
             }
         }
 
