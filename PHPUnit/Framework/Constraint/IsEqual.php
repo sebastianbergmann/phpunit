@@ -184,6 +184,14 @@ class PHPUnit_Framework_Constraint_IsEqual extends PHPUnit_Framework_Constraint
             return FALSE;
         }
 
+        if ($a instanceof DOMDocument) {
+            $a = $this->domToText($a);
+        }
+
+        if ($b instanceof DOMDocument) {
+            $b = $this->domToText($b);
+        }
+
         if (is_object($a) && is_object($b) &&
            (get_class($a) !== get_class($b))) {
             return FALSE;
@@ -242,6 +250,22 @@ class PHPUnit_Framework_Constraint_IsEqual extends PHPUnit_Framework_Constraint
         } else {
             return (abs($a - $b) <= $this->delta);
         }
+    }
+
+    /**
+     * Returns the normalized, whitespace-cleaned, and indented textual
+     * representation of a DOMDocument.
+     * 
+     * @param DOMDocument $document
+     * @return string
+     */
+    protected function domToText(DOMDocument $document)
+    {
+        $document->formatOutput = true;
+        $document->preserveWhiteSpace = false;
+        $document->normalizeDocument();
+
+        return $document->saveXML();
     }
 }
 ?>
