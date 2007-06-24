@@ -882,6 +882,88 @@ class PHPUnit_Framework_Assert
     }
 
     /**
+     * Asserts that two XML files are equal.
+     *
+     * @param  string $expectedFile
+     * @param  string $actualFile
+     * @param  string $message
+     * @access public
+     * @static
+     * @since  Method available since Release 3.1.0
+     */
+    public static function assertXmlFileEqualsXmlFile($expectedFile, $actualFile, $message = '')
+    {
+        self::assertFileExists($expectedFile);
+        self::assertFileExists($actualFile);
+
+        self::assertEquals(
+          DOMDocument::load($expectedFile),
+          DOMDocument::load($actualFile),
+          $message
+        );
+    }
+
+    /**
+     * Asserts that two XML files are not equal.
+     *
+     * @param  string $expectedFile
+     * @param  string $actualFile
+     * @param  string $message
+     * @access public
+     * @static
+     * @since  Method available since Release 3.1.0
+     */
+    public static function assertXmlFileNotEqualsXmlFile($expectedFile, $actualFile, $message = '')
+    {
+        self::assertFileExists($expectedFile);
+        self::assertFileExists($actualFile);
+
+        self::assertNotEquals(
+          DOMDocument::load($expectedFile),
+          DOMDocument::load($actualFile),
+          $message
+        );
+    }
+
+    /**
+     * Asserts that two XML documents are equal.
+     *
+     * @param  string $expectedXml
+     * @param  string $actualXml
+     * @param  string $message
+     * @access public
+     * @static
+     * @since  Method available since Release 3.1.0
+     */
+    public static function assertXmlStringEqualsXmlString($expectedXml, $actualXml, $message = '')
+    {
+        self::assertEquals(
+          DOMDocument::loadXML($expectedFile),
+          DOMDocument::loadXML($actualFile),
+          $message
+        );
+    }
+
+    /**
+     * Asserts that two XML documents are not equal.
+     *
+     * @param  string $expectedXml
+     * @param  string $actualXml
+     * @param  string $message
+     * @access public
+     * @static
+     * @since  Method available since Release 3.1.0
+     */
+    public static function assertXmlStringNotEqualsXmlString($expectedXml, $actualXml, $message = '')
+    {
+        self::assertNotEquals(
+          DOMDocument::loadXML($expectedFile),
+          DOMDocument::loadXML($actualFile),
+          $message
+        );
+    }
+
+    /**
      *
      *
      * @param  mixed                         $value
