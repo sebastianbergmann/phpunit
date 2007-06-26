@@ -416,7 +416,7 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
     }
 
     /**
-     * This method is a wrapper for the setlocate() function that automatically
+     * This method is a wrapper for the setlocale() function that automatically
      * resets the locale to its original value after the test is run.
      *
      * @param  integer $category
