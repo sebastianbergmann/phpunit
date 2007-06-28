@@ -357,7 +357,8 @@ class PHPUnit_Framework_MockObject_Mock
               "    public function __construct(%s) {\n" .
               "        \$args = func_get_args();\n" .
               "        \$this->invocationMocker = new PHPUnit_Framework_MockObject_InvocationMocker;\n" .
-              "        call_user_func_array(array(\$this, 'parent::%s'), \$args);\n" .
+              "        \$class = new ReflectionClass(\$this);\n" .
+              "        \$class->getParentClass()->getConstructor()->invokeArgs(\$this, \$args);\n" .
               "    }\n\n",
 
               $this->generateMethodParameters($constructor),
