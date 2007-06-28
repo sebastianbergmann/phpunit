@@ -966,9 +966,9 @@ class PHPUnit_Framework_Assert
     /**
      *
      *
-     * @param  mixed                         $value
+     * @param  mixed                        $value
      * @param  PHPUnit_Framework_Constraint $constraint
-     * @param  string                        $message
+     * @param  string                       $message
      * @access public
      * @static
      * @since  Method available since Release 3.0.0
