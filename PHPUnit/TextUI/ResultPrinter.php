@@ -212,7 +212,11 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
         $e = $defect->thrownException();
 
         if ($e instanceof PHPUnit_Framework_SelfDescribing) {
-            $buffer = $e->toString() . "\n";
+            $buffer = $e->toString();
+
+            if (!empty($buffer)) {
+                $buffer .= "\n";
+            }
 
             if ($e instanceof PHPUnit_Framework_ExpectationFailedException) {
                 $comparisonFailure = $e->getComparisonFailure();
@@ -222,7 +226,7 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
                        ($comparisonFailure instanceof PHPUnit_Framework_ComparisonFailure_Array ||
                         $comparisonFailure instanceof PHPUnit_Framework_ComparisonFailure_Object ||
                         $comparisonFailure instanceof PHPUnit_Framework_ComparisonFailure_String)) {
-                        $buffer = sprintf(
+                        $buffer .= sprintf(
                           "Failed asserting that two %ss are equal.\n%s\n",
 
                           strtolower(substr(get_class($comparisonFailure), 36)),

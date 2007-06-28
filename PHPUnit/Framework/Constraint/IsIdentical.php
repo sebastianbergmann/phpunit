@@ -110,11 +110,14 @@ class PHPUnit_Framework_Constraint_IsIdentical extends PHPUnit_Framework_Constra
         if (!$not) {
             throw new PHPUnit_Framework_ExpectationFailedException(
               $failureDescription,
-              PHPUnit_Framework_ComparisonFailure::diffIdentical($this->value, $other)
+              PHPUnit_Framework_ComparisonFailure::diffIdentical($this->value, $other),
+              $description
             );
         } else {
             throw new PHPUnit_Framework_ExpectationFailedException(
-              $failureDescription
+              $failureDescription,
+              NULL,
+              $description
             );
         }
     }

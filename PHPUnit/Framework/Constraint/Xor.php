@@ -115,16 +115,13 @@ class PHPUnit_Framework_Constraint_Xor extends PHPUnit_Framework_Constraint
      */
     public function fail($other, $description, $not = FALSE)
     {
-        if (!empty($description)) {
-            $description .= "\n";
-        }
-
         throw new PHPUnit_Framework_ExpectationFailedException(
           sprintf(
-            '%sFailed asserting that %s.',
+            'Failed asserting that %s.',
 
-             $description,
-             $this->toString()
+             $this->toString(),
+             NULL,
+             $description
           )
         );
     }
