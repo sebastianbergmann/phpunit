@@ -115,11 +115,14 @@ class PHPUnit_Framework_Constraint_IsEqual extends PHPUnit_Framework_Constraint
         if (!$not) {
             throw new PHPUnit_Framework_ExpectationFailedException(
               $failureDescription,
-              PHPUnit_Framework_ComparisonFailure::diffEqual($this->value, $other)
+              PHPUnit_Framework_ComparisonFailure::diffEqual($this->value, $other),
+              $description
             );
         } else {
             throw new PHPUnit_Framework_ExpectationFailedException(
-              $failureDescription
+              $failureDescription,
+              NULL,
+              $description
             );
         }
     }
