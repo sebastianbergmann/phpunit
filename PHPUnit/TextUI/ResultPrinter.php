@@ -222,7 +222,16 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
                 $comparisonFailure = $e->getComparisonFailure();
 
                 if ($comparisonFailure !== NULL) {
-                    if (PHPUnit_Framework_ComparisonFailure::hasDiff() &&
+                    if ($comparisonFailure instanceof PHPUnit_Framework_ComparisonFailure_Scalar) {
+                        $buffer .= sprintf(
+                          "Failed asserting that %s matches expected value %s.\n",
+
+                          PHPUnit_Util_Type::toString($comparisonFailure->getActual()),
+                          PHPUnit_Util_Type::toString($comparisonFailure->getExpected())
+                        );
+                    }
+
+                    else if (PHPUnit_Framework_ComparisonFailure::hasDiff() &&
                        ($comparisonFailure instanceof PHPUnit_Framework_ComparisonFailure_Array ||
                         $comparisonFailure instanceof PHPUnit_Framework_ComparisonFailure_Object ||
                         $comparisonFailure instanceof PHPUnit_Framework_ComparisonFailure_String)) {
