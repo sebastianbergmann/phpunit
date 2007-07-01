@@ -212,7 +212,7 @@ class PHPUnit_Framework_MockObject_Mock
             } else {
                 $method = $class->getMethod($methodName);
 
-                if (!$method->isInternal()) {
+                if (!$method->isInternal() && !$method->isConstructor() && $methodName != '__clone') {
                     $code .= "\n" . str_replace(
                       array($this->className . '::', 'self::'),
                       $this->mockClassName . '::',
