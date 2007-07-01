@@ -107,6 +107,16 @@ abstract class PHPUnit_Framework_ComparisonFailure extends PHPUnit_Framework_Ass
         $this->message  = $message;
     }
 
+    public function getActual()
+    {
+        return $this->actual;
+    }
+
+    public function getExpected()
+    {
+        return $this->expected;
+    }
+
     /**
      * Figures out which diff class to use for the input types then
      * instantiates that class and returns the object.
