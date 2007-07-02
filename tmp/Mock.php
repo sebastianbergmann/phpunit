@@ -193,6 +193,7 @@ class PHPUnit_Framework_MockObject_Mock
             );
         }
 
+        $code   .= $this->generateAttributeDefinitions($class);
         $code   .= $this->generateMockApi($class);
         $methods = array_unique(array_merge($this->methods, get_class_methods($class->getName())));
 
@@ -236,6 +237,40 @@ class PHPUnit_Framework_MockObject_Mock
         }
 
         return TRUE;
+    }
+
+    protected function generateAttributeDefinitions(ReflectionClass $class)
+    {
+        $buffer = '';
+
+        foreach ($class->getProperties() as $attribute) {
+            if ($attribute->isPublic()) {
+                $buffer .= 'public';
+            }
+
+            else if ($attribute->isProtected()) {
+                $buffer .= 'protected';
+            }
+
+            else if ($attribute->isPrivate()) {
+                $buffer .= 'private';
+            }
+
+            if ($attribute->isStatic()) {
+                $buffer .= ' static';
+            }
+
+            $buffer .= ' $' . $attribute->getName();
+
+            if ($attribute->isDefault()) {
+                $defaults = $class->getDefaultProperties();
+                $buffer .= ' = ' . var_export($defaults[$attribute->getName()], TRUE);
+            }
+
+            $buffer .= ";\n\n";
+        }
+
+        return $buffer;
     }
 
     protected function generateMethodDefinitionFromExisting(ReflectionMethod $method)
