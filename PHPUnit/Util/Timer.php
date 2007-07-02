@@ -78,5 +78,32 @@ class PHPUnit_Util_Timer
     {
         return microtime(TRUE) - array_pop(self::$startTimes);
     }
+
+    public static function secondsToTimeString($time)
+    {
+        $buffer = '';
+
+        $hours   = sprintf('%02d', ($time >= 3600) ? floor($time / 3600) : 0);
+        $minutes = sprintf('%02d', ($time >= 60)   ? floor($time /   60) - 60 * $hours : 0);
+        $seconds = sprintf('%02d', $time - 60 * 60 * $hours - 60 * $minutes);
+
+        if ($hours == 0 && $minutes == 0) {
+            $seconds = sprintf('%1d', $seconds);
+
+            $buffer .= $seconds . ' second';
+
+            if ($seconds != '1') {
+                $buffer .= 's';
+            }
+        } else {
+            if ($hours > 0) {
+                $buffer = $hours . ':';
+            }
+
+            $buffer .= $minutes . ':' . $seconds;
+        }
+
+        return $buffer;
+    }
 }
 ?>
