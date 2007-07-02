@@ -172,24 +172,14 @@ abstract class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_Tes
             }
         }
 
-        if ($this->runId !== FALSE && $this->runId !== NULL) {
+        if ($this->runId !== FALSE) {
             $this->createCookie(
               'PHPUNIT_SELENIUM_RUN_ID=' . $this->runId,
               'path=/'
             );
 
             $this->createCookie(
-              'PHPUNIT_SELENIUM_SESSION_ID=' . $this->sessionId,
-              'path=/'
-            );
-
-            $this->createCookie(
               'PHPUNIT_SELENIUM_TEST_ID=' . $this->testId,
-              'path=/'
-            );
-
-            $this->createCookie(
-              'PHPUNIT_SELENIUM_TEST_NAME=' . $this->getName(),
               'path=/'
             );
         }
