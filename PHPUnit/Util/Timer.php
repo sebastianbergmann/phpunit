@@ -64,21 +64,48 @@ class PHPUnit_Util_Timer
 {
     private static $startTimes = array();
 
+    /**
+     * Starts the timer.
+     *
+     * @access public
+     * @static
+     */
     public static function start()
     {
         array_push(self::$startTimes, microtime(TRUE));
     }
 
+    /**
+     * Returns the currently elapsed time.
+     *
+     * @return float
+     * @access public
+     * @static
+     */
     public static function current()
     {
         return microtime(TRUE) - self::$startTimes[count(self::$startTimes)-1];
     }
 
+    /**
+     * Stops the timer and returns the elapsed time.
+     *
+     * @access public
+     * @static
+     */
     public static function stop()
     {
         return microtime(TRUE) - array_pop(self::$startTimes);
     }
 
+    /**
+     * Formats elapsed time (in seconds) to a string.
+     *
+     * @param  float $time
+     * @return float
+     * @access public
+     * @static
+     */
     public static function secondsToTimeString($time)
     {
         $buffer = '';

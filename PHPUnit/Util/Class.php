@@ -65,11 +65,25 @@ class PHPUnit_Util_Class
     protected static $buffer = array();
     protected static $fileClassMap = array();
 
+    /**
+     * Starts the collection of loaded classes.
+     *
+     * @access public
+     * @static
+     */
     public static function collectStart()
     {
         self::$buffer = get_declared_classes();
     }
 
+    /**
+     * Stops the collection of loaded classes and
+     * returns the names of the loaded classes.
+     *
+     * @return array
+     * @access public
+     * @static
+     */
     public static function collectEnd()
     {
         return array_values(
@@ -77,6 +91,14 @@ class PHPUnit_Util_Class
         );
     }
 
+    /**
+     * Stops the collection of loaded classes and
+     * returns the names of the files that declare the loaded classes.
+     *
+     * @return array
+     * @access public
+     * @static
+     */
     public static function collectEndAsFiles()
     {
         $result = self::collectEnd();
@@ -99,6 +121,16 @@ class PHPUnit_Util_Class
         return $result;
     }
 
+    /**
+     * Returns the names of the classes declared in a sourcefile.
+     *
+     * @param  string  $filename
+     * @param  string  $commonPath
+     * @param  boolean $clearCache
+     * @return array
+     * @access public
+     * @static
+     */
     public static function getClassesInFile($filename, $commonPath = '', $clearCache = FALSE)
     {
         if ($commonPath != '') {
@@ -135,6 +167,14 @@ class PHPUnit_Util_Class
         return isset(self::$fileClassMap[$filename]) ? self::$fileClassMap[$filename] : array();
     }
 
+    /**
+     * Returns the class hierarchy for a given class.
+     *
+     * @param  string  $className
+     * @return array
+     * @access public
+     * @static
+     */
     public static function getHierarchy($className)
     {
         $classes = array($className);
@@ -154,6 +194,15 @@ class PHPUnit_Util_Class
         return $classes;
     }
 
+    /**
+     * Returns the sourcecode of a user-defined class.
+     *
+     * @param  string  $className
+     * @param  string  $methodName
+     * @return string
+     * @access public
+     * @static
+     */
     public static function getMethodSource($className, $methodName)
     {
         $method = new ReflectionMethod($className, $methodName);
