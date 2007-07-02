@@ -39,29 +39,14 @@
  * @author     Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @copyright  2002-2007 Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
- * @version    SVN: $Id$
+ * @version    SVN: $Id: NamePrettifierTest.php 537 2007-02-24 06:58:18Z sb $
  * @link       http://www.phpunit.de/
  * @since      File available since Release 2.3.0
  */
 
-require_once 'PHPUnit/Util/Filter.php';
+require_once 'PHPUnit/Framework/TestCase.php';
 
-PHPUnit_Util_Filter::addFileToFilter(__FILE__);
-
-if (!defined('PHPUnit_MAIN_METHOD')) {
-    define('PHPUnit_MAIN_METHOD', 'Util_AllTests::main');
-    chdir(dirname(dirname(__FILE__)));
-}
-
-if (!defined('PHPUnit_INSIDE_OWN_TESTSUITE')) {
-    define('PHPUnit_INSIDE_OWN_TESTSUITE', TRUE);
-}
-
-require_once 'PHPUnit/Framework/TestSuite.php';
-require_once 'PHPUnit/TextUI/TestRunner.php';
-
-require_once 'Util/TestDox/AllTests.php';
-require_once 'Util/TimerTest.php';
+require_once 'PHPUnit/Util/Timer.php';
 
 /**
  *
@@ -73,27 +58,21 @@ require_once 'Util/TimerTest.php';
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    Release: @package_version@
  * @link       http://www.phpunit.de/
- * @since      Class available since Release 2.0.0
+ * @since      Class available since Release 2.1.0
  */
-class Util_AllTests
+class Util_TimerTest extends PHPUnit_Framework_TestCase
 {
-    public static function main()
+    public function testSecondsToTimeString()
     {
-        PHPUnit_TextUI_TestRunner::run(self::suite());
+        $this->assertEquals('0 seconds', PHPUnit_Util_Timer::secondsToTimeString(0));
+        $this->assertEquals('1 second', PHPUnit_Util_Timer::secondsToTimeString(1));
+        $this->assertEquals('2 seconds', PHPUnit_Util_Timer::secondsToTimeString(2));
+        $this->assertEquals('01:00', PHPUnit_Util_Timer::secondsToTimeString(60));
+        $this->assertEquals('01:01', PHPUnit_Util_Timer::secondsToTimeString(61));
+        $this->assertEquals('02:00', PHPUnit_Util_Timer::secondsToTimeString(120));
+        $this->assertEquals('02:01', PHPUnit_Util_Timer::secondsToTimeString(121));
+        $this->assertEquals('01:00:00', PHPUnit_Util_Timer::secondsToTimeString(3600));
+        $this->assertEquals('01:00:01', PHPUnit_Util_Timer::secondsToTimeString(3601));
     }
-
-    public static function suite()
-    {
-        $suite = new PHPUnit_Framework_TestSuite('PHPUnit_Util');
-
-        $suite->addTest(Util_TestDox_AllTests::suite());
-        $suite->addTestSuite('Util_TimerTest');
-
-        return $suite;
-    }
-}
-
-if (PHPUnit_MAIN_METHOD == 'Util_AllTests::main') {
-    Util_AllTests::main();
 }
 ?>
