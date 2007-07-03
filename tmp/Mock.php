@@ -193,38 +193,23 @@ class PHPUnit_Framework_MockObject_Mock
             );
         }
 
-        $code   .= $this->generateAttributeDefinitions($class);
-        $code   .= $this->generateMockApi($class);
-        $methods = array_unique(array_merge($this->methods, get_class_methods($class->getName())));
+        $code .= $this->generateMockApi($class);
 
-        foreach ($methods as $methodName) {
-            if (in_array($methodName, $this->methods)) {
-                try {
-                    $method = $class->getMethod($methodName);
-
-                    if ($this->canMockMethod($method)) {
-                        $code .= $this->generateMethodDefinitionFromExisting($method);
-                    }
-                }
-
-                catch (ReflectionException $e) {
-                    $code .= $this->generateMethodDefinition($this->className, $methodName, 'public');
-                }
-            } else {
+        foreach ($this->methods as $methodName) {
+            try {
                 $method = $class->getMethod($methodName);
 
-                if (!$method->isInternal() && !$method->isConstructor() && $methodName != '__clone') {
-                    $code .= "\n" . str_replace(
-                      array($this->className . '::', 'self::'),
-                      $this->mockClassName . '::',
-                      PHPUnit_Util_Class::getMethodSource($this->className, $methodName)
-                    );
+                if ($this->canMockMethod($method)) {
+                    $code .= $this->generateMethodDefinitionFromExisting($method);
                 }
+            }
+
+            catch (ReflectionException $e) {
+                $code .= $this->generateMethodDefinition($class->getName(), $methodName, 'public');
             }
         }
 
-        $code .= "}\n\n" .
-                 $this->mockClassName . '::$staticInvocationMocker = new PHPUnit_Framework_MockObject_InvocationMocker;';
+        $code .= "}\n";
 
         return $code;
     }
@@ -237,40 +222,6 @@ class PHPUnit_Framework_MockObject_Mock
         }
 
         return TRUE;
-    }
-
-    protected function generateAttributeDefinitions(ReflectionClass $class)
-    {
-        $buffer = '';
-
-        foreach ($class->getProperties() as $attribute) {
-            if ($attribute->isPublic()) {
-                $buffer .= 'public';
-            }
-
-            else if ($attribute->isProtected()) {
-                $buffer .= 'protected';
-            }
-
-            else if ($attribute->isPrivate()) {
-                $buffer .= 'private';
-            }
-
-            if ($attribute->isStatic()) {
-                $buffer .= ' static';
-            }
-
-            $buffer .= ' $' . $attribute->getName();
-
-            if ($attribute->isDefault()) {
-                $defaults = $class->getDefaultProperties();
-                $buffer .= ' = ' . var_export($defaults[$attribute->getName()], TRUE);
-            }
-
-            $buffer .= ";\n\n";
-        }
-
-        return $buffer;
     }
 
     protected function generateMethodDefinitionFromExisting(ReflectionMethod $method)
@@ -308,21 +259,11 @@ class PHPUnit_Framework_MockObject_Mock
 
     protected function generateMethodDefinition($className, $methodName, $modifier, $reference = '', $parameters = '')
     {
-        if (strpos($modifier, 'static') === FALSE) {
-            $invocationClass  = 'PHPUnit_Framework_MockObject_ObjectInvocation';
-            $invocationMocker = '$this->invocationMocker';
-            $objectReference  = ', $this';
-        } else {
-            $invocationClass  = 'PHPUnit_Framework_MockObject_StaticInvocation';
-            $invocationMocker = 'self::$staticInvocationMocker';
-            $objectReference  = '';
-        }
-
         return sprintf(
           "\n    %s function %s%s(%s) {\n" .
           "        \$args = func_get_args();\n" .
-          "        return %s->invoke(\n" .
-          "          new %s(\"%s\", \"%s\", \$args%s)\n" .
+          "        return \$this->invocationMocker->invoke(\n" .
+          "          new PHPUnit_Framework_MockObject_Invocation(\$this, \"%s\", \"%s\", \$args)\n" .
           "        );\n" .
           "    }\n",
 
@@ -330,11 +271,8 @@ class PHPUnit_Framework_MockObject_Mock
           $reference,
           $methodName,
           $parameters,
-          $invocationMocker,
-          $invocationClass,
           $className,
-          $methodName,
-          $objectReference
+          $methodName
         );
     }
 
@@ -353,8 +291,7 @@ class PHPUnit_Framework_MockObject_Mock
         }
 
         return sprintf(
-          "    private \$invocationMocker;\n" .
-          "    public static \$staticInvocationMocker;\n\n" .
+          "    private \$invocationMocker;\n\n" .
           "%s" .
           "%s" .
           "    public function getInvocationMocker() {\n" .
@@ -363,11 +300,7 @@ class PHPUnit_Framework_MockObject_Mock
           "    public function expects(PHPUnit_Framework_MockObject_Matcher_Invocation \$matcher) {\n" .
           "        return \$this->invocationMocker->expects(\$matcher);\n" .
           "    }\n\n" .
-          "    public function staticExpects(PHPUnit_Framework_MockObject_Matcher_Invocation \$matcher) {\n" .
-          "        return self::\$staticInvocationMocker->expects(\$matcher);\n" .
-          "    }\n\n" .
           "    public function verify() {\n" .
-          "        self::\$staticInvocationMocker->verify();\n" .
           "        \$this->invocationMocker->verify();\n" .
           "    }\n",
 
@@ -379,7 +312,7 @@ class PHPUnit_Framework_MockObject_Mock
     protected function generateConstructorCode()
     {
         return "    public function __construct() {\n" .
-               "        \$this->invocationMocker = new PHPUnit_Framework_MockObject_InvocationMocker;\n" .
+               "        \$this->invocationMocker = new PHPUnit_Framework_MockObject_InvocationMocker(\$this);\n" .
                "    }\n\n";
     }
 
@@ -396,8 +329,7 @@ class PHPUnit_Framework_MockObject_Mock
               "        \$class->getParentClass()->getConstructor()->invokeArgs(\$this, \$args);\n" .
               "    }\n\n",
 
-              $this->generateMethodParameters($constructor),
-              $constructor->getName()
+              $this->generateMethodParameters($constructor)
             );
         } else {
             return $this->generateConstructorCode();
