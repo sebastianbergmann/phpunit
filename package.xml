@@ -222,12 +222,6 @@
       <file baseinstalldir="/" name="Mock.php" role="php">
        <tasks:replace from="@package_version@" to="version" type="package-info" />
       </file>
-      <file baseinstalldir="/" name="ObjectInvocation.php" role="php">
-       <tasks:replace from="@package_version@" to="version" type="package-info" />
-      </file>
-      <file baseinstalldir="/" name="StaticInvocation.php" role="php">
-       <tasks:replace from="@package_version@" to="version" type="package-info" />
-      </file>
       <file baseinstalldir="/" name="Stub.php" role="php">
        <tasks:replace from="@package_version@" to="version" type="package-info" />
       </file>
