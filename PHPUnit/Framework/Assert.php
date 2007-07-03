@@ -327,7 +327,7 @@ class PHPUnit_Framework_Assert
      */
     public static function assertGreaterThan($expected, $actual, $message = '')
     {
-        self::assertThat($actual, $this->greaterThan($expected), $message);
+        self::assertThat($actual, self::greaterThan($expected), $message);
     }
 
     /**
@@ -362,7 +362,7 @@ class PHPUnit_Framework_Assert
      */
     public static function assertGreaterThanOrEqual($expected, $actual, $message = '')
     {
-        self::assertThat($actual, $this->greaterThanOrEqual($expected), $message);
+        self::assertThat($actual, self::greaterThanOrEqual($expected), $message);
     }
 
     /**
@@ -397,7 +397,7 @@ class PHPUnit_Framework_Assert
      */
     public static function assertLessThan($expected, $actual, $message = '')
     {
-        self::assertThat($actual, $this->lessThan($expected), $message);
+        self::assertThat($actual, self::lessThan($expected), $message);
     }
 
     /**
@@ -432,7 +432,7 @@ class PHPUnit_Framework_Assert
      */
     public static function assertLessThanOrEqual($expected, $actual, $message = '')
     {
-        self::assertThat($actual, $this->lessThanOrEqual($expected), $message);
+        self::assertThat($actual, self::lessThanOrEqual($expected), $message);
     }
 
     /**
