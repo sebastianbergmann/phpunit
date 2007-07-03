@@ -52,7 +52,7 @@ PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
 
 trigger_error(
   "Class PHPUnit_Extensions_TestSetup is deprecated. ".
-  "It will be removed in PHPUnit 3.2. ".
+  "It will be removed in PHPUnit 4.0. ".
   "Please use the new functionality in PHPUnit_Framework_TestSuite instead."
 );
 
