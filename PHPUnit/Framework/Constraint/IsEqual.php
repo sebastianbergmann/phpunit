@@ -113,9 +113,19 @@ class PHPUnit_Framework_Constraint_IsEqual extends PHPUnit_Framework_Constraint
         );
 
         if (!$not) {
+            if ($this->value instanceof DOMDocument) {
+                $value = $this->domToText($this->value);
+            } else {
+                $value = $this->value;
+            }
+
+            if ($other instanceof DOMDocument) {
+                $other = $this->domToText($other);
+            }
+
             throw new PHPUnit_Framework_ExpectationFailedException(
               $failureDescription,
-              PHPUnit_Framework_ComparisonFailure::diffEqual($this->value, $other),
+              PHPUnit_Framework_ComparisonFailure::diffEqual($value, $other),
               $description
             );
         } else {
