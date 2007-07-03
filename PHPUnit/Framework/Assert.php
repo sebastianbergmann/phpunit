@@ -896,11 +896,13 @@ class PHPUnit_Framework_Assert
         self::assertFileExists($expectedFile);
         self::assertFileExists($actualFile);
 
-        self::assertEquals(
-          DOMDocument::load($expectedFile),
-          DOMDocument::load($actualFile),
-          $message
-        );
+        $expected = new DOMDocument;
+        $expected->load($expectedFile);
+
+        $actual = new DOMDocument;
+        $actual->load($actualFile);
+
+        self::assertEquals($expected, $actual, $message);
     }
 
     /**
@@ -918,11 +920,13 @@ class PHPUnit_Framework_Assert
         self::assertFileExists($expectedFile);
         self::assertFileExists($actualFile);
 
-        self::assertNotEquals(
-          DOMDocument::load($expectedFile),
-          DOMDocument::load($actualFile),
-          $message
-        );
+        $expected = new DOMDocument;
+        $expected->load($expectedFile);
+
+        $actual = new DOMDocument;
+        $actual->load($actualFile);
+
+        self::assertNotEquals($expected, $actual, $message);
     }
 
     /**
@@ -937,11 +941,13 @@ class PHPUnit_Framework_Assert
      */
     public static function assertXmlStringEqualsXmlString($expectedXml, $actualXml, $message = '')
     {
-        self::assertEquals(
-          DOMDocument::loadXML($expectedFile),
-          DOMDocument::loadXML($actualFile),
-          $message
-        );
+        $expected = new DOMDocument;
+        $expected->loadXML($expectedXml);
+
+        $actual = new DOMDocument;
+        $actual->loadXML($actualXml);
+
+        self::assertEquals($expected, $actual, $message);
     }
 
     /**
@@ -956,11 +962,13 @@ class PHPUnit_Framework_Assert
      */
     public static function assertXmlStringNotEqualsXmlString($expectedXml, $actualXml, $message = '')
     {
-        self::assertNotEquals(
-          DOMDocument::loadXML($expectedFile),
-          DOMDocument::loadXML($actualFile),
-          $message
-        );
+        $expected = new DOMDocument;
+        $expected->loadXML($expectedXml);
+
+        $actual = new DOMDocument;
+        $actual->loadXML($actualXml);
+
+        self::assertNotEquals($expected, $actual, $message);
     }
 
     /**
