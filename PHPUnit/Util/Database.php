@@ -93,14 +93,7 @@ class PHPUnit_Util_Database
      */
     public function storeCodeCoverage(PHPUnit_Framework_TestResult $result, $revision)
     {
-        if (defined('PHPUnit_INSIDE_OWN_TESTSUITE')) {
-            $filterPHPUnit = FALSE;
-            xdebug_stop_code_coverage();
-        } else {
-            $filterPHPUnit = TRUE;
-        }
-
-        $codeCoverage = $result->getCodeCoverageInformation(FALSE, $filterPHPUnit);
+        $codeCoverage = $result->getCodeCoverageInformation(FALSE, TRUE);
         $summary      = PHPUnit_Util_CodeCoverage::getSummary($codeCoverage);
         $files        = array_keys($summary);
         $commonPath   = PHPUnit_Util_Filesystem::getCommonPath($files);
