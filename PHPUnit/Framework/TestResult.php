@@ -532,8 +532,8 @@ class PHPUnit_Framework_TestResult implements Countable
         }
 
         if (self::$xdebugLoaded === NULL) {
-            self::$xdebugLoaded  = extension_loaded('xdebug');
-            self::$useXdebug = self::$xdebugLoaded && !defined('PHPUnit_INSIDE_OWN_TESTSUITE');
+            self::$xdebugLoaded = extension_loaded('xdebug');
+            self::$useXdebug = self::$xdebugLoaded;
         }
 
         $useXdebug = self::$useXdebug && $this->collectCodeCoverageInformation && !$test instanceof PHPUnit_Extensions_SeleniumTestCase;
@@ -565,10 +565,6 @@ class PHPUnit_Framework_TestResult implements Countable
             );
 
             xdebug_stop_code_coverage();
-
-            if (defined('PHPUnit_INSIDE_OWN_TESTSUITE')) {
-                xdebug_start_code_coverage(XDEBUG_CC_UNUSED | XDEBUG_CC_DEAD_CODE);
-            }
         }
 
         if ($errorHandlerSet === TRUE) {
