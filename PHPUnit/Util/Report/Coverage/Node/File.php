@@ -428,6 +428,8 @@ class PHPUnit_Util_Report_Coverage_Node_File extends PHPUnit_Util_Report_Coverag
             }
         }
 
+        unset($result[count($result)-1]);
+
         return $result;
     }
 
