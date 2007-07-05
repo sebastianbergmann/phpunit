@@ -73,6 +73,7 @@ class PHPUnit_Framework_Constraint_IsType extends PHPUnit_Framework_Constraint
     public function __construct($type)
     {
         switch ($type) {
+            case 'numeric':
             case 'integer':
             case 'int':
             case 'float':
@@ -110,6 +111,10 @@ class PHPUnit_Framework_Constraint_IsType extends PHPUnit_Framework_Constraint
     public function evaluate($other)
     {
         switch ($this->type) {
+            case 'numeric': {
+              return is_numeric($other);
+            }
+
             case 'integer':
             case 'int': {
               return is_integer($other);
