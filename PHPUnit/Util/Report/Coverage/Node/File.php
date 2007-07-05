@@ -375,22 +375,27 @@ class PHPUnit_Util_Report_Coverage_Node_File extends PHPUnit_Util_Report_Coverag
         }
 
         $tokens     = token_get_all(file_get_contents($file));
+        $stringFlag = FALSE;
         $i          = 0;
         $result     = array();
         $result[$i] = '';
 
         foreach ($tokens as $j => $token) {
             if (is_string($token)) {
-                $result[$i] .= sprintf(
-                  '<span class="keyword">%s</span>',
+                if ($token === '"' && $tokens[$j - 1] !== '\\') {
+                    $result[$i] .= sprintf(
+                      '<span class="string">%s</span>',
 
-                  htmlspecialchars($token)
-                );
+                      htmlspecialchars($token)
+                    );
 
-                list($tb) = isset($tokens[$j - 1]) ? $tokens[$j - 1] : FALSE;
+                    $stringFlag = !$stringFlag;   
+                } else {
+                    $result[$i] .= sprintf(
+                      '<span class="keyword">%s</span>',
 
-                if ($tb == T_END_HEREDOC) {
-                    $result[++$i] = '';
+                      htmlspecialchars($token)
+                    );
                 }
 
                 continue;
@@ -413,10 +418,16 @@ class PHPUnit_Util_Report_Coverage_Node_File extends PHPUnit_Util_Report_Coverag
                     $line = trim($line);
 
                     if ($line !== '') {
+                        if ($stringFlag) {
+                            $colour = 'string';
+                        } else {
+                            $colour = $this->tokenToColor($token);
+                        }
+
                         $result[$i] .= sprintf(
                           '<span class="%s">%s</span>',
 
-                          $this->tokenToColor($token),
+                          $colour,
                           $line
                         );
                     }
