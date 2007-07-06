@@ -121,7 +121,11 @@ class PHPUnit_Util_Filter
     {
         $filename = self::getCanonicalFilename($filename);
 
-        if (!in_array($filename, self::$blacklistedFiles[$group])) {
+        if (!isset(self::$blacklistedFiles[$group])) {
+            self::$blacklistedFiles[$group] = array($filename);
+        }
+
+        else if (!in_array($filename, self::$blacklistedFiles[$group])) {
             self::$blacklistedFiles[$group][] = $filename;
         }
     }
