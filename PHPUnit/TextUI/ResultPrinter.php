@@ -249,6 +249,8 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
                        !$comparisonFailure instanceof PHPUnit_Framework_ComparisonFailure_String) {
                         $buffer .= $comparisonFailure->toString() . "\n";
                     }
+                } else {
+                    $buffer .= $e->getDescription() . "\n";
                 }
             }
         }
