@@ -111,12 +111,13 @@ class PHPUnit_Framework_Constraint_Or extends PHPUnit_Framework_Constraint
     {
         throw new PHPUnit_Framework_ExpectationFailedException(
           sprintf(
-            'Failed asserting that %s.',
+            'Failed asserting that %s %s.',
 
-             $this->toString(),
-             NULL,
-             $description
-          )
+             PHPUnit_Util_Type::toString($other),
+             $this->toString()
+          ),
+          NULL,
+          $description
         );
     }
 
