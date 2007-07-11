@@ -227,12 +227,13 @@ class PHPUnit_Framework_Assert
      *
      * @param  string  $type
      * @param  mixed   $haystack
+     * @param  boolean $isNativeType
      * @param  string  $message
      * @access public
      * @static
      * @since  Method available since Release 3.1.4
      */
-    public static function assertContainsOnly($type, $haystack, $message = '')
+    public static function assertContainsOnly($type, $haystack, $isNativeType = TRUE, $message = '')
     {
         if (!(is_array($haystack) ||
             is_object($haystack) && $haystack instanceof Iterator)) {
@@ -241,7 +242,9 @@ class PHPUnit_Framework_Assert
 
         self::assertThat(
           $haystack,
-          new PHPUnit_Framework_Constraint_TraversableContainsOnly($type),
+          new PHPUnit_Framework_Constraint_TraversableContainsOnly(
+            $type, $isNativeType
+          ),
           $message
         );
     }
@@ -253,16 +256,18 @@ class PHPUnit_Framework_Assert
      * @param  string  $type
      * @param  string  $haystackAttributeName
      * @param  mixed   $haystackClassOrObject
+     * @param  boolean $isNativeType
      * @param  string  $message
      * @access public
      * @static
      * @since  Method available since Release 3.1.4
      */
-    public static function assertAttributeContainsOnly($type, $haystackAttributeName, $haystackClassOrObject, $message = '')
+    public static function assertAttributeContainsOnly($type, $haystackAttributeName, $haystackClassOrObject, $isNativeType = TRUE, $message = '')
     {
         self::assertContainsOnly(
           $type,
           self::readAttribute($haystackClassOrObject, $haystackAttributeName),
+          $isNativeType,
           $message
         );
     }
@@ -272,12 +277,13 @@ class PHPUnit_Framework_Assert
      *
      * @param  string  $type
      * @param  mixed   $haystack
+     * @param  boolean $isNativeType
      * @param  string  $message
      * @access public
      * @static
      * @since  Method available since Release 3.1.4
      */
-    public static function assertNotContainsOnly($type, $haystack, $message = '')
+    public static function assertNotContainsOnly($type, $haystack, $isNativeType = TRUE, $message = '')
     {
         if (!(is_array($haystack) ||
             is_object($haystack) && $haystack instanceof Iterator)) {
@@ -287,7 +293,9 @@ class PHPUnit_Framework_Assert
         self::assertThat(
           $haystack,
           new PHPUnit_Framework_Constraint_Not(
-            new PHPUnit_Framework_Constraint_TraversableContainsOnly($type)
+            new PHPUnit_Framework_Constraint_TraversableContainsOnly(
+              $type, $isNativeType
+            )
           ),
           $message
         );
@@ -300,16 +308,18 @@ class PHPUnit_Framework_Assert
      * @param  string  $type
      * @param  string  $haystackAttributeName
      * @param  mixed   $haystackClassOrObject
+     * @param  boolean $isNativeType
      * @param  string  $message
      * @access public
      * @static
      * @since  Method available since Release 3.1.4
      */
-    public static function assertAttributeNotContainsOnly($type, $haystackAttributeName, $haystackClassOrObject, $message = '')
+    public static function assertAttributeNotContainsOnly($type, $haystackAttributeName, $haystackClassOrObject, $isNativeType = TRUE, $message = '')
     {
         self::assertNotContainsOnly(
           $type,
           self::readAttribute($haystackClassOrObject, $haystackAttributeName),
+          $isNativeType,
           $message
         );
     }

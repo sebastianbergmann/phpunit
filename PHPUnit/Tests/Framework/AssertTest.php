@@ -297,6 +297,36 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
         $this->fail();
     }
 
+    public function testAssertArrayContainsOnlyStdClass()
+    {
+        $this->assertContainsOnly('StdClass', array(new StdClass), FALSE);
+
+        try {
+            $this->assertContainsOnly('StdClass', array('StdClass'), FALSE);
+        }
+
+        catch (PHPUnit_Framework_AssertionFailedError $e) {
+            return;
+        }
+
+        $this->fail();
+    }
+
+    public function testAssertArrayNotContainsOnlyStdClass()
+    {
+        $this->assertNotContainsOnly('StdClass', array('StdClass'), FALSE);
+
+        try {
+            $this->assertNotContainsOnly('StdClass', array(new StdClass), FALSE);
+        }
+
+        catch (PHPUnit_Framework_AssertionFailedError $e) {
+            return;
+        }
+
+        $this->fail();
+    }
+
     public function testAssertEqualsArray()
     {
         $this->assertEquals(array('a', 'b' => array(1, 2)), array('a', 'b' => array(1, 2)));
