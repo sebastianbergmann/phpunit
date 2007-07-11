@@ -138,6 +138,9 @@
       <file baseinstalldir="/" name="TraversableContains.php" role="php">
        <tasks:replace from="@package_version@" to="version" type="package-info" />
       </file>
+      <file baseinstalldir="/" name="TraversableContainsOnly.php" role="php">
+       <tasks:replace from="@package_version@" to="version" type="package-info" />
+      </file>
       <file baseinstalldir="/" name="Xor.php" role="php">
        <tasks:replace from="@package_version@" to="version" type="package-info" />
       </file>

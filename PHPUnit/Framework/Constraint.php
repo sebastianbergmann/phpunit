@@ -160,5 +160,6 @@ require_once 'PHPUnit/Framework/Constraint/Or.php';
 require_once 'PHPUnit/Framework/Constraint/PCREMatch.php';
 require_once 'PHPUnit/Framework/Constraint/StringContains.php';
 require_once 'PHPUnit/Framework/Constraint/TraversableContains.php';
+require_once 'PHPUnit/Framework/Constraint/TraversableContainsOnly.php';
 require_once 'PHPUnit/Framework/Constraint/Xor.php';
 ?>
