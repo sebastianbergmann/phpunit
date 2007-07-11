@@ -95,5 +95,20 @@ class FailureTest extends PHPUnit_Framework_TestCase
     {
         $this->assertEquals("foo\nbar\n", "foo\nbaz\n");
     }
+
+    public function testAssertTextSameText()
+    {
+        $this->assertSame('foo', 'bar');
+    }
+
+    public function testAssertObjectSameObject()
+    {
+        $this->assertSame(new StdClass, new StdClass);
+    }
+
+    public function testAssertObjectSameNull()
+    {
+        $this->assertSame(new StdClass, NULL);
+    }
 }
 ?>
