@@ -267,6 +267,36 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
         $this->fail();
     }
 
+    public function testAssertArrayContainsOnlyIntegers()
+    {
+        $this->assertContainsOnly('integer', array(1, 2, 3));
+
+        try {
+            $this->assertContainsOnly('integer', array("1", 2, 3));
+        }
+
+        catch (PHPUnit_Framework_AssertionFailedError $e) {
+            return;
+        }
+
+        $this->fail();
+    }
+
+    public function testAssertArrayNotContainsOnlyIntegers()
+    {
+        $this->assertNotContainsOnly('integer', array("1", 2, 3));
+
+        try {
+            $this->assertNotContainsOnly('integer', array(1, 2, 3));
+        }
+
+        catch (PHPUnit_Framework_AssertionFailedError $e) {
+            return;
+        }
+
+        $this->fail();
+    }
+
     public function testAssertEqualsArray()
     {
         $this->assertEquals(array('a', 'b' => array(1, 2)), array('a', 'b' => array(1, 2)));

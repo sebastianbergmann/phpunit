@@ -223,6 +223,98 @@ class PHPUnit_Framework_Assert
     }
 
     /**
+     * Asserts that a haystack contains only values of a given type.
+     *
+     * @param  string  $type
+     * @param  mixed   $haystack
+     * @param  string  $message
+     * @access public
+     * @static
+     * @since  Method available since Release 3.1.4
+     */
+    public static function assertContainsOnly($type, $haystack, $message = '')
+    {
+        if (!(is_array($haystack) ||
+            is_object($haystack) && $haystack instanceof Iterator)) {
+            throw new InvalidArgumentException;
+        }
+
+        self::assertThat(
+          $haystack,
+          new PHPUnit_Framework_Constraint_TraversableContainsOnly($type),
+          $message
+        );
+    }
+
+    /**
+     * Asserts that a haystack that is stored in a static attribute of a class
+     * or an attribute of an object contains only values of a given type.
+     *
+     * @param  string  $type
+     * @param  string  $haystackAttributeName
+     * @param  mixed   $haystackClassOrObject
+     * @param  string  $message
+     * @access public
+     * @static
+     * @since  Method available since Release 3.1.4
+     */
+    public static function assertAttributeContainsOnly($type, $haystackAttributeName, $haystackClassOrObject, $message = '')
+    {
+        self::assertContainsOnly(
+          $type,
+          self::readAttribute($haystackClassOrObject, $haystackAttributeName),
+          $message
+        );
+    }
+
+    /**
+     * Asserts that a haystack does not contain only values of a given type.
+     *
+     * @param  string  $type
+     * @param  mixed   $haystack
+     * @param  string  $message
+     * @access public
+     * @static
+     * @since  Method available since Release 3.1.4
+     */
+    public static function assertNotContainsOnly($type, $haystack, $message = '')
+    {
+        if (!(is_array($haystack) ||
+            is_object($haystack) && $haystack instanceof Iterator)) {
+            throw new InvalidArgumentException;
+        }
+
+        self::assertThat(
+          $haystack,
+          new PHPUnit_Framework_Constraint_Not(
+            new PHPUnit_Framework_Constraint_TraversableContainsOnly($type)
+          ),
+          $message
+        );
+    }
+
+    /**
+     * Asserts that a haystack that is stored in a static attribute of a class
+     * or an attribute of an object does not contain only values of a given type.
+     *
+     * @param  string  $type
+     * @param  string  $haystackAttributeName
+     * @param  mixed   $haystackClassOrObject
+     * @param  string  $message
+     * @access public
+     * @static
+     * @since  Method available since Release 3.1.4
+     */
+    public static function assertAttributeNotContainsOnly($type, $haystackAttributeName, $haystackClassOrObject, $message = '')
+    {
+        self::assertNotContainsOnly(
+          $type,
+          self::readAttribute($haystackClassOrObject, $haystackAttributeName),
+          $message
+        );
+    }
+
+    /**
      * Asserts that two variables are equal.
      *
      * @param  mixed   $expected
@@ -1098,6 +1190,20 @@ class PHPUnit_Framework_Assert
     public static function contains($value)
     {
         return new PHPUnit_Framework_Constraint_TraversableContains($value);
+    }
+
+    /**
+     *
+     *
+     * @param  string $type
+     * @return PHPUnit_Framework_Constraint_TraversableContainsOnly
+     * @access public
+     * @since  Method available since Release 3.1.4
+     * @static
+     */
+    public static function containsOnly($type)
+    {
+        return new PHPUnit_Framework_Constraint_TraversableContainsOnly($type);
     }
 
     /**
