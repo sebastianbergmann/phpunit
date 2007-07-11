@@ -45,6 +45,7 @@
  */
 
 require_once 'PHPUnit/Framework.php';
+require_once 'PHPUnit/Extensions/PhptTestCase.php';
 require_once 'PHPUnit/Runner/BaseTestRunner.php';
 require_once 'PHPUnit/Util/Class.php';
 require_once 'PHPUnit/Util/Fileloader.php';
@@ -296,6 +297,14 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
     {
         if (!is_string($filename)) {
             throw new InvalidArgumentException;
+        }
+
+        if (file_exists($filename) && substr($filename, -5) == '.phpt') {
+            $this->addTest(
+              new PHPUnit_Extensions_PhptTestCase($filename)
+            );
+
+            return;
         }
 
         if (!file_exists($filename)) {
