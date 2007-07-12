@@ -896,8 +896,17 @@ abstract class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_Tes
             );
         }
 
-        stream_set_blocking($handle, FALSE);
-        $response = stream_get_contents($handle);
+        stream_set_blocking($handle, 1);
+        stream_set_timeout($handle, 0, $this->timeout);
+
+        $info     = stream_get_meta_data($handle);
+        $response = '';
+
+        while ((!feof($handle)) && (!$info['timed_out'])) {
+            $response .= fgets($handle, 4096); 
+            $info = stream_get_meta_data($handle); 
+        }
+
         fclose($handle);
 
         if (!preg_match('/^OK/', $response)) {
