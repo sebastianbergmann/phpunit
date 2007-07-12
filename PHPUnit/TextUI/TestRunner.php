@@ -52,6 +52,7 @@ require_once 'PHPUnit/Runner/Version.php';
 require_once 'PHPUnit/TextUI/ResultPrinter.php';
 require_once 'PHPUnit/Util/TestDox/ResultPrinter.php';
 require_once 'PHPUnit/Util/Database.php';
+require_once 'PHPUnit/Util/PDO.php';
 require_once 'PHPUnit/Util/Filter.php';
 require_once 'PHPUnit/Util/Report.php';
 require_once 'PHPUnit/Util/Report/GraphViz.php';
@@ -272,7 +273,7 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
         }
 
         if ($writeToTestDatabase) {
-            $dbh = new PDO($parameters['testDatabaseDSN']);
+            $dbh = PHPUnit_Util_PDO::factory($parameters['testDatabaseDSN']);
 
             $dbListener = PHPUnit_Util_Log_Database::getInstance(
               $dbh,
