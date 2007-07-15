@@ -107,6 +107,7 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
     /**
      * @param  mixed $test
      * @param  array $parameters
+     * @throws InvalidArgumentException
      * @access public
      * @static
      */
@@ -122,6 +123,10 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
             return $aTestRunner->doRun(
               $test,
               $parameters
+            );
+        } else {
+            throw new InvalidArgumentException(
+              'No test case or test suite found.'
             );
         }
     }
