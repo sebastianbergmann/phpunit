@@ -329,6 +329,13 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
             extension_loaded('xdebug')) {
             $this->printer->write("\nGenerating report, this may take a moment.");
             PHPUnit_Util_Report::render($result, $parameters['reportDirectory']);
+
+            $writer = new PHPUnit_Util_Log_CodeCoverage_XML(
+              $parameters['reportDirectory'] . '/coverage.xml'
+            );
+
+            $writer->process($result);
+
             $this->printer->write("\n");
         }
 
