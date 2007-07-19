@@ -768,7 +768,7 @@
    </extension>
    <extension>
     <name>xdebug</name>
-    <min>2.0.0RC4</min>
+    <min>2.0.0</min>
    </extension>
   </optional>
  </dependencies>
