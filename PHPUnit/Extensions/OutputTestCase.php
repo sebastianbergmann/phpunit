@@ -82,6 +82,36 @@ abstract class PHPUnit_Extensions_OutputTestCase extends PHPUnit_Framework_TestC
     private $output = '';
 
     /**
+     * @var    mixed
+     * @access private
+     */
+    private $outputCallback = false;
+
+    /**
+     * @return bool
+     * @access public
+     */
+    public function setOutputCallback($callback)
+    {
+        if (is_callable($callback)) {
+            $this->outputCallback = $callback;
+            $set = true;
+        } else {
+            $set = false;
+        }
+        return $set;
+    }
+
+    /**
+     * @return string
+     * @access public
+     */
+    public function normalizeOutput($buffer)
+    {
+        return str_replace("\r", '', $buffer);
+    }
+
+    /**
      * @return string
      * @access public
      */
@@ -145,7 +175,13 @@ abstract class PHPUnit_Extensions_OutputTestCase extends PHPUnit_Framework_TestC
     {
         ob_start();
         parent::runTest();
-        $this->output = ob_get_contents();
+
+        if ($this->outputCallback === false) {
+            $this->output = ob_get_contents();
+        } else {
+            $this->output = call_user_func_array($this->outputCallback, array(ob_get_contents()));
+        }
+
         ob_end_clean();
 
         if ($this->expectedRegex !== NULL) {
