@@ -64,6 +64,7 @@ PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
 abstract class PHPUnit_Util_CodeCoverage
 {
     protected static $lineToTestMap = array();
+    protected static $summary = array();
 
     /**
      * Returns the names of the covered files.
@@ -140,41 +141,42 @@ abstract class PHPUnit_Util_CodeCoverage
      * </code>
      *
      * @param  array $data
+     * @param  boolean $clear
      * @return array
      * @access public
      * @static
      */
-    public static function getSummary(array &$data)
+    public static function getSummary(array &$data, $clear = FALSE)
     {
-        $summary = array();
-
-        foreach ($data as $test) {
-            foreach ($test['files'] as $file => $lines) {
-                if (!self::isFile($file)) {
-                    continue;
-                }
-
-                foreach ($lines as $line => $flag) {
-                    // +1: Line is executable and was executed.
-                    if ($flag == 1) {
-                        if (!isset($summary[$file][$line]) ||
-                            !is_array($summary[$file][$line])) {
-                            $summary[$file][$line] = array();
-                        }
-
-                        $summary[$file][$line][] = $test['test'];
+        if (empty(self::$summary) || $clear) {
+            foreach ($data as $test) {
+                foreach ($test['files'] as $file => $lines) {
+                    if (!self::isFile($file)) {
+                        continue;
                     }
 
-                    // -1: Line is executable and was not executed.
-                    // -2: Line is dead code.
-                    else if (!(isset($summary[$file][$line]) && is_array($summary[$file][$line]))) {
-                        $summary[$file][$line] = $flag;
+                    foreach ($lines as $line => $flag) {
+                        // +1: Line is executable and was executed.
+                        if ($flag == 1) {
+                            if (!isset(self::$summary[$file][$line]) ||
+                                !is_array(self::$summary[$file][$line])) {
+                                self::$summary[$file][$line] = array();
+                            }
+
+                            self::$summary[$file][$line][] = $test['test'];
+                        }
+
+                        // -1: Line is executable and was not executed.
+                        // -2: Line is dead code.
+                        else if (!(isset(self::$summary[$file][$line]) && is_array(self::$summary[$file][$line]))) {
+                            self::$summary[$file][$line] = $flag;
+                        }
                     }
                 }
             }
         }
 
-        return $summary;
+        return self::$summary;
     }
 
     /**

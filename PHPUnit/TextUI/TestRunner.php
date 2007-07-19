@@ -51,12 +51,13 @@ require_once 'PHPUnit/Runner/StandardTestSuiteLoader.php';
 require_once 'PHPUnit/Runner/Version.php';
 require_once 'PHPUnit/TextUI/ResultPrinter.php';
 require_once 'PHPUnit/Util/TestDox/ResultPrinter.php';
-require_once 'PHPUnit/Util/Database.php';
 require_once 'PHPUnit/Util/PDO.php';
 require_once 'PHPUnit/Util/Filter.php';
 require_once 'PHPUnit/Util/Report.php';
 require_once 'PHPUnit/Util/Report/GraphViz.php';
 require_once 'PHPUnit/Util/Timer.php';
+require_once 'PHPUnit/Util/Log/CodeCoverage/Database.php';
+require_once 'PHPUnit/Util/Log/CodeCoverage/XML.php';
 require_once 'PHPUnit/Util/Log/Database.php';
 require_once 'PHPUnit/Util/Log/GraphViz.php';
 require_once 'PHPUnit/Util/Log/JSON.php';
@@ -228,6 +229,10 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
             }
         }
 
+        if (isset($parameters['coverageXML']) && extension_loaded('xdebug')) {
+            $result->collectCodeCoverageInformation(TRUE);
+        }
+
         if (isset($parameters['reportDirectory']) &&
             extension_loaded('xdebug')) {
             if (class_exists('Image_GraphViz', FALSE)) {
@@ -298,10 +303,21 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
             $this->printer->printResult($result);
         }
 
+        if (isset($parameters['coverageXML']) && extension_loaded('xdebug')) {
+            $this->printer->write("\nWriting code coverage data to XML file, this may take a moment.");
+
+            $writer = new PHPUnit_Util_Log_CodeCoverage_XML(
+              $parameters['coverageXML']
+            );
+
+            $writer->process($result);
+            $this->printer->write("\n");
+        }
+
         if ($writeToTestDatabase && extension_loaded('xdebug')) {
             $this->printer->write("\nStoring code coverage data in database, this may take a moment.");
 
-            $testDb = new PHPUnit_Util_Database($dbh);
+            $testDb = new PHPUnit_Util_Log_CodeCoverage_Database($dbh);
             $testDb->storeCodeCoverage(
               $result, $parameters['testDatabaseLogRevision']
             );

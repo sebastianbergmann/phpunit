@@ -164,6 +164,7 @@ class PHPUnit_TextUI_Command
         }
 
         if (extension_loaded('xdebug')) {
+            $longOptions[] = 'coverage-xml=';
             $longOptions[] = 'report=';
         }
 
@@ -193,6 +194,11 @@ class PHPUnit_TextUI_Command
 
         foreach ($options[0] as $option) {
             switch ($option[0]) {
+                case '--coverage-xml': {
+                    $arguments['coverageXML'] = $option[1];
+                }
+                break;
+
                 case 'd': {
                     $ini = explode('=', $option[1]);
 
@@ -425,6 +431,7 @@ class PHPUnit_TextUI_Command
               "  --log-xml <file>       Log test execution in XML format to file.\n\n";
 
         if (extension_loaded('xdebug')) {
+            print "  --coverage-xml <file>  Write code coverage information in XML format.\n";
             print "  --report <dir>         Generate combined test/coverage report in HTML format.\n\n";
         }
 
