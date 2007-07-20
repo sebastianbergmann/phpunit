@@ -767,6 +767,9 @@
     <name>pdo_sqlite</name>
    </extension>
    <extension>
+    <name>tokenizer</name>
+   </extension>
+   <extension>
     <name>xdebug</name>
     <min>2.0.0</min>
    </extension>
