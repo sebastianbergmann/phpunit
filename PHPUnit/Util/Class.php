@@ -142,7 +142,7 @@ class PHPUnit_Util_Class
         }
 
         if (empty(self::$fileClassMap)) {
-            $classes = get_declared_classes();
+            $classes = array_merge(get_declared_classes(), get_declared_interfaces());
             $count   = count($classes);
             
             for ($i = 0; $i < $count; $i++) {
