@@ -429,6 +429,8 @@ class PHPUnit_Util_Log_Database implements PHPUnit_Framework_TestListener
         if (!$test instanceof PHPUnit_Framework_TestSuite) {
             $test->__db_id = $this->currentTestId;
         }
+
+        return $this->currentTestId;
     }
 
     /**
