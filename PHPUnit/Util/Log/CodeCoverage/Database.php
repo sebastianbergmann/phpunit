@@ -190,7 +190,7 @@ class PHPUnit_Util_Log_CodeCoverage_Database
 
                         $fileId,
                         $i,
-                        trim($line),
+                        $line,
                         isset($summary[$file][$i]) ? $summary[$file][$i] : 0
                       )
                     );
