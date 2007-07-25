@@ -342,13 +342,13 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
     /**
      * Override to run the test and assert its state.
      *
-     * @throws PHPUnit_Framework_Error
+     * @throws RuntimeException
      * @access protected
      */
     protected function runTest()
     {
         if ($this->name === NULL) {
-            throw new PHPUnit_Framework_Error(
+            throw new RuntimeException(
               'PHPUnit_Framework_TestCase::$name must not be NULL.'
             );
         }
