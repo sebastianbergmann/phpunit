@@ -146,15 +146,23 @@ class PHPUnit_Util_PDO
                     $dsn .= ";unix_socket=$socket";
                 }
 
-                return new PDO($dsn, $user, $pass, $driverOptions);
+                $dbh = new PDO($dsn, $user, $pass, $driverOptions);
             }
             break;
 
             case 'sqlite': {
-                return new PDO($dsn);
+                $dbh = new PDO($dsn);
             }
             break;
+
+            default: {
+                throw new InvalidArgumentException;
+            }
         }
+
+        $dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+        return $dbh;
     }
 
     /**
