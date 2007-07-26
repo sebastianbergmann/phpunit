@@ -189,6 +189,10 @@ class PHPUnit_Framework_Constraint_IsEqual extends PHPUnit_Framework_Constraint
             return TRUE;
         }
 
+        if (is_numeric($a) XOR is_numeric($b)) {
+            return FALSE;
+        }
+
         if (is_array($a) XOR is_array($b)) {
             return FALSE;
         }

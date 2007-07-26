@@ -822,6 +822,26 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
         $this->fail();
     }
 
+    public function testAssertStringEqualsNumeric()
+    {
+        $this->assertEquals('0', 0);
+
+        try {
+            $this->assertEquals('0', 1);
+        }
+
+        catch (PHPUnit_Framework_AssertionFailedError $e) {
+            return;
+        }
+
+        $this->fail();
+    }
+
+    public function testAssertStringEqualsNumeric2()
+    {
+        $this->assertNotEquals('A', 0);
+    }
+
     public function testAssertFileExists()
     {
         $this->assertFileExists(dirname(__FILE__) . DIRECTORY_SEPARATOR . 'AllTests.php');
