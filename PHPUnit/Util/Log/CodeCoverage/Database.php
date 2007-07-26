@@ -106,17 +106,16 @@ class PHPUnit_Util_Log_CodeCoverage_Database
             $lines    = file($file);
             $numLines = count($lines);
 
-            $stmt = $this->dbh->query(
-              sprintf(
-                'SELECT code_file_id
-                   FROM code_file
-                  WHERE code_file_name = "%s"
-                    AND revision       = %d;',
-
-                $filename,
-                $revision
-              )
+            $stmt = $this->dbh->prepare(
+              'SELECT code_file_id
+                 FROM code_file
+                WHERE code_file_name = :filename
+                  AND revision       = :revision;'
             );
+
+            $stmt->bindParam(':filename', $filename, PDO::PARAM_STR);
+            $stmt->bindParam(':revision', $revision, PDO::PARAM_INT);
+            $stmt->execute();
 
             if ($stmt) {
                 $fileId = (int)$stmt->fetchColumn();
@@ -125,79 +124,108 @@ class PHPUnit_Util_Log_CodeCoverage_Database
             unset($stmt);
 
             if ($fileId == 0) {
-                $this->dbh->exec(
-                  sprintf(
-                    'INSERT INTO code_file
-                                 (code_file_name, code_file_md5, revision)
-                           VALUES("%s", "%s", %d);',
+                $hash = md5_file($file);
 
-                    $filename,
-                    md5_file($file),
-                    $revision
-                  )
+                $stmt = $this->dbh->prepare(
+                  'INSERT INTO code_file
+                               (code_file_name, code_file_md5, revision)
+                         VALUES(:filename, :hash, :revision);'
                 );
 
-                $fileId    = $this->dbh->lastInsertId();
-                $classes   = PHPUnit_Util_Class::getClassesInFile($file, $commonPath);
+                $stmt->bindParam(':filename', $filename, PDO::PARAM_STR);
+                $stmt->bindParam(':hash', $hash, PDO::PARAM_STR);
+                $stmt->bindParam(':revision', $revision, PDO::PARAM_INT);
+                $stmt->execute();
+
+                $fileId  = $this->dbh->lastInsertId();
+                $classes = PHPUnit_Util_Class::getClassesInFile($file, $commonPath);
+
+                $stmt = $this->dbh->prepare(
+                  'INSERT INTO code_class
+                               (code_file_id, code_class_name,
+                                code_class_start_line, code_class_end_line)
+                         VALUES(:fileId, :className, :startLine, :endLine);'
+                );
 
                 foreach ($classes as $class) {
-                    $this->dbh->exec(
-                      sprintf(
-                        'INSERT INTO code_class
-                                     (code_file_id, code_class_name,
-                                      code_class_start_line, code_class_end_line)
-                               VALUES(%d, "%s", %d, %d);',
+                    $className = $class->getName();
+                    $startLine = $class->getStartLine();
+                    $endLine   = $class->getEndLine();
 
-                        $fileId,
-                        $class->getName(),
-                        $class->getStartLine(),
-                        $class->getEndLine()
-                      )
-                    );
+                    $stmt->bindParam(':fileId', $fileId, PDO::PARAM_INT);
+                    $stmt->bindParam(':className', $className, PDO::PARAM_STR);
+                    $stmt->bindParam(':startLine', $startLine, PDO::PARAM_INT);
+                    $stmt->bindParam(':endLine', $endLine, PDO::PARAM_INT);
+                    $stmt->execute();
 
                     $classId = $this->dbh->lastInsertId();
+
+                    $stmt2 = $this->dbh->prepare(
+                      'INSERT INTO code_method
+                                   (code_class_id, code_method_name,
+                                    code_method_start_line, code_method_end_line)
+                             VALUES(:classId, :methodName, :startLine, :endLine);'
+                    );
 
                     foreach ($class->getMethods() as $method) {
                         if ($class->getName() != $method->getDeclaringClass()->getName()) {
                             continue;
                         }
 
-                        $this->dbh->exec(
-                          sprintf(
-                            'INSERT INTO code_method
-                                         (code_class_id, code_method_name,
-                                          code_method_start_line, code_method_end_line)
-                                   VALUES(%d, "%s", %d, %d);',
+                        $methodName = $method->getName();
+                        $startLine  = $method->getStartLine();
+                        $endLine    = $method->getEndLine();
 
-                            $classId,
-                            $method->getName(),
-                            $method->getStartLine(),
-                            $method->getEndLine()
-                          )
-                        );
+                        $stmt2->bindParam(':classId', $classId, PDO::PARAM_INT);
+                        $stmt2->bindParam(':methodName', $methodName, PDO::PARAM_STR);
+                        $stmt2->bindParam(':startLine', $startLine, PDO::PARAM_INT);
+                        $stmt2->bindParam(':endLine', $endLine, PDO::PARAM_INT);
+                        $stmt2->execute();
                     }
+
+                    unset($stmt2);
                 }
+
+                $stmt = $this->dbh->prepare(
+                  'INSERT INTO code_line
+                               (code_file_id, code_line_number, code_line,
+                                code_line_covered)
+                         VALUES(:fileId, :lineNumber, :line, :covered);'
+                );
 
                 $i = 1;
 
                 foreach ($lines as $line) {
-                    $this->dbh->exec(
-                      sprintf(
-                        'INSERT INTO code_line
-                                     (code_file_id, code_line_number, code_line,
-                                      code_line_covered)
-                               VALUES(%d, %d, "%s", %d);',
+                    $covered = isset($summary[$file][$i]) ? 1 : 0;
 
-                        $fileId,
-                        $i,
-                        $line,
-                        isset($summary[$file][$i]) ? $summary[$file][$i] : 0
-                      )
-                    );
+                    $stmt->bindParam(':fileId', $fileId, PDO::PARAM_INT);
+                    $stmt->bindParam(':lineNumber', $i, PDO::PARAM_INT);
+                    $stmt->bindParam(':line', $line, PDO::PARAM_STR);
+                    $stmt->bindParam(':covered', $covered, PDO::PARAM_INT);
+                    $stmt->execute();
 
                     $i++;
                 }
             }
+
+            $stmt = $this->dbh->prepare(
+              'SELECT code_line_id, code_line_covered
+                 FROM code_line
+                WHERE code_file_id     = :fileId
+                  AND code_line_number = :lineNumber;'
+            );
+
+            $stmt2 = $this->dbh->prepare(
+              'UPDATE code_line
+                  SET code_line_covered = :lineCovered
+                WHERE code_line_id      = :lineId;'
+            );
+
+            $stmt3 = $this->dbh->prepare(
+              'INSERT INTO code_coverage
+                      (test_id, code_line_id)
+                VALUES(:testId, :lineId);'
+            );
 
             for ($lineNumber = 1; $lineNumber <= $numLines; $lineNumber++) {
                 $coveringTests = PHPUnit_Util_CodeCoverage::getCoveringTests(
@@ -205,84 +233,67 @@ class PHPUnit_Util_Log_CodeCoverage_Database
                 );
 
                 if (is_array($coveringTests)) {
-                    $stmt = $this->dbh->query(
-                      sprintf(
-                        'SELECT code_line_id, code_line_covered
-                           FROM code_line
-                          WHERE code_file_id     = %d
-                            AND code_line_number = %d;',
-
-                        $fileId,
-                        $lineNumber
-                      )
-                    );
+                    $stmt->bindParam(':fileId', $fileId, PDO::PARAM_INT);
+                    $stmt->bindParam(':lineNumber', $lineNumber, PDO::PARAM_INT);
+                    $stmt->execute();
 
                     $codeLineId      = (int)$stmt->fetchColumn(0);
                     $oldCoverageFlag = (int)$stmt->fetchColumn(1);
-                    unset($stmt);
-
-                    $newCoverageFlag = $summary[$file][$lineNumber];
+                    $newCoverageFlag = isset($summary[$file][$i]) ? 1 : 0;
 
                     if (($oldCoverageFlag == 0 && $newCoverageFlag != 0) ||
                         ($oldCoverageFlag <  0 && $newCoverageFlag >  0)) {
-                        $this->dbh->exec(
-                          sprintf(
-                            'UPDATE code_line
-                                SET code_line_covered = %d
-                              WHERE code_line_id      = %d;',
-
-                            $newCoverageFlag,
-                            $codeLineId
-                          )
-                        );
+                        $stmt2->bindParam(':lineCovered', $newCoverageFlag, PDO::PARAM_INT);
+                        $stmt2->bindParam(':lineId', $codeLineId, PDO::PARAM_INT);
+                        $stmt2->execute();
                     }
 
                     foreach ($coveringTests as $test) {
-                        $this->dbh->exec(
-                          sprintf(
-                            'INSERT INTO code_coverage
-                                         (test_id, code_line_id)
-                                   VALUES(%d, %d);',
-
-                            $test->__db_id,
-                            $codeLineId
-                          )
-                        );
+                        $stmt3->bindParam(':testId', $test->__db_id, PDO::PARAM_INT);
+                        $stmt3->bindParam(':lineId', $codeLineId, PDO::PARAM_INT);
+                        $stmt3->execute();
                     }
                 }
             }
         }
 
+        unset($stmt);
+        unset($stmt2);
+        unset($stmt3);
+
+        $stmt = $this->dbh->prepare(
+          'SELECT code_method.code_method_id
+             FROM code_class, code_method
+            WHERE code_class.code_class_id     = code_method.code_class_id
+              AND code_class.code_class_name   = :className
+              AND code_method.code_method_name = :methodName;'
+        );
+
+        $stmt2 = $this->dbh->prepare(
+          'UPDATE test
+              SET code_method_id = :methodId
+            WHERE test_id = :testId;'
+        );
+
         foreach ($result->topTestSuite() as $test) {
             if ($test instanceof PHPUnit_Framework_TestCase) {
-                $stmt = $this->dbh->query(
-                  sprintf(
-                    'SELECT code_method.code_method_id
-                       FROM code_class, code_method
-                      WHERE code_class.code_class_id     = code_method.code_class_id
-                        AND code_class.code_class_name   = "%s"
-                        AND code_method.code_method_name = "%s";',
+                $className  = get_class($test);
+                $methodName = $test->getName();
 
-                    get_class($test),
-                    $test->getName()
-                  )
-                );
+                $stmt->bindParam(':className', $className, PDO::PARAM_STR);
+                $stmt->bindParam(':methodName', $methodName, PDO::PARAM_STR);
+                $stmt->execute();
 
                 $methodId = (int)$stmt->fetchColumn();
-                unset($stmt);
 
-                $this->dbh->exec(
-                  sprintf(
-                    'UPDATE test
-                        SET code_method_id = %d
-                      WHERE test_id = %d;',
-
-                    $methodId,
-                    $test->__db_id
-                  )
-                );
+                $stmt2->bindParam(':methodId', $methodId, PDO::PARAM_INT);
+                $stmt2->bindParam(':testId', $test->__db_id, PDO::PARAM_INT);
+                $stmt2->execute();
             }
         }
+
+        unset($stmt);
+        unset($stmt2);
 
         $this->dbh->commit();
     }
