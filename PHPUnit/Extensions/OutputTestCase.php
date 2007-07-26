@@ -85,7 +85,7 @@ abstract class PHPUnit_Extensions_OutputTestCase extends PHPUnit_Framework_TestC
      * @var    mixed
      * @access private
      */
-    private $outputCallback = false;
+    private $outputCallback = FALSE;
 
     /**
      * @return bool
@@ -95,10 +95,11 @@ abstract class PHPUnit_Extensions_OutputTestCase extends PHPUnit_Framework_TestC
     {
         if (is_callable($callback)) {
             $this->outputCallback = $callback;
-            $set = true;
+            $set = TRUE;
         } else {
-            $set = false;
+            $set = FALSE;
         }
+
         return $set;
     }
 
@@ -176,7 +177,7 @@ abstract class PHPUnit_Extensions_OutputTestCase extends PHPUnit_Framework_TestC
         ob_start();
         parent::runTest();
 
-        if ($this->outputCallback === false) {
+        if ($this->outputCallback === FALSE) {
             $this->output = ob_get_contents();
         } else {
             $this->output = call_user_func_array($this->outputCallback, array(ob_get_contents()));
