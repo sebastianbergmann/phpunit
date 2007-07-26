@@ -115,17 +115,18 @@ class PHPUnit_Util_Log_Database implements PHPUnit_Framework_TestListener
     {
         $this->dbh = $dbh;
 
-        $this->dbh->exec(
-          sprintf(
-            'INSERT INTO run
-                         (timestamp, revision, information)
-                   VALUES(%d, %d, "%s");',
-
-            time(),
-            $revision,
-            $information
-          )
+        $stmt = $this->dbh->prepare(
+          'INSERT INTO run
+                       (timestamp, revision, information)
+                 VALUES(:timestamp, :revision, :information);'
         );
+
+        $timestamp = time();
+
+        $stmt->bindParam(':timestamp', $timestamp, PDO::PARAM_INT);
+        $stmt->bindParam(':revision', $revision, PDO::PARAM_INT);
+        $stmt->bindParam(':information', $information, PDO::PARAM_STR);
+        $stmt->execute();
 
         $this->runId = $this->dbh->lastInsertId();
     }
@@ -330,29 +331,27 @@ class PHPUnit_Util_Log_Database implements PHPUnit_Framework_TestListener
     {
         $this->dbh->beginTransaction();
 
-        $this->dbh->exec(
-          sprintf(
-            'INSERT INTO test
-                         (run_id, test_name, node_left, node_right)
-                   VALUES(%d, "%s", 1, 2);',
-
-            $this->runId,
-            $name
-          )
+        $stmt = $this->dbh->prepare(
+          'INSERT INTO test
+                       (run_id, test_name, node_left, node_right)
+                 VALUES(:runId, :testName, 1, 2);'
         );
+
+        $stmt->bindParam(':runId', $this->runId, PDO::PARAM_INT);
+        $stmt->bindParam(':testName', $name, PDO::PARAM_STR);
+        $stmt->execute();
 
         $rootId = $this->dbh->lastInsertId();
 
-        $this->dbh->exec(
-          sprintf(
-            'UPDATE test
-                SET node_root = %d
-              WHERE test_id = %d;',
-
-            $rootId,
-            $rootId
-          )
+        $stmt = $this->dbh->prepare(
+          'UPDATE test
+              SET node_root = :root
+            WHERE test_id = :testId;'
         );
+
+        $stmt->bindParam(':root', $rootId, PDO::PARAM_INT);
+        $stmt->bindParam(':testId', $rootId, PDO::PARAM_INT);
+        $stmt->execute();
 
         $this->dbh->commit();
 
@@ -370,60 +369,58 @@ class PHPUnit_Util_Log_Database implements PHPUnit_Framework_TestListener
     {
         $this->dbh->beginTransaction();
 
-        $stmt = $this->dbh->query(
-          sprintf(
-            'SELECT node_right
-               FROM test
-              WHERE test_id = %d;',
-
-            $this->testSuites[count($this->testSuites)-1]
-          )
+        $stmt = $this->dbh->prepare(
+          'SELECT node_right
+             FROM test
+            WHERE test_id = :testId;'
         );
+
+        $stmt->bindParam(':testId', $this->testSuites[count($this->testSuites)-1], PDO::PARAM_INT);
+        $stmt->execute();
 
         $right = (int)$stmt->fetchColumn();
-        unset($stmt);
 
-        $this->dbh->exec(
-          sprintf(
-            'UPDATE test
-                SET node_left = node_left + 2
-              WHERE node_root = %d
-                AND node_left > %d;',
-
-            $this->testSuites[0],
-            $right
-          )
+        $stmt = $this->dbh->prepare(
+          'UPDATE test
+              SET node_left = node_left + 2
+            WHERE node_root = :root
+              AND node_left > :left;'
         );
 
-        $this->dbh->exec(
-          sprintf(
-            'UPDATE test
-                SET node_right  = node_right + 2
-              WHERE node_root   = %d
-                AND node_right >= %d;',
+        $stmt->bindParam(':root', $this->testSuites[0], PDO::PARAM_INT);
+        $stmt->bindParam(':left', $right, PDO::PARAM_INT);
+        $stmt->execute();
 
-            $this->testSuites[0],
-            $right
-          )
+        $stmt = $this->dbh->prepare(
+          'UPDATE test
+              SET node_right  = node_right + 2
+            WHERE node_root   = :root
+              AND node_right >= :right;'
         );
 
-        $this->dbh->exec(
-          sprintf(
-            'INSERT INTO test
-                         (run_id, test_name, test_result, test_message,
-                          test_execution_time, node_root, node_left, node_right)
-                   VALUES(%d, "%s", 0, "", 0, %d, %d, %d);',
+        $stmt->bindParam(':root', $this->testSuites[0], PDO::PARAM_INT);
+        $stmt->bindParam(':right', $right, PDO::PARAM_INT);
+        $stmt->execute();
 
-            $this->runId,
-            $test->getName(),
-            $this->testSuites[0],
-            $right,
-            $right + 1
-          )
+        $testName = $test->getName();
+        $left     = $right;
+        $right    = $right + 1;
+
+        $stmt = $this->dbh->prepare(
+          'INSERT INTO test
+                       (run_id, test_name, test_result, test_message,
+                        test_execution_time, node_root, node_left, node_right)
+                 VALUES(:runId, :testName, 0, "", 0, :root, :left, :right);'
         );
+
+        $stmt->bindParam(':runId', $this->runId, PDO::PARAM_INT);
+        $stmt->bindParam(':testName', $testName, PDO::PARAM_STR);
+        $stmt->bindParam(':root', $this->testSuites[0], PDO::PARAM_INT);
+        $stmt->bindParam(':left', $left, PDO::PARAM_INT);
+        $stmt->bindParam(':right', $right, PDO::PARAM_INT);
+        $stmt->execute();
 
         $this->currentTestId = $this->dbh->lastInsertId();
-
         $this->dbh->commit();
 
         if (!$test instanceof PHPUnit_Framework_TestSuite) {
@@ -444,20 +441,19 @@ class PHPUnit_Util_Log_Database implements PHPUnit_Framework_TestListener
      */
     protected function storeResult($result = PHPUnit_Runner_BaseTestRunner::STATUS_PASSED, $time = 0, $message = '')
     {
-        $this->dbh->exec(
-          sprintf(
-            'UPDATE test
-                SET test_result         = %d,
-                    test_message        = "%s",
-                    test_execution_time = %f
-              WHERE test_id             = %d;',
-
-            $result,
-            $message,
-            $time,
-            $this->currentTestId
-          )
+        $stmt = $this->dbh->prepare(
+          'UPDATE test
+              SET test_result         = :result,
+                  test_message        = :message,
+                  test_execution_time = :executionTime
+            WHERE test_id             = :testId;'
         );
+
+        $stmt->bindParam(':result', $result, PDO::PARAM_INT);
+        $stmt->bindParam(':message', $message, PDO::PARAM_STR);
+        $stmt->bindParam(':executionTime', $time);
+        $stmt->bindParam(':testId', $this->currentTestId, PDO::PARAM_INT);
+        $stmt->execute();
     }
 }
 ?>
