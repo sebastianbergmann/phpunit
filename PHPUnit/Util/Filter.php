@@ -44,6 +44,8 @@
  * @since      File available since Release 2.0.0
  */
 
+require_once 'PHPUnit/Util/FilterIterator.php';
+
 /**
  * Utility class for code filtering.
  *
@@ -109,6 +111,23 @@ class PHPUnit_Util_Filter
     protected static $whitelistedFiles = array();
 
     /**
+     * Adds a directory to the blacklist (recursively).
+     *
+     * @param  string $directory
+     * @param  string $suffix
+     * @param  string $group
+     * @access public
+     * @static
+     * @since  Method available since Release 3.1.5
+     */
+    public static function addDirectoryToFilter($directory, $suffix = '.php', $group = 'DEFAULT')
+    {
+        foreach ($this->getIterator($directory, $suffix) as $file) {
+            self::addFileToFilter($file->getPathName(), $group);
+        }
+    }
+
+    /**
      * Adds a new file to be filtered (blacklist).
      *
      * @param  string $filename
@@ -127,6 +146,23 @@ class PHPUnit_Util_Filter
 
         else if (!in_array($filename, self::$blacklistedFiles[$group])) {
             self::$blacklistedFiles[$group][] = $filename;
+        }
+    }
+
+    /**
+     * Removes a directory from the blacklist (recursively).
+     *
+     * @param  string $directory
+     * @param  string $suffix
+     * @param  string $group
+     * @access public
+     * @static
+     * @since  Method available since Release 3.1.5
+     */
+    public static function removeDirectoryFromFilter($directory, $suffix = '.php', $group = 'DEFAULT')
+    {
+        foreach ($this->getIterator($directory, $suffix) as $file) {
+            self::removeFileFromFilter($file->getPathName(), $group);
         }
     }
 
@@ -153,6 +189,22 @@ class PHPUnit_Util_Filter
     }
 
     /**
+     * Adds a directory to the whitelist (recursively).
+     *
+     * @param  string $directory
+     * @param  string $suffix
+     * @access public
+     * @static
+     * @since  Method available since Release 3.1.5
+     */
+    public static function addDirectoryToWhitelist($directory, $suffix = '.php')
+    {
+        foreach ($this->getIterator($directory, $suffix) as $file) {
+            self::addFileToWhitelist($file->getPathName());
+        }
+    }
+
+    /**
      * Adds a new file to the whitelist.
      *
      * When the whitelist is empty (default), blacklisting is used.
@@ -169,6 +221,22 @@ class PHPUnit_Util_Filter
 
         if (!in_array($filename, self::$whitelistedFiles)) {
             self::$whitelistedFiles[] = $filename;
+        }
+    }
+
+    /**
+     * Removes a directory from the whitelist (recursively).
+     *
+     * @param  string $directory
+     * @param  string $suffix
+     * @access public
+     * @static
+     * @since  Method available since Release 3.1.5
+     */
+    public static function removeDirectoryFromWhitelist($directory, $suffix = '.php')
+    {
+        foreach ($this->getIterator($directory, $suffix) as $file) {
+            self::removeFileFromWhitelist($file->getPathName());
         }
     }
 
@@ -320,6 +388,26 @@ class PHPUnit_Util_Filter
     protected static function getCanonicalFilename($filename)
     {
         return str_replace('\\', '/', $filename);
+    }
+
+    /**
+     * Canonicalizes a source file name.
+     *
+     * @param  string $directory
+     * @param  string $suffix
+     * @return Iterator
+     * @access protected
+     * @static
+     * @since  Method available since Release 3.1.5
+     */
+    protected static function getIterator($directory, $suffix)
+    {
+        return new PHPUnit_Util_FilterIterator(
+          new RecursiveIteratorIterator(
+            new RecursiveDirectoryIterator($directory)
+          ),
+          $suffix
+        );
     }
 
     /**
