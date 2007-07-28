@@ -238,10 +238,9 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
                             );
                         }
 
-                        else if (PHPUnit_Framework_ComparisonFailure::hasDiff() &&
-                           ($comparisonFailure instanceof PHPUnit_Framework_ComparisonFailure_Array ||
-                            $comparisonFailure instanceof PHPUnit_Framework_ComparisonFailure_Object ||
-                            $comparisonFailure instanceof PHPUnit_Framework_ComparisonFailure_String)) {
+                        else if ($comparisonFailure instanceof PHPUnit_Framework_ComparisonFailure_Array ||
+                                 $comparisonFailure instanceof PHPUnit_Framework_ComparisonFailure_Object ||
+                                 $comparisonFailure instanceof PHPUnit_Framework_ComparisonFailure_String) {
                             $buffer .= sprintf(
                               "Failed asserting that two %ss are equal.\n%s\n",
 
