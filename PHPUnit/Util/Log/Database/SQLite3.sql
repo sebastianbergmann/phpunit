@@ -67,7 +67,10 @@ CREATE TABLE IF NOT EXISTS code_file(
   code_file_id   INTEGER PRIMARY KEY AUTOINCREMENT,
   code_file_name TEXT,
   code_file_md5  TEXT,
-  revision       INTEGER
+  revision       INTEGER,
+  loc            INTEGER,
+  cloc           INTEGER,
+  ncloc          INTEGER
 );
 
 CREATE TABLE IF NOT EXISTS code_class(
