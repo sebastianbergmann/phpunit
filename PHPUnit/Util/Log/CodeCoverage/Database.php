@@ -49,6 +49,7 @@ require_once 'PHPUnit/Util/Class.php';
 require_once 'PHPUnit/Util/CodeCoverage.php';
 require_once 'PHPUnit/Util/Filesystem.php';
 require_once 'PHPUnit/Util/Filter.php';
+require_once 'PHPUnit/Util/SourceFile.php';
 
 PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
 
@@ -101,10 +102,14 @@ class PHPUnit_Util_Log_CodeCoverage_Database
         $this->dbh->beginTransaction();
 
         foreach ($files as $file) {
-            $filename = str_replace($commonPath, '', $file);
-            $fileId   = FALSE;
-            $lines    = file($file);
-            $numLines = count($lines);
+            $sourceFile = new PHPUnit_Util_SourceFile($file);
+            $filename   = str_replace($commonPath, '', $file);
+            $fileId     = FALSE;
+            $lines      = $sourceFile->getLines();
+            $loc        = $sourceFile->getLoc();
+            $cloc       = $sourceFile->getCloc();
+            $ncloc      = $sourceFile->getNcloc();
+            $hash       = md5_file($file);
 
             $stmt = $this->dbh->prepare(
               'SELECT code_file_id
@@ -124,17 +129,18 @@ class PHPUnit_Util_Log_CodeCoverage_Database
             unset($stmt);
 
             if ($fileId == 0) {
-                $hash = md5_file($file);
-
                 $stmt = $this->dbh->prepare(
                   'INSERT INTO code_file
-                               (code_file_name, code_file_md5, revision)
-                         VALUES(:filename, :hash, :revision);'
+                               (code_file_name, code_file_md5, revision, loc, cloc, ncloc)
+                         VALUES(:filename, :hash, :revision, :loc, :cloc, :ncloc);'
                 );
 
                 $stmt->bindParam(':filename', $filename, PDO::PARAM_STR);
                 $stmt->bindParam(':hash', $hash, PDO::PARAM_STR);
                 $stmt->bindParam(':revision', $revision, PDO::PARAM_INT);
+                $stmt->bindParam(':loc', $loc, PDO::PARAM_INT);
+                $stmt->bindParam(':cloc', $cloc, PDO::PARAM_INT);
+                $stmt->bindParam(':ncloc', $ncloc, PDO::PARAM_INT);
                 $stmt->execute();
 
                 $fileId  = $this->dbh->lastInsertId();
@@ -227,7 +233,7 @@ class PHPUnit_Util_Log_CodeCoverage_Database
                 VALUES(:testId, :lineId);'
             );
 
-            for ($lineNumber = 1; $lineNumber <= $numLines; $lineNumber++) {
+            for ($lineNumber = 1; $lineNumber <= $loc; $lineNumber++) {
                 $coveringTests = PHPUnit_Util_CodeCoverage::getCoveringTests(
                   $codeCoverage, $file, $lineNumber
                 );

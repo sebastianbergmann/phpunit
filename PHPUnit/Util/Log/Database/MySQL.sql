@@ -67,7 +67,10 @@ CREATE TABLE IF NOT EXISTS code_file(
   code_file_id   INTEGER UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
   code_file_name CHAR(255),
   code_file_md5  CHAR(32),
-  revision       INTEGER UNSIGNED NOT NULL
+  revision       INTEGER UNSIGNED NOT NULL,
+  loc            INTEGER UNSIGNED NOT NULL,
+  cloc           INTEGER UNSIGNED NOT NULL,
+  ncloc          INTEGER UNSIGNED NOT NULL
 ) ENGINE=InnoDB;
 
 CREATE TABLE IF NOT EXISTS code_class(
