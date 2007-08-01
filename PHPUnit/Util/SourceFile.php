@@ -99,6 +99,28 @@ class PHPUnit_Util_SourceFile
     }
 
     /**
+     * Lines.
+     *
+     * @return array
+     * @access public
+     */
+    public function getLines()
+    {
+        return $this->lines;
+    }
+
+    /**
+     * Tokens.
+     *
+     * @return array
+     * @access public
+     */
+    public function getTokens()
+    {
+        return $this->tokens;
+    }
+
+    /**
      * Lines of Code (LOC).
      *
      * @return int
