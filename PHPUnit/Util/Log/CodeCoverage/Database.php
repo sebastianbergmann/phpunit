@@ -150,19 +150,21 @@ class PHPUnit_Util_Log_CodeCoverage_Database
                   'INSERT INTO code_class
                                (code_file_id, code_class_name,
                                 code_class_start_line, code_class_end_line,
-                                code_class_wmc)
-                         VALUES(:fileId, :className, :startLine, :endLine, 0);'
+                                code_class_dit, code_class_wmc)
+                         VALUES(:fileId, :className, :startLine, :endLine, :dit, 0);'
                 );
 
                 foreach ($classes as $class) {
                     $className = $class->getName();
                     $startLine = $class->getStartLine();
                     $endLine   = $class->getEndLine();
+                    $dit       = PHPUnit_Util_Class::getDIT( $className );
 
                     $stmt->bindParam(':fileId', $fileId, PDO::PARAM_INT);
                     $stmt->bindParam(':className', $className, PDO::PARAM_STR);
                     $stmt->bindParam(':startLine', $startLine, PDO::PARAM_INT);
                     $stmt->bindParam(':endLine', $endLine, PDO::PARAM_INT);
+                    $stmt->bindParam(':dit', $dit, PDO::PARAM_INT);
                     $stmt->execute();
 
                     $classId = $this->dbh->lastInsertId();
