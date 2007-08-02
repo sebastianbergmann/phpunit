@@ -169,8 +169,9 @@ class PHPUnit_Util_Log_CodeCoverage_Database
                     $stmt2 = $this->dbh->prepare(
                       'INSERT INTO code_method
                                    (code_class_id, code_method_name,
-                                    code_method_start_line, code_method_end_line)
-                             VALUES(:classId, :methodName, :startLine, :endLine);'
+                                    code_method_start_line, code_method_end_line,
+                                    code_method_ccn)
+                             VALUES(:classId, :methodName, :startLine, :endLine, :ccn);'
                     );
 
                     foreach ($class->getMethods() as $method) {
@@ -181,11 +182,13 @@ class PHPUnit_Util_Log_CodeCoverage_Database
                         $methodName = $method->getName();
                         $startLine  = $method->getStartLine();
                         $endLine    = $method->getEndLine();
+                        $ccn        = PHPUnit_Util_Class::getCCN($className, $methodName);
 
                         $stmt2->bindParam(':classId', $classId, PDO::PARAM_INT);
                         $stmt2->bindParam(':methodName', $methodName, PDO::PARAM_STR);
                         $stmt2->bindParam(':startLine', $startLine, PDO::PARAM_INT);
                         $stmt2->bindParam(':endLine', $endLine, PDO::PARAM_INT);
+                        $stmt2->bindParam(':ccn', $ccn, PDO::PARAM_INT);
                         $stmt2->execute();
                     }
 

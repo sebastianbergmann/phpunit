@@ -88,7 +88,8 @@ CREATE TABLE IF NOT EXISTS code_method(
   code_method_id         INTEGER PRIMARY KEY AUTOINCREMENT,
   code_method_name       TEXT,
   code_method_start_line INTEGER,
-  code_method_end_line   INTEGER
+  code_method_end_line   INTEGER,
+  code_method_ccn        INTEGER
 );
 
 CREATE INDEX IF NOT EXISTS code_class_id ON code_method (code_class_id);
