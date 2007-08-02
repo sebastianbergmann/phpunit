@@ -271,5 +271,19 @@ class PHPUnit_Util_Class
 
         return $ccn;
     }
+
+    /**
+     * Returns the Depth of Inheritance Tree (DIT) for a class.
+     *
+     * @param  string  $className
+     * @return integer
+     * @access public
+     * @static
+     * @since  Method available since Release 3.1.6
+     */
+    public static function getDIT($className)
+    {
+        return count(self::getHierarchy($className));
+    }
 }
 ?>
