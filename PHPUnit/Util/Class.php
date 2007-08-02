@@ -229,6 +229,8 @@ class PHPUnit_Util_Class
      *   - while
      *   - case
      *   - catch
+     *   - &&
+     *   - ||
      *
      * Note that 'else', 'default', and 'finally' don't increment the value
      * any further. On the other hand, a simple method with a 'switch'
@@ -262,7 +264,9 @@ class PHPUnit_Util_Class
                 case T_FOREACH:
                 case T_WHILE:
                 case T_CASE:
-                case T_CATCH: {
+                case T_CATCH:
+                case T_BOOLEAN_AND:
+                case T_BOOLEAN_OR: {
                     $ccn++;
                 }
                 break;
