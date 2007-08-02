@@ -79,6 +79,7 @@ CREATE TABLE IF NOT EXISTS code_class(
   code_class_name       TEXT,
   code_class_start_line INTEGER,
   code_class_end_line   INTEGER,
+  code_class_dit        INTEGER,
   code_class_wmc        INTEGER
 );
 
