@@ -78,7 +78,8 @@ CREATE TABLE IF NOT EXISTS code_class(
   code_class_id         INTEGER PRIMARY KEY AUTOINCREMENT,
   code_class_name       TEXT,
   code_class_start_line INTEGER,
-  code_class_end_line   INTEGER
+  code_class_end_line   INTEGER,
+  code_class_wmc        INTEGER
 );
 
 CREATE INDEX IF NOT EXISTS code_file_id ON code_class (code_file_id);
