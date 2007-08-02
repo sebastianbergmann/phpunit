@@ -149,8 +149,9 @@ class PHPUnit_Util_Log_CodeCoverage_Database
                 $stmt = $this->dbh->prepare(
                   'INSERT INTO code_class
                                (code_file_id, code_class_name,
-                                code_class_start_line, code_class_end_line)
-                         VALUES(:fileId, :className, :startLine, :endLine);'
+                                code_class_start_line, code_class_end_line,
+                                code_class_wmc)
+                         VALUES(:fileId, :className, :startLine, :endLine, 0);'
                 );
 
                 foreach ($classes as $class) {
@@ -174,6 +175,8 @@ class PHPUnit_Util_Log_CodeCoverage_Database
                              VALUES(:classId, :methodName, :startLine, :endLine, :ccn);'
                     );
 
+                    $wmc = 0;
+
                     foreach ($class->getMethods() as $method) {
                         if ($class->getName() != $method->getDeclaringClass()->getName()) {
                             continue;
@@ -190,10 +193,22 @@ class PHPUnit_Util_Log_CodeCoverage_Database
                         $stmt2->bindParam(':endLine', $endLine, PDO::PARAM_INT);
                         $stmt2->bindParam(':ccn', $ccn, PDO::PARAM_INT);
                         $stmt2->execute();
+
+                        $wmc += $ccn;
                     }
 
                     unset($stmt2);
                 }
+
+                $stmt = $this->dbh->prepare(
+                  'UPDATE code_class
+                      SET code_class_wmc = :wmc
+                    WHERE code_class_id = :classId;'
+                );
+
+                $stmt->bindParam(':classId', $classId, PDO::PARAM_INT);
+                $stmt->bindParam(':wmc', $wmc, PDO::PARAM_INT);
+                $stmt->execute();
 
                 $stmt = $this->dbh->prepare(
                   'INSERT INTO code_line
