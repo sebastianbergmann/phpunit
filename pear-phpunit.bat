@@ -37,4 +37,4 @@ REM $Id$
 REM
 
 set PHPBIN="@php_bin@"
-"@php_bin@" "@php_dir@/PHPUnit/TextUI/Command.php" %*
+"@php_bin@" -d safe_mode=Off "@php_dir@/PHPUnit/TextUI/Command.php" %*
