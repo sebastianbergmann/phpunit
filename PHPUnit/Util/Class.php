@@ -220,29 +220,21 @@ class PHPUnit_Util_Class
      * Returns the Cyclomatic Complexity Number (CCN) for a method.
      * This is also known as the McCabe metric.
      *
-     * From the JavaNCSS website:
+     * Each method has a minimum value of 1 per default. For each of the
+     * following PHP keywords/statements this value gets incremented by one:
      *
-     *   "There exists a much hyped theory behind it based on graph theory, but
-     *   it all comes down to simply counting 'if', 'for', 'while' statements
-     *   etc. in a method. Whenever the control flow of a method splits, the
-     *   Cyclomatic Complexity Number gets incremented by one.
+     *   - if
+     *   - for
+     *   - foreach
+     *   - while
+     *   - case
+     *   - catch
      *
-     *   Each method has a minimum value of 1 per default. For each of the
-     *   following PHP keywords/statements this value gets incremented by one:
-     *
-     *     - if
-     *     - for
-     *     - while
-     *     - case
-     *     - catch
-     *     - &&
-     *     - ||
-     *
-     *   Note that 'else', 'default', and 'finally' don't increment the value
-     *   any further. On the other hand, a simple method with a 'switch'
-     *   statement and a huge block of 'case 'statements can have a surprisingly
-     *   high value (still it has the same value when converting a 'switch'
-     *   block to an equivalent sequence of 'if' statements)."
+     * Note that 'else', 'default', and 'finally' don't increment the value
+     * any further. On the other hand, a simple method with a 'switch'
+     * statement and a huge block of 'case 'statements can have a surprisingly
+     * high value (still it has the same value when converting a 'switch'
+     * block to an equivalent sequence of 'if' statements).
      *
      * @param  string  $className
      * @param  string  $methodName
@@ -270,9 +262,7 @@ class PHPUnit_Util_Class
                 case T_FOREACH:
                 case T_WHILE:
                 case T_CASE:
-                case T_CATCH:
-                case T_BOOLEAN_AND:
-                case T_BOOLEAN_OR: {
+                case T_CATCH: {
                     $ccn++;
                 }
                 break;
