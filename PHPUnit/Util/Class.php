@@ -64,6 +64,7 @@ class PHPUnit_Util_Class
 {
     protected static $buffer = array();
     protected static $fileClassMap = array();
+    protected static $noc = array();
 
     /**
      * Starts the collection of loaded classes.
@@ -290,6 +291,46 @@ class PHPUnit_Util_Class
     public static function getDIT($className)
     {
         return count(self::getHierarchy($className));
+    }
+
+    /**
+     * Returns the Number of Children (NOC) for a class.
+     *
+     * @param  string  $className
+     * @param  boolean $clearCache
+     * @return integer
+     * @access public
+     * @static
+     * @since  Method available since Release 3.1.6
+     */
+    public static function getNOC($className, $clearCache = FALSE)
+    {
+        if ($clearCache) {
+            self::$noc = array();
+        }
+
+        if (empty(self::$noc)) {
+            foreach (get_declared_classes() as $_className) {
+                $class  = new ReflectionClass($_className);
+                $parent = $class->getParentClass();
+
+                if ($parent !== FALSE) {
+                    $parentName = $parent->getName();
+
+                    if (isset(self::$noc[$parentName])) {
+                        self::$noc[$parentName]++;
+                    } else {
+                        self::$noc[$parentName] = 1;
+                    }
+                }
+            }
+        }
+
+        if (isset(self::$noc[$className])) {
+            return self::$noc[$className];
+        } else {
+            return 0;
+        }
     }
 }
 ?>
