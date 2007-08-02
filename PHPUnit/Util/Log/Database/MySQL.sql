@@ -80,6 +80,7 @@ CREATE TABLE IF NOT EXISTS code_class(
   code_class_start_line INTEGER UNSIGNED NOT NULL,
   code_class_end_line   INTEGER UNSIGNED NOT NULL,
   code_class_dit        INTEGER UNSIGNED NOT NULL,
+  code_class_noc        INTEGER UNSIGNED NOT NULL,
   code_class_wmc        INTEGER UNSIGNED NOT NULL,
 
   INDEX (code_file_id)
