@@ -89,6 +89,7 @@ CREATE TABLE IF NOT EXISTS code_method(
   code_method_name       CHAR(255),
   code_method_start_line INTEGER UNSIGNED NOT NULL,
   code_method_end_line   INTEGER UNSIGNED NOT NULL,
+  code_method_ccn        INTEGER UNSIGNED NOT NULL,
 
   INDEX (code_class_id)
 ) ENGINE=InnoDB;
