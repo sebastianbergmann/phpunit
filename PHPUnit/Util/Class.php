@@ -280,6 +280,60 @@ class PHPUnit_Util_Class
     }
 
     /**
+     * Returns the Attribute Inheritance Factor (AIF) for a class.
+     *
+     * @param  string  $className
+     * @return integer
+     * @access public
+     * @static
+     * @since  Method available since Release 3.1.6
+     */
+    public static function getAIF($className)
+    {
+        $class = new ReflectionClass($className);
+
+        $attributes          = 0;
+        $inheritedAttributes = 0;
+
+        foreach ($class->getProperties() as $attribute) {
+            if ($attribute->getDeclaringClass()->getName() != $className) {
+                $inheritedAttributes++;
+            }
+
+            $attributes++;
+        }
+
+        return (100 * $inheritedAttributes) / $attributes;
+    }
+
+    /**
+     * Returns the Attribute Hiding Factor (AHF) for a class.
+     *
+     * @param  string  $className
+     * @return integer
+     * @access public
+     * @static
+     * @since  Method available since Release 3.1.6
+     */
+    public static function getAHF($className)
+    {
+        $class = new ReflectionClass($className);
+
+        $attributes       = 0;
+        $hiddenAttributes = 0;
+
+        foreach ($class->getProperties() as $attribute) {
+            if (!$attribute->isPublic()) {
+                $hiddenAttributes++;
+            }
+
+            $attributes++;
+        }
+
+        return (100 * $hiddenAttributes) / $attributes;
+    }
+
+    /**
      * Returns the Depth of Inheritance Tree (DIT) for a class.
      *
      * @param  string  $className
@@ -291,6 +345,60 @@ class PHPUnit_Util_Class
     public static function getDIT($className)
     {
         return count(self::getHierarchy($className));
+    }
+
+    /**
+     * Returns the Method Inheritance Factor (MIF) for a class.
+     *
+     * @param  string  $className
+     * @return float
+     * @access public
+     * @static
+     * @since  Method available since Release 3.1.6
+     */
+    public static function getMIF($className)
+    {
+        $class = new ReflectionClass($className);
+
+        $methods          = 0;
+        $inheritedMethods = 0;
+
+        foreach ($class->getMethods() as $method) {
+            if ($method->getDeclaringClass()->getName() != $className) {
+                $inheritedMethods++;
+            }
+
+            $methods++;
+        }
+
+        return (100 * $inheritedMethods) / $methods;
+    }
+
+    /**
+     * Returns the Method Hiding Factor (MHF) for a class.
+     *
+     * @param  string  $className
+     * @return float
+     * @access public
+     * @static
+     * @since  Method available since Release 3.1.6
+     */
+    public static function getMHF($className)
+    {
+        $class = new ReflectionClass($className);
+
+        $methods       = 0;
+        $hiddenMethods = 0;
+
+        foreach ($class->getMethods() as $method) {
+            if (!$method->isPublic()) {
+                $hiddenMethods++;
+            }
+
+            $methods++;
+        }
+
+        return (100 * $hiddenMethods) / $methods;
     }
 
     /**
