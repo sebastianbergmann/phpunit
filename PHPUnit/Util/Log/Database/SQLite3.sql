@@ -86,6 +86,7 @@ CREATE TABLE IF NOT EXISTS code_class(
   code_class_mif        INTEGER,
   code_class_mhf        INTEGER,
   code_class_noc        INTEGER,
+  code_class_pf         INTEGER,
   code_class_wmc        INTEGER
 );
 

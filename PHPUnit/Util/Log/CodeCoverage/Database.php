@@ -153,9 +153,9 @@ class PHPUnit_Util_Log_CodeCoverage_Database
                                 code_class_start_line, code_class_end_line,
                                 code_class_aif, code_class_ahf, code_class_dit,
                                 code_class_mif, code_class_mhf, code_class_noc,
-                                code_class_wmc)
+                                code_class_pf, code_class_wmc)
                          VALUES(:fileId, :className, :startLine, :endLine,
-                                :aif, :ahf, :dit, :mif, :mhf, :noc, 0);'
+                                :aif, :ahf, :dit, :mif, :mhf, :noc, :pf, 0);'
                 );
 
                 foreach ($classes as $class) {
@@ -168,6 +168,7 @@ class PHPUnit_Util_Log_CodeCoverage_Database
                     $mif       = PHPUnit_Util_Class::getMIF($className);
                     $mhf       = PHPUnit_Util_Class::getMHF($className);
                     $noc       = PHPUnit_Util_Class::getNOC($className);
+                    $pf        = PHPUnit_Util_Class::getPF($className);
 
                     $stmt->bindParam(':fileId', $fileId, PDO::PARAM_INT);
                     $stmt->bindParam(':className', $className, PDO::PARAM_STR);
@@ -179,6 +180,7 @@ class PHPUnit_Util_Log_CodeCoverage_Database
                     $stmt->bindParam(':mif', $mif);
                     $stmt->bindParam(':mhf', $mhf);
                     $stmt->bindParam(':noc', $noc, PDO::PARAM_INT);
+                    $stmt->bindParam(':pf', $noc);
                     $stmt->execute();
 
                     $classId                   = $this->dbh->lastInsertId();
