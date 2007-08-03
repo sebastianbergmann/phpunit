@@ -94,10 +94,11 @@ class PHPUnit_Util_Log_CodeCoverage_Database
      */
     public function storeCodeCoverage(PHPUnit_Framework_TestResult $result, $revision)
     {
-        $codeCoverage = $result->getCodeCoverageInformation(FALSE, TRUE);
-        $summary      = PHPUnit_Util_CodeCoverage::getSummary($codeCoverage);
-        $files        = array_keys($summary);
-        $commonPath   = PHPUnit_Util_Filesystem::getCommonPath($files);
+        $codeCoverage  = $result->getCodeCoverageInformation(FALSE, TRUE);
+        $summary       = PHPUnit_Util_CodeCoverage::getSummary($codeCoverage);
+        $files         = array_keys($summary);
+        $commonPath    = PHPUnit_Util_Filesystem::getCommonPath($files);
+        $storedClasses = array();
 
         $this->dbh->beginTransaction();
 
@@ -180,7 +181,8 @@ class PHPUnit_Util_Log_CodeCoverage_Database
                     $stmt->bindParam(':noc', $noc, PDO::PARAM_INT);
                     $stmt->execute();
 
-                    $classId = $this->dbh->lastInsertId();
+                    $classId                   = $this->dbh->lastInsertId();
+                    $storedClasses[$className] = $classId;
 
                     $stmt2 = $this->dbh->prepare(
                       'INSERT INTO code_method
@@ -328,6 +330,43 @@ class PHPUnit_Util_Log_CodeCoverage_Database
                 $stmt2->bindParam(':methodId', $methodId, PDO::PARAM_INT);
                 $stmt2->bindParam(':testId', $test->__db_id, PDO::PARAM_INT);
                 $stmt2->execute();
+            }
+        }
+
+        $stmt = $this->dbh->prepare(
+          'UPDATE code_class
+              SET code_class_parent_id = :parentClassId
+            WHERE code_class_id = :classId;'
+        );
+
+        $stmt2 = $this->dbh->prepare(
+          'SELECT MAX(code_class_id) AS code_class_id
+             FROM code_class
+            WHERE code_class_name = :parentClassName;'
+        );
+
+        foreach ($storedClasses as $className => $classId) {
+            $class       = new ReflectionClass($className);
+            $parentClass = $class->getParentClass();
+
+            if ($parentClass !== FALSE) {
+                $parentClassName = $parentClass->getName();
+                $parentClassId   = 0;
+
+                if (isset($storedClasses[$parentClassName])) {
+                    $parentClassId = $storedClasses[$parentClassName];
+                } else {
+                    $stmt2->bindParam(':parentClassName', $parentClassName, PDO::PARAM_STR);
+                    $stmt2->execute();
+
+                    $parentClassId = (int)$stmt->fetchColumn();
+                }
+
+                if ($parentClassId > 0) {
+                    $stmt->bindParam(':classId', $classId, PDO::PARAM_INT);
+                    $stmt->bindParam(':parentClassId', $parentClassId, PDO::PARAM_INT);
+                    $stmt->execute();
+                }
             }
         }
 
