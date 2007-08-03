@@ -157,6 +157,12 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
      * @var    Array
      * @access private
      */
+    private $locale = array();
+
+    /**
+     * @var    Array
+     * @access private
+     */
     private $mockObjects = array();
 
     /**
@@ -320,6 +326,11 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
             ini_set($varName, $oldValue);
         }
 
+        // Clean up locale settings.
+        foreach ($this->locale as $category => $locale) {
+            setlocale($category, $locale);
+        }
+
         $this->iniSettings = array();
 
         // Workaround for missing "finally".
@@ -331,13 +342,13 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
     /**
      * Override to run the test and assert its state.
      *
-     * @throws PHPUnit_Framework_Error
+     * @throws RuntimeException
      * @access protected
      */
     protected function runTest()
     {
         if ($this->name === NULL) {
-            throw new PHPUnit_Framework_Error(
+            throw new RuntimeException(
               'PHPUnit_Framework_TestCase::$name must not be NULL.'
             );
         }
@@ -402,6 +413,40 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
         } else {
             throw new RuntimeException;
         }
+    }
+
+    /**
+     * This method is a wrapper for the setlocale() function that automatically
+     * resets the locale to its original value after the test is run.
+     *
+     * @param  integer $category
+     * @param  string  $locale
+     * @throws InvalidArgumentException
+     * @throws RuntimeException
+     * @access protected
+     * @since  Method available since Release 3.1.0
+     */
+    protected function setLocale()
+    {
+        $args = func_get_args();
+
+        if (count($args) < 2) {
+            throw new InvalidArgumentException;
+        }
+
+        $category = $args[0];
+        $locale   = $args[1];
+
+        if (!in_array($category, array(LC_ALL, LC_COLLATE, LC_CTYPE, LC_MONETARY, LC_NUMERIC, LC_TIME, LC_MESSAGES))) {
+            throw new InvalidArgumentException;
+        }
+
+        if (!is_array($locale) && !is_string($locale)) {
+            throw new InvalidArgumentException;
+        }
+
+        $this->locale[$category] = setlocale($category, NULL);
+        call_user_func_array( 'setlocale', $args );
     }
 
     /**

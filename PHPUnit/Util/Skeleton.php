@@ -174,7 +174,7 @@ class PHPUnit_Util_Skeleton
 
                 if (preg_match_all('/@assert(.*)$/Um', $method->getDocComment(), $annotations)) {
                     foreach ($annotations[1] as $annotation) {
-                        if (preg_match('/\((.*)\) (.*) (.*)/', $annotation, $matches)) {
+                        if (preg_match('/\((.*)\)\s+(.*)\s+(.*)/', $annotation, $matches)) {
                             switch ($matches[2]) {
                                 case '==': {
                                     $assertion = 'Equals';
@@ -327,7 +327,7 @@ class PHPUnit_Util_Skeleton
           array(
             $this->className,
             $requireClassFile,
-            !empty($methods) ? $methods : $incompleteMethods,
+            $methods . $incompleteMethods,
             date('Y-m-d'),
             date('H:i:s')
           )

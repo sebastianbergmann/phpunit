@@ -17,14 +17,14 @@
   <email>sb@sebastian-bergmann.de</email>
   <active>yes</active>
  </lead>
- <date>2007-MM-DD</date>
+ <date>2007-08-DD</date>
  <version>
-  <release>3.2.0-dev</release>
+  <release>3.2.0</release>
   <api>3.2.0</api>
  </version>
  <stability>
-  <release>devel</release>
-  <api>devel</api>
+  <release>stable</release>
+  <api>stable</api>
  </stability>
  <license>BSD License</license>
  <notes>http://www.phpunit.de/wiki/ChangeLog</notes>
@@ -32,6 +32,11 @@
   <dir name="/">
    <dir name="PHPUnit">
     <dir name="Extensions">
+     <dir name="PhptTestCase">
+      <file baseinstalldir="/" name="Logger.php" role="php">
+       <tasks:replace from="@package_version@" to="version" type="package-info" />
+      </file>
+     </dir>
      <file baseinstalldir="/" name="ExceptionTestCase.php" role="php">
       <tasks:replace from="@package_version@" to="version" type="package-info" />
      </file>
@@ -41,6 +46,12 @@
      <file baseinstalldir="/" name="PerformanceTestCase.php" role="php">
       <tasks:replace from="@package_version@" to="version" type="package-info" />
      </file>
+     <file baseinstalldir="/" name="PhptTestCase.php" role="php">
+      <tasks:replace from="@package_version@" to="version" type="package-info" />
+     </file>
+     <file baseinstalldir="/" name="PhptTestSuite.php" role="php">
+      <tasks:replace from="@package_version@" to="version" type="package-info" />
+     </file>
      <file baseinstalldir="/" name="RepeatedTest.php" role="php">
       <tasks:replace from="@package_version@" to="version" type="package-info" />
      </file>
@@ -48,6 +59,9 @@
       <tasks:replace from="@package_version@" to="version" type="package-info" />
      </file>
      <file baseinstalldir="/" name="TestDecorator.php" role="php">
+      <tasks:replace from="@package_version@" to="version" type="package-info" />
+     </file>
+     <file baseinstalldir="/" name="TestSetup.php" role="php">
       <tasks:replace from="@package_version@" to="version" type="package-info" />
      </file>
     </dir>
@@ -127,6 +141,9 @@
       <file baseinstalldir="/" name="TraversableContains.php" role="php">
        <tasks:replace from="@package_version@" to="version" type="package-info" />
       </file>
+      <file baseinstalldir="/" name="TraversableContainsOnly.php" role="php">
+       <tasks:replace from="@package_version@" to="version" type="package-info" />
+      </file>
       <file baseinstalldir="/" name="Xor.php" role="php">
        <tasks:replace from="@package_version@" to="version" type="package-info" />
       </file>
@@ -188,10 +205,10 @@
        </file>
       </dir>
       <dir name="Stub">
-       <file baseinstalldir="/" name="Exception.php" role="php">
+       <file baseinstalldir="/" name="ConsecutiveCalls.php" role="php">
         <tasks:replace from="@package_version@" to="version" type="package-info" />
        </file>
-       <file baseinstalldir="/" name="ConsecutiveCalls.php" role="php">
+       <file baseinstalldir="/" name="Exception.php" role="php">
         <tasks:replace from="@package_version@" to="version" type="package-info" />
        </file>
        <file baseinstalldir="/" name="MatcherCollection.php" role="php">
@@ -201,10 +218,10 @@
         <tasks:replace from="@package_version@" to="version" type="package-info" />
        </file>
       </dir>
-      <file baseinstalldir="/" name="Invocation.php" role="php">
+      <file baseinstalldir="/" name="InvocationMocker.php" role="php">
        <tasks:replace from="@package_version@" to="version" type="package-info" />
       </file>
-      <file baseinstalldir="/" name="InvocationMocker.php" role="php">
+      <file baseinstalldir="/" name="Invocation.php" role="php">
        <tasks:replace from="@package_version@" to="version" type="package-info" />
       </file>
       <file baseinstalldir="/" name="Invokable.php" role="php">
@@ -213,10 +230,10 @@
       <file baseinstalldir="/" name="Matcher.php" role="php">
        <tasks:replace from="@package_version@" to="version" type="package-info" />
       </file>
-      <file baseinstalldir="/" name="Mock.php" role="php">
+      <file baseinstalldir="/" name="MockObject.php" role="php">
        <tasks:replace from="@package_version@" to="version" type="package-info" />
       </file>
-      <file baseinstalldir="/" name="MockObject.php" role="php">
+      <file baseinstalldir="/" name="Mock.php" role="php">
        <tasks:replace from="@package_version@" to="version" type="package-info" />
       </file>
       <file baseinstalldir="/" name="Stub.php" role="php">
@@ -226,10 +243,10 @@
        <tasks:replace from="@package_version@" to="version" type="package-info" />
       </file>
      </dir>
-     <file baseinstalldir="/" name="Assert.php" role="php">
+     <file baseinstalldir="/" name="AssertionFailedError.php" role="php">
       <tasks:replace from="@package_version@" to="version" type="package-info" />
      </file>
-     <file baseinstalldir="/" name="AssertionFailedError.php" role="php">
+     <file baseinstalldir="/" name="Assert.php" role="php">
       <tasks:replace from="@package_version@" to="version" type="package-info" />
      </file>
      <file baseinstalldir="/" name="ComparisonFailure.php" role="php">
@@ -244,10 +261,10 @@
      <file baseinstalldir="/" name="ExpectationFailedException.php" role="php">
       <tasks:replace from="@package_version@" to="version" type="package-info" />
      </file>
-     <file baseinstalldir="/" name="IncompleteTest.php" role="php">
+     <file baseinstalldir="/" name="IncompleteTestError.php" role="php">
       <tasks:replace from="@package_version@" to="version" type="package-info" />
      </file>
-     <file baseinstalldir="/" name="IncompleteTestError.php" role="php">
+     <file baseinstalldir="/" name="IncompleteTest.php" role="php">
       <tasks:replace from="@package_version@" to="version" type="package-info" />
      </file>
      <file baseinstalldir="/" name="Notice.php" role="php">
@@ -256,16 +273,13 @@
      <file baseinstalldir="/" name="SelfDescribing.php" role="php">
       <tasks:replace from="@package_version@" to="version" type="package-info" />
      </file>
-     <file baseinstalldir="/" name="SkippedTest.php" role="php">
-      <tasks:replace from="@package_version@" to="version" type="package-info" />
-     </file>
      <file baseinstalldir="/" name="SkippedTestError.php" role="php">
       <tasks:replace from="@package_version@" to="version" type="package-info" />
      </file>
-     <file baseinstalldir="/" name="SkippedTestSuiteError.php" role="php">
+     <file baseinstalldir="/" name="SkippedTest.php" role="php">
       <tasks:replace from="@package_version@" to="version" type="package-info" />
      </file>
-     <file baseinstalldir="/" name="Test.php" role="php">
+     <file baseinstalldir="/" name="SkippedTestSuiteError.php" role="php">
       <tasks:replace from="@package_version@" to="version" type="package-info" />
      </file>
      <file baseinstalldir="/" name="TestCase.php" role="php">
@@ -277,6 +291,9 @@
      <file baseinstalldir="/" name="TestListener.php" role="php">
       <tasks:replace from="@package_version@" to="version" type="package-info" />
      </file>
+     <file baseinstalldir="/" name="Test.php" role="php">
+      <tasks:replace from="@package_version@" to="version" type="package-info" />
+     </file>
      <file baseinstalldir="/" name="TestResult.php" role="php">
       <tasks:replace from="@package_version@" to="version" type="package-info" />
      </file>
@@ -284,54 +301,6 @@
       <tasks:replace from="@package_version@" to="version" type="package-info" />
      </file>
      <file baseinstalldir="/" name="Warning.php" role="php">
-      <tasks:replace from="@package_version@" to="version" type="package-info" />
-     </file>
-    </dir>
-    <dir name="GtkUI">
-     <dir name="Controller">
-      <file baseinstalldir="/" name="FileChooser.php" role="php">
-       <tasks:replace from="@package_version@" to="version" type="package-info" />
-      </file>
-      <file baseinstalldir="/" name="MainWindow.php" role="php">
-       <tasks:replace from="@package_version@" to="version" type="package-info" />
-      </file>
-      <file baseinstalldir="/" name="StatusTree.php" role="php">
-       <tasks:replace from="@package_version@" to="version" type="package-info" />
-      </file>
-      <file baseinstalldir="/" name="SuiteTree.php" role="php">
-       <tasks:replace from="@package_version@" to="version" type="package-info" />
-      </file>
-     </dir>
-     <dir name="glade">
-      <file baseinstalldir="/" name="testrunner.glade" role="php">
-       <tasks:replace from="@package_version@" to="version" type="package-info" />
-      </file>
-     </dir>
-     <dir name="img">
-      <file baseinstalldir="/" name="empty.png" role="php" />
-      <file baseinstalldir="/" name="error.png" role="php" />
-      <file baseinstalldir="/" name="failed.png" role="php" />
-      <file baseinstalldir="/" name="info.png" role="php" />
-      <file baseinstalldir="/" name="skipped.png" role="php" />
-      <file baseinstalldir="/" name="success.png" role="php" />
-      <file baseinstalldir="/" name="warning.png" role="php" />
-     </dir>
-     <file baseinstalldir="/" name="FileFilter.php" role="php">
-      <tasks:replace from="@package_version@" to="version" type="package-info" />
-     </file>
-     <file baseinstalldir="/" name="Main.php" role="php">
-      <tasks:replace from="@package_version@" to="version" type="package-info" />
-     </file>
-     <file baseinstalldir="/" name="SuiteTreeModel.php" role="php">
-      <tasks:replace from="@package_version@" to="version" type="package-info" />
-     </file>
-     <file baseinstalldir="/" name="TestListener.php" role="php">
-      <tasks:replace from="@package_version@" to="version" type="package-info" />
-     </file>
-     <file baseinstalldir="/" name="TestRunner.php" role="php">
-      <tasks:replace from="@package_version@" to="version" type="package-info" />
-     </file>
-     <file baseinstalldir="/" name="TestStatusMapper.php" role="php">
       <tasks:replace from="@package_version@" to="version" type="package-info" />
      </file>
     </dir>
@@ -452,6 +421,9 @@
       <file baseinstalldir="/" name="AllTests.php" role="test">
        <tasks:replace from="@package_version@" to="version" type="package-info" />
       </file>
+      <file baseinstalldir="/" name="TimerTest.php" role="test">
+       <tasks:replace from="@package_version@" to="version" type="package-info" />
+      </file>
      </dir>
      <dir name="_files">
       <file baseinstalldir="/" name="AnInterface.php" role="test">
@@ -567,11 +539,19 @@
      </file>
     </dir>
     <dir name="Util">
-     <dir name="Database">
-      <file baseinstalldir="/" name="MySQL.sql" role="php" />
-      <file baseinstalldir="/" name="SQLite3.sql" role="php" />
-     </dir>
      <dir name="Log">
+      <dir name="CodeCoverage">
+       <file baseinstalldir="/" name="Database.php" role="php">
+        <tasks:replace from="@package_version@" to="version" type="package-info" />
+       </file>
+       <file baseinstalldir="/" name="XML.php" role="php">
+        <tasks:replace from="@package_version@" to="version" type="package-info" />
+       </file>
+      </dir>
+      <dir name="Database">
+       <file baseinstalldir="/" name="MySQL.sql" role="php" />
+       <file baseinstalldir="/" name="SQLite3.sql" role="php" />
+      </dir>
       <file baseinstalldir="/" name="Database.php" role="php">
        <tasks:replace from="@package_version@" to="version" type="package-info" />
       </file>
@@ -588,6 +568,14 @@
        <tasks:replace from="@package_version@" to="version" type="package-info" />
       </file>
       <file baseinstalldir="/" name="XML.php" role="php">
+       <tasks:replace from="@package_version@" to="version" type="package-info" />
+      </file>
+     </dir>
+     <dir name="Metrics">
+      <file baseinstalldir="/" name="Class.php" role="php">
+       <tasks:replace from="@package_version@" to="version" type="package-info" />
+      </file>
+      <file baseinstalldir="/" name="Method.php" role="php">
        <tasks:replace from="@package_version@" to="version" type="package-info" />
       </file>
      </dir>
@@ -682,9 +670,6 @@
      <file baseinstalldir="/" name="CodeCoverage.php" role="php">
       <tasks:replace from="@package_version@" to="version" type="package-info" />
      </file>
-     <file baseinstalldir="/" name="Database.php" role="php">
-      <tasks:replace from="@package_version@" to="version" type="package-info" />
-     </file>
      <file baseinstalldir="/" name="ErrorHandler.php" role="php">
       <tasks:replace from="@package_version@" to="version" type="package-info" />
      </file>
@@ -703,6 +688,9 @@
      <file baseinstalldir="/" name="Getopt.php" role="php">
       <tasks:replace from="@package_version@" to="version" type="package-info" />
      </file>
+     <file baseinstalldir="/" name="PDO.php" role="php">
+      <tasks:replace from="@package_version@" to="version" type="package-info" />
+     </file>
      <file baseinstalldir="/" name="Printer.php" role="php">
       <tasks:replace from="@package_version@" to="version" type="package-info" />
      </file>
@@ -710,6 +698,9 @@
       <tasks:replace from="@package_version@" to="version" type="package-info" />
      </file>
      <file baseinstalldir="/" name="Skeleton.php" role="php">
+      <tasks:replace from="@package_version@" to="version" type="package-info" />
+     </file>
+     <file baseinstalldir="/" name="SourceFile.php" role="php">
       <tasks:replace from="@package_version@" to="version" type="package-info" />
      </file>
      <file baseinstalldir="/" name="Template.php" role="php">
@@ -778,10 +769,6 @@
     <name>json</name>
    </extension>
    <extension>
-    <name>php-gtk</name>
-    <min>2.0.0dev</min>
-   </extension>
-   <extension>
     <name>pdo</name>
    </extension>
    <extension>
@@ -791,11 +778,11 @@
     <name>pdo_sqlite</name>
    </extension>
    <extension>
-    <name>runkit</name>
+    <name>tokenizer</name>
    </extension>
    <extension>
     <name>xdebug</name>
-    <min>2.0.0RC2</min>
+    <min>2.0.0</min>
    </extension>
   </optional>
  </dependencies>

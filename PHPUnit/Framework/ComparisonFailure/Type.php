@@ -65,99 +65,18 @@ PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
  */
 class PHPUnit_Framework_ComparisonFailure_Type extends PHPUnit_Framework_ComparisonFailure
 {
-    private $expectedIsType;
-
-    /**
-     * Initialises with the expected value and the actual value.
-     *
-     * @param mixed $expected Expected value retrieved.
-     * @param mixed $actual Actual value retrieved.
-     * @param string $message A string which is prefixed on all returned lines
-     *                       in the difference output.
-     * @param boolean $expectedIsType
-     */
-    public function __construct($expected, $actual, $message = '', $expectedIsType = FALSE)
-    {
-        parent::__construct($expected, $actual, $message);
-
-        $this->expectedIsType = $expectedIsType;
-    }
-
     /**
      * Returns a string describing the type difference between the expected
      * and the actual value.
      */
     public function toString()
     {
-        $actualType = gettype($this->actual);
+        return sprintf(
+          '%s does not match expected type "%s".',
 
-        if ($this->expectedIsType) {
-            $expectedType = $this->expected;
-        } else {
-            $expectedType = gettype($this->expected);
-        }
-
-        $expectedDiffLen = strlen($expectedType) - strlen($actualType);
-        $actualDiffLen   = -$expectedDiffLen;
-
-        if ($expectedDiffLen > 0) {
-            $expectedType .= str_repeat(' ', $expectedDiffLen);
-        }
-
-        if ($actualDiffLen > 0) {
-            $actualType .= str_repeat(' ', $actualDiffLen);
-        }
-
-        $actualValue = '';
-
-        if (is_string($this->actual) || is_bool($this->actual) || is_int($this->actual) || is_float($this->actual)) {
-            $actualValue = PHPUnit_Util_Type::toString($this->actual);
-        }
-
-        elseif (is_object($this->actual)) {
-            $actualValue = '<' . get_class($this->actual) . '>';
-        }
-
-        $expectedValue = '';
-
-        if ($this->expectedIsType) {
-            $expectedValue = '<' . $this->expected . '>';
-        } else {
-            if (is_string($this->expected) || is_bool($this->expected) || is_int($this->expected) || is_float($this->expected)) {
-                $expectedValue = PHPUnit_Util_Type::toString($this->expected);
-            }
-
-            elseif (is_object($this->expected)) {
-                $expectedValue = '<' . get_class($this->expected) . '>';
-            }
-        }
-
-        if ($this->expectedIsType) {
-            return sprintf(
-              "%s%sexpected type %s\n" .
-              '%sgot      type %s %s',
-
-              $this->message,
-              ($this->message != '') ? ' ' : '',
-              $expectedType,
-              ($this->message != '') ? str_repeat(' ', strlen($this->message) + 1) : '',
-              $actualType,
-              $actualValue
-            );
-        } else {
-            return sprintf(
-              "%s%sexpected %s %s\n" .
-              '%sgot      %s %s',
-
-              $this->message,
-              ($this->message != '') ? ' ' : '',
-              $expectedType,
-              $expectedValue,
-              ($this->message != '') ? str_repeat(' ', strlen($this->message) + 1) : '',
-              $actualType,
-              $actualValue
-            );
-        }
+          PHPUnit_Util_Type::toString($this->actual),
+          gettype($this->expected)
+        );
     }
 }
 ?>

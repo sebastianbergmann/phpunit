@@ -114,6 +114,12 @@ abstract class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_Tes
     private $testId = NULL;
 
     /**
+     * @var    integer
+     * @access private
+     */
+    private $sleep = 0;
+
+    /**
      * @access protected
      */
     protected function runTest()
@@ -166,24 +172,14 @@ abstract class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_Tes
             }
         }
 
-        if ($this->runId !== FALSE && $this->runId !== NULL) {
+        if ($this->runId !== FALSE) {
             $this->createCookie(
               'PHPUNIT_SELENIUM_RUN_ID=' . $this->runId,
               'path=/'
             );
 
             $this->createCookie(
-              'PHPUNIT_SELENIUM_SESSION_ID=' . $this->sessionId,
-              'path=/'
-            );
-
-            $this->createCookie(
               'PHPUNIT_SELENIUM_TEST_ID=' . $this->testId,
-              'path=/'
-            );
-
-            $this->createCookie(
-              'PHPUNIT_SELENIUM_TEST_NAME=' . $this->getName(),
               'path=/'
             );
         }
@@ -271,7 +267,21 @@ abstract class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_Tes
     }
 
     /**
-     * This method (and the next) implement the Selenium RC protocol.
+     * @param  integer  $seconds
+     * @throws InvalidArgumentException
+     * @access public
+     */
+    public function setSleep($seconds)
+    {
+        if (!is_int($seconds)) {
+            throw new InvalidArgumentException;
+        }
+
+        $this->sleep = $seconds;
+    }
+
+    /**
+     * This method implements the Selenium RC protocol.
      *
      * @param  string $command
      * @param  array  $arguments
@@ -341,6 +351,11 @@ abstract class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_Tes
             case 'windowFocus':
             case 'windowMaximize': {
                 $this->doCommand($command, $arguments);
+
+                if ($this->sleep > 0) {
+                    sleep($this->sleep);
+                }
+
                 $this->defaultAssertions($command);
             }
             break;
@@ -373,6 +388,7 @@ abstract class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_Tes
             break;
 
             case 'getAlert':
+            case 'getAttribute':
             case 'getBodyText':
             case 'getConfirmation':
             case 'getCookie':
@@ -413,23 +429,15 @@ abstract class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_Tes
             case 'clickAndWait': {
                 $this->doCommand('click', $arguments);
                 $this->doCommand('waitForPageToLoad', array($this->timeout));
+
+                if ($this->sleep > 0) {
+                    sleep($this->sleep);
+                }
+
                 $this->defaultAssertions($command);
             }
             break;
         }
-    }
-
-    /**
-     * The Selenium command "getAttribute" clashes with
-     * PHPUnit_Framework_Assert::getAttribute().
-     *
-     * @param  string $attributeLocator
-     * @reutn  string
-     * @access public
-     */
-    public function getElementAttribute($attributeLocator)
-    {
-        return $this->getString('getAttribute', array($attributeLocator));
     }
 
     /**
@@ -888,8 +896,17 @@ abstract class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_Tes
             );
         }
 
-        stream_set_blocking($handle, FALSE);
-        $response = stream_get_contents($handle);
+        stream_set_blocking($handle, 1);
+        stream_set_timeout($handle, 0, $this->timeout);
+
+        $info     = stream_get_meta_data($handle);
+        $response = '';
+
+        while ((!feof($handle)) && (!$info['timed_out'])) {
+            $response .= fgets($handle, 4096); 
+            $info = stream_get_meta_data($handle); 
+        }
+
         fclose($handle);
 
         if (!preg_match('/^OK/', $response)) {

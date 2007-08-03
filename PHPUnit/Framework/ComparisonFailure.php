@@ -81,6 +81,11 @@ abstract class PHPUnit_Framework_ComparisonFailure extends PHPUnit_Framework_Ass
     protected $actual;
 
     /**
+     * @var boolean
+     */
+    protected $identical;
+
+    /**
      * Optional message which is placed in front of the first line
      * returned by toString().
      * @var string
@@ -97,14 +102,31 @@ abstract class PHPUnit_Framework_ComparisonFailure extends PHPUnit_Framework_Ass
      *
      * @param mixed $expected Expected value retrieved.
      * @param mixed $actual Actual value retrieved.
+     * @param boolean $identical
      * @param string $message A string which is prefixed on all returned lines
      *                       in the difference output.
      */
-    public function __construct($expected, $actual, $message = '')
+    public function __construct($expected, $actual, $identical = FALSE, $message = '')
     {
-        $this->expected = $expected;
-        $this->actual   = $actual;
-        $this->message  = $message;
+        $this->expected  = $expected;
+        $this->actual    = $actual;
+        $this->identical = $identical;
+        $this->message   = $message;
+    }
+
+    public function getActual()
+    {
+        return $this->actual;
+    }
+
+    public function getExpected()
+    {
+        return $this->expected;
+    }
+
+    public function identical()
+    {
+        return $this->identical;
     }
 
     /**
@@ -122,23 +144,23 @@ abstract class PHPUnit_Framework_ComparisonFailure extends PHPUnit_Framework_Ass
     public static function diffIdentical($expected, $actual, $message = '')
     {
         if (gettype($expected) !== gettype($actual)) {
-            return new PHPUnit_Framework_ComparisonFailure_Type($expected, $actual, $message);
+            return new PHPUnit_Framework_ComparisonFailure_Type($expected, $actual, TRUE, $message);
         }
 
         elseif (is_string($expected)) {
-            return new PHPUnit_Framework_ComparisonFailure_String($expected, $actual, $message);
+            return new PHPUnit_Framework_ComparisonFailure_String($expected, $actual, TRUE, $message);
         }
 
-        elseif (is_bool($expected) || is_int($expected) || is_float($expected)) {
-            return new PHPUnit_Framework_ComparisonFailure_Scalar($expected, $actual, $message);
+        elseif (is_null($expected) || is_scalar($expected)) {
+            return new PHPUnit_Framework_ComparisonFailure_Scalar($expected, $actual, TRUE, $message);
         }
 
         elseif (is_array($expected)) {
-            return new PHPUnit_Framework_ComparisonFailure_Array($expected, $actual, $message);
+            return new PHPUnit_Framework_ComparisonFailure_Array($expected, $actual, TRUE, $message);
         }
 
         elseif (is_object($expected)) {
-            return new PHPUnit_Framework_ComparisonFailure_Object($expected, $actual, $message);
+            return new PHPUnit_Framework_ComparisonFailure_Object($expected, $actual, TRUE, $message);
         }
     }
 
@@ -156,25 +178,20 @@ abstract class PHPUnit_Framework_ComparisonFailure extends PHPUnit_Framework_Ass
      */
     public static function diffEqual($expected, $actual, $message = '')
     {
-        if (gettype($expected) !== gettype($actual)) {
-            $expected = (string)$expected;
-            $actual = (string)$actual;
-        }
-
         if (is_string($expected)) {
-            return new PHPUnit_Framework_ComparisonFailure_String($expected, $actual, $message);
+            return new PHPUnit_Framework_ComparisonFailure_String($expected, $actual, FALSE, $message);
         }
 
-        elseif (is_bool($expected) || is_int($expected) || is_float($expected)) {
-            return new PHPUnit_Framework_ComparisonFailure_Scalar($expected, $actual, $message);
+        elseif (is_null($expected) || is_scalar($expected)) {
+            return new PHPUnit_Framework_ComparisonFailure_Scalar($expected, $actual, FALSE, $message);
         }
 
         elseif (is_array($expected)) {
-            return new PHPUnit_Framework_ComparisonFailure_Array($expected, $actual, $message);
+            return new PHPUnit_Framework_ComparisonFailure_Array($expected, $actual, FALSE, $message);
         }
 
         elseif (is_object($expected)) {
-            return new PHPUnit_Framework_ComparisonFailure_Object($expected, $actual, $message);
+            return new PHPUnit_Framework_ComparisonFailure_Object($expected, $actual, FALSE, $message);
         }
     }
 

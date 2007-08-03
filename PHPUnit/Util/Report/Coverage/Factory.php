@@ -79,16 +79,11 @@ abstract class PHPUnit_Util_Report_Coverage_Factory
      */
     public static function create(PHPUnit_Framework_TestResult $result, PHPUnit_Util_Report_Test_Node_TestSuite $testSuite)
     {
-        if (!defined('PHPUnit_INSIDE_OWN_TESTSUITE')) {
-            $codeCoverageInformation = $result->getCodeCoverageInformation();
-        } else {
-            $codeCoverageInformation = $result->getCodeCoverageInformation(TRUE, FALSE);
-        }
-
-        $files      = PHPUnit_Util_CodeCoverage::getSummary($codeCoverageInformation);
-        $commonPath = self::reducePaths($files);
-        $items      = self::buildDirectoryStructure($files);
-        $root       = new PHPUnit_Util_Report_Coverage_Node_Directory($commonPath);
+        $codeCoverageInformation = $result->getCodeCoverageInformation();
+        $files                   = PHPUnit_Util_CodeCoverage::getSummary($codeCoverageInformation);
+        $commonPath              = self::reducePaths($files);
+        $items                   = self::buildDirectoryStructure($files);
+        $root                    = new PHPUnit_Util_Report_Coverage_Node_Directory($commonPath);
 
         self::addItems($root, $items, $testSuite, $files);
 

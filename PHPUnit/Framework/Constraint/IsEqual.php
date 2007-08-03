@@ -113,13 +113,26 @@ class PHPUnit_Framework_Constraint_IsEqual extends PHPUnit_Framework_Constraint
         );
 
         if (!$not) {
+            if ($this->value instanceof DOMDocument) {
+                $value = $this->domToText($this->value);
+            } else {
+                $value = $this->value;
+            }
+
+            if ($other instanceof DOMDocument) {
+                $other = $this->domToText($other);
+            }
+
             throw new PHPUnit_Framework_ExpectationFailedException(
               $failureDescription,
-              PHPUnit_Framework_ComparisonFailure::diffEqual($this->value, $other)
+              PHPUnit_Framework_ComparisonFailure::diffEqual($value, $other),
+              $description
             );
         } else {
             throw new PHPUnit_Framework_ExpectationFailedException(
-              $failureDescription
+              $failureDescription,
+              NULL,
+              $description
             );
         }
     }
@@ -176,12 +189,24 @@ class PHPUnit_Framework_Constraint_IsEqual extends PHPUnit_Framework_Constraint
             return TRUE;
         }
 
+        if (is_numeric($a) XOR is_numeric($b)) {
+            return FALSE;
+        }
+
         if (is_array($a) XOR is_array($b)) {
             return FALSE;
         }
 
         if (is_object($a) XOR is_object($b)) {
             return FALSE;
+        }
+
+        if ($a instanceof DOMDocument) {
+            $a = $this->domToText($a);
+        }
+
+        if ($b instanceof DOMDocument) {
+            $b = $this->domToText($b);
         }
 
         if (is_object($a) && is_object($b) &&
@@ -242,6 +267,22 @@ class PHPUnit_Framework_Constraint_IsEqual extends PHPUnit_Framework_Constraint
         } else {
             return (abs($a - $b) <= $this->delta);
         }
+    }
+
+    /**
+     * Returns the normalized, whitespace-cleaned, and indented textual
+     * representation of a DOMDocument.
+     * 
+     * @param DOMDocument $document
+     * @return string
+     */
+    protected function domToText(DOMDocument $document)
+    {
+        $document->formatOutput = true;
+        $document->preserveWhiteSpace = false;
+        $document->normalizeDocument();
+
+        return $document->saveXML();
     }
 }
 ?>

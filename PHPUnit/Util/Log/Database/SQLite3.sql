@@ -67,15 +67,27 @@ CREATE TABLE IF NOT EXISTS code_file(
   code_file_id   INTEGER PRIMARY KEY AUTOINCREMENT,
   code_file_name TEXT,
   code_file_md5  TEXT,
-  revision       INTEGER
+  revision       INTEGER,
+  loc            INTEGER,
+  cloc           INTEGER,
+  ncloc          INTEGER
 );
 
 CREATE TABLE IF NOT EXISTS code_class(
   code_file_id          INTEGER,
   code_class_id         INTEGER PRIMARY KEY AUTOINCREMENT,
+  code_class_parent_id  INTEGER,
   code_class_name       TEXT,
   code_class_start_line INTEGER,
-  code_class_end_line   INTEGER
+  code_class_end_line   INTEGER,
+  code_class_aif        INTEGER,
+  code_class_ahf        INTEGER,
+  code_class_dit        INTEGER,
+  code_class_mif        INTEGER,
+  code_class_mhf        INTEGER,
+  code_class_noc        INTEGER,
+  code_class_pf         INTEGER,
+  code_class_wmc        INTEGER
 );
 
 CREATE INDEX IF NOT EXISTS code_file_id ON code_class (code_file_id);
@@ -85,7 +97,8 @@ CREATE TABLE IF NOT EXISTS code_method(
   code_method_id         INTEGER PRIMARY KEY AUTOINCREMENT,
   code_method_name       TEXT,
   code_method_start_line INTEGER,
-  code_method_end_line   INTEGER
+  code_method_end_line   INTEGER,
+  code_method_ccn        INTEGER
 );
 
 CREATE INDEX IF NOT EXISTS code_class_id ON code_method (code_class_id);

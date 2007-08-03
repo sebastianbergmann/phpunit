@@ -44,8 +44,10 @@
  * @since      File available since Release 2.3.0
  */
 
+class BankAccountException extends RuntimeException {}
+
 /**
- * A Bank Account.
+ * A bank account.
  *
  * @category   Testing
  * @package    PHPUnit
@@ -62,9 +64,9 @@ class BankAccount
      * The bank account's balance.
      *
      * @var    float
-     * @access private
+     * @access protected
      */
-    private $balance = 0;
+    protected $balance = 0;
 
     /**
      * Returns the bank account's balance.
@@ -81,15 +83,15 @@ class BankAccount
      * Sets the bank account's balance.
      *
      * @param  float $balance
-     * @throws InvalidArgumentException
-     * @access public
+     * @throws BankAccountException
+     * @access protected
      */
-    public function setBalance($balance)
+    protected function setBalance($balance)
     {
         if ($balance >= 0) {
             $this->balance = $balance;
         } else {
-            throw new InvalidArgumentException;
+            throw new BankAccountException;
         }
     }
 
@@ -97,32 +99,28 @@ class BankAccount
      * Deposits an amount of money to the bank account.
      *
      * @param  float $balance
-     * @throws InvalidArgumentException
+     * @throws BankAccountException
      * @access public
      */
-    public function depositMoney($amount)
+    public function depositMoney($balance)
     {
-        if ($amount >= 0) {
-            $this->balance += $amount;
-        } else {
-            throw new InvalidArgumentException;
-        }
+        $this->setBalance($this->getBalance() + $balance);
+
+        return $this->getBalance();
     }
 
     /**
      * Withdraws an amount of money from the bank account.
      *
      * @param  float $balance
-     * @throws InvalidArgumentException
+     * @throws BankAccountException
      * @access public
      */
-    public function withdrawMoney($amount)
+    public function withdrawMoney($balance)
     {
-        if ($amount >= 0 && $this->balance >= $amount) {
-            $this->balance -= $amount;
-        } else {
-            throw new InvalidArgumentException;
-        }
+        $this->setBalance($this->getBalance() - $balance);
+
+        return $this->getBalance();
     }
 }
 ?>

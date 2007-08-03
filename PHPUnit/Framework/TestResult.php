@@ -69,6 +69,10 @@ if (!class_exists('PHPUnit_Framework_TestResult', FALSE)) {
  */
 class PHPUnit_Framework_TestResult implements Countable
 {
+    protected static $isPHP52 = null;
+    protected static $xdebugLoaded = null;
+    protected static $useXdebug = null;
+
     /**
      * @var    array
      * @access protected
@@ -138,6 +142,12 @@ class PHPUnit_Framework_TestResult implements Countable
     private $stop = FALSE;
 
     /**
+     * @var    boolean
+     * @access protected
+     */
+    protected $stopOnFailure = FALSE;
+
+    /**
      * Registers a TestListener.
      *
      * @param  PHPUnit_Framework_TestListener
@@ -191,26 +201,25 @@ class PHPUnit_Framework_TestResult implements Countable
     {
         if ($e instanceof PHPUnit_Framework_IncompleteTest) {
             $this->notImplemented[] = new PHPUnit_Framework_TestFailure($test, $e);
-
-            foreach ($this->listeners as $listener) {
-                $listener->addIncompleteTest($test, $e, $time);
-            }
+            $notifyMethod           = 'addIncompleteTest';
         }
 
         else if ($e instanceof PHPUnit_Framework_SkippedTest) {
             $this->skipped[] = new PHPUnit_Framework_TestFailure($test, $e);
-
-            foreach ($this->listeners as $listener) {
-                $listener->addSkippedTest($test, $e, $time);
-            }
+            $notifyMethod    = 'addSkippedTest';
         }
 
         else {
             $this->errors[] = new PHPUnit_Framework_TestFailure($test, $e);
+            $notifyMethod   = 'addError';
 
-            foreach ($this->listeners as $listener) {
-                $listener->addError($test, $e, $time);
+            if ($this->stopOnFailure) {
+                $this->stop();
             }
+        }
+
+        foreach ($this->listeners as $listener) {
+            $listener->$notifyMethod($test, $e, $time);
         }
     }
 
@@ -227,26 +236,25 @@ class PHPUnit_Framework_TestResult implements Countable
     {
         if ($e instanceof PHPUnit_Framework_IncompleteTest) {
             $this->notImplemented[] = new PHPUnit_Framework_TestFailure($test, $e);
-
-            foreach ($this->listeners as $listener) {
-                $listener->addIncompleteTest($test, $e, $time);
-            }
+            $notifyMethod           = 'addIncompleteTest';
         }
 
         else if ($e instanceof PHPUnit_Framework_SkippedTest) {
             $this->skipped[] = new PHPUnit_Framework_TestFailure($test, $e);
-
-            foreach ($this->listeners as $listener) {
-                $listener->addSkippedTest($test, $e, $time);
-            }
+            $notifyMethod    = 'addSkippedTest';
         }
 
         else {
             $this->failures[] = new PHPUnit_Framework_TestFailure($test, $e);
+            $notifyMethod     = 'addFailure';
 
-            foreach ($this->listeners as $listener) {
-                $listener->addFailure($test, $e, $time);
+            if ($this->stopOnFailure) {
+                $this->stop();
             }
+        }
+
+        foreach ($this->listeners as $listener) {
+            $listener->$notifyMethod($test, $e, $time);
         }
     }
 
@@ -503,7 +511,15 @@ class PHPUnit_Framework_TestResult implements Countable
 
         $errorHandlerSet = FALSE;
 
-        if (version_compare(phpversion(), '5.2.0RC1', '>=')) {
+        if (self::$isPHP52 === NULL) {
+            if (version_compare(phpversion(), '5.2.0RC1', '>=')) {
+                self::$isPHP52 = TRUE;
+            } else {
+                self::$isPHP52 = FALSE;
+            }
+        }
+
+        if (self::$isPHP52) {
             $oldErrorHandler = set_error_handler('PHPUnit_Util_ErrorHandler', E_RECOVERABLE_ERROR | E_USER_ERROR | E_NOTICE | E_STRICT);
         } else {
             $oldErrorHandler = set_error_handler('PHPUnit_Util_ErrorHandler', E_USER_ERROR | E_NOTICE | E_STRICT);
@@ -515,16 +531,14 @@ class PHPUnit_Framework_TestResult implements Countable
             restore_error_handler();
         }
 
-        $xdebugLoaded  = extension_loaded('xdebug');
-        $xdebugEnabled = $xdebugLoaded && xdebug_is_enabled();
-
-        if ($xdebugEnabled) {
-            xdebug_disable();
+        if (self::$xdebugLoaded === NULL) {
+            self::$xdebugLoaded = extension_loaded('xdebug');
+            self::$useXdebug = self::$xdebugLoaded;
         }
 
-        $useXdebug = ($xdebugLoaded && $this->collectCodeCoverageInformation && !$test instanceof PHPUnit_Extensions_SeleniumTestCase);
+        $useXdebug = self::$useXdebug && $this->collectCodeCoverageInformation && !$test instanceof PHPUnit_Extensions_SeleniumTestCase;
 
-        if ($useXdebug && !defined('PHPUnit_INSIDE_OWN_TESTSUITE')) {
+        if ($useXdebug) {
             xdebug_start_code_coverage(XDEBUG_CC_UNUSED | XDEBUG_CC_DEAD_CODE);
         }
 
@@ -551,14 +565,6 @@ class PHPUnit_Framework_TestResult implements Countable
             );
 
             xdebug_stop_code_coverage();
-
-            if (defined('PHPUnit_INSIDE_OWN_TESTSUITE')) {
-                xdebug_start_code_coverage(XDEBUG_CC_UNUSED | XDEBUG_CC_DEAD_CODE);
-            }
-        }
-
-        if ($xdebugEnabled) {
-            xdebug_enable();
         }
 
         if ($errorHandlerSet === TRUE) {
@@ -608,6 +614,23 @@ class PHPUnit_Framework_TestResult implements Countable
     public function stop()
     {
         $this->stop = TRUE;
+    }
+
+    /**
+     * Enables or disables the stopping when a failure or error occurs.
+     *
+     * @param  boolean $flag
+     * @throws InvalidArgumentException
+     * @access public
+     * @since  Method available since Release 3.1.0
+     */
+    public function stopOnFailure($flag)
+    {
+        if (is_bool($flag)) {
+            $this->stopOnFailure = $flag;
+        } else {
+            throw new InvalidArgumentException;
+        }
     }
 
     /**

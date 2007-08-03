@@ -1,8 +1,8 @@
 <?php
 /**
- * PHP-GTK2 Test Runner for PHPUnit
+ * PHPUnit
  *
- * Copyright (c) 2007, Tobias Schlitt <toby@php.net>.
+ * Copyright (c) 2002-2007, Sebastian Bergmann <sb@sebastian-bergmann.de>.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -17,7 +17,7 @@
  *     the documentation and/or other materials provided with the
  *     distribution.
  *
- *   * Neither the name of Tobias Schlitt nor the names of his
+ *   * Neither the name of Sebastian Bergmann nor the names of his
  *     contributors may be used to endorse or promote products derived
  *     from this software without specific prior written permission.
  *
@@ -36,59 +36,59 @@
  *
  * @category   Testing
  * @package    PHPUnit
- * @author     Tobias Schlitt <toby@php.net>
  * @author     Sebastian Bergmann <sb@sebastian-bergmann.de>
- * @copyright  2007 Tobias Schlitt <toby@php.net>
+ * @copyright  2002-2007 Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    SVN: $Id$
  * @link       http://www.phpunit.de/
- * @since      File available since Release 3.2.0
+ * @since      File available since Release 3.1.4
  */
 
 require_once 'PHPUnit/Framework.php';
 require_once 'PHPUnit/Util/Filter.php';
+require_once 'PHPUnit/Util/FilterIterator.php';
 
 PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
 
 /**
- * 
+ * Suite for .phpt test cases.
  *
  * @category   Testing
  * @package    PHPUnit
- * @author     Tobias Schlitt <toby@php.net>
  * @author     Sebastian Bergmann <sb@sebastian-bergmann.de>
- * @copyright  2007 Tobias Schlitt <toby@php.net>
+ * @copyright  2002-2007 Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    Release: @package_version@
  * @link       http://www.phpunit.de/
- * @since      Class available since Release 3.2.0
+ * @since      Class available since Release 3.1.4
  */
-class PHPUnit_GtkUI_TestStatusMapper
+class PHPUnit_Extensions_PhptTestSuite extends PHPUnit_Framework_TestSuite
 {
-    private $map = array();
-    private static $instance;
-
-    public static function getInstance()
+    /**
+     * Constructs a new TestSuite for .phpt test cases.
+     *
+     * @param  string $directory
+     * @throws InvalidArgumentException
+     * @access public
+     */
+    public function __construct($directory)
     {
-        if (self::$instance === NULL) {
-            self::$instance = new PHPUnit_GtkUI_TestStatusMapper;
+        if (is_dir($directory)) {
+            $this->setName($directory);
+
+            $iterator = new PHPUnit_Util_FilterIterator(
+              new RecursiveIteratorIterator(
+                new RecursiveDirectoryIterator($directory)
+              ),
+              '.phpt'
+            );
+
+            foreach ($iterator as $testFile) {
+                $this->addTestFile($testFile->getPathname());
+            }
+        } else {
+            throw new InvalidArgumentException;
         }
-
-        return self::$instance;
-    }
-
-    public function setMapping(PHPUnit_Framework_Test $test, GtkTreeIter $status)
-    {
-        $this->map[$test->toString()] = $status;
-    }
-
-    public function getStatusIter(PHPUnit_Framework_Test $test)
-    {
-        if (!isset($this->map[$test->toString()])) {
-            return NULL;
-        }
-
-        return $this->map[$test->toString()];
     }
 }
 ?>

@@ -41,16 +41,25 @@
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    SVN: $Id$
  * @link       http://www.phpunit.de/
- * @since      File available since Release 3.1.0
+ * @since      File available since Release 2.0.0
  */
 
 require_once 'PHPUnit/Framework.php';
+require_once 'PHPUnit/Extensions/TestDecorator.php';
 require_once 'PHPUnit/Util/Filter.php';
 
 PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
 
+trigger_error(
+  "Class PHPUnit_Extensions_TestSetup is deprecated. ".
+  "It will be removed in PHPUnit 4.0. ".
+  "Please use the new functionality in PHPUnit_Framework_TestSuite instead."
+);
+
 /**
- * 
+ * A Decorator to set up and tear down additional fixture state.
+ * Subclass TestSetup and insert it into your tests when you want
+ * to set up additional state once before the tests are run.
  *
  * @category   Testing
  * @package    PHPUnit
@@ -59,64 +68,85 @@ PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    Release: @package_version@
  * @link       http://www.phpunit.de/
- * @since      Class available since Release 3.1.0
+ * @since      Class available since Release 2.0.0
  */
-
-class PHPUnit_Framework_Constraint_Attribute extends PHPUnit_Framework_Constraint
+class PHPUnit_Extensions_TestSetup extends PHPUnit_Extensions_TestDecorator
 {
-    private $attributeName;
-    private $constraint;
-
-    public function __construct(PHPUnit_Framework_Constraint $constraint, $attributeName)
-    {
-        $this->attributeName = $attributeName;
-        $this->constraint    = $constraint;
-    }
-
     /**
-     * Evaluates the constraint for parameter $other. Returns TRUE if the
-     * constraint is met, FALSE otherwise.
+     * Runs the decorated test and collects the
+     * result in a TestResult.
      *
-     * @param mixed $other Value or object to evaluate.
-     * @return bool
-     */
-    public function evaluate($other)
-    {
-        return $this->constraint->evaluate(
-          PHPUnit_Framework_Assert::readAttribute(
-            $other, $this->attributeName
-          )
-        );
-    }
-
-    /**
-     * @param   mixed   $other The value passed to evaluate() which failed the
-     *                         constraint check.
-     * @param   string  $description A string with extra description of what was
-     *                               going on while the evaluation failed.
-     * @param   boolean $not Flag to indicate negation.
-     * @throws  PHPUnit_Framework_ExpectationFailedException
-     */
-    public function fail($other, $description, $not = FALSE)
-    {
-        parent::fail(
-          PHPUnit_Framework_Assert::readAttribute(
-            $other, $this->attributeName
-          ),
-          $description,
-          $not
-        );
-    }
-
-    /**
-     * Returns a string representation of the constraint.
-     *
-     * @return string
+     * @param  PHPUnit_Framework_TestResult $result
+     * @return PHPUnit_Framework_TestResult
+     * @throws InvalidArgumentException
      * @access public
      */
-    public function toString()
+    public function run(PHPUnit_Framework_TestResult $result = NULL)
     {
-        return $this->constraint->toString();
+        if ($result === NULL) {
+            $result = $this->createResult();
+        }
+
+        $this->setUp();
+        $this->copyFixtureToTest();
+        $this->basicRun($result);
+        $this->tearDown();
+
+        return $result;
+    }
+
+    /**
+     * Copies the fixture set up by setUp() to the test.
+     *
+     * @access private
+     * @since  Method available since Release 2.3.0
+     */
+    private function copyFixtureToTest()
+    {
+        $object = new ReflectionClass($this);
+
+        foreach ($object->getProperties() as $attribute) {
+            $name = $attribute->getName();
+
+            if ($name != 'test') {
+                $this->doCopyFixtureToTest($this->test, $name, $this->$name);
+            }
+        }
+    }
+
+    /**
+     * @access private
+     * @since  Method available since Release 2.3.0
+     */
+    private function doCopyFixtureToTest($object, $name, &$value)
+    {
+        if ($object instanceof PHPUnit_Framework_TestSuite) {
+            foreach ($object->tests() as $test) {
+                $this->doCopyFixtureToTest($test, $name, $value);
+            }
+        } else {
+            $object->$name =& $value;
+        }
+    }
+
+    /**
+     * Sets up the fixture. Override to set up additional fixture
+     * state.
+     *
+     * @access protected
+     */
+    protected function setUp()
+    {
+    }
+
+    /**
+     * Tears down the fixture. Override to tear down the additional
+     * fixture state.
+     *
+     * @access protected
+     */
+    protected function tearDown()
+    {
     }
 }
 ?>

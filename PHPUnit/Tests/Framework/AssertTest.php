@@ -267,6 +267,66 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
         $this->fail();
     }
 
+    public function testAssertArrayContainsOnlyIntegers()
+    {
+        $this->assertContainsOnly('integer', array(1, 2, 3));
+
+        try {
+            $this->assertContainsOnly('integer', array("1", 2, 3));
+        }
+
+        catch (PHPUnit_Framework_AssertionFailedError $e) {
+            return;
+        }
+
+        $this->fail();
+    }
+
+    public function testAssertArrayNotContainsOnlyIntegers()
+    {
+        $this->assertNotContainsOnly('integer', array("1", 2, 3));
+
+        try {
+            $this->assertNotContainsOnly('integer', array(1, 2, 3));
+        }
+
+        catch (PHPUnit_Framework_AssertionFailedError $e) {
+            return;
+        }
+
+        $this->fail();
+    }
+
+    public function testAssertArrayContainsOnlyStdClass()
+    {
+        $this->assertContainsOnly('StdClass', array(new StdClass), FALSE);
+
+        try {
+            $this->assertContainsOnly('StdClass', array('StdClass'), FALSE);
+        }
+
+        catch (PHPUnit_Framework_AssertionFailedError $e) {
+            return;
+        }
+
+        $this->fail();
+    }
+
+    public function testAssertArrayNotContainsOnlyStdClass()
+    {
+        $this->assertNotContainsOnly('StdClass', array('StdClass'), FALSE);
+
+        try {
+            $this->assertNotContainsOnly('StdClass', array(new StdClass), FALSE);
+        }
+
+        catch (PHPUnit_Framework_AssertionFailedError $e) {
+            return;
+        }
+
+        $this->fail();
+    }
+
     public function testAssertEqualsArray()
     {
         $this->assertEquals(array('a', 'b' => array(1, 2)), array('a', 'b' => array(1, 2)));
@@ -571,6 +631,215 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
         }
 
         $this->fail();
+    }
+
+    public function testAssertEqualsDOMDocument()
+    {
+        $expected = new DOMDocument;
+        $expected->loadXML('<root></root>');
+
+        $actual = new DOMDocument;
+        $actual->loadXML('<root/>');
+
+        $this->assertEquals($expected, $actual);
+
+        try {
+            $this->assertNotEquals($expected, $actual);
+        }
+
+        catch (PHPUnit_Framework_AssertionFailedError $e) {
+            return;
+        }
+
+        $this->fail();
+    }
+
+    public function testAssertEqualsDOMDocument2()
+    {
+        $expected = new DOMDocument;
+        $expected->loadXML('<foo></foo>');
+
+        $actual = new DOMDocument;
+        $actual->loadXML('<bar/>');        
+
+        $this->assertNotEquals($expected, $actual);
+
+        try {
+            $this->assertEquals($expected, $actual);
+        }
+
+        catch (PHPUnit_Framework_AssertionFailedError $e) {
+            return;
+        }
+
+        $this->fail();
+    }
+
+    public function testAssertEqualsDOMDocument3()
+    {
+        $expected = new DOMDocument;
+        $expected->loadXML('<foo attr="bar"></foo>');
+
+        $actual = new DOMDocument;
+        $actual->loadXML('<foo attr="bar"/>');
+
+        $this->assertEquals($expected, $actual);
+
+        try {
+            $this->assertNotEquals($expected, $actual);
+        }
+
+        catch (PHPUnit_Framework_AssertionFailedError $e) {
+            return;
+        }
+
+        $this->fail();
+    }
+
+    public function testAssertEqualsDOMDocument4()
+    {
+        $expected = new DOMDocument;
+        $expected->loadXML('<root><foo attr="bar"></foo></root>');
+
+        $actual = new DOMDocument;
+        $actual->loadXML('<root><foo attr="bar"/></root>');
+
+        $this->assertEquals($expected, $actual);
+
+        try {
+            $this->assertNotEquals($expected, $actual);
+        }
+
+        catch (PHPUnit_Framework_AssertionFailedError $e) {
+            return;
+        }
+
+        $this->fail();
+    }
+
+    public function testAssertEqualsDOMDocument5()
+    {
+        $expected = new DOMDocument;
+        $expected->loadXML('<foo attr1="bar"/>');
+
+        $actual = new DOMDocument;
+        $actual->loadXML('<foo attr1="foobar"/>');
+
+        $this->assertNotEquals($expected, $actual);
+
+        try {
+            $this->assertEquals($expected, $actual);
+        }
+
+        catch (PHPUnit_Framework_AssertionFailedError $e) {
+            return;
+        }
+
+        $this->fail();
+    }
+
+    public function testAssertEqualsDOMDocument6()
+    {
+        $expected = new DOMDocument;
+        $expected->loadXML('<foo> bar </foo>');
+
+        $actual = new DOMDocument;
+        $actual->loadXML('<foo />');
+
+        $this->assertNotEquals($expected, $actual);        
+
+        try {
+            $this->assertEquals($expected, $actual);        
+        }
+
+        catch (PHPUnit_Framework_AssertionFailedError $e) {
+            return;
+        }
+
+        $this->fail();
+    }
+
+    public function testAssertEqualsDOMDocument7()
+    {
+        $expected = new DOMDocument;
+        $expected->loadXML('<foo xmlns="urn:myns:bar"/>');
+
+        $actual = new DOMDocument;
+        $actual->loadXML('<foo xmlns="urn:notmyns:bar"/>');
+
+        $this->assertNotEquals($expected, $actual);
+
+        try {
+            $this->assertEquals($expected, $actual);
+        }
+
+        catch (PHPUnit_Framework_AssertionFailedError $e) {
+            return;
+        }
+
+        $this->fail();
+    }
+
+    public function testAssertEqualsDOMDocument8()
+    {
+        $expected = new DOMDocument;
+        $expected->loadXML("<root>\n  <child/>\n</root>");
+
+        $actual = new DOMDocument;
+        $actual->loadXML('<root><child/></root>');
+
+        $this->assertEquals($expected, $actual);        
+
+        try {
+            $this->assertNotEquals($expected, $actual);        
+        }
+
+        catch (PHPUnit_Framework_AssertionFailedError $e) {
+            return;
+        }
+
+        $this->fail();
+    }
+
+    public function testAssertEqualsDOMDocument9()
+    {
+        $expected = new DOMDocument;
+        $expected->loadXML('<foo> bar </foo>');
+
+        $actual = new DOMDocument;
+        $actual->loadXML('<foo> bir </foo>');
+
+        $this->assertNotEquals($expected, $actual);        
+
+        try {
+            $this->assertEquals($expected, $actual);        
+        }
+
+        catch (PHPUnit_Framework_AssertionFailedError $e) {
+            return;
+        }
+
+        $this->fail();
+    }
+
+    public function testAssertStringEqualsNumeric()
+    {
+        $this->assertEquals('0', 0);
+
+        try {
+            $this->assertEquals('0', 1);
+        }
+
+        catch (PHPUnit_Framework_AssertionFailedError $e) {
+            return;
+        }
+
+        $this->fail();
+    }
+
+    public function testAssertStringEqualsNumeric2()
+    {
+        $this->assertNotEquals('A', 0);
     }
 
     public function testAssertFileExists()
@@ -1034,18 +1303,18 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
     {
         $obj = new ClassWithNonPublicAttributes;
 
-        $this->assertEquals('foo', $this->getAttribute($obj, 'publicAttribute'));
-        $this->assertEquals('bar', $this->getAttribute($obj, 'protectedAttribute'));
-        $this->assertEquals('baz', $this->getAttribute($obj, 'privateAttribute'));
-        $this->assertEquals('parent', $this->getAttribute($obj, 'privateParentAttribute'));
+        $this->assertEquals('foo', $this->readAttribute($obj, 'publicAttribute'));
+        $this->assertEquals('bar', $this->readAttribute($obj, 'protectedAttribute'));
+        $this->assertEquals('baz', $this->readAttribute($obj, 'privateAttribute'));
+        $this->assertEquals('parent', $this->readAttribute($obj, 'privateParentAttribute'));
     }
 
     public function testGetStaticAttribute()
     {
-        $this->assertEquals('foo', $this->getAttribute('ClassWithNonPublicAttributes', 'publicStaticAttribute'));
-        $this->assertEquals('bar', $this->getAttribute('ClassWithNonPublicAttributes', 'protectedStaticAttribute'));
-        $this->assertEquals('baz', $this->getAttribute('ClassWithNonPublicAttributes', 'privateStaticAttribute'));
-        $this->assertEquals('parent', $this->getAttribute('ClassWithNonPublicAttributes', 'privateStaticParentAttribute'));
+        $this->assertEquals('foo', $this->readAttribute('ClassWithNonPublicAttributes', 'publicStaticAttribute'));
+        $this->assertEquals('bar', $this->readAttribute('ClassWithNonPublicAttributes', 'protectedStaticAttribute'));
+        $this->assertEquals('baz', $this->readAttribute('ClassWithNonPublicAttributes', 'privateStaticAttribute'));
+        $this->assertEquals('parent', $this->readAttribute('ClassWithNonPublicAttributes', 'privateStaticParentAttribute'));
     }
 
     public function testAssertPublicAttributeContains()
