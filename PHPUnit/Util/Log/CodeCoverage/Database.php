@@ -45,6 +45,8 @@
  */
 
 require_once 'PHPUnit/Framework.php';
+require_once 'PHPUnit/Util/Metrics/Class.php';
+require_once 'PHPUnit/Util/Metrics/Method.php';
 require_once 'PHPUnit/Util/Class.php';
 require_once 'PHPUnit/Util/CodeCoverage.php';
 require_once 'PHPUnit/Util/Filesystem.php';
@@ -155,20 +157,23 @@ class PHPUnit_Util_Log_CodeCoverage_Database
                                 code_class_mif, code_class_mhf, code_class_noc,
                                 code_class_pf, code_class_wmc)
                          VALUES(:fileId, :className, :startLine, :endLine,
-                                :aif, :ahf, :dit, :mif, :mhf, :noc, :pf, 0);'
+                                :aif, :ahf, :dit, :mif, :mhf, :noc, :pf, :wmc);'
                 );
 
                 foreach ($classes as $class) {
                     $className = $class->getName();
                     $startLine = $class->getStartLine();
                     $endLine   = $class->getEndLine();
-                    $aif       = PHPUnit_Util_Class::getAIF($className);
-                    $ahf       = PHPUnit_Util_Class::getAHF($className);
-                    $dit       = PHPUnit_Util_Class::getDIT($className);
-                    $mif       = PHPUnit_Util_Class::getMIF($className);
-                    $mhf       = PHPUnit_Util_Class::getMHF($className);
-                    $noc       = PHPUnit_Util_Class::getNOC($className);
-                    $pf        = PHPUnit_Util_Class::getPF($className);
+
+                    $metrics   = new PHPUnit_Util_Metrics_Class($class);
+                    $aif       = $metrics->getAIF();
+                    $ahf       = $metrics->getAHF();
+                    $dit       = $metrics->getDIT();
+                    $mif       = $metrics->getMIF();
+                    $mhf       = $metrics->getMHF();
+                    $noc       = $metrics->getNOC();
+                    $pf        = $metrics->getPF();
+                    $wmc       = $metrics->getWMC();
 
                     $stmt->bindParam(':fileId', $fileId, PDO::PARAM_INT);
                     $stmt->bindParam(':className', $className, PDO::PARAM_STR);
@@ -181,6 +186,7 @@ class PHPUnit_Util_Log_CodeCoverage_Database
                     $stmt->bindParam(':mhf', $mhf);
                     $stmt->bindParam(':noc', $noc, PDO::PARAM_INT);
                     $stmt->bindParam(':pf', $noc);
+                    $stmt->bindParam(':wmc', $wmc);
                     $stmt->execute();
 
                     $classId                   = $this->dbh->lastInsertId();
@@ -194,8 +200,6 @@ class PHPUnit_Util_Log_CodeCoverage_Database
                              VALUES(:classId, :methodName, :startLine, :endLine, :ccn);'
                     );
 
-                    $wmc = 0;
-
                     foreach ($class->getMethods() as $method) {
                         if ($class->getName() != $method->getDeclaringClass()->getName()) {
                             continue;
@@ -204,7 +208,7 @@ class PHPUnit_Util_Log_CodeCoverage_Database
                         $methodName = $method->getName();
                         $startLine  = $method->getStartLine();
                         $endLine    = $method->getEndLine();
-                        $ccn        = PHPUnit_Util_Class::getCCN($className, $methodName);
+                        $ccn        = $metrics->getCCN($methodName);
 
                         $stmt2->bindParam(':classId', $classId, PDO::PARAM_INT);
                         $stmt2->bindParam(':methodName', $methodName, PDO::PARAM_STR);
@@ -212,22 +216,10 @@ class PHPUnit_Util_Log_CodeCoverage_Database
                         $stmt2->bindParam(':endLine', $endLine, PDO::PARAM_INT);
                         $stmt2->bindParam(':ccn', $ccn, PDO::PARAM_INT);
                         $stmt2->execute();
-
-                        $wmc += $ccn;
                     }
 
                     unset($stmt2);
                 }
-
-                $stmt = $this->dbh->prepare(
-                  'UPDATE code_class
-                      SET code_class_wmc = :wmc
-                    WHERE code_class_id = :classId;'
-                );
-
-                $stmt->bindParam(':classId', $classId, PDO::PARAM_INT);
-                $stmt->bindParam(':wmc', $wmc, PDO::PARAM_INT);
-                $stmt->execute();
 
                 $stmt = $this->dbh->prepare(
                   'INSERT INTO code_line
