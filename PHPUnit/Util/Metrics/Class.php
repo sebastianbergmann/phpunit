@@ -111,6 +111,7 @@ class PHPUnit_Util_Metrics_Class
      * Factory.
      *
      * @param  ReflectionClass $class
+     * @return PHPUnit_Util_Metrics_Class
      * @access public
      * @static
      */
