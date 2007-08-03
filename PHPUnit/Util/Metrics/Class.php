@@ -76,6 +76,8 @@ class PHPUnit_Util_Metrics_Class
     protected $class;
     protected $methods = array();
 
+    protected static $nocCache = array();
+
     /**
      * Constructor.
      *
@@ -294,27 +296,31 @@ class PHPUnit_Util_Metrics_Class
      */
     protected function calculateNOC()
     {
-        $noc = array();
+        $className = $this->class->getName();
 
-        foreach (get_declared_classes() as $_className) {
-            $class  = new ReflectionClass($_className);
-            $parent = $class->getParentClass();
+        if (!isset(self::$nocCache[$className])) {
+            self::$nocCache = array();
+        }
 
-            if ($parent !== FALSE) {
-                $parentName = $parent->getName();
+        if (empty(self::$nocCache)) {
+            foreach (get_declared_classes() as $_className) {
+                $class  = new ReflectionClass($_className);
+                $parent = $class->getParentClass();
 
-                if (isset($noc[$parentName])) {
-                    $noc[$parentName]++;
-                } else {
-                    $noc[$parentName] = 1;
+                if ($parent !== FALSE) {
+                    $parentName = $parent->getName();
+
+                    if (isset(self::$nocCache[$parentName])) {
+                        self::$nocCache[$parentName]++;
+                    } else {
+                        self::$nocCache[$parentName] = 1;
+                    }
                 }
             }
         }
 
-        $className = $this->class->getName();
-
-        if (isset($noc[$className])) {
-            $this->noc = $noc[$className];
+        if (isset(self::$nocCache[$className])) {
+            $this->noc = self::$nocCache[$className];
         }
     }
 
