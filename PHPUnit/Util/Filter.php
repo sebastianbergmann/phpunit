@@ -122,7 +122,7 @@ class PHPUnit_Util_Filter
      */
     public static function addDirectoryToFilter($directory, $suffix = '.php', $group = 'DEFAULT')
     {
-        foreach (self::getIterator($directory, $suffix) as $file) {
+        foreach ($this->getIterator($directory, $suffix) as $file) {
             self::addFileToFilter($file->getPathName(), $group);
         }
     }
@@ -161,7 +161,7 @@ class PHPUnit_Util_Filter
      */
     public static function removeDirectoryFromFilter($directory, $suffix = '.php', $group = 'DEFAULT')
     {
-        foreach (self::getIterator($directory, $suffix) as $file) {
+        foreach ($this->getIterator($directory, $suffix) as $file) {
             self::removeFileFromFilter($file->getPathName(), $group);
         }
     }
@@ -199,7 +199,7 @@ class PHPUnit_Util_Filter
      */
     public static function addDirectoryToWhitelist($directory, $suffix = '.php')
     {
-        foreach (self::getIterator($directory, $suffix) as $file) {
+        foreach ($this->getIterator($directory, $suffix) as $file) {
             self::addFileToWhitelist($file->getPathName());
         }
     }
@@ -235,7 +235,7 @@ class PHPUnit_Util_Filter
      */
     public static function removeDirectoryFromWhitelist($directory, $suffix = '.php')
     {
-        foreach (self::getIterator($directory, $suffix) as $file) {
+        foreach ($this->getIterator($directory, $suffix) as $file) {
             self::removeFileFromWhitelist($file->getPathName());
         }
     }

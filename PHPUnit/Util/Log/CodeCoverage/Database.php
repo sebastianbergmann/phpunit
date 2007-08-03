@@ -49,7 +49,6 @@ require_once 'PHPUnit/Util/Class.php';
 require_once 'PHPUnit/Util/CodeCoverage.php';
 require_once 'PHPUnit/Util/Filesystem.php';
 require_once 'PHPUnit/Util/Filter.php';
-require_once 'PHPUnit/Util/SourceFile.php';
 
 PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
 
@@ -102,14 +101,10 @@ class PHPUnit_Util_Log_CodeCoverage_Database
         $this->dbh->beginTransaction();
 
         foreach ($files as $file) {
-            $sourceFile = new PHPUnit_Util_SourceFile($file);
-            $filename   = str_replace($commonPath, '', $file);
-            $fileId     = FALSE;
-            $lines      = $sourceFile->getLines();
-            $loc        = $sourceFile->getLoc();
-            $cloc       = $sourceFile->getCloc();
-            $ncloc      = $sourceFile->getNcloc();
-            $hash       = md5_file($file);
+            $filename = str_replace($commonPath, '', $file);
+            $fileId   = FALSE;
+            $lines    = file($file);
+            $numLines = count($lines);
 
             $stmt = $this->dbh->prepare(
               'SELECT code_file_id
@@ -129,18 +124,17 @@ class PHPUnit_Util_Log_CodeCoverage_Database
             unset($stmt);
 
             if ($fileId == 0) {
+                $hash = md5_file($file);
+
                 $stmt = $this->dbh->prepare(
                   'INSERT INTO code_file
-                               (code_file_name, code_file_md5, revision, loc, cloc, ncloc)
-                         VALUES(:filename, :hash, :revision, :loc, :cloc, :ncloc);'
+                               (code_file_name, code_file_md5, revision)
+                         VALUES(:filename, :hash, :revision);'
                 );
 
                 $stmt->bindParam(':filename', $filename, PDO::PARAM_STR);
                 $stmt->bindParam(':hash', $hash, PDO::PARAM_STR);
                 $stmt->bindParam(':revision', $revision, PDO::PARAM_INT);
-                $stmt->bindParam(':loc', $loc, PDO::PARAM_INT);
-                $stmt->bindParam(':cloc', $cloc, PDO::PARAM_INT);
-                $stmt->bindParam(':ncloc', $ncloc, PDO::PARAM_INT);
                 $stmt->execute();
 
                 $fileId  = $this->dbh->lastInsertId();
@@ -149,22 +143,19 @@ class PHPUnit_Util_Log_CodeCoverage_Database
                 $stmt = $this->dbh->prepare(
                   'INSERT INTO code_class
                                (code_file_id, code_class_name,
-                                code_class_start_line, code_class_end_line,
-                                code_class_dit, code_class_wmc)
-                         VALUES(:fileId, :className, :startLine, :endLine, :dit, 0);'
+                                code_class_start_line, code_class_end_line)
+                         VALUES(:fileId, :className, :startLine, :endLine);'
                 );
 
                 foreach ($classes as $class) {
                     $className = $class->getName();
                     $startLine = $class->getStartLine();
                     $endLine   = $class->getEndLine();
-                    $dit       = PHPUnit_Util_Class::getDIT( $className );
 
                     $stmt->bindParam(':fileId', $fileId, PDO::PARAM_INT);
                     $stmt->bindParam(':className', $className, PDO::PARAM_STR);
                     $stmt->bindParam(':startLine', $startLine, PDO::PARAM_INT);
                     $stmt->bindParam(':endLine', $endLine, PDO::PARAM_INT);
-                    $stmt->bindParam(':dit', $dit, PDO::PARAM_INT);
                     $stmt->execute();
 
                     $classId = $this->dbh->lastInsertId();
@@ -172,12 +163,9 @@ class PHPUnit_Util_Log_CodeCoverage_Database
                     $stmt2 = $this->dbh->prepare(
                       'INSERT INTO code_method
                                    (code_class_id, code_method_name,
-                                    code_method_start_line, code_method_end_line,
-                                    code_method_ccn)
-                             VALUES(:classId, :methodName, :startLine, :endLine, :ccn);'
+                                    code_method_start_line, code_method_end_line)
+                             VALUES(:classId, :methodName, :startLine, :endLine);'
                     );
-
-                    $wmc = 0;
 
                     foreach ($class->getMethods() as $method) {
                         if ($class->getName() != $method->getDeclaringClass()->getName()) {
@@ -187,30 +175,16 @@ class PHPUnit_Util_Log_CodeCoverage_Database
                         $methodName = $method->getName();
                         $startLine  = $method->getStartLine();
                         $endLine    = $method->getEndLine();
-                        $ccn        = PHPUnit_Util_Class::getCCN($className, $methodName);
 
                         $stmt2->bindParam(':classId', $classId, PDO::PARAM_INT);
                         $stmt2->bindParam(':methodName', $methodName, PDO::PARAM_STR);
                         $stmt2->bindParam(':startLine', $startLine, PDO::PARAM_INT);
                         $stmt2->bindParam(':endLine', $endLine, PDO::PARAM_INT);
-                        $stmt2->bindParam(':ccn', $ccn, PDO::PARAM_INT);
                         $stmt2->execute();
-
-                        $wmc += $ccn;
                     }
 
                     unset($stmt2);
                 }
-
-                $stmt = $this->dbh->prepare(
-                  'UPDATE code_class
-                      SET code_class_wmc = :wmc
-                    WHERE code_class_id = :classId;'
-                );
-
-                $stmt->bindParam(':classId', $classId, PDO::PARAM_INT);
-                $stmt->bindParam(':wmc', $wmc, PDO::PARAM_INT);
-                $stmt->execute();
 
                 $stmt = $this->dbh->prepare(
                   'INSERT INTO code_line
@@ -253,7 +227,7 @@ class PHPUnit_Util_Log_CodeCoverage_Database
                 VALUES(:testId, :lineId);'
             );
 
-            for ($lineNumber = 1; $lineNumber <= $loc; $lineNumber++) {
+            for ($lineNumber = 1; $lineNumber <= $numLines; $lineNumber++) {
                 $coveringTests = PHPUnit_Util_CodeCoverage::getCoveringTests(
                   $codeCoverage, $file, $lineNumber
                 );

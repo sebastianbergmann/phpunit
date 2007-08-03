@@ -604,22 +604,20 @@ class PHPUnit_Framework_Assert
      *
      * @param  boolean $condition
      * @param  string  $message
-     * @throws PHPUnit_Framework_AssertionFailedError
+     * @throws PHPUnit_Framework_ComparisonFailure
+     * @throws InvalidArgumentException
      * @access public
      * @static
      */
     public static function assertTrue($condition, $message = '')
     {
-        if ($condition !== TRUE) {
-            throw new PHPUnit_Framework_AssertionFailedError(
-              sprintf(
-                '%sFailed asserting that %s is true.',
-
-                $message != '' ? $message . "\n" : '',
-                PHPUnit_Util_Type::toString($condition)
-              )
-            );
+        if (!is_bool($condition)) {
+            throw new InvalidArgumentException;
         }
+
+        $constraint = new PHPUnit_Framework_Constraint_IsIdentical(TRUE);
+
+        self::assertThat($condition, $constraint, $message);
     }
 
     /**
@@ -627,22 +625,20 @@ class PHPUnit_Framework_Assert
      *
      * @param  boolean  $condition
      * @param  string   $message
-     * @throws PHPUnit_Framework_AssertionFailedError
+     * @throws PHPUnit_Framework_ComparisonFailure
+     * @throws InvalidArgumentException
      * @access public
      * @static
      */
     public static function assertFalse($condition, $message = '')
     {
-        if ($condition !== FALSE) {
-            throw new PHPUnit_Framework_AssertionFailedError(
-              sprintf(
-                '%sFailed asserting that %s is false.',
-
-                $message != '' ? $message . "\n" : '',
-                PHPUnit_Util_Type::toString($condition)
-              )
-            );
+        if (!is_bool($condition)) {
+            throw new InvalidArgumentException;
         }
+
+        $constraint = new PHPUnit_Framework_Constraint_IsIdentical(FALSE);
+
+        self::assertThat($condition, $constraint, $message);
     }
 
     /**

@@ -232,9 +232,7 @@ class PHPUnit_Util_Log_CodeCoverage_XML extends PHPUnit_Util_Printer
                 $file->appendChild($line);
             }
 
-            $sourceFile = new PHPUnit_Util_SourceFile($filename);
-            $loc        = $sourceFile->getLoc();
-            $ncloc      = $sourceFile->getNcloc();
+            list($loc, $ncloc) = $this->countLines($filename);
 
             $projectLoc += $loc;
             $projectNcloc += $ncloc;
@@ -275,6 +273,33 @@ class PHPUnit_Util_Log_CodeCoverage_XML extends PHPUnit_Util_Printer
 
         $this->write($document->saveXML());
         $this->flush();
+    }
+
+    /**
+     * @param  string $filename
+     * @return array
+     * @access protected
+     */
+    protected function countLines($filename)
+    {
+        $lines  = file($filename);        
+        $tokens = token_get_all(file_get_contents($filename));
+        $loc    = count($lines);
+        $cloc   = 0;
+
+        foreach ($tokens as $i => $token) {
+            if (is_string($token)) {
+                continue;
+            }
+
+            list ($token, $value) = $token;
+
+            if ($token == T_COMMENT || $token == T_DOC_COMMENT) {
+                $cloc += count(explode("\n", $value));
+            }
+        }
+
+        return array($loc, $loc - $cloc);
     }
 }
 ?>

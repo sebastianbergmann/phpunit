@@ -327,7 +327,7 @@ class PHPUnit_Util_Skeleton
           array(
             $this->className,
             $requireClassFile,
-            $methods . $incompleteMethods,
+            !empty($methods) ? $methods : $incompleteMethods,
             date('Y-m-d'),
             date('H:i:s')
           )

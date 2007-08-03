@@ -64,7 +64,6 @@ class PHPUnit_Util_Class
 {
     protected static $buffer = array();
     protected static $fileClassMap = array();
-    protected static $noc = array();
 
     /**
      * Starts the collection of loaded classes.
@@ -215,122 +214,6 @@ class PHPUnit_Util_Class
         }
 
         return $result;
-    }
-
-    /**
-     * Returns the Cyclomatic Complexity Number (CCN) for a method.
-     * This is also known as the McCabe metric.
-     *
-     * Each method has a minimum value of 1 per default. For each of the
-     * following PHP keywords/statements this value gets incremented by one:
-     *
-     *   - if
-     *   - for
-     *   - foreach
-     *   - while
-     *   - case
-     *   - catch
-     *   - AND, &&
-     *   - OR, ||
-     *
-     * Note that 'else', 'default', and 'finally' don't increment the value
-     * any further. On the other hand, a simple method with a 'switch'
-     * statement and a huge block of 'case 'statements can have a surprisingly
-     * high value (still it has the same value when converting a 'switch'
-     * block to an equivalent sequence of 'if' statements).
-     *
-     * @param  string  $className
-     * @param  string  $methodName
-     * @return integer
-     * @access public
-     * @static
-     * @since  Method available since Release 3.1.6
-     */
-    public static function getCCN($className, $methodName)
-    {
-        $source = self::getMethodSource($className, $methodName);
-        $tokens = token_get_all('<?php' . $source . '?>');
-        $ccn    = 1;
-
-        foreach ($tokens as $i => $token) {
-            if (is_string($token)) {
-                continue;
-            }
-
-            list ($token, $value) = $token;
-
-            switch ($token) {
-                case T_IF:
-                case T_FOR:
-                case T_FOREACH:
-                case T_WHILE:
-                case T_CASE:
-                case T_CATCH:
-                case T_BOOLEAN_AND:
-                case T_LOGICAL_AND:
-                case T_BOOLEAN_OR:
-                case T_LOGICAL_OR: {
-                    $ccn++;
-                }
-                break;
-            }
-        }
-
-        return $ccn;
-    }
-
-    /**
-     * Returns the Depth of Inheritance Tree (DIT) for a class.
-     *
-     * @param  string  $className
-     * @return integer
-     * @access public
-     * @static
-     * @since  Method available since Release 3.1.6
-     */
-    public static function getDIT($className)
-    {
-        return count(self::getHierarchy($className));
-    }
-
-    /**
-     * Returns the Number of Children (NOC) for a class.
-     *
-     * @param  string  $className
-     * @param  boolean $clearCache
-     * @return integer
-     * @access public
-     * @static
-     * @since  Method available since Release 3.1.6
-     */
-    public static function getNOC($className, $clearCache = FALSE)
-    {
-        if ($clearCache) {
-            self::$noc = array();
-        }
-
-        if (empty(self::$noc)) {
-            foreach (get_declared_classes() as $_className) {
-                $class  = new ReflectionClass($_className);
-                $parent = $class->getParentClass();
-
-                if ($parent !== FALSE) {
-                    $parentName = $parent->getName();
-
-                    if (isset(self::$noc[$parentName])) {
-                        self::$noc[$parentName]++;
-                    } else {
-                        self::$noc[$parentName] = 1;
-                    }
-                }
-            }
-        }
-
-        if (isset(self::$noc[$className])) {
-            return self::$noc[$className];
-        } else {
-            return 0;
-        }
     }
 }
 ?>

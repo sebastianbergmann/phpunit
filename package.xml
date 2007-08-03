@@ -692,9 +692,6 @@
      <file baseinstalldir="/" name="Skeleton.php" role="php">
       <tasks:replace from="@package_version@" to="version" type="package-info" />
      </file>
-     <file baseinstalldir="/" name="SourceFile.php" role="php">
-      <tasks:replace from="@package_version@" to="version" type="package-info" />
-     </file>
      <file baseinstalldir="/" name="Template.php" role="php">
       <tasks:replace from="@package_version@" to="version" type="package-info" />
      </file>
