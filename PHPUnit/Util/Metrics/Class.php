@@ -70,21 +70,22 @@ class PHPUnit_Util_Metrics_Class
     protected $mif = 0;
     protected $mhf = 0;
     protected $noc = 0;
-    protected $pf = 0;
+    protected $pf  = 0;
     protected $wmc = 0;
 
     protected $class;
     protected $methods = array();
 
+    protected static $cache = array();
     protected static $nocCache = array();
 
     /**
      * Constructor.
      *
      * @param  ReflectionClass $class
-     * @access public
+     * @access protected
      */
-    public function __construct(ReflectionClass $class)
+    protected function __construct(ReflectionClass $class)
     {
         $this->class = $class;
 
@@ -97,13 +98,31 @@ class PHPUnit_Util_Metrics_Class
 
         foreach ($class->getMethods() as $method) {
             if ($method->getDeclaringClass()->getName() == $class->getName()) {
-                $this->methods[$method->getName()] = new PHPUnit_Util_Metrics_Method($method);
+                $this->methods[$method->getName()] = PHPUnit_Util_Metrics_Method::factory($method);
             }
         }
 
         foreach ($this->methods as $method) {
             $this->wmc += $method->getCCN();
         }
+    }
+
+    /**
+     * Factory.
+     *
+     * @param  ReflectionClass $class
+     * @access public
+     * @static
+     */
+    public static function factory(ReflectionClass $class)
+    {
+        $className = $class->getName();
+
+        if (!isset(self::$cache[$className])) {
+            self::$cache[$className] = new PHPUnit_Util_Metrics_Class($class);
+        }
+
+        return self::$cache[$className];
     }
 
     /**

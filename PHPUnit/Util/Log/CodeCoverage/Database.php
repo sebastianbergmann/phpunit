@@ -165,7 +165,7 @@ class PHPUnit_Util_Log_CodeCoverage_Database
                     $startLine = $class->getStartLine();
                     $endLine   = $class->getEndLine();
 
-                    $metrics   = new PHPUnit_Util_Metrics_Class($class);
+                    $metrics   = PHPUnit_Util_Metrics_Class::factory($class);
                     $aif       = $metrics->getAIF();
                     $ahf       = $metrics->getAHF();
                     $dit       = $metrics->getDIT();
