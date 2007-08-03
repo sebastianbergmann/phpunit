@@ -67,17 +67,38 @@ class PHPUnit_Util_Metrics_Method
 
     protected $method;
 
+    protected static $cache = array();
+
     /**
      * Constructor.
      *
      * @param  ReflectionMethod $method
-     * @access public
+     * @access protected
      */
-    public function __construct(ReflectionMethod $method)
+    protected function __construct(ReflectionMethod $method)
     {
         $this->method = $method;
 
         $this->calculateCCN();
+    }
+
+    /**
+     * Factory.
+     *
+     * @param  ReflectionMethod $method
+     * @access public
+     * @static
+     */
+    public static function factory(ReflectionMethod $method)
+    {
+        $className  = $method->getDeclaringClass()->getName();
+        $methodName = $method->getName();
+
+        if (!isset(self::$cache[$className][$methodName])) {
+            self::$cache[$className][$methodName] = new PHPUnit_Util_Metrics_Method($method);
+        }
+
+        return self::$cache[$className][$methodName];
     }
 
     /**
