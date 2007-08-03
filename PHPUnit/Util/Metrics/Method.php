@@ -86,6 +86,7 @@ class PHPUnit_Util_Metrics_Method
      * Factory.
      *
      * @param  ReflectionMethod $method
+     * @return PHPUnit_Util_Metrics_Method
      * @access public
      * @static
      */
