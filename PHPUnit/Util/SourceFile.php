@@ -41,7 +41,7 @@
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    SVN: $Id: Class.php 827 2007-07-20 10:18:53Z sb $
  * @link       http://www.phpunit.de/
- * @since      File available since Release 3.1.6
+ * @since      File available since Release 3.2.0
  */
 
 require_once 'PHPUnit/Util/Filter.php';
@@ -58,7 +58,7 @@ PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    Release: @package_version@
  * @link       http://www.phpunit.de/
- * @since      Class available since Release 3.1.6
+ * @since      Class available since Release 3.2.0
  */
 class PHPUnit_Util_SourceFile
 {
