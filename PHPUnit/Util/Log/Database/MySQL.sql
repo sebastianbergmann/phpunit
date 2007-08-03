@@ -86,6 +86,7 @@ CREATE TABLE IF NOT EXISTS code_class(
   code_class_mif        INTEGER UNSIGNED NOT NULL,
   code_class_mhf        INTEGER UNSIGNED NOT NULL,
   code_class_noc        INTEGER UNSIGNED NOT NULL,
+  code_class_pf         INTEGER UNSIGNED NOT NULL,
   code_class_wmc        INTEGER UNSIGNED NOT NULL,
 
   INDEX (code_file_id)
