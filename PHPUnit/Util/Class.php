@@ -303,7 +303,11 @@ class PHPUnit_Util_Class
             $attributes++;
         }
 
-        return (100 * $inheritedAttributes) / $attributes;
+        if ($attributes > 0) {
+            return (100 * $inheritedAttributes) / $attributes;
+        } else {
+            return 0;
+        }
     }
 
     /**
@@ -330,7 +334,11 @@ class PHPUnit_Util_Class
             $attributes++;
         }
 
-        return (100 * $hiddenAttributes) / $attributes;
+        if ($attributes > 0) {
+            return (100 * $hiddenAttributes) / $attributes;
+        } else {
+            return 0;
+        }
     }
 
     /**
@@ -371,7 +379,11 @@ class PHPUnit_Util_Class
             $methods++;
         }
 
-        return (100 * $inheritedMethods) / $methods;
+        if ($methods > 0) {
+            return (100 * $inheritedMethods) / $methods;
+        } else {
+            return 0;
+        }
     }
 
     /**
@@ -398,7 +410,11 @@ class PHPUnit_Util_Class
             $methods++;
         }
 
-        return (100 * $hiddenMethods) / $methods;
+        if ($methods > 0) {
+            return (100 * $hiddenMethods) / $methods;
+        } else {
+            return 0;
+        }
     }
 
     /**
