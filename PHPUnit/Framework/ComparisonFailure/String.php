@@ -74,10 +74,12 @@ class PHPUnit_Framework_ComparisonFailure_String extends PHPUnit_Framework_Compa
         $expected = (string)$this->expected;
         $actual   = (string)$this->actual;
 
-        if ($this->hasDiff() &&
-           (strpos($expected, "\n") !== FALSE ||
-            strpos($actual, "\n")   !== FALSE)) {
-            return $this->diff($expected, $actual);
+        if (strpos($expected, "\n") !== FALSE || strpos($actual, "\n") !== FALSE) {
+            if ($this->hasDiff()) {
+                return $this->diff($expected, $actual);
+            } else {
+                return '';
+            }
         }
 
         $expectedLen = strlen($expected);

@@ -61,86 +61,56 @@ require_once 'BankAccount.php';
  */
 class BankAccountTest extends PHPUnit_Framework_TestCase
 {
-    /**
-     * BankAccount object used as the tests' fixture.
-     *
-     * @var    BankAccount
-     * @access private
-     */
-    private $ba;
+    protected $ba;
 
-    /**
-     * Sets up the test fixture.
-     *
-     * @access protected
-     */
     protected function setUp()
     {
         $this->ba = new BankAccount;
     }
 
-    /**
-     * Asserts that the balance is initially zero.
-     *
-     * @access public
-     */
     public function testBalanceIsInitiallyZero()
     {
         $this->assertEquals(0, $this->ba->getBalance());
     }
 
-    /**
-     * Asserts that the balance cannot become negative.
-     *
-     * @access public
-     */
     public function testBalanceCannotBecomeNegative()
     {
         try {
             $this->ba->withdrawMoney(1);
         }
 
-        catch (InvalidArgumentException $e) {
+        catch (BankAccountException $e) {
+            $this->assertEquals(0, $this->ba->getBalance());
+
             return;
         }
 
         $this->fail();
     }
 
-    /**
-     * Asserts that the balance cannot become negative.
-     *
-     * @access public
-     */
     public function testBalanceCannotBecomeNegative2()
     {
         try {
             $this->ba->depositMoney(-1);
         }
 
-        catch (InvalidArgumentException $e) {
+        catch (BankAccountException $e) {
+            $this->assertEquals(0, $this->ba->getBalance());
+
             return;
         }
 
         $this->fail();
     }
-
-    /**
-     * Asserts that the balance cannot become negative.
-     *
-     * @access public
-     */
-    public function testBalanceCannotBecomeNegative3()
+/*
+    public function testDepositWithdrawMoney()
     {
-        try {
-            $this->ba->setBalance(-1);
-        }
-
-        catch (InvalidArgumentException $e) {
-            return;
-        }
-
-        $this->fail();
+        $this->assertEquals(0, $this->ba->getBalance());
+        $this->ba->depositMoney(1);
+        $this->assertEquals(1, $this->ba->getBalance());
+        $this->ba->withdrawMoney(1);
+        $this->assertEquals(0, $this->ba->getBalance());
     }
+*/
 }
 ?>

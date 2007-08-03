@@ -1,4 +1,4 @@
-#!@php_bin@
+#!@php_bin@ -d safe_mode=Off
 <?php
 /* PHPUnit
  *

@@ -41,16 +41,18 @@
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    SVN: $Id$
  * @link       http://www.phpunit.de/
- * @since      File available since Release 3.1.0
+ * @since      File available since Release 3.1.4
  */
 
 require_once 'PHPUnit/Framework.php';
 require_once 'PHPUnit/Util/Filter.php';
+require_once 'PHPUnit/Util/Type.php';
 
 PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
 
 /**
- * 
+ * Constraint that asserts that the Traversable it is applied to contains
+ * only values of a given type.
  *
  * @category   Testing
  * @package    PHPUnit
@@ -59,18 +61,22 @@ PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    Release: @package_version@
  * @link       http://www.phpunit.de/
- * @since      Class available since Release 3.1.0
+ * @since      Class available since Release 3.1.4
  */
-
-class PHPUnit_Framework_Constraint_Attribute extends PHPUnit_Framework_Constraint
+class PHPUnit_Framework_Constraint_TraversableContainsOnly extends PHPUnit_Framework_Constraint
 {
-    private $attributeName;
     private $constraint;
+    private $type;
 
-    public function __construct(PHPUnit_Framework_Constraint $constraint, $attributeName)
+    public function __construct($type, $isNativeType = TRUE)
     {
-        $this->attributeName = $attributeName;
-        $this->constraint    = $constraint;
+        if ($isNativeType) {
+            $this->constraint = new PHPUnit_Framework_Constraint_IsType($type);
+        } else {
+            $this->constraint = new PHPUnit_Framework_Constraint_IsInstanceOf($type);
+        }
+
+        $this->type = $type;
     }
 
     /**
@@ -82,30 +88,13 @@ class PHPUnit_Framework_Constraint_Attribute extends PHPUnit_Framework_Constrain
      */
     public function evaluate($other)
     {
-        return $this->constraint->evaluate(
-          PHPUnit_Framework_Assert::readAttribute(
-            $other, $this->attributeName
-          )
-        );
-    }
+        foreach ($other as $item) {
+            if (!$this->constraint->evaluate($item)) {
+                return FALSE;
+            }
+        }
 
-    /**
-     * @param   mixed   $other The value passed to evaluate() which failed the
-     *                         constraint check.
-     * @param   string  $description A string with extra description of what was
-     *                               going on while the evaluation failed.
-     * @param   boolean $not Flag to indicate negation.
-     * @throws  PHPUnit_Framework_ExpectationFailedException
-     */
-    public function fail($other, $description, $not = FALSE)
-    {
-        parent::fail(
-          PHPUnit_Framework_Assert::readAttribute(
-            $other, $this->attributeName
-          ),
-          $description,
-          $not
-        );
+        return TRUE;
     }
 
     /**
@@ -116,7 +105,7 @@ class PHPUnit_Framework_Constraint_Attribute extends PHPUnit_Framework_Constrain
      */
     public function toString()
     {
-        return $this->constraint->toString();
+        return 'contains only values of type "' . $this->type . '"';
     }
 }
 ?>

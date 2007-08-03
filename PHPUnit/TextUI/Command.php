@@ -50,6 +50,7 @@ require_once 'PHPUnit/Util/Fileloader.php';
 require_once 'PHPUnit/Util/Filter.php';
 require_once 'PHPUnit/Util/Getopt.php';
 require_once 'PHPUnit/Util/Skeleton.php';
+require_once 'PHPUnit/Util/TestDox/ResultPrinter/Text.php';
 
 PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
 
@@ -141,7 +142,9 @@ class PHPUnit_TextUI_Command
           'log-xml=',
           'repeat=',
           'skeleton',
+          'stop-on-failure',
           'tap',
+          'testdox',
           'testdox-html=',
           'testdox-text=',
           'no-syntax-check',
@@ -161,6 +164,7 @@ class PHPUnit_TextUI_Command
         }
 
         if (extension_loaded('xdebug')) {
+            $longOptions[] = 'coverage-xml=';
             $longOptions[] = 'report=';
         }
 
@@ -190,6 +194,11 @@ class PHPUnit_TextUI_Command
 
         foreach ($options[0] as $option) {
             switch ($option[0]) {
+                case '--coverage-xml': {
+                    $arguments['coverageXML'] = $option[1];
+                }
+                break;
+
                 case 'd': {
                     $ini = explode('=', $option[1]);
 
@@ -248,6 +257,11 @@ class PHPUnit_TextUI_Command
                 }
                 break;
 
+                case '--stop-on-failure': {
+                    $arguments['stopOnFailure'] = TRUE;
+                }
+                break;
+
                 case '--test-db-dsn': {
                     $arguments['testDatabaseDSN'] = $option[1];
                 }
@@ -275,6 +289,11 @@ class PHPUnit_TextUI_Command
 
                 case '--tap': {
                     $arguments['printer'] = new PHPUnit_Util_Log_TAP;
+                }
+                break;
+
+                case '--testdox': {
+                    $arguments['printer'] = new PHPUnit_Util_TestDox_ResultPrinter_Text;
                 }
                 break;
 
@@ -412,6 +431,7 @@ class PHPUnit_TextUI_Command
               "  --log-xml <file>       Log test execution in XML format to file.\n\n";
 
         if (extension_loaded('xdebug')) {
+            print "  --coverage-xml <file>  Write code coverage information in XML format.\n";
             print "  --report <dir>         Generate combined test/coverage report in HTML format.\n\n";
         }
 
@@ -425,9 +445,11 @@ class PHPUnit_TextUI_Command
               "  --testdox-text <file>  Write agile documentation in Text format to file.\n\n" .
               "  --filter <pattern>     Filter which tests to run.\n" .
               "  --loader <loader>      TestSuiteLoader implementation to use.\n" .
-              "  --repeat <times>       Runs the test(s) repeatedly.\n" .
+              "  --repeat <times>       Runs the test(s) repeatedly.\n\n" .
               "  --tap                  Report test execution progress in TAP format.\n" .
+              "  --testdox              Report test execution progress in TestDox format.\n\n" .
               "  --no-syntax-check      Disable syntax check of test source files.\n" .
+              "  --stop-on-failure      Stop execution upon first error or failure.\n" .
               "  --verbose              Output more verbose information.\n" .
               "  --wait                 Waits for a keystroke after each test.\n\n" .
               "  --skeleton             Generate skeleton UnitTest class for Unit in Unit.php.\n\n" .

@@ -44,8 +44,6 @@
  * @since      File available since Release 3.0.0
  */
 
-define('PHPUNIT_TESTSUITE_GENERATE_REPORT',            FALSE);
-define('PHPUNIT_TESTSUITE_REPORT_TARGET',              '/path/to/target');
 define('PHPUNIT_TESTSUITE_EXTENSION_SELENIUM_ENABLED', FALSE);
 define('PHPUNIT_TESTSUITE_EXTENSION_SELENIUM_HOST',    '127.0.0.1');
 define('PHPUNIT_TESTSUITE_EXTENSION_SELENIUM_PORT',    4444);

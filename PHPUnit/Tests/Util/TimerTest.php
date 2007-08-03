@@ -1,8 +1,8 @@
 <?php
 /**
- * PHP-GTK2 Test Runner for PHPUnit
+ * PHPUnit
  *
- * Copyright (c) 2007, Tobias Schlitt <toby@php.net>.
+ * Copyright (c) 2002-2007, Sebastian Bergmann <sb@sebastian-bergmann.de>.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -17,7 +17,7 @@
  *     the documentation and/or other materials provided with the
  *     distribution.
  *
- *   * Neither the name of Tobias Schlitt nor the names of his
+ *   * Neither the name of Sebastian Bergmann nor the names of his
  *     contributors may be used to endorse or promote products derived
  *     from this software without specific prior written permission.
  *
@@ -36,45 +36,43 @@
  *
  * @category   Testing
  * @package    PHPUnit
- * @author     Tobias Schlitt <toby@php.net>
  * @author     Sebastian Bergmann <sb@sebastian-bergmann.de>
- * @copyright  2007 Tobias Schlitt <toby@php.net>
+ * @copyright  2002-2007 Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
- * @version    SVN: $Id$
+ * @version    SVN: $Id: NamePrettifierTest.php 537 2007-02-24 06:58:18Z sb $
  * @link       http://www.phpunit.de/
- * @since      File available since Release 3.2.0
+ * @since      File available since Release 2.3.0
  */
 
-require_once 'PHPUnit/Util/Filter.php';
+require_once 'PHPUnit/Framework/TestCase.php';
 
-PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
+require_once 'PHPUnit/Util/Timer.php';
 
 /**
- * 
+ *
  *
  * @category   Testing
  * @package    PHPUnit
- * @author     Tobias Schlitt <toby@php.net>
  * @author     Sebastian Bergmann <sb@sebastian-bergmann.de>
- * @copyright  2007 Tobias Schlitt <toby@php.net>
+ * @copyright  2002-2007 Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    Release: @package_version@
  * @link       http://www.phpunit.de/
- * @since      Class available since Release 3.2.0
+ * @since      Class available since Release 2.1.0
  */
-class PHPUnit_GtkUI_FileFilter extends FilterIterator
+class Util_TimerTest extends PHPUnit_Framework_TestCase
 {
-    private $pattern;
-
-    public function __construct(Iterator $it, $pattern)
+    public function testSecondsToTimeString()
     {
-        parent::__construct($it);
-        $this->pattern = $pattern;
-    }
-
-    public function accept()
-    {
-        return fnmatch($this->pattern, $this->current()->getPathname());
+        $this->assertEquals('0 seconds', PHPUnit_Util_Timer::secondsToTimeString(0));
+        $this->assertEquals('1 second', PHPUnit_Util_Timer::secondsToTimeString(1));
+        $this->assertEquals('2 seconds', PHPUnit_Util_Timer::secondsToTimeString(2));
+        $this->assertEquals('01:00', PHPUnit_Util_Timer::secondsToTimeString(60));
+        $this->assertEquals('01:01', PHPUnit_Util_Timer::secondsToTimeString(61));
+        $this->assertEquals('02:00', PHPUnit_Util_Timer::secondsToTimeString(120));
+        $this->assertEquals('02:01', PHPUnit_Util_Timer::secondsToTimeString(121));
+        $this->assertEquals('01:00:00', PHPUnit_Util_Timer::secondsToTimeString(3600));
+        $this->assertEquals('01:00:01', PHPUnit_Util_Timer::secondsToTimeString(3601));
     }
 }
 ?>

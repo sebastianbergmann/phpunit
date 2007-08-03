@@ -55,10 +55,6 @@ if (!defined('PHPUnit_MAIN_METHOD')) {
     chdir(dirname(__FILE__));
 }
 
-if (!defined('PHPUnit_INSIDE_OWN_TESTSUITE')) {
-    define('PHPUnit_INSIDE_OWN_TESTSUITE', TRUE);
-}
-
 require_once 'PHPUnit/Framework/TestSuite.php';
 require_once 'PHPUnit/TextUI/TestRunner.php';
 
@@ -83,13 +79,7 @@ class AllTests
 {
     public static function main()
     {
-        $parameters = array();
-
-        if (PHPUNIT_TESTSUITE_GENERATE_REPORT && extension_loaded('xdebug')) {
-            $parameters['reportDirectory'] = PHPUNIT_TESTSUITE_REPORT_TARGET;
-        }
-
-        PHPUnit_TextUI_TestRunner::run(self::suite(), $parameters);
+        PHPUnit_TextUI_TestRunner::run(self::suite());
     }
 
     public static function suite()
@@ -109,10 +99,6 @@ if (is_readable(dirname(__FILE__) . '/TestConfiguration.php')) {
     require_once 'TestConfiguration.php';
 } else {
     require_once 'TestConfiguration.php.dist';
-}
-
-if (PHPUNIT_TESTSUITE_GENERATE_REPORT && extension_loaded('xdebug')) {
-    xdebug_start_code_coverage(XDEBUG_CC_UNUSED | XDEBUG_CC_DEAD_CODE);
 }
 
 if (PHPUnit_MAIN_METHOD == 'AllTests::main') {

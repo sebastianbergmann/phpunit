@@ -76,10 +76,6 @@ abstract class PHPUnit_Util_Report
      */
     public static function render(PHPUnit_Framework_TestResult $result, $target)
     {
-        if (defined('PHPUnit_INSIDE_OWN_TESTSUITE')) {
-            xdebug_stop_code_coverage();
-        }
-
         $tests    = PHPUnit_Util_Report_Test_Factory::create($result);
         $coverage = PHPUnit_Util_Report_Coverage_Factory::create($result, $tests);
 

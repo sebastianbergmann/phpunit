@@ -1,8 +1,8 @@
 <?php
 /**
- * PHP-GTK2 Test Runner for PHPUnit
+ * PHPUnit
  *
- * Copyright (c) 2007, Tobias Schlitt <toby@php.net>.
+ * Copyright (c) 2002-2007, Sebastian Bergmann <sb@sebastian-bergmann.de>.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -17,7 +17,7 @@
  *     the documentation and/or other materials provided with the
  *     distribution.
  *
- *   * Neither the name of Tobias Schlitt nor the names of his
+ *   * Neither the name of Sebastian Bergmann nor the names of his
  *     contributors may be used to endorse or promote products derived
  *     from this software without specific prior written permission.
  *
@@ -36,52 +36,34 @@
  *
  * @category   Testing
  * @package    PHPUnit
- * @author     Tobias Schlitt <toby@php.net>
  * @author     Sebastian Bergmann <sb@sebastian-bergmann.de>
- * @copyright  2007 Tobias Schlitt <toby@php.net>
+ * @copyright  2002-2007 Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    SVN: $Id$
  * @link       http://www.phpunit.de/
- * @since      File available since Release 3.2.0
+ * @since      File available since Release 3.1.4
  */
 
-require_once 'PHPUnit/Framework.php';
 require_once 'PHPUnit/Util/Filter.php';
 
 PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
 
 /**
- * 
+ * Dummy logger for PEAR_RunTest.
  *
  * @category   Testing
  * @package    PHPUnit
- * @author     Tobias Schlitt <toby@php.net>
  * @author     Sebastian Bergmann <sb@sebastian-bergmann.de>
- * @copyright  2007 Tobias Schlitt <toby@php.net>
+ * @copyright  2002-2007 Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    Release: @package_version@
  * @link       http://www.phpunit.de/
- * @since      Class available since Release 3.2.0
+ * @since      Class available since Release 3.1.4
  */
-abstract class PHPUnit_GtkUI_Runner
+class PHPUnit_Extensions_PhptTestCase_Logger
 {
-    const STATUS_INFO    = 0;
-    const STATUS_NOTRUN  = 1;
-    const STATUS_OK      = 2;
-    const STATUS_SKIPPED = 3;
-    const STATUS_FAILED  = 4;
-    const STATUS_ERROR   = 5;
-
-    private $testResult;
-    private $listener;
-    private $tests;
-
-    public abstract function __construct();
-
-    public abstract function loadSuite($filename);
-    
-    public abstract function loadSuites(array $filenames);
-
-    public abstract function doRun();
+    public function log($level, $msg, $append_crlf = TRUE)
+    {
+    }
 }
 ?>

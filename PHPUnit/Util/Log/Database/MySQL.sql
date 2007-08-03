@@ -67,15 +67,27 @@ CREATE TABLE IF NOT EXISTS code_file(
   code_file_id   INTEGER UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
   code_file_name CHAR(255),
   code_file_md5  CHAR(32),
-  revision       INTEGER UNSIGNED NOT NULL
+  revision       INTEGER UNSIGNED NOT NULL,
+  loc            INTEGER UNSIGNED NOT NULL,
+  cloc           INTEGER UNSIGNED NOT NULL,
+  ncloc          INTEGER UNSIGNED NOT NULL
 ) ENGINE=InnoDB;
 
 CREATE TABLE IF NOT EXISTS code_class(
   code_file_id          INTEGER UNSIGNED NOT NULL REFERENCES code_file.code_file_id,
   code_class_id         INTEGER UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
+  code_class_parent_id  INTEGER UNSIGNED REFERENCES code_class.code_class_id,
   code_class_name       CHAR(255),
   code_class_start_line INTEGER UNSIGNED NOT NULL,
   code_class_end_line   INTEGER UNSIGNED NOT NULL,
+  code_class_aif        INTEGER UNSIGNED NOT NULL,
+  code_class_ahf        INTEGER UNSIGNED NOT NULL,
+  code_class_dit        INTEGER UNSIGNED NOT NULL,
+  code_class_mif        INTEGER UNSIGNED NOT NULL,
+  code_class_mhf        INTEGER UNSIGNED NOT NULL,
+  code_class_noc        INTEGER UNSIGNED NOT NULL,
+  code_class_pf         INTEGER UNSIGNED NOT NULL,
+  code_class_wmc        INTEGER UNSIGNED NOT NULL,
 
   INDEX (code_file_id)
 ) ENGINE=InnoDB;
@@ -86,6 +98,7 @@ CREATE TABLE IF NOT EXISTS code_method(
   code_method_name       CHAR(255),
   code_method_start_line INTEGER UNSIGNED NOT NULL,
   code_method_end_line   INTEGER UNSIGNED NOT NULL,
+  code_method_ccn        INTEGER UNSIGNED NOT NULL,
 
   INDEX (code_class_id)
 ) ENGINE=InnoDB;

@@ -71,7 +71,7 @@ interface PHPUnit_Runner_TestSuiteLoader
     public function load($suiteClassName, $suiteClassFile = '');
 
     /**
-     * @param  ReflectionClass  $aClass
+     * @param  ReflectionClass $aClass
      * @return ReflectionClass
      * @access public
      */

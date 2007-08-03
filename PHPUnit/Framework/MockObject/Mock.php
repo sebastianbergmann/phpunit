@@ -92,6 +92,9 @@ class PHPUnit_Framework_MockObject_Mock
     public $mockClassName;
     public $className;
     public $methods;
+    private $callOriginalConstructor;
+    private $callOriginalClone;
+    private $callAutoload;
 
     public function __construct($className, array $methods = array(), $mockClassName = '', $callOriginalConstructor = TRUE, $callOriginalClone = TRUE, $callAutoload = TRUE)
     {
@@ -120,6 +123,7 @@ class PHPUnit_Framework_MockObject_Mock
         $this->methods                 = $methods;
         $this->callOriginalConstructor = $callOriginalConstructor;
         $this->callOriginalClone       = $callOriginalClone;
+        $this->callAutoload            = $callAutoload;
     }
 
     public static function generate($className, array $methods = array(), $mockClassName = '', $callOriginalConstructor = TRUE, $callOriginalClone = TRUE, $callAutoload = TRUE)
@@ -140,7 +144,7 @@ class PHPUnit_Framework_MockObject_Mock
 
     protected function generateClass()
     {
-        if (!class_exists($this->className, FALSE) && !interface_exists($this->className, FALSE)) {
+        if (!class_exists($this->className, $this->callAutoload) && !interface_exists($this->className, $this->callAutoload)) {
             eval('class ' . $this->className . ' {}');
         }
 
@@ -164,7 +168,8 @@ class PHPUnit_Framework_MockObject_Mock
               sprintf(
                 'Failed to generate mock class "%s" for class "%s".\n%s',
                 $this->mockClassName,
-                $this->className
+                $this->className,
+                $e->getMessage()
               )
             );
         }
@@ -318,13 +323,13 @@ class PHPUnit_Framework_MockObject_Mock
         if ($constructor) {
             return sprintf(
               "    public function __construct(%s) {\n" .
-              "        \$this->invocationMocker = new PHPUnit_Framework_MockObject_InvocationMocker(\$this);\n" .
-              "        parent::%s(%s);\n" .
+              "        \$args = func_get_args();\n" .
+              "        \$this->invocationMocker = new PHPUnit_Framework_MockObject_InvocationMocker;\n" .
+              "        \$class = new ReflectionClass(\$this);\n" .
+              "        \$class->getParentClass()->getConstructor()->invokeArgs(\$this, \$args);\n" .
               "    }\n\n",
 
-              $this->generateMethodParameters($constructor),
-              $constructor->getName(),
-              $this->generateMethodParameters($constructor, TRUE)
+              $this->generateMethodParameters($constructor)
             );
         } else {
             return $this->generateConstructorCode();
@@ -346,43 +351,38 @@ class PHPUnit_Framework_MockObject_Mock
                "    }\n\n";
     }
 
-    protected function generateMethodParameters(ReflectionMethod $method, $asCall = FALSE)
+    protected function generateMethodParameters(ReflectionMethod $method)
     {
         $list = array();
 
         foreach ($method->getParameters() as $parameter) {
-            $name = '$' . $parameter->getName();
+            $name     = '$' . $parameter->getName();
+            $typeHint = '';
 
-            if ($asCall) {
-                $list[] = $name;
+            if ($parameter->isArray()) {
+                $typeHint = 'array ';
             } else {
-                $typeHint = '';
+                $class = $parameter->getClass();
 
-                if ($parameter->isArray()) {
-                    $typeHint = 'array ';
-                } else {
-                    $class = $parameter->getClass();
-
-                    if ($class) {
-                        $typeHint = $class->getName() . ' ';
-                    }
+                if ($class) {
+                    $typeHint = $class->getName() . ' ';
                 }
-
-                $default = '';
-
-                if ($parameter->isDefaultValueAvailable()) {
-                    $value   = $parameter->getDefaultValue();
-                    $default = ' = ' . var_export($value, TRUE);
-                }
-
-                $ref = '';
-
-                if ($parameter->isPassedByReference()) {
-                    $ref = '&';
-                }
-
-                $list[] = $typeHint . $ref . $name . $default;
             }
+
+            $default = '';
+
+            if ($parameter->isDefaultValueAvailable()) {
+                $value   = $parameter->getDefaultValue();
+                $default = ' = ' . var_export($value, TRUE);
+            }
+
+            $ref = '';
+
+            if ($parameter->isPassedByReference()) {
+                $ref = '&';
+            }
+
+            $list[] = $typeHint . $ref . $name . $default;
         }
 
         return join(', ', $list);

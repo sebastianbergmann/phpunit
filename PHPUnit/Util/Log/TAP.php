@@ -79,24 +79,6 @@ class PHPUnit_Util_Log_TAP extends PHPUnit_Util_Printer implements PHPUnit_Frame
     private $testSuccessful = TRUE;
 
     /**
-     * Flush buffer and close output.
-     *
-     * @access public
-     */
-    public function flush()
-    {
-        $this->write(
-          sprintf(
-            "1..%s\n",
-
-            $this->testNumber
-          )
-        );
-
-        parent::flush();
-    }
-
-    /**
      * An error occurred.
      *
      * @param  PHPUnit_Framework_Test $test
@@ -148,7 +130,7 @@ class PHPUnit_Util_Log_TAP extends PHPUnit_Util_Printer implements PHPUnit_Frame
     {
         $this->write(
           sprintf(
-            "ok %s - # SKIP%s\n",
+            "ok %d - # SKIP%s\n",
 
             $this->testNumber,
             $e->getMessage() != '' ? ' ' . $e->getMessage() : ''
@@ -164,6 +146,16 @@ class PHPUnit_Util_Log_TAP extends PHPUnit_Util_Printer implements PHPUnit_Frame
      */
     public function startTestSuite(PHPUnit_Framework_TestSuite $suite)
     {
+        if ($this->testNumber == 0) {
+            $this->write(
+              sprintf(
+                "1..%d\n",
+
+                count($suite)
+              )
+            );
+        }
+
         $this->write(
           sprintf(
             "# TestSuite \"%s\" started.\n",
@@ -214,7 +206,7 @@ class PHPUnit_Util_Log_TAP extends PHPUnit_Util_Printer implements PHPUnit_Frame
         if ($this->testSuccessful === TRUE) {
             $this->write(
               sprintf(
-                "ok %s - %s\n",
+                "ok %d - %s\n",
 
                 $this->testNumber,
                 PHPUnit_Util_Test::describe($test)
@@ -233,7 +225,7 @@ class PHPUnit_Util_Log_TAP extends PHPUnit_Util_Printer implements PHPUnit_Frame
     {
         $this->write(
           sprintf(
-            "not ok %s - %s%s%s\n",
+            "not ok %d - %s%s%s\n",
 
             $this->testNumber,
             $prefix != '' ? $prefix . ': ' : '',

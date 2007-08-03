@@ -164,7 +164,7 @@ class PHPUnit_Framework_Assert
     {
         self::assertContains(
           $needle,
-          self::getAttribute($haystackClassOrObject, $haystackAttributeName),
+          self::readAttribute($haystackClassOrObject, $haystackAttributeName),
           $message
         );
     }
@@ -217,7 +217,109 @@ class PHPUnit_Framework_Assert
     {
         self::assertNotContains(
           $needle,
-          self::getAttribute($haystackClassOrObject, $haystackAttributeName),
+          self::readAttribute($haystackClassOrObject, $haystackAttributeName),
+          $message
+        );
+    }
+
+    /**
+     * Asserts that a haystack contains only values of a given type.
+     *
+     * @param  string  $type
+     * @param  mixed   $haystack
+     * @param  boolean $isNativeType
+     * @param  string  $message
+     * @access public
+     * @static
+     * @since  Method available since Release 3.1.4
+     */
+    public static function assertContainsOnly($type, $haystack, $isNativeType = TRUE, $message = '')
+    {
+        if (!(is_array($haystack) ||
+            is_object($haystack) && $haystack instanceof Iterator)) {
+            throw new InvalidArgumentException;
+        }
+
+        self::assertThat(
+          $haystack,
+          new PHPUnit_Framework_Constraint_TraversableContainsOnly(
+            $type, $isNativeType
+          ),
+          $message
+        );
+    }
+
+    /**
+     * Asserts that a haystack that is stored in a static attribute of a class
+     * or an attribute of an object contains only values of a given type.
+     *
+     * @param  string  $type
+     * @param  string  $haystackAttributeName
+     * @param  mixed   $haystackClassOrObject
+     * @param  boolean $isNativeType
+     * @param  string  $message
+     * @access public
+     * @static
+     * @since  Method available since Release 3.1.4
+     */
+    public static function assertAttributeContainsOnly($type, $haystackAttributeName, $haystackClassOrObject, $isNativeType = TRUE, $message = '')
+    {
+        self::assertContainsOnly(
+          $type,
+          self::readAttribute($haystackClassOrObject, $haystackAttributeName),
+          $isNativeType,
+          $message
+        );
+    }
+
+    /**
+     * Asserts that a haystack does not contain only values of a given type.
+     *
+     * @param  string  $type
+     * @param  mixed   $haystack
+     * @param  boolean $isNativeType
+     * @param  string  $message
+     * @access public
+     * @static
+     * @since  Method available since Release 3.1.4
+     */
+    public static function assertNotContainsOnly($type, $haystack, $isNativeType = TRUE, $message = '')
+    {
+        if (!(is_array($haystack) ||
+            is_object($haystack) && $haystack instanceof Iterator)) {
+            throw new InvalidArgumentException;
+        }
+
+        self::assertThat(
+          $haystack,
+          new PHPUnit_Framework_Constraint_Not(
+            new PHPUnit_Framework_Constraint_TraversableContainsOnly(
+              $type, $isNativeType
+            )
+          ),
+          $message
+        );
+    }
+
+    /**
+     * Asserts that a haystack that is stored in a static attribute of a class
+     * or an attribute of an object does not contain only values of a given type.
+     *
+     * @param  string  $type
+     * @param  string  $haystackAttributeName
+     * @param  mixed   $haystackClassOrObject
+     * @param  boolean $isNativeType
+     * @param  string  $message
+     * @access public
+     * @static
+     * @since  Method available since Release 3.1.4
+     */
+    public static function assertAttributeNotContainsOnly($type, $haystackAttributeName, $haystackClassOrObject, $isNativeType = TRUE, $message = '')
+    {
+        self::assertNotContainsOnly(
+          $type,
+          self::readAttribute($haystackClassOrObject, $haystackAttributeName),
+          $isNativeType,
           $message
         );
     }
@@ -260,7 +362,7 @@ class PHPUnit_Framework_Assert
     {
         self::assertEquals(
           $expected,
-          self::getAttribute($actualClassOrObject, $actualAttributeName),
+          self::readAttribute($actualClassOrObject, $actualAttributeName),
           $message,
           $delta,
           $maxDepth
@@ -308,10 +410,150 @@ class PHPUnit_Framework_Assert
     {
         self::assertNotEquals(
           $expected,
-          self::getAttribute($actualClassOrObject, $actualAttributeName),
+          self::readAttribute($actualClassOrObject, $actualAttributeName),
           $message,
           $delta,
           $maxDepth
+        );
+    }
+
+    /**
+     * Asserts that a value is greater than another value.
+     *
+     * @param  mixed   $expected
+     * @param  mixed   $actual
+     * @param  string  $message
+     * @access public
+     * @static
+     * @since  Method available since Release 3.1.0
+     */
+    public static function assertGreaterThan($expected, $actual, $message = '')
+    {
+        self::assertThat($actual, self::greaterThan($expected), $message);
+    }
+
+    /**
+     * Asserts that an attribute is greater than another value.
+     *
+     * @param  mixed   $expected
+     * @param  string  $actualAttributeName
+     * @param  string  $actualClassOrObject
+     * @param  string  $message
+     * @access public
+     * @static
+     * @since  Method available since Release 3.1.0
+     */
+    public static function assertAttributeGreaterThan($expected, $actualAttributeName, $actualClassOrObject, $message = '')
+    {
+        self::assertGreaterThan(
+          $expected,
+          self::readAttribute($actualClassOrObject, $actualAttributeName),
+          $message
+        );
+    }
+
+    /**
+     * Asserts that a value is greater than or equal to another value.
+     *
+     * @param  mixed   $expected
+     * @param  mixed   $actual
+     * @param  string  $message
+     * @access public
+     * @static
+     * @since  Method available since Release 3.1.0
+     */
+    public static function assertGreaterThanOrEqual($expected, $actual, $message = '')
+    {
+        self::assertThat($actual, self::greaterThanOrEqual($expected), $message);
+    }
+
+    /**
+     * Asserts that an attribute is greater than or equal to another value.
+     *
+     * @param  mixed   $expected
+     * @param  string  $actualAttributeName
+     * @param  string  $actualClassOrObject
+     * @param  string  $message
+     * @access public
+     * @static
+     * @since  Method available since Release 3.1.0
+     */
+    public static function assertAttributeGreaterThanOrEqual($expected, $actualAttributeName, $actualClassOrObject, $message = '')
+    {
+        self::assertGreaterThanOrEqual(
+          $expected,
+          self::readAttribute($actualClassOrObject, $actualAttributeName),
+          $message
+        );
+    }
+
+    /**
+     * Asserts that a value is smaller than another value.
+     *
+     * @param  mixed   $expected
+     * @param  mixed   $actual
+     * @param  string  $message
+     * @access public
+     * @static
+     * @since  Method available since Release 3.1.0
+     */
+    public static function assertLessThan($expected, $actual, $message = '')
+    {
+        self::assertThat($actual, self::lessThan($expected), $message);
+    }
+
+    /**
+     * Asserts that an attribute is smaller than another value.
+     *
+     * @param  mixed   $expected
+     * @param  string  $actualAttributeName
+     * @param  string  $actualClassOrObject
+     * @param  string  $message
+     * @access public
+     * @static
+     * @since  Method available since Release 3.1.0
+     */
+    public static function assertAttributeLessThan($expected, $actualAttributeName, $actualClassOrObject, $message = '')
+    {
+        self::assertLessThan(
+          $expected,
+          self::readAttribute($actualClassOrObject, $actualAttributeName),
+          $message
+        );
+    }
+
+    /**
+     * Asserts that a value is smaller than or equal to another value.
+     *
+     * @param  mixed   $expected
+     * @param  mixed   $actual
+     * @param  string  $message
+     * @access public
+     * @static
+     * @since  Method available since Release 3.1.0
+     */
+    public static function assertLessThanOrEqual($expected, $actual, $message = '')
+    {
+        self::assertThat($actual, self::lessThanOrEqual($expected), $message);
+    }
+
+    /**
+     * Asserts that an attribute is smaller than or equal to another value.
+     *
+     * @param  mixed   $expected
+     * @param  string  $actualAttributeName
+     * @param  string  $actualClassOrObject
+     * @param  string  $message
+     * @access public
+     * @static
+     * @since  Method available since Release 3.1.0
+     */
+    public static function assertAttributeLessThanOrEqual($expected, $actualAttributeName, $actualClassOrObject, $message = '')
+    {
+        self::assertLessThanOrEqual(
+          $expected,
+          self::readAttribute($actualClassOrObject, $actualAttributeName),
+          $message
         );
     }
 
@@ -362,20 +604,22 @@ class PHPUnit_Framework_Assert
      *
      * @param  boolean $condition
      * @param  string  $message
-     * @throws PHPUnit_Framework_ComparisonFailure
-     * @throws InvalidArgumentException
+     * @throws PHPUnit_Framework_AssertionFailedError
      * @access public
      * @static
      */
     public static function assertTrue($condition, $message = '')
     {
-        if (!is_bool($condition)) {
-            throw new InvalidArgumentException;
+        if ($condition !== TRUE) {
+            throw new PHPUnit_Framework_AssertionFailedError(
+              sprintf(
+                '%sFailed asserting that %s is true.',
+
+                $message != '' ? $message . "\n" : '',
+                PHPUnit_Util_Type::toString($condition)
+              )
+            );
         }
-
-        $constraint = new PHPUnit_Framework_Constraint_IsIdentical(TRUE);
-
-        self::assertThat($condition, $constraint, $message);
     }
 
     /**
@@ -383,20 +627,22 @@ class PHPUnit_Framework_Assert
      *
      * @param  boolean  $condition
      * @param  string   $message
-     * @throws PHPUnit_Framework_ComparisonFailure
-     * @throws InvalidArgumentException
+     * @throws PHPUnit_Framework_AssertionFailedError
      * @access public
      * @static
      */
     public static function assertFalse($condition, $message = '')
     {
-        if (!is_bool($condition)) {
-            throw new InvalidArgumentException;
+        if ($condition !== FALSE) {
+            throw new PHPUnit_Framework_AssertionFailedError(
+              sprintf(
+                '%sFailed asserting that %s is false.',
+
+                $message != '' ? $message . "\n" : '',
+                PHPUnit_Util_Type::toString($condition)
+              )
+            );
         }
-
-        $constraint = new PHPUnit_Framework_Constraint_IsIdentical(FALSE);
-
-        self::assertThat($condition, $constraint, $message);
     }
 
     /**
@@ -596,7 +842,7 @@ class PHPUnit_Framework_Assert
     {
         self::assertSame(
           $expected,
-          self::getAttribute($actualClassOrObject, $actualAttributeName),
+          self::readAttribute($actualClassOrObject, $actualAttributeName),
           $message
         );
     }
@@ -636,7 +882,7 @@ class PHPUnit_Framework_Assert
     {
         self::assertNotSame(
           $expected,
-          self::getAttribute($actualClassOrObject, $actualAttributeName),
+          self::readAttribute($actualClassOrObject, $actualAttributeName),
           $message
         );
     }
@@ -742,11 +988,101 @@ class PHPUnit_Framework_Assert
     }
 
     /**
+     * Asserts that two XML files are equal.
+     *
+     * @param  string $expectedFile
+     * @param  string $actualFile
+     * @param  string $message
+     * @access public
+     * @static
+     * @since  Method available since Release 3.1.0
+     */
+    public static function assertXmlFileEqualsXmlFile($expectedFile, $actualFile, $message = '')
+    {
+        self::assertFileExists($expectedFile);
+        self::assertFileExists($actualFile);
+
+        $expected = new DOMDocument;
+        $expected->load($expectedFile);
+
+        $actual = new DOMDocument;
+        $actual->load($actualFile);
+
+        self::assertEquals($expected, $actual, $message);
+    }
+
+    /**
+     * Asserts that two XML files are not equal.
+     *
+     * @param  string $expectedFile
+     * @param  string $actualFile
+     * @param  string $message
+     * @access public
+     * @static
+     * @since  Method available since Release 3.1.0
+     */
+    public static function assertXmlFileNotEqualsXmlFile($expectedFile, $actualFile, $message = '')
+    {
+        self::assertFileExists($expectedFile);
+        self::assertFileExists($actualFile);
+
+        $expected = new DOMDocument;
+        $expected->load($expectedFile);
+
+        $actual = new DOMDocument;
+        $actual->load($actualFile);
+
+        self::assertNotEquals($expected, $actual, $message);
+    }
+
+    /**
+     * Asserts that two XML documents are equal.
+     *
+     * @param  string $expectedXml
+     * @param  string $actualXml
+     * @param  string $message
+     * @access public
+     * @static
+     * @since  Method available since Release 3.1.0
+     */
+    public static function assertXmlStringEqualsXmlString($expectedXml, $actualXml, $message = '')
+    {
+        $expected = new DOMDocument;
+        $expected->loadXML($expectedXml);
+
+        $actual = new DOMDocument;
+        $actual->loadXML($actualXml);
+
+        self::assertEquals($expected, $actual, $message);
+    }
+
+    /**
+     * Asserts that two XML documents are not equal.
+     *
+     * @param  string $expectedXml
+     * @param  string $actualXml
+     * @param  string $message
+     * @access public
+     * @static
+     * @since  Method available since Release 3.1.0
+     */
+    public static function assertXmlStringNotEqualsXmlString($expectedXml, $actualXml, $message = '')
+    {
+        $expected = new DOMDocument;
+        $expected->loadXML($expectedXml);
+
+        $actual = new DOMDocument;
+        $actual->loadXML($actualXml);
+
+        self::assertNotEquals($expected, $actual, $message);
+    }
+
+    /**
      *
      *
-     * @param  mixed                         $value
+     * @param  mixed                        $value
      * @param  PHPUnit_Framework_Constraint $constraint
-     * @param  string                        $message
+     * @param  string                       $message
      * @access public
      * @static
      * @since  Method available since Release 3.0.0
@@ -868,6 +1204,20 @@ class PHPUnit_Framework_Assert
     public static function contains($value)
     {
         return new PHPUnit_Framework_Constraint_TraversableContains($value);
+    }
+
+    /**
+     *
+     *
+     * @param  string $type
+     * @return PHPUnit_Framework_Constraint_TraversableContainsOnly
+     * @access public
+     * @since  Method available since Release 3.1.4
+     * @static
+     */
+    public static function containsOnly($type)
+    {
+        return new PHPUnit_Framework_Constraint_TraversableContainsOnly($type);
     }
 
     /**
@@ -1133,7 +1483,7 @@ class PHPUnit_Framework_Assert
      * @access protected
      * @static
      */
-    public static function getAttribute($classOrObject, $attributeName)
+    public static function readAttribute($classOrObject, $attributeName)
     {
         if (!is_string($attributeName)) {
             throw new InvalidArgumentException;

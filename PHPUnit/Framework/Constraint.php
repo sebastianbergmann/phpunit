@@ -50,7 +50,7 @@ require_once 'PHPUnit/Util/Filter.php';
 
 PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
 
-if (!interface_exists('PHPUnit_Framework_Constraint', FALSE)) {
+if (!class_exists('PHPUnit_Framework_Constraint', FALSE)) {
 
 /**
  * Abstract base class for constraints. which are placed upon any value.
@@ -91,7 +91,9 @@ abstract class PHPUnit_Framework_Constraint implements PHPUnit_Framework_SelfDes
     public function fail($other, $description, $not = FALSE)
     {
         throw new PHPUnit_Framework_ExpectationFailedException(
-          $this->failureDescription($other, $description, $not)
+          $this->failureDescription($other, $description, $not),
+          NULL,
+          $description
         );
     }
 
@@ -158,5 +160,6 @@ require_once 'PHPUnit/Framework/Constraint/Or.php';
 require_once 'PHPUnit/Framework/Constraint/PCREMatch.php';
 require_once 'PHPUnit/Framework/Constraint/StringContains.php';
 require_once 'PHPUnit/Framework/Constraint/TraversableContains.php';
+require_once 'PHPUnit/Framework/Constraint/TraversableContainsOnly.php';
 require_once 'PHPUnit/Framework/Constraint/Xor.php';
 ?>

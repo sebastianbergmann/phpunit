@@ -74,10 +74,10 @@ class PHPUnit_Framework_ExpectationFailedException extends PHPUnit_Framework_Ass
     private $comparisonFailure;
     private $description;
 
-    public function __construct($message, PHPUnit_Framework_ComparisonFailure $comparisonFailure = NULL)
+    public function __construct($description, PHPUnit_Framework_ComparisonFailure $comparisonFailure = NULL, $message = '')
     {
+        $this->description       = $description;
         $this->comparisonFailure = $comparisonFailure;
-        $this->description       = $message;
 
         parent::__construct($message);
     }
