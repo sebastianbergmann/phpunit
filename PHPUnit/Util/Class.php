@@ -456,5 +456,48 @@ class PHPUnit_Util_Class
             return 0;
         }
     }
+
+    /**
+     * Returns the Polymorphism Factor (PF) for a class.
+     *
+     * @param  string  $className
+     * @return float
+     * @access public
+     * @static
+     * @since  Method available since Release 3.1.6
+     */
+    public static function getPF($className)
+    {
+        $class       = new ReflectionClass($className);
+        $parentClass = $class->getParentClass();
+
+        if ($parentClass !== FALSE) {
+            $overridableMethods = array();
+
+            foreach ($parentClass->getMethods() as $method) {
+                if (!$method->isPrivate() && !$method->isFinal() && !$method->isAbstract()) {
+                    $overridableMethods[] = $method->getName();
+                }
+            }
+
+            if (!empty($overridableMethods)) {
+                $overriddenMethods = 0;
+
+                foreach ($class->getMethods() as $method) {
+                    if ($method->getDeclaringClass()->getName() == $className) {
+                        $methodName = $method->getName();
+
+                        if (in_array($methodName, $overridableMethods)) {
+                            $overriddenMethods++;
+                        }
+                    }
+                }
+
+                return (100 * $overriddenMethods) / count($overridableMethods);
+            }
+        }
+
+        return 0;
+    }
 }
 ?>
