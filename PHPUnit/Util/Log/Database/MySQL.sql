@@ -76,6 +76,7 @@ CREATE TABLE IF NOT EXISTS code_file(
 CREATE TABLE IF NOT EXISTS code_class(
   code_file_id          INTEGER UNSIGNED NOT NULL REFERENCES code_file.code_file_id,
   code_class_id         INTEGER UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
+  code_class_parent_id  INTEGER UNSIGNED REFERENCES code_class.code_class_id,
   code_class_name       CHAR(255),
   code_class_start_line INTEGER UNSIGNED NOT NULL,
   code_class_end_line   INTEGER UNSIGNED NOT NULL,

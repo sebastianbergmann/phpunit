@@ -76,6 +76,7 @@ CREATE TABLE IF NOT EXISTS code_file(
 CREATE TABLE IF NOT EXISTS code_class(
   code_file_id          INTEGER,
   code_class_id         INTEGER PRIMARY KEY AUTOINCREMENT,
+  code_class_parent_id  INTEGER,
   code_class_name       TEXT,
   code_class_start_line INTEGER,
   code_class_end_line   INTEGER,
