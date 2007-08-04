@@ -166,8 +166,10 @@ class PHPUnit_Util_Log_XML extends PHPUnit_Util_Printer implements PHPUnit_Frame
      */
     public function addError(PHPUnit_Framework_Test $test, Exception $e, $time)
     {
-        $error = $this->document->createElement('error', PHPUnit_Util_Filter::getFilteredStacktrace($e, FALSE));
-        $error->setAttribute('message', $e->getMessage());
+        $error = $this->document->createElement(
+          'error', $e->getMessage() . "\n" . PHPUnit_Util_Filter::getFilteredStacktrace($e, FALSE)
+        );
+
         $error->setAttribute('type', get_class($e));
 
         $this->currentTestCase->appendChild($error);
@@ -185,8 +187,10 @@ class PHPUnit_Util_Log_XML extends PHPUnit_Util_Printer implements PHPUnit_Frame
      */
     public function addFailure(PHPUnit_Framework_Test $test, PHPUnit_Framework_AssertionFailedError $e, $time)
     {
-        $failure = $this->document->createElement('failure', PHPUnit_Util_Filter::getFilteredStacktrace($e, FALSE));
-        $failure->setAttribute('message', $e->getMessage());
+        $failure = $this->document->createElement(
+          'failure', $e->getMessage() . "\n" . PHPUnit_Util_Filter::getFilteredStacktrace($e, FALSE)
+        );
+
         $failure->setAttribute('type', get_class($e));
 
         $this->currentTestCase->appendChild($failure);
@@ -204,8 +208,10 @@ class PHPUnit_Util_Log_XML extends PHPUnit_Util_Printer implements PHPUnit_Frame
      */
     public function addIncompleteTest(PHPUnit_Framework_Test $test, Exception $e, $time)
     {
-        $error = $this->document->createElement('error', PHPUnit_Util_Filter::getFilteredStacktrace($e, FALSE));
-        $error->setAttribute('message', 'Incomplete Test');
+        $error = $this->document->createElement(
+          'error', "Incomplete Test\n" . PHPUnit_Util_Filter::getFilteredStacktrace($e, FALSE)
+        );
+
         $error->setAttribute('type', get_class($e));
 
         $this->currentTestCase->appendChild($error);
@@ -224,8 +230,10 @@ class PHPUnit_Util_Log_XML extends PHPUnit_Util_Printer implements PHPUnit_Frame
      */
     public function addSkippedTest(PHPUnit_Framework_Test $test, Exception $e, $time)
     {
-        $error = $this->document->createElement('error', PHPUnit_Util_Filter::getFilteredStacktrace($e, FALSE));
-        $error->setAttribute('message', 'Skipped Test');
+        $error = $this->document->createElement(
+          'error', "Skipped Test\n" . PHPUnit_Util_Filter::getFilteredStacktrace($e, FALSE)
+        );
+
         $error->setAttribute('type', get_class($e));
 
         $this->currentTestCase->appendChild($error);
