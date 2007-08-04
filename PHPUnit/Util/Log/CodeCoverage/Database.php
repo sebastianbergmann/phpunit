@@ -330,9 +330,11 @@ class PHPUnit_Util_Log_CodeCoverage_Database
         );
 
         $stmt2 = $this->dbh->prepare(
-          'SELECT MAX(code_class_id) AS code_class_id
-             FROM code_class
-            WHERE code_class_name = :parentClassName;'
+          'SELECT code_class.code_class_id as code_class_id
+             FROM code_class, code_file
+            WHERE code_class.code_file_id    = code_file.code_file_id
+              AND code_file.revision         = :revision
+              AND code_class.code_class_name = :parentClassName;'
         );
 
         foreach ($storedClasses as $className => $classId) {
@@ -347,6 +349,7 @@ class PHPUnit_Util_Log_CodeCoverage_Database
                     $parentClassId = $storedClasses[$parentClassName];
                 } else {
                     $stmt2->bindParam(':parentClassName', $parentClassName, PDO::PARAM_STR);
+                    $stmt2->bindParam(':revision', $revision, PDO::PARAM_INT);
                     $stmt2->execute();
 
                     $parentClassId = (int)$stmt->fetchColumn();
