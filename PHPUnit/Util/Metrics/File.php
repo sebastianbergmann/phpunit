@@ -44,13 +44,14 @@
  * @since      File available since Release 3.2.0
  */
 
+require_once 'PHPUnit/Util/Metrics/Class.php';
 require_once 'PHPUnit/Util/Class.php';
 require_once 'PHPUnit/Util/Filter.php';
 
 PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
 
 /**
- * Method-Level Metrics.
+ * File-Level Metrics.
  *
  * @category   Testing
  * @package    PHPUnit
@@ -61,146 +62,154 @@ PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
  * @link       http://www.phpunit.de/
  * @since      Class available since Release 3.2.0
  */
-class PHPUnit_Util_Metrics_Method
+class PHPUnit_Util_Metrics_File
 {
-    protected $ccn = 1;
+    protected $loc = 0;
+    protected $cloc = 0;
+    protected $ncloc = 0;
 
-    protected $method;
+    protected $filename;
+    protected $classes = array();
+    protected $lines = array();
+    protected $tokens = array();
 
     protected static $cache = array();
 
     /**
      * Constructor.
      *
-     * @param  ReflectionMethod $method
+     * @param  string $filename
      * @access protected
      */
-    protected function __construct(ReflectionMethod $method)
+    protected function __construct($filename)
     {
-        $this->method = $method;
+        $this->filename = $filename;
+        $this->lines    = file($filename);
+        $this->tokens   = token_get_all(file_get_contents($filename));
 
-        $this->calculateCCN();
+        $this->countLines();
+
+        foreach (PHPUnit_Util_Class::getClassesInFile($filename) as $class) {
+            $this->classes[$class->getName()] = PHPUnit_Util_Metrics_Class::factory($class);
+        }
     }
 
     /**
      * Factory.
      *
-     * @param  ReflectionMethod $method
-     * @return PHPUnit_Util_Metrics_Method
+     * @param  string $filename
+     * @return PHPUnit_Util_Metrics_File
      * @access public
      * @static
      */
-    public static function factory(ReflectionMethod $method)
+    public static function factory($filename)
     {
-        $className  = $method->getDeclaringClass()->getName();
-        $methodName = $method->getName();
-
-        if (!isset(self::$cache[$className][$methodName])) {
-            self::$cache[$className][$methodName] = new PHPUnit_Util_Metrics_Method($method);
+        if (!isset(self::$cache[$filename])) {
+            self::$cache[$filename] = new PHPUnit_Util_Metrics_File($filename);
         }
 
-        return self::$cache[$className][$methodName];
+        return self::$cache[$filename];
     }
 
     /**
-     * Returns the name of the method.
+     * Classes.
      *
-     * @return string
+     * @return array
      * @access public
      */
-    public function getName()
+    public function getClasses()
     {
-        return $this->method->getName();
+        return $this->classes;
     }
 
     /**
-     * 
+     * A class.
      *
-     * @return integer
+     * @param  string $className
+     * @return ReflectionClass
      * @access public
      */
-    public function getStartLine()
+    public function getClass($className)
     {
-        return $this->method->getStartLine();
+        return $this->classes[$className];
     }
 
     /**
-     * 
+     * Lines.
      *
-     * @return integer
+     * @return array
      * @access public
      */
-    public function getEndLine()
+    public function getLines()
     {
-        return $this->method->getEndLine();
+        return $this->lines;
     }
 
     /**
-     * Returns the Cyclomatic Complexity Number (CCN) for the method.
-     * This is also known as the McCabe metric.
+     * Tokens.
      *
-     * Each method has a minimum value of 1 per default. For each of the
-     * following PHP keywords/statements this value gets incremented by one:
-     *
-     *   - if
-     *   - for
-     *   - foreach
-     *   - while
-     *   - case
-     *   - catch
-     *   - AND, &&
-     *   - OR, ||
-     *
-     * Note that 'else', 'default', and 'finally' don't increment the value
-     * any further. On the other hand, a simple method with a 'switch'
-     * statement and a huge block of 'case 'statements can have a surprisingly
-     * high value (still it has the same value when converting a 'switch'
-     * block to an equivalent sequence of 'if' statements).
-     *
-     * @return integer
+     * @return array
      * @access public
      */
-    public function getCCN()
+    public function getTokens()
     {
-        return $this->ccn;
+        return $this->tokens;
     }
 
     /**
-     * Calculates the Cyclomatic Complexity Number (CCN) for the method.
+     * Lines of Code (LOC).
      *
+     * @return int
+     * @access public
+     */
+    public function getLoc()
+    {
+        return $this->loc;
+    }
+
+    /**
+     * Comment Lines of Code (CLOC).
+     *
+     * @return int
+     * @access public
+     */
+    public function getCloc()
+    {
+        return $this->cloc;
+    }
+
+    /**
+     * Non-Comment Lines of Code (NCLOC).
+     *
+     * @return int
+     * @access public
+     */
+    public function getNcloc()
+    {
+        return $this->ncloc;
+    }
+
+    /**
      * @access protected
      */
-    protected function calculateCCN()
+    protected function countLines()
     {
-        $source = PHPUnit_Util_Class::getMethodSource(
-          $this->method->getDeclaringClass()->getName(), $this->method->getName()
-        );
+        $this->loc  = count($this->lines);
+        $this->cloc = 0;
 
-        $tokens = token_get_all('<?php' . $source . '?>');
-
-        foreach ($tokens as $i => $token) {
+        foreach ($this->tokens as $i => $token) {
             if (is_string($token)) {
                 continue;
             }
 
             list ($token, $value) = $token;
 
-            switch ($token) {
-                case T_IF:
-                case T_FOR:
-                case T_FOREACH:
-                case T_WHILE:
-                case T_CASE:
-                case T_CATCH:
-                case T_BOOLEAN_AND:
-                case T_LOGICAL_AND:
-                case T_BOOLEAN_OR:
-                case T_LOGICAL_OR: {
-                    $this->ccn++;
-                }
-                break;
+            if ($token == T_COMMENT || $token == T_DOC_COMMENT) {
+                $this->cloc += count(explode("\n", $value));
             }
         }
+
+        $this->ncloc = $this->loc - $this->cloc;
     }
 }
 ?>

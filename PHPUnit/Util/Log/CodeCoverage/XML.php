@@ -45,6 +45,7 @@
  */
 
 require_once 'PHPUnit/Runner/Version.php';
+require_once 'PHPUnit/Util/Metrics/File.php';
 require_once 'PHPUnit/Util/Class.php';
 require_once 'PHPUnit/Util/CodeCoverage.php';
 require_once 'PHPUnit/Util/Filter.php';
@@ -91,27 +92,27 @@ class PHPUnit_Util_Log_CodeCoverage_XML extends PHPUnit_Util_Printer
         $codeCoverageInformation = $result->getCodeCoverageInformation();
         $files                   = PHPUnit_Util_CodeCoverage::getSummary($codeCoverageInformation);
 
-        $projectFiles = 0;
-        $projectLoc = 0;
-        $projectNcloc = 0;
-        $projectClasses = 0;
-        $projectMethods = 0;
-        $projectCoveredMethods = 0;
-        $projectConditionals = 0;
+        $projectFiles               = 0;
+        $projectLoc                 = 0;
+        $projectNcloc               = 0;
+        $projectClasses             = 0;
+        $projectMethods             = 0;
+        $projectCoveredMethods      = 0;
+        $projectConditionals        = 0;
         $projectCoveredConditionals = 0;
-        $projectStatements = 0;
-        $projectCoveredStatements = 0;
+        $projectStatements          = 0;
+        $projectCoveredStatements   = 0;
 
         foreach ($files as $filename => $data) {
             $projectFiles++;
 
-            $fileClasses = 0;
-            $fileConditionals = 0;
+            $fileClasses             = 0;
+            $fileConditionals        = 0;
             $fileCoveredConditionals = 0;
-            $fileStatements = 0;
-            $fileCoveredStatements = 0;
-            $fileMethods = 0;
-            $fileCoveredMethods = 0;
+            $fileStatements          = 0;
+            $fileCoveredStatements   = 0;
+            $fileMethods             = 0;
+            $fileCoveredMethods      = 0;
 
             $file = $document->createElement('file');
             $file->setAttribute('name', $filename);
@@ -125,11 +126,11 @@ class PHPUnit_Util_Log_CodeCoverage_XML extends PHPUnit_Util_Printer
                 $fileClasses++;
                 $projectClasses++;
 
-                $classConditionals = 0;
+                $classConditionals        = 0;
                 $classCoveredConditionals = 0;
-                $classStatements = 0;
-                $classCoveredStatements = 0;
-                $classCoveredMethods = 0;
+                $classStatements          = 0;
+                $classCoveredStatements   = 0;
+                $classCoveredMethods      = 0;
 
                 foreach ($methods as $method) {
                     if ($method->getDeclaringClass()->getName() == $class->getName()) {
@@ -232,11 +233,11 @@ class PHPUnit_Util_Log_CodeCoverage_XML extends PHPUnit_Util_Printer
                 $file->appendChild($line);
             }
 
-            $sourceFile = new PHPUnit_Util_SourceFile($filename);
-            $loc        = $sourceFile->getLoc();
-            $ncloc      = $sourceFile->getNcloc();
+            $fileMetrics = PHPUnit_Util_Metrics_File::factory($filename);
+            $loc         = $fileMetrics->getLoc();
+            $ncloc       = $fileMetrics->getNcloc();
 
-            $projectLoc += $loc;
+            $projectLoc   += $loc;
             $projectNcloc += $ncloc;
 
             $fileMetricsXML = $document->createElement('metrics');
@@ -251,10 +252,11 @@ class PHPUnit_Util_Log_CodeCoverage_XML extends PHPUnit_Util_Printer
             $fileMetricsXML->setAttribute('coveredstatements', $fileCoveredStatements);
             $fileMetricsXML->setAttribute('elements', $fileConditionals + $fileStatements + $fileMethods);
             $fileMetricsXML->setAttribute('coveredelements', $fileCoveredConditionals + $fileCoveredStatements + $fileCoveredMethods);
-            $file->appendChild($fileMetricsXML);
 
+            $file->appendChild($fileMetricsXML);
             $project->appendChild($file);
-            $projectStatements += $fileStatements;
+
+            $projectStatements        += $fileStatements;
             $projectCoveredStatements += $fileCoveredStatements;
         }
 

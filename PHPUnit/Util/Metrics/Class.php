@@ -127,6 +127,50 @@ class PHPUnit_Util_Metrics_Class
     }
 
     /**
+     * Returns the name of the class.
+     *
+     * @return string
+     * @access public
+     */
+    public function getName()
+    {
+        return $this->class->getName();
+    }
+
+    /**
+     * 
+     *
+     * @return integer
+     * @access public
+     */
+    public function getStartLine()
+    {
+        return $this->class->getStartLine();
+    }
+
+    /**
+     * 
+     *
+     * @return integer
+     * @access public
+     */
+    public function getEndLine()
+    {
+        return $this->class->getEndLine();
+    }
+
+    /**
+     * 
+     *
+     * @return array
+     * @access public
+     */
+    public function getMethods()
+    {
+        return $this->methods;
+    }
+
+    /**
      * Returns the Attribute Inheritance Factor (AIF) for the class.
      *
      * @return integer
@@ -146,41 +190,6 @@ class PHPUnit_Util_Metrics_Class
     public function getAHF()
     {
         return $this->ahf;
-    }
-
-    /**
-     * Returns the Cyclomatic Complexity Number (CCN) for a method.
-     * This is also known as the McCabe metric.
-     *
-     * Each method has a minimum value of 1 per default. For each of the
-     * following PHP keywords/statements this value gets incremented by one:
-     *
-     *   - if
-     *   - for
-     *   - foreach
-     *   - while
-     *   - case
-     *   - catch
-     *   - AND, &&
-     *   - OR, ||
-     *
-     * Note that 'else', 'default', and 'finally' don't increment the value
-     * any further. On the other hand, a simple method with a 'switch'
-     * statement and a huge block of 'case 'statements can have a surprisingly
-     * high value (still it has the same value when converting a 'switch'
-     * block to an equivalent sequence of 'if' statements).
-     *
-     * @param  string $methodName
-     * @return integer
-     * @access public
-     */
-    public function getCCN($methodName)
-    {
-        if (isset($this->methods[$methodName])) {
-            return $this->methods[$methodName]->getCCN();
-        } else {
-            return false;
-        }
     }
 
     /**
