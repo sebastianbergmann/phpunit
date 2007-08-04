@@ -45,13 +45,11 @@
  */
 
 require_once 'PHPUnit/Framework.php';
-require_once 'PHPUnit/Util/Metrics/Class.php';
-require_once 'PHPUnit/Util/Metrics/Method.php';
+require_once 'PHPUnit/Util/Metrics/Project.php';
 require_once 'PHPUnit/Util/Class.php';
 require_once 'PHPUnit/Util/CodeCoverage.php';
 require_once 'PHPUnit/Util/Filesystem.php';
 require_once 'PHPUnit/Util/Filter.php';
-require_once 'PHPUnit/Util/SourceFile.php';
 
 PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
 
@@ -96,23 +94,24 @@ class PHPUnit_Util_Log_CodeCoverage_Database
      */
     public function storeCodeCoverage(PHPUnit_Framework_TestResult $result, $revision)
     {
-        $codeCoverage  = $result->getCodeCoverageInformation(FALSE, TRUE);
-        $summary       = PHPUnit_Util_CodeCoverage::getSummary($codeCoverage);
-        $files         = array_keys($summary);
-        $commonPath    = PHPUnit_Util_Filesystem::getCommonPath($files);
-        $storedClasses = array();
+        $codeCoverage   = $result->getCodeCoverageInformation(FALSE, TRUE);
+        $summary        = PHPUnit_Util_CodeCoverage::getSummary($codeCoverage);
+        $files          = array_keys($summary);
+        $projectMetrics = new PHPUnit_Util_Metrics_Project($files);
+        $commonPath     = PHPUnit_Util_Filesystem::getCommonPath($files);
+        $storedClasses  = array();
 
         $this->dbh->beginTransaction();
 
         foreach ($files as $file) {
-            $sourceFile = new PHPUnit_Util_SourceFile($file);
-            $filename   = str_replace($commonPath, '', $file);
-            $fileId     = FALSE;
-            $lines      = $sourceFile->getLines();
-            $loc        = $sourceFile->getLoc();
-            $cloc       = $sourceFile->getCloc();
-            $ncloc      = $sourceFile->getNcloc();
-            $hash       = md5_file($file);
+            $filename    = str_replace($commonPath, '', $file);
+            $fileId      = FALSE;
+            $fileMetrics = $projectMetrics->getFile($file);
+            $lines       = $fileMetrics->getLines();
+            $loc         = $fileMetrics->getLoc();
+            $cloc        = $fileMetrics->getCloc();
+            $ncloc       = $fileMetrics->getNcloc();
+            $hash        = md5_file($file);
 
             $stmt = $this->dbh->prepare(
               'SELECT code_file_id
@@ -147,7 +146,6 @@ class PHPUnit_Util_Log_CodeCoverage_Database
                 $stmt->execute();
 
                 $fileId  = $this->dbh->lastInsertId();
-                $classes = PHPUnit_Util_Class::getClassesInFile($file, $commonPath);
 
                 $stmt = $this->dbh->prepare(
                   'INSERT INTO code_class
@@ -160,20 +158,18 @@ class PHPUnit_Util_Log_CodeCoverage_Database
                                 :aif, :ahf, :dit, :mif, :mhf, :noc, :pf, :wmc);'
                 );
 
-                foreach ($classes as $class) {
-                    $className = $class->getName();
-                    $startLine = $class->getStartLine();
-                    $endLine   = $class->getEndLine();
-
-                    $metrics   = PHPUnit_Util_Metrics_Class::factory($class);
-                    $aif       = $metrics->getAIF();
-                    $ahf       = $metrics->getAHF();
-                    $dit       = $metrics->getDIT();
-                    $mif       = $metrics->getMIF();
-                    $mhf       = $metrics->getMHF();
-                    $noc       = $metrics->getNOC();
-                    $pf        = $metrics->getPF();
-                    $wmc       = $metrics->getWMC();
+                foreach ($fileMetrics->getClasses() as $classMetrics) {
+                    $className = $classMetrics->getName();
+                    $startLine = $classMetrics->getStartLine();
+                    $endLine   = $classMetrics->getEndLine();
+                    $aif       = $classMetrics->getAIF();
+                    $ahf       = $classMetrics->getAHF();
+                    $dit       = $classMetrics->getDIT();
+                    $mif       = $classMetrics->getMIF();
+                    $mhf       = $classMetrics->getMHF();
+                    $noc       = $classMetrics->getNOC();
+                    $pf        = $classMetrics->getPF();
+                    $wmc       = $classMetrics->getWMC();
 
                     $stmt->bindParam(':fileId', $fileId, PDO::PARAM_INT);
                     $stmt->bindParam(':className', $className, PDO::PARAM_STR);
@@ -200,15 +196,11 @@ class PHPUnit_Util_Log_CodeCoverage_Database
                              VALUES(:classId, :methodName, :startLine, :endLine, :ccn);'
                     );
 
-                    foreach ($class->getMethods() as $method) {
-                        if ($class->getName() != $method->getDeclaringClass()->getName()) {
-                            continue;
-                        }
-
-                        $methodName = $method->getName();
-                        $startLine  = $method->getStartLine();
-                        $endLine    = $method->getEndLine();
-                        $ccn        = $metrics->getCCN($methodName);
+                    foreach ($classMetrics->getMethods() as $methodMetrics) {
+                        $methodName = $methodMetrics->getName();
+                        $startLine  = $methodMetrics->getStartLine();
+                        $endLine    = $methodMetrics->getEndLine();
+                        $ccn        = $methodMetrics->getCCN();
 
                         $stmt2->bindParam(':classId', $classId, PDO::PARAM_INT);
                         $stmt2->bindParam(':methodName', $methodName, PDO::PARAM_STR);
