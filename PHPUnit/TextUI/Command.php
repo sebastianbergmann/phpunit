@@ -160,6 +160,7 @@ class PHPUnit_TextUI_Command
         if (extension_loaded('pdo')) {
             $longOptions[] = 'test-db-dsn=';
             $longOptions[] = 'test-db-log-rev=';
+            $longOptions[] = 'test-db-log-prefix=';
             $longOptions[] = 'test-db-log-info=';
         }
 
@@ -269,6 +270,11 @@ class PHPUnit_TextUI_Command
 
                 case '--test-db-log-rev': {
                     $arguments['testDatabaseLogRevision'] = $option[1];
+                }
+                break;
+
+                case '--test-db-prefix': {
+                    $arguments['testDatabasePrefix'] = $option[1];
                 }
                 break;
 
@@ -438,6 +444,7 @@ class PHPUnit_TextUI_Command
         if (extension_loaded('pdo')) {
             print "  --test-db-dsn <dsn>    DSN for the test database.\n" .
                   "  --test-db-log-rev <r>  Revision information for database logging.\n" .
+                  "  --test-db-prefix ...   Prefix that should be stripped from filenames.\n" .
                   "  --test-db-log-info ... Additional information for database logging.\n\n";
         }
 

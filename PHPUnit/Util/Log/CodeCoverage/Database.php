@@ -90,16 +90,20 @@ class PHPUnit_Util_Log_CodeCoverage_Database
      *
      * @param  PHPUnit_Framework_TestResult $result
      * @param  integer                      $revision
+     * @param  string                       $commonPath
      * @access public
      */
-    public function storeCodeCoverage(PHPUnit_Framework_TestResult $result, $revision)
+    public function storeCodeCoverage(PHPUnit_Framework_TestResult $result, $revision, $commonPath = '')
     {
         $codeCoverage   = $result->getCodeCoverageInformation(FALSE, TRUE);
         $summary        = PHPUnit_Util_CodeCoverage::getSummary($codeCoverage);
         $files          = array_keys($summary);
         $projectMetrics = new PHPUnit_Util_Metrics_Project($files);
-        $commonPath     = PHPUnit_Util_Filesystem::getCommonPath($files);
         $storedClasses  = array();
+
+        if (empty($commonPath)) {
+            $commonPath = PHPUnit_Util_Filesystem::getCommonPath($files);
+        }
 
         $this->dbh->beginTransaction();
 

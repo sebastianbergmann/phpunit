@@ -107,12 +107,12 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
 
     /**
      * @param  mixed $test
-     * @param  array $parameters
+     * @param  array $arguments
      * @throws InvalidArgumentException
      * @access public
      * @static
      */
-    public static function run($test, array $parameters = array())
+    public static function run($test, array $arguments = array())
     {
         if ($test instanceof ReflectionClass) {
             $test = new PHPUnit_Framework_TestSuite($test);
@@ -123,7 +123,7 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
 
             return $aTestRunner->doRun(
               $test,
-              $parameters
+              $arguments
             );
         } else {
             throw new InvalidArgumentException(
@@ -163,37 +163,38 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
 
     /**
      * @param  PHPUnit_Framework_Test $suite
-     * @param  array                   $parameters
+     * @param  array                  $arguments
      * @return PHPUnit_Framework_TestResult
      * @access public
      */
-    public function doRun(PHPUnit_Framework_Test $suite, array $parameters = array())
+    public function doRun(PHPUnit_Framework_Test $suite, array $arguments = array())
     {
-        $parameters['filter']        = isset($parameters['filter'])         ? $parameters['filter']       : FALSE;
-        $parameters['stopOnFailure'] = isset($parameters['stopOnFailure'])  ? $parameters['stopOnFailure']: FALSE;
-        $parameters['repeat']        = isset($parameters['repeat'])         ? $parameters['repeat']       : FALSE;
-        $parameters['verbose']       = isset($parameters['verbose'])        ? $parameters['verbose']      : FALSE;
-        $parameters['wait']          = isset($parameters['wait'])           ? $parameters['wait']         : FALSE;
+        $arguments['filter']             = isset($arguments['filter'])             ? $arguments['filter']             : FALSE;
+        $arguments['stopOnFailure']      = isset($arguments['stopOnFailure'])      ? $arguments['stopOnFailure']      : FALSE;
+        $arguments['repeat']             = isset($arguments['repeat'])             ? $arguments['repeat']             : FALSE;
+        $arguments['testDatabasePrefix'] = isset($arguments['testDatabasePrefix']) ? $arguments['testDatabasePrefix'] : '';
+        $arguments['verbose']            = isset($arguments['verbose'])            ? $arguments['verbose']            : FALSE;
+        $arguments['wait']               = isset($arguments['wait'])               ? $arguments['wait']               : FALSE;
 
-        if (is_integer($parameters['repeat'])) {
-            $suite = new PHPUnit_Extensions_RepeatedTest($suite, $parameters['repeat']);
+        if (is_integer($arguments['repeat'])) {
+            $suite = new PHPUnit_Extensions_RepeatedTest($suite, $arguments['repeat']);
         }
 
-        if (isset($parameters['reportDirectory'])) {
-            $parameters['reportDirectory'] = $this->getDirectory($parameters['reportDirectory']);
+        if (isset($arguments['reportDirectory'])) {
+            $arguments['reportDirectory'] = $this->getDirectory($arguments['reportDirectory']);
         }
 
         $result = $this->createTestResult();
 
-        if ($parameters['stopOnFailure']) {
+        if ($arguments['stopOnFailure']) {
             $result->stopOnFailure(TRUE);
         }
 
         if ($this->printer === NULL) {
-            if (isset($parameters['printer']) && $parameters['printer'] instanceof PHPUnit_Util_Printer) {
-                $this->printer = $parameters['printer'];
+            if (isset($arguments['printer']) && $arguments['printer'] instanceof PHPUnit_Util_Printer) {
+                $this->printer = $arguments['printer'];
             } else {
-                $this->printer = new PHPUnit_TextUI_ResultPrinter(NULL, $parameters['verbose']);
+                $this->printer = new PHPUnit_TextUI_ResultPrinter(NULL, $arguments['verbose']);
             }
         }
 
@@ -203,79 +204,79 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
 
         $result->addListener($this->printer);
 
-        if (isset($parameters['testdoxHTMLFile'])) {
+        if (isset($arguments['testdoxHTMLFile'])) {
             $result->addListener(
               PHPUnit_Util_TestDox_ResultPrinter::factory(
                 'HTML',
-                $parameters['testdoxHTMLFile']
+                $arguments['testdoxHTMLFile']
               )
             );
         }
 
-        if (isset($parameters['testdoxTextFile'])) {
+        if (isset($arguments['testdoxTextFile'])) {
             $result->addListener(
               PHPUnit_Util_TestDox_ResultPrinter::factory(
                 'Text',
-                $parameters['testdoxTextFile']
+                $arguments['testdoxTextFile']
               )
             );
         }
 
-        if (isset($parameters['graphvizLogfile'])) {
+        if (isset($arguments['graphvizLogfile'])) {
             if (class_exists('Image_GraphViz', FALSE)) {
                 $result->addListener(
-                  new PHPUnit_Util_Log_GraphViz($parameters['graphvizLogfile'])
+                  new PHPUnit_Util_Log_GraphViz($arguments['graphvizLogfile'])
                 );
             }
         }
 
-        if (isset($parameters['coverageXML']) && extension_loaded('xdebug')) {
+        if (isset($arguments['coverageXML']) && extension_loaded('xdebug')) {
             $result->collectCodeCoverageInformation(TRUE);
         }
 
-        if (isset($parameters['reportDirectory']) &&
+        if (isset($arguments['reportDirectory']) &&
             extension_loaded('xdebug')) {
             if (class_exists('Image_GraphViz', FALSE)) {
                 $result->addListener(
-                  new PHPUnit_Util_Report_GraphViz($parameters['reportDirectory'])
+                  new PHPUnit_Util_Report_GraphViz($arguments['reportDirectory'])
                 );
             }
 
             $result->addListener(
-              new PHPUnit_TextUI_ResultPrinter($parameters['reportDirectory'] . '/logfile.txt', TRUE)
+              new PHPUnit_TextUI_ResultPrinter($arguments['reportDirectory'] . '/logfile.txt', TRUE)
             );
 
             $result->addListener(
-              new PHPUnit_Util_Log_XML($parameters['reportDirectory'] . '/logfile.xml')
+              new PHPUnit_Util_Log_XML($arguments['reportDirectory'] . '/logfile.xml')
             );
 
             $result->addListener(
-              new PHPUnit_Util_Log_TAP($parameters['reportDirectory'] . '/logfile.tap')
+              new PHPUnit_Util_Log_TAP($arguments['reportDirectory'] . '/logfile.tap')
             );
 
             $result->collectCodeCoverageInformation(TRUE);
         }
 
-        if (isset($parameters['jsonLogfile'])) {
+        if (isset($arguments['jsonLogfile'])) {
             $result->addListener(
-              new PHPUnit_Util_Log_JSON($parameters['jsonLogfile'])
+              new PHPUnit_Util_Log_JSON($arguments['jsonLogfile'])
             );
         }
 
-        if (isset($parameters['tapLogfile'])) {
+        if (isset($arguments['tapLogfile'])) {
             $result->addListener(
-              new PHPUnit_Util_Log_TAP($parameters['tapLogfile'])
+              new PHPUnit_Util_Log_TAP($arguments['tapLogfile'])
             );
         }
 
-        if (isset($parameters['xmlLogfile'])) {
+        if (isset($arguments['xmlLogfile'])) {
             $result->addListener(
-              new PHPUnit_Util_Log_XML($parameters['xmlLogfile'])
+              new PHPUnit_Util_Log_XML($arguments['xmlLogfile'])
             );
         }
 
-        if (isset($parameters['testDatabaseDSN']) &&
-            isset($parameters['testDatabaseLogRevision']) &&
+        if (isset($arguments['testDatabaseDSN']) &&
+            isset($arguments['testDatabaseLogRevision']) &&
             extension_loaded('pdo')) {
             $writeToTestDatabase = TRUE;
         } else {
@@ -283,19 +284,19 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
         }
 
         if ($writeToTestDatabase) {
-            $dbh = PHPUnit_Util_PDO::factory($parameters['testDatabaseDSN']);
+            $dbh = PHPUnit_Util_PDO::factory($arguments['testDatabaseDSN']);
 
             $dbListener = PHPUnit_Util_Log_Database::getInstance(
               $dbh,
-              $parameters['testDatabaseLogRevision'],
-              isset($parameters['testDatabaseLogInfo']) ? $parameters['testDatabaseLogInfo'] : ''
+              $arguments['testDatabaseLogRevision'],
+              isset($arguments['testDatabaseLogInfo']) ? $arguments['testDatabaseLogInfo'] : ''
             );
 
             $result->addListener($dbListener);
             $result->collectCodeCoverageInformation(TRUE);
         }
 
-        $suite->run($result, $parameters['filter']);
+        $suite->run($result, $arguments['filter']);
 
         $result->flushListeners();
 
@@ -303,11 +304,11 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
             $this->printer->printResult($result);
         }
 
-        if (isset($parameters['coverageXML']) && extension_loaded('xdebug')) {
+        if (isset($arguments['coverageXML']) && extension_loaded('xdebug')) {
             $this->printer->write("\nWriting code coverage data to XML file, this may take a moment.");
 
             $writer = new PHPUnit_Util_Log_CodeCoverage_XML(
-              $parameters['coverageXML']
+              $arguments['coverageXML']
             );
 
             $writer->process($result);
@@ -319,19 +320,21 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
 
             $testDb = new PHPUnit_Util_Log_CodeCoverage_Database($dbh);
             $testDb->storeCodeCoverage(
-              $result, $parameters['testDatabaseLogRevision']
+              $result,
+              $arguments['testDatabaseLogRevision'],
+              $arguments['testDatabasePrefix']
             );
 
             $this->printer->write("\n");
         }
 
-        if (isset($parameters['reportDirectory']) &&
+        if (isset($arguments['reportDirectory']) &&
             extension_loaded('xdebug')) {
             $this->printer->write("\nGenerating report, this may take a moment.");
-            PHPUnit_Util_Report::render($result, $parameters['reportDirectory']);
+            PHPUnit_Util_Report::render($result, $arguments['reportDirectory']);
 
             $writer = new PHPUnit_Util_Log_CodeCoverage_XML(
-              $parameters['reportDirectory'] . '/coverage.xml'
+              $arguments['reportDirectory'] . '/coverage.xml'
             );
 
             $writer->process($result);
@@ -339,7 +342,7 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
             $this->printer->write("\n");
         }
 
-        $this->pause($parameters['wait']);
+        $this->pause($arguments['wait']);
 
         return $result;
     }
