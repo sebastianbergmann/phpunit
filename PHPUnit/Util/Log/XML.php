@@ -255,7 +255,10 @@ class PHPUnit_Util_Log_XML extends PHPUnit_Util_Printer implements PHPUnit_Frame
 
         if (class_exists($suite->getName(), FALSE)) {
             try {
-                $class      = new ReflectionClass($suite->getName());
+                $class = new ReflectionClass($suite->getName());
+
+                $testSuite->setAttribute('file', $class->getFileName());
+
                 $docComment = $class->getDocComment();
 
                 if (preg_match('/@category[\s]+([\.\w]+)/', $docComment, $matches)) {
@@ -323,7 +326,10 @@ class PHPUnit_Util_Log_XML extends PHPUnit_Util_Printer implements PHPUnit_Frame
     {
         $testCase = $this->document->createElement('testcase');
         $testCase->setAttribute('name', $test->getName());
-        $testCase->setAttribute('class', get_class($test));
+
+        $class = new ReflectionClass($test);
+        $testCase->setAttribute('class', $class->getName());
+        $testCase->setAttribute('file', $class->getFileName());
 
         $this->testSuites[$this->testSuiteLevel]->appendChild($testCase);
         $this->currentTestCase = $testCase;
