@@ -160,6 +160,8 @@ abstract class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_Tes
           array($this->browser, $this->browserUrl)
         );
 
+        $this->doCommand('setTimeout', array($this->timeout));
+
         if ($this->runId === NULL) {
             $dbListener = PHPUnit_Util_Log_Database::getInstance();
 
@@ -338,16 +340,12 @@ abstract class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_Tes
             case 'setCursorPosition':
             case 'setMouseSpeed':
             case 'setSpeed':
-            case 'setTimeout':
             case 'shiftKeyDown':
             case 'shiftKeyUp':
             case 'submit':
             case 'type':
             case 'typeKeys':
             case 'uncheck':
-            case 'waitForCondition':
-            case 'waitForPageToLoad':
-            case 'waitForPopUp':
             case 'windowFocus':
             case 'windowMaximize': {
                 $this->doCommand($command, $arguments);
@@ -434,6 +432,27 @@ abstract class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_Tes
                     sleep($this->sleep);
                 }
 
+                $this->defaultAssertions($command);
+            }
+            break;
+
+            case 'waitForCondition':
+            case 'waitForPopUp': {
+                if (count($arguments) == 1) {
+                    $arguments[] = $this->timeout;
+                }
+
+                $this->doCommand($command, $arguments);
+                $this->defaultAssertions($command);
+            }
+            break;
+
+            case 'waitForPageToLoad': {
+                if (empty($arguments)) {
+                    $arguments[] = $this->timeout;
+                }
+
+                $this->doCommand($command, $arguments);
                 $this->defaultAssertions($command);
             }
             break;
