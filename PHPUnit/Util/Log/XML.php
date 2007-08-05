@@ -167,7 +167,7 @@ class PHPUnit_Util_Log_XML extends PHPUnit_Util_Printer implements PHPUnit_Frame
     public function addError(PHPUnit_Framework_Test $test, Exception $e, $time)
     {
         $error = $this->document->createElement(
-          'error', $e->getMessage() . "\n" . PHPUnit_Util_Filter::getFilteredStacktrace($e, FALSE)
+          'error', PHPUnit_Framework_TestFailure::exceptionToString($e) . "\n" . PHPUnit_Util_Filter::getFilteredStacktrace($e, FALSE)
         );
 
         $error->setAttribute('type', get_class($e));
@@ -188,7 +188,7 @@ class PHPUnit_Util_Log_XML extends PHPUnit_Util_Printer implements PHPUnit_Frame
     public function addFailure(PHPUnit_Framework_Test $test, PHPUnit_Framework_AssertionFailedError $e, $time)
     {
         $failure = $this->document->createElement(
-          'failure', $e->getMessage() . "\n" . PHPUnit_Util_Filter::getFilteredStacktrace($e, FALSE)
+          'failure', PHPUnit_Framework_TestFailure::exceptionToString($e) . "\n" . PHPUnit_Util_Filter::getFilteredStacktrace($e, FALSE)
         );
 
         $failure->setAttribute('type', get_class($e));

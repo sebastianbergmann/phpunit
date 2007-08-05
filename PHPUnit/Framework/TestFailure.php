@@ -107,6 +107,93 @@ class PHPUnit_Framework_TestFailure
     }
 
     /**
+     * Returns a verbose description of the failure.
+     *
+     * @param  bool $verbose
+     * @return string
+     * @access public
+     * @since  Method available since Release 3.2.0
+     */
+    public function toStringVerbose($verbose = FALSE)
+    {
+        return self::exceptionToString($this->thrownException, $verbose);
+    }
+
+    /**
+     * Returns a verbose description for an exception.
+     *
+     * @param  Exception $e
+     * @param  bool      $verbose
+     * @return string
+     * @access public
+     * @static
+     * @since  Method available since Release 3.2.0
+     */
+    public static function exceptionToString(Exception $e, $verbose = FALSE)
+    {
+        if ($e instanceof PHPUnit_Framework_SelfDescribing) {
+            $buffer = $e->toString();
+
+            if (!empty($buffer)) {
+                $buffer .= "\n";
+            }
+
+            if ($e instanceof PHPUnit_Framework_ExpectationFailedException) {
+                $comparisonFailure = $e->getComparisonFailure();
+
+                if ($comparisonFailure !== NULL) {
+                    if ($comparisonFailure->identical()) {
+                        if ($comparisonFailure instanceof PHPUnit_Framework_ComparisonFailure_Object) {
+                            $buffer .= "Failed asserting that two variables reference the same object.\n";
+                        } else {
+                            $buffer .= $comparisonFailure->toString() . "\n";
+                        }
+                    } else {
+                        if ($comparisonFailure instanceof PHPUnit_Framework_ComparisonFailure_Scalar) {
+                            $buffer .= sprintf(
+                              "Failed asserting that %s matches expected value %s.\n",
+
+                              PHPUnit_Util_Type::toString($comparisonFailure->getActual()),
+                              PHPUnit_Util_Type::toString($comparisonFailure->getExpected())
+                            );
+                        }
+
+                        else if ($comparisonFailure instanceof PHPUnit_Framework_ComparisonFailure_Array ||
+                                 $comparisonFailure instanceof PHPUnit_Framework_ComparisonFailure_Object ||
+                                 $comparisonFailure instanceof PHPUnit_Framework_ComparisonFailure_String) {
+                            $buffer .= sprintf(
+                              "Failed asserting that two %ss are equal.\n%s\n",
+
+                              strtolower(substr(get_class($comparisonFailure), 36)),
+                              $comparisonFailure->toString()
+                            );
+                        }
+
+                        if ($verbose &&
+                           !$comparisonFailure instanceof PHPUnit_Framework_ComparisonFailure_Array &&
+                           !$comparisonFailure instanceof PHPUnit_Framework_ComparisonFailure_Object &&
+                           !$comparisonFailure instanceof PHPUnit_Framework_ComparisonFailure_String) {
+                            $buffer .= $comparisonFailure->toString() . "\n";
+                        }
+                    }
+                } else {
+                    $buffer .= $e->getDescription() . "\n";
+                }
+            }
+        }
+
+        else if ($e instanceof PHPUnit_Framework_Error) {
+            $buffer = $e->getMessage() . "\n";
+        }
+
+        else {
+            $buffer = get_class($e) . ': ' . $e->getMessage() . "\n";
+        }
+
+        return $buffer;
+    }
+
+    /**
      * Gets the failed test.
      *
      * @return Test
