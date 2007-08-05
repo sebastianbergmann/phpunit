@@ -63,6 +63,17 @@ CREATE TABLE IF NOT EXISTS test(
   INDEX (node_right)
 ) ENGINE=InnoDB;
 
+CREATE TABLE IF NOT EXISTS project_metrics(
+  revision                INTEGER UNSIGNED NOT NULL PRIMARY KEY,
+  project_metrics_cls     INTEGER UNSIGNED NOT NULL,
+  project_metrics_clsa    INTEGER UNSIGNED NOT NULL,
+  project_metrics_clsc    INTEGER UNSIGNED NOT NULL,
+  project_metrics_roots   INTEGER UNSIGNED NOT NULL,
+  project_metrics_leafs   INTEGER UNSIGNED NOT NULL,
+  project_metrics_interfs INTEGER UNSIGNED NOT NULL,
+  project_metrics_maxdit  INTEGER UNSIGNED NOT NULL
+) ENGINE=InnoDB;
+
 CREATE TABLE IF NOT EXISTS code_file(
   code_file_id   INTEGER UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
   code_file_name CHAR(255),

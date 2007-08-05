@@ -64,17 +64,24 @@ PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
  */
 class PHPUnit_Util_Metrics_Class
 {
-    protected $aif = 0;
-    protected $ahf = 0;
-    protected $dit = 0;
-    protected $mif = 0;
-    protected $mhf = 0;
-    protected $noc = 0;
-    protected $pf  = 0;
-    protected $wmc = 0;
+    protected $aif    = 0;
+    protected $ahf    = 0;
+    protected $dit    = 0;
+    protected $impl   = 0;
+    protected $mif    = 0;
+    protected $mhf    = 0;
+    protected $noc    = 0;
+    protected $pf     = 0;
+    protected $vars   = 0;
+    protected $varsNp = 0;
+    protected $varsI  = 0;
+    protected $wmc    = 0;
+    protected $wmcNp  = 0;
+    protected $wmcI   = 0;
 
     protected $class;
     protected $methods = array();
+    protected $publicMethods = 0;
 
     protected static $cache = array();
     protected static $nocCache = array();
@@ -89,21 +96,16 @@ class PHPUnit_Util_Metrics_Class
     {
         $this->class = $class;
 
-        $this->calculateAIFAHF();
-        $this->calculateMIFMHF();
-        $this->calculateNOC();
-        $this->calculatePF();
+        $this->calculateAttributeMetrics();
+        $this->calculateMethodMetrics();
+        $this->calculateNumberOfChildren();
+        $this->calculatePolymorphismFactor();
 
-        $this->dit = count(PHPUnit_Util_Class::getHierarchy($class->getName()));
+        $this->dit  = count(PHPUnit_Util_Class::getHierarchy($class->getName()));
+        $this->impl = count($class->getInterfaces());
 
-        foreach ($class->getMethods() as $method) {
-            if ($method->getDeclaringClass()->getName() == $class->getName()) {
-                $this->methods[$method->getName()] = PHPUnit_Util_Metrics_Method::factory($method);
-            }
-        }
-
-        foreach ($this->methods as $method) {
-            $this->wmc += $method->getCCN();
+        foreach ($this->class->getMethods() as $method) {
+            $this->methods[$method->getName()] = PHPUnit_Util_Metrics_Method::factory($method);
         }
     }
 
@@ -127,40 +129,18 @@ class PHPUnit_Util_Metrics_Class
     }
 
     /**
-     * Returns the name of the class.
+     * Returns the class.
      *
-     * @return string
+     * @return ReflectionClass
      * @access public
      */
-    public function getName()
+    public function getClass()
     {
-        return $this->class->getName();
+        return $this->class;
     }
 
     /**
-     * 
-     *
-     * @return integer
-     * @access public
-     */
-    public function getStartLine()
-    {
-        return $this->class->getStartLine();
-    }
-
-    /**
-     * 
-     *
-     * @return integer
-     * @access public
-     */
-    public function getEndLine()
-    {
-        return $this->class->getEndLine();
-    }
-
-    /**
-     * 
+     * Returns the methods of this class.
      *
      * @return array
      * @access public
@@ -175,6 +155,7 @@ class PHPUnit_Util_Metrics_Class
      *
      * @return integer
      * @access public
+     * @see    http://www.aivosto.com/project/help/pm-oo-mood.html
      */
     public function getAIF()
     {
@@ -186,6 +167,7 @@ class PHPUnit_Util_Metrics_Class
      *
      * @return integer
      * @access public
+     * @see    http://www.aivosto.com/project/help/pm-oo-mood.html
      */
     public function getAHF()
     {
@@ -193,10 +175,35 @@ class PHPUnit_Util_Metrics_Class
     }
 
     /**
+     * Returns the Class Size (CSZ) of the class.
+     *
+     * @return integer
+     * @access public
+     * @see    http://www.aivosto.com/project/help/pm-oo-misc.html
+     */
+    public function getCSZ()
+    {
+        return count($this->methods) + $this->vars;
+    }
+
+    /**
+     * Returns the Class Interface Size (CIS) of the class.
+     *
+     * @return integer
+     * @access public
+     * @see    http://www.aivosto.com/project/help/pm-oo-misc.html
+     */
+    public function getCIS()
+    {
+        return $this->publicMethods + $this->varsNp;
+    }
+
+    /**
      * Returns the Depth of Inheritance Tree (DIT) for the class.
      *
      * @return integer
      * @access public
+     * @see    http://www.aivosto.com/project/help/pm-oo-ck.html
      */
     public function getDIT()
     {
@@ -204,10 +211,23 @@ class PHPUnit_Util_Metrics_Class
     }
 
     /**
+     * Returns the Number of Interfaces Implemented by the class (IMPL).
+     *
+     * @return integer
+     * @access public
+     * @see    http://www.aivosto.com/project/help/pm-oo-misc.html
+     */
+    public function getIMPL()
+    {
+        return $this->impl;
+    }
+
+    /**
      * Returns the Method Inheritance Factor (MIF) for the class.
      *
      * @return float
      * @access public
+     * @see    http://www.aivosto.com/project/help/pm-oo-mood.html
      */
     public function getMIF()
     {
@@ -219,6 +239,7 @@ class PHPUnit_Util_Metrics_Class
      *
      * @return float
      * @access public
+     * @see    http://www.aivosto.com/project/help/pm-oo-mood.html
      */
     public function getMHF()
     {
@@ -230,6 +251,7 @@ class PHPUnit_Util_Metrics_Class
      *
      * @return integer
      * @access public
+     * @see    http://www.aivosto.com/project/help/pm-oo-ck.html
      */
     public function getNOC()
     {
@@ -241,6 +263,7 @@ class PHPUnit_Util_Metrics_Class
      *
      * @return float
      * @access public
+     * @see    http://www.aivosto.com/project/help/pm-oo-mood.html
      */
     public function getPF()
     {
@@ -248,14 +271,75 @@ class PHPUnit_Util_Metrics_Class
     }
 
     /**
+     * Returns the Number of Variables (VARS) defined by the class.
+     *
+     * @return integer
+     * @access public
+     * @see    http://www.aivosto.com/project/help/pm-oo-misc.html
+     */
+    public function getVARS()
+    {
+        return $this->vars;
+    }
+
+    /**
+     * Returns the Number of Non-Private Variables (VARSnp) defined by the class.
+     *
+     * @return integer
+     * @access public
+     * @see    http://www.aivosto.com/project/help/pm-oo-misc.html
+     */
+    public function getVARSnp()
+    {
+        return $this->varsNp;
+    }
+
+    /**
+     * Returns the Number of Variables (VARSi) defined and inherited by the class.
+     *
+     * @return integer
+     * @access public
+     * @see    http://www.aivosto.com/project/help/pm-oo-misc.html
+     */
+    public function getVARSi()
+    {
+        return $this->varsI;
+    }
+
+    /**
      * Returns the Weighted Methods Per Class (WMC) for the class.
      *
      * @return integer
      * @access public
+     * @see    http://www.aivosto.com/project/help/pm-oo-ck.html
      */
     public function getWMC()
     {
         return $this->wmc;
+    }
+
+    /**
+     * Returns the Weighted Non-Private Methods Per Class (WMCnp) for the class.
+     *
+     * @return integer
+     * @access public
+     * @see    http://www.aivosto.com/project/help/pm-oo-misc.html
+     */
+    public function getWMCnp()
+    {
+        return $this->wmcNp;
+    }
+
+    /**
+     * Returns the Weighted Inherited Methods Per Class (WMCi) for the class.
+     *
+     * @return integer
+     * @access public
+     * @see    http://www.aivosto.com/project/help/pm-oo-misc.html
+     */
+    public function getWMCi()
+    {
+        return $this->wmcI;
     }
 
     /**
@@ -264,21 +348,26 @@ class PHPUnit_Util_Metrics_Class
      *
      * @access protected
      */
-    protected function calculateAIFAHF()
+    protected function calculateAttributeMetrics()
     {
         $attributes          = 0;
         $hiddenAttributes    = 0;
         $inheritedAttributes = 0;
 
         foreach ($this->class->getProperties() as $attribute) {
-            if (!$attribute->isPublic()) {
+            if ($attribute->isPublic()) {
+                $this->varsNp++;
+            } else {
                 $hiddenAttributes++;
             }
 
-            if ($attribute->getDeclaringClass()->getName() != $this->class->getName()) {
+            if ($attribute->getDeclaringClass()->getName() == $this->class->getName()) {
+                $this->vars++;
+            } else {
                 $inheritedAttributes++;
             }
 
+            $this->varsI++;
             $attributes++;
         }
 
@@ -289,26 +378,38 @@ class PHPUnit_Util_Metrics_Class
     }
 
     /**
-     * Calculates the Method Inheritance Factor (MIF) and
-     * Method Hiding Factor (MHF) metrics for the class.
+     * Calculates the Method Inheritance Factor (MIF)
+     * Method Hiding Factor (MHF), Weighted Methods Per Class (WMC),
+     * Weighted Non-Private Methods Per Class (WMCnp), and
+     * Weighted Inherited Methods Per Class (WMCi) metrics for the class.
      *
      * @access protected
      */
-    protected function calculateMIFMHF()
+    protected function calculateMethodMetrics()
     {
         $methods          = 0;
         $hiddenMethods    = 0;
         $inheritedMethods = 0;
 
-        foreach ($this->class->getMethods() as $method) {
+        foreach ($this->methods as $method) {
+            $ccn = $method->getCCN();
+
+            if ($method->getMethod()->getDeclaringClass()->getName() == $this->class->getName()) {
+                $this->wmc += $ccn;
+
+                if ($method->isPublic()) {
+                    $this->publicMethods++;
+                    $this->wmcNp += $ccn;
+                }
+            } else {
+                $inheritedMethods++;
+            }
+
             if (!$method->isPublic()) {
                 $hiddenMethods++;
             }
 
-            if ($method->getDeclaringClass()->getName() != $this->class->getName()) {
-                $inheritedMethods++;
-            }
-
+            $this->wmcI += $ccn;
             $methods++;
         }
 
@@ -323,7 +424,7 @@ class PHPUnit_Util_Metrics_Class
      *
      * @access protected
      */
-    protected function calculateNOC()
+    protected function calculateNumberOfChildren()
     {
         $className = $this->class->getName();
 
@@ -359,7 +460,7 @@ class PHPUnit_Util_Metrics_Class
      * @param  ReflectionClass $class
      * @access protected
      */
-    protected function calculatePF()
+    protected function calculatePolymorphismFactor()
     {
         $parentClass = $this->class->getParentClass();
 

@@ -103,36 +103,14 @@ class PHPUnit_Util_Metrics_Method
     }
 
     /**
-     * Returns the name of the method.
+     * Returns the method.
      *
-     * @return string
+     * @return ReflectionMethod
      * @access public
      */
-    public function getName()
+    public function getMethod()
     {
-        return $this->method->getName();
-    }
-
-    /**
-     * 
-     *
-     * @return integer
-     * @access public
-     */
-    public function getStartLine()
-    {
-        return $this->method->getStartLine();
-    }
-
-    /**
-     * 
-     *
-     * @return integer
-     * @access public
-     */
-    public function getEndLine()
-    {
-        return $this->method->getEndLine();
+        return $this->method;
     }
 
     /**
@@ -150,6 +128,7 @@ class PHPUnit_Util_Metrics_Method
      *   - catch
      *   - AND, &&
      *   - OR, ||
+     *   - ?, :
      *
      * Note that 'else', 'default', and 'finally' don't increment the value
      * any further. On the other hand, a simple method with a 'switch'
@@ -159,6 +138,7 @@ class PHPUnit_Util_Metrics_Method
      *
      * @return integer
      * @access public
+     * @see    http://en.wikipedia.org/wiki/Cyclomatic_complexity
      */
     public function getCCN()
     {
@@ -180,6 +160,12 @@ class PHPUnit_Util_Metrics_Method
 
         foreach ($tokens as $i => $token) {
             if (is_string($token)) {
+                $token = trim($token);
+
+                if ($token == '?' || $token == ':') {
+                    $this->ccn++;
+                }
+
                 continue;
             }
 
