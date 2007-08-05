@@ -66,6 +66,14 @@ class PHPUnit_Util_Metrics_Project
     protected $classes = array();
     protected $files   = array();
 
+    protected $cls     = 0;
+    protected $clsa    = 0;
+    protected $clsc    = 0;
+    protected $interfs = 0;
+    protected $roots   = 0;
+    protected $leafs   = 0;
+    protected $maxDit  = 0;
+
     /**
      * Constructor.
      *
@@ -78,13 +86,39 @@ class PHPUnit_Util_Metrics_Project
             $this->files[$file] = PHPUnit_Util_Metrics_File::factory($file);
 
             foreach ($this->files[$file]->getClasses() as $class) {
-                $this->classes[$class->getName()] = $class;
+                $className = $class->getClass()->getName();
+
+                $this->classes[$className] = $class;
+
+                if ($class->getClass()->isInterface()) {
+                    $this->interfs++;
+                } else {
+                    if ($class->getClass()->isAbstract()) {
+                        $this->clsa++;
+                    } else {
+                        $this->clsc++;
+                    }
+
+                    $this->cls++;
+                }
             }
+        }
+
+        foreach ($this->classes as $class) {
+            if ($class->getNOC() == 0) {
+                $this->leafs++;
+            }
+
+            else if ($class->getClass()->getParentClass() === FALSE) {
+                $this->roots++;
+            }
+
+            $this->maxDit = max($this->maxDit, $class->getDit());
         }
     }
 
     /**
-     * 
+     * Returns the classes of this project.
      *
      * @return array
      * @access public
@@ -107,7 +141,7 @@ class PHPUnit_Util_Metrics_Project
     }
 
     /**
-     * 
+     * Returns the files of this project.
      *
      * @return array
      * @access public
@@ -127,6 +161,90 @@ class PHPUnit_Util_Metrics_Project
     public function getFile($filename)
     {
         return $this->files[$filename];
+    }
+
+    /**
+     * Returns the Number of Classes (CLS) for the project.
+     *
+     * @return integer
+     * @access public
+     * @see    http://www.aivosto.com/project/help/pm-oo-misc.html
+     */
+    public function getCLS()
+    {
+        return $this->cls;
+    }
+
+    /**
+     * Returns the Number of Abstract Classes (CLSa) for the project.
+     *
+     * @return integer
+     * @access public
+     * @see    http://www.aivosto.com/project/help/pm-oo-misc.html
+     */
+    public function getCLSa()
+    {
+        return $this->clsa;
+    }
+
+    /**
+     * Returns the Number of Concrete Classes (CLSc) for the project.
+     *
+     * @return integer
+     * @access public
+     * @see    http://www.aivosto.com/project/help/pm-oo-misc.html
+     */
+    public function getCLSc()
+    {
+        return $this->clsc;
+    }
+
+    /**
+     * Returns the Number of Root Classes (ROOTS) for the project.
+     *
+     * @return integer
+     * @access public
+     * @see    http://www.aivosto.com/project/help/pm-oo-misc.html
+     */
+    public function getRoots()
+    {
+        return $this->roots;
+    }
+
+    /**
+     * Returns the Number of Leaf Classes (LEAFS) for the project.
+     *
+     * @return integer
+     * @access public
+     * @see    http://www.aivosto.com/project/help/pm-oo-misc.html
+     */
+    public function getLeafs()
+    {
+        return $this->leafs;
+    }
+
+    /**
+     * Returns the Number of Interfaces (INTERFS) for the project.
+     *
+     * @return integer
+     * @access public
+     * @see    http://www.aivosto.com/project/help/pm-oo-misc.html
+     */
+    public function getInterfs()
+    {
+        return $this->interfs;
+    }
+
+    /**
+     * Returns the Maximum Depth of Intheritance Tree (maxDIT) for the project.
+     *
+     * @return integer
+     * @access public
+     * @see    http://www.aivosto.com/project/help/pm-oo-misc.html
+     */
+    public function getMaxDit()
+    {
+        return $this->maxDit;
     }
 }
 ?>

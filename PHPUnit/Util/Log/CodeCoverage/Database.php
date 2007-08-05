@@ -107,6 +107,51 @@ class PHPUnit_Util_Log_CodeCoverage_Database
 
         $this->dbh->beginTransaction();
 
+        $stmt = $this->dbh->prepare(
+         'SELECT revision
+            FROM project_metrics
+           WHERE revision = :revision;'
+        );
+
+        $stmt->bindParam(':revision', $revision, PDO::PARAM_INT);
+        $stmt->execute();
+
+        if ($stmt) {
+            $_revision = (int)$stmt->fetchColumn();
+        }
+
+        unset($stmt);
+
+        if ($_revision == 0) {
+            $stmt = $this->dbh->prepare(
+              'INSERT INTO project_metrics
+                           (revision, project_metrics_cls, project_metrics_clsa,
+                           project_metrics_clsc, project_metrics_roots,
+                           project_metrics_leafs, project_metrics_interfs,
+                           project_metrics_maxdit)
+                     VALUES(:revision, :cls, :clsa, :clsc, :roots, :leafs,
+                            :interfs, :maxdit);'
+            );
+
+            $cls     = $projectMetrics->getCLS();
+            $clsa    = $projectMetrics->getCLSa();
+            $clsc    = $projectMetrics->getCLSc();
+            $interfs = $projectMetrics->getInterfs();
+            $roots   = $projectMetrics->getRoots();
+            $leafs   = $projectMetrics->getLeafs();
+            $maxDit  = $projectMetrics->getMaxDit();
+
+            $stmt->bindParam(':revision', $revision, PDO::PARAM_INT);
+            $stmt->bindParam(':cls', $cls, PDO::PARAM_INT);
+            $stmt->bindParam(':clsa', $clsa, PDO::PARAM_INT);
+            $stmt->bindParam(':clsc', $clsc, PDO::PARAM_INT);
+            $stmt->bindParam(':roots', $roots, PDO::PARAM_INT);
+            $stmt->bindParam(':leafs', $leafs, PDO::PARAM_INT);
+            $stmt->bindParam(':interfs', $interfs, PDO::PARAM_INT);
+            $stmt->bindParam(':maxdit', $maxDit, PDO::PARAM_INT);
+            $stmt->execute();
+        }
+
         foreach ($files as $file) {
             $filename    = str_replace($commonPath, '', $file);
             $fileId      = FALSE;
@@ -163,9 +208,9 @@ class PHPUnit_Util_Log_CodeCoverage_Database
                 );
 
                 foreach ($fileMetrics->getClasses() as $classMetrics) {
-                    $className = $classMetrics->getName();
-                    $startLine = $classMetrics->getStartLine();
-                    $endLine   = $classMetrics->getEndLine();
+                    $className = $classMetrics->getClass()->getName();
+                    $startLine = $classMetrics->getClass()->getStartLine();
+                    $endLine   = $classMetrics->getClass()->getEndLine();
                     $aif       = $classMetrics->getAIF();
                     $ahf       = $classMetrics->getAHF();
                     $dit       = $classMetrics->getDIT();
@@ -201,9 +246,9 @@ class PHPUnit_Util_Log_CodeCoverage_Database
                     );
 
                     foreach ($classMetrics->getMethods() as $methodMetrics) {
-                        $methodName = $methodMetrics->getName();
-                        $startLine  = $methodMetrics->getStartLine();
-                        $endLine    = $methodMetrics->getEndLine();
+                        $methodName = $methodMetrics->getMethod()->getName();
+                        $startLine  = $methodMetrics->getMethod()->getStartLine();
+                        $endLine    = $methodMetrics->getMethod()->getEndLine();
                         $ccn        = $methodMetrics->getCCN();
 
                         $stmt2->bindParam(':classId', $classId, PDO::PARAM_INT);

@@ -63,6 +63,17 @@ CREATE INDEX IF NOT EXISTS test_node_root      ON test (node_root);
 CREATE INDEX IF NOT EXISTS test_node_left      ON test (node_left);
 CREATE INDEX IF NOT EXISTS test_node_right     ON test (node_right);
 
+CREATE TABLE IF NOT EXISTS project_metrics(
+  revision                INTEGER PRIMARY KEY,
+  project_metrics_cls     INTEGER,
+  project_metrics_clsa    INTEGER,
+  project_metrics_clsc    INTEGER,
+  project_metrics_roots   INTEGER,
+  project_metrics_leafs   INTEGER,
+  project_metrics_interfs INTEGER,
+  project_metrics_maxdit  INTEGER
+);
+
 CREATE TABLE IF NOT EXISTS code_file(
   code_file_id   INTEGER PRIMARY KEY AUTOINCREMENT,
   code_file_name TEXT,
