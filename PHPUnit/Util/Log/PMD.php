@@ -95,6 +95,8 @@ class PHPUnit_Util_Log_PMD extends PHPUnit_Util_Printer
             $xmlFile->setAttribute('name', $fileName);
 
             foreach ($fileMetrics->getClasses() as $className => $classMetrics) {
+                $classStartLine = $classMetrics->getClass()->getStartLine();
+
                 $dit = $classMetrics->getDIT();
 
                 if ($dit > 6) {
@@ -102,7 +104,7 @@ class PHPUnit_Util_Log_PMD extends PHPUnit_Util_Printer
                       'Depth of Inheritance Tree (DIT) should not exceed 6.',
                       $xmlFile,
                       'DepthOfInheritanceTree',
-                      $classMetrics->getClass()->getStartLine(),
+                      $classStartLine,
                       '',
                       $className
                     );
@@ -115,7 +117,7 @@ class PHPUnit_Util_Log_PMD extends PHPUnit_Util_Printer
                       'Attribute Hiding Factor (AHF) should be between 8% and 25%.',
                       $xmlFile,
                       'AttributeHidingFactor',
-                      $classMetrics->getClass()->getStartLine(),
+                      $classStartLine,
                       '',
                       $className
                     );
@@ -128,7 +130,7 @@ class PHPUnit_Util_Log_PMD extends PHPUnit_Util_Printer
                       'Attribute Inheritance Factor (AIF) should be between 0% and 48%.',
                       $xmlFile,
                       'AttributeInheritanceFactor',
-                      $classMetrics->getClass()->getStartLine(),
+                      $classStartLine,
                       '',
                       $className
                     );
@@ -141,7 +143,7 @@ class PHPUnit_Util_Log_PMD extends PHPUnit_Util_Printer
                       'Method Hiding Factor (MHF) should be between 8% and 25%.',
                       $xmlFile,
                       'MethodHidingFactor',
-                      $classMetrics->getClass()->getStartLine(),
+                      $classStartLine,
                       '',
                       $className
                     );
@@ -154,13 +156,15 @@ class PHPUnit_Util_Log_PMD extends PHPUnit_Util_Printer
                       'Method Inheritance Factor (MIF) should be between 20% and 80%.',
                       $xmlFile,
                       'MethodInheritanceFactor',
-                      $classMetrics->getClass()->getStartLine(),
+                      $classStartLine,
                       '',
                       $className
                     );
                 }
 
                 foreach ($classMetrics->getMethods() as $methodName => $methodMetrics) {
+                    $methodStartLine = $methodMetrics->getMethod()->getStartLine();
+
                     $ccn = $methodMetrics->getCCN();
 
                     $violation = '';
@@ -178,7 +182,31 @@ class PHPUnit_Util_Log_PMD extends PHPUnit_Util_Printer
                           $violation,
                           $xmlFile,
                           'CyclomaticComplexity',
-                          $methodMetrics->getMethod()->getStartLine(),
+                          $methodStartLine,
+                          '',
+                          $className,
+                          $methodName
+                        );
+                    }
+
+                    $coverage = $methodMetrics->getCoverage();
+
+                    $violation = '';
+
+                    if ($coverage <= 35) {
+                        $violation = 'The code coverage is low.';
+                    }
+
+                    else if ($coverage > 35 && $coverage < 70) {
+                        $violation = 'The code coverage is medium.';
+                    }
+
+                    if (!empty($violation)) {
+                        $this->addViolation(
+                          $violation,
+                          $xmlFile,
+                          'CodeCoverage',
+                          $methodStartLine,
                           '',
                           $className,
                           $methodName
@@ -188,6 +216,8 @@ class PHPUnit_Util_Log_PMD extends PHPUnit_Util_Printer
             }
 
             foreach ($fileMetrics->getFunctions() as $functionName => $functionMetrics) {
+                $functionStartLine = $functionMetrics->getFunction()->getStartLine();
+
                 $ccn = $functionMetrics->getCCN();
 
                 $violation = '';
@@ -205,11 +235,35 @@ class PHPUnit_Util_Log_PMD extends PHPUnit_Util_Printer
                       $violation,
                       $xmlFile,
                       'CyclomaticComplexity',
-                      $functionMetrics->getFunction()->getStartLine(),
+                      $functionStartLine,
                       '',
                       '',
                       '',
                       $functionName
+                    );
+                }
+
+                $coverage = $methodMetrics->getCoverage();
+
+                $violation = '';
+
+                if ($coverage <= 35) {
+                    $violation = 'The code coverage is low.';
+                }
+
+                else if ($coverage > 35 && $coverage < 70) {
+                    $violation = 'The code coverage is medium.';
+                }
+
+                if (!empty($violation)) {
+                    $this->addViolation(
+                      $violation,
+                      $xmlFile,
+                      'CodeCoverage',
+                      $methodStartLine,
+                      '',
+                      $className,
+                      $methodName
                     );
                 }
             }
