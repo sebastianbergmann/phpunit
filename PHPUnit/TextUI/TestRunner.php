@@ -62,6 +62,7 @@ require_once 'PHPUnit/Util/Log/Database.php';
 require_once 'PHPUnit/Util/Log/GraphViz.php';
 require_once 'PHPUnit/Util/Log/JSON.php';
 require_once 'PHPUnit/Util/Log/TAP.php';
+require_once 'PHPUnit/Util/Log/PMD.php';
 require_once 'PHPUnit/Util/Log/XML.php';
 
 PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
@@ -230,7 +231,7 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
             }
         }
 
-        if (isset($arguments['coverageXML']) && extension_loaded('xdebug')) {
+        if ((isset($arguments['coverageXML']) || isset($arguments['pmdXML'])) && extension_loaded('xdebug')) {
             $result->collectCodeCoverageInformation(TRUE);
         }
 
@@ -326,6 +327,17 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
               $arguments['testDatabasePrefix']
             );
 
+            $this->printer->write("\n");
+        }
+
+        if (isset($arguments['pmdXML']) && extension_loaded('tokenizer') && extension_loaded('xdebug')) {
+            $this->printer->write("\nWriting violations report XML file, this may take a moment.");
+
+            $writer = new PHPUnit_Util_Log_PMD(
+              $arguments['pmdXML']
+            );
+
+            $writer->process($result);
             $this->printer->write("\n");
         }
 

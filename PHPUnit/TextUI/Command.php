@@ -166,6 +166,7 @@ class PHPUnit_TextUI_Command
 
         if (extension_loaded('xdebug')) {
             $longOptions[] = 'coverage-xml=';
+            $longOptions[] = 'pmd-xml=';
             $longOptions[] = 'report=';
         }
 
@@ -250,6 +251,11 @@ class PHPUnit_TextUI_Command
 
                 case '--log-xml': {
                     $arguments['xmlLogfile'] = $option[1];
+                }
+                break;
+
+                case '--pmd-xml': {
+                    $arguments['pmdXML'] = $option[1];
                 }
                 break;
 
@@ -434,7 +440,13 @@ class PHPUnit_TextUI_Command
 
         print "  --log-json <file>      Log test execution in JSON format.\n" .
               "  --log-tap <file>       Log test execution in TAP format to file.\n" .
-              "  --log-xml <file>       Log test execution in XML format to file.\n\n";
+              "  --log-xml <file>       Log test execution in XML format to file.\n";
+
+        if (extension_loaded('xdebug')) {
+            print "  --pmd-xml <file>  Write violations report in PMD XML format.\n";
+        }
+
+        print "\n";
 
         if (extension_loaded('xdebug')) {
             print "  --coverage-xml <file>  Write code coverage information in XML format.\n";

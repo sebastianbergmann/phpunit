@@ -63,8 +63,9 @@ PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
  */
 class PHPUnit_Util_Metrics_Project
 {
-    protected $classes = array();
-    protected $files   = array();
+    protected $classes   = array();
+    protected $files     = array();
+    protected $functions = array();
 
     protected $cls     = 0;
     protected $clsa    = 0;
@@ -85,6 +86,10 @@ class PHPUnit_Util_Metrics_Project
     {
         foreach ($files as $file) {
             $this->files[$file] = PHPUnit_Util_Metrics_File::factory($file, $codeCoverage);
+
+            foreach ($this->files[$file]->getFunctions() as $function) {
+                $this->functions[$function->getFunction()->getName()] = $function;
+            }
 
             foreach ($this->files[$file]->getClasses() as $class) {
                 $className = $class->getClass()->getName();
@@ -162,6 +167,29 @@ class PHPUnit_Util_Metrics_Project
     public function getFile($filename)
     {
         return $this->files[$filename];
+    }
+
+    /**
+     * Functions.
+     *
+     * @return array
+     * @access public
+     */
+    public function getFunctions()
+    {
+        return $this->functions;
+    }
+
+    /**
+     * A function.
+     *
+     * @param  string $functionName
+     * @return ReflectionClass
+     * @access public
+     */
+    public function getFunction($functionName)
+    {
+        return $this->functions[$functionName];
     }
 
     /**
