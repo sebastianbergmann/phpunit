@@ -112,66 +112,6 @@ class PHPUnit_Util_Log_PMD extends PHPUnit_Util_Printer
                         $added = TRUE;
                     }
 
-                    $ahf = $classMetrics->getAHF();
-
-                    if (!($ahf >= 8 && $ahf <= 25)) {
-                        $this->addViolation(
-                          'Attribute Hiding Factor (AHF) should be between 8% and 25%.',
-                          $xmlFile,
-                          'AttributeHidingFactor',
-                          $classStartLine,
-                          '',
-                          $className
-                        );
-
-                        $added = TRUE;
-                    }
-
-                    $aif = $classMetrics->getAIF();
-
-                    if (!($aif >= 0 && $aif <= 48)) {
-                        $this->addViolation(
-                          'Attribute Inheritance Factor (AIF) should be between 0% and 48%.',
-                          $xmlFile,
-                          'AttributeInheritanceFactor',
-                          $classStartLine,
-                          '',
-                          $className
-                        );
-
-                        $added = TRUE;
-                    }
-
-                    $mhf = $classMetrics->getMHF();
-
-                    if (!($mhf >= 8 && $mhf <= 25)) {
-                        $this->addViolation(
-                          'Method Hiding Factor (MHF) should be between 8% and 25%.',
-                          $xmlFile,
-                          'MethodHidingFactor',
-                          $classStartLine,
-                          '',
-                          $className
-                        );
-
-                        $added = TRUE;
-                    }
-
-                    $mif = $classMetrics->getMIF();
-
-                    if (!($mif >= 20 && $mif <= 80)) {
-                        $this->addViolation(
-                          'Method Inheritance Factor (MIF) should be between 20% and 80%.',
-                          $xmlFile,
-                          'MethodInheritanceFactor',
-                          $classStartLine,
-                          '',
-                          $className
-                        );
-
-                        $added = TRUE;
-                    }
-
                     foreach ($classMetrics->getMethods() as $methodName => $methodMetrics) {
                         $methodStartLine = $methodMetrics->getMethod()->getStartLine();
 
