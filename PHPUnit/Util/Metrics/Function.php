@@ -50,7 +50,7 @@ require_once 'PHPUnit/Util/Filter.php';
 PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
 
 /**
- * Method-Level Metrics.
+ * Function- and Method-Level Metrics.
  *
  * @category   Testing
  * @package    PHPUnit
@@ -61,7 +61,7 @@ PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
  * @link       http://www.phpunit.de/
  * @since      Class available since Release 3.2.0
  */
-class PHPUnit_Util_Metrics_Method
+class PHPUnit_Util_Metrics_Function
 {
     protected $ccn           = 1;
     protected $coverage      = 0;
@@ -70,20 +70,23 @@ class PHPUnit_Util_Metrics_Method
     protected $locExecutable = 0;
     protected $locExecuted   = 0;
 
-    protected $method;
+    protected $function;
+    protected $scope;
 
     protected static $cache = array();
 
     /**
      * Constructor.
      *
-     * @param  ReflectionMethod $method
-     * @param  array            $codeCoverage
+     * @param  ReflectionFunction|ReflectionMethod $function
+     * @param  array                               $codeCoverage
+     * @param  array              $codeCoverage
      * @access protected
      */
-    protected function __construct(ReflectionMethod $method, &$codeCoverage = array())
+    protected function __construct($scope, $function, &$codeCoverage = array())
     {
-        $this->method = $method;
+        $this->scope    = $scope;
+        $this->function = $function;
 
         $this->calculateCCN();
         $this->calculateCodeCoverage($codeCoverage);
@@ -93,33 +96,50 @@ class PHPUnit_Util_Metrics_Method
     /**
      * Factory.
      *
-     * @param  ReflectionMethod $method
-     * @param  array            $codeCoverage
+     * @param  ReflectionFunction|ReflectionMethod $function
+     * @param  array                               $codeCoverage
      * @return PHPUnit_Util_Metrics_Method
      * @access public
      * @static
      */
-    public static function factory(ReflectionMethod $method, &$codeCoverage = array())
+    public static function factory($function, &$codeCoverage = array())
     {
-        $className  = $method->getDeclaringClass()->getName();
-        $methodName = $method->getName();
-
-        if (!isset(self::$cache[$className][$methodName])) {
-            self::$cache[$className][$methodName] = new PHPUnit_Util_Metrics_Method($method, $codeCoverage);
+        if ($function instanceof ReflectionMethod) {
+            $scope = $function->getDeclaringClass()->getName();
+        } else {
+            $scope = 'global';
         }
 
-        return self::$cache[$className][$methodName];
+        $name = $function->getName();
+
+        if (!isset(self::$cache[$scope][$name])) {
+            self::$cache[$scope][$name] = new PHPUnit_Util_Metrics_Function($scope, $function, $codeCoverage);
+        }
+
+        return self::$cache[$scope][$name];
+    }
+
+    /**
+     * Returns the function.
+     *
+     * @return ReflectionFunction
+     * @access public
+     */
+    public function getFunction()
+    {
+        return $this->function;
     }
 
     /**
      * Returns the method.
+     * Alias for getFunction().
      *
      * @return ReflectionMethod
      * @access public
      */
     public function getMethod()
     {
-        return $this->method;
+        return $this->function;
     }
 
     /**
@@ -219,7 +239,7 @@ class PHPUnit_Util_Metrics_Method
     protected function calculateCCN()
     {
         $source = PHPUnit_Util_Class::getMethodSource(
-          $this->method->getDeclaringClass()->getName(), $this->method->getName()
+          $this->scope, $this->function->getName()
         );
 
         $tokens = token_get_all('<?php' . $source . '?>');
@@ -265,9 +285,9 @@ class PHPUnit_Util_Metrics_Method
     {
         $statistics = PHPUnit_Util_CodeCoverage::getStatistics(
           $codeCoverage,
-          $this->method->getFileName(),
-          $this->method->getStartLine(),
-          $this->method->getEndLine()
+          $this->function->getFileName(),
+          $this->function->getStartLine(),
+          $this->function->getEndLine()
         );
 
         $this->coverage       = $statistics['coverage'];

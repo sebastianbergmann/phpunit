@@ -237,39 +237,100 @@ class PHPUnit_Util_Log_CodeCoverage_Database
             $stmt->bindParam(':locExecuted', $locExecuted, PDO::PARAM_INT);
             $stmt->execute();
 
+            $stmtSelectFunctionId = $this->dbh->prepare(
+              'SELECT code_function_id
+                 FROM code_file, code_function
+                WHERE code_function.code_file_id       = code_file.code_file_id
+                  AND code_file.revision               = :revision
+                  AND code_function.code_function_name = :functionName;'
+            );
+
+            $stmtInsertFunction = $this->dbh->prepare(
+              'INSERT INTO metrics_function
+                           (run_id, code_function_id, metrics_function_coverage,
+                           metrics_function_loc, metrics_function_loc_executable, metrics_function_loc_executed,
+                           metrics_function_ccn, metrics_function_crap)
+                     VALUES(:runId, :functionId, :coverage, :loc,
+                            :locExecutable, :locExecuted, :ccn, :crap);'
+            );
+
+            $stmtSelectClassId = $this->dbh->prepare(
+              'SELECT code_class_id
+                 FROM code_file, code_class
+                WHERE code_class.code_file_id    = code_file.code_file_id
+                  AND code_file.revision         = :revision
+                  AND code_class.code_class_name = :className;'
+            );
+
+            $stmtInsertClass = $this->dbh->prepare(
+              'INSERT INTO metrics_class
+                           (run_id, code_class_id, metrics_class_coverage,
+                           metrics_class_loc, metrics_class_loc_executable, metrics_class_loc_executed,
+                           metrics_class_aif, metrics_class_ahf,
+                           metrics_class_cis, metrics_class_csz, metrics_class_dit,
+                           metrics_class_impl, metrics_class_mif, metrics_class_mhf,
+                           metrics_class_noc, metrics_class_pf, metrics_class_vars,
+                           metrics_class_varsnp, metrics_class_varsi,
+                           metrics_class_wmc, metrics_class_wmcnp, metrics_class_wmci)
+                     VALUES(:runId, :classId, :coverage, :loc, :locExecutable,
+                            :locExecuted, :aif, :ahf, :cis, :csz, :dit, :impl, 
+                            :mif, :mhf, :noc, :pf, :vars, :varsnp, :varsi,
+                            :wmc, :wmcnp, :wmci);'
+            );
+
+            $stmtSelectMethodId = $this->dbh->prepare(
+              'SELECT code_method_id
+                 FROM code_file, code_class, code_method
+                WHERE code_class.code_file_id      = code_file.code_file_id
+                  AND code_class.code_class_id     = code_method.code_class_id
+                  AND code_file.revision           = :revision
+                  AND code_class.code_class_name   = :className
+                  AND code_method.code_method_name = :methodName;'
+            );
+
+            $stmtInsertMethod = $this->dbh->prepare(
+              'INSERT INTO metrics_method
+                           (run_id, code_method_id, metrics_method_coverage,
+                           metrics_method_loc, metrics_method_loc_executable, metrics_method_loc_executed,
+                           metrics_method_ccn, metrics_method_crap)
+                     VALUES(:runId, :methodId, :coverage, :loc,
+                            :locExecutable, :locExecuted, :ccn, :crap);'
+            );
+
+            foreach ($fileMetrics->getFunctions() as $functionMetrics) {
+                $functionName = $functionMetrics->getFunction()->getName();
+
+                $stmtSelectFunctionId->bindParam(':functionName', $functionName, PDO::PARAM_STR);
+                $stmtSelectFunctionId->bindParam(':revision', $revision, PDO::PARAM_INT);
+                $stmtSelectFunctionId->execute();
+
+                $functionId    = (int)$stmtSelectFunctionId->fetchColumn();
+                $coverage      = $functionMetrics->getCoverage();
+                $loc           = $functionMetrics->getLoc();
+                $locExecutable = $functionMetrics->getLocExecutable();
+                $locExecuted   = $functionMetrics->getLocExecuted();
+                $ccn           = $functionMetrics->getCCN();
+                $crap          = $functionMetrics->getCrapIndex();
+
+                $stmtInsertFunction->bindParam(':runId', $runId, PDO::PARAM_INT);
+                $stmtInsertFunction->bindParam(':functionId', $functionId, PDO::PARAM_INT);
+                $stmtInsertFunction->bindParam(':coverage', $coverage);
+                $stmtInsertFunction->bindParam(':loc', $loc, PDO::PARAM_INT);
+                $stmtInsertFunction->bindParam(':locExecutable', $locExecutable, PDO::PARAM_INT);
+                $stmtInsertFunction->bindParam(':locExecuted', $locExecuted, PDO::PARAM_INT);
+                $stmtInsertFunction->bindParam(':ccn', $ccn);
+                $stmtInsertFunction->bindParam(':crap', $crap);
+                $stmtInsertFunction->execute();
+            }
+
             foreach ($fileMetrics->getClasses() as $classMetrics) {
                 $className = $classMetrics->getClass()->getName();
 
-                $stmt = $this->dbh->prepare(
-                  'SELECT code_class_id
-                     FROM code_file, code_class
-                    WHERE code_class.code_file_id    = code_file.code_file_id
-                      AND code_file.revision         = :revision
-                      AND code_class.code_class_name = :className;'
-                );
+                $stmtSelectClassId->bindParam(':className', $className, PDO::PARAM_STR);
+                $stmtSelectClassId->bindParam(':revision', $revision, PDO::PARAM_INT);
+                $stmtSelectClassId->execute();
 
-                $stmt->bindParam(':className', $className, PDO::PARAM_STR);
-                $stmt->bindParam(':revision', $revision, PDO::PARAM_INT);
-                $stmt->execute();
-
-                $classId = (int)$stmt->fetchColumn();
-
-                $stmt = $this->dbh->prepare(
-                  'INSERT INTO metrics_class
-                               (run_id, code_class_id, metrics_class_coverage,
-                               metrics_class_loc, metrics_class_loc_executable, metrics_class_loc_executed,
-                               metrics_class_aif, metrics_class_ahf,
-                               metrics_class_cis, metrics_class_csz, metrics_class_dit,
-                               metrics_class_impl, metrics_class_mif, metrics_class_mhf,
-                               metrics_class_noc, metrics_class_pf, metrics_class_vars,
-                               metrics_class_varsnp, metrics_class_varsi,
-                               metrics_class_wmc, metrics_class_wmcnp, metrics_class_wmci)
-                         VALUES(:runId, :classId, :coverage, :loc, :locExecutable,
-                                :locExecuted, :aif, :ahf, :cis, :csz, :dit, :impl, 
-                                :mif, :mhf, :noc, :pf, :vars, :varsnp, :varsi,
-                                :wmc, :wmcnp, :wmci);'
-                );
-
+                $classId       = (int)$stmtSelectClassId->fetchColumn();
                 $coverage      = $classMetrics->getCoverage();
                 $loc           = $classMetrics->getLoc();
                 $locExecutable = $classMetrics->getLocExecutable();
@@ -291,59 +352,39 @@ class PHPUnit_Util_Log_CodeCoverage_Database
                 $wmcnp         = $classMetrics->getWMCnp();
                 $wmci          = $classMetrics->getWMCi();
 
-                $stmt->bindParam(':runId', $runId, PDO::PARAM_INT);
-                $stmt->bindParam(':classId', $classId, PDO::PARAM_INT);
-                $stmt->bindParam(':coverage', $coverage);
-                $stmt->bindParam(':loc', $loc, PDO::PARAM_INT);
-                $stmt->bindParam(':locExecutable', $locExecutable, PDO::PARAM_INT);
-                $stmt->bindParam(':locExecuted', $locExecuted, PDO::PARAM_INT);
-                $stmt->bindParam(':aif', $aif);
-                $stmt->bindParam(':ahf', $ahf);
-                $stmt->bindParam(':cis', $cis, PDO::PARAM_INT);
-                $stmt->bindParam(':csz', $csz, PDO::PARAM_INT);
-                $stmt->bindParam(':dit', $dit, PDO::PARAM_INT);
-                $stmt->bindParam(':impl', $impl, PDO::PARAM_INT);
-                $stmt->bindParam(':mif', $mif);
-                $stmt->bindParam(':mhf', $mhf);
-                $stmt->bindParam(':noc', $noc, PDO::PARAM_INT);
-                $stmt->bindParam(':pf', $pf);
-                $stmt->bindParam(':vars', $vars, PDO::PARAM_INT);
-                $stmt->bindParam(':varsnp', $varsnp, PDO::PARAM_INT);
-                $stmt->bindParam(':varsi', $varsi, PDO::PARAM_INT);
-                $stmt->bindParam(':wmc', $wmc, PDO::PARAM_INT);
-                $stmt->bindParam(':wmcnp', $wmcnp, PDO::PARAM_INT);
-                $stmt->bindParam(':wmci', $wmci, PDO::PARAM_INT);
-                $stmt->execute();
+                $stmtInsertClass->bindParam(':runId', $runId, PDO::PARAM_INT);
+                $stmtInsertClass->bindParam(':classId', $classId, PDO::PARAM_INT);
+                $stmtInsertClass->bindParam(':coverage', $coverage);
+                $stmtInsertClass->bindParam(':loc', $loc, PDO::PARAM_INT);
+                $stmtInsertClass->bindParam(':locExecutable', $locExecutable, PDO::PARAM_INT);
+                $stmtInsertClass->bindParam(':locExecuted', $locExecuted, PDO::PARAM_INT);
+                $stmtInsertClass->bindParam(':aif', $aif);
+                $stmtInsertClass->bindParam(':ahf', $ahf);
+                $stmtInsertClass->bindParam(':cis', $cis, PDO::PARAM_INT);
+                $stmtInsertClass->bindParam(':csz', $csz, PDO::PARAM_INT);
+                $stmtInsertClass->bindParam(':dit', $dit, PDO::PARAM_INT);
+                $stmtInsertClass->bindParam(':impl', $impl, PDO::PARAM_INT);
+                $stmtInsertClass->bindParam(':mif', $mif);
+                $stmtInsertClass->bindParam(':mhf', $mhf);
+                $stmtInsertClass->bindParam(':noc', $noc, PDO::PARAM_INT);
+                $stmtInsertClass->bindParam(':pf', $pf);
+                $stmtInsertClass->bindParam(':vars', $vars, PDO::PARAM_INT);
+                $stmtInsertClass->bindParam(':varsnp', $varsnp, PDO::PARAM_INT);
+                $stmtInsertClass->bindParam(':varsi', $varsi, PDO::PARAM_INT);
+                $stmtInsertClass->bindParam(':wmc', $wmc, PDO::PARAM_INT);
+                $stmtInsertClass->bindParam(':wmcnp', $wmcnp, PDO::PARAM_INT);
+                $stmtInsertClass->bindParam(':wmci', $wmci, PDO::PARAM_INT);
+                $stmtInsertClass->execute();
 
                 foreach ($classMetrics->getMethods() as $methodMetrics) {
                     $methodName = $methodMetrics->getMethod()->getName();
 
-                    $stmt = $this->dbh->prepare(
-                      'SELECT code_method_id
-                         FROM code_file, code_class, code_method
-                        WHERE code_class.code_file_id      = code_file.code_file_id
-                          AND code_class.code_class_id     = code_method.code_class_id
-                          AND code_file.revision           = :revision
-                          AND code_class.code_class_name   = :className
-                          AND code_method.code_method_name = :methodName;'
-                    );
+                    $stmtSelectMethodId->bindParam(':className', $className, PDO::PARAM_STR);
+                    $stmtSelectMethodId->bindParam(':methodName', $methodName, PDO::PARAM_STR);
+                    $stmtSelectMethodId->bindParam(':revision', $revision, PDO::PARAM_INT);
+                    $stmtSelectMethodId->execute();
 
-                    $stmt->bindParam(':className', $className, PDO::PARAM_STR);
-                    $stmt->bindParam(':methodName', $methodName, PDO::PARAM_STR);
-                    $stmt->bindParam(':revision', $revision, PDO::PARAM_INT);
-                    $stmt->execute();
-
-                    $methodId = (int)$stmt->fetchColumn();
-
-                    $stmt = $this->dbh->prepare(
-                      'INSERT INTO metrics_method
-                                   (run_id, code_method_id, metrics_method_coverage,
-                                   metrics_method_loc, metrics_method_loc_executable, metrics_method_loc_executed,
-                                   metrics_method_ccn, metrics_method_crap)
-                             VALUES(:runId, :methodId, :coverage, :loc,
-                                    :locExecutable, :locExecuted, :ccn, :crap);'
-                    );
-
+                    $methodId      = (int)$stmtSelectMethodId->fetchColumn();
                     $coverage      = $methodMetrics->getCoverage();
                     $loc           = $methodMetrics->getLoc();
                     $locExecutable = $methodMetrics->getLocExecutable();
@@ -351,17 +392,24 @@ class PHPUnit_Util_Log_CodeCoverage_Database
                     $ccn           = $methodMetrics->getCCN();
                     $crap          = $methodMetrics->getCrapIndex();
 
-                    $stmt->bindParam(':runId', $runId, PDO::PARAM_INT);
-                    $stmt->bindParam(':methodId', $methodId, PDO::PARAM_INT);
-                    $stmt->bindParam(':coverage', $coverage);
-                    $stmt->bindParam(':loc', $loc, PDO::PARAM_INT);
-                    $stmt->bindParam(':locExecutable', $locExecutable, PDO::PARAM_INT);
-                    $stmt->bindParam(':locExecuted', $locExecuted, PDO::PARAM_INT);
-                    $stmt->bindParam(':ccn', $ccn);
-                    $stmt->bindParam(':crap', $crap);
-                    $stmt->execute();
+                    $stmtInsertMethod->bindParam(':runId', $runId, PDO::PARAM_INT);
+                    $stmtInsertMethod->bindParam(':methodId', $methodId, PDO::PARAM_INT);
+                    $stmtInsertMethod->bindParam(':coverage', $coverage);
+                    $stmtInsertMethod->bindParam(':loc', $loc, PDO::PARAM_INT);
+                    $stmtInsertMethod->bindParam(':locExecutable', $locExecutable, PDO::PARAM_INT);
+                    $stmtInsertMethod->bindParam(':locExecuted', $locExecuted, PDO::PARAM_INT);
+                    $stmtInsertMethod->bindParam(':ccn', $ccn);
+                    $stmtInsertMethod->bindParam(':crap', $crap);
+                    $stmtInsertMethod->execute();
                 }
             }
+
+            unset($stmtSelectFunctionId);
+            unset($stmtInsertFunction);
+            unset($stmtSelectClassId);
+            unset($stmtInsertClass);
+            unset($stmtSelectMethodId);
+            unset($stmtInsertMethod);
 
             $stmt = $this->dbh->prepare(
               'SELECT code_line_id, code_line_covered

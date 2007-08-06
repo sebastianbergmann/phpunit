@@ -46,7 +46,7 @@
 
 require_once 'PHPUnit/Util/Class.php';
 require_once 'PHPUnit/Util/Filter.php';
-require_once 'PHPUnit/Util/Metrics/Method.php';
+require_once 'PHPUnit/Util/Metrics/Function.php';
 
 PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
 
@@ -111,7 +111,7 @@ class PHPUnit_Util_Metrics_Class
         $this->impl = count($class->getInterfaces());
 
         foreach ($this->class->getMethods() as $method) {
-            $this->methods[$method->getName()] = PHPUnit_Util_Metrics_Method::factory($method, $codeCoverage);
+            $this->methods[$method->getName()] = PHPUnit_Util_Metrics_Function::factory($method, $codeCoverage);
         }
     }
 
