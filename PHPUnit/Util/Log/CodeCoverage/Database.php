@@ -89,16 +89,17 @@ class PHPUnit_Util_Log_CodeCoverage_Database
      * Stores code coverage information.
      *
      * @param  PHPUnit_Framework_TestResult $result
+     * @param  integer                      $runId
      * @param  integer                      $revision
      * @param  string                       $commonPath
      * @access public
      */
-    public function storeCodeCoverage(PHPUnit_Framework_TestResult $result, $revision, $commonPath = '')
+    public function storeCodeCoverage(PHPUnit_Framework_TestResult $result, $runId, $revision, $commonPath = '')
     {
         $codeCoverage   = $result->getCodeCoverageInformation(FALSE, TRUE);
         $summary        = PHPUnit_Util_CodeCoverage::getSummary($codeCoverage);
         $files          = array_keys($summary);
-        $projectMetrics = new PHPUnit_Util_Metrics_Project($files);
+        $projectMetrics = new PHPUnit_Util_Metrics_Project($files, $summary);
         $storedClasses  = array();
 
         if (empty($commonPath)) {
@@ -107,59 +108,11 @@ class PHPUnit_Util_Log_CodeCoverage_Database
 
         $this->dbh->beginTransaction();
 
-        $stmt = $this->dbh->prepare(
-         'SELECT revision
-            FROM project_metrics
-           WHERE revision = :revision;'
-        );
-
-        $stmt->bindParam(':revision', $revision, PDO::PARAM_INT);
-        $stmt->execute();
-
-        if ($stmt) {
-            $_revision = (int)$stmt->fetchColumn();
-        }
-
-        unset($stmt);
-
-        if ($_revision == 0) {
-            $stmt = $this->dbh->prepare(
-              'INSERT INTO project_metrics
-                           (revision, project_metrics_cls, project_metrics_clsa,
-                           project_metrics_clsc, project_metrics_roots,
-                           project_metrics_leafs, project_metrics_interfs,
-                           project_metrics_maxdit)
-                     VALUES(:revision, :cls, :clsa, :clsc, :roots, :leafs,
-                            :interfs, :maxdit);'
-            );
-
-            $cls     = $projectMetrics->getCLS();
-            $clsa    = $projectMetrics->getCLSa();
-            $clsc    = $projectMetrics->getCLSc();
-            $interfs = $projectMetrics->getInterfs();
-            $roots   = $projectMetrics->getRoots();
-            $leafs   = $projectMetrics->getLeafs();
-            $maxDit  = $projectMetrics->getMaxDit();
-
-            $stmt->bindParam(':revision', $revision, PDO::PARAM_INT);
-            $stmt->bindParam(':cls', $cls, PDO::PARAM_INT);
-            $stmt->bindParam(':clsa', $clsa, PDO::PARAM_INT);
-            $stmt->bindParam(':clsc', $clsc, PDO::PARAM_INT);
-            $stmt->bindParam(':roots', $roots, PDO::PARAM_INT);
-            $stmt->bindParam(':leafs', $leafs, PDO::PARAM_INT);
-            $stmt->bindParam(':interfs', $interfs, PDO::PARAM_INT);
-            $stmt->bindParam(':maxdit', $maxDit, PDO::PARAM_INT);
-            $stmt->execute();
-        }
-
         foreach ($files as $file) {
             $filename    = str_replace($commonPath, '', $file);
             $fileId      = FALSE;
             $fileMetrics = $projectMetrics->getFile($file);
             $lines       = $fileMetrics->getLines();
-            $loc         = $fileMetrics->getLoc();
-            $cloc        = $fileMetrics->getCloc();
-            $ncloc       = $fileMetrics->getNcloc();
             $hash        = md5_file($file);
 
             $stmt = $this->dbh->prepare(
@@ -182,16 +135,13 @@ class PHPUnit_Util_Log_CodeCoverage_Database
             if ($fileId == 0) {
                 $stmt = $this->dbh->prepare(
                   'INSERT INTO code_file
-                               (code_file_name, code_file_md5, revision, loc, cloc, ncloc)
-                         VALUES(:filename, :hash, :revision, :loc, :cloc, :ncloc);'
+                               (code_file_name, code_file_md5, revision)
+                         VALUES(:filename, :hash, :revision);'
                 );
 
                 $stmt->bindParam(':filename', $filename, PDO::PARAM_STR);
                 $stmt->bindParam(':hash', $hash, PDO::PARAM_STR);
                 $stmt->bindParam(':revision', $revision, PDO::PARAM_INT);
-                $stmt->bindParam(':loc', $loc, PDO::PARAM_INT);
-                $stmt->bindParam(':cloc', $cloc, PDO::PARAM_INT);
-                $stmt->bindParam(':ncloc', $ncloc, PDO::PARAM_INT);
                 $stmt->execute();
 
                 $fileId  = $this->dbh->lastInsertId();
@@ -199,39 +149,19 @@ class PHPUnit_Util_Log_CodeCoverage_Database
                 $stmt = $this->dbh->prepare(
                   'INSERT INTO code_class
                                (code_file_id, code_class_name,
-                                code_class_start_line, code_class_end_line,
-                                code_class_aif, code_class_ahf, code_class_dit,
-                                code_class_mif, code_class_mhf, code_class_noc,
-                                code_class_pf, code_class_wmc)
-                         VALUES(:fileId, :className, :startLine, :endLine,
-                                :aif, :ahf, :dit, :mif, :mhf, :noc, :pf, :wmc);'
+                                code_class_start_line, code_class_end_line)
+                         VALUES(:fileId, :className, :startLine, :endLine);'
                 );
 
                 foreach ($fileMetrics->getClasses() as $classMetrics) {
                     $className = $classMetrics->getClass()->getName();
                     $startLine = $classMetrics->getClass()->getStartLine();
                     $endLine   = $classMetrics->getClass()->getEndLine();
-                    $aif       = $classMetrics->getAIF();
-                    $ahf       = $classMetrics->getAHF();
-                    $dit       = $classMetrics->getDIT();
-                    $mif       = $classMetrics->getMIF();
-                    $mhf       = $classMetrics->getMHF();
-                    $noc       = $classMetrics->getNOC();
-                    $pf        = $classMetrics->getPF();
-                    $wmc       = $classMetrics->getWMC();
 
                     $stmt->bindParam(':fileId', $fileId, PDO::PARAM_INT);
                     $stmt->bindParam(':className', $className, PDO::PARAM_STR);
                     $stmt->bindParam(':startLine', $startLine, PDO::PARAM_INT);
                     $stmt->bindParam(':endLine', $endLine, PDO::PARAM_INT);
-                    $stmt->bindParam(':aif', $aif);
-                    $stmt->bindParam(':ahf', $ahf);
-                    $stmt->bindParam(':dit', $dit, PDO::PARAM_INT);
-                    $stmt->bindParam(':mif', $mif);
-                    $stmt->bindParam(':mhf', $mhf);
-                    $stmt->bindParam(':noc', $noc, PDO::PARAM_INT);
-                    $stmt->bindParam(':pf', $noc);
-                    $stmt->bindParam(':wmc', $wmc);
                     $stmt->execute();
 
                     $classId                   = $this->dbh->lastInsertId();
@@ -240,22 +170,19 @@ class PHPUnit_Util_Log_CodeCoverage_Database
                     $stmt2 = $this->dbh->prepare(
                       'INSERT INTO code_method
                                    (code_class_id, code_method_name,
-                                    code_method_start_line, code_method_end_line,
-                                    code_method_ccn)
-                             VALUES(:classId, :methodName, :startLine, :endLine, :ccn);'
+                                    code_method_start_line, code_method_end_line)
+                             VALUES(:classId, :methodName, :startLine, :endLine);'
                     );
 
                     foreach ($classMetrics->getMethods() as $methodMetrics) {
                         $methodName = $methodMetrics->getMethod()->getName();
                         $startLine  = $methodMetrics->getMethod()->getStartLine();
                         $endLine    = $methodMetrics->getMethod()->getEndLine();
-                        $ccn        = $methodMetrics->getCCN();
 
                         $stmt2->bindParam(':classId', $classId, PDO::PARAM_INT);
                         $stmt2->bindParam(':methodName', $methodName, PDO::PARAM_STR);
                         $stmt2->bindParam(':startLine', $startLine, PDO::PARAM_INT);
                         $stmt2->bindParam(':endLine', $endLine, PDO::PARAM_INT);
-                        $stmt2->bindParam(':ccn', $ccn, PDO::PARAM_INT);
                         $stmt2->execute();
                     }
 
@@ -281,6 +208,158 @@ class PHPUnit_Util_Log_CodeCoverage_Database
                     $stmt->execute();
 
                     $i++;
+                }
+            }
+
+            $stmt = $this->dbh->prepare(
+              'INSERT INTO metrics_file
+                           (run_id, code_file_id, metrics_file_coverage,
+                           metrics_file_loc, metrics_file_cloc, metrics_file_ncloc,
+                           metrics_file_loc_executable, metrics_file_loc_executed)
+                     VALUES(:runId, :fileId, :coverage, :loc, :cloc, :ncloc,
+                            :locExecutable, :locExecuted);'
+            );
+
+            $coverage      = $fileMetrics->getCoverage();
+            $loc           = $fileMetrics->getLoc();
+            $cloc          = $fileMetrics->getCloc();
+            $ncloc         = $fileMetrics->getNcloc();
+            $locExecutable = $fileMetrics->getLocExecutable();
+            $locExecuted   = $fileMetrics->getLocExecuted();
+
+            $stmt->bindParam(':runId', $runId, PDO::PARAM_INT);
+            $stmt->bindParam(':fileId', $fileId, PDO::PARAM_INT);
+            $stmt->bindParam(':coverage', $coverage);
+            $stmt->bindParam(':loc', $loc, PDO::PARAM_INT);
+            $stmt->bindParam(':cloc', $cloc, PDO::PARAM_INT);
+            $stmt->bindParam(':ncloc', $ncloc, PDO::PARAM_INT);
+            $stmt->bindParam(':locExecutable', $locExecutable, PDO::PARAM_INT);
+            $stmt->bindParam(':locExecuted', $locExecuted, PDO::PARAM_INT);
+            $stmt->execute();
+
+            foreach ($fileMetrics->getClasses() as $classMetrics) {
+                $className = $classMetrics->getClass()->getName();
+
+                $stmt = $this->dbh->prepare(
+                  'SELECT code_class_id
+                     FROM code_file, code_class
+                    WHERE code_class.code_file_id    = code_file.code_file_id
+                      AND code_file.revision         = :revision
+                      AND code_class.code_class_name = :className;'
+                );
+
+                $stmt->bindParam(':className', $className, PDO::PARAM_STR);
+                $stmt->bindParam(':revision', $revision, PDO::PARAM_INT);
+                $stmt->execute();
+
+                $classId = (int)$stmt->fetchColumn();
+
+                $stmt = $this->dbh->prepare(
+                  'INSERT INTO metrics_class
+                               (run_id, code_class_id, metrics_class_coverage,
+                               metrics_class_loc, metrics_class_loc_executable, metrics_class_loc_executed,
+                               metrics_class_aif, metrics_class_ahf,
+                               metrics_class_cis, metrics_class_csz, metrics_class_dit,
+                               metrics_class_impl, metrics_class_mif, metrics_class_mhf,
+                               metrics_class_noc, metrics_class_pf, metrics_class_vars,
+                               metrics_class_varsnp, metrics_class_varsi,
+                               metrics_class_wmc, metrics_class_wmcnp, metrics_class_wmci)
+                         VALUES(:runId, :classId, :coverage, :loc, :locExecutable,
+                                :locExecuted, :aif, :ahf, :cis, :csz, :dit, :impl, 
+                                :mif, :mhf, :noc, :pf, :vars, :varsnp, :varsi,
+                                :wmc, :wmcnp, :wmci);'
+                );
+
+                $coverage      = $classMetrics->getCoverage();
+                $loc           = $classMetrics->getLoc();
+                $locExecutable = $classMetrics->getLocExecutable();
+                $locExecuted   = $classMetrics->getLocExecuted();
+                $aif           = $classMetrics->getAIF();
+                $ahf           = $classMetrics->getAHF();
+                $cis           = $classMetrics->getCIS();
+                $csz           = $classMetrics->getCSZ();
+                $dit           = $classMetrics->getDIT();
+                $impl          = $classMetrics->getIMPL();
+                $mif           = $classMetrics->getMIF();
+                $mhf           = $classMetrics->getMHF();
+                $noc           = $classMetrics->getNOC();
+                $pf            = $classMetrics->getPF();
+                $vars          = $classMetrics->getVARS();
+                $varsnp        = $classMetrics->getVARSnp();
+                $varsi         = $classMetrics->getVARSi();
+                $wmc           = $classMetrics->getWMC();
+                $wmcnp         = $classMetrics->getWMCnp();
+                $wmci          = $classMetrics->getWMCi();
+
+                $stmt->bindParam(':runId', $runId, PDO::PARAM_INT);
+                $stmt->bindParam(':classId', $classId, PDO::PARAM_INT);
+                $stmt->bindParam(':coverage', $coverage);
+                $stmt->bindParam(':loc', $loc, PDO::PARAM_INT);
+                $stmt->bindParam(':locExecutable', $locExecutable, PDO::PARAM_INT);
+                $stmt->bindParam(':locExecuted', $locExecuted, PDO::PARAM_INT);
+                $stmt->bindParam(':aif', $aif);
+                $stmt->bindParam(':ahf', $ahf);
+                $stmt->bindParam(':cis', $cis, PDO::PARAM_INT);
+                $stmt->bindParam(':csz', $csz, PDO::PARAM_INT);
+                $stmt->bindParam(':dit', $dit, PDO::PARAM_INT);
+                $stmt->bindParam(':impl', $impl, PDO::PARAM_INT);
+                $stmt->bindParam(':mif', $mif);
+                $stmt->bindParam(':mhf', $mhf);
+                $stmt->bindParam(':noc', $noc, PDO::PARAM_INT);
+                $stmt->bindParam(':pf', $pf);
+                $stmt->bindParam(':vars', $vars, PDO::PARAM_INT);
+                $stmt->bindParam(':varsnp', $varsnp, PDO::PARAM_INT);
+                $stmt->bindParam(':varsi', $varsi, PDO::PARAM_INT);
+                $stmt->bindParam(':wmc', $wmc, PDO::PARAM_INT);
+                $stmt->bindParam(':wmcnp', $wmcnp, PDO::PARAM_INT);
+                $stmt->bindParam(':wmci', $wmci, PDO::PARAM_INT);
+                $stmt->execute();
+
+                foreach ($classMetrics->getMethods() as $methodMetrics) {
+                    $methodName = $methodMetrics->getMethod()->getName();
+
+                    $stmt = $this->dbh->prepare(
+                      'SELECT code_method_id
+                         FROM code_file, code_class, code_method
+                        WHERE code_class.code_file_id      = code_file.code_file_id
+                          AND code_class.code_class_id     = code_method.code_class_id
+                          AND code_file.revision           = :revision
+                          AND code_class.code_class_name   = :className
+                          AND code_method.code_method_name = :methodName;'
+                    );
+
+                    $stmt->bindParam(':className', $className, PDO::PARAM_STR);
+                    $stmt->bindParam(':methodName', $methodName, PDO::PARAM_STR);
+                    $stmt->bindParam(':revision', $revision, PDO::PARAM_INT);
+                    $stmt->execute();
+
+                    $methodId = (int)$stmt->fetchColumn();
+
+                    $stmt = $this->dbh->prepare(
+                      'INSERT INTO metrics_method
+                                   (run_id, code_method_id, metrics_method_coverage,
+                                   metrics_method_loc, metrics_method_loc_executable, metrics_method_loc_executed,
+                                   metrics_method_ccn, metrics_method_crap)
+                             VALUES(:runId, :methodId, :coverage, :loc,
+                                    :locExecutable, :locExecuted, :ccn, :crap);'
+                    );
+
+                    $coverage      = $methodMetrics->getCoverage();
+                    $loc           = $methodMetrics->getLoc();
+                    $locExecutable = $methodMetrics->getLocExecutable();
+                    $locExecuted   = $methodMetrics->getLocExecuted();
+                    $ccn           = $methodMetrics->getCCN();
+                    $crap          = $methodMetrics->getCrapIndex();
+
+                    $stmt->bindParam(':runId', $runId, PDO::PARAM_INT);
+                    $stmt->bindParam(':methodId', $methodId, PDO::PARAM_INT);
+                    $stmt->bindParam(':coverage', $coverage);
+                    $stmt->bindParam(':loc', $loc, PDO::PARAM_INT);
+                    $stmt->bindParam(':locExecutable', $locExecutable, PDO::PARAM_INT);
+                    $stmt->bindParam(':locExecuted', $locExecuted, PDO::PARAM_INT);
+                    $stmt->bindParam(':ccn', $ccn);
+                    $stmt->bindParam(':crap', $crap);
+                    $stmt->execute();
                 }
             }
 
@@ -367,6 +446,39 @@ class PHPUnit_Util_Log_CodeCoverage_Database
                 $stmt2->execute();
             }
         }
+
+        unset($stmt);
+        unset($stmt2);
+
+        $stmt = $this->dbh->prepare(
+          'INSERT INTO metrics_project
+                       (run_id, metrics_project_cls, metrics_project_clsa,
+                       metrics_project_clsc, metrics_project_roots,
+                       metrics_project_leafs, metrics_project_interfs,
+                       metrics_project_maxdit)
+                 VALUES(:runId, :cls, :clsa, :clsc, :roots, :leafs,
+                        :interfs, :maxdit);'
+        );
+
+        $cls     = $projectMetrics->getCLS();
+        $clsa    = $projectMetrics->getCLSa();
+        $clsc    = $projectMetrics->getCLSc();
+        $interfs = $projectMetrics->getInterfs();
+        $roots   = $projectMetrics->getRoots();
+        $leafs   = $projectMetrics->getLeafs();
+        $maxDit  = $projectMetrics->getMaxDit();
+
+        $stmt->bindParam(':runId', $runId, PDO::PARAM_INT);
+        $stmt->bindParam(':cls', $cls, PDO::PARAM_INT);
+        $stmt->bindParam(':clsa', $clsa, PDO::PARAM_INT);
+        $stmt->bindParam(':clsc', $clsc, PDO::PARAM_INT);
+        $stmt->bindParam(':roots', $roots, PDO::PARAM_INT);
+        $stmt->bindParam(':leafs', $leafs, PDO::PARAM_INT);
+        $stmt->bindParam(':interfs', $interfs, PDO::PARAM_INT);
+        $stmt->bindParam(':maxdit', $maxDit, PDO::PARAM_INT);
+        $stmt->execute();
+
+        unset($stmt);
 
         $stmt = $this->dbh->prepare(
           'UPDATE code_class

@@ -64,9 +64,12 @@ PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
  */
 class PHPUnit_Util_Metrics_File
 {
-    protected $loc = 0;
-    protected $cloc = 0;
-    protected $ncloc = 0;
+    protected $coverage      = 0;
+    protected $loc           = 0;
+    protected $cloc          = 0;
+    protected $ncloc         = 0;
+    protected $locExecutable = 0;
+    protected $locExecuted   = 0;
 
     protected $filename;
     protected $classes = array();
@@ -79,18 +82,20 @@ class PHPUnit_Util_Metrics_File
      * Constructor.
      *
      * @param  string $filename
+     * @param  array  $codeCoverage
      * @access protected
      */
-    protected function __construct($filename)
+    protected function __construct($filename, &$codeCoverage = array())
     {
         $this->filename = $filename;
         $this->lines    = file($filename);
         $this->tokens   = token_get_all(file_get_contents($filename));
 
         $this->countLines();
+        $this->calculateCodeCoverage($codeCoverage);
 
         foreach (PHPUnit_Util_Class::getClassesInFile($filename) as $class) {
-            $this->classes[$class->getName()] = PHPUnit_Util_Metrics_Class::factory($class);
+            $this->classes[$class->getName()] = PHPUnit_Util_Metrics_Class::factory($class, $codeCoverage);
         }
     }
 
@@ -98,14 +103,15 @@ class PHPUnit_Util_Metrics_File
      * Factory.
      *
      * @param  string $filename
+     * @param  array  $codeCoverage
      * @return PHPUnit_Util_Metrics_File
      * @access public
      * @static
      */
-    public static function factory($filename)
+    public static function factory($filename, &$codeCoverage = array())
     {
         if (!isset(self::$cache[$filename])) {
-            self::$cache[$filename] = new PHPUnit_Util_Metrics_File($filename);
+            self::$cache[$filename] = new PHPUnit_Util_Metrics_File($filename, $codeCoverage);
         }
 
         return self::$cache[$filename];
@@ -157,6 +163,17 @@ class PHPUnit_Util_Metrics_File
     }
 
     /**
+     * Returns the Code Coverage for the file.
+     *
+     * @return float
+     * @access public
+     */
+    public function getCoverage()
+    {
+        return $this->coverage;
+    }
+
+    /**
      * Lines of Code (LOC).
      *
      * @return int
@@ -165,6 +182,28 @@ class PHPUnit_Util_Metrics_File
     public function getLoc()
     {
         return $this->loc;
+    }
+
+    /**
+     * Executable Lines of Code (ELOC).
+     *
+     * @return int
+     * @access public
+     */
+    public function getLocExecutable()
+    {
+        return $this->locExecutable;
+    }
+
+    /**
+     * Executed Lines of Code.
+     *
+     * @return int
+     * @access public
+     */
+    public function getLocExecuted()
+    {
+        return $this->locExecuted;
     }
 
     /**
@@ -187,6 +226,27 @@ class PHPUnit_Util_Metrics_File
     public function getNcloc()
     {
         return $this->ncloc;
+    }
+
+    /**
+     * Calculates the Code Coverage for the class.
+     *
+     * @param  array $codeCoverage
+     * @access protected
+     */
+    protected function calculateCodeCoverage(&$codeCoverage)
+    {
+        $statistics = PHPUnit_Util_CodeCoverage::getStatistics(
+          $codeCoverage,
+          $this->filename,
+          1,
+          count($this->lines)
+        );
+
+        $this->coverage       = $statistics['coverage'];
+        $this->loc            = $statistics['loc'];
+        $this->locExecutable  = $statistics['locExecutable'];
+        $this->loclocExecuted = $statistics['locExecuted'];
     }
 
     /**

@@ -63,25 +63,11 @@ CREATE INDEX IF NOT EXISTS test_node_root      ON test (node_root);
 CREATE INDEX IF NOT EXISTS test_node_left      ON test (node_left);
 CREATE INDEX IF NOT EXISTS test_node_right     ON test (node_right);
 
-CREATE TABLE IF NOT EXISTS project_metrics(
-  revision                INTEGER PRIMARY KEY,
-  project_metrics_cls     INTEGER,
-  project_metrics_clsa    INTEGER,
-  project_metrics_clsc    INTEGER,
-  project_metrics_roots   INTEGER,
-  project_metrics_leafs   INTEGER,
-  project_metrics_interfs INTEGER,
-  project_metrics_maxdit  INTEGER
-);
-
 CREATE TABLE IF NOT EXISTS code_file(
   code_file_id   INTEGER PRIMARY KEY AUTOINCREMENT,
   code_file_name TEXT,
   code_file_md5  TEXT,
-  revision       INTEGER,
-  loc            INTEGER,
-  cloc           INTEGER,
-  ncloc          INTEGER
+  revision       INTEGER
 );
 
 CREATE TABLE IF NOT EXISTS code_class(
@@ -90,15 +76,7 @@ CREATE TABLE IF NOT EXISTS code_class(
   code_class_parent_id  INTEGER,
   code_class_name       TEXT,
   code_class_start_line INTEGER,
-  code_class_end_line   INTEGER,
-  code_class_aif        INTEGER,
-  code_class_ahf        INTEGER,
-  code_class_dit        INTEGER,
-  code_class_mif        INTEGER,
-  code_class_mhf        INTEGER,
-  code_class_noc        INTEGER,
-  code_class_pf         INTEGER,
-  code_class_wmc        INTEGER
+  code_class_end_line   INTEGER
 );
 
 CREATE INDEX IF NOT EXISTS code_file_id ON code_class (code_file_id);
@@ -108,8 +86,7 @@ CREATE TABLE IF NOT EXISTS code_method(
   code_method_id         INTEGER PRIMARY KEY AUTOINCREMENT,
   code_method_name       TEXT,
   code_method_start_line INTEGER,
-  code_method_end_line   INTEGER,
-  code_method_ccn        INTEGER
+  code_method_end_line   INTEGER
 );
 
 CREATE INDEX IF NOT EXISTS code_class_id ON code_method (code_class_id);
@@ -130,3 +107,72 @@ CREATE TABLE IF NOT EXISTS code_coverage(
 );
 
 CREATE UNIQUE INDEX IF NOT EXISTS code_coverage_test_id_code_line_id ON code_coverage (test_id, code_line_id);
+
+CREATE TABLE IF NOT EXISTS metrics_project(
+  run_id                  INTEGER,
+  metrics_project_cls     INTEGER,
+  metrics_project_clsa    INTEGER,
+  metrics_project_clsc    INTEGER,
+  metrics_project_roots   INTEGER,
+  metrics_project_leafs   INTEGER,
+  metrics_project_interfs INTEGER,
+  metrics_project_maxdit  INTEGER
+);
+
+CREATE INDEX IF NOT EXISTS run_id ON metrics_project (run_id);
+
+CREATE TABLE IF NOT EXISTS metrics_file(
+  run_id                      INTEGER,
+  code_file_id                INTEGER,
+  metrics_file_coverage       REAL,
+  metrics_file_loc            INTEGER,
+  metrics_file_cloc           INTEGER,
+  metrics_file_ncloc          INTEGER,
+  metrics_file_loc_executable INTEGER,
+  metrics_file_loc_executed   INTEGER
+);
+
+CREATE INDEX IF NOT EXISTS run_id ON metrics_file (run_id);
+CREATE INDEX IF NOT EXISTS code_file_id ON metrics_file (code_file_id);
+
+CREATE TABLE IF NOT EXISTS metrics_class(
+  run_id                       INTEGER,
+  code_class_id                INTEGER,
+  metrics_class_coverage       REAL,
+  metrics_class_loc            INTEGER,
+  metrics_class_loc_executable INTEGER,
+  metrics_class_loc_executed   INTEGER,
+  metrics_class_aif            REAL,
+  metrics_class_ahf            REAL,
+  metrics_class_cis            INTEGER,
+  metrics_class_csz            INTEGER,
+  metrics_class_dit            INTEGER,
+  metrics_class_impl           INTEGER,
+  metrics_class_mif            REAL,
+  metrics_class_mhf            REAL,
+  metrics_class_noc            INTEGER,
+  metrics_class_pf             REAL,
+  metrics_class_vars           INTEGER,
+  metrics_class_varsnp         INTEGER,
+  metrics_class_varsi          INTEGER,
+  metrics_class_wmc            INTEGER,
+  metrics_class_wmcnp          INTEGER,
+  metrics_class_wmci           INTEGER
+);
+
+CREATE INDEX IF NOT EXISTS run_id ON metrics_class (run_id);
+CREATE INDEX IF NOT EXISTS code_class_id ON metrics_class (code_class_id);
+
+CREATE TABLE IF NOT EXISTS metrics_method(
+  run_id                        INTEGER,
+  code_method_id                INTEGER,
+  metrics_method_coverage       REAL,
+  metrics_method_loc            INTEGER,
+  metrics_method_loc_executable INTEGER,
+  metrics_method_loc_executed   INTEGER,
+  metrics_method_ccn            INTEGER,
+  metrics_method_crap           REAL
+);
+
+CREATE INDEX IF NOT EXISTS run_id ON metrics_method (run_id);
+CREATE INDEX IF NOT EXISTS code_method_id ON metrics_method (code_method_id);

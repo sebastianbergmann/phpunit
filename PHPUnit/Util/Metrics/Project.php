@@ -78,12 +78,13 @@ class PHPUnit_Util_Metrics_Project
      * Constructor.
      *
      * @param  array $files
+     * @param  array $codeCoverage
      * @access public
      */
-    public function __construct(Array $files)
+    public function __construct(Array $files, &$codeCoverage = array())
     {
         foreach ($files as $file) {
-            $this->files[$file] = PHPUnit_Util_Metrics_File::factory($file);
+            $this->files[$file] = PHPUnit_Util_Metrics_File::factory($file, $codeCoverage);
 
             foreach ($this->files[$file]->getClasses() as $class) {
                 $className = $class->getClass()->getName();
