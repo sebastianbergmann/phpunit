@@ -239,7 +239,7 @@ class PHPUnit_Util_Log_CodeCoverage_Database
 
                     $codeLineId      = (int)$stmt->fetchColumn(0);
                     $oldCoverageFlag = (int)$stmt->fetchColumn(1);
-                    $newCoverageFlag = isset($summary[$file][$i]) ? 1 : 0;
+                    $newCoverageFlag = isset($summary[$file][$lineNumber]) ? 1 : 0;
 
                     if (($oldCoverageFlag == 0 && $newCoverageFlag != 0) ||
                         ($oldCoverageFlag <  0 && $newCoverageFlag >  0)) {
