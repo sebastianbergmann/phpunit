@@ -180,6 +180,54 @@ abstract class PHPUnit_Util_CodeCoverage
     }
 
     /**
+     * Returns the coverage statistics for a section of a file.
+     *
+     * @param  array   $data
+     * @param  string  $filename
+     * @param  integer $startLine
+     * @param  integer $endLine
+     * @return array
+     * @access public
+     * @static
+     * @since  Method available since Release 3.2.0
+     */
+    public static function getStatistics(array &$data, $filename, $startLine = 1, $endLine = FALSE) {
+        $coverage      = 0;
+        $locExecutable = 0;
+        $locExecuted   = 0;
+
+        if (isset($data[$filename])) {
+            if ($endLine == FALSE) {
+                $endLine = count(file($filename));
+            }
+
+            foreach ($data[$filename] as $line => $_data) {
+                if ($line >= $startLine && $line <= $endLine) {
+                    if (is_array($_data)) {
+                        $locExecutable++;
+                        $locExecuted++;
+                    }
+                    
+                    else if ($_data == -1) {
+                        $locExecutable++;
+                    }
+                }
+            }
+
+            if ($locExecutable > 0) {
+                $coverage = ($locExecuted / $locExecutable) * 100;
+            }
+        }
+
+        return array(
+          'coverage'      => $coverage,
+          'loc'           => $endLine - $startLine + 1,
+          'locExecutable' => $locExecutable,
+          'locExecuted'   => $locExecuted
+        );
+    }
+
+    /**
      * @param  string $file
      * @return boolean
      * @access protected

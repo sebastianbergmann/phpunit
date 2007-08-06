@@ -63,7 +63,12 @@ PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
  */
 class PHPUnit_Util_Metrics_Method
 {
-    protected $ccn = 1;
+    protected $ccn           = 1;
+    protected $coverage      = 0;
+    protected $crap;
+    protected $loc           = 0;
+    protected $locExecutable = 0;
+    protected $locExecuted   = 0;
 
     protected $method;
 
@@ -73,30 +78,34 @@ class PHPUnit_Util_Metrics_Method
      * Constructor.
      *
      * @param  ReflectionMethod $method
+     * @param  array            $codeCoverage
      * @access protected
      */
-    protected function __construct(ReflectionMethod $method)
+    protected function __construct(ReflectionMethod $method, &$codeCoverage = array())
     {
         $this->method = $method;
 
         $this->calculateCCN();
+        $this->calculateCodeCoverage($codeCoverage);
+        $this->calculateCrapIndex();
     }
 
     /**
      * Factory.
      *
      * @param  ReflectionMethod $method
+     * @param  array            $codeCoverage
      * @return PHPUnit_Util_Metrics_Method
      * @access public
      * @static
      */
-    public static function factory(ReflectionMethod $method)
+    public static function factory(ReflectionMethod $method, &$codeCoverage = array())
     {
         $className  = $method->getDeclaringClass()->getName();
         $methodName = $method->getName();
 
         if (!isset(self::$cache[$className][$methodName])) {
-            self::$cache[$className][$methodName] = new PHPUnit_Util_Metrics_Method($method);
+            self::$cache[$className][$methodName] = new PHPUnit_Util_Metrics_Method($method, $codeCoverage);
         }
 
         return self::$cache[$className][$methodName];
@@ -111,6 +120,39 @@ class PHPUnit_Util_Metrics_Method
     public function getMethod()
     {
         return $this->method;
+    }
+
+    /**
+     * Lines of Code (LOC).
+     *
+     * @return int
+     * @access public
+     */
+    public function getLoc()
+    {
+        return $this->loc;
+    }
+
+    /**
+     * Executable Lines of Code (ELOC).
+     *
+     * @return int
+     * @access public
+     */
+    public function getLocExecutable()
+    {
+        return $this->locExecutable;
+    }
+
+    /**
+     * Executed Lines of Code.
+     *
+     * @return int
+     * @access public
+     */
+    public function getLocExecuted()
+    {
+        return $this->locExecuted;
     }
 
     /**
@@ -143,6 +185,30 @@ class PHPUnit_Util_Metrics_Method
     public function getCCN()
     {
         return $this->ccn;
+    }
+
+    /**
+     * Returns the Change Risk Analysis and Predictions (CRAP) index for the
+     * method.
+     *
+     * @return float
+     * @access public
+     * @see    http://www.artima.com/weblogs/viewpost.jsp?thread=210575
+     */
+    public function getCrapIndex()
+    {
+        return $this->crap;
+    }
+
+    /**
+     * Returns the Code Coverage for the method.
+     *
+     * @return float
+     * @access public
+     */
+    public function getCoverage()
+    {
+        return $this->coverage;
     }
 
     /**
@@ -186,6 +252,48 @@ class PHPUnit_Util_Metrics_Method
                 }
                 break;
             }
+        }
+    }
+
+    /**
+     * Calculates the Code Coverage for the method.
+     *
+     * @param  array $codeCoverage
+     * @access protected
+     */
+    protected function calculateCodeCoverage(&$codeCoverage)
+    {
+        $statistics = PHPUnit_Util_CodeCoverage::getStatistics(
+          $codeCoverage,
+          $this->method->getFileName(),
+          $this->method->getStartLine(),
+          $this->method->getEndLine()
+        );
+
+        $this->coverage       = $statistics['coverage'];
+        $this->loc            = $statistics['loc'];
+        $this->locExecutable  = $statistics['locExecutable'];
+        $this->loclocExecuted = $statistics['locExecuted'];
+    }
+
+    /**
+     * Calculates the Change Risk Analysis and Predictions (CRAP) index for the
+     * method.
+     *
+     * @access public
+     */
+    protected function calculateCrapIndex()
+    {
+        if ($this->coverage == 0) {
+            $this->crap = pow($this->ccn, 2) + $this->ccn;
+        }
+
+        else if ($this->coverage >= 95) {
+            $this->crap = $this->ccn;
+        }
+
+        else {
+            $this->crap = pow($this->ccn, 2) * (pow(1 - $this->coverage/100, 3) + $this->ccn);
         }
     }
 }

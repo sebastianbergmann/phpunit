@@ -304,7 +304,7 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
             $this->printer->printResult($result);
         }
 
-        if (isset($arguments['coverageXML']) && extension_loaded('xdebug')) {
+        if (isset($arguments['coverageXML']) && extension_loaded('tokenizer') && extension_loaded('xdebug')) {
             $this->printer->write("\nWriting code coverage data to XML file, this may take a moment.");
 
             $writer = new PHPUnit_Util_Log_CodeCoverage_XML(
@@ -315,12 +315,13 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
             $this->printer->write("\n");
         }
 
-        if ($writeToTestDatabase && extension_loaded('xdebug')) {
-            $this->printer->write("\nStoring code coverage data in database, this may take a moment.");
+        if ($writeToTestDatabase && extension_loaded('tokenizer') && extension_loaded('xdebug')) {
+            $this->printer->write("\nStoring code coverage and software metrics data in database.\nThis may take a moment.");
 
             $testDb = new PHPUnit_Util_Log_CodeCoverage_Database($dbh);
             $testDb->storeCodeCoverage(
               $result,
+              $dbListener->getRunId(),
               $arguments['testDatabaseLogRevision'],
               $arguments['testDatabasePrefix']
             );

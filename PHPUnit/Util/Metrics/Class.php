@@ -64,20 +64,24 @@ PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
  */
 class PHPUnit_Util_Metrics_Class
 {
-    protected $aif    = 0;
-    protected $ahf    = 0;
-    protected $dit    = 0;
-    protected $impl   = 0;
-    protected $mif    = 0;
-    protected $mhf    = 0;
-    protected $noc    = 0;
-    protected $pf     = 0;
-    protected $vars   = 0;
-    protected $varsNp = 0;
-    protected $varsI  = 0;
-    protected $wmc    = 0;
-    protected $wmcNp  = 0;
-    protected $wmcI   = 0;
+    protected $aif           = 0;
+    protected $ahf           = 0;
+    protected $coverage      = 0;
+    protected $dit           = 0;
+    protected $impl          = 0;
+    protected $loc           = 0;
+    protected $locExecutable = 0;
+    protected $locExecuted   = 0;
+    protected $mif           = 0;
+    protected $mhf           = 0;
+    protected $noc           = 0;
+    protected $pf            = 0;
+    protected $vars          = 0;
+    protected $varsNp        = 0;
+    protected $varsI         = 0;
+    protected $wmc           = 0;
+    protected $wmcNp         = 0;
+    protected $wmcI          = 0;
 
     protected $class;
     protected $methods = array();
@@ -90,9 +94,10 @@ class PHPUnit_Util_Metrics_Class
      * Constructor.
      *
      * @param  ReflectionClass $class
+     * @param  array           $codeCoverage
      * @access protected
      */
-    protected function __construct(ReflectionClass $class)
+    protected function __construct(ReflectionClass $class, &$codeCoverage = array())
     {
         $this->class = $class;
 
@@ -100,12 +105,13 @@ class PHPUnit_Util_Metrics_Class
         $this->calculateMethodMetrics();
         $this->calculateNumberOfChildren();
         $this->calculatePolymorphismFactor();
+        $this->calculateCodeCoverage($codeCoverage);
 
         $this->dit  = count(PHPUnit_Util_Class::getHierarchy($class->getName()));
         $this->impl = count($class->getInterfaces());
 
         foreach ($this->class->getMethods() as $method) {
-            $this->methods[$method->getName()] = PHPUnit_Util_Metrics_Method::factory($method);
+            $this->methods[$method->getName()] = PHPUnit_Util_Metrics_Method::factory($method, $codeCoverage);
         }
     }
 
@@ -113,16 +119,17 @@ class PHPUnit_Util_Metrics_Class
      * Factory.
      *
      * @param  ReflectionClass $class
+     * @param  array           $codeCoverage
      * @return PHPUnit_Util_Metrics_Class
      * @access public
      * @static
      */
-    public static function factory(ReflectionClass $class)
+    public static function factory(ReflectionClass $class, &$codeCoverage = array())
     {
         $className = $class->getName();
 
         if (!isset(self::$cache[$className])) {
-            self::$cache[$className] = new PHPUnit_Util_Metrics_Class($class);
+            self::$cache[$className] = new PHPUnit_Util_Metrics_Class($class, $codeCoverage);
         }
 
         return self::$cache[$className];
@@ -148,6 +155,39 @@ class PHPUnit_Util_Metrics_Class
     public function getMethods()
     {
         return $this->methods;
+    }
+
+    /**
+     * Lines of Code (LOC).
+     *
+     * @return int
+     * @access public
+     */
+    public function getLoc()
+    {
+        return $this->loc;
+    }
+
+    /**
+     * Executable Lines of Code (ELOC).
+     *
+     * @return int
+     * @access public
+     */
+    public function getLocExecutable()
+    {
+        return $this->locExecutable;
+    }
+
+    /**
+     * Executed Lines of Code.
+     *
+     * @return int
+     * @access public
+     */
+    public function getLocExecuted()
+    {
+        return $this->locExecuted;
     }
 
     /**
@@ -196,6 +236,17 @@ class PHPUnit_Util_Metrics_Class
     public function getCIS()
     {
         return $this->publicMethods + $this->varsNp;
+    }
+
+    /**
+     * Returns the Code Coverage for the class.
+     *
+     * @return float
+     * @access public
+     */
+    public function getCoverage()
+    {
+        return $this->coverage;
     }
 
     /**
@@ -489,6 +540,27 @@ class PHPUnit_Util_Metrics_Class
                 $this->pf = (100 * $overriddenMethods) / count($overridableMethods);
             }
         }
+    }
+
+    /**
+     * Calculates the Code Coverage for the class.
+     *
+     * @param  array $codeCoverage
+     * @access protected
+     */
+    protected function calculateCodeCoverage(&$codeCoverage)
+    {
+        $statistics = PHPUnit_Util_CodeCoverage::getStatistics(
+          $codeCoverage,
+          $this->class->getFileName(),
+          $this->class->getStartLine(),
+          $this->class->getEndLine()
+        );
+
+        $this->coverage       = $statistics['coverage'];
+        $this->loc            = $statistics['loc'];
+        $this->locExecutable  = $statistics['locExecutable'];
+        $this->loclocExecuted = $statistics['locExecuted'];
     }
 }
 ?>
