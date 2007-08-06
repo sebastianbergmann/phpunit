@@ -88,129 +88,144 @@ class PHPUnit_Util_Log_PMD extends PHPUnit_Util_Printer
         $document->appendChild($pmd);
 
         foreach ($metrics->getFiles() as $fileName => $fileMetrics) {
-            $xmlFile = $pmd->appendChild(
-              $document->createElement('file')
-            );
-
+            $xmlFile = $document->createElement('file');
             $xmlFile->setAttribute('name', $fileName);
 
+            $added = FALSE;
+
             foreach ($fileMetrics->getClasses() as $className => $classMetrics) {
-                $classStartLine = $classMetrics->getClass()->getStartLine();
+                if (!$classMetrics->getClass()->implementsInterface('PHPUnit_Framework_Test')) {
+                    $classStartLine = $classMetrics->getClass()->getStartLine();
 
-                $dit = $classMetrics->getDIT();
+                    $dit = $classMetrics->getDIT();
 
-                if ($dit > 6) {
-                    $this->addViolation(
-                      'Depth of Inheritance Tree (DIT) should not exceed 6.',
-                      $xmlFile,
-                      'DepthOfInheritanceTree',
-                      $classStartLine,
-                      '',
-                      $className
-                    );
-                }
-
-                $ahf = $classMetrics->getAHF();
-
-                if (!($ahf >= 8 && $ahf <= 25)) {
-                    $this->addViolation(
-                      'Attribute Hiding Factor (AHF) should be between 8% and 25%.',
-                      $xmlFile,
-                      'AttributeHidingFactor',
-                      $classStartLine,
-                      '',
-                      $className
-                    );
-                }
-
-                $aif = $classMetrics->getAIF();
-
-                if (!($aif >= 0 && $aif <= 48)) {
-                    $this->addViolation(
-                      'Attribute Inheritance Factor (AIF) should be between 0% and 48%.',
-                      $xmlFile,
-                      'AttributeInheritanceFactor',
-                      $classStartLine,
-                      '',
-                      $className
-                    );
-                }
-
-                $mhf = $classMetrics->getMHF();
-
-                if (!($mhf >= 8 && $mhf <= 25)) {
-                    $this->addViolation(
-                      'Method Hiding Factor (MHF) should be between 8% and 25%.',
-                      $xmlFile,
-                      'MethodHidingFactor',
-                      $classStartLine,
-                      '',
-                      $className
-                    );
-                }
-
-                $mif = $classMetrics->getMIF();
-
-                if (!($mif >= 20 && $mif <= 80)) {
-                    $this->addViolation(
-                      'Method Inheritance Factor (MIF) should be between 20% and 80%.',
-                      $xmlFile,
-                      'MethodInheritanceFactor',
-                      $classStartLine,
-                      '',
-                      $className
-                    );
-                }
-
-                foreach ($classMetrics->getMethods() as $methodName => $methodMetrics) {
-                    $methodStartLine = $methodMetrics->getMethod()->getStartLine();
-
-                    $ccn = $methodMetrics->getCCN();
-
-                    $violation = '';
-
-                    if ($ccn >= 50) {
-                        $violation = 'A cyclomatic complexity of over 50 indicates unmaintainable code.';
-                    }
-
-                    else if ($ccn >= 20) {
-                        $violation = 'A cyclomatic complexity of over 20 indicates hardly maintainable code.';
-                    }
-
-                    if (!empty($violation)) {
+                    if ($dit > 6) {
                         $this->addViolation(
-                          $violation,
+                          'Depth of Inheritance Tree (DIT) should not exceed 6.',
                           $xmlFile,
-                          'CyclomaticComplexity',
-                          $methodStartLine,
+                          'DepthOfInheritanceTree',
+                          $classStartLine,
                           '',
-                          $className,
-                          $methodName
+                          $className
                         );
+
+                        $added = TRUE;
                     }
 
-                    $coverage = $methodMetrics->getCoverage();
+                    $ahf = $classMetrics->getAHF();
 
-                    $violation = '';
-
-                    if ($coverage <= 35) {
-                        $violation = 'The code coverage is low.';
-                    }
-
-                    else if ($coverage > 35 && $coverage < 70) {
-                        $violation = 'The code coverage is medium.';
-                    }
-
-                    if (!empty($violation)) {
+                    if (!($ahf >= 8 && $ahf <= 25)) {
                         $this->addViolation(
-                          $violation,
+                          'Attribute Hiding Factor (AHF) should be between 8% and 25%.',
                           $xmlFile,
-                          'CodeCoverage',
-                          $methodStartLine,
+                          'AttributeHidingFactor',
+                          $classStartLine,
                           '',
-                          $className,
-                          $methodName
+                          $className
                         );
+
+                        $added = TRUE;
+                    }
+
+                    $aif = $classMetrics->getAIF();
+
+                    if (!($aif >= 0 && $aif <= 48)) {
+                        $this->addViolation(
+                          'Attribute Inheritance Factor (AIF) should be between 0% and 48%.',
+                          $xmlFile,
+                          'AttributeInheritanceFactor',
+                          $classStartLine,
+                          '',
+                          $className
+                        );
+
+                        $added = TRUE;
+                    }
+
+                    $mhf = $classMetrics->getMHF();
+
+                    if (!($mhf >= 8 && $mhf <= 25)) {
+                        $this->addViolation(
+                          'Method Hiding Factor (MHF) should be between 8% and 25%.',
+                          $xmlFile,
+                          'MethodHidingFactor',
+                          $classStartLine,
+                          '',
+                          $className
+                        );
+
+                        $added = TRUE;
+                    }
+
+                    $mif = $classMetrics->getMIF();
+
+                    if (!($mif >= 20 && $mif <= 80)) {
+                        $this->addViolation(
+                          'Method Inheritance Factor (MIF) should be between 20% and 80%.',
+                          $xmlFile,
+                          'MethodInheritanceFactor',
+                          $classStartLine,
+                          '',
+                          $className
+                        );
+
+                        $added = TRUE;
+                    }
+
+                    foreach ($classMetrics->getMethods() as $methodName => $methodMetrics) {
+                        $methodStartLine = $methodMetrics->getMethod()->getStartLine();
+
+                        $ccn = $methodMetrics->getCCN();
+
+                        $violation = '';
+
+                        if ($ccn >= 50) {
+                            $violation = 'A cyclomatic complexity of over 50 indicates unmaintainable code.';
+                        }
+
+                        else if ($ccn >= 20) {
+                            $violation = 'A cyclomatic complexity of over 20 indicates hardly maintainable code.';
+                        }
+
+                        if (!empty($violation)) {
+                            $this->addViolation(
+                              $violation,
+                              $xmlFile,
+                              'CyclomaticComplexity',
+                              $methodStartLine,
+                              '',
+                              $className,
+                              $methodName
+                            );
+
+                            $added = TRUE;
+                        }
+
+                        $coverage = $methodMetrics->getCoverage();
+
+                        $violation = '';
+
+                        if ($coverage <= 35) {
+                            $violation = 'The code coverage is low.';
+                        }
+
+                        else if ($coverage > 35 && $coverage < 70) {
+                            $violation = 'The code coverage is medium.';
+                        }
+
+                        if (!empty($violation)) {
+                            $this->addViolation(
+                              $violation,
+                              $xmlFile,
+                              'CodeCoverage',
+                              $methodStartLine,
+                              '',
+                              $className,
+                              $methodName
+                            );
+
+                            $added = TRUE;
+                        }
                     }
                 }
             }
@@ -241,6 +256,8 @@ class PHPUnit_Util_Log_PMD extends PHPUnit_Util_Printer
                       '',
                       $functionName
                     );
+
+                    $added = TRUE;
                 }
 
                 $coverage = $methodMetrics->getCoverage();
@@ -265,7 +282,13 @@ class PHPUnit_Util_Log_PMD extends PHPUnit_Util_Printer
                       $className,
                       $methodName
                     );
+
+                    $added = TRUE;
                 }
+            }
+
+            if ($added) {
+                $pmd->appendChild($xmlFile);
             }
         }
 
