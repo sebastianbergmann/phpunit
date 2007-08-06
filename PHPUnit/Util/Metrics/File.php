@@ -73,6 +73,7 @@ class PHPUnit_Util_Metrics_File
 
     protected $filename;
     protected $classes = array();
+    protected $functions = array();
     protected $lines = array();
     protected $tokens = array();
 
@@ -96,6 +97,10 @@ class PHPUnit_Util_Metrics_File
 
         foreach (PHPUnit_Util_Class::getClassesInFile($filename) as $class) {
             $this->classes[$class->getName()] = PHPUnit_Util_Metrics_Class::factory($class, $codeCoverage);
+        }
+
+        foreach (PHPUnit_Util_Class::getFunctionsInFile($filename) as $function) {
+            $this->functions[$function->getName()] = PHPUnit_Util_Metrics_Function::factory($function, $codeCoverage);
         }
     }
 
@@ -138,6 +143,29 @@ class PHPUnit_Util_Metrics_File
     public function getClass($className)
     {
         return $this->classes[$className];
+    }
+
+    /**
+     * Functions.
+     *
+     * @return array
+     * @access public
+     */
+    public function getFunctions()
+    {
+        return $this->functions;
+    }
+
+    /**
+     * A function.
+     *
+     * @param  string $functionName
+     * @return ReflectionClass
+     * @access public
+     */
+    public function getFunction($functionName)
+    {
+        return $this->functions[$functionName];
     }
 
     /**

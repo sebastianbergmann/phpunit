@@ -64,6 +64,7 @@ class PHPUnit_Util_Class
 {
     protected static $buffer = array();
     protected static $fileClassMap = array();
+    protected static $fileFunctionMap = array();
 
     /**
      * Starts the collection of loaded classes.
@@ -143,10 +144,9 @@ class PHPUnit_Util_Class
 
         if (empty(self::$fileClassMap)) {
             $classes = array_merge(get_declared_classes(), get_declared_interfaces());
-            $count   = count($classes);
-            
-            for ($i = 0; $i < $count; $i++) {
-                $class = new ReflectionClass($classes[$i]);
+
+            foreach ($classes as $className) {
+                $class = new ReflectionClass($className);
 
                 if ($class->isUserDefined()) {
                     $file = $class->getFileName();
@@ -165,6 +165,51 @@ class PHPUnit_Util_Class
         }
 
         return isset(self::$fileClassMap[$filename]) ? self::$fileClassMap[$filename] : array();
+    }
+
+    /**
+     * Returns the names of the classes declared in a sourcefile.
+     *
+     * @param  string  $filename
+     * @param  string  $commonPath
+     * @param  boolean $clearCache
+     * @return array
+     * @access public
+     * @static
+     * @since  Class available since Release 3.2.0
+     * @todo   Find a better place for this method.
+     */
+    public static function getFunctionsInFile($filename, $commonPath = '', $clearCache = FALSE)
+    {
+        if ($commonPath != '') {
+            $filename = str_replace($commonPath, '', $filename);
+        }
+
+        if ($clearCache) {
+            self::$fileFunctionMap = array();
+        }
+
+        if (empty(self::$fileFunctionMap)) {
+            $functions = get_defined_functions();
+
+            foreach ($functions['user'] as $functionName) {
+                $function = new ReflectionFunction($functionName);
+
+                $file = $function->getFileName();
+
+                if ($commonPath != '') {
+                    $file = str_replace($commonPath, '', $file);
+                }
+
+                if (!isset(self::$fileFunctionMap[$file])) {
+                    self::$fileFunctionMap[$file] = array($function);
+                } else {
+                    self::$fileFunctionMap[$file][] = $function;
+                }
+            }
+        }
+
+        return isset(self::$fileFunctionMap[$filename]) ? self::$fileFunctionMap[$filename] : array();
     }
 
     /**
@@ -205,11 +250,16 @@ class PHPUnit_Util_Class
      */
     public static function getMethodSource($className, $methodName)
     {
-        $method = new ReflectionMethod($className, $methodName);
-        $file   = file($method->getFileName());
+        if ($className != 'global') {
+            $function = new ReflectionMethod($className, $methodName);
+        } else {
+            $function = new ReflectionFunction($methodName);
+        }
+
+        $file   = file($function->getFileName());
         $result = '';
 
-        for ($line = $method->getStartLine() - 1; $line <= $method->getEndLine() - 1; $line++) {
+        for ($line = $function->getStartLine() - 1; $line <= $function->getEndLine() - 1; $line++) {
             $result .= $file[$line];
         }
 

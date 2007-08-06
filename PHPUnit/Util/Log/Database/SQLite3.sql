@@ -70,6 +70,16 @@ CREATE TABLE IF NOT EXISTS code_file(
   revision       INTEGER
 );
 
+CREATE TABLE IF NOT EXISTS code_function(
+  code_file_id             INTEGER,
+  code_function_id         INTEGER PRIMARY KEY AUTOINCREMENT,
+  code_function_name       TEXT,
+  code_function_start_line INTEGER,
+  code_function_end_line   INTEGER
+);
+
+CREATE INDEX IF NOT EXISTS code_file_id ON code_function (code_file_id);
+
 CREATE TABLE IF NOT EXISTS code_class(
   code_file_id          INTEGER,
   code_class_id         INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -134,6 +144,20 @@ CREATE TABLE IF NOT EXISTS metrics_file(
 
 CREATE INDEX IF NOT EXISTS run_id ON metrics_file (run_id);
 CREATE INDEX IF NOT EXISTS code_file_id ON metrics_file (code_file_id);
+
+CREATE TABLE IF NOT EXISTS metrics_function(
+  run_id                          INTEGER,
+  code_function_id                INTEGER,
+  metrics_function_coverage       REAL,
+  metrics_function_loc            INTEGER,
+  metrics_function_loc_executable INTEGER,
+  metrics_function_loc_executed   INTEGER,
+  metrics_function_ccn            INTEGER,
+  metrics_function_crap           REAL
+);
+
+CREATE INDEX IF NOT EXISTS run_id ON metrics_function (run_id);
+CREATE INDEX IF NOT EXISTS code_function_id ON metrics_function (code_function_id);
 
 CREATE TABLE IF NOT EXISTS metrics_class(
   run_id                       INTEGER,

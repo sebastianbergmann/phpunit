@@ -70,6 +70,16 @@ CREATE TABLE IF NOT EXISTS code_file(
   revision       INTEGER UNSIGNED NOT NULL
 ) ENGINE=InnoDB;
 
+CREATE TABLE IF NOT EXISTS code_function(
+  code_file_id             INTEGER UNSIGNED NOT NULL REFERENCES code_file.code_file_id,
+  code_function_id         INTEGER UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
+  code_function_name       CHAR(255),
+  code_function_start_line INTEGER UNSIGNED NOT NULL,
+  code_function_end_line   INTEGER UNSIGNED NOT NULL,
+
+  INDEX (code_file_id)
+) ENGINE=InnoDB;
+
 CREATE TABLE IF NOT EXISTS code_class(
   code_file_id          INTEGER UNSIGNED NOT NULL REFERENCES code_file.code_file_id,
   code_class_id         INTEGER UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
@@ -133,6 +143,20 @@ CREATE TABLE IF NOT EXISTS metrics_file(
 
   INDEX (run_id),
   INDEX (code_file_id)
+) ENGINE=InnoDB;
+
+CREATE TABLE IF NOT EXISTS metrics_function(
+  run_id                          INTEGER UNSIGNED NOT NULL,
+  code_function_id                INTEGER UNSIGNED NOT NULL REFERENCES code_method.code_function_id,
+  metrics_function_coverage       FLOAT   UNSIGNED NOT NULL,
+  metrics_function_loc            INTEGER UNSIGNED NOT NULL,
+  metrics_function_loc_executable INTEGER UNSIGNED NOT NULL,
+  metrics_function_loc_executed   INTEGER UNSIGNED NOT NULL,
+  metrics_function_ccn            INTEGER UNSIGNED NOT NULL,
+  metrics_function_crap           FLOAT   UNSIGNED NOT NULL,
+
+  INDEX (run_id),
+  INDEX (code_function_id)
 ) ENGINE=InnoDB;
 
 CREATE TABLE IF NOT EXISTS metrics_class(
