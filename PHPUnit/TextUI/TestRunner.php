@@ -352,6 +352,12 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
 
             $writer->process($result);
 
+            $writer = new PHPUnit_Util_Log_PMD(
+              $arguments['reportDirectory'] . '/pmd.xml'
+            );
+
+            $writer->process($result);
+
             $this->printer->write("\n");
         }
 
