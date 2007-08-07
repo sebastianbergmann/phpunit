@@ -174,6 +174,7 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
         $arguments['filter']             = isset($arguments['filter'])             ? $arguments['filter']             : FALSE;
         $arguments['stopOnFailure']      = isset($arguments['stopOnFailure'])      ? $arguments['stopOnFailure']      : FALSE;
         $arguments['repeat']             = isset($arguments['repeat'])             ? $arguments['repeat']             : FALSE;
+        $arguments['reportCharset']      = isset($arguments['reportCharset'])      ? $arguments['reportCharset']      : 'ISO-8859-1';
         $arguments['testDatabasePrefix'] = isset($arguments['testDatabasePrefix']) ? $arguments['testDatabasePrefix'] : '';
         $arguments['verbose']            = isset($arguments['verbose'])            ? $arguments['verbose']            : FALSE;
         $arguments['wait']               = isset($arguments['wait'])               ? $arguments['wait']               : FALSE;
@@ -356,7 +357,7 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
         if (isset($arguments['reportDirectory']) &&
             extension_loaded('xdebug')) {
             $this->printer->write("\nGenerating report, this may take a moment.");
-            PHPUnit_Util_Report::render($result, $arguments['reportDirectory']);
+            PHPUnit_Util_Report::render($result, $arguments['reportDirectory'], $arguments['reportCharset']);
 
             $writer = new PHPUnit_Util_Log_CodeCoverage_XML(
               $arguments['reportDirectory'] . '/coverage.xml'

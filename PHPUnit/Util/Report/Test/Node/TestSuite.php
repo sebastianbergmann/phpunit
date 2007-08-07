@@ -125,11 +125,12 @@ class PHPUnit_Util_Report_Test_Node_TestSuite extends PHPUnit_Util_Report_Test_N
      *
      * @param string $target
      * @param string $title
+     * @param string $charset
      * @access public
      */
-    public function render($target, $title)
+    public function render($target, $title, $charset = 'ISO-8859-1')
     {
-        $this->doRender($target, $title);
+        $this->doRender($target, $title, $charset);
 
         foreach ($this->children as $child) {
             $child->render($target, $title);
@@ -138,9 +139,11 @@ class PHPUnit_Util_Report_Test_Node_TestSuite extends PHPUnit_Util_Report_Test_N
 
     /**
      * @param  string   $target
+     * @param  string   $title
+     * @param  string   $charset
      * @access protected
      */
-    protected function doRender($target, $title)
+    protected function doRender($target, $title, $charset)
     {
         $file = $target . PHPUnit_Util_Filesystem::getSafeFilename($this->getName()) . '-test.html';
 
@@ -149,7 +152,7 @@ class PHPUnit_Util_Report_Test_Node_TestSuite extends PHPUnit_Util_Report_Test_N
           'testsuite.html'
         );
 
-        $this->setTemplateVars($template, $title);
+        $this->setTemplateVars($template, $title, $charset);
         $this->setGraphVizTemplateVars($template, $target);
 
         $template->setVar(

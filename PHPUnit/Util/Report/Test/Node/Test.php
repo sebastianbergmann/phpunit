@@ -144,9 +144,10 @@ class PHPUnit_Util_Report_Test_Node_Test extends PHPUnit_Util_Report_Test_Node
      *
      * @param string $target
      * @param string $title
+     * @param string $charset
      * @access public
      */
-    public function render($target, $title)
+    public function render($target, $title, $charset = 'ISO-8859-1')
     {
     }
 }

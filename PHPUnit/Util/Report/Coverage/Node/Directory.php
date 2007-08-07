@@ -226,24 +226,27 @@ class PHPUnit_Util_Report_Coverage_Node_Directory extends PHPUnit_Util_Report_Co
      *
      * @param string $target
      * @param string $title
+     * @param string $charset
      * @access public
      */
-    public function render($target, $title)
+    public function render($target, $title, $charset = 'ISO-8859-1')
     {
-        $this->doRender($target, $title, TRUE);
-        $this->doRender($target, $title, FALSE);
+        $this->doRender($target, $title, TRUE, $charset);
+        $this->doRender($target, $title, FALSE, $charset);
 
         foreach ($this->children as $child) {
-            $child->render($target, $title);
+            $child->render($target, $title, $charset);
         }
     }
 
     /**
      * @param  string   $target
+     * @param  string   $title
      * @param  boolean  $includeDetails
+     * @param  string   $charset
      * @access protected
      */
-    protected function doRender($target, $title, $includeDetails)
+    protected function doRender($target, $title, $includeDetails, $charset)
     {
         $cleanId = PHPUnit_Util_Filesystem::getSafeFilename($this->getId());
         $file = $target . $cleanId;
@@ -269,7 +272,7 @@ class PHPUnit_Util_Report_Coverage_Node_Directory extends PHPUnit_Util_Report_Co
           'coverage_directory.html'
         );
 
-        $this->setTemplateVars($template, $title);
+        $this->setTemplateVars($template, $title, $charset);
 
         $template->setVar(
           array(

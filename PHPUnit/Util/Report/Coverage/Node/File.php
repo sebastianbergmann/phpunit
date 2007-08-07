@@ -283,9 +283,10 @@ class PHPUnit_Util_Report_Coverage_Node_File extends PHPUnit_Util_Report_Coverag
      *
      * @param string $target
      * @param string $title
+     * @param string $charset
      * @access public
      */
-    public function render($target, $title)
+    public function render($target, $title, $charset = 'ISO-8859-1')
     {
         $template = new PHPUnit_Util_Template(
           PHPUnit_Util_Report::getTemplatePath() .
@@ -342,7 +343,7 @@ class PHPUnit_Util_Report_Coverage_Node_File extends PHPUnit_Util_Report_Coverag
             $i++;
         }
 
-        $this->setTemplateVars($template, $title);
+        $this->setTemplateVars($template, $title, $charset);
         $template->setVar('lines', $lines);
 
         $cleanId = PHPUnit_Util_Filesystem::getSafeFilename($this->getId());

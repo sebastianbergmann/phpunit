@@ -70,17 +70,18 @@ abstract class PHPUnit_Util_Report
      * Renders the report.
      *
      * @param  PHPUnit_Framework_TestResult $result
-     * @param  string $target
+     * @param  string                       $target
+     * @param  string                       $charset
      * @access public
      * @static
      */
-    public static function render(PHPUnit_Framework_TestResult $result, $target)
+    public static function render(PHPUnit_Framework_TestResult $result, $target, $charset = 'ISO-8859-1')
     {
         $tests    = PHPUnit_Util_Report_Test_Factory::create($result);
         $coverage = PHPUnit_Util_Report_Coverage_Factory::create($result, $tests);
 
-        $coverage->render($target, $result->topTestSuite()->getName());
-        $tests->render($target, $result->topTestSuite()->getName());
+        $coverage->render($target, $result->topTestSuite()->getName(), $charset);
+        $tests->render($target, $result->topTestSuite()->getName(), $charset);
 
         self::copyFiles($target);
     }
