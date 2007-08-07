@@ -110,8 +110,12 @@ class PHPUnit_Util_Metrics_Class
         $this->dit  = count(PHPUnit_Util_Class::getHierarchy($class->getName()));
         $this->impl = count($class->getInterfaces());
 
+        $className = $class->getName();
+
         foreach ($this->class->getMethods() as $method) {
-            $this->methods[$method->getName()] = PHPUnit_Util_Metrics_Function::factory($method, $codeCoverage);
+            if ($method->getDeclaringClass()->getName() == $className) {
+                $this->methods[$method->getName()] = PHPUnit_Util_Metrics_Function::factory($method, $codeCoverage);
+            }
         }
     }
 
