@@ -291,10 +291,10 @@ class PHPUnit_Util_Metrics_Function
           $this->function->getEndLine()
         );
 
-        $this->coverage       = $statistics['coverage'];
-        $this->loc            = $statistics['loc'];
-        $this->locExecutable  = $statistics['locExecutable'];
-        $this->loclocExecuted = $statistics['locExecuted'];
+        $this->coverage      = $statistics['coverage'];
+        $this->loc           = $statistics['loc'];
+        $this->locExecutable = $statistics['locExecutable'];
+        $this->locExecuted   = $statistics['locExecuted'];
     }
 
     /**

@@ -108,7 +108,7 @@ class PHPUnit_Util_Metrics_Class
         $this->calculatePolymorphismFactor();
         $this->calculateCodeCoverage($codeCoverage);
 
-        $this->dit  = count(PHPUnit_Util_Class::getHierarchy($class->getName()));
+        $this->dit  = count(PHPUnit_Util_Class::getHierarchy($class->getName())) - 1;
         $this->impl = count($class->getInterfaces());
 
         $className = $class->getName();
@@ -567,10 +567,10 @@ class PHPUnit_Util_Metrics_Class
           $this->class->getEndLine()
         );
 
-        $this->coverage       = $statistics['coverage'];
-        $this->loc            = $statistics['loc'];
-        $this->locExecutable  = $statistics['locExecutable'];
-        $this->loclocExecuted = $statistics['locExecuted'];
+        $this->coverage      = $statistics['coverage'];
+        $this->loc           = $statistics['loc'];
+        $this->locExecutable = $statistics['locExecutable'];
+        $this->locExecuted   = $statistics['locExecuted'];
     }
 }
 ?>
