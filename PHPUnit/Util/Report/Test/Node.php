@@ -147,14 +147,16 @@ abstract class PHPUnit_Util_Report_Test_Node
 
     /**
      * @param  PHPUnit_Util_Template $template
-     * @param  string                 $title
+     * @param  string                $title
+     * @param  string                $charset
      * @access public
      */
-   protected function setTemplateVars(PHPUnit_Util_Template $template, $title)
+   protected function setTemplateVars(PHPUnit_Util_Template $template, $title, $charset)
     {
         $template->setVar(
           array(
             'title',
+            'charset',
             'link',
             'date',
             'phpunit_version',
@@ -162,6 +164,7 @@ abstract class PHPUnit_Util_Report_Test_Node
           ),
           array(
             $title,
+            $charset,
             $this->getLink(TRUE),
             $template->getDate(),
             PHPUnit_Runner_Version::id(),

@@ -232,14 +232,16 @@ abstract class PHPUnit_Util_Report_Coverage_Node
 
     /**
      * @param  PHPUnit_Util_Template $template
-     * @param  string                 $title
+     * @param  string                $title
+     * @param  string                $charset
      * @access public
      */
-   protected function setTemplateVars(PHPUnit_Util_Template $template, $title)
+   protected function setTemplateVars(PHPUnit_Util_Template $template, $title, $charset)
     {
         $template->setVar(
           array(
             'title',
+            'charset',
             'link',
             'executable_lines',
             'executed_lines',
@@ -250,6 +252,7 @@ abstract class PHPUnit_Util_Report_Coverage_Node
           ),
           array(
             $title,
+            $charset,
             $this->getLink(FALSE, TRUE),
             $this->getNumExecutableLines(),
             $this->getNumExecutedLines(),
@@ -293,9 +296,10 @@ abstract class PHPUnit_Util_Report_Coverage_Node
      *
      * @param string $target
      * @param string $title
+     * @param string $charset
      * @access public
      * @abstract
      */
-    abstract public function render($target, $title);
+    abstract public function render($target, $title, $charset = 'ISO-8859-1');
 }
 ?>
