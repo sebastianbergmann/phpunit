@@ -822,9 +822,13 @@ class PHPUnit_Framework_Assert
      */
     public static function assertSame($expected, $actual, $message = '')
     {
-        $constraint = new PHPUnit_Framework_Constraint_IsIdentical($expected);
+        if (is_bool($expected) && is_bool($actual)) {
+            self::assertEquals($expected, $actual);
+        } else {
+            $constraint = new PHPUnit_Framework_Constraint_IsIdentical($expected);
 
-        self::assertThat($actual, $constraint, $message);
+            self::assertThat($actual, $constraint, $message);
+        }
     }
 
     /**
@@ -860,11 +864,15 @@ class PHPUnit_Framework_Assert
      */
     public static function assertNotSame($expected, $actual, $message = '')
     {
-        $constraint = new PHPUnit_Framework_Constraint_Not(
-          new PHPUnit_Framework_Constraint_IsIdentical($expected)
-        );
+        if (is_bool($expected) && is_bool($actual)) {
+            self::assertNotEquals($expected, $actual);
+        } else {
+            $constraint = new PHPUnit_Framework_Constraint_Not(
+              new PHPUnit_Framework_Constraint_IsIdentical($expected)
+            );
 
-        self::assertThat($actual, $constraint, $message);
+            self::assertThat($actual, $constraint, $message);
+        }
     }
 
     /**
