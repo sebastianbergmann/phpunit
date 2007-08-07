@@ -94,76 +94,80 @@ class PHPUnit_Util_Log_PMD extends PHPUnit_Util_Printer
             $added = FALSE;
 
             foreach ($fileMetrics->getClasses() as $className => $classMetrics) {
-                $classStartLine = $classMetrics->getClass()->getStartLine();
+                if (!$classMetrics->getClass()->isInterface()) {
+                    $classStartLine = $classMetrics->getClass()->getStartLine();
 
-                $dit = $classMetrics->getDIT();
+                    $dit = $classMetrics->getDIT();
 
-                if ($dit > 6) {
-                    $this->addViolation(
-                      'Depth of Inheritance Tree (DIT) should not exceed 6.',
-                      $xmlFile,
-                      'DepthOfInheritanceTree',
-                      $classStartLine,
-                      '',
-                      $className
-                    );
-
-                    $added = TRUE;
-                }
-
-                foreach ($classMetrics->getMethods() as $methodName => $methodMetrics) {
-                    $methodStartLine = $methodMetrics->getMethod()->getStartLine();
-
-                    $ccn = $methodMetrics->getCCN();
-
-                    $violation = '';
-
-                    if ($ccn >= 50) {
-                        $violation = 'A cyclomatic complexity of over 50 indicates unmaintainable code.';
-                    }
-
-                    else if ($ccn >= 20) {
-                        $violation = 'A cyclomatic complexity of over 20 indicates hardly maintainable code.';
-                    }
-
-                    if (!empty($violation)) {
+                    if ($dit > 6) {
                         $this->addViolation(
-                          $violation,
+                          'Depth of Inheritance Tree (DIT) should not exceed 6.',
                           $xmlFile,
-                          'CyclomaticComplexity',
-                          $methodStartLine,
+                          'DepthOfInheritanceTree',
+                          $classStartLine,
                           '',
-                          $className,
-                          $methodName
+                          $className
                         );
 
                         $added = TRUE;
                     }
 
-                    $coverage = $methodMetrics->getCoverage();
+                    foreach ($classMetrics->getMethods() as $methodName => $methodMetrics) {
+                        if (!$methodMetrics->getMethod()->isAbstract()) {
+                            $methodStartLine = $methodMetrics->getMethod()->getStartLine();
 
-                    $violation = '';
+                            $ccn = $methodMetrics->getCCN();
 
-                    if ($coverage <= 35) {
-                        $violation = 'The code coverage is low.';
-                    }
+                            $violation = '';
 
-                    else if ($coverage > 35 && $coverage < 70) {
-                        $violation = 'The code coverage is medium.';
-                    }
+                            if ($ccn >= 50) {
+                                $violation = 'A cyclomatic complexity of over 50 indicates unmaintainable code.';
+                            }
 
-                    if (!empty($violation)) {
-                        $this->addViolation(
-                          $violation,
-                          $xmlFile,
-                          'CodeCoverage',
-                          $methodStartLine,
-                          '',
-                          $className,
-                          $methodName
-                        );
+                            else if ($ccn >= 20) {
+                                $violation = 'A cyclomatic complexity of over 20 indicates hardly maintainable code.';
+                            }
 
-                        $added = TRUE;
+                            if (!empty($violation)) {
+                                $this->addViolation(
+                                  $violation,
+                                  $xmlFile,
+                                  'CyclomaticComplexity',
+                                  $methodStartLine,
+                                  '',
+                                  $className,
+                                  $methodName
+                                );
+
+                                $added = TRUE;
+                            }
+
+                            $coverage = $methodMetrics->getCoverage();
+
+                            $violation = '';
+
+                            if ($coverage <= 35) {
+                                $violation = 'The code coverage is low.';
+                            }
+
+                            else if ($coverage > 35 && $coverage < 70) {
+                                $violation = 'The code coverage is medium.';
+                            }
+
+                            if (!empty($violation)) {
+                                $this->addViolation(
+                                  $violation,
+                                  $xmlFile,
+                                  'CodeCoverage',
+                                  $methodStartLine,
+                                  '',
+                                  $className,
+                                  $methodName
+                                );
+
+                                $added = TRUE;
+                            }
+                        }
                     }
                 }
             }
