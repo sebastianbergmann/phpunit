@@ -166,6 +166,7 @@ class PHPUnit_TextUI_Command
 
         if (extension_loaded('xdebug')) {
             $longOptions[] = 'coverage-xml=';
+            $longOptions[] = 'log-metrics=';
             $longOptions[] = 'log-pmd=';
             $longOptions[] = 'report=';
         }
@@ -256,6 +257,11 @@ class PHPUnit_TextUI_Command
 
                 case '--log-pmd': {
                     $arguments['pmdXML'] = $option[1];
+                }
+                break;
+
+                case '--log-metrics': {
+                    $arguments['metricsXML'] = $option[1];
                 }
                 break;
 
@@ -443,7 +449,8 @@ class PHPUnit_TextUI_Command
               "  --log-xml <file>       Log test execution in XML format to file.\n";
 
         if (extension_loaded('xdebug')) {
-            print "  --log-pmd <file>  Write violations report in PMD XML format.\n";
+            print "  --log-metrics <file>   Write metrics report in XML format.\n" .
+                  "  --log-pmd <file>       Write violations report in PMD XML format.\n";
         }
 
         print "\n";

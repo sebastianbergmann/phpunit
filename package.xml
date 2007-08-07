@@ -561,6 +561,9 @@
       <file baseinstalldir="/" name="JSON.php" role="php">
        <tasks:replace from="@package_version@" to="version" type="package-info" />
       </file>
+      <file baseinstalldir="/" name="Metrics.php" role="php">
+       <tasks:replace from="@package_version@" to="version" type="package-info" />
+      </file>
       <file baseinstalldir="/" name="PEAR.php" role="php">
        <tasks:replace from="@package_version@" to="version" type="package-info" />
       </file>
