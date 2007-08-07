@@ -101,7 +101,10 @@ class PHPUnit_Util_Log_PMD extends PHPUnit_Util_Printer
 
                     if ($dit > 6) {
                         $this->addViolation(
-                          'Depth of Inheritance Tree (DIT) should not exceed 6.',
+                          sprintf(
+                            'Depth of Inheritance Tree (DIT) is %d but should not exceed 6.',
+                            $dit
+                          ),
                           $xmlFile,
                           'DepthOfInheritanceTree',
                           $classStartLine,
@@ -121,16 +124,20 @@ class PHPUnit_Util_Log_PMD extends PHPUnit_Util_Printer
                             $violation = '';
 
                             if ($ccn >= 50) {
-                                $violation = 'A cyclomatic complexity of over 50 indicates unmaintainable code.';
+                                $violation = 'A cyclomatic complexity >= 50 indicates unmaintainable code.';
                             }
 
                             else if ($ccn >= 20) {
-                                $violation = 'A cyclomatic complexity of over 20 indicates hardly maintainable code.';
+                                $violation = 'A cyclomatic complexity >= 20 indicates hardly maintainable code.';
                             }
 
                             if (!empty($violation)) {
                                 $this->addViolation(
-                                  $violation,
+                                  sprintf(
+                                    "The cyclomatic complexity is %d.\n%s",
+                                    $ccn,
+                                    $violation
+                                  ),
                                   $xmlFile,
                                   'CyclomaticComplexity',
                                   $methodStartLine,
@@ -147,16 +154,19 @@ class PHPUnit_Util_Log_PMD extends PHPUnit_Util_Printer
                             $violation = '';
 
                             if ($coverage <= 35) {
-                                $violation = 'The code coverage is low.';
+                                $violation = 'The code coverage is %01.2f which is considered low.';
                             }
 
                             else if ($coverage > 35 && $coverage < 70) {
-                                $violation = 'The code coverage is medium.';
+                                $violation = 'The code coverage is %01.2f which is considered medium.';
                             }
 
                             if (!empty($violation)) {
                                 $this->addViolation(
-                                  $violation,
+                                  sprintf(
+                                    $violation,
+                                    $coverage
+                                  ),
                                   $xmlFile,
                                   'CodeCoverage',
                                   $methodStartLine,
@@ -180,16 +190,20 @@ class PHPUnit_Util_Log_PMD extends PHPUnit_Util_Printer
                 $violation = '';
 
                 if ($ccn >= 50) {
-                    $violation = 'A cyclomatic complexity of over 50 indicates unmaintainable code.';
+                    $violation = 'A cyclomatic complexity >= 50 indicates unmaintainable code.';
                 }
 
                 else if ($ccn >= 20) {
-                    $violation = 'A cyclomatic complexity of over 20 indicates hardly maintainable code.';
+                    $violation = 'A cyclomatic complexity >= 20 indicates hardly maintainable code.';
                 }
 
                 if (!empty($violation)) {
                     $this->addViolation(
-                      $violation,
+                      sprintf(
+                        "The cyclomatic complexity is %d.\n%s",
+                        $ccn,
+                        $violation
+                      ),
                       $xmlFile,
                       'CyclomaticComplexity',
                       $functionStartLine,
@@ -207,16 +221,19 @@ class PHPUnit_Util_Log_PMD extends PHPUnit_Util_Printer
                 $violation = '';
 
                 if ($coverage <= 35) {
-                    $violation = 'The code coverage is low.';
+                    $violation = 'The code coverage is %01.2f which is considered low.';
                 }
 
                 else if ($coverage > 35 && $coverage < 70) {
-                    $violation = 'The code coverage is medium.';
+                    $violation = 'The code coverage is %01.2f which is considered medium.';
                 }
 
                 if (!empty($violation)) {
                     $this->addViolation(
-                      $violation,
+                      sprintf(
+                        $violation,
+                        $coverage
+                      ),
                       $xmlFile,
                       'CodeCoverage',
                       $methodStartLine,
