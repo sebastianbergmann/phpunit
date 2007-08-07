@@ -272,10 +272,10 @@ class PHPUnit_Util_Metrics_File
           count($this->lines)
         );
 
-        $this->coverage       = $statistics['coverage'];
-        $this->loc            = $statistics['loc'];
-        $this->locExecutable  = $statistics['locExecutable'];
-        $this->loclocExecuted = $statistics['locExecuted'];
+        $this->coverage      = $statistics['coverage'];
+        $this->loc           = $statistics['loc'];
+        $this->locExecutable = $statistics['locExecutable'];
+        $this->locExecuted   = $statistics['locExecuted'];
     }
 
     /**
