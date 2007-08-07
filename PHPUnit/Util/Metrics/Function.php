@@ -112,7 +112,8 @@ class PHPUnit_Util_Metrics_Function
 
         $name = $function->getName();
 
-        if (!isset(self::$cache[$scope][$name])) {
+        if (!isset(self::$cache[$scope][$name]) ||
+           (!empty($codeCoverage) && self::$cache[$scope][$name]->coverage == 0)) {
             self::$cache[$scope][$name] = new PHPUnit_Util_Metrics_Function($scope, $function, $codeCoverage);
         }
 
