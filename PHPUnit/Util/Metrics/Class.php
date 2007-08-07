@@ -85,6 +85,7 @@ class PHPUnit_Util_Metrics_Class
 
     protected $class;
     protected $methods = array();
+    protected $inheritedMethods = array();
     protected $publicMethods = 0;
 
     protected static $cache = array();
@@ -115,6 +116,8 @@ class PHPUnit_Util_Metrics_Class
         foreach ($this->class->getMethods() as $method) {
             if ($method->getDeclaringClass()->getName() == $className) {
                 $this->methods[$method->getName()] = PHPUnit_Util_Metrics_Function::factory($method, $codeCoverage);
+            } else {
+                $this->inheritedMethods[$method->getName()] = PHPUnit_Util_Metrics_Function::factory($method, $codeCoverage);
             }
         }
     }
@@ -443,11 +446,13 @@ class PHPUnit_Util_Metrics_Class
      */
     protected function calculateMethodMetrics()
     {
-        $methods          = 0;
+        $numMethods       = 0;
         $hiddenMethods    = 0;
         $inheritedMethods = 0;
 
-        foreach ($this->methods as $method) {
+        $methods = array_merge($this->methods, $this->inheritedMethods);
+
+        foreach ($methods as $method) {
             $ccn = $method->getCCN();
 
             if ($method->getMethod()->getDeclaringClass()->getName() == $this->class->getName()) {
@@ -466,12 +471,12 @@ class PHPUnit_Util_Metrics_Class
             }
 
             $this->wmcI += $ccn;
-            $methods++;
+            $numMethods++;
         }
 
-        if ($methods > 0) {
-            $this->mif = (100 * $inheritedMethods) / $methods;
-            $this->mhf = (100 * $hiddenMethods) / $methods;
+        if ($numMethods > 0) {
+            $this->mif = (100 * $inheritedMethods) / $numMethods;
+            $this->mhf = (100 * $hiddenMethods) / $numMethods;
         }
     }
 
