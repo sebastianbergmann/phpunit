@@ -132,7 +132,8 @@ class PHPUnit_Util_Metrics_Class
     {
         $className = $class->getName();
 
-        if (!isset(self::$cache[$className])) {
+        if (!isset(self::$cache[$className]) ||
+           (!empty($codeCoverage) && self::$cache[$className]->coverage == 0)) {
             self::$cache[$className] = new PHPUnit_Util_Metrics_Class($class, $codeCoverage);
         }
 

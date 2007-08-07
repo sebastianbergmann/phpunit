@@ -115,7 +115,8 @@ class PHPUnit_Util_Metrics_File
      */
     public static function factory($filename, &$codeCoverage = array())
     {
-        if (!isset(self::$cache[$filename])) {
+        if (!isset(self::$cache[$filename]) ||
+           (!empty($codeCoverage) && self::$cache[$filename]->coverage == 0)) {
             self::$cache[$filename] = new PHPUnit_Util_Metrics_File($filename, $codeCoverage);
         }
 
