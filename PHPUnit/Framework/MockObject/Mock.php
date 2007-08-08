@@ -261,10 +261,11 @@ class PHPUnit_Framework_MockObject_Mock
     {
         return sprintf(
           "\n    %s function %s%s(%s) {\n" .
-          "        \$args = func_get_args();\n" .
-          "        return \$this->invocationMocker->invoke(\n" .
+          "        \$args   = func_get_args();\n" .
+          "        \$result = \$this->invocationMocker->invoke(\n" .
           "          new PHPUnit_Framework_MockObject_Invocation(\$this, \"%s\", \"%s\", \$args)\n" .
-          "        );\n" .
+          "        );\n\n" .
+          "        return \$result;\n" .
           "    }\n",
 
           $modifier,
