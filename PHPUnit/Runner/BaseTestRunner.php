@@ -66,10 +66,10 @@ PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
 abstract class PHPUnit_Runner_BaseTestRunner implements PHPUnit_Framework_TestListener
 {
     const STATUS_PASSED     = 0;
-    const STATUS_ERROR      = 1;
-    const STATUS_FAILURE    = 2;
-    const STATUS_INCOMPLETE = 3;
-    const STATUS_SKIPPED    = 4;
+    const STATUS_SKIPPED    = 1;
+    const STATUS_INCOMPLETE = 2;
+    const STATUS_FAILURE    = 3;
+    const STATUS_ERROR      = 4;
     const SUITE_METHODNAME  = 'suite';
 
     /**
