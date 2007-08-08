@@ -69,6 +69,8 @@ PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
  */
 class PHPUnit_Util_Log_PMD extends PHPUnit_Util_Printer
 {
+    protected $added;
+
     /**
      * @param  PHPUnit_Framework_TestResult $result
      * @access public
@@ -91,7 +93,7 @@ class PHPUnit_Util_Log_PMD extends PHPUnit_Util_Printer
             $xmlFile = $document->createElement('file');
             $xmlFile->setAttribute('name', $fileName);
 
-            $added = FALSE;
+            $this->added = FALSE;
 
             foreach ($fileMetrics->getClasses() as $className => $classMetrics) {
                 if (!$classMetrics->getClass()->isInterface()) {
@@ -112,141 +114,22 @@ class PHPUnit_Util_Log_PMD extends PHPUnit_Util_Printer
                           $className
                         );
 
-                        $added = TRUE;
+                        $this->added = TRUE;
                     }
 
                     foreach ($classMetrics->getMethods() as $methodName => $methodMetrics) {
                         if (!$methodMetrics->getMethod()->isAbstract()) {
-                            $methodStartLine = $methodMetrics->getMethod()->getStartLine();
-
-                            $ccn = $methodMetrics->getCCN();
-
-                            $violation = '';
-
-                            if ($ccn >= 50) {
-                                $violation = 'A cyclomatic complexity >= 50 indicates unmaintainable code.';
-                            }
-
-                            else if ($ccn >= 20) {
-                                $violation = 'A cyclomatic complexity >= 20 indicates hardly maintainable code.';
-                            }
-
-                            if (!empty($violation)) {
-                                $this->addViolation(
-                                  sprintf(
-                                    "The cyclomatic complexity is %d.\n%s",
-                                    $ccn,
-                                    $violation
-                                  ),
-                                  $xmlFile,
-                                  'CyclomaticComplexity',
-                                  $methodStartLine,
-                                  '',
-                                  $className,
-                                  $methodName
-                                );
-
-                                $added = TRUE;
-                            }
-
-                            $coverage = $methodMetrics->getCoverage();
-
-                            $violation = '';
-
-                            if ($coverage <= 35) {
-                                $violation = 'The code coverage is %01.2f which is considered low.';
-                            }
-
-                            else if ($coverage > 35 && $coverage < 70) {
-                                $violation = 'The code coverage is %01.2f which is considered medium.';
-                            }
-
-                            if (!empty($violation)) {
-                                $this->addViolation(
-                                  sprintf(
-                                    $violation,
-                                    $coverage
-                                  ),
-                                  $xmlFile,
-                                  'CodeCoverage',
-                                  $methodStartLine,
-                                  '',
-                                  $className,
-                                  $methodName
-                                );
-
-                                $added = TRUE;
-                            }
+                            $this->processFunctionOrMethod($xmlFile, $methodMetrics);
                         }
                     }
                 }
             }
 
             foreach ($fileMetrics->getFunctions() as $functionName => $functionMetrics) {
-                $functionStartLine = $functionMetrics->getFunction()->getStartLine();
-
-                $ccn = $functionMetrics->getCCN();
-
-                $violation = '';
-
-                if ($ccn >= 50) {
-                    $violation = 'A cyclomatic complexity >= 50 indicates unmaintainable code.';
-                }
-
-                else if ($ccn >= 20) {
-                    $violation = 'A cyclomatic complexity >= 20 indicates hardly maintainable code.';
-                }
-
-                if (!empty($violation)) {
-                    $this->addViolation(
-                      sprintf(
-                        "The cyclomatic complexity is %d.\n%s",
-                        $ccn,
-                        $violation
-                      ),
-                      $xmlFile,
-                      'CyclomaticComplexity',
-                      $functionStartLine,
-                      '',
-                      '',
-                      '',
-                      $functionName
-                    );
-
-                    $added = TRUE;
-                }
-
-                $coverage = $methodMetrics->getCoverage();
-
-                $violation = '';
-
-                if ($coverage <= 35) {
-                    $violation = 'The code coverage is %01.2f which is considered low.';
-                }
-
-                else if ($coverage > 35 && $coverage < 70) {
-                    $violation = 'The code coverage is %01.2f which is considered medium.';
-                }
-
-                if (!empty($violation)) {
-                    $this->addViolation(
-                      sprintf(
-                        $violation,
-                        $coverage
-                      ),
-                      $xmlFile,
-                      'CodeCoverage',
-                      $methodStartLine,
-                      '',
-                      $className,
-                      $methodName
-                    );
-
-                    $added = TRUE;
-                }
+                $this->processFunctionOrMethod($xmlFile, $functionMetrics);
             }
 
-            if ($added) {
+            if ($this->added) {
                 $pmd->appendChild($xmlFile);
             }
         }
@@ -295,6 +178,77 @@ class PHPUnit_Util_Log_PMD extends PHPUnit_Util_Printer
 
         if (!empty($function)) {
             $violationXml->setAttribute('function', $function);
+        }
+    }
+
+    protected function processFunctionOrMethod(DOMElement $element, $metrics)
+    {
+        $scope = '';
+
+        if ($metrics->getFunction() instanceof ReflectionMethod) {
+            $scope = $metrics->getFunction()->getDeclaringClass()->getName();
+        }
+
+        $startLine = $metrics->getFunction()->getStartLine();
+        $name      = $metrics->getFunction()->getName();
+
+        $ccn = $metrics->getCCN();
+
+        $violation = '';
+
+        if ($ccn >= 50) {
+            $violation = 'A cyclomatic complexity >= 50 indicates unmaintainable code.';
+        }
+
+        else if ($ccn >= 20) {
+            $violation = 'A cyclomatic complexity >= 20 indicates hardly maintainable code.';
+        }
+
+        if (!empty($violation)) {
+            $this->addViolation(
+              sprintf(
+                "The cyclomatic complexity is %d.\n%s",
+                $ccn,
+                $violation
+              ),
+              $element,
+              'CyclomaticComplexity',
+              $startLine,
+              '',
+              $scope,
+              $name
+            );
+
+            $this->added = TRUE;
+        }
+
+        $coverage = $metrics->getCoverage();
+
+        $violation = '';
+
+        if ($coverage <= 35) {
+            $violation = 'The code coverage is %01.2f which is considered low.';
+        }
+
+        else if ($coverage > 35 && $coverage < 70) {
+            $violation = 'The code coverage is %01.2f which is considered medium.';
+        }
+
+        if (!empty($violation)) {
+            $this->addViolation(
+              sprintf(
+                $violation,
+                $coverage
+              ),
+              $element,
+              'CodeCoverage',
+              $startLine,
+              '',
+              $scope,
+              $name
+            );
+
+            $this->added = TRUE;
         }
     }
 }
