@@ -205,6 +205,10 @@ class PHPUnit_Util_Log_Database implements PHPUnit_Framework_TestListener
           $e->getMessage()
         );
 
+        $this->updateParents(
+          $time, PHPUnit_Runner_BaseTestRunner::STATUS_ERROR
+        );
+
         $this->currentTestSuccess = FALSE;
     }
 
@@ -222,6 +226,10 @@ class PHPUnit_Util_Log_Database implements PHPUnit_Framework_TestListener
           PHPUnit_Runner_BaseTestRunner::STATUS_FAILURE,
           $time,
           $e->getMessage()
+        );
+
+        $this->updateParents(
+          $time, PHPUnit_Runner_BaseTestRunner::STATUS_FAILURE
         );
 
         $this->currentTestSuccess = FALSE;
@@ -274,10 +282,15 @@ class PHPUnit_Util_Log_Database implements PHPUnit_Framework_TestListener
     public function startTestSuite(PHPUnit_Framework_TestSuite $suite)
     {
         if (empty($this->testSuites)) {
-            $this->testSuites[] = $this->insertRootNode($suite->getName());
+            $testSuiteId = $this->insertRootNode($suite->getName());
         } else {
-            $this->testSuites[] = $this->insertNode($suite);
+            $testSuiteId = $this->insertNode($suite);
         }
+
+        $this->testSuites[] = array(
+          'id'     => $testSuiteId,
+          'result' => PHPUnit_Runner_BaseTestRunner::STATUS_PASSED
+        );
     }
 
     /**
@@ -316,6 +329,8 @@ class PHPUnit_Util_Log_Database implements PHPUnit_Framework_TestListener
             $this->storeResult(
               PHPUnit_Runner_BaseTestRunner::STATUS_PASSED, $time
             );
+
+            $this->updateParents($time);
         }
     }
 
@@ -375,7 +390,7 @@ class PHPUnit_Util_Log_Database implements PHPUnit_Framework_TestListener
             WHERE test_id = :testId;'
         );
 
-        $stmt->bindParam(':testId', $this->testSuites[count($this->testSuites)-1], PDO::PARAM_INT);
+        $stmt->bindParam(':testId', $this->testSuites[count($this->testSuites)-1]['id'], PDO::PARAM_INT);
         $stmt->execute();
 
         $right = (int)$stmt->fetchColumn();
@@ -387,7 +402,7 @@ class PHPUnit_Util_Log_Database implements PHPUnit_Framework_TestListener
               AND node_left > :left;'
         );
 
-        $stmt->bindParam(':root', $this->testSuites[0], PDO::PARAM_INT);
+        $stmt->bindParam(':root', $this->testSuites[0]['id'], PDO::PARAM_INT);
         $stmt->bindParam(':left', $right, PDO::PARAM_INT);
         $stmt->execute();
 
@@ -398,7 +413,7 @@ class PHPUnit_Util_Log_Database implements PHPUnit_Framework_TestListener
               AND node_right >= :right;'
         );
 
-        $stmt->bindParam(':root', $this->testSuites[0], PDO::PARAM_INT);
+        $stmt->bindParam(':root', $this->testSuites[0]['id'], PDO::PARAM_INT);
         $stmt->bindParam(':right', $right, PDO::PARAM_INT);
         $stmt->execute();
 
@@ -415,7 +430,7 @@ class PHPUnit_Util_Log_Database implements PHPUnit_Framework_TestListener
 
         $stmt->bindParam(':runId', $this->runId, PDO::PARAM_INT);
         $stmt->bindParam(':testName', $testName, PDO::PARAM_STR);
-        $stmt->bindParam(':root', $this->testSuites[0], PDO::PARAM_INT);
+        $stmt->bindParam(':root', $this->testSuites[0]['id'], PDO::PARAM_INT);
         $stmt->bindParam(':left', $left, PDO::PARAM_INT);
         $stmt->bindParam(':right', $right, PDO::PARAM_INT);
         $stmt->execute();
@@ -454,6 +469,43 @@ class PHPUnit_Util_Log_Database implements PHPUnit_Framework_TestListener
         $stmt->bindParam(':executionTime', $time);
         $stmt->bindParam(':testId', $this->currentTestId, PDO::PARAM_INT);
         $stmt->execute();
+    }
+
+    /**
+     * @param  float   $time
+     * @param  integer $result
+     * @throws PDOException
+     * @access protected
+     */
+    protected function updateParents($time, $result = NULL)
+    {
+        $stmtUpdateResultAndTime = $this->dbh->prepare(
+          'UPDATE test
+              SET test_result         = :result,
+                  test_execution_time = test_execution_time + :time
+            WHERE test_id             = :testSuiteId;'
+        );
+
+        $stmtUpdateTime = $this->dbh->prepare(
+          'UPDATE test
+              SET test_execution_time = test_execution_time + :time
+            WHERE test_id             = :testSuiteId;'
+        );
+
+        foreach ($this->testSuites as &$testSuite) {
+            if ($result > $testSuite['result']) {
+                $stmtUpdateResultAndTime->bindParam(':result', $result, PDO::PARAM_INT);
+                $stmtUpdateResultAndTime->bindParam(':testSuiteId', $testSuite['id'], PDO::PARAM_INT);
+                $stmtUpdateResultAndTime->bindParam(':time', $time);
+                $stmtUpdateResultAndTime->execute();
+
+                $testSuite['result'] = $result;
+            } else {
+                $stmtUpdateTime->bindParam(':testSuiteId', $testSuite['id'], PDO::PARAM_INT);
+                $stmtUpdateTime->bindParam(':time', $time);
+                $stmtUpdateTime->execute();
+            }
+        }
     }
 }
 ?>
