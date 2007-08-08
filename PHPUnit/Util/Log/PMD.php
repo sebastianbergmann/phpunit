@@ -271,9 +271,9 @@ class PHPUnit_Util_Log_PMD extends PHPUnit_Util_Printer
                 'Complexity is determined by the number of decision points in a ' .
                 'function or method plus one for the function or method entry. ' .
                 'The decision points are "if", "for", "foreach", "while", "case", ' .
-                '"catch", "&&", "||", and "?:". Generally, 1-4 is low complexity, ' .
-                '5-7 indicates moderate complexity, 8-10 is high complexity, and ' .
-                '11+ is very high complexity.',
+                '"catch", "&amp;&amp;", "||", and "?:". Generally, 1-4 is low ' .
+                'complexity, 5-7 indicates moderate complexity, 8-10 is high ' .
+                'complexity, and 11+ is very high complexity.',
                 $ccn
               ),
               $element,
