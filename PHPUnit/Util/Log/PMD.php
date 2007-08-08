@@ -139,7 +139,7 @@ class PHPUnit_Util_Log_PMD extends PHPUnit_Util_Printer
                         $this->added = TRUE;
                     }
 
-                    $varsNp = $classMetrics->getVARSnp()();
+                    $varsNp = $classMetrics->getVARSnp();
 
                     if ($varsNp > 15) {
                         $this->addViolation(
@@ -164,7 +164,7 @@ class PHPUnit_Util_Log_PMD extends PHPUnit_Util_Printer
                     }
 
 
-                    $publicMethods = $classMetrics->getPublicMethods()();
+                    $publicMethods = $classMetrics->getPublicMethods();
 
                     if ($publicMethods > 45) {
                         $this->addViolation(
@@ -274,7 +274,7 @@ class PHPUnit_Util_Log_PMD extends PHPUnit_Util_Printer
                 '"catch", "&&", "||", and "?:". Generally, 1-4 is low complexity, ' .
                 '5-7 indicates moderate complexity, 8-10 is high complexity, and ' .
                 '11+ is very high complexity.',
-                $ccn,
+                $ccn
               ),
               $element,
               'CyclomaticComplexity',
