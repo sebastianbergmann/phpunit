@@ -143,6 +143,7 @@ class PHPUnit_Util_Log_Metrics extends PHPUnit_Util_Printer
                         $xmlMethod->setAttribute('coverage', $methodMetrics->getCoverage());
                         $xmlMethod->setAttribute('ccn', $methodMetrics->getCCN());
                         $xmlMethod->setAttribute('crap', $methodMetrics->getCrapIndex());
+                        $xmlMethod->setAttribute('parameters', $methodMetrics->getParameters());
 
                         $xmlClass->appendChild($xmlMethod);
                     }
