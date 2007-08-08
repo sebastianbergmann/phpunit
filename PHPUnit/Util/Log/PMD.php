@@ -117,6 +117,76 @@ class PHPUnit_Util_Log_PMD extends PHPUnit_Util_Printer
                         $this->added = TRUE;
                     }
 
+                    $locExecutable = $classMetrics->getLocExecutable();
+
+                    if ($locExecutable > 1000) {
+                        $this->addViolation(
+                          sprintf(
+                            "Class has %d lines of executable code.\n" .
+                            'This is an indication that the class may be ' .
+                            'trying to do too much. Try to break it down, ' .
+                            'and reduce the size to something manageable.',
+                            $locExecutable
+                          ),
+                          $element,
+                          'ExcessiveClassLength',
+                          $startLine,
+                          '',
+                          $scope,
+                          $name
+                        );
+
+                        $this->added = TRUE;
+                    }
+
+                    $varsNp = $classMetrics->getVARSnp()();
+
+                    if ($varsNp > 15) {
+                        $this->addViolation(
+                          sprintf(
+                            "Class has %d public fields.\n" .
+                            'Classes that have too many fields could be redesigned ' .
+                            'to have fewer fields, possibly through some nested ' .
+                            'object grouping of some of the information. For ' .
+                            'example, a class with city/state/zip fields could ' .
+                            'instead have one Address field.',
+                            $varsNp
+                          ),
+                          $element,
+                          'TooManyFields',
+                          $startLine,
+                          '',
+                          $scope,
+                          $name
+                        );
+
+                        $this->added = TRUE;
+                    }
+
+
+                    $publicMethods = $classMetrics->getPublicMethods()();
+
+                    if ($publicMethods > 45) {
+                        $this->addViolation(
+                          sprintf(
+                            "Class has %d public methods.\n" .
+                            'A large number of public methods and attributes ' .
+                            'declared in a class can indicate the class may need ' .
+                            'to be broken up as increased effort will be required ' .
+                            'to thoroughly test it.',
+                            $publicMethods
+                          ),
+                          $element,
+                          'ExcessivePublicCount',
+                          $startLine,
+                          '',
+                          $scope,
+                          $name
+                        );
+
+                        $this->added = TRUE;
+                    }
+
                     foreach ($classMetrics->getMethods() as $methodName => $methodMetrics) {
                         if (!$methodMetrics->getMethod()->isAbstract()) {
                             $this->processFunctionOrMethod($xmlFile, $methodMetrics);
@@ -194,22 +264,17 @@ class PHPUnit_Util_Log_PMD extends PHPUnit_Util_Printer
 
         $ccn = $metrics->getCCN();
 
-        $violation = '';
-
-        if ($ccn >= 50) {
-            $violation = 'A cyclomatic complexity >= 50 indicates unmaintainable code.';
-        }
-
-        else if ($ccn >= 20) {
-            $violation = 'A cyclomatic complexity >= 20 indicates hardly maintainable code.';
-        }
-
-        if (!empty($violation)) {
+        if ($ccn >= 10) {
             $this->addViolation(
               sprintf(
-                "The cyclomatic complexity is %d.\n%s",
+                "The cyclomatic complexity is %d.\n" .
+                'Complexity is determined by the number of decision points in a ' .
+                'function or method plus one for the function or method entry. ' .
+                'The decision points are "if", "for", "foreach", "while", "case", ' .
+                '"catch", "&&", "||", and "?:". Generally, 1-4 is low complexity, ' .
+                '5-7 indicates moderate complexity, 8-10 is high complexity, and ' .
+                '11+ is very high complexity.',
                 $ccn,
-                $violation
               ),
               $element,
               'CyclomaticComplexity',
@@ -242,6 +307,50 @@ class PHPUnit_Util_Log_PMD extends PHPUnit_Util_Printer
               ),
               $element,
               'CodeCoverage',
+              $startLine,
+              '',
+              $scope,
+              $name
+            );
+
+            $this->added = TRUE;
+        }
+
+        $locExecutable = $metrics->getLocExecutable();
+
+        if ($locExecutable > 100) {
+            $this->addViolation(
+              sprintf(
+                "Function or method has %d lines of executable code.\n" .
+                'Violations of this rule usually indicate that the method is ' .
+                'doing too much. Try to reduce the method size by creating ' .
+                'helper methods and removing any copy/pasted code.',
+                $locExecutable
+              ),
+              $element,
+              'ExcessiveMethodLength',
+              $startLine,
+              '',
+              $scope,
+              $name
+            );
+
+            $this->added = TRUE;
+        }
+
+        $parameters = $metrics->getParameters();
+
+        if ($parameters > 10) {
+            $this->addViolation(
+              sprintf(
+                "Function or method has %d parameters.\n" .
+                'Long parameter lists can indicate that a new object should be ' .
+                'created to wrap the numerous parameters. Basically, try to '.
+                'group the parameters together.',
+                $parameters
+              ),
+              $element,
+              'ExcessiveParameterList',
               $startLine,
               '',
               $scope,
