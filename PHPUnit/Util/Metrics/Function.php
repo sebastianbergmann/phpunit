@@ -69,9 +69,11 @@ class PHPUnit_Util_Metrics_Function
     protected $loc           = 0;
     protected $locExecutable = 0;
     protected $locExecuted   = 0;
+    protected $parameters    = 0;
 
     protected $function;
     protected $scope;
+    protected $tokens;
 
     protected static $cache = array();
 
@@ -88,8 +90,15 @@ class PHPUnit_Util_Metrics_Function
         $this->scope    = $scope;
         $this->function = $function;
 
-        $this->calculateCCN();
+        $source = PHPUnit_Util_Class::getMethodSource(
+          $scope, $function->getName()
+        );
+
+        $this->tokens     = token_get_all('<?php' . $source . '?>');
+        $this->parameters = $function->getNumberOfParameters();
+
         $this->calculateCodeCoverage($codeCoverage);
+        $this->calculateCCN();
         $this->calculateCrapIndex();
     }
 
@@ -177,6 +186,17 @@ class PHPUnit_Util_Metrics_Function
     }
 
     /**
+     * Number of Parameters.
+     *
+     * @return int
+     * @access public
+     */
+    public function getParameters()
+    {
+        return $this->parameters;
+    }
+
+    /**
      * Returns the Cyclomatic Complexity Number (CCN) for the method.
      * This is also known as the McCabe metric.
      *
@@ -239,13 +259,7 @@ class PHPUnit_Util_Metrics_Function
      */
     protected function calculateCCN()
     {
-        $source = PHPUnit_Util_Class::getMethodSource(
-          $this->scope, $this->function->getName()
-        );
-
-        $tokens = token_get_all('<?php' . $source . '?>');
-
-        foreach ($tokens as $i => $token) {
+        foreach ($this->tokens as $token) {
             if (is_string($token)) {
                 $token = trim($token);
 
