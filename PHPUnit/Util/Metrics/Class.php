@@ -199,6 +199,17 @@ class PHPUnit_Util_Metrics_Class
     }
 
     /**
+     * Returns the Number of Public Methods of the class.
+     *
+     * @return integer
+     * @access public
+     */
+    public function getPublicMethods()
+    {
+        return $this->publicMethods;
+    }
+
+    /**
      * Returns the Attribute Inheritance Factor (AIF) for the class.
      *
      * @return integer
