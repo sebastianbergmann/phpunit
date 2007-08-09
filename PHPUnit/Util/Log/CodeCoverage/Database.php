@@ -249,9 +249,9 @@ class PHPUnit_Util_Log_CodeCoverage_Database
               'INSERT INTO metrics_function
                            (run_id, code_function_id, metrics_function_coverage,
                            metrics_function_loc, metrics_function_loc_executable, metrics_function_loc_executed,
-                           metrics_function_ccn, metrics_function_crap)
+                           metrics_function_ccn, metrics_function_crap, metrics_function_npath)
                      VALUES(:runId, :functionId, :coverage, :loc,
-                            :locExecutable, :locExecuted, :ccn, :crap);'
+                            :locExecutable, :locExecuted, :ccn, :crap, :npath);'
             );
 
             $stmtSelectClassId = $this->dbh->prepare(
@@ -292,9 +292,9 @@ class PHPUnit_Util_Log_CodeCoverage_Database
               'INSERT INTO metrics_method
                            (run_id, code_method_id, metrics_method_coverage,
                            metrics_method_loc, metrics_method_loc_executable, metrics_method_loc_executed,
-                           metrics_method_ccn, metrics_method_crap)
+                           metrics_method_ccn, metrics_method_crap, metrics_method_npath)
                      VALUES(:runId, :methodId, :coverage, :loc,
-                            :locExecutable, :locExecuted, :ccn, :crap);'
+                            :locExecutable, :locExecuted, :ccn, :crap, :npath);'
             );
 
             foreach ($fileMetrics->getFunctions() as $functionMetrics) {
@@ -311,6 +311,7 @@ class PHPUnit_Util_Log_CodeCoverage_Database
                 $locExecuted   = $functionMetrics->getLocExecuted();
                 $ccn           = $functionMetrics->getCCN();
                 $crap          = $functionMetrics->getCrapIndex();
+                $npath         = $functionMetrics->getNPath();
 
                 $stmtInsertFunction->bindParam(':runId', $runId, PDO::PARAM_INT);
                 $stmtInsertFunction->bindParam(':functionId', $functionId, PDO::PARAM_INT);
@@ -318,8 +319,9 @@ class PHPUnit_Util_Log_CodeCoverage_Database
                 $stmtInsertFunction->bindParam(':loc', $loc, PDO::PARAM_INT);
                 $stmtInsertFunction->bindParam(':locExecutable', $locExecutable, PDO::PARAM_INT);
                 $stmtInsertFunction->bindParam(':locExecuted', $locExecuted, PDO::PARAM_INT);
-                $stmtInsertFunction->bindParam(':ccn', $ccn);
+                $stmtInsertFunction->bindParam(':ccn', $ccn, PDO::PARAM_INT);
                 $stmtInsertFunction->bindParam(':crap', $crap);
+                $stmtInsertFunction->bindParam(':npath', $npath, PDO::PARAM_INT);
                 $stmtInsertFunction->execute();
             }
 
@@ -391,6 +393,7 @@ class PHPUnit_Util_Log_CodeCoverage_Database
                     $locExecuted   = $methodMetrics->getLocExecuted();
                     $ccn           = $methodMetrics->getCCN();
                     $crap          = $methodMetrics->getCrapIndex();
+                    $npath         = $methodMetrics->getNPath();
 
                     $stmtInsertMethod->bindParam(':runId', $runId, PDO::PARAM_INT);
                     $stmtInsertMethod->bindParam(':methodId', $methodId, PDO::PARAM_INT);
@@ -398,8 +401,9 @@ class PHPUnit_Util_Log_CodeCoverage_Database
                     $stmtInsertMethod->bindParam(':loc', $loc, PDO::PARAM_INT);
                     $stmtInsertMethod->bindParam(':locExecutable', $locExecutable, PDO::PARAM_INT);
                     $stmtInsertMethod->bindParam(':locExecuted', $locExecuted, PDO::PARAM_INT);
-                    $stmtInsertMethod->bindParam(':ccn', $ccn);
+                    $stmtInsertMethod->bindParam(':ccn', $ccn, PDO::PARAM_INT);
                     $stmtInsertMethod->bindParam(':crap', $crap);
+                    $stmtInsertMethod->bindParam(':npath', $npath, PDO::PARAM_INT);
                     $stmtInsertMethod->execute();
                 }
             }
