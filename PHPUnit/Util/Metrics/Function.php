@@ -325,7 +325,7 @@ class PHPUnit_Util_Metrics_Function
                     if (isset($scope)) {
                         array_push($stack, $scope);
                         array_push($npathStack, $this->npath);
-
+                        $this->npath = 1;
                     } else {
                         array_push($stack, NULL);
                     }
