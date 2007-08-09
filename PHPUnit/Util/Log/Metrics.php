@@ -174,6 +174,7 @@ class PHPUnit_Util_Log_Metrics extends PHPUnit_Util_Printer
         $element->setAttribute('coverage', $metrics->getCoverage());
         $element->setAttribute('ccn', $metrics->getCCN());
         $element->setAttribute('crap', $metrics->getCrapIndex());
+        $element->setAttribute('npath', $metrics->getNPath());
         $element->setAttribute('parameters', $metrics->getParameters());
     }
 }

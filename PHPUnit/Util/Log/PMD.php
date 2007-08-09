@@ -287,6 +287,29 @@ class PHPUnit_Util_Log_PMD extends PHPUnit_Util_Printer
             $this->added = TRUE;
         }
 
+        $npath = $metrics->getNPath();
+
+        if ($npath >= 200) {
+            $this->addViolation(
+              sprintf(
+                "The NPath complexity is %d.\n" .
+                'The NPath complexity of a function or method is the number of ' .
+                'acyclic execution paths through that method. A threshold of 200 ' .
+                'is generally considered the point where measures should be taken ' .
+                'to reduce complexity.',
+                $npath
+              ),
+              $element,
+              'NPathComplexity',
+              $startLine,
+              '',
+              $scope,
+              $name
+            );
+
+            $this->added = TRUE;
+        }
+
         $coverage = $metrics->getCoverage();
 
         $violation = '';

@@ -154,6 +154,7 @@ CREATE TABLE IF NOT EXISTS metrics_function(
   metrics_function_loc_executed   INTEGER UNSIGNED NOT NULL,
   metrics_function_ccn            INTEGER UNSIGNED NOT NULL,
   metrics_function_crap           FLOAT   UNSIGNED NOT NULL,
+  metrics_function_npath          INTEGER UNSIGNED NOT NULL,
 
   INDEX (run_id),
   INDEX (code_function_id)
@@ -196,6 +197,7 @@ CREATE TABLE IF NOT EXISTS metrics_method(
   metrics_method_loc_executed   INTEGER UNSIGNED NOT NULL,
   metrics_method_ccn            INTEGER UNSIGNED NOT NULL,
   metrics_method_crap           FLOAT   UNSIGNED NOT NULL,
+  metrics_function_npath        INTEGER UNSIGNED NOT NULL,
 
   INDEX (run_id),
   INDEX (code_method_id)

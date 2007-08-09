@@ -64,6 +64,7 @@ PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
 class PHPUnit_Util_Metrics_Function
 {
     protected $ccn           = 1;
+    protected $npath         = 1;
     protected $coverage      = 0;
     protected $crap;
     protected $loc           = 0;
@@ -99,6 +100,7 @@ class PHPUnit_Util_Metrics_Function
 
         $this->calculateCodeCoverage($codeCoverage);
         $this->calculateCCN();
+        $this->calculateNPath();
         $this->calculateCrapIndex();
     }
 
@@ -253,6 +255,17 @@ class PHPUnit_Util_Metrics_Function
     }
 
     /**
+     * Returns the NPath Complexity for the method.
+     *
+     * @return integer
+     * @access public
+     */
+    public function getNPath()
+    {
+        return $this->npath;
+    }
+
+    /**
      * Calculates the Cyclomatic Complexity Number (CCN) for the method.
      *
      * @access protected
@@ -284,6 +297,83 @@ class PHPUnit_Util_Metrics_Function
                 case T_BOOLEAN_OR:
                 case T_LOGICAL_OR: {
                     $this->ccn++;
+                }
+                break;
+            }
+        }
+    }
+
+    /**
+     * Calculates the NPath Complexity for the method.
+     *
+     * @access protected
+     */
+    protected function calculateNPath()
+    {
+        $npathStack = array();
+        $stack      = array();
+
+        foreach ($this->tokens as $token) {
+            if (is_string($token)) {
+                $token = trim($token);
+
+                if ($token == '?') {
+                    $this->npath = ($this->npath + 1) * $this->npath;
+                }
+
+                if ($token == '{') {
+                    if (isset($scope)) {
+                        array_push($stack, $scope);
+                        array_push($npathStack, $this->npath);
+
+                    } else {
+                        array_push($stack, NULL);
+                    }
+                }
+
+                if ($token == '}') {
+                    $scope = array_pop($stack);
+
+                    if ($scope !== NULL) {
+                        switch ($scope) {
+                            case T_WHILE:
+                            case T_DO:
+                            case T_FOR:
+                            case T_FOREACH:
+                            case T_IF:
+                            case T_TRY:
+                            case T_SWITCH: {
+                                $this->npath = ($this->npath + 1) * array_pop($npathStack);
+                            }
+                            break;
+
+                            case T_ELSE:
+                            case T_CATCH:
+                            case T_CASE: {
+                                $this->npath = ($this->npath - 1) + array_pop($npathStack);
+                            }
+                            break;
+                        }
+                    }
+                }
+
+                continue;
+            }
+
+            list ($token, $value) = $token;
+
+            switch ($token) {
+                case T_WHILE:
+                case T_DO:
+                case T_FOR:
+                case T_FOREACH:
+                case T_IF:
+                case T_TRY:
+                case T_SWITCH:
+                case T_ELSE:
+                case T_CATCH:
+                case T_CASE: {
+                    $scope = $token;
                 }
                 break;
             }
