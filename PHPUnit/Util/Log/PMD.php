@@ -69,6 +69,15 @@ PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
  */
 class PHPUnit_Util_Log_PMD extends PHPUnit_Util_Printer
 {
+    public static $THRESHOLD_CLASS_DIT            = 6;
+    public static $THRESHOLD_CLASS_ELOC           = 1000;
+    public static $THRESHOLD_CLASS_VARSNP         = 15;
+    public static $THRESHOLD_CLASS_PUBLIC_METHODS = 45;
+    public static $THRESHOLD_FUNCTION_CCN         = 10;
+    public static $THRESHOLD_FUNCTION_NPATH       = 200;
+    public static $THRESHOLD_FUNCTION_ELOC        = 100;
+    public static $THRESHOLD_FUNCTION_PARAMETERS  = 10;
+
     protected $added;
 
     /**
@@ -101,11 +110,12 @@ class PHPUnit_Util_Log_PMD extends PHPUnit_Util_Printer
 
                     $dit = $classMetrics->getDIT();
 
-                    if ($dit > 6) {
+                    if ($dit > self::$THRESHOLD_CLASS_DIT) {
                         $this->addViolation(
                           sprintf(
-                            'Depth of Inheritance Tree (DIT) is %d but should not exceed 6.',
-                            $dit
+                            'Depth of Inheritance Tree (DIT) is %d but should not exceed %d.',
+                            $dit,
+                            self::$THRESHOLD_CLASS_DIT
                           ),
                           $xmlFile,
                           'DepthOfInheritanceTree',
@@ -119,7 +129,7 @@ class PHPUnit_Util_Log_PMD extends PHPUnit_Util_Printer
 
                     $locExecutable = $classMetrics->getLocExecutable();
 
-                    if ($locExecutable > 1000) {
+                    if ($locExecutable > self::$THRESHOLD_CLASS_ELOC) {
                         $this->addViolation(
                           sprintf(
                             "Class has %d lines of executable code.\n" .
@@ -141,7 +151,7 @@ class PHPUnit_Util_Log_PMD extends PHPUnit_Util_Printer
 
                     $varsNp = $classMetrics->getVARSnp();
 
-                    if ($varsNp > 15) {
+                    if ($varsNp > self::$THRESHOLD_CLASS_VARSNP) {
                         $this->addViolation(
                           sprintf(
                             "Class has %d public fields.\n" .
@@ -166,7 +176,7 @@ class PHPUnit_Util_Log_PMD extends PHPUnit_Util_Printer
 
                     $publicMethods = $classMetrics->getPublicMethods();
 
-                    if ($publicMethods > 45) {
+                    if ($publicMethods > self::$THRESHOLD_CLASS_PUBLIC_METHODS) {
                         $this->addViolation(
                           sprintf(
                             "Class has %d public methods.\n" .
@@ -264,7 +274,7 @@ class PHPUnit_Util_Log_PMD extends PHPUnit_Util_Printer
 
         $ccn = $metrics->getCCN();
 
-        if ($ccn >= 10) {
+        if ($ccn >= self::$THRESHOLD_FUNCTION_CCN) {
             $this->addViolation(
               sprintf(
                 "The cyclomatic complexity is %d.\n" .
@@ -289,7 +299,7 @@ class PHPUnit_Util_Log_PMD extends PHPUnit_Util_Printer
 
         $npath = $metrics->getNPath();
 
-        if ($npath >= 200) {
+        if ($npath >= self::$THRESHOLD_FUNCTION_NPATH) {
             $this->addViolation(
               sprintf(
                 "The NPath complexity is %d.\n" .
@@ -341,7 +351,7 @@ class PHPUnit_Util_Log_PMD extends PHPUnit_Util_Printer
 
         $locExecutable = $metrics->getLocExecutable();
 
-        if ($locExecutable > 100) {
+        if ($locExecutable > self::$THRESHOLD_FUNCTION_ELOC) {
             $this->addViolation(
               sprintf(
                 "Function or method has %d lines of executable code.\n" .
@@ -363,7 +373,7 @@ class PHPUnit_Util_Log_PMD extends PHPUnit_Util_Printer
 
         $parameters = $metrics->getParameters();
 
-        if ($parameters > 10) {
+        if ($parameters > self::$THRESHOLD_FUNCTION_PARAMETERS) {
             $this->addViolation(
               sprintf(
                 "Function or method has %d parameters.\n" .
