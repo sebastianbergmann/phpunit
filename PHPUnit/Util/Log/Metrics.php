@@ -95,7 +95,9 @@ class PHPUnit_Util_Log_Metrics extends PHPUnit_Util_Printer
         $document->appendChild($metrics);
 
         foreach ($projectMetrics->getFiles() as $fileName => $fileMetrics) {
-            $xmlFile = $document->createElement('file');
+            $xmlFile = $metrics->appendChild(
+              $document->createElement('file')
+            );
 
             $xmlFile->setAttribute('name', $fileName);
             $xmlFile->setAttribute('classes', count($fileMetrics->getClasses()));
@@ -134,18 +136,11 @@ class PHPUnit_Util_Log_Metrics extends PHPUnit_Util_Printer
                     $xmlClass->setAttribute('wmci', $classMetrics->getWMCi());
 
                     foreach ($classMetrics->getMethods() as $methodName => $methodMetrics) {
-                        $xmlMethod = $document->createElement('method');
+                        $xmlMethod = $xmlClass->appendChild(
+                          $document->createElement('method')
+                        );
 
-                        $xmlMethod->setAttribute('name', $methodMetrics->getMethod()->getName());
-                        $xmlMethod->setAttribute('loc', $methodMetrics->getLoc());
-                        $xmlMethod->setAttribute('locExecutable', $methodMetrics->getLocExecutable());
-                        $xmlMethod->setAttribute('locExecuted', $methodMetrics->getLocExecuted());
-                        $xmlMethod->setAttribute('coverage', $methodMetrics->getCoverage());
-                        $xmlMethod->setAttribute('ccn', $methodMetrics->getCCN());
-                        $xmlMethod->setAttribute('crap', $methodMetrics->getCrapIndex());
-                        $xmlMethod->setAttribute('parameters', $methodMetrics->getParameters());
-
-                        $xmlClass->appendChild($xmlMethod);
+                        $this->processFunctionOrMethod($methodMetrics, $xmlMethod);
                     }
 
                     $xmlFile->appendChild($xmlClass);
@@ -153,16 +148,33 @@ class PHPUnit_Util_Log_Metrics extends PHPUnit_Util_Printer
             }
 
             foreach ($fileMetrics->getFunctions() as $functionName => $functionMetrics) {
-                $xmlFunction = $document->createElement('function');
+                $xmlFunction = $xmlFile->appendChild(
+                  $document->createElement('function')
+                );
 
-                $xmlFile->appendChild($xmlFunction);
+                $this->processFunctionOrMethod($functionMetrics, $xmlFunction);
             }
-
-            $metrics->appendChild($xmlFile);
         }
 
         $this->write($document->saveXML());
         $this->flush();
+    }
+
+    /**
+     * @param  PHPUnit_Util_Metrics_Function $metrics
+     * @param  DOMElement                    $element
+     * @access protected
+     */
+    protected function processFunctionOrMethod($metrics, DOMElement $element)
+    {
+        $element->setAttribute('name', $metrics->getFunction()->getName());
+        $element->setAttribute('loc', $metrics->getLoc());
+        $element->setAttribute('locExecutable', $metrics->getLocExecutable());
+        $element->setAttribute('locExecuted', $metrics->getLocExecuted());
+        $element->setAttribute('coverage', $metrics->getCoverage());
+        $element->setAttribute('ccn', $metrics->getCCN());
+        $element->setAttribute('crap', $metrics->getCrapIndex());
+        $element->setAttribute('parameters', $metrics->getParameters());
     }
 }
 ?>
