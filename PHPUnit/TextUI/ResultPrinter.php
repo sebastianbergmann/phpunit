@@ -527,9 +527,11 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
                 $testSuiteSize = $this->testSuiteSize[0];
             }
 
+            $width = strlen((string)$testSuiteSize);
+
             $this->write(
               sprintf(
-                "    %5d / %5d\n",
+                ' %' . $width . 'd / %' . $width . "d\n",
 
                 $numberOfTests,
                 $testSuiteSize
