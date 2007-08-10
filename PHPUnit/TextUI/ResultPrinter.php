@@ -76,10 +76,16 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
     private $column = 0;
 
     /**
-     * @var    integer
+     * @var    array
      * @access private
      */
-    private $depth = 0;
+    private $numberOfTests = array();
+
+    /**
+     * @var    array
+     * @access private
+     */
+    private $testSuiteSize = array();
 
     /**
      * @var    integer
@@ -424,12 +430,18 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
                 "%s%s%s\n",
 
                 $this->lastEvent == self::EVENT_TESTSUITE_END ? "\n" : '',
-                str_repeat(' ', $this->depth),
+                str_repeat(' ', count($this->testSuiteSize)),
                 $name
               )
             );
 
-            $this->depth++;
+            array_push($this->numberOfTests, 0);
+            array_push($this->testSuiteSize, count($suite));
+        }
+
+        else if (empty($this->numberOfTests)) {
+            array_push($this->numberOfTests, 0);
+            array_push($this->testSuiteSize, count($suite));
         }
 
         $this->lastEvent = self::EVENT_TESTSUITE_START;
@@ -445,7 +457,8 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
     public function endTestSuite(PHPUnit_Framework_TestSuite $suite)
     {
         if ($this->verbose) {
-            $this->depth--;
+            array_pop($this->numberOfTests);
+            array_pop($this->testSuiteSize);
 
             $this->column = 0;
 
@@ -465,6 +478,12 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
      */
     public function startTest(PHPUnit_Framework_Test $test)
     {
+        if ($this->verbose) {
+            $this->numberOfTests[count($this->numberOfTests)-1]++;
+        } else {
+            $this->numberOfTests[0]++;
+        }
+
         $this->lastEvent = self::EVENT_TEST_START;
     }
 
@@ -491,15 +510,33 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
      */
     protected function writeProgress($progress)
     {
+        $indent = max(0, count($this->testSuiteSize) - 1);
+
         if ($this->column == 0) {
-            $this->write(str_repeat(' ', max(0, $this->depth - 1)));
+            $this->write(str_repeat(' ', $indent));
         }
 
         $this->write($progress);
 
-        if ($this->column++ >= 40 - $this->depth) {
+        if ($this->column++ == 60 - 1 - $indent) {
+            if ($this->verbose) {
+                $numberOfTests = $this->numberOfTests[count($this->numberOfTests)-1];
+                $testSuiteSize = $this->testSuiteSize[count($this->testSuiteSize)-1];
+            } else {
+                $numberOfTests = $this->numberOfTests[0];
+                $testSuiteSize = $this->testSuiteSize[0];
+            }
+
+            $this->write(
+              sprintf(
+                "    %5d / %5d\n",
+
+                $numberOfTests,
+                $testSuiteSize
+              )
+            );
+
             $this->column = 0;
-            $this->write("\n");
         }
     }
 }
