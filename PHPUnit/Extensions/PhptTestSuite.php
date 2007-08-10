@@ -68,10 +68,12 @@ class PHPUnit_Extensions_PhptTestSuite extends PHPUnit_Framework_TestSuite
      * Constructs a new TestSuite for .phpt test cases.
      *
      * @param  string $directory
+     * @param  array  $options Array with ini settings for the php instance run,
+     *                         key being the name if the setting, value the ini value.
      * @throws InvalidArgumentException
      * @access public
      */
-    public function __construct($directory)
+    public function __construct($directory, $options = array())
     {
         if (is_dir($directory)) {
             $this->setName($directory);
@@ -84,7 +86,7 @@ class PHPUnit_Extensions_PhptTestSuite extends PHPUnit_Framework_TestSuite
             );
 
             foreach ($iterator as $testFile) {
-                $this->addTestFile($testFile->getPathname());
+                $this->addTestFile($testFile->getPathname(), TRUE, $options);
             }
         } else {
             throw new InvalidArgumentException;

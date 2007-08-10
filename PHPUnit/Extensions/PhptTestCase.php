@@ -74,13 +74,17 @@ class PHPUnit_Extensions_PhptTestCase implements PHPUnit_Framework_Test
      */
     private $filename;
 
+    private $options = array();
+
     /**
      * Constructs a test case with the given filename.
      *
      * @param  string $filename
+     * @param  array  $options Array with ini settings for the php instance run,
+     *                         key being the name if the setting, value the ini value.
      * @access public
      */
-    public function __construct($filename)
+    public function __construct($filename, $options = array())
     {
         if (!is_string($filename)) {
             throw new InvalidArgumentException;
@@ -95,7 +99,12 @@ class PHPUnit_Extensions_PhptTestCase implements PHPUnit_Framework_Test
             );
         }
 
+        if (!is_array($options)) {
+            throw new InvalidArgumentException;
+        }
+
         $this->filename = $filename;
+        $this->options  = $options;
     }
 
     /**
@@ -113,10 +122,12 @@ class PHPUnit_Extensions_PhptTestCase implements PHPUnit_Framework_Test
      * Runs a test and collects its result in a TestResult instance.
      *
      * @param  PHPUnit_Framework_TestResult $result
+     * @param  array $options Array with ini settings for the php instance run,
+     *                        key being the name if the setting, value the ini value.
      * @return PHPUnit_Framework_TestResult
      * @access public
      */
-    public function run(PHPUnit_Framework_TestResult $result = NULL)
+    public function run(PHPUnit_Framework_TestResult $result = NULL, $options = array())
     {
         if (!class_exists('PEAR_RunTest', FALSE)) {
             throw new RuntimeException('Class PEAR_RunTest not found.');
@@ -126,12 +137,18 @@ class PHPUnit_Extensions_PhptTestCase implements PHPUnit_Framework_Test
             $result = new PHPUnit_Framework_TestResult;
         }
 
+        if (!is_array($options)) {
+            throw new InvalidArgumentException;
+        }
+
+        $options = array_merge($options, $this->options);
+
         $runner = new PEAR_RunTest(new PHPUnit_Extensions_PhptTestCase_Logger);
 
         $result->startTest($this);
 
         PHPUnit_Util_Timer::start();
-        $buffer = $runner->run($this->filename);
+        $buffer = $runner->run($this->filename, $options);
         $time = PHPUnit_Util_Timer::stop();
 
         if ($buffer == 'SKIPPED') {
