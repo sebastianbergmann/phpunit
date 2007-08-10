@@ -288,12 +288,15 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
      *
      * @param  string  $filename
      * @param  boolean $syntaxCheck
+     * @param  array   $phptOptions Array with ini settings for the php instance
+     *                              run, key being the name if the setting,
+     *                              value the ini value.
      * @throws InvalidArgumentException
      * @access public
      * @since  Method available since Release 2.3.0
      * @author Stefano F. Rausch <stefano@rausch-e.net>
      */
-    public function addTestFile($filename, $syntaxCheck = TRUE)
+    public function addTestFile($filename, $syntaxCheck = TRUE, $phptOptions = array())
     {
         if (!is_string($filename)) {
             throw new InvalidArgumentException;
@@ -301,7 +304,7 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
 
         if (file_exists($filename) && substr($filename, -5) == '.phpt') {
             $this->addTest(
-              new PHPUnit_Extensions_PhptTestCase($filename)
+              new PHPUnit_Extensions_PhptTestCase($filename, $phptOptions)
             );
 
             return;
