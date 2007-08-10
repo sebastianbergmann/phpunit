@@ -191,7 +191,9 @@ class PHPUnit_Extensions_PhptTestCase implements PHPUnit_Framework_Test
               $this,
               PHPUnit_Framework_ComparisonFailure::diffEqual(
                 file_get_contents($expFile),
-                file_get_contents($outFile)
+                file_get_contents($outFile),
+                FALSE,
+                $this->getName()
               ),
               $time
             );
