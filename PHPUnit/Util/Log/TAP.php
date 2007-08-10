@@ -136,6 +136,8 @@ class PHPUnit_Util_Log_TAP extends PHPUnit_Util_Printer implements PHPUnit_Frame
             $e->getMessage() != '' ? ' ' . $e->getMessage() : ''
           )
         );
+
+        $this->testSuccessful = FALSE;
     }
 
     /**
