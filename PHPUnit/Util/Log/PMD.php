@@ -138,7 +138,7 @@ class PHPUnit_Util_Log_PMD extends PHPUnit_Util_Printer
                             'and reduce the size to something manageable.',
                             $locExecutable
                           ),
-                          $element,
+                          $xmlFile,
                           'ExcessiveClassLength',
                           $startLine,
                           '',
@@ -162,7 +162,7 @@ class PHPUnit_Util_Log_PMD extends PHPUnit_Util_Printer
                             'instead have one Address field.',
                             $varsNp
                           ),
-                          $element,
+                          $xmlFile,
                           'TooManyFields',
                           $startLine,
                           '',
@@ -186,7 +186,7 @@ class PHPUnit_Util_Log_PMD extends PHPUnit_Util_Printer
                             'to thoroughly test it.',
                             $publicMethods
                           ),
-                          $element,
+                          $xmlFile,
                           'ExcessivePublicCount',
                           $startLine,
                           '',
