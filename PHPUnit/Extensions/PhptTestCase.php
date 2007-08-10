@@ -165,21 +165,28 @@ class PHPUnit_Extensions_PhptTestCase implements PHPUnit_Framework_Test
         $buffer = $runner->run($this->filename, $options);
         $time = PHPUnit_Util_Timer::stop();
 
-        if ($buffer == 'SKIPPED') {
-            $result->addFailure($this, new PHPUnit_Framework_SkippedTestError, 0);
-        }
-
         $base         = basename($this->filename);
         $path         = dirname($this->filename);
         $coverageFile = $path . DIRECTORY_SEPARATOR . str_replace('.phpt', '.xdebug', $base);
+        $diffFile     = $path . DIRECTORY_SEPARATOR . str_replace('.phpt', '.diff', $base);
+        $expFile      = $path . DIRECTORY_SEPARATOR . str_replace('.phpt', '.exp', $base);
+        $logFile      = $path . DIRECTORY_SEPARATOR . str_replace('.phpt', '.log', $base);
+        $outFile      = $path . DIRECTORY_SEPARATOR . str_replace('.phpt', '.out', $base);
         $phpFile      = $path . DIRECTORY_SEPARATOR . str_replace('.phpt', '.php', $base);
 
-        if ($buffer != 'PASSED') {
-            $diffFile = $path . DIRECTORY_SEPARATOR . str_replace('.phpt', '.diff', $base);
-            $expFile  = $path . DIRECTORY_SEPARATOR . str_replace('.phpt', '.exp', $base);
-            $logFile  = $path . DIRECTORY_SEPARATOR . str_replace('.phpt', '.log', $base);
-            $outFile  = $path . DIRECTORY_SEPARATOR . str_replace('.phpt', '.out', $base);
+        if (is_object($buffer) && $buffer instanceof PEAR_Error) {
+            $result->addError( 
+              $this, 
+              new RuntimeException($buffer->getMessage()),
+              $time 
+            ); 
+        }
 
+        else if ($buffer == 'SKIPPED') {
+            $result->addFailure($this, new PHPUnit_Framework_SkippedTestError, 0);
+        }
+
+        else if ($buffer != 'PASSED') {
             $result->addFailure(
               $this,
               PHPUnit_Framework_ComparisonFailure::diffEqual(
@@ -188,12 +195,12 @@ class PHPUnit_Extensions_PhptTestCase implements PHPUnit_Framework_Test
               ),
               $time
             );
+        }
 
-            unlink($diffFile);
-            unlink($expFile);
-            unlink($logFile);
-            unlink($phpFile);
-            unlink($outFile);
+        foreach (array($diffFile, $expFile, $logFile, $phpFile, $outFile) as $file) {
+            if (file_exists($file)) {
+                unlink($file);
+            }
         }
 
         if ($coverage) {
