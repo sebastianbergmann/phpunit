@@ -143,7 +143,21 @@ class PHPUnit_Extensions_PhptTestCase implements PHPUnit_Framework_Test
 
         $options = array_merge($options, $this->options);
 
-        $runner = new PEAR_RunTest(new PHPUnit_Extensions_PhptTestCase_Logger);
+        $coverage = $result->getCollectCodeCoverageInformation();
+
+        if ($coverage) {
+            $options = array('coverage' => TRUE);
+        } else {
+            $options = array();
+        }
+
+        $runner = new PEAR_RunTest(new PHPUnit_Extensions_PhptTestCase_Logger, $options);
+
+        if ($coverage){
+            $runner->xdebug_loaded = TRUE;
+        } else {
+            $runner->xdebug_loaded = FALSE;
+        }
 
         $result->startTest($this);
 
@@ -155,13 +169,15 @@ class PHPUnit_Extensions_PhptTestCase implements PHPUnit_Framework_Test
             $result->addFailure($this, new PHPUnit_Framework_SkippedTestError, 0);
         }
 
+        $base         = basename($this->filename);
+        $path         = dirname($this->filename);
+        $coverageFile = $path . DIRECTORY_SEPARATOR . str_replace('.phpt', '.xdebug', $base);
+        $phpFile      = $path . DIRECTORY_SEPARATOR . str_replace('.phpt', '.php', $base);
+
         if ($buffer != 'PASSED') {
-            $base     = basename($this->filename);
-            $path     = dirname($this->filename);
             $diffFile = $path . DIRECTORY_SEPARATOR . str_replace('.phpt', '.diff', $base);
             $expFile  = $path . DIRECTORY_SEPARATOR . str_replace('.phpt', '.exp', $base);
             $logFile  = $path . DIRECTORY_SEPARATOR . str_replace('.phpt', '.log', $base);
-            $phpFile  = $path . DIRECTORY_SEPARATOR . str_replace('.phpt', '.php', $base);
             $outFile  = $path . DIRECTORY_SEPARATOR . str_replace('.phpt', '.out', $base);
 
             $result->addFailure(
@@ -180,9 +196,33 @@ class PHPUnit_Extensions_PhptTestCase implements PHPUnit_Framework_Test
             unlink($outFile);
         }
 
+        if ($coverage) {
+            eval('$coverageData = ' . file_get_contents($coverageFile) . ';');
+            unset($coverageData[$phpFile]);
+
+            $codeCoverageInformation = array(
+              'test'  => $this,
+              'files' => $coverageData
+            );
+
+            $result->appendCodeCoverageInformation($codeCoverageInformation);
+            unlink($coverageFile);
+        }
+
         $result->endTest($this, $time);
 
         return $result;
+    }
+
+    /**
+     * Returns the name of the test case.
+     *
+     * @return string
+     * @access public
+     */
+    public function getName()
+    {
+        return $this->toString();
     }
 
     /**

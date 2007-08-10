@@ -462,6 +462,26 @@ class PHPUnit_Framework_TestResult implements Countable
     }
 
     /**
+     * Returns whether code coverage information should be collected.
+     *
+     * @return boolean If code coverage should be collected
+     */
+    public function getCollectCodeCoverageInformation()
+    {
+        return $this->collectCodeCoverageInformation;
+    }
+
+    /**
+     * Appends code coverage information to the test
+     *
+     * @param array $info Xdebug code coverage information
+     */
+    public function appendCodeCoverageInformation($info)
+    {
+        $this->codeCoverageInformation[] = $info;
+    }
+
+    /**
      * Returns Code Coverage data per test case.
      *
      * Format of the result array:
