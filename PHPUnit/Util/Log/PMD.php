@@ -140,10 +140,9 @@ class PHPUnit_Util_Log_PMD extends PHPUnit_Util_Printer
                           ),
                           $xmlFile,
                           'ExcessiveClassLength',
-                          $startLine,
+                          $classStartLine,
                           '',
-                          $scope,
-                          $name
+                          $className
                         );
 
                         $this->added = TRUE;
@@ -164,10 +163,9 @@ class PHPUnit_Util_Log_PMD extends PHPUnit_Util_Printer
                           ),
                           $xmlFile,
                           'TooManyFields',
-                          $startLine,
+                          $classStartLine,
                           '',
-                          $scope,
-                          $name
+                          $className
                         );
 
                         $this->added = TRUE;
@@ -188,10 +186,9 @@ class PHPUnit_Util_Log_PMD extends PHPUnit_Util_Printer
                           ),
                           $xmlFile,
                           'ExcessivePublicCount',
-                          $startLine,
+                          $classStartLine,
                           '',
-                          $scope,
-                          $name
+                          $className
                         );
 
                         $this->added = TRUE;
