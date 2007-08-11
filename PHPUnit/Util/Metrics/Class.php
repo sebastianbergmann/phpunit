@@ -106,7 +106,8 @@ class PHPUnit_Util_Metrics_Class
         $this->calculateMethodMetrics();
         $this->calculateNumberOfChildren();
         $this->calculatePolymorphismFactor();
-        $this->calculateCodeCoverage($codeCoverage);
+
+        $this->setCoverage($codeCoverage);
 
         $this->dit  = count(PHPUnit_Util_Class::getHierarchy($class->getName())) - 1;
         $this->impl = count($class->getInterfaces());
@@ -135,12 +136,30 @@ class PHPUnit_Util_Metrics_Class
     {
         $className = $class->getName();
 
-        if (!isset(self::$cache[$className]) ||
-           (!empty($codeCoverage) && self::$cache[$className]->coverage == 0)) {
+        if (!isset(self::$cache[$className])) {
             self::$cache[$className] = new PHPUnit_Util_Metrics_Class($class, $codeCoverage);
         }
 
+        else if (!empty($codeCoverage) && self::$cache[$className]->getCoverage() == 0) {
+            self::$cache[$className]->setCoverage($codeCoverage);
+        }
+
         return self::$cache[$className];
+    }
+
+    /**
+     * @param  array $codeCoverage
+     * @access public
+     */
+    public function setCoverage(array &$codeCoverage)
+    {
+        if (!empty($codeCoverage)) {
+            $this->calculateCodeCoverage($codeCoverage);
+
+            foreach ($this->methods as $method) {
+                $method->setCoverage($codeCoverage);
+            }
+        }
     }
 
     /**
