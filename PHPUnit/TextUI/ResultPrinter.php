@@ -71,39 +71,39 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
 
     /**
      * @var    integer
-     * @access private
+     * @access protected
      */
-    private $column = 0;
+    protected $column = 0;
 
     /**
      * @var    array
-     * @access private
+     * @access protected
      */
-    private $numberOfTests = array();
+    protected $numberOfTests = array();
 
     /**
      * @var    array
-     * @access private
+     * @access protected
      */
-    private $testSuiteSize = array();
+    protected $testSuiteSize = array();
 
     /**
      * @var    integer
-     * @access private
+     * @access protected
      */
-    private $lastEvent = -1;
+    protected $lastEvent = -1;
 
     /**
      * @var    boolean
-     * @access private
+     * @access protected
      */
-    private $lastTestFailed = FALSE;
+    protected $lastTestFailed = FALSE;
 
     /**
      * @var    boolean
-     * @access private
+     * @access protected
      */
-    private $verbose = FALSE;
+    protected $verbose = FALSE;
 
     /**
      * Constructor.
