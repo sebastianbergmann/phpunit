@@ -92,8 +92,7 @@ abstract class PHPUnit_Framework_Constraint implements PHPUnit_Framework_SelfDes
     {
         throw new PHPUnit_Framework_ExpectationFailedException(
           $this->failureDescription($other, $description, $not),
-          NULL,
-          $description
+          NULL
         );
     }
 
