@@ -93,7 +93,7 @@ class PHPUnit_Util_Metrics_File
         $this->tokens   = token_get_all(file_get_contents($filename));
 
         $this->countLines();
-        $this->calculateCodeCoverage($codeCoverage);
+        $this->setCoverage($codeCoverage);
 
         foreach (PHPUnit_Util_Class::getClassesInFile($filename) as $class) {
             $this->classes[$class->getName()] = PHPUnit_Util_Metrics_Class::factory($class, $codeCoverage);
@@ -115,12 +115,34 @@ class PHPUnit_Util_Metrics_File
      */
     public static function factory($filename, &$codeCoverage = array())
     {
-        if (!isset(self::$cache[$filename]) ||
-           (!empty($codeCoverage) && self::$cache[$filename]->coverage == 0)) {
+        if (!isset(self::$cache[$filename])) {
             self::$cache[$filename] = new PHPUnit_Util_Metrics_File($filename, $codeCoverage);
         }
 
+        else if (!empty($codeCoverage) && self::$cache[$filename]->getCoverage() == 0) {
+            self::$cache[$filename]->setCoverage($codeCoverage);
+        }
+
         return self::$cache[$filename];
+    }
+
+    /**
+     * @param  array $codeCoverage
+     * @access public
+     */
+    public function setCoverage(array &$codeCoverage)
+    {
+        if (!empty($codeCoverage)) {
+            $this->calculateCodeCoverage($codeCoverage);
+
+            foreach ($this->classes as $class) {
+                $class->setCoverage($codeCoverage);
+            }
+
+            foreach ($this->functions as $function) {
+                $function->setCoverage($codeCoverage);
+            }
+        }
     }
 
     /**

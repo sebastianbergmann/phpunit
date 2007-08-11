@@ -98,10 +98,10 @@ class PHPUnit_Util_Metrics_Function
         $this->tokens     = token_get_all('<?php' . $source . '?>');
         $this->parameters = $function->getNumberOfParameters();
 
-        $this->calculateCodeCoverage($codeCoverage);
         $this->calculateCCN();
         $this->calculateNPath();
-        $this->calculateCrapIndex();
+
+        $this->setCoverage($codeCoverage);
     }
 
     /**
@@ -123,12 +123,27 @@ class PHPUnit_Util_Metrics_Function
 
         $name = $function->getName();
 
-        if (!isset(self::$cache[$scope][$name]) ||
-           (!empty($codeCoverage) && self::$cache[$scope][$name]->coverage == 0)) {
+        if (!isset(self::$cache[$scope][$name])) {
             self::$cache[$scope][$name] = new PHPUnit_Util_Metrics_Function($scope, $function, $codeCoverage);
         }
 
+        else if (!empty($codeCoverage) && self::$cache[$scope][$name]->getCoverage() == 0) {
+            self::$cache[$scope][$name]->setCoverage($codeCoverage);
+        }
+
         return self::$cache[$scope][$name];
+    }
+
+    /**
+     * @param  array $codeCoverage
+     * @access public
+     */
+    public function setCoverage(array &$codeCoverage)
+    {
+        if (!empty($codeCoverage)) {
+            $this->calculateCodeCoverage($codeCoverage);
+            $this->calculateCrapIndex();
+        }
     }
 
     /**
