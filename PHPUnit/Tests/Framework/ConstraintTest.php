@@ -347,7 +347,7 @@ class Framework_ConstraintTest extends PHPUnit_Framework_TestCase
 
         catch (PHPUnit_Framework_ExpectationFailedException $e) {
             $this->assertEquals(
-              "Failed asserting that \nstdClass Object\n(\n)\n is instance of class \"Exception\".",
+              'Failed asserting that <stdClass> is an instance of class "Exception".',
               $e->getDescription()
             );
 
@@ -373,7 +373,7 @@ class Framework_ConstraintTest extends PHPUnit_Framework_TestCase
 
         catch (PHPUnit_Framework_ExpectationFailedException $e) {
             $this->assertEquals(
-              "Failed asserting that \nstdClass Object\n(\n)\n is not instance of class \"stdClass\".",
+              'Failed asserting that <stdClass> is not an instance of class "stdClass".',
               $e->getDescription()
             );
 

@@ -136,10 +136,18 @@ class PHPUnit_Util_Type
         }
     }
 
-    public static function toString($value)
+    public static function toString($value, $short = FALSE)
     {
         if (is_array($value) || is_object($value)) {
-            return "\n" . print_r($value, TRUE);
+            if (!$short) {
+                return "\n" . print_r($value, TRUE);
+            } else {
+                if (is_array($value)) {
+                    return '<array>';
+                } else {
+                    return '<' . get_class($value) . '>';
+                }
+            }
         }
 
         if (is_string($value) && strpos($value, "\n") !== FALSE) {
