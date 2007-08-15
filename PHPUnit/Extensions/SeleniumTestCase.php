@@ -67,57 +67,57 @@ abstract class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_Tes
 {
     /**
      * @var    string
-     * @access private
+     * @access protected
      */
-    private $browser;
+    protected $browser;
 
     /**
      * @var    string
-     * @access private
+     * @access protected
      */
-    private $browserUrl;
+    protected $browserUrl;
 
     /**
      * @var    string
-     * @access private
+     * @access protected
      */
-    private $host = 'localhost';
+    protected $host = 'localhost';
 
     /**
      * @var    integer
-     * @access private
+     * @access protected
      */
-    private $port = 4444;
+    protected $port = 4444;
 
     /**
      * @var    integer
-     * @access private
+     * @access protected
      */
-    private $timeout = 30000;
+    protected $timeout = 30000;
 
     /**
      * @var    string
-     * @access private
+     * @access protected
      */
-    private $sessionId = NULL;
+    protected $sessionId = NULL;
 
     /**
      * @var    integer
-     * @access private
+     * @access protected
      */
-    private $runId = NULL;
+    protected $runId = NULL;
 
     /**
      * @var    integer
-     * @access private
+     * @access protected
      */
-    private $testId = NULL;
+    protected $testId = NULL;
 
     /**
      * @var    integer
-     * @access private
+     * @access protected
      */
-    private $sleep = 0;
+    protected $sleep = 0;
 
     /**
      * @access protected
@@ -886,12 +886,12 @@ abstract class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_Tes
      * @param  string $command
      * @param  array  $arguments
      * @return string
-     * @access private
+     * @access protected
      * @author Shin Ohno <ganchiku@gmail.com>
      * @author Bjoern Schotte <schotte@mayflower.de>
      * @since  Method available since Release 3.1.0
      */
-    private function doCommand($command, array $arguments = array())
+    protected function doCommand($command, array $arguments = array())
     {
         $url = sprintf(
           'http://%s:%s/selenium-server/driver/?cmd=%s',
@@ -944,12 +944,12 @@ abstract class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_Tes
      * @param  string $command
      * @param  array  $arguments
      * @return boolean
-     * @access private
+     * @access protected
      * @author Shin Ohno <ganchiku@gmail.com>
      * @author Bjoern Schotte <schotte@mayflower.de>
      * @since  Method available since Release 3.1.0
      */
-    private function getBoolean($command, array $arguments)
+    protected function getBoolean($command, array $arguments)
     {
         $result = $this->getString($command, $arguments);
 
@@ -969,12 +969,12 @@ abstract class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_Tes
      * @param  string $command
      * @param  array  $arguments
      * @return numeric
-     * @access private
+     * @access protected
      * @author Shin Ohno <ganchiku@gmail.com>
      * @author Bjoern Schotte <schotte@mayflower.de>
      * @since  Method available since Release 3.1.0
      */
-    private function getNumber($command, array $arguments)
+    protected function getNumber($command, array $arguments)
     {
         $result = $this->getString($command, $arguments);
 
@@ -992,12 +992,12 @@ abstract class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_Tes
      * @param  string $command
      * @param  array  $arguments
      * @return string
-     * @access private
+     * @access protected
      * @author Shin Ohno <ganchiku@gmail.com>
      * @author Bjoern Schotte <schotte@mayflower.de>
      * @since  Method available since Release 3.1.0
      */
-    private function getString($command, array $arguments)
+    protected function getString($command, array $arguments)
     {
         try {
             $result = $this->doCommand($command, $arguments);
@@ -1017,12 +1017,12 @@ abstract class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_Tes
      * @param  string $command
      * @param  array  $arguments
      * @return array
-     * @access private
+     * @access protected
      * @author Shin Ohno <ganchiku@gmail.com>
      * @author Bjoern Schotte <schotte@mayflower.de>
      * @since  Method available since Release 3.1.0
      */
-    private function getStringArray($command, array $arguments)
+    protected function getStringArray($command, array $arguments)
     {
         $csv     = $this->getString($command, $arguments);
         $token   = '';
