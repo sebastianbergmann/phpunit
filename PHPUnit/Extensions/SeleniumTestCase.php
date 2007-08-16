@@ -105,18 +105,6 @@ abstract class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_Tes
      * @var    integer
      * @access protected
      */
-    protected $runId = NULL;
-
-    /**
-     * @var    integer
-     * @access protected
-     */
-    protected $testId = NULL;
-
-    /**
-     * @var    integer
-     * @access protected
-     */
     protected $sleep = 0;
 
     /**
@@ -162,29 +150,10 @@ abstract class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_Tes
 
         $this->doCommand('setTimeout', array($this->timeout));
 
-        if ($this->runId === NULL) {
-            $dbListener = PHPUnit_Util_Log_Database::getInstance();
-
-            if ($dbListener !== FALSE) {
-                $this->runId  = $dbListener->getRunId();
-                $this->testId = $dbListener->getCurrentTestId();
-            } else {
-                $this->runId  = FALSE;
-                $this->testId = FALSE;
-            }
-        }
-
-        if ($this->runId !== FALSE) {
-            $this->createCookie(
-              'PHPUNIT_SELENIUM_RUN_ID=' . $this->runId,
-              'path=/'
-            );
-
-            $this->createCookie(
-              'PHPUNIT_SELENIUM_TEST_ID=' . $this->testId,
-              'path=/'
-            );
-        }
+        $this->createCookie(
+          'PHPUNIT_SELENIUM_TEST_ID=' . md5(uniqid(rand(), TRUE)),
+          'path=/'
+        );
 
         return $this->sessionId;
     }
