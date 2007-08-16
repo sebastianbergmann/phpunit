@@ -156,7 +156,13 @@ class PHPUnit_Util_Fileloader
      */
     protected static function syntaxCheck($filename)
     {
-        $output = shell_exec('php -l ' . escapeshellarg($filename));
+        $php = 'php';
+
+        if (PHP_SAPI == 'cli') {
+            $php = $_SERVER['_'];
+        }
+
+        $output = shell_exec($php . ' -l ' . escapeshellarg($filename));
 
         if (strpos($output, 'Errors parsing') === TRUE) {
             throw new RuntimeException($output);
