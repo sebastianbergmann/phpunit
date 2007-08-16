@@ -214,7 +214,7 @@ class PHPUnit_Extensions_PhptTestCase implements PHPUnit_Framework_Test
               'files' => $coverageData
             );
 
-            $result->appendCodeCoverageInformation($codeCoverageInformation);
+            $result->appendCodeCoverageInformation($this, $codeCoverageInformation);
             unlink($coverageFile);
         }
 

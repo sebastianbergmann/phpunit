@@ -465,6 +465,7 @@ class PHPUnit_Framework_TestResult implements Countable
      * Returns whether code coverage information should be collected.
      *
      * @return boolean If code coverage should be collected
+     * @since  Method available since Release 3.2.0
      */
     public function getCollectCodeCoverageInformation()
     {
@@ -474,11 +475,16 @@ class PHPUnit_Framework_TestResult implements Countable
     /**
      * Appends code coverage information to the test
      *
-     * @param array $info Xdebug code coverage information
+     * @param PHPUnit_Framework_Test $test
+     * @param array                  $data
+     * @since Method available since Release 3.2.0
      */
-    public function appendCodeCoverageInformation($info)
+    public function appendCodeCoverageInformation(PHPUnit_Framework_Test $test, $data)
     {
-        $this->codeCoverageInformation[] = $info;
+        $this->codeCoverageInformation[] = array(
+          'test'  => $test,
+          'files' => $data
+        );
     }
 
     /**
@@ -579,9 +585,8 @@ class PHPUnit_Framework_TestResult implements Countable
         $time = PHPUnit_Util_Timer::stop();
 
         if ($useXdebug) {
-            $this->codeCoverageInformation[] = array(
-              'test'  => $test,
-              'files' => xdebug_get_code_coverage()
+            $this->appendCodeCoverageInformation(
+              $test, xdebug_get_code_coverage()
             );
 
             xdebug_stop_code_coverage();
