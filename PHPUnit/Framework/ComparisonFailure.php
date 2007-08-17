@@ -211,11 +211,11 @@ abstract class PHPUnit_Framework_ComparisonFailure extends PHPUnit_Framework_Ass
           )
         );
 
+        unlink($expectedFile);
+        unlink($actualFile);
+
         if (!empty($buffer)) {
             $buffer = explode("\n", $buffer);
-
-            unlink($expectedFile);
-            unlink($actualFile);
 
             $buffer[0] = "--- Expected";
             $buffer[1] = "+++ Actual";
