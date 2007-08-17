@@ -203,24 +203,27 @@ abstract class PHPUnit_Framework_ComparisonFailure extends PHPUnit_Framework_Ass
         $actualFile = tempnam('/tmp', 'actual');
         file_put_contents($actualFile, $actual);
 
-        $buffer = explode(
-          "\n",
-          shell_exec(
-            sprintf(
-              'diff -u %s %s',
-              $expectedFile,
-              $actualFile
-            )
+        $buffer = shell_exec(
+          sprintf(
+            'diff -u %s %s',
+            $expectedFile,
+            $actualFile
           )
         );
 
-        unlink($expectedFile);
-        unlink($actualFile);
+        if (!empty($buffer)) {
+            $buffer = explode("\n", $buffer);
 
-        $buffer[0] = "--- Expected";
-        $buffer[1] = "+++ Actual";
+            unlink($expectedFile);
+            unlink($actualFile);
 
-        return implode("\n", $buffer);
+            $buffer[0] = "--- Expected";
+            $buffer[1] = "+++ Actual";
+
+            return implode("\n", $buffer);
+        }
+
+        return '';
     }
 
     public static function hasDiff()
