@@ -107,8 +107,7 @@ class PHPUnit_Framework_MockObject_Matcher_InvokedAtIndex implements PHPUnit_Fra
                 'The expected invocation at index %s was never reached.',
 
                 $this->sequenceIndex
-              ),
-              new PHPUnit_Framework_ComparisonFailure_Scalar($this->sequenceIndex, $this->currentIndex)
+              )
             );
         }
     }
