@@ -94,8 +94,7 @@ class PHPUnit_Framework_MockObject_Matcher_InvokedCount extends PHPUnit_Framewor
                 'Expected count for invocation <%s> is wrong.',
 
                 $invocation->toString()
-              ),
-              new PHPUnit_Framework_ComparisonFailure_Scalar($this->expectedCount, $count)
+              )
             );
         }
     }
@@ -106,8 +105,7 @@ class PHPUnit_Framework_MockObject_Matcher_InvokedCount extends PHPUnit_Framewor
 
         if ($count !== $this->expectedCount) {
             throw new PHPUnit_Framework_ExpectationFailedException(
-              'Expected invocation count is wrong.',
-              new PHPUnit_Framework_ComparisonFailure_Scalar($this->expectedCount, $count)
+              'Invocation count does not match expected value.'
             );
         }
     }
