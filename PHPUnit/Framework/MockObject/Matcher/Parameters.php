@@ -123,10 +123,6 @@ class PHPUnit_Framework_MockObject_Matcher_Parameters extends PHPUnit_Framework_
                 'Parameter count for invocation %s is too low.',
 
                 $this->invocation->toString()
-              ),
-              new PHPUnit_Framework_ComparisonFailure_Scalar(
-                count($this->parameters),
-                count($this->invocation->parameters)
               )
             );
         }
