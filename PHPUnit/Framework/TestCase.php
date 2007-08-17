@@ -288,7 +288,7 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
     {
         // Backup the $GLOBALS array.
         if ($this->backupGlobals === TRUE) {
-            $globalsBackup = $GLOBALS;
+            $globalsBackup = serialize($GLOBALS);
         }
 
         // Set up the fixture.
@@ -318,7 +318,7 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
 
         // Restore the $GLOBALS array.
         if ($this->backupGlobals === TRUE) {
-            $GLOBALS = $globalsBackup;
+            $GLOBALS = unserialize($globalsBackup);
         }
 
         // Clean up INI settings.
