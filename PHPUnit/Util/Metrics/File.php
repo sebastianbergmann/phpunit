@@ -146,6 +146,17 @@ class PHPUnit_Util_Metrics_File
     }
 
     /**
+     * Returns the path to the file.
+     *
+     * @return string
+     * @access public
+     */
+    public function getPath()
+    {
+        return $this->filename;
+    }
+
+    /**
      * Classes.
      *
      * @return array
