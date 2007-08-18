@@ -381,9 +381,9 @@ class PHPUnit_Util_Metrics_Project
             if ($found) {
                 if ($line + 1 - $firstLine > self::$CPD_MINIMAL_LINES ) {
                     $this->cpdDuplicates[] = array(
-                      'fileA'      => $this->cpdHashes[$firstHash][0]->getPath(),
+                      'fileA'      => $this->cpdHashes[$firstHash][0],
                       'firstLineA' => $this->cpdHashes[$firstHash][1],
-                      'fileB'      => $file->getPath(),
+                      'fileB'      => $file,
                       'firstLineB' => $firstLine,
                       'numLines'   => $line + 1 - $firstLine,
                       'numTokens'  => $tokenNr + 1 - $firstToken
