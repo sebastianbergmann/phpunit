@@ -552,6 +552,9 @@
        <file baseinstalldir="/" name="MySQL.sql" role="php" />
        <file baseinstalldir="/" name="SQLite3.sql" role="php" />
       </dir>
+      <file baseinstalldir="/" name="CPD.php" role="php">
+       <tasks:replace from="@package_version@" to="version" type="package-info" />
+      </file>
       <file baseinstalldir="/" name="Database.php" role="php">
        <tasks:replace from="@package_version@" to="version" type="package-info" />
       </file>

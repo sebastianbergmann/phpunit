@@ -58,6 +58,7 @@ require_once 'PHPUnit/Util/Report/GraphViz.php';
 require_once 'PHPUnit/Util/Timer.php';
 require_once 'PHPUnit/Util/Log/CodeCoverage/Database.php';
 require_once 'PHPUnit/Util/Log/CodeCoverage/XML.php';
+require_once 'PHPUnit/Util/Log/CPD.php';
 require_once 'PHPUnit/Util/Log/Database.php';
 require_once 'PHPUnit/Util/Log/GraphViz.php';
 require_once 'PHPUnit/Util/Log/JSON.php';
@@ -351,6 +352,13 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
             );
 
             $writer->process($result);
+
+            $writer = new PHPUnit_Util_Log_CPD(
+              str_replace('.xml', '-cpd.xml', $arguments['pmdXML'])
+            );
+
+            $writer->process($result);
+
             $this->printer->write("\n");
         }
 
@@ -373,6 +381,12 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
 
             $writer = new PHPUnit_Util_Log_PMD(
               $arguments['reportDirectory'] . '/pmd.xml'
+            );
+
+            $writer->process($result);
+
+            $writer = new PHPUnit_Util_Log_CPD(
+              $arguments['reportDirectory'] . '/pmd-cpd.xml'
             );
 
             $writer->process($result);

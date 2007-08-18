@@ -63,6 +63,11 @@ PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
  */
 class PHPUnit_Util_Metrics_Project
 {
+    public static $CPD_MINIMAL_MATCHES = 70;
+    public static $CPD_MINIMAL_LINES   = 5;
+
+    protected static $CPD_IGNORE_LIST = array(311, 365, 366, 367, 368, 369, 370);
+
     protected $classes   = array();
     protected $files     = array();
     protected $functions = array();
@@ -74,6 +79,9 @@ class PHPUnit_Util_Metrics_Project
     protected $roots   = 0;
     protected $leafs   = 0;
     protected $maxDit  = 0;
+
+    protected $cpdDuplicates = array();
+    protected $cpdHashes     = array();
 
     /**
      * Constructor.
@@ -121,6 +129,8 @@ class PHPUnit_Util_Metrics_Project
 
             $this->maxDit = max($this->maxDit, $class->getDit());
         }
+
+        $this->copyPasteDetection();
     }
 
     /**
@@ -144,6 +154,17 @@ class PHPUnit_Util_Metrics_Project
     public function getClass($className)
     {
         return $this->classes[$className];
+    }
+
+    /**
+     * Returns the duplicates found by the Copy & Paste Detection (CPD).
+     *
+     * @return array
+     * @access public
+     */
+    public function getDuplicates()
+    {
+        return $this->cpdDuplicates;
     }
 
     /**
@@ -274,6 +295,104 @@ class PHPUnit_Util_Metrics_Project
     public function getMaxDit()
     {
         return $this->maxDit;
+    }
+
+    /**
+     * Copy & Paste Detection (CPD).
+     *
+     * @author Johann-Peter Hartmann <johann-peter.hartmann@mayflower.de>
+     */
+    protected function copyPasteDetection()
+    {
+        foreach ($this->files as $file) {
+            $currentTokenPositions = array();
+            $currentSignature      = '';
+            $lines                 = $file->getLines();
+            $tokens                = $file->getTokens();
+            $tokenNr               = 0;
+            $line                  = 1;
+
+            foreach (array_keys($tokens) as $key) {
+                $token = $tokens[$key];
+
+                if (is_string($token)) {
+                    $line += substr_count($token, "\n");
+                } else {
+                    if (!in_array($token[0], self::$CPD_IGNORE_LIST)) {
+                        $currentTokenPositions[$tokenNr++] = $line;
+                        $currentSignature .= chr($token[0] & 255) . pack('N*', crc32($token[1]));
+                    }
+
+                    $line += substr_count($token[1], "\n");
+                }
+            }
+
+            $tokenNr   = 0;
+            $firstLine = 0;
+            $found     = FALSE;
+
+            do {
+                $line = $currentTokenPositions[$tokenNr];
+
+                $hash = substr(
+                  md5(
+                    substr(
+                      $currentSignature, $tokenNr * 5,
+                      self::$CPD_MINIMAL_MATCHES * 5
+                    ),
+                    TRUE
+                  ),
+                  0,
+                  8
+                );
+
+                if (isset($this->cpdHashes[$hash])) {
+                    $found = TRUE;
+
+                    if ($firstLine === 0) {
+                        $firstLine  = $line;
+                        $firstHash  = $hash;
+                        $firstToken = $tokenNr;
+                    }
+                } else {
+                    if ($found) {
+                        if ($line + 1 - $firstLine > self::$CPD_MINIMAL_LINES ) {
+                            $this->cpdDuplicates[] = array(
+                              'fileA'      => $this->cpdHashes[$firstHash][0],
+                              'firstLineA' => $this->cpdHashes[$firstHash][1],
+                              'fileB'      => $file,
+                              'firstLineB' => $firstLine,
+                              'numLines'   => $line + 1 - $firstLine,
+                              'numTokens'  => $tokenNr + 1 - $firstToken
+                            );
+                        }
+
+                        $found     = FALSE;
+                        $firstLine = 0;
+                    }
+
+                    $this->cpdHashes[$hash] = array($file, $line);
+                }
+
+                $tokenNr++;
+            } while ($tokenNr <= (count($currentTokenPositions) -
+                     self::$CPD_MINIMAL_MATCHES )+1);
+
+            if ($found) {
+                if ($line + 1 - $firstLine > self::$CPD_MINIMAL_LINES ) {
+                    $this->cpdDuplicates[] = array(
+                      'fileA'      => $this->cpdHashes[$firstHash][0]->getPath(),
+                      'firstLineA' => $this->cpdHashes[$firstHash][1],
+                      'fileB'      => $file->getPath(),
+                      'firstLineB' => $firstLine,
+                      'numLines'   => $line + 1 - $firstLine,
+                      'numTokens'  => $tokenNr + 1 - $firstToken
+                    );
+                }
+
+                $found = FALSE;
+            }
+        }
     }
 }
 ?>
