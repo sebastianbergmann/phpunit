@@ -131,7 +131,9 @@ class PHPUnit_Util_Metrics_Project
             $this->maxDit = max($this->maxDit, $class->getDit());
         }
 
-        $this->copyPasteDetection();
+        if ($cpd) {
+            $this->copyPasteDetection();
+        }
     }
 
     /**
