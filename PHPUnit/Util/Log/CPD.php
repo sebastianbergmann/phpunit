@@ -75,7 +75,7 @@ class PHPUnit_Util_Log_CPD extends PHPUnit_Util_Printer
         $codeCoverage = $result->getCodeCoverageInformation();
         $summary      = PHPUnit_Util_CodeCoverage::getSummary($codeCoverage);
         $files        = array_keys($summary);
-        $metrics      = new PHPUnit_Util_Metrics_Project($files, $summary);
+        $metrics      = new PHPUnit_Util_Metrics_Project($files, $summary, TRUE);
 
         $document = new DOMDocument('1.0', 'UTF-8');
         $document->formatOutput = TRUE;

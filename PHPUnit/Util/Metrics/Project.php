@@ -86,11 +86,12 @@ class PHPUnit_Util_Metrics_Project
     /**
      * Constructor.
      *
-     * @param  array $files
-     * @param  array $codeCoverage
+     * @param  array   $files
+     * @param  array   $codeCoverage
+     * @param  boolean $cpd
      * @access public
      */
-    public function __construct(Array $files, &$codeCoverage = array())
+    public function __construct(Array $files, &$codeCoverage = array(), $cpd = FALSE)
     {
         foreach ($files as $file) {
             $this->files[$file] = PHPUnit_Util_Metrics_File::factory($file, $codeCoverage);
