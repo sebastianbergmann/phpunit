@@ -96,15 +96,15 @@ class PHPUnit_Util_Log_CPD extends PHPUnit_Util_Printer
               $document->createElement('file')
             );
 
-            $xmlFile->setAttribute('line', $duplicate['fileA']->getPath());
-            $xmlFile->setAttribute('path', $duplicate['firstLineA']);
+            $xmlFile->setAttribute('path', $duplicate['fileA']->getPath());
+            $xmlFile->setAttribute('line', $duplicate['firstLineA']);
 
             $xmlFile = $xmlDuplication->appendChild(
               $document->createElement('file')
             );
 
-            $xmlFile->setAttribute('line', $duplicate['fileB']->getPath());
-            $xmlFile->setAttribute('path', $duplicate['firstLineB']);
+            $xmlFile->setAttribute('path', $duplicate['fileB']->getPath());
+            $xmlFile->setAttribute('line', $duplicate['firstLineB']);
 
             $codefragment = $xmlDuplication->appendChild(
               $document->createElement('codefragment')
