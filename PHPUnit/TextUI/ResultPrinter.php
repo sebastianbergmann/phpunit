@@ -132,12 +132,35 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
     public function printResult(PHPUnit_Framework_TestResult $result)
     {
         $this->printHeader($result->time());
-        $this->printErrors($result);
-        $this->printFailures($result);
+
+        if ($result->errorCount() > 0) {
+            $this->printErrors($result);
+        }
+
+        if ($result->failureCount() > 0) {
+            if ($result->errorCount() > 0) {
+                print "\n--\n\n";
+            }
+
+            $this->printFailures($result);
+        }
 
         if ($this->verbose) {
-            $this->printIncompletes($result);
-            $this->printSkipped($result);
+            if ($result->notImplementedCount() > 0) {
+                if ($result->failureCount() > 0) {
+                    print "\n--\n\n";
+                }
+
+                $this->printIncompletes($result);
+            }
+
+            if ($result->skippedCount() > 0) {
+                if ($result->notImplementedCount() > 0) {
+                    print "\n--\n\n";
+                }
+
+                $this->printSkipped($result);
+            }
         }
 
         $this->printFooter($result);
