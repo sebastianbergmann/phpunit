@@ -66,10 +66,16 @@ PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
 abstract class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_TestCase
 {
     /**
+     * @var    array
+     * @access protected
+     */
+    protected $browser = array();
+
+    /**
      * @var    string
      * @access protected
      */
-    protected $browser;
+    protected $currentBrowser;
 
     /**
      * @var    string
@@ -112,15 +118,19 @@ abstract class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_Tes
      */
     protected function runTest()
     {
-        $this->start();
+        foreach ($this->browser as $browser) {
+            $this->currentBrowser = $browser;
 
-        parent::runTest();
+            $this->start();
 
-        try {
-            $this->stop();
-        }
+            parent::runTest();
 
-        catch (RuntimeException $e) {
+            try {
+                $this->stop();
+            }
+
+            catch (RuntimeException $e) {
+            }
         }
     }
 
@@ -145,7 +155,7 @@ abstract class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_Tes
     {
         $this->sessionId = $this->getString(
           'getNewBrowserSession',
-          array($this->browser, $this->browserUrl)
+          array($this->currentBrowser, $this->browserUrl)
         );
 
         $this->doCommand('setTimeout', array($this->timeout));
@@ -164,17 +174,22 @@ abstract class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_Tes
     public function stop()
     {
         $this->doCommand('testComplete');
+        $this->currentBrowser = NULL;
         $this->sessionId = NULL;
     }
 
     /**
-     * @param  string  $browser
+     * @param  array|string $browser
      * @throws InvalidArgumentException
      * @access public
      */
     public function setBrowser($browser)
     {
-        if (!is_string($browser)) {
+        if (is_string($browser)) {
+            $browser = array($browser);
+        }
+
+        if (!is_array($browser)) {
             throw new InvalidArgumentException;
         }
 
