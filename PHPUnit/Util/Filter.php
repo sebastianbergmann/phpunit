@@ -122,8 +122,10 @@ class PHPUnit_Util_Filter
      */
     public static function addDirectoryToFilter($directory, $suffix = '.php', $group = 'DEFAULT')
     {
-        foreach (self::getIterator($directory, $suffix) as $file) {
-            self::addFileToFilter($file->getPathName(), $group);
+        if (file_exists($directory)) {
+            foreach (self::getIterator($directory, $suffix) as $file) {
+                self::addFileToFilter($file->getPathName(), $group);
+            }
         }
     }
 
@@ -138,14 +140,16 @@ class PHPUnit_Util_Filter
      */
     public static function addFileToFilter($filename, $group = 'DEFAULT')
     {
-        $filename = self::getCanonicalFilename($filename);
+        if (file_exists($filename)) {
+            $filename = self::getCanonicalFilename($filename);
 
-        if (!isset(self::$blacklistedFiles[$group])) {
-            self::$blacklistedFiles[$group] = array($filename);
-        }
+            if (!isset(self::$blacklistedFiles[$group])) {
+                self::$blacklistedFiles[$group] = array($filename);
+            }
 
-        else if (!in_array($filename, self::$blacklistedFiles[$group])) {
-            self::$blacklistedFiles[$group][] = $filename;
+            else if (!in_array($filename, self::$blacklistedFiles[$group])) {
+                self::$blacklistedFiles[$group][] = $filename;
+            }
         }
     }
 
@@ -161,8 +165,10 @@ class PHPUnit_Util_Filter
      */
     public static function removeDirectoryFromFilter($directory, $suffix = '.php', $group = 'DEFAULT')
     {
-        foreach (self::getIterator($directory, $suffix) as $file) {
-            self::removeFileFromFilter($file->getPathName(), $group);
+        if (file_exists($directory)) {
+            foreach (self::getIterator($directory, $suffix) as $file) {
+                self::removeFileFromFilter($file->getPathName(), $group);
+            }
         }
     }
 
@@ -177,12 +183,14 @@ class PHPUnit_Util_Filter
      */
     public static function removeFileFromFilter($filename, $group = 'DEFAULT')
     {
-        if (isset(self::$blacklistedFiles[$group])) {
-            $filename = self::getCanonicalFilename($filename);
+        if (file_exists($filename)) {
+            if (isset(self::$blacklistedFiles[$group])) {
+                $filename = self::getCanonicalFilename($filename);
 
-            foreach (self::$blacklistedFiles[$group] as $key => $_filename) {
-                if ($filename == $_filename) {
-                    unset(self::$blacklistedFiles[$group][$key]);
+                foreach (self::$blacklistedFiles[$group] as $key => $_filename) {
+                    if ($filename == $_filename) {
+                        unset(self::$blacklistedFiles[$group][$key]);
+                    }
                 }
             }
         }
@@ -199,8 +207,10 @@ class PHPUnit_Util_Filter
      */
     public static function addDirectoryToWhitelist($directory, $suffix = '.php')
     {
-        foreach (self::getIterator($directory, $suffix) as $file) {
-            self::addFileToWhitelist($file->getPathName());
+        if (file_exists($directory)) {
+            foreach (self::getIterator($directory, $suffix) as $file) {
+                self::addFileToWhitelist($file->getPathName());
+            }
         }
     }
 
@@ -217,10 +227,12 @@ class PHPUnit_Util_Filter
      */
     public static function addFileToWhitelist($filename)
     {
-        $filename = self::getCanonicalFilename($filename);
+        if (file_exists($filename)) {
+            $filename = self::getCanonicalFilename($filename);
 
-        if (!in_array($filename, self::$whitelistedFiles)) {
-            self::$whitelistedFiles[] = $filename;
+            if (!in_array($filename, self::$whitelistedFiles)) {
+                self::$whitelistedFiles[] = $filename;
+            }
         }
     }
 
@@ -235,8 +247,10 @@ class PHPUnit_Util_Filter
      */
     public static function removeDirectoryFromWhitelist($directory, $suffix = '.php')
     {
-        foreach (self::getIterator($directory, $suffix) as $file) {
-            self::removeFileFromWhitelist($file->getPathName());
+        if (file_exists($directory)) {
+            foreach (self::getIterator($directory, $suffix) as $file) {
+                self::removeFileFromWhitelist($file->getPathName());
+            }
         }
     }
 
@@ -250,11 +264,13 @@ class PHPUnit_Util_Filter
      */
     public static function removeFileFromWhitelist($filename)
     {
-        $filename = self::getCanonicalFilename($filename);
+        if (file_exists($filename)) {
+            $filename = self::getCanonicalFilename($filename);
 
-        foreach (self::$whitelistedFiles as $key => $_filename) {
-            if ($filename == $_filename) {
-                unset(self::$whitelistedFiles[$key]);
+            foreach (self::$whitelistedFiles as $key => $_filename) {
+                if ($filename == $_filename) {
+                    unset(self::$whitelistedFiles[$key]);
+                }
             }
         }
     }
