@@ -270,7 +270,24 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
         }
 
         else if ($testClass instanceof ReflectionClass) {
-            $this->addTest(new PHPUnit_Framework_TestSuite($testClass));
+            $suiteMethod = FALSE;
+
+            if (!$testClass->isAbstract()) {
+                if ($testClass->hasMethod(PHPUnit_Runner_BaseTestRunner::SUITE_METHODNAME)) {
+                    $method = $testClass->getMethod(
+                      PHPUnit_Runner_BaseTestRunner::SUITE_METHODNAME
+                    );
+
+                    if ($method->isStatic()) {
+                        $this->addTest($method->invoke(NULL, $testClass->getName()));
+                        $suiteMethod = TRUE;
+                    }
+                }
+            }
+
+            if (!$suiteMethod) {
+                $this->addTest(new PHPUnit_Framework_TestSuite($testClass));
+            }
         }
 
         else {
@@ -339,7 +356,7 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
                     );
 
                     if ($method->isStatic()) {
-                        $this->addTest($method->invoke(NULL));
+                        $this->addTest($method->invoke(NULL, $className));
 
                         $testsFound = TRUE;
                     }
