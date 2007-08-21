@@ -264,6 +264,15 @@ abstract class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_Tes
     }
 
     /**
+     * @return string
+     * @access public
+     */
+    public function getBrowserName()
+    {
+        return $this->browserName;
+    }
+
+    /**
      * @param  string $browser
      * @throws InvalidArgumentException
      * @access public
