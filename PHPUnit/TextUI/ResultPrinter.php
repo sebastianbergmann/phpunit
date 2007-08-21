@@ -230,6 +230,14 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
             $testName
           )
         );
+
+        if ($failedTest instanceof PHPUnit_Extensions_SeleniumTestCase) {
+            $browserName = $failedTest->getBrowserName();
+
+            if ($browserName != '') {
+                $this->write('Browser: ' . $browserName . "\n");
+            }
+        }
     }
 
     /**
