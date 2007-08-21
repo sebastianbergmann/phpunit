@@ -66,10 +66,16 @@ PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
 abstract class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_TestCase
 {
     /**
-     * @var    array
+     * @var    string
      * @access protected
      */
-    protected $browser = array();
+    protected $browser;
+
+    /**
+     * @var    string
+     * @access protected
+     */
+    protected $browserName;
 
     /**
      * @var    string
@@ -81,25 +87,19 @@ abstract class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_Tes
      * @var    string
      * @access protected
      */
-    protected $currentBrowser;
-
-    /**
-     * @var    string
-     * @access protected
-     */
-    protected $currentHost = 'localhost';
+    protected $host = 'localhost';
 
     /**
      * @var    integer
      * @access protected
      */
-    protected $currentPort = 4444;
+    protected $port = 4444;
 
     /**
      * @var    integer
      * @access protected
      */
-    protected $currentTimeout = 30000;
+    protected $timeout = 30000;
 
     /**
      * @var    string
@@ -114,35 +114,105 @@ abstract class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_Tes
     protected $sleep = 0;
 
     /**
+     * @param  string $name
+     * @param  array  $browser
+     * @throws InvalidArgumentException
+     * @access public
+     */
+    public function __construct($name = NULL, array $browser = array())
+    {
+        parent::__construct($name);
+
+        if (isset($browser['name'])) {
+            if (!is_string($browser['name'])) {
+                throw new InvalidArgumentException;
+            }
+        } else {
+            $browser['name'] = '';
+        }
+
+        if (isset($browser['browser'])) {
+            if (!is_string($browser['browser'])) {
+                throw new InvalidArgumentException;
+            }
+        } else {
+            $browser['browser'] = '';
+        }
+
+        if (isset($browser['host'])) {
+            if (!is_string($browser['host'])) {
+                throw new InvalidArgumentException;
+            }
+        } else {
+            $browser['host'] = 'localhost';
+        }
+
+        if (isset($browser['port'])) {
+            if (!is_int($browser['port'])) {
+                throw new InvalidArgumentException;
+            }
+        } else {
+            $browser['port'] = 4444;
+        }
+
+        if (isset($browser['timeout'])) {
+            if (!is_int($browser['timeout'])) {
+                throw new InvalidArgumentException;
+            }
+        } else {
+            $browser['timeout'] = 30000;
+        }
+
+        $this->browserName = $browser['name'];
+        $this->browser     = $browser['browser'];
+        $this->host        = $browser['host'];
+        $this->port        = $browser['port'];
+        $this->timeout     = $browser['timeout'];
+    }
+
+    /**
+     * @param  string $className
+     * @return PHPUnit_Framework_TestSuite
+     * @access public
+     */
+    public static function suite($className)
+    {
+        $suite = new PHPUnit_Framework_TestSuite;
+
+        $class     = new ReflectionClass($className);
+        $className = $class->getName();
+
+        $staticProperties = $class->getStaticProperties();
+
+        foreach ($class->getMethods() as $method) {
+            if (PHPUnit_Framework_TestSuite::isPublicTestMethod($method)) {
+                if (isset($staticProperties['browsers'])) {
+                    foreach ($staticProperties['browsers'] as $browser) {
+                        $suite->addTest(new $className($method->getName(), $browser));
+                    }
+                } else {
+                    $suite->addTest(new $className($method->getName()));
+                }
+            }
+        }
+
+        return $suite;
+    }
+
+    /**
      * @access protected
      */
     protected function runTest()
     {
-        if (empty($this->browser)) {
-            $this->addBrowser(
-              $this->currentBrowser,
-              $this->currentHost,
-              $this->currentPort,
-              $this->currentTimeout
-            );
+        $this->start();
+
+        parent::runTest();
+
+        try {
+            $this->stop();
         }
 
-        foreach ($this->browser as $browser) {
-            $this->currentBrowser = $browser['browser'];
-            $this->currentHost    = $browser['host'];
-            $this->currentPort    = $browser['port'];
-            $this->currentTimeout = $browser['timeout'];
-
-            $this->start();
-
-            parent::runTest();
-
-            try {
-                $this->stop();
-            }
-
-            catch (RuntimeException $e) {
-            }
+        catch (RuntimeException $e) {
         }
     }
 
@@ -160,17 +230,17 @@ abstract class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_Tes
     }
 
     /**
-     * @return  string
+     * @return string
      * @access public
      */
     public function start()
     {
         $this->sessionId = $this->getString(
           'getNewBrowserSession',
-          array($this->currentBrowser, $this->browserUrl)
+          array($this->browser, $this->browserUrl)
         );
 
-        $this->doCommand('setTimeout', array($this->currentTimeout));
+        $this->doCommand('setTimeout', array($this->timeout));
 
         $this->createCookie(
           'PHPUNIT_SELENIUM_TEST_ID=' . md5(uniqid(rand(), TRUE)),
@@ -191,33 +261,6 @@ abstract class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_Tes
 
         $this->doCommand('testComplete');
         $this->sessionId = NULL;
-
-        $this->currentBrowser = NULL;
-        $this->currentHost    = 'localhost';
-        $this->currentPort    = 4444;
-        $this->currentTimeout = 30000;
-    }
-
-    /**
-     * @param  string  $browser
-     * @param  string  $host
-     * @param  integer $port
-     * @param  integer $timeout
-     * @throws InvalidArgumentException
-     * @access public
-     */
-    public function addBrowser($browser, $host = 'localhost', $port = 4444, $timeout = 30000)
-    {
-        if (!is_string($browser) || !is_string($host) || !is_int($port) || !is_int($timeout)) {
-            throw new InvalidArgumentException;
-        }
-
-        $this->browser[] = array(
-          'browser' => $browser,
-          'host'    => $host,
-          'port'    => $port,
-          'timeout' => $timeout
-        );
     }
 
     /**
@@ -231,7 +274,7 @@ abstract class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_Tes
             throw new InvalidArgumentException;
         }
 
-        $this->currentBrowser = $browser;
+        $this->browser = $browser;
     }
 
     /**
@@ -259,7 +302,7 @@ abstract class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_Tes
             throw new InvalidArgumentException;
         }
 
-        $this->currentHost = $host;
+        $this->host = $host;
     }
 
     /**
@@ -273,7 +316,7 @@ abstract class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_Tes
             throw new InvalidArgumentException;
         }
 
-        $this->currentPort = $port;
+        $this->port = $port;
     }
 
     /**
@@ -287,11 +330,11 @@ abstract class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_Tes
             throw new InvalidArgumentException;
         }
 
-        $this->currentTimeout = $timeout;
+        $this->timeout = $timeout;
     }
 
     /**
-     * @param  integer  $seconds
+     * @param  integer $seconds
      * @throws InvalidArgumentException
      * @access public
      */
@@ -448,7 +491,7 @@ abstract class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_Tes
 
             case 'clickAndWait': {
                 $this->doCommand('click', $arguments);
-                $this->doCommand('waitForPageToLoad', array($this->currentTimeout));
+                $this->doCommand('waitForPageToLoad', array($this->timeout));
 
                 if ($this->sleep > 0) {
                     sleep($this->sleep);
@@ -461,7 +504,7 @@ abstract class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_Tes
             case 'waitForCondition':
             case 'waitForPopUp': {
                 if (count($arguments) == 1) {
-                    $arguments[] = $this->currentTimeout;
+                    $arguments[] = $this->timeout;
                 }
 
                 $this->doCommand($command, $arguments);
@@ -471,7 +514,7 @@ abstract class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_Tes
 
             case 'waitForPageToLoad': {
                 if (empty($arguments)) {
-                    $arguments[] = $this->currentTimeout;
+                    $arguments[] = $this->timeout;
                 }
 
                 $this->doCommand($command, $arguments);
@@ -925,8 +968,8 @@ abstract class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_Tes
     {
         $url = sprintf(
           'http://%s:%s/selenium-server/driver/?cmd=%s',
-          $this->currentHost,
-          $this->currentPort,
+          $this->host,
+          $this->port,
           urlencode($command)
         );
 
@@ -946,7 +989,7 @@ abstract class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_Tes
         }
 
         stream_set_blocking($handle, 1);
-        stream_set_timeout($handle, 0, $this->currentTimeout);
+        stream_set_timeout($handle, 0, $this->timeout);
 
         $info     = stream_get_meta_data($handle);
         $response = '';
