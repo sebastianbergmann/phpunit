@@ -217,9 +217,13 @@ abstract class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_Tes
     }
 
     /**
+     * If you want to override tearDown() make sure to either call stop() or
+     * parent::tearDown(). Otherwise the Selenium RC session will not be
+     * closed upon test failure.
+     *
      * @access protected
      */
-    final protected function tearDown()
+    protected function tearDown()
     {
         try {
             $this->stop();
