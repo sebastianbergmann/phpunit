@@ -995,7 +995,7 @@ abstract class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_Tes
             $url .= sprintf('&%s=%s', 'sessionId', $this->sessionId);
         }
 
-        if (!$handle = fopen($url, 'r')) {
+        if (!$handle = @fopen($url, 'r')) {
             throw new RuntimeException(
               'Could not connect to the Selenium RC server.'
             );
