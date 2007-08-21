@@ -221,7 +221,7 @@ abstract class PHPUnit_Runner_BaseTestRunner implements PHPUnit_Framework_TestLi
             }
 
             try {
-                $test = $suiteMethod->invoke(NULL);
+                $test = $suiteMethod->invoke(NULL, $testClass->getName());
             }
 
             catch (ReflectionException $e) {
