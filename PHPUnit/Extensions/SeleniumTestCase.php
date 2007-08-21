@@ -149,7 +149,7 @@ abstract class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_Tes
     /**
      * @access protected
      */
-    protected function tearDown()
+    final protected function tearDown()
     {
         try {
             $this->stop();
@@ -185,6 +185,10 @@ abstract class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_Tes
      */
     public function stop()
     {
+        if ($this->sessionId === NULL) {
+            return;
+        }
+
         $this->doCommand('testComplete');
         $this->sessionId = NULL;
 
@@ -474,6 +478,14 @@ abstract class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_Tes
                 $this->defaultAssertions($command);
             }
             break;
+
+            default: {
+                $this->stop();
+
+                throw new BadMethodCallException(
+                  "Method $command not defined."
+                );
+            }
         }
     }
 
@@ -947,6 +959,8 @@ abstract class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_Tes
         fclose($handle);
 
         if (!preg_match('/^OK/', $response)) {
+            $this->stop();
+
             throw new RuntimeException(
               'The response from the Selenium RC server is invalid: ' . $response
             );
@@ -973,10 +987,16 @@ abstract class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_Tes
 
         switch ($result) {
             case 'true':  return TRUE;
+
             case 'false': return FALSE;
-            default: throw new RuntimeException(
-              'Result is neither "true" nor "false": ' . $result
-            );
+
+            default: {
+                $this->stop();
+
+                throw new RuntimeException(
+                  'Result is neither "true" nor "false": ' . PHPUnit_Util_Type::toString($result, TRUE)
+                );
+            }
         }
     }
 
@@ -997,7 +1017,11 @@ abstract class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_Tes
         $result = $this->getString($command, $arguments);
 
         if (!is_numeric($result)) {
-            throw new RuntimeException('Result is not numeric.');
+            $this->stop();
+
+            throw new RuntimeException(
+              'Result is not numeric: ' . PHPUnit_Util_Type::toString($result, TRUE)
+            );
         }
 
         return $result;
@@ -1022,7 +1046,9 @@ abstract class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_Tes
         }
 
         catch (RuntimeException $e) {
-            return $e;
+            $this->stop();
+
+            throw $e;
         }
 
         return substr($result, 3);
