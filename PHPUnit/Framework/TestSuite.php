@@ -652,20 +652,21 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
     /**
      * @param  ReflectionMethod $method
      * @return boolean
-     * @access private
+     * @access public
+     * @static
      */
-    private function isPublicTestMethod(ReflectionMethod $method)
+    public static function isPublicTestMethod(ReflectionMethod $method)
     {
-        return ($this->isTestMethod($method) &&
-                $method->isPublic());
+        return (self::isTestMethod($method) && $method->isPublic());
     }
 
     /**
      * @param  ReflectionMethod $method
      * @return boolean
-     * @access private
+     * @access public
+     * @static
      */
-    private function isTestMethod(ReflectionMethod $method)
+    public static function isTestMethod(ReflectionMethod $method)
     {
         if (substr($method->name, 0, 4) == 'test') {
             return TRUE;
