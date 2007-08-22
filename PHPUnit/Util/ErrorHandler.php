@@ -73,6 +73,10 @@ function PHPUnit_Util_ErrorHandler($errno, $errstr, $errfile, $errline)
     }
 
     if ($errno == E_NOTICE || $errno == E_STRICT) {
+        if (PHPUnit_Framework_Notice::$enabled !== TRUE) {
+            return;
+        }
+
         $exception = 'PHPUnit_Framework_Notice';
     } else {
         $exception = 'PHPUnit_Framework_Error';
