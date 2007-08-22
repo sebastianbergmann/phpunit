@@ -120,6 +120,18 @@ abstract class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_Tes
     protected $autoStop = TRUE;
 
     /**
+     * @var    boolean
+     * @access protected
+     */
+    protected $collectCodeCoverageInformation = FALSE;
+
+    /**
+     * @var    string
+     * @access protected
+     */
+    protected $coverageScriptUrl = '';
+
+    /**
      * @param  string $name
      * @param  array  $browser
      * @throws InvalidArgumentException
@@ -206,6 +218,34 @@ abstract class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_Tes
     }
 
     /**
+     * Runs the test case and collects the results in a TestResult object.
+     * If no TestResult object is passed a new one will be created.
+     *
+     * @param  PHPUnit_Framework_TestResult $result
+     * @return PHPUnit_Framework_TestResult
+     * @throws InvalidArgumentException
+     * @access public
+     */
+    public function run(PHPUnit_Framework_TestResult $result = NULL)
+    {
+        if ($result === NULL) {
+            $result = $this->createResult();
+        }
+
+        $this->collectCodeCoverageInformation = $result->getCollectCodeCoverageInformation();
+
+        $result->run($this);
+
+        if ($this->collectCodeCoverageInformation) {
+            $result->appendCodeCoverageInformation(
+              $this, $this->getCodeCoverage()
+            );
+        }
+
+        return $result;
+    }
+
+    /**
      * @access protected
      */
     protected function runTest()
@@ -256,14 +296,18 @@ abstract class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_Tes
             );
 
             $this->doCommand('setTimeout', array($this->timeout));
-        } else {
+        }
+
+        else if ($this->collectCodeCoverageInformation) {
             $this->deleteCookie('PHPUNIT_SELENIUM_TEST_ID', '/');
         }
 
-        $this->createCookie(
-          'PHPUNIT_SELENIUM_TEST_ID=' . md5(uniqid(rand(), TRUE)),
-          'path=/'
-        );
+        if ($this->collectCodeCoverageInformation) {
+            $this->createCookie(
+              'PHPUNIT_SELENIUM_TEST_ID=' . md5(uniqid(rand(), TRUE)),
+              'path=/'
+            );
+        }
 
         return self::$sessionId[$this->host][$this->port][$this->browser];
     }
@@ -1184,6 +1228,22 @@ abstract class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_Tes
         $tokens[] = $token;
 
         return $tokens;
+    }
+
+    /**
+     * @return array
+     * @access protected
+     * @since  Method available since Release 3.2.0
+     */
+    protected function getCodeCoverage()
+    {
+        if (!empty($this->coverageScriptUrl)) {
+            return eval(
+              'return ' . file_get_contents($this->coverageScriptUrl) . ';'
+            );
+        } else {
+            return array();
+        }
     }
 }
 ?>
