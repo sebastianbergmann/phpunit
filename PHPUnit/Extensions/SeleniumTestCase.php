@@ -256,12 +256,14 @@ abstract class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_Tes
             );
 
             $this->doCommand('setTimeout', array($this->timeout));
-
-            $this->createCookie(
-              'PHPUNIT_SELENIUM_TEST_ID=' . md5(uniqid(rand(), TRUE)),
-              'path=/'
-            );
+        } else {
+            $this->deleteCookie('PHPUNIT_SELENIUM_TEST_ID', '/');
         }
+
+        $this->createCookie(
+          'PHPUNIT_SELENIUM_TEST_ID=' . md5(uniqid(rand(), TRUE)),
+          'path=/'
+        );
 
         return self::$sessionId[$this->host][$this->port][$this->browser];
     }
