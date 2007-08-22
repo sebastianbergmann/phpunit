@@ -102,16 +102,22 @@ abstract class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_Tes
     protected $timeout = 30000;
 
     /**
-     * @var    string
+     * @var    array
      * @access protected
      */
-    protected $sessionId = NULL;
+    protected static $sessionId = array();
 
     /**
      * @var    integer
      * @access protected
      */
     protected $sleep = 0;
+
+    /**
+     * @var    boolean
+     * @access protected
+     */
+    protected $autoStop = TRUE;
 
     /**
      * @param  string $name
@@ -208,11 +214,13 @@ abstract class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_Tes
 
         parent::runTest();
 
-        try {
-            $this->stop();
-        }
+        if ($this->autoStop) {
+            try {
+                $this->stop();
+            }
 
-        catch (RuntimeException $e) {
+            catch (RuntimeException $e) {
+            }
         }
     }
 
@@ -225,11 +233,13 @@ abstract class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_Tes
      */
     protected function tearDown()
     {
-        try {
-            $this->stop();
-        }
+        if ($this->autoStop) {
+            try {
+                $this->stop();
+            }
 
-        catch (RuntimeException $e) {
+            catch (RuntimeException $e) {
+            }
         }
     }
 
@@ -239,19 +249,21 @@ abstract class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_Tes
      */
     public function start()
     {
-        $this->sessionId = $this->getString(
-          'getNewBrowserSession',
-          array($this->browser, $this->browserUrl)
-        );
+        if (!isset(self::$sessionId[$this->host][$this->port][$this->browser])) {
+            self::$sessionId[$this->host][$this->port][$this->browser] = $this->getString(
+              'getNewBrowserSession',
+              array($this->browser, $this->browserUrl)
+            );
 
-        $this->doCommand('setTimeout', array($this->timeout));
+            $this->doCommand('setTimeout', array($this->timeout));
 
-        $this->createCookie(
-          'PHPUNIT_SELENIUM_TEST_ID=' . md5(uniqid(rand(), TRUE)),
-          'path=/'
-        );
+            $this->createCookie(
+              'PHPUNIT_SELENIUM_TEST_ID=' . md5(uniqid(rand(), TRUE)),
+              'path=/'
+            );
+        }
 
-        return $this->sessionId;
+        return self::$sessionId[$this->host][$this->port][$this->browser];
     }
 
     /**
@@ -259,12 +271,27 @@ abstract class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_Tes
      */
     public function stop()
     {
-        if ($this->sessionId === NULL) {
+        if (!isset(self::$sessionId[$this->host][$this->port][$this->browser])) {
             return;
         }
 
         $this->doCommand('testComplete');
-        $this->sessionId = NULL;
+
+        unset(self::$sessionId[$this->host][$this->port][$this->browser]);
+    }
+
+    /**
+     * @param  boolean $autoStop
+     * @throws InvalidArgumentException
+     * @access public
+     */
+    public function setAutoStop($autoStop)
+    {
+        if (!is_bool($autoStop)) {
+            throw new InvalidArgumentException;
+        }
+
+        $this->autoStop = $autoStop;
     }
 
     /**
@@ -991,8 +1018,8 @@ abstract class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_Tes
             $url .= sprintf('&%s=%s', $argNum, urlencode(trim($arguments[$i])));
         }
 
-        if (isset($this->sessionId)) {
-            $url .= sprintf('&%s=%s', 'sessionId', $this->sessionId);
+        if (isset(self::$sessionId[$this->host][$this->port][$this->browser])) {
+            $url .= sprintf('&%s=%s', 'sessionId', self::$sessionId[$this->host][$this->port][$this->browser]);
         }
 
         if (!$handle = @fopen($url, 'r')) {
