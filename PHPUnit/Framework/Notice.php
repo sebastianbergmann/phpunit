@@ -52,6 +52,11 @@ if (!class_exists('PHPUnit_Framework_Notice', FALSE)) {
 
 /**
  * Wrapper for PHP notices.
+ * You can disable notice-to-exception conversion by setting
+ *
+ * <code>
+ * PHPUnit_Framework_Notice::$enabled = FALSE;
+ * </code>
  *
  * @category   Testing
  * @package    PHPUnit
@@ -64,6 +69,7 @@ if (!class_exists('PHPUnit_Framework_Notice', FALSE)) {
  */
 class PHPUnit_Framework_Notice extends PHPUnit_Framework_Error
 {
+    public static $enabled = TRUE;
 }
 
 }
