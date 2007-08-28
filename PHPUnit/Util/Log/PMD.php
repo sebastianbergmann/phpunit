@@ -69,14 +69,16 @@ PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
  */
 class PHPUnit_Util_Log_PMD extends PHPUnit_Util_Printer
 {
-    public static $THRESHOLD_CLASS_DIT            = 6;
-    public static $THRESHOLD_CLASS_ELOC           = 1000;
-    public static $THRESHOLD_CLASS_VARSNP         = 15;
-    public static $THRESHOLD_CLASS_PUBLIC_METHODS = 45;
-    public static $THRESHOLD_FUNCTION_CCN         = 10;
-    public static $THRESHOLD_FUNCTION_NPATH       = 200;
-    public static $THRESHOLD_FUNCTION_ELOC        = 100;
-    public static $THRESHOLD_FUNCTION_PARAMETERS  = 10;
+    public static $THRESHOLD_CLASS_DIT                 = 6;
+    public static $THRESHOLD_CLASS_ELOC                = 1000;
+    public static $THRESHOLD_CLASS_VARSNP              = 15;
+    public static $THRESHOLD_CLASS_PUBLIC_METHODS      = 45;
+    public static $THRESHOLD_FUNCTION_CCN              = 10;
+    public static $THRESHOLD_FUNCTION_NPATH            = 200;
+    public static $THRESHOLD_FUNCTION_ELOC             = 100;
+    public static $THRESHOLD_FUNCTION_PARAMETERS       = 10;
+    public static $THRESHOLD_COVERAGE_LOW_UPPER_BOUND  = 35;
+    public static $THRESHOLD_COVERAGE_HIGH_LOWER_BOUND = 70;
 
     protected $added;
 
@@ -110,7 +112,9 @@ class PHPUnit_Util_Log_PMD extends PHPUnit_Util_Printer
 
                     $dit = $classMetrics->getDIT();
 
-                    if ($dit > self::$THRESHOLD_CLASS_DIT) {
+                    if (is_int(self::$THRESHOLD_CLASS_DIT) &&
+                        self::$THRESHOLD_CLASS_DIT > 0 &&
+                        $dit > self::$THRESHOLD_CLASS_DIT) {
                         $this->addViolation(
                           sprintf(
                             'Depth of Inheritance Tree (DIT) is %d but should not exceed %d.',
@@ -129,7 +133,9 @@ class PHPUnit_Util_Log_PMD extends PHPUnit_Util_Printer
 
                     $locExecutable = $classMetrics->getLocExecutable();
 
-                    if ($locExecutable > self::$THRESHOLD_CLASS_ELOC) {
+                    if (is_int(self::$THRESHOLD_CLASS_ELOC) &&
+                        self::$THRESHOLD_CLASS_ELOC > 0 &&
+                        $locExecutable > self::$THRESHOLD_CLASS_ELOC) {
                         $this->addViolation(
                           sprintf(
                             "Class has %d lines of executable code.\n" .
@@ -150,7 +156,9 @@ class PHPUnit_Util_Log_PMD extends PHPUnit_Util_Printer
 
                     $varsNp = $classMetrics->getVARSnp();
 
-                    if ($varsNp > self::$THRESHOLD_CLASS_VARSNP) {
+                    if (is_int(self::$THRESHOLD_CLASS_VARSNP) &&
+                        self::$THRESHOLD_CLASS_VARSNP > 0 &&
+                        $varsNp > self::$THRESHOLD_CLASS_VARSNP) {
                         $this->addViolation(
                           sprintf(
                             "Class has %d public fields.\n" .
@@ -174,7 +182,9 @@ class PHPUnit_Util_Log_PMD extends PHPUnit_Util_Printer
 
                     $publicMethods = $classMetrics->getPublicMethods();
 
-                    if ($publicMethods > self::$THRESHOLD_CLASS_PUBLIC_METHODS) {
+                    if (is_int(self::$THRESHOLD_CLASS_PUBLIC_METHODS) &&
+                        self::$THRESHOLD_CLASS_PUBLIC_METHODS > 0 &&
+                        $publicMethods > self::$THRESHOLD_CLASS_PUBLIC_METHODS) {
                         $this->addViolation(
                           sprintf(
                             "Class has %d public methods.\n" .
@@ -271,7 +281,9 @@ class PHPUnit_Util_Log_PMD extends PHPUnit_Util_Printer
 
         $ccn = $metrics->getCCN();
 
-        if ($ccn >= self::$THRESHOLD_FUNCTION_CCN) {
+        if (is_int(self::$THRESHOLD_FUNCTION_CCN) &&
+            self::$THRESHOLD_FUNCTION_CCN > 0 &&
+            $ccn >= self::$THRESHOLD_FUNCTION_CCN) {
             $this->addViolation(
               sprintf(
                 "The cyclomatic complexity is %d.\n" .
@@ -296,7 +308,9 @@ class PHPUnit_Util_Log_PMD extends PHPUnit_Util_Printer
 
         $npath = $metrics->getNPath();
 
-        if ($npath >= self::$THRESHOLD_FUNCTION_NPATH) {
+        if (is_int(self::$THRESHOLD_FUNCTION_NPATH) &&
+            self::$THRESHOLD_FUNCTION_NPATH > 0 &&
+            $npath >= self::$THRESHOLD_FUNCTION_NPATH) {
             $this->addViolation(
               sprintf(
                 "The NPath complexity is %d.\n" .
@@ -321,11 +335,18 @@ class PHPUnit_Util_Log_PMD extends PHPUnit_Util_Printer
 
         $violation = '';
 
-        if ($coverage <= 35) {
+        if (is_int(self::$THRESHOLD_COVERAGE_LOW_UPPER_BOUND) &&
+            self::$THRESHOLD_COVERAGE_LOW_UPPER_BOUND > 0 &&
+            $coverage <= self::$THRESHOLD_COVERAGE_LOW_UPPER_BOUND) {
             $violation = 'The code coverage is %01.2f which is considered low.';
         }
 
-        else if ($coverage > 35 && $coverage < 70) {
+        else if (is_int(self::$THRESHOLD_COVERAGE_LOW_UPPER_BOUND) &&
+                 self::$THRESHOLD_COVERAGE_LOW_UPPER_BOUND > 0 &&
+                 is_int(self::$THRESHOLD_COVERAGE_HIGH_LOWER_BOUND) &&
+                 self::$THRESHOLD_COVERAGE_HIGH_LOWER_BOUND > 0 &&
+                 $coverage > self::$THRESHOLD_COVERAGE_LOW_UPPER_BOUND &&
+                 $coverage < self::$THRESHOLD_COVERAGE_HIGH_LOWER_BOUND) {
             $violation = 'The code coverage is %01.2f which is considered medium.';
         }
 
@@ -348,7 +369,7 @@ class PHPUnit_Util_Log_PMD extends PHPUnit_Util_Printer
 
         $locExecutable = $metrics->getLocExecutable();
 
-        if ($locExecutable > self::$THRESHOLD_FUNCTION_ELOC) {
+        if (is_int(self::$THRESHOLD_FUNCTION_ELOC) && self::$THRESHOLD_FUNCTION_ELOC > 0 && $locExecutable > self::$THRESHOLD_FUNCTION_ELOC) {
             $this->addViolation(
               sprintf(
                 "Function or method has %d lines of executable code.\n" .
@@ -370,7 +391,7 @@ class PHPUnit_Util_Log_PMD extends PHPUnit_Util_Printer
 
         $parameters = $metrics->getParameters();
 
-        if ($parameters > self::$THRESHOLD_FUNCTION_PARAMETERS) {
+        if (is_int(self::$THRESHOLD_FUNCTION_PARAMETERS) && self::$THRESHOLD_FUNCTION_PARAMETERS > 0 && $parameters > self::$THRESHOLD_FUNCTION_PARAMETERS) {
             $this->addViolation(
               sprintf(
                 "Function or method has %d parameters.\n" .
