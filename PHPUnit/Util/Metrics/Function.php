@@ -76,14 +76,16 @@ class PHPUnit_Util_Metrics_Function
     protected $scope;
     protected $tokens;
 
+    protected $dependencies = array();
+
     protected static $cache = array();
 
     /**
      * Constructor.
      *
+     * @param  string                              $scope
      * @param  ReflectionFunction|ReflectionMethod $function
      * @param  array                               $codeCoverage
-     * @param  array              $codeCoverage
      * @access protected
      */
     protected function __construct($scope, $function, &$codeCoverage = array())
@@ -100,6 +102,7 @@ class PHPUnit_Util_Metrics_Function
 
         $this->calculateCCN();
         $this->calculateNPath();
+        $this->calculateDependencies();
 
         $this->setCoverage($codeCoverage);
     }
@@ -167,6 +170,17 @@ class PHPUnit_Util_Metrics_Function
     public function getMethod()
     {
         return $this->function;
+    }
+
+    /**
+     * Returns the names of the classes this function or method depends on.
+     *
+     * @return array
+     * @access public
+     */
+    public function getDependencies()
+    {
+        return $this->dependencies;
     }
 
     /**
@@ -434,6 +448,54 @@ class PHPUnit_Util_Metrics_Function
 
         else {
             $this->crap = pow($this->ccn, 2) * (pow(1 - $this->coverage/100, 3) + $this->ccn);
+        }
+    }
+
+    /**
+     * Calculates the dependencies for this function or method.
+     *
+     * @access public
+     */
+    protected function calculateDependencies()
+    {
+        foreach ($this->function->getParameters() as $parameter) {
+            $class = $parameter->getClass();
+
+            if ($class && !in_array($class, $this->dependencies)) {
+                $this->dependencies[] = $class->getName();
+            }
+        }
+
+        $inNew = FALSE;
+
+        foreach($this->tokens as $token) {
+            if (is_string($token)) {
+                if (trim($token) == ';') {
+                    $inNew = FALSE;
+                }
+
+                continue;
+            }
+
+            list ($token, $value) = $token;
+
+            switch ($token) {
+                case T_NEW: {
+                    $inNew = TRUE;
+                }
+                break;
+
+                case T_STRING: {
+                    if ($inNew) {
+                        if (!in_array($value, $this->dependencies)) {
+                            $this->dependencies[] = $value;
+                        }
+                    }
+
+                    $inNew = FALSE;
+                }
+                break;
+            }
         }
     }
 }

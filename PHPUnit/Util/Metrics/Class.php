@@ -86,6 +86,7 @@ class PHPUnit_Util_Metrics_Class
     protected $class;
     protected $methods = array();
     protected $inheritedMethods = array();
+    protected $dependencies = array();
     protected $publicMethods = 0;
 
     protected static $cache = array();
@@ -121,6 +122,8 @@ class PHPUnit_Util_Metrics_Class
                 $this->inheritedMethods[$method->getName()] = PHPUnit_Util_Metrics_Function::factory($method, $codeCoverage);
             }
         }
+
+        $this->calculateDependencies();
     }
 
     /**
@@ -182,6 +185,17 @@ class PHPUnit_Util_Metrics_Class
     public function getMethods()
     {
         return $this->methods;
+    }
+
+    /**
+     * Returns the names of the classes this class depends on.
+     *
+     * @return array
+     * @access public
+     */
+    public function getDependencies()
+    {
+        return $this->dependencies;
     }
 
     /**
@@ -601,6 +615,38 @@ class PHPUnit_Util_Metrics_Class
         $this->loc           = $statistics['loc'];
         $this->locExecutable = $statistics['locExecutable'];
         $this->locExecuted   = $statistics['locExecuted'];
+    }
+
+    /**
+     * Calculates the dependencies for this class.
+     *
+     * @access public
+     */
+    protected function calculateDependencies()
+    {
+        $parent = $this->class->getParentClass();
+
+        if ($parent && !in_array($parent->getName(), $this->dependencies)) {
+            $this->dependencies[] = $parent->getName();
+        }
+
+        $interfaces = $this->class->getInterfaceNames();
+
+        foreach ($interfaces as $interface) {
+            if (!in_array($interface, $this->dependencies)) {
+                $this->dependencies[] = $interface;
+            }
+        }
+
+        $methods = array_merge($this->methods, $this->inheritedMethods);
+
+        foreach ($methods as $method) {
+            foreach ($method->getDependencies() as $dependency) {
+                if (!in_array($dependency, $this->dependencies)) {
+                    $this->dependencies[] = $dependency;
+                }
+            }
+        }
     }
 }
 ?>
