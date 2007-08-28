@@ -45,6 +45,7 @@
  */
 
 require_once 'PHPUnit/TextUI/TestRunner.php';
+require_once 'PHPUnit/Util/Log/PMD.php';
 require_once 'PHPUnit/Util/Log/TAP.php';
 require_once 'PHPUnit/Util/Fileloader.php';
 require_once 'PHPUnit/Util/Filter.php';
@@ -168,6 +169,7 @@ class PHPUnit_TextUI_Command
             $longOptions[] = 'coverage-xml=';
             $longOptions[] = 'log-metrics=';
             $longOptions[] = 'log-pmd=';
+            $longOptions[] = 'pmd-threshold=';
             $longOptions[] = 'report=';
             $longOptions[] = 'charset=';
         }
@@ -258,6 +260,30 @@ class PHPUnit_TextUI_Command
 
                 case '--log-pmd': {
                     $arguments['pmdXML'] = $option[1];
+                }
+                break;
+
+                case '--pmd-threshold': {
+                    $threshold = explode('=', $option[1]);
+
+                    switch ($threshold[0]) {
+                        case 'CLASS_DIT':
+                        case 'CLASS_ELOC':
+                        case 'CLASS_VARSNP':
+                        case 'CLASS_PUBLIC_METHODS':
+                        case 'FUNCTION_CCN':
+                        case 'FUNCTION_NPATH':
+                        case 'FUNCTION_ELOC':
+                        case 'FUNCTION_PARAMETERS':
+                        case 'COVERAGE_LOW_UPPER_BOUND':
+                        case 'COVERAGE_HIGH_LOWER_BOUND': {
+                            if (is_int($threshold[1])) {
+                                $name = 'THRESHOLD_' . $threshold[1];
+
+                                PHPUnit_Util_Log_PMD::$$name = $threshold[1];
+                            }
+                        }
+                    }
                 }
                 break;
 
@@ -456,7 +482,8 @@ class PHPUnit_TextUI_Command
 
         if (extension_loaded('xdebug')) {
             print "  --log-metrics <file>   Write metrics report in XML format.\n" .
-                  "  --log-pmd <file>       Write violations report in PMD XML format.\n";
+                  "  --log-pmd <file>       Write violations report in PMD XML format.\n" .
+                  "  --pmd-threshold k=v    Configure threshold for PMD rule violations.\n";
         }
 
         print "\n";
