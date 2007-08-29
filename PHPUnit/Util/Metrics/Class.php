@@ -626,15 +626,15 @@ class PHPUnit_Util_Metrics_Class
     {
         $parent = $this->class->getParentClass();
 
-        if ($parent && !in_array($parent->getName(), $this->dependencies)) {
+        if ($parent && $parent->isUserDefined() && !in_array($parent->getName(), $this->dependencies)) {
             $this->dependencies[] = $parent->getName();
         }
 
-        $interfaces = $this->class->getInterfaceNames();
+        $interfaces = $this->class->getInterfaces();
 
         foreach ($interfaces as $interface) {
-            if (!in_array($interface, $this->dependencies)) {
-                $this->dependencies[] = $interface;
+            if ($interface->isUserDefined() && !in_array($interface->getName(), $this->dependencies)) {
+                $this->dependencies[] = $interface->getName();
             }
         }
 

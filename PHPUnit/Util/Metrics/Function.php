@@ -487,8 +487,17 @@ class PHPUnit_Util_Metrics_Function
 
                 case T_STRING: {
                     if ($inNew) {
-                        if (!in_array($value, $this->dependencies)) {
-                            $this->dependencies[] = $value;
+                        if ($value != $this->scope) {
+                            try {
+                                $class = new ReflectionClass($value);
+
+                                if ($class->isUserDefined() && !in_array($value, $this->dependencies)) {
+                                    $this->dependencies[] = $value;
+                                }
+                            }
+
+                            catch (ReflectionException $e) {
+                            }
                         }
                     }
 
