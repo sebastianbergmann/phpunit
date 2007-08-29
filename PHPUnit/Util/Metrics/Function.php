@@ -468,7 +468,7 @@ class PHPUnit_Util_Metrics_Function
 
         $inNew = FALSE;
 
-        foreach($this->tokens as $token) {
+        foreach ($this->tokens as $token) {
             if (is_string($token)) {
                 if (trim($token) == ';') {
                     $inNew = FALSE;
