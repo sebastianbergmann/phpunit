@@ -461,8 +461,12 @@ class PHPUnit_Util_Metrics_Function
         foreach ($this->function->getParameters() as $parameter) {
             $class = $parameter->getClass();
 
-            if ($class && !in_array($class, $this->dependencies)) {
-                $this->dependencies[] = $class->getName();
+            if ($class) {
+                $className = $class->getName();
+
+                if ($className != $this->scope && !in_array($className, $this->dependencies)) {
+                    $this->dependencies[] = $className;
+                }
             }
         }
 
