@@ -44,6 +44,8 @@
  * @since      File available since Release 3.2.0
  */
 
+@include_once 'Image/GraphViz.php';
+
 require_once 'PHPUnit/Util/Metrics/File.php';
 require_once 'PHPUnit/Util/Filter.php';
 
@@ -82,6 +84,7 @@ class PHPUnit_Util_Metrics_Project
 
     protected $cpdDuplicates = array();
     protected $cpdHashes     = array();
+    protected $dependencies  = array();
 
     /**
      * Constructor.
@@ -103,7 +106,8 @@ class PHPUnit_Util_Metrics_Project
             foreach ($this->files[$file]->getClasses() as $class) {
                 $className = $class->getClass()->getName();
 
-                $this->classes[$className] = $class;
+                $this->classes[$className]      = $class;
+                $this->dependencies[$className] = $class->getDependencies();
 
                 if ($class->getClass()->isInterface()) {
                     $this->interfs++;
@@ -157,6 +161,65 @@ class PHPUnit_Util_Metrics_Project
     public function getClass($className)
     {
         return $this->classes[$className];
+    }
+
+    /**
+     * Returns the dependencies between the classes of this project.
+     *
+     * @return array
+     * @access public
+     */
+    public function getDependencies()
+    {
+        return $this->dependencies;
+    }
+
+    /**
+     * Returns the dependencies between the classes of this project
+     * in GraphViz/dot markup.
+     *
+     * @return string
+     * @access public
+     */
+    public function getDependenciesAsDot()
+    {
+        if (!class_exists('Image_GraphViz')) {
+            throw new RuntimeException('Image_GraphViz not found.');
+        }
+
+        $graph = new Image_GraphViz(TRUE, array('compound' => 'true'), 'Dependencies');
+
+        foreach ($this->classes as $className => $classMetrics) {
+            $classId = 'class_' . $className;
+
+            $graph->addCluster($classId, $className);
+            $graph->addNode($classId, array('style' => 'invisible'), $classId);
+
+            foreach ($classMetrics->getDependencies() as $_className) {
+                $graph->addEdge(
+                  array($classId => 'class_' . $_className),
+                  array(
+                    'ltail' => 'cluster_' . $classId,
+                    'lhead' => 'cluster_' . 'class_' . $_className
+                  )
+                );
+            }
+
+            foreach ($classMetrics->getMethods() as $methodName => $methodMetrics) {
+                $methodId = $classId . '_' . $methodName;
+
+                $graph->addNode($methodId, array('label' => $methodName . '()'), $classId);
+
+                foreach ($methodMetrics->getDependencies() as $_className) {
+                    $graph->addEdge(
+                      array($methodId => 'class_' . $_className),
+                      array('lhead' => 'cluster_' . 'class_' . $_className)
+                    );
+                }
+            }
+        }
+
+        return $graph->parse();
     }
 
     /**
