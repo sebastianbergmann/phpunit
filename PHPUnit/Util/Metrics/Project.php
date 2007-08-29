@@ -178,10 +178,11 @@ class PHPUnit_Util_Metrics_Project
      * Returns the dependencies between the classes of this project
      * in GraphViz/dot markup.
      *
+     * @param  boolean $verbose
      * @return string
      * @access public
      */
-    public function getDependenciesAsDot()
+    public function getDependenciesAsDot($verbose = FALSE)
     {
         if (!class_exists('Image_GraphViz')) {
             throw new RuntimeException('Image_GraphViz not found.');
@@ -205,16 +206,18 @@ class PHPUnit_Util_Metrics_Project
                 );
             }
 
-            foreach ($classMetrics->getMethods() as $methodName => $methodMetrics) {
-                $methodId = $classId . '_' . $methodName;
+            if ($verbose) {
+                foreach ($classMetrics->getMethods() as $methodName => $methodMetrics) {
+                    $methodId = $classId . '_' . $methodName;
 
-                $graph->addNode($methodId, array('label' => $methodName . '()'), $classId);
+                    $graph->addNode($methodId, array('label' => $methodName . '()'), $classId);
 
-                foreach ($methodMetrics->getDependencies() as $_className) {
-                    $graph->addEdge(
-                      array($methodId => 'class_' . $_className),
-                      array('lhead' => 'cluster_' . 'class_' . $_className)
-                    );
+                    foreach ($methodMetrics->getDependencies() as $_className) {
+                        $graph->addEdge(
+                          array($methodId => 'class_' . $_className),
+                          array('lhead' => 'cluster_' . 'class_' . $_className)
+                        );
+                    }
                 }
             }
         }
