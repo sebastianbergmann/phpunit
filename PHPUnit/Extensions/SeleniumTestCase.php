@@ -499,17 +499,14 @@ abstract class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_Tes
             case 'windowMaximize': {
                 $this->doCommand($command, $arguments);
 
-                if ($command == 'open' || $command == 'openWindow') {
-                    if ($this->collectCodeCoverageInformation) {
-                        $this->deleteCookie('PHPUNIT_SELENIUM_TEST_ID', '/');
-                    }
+                if ($this->collectCodeCoverageInformation &&
+                   ($command == 'open' || $command == 'openWindow')) {
+                    $this->deleteCookie('PHPUNIT_SELENIUM_TEST_ID', '/');
 
-                    if ($this->collectCodeCoverageInformation) {
-                        $this->createCookie(
-                          'PHPUNIT_SELENIUM_TEST_ID=' . $this->testId,
-                          'path=/'
-                        );
-                    }
+                    $this->createCookie(
+                      'PHPUNIT_SELENIUM_TEST_ID=' . $this->testId,
+                      'path=/'
+                    );
                 }
 
                 if ($this->sleep > 0) {
