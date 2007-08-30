@@ -132,6 +132,12 @@ abstract class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_Tes
     protected $coverageScriptUrl = '';
 
     /**
+     * @var    string
+     * @access protected
+     */
+    protected $testId;
+
+    /**
      * @param  string $name
      * @param  array  $browser
      * @throws InvalidArgumentException
@@ -298,16 +304,8 @@ abstract class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_Tes
             $this->doCommand('setTimeout', array($this->timeout));
         }
 
-        else if ($this->collectCodeCoverageInformation) {
-            $this->deleteCookie('PHPUNIT_SELENIUM_TEST_ID', '/');
-        }
 
-        if ($this->collectCodeCoverageInformation) {
-            $this->createCookie(
-              'PHPUNIT_SELENIUM_TEST_ID=' . md5(uniqid(rand(), TRUE)),
-              'path=/'
-            );
-        }
+        $this->testId = md5(uniqid(rand(), TRUE));
 
         return self::$sessionId[$this->host][$this->port][$this->browser];
     }
@@ -500,6 +498,19 @@ abstract class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_Tes
             case 'windowFocus':
             case 'windowMaximize': {
                 $this->doCommand($command, $arguments);
+
+                if ($command == 'open' || $command == 'openWindow') {
+                    if ($this->collectCodeCoverageInformation) {
+                        $this->deleteCookie('PHPUNIT_SELENIUM_TEST_ID', '/');
+                    }
+
+                    if ($this->collectCodeCoverageInformation) {
+                        $this->createCookie(
+                          'PHPUNIT_SELENIUM_TEST_ID=' . $this->testId,
+                          'path=/'
+                        );
+                    }
+                }
 
                 if ($this->sleep > 0) {
                     sleep($this->sleep);
