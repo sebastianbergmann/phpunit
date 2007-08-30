@@ -459,14 +459,19 @@ class PHPUnit_Util_Metrics_Function
     protected function calculateDependencies()
     {
         foreach ($this->function->getParameters() as $parameter) {
-            $class = $parameter->getClass();
+            try {
+                $class = $parameter->getClass();
 
-            if ($class) {
-                $className = $class->getName();
+                if ($class) {
+                    $className = $class->getName();
 
-                if ($className != $this->scope && !in_array($className, $this->dependencies)) {
-                    $this->dependencies[] = $className;
+                    if ($className != $this->scope && !in_array($className, $this->dependencies)) {
+                        $this->dependencies[] = $className;
+                    }
                 }
+            }
+
+            catch (ReflectionException $e) {
             }
         }
 
