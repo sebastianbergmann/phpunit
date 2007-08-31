@@ -68,7 +68,15 @@ class PHPUnit_Util_Metrics_Project
     public static $CPD_MINIMAL_MATCHES = 70;
     public static $CPD_MINIMAL_LINES   = 5;
 
-    protected static $CPD_IGNORE_LIST = array(311, 365, 366, 367, 368, 369, 370);
+    protected static $CPD_IGNORE_LIST = array(
+      T_INLINE_HTML,
+      T_COMMENT,
+      T_DOC_COMMENT,
+      T_OPEN_TAG,
+      T_OPEN_TAG_WITH_ECHO,
+      T_CLOSE_TAG,
+      T_WHITESPACE
+    );
 
     protected $classes   = array();
     protected $files     = array();
@@ -400,52 +408,54 @@ class PHPUnit_Util_Metrics_Project
             $firstLine = 0;
             $found     = FALSE;
 
-            do {
-                $line = $currentTokenPositions[$tokenNr];
+            if (count($currentTokenPositions) > 0) {
+                do {
+                    $line = $currentTokenPositions[$tokenNr];
 
-                $hash = substr(
-                  md5(
-                    substr(
-                      $currentSignature, $tokenNr * 5,
-                      self::$CPD_MINIMAL_MATCHES * 5
-                    ),
-                    TRUE
-                  ),
-                  0,
-                  8
-                );
+                    $hash = substr(
+                      md5(
+                        substr(
+                          $currentSignature, $tokenNr * 5,
+                          self::$CPD_MINIMAL_MATCHES * 5
+                        ),
+                        TRUE
+                      ),
+                      0,
+                      8
+                    );
 
-                if (isset($this->cpdHashes[$hash])) {
-                    $found = TRUE;
+                    if (isset($this->cpdHashes[$hash])) {
+                        $found = TRUE;
 
-                    if ($firstLine === 0) {
-                        $firstLine  = $line;
-                        $firstHash  = $hash;
-                        $firstToken = $tokenNr;
-                    }
-                } else {
-                    if ($found) {
-                        if ($line + 1 - $firstLine > self::$CPD_MINIMAL_LINES ) {
-                            $this->cpdDuplicates[] = array(
-                              'fileA'      => $this->cpdHashes[$firstHash][0],
-                              'firstLineA' => $this->cpdHashes[$firstHash][1],
-                              'fileB'      => $file,
-                              'firstLineB' => $firstLine,
-                              'numLines'   => $line + 1 - $firstLine,
-                              'numTokens'  => $tokenNr + 1 - $firstToken
-                            );
+                        if ($firstLine === 0) {
+                            $firstLine  = $line;
+                            $firstHash  = $hash;
+                            $firstToken = $tokenNr;
+                        }
+                    } else {
+                        if ($found) {
+                            if ($line + 1 - $firstLine > self::$CPD_MINIMAL_LINES ) {
+                                $this->cpdDuplicates[] = array(
+                                  'fileA'      => $this->cpdHashes[$firstHash][0],
+                                  'firstLineA' => $this->cpdHashes[$firstHash][1],
+                                  'fileB'      => $file,
+                                  'firstLineB' => $firstLine,
+                                  'numLines'   => $line + 1 - $firstLine,
+                                  'numTokens'  => $tokenNr + 1 - $firstToken
+                                );
+                            }
+
+                            $found     = FALSE;
+                            $firstLine = 0;
                         }
 
-                        $found     = FALSE;
-                        $firstLine = 0;
+                        $this->cpdHashes[$hash] = array($file, $line);
                     }
 
-                    $this->cpdHashes[$hash] = array($file, $line);
-                }
-
-                $tokenNr++;
-            } while ($tokenNr <= (count($currentTokenPositions) -
-                     self::$CPD_MINIMAL_MATCHES )+1);
+                    $tokenNr++;
+                } while ($tokenNr <= (count($currentTokenPositions) -
+                         self::$CPD_MINIMAL_MATCHES )+1);
+            }
 
             if ($found) {
                 if ($line + 1 - $firstLine > self::$CPD_MINIMAL_LINES ) {
