@@ -45,6 +45,7 @@
  */
 
 require_once 'PHPUnit/Framework.php';
+require_once 'PHPUnit/Util/Class.php';
 require_once 'PHPUnit/Util/Filter.php';
 require_once 'PHPUnit/Util/Printer.php';
 
@@ -283,18 +284,20 @@ class PHPUnit_Util_Log_XML extends PHPUnit_Util_Printer implements PHPUnit_Frame
 
                 $testSuite->setAttribute('file', $class->getFileName());
 
-                $docComment = $class->getDocComment();
+                $packageInformation = PHPUnit_Util_Class::getPackageInformation(
+                  $suite->getName()
+                );
 
-                if (preg_match('/@category[\s]+([\.\w]+)/', $docComment, $matches)) {
-                    $testSuite->setAttribute('category', $matches[1]);
+                if (!empty($packageInformation['category'])) {
+                    $testSuite->setAttribute('category', $packageInformation['category']);
                 }
 
-                if (preg_match('/@package[\s]+([\.\w]+)/', $docComment, $matches)) {
-                    $testSuite->setAttribute('package', $matches[1]);
+                if (!empty($packageInformation['package'])) {
+                    $testSuite->setAttribute('package', $packageInformation['package']);
                 }
 
-                if (preg_match('/@subpackage[\s]+([\.\w]+)/', $docComment, $matches)) {
-                    $testSuite->setAttribute('subpackage', $matches[1]);
+                if (!empty($packageInformation['subpackage'])) {
+                    $testSuite->setAttribute('subpackage', $packageInformation['subpackage']);
                 }
             }
 
