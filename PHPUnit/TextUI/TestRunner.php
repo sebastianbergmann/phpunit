@@ -173,6 +173,7 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
     public function doRun(PHPUnit_Framework_Test $suite, array $arguments = array())
     {
         $arguments['filter']             = isset($arguments['filter'])             ? $arguments['filter']             : FALSE;
+        $arguments['group']              = isset($arguments['group'])              ? $arguments['group']              : FALSE;
         $arguments['stopOnFailure']      = isset($arguments['stopOnFailure'])      ? $arguments['stopOnFailure']      : FALSE;
         $arguments['repeat']             = isset($arguments['repeat'])             ? $arguments['repeat']             : FALSE;
         $arguments['reportCharset']      = isset($arguments['reportCharset'])      ? $arguments['reportCharset']      : 'ISO-8859-1';
@@ -182,7 +183,7 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
 
         if (is_integer($arguments['repeat'])) {
             $suite = new PHPUnit_Extensions_RepeatedTest(
-              $suite, $arguments['repeat'], $arguments['filter']
+              $suite, $arguments['repeat'], $arguments['filter'], $arguments['group']
             );
         }
 
@@ -302,7 +303,7 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
             $result->collectCodeCoverageInformation(TRUE);
         }
 
-        $suite->run($result, $arguments['filter']);
+        $suite->run($result, $arguments['filter'], $arguments['group']);
 
         $result->flushListeners();
 

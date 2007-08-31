@@ -137,6 +137,7 @@ class PHPUnit_TextUI_Command
         $longOptions = array(
           'help',
           'filter=',
+          'group=',
           'loader=',
           'log-json=',
           'log-tap=',
@@ -230,6 +231,11 @@ class PHPUnit_TextUI_Command
                     } else {
                         $arguments['filter'] = $option[1];
                     }
+                }
+                break;
+
+                case '--group': {
+                    $arguments['group'] = $option[1];
                 }
                 break;
 
@@ -504,6 +510,7 @@ class PHPUnit_TextUI_Command
         print "  --testdox-html <file>  Write agile documentation in HTML format to file.\n" .
               "  --testdox-text <file>  Write agile documentation in Text format to file.\n\n" .
               "  --filter <pattern>     Filter which tests to run.\n" .
+              "  --group <name>         Only runs tests from the specified group of tests.\n\n" .
               "  --loader <loader>      TestSuiteLoader implementation to use.\n" .
               "  --repeat <times>       Runs the test(s) repeatedly.\n\n" .
               "  --tap                  Report test execution progress in TAP format.\n" .
