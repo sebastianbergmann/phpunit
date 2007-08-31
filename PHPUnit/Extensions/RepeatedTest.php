@@ -65,6 +65,12 @@ PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
 class PHPUnit_Extensions_RepeatedTest extends PHPUnit_Extensions_TestDecorator
 {
     /**
+     * @var    mixed
+     * @access private
+     */
+    private $filter = FALSE;
+
+    /**
      * @var    integer
      * @access private
      */
@@ -74,11 +80,12 @@ class PHPUnit_Extensions_RepeatedTest extends PHPUnit_Extensions_TestDecorator
      * Constructor.
      *
      * @param  PHPUnit_Framework_Test $test
-     * @param  integer                 $timesRepeat
+     * @param  integer                $timesRepeat
+     * @param  mixed                  $filter
      * @throws InvalidArgumentException
      * @access public
      */
-    public function __construct(PHPUnit_Framework_Test $test, $timesRepeat = 1)
+    public function __construct(PHPUnit_Framework_Test $test, $timesRepeat = 1, $filter = FALSE)
     {
         parent::__construct($test);
 
@@ -90,6 +97,8 @@ class PHPUnit_Extensions_RepeatedTest extends PHPUnit_Extensions_TestDecorator
               'Argument 2 must be a positive integer.'
             );
         }
+
+        $this->filter = $filter;
     }
 
     /**
@@ -120,7 +129,11 @@ class PHPUnit_Extensions_RepeatedTest extends PHPUnit_Extensions_TestDecorator
         }
 
         for ($i = 0; $i < $this->timesRepeat && !$result->shouldStop(); $i++) {
-            $this->test->run($result);
+            if ($this->test instanceof PHPUnit_Framework_TestSuite) {
+                $this->test->run($result, $this->filter);
+            } else {
+                $this->test->run($result);
+            }
         }
 
         return $result;
