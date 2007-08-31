@@ -84,6 +84,7 @@ class PHPUnit_Util_Metrics_Class
     protected $wmcI          = 0;
 
     protected $class;
+    protected $package = '';
     protected $methods = array();
     protected $inheritedMethods = array();
     protected $dependencies = array();
@@ -103,6 +104,14 @@ class PHPUnit_Util_Metrics_Class
     {
         $this->class = $class;
 
+        $className = $class->getName();
+
+        $packageInformation = PHPUnit_Util_Class::getPackageInformation($className);
+
+        if (!empty($packageInformation['fullPackage'])) {
+            $this->package = $packageInformation['fullPackage'];
+        }
+
         $this->calculateAttributeMetrics();
         $this->calculateMethodMetrics();
         $this->calculateNumberOfChildren();
@@ -112,8 +121,6 @@ class PHPUnit_Util_Metrics_Class
 
         $this->dit  = count(PHPUnit_Util_Class::getHierarchy($class->getName())) - 1;
         $this->impl = count($class->getInterfaces());
-
-        $className = $class->getName();
 
         foreach ($this->class->getMethods() as $method) {
             if ($method->getDeclaringClass()->getName() == $className) {
@@ -174,6 +181,17 @@ class PHPUnit_Util_Metrics_Class
     public function getClass()
     {
         return $this->class;
+    }
+
+    /**
+     * Returns the package of this class.
+     *
+     * @return string
+     * @access public
+     */
+    public function getPackage()
+    {
+        return $this->package;
     }
 
     /**
