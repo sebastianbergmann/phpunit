@@ -113,9 +113,15 @@ class PHPUnit_Util_Metrics_Project
 
             foreach ($this->files[$file]->getClasses() as $class) {
                 $className = $class->getClass()->getName();
+                $package   = $class->getPackage();
 
-                $this->classes[$className]      = $class;
-                $this->dependencies[$className] = $class->getDependencies();
+                $this->classes[$className] = $class;
+
+                if (!empty($package)) {
+                    $this->dependencies[$package][$className] = $class->getDependencies();
+                } else {
+                    $this->dependencies[$className] = $class->getDependencies();
+                }
 
                 if ($class->getClass()->isInterface()) {
                     $this->interfs++;
