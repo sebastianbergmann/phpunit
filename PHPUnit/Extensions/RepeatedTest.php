@@ -71,6 +71,12 @@ class PHPUnit_Extensions_RepeatedTest extends PHPUnit_Extensions_TestDecorator
     private $filter = FALSE;
 
     /**
+     * @var    mixed
+     * @access private
+     */
+    private $group = FALSE;
+
+    /**
      * @var    integer
      * @access private
      */
@@ -82,10 +88,11 @@ class PHPUnit_Extensions_RepeatedTest extends PHPUnit_Extensions_TestDecorator
      * @param  PHPUnit_Framework_Test $test
      * @param  integer                $timesRepeat
      * @param  mixed                  $filter
+     * @param  mixed                  $group
      * @throws InvalidArgumentException
      * @access public
      */
-    public function __construct(PHPUnit_Framework_Test $test, $timesRepeat = 1, $filter = FALSE)
+    public function __construct(PHPUnit_Framework_Test $test, $timesRepeat = 1, $filter = FALSE, $group = FALSE)
     {
         parent::__construct($test);
 
@@ -99,6 +106,7 @@ class PHPUnit_Extensions_RepeatedTest extends PHPUnit_Extensions_TestDecorator
         }
 
         $this->filter = $filter;
+        $this->group  = $group;
     }
 
     /**
@@ -130,7 +138,7 @@ class PHPUnit_Extensions_RepeatedTest extends PHPUnit_Extensions_TestDecorator
 
         for ($i = 0; $i < $this->timesRepeat && !$result->shouldStop(); $i++) {
             if ($this->test instanceof PHPUnit_Framework_TestSuite) {
-                $this->test->run($result, $this->filter);
+                $this->test->run($result, $this->filter, $this->group);
             } else {
                 $this->test->run($result);
             }

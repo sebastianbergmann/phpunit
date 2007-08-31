@@ -112,6 +112,14 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
     private $name = '';
 
     /**
+     * The test groups of the test suite.
+     *
+     * @var    array
+     * @access private
+     */
+    private $groups = array();
+
+    /**
      * The tests in the test suite.
      *
      * @var    array
@@ -206,10 +214,20 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
             return;
         }
 
-        $names = array();
+        $className = $theClass->getName();
+        $names     = array();
 
         foreach ($theClass->getMethods() as $method) {
-            $this->addTestMethod($method, $names, $theClass);
+            if ($className == $method->getDeclaringClass()->getName()) {
+                $docComment = $method->getDocComment();
+                $group      = '';
+
+                if (preg_match('/@group[\s]+([\.\w]+)/', $docComment, $matches)) {
+                    $group = $matches[1];
+                }
+
+                $this->addTestMethod($method, $group, $names, $theClass);
+            }
         }
 
         if (empty($this->tests)) {
@@ -240,12 +258,21 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
      * Adds a test to the suite.
      *
      * @param  PHPUnit_Framework_Test $test
+     * @param  string                 $group
      * @access public
      */
-    public function addTest(PHPUnit_Framework_Test $test)
+    public function addTest(PHPUnit_Framework_Test $test, $group = '')
     {
         $this->tests[]  = $test;
         $this->numTests = -1;
+
+        if (is_string($group) && $group != '') {
+            if (!isset($this->groups[$group])) {
+                $this->groups[$group] = array($test);
+            } else {
+                $this->groups[$group][] = $test;
+            }
+        }
     }
 
     /**
@@ -493,11 +520,12 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
      *
      * @param  PHPUnit_Framework_TestResult $result
      * @param  mixed                        $filter
+     * @param  mixed                        $group
      * @return PHPUnit_Framework_TestResult
      * @throws InvalidArgumentException
      * @access public
      */
-    public function run(PHPUnit_Framework_TestResult $result = NULL, $filter = FALSE)
+    public function run(PHPUnit_Framework_TestResult $result = NULL, $filter = FALSE, $group = FALSE)
     {
         if ($result === NULL) {
             $result = $this->createResult();
@@ -519,14 +547,20 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
 
         $result->startTestSuite($this);
 
-        foreach ($this->tests as $test) {
+        if ($group !== FALSE && is_string($group) && isset($this->groups[$group])) {
+            $tests = &$this->groups[$group];
+        } else {
+            $tests = &$this->tests;
+        }
+
+        foreach ($tests as $test) {
             if ($result->shouldStop()) {
                 break;
             }
 
             if ($test instanceof PHPUnit_Framework_TestSuite) {
                 $test->setSharedFixture($this->sharedFixture);
-                $test->run($result, $filter);
+                $test->run($result, $filter, $group);
             } else {
                 $runTest = TRUE;
 
@@ -630,11 +664,12 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
 
     /**
      * @param  ReflectionMethod $method
+     * @param  string           $group
      * @param  array            $names
      * @param  ReflectionClass  $theClass
      * @access private
      */
-    private function addTestMethod(ReflectionMethod $method, Array &$names, ReflectionClass $theClass)
+    private function addTestMethod(ReflectionMethod $method, $group, Array &$names, ReflectionClass $theClass)
     {
         $name = $method->getName();
 
@@ -649,7 +684,8 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
               self::createTest(
                 $theClass,
                 $name
-              )
+              ),
+              $group
             );
         }
 
