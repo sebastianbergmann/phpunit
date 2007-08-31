@@ -274,7 +274,7 @@ class PHPUnit_Util_Class
      * @access public
      * @static
      */
-    public static function getPackageInformation($className, $commonPath = '')
+    public static function getPackageInformation($className)
     {
         $result = array(
           'fullPackage' => '',
