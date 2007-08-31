@@ -877,6 +877,30 @@ abstract class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_Tes
     }
 
     /**
+     * Asserts that a select element has a specific option.
+     *
+     * @param  string $selectLocator
+     * @param  string $option
+     * @access public
+     */
+    public function assertSelectHasOption($selectLocator, $option)
+    {
+        $this->assertContains($option, $this->getSelectOptions($selectLocator));
+    }
+
+    /**
+     * Asserts that a select element does not have a specific option.
+     *
+     * @param  string $selectLocator
+     * @param  string $option
+     * @access public
+     */
+    public function assertSelectNotHasOption($selectLocator, $option)
+    {
+        $this->assertNotContains($option, $this->getSelectOptions($selectLocator));
+    }
+
+    /**
      * Asserts that a specific value is selected.
      *
      * @param  string  $selectLocator
