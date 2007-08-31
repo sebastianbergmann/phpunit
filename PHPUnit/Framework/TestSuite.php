@@ -220,13 +220,13 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
         foreach ($theClass->getMethods() as $method) {
             if ($className == $method->getDeclaringClass()->getName()) {
                 $docComment = $method->getDocComment();
-                $group      = '';
+                $groups     = array();
 
-                if (preg_match('/@group[\s]+([\.\w]+)/', $docComment, $matches)) {
-                    $group = $matches[1];
+                if (preg_match_all('/@group[\s]+([\.\w]+)/', $docComment, $matches)) {
+                    $groups = $matches[1];
                 }
 
-                $this->addTestMethod($method, $group, $names, $theClass);
+                $this->addTestMethod($method, $groups, $names, $theClass);
             }
         }
 
@@ -258,15 +258,15 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
      * Adds a test to the suite.
      *
      * @param  PHPUnit_Framework_Test $test
-     * @param  string                 $group
+     * @param  array                  $groups
      * @access public
      */
-    public function addTest(PHPUnit_Framework_Test $test, $group = '')
+    public function addTest(PHPUnit_Framework_Test $test, $groups = array())
     {
         $this->tests[]  = $test;
         $this->numTests = -1;
 
-        if (is_string($group) && $group != '') {
+        foreach ($groups as $group) {
             if (!isset($this->groups[$group])) {
                 $this->groups[$group] = array($test);
             } else {
@@ -664,12 +664,12 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
 
     /**
      * @param  ReflectionMethod $method
-     * @param  string           $group
+     * @param  string           $groups
      * @param  array            $names
      * @param  ReflectionClass  $theClass
      * @access private
      */
-    private function addTestMethod(ReflectionMethod $method, $group, Array &$names, ReflectionClass $theClass)
+    private function addTestMethod(ReflectionMethod $method, $groups, Array &$names, ReflectionClass $theClass)
     {
         $name = $method->getName();
 
@@ -685,7 +685,7 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
                 $theClass,
                 $name
               ),
-              $group
+              $groups
             );
         }
 
