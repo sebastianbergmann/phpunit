@@ -265,5 +265,52 @@ class PHPUnit_Util_Class
 
         return $result;
     }
+
+    /**
+     * Returns the package information of a user-defined class.
+     *
+     * @param  string $className
+     * @return array
+     * @access public
+     * @static
+     */
+    public static function getPackageInformation($className, $commonPath = '')
+    {
+        $result = array(
+          'fullPackage' => '',
+          'category'    => '',
+          'package'     => '',
+          'subpackage'  => ''
+        );
+
+        $class      = new ReflectionClass($className);
+        $docComment = $class->getDocComment();
+
+        if (preg_match('/@category[\s]+([\.\w]+)/', $docComment, $matches)) {
+            $result['category'] = $matches[1];
+        }
+
+        if (preg_match('/@package[\s]+([\.\w]+)/', $docComment, $matches)) {
+            $result['package']     = $matches[1];
+            $result['fullPackage'] = $matches[1];
+        }
+
+        if (preg_match('/@subpackage[\s]+([\.\w]+)/', $docComment, $matches)) {
+            $result['subpackage'] = $matches[1];
+            $result['fullPackage'] .= '.' . $matches[1];
+        }
+
+        if (empty($result['fullPackage'])) {
+            $tmp = explode('_', $className);
+
+            if (count($tmp) > 1) {
+                unset($tmp[count($tmp)-1]);
+
+                $result['fullPackage'] = join('.', $tmp);
+            }
+        }
+
+        return $result;
+    }
 }
 ?>
