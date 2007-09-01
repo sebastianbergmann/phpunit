@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dataset>
+	<bank_account account_number="12345678912345678" balance="0.00" />
+	<bank_account account_number="12348612357236185" balance="89.00" />
+	<bank_account account_number="15934903649620486" balance="100.00" />
+	<bank_account account_number="15936487230215067" balance="1216.00" />
+</dataset>

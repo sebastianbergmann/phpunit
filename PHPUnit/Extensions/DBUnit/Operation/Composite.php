@@ -36,69 +36,71 @@
  *
  * @category   Testing
  * @package    PHPUnit
- * @author     Sebastian Bergmann <sb@sebastian-bergmann.de>
+ * @author     Mike Lively <m@digitalsandwich.com>
  * @copyright  2002-2007 Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    SVN: $Id$
  * @link       http://www.phpunit.de/
- * @since      File available since Release 2.0.0
+ * @since      File available since Release 3.2.0
  */
 
+require_once 'PHPUnit/Framework.php';
 require_once 'PHPUnit/Util/Filter.php';
 
-PHPUnit_Util_Filter::addFileToFilter(__FILE__);
+require_once 'PHPUnit/Extensions/DBUnit/Operation/IDatabaseOperation.php';
+require_once 'PHPUnit/Extensions/DBUnit/Operation/Exception.php';
 
-if (!defined('PHPUnit_MAIN_METHOD')) {
-    define('PHPUnit_MAIN_METHOD', 'Extensions_AllTests::main');
-    chdir(dirname(dirname(__FILE__)));
-}
-
-require_once 'PHPUnit/Framework/TestSuite.php';
-require_once 'PHPUnit/TextUI/TestRunner.php';
-require_once 'PHPUnit/Util/Filter.php';
-
-require_once 'Extensions/ExceptionTestCaseTest.php';
-require_once 'Extensions/OutputTestCaseTest.php';
-require_once 'Extensions/PerformanceTestCaseTest.php';
-require_once 'Extensions/RepeatedTestTest.php';
-require_once 'Extensions/SeleniumTestCaseTest.php';
-require_once 'Extensions/DBUnit/AllTests.php';
+PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
 
 /**
- *
+ * This class facilitates combining database operations. To create a composite 
+ * operation pass an array of classes that implement 
+ * PHPUnit_Extensions_DBUnit_Operation_IDatabaseOperation and they will be 
+ * executed in that order against all data sets.
  *
  * @category   Testing
  * @package    PHPUnit
- * @author     Sebastian Bergmann <sb@sebastian-bergmann.de>
- * @copyright  2002-2007 Sebastian Bergmann <sb@sebastian-bergmann.de>
+ * @author     Mike Lively <m@digitalsandwich.com>
+ * @copyright  2007 Mike Lively <m@digitalsandwich.com>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    Release: @package_version@
  * @link       http://www.phpunit.de/
- * @since      Class available since Release 2.0.0
+ * @since      Class available since Release 3.2.0
  */
-class Extensions_AllTests
+class PHPUnit_Extensions_DBUnit_Operation_Composite implements PHPUnit_Extensions_DBUnit_Operation_IDatabaseOperation
 {
-    public static function main()
+
+    /**
+     * @var array
+     */
+    protected $operations = array();
+
+    /**
+     * Creates a composite operation.
+     *
+     * @param array $operations
+     */
+    public function __construct(Array $operations)
     {
-        PHPUnit_TextUI_TestRunner::run(self::suite());
+        foreach ($operations as $operation) {
+            if ($operation instanceof PHPUnit_Extensions_DBUnit_Operation_IDatabaseOperation) {
+                $this->operations[] = $operation;
+            } else {
+                throw new InvalidArgumentException("Only database operation instances can be passed to a composite database operation.");
+            }
+        }
     }
 
-    public static function suite()
+    public function execute(PHPUnit_Extensions_DBUnit_Database_IDatabaseConnection $connection, PHPUnit_Extensions_DBUnit_DataSet_IDataSet $dataSet)
     {
-        $suite = new PHPUnit_Framework_TestSuite('PHPUnit_Extensions');
-
-        $suite->addTestSuite('Extensions_ExceptionTestCaseTest');
-        $suite->addTestSuite('Extensions_OutputTestCaseTest');
-        $suite->addTestSuite('Extensions_PerformanceTestCaseTest');
-        $suite->addTestSuite('Extensions_RepeatedTestTest');
-        $suite->addTestSuite('Extensions_SeleniumTestCaseTest');
-        $suite->addTest(Extensions_DBUnit_AllTests::suite());
-
-        return $suite;
+        try {
+            foreach ($this->operations as $operation) {
+                /* @var $operation PHPUnit_Extensions_DBUnit_Operation_IDatabaseOperation */
+                $operation->execute($connection, $dataSet);
+            }
+        } catch (PHPUnit_Extensions_DBUnit_Operation_Exception $e) {
+            throw new PHPUnit_Extensions_DBUnit_Operation_Exception("COMPOSITE[{$e->getOperation()}]", $e->getQuery(), $e->getArgs(), $e->getTable(), $e->getError());
+        }
     }
-}
-
-if (PHPUnit_MAIN_METHOD == 'Extensions_AllTests::main') {
-    Extensions_AllTests::main();
 }
 ?>

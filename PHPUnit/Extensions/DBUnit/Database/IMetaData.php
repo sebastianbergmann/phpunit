@@ -36,69 +36,64 @@
  *
  * @category   Testing
  * @package    PHPUnit
- * @author     Sebastian Bergmann <sb@sebastian-bergmann.de>
+ * @author     Mike Lively <m@digitalsandwich.com>
  * @copyright  2002-2007 Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    SVN: $Id$
  * @link       http://www.phpunit.de/
- * @since      File available since Release 2.0.0
+ * @since      File available since Release 3.2.0
  */
 
+require_once 'PHPUnit/Framework.php';
 require_once 'PHPUnit/Util/Filter.php';
 
-PHPUnit_Util_Filter::addFileToFilter(__FILE__);
-
-if (!defined('PHPUnit_MAIN_METHOD')) {
-    define('PHPUnit_MAIN_METHOD', 'Extensions_AllTests::main');
-    chdir(dirname(dirname(__FILE__)));
-}
-
-require_once 'PHPUnit/Framework/TestSuite.php';
-require_once 'PHPUnit/TextUI/TestRunner.php';
-require_once 'PHPUnit/Util/Filter.php';
-
-require_once 'Extensions/ExceptionTestCaseTest.php';
-require_once 'Extensions/OutputTestCaseTest.php';
-require_once 'Extensions/PerformanceTestCaseTest.php';
-require_once 'Extensions/RepeatedTestTest.php';
-require_once 'Extensions/SeleniumTestCaseTest.php';
-require_once 'Extensions/DBUnit/AllTests.php';
+PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
 
 /**
- *
+ * Provides a basic interface for retreiving metadata from a database.
  *
  * @category   Testing
  * @package    PHPUnit
- * @author     Sebastian Bergmann <sb@sebastian-bergmann.de>
- * @copyright  2002-2007 Sebastian Bergmann <sb@sebastian-bergmann.de>
+ * @author     Mike Lively <m@digitalsandwich.com>
+ * @copyright  2007 Mike Lively <m@digitalsandwich.com>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    Release: @package_version@
  * @link       http://www.phpunit.de/
- * @since      Class available since Release 2.0.0
+ * @since      Class available since Release 3.2.0
  */
-class Extensions_AllTests
+interface PHPUnit_Extensions_DBUnit_Database_IMetaData
 {
-    public static function main()
-    {
-        PHPUnit_TextUI_TestRunner::run(self::suite());
-    }
 
-    public static function suite()
-    {
-        $suite = new PHPUnit_Framework_TestSuite('PHPUnit_Extensions');
+    /**
+     * Returns an array containing the names of all the tables in the database.
+     *
+     * @return array
+     */
+    public function getTableNames();
 
-        $suite->addTestSuite('Extensions_ExceptionTestCaseTest');
-        $suite->addTestSuite('Extensions_OutputTestCaseTest');
-        $suite->addTestSuite('Extensions_PerformanceTestCaseTest');
-        $suite->addTestSuite('Extensions_RepeatedTestTest');
-        $suite->addTestSuite('Extensions_SeleniumTestCaseTest');
-        $suite->addTest(Extensions_DBUnit_AllTests::suite());
+    /**
+     * Returns an array containing the names of all the columns in the 
+     * $tableName table,
+     *
+     * @param string $tableName
+     * @return array
+     */
+    public function getTableColumns($tableName);
 
-        return $suite;
-    }
-}
+    /**
+     * Returns an array containing the names of all the primary key columns in 
+     * the $tableName table.
+     *
+     * @param string $tableName
+     * @return array
+     */
+    public function getTablePrimaryKeys($tableName);
 
-if (PHPUnit_MAIN_METHOD == 'Extensions_AllTests::main') {
-    Extensions_AllTests::main();
+    /**
+     * Returns the name of the default schema.
+     * 
+     * @return string
+     */
+    public function getSchema();
 }
 ?>

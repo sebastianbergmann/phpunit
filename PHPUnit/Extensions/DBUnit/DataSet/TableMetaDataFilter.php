@@ -36,69 +36,90 @@
  *
  * @category   Testing
  * @package    PHPUnit
- * @author     Sebastian Bergmann <sb@sebastian-bergmann.de>
+ * @author     Mike Lively <m@digitalsandwich.com>
  * @copyright  2002-2007 Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    SVN: $Id$
  * @link       http://www.phpunit.de/
- * @since      File available since Release 2.0.0
+ * @since      File available since Release 3.2.0
  */
 
+require_once 'PHPUnit/Framework.php';
 require_once 'PHPUnit/Util/Filter.php';
 
-PHPUnit_Util_Filter::addFileToFilter(__FILE__);
+require_once 'PHPUnit/Extensions/DBUnit/DataSet/AbstractTableMetaData.php';
 
-if (!defined('PHPUnit_MAIN_METHOD')) {
-    define('PHPUnit_MAIN_METHOD', 'Extensions_AllTests::main');
-    chdir(dirname(dirname(__FILE__)));
-}
-
-require_once 'PHPUnit/Framework/TestSuite.php';
-require_once 'PHPUnit/TextUI/TestRunner.php';
-require_once 'PHPUnit/Util/Filter.php';
-
-require_once 'Extensions/ExceptionTestCaseTest.php';
-require_once 'Extensions/OutputTestCaseTest.php';
-require_once 'Extensions/PerformanceTestCaseTest.php';
-require_once 'Extensions/RepeatedTestTest.php';
-require_once 'Extensions/SeleniumTestCaseTest.php';
-require_once 'Extensions/DBUnit/AllTests.php';
+PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
 
 /**
- *
+ * A TableMetaData decorator that allows filtering out columns from another 
+ * metaData object.
  *
  * @category   Testing
  * @package    PHPUnit
- * @author     Sebastian Bergmann <sb@sebastian-bergmann.de>
- * @copyright  2002-2007 Sebastian Bergmann <sb@sebastian-bergmann.de>
+ * @author     Mike Lively <m@digitalsandwich.com>
+ * @copyright  2007 Mike Lively <m@digitalsandwich.com>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    Release: @package_version@
  * @link       http://www.phpunit.de/
- * @since      Class available since Release 2.0.0
+ * @since      Class available since Release 3.2.0
  */
-class Extensions_AllTests
+class PHPUnit_Extensions_DBUnit_DataSet_TableMetaDataFilter extends PHPUnit_Extensions_DBUnit_DataSet_AbstractTableMetaData
 {
-    public static function main()
+
+    /**
+     * The table meta data being decorated.
+     * @var PHPUnit_Extensions_DBUnit_DataSet_ITableMetaData
+     */
+    protected $originalMetaData;
+
+    /**
+     * The columns to exclude from the meta data.
+     * @var Array
+     */
+    protected $excludeColumns;
+
+    /**
+     * Creates a new filtered table meta data object filtering out 
+     * $excludeColumns.
+     *
+     * @param PHPUnit_Extensions_DBUnit_DataSet_ITableMetaData $originalMetaData
+     * @param array $excludeColumns
+     */
+    public function __construct(PHPUnit_Extensions_DBUnit_DataSet_ITableMetaData $originalMetaData, Array $excludeColumns)
     {
-        PHPUnit_TextUI_TestRunner::run(self::suite());
+        $this->originalMetaData = $originalMetaData;
+        $this->excludeColumns = $excludeColumns;
     }
 
-    public static function suite()
+    /**
+     * Returns the names of the columns in the table.
+     *
+     * @return array
+     */
+    public function getColumns()
     {
-        $suite = new PHPUnit_Framework_TestSuite('PHPUnit_Extensions');
-
-        $suite->addTestSuite('Extensions_ExceptionTestCaseTest');
-        $suite->addTestSuite('Extensions_OutputTestCaseTest');
-        $suite->addTestSuite('Extensions_PerformanceTestCaseTest');
-        $suite->addTestSuite('Extensions_RepeatedTestTest');
-        $suite->addTestSuite('Extensions_SeleniumTestCaseTest');
-        $suite->addTest(Extensions_DBUnit_AllTests::suite());
-
-        return $suite;
+        return array_values(array_diff($this->originalMetaData->getColumns(), $this->excludeColumns));
     }
-}
 
-if (PHPUnit_MAIN_METHOD == 'Extensions_AllTests::main') {
-    Extensions_AllTests::main();
+    /**
+     * Returns the names of the primary key columns in the table.
+     *
+     * @return array
+     */
+    public function getPrimaryKeys()
+    {
+        return $this->originalMetaData->getPrimaryKeys();
+    }
+
+    /**
+     * Returns the name of the table.
+     *
+     * @return string
+     */
+    public function getTableName()
+    {
+        return $this->originalMetaData->getTableName();
+    }
 }
 ?>
