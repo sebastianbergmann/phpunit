@@ -32,7 +32,7 @@
   <dir name="/">
    <dir name="PHPUnit">
     <dir name="Extensions">
-     <dir name="DBUnit">
+     <dir name="Database">
       <dir name="Constraint">
        <file baseinstalldir="/" name="DataSetIsEqual.php" role="php">
         <tasks:replace from="@package_version@" to="version" type="package-info" />
@@ -175,7 +175,7 @@
       <file baseinstalldir="/" name="AbstractDatabaseTester.php" role="php">
        <tasks:replace from="@package_version@" to="version" type="package-info" />
       </file>
-      <file baseinstalldir="/" name="DBTestCase.php" role="php">
+      <file baseinstalldir="/" name="TestCase.php" role="php">
        <tasks:replace from="@package_version@" to="version" type="package-info" />
       </file>
       <file baseinstalldir="/" name="DefaultDatabaseTester.php" role="php">
@@ -531,7 +531,7 @@
     </dir>
     <dir name="Tests">
      <dir name="Extensions">
-      <dir name="DBUnit">
+      <dir name="Database">
        <dir name="_files">
         <dir name="XmlDataSets">
          <file baseinstalldir="/" name="DeleteAllOperationTest.xml" role="test">

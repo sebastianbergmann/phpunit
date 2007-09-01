@@ -41,7 +41,7 @@
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    SVN: $Id$
  * @link       http://www.phpunit.de/
- * @since      File available since Release 2.0.0
+ * @since      File available since Release 3.2.0
  */
 
 require_once 'PHPUnit/Util/Filter.php';
@@ -49,7 +49,7 @@ require_once 'PHPUnit/Util/Filter.php';
 PHPUnit_Util_Filter::addFileToFilter(__FILE__);
 
 if (!defined('PHPUnit_MAIN_METHOD')) {
-    define('PHPUnit_MAIN_METHOD', 'Extensions_AllTests::main');
+    define('PHPUnit_MAIN_METHOD', 'Extensions_Database_Operation_AllTests::main');
     chdir(dirname(dirname(__FILE__)));
 }
 
@@ -57,12 +57,7 @@ require_once 'PHPUnit/Framework/TestSuite.php';
 require_once 'PHPUnit/TextUI/TestRunner.php';
 require_once 'PHPUnit/Util/Filter.php';
 
-require_once 'Extensions/ExceptionTestCaseTest.php';
-require_once 'Extensions/OutputTestCaseTest.php';
-require_once 'Extensions/PerformanceTestCaseTest.php';
-require_once 'Extensions/RepeatedTestTest.php';
-require_once 'Extensions/SeleniumTestCaseTest.php';
-require_once 'Extensions/Database/AllTests.php';
+require_once 'Extensions/Database/DataSet/XmlDataSetsTest.php';
 
 /**
  *
@@ -74,9 +69,9 @@ require_once 'Extensions/Database/AllTests.php';
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    Release: @package_version@
  * @link       http://www.phpunit.de/
- * @since      Class available since Release 2.0.0
+ * @since      Class available since Release 3.2.0
  */
-class Extensions_AllTests
+class Extensions_Database_DataSet_AllTests
 {
     public static function main()
     {
@@ -85,20 +80,15 @@ class Extensions_AllTests
 
     public static function suite()
     {
-        $suite = new PHPUnit_Framework_TestSuite('PHPUnit_Extensions');
+        $suite = new PHPUnit_Framework_TestSuite('PHPUnit_Extensions_Database_DataSet');
 
-        $suite->addTestSuite('Extensions_ExceptionTestCaseTest');
-        $suite->addTestSuite('Extensions_OutputTestCaseTest');
-        $suite->addTestSuite('Extensions_PerformanceTestCaseTest');
-        $suite->addTestSuite('Extensions_RepeatedTestTest');
-        $suite->addTestSuite('Extensions_SeleniumTestCaseTest');
-        $suite->addTest(Extensions_Database_AllTests::suite());
+        $suite->addTestSuite('Extensions_Database_DataSet_XmlDataSetsTest');
 
         return $suite;
     }
 }
 
-if (PHPUnit_MAIN_METHOD == 'Extensions_AllTests::main') {
-    Extensions_AllTests::main();
+if (PHPUnit_MAIN_METHOD == 'Extensions_Database_DataSet_AllTests::main') {
+    Extensions_Database_DataSet_AllTests::main();
 }
 ?>

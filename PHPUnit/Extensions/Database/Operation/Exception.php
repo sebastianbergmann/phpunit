@@ -36,69 +36,102 @@
  *
  * @category   Testing
  * @package    PHPUnit
- * @author     Sebastian Bergmann <sb@sebastian-bergmann.de>
+ * @author     Mike Lively <m@digitalsandwich.com>
  * @copyright  2002-2007 Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    SVN: $Id$
  * @link       http://www.phpunit.de/
- * @since      File available since Release 2.0.0
+ * @since      File available since Release 3.2.0
  */
 
+require_once 'PHPUnit/Framework.php';
 require_once 'PHPUnit/Util/Filter.php';
 
-PHPUnit_Util_Filter::addFileToFilter(__FILE__);
-
-if (!defined('PHPUnit_MAIN_METHOD')) {
-    define('PHPUnit_MAIN_METHOD', 'Extensions_AllTests::main');
-    chdir(dirname(dirname(__FILE__)));
-}
-
-require_once 'PHPUnit/Framework/TestSuite.php';
-require_once 'PHPUnit/TextUI/TestRunner.php';
-require_once 'PHPUnit/Util/Filter.php';
-
-require_once 'Extensions/ExceptionTestCaseTest.php';
-require_once 'Extensions/OutputTestCaseTest.php';
-require_once 'Extensions/PerformanceTestCaseTest.php';
-require_once 'Extensions/RepeatedTestTest.php';
-require_once 'Extensions/SeleniumTestCaseTest.php';
-require_once 'Extensions/Database/AllTests.php';
+PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
 
 /**
- *
+ * Thrown for exceptions encountered with database operations. Provides 
+ * information regarding which operations failed and the query (if any) it 
+ * failed on.
  *
  * @category   Testing
  * @package    PHPUnit
- * @author     Sebastian Bergmann <sb@sebastian-bergmann.de>
- * @copyright  2002-2007 Sebastian Bergmann <sb@sebastian-bergmann.de>
+ * @author     Mike Lively <m@digitalsandwich.com>
+ * @copyright  2007 Mike Lively <m@digitalsandwich.com>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    Release: @package_version@
  * @link       http://www.phpunit.de/
- * @since      Class available since Release 2.0.0
+ * @since      Class available since Release 3.2.0
  */
-class Extensions_AllTests
+class PHPUnit_Extensions_Database_Operation_Exception extends RuntimeException
 {
-    public static function main()
+
+    /**
+     * @var string
+     */
+    private $operation;
+
+    /**
+     * @var string
+     */
+    private $preparedQuery;
+
+    /**
+     * @var array
+     */
+    private $preparedArgs;
+
+    /**
+     * @var PHPUnit_Extensions_Database_DataSet_ITable
+     */
+    private $table;
+
+    /**
+     * @var string
+     */
+    private $error;
+
+    /**
+     * Creates a new dbunit operation exception
+     *
+     * @param string $operation
+     * @param string $current_query
+     * @param PHPUnit_Extensions_Database_DataSet_ITable $current_table
+     * @param string $error
+     */
+    public function __construct($operation, $current_query, $current_args, $current_table, $error)
     {
-        PHPUnit_TextUI_TestRunner::run(self::suite());
+        parent::__construct("{$operation} operation failed on query: {$current_query} using args: " . print_r($current_args, true) . " [{$error}]");
+        $this->operation = $operation;
+        $this->preparedQuery = $current_query;
+        $this->preparedArgs = $current_args;
+        $this->table = $current_table;
+        $this->error = $error;
     }
 
-    public static function suite()
+    public function getOperation()
     {
-        $suite = new PHPUnit_Framework_TestSuite('PHPUnit_Extensions');
-
-        $suite->addTestSuite('Extensions_ExceptionTestCaseTest');
-        $suite->addTestSuite('Extensions_OutputTestCaseTest');
-        $suite->addTestSuite('Extensions_PerformanceTestCaseTest');
-        $suite->addTestSuite('Extensions_RepeatedTestTest');
-        $suite->addTestSuite('Extensions_SeleniumTestCaseTest');
-        $suite->addTest(Extensions_Database_AllTests::suite());
-
-        return $suite;
+        return $this->operation;
     }
-}
 
-if (PHPUnit_MAIN_METHOD == 'Extensions_AllTests::main') {
-    Extensions_AllTests::main();
+    public function getQuery()
+    {
+        return $this->preparedQuery;
+    }
+
+    public function getTable()
+    {
+        return $this->table;
+    }
+
+    public function getArgs()
+    {
+        return $this->preparedArgs;
+    }
+
+    public function getError()
+    {
+        return $this->error;
+    }
 }
 ?>
