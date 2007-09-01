@@ -66,8 +66,11 @@ class PHPUnit_Util_Metrics_Class
 {
     protected $aif           = 0;
     protected $ahf           = 0;
+    protected $ca            = 0;
+    protected $ce            = 0;
     protected $coverage      = 0;
     protected $dit           = 0;
+    protected $i             = 0;
     protected $impl          = 0;
     protected $loc           = 0;
     protected $locExecutable = 0;
@@ -83,8 +86,9 @@ class PHPUnit_Util_Metrics_Class
     protected $wmcNp         = 0;
     protected $wmcI          = 0;
 
-    protected $class;
+    protected $project;
     protected $package = '';
+    protected $class;
     protected $methods = array();
     protected $inheritedMethods = array();
     protected $dependencies = array();
@@ -170,6 +174,19 @@ class PHPUnit_Util_Metrics_Class
                 $method->setCoverage($codeCoverage);
             }
         }
+    }
+
+    /**
+     * @param  PHPUnit_Util_Metrics_Project $project
+     * @access public
+     */
+    public function setProject(PHPUnit_Util_Metrics_Project $project)
+    {
+        $this->project = $project;
+
+        $this->ca = 0;
+        $this->ce = 0;
+        $this->i  = 0;
     }
 
     /**
@@ -285,6 +302,38 @@ class PHPUnit_Util_Metrics_Class
     }
 
     /**
+     * Returns the Afferent Couplings (Ca) for the class.
+     *
+     * The number of other classes that depend upon a class is an indicator of
+     * the class' responsibility.
+     *
+     * @return integer
+     * @access public
+     */
+    public function getCa()
+    {
+        $this->calculateDependencyMetrics();
+
+        return $this->ca;
+    }
+
+    /**
+     * Returns the Efferent Couplings (Ce) for the class.
+     *
+     * The number of other classes that the class depends upon is an indicator
+     * of the class' independence.
+     *
+     * @return integer
+     * @access public
+     */
+    public function getCe()
+    {
+        $this->calculateDependencyMetrics();
+
+        return $this->ce;
+    }
+
+    /**
      * Returns the Class Size (CSZ) of the class.
      *
      * @return integer
@@ -329,6 +378,26 @@ class PHPUnit_Util_Metrics_Class
     public function getDIT()
     {
         return $this->dit;
+    }
+
+    /**
+     * Returns the Instability (I) for the class.
+     *
+     * The ratio of efferent coupling (Ce) to total coupling (Ce + Ca) such that
+     * I = Ce / (Ce + Ca). This metric is an indicator of the class' resilience
+     * to change.
+     *
+     * The range for this metric is 0 to 1, with I=0 indicating a completely
+     * stable class and I=1 indicating a completely instable class.
+     *
+     * @return float
+     * @access public
+     */
+    public function getI()
+    {
+        $this->calculateDependencyMetrics();
+
+        return $this->i;
     }
 
     /**
@@ -638,7 +707,7 @@ class PHPUnit_Util_Metrics_Class
     /**
      * Calculates the dependencies for this class.
      *
-     * @access public
+     * @access protected
      */
     protected function calculateDependencies()
     {
@@ -664,6 +733,35 @@ class PHPUnit_Util_Metrics_Class
                     $this->dependencies[] = $dependency;
                 }
             }
+        }
+    }
+
+    /**
+     * Calculates the dependency-based metrics for this class.
+     *
+     * @access protected
+     */
+    protected function calculateDependencyMetrics()
+    {
+        if ($this->ca == 0 && $this->ce == 0 && $this->i == 0) {
+            $className    = $this->class->getName();
+            $dependencies = $this->project->getDependencies();
+
+            foreach ($dependencies[$className] as $dependency) {
+                if ($dependency > 0) {
+                    $this->ce++;
+                }
+            }
+
+            unset($dependencies[$className]);
+
+            foreach ($dependencies as $_className => $_dependencies) {
+                if ($_dependencies[$className] > 0) {
+                    $this->ca++;
+                }
+            }
+
+            $this->i = $this->ce / ($this->ce + $this->ca);
         }
     }
 }
