@@ -882,6 +882,7 @@ abstract class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_Tes
      * @param  string $selectLocator
      * @param  string $option
      * @access public
+     * @since  Method available since Release 3.2.0
      */
     public function assertSelectHasOption($selectLocator, $option)
     {
@@ -894,6 +895,7 @@ abstract class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_Tes
      * @param  string $selectLocator
      * @param  string $option
      * @access public
+     * @since  Method available since Release 3.2.0
      */
     public function assertSelectNotHasOption($selectLocator, $option)
     {
