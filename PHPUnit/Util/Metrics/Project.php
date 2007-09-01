@@ -46,7 +46,6 @@
 
 @include_once 'Image/GraphViz.php';
 
-require_once 'PHPUnit/Util/Metrics/Package.php';
 require_once 'PHPUnit/Util/Metrics/File.php';
 require_once 'PHPUnit/Util/Filter.php';
 
@@ -79,7 +78,6 @@ class PHPUnit_Util_Metrics_Project
       T_WHITESPACE
     );
 
-    protected $packages  = array();
     protected $classes   = array();
     protected $files     = array();
     protected $functions = array();
@@ -115,18 +113,14 @@ class PHPUnit_Util_Metrics_Project
 
             foreach ($this->files[$file]->getClasses() as $class) {
                 $className = $class->getClass()->getName();
+                $package   = $class->getPackage();
 
-                $this->classes[$className]      = $class;
-                $this->dependencies[$className] = $class->getDependencies();
-
-                $package = $class->getPackage();
+                $this->classes[$className] = $class;
 
                 if (!empty($package)) {
-                    if (!isset($this->packages[$package])) {
-                        $this->packages[$package] = new PHPUnit_Util_Metrics_Package($package);
-                    }
-
-                    $this->packages[$package]->addClass($class);
+                    $this->dependencies[$package][$className] = $class->getDependencies();
+                } else {
+                    $this->dependencies[$className] = $class->getDependencies();
                 }
 
                 if ($class->getClass()->isInterface()) {
