@@ -117,12 +117,6 @@ class PHPUnit_Util_Metrics_Project
 
                 $this->classes[$className] = $class;
 
-                if (!empty($package)) {
-                    $this->dependencies[$package][$className] = $class->getDependencies();
-                } else {
-                    $this->dependencies[$className] = $class->getDependencies();
-                }
-
                 if ($class->getClass()->isInterface()) {
                     $this->interfs++;
                 } else {
@@ -137,7 +131,19 @@ class PHPUnit_Util_Metrics_Project
             }
         }
 
-        foreach ($this->classes as $class) {
+        $numClasses = count($this->classes);
+
+        foreach ($this->classes as $a => $b) {
+            foreach ($this->classes as $c => $d) {
+                $this->dependencies[$a][$c] = 0;
+            }
+        }
+
+        foreach ($this->classes as $className => $class) {
+            foreach ($class->getDependencies() as $dependency) {
+                $this->dependencies[$className][$dependency] = 1;
+            }
+
             if ($class->getNOC() == 0) {
                 $this->leafs++;
             }
