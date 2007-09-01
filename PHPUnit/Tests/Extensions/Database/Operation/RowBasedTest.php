@@ -52,7 +52,8 @@ require_once 'PHPUnit/Extensions/Database/DataSet/DefaultTableMetaData.php';
 require_once 'PHPUnit/Extensions/Database/DataSet/FlatXmlDataSet.php';
 require_once 'PHPUnit/Extensions/Database/Operation/RowBased.php';
 
-require_once '_files/DBUnitTestUtility.php';
+require_once 'Extensions/Database/_files/DatabaseTestUtility.php';
+
 
 /**
  * @category   Testing
