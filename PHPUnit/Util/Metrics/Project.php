@@ -195,57 +195,6 @@ class PHPUnit_Util_Metrics_Project
     }
 
     /**
-     * Returns the dependencies between the classes of this project
-     * in GraphViz/dot markup.
-     *
-     * @param  boolean $verbose
-     * @return string
-     * @access public
-     */
-    public function getDependenciesAsDot($verbose = FALSE)
-    {
-        if (!class_exists('Image_GraphViz')) {
-            throw new RuntimeException('Image_GraphViz not found.');
-        }
-
-        $graph = new Image_GraphViz(TRUE, array('compound' => 'true'), 'Dependencies');
-
-        foreach ($this->classes as $className => $classMetrics) {
-            $classId = 'class_' . $className;
-
-            $graph->addCluster($classId, $className);
-            $graph->addNode($classId, array('style' => 'invisible'), $classId);
-
-            foreach ($classMetrics->getDependencies() as $_className) {
-                $graph->addEdge(
-                  array($classId => 'class_' . $_className),
-                  array(
-                    'ltail' => 'cluster_' . $classId,
-                    'lhead' => 'cluster_' . 'class_' . $_className
-                  )
-                );
-            }
-
-            if ($verbose) {
-                foreach ($classMetrics->getMethods() as $methodName => $methodMetrics) {
-                    $methodId = $classId . '_' . $methodName;
-
-                    $graph->addNode($methodId, array('label' => $methodName . '()'), $classId);
-
-                    foreach ($methodMetrics->getDependencies() as $_className) {
-                        $graph->addEdge(
-                          array($methodId => 'class_' . $_className),
-                          array('lhead' => 'cluster_' . 'class_' . $_className)
-                        );
-                    }
-                }
-            }
-        }
-
-        return $graph->parse();
-    }
-
-    /**
      * Returns the duplicates found by the Copy & Paste Detection (CPD).
      *
      * @return array
