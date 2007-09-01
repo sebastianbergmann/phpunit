@@ -844,6 +844,9 @@
       <file baseinstalldir="/" name="Function.php" role="php">
        <tasks:replace from="@package_version@" to="version" type="package-info" />
       </file>
+      <file baseinstalldir="/" name="Package.php" role="php">
+       <tasks:replace from="@package_version@" to="version" type="package-info" />
+      </file>
       <file baseinstalldir="/" name="Project.php" role="php">
        <tasks:replace from="@package_version@" to="version" type="package-info" />
       </file>
