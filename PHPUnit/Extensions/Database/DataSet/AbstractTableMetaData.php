@@ -36,69 +36,101 @@
  *
  * @category   Testing
  * @package    PHPUnit
- * @author     Sebastian Bergmann <sb@sebastian-bergmann.de>
+ * @author     Mike Lively <m@digitalsandwich.com>
  * @copyright  2002-2007 Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    SVN: $Id$
  * @link       http://www.phpunit.de/
- * @since      File available since Release 2.0.0
+ * @since      File available since Release 3.2.0
  */
 
+require_once 'PHPUnit/Framework.php';
 require_once 'PHPUnit/Util/Filter.php';
 
-PHPUnit_Util_Filter::addFileToFilter(__FILE__);
+require_once 'PHPUnit/Extensions/Database/DataSet/ITableMetaData.php';
 
-if (!defined('PHPUnit_MAIN_METHOD')) {
-    define('PHPUnit_MAIN_METHOD', 'Extensions_AllTests::main');
-    chdir(dirname(dirname(__FILE__)));
-}
-
-require_once 'PHPUnit/Framework/TestSuite.php';
-require_once 'PHPUnit/TextUI/TestRunner.php';
-require_once 'PHPUnit/Util/Filter.php';
-
-require_once 'Extensions/ExceptionTestCaseTest.php';
-require_once 'Extensions/OutputTestCaseTest.php';
-require_once 'Extensions/PerformanceTestCaseTest.php';
-require_once 'Extensions/RepeatedTestTest.php';
-require_once 'Extensions/SeleniumTestCaseTest.php';
-require_once 'Extensions/Database/AllTests.php';
+PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
 
 /**
- *
+ * Provides basic functionality for table meta data.
  *
  * @category   Testing
  * @package    PHPUnit
- * @author     Sebastian Bergmann <sb@sebastian-bergmann.de>
- * @copyright  2002-2007 Sebastian Bergmann <sb@sebastian-bergmann.de>
+ * @author     Mike Lively <m@digitalsandwich.com>
+ * @copyright  2007 Mike Lively <m@digitalsandwich.com>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    Release: @package_version@
  * @link       http://www.phpunit.de/
- * @since      Class available since Release 2.0.0
+ * @since      Class available since Release 3.2.0
  */
-class Extensions_AllTests
+abstract class PHPUnit_Extensions_Database_DataSet_AbstractTableMetaData implements PHPUnit_Extensions_Database_DataSet_ITableMetaData
 {
-    public static function main()
+
+    /**
+     * The names of all columns in the table.
+     * 
+     * @var Array
+     */
+    protected $columns;
+
+    /**
+     * The names of all the primary keys in the table.
+     * 
+     * @var Array
+     */
+    protected $primaryKeys;
+
+    /**
+     * @var string
+     */
+    protected $tableName;
+
+    /**
+     * Returns the names of the columns in the table.
+     *
+     * @return array
+     */
+    public function getColumns()
     {
-        PHPUnit_TextUI_TestRunner::run(self::suite());
+        return $this->columns;
     }
 
-    public static function suite()
+    /**
+     * Returns the names of the primary key columns in the table.
+     *
+     * @return array
+     */
+    public function getPrimaryKeys()
     {
-        $suite = new PHPUnit_Framework_TestSuite('PHPUnit_Extensions');
-
-        $suite->addTestSuite('Extensions_ExceptionTestCaseTest');
-        $suite->addTestSuite('Extensions_OutputTestCaseTest');
-        $suite->addTestSuite('Extensions_PerformanceTestCaseTest');
-        $suite->addTestSuite('Extensions_RepeatedTestTest');
-        $suite->addTestSuite('Extensions_SeleniumTestCaseTest');
-        $suite->addTest(Extensions_Database_AllTests::suite());
-
-        return $suite;
+        return $this->primaryKeys;
     }
-}
 
-if (PHPUnit_MAIN_METHOD == 'Extensions_AllTests::main') {
-    Extensions_AllTests::main();
+    /**
+     * Returns the name of the table.
+     *
+     * @return string
+     */
+    public function getTableName()
+    {
+        return $this->tableName;
+    }
+
+    /**
+     * Asserts that the given tableMetaData matches this tableMetaData.
+     *
+     * @param PHPUnit_Extensions_Database_DataSet_ITableMetaData $other
+     */
+    public function assertEquals(PHPUnit_Extensions_Database_DataSet_ITableMetaData $other)
+    {
+        if ($this->getTableName() != $other->getTableName()) {
+            throw new Exception("Expected table name of {$this->getTableName()}, has a name of {$other->getTableName()}");
+        }
+        
+        if ($this->getColumns() != $other->getColumns()) {
+            throw new Exception("Expected following columns: " . implode(', ', $this->getColumns()) . "; has columns: " . implode(', ', $other->getColumns()));
+        }
+        
+        return TRUE;
+    }
 }
 ?>

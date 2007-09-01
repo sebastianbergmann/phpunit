@@ -36,69 +36,87 @@
  *
  * @category   Testing
  * @package    PHPUnit
- * @author     Sebastian Bergmann <sb@sebastian-bergmann.de>
+ * @author     Mike Lively <m@digitalsandwich.com>
  * @copyright  2002-2007 Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    SVN: $Id$
  * @link       http://www.phpunit.de/
- * @since      File available since Release 2.0.0
+ * @since      File available since Release 3.2.0
  */
 
+require_once 'PHPUnit/Framework.php';
 require_once 'PHPUnit/Util/Filter.php';
 
-PHPUnit_Util_Filter::addFileToFilter(__FILE__);
-
-if (!defined('PHPUnit_MAIN_METHOD')) {
-    define('PHPUnit_MAIN_METHOD', 'Extensions_AllTests::main');
-    chdir(dirname(dirname(__FILE__)));
-}
-
-require_once 'PHPUnit/Framework/TestSuite.php';
-require_once 'PHPUnit/TextUI/TestRunner.php';
-require_once 'PHPUnit/Util/Filter.php';
-
-require_once 'Extensions/ExceptionTestCaseTest.php';
-require_once 'Extensions/OutputTestCaseTest.php';
-require_once 'Extensions/PerformanceTestCaseTest.php';
-require_once 'Extensions/RepeatedTestTest.php';
-require_once 'Extensions/SeleniumTestCaseTest.php';
-require_once 'Extensions/Database/AllTests.php';
+PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
 
 /**
- *
+ * Provides a basic interface for communicating with a database.
  *
  * @category   Testing
  * @package    PHPUnit
- * @author     Sebastian Bergmann <sb@sebastian-bergmann.de>
- * @copyright  2002-2007 Sebastian Bergmann <sb@sebastian-bergmann.de>
+ * @author     Mike Lively <m@digitalsandwich.com>
+ * @copyright  2007 Mike Lively <m@digitalsandwich.com>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    Release: @package_version@
  * @link       http://www.phpunit.de/
- * @since      Class available since Release 2.0.0
+ * @since      Class available since Release 3.2.0
  */
-class Extensions_AllTests
+interface PHPUnit_Extensions_Database_Database_IDatabaseConnection
 {
-    public static function main()
-    {
-        PHPUnit_TextUI_TestRunner::run(self::suite());
-    }
 
-    public static function suite()
-    {
-        $suite = new PHPUnit_Framework_TestSuite('PHPUnit_Extensions');
+    /**
+     * Close this connection.
+     */
+    public function close();
 
-        $suite->addTestSuite('Extensions_ExceptionTestCaseTest');
-        $suite->addTestSuite('Extensions_OutputTestCaseTest');
-        $suite->addTestSuite('Extensions_PerformanceTestCaseTest');
-        $suite->addTestSuite('Extensions_RepeatedTestTest');
-        $suite->addTestSuite('Extensions_SeleniumTestCaseTest');
-        $suite->addTest(Extensions_Database_AllTests::suite());
+    /**
+     * Creates a dataset containing the specified table names. If no table 
+     * names are specified then it will created a dataset over the entire 
+     * database.
+     *
+     * @param array $tableNames
+     * @return PHPUnit_Extensions_Database_DataSet_IDataSet
+     */
+    public function createDataSet(Array $tableNames = null);
 
-        return $suite;
-    }
-}
+    /**
+     * Creates a table with the result of the specified SQL statement.
+     *
+     * @param string $resultName
+     * @param string $sql
+     * @return PHPUnit_Extensions_Database_DataSet_ITable
+     */
+    public function createQueryTable($resultName, $sql);
 
-if (PHPUnit_MAIN_METHOD == 'Extensions_AllTests::main') {
-    Extensions_AllTests::main();
+    /**
+     * Returns this connection database configuration 
+     *
+     * @return PHPUnit_Extensions_Database_Database_DatabaseConfig
+     */
+    public function getConfig();
+
+    /**
+     * Returns a PDO Connection
+     *
+     * @return PDO
+     */
+    public function getConnection();
+
+    /**
+     * Returns the number of rows in the given table. You can specify an 
+     * optional where clause to return a subset of the table.
+     *
+     * @param string $tableName
+     * @param string $whereClause
+     * @param int
+     */
+    public function getRowCount($tableName, $whereClause = null);
+
+    /**
+     * Returns the schema for the connection.
+     *
+     * @return string
+     */
+    public function getSchema();
 }
 ?>
