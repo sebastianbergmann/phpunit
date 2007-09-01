@@ -147,6 +147,55 @@ abstract class PHPUnit_Extensions_Database_TestCase extends PHPUnit_Framework_Te
     }
 
     /**
+     * Creates a new DefaultDatabaseConnection using the given PDO connection 
+     * and database schema name.
+     *
+     * @param PDO $connection
+     * @param string $schema
+     * @return PHPUnit_Extensions_Database_Database_DefaultDatabaseConnection
+     */
+    protected function createDefaultDBConnection(PDO $connection, $schema)
+    {
+    	return new PHPUnit_Extensions_Database_Database_DefaultDatabaseConnection($connection, $schema);
+    }
+    
+    /**
+     * Creates a new FlatXmlDataSet with the given $xmlFile. (absolute path.)
+     *
+     * @param string $xmlFile
+     * @return PHPUnit_Extensions_Database_DataSet_FlatXmlDataSet
+     */
+    protected function createFlatXMLDataSet($xmlFile)
+    {
+        require_once 'PHPUnit/Extensions/Database/DataSet/FlatXmlDataSet.php';
+    	return new PHPUnit_Extensions_Database_DataSet_FlatXmlDataSet($xmlFile);
+    }
+    
+    /**
+     * Creates a new XMLDataSet with the given $xmlFile. (absolute path.)
+     *
+     * @param string $xmlFile
+     * @return PHPUnit_Extensions_Database_DataSet_XmlDataSet
+     */
+    protected function createXMLDataSet($xmlFile)
+    {
+        require_once 'PHPUnit/Extensions/Database/DataSet/XmlDataSet.php';
+    	return new PHPUnit_Extensions_Database_DataSet_XmlDataSet($xmlFile);
+    }
+    
+    /**
+     * Returns an operation factory instance that can be used to instantiate 
+     * new operations.
+     *
+     * @return PHPUnit_Extensions_Database_Operation_Factory
+     */
+    protected function getOperations()
+    {
+        require_once 'PHPUnit/Extensions/Database/Operation/Factory.php';
+    	return new PHPUnit_Extensions_Database_Operation_Factory();
+    }
+    
+    /**
      * Performs operation returned by getSetUpOperation().
      */
     protected function setUp()
