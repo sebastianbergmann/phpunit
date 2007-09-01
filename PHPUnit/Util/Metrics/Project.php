@@ -144,6 +144,8 @@ class PHPUnit_Util_Metrics_Project
                 $this->dependencies[$className][$dependency] = 1;
             }
 
+            $class->setProject($this);
+
             if ($class->getNOC() == 0) {
                 $this->leafs++;
             }

@@ -119,10 +119,13 @@ class PHPUnit_Util_Log_Metrics extends PHPUnit_Util_Printer
                     $xmlClass->setAttribute('locExecuted', $classMetrics->getLocExecuted());
                     $xmlClass->setAttribute('aif', $classMetrics->getAIF());
                     $xmlClass->setAttribute('ahf', $classMetrics->getAHF());
+                    $xmlClass->setAttribute('ca', $classMetrics->getCa());
+                    $xmlClass->setAttribute('ce', $classMetrics->getCe());
                     $xmlClass->setAttribute('csz', $classMetrics->getCSZ());
                     $xmlClass->setAttribute('cis', $classMetrics->getCIS());
                     $xmlClass->setAttribute('coverage', $classMetrics->getCoverage());
                     $xmlClass->setAttribute('dit', $classMetrics->getDIT());
+                    $xmlClass->setAttribute('i', $classMetrics->getI());
                     $xmlClass->setAttribute('impl', $classMetrics->getIMPL());
                     $xmlClass->setAttribute('mif', $classMetrics->getMIF());
                     $xmlClass->setAttribute('mhf', $classMetrics->getMHF());
