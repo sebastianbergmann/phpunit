@@ -41,7 +41,7 @@
         <tasks:replace from="@package_version@" to="version" type="package-info" />
        </file>
       </dir>
-      <dir name="Database">
+      <dir name="DB">
        <dir name="MetaData">
         <file baseinstalldir="/" name="InformationSchema.php" role="php">
          <tasks:replace from="@package_version@" to="version" type="package-info" />
