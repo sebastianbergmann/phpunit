@@ -446,7 +446,16 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
         }
 
         $this->locale[$category] = setlocale($category, NULL);
-        call_user_func_array( 'setlocale', $args );
+
+        $result = call_user_func_array( 'setlocale', $args );
+
+        if ($result === FALSE) {
+            throw new RuntimeException(
+              'The locale functionality is not implemented on your platform, ' .
+              'the specified locale does not exist or the category name is ' .
+              'invalid.'
+            );
+        }
     }
 
     /**
