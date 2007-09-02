@@ -47,12 +47,10 @@
 require_once 'PHPUnit/Framework.php';
 require_once 'PHPUnit/Util/Filter.php';
 
-require_once 'PHPUnit/Extensions/Database/DataSet/AbstractTable.php';
-
 PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
 
 /**
- * Provides the functionality to represent a database table.
+ * Provides a basic interface for communicating with a database.
  *
  * @category   Testing
  * @package    PHPUnit
@@ -63,22 +61,62 @@ PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
  * @link       http://www.phpunit.de/
  * @since      Class available since Release 3.2.0
  */
-class PHPUnit_Extensions_Database_Database_Table extends PHPUnit_Extensions_Database_DataSet_AbstractTable
+interface PHPUnit_Extensions_Database_DB_IDatabaseConnection
 {
 
     /**
-     * Creates a new database table object.
-     *
-     * @param PHPUnit_Extensions_Database_DataSet_ITableMetaData $tableMetaData
-     * @param PHPUnit_Extensions_Database_Database_IDatabaseConnection $databaseConnection
+     * Close this connection.
      */
-    public function __construct(PHPUnit_Extensions_Database_DataSet_ITableMetaData $tableMetaData, PHPUnit_Extensions_Database_Database_IDatabaseConnection $databaseConnection)
-    {
-        $this->setTableMetaData($tableMetaData);
-        
-        $pdoStatement = $databaseConnection->getConnection()->prepare(PHPUnit_Extensions_Database_Database_DataSet::buildTableSelect($tableMetaData));
-        $pdoStatement->execute();
-        $this->data = $pdoStatement->fetchAll(PDO::FETCH_ASSOC);
-    }
+    public function close();
+
+    /**
+     * Creates a dataset containing the specified table names. If no table 
+     * names are specified then it will created a dataset over the entire 
+     * database.
+     *
+     * @param array $tableNames
+     * @return PHPUnit_Extensions_Database_DataSet_IDataSet
+     */
+    public function createDataSet(Array $tableNames = null);
+
+    /**
+     * Creates a table with the result of the specified SQL statement.
+     *
+     * @param string $resultName
+     * @param string $sql
+     * @return PHPUnit_Extensions_Database_DataSet_ITable
+     */
+    public function createQueryTable($resultName, $sql);
+
+    /**
+     * Returns this connection database configuration 
+     *
+     * @return PHPUnit_Extensions_Database_Database_DatabaseConfig
+     */
+    public function getConfig();
+
+    /**
+     * Returns a PDO Connection
+     *
+     * @return PDO
+     */
+    public function getConnection();
+
+    /**
+     * Returns the number of rows in the given table. You can specify an 
+     * optional where clause to return a subset of the table.
+     *
+     * @param string $tableName
+     * @param string $whereClause
+     * @param int
+     */
+    public function getRowCount($tableName, $whereClause = null);
+
+    /**
+     * Returns the schema for the connection.
+     *
+     * @return string
+     */
+    public function getSchema();
 }
 ?>

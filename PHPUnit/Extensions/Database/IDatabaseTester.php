@@ -69,14 +69,14 @@ interface PHPUnit_Extensions_Database_IDatabaseTester
     /**
      * Closes the specified connection.
      *
-     * @param PHPUnit_Extensions_Database_Database_IDatabaseConnection $connection
+     * @param PHPUnit_Extensions_Database_DB_IDatabaseConnection $connection
      */
-    public function closeConnection(PHPUnit_Extensions_Database_Database_IDatabaseConnection $connection);
+    public function closeConnection(PHPUnit_Extensions_Database_DB_IDatabaseConnection $connection);
 
     /**
      * Returns the test database connection.
      *
-     * @return PHPUnit_Extensions_Database_Database_IDatabaseConnection
+     * @return PHPUnit_Extensions_Database_DB_IDatabaseConnection
      */
     public function getConnection();
 

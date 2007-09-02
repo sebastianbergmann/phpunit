@@ -98,10 +98,10 @@ class PHPUnit_Extensions_Database_Operation_Replace extends PHPUnit_Extensions_D
     }
 
     /**
-     * @param PHPUnit_Extensions_Database_Database_IDatabaseConnection $connection
+     * @param PHPUnit_Extensions_Database_DB_IDatabaseConnection $connection
      * @param PHPUnit_Extensions_Database_DataSet_IDataSet $dataSet
      */
-    public function execute(PHPUnit_Extensions_Database_Database_IDatabaseConnection $connection, PHPUnit_Extensions_Database_DataSet_IDataSet $dataSet)
+    public function execute(PHPUnit_Extensions_Database_DB_IDatabaseConnection $connection, PHPUnit_Extensions_Database_DataSet_IDataSet $dataSet)
     {
         $insertOperation = new PHPUnit_Extensions_Database_Operation_Insert();
         $updateOperation = new PHPUnit_Extensions_Database_Operation_Update();

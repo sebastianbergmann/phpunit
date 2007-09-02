@@ -89,7 +89,7 @@ abstract class PHPUnit_Extensions_Database_AbstractDatabaseTester implements PHP
     /**
      * Creates a new database tester.
      * 
-     * @param PHPUnit_Extensions_Database_Database_IDatabaseConnection $databaseConnection
+     * @param PHPUnit_Extensions_Database_DB_IDatabaseConnection $databaseConnection
      */
     public function __construct()
     {
@@ -100,9 +100,9 @@ abstract class PHPUnit_Extensions_Database_AbstractDatabaseTester implements PHP
     /**
      * Closes the specified connection.
      *
-     * @param PHPUnit_Extensions_Database_Database_IDatabaseConnection $connection
+     * @param PHPUnit_Extensions_Database_DB_IDatabaseConnection $connection
      */
-    public function closeConnection(PHPUnit_Extensions_Database_Database_IDatabaseConnection $connection)
+    public function closeConnection(PHPUnit_Extensions_Database_DB_IDatabaseConnection $connection)
     {
         $connection->close();
     }

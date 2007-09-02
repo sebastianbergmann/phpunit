@@ -39,7 +39,7 @@
  * @author     Mike Lively <m@digitalsandwich.com>
  * @copyright  2002-2007 Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
- * @version    SVN: $Id$
+ * @version    SVN: $Id:DefaultDatabaseConnection.php 1254 2007-09-02 04:36:15Z mlively $
  * @link       http://www.phpunit.de/
  * @since      File available since Release 3.2.0
  */
@@ -47,11 +47,11 @@
 require_once 'PHPUnit/Framework.php';
 require_once 'PHPUnit/Util/Filter.php';
 
-require_once 'PHPUnit/Extensions/Database/Database/IDatabaseConnection.php';
-require_once 'PHPUnit/Extensions/Database/Database/MetaData.php';
-require_once 'PHPUnit/Extensions/Database/Database/ResultSetTable.php';
-require_once 'PHPUnit/Extensions/Database/Database/DataSet.php';
-require_once 'PHPUnit/Extensions/Database/Database/FilteredDataSet.php';
+require_once 'PHPUnit/Extensions/Database/DB/IDatabaseConnection.php';
+require_once 'PHPUnit/Extensions/Database/DB/MetaData.php';
+require_once 'PHPUnit/Extensions/Database/DB/ResultSetTable.php';
+require_once 'PHPUnit/Extensions/Database/DB/DataSet.php';
+require_once 'PHPUnit/Extensions/Database/DB/FilteredDataSet.php';
 
 PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
 
@@ -67,7 +67,7 @@ PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
  * @link       http://www.phpunit.de/
  * @since      Class available since Release 3.2.0
  */
-class PHPUnit_Extensions_Database_Database_DefaultDatabaseConnection implements PHPUnit_Extensions_Database_Database_IDatabaseConnection
+class PHPUnit_Extensions_Database_DB_DefaultDatabaseConnection implements PHPUnit_Extensions_Database_DB_IDatabaseConnection
 {
 
     /**
@@ -83,7 +83,7 @@ class PHPUnit_Extensions_Database_Database_DefaultDatabaseConnection implements 
     /**
      * The metadata object used to retrieve table meta data from the database.
      * 
-     * @var PHPUnit_Extensions_Database_Database_IMetaData
+     * @var PHPUnit_Extensions_Database_DB_IMetaData
      */
     private $metaData;
 
@@ -96,7 +96,7 @@ class PHPUnit_Extensions_Database_Database_DefaultDatabaseConnection implements 
     public function __construct(PDO $connection, $schema)
     {
         $this->connection = $connection;
-        $this->metaData = PHPUnit_Extensions_Database_Database_MetaData::createMetaData($connection, $schema);
+        $this->metaData = PHPUnit_Extensions_Database_DB_MetaData::createMetaData($connection, $schema);
         $this->schema = $schema;
         
         $connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
@@ -114,7 +114,7 @@ class PHPUnit_Extensions_Database_Database_DefaultDatabaseConnection implements 
      * Returns a database metadata object that can be used to retrieve table 
      * meta data from the database.
      *
-     * @return PHPUnit_Extensions_Database_Database_IMetaData
+     * @return PHPUnit_Extensions_Database_DB_IMetaData
      */
     public function getMetaData()
     {
@@ -143,9 +143,9 @@ class PHPUnit_Extensions_Database_Database_DefaultDatabaseConnection implements 
     public function createDataSet(Array $tableNames = null)
     {
         if (empty($tableNames)) {
-            return new PHPUnit_Extensions_Database_Database_DataSet($this);
+            return new PHPUnit_Extensions_Database_DB_DataSet($this);
         } else {
-            return new PHPUnit_Extensions_Database_Database_FilteredDataSet($this, $tableNames);
+            return new PHPUnit_Extensions_Database_DB_FilteredDataSet($this, $tableNames);
         }
     }
 
@@ -154,12 +154,12 @@ class PHPUnit_Extensions_Database_Database_DefaultDatabaseConnection implements 
      *
      * @param string $resultName
      * @param string $sql
-     * @return PHPUnit_Extensions_Database_Database_Table
+     * @return PHPUnit_Extensions_Database_DB_Table
      */
     public function createQueryTable($resultName, $sql)
     {
         $statement = $this->connection->query($sql);
-        return new PHPUnit_Extensions_Database_Database_ResultSetTable($resultName, $statement);
+        return new PHPUnit_Extensions_Database_DB_ResultSetTable($resultName, $statement);
     }
 
     /**

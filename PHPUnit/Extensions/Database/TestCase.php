@@ -79,9 +79,9 @@ abstract class PHPUnit_Extensions_Database_TestCase extends PHPUnit_Framework_Te
     /**
      * Closes the specified connection.
      *
-     * @param PHPUnit_Extensions_Database_Database_IDatabaseConnection $connection
+     * @param PHPUnit_Extensions_Database_DB_IDatabaseConnection $connection
      */
-    protected function closeConnection(PHPUnit_Extensions_Database_Database_IDatabaseConnection $connection)
+    protected function closeConnection(PHPUnit_Extensions_Database_DB_IDatabaseConnection $connection)
     {
         $this->getDatabaseTester()->closeConnection($connection);
     }
@@ -89,7 +89,7 @@ abstract class PHPUnit_Extensions_Database_TestCase extends PHPUnit_Framework_Te
     /**
      * Returns the test database connection.
      *
-     * @return PHPUnit_Extensions_Database_Database_IDatabaseConnection
+     * @return PHPUnit_Extensions_Database_DB_IDatabaseConnection
      */
     protected abstract function getConnection();
 
@@ -152,11 +152,11 @@ abstract class PHPUnit_Extensions_Database_TestCase extends PHPUnit_Framework_Te
      *
      * @param PDO $connection
      * @param string $schema
-     * @return PHPUnit_Extensions_Database_Database_DefaultDatabaseConnection
+     * @return PHPUnit_Extensions_Database_DB_DefaultDatabaseConnection
      */
     protected function createDefaultDBConnection(PDO $connection, $schema)
     {
-    	return new PHPUnit_Extensions_Database_Database_DefaultDatabaseConnection($connection, $schema);
+    	return new PHPUnit_Extensions_Database_DB_DefaultDatabaseConnection($connection, $schema);
     }
     
     /**

@@ -45,7 +45,7 @@
  */
 
 require_once 'PHPUnit/Extensions/Database/TestCase.php';
-require_once 'PHPUnit/Extensions/Database/Database/DefaultDatabaseConnection.php';
+require_once 'PHPUnit/Extensions/Database/DB/DefaultDatabaseConnection.php';
 require_once 'PHPUnit/Extensions/Database/DataSet/FlatXmlDataSet.php';
 require_once 'PHPUnit/Extensions/Database/DataSet/DefaultDataSet.php';
 require_once 'PHPUnit/Extensions/Database/DataSet/DefaultTable.php';
@@ -74,7 +74,7 @@ class Extensions_Database_Operation_OperationsTest extends PHPUnit_Extensions_Da
 {
 	public function getConnection()
 	{
-		return new PHPUnit_Extensions_Database_Database_DefaultDatabaseConnection(DBUnitTestUtility::getSQLiteMemoryDB(), 'sqlite');
+		return new PHPUnit_Extensions_Database_DB_DefaultDatabaseConnection(DBUnitTestUtility::getSQLiteMemoryDB(), 'sqlite');
 	}
 	
 	public function getDataSet()

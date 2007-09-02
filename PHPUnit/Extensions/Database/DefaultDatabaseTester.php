@@ -68,16 +68,16 @@ class PHPUnit_Extensions_Database_DefaultDatabaseTester extends PHPUnit_Extensio
 {
 
     /**
-     * @var PHPUnit_Extensions_Database_Database_IDatabaseConnection
+     * @var PHPUnit_Extensions_Database_DB_IDatabaseConnection
      */
     private $connection;
 
     /**
      * Creates a new default database tester using the given connection.
      *
-     * @param PHPUnit_Extensions_Database_Database_IDatabaseConnection $connection
+     * @param PHPUnit_Extensions_Database_DB_IDatabaseConnection $connection
      */
-    public function __construct(PHPUnit_Extensions_Database_Database_IDatabaseConnection $connection)
+    public function __construct(PHPUnit_Extensions_Database_DB_IDatabaseConnection $connection)
     {
         $this->connection = $connection;
     }
@@ -85,7 +85,7 @@ class PHPUnit_Extensions_Database_DefaultDatabaseTester extends PHPUnit_Extensio
     /**
      * Returns the test database connection.
      *
-     * @return PHPUnit_Extensions_Database_Database_IDatabaseConnection
+     * @return PHPUnit_Extensions_Database_DB_IDatabaseConnection
      */
     public function getConnection()
     {

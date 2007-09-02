@@ -46,106 +46,39 @@
 
 require_once 'PHPUnit/Framework.php';
 require_once 'PHPUnit/Util/Filter.php';
-require_once 'PHPUnit/Extensions/Database/Database/MetaData.php';
+
+require_once 'PHPUnit/Extensions/Database/DataSet/AbstractTable.php';
 
 PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
 
 /**
- * Provides functionality to retrieve meta data from a sqlite database.
+ * Provides the functionality to represent a database table.
  *
  * @category   Testing
  * @package    PHPUnit
  * @author     Mike Lively <m@digitalsandwich.com>
- * @copyright  2002-2007 Sebastian Bergmann <sb@sebastian-bergmann.de>
+ * @copyright  2007 Mike Lively <m@digitalsandwich.com>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    Release: @package_version@
  * @link       http://www.phpunit.de/
  * @since      Class available since Release 3.2.0
  */
-class PHPUnit_Extensions_Database_Database_MetaData_Sqlite extends PHPUnit_Extensions_Database_Database_MetaData
+class PHPUnit_Extensions_Database_DB_Table extends PHPUnit_Extensions_Database_DataSet_AbstractTable
 {
 
-    private $columns = array();
-
-    private $keys = array();
-
     /**
-     * Returns an array containing the names of all the tables in the database.
+     * Creates a new database table object.
      *
-     * @return array
+     * @param PHPUnit_Extensions_Database_DataSet_ITableMetaData $tableMetaData
+     * @param PHPUnit_Extensions_Database_DB_IDatabaseConnection $databaseConnection
      */
-    public function getTableNames()
+    public function __construct(PHPUnit_Extensions_Database_DataSet_ITableMetaData $tableMetaData, PHPUnit_Extensions_Database_DB_IDatabaseConnection $databaseConnection)
     {
-        $query = "
-            SELECT name 
-            FROM sqlite_master
-            WHERE 
-                type='table' AND 
-                name <> 'sqlite_sequence'
-            ORDER BY name
-        ";
+        $this->setTableMetaData($tableMetaData);
         
-        $result = $this->pdo->query($query);
-        
-        while ($tableName = $result->fetchColumn(0)) {
-            $tableNames[] = $tableName;
-        }
-        
-        return $tableNames;
-    }
-
-    /**
-     * Returns an array containing the names of all the columns in the 
-     * $tableName table,
-     *
-     * @param string $tableName
-     * @return array
-     */
-    public function getTableColumns($tableName)
-    {
-        if (!isset($this->columns[$tableName])) {
-            $this->loadColumnInfo($tableName);
-        }
-        
-        return $this->columns[$tableName];
-    }
-
-    /**
-     * Returns an array containing the names of all the primary key columns in 
-     * the $tableName table.
-     *
-     * @param string $tableName
-     * @return array
-     */
-    public function getTablePrimaryKeys($tableName)
-    {
-        if (!isset($this->keys[$tableName])) {
-            $this->loadColumnInfo($tableName);
-        }
-        
-        return $this->keys[$tableName];
-    }
-
-    /**
-     * Loads column info from a sqlite database.
-     *
-     * @param string $tableName
-     */
-    private function loadColumnInfo($tableName)
-    {
-        $query = "PRAGMA table_info('{$tableName}')";
-        $statement = $this->pdo->query($query);
-        
-        /* @var $statement PDOStatement */
-        $this->columns[$tableName] = array();
-        $this->keys[$tableName] = array();
-        while ($columnData = $statement->fetch(PDO::FETCH_NUM)) {
-            $this->columns[$tableName][] = $columnData[1];
-            
-            if ($columnData[5] == 1) {
-                $this->keys[$tableName][] = $columnData[1];
-            }
-        }
+        $pdoStatement = $databaseConnection->getConnection()->prepare(PHPUnit_Extensions_Database_DB_DataSet::buildTableSelect($tableMetaData));
+        $pdoStatement->execute();
+        $this->data = $pdoStatement->fetchAll(PDO::FETCH_ASSOC);
     }
 }
 ?>

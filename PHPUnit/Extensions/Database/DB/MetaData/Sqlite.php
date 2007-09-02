@@ -39,138 +39,113 @@
  * @author     Mike Lively <m@digitalsandwich.com>
  * @copyright  2002-2007 Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
- * @version    SVN: $Id$
+ * @version    SVN: $Id:Sqlite.php 1254 2007-09-02 04:36:15Z mlively $
  * @link       http://www.phpunit.de/
  * @since      File available since Release 3.2.0
  */
 
 require_once 'PHPUnit/Framework.php';
 require_once 'PHPUnit/Util/Filter.php';
-
-require_once 'PHPUnit/Extensions/Database/DataSet/ITableIterator.php';
+require_once 'PHPUnit/Extensions/Database/DB/MetaData.php';
 
 PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
 
 /**
- * Provides iterative access to tables from a database instance.
+ * Provides functionality to retrieve meta data from a sqlite database.
  *
  * @category   Testing
  * @package    PHPUnit
  * @author     Mike Lively <m@digitalsandwich.com>
- * @copyright  2007 Mike Lively <m@digitalsandwich.com>
+ * @copyright  2002-2007 Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    Release: @package_version@
  * @link       http://www.phpunit.de/
  * @since      Class available since Release 3.2.0
  */
-class PHPUnit_Extensions_Database_Database_TableIterator implements PHPUnit_Extensions_Database_DataSet_ITableIterator
+class PHPUnit_Extensions_Database_DB_MetaData_Sqlite extends PHPUnit_Extensions_Database_DB_MetaData
 {
 
+    private $columns = array();
+
+    private $keys = array();
+
     /**
-     * An array of tablenames.
+     * Returns an array containing the names of all the tables in the database.
      *
-     * @var Array
+     * @return array
      */
-    private $tableNames;
-
-    /**
-     * If this property is true then the tables will be iterated in reverse 
-     * order.
-     * 
-     * @var bool
-     */
-    private $reverse;
-
-    /**
-     * The database dataset that this iterator iterates over.
-     *
-     * @var PHPUnit_Extensions_Database_Database_DataSet
-     */
-    private $dataSet;
-
-    public function __construct($tableNames, PHPUnit_Extensions_Database_Database_DataSet $dataSet, $reverse = false)
+    public function getTableNames()
     {
-        $this->tableNames = $tableNames;
-        $this->dataSet = $dataSet;
-        $this->reverse = $reverse;
+        $query = "
+            SELECT name 
+            FROM sqlite_master
+            WHERE 
+                type='table' AND 
+                name <> 'sqlite_sequence'
+            ORDER BY name
+        ";
         
-        $this->rewind();
-    }
-
-    /**
-     * Returns the current table.
-     *
-     * @return PHPUnit_Extensions_Database_DataSet_ITable
-     */
-    public function getTable()
-    {
-        $this->current();
-    }
-
-    /**
-     * Returns the current table's meta data.
-     *
-     * @return PHPUnit_Extensions_Database_DataSet_ITableMetaData
-     */
-    public function getTableMetaData()
-    {
-        $this->current()->getTableMetaData();
-    }
-
-    /**
-     * Returns the current table.
-     *
-     * @return PHPUnit_Extensions_Database_DataSet_ITable
-     */
-    public function current()
-    {
-        $tableName = current($this->tableNames);
-        return $this->dataSet->getTable($tableName);
-    }
-
-    /**
-     * Returns the name of the current table.
-     *
-     * @return string
-     */
-    public function key()
-    {
-        return $this->current()->getTableMetaData()->getTableName();
-    }
-
-    /**
-     * advances to the next element.
-     *
-     */
-    public function next()
-    {
-        if ($this->reverse) {
-            prev($this->tableNames);
-        } else {
-            next($this->tableNames);
+        $result = $this->pdo->query($query);
+        
+        while ($tableName = $result->fetchColumn(0)) {
+            $tableNames[] = $tableName;
         }
+        
+        return $tableNames;
     }
 
     /**
-     * Rewinds to the first element
+     * Returns an array containing the names of all the columns in the 
+     * $tableName table,
+     *
+     * @param string $tableName
+     * @return array
      */
-    public function rewind()
+    public function getTableColumns($tableName)
     {
-        if ($this->reverse) {
-            end($this->tableNames);
-        } else {
-            reset($this->tableNames);
+        if (!isset($this->columns[$tableName])) {
+            $this->loadColumnInfo($tableName);
         }
+        
+        return $this->columns[$tableName];
     }
 
     /**
-     * Returns true if the current index is valid
-     * 
-     * @return bool
+     * Returns an array containing the names of all the primary key columns in 
+     * the $tableName table.
+     *
+     * @param string $tableName
+     * @return array
      */
-    public function valid()
+    public function getTablePrimaryKeys($tableName)
     {
-        return (current($this->tableNames) !== false);
+        if (!isset($this->keys[$tableName])) {
+            $this->loadColumnInfo($tableName);
+        }
+        
+        return $this->keys[$tableName];
+    }
+
+    /**
+     * Loads column info from a sqlite database.
+     *
+     * @param string $tableName
+     */
+    private function loadColumnInfo($tableName)
+    {
+        $query = "PRAGMA table_info('{$tableName}')";
+        $statement = $this->pdo->query($query);
+        
+        /* @var $statement PDOStatement */
+        $this->columns[$tableName] = array();
+        $this->keys[$tableName] = array();
+        while ($columnData = $statement->fetch(PDO::FETCH_NUM)) {
+            $this->columns[$tableName][] = $columnData[1];
+            
+            if ($columnData[5] == 1) {
+                $this->keys[$tableName][] = $columnData[1];
+            }
+        }
     }
 }
 ?>

@@ -50,7 +50,7 @@ require_once 'PHPUnit/Util/Filter.php';
 PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
 
 /**
- * Provides a basic interface for communicating with a database.
+ * Provides a basic interface for retreiving metadata from a database.
  *
  * @category   Testing
  * @package    PHPUnit
@@ -61,60 +61,37 @@ PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
  * @link       http://www.phpunit.de/
  * @since      Class available since Release 3.2.0
  */
-interface PHPUnit_Extensions_Database_Database_IDatabaseConnection
+interface PHPUnit_Extensions_Database_DB_IMetaData
 {
 
     /**
-     * Close this connection.
-     */
-    public function close();
-
-    /**
-     * Creates a dataset containing the specified table names. If no table 
-     * names are specified then it will created a dataset over the entire 
-     * database.
+     * Returns an array containing the names of all the tables in the database.
      *
-     * @param array $tableNames
-     * @return PHPUnit_Extensions_Database_DataSet_IDataSet
+     * @return array
      */
-    public function createDataSet(Array $tableNames = null);
+    public function getTableNames();
 
     /**
-     * Creates a table with the result of the specified SQL statement.
-     *
-     * @param string $resultName
-     * @param string $sql
-     * @return PHPUnit_Extensions_Database_DataSet_ITable
-     */
-    public function createQueryTable($resultName, $sql);
-
-    /**
-     * Returns this connection database configuration 
-     *
-     * @return PHPUnit_Extensions_Database_Database_DatabaseConfig
-     */
-    public function getConfig();
-
-    /**
-     * Returns a PDO Connection
-     *
-     * @return PDO
-     */
-    public function getConnection();
-
-    /**
-     * Returns the number of rows in the given table. You can specify an 
-     * optional where clause to return a subset of the table.
+     * Returns an array containing the names of all the columns in the 
+     * $tableName table,
      *
      * @param string $tableName
-     * @param string $whereClause
-     * @param int
+     * @return array
      */
-    public function getRowCount($tableName, $whereClause = null);
+    public function getTableColumns($tableName);
 
     /**
-     * Returns the schema for the connection.
+     * Returns an array containing the names of all the primary key columns in 
+     * the $tableName table.
      *
+     * @param string $tableName
+     * @return array
+     */
+    public function getTablePrimaryKeys($tableName);
+
+    /**
+     * Returns the name of the default schema.
+     * 
      * @return string
      */
     public function getSchema();

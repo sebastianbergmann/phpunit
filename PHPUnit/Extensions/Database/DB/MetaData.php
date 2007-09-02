@@ -39,14 +39,14 @@
  * @author     Mike Lively <m@digitalsandwich.com>
  * @copyright  2002-2007 Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
- * @version    SVN: $Id$
+ * @version    SVN: $Id:MetaData.php 1254 2007-09-02 04:36:15Z mlively $
  * @link       http://www.phpunit.de/
  * @since      File available since Release 3.2.0
  */
 
 require_once 'PHPUnit/Framework.php';
 require_once 'PHPUnit/Util/Filter.php';
-require_once 'PHPUnit/Extensions/Database/Database/IMetaData.php';
+require_once 'PHPUnit/Extensions/Database/DB/IMetaData.php';
 
 PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
 
@@ -63,10 +63,13 @@ PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
  * @link       http://www.phpunit.de/
  * @since      Class available since Release 3.2.0
  */
-abstract class PHPUnit_Extensions_Database_Database_MetaData implements PHPUnit_Extensions_Database_Database_IMetaData
+abstract class PHPUnit_Extensions_Database_DB_MetaData implements PHPUnit_Extensions_Database_DB_IMetaData
 {
 
-    private static $metaDataClassMap = array('sqlite' => 'PHPUnit_Extensions_Database_Database_MetaData_Sqlite', 'mysql' => 'PHPUnit_Extensions_Database_Database_MetaData_InformationSchema');
+    private static $metaDataClassMap = array(
+        'sqlite' => 'PHPUnit_Extensions_Database_DB_MetaData_Sqlite', 
+        'mysql' => 'PHPUnit_Extensions_Database_DB_MetaData_InformationSchema'
+    );
 
     /**
      * The PDO connection used to retreive database meta data
@@ -101,7 +104,7 @@ abstract class PHPUnit_Extensions_Database_Database_MetaData implements PHPUnit_
      *
      * @param PDO $pdo
      * @param string $schema
-     * @return PHPUnit_Extensions_Database_Database_MetaData
+     * @return PHPUnit_Extensions_Database_DB_MetaData
      */
     public static function createMetaData(PDO $pdo, $schema)
     {
@@ -138,10 +141,10 @@ abstract class PHPUnit_Extensions_Database_Database_MetaData implements PHPUnit_
         }
         
         $reflection = new ReflectionClass($className);
-        if ($reflection->isSubclassOf('PHPUnit_Extensions_Database_Database_MetaData')) {
+        if ($reflection->isSubclassOf('PHPUnit_Extensions_Database_DB_MetaData')) {
             return self::$metaDataClassMap[$pdoDriver] = $reflection;
         } else {
-            throw new Exception("Specified class for {$pdoDriver} driver ({$className}) does not extend PHPUnit_Extensions_Database_Database_MetaData.");
+            throw new Exception("Specified class for {$pdoDriver} driver ({$className}) does not extend PHPUnit_Extensions_Database_DB_MetaData.");
         }
     }
 
@@ -158,10 +161,10 @@ abstract class PHPUnit_Extensions_Database_Database_MetaData implements PHPUnit_
 
 /**
  * I am not sure why these requires can't go above the class, but when they do 
- * the classes can't find the PHPUnit_Extensions_Database_Database_MetaData 
+ * the classes can't find the PHPUnit_Extensions_Database_DB_MetaData 
  * class.
  */
-require_once 'PHPUnit/Extensions/Database/Database/MetaData/Sqlite.php';
-require_once 'PHPUnit/Extensions/Database/Database/MetaData/InformationSchema.php';
+require_once 'PHPUnit/Extensions/Database/DB/MetaData/Sqlite.php';
+require_once 'PHPUnit/Extensions/Database/DB/MetaData/InformationSchema.php';
 
 ?>

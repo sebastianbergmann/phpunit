@@ -74,7 +74,7 @@ class BankAccountDBTestMySQL extends PHPUnit_Extensions_Database_TestCase
 	/**
 	 * Returns the test database connection.
 	 *
-	 * @return PHPUnit_Extensions_Database_Database_IDatabaseConnection
+	 * @return PHPUnit_Extensions_Database_DB_IDatabaseConnection
 	 */
 	protected function getConnection()
 	{
