@@ -175,7 +175,9 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
         $parameters['wait']          = isset($parameters['wait'])           ? $parameters['wait']         : FALSE;
 
         if (is_integer($parameters['repeat'])) {
-            $suite = new PHPUnit_Extensions_RepeatedTest($suite, $parameters['repeat']);
+            $suite = new PHPUnit_Extensions_RepeatedTest(
+              $suite, $arguments['repeat'], $arguments['filter']
+            );
         }
 
         if (isset($parameters['reportDirectory'])) {
