@@ -89,6 +89,31 @@ class PHPUnit_Framework_Constraint_IsInstanceOf extends PHPUnit_Framework_Constr
     }
 
     /**
+     * Creates the appropriate exception for the constraint which can be caught
+     * by the unit test system. This can be called if a call to evaluate() fails.
+     *
+     * @param   mixed   $other The value passed to evaluate() which failed the
+     *                         constraint check.
+     * @param   string  $description A string with extra description of what was
+     *                               going on while the evaluation failed.
+     * @param   boolean $not Flag to indicate negation.
+     * @throws  PHPUnit_Framework_ExpectationFailedException
+     */
+    public function fail($other, $description, $not = FALSE)
+    {
+        throw new PHPUnit_Framework_ExpectationFailedException(
+          sprintf(
+            'Failed asserting that %s is %san instance of class "%s".',
+
+            PHPUnit_Util_Type::toString($other, TRUE),
+            $not ? 'not ' : '',
+            $this->className
+          ),
+          NULL
+        );
+    }
+
+    /**
      * Returns a string representation of the constraint.
      *
      * @return string
