@@ -47,12 +47,12 @@
 require_once 'PHPUnit/Framework.php';
 require_once 'PHPUnit/Util/Filter.php';
 
-require_once 'PHPUnit/Extensions/Database/Database/DataSet.php';
+require_once 'PHPUnit/Extensions/Database/DataSet/ITableIterator.php';
 
 PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
 
 /**
- * Provides access to a database instance as a data set.
+ * Provides iterative access to tables from a database instance.
  *
  * @category   Testing
  * @package    PHPUnit
@@ -63,33 +63,114 @@ PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
  * @link       http://www.phpunit.de/
  * @since      Class available since Release 3.2.0
  */
-class PHPUnit_Extensions_Database_Database_FilteredDataSet extends PHPUnit_Extensions_Database_Database_DataSet
+class PHPUnit_Extensions_Database_DB_TableIterator implements PHPUnit_Extensions_Database_DataSet_ITableIterator
 {
 
     /**
+     * An array of tablenames.
+     *
      * @var Array
      */
     private $tableNames;
 
     /**
-     * Creates a new dataset using the given database connection.
-     *
-     * @param PHPUnit_Extensions_Database_Database_DefaultDatabaseConnection $databaseConnection
+     * If this property is true then the tables will be iterated in reverse 
+     * order.
+     * 
+     * @var bool
      */
-    public function __construct(PHPUnit_Extensions_Database_Database_DefaultDatabaseConnection $databaseConnection, Array $tableNames)
+    private $reverse;
+
+    /**
+     * The database dataset that this iterator iterates over.
+     *
+     * @var PHPUnit_Extensions_Database_DB_DataSet
+     */
+    private $dataSet;
+
+    public function __construct($tableNames, PHPUnit_Extensions_Database_DB_DataSet $dataSet, $reverse = false)
     {
-        parent::__construct($databaseConnection);
         $this->tableNames = $tableNames;
+        $this->dataSet = $dataSet;
+        $this->reverse = $reverse;
+        
+        $this->rewind();
     }
 
     /**
-     * Returns a list of table names for the database
-     * 
-     * @return Array
+     * Returns the current table.
+     *
+     * @return PHPUnit_Extensions_Database_DataSet_ITable
      */
-    public function getTableNames()
+    public function getTable()
     {
-        return $this->tableNames;
+        $this->current();
+    }
+
+    /**
+     * Returns the current table's meta data.
+     *
+     * @return PHPUnit_Extensions_Database_DataSet_ITableMetaData
+     */
+    public function getTableMetaData()
+    {
+        $this->current()->getTableMetaData();
+    }
+
+    /**
+     * Returns the current table.
+     *
+     * @return PHPUnit_Extensions_Database_DataSet_ITable
+     */
+    public function current()
+    {
+        $tableName = current($this->tableNames);
+        return $this->dataSet->getTable($tableName);
+    }
+
+    /**
+     * Returns the name of the current table.
+     *
+     * @return string
+     */
+    public function key()
+    {
+        return $this->current()->getTableMetaData()->getTableName();
+    }
+
+    /**
+     * advances to the next element.
+     *
+     */
+    public function next()
+    {
+        if ($this->reverse) {
+            prev($this->tableNames);
+        } else {
+            next($this->tableNames);
+        }
+    }
+
+    /**
+     * Rewinds to the first element
+     */
+    public function rewind()
+    {
+        if ($this->reverse) {
+            end($this->tableNames);
+        } else {
+            reset($this->tableNames);
+        }
+    }
+
+    /**
+     * Returns true if the current index is valid
+     * 
+     * @return bool
+     */
+    public function valid()
+    {
+        return (current($this->tableNames) !== false);
     }
 }
 ?>

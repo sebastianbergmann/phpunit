@@ -69,10 +69,10 @@ interface PHPUnit_Extensions_Database_Operation_IDatabaseOperation
      * Executes the database operation against the given $connection for the 
      * given $dataSet.
      *
-     * @param PHPUnit_Extensions_Database_Database_IDatabaseConnection $connection
+     * @param PHPUnit_Extensions_Database_DB_IDatabaseConnection $connection
      * @param PHPUnit_Extensions_Database_DataSet_IDataSet $dataSet
      * @throws PHPUnit_Extensions_Database_Operation_Exception
      */
-    public function execute(PHPUnit_Extensions_Database_Database_IDatabaseConnection $connection, PHPUnit_Extensions_Database_DataSet_IDataSet $dataSet);
+    public function execute(PHPUnit_Extensions_Database_DB_IDatabaseConnection $connection, PHPUnit_Extensions_Database_DataSet_IDataSet $dataSet);
 }
 ?>

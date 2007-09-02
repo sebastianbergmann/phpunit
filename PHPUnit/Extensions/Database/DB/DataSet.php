@@ -39,7 +39,7 @@
  * @author     Mike Lively <m@digitalsandwich.com>
  * @copyright  2002-2007 Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
- * @version    SVN: $Id$
+ * @version    SVN: $Id:DataSet.php 1254 2007-09-02 04:36:15Z mlively $
  * @link       http://www.phpunit.de/
  * @since      File available since Release 3.2.0
  */
@@ -48,8 +48,8 @@ require_once 'PHPUnit/Framework.php';
 require_once 'PHPUnit/Util/Filter.php';
 
 require_once 'PHPUnit/Extensions/Database/DataSet/AbstractDataSet.php';
-require_once 'PHPUnit/Extensions/Database/Database/TableIterator.php';
-require_once 'PHPUnit/Extensions/Database/Database/Table.php';
+require_once 'PHPUnit/Extensions/Database/DB/TableIterator.php';
+require_once 'PHPUnit/Extensions/Database/DB/Table.php';
 
 PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
 
@@ -65,7 +65,7 @@ PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
  * @link       http://www.phpunit.de/
  * @since      Class available since Release 3.2.0
  */
-class PHPUnit_Extensions_Database_Database_DataSet extends PHPUnit_Extensions_Database_DataSet_AbstractDataSet
+class PHPUnit_Extensions_Database_DB_DataSet extends PHPUnit_Extensions_Database_DataSet_AbstractDataSet
 {
 
     /**
@@ -78,16 +78,16 @@ class PHPUnit_Extensions_Database_Database_DataSet extends PHPUnit_Extensions_Da
     /**
      * The database connection this dataset is using.
      *
-     * @var PHPUnit_Extensions_Database_Database_DefaultDatabaseConnection
+     * @var PHPUnit_Extensions_Database_DB_DefaultDatabaseConnection
      */
     private $databaseConnection;
 
     /**
      * Creates a new dataset using the given database connection.
      *
-     * @param PHPUnit_Extensions_Database_Database_DefaultDatabaseConnection $databaseConnection
+     * @param PHPUnit_Extensions_Database_DB_DefaultDatabaseConnection $databaseConnection
      */
-    public function __construct(PHPUnit_Extensions_Database_Database_DefaultDatabaseConnection $databaseConnection)
+    public function __construct(PHPUnit_Extensions_Database_DB_DefaultDatabaseConnection $databaseConnection)
     {
         $this->databaseConnection = $databaseConnection;
     }
@@ -123,18 +123,18 @@ class PHPUnit_Extensions_Database_Database_DataSet extends PHPUnit_Extensions_Da
      * true a reverse iterator will be returned.
      *
      * @param bool $reverse
-     * @return PHPUnit_Extensions_Database_Database_TableIterator
+     * @return PHPUnit_Extensions_Database_DB_TableIterator
      */
     protected function createIterator($reverse = false)
     {
-        return new PHPUnit_Extensions_Database_Database_TableIterator($this->getTableNames(), $this, $reverse);
+        return new PHPUnit_Extensions_Database_DB_TableIterator($this->getTableNames(), $this, $reverse);
     }
 
     /**
      * Returns a table object for the given table.
      *
      * @param string $tableName
-     * @return PHPUnit_Extensions_Database_Database_Table
+     * @return PHPUnit_Extensions_Database_DB_Table
      */
     public function getTable($tableName)
     {
@@ -143,7 +143,7 @@ class PHPUnit_Extensions_Database_Database_DataSet extends PHPUnit_Extensions_Da
         }
         
         if (empty($this->tables[$tableName])) {
-            $this->tables[$tableName] = new PHPUnit_Extensions_Database_Database_Table($this->getTableMetaData($tableName), $this->databaseConnection);
+            $this->tables[$tableName] = new PHPUnit_Extensions_Database_DB_Table($this->getTableMetaData($tableName), $this->databaseConnection);
         }
         
         return $this->tables[$tableName];

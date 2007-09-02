@@ -45,7 +45,7 @@
  */
 
 require_once 'PHPUnit/Extensions/Database/TestCase.php';
-require_once 'PHPUnit/Extensions/Database/Database/DefaultDatabaseConnection.php';
+require_once 'PHPUnit/Extensions/Database/DB/DefaultDatabaseConnection.php';
 require_once 'PHPUnit/Extensions/Database/DataSet/DefaultDataSet.php';
 require_once 'PHPUnit/Extensions/Database/DataSet/DefaultTable.php';
 require_once 'PHPUnit/Extensions/Database/DataSet/DefaultTableMetaData.php';
@@ -69,7 +69,7 @@ class Extensions_Database_Operation_RowBasedTest extends PHPUnit_Extensions_Data
 {
 	public function getConnection()
 	{
-		return new PHPUnit_Extensions_Database_Database_DefaultDatabaseConnection(DBUnitTestUtility::getSQLiteMemoryDB(), 'sqlite');
+		return new PHPUnit_Extensions_Database_DB_DefaultDatabaseConnection(DBUnitTestUtility::getSQLiteMemoryDB(), 'sqlite');
 	}
 	
 	public function getDataSet()
@@ -95,7 +95,7 @@ class Extensions_Database_Operation_RowBasedTest extends PHPUnit_Extensions_Data
 	public function testExcecute()
 	{
 		$connection = $this->getConnection();
-		/* @var $connection PHPUnit_Extensions_Database_Database_DefaultDatabaseConnection */
+		/* @var $connection PHPUnit_Extensions_Database_DB_DefaultDatabaseConnection */
 		$table1 = new PHPUnit_Extensions_Database_DataSet_DefaultTable(
 			new PHPUnit_Extensions_Database_DataSet_DefaultTableMetaData('table1', array('table1_id', 'column1', 'column2', 'column3', 'column4'))
 		);

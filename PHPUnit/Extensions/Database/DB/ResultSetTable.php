@@ -49,8 +49,11 @@ require_once 'PHPUnit/Util/Filter.php';
 
 PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
 
+require_once 'PHPUnit/Extensions/Database/DataSet/AbstractTable.php';
+
 /**
- * This class loads a table metadata object with database metadata.
+ * Provides the functionality to represent a database result set as a DBUnit 
+ * table.
  *
  * @category   Testing
  * @package    PHPUnit
@@ -61,14 +64,26 @@ PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
  * @link       http://www.phpunit.de/
  * @since      Class available since Release 3.2.0
  */
-class PHPUnit_Extensions_Database_Database_TableMetaData extends PHPUnit_Extensions_Database_DataSet_DefaultTableMetaData
+class PHPUnit_Extensions_Database_DB_ResultSetTable extends PHPUnit_Extensions_Database_DataSet_AbstractTable
 {
 
-    public function __construct($tableName, PHPUnit_Extensions_Database_Database_IMetaData $databaseMetaData)
+    /**
+     * Creates a new result set table.
+     *
+     * @param string $tableName
+     * @param PDOStatement $pdoStatement
+     */
+    public function __construct($tableName, PDOStatement $pdoStatement)
     {
-        $this->tableName = $tableName;
-        $this->columns = $databaseMetaData->getTableColumns($tableName);
-        $this->primaryKeys = $databaseMetaData->getTablePrimaryKeys($tableName);
+        $this->data = $pdoStatement->fetchAll(PDO::FETCH_ASSOC);
+        
+        if (count($this->data)) {
+            $columns = array_keys($this->data[0]);
+        } else {
+            $columns = array();
+        }
+        
+        $this->setTableMetaData(new PHPUnit_Extensions_Database_DataSet_DefaultTableMetaData($tableName, $columns));
     }
 }
 ?>

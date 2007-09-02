@@ -50,7 +50,7 @@ require_once 'PHPUnit/Util/Filter.php';
 PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
 
 /**
- * Provides a basic interface for retreiving metadata from a database.
+ * This class loads a table metadata object with database metadata.
  *
  * @category   Testing
  * @package    PHPUnit
@@ -61,39 +61,14 @@ PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
  * @link       http://www.phpunit.de/
  * @since      Class available since Release 3.2.0
  */
-interface PHPUnit_Extensions_Database_Database_IMetaData
+class PHPUnit_Extensions_Database_DB_TableMetaData extends PHPUnit_Extensions_Database_DataSet_DefaultTableMetaData
 {
 
-    /**
-     * Returns an array containing the names of all the tables in the database.
-     *
-     * @return array
-     */
-    public function getTableNames();
-
-    /**
-     * Returns an array containing the names of all the columns in the 
-     * $tableName table,
-     *
-     * @param string $tableName
-     * @return array
-     */
-    public function getTableColumns($tableName);
-
-    /**
-     * Returns an array containing the names of all the primary key columns in 
-     * the $tableName table.
-     *
-     * @param string $tableName
-     * @return array
-     */
-    public function getTablePrimaryKeys($tableName);
-
-    /**
-     * Returns the name of the default schema.
-     * 
-     * @return string
-     */
-    public function getSchema();
+    public function __construct($tableName, PHPUnit_Extensions_Database_DB_IMetaData $databaseMetaData)
+    {
+        $this->tableName = $tableName;
+        $this->columns = $databaseMetaData->getTableColumns($tableName);
+        $this->primaryKeys = $databaseMetaData->getTablePrimaryKeys($tableName);
+    }
 }
 ?>

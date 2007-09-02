@@ -39,14 +39,14 @@
  * @author     Mike Lively <m@digitalsandwich.com>
  * @copyright  2002-2007 Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
- * @version    SVN: $Id$
+ * @version    SVN: $Id:InformationSchema.php 1254 2007-09-02 04:36:15Z mlively $
  * @link       http://www.phpunit.de/
  * @since      File available since Release 3.2.0
  */
 
 require_once 'PHPUnit/Framework.php';
 require_once 'PHPUnit/Util/Filter.php';
-require_once 'PHPUnit/Extensions/Database/Database/MetaData.php';
+require_once 'PHPUnit/Extensions/Database/DB/MetaData.php';
 
 PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
 
@@ -62,7 +62,7 @@ PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
  * @link       http://www.phpunit.de/
  * @since      Class available since Release 3.2.0
  */
-class PHPUnit_Extensions_Database_Database_MetaData_InformationSchema extends PHPUnit_Extensions_Database_Database_MetaData
+class PHPUnit_Extensions_Database_DB_MetaData_InformationSchema extends PHPUnit_Extensions_Database_DB_MetaData
 {
 
     private $columns = array();
