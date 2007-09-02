@@ -66,6 +66,12 @@ function PHPUnit_Util_ErrorHandler($errno, $errstr, $errfile, $errline)
     $trace = debug_backtrace();
     array_shift($trace);
 
+    foreach ($trace as $frame) {
+        if ($frame['function'] == '__toString') {
+            return;
+        }
+    }
+
     if ($errno == E_NOTICE || $errno == E_STRICT) {
         $exception = 'PHPUnit_Framework_Notice';
     } else {
