@@ -196,8 +196,8 @@ CREATE TABLE IF NOT EXISTS metrics_method(
   metrics_method_loc_executable INTEGER,
   metrics_method_loc_executed   INTEGER,
   metrics_method_ccn            INTEGER,
-  metrics_function_crap         REAL,
-  metrics_function_npath        INTEGER
+  metrics_method_crap           REAL,
+  metrics_method_npath          INTEGER
 );
 
 CREATE INDEX IF NOT EXISTS run_id ON metrics_method (run_id);
