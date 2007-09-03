@@ -109,6 +109,7 @@ class PHPUnit_Util_Log_PMD extends PHPUnit_Util_Printer
             foreach ($fileMetrics->getClasses() as $className => $classMetrics) {
                 if (!$classMetrics->getClass()->isInterface()) {
                     $classStartLine = $classMetrics->getClass()->getStartLine();
+                    $classEndLine   = $classMetrics->getClass()->getEndLine();
 
                     $dit = $classMetrics->getDIT();
 
@@ -124,6 +125,7 @@ class PHPUnit_Util_Log_PMD extends PHPUnit_Util_Printer
                           $xmlFile,
                           'DepthOfInheritanceTree',
                           $classStartLine,
+                          $classEndLine,
                           '',
                           $className
                         );
@@ -147,6 +149,7 @@ class PHPUnit_Util_Log_PMD extends PHPUnit_Util_Printer
                           $xmlFile,
                           'ExcessiveClassLength',
                           $classStartLine,
+                          $classEndLine,
                           '',
                           $className
                         );
@@ -172,6 +175,7 @@ class PHPUnit_Util_Log_PMD extends PHPUnit_Util_Printer
                           $xmlFile,
                           'TooManyFields',
                           $classStartLine,
+                          $classEndLine,
                           '',
                           $className
                         );
@@ -197,6 +201,7 @@ class PHPUnit_Util_Log_PMD extends PHPUnit_Util_Printer
                           $xmlFile,
                           'ExcessivePublicCount',
                           $classStartLine,
+                          $classEndLine,
                           '',
                           $className
                         );
@@ -230,12 +235,13 @@ class PHPUnit_Util_Log_PMD extends PHPUnit_Util_Printer
      * @param  DOMElement $element
      * @param  string     $rule
      * @param  integer    $line
+     * @param  integer    $toLine
      * @param  string     $package
      * @param  string     $class
      * @param  string     $method
      * @access public
      */
-    protected function addViolation($violation, DOMElement $element, $rule, $line = '', $package = '', $class = '', $method = '', $function = '')
+    protected function addViolation($violation, DOMElement $element, $rule, $line = '', $toLine = '', $package = '', $class = '', $method = '', $function = '')
     {
         $violationXml = $element->appendChild(
           $element->ownerDocument->createElement('violation', $violation)
@@ -245,6 +251,10 @@ class PHPUnit_Util_Log_PMD extends PHPUnit_Util_Printer
 
         if (!empty($line)) {
             $violationXml->setAttribute('line', $line);
+        }
+
+        if (!empty($toLine)) {
+            $violationXml->setAttribute('to-line', $toLine);
         }
 
         if (empty($package)) {
@@ -277,6 +287,7 @@ class PHPUnit_Util_Log_PMD extends PHPUnit_Util_Printer
         }
 
         $startLine = $metrics->getFunction()->getStartLine();
+        $endLine   = $metrics->getFunction()->getEndLine();
         $name      = $metrics->getFunction()->getName();
 
         $ccn = $metrics->getCCN();
@@ -298,6 +309,7 @@ class PHPUnit_Util_Log_PMD extends PHPUnit_Util_Printer
               $element,
               'CyclomaticComplexity',
               $startLine,
+              $endLine,
               '',
               $scope,
               $name
@@ -323,6 +335,7 @@ class PHPUnit_Util_Log_PMD extends PHPUnit_Util_Printer
               $element,
               'NPathComplexity',
               $startLine,
+              $endLine,
               '',
               $scope,
               $name
@@ -359,6 +372,7 @@ class PHPUnit_Util_Log_PMD extends PHPUnit_Util_Printer
               $element,
               'CodeCoverage',
               $startLine,
+              $endLine,
               '',
               $scope,
               $name
@@ -381,6 +395,7 @@ class PHPUnit_Util_Log_PMD extends PHPUnit_Util_Printer
               $element,
               'ExcessiveMethodLength',
               $startLine,
+              $endLine,
               '',
               $scope,
               $name
@@ -403,6 +418,7 @@ class PHPUnit_Util_Log_PMD extends PHPUnit_Util_Printer
               $element,
               'ExcessiveParameterList',
               $startLine,
+              $endLine,
               '',
               $scope,
               $name
