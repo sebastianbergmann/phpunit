@@ -110,6 +110,7 @@ class PHPUnit_Util_Log_PMD extends PHPUnit_Util_Printer
                 if (!$classMetrics->getClass()->isInterface()) {
                     $classStartLine = $classMetrics->getClass()->getStartLine();
                     $classEndLine   = $classMetrics->getClass()->getEndLine();
+                    $classPackage   = $classMetrics->getPackage();
 
                     $dit = $classMetrics->getDIT();
 
@@ -126,7 +127,7 @@ class PHPUnit_Util_Log_PMD extends PHPUnit_Util_Printer
                           'DepthOfInheritanceTree',
                           $classStartLine,
                           $classEndLine,
-                          '',
+                          $classPackage,
                           $className
                         );
 
@@ -150,7 +151,7 @@ class PHPUnit_Util_Log_PMD extends PHPUnit_Util_Printer
                           'ExcessiveClassLength',
                           $classStartLine,
                           $classEndLine,
-                          '',
+                          $classPackage,
                           $className
                         );
 
@@ -176,7 +177,7 @@ class PHPUnit_Util_Log_PMD extends PHPUnit_Util_Printer
                           'TooManyFields',
                           $classStartLine,
                           $classEndLine,
-                          '',
+                          $classPackage,
                           $className
                         );
 
@@ -202,7 +203,7 @@ class PHPUnit_Util_Log_PMD extends PHPUnit_Util_Printer
                           'ExcessivePublicCount',
                           $classStartLine,
                           $classEndLine,
-                          '',
+                          $classPackage,
                           $className
                         );
 
@@ -211,7 +212,7 @@ class PHPUnit_Util_Log_PMD extends PHPUnit_Util_Printer
 
                     foreach ($classMetrics->getMethods() as $methodName => $methodMetrics) {
                         if (!$methodMetrics->getMethod()->isAbstract()) {
-                            $this->processFunctionOrMethod($xmlFile, $methodMetrics);
+                            $this->processFunctionOrMethod($xmlFile, $methodMetrics, $classPackage);
                         }
                     }
                 }
@@ -278,7 +279,7 @@ class PHPUnit_Util_Log_PMD extends PHPUnit_Util_Printer
         }
     }
 
-    protected function processFunctionOrMethod(DOMElement $element, $metrics)
+    protected function processFunctionOrMethod(DOMElement $element, $metrics, $package = '')
     {
         $scope = '';
 
@@ -310,7 +311,7 @@ class PHPUnit_Util_Log_PMD extends PHPUnit_Util_Printer
               'CyclomaticComplexity',
               $startLine,
               $endLine,
-              '',
+              $package,
               $scope,
               $name
             );
@@ -336,7 +337,7 @@ class PHPUnit_Util_Log_PMD extends PHPUnit_Util_Printer
               'NPathComplexity',
               $startLine,
               $endLine,
-              '',
+              $package,
               $scope,
               $name
             );
@@ -373,7 +374,7 @@ class PHPUnit_Util_Log_PMD extends PHPUnit_Util_Printer
               'CodeCoverage',
               $startLine,
               $endLine,
-              '',
+              $package,
               $scope,
               $name
             );
@@ -396,7 +397,7 @@ class PHPUnit_Util_Log_PMD extends PHPUnit_Util_Printer
               'ExcessiveMethodLength',
               $startLine,
               $endLine,
-              '',
+              $package,
               $scope,
               $name
             );
@@ -419,7 +420,7 @@ class PHPUnit_Util_Log_PMD extends PHPUnit_Util_Printer
               'ExcessiveParameterList',
               $startLine,
               $endLine,
-              '',
+              $package,
               $scope,
               $name
             );
