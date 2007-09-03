@@ -455,7 +455,7 @@ class PHPUnit_TextUI_Command
             }
         }
 
-        if ($loader === NULL) {
+        if (!isset($loader)) {
             PHPUnit_TextUI_TestRunner::showError(
               sprintf(
                 'Could not use "%s" as loader.',
