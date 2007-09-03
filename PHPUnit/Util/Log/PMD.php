@@ -71,8 +71,9 @@ class PHPUnit_Util_Log_PMD extends PHPUnit_Util_Printer
 {
     public static $THRESHOLD_CLASS_DIT                 = 6;
     public static $THRESHOLD_CLASS_ELOC                = 1000;
-    public static $THRESHOLD_CLASS_VARSNP              = 15;
+    public static $THRESHOLD_CLASS_EFFERENT_COUPLINGS  = 20;
     public static $THRESHOLD_CLASS_PUBLIC_METHODS      = 45;
+    public static $THRESHOLD_CLASS_VARSNP              = 15;
     public static $THRESHOLD_FUNCTION_CCN              = 10;
     public static $THRESHOLD_FUNCTION_NPATH            = 200;
     public static $THRESHOLD_FUNCTION_ELOC             = 100;
@@ -158,23 +159,21 @@ class PHPUnit_Util_Log_PMD extends PHPUnit_Util_Printer
                         $this->added = TRUE;
                     }
 
-                    $varsNp = $classMetrics->getVARSnp();
+                    $ce = $classMetrics->getCe();
 
-                    if (is_int(self::$THRESHOLD_CLASS_VARSNP) &&
-                        self::$THRESHOLD_CLASS_VARSNP > 0 &&
-                        $varsNp > self::$THRESHOLD_CLASS_VARSNP) {
+                    if (is_int(self::$THRESHOLD_CLASS_EFFERENT_COUPLINGS) &&
+                        self::$THRESHOLD_CLASS_EFFERENT_COUPLINGS > 0 &&
+                        $ce > self::$THRESHOLD_CLASS_EFFERENT_COUPLINGS) {
                         $this->addViolation(
                           sprintf(
-                            "Class has %d public fields.\n" .
-                            'Classes that have too many fields could be redesigned ' .
-                            'to have fewer fields, possibly through some nested ' .
-                            'object grouping of some of the information. For ' .
-                            'example, a class with city/state/zip fields could ' .
-                            'instead have one Address field.',
-                            $varsNp
+                            "Class depends on %d other classes.\n" .
+                            'The number of other classes that the class ' .
+                            'depends upon is an indicator of the class\' ' .
+                            'independence.',
+                            $ce
                           ),
                           $xmlFile,
-                          'TooManyFields',
+                          'EfferentCoupling',
                           $classStartLine,
                           $classEndLine,
                           $classPackage,
@@ -183,7 +182,6 @@ class PHPUnit_Util_Log_PMD extends PHPUnit_Util_Printer
 
                         $this->added = TRUE;
                     }
-
 
                     $publicMethods = $classMetrics->getPublicMethods();
 
@@ -201,6 +199,32 @@ class PHPUnit_Util_Log_PMD extends PHPUnit_Util_Printer
                           ),
                           $xmlFile,
                           'ExcessivePublicCount',
+                          $classStartLine,
+                          $classEndLine,
+                          $classPackage,
+                          $className
+                        );
+
+                        $this->added = TRUE;
+                    }
+
+                    $varsNp = $classMetrics->getVARSnp();
+
+                    if (is_int(self::$THRESHOLD_CLASS_VARSNP) &&
+                        self::$THRESHOLD_CLASS_VARSNP > 0 &&
+                        $varsNp > self::$THRESHOLD_CLASS_VARSNP) {
+                        $this->addViolation(
+                          sprintf(
+                            "Class has %d public fields.\n" .
+                            'Classes that have too many fields could be redesigned ' .
+                            'to have fewer fields, possibly through some nested ' .
+                            'object grouping of some of the information. For ' .
+                            'example, a class with city/state/zip fields could ' .
+                            'instead have one Address field.',
+                            $varsNp
+                          ),
+                          $xmlFile,
+                          'TooManyFields',
                           $classStartLine,
                           $classEndLine,
                           $classPackage,
