@@ -217,12 +217,19 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
         $className = $theClass->getName();
         $names     = array();
 
+        $docComment  = $theClass->getDocComment();
+        $classGroups = array();
+
+        if (preg_match_all('/@group[\s]+([\.\w]+)/', $docComment, $matches)) {
+            $classGroups = $matches[1];
+        }
+
         foreach ($theClass->getMethods() as $method) {
             $docComment = $method->getDocComment();
-            $groups     = array();
+            $groups     = $classGroups;
 
             if (preg_match_all('/@group[\s]+([\.\w]+)/', $docComment, $matches)) {
-                $groups = $matches[1];
+                $groups = array_merge($groups, $matches[1]);
             }
 
             $this->addTestMethod($method, $groups, $names, $theClass);
