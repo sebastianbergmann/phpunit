@@ -47,7 +47,7 @@
 require_once 'PHPUnit/Framework.php';
 require_once 'PHPUnit/Util/Filter.php';
 
-require_once 'PHPUnit/Extensions/Database/DefaultDatabaseTester.php';
+require_once 'PHPUnit/Extensions/Database/DefaultTester.php';
 require_once 'PHPUnit/Extensions/Database/DB/DefaultDatabaseConnection.php';
 require_once 'PHPUnit/Extensions/Database/Operation/Factory.php';
 require_once 'PHPUnit/Extensions/Database/Constraint/TableIsEqual.php';
@@ -72,7 +72,7 @@ abstract class PHPUnit_Extensions_Database_TestCase extends PHPUnit_Framework_Te
 {
 
     /**
-     * @var PHPUnit_Extensions_Database_IDatabaseTester
+     * @var PHPUnit_Extensions_Database_ITester
      */
     private $databaseTester;
 
@@ -98,7 +98,7 @@ abstract class PHPUnit_Extensions_Database_TestCase extends PHPUnit_Framework_Te
      * not set yet, this method calls newDatabaseTester() to obtain a new 
      * instance.
      *
-     * @return PHPUnit_Extensions_Database_IDatabaseTester
+     * @return PHPUnit_Extensions_Database_ITester
      */
     protected function getDatabaseTester()
     {
@@ -139,11 +139,11 @@ abstract class PHPUnit_Extensions_Database_TestCase extends PHPUnit_Framework_Te
     /**
      * Creates a IDatabaseTester for this testCase.
      *
-     * @return PHPUnit_Extensions_Database_IDatabaseTester
+     * @return PHPUnit_Extensions_Database_ITester
      */
     protected function newDatabaseTester()
     {
-        return new PHPUnit_Extensions_Database_DefaultDatabaseTester($this->getConnection());
+        return new PHPUnit_Extensions_Database_DefaultTester($this->getConnection());
     }
 
     /**
