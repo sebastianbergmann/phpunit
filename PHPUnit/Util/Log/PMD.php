@@ -376,7 +376,7 @@ class PHPUnit_Util_Log_PMD extends PHPUnit_Util_Printer
         if (is_int(self::$THRESHOLD_COVERAGE_LOW_UPPER_BOUND) &&
             self::$THRESHOLD_COVERAGE_LOW_UPPER_BOUND > 0 &&
             $coverage <= self::$THRESHOLD_COVERAGE_LOW_UPPER_BOUND) {
-            $violation = 'The code coverage is %01.2f which is considered low.';
+            $violation = 'The code coverage is %01.2F which is considered low.';
         }
 
         else if (is_int(self::$THRESHOLD_COVERAGE_LOW_UPPER_BOUND) &&
@@ -385,7 +385,7 @@ class PHPUnit_Util_Log_PMD extends PHPUnit_Util_Printer
                  self::$THRESHOLD_COVERAGE_HIGH_LOWER_BOUND > 0 &&
                  $coverage > self::$THRESHOLD_COVERAGE_LOW_UPPER_BOUND &&
                  $coverage < self::$THRESHOLD_COVERAGE_HIGH_LOWER_BOUND) {
-            $violation = 'The code coverage is %01.2f which is considered medium.';
+            $violation = 'The code coverage is %01.2F which is considered medium.';
         }
 
         if (!empty($violation)) {

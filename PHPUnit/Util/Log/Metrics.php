@@ -107,7 +107,7 @@ class PHPUnit_Util_Log_Metrics extends PHPUnit_Util_Printer
             $xmlFile->setAttribute('ncloc', $fileMetrics->getNcloc());
             $xmlFile->setAttribute('locExecutable', $fileMetrics->getLocExecutable());
             $xmlFile->setAttribute('locExecuted', $fileMetrics->getLocExecuted());
-            $xmlFile->setAttribute('coverage', $fileMetrics->getCoverage());
+            $xmlFile->setAttribute('coverage', sprintf('%F', $fileMetrics->getCoverage()));
 
             foreach ($fileMetrics->getClasses() as $className => $classMetrics) {
                 if (!$classMetrics->getClass()->implementsInterface('PHPUnit_Framework_Test')) {
@@ -117,20 +117,20 @@ class PHPUnit_Util_Log_Metrics extends PHPUnit_Util_Printer
                     $xmlClass->setAttribute('loc', $classMetrics->getLoc());
                     $xmlClass->setAttribute('locExecutable', $classMetrics->getLocExecutable());
                     $xmlClass->setAttribute('locExecuted', $classMetrics->getLocExecuted());
-                    $xmlClass->setAttribute('aif', $classMetrics->getAIF());
-                    $xmlClass->setAttribute('ahf', $classMetrics->getAHF());
+                    $xmlClass->setAttribute('aif', sprintf('%F', $classMetrics->getAIF()));
+                    $xmlClass->setAttribute('ahf', sprintf('%F', $classMetrics->getAHF()));
                     $xmlClass->setAttribute('ca', $classMetrics->getCa());
                     $xmlClass->setAttribute('ce', $classMetrics->getCe());
                     $xmlClass->setAttribute('csz', $classMetrics->getCSZ());
                     $xmlClass->setAttribute('cis', $classMetrics->getCIS());
-                    $xmlClass->setAttribute('coverage', $classMetrics->getCoverage());
+                    $xmlClass->setAttribute('coverage', sprintf('%F', $classMetrics->getCoverage()));
                     $xmlClass->setAttribute('dit', $classMetrics->getDIT());
-                    $xmlClass->setAttribute('i', $classMetrics->getI());
+                    $xmlClass->setAttribute('i', sprintf('%F', $classMetrics->getI()));
                     $xmlClass->setAttribute('impl', $classMetrics->getIMPL());
-                    $xmlClass->setAttribute('mif', $classMetrics->getMIF());
-                    $xmlClass->setAttribute('mhf', $classMetrics->getMHF());
+                    $xmlClass->setAttribute('mif', sprintf('%F', $classMetrics->getMIF()));
+                    $xmlClass->setAttribute('mhf', sprintf('%F', $classMetrics->getMHF()));
                     $xmlClass->setAttribute('noc', $classMetrics->getNOC());
-                    $xmlClass->setAttribute('pf', $classMetrics->getPF());
+                    $xmlClass->setAttribute('pf', sprintf('%F', $classMetrics->getPF()));
                     $xmlClass->setAttribute('vars', $classMetrics->getVARS());
                     $xmlClass->setAttribute('varsnp', $classMetrics->getVARSnp());
                     $xmlClass->setAttribute('varsi', $classMetrics->getVARSi());
@@ -174,9 +174,9 @@ class PHPUnit_Util_Log_Metrics extends PHPUnit_Util_Printer
         $element->setAttribute('loc', $metrics->getLoc());
         $element->setAttribute('locExecutable', $metrics->getLocExecutable());
         $element->setAttribute('locExecuted', $metrics->getLocExecuted());
-        $element->setAttribute('coverage', $metrics->getCoverage());
+        $element->setAttribute('coverage', sprintf('%F', $metrics->getCoverage()));
         $element->setAttribute('ccn', $metrics->getCCN());
-        $element->setAttribute('crap', $metrics->getCrapIndex());
+        $element->setAttribute('crap', sprintf('%F', $metrics->getCrapIndex()));
         $element->setAttribute('npath', $metrics->getNPath());
         $element->setAttribute('parameters', $metrics->getParameters());
     }
