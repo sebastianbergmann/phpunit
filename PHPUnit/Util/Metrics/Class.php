@@ -761,7 +761,11 @@ class PHPUnit_Util_Metrics_Class
                 }
             }
 
-            $this->i = $this->ce / ($this->ce + $this->ca);
+            $sum = $this->ce + $this->ca;
+
+            if ($sum > 0) {
+                $this->i = $this->ce / $sum;
+            }
         }
     }
 }
