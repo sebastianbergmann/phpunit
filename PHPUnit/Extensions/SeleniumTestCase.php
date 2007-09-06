@@ -903,6 +903,42 @@ abstract class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_Tes
     }
 
     /**
+     * Asserts that a specific label is selected.
+     *
+     * @param  string  $selectLocator
+     * @param  string  $value
+     * @access public
+     */
+    public function assertSelected($selectLocator, $option)
+    {
+        $this->assertEquals(
+          $option, $this->getSelectedLabel($selectLocator),
+          sprintf(
+            '%s not selected in "%s".',
+            $option, $selectLocator
+          )
+        );
+    }
+
+    /**
+     * Asserts that a specific label is not selected.
+     *
+     * @param  string  $selectLocator
+     * @param  string  $value
+     * @access public
+     */
+    public function assertNotSelected($selectLocator, $option)
+    {
+        $this->assertNotEquals(
+          $option, $this->getSelectedLabel($selectLocator),
+          sprintf(
+            '%s selected in "%s".',
+            $option, $selectLocator
+          )
+        );
+    }
+
+    /**
      * Asserts that a specific value is selected.
      *
      * @param  string  $selectLocator
@@ -932,7 +968,7 @@ abstract class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_Tes
         $this->assertNotEquals(
           $value, $this->getSelectedValue($selectLocator),
           sprintf(
-            '%s not selected in "%s".',
+            '%s selected in "%s".',
             $value, $selectLocator
           )
         );
