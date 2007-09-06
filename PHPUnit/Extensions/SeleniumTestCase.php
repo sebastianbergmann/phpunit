@@ -908,6 +908,7 @@ abstract class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_Tes
      * @param  string  $selectLocator
      * @param  string  $value
      * @access public
+     * @since  Method available since Release 3.2.0
      */
     public function assertSelected($selectLocator, $option)
     {
@@ -926,6 +927,7 @@ abstract class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_Tes
      * @param  string  $selectLocator
      * @param  string  $value
      * @access public
+     * @since  Method available since Release 3.2.0
      */
     public function assertNotSelected($selectLocator, $option)
     {
