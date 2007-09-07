@@ -49,7 +49,7 @@ require_once 'PHPUnit/Util/Filter.php';
 PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
 
 /**
- *
+ * Utility methods to load PHP sourcefiles.
  *
  * @category   Testing
  * @package    PHPUnit
@@ -63,8 +63,18 @@ PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
 class PHPUnit_Util_Fileloader
 {
     /**
-     * Checks if a PHP sourcefile is readable and contains no syntax errors.
-     * If that is the case, the sourcefile is loaded through include_once().
+     * Path to the PHP interpreter that is to be used.
+     *
+     * @var    string $phpBinary
+     * @access public
+     * @static
+     */
+    public static $phpBinary = NULL;
+
+    /**
+     * Checks if a PHP sourcefile is readable and is optionally checked for
+     * syntax errors through the syntaxCheck() method. The sourcefile is
+     * loaded through the load() method.
      *
      * @param  string  $filename
      * @param  boolean $syntaxCheck
@@ -96,9 +106,11 @@ class PHPUnit_Util_Fileloader
     }
 
     /**
+     * Returns the include paths configured via the "include_path"
+     * PHP INI setting plus the include paths configured via the
+     * PEAR environment's "test_dir" configuration setting.
      *
-     *
-     * @return Array
+     * @return array
      * @access public
      * @static
      * @since  Method available since Release 3.0.0
@@ -118,7 +130,13 @@ class PHPUnit_Util_Fileloader
     }
 
     /**
-     * @param  string  $filename
+     * Loads a PHP sourcefile.
+     *
+     * When the Xdebug extension is loaded and its "xdebug.collect_vars"
+     * configuration directive is enabled, all global variables declared
+     * in the loaded PHP sourcefile will be added to $GLOBALS.
+     *
+     * @param  string $filename
      * @access protected
      * @static
      * @since  Method available since Release 3.0.0
@@ -148,7 +166,28 @@ class PHPUnit_Util_Fileloader
     }
 
     /**
-     * @param  string   $filename
+     * Uses a separate process to perform a syntax check on a PHP sourcefile.
+     *
+     * PHPUnit_Util_Fileloader::$phpBinary contains the path to the PHP
+     * interpreter used for this. If unset, the following assumptions will
+     * be made:
+     *
+     *   1. When PHPUnit is run using the CLI SAPI and the $_SERVER['_']
+     *      variable does not contain the string "PHPUnit", $_SERVER['_']
+     *      is assumed to contain the path to the current PHP interpreter
+     *      and that will be used.
+     *
+     *   2. When PHPUnit is run using the CLI SAPI and the $_SERVER['_']
+     *      variable contains the string "PHPUnit", the file that $_SERVER['_']
+     *      points is assumed to be the PHPUnit TextUI CLI wrapper script
+     *      "phpunit" and the binary set up using #! on that file's first
+     *      line of code is assumed to contain the path to the current PHP
+     *      interpreter and that will be used.
+     *
+     *   3. The current PHP interpreter is assumed to be in the $PATH and
+     *      to be invokable through "php".
+     *
+     * @param  string $filename
      * @throws RuntimeException
      * @access protected
      * @static
@@ -156,13 +195,23 @@ class PHPUnit_Util_Fileloader
      */
     protected static function syntaxCheck($filename)
     {
-        $php = 'php';
+        if (self::$phpBinary === NULL) {
+            self::$phpBinary = 'php';
 
-        if (PHP_SAPI == 'cli') {
-            $php = $_SERVER['_'];
+            if (PHP_SAPI == 'cli') {
+                self::$phpBinary = $_SERVER['_'];
+
+                if (strpos(self::$phpBinary, 'phpunit') !== FALSE) {
+                    $file            = file($php);
+                    $tmp             = explode(' ', $file[0]);
+                    self::$phpBinary = trim($tmp[1]);
+                }
+            }
         }
 
-        $output = shell_exec($php . ' -l ' . escapeshellarg($filename));
+        $output = shell_exec(
+          self::$phpBinary . ' -l ' . escapeshellarg($filename)
+        );
 
         if (strpos($output, 'Errors parsing') === TRUE) {
             throw new RuntimeException($output);
