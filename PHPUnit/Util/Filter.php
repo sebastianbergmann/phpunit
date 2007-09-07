@@ -407,7 +407,9 @@ class PHPUnit_Util_Filter
     }
 
     /**
-     * Canonicalizes a source file name.
+     * Returns a PHPUnit_Util_FilterIterator that iterates
+     * over all files in the given directory that have the
+     * given suffix.
      *
      * @param  string $directory
      * @param  string $suffix
