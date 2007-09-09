@@ -73,7 +73,6 @@ class PHPUnit_Util_Log_PMD extends PHPUnit_Util_Printer
     protected $added;
 
     protected $rules = array(
-      'project'  => array(),
       'file'     => array(),
       'class'    => array(),
       'function' => array()
@@ -99,11 +98,7 @@ class PHPUnit_Util_Log_PMD extends PHPUnit_Util_Printer
                 $rule = explode('_', $className);
                 $rule = $rule[count($rule)-1];
 
-                if ($class->isSubclassOf('PHPUnit_Util_Log_PMD_Rule_Project')) {
-                    $this->rules['project'][$rule] = new $className;
-                }
-
-                else if ($class->isSubclassOf('PHPUnit_Util_Log_PMD_Rule_File')) {
+                if ($class->isSubclassOf('PHPUnit_Util_Log_PMD_Rule_File')) {
                     $this->rules['file'][$rule] = new $className;
                 }
 
@@ -141,6 +136,20 @@ class PHPUnit_Util_Log_PMD extends PHPUnit_Util_Printer
             $xmlFile->setAttribute('name', $fileName);
 
             $this->added = FALSE;
+
+            foreach ($this->rules['file'] as $ruleName => $rule) {
+                $result = $rule->apply($fileMetrics);
+
+                if ($result !== NULL) {
+                    $this->addViolation(
+                      $result,
+                      $xmlFile,
+                      $ruleName
+                    );
+
+                    $this->added = TRUE;
+                }
+            }
 
             foreach ($fileMetrics->getClasses() as $className => $classMetrics) {
                 if (!$classMetrics->getClass()->isInterface()) {
