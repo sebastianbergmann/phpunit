@@ -73,7 +73,6 @@ abstract class PHPUnit_Util_Log_PMD_Rule
     abstract public function apply(PHPUnit_Util_Metrics $metrics);
 }
 
-require_once 'PHPUnit/Util/Log/PMD/Rule/Project.php';
 require_once 'PHPUnit/Util/Log/PMD/Rule/File.php';
 require_once 'PHPUnit/Util/Log/PMD/Rule/Class.php';
 require_once 'PHPUnit/Util/Log/PMD/Rule/Function.php';
