@@ -45,6 +45,7 @@
  */
 
 require_once 'PHPUnit/Runner/Version.php';
+require_once 'PHPUnit/Util/Log/PMD/Rule.php';
 require_once 'PHPUnit/Util/Metrics/Project.php';
 require_once 'PHPUnit/Util/Class.php';
 require_once 'PHPUnit/Util/CodeCoverage.php';
@@ -69,19 +70,53 @@ PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
  */
 class PHPUnit_Util_Log_PMD extends PHPUnit_Util_Printer
 {
-    public static $THRESHOLD_CLASS_DIT                 = 6;
-    public static $THRESHOLD_CLASS_ELOC                = 1000;
-    public static $THRESHOLD_CLASS_EFFERENT_COUPLINGS  = 20;
-    public static $THRESHOLD_CLASS_PUBLIC_METHODS      = 45;
-    public static $THRESHOLD_CLASS_VARSNP              = 15;
-    public static $THRESHOLD_FUNCTION_CCN              = 10;
-    public static $THRESHOLD_FUNCTION_NPATH            = 200;
-    public static $THRESHOLD_FUNCTION_ELOC             = 100;
-    public static $THRESHOLD_FUNCTION_PARAMETERS       = 10;
-    public static $THRESHOLD_COVERAGE_LOW_UPPER_BOUND  = 35;
-    public static $THRESHOLD_COVERAGE_HIGH_LOWER_BOUND = 70;
-
     protected $added;
+
+    protected $rules = array(
+      'project'  => array(),
+      'file'     => array(),
+      'class'    => array(),
+      'function' => array()
+    );
+
+    /**
+     * Constructor.
+     *
+     * @param  mixed $out
+     * @throws InvalidArgumentException
+     * @access public
+     */
+    public function __construct($out = NULL)
+    {
+        parent::__construct($out);
+
+        $classes = get_declared_classes();
+
+        foreach ($classes as $className) {
+            $class = new ReflectionClass($className);
+
+            if ($class->isSubclassOf('PHPUnit_Util_Log_PMD_Rule')) {
+                $rule = explode('_', $className);
+                $rule = $rule[count($rule)-1];
+
+                if ($class->isSubclassOf('PHPUnit_Util_Log_PMD_Rule_Project')) {
+                    $this->rules['project'][$rule] = new $className;
+                }
+
+                else if ($class->isSubclassOf('PHPUnit_Util_Log_PMD_Rule_File')) {
+                    $this->rules['file'][$rule] = new $className;
+                }
+
+                else if ($class->isSubclassOf('PHPUnit_Util_Log_PMD_Rule_Class')) {
+                    $this->rules['class'][$rule] = new $className;
+                }
+
+                else if ($class->isSubclassOf('PHPUnit_Util_Log_PMD_Rule_Function')) {
+                    $this->rules['function'][$rule] = new $className;
+                }
+            }
+        }
+    }
 
     /**
      * @param  PHPUnit_Framework_TestResult $result
@@ -113,125 +148,22 @@ class PHPUnit_Util_Log_PMD extends PHPUnit_Util_Printer
                     $classEndLine   = $classMetrics->getClass()->getEndLine();
                     $classPackage   = $classMetrics->getPackage();
 
-                    $dit = $classMetrics->getDIT();
+                    foreach ($this->rules['class'] as $ruleName => $rule) {
+                        $result = $rule->apply($classMetrics);
 
-                    if (is_int(self::$THRESHOLD_CLASS_DIT) &&
-                        self::$THRESHOLD_CLASS_DIT > 0 &&
-                        $dit > self::$THRESHOLD_CLASS_DIT) {
-                        $this->addViolation(
-                          sprintf(
-                            'Depth of Inheritance Tree (DIT) is %d but should not exceed %d.',
-                            $dit,
-                            self::$THRESHOLD_CLASS_DIT
-                          ),
-                          $xmlFile,
-                          'DepthOfInheritanceTree',
-                          $classStartLine,
-                          $classEndLine,
-                          $classPackage,
-                          $className
-                        );
+                        if ($result !== NULL) {
+                            $this->addViolation(
+                              $result,
+                              $xmlFile,
+                              $ruleName,
+                              $classStartLine,
+                              $classEndLine,
+                              $classPackage,
+                              $className
+                            );
 
-                        $this->added = TRUE;
-                    }
-
-                    $locExecutable = $classMetrics->getLocExecutable();
-
-                    if (is_int(self::$THRESHOLD_CLASS_ELOC) &&
-                        self::$THRESHOLD_CLASS_ELOC > 0 &&
-                        $locExecutable > self::$THRESHOLD_CLASS_ELOC) {
-                        $this->addViolation(
-                          sprintf(
-                            "Class has %d lines of executable code.\n" .
-                            'This is an indication that the class may be ' .
-                            'trying to do too much. Try to break it down, ' .
-                            'and reduce the size to something manageable.',
-                            $locExecutable
-                          ),
-                          $xmlFile,
-                          'ExcessiveClassLength',
-                          $classStartLine,
-                          $classEndLine,
-                          $classPackage,
-                          $className
-                        );
-
-                        $this->added = TRUE;
-                    }
-
-                    $ce = $classMetrics->getCe();
-
-                    if (is_int(self::$THRESHOLD_CLASS_EFFERENT_COUPLINGS) &&
-                        self::$THRESHOLD_CLASS_EFFERENT_COUPLINGS > 0 &&
-                        $ce > self::$THRESHOLD_CLASS_EFFERENT_COUPLINGS) {
-                        $this->addViolation(
-                          sprintf(
-                            "Class depends on %d other classes.\n" .
-                            'The number of other classes that the class ' .
-                            'depends upon is an indicator of the class\' ' .
-                            'independence.',
-                            $ce
-                          ),
-                          $xmlFile,
-                          'EfferentCoupling',
-                          $classStartLine,
-                          $classEndLine,
-                          $classPackage,
-                          $className
-                        );
-
-                        $this->added = TRUE;
-                    }
-
-                    $publicMethods = $classMetrics->getPublicMethods();
-
-                    if (is_int(self::$THRESHOLD_CLASS_PUBLIC_METHODS) &&
-                        self::$THRESHOLD_CLASS_PUBLIC_METHODS > 0 &&
-                        $publicMethods > self::$THRESHOLD_CLASS_PUBLIC_METHODS) {
-                        $this->addViolation(
-                          sprintf(
-                            "Class has %d public methods.\n" .
-                            'A large number of public methods and attributes ' .
-                            'declared in a class can indicate the class may need ' .
-                            'to be broken up as increased effort will be required ' .
-                            'to thoroughly test it.',
-                            $publicMethods
-                          ),
-                          $xmlFile,
-                          'ExcessivePublicCount',
-                          $classStartLine,
-                          $classEndLine,
-                          $classPackage,
-                          $className
-                        );
-
-                        $this->added = TRUE;
-                    }
-
-                    $varsNp = $classMetrics->getVARSnp();
-
-                    if (is_int(self::$THRESHOLD_CLASS_VARSNP) &&
-                        self::$THRESHOLD_CLASS_VARSNP > 0 &&
-                        $varsNp > self::$THRESHOLD_CLASS_VARSNP) {
-                        $this->addViolation(
-                          sprintf(
-                            "Class has %d public fields.\n" .
-                            'Classes that have too many fields could be redesigned ' .
-                            'to have fewer fields, possibly through some nested ' .
-                            'object grouping of some of the information. For ' .
-                            'example, a class with city/state/zip fields could ' .
-                            'instead have one Address field.',
-                            $varsNp
-                          ),
-                          $xmlFile,
-                          'TooManyFields',
-                          $classStartLine,
-                          $classEndLine,
-                          $classPackage,
-                          $className
-                        );
-
-                        $this->added = TRUE;
+                            $this->added = TRUE;
+                        }
                     }
 
                     foreach ($classMetrics->getMethods() as $methodName => $methodMetrics) {
@@ -315,141 +247,23 @@ class PHPUnit_Util_Log_PMD extends PHPUnit_Util_Printer
         $endLine   = $metrics->getFunction()->getEndLine();
         $name      = $metrics->getFunction()->getName();
 
-        $ccn = $metrics->getCCN();
+        foreach ($this->rules['function'] as $ruleName => $rule) {
+            $result = $rule->apply($metrics);
 
-        if (is_int(self::$THRESHOLD_FUNCTION_CCN) &&
-            self::$THRESHOLD_FUNCTION_CCN > 0 &&
-            $ccn >= self::$THRESHOLD_FUNCTION_CCN) {
-            $this->addViolation(
-              sprintf(
-                "The cyclomatic complexity is %d.\n" .
-                'Complexity is determined by the number of decision points in a ' .
-                'function or method plus one for the function or method entry. ' .
-                'The decision points are "if", "for", "foreach", "while", "case", ' .
-                '"catch", "&amp;&amp;", "||", and "?:". Generally, 1-4 is low ' .
-                'complexity, 5-7 indicates moderate complexity, 8-10 is high ' .
-                'complexity, and 11+ is very high complexity.',
-                $ccn
-              ),
-              $element,
-              'CyclomaticComplexity',
-              $startLine,
-              $endLine,
-              $package,
-              $scope,
-              $name
-            );
+            if ($result !== NULL) {
+                $this->addViolation(
+                  $result,
+                  $element,
+                  $ruleName,
+                  $startLine,
+                  $endLine,
+                  $package,
+                  $scope,
+                  $name
+                );
 
-            $this->added = TRUE;
-        }
-
-        $npath = $metrics->getNPath();
-
-        if (is_int(self::$THRESHOLD_FUNCTION_NPATH) &&
-            self::$THRESHOLD_FUNCTION_NPATH > 0 &&
-            $npath >= self::$THRESHOLD_FUNCTION_NPATH) {
-            $this->addViolation(
-              sprintf(
-                "The NPath complexity is %d.\n" .
-                'The NPath complexity of a function or method is the number of ' .
-                'acyclic execution paths through that method. A threshold of 200 ' .
-                'is generally considered the point where measures should be taken ' .
-                'to reduce complexity.',
-                $npath
-              ),
-              $element,
-              'NPathComplexity',
-              $startLine,
-              $endLine,
-              $package,
-              $scope,
-              $name
-            );
-
-            $this->added = TRUE;
-        }
-
-        $coverage = $metrics->getCoverage();
-
-        $violation = '';
-
-        if (is_int(self::$THRESHOLD_COVERAGE_LOW_UPPER_BOUND) &&
-            self::$THRESHOLD_COVERAGE_LOW_UPPER_BOUND > 0 &&
-            $coverage <= self::$THRESHOLD_COVERAGE_LOW_UPPER_BOUND) {
-            $violation = 'The code coverage is %01.2F which is considered low.';
-        }
-
-        else if (is_int(self::$THRESHOLD_COVERAGE_LOW_UPPER_BOUND) &&
-                 self::$THRESHOLD_COVERAGE_LOW_UPPER_BOUND > 0 &&
-                 is_int(self::$THRESHOLD_COVERAGE_HIGH_LOWER_BOUND) &&
-                 self::$THRESHOLD_COVERAGE_HIGH_LOWER_BOUND > 0 &&
-                 $coverage > self::$THRESHOLD_COVERAGE_LOW_UPPER_BOUND &&
-                 $coverage < self::$THRESHOLD_COVERAGE_HIGH_LOWER_BOUND) {
-            $violation = 'The code coverage is %01.2F which is considered medium.';
-        }
-
-        if (!empty($violation)) {
-            $this->addViolation(
-              sprintf(
-                $violation,
-                $coverage
-              ),
-              $element,
-              'CodeCoverage',
-              $startLine,
-              $endLine,
-              $package,
-              $scope,
-              $name
-            );
-
-            $this->added = TRUE;
-        }
-
-        $locExecutable = $metrics->getLocExecutable();
-
-        if (is_int(self::$THRESHOLD_FUNCTION_ELOC) && self::$THRESHOLD_FUNCTION_ELOC > 0 && $locExecutable > self::$THRESHOLD_FUNCTION_ELOC) {
-            $this->addViolation(
-              sprintf(
-                "Function or method has %d lines of executable code.\n" .
-                'Violations of this rule usually indicate that the method is ' .
-                'doing too much. Try to reduce the method size by creating ' .
-                'helper methods and removing any copy/pasted code.',
-                $locExecutable
-              ),
-              $element,
-              'ExcessiveMethodLength',
-              $startLine,
-              $endLine,
-              $package,
-              $scope,
-              $name
-            );
-
-            $this->added = TRUE;
-        }
-
-        $parameters = $metrics->getParameters();
-
-        if (is_int(self::$THRESHOLD_FUNCTION_PARAMETERS) && self::$THRESHOLD_FUNCTION_PARAMETERS > 0 && $parameters > self::$THRESHOLD_FUNCTION_PARAMETERS) {
-            $this->addViolation(
-              sprintf(
-                "Function or method has %d parameters.\n" .
-                'Long parameter lists can indicate that a new object should be ' .
-                'created to wrap the numerous parameters. Basically, try to '.
-                'group the parameters together.',
-                $parameters
-              ),
-              $element,
-              'ExcessiveParameterList',
-              $startLine,
-              $endLine,
-              $package,
-              $scope,
-              $name
-            );
-
-            $this->added = TRUE;
+                $this->added = TRUE;
+            }
         }
     }
 }
