@@ -202,7 +202,7 @@ class PHPUnit_Util_Fileloader
                 self::$phpBinary = $_SERVER['_'];
 
                 if (strpos(self::$phpBinary, 'phpunit') !== FALSE) {
-                    $file            = file($php);
+                    $file            = file(self::$phpBinary);
                     $tmp             = explode(' ', $file[0]);
                     self::$phpBinary = trim($tmp[1]);
                 }
