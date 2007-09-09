@@ -45,8 +45,8 @@
  */
 
 require_once 'PHPUnit/Util/Class.php';
+require_once 'PHPUnit/Util/Metrics.php';
 require_once 'PHPUnit/Util/Filter.php';
-require_once 'PHPUnit/Util/Metrics/Function.php';
 
 PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
 
@@ -62,7 +62,7 @@ PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
  * @link       http://www.phpunit.de/
  * @since      Class available since Release 3.2.0
  */
-class PHPUnit_Util_Metrics_Class
+class PHPUnit_Util_Metrics_Class extends PHPUnit_Util_Metrics
 {
     protected $aif           = 0;
     protected $ahf           = 0;

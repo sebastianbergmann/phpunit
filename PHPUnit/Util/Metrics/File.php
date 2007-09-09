@@ -44,8 +44,8 @@
  * @since      File available since Release 3.2.0
  */
 
-require_once 'PHPUnit/Util/Metrics/Class.php';
 require_once 'PHPUnit/Util/Class.php';
+require_once 'PHPUnit/Util/Metrics.php';
 require_once 'PHPUnit/Util/Filter.php';
 
 PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
@@ -62,7 +62,7 @@ PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
  * @link       http://www.phpunit.de/
  * @since      Class available since Release 3.2.0
  */
-class PHPUnit_Util_Metrics_File
+class PHPUnit_Util_Metrics_File extends PHPUnit_Util_Metrics
 {
     protected $coverage      = 0;
     protected $loc           = 0;

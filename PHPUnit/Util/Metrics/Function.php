@@ -61,7 +61,7 @@ PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
  * @link       http://www.phpunit.de/
  * @since      Class available since Release 3.2.0
  */
-class PHPUnit_Util_Metrics_Function
+class PHPUnit_Util_Metrics_Function extends PHPUnit_Util_Metrics
 {
     protected $ccn           = 1;
     protected $npath         = 1;

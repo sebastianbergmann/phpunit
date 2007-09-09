@@ -46,8 +46,8 @@
 
 @include_once 'Image/GraphViz.php';
 
-require_once 'PHPUnit/Util/Metrics/File.php';
 require_once 'PHPUnit/Util/Filter.php';
+require_once 'PHPUnit/Util/Metrics.php';
 
 PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
 
@@ -63,7 +63,7 @@ PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
  * @link       http://www.phpunit.de/
  * @since      Class available since Release 3.2.0
  */
-class PHPUnit_Util_Metrics_Project
+class PHPUnit_Util_Metrics_Project extends PHPUnit_Util_Metrics
 {
     public static $CPD_MINIMAL_MATCHES = 70;
     public static $CPD_MINIMAL_LINES   = 5;
