@@ -196,8 +196,6 @@ class PHPUnit_Util_Fileloader
     protected static function syntaxCheck($filename)
     {
         if (self::$phpBinary === NULL) {
-            self::$phpBinary = 'php';
-
             if (PHP_SAPI == 'cli') {
                 self::$phpBinary = $_SERVER['_'];
 
@@ -206,6 +204,10 @@ class PHPUnit_Util_Fileloader
                     $tmp             = explode(' ', $file[0]);
                     self::$phpBinary = trim($tmp[1]);
                 }
+            }
+
+            if (!is_readable(self::$phpBinary)) {
+                self::$phpBinary = 'php';
             }
         }
 
