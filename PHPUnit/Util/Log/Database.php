@@ -394,6 +394,7 @@ class PHPUnit_Util_Log_Database implements PHPUnit_Framework_TestListener
         $stmt->execute();
 
         $right = (int)$stmt->fetchColumn();
+        unset($stmt);
 
         $stmt = $this->dbh->prepare(
           'UPDATE test
