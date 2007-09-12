@@ -496,7 +496,7 @@ class PHPUnit_Util_Metrics_Function extends PHPUnit_Util_Metrics
 
                 case T_STRING: {
                     if ($inNew) {
-                        if ($value != $this->scope) {
+                        if ($value != $this->scope && class_exists($value, FALSE)) {
                             try {
                                 $class = new ReflectionClass($value);
 
