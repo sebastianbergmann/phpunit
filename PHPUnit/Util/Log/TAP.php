@@ -68,15 +68,15 @@ class PHPUnit_Util_Log_TAP extends PHPUnit_Util_Printer implements PHPUnit_Frame
 {
     /**
      * @var    integer
-     * @access private
+     * @access protected
      */
-    private $testNumber = 0;
+    protected $testNumber = 0;
 
     /**
      * @var    boolean
-     * @access private
+     * @access protected
      */
-    private $testSuccessful = TRUE;
+    protected $testSuccessful = TRUE;
 
     /**
      * An error occurred.
@@ -219,11 +219,11 @@ class PHPUnit_Util_Log_TAP extends PHPUnit_Util_Printer implements PHPUnit_Frame
 
     /**
      * @param  PHPUnit_Framework_Test $test
-     * @param  string                  $prefix
-     * @param  string                  $directive
-     * @access private
+     * @param  string                 $prefix
+     * @param  string                 $directive
+     * @access protected
      */
-    private function writeNotOk(PHPUnit_Framework_Test $test, $prefix = '', $directive = '')
+    protected function writeNotOk(PHPUnit_Framework_Test $test, $prefix = '', $directive = '')
     {
         $this->write(
           sprintf(
