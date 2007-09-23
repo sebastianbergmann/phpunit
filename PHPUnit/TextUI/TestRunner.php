@@ -57,6 +57,7 @@ require_once 'PHPUnit/Util/Report.php';
 require_once 'PHPUnit/Util/Report/GraphViz.php';
 require_once 'PHPUnit/Util/Timer.php';
 require_once 'PHPUnit/Util/Log/CodeCoverage/Database.php';
+require_once 'PHPUnit/Util/Log/CodeCoverage/XML.php';
 require_once 'PHPUnit/Util/Log/Database.php';
 require_once 'PHPUnit/Util/Log/GraphViz.php';
 require_once 'PHPUnit/Util/Log/JSON.php';
