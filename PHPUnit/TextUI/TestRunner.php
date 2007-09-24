@@ -174,9 +174,10 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
     {
         $arguments['filter']             = isset($arguments['filter'])             ? $arguments['filter']             : FALSE;
         $arguments['group']              = isset($arguments['group'])              ? $arguments['group']              : FALSE;
-        $arguments['stopOnFailure']      = isset($arguments['stopOnFailure'])      ? $arguments['stopOnFailure']      : FALSE;
+        $arguments['listeners']          = isset($arguments['listeners'])          ? $arguments['listeners']          : array();
         $arguments['repeat']             = isset($arguments['repeat'])             ? $arguments['repeat']             : FALSE;
         $arguments['reportCharset']      = isset($arguments['reportCharset'])      ? $arguments['reportCharset']      : 'ISO-8859-1';
+        $arguments['stopOnFailure']      = isset($arguments['stopOnFailure'])      ? $arguments['stopOnFailure']      : FALSE;
         $arguments['testDatabasePrefix'] = isset($arguments['testDatabasePrefix']) ? $arguments['testDatabasePrefix'] : '';
         $arguments['verbose']            = isset($arguments['verbose'])            ? $arguments['verbose']            : FALSE;
         $arguments['wait']               = isset($arguments['wait'])               ? $arguments['wait']               : FALSE;
@@ -208,6 +209,10 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
         $this->printer->write(
           PHPUnit_Runner_Version::getVersionString() . "\n\n"
         );
+
+        foreach ($arguments['listeners'] as $listener) {
+            $result->addListener($listener);
+        }
 
         $result->addListener($this->printer);
 
