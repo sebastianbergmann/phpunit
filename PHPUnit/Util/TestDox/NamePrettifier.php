@@ -75,6 +75,12 @@ class PHPUnit_Util_TestDox_NamePrettifier
     protected $suffix = 'Test';
 
     /**
+     * @var    array
+     * @access protected
+     */
+    protected $strings = array();
+
+    /**
      * Prettifies the name of a test class.
      *
      * @param  string  $testClassName
@@ -109,8 +115,15 @@ class PHPUnit_Util_TestDox_NamePrettifier
     {
         $buffer = '';
 
-        $testMethodName = preg_replace('#\d+$#', '', $testMethodName);
-        $max            = strlen($testMethodName);
+        $string = preg_replace('#\d+$#', '', $testMethodName);
+
+        if (in_array($string, $this->strings)) {
+            $testMethodName = $string;
+        } else {
+            $this->strings[] = $string;
+        }
+
+        $max = strlen($testMethodName);
 
         if (substr($testMethodName, 0, 4) == 'test') {
             $offset = 4;
@@ -119,12 +132,25 @@ class PHPUnit_Util_TestDox_NamePrettifier
             $testMethodName[0] = strtoupper($testMethodName[0]);
         }
 
+        $wasNumeric = FALSE;
+
         for ($i = $offset; $i < $max; $i++) {
             if ($i > $offset &&
                 ord($testMethodName[$i]) >= 65 &&
                 ord($testMethodName[$i]) <= 90) {
                 $buffer .= ' ' . strtolower($testMethodName[$i]);
             } else {
+                $isNumeric = is_numeric($testMethodName[$i]);
+
+                if (!$wasNumeric && $isNumeric) {
+                    $buffer .= ' ';
+                    $wasNumeric = TRUE;
+                }
+
+                if ($wasNumeric && !$isNumeric) {
+                    $wasNumeric = FALSE;
+                }
+
                 $buffer .= $testMethodName[$i];
             }
         }
