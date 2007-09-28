@@ -196,7 +196,7 @@ class PHPUnit_Util_Fileloader
     protected static function syntaxCheck($filename)
     {
         if (self::$phpBinary === NULL) {
-            if (PHP_SAPI == 'cli') {
+            if (PHP_SAPI == 'cli' && isset($_SERVER['_'])) {
                 self::$phpBinary = $_SERVER['_'];
 
                 if (strpos(self::$phpBinary, 'phpunit') !== FALSE) {
