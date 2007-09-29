@@ -65,9 +65,9 @@ abstract class PHPUnit_Util_Printer
 {
     /**
      * @var    resource
-     * @access private
+     * @access protected
      */
-    private $out = NULL;
+    protected $out = NULL;
 
     /**
      * Constructor.

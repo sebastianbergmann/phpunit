@@ -62,8 +62,8 @@ PHPUnit_Util_Filter::addFileToFilter(__FILE__);
  */
 class TestIterator implements Iterator
 {
-    private $array;
-    private $position;
+    protected $array;
+    protected $position;
 
     public function __construct($array = array())
     {

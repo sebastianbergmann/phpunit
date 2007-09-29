@@ -72,7 +72,7 @@ PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
  */
 class PHPUnit_Framework_Constraint_PCREMatch extends PHPUnit_Framework_Constraint
 {
-    private $pattern;
+    protected $pattern;
 
     public function __construct($pattern)
     {

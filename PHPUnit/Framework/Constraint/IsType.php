@@ -68,7 +68,7 @@ PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
  */
 class PHPUnit_Framework_Constraint_IsType extends PHPUnit_Framework_Constraint
 {
-    private $type;
+    protected $type;
 
     public function __construct($type)
     {

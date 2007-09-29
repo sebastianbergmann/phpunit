@@ -65,9 +65,9 @@ PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
 class PHPUnit_Extensions_Database_DB_MetaData_Sqlite extends PHPUnit_Extensions_Database_DB_MetaData
 {
 
-    private $columns = array();
+    protected $columns = array();
 
-    private $keys = array();
+    protected $keys = array();
 
     /**
      * Returns an array containing the names of all the tables in the database.
@@ -131,7 +131,7 @@ class PHPUnit_Extensions_Database_DB_MetaData_Sqlite extends PHPUnit_Extensions_
      *
      * @param string $tableName
      */
-    private function loadColumnInfo($tableName)
+    protected function loadColumnInfo($tableName)
     {
         $query = "PRAGMA table_info('{$tableName}')";
         $statement = $this->pdo->query($query);

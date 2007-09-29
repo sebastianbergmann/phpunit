@@ -65,7 +65,7 @@ PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
  */
 class PHPUnit_Framework_Constraint_TraversableContains extends PHPUnit_Framework_Constraint
 {
-    private $value;
+    protected $value;
 
     public function __construct($value)
     {

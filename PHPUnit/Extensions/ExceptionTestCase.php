@@ -67,9 +67,9 @@ abstract class PHPUnit_Extensions_ExceptionTestCase extends PHPUnit_Framework_Te
      * The name of the expected Exception.
      *
      * @var    mixed
-     * @access private
+     * @access protected
      */
-    private $expectedException = NULL;
+    protected $expectedException = NULL;
 
     /**
      * @return string

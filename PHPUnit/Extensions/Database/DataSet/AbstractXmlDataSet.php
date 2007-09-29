@@ -72,7 +72,7 @@ abstract class PHPUnit_Extensions_Database_DataSet_AbstractXmlDataSet extends PH
     /**
      * @var array
      */
-    private $tables;
+    protected $tables;
 
     /**
      * @var SimpleXmlElement

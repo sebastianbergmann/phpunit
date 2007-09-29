@@ -137,33 +137,33 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
      * The name of the test case.
      *
      * @var    string
-     * @access private
+     * @access protected
      */
-    private $name = NULL;
+    protected $name = NULL;
 
     /*
      * @var    Exception
-     * @access private
+     * @access protected
      */
-    private $exception = NULL;
+    protected $exception = NULL;
 
     /**
      * @var    Array
-     * @access private
+     * @access protected
      */
-    private $iniSettings = array();
+    protected $iniSettings = array();
 
     /**
      * @var    Array
-     * @access private
+     * @access protected
      */
-    private $locale = array();
+    protected $locale = array();
 
     /**
      * @var    Array
-     * @access private
+     * @access protected
      */
-    private $mockObjects = array();
+    protected $mockObjects = array();
 
     /**
      * Constructs a test case with the given name.

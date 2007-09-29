@@ -61,7 +61,7 @@ require_once 'Money.php';
  */
 class MoneyBag implements IMoney
 {
-    private $fMonies = array();
+    protected $fMonies = array();
 
     public static function create(IMoney $m1, IMoney $m2)
     {
@@ -155,7 +155,7 @@ class MoneyBag implements IMoney
         return FALSE;
     }
 
-    private function findMoney($currency)
+    protected function findMoney($currency)
     {
         foreach ($this->fMonies as $m) {
             if ($m->currency() == $currency) {
@@ -166,7 +166,7 @@ class MoneyBag implements IMoney
         return NULL;
     }
 
-    private function contains(Money $m)
+    protected function contains(Money $m)
     {
         $found = $this->findMoney($m->currency());
 
@@ -217,7 +217,7 @@ class MoneyBag implements IMoney
         return $result;
     }
 
-    private function simplify()
+    protected function simplify()
     {
         if (count($this->fMonies) == 1) {
             return array_pop($this->fMonies);

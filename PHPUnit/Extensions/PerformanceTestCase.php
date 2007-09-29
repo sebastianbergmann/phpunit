@@ -67,9 +67,9 @@ abstract class PHPUnit_Extensions_PerformanceTestCase extends PHPUnit_Framework_
 {
     /**
      * @var    integer
-     * @access private
+     * @access protected
      */
-    private $maxRunningTime = 0;
+    protected $maxRunningTime = 0;
 
     /**
      * @access protected

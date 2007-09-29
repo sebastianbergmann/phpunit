@@ -70,45 +70,45 @@ class PHPUnit_Util_Report_GraphViz implements PHPUnit_Framework_TestListener
 {
     /**
      * @var    Image_GraphViz[]
-     * @access private
+     * @access protected
      */
-    private $graphs = array();
+    protected $graphs = array();
 
     /**
      * @var    string
-     * @access private
+     * @access protected
      */
-    private $target;
+    protected $target;
 
     /**
      * @var    boolean
-     * @access private
+     * @access protected
      */
-    private $currentTestSuccess = TRUE;
+    protected $currentTestSuccess = TRUE;
 
     /**
      * @var    string[]
-     * @access private
+     * @access protected
      */
-    private $testSuites = array();
+    protected $testSuites = array();
 
     /**
      * @var    integer
-     * @access private
+     * @access protected
      */
-    private $testSuiteLevel = 0;
+    protected $testSuiteLevel = 0;
 
     /**
      * @var    integer[]
-     * @access private
+     * @access protected
      */
-    private $testSuiteFailureOrErrorCount = array(0);
+    protected $testSuiteFailureOrErrorCount = array(0);
 
     /**
      * @var    integer[]
-     * @access private
+     * @access protected
      */
-    private $testSuiteIncompleteOrSkippedCount = array(0);
+    protected $testSuiteIncompleteOrSkippedCount = array(0);
 
     /**
      * Constructor.
@@ -312,9 +312,9 @@ class PHPUnit_Util_Report_GraphViz implements PHPUnit_Framework_TestListener
     /**
      * @param  PHPUnit_Framework_Test $test
      * @param  string                  $color
-     * @access private
+     * @access protected
      */
-    private function addTestNode(PHPUnit_Framework_Test $test, $color)
+    protected function addTestNode(PHPUnit_Framework_Test $test, $color)
     {
         $name = PHPUnit_Util_Test::describe($test, FALSE);
 

@@ -67,9 +67,9 @@ class PHPUnit_Framework_Warning extends PHPUnit_Framework_TestCase
 {
     /**
      * @var    string
-     * @access private
+     * @access protected
      */
-    private $message = '';
+    protected $message = '';
 
     /**
      * @param  string  $message

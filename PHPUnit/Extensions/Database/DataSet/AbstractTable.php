@@ -69,7 +69,7 @@ class PHPUnit_Extensions_Database_DataSet_AbstractTable implements PHPUnit_Exten
     /**
      * @var PHPUnit_Extensions_Database_DataSet_ITableMetaData
      */
-    private $tableMetaData;
+    protected $tableMetaData;
 
     /**
      * A 2-dimensional array containing the data for this table.

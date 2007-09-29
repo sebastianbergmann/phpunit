@@ -63,7 +63,7 @@ PHPUnit_Util_Filter::addFileToFilter(__FILE__);
  */
 class DoubleTestCase implements PHPUnit_Framework_Test
 {
-    private $testCase;
+    protected $testCase;
 
     public function __construct(PHPUnit_Framework_TestCase $testCase)
     {

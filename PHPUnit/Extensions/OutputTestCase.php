@@ -65,27 +65,27 @@ abstract class PHPUnit_Extensions_OutputTestCase extends PHPUnit_Framework_TestC
 {
     /**
      * @var    string
-     * @access private
+     * @access protected
      */
-    private $expectedRegex = NULL;
+    protected $expectedRegex = NULL;
 
     /**
      * @var    string
-     * @access private
+     * @access protected
      */
-    private $expectedString = NULL;
+    protected $expectedString = NULL;
 
     /**
      * @var    string
-     * @access private
+     * @access protected
      */
-    private $output = '';
+    protected $output = '';
 
     /**
      * @var    mixed
-     * @access private
+     * @access protected
      */
-    private $outputCallback = FALSE;
+    protected $outputCallback = FALSE;
 
     /**
      * @return bool

@@ -65,7 +65,7 @@ require_once '_files/Success.php';
  */
 class Extensions_RepeatedTestTest extends PHPUnit_Framework_TestCase
 {
-    private $suite;
+    protected $suite;
 
     public function __construct()
     {

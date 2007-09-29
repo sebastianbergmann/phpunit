@@ -64,7 +64,7 @@ class SampleClass
 {
     public $a;
     protected $b;
-    private $c;
+    protected $c;
 
     public function __construct($a, $b, $c)
     {

@@ -91,9 +91,9 @@ class PHPUnit_Util_Log_Database implements PHPUnit_Framework_TestListener
 
     /**
      * @var    boolean
-     * @access private
+     * @access protected
      */
-    private $currentTestSuccess = TRUE;
+    protected $currentTestSuccess = TRUE;
 
     /**
      * @var    PDO

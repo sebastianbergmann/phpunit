@@ -257,9 +257,9 @@ class PHPUnit_Util_Report_Coverage_Node_File extends PHPUnit_Util_Report_Coverag
     /**
      * Counts the executable and executed lines.
      *
-     * @access private
+     * @access protected
      */
-    private function countLines()
+    protected function countLines()
     {
         $this->numExecutableLines = 0;
         $this->numExecutedLines = 0;
@@ -355,9 +355,9 @@ class PHPUnit_Util_Report_Coverage_Node_File extends PHPUnit_Util_Report_Coverag
      * @author Sebastian Bergmann <sb@sebastian-bergmann.de>
      * @param  string $file
      * @return array
-     * @access private
+     * @access protected
      */
-    private function highlightFile($file)
+    protected function highlightFile($file)
     {
         $lines    = file($file);
         $numLines = count($lines);
@@ -450,9 +450,9 @@ class PHPUnit_Util_Report_Coverage_Node_File extends PHPUnit_Util_Report_Coverag
      * @author Sebastian Bergmann <sb@sebastian-bergmann.de>
      * @param  string $token
      * @return string
-     * @access private
+     * @access protected
      */
-    private function tokenToColor($token)
+    protected function tokenToColor($token)
     {
         switch ($token) {
             case T_CONSTANT_ENCAPSED_STRING: return 'string';

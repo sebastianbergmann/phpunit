@@ -69,7 +69,7 @@ class PHPUnit_Extensions_Database_DB_FilteredDataSet extends PHPUnit_Extensions_
     /**
      * @var Array
      */
-    private $tableNames;
+    protected $tableNames;
 
     /**
      * Creates a new dataset using the given database connection.

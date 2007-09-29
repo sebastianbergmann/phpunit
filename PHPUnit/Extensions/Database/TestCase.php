@@ -74,7 +74,7 @@ abstract class PHPUnit_Extensions_Database_TestCase extends PHPUnit_Framework_Te
     /**
      * @var PHPUnit_Extensions_Database_ITester
      */
-    private $databaseTester;
+    protected $databaseTester;
 
     /**
      * Closes the specified connection.

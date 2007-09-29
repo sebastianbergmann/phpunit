@@ -73,9 +73,9 @@ PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
  */
 class PHPUnit_Framework_Constraint_IsEqual extends PHPUnit_Framework_Constraint
 {
-    private $value;
-    private $delta = 0;
-    private $maxDepth = 10;
+    protected $value;
+    protected $delta = 0;
+    protected $maxDepth = 10;
 
     public function __construct($value, $delta = 0, $maxDepth = 10)
     {

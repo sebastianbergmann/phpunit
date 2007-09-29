@@ -69,22 +69,22 @@ abstract class PHPUnit_Extensions_Database_AbstractTester implements PHPUnit_Ext
     /**
      * @var PHPUnit_Extensions_Database_Operation_IDatabaseOperation
      */
-    private $setUpOperation;
+    protected $setUpOperation;
 
     /**
      * @var PHPUnit_Extensions_Database_Operation_IDatabaseOperation
      */
-    private $tearDownOperation;
+    protected $tearDownOperation;
 
     /**
      * @var PHPUnit_Extensions_Database_DataSet_IDataSet
      */
-    private $dataSet;
+    protected $dataSet;
 
     /**
      * @var string
      */
-    private $schema;
+    protected $schema;
 
     /**
      * Creates a new database tester.

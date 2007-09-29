@@ -70,7 +70,7 @@ class PHPUnit_Extensions_Database_DefaultTester extends PHPUnit_Extensions_Datab
     /**
      * @var PHPUnit_Extensions_Database_DB_IDatabaseConnection
      */
-    private $connection;
+    protected $connection;
 
     /**
      * Creates a new default database tester using the given connection.

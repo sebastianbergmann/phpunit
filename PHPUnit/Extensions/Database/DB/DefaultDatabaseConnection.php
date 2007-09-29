@@ -73,19 +73,19 @@ class PHPUnit_Extensions_Database_DB_DefaultDatabaseConnection implements PHPUni
     /**
      * @var PDO
      */
-    private $connection;
+    protected $connection;
 
     /**
      * @var string
      */
-    private $schema;
+    protected $schema;
 
     /**
      * The metadata object used to retrieve table meta data from the database.
      * 
      * @var PHPUnit_Extensions_Database_DB_IMetaData
      */
-    private $metaData;
+    protected $metaData;
 
     /**
      * Creates a new database connection

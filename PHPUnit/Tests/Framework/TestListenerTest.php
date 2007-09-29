@@ -66,13 +66,13 @@ require_once '_files/Success.php';
  */
 class Framework_TestListenerTest extends PHPUnit_Framework_TestCase implements PHPUnit_Framework_TestListener
 {
-    private $endCount;
-    private $errorCount;
-    private $failureCount;
-    private $notImplementedCount;
-    private $skippedCount;
-    private $result;
-    private $startCount;
+    protected $endCount;
+    protected $errorCount;
+    protected $failureCount;
+    protected $notImplementedCount;
+    protected $skippedCount;
+    protected $result;
+    protected $startCount;
 
     public function addError(PHPUnit_Framework_Test $test, Exception $e, $time)
     {

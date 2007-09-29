@@ -105,7 +105,7 @@ class PHPUnit_Util_Getopt {
         return array($opts, $non_opts);
     }
 
-    private static function parseShortOption($arg, $short_options, &$opts, &$args)
+    protected static function parseShortOption($arg, $short_options, &$opts, &$args)
     {
         for ($i = 0; $i < strlen($arg); $i++) {
             $opt = $arg{$i};
@@ -140,7 +140,7 @@ class PHPUnit_Util_Getopt {
         }
     }
 
-    private static function parseLongOption($arg, $long_options, &$opts, &$args)
+    protected static function parseLongOption($arg, $long_options, &$opts, &$args)
     {
         @list($opt, $opt_arg) = explode('=', $arg);
         $opt_len = strlen($opt);
