@@ -75,9 +75,9 @@ PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
  */
 class PHPUnit_Framework_MockObject_InvocationMocker implements PHPUnit_Framework_MockObject_Stub_MatcherCollection, PHPUnit_Framework_MockObject_Invokable, PHPUnit_Framework_MockObject_Builder_Namespace
 {
-    private $matchers = array();
+    protected $matchers = array();
 
-    private $builderMap = array();
+    protected $builderMap = array();
 
     public function addMatcher(PHPUnit_Framework_MockObject_Matcher_Invocation $matcher)
     {

@@ -71,9 +71,9 @@ PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
  */
 class PHPUnit_Framework_MockObject_Matcher_Parameters extends PHPUnit_Framework_MockObject_Matcher_StatelessInvocation
 {
-    private $parameters = array();
+    protected $parameters = array();
 
-    private $invocation;
+    protected $invocation;
 
     public function __construct($parameters)
     {
