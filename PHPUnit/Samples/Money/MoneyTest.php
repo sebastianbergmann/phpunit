@@ -63,13 +63,13 @@ require_once 'MoneyBag.php';
  */
 class MoneyTest extends PHPUnit_Framework_TestCase
 {
-    private $f12EUR;
-    private $f14EUR;
-    private $f7USD;
-    private $f21USD;
+    protected $f12EUR;
+    protected $f14EUR;
+    protected $f7USD;
+    protected $f21USD;
 
-    private $fMB1;
-    private $fMB2;
+    protected $fMB1;
+    protected $fMB2;
 
     protected function setUp()
     {

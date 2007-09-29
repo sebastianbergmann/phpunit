@@ -64,7 +64,7 @@ require_once '_files/Success.php';
  */
 class Framework_TestImplementorTest extends PHPUnit_Framework_TestCase
 {
-    private $test;
+    protected $test;
 
     public function __construct()
     {

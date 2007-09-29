@@ -66,21 +66,21 @@ class PHPUnit_Extensions_RepeatedTest extends PHPUnit_Extensions_TestDecorator
 {
     /**
      * @var    mixed
-     * @access private
+     * @access protected
      */
-    private $filter = FALSE;
+    protected $filter = FALSE;
 
     /**
      * @var    mixed
-     * @access private
+     * @access protected
      */
-    private $group = FALSE;
+    protected $group = FALSE;
 
     /**
      * @var    integer
-     * @access private
+     * @access protected
      */
-    private $timesRepeat = 1;
+    protected $timesRepeat = 1;
 
     /**
      * Constructor.

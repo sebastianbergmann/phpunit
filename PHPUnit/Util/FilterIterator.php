@@ -65,9 +65,9 @@ class PHPUnit_Util_FilterIterator extends FilterIterator
 {
     /**
      * @var    string
-     * @access private
+     * @access protected
      */
-    private $suffix;
+    protected $suffix;
 
     /**
      * @param  Iterator $iterator

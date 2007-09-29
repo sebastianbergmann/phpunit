@@ -70,7 +70,7 @@ PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
  */
 abstract class PHPUnit_Framework_MockObject_Matcher_InvokedRecorder implements PHPUnit_Framework_MockObject_Matcher_Invocation
 {
-    private $invocations = array();
+    protected $invocations = array();
 
     public function getInvocationCount()
     {

@@ -74,9 +74,9 @@ PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
  */
 class PHPUnit_Framework_MockObject_Matcher_InvokedAtIndex implements PHPUnit_Framework_MockObject_Matcher_Invocation
 {
-    private $sequenceIndex;
+    protected $sequenceIndex;
 
-    private $currentIndex = -1;
+    protected $currentIndex = -1;
 
     public function __construct($sequenceIndex)
     {

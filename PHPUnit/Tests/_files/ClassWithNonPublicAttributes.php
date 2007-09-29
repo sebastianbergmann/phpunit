@@ -62,22 +62,22 @@ PHPUnit_Util_Filter::addFileToFilter(__FILE__);
  */
 class ParentClassWithPrivateAttributes
 {
-    private static $privateStaticParentAttribute = 'parent';
-    private $privateParentAttribute = 'parent';
+    protected static $privateStaticParentAttribute = 'parent';
+    protected $privateParentAttribute = 'parent';
 }
 
 class ClassWithNonPublicAttributes extends ParentClassWithPrivateAttributes
 {
     public static $publicStaticAttribute = 'foo';
     protected static $protectedStaticAttribute = 'bar';
-    private static $privateStaticAttribute = 'baz';
+    protected static $privateStaticAttribute = 'baz';
 
     public $publicAttribute = 'foo';
     protected $protectedAttribute = 'bar';
-    private $privateAttribute = 'baz';
+    protected $privateAttribute = 'baz';
 
     public $publicArray = array('foo');
     protected $protectedArray = array('bar');
-    private $privateArray = array('baz');
+    protected $privateArray = array('baz');
 }
 ?>

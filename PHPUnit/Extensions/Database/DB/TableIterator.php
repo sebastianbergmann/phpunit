@@ -71,7 +71,7 @@ class PHPUnit_Extensions_Database_DB_TableIterator implements PHPUnit_Extensions
      *
      * @var Array
      */
-    private $tableNames;
+    protected $tableNames;
 
     /**
      * If this property is true then the tables will be iterated in reverse 
@@ -79,14 +79,14 @@ class PHPUnit_Extensions_Database_DB_TableIterator implements PHPUnit_Extensions
      * 
      * @var bool
      */
-    private $reverse;
+    protected $reverse;
 
     /**
      * The database dataset that this iterator iterates over.
      *
      * @var PHPUnit_Extensions_Database_DB_DataSet
      */
-    private $dataSet;
+    protected $dataSet;
 
     public function __construct($tableNames, PHPUnit_Extensions_Database_DB_DataSet $dataSet, $reverse = false)
     {

@@ -107,33 +107,33 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
      * The name of the test suite.
      *
      * @var    string
-     * @access private
+     * @access protected
      */
-    private $name = '';
+    protected $name = '';
 
     /**
      * The test groups of the test suite.
      *
      * @var    array
-     * @access private
+     * @access protected
      */
-    private $groups = array();
+    protected $groups = array();
 
     /**
      * The tests in the test suite.
      *
      * @var    array
-     * @access private
+     * @access protected
      */
-    private $tests = array();
+    protected $tests = array();
 
     /**
      * The number of tests in the test suite.
      *
      * @var    integer
-     * @access private
+     * @access protected
      */
-    private $numTests = -1;
+    protected $numTests = -1;
 
     /**
      * Constructs a new TestSuite:
@@ -674,9 +674,9 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
      * @param  string           $groups
      * @param  array            $names
      * @param  ReflectionClass  $theClass
-     * @access private
+     * @access protected
      */
-    private function addTestMethod(ReflectionMethod $method, $groups, Array &$names, ReflectionClass $theClass)
+    protected function addTestMethod(ReflectionMethod $method, $groups, Array &$names, ReflectionClass $theClass)
     {
         $name = $method->getName();
 
@@ -738,9 +738,9 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
     /**
      * @param  string  $message
      * @return PHPUnit_Framework_Warning
-     * @access private
+     * @access protected
      */
-    private static function warning($message)
+    protected static function warning($message)
     {
         return new PHPUnit_Framework_Warning($message);
     }

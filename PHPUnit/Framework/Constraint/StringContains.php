@@ -72,9 +72,9 @@ PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
  */
 class PHPUnit_Framework_Constraint_StringContains extends PHPUnit_Framework_Constraint
 {
-    private $string;
+    protected $string;
 
-    private $case;
+    protected $case;
 
     public function __construct($string, $case = TRUE)
     {

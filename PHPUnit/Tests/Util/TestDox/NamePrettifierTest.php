@@ -62,7 +62,7 @@ require_once 'PHPUnit/Util/TestDox/NamePrettifier.php';
  */
 class Util_TestDox_NamePrettifierTest extends PHPUnit_Framework_TestCase
 {
-    private $namePrettifier;
+    protected $namePrettifier;
 
     protected function setUp()
     {

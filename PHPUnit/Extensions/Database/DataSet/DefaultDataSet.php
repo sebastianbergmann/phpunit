@@ -72,7 +72,7 @@ class PHPUnit_Extensions_Database_DataSet_DefaultDataSet extends PHPUnit_Extensi
      *
      * @var array
      */
-    private $tables;
+    protected $tables;
 
     /**
      * Creates a new dataset using the given tables.

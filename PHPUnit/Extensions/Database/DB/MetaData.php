@@ -66,7 +66,7 @@ PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
 abstract class PHPUnit_Extensions_Database_DB_MetaData implements PHPUnit_Extensions_Database_DB_IMetaData
 {
 
-    private static $metaDataClassMap = array(
+    protected static $metaDataClassMap = array(
         'sqlite' => 'PHPUnit_Extensions_Database_DB_MetaData_Sqlite', 
         'mysql' => 'PHPUnit_Extensions_Database_DB_MetaData_InformationSchema'
     );

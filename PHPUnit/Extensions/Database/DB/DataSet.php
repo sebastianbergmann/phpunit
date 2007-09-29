@@ -73,14 +73,14 @@ class PHPUnit_Extensions_Database_DB_DataSet extends PHPUnit_Extensions_Database
      *
      * @var array
      */
-    private $tables = array();
+    protected $tables = array();
 
     /**
      * The database connection this dataset is using.
      *
      * @var PHPUnit_Extensions_Database_DB_DefaultDatabaseConnection
      */
-    private $databaseConnection;
+    protected $databaseConnection;
 
     /**
      * Creates a new dataset using the given database connection.

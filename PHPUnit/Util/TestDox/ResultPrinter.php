@@ -260,10 +260,10 @@ abstract class PHPUnit_Util_TestDox_ResultPrinter extends PHPUnit_Util_Printer i
     }
 
     /**
-     * @access private
+     * @access protected
      * @since  Method available since Release 2.3.0
      */
-    private function doEndClass()
+    protected function doEndClass()
     {
         foreach ($this->tests as $name => $data) {
             if ($data['failure'] == 0) {

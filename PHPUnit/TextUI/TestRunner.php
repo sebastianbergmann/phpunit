@@ -90,23 +90,23 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
 
     /**
      * @var    PHPUnit_Runner_TestSuiteLoader
-     * @access private
+     * @access protected
      * @static
      */
-    private static $loader = NULL;
+    protected static $loader = NULL;
 
     /**
      * @var    PHPUnit_TextUI_ResultPrinter
-     * @access private
+     * @access protected
      */
-    private $printer = NULL;
+    protected $printer = NULL;
 
     /**
      * @var    boolean
-     * @access private
+     * @access protected
      * @static
      */
-    private static $versionStringPrinted = FALSE;
+    protected static $versionStringPrinted = FALSE;
 
     /**
      * @param  mixed $test
@@ -459,10 +459,10 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
      * @param  string $directory
      * @return string
      * @throws RuntimeException
-     * @access private
+     * @access protected
      * @since  Method available since Release 3.0.0
      */
-    private function getDirectory($directory)
+    protected function getDirectory($directory)
     {
         if (substr($directory, -1, 1) != DIRECTORY_SEPARATOR) {
             $directory .= DIRECTORY_SEPARATOR;
@@ -482,10 +482,10 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
 
     /**
      * @param  string $buffer
-     * @access private
+     * @access protected
      * @since  Method available since Release 3.1.0
      */
-    private static function write($buffer)
+    protected static function write($buffer)
     {
         if (php_sapi_name() != 'cli') {
             $buffer = htmlentities($buffer);

@@ -60,8 +60,8 @@ require_once 'IMoney.php';
  */
 class Money implements IMoney
 {
-    private $fAmount;
-    private $fCurrency;
+    protected $fAmount;
+    protected $fCurrency;
 
     public function __construct($amount, $currency)
     {

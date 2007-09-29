@@ -137,9 +137,9 @@ class PHPUnit_Framework_TestResult implements Countable
 
     /**
      * @var    boolean
-     * @access private
+     * @access protected
      */
-    private $stop = FALSE;
+    protected $stop = FALSE;
 
     /**
      * @var    boolean

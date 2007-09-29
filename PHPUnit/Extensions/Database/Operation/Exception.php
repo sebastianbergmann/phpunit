@@ -69,27 +69,27 @@ class PHPUnit_Extensions_Database_Operation_Exception extends RuntimeException
     /**
      * @var string
      */
-    private $operation;
+    protected $operation;
 
     /**
      * @var string
      */
-    private $preparedQuery;
+    protected $preparedQuery;
 
     /**
      * @var array
      */
-    private $preparedArgs;
+    protected $preparedArgs;
 
     /**
      * @var PHPUnit_Extensions_Database_DataSet_ITable
      */
-    private $table;
+    protected $table;
 
     /**
      * @var string
      */
-    private $error;
+    protected $error;
 
     /**
      * Creates a new dbunit operation exception

@@ -70,11 +70,11 @@ class PHPUnit_Extensions_PhptTestCase implements PHPUnit_Framework_Test
      * The filename of the .phpt file.
      *
      * @var    string
-     * @access private
+     * @access protected
      */
-    private $filename;
+    protected $filename;
 
-    private $options = array();
+    protected $options = array();
 
     /**
      * Constructs a test case with the given filename.

@@ -66,8 +66,8 @@ PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
  */
 class PHPUnit_Framework_MockObject_Stub_ConsecutiveCalls implements PHPUnit_Framework_MockObject_Stub
 {
-    private $stack;
-    private $value;
+    protected $stack;
+    protected $value;
 
     public function __construct($stack)
     {

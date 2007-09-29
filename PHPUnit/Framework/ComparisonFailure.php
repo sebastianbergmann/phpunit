@@ -95,7 +95,7 @@ abstract class PHPUnit_Framework_ComparisonFailure extends PHPUnit_Framework_Ass
     /**
      * @var boolean
      */
-    private static $hasDiff = NULL;
+    protected static $hasDiff = NULL;
 
     /**
      * Initialises with the expected value and the actual value.

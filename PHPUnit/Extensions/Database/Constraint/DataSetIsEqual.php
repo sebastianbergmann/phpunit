@@ -68,12 +68,12 @@ class PHPUnit_Extensions_Database_Constraint_DataSetIsEqual extends PHPUnit_Fram
     /**
      * @var PHPUnit_Extensions_Database_DataSet_IDataSet
      */
-    private $value;
+    protected $value;
 
     /**
      * @var string
      */
-    private $failure_reason;
+    protected $failure_reason;
 
     /**
      * Creates a new constraint.

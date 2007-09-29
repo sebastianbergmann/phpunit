@@ -62,7 +62,7 @@ PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
  */
 class PHPUnit_Util_Timer
 {
-    private static $startTimes = array();
+    protected static $startTimes = array();
 
     /**
      * Starts the timer.

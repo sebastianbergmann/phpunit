@@ -71,8 +71,8 @@ if (!class_exists('PHPUnit_Framework_ExpectationFailedException', FALSE)) {
  */
 class PHPUnit_Framework_ExpectationFailedException extends PHPUnit_Framework_AssertionFailedError
 {
-    private $comparisonFailure;
-    private $description;
+    protected $comparisonFailure;
+    protected $description;
 
     public function __construct($description, PHPUnit_Framework_ComparisonFailure $comparisonFailure = NULL, $message = '')
     {

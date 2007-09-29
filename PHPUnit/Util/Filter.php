@@ -62,10 +62,10 @@ class PHPUnit_Util_Filter
 {
     /**
      * @var    boolean
-     * @access private
+     * @access protected
      * @static
      */
-    private static $filter = TRUE;
+    protected static $filter = TRUE;
 
     /**
      * Source files that are blacklisted.

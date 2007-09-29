@@ -69,9 +69,9 @@ class PHPUnit_Util_Log_PEAR implements PHPUnit_Framework_TestListener
      * Log.
      *
      * @var    Log
-     * @access private
+     * @access protected
      */
-    private $log;
+    protected $log;
 
     /**
      * @param string $type      The type of concrete Log subclass to use.

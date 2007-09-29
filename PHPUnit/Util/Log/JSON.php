@@ -67,21 +67,21 @@ class PHPUnit_Util_Log_JSON extends PHPUnit_Util_Printer implements PHPUnit_Fram
 {
     /**
      * @var    string
-     * @access private
+     * @access protected
      */
-    private $currentTestSuiteName = '';
+    protected $currentTestSuiteName = '';
 
     /**
      * @var    string
-     * @access private
+     * @access protected
      */
-    private $currentTestName = '';
+    protected $currentTestName = '';
 
     /**
      * @var     boolean
      * @access  private
      */
-    private $currentTestPass = TRUE;
+    protected $currentTestPass = TRUE;
 
     /**
      * An error occurred.
@@ -226,9 +226,9 @@ class PHPUnit_Util_Log_JSON extends PHPUnit_Util_Printer implements PHPUnit_Fram
      * @param float  $time
      * @param array  $trace
      * @param string $message
-     * @access private
+     * @access protected
      */
-    private function writeCase($status, $time, array $trace = array(), $message = '')
+    protected function writeCase($status, $time, array $trace = array(), $message = '')
     {
         $message = array(
           'event'   => 'test',
@@ -246,9 +246,9 @@ class PHPUnit_Util_Log_JSON extends PHPUnit_Util_Printer implements PHPUnit_Fram
     /**
      * @param  array $message
      * @return string
-     * @access private
+     * @access protected
      */
-    private function encode($message)
+    protected function encode($message)
     {
         if (function_exists('json_encode')) {
             return json_encode($message);
@@ -283,9 +283,9 @@ class PHPUnit_Util_Log_JSON extends PHPUnit_Util_Printer implements PHPUnit_Fram
     /**
      * @param  string $value
      * @return string
-     * @access private
+     * @access protected
      */
-    private function escape($value)
+    protected function escape($value)
     {
         return str_replace(
           array("\\",   "\"", "/",  "\b", "\f", "\n", "\r", "\t"),

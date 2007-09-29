@@ -70,7 +70,7 @@ PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
  */
 class PHPUnit_Framework_MockObject_Matcher_InvokedCount extends PHPUnit_Framework_MockObject_Matcher_InvokedRecorder
 {
-    private $expectedCount;
+    protected $expectedCount;
 
     public function __construct($expectedCount)
     {

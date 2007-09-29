@@ -68,9 +68,9 @@ class PHPUnit_Runner_IncludePathTestCollector implements PHPUnit_Runner_TestColl
 {
     /**
      * @var    string
-     * @access private
+     * @access protected
      */
-    private $filterIterator = NULL;
+    protected $filterIterator = NULL;
 
     /**
      * @return array

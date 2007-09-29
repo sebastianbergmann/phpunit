@@ -71,7 +71,7 @@ class PHPUnit_Extensions_Database_DataSet_DefaultTableIterator implements PHPUni
      *
      * @var Array
      */
-    private $tables;
+    protected $tables;
 
     /**
      * If this property is true then the tables will be iterated in reverse 
@@ -79,7 +79,7 @@ class PHPUnit_Extensions_Database_DataSet_DefaultTableIterator implements PHPUni
      * 
      * @var bool
      */
-    private $reverse;
+    protected $reverse;
 
     /**
      * Creates a new default table iterator object.

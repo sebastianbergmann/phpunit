@@ -64,27 +64,27 @@ class PHPUnit_Util_Template
 {
     /**
      * @var    string
-     * @access private
+     * @access protected
      */
-    private static $date = '';
+    protected static $date = '';
 
     /**
      * @var    string
-     * @access private
+     * @access protected
      */
-    private $template = '';
+    protected $template = '';
 
     /**
      * @var    array
-     * @access private
+     * @access protected
      */
-    private $keys = array();
+    protected $keys = array();
 
     /**
      * @var    array
-     * @access private
+     * @access protected
      */
-    private $values = array();
+    protected $values = array();
 
     /**
      * Constructor.

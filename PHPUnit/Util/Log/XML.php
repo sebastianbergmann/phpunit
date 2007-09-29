@@ -68,63 +68,63 @@ class PHPUnit_Util_Log_XML extends PHPUnit_Util_Printer implements PHPUnit_Frame
 {
     /**
      * @var    DOMDocument
-     * @access private
+     * @access protected
      */
-    private $document;
+    protected $document;
 
     /**
      * @var    DOMElement
-     * @access private
+     * @access protected
      */
-    private $root;
+    protected $root;
 
     /**
      * @var    boolean
-     * @access private
+     * @access protected
      */
-    private $writeDocument = TRUE;
+    protected $writeDocument = TRUE;
 
     /**
      * @var    DOMElement[]
-     * @access private
+     * @access protected
      */
-    private $testSuites = array();
+    protected $testSuites = array();
 
     /**
      * @var    integer[]
-     * @access private
+     * @access protected
      */
-    private $testSuiteTests = array(0);
+    protected $testSuiteTests = array(0);
 
     /**
      * @var    integer[]
-     * @access private
+     * @access protected
      */
-    private $testSuiteErrors = array(0);
+    protected $testSuiteErrors = array(0);
 
     /**
      * @var    integer[]
-     * @access private
+     * @access protected
      */
-    private $testSuiteFailures = array(0);
+    protected $testSuiteFailures = array(0);
 
     /**
      * @var    integer[]
-     * @access private
+     * @access protected
      */
-    private $testSuiteTimes = array(0);
+    protected $testSuiteTimes = array(0);
 
     /**
      * @var    integer
-     * @access private
+     * @access protected
      */
-    private $testSuiteLevel = 0;
+    protected $testSuiteLevel = 0;
 
     /**
      * @var    DOMElement
-     * @access private
+     * @access protected
      */
-    private $currentTestCase = NULL;
+    protected $currentTestCase = NULL;
 
     /**
      * Constructor.
