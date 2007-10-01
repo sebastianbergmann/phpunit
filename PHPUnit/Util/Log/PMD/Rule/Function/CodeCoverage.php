@@ -63,23 +63,20 @@ PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
  */
 class PHPUnit_Util_Log_PMD_Rule_Function_CodeCoverage extends PHPUnit_Util_Log_PMD_Rule_Function
 {
-    protected $threshold2;
-
-    public function __construct($threshold = 35, $threshold2 = 70)
+    public function __construct($threshold = array(35, 70))
     {
         parent::__construct($threshold);
-        $this->threshold2 = $threshold2;
     }
 
     public function apply(PHPUnit_Util_Metrics $metrics)
     {
         $coverage = $metrics->getCoverage();
 
-        if ($coverage <= $this->threshold) {
+        if ($coverage <= $this->threshold[0]) {
             $violation = 'The code coverage is %01.2F which is considered low.';
         }
 
-        else if ($coverage > $this->threshold && $coverage < $this->threshold2) {
+        else if ($coverage > $this->threshold[0] && $coverage < $this->threshold[1]) {
             $violation = 'The code coverage is %01.2F which is considered medium.';
         }
 
