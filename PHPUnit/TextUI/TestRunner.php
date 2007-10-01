@@ -177,7 +177,7 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
 
         if (is_integer($parameters['repeat'])) {
             $suite = new PHPUnit_Extensions_RepeatedTest(
-              $suite, $arguments['repeat'], $arguments['filter']
+              $suite, $parameters['repeat'], $parameters['filter']
             );
         }
 
