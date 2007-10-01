@@ -82,10 +82,11 @@ class PHPUnit_Util_Log_PMD extends PHPUnit_Util_Printer
      * Constructor.
      *
      * @param  mixed $out
+     * @param  array $configuration
      * @throws InvalidArgumentException
      * @access public
      */
-    public function __construct($out = NULL)
+    public function __construct($out = NULL, array $configuration = array())
     {
         parent::__construct($out);
 
@@ -94,20 +95,26 @@ class PHPUnit_Util_Log_PMD extends PHPUnit_Util_Printer
         foreach ($classes as $className) {
             $class = new ReflectionClass($className);
 
-            if ($class->isSubclassOf('PHPUnit_Util_Log_PMD_Rule')) {
+            if (!$class->isAbstract() && $class->isSubclassOf('PHPUnit_Util_Log_PMD_Rule')) {
                 $rule = explode('_', $className);
                 $rule = $rule[count($rule)-1];
 
+                if (isset($configuration[$className])) {
+                    $object = new $className($configuration[$className]);
+                } else {
+                    $object = new $className;
+                }
+
                 if ($class->isSubclassOf('PHPUnit_Util_Log_PMD_Rule_File')) {
-                    $this->rules['file'][$rule] = new $className;
+                    $this->rules['file'][$rule] = $object;
                 }
 
                 else if ($class->isSubclassOf('PHPUnit_Util_Log_PMD_Rule_Class')) {
-                    $this->rules['class'][$rule] = new $className;
+                    $this->rules['class'][$rule] = $object;
                 }
 
                 else if ($class->isSubclassOf('PHPUnit_Util_Log_PMD_Rule_Function')) {
-                    $this->rules['function'][$rule] = new $className;
+                    $this->rules['function'][$rule] = $object;
                 }
             }
         }
