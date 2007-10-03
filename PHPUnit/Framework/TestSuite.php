@@ -554,7 +554,7 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
 
         $result->startTestSuite($this);
 
-        if ($group !== FALSE && is_string($group)) {
+        if (is_string($group)) {
             if (isset($this->groups[$group])) {
                 $tests = &$this->groups[$group];
             } else {
