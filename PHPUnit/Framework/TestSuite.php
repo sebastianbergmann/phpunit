@@ -273,6 +273,10 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
         $this->tests[]  = $test;
         $this->numTests = -1;
 
+        if ($test instanceof PHPUnit_Framework_TestSuite && empty($groups)) {
+            $groups = $test->getGroups();
+        }
+
         foreach ($groups as $group) {
             if (!isset($this->groups[$group])) {
                 $this->groups[$group] = array($test);
@@ -520,6 +524,18 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
     public function getName()
     {
         return $this->name;
+    }
+
+    /**
+     * Returns the test groups of the suite.
+     *
+     * @return array
+     * @access public
+     * @since  Method available since Release 3.2.0
+     */
+    public function getGroups()
+    {
+        return array_keys($this->groups);
     }
 
     /**
