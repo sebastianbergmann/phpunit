@@ -442,10 +442,14 @@ abstract class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_Tes
     public function __call($command, $arguments)
     {
         switch ($command) {
+            case 'addLocationStrategy':
             case 'addSelection':
+            case 'allowNativeXpath':
             case 'altKeyDown':
             case 'altKeyUp':
             case 'answerOnNextPrompt':
+            case 'assignId':
+            case 'captureScreenshot':
             case 'check':
             case 'chooseCancelOnNextConfirmation':
             case 'click':
@@ -499,21 +503,36 @@ abstract class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_Tes
             case 'windowMaximize': {
                 $this->doCommand($command, $arguments);
 
-                if ($this->collectCodeCoverageInformation &&
-                   ($command == 'open' || $command == 'openWindow')) {
-                    $this->deleteCookie('PHPUNIT_SELENIUM_TEST_ID', '/');
+                switch ($command) {
+                    case 'addLocationStrategy':
+                    case 'allowNativeXpath':
+                    case 'assignId':
+                    case 'captureScreenshot': {
+                        // intentionally empty
+                    }
+                    break;
 
-                    $this->createCookie(
-                      'PHPUNIT_SELENIUM_TEST_ID=' . $this->testId,
-                      'path=/'
-                    );
+                    case 'open':
+                    case 'openWindow': {
+                        if ($this->collectCodeCoverageInformation) {
+                            $this->deleteCookie('PHPUNIT_SELENIUM_TEST_ID', '/');
+
+                            $this->createCookie(
+                              'PHPUNIT_SELENIUM_TEST_ID=' . $this->testId,
+                              'path=/'
+                            );
+                        }
+                    }
+                    // break intentionally missing
+
+                    default: {
+                        if ($this->sleep > 0) {
+                            sleep($this->sleep);
+                        }
+
+                        $this->defaultAssertions($command);
+                    }
                 }
-
-                if ($this->sleep > 0) {
-                    sleep($this->sleep);
-                }
-
-                $this->defaultAssertions($command);
             }
             break;
 
@@ -539,12 +558,12 @@ abstract class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_Tes
             case 'getElementPositionLeft':
             case 'getElementPositionTop':
             case 'getElementWidth':
-            case 'getMouseSpeed': {
+            case 'getMouseSpeed':
+            case 'getXpathCount': {
                 return $this->getNumber($command, $arguments);
             }
             break;
 
-            case 'captureScreenshot':
             case 'getAlert':
             case 'getAttribute':
             case 'getBodyText':
