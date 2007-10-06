@@ -277,6 +277,10 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
             $groups = $test->getGroups();
         }
 
+        if (empty($groups)) {
+            $groups = array('__nogroup__');
+        }
+
         foreach ($groups as $group) {
             if (!isset($this->groups[$group])) {
                 $this->groups[$group] = array($test);
@@ -543,12 +547,13 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
      *
      * @param  PHPUnit_Framework_TestResult $result
      * @param  mixed                        $filter
-     * @param  mixed                        $group
+     * @param  array                        $groups
+     * @param  array                        $excludeGroups
      * @return PHPUnit_Framework_TestResult
      * @throws InvalidArgumentException
      * @access public
      */
-    public function run(PHPUnit_Framework_TestResult $result = NULL, $filter = FALSE, $group = FALSE)
+    public function run(PHPUnit_Framework_TestResult $result = NULL, $filter = FALSE, array $groups = array(), array $excludeGroups = array())
     {
         if ($result === NULL) {
             $result = $this->createResult();
@@ -570,14 +575,24 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
 
         $result->startTestSuite($this);
 
-        if (is_string($group)) {
-            if (isset($this->groups[$group])) {
-                $tests = &$this->groups[$group];
+        $tests = array();
+
+        if (empty($excludeGroups)) {
+            if (empty($groups)) {
+                $tests = $this->tests;
             } else {
-                $tests = array();
+                foreach ($groups as $group) {
+                    if (isset($this->groups[$group])) {
+                        $tests = array_merge($tests, $this->groups[$group]);
+                    }
+                }
             }
         } else {
-            $tests = &$this->tests;
+            foreach ($this->groups as $_group => $_tests) {
+                if (!in_array($_group, $excludeGroups)) {
+                    $tests = array_merge($tests, $_tests);
+                }
+            }
         }
 
         foreach ($tests as $test) {
@@ -587,7 +602,7 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
 
             if ($test instanceof PHPUnit_Framework_TestSuite) {
                 $test->setSharedFixture($this->sharedFixture);
-                $test->run($result, $filter, $group);
+                $test->run($result, $filter, $groups, $excludeGroups);
             } else {
                 $runTest = TRUE;
 

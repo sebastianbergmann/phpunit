@@ -71,10 +71,16 @@ class PHPUnit_Extensions_RepeatedTest extends PHPUnit_Extensions_TestDecorator
     protected $filter = FALSE;
 
     /**
-     * @var    mixed
+     * @var    array
      * @access protected
      */
-    protected $group = FALSE;
+    protected $groups = array();
+
+    /**
+     * @var    array
+     * @access protected
+     */
+    protected $excludeGroups = array();
 
     /**
      * @var    integer
@@ -88,11 +94,12 @@ class PHPUnit_Extensions_RepeatedTest extends PHPUnit_Extensions_TestDecorator
      * @param  PHPUnit_Framework_Test $test
      * @param  integer                $timesRepeat
      * @param  mixed                  $filter
-     * @param  mixed                  $group
+     * @param  array                  $groups
+     * @param  array                  $excludeGroups
      * @throws InvalidArgumentException
      * @access public
      */
-    public function __construct(PHPUnit_Framework_Test $test, $timesRepeat = 1, $filter = FALSE, $group = FALSE)
+    public function __construct(PHPUnit_Framework_Test $test, $timesRepeat = 1, $filter = FALSE, array $groups = array(), array $excludeGroups = array())
     {
         parent::__construct($test);
 
@@ -105,8 +112,9 @@ class PHPUnit_Extensions_RepeatedTest extends PHPUnit_Extensions_TestDecorator
             );
         }
 
-        $this->filter = $filter;
-        $this->group  = $group;
+        $this->filter        = $filter;
+        $this->groups        = $groups;
+        $this->excludeGroups = $excludeGroups;
     }
 
     /**
@@ -138,7 +146,9 @@ class PHPUnit_Extensions_RepeatedTest extends PHPUnit_Extensions_TestDecorator
 
         for ($i = 0; $i < $this->timesRepeat && !$result->shouldStop(); $i++) {
             if ($this->test instanceof PHPUnit_Framework_TestSuite) {
-                $this->test->run($result, $this->filter, $this->group);
+                $this->test->run(
+                  $result, $this->filter, $this->groups, $this->excludeGroups
+                );
             } else {
                 $this->test->run($result);
             }
