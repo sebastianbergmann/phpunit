@@ -173,7 +173,8 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
     public function doRun(PHPUnit_Framework_Test $suite, array $arguments = array())
     {
         $arguments['filter']             = isset($arguments['filter'])             ? $arguments['filter']             : FALSE;
-        $arguments['group']              = isset($arguments['group'])              ? $arguments['group']              : FALSE;
+        $arguments['groups']             = isset($arguments['groups'])             ? $arguments['groups']             : array();
+        $arguments['excludeGroups']      = isset($arguments['excludeGroups'])      ? $arguments['excludeGroups']      : array();
         $arguments['listeners']          = isset($arguments['listeners'])          ? $arguments['listeners']          : array();
         $arguments['repeat']             = isset($arguments['repeat'])             ? $arguments['repeat']             : FALSE;
         $arguments['reportCharset']      = isset($arguments['reportCharset'])      ? $arguments['reportCharset']      : 'ISO-8859-1';
@@ -184,7 +185,11 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
 
         if (is_integer($arguments['repeat'])) {
             $suite = new PHPUnit_Extensions_RepeatedTest(
-              $suite, $arguments['repeat'], $arguments['filter'], $arguments['group']
+              $suite,
+              $arguments['repeat'],
+              $arguments['filter'],
+              $arguments['groups'],
+              $arguments['excludeGroups']
             );
         }
 
@@ -308,7 +313,12 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
             $result->collectCodeCoverageInformation(TRUE);
         }
 
-        $suite->run($result, $arguments['filter'], $arguments['group']);
+        $suite->run(
+          $result,
+          $arguments['filter'],
+          $arguments['groups'],
+          $arguments['excludeGroups']
+        );
 
         $result->flushListeners();
 

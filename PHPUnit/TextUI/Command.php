@@ -138,6 +138,7 @@ class PHPUnit_TextUI_Command
           'help',
           'filter=',
           'group=',
+          'exclude-group=',
           'loader=',
           'log-json=',
           'log-tap=',
@@ -234,7 +235,12 @@ class PHPUnit_TextUI_Command
                 break;
 
                 case '--group': {
-                    $arguments['group'] = $option[1];
+                    $arguments['groups'] = explode(',', $option[1]);
+                }
+                break;
+
+                case '--exclude-group': {
+                    $arguments['excludeGroups'] = explode(',', $option[1]);
                 }
                 break;
 
@@ -484,7 +490,8 @@ class PHPUnit_TextUI_Command
         print "  --testdox-html <file>  Write agile documentation in HTML format to file.\n" .
               "  --testdox-text <file>  Write agile documentation in Text format to file.\n\n" .
               "  --filter <pattern>     Filter which tests to run.\n" .
-              "  --group <name>         Only runs tests from the specified group of tests.\n\n" .
+              "  --group ...            Only runs tests from the specified group(s).\n" .
+              "  --exclude-group ...    Exclude tests from the specified group(s).\n\n" .
               "  --loader <loader>      TestSuiteLoader implementation to use.\n" .
               "  --repeat <times>       Runs the test(s) repeatedly.\n\n" .
               "  --tap                  Report test execution progress in TAP format.\n" .
