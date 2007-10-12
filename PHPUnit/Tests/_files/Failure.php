@@ -63,7 +63,7 @@ PHPUnit_Util_Filter::addFileToFilter(__FILE__);
  */
 class Failure extends PHPUnit_Framework_TestCase
 {
-    public function runTest()
+    public function runTest($data)
     {
         $this->fail();
     }

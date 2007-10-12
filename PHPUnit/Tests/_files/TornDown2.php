@@ -70,7 +70,7 @@ class TornDown2 extends TornDown
         throw new Exception;
     }
 
-    protected function runTest()
+    protected function runTest($data)
     {
         throw new Exception;
     }

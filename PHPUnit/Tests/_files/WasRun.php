@@ -65,7 +65,7 @@ class WasRun extends PHPUnit_Framework_TestCase
 {
     public $wasRun = FALSE;
 
-    protected function runTest()
+    protected function runTest($data)
     {
         $this->wasRun = TRUE;
     }
