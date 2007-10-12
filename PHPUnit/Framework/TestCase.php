@@ -126,6 +126,12 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
     protected $backupGlobals = TRUE;
 
     /**
+     * @var    array
+     * @access protected
+     */
+    protected $data = array();
+
+    /**
      * Fixture that is shared between the tests of a test suite.
      *
      * @var    mixed
@@ -175,6 +181,19 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
     {
         if ($name !== NULL) {
             $this->setName($name);
+        }
+
+        try {
+            $method     = new ReflectionMethod($this, $this->name);
+            $docComment = $method->getDocComment();
+
+            if (preg_match('/@dataProvider[\s]+([\.\w]+)/', $docComment, $matches)) {
+                $dataProviderMethod = new ReflectionMethod($this, $matches[1]);
+                $this->data = $dataProviderMethod->invoke($this);
+            }
+        }
+
+        catch (ReflectionException $e) {
         }
     }
 
@@ -286,66 +305,73 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
      */
     public function runBare()
     {
-        // Backup the $GLOBALS array.
-        if ($this->backupGlobals === TRUE) {
-            $globalsBackup = serialize($GLOBALS);
+        if (empty($this->data)) {
+            $this->data = array(FALSE);
         }
 
-        // Set up the fixture.
-        $this->setUp();
-
-        // Run the test.
-        try {
-            $this->runTest();
-
-            // Perform assertions shared by all tests of a test case.
-            $this->sharedAssertions();
-
-            // Verify Mock Object conditions.
-            foreach ($this->mockObjects as $mockObject) {
-                $mockObject->verify();
+        foreach ($this->data as $data) {
+            // Backup the $GLOBALS array.
+            if ($this->backupGlobals === TRUE) {
+                $globalsBackup = serialize($GLOBALS);
             }
 
-            $this->mockObjects = array();
-        }
+            // Set up the fixture.
+            $this->setUp();
 
-        catch (Exception $e) {
-            $this->exception = $e;
-        }
+            // Run the test.
+            try {
+                $this->runTest($data);
 
-        // Tear down the fixture.
-        $this->tearDown();
+                // Perform assertions shared by all tests of a test case.
+                $this->sharedAssertions();
 
-        // Restore the $GLOBALS array.
-        if ($this->backupGlobals === TRUE) {
-            $GLOBALS = unserialize($globalsBackup);
-        }
+                // Verify Mock Object conditions.
+                foreach ($this->mockObjects as $mockObject) {
+                    $mockObject->verify();
+                }
 
-        // Clean up INI settings.
-        foreach ($this->iniSettings as $varName => $oldValue) {
-            ini_set($varName, $oldValue);
-        }
+                $this->mockObjects = array();
+            }
 
-        // Clean up locale settings.
-        foreach ($this->locale as $category => $locale) {
-            setlocale($category, $locale);
-        }
+            catch (Exception $e) {
+                $this->exception = $e;
+            }
 
-        $this->iniSettings = array();
+            // Tear down the fixture.
+            $this->tearDown();
 
-        // Workaround for missing "finally".
-        if ($this->exception !== NULL) {
-            throw $this->exception;
+            // Restore the $GLOBALS array.
+            if ($this->backupGlobals === TRUE) {
+                $GLOBALS = unserialize($globalsBackup);
+            }
+
+            // Clean up INI settings.
+            foreach ($this->iniSettings as $varName => $oldValue) {
+                ini_set($varName, $oldValue);
+            }
+
+            // Clean up locale settings.
+            foreach ($this->locale as $category => $locale) {
+                setlocale($category, $locale);
+            }
+
+            $this->iniSettings = array();
+
+            // Workaround for missing "finally".
+            if ($this->exception !== NULL) {
+                throw $this->exception;
+            }
         }
     }
 
     /**
      * Override to run the test and assert its state.
      *
+     * @param  mixed $data
      * @throws RuntimeException
      * @access protected
      */
-    protected function runTest()
+    protected function runTest($data)
     {
         if ($this->name === NULL) {
             throw new RuntimeException(
@@ -362,7 +388,11 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
             $this->fail($e->getMessage());
         }
 
-        $method->invoke($this);
+        if ($data === FALSE) {
+            $method->invoke($this);
+        } else {
+            $method->invokeArgs($this, $data);
+        }
     }
 
     /**

@@ -74,10 +74,10 @@ abstract class PHPUnit_Extensions_PerformanceTestCase extends PHPUnit_Framework_
     /**
      * @access protected
      */
-    protected function runTest()
+    protected function runTest($data)
     {
         PHPUnit_Util_Timer::start();
-        parent::runTest();
+        parent::runTest($data);
         $time = PHPUnit_Util_Timer::stop();
 
         if ($this->maxRunningTime != 0 &&

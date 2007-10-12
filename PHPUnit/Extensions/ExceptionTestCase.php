@@ -96,10 +96,10 @@ abstract class PHPUnit_Extensions_ExceptionTestCase extends PHPUnit_Framework_Te
     /**
      * @access protected
      */
-    protected function runTest()
+    protected function runTest($data)
     {
         try {
-            parent::runTest();
+            parent::runTest($data);
         }
 
         catch (Exception $e) {
