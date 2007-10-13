@@ -174,27 +174,17 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
     /**
      * Constructs a test case with the given name.
      *
-     * @param  string
+     * @param  string $name
+     * @param  array  $data
      * @access public
      */
-    public function __construct($name = NULL)
+    public function __construct($name = NULL, array $data = array())
     {
         if ($name !== NULL) {
             $this->setName($name);
         }
 
-        try {
-            $method     = new ReflectionMethod($this, $this->name);
-            $docComment = $method->getDocComment();
-
-            if (preg_match('/@dataProvider[\s]+([\.\w]+)/', $docComment, $matches)) {
-                $dataProviderMethod = new ReflectionMethod($this, $matches[1]);
-                $this->data = $dataProviderMethod->invoke($this);
-            }
-        }
-
-        catch (ReflectionException $e) {
-        }
+        $this->data = $data;
     }
 
     /**
@@ -207,12 +197,18 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
     {
         $class = new ReflectionClass($this);
 
-        return sprintf(
+        $buffer = sprintf(
           '%s(%s)',
 
           $this->getName(),
           $class->name
         );
+
+        if (!empty($this->data)) {
+            $buffer .= ' with data (' . join(', ', $this->data) . ')';
+        }
+
+        return $buffer;
     }
 
     /**
@@ -305,62 +301,56 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
      */
     public function runBare()
     {
-        if (empty($this->data)) {
-            $this->data = array(FALSE);
+        // Backup the $GLOBALS array.
+        if ($this->backupGlobals === TRUE) {
+            $globalsBackup = serialize($GLOBALS);
         }
 
-        foreach ($this->data as $data) {
-            // Backup the $GLOBALS array.
-            if ($this->backupGlobals === TRUE) {
-                $globalsBackup = serialize($GLOBALS);
+        // Set up the fixture.
+        $this->setUp();
+
+        // Run the test.
+        try {
+            $this->runTest();
+
+            // Perform assertions shared by all tests of a test case.
+            $this->sharedAssertions();
+
+            // Verify Mock Object conditions.
+            foreach ($this->mockObjects as $mockObject) {
+                $mockObject->verify();
             }
 
-            // Set up the fixture.
-            $this->setUp();
+            $this->mockObjects = array();
+        }
 
-            // Run the test.
-            try {
-                $this->runTest($data);
+        catch (Exception $e) {
+            $this->exception = $e;
+        }
 
-                // Perform assertions shared by all tests of a test case.
-                $this->sharedAssertions();
+        // Tear down the fixture.
+        $this->tearDown();
 
-                // Verify Mock Object conditions.
-                foreach ($this->mockObjects as $mockObject) {
-                    $mockObject->verify();
-                }
+        // Restore the $GLOBALS array.
+        if ($this->backupGlobals === TRUE) {
+            $GLOBALS = unserialize($globalsBackup);
+        }
 
-                $this->mockObjects = array();
-            }
+        // Clean up INI settings.
+        foreach ($this->iniSettings as $varName => $oldValue) {
+            ini_set($varName, $oldValue);
+        }
 
-            catch (Exception $e) {
-                $this->exception = $e;
-            }
+        // Clean up locale settings.
+        foreach ($this->locale as $category => $locale) {
+            setlocale($category, $locale);
+        }
 
-            // Tear down the fixture.
-            $this->tearDown();
+        $this->iniSettings = array();
 
-            // Restore the $GLOBALS array.
-            if ($this->backupGlobals === TRUE) {
-                $GLOBALS = unserialize($globalsBackup);
-            }
-
-            // Clean up INI settings.
-            foreach ($this->iniSettings as $varName => $oldValue) {
-                ini_set($varName, $oldValue);
-            }
-
-            // Clean up locale settings.
-            foreach ($this->locale as $category => $locale) {
-                setlocale($category, $locale);
-            }
-
-            $this->iniSettings = array();
-
-            // Workaround for missing "finally".
-            if ($this->exception !== NULL) {
-                throw $this->exception;
-            }
+        // Workaround for missing "finally".
+        if ($this->exception !== NULL) {
+            throw $this->exception;
         }
     }
 
@@ -371,7 +361,7 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
      * @throws RuntimeException
      * @access protected
      */
-    protected function runTest($data)
+    protected function runTest()
     {
         if ($this->name === NULL) {
             throw new RuntimeException(
@@ -388,10 +378,10 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
             $this->fail($e->getMessage());
         }
 
-        if ($data === FALSE) {
+        if (empty($this->data)) {
             $method->invoke($this);
         } else {
-            $method->invokeArgs($this, $data);
+            $method->invokeArgs($this, $this->data);
         }
     }
 

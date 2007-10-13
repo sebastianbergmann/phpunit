@@ -71,7 +71,7 @@ class TornDown extends PHPUnit_Framework_TestCase
         $this->tornDown = TRUE;
     }
 
-    protected function runTest($data)
+    protected function runTest()
     {
         throw new Exception;
     }

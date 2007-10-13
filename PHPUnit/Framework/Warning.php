@@ -84,7 +84,7 @@ class PHPUnit_Framework_Warning extends PHPUnit_Framework_TestCase
     /**
      * @access protected
      */
-    protected function runTest($data)
+    protected function runTest()
     {
         $this->fail($this->message);
     }

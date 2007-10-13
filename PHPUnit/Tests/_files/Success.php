@@ -64,7 +64,7 @@ require_once 'PHPUnit/Framework/TestCase.php';
  */
 class Success extends PHPUnit_Framework_TestCase
 {
-    public function runTest($data)
+    public function runTest()
     {
     }
 }

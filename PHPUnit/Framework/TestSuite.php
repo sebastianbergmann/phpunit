@@ -468,6 +468,8 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
      */
     public static function createTest(ReflectionClass $theClass, $name)
     {
+        $className = $theClass->getName();
+
         if (!$theClass->isInstantiable()) {
             return self::warning(
               sprintf(
@@ -490,18 +492,45 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
                 }
             }
 
-            else if (count($parameters) == 1 &&
-                     $parameters[0]->getClass() === NULL) {
-                $test = $theClass->newInstance($name);
-            }
-
             else {
-                return self::warning(
-                  sprintf(
-                    'Constructor of class "%s" is not TestCase($name) or TestCase().',
-                    $theClass->getName()
-                  )
-                );
+                if (count($parameters) >= 1 &&
+                    $parameters[0]->getClass() === NULL) {
+                    $test = $theClass->newInstance($name);
+                }
+
+                if (count($parameters) == 2) {
+                    try {
+                        $method     = new ReflectionMethod($className, $name);
+                        $docComment = $method->getDocComment();
+
+                        if (preg_match('/@dataProvider[\s]+([\.\w]+)/', $docComment, $matches)) {
+                            $dataProviderMethod = new ReflectionMethod($className, $matches[1]);
+                            $data = $dataProviderMethod->invoke(NULL);
+
+                            if (is_array($data) || $data instanceof Iterator) {
+                                 $test = new PHPUnit_Framework_TestSuite(
+                                   $className . '::' . $name
+                                 );
+
+                                foreach ($data as $_data) {
+                                    $test->addTest(new $className($name, $_data));
+                                }
+                            }
+                        }
+                    }
+
+                    catch (ReflectionException $e) {
+                    }
+                }
+
+                else {
+                    return self::warning(
+                      sprintf(
+                        'Constructor of class "%s" is not TestCase($name, $data), TestCase($name), or TestCase().',
+                        $theClass->getName()
+                      )
+                    );
+                }
             }
         }
 
