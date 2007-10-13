@@ -63,7 +63,7 @@ PHPUnit_Util_Filter::addFileToFilter(__FILE__);
  */
 class Error extends PHPUnit_Framework_TestCase
 {
-    public function runTest($data)
+    public function runTest()
     {
         throw new Exception;
     }

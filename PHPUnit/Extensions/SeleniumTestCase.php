@@ -254,11 +254,11 @@ abstract class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_Tes
     /**
      * @access protected
      */
-    protected function runTest($data)
+    protected function runTest()
     {
         $this->start();
 
-        parent::runTest($data);
+        parent::runTest();
 
         if ($this->autoStop) {
             try {

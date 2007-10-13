@@ -172,10 +172,10 @@ abstract class PHPUnit_Extensions_OutputTestCase extends PHPUnit_Framework_TestC
     /**
      * @access protected
      */
-    protected function runTest($data)
+    protected function runTest()
     {
         ob_start();
-        parent::runTest($data);
+        parent::runTest();
 
         if ($this->outputCallback === FALSE) {
             $this->output = ob_get_contents();
