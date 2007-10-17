@@ -194,10 +194,6 @@ abstract class PHPUnit_Runner_BaseTestRunner implements PHPUnit_Framework_TestLi
      */
     public function getTest($suiteClassName, $suiteClassFile = '', $syntaxCheck = TRUE)
     {
-        if ($suiteClassFile == $suiteClassName . '.php') {
-            $suiteClassFile = '';
-        }
-
         try {
             $testClass = $this->loadSuiteClass(
               $suiteClassName, $suiteClassFile, $syntaxCheck
