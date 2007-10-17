@@ -178,7 +178,7 @@ abstract class PHPUnit_Framework_ComparisonFailure extends PHPUnit_Framework_Ass
      */
     public static function diffEqual($expected, $actual, $message = '')
     {
-        if (is_string($expected)) {
+        if (is_string($expected) && !is_object($actual)) {
             return new PHPUnit_Framework_ComparisonFailure_String($expected, $actual, FALSE, $message);
         }
 
