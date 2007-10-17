@@ -185,6 +185,10 @@ class PHPUnit_Framework_Constraint_IsEqual extends PHPUnit_Framework_Constraint
      */
     protected function recursiveComparison($a, $b, $depth = 0)
     {
+        if ($a === $b) {
+            return TRUE;
+        }
+
         if ($depth >= $this->maxDepth) {
             return TRUE;
         }
