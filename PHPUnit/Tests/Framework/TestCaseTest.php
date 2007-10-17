@@ -52,6 +52,8 @@ require_once '_files/NoArgTestCaseTest.php';
 require_once '_files/SetupFailure.php';
 require_once '_files/Success.php';
 require_once '_files/TearDownFailure.php';
+require_once '_files/ThrowExceptionTestCase.php';
+require_once '_files/ThrowNoExceptionTestCase.php';
 require_once '_files/TornDown.php';
 require_once '_files/TornDown2.php';
 require_once '_files/TornDown3.php';
@@ -168,6 +170,39 @@ class Framework_TestCaseTest extends PHPUnit_Framework_TestCase
         $test->run();
 
         $this->assertTrue($test->wasRun);
+    }
+
+    public function testException()
+    {
+        $test = new ThrowExceptionTestCase('test');
+        $test->setExpectedException('Exception');
+
+        $result = $test->run();
+
+        $this->assertEquals(1, count($result));
+        $this->assertTrue($result->wasSuccessful());
+    }
+
+    public function testNoException()
+    {
+        $test = new ThrowNoExceptionTestCase('test');
+        $test->setExpectedException('Exception');
+
+        $result = $test->run();
+
+        $this->assertEquals(1, $result->failureCount());
+        $this->assertEquals(1, count($result));
+    }
+
+    public function testWrongException()
+    {
+        $test = new ThrowExceptionTestCase('test');
+        $test->setExpectedException('RuntimeException');
+
+        $result = $test->run();
+
+        $this->assertEquals(1, $result->errorCount());
+        $this->assertEquals(1, count($result));
     }
 
     protected function verifyError(PHPUnit_Framework_TestCase $test)

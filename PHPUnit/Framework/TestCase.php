@@ -132,6 +132,14 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
     protected $data = array();
 
     /**
+     * The name of the expected Exception.
+     *
+     * @var    mixed
+     * @access protected
+     */
+    protected $expectedException = NULL;
+
+    /**
      * Fixture that is shared between the tests of a test suite.
      *
      * @var    mixed
@@ -231,6 +239,28 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
     public function getName()
     {
         return $this->name;
+    }
+
+    /**
+     * @return string
+     * @access public
+     * @since  Method available since Release 3.2.0
+     */
+    public function getExpectedException()
+    {
+        return $this->expectedException;
+    }
+
+    /**
+     * @param  mixed  $exceptionName
+     * @access public
+     * @since  Method available since Release 3.2.0
+     */
+    public function setExpectedException($exceptionName)
+    {
+        if ((is_string($exceptionName) && class_exists($exceptionName, FALSE)) || $exceptionName === NULL) {
+            $this->expectedException = $exceptionName;
+        }
     }
 
     /**
@@ -378,10 +408,25 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
             $this->fail($e->getMessage());
         }
 
-        if (empty($this->data)) {
-            $method->invoke($this);
-        } else {
-            $method->invokeArgs($this, $this->data);
+        try {
+            if (empty($this->data)) {
+                $method->invoke($this);
+            } else {
+                $method->invokeArgs($this, $this->data);
+            }
+        }
+
+        catch (Exception $e) {
+            if ($this->expectedException !== NULL &&
+                $e instanceof $this->expectedException) {
+                return;
+            } else {
+                throw $e;
+            }
+        }
+
+        if ($this->expectedException !== NULL) {
+            $this->fail('Expected exception ' . $this->expectedException);
         }
     }
 
