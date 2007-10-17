@@ -49,6 +49,12 @@ require_once 'PHPUnit/Util/Filter.php';
 
 PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
 
+trigger_error(
+  "Class PHPUnit_Extensions_ExceptionTestCase is deprecated. ".
+  "It will be removed in PHPUnit 4.0. ".
+  "The functionality has been merged into PHPUnit_Framework_TestCase."
+);
+
 /**
  * A TestCase that expects a specified Exception to be thrown.
  *
@@ -63,57 +69,5 @@ PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
  */
 abstract class PHPUnit_Extensions_ExceptionTestCase extends PHPUnit_Framework_TestCase
 {
-    /**
-     * The name of the expected Exception.
-     *
-     * @var    mixed
-     * @access protected
-     */
-    protected $expectedException = NULL;
-
-    /**
-     * @return string
-     * @access public
-     * @since  Method available since Release 2.2.0
-     */
-    public function getExpectedException()
-    {
-        return $this->expectedException;
-    }
-
-    /**
-     * @param  mixed  $exceptionName
-     * @access public
-     * @since  Method available since Release 2.2.0
-     */
-    public function setExpectedException($exceptionName)
-    {
-        if ((is_string($exceptionName) && class_exists($exceptionName, FALSE)) || $exceptionName === NULL) {
-            $this->expectedException = $exceptionName;
-        }
-    }
-
-    /**
-     * @access protected
-     */
-    protected function runTest()
-    {
-        try {
-            parent::runTest();
-        }
-
-        catch (Exception $e) {
-            if ($this->expectedException !== NULL &&
-                $e instanceof $this->expectedException) {
-                return;
-            } else {
-                throw $e;
-            }
-        }
-
-        if ($this->expectedException !== NULL) {
-            $this->fail('Expected exception ' . $this->expectedException);
-        }
-    }
 }
 ?>

@@ -48,8 +48,6 @@ require_once 'PHPUnit/Util/Filter.php';
 
 PHPUnit_Util_Filter::addFileToFilter(__FILE__);
 
-require_once 'PHPUnit/Extensions/ExceptionTestCase.php';
-
 /**
  *
  *
@@ -62,7 +60,7 @@ require_once 'PHPUnit/Extensions/ExceptionTestCase.php';
  * @link       http://www.phpunit.de/
  * @since      Class available since Release 2.0.0
  */
-class ThrowExceptionTestCase extends PHPUnit_Extensions_ExceptionTestCase
+class ThrowExceptionTestCase extends PHPUnit_Framework_TestCase
 {
     public function test()
     {
