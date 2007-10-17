@@ -611,13 +611,14 @@ class PHPUnit_Framework_Assert
     public static function assertTrue($condition, $message = '')
     {
         if ($condition !== TRUE) {
-            throw new PHPUnit_Framework_AssertionFailedError(
+            throw new PHPUnit_Framework_ExpectationFailedException(
               sprintf(
-                '%sFailed asserting that %s is true.',
+                'Failed asserting that %s is true.',
 
-                $message != '' ? $message . "\n" : '',
                 PHPUnit_Util_Type::toString($condition)
-              )
+              ),
+              NULL,
+              $message
             );
         }
     }
@@ -634,13 +635,14 @@ class PHPUnit_Framework_Assert
     public static function assertFalse($condition, $message = '')
     {
         if ($condition !== FALSE) {
-            throw new PHPUnit_Framework_AssertionFailedError(
+            throw new PHPUnit_Framework_ExpectationFailedException(
               sprintf(
-                '%sFailed asserting that %s is false.',
+                'Failed asserting that %s is false.',
 
-                $message != '' ? $message . "\n" : '',
                 PHPUnit_Util_Type::toString($condition)
-              )
+              ),
+              NULL,
+              $message
             );
         }
     }
