@@ -44,6 +44,7 @@
  * @since      File available since Release 3.2.0
  */
 
+require_once 'PHPUnit/Util/Log/PMD/Rule.php';
 require_once 'PHPUnit/Util/Filter.php';
 
 PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
@@ -64,10 +65,4 @@ PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
 abstract class PHPUnit_Util_Log_PMD_Rule_Function extends PHPUnit_Util_Log_PMD_Rule
 {
 }
-
-require_once 'PHPUnit/Util/Log/PMD/Rule/Function/CodeCoverage.php';
-require_once 'PHPUnit/Util/Log/PMD/Rule/Function/CyclomaticComplexity.php';
-require_once 'PHPUnit/Util/Log/PMD/Rule/Function/ExcessiveMethodLength.php';
-require_once 'PHPUnit/Util/Log/PMD/Rule/Function/ExcessiveParameterList.php';
-require_once 'PHPUnit/Util/Log/PMD/Rule/Function/NPathComplexity.php';
 ?>
