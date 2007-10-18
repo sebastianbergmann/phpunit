@@ -50,6 +50,7 @@ require_once 'PHPUnit/Runner/BaseTestRunner.php';
 require_once 'PHPUnit/Util/Class.php';
 require_once 'PHPUnit/Util/Fileloader.php';
 require_once 'PHPUnit/Util/Filter.php';
+require_once 'PHPUnit/Util/Group.php';
 require_once 'PHPUnit/Util/TestSuiteIterator.php';
 
 PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
@@ -214,26 +215,18 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
             return;
         }
 
-        $className = $theClass->getName();
-        $names     = array();
-
-        $docComment  = $theClass->getDocComment();
-        $classGroups = array();
-
-        if (preg_match_all('/@group[\s]+([\.\w]+)/', $docComment, $matches)) {
-            $classGroups = $matches[1];
-        }
+        $className   = $theClass->getName();
+        $names       = array();
+        $classGroups = PHPUnit_Util_Group::getGroups($theClass);
 
         foreach ($theClass->getMethods() as $method) {
             if (strpos($method->getDeclaringClass()->getName(), 'PHPUnit_') !== 0) {
-                $docComment = $method->getDocComment();
-                $groups     = $classGroups;
-
-                if (preg_match_all('/@group[\s]+([\.\w]+)/', $docComment, $matches)) {
-                    $groups = array_merge($groups, $matches[1]);
-                }
-
-                $this->addTestMethod($method, $groups, $names, $theClass);
+                $this->addTestMethod(
+                  $method,
+                  PHPUnit_Util_Group::getGroups($method, $classGroups),
+                  $names,
+                  $theClass
+                );
             }
         }
 
