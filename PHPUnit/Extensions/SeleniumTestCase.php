@@ -47,6 +47,7 @@
 require_once 'PHPUnit/Framework.php';
 require_once 'PHPUnit/Util/Log/Database.php';
 require_once 'PHPUnit/Util/Filter.php';
+require_once 'PHPUnit/Util/Group.php';
 
 PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
 
@@ -201,21 +202,26 @@ abstract class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_Tes
      */
     public static function suite($className)
     {
-        $suite = new PHPUnit_Framework_TestSuite;
-
-        $class     = new ReflectionClass($className);
-        $className = $class->getName();
-
+        $suite            = new PHPUnit_Framework_TestSuite;
+        $class            = new ReflectionClass($className);
+        $classGroups      = PHPUnit_Util_Group::getGroups($class);
         $staticProperties = $class->getStaticProperties();
 
         foreach ($class->getMethods() as $method) {
             if (PHPUnit_Framework_TestSuite::isPublicTestMethod($method)) {
+                $groups = PHPUnit_Util_Group::getGroups($method, $classGroups);
+
                 if (isset($staticProperties['browsers'])) {
                     foreach ($staticProperties['browsers'] as $browser) {
-                        $suite->addTest(new $className($method->getName(), $browser));
+                        $suite->addTest(
+                          new $className($method->getName(), $browser),
+                          $groups
+                        );
                     }
                 } else {
-                    $suite->addTest(new $className($method->getName()));
+                    $suite->addTest(
+                      new $className($method->getName()), $groups
+                    );
                 }
             }
         }
