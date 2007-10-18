@@ -296,6 +296,23 @@ abstract class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_Tes
     }
 
     /**
+     * Returns a string representation of the test case.
+     *
+     * @return string
+     * @access public
+     */
+    public function toString()
+    {
+        $buffer = parent::toString();
+
+        if (!empty($this->browserName)) {
+            $buffer .= ' with browser ' . $this->browserName;
+        }
+
+        return $buffer;
+    }
+
+    /**
      * @return string
      * @access public
      */
@@ -342,15 +359,6 @@ abstract class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_Tes
         }
 
         $this->autoStop = $autoStop;
-    }
-
-    /**
-     * @return string
-     * @access public
-     */
-    public function getBrowserName()
-    {
-        return $this->browserName;
     }
 
     /**
