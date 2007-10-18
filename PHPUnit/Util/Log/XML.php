@@ -170,12 +170,18 @@ class PHPUnit_Util_Log_XML extends PHPUnit_Util_Printer implements PHPUnit_Frame
         $error = $this->document->createElement('error');
         $error->setAttribute('type', get_class($e));
 
+        if ($test instanceof PHPUnit_Framework_SelfDescribing) {
+            $buffer = $test->toString() . "\n";
+        } else {
+            $buffer = '';
+        }
+
+        $buffer .= PHPUnit_Framework_TestFailure::exceptionToString($e) . "\n" .
+                   PHPUnit_Util_Filter::getFilteredStacktrace($e, FALSE);
+
         $error->appendChild(
           $this->document->createCDATASection(
-            utf8_encode(
-              PHPUnit_Framework_TestFailure::exceptionToString($e) . "\n" .
-              PHPUnit_Util_Filter::getFilteredStacktrace($e, FALSE)
-            )
+            utf8_encode($buffer)
           )
         );
 
@@ -197,12 +203,18 @@ class PHPUnit_Util_Log_XML extends PHPUnit_Util_Printer implements PHPUnit_Frame
         $failure = $this->document->createElement('failure');
         $failure->setAttribute('type', get_class($e));
 
+        if ($test instanceof PHPUnit_Framework_SelfDescribing) {
+            $buffer = $test->toString() . "\n";
+        } else {
+            $buffer = '';
+        }
+
+        $buffer .= PHPUnit_Framework_TestFailure::exceptionToString($e) . "\n" .
+                   PHPUnit_Util_Filter::getFilteredStacktrace($e, FALSE);
+
         $failure->appendChild(
           $this->document->createCDATASection(
-            utf8_encode(
-              PHPUnit_Framework_TestFailure::exceptionToString($e) . "\n" .
-              PHPUnit_Util_Filter::getFilteredStacktrace($e, FALSE)
-            )
+            utf8_encode($buffer)
           )
         );
 
