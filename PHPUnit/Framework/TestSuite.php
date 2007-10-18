@@ -468,7 +468,9 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
      */
     public static function createTest(ReflectionClass $theClass, $name)
     {
-        $className = $theClass->getName();
+        $className  = $theClass->getName();
+        $method     = new ReflectionMethod($className, $name);
+        $docComment = $method->getDocComment();
 
         if (!$theClass->isInstantiable()) {
             return self::warning(
@@ -500,9 +502,6 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
 
                 if (count($parameters) == 2) {
                     try {
-                        $method     = new ReflectionMethod($className, $name);
-                        $docComment = $method->getDocComment();
-
                         if (preg_match('/@dataProvider[\s]+([\.\w]+)/', $docComment, $matches)) {
                             $dataProviderMethod = new ReflectionMethod($className, $matches[1]);
                             $data = $dataProviderMethod->invoke(NULL);
@@ -532,6 +531,11 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
                     );
                 }
             }
+        }
+
+        if ($test instanceof PHPUnit_Framework_TestCase &&
+            preg_match('/@expectedException[\s]+([\.\w]+)/', $docComment, $matches)) {
+            $test->setExpectedException($matches[1]);
         }
 
         return $test;
