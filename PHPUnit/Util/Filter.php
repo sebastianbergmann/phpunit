@@ -79,6 +79,7 @@ class PHPUnit_Util_Filter
       'PHPUNIT' => array(),
       'TESTS' => array(),
       'PEAR' => array(
+        'Console/Getopt.php',
         'Image/GraphViz.php',
         'Log/composite.php',
         'Log/console.php',
@@ -96,8 +97,16 @@ class PHPUnit_Util_Filter
         'Log/syslog.php',
         'Log/win.php',
         'Log.php',
+        'PEAR/Installer/Role/Common.php',
+        'PEAR/Installer/Role.php',
         'PEAR/Config.php',
-        'PEAR.php'
+        'PEAR/DependencyDB.php',
+        'PEAR/Registry.php',
+        'PEAR/Remote.php',
+        'PEAR/RunTest.php',
+        'PEAR/XMLParser.php',
+        'PEAR.php',
+        'System.php'
       )
     );
 
