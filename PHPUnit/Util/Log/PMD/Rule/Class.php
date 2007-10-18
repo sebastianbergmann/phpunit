@@ -44,6 +44,7 @@
  * @since      File available since Release 3.2.0
  */
 
+require_once 'PHPUnit/Util/Log/PMD/Rule.php';
 require_once 'PHPUnit/Util/Filter.php';
 
 PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
@@ -63,10 +64,4 @@ PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
 abstract class PHPUnit_Util_Log_PMD_Rule_Class extends PHPUnit_Util_Log_PMD_Rule
 {
 }
-
-require_once 'PHPUnit/Util/Log/PMD/Rule/Class/DepthOfInheritanceTree.php';
-require_once 'PHPUnit/Util/Log/PMD/Rule/Class/EfferentCoupling.php';
-require_once 'PHPUnit/Util/Log/PMD/Rule/Class/ExcessiveClassLength.php';
-require_once 'PHPUnit/Util/Log/PMD/Rule/Class/ExcessivePublicCount.php';
-require_once 'PHPUnit/Util/Log/PMD/Rule/Class/TooManyFields.php';
 ?>

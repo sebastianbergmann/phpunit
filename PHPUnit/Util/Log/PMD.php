@@ -45,11 +45,14 @@
  */
 
 require_once 'PHPUnit/Runner/Version.php';
-require_once 'PHPUnit/Util/Log/PMD/Rule.php';
 require_once 'PHPUnit/Util/Metrics/Project.php';
+require_once 'PHPUnit/Util/Log/PMD/Rule/Class.php';
+require_once 'PHPUnit/Util/Log/PMD/Rule/File.php';
+require_once 'PHPUnit/Util/Log/PMD/Rule/Function.php';
 require_once 'PHPUnit/Util/Class.php';
 require_once 'PHPUnit/Util/CodeCoverage.php';
 require_once 'PHPUnit/Util/Filter.php';
+require_once 'PHPUnit/Util/FilterIterator.php';
 require_once 'PHPUnit/Util/Printer.php';
 
 PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
@@ -89,35 +92,7 @@ class PHPUnit_Util_Log_PMD extends PHPUnit_Util_Printer
     public function __construct($out = NULL, array $configuration = array())
     {
         parent::__construct($out);
-
-        $classes = get_declared_classes();
-
-        foreach ($classes as $className) {
-            $class = new ReflectionClass($className);
-
-            if (!$class->isAbstract() && $class->isSubclassOf('PHPUnit_Util_Log_PMD_Rule')) {
-                $rule = explode('_', $className);
-                $rule = $rule[count($rule)-1];
-
-                if (isset($configuration[$className])) {
-                    $object = new $className($configuration[$className]);
-                } else {
-                    $object = new $className;
-                }
-
-                if ($class->isSubclassOf('PHPUnit_Util_Log_PMD_Rule_File')) {
-                    $this->rules['file'][$rule] = $object;
-                }
-
-                else if ($class->isSubclassOf('PHPUnit_Util_Log_PMD_Rule_Class')) {
-                    $this->rules['class'][$rule] = $object;
-                }
-
-                else if ($class->isSubclassOf('PHPUnit_Util_Log_PMD_Rule_Function')) {
-                    $this->rules['function'][$rule] = $object;
-                }
-            }
-        }
+        $this->loadClasses();
     }
 
     /**
@@ -279,6 +254,62 @@ class PHPUnit_Util_Log_PMD extends PHPUnit_Util_Printer
                 );
 
                 $this->added = TRUE;
+            }
+        }
+    }
+
+    protected function loadClasses()
+    {
+        $basedir = dirname(__FILE__) . DIRECTORY_SEPARATOR .
+                   'PMD' . DIRECTORY_SEPARATOR . 'Rule';
+
+        $dirs = array(
+          $basedir . DIRECTORY_SEPARATOR . 'Class',
+          $basedir . DIRECTORY_SEPARATOR . 'File',
+          $basedir . DIRECTORY_SEPARATOR . 'Function'
+        );
+
+        foreach ($dirs as $dir) {
+            if (file_exists($dir)) {
+                $iterator = new PHPUnit_Util_FilterIterator(
+                  new RecursiveIteratorIterator(
+                    new RecursiveDirectoryIterator($dir)
+                  ),
+                  '.php'
+                );
+
+                foreach ($iterator as $file) {
+                    include_once $file->getPathname();
+                }
+            }
+        }
+
+        $classes = get_declared_classes();
+
+        foreach ($classes as $className) {
+            $class = new ReflectionClass($className);
+
+            if (!$class->isAbstract() && $class->isSubclassOf('PHPUnit_Util_Log_PMD_Rule')) {
+                $rule = explode('_', $className);
+                $rule = $rule[count($rule)-1];
+
+                if (isset($configuration[$className])) {
+                    $object = new $className($configuration[$className]);
+                } else {
+                    $object = new $className;
+                }
+
+                if ($class->isSubclassOf('PHPUnit_Util_Log_PMD_Rule_File')) {
+                    $this->rules['file'][$rule] = $object;
+                }
+
+                else if ($class->isSubclassOf('PHPUnit_Util_Log_PMD_Rule_Class')) {
+                    $this->rules['class'][$rule] = $object;
+                }
+
+                else if ($class->isSubclassOf('PHPUnit_Util_Log_PMD_Rule_Function')) {
+                    $this->rules['function'][$rule] = $object;
+                }
             }
         }
     }
