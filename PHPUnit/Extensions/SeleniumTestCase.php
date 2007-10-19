@@ -813,7 +813,7 @@ abstract class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_Tes
      */
     public function assertElementContainsText($locator, $text)
     {
-        $this->assertContains($text, $this->getText($locator));
+        $this->assertContains($text, $this->getValue($locator));
     }
 
     /**
@@ -825,7 +825,7 @@ abstract class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_Tes
      */
     public function assertElementNotContainsText($locator, $text)
     {
-        $this->assertNotContains($text, $this->getText($locator));
+        $this->assertNotContains($text, $this->getValue($locator));
     }
 
     /**
