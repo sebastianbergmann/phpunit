@@ -101,13 +101,13 @@ class PHPUnit_Util_Report_Coverage_Node_File extends PHPUnit_Util_Report_Coverag
      * @var    integer
      * @access protected
      */
-    protected $numExecutableLines = -1;
+    protected $numExecutableLines = 0;
 
     /**
      * @var    integer
      * @access protected
      */
-    protected $numExecutedLines = -1;
+    protected $numExecutedLines = 0;
 
     /**
      * Constructor.
@@ -130,11 +130,13 @@ class PHPUnit_Util_Report_Coverage_Node_File extends PHPUnit_Util_Report_Coverag
 
         $this->codeLines     = $this->highlightFile($path);
         $this->executedLines = $executedLines;
+
+        $this->countLines();
     }
 
     /**
      * @param  PHPUnit_Util_Report_Test_Node_TestSuite $testSuite
-     * @param  array                                    $files
+     * @param  array                                   $files
      * @access protected
      * @static
      */
@@ -232,10 +234,6 @@ class PHPUnit_Util_Report_Coverage_Node_File extends PHPUnit_Util_Report_Coverag
      */
     public function getNumExecutableLines()
     {
-        if ($this->numExecutableLines == -1) {
-            $this->countLines();
-        }
-
         return $this->numExecutableLines;
     }
 
@@ -247,35 +245,7 @@ class PHPUnit_Util_Report_Coverage_Node_File extends PHPUnit_Util_Report_Coverag
      */
     public function getNumExecutedLines()
     {
-        if ($this->numExecutedLines == -1) {
-            $this->countLines();
-        }
-
         return $this->numExecutedLines;
-    }
-
-    /**
-     * Counts the executable and executed lines.
-     *
-     * @access protected
-     */
-    protected function countLines()
-    {
-        $this->numExecutableLines = 0;
-        $this->numExecutedLines = 0;
-
-        foreach ($this->executedLines as $line) {
-            // Array: Line is executable and was executed.
-            if (is_array($line)) {
-                $this->numExecutableLines++;
-                $this->numExecutedLines++;
-            }
-
-            // -1: Line is executable and was not executed.
-            else if ($line == -1) {
-                $this->numExecutableLines++;
-            }
-        }
     }
 
     /**
@@ -293,55 +263,49 @@ class PHPUnit_Util_Report_Coverage_Node_File extends PHPUnit_Util_Report_Coverag
           'coverage_file.html'
         );
 
-        $i           = 1;
-        $lines       = '';
-        $ignoreStart = -1;
+        $i      = 1;
+        $lines  = '';
+        $ignore = FALSE;
 
         foreach ($this->codeLines as $line) {
             if (strpos($line, '@codeCoverageIgnoreStart') !== FALSE) {
-                $ignoreStart = $i;
+                $ignore = TRUE;
             }
 
             else if (strpos($line, '@codeCoverageIgnoreEnd') !== FALSE) {
-                $ignoreStart = -1;
+                $ignore = FALSE;
             }
 
             $css = '';
 
-            if ($ignoreStart == -1) {
-                if (isset($this->executedLines[$i])) {
-                    $count = '';
+            if (!$ignore && isset($this->executedLines[$i])) {
+                $count = '';
 
-                    // Array: Line is executable and was executed.
-                    // count(Array) = Number of tests that hit this line.
-                    if (is_array($this->executedLines[$i])) {
-                        $color = 'lineCov';
-                        $count = sprintf('%8d', count($this->executedLines[$i]));
-                    }
-
-                    // -1: Line is executable and was not executed.
-                    else if ($this->executedLines[$i] == -1) {
-                        $color = 'lineNoCov';
-                        $count = sprintf('%8d', 0);
-                    }
-
-                    // -2: Line is dead code.
-                    else {
-                        $color = 'lineDeadCode';
-                        $count = '        ';
-                    }
-
-                    $css = sprintf(
-                      '<span class="%s">       %s : ',
-
-                      $color,
-                      $count
-                    );
+                // Array: Line is executable and was executed.
+                // count(Array) = Number of tests that hit this line.
+                if (is_array($this->executedLines[$i])) {
+                    $color = 'lineCov';
+                    $count = sprintf('%8d', count($this->executedLines[$i]));
                 }
-            }
 
-            else if ($i > $ignoreStart) {
-                $this->numExecutedLines++;
+                // -1: Line is executable and was not executed.
+                else if ($this->executedLines[$i] == -1) {
+                    $color = 'lineNoCov';
+                    $count = sprintf('%8d', 0);
+                }
+
+                // -2: Line is dead code.
+                else {
+                    $color = 'lineDeadCode';
+                    $count = '        ';
+                }
+
+                $css = sprintf(
+                  '<span class="%s">       %s : ',
+
+                  $color,
+                  $count
+                );
             }
 
             $lines .= sprintf(
@@ -363,6 +327,46 @@ class PHPUnit_Util_Report_Coverage_Node_File extends PHPUnit_Util_Report_Coverag
 
         $cleanId = PHPUnit_Util_Filesystem::getSafeFilename($this->getId());
         $template->renderTo($target . $cleanId . '.html');
+    }
+
+    /**
+     * Counts the executable and executed lines.
+     *
+     * @access protected
+     */
+    protected function countLines()
+    {
+        $i           = 1;
+        $ignoreStart = -1;
+
+        foreach ($this->codeLines as $line) {
+            if (strpos($line, '@codeCoverageIgnoreStart') !== FALSE) {
+                $ignoreStart = $line;
+            }
+
+            else if (strpos($line, '@codeCoverageIgnoreEnd') !== FALSE) {
+                $ignoreStart = -1;
+            }
+
+            if (isset($this->executedLines[$i])) {
+                // Array: Line is executable and was executed.
+                if (is_array($this->executedLines[$i])) {
+                    $this->numExecutableLines++;
+                    $this->numExecutedLines++;
+                }
+
+                // -1: Line is executable and was not executed.
+                else if ($this->executedLines[$i] == -1) {
+                    $this->numExecutableLines++;
+
+                    if ($ignoreStart != -1 && $line > $ignoreStart) {
+                        $this->numExecutedLines++;
+                    }
+                }
+            }
+
+            $i++;
+        }
     }
 
     /**
