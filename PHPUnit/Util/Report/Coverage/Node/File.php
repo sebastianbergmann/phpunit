@@ -293,40 +293,55 @@ class PHPUnit_Util_Report_Coverage_Node_File extends PHPUnit_Util_Report_Coverag
           'coverage_file.html'
         );
 
-        $i     = 1;
-        $lines = '';
+        $i           = 1;
+        $lines       = '';
+        $ignoreStart = -1;
 
         foreach ($this->codeLines as $line) {
+            if (strpos($line, '@codeCoverageIgnoreStart') !== FALSE) {
+                $ignoreStart = $i;
+            }
+
+            else if (strpos($line, '@codeCoverageIgnoreEnd') !== FALSE) {
+                $ignoreStart = -1;
+            }
+
             $css = '';
 
-            if (isset($this->executedLines[$i])) {
-                $count = '';
+            if ($ignoreStart == -1) {
+                if (isset($this->executedLines[$i])) {
+                    $count = '';
 
-                // Array: Line is executable and was executed.
-                // count(Array) = Number of tests that hit this line.
-                if (is_array($this->executedLines[$i])) {
-                    $color = 'lineCov';
-                    $count = sprintf('%8d', count($this->executedLines[$i]));
+                    // Array: Line is executable and was executed.
+                    // count(Array) = Number of tests that hit this line.
+                    if (is_array($this->executedLines[$i])) {
+                        $color = 'lineCov';
+                        $count = sprintf('%8d', count($this->executedLines[$i]));
+                    }
+
+                    // -1: Line is executable and was not executed.
+                    else if ($this->executedLines[$i] == -1) {
+                        $color = 'lineNoCov';
+                        $count = sprintf('%8d', 0);
+                    }
+
+                    // -2: Line is dead code.
+                    else {
+                        $color = 'lineDeadCode';
+                        $count = '        ';
+                    }
+
+                    $css = sprintf(
+                      '<span class="%s">       %s : ',
+
+                      $color,
+                      $count
+                    );
                 }
+            }
 
-                // -1: Line is executable and was not executed.
-                else if ($this->executedLines[$i] == -1) {
-                    $color = 'lineNoCov';
-                    $count = sprintf('%8d', 0);
-                }
-
-                // -2: Line is dead code.
-                else {
-                    $color = 'lineDeadCode';
-                    $count = '        ';
-                }
-
-                $css = sprintf(
-                  '<span class="%s">       %s : ',
-
-                  $color,
-                  $count
-                );
+            else if ($i > $ignoreStart) {
+                $this->numExecutedLines++;
             }
 
             $lines .= sprintf(
