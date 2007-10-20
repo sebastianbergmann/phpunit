@@ -367,7 +367,7 @@ class PHPUnit_Util_Filter
         }
 
         foreach ($e->getTrace() as $frame) {
-            if (!self::$filter || (isset($frame['file']) && !self::isFiltered($frame['file'], $filterTests, $filterPHPUnit))) {
+            if (!self::$filter || (isset($frame['file']) && !self::isFiltered($frame['file'], $filterTests, $filterPHPUnit, TRUE))) {
                 if ($asString === TRUE) {
                     $filteredStacktrace .= sprintf(
                       "%s:%s\n",
@@ -441,17 +441,18 @@ class PHPUnit_Util_Filter
      * @param  string  $filename
      * @param  boolean $filterTests
      * @param  boolean $filterPHPUnit
+     * @param  boolean $ignoreWhitelist
      * @return boolean
      * @access protected
      * @static
      * @since  Method available since Release 2.1.3
      */
-    protected static function isFiltered($filename, $filterTests = TRUE, $filterPHPUnit = TRUE)
+    protected static function isFiltered($filename, $filterTests = TRUE, $filterPHPUnit = TRUE, $ignoreWhitelist = FALSE)
     {
         $filename = self::getCanonicalFilename($filename);
 
         // Use blacklist.
-        if (empty(self::$whitelistedFiles)) {
+        if ($ignoreWhitelist || empty(self::$whitelistedFiles)) {
             $blacklistedFiles = array_merge(
               self::$blacklistedFiles['DEFAULT'],
               self::$blacklistedFiles['PEAR']
