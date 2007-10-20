@@ -504,6 +504,8 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
 
                         $test->addTest($_test);
                     }
+                } else {
+                    $test = new $className;
                 }
             }
         }
