@@ -50,7 +50,7 @@ require_once 'PHPUnit/Runner/BaseTestRunner.php';
 require_once 'PHPUnit/Util/Class.php';
 require_once 'PHPUnit/Util/Fileloader.php';
 require_once 'PHPUnit/Util/Filter.php';
-require_once 'PHPUnit/Util/Group.php';
+require_once 'PHPUnit/Util/Test.php';
 require_once 'PHPUnit/Util/TestSuiteIterator.php';
 
 PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
@@ -217,13 +217,13 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
 
         $className   = $theClass->getName();
         $names       = array();
-        $classGroups = PHPUnit_Util_Group::getGroups($theClass);
+        $classGroups = PHPUnit_Util_Test::getGroups($theClass);
 
         foreach ($theClass->getMethods() as $method) {
             if (strpos($method->getDeclaringClass()->getName(), 'PHPUnit_') !== 0) {
                 $this->addTestMethod(
                   $method,
-                  PHPUnit_Util_Group::getGroups($method, $classGroups),
+                  PHPUnit_Util_Test::getGroups($method, $classGroups),
                   $names,
                   $theClass
                 );
@@ -487,31 +487,23 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
 
             // TestCase($name, $data)
             else {
-                try {
-                    if (preg_match('/@dataProvider[\s]+([\.\w]+)/', $docComment, $matches)) {
-                        $dataProviderMethod = new ReflectionMethod($className, $matches[1]);
-                        $data = $dataProviderMethod->invoke(NULL);
+                $data = PHPUnit_Util_Test::getProvidedData($method);
 
-                        if (is_array($data) || $data instanceof Iterator) {
-                             $test = new PHPUnit_Framework_TestSuite(
-                               $className . '::' . $name
-                             );
+                if (is_array($data) || $data instanceof Iterator) {
+                     $test = new PHPUnit_Framework_TestSuite(
+                       $className . '::' . $name
+                     );
 
-                            foreach ($data as $_data) {
-                                $_test = new $className($name, $_data);
+                    foreach ($data as $_data) {
+                        $_test = new $className($name, $_data);
 
-                                if ($_test instanceof PHPUnit_Framework_TestCase &&
-                                    isset($expectedException)) {
-                                    $test->setExpectedException($expectedException);
-                                }
-
-                                $test->addTest($_test);
-                            }
+                        if ($_test instanceof PHPUnit_Framework_TestCase &&
+                            isset($expectedException)) {
+                            $test->setExpectedException($expectedException);
                         }
-                    }
-                }
 
-                catch (ReflectionException $e) {
+                        $test->addTest($_test);
+                    }
                 }
             }
         }

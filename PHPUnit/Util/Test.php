@@ -131,5 +131,54 @@ class PHPUnit_Util_Test
 
         return PHPUnit_Runner_BaseTestRunner::STATUS_PASSED;
     }
+
+    /**
+     * Returns the groups for a test class or method.
+     *
+     * @param  Reflector $reflector
+     * @param  array     $groups
+     * @return array
+     * @access public
+     * @static
+     * @since  Method available since Release 3.2.0
+     */
+    public static function getGroups(Reflector $reflector, array $groups = array())
+    {
+        $docComment = $reflector->getDocComment();
+
+        if (preg_match_all('/@group[\s]+([\.\w]+)/', $docComment, $matches)) {
+            $groups = array_merge($groups, $matches[1]);
+        }
+
+        return $groups;
+    }
+
+    /**
+     * Returns the provided data for a method.
+     *
+     * @param  ReflectionMethod $method
+     * @return array
+     * @access public
+     * @static
+     * @since  Method available since Release 3.2.0
+     */
+    public static function getProvidedData(ReflectionMethod $method)
+    {
+        $docComment = $method->getDocComment();
+
+        if (preg_match('/@dataProvider[\s]+([\.\w]+)/', $docComment, $matches)) {
+            try {
+                $dataProviderMethod = new ReflectionMethod(
+                  $method->getDeclaringClass()->getName(),
+                  $matches[1]
+                );
+
+                return $dataProviderMethod->invoke(NULL);
+            }
+
+            catch (ReflectionException $e) {
+            }
+        }
+    }
 }
 ?>
