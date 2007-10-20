@@ -467,11 +467,12 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
 
         if (!$theClass->isInstantiable()) {
             return self::warning(
-              sprintf(
-                'Cannot instantiate class "%s".',
-                $theClass->getName()
-              )
+              sprintf('Cannot instantiate class "%s".', $className)
             );
+        }
+
+        if (preg_match('/@expectedException[\s]+([\.\w]+)/', $docComment, $matches)) {
+            $expectedException = $matches[1];
         }
 
         $constructor = $theClass->getConstructor();
@@ -479,56 +480,48 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
         if ($constructor !== NULL) {
             $parameters = $constructor->getParameters();
 
-            if (count($parameters) == 0) {
-                $test = $theClass->newInstance();
-
-                if ($test instanceof PHPUnit_Framework_TestCase) {
-                    $test->setName($name);
-                }
+            // TestCase() or TestCase($name)
+            if (count($parameters) < 2) {
+                $test = new $className;
             }
 
+            // TestCase($name, $data)
             else {
-                if (count($parameters) >= 1 &&
-                    $parameters[0]->getClass() === NULL) {
-                    $test = $theClass->newInstance($name);
-                }
+                try {
+                    if (preg_match('/@dataProvider[\s]+([\.\w]+)/', $docComment, $matches)) {
+                        $dataProviderMethod = new ReflectionMethod($className, $matches[1]);
+                        $data = $dataProviderMethod->invoke(NULL);
 
-                if (count($parameters) == 2) {
-                    try {
-                        if (preg_match('/@dataProvider[\s]+([\.\w]+)/', $docComment, $matches)) {
-                            $dataProviderMethod = new ReflectionMethod($className, $matches[1]);
-                            $data = $dataProviderMethod->invoke(NULL);
+                        if (is_array($data) || $data instanceof Iterator) {
+                             $test = new PHPUnit_Framework_TestSuite(
+                               $className . '::' . $name
+                             );
 
-                            if (is_array($data) || $data instanceof Iterator) {
-                                 $test = new PHPUnit_Framework_TestSuite(
-                                   $className . '::' . $name
-                                 );
+                            foreach ($data as $_data) {
+                                $_test = new $className($name, $_data);
 
-                                foreach ($data as $_data) {
-                                    $test->addTest(new $className($name, $_data));
+                                if ($_test instanceof PHPUnit_Framework_TestCase &&
+                                    isset($expectedException)) {
+                                    $test->setExpectedException($expectedException);
                                 }
+
+                                $test->addTest($_test);
                             }
                         }
                     }
-
-                    catch (ReflectionException $e) {
-                    }
                 }
 
-                else {
-                    return self::warning(
-                      sprintf(
-                        'Constructor of class "%s" is not TestCase($name, $data), TestCase($name), or TestCase().',
-                        $theClass->getName()
-                      )
-                    );
+                catch (ReflectionException $e) {
                 }
             }
         }
 
-        if ($test instanceof PHPUnit_Framework_TestCase &&
-            preg_match('/@expectedException[\s]+([\.\w]+)/', $docComment, $matches)) {
-            $test->setExpectedException($matches[1]);
+        if ($test instanceof PHPUnit_Framework_TestCase) {
+            $test->setName($name);
+
+            if (isset($expectedException)) {
+                $test->setExpectedException($expectedException);
+            }
         }
 
         return $test;
