@@ -47,7 +47,7 @@
 require_once 'PHPUnit/Framework.php';
 require_once 'PHPUnit/Util/Log/Database.php';
 require_once 'PHPUnit/Util/Filter.php';
-require_once 'PHPUnit/Util/Group.php';
+require_once 'PHPUnit/Util/Test.php';
 
 PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
 
@@ -144,9 +144,9 @@ abstract class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_Tes
      * @throws InvalidArgumentException
      * @access public
      */
-    public function __construct($name = NULL, array $browser = array())
+    public function __construct($name = NULL, array $data = array(), array $browser = array())
     {
-        parent::__construct($name);
+        parent::__construct($name, $data);
 
         if (isset($browser['name'])) {
             if (!is_string($browser['name'])) {
@@ -204,24 +204,52 @@ abstract class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_Tes
     {
         $suite            = new PHPUnit_Framework_TestSuite;
         $class            = new ReflectionClass($className);
-        $classGroups      = PHPUnit_Util_Group::getGroups($class);
+        $classGroups      = PHPUnit_Util_Test::getGroups($class);
         $staticProperties = $class->getStaticProperties();
 
         foreach ($class->getMethods() as $method) {
             if (PHPUnit_Framework_TestSuite::isPublicTestMethod($method)) {
-                $groups = PHPUnit_Util_Group::getGroups($method, $classGroups);
+                $data   = PHPUnit_Util_Test::getProvidedData($method);
+                $groups = PHPUnit_Util_Test::getGroups($method, $classGroups);
+                $name   = $method->getName();
 
                 if (isset($staticProperties['browsers'])) {
                     foreach ($staticProperties['browsers'] as $browser) {
-                        $suite->addTest(
-                          new $className($method->getName(), $browser),
-                          $groups
-                        );
+                        if (is_array($data) || $data instanceof Iterator) {
+                            $_suite = new PHPUnit_Framework_TestSuite(
+                              $className . '::' . $name
+                            );
+
+                            foreach ($data as $_data) {
+                                $_suite->addTest(
+                                  new $className($name, $_data, $browser)
+                                );
+                            }
+
+                            $suite->addTest($_suite);
+                        } else {
+                            $suite->addTest(
+                              new $className($name, array(), $browser),
+                              $groups
+                            );
+                        }
                     }
                 } else {
-                    $suite->addTest(
-                      new $className($method->getName()), $groups
-                    );
+                    if (is_array($data) || $data instanceof Iterator) {
+                        $_suite = new PHPUnit_Framework_TestSuite(
+                          $className . '::' . $name
+                        );
+
+                        foreach ($data as $_data) {
+                            $_suite->addTest(new $className($name, $_data));
+                        }
+
+                        $suite->addTest($_suite);
+                    } else {
+                        $suite->addTest(
+                          new $className($name), $groups
+                        );
+                    }
                 }
             }
         }
