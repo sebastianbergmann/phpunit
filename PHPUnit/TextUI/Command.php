@@ -95,7 +95,7 @@ class PHPUnit_TextUI_Command
             $result = $skeleton->generate(TRUE);
 
             if (!$result['incomplete']) {
-                eval(str_replace(array('<?php', '?>'), '', $result['code']));
+                eval(str_replace(array('<?php', '?'), '', $result['code']));
                 $suite = new PHPUnit_Framework_TestSuite($arguments['test'] . 'Test');
             }
         }
@@ -196,7 +196,11 @@ class PHPUnit_TextUI_Command
         }
 
         else if (isset($arguments['test'])) {
-            $arguments['testFile'] = $arguments['test'] . '.php';
+            $arguments['testFile'] = $arguments['test'];
+
+            if (substr($arguments['test'], -4) != '.php') {
+                $arguments['testFile'] .= '.php';
+            }
         }
 
         foreach ($options[0] as $option) {
