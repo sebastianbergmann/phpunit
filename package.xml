@@ -1004,9 +1004,6 @@
      <file baseinstalldir="/" name="Getopt.php" role="php">
       <tasks:replace from="@package_version@" to="version" type="package-info" />
      </file>
-     <file baseinstalldir="/" name="Group.php" role="php">
-      <tasks:replace from="@package_version@" to="version" type="package-info" />
-     </file>
      <file baseinstalldir="/" name="Metrics.php" role="php">
       <tasks:replace from="@package_version@" to="version" type="package-info" />
      </file>
