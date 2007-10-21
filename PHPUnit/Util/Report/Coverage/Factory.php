@@ -92,9 +92,9 @@ abstract class PHPUnit_Util_Report_Coverage_Factory
 
     /**
      * @param  PHPUnit_Util_Report_Coverage_Node_Directory $root
-     * @param  array                                        $items
+     * @param  array                                       $items
      * @param  PHPUnit_Util_Report_Test_Node_TestSuite     $testSuite
-     * @param  array                                        $files
+     * @param  array                                       $files
      * @access protected
      * @static
      */
