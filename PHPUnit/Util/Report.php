@@ -46,8 +46,7 @@
 
 require_once 'PHPUnit/Framework.php';
 require_once 'PHPUnit/Util/Filter.php';
-require_once 'PHPUnit/Util/Report/Coverage/Factory.php';
-require_once 'PHPUnit/Util/Report/Test/Factory.php';
+require_once 'PHPUnit/Util/Report/Factory.php';
 
 PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
 
@@ -77,11 +76,8 @@ abstract class PHPUnit_Util_Report
      */
     public static function render(PHPUnit_Framework_TestResult $result, $target, $charset = 'ISO-8859-1')
     {
-        $tests    = PHPUnit_Util_Report_Test_Factory::create($result);
-        $coverage = PHPUnit_Util_Report_Coverage_Factory::create($result, $tests);
-
+        $coverage = PHPUnit_Util_Report_Factory::create($result);
         $coverage->render($target, $result->topTestSuite()->getName(), $charset);
-        $tests->render($target, $result->topTestSuite()->getName(), $charset);
 
         self::copyFiles($target);
     }

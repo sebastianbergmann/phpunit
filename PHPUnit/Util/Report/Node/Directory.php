@@ -41,14 +41,14 @@
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    SVN: $Id$
  * @link       http://www.phpunit.de/
- * @since      File available since Release 3.0.0
+ * @since      File available since Release 3.2.0
  */
 
 require_once 'PHPUnit/Util/Filter.php';
 require_once 'PHPUnit/Util/Filesystem.php';
 require_once 'PHPUnit/Util/Template.php';
-require_once 'PHPUnit/Util/Report/Coverage/Node.php';
-require_once 'PHPUnit/Util/Report/Coverage/Node/File.php';
+require_once 'PHPUnit/Util/Report/Node.php';
+require_once 'PHPUnit/Util/Report/Node/File.php';
 
 PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
 
@@ -62,27 +62,27 @@ PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    Release: @package_version@
  * @link       http://www.phpunit.de/
- * @since      Class available since Release 3.0.0
+ * @since      Class available since Release 3.2.0
  */
-class PHPUnit_Util_Report_Coverage_Node_Directory extends PHPUnit_Util_Report_Coverage_Node
+class PHPUnit_Util_Report_Node_Directory extends PHPUnit_Util_Report_Node
 {
     const LOW_UPPER_BOUND  = 35;
     const HIGH_LOWER_BOUND = 70;
 
     /**
-     * @var    PHPUnit_Util_Report_Coverage_Node[]
+     * @var    PHPUnit_Util_Report_Node[]
      * @access protected
      */
     protected $children = array();
 
     /**
-     * @var    PHPUnit_Util_Report_Coverage_Node_Directory[]
+     * @var    PHPUnit_Util_Report_Node_Directory[]
      * @access protected
      */
     protected $directories = array();
 
     /**
-     * @var    PHPUnit_Util_Report_Coverage_Node_File[]
+     * @var    PHPUnit_Util_Report_Node_File[]
      * @access protected
      */
     protected $files = array();
@@ -102,12 +102,12 @@ class PHPUnit_Util_Report_Coverage_Node_Directory extends PHPUnit_Util_Report_Co
     /**
      * Adds a new directory.
      *
-     * @return PHPUnit_Util_Report_Coverage_Node_Directory
+     * @return PHPUnit_Util_Report_Node_Directory
      * @access public
      */
     public function addDirectory($name)
     {
-        $directory = new PHPUnit_Util_Report_Coverage_Node_Directory(
+        $directory = new PHPUnit_Util_Report_Node_Directory(
           $name,
           $this
         );
@@ -123,13 +123,13 @@ class PHPUnit_Util_Report_Coverage_Node_Directory extends PHPUnit_Util_Report_Co
      *
      * @param  string $name
      * @param  array  $lines
-     * @return PHPUnit_Util_Report_Coverage_Node_File
+     * @return PHPUnit_Util_Report_Node_File
      * @throws RuntimeException
      * @access public
      */
     public function addFile($name, array $lines)
     {
-        $file = new PHPUnit_Util_Report_Coverage_Node_File(
+        $file = new PHPUnit_Util_Report_Node_File(
           $name,
           $this,
           $lines
@@ -164,23 +164,6 @@ class PHPUnit_Util_Report_Coverage_Node_Directory extends PHPUnit_Util_Report_Co
     public function getFiles()
     {
         return $this->files;
-    }
-
-    /**
-     * Returns the tests covering this directory.
-     *
-     * @return array
-     * @access public
-     */
-    public function getCoveringTests()
-    {
-        $coveringTests = array();
-
-        foreach ($this->children as $child) {
-            $coveringTests = array_merge($coveringTests, $child->getCoveringTests());
-        }
-
-        return $coveringTests;
     }
 
     /**
@@ -231,8 +214,7 @@ class PHPUnit_Util_Report_Coverage_Node_Directory extends PHPUnit_Util_Report_Co
      */
     public function render($target, $title, $charset = 'ISO-8859-1')
     {
-        $this->doRender($target, $title, TRUE, $charset);
-        $this->doRender($target, $title, FALSE, $charset);
+        $this->doRender($target, $title, $charset);
 
         foreach ($this->children as $child) {
             $child->render($target, $title, $charset);
@@ -242,30 +224,13 @@ class PHPUnit_Util_Report_Coverage_Node_Directory extends PHPUnit_Util_Report_Co
     /**
      * @param  string   $target
      * @param  string   $title
-     * @param  boolean  $includeDetails
      * @param  string   $charset
      * @access protected
      */
-    protected function doRender($target, $title, $includeDetails, $charset)
+    protected function doRender($target, $title, $charset)
     {
         $cleanId = PHPUnit_Util_Filesystem::getSafeFilename($this->getId());
-        $file = $target . $cleanId;
-
-        if ($includeDetails) {
-            $file .= '-details.html';
-
-            $detailsLink = sprintf(
-              '(<a class="detail" href="%s.html">hide details</a>)',
-              $cleanId
-            );
-        } else {
-            $file .= '.html';
-
-            $detailsLink = sprintf(
-              '(<a class="detail" href="%s-details.html">show details</a>)',
-              $cleanId
-            );
-        }
+        $file    = $target . $cleanId . '.html';
 
         $template = new PHPUnit_Util_Template(
           PHPUnit_Util_Report::getTemplatePath() .
@@ -277,13 +242,11 @@ class PHPUnit_Util_Report_Coverage_Node_Directory extends PHPUnit_Util_Report_Co
         $template->setVar(
           array(
             'items',
-            'details_link',
             'low_upper_bound',
             'high_lower_bound'
           ),
           array(
-            $this->renderItems($includeDetails),
-            $detailsLink,
+            $this->renderItems(),
             self::LOW_UPPER_BOUND,
             self::HIGH_LOWER_BOUND
           )
@@ -293,25 +256,23 @@ class PHPUnit_Util_Report_Coverage_Node_Directory extends PHPUnit_Util_Report_Co
     }
 
     /**
-     * @param  boolean  $includeDetails
      * @return string
      * @access protected
      */
-    protected function renderItems($includeDetails)
+    protected function renderItems()
     {
-        $items  = $this->doRenderItems($this->directories, $includeDetails);
-        $items .= $this->doRenderItems($this->files, $includeDetails);
+        $items  = $this->doRenderItems($this->directories);
+        $items .= $this->doRenderItems($this->files);
 
         return $items;
     }
 
     /**
      * @param  array    $items
-     * @param  boolean  $includeDetails
      * @return string
      * @access protected
      */
-    protected function doRenderItems(array $items, $includeDetails)
+    protected function doRenderItems(array $items)
     {
         $result = '';
 
@@ -320,66 +281,6 @@ class PHPUnit_Util_Report_Coverage_Node_Directory extends PHPUnit_Util_Report_Co
               PHPUnit_Util_Report::getTemplatePath() .
               'coverage_item.html'
             );
-
-            $details = '';
-
-            if ($includeDetails) {
-                foreach ($item->getCoveringTests() as $suite => $tests) {
-                    $detailsHeaderTemplate = new PHPUnit_Util_Template(
-                      PHPUnit_Util_Report::getTemplatePath() .
-                      'coverage_item_details_header.html'
-                    );
-
-                    $detailsHeaderTemplate->setVar(
-                      'link',
-                      sprintf(
-                        '<a href="%s-test.html">%s</a>',
-
-                        PHPUnit_Util_Filesystem::getSafeFilename($suite),
-                        $suite
-                      )
-                    );
-
-                    $details .= $detailsHeaderTemplate->render();
-
-                    foreach ($tests as $test => $_test) {
-                        $detailsTemplate = new PHPUnit_Util_Template(
-                          PHPUnit_Util_Report::getTemplatePath() .
-                          'coverage_item_details.html'
-                        );
-
-                        if ($_test['object']->getResult() !== PHPUnit_Runner_BaseTestRunner::STATUS_PASSED) {
-                            $failure = sprintf(
-                              '<br /><pre>%s</pre>',
-
-                              htmlspecialchars($_test['object']->getResult()->exceptionMessage())
-                            );
-                        } else {
-                            $failure = '';
-                        }
-
-                        $detailsTemplate->setVar(
-                          array(
-                            'item',
-                            'executed_percent',
-                            'executed_lines',
-                            'executable_lines'
-                          ),
-                          array(
-                            $test . $failure,
-                            sprintf(
-                              '%01.2f',
-                              ($_test['numLinesExecuted'] / $item->getNumExecutableLines()) * 100
-                            ),
-                            $_test['numLinesExecuted'],
-                            $item->getNumExecutableLines()
-                          )
-                        );
-
-                        $details .= $detailsTemplate->render();
-                    }
-                }
-            }
 
             $floorPercent = floor($item->getExecutedPercent());
 
@@ -408,8 +309,7 @@ class PHPUnit_Util_Report_Coverage_Node_Directory extends PHPUnit_Util_Report_Co
                 'executed_percent',
                 'not_executed_width',
                 'executable_lines',
-                'executed_lines',
-                'details'
+                'executed_lines'
               ),
               array(
                 $item->getLink(FALSE, FALSE),
@@ -419,8 +319,7 @@ class PHPUnit_Util_Report_Coverage_Node_Directory extends PHPUnit_Util_Report_Co
                 $item->getExecutedPercent(),
                 100 - floor($item->getExecutedPercent()),
                 $item->getNumExecutableLines(),
-                $item->getNumExecutedLines(),
-                $details
+                $item->getNumExecutedLines()
               )
             );
 

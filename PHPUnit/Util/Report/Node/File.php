@@ -41,15 +41,14 @@
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    SVN: $Id$
  * @link       http://www.phpunit.de/
- * @since      File available since Release 3.0.0
+ * @since      File available since Release 3.2.0
  */
 
 require_once 'PHPUnit/Util/Filter.php';
 require_once 'PHPUnit/Util/Array.php';
 require_once 'PHPUnit/Util/Filesystem.php';
 require_once 'PHPUnit/Util/Template.php';
-require_once 'PHPUnit/Util/Report/Coverage/Node.php';
-require_once 'PHPUnit/Util/Report/Test/Node/TestSuite.php';
+require_once 'PHPUnit/Util/Report/Node.php';
 
 PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
 
@@ -63,9 +62,9 @@ PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    Release: @package_version@
  * @link       http://www.phpunit.de/
- * @since      Class available since Release 3.0.0
+ * @since      Class available since Release 3.2.0
  */
-class PHPUnit_Util_Report_Coverage_Node_File extends PHPUnit_Util_Report_Coverage_Node
+class PHPUnit_Util_Report_Node_File extends PHPUnit_Util_Report_Node
 {
     /**
      * @var    array
@@ -78,18 +77,6 @@ class PHPUnit_Util_Report_Coverage_Node_File extends PHPUnit_Util_Report_Coverag
      * @access protected
      */
     protected $codeLinesFillup = array();
-
-    /**
-     * @var    array
-     * @access protected
-     */
-    protected $coveringTests = array();
-
-    /**
-     * @var    array
-     * @access protected
-     */
-    protected $coveringTestsByLine = array();
 
     /**
      * @var    array
@@ -118,7 +105,7 @@ class PHPUnit_Util_Report_Coverage_Node_File extends PHPUnit_Util_Report_Coverag
      * @throws RuntimeException
      * @access public
      */
-    public function __construct($name, PHPUnit_Util_Report_Coverage_Node $parent, array $executedLines)
+    public function __construct($name, PHPUnit_Util_Report_Node $parent, array $executedLines)
     {
         parent::__construct($name, $parent);
 
@@ -132,98 +119,6 @@ class PHPUnit_Util_Report_Coverage_Node_File extends PHPUnit_Util_Report_Coverag
         $this->executedLines = $executedLines;
 
         $this->countLines();
-    }
-
-    /**
-     * @param  PHPUnit_Util_Report_Test_Node_TestSuite $testSuite
-     * @param  array                                   $files
-     * @access protected
-     * @static
-     */
-    public function setupCoveringTests(PHPUnit_Util_Report_Test_Node_TestSuite $testSuite, $files)
-    {
-        $testCase = array();
-        $thisName = $this->getName(TRUE);
-
-        foreach ($files[$thisName] as $line => $tests) {
-            if (is_array($tests)) {
-                foreach ($tests as $test) {
-                    if (isset($test->__testNode->testId)) {
-                        $testId = $test->__testNode->testId;
-
-                        if (!isset($testCase[$testId])) {
-                            $testCase[$testId] = array(
-                              'numLinesExecuted' => 1,
-                              'object' => $test
-                            );
-                        } else {
-                            $testCase[$testId]['numLinesExecuted']++;
-                        }
-
-                        if (!isset($this->coveringTestsByLine[$line])) {
-                            $this->coveringTestsByLine[$line] = array();
-                        }
-
-                        $found = FALSE;
-
-                        foreach ($this->coveringTestsByLine[$line] as $_test) {
-                            if ($_test === $test) {
-                                $found = TRUE;
-                                break;
-                            }
-                        }
-
-                        if (!$found) {
-                            $this->coveringTestsByLine[$line][] = $test;
-                        }
-                    }
-                }
-            }
-        }
-
-        foreach ($testCase as $coveringTest) {
-            $test = $coveringTest['object'];
-            $test = $test->__testNode;
-            $name = $test->getName(TRUE);
-
-            if (!isset($this->coveringTests[$name[0]])) {
-                $this->coveringTests[$name[0]] = array();
-            }
-
-            $found = FALSE;
-
-            foreach ($this->coveringTests[$name[0]] as $_name => $existingTest) {
-                if ($existingTest['object'] === $test) {
-                    $found = TRUE;
-
-                    break;
-                }
-            }
-
-            if (!$found) {
-                $test->addCoveredFile($this);
-
-                $this->coveringTests[$name[0]][$name[1]] = array(
-                  'numLinesExecuted' => $coveringTest['numLinesExecuted'],
-                  'object'           => $test
-                );
-            } else {
-                $this->coveringTests[$name[0]][$name[1]]['numLinesExecuted'] += $coveringTest['numLinesExecuted'];
-            }
-        }
-
-        $this->coveringTests = PHPUnit_Util_Array::sortRecursively($this->coveringTests);
-    }
-
-    /**
-     * Returns the tests covering this file.
-     *
-     * @return array
-     * @access public
-     */
-    public function getCoveringTests()
-    {
-        return $this->coveringTests;
     }
 
     /**

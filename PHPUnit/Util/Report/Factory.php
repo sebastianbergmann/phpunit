@@ -41,16 +41,15 @@
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    SVN: $Id$
  * @link       http://www.phpunit.de/
- * @since      File available since Release 3.0.0
+ * @since      File available since Release 3.2.0
  */
 
 require_once 'PHPUnit/Framework.php';
 require_once 'PHPUnit/Util/Filter.php';
 require_once 'PHPUnit/Util/Array.php';
 require_once 'PHPUnit/Util/CodeCoverage.php';
-require_once 'PHPUnit/Util/Report/Coverage/Node/Directory.php';
-require_once 'PHPUnit/Util/Report/Coverage/Node/File.php';
-require_once 'PHPUnit/Util/Report/Test/Node/TestSuite.php';
+require_once 'PHPUnit/Util/Report/Node/Directory.php';
+require_once 'PHPUnit/Util/Report/Node/File.php';
 
 PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
 
@@ -64,47 +63,44 @@ PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    Release: @package_version@
  * @link       http://www.phpunit.de/
- * @since      Class available since Release 3.0.0
+ * @since      Class available since Release 3.2.0
  */
-abstract class PHPUnit_Util_Report_Coverage_Factory
+abstract class PHPUnit_Util_Report_Factory
 {
     /**
      * Creates a new Code Coverage information tree.
      *
-     * @param  PHPUnit_Framework_TestResult            $result
-     * @param  PHPUnit_Util_Report_Test_Node_TestSuite $testSuite
-     * @return PHPUnit_Util_Report_Coverage_Node_Directory
+     * @param  PHPUnit_Framework_TestResult $result
+     * @return PHPUnit_Util_Report_Node_Directory
      * @access public
      * @static
      */
-    public static function create(PHPUnit_Framework_TestResult $result, PHPUnit_Util_Report_Test_Node_TestSuite $testSuite)
+    public static function create(PHPUnit_Framework_TestResult $result)
     {
         $codeCoverageInformation = $result->getCodeCoverageInformation();
         $files                   = PHPUnit_Util_CodeCoverage::getSummary($codeCoverageInformation);
         $commonPath              = self::reducePaths($files);
         $items                   = self::buildDirectoryStructure($files);
-        $root                    = new PHPUnit_Util_Report_Coverage_Node_Directory($commonPath);
+        $root                    = new PHPUnit_Util_Report_Node_Directory($commonPath);
 
-        self::addItems($root, $items, $testSuite, $files);
+        self::addItems($root, $items, $files);
 
         return $root;
     }
 
     /**
-     * @param  PHPUnit_Util_Report_Coverage_Node_Directory $root
-     * @param  array                                       $items
-     * @param  PHPUnit_Util_Report_Test_Node_TestSuite     $testSuite
-     * @param  array                                       $files
+     * @param  PHPUnit_Util_Report_Node_Directory $root
+     * @param  array $items
+     * @param  array $files
      * @access protected
      * @static
      */
-    protected static function addItems(PHPUnit_Util_Report_Coverage_Node_Directory $root, array $items, PHPUnit_Util_Report_Test_Node_TestSuite $testSuite, array $files)
+    protected static function addItems(PHPUnit_Util_Report_Node_Directory $root, array $items, array $files)
     {
         foreach ($items as $key => $value) {
             if (substr($key, -2) == '/f') {
                 try {
                     $file = $root->addFile(substr($key, 0, -2), $value);
-                    $file->setupCoveringTests($testSuite, $files);
                 }
 
                 catch (RuntimeException $e) {
@@ -112,7 +108,7 @@ abstract class PHPUnit_Util_Report_Coverage_Factory
                 }
             } else {
                 $child = $root->addDirectory($key);
-                self::addItems($child, $value, $testSuite, $files);
+                self::addItems($child, $value, $files);
             }
         }
     }

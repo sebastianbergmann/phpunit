@@ -896,56 +896,31 @@
       </file>
      </dir>
      <dir name="Report">
-      <dir name="Coverage">
-       <dir name="Node">
-        <file baseinstalldir="/" name="Directory.php" role="php">
-         <tasks:replace from="@package_version@" to="version" type="package-info" />
-        </file>
-        <file baseinstalldir="/" name="File.php" role="php">
-         <tasks:replace from="@package_version@" to="version" type="package-info" />
-        </file>
-       </dir>
-       <file baseinstalldir="/" name="Factory.php" role="php">
+      <dir name="Node">
+       <file baseinstalldir="/" name="Directory.php" role="php">
         <tasks:replace from="@package_version@" to="version" type="package-info" />
        </file>
-       <file baseinstalldir="/" name="Node.php" role="php">
+       <file baseinstalldir="/" name="File.php" role="php">
         <tasks:replace from="@package_version@" to="version" type="package-info" />
        </file>
       </dir>
+      <file baseinstalldir="/" name="Factory.php" role="php">
+       <tasks:replace from="@package_version@" to="version" type="package-info" />
+      </file>
+      <file baseinstalldir="/" name="Node.php" role="php">
+       <tasks:replace from="@package_version@" to="version" type="package-info" />
+      </file>
       <dir name="Template">
        <file baseinstalldir="/" name="butter.png" role="php" />
        <file baseinstalldir="/" name="chameleon.png" role="php" />
        <file baseinstalldir="/" name="coverage_directory.html" role="php" />
        <file baseinstalldir="/" name="coverage_file.html" role="php" />
        <file baseinstalldir="/" name="coverage_item.html" role="php" />
-       <file baseinstalldir="/" name="coverage_item_details.html" role="php" />
-       <file baseinstalldir="/" name="coverage_item_details_header.html" role="php" />
        <file baseinstalldir="/" name="glass.png" role="php" />
        <file baseinstalldir="/" name="scarlet_red.png" role="php" />
        <file baseinstalldir="/" name="snow.png" role="php" />
        <file baseinstalldir="/" name="style.css" role="php" />
-       <file baseinstalldir="/" name="testsuite.html" role="php" />
-       <file baseinstalldir="/" name="testsuite_item.html" role="php" />
       </dir>
-      <dir name="Test">
-       <dir name="Node">
-        <file baseinstalldir="/" name="Test.php" role="php">
-         <tasks:replace from="@package_version@" to="version" type="package-info" />
-        </file>
-        <file baseinstalldir="/" name="TestSuite.php" role="php">
-         <tasks:replace from="@package_version@" to="version" type="package-info" />
-        </file>
-       </dir>
-       <file baseinstalldir="/" name="Factory.php" role="php">
-        <tasks:replace from="@package_version@" to="version" type="package-info" />
-       </file>
-       <file baseinstalldir="/" name="Node.php" role="php">
-        <tasks:replace from="@package_version@" to="version" type="package-info" />
-       </file>
-      </dir>
-      <file baseinstalldir="/" name="GraphViz.php" role="php">
-       <tasks:replace from="@package_version@" to="version" type="package-info" />
-      </file>
      </dir>
      <dir name="Skeleton">
       <file baseinstalldir="/" name="IncompleteTestMethod.tpl" role="php">
