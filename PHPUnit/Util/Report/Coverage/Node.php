@@ -86,7 +86,7 @@ abstract class PHPUnit_Util_Report_Coverage_Node
     /**
      * Constructor.
      *
-     * @param  string                          $name
+     * @param  string                         $name
      * @param  PHPUnit_Util_CodeCoverage_Node $parent
      * @access public
      */
