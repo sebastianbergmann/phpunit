@@ -41,7 +41,7 @@
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    SVN: $Id$
  * @link       http://www.phpunit.de/
- * @since      File available since Release 3.0.0
+ * @since      File available since Release 3.2.0
  */
 
 require_once 'PHPUnit/Framework.php';
@@ -61,9 +61,9 @@ PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    Release: @package_version@
  * @link       http://www.phpunit.de/
- * @since      Class available since Release 3.0.0
+ * @since      Class available since Release 3.2.0
  */
-abstract class PHPUnit_Util_Report_Coverage_Node
+abstract class PHPUnit_Util_Report_Node
 {
     /**
      * @var    array
@@ -90,10 +90,10 @@ abstract class PHPUnit_Util_Report_Coverage_Node
      * @param  PHPUnit_Util_CodeCoverage_Node $parent
      * @access public
      */
-    public function __construct($name, PHPUnit_Util_Report_Coverage_Node $parent = NULL)
+    public function __construct($name, PHPUnit_Util_Report_Node $parent = NULL)
     {
-        $this->name    = $name;
-        $this->parent  = $parent;
+        $this->name   = $name;
+        $this->parent = $parent;
     }
 
     /**
@@ -170,12 +170,11 @@ abstract class PHPUnit_Util_Report_Coverage_Node
     /**
      * Returns the link to this node.
      *
-     * @param  boolean $details
      * @param  boolean $full
      * @return string
      * @access public
      */
-    public function getLink($details, $full) {
+    public function getLink($full) {
         if (substr($this->name, -1) == DIRECTORY_SEPARATOR) {
             $name = substr($this->name, 0, -1);
         } else {
@@ -192,17 +191,15 @@ abstract class PHPUnit_Util_Report_Coverage_Node
             }
 
             return sprintf(
-              '%s<a href="%s%s.html">%s</a>',
+              '%s<a href="%s.html">%s</a>',
               $parent,
               $cleanId,
-              $details ? '-details' : '',
               $name
             );
         } else {
             return sprintf(
-              '<a href="%s%s.html">%s</a>',
+              '<a href="%s.html">%s</a>',
               $cleanId,
-              $details ? '-details' : '',
               $name
             );
         }
@@ -263,15 +260,6 @@ abstract class PHPUnit_Util_Report_Coverage_Node
           )
         );
     }
-
-    /**
-     * Returns the covering tests.
-     *
-     * @return array
-     * @access public
-     * @abstract
-     */
-    abstract public function getCoveringTests();
 
     /**
      * Returns the number of executable lines.

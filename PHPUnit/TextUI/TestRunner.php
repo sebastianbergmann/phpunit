@@ -54,7 +54,6 @@ require_once 'PHPUnit/Util/TestDox/ResultPrinter.php';
 require_once 'PHPUnit/Util/PDO.php';
 require_once 'PHPUnit/Util/Filter.php';
 require_once 'PHPUnit/Util/Report.php';
-require_once 'PHPUnit/Util/Report/GraphViz.php';
 require_once 'PHPUnit/Util/Timer.php';
 require_once 'PHPUnit/Util/Log/CodeCoverage/Database.php';
 require_once 'PHPUnit/Util/Log/CodeCoverage/XML.php';
@@ -253,12 +252,6 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
 
         if (isset($arguments['reportDirectory']) &&
             extension_loaded('xdebug')) {
-            if (class_exists('Image_GraphViz', FALSE)) {
-                $result->addListener(
-                  new PHPUnit_Util_Report_GraphViz($arguments['reportDirectory'])
-                );
-            }
-
             $result->addListener(
               new PHPUnit_TextUI_ResultPrinter($arguments['reportDirectory'] . '/logfile.txt', TRUE)
             );
