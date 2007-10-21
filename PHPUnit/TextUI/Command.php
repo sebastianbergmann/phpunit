@@ -480,7 +480,7 @@ class PHPUnit_TextUI_Command
 
         if (extension_loaded('xdebug')) {
             print "  --coverage-xml <file>  Write code coverage information in XML format.\n" .
-                  "  --report <dir>         Generate combined test/coverage report in HTML format.\n" .
+                  "  --report <dir>         Generate code coverage report in HTML format.\n" .
                   "  --charset ...          Character Set for the HTML (default: ISO-8859-1).\n\n";
         }
 
