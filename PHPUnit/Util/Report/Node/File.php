@@ -45,7 +45,6 @@
  */
 
 require_once 'PHPUnit/Util/Filter.php';
-require_once 'PHPUnit/Util/Array.php';
 require_once 'PHPUnit/Util/Filesystem.php';
 require_once 'PHPUnit/Util/Template.php';
 require_once 'PHPUnit/Util/Report/Node.php';
