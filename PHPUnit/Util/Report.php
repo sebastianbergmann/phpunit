@@ -46,7 +46,10 @@
 
 require_once 'PHPUnit/Framework.php';
 require_once 'PHPUnit/Util/Filter.php';
-require_once 'PHPUnit/Util/Report/Factory.php';
+require_once 'PHPUnit/Util/Array.php';
+require_once 'PHPUnit/Util/CodeCoverage.php';
+require_once 'PHPUnit/Util/Report/Node/Directory.php';
+require_once 'PHPUnit/Util/Report/Node/File.php';
 
 PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
 
@@ -65,6 +68,8 @@ PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
  */
 abstract class PHPUnit_Util_Report
 {
+    public static $templatePath;
+
     /**
      * Renders the report.
      *
@@ -76,10 +81,226 @@ abstract class PHPUnit_Util_Report
      */
     public static function render(PHPUnit_Framework_TestResult $result, $target, $charset = 'ISO-8859-1')
     {
-        $coverage = PHPUnit_Util_Report_Factory::create($result);
-        $coverage->render($target, $result->topTestSuite()->getName(), $charset);
+        self::$templatePath = sprintf(
+          '%s%sReport%sTemplate%s',
 
+          dirname(__FILE__),
+          DIRECTORY_SEPARATOR,
+          DIRECTORY_SEPARATOR,
+          DIRECTORY_SEPARATOR
+        );
+
+        $codeCoverageInformation = $result->getCodeCoverageInformation();
+        $files                   = PHPUnit_Util_CodeCoverage::getSummary($codeCoverageInformation);
+        $commonPath              = self::reducePaths($files);
+        $items                   = self::buildDirectoryStructure($files);
+        $root                    = new PHPUnit_Util_Report_Node_Directory($commonPath);
+
+        self::addItems($root, $items, $files);
         self::copyFiles($target);
+
+        $root->render($target, $result->topTestSuite()->getName(), $charset);
+    }
+
+    /**
+     * @param  PHPUnit_Util_Report_Node_Directory $root
+     * @param  array $items
+     * @param  array $files
+     * @access protected
+     * @static
+     */
+    protected static function addItems(PHPUnit_Util_Report_Node_Directory $root, array $items, array $files)
+    {
+        foreach ($items as $key => $value) {
+            if (substr($key, -2) == '/f') {
+                try {
+                    $file = $root->addFile(substr($key, 0, -2), $value);
+                }
+
+                catch (RuntimeException $e) {
+                    continue;
+                }
+            } else {
+                $child = $root->addDirectory($key);
+                self::addItems($child, $value, $files);
+            }
+        }
+    }
+
+    /**
+     * Builds an array representation of the directory structure.
+     *
+     * For instance,
+     *
+     * <code>
+     * Array
+     * (
+     *     [Money.php] => Array
+     *         (
+     *             ...
+     *         )
+     *
+     *     [MoneyBag.php] => Array
+     *         (
+     *             ...
+     *         )
+     * )
+     * </code>
+     *
+     * is transformed into
+     *
+     * <code>
+     * Array
+     * (
+     *     [.] => Array
+     *         (
+     *             [Money.php] => Array
+     *                 (
+     *                     ...
+     *                 )
+     *
+     *             [MoneyBag.php] => Array
+     *                 (
+     *                     ...
+     *                 )
+     *         )
+     * )
+     * </code>
+     *
+     * @param  array $files
+     * @return array
+     * @access protected
+     * @static
+     */
+    protected static function buildDirectoryStructure($files)
+    {
+        $result = array();
+
+        foreach ($files as $path => $file) {
+            $path    = explode('/', $path);
+            $pointer = &$result;
+            $max     = count($path);
+
+            for ($i = 0; $i < $max; $i++) {
+                if ($i == ($max - 1)) {
+                    $type = '/f';
+                } else {
+                    $type = '';
+                }
+
+                $pointer = &$pointer[$path[$i] . $type];
+            }
+
+            $pointer = $file;
+        }
+
+        return $result;
+    }
+
+    /**
+     * Reduces the paths by cutting the longest common start path.
+     *
+     * For instance,
+     *
+     * <code>
+     * Array
+     * (
+     *     [/home/sb/PHPUnit/Samples/Money/Money.php] => Array
+     *         (
+     *             ...
+     *         )
+     *
+     *     [/home/sb/PHPUnit/Samples/Money/MoneyBag.php] => Array
+     *         (
+     *             ...
+     *         )
+     * )
+     * </code>
+     *
+     * is reduced to
+     *
+     * <code>
+     * Array
+     * (
+     *     [Money.php] => Array
+     *         (
+     *             ...
+     *         )
+     *
+     *     [MoneyBag.php] => Array
+     *         (
+     *             ...
+     *         )
+     * )
+     * </code>
+     *
+     * @param  array $files
+     * @return string
+     * @access protected
+     * @static
+     */
+    protected static function reducePaths(&$files)
+    {
+        if (empty($files)) {
+            return '.';
+        }
+
+        $commonPath = '';
+        $paths      = array_keys($files);
+
+        if (count($files) == 1) {
+            $commonPath                 = dirname($paths[0]);
+            $files[basename($paths[0])] = $files[$paths[0]];
+
+            unset($files[$paths[0]]);
+
+            return $commonPath;
+        }
+
+        $max = count($paths);
+
+        for ($i = 0; $i < $max; $i++) {
+            $paths[$i] = explode(DIRECTORY_SEPARATOR, $paths[$i]);
+
+            if (empty($paths[$i][0])) {
+                $paths[$i][0] = DIRECTORY_SEPARATOR;
+            }
+        }
+
+        $done = FALSE;
+
+        $max = count($paths);
+
+        while (!$done) {
+            for ($i = 0; $i < $max - 1; $i++) {
+                if (!isset($paths[$i][0]) ||
+                    !isset($paths[$i+1][0]) ||
+                    $paths[$i][0] != $paths[$i+1][0]) {
+                    $done = TRUE;
+                    break;
+                }
+            }
+
+            if (!$done) {
+                $commonPath .= $paths[0][0] . (($paths[0][0] != DIRECTORY_SEPARATOR) ? DIRECTORY_SEPARATOR : '');
+
+                for ($i = 0; $i < $max; $i++) {
+                    array_shift($paths[$i]);
+                }
+            }
+        }
+
+        $original = array_keys($files);
+        $max      = count($original);
+
+        for ($i = 0; $i < $max; $i++) {
+            $files[join('/', $paths[$i])] = $files[$original[$i]];
+            unset($files[$original[$i]]);
+        }
+
+        $files = PHPUnit_Util_Array::sortRecursively($files);
+
+        return $commonPath;
     }
 
     /**
@@ -97,28 +318,9 @@ abstract class PHPUnit_Util_Report
           'style.css',
         );
 
-        $path = self::getTemplatePath();
-
         foreach ($files as $file) {
-            copy($path . $file, $target . $file);
+            copy(self::$templatePath . $file, $target . $file);
         }
-    }
-
-    /**
-     * @return string
-     * @access public
-     * @static
-     */
-    public static function getTemplatePath()
-    {
-        return sprintf(
-          '%s%sReport%sTemplate%s',
-
-          dirname(__FILE__),
-          DIRECTORY_SEPARATOR,
-          DIRECTORY_SEPARATOR,
-          DIRECTORY_SEPARATOR
-        );
     }
 }
 ?>
