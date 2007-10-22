@@ -298,7 +298,7 @@ abstract class PHPUnit_Util_Report
             unset($files[$original[$i]]);
         }
 
-        $files = PHPUnit_Util_Array::sortRecursively($files);
+        ksort($files);
 
         return $commonPath;
     }
