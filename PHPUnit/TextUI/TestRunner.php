@@ -252,18 +252,6 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
 
         if (isset($arguments['reportDirectory']) &&
             extension_loaded('xdebug')) {
-            $result->addListener(
-              new PHPUnit_TextUI_ResultPrinter($arguments['reportDirectory'] . '/logfile.txt', TRUE)
-            );
-
-            $result->addListener(
-              new PHPUnit_Util_Log_XML($arguments['reportDirectory'] . '/logfile.xml')
-            );
-
-            $result->addListener(
-              new PHPUnit_Util_Log_TAP($arguments['reportDirectory'] . '/logfile.tap')
-            );
-
             $result->collectCodeCoverageInformation(TRUE);
         }
 
