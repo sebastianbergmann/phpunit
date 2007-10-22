@@ -334,7 +334,93 @@ class PHPUnit_Util_Report_Node_File extends PHPUnit_Util_Report_Node
                         if ($stringFlag) {
                             $colour = 'string';
                         } else {
-                            $colour = $this->tokenToColor($token);
+                            switch ($token) {
+                                case T_INLINE_HTML: {
+                                    $colour = 'html';
+                                }
+                                break;
+
+                                case T_COMMENT:
+                                case T_DOC_COMMENT: {
+                                    $colour = 'comment';
+                                }
+                                break;
+
+                                case T_ABSTRACT:
+                                case T_ARRAY:
+                                case T_ARRAY_CAST:
+                                case T_AS:
+                                case T_BOOLEAN_AND:
+                                case T_BOOLEAN_OR:
+                                case T_BOOL_CAST:
+                                case T_BREAK:
+                                case T_CASE:
+                                case T_CATCH:
+                                case T_CLASS:
+                                case T_CLONE:
+                                case T_CONCAT_EQUAL:
+                                case T_CONTINUE:
+                                case T_DEFAULT:
+                                case T_DOUBLE_ARROW:
+                                case T_DOUBLE_CAST:
+                                case T_ECHO:
+                                case T_ELSE:
+                                case T_ELSEIF:
+                                case T_EMPTY:
+                                case T_ENDDECLARE:
+                                case T_ENDFOR:
+                                case T_ENDFOREACH:
+                                case T_ENDIF:
+                                case T_ENDSWITCH:
+                                case T_ENDWHILE:
+                                case T_END_HEREDOC:
+                                case T_EXIT:
+                                case T_EXTENDS:
+                                case T_FINAL:
+                                case T_FOREACH:
+                                case T_FUNCTION:
+                                case T_GLOBAL:
+                                case T_IF:
+                                case T_INC:
+                                case T_INCLUDE:
+                                case T_INCLUDE_ONCE:
+                                case T_INSTANCEOF:
+                                case T_INT_CAST:
+                                case T_ISSET:
+                                case T_IS_EQUAL:
+                                case T_IS_IDENTICAL:
+                                case T_IS_NOT_IDENTICAL:
+                                case T_IS_SMALLER_OR_EQUAL:
+                                case T_NEW:
+                                case T_OBJECT_CAST:
+                                case T_OBJECT_OPERATOR:
+                                case T_PAAMAYIM_NEKUDOTAYIM:
+                                case T_PRIVATE:
+                                case T_PROTECTED:
+                                case T_PUBLIC:
+                                case T_REQUIRE:
+                                case T_REQUIRE_ONCE:
+                                case T_RETURN:
+                                case T_SL:
+                                case T_SL_EQUAL:
+                                case T_SR:
+                                case T_SR_EQUAL:
+                                case T_START_HEREDOC:
+                                case T_STATIC:
+                                case T_STRING_CAST:
+                                case T_THROW:
+                                case T_TRY:
+                                case T_UNSET_CAST:
+                                case T_VAR:
+                                case T_WHILE: {
+                                    $colour = 'keyword';
+                                }
+                                break;
+
+                                default: {
+                                    $colour = 'default';
+                                }
+                            }
                         }
 
                         $result[$i] .= sprintf(
@@ -355,94 +441,6 @@ class PHPUnit_Util_Report_Node_File extends PHPUnit_Util_Report_Node
         unset($result[count($result)-1]);
 
         return $result;
-    }
-
-    /**
-     * @author Aidan Lister <aidan@php.net>
-     * @author Sebastian Bergmann <sb@sebastian-bergmann.de>
-     * @param  string $token
-     * @return string
-     * @access protected
-     */
-    protected function tokenToColor($token)
-    {
-        switch ($token) {
-            case T_CONSTANT_ENCAPSED_STRING: return 'string';
-            case T_INLINE_HTML: return 'html';
-            case T_COMMENT:
-            case T_DOC_COMMENT: return 'comment';
-            case T_ABSTRACT:
-            case T_ARRAY:
-            case T_ARRAY_CAST:
-            case T_AS:
-            case T_BOOLEAN_AND:
-            case T_BOOLEAN_OR:
-            case T_BOOL_CAST:
-            case T_BREAK:
-            case T_CASE:
-            case T_CATCH:
-            case T_CLASS:
-            case T_CLONE:
-            case T_CONCAT_EQUAL:
-            case T_CONTINUE:
-            case T_DEFAULT:
-            case T_DOUBLE_ARROW:
-            case T_DOUBLE_CAST:
-            case T_ECHO:
-            case T_ELSE:
-            case T_ELSEIF:
-            case T_EMPTY:
-            case T_ENDDECLARE:
-            case T_ENDFOR:
-            case T_ENDFOREACH:
-            case T_ENDIF:
-            case T_ENDSWITCH:
-            case T_ENDWHILE:
-            case T_END_HEREDOC:
-            case T_EXIT:
-            case T_EXTENDS:
-            case T_FINAL:
-            case T_FOREACH:
-            case T_FUNCTION:
-            case T_GLOBAL:
-            case T_IF:
-            case T_INC:
-            case T_INCLUDE:
-            case T_INCLUDE_ONCE:
-            case T_INSTANCEOF:
-            case T_INT_CAST:
-            case T_ISSET:
-            case T_IS_EQUAL:
-            case T_IS_IDENTICAL:
-            case T_IS_NOT_IDENTICAL:
-            case T_IS_SMALLER_OR_EQUAL:
-            case T_NEW:
-            case T_OBJECT_CAST:
-            case T_OBJECT_OPERATOR:
-            case T_PAAMAYIM_NEKUDOTAYIM:
-            case T_PRIVATE:
-            case T_PROTECTED:
-            case T_PUBLIC:
-            case T_REQUIRE:
-            case T_REQUIRE_ONCE:
-            case T_RETURN:
-            case T_SL:
-            case T_SL_EQUAL:
-            case T_SR:
-            case T_SR_EQUAL:
-            case T_START_HEREDOC:
-            case T_STATIC:
-            case T_STRING_CAST:
-            case T_THROW:
-            case T_TRY:
-            case T_UNSET_CAST:
-            case T_VAR:
-            case T_WHILE: return 'keyword';
-            case T_CLOSE_TAG:
-            case T_OPEN_TAG:
-            case T_OPEN_TAG_WITH_ECHO:
-            default: return 'default';
-        }
     }
 }
 ?>
