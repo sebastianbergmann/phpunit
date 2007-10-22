@@ -154,8 +154,7 @@ class PHPUnit_Util_Report_Node_File extends PHPUnit_Util_Report_Node
     public function render($target, $title, $charset = 'ISO-8859-1')
     {
         $template = new PHPUnit_Util_Template(
-          PHPUnit_Util_Report::getTemplatePath() .
-          'coverage_file.html'
+          PHPUnit_Util_Report::$templatePath . 'coverage_file.html'
         );
 
         $i      = 1;

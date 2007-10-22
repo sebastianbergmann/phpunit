@@ -904,9 +904,6 @@
         <tasks:replace from="@package_version@" to="version" type="package-info" />
        </file>
       </dir>
-      <file baseinstalldir="/" name="Factory.php" role="php">
-       <tasks:replace from="@package_version@" to="version" type="package-info" />
-      </file>
       <file baseinstalldir="/" name="Node.php" role="php">
        <tasks:replace from="@package_version@" to="version" type="package-info" />
       </file>
