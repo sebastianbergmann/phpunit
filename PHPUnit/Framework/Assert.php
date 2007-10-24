@@ -909,13 +909,18 @@ class PHPUnit_Framework_Assert
     public static function assertType($expected, $actual, $message = '')
     {
         if (is_string($expected)) {
-            if (class_exists($expected, FALSE) ||
-                interface_exists($expected, FALSE)) {
+            if (PHPUnit_Util_Type::isType($expected)) {
+                $constraint = new PHPUnit_Framework_Constraint_IsType($expected);
+            }
+
+            else if (class_exists($expected) || interface_exists($expected)) {
                 $constraint = new PHPUnit_Framework_Constraint_IsInstanceOf(
                   $expected
                 );
-            } else {
-                $constraint = new PHPUnit_Framework_Constraint_IsType($expected);
+            }
+
+            else {
+                throw new InvalidArgumentException;
             }
         } else {
             throw new InvalidArgumentException;
@@ -937,15 +942,20 @@ class PHPUnit_Framework_Assert
     public static function assertNotType($expected, $actual, $message = '')
     {
         if (is_string($expected)) {
-            if (class_exists($expected, FALSE) ||
-                interface_exists($expected, FALSE)) {
-                $constraint = new PHPUnit_Framework_Constraint_Not(
-                  new PHPUnit_Framework_Constraint_IsInstanceOf($expected)
-                );
-            } else {
+            if (PHPUnit_Util_Type::isType($expected)) {
                 $constraint = new PHPUnit_Framework_Constraint_Not(
                   new PHPUnit_Framework_Constraint_IsType($expected)
                 );
+            }
+
+            else if (class_exists($expected) || interface_exists($expected)) {
+                $constraint = new PHPUnit_Framework_Constraint_Not(
+                  new PHPUnit_Framework_Constraint_IsInstanceOf($expected)
+                );
+            }
+
+            else {
+                throw new InvalidArgumentException;
             }
         } else {
             throw new InvalidArgumentException;
