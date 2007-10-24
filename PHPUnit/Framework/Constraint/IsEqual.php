@@ -130,8 +130,7 @@ class PHPUnit_Framework_Constraint_IsEqual extends PHPUnit_Framework_Constraint
         } else {
             throw new PHPUnit_Framework_ExpectationFailedException(
               $failureDescription,
-              NULL,
-              $description
+              NULL
             );
         }
     }
