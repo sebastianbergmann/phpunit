@@ -47,6 +47,7 @@
 require_once 'PHPUnit/TextUI/TestRunner.php';
 require_once 'PHPUnit/Util/Log/PMD.php';
 require_once 'PHPUnit/Util/Log/TAP.php';
+require_once 'PHPUnit/Util/Configuration.php';
 require_once 'PHPUnit/Util/Fileloader.php';
 require_once 'PHPUnit/Util/Filter.php';
 require_once 'PHPUnit/Util/Getopt.php';
@@ -95,7 +96,7 @@ class PHPUnit_TextUI_Command
             $result = $skeleton->generate(TRUE);
 
             if (!$result['incomplete']) {
-                eval(str_replace(array('<?php', '?>'), '', $result['code']));
+                eval(str_replace(array('<?php', '?'), '', $result['code']));
                 $suite = new PHPUnit_Framework_TestSuite($arguments['test'] . 'Test');
             }
         }
@@ -135,10 +136,11 @@ class PHPUnit_TextUI_Command
         $arguments = array('syntaxCheck' => TRUE);
 
         $longOptions = array(
-          'help',
+          'configuration=',
+          'exclude-group=',
           'filter=',
           'group=',
-          'exclude-group=',
+          'help',
           'loader=',
           'log-json=',
           'log-tap=',
@@ -205,6 +207,11 @@ class PHPUnit_TextUI_Command
 
         foreach ($options[0] as $option) {
             switch ($option[0]) {
+                case '--configuration': {
+                    $arguments['configuration'] = new PHPUnit_Util_Configuration($option[1]);
+                }
+                break;
+
                 case '--coverage-xml': {
                     $arguments['coverageXML'] = $option[1];
                 }
@@ -507,6 +514,7 @@ class PHPUnit_TextUI_Command
               "  --skeleton             Generate skeleton UnitTest class for Unit in Unit.php.\n\n" .
               "  --help                 Prints this usage information.\n" .
               "  --version              Prints the version and exits.\n\n" .
+              "  --configuration <file> Read configuration from XML file.\n" .
               "  -d key[=value]         Sets a php.ini value.\n";
     }
 }
