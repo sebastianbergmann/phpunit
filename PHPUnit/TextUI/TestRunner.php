@@ -344,12 +344,17 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
         }
 
         if (isset($arguments['pmdXML']) && extension_loaded('tokenizer') && extension_loaded('xdebug')) {
-            $this->printer->write("\nWriting violations report XML file, this may take a moment.");
+            if (isset($arguments['configuration'])) {
+                $pmdConfiguration = $arguments['configuration']->getPMDConfiguration();
+            } else {
+                $pmdConfiguration = array();
+            }
 
             $writer = new PHPUnit_Util_Log_PMD(
-              $arguments['pmdXML']
+              $arguments['pmdXML'], $pmdConfiguration
             );
 
+            $this->printer->write("\nWriting violations report XML file, this may take a moment.");
             $writer->process($result);
 
             $writer = new PHPUnit_Util_Log_CPD(
