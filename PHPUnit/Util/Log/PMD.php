@@ -92,7 +92,7 @@ class PHPUnit_Util_Log_PMD extends PHPUnit_Util_Printer
     public function __construct($out = NULL, array $configuration = array())
     {
         parent::__construct($out);
-        $this->loadClasses();
+        $this->loadClasses($configuration);
     }
 
     /**
@@ -258,7 +258,7 @@ class PHPUnit_Util_Log_PMD extends PHPUnit_Util_Printer
         }
     }
 
-    protected function loadClasses()
+    protected function loadClasses(array $configuration)
     {
         $basedir = dirname(__FILE__) . DIRECTORY_SEPARATOR .
                    'PMD' . DIRECTORY_SEPARATOR . 'Rule';
