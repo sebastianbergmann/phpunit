@@ -171,6 +171,62 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
      */
     public function doRun(PHPUnit_Framework_Test $suite, array $arguments = array())
     {
+        if (isset($arguments['configuration'])) {
+            $reportingConfiguration = $arguments['configuration']->getReportingConfiguration();
+
+            if (isset($reportingConfiguration['coverage-html']) && !isset($arguments['reportDirectory'])) {
+                if (isset($reportingConfiguration['charset']) && !isset($arguments['reportCharset'])) {
+                    $arguments['reportCharset'] = $reportingConfiguration['charset'];
+                }
+
+                $arguments['reportDirectory'] = $reportingConfiguration['coverage-html'];
+            }
+
+            if (isset($reportingConfiguration['coverage-xml']) && !isset($arguments['coverageXML'])) {
+                $arguments['coverageXML'] = $reportingConfiguration['coverage-xml'];
+            }
+
+            if (isset($reportingConfiguration['graphviz']) && !isset($arguments['graphvizLogfile'])) {
+                $arguments['graphvizLogfile'] = $reportingConfiguration['graphviz'];
+            }
+
+            if (isset($reportingConfiguration['json']) && !isset($arguments['jsonLogfile'])) {
+                $arguments['jsonLogfile'] = $reportingConfiguration['json'];
+            }
+
+            if (isset($reportingConfiguration['metrics-xml']) && !isset($arguments['metricsXML'])) {
+                $arguments['metricsXML'] = $reportingConfiguration['metrics-xml'];
+            }
+
+            if (isset($reportingConfiguration['pmd-xml']) && !isset($arguments['pmdXML'])) {
+                $arguments['pmdXML'] = $reportingConfiguration['pmd-xml'];
+            }
+
+            if (isset($reportingConfiguration['tap']) && !isset($arguments['tapLogfile'])) {
+                $arguments['tapLogfile'] = $reportingConfiguration['tap'];
+            }
+
+            if (isset($reportingConfiguration['test-xml']) && !isset($arguments['xmlLogfile'])) {
+                $arguments['xmlLogfile'] = $reportingConfiguration['test-xml'];
+            }
+
+            if (isset($reportingConfiguration['testdox-html']) && !isset($arguments['testdoxHTMLFile'])) {
+                $arguments['testdoxHTMLFile'] = $reportingConfiguration['testdox-html'];
+            }
+
+            if (isset($reportingConfiguration['testdox-text']) && !isset($arguments['testdoxTextFile'])) {
+                $arguments['testdoxTextFile'] = $reportingConfiguration['testdox-text'];
+            }
+
+            $pmdConfiguration = $arguments['configuration']->getPMDConfiguration();
+        } else {
+            $pmdConfiguration = array();
+        }
+
+        if (isset($arguments['reportDirectory'])) {
+            $arguments['reportDirectory'] = $this->getDirectory($arguments['reportDirectory']);
+        }
+
         $arguments['filter']             = isset($arguments['filter'])             ? $arguments['filter']             : FALSE;
         $arguments['groups']             = isset($arguments['groups'])             ? $arguments['groups']             : array();
         $arguments['excludeGroups']      = isset($arguments['excludeGroups'])      ? $arguments['excludeGroups']      : array();
@@ -190,10 +246,6 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
               $arguments['groups'],
               $arguments['excludeGroups']
             );
-        }
-
-        if (isset($arguments['reportDirectory'])) {
-            $arguments['reportDirectory'] = $this->getDirectory($arguments['reportDirectory']);
         }
 
         $result = $this->createTestResult();
@@ -344,12 +396,6 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
         }
 
         if (isset($arguments['pmdXML']) && extension_loaded('tokenizer') && extension_loaded('xdebug')) {
-            if (isset($arguments['configuration'])) {
-                $pmdConfiguration = $arguments['configuration']->getPMDConfiguration();
-            } else {
-                $pmdConfiguration = array();
-            }
-
             $writer = new PHPUnit_Util_Log_PMD(
               $arguments['pmdXML'], $pmdConfiguration
             );

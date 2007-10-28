@@ -96,7 +96,7 @@ class PHPUnit_TextUI_Command
             $result = $skeleton->generate(TRUE);
 
             if (!$result['incomplete']) {
-                eval(str_replace(array('<?php', '?'), '', $result['code']));
+                eval(str_replace(array('<?php', '?>'), '', $result['code']));
                 $suite = new PHPUnit_Framework_TestSuite($arguments['test'] . 'Test');
             }
         }
