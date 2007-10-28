@@ -39,7 +39,7 @@
  * @author     Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @copyright  2002-2007 Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
- * @version    SVN: $Id: Class.php 1206 2007-08-31 07:38:50Z sb $
+ * @version    SVN: $Id$
  * @link       http://www.phpunit.de/
  * @since      File available since Release 3.2.0
  */
@@ -49,7 +49,52 @@ require_once 'PHPUnit/Util/Filter.php';
 PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
 
 /**
- * Wrapper for the PHPUnit configuration file.
+ * Wrapper for the PHPUnit XML configuration file.
+ *
+ * Example XML configuration file:
+ * <code>
+ * <?xml version="1.0" encoding="utf-8" ?>
+ *
+ * <phpunit>
+ *   <reporting>
+ *     <log type="coverage-html" target="/tmp/report" charset="ISO-8859-1"/>
+ *     <log type="coverage-xml" target="/tmp/coverage.xml"/>
+ *     <log type="json" target="/tmp/json"/>
+ *     <log type="graphviz" target="/tmp/graphviz.dot"/>
+ *     <log type="metrics-xml" target="/tmp/metrics.xml"/>
+ *     <log type="pmd-xml" target="/tmp/pmd.xml"/>
+ *     <log type="tap" target="/tmp/tap"/>
+ *     <log type="test-xml" target="/tmp/test.xml"/>
+ *     <log type="testdox-html" target="/tmp/testdox.html"/>
+ *     <log type="testdox-text" target="/tmp/testdox.txt"/>
+ * 
+ *     <pmd>
+ *       <rules>
+ *         <rule class="PHPUnit_Util_Log_PMD_Rule_Class_DepthOfInheritanceTree"
+ *               threshold="6"/>
+ *         <rule class="PHPUnit_Util_Log_PMD_Rule_Class_EfferentCoupling"
+ *               threshold="20"/>
+ *         <rule class="PHPUnit_Util_Log_PMD_Rule_Class_ExcessiveClassLength"
+ *               threshold="1000"/>
+ *         <rule class="PHPUnit_Util_Log_PMD_Rule_Class_ExcessivePublicCount"
+ *               threshold="45"/>
+ *         <rule class="PHPUnit_Util_Log_PMD_Rule_Class_TooManyFields"
+ *               threshold="15"/>
+ *         <rule class="PHPUnit_Util_Log_PMD_Rule_Function_CodeCoverage"
+ *               threshold="35,70"/>
+ *         <rule class="PHPUnit_Util_Log_PMD_Rule_Function_CyclomaticComplexity"
+ *               threshold="10"/>
+ *         <rule class="PHPUnit_Util_Log_PMD_Rule_Function_ExcessiveMethodLength"
+ *               threshold="100"/>
+ *         <rule class="PHPUnit_Util_Log_PMD_Rule_Function_ExcessiveParameterList"
+ *               threshold="10"/>
+ *         <rule class="PHPUnit_Util_Log_PMD_Rule_Function_NPathComplexity"
+ *               threshold="200"/>
+ *       </rules>
+ *     </pmd>
+ *   </reporting>
+ * </phpunit>
+ * </code>
  *
  * @category   Testing
  * @package    PHPUnit
@@ -74,18 +119,15 @@ class PHPUnit_Util_Configuration
     {
         $this->document = new DOMDocument;
 
-        if (is_readable($filename))
-        {
+        if (is_readable($filename)) {
             libxml_use_internal_errors(TRUE);
 
             $loaded = @$this->document->load($filename);
 
-            if ($loaded === FALSE)
-            {
+            if ($loaded === FALSE) {
                 $message = '';
 
-                foreach (libxml_get_errors() as $error)
-                {
+                foreach (libxml_get_errors() as $error) {
                     $message .= $error->message;
                 }
 
@@ -98,9 +140,7 @@ class PHPUnit_Util_Configuration
                   )
                 );
             }
-        }
-        else
-        {
+        } else {
             throw new RuntimeException(
               sprintf(
                 'Could not read configuration file "%s".',
@@ -119,11 +159,10 @@ class PHPUnit_Util_Configuration
     public function getPMDConfiguration()
     {
         $xpath  = new DOMXPath($this->document);
-        $rules  = $xpath->query('pmd/rule');
+        $rules  = $xpath->query('reporting/pmd/rules/rule');
         $result = array();
 
-        foreach ($rules as $rule)
-        {
+        foreach ($rules as $rule) {
             $class     = (string)$rule->getAttribute('class');
             $threshold = (string)$rule->getAttribute('threshold');
             $threshold = explode(',', $threshold);
@@ -133,6 +172,32 @@ class PHPUnit_Util_Configuration
             }
 
             $result[$class] = $threshold;
+        }
+
+        return $result;
+    }
+
+    /**
+     * Returns the reporting configuration.
+     *
+     * @return array
+     * @access public
+     */
+    public function getReportingConfiguration()
+    {
+        $xpath  = new DOMXPath($this->document);
+        $logs   = $xpath->query('reporting/log');
+        $result = array();
+
+        foreach ($logs as $log) {
+            $type   = (string)$log->getAttribute('type');
+            $target = (string)$log->getAttribute('target');
+
+            if ($type == 'coverage-html' && $log->hasAttribute('charset')) {
+                $result['charset'] = (string)$log->getAttribute('charset');
+            }
+
+            $result[$type] = $target;
         }
 
         return $result;
