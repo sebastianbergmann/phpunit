@@ -171,51 +171,65 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
      */
     public function doRun(PHPUnit_Framework_Test $suite, array $arguments = array())
     {
-        if (isset($arguments['configuration'])) {
-            $reportingConfiguration = $arguments['configuration']->getReportingConfiguration();
+        $arguments['filter']             = isset($arguments['filter'])             ? $arguments['filter']             : FALSE;
+        $arguments['groups']             = isset($arguments['groups'])             ? $arguments['groups']             : array();
+        $arguments['excludeGroups']      = isset($arguments['excludeGroups'])      ? $arguments['excludeGroups']      : array();
+        $arguments['listeners']          = isset($arguments['listeners'])          ? $arguments['listeners']          : array();
+        $arguments['repeat']             = isset($arguments['repeat'])             ? $arguments['repeat']             : FALSE;
+        $arguments['stopOnFailure']      = isset($arguments['stopOnFailure'])      ? $arguments['stopOnFailure']      : FALSE;
+        $arguments['testDatabasePrefix'] = isset($arguments['testDatabasePrefix']) ? $arguments['testDatabasePrefix'] : '';
+        $arguments['verbose']            = isset($arguments['verbose'])            ? $arguments['verbose']            : FALSE;
+        $arguments['wait']               = isset($arguments['wait'])               ? $arguments['wait']               : FALSE;
 
-            if (isset($reportingConfiguration['coverage-html']) && !isset($arguments['reportDirectory'])) {
-                if (isset($reportingConfiguration['charset']) && !isset($arguments['reportCharset'])) {
-                    $arguments['reportCharset'] = $reportingConfiguration['charset'];
+        if (isset($arguments['configuration'])) {
+            $loggingConfiguration = $arguments['configuration']->getLoggingConfiguration();
+
+            if (isset($loggingConfiguration['coverage-html']) && !isset($arguments['reportDirectory'])) {
+                if (isset($loggingConfiguration['charset']) && !isset($arguments['reportCharset'])) {
+                    $arguments['reportCharset'] = $loggingConfiguration['charset'];
                 }
 
-                $arguments['reportDirectory'] = $reportingConfiguration['coverage-html'];
+                $arguments['reportDirectory'] = $loggingConfiguration['coverage-html'];
             }
 
-            if (isset($reportingConfiguration['coverage-xml']) && !isset($arguments['coverageXML'])) {
-                $arguments['coverageXML'] = $reportingConfiguration['coverage-xml'];
+            if (isset($loggingConfiguration['coverage-xml']) && !isset($arguments['coverageXML'])) {
+                $arguments['coverageXML'] = $loggingConfiguration['coverage-xml'];
             }
 
-            if (isset($reportingConfiguration['graphviz']) && !isset($arguments['graphvizLogfile'])) {
-                $arguments['graphvizLogfile'] = $reportingConfiguration['graphviz'];
+            if (isset($loggingConfiguration['graphviz']) && !isset($arguments['graphvizLogfile'])) {
+                $arguments['graphvizLogfile'] = $loggingConfiguration['graphviz'];
             }
 
-            if (isset($reportingConfiguration['json']) && !isset($arguments['jsonLogfile'])) {
-                $arguments['jsonLogfile'] = $reportingConfiguration['json'];
+            if (isset($loggingConfiguration['json']) && !isset($arguments['jsonLogfile'])) {
+                $arguments['jsonLogfile'] = $loggingConfiguration['json'];
             }
 
-            if (isset($reportingConfiguration['metrics-xml']) && !isset($arguments['metricsXML'])) {
-                $arguments['metricsXML'] = $reportingConfiguration['metrics-xml'];
+            if (isset($loggingConfiguration['metrics-xml']) && !isset($arguments['metricsXML'])) {
+                $arguments['metricsXML'] = $loggingConfiguration['metrics-xml'];
             }
 
-            if (isset($reportingConfiguration['pmd-xml']) && !isset($arguments['pmdXML'])) {
-                $arguments['pmdXML'] = $reportingConfiguration['pmd-xml'];
+            if (isset($loggingConfiguration['plain'])) {
+                $arguments['listeners'][] = new PHPUnit_TextUI_ResultPrinter($loggingConfiguration['plain'], TRUE);
             }
 
-            if (isset($reportingConfiguration['tap']) && !isset($arguments['tapLogfile'])) {
-                $arguments['tapLogfile'] = $reportingConfiguration['tap'];
+            if (isset($loggingConfiguration['pmd-xml']) && !isset($arguments['pmdXML'])) {
+                $arguments['pmdXML'] = $loggingConfiguration['pmd-xml'];
             }
 
-            if (isset($reportingConfiguration['test-xml']) && !isset($arguments['xmlLogfile'])) {
-                $arguments['xmlLogfile'] = $reportingConfiguration['test-xml'];
+            if (isset($loggingConfiguration['tap']) && !isset($arguments['tapLogfile'])) {
+                $arguments['tapLogfile'] = $loggingConfiguration['tap'];
             }
 
-            if (isset($reportingConfiguration['testdox-html']) && !isset($arguments['testdoxHTMLFile'])) {
-                $arguments['testdoxHTMLFile'] = $reportingConfiguration['testdox-html'];
+            if (isset($loggingConfiguration['test-xml']) && !isset($arguments['xmlLogfile'])) {
+                $arguments['xmlLogfile'] = $loggingConfiguration['test-xml'];
             }
 
-            if (isset($reportingConfiguration['testdox-text']) && !isset($arguments['testdoxTextFile'])) {
-                $arguments['testdoxTextFile'] = $reportingConfiguration['testdox-text'];
+            if (isset($loggingConfiguration['testdox-html']) && !isset($arguments['testdoxHTMLFile'])) {
+                $arguments['testdoxHTMLFile'] = $loggingConfiguration['testdox-html'];
+            }
+
+            if (isset($loggingConfiguration['testdox-text']) && !isset($arguments['testdoxTextFile'])) {
+                $arguments['testdoxTextFile'] = $loggingConfiguration['testdox-text'];
             }
 
             $pmdConfiguration = $arguments['configuration']->getPMDConfiguration();
@@ -227,16 +241,7 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
             $arguments['reportDirectory'] = $this->getDirectory($arguments['reportDirectory']);
         }
 
-        $arguments['filter']             = isset($arguments['filter'])             ? $arguments['filter']             : FALSE;
-        $arguments['groups']             = isset($arguments['groups'])             ? $arguments['groups']             : array();
-        $arguments['excludeGroups']      = isset($arguments['excludeGroups'])      ? $arguments['excludeGroups']      : array();
-        $arguments['listeners']          = isset($arguments['listeners'])          ? $arguments['listeners']          : array();
-        $arguments['repeat']             = isset($arguments['repeat'])             ? $arguments['repeat']             : FALSE;
-        $arguments['reportCharset']      = isset($arguments['reportCharset'])      ? $arguments['reportCharset']      : 'ISO-8859-1';
-        $arguments['stopOnFailure']      = isset($arguments['stopOnFailure'])      ? $arguments['stopOnFailure']      : FALSE;
-        $arguments['testDatabasePrefix'] = isset($arguments['testDatabasePrefix']) ? $arguments['testDatabasePrefix'] : '';
-        $arguments['verbose']            = isset($arguments['verbose'])            ? $arguments['verbose']            : FALSE;
-        $arguments['wait']               = isset($arguments['wait'])               ? $arguments['wait']               : FALSE;
+        $arguments['reportCharset'] = isset($arguments['reportCharset']) ? $arguments['reportCharset'] : 'ISO-8859-1';
 
         if (is_integer($arguments['repeat'])) {
             $suite = new PHPUnit_Extensions_RepeatedTest(
