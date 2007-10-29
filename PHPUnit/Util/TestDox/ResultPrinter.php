@@ -240,21 +240,25 @@ abstract class PHPUnit_Util_TestDox_ResultPrinter extends PHPUnit_Util_Printer i
      */
     public function endTest(PHPUnit_Framework_Test $test, $time)
     {
-        $prettifiedName = $this->prettifier->prettifyTestMethod($test->getName());
+        if ($test instanceof PHPUnit_Framework_TestCase) {
+            $prettifiedName = $this->prettifier->prettifyTestMethod(
+              $test->getName()
+            );
 
-        if (!isset($this->tests[$prettifiedName])) {
-            if (!$this->testFailed) {
-                $this->tests[$prettifiedName]['success'] = 1;
-                $this->tests[$prettifiedName]['failure'] = 0;
+            if (!isset($this->tests[$prettifiedName])) {
+                if (!$this->testFailed) {
+                    $this->tests[$prettifiedName]['success'] = 1;
+                    $this->tests[$prettifiedName]['failure'] = 0;
+                } else {
+                    $this->tests[$prettifiedName]['success'] = 0;
+                    $this->tests[$prettifiedName]['failure'] = 1;
+                }
             } else {
-                $this->tests[$prettifiedName]['success'] = 0;
-                $this->tests[$prettifiedName]['failure'] = 1;
-            }
-        } else {
-            if (!$this->testFailed) {
-                $this->tests[$prettifiedName]['success']++;
-            } else {
-                $this->tests[$prettifiedName]['failure']++;
+                if (!$this->testFailed) {
+                    $this->tests[$prettifiedName]['success']++;
+                } else {
+                    $this->tests[$prettifiedName]['failure']++;
+                }
             }
         }
     }
