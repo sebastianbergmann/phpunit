@@ -371,12 +371,15 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
             ini_set($varName, $oldValue);
         }
 
+        $this->iniSettings = array();
+
         // Clean up locale settings.
         foreach ($this->locale as $category => $locale) {
             setlocale($category, $locale);
         }
 
-        $this->iniSettings = array();
+        // Clean up stat cache.
+        clearstatcache();
 
         // Workaround for missing "finally".
         if ($this->exception !== NULL) {
