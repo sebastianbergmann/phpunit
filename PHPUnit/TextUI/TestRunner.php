@@ -182,7 +182,11 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
         $arguments['wait']               = isset($arguments['wait'])               ? $arguments['wait']               : FALSE;
 
         if (isset($arguments['configuration'])) {
-            $loggingConfiguration = $arguments['configuration']->getLoggingConfiguration();
+            $configuration = new PHPUnit_Util_Configuration(
+              $arguments['configuration']
+            );
+
+            $loggingConfiguration = $configuration->getLoggingConfiguration();
 
             if (isset($loggingConfiguration['coverage-html']) && !isset($arguments['reportDirectory'])) {
                 if (isset($loggingConfiguration['charset']) && !isset($arguments['reportCharset'])) {
@@ -232,7 +236,7 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
                 $arguments['testdoxTextFile'] = $loggingConfiguration['testdox-text'];
             }
 
-            $pmdConfiguration = $arguments['configuration']->getPMDConfiguration();
+            $pmdConfiguration = $configuration->getPMDConfiguration();
         } else {
             $pmdConfiguration = array();
         }
