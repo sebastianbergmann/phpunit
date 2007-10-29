@@ -115,6 +115,10 @@ class PHPUnit_Util_TestDox_NamePrettifier
     {
         $buffer = '';
 
+        if (!is_string($testMethodName) || strlen($testMethodName) == 0) {
+            return $buffer;
+        }
+
         $string = preg_replace('#\d+$#', '', $testMethodName);
 
         if (in_array($string, $this->strings)) {
