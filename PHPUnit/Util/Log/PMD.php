@@ -49,6 +49,7 @@ require_once 'PHPUnit/Util/Metrics/Project.php';
 require_once 'PHPUnit/Util/Log/PMD/Rule/Class.php';
 require_once 'PHPUnit/Util/Log/PMD/Rule/File.php';
 require_once 'PHPUnit/Util/Log/PMD/Rule/Function.php';
+require_once 'PHPUnit/Util/Log/PMD/Rule/Project.php';
 require_once 'PHPUnit/Util/Class.php';
 require_once 'PHPUnit/Util/CodeCoverage.php';
 require_once 'PHPUnit/Util/Filter.php';
@@ -76,6 +77,7 @@ class PHPUnit_Util_Log_PMD extends PHPUnit_Util_Printer
     protected $added;
 
     protected $rules = array(
+      'project'  => array(),
       'file'     => array(),
       'class'    => array(),
       'function' => array()
@@ -112,6 +114,18 @@ class PHPUnit_Util_Log_PMD extends PHPUnit_Util_Printer
         $pmd = $document->createElement('pmd');
         $pmd->setAttribute('version', 'PHPUnit ' . PHPUnit_Runner_Version::id());
         $document->appendChild($pmd);
+
+        foreach ($this->rules['project'] as $ruleName => $rule) {
+            $result = $rule->apply($metrics);
+
+            if ($result !== NULL) {
+                $this->addViolation(
+                  $result,
+                  $pmd,
+                  $ruleName
+                );
+            }
+        }
 
         foreach ($metrics->getFiles() as $fileName => $fileMetrics) {
             $xmlFile = $document->createElement('file');
@@ -266,7 +280,8 @@ class PHPUnit_Util_Log_PMD extends PHPUnit_Util_Printer
         $dirs = array(
           $basedir . DIRECTORY_SEPARATOR . 'Class',
           $basedir . DIRECTORY_SEPARATOR . 'File',
-          $basedir . DIRECTORY_SEPARATOR . 'Function'
+          $basedir . DIRECTORY_SEPARATOR . 'Function',
+          $basedir . DIRECTORY_SEPARATOR . 'Project'
         );
 
         foreach ($dirs as $dir) {
@@ -297,6 +312,10 @@ class PHPUnit_Util_Log_PMD extends PHPUnit_Util_Printer
                     $object = new $className($configuration[$className]);
                 } else {
                     $object = new $className;
+                }
+
+                if ($class->isSubclassOf('PHPUnit_Util_Log_PMD_Rule_Project')) {
+                    $this->rules['project'][$rule] = $object;
                 }
 
                 if ($class->isSubclassOf('PHPUnit_Util_Log_PMD_Rule_File')) {

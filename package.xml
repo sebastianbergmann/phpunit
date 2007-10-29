@@ -826,6 +826,9 @@
          <file baseinstalldir="/" name="CodeCoverage.php" role="php">
           <tasks:replace from="@package_version@" to="version" type="package-info" />
          </file>
+         <file baseinstalldir="/" name="CRAP.php" role="php">
+          <tasks:replace from="@package_version@" to="version" type="package-info" />
+         </file>
          <file baseinstalldir="/" name="CyclomaticComplexity.php" role="php">
           <tasks:replace from="@package_version@" to="version" type="package-info" />
          </file>
@@ -839,6 +842,11 @@
           <tasks:replace from="@package_version@" to="version" type="package-info" />
          </file>
         </dir>
+        <dir name="Project">
+         <file baseinstalldir="/" name="CRAP.php" role="php">
+          <tasks:replace from="@package_version@" to="version" type="package-info" />
+         </file>
+        </dir>
         <file baseinstalldir="/" name="Class.php" role="php">
          <tasks:replace from="@package_version@" to="version" type="package-info" />
         </file>
@@ -846,6 +854,9 @@
          <tasks:replace from="@package_version@" to="version" type="package-info" />
         </file>
         <file baseinstalldir="/" name="Function.php" role="php">
+         <tasks:replace from="@package_version@" to="version" type="package-info" />
+        </file>
+        <file baseinstalldir="/" name="Project.php" role="php">
          <tasks:replace from="@package_version@" to="version" type="package-info" />
         </file>
        </dir>
