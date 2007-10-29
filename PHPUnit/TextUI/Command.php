@@ -208,7 +208,7 @@ class PHPUnit_TextUI_Command
         foreach ($options[0] as $option) {
             switch ($option[0]) {
                 case '--configuration': {
-                    $arguments['configuration'] = new PHPUnit_Util_Configuration($option[1]);
+                    $arguments['configuration'] = $option[1];
                 }
                 break;
 
