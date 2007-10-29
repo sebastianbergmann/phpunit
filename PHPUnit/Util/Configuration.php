@@ -70,6 +70,8 @@ PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
  *     <log type="testdox-text" target="/tmp/testdox.txt"/>
  * 
  *     <pmd>
+ *       <rule class="PHPUnit_Util_Log_PMD_Rule_Project_CRAP"
+ *             threshold="5,30"/>
  *       <rule class="PHPUnit_Util_Log_PMD_Rule_Class_DepthOfInheritanceTree"
  *             threshold="6"/>
  *       <rule class="PHPUnit_Util_Log_PMD_Rule_Class_EfferentCoupling"
@@ -82,6 +84,8 @@ PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
  *             threshold="15"/>
  *       <rule class="PHPUnit_Util_Log_PMD_Rule_Function_CodeCoverage"
  *             threshold="35,70"/>
+ *       <rule class="PHPUnit_Util_Log_PMD_Rule_Function_CRAP"
+ *             threshold="30"/>
  *       <rule class="PHPUnit_Util_Log_PMD_Rule_Function_CyclomaticComplexity"
  *             threshold="10"/>
  *       <rule class="PHPUnit_Util_Log_PMD_Rule_Function_ExcessiveMethodLength"
