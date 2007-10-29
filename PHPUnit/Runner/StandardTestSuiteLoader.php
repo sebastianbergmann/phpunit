@@ -75,7 +75,7 @@ class PHPUnit_Runner_StandardTestSuiteLoader implements PHPUnit_Runner_TestSuite
     public function load($suiteClassName, $suiteClassFile = '', $syntaxCheck = TRUE)
     {
         $suiteClassName = str_replace('.php', '', $suiteClassName);
-        $suiteClassFile = !empty($suiteClassFile) ? $suiteClassFile : str_replace('_', '/', $suiteClassName) . '.php';
+        $suiteClassFile = str_replace('_', '/', $suiteClassName) . '.php';
 
         if (!class_exists($suiteClassName, FALSE)) {
             if(!file_exists($suiteClassFile)) {
