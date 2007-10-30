@@ -174,7 +174,6 @@ class PHPUnit_TextUI_Command
             $longOptions[] = 'log-metrics=';
             $longOptions[] = 'log-pmd=';
             $longOptions[] = 'report=';
-            $longOptions[] = 'charset=';
         }
 
         try {
@@ -322,11 +321,6 @@ class PHPUnit_TextUI_Command
 
                 case '--report': {
                     $arguments['reportDirectory'] = $option[1];
-                }
-                break;
-
-                case '--charset': {
-                    $arguments['reportCharset'] = $option[1];
                 }
                 break;
 
@@ -487,8 +481,7 @@ class PHPUnit_TextUI_Command
 
         if (extension_loaded('xdebug')) {
             print "  --coverage-xml <file>  Write code coverage information in XML format.\n" .
-                  "  --report <dir>         Generate code coverage report in HTML format.\n" .
-                  "  --charset ...          Character Set for the HTML (default: ISO-8859-1).\n\n";
+                  "  --report <dir>         Generate code coverage report in HTML format.\n\n";
         }
 
         if (extension_loaded('pdo')) {
