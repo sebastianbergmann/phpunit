@@ -105,24 +105,45 @@ abstract class PHPUnit_Util_Report_Node
     }
 
     /**
+     * Returns the percentage of classes of which at least one method
+     * has been called at least once..
+     *
+     * @return integer
+     * @access public
+     */
+    public function getCalledClassesPercent()
+    {
+        return $this->calculatePercent(
+          $this->getNumCalledClasses(),
+          $this->getNumClasses()
+        );
+    }
+
+    /**
+     * Returns the percentage of methods that has been called at least once.
+     *
+     * @return integer
+     * @access public
+     */
+    public function getCalledMethodsPercent()
+    {
+        return $this->calculatePercent(
+          $this->getNumCalledMethods(),
+          $this->getNumMethods()
+        );
+    }
+
+    /**
      * Returns the percentage of executed lines.
      *
      * @return integer
      * @access public
      */
-    public function getExecutedPercent()
+    public function getLineExecutedPercent()
     {
-        $numExecutableLines = $this->getNumExecutableLines();
-
-        if ($numExecutableLines > 0) {
-            $percent = ($this->getNumExecutedLines() / $numExecutableLines) * 100;
-        } else {
-            $percent = 100;
-        }
-
-        return sprintf(
-          '%01.2f',
-          $percent
+        return $this->calculatePercent(
+          $this->getNumExecutedLines(),
+          $this->getNumExecutableLines()
         );
     }
 
@@ -236,6 +257,28 @@ abstract class PHPUnit_Util_Report_Node
     }
 
     /**
+     * Calculates a percentage value.
+     *
+     * @param  integer $a
+     * @param  integer $b
+     * @return float   ($a / $b) * 100
+     * @access protected
+     */
+    protected function calculatePercent($a, $b)
+    {
+        if ($b > 0) {
+            $percent = ($a / $b) * 100;
+        } else {
+            $percent = 100;
+        }
+
+        return sprintf(
+          '%01.2f',
+          $percent
+        );
+    }
+
+    /**
      * @param  PHPUnit_Util_Template $template
      * @param  string                $title
      * @param  string                $charset
@@ -248,9 +291,9 @@ abstract class PHPUnit_Util_Report_Node
             'title',
             'charset',
             'link',
-            'executable_lines',
-            'executed_lines',
-            'executed_percent',
+            'num_executable_lines',
+            'num_executed_lines',
+            'lines_executed_percent',
             'date',
             'phpunit_version',
             'xdebug_version',
@@ -261,13 +304,22 @@ abstract class PHPUnit_Util_Report_Node
             $this->getLink(TRUE),
             $this->getNumExecutableLines(),
             $this->getNumExecutedLines(),
-            $this->getExecutedPercent(),
+            $this->getLineExecutedPercent(),
             $template->getDate(),
             PHPUnit_Runner_Version::id(),
             phpversion('xdebug')
           )
         );
     }
+
+    /**
+     * Returns the classes of this node.
+     *
+     * @return array
+     * @access public
+     * @abstract
+     */
+    abstract public function getClasses();
 
     /**
      * Returns the number of executable lines.
@@ -286,6 +338,43 @@ abstract class PHPUnit_Util_Report_Node
      * @abstract
      */
     abstract public function getNumExecutedLines();
+
+    /**
+     * Returns the number of classes.
+     *
+     * @return integer
+     * @access public
+     * @abstract
+     */
+    abstract public function getNumClasses();
+
+    /**
+     * Returns the number of classes of which at least one method
+     * has been called at least once.
+     *
+     * @return integer
+     * @access public
+     * @abstract
+     */
+    abstract public function getNumCalledClasses();
+
+    /**
+     * Returns the number of methods.
+     *
+     * @return integer
+     * @access public
+     * @abstract
+     */
+    abstract public function getNumMethods();
+
+    /**
+     * Returns the number of methods that has been called at least once.
+     *
+     * @return integer
+     * @access public
+     * @abstract
+     */
+    abstract public function getNumCalledMethods();
 
     /**
      * Renders this node.
