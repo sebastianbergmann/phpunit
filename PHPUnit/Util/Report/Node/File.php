@@ -96,6 +96,36 @@ class PHPUnit_Util_Report_Node_File extends PHPUnit_Util_Report_Node
     protected $numExecutedLines = 0;
 
     /**
+     * @var    array
+     * @access protected
+     */
+    protected $classes = array();
+
+    /**
+     * @var    integer
+     * @access protected
+     */
+    protected $numClasses = 0;
+
+    /**
+     * @var    integer
+     * @access protected
+     */
+    protected $numCalledClasses = 0;
+
+    /**
+     * @var    integer
+     * @access protected
+     */
+    protected $numMethods = 0;
+
+    /**
+     * @var    integer
+     * @access protected
+     */
+    protected $numCalledMethods = 0;
+
+    /**
      * Constructor.
      *
      * @param  string                   $name
@@ -118,7 +148,18 @@ class PHPUnit_Util_Report_Node_File extends PHPUnit_Util_Report_Node
         $this->codeLines     = $this->loadFile($path);
         $this->executedLines = $executedLines;
 
-        $this->countLines();
+        $this->calculateStatistics();
+    }
+
+    /**
+     * Returns the classes of this node.
+     *
+     * @return array
+     * @access public
+     */
+    public function getClasses()
+    {
+        return $this->classes;
     }
 
     /**
@@ -141,6 +182,51 @@ class PHPUnit_Util_Report_Node_File extends PHPUnit_Util_Report_Node
     public function getNumExecutedLines()
     {
         return $this->numExecutedLines;
+    }
+
+    /**
+     * Returns the number of classes.
+     *
+     * @return integer
+     * @access public
+     */
+    public function getNumClasses()
+    {
+        return $this->numClasses;
+    }
+
+    /**
+     * Returns the number of classes of which at least one method
+     * has been called at least once.
+     *
+     * @return integer
+     * @access public
+     */
+    public function getNumCalledClasses()
+    {
+        return $this->numCalledClasses;
+    }
+
+    /**
+     * Returns the number of methods.
+     *
+     * @return integer
+     * @access public
+     */
+    public function getNumMethods()
+    {
+        return $this->numMethods;
+    }
+
+    /**
+     * Returns the number of methods that has been called at least once.
+     *
+     * @return integer
+     * @access public
+     */
+    public function getNumCalledMethods()
+    {
+        return $this->numCalledMethods;
     }
 
     /**
@@ -230,16 +316,77 @@ class PHPUnit_Util_Report_Node_File extends PHPUnit_Util_Report_Node
     }
 
     /**
-     * Counts the executable and executed lines.
+     * Calculates coverage statistics for the file.
      *
      * @access protected
      */
-    protected function countLines()
+    protected function calculateStatistics()
     {
-        $i           = 1;
-        $ignoreStart = -1;
+        $classes = PHPUnit_Util_Class::getClassesInFile($this->getPath());
+
+        $startLines = array();
+        $endLines   = array();
+
+        foreach ($classes as $class) {
+            if (!$class->isInterface()) {
+                $className = $class->getName();
+
+                $this->classes[$className] = array(
+                  'called'  => FALSE,
+                  'methods' => array()
+                );
+
+                $startLines[$class->getStartLine()] = &$this->classes[$className];
+                $endLines[$class->getStartLine()]   = &$this->classes[$className];
+
+                foreach ($class->getMethods() as $method) {
+                    if (!$method->isAbstract() &&
+                        $method->getDeclaringClass()->getName() == $className) {
+                        $methodName = $method->getName();
+
+                        $this->classes[$className]['methods'][$methodName] = FALSE;
+
+                        $startLines[$method->getStartLine()] = &$this->classes[$className]['methods'][$methodName];
+                        $endLines[$method->getStartLine()]   = &$this->classes[$className]['methods'][$methodName];
+
+                        $this->numMethods++;
+                    }
+                }
+
+                $this->numClasses++;
+            }
+        }
+
+        $currentClass  = NULL;
+        $currentMethod = NULL;
+        $ignoreStart   = -1;
+        $lineNumber    = 1;
 
         foreach ($this->codeLines as $line) {
+            if (isset($startLines[$lineNumber])) {
+                // Start line of a class.
+                if (is_array($startLines[$lineNumber])) {
+                    $currentClass = &$startLines[$lineNumber];
+                }
+
+                // Start line of a method.
+                else {
+                    $currentMethod = &$startLines[$lineNumber];
+                }
+            }
+
+            else if (isset($endLines[$lineNumber])) {
+                // End line of a class.
+                if (is_array($startLines[$lineNumber])) {
+                    $currentClass = NULL;
+                }
+
+                // End line of a method.
+                else {
+                    $currentMethod = NULL;
+                }
+            }
+
             if (strpos($line, '@codeCoverageIgnoreStart') !== FALSE) {
                 $ignoreStart = $line;
             }
@@ -248,15 +395,23 @@ class PHPUnit_Util_Report_Node_File extends PHPUnit_Util_Report_Node
                 $ignoreStart = -1;
             }
 
-            if (isset($this->executedLines[$i])) {
+            if (isset($this->executedLines[$lineNumber])) {
                 // Array: Line is executable and was executed.
-                if (is_array($this->executedLines[$i])) {
+                if (is_array($this->executedLines[$lineNumber])) {
+                    if ($currentClass !== NULL) {
+                        $currentClass['called'] = TRUE;
+                    }
+
+                    if ($currentMethod !== NULL) {
+                        $currentMethod = TRUE;
+                    }
+
                     $this->numExecutableLines++;
                     $this->numExecutedLines++;
                 }
 
                 // -1: Line is executable and was not executed.
-                else if ($this->executedLines[$i] == -1) {
+                else if ($this->executedLines[$lineNumber] == -1) {
                     $this->numExecutableLines++;
 
                     if ($ignoreStart != -1 && $line > $ignoreStart) {
@@ -265,7 +420,19 @@ class PHPUnit_Util_Report_Node_File extends PHPUnit_Util_Report_Node
                 }
             }
 
-            $i++;
+            $lineNumber++;
+        }
+
+        foreach ($this->classes as $class) {
+            foreach ($class['methods'] as $method) {
+                if ($method) {
+                    $this->numCalledMethods++;
+                }
+            }
+
+            if ($class['called']) {
+                $this->numCalledClasses++;
+            }
         }
     }
 
