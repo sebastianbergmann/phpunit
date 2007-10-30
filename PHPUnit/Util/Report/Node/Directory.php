@@ -312,7 +312,7 @@ class PHPUnit_Util_Report_Node_Directory extends PHPUnit_Util_Report_Node
                 'executed_lines'
               ),
               array(
-                $item->getLink(FALSE, FALSE),
+                $item->getLink(FALSE),
                 $color,
                 $level,
                 floor($item->getExecutedPercent()),

@@ -193,7 +193,7 @@ abstract class PHPUnit_Util_Report_Node
 
         if ($full) {
             if ($this->parent !== NULL) {
-                $parent = $this->parent->getLink(FALSE, TRUE) . DIRECTORY_SEPARATOR;
+                $parent = $this->parent->getLink(TRUE) . DIRECTORY_SEPARATOR;
             } else {
                 $parent = '';
             }
@@ -258,7 +258,7 @@ abstract class PHPUnit_Util_Report_Node
           array(
             $title,
             $charset,
-            $this->getLink(FALSE, TRUE),
+            $this->getLink(TRUE),
             $this->getNumExecutableLines(),
             $this->getNumExecutedLines(),
             $this->getExecutedPercent(),
