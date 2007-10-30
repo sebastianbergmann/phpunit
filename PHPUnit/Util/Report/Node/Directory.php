@@ -386,55 +386,13 @@ class PHPUnit_Util_Report_Node_Directory extends PHPUnit_Util_Report_Node
 
         $template->setVar(
           array(
-            'total_classes_color',
-            'total_classes_level',
-            'total_classes_called_width',
-            'total_classes_called_percent',
-            'total_classes_not_called_width',
-            'total_num_called_classes',
-            'total_num_classes',
-
-            'total_methods_color',
-            'total_methods_level',
-            'total_methods_called_width',
-            'total_methods_called_percent',
-            'total_methods_not_called_width',
-            'total_num_called_methods',
-            'total_num_methods',
-
-            'total_lines_executed_color',
-            'total_lines_executed_level',
-            'total_lines_executed_width',
-            'total_lines_executed_percent',
-            'total_lines_not_executed_width',
-
+            'total_item',
             'items',
             'low_upper_bound',
             'high_lower_bound'
           ),
           array(
-            $totalClassesColor,
-            $totalClassesLevel,
-            floor($totalClassesPercent),
-            $totalClassesPercent,
-            100 - floor($totalClassesPercent),
-            $this->getNumCalledClasses(),
-            $this->getNumClasses(),
-
-            $totalMethodsColor,
-            $totalMethodsLevel,
-            floor($totalMethodsPercent),
-            $totalMethodsPercent,
-            100 - floor($totalMethodsPercent),
-            $this->getNumCalledMethods(),
-            $this->getNumMethods(),
-
-            $totalLinesColor,
-            $totalLinesLevel,
-            floor($totalLinesPercent),
-            $totalLinesPercent,
-            100 - floor($totalLinesPercent),
-
+            $this->renderTotalItem(),
             $this->renderItems(),
             self::LOW_UPPER_BOUND,
             self::HIGH_LOWER_BOUND
@@ -466,65 +424,82 @@ class PHPUnit_Util_Report_Node_Directory extends PHPUnit_Util_Report_Node
         $result = '';
 
         foreach ($items as $item) {
-            $itemTemplate = new PHPUnit_Util_Template(
-              PHPUnit_Util_Report::$templatePath . 'coverage_item.html'
-            );
-
-            list($color, $level) = $this->getColorLevel(
-              $item->getLineExecutedPercent()
-            );
-
-            $calledClassesPercent = $item->getCalledClassesPercent();
-            $calledMethodsPercent = $item->getCalledMethodsPercent();
-            $executedLinesPercent = $item->getLineExecutedPercent();
-
-            $itemTemplate->setVar(
-              array(
-                'link',
-                'color',
-                'level',
-                'classes_called_width',
-                'classes_called_percent',
-                'classes_not_called_width',
-                'num_classes',
-                'num_called_classes',
-                'methods_called_width',
-                'methods_called_percent',
-                'methods_not_called_width',
-                'num_methods',
-                'num_called_methods',
-                'lines_executed_width',
-                'lines_executed_percent',
-                'lines_not_executed_width',
-                'num_executable_lines',
-                'num_executed_lines'
-              ),
-              array(
-                $item->getLink(FALSE),
-                $color,
-                $level,
-                floor($calledClassesPercent),
-                $calledClassesPercent,
-                100 - floor($calledClassesPercent),
-                $item->getNumClasses(),
-                $item->getNumCalledClasses(),
-                floor($calledMethodsPercent),
-                $calledMethodsPercent,
-                100 - floor($calledMethodsPercent),
-                $item->getNumMethods(),
-                $item->getNumCalledMethods(),
-                floor($executedLinesPercent),
-                $executedLinesPercent,
-                100 - floor($executedLinesPercent),
-                $item->getNumExecutableLines(),
-                $item->getNumExecutedLines()
-              )
-            );
-
-            $result .= $itemTemplate->render();
+            $result .= $this->doRenderItem($item);
         }
 
         return $result;
+    }
+
+    protected function doRenderItem(PHPUnit_Util_Report_Node $item, $link = NULL)
+    {
+        $itemTemplate = new PHPUnit_Util_Template(
+          PHPUnit_Util_Report::$templatePath . 'coverage_item.html'
+        );
+
+        list($color, $level) = $this->getColorLevel(
+          $item->getLineExecutedPercent()
+        );
+
+        $calledClassesPercent = $item->getCalledClassesPercent();
+        $calledMethodsPercent = $item->getCalledMethodsPercent();
+        $executedLinesPercent = $item->getLineExecutedPercent();
+
+        $itemTemplate->setVar(
+          array(
+            'link',
+            'color',
+            'level',
+            'classes_called_width',
+            'classes_called_percent',
+            'classes_not_called_width',
+            'num_classes',
+            'num_called_classes',
+            'methods_called_width',
+            'methods_called_percent',
+            'methods_not_called_width',
+            'num_methods',
+            'num_called_methods',
+            'lines_executed_width',
+            'lines_executed_percent',
+            'lines_not_executed_width',
+            'num_executable_lines',
+            'num_executed_lines'
+          ),
+          array(
+            $link != NULL ? $link : $item->getLink(FALSE),
+            $color,
+            $level,
+            floor($calledClassesPercent),
+            $calledClassesPercent,
+            100 - floor($calledClassesPercent),
+            $item->getNumClasses(),
+            $item->getNumCalledClasses(),
+            floor($calledMethodsPercent),
+            $calledMethodsPercent,
+            100 - floor($calledMethodsPercent),
+            $item->getNumMethods(),
+            $item->getNumCalledMethods(),
+            floor($executedLinesPercent),
+            $executedLinesPercent,
+            100 - floor($executedLinesPercent),
+            $item->getNumExecutableLines(),
+            $item->getNumExecutedLines()
+          )
+        );
+
+        return $itemTemplate->render();
+    }
+
+    protected function renderTotalItem()
+    {
+        if (empty($this->directories) && count($this->files) == 1) {
+            return '';
+        }
+
+        return $this->doRenderItem($this, 'Total') .
+               "        <tr>\n" .
+               '          <td class="tableHead" colspan="10">&nbsp;</td>' . "\n" .
+               "        </tr>\n";
     }
 
     protected function getColorLevel($percent)
