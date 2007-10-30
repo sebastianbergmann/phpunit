@@ -193,6 +193,10 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
                     $arguments['reportCharset'] = $loggingConfiguration['charset'];
                 }
 
+                if (isset($loggingConfiguration['highlight']) && !isset($arguments['reportHighlight'])) {
+                    $arguments['reportHighlight'] = $loggingConfiguration['highlight'];
+                }
+
                 $arguments['reportDirectory'] = $loggingConfiguration['coverage-html'];
             }
 
@@ -245,7 +249,8 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
             $arguments['reportDirectory'] = $this->getDirectory($arguments['reportDirectory']);
         }
 
-        $arguments['reportCharset'] = isset($arguments['reportCharset']) ? $arguments['reportCharset'] : 'ISO-8859-1';
+        $arguments['reportCharset']   = isset($arguments['reportCharset'])   ? $arguments['reportCharset']   : 'ISO-8859-1';
+        $arguments['reportHighlight'] = isset($arguments['reportHighlight']) ? $arguments['reportHighlight'] : FALSE;
 
         if (is_integer($arguments['repeat'])) {
             $suite = new PHPUnit_Extensions_RepeatedTest(
@@ -424,7 +429,13 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
         if (isset($arguments['reportDirectory']) &&
             extension_loaded('xdebug')) {
             $this->printer->write("\nGenerating code coverage report, this may take a moment.");
-            PHPUnit_Util_Report::render($result, $arguments['reportDirectory'], $arguments['reportCharset']);
+
+            PHPUnit_Util_Report::render(
+              $result,
+              $arguments['reportDirectory'],
+              $arguments['reportCharset'],
+              $arguments['reportHighlight']
+            );
 
             $this->printer->write("\n");
         }
