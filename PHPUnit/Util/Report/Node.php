@@ -78,22 +78,30 @@ abstract class PHPUnit_Util_Report_Node
     protected $name;
 
     /**
-     * @var    PHPUnit_Util_CodeCoverage_Node
+     * @var    PHPUnit_Util_Report_Node
      * @access protected
      */
     protected $parent;
 
     /**
+     * @var    boolean
+     * @access protected
+     */
+    protected $highlight;
+
+    /**
      * Constructor.
      *
-     * @param  string                         $name
-     * @param  PHPUnit_Util_CodeCoverage_Node $parent
+     * @param  string                   $name
+     * @param  PHPUnit_Util_Report_Node $parent
+     * @param  boolean                  $highlight
      * @access public
      */
-    public function __construct($name, PHPUnit_Util_Report_Node $parent = NULL)
+    public function __construct($name, PHPUnit_Util_Report_Node $parent = NULL, $highlight = FALSE)
     {
-        $this->name   = $name;
-        $this->parent = $parent;
+        $this->name      = $name;
+        $this->parent    = $parent;
+        $this->highlight = $highlight;
     }
 
     /**

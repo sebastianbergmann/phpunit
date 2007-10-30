@@ -98,15 +98,16 @@ class PHPUnit_Util_Report_Node_File extends PHPUnit_Util_Report_Node
     /**
      * Constructor.
      *
-     * @param  string                         $name
-     * @param  PHPUnit_Util_CodeCoverage_Node $parent
-     * @param  array                          $lines
+     * @param  string                   $name
+     * @param  PHPUnit_Util_Report_Node $parent
+     * @param  boolean                  $highlight
+     * @param  array                    $executedLines
      * @throws RuntimeException
      * @access public
      */
-    public function __construct($name, PHPUnit_Util_Report_Node $parent, array $executedLines)
+    public function __construct($name, PHPUnit_Util_Report_Node $parent = NULL, $highlight = FALSE, array $executedLines)
     {
-        parent::__construct($name, $parent);
+        parent::__construct($name, $parent, $highlight);
 
         $path = $this->getPath();
 
@@ -114,7 +115,7 @@ class PHPUnit_Util_Report_Node_File extends PHPUnit_Util_Report_Node
             throw new RuntimeException;
         }
 
-        $this->codeLines     = $this->highlightFile($path);
+        $this->codeLines     = $this->loadFile($path);
         $this->executedLines = $executedLines;
 
         $this->countLines();
@@ -201,6 +202,12 @@ class PHPUnit_Util_Report_Node_File extends PHPUnit_Util_Report_Node
                 );
             }
 
+            $fillup = array_shift($this->codeLinesFillup);
+
+            if ($fillup > 0) {
+                $line .= str_repeat(' ', $fillup);
+            }
+
             $lines .= sprintf(
               '<span class="lineNum"><a name="%d"></a><a href="#%d">%8d</a> </span>%s%s%s' . "\n",
 
@@ -208,7 +215,7 @@ class PHPUnit_Util_Report_Node_File extends PHPUnit_Util_Report_Node
               $i,
               $i,
               !empty($css) ? $css : '                : ',
-              $line . str_repeat(' ', array_shift($this->codeLinesFillup)),
+              !$this->highlight ? htmlspecialchars($line) : $line,
               !empty($css) ? '</span>' : ''
             );
 
@@ -265,11 +272,11 @@ class PHPUnit_Util_Report_Node_File extends PHPUnit_Util_Report_Node
     /**
      * @author Aidan Lister <aidan@php.net>
      * @author Sebastian Bergmann <sb@sebastian-bergmann.de>
-     * @param  string $file
+     * @param  string  $file
      * @return array
      * @access protected
      */
-    protected function highlightFile($file)
+    protected function loadFile($file)
     {
         $lines    = file($file);
         $numLines = count($lines);
@@ -277,14 +284,15 @@ class PHPUnit_Util_Report_Node_File extends PHPUnit_Util_Report_Node
 
         for ($i = 0; $i < $numLines; $i++) {
             $lines[$i] = rtrim($lines[$i]);
-
-            if (strlen($lines[$i]) > $width) {
-                $width = strlen($lines[$i]);
-            }
+            $width     = max($width, strlen($lines[$i]));
         }
 
         for ($i = 0; $i < $numLines; $i++) {
             $this->codeLinesFillup[$i] = $width - strlen($lines[$i]);
+        }
+
+        if (!$this->highlight) {
+            return $lines;
         }
 
         $tokens     = token_get_all(file_get_contents($file));

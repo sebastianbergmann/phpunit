@@ -75,10 +75,11 @@ abstract class PHPUnit_Util_Report
      * @param  PHPUnit_Framework_TestResult $result
      * @param  string                       $target
      * @param  string                       $charset
+     * @param  boolean                      $highlight
      * @access public
      * @static
      */
-    public static function render(PHPUnit_Framework_TestResult $result, $target, $charset = 'ISO-8859-1')
+    public static function render(PHPUnit_Framework_TestResult $result, $target, $charset = 'ISO-8859-1', $highlight = FALSE)
     {
         self::$templatePath = sprintf(
           '%s%sReport%sTemplate%s',
@@ -93,7 +94,10 @@ abstract class PHPUnit_Util_Report
         $files                   = PHPUnit_Util_CodeCoverage::getSummary($codeCoverageInformation);
         $commonPath              = self::reducePaths($files);
         $items                   = self::buildDirectoryStructure($files);
-        $root                    = new PHPUnit_Util_Report_Node_Directory($commonPath);
+
+        $root = new PHPUnit_Util_Report_Node_Directory(
+          $commonPath, NULL, $highlight
+        );
 
         self::addItems($root, $items, $files);
         self::copyFiles($target);

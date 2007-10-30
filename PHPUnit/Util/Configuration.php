@@ -57,7 +57,7 @@ PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
  *
  * <phpunit>
  *   <logging>
- *     <log type="coverage-html" target="/tmp/report" charset="UTF-8"/>
+ *     <log type="coverage-html" target="/tmp/report" charset="UTF-8" highlight="false"/>
  *     <log type="coverage-xml" target="/tmp/coverage.xml"/>
  *     <log type="graphviz" target="/tmp/logfile.dot"/>
  *     <log type="json" target="/tmp/logfile.json"/>
@@ -169,8 +169,18 @@ class PHPUnit_Util_Configuration
             $type   = (string)$log->getAttribute('type');
             $target = (string)$log->getAttribute('target');
 
-            if ($type == 'coverage-html' && $log->hasAttribute('charset')) {
-                $result['charset'] = (string)$log->getAttribute('charset');
+            if ($type == 'coverage-html') {
+                if ($log->hasAttribute('charset')) {
+                    $result['charset'] = (string)$log->getAttribute('charset');
+                }
+
+                if ($log->hasAttribute('highlight')) {
+                    if ((string)$log->getAttribute('highlight') == 'true') {
+                        $result['highlight'] = TRUE;
+                    } else {
+                        $result['highlight'] = FALSE;
+                    }
+                }
             }
 
             $result[$type] = $target;

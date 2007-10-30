@@ -109,7 +109,8 @@ class PHPUnit_Util_Report_Node_Directory extends PHPUnit_Util_Report_Node
     {
         $directory = new PHPUnit_Util_Report_Node_Directory(
           $name,
-          $this
+          $this,
+          $this->highlight
         );
 
         $this->children[]    = $directory;
@@ -132,6 +133,7 @@ class PHPUnit_Util_Report_Node_Directory extends PHPUnit_Util_Report_Node
         $file = new PHPUnit_Util_Report_Node_File(
           $name,
           $this,
+          $this->highlight,
           $lines
         );
 
