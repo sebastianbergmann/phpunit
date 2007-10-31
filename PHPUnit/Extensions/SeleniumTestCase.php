@@ -139,6 +139,12 @@ abstract class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_Tes
     protected $testId;
 
     /**
+     * @var    boolean
+     * @access protected
+     */
+    protected $inDefaultAssertions = FALSE;
+
+    /**
      * @param  string $name
      * @param  array  $browser
      * @throws InvalidArgumentException
@@ -572,7 +578,7 @@ abstract class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_Tes
                             sleep($this->sleep);
                         }
 
-                        $this->defaultAssertions($command);
+                        $this->runDefaultAssertions($command);
                     }
                 }
             }
@@ -653,7 +659,7 @@ abstract class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_Tes
                     sleep($this->sleep);
                 }
 
-                $this->defaultAssertions($command);
+                $this->runDefaultAssertions($command);
             }
             break;
 
@@ -664,7 +670,7 @@ abstract class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_Tes
                 }
 
                 $this->doCommand($command, $arguments);
-                $this->defaultAssertions($command);
+                $this->runDefaultAssertions($command);
             }
             break;
 
@@ -674,7 +680,7 @@ abstract class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_Tes
                 }
 
                 $this->doCommand($command, $arguments);
-                $this->defaultAssertions($command);
+                $this->runDefaultAssertions($command);
             }
             break;
 
@@ -1377,6 +1383,20 @@ abstract class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_Tes
             );
         } else {
             return array();
+        }
+    }
+
+    /**
+     * @param  string $action
+     * @access private
+     * @since  Method available since Release 3.2.0
+     */
+    private function runDefaultAssertions($action)
+    {
+        if (!$this->inDefaultAssertions) {
+            $this->inDefaultAssertions = TRUE;
+            $this->defaultAssertions($action);
+            $this->inDefaultAssertions = FALSE;
         }
     }
 }
