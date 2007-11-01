@@ -64,7 +64,7 @@ PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
  *     <log type="json" target="/tmp/logfile.json"/>
  *     <log type="metrics-xml" target="/tmp/metrics.xml"/>
  *     <log type="plain" target="/tmp/logfile.txt"/>
- *     <log type="pmd-xml" target="/tmp/pmd.xml"/>
+ *     <log type="pmd-xml" target="/tmp/pmd.xml" cpdMinLines="5" cpdMinMatches="70"/>
  *     <log type="tap" target="/tmp/logfile.tap"/>
  *     <log type="test-xml" target="/tmp/logfile.xml"/>
  *     <log type="testdox-html" target="/tmp/testdox.html"/>
@@ -169,6 +169,16 @@ class PHPUnit_Util_Configuration
         foreach ($logs as $log) {
             $type   = (string)$log->getAttribute('type');
             $target = (string)$log->getAttribute('target');
+
+            if ($type == 'pmd-xml') {
+                if ($log->hasAttribute('cpdMinLines')) {
+                    $result['cpdMinLines'] = (string)$log->getAttribute('cpdMinLines');
+                }
+
+                if ($log->hasAttribute('cpdMinMatches')) {
+                    $result['cpdMinMatches'] = (string)$log->getAttribute('cpdMinMatches');
+                }
+            }
 
             if ($type == 'coverage-html') {
                 if ($log->hasAttribute('charset')) {

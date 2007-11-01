@@ -70,12 +70,12 @@ class PHPUnit_Util_Log_CPD extends PHPUnit_Util_Printer
      * @param  PHPUnit_Framework_TestResult $result
      * @access public
      */
-    public function process(PHPUnit_Framework_TestResult $result)
+    public function process(PHPUnit_Framework_TestResult $result, $minLines = 5, $minMatches = 70)
     {
         $codeCoverage = $result->getCodeCoverageInformation();
         $summary      = PHPUnit_Util_CodeCoverage::getSummary($codeCoverage);
         $files        = array_keys($summary);
-        $metrics      = new PHPUnit_Util_Metrics_Project($files, $summary, TRUE);
+        $metrics      = new PHPUnit_Util_Metrics_Project($files, $summary, TRUE, $minLines, $minMatches);
 
         $document = new DOMDocument('1.0', 'UTF-8');
         $document->formatOutput = TRUE;
