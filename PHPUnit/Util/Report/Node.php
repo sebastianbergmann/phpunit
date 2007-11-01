@@ -84,24 +84,16 @@ abstract class PHPUnit_Util_Report_Node
     protected $parent;
 
     /**
-     * @var    boolean
-     * @access protected
-     */
-    protected $highlight;
-
-    /**
      * Constructor.
      *
      * @param  string                   $name
      * @param  PHPUnit_Util_Report_Node $parent
-     * @param  boolean                  $highlight
      * @access public
      */
-    public function __construct($name, PHPUnit_Util_Report_Node $parent = NULL, $highlight = FALSE)
+    public function __construct($name, PHPUnit_Util_Report_Node $parent = NULL)
     {
-        $this->name      = $name;
-        $this->parent    = $parent;
-        $this->highlight = $highlight;
+        $this->name   = $name;
+        $this->parent = $parent;
     }
 
     /**
@@ -379,12 +371,15 @@ abstract class PHPUnit_Util_Report_Node
     /**
      * Renders this node.
      *
-     * @param string $target
-     * @param string $title
-     * @param string $charset
+     * @param string  $target
+     * @param string  $title
+     * @param string  $charset
+     * @param boolean $highlight
+     * @param integer $lowUpperBound
+     * @param integer $highLowerBound
      * @access public
      * @abstract
      */
-    abstract public function render($target, $title, $charset = 'ISO-8859-1');
+    abstract public function render($target, $title, $charset = 'ISO-8859-1', $highlight = FALSE, $lowUpperBound = 35, $highLowerBound = 70);
 }
 ?>

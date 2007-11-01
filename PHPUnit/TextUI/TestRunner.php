@@ -197,6 +197,14 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
                     $arguments['reportHighlight'] = $loggingConfiguration['highlight'];
                 }
 
+                if (isset($loggingConfiguration['lowUpperBound']) && !isset($arguments['reportLowUpperBound'])) {
+                    $arguments['reportLowUpperBound'] = $loggingConfiguration['lowUpperBound'];
+                }
+
+                if (isset($loggingConfiguration['highLowerBound']) && !isset($arguments['reportHighLowerBound'])) {
+                    $arguments['reportHighLowerBound'] = $loggingConfiguration['highLowerBound'];
+                }
+
                 $arguments['reportDirectory'] = $loggingConfiguration['coverage-html'];
             }
 
@@ -249,8 +257,10 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
             $arguments['reportDirectory'] = $this->getDirectory($arguments['reportDirectory']);
         }
 
-        $arguments['reportCharset']   = isset($arguments['reportCharset'])   ? $arguments['reportCharset']   : 'ISO-8859-1';
-        $arguments['reportHighlight'] = isset($arguments['reportHighlight']) ? $arguments['reportHighlight'] : FALSE;
+        $arguments['reportCharset']        = isset($arguments['reportCharset'])        ? $arguments['reportCharset']        : 'ISO-8859-1';
+        $arguments['reportHighlight']      = isset($arguments['reportHighlight'])      ? $arguments['reportHighlight']      : FALSE;
+        $arguments['reportLowUpperBound']  = isset($arguments['reportLowUpperBound'])  ? $arguments['reportLowUpperBound']  : 35;
+        $arguments['reportHighLowerBound'] = isset($arguments['reportHighLowerBound']) ? $arguments['reportHighLowerBound'] : 70;
 
         if (is_integer($arguments['repeat'])) {
             $suite = new PHPUnit_Extensions_RepeatedTest(
@@ -434,7 +444,9 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
               $result,
               $arguments['reportDirectory'],
               $arguments['reportCharset'],
-              $arguments['reportHighlight']
+              $arguments['reportHighlight'],
+              $arguments['reportLowUpperBound'],
+              $arguments['reportHighLowerBound']
             );
 
             $this->printer->write("\n");
