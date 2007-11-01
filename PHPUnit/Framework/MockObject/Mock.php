@@ -114,8 +114,15 @@ class PHPUnit_Framework_MockObject_Mock
             );
         }
 
-        if (empty($methods) && (class_exists($className, $callAutoload) || interface_exists($className, $callAutoload))) {
+        $isClass     = class_exists($className, $callAutoload);
+        $isInterface = interface_exists($className, $callAutoload);
+
+        if (empty($methods) && ($isClass || $isInterface)) {
             $methods = get_class_methods($className);
+        }
+
+        if ($isInterface) {
+            $callOriginalConstructor = FALSE;
         }
 
         $this->mockClassName           = $mockClassName;
@@ -216,8 +223,12 @@ class PHPUnit_Framework_MockObject_Mock
 
     protected function canMockMethod(ReflectionMethod $method)
     {
-        if ($method->isConstructor() || $method->isDestructor() ||
-            $method->isFinal()       || $method->getName() == '__clone') {
+        $className  = $method->getDeclaringClass()->getName();
+        $methodName = $method->getName();
+
+        if ($method->isFinal() ||
+            $methodName == '__construct' || $methodName == $className ||
+            $methodName == '__destruct'  || $method->getName() == '__clone') {
             return FALSE;
         }
 
@@ -282,7 +293,7 @@ class PHPUnit_Framework_MockObject_Mock
         if ($this->callOriginalConstructor) {
             $constructorCode = $this->generateConstructorCodeWithParentCall($class);
         } else {
-            $constructorCode = $this->generateConstructorCode();
+            $constructorCode = $this->generateConstructorCode($class);
         }
 
         if ($this->callOriginalClone && $class->hasMethod('__clone')) {
@@ -310,16 +321,31 @@ class PHPUnit_Framework_MockObject_Mock
         );
     }
 
-    protected function generateConstructorCode()
+    protected function generateConstructorCode(ReflectionClass $class)
     {
-        return "    public function __construct() {\n" .
-               "        \$this->invocationMocker = new PHPUnit_Framework_MockObject_InvocationMocker(\$this);\n" .
-               "    }\n\n";
+        $className   = $class->getName();
+        $constructor = FALSE;
+
+        if ($class->hasMethod('__construct')) {
+            $constructor = $class->getMethod('__construct');
+        }
+
+        else if ($class->hasMethod($className)) {
+            $constructor = $class->getMethod($className);
+        }
+
+        return sprintf(
+          "    public function __construct(%s) {\n" .
+          "        \$this->invocationMocker = new PHPUnit_Framework_MockObject_InvocationMocker(\$this);\n" .
+          "    }\n\n",
+
+          $constructor !== FALSE ? $this->generateMethodParameters($constructor) : ''
+        );
     }
 
     protected function generateConstructorCodeWithParentCall(ReflectionClass $class)
     {
-        $constructor = $class->getConstructor();
+        $constructor = $this->getConstructor($class);
 
         if ($constructor) {
             return sprintf(
@@ -333,7 +359,7 @@ class PHPUnit_Framework_MockObject_Mock
               $this->generateMethodParameters($constructor)
             );
         } else {
-            return $this->generateConstructorCode();
+            return $this->generateConstructorCode($class);
         }
     }
 
@@ -387,6 +413,22 @@ class PHPUnit_Framework_MockObject_Mock
         }
 
         return join(', ', $list);
+    }
+
+    protected function getConstructor(ReflectionClass $class)
+    {
+        $className   = $class->getName();
+        $constructor = NULL;
+
+        if ($class->hasMethod('__construct')) {
+            $constructor = $class->getMethod('__construct');
+        }
+
+        else if ($class->hasMethod($className)) {
+            $constructor = $class->getMethod($className);
+        }
+
+        return $constructor;
     }
 }
 ?>
