@@ -45,6 +45,7 @@
  */
 
 require_once 'PHPUnit/Util/Filter.php';
+require_once 'PHPUnit/Util/XML.php';
 
 PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
 
@@ -121,37 +122,7 @@ class PHPUnit_Util_Configuration
      */
     public function __construct($filename)
     {
-        $this->document = new DOMDocument;
-
-        if (is_readable($filename)) {
-            libxml_use_internal_errors(TRUE);
-
-            $loaded = @$this->document->load($filename);
-
-            if ($loaded === FALSE) {
-                $message = '';
-
-                foreach (libxml_get_errors() as $error) {
-                    $message .= $error->message;
-                }
-
-                throw new RuntimeException(
-                  sprintf(
-                    'Could not load configuration from "%s".%s',
-
-                    $filename,
-                    $message != '' ? "\n" . $message : ''
-                  )
-                );
-            }
-        } else {
-            throw new RuntimeException(
-              sprintf(
-                'Could not read configuration file "%s".',
-                $filename
-              )
-            );
-        }
+        $this->document = PHPUnit_Util_XML::load($filename);
     }
 
     /**
