@@ -299,10 +299,10 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
 
     public function testAssertArrayContainsOnlyStdClass()
     {
-        $this->assertContainsOnly('StdClass', array(new StdClass), FALSE);
+        $this->assertContainsOnly('StdClass', array(new StdClass));
 
         try {
-            $this->assertContainsOnly('StdClass', array('StdClass'), FALSE);
+            $this->assertContainsOnly('StdClass', array('StdClass'));
         }
 
         catch (PHPUnit_Framework_AssertionFailedError $e) {
@@ -314,10 +314,10 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
 
     public function testAssertArrayNotContainsOnlyStdClass()
     {
-        $this->assertNotContainsOnly('StdClass', array('StdClass'), FALSE);
+        $this->assertNotContainsOnly('StdClass', array('StdClass'));
 
         try {
-            $this->assertNotContainsOnly('StdClass', array(new StdClass), FALSE);
+            $this->assertNotContainsOnly('StdClass', array(new StdClass));
         }
 
         catch (PHPUnit_Framework_AssertionFailedError $e) {

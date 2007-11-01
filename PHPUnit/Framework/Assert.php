@@ -233,11 +233,15 @@ class PHPUnit_Framework_Assert
      * @static
      * @since  Method available since Release 3.1.4
      */
-    public static function assertContainsOnly($type, $haystack, $isNativeType = TRUE, $message = '')
+    public static function assertContainsOnly($type, $haystack, $isNativeType = NULL, $message = '')
     {
         if (!(is_array($haystack) ||
             is_object($haystack) && $haystack instanceof Iterator)) {
             throw new InvalidArgumentException;
+        }
+
+        if ($isNativeType == NULL) {
+            $isNativeType = PHPUnit_Util_Type::isType($type);
         }
 
         self::assertThat(
@@ -262,7 +266,7 @@ class PHPUnit_Framework_Assert
      * @static
      * @since  Method available since Release 3.1.4
      */
-    public static function assertAttributeContainsOnly($type, $haystackAttributeName, $haystackClassOrObject, $isNativeType = TRUE, $message = '')
+    public static function assertAttributeContainsOnly($type, $haystackAttributeName, $haystackClassOrObject, $isNativeType = NULL, $message = '')
     {
         self::assertContainsOnly(
           $type,
@@ -283,11 +287,15 @@ class PHPUnit_Framework_Assert
      * @static
      * @since  Method available since Release 3.1.4
      */
-    public static function assertNotContainsOnly($type, $haystack, $isNativeType = TRUE, $message = '')
+    public static function assertNotContainsOnly($type, $haystack, $isNativeType = NULL, $message = '')
     {
         if (!(is_array($haystack) ||
             is_object($haystack) && $haystack instanceof Iterator)) {
             throw new InvalidArgumentException;
+        }
+
+        if ($isNativeType == NULL) {
+            $isNativeType = PHPUnit_Util_Type::isType($type);
         }
 
         self::assertThat(
@@ -314,7 +322,7 @@ class PHPUnit_Framework_Assert
      * @static
      * @since  Method available since Release 3.1.4
      */
-    public static function assertAttributeNotContainsOnly($type, $haystackAttributeName, $haystackClassOrObject, $isNativeType = TRUE, $message = '')
+    public static function assertAttributeNotContainsOnly($type, $haystackAttributeName, $haystackClassOrObject, $isNativeType = NULL, $message = '')
     {
         self::assertNotContainsOnly(
           $type,
