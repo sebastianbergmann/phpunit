@@ -44,8 +44,6 @@
  * @since      File available since Release 3.2.0
  */
 
-@include_once 'Image/GraphViz.php';
-
 require_once 'PHPUnit/Util/Filter.php';
 require_once 'PHPUnit/Util/Metrics.php';
 
