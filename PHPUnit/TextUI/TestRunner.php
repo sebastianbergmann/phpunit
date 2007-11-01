@@ -229,6 +229,14 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
             }
 
             if (isset($loggingConfiguration['pmd-xml']) && !isset($arguments['pmdXML'])) {
+                if (isset($loggingConfiguration['cpdMinLines']) && !isset($arguments['cpdMinLines'])) {
+                    $arguments['cpdMinLines'] = $loggingConfiguration['cpdMinLines'];
+                }
+
+                if (isset($loggingConfiguration['cpdMinMatches']) && !isset($arguments['cpdMinMatches'])) {
+                    $arguments['cpdMinMatches'] = $loggingConfiguration['cpdMinMatches'];
+                }
+
                 $arguments['pmdXML'] = $loggingConfiguration['pmd-xml'];
             }
 
@@ -257,6 +265,8 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
             $arguments['reportDirectory'] = $this->getDirectory($arguments['reportDirectory']);
         }
 
+        $arguments['cpdMinLines']          = isset($arguments['cpdMinLines'])          ? $arguments['cpdMinLines']          : 5;
+        $arguments['cpdMinMatches']        = isset($arguments['cpdMinMatches'])        ? $arguments['cpdMinMatches']        : 70;
         $arguments['reportCharset']        = isset($arguments['reportCharset'])        ? $arguments['reportCharset']        : 'ISO-8859-1';
         $arguments['reportHighlight']      = isset($arguments['reportHighlight'])      ? $arguments['reportHighlight']      : FALSE;
         $arguments['reportLowUpperBound']  = isset($arguments['reportLowUpperBound'])  ? $arguments['reportLowUpperBound']  : 35;
@@ -431,7 +441,9 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
               str_replace('.xml', '-cpd.xml', $arguments['pmdXML'])
             );
 
-            $writer->process($result);
+            $writer->process(
+              $result, $arguments['cpdMinLines'], $arguments['cpdMinMatches']
+            );
 
             $this->printer->write("\n");
         }
