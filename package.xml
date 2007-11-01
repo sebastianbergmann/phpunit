@@ -1017,6 +1017,9 @@
      <file baseinstalldir="/" name="Type.php" role="php">
       <tasks:replace from="@package_version@" to="version" type="package-info" />
      </file>
+     <file baseinstalldir="/" name="XML.php" role="php">
+      <tasks:replace from="@package_version@" to="version" type="package-info" />
+     </file>
     </dir>
     <file baseinstalldir="/" name="Framework.php" role="php">
      <tasks:replace from="@package_version@" to="version" type="package-info" />
