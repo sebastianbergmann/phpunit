@@ -66,9 +66,6 @@ PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
  */
 class PHPUnit_Util_Report_Node_Directory extends PHPUnit_Util_Report_Node
 {
-    const LOW_UPPER_BOUND  = 35;
-    const HIGH_LOWER_BOUND = 70;
-
     /**
      * @var    PHPUnit_Util_Report_Node[]
      * @access protected
@@ -137,11 +134,7 @@ class PHPUnit_Util_Report_Node_Directory extends PHPUnit_Util_Report_Node
      */
     public function addDirectory($name)
     {
-        $directory = new PHPUnit_Util_Report_Node_Directory(
-          $name,
-          $this,
-          $this->highlight
-        );
+        $directory = new PHPUnit_Util_Report_Node_Directory($name, $this);
 
         $this->children[]    = $directory;
         $this->directories[] = &$this->children[count($this->children) - 1];
@@ -152,20 +145,16 @@ class PHPUnit_Util_Report_Node_Directory extends PHPUnit_Util_Report_Node
     /**
      * Adds a new file.
      *
-     * @param  string $name
-     * @param  array  $lines
+     * @param  string  $name
+     * @param  array   $lines
+     * @param  boolean $highlight
      * @return PHPUnit_Util_Report_Node_File
      * @throws RuntimeException
      * @access public
      */
-    public function addFile($name, array $lines)
+    public function addFile($name, array $lines, $highlight)
     {
-        $file = new PHPUnit_Util_Report_Node_File(
-          $name,
-          $this,
-          $this->highlight,
-          $lines
-        );
+        $file = new PHPUnit_Util_Report_Node_File($name, $this, $lines, $highlight);
 
         $this->children[] = $file;
         $this->files[]    = &$this->children[count($this->children) - 1];
@@ -335,27 +324,37 @@ class PHPUnit_Util_Report_Node_Directory extends PHPUnit_Util_Report_Node
     /**
      * Renders this node.
      *
-     * @param string $target
-     * @param string $title
-     * @param string $charset
+     * @param string  $target
+     * @param string  $title
+     * @param string  $charset
+     * @param boolean $highlight
+     * @param integer $lowUpperBound
+     * @param integer $highLowerBound
      * @access public
      */
-    public function render($target, $title, $charset = 'ISO-8859-1')
+    public function render($target, $title, $charset = 'ISO-8859-1', $highlight = FALSE, $lowUpperBound = 35, $highLowerBound = 70)
     {
-        $this->doRender($target, $title, $charset);
+        $this->doRender(
+          $target, $title, $charset, $highlight, $lowUpperBound, $highLowerBound
+        );
 
         foreach ($this->children as $child) {
-            $child->render($target, $title, $charset);
+            $child->render(
+              $target, $title, $charset, $highlight, $lowUpperBound, $highLowerBound
+            );
         }
     }
 
     /**
-     * @param  string   $target
-     * @param  string   $title
-     * @param  string   $charset
+     * @param string  $target
+     * @param string  $title
+     * @param string  $charset
+     * @param boolean $highlight
+     * @param integer $lowUpperBound
+     * @param integer $highLowerBound
      * @access protected
      */
-    protected function doRender($target, $title, $charset)
+    protected function doRender($target, $title, $charset, $highlight, $lowUpperBound, $highLowerBound)
     {
         $cleanId = PHPUnit_Util_Filesystem::getSafeFilename($this->getId());
         $file    = $target . $cleanId . '.html';
@@ -369,19 +368,19 @@ class PHPUnit_Util_Report_Node_Directory extends PHPUnit_Util_Report_Node
         $totalClassesPercent = $this->getCalledClassesPercent();
 
         list($totalClassesColor, $totalClassesLevel) = $this->getColorLevel(
-          $totalClassesPercent
+          $totalClassesPercent, $lowUpperBound, $highLowerBound
         );
 
         $totalMethodsPercent = $this->getCalledMethodsPercent();
 
         list($totalMethodsColor, $totalMethodsLevel) = $this->getColorLevel(
-          $totalMethodsPercent
+          $totalMethodsPercent, $lowUpperBound, $highLowerBound
         );
 
         $totalLinesPercent = $this->getLineExecutedPercent();
 
         list($totalLinesColor, $totalLinesLevel) = $this->getColorLevel(
-          $totalLinesPercent
+          $totalLinesPercent, $lowUpperBound, $highLowerBound
         );
 
         $template->setVar(
@@ -392,10 +391,10 @@ class PHPUnit_Util_Report_Node_Directory extends PHPUnit_Util_Report_Node
             'high_lower_bound'
           ),
           array(
-            $this->renderTotalItem(),
-            $this->renderItems(),
-            self::LOW_UPPER_BOUND,
-            self::HIGH_LOWER_BOUND
+            $this->renderTotalItem($lowUpperBound, $highLowerBound),
+            $this->renderItems($lowUpperBound, $highLowerBound),
+            $lowUpperBound,
+            $highLowerBound
           )
         );
 
@@ -406,10 +405,10 @@ class PHPUnit_Util_Report_Node_Directory extends PHPUnit_Util_Report_Node
      * @return string
      * @access protected
      */
-    protected function renderItems()
+    protected function renderItems($lowUpperBound, $highLowerBound)
     {
-        $items  = $this->doRenderItems($this->directories);
-        $items .= $this->doRenderItems($this->files);
+        $items  = $this->doRenderItems($this->directories, $lowUpperBound, $highLowerBound);
+        $items .= $this->doRenderItems($this->files, $lowUpperBound, $highLowerBound);
 
         return $items;
     }
@@ -419,25 +418,25 @@ class PHPUnit_Util_Report_Node_Directory extends PHPUnit_Util_Report_Node
      * @return string
      * @access protected
      */
-    protected function doRenderItems(array $items)
+    protected function doRenderItems(array $items, $lowUpperBound, $highLowerBound)
     {
         $result = '';
 
         foreach ($items as $item) {
-            $result .= $this->doRenderItem($item);
+            $result .= $this->doRenderItem($item, $lowUpperBound, $highLowerBound);
         }
 
         return $result;
     }
 
-    protected function doRenderItem(PHPUnit_Util_Report_Node $item, $link = NULL)
+    protected function doRenderItem(PHPUnit_Util_Report_Node $item, $lowUpperBound, $highLowerBound, $link = NULL)
     {
         $itemTemplate = new PHPUnit_Util_Template(
           PHPUnit_Util_Report::$templatePath . 'coverage_item.html'
         );
 
         list($color, $level) = $this->getColorLevel(
-          $item->getLineExecutedPercent()
+          $item->getLineExecutedPercent(), $lowUpperBound, $highLowerBound
         );
 
         $calledClassesPercent = $item->getCalledClassesPercent();
@@ -490,29 +489,29 @@ class PHPUnit_Util_Report_Node_Directory extends PHPUnit_Util_Report_Node
         return $itemTemplate->render();
     }
 
-    protected function renderTotalItem()
+    protected function renderTotalItem($lowUpperBound, $highLowerBound)
     {
         if (empty($this->directories) && count($this->files) == 1) {
             return '';
         }
 
-        return $this->doRenderItem($this, 'Total') .
+        return $this->doRenderItem($this, $lowUpperBound, $highLowerBound, 'Total') .
                "        <tr>\n" .
                '          <td class="tableHead" colspan="10">&nbsp;</td>' . "\n" .
                "        </tr>\n";
     }
 
-    protected function getColorLevel($percent)
+    protected function getColorLevel($percent, $lowUpperBound, $highLowerBound)
     {
         $floorPercent = floor($percent);
 
-        if ($floorPercent < self::LOW_UPPER_BOUND) {
+        if ($floorPercent < $lowUpperBound) {
             $color = 'scarlet_red';
             $level = 'Lo';
         }
 
-        else if ($floorPercent >= self::LOW_UPPER_BOUND &&
-                 $floorPercent <  self::HIGH_LOWER_BOUND) {
+        else if ($floorPercent >= $lowUpperBound &&
+                 $floorPercent <  $highLowerBound) {
             $color = 'butter';
             $level = 'Med';
         }

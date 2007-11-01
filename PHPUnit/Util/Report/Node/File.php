@@ -84,6 +84,12 @@ class PHPUnit_Util_Report_Node_File extends PHPUnit_Util_Report_Node
     protected $executedLines;
 
     /**
+     * @var    boolean
+     * @access protected
+     */
+    protected $highlight;
+
+    /**
      * @var    integer
      * @access protected
      */
@@ -130,14 +136,14 @@ class PHPUnit_Util_Report_Node_File extends PHPUnit_Util_Report_Node
      *
      * @param  string                   $name
      * @param  PHPUnit_Util_Report_Node $parent
-     * @param  boolean                  $highlight
      * @param  array                    $executedLines
+     * @param  boolean                  $highlight
      * @throws RuntimeException
      * @access public
      */
-    public function __construct($name, PHPUnit_Util_Report_Node $parent = NULL, $highlight = FALSE, array $executedLines)
+    public function __construct($name, PHPUnit_Util_Report_Node $parent = NULL, array $executedLines, $highlight = FALSE)
     {
-        parent::__construct($name, $parent, $highlight);
+        parent::__construct($name, $parent);
 
         $path = $this->getPath();
 
@@ -146,6 +152,7 @@ class PHPUnit_Util_Report_Node_File extends PHPUnit_Util_Report_Node
         }
 
         $this->codeLines     = $this->loadFile($path);
+        $this->highlight     = $highlight;
         $this->executedLines = $executedLines;
 
         $this->calculateStatistics();
@@ -232,12 +239,15 @@ class PHPUnit_Util_Report_Node_File extends PHPUnit_Util_Report_Node
     /**
      * Renders this node.
      *
-     * @param string $target
-     * @param string $title
-     * @param string $charset
+     * @param string  $target
+     * @param string  $title
+     * @param string  $charset
+     * @param boolean $highlight
+     * @param integer $lowUpperBound
+     * @param integer $highLowerBound
      * @access public
      */
-    public function render($target, $title, $charset = 'ISO-8859-1')
+    public function render($target, $title, $charset = 'ISO-8859-1', $highlight = FALSE, $lowUpperBound = 35, $highLowerBound = 70)
     {
         $template = new PHPUnit_Util_Template(
           PHPUnit_Util_Report::$templatePath . 'coverage_file.html'
