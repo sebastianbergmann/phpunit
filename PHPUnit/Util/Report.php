@@ -133,7 +133,7 @@ abstract class PHPUnit_Util_Report
                 }
             } else {
                 $child = $root->addDirectory($key);
-                self::addItems($child, $value, $files);
+                self::addItems($child, $value, $files, $highlight);
             }
         }
     }
