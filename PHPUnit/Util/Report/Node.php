@@ -270,6 +270,133 @@ abstract class PHPUnit_Util_Report_Node
         );
     }
 
+    protected function doRenderItemObject(PHPUnit_Util_Report_Node $item, $lowUpperBound, $highLowerBound, $link = NULL)
+    {
+        return $this->doRenderItem(
+          array(
+            'name'                 => $link != NULL ? $link : $item->getLink(FALSE),
+            'numClasses'           => $item->getNumClasses(),
+            'numCalledClasses'     => $item->getNumCalledClasses(),
+            'calledClassesPercent' => $item->getCalledClassesPercent(),
+            'numMethods'           => $item->getNumMethods(),
+            'numCalledMethods'     => $item->getNumCalledMethods(),
+            'calledMethodsPercent' => $item->getCalledMethodsPercent(),
+            'numExecutableLines'   => $item->getNumExecutableLines(),
+            'numExecutedLines'     => $item->getNumExecutedLines(),
+            'executedLinesPercent' => $item->getLineExecutedPercent()
+          ),
+          $lowUpperBound,
+          $highLowerBound
+        );
+    }
+
+    protected function doRenderItem(array $data, $lowUpperBound, $highLowerBound, $template = 'coverage_item.html')
+    {
+        $itemTemplate = new PHPUnit_Util_Template(
+          PHPUnit_Util_Report::$templatePath . $template
+        );
+
+        list($classesColor, $classesLevel) = $this->getColorLevel(
+          $data['calledClassesPercent'], $lowUpperBound, $highLowerBound
+        );
+
+        list($methodsColor, $methodsLevel) = $this->getColorLevel(
+          $data['calledMethodsPercent'], $lowUpperBound, $highLowerBound
+        );
+
+        list($linesColor, $linesLevel) = $this->getColorLevel(
+          $data['executedLinesPercent'], $lowUpperBound, $highLowerBound
+        );
+
+        $itemTemplate->setVar(
+          array(
+            'name',
+            'classes_color',
+            'classes_level',
+            'classes_called_width',
+            'classes_called_percent',
+            'classes_not_called_width',
+            'num_classes',
+            'num_called_classes',
+            'methods_color',
+            'methods_level',
+            'methods_called_width',
+            'methods_called_percent',
+            'methods_not_called_width',
+            'num_methods',
+            'num_called_methods',
+            'lines_color',
+            'lines_level',
+            'lines_executed_width',
+            'lines_executed_percent',
+            'lines_not_executed_width',
+            'num_executable_lines',
+            'num_executed_lines'
+          ),
+          array(
+            $data['name'],
+            $classesColor,
+            $classesLevel,
+            floor($data['calledClassesPercent']),
+            $data['calledClassesPercent'],
+            100 - floor($data['calledClassesPercent']),
+            $data['numClasses'],
+            $data['numCalledClasses'],
+            $methodsColor,
+            $methodsLevel,
+            floor($data['calledMethodsPercent']),
+            $data['calledMethodsPercent'],
+            100 - floor($data['calledMethodsPercent']),
+            $data['numMethods'],
+            $data['numCalledMethods'],
+            $linesColor,
+            $linesLevel,
+            floor($data['executedLinesPercent']),
+            $data['executedLinesPercent'],
+            100 - floor($data['executedLinesPercent']),
+            $data['numExecutableLines'],
+            $data['numExecutedLines']
+          )
+        );
+
+        return $itemTemplate->render();
+    }
+
+    protected function getColorLevel($percent, $lowUpperBound, $highLowerBound)
+    {
+        $floorPercent = floor($percent);
+
+        if ($floorPercent < $lowUpperBound) {
+            $color = 'scarlet_red';
+            $level = 'Lo';
+        }
+
+        else if ($floorPercent >= $lowUpperBound &&
+                 $floorPercent <  $highLowerBound) {
+            $color = 'butter';
+            $level = 'Med';
+        }
+
+        else {
+            $color = 'chameleon';
+            $level = 'Hi';
+        }
+
+        return array($color, $level);
+    }
+
+    protected function renderTotalItem($lowUpperBound, $highLowerBound, $directory = TRUE)
+    {
+        if ($directory && empty($this->directories) && count($this->files) == 1) {
+            return '';
+        }
+
+        return $this->doRenderItemObject($this, $lowUpperBound, $highLowerBound, 'Total') .
+               "        <tr>\n" .
+               '          <td class="tableHead" colspan="10">&nbsp;</td>' . "\n" .
+               "        </tr>\n";
+    }
+
     /**
      * @param  PHPUnit_Util_Template $template
      * @param  string                $title

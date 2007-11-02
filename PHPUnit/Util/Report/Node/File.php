@@ -318,8 +318,94 @@ class PHPUnit_Util_Report_Node_File extends PHPUnit_Util_Report_Node
             $i++;
         }
 
+        $items = '';
+
+        foreach ($this->classes as $className => $classData) {
+            $numCalledClasses     = $classData['executedLines'] > 0 ? 1   : 0;
+            $calledClassesPercent = $numCalledClasses == 1          ? 100 : 0;
+
+            $numCalledMethods = 0;
+            $numMethods       = count($classData['methods']);
+
+            foreach ($classData['methods'] as $method) {
+                if ($method['executedLines'] > 0) {
+                    $numCalledMethods++;
+                }
+            }
+
+            $items .= $this->doRenderItem(
+              array(
+                'name'                 => sprintf(
+                  '<b><a href="#%d">%s</a></b>',
+
+                  $classData['startLine'],
+                  $className
+                ),
+                'numClasses'           => 1,
+                'numCalledClasses'     => $numCalledClasses,
+                'calledClassesPercent' => $calledClassesPercent,
+                'numMethods'           => $numMethods,
+                'numCalledMethods'     => $numCalledMethods,
+                'calledMethodsPercent' => $this->calculatePercent(
+                  $numCalledMethods, $numMethods
+                ),
+                'numExecutableLines'   => $classData['executableLines'],
+                'numExecutedLines'     => $classData['executedLines'],
+                'executedLinesPercent' => $this->calculatePercent(
+                  $classData['executedLines'], $classData['executableLines']
+                )
+              ),
+              $lowUpperBound,
+              $highLowerBound
+            );
+
+            foreach ($classData['methods'] as $methodName => $methodData) {
+                $numCalledMethods     = $methodData['executedLines'] > 0 ? 1  : 0;
+                $calledMethodsPercent = $numCalledMethods == 1           ? 100 : 0;
+
+                $items .= $this->doRenderItem(
+                  array(
+                    'name'                 => sprintf(
+                      '&nbsp;<a href="#%d">%s</a>',
+
+                      $methodData['startLine'],
+                      PHPUnit_Util_Class::getMethodSignature(
+                        new ReflectionMethod($className, $methodName)
+                      )
+                    ),
+                    'numClasses'           => '',
+                    'numCalledClasses'     => '',
+                    'calledClassesPercent' => '',
+                    'numMethods'           => 1,
+                    'numCalledMethods'     => $numCalledMethods,
+                    'calledMethodsPercent' => $calledMethodsPercent,
+                    'numExecutableLines'   => $methodData['executableLines'],
+                    'numExecutedLines'     => $methodData['executedLines'],
+                    'executedLinesPercent' => $this->calculatePercent(
+                      $methodData['executedLines'], $methodData['executableLines']
+                    )
+                  ),
+                  $lowUpperBound,
+                  $highLowerBound,
+                  'coverage_method_item.html'
+                );
+            }
+        }
+
         $this->setTemplateVars($template, $title, $charset);
-        $template->setVar('lines', $lines);
+
+        $template->setVar(
+          array(
+            'lines',
+            'total_item',
+            'items'
+          ),
+          array(
+            $lines,
+            $this->renderTotalItem($lowUpperBound, $highLowerBound, FALSE),
+            $items
+          )
+        );
 
         $cleanId = PHPUnit_Util_Filesystem::getSafeFilename($this->getId());
         $template->renderTo($target . $cleanId . '.html');
@@ -339,25 +425,35 @@ class PHPUnit_Util_Report_Node_File extends PHPUnit_Util_Report_Node
 
         foreach ($classes as $class) {
             if (!$class->isInterface()) {
-                $className = $class->getName();
+                $className      = $class->getName();
+                $classStartLine = $class->getStartLine();
+                $classEndLine   = $class->getEndLine();
 
                 $this->classes[$className] = array(
-                  'called'  => FALSE,
-                  'methods' => array()
+                  'methods'         => array(),
+                  'startLine'       => $classStartLine,
+                  'executableLines' => 0,
+                  'executedLines'   => 0
                 );
 
-                $startLines[$class->getStartLine()] = &$this->classes[$className];
-                $endLines[$class->getStartLine()]   = &$this->classes[$className];
+                $startLines[$classStartLine] = &$this->classes[$className];
+                $endLines[$classEndLine]     = &$this->classes[$className];
 
                 foreach ($class->getMethods() as $method) {
                     if (!$method->isAbstract() &&
                         $method->getDeclaringClass()->getName() == $className) {
-                        $methodName = $method->getName();
+                        $methodName      = $method->getName();
+                        $methodStartLine = $method->getStartLine();
+                        $methodEndLine   = $method->getEndLine();
 
-                        $this->classes[$className]['methods'][$methodName] = FALSE;
+                        $this->classes[$className]['methods'][$methodName] = array(
+                          'startLine'       => $methodStartLine,
+                          'executableLines' => 0,
+                          'executedLines'   => 0
+                        );
 
-                        $startLines[$method->getStartLine()] = &$this->classes[$className]['methods'][$methodName];
-                        $endLines[$method->getStartLine()]   = &$this->classes[$className]['methods'][$methodName];
+                        $startLines[$methodStartLine] = &$this->classes[$className]['methods'][$methodName];
+                        $endLines[$methodEndLine]     = &$this->classes[$className]['methods'][$methodName];
 
                         $this->numMethods++;
                     }
@@ -367,33 +463,19 @@ class PHPUnit_Util_Report_Node_File extends PHPUnit_Util_Report_Node
             }
         }
 
-        $currentClass  = NULL;
-        $currentMethod = NULL;
-        $ignoreStart   = -1;
-        $lineNumber    = 1;
+        $ignoreStart = -1;
+        $lineNumber  = 1;
 
         foreach ($this->codeLines as $line) {
             if (isset($startLines[$lineNumber])) {
                 // Start line of a class.
-                if (is_array($startLines[$lineNumber])) {
+                if (isset($startLines[$lineNumber]['methods'])) {
                     $currentClass = &$startLines[$lineNumber];
                 }
 
                 // Start line of a method.
                 else {
                     $currentMethod = &$startLines[$lineNumber];
-                }
-            }
-
-            else if (isset($endLines[$lineNumber])) {
-                // End line of a class.
-                if (is_array($startLines[$lineNumber])) {
-                    $currentClass = NULL;
-                }
-
-                // End line of a method.
-                else {
-                    $currentMethod = NULL;
                 }
             }
 
@@ -408,12 +490,14 @@ class PHPUnit_Util_Report_Node_File extends PHPUnit_Util_Report_Node
             if (isset($this->executedLines[$lineNumber])) {
                 // Array: Line is executable and was executed.
                 if (is_array($this->executedLines[$lineNumber])) {
-                    if ($currentClass !== NULL) {
-                        $currentClass['called'] = TRUE;
+                    if (isset($currentClass)) {
+                        $currentClass['executableLines']++;
+                        $currentClass['executedLines']++;
                     }
 
-                    if ($currentMethod !== NULL) {
-                        $currentMethod = TRUE;
+                    if (isset($currentMethod)) {
+                        $currentMethod['executableLines']++;
+                        $currentMethod['executedLines']++;
                     }
 
                     $this->numExecutableLines++;
@@ -422,11 +506,39 @@ class PHPUnit_Util_Report_Node_File extends PHPUnit_Util_Report_Node
 
                 // -1: Line is executable and was not executed.
                 else if ($this->executedLines[$lineNumber] == -1) {
+                    if (isset($currentClass)) {
+                        $currentClass['executableLines']++;
+                    }
+
+                    if (isset($currentMethod)) {
+                        $currentMethod['executableLines']++;
+                    }
+
                     $this->numExecutableLines++;
 
                     if ($ignoreStart != -1 && $line > $ignoreStart) {
+                        if (isset($currentClass)) {
+                            $currentClass['executedLines']++;
+                        }
+
+                        if (isset($currentMethod)) {
+                            $currentMethod['executedLines']++;
+                        }
+
                         $this->numExecutedLines++;
                     }
+                }
+            }
+
+            if (isset($endLines[$lineNumber])) {
+                // End line of a class.
+                if (isset($endLines[$lineNumber]['methods'])) {
+                    unset($currentClass);
+                }
+
+                // End line of a method.
+                else {
+                    unset($currentMethod);
                 }
             }
 
@@ -435,12 +547,12 @@ class PHPUnit_Util_Report_Node_File extends PHPUnit_Util_Report_Node
 
         foreach ($this->classes as $class) {
             foreach ($class['methods'] as $method) {
-                if ($method) {
+                if ($method['executedLines'] > 0) {
                     $this->numCalledMethods++;
                 }
             }
 
-            if ($class['called']) {
+            if ($class['executedLines'] > 0) {
                 $this->numCalledClasses++;
             }
         }
