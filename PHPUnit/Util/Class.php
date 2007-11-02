@@ -240,6 +240,95 @@ class PHPUnit_Util_Class
     }
 
     /**
+     * Returns the signature of a method.
+     *
+     * @param  ReflectionClass $method
+     * @return string
+     * @access public
+     * @static
+     * @since  Class available since Release 3.2.0
+     */
+    public static function getMethodSignature(ReflectionMethod $method)
+    {
+        if ($method->isPrivate()) {
+            $modifier = 'private';
+        }
+
+        else if ($method->isProtected()) {
+            $modifier = 'protected';
+        }
+
+        else {
+            $modifier = 'public';
+        }
+
+        if ($method->isStatic()) {
+            $modifier .= ' static';
+        }
+
+        if ($method->returnsReference()) {
+            $reference = '&';
+        } else {
+            $reference = '';
+        }
+
+        return sprintf(
+          '%s function %s%s(%s)',
+
+          $modifier,
+          $reference,
+          $method->getName(),
+          self::getMethodParameters($method)
+        );
+    }
+
+    /**
+     * Returns the parameters of a method.
+     *
+     * @param  ReflectionClass $method
+     * @return string
+     * @access public
+     * @static
+     * @since  Class available since Release 3.2.0
+     */
+    public static function getMethodParameters(ReflectionMethod $method)
+    {
+        $parameters = array();
+
+        foreach ($method->getParameters() as $parameter) {
+            $name     = '$' . $parameter->getName();
+            $typeHint = '';
+
+            if ($parameter->isArray()) {
+                $typeHint = 'array ';
+            } else {
+                $class = $parameter->getClass();
+
+                if ($class) {
+                    $typeHint = $class->getName() . ' ';
+                }
+            }
+
+            $default = '';
+
+            if ($parameter->isDefaultValueAvailable()) {
+                $value   = $parameter->getDefaultValue();
+                $default = ' = ' . var_export($value, TRUE);
+            }
+
+            $ref = '';
+
+            if ($parameter->isPassedByReference()) {
+                $ref = '&';
+            }
+
+            $parameters[] = $typeHint . $ref . $name . $default;
+        }
+
+        return join(', ', $parameters);
+    }
+
+    /**
      * Returns the sourcecode of a user-defined class.
      *
      * @param  string  $className
