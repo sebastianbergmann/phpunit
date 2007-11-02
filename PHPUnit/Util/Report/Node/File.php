@@ -343,7 +343,7 @@ class PHPUnit_Util_Report_Node_File extends PHPUnit_Util_Report_Node
                 ),
                 'numClasses'           => 1,
                 'numCalledClasses'     => $numCalledClasses,
-                'calledClassesPercent' => $calledClassesPercent,
+                'calledClassesPercent' => sprintf('%01.2f', $calledClassesPercent),
                 'numMethods'           => $numMethods,
                 'numCalledMethods'     => $numCalledMethods,
                 'calledMethodsPercent' => $this->calculatePercent(
@@ -378,7 +378,7 @@ class PHPUnit_Util_Report_Node_File extends PHPUnit_Util_Report_Node
                     'calledClassesPercent' => '',
                     'numMethods'           => 1,
                     'numCalledMethods'     => $numCalledMethods,
-                    'calledMethodsPercent' => $calledMethodsPercent,
+                    'calledMethodsPercent' => sprintf('%01.2f', $calledMethodsPercent),
                     'numExecutableLines'   => $methodData['executableLines'],
                     'numExecutedLines'     => $methodData['executedLines'],
                     'executedLinesPercent' => $this->calculatePercent(
