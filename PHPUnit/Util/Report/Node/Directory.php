@@ -423,105 +423,10 @@ class PHPUnit_Util_Report_Node_Directory extends PHPUnit_Util_Report_Node
         $result = '';
 
         foreach ($items as $item) {
-            $result .= $this->doRenderItem($item, $lowUpperBound, $highLowerBound);
+            $result .= $this->doRenderItemObject($item, $lowUpperBound, $highLowerBound);
         }
 
         return $result;
-    }
-
-    protected function doRenderItem(PHPUnit_Util_Report_Node $item, $lowUpperBound, $highLowerBound, $link = NULL)
-    {
-        $itemTemplate = new PHPUnit_Util_Template(
-          PHPUnit_Util_Report::$templatePath . 'coverage_item.html'
-        );
-
-        list($color, $level) = $this->getColorLevel(
-          $item->getLineExecutedPercent(), $lowUpperBound, $highLowerBound
-        );
-
-        $calledClassesPercent = $item->getCalledClassesPercent();
-        $calledMethodsPercent = $item->getCalledMethodsPercent();
-        $executedLinesPercent = $item->getLineExecutedPercent();
-
-        $itemTemplate->setVar(
-          array(
-            'link',
-            'color',
-            'level',
-            'classes_called_width',
-            'classes_called_percent',
-            'classes_not_called_width',
-            'num_classes',
-            'num_called_classes',
-            'methods_called_width',
-            'methods_called_percent',
-            'methods_not_called_width',
-            'num_methods',
-            'num_called_methods',
-            'lines_executed_width',
-            'lines_executed_percent',
-            'lines_not_executed_width',
-            'num_executable_lines',
-            'num_executed_lines'
-          ),
-          array(
-            $link != NULL ? $link : $item->getLink(FALSE),
-            $color,
-            $level,
-            floor($calledClassesPercent),
-            $calledClassesPercent,
-            100 - floor($calledClassesPercent),
-            $item->getNumClasses(),
-            $item->getNumCalledClasses(),
-            floor($calledMethodsPercent),
-            $calledMethodsPercent,
-            100 - floor($calledMethodsPercent),
-            $item->getNumMethods(),
-            $item->getNumCalledMethods(),
-            floor($executedLinesPercent),
-            $executedLinesPercent,
-            100 - floor($executedLinesPercent),
-            $item->getNumExecutableLines(),
-            $item->getNumExecutedLines()
-          )
-        );
-
-        return $itemTemplate->render();
-    }
-
-    protected function renderTotalItem($lowUpperBound, $highLowerBound)
-    {
-        if (empty($this->directories) && count($this->files) == 1) {
-            return '';
-        }
-
-        return $this->doRenderItem($this, $lowUpperBound, $highLowerBound, 'Total') .
-               "        <tr>\n" .
-               '          <td class="tableHead" colspan="10">&nbsp;</td>' . "\n" .
-               "        </tr>\n";
-    }
-
-    protected function getColorLevel($percent, $lowUpperBound, $highLowerBound)
-    {
-        $floorPercent = floor($percent);
-
-        if ($floorPercent < $lowUpperBound) {
-            $color = 'scarlet_red';
-            $level = 'Lo';
-        }
-
-        else if ($floorPercent >= $lowUpperBound &&
-                 $floorPercent <  $highLowerBound) {
-            $color = 'butter';
-            $level = 'Med';
-        }
-
-        else {
-            $color = 'chameleon';
-            $level = 'Hi';
-        }
-
-        return array($color, $level);
     }
 }
 ?>
