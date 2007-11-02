@@ -45,6 +45,7 @@
  * @since      File available since Release 3.0.0
  */
 
+require_once 'PHPUnit/Util/Class.php';
 require_once 'PHPUnit/Util/Filter.php';
 require_once 'PHPUnit/Framework/MockObject/Matcher.php';
 require_once 'PHPUnit/Framework/MockObject/Invocation.php';
@@ -264,7 +265,7 @@ class PHPUnit_Framework_MockObject_Mock
           $method->getName(),
           $modifier,
           $reference,
-          $this->generateMethodParameters($method)
+          PHPUnit_Util_Class::getMethodParameters($method)
         );
     }
 
@@ -339,7 +340,7 @@ class PHPUnit_Framework_MockObject_Mock
           "        \$this->invocationMocker = new PHPUnit_Framework_MockObject_InvocationMocker(\$this);\n" .
           "    }\n\n",
 
-          $constructor !== FALSE ? $this->generateMethodParameters($constructor) : ''
+          $constructor !== FALSE ? PHPUnit_Util_Class::getMethodParameters($constructor) : ''
         );
     }
 
@@ -356,7 +357,7 @@ class PHPUnit_Framework_MockObject_Mock
               "        \$class->getParentClass()->getConstructor()->invokeArgs(\$this, \$args);\n" .
               "    }\n\n",
 
-              $this->generateMethodParameters($constructor)
+              PHPUnit_Util_Class::getMethodParameters($constructor)
             );
         } else {
             return $this->generateConstructorCode($class);
@@ -376,43 +377,6 @@ class PHPUnit_Framework_MockObject_Mock
                "        \$this->invocationMocker = clone \$this->invocationMocker;\n" .
                "        parent::__clone();\n" .
                "    }\n\n";
-    }
-
-    protected function generateMethodParameters(ReflectionMethod $method)
-    {
-        $list = array();
-
-        foreach ($method->getParameters() as $parameter) {
-            $name     = '$' . $parameter->getName();
-            $typeHint = '';
-
-            if ($parameter->isArray()) {
-                $typeHint = 'array ';
-            } else {
-                $class = $parameter->getClass();
-
-                if ($class) {
-                    $typeHint = $class->getName() . ' ';
-                }
-            }
-
-            $default = '';
-
-            if ($parameter->isDefaultValueAvailable()) {
-                $value   = $parameter->getDefaultValue();
-                $default = ' = ' . var_export($value, TRUE);
-            }
-
-            $ref = '';
-
-            if ($parameter->isPassedByReference()) {
-                $ref = '&';
-            }
-
-            $list[] = $typeHint . $ref . $name . $default;
-        }
-
-        return join(', ', $list);
     }
 
     protected function getConstructor(ReflectionClass $class)
