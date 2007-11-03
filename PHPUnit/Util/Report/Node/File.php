@@ -132,6 +132,12 @@ class PHPUnit_Util_Report_Node_File extends PHPUnit_Util_Report_Node
     protected $numCalledMethods = 0;
 
     /**
+     * @var    string
+     * @access protected
+     */
+    protected $yuiPanelJS = '';
+
+    /**
      * Constructor.
      *
      * @param  string                   $name
@@ -276,6 +282,43 @@ class PHPUnit_Util_Report_Node_File extends PHPUnit_Util_Report_Node
                 if (is_array($this->executedLines[$i])) {
                     $color = 'lineCov';
                     $count = sprintf('%8d', count($this->executedLines[$i]));
+
+                    $buffer = '';
+
+                    foreach ($this->executedLines[$i] as $test) {
+                        if ($test instanceof PHPUnit_Framework_SelfDescribing) {
+                            $buffer .= '<li>' . $test->toString() . '</li>';
+                        }
+                    }
+
+                    $yuiTemplate = new PHPUnit_Util_Template(
+                      PHPUnit_Util_Report::$templatePath . 'yui_item.js'
+                    );
+
+                    $numTests = count($this->executedLines[$i]);
+
+                    if ($numTests > 1) {
+                        $header = $numTests . ' tests cover';
+                    } else {
+                        $header = '1 test covers';
+                    }
+
+                    $header .= ' line ' . $i;
+
+                    $yuiTemplate->setVar(
+                      array(
+                        'line',
+                        'header',
+                        'tests'
+                      ),
+                      array(
+                        $i,
+                        $header,
+                        $buffer
+                      )
+                    );
+
+                    $this->yuiPanelJS .= $yuiTemplate->render();
                 }
 
                 // -1: Line is executable and was not executed.
@@ -305,8 +348,10 @@ class PHPUnit_Util_Report_Node_File extends PHPUnit_Util_Report_Node
             }
 
             $lines .= sprintf(
-              '<span class="lineNum"><a name="%d"></a><a href="#%d">%8d</a> </span>%s%s%s' . "\n",
+              '<span class="lineNum" id="container%d"><a name="%d"></a><a href="#%d" id="line%d">%8d</a> </span>%s%s%s' . "\n",
 
+              $i,
+              $i,
               $i,
               $i,
               $i,
@@ -398,12 +443,14 @@ class PHPUnit_Util_Report_Node_File extends PHPUnit_Util_Report_Node
           array(
             'lines',
             'total_item',
-            'items'
+            'items',
+            'yuiPanelJS'
           ),
           array(
             $lines,
             $this->renderTotalItem($lowUpperBound, $highLowerBound, FALSE),
-            $items
+            $items,
+            $this->yuiPanelJS
           )
         );
 

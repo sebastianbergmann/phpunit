@@ -5,9 +5,12 @@
     <meta http-equiv="Content-Type" content="text/html; charset={charset}">
     <title>{title}</title>
     <link rel="stylesheet" type="text/css" href="style.css">
+    <link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/2.3.1/build/container/assets/container.css">
+    <script type="text/javascript" src="http://yui.yahooapis.com/2.3.1/build/yahoo-dom-event/yahoo-dom-event.js"></script>
+    <script type="text/javascript" src="http://yui.yahooapis.com/2.3.1/build/container/container-min.js"></script>
   </head>
 
-  <body>
+  <body class="yui-skin-sam">
     <table width="100%" border="0" cellspacing="0" cellpadding="0">
       <tr><td class="title">{title}</td></tr>
       <tr><td class="ruler"><img src="glass.png" width="3" height="3" alt=""></td></tr>
@@ -76,5 +79,13 @@
 
     <br />
 
+    <script language="javascript">
+      YAHOO.namespace("phpunit.container");
+
+      function init() {
+{yuiPanelJS}      }
+
+      YAHOO.util.Event.addListener(window, "load", init);
+    </script>
   </body>
 </html>
