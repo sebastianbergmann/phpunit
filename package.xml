@@ -929,6 +929,7 @@
        <file baseinstalldir="/" name="scarlet_red.png" role="php" />
        <file baseinstalldir="/" name="snow.png" role="php" />
        <file baseinstalldir="/" name="style.css" role="php" />
+       <file baseinstalldir="/" name="yui_item.js" role="php" />
       </dir>
      </dir>
      <dir name="Skeleton">
