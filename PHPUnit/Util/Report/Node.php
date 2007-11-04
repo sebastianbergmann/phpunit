@@ -290,7 +290,7 @@ abstract class PHPUnit_Util_Report_Node
         );
     }
 
-    protected function doRenderItem(array $data, $lowUpperBound, $highLowerBound, $template = 'coverage_item.html')
+    protected function doRenderItem(array $data, $lowUpperBound, $highLowerBound, $template = 'item.html')
     {
         $itemTemplate = new PHPUnit_Util_Template(
           PHPUnit_Util_Report::$templatePath . $template

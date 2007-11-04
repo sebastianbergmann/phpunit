@@ -360,7 +360,7 @@ class PHPUnit_Util_Report_Node_Directory extends PHPUnit_Util_Report_Node
         $file    = $target . $cleanId . '.html';
 
         $template = new PHPUnit_Util_Template(
-          PHPUnit_Util_Report::$templatePath . 'coverage_directory.html'
+          PHPUnit_Util_Report::$templatePath . 'directory.html'
         );
 
         $this->setTemplateVars($template, $title, $charset);
