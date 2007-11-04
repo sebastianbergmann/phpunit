@@ -324,9 +324,13 @@ abstract class PHPUnit_Util_Report
         $files = array(
           'butter.png',
           'chameleon.png',
+          'close12_1.gif',
+          'container.css',
+          'container-min.js',
           'scarlet_red.png',
           'snow.png',
           'style.css',
+          'yahoo-dom-event.js'
         );
 
         foreach ($files as $file) {
