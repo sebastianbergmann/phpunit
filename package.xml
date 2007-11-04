@@ -924,11 +924,11 @@
        <file baseinstalldir="/" name="close12_1.gif" role="php" />
        <file baseinstalldir="/" name="container.css" role="php" />
        <file baseinstalldir="/" name="container-min.js" role="php" />
-       <file baseinstalldir="/" name="coverage_directory.html" role="php" />
-       <file baseinstalldir="/" name="coverage_file.html" role="php" />
-       <file baseinstalldir="/" name="coverage_item.html" role="php" />
-       <file baseinstalldir="/" name="coverage_method_item.html" role="php" />
+       <file baseinstalldir="/" name="directory.html" role="php" />
+       <file baseinstalldir="/" name="file.html" role="php" />
        <file baseinstalldir="/" name="glass.png" role="php" />
+       <file baseinstalldir="/" name="item.html" role="php" />
+       <file baseinstalldir="/" name="method_item.html" role="php" />
        <file baseinstalldir="/" name="scarlet_red.png" role="php" />
        <file baseinstalldir="/" name="snow.png" role="php" />
        <file baseinstalldir="/" name="style.css" role="php" />

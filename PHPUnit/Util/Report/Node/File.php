@@ -256,7 +256,7 @@ class PHPUnit_Util_Report_Node_File extends PHPUnit_Util_Report_Node
     public function render($target, $title, $charset = 'ISO-8859-1', $highlight = FALSE, $lowUpperBound = 35, $highLowerBound = 70)
     {
         $template = new PHPUnit_Util_Template(
-          PHPUnit_Util_Report::$templatePath . 'coverage_file.html'
+          PHPUnit_Util_Report::$templatePath . 'file.html'
         );
 
         $i      = 1;
@@ -432,7 +432,7 @@ class PHPUnit_Util_Report_Node_File extends PHPUnit_Util_Report_Node
                   ),
                   $lowUpperBound,
                   $highLowerBound,
-                  'coverage_method_item.html'
+                  'method_item.html'
                 );
             }
         }
