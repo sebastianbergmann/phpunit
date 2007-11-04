@@ -265,7 +265,7 @@ abstract class PHPUnit_Util_Report_Node
         }
 
         return sprintf(
-          '%01.2f',
+          '%01.2F',
           $percent
         );
     }
