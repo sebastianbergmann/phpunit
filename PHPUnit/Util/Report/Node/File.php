@@ -287,7 +287,39 @@ class PHPUnit_Util_Report_Node_File extends PHPUnit_Util_Report_Node
 
                     foreach ($this->executedLines[$i] as $test) {
                         if ($test instanceof PHPUnit_Framework_SelfDescribing) {
-                            $buffer .= '<li>' . $test->toString() . '</li>';
+                            $testName = $test->toString();
+
+                            if ($test instanceof PHPUnit_Framework_TestCase) {
+                                switch ($test->getStatus()) {
+                                    case PHPUnit_Runner_BaseTestRunner::STATUS_PASSED: {
+                                        $testCSS = ' class=\"testPassed\"';
+                                    }
+                                    break;
+
+                                    case PHPUnit_Runner_BaseTestRunner::STATUS_FAILURE: {
+                                        $testCSS = ' class=\"testFailure\"';
+                                    }
+                                    break;
+
+                                    case PHPUnit_Runner_BaseTestRunner::STATUS_ERROR: {
+                                        $testCSS = ' class=\"testError\"';
+                                    }
+                                    break;
+
+                                    case PHPUnit_Runner_BaseTestRunner::STATUS_INCOMPLETE:
+                                    case PHPUnit_Runner_BaseTestRunner::STATUS_SKIPPED: {
+                                        $testCSS = ' class=\"testIncomplete\"';
+                                    }
+                                    break;
+                                }
+                            }
+
+                            $buffer .= sprintf(
+                              '<li%s>%s</li>',
+
+                              isset($testCSS) ? $testCSS : '',
+                              $testName
+                            );
                         }
                     }
 
