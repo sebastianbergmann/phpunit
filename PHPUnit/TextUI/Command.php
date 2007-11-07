@@ -325,7 +325,12 @@ class PHPUnit_TextUI_Command
                 break;
 
                 case '--skeleton': {
-                    self::doSkeleton($arguments['test'], $arguments['testFile']);
+                    if (isset($arguments['test']) && isset($arguments['testFile'])) {
+                        self::doSkeleton($arguments['test'], $arguments['testFile']);
+                    } else {
+                        self::showHelp();
+                        exit(PHPUnit_TextUI_TestRunner::EXCEPTION_EXIT);
+                    }
                 }
                 break;
 
@@ -375,7 +380,7 @@ class PHPUnit_TextUI_Command
         if (!isset($arguments['test']) ||
             (isset($arguments['testDatabaseLogRevision']) && !isset($arguments['testDatabaseDSN']))) {
             self::showHelp();
-            exit(PHPUnit_TextUI_TestRunner::SUCCESS_EXIT);
+            exit(PHPUnit_TextUI_TestRunner::EXCEPTION_EXIT);
         }
 
         return $arguments;
