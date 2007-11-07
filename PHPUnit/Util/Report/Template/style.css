@@ -373,6 +373,29 @@ span.LegendDeadCode
   background-color: #fcaf3e;
 }
 
+/* Test view: format for tests which have passed */
+li.testPassed
+{
+}
+
+/* Test view: format for tests which failed */
+li.testFailure
+{
+  background-color: #ef2929;
+}
+
+/* Test view: format for tests which failed with an error */
+li.testError
+{
+  background-color: #ef2929;
+}
+
+/* Test view: format for incomplete and skipped tests */
+li.testIncomplete
+{
+  background-color: #fcaf3e;
+}
+
 pre span.comment {
   color: #888a85;
 }
