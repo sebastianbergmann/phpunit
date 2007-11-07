@@ -89,7 +89,7 @@ PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
  *       <rule class="PHPUnit_Util_Log_PMD_Rule_Function_CRAP"
  *             threshold="30"/>
  *       <rule class="PHPUnit_Util_Log_PMD_Rule_Function_CyclomaticComplexity"
- *             threshold="10"/>
+ *             threshold="20"/>
  *       <rule class="PHPUnit_Util_Log_PMD_Rule_Function_ExcessiveMethodLength"
  *             threshold="100"/>
  *       <rule class="PHPUnit_Util_Log_PMD_Rule_Function_ExcessiveParameterList"
