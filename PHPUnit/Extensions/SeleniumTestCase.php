@@ -48,6 +48,7 @@ require_once 'PHPUnit/Framework.php';
 require_once 'PHPUnit/Util/Log/Database.php';
 require_once 'PHPUnit/Util/Filter.php';
 require_once 'PHPUnit/Util/Test.php';
+require_once 'PHPUnit/Util/XML.php';
 
 PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
 
@@ -477,6 +478,37 @@ abstract class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_Tes
         }
 
         $this->sleep = $seconds;
+    }
+
+    /**
+     * Runs a test from a Selenese (HTML) specification.
+     *
+     * @param string $filename
+     * @access public
+     */
+    public function runSelenese($filename)
+    {
+        $document = PHPUnit_Util_XML::load($filename, TRUE);
+        $xpath    = new DOMXPath($document);
+        $rows     = $xpath->query('body/table/tbody/tr');
+
+        foreach ($rows as $row)
+        {
+            $action    = NULL;
+            $arguments = array();
+            $columns   = $xpath->query('td', $row);
+
+            foreach ($columns as $column)
+            {
+                if ($action === NULL) {
+                    $action = $column->nodeValue;
+                } else {
+                    $arguments[] = $column->nodeValue;
+                }
+            }
+
+            $this->__call($action, $arguments);
+        }
     }
 
     /**
