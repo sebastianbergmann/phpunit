@@ -133,6 +133,62 @@ class PHPUnit_Util_Test
     }
 
     /**
+     * Returns the units covered by a test case.
+     *
+     * @param  string $className
+     * @param  string $methodName
+     * @return array
+     * @access public
+     * @static
+     * @since  Method available since Release 3.2.0
+     */
+    public static function getCoveredUnits($className, $methodName)
+    {
+        $class  = new ReflectionClass($className);
+        $method = new ReflectionMethod($className, $methodName);
+        $units  = array();
+        $result = array();
+
+        $docComment = $class->getDocComment();
+
+        if (preg_match_all('/@covers[\s]+([\:\.\w]+)/', $docComment, $matches)) {
+            $units = $matches[1];
+        }
+
+        $docComment = $method->getDocComment();
+
+        if (preg_match_all('/@covers[\s]+([\:\.\w]+)/', $docComment, $matches)) {
+            $units = array_merge($units, $matches[1]);
+        }
+
+        foreach ($units as $unit) {
+            if (strpos($unit, '::') !== FALSE) {
+                list($className, $methodName) = explode('::', $unit);
+
+                try {
+                    $method    = new ReflectionMethod($className, $methodName);
+                    $fileName  = $method->getFileName();
+                    $startLine = $method->getStartLine();
+                    $endLine   = $method->getEndLine();
+
+                    if (!isset($result[$fileName])) {
+                        $result[$fileName] = array();
+                    }
+
+                    for ($i = $startLine; $i <= $endLine; $i++) {
+                        $result[$fileName][$i] = TRUE;
+                    }
+                }
+
+                catch (ReflectionException $e) {
+                }
+            }
+        }
+
+        return $result;
+    }
+
+    /**
      * Returns the groups for a test class or method.
      *
      * @param  Reflector $reflector
