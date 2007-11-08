@@ -2,7 +2,7 @@
 /**
  * PHPUnit
  *
- * Copyright (c) 2002-2006, Sebastian Bergmann <sb@sebastian-bergmann.de>.
+ * Copyright (c) 2002-2007, Sebastian Bergmann <sb@sebastian-bergmann.de>.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -29,7 +29,7 @@
  * INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING,
  * BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
  * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
- * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRIC
+ * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
  * LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
@@ -38,7 +38,7 @@
  * @package    PHPUnit
  * @author     Jan Borsodi <jb@ez.no>
  * @author     Sebastian Bergmann <sb@sebastian-bergmann.de>
- * @copyright  2002-2006 Sebastian Bergmann <sb@sebastian-bergmann.de>
+ * @copyright  2002-2007 Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    SVN: $Id$
  * @link       http://www.phpunit.de/
@@ -63,7 +63,7 @@ PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
  * @package    PHPUnit
  * @author     Jan Borsodi <jb@ez.no>
  * @author     Sebastian Bergmann <sb@sebastian-bergmann.de>
- * @copyright  2002-2006 Sebastian Bergmann <sb@sebastian-bergmann.de>
+ * @copyright  2002-2007 Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    Release: @package_version@
  * @link       http://www.phpunit.de/
@@ -71,9 +71,9 @@ PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
  */
 class PHPUnit_Framework_MockObject_Matcher_Parameters extends PHPUnit_Framework_MockObject_Matcher_StatelessInvocation
 {
-    private $parameters = array();
+    protected $parameters = array();
 
-    private $invocation;
+    protected $invocation;
 
     public function __construct($parameters)
     {
@@ -111,16 +111,18 @@ class PHPUnit_Framework_MockObject_Matcher_Parameters extends PHPUnit_Framework_
 
     public function verify()
     {
+        if ($this->invocation === NULL) {
+            throw new PHPUnit_Framework_ExpectationFailedException(
+              'Mocked method does not exist.'
+            );
+        }
+
         if (count($this->invocation->parameters) < count($this->parameters)) {
             throw new PHPUnit_Framework_ExpectationFailedException(
               sprintf(
                 'Parameter count for invocation %s is too low.',
 
                 $this->invocation->toString()
-              ),
-              new PHPUnit_Framework_ComparisonFailure_Scalar(
-                count($this->parameters),
-                count($this->invocation->parameters)
               )
             );
         }

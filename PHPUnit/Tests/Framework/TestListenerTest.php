@@ -2,7 +2,7 @@
 /**
  * PHPUnit
  *
- * Copyright (c) 2002-2006, Sebastian Bergmann <sb@sebastian-bergmann.de>.
+ * Copyright (c) 2002-2007, Sebastian Bergmann <sb@sebastian-bergmann.de>.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -29,7 +29,7 @@
  * INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING,
  * BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
  * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
- * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRIC
+ * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
  * LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
@@ -37,7 +37,7 @@
  * @category   Testing
  * @package    PHPUnit
  * @author     Sebastian Bergmann <sb@sebastian-bergmann.de>
- * @copyright  2002-2006 Sebastian Bergmann <sb@sebastian-bergmann.de>
+ * @copyright  2002-2007 Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    SVN: $Id$
  * @link       http://www.phpunit.de/
@@ -58,7 +58,7 @@ require_once '_files/Success.php';
  * @category   Testing
  * @package    PHPUnit
  * @author     Sebastian Bergmann <sb@sebastian-bergmann.de>
- * @copyright  2002-2006 Sebastian Bergmann <sb@sebastian-bergmann.de>
+ * @copyright  2002-2007 Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    Release: @package_version@
  * @link       http://www.phpunit.de/
@@ -66,30 +66,30 @@ require_once '_files/Success.php';
  */
 class Framework_TestListenerTest extends PHPUnit_Framework_TestCase implements PHPUnit_Framework_TestListener
 {
-    private $endCount;
-    private $errorCount;
-    private $failureCount;
-    private $notImplementedCount;
-    private $skippedCount;
-    private $result;
-    private $startCount;
+    protected $endCount;
+    protected $errorCount;
+    protected $failureCount;
+    protected $notImplementedCount;
+    protected $skippedCount;
+    protected $result;
+    protected $startCount;
 
-    public function addError(PHPUnit_Framework_Test $test, Exception $e)
+    public function addError(PHPUnit_Framework_Test $test, Exception $e, $time)
     {
         $this->errorCount++;
     }
 
-    public function addFailure(PHPUnit_Framework_Test $test, PHPUnit_Framework_AssertionFailedError $e)
+    public function addFailure(PHPUnit_Framework_Test $test, PHPUnit_Framework_AssertionFailedError $e, $time)
     {
         $this->failureCount++;
     }
 
-    public function addIncompleteTest(PHPUnit_Framework_Test $test, Exception $e)
+    public function addIncompleteTest(PHPUnit_Framework_Test $test, Exception $e, $time)
     {
         $this->notImplementedCount++;
     }
 
-    public function addSkippedTest(PHPUnit_Framework_Test $test, Exception $e)
+    public function addSkippedTest(PHPUnit_Framework_Test $test, Exception $e, $time)
     {
         $this->skippedCount++;
     }
@@ -107,7 +107,7 @@ class Framework_TestListenerTest extends PHPUnit_Framework_TestCase implements P
         $this->startCount++;
     }
 
-    public function endTest(PHPUnit_Framework_Test $test)
+    public function endTest(PHPUnit_Framework_Test $test, $time)
     {
         $this->endCount++;
     }

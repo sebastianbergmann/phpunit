@@ -2,7 +2,7 @@
 /**
  * PHPUnit
  *
- * Copyright (c) 2002-2006, Sebastian Bergmann <sb@sebastian-bergmann.de>.
+ * Copyright (c) 2002-2007, Sebastian Bergmann <sb@sebastian-bergmann.de>.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -29,7 +29,7 @@
  * INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING,
  * BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
  * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
- * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRIC
+ * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
  * LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
@@ -37,7 +37,7 @@
  * @category   Testing
  * @package    PHPUnit
  * @author     Sebastian Bergmann <sb@sebastian-bergmann.de>
- * @copyright  2002-2006 Sebastian Bergmann <sb@sebastian-bergmann.de>
+ * @copyright  2002-2007 Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    SVN: $Id$
  * @link       http://www.phpunit.de/
@@ -57,7 +57,7 @@ PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
  * @category   Testing
  * @package    PHPUnit
  * @author     Sebastian Bergmann <sb@sebastian-bergmann.de>
- * @copyright  2002-2006 Sebastian Bergmann <sb@sebastian-bergmann.de>
+ * @copyright  2002-2007 Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    Release: @package_version@
  * @link       http://www.phpunit.de/
@@ -136,10 +136,11 @@ abstract class PHPUnit_Util_TestDox_ResultPrinter extends PHPUnit_Util_Printer i
      * An error occurred.
      *
      * @param  PHPUnit_Framework_Test $test
-     * @param  Exception               $e
+     * @param  Exception              $e
+     * @param  float                  $time
      * @access public
      */
-    public function addError(PHPUnit_Framework_Test $test, Exception $e)
+    public function addError(PHPUnit_Framework_Test $test, Exception $e, $time)
     {
         $this->testFailed = TRUE;
     }
@@ -149,9 +150,10 @@ abstract class PHPUnit_Util_TestDox_ResultPrinter extends PHPUnit_Util_Printer i
      *
      * @param  PHPUnit_Framework_Test                 $test
      * @param  PHPUnit_Framework_AssertionFailedError $e
+     * @param  float                                  $time
      * @access public
      */
-    public function addFailure(PHPUnit_Framework_Test $test, PHPUnit_Framework_AssertionFailedError $e)
+    public function addFailure(PHPUnit_Framework_Test $test, PHPUnit_Framework_AssertionFailedError $e, $time)
     {
         $this->testFailed = TRUE;
     }
@@ -160,10 +162,11 @@ abstract class PHPUnit_Util_TestDox_ResultPrinter extends PHPUnit_Util_Printer i
      * Incomplete test.
      *
      * @param  PHPUnit_Framework_Test $test
-     * @param  Exception               $e
+     * @param  Exception              $e
+     * @param  float                  $time
      * @access public
      */
-    public function addIncompleteTest(PHPUnit_Framework_Test $test, Exception $e)
+    public function addIncompleteTest(PHPUnit_Framework_Test $test, Exception $e, $time)
     {
         $this->testFailed = TRUE;
     }
@@ -172,11 +175,12 @@ abstract class PHPUnit_Util_TestDox_ResultPrinter extends PHPUnit_Util_Printer i
      * Skipped test.
      *
      * @param  PHPUnit_Framework_Test $test
-     * @param  Exception               $e
+     * @param  Exception              $e
+     * @param  float                  $time
      * @access public
      * @since  Method available since Release 3.0.0
      */
-    public function addSkippedTest(PHPUnit_Framework_Test $test, Exception $e)
+    public function addSkippedTest(PHPUnit_Framework_Test $test, Exception $e, $time)
     {
         $this->testFailed = TRUE;
     }
@@ -231,34 +235,39 @@ abstract class PHPUnit_Util_TestDox_ResultPrinter extends PHPUnit_Util_Printer i
      * A test ended.
      *
      * @param  PHPUnit_Framework_Test $test
+     * @param  float                  $time
      * @access public
      */
-    public function endTest(PHPUnit_Framework_Test $test)
+    public function endTest(PHPUnit_Framework_Test $test, $time)
     {
-        $prettifiedName = $this->prettifier->prettifyTestMethod($test->getName());
+        if ($test instanceof PHPUnit_Framework_TestCase) {
+            $prettifiedName = $this->prettifier->prettifyTestMethod(
+              $test->getName()
+            );
 
-        if (!isset($this->tests[$prettifiedName])) {
-            if (!$this->testFailed) {
-                $this->tests[$prettifiedName]['success'] = 1;
-                $this->tests[$prettifiedName]['failure'] = 0;
+            if (!isset($this->tests[$prettifiedName])) {
+                if (!$this->testFailed) {
+                    $this->tests[$prettifiedName]['success'] = 1;
+                    $this->tests[$prettifiedName]['failure'] = 0;
+                } else {
+                    $this->tests[$prettifiedName]['success'] = 0;
+                    $this->tests[$prettifiedName]['failure'] = 1;
+                }
             } else {
-                $this->tests[$prettifiedName]['success'] = 0;
-                $this->tests[$prettifiedName]['failure'] = 1;
-            }
-        } else {
-            if (!$this->testFailed) {
-                $this->tests[$prettifiedName]['success']++;
-            } else {
-                $this->tests[$prettifiedName]['failure']++;
+                if (!$this->testFailed) {
+                    $this->tests[$prettifiedName]['success']++;
+                } else {
+                    $this->tests[$prettifiedName]['failure']++;
+                }
             }
         }
     }
 
     /**
-     * @access private
+     * @access protected
      * @since  Method available since Release 2.3.0
      */
-    private function doEndClass()
+    protected function doEndClass()
     {
         foreach ($this->tests as $name => $data) {
             if ($data['failure'] == 0) {

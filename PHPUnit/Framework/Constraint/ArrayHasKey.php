@@ -2,7 +2,7 @@
 /**
  * PHPUnit
  *
- * Copyright (c) 2002-2006, Sebastian Bergmann <sb@sebastian-bergmann.de>.
+ * Copyright (c) 2002-2007, Sebastian Bergmann <sb@sebastian-bergmann.de>.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -29,7 +29,7 @@
  * INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING,
  * BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
  * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
- * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRIC
+ * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
  * LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
@@ -38,7 +38,7 @@
  * @package    PHPUnit
  * @author     Jan Borsodi <jb@ez.no>
  * @author     Sebastian Bergmann <sb@sebastian-bergmann.de>
- * @copyright  2002-2006 Sebastian Bergmann <sb@sebastian-bergmann.de>
+ * @copyright  2002-2007 Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    SVN: $Id$
  * @link       http://www.phpunit.de/
@@ -47,11 +47,12 @@
 
 require_once 'PHPUnit/Framework.php';
 require_once 'PHPUnit/Util/Filter.php';
+require_once 'PHPUnit/Util/Type.php';
 
 PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
 
 /**
- * Constraint which checks if a certain key is found in the input array.
+ * Constraint that asserts that the array it is evaluated for has a given key.
  *
  * Uses array_key_exists() to check if the key is found in the input array, if not
  * found the evaluaton fails.
@@ -62,15 +63,15 @@ PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
  * @package    PHPUnit
  * @author     Jan Borsodi <jb@ez.no>
  * @author     Sebastian Bergmann <sb@sebastian-bergmann.de>
- * @copyright  2002-2006 Sebastian Bergmann <sb@sebastian-bergmann.de>
+ * @copyright  2002-2007 Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    Release: @package_version@
  * @link       http://www.phpunit.de/
  * @since      Class available since Release 3.0.0
  */
-class PHPUnit_Framework_Constraint_ArrayHasKey implements PHPUnit_Framework_Constraint
+class PHPUnit_Framework_Constraint_ArrayHasKey extends PHPUnit_Framework_Constraint
 {
-    private $key;
+    protected $key;
 
     public function __construct($key)
     {
@@ -81,33 +82,12 @@ class PHPUnit_Framework_Constraint_ArrayHasKey implements PHPUnit_Framework_Cons
      * Evaluates the constraint for parameter $other. Returns TRUE if the
      * constraint is met, FALSE otherwise.
      *
-     * @parameter mixed $other Value or object to evaluate.
+     * @param mixed $other Value or object to evaluate.
      * @return bool
      */
     public function evaluate($other)
     {
         return array_key_exists($this->key, $other);
-    }
-
-    /**
-     * @param   mixed   $other The value passed to evaluate() which failed the
-     *                         constraint check.
-     * @param   string  $description A string with extra description of what was
-     *                               going on while the evaluation failed.
-     * @throws  PHPUnit_Framework_ExpectationFailedException
-     */
-    public function fail($other, $description)
-    {
-        throw new PHPUnit_Framework_ExpectationFailedException(
-          sprintf(
-            "%s\nexpected array key <%s:%s> not found in array <%s>",
-
-            $description,
-            gettype($this->key),
-            print_r($this->key, TRUE),
-            print_r($other, TRUE)
-          )
-        );
     }
 
     /**
@@ -118,12 +98,7 @@ class PHPUnit_Framework_Constraint_ArrayHasKey implements PHPUnit_Framework_Cons
      */
     public function toString()
     {
-        return sprintf(
-          'has key <%s:%s>',
-
-          gettype($this->key),
-          print_r($this->key, TRUE)
-        );
+        return 'has key ' . PHPUnit_Util_Type::toString($this->key);
     }
 }
 ?>

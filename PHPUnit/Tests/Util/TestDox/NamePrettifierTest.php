@@ -2,7 +2,7 @@
 /**
  * PHPUnit
  *
- * Copyright (c) 2002-2006, Sebastian Bergmann <sb@sebastian-bergmann.de>.
+ * Copyright (c) 2002-2007, Sebastian Bergmann <sb@sebastian-bergmann.de>.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -29,7 +29,7 @@
  * INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING,
  * BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
  * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
- * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRIC
+ * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
  * LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
@@ -37,7 +37,7 @@
  * @category   Testing
  * @package    PHPUnit
  * @author     Sebastian Bergmann <sb@sebastian-bergmann.de>
- * @copyright  2002-2006 Sebastian Bergmann <sb@sebastian-bergmann.de>
+ * @copyright  2002-2007 Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    SVN: $Id$
  * @link       http://www.phpunit.de/
@@ -54,7 +54,7 @@ require_once 'PHPUnit/Util/TestDox/NamePrettifier.php';
  * @category   Testing
  * @package    PHPUnit
  * @author     Sebastian Bergmann <sb@sebastian-bergmann.de>
- * @copyright  2002-2006 Sebastian Bergmann <sb@sebastian-bergmann.de>
+ * @copyright  2002-2007 Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    Release: @package_version@
  * @link       http://www.phpunit.de/
@@ -62,7 +62,7 @@ require_once 'PHPUnit/Util/TestDox/NamePrettifier.php';
  */
 class Util_TestDox_NamePrettifierTest extends PHPUnit_Framework_TestCase
 {
-    private $namePrettifier;
+    protected $namePrettifier;
 
     protected function setUp()
     {
@@ -100,15 +100,9 @@ class Util_TestDox_NamePrettifierTest extends PHPUnit_Framework_TestCase
     {
         $this->assertEquals('This is a test', $this->namePrettifier->prettifyTestMethod('testThisIsATest'));
         $this->assertEquals('This is a test', $this->namePrettifier->prettifyTestMethod('testThisIsATest2'));
-        $this->assertEquals('This2 is a test', $this->namePrettifier->prettifyTestMethod('testThis2IsATest'));
         $this->assertEquals('database_column_spec is set correctly', $this->namePrettifier->prettifyTestMethod('testdatabase_column_specIsSetCorrectly'));
-    }
-
-    public function testIsATestIsFalseForNonTestMethods()
-    {
-        $this->assertFalse($this->namePrettifier->isATestMethod('setUp'));
-        $this->assertFalse($this->namePrettifier->isATestMethod('tearDown'));
-        $this->assertFalse($this->namePrettifier->isATestMethod('foo'));
+        $this->assertEquals('Foo for bar is 0', $this->namePrettifier->prettifyTestMethod('testFooForBarIs0'));
+        $this->assertEquals('Foo for baz is 1', $this->namePrettifier->prettifyTestMethod('testFooForBazIs1'));
     }
 }
 ?>

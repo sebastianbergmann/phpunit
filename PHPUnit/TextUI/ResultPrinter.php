@@ -2,7 +2,7 @@
 /**
  * PHPUnit
  *
- * Copyright (c) 2002-2006, Sebastian Bergmann <sb@sebastian-bergmann.de>.
+ * Copyright (c) 2002-2007, Sebastian Bergmann <sb@sebastian-bergmann.de>.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -29,7 +29,7 @@
  * INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING,
  * BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
  * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
- * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRIC
+ * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
  * LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
@@ -37,7 +37,7 @@
  * @category   Testing
  * @package    PHPUnit
  * @author     Sebastian Bergmann <sb@sebastian-bergmann.de>
- * @copyright  2002-2006 Sebastian Bergmann <sb@sebastian-bergmann.de>
+ * @copyright  2002-2007 Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    SVN: $Id$
  * @link       http://www.phpunit.de/
@@ -56,7 +56,7 @@ PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
  * @category   Testing
  * @package    PHPUnit
  * @author     Sebastian Bergmann <sb@sebastian-bergmann.de>
- * @copyright  2002-2006 Sebastian Bergmann <sb@sebastian-bergmann.de>
+ * @copyright  2002-2007 Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    Release: @package_version@
  * @link       http://www.phpunit.de/
@@ -71,33 +71,39 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
 
     /**
      * @var    integer
-     * @access private
+     * @access protected
      */
-    private $column = 0;
+    protected $column = 0;
+
+    /**
+     * @var    array
+     * @access protected
+     */
+    protected $numberOfTests = array();
+
+    /**
+     * @var    array
+     * @access protected
+     */
+    protected $testSuiteSize = array();
 
     /**
      * @var    integer
-     * @access private
+     * @access protected
      */
-    private $depth = 0;
-
-    /**
-     * @var    integer
-     * @access private
-     */
-    private $lastEvent = -1;
+    protected $lastEvent = -1;
 
     /**
      * @var    boolean
-     * @access private
+     * @access protected
      */
-    private $lastTestFailed = FALSE;
+    protected $lastTestFailed = FALSE;
 
     /**
      * @var    boolean
-     * @access private
+     * @access protected
      */
-    private $verbose = FALSE;
+    protected $verbose = FALSE;
 
     /**
      * Constructor.
@@ -121,18 +127,40 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
 
     /**
      * @param  PHPUnit_Framework_TestResult $result
-     * @param  float                        $timeElapsed
      * @access public
      */
-    public function printResult(PHPUnit_Framework_TestResult $result, $timeElapsed)
+    public function printResult(PHPUnit_Framework_TestResult $result)
     {
-        $this->printHeader($timeElapsed);
-        $this->printErrors($result);
-        $this->printFailures($result);
+        $this->printHeader($result->time());
+
+        if ($result->errorCount() > 0) {
+            $this->printErrors($result);
+        }
+
+        if ($result->failureCount() > 0) {
+            if ($result->errorCount() > 0) {
+                print "\n--\n\n";
+            }
+
+            $this->printFailures($result);
+        }
 
         if ($this->verbose) {
-            $this->printIncompletes($result);
-            $this->printSkipped($result);
+            if ($result->notImplementedCount() > 0) {
+                if ($result->failureCount() > 0) {
+                    print "\n--\n\n";
+                }
+
+                $this->printIncompletes($result);
+            }
+
+            if ($result->skippedCount() > 0) {
+                if ($result->notImplementedCount() > 0) {
+                    print "\n--\n\n";
+                }
+
+                $this->printSkipped($result);
+            }
         }
 
         $this->printFooter($result);
@@ -144,7 +172,7 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
      * @param  string  $type
      * @access protected
      */
-    protected function printDefects(Array $defects, $count, $type)
+    protected function printDefects(array $defects, $count, $type)
     {
         if ($count == 0) {
             return;
@@ -170,7 +198,7 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
 
     /**
      * @param  PHPUnit_Framework_TestFailure $defect
-     * @param  integer                        $count
+     * @param  integer                       $count
      * @access protected
      */
     protected function printDefect(PHPUnit_Framework_TestFailure $defect, $count)
@@ -181,16 +209,17 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
 
     /**
      * @param  PHPUnit_Framework_TestFailure $defect
-     * @param  integer                        $count
+     * @param  integer                       $count
      * @access protected
      */
     protected function printDefectHeader(PHPUnit_Framework_TestFailure $defect, $count)
     {
         $failedTest = $defect->failedTest();
-        $message    = '';
 
         if ($failedTest instanceof PHPUnit_Framework_SelfDescribing) {
-            $message = $failedTest->toString();
+            $testName = $failedTest->toString();
+        } else {
+            $testName = get_class($failedTest);
         }
 
         $this->write(
@@ -198,7 +227,7 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
             "\n%d) %s\n",
 
             $count,
-            $message
+            $testName
           )
         );
     }
@@ -209,42 +238,8 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
      */
     protected function printDefectTrace(PHPUnit_Framework_TestFailure $defect)
     {
-        $e = $defect->thrownException();
-
-        if ($e instanceof PHPUnit_Framework_SelfDescribing) {
-            $this->write($e->toString() . "\n");
-
-            if ($e instanceof PHPUnit_Framework_ExpectationFailedException) {
-                $comparisonFailure = $e->getComparisonFailure();
-
-                $string = '';
-
-                if ($this->verbose ||
-                    $comparisonFailure instanceof PHPUnit_Framework_ComparisonFailure_String) {
-                    $string = $comparisonFailure->toString();
-                }
-
-                if (!$this->verbose &&
-                    $comparisonFailure instanceof PHPUnit_Framework_ComparisonFailure_String &&
-                    strpos($string, 'expected string <') !== FALSE) {
-                    $string = '';
-                }
-
-                if (!empty($string)) {
-                    $this->write($string . "\n");
-                }
-            }
-        }
-
-        else if ($e instanceof PHPUnit_Framework_Error) {
-            $this->write($e->getMessage() . "\n");
-        }
-
-        else {
-            $this->write(get_class($e) . ': ' . $e->getMessage() . "\n");
-        }
-
         $this->write(
+          $defect->toStringVerbose($this->verbose) .
           PHPUnit_Util_Filter::getFilteredStacktrace(
             $defect->thrownException(),
             FALSE
@@ -295,16 +290,7 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
      */
     protected function printHeader($timeElapsed)
     {
-        $minutes = ($timeElapsed >= 60) ? floor($timeElapsed / 60) : 0;
-
-        $this->write(
-          sprintf(
-            "\n\nTime: %02d:%02d\n\n",
-
-            $minutes,
-            $timeElapsed - $minutes * 60
-          )
-        );
+        $this->write("\n\nTime: " . PHPUnit_Util_Timer::secondsToTimeString($timeElapsed) . "\n\n");
     }
 
     /**
@@ -393,9 +379,10 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
      *
      * @param  PHPUnit_Framework_Test $test
      * @param  Exception              $e
+     * @param  float                  $time
      * @access public
      */
-    public function addError(PHPUnit_Framework_Test $test, Exception $e)
+    public function addError(PHPUnit_Framework_Test $test, Exception $e, $time)
     {
         $this->writeProgress('E');
         $this->lastTestFailed = TRUE;
@@ -406,9 +393,10 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
      *
      * @param  PHPUnit_Framework_Test                 $test
      * @param  PHPUnit_Framework_AssertionFailedError $e
+     * @param  float                                  $time
      * @access public
      */
-    public function addFailure(PHPUnit_Framework_Test $test, PHPUnit_Framework_AssertionFailedError $e)
+    public function addFailure(PHPUnit_Framework_Test $test, PHPUnit_Framework_AssertionFailedError $e, $time)
     {
         $this->writeProgress('F');
         $this->lastTestFailed = TRUE;
@@ -418,10 +406,11 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
      * Incomplete test.
      *
      * @param  PHPUnit_Framework_Test $test
-     * @param  Exception               $e
+     * @param  Exception              $e
+     * @param  float                  $time
      * @access public
      */
-    public function addIncompleteTest(PHPUnit_Framework_Test $test, Exception $e)
+    public function addIncompleteTest(PHPUnit_Framework_Test $test, Exception $e, $time)
     {
         $this->writeProgress('I');
         $this->lastTestFailed = TRUE;
@@ -431,11 +420,12 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
      * Skipped test.
      *
      * @param  PHPUnit_Framework_Test $test
-     * @param  Exception               $e
+     * @param  Exception              $e
+     * @param  float                  $time
      * @access public
      * @since  Method available since Release 3.0.0
      */
-    public function addSkippedTest(PHPUnit_Framework_Test $test, Exception $e)
+    public function addSkippedTest(PHPUnit_Framework_Test $test, Exception $e, $time)
     {
         $this->writeProgress('S');
         $this->lastTestFailed = TRUE;
@@ -462,12 +452,18 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
                 "%s%s%s\n",
 
                 $this->lastEvent == self::EVENT_TESTSUITE_END ? "\n" : '',
-                str_repeat(' ', $this->depth),
+                str_repeat(' ', count($this->testSuiteSize)),
                 $name
               )
             );
 
-            $this->depth++;
+            array_push($this->numberOfTests, 0);
+            array_push($this->testSuiteSize, count($suite));
+        }
+
+        else if (empty($this->numberOfTests)) {
+            array_push($this->numberOfTests, 0);
+            array_push($this->testSuiteSize, count($suite));
         }
 
         $this->lastEvent = self::EVENT_TESTSUITE_START;
@@ -483,7 +479,8 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
     public function endTestSuite(PHPUnit_Framework_TestSuite $suite)
     {
         if ($this->verbose) {
-            $this->depth--;
+            array_pop($this->numberOfTests);
+            array_pop($this->testSuiteSize);
 
             $this->column = 0;
 
@@ -503,6 +500,12 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
      */
     public function startTest(PHPUnit_Framework_Test $test)
     {
+        if ($this->verbose) {
+            $this->numberOfTests[count($this->numberOfTests)-1]++;
+        } else {
+            $this->numberOfTests[0]++;
+        }
+
         $this->lastEvent = self::EVENT_TEST_START;
     }
 
@@ -510,9 +513,10 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
      * A test ended.
      *
      * @param  PHPUnit_Framework_Test $test
+     * @param  float                  $time
      * @access public
      */
-    public function endTest(PHPUnit_Framework_Test $test)
+    public function endTest(PHPUnit_Framework_Test $test, $time)
     {
         if (!$this->lastTestFailed) {
             $this->writeProgress('.');
@@ -528,15 +532,35 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
      */
     protected function writeProgress($progress)
     {
+        $indent = max(0, count($this->testSuiteSize) - 1);
+
         if ($this->column == 0) {
-            $this->write(str_repeat(' ', max(0, $this->depth - 1)));
+            $this->write(str_repeat(' ', $indent));
         }
 
         $this->write($progress);
 
-        if ($this->column++ >= 40 - $this->depth) {
+        if ($this->column++ == 60 - 1 - $indent) {
+            if ($this->verbose) {
+                $numberOfTests = $this->numberOfTests[count($this->numberOfTests)-1];
+                $testSuiteSize = $this->testSuiteSize[count($this->testSuiteSize)-1];
+            } else {
+                $numberOfTests = $this->numberOfTests[0];
+                $testSuiteSize = $this->testSuiteSize[0];
+            }
+
+            $width = strlen((string)$testSuiteSize);
+
+            $this->write(
+              sprintf(
+                ' %' . $width . 'd / %' . $width . "d\n",
+
+                $numberOfTests,
+                $testSuiteSize
+              )
+            );
+
             $this->column = 0;
-            $this->write("\n");
         }
     }
 }

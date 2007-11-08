@@ -2,7 +2,7 @@
 /**
  * PHPUnit
  *
- * Copyright (c) 2002-2006, Sebastian Bergmann <sb@sebastian-bergmann.de>.
+ * Copyright (c) 2002-2007, Sebastian Bergmann <sb@sebastian-bergmann.de>.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -29,7 +29,7 @@
  * INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING,
  * BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
  * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
- * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRIC
+ * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
  * LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
@@ -37,7 +37,7 @@
  * @category   Testing
  * @package    PHPUnit
  * @author     Sebastian Bergmann <sb@sebastian-bergmann.de>
- * @copyright  2002-2006 Sebastian Bergmann <sb@sebastian-bergmann.de>
+ * @copyright  2002-2007 Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    SVN: $Id$
  * @link       http://www.phpunit.de/
@@ -53,7 +53,7 @@ require_once 'BankAccount.php';
  * @category   Testing
  * @package    PHPUnit
  * @author     Sebastian Bergmann <sb@sebastian-bergmann.de>
- * @copyright  2002-2006 Sebastian Bergmann <sb@sebastian-bergmann.de>
+ * @copyright  2002-2007 Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    Release: @package_version@
  * @link       http://www.phpunit.de/
@@ -61,28 +61,15 @@ require_once 'BankAccount.php';
  */
 class BankAccountTest extends PHPUnit_Framework_TestCase
 {
-    /**
-     * BankAccount object used as the tests' fixture.
-     *
-     * @var    BankAccount
-     * @access private
-     */
-    private $ba;
+    protected $ba;
 
-    /**
-     * Sets up the test fixture.
-     *
-     * @access protected
-     */
     protected function setUp()
     {
         $this->ba = new BankAccount;
     }
 
     /**
-     * Asserts that the balance is initially zero.
-     *
-     * @access public
+     * @covers BankAccount::getBalance
      */
     public function testBalanceIsInitiallyZero()
     {
@@ -90,9 +77,7 @@ class BankAccountTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * Asserts that the balance cannot become negative.
-     *
-     * @access public
+     * @covers BankAccount::withdrawMoney
      */
     public function testBalanceCannotBecomeNegative()
     {
@@ -100,7 +85,9 @@ class BankAccountTest extends PHPUnit_Framework_TestCase
             $this->ba->withdrawMoney(1);
         }
 
-        catch (InvalidArgumentException $e) {
+        catch (BankAccountException $e) {
+            $this->assertEquals(0, $this->ba->getBalance());
+
             return;
         }
 
@@ -108,9 +95,7 @@ class BankAccountTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * Asserts that the balance cannot become negative.
-     *
-     * @access public
+     * @covers BankAccount::depositMoney
      */
     public function testBalanceCannotBecomeNegative2()
     {
@@ -118,7 +103,9 @@ class BankAccountTest extends PHPUnit_Framework_TestCase
             $this->ba->depositMoney(-1);
         }
 
-        catch (InvalidArgumentException $e) {
+        catch (BankAccountException $e) {
+            $this->assertEquals(0, $this->ba->getBalance());
+
             return;
         }
 
@@ -126,21 +113,19 @@ class BankAccountTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * Asserts that the balance cannot become negative.
-     *
-     * @access public
+     * @covers BankAccount::getBalance
+     * @covers BankAccount::depositMoney
+     * @covers BankAccount::withdrawMoney
      */
-    public function testBalanceCannotBecomeNegative3()
+/*
+    public function testDepositWithdrawMoney()
     {
-        try {
-            $this->ba->setBalance(-1);
-        }
-
-        catch (InvalidArgumentException $e) {
-            return;
-        }
-
-        $this->fail();
+        $this->assertEquals(0, $this->ba->getBalance());
+        $this->ba->depositMoney(1);
+        $this->assertEquals(1, $this->ba->getBalance());
+        $this->ba->withdrawMoney(1);
+        $this->assertEquals(0, $this->ba->getBalance());
     }
+*/
 }
 ?>

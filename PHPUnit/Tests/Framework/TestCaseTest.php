@@ -2,7 +2,7 @@
 /**
  * PHPUnit
  *
- * Copyright (c) 2002-2006, Sebastian Bergmann <sb@sebastian-bergmann.de>.
+ * Copyright (c) 2002-2007, Sebastian Bergmann <sb@sebastian-bergmann.de>.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -29,7 +29,7 @@
  * INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING,
  * BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
  * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
- * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRIC
+ * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
  * LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
@@ -37,7 +37,7 @@
  * @category   Testing
  * @package    PHPUnit
  * @author     Sebastian Bergmann <sb@sebastian-bergmann.de>
- * @copyright  2002-2006 Sebastian Bergmann <sb@sebastian-bergmann.de>
+ * @copyright  2002-2007 Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    SVN: $Id$
  * @link       http://www.phpunit.de/
@@ -52,10 +52,12 @@ require_once '_files/NoArgTestCaseTest.php';
 require_once '_files/SetupFailure.php';
 require_once '_files/Success.php';
 require_once '_files/TearDownFailure.php';
+require_once '_files/ThrowExceptionTestCase.php';
+require_once '_files/ThrowNoExceptionTestCase.php';
+require_once '_files/TornDown.php';
 require_once '_files/TornDown2.php';
 require_once '_files/TornDown3.php';
 require_once '_files/TornDown4.php';
-require_once '_files/TornDown5.php';
 require_once '_files/WasRun.php';
 
 /**
@@ -64,7 +66,7 @@ require_once '_files/WasRun.php';
  * @category   Testing
  * @package    PHPUnit
  * @author     Sebastian Bergmann <sb@sebastian-bergmann.de>
- * @copyright  2002-2006 Sebastian Bergmann <sb@sebastian-bergmann.de>
+ * @copyright  2002-2007 Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    Release: @package_version@
  * @link       http://www.phpunit.de/
@@ -88,7 +90,7 @@ class Framework_TestCaseTest extends PHPUnit_Framework_TestCase
     public function testExceptionRunningAndTearDown()
     {
         $result = new PHPUnit_Framework_TestResult();
-        $t      = new TornDown5;
+        $t      = new TornDown4;
 
         $t->run($result);
 
@@ -125,7 +127,7 @@ class Framework_TestCaseTest extends PHPUnit_Framework_TestCase
 
     public function testRunAndTearDownFails()
     {
-        $fails = new TornDown3;
+        $fails = new TornDown2;
 
 		    $this->verifyError($fails);
 		    $this->assertTrue($fails->tornDown);
@@ -143,7 +145,7 @@ class Framework_TestCaseTest extends PHPUnit_Framework_TestCase
 
     public function testTearDownAfterError()
     {
-        $fails = new TornDown2;
+        $fails = new TornDown;
 
 		    $this->verifyError($fails);
 		    $this->assertTrue($fails->tornDown);
@@ -156,7 +158,7 @@ class Framework_TestCaseTest extends PHPUnit_Framework_TestCase
 
     public function testTearDownSetupFails()
     {
-        $fails = new TornDown4;
+        $fails = new TornDown3;
 
 		    $this->verifyError($fails);
 		    $this->assertFalse($fails->tornDown);
@@ -168,6 +170,39 @@ class Framework_TestCaseTest extends PHPUnit_Framework_TestCase
         $test->run();
 
         $this->assertTrue($test->wasRun);
+    }
+
+    public function testException()
+    {
+        $test = new ThrowExceptionTestCase('test');
+        $test->setExpectedException('Exception');
+
+        $result = $test->run();
+
+        $this->assertEquals(1, count($result));
+        $this->assertTrue($result->wasSuccessful());
+    }
+
+    public function testNoException()
+    {
+        $test = new ThrowNoExceptionTestCase('test');
+        $test->setExpectedException('Exception');
+
+        $result = $test->run();
+
+        $this->assertEquals(1, $result->failureCount());
+        $this->assertEquals(1, count($result));
+    }
+
+    public function testWrongException()
+    {
+        $test = new ThrowExceptionTestCase('test');
+        $test->setExpectedException('RuntimeException');
+
+        $result = $test->run();
+
+        $this->assertEquals(1, $result->errorCount());
+        $this->assertEquals(1, count($result));
     }
 
     protected function verifyError(PHPUnit_Framework_TestCase $test)

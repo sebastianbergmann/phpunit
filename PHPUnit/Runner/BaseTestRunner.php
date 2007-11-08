@@ -2,7 +2,7 @@
 /**
  * PHPUnit
  *
- * Copyright (c) 2002-2006, Sebastian Bergmann <sb@sebastian-bergmann.de>.
+ * Copyright (c) 2002-2007, Sebastian Bergmann <sb@sebastian-bergmann.de>.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -29,7 +29,7 @@
  * INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING,
  * BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
  * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
- * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRIC
+ * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
  * LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
@@ -37,7 +37,7 @@
  * @category   Testing
  * @package    PHPUnit
  * @author     Sebastian Bergmann <sb@sebastian-bergmann.de>
- * @copyright  2002-2006 Sebastian Bergmann <sb@sebastian-bergmann.de>
+ * @copyright  2002-2007 Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    SVN: $Id$
  * @link       http://www.phpunit.de/
@@ -56,7 +56,7 @@ PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
  * @category   Testing
  * @package    PHPUnit
  * @author     Sebastian Bergmann <sb@sebastian-bergmann.de>
- * @copyright  2002-2006 Sebastian Bergmann <sb@sebastian-bergmann.de>
+ * @copyright  2002-2007 Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    Release: @package_version@
  * @link       http://www.phpunit.de/
@@ -66,20 +66,21 @@ PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
 abstract class PHPUnit_Runner_BaseTestRunner implements PHPUnit_Framework_TestListener
 {
     const STATUS_PASSED     = 0;
-    const STATUS_ERROR      = 1;
-    const STATUS_FAILURE    = 2;
-    const STATUS_INCOMPLETE = 3;
-    const STATUS_SKIPPED    = 4;
+    const STATUS_SKIPPED    = 1;
+    const STATUS_INCOMPLETE = 2;
+    const STATUS_FAILURE    = 3;
+    const STATUS_ERROR      = 4;
     const SUITE_METHODNAME  = 'suite';
 
     /**
      * An error occurred.
      *
      * @param  PHPUnit_Framework_Test $test
-     * @param  Exception               $e
+     * @param  Exception              $e
+     * @param  float                  $time
      * @access public
      */
-    public function addError(PHPUnit_Framework_Test $test, Exception $e)
+    public function addError(PHPUnit_Framework_Test $test, Exception $e, $time)
     {
         $this->testFailed(self::STATUS_ERROR, $test, $e);
     }
@@ -89,9 +90,10 @@ abstract class PHPUnit_Runner_BaseTestRunner implements PHPUnit_Framework_TestLi
      *
      * @param  PHPUnit_Framework_Test                 $test
      * @param  PHPUnit_Framework_AssertionFailedError $e
+     * @param  float                                  $time
      * @access public
      */
-    public function addFailure(PHPUnit_Framework_Test $test, PHPUnit_Framework_AssertionFailedError $e)
+    public function addFailure(PHPUnit_Framework_Test $test, PHPUnit_Framework_AssertionFailedError $e, $time)
     {
         $this->testFailed(self::STATUS_FAILURE, $test, $e);
     }
@@ -100,10 +102,11 @@ abstract class PHPUnit_Runner_BaseTestRunner implements PHPUnit_Framework_TestLi
      * Incomplete test.
      *
      * @param  PHPUnit_Framework_Test $test
-     * @param  Exception               $e
+     * @param  Exception              $e
+     * @param  float                  $time
      * @access public
      */
-    public function addIncompleteTest(PHPUnit_Framework_Test $test, Exception $e)
+    public function addIncompleteTest(PHPUnit_Framework_Test $test, Exception $e, $time)
     {
         $this->testFailed(self::STATUS_INCOMPLETE, $test, $e);
     }
@@ -112,11 +115,12 @@ abstract class PHPUnit_Runner_BaseTestRunner implements PHPUnit_Framework_TestLi
      * Skipped test.
      *
      * @param  PHPUnit_Framework_Test $test
-     * @param  Exception               $e
+     * @param  Exception              $e
+     * @param  float                  $time
      * @access public
      * @since  Method available since Release 3.0.0
      */
-    public function addSkippedTest(PHPUnit_Framework_Test $test, Exception $e)
+    public function addSkippedTest(PHPUnit_Framework_Test $test, Exception $e, $time)
     {
         $this->testFailed(self::STATUS_SKIPPED, $test, $e);
     }
@@ -157,10 +161,11 @@ abstract class PHPUnit_Runner_BaseTestRunner implements PHPUnit_Framework_TestLi
     /**
      * A test ended.
      *
-     * @param  PHPUnit_Framework_Test  $test
+     * @param  PHPUnit_Framework_Test $test
+     * @param  float                  $time
      * @access public
      */
-    public function endTest(PHPUnit_Framework_Test $test)
+    public function endTest(PHPUnit_Framework_Test $test, $time)
     {
         $this->testEnded($test->getName());
     }
@@ -183,17 +188,16 @@ abstract class PHPUnit_Runner_BaseTestRunner implements PHPUnit_Framework_TestLi
      *
      * @param  string  $suiteClassName
      * @param  string  $suiteClassFile
+     * @param  boolean $syntaxCheck
      * @return PHPUnit_Framework_Test
      * @access public
      */
-    public function getTest($suiteClassName, $suiteClassFile = '')
+    public function getTest($suiteClassName, $suiteClassFile = '', $syntaxCheck = TRUE)
     {
-        if ($suiteClassFile == $suiteClassName . '.php') {
-            $suiteClassFile = '';
-        }
-
         try {
-            $testClass = $this->loadSuiteClass($suiteClassName, $suiteClassFile);
+            $testClass = $this->loadSuiteClass(
+              $suiteClassName, $suiteClassFile, $syntaxCheck
+            );
         }
 
         catch (Exception $e) {
@@ -213,7 +217,7 @@ abstract class PHPUnit_Runner_BaseTestRunner implements PHPUnit_Framework_TestLi
             }
 
             try {
-                $test = $suiteMethod->invoke(NULL);
+                $test = $suiteMethod->invoke(NULL, $testClass->getName());
             }
 
             catch (ReflectionException $e) {
@@ -253,12 +257,19 @@ abstract class PHPUnit_Runner_BaseTestRunner implements PHPUnit_Framework_TestLi
      *
      * @param  string  $suiteClassName
      * @param  string  $suiteClassFile
+     * @param  boolean $syntaxCheck
      * @return ReflectionClass
      * @access protected
      */
-    protected function loadSuiteClass($suiteClassName, $suiteClassFile = '')
+    protected function loadSuiteClass($suiteClassName, $suiteClassFile = '', $syntaxCheck = TRUE)
     {
-        return $this->getLoader()->load($suiteClassName, $suiteClassFile);
+        $loader = $this->getLoader();
+
+        if ($loader instanceof PHPUnit_Runner_StandardTestSuiteLoader) {
+            return $loader->load($suiteClassName, $suiteClassFile, $syntaxCheck);
+        } else {
+            return $loader->load($suiteClassName, $suiteClassFile);
+        }
     }
 
     /**

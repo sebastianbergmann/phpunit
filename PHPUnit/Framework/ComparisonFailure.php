@@ -2,7 +2,7 @@
 /**
  * PHPUnit
  *
- * Copyright (c) 2002-2006, Sebastian Bergmann <sb@sebastian-bergmann.de>.
+ * Copyright (c) 2002-2007, Sebastian Bergmann <sb@sebastian-bergmann.de>.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -29,7 +29,7 @@
  * INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING,
  * BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
  * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
- * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRIC
+ * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
  * LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
@@ -37,8 +37,8 @@
  * @category   Testing
  * @package    PHPUnit
  * @author     Jan Borsodi <jb@ez.no>
- *             Sebastian Bergmann <sb@sebastian-bergmann.de>
- * @copyright  2002-2006 Sebastian Bergmann <sb@sebastian-bergmann.de>
+ * @author     Sebastian Bergmann <sb@sebastian-bergmann.de>
+ * @copyright  2002-2007 Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    SVN: $Id$
  * @link       http://www.phpunit.de/
@@ -47,6 +47,7 @@
 
 require_once 'PHPUnit/Framework.php';
 require_once 'PHPUnit/Util/Filter.php';
+require_once 'PHPUnit/Util/Type.php';
 
 PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
 
@@ -58,8 +59,8 @@ if (!class_exists('PHPUnit_Framework_ComparisonFailure', FALSE)) {
  * @category   Testing
  * @package    PHPUnit
  * @author     Jan Borsodi <jb@ez.no>
- *             Sebastian Bergmann <sb@sebastian-bergmann.de>
- * @copyright  2002-2006 Sebastian Bergmann <sb@sebastian-bergmann.de>
+ * @author     Sebastian Bergmann <sb@sebastian-bergmann.de>
+ * @copyright  2002-2007 Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    Release: @package_version@
  * @link       http://www.phpunit.de/
@@ -80,6 +81,11 @@ abstract class PHPUnit_Framework_ComparisonFailure extends PHPUnit_Framework_Ass
     protected $actual;
 
     /**
+     * @var boolean
+     */
+    protected $identical;
+
+    /**
      * Optional message which is placed in front of the first line
      * returned by toString().
      * @var string
@@ -87,18 +93,40 @@ abstract class PHPUnit_Framework_ComparisonFailure extends PHPUnit_Framework_Ass
     protected $message;
 
     /**
+     * @var boolean
+     */
+    protected static $hasDiff = NULL;
+
+    /**
      * Initialises with the expected value and the actual value.
      *
      * @param mixed $expected Expected value retrieved.
      * @param mixed $actual Actual value retrieved.
+     * @param boolean $identical
      * @param string $message A string which is prefixed on all returned lines
      *                       in the difference output.
      */
-    public function __construct($expected, $actual, $message = '')
+    public function __construct($expected, $actual, $identical = FALSE, $message = '')
     {
-        $this->expected = $expected;
-        $this->actual   = $actual;
-        $this->message  = $message;
+        $this->expected  = $expected;
+        $this->actual    = $actual;
+        $this->identical = $identical;
+        $this->message   = $message;
+    }
+
+    public function getActual()
+    {
+        return $this->actual;
+    }
+
+    public function getExpected()
+    {
+        return $this->expected;
+    }
+
+    public function identical()
+    {
+        return $this->identical;
     }
 
     /**
@@ -116,23 +144,23 @@ abstract class PHPUnit_Framework_ComparisonFailure extends PHPUnit_Framework_Ass
     public static function diffIdentical($expected, $actual, $message = '')
     {
         if (gettype($expected) !== gettype($actual)) {
-            return new PHPUnit_Framework_ComparisonFailure_Type($expected, $actual, $message);
+            return new PHPUnit_Framework_ComparisonFailure_Type($expected, $actual, TRUE, $message);
         }
 
         elseif (is_string($expected)) {
-            return new PHPUnit_Framework_ComparisonFailure_String($expected, $actual, $message);
+            return new PHPUnit_Framework_ComparisonFailure_String($expected, $actual, TRUE, $message);
         }
 
-        elseif (is_bool($expected) || is_int($expected) || is_float($expected)) {
-            return new PHPUnit_Framework_ComparisonFailure_Scalar($expected, $actual, $message);
+        elseif (is_null($expected) || is_scalar($expected)) {
+            return new PHPUnit_Framework_ComparisonFailure_Scalar($expected, $actual, TRUE, $message);
         }
 
         elseif (is_array($expected)) {
-            return new PHPUnit_Framework_ComparisonFailure_Array($expected, $actual, $message);
+            return new PHPUnit_Framework_ComparisonFailure_Array($expected, $actual, TRUE, $message);
         }
 
         elseif (is_object($expected)) {
-            return new PHPUnit_Framework_ComparisonFailure_Object($expected, $actual, $message);
+            return new PHPUnit_Framework_ComparisonFailure_Object($expected, $actual, TRUE, $message);
         }
     }
 
@@ -150,111 +178,90 @@ abstract class PHPUnit_Framework_ComparisonFailure extends PHPUnit_Framework_Ass
      */
     public static function diffEqual($expected, $actual, $message = '')
     {
-        if (gettype($expected) !== gettype($actual)) {
-            $expected = (string)$expected;
-            $actual = (string)$actual;
+        if (is_string($expected) && !is_object($actual)) {
+            return new PHPUnit_Framework_ComparisonFailure_String($expected, $actual, FALSE, $message);
         }
 
-        if (is_string($expected)) {
-            return new PHPUnit_Framework_ComparisonFailure_String($expected, $actual, $message);
-        }
-
-        elseif (is_bool($expected) || is_int($expected) || is_float($expected)) {
-            return new PHPUnit_Framework_ComparisonFailure_Scalar($expected, $actual, $message);
+        elseif (is_null($expected) || is_scalar($expected)) {
+            return new PHPUnit_Framework_ComparisonFailure_Scalar($expected, $actual, FALSE, $message);
         }
 
         elseif (is_array($expected)) {
-            return new PHPUnit_Framework_ComparisonFailure_Array($expected, $actual, $message);
+            return new PHPUnit_Framework_ComparisonFailure_Array($expected, $actual, FALSE, $message);
         }
 
         elseif (is_object($expected)) {
-            return new PHPUnit_Framework_ComparisonFailure_Object($expected, $actual, $message);
+            return new PHPUnit_Framework_ComparisonFailure_Object($expected, $actual, FALSE, $message);
         }
     }
 
-    /**
-     * Exports the value $value to a string but in a shortened form.
-     *
-     * @param mixed $value The value to export as string.
-     * @return string
-     */
-    public static function shortenedExport($value)
+    protected function diff($expected, $actual)
     {
-        if (is_string($value)) {
-            return self::shortenedString($value);
+        $expectedFile = tempnam('/tmp', 'expected');
+        file_put_contents($expectedFile, $expected);
+
+        $actualFile = tempnam('/tmp', 'actual');
+        file_put_contents($actualFile, $actual);
+
+        $buffer = shell_exec(
+          sprintf(
+            'diff -u %s %s',
+            $expectedFile,
+            $actualFile
+          )
+        );
+
+        unlink($expectedFile);
+        unlink($actualFile);
+
+        if (!empty($buffer)) {
+            $buffer = explode("\n", $buffer);
+
+            $buffer[0] = "--- Expected";
+            $buffer[1] = "+++ Actual";
+
+            return implode("\n", $buffer);
         }
 
-        elseif (is_array($value)) {
-            if (count($value) == 0) {
-                return 'array()';
-            }
-
-            $a1 = array_slice($value, 0, 1, TRUE);
-            $k1 = key($a1);
-            $v1 = $a1[$k1];
-
-            if (is_string($v1)) {
-                $v1 = self::shortenedString($v1);
-            }
-
-            elseif (is_array($v1)) {
-                $v1 = 'array(...)';
-            } else {
-                $v1 = print_r($v1, TRUE);
-            }
-
-            $a2 = false;
-
-            if (count($value) > 1) {
-                $a2 = array_slice($value, -1, 1, TRUE);
-                $k2 = key($a2);
-                $v2 = $a2[$k2];
-
-                if (is_string($v2)) {
-                    $v2 = self::shortenedString($v2);
-                }
-
-                elseif (is_array($v2)) {
-                    $v2 = 'array(...)';
-                } else {
-                    $v2 = print_r($v2, TRUE);
-                }
-            }
-
-            $text = 'array( ' . print_r($k1, TRUE) . ' => ' . $v1;
-
-            if ($a2 !== FALSE) {
-                $text .= ', ..., ' . print_r($k2, TRUE) . ' => ' . $v2 . ' )';
-            } else {
-                $text .= ' )';
-            }
-
-            return $text;
-        }
-
-        elseif (is_object($value)) {
-            return 'class ' . get_class($value) . '(...)';
-        }
-
-        return print_r($value, TRUE);
+        return '';
     }
 
-    /**
-     * Shortens the string $string and returns it. If the string is already short
-     * enough it is returned as it was.
-     *
-     * @param string $string The string value which must be shortened.
-     * @return string
-     */
-    private static function shortenedString($string)
+    public static function hasDiff()
     {
-        $string = preg_replace('#\n|\r\n|\r#', ' ', $string);
+        if (self::$hasDiff === NULL)
+        {
+            self::$hasDiff = FALSE;
 
-        if (strlen($string) > 14) {
-            return print_r(substr($string, 0, 7), TRUE) . '...' . print_r(substr($string, -7), TRUE);
-        } else {
-            return print_r($string, TRUE);
+            $binary = 'diff';
+
+            if (substr(php_uname('s'), 0, 7) == 'Windows')
+            {
+                $binary .= '.exe';
+            }
+
+            if (isset($_ENV['PATH'])) {
+                $paths = explode(PATH_SEPARATOR, $_ENV['PATH']);
+            }
+
+            else if (isset($_SERVER['PATH'])) {
+                $paths = explode(PATH_SEPARATOR, $_SERVER['PATH']);
+            }
+
+            else {
+                $paths = array();
+            }
+
+            foreach ($paths as $path) {
+                if (file_exists($path . DIRECTORY_SEPARATOR . $binary) &&
+                    is_executable($path . DIRECTORY_SEPARATOR . $binary))
+                {
+                    self::$hasDiff = TRUE;
+                    break;
+                }
+            }
         }
+
+        return self::$hasDiff;
     }
 }
 
