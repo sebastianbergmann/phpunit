@@ -2,7 +2,7 @@
 /**
  * PHPUnit
  *
- * Copyright (c) 2002-2006, Sebastian Bergmann <sb@sebastian-bergmann.de>.
+ * Copyright (c) 2002-2007, Sebastian Bergmann <sb@sebastian-bergmann.de>.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -29,7 +29,7 @@
  * INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING,
  * BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
  * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
- * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRIC
+ * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
  * LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
@@ -37,7 +37,7 @@
  * @category   Testing
  * @package    PHPUnit
  * @author     Sebastian Bergmann <sb@sebastian-bergmann.de>
- * @copyright  2002-2006 Sebastian Bergmann <sb@sebastian-bergmann.de>
+ * @copyright  2002-2007 Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    SVN: $Id$
  * @link       http://www.phpunit.de/
@@ -56,7 +56,7 @@ PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
  * @category   Testing
  * @package    PHPUnit
  * @author     Sebastian Bergmann <sb@sebastian-bergmann.de>
- * @copyright  2002-2006 Sebastian Bergmann <sb@sebastian-bergmann.de>
+ * @copyright  2002-2007 Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    Release: @package_version@
  * @link       http://www.phpunit.de/
@@ -65,20 +65,41 @@ PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
 class PHPUnit_Extensions_RepeatedTest extends PHPUnit_Extensions_TestDecorator
 {
     /**
-     * @var    integer
-     * @access private
+     * @var    mixed
+     * @access protected
      */
-    private $timesRepeat = 1;
+    protected $filter = FALSE;
+
+    /**
+     * @var    array
+     * @access protected
+     */
+    protected $groups = array();
+
+    /**
+     * @var    array
+     * @access protected
+     */
+    protected $excludeGroups = array();
+
+    /**
+     * @var    integer
+     * @access protected
+     */
+    protected $timesRepeat = 1;
 
     /**
      * Constructor.
      *
      * @param  PHPUnit_Framework_Test $test
-     * @param  integer                 $timesRepeat
+     * @param  integer                $timesRepeat
+     * @param  mixed                  $filter
+     * @param  array                  $groups
+     * @param  array                  $excludeGroups
      * @throws InvalidArgumentException
      * @access public
      */
-    public function __construct(PHPUnit_Framework_Test $test, $timesRepeat = 1)
+    public function __construct(PHPUnit_Framework_Test $test, $timesRepeat = 1, $filter = FALSE, array $groups = array(), array $excludeGroups = array())
     {
         parent::__construct($test);
 
@@ -90,6 +111,10 @@ class PHPUnit_Extensions_RepeatedTest extends PHPUnit_Extensions_TestDecorator
               'Argument 2 must be a positive integer.'
             );
         }
+
+        $this->filter        = $filter;
+        $this->groups        = $groups;
+        $this->excludeGroups = $excludeGroups;
     }
 
     /**
@@ -120,7 +145,13 @@ class PHPUnit_Extensions_RepeatedTest extends PHPUnit_Extensions_TestDecorator
         }
 
         for ($i = 0; $i < $this->timesRepeat && !$result->shouldStop(); $i++) {
-            $this->test->run($result);
+            if ($this->test instanceof PHPUnit_Framework_TestSuite) {
+                $this->test->run(
+                  $result, $this->filter, $this->groups, $this->excludeGroups
+                );
+            } else {
+                $this->test->run($result);
+            }
         }
 
         return $result;

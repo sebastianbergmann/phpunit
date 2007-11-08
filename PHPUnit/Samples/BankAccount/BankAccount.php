@@ -2,7 +2,7 @@
 /**
  * PHPUnit
  *
- * Copyright (c) 2002-2006, Sebastian Bergmann <sb@sebastian-bergmann.de>.
+ * Copyright (c) 2002-2007, Sebastian Bergmann <sb@sebastian-bergmann.de>.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -29,7 +29,7 @@
  * INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING,
  * BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
  * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
- * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRIC
+ * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
  * LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
@@ -37,20 +37,22 @@
  * @category   Testing
  * @package    PHPUnit
  * @author     Sebastian Bergmann <sb@sebastian-bergmann.de>
- * @copyright  2002-2006 Sebastian Bergmann <sb@sebastian-bergmann.de>
+ * @copyright  2002-2007 Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    SVN: $Id$
  * @link       http://www.phpunit.de/
  * @since      File available since Release 2.3.0
  */
 
+class BankAccountException extends RuntimeException {}
+
 /**
- * A Bank Account.
+ * A bank account.
  *
  * @category   Testing
  * @package    PHPUnit
  * @author     Sebastian Bergmann <sb@sebastian-bergmann.de>
- * @copyright  2002-2006 Sebastian Bergmann <sb@sebastian-bergmann.de>
+ * @copyright  2002-2007 Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    Release: @package_version@
  * @link       http://www.phpunit.de/
@@ -62,9 +64,9 @@ class BankAccount
      * The bank account's balance.
      *
      * @var    float
-     * @access private
+     * @access protected
      */
-    private $balance = 0;
+    protected $balance = 0;
 
     /**
      * Returns the bank account's balance.
@@ -81,15 +83,15 @@ class BankAccount
      * Sets the bank account's balance.
      *
      * @param  float $balance
-     * @throws InvalidArgumentException
-     * @access public
+     * @throws BankAccountException
+     * @access protected
      */
-    public function setBalance($balance)
+    protected function setBalance($balance)
     {
         if ($balance >= 0) {
             $this->balance = $balance;
         } else {
-            throw new InvalidArgumentException;
+            throw new BankAccountException;
         }
     }
 
@@ -97,32 +99,28 @@ class BankAccount
      * Deposits an amount of money to the bank account.
      *
      * @param  float $balance
-     * @throws InvalidArgumentException
+     * @throws BankAccountException
      * @access public
      */
-    public function depositMoney($amount)
+    public function depositMoney($balance)
     {
-        if ($amount >= 0) {
-            $this->balance += $amount;
-        } else {
-            throw new InvalidArgumentException;
-        }
+        $this->setBalance($this->getBalance() + $balance);
+
+        return $this->getBalance();
     }
 
     /**
      * Withdraws an amount of money from the bank account.
      *
      * @param  float $balance
-     * @throws InvalidArgumentException
+     * @throws BankAccountException
      * @access public
      */
-    public function withdrawMoney($amount)
+    public function withdrawMoney($balance)
     {
-        if ($amount >= 0 && $this->balance >= $amount) {
-            $this->balance -= $amount;
-        } else {
-            throw new InvalidArgumentException;
-        }
+        $this->setBalance($this->getBalance() - $balance);
+
+        return $this->getBalance();
     }
 }
 ?>

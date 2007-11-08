@@ -2,7 +2,7 @@
 /**
  * PHPUnit
  *
- * Copyright (c) 2002-2006, Sebastian Bergmann <sb@sebastian-bergmann.de>.
+ * Copyright (c) 2002-2007, Sebastian Bergmann <sb@sebastian-bergmann.de>.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -29,7 +29,7 @@
  * INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING,
  * BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
  * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
- * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRIC
+ * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
  * LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
@@ -37,7 +37,7 @@
  * @category   Testing
  * @package    PHPUnit
  * @author     Sebastian Bergmann <sb@sebastian-bergmann.de>
- * @copyright  2002-2006 Sebastian Bergmann <sb@sebastian-bergmann.de>
+ * @copyright  2002-2007 Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    SVN: $Id$
  * @link       http://www.phpunit.de/
@@ -49,6 +49,7 @@ require_once 'PHPUnit/Util/ErrorHandler.php';
 require_once 'PHPUnit/Util/Filter.php';
 require_once 'PHPUnit/Util/Printer.php';
 require_once 'PHPUnit/Util/Test.php';
+require_once 'PHPUnit/Util/Timer.php';
 
 PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
 
@@ -60,7 +61,7 @@ if (!class_exists('PHPUnit_Framework_TestResult', FALSE)) {
  * @category   Testing
  * @package    PHPUnit
  * @author     Sebastian Bergmann <sb@sebastian-bergmann.de>
- * @copyright  2002-2006 Sebastian Bergmann <sb@sebastian-bergmann.de>
+ * @copyright  2002-2007 Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    Release: @package_version@
  * @link       http://www.phpunit.de/
@@ -68,6 +69,10 @@ if (!class_exists('PHPUnit_Framework_TestResult', FALSE)) {
  */
 class PHPUnit_Framework_TestResult implements Countable
 {
+    protected static $isPHP52 = null;
+    protected static $xdebugLoaded = null;
+    protected static $useXdebug = null;
+
     /**
      * @var    array
      * @access protected
@@ -105,6 +110,12 @@ class PHPUnit_Framework_TestResult implements Countable
     protected $runTests = 0;
 
     /**
+     * @var    float
+     * @access protected
+     */
+    protected $time = 0;
+
+    /**
      * @var    PHPUnit_Framework_TestSuite
      * @access protected
      */
@@ -126,9 +137,15 @@ class PHPUnit_Framework_TestResult implements Countable
 
     /**
      * @var    boolean
-     * @access private
+     * @access protected
      */
-    private $stop = FALSE;
+    protected $stop = FALSE;
+
+    /**
+     * @var    boolean
+     * @access protected
+     */
+    protected $stopOnFailure = FALSE;
 
     /**
      * Registers a TestListener.
@@ -176,33 +193,33 @@ class PHPUnit_Framework_TestResult implements Countable
      * The passed in exception caused the error.
      *
      * @param  PHPUnit_Framework_Test $test
-     * @param  Exception               $e
+     * @param  Exception              $e
+     * @param  float                  $time
      * @access public
      */
-    public function addError(PHPUnit_Framework_Test $test, Exception $e)
+    public function addError(PHPUnit_Framework_Test $test, Exception $e, $time)
     {
         if ($e instanceof PHPUnit_Framework_IncompleteTest) {
             $this->notImplemented[] = new PHPUnit_Framework_TestFailure($test, $e);
-
-            foreach ($this->listeners as $listener) {
-                $listener->addIncompleteTest($test, $e);
-            }
+            $notifyMethod           = 'addIncompleteTest';
         }
 
         else if ($e instanceof PHPUnit_Framework_SkippedTest) {
             $this->skipped[] = new PHPUnit_Framework_TestFailure($test, $e);
-
-            foreach ($this->listeners as $listener) {
-                $listener->addSkippedTest($test, $e);
-            }
+            $notifyMethod    = 'addSkippedTest';
         }
 
         else {
             $this->errors[] = new PHPUnit_Framework_TestFailure($test, $e);
+            $notifyMethod   = 'addError';
 
-            foreach ($this->listeners as $listener) {
-                $listener->addError($test, $e);
+            if ($this->stopOnFailure) {
+                $this->stop();
             }
+        }
+
+        foreach ($this->listeners as $listener) {
+            $listener->$notifyMethod($test, $e, $time);
         }
     }
 
@@ -210,34 +227,34 @@ class PHPUnit_Framework_TestResult implements Countable
      * Adds a failure to the list of failures.
      * The passed in exception caused the failure.
      *
-     * @param  PHPUnit_Framework_Test                  $test
-     * @param  PHPUnit_Framework_AssertionFailedError  $e
+     * @param  PHPUnit_Framework_Test                 $test
+     * @param  PHPUnit_Framework_AssertionFailedError $e
+     * @param  float                                  $time
      * @access public
      */
-    public function addFailure(PHPUnit_Framework_Test $test, PHPUnit_Framework_AssertionFailedError $e)
+    public function addFailure(PHPUnit_Framework_Test $test, PHPUnit_Framework_AssertionFailedError $e, $time)
     {
         if ($e instanceof PHPUnit_Framework_IncompleteTest) {
             $this->notImplemented[] = new PHPUnit_Framework_TestFailure($test, $e);
-
-            foreach ($this->listeners as $listener) {
-                $listener->addIncompleteTest($test, $e);
-            }
+            $notifyMethod           = 'addIncompleteTest';
         }
 
         else if ($e instanceof PHPUnit_Framework_SkippedTest) {
             $this->skipped[] = new PHPUnit_Framework_TestFailure($test, $e);
-
-            foreach ($this->listeners as $listener) {
-                $listener->addSkippedTest($test, $e);
-            }
+            $notifyMethod    = 'addSkippedTest';
         }
 
         else {
             $this->failures[] = new PHPUnit_Framework_TestFailure($test, $e);
+            $notifyMethod     = 'addFailure';
 
-            foreach ($this->listeners as $listener) {
-                $listener->addFailure($test, $e);
+            if ($this->stopOnFailure) {
+                $this->stop();
             }
+        }
+
+        foreach ($this->listeners as $listener) {
+            $listener->$notifyMethod($test, $e, $time);
         }
     }
 
@@ -291,13 +308,14 @@ class PHPUnit_Framework_TestResult implements Countable
     /**
      * Informs the result that a test was completed.
      *
-     * @param  PHPUnit_Framework_Test
+     * @param  PHPUnit_Framework_Test $test
+     * @param  float                  $time
      * @access public
      */
-    public function endTest(PHPUnit_Framework_Test $test)
+    public function endTest(PHPUnit_Framework_Test $test, $time)
     {
         foreach ($this->listeners as $listener) {
-            $listener->endTest($test);
+            $listener->endTest($test, $time);
         }
     }
 
@@ -444,6 +462,61 @@ class PHPUnit_Framework_TestResult implements Countable
     }
 
     /**
+     * Returns whether code coverage information should be collected.
+     *
+     * @return boolean If code coverage should be collected
+     * @since  Method available since Release 3.2.0
+     */
+    public function getCollectCodeCoverageInformation()
+    {
+        return $this->collectCodeCoverageInformation;
+    }
+
+    /**
+     * Appends code coverage information to the test
+     *
+     * @param PHPUnit_Framework_Test $test
+     * @param array                  $data
+     * @since Method available since Release 3.2.0
+     */
+    public function appendCodeCoverageInformation(PHPUnit_Framework_Test $test, $data)
+    {
+        if ($test instanceof PHPUnit_Framework_TestCase) {
+            $coveredUnits = PHPUnit_Util_Test::getCoveredUnits(
+              get_class($test), $test->getName()
+            );
+
+            if (!empty($coveredUnits)) {
+                $coveredFilesKeep  = array_keys($coveredUnits);
+                $coveredFilesTotal = array_keys($data);
+
+                $numCoveredFiles = count($coveredFilesTotal);
+
+                for ($i = 0; $i < $numCoveredFiles; $i++) {
+                    if (!in_array($coveredFilesTotal[$i], $coveredFilesKeep)) {
+                        unset($coveredFilesTotal[$i]);
+                    } else {
+                        $lineNums  = array_keys($data[$coveredFilesTotal[$i]]);
+                        $numLines  = count($lineNums);
+
+                        for ($j = 0; $j < $numLines; $j++) {
+                            if (!in_array($lineNums[$j], $coveredUnits[$coveredFilesTotal[$i]]) &&
+                                $data[$coveredFilesTotal[$i]][$lineNums[$j]] > 0) {
+                                $data[$coveredFilesTotal[$i]][$lineNums[$j]] = -1;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        $this->codeCoverageInformation[] = array(
+          'test'  => $test,
+          'files' => $data
+        );
+    }
+
+    /**
      * Returns Code Coverage data per test case.
      *
      * Format of the result array:
@@ -486,14 +559,25 @@ class PHPUnit_Framework_TestResult implements Countable
      */
     public function run(PHPUnit_Framework_Test $test)
     {
+        $error   = FALSE;
+        $failure = FALSE;
+
         $this->startTest($test);
 
         $errorHandlerSet = FALSE;
 
-        if (version_compare(phpversion(), '5.2.0RC1', '>=')) {
-            $oldErrorHandler = set_error_handler('PHPUnit_Util_ErrorHandler', E_RECOVERABLE_ERROR | E_USER_ERROR);
+        if (self::$isPHP52 === NULL) {
+            if (version_compare(phpversion(), '5.2.0RC1', '>=')) {
+                self::$isPHP52 = TRUE;
+            } else {
+                self::$isPHP52 = FALSE;
+            }
+        }
+
+        if (self::$isPHP52) {
+            $oldErrorHandler = set_error_handler('PHPUnit_Util_ErrorHandler', E_RECOVERABLE_ERROR | E_USER_ERROR | E_NOTICE | E_STRICT);
         } else {
-            $oldErrorHandler = set_error_handler('PHPUnit_Util_ErrorHandler', E_USER_ERROR);
+            $oldErrorHandler = set_error_handler('PHPUnit_Util_ErrorHandler', E_USER_ERROR | E_NOTICE | E_STRICT);
         }
 
         if ($oldErrorHandler === NULL) {
@@ -502,46 +586,56 @@ class PHPUnit_Framework_TestResult implements Countable
             restore_error_handler();
         }
 
-        $globalsBackup = $GLOBALS;
+        if (self::$xdebugLoaded === NULL) {
+            self::$xdebugLoaded = extension_loaded('xdebug');
+            self::$useXdebug = self::$xdebugLoaded;
+        }
 
-        $useXdebug = (extension_loaded('xdebug') && $this->collectCodeCoverageInformation);
+        $useXdebug = self::$useXdebug && $this->collectCodeCoverageInformation && !$test instanceof PHPUnit_Extensions_SeleniumTestCase;
 
-        if ($useXdebug && !defined('PHPUnit_INSIDE_OWN_TESTSUITE')) {
+        if ($useXdebug) {
             xdebug_start_code_coverage(XDEBUG_CC_UNUSED | XDEBUG_CC_DEAD_CODE);
         }
+
+        PHPUnit_Util_Timer::start();
 
         try {
             $test->runBare();
         }
 
         catch (PHPUnit_Framework_AssertionFailedError $e) {
-            $this->addFailure($test, $e);
+            $failure = TRUE;
         }
 
         catch (Exception $e) {
-            $this->addError($test, $e);
+            $error = TRUE;
         }
 
+        $time = PHPUnit_Util_Timer::stop();
+
         if ($useXdebug) {
-            $this->codeCoverageInformation[] = array(
-              'test'  => $test,
-              'files' => xdebug_get_code_coverage()
+            $this->appendCodeCoverageInformation(
+              $test, xdebug_get_code_coverage()
             );
 
             xdebug_stop_code_coverage();
-
-            if (defined('PHPUnit_INSIDE_OWN_TESTSUITE')) {
-                xdebug_start_code_coverage(XDEBUG_CC_UNUSED | XDEBUG_CC_DEAD_CODE);
-            }
         }
-
-        $GLOBALS = $globalsBackup;
 
         if ($errorHandlerSet === TRUE) {
             restore_error_handler();
         }
 
-        $this->endTest($test);
+        if ($error === TRUE) {
+            $this->addError($test, $e, $time);
+        }
+
+        else if ($failure === TRUE) {
+            $this->addFailure($test, $e, $time);
+        }
+
+        $this->endTest($test, $time);
+
+        $this->time += $time;
     }
 
     /**
@@ -574,6 +668,34 @@ class PHPUnit_Framework_TestResult implements Countable
     public function stop()
     {
         $this->stop = TRUE;
+    }
+
+    /**
+     * Enables or disables the stopping when a failure or error occurs.
+     *
+     * @param  boolean $flag
+     * @throws InvalidArgumentException
+     * @access public
+     * @since  Method available since Release 3.1.0
+     */
+    public function stopOnFailure($flag)
+    {
+        if (is_bool($flag)) {
+            $this->stopOnFailure = $flag;
+        } else {
+            throw new InvalidArgumentException;
+        }
+    }
+
+    /**
+     * Returns the time spent running the tests.
+     *
+     * @return float
+     * @access public
+     */
+    public function time()
+    {
+        return $this->time;
     }
 
     /**

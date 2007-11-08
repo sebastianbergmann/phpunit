@@ -2,7 +2,7 @@
 /**
  * PHPUnit
  *
- * Copyright (c) 2002-2006, Sebastian Bergmann <sb@sebastian-bergmann.de>.
+ * Copyright (c) 2002-2007, Sebastian Bergmann <sb@sebastian-bergmann.de>.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -29,7 +29,7 @@
  * INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING,
  * BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
  * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
- * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRIC
+ * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
  * LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
@@ -37,7 +37,7 @@
  * @category   Testing
  * @package    PHPUnit
  * @author     Sebastian Bergmann <sb@sebastian-bergmann.de>
- * @copyright  2002-2006 Sebastian Bergmann <sb@sebastian-bergmann.de>
+ * @copyright  2002-2007 Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    SVN: $Id$
  * @link       http://www.phpunit.de/
@@ -51,7 +51,6 @@ require_once 'PHPUnit/Util/Filter.php';
 require_once 'PHPUnit/Util/Filesystem.php';
 require_once 'PHPUnit/Util/Printer.php';
 require_once 'PHPUnit/Util/Test.php';
-require_once 'PHPUnit/Util/Timer.php';
 
 PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
 
@@ -62,7 +61,7 @@ PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
  * @category   Testing
  * @package    PHPUnit
  * @author     Sebastian Bergmann <sb@sebastian-bergmann.de>
- * @copyright  2002-2006 Sebastian Bergmann <sb@sebastian-bergmann.de>
+ * @copyright  2002-2007 Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    Release: @package_version@
  * @link       http://www.phpunit.de/
@@ -72,39 +71,39 @@ class PHPUnit_Util_Log_GraphViz extends PHPUnit_Util_Printer implements PHPUnit_
 {
     /**
      * @var    Image_GraphViz
-     * @access private
+     * @access protected
      */
-    private $graph;
+    protected $graph;
 
     /**
      * @var    boolean
-     * @access private
+     * @access protected
      */
-    private $currentTestSuccess = TRUE;
+    protected $currentTestSuccess = TRUE;
 
     /**
      * @var    string[]
-     * @access private
+     * @access protected
      */
-    private $testSuites = array();
+    protected $testSuites = array();
 
     /**
      * @var    integer
-     * @access private
+     * @access protected
      */
-    private $testSuiteLevel = 0;
+    protected $testSuiteLevel = 0;
 
     /**
      * @var    integer[]
-     * @access private
+     * @access protected
      */
-    private $testSuiteFailureOrErrorCount = array(0);
+    protected $testSuiteFailureOrErrorCount = array(0);
 
     /**
      * @var    integer[]
-     * @access private
+     * @access protected
      */
-    private $testSuiteIncompleteOrSkippedCount = array(0);
+    protected $testSuiteIncompleteOrSkippedCount = array(0);
 
     /**
      * Constructor.
@@ -143,10 +142,11 @@ class PHPUnit_Util_Log_GraphViz extends PHPUnit_Util_Printer implements PHPUnit_
      * An error occurred.
      *
      * @param  PHPUnit_Framework_Test $test
-     * @param  Exception               $e
+     * @param  Exception              $e
+     * @param  float                  $time
      * @access public
      */
-    public function addError(PHPUnit_Framework_Test $test, Exception $e)
+    public function addError(PHPUnit_Framework_Test $test, Exception $e, $time)
     {
         $this->addTestNode($test, 'red');
         $this->testSuiteFailureOrErrorCount[$this->testSuiteLevel]++;
@@ -159,9 +159,10 @@ class PHPUnit_Util_Log_GraphViz extends PHPUnit_Util_Printer implements PHPUnit_
      *
      * @param  PHPUnit_Framework_Test                 $test
      * @param  PHPUnit_Framework_AssertionFailedError $e
+     * @param  float                                  $time
      * @access public
      */
-    public function addFailure(PHPUnit_Framework_Test $test, PHPUnit_Framework_AssertionFailedError $e)
+    public function addFailure(PHPUnit_Framework_Test $test, PHPUnit_Framework_AssertionFailedError $e, $time)
     {
         $this->addTestNode($test, 'red');
         $this->testSuiteFailureOrErrorCount[$this->testSuiteLevel]++;
@@ -173,10 +174,11 @@ class PHPUnit_Util_Log_GraphViz extends PHPUnit_Util_Printer implements PHPUnit_
      * Incomplete test.
      *
      * @param  PHPUnit_Framework_Test $test
-     * @param  Exception               $e
+     * @param  Exception              $e
+     * @param  float                  $time
      * @access public
      */
-    public function addIncompleteTest(PHPUnit_Framework_Test $test, Exception $e)
+    public function addIncompleteTest(PHPUnit_Framework_Test $test, Exception $e, $time)
     {
         $this->addTestNode($test, 'yellow');
         $this->testSuiteIncompleteOrSkippedCount[$this->testSuiteLevel]++;
@@ -188,10 +190,11 @@ class PHPUnit_Util_Log_GraphViz extends PHPUnit_Util_Printer implements PHPUnit_
      * Skipped test.
      *
      * @param  PHPUnit_Framework_Test $test
-     * @param  Exception               $e
+     * @param  Exception              $e
+     * @param  float                  $time
      * @access public
      */
-    public function addSkippedTest(PHPUnit_Framework_Test $test, Exception $e)
+    public function addSkippedTest(PHPUnit_Framework_Test $test, Exception $e, $time)
     {
         $this->addTestNode($test, 'yellow');
         $this->testSuiteIncompleteOrSkippedCount[$this->testSuiteLevel]++;
@@ -271,9 +274,10 @@ class PHPUnit_Util_Log_GraphViz extends PHPUnit_Util_Printer implements PHPUnit_
      * A test ended.
      *
      * @param  PHPUnit_Framework_Test $test
+     * @param  float                  $time
      * @access public
      */
-    public function endTest(PHPUnit_Framework_Test $test)
+    public function endTest(PHPUnit_Framework_Test $test, $time)
     {
         if ($this->currentTestSuccess) {
             $this->addTestNode($test, 'green');
@@ -283,9 +287,9 @@ class PHPUnit_Util_Log_GraphViz extends PHPUnit_Util_Printer implements PHPUnit_
     /**
      * @param  PHPUnit_Framework_Test $test
      * @param  string                  $color
-     * @access private
+     * @access protected
      */
-    private function addTestNode(PHPUnit_Framework_Test $test, $color)
+    protected function addTestNode(PHPUnit_Framework_Test $test, $color)
     {
         $name = PHPUnit_Util_Test::describe($test, FALSE);
 

@@ -2,7 +2,7 @@
 /**
  * PHPUnit
  *
- * Copyright (c) 2002-2006, Sebastian Bergmann <sb@sebastian-bergmann.de>.
+ * Copyright (c) 2002-2007, Sebastian Bergmann <sb@sebastian-bergmann.de>.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -29,16 +29,16 @@
  * INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING,
  * BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
  * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
- * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRIC
+ * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
  * LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  *
  * @category   Testing
  * @package    PHPUnit
- * @author     Jan Borsodi <jb@ez.no>
+ * @author     Kore Nordmann <kn@ez.no>
  * @author     Sebastian Bergmann <sb@sebastian-bergmann.de>
- * @copyright  2002-2006 Sebastian Bergmann <sb@sebastian-bergmann.de>
+ * @copyright  2002-2007 Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    SVN: $Id$
  * @link       http://www.phpunit.de/
@@ -46,14 +46,13 @@
  */
 
 require_once 'PHPUnit/Framework.php';
-require_once 'PHPUnit/Util/Array.php';
 require_once 'PHPUnit/Util/Filter.php';
 require_once 'PHPUnit/Util/Type.php';
 
 PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
 
 /**
- * Constraint which checks if one value is equal to another.
+ * Constraint that checks if one value is equal to another.
  *
  * Equality is checked with PHP's == operator, the operator is explained in detail
  * at {@url http://www.php.net/manual/en/types.comparisons.php}.
@@ -65,17 +64,17 @@ PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
  * @package    PHPUnit
  * @author     Kore Nordmann <kn@ez.no>
  * @author     Sebastian Bergmann <sb@sebastian-bergmann.de>
- * @copyright  2002-2006 Sebastian Bergmann <sb@sebastian-bergmann.de>
+ * @copyright  2002-2007 Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    Release: @package_version@
  * @link       http://www.phpunit.de/
  * @since      Class available since Release 3.0.0
  */
-class PHPUnit_Framework_Constraint_IsEqual implements PHPUnit_Framework_Constraint
+class PHPUnit_Framework_Constraint_IsEqual extends PHPUnit_Framework_Constraint
 {
-    private $value;
-    private $delta = 0;
-    private $maxDepth = 10;
+    protected $value;
+    protected $delta = 0;
+    protected $maxDepth = 10;
 
     public function __construct($value, $delta = 0, $maxDepth = 10)
     {
@@ -88,7 +87,7 @@ class PHPUnit_Framework_Constraint_IsEqual implements PHPUnit_Framework_Constrai
      * Evaluates the constraint for parameter $other. Returns TRUE if the
      * constraint is met, FALSE otherwise.
      *
-     * @parameter mixed $other Value or object to evaluate.
+     * @param mixed $other Value or object to evaluate.
      * @return bool
      */
     public function evaluate($other)
@@ -101,14 +100,39 @@ class PHPUnit_Framework_Constraint_IsEqual implements PHPUnit_Framework_Constrai
      *                         constraint check.
      * @param   string  $description A string with extra description of what was
      *                               going on while the evaluation failed.
+     * @param   boolean $not Flag to indicate negation.
      * @throws  PHPUnit_Framework_ExpectationFailedException
      */
-    public function fail($other, $description)
+    public function fail($other, $description, $not = FALSE)
     {
-        throw new PHPUnit_Framework_ExpectationFailedException(
-            $description,
-            PHPUnit_Framework_ComparisonFailure::diffIdentical($this->value, $other)
+        $failureDescription = $this->failureDescription(
+          $other,
+          $description,
+          $not
         );
+
+        if (!$not) {
+            if ($this->value instanceof DOMDocument) {
+                $value = $this->domToText($this->value);
+            } else {
+                $value = $this->value;
+            }
+
+            if ($other instanceof DOMDocument) {
+                $other = $this->domToText($other);
+            }
+
+            throw new PHPUnit_Framework_ExpectationFailedException(
+              $failureDescription,
+              PHPUnit_Framework_ComparisonFailure::diffEqual($value, $other),
+              $description
+            );
+        } else {
+            throw new PHPUnit_Framework_ExpectationFailedException(
+              $failureDescription,
+              NULL
+            );
+        }
     }
 
     /**
@@ -134,7 +158,7 @@ class PHPUnit_Framework_Constraint_IsEqual implements PHPUnit_Framework_Constrai
         } else {
             if ($this->delta != 0) {
                 $delta = sprintf(
-                  ' with delta <%d>',
+                  ' with delta <%F>',
 
                   $this->delta
                 );
@@ -159,8 +183,37 @@ class PHPUnit_Framework_Constraint_IsEqual implements PHPUnit_Framework_Constrai
      */
     protected function recursiveComparison($a, $b, $depth = 0)
     {
+        if ($a === $b) {
+            return TRUE;
+        }
+
         if ($depth >= $this->maxDepth) {
             return TRUE;
+        }
+
+        if (is_numeric($a) XOR is_numeric($b)) {
+            return FALSE;
+        }
+
+        if (is_array($a) XOR is_array($b)) {
+            return FALSE;
+        }
+
+        if (is_object($a) XOR is_object($b)) {
+            return FALSE;
+        }
+
+        if ($a instanceof DOMDocument) {
+            $a = $this->domToText($a);
+        }
+
+        if ($b instanceof DOMDocument) {
+            $b = $this->domToText($b);
+        }
+
+        if (is_object($a) && is_object($b) &&
+           (get_class($a) !== get_class($b))) {
+            return FALSE;
         }
 
         // Normal comparision for scalar values.
@@ -172,15 +225,6 @@ class PHPUnit_Framework_Constraint_IsEqual implements PHPUnit_Framework_Constrai
             } else {
                 return ($a == $b);
             }
-        }
-
-        if (is_object($a) XOR is_object($b)) {
-            return FALSE;
-        }
-
-        if (is_object($a) && is_object($b) &&
-           (get_class($a) !== get_class($b))) {
-            return FALSE;
         }
 
         if (is_object($a)) {
@@ -225,6 +269,22 @@ class PHPUnit_Framework_Constraint_IsEqual implements PHPUnit_Framework_Constrai
         } else {
             return (abs($a - $b) <= $this->delta);
         }
+    }
+
+    /**
+     * Returns the normalized, whitespace-cleaned, and indented textual
+     * representation of a DOMDocument.
+     * 
+     * @param DOMDocument $document
+     * @return string
+     */
+    protected function domToText(DOMDocument $document)
+    {
+        $document->formatOutput = true;
+        $document->preserveWhiteSpace = false;
+        $document->normalizeDocument();
+
+        return $document->saveXML();
     }
 }
 ?>

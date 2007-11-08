@@ -2,7 +2,7 @@
 /**
  * PHPUnit
  *
- * Copyright (c) 2002-2006, Sebastian Bergmann <sb@sebastian-bergmann.de>.
+ * Copyright (c) 2002-2007, Sebastian Bergmann <sb@sebastian-bergmann.de>.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -29,7 +29,7 @@
  * INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING,
  * BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
  * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
- * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRIC
+ * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
  * LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
@@ -38,7 +38,7 @@
  * @package    PHPUnit
  * @author     Jan Borsodi <jb@ez.no>
  * @author     Sebastian Bergmann <sb@sebastian-bergmann.de>
- * @copyright  2002-2006 Sebastian Bergmann <sb@sebastian-bergmann.de>
+ * @copyright  2002-2007 Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    SVN: $Id$
  * @link       http://www.phpunit.de/
@@ -65,7 +65,7 @@ PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
  * @package    PHPUnit
  * @author     Jan Borsodi <jb@ez.no>
  * @author     Sebastian Bergmann <sb@sebastian-bergmann.de>
- * @copyright  2002-2006 Sebastian Bergmann <sb@sebastian-bergmann.de>
+ * @copyright  2002-2007 Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    Release: @package_version@
  * @link       http://www.phpunit.de/
@@ -238,10 +238,6 @@ class PHPUnit_Framework_MockObject_Matcher implements PHPUnit_Framework_MockObje
 
     public function verify()
     {
-        if ($this->stub !== NULL) {
-            return;
-        }
-
         if ($this->invocationMatcher === NULL) {
             throw new RuntimeException('No invocation matcher is set');
         }
@@ -250,9 +246,9 @@ class PHPUnit_Framework_MockObject_Matcher implements PHPUnit_Framework_MockObje
             throw new RuntimeException('No method matcher is set');
         }
 
-        $this->invocationMatcher->verify();
-
         try {
+            $this->invocationMatcher->verify();
+
             if ($this->parametersMatcher !== NULL) {
                 $this->parametersMatcher->verify();
             }
@@ -261,18 +257,18 @@ class PHPUnit_Framework_MockObject_Matcher implements PHPUnit_Framework_MockObje
         catch (PHPUnit_Framework_ExpectationFailedException $e) {
             throw new PHPUnit_Framework_ExpectationFailedException(
               sprintf(
-                "Expectation failed for %s when %s\n%s",
+                "Expectation failed for %s when %s.\n%s",
 
                 $this->methodNameMatcher->toString(),
                 $this->invocationMatcher->toString(),
                 $e->getDescription()
-              ),
-              $e->getComparisonFailure()
+              )
             );
         }
     }
 }
 
+require_once 'PHPUnit/Framework/MockObject/Matcher/AnyInvokedCount.php';
 require_once 'PHPUnit/Framework/MockObject/Matcher/AnyParameters.php';
 require_once 'PHPUnit/Framework/MockObject/Matcher/InvokedAtIndex.php';
 require_once 'PHPUnit/Framework/MockObject/Matcher/InvokedAtLeastOnce.php';

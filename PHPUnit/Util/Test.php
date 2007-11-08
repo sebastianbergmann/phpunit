@@ -2,7 +2,7 @@
 /**
  * PHPUnit
  *
- * Copyright (c) 2002-2006, Sebastian Bergmann <sb@sebastian-bergmann.de>.
+ * Copyright (c) 2002-2007, Sebastian Bergmann <sb@sebastian-bergmann.de>.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -29,7 +29,7 @@
  * INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING,
  * BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
  * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
- * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRIC
+ * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
  * LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
@@ -37,7 +37,7 @@
  * @category   Testing
  * @package    PHPUnit
  * @author     Sebastian Bergmann <sb@sebastian-bergmann.de>
- * @copyright  2002-2006 Sebastian Bergmann <sb@sebastian-bergmann.de>
+ * @copyright  2002-2007 Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    SVN: $Id$
  * @link       http://www.phpunit.de/
@@ -54,7 +54,7 @@ PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
  * @category   Testing
  * @package    PHPUnit
  * @author     Sebastian Bergmann <sb@sebastian-bergmann.de>
- * @copyright  2002-2006 Sebastian Bergmann <sb@sebastian-bergmann.de>
+ * @copyright  2002-2007 Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    Release: @package_version@
  * @link       http://www.phpunit.de/
@@ -130,6 +130,111 @@ class PHPUnit_Util_Test
         }
 
         return PHPUnit_Runner_BaseTestRunner::STATUS_PASSED;
+    }
+
+    /**
+     * Returns the units covered by a test case.
+     *
+     * @param  string $className
+     * @param  string $methodName
+     * @return array
+     * @access public
+     * @static
+     * @since  Method available since Release 3.2.0
+     */
+    public static function getCoveredUnits($className, $methodName)
+    {
+        $class  = new ReflectionClass($className);
+        $method = new ReflectionMethod($className, $methodName);
+        $units  = array();
+        $result = array();
+
+        $docComment = $class->getDocComment();
+
+        if (preg_match_all('/@covers[\s]+([\:\.\w]+)/', $docComment, $matches)) {
+            $units = $matches[1];
+        }
+
+        $docComment = $method->getDocComment();
+
+        if (preg_match_all('/@covers[\s]+([\:\.\w]+)/', $docComment, $matches)) {
+            $units = array_merge($units, $matches[1]);
+        }
+
+        foreach ($units as $unit) {
+            if (strpos($unit, '::') !== FALSE) {
+                list($className, $methodName) = explode('::', $unit);
+
+                try {
+                    $method    = new ReflectionMethod($className, $methodName);
+                    $fileName  = $method->getFileName();
+                    $startLine = $method->getStartLine();
+                    $endLine   = $method->getEndLine();
+
+                    if (!isset($result[$fileName])) {
+                        $result[$fileName] = array();
+                    }
+
+                    for ($i = $startLine; $i <= $endLine; $i++) {
+                        $result[$fileName][$i] = TRUE;
+                    }
+                }
+
+                catch (ReflectionException $e) {
+                }
+            }
+        }
+
+        return $result;
+    }
+
+    /**
+     * Returns the groups for a test class or method.
+     *
+     * @param  Reflector $reflector
+     * @param  array     $groups
+     * @return array
+     * @access public
+     * @static
+     * @since  Method available since Release 3.2.0
+     */
+    public static function getGroups(Reflector $reflector, array $groups = array())
+    {
+        $docComment = $reflector->getDocComment();
+
+        if (preg_match_all('/@group[\s]+([\.\w]+)/', $docComment, $matches)) {
+            $groups = array_merge($groups, $matches[1]);
+        }
+
+        return $groups;
+    }
+
+    /**
+     * Returns the provided data for a method.
+     *
+     * @param  ReflectionMethod $method
+     * @return array
+     * @access public
+     * @static
+     * @since  Method available since Release 3.2.0
+     */
+    public static function getProvidedData(ReflectionMethod $method)
+    {
+        $docComment = $method->getDocComment();
+
+        if (preg_match('/@dataProvider[\s]+([\.\w]+)/', $docComment, $matches)) {
+            try {
+                $dataProviderMethod = new ReflectionMethod(
+                  $method->getDeclaringClass()->getName(),
+                  $matches[1]
+                );
+
+                return $dataProviderMethod->invoke(NULL);
+            }
+
+            catch (ReflectionException $e) {
+            }
+        }
     }
 }
 ?>

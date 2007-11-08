@@ -2,7 +2,7 @@
 /**
  * PHPUnit
  *
- * Copyright (c) 2002-2006, Sebastian Bergmann <sb@sebastian-bergmann.de>.
+ * Copyright (c) 2002-2007, Sebastian Bergmann <sb@sebastian-bergmann.de>.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -29,7 +29,7 @@
  * INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING,
  * BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
  * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
- * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRIC
+ * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
  * LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
@@ -37,7 +37,7 @@
  * @category   Testing
  * @package    PHPUnit
  * @author     Sebastian Bergmann <sb@sebastian-bergmann.de>
- * @copyright  2002-2006 Sebastian Bergmann <sb@sebastian-bergmann.de>
+ * @copyright  2002-2007 Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    SVN: $Id$
  * @link       http://www.phpunit.de/
@@ -54,7 +54,7 @@ PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
  * @category   Testing
  * @package    PHPUnit
  * @author     Sebastian Bergmann <sb@sebastian-bergmann.de>
- * @copyright  2002-2006 Sebastian Bergmann <sb@sebastian-bergmann.de>
+ * @copyright  2002-2007 Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    Release: @package_version@
  * @link       http://www.phpunit.de/
@@ -65,21 +65,32 @@ abstract class PHPUnit_Util_Printer
 {
     /**
      * @var    resource
-     * @access private
+     * @access protected
      */
-    private $out = NULL;
+    protected $out = NULL;
 
     /**
      * Constructor.
      *
      * @param  mixed $out
+     * @throws InvalidArgumentException
      * @access public
      */
     public function __construct($out = NULL)
     {
         if ($out !== NULL) {
             if (is_string($out)) {
-                $this->out = fopen($out, 'wt');
+                if (strpos($out, 'socket://') === 0) {
+                    $out = explode(':', str_replace('socket://', '', $out));
+
+                    if (sizeof($out) != 2) {
+                        throw new InvalidArgumentException;
+                    }                    
+
+                    $this->out = fsockopen($out[0], $out[1]);
+                } else {
+                    $this->out = fopen($out, 'wt');
+                }
             } else {
                 $this->out = $out;
             }
@@ -105,8 +116,12 @@ abstract class PHPUnit_Util_Printer
     public function write($buffer)
     {
         if ($this->out !== NULL) {
-            fputs($this->out, $buffer);
+            fwrite($this->out, $buffer);
         } else {
+            if (php_sapi_name() != 'cli') {
+                $buffer = htmlentities($buffer);
+            }
+
             print $buffer;
         }
     }

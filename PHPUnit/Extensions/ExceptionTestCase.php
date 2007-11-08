@@ -2,7 +2,7 @@
 /**
  * PHPUnit
  *
- * Copyright (c) 2002-2006, Sebastian Bergmann <sb@sebastian-bergmann.de>.
+ * Copyright (c) 2002-2007, Sebastian Bergmann <sb@sebastian-bergmann.de>.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -29,7 +29,7 @@
  * INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING,
  * BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
  * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
- * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRIC
+ * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
  * LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
@@ -37,7 +37,7 @@
  * @category   Testing
  * @package    PHPUnit
  * @author     Sebastian Bergmann <sb@sebastian-bergmann.de>
- * @copyright  2002-2006 Sebastian Bergmann <sb@sebastian-bergmann.de>
+ * @copyright  2002-2007 Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    SVN: $Id$
  * @link       http://www.phpunit.de/
@@ -49,71 +49,25 @@ require_once 'PHPUnit/Util/Filter.php';
 
 PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
 
+trigger_error(
+  "Class PHPUnit_Extensions_ExceptionTestCase is deprecated. ".
+  "It will be removed in PHPUnit 4.0. ".
+  "The functionality has been merged into PHPUnit_Framework_TestCase."
+);
+
 /**
  * A TestCase that expects a specified Exception to be thrown.
  *
  * @category   Testing
  * @package    PHPUnit
  * @author     Sebastian Bergmann <sb@sebastian-bergmann.de>
- * @copyright  2002-2006 Sebastian Bergmann <sb@sebastian-bergmann.de>
+ * @copyright  2002-2007 Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    Release: @package_version@
  * @link       http://www.phpunit.de/
  * @since      Class available since Release 2.0.0
  */
-class PHPUnit_Extensions_ExceptionTestCase extends PHPUnit_Framework_TestCase
+abstract class PHPUnit_Extensions_ExceptionTestCase extends PHPUnit_Framework_TestCase
 {
-    /**
-     * The name of the expected Exception.
-     *
-     * @var    mixed
-     * @access private
-     */
-    private $expectedException = NULL;
-
-    /**
-     * @return string
-     * @access public
-     * @since  Method available since Release 2.2.0
-     */
-    public function getExpectedException()
-    {
-        return $this->expectedException;
-    }
-
-    /**
-     * @param  mixed  $exceptionName
-     * @access public
-     * @since  Method available since Release 2.2.0
-     */
-    public function setExpectedException($exceptionName)
-    {
-        if ((is_string($exceptionName) && class_exists($exceptionName, FALSE)) || $exceptionName === NULL) {
-            $this->expectedException = $exceptionName;
-        }
-    }
-
-    /**
-     * @access protected
-     */
-    protected function runTest()
-    {
-        try {
-            parent::runTest();
-        }
-
-        catch (Exception $e) {
-            if ($this->expectedException !== NULL &&
-                $e instanceof $this->expectedException) {
-                return;
-            } else {
-                throw $e;
-            }
-        }
-
-        if ($this->expectedException !== NULL) {
-            $this->fail('Expected exception ' . $this->expectedException);
-        }
-    }
 }
 ?>

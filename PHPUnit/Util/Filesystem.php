@@ -2,7 +2,7 @@
 /**
  * PHPUnit
  *
- * Copyright (c) 2002-2006, Sebastian Bergmann <sb@sebastian-bergmann.de>.
+ * Copyright (c) 2002-2007, Sebastian Bergmann <sb@sebastian-bergmann.de>.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -29,7 +29,7 @@
  * INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING,
  * BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
  * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
- * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRIC
+ * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
  * LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
@@ -37,8 +37,7 @@
  * @category   Testing
  * @package    PHPUnit
  * @author     Sebastian Bergmann <sb@sebastian-bergmann.de>
- * @author     Michael Lively Jr. <m@digitalsandwich.com>
- * @copyright  2002-2006 Sebastian Bergmann <sb@sebastian-bergmann.de>
+ * @copyright  2002-2007 Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    SVN: $Id$
  * @link       http://www.phpunit.de/
@@ -55,8 +54,7 @@ PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
  * @category   Testing
  * @package    PHPUnit
  * @author     Sebastian Bergmann <sb@sebastian-bergmann.de>
- * @author     Michael Lively Jr. <m@digitalsandwich.com>
- * @copyright  2002-2006 Sebastian Bergmann <sb@sebastian-bergmann.de>
+ * @copyright  2002-2007 Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    Release: @package_version@
  * @link       http://www.phpunit.de/
@@ -66,13 +64,70 @@ PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
 class PHPUnit_Util_Filesystem
 {
     /**
+     * Returns the common path of a set of files.
+     *
+     * @param  array $paths
+     * @return string
+     * @access public
+     * @static
+     * @since  Method available since Release 3.1.0
+     */
+    public static function getCommonPath(array $paths)
+    {
+        $count = count($paths);
+
+        if ($count == 1) {
+            return dirname($paths[0]) . DIRECTORY_SEPARATOR;
+        }
+
+        $_paths = array();
+
+        for ($i = 0; $i < $count; $i++) {
+            $_paths[$i] = explode(DIRECTORY_SEPARATOR, $paths[$i]);
+
+            if (empty($_paths[$i][0])) {
+                $_paths[$i][0] = DIRECTORY_SEPARATOR;
+            }
+        }
+
+        $common = '';
+        $done   = FALSE;
+        $j      = 0;
+        $count--;
+
+        while (!$done) {
+            for ($i = 0; $i < $count; $i++) {
+                if ($_paths[$i][$j] != $_paths[$i+1][$j]) {
+                    $done = TRUE;
+                    break;
+                }
+            }
+
+            if (!$done) {
+                $common .= $_paths[0][$j];
+
+                if ($j > 0) {
+                    $common .= DIRECTORY_SEPARATOR;
+                }
+            }
+
+            $j++;
+        }
+
+        return $common;
+    }
+
+    /**
      * Returns a filesystem safe version of the passed filename.
      * This function does not operate on full paths, just filenames.
      *
      * @param  string $filename
+     * @return string
      * @access public
+     * @static
+     * @author Michael Lively Jr. <m@digitalsandwich.com>
      */
-    static public function getSafeFilename($filename)
+    public static function getSafeFilename($filename)
     {
         /* characters allowed: A-Z, a-z, 0-9, _ and . */
         return preg_replace('#[^\w.]#', '_', $filename);

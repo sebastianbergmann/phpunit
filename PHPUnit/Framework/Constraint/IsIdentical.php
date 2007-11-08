@@ -2,7 +2,7 @@
 /**
  * PHPUnit
  *
- * Copyright (c) 2002-2006, Sebastian Bergmann <sb@sebastian-bergmann.de>.
+ * Copyright (c) 2002-2007, Sebastian Bergmann <sb@sebastian-bergmann.de>.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -29,7 +29,7 @@
  * INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING,
  * BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
  * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
- * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRIC
+ * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
  * LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
@@ -38,7 +38,7 @@
  * @package    PHPUnit
  * @author     Jan Borsodi <jb@ez.no>
  * @author     Sebastian Bergmann <sb@sebastian-bergmann.de>
- * @copyright  2002-2006 Sebastian Bergmann <sb@sebastian-bergmann.de>
+ * @copyright  2002-2007 Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    SVN: $Id$
  * @link       http://www.phpunit.de/
@@ -52,7 +52,7 @@ require_once 'PHPUnit/Util/Type.php';
 PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
 
 /**
- * Constraint which checks if one value is identical to another.
+ * Constraint that asserts that one value is identical to another.
  *
  * Identical check is performed with PHP's === operator, the operator is explained
  * in detail at {@url http://www.php.net/manual/en/types.comparisons.php}.
@@ -64,15 +64,15 @@ PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
  * @package    PHPUnit
  * @author     Jan Borsodi <jb@ez.no>
  * @author     Sebastian Bergmann <sb@sebastian-bergmann.de>
- * @copyright  2002-2006 Sebastian Bergmann <sb@sebastian-bergmann.de>
+ * @copyright  2002-2007 Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    Release: @package_version@
  * @link       http://www.phpunit.de/
  * @since      Class available since Release 3.0.0
  */
-class PHPUnit_Framework_Constraint_IsIdentical implements PHPUnit_Framework_Constraint
+class PHPUnit_Framework_Constraint_IsIdentical extends PHPUnit_Framework_Constraint
 {
-    private $value;
+    protected $value;
 
     public function __construct($value)
     {
@@ -83,7 +83,7 @@ class PHPUnit_Framework_Constraint_IsIdentical implements PHPUnit_Framework_Cons
      * Evaluates the constraint for parameter $other. Returns TRUE if the
      * constraint is met, FALSE otherwise.
      *
-     * @parameter mixed $other Value or object to evaluate.
+     * @param mixed $other Value or object to evaluate.
      * @return bool
      */
     public function evaluate($other)
@@ -96,14 +96,30 @@ class PHPUnit_Framework_Constraint_IsIdentical implements PHPUnit_Framework_Cons
      *                         constraint check.
      * @param   string  $description A string with extra description of what was
      *                               going on while the evaluation failed.
+     * @param   boolean $not Flag to indicate negation.
      * @throws  PHPUnit_Framework_ExpectationFailedException
      */
-    public function fail($other, $description)
+    public function fail($other, $description, $not = FALSE)
     {
-        throw new PHPUnit_Framework_ExpectationFailedException(
+        $failureDescription = $this->failureDescription(
+          $other,
           $description,
-          PHPUnit_Framework_ComparisonFailure::diffIdentical($this->value, $other)
+          $not
         );
+
+        if (!$not) {
+            throw new PHPUnit_Framework_ExpectationFailedException(
+              $failureDescription,
+              PHPUnit_Framework_ComparisonFailure::diffIdentical($this->value, $other),
+              $description
+            );
+        } else {
+            throw new PHPUnit_Framework_ExpectationFailedException(
+              $failureDescription,
+              NULL,
+              $description
+            );
+        }
     }
 
     /**
@@ -114,11 +130,7 @@ class PHPUnit_Framework_Constraint_IsIdentical implements PHPUnit_Framework_Cons
      */
     public function toString()
     {
-        return sprintf(
-          'is identical to %s',
-
-            PHPUnit_Util_Type::toString($this->value)
-        );
+        return 'is identical to ' . PHPUnit_Util_Type::toString($this->value);
     }
 }
 ?>

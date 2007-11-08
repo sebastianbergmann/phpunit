@@ -2,7 +2,7 @@
 /**
  * PHPUnit
  *
- * Copyright (c) 2002-2006, Sebastian Bergmann <sb@sebastian-bergmann.de>.
+ * Copyright (c) 2002-2007, Sebastian Bergmann <sb@sebastian-bergmann.de>.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -29,7 +29,7 @@
  * INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING,
  * BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
  * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
- * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRIC
+ * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
  * LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
@@ -38,7 +38,7 @@
  * @package    PHPUnit
  * @author     Jan Borsodi <jb@ez.no>
  * @author     Sebastian Bergmann <sb@sebastian-bergmann.de>
- * @copyright  2002-2006 Sebastian Bergmann <sb@sebastian-bergmann.de>
+ * @copyright  2002-2007 Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    SVN: $Id$
  * @link       http://www.phpunit.de/
@@ -47,32 +47,30 @@
 
 require_once 'PHPUnit/Framework.php';
 require_once 'PHPUnit/Util/Filter.php';
+require_once 'PHPUnit/Util/Type.php';
 
 PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
 
 /**
- * Constraint which will only evaluate to true if all sub-constraints does the same.
- *
- * This means the constraint behaves like a logical and. All parameters passed
- * to the constructor will be considered a constraint to check.
+ * Logical AND.
  *
  * @category   Testing
  * @package    PHPUnit
  * @author     Jan Borsodi <jb@ez.no>
  * @author     Sebastian Bergmann <sb@sebastian-bergmann.de>
- * @copyright  2002-2006 Sebastian Bergmann <sb@sebastian-bergmann.de>
+ * @copyright  2002-2007 Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    Release: @package_version@
  * @link       http://www.phpunit.de/
  * @since      Class available since Release 3.0.0
  */
-class PHPUnit_Framework_Constraint_And implements PHPUnit_Framework_Constraint
+class PHPUnit_Framework_Constraint_And extends PHPUnit_Framework_Constraint
 {
-    private $constraints = array();
+    protected $constraints = array();
 
-    private $failedConstraint = NULL;
+    protected $lastConstraint = NULL;
 
-    public function setConstraints(Array $constraints)
+    public function setConstraints(array $constraints)
     {
         $this->constraints = array();
 
@@ -89,17 +87,17 @@ class PHPUnit_Framework_Constraint_And implements PHPUnit_Framework_Constraint
      * Evaluates the constraint for parameter $other. Returns TRUE if the
      * constraint is met, FALSE otherwise.
      *
-     * @parameter mixed $other Value or object to evaluate.
+     * @param mixed $other Value or object to evaluate.
      * @return bool
      */
     public function evaluate($other)
     {
-        $this->failedConstraint = NULL;
+        $this->lastConstraint = NULL;
 
-        foreach($this->constraints as $key => $constraint) {
+        foreach($this->constraints as $constraint) {
+            $this->lastConstraint = $constraint;
+
             if (!$constraint->evaluate($other)) {
-                $this->failedConstraint = $constraint;
-
                 return FALSE;
             }
         }
@@ -112,27 +110,12 @@ class PHPUnit_Framework_Constraint_And implements PHPUnit_Framework_Constraint
      *                         constraint check.
      * @param   string  $description A string with extra description of what was
      *                               going on while the evaluation failed.
+     * @param   boolean $not Flag to indicate negation.
      * @throws  PHPUnit_Framework_ExpectationFailedException
      */
-    public function fail($other, $description)
+    public function fail($other, $description, $not = FALSE)
     {
-        if ($this->failedConstraint !== NULL) {
-            $this->failedConstraint->fail(
-              $other,
-              $description . "\n" .
-              'Expected that <' . $other . '> ' . $this->toString()
-            );
-        } else {
-            throw new PHPUnit_Framework_ExpectationFailedException(
-              sprintf(
-                "%s\nExpected that <%s> %s",
-
-                $description,
-                print_r($other, 1),
-                $this->toString()
-              )
-            );
-        }
+        $this->lastConstraint->fail($other, $description, $not);
     }
 
     /**

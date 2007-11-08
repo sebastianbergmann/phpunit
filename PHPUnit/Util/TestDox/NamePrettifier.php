@@ -2,7 +2,7 @@
 /**
  * PHPUnit
  *
- * Copyright (c) 2002-2006, Sebastian Bergmann <sb@sebastian-bergmann.de>.
+ * Copyright (c) 2002-2007, Sebastian Bergmann <sb@sebastian-bergmann.de>.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -29,7 +29,7 @@
  * INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING,
  * BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
  * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
- * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRIC
+ * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
  * LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
@@ -37,7 +37,7 @@
  * @category   Testing
  * @package    PHPUnit
  * @author     Sebastian Bergmann <sb@sebastian-bergmann.de>
- * @copyright  2002-2006 Sebastian Bergmann <sb@sebastian-bergmann.de>
+ * @copyright  2002-2007 Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    SVN: $Id$
  * @link       http://www.phpunit.de/
@@ -54,7 +54,7 @@ PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
  * @category   Testing
  * @package    PHPUnit
  * @author     Sebastian Bergmann <sb@sebastian-bergmann.de>
- * @copyright  2002-2006 Sebastian Bergmann <sb@sebastian-bergmann.de>
+ * @copyright  2002-2007 Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    Release: @package_version@
  * @link       http://www.phpunit.de/
@@ -75,20 +75,10 @@ class PHPUnit_Util_TestDox_NamePrettifier
     protected $suffix = 'Test';
 
     /**
-     * Tests if a method is a test method.
-     *
-     * @param  string  $testMethodName
-     * @return boolean
-     * @access public
+     * @var    array
+     * @access protected
      */
-    public function isATestMethod($testMethodName)
-    {
-        if (substr($testMethodName, 0, 4) == 'test') {
-            return TRUE;
-        }
-
-        return FALSE;
-    }
+    protected $strings = array();
 
     /**
      * Prettifies the name of a test class.
@@ -125,15 +115,46 @@ class PHPUnit_Util_TestDox_NamePrettifier
     {
         $buffer = '';
 
-        $testMethodName = preg_replace('#\d+$#', '', $testMethodName);
-        $max            = strlen($testMethodName);
+        if (!is_string($testMethodName) || strlen($testMethodName) == 0) {
+            return $buffer;
+        }
 
-        for ($i = 4; $i < $max; $i++) {
-            if ($i > 4 &&
+        $string = preg_replace('#\d+$#', '', $testMethodName);
+
+        if (in_array($string, $this->strings)) {
+            $testMethodName = $string;
+        } else {
+            $this->strings[] = $string;
+        }
+
+        $max = strlen($testMethodName);
+
+        if (substr($testMethodName, 0, 4) == 'test') {
+            $offset = 4;
+        } else {
+            $offset = 0;
+            $testMethodName[0] = strtoupper($testMethodName[0]);
+        }
+
+        $wasNumeric = FALSE;
+
+        for ($i = $offset; $i < $max; $i++) {
+            if ($i > $offset &&
                 ord($testMethodName[$i]) >= 65 &&
                 ord($testMethodName[$i]) <= 90) {
                 $buffer .= ' ' . strtolower($testMethodName[$i]);
             } else {
+                $isNumeric = is_numeric($testMethodName[$i]);
+
+                if (!$wasNumeric && $isNumeric) {
+                    $buffer .= ' ';
+                    $wasNumeric = TRUE;
+                }
+
+                if ($wasNumeric && !$isNumeric) {
+                    $wasNumeric = FALSE;
+                }
+
                 $buffer .= $testMethodName[$i];
             }
         }

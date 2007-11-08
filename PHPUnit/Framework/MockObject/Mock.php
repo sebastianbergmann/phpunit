@@ -2,7 +2,7 @@
 /**
  * PHPUnit
  *
- * Copyright (c) 2002-2006, Sebastian Bergmann <sb@sebastian-bergmann.de>.
+ * Copyright (c) 2002-2007, Sebastian Bergmann <sb@sebastian-bergmann.de>.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -29,7 +29,7 @@
  * INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING,
  * BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
  * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
- * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRIC
+ * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
  * LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
@@ -38,13 +38,14 @@
  * @package    PHPUnit
  * @author     Jan Borsodi <jb@ez.no>
  * @author     Sebastian Bergmann <sb@sebastian-bergmann.de>
- * @copyright  2002-2006 Sebastian Bergmann <sb@sebastian-bergmann.de>
+ * @copyright  2002-2007 Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    SVN: $Id$
  * @link       http://www.phpunit.de/
  * @since      File available since Release 3.0.0
  */
 
+require_once 'PHPUnit/Util/Class.php';
 require_once 'PHPUnit/Util/Filter.php';
 require_once 'PHPUnit/Framework/MockObject/Matcher.php';
 require_once 'PHPUnit/Framework/MockObject/Invocation.php';
@@ -81,7 +82,7 @@ PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
  * @package    PHPUnit
  * @author     Jan Borsodi <jb@ez.no>
  * @author     Sebastian Bergmann <sb@sebastian-bergmann.de>
- * @copyright  2002-2006 Sebastian Bergmann <sb@sebastian-bergmann.de>
+ * @copyright  2002-2007 Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    Release: @package_version@
  * @link       http://www.phpunit.de/
@@ -92,59 +93,93 @@ class PHPUnit_Framework_MockObject_Mock
     public $mockClassName;
     public $className;
     public $methods;
+    protected $callOriginalConstructor;
+    protected $callOriginalClone;
+    protected $callAutoload;
 
-    public function __construct($className, Array $methods = array(), $mockClassName = '')
+    public function __construct($className, array $methods = array(), $mockClassName = '', $callOriginalConstructor = TRUE, $callOriginalClone = TRUE, $callAutoload = TRUE)
     {
-        $this->mockClassName = $mockClassName;
-
-        if ($this->mockClassName === '') {
+        if ($mockClassName === '') {
             do {
-                $random = substr(md5(microtime()), 0, 8);
+                $mockClassName = 'Mock_' . $className . '_' . substr(md5(microtime()), 0, 8);
             }
-            while (class_exists('Mock_' . $className . '_' . $random, FALSE));
-
-            $this->mockClassName = 'Mock_' . $className . '_' . $random;
+            while (class_exists($mockClassName, FALSE));
         }
 
-        if (empty($methods)) {
+        else if (class_exists($mockClassName, FALSE)) {
+            throw new RuntimeException(
+              sprintf(
+                'Class "%s" already exists.',
+                $mockClassName
+              )
+            );
+        }
+
+        $isClass     = class_exists($className, $callAutoload);
+        $isInterface = interface_exists($className, $callAutoload);
+
+        if (empty($methods) && ($isClass || $isInterface)) {
             $methods = get_class_methods($className);
         }
 
-        $this->className = $className;
-        $this->methods   = $methods;
+        if ($isInterface) {
+            $callOriginalConstructor = FALSE;
+        }
+
+        $this->mockClassName           = $mockClassName;
+        $this->className               = $className;
+        $this->methods                 = $methods;
+        $this->callOriginalConstructor = $callOriginalConstructor;
+        $this->callOriginalClone       = $callOriginalClone;
+        $this->callAutoload            = $callAutoload;
     }
 
-    public static function generate($className, Array $methods = array(), $mockClassName = '')
+    public static function generate($className, array $methods = array(), $mockClassName = '', $callOriginalConstructor = TRUE, $callOriginalClone = TRUE, $callAutoload = TRUE)
     {
-        $mock = new PHPUnit_Framework_MockObject_Mock($className, $methods, $mockClassName);
+        $mock = new PHPUnit_Framework_MockObject_Mock(
+          $className,
+          $methods,
+          $mockClassName,
+          $callOriginalConstructor,
+          $callOriginalClone,
+          $callAutoload
+        );
 
-        if (!class_exists($mock->mockClassName, FALSE)) {
-            $mock->generateClass();
-        }
+        $mock->generateClass();
 
         return $mock;
     }
 
     protected function generateClass()
     {
-        if (class_exists($this->mockClassName, FALSE)) {
-            throw new RuntimeException("Mock class <{$this->mockClassName}> already exists, cannot generate");
+        if (!class_exists($this->className, $this->callAutoload) && !interface_exists($this->className, $this->callAutoload)) {
+            eval('class ' . $this->className . ' {}');
         }
 
         try {
             $class = new ReflectionClass($this->className);
 
             if ($class->isFinal()) {
-                throw new RuntimeException("Class <{$this->className}> is a finalized class, cannot make mock version of it");
+                throw new RuntimeException(
+                  sprintf(
+                    'Class "%s" is declared "final" and cannot be mocked.',
+                    $this->className
+                  )
+                );
             }
 
-            $code = $this->generateClassDefinition($class);
-
-            eval($code);
+            eval($this->generateClassDefinition($class));
         }
 
         catch (Exception $e) {
-            throw new RuntimeException("Failed to generate mock class <{$this->mockClassName}> for class <{$this->className}>, caught an exception:\n" . $e->getMessage());
+            throw new RuntimeException(
+              sprintf(
+                'Failed to generate mock class "%s" for class "%s".\n%s',
+                $this->mockClassName,
+                $this->className,
+                $e->getMessage()
+              )
+            );
         }
     }
 
@@ -153,22 +188,33 @@ class PHPUnit_Framework_MockObject_Mock
         $code = 'class ';
 
         if ($class->isInterface()) {
-            $code .= "{$this->mockClassName} implements {$this->className}, PHPUnit_Framework_MockObject_MockObject {\n";
+            $code .= sprintf(
+              "%s implements %s, PHPUnit_Framework_MockObject_MockObject {\n",
+              $this->mockClassName,
+              $this->className
+            );
         } else {
-            $code .= "{$this->mockClassName} extends {$this->className} implements PHPUnit_Framework_MockObject_MockObject {\n";
+            $code .= sprintf(
+              "%s extends %s implements PHPUnit_Framework_MockObject_MockObject {\n",
+              $this->mockClassName,
+              $this->className
+            );
         }
+
         $code .= $this->generateMockApi($class);
 
-        foreach($class->getMethods() as $method) {
-            if (!$this->canMockMethod($method)) {
-                continue;
+        foreach ($this->methods as $methodName) {
+            try {
+                $method = $class->getMethod($methodName);
+
+                if ($this->canMockMethod($method)) {
+                    $code .= $this->generateMethodDefinitionFromExisting($method);
+                }
             }
 
-            if (!$this->shouldMockMethod($method)) {
-                continue;
+            catch (ReflectionException $e) {
+                $code .= $this->generateMethodDefinition($class->getName(), $methodName, 'public');
             }
-
-            $code .= $this->generateMethodDefinition($method);
         }
 
         $code .= "}\n";
@@ -178,69 +224,85 @@ class PHPUnit_Framework_MockObject_Mock
 
     protected function canMockMethod(ReflectionMethod $method)
     {
-        if ($method->isConstructor() || $method->isDestructor()) {
-            return FALSE;
-        }
+        $className  = $method->getDeclaringClass()->getName();
+        $methodName = $method->getName();
 
-        if ($method->isFinal()) {
-            return FALSE;
-        }
-
-        if (substr($method->getName(), 0, 2) == '__') {
+        if ($method->isFinal() ||
+            $methodName == '__construct' || $methodName == $className ||
+            $methodName == '__destruct'  || $method->getName() == '__clone') {
             return FALSE;
         }
 
         return TRUE;
     }
 
-    protected function shouldMockMethod(ReflectionMethod $method)
+    protected function generateMethodDefinitionFromExisting(ReflectionMethod $method)
     {
-        return in_array($method->getName(), $this->methods);
-    }
-
-    protected function generateMethodDefinition(ReflectionMethod $method)
-    {
-        $code = "\n    ";
-
         if ($method->isPrivate()) {
-            $code .= 'private ';
+            $modifier = 'private';
         }
 
         else if ($method->isProtected()) {
-            $code .= 'protected ';
+            $modifier = 'protected';
         }
 
         else {
-            $code .= 'public ';
+            $modifier = 'public';
         }
 
         if ($method->isStatic()) {
-            $code .= 'static ';
+            $modifier .= ' static';
         }
-
-        $code .= 'function ';
 
         if ($method->returnsReference()) {
-            $code .= '&';
+            $reference = '&';
+        } else {
+            $reference = '';
         }
 
-        $code .= sprintf(
-          "%s(%s) {\n" .
-          "        \$args = func_get_args();\n" .
-          "        return \$this->invocationMocker->invoke(new PHPUnit_Framework_MockObject_Invocation(\$this, %s, %s, \$args));\n" .
+        return $this->generateMethodDefinition(
+          $method->getDeclaringClass()->getName(),
+          $method->getName(),
+          $modifier,
+          $reference,
+          PHPUnit_Util_Class::getMethodParameters($method)
+        );
+    }
+
+    protected function generateMethodDefinition($className, $methodName, $modifier, $reference = '', $parameters = '')
+    {
+        return sprintf(
+          "\n    %s function %s%s(%s) {\n" .
+          "        \$args   = func_get_args();\n" .
+          "        \$result = \$this->invocationMocker->invoke(\n" .
+          "          new PHPUnit_Framework_MockObject_Invocation(\$this, \"%s\", \"%s\", \$args)\n" .
+          "        );\n\n" .
+          "        return \$result;\n" .
           "    }\n",
 
-          $method->getName(),
-          $this->generateMethodParameters($method),
-          var_export($method->getDeclaringClass()->getName(), TRUE),
-          var_export($method->getName(), TRUE)
+          $modifier,
+          $reference,
+          $methodName,
+          $parameters,
+          $className,
+          $methodName
         );
-
-        return $code;
     }
 
     protected function generateMockApi(ReflectionClass $class)
     {
+        if ($this->callOriginalConstructor) {
+            $constructorCode = $this->generateConstructorCodeWithParentCall($class);
+        } else {
+            $constructorCode = $this->generateConstructorCode($class);
+        }
+
+        if ($this->callOriginalClone && $class->hasMethod('__clone')) {
+            $cloneCode = $this->generateCloneCodeWithParentCall();
+        } else {
+            $cloneCode = $this->generateCloneCode();
+        }
+
         return sprintf(
           "    private \$invocationMocker;\n\n" .
           "%s" .
@@ -255,87 +317,82 @@ class PHPUnit_Framework_MockObject_Mock
           "        \$this->invocationMocker->verify();\n" .
           "    }\n",
 
-          $this->generateConstructorCode($class),
-          $this->generateCloneCode($class)
+          $constructorCode,
+          $cloneCode
         );
     }
 
     protected function generateConstructorCode(ReflectionClass $class)
     {
-        $constructor = $class->getConstructor();
+        $className   = $class->getName();
+        $constructor = FALSE;
+
+        if ($class->hasMethod('__construct')) {
+            $constructor = $class->getMethod('__construct');
+        }
+
+        else if ($class->hasMethod($className)) {
+            $constructor = $class->getMethod($className);
+        }
+
+        return sprintf(
+          "    public function __construct(%s) {\n" .
+          "        \$this->invocationMocker = new PHPUnit_Framework_MockObject_InvocationMocker(\$this);\n" .
+          "    }\n\n",
+
+          $constructor !== FALSE ? PHPUnit_Util_Class::getMethodParameters($constructor) : ''
+        );
+    }
+
+    protected function generateConstructorCodeWithParentCall(ReflectionClass $class)
+    {
+        $constructor = $this->getConstructor($class);
 
         if ($constructor) {
             return sprintf(
               "    public function __construct(%s) {\n" .
-              "        \$this->invocationMocker = new PHPUnit_Framework_MockObject_InvocationMocker(\$this);\n" .
-              "        parent::%s(%s);\n" .
+              "        \$args = func_get_args();\n" .
+              "        \$this->invocationMocker = new PHPUnit_Framework_MockObject_InvocationMocker;\n" .
+              "        \$class = new ReflectionClass(\$this);\n" .
+              "        \$class->getParentClass()->getConstructor()->invokeArgs(\$this, \$args);\n" .
               "    }\n\n",
 
-              $this->generateMethodParameters($constructor),
-              $constructor->getName(),
-              $this->generateMethodParameters($constructor, TRUE)
+              PHPUnit_Util_Class::getMethodParameters($constructor)
             );
         } else {
-            return "    public function __construct() {\n" .
-                   "        \$this->invocationMocker = new PHPUnit_Framework_MockObject_InvocationMocker(\$this);\n" .
-                   "    }\n\n";
+            return $this->generateConstructorCode($class);
         }
     }
 
-    protected function generateCloneCode(ReflectionClass $class)
+    protected function generateCloneCode()
     {
-        if ($class->hasMethod('__clone')) {
-            return "    public function __clone() {\n" .
-                   "        \$this->invocationMocker = clone \$this->invocationMocker;\n" .
-                   "        parent::__clone();\n" .
-                   "    }\n\n";
-        } else {
-            return "    public function __clone() {\n" .
-                   "        \$this->invocationMocker = clone \$this->invocationMocker;\n" .
-                   "    }\n\n";
-        }
+        return "    public function __clone() {\n" .
+               "        \$this->invocationMocker = clone \$this->invocationMocker;\n" .
+               "    }\n\n";
     }
 
-    protected function generateMethodParameters(ReflectionMethod $method, $asCall = FALSE)
+    protected function generateCloneCodeWithParentCall()
     {
-        $list = array();
+        return "    public function __clone() {\n" .
+               "        \$this->invocationMocker = clone \$this->invocationMocker;\n" .
+               "        parent::__clone();\n" .
+               "    }\n\n";
+    }
 
-        foreach($method->getParameters() as $parameter) {
-            $name = '$' . $parameter->getName();
+    protected function getConstructor(ReflectionClass $class)
+    {
+        $className   = $class->getName();
+        $constructor = NULL;
 
-            if ($asCall) {
-                $list[] = $name;
-            } else {
-                $typeHint = '';
-
-                if ($parameter->isArray()) {
-                    $typeHint = 'Array ';
-                } else {
-                    $class = $parameter->getClass();
-
-                    if ($class) {
-                        $typeHint = $class->getName() . ' ';
-                    }
-                }
-
-                $default = '';
-
-                if ($parameter->isDefaultValueAvailable()) {
-                    $value   = $parameter->getDefaultValue();
-                    $default = ' = ' . var_export($value, TRUE);
-                }
-
-                $ref = '';
-
-                if ($parameter->isPassedByReference()) {
-                    $ref = '&';
-                }
-
-                $list[] = $typeHint . $ref . $name . $default;
-            }
+        if ($class->hasMethod('__construct')) {
+            $constructor = $class->getMethod('__construct');
         }
 
-        return join(', ', $list);
+        else if ($class->hasMethod($className)) {
+            $constructor = $class->getMethod($className);
+        }
+
+        return $constructor;
     }
 }
 ?>

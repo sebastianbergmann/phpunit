@@ -2,7 +2,7 @@
 /**
  * PHPUnit
  *
- * Copyright (c) 2002-2006, Sebastian Bergmann <sb@sebastian-bergmann.de>.
+ * Copyright (c) 2002-2007, Sebastian Bergmann <sb@sebastian-bergmann.de>.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -29,7 +29,7 @@
  * INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING,
  * BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
  * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
- * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRIC
+ * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
  * LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
@@ -37,7 +37,7 @@
  * @category   Testing
  * @package    PHPUnit
  * @author     Sebastian Bergmann <sb@sebastian-bergmann.de>
- * @copyright  2002-2006 Sebastian Bergmann <sb@sebastian-bergmann.de>
+ * @copyright  2002-2007 Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    SVN: $Id$
  * @link       http://www.phpunit.de/
@@ -55,7 +55,7 @@ require_once '_files/AnInterface.php';
  * @package    PHPUnit
  * @author     Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @author     Patrick M??ller <elias0@gmx.net>
- * @copyright  2002-2006 Sebastian Bergmann <sb@sebastian-bergmann.de>
+ * @copyright  2002-2007 Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    Release: @package_version@
  * @link       http://www.phpunit.de/
@@ -63,33 +63,70 @@ require_once '_files/AnInterface.php';
  */
 class Framework_MockObjectTest extends PHPUnit_Framework_TestCase
 {
-    public function testMockedMethodIsCalledOnceWithCorrectParameter()
+    public function testMockedMethodIsNeverCalled()
     {
-        $mock       = PHPUnit_Framework_MockObject_Mock::generate('AnInterface');
-        $mockClass  = new ReflectionClass($mock->mockClassName);
-        $mockObject = $mockClass->newInstance();
-
-        $mockObject->expects($this->once())
-                   ->method('doSomething')
-                   ->with($this->equalTo('something')
-        );
-
-        $mockObject->doSomething('something');
+        $mock = $this->getMock('AnInterface');
+        $mock->expects($this->never())
+             ->method('doSomething');
     }
 
-    public function testMockedMethodIsCalledOnceWithWrongParameter()
+    public function testMockedMethodIsCalledAtLeastOnce()
     {
-        $mock       = PHPUnit_Framework_MockObject_Mock::generate('AnInterface');
-        $mockClass  = new ReflectionClass($mock->mockClassName);
-        $mockObject = $mockClass->newInstance();
+        $mock = $this->getMock('AnInterface');
+        $mock->expects($this->atLeastOnce())
+             ->method('doSomething');
 
-        $mockObject->expects($this->once())
-                   ->method('doSomething')
-                   ->with($this->equalTo('something')
-        );
+        $mock->doSomething();
+    }
+
+    public function testMockedMethodIsCalledAtLeastOnce2()
+    {
+        $mock = $this->getMock('AnInterface');
+        $mock->expects($this->atLeastOnce())
+             ->method('doSomething');
+
+        $mock->doSomething();
+        $mock->doSomething();
+    }
+
+    public function testMockedMethodIsCalledOnce()
+    {
+        $mock = $this->getMock('AnInterface');
+        $mock->expects($this->once())
+             ->method('doSomething');
+
+        $mock->doSomething();
+    }
+
+    public function testMockedMethodIsCalledOnceWithParameter()
+    {
+        $mock = $this->getMock('AnInterface');
+        $mock->expects($this->once())
+             ->method('doSomething')
+             ->with($this->equalTo('something'));
+
+        $mock->doSomething('something');
+    }
+
+    public function testMockedMethodIsCalledExactly()
+    {
+        $mock = $this->getMock('AnInterface');
+        $mock->expects($this->exactly(2))
+             ->method('doSomething');
+
+        $mock->doSomething();
+        $mock->doSomething();
+    }
+
+    public function testStubbedException()
+    {
+        $mock = $this->getMock('AnInterface');
+        $mock->expects($this->any())
+             ->method('doSomething')
+             ->will($this->throwException(new Exception));
 
         try {
-            $mockObject->doSomething('anything');
+            $mock->doSomething();
         }
 
         catch (Exception $e) {
@@ -97,6 +134,16 @@ class Framework_MockObjectTest extends PHPUnit_Framework_TestCase
         }
 
         $this->fail();
+    }
+
+    public function testStubbedReturnValue()
+    {
+        $mock = $this->getMock('AnInterface');
+        $mock->expects($this->any())
+             ->method('doSomething')
+             ->will($this->returnValue('something'));
+
+        $this->assertEquals('something', $mock->doSomething());
     }
 }
 ?>

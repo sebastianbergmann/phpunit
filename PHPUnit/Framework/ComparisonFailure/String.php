@@ -2,7 +2,7 @@
 /**
  * PHPUnit
  *
- * Copyright (c) 2002-2006, Sebastian Bergmann <sb@sebastian-bergmann.de>.
+ * Copyright (c) 2002-2007, Sebastian Bergmann <sb@sebastian-bergmann.de>.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -29,7 +29,7 @@
  * INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING,
  * BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
  * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
- * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRIC
+ * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
  * LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
@@ -38,7 +38,7 @@
  * @package    PHPUnit
  * @author     Jan Borsodi <jb@ez.no>
  * @author     Sebastian Bergmann <sb@sebastian-bergmann.de>
- * @copyright  2002-2006 Sebastian Bergmann <sb@sebastian-bergmann.de>
+ * @copyright  2002-2007 Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    SVN: $Id$
  * @link       http://www.phpunit.de/
@@ -57,7 +57,7 @@ PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
  * @package    PHPUnit
  * @author     Jan Borsodi <jb@ez.no>
  * @author     Sebastian Bergmann <sb@sebastian-bergmann.de>
- * @copyright  2002-2006 Sebastian Bergmann <sb@sebastian-bergmann.de>
+ * @copyright  2002-2007 Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    Release: @package_version@
  * @link       http://www.phpunit.de/
@@ -74,10 +74,12 @@ class PHPUnit_Framework_ComparisonFailure_String extends PHPUnit_Framework_Compa
         $expected = (string)$this->expected;
         $actual   = (string)$this->actual;
 
-        if (substr(php_uname('s'), 0, 7) != 'Windows' &&
-           (strpos($expected, "\n") !== FALSE ||
-            strpos($actual, "\n")   !== FALSE)) {
-            return $this->diff($expected, $actual);
+        if (strpos($expected, "\n") !== FALSE || strpos($actual, "\n") !== FALSE) {
+            if ($this->hasDiff()) {
+                return $this->diff($expected, $actual);
+            } else {
+                return '';
+            }
         }
 
         $expectedLen = strlen($expected);
@@ -113,34 +115,6 @@ class PHPUnit_Framework_ComparisonFailure_String extends PHPUnit_Framework_Compa
           ($this->message != '') ? str_repeat(' ', strlen($this->message) + 1) : '',
           $actual
         );
-    }
-
-    private function diff($expected, $actual)
-    {
-        $expectedFile = tempnam('/tmp', 'expected');
-        file_put_contents($expectedFile, $expected);
-
-        $actualFile = tempnam('/tmp', 'actual');
-        file_put_contents($actualFile, $actual);
-
-        $buffer = explode(
-          "\n",
-          shell_exec(
-            sprintf(
-              'diff -u %s %s',
-              $expectedFile,
-              $actualFile
-            )
-          )
-        );
-
-        unlink($expectedFile);
-        unlink($actualFile);
-
-        $buffer[0] = "--- Expected";
-        $buffer[1] = "+++ Actual";
-
-        return implode("\n", $buffer);
     }
 }
 ?>

@@ -2,7 +2,7 @@
 /**
  * PHPUnit
  *
- * Copyright (c) 2002-2006, Sebastian Bergmann <sb@sebastian-bergmann.de>.
+ * Copyright (c) 2002-2007, Sebastian Bergmann <sb@sebastian-bergmann.de>.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -29,7 +29,7 @@
  * INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING,
  * BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
  * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
- * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRIC
+ * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
  * LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
@@ -38,7 +38,7 @@
  * @package    PHPUnit
  * @author     Jan Borsodi <jb@ez.no>
  * @author     Sebastian Bergmann <sb@sebastian-bergmann.de>
- * @copyright  2002-2006 Sebastian Bergmann <sb@sebastian-bergmann.de>
+ * @copyright  2002-2007 Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    SVN: $Id$
  * @link       http://www.phpunit.de/
@@ -62,7 +62,7 @@ PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
  * @package    PHPUnit
  * @author     Jan Borsodi <jb@ez.no>
  * @author     Sebastian Bergmann <sb@sebastian-bergmann.de>
- * @copyright  2002-2006 Sebastian Bergmann <sb@sebastian-bergmann.de>
+ * @copyright  2002-2007 Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    Release: @package_version@
  * @link       http://www.phpunit.de/
@@ -87,7 +87,7 @@ class PHPUnit_Framework_MockObject_Invocation implements PHPUnit_Framework_SelfD
 
         foreach ($this->parameters as $key => $value) {
             if (is_object($value)) {
-                $this->parameters[$key] = clone $value;
+                $this->parameters[$key] = $this->cloneObject($value);
             }
         }
     }
@@ -99,8 +99,40 @@ class PHPUnit_Framework_MockObject_Invocation implements PHPUnit_Framework_SelfD
 
           $this->className,
           $this->methodName,
-          join(', ', array_map(create_function('$a', 'return PHPUnit_Framework_ComparisonFailure::shortenedExport($a);'), $this->parameters))
+          join(
+            ', ',
+            array_map(
+              create_function(
+                '$a',
+                'return PHPUnit_Util_Type::shortenedExport($a);'
+              ),
+              $this->parameters
+            )
+          )
         );
+    }
+
+    protected function cloneObject($original)
+    {
+        $object = new ReflectionObject($original);
+
+        if ($object->hasMethod('__clone')) {
+            $method = $object->getMethod('__clone');
+
+            if (!$method->isPublic()) {
+                return $original;
+            }
+
+            try {
+                return clone $original;
+            }
+
+            catch (Exception $e) {
+                return $original;
+            }
+        }
+
+        return clone $original;
     }
 }
 ?>

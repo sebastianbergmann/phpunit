@@ -2,7 +2,7 @@
 /**
  * PHPUnit
  *
- * Copyright (c) 2002-2006, Sebastian Bergmann <sb@sebastian-bergmann.de>.
+ * Copyright (c) 2002-2007, Sebastian Bergmann <sb@sebastian-bergmann.de>.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -29,7 +29,7 @@
  * INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING,
  * BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
  * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
- * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRIC
+ * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
  * LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
@@ -37,7 +37,7 @@
  * @category   Testing
  * @package    PHPUnit
  * @author     Sebastian Bergmann <sb@sebastian-bergmann.de>
- * @copyright  2002-2006 Sebastian Bergmann <sb@sebastian-bergmann.de>
+ * @copyright  2002-2007 Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    SVN: $Id$
  * @link       http://www.phpunit.de/
@@ -55,7 +55,7 @@ PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
  * @category   Testing
  * @package    PHPUnit
  * @author     Sebastian Bergmann <sb@sebastian-bergmann.de>
- * @copyright  2002-2006 Sebastian Bergmann <sb@sebastian-bergmann.de>
+ * @copyright  2002-2007 Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    Release: @package_version@
  * @link       http://www.phpunit.de/
@@ -97,37 +97,56 @@ class PHPUnit_Util_Skeleton
      */
     public function __construct($className, $classSourceFile = '')
     {
-        if (file_exists($className . '.php')) {
-            $this->classSourceFile = $className . '.php';
-            $this->testSourceFile  = $className . 'Test.php';
+        $this->className      = $className;
+        $this->testSourceFile = $className . 'Test.php';
+
+        if (class_exists($className)) {
+            $this->classSourceFile = '<internal>';
         }
 
-        else if (file_exists(str_replace('_', '/', $className) . '.php')) {
+        else if (empty($classSourceFile) && is_file($className . '.php')) {
+            $this->classSourceFile = $className . '.php';
+        }
+
+        else if (empty($classSourceFile) ||
+                 is_file(str_replace('_', '/', $className) . '.php')) {
             $this->classSourceFile = str_replace('_', '/', $className) . '.php';
             $this->testSourceFile  = str_replace('_', '/', $className) . 'Test.php';
         }
 
-        else {
+        else if (empty($classSourceFile)) {
             throw new RuntimeException(
               sprintf(
-                'Could not open %s.',
-
-                $classSourceFile
+                'Neither "%s.php" nor "%s.php" could be opened.',
+                $className,
+                str_replace('_', '/', $className)
               )
             );
         }
 
-        @include_once $this->classSourceFile;
-
-        if (class_exists($className, FALSE)) {
-            $this->className = $className;
-        } else {
+        else if (!is_file($classSourceFile)) {
             throw new RuntimeException(
               sprintf(
-                'Could not find class "%s" in %s.',
+                '"%s" could not be opened.',
+
+                $classSourceFile
+              )
+            );
+        } else {
+            $this->classSourceFile = $classSourceFile;
+        }
+
+        if ($this->classSourceFile != '<internal>') {
+            include_once $this->classSourceFile;
+        }
+
+        if (!class_exists($className)) {
+            throw new RuntimeException(
+              sprintf(
+                'Could not find class "%s" in "%s".',
 
                 $className,
-                $this->classSourceFile
+                realpath($this->classSourceFile)
               )
             );
         }
@@ -149,14 +168,13 @@ class PHPUnit_Util_Skeleton
         foreach ($class->getMethods() as $method) {
             if (!$method->isConstructor() &&
                 !$method->isAbstract() &&
-                 $method->isUserDefined() &&
                  $method->isPublic() &&
                  $method->getDeclaringClass()->getName() == $this->className) {
                 $testTagFound = FALSE;
 
-                if (preg_match_all('/@test(.*)$/Um', $method->getDocComment(), $annotations)) {
+                if (preg_match_all('/@assert(.*)$/Um', $method->getDocComment(), $annotations)) {
                     foreach ($annotations[1] as $annotation) {
-                        if (preg_match('/\((.*)\) (.*) (.*)/', $annotation, $matches)) {
+                        if (preg_match('/\((.*)\)\s+([^\s]*)\s+(.*)/', $annotation, $matches)) {
                             switch ($matches[2]) {
                                 case '==': {
                                     $assertion = 'Equals';
@@ -178,6 +196,26 @@ class PHPUnit_Util_Skeleton
                                 }
                                 break;
 
+                                case '>': {
+                                    $constraint = 'greaterThan';
+                                }
+                                break;
+
+                                case '>=': {
+                                    $constraint = 'greaterThanOrEqual';
+                                }
+                                break;
+
+                                case '<': {
+                                    $constraint = 'lessThan';
+                                }
+                                break;
+
+                                case '<=': {
+                                    $constraint = 'lessThanOrEqual';
+                                }
+                                break;
+
                                 default: {
                                     throw new RuntimeException;
                                 }
@@ -185,11 +223,12 @@ class PHPUnit_Util_Skeleton
 
                             $methodTemplate = new PHPUnit_Util_Template(
                                 sprintf(
-                                '%s%sSkeleton%sTestMethod.php',
+                                '%s%sSkeleton%sTestMethod%s.tpl',
 
                                 dirname(__FILE__),
                                 DIRECTORY_SEPARATOR,
-                                DIRECTORY_SEPARATOR
+                                DIRECTORY_SEPARATOR,
+                                isset($constraint) ? 'Constraint' : ''
                                 )
                             );
 
@@ -207,24 +246,26 @@ class PHPUnit_Util_Skeleton
                             }
 
                             $methodTemplate->setVar(
-                                array(
+                              array(
                                 'annotation',
                                 'arguments',
                                 'assertion',
                                 'class',
+                                'constraint',
                                 'expected',
                                 'origMethodName',
                                 'methodName'
-                                ),
-                                array(
-                                trim($token[1]),
+                              ),
+                              array(
+                                trim($annotation),
                                 $matches[1],
-                                $assertion,
+                                isset($assertion) ? $assertion : '',
                                 $this->className,
+                                isset($constraint) ? $constraint : '',
                                 $matches[3],
                                 $origMethodName,
                                 $methodName
-                                )
+                              )
                             );
 
                             $methods .= $methodTemplate->render();
@@ -237,7 +278,7 @@ class PHPUnit_Util_Skeleton
                 if (!$testTagFound) {
                     $methodTemplate = new PHPUnit_Util_Template(
                       sprintf(
-                        '%s%sSkeleton%sIncompleteTestMethod.php',
+                        '%s%sSkeleton%sIncompleteTestMethod.tpl',
 
                         dirname(__FILE__),
                         DIRECTORY_SEPARATOR,
@@ -257,7 +298,7 @@ class PHPUnit_Util_Skeleton
 
         $classTemplate = new PHPUnit_Util_Template(
           sprintf(
-            '%s%sSkeleton%sTestClass.php',
+            '%s%sSkeleton%sTestClass.tpl',
 
             dirname(__FILE__),
             DIRECTORY_SEPARATOR,
@@ -265,18 +306,28 @@ class PHPUnit_Util_Skeleton
           )
         );
 
+        if ($this->classSourceFile != '<internal>') {
+            $requireClassFile = sprintf(
+              "\n\nrequire_once '%s';",
+
+              $this->classSourceFile
+            );
+        } else {
+            $requireClassFile = '';
+        }
+
         $classTemplate->setVar(
           array(
             'className',
-            'classFile',
+            'requireClassFile',
             'methods',
             'date',
             'time'
           ),
           array(
             $this->className,
-            $this->classSourceFile,
-            !empty($methods) ? $methods : $incompleteMethods,
+            $requireClassFile,
+            $methods . $incompleteMethods,
             date('Y-m-d'),
             date('H:i:s')
           )
@@ -305,7 +356,7 @@ class PHPUnit_Util_Skeleton
         }
 
         if ($fp = @fopen($file, 'wt')) {
-            @fputs($fp, $this->generate());
+            @fwrite($fp, $this->generate());
             @fclose($fp);
         }
     }
