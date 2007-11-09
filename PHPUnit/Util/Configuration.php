@@ -67,7 +67,7 @@ PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
  *     <log type="plain" target="/tmp/logfile.txt"/>
  *     <log type="pmd-xml" target="/tmp/pmd.xml" cpdMinLines="5" cpdMinMatches="70"/>
  *     <log type="tap" target="/tmp/logfile.tap"/>
- *     <log type="test-xml" target="/tmp/logfile.xml"/>
+ *     <log type="test-xml" target="/tmp/logfile.xml" logIncompleteSkipped="false"/>
  *     <log type="testdox-html" target="/tmp/testdox.html"/>
  *     <log type="testdox-text" target="/tmp/testdox.txt"/>
  * 
@@ -141,16 +141,6 @@ class PHPUnit_Util_Configuration
             $type   = (string)$log->getAttribute('type');
             $target = (string)$log->getAttribute('target');
 
-            if ($type == 'pmd-xml') {
-                if ($log->hasAttribute('cpdMinLines')) {
-                    $result['cpdMinLines'] = (string)$log->getAttribute('cpdMinLines');
-                }
-
-                if ($log->hasAttribute('cpdMinMatches')) {
-                    $result['cpdMinMatches'] = (string)$log->getAttribute('cpdMinMatches');
-                }
-            }
-
             if ($type == 'coverage-html') {
                 if ($log->hasAttribute('charset')) {
                     $result['charset'] = (string)$log->getAttribute('charset');
@@ -169,6 +159,26 @@ class PHPUnit_Util_Configuration
                         $result['highlight'] = TRUE;
                     } else {
                         $result['highlight'] = FALSE;
+                    }
+                }
+            }
+
+            else if ($type == 'pmd-xml') {
+                if ($log->hasAttribute('cpdMinLines')) {
+                    $result['cpdMinLines'] = (string)$log->getAttribute('cpdMinLines');
+                }
+
+                if ($log->hasAttribute('cpdMinMatches')) {
+                    $result['cpdMinMatches'] = (string)$log->getAttribute('cpdMinMatches');
+                }
+            }
+
+            else if ($type == 'test-xml') {
+                if ($log->hasAttribute('logIncompleteSkipped')) {
+                    if ((string)$log->getAttribute('logIncompleteSkipped') == 'true') {
+                        $result['logIncompleteSkipped'] = TRUE;
+                    } else {
+                        $result['logIncompleteSkipped'] = FALSE;
                     }
                 }
             }

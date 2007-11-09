@@ -246,6 +246,10 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
 
             if (isset($loggingConfiguration['test-xml']) && !isset($arguments['xmlLogfile'])) {
                 $arguments['xmlLogfile'] = $loggingConfiguration['test-xml'];
+
+                if (isset($loggingConfiguration['logIncompleteSkipped']) && !isset($arguments['logIncompleteSkipped'])) {
+                    $arguments['logIncompleteSkipped'] = $loggingConfiguration['logIncompleteSkipped'];
+                }
             }
 
             if (isset($loggingConfiguration['testdox-html']) && !isset($arguments['testdoxHTMLFile'])) {
@@ -267,6 +271,7 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
 
         $arguments['cpdMinLines']          = isset($arguments['cpdMinLines'])          ? $arguments['cpdMinLines']          : 5;
         $arguments['cpdMinMatches']        = isset($arguments['cpdMinMatches'])        ? $arguments['cpdMinMatches']        : 70;
+        $arguments['logIncompleteSkipped'] = isset($arguments['logIncompleteSkipped']) ? $arguments['logIncompleteSkipped'] : FALSE;
         $arguments['reportCharset']        = isset($arguments['reportCharset'])        ? $arguments['reportCharset']        : 'ISO-8859-1';
         $arguments['reportHighlight']      = isset($arguments['reportHighlight'])      ? $arguments['reportHighlight']      : FALSE;
         $arguments['reportLowUpperBound']  = isset($arguments['reportLowUpperBound'])  ? $arguments['reportLowUpperBound']  : 35;
@@ -355,7 +360,9 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
 
         if (isset($arguments['xmlLogfile'])) {
             $result->addListener(
-              new PHPUnit_Util_Log_XML($arguments['xmlLogfile'])
+              new PHPUnit_Util_Log_XML(
+                $arguments['xmlLogfile'], $arguments['logIncompleteSkipped']
+              )
             );
         }
 

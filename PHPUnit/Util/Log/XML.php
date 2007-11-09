@@ -82,6 +82,12 @@ class PHPUnit_Util_Log_XML extends PHPUnit_Util_Printer implements PHPUnit_Frame
      * @var    boolean
      * @access protected
      */
+    protected $logIncompleteSkipeed = FALSE;
+
+    /**
+     * @var    boolean
+     * @access protected
+     */
     protected $writeDocument = TRUE;
 
     /**
@@ -127,12 +133,19 @@ class PHPUnit_Util_Log_XML extends PHPUnit_Util_Printer implements PHPUnit_Frame
     protected $currentTestCase = NULL;
 
     /**
+     * @var    boolean
+     * @access protected
+     */
+    protected $attachCurrentTestCase = TRUE;
+
+    /**
      * Constructor.
      *
-     * @param  mixed $out
+     * @param  mixed   $out
+     * @param  boolean $logIncompleteSkipped
      * @access public
      */
-    public function __construct($out = NULL)
+    public function __construct($out = NULL, $logIncompleteSkipped = FALSE)
     {
         $this->document = new DOMDocument('1.0', 'UTF-8');
         $this->document->formatOutput = TRUE;
@@ -141,6 +154,8 @@ class PHPUnit_Util_Log_XML extends PHPUnit_Util_Printer implements PHPUnit_Frame
         $this->document->appendChild($this->root);
 
         parent::__construct($out);
+
+        $this->logIncompleteSkipped = $logIncompleteSkipped;
     }
 
     /**
@@ -233,21 +248,25 @@ class PHPUnit_Util_Log_XML extends PHPUnit_Util_Printer implements PHPUnit_Frame
      */
     public function addIncompleteTest(PHPUnit_Framework_Test $test, Exception $e, $time)
     {
-        $error = $this->document->createElement('error');
-        $error->setAttribute('type', get_class($e));
+        if ($this->logIncompleteSkipped) {
+            $error = $this->document->createElement('error');
+            $error->setAttribute('type', get_class($e));
 
-        $error->appendChild(
-          $this->document->createCDATASection(
-            utf8_encode(
-              "Incomplete Test\n" .
-              PHPUnit_Util_Filter::getFilteredStacktrace($e, FALSE)
-            )
-          )
-        );
+            $error->appendChild(
+              $this->document->createCDATASection(
+                utf8_encode(
+                  "Incomplete Test\n" .
+                  PHPUnit_Util_Filter::getFilteredStacktrace($e, FALSE)
+                )
+              )
+            );
 
-        $this->currentTestCase->appendChild($error);
+            $this->currentTestCase->appendChild($error);
 
-        $this->testSuiteErrors[$this->testSuiteLevel]++;
+            $this->testSuiteErrors[$this->testSuiteLevel]++;
+        } else {
+            $this->attachCurrentTestCase = FALSE;
+        }
     }
 
     /**
@@ -261,21 +280,25 @@ class PHPUnit_Util_Log_XML extends PHPUnit_Util_Printer implements PHPUnit_Frame
      */
     public function addSkippedTest(PHPUnit_Framework_Test $test, Exception $e, $time)
     {
-        $error = $this->document->createElement('error');
-        $error->setAttribute('type', get_class($e));
+        if ($this->logIncompleteSkipped) {
+            $error = $this->document->createElement('error');
+            $error->setAttribute('type', get_class($e));
 
-        $error->appendChild(
-          $this->document->createCDATASection(
-            utf8_encode(
-              "Skipped Test\n" .
-              PHPUnit_Util_Filter::getFilteredStacktrace($e, FALSE)
-            )
-          )
-        );
+            $error->appendChild(
+              $this->document->createCDATASection(
+                utf8_encode(
+                  "Skipped Test\n" .
+                  PHPUnit_Util_Filter::getFilteredStacktrace($e, FALSE)
+                )
+              )
+            );
 
-        $this->currentTestCase->appendChild($error);
+            $this->currentTestCase->appendChild($error);
 
-        $this->testSuiteErrors[$this->testSuiteLevel]++;
+            $this->testSuiteErrors[$this->testSuiteLevel]++;
+        } else {
+            $this->attachCurrentTestCase = FALSE;
+        }
     }
 
     /**
@@ -370,10 +393,7 @@ class PHPUnit_Util_Log_XML extends PHPUnit_Util_Printer implements PHPUnit_Frame
         $testCase->setAttribute('class', $class->getName());
         $testCase->setAttribute('file', $class->getFileName());
 
-        $this->testSuites[$this->testSuiteLevel]->appendChild($testCase);
         $this->currentTestCase = $testCase;
-
-        $this->testSuiteTests[$this->testSuiteLevel]++;
     }
 
     /**
@@ -385,10 +405,19 @@ class PHPUnit_Util_Log_XML extends PHPUnit_Util_Printer implements PHPUnit_Frame
      */
     public function endTest(PHPUnit_Framework_Test $test, $time)
     {
-        $this->currentTestCase->setAttribute('time', sprintf('%F', $time));
-        $this->testSuiteTimes[$this->testSuiteLevel] += $time;
+        if ($this->attachCurrentTestCase) {
+            $this->currentTestCase->setAttribute('time', sprintf('%F', $time));
 
-        $this->currentTestCase = NULL;
+            $this->testSuites[$this->testSuiteLevel]->appendChild(
+              $this->currentTestCase
+            );
+
+            $this->testSuiteTests[$this->testSuiteLevel]++;
+            $this->testSuiteTimes[$this->testSuiteLevel] += $time;
+        }
+
+        $this->currentTestCase       = NULL;
+        $this->attachCurrentTestCase = TRUE;
     }
 
     /**
