@@ -170,6 +170,7 @@ class PHPUnit_TextUI_Command
         }
 
         if (extension_loaded('xdebug')) {
+            $longOptions[] = 'coverage-html=';
             $longOptions[] = 'coverage-xml=';
             $longOptions[] = 'log-metrics=';
             $longOptions[] = 'log-pmd=';
@@ -319,6 +320,7 @@ class PHPUnit_TextUI_Command
                 }
                 break;
 
+                case '--coverage-html':
                 case '--report': {
                     $arguments['reportDirectory'] = $option[1];
                 }
@@ -480,8 +482,8 @@ class PHPUnit_TextUI_Command
         if (extension_loaded('xdebug')) {
             print "  --log-metrics <file>   Write metrics report in XML format.\n" .
                   "  --log-pmd <file>       Write violations report in PMD XML format.\n\n" .
-                  "  --coverage-xml <file>  Write code coverage information in XML format.\n" .
-                  "  --report <dir>         Generate code coverage report in HTML format.\n\n";
+                  "  --coverage-html <dir>  Generate code coverage report in HTML format.\n" .
+                  "  --coverage-xml <file>  Write code coverage information in XML format.\n\n";
         }
 
         if (extension_loaded('pdo')) {
