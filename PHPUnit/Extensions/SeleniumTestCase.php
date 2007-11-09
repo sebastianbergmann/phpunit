@@ -216,9 +216,9 @@ abstract class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_Tes
 
         foreach ($class->getMethods() as $method) {
             if (PHPUnit_Framework_TestSuite::isPublicTestMethod($method)) {
-                $data   = PHPUnit_Util_Test::getProvidedData($method);
-                $groups = PHPUnit_Util_Test::getGroups($method, $classGroups);
                 $name   = $method->getName();
+                $data   = PHPUnit_Util_Test::getProvidedData($className, $name);
+                $groups = PHPUnit_Util_Test::getGroups($method, $classGroups);
 
                 if (isset($staticProperties['browsers'])) {
                     foreach ($staticProperties['browsers'] as $browser) {

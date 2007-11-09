@@ -212,21 +212,22 @@ class PHPUnit_Util_Test
     /**
      * Returns the provided data for a method.
      *
-     * @param  ReflectionMethod $method
+     * @param  string $className
+     * @param  string $methodName
      * @return array
      * @access public
      * @static
      * @since  Method available since Release 3.2.0
      */
-    public static function getProvidedData(ReflectionMethod $method)
+    public static function getProvidedData($className, $methodName)
     {
+        $method     = new ReflectionMethod($className, $methodName);
         $docComment = $method->getDocComment();
 
         if (preg_match('/@dataProvider[\s]+([\.\w]+)/', $docComment, $matches)) {
             try {
                 $dataProviderMethod = new ReflectionMethod(
-                  $method->getDeclaringClass()->getName(),
-                  $matches[1]
+                  $className, $matches[1]
                 );
 
                 return $dataProviderMethod->invoke(NULL);
