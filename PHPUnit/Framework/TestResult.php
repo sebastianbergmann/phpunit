@@ -489,15 +489,14 @@ class PHPUnit_Framework_TestResult implements Countable
             if (!empty($coveredUnits)) {
                 $coveredFilesKeep  = array_keys($coveredUnits);
                 $coveredFilesTotal = array_keys($data);
-
-                $numCoveredFiles = count($coveredFilesTotal);
+                $numCoveredFiles   = count($coveredFilesTotal);
 
                 for ($i = 0; $i < $numCoveredFiles; $i++) {
                     if (!in_array($coveredFilesTotal[$i], $coveredFilesKeep)) {
                         unset($coveredFilesTotal[$i]);
                     } else {
-                        $lineNums  = array_keys($data[$coveredFilesTotal[$i]]);
-                        $numLines  = count($lineNums);
+                        $lineNums = array_keys($data[$coveredFilesTotal[$i]]);
+                        $numLines = count($lineNums);
 
                         for ($j = 0; $j < $numLines; $j++) {
                             if (!in_array($lineNums[$j], $coveredUnits[$coveredFilesTotal[$i]]) &&
