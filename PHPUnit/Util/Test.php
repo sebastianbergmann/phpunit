@@ -133,7 +133,7 @@ class PHPUnit_Util_Test
     }
 
     /**
-     * Returns the units covered by a test case.
+     * Returns the files and lines a test method wants to cover.
      *
      * @param  string $className
      * @param  string $methodName
@@ -142,41 +142,41 @@ class PHPUnit_Util_Test
      * @static
      * @since  Method available since Release 3.2.0
      */
-    public static function getCoveredUnits($className, $methodName)
+    public static function getLinesToBeCovered($className, $methodName)
     {
-        $class  = new ReflectionClass($className);
-        $method = new ReflectionMethod($className, $methodName);
-        $units  = array();
-        $result = array();
+        $class   = new ReflectionClass($className);
+        $method  = new ReflectionMethod($className, $methodName);
+        $methods = array();
+        $result  = array();
 
         $docComment = $class->getDocComment();
 
         if (preg_match_all('/@covers[\s]+([\:\.\w]+)/', $docComment, $matches)) {
-            $units = $matches[1];
+            $methods = $matches[1];
         }
 
         $docComment = $method->getDocComment();
 
         if (preg_match_all('/@covers[\s]+([\:\.\w]+)/', $docComment, $matches)) {
-            $units = array_merge($units, $matches[1]);
+            $methods = array_merge($methods, $matches[1]);
         }
 
-        foreach ($units as $unit) {
-            if (strpos($unit, '::') !== FALSE) {
-                list($className, $methodName) = explode('::', $unit);
+        foreach ($methods as $method) {
+            if (strpos($method, '::') !== FALSE) {
+                list($className, $methodName) = explode('::', $method);
 
                 try {
-                    $method    = new ReflectionMethod($className, $methodName);
-                    $fileName  = $method->getFileName();
-                    $startLine = $method->getStartLine();
-                    $endLine   = $method->getEndLine();
+                    $_method   = new ReflectionMethod($className, $methodName);
+                    $fileName  = $_method->getFileName();
+                    $startLine = $_method->getStartLine();
+                    $endLine   = $_method->getEndLine();
 
                     if (!isset($result[$fileName])) {
                         $result[$fileName] = array();
                     }
 
                     for ($i = $startLine; $i <= $endLine; $i++) {
-                        $result[$fileName][$i] = TRUE;
+                        $result[$fileName][] = $i;
                     }
                 }
 

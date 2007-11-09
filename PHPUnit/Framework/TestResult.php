@@ -482,26 +482,26 @@ class PHPUnit_Framework_TestResult implements Countable
     public function appendCodeCoverageInformation(PHPUnit_Framework_Test $test, $data)
     {
         if ($test instanceof PHPUnit_Framework_TestCase) {
-            $coveredUnits = PHPUnit_Util_Test::getCoveredUnits(
+            $linesToBeCovered = PHPUnit_Util_Test::getLinesToBeCovered(
               get_class($test), $test->getName()
             );
 
-            if (!empty($coveredUnits)) {
-                $coveredFilesKeep  = array_keys($coveredUnits);
-                $coveredFilesTotal = array_keys($data);
-                $numCoveredFiles   = count($coveredFilesTotal);
+            if (!empty($linesToBeCovered)) {
+                $filesToBeCovered = array_keys($linesToBeCovered);
+                $filesCovered     = array_keys($data);
+                $numFilesCovered  = count($filesCovered);
 
-                for ($i = 0; $i < $numCoveredFiles; $i++) {
-                    if (!in_array($coveredFilesTotal[$i], $coveredFilesKeep)) {
-                        unset($coveredFilesTotal[$i]);
+                for ($i = 0; $i < $numFilesCovered; $i++) {
+                    if (!in_array($filesCovered[$i], $filesToBeCovered)) {
+                        unset($filesCovered[$i]);
                     } else {
-                        $lineNums = array_keys($data[$coveredFilesTotal[$i]]);
-                        $numLines = count($lineNums);
+                        $linesCovered    = array_keys($data[$filesCovered[$i]]);
+                        $numLinesCovered = count($linesCovered);
 
-                        for ($j = 0; $j < $numLines; $j++) {
-                            if (!in_array($lineNums[$j], $coveredUnits[$coveredFilesTotal[$i]]) &&
-                                $data[$coveredFilesTotal[$i]][$lineNums[$j]] > 0) {
-                                $data[$coveredFilesTotal[$i]][$lineNums[$j]] = -1;
+                        for ($j = 0; $j < $numLinesCovered; $j++) {
+                            if (!in_array($linesCovered[$j], $linesToBeCovered[$filesCovered[$i]]) &&
+                                $data[$filesCovered[$i]][$linesCovered[$j]] > 0) {
+                                $data[$filesCovered[$i]][$linesCovered[$j]] = -1;
                             }
                         }
                     }
