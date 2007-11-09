@@ -479,13 +479,8 @@ class PHPUnit_TextUI_Command
 
         if (extension_loaded('xdebug')) {
             print "  --log-metrics <file>   Write metrics report in XML format.\n" .
-                  "  --log-pmd <file>       Write violations report in PMD XML format.\n";
-        }
-
-        print "\n";
-
-        if (extension_loaded('xdebug')) {
-            print "  --coverage-xml <file>  Write code coverage information in XML format.\n" .
+                  "  --log-pmd <file>       Write violations report in PMD XML format.\n\n" .
+                  "  --coverage-xml <file>  Write code coverage information in XML format.\n" .
                   "  --report <dir>         Generate code coverage report in HTML format.\n\n";
         }
 
