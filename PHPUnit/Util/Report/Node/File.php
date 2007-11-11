@@ -259,6 +259,10 @@ class PHPUnit_Util_Report_Node_File extends PHPUnit_Util_Report_Node
           PHPUnit_Util_Report::$templatePath . 'file.html'
         );
 
+        $yuiTemplate = new PHPUnit_Util_Template(
+          PHPUnit_Util_Report::$templatePath . 'yui_item.js'
+        );
+
         $i      = 1;
         $lines  = '';
         $ignore = FALSE;
@@ -322,10 +326,6 @@ class PHPUnit_Util_Report_Node_File extends PHPUnit_Util_Report_Node
                             );
                         }
                     }
-
-                    $yuiTemplate = new PHPUnit_Util_Template(
-                      PHPUnit_Util_Report::$templatePath . 'yui_item.js'
-                    );
 
                     $numTests = count($this->executedLines[$i]);
 
