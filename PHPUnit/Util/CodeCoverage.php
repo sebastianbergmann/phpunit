@@ -149,29 +149,39 @@ abstract class PHPUnit_Util_CodeCoverage
     public static function getSummary(array &$data, $clear = FALSE)
     {
         if (empty(self::$summary) || $clear) {
+            $isFileCache = array();
+
             foreach ($data as $test) {
                 foreach ($test['files'] as $file => $lines) {
-                    if (!self::isFile($file)) {
+                    if (!isset($isFileCache[$file])) {
+                        $isFileCache[$file] = self::isFile($file);
+                    }
+
+                    if (!$isFileCache[$file]) {
                         continue;
                     }
+
+                    $fileSummary = &self::$summary[$file];
 
                     foreach ($lines as $line => $flag) {
                         // +1: Line is executable and was executed.
                         if ($flag == 1) {
-                            if (!isset(self::$summary[$file][$line]) ||
-                                !is_array(self::$summary[$file][$line])) {
-                                self::$summary[$file][$line] = array();
+                            if (!isset($fileSummary[$line]) ||
+                                !is_array($fileSummary[$line])) {
+                                $fileSummary[$line] = array();
                             }
 
-                            self::$summary[$file][$line][] = $test['test'];
+                            $fileSummary[$line][] = $test['test'];
                         }
 
                         // -1: Line is executable and was not executed.
                         // -2: Line is dead code.
-                        else if (!(isset(self::$summary[$file][$line]) && is_array(self::$summary[$file][$line]))) {
-                            self::$summary[$file][$line] = $flag;
+                        else if (!(isset($fileSummary[$line]) && is_array($fileSummary[$line]))) {
+                            $fileSummary[$line] = $flag;
                         }
                     }
+
+                    unset($fileSummary);
                 }
             }
         }
