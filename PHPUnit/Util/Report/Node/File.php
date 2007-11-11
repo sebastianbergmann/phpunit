@@ -292,41 +292,47 @@ class PHPUnit_Util_Report_Node_File extends PHPUnit_Util_Report_Node
                     $buffer   = '';
 
                     foreach ($this->executedLines[$i] as $test) {
-                        if ($test instanceof PHPUnit_Framework_SelfDescribing) {
-                            $testName = $test->toString();
+                        if (!isset($test->__liHtml)) {
+                            $test->__liHtml = '';
 
-                            if ($test instanceof PHPUnit_Framework_TestCase) {
-                                switch ($test->getStatus()) {
-                                    case PHPUnit_Runner_BaseTestRunner::STATUS_PASSED: {
-                                        $testCSS = ' class=\"testPassed\"';
-                                    }
-                                    break;
+                            if ($test instanceof PHPUnit_Framework_SelfDescribing) {
+                                $testName = $test->toString();
 
-                                    case PHPUnit_Runner_BaseTestRunner::STATUS_FAILURE: {
-                                        $testCSS = ' class=\"testFailure\"';
-                                    }
-                                    break;
+                                if ($test instanceof PHPUnit_Framework_TestCase) {
+                                    switch ($test->getStatus()) {
+                                        case PHPUnit_Runner_BaseTestRunner::STATUS_PASSED: {
+                                            $testCSS = ' class=\"testPassed\"';
+                                        }
+                                        break;
 
-                                    case PHPUnit_Runner_BaseTestRunner::STATUS_ERROR: {
-                                        $testCSS = ' class=\"testError\"';
-                                    }
-                                    break;
+                                        case PHPUnit_Runner_BaseTestRunner::STATUS_FAILURE: {
+                                            $testCSS = ' class=\"testFailure\"';
+                                        }
+                                        break;
 
-                                    case PHPUnit_Runner_BaseTestRunner::STATUS_INCOMPLETE:
-                                    case PHPUnit_Runner_BaseTestRunner::STATUS_SKIPPED: {
-                                        $testCSS = ' class=\"testIncomplete\"';
+                                        case PHPUnit_Runner_BaseTestRunner::STATUS_ERROR: {
+                                            $testCSS = ' class=\"testError\"';
+                                        }
+                                        break;
+
+                                        case PHPUnit_Runner_BaseTestRunner::STATUS_INCOMPLETE:
+                                        case PHPUnit_Runner_BaseTestRunner::STATUS_SKIPPED: {
+                                            $testCSS = ' class=\"testIncomplete\"';
+                                        }
+                                        break;
                                     }
-                                    break;
                                 }
                             }
 
-                            $buffer .= sprintf(
+                            $test->__liHtml .= sprintf(
                               '<li%s>%s</li>',
 
                               isset($testCSS) ? $testCSS : '',
                               $testName
                             );
                         }
+
+                        $buffer .= $test->__liHtml;
                     }
 
                     if ($numTests > 1) {
