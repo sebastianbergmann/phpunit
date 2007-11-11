@@ -320,6 +320,10 @@ class PHPUnit_Util_Report_Node_File extends PHPUnit_Util_Report_Node
                                             $testCSS = ' class=\"testIncomplete\"';
                                         }
                                         break;
+
+                                        default: {
+                                            $testCSS = '';
+                                        }
                                     }
                                 }
                             }
@@ -327,7 +331,7 @@ class PHPUnit_Util_Report_Node_File extends PHPUnit_Util_Report_Node
                             $test->__liHtml .= sprintf(
                               '<li%s>%s</li>',
 
-                              isset($testCSS) ? $testCSS : '',
+                              $testCSS,
                               $testName
                             );
                         }
