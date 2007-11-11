@@ -286,10 +286,10 @@ class PHPUnit_Util_Report_Node_File extends PHPUnit_Util_Report_Node
                 // Array: Line is executable and was executed.
                 // count(Array) = Number of tests that hit this line.
                 if (is_array($this->executedLines[$i])) {
-                    $color = 'lineCov';
-                    $count = sprintf('%8d', count($this->executedLines[$i]));
-
-                    $buffer = '';
+                    $color    = 'lineCov';
+                    $numTests = count($this->executedLines[$i]);
+                    $count    = sprintf('%8d', $numTests);
+                    $buffer   = '';
 
                     foreach ($this->executedLines[$i] as $test) {
                         if ($test instanceof PHPUnit_Framework_SelfDescribing) {
@@ -328,8 +328,6 @@ class PHPUnit_Util_Report_Node_File extends PHPUnit_Util_Report_Node
                             );
                         }
                     }
-
-                    $numTests = count($this->executedLines[$i]);
 
                     if ($numTests > 1) {
                         $header = $numTests . ' tests cover';
