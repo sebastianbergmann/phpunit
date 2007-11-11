@@ -268,12 +268,14 @@ class PHPUnit_Util_Report_Node_File extends PHPUnit_Util_Report_Node
         $ignore = FALSE;
 
         foreach ($this->codeLines as $line) {
-            if (strpos($line, '@codeCoverageIgnoreStart') !== FALSE) {
-                $ignore = TRUE;
-            }
+            if (strpos($line, '@codeCoverageIgnore') !== FALSE) {
+                if (strpos($line, '@codeCoverageIgnoreStart') !== FALSE) {
+                    $ignore = TRUE;
+                }
 
-            else if (strpos($line, '@codeCoverageIgnoreEnd') !== FALSE) {
-                $ignore = FALSE;
+                else if (strpos($line, '@codeCoverageIgnoreEnd') !== FALSE) {
+                    $ignore = FALSE;
+                }
             }
 
             $css = '';
@@ -558,12 +560,14 @@ class PHPUnit_Util_Report_Node_File extends PHPUnit_Util_Report_Node
                 }
             }
 
-            if (strpos($line, '@codeCoverageIgnoreStart') !== FALSE) {
-                $ignoreStart = $line;
-            }
+            if (strpos($line, '@codeCoverageIgnore') !== FALSE) {
+                if (strpos($line, '@codeCoverageIgnoreStart') !== FALSE) {
+                    $ignoreStart = $line;
+                }
 
-            else if (strpos($line, '@codeCoverageIgnoreEnd') !== FALSE) {
-                $ignoreStart = -1;
+                else if (strpos($line, '@codeCoverageIgnoreEnd') !== FALSE) {
+                    $ignoreStart = -1;
+                }
             }
 
             if (isset($this->executedLines[$lineNumber])) {
