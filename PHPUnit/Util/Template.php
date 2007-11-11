@@ -117,11 +117,17 @@ class PHPUnit_Util_Template
     /**
      * Sets one or more template variables.
      *
-     * @param  mixed $keys
-     * @param  mixed $values
+     * @param  mixed   $keys
+     * @param  mixed   $values
+     * @param  boolean $merge
      * @access public
      */
-    public function setVar($keys, $values) {
+    public function setVar($keys, $values, $merge = TRUE) {
+        if (!$merge) {
+            $this->keys   = array();
+            $this->values = array();
+        }
+
         if (is_array($keys) && is_array($values) && count($keys) == count($values)) {
             foreach ($keys as $key) {
                 $this->keys[] = '{' . $key . '}';

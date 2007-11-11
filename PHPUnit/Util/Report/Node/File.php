@@ -349,7 +349,8 @@ class PHPUnit_Util_Report_Node_File extends PHPUnit_Util_Report_Node
                         $i,
                         $header,
                         $buffer
-                      )
+                      ),
+                      FALSE
                     );
 
                     $this->yuiPanelJS .= $yuiTemplate->render();
