@@ -646,17 +646,12 @@ class PHPUnit_Util_Report_Node_File extends PHPUnit_Util_Report_Node
      */
     protected function loadFile($file)
     {
-        $lines    = file($file);
-        $numLines = count($lines);
-        $width    = 0;
+        $lines       = array_map('rtrim', file($file));
+        $linesLength = array_map('strlen', $lines);
+        $width       = max($linesLength);
 
-        for ($i = 0; $i < $numLines; $i++) {
-            $lines[$i] = rtrim($lines[$i]);
-            $width     = max($width, strlen($lines[$i]));
-        }
-
-        for ($i = 0; $i < $numLines; $i++) {
-            $this->codeLinesFillup[$i] = $width - strlen($lines[$i]);
+        foreach ($linesLength as $line => $length) {
+            $this->codeLinesFillup[$line] = $width - $length;
         }
 
         if (!$this->highlight) {
