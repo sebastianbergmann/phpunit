@@ -195,14 +195,8 @@ class PHPUnit_TextUI_Command
 
         if (isset($options[1][1])) {
             $arguments['testFile'] = $options[1][1];
-        }
-
-        else if (isset($arguments['test'])) {
-            $arguments['testFile'] = $arguments['test'];
-
-            if (substr($arguments['test'], -4) != '.php') {
-                $arguments['testFile'] .= '.php';
-            }
+        } else {
+            $arguments['testFile'] = '';
         }
 
         foreach ($options[0] as $option) {
