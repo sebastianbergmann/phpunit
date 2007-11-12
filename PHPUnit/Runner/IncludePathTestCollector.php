@@ -51,8 +51,17 @@ require_once 'PHPUnit/Util/FilterIterator.php';
 PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
 
 /**
- * An implementation of a TestCollector that consults the
- * include path set in the php.ini.
+ * A test collector that collects tests from one or more directories
+ * recursively. If no directories are specified, the include_path is searched.
+ *
+ * <code>
+ * $testCollector = new PHPUnit_Runner_IncludePathTestCollector(
+ *   '/path/to/*Test.php files'
+ * );
+ *
+ * $suite = new PHPUnit_Framework_TestSuite('My Test Suite');
+ * $suite->addTestFiles($testCollector->collectTests());
+ * </code>
  *
  * @category   Testing
  * @package    PHPUnit
@@ -63,7 +72,6 @@ PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
  * @link       http://www.phpunit.de/
  * @since      Class available since Release 2.1.0
  */
-
 class PHPUnit_Runner_IncludePathTestCollector implements PHPUnit_Runner_TestCollector
 {
     /**
@@ -73,38 +81,49 @@ class PHPUnit_Runner_IncludePathTestCollector implements PHPUnit_Runner_TestColl
     protected $filterIterator = NULL;
 
     /**
+     * @var    array
+     * @access protected
+     */
+    protected $paths = array();
+
+    /**
+     * @return array
+     * @access public
+     */
+    public function __construct($paths = array())
+    {
+        if (!empty($paths)) {
+            $this->paths = $paths;
+        } else {
+            $this->paths = PHPUnit_Util_Fileloader::getIncludePaths();
+        }
+    }
+
+    /**
      * @return array
      * @access public
      */
     public function collectTests()
     {
-        $includePathsIterator = new AppendIterator;
-        $result = array();
+        $pathIterator = new AppendIterator;
+        $result       = array();
 
-        $includePaths = PHPUnit_Util_Fileloader::getIncludePaths();
-
-        foreach ($includePaths as $includePath) {
-            $includePathsIterator->append(
+        foreach ($this->paths as $path) {
+            $pathIterator->append(
               new RecursiveIteratorIterator(
-                  new RecursiveDirectoryIterator($includePath)
+                new RecursiveDirectoryIterator($path)
               )
             );
         }
 
-        $filterIterator = new PHPUnit_Util_FilterIterator(
-          $includePathsIterator
-        );
+        $filterIterator = new PHPUnit_Util_FilterIterator($pathIterator);
 
         if ($this->filterIterator !== NULL) {
             $class          = new ReflectionClass($this->filterIterator);
             $filterIterator = $class->newInstance($filterIterator);
         }
 
-        foreach ($filterIterator as $file) {
-            $result[] = $file;
-        }
-
-        return $result;
+        return $filterIterator;
     }
 
     /**
