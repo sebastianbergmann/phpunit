@@ -419,13 +419,18 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
     /**
      * Wrapper for addTestFile() that adds multiple test files.
      *
-     * @param  array $filenames
+     * @param  array|Iterator $filenames
      * @throws InvalidArgumentException
      * @access public
      * @since  Method available since Release 2.3.0
      */
-    public function addTestFiles(array $filenames)
+    public function addTestFiles($filenames)
     {
+        if (!(is_array($filename) ||
+             (is_object($filename) && $object instanceof Iterator))) {
+            throw new InvalidArgumentException;
+        }
+
         foreach ($filenames as $filename) {
             $this->addTestFile($filename);
         }
