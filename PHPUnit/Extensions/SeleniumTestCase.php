@@ -214,6 +214,30 @@ abstract class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_Tes
         $classGroups      = PHPUnit_Util_Test::getGroups($class);
         $staticProperties = $class->getStaticProperties();
 
+        if (isset($staticProperties['seleneseDirectory']) &&
+            is_dir($staticProperties['seleneseDirectory'])) {
+            $files = new PHPUnit_Util_FilterIterator(
+              new RecursiveIteratorIterator(
+                new RecursiveDirectoryIterator(
+                  $staticProperties['seleneseDirectory']
+                )
+              ),
+              '.htm'
+            );
+
+            foreach ($files as $file) {
+                $file = (string)$file;
+
+                if (isset($staticProperties['browsers'])) {
+                    foreach ($staticProperties['browsers'] as $browser) {
+                        $suite->addTest(new $className($file, array(), $browser));
+                    }
+                } else {
+                    $suite->addTest(new $className($file));
+                }
+            }
+        }
+
         foreach ($class->getMethods() as $method) {
             if (PHPUnit_Framework_TestSuite::isPublicTestMethod($method)) {
                 $name   = $method->getName();
@@ -299,7 +323,11 @@ abstract class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_Tes
     {
         $this->start();
 
-        parent::runTest();
+        if (!is_file($this->name)) {
+            parent::runTest();
+        } else {
+            $this->runSelenese($this->name);
+        }
 
         if ($this->autoStop) {
             try {
