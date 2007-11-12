@@ -64,7 +64,7 @@ class PHPUnit_Util_Test
 {
     /**
      * @param  PHPUnit_Framework_Test $test
-     * @param  boolean                 $asString
+     * @param  boolean                $asString
      * @return mixed
      * @access public
      * @static
@@ -144,45 +144,51 @@ class PHPUnit_Util_Test
      */
     public static function getLinesToBeCovered($className, $methodName)
     {
-        $class   = new ReflectionClass($className);
-        $method  = new ReflectionMethod($className, $methodName);
-        $methods = array();
-        $result  = array();
+        $result = array();
 
-        $docComment = $class->getDocComment();
+        try {
+            $class   = new ReflectionClass($className);
+            $method  = new ReflectionMethod($className, $methodName);
+            $methods = array();
 
-        if (preg_match_all('/@covers[\s]+([\:\.\w]+)/', $docComment, $matches)) {
-            $methods = $matches[1];
-        }
+            $docComment = $class->getDocComment();
 
-        $docComment = $method->getDocComment();
+            if (preg_match_all('/@covers[\s]+([\:\.\w]+)/', $docComment, $matches)) {
+                $methods = $matches[1];
+            }
 
-        if (preg_match_all('/@covers[\s]+([\:\.\w]+)/', $docComment, $matches)) {
-            $methods = array_merge($methods, $matches[1]);
-        }
+            $docComment = $method->getDocComment();
 
-        foreach ($methods as $method) {
-            if (strpos($method, '::') !== FALSE) {
-                list($className, $methodName) = explode('::', $method);
+            if (preg_match_all('/@covers[\s]+([\:\.\w]+)/', $docComment, $matches)) {
+                $methods = array_merge($methods, $matches[1]);
+            }
 
-                try {
-                    $_method   = new ReflectionMethod($className, $methodName);
-                    $fileName  = $_method->getFileName();
-                    $startLine = $_method->getStartLine();
-                    $endLine   = $_method->getEndLine();
+            foreach ($methods as $method) {
+                if (strpos($method, '::') !== FALSE) {
+                    list($className, $methodName) = explode('::', $method);
 
-                    if (!isset($result[$fileName])) {
-                        $result[$fileName] = array();
+                    try {
+                        $_method   = new ReflectionMethod($className, $methodName);
+                        $fileName  = $_method->getFileName();
+                        $startLine = $_method->getStartLine();
+                        $endLine   = $_method->getEndLine();
+
+                        if (!isset($result[$fileName])) {
+                            $result[$fileName] = array();
+                        }
+
+                        for ($i = $startLine; $i <= $endLine; $i++) {
+                            $result[$fileName][] = $i;
+                        }
                     }
 
-                    for ($i = $startLine; $i <= $endLine; $i++) {
-                        $result[$fileName][] = $i;
+                    catch (ReflectionException $e) {
                     }
-                }
-
-                catch (ReflectionException $e) {
                 }
             }
+        }
+
+        catch (ReflectionException $e) {
         }
 
         return $result;
