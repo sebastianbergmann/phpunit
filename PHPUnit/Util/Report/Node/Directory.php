@@ -385,16 +385,10 @@ class PHPUnit_Util_Report_Node_Directory extends PHPUnit_Util_Report_Node
 
         $template->setVar(
           array(
-            'total_item',
-            'items',
-            'low_upper_bound',
-            'high_lower_bound'
-          ),
-          array(
-            $this->renderTotalItem($lowUpperBound, $highLowerBound),
-            $this->renderItems($lowUpperBound, $highLowerBound),
-            $lowUpperBound,
-            $highLowerBound
+            'total_item'       => $this->renderTotalItem($lowUpperBound, $highLowerBound),
+            'items'            => $this->renderItems($lowUpperBound, $highLowerBound),
+            'low_upper_bound'  => $lowUpperBound,
+            'high_lower_bound' => $highLowerBound
           )
         );
 
