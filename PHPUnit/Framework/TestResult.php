@@ -489,20 +489,15 @@ class PHPUnit_Framework_TestResult implements Countable
             if (!empty($linesToBeCovered)) {
                 $filesToBeCovered = array_keys($linesToBeCovered);
                 $filesCovered     = array_keys($data);
-                $numFilesCovered  = count($filesCovered);
+                $filesCovered     = array_intersect($filesCovered, $filesToBeCovered);
 
-                for ($i = 0; $i < $numFilesCovered; $i++) {
-                    if (!in_array($filesCovered[$i], $filesToBeCovered)) {
-                        unset($filesCovered[$i]);
-                    } else {
-                        $linesCovered    = array_keys($data[$filesCovered[$i]]);
-                        $numLinesCovered = count($linesCovered);
+                foreach ($filesCovered as $file) {
+                    $linesCovered    = array_keys($data[$file]);
+                    $linesNotToCover = array_diff($linesCovered, $linesToBeCovered[$file]);
 
-                        for ($j = 0; $j < $numLinesCovered; $j++) {
-                            if (!in_array($linesCovered[$j], $linesToBeCovered[$filesCovered[$i]]) &&
-                                $data[$filesCovered[$i]][$linesCovered[$j]] > 0) {
-                                $data[$filesCovered[$i]][$linesCovered[$j]] = -1;
-                            }
+                    foreach ($linesNotToCover as $line) {
+                        if ($data[$file][$line] > 0) {
+                            $data[$file][$line] = -1;
                         }
                     }
                 }
