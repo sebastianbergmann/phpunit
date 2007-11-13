@@ -242,7 +242,7 @@ class PHPUnit_Util_Metrics_Function extends PHPUnit_Util_Metrics
      *   - catch
      *   - AND, &&
      *   - OR, ||
-     *   - ?, :
+     *   - ?
      *
      * Note that 'else', 'default', and 'finally' don't increment the value
      * any further. On the other hand, a simple method with a 'switch'
@@ -305,7 +305,7 @@ class PHPUnit_Util_Metrics_Function extends PHPUnit_Util_Metrics
             if (is_string($token)) {
                 $token = trim($token);
 
-                if ($token == '?' || $token == ':') {
+                if ($token == '?') {
                     $this->ccn++;
                 }
 

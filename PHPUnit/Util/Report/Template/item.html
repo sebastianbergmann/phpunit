@@ -1,0 +1,31 @@
+        <tr>
+          <td class="coverFile">{name}</td>
+          <td class="coverBar" align="center" width="100">
+            <table border="0" cellspacing="0" cellpadding="1">
+              <tr>
+                <td class="coverBarOutline"><img src="{classes_color}.png" width="{classes_called_width}" height="10" alt="{classes_called_percent} %"><img src="snow.png" width="{classes_not_called_width}" height="10" alt="{classes_called_percent}%"></td>
+              </tr>
+            </table>
+          </td>
+          <td class="coverPer{classes_level}">{classes_called_percent}%</td>
+          <td class="coverNum{classes_level}">{num_called_classes} / {num_classes}</td>
+          <td class="coverBar" align="center" width="100">
+            <table border="0" cellspacing="0" cellpadding="1">
+              <tr>
+                <td class="coverBarOutline"><img src="{methods_color}.png" width="{methods_called_width}" height="10" alt="{methods_called_percent} %"><img src="snow.png" width="{methods_not_called_width}" height="10" alt="{methods_called_percent}%"></td>
+              </tr>
+            </table>
+          </td>
+          <td class="coverPer{methods_level}">{methods_called_percent}%</td>
+          <td class="coverNum{methods_level}">{num_called_methods} / {num_methods}</td>
+          <td class="coverBar" align="center" width="100">
+            <table border="0" cellspacing="0" cellpadding="1">
+              <tr>
+                <td class="coverBarOutline"><img src="{lines_color}.png" width="{lines_executed_width}" height="10" alt="{lines_executed_percent} %"><img src="snow.png" width="{lines_not_executed_width}" height="10" alt="{lines_executed_percent}%"></td>
+              </tr>
+            </table>
+          </td>
+          <td class="coverPer{lines_level}">{lines_executed_percent}%</td>
+          <td class="coverNum{lines_level}">{num_executed_lines} / {num_executable_lines}</td>
+        </tr>
+

@@ -17,14 +17,14 @@
   <email>sb@sebastian-bergmann.de</email>
   <active>yes</active>
  </lead>
- <date>2007-10-23</date>
+ <date>2007-11-12</date>
  <version>
-  <release>3.2.0beta8</release>
+  <release>3.2.0RC2</release>
   <api>3.2.0</api>
  </version>
  <stability>
   <release>beta</release>
-  <api>beta</api>
+  <api>stable</api>
  </stability>
  <license>BSD License</license>
  <notes>http://www.phpunit.de/wiki/ChangeLog</notes>
@@ -826,6 +826,9 @@
          <file baseinstalldir="/" name="CodeCoverage.php" role="php">
           <tasks:replace from="@package_version@" to="version" type="package-info" />
          </file>
+         <file baseinstalldir="/" name="CRAP.php" role="php">
+          <tasks:replace from="@package_version@" to="version" type="package-info" />
+         </file>
          <file baseinstalldir="/" name="CyclomaticComplexity.php" role="php">
           <tasks:replace from="@package_version@" to="version" type="package-info" />
          </file>
@@ -839,6 +842,11 @@
           <tasks:replace from="@package_version@" to="version" type="package-info" />
          </file>
         </dir>
+        <dir name="Project">
+         <file baseinstalldir="/" name="CRAP.php" role="php">
+          <tasks:replace from="@package_version@" to="version" type="package-info" />
+         </file>
+        </dir>
         <file baseinstalldir="/" name="Class.php" role="php">
          <tasks:replace from="@package_version@" to="version" type="package-info" />
         </file>
@@ -846,6 +854,9 @@
          <tasks:replace from="@package_version@" to="version" type="package-info" />
         </file>
         <file baseinstalldir="/" name="Function.php" role="php">
+         <tasks:replace from="@package_version@" to="version" type="package-info" />
+        </file>
+        <file baseinstalldir="/" name="Project.php" role="php">
          <tasks:replace from="@package_version@" to="version" type="package-info" />
         </file>
        </dir>
@@ -910,13 +921,19 @@
       <dir name="Template">
        <file baseinstalldir="/" name="butter.png" role="php" />
        <file baseinstalldir="/" name="chameleon.png" role="php" />
-       <file baseinstalldir="/" name="coverage_directory.html" role="php" />
-       <file baseinstalldir="/" name="coverage_file.html" role="php" />
-       <file baseinstalldir="/" name="coverage_item.html" role="php" />
+       <file baseinstalldir="/" name="close12_1.gif" role="php" />
+       <file baseinstalldir="/" name="container.css" role="php" />
+       <file baseinstalldir="/" name="container-min.js" role="php" />
+       <file baseinstalldir="/" name="directory.html" role="php" />
+       <file baseinstalldir="/" name="file.html" role="php" />
        <file baseinstalldir="/" name="glass.png" role="php" />
+       <file baseinstalldir="/" name="item.html" role="php" />
+       <file baseinstalldir="/" name="method_item.html" role="php" />
        <file baseinstalldir="/" name="scarlet_red.png" role="php" />
        <file baseinstalldir="/" name="snow.png" role="php" />
        <file baseinstalldir="/" name="style.css" role="php" />
+       <file baseinstalldir="/" name="yahoo-dom-event.js" role="php" />
+       <file baseinstalldir="/" name="yui_item.js" role="php" />
       </dir>
      </dir>
      <dir name="Skeleton">
@@ -953,6 +970,9 @@
       <tasks:replace from="@package_version@" to="version" type="package-info" />
      </file>
      <file baseinstalldir="/" name="CodeCoverage.php" role="php">
+      <tasks:replace from="@package_version@" to="version" type="package-info" />
+     </file>
+     <file baseinstalldir="/" name="Configuration.php" role="php">
       <tasks:replace from="@package_version@" to="version" type="package-info" />
      </file>
      <file baseinstalldir="/" name="ErrorHandler.php" role="php">
@@ -1001,6 +1021,9 @@
       <tasks:replace from="@package_version@" to="version" type="package-info" />
      </file>
      <file baseinstalldir="/" name="Type.php" role="php">
+      <tasks:replace from="@package_version@" to="version" type="package-info" />
+     </file>
+     <file baseinstalldir="/" name="XML.php" role="php">
       <tasks:replace from="@package_version@" to="version" type="package-info" />
      </file>
     </dir>

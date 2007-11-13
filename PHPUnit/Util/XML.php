@@ -44,16 +44,12 @@
  * @since      File available since Release 3.2.0
  */
 
-require_once 'PHPUnit/Runner/Version.php';
-require_once 'PHPUnit/Util/Metrics/Project.php';
-require_once 'PHPUnit/Util/CodeCoverage.php';
 require_once 'PHPUnit/Util/Filter.php';
-require_once 'PHPUnit/Util/Printer.php';
 
 PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
 
 /**
- * Generates an XML logfile with code duplication information.
+ * XML helpers.
  *
  * @category   Testing
  * @package    PHPUnit
@@ -64,70 +60,47 @@ PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
  * @link       http://www.phpunit.de/
  * @since      Class available since Release 3.2.0
  */
-class PHPUnit_Util_Log_CPD extends PHPUnit_Util_Printer
+class PHPUnit_Util_XML
 {
-    /**
-     * @param  PHPUnit_Framework_TestResult $result
-     * @access public
-     */
-    public function process(PHPUnit_Framework_TestResult $result, $minLines = 5, $minMatches = 70)
+    public static function load($filename, $html = FALSE)
     {
-        $codeCoverage = $result->getCodeCoverageInformation();
-        $summary      = PHPUnit_Util_CodeCoverage::getSummary($codeCoverage);
-        $files        = array_keys($summary);
-        $metrics      = new PHPUnit_Util_Metrics_Project($files, $summary, TRUE, $minLines, $minMatches);
+        $document = new DOMDocument;
 
-        $document = new DOMDocument('1.0', 'UTF-8');
-        $document->formatOutput = TRUE;
+        if (is_readable($filename)) {
+            libxml_use_internal_errors(TRUE);
 
-        $cpd = $document->createElement('pmd-cpd');
-        $cpd->setAttribute('version', 'PHPUnit ' . PHPUnit_Runner_Version::id());
-        $document->appendChild($cpd);
+            if (!$html) {
+                $loaded = @$document->load($filename);
+            } else {
+                $loaded = @$document->loadHTMLFile($filename);
+            }
 
-        foreach ($metrics->getDuplicates() as $duplicate) {
-            $xmlDuplication = $cpd->appendChild(
-              $document->createElement('duplication')
-            );
+            if ($loaded === FALSE) {
+                $message = '';
 
-            $xmlDuplication->setAttribute('lines', $duplicate['numLines']);
-            $xmlDuplication->setAttribute('tokens', $duplicate['numTokens']);
+                foreach (libxml_get_errors() as $error) {
+                    $message .= $error->message;
+                }
 
-            $xmlFile = $xmlDuplication->appendChild(
-              $document->createElement('file')
-            );
+                throw new RuntimeException(
+                  sprintf(
+                    'Could not load "%s".%s',
 
-            $xmlFile->setAttribute('path', $duplicate['fileA']->getPath());
-            $xmlFile->setAttribute('line', $duplicate['firstLineA']);
-
-            $xmlFile = $xmlDuplication->appendChild(
-              $document->createElement('file')
-            );
-
-            $xmlFile->setAttribute('path', $duplicate['fileB']->getPath());
-            $xmlFile->setAttribute('line', $duplicate['firstLineB']);
-
-            $codefragment = $xmlDuplication->appendChild(
-              $document->createElement('codefragment')
-            );
-
-            $codefragment->appendChild(
-              $document->createCDATASection(
-                utf8_encode(
-                  join(
-                    '',
-                    array_slice(
-                      $duplicate['fileA']->getLines(),
-                      $duplicate['firstLineA'] - 1,
-                      $duplicate['numLines']
-                    )
+                    $filename,
+                    $message != '' ? "\n" . $message : ''
                   )
-                )
+                );
+            }
+        } else {
+            throw new RuntimeException(
+              sprintf(
+                'Could not read "%s".',
+                $filename
               )
             );
         }
 
-        $this->write($document->saveXML());
-        $this->flush();
+        return $document;
     }
 }
 ?>

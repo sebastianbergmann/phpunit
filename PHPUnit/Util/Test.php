@@ -64,7 +64,7 @@ class PHPUnit_Util_Test
 {
     /**
      * @param  PHPUnit_Framework_Test $test
-     * @param  boolean                 $asString
+     * @param  boolean                $asString
      * @return mixed
      * @access public
      * @static
@@ -133,6 +133,68 @@ class PHPUnit_Util_Test
     }
 
     /**
+     * Returns the files and lines a test method wants to cover.
+     *
+     * @param  string $className
+     * @param  string $methodName
+     * @return array
+     * @access public
+     * @static
+     * @since  Method available since Release 3.2.0
+     */
+    public static function getLinesToBeCovered($className, $methodName)
+    {
+        $result = array();
+
+        try {
+            $class   = new ReflectionClass($className);
+            $method  = new ReflectionMethod($className, $methodName);
+            $methods = array();
+
+            $docComment = $class->getDocComment();
+
+            if (preg_match_all('/@covers[\s]+([\:\.\w]+)/', $docComment, $matches)) {
+                $methods = $matches[1];
+            }
+
+            $docComment = $method->getDocComment();
+
+            if (preg_match_all('/@covers[\s]+([\:\.\w]+)/', $docComment, $matches)) {
+                $methods = array_merge($methods, $matches[1]);
+            }
+
+            foreach ($methods as $method) {
+                if (strpos($method, '::') !== FALSE) {
+                    list($className, $methodName) = explode('::', $method);
+
+                    try {
+                        $_method   = new ReflectionMethod($className, $methodName);
+                        $fileName  = $_method->getFileName();
+                        $startLine = $_method->getStartLine();
+                        $endLine   = $_method->getEndLine();
+
+                        if (!isset($result[$fileName])) {
+                            $result[$fileName] = array();
+                        }
+
+                        for ($i = $startLine; $i <= $endLine; $i++) {
+                            $result[$fileName][] = $i;
+                        }
+                    }
+
+                    catch (ReflectionException $e) {
+                    }
+                }
+            }
+        }
+
+        catch (ReflectionException $e) {
+        }
+
+        return $result;
+    }
+
+    /**
      * Returns the groups for a test class or method.
      *
      * @param  Reflector $reflector
@@ -156,21 +218,22 @@ class PHPUnit_Util_Test
     /**
      * Returns the provided data for a method.
      *
-     * @param  ReflectionMethod $method
+     * @param  string $className
+     * @param  string $methodName
      * @return array
      * @access public
      * @static
      * @since  Method available since Release 3.2.0
      */
-    public static function getProvidedData(ReflectionMethod $method)
+    public static function getProvidedData($className, $methodName)
     {
+        $method     = new ReflectionMethod($className, $methodName);
         $docComment = $method->getDocComment();
 
         if (preg_match('/@dataProvider[\s]+([\.\w]+)/', $docComment, $matches)) {
             try {
                 $dataProviderMethod = new ReflectionMethod(
-                  $method->getDeclaringClass()->getName(),
-                  $matches[1]
+                  $className, $matches[1]
                 );
 
                 return $dataProviderMethod->invoke(NULL);

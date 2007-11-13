@@ -48,6 +48,7 @@ require_once 'PHPUnit/Framework.php';
 require_once 'PHPUnit/Util/Log/Database.php';
 require_once 'PHPUnit/Util/Filter.php';
 require_once 'PHPUnit/Util/Test.php';
+require_once 'PHPUnit/Util/XML.php';
 
 PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
 
@@ -139,6 +140,12 @@ abstract class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_Tes
     protected $testId;
 
     /**
+     * @var    boolean
+     * @access protected
+     */
+    protected $inDefaultAssertions = FALSE;
+
+    /**
      * @param  string $name
      * @param  array  $browser
      * @throws InvalidArgumentException
@@ -207,11 +214,35 @@ abstract class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_Tes
         $classGroups      = PHPUnit_Util_Test::getGroups($class);
         $staticProperties = $class->getStaticProperties();
 
+        if (isset($staticProperties['seleneseDirectory']) &&
+            is_dir($staticProperties['seleneseDirectory'])) {
+            $files = new PHPUnit_Util_FilterIterator(
+              new RecursiveIteratorIterator(
+                new RecursiveDirectoryIterator(
+                  $staticProperties['seleneseDirectory']
+                )
+              ),
+              '.htm'
+            );
+
+            foreach ($files as $file) {
+                $file = (string)$file;
+
+                if (isset($staticProperties['browsers'])) {
+                    foreach ($staticProperties['browsers'] as $browser) {
+                        $suite->addTest(new $className($file, array(), $browser));
+                    }
+                } else {
+                    $suite->addTest(new $className($file));
+                }
+            }
+        }
+
         foreach ($class->getMethods() as $method) {
             if (PHPUnit_Framework_TestSuite::isPublicTestMethod($method)) {
-                $data   = PHPUnit_Util_Test::getProvidedData($method);
-                $groups = PHPUnit_Util_Test::getGroups($method, $classGroups);
                 $name   = $method->getName();
+                $data   = PHPUnit_Util_Test::getProvidedData($className, $name);
+                $groups = PHPUnit_Util_Test::getGroups($method, $classGroups);
 
                 if (isset($staticProperties['browsers'])) {
                     foreach ($staticProperties['browsers'] as $browser) {
@@ -292,7 +323,11 @@ abstract class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_Tes
     {
         $this->start();
 
-        parent::runTest();
+        if (!is_file($this->name)) {
+            parent::runTest();
+        } else {
+            $this->runSelenese($this->name);
+        }
 
         if ($this->autoStop) {
             try {
@@ -474,6 +509,37 @@ abstract class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_Tes
     }
 
     /**
+     * Runs a test from a Selenese (HTML) specification.
+     *
+     * @param string $filename
+     * @access public
+     */
+    public function runSelenese($filename)
+    {
+        $document = PHPUnit_Util_XML::load($filename, TRUE);
+        $xpath    = new DOMXPath($document);
+        $rows     = $xpath->query('body/table/tbody/tr');
+
+        foreach ($rows as $row)
+        {
+            $action    = NULL;
+            $arguments = array();
+            $columns   = $xpath->query('td', $row);
+
+            foreach ($columns as $column)
+            {
+                if ($action === NULL) {
+                    $action = $column->nodeValue;
+                } else {
+                    $arguments[] = $column->nodeValue;
+                }
+            }
+
+            $this->__call($action, $arguments);
+        }
+    }
+
+    /**
      * This method implements the Selenium RC protocol.
      *
      * @param  string $command
@@ -572,7 +638,7 @@ abstract class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_Tes
                             sleep($this->sleep);
                         }
 
-                        $this->defaultAssertions($command);
+                        $this->runDefaultAssertions($command);
                     }
                 }
             }
@@ -653,7 +719,7 @@ abstract class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_Tes
                     sleep($this->sleep);
                 }
 
-                $this->defaultAssertions($command);
+                $this->runDefaultAssertions($command);
             }
             break;
 
@@ -664,7 +730,7 @@ abstract class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_Tes
                 }
 
                 $this->doCommand($command, $arguments);
-                $this->defaultAssertions($command);
+                $this->runDefaultAssertions($command);
             }
             break;
 
@@ -674,7 +740,7 @@ abstract class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_Tes
                 }
 
                 $this->doCommand($command, $arguments);
-                $this->defaultAssertions($command);
+                $this->runDefaultAssertions($command);
             }
             break;
 
@@ -1377,6 +1443,20 @@ abstract class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_Tes
             );
         } else {
             return array();
+        }
+    }
+
+    /**
+     * @param  string $action
+     * @access private
+     * @since  Method available since Release 3.2.0
+     */
+    private function runDefaultAssertions($action)
+    {
+        if (!$this->inDefaultAssertions) {
+            $this->inDefaultAssertions = TRUE;
+            $this->defaultAssertions($action);
+            $this->inDefaultAssertions = FALSE;
         }
     }
 }

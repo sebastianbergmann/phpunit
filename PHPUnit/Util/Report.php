@@ -75,10 +75,13 @@ abstract class PHPUnit_Util_Report
      * @param  PHPUnit_Framework_TestResult $result
      * @param  string                       $target
      * @param  string                       $charset
+     * @param  boolean                      $highlight
+     * @param  integer                      $lowUpperBound
+     * @param  integer                      $highLowerBound
      * @access public
      * @static
      */
-    public static function render(PHPUnit_Framework_TestResult $result, $target, $charset = 'ISO-8859-1')
+    public static function render(PHPUnit_Framework_TestResult $result, $target, $charset = 'ISO-8859-1', $highlight = FALSE, $lowUpperBound = 35, $highLowerBound = 70)
     {
         self::$templatePath = sprintf(
           '%s%sReport%sTemplate%s',
@@ -93,27 +96,36 @@ abstract class PHPUnit_Util_Report
         $files                   = PHPUnit_Util_CodeCoverage::getSummary($codeCoverageInformation);
         $commonPath              = self::reducePaths($files);
         $items                   = self::buildDirectoryStructure($files);
-        $root                    = new PHPUnit_Util_Report_Node_Directory($commonPath);
 
-        self::addItems($root, $items, $files);
+        $root = new PHPUnit_Util_Report_Node_Directory($commonPath, NULL);
+
+        self::addItems($root, $items, $files, $highlight);
         self::copyFiles($target);
 
-        $root->render($target, $result->topTestSuite()->getName(), $charset);
+        $root->render(
+          $target,
+          $result->topTestSuite()->getName(),
+          $charset,
+          $highlight,
+          $lowUpperBound,
+          $highLowerBound
+        );
     }
 
     /**
      * @param  PHPUnit_Util_Report_Node_Directory $root
-     * @param  array $items
-     * @param  array $files
+     * @param  array   $items
+     * @param  array   $files
+     * @param  boolean $highlight
      * @access protected
      * @static
      */
-    protected static function addItems(PHPUnit_Util_Report_Node_Directory $root, array $items, array $files)
+    protected static function addItems(PHPUnit_Util_Report_Node_Directory $root, array $items, array $files, $highlight)
     {
         foreach ($items as $key => $value) {
             if (substr($key, -2) == '/f') {
                 try {
-                    $file = $root->addFile(substr($key, 0, -2), $value);
+                    $file = $root->addFile(substr($key, 0, -2), $value, $highlight);
                 }
 
                 catch (RuntimeException $e) {
@@ -121,7 +133,7 @@ abstract class PHPUnit_Util_Report
                 }
             } else {
                 $child = $root->addDirectory($key);
-                self::addItems($child, $value, $files);
+                self::addItems($child, $value, $files, $highlight);
             }
         }
     }
@@ -312,9 +324,13 @@ abstract class PHPUnit_Util_Report
         $files = array(
           'butter.png',
           'chameleon.png',
+          'close12_1.gif',
+          'container.css',
+          'container-min.js',
           'scarlet_red.png',
           'snow.png',
           'style.css',
+          'yahoo-dom-event.js'
         );
 
         foreach ($files as $file) {

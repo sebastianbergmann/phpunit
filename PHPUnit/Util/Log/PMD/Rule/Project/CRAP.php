@@ -39,21 +39,18 @@
  * @author     Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @copyright  2002-2007 Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
- * @version    SVN: $Id$
+ * @version    SVN: $Id: CodeCoverage.php 1522 2007-10-28 13:42:55Z sb $
  * @link       http://www.phpunit.de/
  * @since      File available since Release 3.2.0
  */
 
-require_once 'PHPUnit/Runner/Version.php';
-require_once 'PHPUnit/Util/Metrics/Project.php';
-require_once 'PHPUnit/Util/CodeCoverage.php';
+require_once 'PHPUnit/Util/Log/PMD/Rule/Function.php';
 require_once 'PHPUnit/Util/Filter.php';
-require_once 'PHPUnit/Util/Printer.php';
 
 PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
 
 /**
- * Generates an XML logfile with code duplication information.
+ * 
  *
  * @category   Testing
  * @package    PHPUnit
@@ -64,70 +61,49 @@ PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
  * @link       http://www.phpunit.de/
  * @since      Class available since Release 3.2.0
  */
-class PHPUnit_Util_Log_CPD extends PHPUnit_Util_Printer
+class PHPUnit_Util_Log_PMD_Rule_Project_CRAP extends PHPUnit_Util_Log_PMD_Rule_Project
 {
-    /**
-     * @param  PHPUnit_Framework_TestResult $result
-     * @access public
-     */
-    public function process(PHPUnit_Framework_TestResult $result, $minLines = 5, $minMatches = 70)
+    public function __construct($threshold = array(5, 30))
     {
-        $codeCoverage = $result->getCodeCoverageInformation();
-        $summary      = PHPUnit_Util_CodeCoverage::getSummary($codeCoverage);
-        $files        = array_keys($summary);
-        $metrics      = new PHPUnit_Util_Metrics_Project($files, $summary, TRUE, $minLines, $minMatches);
+        parent::__construct($threshold);
+    }
 
-        $document = new DOMDocument('1.0', 'UTF-8');
-        $document->formatOutput = TRUE;
+    public function apply(PHPUnit_Util_Metrics $metrics)
+    {
+        $numCrappyMethods = 0;
+        $numMethods       = 0;
 
-        $cpd = $document->createElement('pmd-cpd');
-        $cpd->setAttribute('version', 'PHPUnit ' . PHPUnit_Runner_Version::id());
-        $document->appendChild($cpd);
+        foreach ($metrics->getClasses() as $class) {
+            $methods = $class->getMethods();
 
-        foreach ($metrics->getDuplicates() as $duplicate) {
-            $xmlDuplication = $cpd->appendChild(
-              $document->createElement('duplication')
-            );
+            foreach ($methods as $method) {
+                if ($method->getCrapIndex() > $this->threshold[1]) {
+                    $numCrappyMethods++;
+                }
+            }
 
-            $xmlDuplication->setAttribute('lines', $duplicate['numLines']);
-            $xmlDuplication->setAttribute('tokens', $duplicate['numTokens']);
-
-            $xmlFile = $xmlDuplication->appendChild(
-              $document->createElement('file')
-            );
-
-            $xmlFile->setAttribute('path', $duplicate['fileA']->getPath());
-            $xmlFile->setAttribute('line', $duplicate['firstLineA']);
-
-            $xmlFile = $xmlDuplication->appendChild(
-              $document->createElement('file')
-            );
-
-            $xmlFile->setAttribute('path', $duplicate['fileB']->getPath());
-            $xmlFile->setAttribute('line', $duplicate['firstLineB']);
-
-            $codefragment = $xmlDuplication->appendChild(
-              $document->createElement('codefragment')
-            );
-
-            $codefragment->appendChild(
-              $document->createCDATASection(
-                utf8_encode(
-                  join(
-                    '',
-                    array_slice(
-                      $duplicate['fileA']->getLines(),
-                      $duplicate['firstLineA'] - 1,
-                      $duplicate['numLines']
-                    )
-                  )
-                )
-              )
-            );
+            $numMethods += count($methods);
         }
 
-        $this->write($document->saveXML());
-        $this->flush();
+        if ($numMethods > 0) {
+            $percent = ($numCrappyMethods / $numMethods) * 100;
+        } else {
+            $percent = 0;
+        }
+
+        if ($percent > $this->threshold[0]) {
+            return sprintf(
+              "More than %01.2f%% of the project's methods have a Change Risk " .
+              'Analysis and Predictions (CRAP) index that is above the threshold ' .
+              "of %d.\n" .
+              'The CRAP index of a function or method uses cyclomatic complexity ' .
+              'and code coverage from automated tests to help estimate the ' .
+              'effort and risk associated with maintaining legacy code. A CRAP ' .
+              'index over 30 is a good indicator of crappy code.',
+              $this->threshold[0],
+              $this->threshold[1]
+            );
+        }
     }
 }
 ?>
