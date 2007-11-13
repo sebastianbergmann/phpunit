@@ -193,6 +193,10 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
                     $arguments['reportCharset'] = $loggingConfiguration['charset'];
                 }
 
+                if (isset($loggingConfiguration['yui']) && !isset($arguments['reportYUI'])) {
+                    $arguments['reportYUI'] = $loggingConfiguration['yui'];
+                }
+
                 if (isset($loggingConfiguration['highlight']) && !isset($arguments['reportHighlight'])) {
                     $arguments['reportHighlight'] = $loggingConfiguration['highlight'];
                 }
@@ -273,6 +277,7 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
         $arguments['cpdMinMatches']        = isset($arguments['cpdMinMatches'])        ? $arguments['cpdMinMatches']        : 70;
         $arguments['logIncompleteSkipped'] = isset($arguments['logIncompleteSkipped']) ? $arguments['logIncompleteSkipped'] : FALSE;
         $arguments['reportCharset']        = isset($arguments['reportCharset'])        ? $arguments['reportCharset']        : 'ISO-8859-1';
+        $arguments['reportYUI']            = isset($arguments['reportYUI'])            ? $arguments['reportYUI']            : TRUE;
         $arguments['reportHighlight']      = isset($arguments['reportHighlight'])      ? $arguments['reportHighlight']      : FALSE;
         $arguments['reportLowUpperBound']  = isset($arguments['reportLowUpperBound'])  ? $arguments['reportLowUpperBound']  : 35;
         $arguments['reportHighLowerBound'] = isset($arguments['reportHighLowerBound']) ? $arguments['reportHighLowerBound'] : 70;
@@ -463,6 +468,7 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
               $result,
               $arguments['reportDirectory'],
               $arguments['reportCharset'],
+              $arguments['reportYUI'],
               $arguments['reportHighlight'],
               $arguments['reportLowUpperBound'],
               $arguments['reportHighLowerBound']
