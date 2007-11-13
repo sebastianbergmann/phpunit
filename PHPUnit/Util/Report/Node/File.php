@@ -164,10 +164,10 @@ class PHPUnit_Util_Report_Node_File extends PHPUnit_Util_Report_Node
             throw new RuntimeException;
         }
 
-        $this->codeLines     = $this->loadFile($path);
-        $this->yui           = $yui;
-        $this->highlight     = $highlight;
         $this->executedLines = $executedLines;
+        $this->highlight     = $highlight;
+        $this->yui           = $yui;
+        $this->codeLines     = $this->loadFile($path);
 
         $this->calculateStatistics();
     }
