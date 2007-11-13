@@ -78,12 +78,6 @@ class PHPUnit_Util_Template
      * @var    array
      * @access protected
      */
-    protected $keys = array();
-
-    /**
-     * @var    array
-     * @access protected
-     */
     protected $values = array();
 
     /**
@@ -117,26 +111,15 @@ class PHPUnit_Util_Template
     /**
      * Sets one or more template variables.
      *
-     * @param  mixed   $keys
-     * @param  mixed   $values
+     * @param  array   $values
      * @param  boolean $merge
      * @access public
      */
-    public function setVar($keys, $values, $merge = TRUE) {
-        if (!$merge) {
-            $this->keys   = array();
-            $this->values = array();
-        }
-
-        if (is_array($keys) && is_array($values) && count($keys) == count($values)) {
-            foreach ($keys as $key) {
-                $this->keys[] = '{' . $key . '}';
-            }
-
-            $this->values = array_merge($this->values, $values);
+    public function setVar(array $values, $merge = TRUE) {
+        if (!$merge || empty($this->values)) {
+            $this->values = $values;
         } else {
-            $this->keys[]   = '{' . $keys . '}';
-            $this->values[] = $values;
+            $this->values = array_merge($this->values, $values);
         }
     }
 
@@ -147,7 +130,13 @@ class PHPUnit_Util_Template
      * @access public
      */
     public function render() {
-        return str_replace($this->keys, $this->values, $this->template);
+        $keys = array();
+
+        foreach ($this->values as $key => $value) {
+            $keys[] = '{' . $key . '}';
+        }
+
+        return str_replace($keys, $this->values, $this->template);
     }
 
     /**
