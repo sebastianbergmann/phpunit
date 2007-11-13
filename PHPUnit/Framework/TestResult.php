@@ -613,11 +613,12 @@ class PHPUnit_Framework_TestResult implements Countable
         $time = PHPUnit_Util_Timer::stop();
 
         if ($useXdebug) {
-            $this->appendCodeCoverageInformation(
-              $test, xdebug_get_code_coverage()
-            );
-
+            $codeCoverage = xdebug_get_code_coverage();
             xdebug_stop_code_coverage();
+
+            $this->appendCodeCoverageInformation(
+              $test, $codeCoverage
+            );
         }
 
         if ($errorHandlerSet === TRUE) {
