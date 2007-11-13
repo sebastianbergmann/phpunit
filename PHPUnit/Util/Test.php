@@ -147,27 +147,15 @@ class PHPUnit_Util_Test
         $result = array();
 
         try {
-            $class   = new ReflectionClass($className);
-            $method  = new ReflectionMethod($className, $methodName);
-            $methods = array();
-
-            $docComment = $class->getDocComment();
+            $class      = new ReflectionClass($className);
+            $method     = new ReflectionMethod($className, $methodName);
+            $docComment = $class->getDocComment() . $method->getDocComment();
 
             if (preg_match_all('/@covers[\s]+([\:\.\w]+)/', $docComment, $matches)) {
-                $methods = $matches[1];
-            }
+                foreach ($matches[1] as $method) {
+                    if (strpos($method, '::') !== FALSE) {
+                        list($className, $methodName) = explode('::', $method);
 
-            $docComment = $method->getDocComment();
-
-            if (preg_match_all('/@covers[\s]+([\:\.\w]+)/', $docComment, $matches)) {
-                $methods = array_merge($methods, $matches[1]);
-            }
-
-            foreach ($methods as $method) {
-                if (strpos($method, '::') !== FALSE) {
-                    list($className, $methodName) = explode('::', $method);
-
-                    try {
                         $_method   = new ReflectionMethod($className, $methodName);
                         $fileName  = $_method->getFileName();
                         $startLine = $_method->getStartLine();
@@ -177,12 +165,10 @@ class PHPUnit_Util_Test
                             $result[$fileName] = array();
                         }
 
-                        for ($i = $startLine; $i <= $endLine; $i++) {
-                            $result[$fileName][] = $i;
-                        }
-                    }
-
-                    catch (ReflectionException $e) {
+                        $result[$fileName] = array_merge(
+                          $result[$fileName],
+                          range($startLine, $endLine)
+                        );
                     }
                 }
             }
