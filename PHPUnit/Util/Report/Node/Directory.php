@@ -147,14 +147,17 @@ class PHPUnit_Util_Report_Node_Directory extends PHPUnit_Util_Report_Node
      *
      * @param  string  $name
      * @param  array   $lines
+     * @param  boolean $yui
      * @param  boolean $highlight
      * @return PHPUnit_Util_Report_Node_File
      * @throws RuntimeException
      * @access public
      */
-    public function addFile($name, array $lines, $highlight)
+    public function addFile($name, array $lines, $yui, $highlight)
     {
-        $file = new PHPUnit_Util_Report_Node_File($name, $this, $lines, $highlight);
+        $file = new PHPUnit_Util_Report_Node_File(
+          $name, $this, $lines, $yui, $highlight
+        );
 
         $this->children[] = $file;
         $this->files[]    = &$this->children[count($this->children) - 1];
