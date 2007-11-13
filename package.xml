@@ -926,6 +926,7 @@
        <file baseinstalldir="/" name="container-min.js" role="php" />
        <file baseinstalldir="/" name="directory.html" role="php" />
        <file baseinstalldir="/" name="file.html" role="php" />
+       <file baseinstalldir="/" name="file_no_yui.html" role="php" />
        <file baseinstalldir="/" name="glass.png" role="php" />
        <file baseinstalldir="/" name="item.html" role="php" />
        <file baseinstalldir="/" name="method_item.html" role="php" />

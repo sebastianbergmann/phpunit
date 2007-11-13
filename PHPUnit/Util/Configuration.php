@@ -59,7 +59,8 @@ PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
  * <phpunit>
  *   <logging>
  *     <log type="coverage-html" target="/tmp/report" charset="UTF-8"
- *          highlight="false" lowUpperBound="35" highLowerBound="70"/>
+ *          yui="true" highlight="false"
+ *          lowUpperBound="35" highLowerBound="70"/>
  *     <log type="coverage-xml" target="/tmp/coverage.xml"/>
  *     <log type="graphviz" target="/tmp/logfile.dot"/>
  *     <log type="json" target="/tmp/logfile.json"/>
@@ -152,6 +153,14 @@ class PHPUnit_Util_Configuration
 
                 if ($log->hasAttribute('highLowerBound')) {
                     $result['highLowerBound'] = (string)$log->getAttribute('highLowerBound');
+                }
+
+                if ($log->hasAttribute('yui')) {
+                    if ((string)$log->getAttribute('yui') == 'true') {
+                        $result['yui'] = TRUE;
+                    } else {
+                        $result['yui'] = FALSE;
+                    }
                 }
 
                 if ($log->hasAttribute('highlight')) {

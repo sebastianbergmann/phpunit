@@ -75,13 +75,14 @@ abstract class PHPUnit_Util_Report
      * @param  PHPUnit_Framework_TestResult $result
      * @param  string                       $target
      * @param  string                       $charset
+     * @param  boolean                      $yui
      * @param  boolean                      $highlight
      * @param  integer                      $lowUpperBound
      * @param  integer                      $highLowerBound
      * @access public
      * @static
      */
-    public static function render(PHPUnit_Framework_TestResult $result, $target, $charset = 'ISO-8859-1', $highlight = FALSE, $lowUpperBound = 35, $highLowerBound = 70)
+    public static function render(PHPUnit_Framework_TestResult $result, $target, $charset = 'ISO-8859-1', $yui = TRUE, $highlight = FALSE, $lowUpperBound = 35, $highLowerBound = 70)
     {
         self::$templatePath = sprintf(
           '%s%sReport%sTemplate%s',
@@ -99,7 +100,7 @@ abstract class PHPUnit_Util_Report
 
         $root = new PHPUnit_Util_Report_Node_Directory($commonPath, NULL);
 
-        self::addItems($root, $items, $files, $highlight);
+        self::addItems($root, $items, $files, $yui, $highlight);
         self::copyFiles($target);
 
         $root->render(
@@ -116,16 +117,19 @@ abstract class PHPUnit_Util_Report
      * @param  PHPUnit_Util_Report_Node_Directory $root
      * @param  array   $items
      * @param  array   $files
+     * @param  boolean $yui
      * @param  boolean $highlight
      * @access protected
      * @static
      */
-    protected static function addItems(PHPUnit_Util_Report_Node_Directory $root, array $items, array $files, $highlight)
+    protected static function addItems(PHPUnit_Util_Report_Node_Directory $root, array $items, array $files, $yui, $highlight)
     {
         foreach ($items as $key => $value) {
             if (substr($key, -2) == '/f') {
                 try {
-                    $file = $root->addFile(substr($key, 0, -2), $value, $highlight);
+                    $file = $root->addFile(
+                      substr($key, 0, -2), $value, $yui, $highlight
+                    );
                 }
 
                 catch (RuntimeException $e) {
@@ -133,7 +137,7 @@ abstract class PHPUnit_Util_Report
                 }
             } else {
                 $child = $root->addDirectory($key);
-                self::addItems($child, $value, $files, $highlight);
+                self::addItems($child, $value, $files, $yui, $highlight);
             }
         }
     }

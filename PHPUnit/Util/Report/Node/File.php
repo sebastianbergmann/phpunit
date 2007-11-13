@@ -87,7 +87,13 @@ class PHPUnit_Util_Report_Node_File extends PHPUnit_Util_Report_Node
      * @var    boolean
      * @access protected
      */
-    protected $highlight;
+    protected $yui = TRUE;
+
+    /**
+     * @var    boolean
+     * @access protected
+     */
+    protected $highlight = FALSE;
 
     /**
      * @var    integer
@@ -143,11 +149,12 @@ class PHPUnit_Util_Report_Node_File extends PHPUnit_Util_Report_Node
      * @param  string                   $name
      * @param  PHPUnit_Util_Report_Node $parent
      * @param  array                    $executedLines
+     * @param  boolean                  $yui
      * @param  boolean                  $highlight
      * @throws RuntimeException
      * @access public
      */
-    public function __construct($name, PHPUnit_Util_Report_Node $parent = NULL, array $executedLines, $highlight = FALSE)
+    public function __construct($name, PHPUnit_Util_Report_Node $parent = NULL, array $executedLines, $yui = TRUE, $highlight = FALSE)
     {
         parent::__construct($name, $parent);
 
@@ -158,6 +165,7 @@ class PHPUnit_Util_Report_Node_File extends PHPUnit_Util_Report_Node
         }
 
         $this->codeLines     = $this->loadFile($path);
+        $this->yui           = $yui;
         $this->highlight     = $highlight;
         $this->executedLines = $executedLines;
 
@@ -255,13 +263,19 @@ class PHPUnit_Util_Report_Node_File extends PHPUnit_Util_Report_Node
      */
     public function render($target, $title, $charset = 'ISO-8859-1', $highlight = FALSE, $lowUpperBound = 35, $highLowerBound = 70)
     {
-        $template = new PHPUnit_Util_Template(
-          PHPUnit_Util_Report::$templatePath . 'file.html'
-        );
+        if ($this->yui) {
+            $template = new PHPUnit_Util_Template(
+              PHPUnit_Util_Report::$templatePath . 'file.html'
+            );
 
-        $yuiTemplate = new PHPUnit_Util_Template(
-          PHPUnit_Util_Report::$templatePath . 'yui_item.js'
-        );
+            $yuiTemplate = new PHPUnit_Util_Template(
+              PHPUnit_Util_Report::$templatePath . 'yui_item.js'
+            );
+        } else {
+            $template = new PHPUnit_Util_Template(
+              PHPUnit_Util_Report::$templatePath . 'file_no_yui.html'
+            );
+        }
 
         $i      = 1;
         $lines  = '';
@@ -289,74 +303,77 @@ class PHPUnit_Util_Report_Node_File extends PHPUnit_Util_Report_Node
                     $color    = 'lineCov';
                     $numTests = count($this->executedLines[$i]);
                     $count    = sprintf('%8d', $numTests);
-                    $buffer   = '';
 
-                    foreach ($this->executedLines[$i] as $test) {
-                        if (!isset($test->__liHtml)) {
-                            $test->__liHtml = '';
+                    if ($this->yui) {
+                        $buffer = '';
 
-                            if ($test instanceof PHPUnit_Framework_SelfDescribing) {
-                                $testName = $test->toString();
+                        foreach ($this->executedLines[$i] as $test) {
+                            if (!isset($test->__liHtml)) {
+                                $test->__liHtml = '';
 
-                                if ($test instanceof PHPUnit_Framework_TestCase) {
-                                    switch ($test->getStatus()) {
-                                        case PHPUnit_Runner_BaseTestRunner::STATUS_PASSED: {
-                                            $testCSS = ' class=\"testPassed\"';
-                                        }
-                                        break;
+                                if ($test instanceof PHPUnit_Framework_SelfDescribing) {
+                                    $testName = $test->toString();
 
-                                        case PHPUnit_Runner_BaseTestRunner::STATUS_FAILURE: {
-                                            $testCSS = ' class=\"testFailure\"';
-                                        }
-                                        break;
+                                    if ($test instanceof PHPUnit_Framework_TestCase) {
+                                        switch ($test->getStatus()) {
+                                            case PHPUnit_Runner_BaseTestRunner::STATUS_PASSED: {
+                                                $testCSS = ' class=\"testPassed\"';
+                                            }
+                                            break;
 
-                                        case PHPUnit_Runner_BaseTestRunner::STATUS_ERROR: {
-                                            $testCSS = ' class=\"testError\"';
-                                        }
-                                        break;
+                                            case PHPUnit_Runner_BaseTestRunner::STATUS_FAILURE: {
+                                                $testCSS = ' class=\"testFailure\"';
+                                            }
+                                            break;
 
-                                        case PHPUnit_Runner_BaseTestRunner::STATUS_INCOMPLETE:
-                                        case PHPUnit_Runner_BaseTestRunner::STATUS_SKIPPED: {
-                                            $testCSS = ' class=\"testIncomplete\"';
-                                        }
-                                        break;
+                                            case PHPUnit_Runner_BaseTestRunner::STATUS_ERROR: {
+                                                $testCSS = ' class=\"testError\"';
+                                            }
+                                            break;
 
-                                        default: {
-                                            $testCSS = '';
+                                            case PHPUnit_Runner_BaseTestRunner::STATUS_INCOMPLETE:
+                                            case PHPUnit_Runner_BaseTestRunner::STATUS_SKIPPED: {
+                                                $testCSS = ' class=\"testIncomplete\"';
+                                            }
+                                            break;
+
+                                            default: {
+                                                $testCSS = '';
+                                            }
                                         }
                                     }
                                 }
+
+                                $test->__liHtml .= sprintf(
+                                  '<li%s>%s</li>',
+
+                                  $testCSS,
+                                  $testName
+                                );
                             }
 
-                            $test->__liHtml .= sprintf(
-                              '<li%s>%s</li>',
-
-                              $testCSS,
-                              $testName
-                            );
+                            $buffer .= $test->__liHtml;
                         }
 
-                        $buffer .= $test->__liHtml;
+                        if ($numTests > 1) {
+                            $header = $numTests . ' tests cover';
+                        } else {
+                            $header = '1 test covers';
+                        }
+
+                        $header .= ' line ' . $i;
+
+                        $yuiTemplate->setVar(
+                          array(
+                            'line'   => $i,
+                            'header' => $header,
+                            'tests'  => $buffer
+                          ),
+                          FALSE
+                        );
+
+                        $this->yuiPanelJS .= $yuiTemplate->render();
                     }
-
-                    if ($numTests > 1) {
-                        $header = $numTests . ' tests cover';
-                    } else {
-                        $header = '1 test covers';
-                    }
-
-                    $header .= ' line ' . $i;
-
-                    $yuiTemplate->setVar(
-                      array(
-                        'line'   => $i,
-                        'header' => $header,
-                        'tests'  => $buffer
-                      ),
-                      FALSE
-                    );
-
-                    $this->yuiPanelJS .= $yuiTemplate->render();
                 }
 
                 // -1: Line is executable and was not executed.
