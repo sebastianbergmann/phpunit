@@ -166,17 +166,17 @@ abstract class PHPUnit_Util_CodeCoverage
                     foreach ($lines as $line => $flag) {
                         // +1: Line is executable and was executed.
                         if ($flag == 1) {
-                            if (!isset($fileSummary[$line]) ||
-                                !is_array($fileSummary[$line])) {
-                                $fileSummary[$line] = array();
+                            if (isset($fileSummary[$line][0])) {
+                                $fileSummary[$line][] = $test['test'];
                             }
-
-                            $fileSummary[$line][] = $test['test'];
+                            else {
+                                $fileSummary[$line] = array($test['test']);
+                            }
                         }
 
                         // -1: Line is executable and was not executed.
                         // -2: Line is dead code.
-                        else if (!(isset($fileSummary[$line]) && is_array($fileSummary[$line]))) {
+                        else if (!isset($fileSummary[$line])) {
                             $fileSummary[$line] = $flag;
                         }
                     }
