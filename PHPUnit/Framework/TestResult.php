@@ -481,6 +481,34 @@ class PHPUnit_Framework_TestResult implements Countable
      */
     public function appendCodeCoverageInformation(PHPUnit_Framework_Test $test, $data)
     {
+        if ($test instanceof PHPUnit_Framework_TestCase) {
+            $linesToBeCovered = PHPUnit_Util_Test::getLinesToBeCovered(
+              get_class($test), $test->getName()
+            );
+
+            if (!empty($linesToBeCovered)) {
+                $filesToBeCovered = array_keys($linesToBeCovered);
+                $filesCovered     = array_keys($data);
+                $numFilesCovered  = count($filesCovered);
+
+                for ($i = 0; $i < $numFilesCovered; $i++) {
+                    if (!in_array($filesCovered[$i], $filesToBeCovered)) {
+                        unset($filesCovered[$i]);
+                    } else {
+                        $linesCovered    = array_keys($data[$filesCovered[$i]]);
+                        $numLinesCovered = count($linesCovered);
+
+                        for ($j = 0; $j < $numLinesCovered; $j++) {
+                            if (!in_array($linesCovered[$j], $linesToBeCovered[$filesCovered[$i]]) &&
+                                $data[$filesCovered[$i]][$linesCovered[$j]] > 0) {
+                                $data[$filesCovered[$i]][$linesCovered[$j]] = -1;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
         $this->codeCoverageInformation[] = array(
           'test'  => $test,
           'files' => $data

@@ -44,8 +44,6 @@
  * @since      File available since Release 3.2.0
  */
 
-@include_once 'Image/GraphViz.php';
-
 require_once 'PHPUnit/Util/Filter.php';
 require_once 'PHPUnit/Util/Metrics.php';
 
@@ -65,9 +63,6 @@ PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
  */
 class PHPUnit_Util_Metrics_Project extends PHPUnit_Util_Metrics
 {
-    public static $CPD_MINIMAL_MATCHES = 70;
-    public static $CPD_MINIMAL_LINES   = 5;
-
     protected static $CPD_IGNORE_LIST = array(
       T_INLINE_HTML,
       T_COMMENT,
@@ -100,9 +95,11 @@ class PHPUnit_Util_Metrics_Project extends PHPUnit_Util_Metrics
      * @param  array   $files
      * @param  array   $codeCoverage
      * @param  boolean $cpd
+     * @param  integer $cpdMinLines
+     * @param  integer $cpdMinMatches
      * @access public
      */
-    public function __construct(Array $files, &$codeCoverage = array(), $cpd = FALSE)
+    public function __construct(Array $files, &$codeCoverage = array(), $cpd = FALSE, $cpdMinLines = 5, $cpdMinMatches = 70)
     {
         foreach ($files as $file) {
             $this->files[$file] = PHPUnit_Util_Metrics_File::factory($file, $codeCoverage);
@@ -158,7 +155,7 @@ class PHPUnit_Util_Metrics_Project extends PHPUnit_Util_Metrics
         }
 
         if ($cpd) {
-            $this->copyPasteDetection();
+            $this->copyPasteDetection($cpdMinLines, $cpdMinMatches);
         }
     }
 
@@ -340,9 +337,12 @@ class PHPUnit_Util_Metrics_Project extends PHPUnit_Util_Metrics
     /**
      * Copy & Paste Detection (CPD).
      *
+     * @param  integer $minLines
+     * @param  integer $minMatches
+     * @access protected
      * @author Johann-Peter Hartmann <johann-peter.hartmann@mayflower.de>
      */
-    protected function copyPasteDetection()
+    protected function copyPasteDetection($minLines, $minMatches)
     {
         foreach ($this->files as $file) {
             $currentTokenPositions = array();
@@ -379,7 +379,7 @@ class PHPUnit_Util_Metrics_Project extends PHPUnit_Util_Metrics
                       md5(
                         substr(
                           $currentSignature, $tokenNr * 5,
-                          self::$CPD_MINIMAL_MATCHES * 5
+                          $minMatches * 5
                         ),
                         TRUE
                       ),
@@ -397,7 +397,7 @@ class PHPUnit_Util_Metrics_Project extends PHPUnit_Util_Metrics
                         }
                     } else {
                         if ($found) {
-                            if ($line + 1 - $firstLine > self::$CPD_MINIMAL_LINES ) {
+                            if ($line + 1 - $firstLine > $minLines) {
                                 $this->cpdDuplicates[] = array(
                                   'fileA'      => $this->cpdHashes[$firstHash][0],
                                   'firstLineA' => $this->cpdHashes[$firstHash][1],
@@ -417,11 +417,11 @@ class PHPUnit_Util_Metrics_Project extends PHPUnit_Util_Metrics
 
                     $tokenNr++;
                 } while ($tokenNr <= (count($currentTokenPositions) -
-                         self::$CPD_MINIMAL_MATCHES )+1);
+                         $minMatches )+1);
             }
 
             if ($found) {
-                if ($line + 1 - $firstLine > self::$CPD_MINIMAL_LINES ) {
+                if ($line + 1 - $firstLine > $minLines) {
                     $this->cpdDuplicates[] = array(
                       'fileA'      => $this->cpdHashes[$firstHash][0],
                       'firstLineA' => $this->cpdHashes[$firstHash][1],

@@ -39,16 +39,18 @@
  * @author     Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @copyright  2002-2007 Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
- * @version    SVN: $Id$
+ * @version    SVN: $Id: Class.php 1522 2007-10-28 13:42:55Z sb $
  * @link       http://www.phpunit.de/
- * @since      File available since Release 2.3.0
+ * @since      File available since Release 3.2.0
  */
 
-require_once 'PHPUnit/Framework/TestCase.php';
-require_once 'BankAccount.php';
+require_once 'PHPUnit/Util/Log/PMD/Rule.php';
+require_once 'PHPUnit/Util/Filter.php';
+
+PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
 
 /**
- * Tests for the BankAccount class.
+ * Abstract base class for PMD rule classes that operate on the project-level.
  *
  * @category   Testing
  * @package    PHPUnit
@@ -57,75 +59,9 @@ require_once 'BankAccount.php';
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    Release: @package_version@
  * @link       http://www.phpunit.de/
- * @since      Class available since Release 2.3.0
+ * @since      Class available since Release 3.2.0
  */
-class BankAccountTest extends PHPUnit_Framework_TestCase
+abstract class PHPUnit_Util_Log_PMD_Rule_Project extends PHPUnit_Util_Log_PMD_Rule
 {
-    protected $ba;
-
-    protected function setUp()
-    {
-        $this->ba = new BankAccount;
-    }
-
-    /**
-     * @covers BankAccount::getBalance
-     */
-    public function testBalanceIsInitiallyZero()
-    {
-        $this->assertEquals(0, $this->ba->getBalance());
-    }
-
-    /**
-     * @covers BankAccount::withdrawMoney
-     */
-    public function testBalanceCannotBecomeNegative()
-    {
-        try {
-            $this->ba->withdrawMoney(1);
-        }
-
-        catch (BankAccountException $e) {
-            $this->assertEquals(0, $this->ba->getBalance());
-
-            return;
-        }
-
-        $this->fail();
-    }
-
-    /**
-     * @covers BankAccount::depositMoney
-     */
-    public function testBalanceCannotBecomeNegative2()
-    {
-        try {
-            $this->ba->depositMoney(-1);
-        }
-
-        catch (BankAccountException $e) {
-            $this->assertEquals(0, $this->ba->getBalance());
-
-            return;
-        }
-
-        $this->fail();
-    }
-
-    /**
-     * @covers BankAccount::getBalance
-     * @covers BankAccount::depositMoney
-     * @covers BankAccount::withdrawMoney
-     */
-/*
-    public function testDepositWithdrawMoney()
-    {
-        $this->assertEquals(0, $this->ba->getBalance());
-        $this->ba->depositMoney(1);
-        $this->assertEquals(1, $this->ba->getBalance());
-        $this->ba->withdrawMoney(1);
-        $this->assertEquals(0, $this->ba->getBalance());
-    }
-*/
 }
 ?>

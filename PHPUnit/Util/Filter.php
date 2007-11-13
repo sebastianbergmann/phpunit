@@ -298,13 +298,17 @@ class PHPUnit_Util_Filter
     public static function getFilteredCodeCoverage(array $codeCoverageInformation, $filterTests = TRUE, $filterPHPUnit = TRUE, $addUncoveredFilesFromWhitelist = TRUE)
     {
         if (self::$filter) {
-            $coveredFiles = array();
-            $max          = count($codeCoverageInformation);
+            $coveredFiles    = array();
+            $isFilteredCache = array();
 
-            for ($i = 0; $i < $max; $i++) {
-                foreach (array_keys($codeCoverageInformation[$i]['files']) as $file) {
-                    if (self::isFiltered($file, $filterTests, $filterPHPUnit)) {
-                        unset($codeCoverageInformation[$i]['files'][$file]);
+            foreach ($codeCoverageInformation as $k => $test) {
+                foreach (array_keys($test['files']) as $file) {
+                    if (!isset($isFilteredCache[$file])) {
+                        $isFilteredCache[$file] = self::isFiltered($file, $filterTests, $filterPHPUnit);
+                    }
+
+                    if ($isFilteredCache[$file]) {
+                        unset($codeCoverageInformation[$k]['files'][$file]);
                     } else {
                         $coveredFiles[] = $file;
                     }

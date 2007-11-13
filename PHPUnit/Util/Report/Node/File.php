@@ -84,6 +84,12 @@ class PHPUnit_Util_Report_Node_File extends PHPUnit_Util_Report_Node
     protected $executedLines;
 
     /**
+     * @var    boolean
+     * @access protected
+     */
+    protected $highlight;
+
+    /**
      * @var    integer
      * @access protected
      */
@@ -96,15 +102,52 @@ class PHPUnit_Util_Report_Node_File extends PHPUnit_Util_Report_Node
     protected $numExecutedLines = 0;
 
     /**
+     * @var    array
+     * @access protected
+     */
+    protected $classes = array();
+
+    /**
+     * @var    integer
+     * @access protected
+     */
+    protected $numClasses = 0;
+
+    /**
+     * @var    integer
+     * @access protected
+     */
+    protected $numCalledClasses = 0;
+
+    /**
+     * @var    integer
+     * @access protected
+     */
+    protected $numMethods = 0;
+
+    /**
+     * @var    integer
+     * @access protected
+     */
+    protected $numCalledMethods = 0;
+
+    /**
+     * @var    string
+     * @access protected
+     */
+    protected $yuiPanelJS = '';
+
+    /**
      * Constructor.
      *
-     * @param  string                         $name
-     * @param  PHPUnit_Util_CodeCoverage_Node $parent
-     * @param  array                          $lines
+     * @param  string                   $name
+     * @param  PHPUnit_Util_Report_Node $parent
+     * @param  array                    $executedLines
+     * @param  boolean                  $highlight
      * @throws RuntimeException
      * @access public
      */
-    public function __construct($name, PHPUnit_Util_Report_Node $parent, array $executedLines)
+    public function __construct($name, PHPUnit_Util_Report_Node $parent = NULL, array $executedLines, $highlight = FALSE)
     {
         parent::__construct($name, $parent);
 
@@ -114,10 +157,22 @@ class PHPUnit_Util_Report_Node_File extends PHPUnit_Util_Report_Node
             throw new RuntimeException;
         }
 
-        $this->codeLines     = $this->highlightFile($path);
+        $this->codeLines     = $this->loadFile($path);
+        $this->highlight     = $highlight;
         $this->executedLines = $executedLines;
 
-        $this->countLines();
+        $this->calculateStatistics();
+    }
+
+    /**
+     * Returns the classes of this node.
+     *
+     * @return array
+     * @access public
+     */
+    public function getClasses()
+    {
+        return $this->classes;
     }
 
     /**
@@ -143,17 +198,69 @@ class PHPUnit_Util_Report_Node_File extends PHPUnit_Util_Report_Node
     }
 
     /**
-     * Renders this node.
+     * Returns the number of classes.
      *
-     * @param string $target
-     * @param string $title
-     * @param string $charset
+     * @return integer
      * @access public
      */
-    public function render($target, $title, $charset = 'ISO-8859-1')
+    public function getNumClasses()
+    {
+        return $this->numClasses;
+    }
+
+    /**
+     * Returns the number of classes of which at least one method
+     * has been called at least once.
+     *
+     * @return integer
+     * @access public
+     */
+    public function getNumCalledClasses()
+    {
+        return $this->numCalledClasses;
+    }
+
+    /**
+     * Returns the number of methods.
+     *
+     * @return integer
+     * @access public
+     */
+    public function getNumMethods()
+    {
+        return $this->numMethods;
+    }
+
+    /**
+     * Returns the number of methods that has been called at least once.
+     *
+     * @return integer
+     * @access public
+     */
+    public function getNumCalledMethods()
+    {
+        return $this->numCalledMethods;
+    }
+
+    /**
+     * Renders this node.
+     *
+     * @param string  $target
+     * @param string  $title
+     * @param string  $charset
+     * @param boolean $highlight
+     * @param integer $lowUpperBound
+     * @param integer $highLowerBound
+     * @access public
+     */
+    public function render($target, $title, $charset = 'ISO-8859-1', $highlight = FALSE, $lowUpperBound = 35, $highLowerBound = 70)
     {
         $template = new PHPUnit_Util_Template(
-          PHPUnit_Util_Report::$templatePath . 'coverage_file.html'
+          PHPUnit_Util_Report::$templatePath . 'file.html'
+        );
+
+        $yuiTemplate = new PHPUnit_Util_Template(
+          PHPUnit_Util_Report::$templatePath . 'yui_item.js'
         );
 
         $i      = 1;
@@ -161,12 +268,14 @@ class PHPUnit_Util_Report_Node_File extends PHPUnit_Util_Report_Node
         $ignore = FALSE;
 
         foreach ($this->codeLines as $line) {
-            if (strpos($line, '@codeCoverageIgnoreStart') !== FALSE) {
-                $ignore = TRUE;
-            }
+            if (strpos($line, '@codeCoverageIgnore') !== FALSE) {
+                if (strpos($line, '@codeCoverageIgnoreStart') !== FALSE) {
+                    $ignore = TRUE;
+                }
 
-            else if (strpos($line, '@codeCoverageIgnoreEnd') !== FALSE) {
-                $ignore = FALSE;
+                else if (strpos($line, '@codeCoverageIgnoreEnd') !== FALSE) {
+                    $ignore = FALSE;
+                }
             }
 
             $css = '';
@@ -177,8 +286,82 @@ class PHPUnit_Util_Report_Node_File extends PHPUnit_Util_Report_Node
                 // Array: Line is executable and was executed.
                 // count(Array) = Number of tests that hit this line.
                 if (is_array($this->executedLines[$i])) {
-                    $color = 'lineCov';
-                    $count = sprintf('%8d', count($this->executedLines[$i]));
+                    $color    = 'lineCov';
+                    $numTests = count($this->executedLines[$i]);
+                    $count    = sprintf('%8d', $numTests);
+                    $buffer   = '';
+
+                    foreach ($this->executedLines[$i] as $test) {
+                        if (!isset($test->__liHtml)) {
+                            $test->__liHtml = '';
+
+                            if ($test instanceof PHPUnit_Framework_SelfDescribing) {
+                                $testName = $test->toString();
+
+                                if ($test instanceof PHPUnit_Framework_TestCase) {
+                                    switch ($test->getStatus()) {
+                                        case PHPUnit_Runner_BaseTestRunner::STATUS_PASSED: {
+                                            $testCSS = ' class=\"testPassed\"';
+                                        }
+                                        break;
+
+                                        case PHPUnit_Runner_BaseTestRunner::STATUS_FAILURE: {
+                                            $testCSS = ' class=\"testFailure\"';
+                                        }
+                                        break;
+
+                                        case PHPUnit_Runner_BaseTestRunner::STATUS_ERROR: {
+                                            $testCSS = ' class=\"testError\"';
+                                        }
+                                        break;
+
+                                        case PHPUnit_Runner_BaseTestRunner::STATUS_INCOMPLETE:
+                                        case PHPUnit_Runner_BaseTestRunner::STATUS_SKIPPED: {
+                                            $testCSS = ' class=\"testIncomplete\"';
+                                        }
+                                        break;
+
+                                        default: {
+                                            $testCSS = '';
+                                        }
+                                    }
+                                }
+                            }
+
+                            $test->__liHtml .= sprintf(
+                              '<li%s>%s</li>',
+
+                              $testCSS,
+                              $testName
+                            );
+                        }
+
+                        $buffer .= $test->__liHtml;
+                    }
+
+                    if ($numTests > 1) {
+                        $header = $numTests . ' tests cover';
+                    } else {
+                        $header = '1 test covers';
+                    }
+
+                    $header .= ' line ' . $i;
+
+                    $yuiTemplate->setVar(
+                      array(
+                        'line',
+                        'header',
+                        'tests'
+                      ),
+                      array(
+                        $i,
+                        $header,
+                        $buffer
+                      ),
+                      FALSE
+                    );
+
+                    $this->yuiPanelJS .= $yuiTemplate->render();
                 }
 
                 // -1: Line is executable and was not executed.
@@ -201,90 +384,291 @@ class PHPUnit_Util_Report_Node_File extends PHPUnit_Util_Report_Node
                 );
             }
 
+            $fillup = array_shift($this->codeLinesFillup);
+
+            if ($fillup > 0) {
+                $line .= str_repeat(' ', $fillup);
+            }
+
             $lines .= sprintf(
-              '<span class="lineNum"><a name="%d"></a><a href="#%d">%8d</a> </span>%s%s%s' . "\n",
+              '<span class="lineNum" id="container%d"><a name="%d"></a><a href="#%d" id="line%d">%8d</a> </span>%s%s%s' . "\n",
 
               $i,
               $i,
               $i,
+              $i,
+              $i,
               !empty($css) ? $css : '                : ',
-              $line . str_repeat(' ', array_shift($this->codeLinesFillup)),
+              !$this->highlight ? htmlspecialchars($line) : $line,
               !empty($css) ? '</span>' : ''
             );
 
             $i++;
         }
 
+        $items = '';
+
+        foreach ($this->classes as $className => $classData) {
+            $numCalledClasses     = $classData['executedLines'] > 0 ? 1   : 0;
+            $calledClassesPercent = $numCalledClasses == 1          ? 100 : 0;
+
+            $numCalledMethods = 0;
+            $numMethods       = count($classData['methods']);
+
+            foreach ($classData['methods'] as $method) {
+                if ($method['executedLines'] > 0) {
+                    $numCalledMethods++;
+                }
+            }
+
+            $items .= $this->doRenderItem(
+              array(
+                'name'                 => sprintf(
+                  '<b><a href="#%d">%s</a></b>',
+
+                  $classData['startLine'],
+                  $className
+                ),
+                'numClasses'           => 1,
+                'numCalledClasses'     => $numCalledClasses,
+                'calledClassesPercent' => sprintf('%01.2f', $calledClassesPercent),
+                'numMethods'           => $numMethods,
+                'numCalledMethods'     => $numCalledMethods,
+                'calledMethodsPercent' => $this->calculatePercent(
+                  $numCalledMethods, $numMethods
+                ),
+                'numExecutableLines'   => $classData['executableLines'],
+                'numExecutedLines'     => $classData['executedLines'],
+                'executedLinesPercent' => $this->calculatePercent(
+                  $classData['executedLines'], $classData['executableLines']
+                )
+              ),
+              $lowUpperBound,
+              $highLowerBound
+            );
+
+            foreach ($classData['methods'] as $methodName => $methodData) {
+                $numCalledMethods     = $methodData['executedLines'] > 0 ? 1  : 0;
+                $calledMethodsPercent = $numCalledMethods == 1           ? 100 : 0;
+
+                $items .= $this->doRenderItem(
+                  array(
+                    'name'                 => sprintf(
+                      '&nbsp;<a href="#%d">%s</a>',
+
+                      $methodData['startLine'],
+                      PHPUnit_Util_Class::getMethodSignature(
+                        new ReflectionMethod($className, $methodName)
+                      )
+                    ),
+                    'numClasses'           => '',
+                    'numCalledClasses'     => '',
+                    'calledClassesPercent' => '',
+                    'numMethods'           => 1,
+                    'numCalledMethods'     => $numCalledMethods,
+                    'calledMethodsPercent' => sprintf('%01.2f', $calledMethodsPercent),
+                    'numExecutableLines'   => $methodData['executableLines'],
+                    'numExecutedLines'     => $methodData['executedLines'],
+                    'executedLinesPercent' => $this->calculatePercent(
+                      $methodData['executedLines'], $methodData['executableLines']
+                    )
+                  ),
+                  $lowUpperBound,
+                  $highLowerBound,
+                  'method_item.html'
+                );
+            }
+        }
+
         $this->setTemplateVars($template, $title, $charset);
-        $template->setVar('lines', $lines);
+
+        $template->setVar(
+          array(
+            'lines',
+            'total_item',
+            'items',
+            'yuiPanelJS'
+          ),
+          array(
+            $lines,
+            $this->renderTotalItem($lowUpperBound, $highLowerBound, FALSE),
+            $items,
+            $this->yuiPanelJS
+          )
+        );
 
         $cleanId = PHPUnit_Util_Filesystem::getSafeFilename($this->getId());
         $template->renderTo($target . $cleanId . '.html');
     }
 
     /**
-     * Counts the executable and executed lines.
+     * Calculates coverage statistics for the file.
      *
      * @access protected
      */
-    protected function countLines()
+    protected function calculateStatistics()
     {
-        $i           = 1;
+        $classes = PHPUnit_Util_Class::getClassesInFile($this->getPath());
+
+        $startLines = array();
+        $endLines   = array();
+
+        foreach ($classes as $class) {
+            if (!$class->isInterface()) {
+                $className      = $class->getName();
+                $classStartLine = $class->getStartLine();
+                $classEndLine   = $class->getEndLine();
+
+                $this->classes[$className] = array(
+                  'methods'         => array(),
+                  'startLine'       => $classStartLine,
+                  'executableLines' => 0,
+                  'executedLines'   => 0
+                );
+
+                $startLines[$classStartLine] = &$this->classes[$className];
+                $endLines[$classEndLine]     = &$this->classes[$className];
+
+                foreach ($class->getMethods() as $method) {
+                    if (!$method->isAbstract() &&
+                        $method->getDeclaringClass()->getName() == $className) {
+                        $methodName      = $method->getName();
+                        $methodStartLine = $method->getStartLine();
+                        $methodEndLine   = $method->getEndLine();
+
+                        $this->classes[$className]['methods'][$methodName] = array(
+                          'startLine'       => $methodStartLine,
+                          'executableLines' => 0,
+                          'executedLines'   => 0
+                        );
+
+                        $startLines[$methodStartLine] = &$this->classes[$className]['methods'][$methodName];
+                        $endLines[$methodEndLine]     = &$this->classes[$className]['methods'][$methodName];
+
+                        $this->numMethods++;
+                    }
+                }
+
+                $this->numClasses++;
+            }
+        }
+
         $ignoreStart = -1;
+        $lineNumber  = 1;
 
         foreach ($this->codeLines as $line) {
-            if (strpos($line, '@codeCoverageIgnoreStart') !== FALSE) {
-                $ignoreStart = $line;
+            if (isset($startLines[$lineNumber])) {
+                // Start line of a class.
+                if (isset($startLines[$lineNumber]['methods'])) {
+                    $currentClass = &$startLines[$lineNumber];
+                }
+
+                // Start line of a method.
+                else {
+                    $currentMethod = &$startLines[$lineNumber];
+                }
             }
 
-            else if (strpos($line, '@codeCoverageIgnoreEnd') !== FALSE) {
-                $ignoreStart = -1;
+            if (strpos($line, '@codeCoverageIgnore') !== FALSE) {
+                if (strpos($line, '@codeCoverageIgnoreStart') !== FALSE) {
+                    $ignoreStart = $line;
+                }
+
+                else if (strpos($line, '@codeCoverageIgnoreEnd') !== FALSE) {
+                    $ignoreStart = -1;
+                }
             }
 
-            if (isset($this->executedLines[$i])) {
+            if (isset($this->executedLines[$lineNumber])) {
                 // Array: Line is executable and was executed.
-                if (is_array($this->executedLines[$i])) {
+                if (is_array($this->executedLines[$lineNumber])) {
+                    if (isset($currentClass)) {
+                        $currentClass['executableLines']++;
+                        $currentClass['executedLines']++;
+                    }
+
+                    if (isset($currentMethod)) {
+                        $currentMethod['executableLines']++;
+                        $currentMethod['executedLines']++;
+                    }
+
                     $this->numExecutableLines++;
                     $this->numExecutedLines++;
                 }
 
                 // -1: Line is executable and was not executed.
-                else if ($this->executedLines[$i] == -1) {
+                else if ($this->executedLines[$lineNumber] == -1) {
+                    if (isset($currentClass)) {
+                        $currentClass['executableLines']++;
+                    }
+
+                    if (isset($currentMethod)) {
+                        $currentMethod['executableLines']++;
+                    }
+
                     $this->numExecutableLines++;
 
                     if ($ignoreStart != -1 && $line > $ignoreStart) {
+                        if (isset($currentClass)) {
+                            $currentClass['executedLines']++;
+                        }
+
+                        if (isset($currentMethod)) {
+                            $currentMethod['executedLines']++;
+                        }
+
                         $this->numExecutedLines++;
                     }
                 }
             }
 
-            $i++;
+            if (isset($endLines[$lineNumber])) {
+                // End line of a class.
+                if (isset($endLines[$lineNumber]['methods'])) {
+                    unset($currentClass);
+                }
+
+                // End line of a method.
+                else {
+                    unset($currentMethod);
+                }
+            }
+
+            $lineNumber++;
+        }
+
+        foreach ($this->classes as $class) {
+            foreach ($class['methods'] as $method) {
+                if ($method['executedLines'] > 0) {
+                    $this->numCalledMethods++;
+                }
+            }
+
+            if ($class['executedLines'] > 0) {
+                $this->numCalledClasses++;
+            }
         }
     }
 
     /**
      * @author Aidan Lister <aidan@php.net>
      * @author Sebastian Bergmann <sb@sebastian-bergmann.de>
-     * @param  string $file
+     * @param  string  $file
      * @return array
      * @access protected
      */
-    protected function highlightFile($file)
+    protected function loadFile($file)
     {
-        $lines    = file($file);
-        $numLines = count($lines);
-        $width    = 0;
+        $lines       = array_map('rtrim', file($file));
+        $linesLength = array_map('strlen', $lines);
+        $width       = max($linesLength);
 
-        for ($i = 0; $i < $numLines; $i++) {
-            $lines[$i] = rtrim($lines[$i]);
-
-            if (strlen($lines[$i]) > $width) {
-                $width = strlen($lines[$i]);
-            }
+        foreach ($linesLength as $line => $length) {
+            $this->codeLinesFillup[$line] = $width - $length;
         }
 
-        for ($i = 0; $i < $numLines; $i++) {
-            $this->codeLinesFillup[$i] = $width - strlen($lines[$i]);
+        if (!$this->highlight) {
+            return $lines;
         }
 
         $tokens     = token_get_all(file_get_contents($file));

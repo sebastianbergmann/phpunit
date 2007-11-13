@@ -78,7 +78,7 @@ abstract class PHPUnit_Util_Report_Node
     protected $name;
 
     /**
-     * @var    PHPUnit_Util_CodeCoverage_Node
+     * @var    PHPUnit_Util_Report_Node
      * @access protected
      */
     protected $parent;
@@ -86,8 +86,8 @@ abstract class PHPUnit_Util_Report_Node
     /**
      * Constructor.
      *
-     * @param  string                         $name
-     * @param  PHPUnit_Util_CodeCoverage_Node $parent
+     * @param  string                   $name
+     * @param  PHPUnit_Util_Report_Node $parent
      * @access public
      */
     public function __construct($name, PHPUnit_Util_Report_Node $parent = NULL)
@@ -97,24 +97,45 @@ abstract class PHPUnit_Util_Report_Node
     }
 
     /**
+     * Returns the percentage of classes of which at least one method
+     * has been called at least once..
+     *
+     * @return integer
+     * @access public
+     */
+    public function getCalledClassesPercent()
+    {
+        return $this->calculatePercent(
+          $this->getNumCalledClasses(),
+          $this->getNumClasses()
+        );
+    }
+
+    /**
+     * Returns the percentage of methods that has been called at least once.
+     *
+     * @return integer
+     * @access public
+     */
+    public function getCalledMethodsPercent()
+    {
+        return $this->calculatePercent(
+          $this->getNumCalledMethods(),
+          $this->getNumMethods()
+        );
+    }
+
+    /**
      * Returns the percentage of executed lines.
      *
      * @return integer
      * @access public
      */
-    public function getExecutedPercent()
+    public function getLineExecutedPercent()
     {
-        $numExecutableLines = $this->getNumExecutableLines();
-
-        if ($numExecutableLines > 0) {
-            $percent = ($this->getNumExecutedLines() / $numExecutableLines) * 100;
-        } else {
-            $percent = 100;
-        }
-
-        return sprintf(
-          '%01.2f',
-          $percent
+        return $this->calculatePercent(
+          $this->getNumExecutedLines(),
+          $this->getNumExecutableLines()
         );
     }
 
@@ -185,7 +206,7 @@ abstract class PHPUnit_Util_Report_Node
 
         if ($full) {
             if ($this->parent !== NULL) {
-                $parent = $this->parent->getLink(FALSE, TRUE) . DIRECTORY_SEPARATOR;
+                $parent = $this->parent->getLink(TRUE) . DIRECTORY_SEPARATOR;
             } else {
                 $parent = '';
             }
@@ -228,6 +249,155 @@ abstract class PHPUnit_Util_Report_Node
     }
 
     /**
+     * Calculates a percentage value.
+     *
+     * @param  integer $a
+     * @param  integer $b
+     * @return float   ($a / $b) * 100
+     * @access protected
+     */
+    protected function calculatePercent($a, $b)
+    {
+        if ($b > 0) {
+            $percent = ($a / $b) * 100;
+        } else {
+            $percent = 100;
+        }
+
+        return sprintf(
+          '%01.2F',
+          $percent
+        );
+    }
+
+    protected function doRenderItemObject(PHPUnit_Util_Report_Node $item, $lowUpperBound, $highLowerBound, $link = NULL)
+    {
+        return $this->doRenderItem(
+          array(
+            'name'                 => $link != NULL ? $link : $item->getLink(FALSE),
+            'numClasses'           => $item->getNumClasses(),
+            'numCalledClasses'     => $item->getNumCalledClasses(),
+            'calledClassesPercent' => $item->getCalledClassesPercent(),
+            'numMethods'           => $item->getNumMethods(),
+            'numCalledMethods'     => $item->getNumCalledMethods(),
+            'calledMethodsPercent' => $item->getCalledMethodsPercent(),
+            'numExecutableLines'   => $item->getNumExecutableLines(),
+            'numExecutedLines'     => $item->getNumExecutedLines(),
+            'executedLinesPercent' => $item->getLineExecutedPercent()
+          ),
+          $lowUpperBound,
+          $highLowerBound
+        );
+    }
+
+    protected function doRenderItem(array $data, $lowUpperBound, $highLowerBound, $template = 'item.html')
+    {
+        $itemTemplate = new PHPUnit_Util_Template(
+          PHPUnit_Util_Report::$templatePath . $template
+        );
+
+        list($classesColor, $classesLevel) = $this->getColorLevel(
+          $data['calledClassesPercent'], $lowUpperBound, $highLowerBound
+        );
+
+        list($methodsColor, $methodsLevel) = $this->getColorLevel(
+          $data['calledMethodsPercent'], $lowUpperBound, $highLowerBound
+        );
+
+        list($linesColor, $linesLevel) = $this->getColorLevel(
+          $data['executedLinesPercent'], $lowUpperBound, $highLowerBound
+        );
+
+        $itemTemplate->setVar(
+          array(
+            'name',
+            'classes_color',
+            'classes_level',
+            'classes_called_width',
+            'classes_called_percent',
+            'classes_not_called_width',
+            'num_classes',
+            'num_called_classes',
+            'methods_color',
+            'methods_level',
+            'methods_called_width',
+            'methods_called_percent',
+            'methods_not_called_width',
+            'num_methods',
+            'num_called_methods',
+            'lines_color',
+            'lines_level',
+            'lines_executed_width',
+            'lines_executed_percent',
+            'lines_not_executed_width',
+            'num_executable_lines',
+            'num_executed_lines'
+          ),
+          array(
+            $data['name'],
+            $classesColor,
+            $classesLevel,
+            floor($data['calledClassesPercent']),
+            $data['calledClassesPercent'],
+            100 - floor($data['calledClassesPercent']),
+            $data['numClasses'],
+            $data['numCalledClasses'],
+            $methodsColor,
+            $methodsLevel,
+            floor($data['calledMethodsPercent']),
+            $data['calledMethodsPercent'],
+            100 - floor($data['calledMethodsPercent']),
+            $data['numMethods'],
+            $data['numCalledMethods'],
+            $linesColor,
+            $linesLevel,
+            floor($data['executedLinesPercent']),
+            $data['executedLinesPercent'],
+            100 - floor($data['executedLinesPercent']),
+            $data['numExecutableLines'],
+            $data['numExecutedLines']
+          )
+        );
+
+        return $itemTemplate->render();
+    }
+
+    protected function getColorLevel($percent, $lowUpperBound, $highLowerBound)
+    {
+        $floorPercent = floor($percent);
+
+        if ($floorPercent < $lowUpperBound) {
+            $color = 'scarlet_red';
+            $level = 'Lo';
+        }
+
+        else if ($floorPercent >= $lowUpperBound &&
+                 $floorPercent <  $highLowerBound) {
+            $color = 'butter';
+            $level = 'Med';
+        }
+
+        else {
+            $color = 'chameleon';
+            $level = 'Hi';
+        }
+
+        return array($color, $level);
+    }
+
+    protected function renderTotalItem($lowUpperBound, $highLowerBound, $directory = TRUE)
+    {
+        if ($directory && empty($this->directories) && count($this->files) == 1) {
+            return '';
+        }
+
+        return $this->doRenderItemObject($this, $lowUpperBound, $highLowerBound, 'Total') .
+               "        <tr>\n" .
+               '          <td class="tableHead" colspan="10">&nbsp;</td>' . "\n" .
+               "        </tr>\n";
+    }
+
+    /**
      * @param  PHPUnit_Util_Template $template
      * @param  string                $title
      * @param  string                $charset
@@ -240,9 +410,9 @@ abstract class PHPUnit_Util_Report_Node
             'title',
             'charset',
             'link',
-            'executable_lines',
-            'executed_lines',
-            'executed_percent',
+            'num_executable_lines',
+            'num_executed_lines',
+            'lines_executed_percent',
             'date',
             'phpunit_version',
             'xdebug_version',
@@ -250,16 +420,25 @@ abstract class PHPUnit_Util_Report_Node
           array(
             $title,
             $charset,
-            $this->getLink(FALSE, TRUE),
+            $this->getLink(TRUE),
             $this->getNumExecutableLines(),
             $this->getNumExecutedLines(),
-            $this->getExecutedPercent(),
+            $this->getLineExecutedPercent(),
             $template->getDate(),
             PHPUnit_Runner_Version::id(),
             phpversion('xdebug')
           )
         );
     }
+
+    /**
+     * Returns the classes of this node.
+     *
+     * @return array
+     * @access public
+     * @abstract
+     */
+    abstract public function getClasses();
 
     /**
      * Returns the number of executable lines.
@@ -280,14 +459,54 @@ abstract class PHPUnit_Util_Report_Node
     abstract public function getNumExecutedLines();
 
     /**
-     * Renders this node.
+     * Returns the number of classes.
      *
-     * @param string $target
-     * @param string $title
-     * @param string $charset
+     * @return integer
      * @access public
      * @abstract
      */
-    abstract public function render($target, $title, $charset = 'ISO-8859-1');
+    abstract public function getNumClasses();
+
+    /**
+     * Returns the number of classes of which at least one method
+     * has been called at least once.
+     *
+     * @return integer
+     * @access public
+     * @abstract
+     */
+    abstract public function getNumCalledClasses();
+
+    /**
+     * Returns the number of methods.
+     *
+     * @return integer
+     * @access public
+     * @abstract
+     */
+    abstract public function getNumMethods();
+
+    /**
+     * Returns the number of methods that has been called at least once.
+     *
+     * @return integer
+     * @access public
+     * @abstract
+     */
+    abstract public function getNumCalledMethods();
+
+    /**
+     * Renders this node.
+     *
+     * @param string  $target
+     * @param string  $title
+     * @param string  $charset
+     * @param boolean $highlight
+     * @param integer $lowUpperBound
+     * @param integer $highLowerBound
+     * @access public
+     * @abstract
+     */
+    abstract public function render($target, $title, $charset = 'ISO-8859-1', $highlight = FALSE, $lowUpperBound = 35, $highLowerBound = 70);
 }
 ?>

@@ -176,11 +176,106 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
         $arguments['excludeGroups']      = isset($arguments['excludeGroups'])      ? $arguments['excludeGroups']      : array();
         $arguments['listeners']          = isset($arguments['listeners'])          ? $arguments['listeners']          : array();
         $arguments['repeat']             = isset($arguments['repeat'])             ? $arguments['repeat']             : FALSE;
-        $arguments['reportCharset']      = isset($arguments['reportCharset'])      ? $arguments['reportCharset']      : 'ISO-8859-1';
         $arguments['stopOnFailure']      = isset($arguments['stopOnFailure'])      ? $arguments['stopOnFailure']      : FALSE;
         $arguments['testDatabasePrefix'] = isset($arguments['testDatabasePrefix']) ? $arguments['testDatabasePrefix'] : '';
         $arguments['verbose']            = isset($arguments['verbose'])            ? $arguments['verbose']            : FALSE;
         $arguments['wait']               = isset($arguments['wait'])               ? $arguments['wait']               : FALSE;
+
+        if (isset($arguments['configuration'])) {
+            $configuration = new PHPUnit_Util_Configuration(
+              $arguments['configuration']
+            );
+
+            $loggingConfiguration = $configuration->getLoggingConfiguration();
+
+            if (isset($loggingConfiguration['coverage-html']) && !isset($arguments['reportDirectory'])) {
+                if (isset($loggingConfiguration['charset']) && !isset($arguments['reportCharset'])) {
+                    $arguments['reportCharset'] = $loggingConfiguration['charset'];
+                }
+
+                if (isset($loggingConfiguration['highlight']) && !isset($arguments['reportHighlight'])) {
+                    $arguments['reportHighlight'] = $loggingConfiguration['highlight'];
+                }
+
+                if (isset($loggingConfiguration['lowUpperBound']) && !isset($arguments['reportLowUpperBound'])) {
+                    $arguments['reportLowUpperBound'] = $loggingConfiguration['lowUpperBound'];
+                }
+
+                if (isset($loggingConfiguration['highLowerBound']) && !isset($arguments['reportHighLowerBound'])) {
+                    $arguments['reportHighLowerBound'] = $loggingConfiguration['highLowerBound'];
+                }
+
+                $arguments['reportDirectory'] = $loggingConfiguration['coverage-html'];
+            }
+
+            if (isset($loggingConfiguration['coverage-xml']) && !isset($arguments['coverageXML'])) {
+                $arguments['coverageXML'] = $loggingConfiguration['coverage-xml'];
+            }
+
+            if (isset($loggingConfiguration['graphviz']) && !isset($arguments['graphvizLogfile'])) {
+                $arguments['graphvizLogfile'] = $loggingConfiguration['graphviz'];
+            }
+
+            if (isset($loggingConfiguration['json']) && !isset($arguments['jsonLogfile'])) {
+                $arguments['jsonLogfile'] = $loggingConfiguration['json'];
+            }
+
+            if (isset($loggingConfiguration['metrics-xml']) && !isset($arguments['metricsXML'])) {
+                $arguments['metricsXML'] = $loggingConfiguration['metrics-xml'];
+            }
+
+            if (isset($loggingConfiguration['plain'])) {
+                $arguments['listeners'][] = new PHPUnit_TextUI_ResultPrinter($loggingConfiguration['plain'], TRUE);
+            }
+
+            if (isset($loggingConfiguration['pmd-xml']) && !isset($arguments['pmdXML'])) {
+                if (isset($loggingConfiguration['cpdMinLines']) && !isset($arguments['cpdMinLines'])) {
+                    $arguments['cpdMinLines'] = $loggingConfiguration['cpdMinLines'];
+                }
+
+                if (isset($loggingConfiguration['cpdMinMatches']) && !isset($arguments['cpdMinMatches'])) {
+                    $arguments['cpdMinMatches'] = $loggingConfiguration['cpdMinMatches'];
+                }
+
+                $arguments['pmdXML'] = $loggingConfiguration['pmd-xml'];
+            }
+
+            if (isset($loggingConfiguration['tap']) && !isset($arguments['tapLogfile'])) {
+                $arguments['tapLogfile'] = $loggingConfiguration['tap'];
+            }
+
+            if (isset($loggingConfiguration['test-xml']) && !isset($arguments['xmlLogfile'])) {
+                $arguments['xmlLogfile'] = $loggingConfiguration['test-xml'];
+
+                if (isset($loggingConfiguration['logIncompleteSkipped']) && !isset($arguments['logIncompleteSkipped'])) {
+                    $arguments['logIncompleteSkipped'] = $loggingConfiguration['logIncompleteSkipped'];
+                }
+            }
+
+            if (isset($loggingConfiguration['testdox-html']) && !isset($arguments['testdoxHTMLFile'])) {
+                $arguments['testdoxHTMLFile'] = $loggingConfiguration['testdox-html'];
+            }
+
+            if (isset($loggingConfiguration['testdox-text']) && !isset($arguments['testdoxTextFile'])) {
+                $arguments['testdoxTextFile'] = $loggingConfiguration['testdox-text'];
+            }
+
+            $pmdConfiguration = $configuration->getPMDConfiguration();
+        } else {
+            $pmdConfiguration = array();
+        }
+
+        if (isset($arguments['reportDirectory'])) {
+            $arguments['reportDirectory'] = $this->getDirectory($arguments['reportDirectory']);
+        }
+
+        $arguments['cpdMinLines']          = isset($arguments['cpdMinLines'])          ? $arguments['cpdMinLines']          : 5;
+        $arguments['cpdMinMatches']        = isset($arguments['cpdMinMatches'])        ? $arguments['cpdMinMatches']        : 70;
+        $arguments['logIncompleteSkipped'] = isset($arguments['logIncompleteSkipped']) ? $arguments['logIncompleteSkipped'] : FALSE;
+        $arguments['reportCharset']        = isset($arguments['reportCharset'])        ? $arguments['reportCharset']        : 'ISO-8859-1';
+        $arguments['reportHighlight']      = isset($arguments['reportHighlight'])      ? $arguments['reportHighlight']      : FALSE;
+        $arguments['reportLowUpperBound']  = isset($arguments['reportLowUpperBound'])  ? $arguments['reportLowUpperBound']  : 35;
+        $arguments['reportHighLowerBound'] = isset($arguments['reportHighLowerBound']) ? $arguments['reportHighLowerBound'] : 70;
 
         if (is_integer($arguments['repeat'])) {
             $suite = new PHPUnit_Extensions_RepeatedTest(
@@ -190,10 +285,6 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
               $arguments['groups'],
               $arguments['excludeGroups']
             );
-        }
-
-        if (isset($arguments['reportDirectory'])) {
-            $arguments['reportDirectory'] = $this->getDirectory($arguments['reportDirectory']);
         }
 
         $result = $this->createTestResult();
@@ -269,7 +360,9 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
 
         if (isset($arguments['xmlLogfile'])) {
             $result->addListener(
-              new PHPUnit_Util_Log_XML($arguments['xmlLogfile'])
+              new PHPUnit_Util_Log_XML(
+                $arguments['xmlLogfile'], $arguments['logIncompleteSkipped']
+              )
             );
         }
 
@@ -344,27 +437,36 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
         }
 
         if (isset($arguments['pmdXML']) && extension_loaded('tokenizer') && extension_loaded('xdebug')) {
-            $this->printer->write("\nWriting violations report XML file, this may take a moment.");
-
             $writer = new PHPUnit_Util_Log_PMD(
-              $arguments['pmdXML']
+              $arguments['pmdXML'], $pmdConfiguration
             );
 
+            $this->printer->write("\nWriting violations report XML file, this may take a moment.");
             $writer->process($result);
 
             $writer = new PHPUnit_Util_Log_CPD(
               str_replace('.xml', '-cpd.xml', $arguments['pmdXML'])
             );
 
-            $writer->process($result);
+            $writer->process(
+              $result, $arguments['cpdMinLines'], $arguments['cpdMinMatches']
+            );
 
             $this->printer->write("\n");
         }
 
         if (isset($arguments['reportDirectory']) &&
             extension_loaded('xdebug')) {
-            $this->printer->write("\nGenerating report, this may take a moment.");
-            PHPUnit_Util_Report::render($result, $arguments['reportDirectory'], $arguments['reportCharset']);
+            $this->printer->write("\nGenerating code coverage report, this may take a moment.");
+
+            PHPUnit_Util_Report::render(
+              $result,
+              $arguments['reportDirectory'],
+              $arguments['reportCharset'],
+              $arguments['reportHighlight'],
+              $arguments['reportLowUpperBound'],
+              $arguments['reportHighLowerBound']
+            );
 
             $this->printer->write("\n");
         }

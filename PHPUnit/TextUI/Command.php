@@ -47,6 +47,7 @@
 require_once 'PHPUnit/TextUI/TestRunner.php';
 require_once 'PHPUnit/Util/Log/PMD.php';
 require_once 'PHPUnit/Util/Log/TAP.php';
+require_once 'PHPUnit/Util/Configuration.php';
 require_once 'PHPUnit/Util/Fileloader.php';
 require_once 'PHPUnit/Util/Filter.php';
 require_once 'PHPUnit/Util/Getopt.php';
@@ -135,10 +136,11 @@ class PHPUnit_TextUI_Command
         $arguments = array('syntaxCheck' => TRUE);
 
         $longOptions = array(
-          'help',
+          'configuration=',
+          'exclude-group=',
           'filter=',
           'group=',
-          'exclude-group=',
+          'help',
           'loader=',
           'log-json=',
           'log-tap=',
@@ -168,11 +170,11 @@ class PHPUnit_TextUI_Command
         }
 
         if (extension_loaded('xdebug')) {
+            $longOptions[] = 'coverage-html=';
             $longOptions[] = 'coverage-xml=';
             $longOptions[] = 'log-metrics=';
             $longOptions[] = 'log-pmd=';
             $longOptions[] = 'report=';
-            $longOptions[] = 'charset=';
         }
 
         try {
@@ -193,18 +195,17 @@ class PHPUnit_TextUI_Command
 
         if (isset($options[1][1])) {
             $arguments['testFile'] = $options[1][1];
-        }
-
-        else if (isset($arguments['test'])) {
-            $arguments['testFile'] = $arguments['test'];
-
-            if (substr($arguments['test'], -4) != '.php') {
-                $arguments['testFile'] .= '.php';
-            }
+        } else {
+            $arguments['testFile'] = '';
         }
 
         foreach ($options[0] as $option) {
             switch ($option[0]) {
+                case '--configuration': {
+                    $arguments['configuration'] = $option[1];
+                }
+                break;
+
                 case '--coverage-xml': {
                     $arguments['coverageXML'] = $option[1];
                 }
@@ -313,18 +314,19 @@ class PHPUnit_TextUI_Command
                 }
                 break;
 
+                case '--coverage-html':
                 case '--report': {
                     $arguments['reportDirectory'] = $option[1];
                 }
                 break;
 
-                case '--charset': {
-                    $arguments['reportCharset'] = $option[1];
-                }
-                break;
-
                 case '--skeleton': {
-                    self::doSkeleton($arguments['test'], $arguments['testFile']);
+                    if (isset($arguments['test']) && isset($arguments['testFile'])) {
+                        self::doSkeleton($arguments['test'], $arguments['testFile']);
+                    } else {
+                        self::showHelp();
+                        exit(PHPUnit_TextUI_TestRunner::EXCEPTION_EXIT);
+                    }
                 }
                 break;
 
@@ -374,7 +376,7 @@ class PHPUnit_TextUI_Command
         if (!isset($arguments['test']) ||
             (isset($arguments['testDatabaseLogRevision']) && !isset($arguments['testDatabaseDSN']))) {
             self::showHelp();
-            exit(PHPUnit_TextUI_TestRunner::SUCCESS_EXIT);
+            exit(PHPUnit_TextUI_TestRunner::EXCEPTION_EXIT);
         }
 
         return $arguments;
@@ -473,15 +475,9 @@ class PHPUnit_TextUI_Command
 
         if (extension_loaded('xdebug')) {
             print "  --log-metrics <file>   Write metrics report in XML format.\n" .
-                  "  --log-pmd <file>       Write violations report in PMD XML format.\n";
-        }
-
-        print "\n";
-
-        if (extension_loaded('xdebug')) {
-            print "  --coverage-xml <file>  Write code coverage information in XML format.\n" .
-                  "  --report <dir>         Generate code coverage report in HTML format.\n" .
-                  "  --charset ...          Character Set for the HTML (default: ISO-8859-1).\n\n";
+                  "  --log-pmd <file>       Write violations report in PMD XML format.\n\n" .
+                  "  --coverage-html <dir>  Generate code coverage report in HTML format.\n" .
+                  "  --coverage-xml <file>  Write code coverage information in XML format.\n\n";
         }
 
         if (extension_loaded('pdo')) {
@@ -507,6 +503,7 @@ class PHPUnit_TextUI_Command
               "  --skeleton             Generate skeleton UnitTest class for Unit in Unit.php.\n\n" .
               "  --help                 Prints this usage information.\n" .
               "  --version              Prints the version and exits.\n\n" .
+              "  --configuration <file> Read configuration from XML file.\n" .
               "  -d key[=value]         Sets a php.ini value.\n";
     }
 }
