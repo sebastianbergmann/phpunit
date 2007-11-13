@@ -609,17 +609,8 @@ abstract class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_Tes
             case 'uncheck':
             case 'windowFocus':
             case 'windowMaximize': {
-                $this->doCommand($command, $arguments);
-
+                // Pre-Command Actions
                 switch ($command) {
-                    case 'addLocationStrategy':
-                    case 'allowNativeXpath':
-                    case 'assignId':
-                    case 'captureScreenshot': {
-                        // intentionally empty
-                    }
-                    break;
-
                     case 'open':
                     case 'openWindow': {
                         if ($this->collectCodeCoverageInformation) {
@@ -631,7 +622,20 @@ abstract class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_Tes
                             );
                         }
                     }
-                    // break intentionally missing
+                    break;
+                }
+
+                $this->doCommand($command, $arguments);
+
+                // Post-Command Actions
+                switch ($command) {
+                    case 'addLocationStrategy':
+                    case 'allowNativeXpath':
+                    case 'assignId':
+                    case 'captureScreenshot': {
+                        // intentionally empty
+                    }
+                    break;
 
                     default: {
                         if ($this->sleep > 0) {
@@ -1438,8 +1442,14 @@ abstract class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_Tes
     protected function getCodeCoverage()
     {
         if (!empty($this->coverageScriptUrl)) {
+            $url = sprintf(
+              '%s?PHPUNIT_SELENIUM_TEST_ID=%s',
+              $this->coverageScriptUrl,
+              $this->testId
+            );
+
             return eval(
-              'return ' . file_get_contents($this->coverageScriptUrl) . ';'
+              'return ' . file_get_contents($url) . ';'
             );
         } else {
             return array();
