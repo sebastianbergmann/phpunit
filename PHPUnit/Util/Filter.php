@@ -310,16 +310,14 @@ class PHPUnit_Util_Filter
                     if ($isFilteredCache[$file]) {
                         unset($codeCoverageInformation[$k]['files'][$file]);
                     } else {
-                        $coveredFiles[] = $file;
+                        $coveredFiles[$file] = 1;
                     }
                 }
             }
 
             if ($addUncoveredFilesFromWhitelist) {
-                $coveredFiles = array_unique($coveredFiles);
-
                 foreach (self::$whitelistedFiles as $whitelistedFile) {
-                    if (!in_array($whitelistedFile, $coveredFiles)) {
+                    if (!isset($coveredFiles[$whitelistedFile])) {
                         if (file_exists($whitelistedFile)) {
                             xdebug_start_code_coverage(XDEBUG_CC_UNUSED | XDEBUG_CC_DEAD_CODE);
                             include_once $whitelistedFile;
@@ -334,13 +332,13 @@ class PHPUnit_Util_Filter
                                 }
 
                                 $codeCoverageInformation[] = array(
-                                  'test' => NULL,
+                                  'test'  => NULL,
                                   'files' => array(
                                     $whitelistedFile => $coverage[$whitelistedFile]
                                   )
                                 );
 
-                                $coveredFiles[] = $whitelistedFile;
+                                $coveredFiles[$whitelistedFile] = 1;
                             }
                         }
                     }
