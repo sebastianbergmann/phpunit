@@ -214,6 +214,7 @@ abstract class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_Tes
         $classGroups      = PHPUnit_Util_Test::getGroups($class);
         $staticProperties = $class->getStaticProperties();
 
+        // Create tests from Selenese/HTML files.
         if (isset($staticProperties['seleneseDirectory']) &&
             is_dir($staticProperties['seleneseDirectory'])) {
             $files = new PHPUnit_Util_FilterIterator(
@@ -225,58 +226,95 @@ abstract class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_Tes
               '.htm'
             );
 
-            foreach ($files as $file) {
-                $file = (string)$file;
+            // Create tests from Selenese/HTML files for multiple browsers.
+            if (isset($staticProperties['browsers'])) {
+                foreach ($staticProperties['browsers'] as $browser) {
+                    $browserSuite = new PHPUnit_Framework_TestSuite;
 
-                if (isset($staticProperties['browsers'])) {
-                    foreach ($staticProperties['browsers'] as $browser) {
-                        $suite->addTest(new $className($file, array(), $browser));
+                    foreach ($files as $file) {
+                        $browserSuite->addTest(
+                          new $className((string)$file, array(), $browser)
+                        );
                     }
-                } else {
-                    $suite->addTest(new $className($file));
+
+                    $suite->addTest($browserSuite, $classGroups);
+                }
+            }
+
+            // Create tests from Selenese/HTML files for single browser.
+            else {
+                foreach ($files as $file) {
+                    $suite->addTest(new $className((string)$file), $classGroups);
                 }
             }
         }
 
-        foreach ($class->getMethods() as $method) {
-            if (PHPUnit_Framework_TestSuite::isPublicTestMethod($method)) {
-                $name   = $method->getName();
-                $data   = PHPUnit_Util_Test::getProvidedData($className, $name);
-                $groups = PHPUnit_Util_Test::getGroups($method, $classGroups);
+        // Create tests from test methods for multiple browsers.
+        if (isset($staticProperties['browsers'])) {
+            foreach ($staticProperties['browsers'] as $browser) {
+                $browserSuite = new PHPUnit_Framework_TestSuite;
 
-                if (isset($staticProperties['browsers'])) {
-                    foreach ($staticProperties['browsers'] as $browser) {
+                foreach ($class->getMethods() as $method) {
+                    if (PHPUnit_Framework_TestSuite::isPublicTestMethod($method)) {
+                        $name   = $method->getName();
+                        $data   = PHPUnit_Util_Test::getProvidedData($className, $name);
+                        $groups = PHPUnit_Util_Test::getGroups($method, $classGroups);
+
+                        // Test method with @dataProvider.
                         if (is_array($data) || $data instanceof Iterator) {
-                            $_suite = new PHPUnit_Framework_TestSuite(
+                            $dataSuite = new PHPUnit_Framework_TestSuite(
                               $className . '::' . $name
                             );
 
                             foreach ($data as $_data) {
-                                $_suite->addTest(
-                                  new $className($name, $_data, $browser)
+                                $dataSuite->addTest(
+                                  new $className($name, $_data, $browser),
+                                  $groups
                                 );
                             }
 
-                            $suite->addTest($_suite);
-                        } else {
-                            $suite->addTest(
-                              new $className($name, array(), $browser),
-                              $groups
+                            $browserSuite->addTest($dataSuite);
+                        }
+
+                        // Test method without @dataProvider.
+                        else {
+                            $browserSuite->addTest(
+                              new $className($name, array(), $browser), $groups
                             );
                         }
                     }
-                } else {
+                }
+
+                $suite->addTest($browserSuite);
+            }
+        }
+
+        // Create tests from test methods for single browser.
+        else {
+            foreach ($class->getMethods() as $method) {
+                if (PHPUnit_Framework_TestSuite::isPublicTestMethod($method)) {
+                    $name   = $method->getName();
+                    $data   = PHPUnit_Util_Test::getProvidedData($className, $name);
+                    $groups = PHPUnit_Util_Test::getGroups($method, $classGroups);
+
+                    // Test method with @dataProvider.
                     if (is_array($data) || $data instanceof Iterator) {
-                        $_suite = new PHPUnit_Framework_TestSuite(
+                        $dataSuite = new PHPUnit_Framework_TestSuite(
                           $className . '::' . $name
                         );
 
                         foreach ($data as $_data) {
-                            $_suite->addTest(new $className($name, $_data));
+                            $dataSuite->addTest(
+                              new $className($name, $_data),
+                              $groups
+                            );
                         }
 
-                        $suite->addTest($_suite);
-                    } else {
+                        $suite->addTest($dataSuite);
+                    }
+
+                    // Test method without @dataProvider.
+                    else {
                         $suite->addTest(
                           new $className($name), $groups
                         );
