@@ -80,12 +80,39 @@
     <br />
 
     <script language="javascript">
+      $E = YAHOO.util.Event;
       YAHOO.namespace("phpunit.container");
+      YAHOO.phpunit.container.panelsData = {
+{yuiPanelJS}      "dummy": ""
+      };
+
+      YAHOO.phpunit.container.prepare = function (e) {
+        var elemId = $E.getTarget(e).id;
+        var line = elemId.substr(4);
+        var panelId = "panel" + line;
+        var containerId = "container" + line;
+
+        var panelData = YAHOO.phpunit.container.panelsData[panelId];
+
+        var panel = new YAHOO.widget.Panel(panelId, { visible:false, draggable:false, close:true } );
+        panel.setHeader(panelData["header"]);
+        panel.setBody(panelData["body"]);
+        panel.setFooter(panelData["footer"]);
+        panel.render(containerId);
+
+        $E.addListener(elemId, "click", panel.show, panel, true);
+        $E.removeListener(elemId, "mouseover");
+      };
 
       function init() {
-{yuiPanelJS}      }
+        var ypc = YAHOO.phpunit.container;
+        for (var panelId in ypc.panelsData) {
+          var elemId = "line" + panelId.substr(5);
+          $E.addListener(elemId, "mouseover", ypc.prepare);
+        }
+      }
 
-      YAHOO.util.Event.addListener(window, "load", init);
+      $E.addListener(window, "load", init);
     </script>
   </body>
 </html>
