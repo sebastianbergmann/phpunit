@@ -56,7 +56,7 @@ PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
  *
  * <code>
  * $testCollector = new PHPUnit_Runner_IncludePathTestCollector(
- *   '/path/to/*Test.php files'
+ *   array('/path/to/*Test.php files')
  * );
  *
  * $suite = new PHPUnit_Framework_TestSuite('My Test Suite');
@@ -90,7 +90,7 @@ class PHPUnit_Runner_IncludePathTestCollector implements PHPUnit_Runner_TestColl
      * @return array
      * @access public
      */
-    public function __construct($paths = array())
+    public function __construct(array $paths = array())
     {
         if (!empty($paths)) {
             $this->paths = $paths;
