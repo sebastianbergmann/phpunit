@@ -236,6 +236,7 @@ class PHPUnit_Util_Configuration
      *
      * @return PHPUnit_Framework_TestSuite
      * @access public
+     * @since  Method available since Release 3.2.1
      */
     public function getTestSuiteConfiguration()
     {
