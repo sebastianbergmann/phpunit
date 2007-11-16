@@ -426,13 +426,13 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
      */
     public function addTestFiles($filenames)
     {
-        if (!(is_array($filename) ||
-             (is_object($filename) && $object instanceof Iterator))) {
+        if (!(is_array($filenames) ||
+             (is_object($filenames) && $filenames instanceof Iterator))) {
             throw new InvalidArgumentException;
         }
 
         foreach ($filenames as $filename) {
-            $this->addTestFile($filename);
+            $this->addTestFile((string)$filename);
         }
     }
 
