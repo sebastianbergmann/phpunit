@@ -51,6 +51,7 @@ require_once 'PHPUnit/Runner/StandardTestSuiteLoader.php';
 require_once 'PHPUnit/Runner/Version.php';
 require_once 'PHPUnit/TextUI/ResultPrinter.php';
 require_once 'PHPUnit/Util/TestDox/ResultPrinter.php';
+require_once 'PHPUnit/Util/Configuration.php';
 require_once 'PHPUnit/Util/PDO.php';
 require_once 'PHPUnit/Util/Filter.php';
 require_once 'PHPUnit/Util/Report.php';
