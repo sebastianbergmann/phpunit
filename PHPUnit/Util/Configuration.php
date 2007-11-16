@@ -63,6 +63,15 @@ PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
  *     <file>/path/to/MyTest.php</file>
  *   </testsuite>
  *
+ *   <groups>
+ *     <include>
+ *       <group>name</group>
+ *     </include>
+ *     <exclude>
+ *       <group>name</group>
+ *     </exclude>
+ *   </groups>
+ *
  *   <logging>
  *     <log type="coverage-html" target="/tmp/report" charset="UTF-8"
  *          yui="true" highlight="false"
@@ -130,6 +139,33 @@ class PHPUnit_Util_Configuration
     public function __construct($filename)
     {
         $this->document = PHPUnit_Util_XML::load($filename);
+    }
+
+    /**
+     * Returns the configuration for groups.
+     *
+     * @return array
+     * @access public
+     * @since  Method available since Release 3.2.1
+     */
+    public function getGroupConfiguration()
+    {
+        $groups = array(
+          'include' => array(),
+          'exclude' => array()
+        );
+
+        $xpath = new DOMXPath($this->document);
+
+        foreach ($xpath->query('groups/include/group') as $group) {
+            $groups['include'][] = (string)$group->nodeValue;
+        }
+
+        foreach ($xpath->query('groups/exclude/group') as $group) {
+            $groups['exclude'][] = (string)$group->nodeValue;
+        }
+
+        return $groups;
     }
 
     /**
