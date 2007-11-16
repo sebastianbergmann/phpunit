@@ -45,6 +45,7 @@
  */
 
 require_once 'PHPUnit/Util/Filter.php';
+require_once 'PHPUnit/Runner/IncludePathTestCollector.php';
 require_once 'PHPUnit/Util/XML.php';
 
 PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
@@ -57,6 +58,11 @@ PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
  * <?xml version="1.0" encoding="utf-8" ?>
  *
  * <phpunit>
+ *   <testsuite name="My Test Suite">
+ *     <directory>/path/to/*Test.php files</directory>
+ *     <file>/path/to/MyTest.php</file>
+ *   </testsuite>
+ *
  *   <logging>
  *     <log type="coverage-html" target="/tmp/report" charset="UTF-8"
  *          yui="true" highlight="false"
@@ -223,6 +229,50 @@ class PHPUnit_Util_Configuration
         }
 
         return $result;
+    }
+
+    /**
+     * Returns the test suite configuration.
+     *
+     * @return PHPUnit_Framework_TestSuite
+     * @access public
+     */
+    public function getTestSuiteConfiguration()
+    {
+        $xpath         = new DOMXPath($this->document);
+        $testSuiteNode = $xpath->query('testsuite');
+
+        if ($testSuiteNode->length > 0) {
+            $testSuiteNode = $testSuiteNode->item(0);
+
+            if ($testSuiteNode->hasAttribute('name')) {
+                $suite = new PHPUnit_Framework_TestSuite(
+                  (string)$testSuiteNode->getAttribute('name')
+                );
+            } else {
+                $suite = new PHPUnit_Framework_TestSuite;
+            }
+
+            $directories = array();
+
+            foreach ($xpath->query('testsuite/directory') as $directoryNode) {
+                $directories[] = (string)$directoryNode->nodeValue;
+            }
+
+            if (!empty($directories)) {
+                $testCollector = new PHPUnit_Runner_IncludePathTestCollector(
+                  $directories
+                );
+
+                $suite->addTestFiles($testCollector->collectTests());
+            }
+
+            foreach ($xpath->query('testsuite/file') as $fileNode) {
+                $suite->addTestFile((string)$fileNode->nodeValue);
+            }
+
+            return $suite;
+        }
     }
 }
 ?>
