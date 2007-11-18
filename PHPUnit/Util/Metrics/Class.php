@@ -116,11 +116,6 @@ class PHPUnit_Util_Metrics_Class extends PHPUnit_Util_Metrics
             $this->package = $packageInformation['fullPackage'];
         }
 
-        $this->calculateAttributeMetrics();
-        $this->calculateMethodMetrics();
-        $this->calculateNumberOfChildren();
-        $this->calculatePolymorphismFactor();
-
         $this->setCoverage($codeCoverage);
 
         $this->dit  = count(PHPUnit_Util_Class::getHierarchy($class->getName())) - 1;
@@ -134,6 +129,10 @@ class PHPUnit_Util_Metrics_Class extends PHPUnit_Util_Metrics
             }
         }
 
+        $this->calculateAttributeMetrics();
+        $this->calculateMethodMetrics();
+        $this->calculateNumberOfChildren();
+        $this->calculatePolymorphismFactor();
         $this->calculateDependencies();
     }
 
@@ -589,7 +588,7 @@ class PHPUnit_Util_Metrics_Class extends PHPUnit_Util_Metrics
             if ($method->getMethod()->getDeclaringClass()->getName() == $this->class->getName()) {
                 $this->wmc += $ccn;
 
-                if ($method->isPublic()) {
+                if ($method->getMethod()->isPublic()) {
                     $this->publicMethods++;
                     $this->wmcNp += $ccn;
                 }
@@ -597,7 +596,7 @@ class PHPUnit_Util_Metrics_Class extends PHPUnit_Util_Metrics
                 $inheritedMethods++;
             }
 
-            if (!$method->isPublic()) {
+            if (!$method->getMethod()->isPublic()) {
                 $hiddenMethods++;
             }
 
