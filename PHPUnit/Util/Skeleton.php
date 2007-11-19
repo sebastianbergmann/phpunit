@@ -247,24 +247,14 @@ class PHPUnit_Util_Skeleton
 
                             $methodTemplate->setVar(
                               array(
-                                'annotation',
-                                'arguments',
-                                'assertion',
-                                'class',
-                                'constraint',
-                                'expected',
-                                'origMethodName',
-                                'methodName'
-                              ),
-                              array(
-                                trim($annotation),
-                                $matches[1],
-                                isset($assertion) ? $assertion : '',
-                                $this->className,
-                                isset($constraint) ? $constraint : '',
-                                $matches[3],
-                                $origMethodName,
-                                $methodName
+                                'annotation'     => trim($annotation),
+                                'arguments'      => $matches[1],
+                                'assertion'      => isset($assertion) ? $assertion : '',
+                                'class'          => $this->className,
+                                'constraint'     => isset($constraint) ? $constraint : '',
+                                'expected'       => $matches[3],
+                                'origMethodName' => $origMethodName,
+                                'methodName'     => $methodName
                               )
                             );
 
@@ -287,8 +277,9 @@ class PHPUnit_Util_Skeleton
                     );
 
                     $methodTemplate->setVar(
-                      'methodName',
-                      ucfirst($method->getName())
+                      array(
+                        'methodName' => ucfirst($method->getName())
+                      )
                     );
 
                     $incompleteMethods .= $methodTemplate->render();
@@ -318,18 +309,11 @@ class PHPUnit_Util_Skeleton
 
         $classTemplate->setVar(
           array(
-            'className',
-            'requireClassFile',
-            'methods',
-            'date',
-            'time'
-          ),
-          array(
-            $this->className,
-            $requireClassFile,
-            $methods . $incompleteMethods,
-            date('Y-m-d'),
-            date('H:i:s')
+            'className'        => $this->className,
+            'requireClassFile' => $requireClassFile,
+            'methods'          => $methods . $incompleteMethods,
+            'date'             => date('Y-m-d'),
+            'time'             => date('H:i:s')
           )
         );
 

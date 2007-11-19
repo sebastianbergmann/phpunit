@@ -305,7 +305,7 @@ class PHPUnit_Util_Report_Node_File extends PHPUnit_Util_Report_Node
                     $count    = sprintf('%8d', $numTests);
 
                     if ($this->yui) {
-                        $buffer   = '';
+                        $buffer = '';
 
                         foreach ($this->executedLines[$i] as $test) {
                             if (!isset($test->__liHtml)) {
@@ -365,14 +365,9 @@ class PHPUnit_Util_Report_Node_File extends PHPUnit_Util_Report_Node
 
                         $yuiTemplate->setVar(
                           array(
-                            'line',
-                            'header',
-                            'tests'
-                          ),
-                          array(
-                            $i,
-                            $header,
-                            $buffer
+                            'line'   => $i,
+                            'header' => $header,
+                            'tests'  => $buffer
                           ),
                           FALSE
                         );
@@ -501,16 +496,10 @@ class PHPUnit_Util_Report_Node_File extends PHPUnit_Util_Report_Node
 
         $template->setVar(
           array(
-            'lines',
-            'total_item',
-            'items',
-            'yuiPanelJS'
-          ),
-          array(
-            $lines,
-            $this->renderTotalItem($lowUpperBound, $highLowerBound, FALSE),
-            $items,
-            $this->yuiPanelJS
+            'lines'      => $lines,
+            'total_item' => $this->renderTotalItem($lowUpperBound, $highLowerBound, FALSE),
+            'items'      => $items,
+            'yuiPanelJS' => $this->yuiPanelJS
           )
         );
 
