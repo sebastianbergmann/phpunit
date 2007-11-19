@@ -173,8 +173,6 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
     public function doRun(PHPUnit_Framework_Test $suite, array $arguments = array())
     {
         $arguments['filter']             = isset($arguments['filter'])             ? $arguments['filter']             : FALSE;
-        $arguments['groups']             = isset($arguments['groups'])             ? $arguments['groups']             : array();
-        $arguments['excludeGroups']      = isset($arguments['excludeGroups'])      ? $arguments['excludeGroups']      : array();
         $arguments['listeners']          = isset($arguments['listeners'])          ? $arguments['listeners']          : array();
         $arguments['repeat']             = isset($arguments['repeat'])             ? $arguments['repeat']             : FALSE;
         $arguments['stopOnFailure']      = isset($arguments['stopOnFailure'])      ? $arguments['stopOnFailure']      : FALSE;
@@ -186,6 +184,16 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
             $configuration = new PHPUnit_Util_Configuration(
               $arguments['configuration']
             );
+
+            $groupConfiguration = $configuration->getGroupConfiguration();
+
+            if (!empty($groupConfiguration['include']) && !isset($arguments['groups'])) {
+                $arguments['groups'] = $groupConfiguration['include'];
+            }
+
+            if (!empty($groupConfiguration['exclude']) && !isset($arguments['excludeGroups'])) {
+                $arguments['excludeGroups'] = $groupConfiguration['exclude'];
+            }
 
             $loggingConfiguration = $configuration->getLoggingConfiguration();
 
@@ -276,6 +284,8 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
 
         $arguments['cpdMinLines']          = isset($arguments['cpdMinLines'])          ? $arguments['cpdMinLines']          : 5;
         $arguments['cpdMinMatches']        = isset($arguments['cpdMinMatches'])        ? $arguments['cpdMinMatches']        : 70;
+        $arguments['groups']               = isset($arguments['groups'])               ? $arguments['groups']               : array();
+        $arguments['excludeGroups']        = isset($arguments['excludeGroups'])        ? $arguments['excludeGroups']        : array();
         $arguments['logIncompleteSkipped'] = isset($arguments['logIncompleteSkipped']) ? $arguments['logIncompleteSkipped'] : FALSE;
         $arguments['reportCharset']        = isset($arguments['reportCharset'])        ? $arguments['reportCharset']        : 'ISO-8859-1';
         $arguments['reportYUI']            = isset($arguments['reportYUI'])            ? $arguments['reportYUI']            : TRUE;
