@@ -172,19 +172,22 @@ class PHPUnit_Util_Fileloader
      * interpreter used for this. If unset, the following assumptions will
      * be made:
      *
-     *   1. When PHPUnit is run using the CLI SAPI and the $_SERVER['_']
+     *   1. When the PHP CLI/CGI binary configured with the PEAR Installer
+     *      (php_bin configuration value) is readable, it will be used.
+     *
+     *   2. When PHPUnit is run using the CLI SAPI and the $_SERVER['_']
      *      variable does not contain the string "PHPUnit", $_SERVER['_']
      *      is assumed to contain the path to the current PHP interpreter
      *      and that will be used.
      *
-     *   2. When PHPUnit is run using the CLI SAPI and the $_SERVER['_']
+     *   3. When PHPUnit is run using the CLI SAPI and the $_SERVER['_']
      *      variable contains the string "PHPUnit", the file that $_SERVER['_']
      *      points is assumed to be the PHPUnit TextUI CLI wrapper script
      *      "phpunit" and the binary set up using #! on that file's first
      *      line of code is assumed to contain the path to the current PHP
      *      interpreter and that will be used.
      *
-     *   3. The current PHP interpreter is assumed to be in the $PATH and
+     *   4. The current PHP interpreter is assumed to be in the $PATH and
      *      to be invokable through "php".
      *
      * @param  string $filename
@@ -196,7 +199,11 @@ class PHPUnit_Util_Fileloader
     protected static function syntaxCheck($filename)
     {
         if (self::$phpBinary === NULL) {
-            if (PHP_SAPI == 'cli' && isset($_SERVER['_'])) {
+            if (is_readable('@php_bin@')) {
+                self::$phpBinary = '@php_bin@';
+            }
+
+            else if (PHP_SAPI == 'cli' && isset($_SERVER['_'])) {
                 self::$phpBinary = $_SERVER['_'];
 
                 if (strpos(self::$phpBinary, 'phpunit') !== FALSE) {
