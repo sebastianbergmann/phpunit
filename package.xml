@@ -981,6 +981,7 @@
      </file>
      <file baseinstalldir="/" name="Fileloader.php" role="php">
       <tasks:replace from="@package_version@" to="version" type="package-info" />
+      <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
      </file>
      <file baseinstalldir="/" name="Filesystem.php" role="php">
       <tasks:replace from="@package_version@" to="version" type="package-info" />
