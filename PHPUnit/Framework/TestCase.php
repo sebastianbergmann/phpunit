@@ -258,7 +258,7 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
      */
     public function setExpectedException($exceptionName)
     {
-        if ((is_string($exceptionName) && class_exists($exceptionName, FALSE)) || $exceptionName === NULL) {
+        if ((is_string($exceptionName) && class_exists($exceptionName)) || $exceptionName === NULL) {
             $this->expectedException = $exceptionName;
         }
     }
