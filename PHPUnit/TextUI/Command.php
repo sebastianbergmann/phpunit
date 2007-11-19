@@ -80,11 +80,15 @@ class PHPUnit_TextUI_Command
         $arguments = self::handleArguments();
         $runner    = new PHPUnit_TextUI_TestRunner;
 
-        $suite = $runner->getTest(
-          $arguments['test'],
-          $arguments['testFile'],
-          $arguments['syntaxCheck']
-        );
+        if (is_object($arguments['test']) && $arguments['test'] instanceof PHPUnit_Framework_Test) {
+            $suite = $arguments['test'];
+        } else {
+            $suite = $runner->getTest(
+              $arguments['test'],
+              $arguments['testFile'],
+              $arguments['syntaxCheck']
+            );
+        }
 
         if ($suite->testAt(0) instanceof PHPUnit_Framework_Warning &&
             strpos($suite->testAt(0)->getMessage(), 'No tests found in class') !== FALSE) {
@@ -370,6 +374,18 @@ class PHPUnit_TextUI_Command
                     $arguments['wait'] = TRUE;
                 }
                 break;
+            }
+        }
+
+        if (!isset($arguments['test']) && isset($arguments['configuration'])) {
+            $configuration = new PHPUnit_Util_Configuration(
+              $arguments['configuration']
+            );
+
+            $testSuite = $configuration->getTestSuiteConfiguration();
+
+            if ($testSuite !== NULL) {
+                $arguments['test'] = $testSuite;
             }
         }
 
