@@ -331,6 +331,7 @@ abstract class PHPUnit_Util_Report
           'close12_1.gif',
           'container.css',
           'container-min.js',
+          'glass.png',
           'scarlet_red.png',
           'snow.png',
           'style.css',
