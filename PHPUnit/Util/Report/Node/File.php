@@ -665,7 +665,8 @@ class PHPUnit_Util_Report_Node_File extends PHPUnit_Util_Report_Node
      */
     protected function loadFile($file)
     {
-        $lines       = array_map('rtrim', file($file));
+        $lines       = explode("\n", str_replace("\t", '    ', file_get_contents($file)));
+        $lines       = array_map('rtrim', $lines);
         $linesLength = array_map('strlen', $lines);
         $width       = max($linesLength);
 
