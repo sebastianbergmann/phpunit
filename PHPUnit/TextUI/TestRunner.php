@@ -172,13 +172,13 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
      */
     public function doRun(PHPUnit_Framework_Test $suite, array $arguments = array())
     {
-        $arguments['filter']             = isset($arguments['filter'])             ? $arguments['filter']             : FALSE;
-        $arguments['listeners']          = isset($arguments['listeners'])          ? $arguments['listeners']          : array();
-        $arguments['repeat']             = isset($arguments['repeat'])             ? $arguments['repeat']             : FALSE;
-        $arguments['stopOnFailure']      = isset($arguments['stopOnFailure'])      ? $arguments['stopOnFailure']      : FALSE;
-        $arguments['testDatabasePrefix'] = isset($arguments['testDatabasePrefix']) ? $arguments['testDatabasePrefix'] : '';
-        $arguments['verbose']            = isset($arguments['verbose'])            ? $arguments['verbose']            : FALSE;
-        $arguments['wait']               = isset($arguments['wait'])               ? $arguments['wait']               : FALSE;
+        $arguments['filter']             = @$arguments['filter']             ?: FALSE;
+        $arguments['listeners']          = @$arguments['listeners']          ?: array();
+        $arguments['repeat']             = @$arguments['repeat']             ?: FALSE;
+        $arguments['stopOnFailure']      = @$arguments['stopOnFailure']      ?: FALSE;
+        $arguments['testDatabasePrefix'] = @$arguments['testDatabasePrefix'] ?: '';
+        $arguments['verbose']            = @$arguments['verbose']            ?: FALSE;
+        $arguments['wait']               = @$arguments['wait']               ?: FALSE;
 
         if (isset($arguments['configuration'])) {
             $configuration = new PHPUnit_Util_Configuration(
@@ -282,16 +282,16 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
             $arguments['reportDirectory'] = $this->getDirectory($arguments['reportDirectory']);
         }
 
-        $arguments['cpdMinLines']          = isset($arguments['cpdMinLines'])          ? $arguments['cpdMinLines']          : 5;
-        $arguments['cpdMinMatches']        = isset($arguments['cpdMinMatches'])        ? $arguments['cpdMinMatches']        : 70;
-        $arguments['groups']               = isset($arguments['groups'])               ? $arguments['groups']               : array();
-        $arguments['excludeGroups']        = isset($arguments['excludeGroups'])        ? $arguments['excludeGroups']        : array();
-        $arguments['logIncompleteSkipped'] = isset($arguments['logIncompleteSkipped']) ? $arguments['logIncompleteSkipped'] : FALSE;
-        $arguments['reportCharset']        = isset($arguments['reportCharset'])        ? $arguments['reportCharset']        : 'ISO-8859-1';
-        $arguments['reportYUI']            = isset($arguments['reportYUI'])            ? $arguments['reportYUI']            : TRUE;
-        $arguments['reportHighlight']      = isset($arguments['reportHighlight'])      ? $arguments['reportHighlight']      : FALSE;
-        $arguments['reportLowUpperBound']  = isset($arguments['reportLowUpperBound'])  ? $arguments['reportLowUpperBound']  : 35;
-        $arguments['reportHighLowerBound'] = isset($arguments['reportHighLowerBound']) ? $arguments['reportHighLowerBound'] : 70;
+        $arguments['cpdMinLines']          = @$arguments['cpdMinLines']          ?: 5;
+        $arguments['cpdMinMatches']        = @$arguments['cpdMinMatches']        ?: 70;
+        $arguments['groups']               = @$arguments['groups']               ?: array();
+        $arguments['excludeGroups']        = @$arguments['excludeGroups']        ?: array();
+        $arguments['logIncompleteSkipped'] = @$arguments['logIncompleteSkipped'] ?: FALSE;
+        $arguments['reportCharset']        = @$arguments['reportCharset']        ?: 'ISO-8859-1';
+        $arguments['reportYUI']            = @$arguments['reportYUI']            ?: TRUE;
+        $arguments['reportHighlight']      = @$arguments['reportHighlight']      ?: FALSE;
+        $arguments['reportLowUpperBound']  = @$arguments['reportLowUpperBound']  ?: 35;
+        $arguments['reportHighLowerBound'] = @$arguments['reportHighLowerBound'] ?: 70;
 
         if (is_integer($arguments['repeat'])) {
             $suite = new PHPUnit_Extensions_RepeatedTest(
