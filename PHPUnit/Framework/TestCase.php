@@ -213,7 +213,7 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
         );
 
         if (!empty($this->data)) {
-            $buffer .= ' with data (' . join(', ', $this->data) . ')';
+            $buffer .= ' with data (' . $this->dataToString($this->data) . ')';
         }
 
         return $buffer;
@@ -682,6 +682,43 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
         $args = func_get_args();
 
         return new PHPUnit_Framework_MockObject_Stub_ConsecutiveCalls($args);
+    }
+
+    /**
+     * @param  mixed $data
+     * @return string
+     * @access protected
+     * @since  Method available since Release 3.2.1
+     */
+    protected function dataToString($data)
+    {
+        $result = array();
+
+        foreach ($data as $_data) {
+            if (is_array($_data)) {
+                $result[] = 'array(' . $this->dataToString($_data) . ')';
+            }
+
+            else if (is_object($_data)) {
+                $object = new ReflectionObject($_data);
+
+                if ($object->hasMethod('__toString')) {
+                    $result[] = (string)$_data;
+                } else {
+                    $result[] = get_class($_data);
+                }
+            }
+
+            else if (is_resource($_data)) {
+                $result[] = '<resource>';
+            }
+
+            else {
+                $result[] = var_export($_data, TRUE);
+            }
+        }
+
+        return join(', ', $result);
     }
 
     /**
