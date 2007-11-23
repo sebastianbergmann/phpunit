@@ -72,6 +72,17 @@ PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
  *     </exclude>
  *   </groups>
  *
+ *   <filter>
+ *     <blacklist>
+ *       <directory suffix=".php">/path/to/files</directory>
+ *       <file>/path/to/file</file>
+ *     </blacklist>
+ *     <whitelist>
+ *       <directory suffix=".php">/path/to/files</directory>
+ *       <file>/path/to/file</file>
+ *     </whitelist>
+ *   </filter>
+ *
  *   <logging>
  *     <log type="coverage-html" target="/tmp/report" charset="UTF-8"
  *          yui="true" highlight="false"
@@ -114,6 +125,11 @@ PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
  *             threshold="200"/>
  *     </pmd>
  *   </logging>
+ *
+ *   <php>
+ *     <ini name="foo" value="bar"/>
+ *     <var name="foo" value="bar"/>
+ *   </php>
  * </phpunit>
  * </code>
  *
@@ -129,6 +145,7 @@ PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
 class PHPUnit_Util_Configuration
 {
     protected $document;
+    protected $xpath;
 
     /**
      * Loads a PHPUnit configuration file.
@@ -139,6 +156,58 @@ class PHPUnit_Util_Configuration
     public function __construct($filename)
     {
         $this->document = PHPUnit_Util_XML::load($filename);
+        $this->xpath    = new DOMXPath($this->document);
+    }
+
+    /**
+     * Returns the configuration for SUT filtering.
+     *
+     * @return array
+     * @access public
+     * @since  Method available since Release 3.2.1
+     */
+    public function getFilterConfiguration()
+    {
+        $filters = array(
+          'blacklist' => array('directory' => array(), 'file' => array()),
+          'whitelist' => array('directory' => array(), 'file' => array())
+        );
+
+        foreach ($this->xpath->query('filter/blacklist/directory') as $directory) {
+            if ($directory->hasAttribute('suffix')) {
+                $suffix = (string)$directory->getAttribute('suffix');
+            } else {
+                $suffix = '.php';
+            }
+
+            $filters['blacklist']['file'][] = array(
+              'path'   => (string)$directory->nodeValue,
+              'suffix' => $suffix
+            );
+        }
+
+        foreach ($this->xpath->query('filter/blacklist/file') as $file) {
+            $filters['blacklist']['file'][] = (string)$file->nodeValue;
+        }
+
+        foreach ($this->xpath->query('filter/whitelist/directory') as $directory) {
+            if ($directory->hasAttribute('suffix')) {
+                $suffix = (string)$directory->getAttribute('suffix');
+            } else {
+                $suffix = '.php';
+            }
+
+            $filters['whitelist']['file'][] = array(
+              'path'   => (string)$directory->nodeValue,
+              'suffix' => $suffix
+            );
+        }
+
+        foreach ($this->xpath->query('filter/whitelist/file') as $file) {
+            $filters['whitelist']['file'][] = (string)$file->nodeValue;
+        }
+
+        return $filters;
     }
 
     /**
@@ -155,13 +224,11 @@ class PHPUnit_Util_Configuration
           'exclude' => array()
         );
 
-        $xpath = new DOMXPath($this->document);
-
-        foreach ($xpath->query('groups/include/group') as $group) {
+        foreach ($this->xpath->query('groups/include/group') as $group) {
             $groups['include'][] = (string)$group->nodeValue;
         }
 
-        foreach ($xpath->query('groups/exclude/group') as $group) {
+        foreach ($this->xpath->query('groups/exclude/group') as $group) {
             $groups['exclude'][] = (string)$group->nodeValue;
         }
 
@@ -176,11 +243,9 @@ class PHPUnit_Util_Configuration
      */
     public function getLoggingConfiguration()
     {
-        $xpath  = new DOMXPath($this->document);
-        $logs   = $xpath->query('logging/log');
         $result = array();
 
-        foreach ($logs as $log) {
+        foreach ($this->xpath->query('logging/log') as $log) {
             $type   = (string)$log->getAttribute('type');
             $target = (string)$log->getAttribute('target');
 
@@ -241,6 +306,37 @@ class PHPUnit_Util_Configuration
     }
 
     /**
+     * Returns the PHP configuration.
+     *
+     * @return array
+     * @access public
+     * @since  Method available since Release 3.2.1
+     */
+    public function getPHPConfiguration()
+    {
+        $result = array(
+          'ini' => array(),
+          'var' => array()
+        );
+
+        foreach ($this->xpath->query('php/ini') as $ini) {
+            $name  = (string)$ini->getAttribute('name');
+            $value = (string)$ini->getAttribute('value');
+
+            $result['ini'][$name] = $value;
+        }
+
+        foreach ($this->xpath->query('php/var') as $var) {
+            $name  = (string)$var->getAttribute('name');
+            $value = (string)$var->getAttribute('value');
+
+            $result['var'][$name] = $value;
+        }
+
+        return $result;
+    }
+
+    /**
      * Returns the configuration for PMD rules.
      *
      * @return array
@@ -248,11 +344,9 @@ class PHPUnit_Util_Configuration
      */
     public function getPMDConfiguration()
     {
-        $xpath  = new DOMXPath($this->document);
-        $rules  = $xpath->query('logging/pmd/rule');
         $result = array();
 
-        foreach ($rules as $rule) {
+        foreach ($this->xpath->query('logging/pmd/rule') as $rule) {
             $class     = (string)$rule->getAttribute('class');
             $threshold = (string)$rule->getAttribute('threshold');
             $threshold = explode(',', $threshold);
@@ -276,8 +370,7 @@ class PHPUnit_Util_Configuration
      */
     public function getTestSuiteConfiguration()
     {
-        $xpath         = new DOMXPath($this->document);
-        $testSuiteNode = $xpath->query('testsuite');
+        $testSuiteNode = $this->xpath->query('testsuite');
 
         if ($testSuiteNode->length > 0) {
             $testSuiteNode = $testSuiteNode->item(0);
@@ -292,7 +385,7 @@ class PHPUnit_Util_Configuration
 
             $directories = array();
 
-            foreach ($xpath->query('testsuite/directory') as $directoryNode) {
+            foreach ($this->xpath->query('testsuite/directory') as $directoryNode) {
                 $directories[] = (string)$directoryNode->nodeValue;
             }
 
@@ -304,7 +397,7 @@ class PHPUnit_Util_Configuration
                 $suite->addTestFiles($testCollector->collectTests());
             }
 
-            foreach ($xpath->query('testsuite/file') as $fileNode) {
+            foreach ($this->xpath->query('testsuite/file') as $fileNode) {
                 $suite->addTestFile((string)$fileNode->nodeValue);
             }
 
