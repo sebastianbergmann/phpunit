@@ -96,7 +96,7 @@ class PHPUnit_Framework_TestFailure
      * @return string
      * @access public
      */
-    public function toString()
+    public function __toString()
     {
         return sprintf(
           '%s: %s',
@@ -132,7 +132,7 @@ class PHPUnit_Framework_TestFailure
     public static function exceptionToString(Exception $e, $verbose = FALSE)
     {
         if ($e instanceof PHPUnit_Framework_SelfDescribing) {
-            $buffer = $e->toString();
+            $buffer = (string)$e;
 
             if (!empty($buffer)) {
                 $buffer .= "\n";
@@ -146,7 +146,7 @@ class PHPUnit_Framework_TestFailure
                         if ($comparisonFailure instanceof PHPUnit_Framework_ComparisonFailure_Object) {
                             $buffer .= "Failed asserting that two variables reference the same object.\n";
                         } else {
-                            $buffer .= $comparisonFailure->toString() . "\n";
+                            $buffer .= (string)$comparisonFailure . "\n";
                         }
                     } else {
                         if ($comparisonFailure instanceof PHPUnit_Framework_ComparisonFailure_Scalar) {
@@ -165,7 +165,7 @@ class PHPUnit_Framework_TestFailure
                               "Failed asserting that two %ss are equal.\n%s\n",
 
                               strtolower(substr(get_class($comparisonFailure), 36)),
-                              $comparisonFailure->toString()
+                              (string)$comparisonFailure
                             );
                         }
 
@@ -173,7 +173,7 @@ class PHPUnit_Framework_TestFailure
                            !$comparisonFailure instanceof PHPUnit_Framework_ComparisonFailure_Array &&
                            !$comparisonFailure instanceof PHPUnit_Framework_ComparisonFailure_Object &&
                            !$comparisonFailure instanceof PHPUnit_Framework_ComparisonFailure_String) {
-                            $buffer .= $comparisonFailure->toString() . "\n";
+                            $buffer .= (string)$comparisonFailure . "\n";
                         }
                     }
                 } else {

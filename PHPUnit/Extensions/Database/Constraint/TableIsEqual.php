@@ -119,7 +119,7 @@ class PHPUnit_Extensions_Database_Constraint_TableIsEqual extends PHPUnit_Framew
     {
         $failureDescription = sprintf('Failed asserting that %s %s Reason: %s', 
             $other->__toString(), 
-            $this->toString(), 
+            (string)$this, 
             $this->failure_reason
         );
         
@@ -140,11 +140,12 @@ class PHPUnit_Extensions_Database_Constraint_TableIsEqual extends PHPUnit_Framew
      * @return string
      * @access public
      */
-    public function toString()
+    public function __toString()
     {
-        return sprintf('is equal to %s', 
-
-        PHPUnit_Util_Type::toString($this->value));
+        return sprintf(
+          'is equal to %s', 
+          PHPUnit_Util_Type::toString($this->value)
+        );
     }
 }
 ?>

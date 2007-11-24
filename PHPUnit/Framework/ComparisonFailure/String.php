@@ -69,7 +69,7 @@ class PHPUnit_Framework_ComparisonFailure_String extends PHPUnit_Framework_Compa
      * Returns a string describing the difference between
      * the expected and the actual string value.
      */
-    public function toString()
+    public function __toString()
     {
         $expected = (string)$this->expected;
         $actual   = (string)$this->actual;

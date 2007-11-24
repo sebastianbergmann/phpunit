@@ -70,7 +70,7 @@ interface PHPUnit_Framework_SelfDescribing
      * @return string
      * @access public
      */
-    public function toString();
+    public function __toString();
 }
 
 }

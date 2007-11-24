@@ -71,7 +71,7 @@ class PHPUnit_Framework_ComparisonFailure_Array extends PHPUnit_Framework_Compar
      *
      * @note Diffing is only done for one level.
      */
-    public function toString()
+    public function __toString()
     {
         if ($this->hasDiff()) {
             return $this->diff(
@@ -93,7 +93,7 @@ class PHPUnit_Framework_ComparisonFailure_Array extends PHPUnit_Framework_Compar
             if ($expectedValue === $this->actual[$expectedKey]) continue;
 
             $diffObject = PHPUnit_Framework_ComparisonFailure::diffIdentical($expectedValue, $this->actual[$expectedKey], $this->message . "array key <{$expectedKey}>: ");
-            $diff .= $diffObject->toString() . "\n";
+            $diff .= (string)$diffObject . "\n";
         }
 
         foreach($this->actual as $actualKey => $actualValue) {

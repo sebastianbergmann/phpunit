@@ -69,7 +69,7 @@ class PHPUnit_Framework_ComparisonFailure_Scalar extends PHPUnit_Framework_Compa
      * Returns a string describing the difference between the expected and the
      * actual scalar value.
      */
-    public function toString()
+    public function __toString()
     {
         if (is_int($this->expected) || is_float($this->expected)) {
             $type             = gettype($this->expected);

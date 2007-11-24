@@ -186,7 +186,7 @@ class PHPUnit_Util_Log_XML extends PHPUnit_Util_Printer implements PHPUnit_Frame
         $error->setAttribute('type', get_class($e));
 
         if ($test instanceof PHPUnit_Framework_SelfDescribing) {
-            $buffer = $test->toString() . "\n";
+            $buffer = (string)$test . "\n";
         } else {
             $buffer = '';
         }
@@ -219,7 +219,7 @@ class PHPUnit_Util_Log_XML extends PHPUnit_Util_Printer implements PHPUnit_Frame
         $failure->setAttribute('type', get_class($e));
 
         if ($test instanceof PHPUnit_Framework_SelfDescribing) {
-            $buffer = $test->toString() . "\n";
+            $buffer = (string)$test . "\n";
         } else {
             $buffer = '';
         }

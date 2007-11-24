@@ -92,7 +92,7 @@ class PHPUnit_Framework_Constraint_GreaterThan extends PHPUnit_Framework_Constra
      * @return string
      * @access public
      */
-    public function toString()
+    public function __toString()
     {
         return 'is greater than ' . PHPUnit_Util_Type::toString($this->value);
     }

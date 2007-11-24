@@ -157,7 +157,7 @@ class PHPUnit_Framework_Constraint_IsType extends PHPUnit_Framework_Constraint
      * @return string
      * @access public
      */
-    public function toString()
+    public function __toString()
     {
         return sprintf(
           'is of type "%s"',

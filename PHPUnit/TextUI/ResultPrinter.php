@@ -217,7 +217,7 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
         $failedTest = $defect->failedTest();
 
         if ($failedTest instanceof PHPUnit_Framework_SelfDescribing) {
-            $testName = $failedTest->toString();
+            $testName = (string)$failedTest;
         } else {
             $testName = get_class($failedTest);
         }

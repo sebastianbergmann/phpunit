@@ -201,7 +201,7 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
      * @return string
      * @access public
      */
-    public function toString()
+    public function __toString()
     {
         $class = new ReflectionClass($this);
 

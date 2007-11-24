@@ -249,7 +249,7 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
      * @return string
      * @access public
      */
-    public function toString()
+    public function __toString()
     {
         return $this->getName();
     }
