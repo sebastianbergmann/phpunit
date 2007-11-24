@@ -96,7 +96,7 @@ class PHPUnit_Framework_Constraint_TraversableContains extends PHPUnit_Framework
      * @return string
      * @access public
      */
-    public function toString()
+    public function __toString()
     {
         return 'contains ' . PHPUnit_Util_Type::toString($this->value);
     }

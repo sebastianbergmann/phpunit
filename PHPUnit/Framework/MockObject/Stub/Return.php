@@ -78,7 +78,7 @@ class PHPUnit_Framework_MockObject_Stub_Return implements PHPUnit_Framework_Mock
         return $this->value;
     }
 
-    public function toString()
+    public function __toString()
     {
         return sprintf(
           'return user-specified value %s',

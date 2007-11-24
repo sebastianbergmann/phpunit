@@ -87,7 +87,7 @@ abstract class PHPUnit_Framework_ComparisonFailure extends PHPUnit_Framework_Ass
 
     /**
      * Optional message which is placed in front of the first line
-     * returned by toString().
+     * returned by __toString().
      * @var string
      */
     protected $message;

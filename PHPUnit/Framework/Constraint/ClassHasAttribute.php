@@ -94,7 +94,7 @@ class PHPUnit_Framework_Constraint_ClassHasAttribute extends PHPUnit_Framework_C
      * @return string
      * @access public
      */
-    public function toString()
+    public function __toString()
     {
         return sprintf(
           'has attribute "%s"',

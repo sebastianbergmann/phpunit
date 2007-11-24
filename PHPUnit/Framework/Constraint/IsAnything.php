@@ -94,7 +94,7 @@ class PHPUnit_Framework_Constraint_IsAnything extends PHPUnit_Framework_Constrai
      * @return string
      * @access public
      */
-    public function toString()
+    public function __toString()
     {
         return 'is anything';
     }

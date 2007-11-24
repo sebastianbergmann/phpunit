@@ -78,7 +78,7 @@ class Framework_TestCaseTest extends PHPUnit_Framework_TestCase
     {
         $this->assertEquals(
           'testCaseToString(Framework_TestCaseTest)',
-          $this->toString()
+          (string)$this
         );
     }
 

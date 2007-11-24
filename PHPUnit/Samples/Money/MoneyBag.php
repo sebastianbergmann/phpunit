@@ -231,12 +231,12 @@ class MoneyBag implements IMoney
         return $this->add($m->negate());
     }
 
-    public function toString()
+    public function __toString()
     {
         $buffer = '{';
 
         foreach ($this->fMonies as $m) {
-            $buffer .= $m->toString();
+            $buffer .= (string)$m;
         }
 
         return $buffer . '}';

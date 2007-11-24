@@ -90,20 +90,20 @@ class PHPUnit_Framework_MockObject_Matcher implements PHPUnit_Framework_MockObje
         $this->invocationMatcher = $invocationMatcher;
     }
 
-    public function toString()
+    public function __toString()
     {
         $list = array();
 
         if ($this->invocationMatcher !== NULL) {
-            $list[] = $this->invocationMatcher->toString();
+            $list[] = (string)$this->invocationMatcher;
         }
 
         if ($this->methodNameMatcher !== NULL) {
-            $list[] = 'where ' . $this->methodNameMatcher->toString();
+            $list[] = 'where ' . (string)$this->methodNameMatcher;
         }
 
         if ($this->parametersMatcher !== NULL) {
-            $list[] = 'and ' . $this->parametersMatcher->toString();
+            $list[] = 'and ' . (string)$this->parametersMatcher;
         }
 
         if ($this->afterMatchBuilderId !== NULL) {
@@ -111,7 +111,7 @@ class PHPUnit_Framework_MockObject_Matcher implements PHPUnit_Framework_MockObje
         }
 
         if ($this->stub !== NULL) {
-            $list[] = 'will ' . $this->stub->toString();
+            $list[] = 'will ' . (string)$this->stub;
         }
 
         return join(' ', $list);
@@ -161,8 +161,8 @@ class PHPUnit_Framework_MockObject_Matcher implements PHPUnit_Framework_MockObje
               sprintf(
                 "Expectation failed for %s when %s\n%s",
 
-                $this->methodNameMatcher->toString(),
-                $this->invocationMatcher->toString(),
+                (string)$this->methodNameMatcher,
+                (string)$this->invocationMatcher,
                 $e->getDescription()
               ),
               $e->getComparisonFailure()
@@ -225,8 +225,8 @@ class PHPUnit_Framework_MockObject_Matcher implements PHPUnit_Framework_MockObje
               sprintf(
                 "Expectation failed for %s when %s\n%s",
 
-                $this->methodNameMatcher->toString(),
-                $this->invocationMatcher->toString(),
+                (string)$this->methodNameMatcher,
+                (string)$this->invocationMatcher(),
                 $e->getDescription()
               ),
               $e->getComparisonFailure()
@@ -259,8 +259,8 @@ class PHPUnit_Framework_MockObject_Matcher implements PHPUnit_Framework_MockObje
               sprintf(
                 "Expectation failed for %s when %s.\n%s",
 
-                $this->methodNameMatcher->toString(),
-                $this->invocationMatcher->toString(),
+                (string)$this->methodNameMatcher,
+                (string)$this->invocationMatcher,
                 $e->getDescription()
               )
             );

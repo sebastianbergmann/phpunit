@@ -69,7 +69,7 @@ class PHPUnit_Framework_ComparisonFailure_Type extends PHPUnit_Framework_Compari
      * Returns a string describing the type difference between the expected
      * and the actual value.
      */
-    public function toString()
+    public function __toString()
     {
         return sprintf(
           '%s does not match expected type "%s".',

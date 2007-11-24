@@ -114,7 +114,7 @@ class PHPUnit_Framework_Constraint_Or extends PHPUnit_Framework_Constraint
             'Failed asserting that %s %s.',
 
              PHPUnit_Util_Type::toString($other),
-             $this->toString()
+             (string)$this
           ),
           NULL,
           $description
@@ -127,7 +127,7 @@ class PHPUnit_Framework_Constraint_Or extends PHPUnit_Framework_Constraint
      * @return string
      * @access public
      */
-    public function toString()
+    public function __toString()
     {
         $text = '';
 
@@ -136,7 +136,7 @@ class PHPUnit_Framework_Constraint_Or extends PHPUnit_Framework_Constraint
                 $text .= ' or ';
             }
 
-            $text .= $constraint->toString();
+            $text .= (string)$constraint;
         }
 
         return $text;

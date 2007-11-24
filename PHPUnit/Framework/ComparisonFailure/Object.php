@@ -71,7 +71,7 @@ class PHPUnit_Framework_ComparisonFailure_Object extends PHPUnit_Framework_Compa
      *
      * @note Diffing is only done for one level.
      */
-    public function toString()
+    public function __toString()
     {
         if ($this->hasDiff()) {
             return $this->diff(
@@ -120,19 +120,19 @@ class PHPUnit_Framework_ComparisonFailure_Object extends PHPUnit_Framework_Compa
 
                     if ($expectedType !== $actualType) {
                         $diffObject = new PHPUnit_Framework_ComparisonFailure_Type($expectedValue, $actualValue, $this->message . 'attribute <' . $expectedAttribute->getName() . '>: ');
-                        $diff .= $diffObject->toString();
+                        $diff .= (string)$diffObject;
                     }
 
                     elseif (is_object($expectedValue)) {
                         if (get_class($expectedValue) !== get_class($actualValue)) {
                             $diffObject = new PHPUnit_Framework_ComparisonFailure_Type($expectedValue, $actualValue, $this->message . 'attribute <' . $expectedAttribute->getName() . '>: ');
-                            $diff .= $diffObject->toString();
+                            $diff .= (string)$diffObject;
                         } else {
                             $diff .= 'attribute <' . $expectedAttribute->getName() . '> contains object <' . get_class($expectedValue) . '> with different attributes';
                         }
                     } else {
                         $diffObject = PHPUnit_Framework_ComparisonFailure::diffIdentical($expectedValue, $actualValue, $this->message . 'attribute <' . $expectedAttribute->getName() . '>: ');
-                        $diff .= $diffObject->toString();
+                        $diff .= (string)$diffObject;
                     }
                 }
             }

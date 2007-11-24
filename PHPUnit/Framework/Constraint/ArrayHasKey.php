@@ -96,7 +96,7 @@ class PHPUnit_Framework_Constraint_ArrayHasKey extends PHPUnit_Framework_Constra
      * @return string
      * @access public
      */
-    public function toString()
+    public function __toString()
     {
         return 'has key ' . PHPUnit_Util_Type::toString($this->key);
     }
