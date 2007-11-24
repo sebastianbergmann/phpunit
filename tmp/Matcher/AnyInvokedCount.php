@@ -67,7 +67,7 @@ PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
  */
 class PHPUnit_Framework_MockObject_Matcher_AnyInvokedCount extends PHPUnit_Framework_MockObject_Matcher_InvokedRecorder
 {
-    public function toString()
+    public function __toString()
     {
         return 'invoked zero or more times';
     }

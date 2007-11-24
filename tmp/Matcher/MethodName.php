@@ -82,9 +82,9 @@ class PHPUnit_Framework_MockObject_Matcher_MethodName extends PHPUnit_Framework_
         $this->constraint = $constraint;
     }
 
-    public function toString()
+    public function __toString()
     {
-        return 'method name ' . $this->constraint->toString();
+        return 'method name ' . (string)$this->constraint;
     }
 
     public function matches(PHPUnit_Framework_MockObject_Invocation $invocation)

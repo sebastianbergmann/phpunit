@@ -86,7 +86,7 @@ class PHPUnit_Framework_MockObject_Matcher_Parameters extends PHPUnit_Framework_
         }
     }
 
-    public function toString()
+    public function __toString()
     {
         $text = 'with parameter';
 
@@ -95,7 +95,7 @@ class PHPUnit_Framework_MockObject_Matcher_Parameters extends PHPUnit_Framework_
                 $text .= ' and';
             }
 
-            $text .= ' ' . $index . ' ' . $parameter->toString();
+            $text .= ' ' . $index . ' ' . (string)$parameter;
         }
 
         return $text;
@@ -122,7 +122,7 @@ class PHPUnit_Framework_MockObject_Matcher_Parameters extends PHPUnit_Framework_
               sprintf(
                 'Parameter count for invocation %s is too low.',
 
-                $this->invocation->toString()
+                (string)$this->invocation
               )
             );
         }
@@ -135,7 +135,7 @@ class PHPUnit_Framework_MockObject_Matcher_Parameters extends PHPUnit_Framework_
                     'Parameter %s for invocation %s does not match expected value.',
 
                     $i,
-                    $this->invocation->toString()
+                    (string)$this->invocation
                   )
                 );
             }

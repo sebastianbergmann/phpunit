@@ -92,7 +92,7 @@ class PHPUnit_Framework_MockObject_Invocation implements PHPUnit_Framework_SelfD
         }
     }
 
-    public function toString()
+    public function __toString()
     {
         return sprintf(
           "%s::%s(%s)",

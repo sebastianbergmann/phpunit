@@ -77,7 +77,7 @@ class PHPUnit_Framework_MockObject_Matcher_InvokedCount extends PHPUnit_Framewor
         $this->expectedCount = $expectedCount;
     }
 
-    public function toString()
+    public function __toString()
     {
         return 'invoked ' . $this->expectedCount . ' time(s)';
     }
@@ -93,7 +93,7 @@ class PHPUnit_Framework_MockObject_Matcher_InvokedCount extends PHPUnit_Framewor
               sprintf(
                 'Expected count for invocation <%s> is wrong.',
 
-                $invocation->toString()
+                (string)$invocation
               )
             );
         }
