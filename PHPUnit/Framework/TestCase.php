@@ -258,9 +258,7 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
      */
     public function setExpectedException($exceptionName)
     {
-        if ((is_string($exceptionName) && class_exists($exceptionName)) || $exceptionName === NULL) {
-            $this->expectedException = $exceptionName;
-        }
+        $this->expectedException = $exceptionName;
     }
 
     /**
@@ -420,7 +418,7 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
         }
 
         catch (Exception $e) {
-            if ($this->expectedException !== NULL &&
+            if (is_string($this->expectedException) &&
                 $e instanceof $this->expectedException) {
                 return;
             } else {
