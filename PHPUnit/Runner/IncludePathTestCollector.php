@@ -78,25 +78,34 @@ class PHPUnit_Runner_IncludePathTestCollector implements PHPUnit_Runner_TestColl
      * @var    string
      * @access protected
      */
-    protected $filterIterator = NULL;
+    protected $filterIterator;
 
     /**
      * @var    array
      * @access protected
      */
-    protected $paths = array();
+    protected $paths;
 
     /**
-     * @return array
+     * @var    string
+     * @access protected
+     */
+    protected $suffix;
+
+    /**
+     * @param  array  $paths
+     * @param  string $suffix
      * @access public
      */
-    public function __construct(array $paths = array())
+    public function __construct(array $paths = array(), $suffix = 'Test.php')
     {
         if (!empty($paths)) {
             $this->paths = $paths;
         } else {
             $this->paths = PHPUnit_Util_Fileloader::getIncludePaths();
         }
+
+        $this->suffix = $suffix;
     }
 
     /**
@@ -116,7 +125,9 @@ class PHPUnit_Runner_IncludePathTestCollector implements PHPUnit_Runner_TestColl
             );
         }
 
-        $filterIterator = new PHPUnit_Util_FilterIterator($pathIterator);
+        $filterIterator = new PHPUnit_Util_FilterIterator(
+          $pathIterator, $this->suffix
+        );
 
         if ($this->filterIterator !== NULL) {
             $class          = new ReflectionClass($this->filterIterator);
