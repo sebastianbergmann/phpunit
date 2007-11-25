@@ -59,7 +59,7 @@ PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
  *
  * <phpunit>
  *   <testsuite name="My Test Suite">
- *     <directory>/path/to/*Test.php files</directory>
+ *     <directory suffix="Test.php">/path/to/files</directory>
  *     <file>/path/to/MyTest.php</file>
  *   </testsuite>
  *
@@ -180,7 +180,7 @@ class PHPUnit_Util_Configuration
                 $suffix = '.php';
             }
 
-            $filters['blacklist']['file'][] = array(
+            $filters['blacklist']['directory'][] = array(
               'path'   => (string)$directory->nodeValue,
               'suffix' => $suffix
             );
@@ -197,7 +197,7 @@ class PHPUnit_Util_Configuration
                 $suffix = '.php';
             }
 
-            $filters['whitelist']['file'][] = array(
+            $filters['whitelist']['directory'][] = array(
               'path'   => (string)$directory->nodeValue,
               'suffix' => $suffix
             );
@@ -383,15 +383,16 @@ class PHPUnit_Util_Configuration
                 $suite = new PHPUnit_Framework_TestSuite;
             }
 
-            $directories = array();
-
             foreach ($this->xpath->query('testsuite/directory') as $directoryNode) {
-                $directories[] = (string)$directoryNode->nodeValue;
-            }
+                if ($directoryNode->hasAttribute('suffix')) {
+                    $suffix = (string)$directoryNode->getAttribute('suffix');
+                } else {
+                    $suffix = 'Test.php';
+                }
 
-            if (!empty($directories)) {
                 $testCollector = new PHPUnit_Runner_IncludePathTestCollector(
-                  $directories
+                  array((string)$directoryNode->nodeValue),
+                  $suffix
                 );
 
                 $suite->addTestFiles($testCollector->collectTests());
