@@ -39,7 +39,7 @@
  * @author     Mike Lively <m@digitalsandwich.com>
  * @copyright  2002-2007 Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
- * @version    SVN: $Id: BankAccountDBTest.php 1254 2007-09-02 04:36:15Z mlively $
+ * @version    SVN: $Id$
  * @link       http://www.phpunit.de/
  * @since      File available since Release 3.2.0
  */
