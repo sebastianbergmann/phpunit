@@ -324,6 +324,12 @@ class PHPUnit_Framework_MockObject_Mock
 
     protected function generateConstructorCode(ReflectionClass $class)
     {
+        if (!$this->callOriginalConstructor) {
+            return "    public function __construct() {\n" .
+                   "        \$this->invocationMocker = new PHPUnit_Framework_MockObject_InvocationMocker(\$this);\n" .
+                   "    }\n\n";      
+        }
+
         $className   = $class->getName();
         $constructor = FALSE;
 
