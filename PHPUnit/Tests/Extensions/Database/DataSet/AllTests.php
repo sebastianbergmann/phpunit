@@ -46,11 +46,9 @@
 
 require_once 'PHPUnit/Util/Filter.php';
 
-PHPUnit_Util_Filter::addFileToFilter(__FILE__);
-
 if (!defined('PHPUnit_MAIN_METHOD')) {
     define('PHPUnit_MAIN_METHOD', 'Extensions_Database_Operation_AllTests::main');
-    chdir(dirname(dirname(__FILE__)));
+    chdir(dirname(dirname(dirname(dirname(__FILE__)))));
 }
 
 require_once 'PHPUnit/Framework/TestSuite.php';
@@ -81,6 +79,22 @@ class Extensions_Database_DataSet_AllTests
 
     public static function suite()
     {
+        if (!defined('PHPUNIT_TESTSUITE_WHITELIST_PREPARED')) {
+            PHPUnit_Util_Filter::addDirectoryToWhitelist(
+              dirname(dirname(dirname(dirname(dirname(__FILE__)))))
+            );
+
+            PHPUnit_Util_Filter::removeDirectoryFromWhitelist(
+              dirname(dirname(dirname(dirname(dirname(__FILE__))))) . DIRECTORY_SEPARATOR . 'Samples'
+            );
+
+            PHPUnit_Util_Filter::removeDirectoryFromWhitelist(
+              dirname(dirname(dirname(dirname(dirname(__FILE__))))) . DIRECTORY_SEPARATOR . 'Tests'
+            );
+
+            define('PHPUNIT_TESTSUITE_WHITELIST_PREPARED', TRUE);
+        }
+
         $suite = new PHPUnit_Framework_TestSuite('PHPUnit_Extensions_Database_DataSet');
 
         $suite->addTestSuite('Extensions_Database_DataSet_XmlDataSetsTest');
