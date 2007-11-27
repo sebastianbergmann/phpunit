@@ -63,19 +63,10 @@ if (!class_exists('PHPUnit_Framework_Assert', FALSE)) {
  * @version    Release: @package_version@
  * @link       http://www.phpunit.de/
  * @since      Class available since Release 2.0.0
- * @static
+ * @abstract
  */
-class PHPUnit_Framework_Assert
+abstract class PHPUnit_Framework_Assert
 {
-    /**
-     * Protect constructor since it is a static only class.
-     *
-     * @access protected
-     */
-    protected function __construct()
-    {
-    }
-
     /**
      * Asserts that an array has a specified key.
      *
