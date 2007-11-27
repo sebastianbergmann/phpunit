@@ -697,10 +697,6 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
             if (isset($loggingConfiguration['testdox-text']) && !isset($arguments['testdoxTextFile'])) {
                 $arguments['testdoxTextFile'] = $loggingConfiguration['testdox-text'];
             }
-
-            if (isset($arguments['reportDirectory'])) {
-                $arguments['reportDirectory'] = $this->getDirectory($arguments['reportDirectory']);
-            }
         }
 
         $arguments['cpdMinLines']          = @$arguments['cpdMinLines']          ?: 5;
@@ -713,6 +709,10 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
         $arguments['reportHighlight']      = @$arguments['reportHighlight']      ?: FALSE;
         $arguments['reportLowUpperBound']  = @$arguments['reportLowUpperBound']  ?: 35;
         $arguments['reportHighLowerBound'] = @$arguments['reportHighLowerBound'] ?: 70;
+
+        if (isset($arguments['reportDirectory'])) {
+            $arguments['reportDirectory'] = $this->getDirectory($arguments['reportDirectory']);
+        }
     }
 }
 ?>
