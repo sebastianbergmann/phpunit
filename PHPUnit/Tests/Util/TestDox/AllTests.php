@@ -46,8 +46,6 @@
 
 require_once 'PHPUnit/Util/Filter.php';
 
-PHPUnit_Util_Filter::addFileToFilter(__FILE__);
-
 if (!defined('PHPUnit_MAIN_METHOD')) {
     define('PHPUnit_MAIN_METHOD', 'Util_TestDox_AllTests::main');
     chdir(dirname(dirname(dirname(__FILE__))));
@@ -79,6 +77,22 @@ class Util_TestDox_AllTests
 
     public static function suite()
     {
+        if (!defined('PHPUNIT_TESTSUITE_WHITELIST_PREPARED')) {
+            PHPUnit_Util_Filter::addDirectoryToWhitelist(
+              dirname(dirname(dirname(dirname(__FILE__))))
+            );
+
+            PHPUnit_Util_Filter::removeDirectoryFromWhitelist(
+              dirname(dirname(dirname(dirname(__FILE__)))) . DIRECTORY_SEPARATOR . 'Samples'
+            );
+
+            PHPUnit_Util_Filter::removeDirectoryFromWhitelist(
+              dirname(dirname(dirname(dirname(__FILE__)))) . DIRECTORY_SEPARATOR . 'Tests'
+            );
+
+            define('PHPUNIT_TESTSUITE_WHITELIST_PREPARED', TRUE);
+        }
+
         $suite = new PHPUnit_Framework_TestSuite('PHPUnit_Util_TestDox');
 
         $suite->addTestSuite('Util_TestDox_NamePrettifierTest');
