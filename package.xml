@@ -764,6 +764,11 @@
       <file baseinstalldir="/" name="WasRun.php" role="test">
        <tasks:replace from="@package_version@" to="version" type="package-info" />
       </file>
+      <file baseinstalldir="/" name="BankAccount.json" role="test" />
+      <file baseinstalldir="/" name="BankAccount.metrics" role="test" />
+      <file baseinstalldir="/" name="BankAccount.pmd" role="test" />
+      <file baseinstalldir="/" name="BankAccount.tap" role="test" />
+      <file baseinstalldir="/" name="BankAccount.xml" role="test" />
       <file baseinstalldir="/" name="bar.xml" role="test" />
       <file baseinstalldir="/" name="foo.xml" role="test" />
      </dir>
