@@ -1,0 +1,6 @@
+1..3
+# TestSuite "BankAccountTest" started.
+ok 1 - testBalanceIsInitiallyZero(BankAccountTest)
+ok 2 - testBalanceCannotBecomeNegative(BankAccountTest)
+ok 3 - testBalanceCannotBecomeNegative2(BankAccountTest)
+# TestSuite "BankAccountTest" ended.

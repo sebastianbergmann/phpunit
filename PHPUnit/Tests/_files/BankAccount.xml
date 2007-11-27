@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites>
+  <testsuite name="BankAccountTest" file="/usr/local/src/phpunit/trunk/PHPUnit/Samples/BankAccount/BankAccountTest.php" category="Testing" package="PHPUnit" tests="3" failures="0" errors="0" time="0">
+    <testcase name="testBalanceIsInitiallyZero" class="BankAccountTest" file="/usr/local/src/phpunit/trunk/PHPUnit/Samples/BankAccount/BankAccountTest.php" time="0"/>
+    <testcase name="testBalanceCannotBecomeNegative" class="BankAccountTest" file="/usr/local/src/phpunit/trunk/PHPUnit/Samples/BankAccount/BankAccountTest.php" time="0"/>
+    <testcase name="testBalanceCannotBecomeNegative2" class="BankAccountTest" file="/usr/local/src/phpunit/trunk/PHPUnit/Samples/BankAccount/BankAccountTest.php" time="0"/>
+  </testsuite>
+</testsuites>

@@ -41,22 +41,14 @@
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    SVN: $Id$
  * @link       http://www.phpunit.de/
- * @since      File available since Release 2.3.0
+ * @since      File available since Release 3.2.3
  */
 
-require_once 'PHPUnit/Util/Filter.php';
+require_once 'PHPUnit/Framework/TestCase.php';
 
-if (!defined('PHPUnit_MAIN_METHOD')) {
-    define('PHPUnit_MAIN_METHOD', 'Util_AllTests::main');
-    chdir(dirname(dirname(__FILE__)));
-}
-
-require_once 'PHPUnit/Framework/TestSuite.php';
-require_once 'PHPUnit/TextUI/TestRunner.php';
-
-require_once 'Util/Log/AllTests.php';
-require_once 'Util/TestDox/AllTests.php';
-require_once 'Util/TimerTest.php';
+require_once dirname(dirname(dirname(dirname(__FILE__)))) . DIRECTORY_SEPARATOR .
+             'Samples' . DIRECTORY_SEPARATOR .
+             'BankAccount' . DIRECTORY_SEPARATOR . 'BankAccountTest.php';
 
 /**
  *
@@ -68,44 +60,30 @@ require_once 'Util/TimerTest.php';
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    Release: @package_version@
  * @link       http://www.phpunit.de/
- * @since      Class available since Release 2.0.0
+ * @since      Class available since Release 3.2.3
  */
-class Util_AllTests
+class Util_Log_PMDTest extends PHPUnit_Framework_TestCase
 {
-    public static function main()
+    public function testBankAccount()
     {
-        PHPUnit_TextUI_TestRunner::run(self::suite());
+        $this->markTestSkipped('Test break code coverage report.');
+
+        $suite  = new PHPUnit_Framework_TestSuite('BankAccountTest');
+        $result = new PHPUnit_Framework_TestResult;
+        $suite->run($result);
+
+        $file = dirname(dirname(dirname(__FILE__))) . DIRECTORY_SEPARATOR .
+                '_files' . DIRECTORY_SEPARATOR . 'BankAccount.pmd';
+
+        $writer = new PHPUnit_Util_Log_PMD($file . '.tmp');
+        $writer->process($result);
+
+        $this->assertEquals(
+          file_get_contents($file),
+          file_get_contents($file . '.tmp')
+        );
+
+        unlink($file . '.tmp');
     }
-
-    public static function suite()
-    {
-        if (!defined('PHPUNIT_TESTSUITE_WHITELIST_PREPARED')) {
-            PHPUnit_Util_Filter::addDirectoryToWhitelist(
-              dirname(dirname(dirname(__FILE__)))
-            );
-
-            PHPUnit_Util_Filter::removeDirectoryFromWhitelist(
-              dirname(dirname(dirname(__FILE__))) . DIRECTORY_SEPARATOR . 'Samples'
-            );
-
-            PHPUnit_Util_Filter::removeDirectoryFromWhitelist(
-              dirname(dirname(dirname(__FILE__))) . DIRECTORY_SEPARATOR . 'Tests'
-            );
-
-            define('PHPUNIT_TESTSUITE_WHITELIST_PREPARED', TRUE);
-        }
-
-        $suite = new PHPUnit_Framework_TestSuite('PHPUnit_Util');
-
-        $suite->addTest(Util_Log_AllTests::suite());
-        $suite->addTest(Util_TestDox_AllTests::suite());
-        $suite->addTestSuite('Util_TimerTest');
-
-        return $suite;
-    }
-}
-
-if (PHPUnit_MAIN_METHOD == 'Util_AllTests::main') {
-    Util_AllTests::main();
 }
 ?>

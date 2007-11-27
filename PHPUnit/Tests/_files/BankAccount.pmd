@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pmd version="PHPUnit @package_version@">
+  <violation rule="CRAP" package="global">More than 5.00% of the project's methods have a Change Risk Analysis and Predictions (CRAP) index that is above the threshold of 30.
+The CRAP index of a function or method uses cyclomatic complexity and code coverage from automated tests to help estimate the effort and risk associated with maintaining legacy code. A CRAP index over 30 is a good indicator of crappy code.</violation>
+  <file name="/usr/local/src/phpunit/trunk/PHPUnit/Extensions/PhptTestSuite.php">
+    <violation rule="CodeCoverage" line="76" to-line="94" package="PHPUnit" class="PHPUnit_Extensions_PhptTestSuite" method="__construct">The code coverage is 0.00 which is considered low.</violation>
+  </file>
+  <file name="/usr/local/src/phpunit/trunk/PHPUnit/Extensions/Database/DB/TableMetaData.php">
+    <violation rule="CodeCoverage" line="68" to-line="73" package="PHPUnit" class="PHPUnit_Extensions_Database_DB_TableMetaData" method="__construct">The code coverage is 0.00 which is considered low.</violation>
+  </file>
+  <file name="/usr/local/src/phpunit/trunk/PHPUnit/Util/Filter.php">
+    <violation rule="CodeCoverage" line="132" to-line="139" package="PHPUnit" class="PHPUnit_Util_Filter" method="addDirectoryToFilter">The code coverage is 0.00 which is considered low.</violation>
+    <violation rule="CodeCoverage" line="150" to-line="163" package="PHPUnit" class="PHPUnit_Util_Filter" method="addFileToFilter">The code coverage is 0.00 which is considered low.</violation>
+    <violation rule="CodeCoverage" line="175" to-line="182" package="PHPUnit" class="PHPUnit_Util_Filter" method="removeDirectoryFromFilter">The code coverage is 0.00 which is considered low.</violation>
+    <violation rule="CRAP" line="193" to-line="206" package="PHPUnit" class="PHPUnit_Util_Filter" method="removeFileFromFilter">The CRAP index is 30.
+The Change Risk Analysis and Predictions (CRAP) index of a function or method uses cyclomatic complexity and code coverage from automated tests to help estimate the effort and risk associated with maintaining legacy code. A CRAP index over 30 is a good indicator of crappy code.</violation>
+    <violation rule="CodeCoverage" line="193" to-line="206" package="PHPUnit" class="PHPUnit_Util_Filter" method="removeFileFromFilter">The code coverage is 0.00 which is considered low.</violation>
+    <violation rule="CodeCoverage" line="217" to-line="224" package="PHPUnit" class="PHPUnit_Util_Filter" method="addDirectoryToWhitelist">The code coverage is 0.00 which is considered low.</violation>
+    <violation rule="CodeCoverage" line="237" to-line="246" package="PHPUnit" class="PHPUnit_Util_Filter" method="addFileToWhitelist">The code coverage is 0.00 which is considered low.</violation>
+    <violation rule="CodeCoverage" line="257" to-line="264" package="PHPUnit" class="PHPUnit_Util_Filter" method="removeDirectoryFromWhitelist">The code coverage is 0.00 which is considered low.</violation>
+    <violation rule="CodeCoverage" line="274" to-line="285" package="PHPUnit" class="PHPUnit_Util_Filter" method="removeFileFromWhitelist">The code coverage is 0.00 which is considered low.</violation>
+    <violation rule="CRAP" line="298" to-line="350" package="PHPUnit" class="PHPUnit_Util_Filter" method="getFilteredCodeCoverage">The CRAP index is 182.
+The Change Risk Analysis and Predictions (CRAP) index of a function or method uses cyclomatic complexity and code coverage from automated tests to help estimate the effort and risk associated with maintaining legacy code. A CRAP index over 30 is a good indicator of crappy code.</violation>
+    <violation rule="CodeCoverage" line="298" to-line="350" package="PHPUnit" class="PHPUnit_Util_Filter" method="getFilteredCodeCoverage">The code coverage is 0.00 which is considered low.</violation>
+    <violation rule="CRAP" line="363" to-line="387" package="PHPUnit" class="PHPUnit_Util_Filter" method="getFilteredStacktrace">The CRAP index is 72.
+The Change Risk Analysis and Predictions (CRAP) index of a function or method uses cyclomatic complexity and code coverage from automated tests to help estimate the effort and risk associated with maintaining legacy code. A CRAP index over 30 is a good indicator of crappy code.</violation>
+    <violation rule="CodeCoverage" line="363" to-line="387" package="PHPUnit" class="PHPUnit_Util_Filter" method="getFilteredStacktrace">The code coverage is 0.00 which is considered low.</violation>
+    <violation rule="CodeCoverage" line="398" to-line="405" package="PHPUnit" class="PHPUnit_Util_Filter" method="setFilter">The code coverage is 0.00 which is considered low.</violation>
+    <violation rule="CodeCoverage" line="415" to-line="418" package="PHPUnit" class="PHPUnit_Util_Filter" method="getCanonicalFilename">The code coverage is 0.00 which is considered low.</violation>
+    <violation rule="CodeCoverage" line="432" to-line="440" package="PHPUnit" class="PHPUnit_Util_Filter" method="getIterator">The code coverage is 0.00 which is considered low.</violation>
+    <violation rule="CRAP" line="452" to-line="499" package="PHPUnit" class="PHPUnit_Util_Filter" method="isFiltered">The CRAP index is 90.
+The Change Risk Analysis and Predictions (CRAP) index of a function or method uses cyclomatic complexity and code coverage from automated tests to help estimate the effort and risk associated with maintaining legacy code. A CRAP index over 30 is a good indicator of crappy code.</violation>
+    <violation rule="CodeCoverage" line="452" to-line="499" package="PHPUnit" class="PHPUnit_Util_Filter" method="isFiltered">The code coverage is 0.00 which is considered low.</violation>
+  </file>
+  <file name="/usr/local/src/phpunit/trunk/PHPUnit/Util/Log/PEAR.php">
+    <violation rule="CodeCoverage" line="90" to-line="93" package="PHPUnit" class="PHPUnit_Util_Log_PEAR" method="__construct">The code coverage is 0.00 which is considered low.</violation>
+    <violation rule="CodeCoverage" line="103" to-line="113" package="PHPUnit" class="PHPUnit_Util_Log_PEAR" method="addError">The code coverage is 0.00 which is considered low.</violation>
+    <violation rule="CodeCoverage" line="123" to-line="133" package="PHPUnit" class="PHPUnit_Util_Log_PEAR" method="addFailure">The code coverage is 0.00 which is considered low.</violation>
+    <violation rule="CodeCoverage" line="143" to-line="153" package="PHPUnit" class="PHPUnit_Util_Log_PEAR" method="addIncompleteTest">The code coverage is 0.00 which is considered low.</violation>
+    <violation rule="CodeCoverage" line="164" to-line="174" package="PHPUnit" class="PHPUnit_Util_Log_PEAR" method="addSkippedTest">The code coverage is 0.00 which is considered low.</violation>
+    <violation rule="CodeCoverage" line="183" to-line="192" package="PHPUnit" class="PHPUnit_Util_Log_PEAR" method="startTestSuite">The code coverage is 0.00 which is considered low.</violation>
+    <violation rule="CodeCoverage" line="201" to-line="210" package="PHPUnit" class="PHPUnit_Util_Log_PEAR" method="endTestSuite">The code coverage is 0.00 which is considered low.</violation>
+    <violation rule="CodeCoverage" line="218" to-line="227" package="PHPUnit" class="PHPUnit_Util_Log_PEAR" method="startTest">The code coverage is 0.00 which is considered low.</violation>
+    <violation rule="CodeCoverage" line="236" to-line="245" package="PHPUnit" class="PHPUnit_Util_Log_PEAR" method="endTest">The code coverage is 0.00 which is considered low.</violation>
+  </file>
+  <file name="/usr/local/src/phpunit/trunk/PHPUnit/Util/Log/PMD/Rule/Function/CRAP.php">
+    <violation rule="CodeCoverage" line="66" to-line="69" package="PHPUnit" class="PHPUnit_Util_Log_PMD_Rule_Function_CRAP" method="__construct">The code coverage is 0.00 which is considered low.</violation>
+    <violation rule="CodeCoverage" line="71" to-line="86" package="PHPUnit" class="PHPUnit_Util_Log_PMD_Rule_Function_CRAP" method="apply">The code coverage is 0.00 which is considered low.</violation>
+  </file>
+  <file name="/usr/local/src/phpunit/trunk/PHPUnit/Util/Log/PMD/Rule/Function/CyclomaticComplexity.php">
+    <violation rule="CodeCoverage" line="66" to-line="69" package="PHPUnit" class="PHPUnit_Util_Log_PMD_Rule_Function_CyclomaticComplexity" method="__construct">The code coverage is 0.00 which is considered low.</violation>
+    <violation rule="CodeCoverage" line="71" to-line="87" package="PHPUnit" class="PHPUnit_Util_Log_PMD_Rule_Function_CyclomaticComplexity" method="apply">The code coverage is 0.00 which is considered low.</violation>
+  </file>
+  <file name="/usr/local/src/phpunit/trunk/PHPUnit/Util/Log/PMD/Rule/Function/NPathComplexity.php">
+    <violation rule="CodeCoverage" line="66" to-line="69" package="PHPUnit" class="PHPUnit_Util_Log_PMD_Rule_Function_NPathComplexity" method="__construct">The code coverage is 0.00 which is considered low.</violation>
+    <violation rule="CodeCoverage" line="71" to-line="85" package="PHPUnit" class="PHPUnit_Util_Log_PMD_Rule_Function_NPathComplexity" method="apply">The code coverage is 0.00 which is considered low.</violation>
+  </file>
+  <file name="/usr/local/src/phpunit/trunk/PHPUnit/Util/Log/PMD/Rule/Function/CodeCoverage.php">
+    <violation rule="CodeCoverage" line="66" to-line="69" package="PHPUnit" class="PHPUnit_Util_Log_PMD_Rule_Function_CodeCoverage" method="__construct">The code coverage is 0.00 which is considered low.</violation>
+    <violation rule="CRAP" line="71" to-line="89" package="PHPUnit" class="PHPUnit_Util_Log_PMD_Rule_Function_CodeCoverage" method="apply">The CRAP index is 30.
+The Change Risk Analysis and Predictions (CRAP) index of a function or method uses cyclomatic complexity and code coverage from automated tests to help estimate the effort and risk associated with maintaining legacy code. A CRAP index over 30 is a good indicator of crappy code.</violation>
+    <violation rule="CodeCoverage" line="71" to-line="89" package="PHPUnit" class="PHPUnit_Util_Log_PMD_Rule_Function_CodeCoverage" method="apply">The code coverage is 0.00 which is considered low.</violation>
+  </file>
+  <file name="/usr/local/src/phpunit/trunk/PHPUnit/Util/Log/PMD/Rule/Function/ExcessiveMethodLength.php">
+    <violation rule="CodeCoverage" line="66" to-line="69" package="PHPUnit" class="PHPUnit_Util_Log_PMD_Rule_Function_ExcessiveMethodLength" method="__construct">The code coverage is 0.00 which is considered low.</violation>
+    <violation rule="CodeCoverage" line="71" to-line="84" package="PHPUnit" class="PHPUnit_Util_Log_PMD_Rule_Function_ExcessiveMethodLength" method="apply">The code coverage is 0.00 which is considered low.</violation>
+  </file>
+  <file name="/usr/local/src/phpunit/trunk/PHPUnit/Util/Log/PMD/Rule/Function/ExcessiveParameterList.php">
+    <violation rule="CodeCoverage" line="66" to-line="69" package="PHPUnit" class="PHPUnit_Util_Log_PMD_Rule_Function_ExcessiveParameterList" method="__construct">The code coverage is 0.00 which is considered low.</violation>
+    <violation rule="CodeCoverage" line="71" to-line="84" package="PHPUnit" class="PHPUnit_Util_Log_PMD_Rule_Function_ExcessiveParameterList" method="apply">The code coverage is 0.00 which is considered low.</violation>
+  </file>
+  <file name="/usr/local/src/phpunit/trunk/PHPUnit/Util/Log/PMD/Rule/Project/CRAP.php">
+    <violation rule="CodeCoverage" line="66" to-line="69" package="PHPUnit" class="PHPUnit_Util_Log_PMD_Rule_Project_CRAP" method="__construct">The code coverage is 0.00 which is considered low.</violation>
+    <violation rule="CRAP" line="71" to-line="107" package="PHPUnit" class="PHPUnit_Util_Log_PMD_Rule_Project_CRAP" method="apply">The CRAP index is 42.
+The Change Risk Analysis and Predictions (CRAP) index of a function or method uses cyclomatic complexity and code coverage from automated tests to help estimate the effort and risk associated with maintaining legacy code. A CRAP index over 30 is a good indicator of crappy code.</violation>
+    <violation rule="CodeCoverage" line="71" to-line="107" package="PHPUnit" class="PHPUnit_Util_Log_PMD_Rule_Project_CRAP" method="apply">The code coverage is 0.00 which is considered low.</violation>
+  </file>
+  <file name="/usr/local/src/phpunit/trunk/PHPUnit/Util/Log/PMD/Rule/Class/TooManyFields.php">
+    <violation rule="CodeCoverage" line="66" to-line="69" package="PHPUnit" class="PHPUnit_Util_Log_PMD_Rule_Class_TooManyFields" method="__construct">The code coverage is 0.00 which is considered low.</violation>
+    <violation rule="CodeCoverage" line="71" to-line="86" package="PHPUnit" class="PHPUnit_Util_Log_PMD_Rule_Class_TooManyFields" method="apply">The code coverage is 0.00 which is considered low.</violation>
+  </file>
+  <file name="/usr/local/src/phpunit/trunk/PHPUnit/Util/Log/PMD/Rule/Class/ExcessiveClassLength.php">
+    <violation rule="CodeCoverage" line="66" to-line="69" package="PHPUnit" class="PHPUnit_Util_Log_PMD_Rule_Class_ExcessiveClassLength" method="__construct">The code coverage is 0.00 which is considered low.</violation>
+    <violation rule="CodeCoverage" line="71" to-line="84" package="PHPUnit" class="PHPUnit_Util_Log_PMD_Rule_Class_ExcessiveClassLength" method="apply">The code coverage is 0.00 which is considered low.</violation>
+  </file>
+  <file name="/usr/local/src/phpunit/trunk/PHPUnit/Util/Log/PMD/Rule/Class/ExcessivePublicCount.php">
+    <violation rule="CodeCoverage" line="66" to-line="69" package="PHPUnit" class="PHPUnit_Util_Log_PMD_Rule_Class_ExcessivePublicCount" method="__construct">The code coverage is 0.00 which is considered low.</violation>
+    <violation rule="CodeCoverage" line="71" to-line="85" package="PHPUnit" class="PHPUnit_Util_Log_PMD_Rule_Class_ExcessivePublicCount" method="apply">The code coverage is 0.00 which is considered low.</violation>
+  </file>
+  <file name="/usr/local/src/phpunit/trunk/PHPUnit/Util/Log/PMD/Rule/Class/DepthOfInheritanceTree.php">
+    <violation rule="CodeCoverage" line="66" to-line="69" package="PHPUnit" class="PHPUnit_Util_Log_PMD_Rule_Class_DepthOfInheritanceTree" method="__construct">The code coverage is 0.00 which is considered low.</violation>
+    <violation rule="CodeCoverage" line="71" to-line="81" package="PHPUnit" class="PHPUnit_Util_Log_PMD_Rule_Class_DepthOfInheritanceTree" method="apply">The code coverage is 0.00 which is considered low.</violation>
+  </file>
+  <file name="/usr/local/src/phpunit/trunk/PHPUnit/Util/Log/PMD/Rule/Class/EfferentCoupling.php">
+    <violation rule="CodeCoverage" line="66" to-line="69" package="PHPUnit" class="PHPUnit_Util_Log_PMD_Rule_Class_EfferentCoupling" method="__construct">The code coverage is 0.00 which is considered low.</violation>
+    <violation rule="CodeCoverage" line="71" to-line="84" package="PHPUnit" class="PHPUnit_Util_Log_PMD_Rule_Class_EfferentCoupling" method="apply">The code coverage is 0.00 which is considered low.</violation>
+  </file>
+</pmd>
