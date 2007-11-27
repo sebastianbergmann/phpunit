@@ -44,6 +44,8 @@
  * @since      File available since Release 3.2.0
  */
 
+@include_once 'Image/GraphViz.php';
+
 require_once 'PHPUnit/Util/Filter.php';
 require_once 'PHPUnit/Util/Metrics.php';
 
@@ -191,6 +193,45 @@ class PHPUnit_Util_Metrics_Project extends PHPUnit_Util_Metrics
     public function getDependencies()
     {
         return $this->dependencies;
+    }
+
+    /**
+     * Returns the dependencies between the classes of this project
+     * as GraphViz/DOT markup.
+     *
+     * @return Image_GraphViz
+     * @access public
+     * @since  Method available since Release 3.2.2
+     */
+    public function getDependenciesAsDOT()
+    {
+        if (class_exists('Image_GraphViz', FALSE)) {
+            $graph = new Image_GraphViz(
+              TRUE,
+              array(
+                'overlap'  => 'scale',
+                'splines'  => 'true',
+                'sep'      => '.1',
+                'fontsize' => '8'
+              )
+            );
+
+            foreach (array_keys($this->dependencies) as $className) {
+                $graph->addNode($className);
+            }
+
+            foreach ($this->dependencies as $from => $dependencies) {
+                foreach ($dependencies as $to => $flag) {
+                    if ($flag === 1) {
+                        $graph->addEdge(array($from => $to));
+                    }
+                }
+            }
+
+            return $graph;
+        } else {
+            throw new RuntimeException;
+        }
     }
 
     /**
