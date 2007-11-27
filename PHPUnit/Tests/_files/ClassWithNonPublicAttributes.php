@@ -73,6 +73,8 @@ class ClassWithNonPublicAttributes extends ParentClassWithPrivateAttributes
     protected static $privateStaticAttribute = 'baz';
 
     public $publicAttribute = 'foo';
+    public $foo = 1;
+    public $bar = 2;
     protected $protectedAttribute = 'bar';
     protected $privateAttribute = 'baz';
 
