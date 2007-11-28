@@ -92,6 +92,8 @@ class Util_AllTests
               dirname(dirname(dirname(__FILE__))) . DIRECTORY_SEPARATOR . 'Tests'
             );
 
+            PHPUnit_Util_Filter::$filterPHPUnit = FALSE;
+
             define('PHPUNIT_TESTSUITE_WHITELIST_PREPARED', TRUE);
         }
 
