@@ -209,7 +209,9 @@ abstract class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_Tes
      */
     public static function suite($className)
     {
-        $suite            = new PHPUnit_Framework_TestSuite;
+        $suite = new PHPUnit_Framework_TestSuite;
+        $suite->setName($className);
+
         $class            = new ReflectionClass($className);
         $classGroups      = PHPUnit_Util_Test::getGroups($class);
         $staticProperties = $class->getStaticProperties();
@@ -230,6 +232,7 @@ abstract class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_Tes
             if (isset($staticProperties['browsers'])) {
                 foreach ($staticProperties['browsers'] as $browser) {
                     $browserSuite = new PHPUnit_Framework_TestSuite;
+                    $browserSuite->setName($className . ': ' . $browser['name']);
 
                     foreach ($files as $file) {
                         $browserSuite->addTest(
@@ -253,6 +256,7 @@ abstract class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_Tes
         if (isset($staticProperties['browsers'])) {
             foreach ($staticProperties['browsers'] as $browser) {
                 $browserSuite = new PHPUnit_Framework_TestSuite;
+                $browserSuite->setName($className . ': ' . $browser['name']);
 
                 foreach ($class->getMethods() as $method) {
                     if (PHPUnit_Framework_TestSuite::isPublicTestMethod($method)) {
