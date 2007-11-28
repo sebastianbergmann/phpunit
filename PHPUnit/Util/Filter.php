@@ -157,7 +157,7 @@ class PHPUnit_Util_Filter
     public static function addFileToFilter($filename, $group = 'DEFAULT')
     {
         if (file_exists($filename)) {
-            $filename = self::getCanonicalFilename($filename);
+            $filename = realpath($filename);
 
             if (!isset(self::$blacklistedFiles[$group])) {
                 self::$blacklistedFiles[$group] = array($filename);
@@ -201,7 +201,7 @@ class PHPUnit_Util_Filter
     {
         if (file_exists($filename)) {
             if (isset(self::$blacklistedFiles[$group])) {
-                $filename = self::getCanonicalFilename($filename);
+                $filename = realpath($filename);
 
                 foreach (self::$blacklistedFiles[$group] as $key => $_filename) {
                     if ($filename == $_filename) {
@@ -244,7 +244,7 @@ class PHPUnit_Util_Filter
     public static function addFileToWhitelist($filename)
     {
         if (file_exists($filename)) {
-            $filename = self::getCanonicalFilename($filename);
+            $filename = realpath($filename);
 
             if (!in_array($filename, self::$whitelistedFiles)) {
                 self::$whitelistedFiles[] = $filename;
@@ -281,7 +281,7 @@ class PHPUnit_Util_Filter
     public static function removeFileFromWhitelist($filename)
     {
         if (file_exists($filename)) {
-            $filename = self::getCanonicalFilename($filename);
+            $filename = realpath($filename);
 
             foreach (self::$whitelistedFiles as $key => $_filename) {
                 if ($filename == $_filename) {
@@ -409,19 +409,6 @@ class PHPUnit_Util_Filter
     }
 
     /**
-     * Canonicalizes a source file name.
-     *
-     * @param  string $filename
-     * @return string
-     * @access protected
-     * @static
-     */
-    protected static function getCanonicalFilename($filename)
-    {
-        return str_replace('\\', '/', $filename);
-    }
-
-    /**
      * Returns a PHPUnit_Util_FilterIterator that iterates
      * over all files in the given directory that have the
      * given suffix.
@@ -454,7 +441,7 @@ class PHPUnit_Util_Filter
      */
     protected static function isFiltered($filename, $filterTests = TRUE, $ignoreWhitelist = FALSE)
     {
-        $filename = self::getCanonicalFilename($filename);
+        $filename = realpath($filename);
 
         // Use blacklist.
         if ($ignoreWhitelist || empty(self::$whitelistedFiles)) {
