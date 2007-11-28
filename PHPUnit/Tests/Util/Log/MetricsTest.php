@@ -68,8 +68,10 @@ class Util_Log_MetricsTest extends PHPUnit_Framework_TestCase
     {
         $this->markTestSkipped('Test break code coverage report.');
 
-        $suite  = new PHPUnit_Framework_TestSuite('BankAccountTest');
         $result = new PHPUnit_Framework_TestResult;
+        $result->collectCodeCoverageInformation(TRUE);
+
+        $suite  = new PHPUnit_Framework_TestSuite('BankAccountTest');
         $suite->run($result);
 
         $file = dirname(dirname(dirname(__FILE__))) . DIRECTORY_SEPARATOR .
