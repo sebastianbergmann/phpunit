@@ -62,6 +62,13 @@ class PHPUnit_Util_Filter
 {
     /**
      * @var    boolean
+     * @access public
+     * @static
+     */
+    public static $filterPHPUnit = TRUE;
+
+    /**
+     * @var    boolean
      * @access protected
      * @static
      */
@@ -150,7 +157,7 @@ class PHPUnit_Util_Filter
     public static function addFileToFilter($filename, $group = 'DEFAULT')
     {
         if (file_exists($filename)) {
-            $filename = self::getCanonicalFilename($filename);
+            $filename = realpath($filename);
 
             if (!isset(self::$blacklistedFiles[$group])) {
                 self::$blacklistedFiles[$group] = array($filename);
@@ -194,7 +201,7 @@ class PHPUnit_Util_Filter
     {
         if (file_exists($filename)) {
             if (isset(self::$blacklistedFiles[$group])) {
-                $filename = self::getCanonicalFilename($filename);
+                $filename = realpath($filename);
 
                 foreach (self::$blacklistedFiles[$group] as $key => $_filename) {
                     if ($filename == $_filename) {
@@ -237,7 +244,7 @@ class PHPUnit_Util_Filter
     public static function addFileToWhitelist($filename)
     {
         if (file_exists($filename)) {
-            $filename = self::getCanonicalFilename($filename);
+            $filename = realpath($filename);
 
             if (!in_array($filename, self::$whitelistedFiles)) {
                 self::$whitelistedFiles[] = $filename;
@@ -274,7 +281,7 @@ class PHPUnit_Util_Filter
     public static function removeFileFromWhitelist($filename)
     {
         if (file_exists($filename)) {
-            $filename = self::getCanonicalFilename($filename);
+            $filename = realpath($filename);
 
             foreach (self::$whitelistedFiles as $key => $_filename) {
                 if ($filename == $_filename) {
@@ -288,14 +295,12 @@ class PHPUnit_Util_Filter
      * Filters source lines from PHPUnit classes.
      *
      * @param  array   $codeCoverageInformation
-     * @param  boolean $filterTests
-     * @param  boolean $filterPHPUnit
      * @param  boolean $addUncoveredFilesFromWhitelist
      * @return array
      * @access public
      * @static
      */
-    public static function getFilteredCodeCoverage(array $codeCoverageInformation, $filterTests = TRUE, $filterPHPUnit = TRUE, $addUncoveredFilesFromWhitelist = TRUE)
+    public static function getFilteredCodeCoverage(array $codeCoverageInformation, $filterTests = TRUE, $addUncoveredFilesFromWhitelist = TRUE)
     {
         if (self::$filter) {
             $coveredFiles    = array();
@@ -304,7 +309,7 @@ class PHPUnit_Util_Filter
             foreach ($codeCoverageInformation as $k => $test) {
                 foreach (array_keys($test['files']) as $file) {
                     if (!isset($isFilteredCache[$file])) {
-                        $isFilteredCache[$file] = self::isFiltered($file, $filterTests, $filterPHPUnit);
+                        $isFilteredCache[$file] = self::isFiltered($file, $filterTests);
                     }
 
                     if ($isFilteredCache[$file]) {
@@ -354,13 +359,12 @@ class PHPUnit_Util_Filter
      *
      * @param  Exception $e
      * @param  boolean   $filterTests
-     * @param  boolean   $filterPHPUnit
      * @param  boolean   $asString
      * @return string
      * @access public
      * @static
      */
-    public static function getFilteredStacktrace(Exception $e, $filterTests = TRUE, $filterPHPUnit = TRUE, $asString = TRUE)
+    public static function getFilteredStacktrace(Exception $e, $filterTests = TRUE, $asString = TRUE)
     {
         if ($asString === TRUE) {
             $filteredStacktrace = '';
@@ -369,7 +373,7 @@ class PHPUnit_Util_Filter
         }
 
         foreach ($e->getTrace() as $frame) {
-            if (!self::$filter || (isset($frame['file']) && !self::isFiltered($frame['file'], $filterTests, $filterPHPUnit, TRUE))) {
+            if (!self::$filter || (isset($frame['file']) && !self::isFiltered($frame['file'], $filterTests, TRUE))) {
                 if ($asString === TRUE) {
                     $filteredStacktrace .= sprintf(
                       "%s:%s\n",
@@ -405,19 +409,6 @@ class PHPUnit_Util_Filter
     }
 
     /**
-     * Canonicalizes a source file name.
-     *
-     * @param  string $filename
-     * @return string
-     * @access protected
-     * @static
-     */
-    protected static function getCanonicalFilename($filename)
-    {
-        return str_replace('\\', '/', $filename);
-    }
-
-    /**
      * Returns a PHPUnit_Util_FilterIterator that iterates
      * over all files in the given directory that have the
      * given suffix.
@@ -442,16 +433,15 @@ class PHPUnit_Util_Filter
     /**
      * @param  string  $filename
      * @param  boolean $filterTests
-     * @param  boolean $filterPHPUnit
      * @param  boolean $ignoreWhitelist
      * @return boolean
      * @access protected
      * @static
      * @since  Method available since Release 2.1.3
      */
-    protected static function isFiltered($filename, $filterTests = TRUE, $filterPHPUnit = TRUE, $ignoreWhitelist = FALSE)
+    protected static function isFiltered($filename, $filterTests = TRUE, $ignoreWhitelist = FALSE)
     {
-        $filename = self::getCanonicalFilename($filename);
+        $filename = realpath($filename);
 
         // Use blacklist.
         if ($ignoreWhitelist || empty(self::$whitelistedFiles)) {
@@ -467,7 +457,7 @@ class PHPUnit_Util_Filter
                 );
             }
 
-            if ($filterPHPUnit) {
+            if (self::$filterPHPUnit) {
                 $blacklistedFiles = array_merge(
                   $blacklistedFiles,
                   self::$blacklistedFiles['PHPUNIT']
