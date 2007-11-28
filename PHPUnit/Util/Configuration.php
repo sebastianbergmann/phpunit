@@ -330,6 +330,14 @@ class PHPUnit_Util_Configuration
             $name  = (string)$var->getAttribute('name');
             $value = (string)$var->getAttribute('value');
 
+            if (strtolower($value) == 'false') {
+                $value = FALSE;
+            }
+
+            else if (strtolower($value) == 'true') {
+                $value = TRUE;
+            }
+
             $result['var'][$name] = $value;
         }
 
