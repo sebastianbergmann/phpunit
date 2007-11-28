@@ -99,7 +99,6 @@ class PHPUnit_Util_Log_JSON extends PHPUnit_Util_Printer implements PHPUnit_Fram
           PHPUnit_Util_Filter::getFilteredStacktrace(
             $e,
             TRUE,
-            TRUE,
             FALSE
           ),
           $e->getMessage()
@@ -123,7 +122,6 @@ class PHPUnit_Util_Log_JSON extends PHPUnit_Util_Printer implements PHPUnit_Fram
           $time,
           PHPUnit_Util_Filter::getFilteredStacktrace(
             $e,
-            TRUE,
             TRUE,
             FALSE
           ),

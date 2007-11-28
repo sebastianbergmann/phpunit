@@ -95,6 +95,8 @@ class AllTests
               dirname(dirname(__FILE__)) . DIRECTORY_SEPARATOR . 'Tests'
             );
 
+            PHPUnit_Util_Filter::$filterPHPUnit = FALSE;
+
             define('PHPUNIT_TESTSUITE_WHITELIST_PREPARED', TRUE);
         }
 
@@ -107,12 +109,6 @@ class AllTests
 
         return $suite;
     }
-}
-
-if (is_readable(dirname(__FILE__) . '/TestConfiguration.php')) {
-    require_once 'TestConfiguration.php';
-} else {
-    require_once 'TestConfiguration.php.dist';
 }
 
 if (PHPUnit_MAIN_METHOD == 'AllTests::main') {

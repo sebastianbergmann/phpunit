@@ -532,16 +532,14 @@ class PHPUnit_Framework_TestResult implements Countable
      * flag > 0: Line was executed.
      *
      * @param  boolean $filterTests
-     * @param  boolean $filterPHPUnit
      * @return array
      * @access public
      */
-    public function getCodeCoverageInformation($filterTests = TRUE, $filterPHPUnit = TRUE)
+    public function getCodeCoverageInformation($filterTests = TRUE)
     {
         return PHPUnit_Util_Filter::getFilteredCodeCoverage(
           $this->codeCoverageInformation,
-          $filterTests,
-          $filterPHPUnit
+          $filterTests
         );
     }
 
