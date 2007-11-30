@@ -949,9 +949,6 @@
       <file baseinstalldir="/" name="TestMethod.tpl" role="php">
        <tasks:replace from="@package_version@" to="version" type="package-info" />
       </file>
-      <file baseinstalldir="/" name="TestMethodConstraint.tpl" role="php">
-       <tasks:replace from="@package_version@" to="version" type="package-info" />
-      </file>
      </dir>
      <dir name="TestDox">
       <dir name="ResultPrinter">
