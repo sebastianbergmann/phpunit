@@ -197,22 +197,22 @@ class PHPUnit_Util_Skeleton
                                 break;
 
                                 case '>': {
-                                    $constraint = 'greaterThan';
+                                    $assertion = 'GreaterThan';
                                 }
                                 break;
 
                                 case '>=': {
-                                    $constraint = 'greaterThanOrEqual';
+                                    $assertion = 'GreaterThanOrEqual';
                                 }
                                 break;
 
                                 case '<': {
-                                    $constraint = 'lessThan';
+                                    $assertion = 'LessThan';
                                 }
                                 break;
 
                                 case '<=': {
-                                    $constraint = 'lessThanOrEqual';
+                                    $assertion = 'LessThanOrEqual';
                                 }
                                 break;
 
@@ -222,14 +222,13 @@ class PHPUnit_Util_Skeleton
                             }
 
                             $methodTemplate = new PHPUnit_Util_Template(
-                                sprintf(
-                                '%s%sSkeleton%sTestMethod%s.tpl',
+                              sprintf(
+                                '%s%sSkeleton%sTestMethod.tpl',
 
                                 dirname(__FILE__),
                                 DIRECTORY_SEPARATOR,
-                                DIRECTORY_SEPARATOR,
-                                isset($constraint) ? 'Constraint' : ''
-                                )
+                                DIRECTORY_SEPARATOR
+                              )
                             );
 
                             $origMethodName = $method->getName();
@@ -251,7 +250,6 @@ class PHPUnit_Util_Skeleton
                                 'arguments'      => $matches[1],
                                 'assertion'      => isset($assertion) ? $assertion : '',
                                 'class'          => $this->className,
-                                'constraint'     => isset($constraint) ? $constraint : '',
                                 'expected'       => $matches[3],
                                 'origMethodName' => $origMethodName,
                                 'methodName'     => $methodName
