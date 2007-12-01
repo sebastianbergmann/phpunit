@@ -216,6 +216,11 @@ class PHPUnit_Util_Skeleton
                                 }
                                 break;
 
+                                case 'throws': {
+                                    $assertion = 'exception';
+                                }
+                                break;
+
                                 default: {
                                     throw new RuntimeException;
                                 }
@@ -223,11 +228,12 @@ class PHPUnit_Util_Skeleton
 
                             $methodTemplate = new PHPUnit_Util_Template(
                               sprintf(
-                                '%s%sSkeleton%sTestMethod.tpl',
+                                '%s%sSkeleton%sTestMethod%s.tpl',
 
                                 dirname(__FILE__),
                                 DIRECTORY_SEPARATOR,
-                                DIRECTORY_SEPARATOR
+                                DIRECTORY_SEPARATOR,
+                                $assertion == 'exception' ? 'Exception' : ''
                               )
                             );
 
@@ -249,7 +255,6 @@ class PHPUnit_Util_Skeleton
                                 'annotation'     => trim($annotation),
                                 'arguments'      => $matches[1],
                                 'assertion'      => isset($assertion) ? $assertion : '',
-                                'class'          => $this->className,
                                 'expected'       => $matches[3],
                                 'origMethodName' => $origMethodName,
                                 'methodName'     => $methodName
