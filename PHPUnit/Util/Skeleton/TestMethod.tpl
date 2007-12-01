@@ -2,10 +2,10 @@
     /**
      * Generated from @assert {annotation}.
      */
-    public function test{methodName}() {
-        $object = new {class};
+    public function test{methodName}()
+    {
         $this->assert{assertion}(
           {expected},
-          $object->{origMethodName}({arguments})
+          $this->object->{origMethodName}({arguments})
         );
     }
