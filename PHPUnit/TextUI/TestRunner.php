@@ -580,24 +580,44 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
         if (isset($arguments['configuration'])) {
             $filterConfiguration = $arguments['configuration']->getFilterConfiguration();
 
-            foreach ($filterConfiguration['blacklist']['directory'] as $dir) {
+            foreach ($filterConfiguration['blacklist']['include']['directory'] as $dir) {
                 PHPUnit_Util_Filter::addDirectoryToFilter(
                   $dir['path'], $dir['suffix']
                 );
             }
 
-            foreach ($filterConfiguration['blacklist']['file'] as $file) {
+            foreach ($filterConfiguration['blacklist']['include']['file'] as $file) {
                 PHPUnit_Util_Filter::addFileToFilter($file);
             }
 
-            foreach ($filterConfiguration['whitelist']['directory'] as $dir) {
+            foreach ($filterConfiguration['blacklist']['exclude']['directory'] as $dir) {
+                PHPUnit_Util_Filter::removeDirectoryFromFilter(
+                  $dir['path'], $dir['suffix']
+                );
+            }
+
+            foreach ($filterConfiguration['blacklist']['exclude']['file'] as $file) {
+                PHPUnit_Util_Filter::removeFileFromFilter($file);
+            }
+
+            foreach ($filterConfiguration['whitelist']['include']['directory'] as $dir) {
                 PHPUnit_Util_Filter::addDirectoryToWhitelist(
                   $dir['path'], $dir['suffix']
                 );
             }
 
-            foreach ($filterConfiguration['whitelist']['file'] as $file) {
+            foreach ($filterConfiguration['whitelist']['include']['file'] as $file) {
                 PHPUnit_Util_Filter::addFileToWhitelist($file);
+            }
+
+            foreach ($filterConfiguration['whitelist']['exclude']['directory'] as $dir) {
+                PHPUnit_Util_Filter::removeDirectoryFromWhitelist(
+                  $dir['path'], $dir['suffix']
+                );
+            }
+
+            foreach ($filterConfiguration['whitelist']['exclude']['file'] as $file) {
+                PHPUnit_Util_Filter::removeFileFromWhitelist($file);
             }
 
             $phpConfiguration = $arguments['configuration']->getPHPConfiguration();
