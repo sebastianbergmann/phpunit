@@ -176,98 +176,44 @@ class PHPUnit_Util_Configuration
      */
     public function getFilterConfiguration()
     {
-        $filters = array(
+        return array(
           'blacklist' => array(
             'include' => array(
-              'directory' => array(),
-              'file' => array()
+              'directory' => $this->readFilterDirectories(
+                'filter/blacklist/directory'
+              ),
+              'file' => $this->readFilterFiles(
+                'filter/blacklist/file'
+              )
             ),
             'exclude' => array(
-              'directory' => array(),
-              'file' => array()
+              'directory' => $this->readFilterDirectories(
+                'filter/blacklist/exclude/directory'
+               ),
+              'file' => $this->readFilterFiles(
+                'filter/blacklist/exclude/file'
+              )
             )
           ),
           'whitelist' => array(
             'include' => array(
-              'directory' => array(),
-              'file' => array()
+              'directory' => $this->readFilterDirectories(
+                'filter/whitelist/directory'
+              ),
+              'file' => $this->readFilterFiles(
+                'filter/whitelist/file'
+              )
             ),
             'exclude' => array(
-              'directory' => array(),
-              'file' => array()
+              'directory' => $this->readFilterDirectories(
+                'filter/whitelist/exclude/directory'
+              ),
+              'file' => $this->readFilterFiles(
+                'filter/whitelist/exclude/file'
+              )
             )
           )
         );
-
-        foreach ($this->xpath->query('filter/blacklist/directory') as $directory) {
-            if ($directory->hasAttribute('suffix')) {
-                $suffix = (string)$directory->getAttribute('suffix');
-            } else {
-                $suffix = '.php';
-            }
-
-            $filters['blacklist']['include']['directory'][] = array(
-              'path'   => (string)$directory->nodeValue,
-              'suffix' => $suffix
-            );
-        }
-
-        foreach ($this->xpath->query('filter/blacklist/file') as $file) {
-            $filters['blacklist']['include']['file'][] = (string)$file->nodeValue;
-        }
-
-        foreach ($this->xpath->query('filter/blacklist/exclude/directory') as $directory) {
-            if ($directory->hasAttribute('suffix')) {
-                $suffix = (string)$directory->getAttribute('suffix');
-            } else {
-                $suffix = '.php';
-            }
-
-            $filters['blacklist']['exclude']['directory'][] = array(
-              'path'   => (string)$directory->nodeValue,
-              'suffix' => $suffix
-            );
-        }
-
-        foreach ($this->xpath->query('filter/blacklist/exclude/file') as $file) {
-            $filters['blacklist']['exclude']['file'][] = (string)$file->nodeValue;
-        }
-
-        foreach ($this->xpath->query('filter/whitelist/directory') as $directory) {
-            if ($directory->hasAttribute('suffix')) {
-                $suffix = (string)$directory->getAttribute('suffix');
-            } else {
-                $suffix = '.php';
-            }
-
-            $filters['whitelist']['include']['directory'][] = array(
-              'path'   => (string)$directory->nodeValue,
-              'suffix' => $suffix
-            );
-        }
-
-        foreach ($this->xpath->query('filter/whitelist/file') as $file) {
-            $filters['whitelist']['include']['file'][] = (string)$file->nodeValue;
-        }
-
-        foreach ($this->xpath->query('filter/whitelist/exclude/directory') as $directory) {
-            if ($directory->hasAttribute('suffix')) {
-                $suffix = (string)$directory->getAttribute('suffix');
-            } else {
-                $suffix = '.php';
-            }
-
-            $filters['whitelist']['exclude']['directory'][] = array(
-              'path'   => (string)$directory->nodeValue,
-              'suffix' => $suffix
-            );
-        }
-
-        foreach ($this->xpath->query('filter/whitelist/exclude/file') as $file) {
-            $filters['whitelist']['exclude']['file'][] = (string)$file->nodeValue;
-        }
-
-        return $filters;
     }
 
     /**
@@ -323,19 +269,17 @@ class PHPUnit_Util_Configuration
                 }
 
                 if ($log->hasAttribute('yui')) {
-                    if ((string)$log->getAttribute('yui') == 'true') {
-                        $result['yui'] = TRUE;
-                    } else {
-                        $result['yui'] = FALSE;
-                    }
+                    $result['yui'] = $this->getBoolean(
+                      (string)$log->getAttribute('yui'),
+                      FALSE
+                    );
                 }
 
                 if ($log->hasAttribute('highlight')) {
-                    if ((string)$log->getAttribute('highlight') == 'true') {
-                        $result['highlight'] = TRUE;
-                    } else {
-                        $result['highlight'] = FALSE;
-                    }
+                    $result['highlight'] = $this->getBoolean(
+                      (string)$log->getAttribute('highlight'),
+                      FALSE
+                    );
                 }
             }
 
@@ -351,11 +295,10 @@ class PHPUnit_Util_Configuration
 
             else if ($type == 'test-xml') {
                 if ($log->hasAttribute('logIncompleteSkipped')) {
-                    if ((string)$log->getAttribute('logIncompleteSkipped') == 'true') {
-                        $result['logIncompleteSkipped'] = TRUE;
-                    } else {
-                        $result['logIncompleteSkipped'] = FALSE;
-                    }
+                    $result['logIncompleteSkipped'] = $this->getBoolean(
+                      (string)$log->getAttribute('logIncompleteSkipped'),
+                      FALSE
+                    );
                 }
             }
 
@@ -472,6 +415,69 @@ class PHPUnit_Util_Configuration
 
             return $suite;
         }
+    }
+
+    /**
+     * @param  string  $value
+     * @param  boolean $default
+     * @return boolean
+     * @access protected
+     * @since  Method available since Release 3.2.3
+     */
+    protected function getBoolean($value, $default)
+    {
+        if (strtolower($value) == 'false') {
+            return FALSE;
+        }
+
+        else if (strtolower($value) == 'true') {
+            return TRUE;
+        }
+
+        return $default;
+    }
+
+    /**
+     * @param  string $query
+     * @return array
+     * @access protected
+     * @since  Method available since Release 3.2.3
+     */
+    protected function readFilterDirectories($query)
+    {
+        $directories = array();
+
+        foreach ($this->xpath->query($query) as $directory) {
+            if ($directory->hasAttribute('suffix')) {
+                $suffix = (string)$directory->getAttribute('suffix');
+            } else {
+                $suffix = '.php';
+            }
+
+            $directories[] = array(
+              'path'   => (string)$directory->nodeValue,
+              'suffix' => $suffix
+            );
+        }
+
+        return $directories;
+    }
+
+    /**
+     * @param  string $query
+     * @return array
+     * @access protected
+     * @since  Method available since Release 3.2.3
+     */
+    protected function readFilterFiles($query)
+    {
+        $files = array();
+
+        foreach ($this->xpath->query($query) as $file) {
+            $files[] = (string)$file->nodeValue;
+        }
+
+        return $files;
     }
 }
 ?>
