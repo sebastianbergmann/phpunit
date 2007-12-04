@@ -76,10 +76,18 @@ PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
  *     <blacklist>
  *       <directory suffix=".php">/path/to/files</directory>
  *       <file>/path/to/file</file>
+ *       <exclude>
+ *         <directory suffix=".php">/path/to/files</directory>
+ *         <file>/path/to/file</file>
+ *       </exclude>
  *     </blacklist>
  *     <whitelist>
  *       <directory suffix=".php">/path/to/files</directory>
  *       <file>/path/to/file</file>
+ *       <exclude>
+ *         <directory suffix=".php">/path/to/files</directory>
+ *         <file>/path/to/file</file>
+ *       </exclude>
  *     </whitelist>
  *   </filter>
  *
@@ -169,8 +177,26 @@ class PHPUnit_Util_Configuration
     public function getFilterConfiguration()
     {
         $filters = array(
-          'blacklist' => array('directory' => array(), 'file' => array()),
-          'whitelist' => array('directory' => array(), 'file' => array())
+          'blacklist' => array(
+            'include' => array(
+              'directory' => array(),
+              'file' => array()
+            ),
+            'exclude' => array(
+              'directory' => array(),
+              'file' => array()
+            )
+          ),
+          'whitelist' => array(
+            'include' => array(
+              'directory' => array(),
+              'file' => array()
+            ),
+            'exclude' => array(
+              'directory' => array(),
+              'file' => array()
+            )
+          )
         );
 
         foreach ($this->xpath->query('filter/blacklist/directory') as $directory) {
@@ -180,14 +206,31 @@ class PHPUnit_Util_Configuration
                 $suffix = '.php';
             }
 
-            $filters['blacklist']['directory'][] = array(
+            $filters['blacklist']['include']['directory'][] = array(
               'path'   => (string)$directory->nodeValue,
               'suffix' => $suffix
             );
         }
 
         foreach ($this->xpath->query('filter/blacklist/file') as $file) {
-            $filters['blacklist']['file'][] = (string)$file->nodeValue;
+            $filters['blacklist']['include']['file'][] = (string)$file->nodeValue;
+        }
+
+        foreach ($this->xpath->query('filter/blacklist/exclude/directory') as $directory) {
+            if ($directory->hasAttribute('suffix')) {
+                $suffix = (string)$directory->getAttribute('suffix');
+            } else {
+                $suffix = '.php';
+            }
+
+            $filters['blacklist']['exclude']['directory'][] = array(
+              'path'   => (string)$directory->nodeValue,
+              'suffix' => $suffix
+            );
+        }
+
+        foreach ($this->xpath->query('filter/blacklist/exclude/file') as $file) {
+            $filters['blacklist']['exclude']['file'][] = (string)$file->nodeValue;
         }
 
         foreach ($this->xpath->query('filter/whitelist/directory') as $directory) {
@@ -197,14 +240,31 @@ class PHPUnit_Util_Configuration
                 $suffix = '.php';
             }
 
-            $filters['whitelist']['directory'][] = array(
+            $filters['whitelist']['include']['directory'][] = array(
               'path'   => (string)$directory->nodeValue,
               'suffix' => $suffix
             );
         }
 
         foreach ($this->xpath->query('filter/whitelist/file') as $file) {
-            $filters['whitelist']['file'][] = (string)$file->nodeValue;
+            $filters['whitelist']['include']['file'][] = (string)$file->nodeValue;
+        }
+
+        foreach ($this->xpath->query('filter/whitelist/exclude/directory') as $directory) {
+            if ($directory->hasAttribute('suffix')) {
+                $suffix = (string)$directory->getAttribute('suffix');
+            } else {
+                $suffix = '.php';
+            }
+
+            $filters['whitelist']['exclude']['directory'][] = array(
+              'path'   => (string)$directory->nodeValue,
+              'suffix' => $suffix
+            );
+        }
+
+        foreach ($this->xpath->query('filter/whitelist/exclude/file') as $file) {
+            $filters['whitelist']['exclude']['file'][] = (string)$file->nodeValue;
         }
 
         return $filters;
