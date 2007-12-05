@@ -125,7 +125,7 @@ class PHPUnit_Util_TestSuiteIterator implements RecursiveIterator
      */
     public function current()
     {
-        return $this->tests[$this->position];
+        return $this->valid() ? $this->tests[$this->position] : NULL;
     }
 
     /**
