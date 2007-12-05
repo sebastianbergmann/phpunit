@@ -52,6 +52,9 @@ require_once 'PHPUnit/Util/Fileloader.php';
 require_once 'PHPUnit/Util/Filter.php';
 require_once 'PHPUnit/Util/Test.php';
 require_once 'PHPUnit/Util/TestSuiteIterator.php';
+require_once 'PHPUnit/Util/TestSuiteIterator/GroupFilter.php';
+require_once 'PHPUnit/Util/TestSuiteIterator/NameFilter.php';
+require_once 'PHPUnit/Util/TestSuiteIterator/RecursiveIteratorIterator.php';
 
 PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
 
@@ -593,52 +596,32 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
 
         $result->startTestSuite($this);
 
-        $tests = array();
-
-        if (empty($excludeGroups)) {
-            if (empty($groups)) {
-                $tests = $this->tests;
-            } else {
-                foreach ($groups as $group) {
-                    if (isset($this->groups[$group])) {
-                        $tests = array_merge($tests, $this->groups[$group]);
-                    }
-                }
-            }
-        } else {
-            foreach ($this->groups as $_group => $_tests) {
-                if (!in_array($_group, $excludeGroups)) {
-                    $tests = array_merge($tests, $_tests);
-                }
-            }
-        }
+        $tests = new PHPUnit_Util_TestSuiteIterator_NameFilter(
+          new PHPUnit_Util_TestSuiteIterator_GroupFilter(
+            new PHPUnit_Util_TestSuiteIterator_RecursiveIteratorIterator(
+              new PHPUnit_Util_TestSuiteIterator($this),
+              PHPUnit_Util_TestSuiteIterator_RecursiveIteratorIterator::SELF_FIRST,
+              0,
+              $result
+            ),
+            $groups,
+            $excludeGroups
+          ),
+          $filter
+        );
 
         foreach ($tests as $test) {
             if ($result->shouldStop()) {
                 break;
             }
 
-            if ($test instanceof PHPUnit_Framework_TestSuite) {
+            if ($test instanceof PHPUnit_Framework_TestCase ||
+                $test instanceof PHPUnit_Framework_TestSuite) {
                 $test->setSharedFixture($this->sharedFixture);
-                $test->run($result, $filter, $groups, $excludeGroups);
-            } else {
-                $runTest = TRUE;
+            }
 
-                if ($filter !== FALSE ) {
-                    $name = $test->getName();
-
-                    if ($name !== NULL && preg_match($filter, $name) == 0) {
-                        $runTest = FALSE;
-                    }
-                }
-
-                if ($runTest) {
-                    if ($test instanceof PHPUnit_Framework_TestCase) {
-                        $test->setSharedFixture($this->sharedFixture);
-                    }
-
-                    $this->runTest($test, $result);
-                }
+            if (!$test instanceof PHPUnit_Framework_TestSuite) {
+                $this->runTest($test, $result);
             }
         }
 
