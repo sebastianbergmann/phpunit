@@ -81,7 +81,7 @@ PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
  *         <file>/path/to/file</file>
  *       </exclude>
  *     </blacklist>
- *     <whitelist>
+ *     <whitelist addUncoveredFilesFromWhitelist="true">
  *       <directory suffix=".php">/path/to/files</directory>
  *       <file>/path/to/file</file>
  *       <exclude>
@@ -176,6 +176,18 @@ class PHPUnit_Util_Configuration
      */
     public function getFilterConfiguration()
     {
+        $addUncoveredFilesFromWhitelist = TRUE;
+
+        $tmp = $this->xpath->query('filter/whitelist');
+
+        if ($tmp->length == 1 &&
+            $tmp->item(0)->hasAttribute('addUncoveredFilesFromWhitelist')) {
+            $addUncoveredFilesFromWhitelist = $this->getBoolean(
+              (string)$tmp->item(0)->getAttribute('addUncoveredFilesFromWhitelist'),
+              TRUE
+            );
+        }
+
         return array(
           'blacklist' => array(
             'include' => array(
@@ -196,6 +208,7 @@ class PHPUnit_Util_Configuration
             )
           ),
           'whitelist' => array(
+            'addUncoveredFilesFromWhitelist' => $addUncoveredFilesFromWhitelist,
             'include' => array(
               'directory' => $this->readFilterDirectories(
                 'filter/whitelist/directory'
