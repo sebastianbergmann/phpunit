@@ -504,7 +504,7 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
 
                         if ($_test instanceof PHPUnit_Framework_TestCase &&
                             isset($expectedException)) {
-                            $test->setExpectedException($expectedException);
+                            $_test->setExpectedException($expectedException);
                         }
 
                         $test->addTest($_test);
