@@ -1426,7 +1426,11 @@ abstract class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_Tes
             throw $e;
         }
 
-        return substr($result, 3);
+        if (is_string($result)) {
+            return substr($result, 3);
+        } else {
+            return '';
+        }
     }
 
     /**

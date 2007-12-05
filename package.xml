@@ -969,6 +969,17 @@
        <tasks:replace from="@package_version@" to="version" type="package-info" />
       </file>
      </dir>
+     <dir name="TestSuiteIterator">
+      <file baseinstalldir="/" name="GroupFilter.php" role="php">
+       <tasks:replace from="@package_version@" to="version" type="package-info" />
+      </file>
+      <file baseinstalldir="/" name="NameFilter.php" role="php">
+       <tasks:replace from="@package_version@" to="version" type="package-info" />
+      </file>
+      <file baseinstalldir="/" name="RecursiveIteratorIterator.php" role="php">
+       <tasks:replace from="@package_version@" to="version" type="package-info" />
+      </file>
+     </dir>
      <file baseinstalldir="/" name="Class.php" role="php">
       <tasks:replace from="@package_version@" to="version" type="package-info" />
      </file>
