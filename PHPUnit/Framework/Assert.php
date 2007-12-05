@@ -711,7 +711,7 @@ abstract class PHPUnit_Framework_Assert
      */
     public static function assertClassNotHasAttribute($attributeName, $className, $message = '')
     {
-        if (!is_string($attributeName) || !is_string($className) || !class_exists($className, FALSE)) {
+        if (!is_string($attributeName) || !is_string($className) || !class_exists($className)) {
             throw new InvalidArgumentException;
         }
 
@@ -734,7 +734,7 @@ abstract class PHPUnit_Framework_Assert
      */
     public static function assertClassHasStaticAttribute($attributeName, $className, $message = '')
     {
-        if (!is_string($attributeName) || !is_string($className) || !class_exists($className, FALSE)) {
+        if (!is_string($attributeName) || !is_string($className) || !class_exists($className)) {
             throw new InvalidArgumentException;
         }
 
@@ -755,7 +755,7 @@ abstract class PHPUnit_Framework_Assert
      */
     public static function assertClassNotHasStaticAttribute($attributeName, $className, $message = '')
     {
-        if (!is_string($attributeName) || !is_string($className) || !class_exists($className, FALSE)) {
+        if (!is_string($attributeName) || !is_string($className) || !class_exists($className)) {
             throw new InvalidArgumentException;
         }
 
@@ -1509,7 +1509,7 @@ abstract class PHPUnit_Framework_Assert
         }
 
         if (is_string($classOrObject)) {
-            if (!class_exists($classOrObject, FALSE)) {
+            if (!class_exists($classOrObject)) {
                 throw new InvalidArgumentException;
             }
 
@@ -1545,7 +1545,7 @@ abstract class PHPUnit_Framework_Assert
      */
     public static function getStaticAttribute($className, $attributeName)
     {
-        if (!is_string($className) || !class_exists($className, FALSE) || !is_string($attributeName)) {
+        if (!is_string($className) || !class_exists($className) || !is_string($attributeName)) {
             throw new InvalidArgumentException;
         }
 
