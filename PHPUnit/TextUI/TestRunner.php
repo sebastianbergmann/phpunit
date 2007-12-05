@@ -580,6 +580,8 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
         if (isset($arguments['configuration'])) {
             $filterConfiguration = $arguments['configuration']->getFilterConfiguration();
 
+            PHPUnit_Util_Filter::$addUncoveredFilesFromWhitelist = $filterConfiguration['whitelist']['addUncoveredFilesFromWhitelist'];
+
             foreach ($filterConfiguration['blacklist']['include']['directory'] as $dir) {
                 PHPUnit_Util_Filter::addDirectoryToFilter(
                   $dir['path'], $dir['suffix']

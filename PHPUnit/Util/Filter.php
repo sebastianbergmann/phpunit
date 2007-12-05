@@ -65,6 +65,13 @@ class PHPUnit_Util_Filter
      * @access public
      * @static
      */
+    public static $addUncoveredFilesFromWhitelist = TRUE;
+
+    /**
+     * @var    boolean
+     * @access public
+     * @static
+     */
     public static $filterPHPUnit = TRUE;
 
     /**
@@ -295,12 +302,12 @@ class PHPUnit_Util_Filter
      * Filters source lines from PHPUnit classes.
      *
      * @param  array   $codeCoverageInformation
-     * @param  boolean $addUncoveredFilesFromWhitelist
+     * @param  boolean $filterTests
      * @return array
      * @access public
      * @static
      */
-    public static function getFilteredCodeCoverage(array $codeCoverageInformation, $filterTests = TRUE, $addUncoveredFilesFromWhitelist = TRUE)
+    public static function getFilteredCodeCoverage(array $codeCoverageInformation, $filterTests = TRUE)
     {
         if (self::$filter) {
             $coveredFiles    = array();
@@ -320,7 +327,7 @@ class PHPUnit_Util_Filter
                 }
             }
 
-            if ($addUncoveredFilesFromWhitelist) {
+            if (self::$addUncoveredFilesFromWhitelist) {
                 foreach (self::$whitelistedFiles as $whitelistedFile) {
                     if (!isset($coveredFiles[$whitelistedFile])) {
                         if (file_exists($whitelistedFile)) {
