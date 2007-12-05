@@ -292,7 +292,7 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
      */
     public function addTestSuite($testClass)
     {
-        if (is_string($testClass) && class_exists($testClass, FALSE)) {
+        if (is_string($testClass) && class_exists($testClass)) {
             $testClass = new ReflectionClass($testClass);
         }
 
