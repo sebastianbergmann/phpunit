@@ -108,29 +108,29 @@ PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
  * 
  *     <pmd>
  *       <rule class="PHPUnit_Util_Log_PMD_Rule_Project_CRAP"
- *             threshold="5,30"/>
+ *             threshold="5,30" priority="1"/>
  *       <rule class="PHPUnit_Util_Log_PMD_Rule_Class_DepthOfInheritanceTree"
- *             threshold="6"/>
+ *             threshold="6" priority="1"/>
  *       <rule class="PHPUnit_Util_Log_PMD_Rule_Class_EfferentCoupling"
- *             threshold="20"/>
+ *             threshold="20" priority="1"/>
  *       <rule class="PHPUnit_Util_Log_PMD_Rule_Class_ExcessiveClassLength"
- *             threshold="1000"/>
+ *             threshold="1000" priority="1"/>
  *       <rule class="PHPUnit_Util_Log_PMD_Rule_Class_ExcessivePublicCount"
- *             threshold="45"/>
+ *             threshold="45" priority="1"/>
  *       <rule class="PHPUnit_Util_Log_PMD_Rule_Class_TooManyFields"
- *             threshold="15"/>
+ *             threshold="15" priority="1"/>
  *       <rule class="PHPUnit_Util_Log_PMD_Rule_Function_CodeCoverage"
- *             threshold="35,70"/>
+ *             threshold="35,70" priority="1"/>
  *       <rule class="PHPUnit_Util_Log_PMD_Rule_Function_CRAP"
- *             threshold="30"/>
+ *             threshold="30" priority="1"/>
  *       <rule class="PHPUnit_Util_Log_PMD_Rule_Function_CyclomaticComplexity"
- *             threshold="20"/>
+ *             threshold="20" priority="1"/>
  *       <rule class="PHPUnit_Util_Log_PMD_Rule_Function_ExcessiveMethodLength"
- *             threshold="100"/>
+ *             threshold="100" priority="1"/>
  *       <rule class="PHPUnit_Util_Log_PMD_Rule_Function_ExcessiveParameterList"
- *             threshold="10"/>
+ *             threshold="10" priority="1"/>
  *       <rule class="PHPUnit_Util_Log_PMD_Rule_Function_NPathComplexity"
- *             threshold="200"/>
+ *             threshold="200" priority="1"/>
  *     </pmd>
  *   </logging>
  *
@@ -372,6 +372,7 @@ class PHPUnit_Util_Configuration
 
         foreach ($this->xpath->query('logging/pmd/rule') as $rule) {
             $class     = (string)$rule->getAttribute('class');
+
             $threshold = (string)$rule->getAttribute('threshold');
             $threshold = explode(',', $threshold);
 
@@ -379,7 +380,12 @@ class PHPUnit_Util_Configuration
                 $threshold = $threshold[0];
             }
 
-            $result[$class] = $threshold;
+            $priority = (int)$rule->getAttribute('priority');
+
+            $result[$class] = array(
+              'threshold' => $threshold,
+              'priority'  => $priority
+            );
         }
 
         return $result;

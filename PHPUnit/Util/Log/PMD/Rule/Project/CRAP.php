@@ -63,7 +63,7 @@ PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
  */
 class PHPUnit_Util_Log_PMD_Rule_Project_CRAP extends PHPUnit_Util_Log_PMD_Rule_Project
 {
-    public function __construct($threshold = array(5, 30))
+    public function __construct($threshold = array(5, 30), $priority = 1)
     {
         parent::__construct($threshold);
     }
