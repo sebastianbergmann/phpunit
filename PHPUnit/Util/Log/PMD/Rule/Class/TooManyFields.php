@@ -63,7 +63,7 @@ PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
  */
 class PHPUnit_Util_Log_PMD_Rule_Class_TooManyFields extends PHPUnit_Util_Log_PMD_Rule_Class
 {
-    public function __construct($threshold = 15)
+    public function __construct($threshold = 15, $priority = 1)
     {
         parent::__construct($threshold);
     }

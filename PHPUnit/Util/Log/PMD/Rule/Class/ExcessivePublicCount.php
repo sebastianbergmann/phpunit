@@ -63,7 +63,7 @@ PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
  */
 class PHPUnit_Util_Log_PMD_Rule_Class_ExcessivePublicCount extends PHPUnit_Util_Log_PMD_Rule_Class
 {
-    public function __construct($threshold = 45)
+    public function __construct($threshold = 45, $priority = 1)
     {
         parent::__construct($threshold);
     }

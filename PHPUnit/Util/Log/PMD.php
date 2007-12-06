@@ -122,7 +122,7 @@ class PHPUnit_Util_Log_PMD extends PHPUnit_Util_Printer
                 $this->addViolation(
                   $result,
                   $pmd,
-                  $ruleName
+                  $rule
                 );
             }
         }
@@ -140,7 +140,7 @@ class PHPUnit_Util_Log_PMD extends PHPUnit_Util_Printer
                     $this->addViolation(
                       $result,
                       $xmlFile,
-                      $ruleName
+                      $rule
                     );
 
                     $this->added = TRUE;
@@ -160,7 +160,7 @@ class PHPUnit_Util_Log_PMD extends PHPUnit_Util_Printer
                             $this->addViolation(
                               $result,
                               $xmlFile,
-                              $ruleName,
+                              $rule,
                               $classStartLine,
                               $classEndLine,
                               $classPackage,
@@ -193,23 +193,24 @@ class PHPUnit_Util_Log_PMD extends PHPUnit_Util_Printer
     }
 
     /**
-     * @param  string     $violation
-     * @param  DOMElement $element
-     * @param  string     $rule
-     * @param  integer    $line
-     * @param  integer    $toLine
-     * @param  string     $package
-     * @param  string     $class
-     * @param  string     $method
+     * @param  string                    $violation
+     * @param  DOMElement                $element
+     * @param  PHPUnit_Util_Log_PMD_Rule $rule
+     * @param  integer                   $line
+     * @param  integer                   $toLine
+     * @param  string                    $package
+     * @param  string                    $class
+     * @param  string                    $method
      * @access public
      */
-    protected function addViolation($violation, DOMElement $element, $rule, $line = '', $toLine = '', $package = '', $class = '', $method = '', $function = '')
+    protected function addViolation($violation, DOMElement $element, PHPUnit_Util_Log_PMD_Rule $rule, $line = '', $toLine = '', $package = '', $class = '', $method = '', $function = '')
     {
         $violationXml = $element->appendChild(
           $element->ownerDocument->createElement('violation', $violation)
         );
 
-        $violationXml->setAttribute('rule', $rule);
+        $violationXml->setAttribute('rule', $rule->getName());
+        $violationXml->setAttribute('priority', $rule->getPriority());
 
         if (!empty($line)) {
             $violationXml->setAttribute('line', $line);
@@ -259,7 +260,7 @@ class PHPUnit_Util_Log_PMD extends PHPUnit_Util_Printer
                 $this->addViolation(
                   $result,
                   $element,
-                  $ruleName,
+                  $rule,
                   $startLine,
                   $endLine,
                   $package,
@@ -309,7 +310,10 @@ class PHPUnit_Util_Log_PMD extends PHPUnit_Util_Printer
                 $rule = $rule[count($rule)-1];
 
                 if (isset($configuration[$className])) {
-                    $object = new $className($configuration[$className]);
+                    $object = new $className(
+                      $configuration[$className]['threshold'],
+                      $configuration[$className]['priority']
+                    );
                 } else {
                     $object = new $className;
                 }
