@@ -45,6 +45,7 @@
  */
 
 require_once 'PHPUnit/Util/Filter.php';
+require_once 'PHPUnit/Util/Test.php';
 
 PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
 
@@ -94,7 +95,39 @@ class PHPUnit_Util_TestSuiteIterator_GroupFilter extends FilterIterator
      */
     public function accept()
     {
-        return TRUE;
+        $accept = TRUE;
+
+        if (!empty($this->groups) || !empty($this->excludeGroups)) {
+            if (!empty($this->groups)) {
+                $accept = FALSE;
+            }
+
+            $test = $this->getInnerIterator()->current();
+
+            if ($test instanceof PHPUnit_Framework_TestCase) {
+                $groups = PHPUnit_Util_Test::getGroups(
+                  new ReflectionMethod(get_class($test), $get->getName())
+                );
+
+                foreach ($groups as $group) {
+                    if (in_array($group, $this->groups)) {
+                        $accept = TRUE;
+                        break;
+                    }
+                }
+
+                if ($accept && !empty($this->excludeGroups)) {
+                    foreach ($groups as $group) {
+                        if (in_array($group, $this->excludeGroups)) {
+                            $accept = FALSE;
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+
+        return $accept;
     }
 }
 ?>
