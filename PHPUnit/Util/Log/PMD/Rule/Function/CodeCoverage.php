@@ -63,7 +63,7 @@ PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
  */
 class PHPUnit_Util_Log_PMD_Rule_Function_CodeCoverage extends PHPUnit_Util_Log_PMD_Rule_Function
 {
-    public function __construct($threshold = array(35, 70))
+    public function __construct($threshold = array(35, 70), $priority = 1)
     {
         parent::__construct($threshold);
     }
