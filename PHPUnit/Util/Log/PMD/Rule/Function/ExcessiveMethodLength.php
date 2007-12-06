@@ -63,7 +63,7 @@ PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
  */
 class PHPUnit_Util_Log_PMD_Rule_Function_ExcessiveMethodLength extends PHPUnit_Util_Log_PMD_Rule_Function
 {
-    public function __construct($threshold = 100)
+    public function __construct($threshold = 100, $priority = 1)
     {
         parent::__construct($threshold);
     }
