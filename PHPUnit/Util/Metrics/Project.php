@@ -104,28 +104,32 @@ class PHPUnit_Util_Metrics_Project extends PHPUnit_Util_Metrics
     public function __construct(Array $files, &$codeCoverage = array(), $cpd = FALSE, $cpdMinLines = 5, $cpdMinMatches = 70)
     {
         foreach ($files as $file) {
-            $this->files[$file] = PHPUnit_Util_Metrics_File::factory($file, $codeCoverage);
+            if (file_exists($file)) {
+                $this->files[$file] = PHPUnit_Util_Metrics_File::factory(
+                  $file, $codeCoverage
+                );
 
-            foreach ($this->files[$file]->getFunctions() as $function) {
-                $this->functions[$function->getFunction()->getName()] = $function;
-            }
+                foreach ($this->files[$file]->getFunctions() as $function) {
+                    $this->functions[$function->getFunction()->getName()] = $function;
+                }
 
-            foreach ($this->files[$file]->getClasses() as $class) {
-                $className = $class->getClass()->getName();
-                $package   = $class->getPackage();
+                foreach ($this->files[$file]->getClasses() as $class) {
+                    $className = $class->getClass()->getName();
+                    $package   = $class->getPackage();
 
-                $this->classes[$className] = $class;
+                    $this->classes[$className] = $class;
 
-                if ($class->getClass()->isInterface()) {
-                    $this->interfs++;
-                } else {
-                    if ($class->getClass()->isAbstract()) {
-                        $this->clsa++;
+                    if ($class->getClass()->isInterface()) {
+                        $this->interfs++;
                     } else {
-                        $this->clsc++;
-                    }
+                        if ($class->getClass()->isAbstract()) {
+                            $this->clsa++;
+                        } else {
+                            $this->clsc++;
+                        }
 
-                    $this->cls++;
+                        $this->cls++;
+                    }
                 }
             }
         }
