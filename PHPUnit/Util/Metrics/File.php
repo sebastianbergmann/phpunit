@@ -84,10 +84,20 @@ class PHPUnit_Util_Metrics_File extends PHPUnit_Util_Metrics
      *
      * @param  string $filename
      * @param  array  $codeCoverage
+     * @throws RuntimeException
      * @access protected
      */
     protected function __construct($filename, &$codeCoverage = array())
     {
+        if (!file_exists($filename)) {
+            throw new RuntimeException(
+              sprintf(
+                'File "%s" not found.',
+                $filename
+              )
+            );
+        }
+
         $this->filename = $filename;
         $this->lines    = file($filename);
         $this->tokens   = token_get_all(file_get_contents($filename));
