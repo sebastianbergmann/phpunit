@@ -170,7 +170,7 @@ class PHPUnit_Util_Skeleton
                 !$method->isAbstract() &&
                  $method->isPublic() &&
                  $method->getDeclaringClass()->getName() == $this->className) {
-                $testTagFound = FALSE;
+                $assertAnnotationFound = FALSE;
 
                 if (preg_match_all('/@assert(.*)$/Um', $method->getDocComment(), $annotations)) {
                     foreach ($annotations[1] as $annotation) {
@@ -254,6 +254,10 @@ class PHPUnit_Util_Skeleton
                                 $template = 'TestMethod';
                             }
 
+                            if ($method->isStatic()) {
+                                $template .= 'Static';
+                            }
+
                             $methodTemplate = new PHPUnit_Util_Template(
                               sprintf(
                                 '%s%sSkeleton%s%s.tpl',
@@ -285,18 +289,19 @@ class PHPUnit_Util_Skeleton
                                 'assertion'      => isset($assertion) ? $assertion : '',
                                 'expected'       => $matches[3],
                                 'origMethodName' => $origMethodName,
+                                'className'      => $this->className,
                                 'methodName'     => $methodName
                               )
                             );
 
                             $methods .= $methodTemplate->render();
 
-                            $testTagFound = TRUE;
+                            $assertAnnotationFound = TRUE;
                         }
                     }
                 }
 
-                if (!$testTagFound) {
+                if (!$assertAnnotationFound) {
                     $methodTemplate = new PHPUnit_Util_Template(
                       sprintf(
                         '%s%sSkeleton%sIncompleteTestMethod.tpl',
