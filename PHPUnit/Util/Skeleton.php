@@ -226,14 +226,42 @@ class PHPUnit_Util_Skeleton
                                 }
                             }
 
+                            if ($assertion == 'exception') {
+                                $template = 'TestMethodException';
+                            }
+
+                            else if ($assertion == 'Equals' && strtolower($matches[3]) == 'true') {
+                                $assertion = 'True';
+                                $template  = 'TestMethodBool';
+                            }
+
+                            else if ($assertion == 'NotEquals' && strtolower($matches[3]) == 'true') {
+                                $assertion = 'False';
+                                $template  = 'TestMethodBool';
+                            }
+
+                            else if ($assertion == 'Equals' && strtolower($matches[3]) == 'false') {
+                                $assertion = 'False';
+                                $template  = 'TestMethodBool';
+                            }
+
+                            else if ($assertion == 'NotEquals' && strtolower($matches[3]) == 'false') {
+                                $assertion = 'True';
+                                $template  = 'TestMethodBool';
+                            }
+
+                            else {
+                                $template = 'TestMethod';
+                            }
+
                             $methodTemplate = new PHPUnit_Util_Template(
                               sprintf(
-                                '%s%sSkeleton%sTestMethod%s.tpl',
+                                '%s%sSkeleton%s%s.tpl',
 
                                 dirname(__FILE__),
                                 DIRECTORY_SEPARATOR,
                                 DIRECTORY_SEPARATOR,
-                                $assertion == 'exception' ? 'Exception' : ''
+                                $template
                               )
                             );
 
