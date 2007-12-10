@@ -233,31 +233,33 @@ class PHPUnit_Util_Log_CodeCoverage_XML extends PHPUnit_Util_Printer
                 $file->appendChild($line);
             }
 
-            $fileMetrics = PHPUnit_Util_Metrics_File::factory($filename);
-            $loc         = $fileMetrics->getLoc();
-            $ncloc       = $fileMetrics->getNcloc();
+            if (file_exists($filename)) {
+                $fileMetrics = PHPUnit_Util_Metrics_File::factory($filename);
+                $loc         = $fileMetrics->getLoc();
+                $ncloc       = $fileMetrics->getNcloc();
 
-            $projectLoc   += $loc;
-            $projectNcloc += $ncloc;
+                $projectLoc   += $loc;
+                $projectNcloc += $ncloc;
 
-            $fileMetricsXML = $document->createElement('metrics');
-            $fileMetricsXML->setAttribute('loc', $loc);
-            $fileMetricsXML->setAttribute('ncloc', $ncloc);
-            $fileMetricsXML->setAttribute('classes', $fileClasses);
-            $fileMetricsXML->setAttribute('methods', $fileMethods);
-            $fileMetricsXML->setAttribute('coveredmethods', $fileCoveredMethods);
-            //$fileMetricsXML->setAttribute('conditionals', $fileConditionals);
-            //$fileMetricsXML->setAttribute('coveredconditionals', $fileCoveredConditionals);
-            $fileMetricsXML->setAttribute('statements', $fileStatements);
-            $fileMetricsXML->setAttribute('coveredstatements', $fileCoveredStatements);
-            $fileMetricsXML->setAttribute('elements', $fileConditionals + $fileStatements + $fileMethods);
-            $fileMetricsXML->setAttribute('coveredelements', $fileCoveredConditionals + $fileCoveredStatements + $fileCoveredMethods);
+                $fileMetricsXML = $document->createElement('metrics');
+                $fileMetricsXML->setAttribute('loc', $loc);
+                $fileMetricsXML->setAttribute('ncloc', $ncloc);
+                $fileMetricsXML->setAttribute('classes', $fileClasses);
+                $fileMetricsXML->setAttribute('methods', $fileMethods);
+                $fileMetricsXML->setAttribute('coveredmethods', $fileCoveredMethods);
+                //$fileMetricsXML->setAttribute('conditionals', $fileConditionals);
+                //$fileMetricsXML->setAttribute('coveredconditionals', $fileCoveredConditionals);
+                $fileMetricsXML->setAttribute('statements', $fileStatements);
+                $fileMetricsXML->setAttribute('coveredstatements', $fileCoveredStatements);
+                $fileMetricsXML->setAttribute('elements', $fileConditionals + $fileStatements + $fileMethods);
+                $fileMetricsXML->setAttribute('coveredelements', $fileCoveredConditionals + $fileCoveredStatements + $fileCoveredMethods);
 
-            $file->appendChild($fileMetricsXML);
-            $project->appendChild($file);
+                $file->appendChild($fileMetricsXML);
+                $project->appendChild($file);
 
-            $projectStatements        += $fileStatements;
-            $projectCoveredStatements += $fileCoveredStatements;
+                $projectStatements        += $fileStatements;
+                $projectCoveredStatements += $fileCoveredStatements;
+            }
         }
 
         $projectMetricsXML = $document->createElement('metrics');
