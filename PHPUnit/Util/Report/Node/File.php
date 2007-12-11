@@ -665,7 +665,13 @@ class PHPUnit_Util_Report_Node_File extends PHPUnit_Util_Report_Node
      */
     protected function loadFile($file)
     {
-        $lines       = explode("\n", str_replace("\t", '    ', file_get_contents($file)));
+        $lines  = explode("\n", str_replace("\t", '    ', file_get_contents($file)));
+        $result = array();
+
+        if (count($lines) == 0) {
+            return $result;
+        }
+
         $lines       = array_map('rtrim', $lines);
         $linesLength = array_map('strlen', $lines);
         $width       = max($linesLength);
@@ -681,7 +687,6 @@ class PHPUnit_Util_Report_Node_File extends PHPUnit_Util_Report_Node
         $tokens     = token_get_all(file_get_contents($file));
         $stringFlag = FALSE;
         $i          = 0;
-        $result     = array();
         $result[$i] = '';
 
         foreach ($tokens as $j => $token) {
