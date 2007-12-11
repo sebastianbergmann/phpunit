@@ -803,251 +803,257 @@ abstract class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_Tes
     /**
      * Asserts that an alert is present.
      *
+     * @param  string $message
      * @access public
      */
-    public function assertAlertPresent()
+    public function assertAlertPresent($message = 'No alert present.')
     {
-        $this->assertTrue(
-          $this->isAlertPresent(),
-          'No alert present.'
-        );
+        $this->assertTrue($this->isAlertPresent(), $message);
     }
 
     /**
      * Asserts that no alert is present.
      *
+     * @param  string $message
      * @access public
      */
-    public function assertNoAlertPresent()
+    public function assertNoAlertPresent($message = 'Alert present.')
     {
-        $this->assertFalse(
-          $this->isAlertPresent(),
-          'Alert present.'
-        );
+        $this->assertFalse($this->isAlertPresent(), $message);
     }
 
     /**
      * Asserts that an option is checked.
      *
-     * @param  string  $locator
+     * @param  string $locator
+     * @param  string $message
      * @access public
      */
-    public function assertChecked($locator)
-    {
-        $this->assertTrue(
-          $this->isChecked($locator),
-          sprintf(
-            '"%s" not checked.',
-            $locator
-          )
-        );
+    public function assertChecked($locator, $message = '')
+    {    	
+        if ($message == '') {
+            $message = sprintf(
+              '"%s" not checked.',
+              $locator
+            );
+        }
+
+        $this->assertTrue($this->isChecked($locator), $message);
     }
 
     /**
      * Asserts that an option is not checked.
      *
-     * @param  string  $locator
+     * @param  string $locator
+     * @param  string $message
      * @access public
      */
-    public function assertNotChecked($locator)
+    public function assertNotChecked($locator, $message = '')
     {
-        $this->assertFalse(
-          $this->isChecked($locator),
-          sprintf(
-            '"%s" checked.',
-            $locator
-          )
-        );
+        if ($message == '') {
+            $message = sprintf(
+              '"%s" checked.',
+              $locator
+            );
+        }
+
+        $this->assertFalse($this->isChecked($locator), $message);
     }
 
     /**
      * Assert that a confirmation is present.
      *
+     * @param  string $message
      * @access public
      */
-    public function assertConfirmationPresent()
+    public function assertConfirmationPresent($message = 'No confirmation present.')
     {
-        $this->assertTrue(
-          $this->isConfirmationPresent(),
-          'No confirmation present.'
-        );
+        $this->assertTrue($this->isConfirmationPresent(), $message);
     }
 
     /**
      * Assert that no confirmation is present.
      *
+     * @param  string $message
      * @access public
      */
-    public function assertNoConfirmationPresent()
+    public function assertNoConfirmationPresent($message = 'Confirmation present.')
     {
-        $this->assertFalse(
-          $this->isConfirmationPresent(),
-          'Confirmation present.'
-        );
+        $this->assertFalse($this->isConfirmationPresent(), $message);
     }
 
     /**
      * Asserts that an input field is editable.
      *
-     * @param  string  $locator
+     * @param  string $locator
+     * @param  string $message
      * @access public
      */
-    public function assertEditable($locator)
+    public function assertEditable($locator, $message = '')
     {
-        $this->assertTrue(
-          $this->isEditable($locator),
-          sprintf(
-            '"%s" not editable.',
-            $locator
-          )
-        );
+        if ($message == '') {
+            $message = sprintf(
+              '"%s" not editable.',
+              $locator
+            );
+        }
+
+        $this->assertTrue($this->isEditable($locator), $message);
     }
 
     /**
      * Asserts that an input field is not editable.
      *
-     * @param  string  $locator
+     * @param  string $locator
+     * @param  string $message
      * @access public
      */
-    public function assertNotEditable($locator)
+    public function assertNotEditable($locator, $message = '')    
     {
-        $this->assertFalse(
-          $this->isEditable($locator),
-          sprintf(
-            '"%s" editable.',
-            $locator
-          )
-        );
+        if ($message == '') {
+            $message = sprintf(
+              '"%s" editable.',
+              $locator
+            );
+        }
+
+        $this->assertFalse($this->isEditable($locator), $message);
     }
 
     /**
      * Asserts that an element's value is equal to a given string.
      *
-     * @param  string  $locator
-     * @param  string  $text
+     * @param  string $locator
+     * @param  string $text
+     * @param  string $message
      * @access public
      */
-    public function assertElementValueEquals($locator, $text)
+    public function assertElementValueEquals($locator, $text, $message = '')
     {
-        $this->assertEquals($text, $this->getValue($locator));
+        $this->assertEquals($text, $this->getValue($locator), $message);
     }
 
     /**
      * Asserts that an element's value is not equal to a given string.
      *
-     * @param  string  $locator
-     * @param  string  $text
+     * @param  string $locator
+     * @param  string $text
+     * @param  string $message
      * @access public
      */
-    public function assertElementValueNotEquals($locator, $text)
+    public function assertElementValueNotEquals($locator, $text, $message = '')
     {
-        $this->assertNotEquals($text, $this->getValue($locator));
+        $this->assertNotEquals($text, $this->getValue($locator), $message);
     }
 
     /**
      * Asserts that an element contains a given string.
      *
-     * @param  string  $locator
-     * @param  string  $text
+     * @param  string $locator
+     * @param  string $text
+     * @param  string $message
      * @access public
      */
-    public function assertElementContainsText($locator, $text)
+    public function assertElementContainsText($locator, $text, $message = '')
     {
-        $this->assertContains($text, $this->getValue($locator));
+        $this->assertContains($text, $this->getValue($locator), $message);
     }
 
     /**
      * Asserts that an element does not contain a given string.
      *
-     * @param  string  $locator
-     * @param  string  $text
+     * @param  string $locator
+     * @param  string $text
+     * @param  string $message
      * @access public
      */
-    public function assertElementNotContainsText($locator, $text)
+    public function assertElementNotContainsText($locator, $text, $message = '')
     {
-        $this->assertNotContains($text, $this->getValue($locator));
+        $this->assertNotContains($text, $this->getValue($locator), $message);
     }
 
     /**
      * Asserts than an element is present.
      *
-     * @param  string  $locator
+     * @param  string $locator
+     * @param  string $message
      * @access public
      */
-    public function assertElementPresent($locator)
+    public function assertElementPresent($locator, $message = '')
     {
-        $this->assertTrue(
-          $this->isElementPresent($locator),
-          sprintf(
-            'Element "%s" not present.',
-            $locator
-          )
-        );
+        if ($message == '') {
+            $message = sprintf(
+              'Element "%s" not present.',
+              $locator
+            );
+        }
+
+        $this->assertTrue($this->isElementPresent($locator), $message);
     }
 
     /**
      * Asserts than an element is not present.
      *
-     * @param  string  $locator
+     * @param  string $locator
+     * @param  string $message
      * @access public
      */
-    public function assertElementNotPresent($locator)
+    public function assertElementNotPresent($locator, $message = '')
     {
-        $this->assertFalse(
-          $this->isElementPresent($locator),
-          sprintf(
-            'Element "%s" present.',
-            $locator
-          )
-        );
+        if ($message == '') {
+            $message = sprintf(
+              'Element "%s" present.',
+              $locator
+            );
+        }
+
+        $this->assertFalse($this->isElementPresent($locator), $message);
     }
 
     /**
      * Asserts that the location is equal to a specified one.
      *
-     * @param  string  $location
+     * @param  string $location
+     * @param  string $message
      * @access public
      */
-    public function assertLocationEquals($location)
+    public function assertLocationEquals($location, $message = '')
     {
-        $this->assertEquals($location, $this->getLocation());
+        $this->assertEquals($location, $this->getLocation(), $message);
     }
 
     /**
      * Asserts that the location is not equal to a specified one.
      *
-     * @param  string  $location
+     * @param  string $location
+     * @param  string $message
      * @access public
      */
-    public function assertLocationNotEquals($location)
+    public function assertLocationNotEquals($location, $message = '')
     {
-        $this->assertNotEquals($location, $this->getLocation());
+        $this->assertNotEquals($location, $this->getLocation(), $message);
     }
 
     /**
      * Asserts than a prompt is present.
      *
+     * @param  string $message
      * @access public
      */
-    public function assertPromptPresent()
+    public function assertPromptPresent($message = 'No prompt present.')
     {
-        $this->assertTrue(
-          $this->isPromptPresent(),
-          'No prompt present.'
-        );
+        $this->assertTrue($this->isPromptPresent(), $message);
     }
 
     /**
      * Asserts than no prompt is present.
      *
+     * @param  string $message
      * @access public
      */
-    public function assertNoPromptPresent()
+    public function assertNoPromptPresent($message = 'Prompt present.')
     {
-        $this->assertFalse(
-          $this->isPromptPresent(),
-          'Prompt present.'
-        );
+        $this->assertFalse($this->isPromptPresent(), $message);
     }
 
     /**
@@ -1055,12 +1061,13 @@ abstract class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_Tes
      *
      * @param  string $selectLocator
      * @param  string $option
+     * @param  string $message
      * @access public
      * @since  Method available since Release 3.2.0
      */
-    public function assertSelectHasOption($selectLocator, $option)
+    public function assertSelectHasOption($selectLocator, $option, $message = '')
     {
-        $this->assertContains($option, $this->getSelectOptions($selectLocator));
+        $this->assertContains($option, $this->getSelectOptions($selectLocator), $message);
     }
 
     /**
@@ -1068,210 +1075,252 @@ abstract class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_Tes
      *
      * @param  string $selectLocator
      * @param  string $option
+     * @param  string $message
      * @access public
      * @since  Method available since Release 3.2.0
      */
-    public function assertSelectNotHasOption($selectLocator, $option)
+    public function assertSelectNotHasOption($selectLocator, $option, $message = '')
     {
-        $this->assertNotContains($option, $this->getSelectOptions($selectLocator));
+        $this->assertNotContains($option, $this->getSelectOptions($selectLocator), $message);
     }
 
     /**
      * Asserts that a specific label is selected.
      *
-     * @param  string  $selectLocator
-     * @param  string  $value
+     * @param  string $selectLocator
+     * @param  string $value
+     * @param  string $message
      * @access public
      * @since  Method available since Release 3.2.0
      */
-    public function assertSelected($selectLocator, $option)
+    public function assertSelected($selectLocator, $option, $message = '')
     {
+        if ($message == '') {
+            $message = sprintf(
+              'Label "%s" not selected in "%s".',
+              $option,
+              $selectLocator
+            );
+        }
+
         $this->assertEquals(
-          $option, $this->getSelectedLabel($selectLocator),
-          sprintf(
-            '%s not selected in "%s".',
-            $option, $selectLocator
-          )
+          $option,
+          $this->getSelectedLabel($selectLocator),
+          $message
         );
     }
 
     /**
      * Asserts that a specific label is not selected.
      *
-     * @param  string  $selectLocator
-     * @param  string  $value
+     * @param  string $selectLocator
+     * @param  string $value
+     * @param  string $message
      * @access public
      * @since  Method available since Release 3.2.0
      */
-    public function assertNotSelected($selectLocator, $option)
+    public function assertNotSelected($selectLocator, $option, $message = '')
     {
+        if ($message == '') {
+            $message = sprintf(
+              'Label "%s" selected in "%s".',
+              $option,
+              $selectLocator
+            );
+        }
+
         $this->assertNotEquals(
-          $option, $this->getSelectedLabel($selectLocator),
-          sprintf(
-            '%s selected in "%s".',
-            $option, $selectLocator
-          )
+          $option,
+          $this->getSelectedLabel($selectLocator),
+          $message
         );
     }
 
     /**
      * Asserts that a specific value is selected.
      *
-     * @param  string  $selectLocator
-     * @param  string  $value
+     * @param  string $selectLocator
+     * @param  string $value
+     * @param  string $message
      * @access public
      */
-    public function assertIsSelected($selectLocator, $value)
+    public function assertIsSelected($selectLocator, $value, $message = '')
     {
+        if ($message == '') {
+            $message = sprintf(
+              'Value "%s" not selected in "%s".',
+              $value,
+              $selectLocator
+            );
+        }
+
         $this->assertEquals(
           $value, $this->getSelectedValue($selectLocator),
-          sprintf(
-            '%s not selected in "%s".',
-            $value, $selectLocator
-          )
+          $message
         );
     }
 
     /**
      * Asserts that a specific value is not selected.
      *
-     * @param  string  $selectLocator
-     * @param  string  $value
+     * @param  string $selectLocator
+     * @param  string $value
+     * @param  string $message
      * @access public
      */
-    public function assertIsNotSelected($selectLocator, $value)
+    public function assertIsNotSelected($selectLocator, $value, $message = '')
     {
+        if ($message == '') {
+            $message = sprintf(
+              'Value "%s" selected in "%s".',
+              $value,
+              $selectLocator
+            );
+        }
+
         $this->assertNotEquals(
-          $value, $this->getSelectedValue($selectLocator),
-          sprintf(
-            '%s selected in "%s".',
-            $value, $selectLocator
-          )
+          $value,
+          $this->getSelectedValue($selectLocator),
+          $message
         );
     }
 
     /**
      * Asserts that something is selected.
      *
-     * @param  string  $selectLocator
+     * @param  string $selectLocator
+     * @param  string $message
      * @access public
      */
-    public function assertSomethingSelected($selectLocator)
+    public function assertSomethingSelected($selectLocator, $message = '')
     {
-        $this->assertTrue(
-          $this->isSomethingSelected($selectLocator),
-          sprintf(
-            'Nothing selected from "%s".',
-            $selectLocator
-          )
-        );
+        if ($message == '') {
+            $message = sprintf(
+              'Nothing selected from "%s".',
+              $selectLocator
+            );
+        }
+
+        $this->assertTrue($this->isSomethingSelected($selectLocator), $message);
     }
 
     /**
      * Asserts that nothing is selected.
      *
-     * @param  string  $selectLocator
+     * @param  string $selectLocator
+     * @param  string $message
      * @access public
      */
-    public function assertNothingSelected($selectLocator)
+    public function assertNothingSelected($selectLocator, $message = '')
     {
-        $this->assertFalse(
-          $this->isSomethingSelected($selectLocator),
-          sprintf(
-            'Something selected from "%s".',
-            $selectLocator
-          )
-        );
+        if ($message == '') {
+            $message = sprintf(
+              'Something selected from "%s".',
+              $selectLocator
+            );
+        }
+
+        $this->assertFalse($this->isSomethingSelected($selectLocator), $message);
     }
 
     /**
      * Asserts that a given text is present.
      *
-     * @param  string  $pattern
+     * @param  string $pattern
+     * @param  string $message
      * @access public
      */
-    public function assertTextPresent($pattern)
+    public function assertTextPresent($pattern, $message = '')
     {
-        $this->assertTrue(
-          $this->isTextPresent($pattern),
-          sprintf(
-            '"%s" not present.',
-            $pattern
-          )
-        );
+        if ($message == '') {
+            $message = sprintf(
+              '"%s" not present.',
+              $pattern
+            );
+        }
+
+        $this->assertTrue($this->isTextPresent($pattern), $message);
     }
 
     /**
      * Asserts that a given text is not present.
      *
-     * @param  string  $pattern
+     * @param  string $pattern
+     * @param  string $message
      * @access public
      */
-    public function assertTextNotPresent($pattern)
+    public function assertTextNotPresent($pattern, $message = '')
     {
-        $this->assertFalse(
-          $this->isTextPresent($pattern),
-          sprintf(
-            '"%s" present.',
-            $pattern
-          )
-        );
+        if ($message == '') {
+            $message = sprintf(
+              '"%s" present.',
+              $pattern
+            );
+        }
+
+        $this->assertFalse($this->isTextPresent($pattern), $message);
     }
 
     /**
      * Asserts that the title is equal to a given string.
      *
-     * @param  string  $title
+     * @param  string $title
+     * @param  string $message
      * @access public
      */
-    public function assertTitleEquals($title)
+    public function assertTitleEquals($title, $message = '')
     {
-        $this->assertEquals($title, $this->getTitle());
+        $this->assertEquals($title, $this->getTitle(), $message);
     }
 
     /**
      * Asserts that the title is not equal to a given string.
      *
-     * @param  string  $title
+     * @param  string $title
+     * @param  string $message
      * @access public
      */
-    public function assertTitleNotEquals($title)
+    public function assertTitleNotEquals($title, $message = '')
     {
-        $this->assertNotEquals($title, $this->getTitle());
+        $this->assertNotEquals($title, $this->getTitle(), $message);
     }
 
     /**
      * Asserts that something is visible.
      *
-     * @param  string  $locator
+     * @param  string $locator
+     * @param  string $message
      * @access public
      */
-    public function assertVisible($locator)
+    public function assertVisible($locator, $message = '')
     {
-        $this->assertTrue(
-          $this->isVisible($locator),
-          sprintf(
-            '"%s" not visible.',
-            $locator
-          )
-        );
+        if ($message == '') {
+            $message = sprintf(
+              '"%s" not visible.',
+              $locator
+            );
+        }
+
+        $this->assertTrue($this->isVisible($locator), $message);
     }
 
     /**
      * Asserts that something is not visible.
      *
-     * @param  string  $locator
+     * @param  string $locator
+     * @param  string $message
      * @access public
      */
-    public function assertNotVisible($locator)
+    public function assertNotVisible($locator, $message = '')
     {
-        $this->assertFalse(
-          $this->isVisible($locator),
-          sprintf(
-            '"%s" visible.',
-            $locator
-          )
-        );
+        if ($message == '') {
+            $message = sprintf(
+              '"%s" visible.',
+              $locator
+            );
+        }
+
+        $this->assertFalse($this->isVisible($locator), $message);
     }
 
     /**
