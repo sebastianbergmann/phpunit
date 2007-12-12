@@ -82,6 +82,13 @@ class PHPUnit_Util_Filter
     protected static $filter = TRUE;
 
     /**
+     * @var    boolean
+     * @access protected
+     * @static
+     */
+    protected static $blackListConverstionForWindowsDone = FALSE;
+
+    /**
      * Source files that are blacklisted.
      *
      * @var    array
@@ -452,6 +459,19 @@ class PHPUnit_Util_Filter
 
         // Use blacklist.
         if ($ignoreWhitelist || empty(self::$whitelistedFiles)) {
+            if (DIRECTORY_SEPARATOR == '\\' &&
+                !self::$blackListConverstionForWindowsDone) {
+                $count = count(self::$blacklistedFiles['PEAR']);
+
+                for ($i = 0; $i < $count; $i++) {
+                    self::$blacklistedFiles['PEAR'][$i] = str_replace(
+                      '/', '\\', self::$blacklistedFiles['PEAR'][$i]
+                    );
+                }
+
+                self::$blackListConverstionForWindowsDone = TRUE;
+            }
+
             $blacklistedFiles = array_merge(
               self::$blacklistedFiles['DEFAULT'],
               self::$blacklistedFiles['PEAR']
