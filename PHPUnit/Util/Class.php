@@ -302,7 +302,13 @@ class PHPUnit_Util_Class
             if ($parameter->isArray()) {
                 $typeHint = 'array ';
             } else {
-                $class = $parameter->getClass();
+                try {
+                    $class = $parameter->getClass();
+                }
+
+                catch (ReflectionException $e) {
+                    $class = FALSE;
+                }
 
                 if ($class) {
                     $typeHint = $class->getName() . ' ';
