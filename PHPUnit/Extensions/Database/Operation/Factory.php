@@ -55,6 +55,8 @@ require_once 'PHPUnit/Extensions/Database/Operation/Null.php';
 require_once 'PHPUnit/Extensions/Database/Operation/Composite.php';
 require_once 'PHPUnit/Extensions/Database/Operation/Insert.php';
 require_once 'PHPUnit/Extensions/Database/Operation/Truncate.php';
+require_once 'PHPUnit/Extensions/Database/Operation/DeleteAll.php';
+require_once 'PHPUnit/Extensions/Database/Operation/Delete.php';
 
 /**
  * A class factory to easily return database operations.
