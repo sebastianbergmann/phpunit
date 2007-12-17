@@ -132,6 +132,12 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
     protected $data = array();
 
     /**
+     * @var    string
+     * @access protected
+     */
+    protected $dataName = '';
+
+    /**
      * The name of the expected Exception.
      *
      * @var    mixed
@@ -184,15 +190,17 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
      *
      * @param  string $name
      * @param  array  $data
+     * @param  string $dataName
      * @access public
      */
-    public function __construct($name = NULL, array $data = array())
+    public function __construct($name = NULL, array $data = array(), $dataName = '')
     {
         if ($name !== NULL) {
             $this->setName($name);
         }
 
-        $this->data = $data;
+        $this->data     = $data;
+        $this->dataName = $dataName;
     }
 
     /**
@@ -212,8 +220,21 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
           $class->name
         );
 
-        if (!empty($this->data)) {
-            $buffer .= ' with data (' . $this->dataToString($this->data) . ')';
+        if (is_string($this->dataName)) {
+            $buffer .= sprintf(
+              ' with data set "%s"',
+
+              $this->dataName
+            );
+        }
+
+        else if (!empty($this->data)) {
+            $buffer .= sprintf(
+              ' with data set #%d (%s)',
+
+              $this->dataName,
+              $this->dataToString($this->data)
+            );
         }
 
         return $buffer;
