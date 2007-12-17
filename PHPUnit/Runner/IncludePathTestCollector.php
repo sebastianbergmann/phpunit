@@ -102,7 +102,7 @@ class PHPUnit_Runner_IncludePathTestCollector implements PHPUnit_Runner_TestColl
         if (!empty($paths)) {
             $this->paths = $paths;
         } else {
-            $this->paths = PHPUnit_Util_Fileloader::getIncludePaths();
+            $this->paths = explode(PATH_SEPARATOR, get_include_path());
         }
 
         $this->suffix = $suffix;

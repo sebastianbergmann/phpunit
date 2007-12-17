@@ -106,30 +106,6 @@ class PHPUnit_Util_Fileloader
     }
 
     /**
-     * Returns the include paths configured via the "include_path"
-     * PHP INI setting plus the include paths configured via the
-     * PEAR environment's "test_dir" configuration setting.
-     *
-     * @return array
-     * @access public
-     * @static
-     * @since  Method available since Release 3.0.0
-     */
-    public static function getIncludePaths()
-    {
-        $includePaths = explode(PATH_SEPARATOR, get_include_path());
-
-        @include_once 'PEAR/Config.php';
-
-        if (class_exists('PEAR_Config', FALSE)) {
-            $config         = new PEAR_Config;
-            $includePaths[] = $config->get('test_dir');
-        }
-
-        return $includePaths;
-    }
-
-    /**
      * Loads a PHP sourcefile.
      *
      * When the Xdebug extension is loaded and its "xdebug.collect_vars"
