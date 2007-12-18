@@ -95,5 +95,14 @@ interface PHPUnit_Extensions_Database_DB_IMetaData
      * @return string
      */
     public function getSchema();
+
+    /**
+     * Returns a quoted schema object. (table name, column name, etc)
+     *
+     * @param string $object
+     * @return string
+     */
+    public function quoteSchemaObject($object);
+
 }
 ?>

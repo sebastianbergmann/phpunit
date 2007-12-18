@@ -73,7 +73,7 @@ class PHPUnit_Extensions_Database_Operation_DeleteAll implements PHPUnit_Extensi
             /* @var $table PHPUnit_Extensions_Database_DataSet_ITable */
             
             $query = "
-                DELETE FROM {$table->getTableMetaData()->getTableName()}
+                DELETE FROM {$connection->quoteSchemaObject($table->getTableMetaData()->getTableName())}
             ";
             
             try {

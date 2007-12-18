@@ -66,7 +66,7 @@ PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
 abstract class PHPUnit_Extensions_Database_DB_MetaData implements PHPUnit_Extensions_Database_DB_IMetaData
 {
     protected static $metaDataClassMap = array(
-        'mysql'  => 'PHPUnit_Extensions_Database_DB_MetaData_InformationSchema',
+        'mysql'  => 'PHPUnit_Extensions_Database_DB_MetaData_MySQL',
         'oci'    => 'PHPUnit_Extensions_Database_DB_MetaData_Oci',
         'sqlite' => 'PHPUnit_Extensions_Database_DB_MetaData_Sqlite'
     );
@@ -84,6 +84,11 @@ abstract class PHPUnit_Extensions_Database_DB_MetaData implements PHPUnit_Extens
      * @var string
      */
     protected $schema;
+
+    /**
+     * The character used to quote schema objects.
+     */
+    protected $schemaObjectQuoteChar = '"';
 
     /**
      * Creates a new database meta data object using the given pdo connection 
@@ -157,6 +162,19 @@ abstract class PHPUnit_Extensions_Database_DB_MetaData implements PHPUnit_Extens
     {
         return $this->schema;
     }
+
+    /**
+     * Returns a quoted schema object. (table name, column name, etc)
+     *
+     * @param string $object
+     * @return string
+     */
+    public function quoteSchemaObject($object)
+    {
+    	return $this->schemaObjectQuoteChar.
+		str_replace($this->schemaObjectQuoteChar, $this->schemaObjectQuoteChar.$this->schemaObjectQuoteChar, $object).
+		$this->schemaObjectQuoteChar;
+    }
 }
 
 /**
@@ -166,5 +184,6 @@ abstract class PHPUnit_Extensions_Database_DB_MetaData implements PHPUnit_Extens
  */
 require_once 'PHPUnit/Extensions/Database/DB/MetaData/Sqlite.php';
 require_once 'PHPUnit/Extensions/Database/DB/MetaData/InformationSchema.php';
+require_once 'PHPUnit/Extensions/Database/DB/MetaData/MySQL.php';
 
 ?>

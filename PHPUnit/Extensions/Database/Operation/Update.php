@@ -69,16 +69,16 @@ class PHPUnit_Extensions_Database_Operation_Update extends PHPUnit_Extensions_Da
 
     protected $operationName = 'UPDATE';
 
-    protected function buildOperationQuery(PHPUnit_Extensions_Database_DataSet_ITableMetaData $databaseTableMetaData, PHPUnit_Extensions_Database_DataSet_ITable $table)
+    protected function buildOperationQuery(PHPUnit_Extensions_Database_DataSet_ITableMetaData $databaseTableMetaData, PHPUnit_Extensions_Database_DataSet_ITable $table, PHPUnit_Extensions_Database_DB_IDatabaseConnection $connection)
     {
         $keys = $databaseTableMetaData->getPrimaryKeys();
         $columns = $table->getTableMetaData()->getColumns();
         
-        $whereStatement = 'WHERE ' . implode(' AND ', $this->buildPreparedColumnArray($keys));
-        $setStatement = 'SET ' . implode(', ', $this->buildPreparedColumnArray($columns));
+        $whereStatement = 'WHERE ' . implode(' AND ', $this->buildPreparedColumnArray($keys, $connection));
+        $setStatement = 'SET ' . implode(', ', $this->buildPreparedColumnArray($columns, $connection));
         
         $query = "
-			UPDATE {$table->getTableMetaData()->getTableName()}
+			UPDATE {$connection->quoteSchemaObject($table->getTableMetaData()->getTableName())}
 			{$setStatement}
 			{$whereStatement}
 		";
