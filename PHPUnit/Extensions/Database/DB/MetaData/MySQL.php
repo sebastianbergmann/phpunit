@@ -39,58 +39,31 @@
  * @author     Mike Lively <m@digitalsandwich.com>
  * @copyright  2002-2007 Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
- * @version    SVN: $Id$
+ * @version    SVN: $Id:InformationSchema.php 1254 2007-09-02 04:36:15Z mlively $
  * @link       http://www.phpunit.de/
  * @since      File available since Release 3.2.0
  */
 
 require_once 'PHPUnit/Framework.php';
 require_once 'PHPUnit/Util/Filter.php';
-
-require_once 'PHPUnit/Extensions/Database/Operation/IDatabaseOperation.php';
-require_once 'PHPUnit/Extensions/Database/Operation/Exception.php';
+require_once 'PHPUnit/Extensions/Database/DB/MetaData/InformationSchema.php';
 
 PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
 
 /**
- * Deletes the rows in a given dataset using primary key columns.
+ * Provides functionality to retrieve meta data from a database with information_schema support.
  *
  * @category   Testing
  * @package    PHPUnit
  * @author     Mike Lively <m@digitalsandwich.com>
- * @copyright  2007 Mike Lively <m@digitalsandwich.com>
+ * @copyright  2002-2007 Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    Release: @package_version@
  * @link       http://www.phpunit.de/
  * @since      Class available since Release 3.2.0
  */
-class PHPUnit_Extensions_Database_Operation_Delete extends PHPUnit_Extensions_Database_Operation_RowBased
+class PHPUnit_Extensions_Database_DB_MetaData_MySQL extends PHPUnit_Extensions_Database_DB_MetaData_InformationSchema
 {
-
-    protected $operationName = 'DELETE';
-
-    protected function buildOperationQuery(PHPUnit_Extensions_Database_DataSet_ITableMetaData $databaseTableMetaData, PHPUnit_Extensions_Database_DataSet_ITable $table, PHPUnit_Extensions_Database_DB_IDatabaseConnection $connection)
-    {
-        $keys = $databaseTableMetaData->getPrimaryKeys();
-        
-        $whereStatement = 'WHERE ' . implode(' AND ', $this->buildPreparedColumnArray($keys, $connection));
-        
-        $query = "
-			DELETE FROM {$connection->quoteSchemaObject($table->getTableMetaData()->getTableName())}
-			{$whereStatement}
-		";
-        
-        return $query;
-    }
-
-    protected function buildOperationArguments(PHPUnit_Extensions_Database_DataSet_ITableMetaData $databaseTableMetaData, PHPUnit_Extensions_Database_DataSet_ITable $table, $row)
-    {
-        $args = array();
-        foreach ($databaseTableMetaData->getPrimaryKeys() as $columnName) {
-            $args[] = $table->getValue($row, $columnName);
-        }
-        
-        return $args;
-    }
+	protected $schemaObjectQuoteChar = '`';
 }
 ?>

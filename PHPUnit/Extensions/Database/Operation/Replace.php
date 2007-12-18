@@ -71,15 +71,15 @@ class PHPUnit_Extensions_Database_Operation_Replace extends PHPUnit_Extensions_D
 
     protected $operationName = 'REPLACE';
 
-    protected function buildOperationQuery(PHPUnit_Extensions_Database_DataSet_ITableMetaData $databaseTableMetaData, PHPUnit_Extensions_Database_DataSet_ITable $table)
+    protected function buildOperationQuery(PHPUnit_Extensions_Database_DataSet_ITableMetaData $databaseTableMetaData, PHPUnit_Extensions_Database_DataSet_ITable $table, PHPUnit_Extensions_Database_DB_IDatabaseConnection $connection)
     {
         $keys = $databaseTableMetaData->getPrimaryKeys();
         
-        $whereStatement = 'WHERE ' . implode(' AND ', $this->buildPreparedColumnArray($keys));
+        $whereStatement = 'WHERE ' . implode(' AND ', $this->buildPreparedColumnArray($keys, $connection));
         
         $query = "
         	SELECT COUNT(*)
-        	FROM {$table->getTableMetaData()->getTableName()}
+        	FROM {$connection->quoteSchemaObject($table->getTableMetaData()->getTableName())}
         	{$whereStatement}
         ";
         
@@ -112,9 +112,9 @@ class PHPUnit_Extensions_Database_Operation_Replace extends PHPUnit_Extensions_D
             /* @var $table PHPUnit_Extensions_Database_DataSet_ITable */
             $databaseTableMetaData = $databaseDataSet->getTableMetaData($table->getTableMetaData()->getTableName());
             
-            $insertQuery = $insertOperation->buildOperationQuery($databaseTableMetaData, $table);
-            $updateQuery = $updateOperation->buildOperationQuery($databaseTableMetaData, $table);
-            $selectQuery = $this->buildOperationQuery($databaseTableMetaData, $table);
+            $insertQuery = $insertOperation->buildOperationQuery($databaseTableMetaData, $table, $connection);
+            $updateQuery = $updateOperation->buildOperationQuery($databaseTableMetaData, $table, $connection);
+            $selectQuery = $this->buildOperationQuery($databaseTableMetaData, $table, $connection);
             
             $insertStatement = $connection->getConnection()->prepare($insertQuery);
             $updateStatement = $connection->getConnection()->prepare($updateQuery);

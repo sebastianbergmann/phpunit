@@ -198,5 +198,17 @@ class PHPUnit_Extensions_Database_DB_DefaultDatabaseConnection implements PHPUni
             $query .= " WHERE {$whereClause}";
         }
     }
+
+    /**
+     * Returns a quoted schema object. (table name, column name, etc)
+     *
+     * @param string $object
+     * @return string
+     */
+    public function quoteSchemaObject($object)
+    {
+    	return $this->getMetaData()->quoteSchemaObject($object);
+    }
+
 }
 ?>
