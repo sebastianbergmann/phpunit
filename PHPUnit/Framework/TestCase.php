@@ -220,21 +220,21 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
           $class->name
         );
 
-        if (is_string($this->dataName)) {
-            $buffer .= sprintf(
-              ' with data set "%s"',
+        if (!empty($this->data)) {
+            if (is_string($this->dataName)) {
+                $buffer .= sprintf(
+                  ' with data set "%s"',
 
-              $this->dataName
-            );
-        }
+                  $this->dataName
+                );
+            } else {
+                $buffer .= sprintf(
+                  ' with data set #%d (%s)',
 
-        else if (!empty($this->data)) {
-            $buffer .= sprintf(
-              ' with data set #%d (%s)',
-
-              $this->dataName,
-              $this->dataToString($this->data)
-            );
+                  $this->dataName,
+                  $this->dataToString($this->data)
+                );
+            }
         }
 
         return $buffer;
