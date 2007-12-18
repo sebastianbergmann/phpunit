@@ -69,7 +69,6 @@ if (!class_exists('PHPUnit_Framework_TestResult', FALSE)) {
  */
 class PHPUnit_Framework_TestResult implements Countable
 {
-    protected static $isPHP52 = null;
     protected static $xdebugLoaded = null;
     protected static $useXdebug = null;
 
@@ -558,19 +557,10 @@ class PHPUnit_Framework_TestResult implements Countable
 
         $errorHandlerSet = FALSE;
 
-        if (self::$isPHP52 === NULL) {
-            if (version_compare(phpversion(), '5.2.0RC1', '>=')) {
-                self::$isPHP52 = TRUE;
-            } else {
-                self::$isPHP52 = FALSE;
-            }
-        }
-
-        if (self::$isPHP52) {
-            $oldErrorHandler = set_error_handler('PHPUnit_Util_ErrorHandler', E_RECOVERABLE_ERROR | E_USER_ERROR | E_NOTICE | E_STRICT);
-        } else {
-            $oldErrorHandler = set_error_handler('PHPUnit_Util_ErrorHandler', E_USER_ERROR | E_NOTICE | E_STRICT);
-        }
+        $oldErrorHandler = set_error_handler(
+          'PHPUnit_Util_ErrorHandler',
+          E_RECOVERABLE_ERROR | E_USER_ERROR | E_NOTICE | E_STRICT
+        );
 
         if ($oldErrorHandler === NULL) {
             $errorHandlerSet = TRUE;
