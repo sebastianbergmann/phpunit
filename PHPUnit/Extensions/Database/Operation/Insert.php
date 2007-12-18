@@ -69,13 +69,20 @@ class PHPUnit_Extensions_Database_Operation_Insert extends PHPUnit_Extensions_Da
 
     protected $operationName = 'INSERT';
 
-    protected function buildOperationQuery(PHPUnit_Extensions_Database_DataSet_ITableMetaData $databaseTableMetaData, PHPUnit_Extensions_Database_DataSet_ITable $table)
+    protected function buildOperationQuery(PHPUnit_Extensions_Database_DataSet_ITableMetaData $databaseTableMetaData, PHPUnit_Extensions_Database_DataSet_ITable $table, PHPUnit_Extensions_Database_DB_IDatabaseConnection $connection)
     {
-        $columns = implode(', ', $table->getTableMetaData()->getColumns());
         $placeHolders = implode(', ', array_fill(0, count($table->getTableMetaData()->getColumns()), '?'));
-        
+       
+        $columns = '';
+	foreach ($table->getTableMetaData()->getColumns() as $column)
+	{
+	    $columns .= $connection->quoteSchemaObject($column).', ';
+	}
+
+	$columns = substr($columns, 0, -2);
+
         $query = "
-            INSERT INTO {$table->getTableMetaData()->getTableName()}
+            INSERT INTO {$connection->quoteSchemaObject($table->getTableMetaData()->getTableName())}
             ({$columns})
             VALUES
             ({$placeHolders})

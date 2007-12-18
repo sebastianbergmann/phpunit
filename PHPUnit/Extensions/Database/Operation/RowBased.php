@@ -74,7 +74,7 @@ abstract class PHPUnit_Extensions_Database_Operation_RowBased implements PHPUnit
 
     protected $operationName;
 
-    protected abstract function buildOperationQuery(PHPUnit_Extensions_Database_DataSet_ITableMetaData $databaseTableMetaData, PHPUnit_Extensions_Database_DataSet_ITable $table);
+    protected abstract function buildOperationQuery(PHPUnit_Extensions_Database_DataSet_ITableMetaData $databaseTableMetaData, PHPUnit_Extensions_Database_DataSet_ITable $table, PHPUnit_Extensions_Database_DB_IDatabaseConnection $connection);
 
     protected abstract function buildOperationArguments(PHPUnit_Extensions_Database_DataSet_ITableMetaData $databaseTableMetaData, PHPUnit_Extensions_Database_DataSet_ITable $table, $row);
 
@@ -88,7 +88,7 @@ abstract class PHPUnit_Extensions_Database_Operation_RowBased implements PHPUnit
         foreach ($dataSet as $table) {
             /* @var $table PHPUnit_Extensions_Database_DataSet_ITable */
             $databaseTableMetaData = $databaseDataSet->getTableMetaData($table->getTableMetaData()->getTableName());
-            $query = $this->buildOperationQuery($databaseTableMetaData, $table);
+            $query = $this->buildOperationQuery($databaseTableMetaData, $table, $connection);
             $statement = $connection->getConnection()->prepare($query);
             for ($i = 0; $i < $table->getRowCount(); $i++) {
                 $args = $this->buildOperationArguments($databaseTableMetaData, $table, $i);
@@ -101,11 +101,11 @@ abstract class PHPUnit_Extensions_Database_Operation_RowBased implements PHPUnit
         }
     }
 
-    protected function buildPreparedColumnArray($columns)
+    protected function buildPreparedColumnArray($columns, PHPUnit_Extensions_Database_DB_IDatabaseConnection $connection)
     {
         $columnArray = array();
         foreach ($columns as $columnName) {
-            $columnArray[] = "{$columnName} = ?";
+            $columnArray[] = "{$connection->quoteSchemaObject($columnName)} = ?";
         }
         return $columnArray;
     }
