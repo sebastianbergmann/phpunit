@@ -97,12 +97,14 @@ class PHPUnit_Util_Metrics_Function extends PHPUnit_Util_Metrics
           $scope, $function->getName()
         );
 
-        $this->tokens     = token_get_all('<?php' . $source . '?>');
-        $this->parameters = $function->getNumberOfParameters();
+        if (!$source !== FALSE) {
+            $this->tokens     = token_get_all('<?php' . $source . '?>');
+            $this->parameters = $function->getNumberOfParameters();
 
-        $this->calculateCCN();
-        $this->calculateNPath();
-        $this->calculateDependencies();
+            $this->calculateCCN();
+            $this->calculateNPath();
+            $this->calculateDependencies();
+        }
 
         $this->setCoverage($codeCoverage);
     }

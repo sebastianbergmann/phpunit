@@ -339,7 +339,7 @@ class PHPUnit_Util_Class
      *
      * @param  string  $className
      * @param  string  $methodName
-     * @return string
+     * @return mixed
      * @access public
      * @static
      */
@@ -351,14 +351,20 @@ class PHPUnit_Util_Class
             $function = new ReflectionFunction($methodName);
         }
 
-        $file   = file($function->getFileName());
-        $result = '';
+        $filename = $function->getFileName();
 
-        for ($line = $function->getStartLine() - 1; $line <= $function->getEndLine() - 1; $line++) {
-            $result .= $file[$line];
+        if (file_exists($filename)) {
+            $file   = file($filename);
+            $result = '';
+
+            for ($line = $function->getStartLine() - 1; $line <= $function->getEndLine() - 1; $line++) {
+                $result .= $file[$line];
+            }
+
+            return $result;
+        } else {
+            return FALSE;
         }
-
-        return $result;
     }
 
     /**
