@@ -103,8 +103,9 @@ class PHPUnit_Framework_Constraint_IsInstanceOf extends PHPUnit_Framework_Constr
     {
         throw new PHPUnit_Framework_ExpectationFailedException(
           sprintf(
-            'Failed asserting that %s is %san instance of class "%s".',
+            '%sFailed asserting that %s is %san instance of class "%s".',
 
+            !empty($description) ? $description . "\n" : '',
             PHPUnit_Util_Type::toString($other, TRUE),
             $not ? 'not ' : '',
             $this->className
