@@ -146,6 +146,14 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
     protected $expectedException = NULL;
 
     /**
+     * The message of the expected Exception.
+     *
+     * @var    string
+     * @access protected
+     */
+    protected $expectedExceptionMessage = '';
+
+    /**
      * Fixture that is shared between the tests of a test suite.
      *
      * @var    mixed
@@ -274,12 +282,14 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
 
     /**
      * @param  mixed  $exceptionName
+     * @param  string $exceptionMessage
      * @access public
      * @since  Method available since Release 3.2.0
      */
-    public function setExpectedException($exceptionName)
+    public function setExpectedException($exceptionName, $exceptionMessage = '')
     {
-        $this->expectedException = $exceptionName;
+        $this->expectedException        = $exceptionName;
+        $this->expectedExceptionMessage = $exceptionMessage;
     }
 
     /**
@@ -441,6 +451,14 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
         catch (Exception $e) {
             if (is_string($this->expectedException) &&
                 $e instanceof $this->expectedException) {
+                if (is_string($this->expectedExceptionMessage) &&
+                    !empty($this->expectedExceptionMessage)) {
+                    $this->assertContains(
+                      $this->expectedExceptionMessage,
+                      $e->getMessage()
+                    );
+                }
+
                 return;
             } else {
                 throw $e;

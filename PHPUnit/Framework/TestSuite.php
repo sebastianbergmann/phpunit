@@ -476,8 +476,9 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
             );
         }
 
-        if (preg_match('/@expectedException[\s]+([:\.\w]+)/', $docComment, $matches)) {
-            $expectedException = $matches[1];
+        if (preg_match('/@expectedException[\s]+([:\.\w]+)\s?(.*|)/', $docComment, $matches)) {
+            $expectedException        = $matches[1];
+            $expectedExceptionMessage = $matches[2];
         }
 
         $constructor = $theClass->getConstructor();
@@ -504,7 +505,9 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
 
                         if ($_test instanceof PHPUnit_Framework_TestCase &&
                             isset($expectedException)) {
-                            $_test->setExpectedException($expectedException);
+                            $_test->setExpectedException(
+                              $expectedException, $expectedExceptionMessage
+                            );
                         }
 
                         $test->addTest($_test);
@@ -519,7 +522,9 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
             $test->setName($name);
 
             if (isset($expectedException)) {
-                $test->setExpectedException($expectedException);
+                $test->setExpectedException(
+                  $expectedException, $expectedExceptionMessage
+                );
             }
         }
 
