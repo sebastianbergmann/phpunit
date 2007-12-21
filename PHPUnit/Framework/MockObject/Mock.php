@@ -92,6 +92,8 @@ class PHPUnit_Framework_MockObject_Mock
 {
     public $mockClassName;
     public $className;
+    public $fullClassName;
+    public $namespaceName;
     public $methods;
     protected $callOriginalConstructor;
     protected $callOriginalClone;
@@ -99,6 +101,17 @@ class PHPUnit_Framework_MockObject_Mock
 
     public function __construct($className, array $methods = array(), $mockClassName = '', $callOriginalConstructor = TRUE, $callOriginalClone = TRUE, $callAutoload = TRUE)
     {
+        $classNameParts = explode('::', $className);
+
+        if (count($classNameParts) > 1) {
+            $className           = array_pop($classNameParts);
+            $namespaceName       = join('::', $classNameParts);
+            $this->fullClassName = $namespaceName . '::' . $className;
+        } else {
+            $namespaceName       = '';
+            $this->fullClassName = $className;
+        }
+
         if ($mockClassName === '') {
             do {
                 $mockClassName = 'Mock_' . $className . '_' . substr(md5(microtime()), 0, 8);
@@ -128,6 +141,7 @@ class PHPUnit_Framework_MockObject_Mock
 
         $this->mockClassName           = $mockClassName;
         $this->className               = $className;
+        $this->namespaceName           = $namespaceName;
         $this->methods                 = $methods;
         $this->callOriginalConstructor = $callOriginalConstructor;
         $this->callOriginalClone       = $callOriginalClone;
@@ -152,23 +166,31 @@ class PHPUnit_Framework_MockObject_Mock
 
     protected function generateClass()
     {
-        if (!class_exists($this->className, $this->callAutoload) && !interface_exists($this->className, $this->callAutoload)) {
-            eval('class ' . $this->className . ' {}');
+        if (!class_exists($this->fullClassName, $this->callAutoload) && !interface_exists($this->fullClassName, $this->callAutoload)) {
+            $code = 'class ' . $this->className . ' {}';
+
+            if (!empty($this->namespaceName)) {
+                $code = 'namespace ' . $this->namespaceName . ';' . $code;
+            }
+
+            eval($code);
         }
 
         try {
-            $class = new ReflectionClass($this->className);
+            $class = new ReflectionClass($this->fullClassName);
 
             if ($class->isFinal()) {
                 throw new RuntimeException(
                   sprintf(
                     'Class "%s" is declared "final" and cannot be mocked.',
-                    $this->className
+                    $this->fullClassName
                   )
                 );
             }
 
-            eval($this->generateClassDefinition($class));
+            $code = $this->generateClassDefinition($class);
+
+            eval($code);
         }
 
         catch (Exception $e) {
@@ -176,7 +198,7 @@ class PHPUnit_Framework_MockObject_Mock
               sprintf(
                 'Failed to generate mock class "%s" for class "%s".\n%s',
                 $this->mockClassName,
-                $this->className,
+                $this->fullClassName,
                 $e->getMessage()
               )
             );
@@ -189,14 +211,16 @@ class PHPUnit_Framework_MockObject_Mock
 
         if ($class->isInterface()) {
             $code .= sprintf(
-              "%s implements %s, PHPUnit_Framework_MockObject_MockObject {\n",
+              "%s implements %s%s, PHPUnit_Framework_MockObject_MockObject {\n",
               $this->mockClassName,
+              !empty($this->namespaceName) ? $this->namespaceName . '::' : '',
               $this->className
             );
         } else {
             $code .= sprintf(
-              "%s extends %s implements PHPUnit_Framework_MockObject_MockObject {\n",
+              "%s extends %s%s implements PHPUnit_Framework_MockObject_MockObject {\n",
               $this->mockClassName,
+              !empty($this->namespaceName) ? $this->namespaceName . '::' : '',
               $this->className
             );
         }
