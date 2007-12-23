@@ -479,9 +479,14 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
             );
         }
 
-        if (preg_match('/@expectedException[\s]+([:\.\w]+)\s?(.*|)/', $docComment, $matches)) {
+        if (preg_match('/@expectedException\s+([:.\w]+)(?:[\t ]+(.*)$)?/m', $docComment, $matches)) {
             $expectedException        = $matches[1];
-            $expectedExceptionMessage = $matches[2];
+
+            if (isset($matches[2])) {
+                $expectedExceptionMessage = $matches[2];
+            } else {
+                $expectedExceptionMessage = '';
+            }
         }
 
         $constructor = $theClass->getConstructor();
