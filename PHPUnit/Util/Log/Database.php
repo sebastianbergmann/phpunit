@@ -199,10 +199,13 @@ class PHPUnit_Util_Log_Database implements PHPUnit_Framework_TestListener
      */
     public function addError(PHPUnit_Framework_Test $test, Exception $e, $time)
     {
+        $message = PHPUnit_Framework_TestFailure::exceptionToString($e) . "\n" .
+                   PHPUnit_Util_Filter::getFilteredStacktrace($e, FALSE);
+
         $this->storeResult(
           PHPUnit_Runner_BaseTestRunner::STATUS_ERROR,
           $time,
-          $e->getMessage()
+          $message
         );
 
         $this->updateParents(
@@ -222,10 +225,13 @@ class PHPUnit_Util_Log_Database implements PHPUnit_Framework_TestListener
      */
     public function addFailure(PHPUnit_Framework_Test $test, PHPUnit_Framework_AssertionFailedError $e, $time)
     {
+        $message = PHPUnit_Framework_TestFailure::exceptionToString($e) . "\n" .
+                   PHPUnit_Util_Filter::getFilteredStacktrace($e, FALSE);
+
         $this->storeResult(
           PHPUnit_Runner_BaseTestRunner::STATUS_FAILURE,
           $time,
-          $e->getMessage()
+          $message
         );
 
         $this->updateParents(
@@ -245,10 +251,13 @@ class PHPUnit_Util_Log_Database implements PHPUnit_Framework_TestListener
      */
     public function addIncompleteTest(PHPUnit_Framework_Test $test, Exception $e, $time)
     {
+        $message = PHPUnit_Framework_TestFailure::exceptionToString($e) . "\n" .
+                   PHPUnit_Util_Filter::getFilteredStacktrace($e, FALSE);
+
         $this->storeResult(
           PHPUnit_Runner_BaseTestRunner::STATUS_INCOMPLETE,
           $time,
-          $e->getMessage()
+          $message
         );
 
         $this->currentTestSuccess = FALSE;
@@ -264,10 +273,13 @@ class PHPUnit_Util_Log_Database implements PHPUnit_Framework_TestListener
      */
     public function addSkippedTest(PHPUnit_Framework_Test $test, Exception $e, $time)
     {
+        $message = PHPUnit_Framework_TestFailure::exceptionToString($e) . "\n" .
+                   PHPUnit_Util_Filter::getFilteredStacktrace($e, FALSE);
+
         $this->storeResult(
           PHPUnit_Runner_BaseTestRunner::STATUS_SKIPPED,
           $time,
-          $e->getMessage()
+          $message
         );
 
         $this->currentTestSuccess = FALSE;
