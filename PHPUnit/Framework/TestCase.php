@@ -393,6 +393,7 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
         // Restore the $GLOBALS array.
         if ($this->backupGlobals === TRUE) {
             $GLOBALS = unserialize($globalsBackup);
+            $GLOBALS['GLOBALS'] = &$GLOBALS;
         }
 
         // Clean up INI settings.
