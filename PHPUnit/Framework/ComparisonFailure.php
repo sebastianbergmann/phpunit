@@ -243,6 +243,10 @@ abstract class PHPUnit_Framework_ComparisonFailure extends PHPUnit_Framework_Ass
                 $paths = explode(PATH_SEPARATOR, $_ENV['PATH']);
             }
 
+            else if (isset($_ENV['Path'])) {
+                $paths = explode(PATH_SEPARATOR, $_ENV['Path']);
+            }
+
             else if (isset($_SERVER['PATH'])) {
                 $paths = explode(PATH_SEPARATOR, $_SERVER['PATH']);
             }
