@@ -97,7 +97,7 @@ class PHPUnit_Util_Metrics_Function extends PHPUnit_Util_Metrics
           $scope, $function->getName()
         );
 
-        if (!$source !== FALSE) {
+        if ($source !== FALSE) {
             $this->tokens     = token_get_all('<?php' . $source . '?>');
             $this->parameters = $function->getNumberOfParameters();
 
