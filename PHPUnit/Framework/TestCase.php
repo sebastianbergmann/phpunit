@@ -370,10 +370,13 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
 
         // Run the test.
         try {
+            // Assert pre-conditions.
+            $this->assertPreConditions();
+
             $this->runTest();
 
-            // Perform assertions shared by all tests of a test case.
-            $this->sharedAssertions();
+            // Assert post-conditions.
+            $this->assertPostConditions();
 
             // Verify Mock Object conditions.
             foreach ($this->mockObjects as $mockObject) {
@@ -783,14 +786,32 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
     /**
      * Performs assertions shared by all tests of a test case.
      *
+     * This method is called before the execution of a test starts
+     * and after setUp() is called.
+     *
+     * @access protected
+     * @since  Method available since Release 3.2.8
+     */
+    protected function assertPreConditions()
+    {
+    }
+
+    /**
+     * Performs assertions shared by all tests of a test case.
+     *
      * This method is called before the execution of a test ends
      * and before tearDown() is called.
      *
      * @access protected
-     * @since  Method available since Release 3.0.0
+     * @since  Method available since Release 3.2.8
      */
-    protected function sharedAssertions()
+    protected function assertPostConditions()
     {
+        // assertPostConditions() was named sharedAssertions() in
+        // PHPUnit 3.0.0-3.2.7.
+        if (method_exists($this, 'sharedAssertions')) {
+            $this->sharedAssertions();
+        }
     }
 
     /**
