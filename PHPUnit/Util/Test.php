@@ -216,10 +216,19 @@ class PHPUnit_Util_Test
         $method     = new ReflectionMethod($className, $methodName);
         $docComment = $method->getDocComment();
 
-        if (preg_match('/@dataProvider[\s]+([\.\w]+)/', $docComment, $matches)) {
+        if (preg_match('/@dataProvider[\s]+([:\.\w]+)/', $docComment, $matches)) {
             try {
+                $dataProvider           = explode('::', $matches[1]);
+                $dataProviderMethodName = array_pop($dataProvider);
+
+                if (!empty($dataProvider)) {
+                    $dataProviderClassName = join('::', $dataProvider);
+                } else {
+                    $dataProviderClassName = $className;
+                }
+
                 $dataProviderMethod = new ReflectionMethod(
-                  $className, $matches[1]
+                  $dataProviderClassName, $dataProviderMethodName
                 );
 
                 return $dataProviderMethod->invoke(NULL);
