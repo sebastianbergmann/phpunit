@@ -72,6 +72,15 @@ require_once 'Extensions/Database/_files/DatabaseTestUtility.php';
  */
 class Extensions_Database_Operation_OperationsTest extends PHPUnit_Extensions_Database_TestCase 
 {
+    protected function setUp()
+    {
+        if (!extension_loaded('pdo_sqlite')) {
+            $this->markTestSkipped('PDO/SQLite is required to run this test.');
+        }
+
+        parent::setUp();
+    }
+
 	public function getConnection()
 	{
 		return new PHPUnit_Extensions_Database_DB_DefaultDatabaseConnection(DBUnitTestUtility::getSQLiteMemoryDB(), 'sqlite');
