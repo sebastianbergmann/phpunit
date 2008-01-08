@@ -198,7 +198,7 @@ class PHPUnit_Util_Fileloader
           self::$phpBinary . ' -l ' . escapeshellarg($filename)
         );
 
-        if (strpos($output, 'Errors parsing') === TRUE) {
+        if (strpos($output, 'Errors parsing') !== FALSE) {
             throw new RuntimeException($output);
         }
     }
