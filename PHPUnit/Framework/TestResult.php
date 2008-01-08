@@ -546,6 +546,22 @@ class PHPUnit_Framework_TestResult implements Countable
     }
 
     /**
+     * Returns unfiltered Code Coverage data per test case.
+     * Returns data in the same form as getCodeCoverageInformation().
+     *
+     * @return array
+     * @access public
+     */
+    public function getUncoveredWhitelistFiles()
+    {
+        list(, $missing) = PHPUnit_Util_Filter::getFileCodeCoverageDisposition(
+          $this->codeCoverageInformation
+        );
+
+        return($missing);  
+    }
+
+    /**
      * Runs a TestCase.
      *
      * @param  PHPUnit_Framework_Test $test
