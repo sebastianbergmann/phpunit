@@ -306,7 +306,15 @@ class PHPUnit_Util_Filter
     }
 
     /**
-     * Filters source lines from PHPUnit classes.
+     * Returns data about files within code coverage information, specifically
+     * which ones will be filtered out and which ones may be whitelisted but not
+     * touched by coverage.
+     * 
+     * Returns a two-item array. The first item is an array indexed by filenames 
+     * with a boolean payload of whether they should be filtered out.
+     * 
+     * The second item is an array of filenames which are 
+     * whitelisted but which are absent from the coverage information.
      *
      * @param  array   $codeCoverageInformation
      * @param  boolean $filterTests
@@ -314,52 +322,74 @@ class PHPUnit_Util_Filter
      * @access public
      * @static
      */
+    public static function getFileCodeCoverageDisposition(array $codeCoverageInformation, $filterTests = TRUE)
+    {
+        if (!self::$filter) {
+            return array(array(), array());
+        }             
+
+        $isFilteredCache = array();
+        $coveredFiles    = array();
+
+        foreach ($codeCoverageInformation as $k => $test) {
+            foreach (array_keys($test['files']) as $file) {
+                if (!isset($isFilteredCache[$file])) {
+                    $isFilteredCache[$file] = self::isFiltered(
+                      $file, $filterTests
+                    );
+                }
+            }
+        }        
+
+        $coveredFiles = array_keys($isFilteredCache);
+        $missedFiles  = array_diff(self::$whitelistedFiles,$coveredFiles);                
+        $missedFiles  = array_filter($missedFiles,'file_exists');
+
+        return array($isFilteredCache,$missedFiles);
+    }
+    
+    /**
+     * @param  array   $codeCoverageInformation
+     * @param  boolean $addUncoveredFilesFromWhitelist
+     * @return array
+     * @access public
+     * @static
+     */
     public static function getFilteredCodeCoverage(array $codeCoverageInformation, $filterTests = TRUE)
     {
         if (self::$filter) {
-            $coveredFiles    = array();
-            $isFilteredCache = array();
+            list($isFilteredCache, $missedFiles) = self::getFileCodeCoverageDisposition(
+              $codeCoverageInformation, $filterTests
+            );
 
             foreach ($codeCoverageInformation as $k => $test) {
                 foreach (array_keys($test['files']) as $file) {
-                    if (!isset($isFilteredCache[$file])) {
-                        $isFilteredCache[$file] = self::isFiltered($file, $filterTests);
-                    }
-
                     if ($isFilteredCache[$file]) {
                         unset($codeCoverageInformation[$k]['files'][$file]);
-                    } else {
-                        $coveredFiles[$file] = 1;
                     }
                 }
             }
 
             if (self::$addUncoveredFilesFromWhitelist) {
-                foreach (self::$whitelistedFiles as $whitelistedFile) {
-                    if (!isset($coveredFiles[$whitelistedFile])) {
-                        if (file_exists($whitelistedFile)) {
-                            xdebug_start_code_coverage(XDEBUG_CC_UNUSED | XDEBUG_CC_DEAD_CODE);
-                            include_once $whitelistedFile;
-                            $coverage = xdebug_get_code_coverage();
-                            xdebug_stop_code_coverage();
+                foreach ($missedFiles as $missedFile) {
+                    xdebug_start_code_coverage(XDEBUG_CC_UNUSED | XDEBUG_CC_DEAD_CODE);
+                    include_once $missedFile;
+                    $coverage = xdebug_get_code_coverage();
+                    xdebug_stop_code_coverage();
 
-                            if (isset($coverage[$whitelistedFile])) {
-                                foreach ($coverage[$whitelistedFile] as $line => $flag) {
-                                    if ($flag > 0) {
-                                        $coverage[$whitelistedFile][$line] = -1;
-                                    }
-                                }
-
-                                $codeCoverageInformation[] = array(
-                                  'test'  => NULL,
-                                  'files' => array(
-                                    $whitelistedFile => $coverage[$whitelistedFile]
-                                  )
-                                );
-
-                                $coveredFiles[$whitelistedFile] = 1;
+                    if (isset($coverage[$missedFile])) {
+                        foreach ($coverage[$missedFile] as $line => $flag) {
+                            if ($flag > 0) {
+                                $coverage[$missedFile][$line] = -1;
                             }
                         }
+
+                        $codeCoverageInformation[] = array(
+                          'test'  => NULL,
+                          'files' => array(
+                            $missedFile => $coverage[$missedFile]
+                          )
+                        );
                     }
                 }
             }
