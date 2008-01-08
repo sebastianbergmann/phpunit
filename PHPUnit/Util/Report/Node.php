@@ -241,14 +241,14 @@ abstract class PHPUnit_Util_Report_Node
                     $this->cache['path'] = $this->parent->getPath() .
                                            $this->getName(FALSE, TRUE);
                 } else {
+                    $this->cache['path'] = $this->parent->getPath() .
+                                           DIRECTORY_SEPARATOR .
+                                           $this->getName(FALSE, TRUE);
+
                     if ($this->parent->getPath() === '' &&
                         realpath($this->cache['path']) === FALSE &&
                         realpath($this->getName(FALSE, TRUE)) !== FALSE) {
                         $this->cache['path'] = $this->getName(FALSE, TRUE);
-                    } else {
-                        $this->cache['path'] = $this->parent->getPath() .
-                                               DIRECTORY_SEPARATOR .
-                                               $this->getName(FALSE, TRUE);
                     }
                 }
             }
