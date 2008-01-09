@@ -1539,12 +1539,66 @@ abstract class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_Tes
               $this->testId
             );
 
-            return eval(
-              'return ' . file_get_contents($url) . ';'
+            return $this->matchLocalAndRemotePaths(
+              eval('return ' . file_get_contents($url) . ';')
             );
         } else {
             return array();
         }
+    }
+
+    /**
+     * @param  array $coverage
+     * @return array
+     * @access protected
+     * @author Mattis Stordalen Flister <mattis@xait.no>
+     * @since  Method available since Release 3.2.9
+     */
+    protected function matchLocalAndRemotePaths(array &$coverage) {
+        $coverageWithLocalPaths = array();
+
+        foreach($coverage as $originalRemotePath => $value) {
+            $remotePath = $originalRemotePath;
+            $separator  = $this->findDirectorySeparator($remotePath);
+
+            while (!($localpath = PHPUnit_Util_Filesystem::fileExistsInIncludePath($remotePath)) &&
+                   strpos($remotePath, $separator) !== FALSE) {
+                $remotePath = substr($remotePath, strpos($remotePath, $separator) + 1);
+            }
+
+            if ($localpath && md5_file($localpath) == $value['md5']) {
+                $coverageWithLocalPaths[$localpath] = $value;
+                unset($coverageWithLocalPaths[$localpath]['md5']);
+            }
+        }
+
+        return $coverageWithLocalPaths;
+    }
+
+    /**
+     * @param  string $path
+     * @return string
+     * @access protected
+     * @author Mattis Stordalen Flister <mattis@xait.no>
+     * @since  Method available since Release 3.2.9
+     */
+    protected function findDirectorySeparator($path) {
+        if (strpos($path, '/') !== FALSE) {
+            return '/';
+        }
+
+        return '\\';
+    }
+
+    /**
+     * @param  string $path
+     * @return array
+     * @access protected
+     * @author Mattis Stordalen Flister <mattis@xait.no>
+     * @since  Method available since Release 3.2.9
+     */
+    protected function explodeDirectories($path) {
+        return explode($this->findDirectorySeparator($path), dirname($path));
     }
 
     /**
