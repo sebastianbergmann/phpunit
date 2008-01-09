@@ -64,6 +64,30 @@ PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
 class PHPUnit_Util_Filesystem
 {
     /**
+     * Wrapper for file_exists() that searches the include_path.
+     *
+     * @param  string $file
+     * @return mixed
+     * @access public
+     * @static
+     * @author Mattis Stordalen Flister <mattis@xait.no>
+     * @since  Method available since Release 3.2.9
+     */
+    public static function fileExistsInIncludePath($file) {
+        $paths = explode(PATH_SEPARATOR, get_include_path());
+
+        foreach ($paths as $path) {
+            $fullpath = $path . DIRECTORY_SEPARATOR . $file;
+
+            if (file_exists($fullpath)) {
+                return realpath($fullpath);
+            }
+        }
+
+        return FALSE;
+    }
+
+    /**
      * Returns the common path of a set of files.
      *
      * @param  array $paths
