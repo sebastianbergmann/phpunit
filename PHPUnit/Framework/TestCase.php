@@ -126,6 +126,17 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
     protected $backupGlobals = TRUE;
 
     /**
+     * Enable or disable creating the $GLOBALS reference that is required
+     * for the "global" keyword to work correctly.
+     * Overwrite this attribute in a child class of TestCase.
+     * Setting this attribute in setUp() has no effect!
+     *
+     * @var    boolean
+     * @access protected
+     */
+    protected $createGlobalsReference = FALSE;
+
+    /**
      * @var    array
      * @access protected
      */
@@ -396,7 +407,10 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
         // Restore the $GLOBALS array.
         if ($this->backupGlobals === TRUE) {
             $GLOBALS = unserialize($globalsBackup);
-            $GLOBALS['GLOBALS'] = &$GLOBALS;
+
+            if ($this->createGlobalsReference) {
+                $GLOBALS['GLOBALS'] = &$GLOBALS;
+            }
         }
 
         // Clean up INI settings.
