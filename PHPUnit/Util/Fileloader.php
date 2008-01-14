@@ -191,12 +191,18 @@ class PHPUnit_Util_Fileloader
 
             if (!is_readable(self::$phpBinary)) {
                 self::$phpBinary = 'php';
+            } else {
+                self::$phpBinary = escapeshellarg(self::$phpBinary);
             }
         }
 
-        $output = shell_exec(
-          self::$phpBinary . ' -l ' . escapeshellarg($filename)
-        );
+        $command = self::$phpBinary . ' -l ' . escapeshellarg($filename);
+
+        if (DIRECTORY_SEPARATOR == '\\') {
+            $command = '"' . $command . '"';
+        }
+
+        $output = shell_exec($command);
 
         if (strpos($output, 'Errors parsing') !== FALSE) {
             throw new RuntimeException($output);
