@@ -36,7 +36,6 @@
  *
  * @category   Testing
  * @package    PHPUnit
- * @author     Jan Borsodi <jb@ez.no>
  * @author     Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @copyright  2002-2008 Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
@@ -61,7 +60,6 @@ if (!class_exists('PHPUnit_Framework_ExpectationFailedException', FALSE)) {
  *
  * @category   Testing
  * @package    PHPUnit
- * @author     Jan Borsodi <jb@ez.no>
  * @author     Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @copyright  2002-2008 Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
@@ -79,7 +77,11 @@ class PHPUnit_Framework_ExpectationFailedException extends PHPUnit_Framework_Ass
         $this->description       = $description;
         $this->comparisonFailure = $comparisonFailure;
 
-        parent::__construct($message);
+        if (!empty($message)) {
+            $description .= "\n" . $message;
+        }
+
+        parent::__construct($description);
     }
 
     public function getComparisonFailure()
