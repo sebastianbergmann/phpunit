@@ -719,6 +719,13 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
             if (isset($loggingConfiguration['testdox-text']) && !isset($arguments['testdoxTextFile'])) {
                 $arguments['testdoxTextFile'] = $loggingConfiguration['testdox-text'];
             }
+
+            $browsers = $arguments['configuration']->getSeleniumBrowserConfiguration();
+
+            if (!empty($browsers)) {
+                require_once 'PHPUnit/Extensions/SeleniumTestCase.php';
+                PHPUnit_Extensions_SeleniumTestCase::$browsers = $browsers;
+            }
         }
 
         $arguments['cpdMinLines']          = @$arguments['cpdMinLines']          ?: 5;
