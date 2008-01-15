@@ -138,6 +138,10 @@ PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
  *     <ini name="foo" value="bar"/>
  *     <var name="foo" value="bar"/>
  *   </php>
+ *
+ *   <selenium>
+ *     <browser name="" browser="" host="" port="" timeout="">
+ *   </selenium>
  * </phpunit>
  * </code>
  *
@@ -385,6 +389,51 @@ class PHPUnit_Util_Configuration
             $result[$class] = array(
               'threshold' => $threshold,
               'priority'  => $priority
+            );
+        }
+
+        return $result;
+    }
+
+    /**
+     * Returns the SeleniumTestCase browser configuration.
+     *
+     * @return array
+     * @access public
+     * @since  Method available since Release 3.2.9
+     */
+    public function getSeleniumBrowserConfiguration()
+    {
+        $result = array();
+
+        foreach ($this->xpath->query('selenium/browser') as $config) {
+            $name    = (string)$config->getAttribute('name');
+            $browser = (string)$config->getAttribute('browser');
+
+            if ($config->hasAttribute('host')) {
+                $host = (string)$config->getAttribute('host');
+            } else {
+                $host = 'localhost';
+            }
+
+            if ($config->hasAttribute('port')) {
+                $host = (int)$config->getAttribute('port');
+            } else {
+                $host = 4444;
+            }
+
+            if ($config->hasAttribute('timeout')) {
+                $host = (int)$config->getAttribute('timeout');
+            } else {
+                $host = 30000;
+            }
+
+            $result[] = array(
+              'name'    => $name,
+              'browser' => $browser,
+              'host'    => $host,
+              'port'    => $port,
+              'timeout' => $timeout
             );
         }
 
