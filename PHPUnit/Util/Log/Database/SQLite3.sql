@@ -53,7 +53,8 @@ CREATE TABLE IF NOT EXISTS test(
   code_method_id      INTEGER,
   node_root           INTEGER,
   node_left           INTEGER,
-  node_right          INTEGER
+  node_right          INTEGER,
+  node_is_leaf        INTEGER DEFAULT 0
 );
 
 CREATE INDEX IF NOT EXISTS test_run_id         ON test (run_id);

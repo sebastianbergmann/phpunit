@@ -54,6 +54,7 @@ CREATE TABLE IF NOT EXISTS test(
   node_root           INTEGER UNSIGNED NOT NULL,
   node_left           INTEGER UNSIGNED NOT NULL,
   node_right          INTEGER UNSIGNED NOT NULL,
+  node_is_leaf        BOOLEAN          NOT NULL DEFAULT 0,
 
   INDEX (run_id),
   INDEX (test_result),

@@ -360,8 +360,8 @@ class PHPUnit_Util_Log_Database implements PHPUnit_Framework_TestListener
 
         $stmt = $this->dbh->prepare(
           'INSERT INTO test
-                       (run_id, test_name, node_left, node_right)
-                 VALUES(:runId, :testName, 1, 2);'
+                       (run_id, test_name, node_left, node_right, node_is_leaf)
+                 VALUES(:runId, :testName, 1, 2, 0);'
         );
 
         $stmt->bindParam(':runId', $this->runId, PDO::PARAM_INT);
@@ -394,6 +394,8 @@ class PHPUnit_Util_Log_Database implements PHPUnit_Framework_TestListener
      */
     protected function insertNode(PHPUnit_Framework_Test $test)
     {
+        $isLeaf = (int)!$test instanceof PHPUnit_Framework_TestSuite;
+
         $this->dbh->beginTransaction();
 
         $stmt = $this->dbh->prepare(
@@ -437,8 +439,10 @@ class PHPUnit_Util_Log_Database implements PHPUnit_Framework_TestListener
         $stmt = $this->dbh->prepare(
           'INSERT INTO test
                        (run_id, test_name, test_result, test_message,
-                        test_execution_time, node_root, node_left, node_right)
-                 VALUES(:runId, :testName, 0, "", 0, :root, :left, :right);'
+                        test_execution_time, node_root, node_left, node_right,
+                        node_is_leaf)
+                 VALUES(:runId, :testName, 0, "", 0, :root, :left, :right,
+                        :isLeaf);'
         );
 
         $stmt->bindParam(':runId', $this->runId, PDO::PARAM_INT);
@@ -446,6 +450,7 @@ class PHPUnit_Util_Log_Database implements PHPUnit_Framework_TestListener
         $stmt->bindParam(':root', $this->testSuites[0]['id'], PDO::PARAM_INT);
         $stmt->bindParam(':left', $left, PDO::PARAM_INT);
         $stmt->bindParam(':right', $right, PDO::PARAM_INT);
+        $stmt->bindParam(':isLeaf', $isLeaf, PDO::PARAM_INT);
         $stmt->execute();
 
         $this->currentTestId = $this->dbh->lastInsertId();
