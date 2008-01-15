@@ -68,6 +68,13 @@ PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
 abstract class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_TestCase
 {
     /**
+     * @var    array
+     * @access public
+     * @static
+     */
+    public static $browsers = array();
+
+    /**
      * @var    string
      * @access protected
      */
@@ -229,7 +236,7 @@ abstract class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_Tes
             );
 
             // Create tests from Selenese/HTML files for multiple browsers.
-            if (isset($staticProperties['browsers'])) {
+            if (!empty($staticProperties['browsers'])) {
                 foreach ($staticProperties['browsers'] as $browser) {
                     $browserSuite = new PHPUnit_Framework_TestSuite;
                     $browserSuite->setName($className . ': ' . $browser['name']);
@@ -253,7 +260,7 @@ abstract class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_Tes
         }
 
         // Create tests from test methods for multiple browsers.
-        if (isset($staticProperties['browsers'])) {
+        if (!empty($staticProperties['browsers'])) {
             foreach ($staticProperties['browsers'] as $browser) {
                 $browserSuite = new PHPUnit_Framework_TestSuite;
                 $browserSuite->setName($className . ': ' . $browser['name']);
