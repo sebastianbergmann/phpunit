@@ -2273,11 +2273,11 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException PHPUnit_Framework_IncompleteTestError
+     * @expectedException PHPUnit_Framework_IncompleteTestError incomplete 0
      */
     public function testMarkTestIncomplete()
     {
-        $this->markTestIncomplete();
+        $this->markTestIncomplete('incomplete');
     }
 
     /**
