@@ -180,11 +180,23 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
      */
     protected $name = NULL;
 
-    /*
+    /**
      * @var    Exception
      * @access protected
      */
     protected $exception = NULL;
+
+    /**
+     * @var    string
+     * @access protected
+     */
+    protected $exceptionMessage = NULL;
+
+    /**
+     * @var    integer
+     * @access protected
+     */
+    protected $exceptionCode = 0;
 
     /**
      * @var    Array
@@ -292,15 +304,17 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
     }
 
     /**
-     * @param  mixed  $exceptionName
-     * @param  string $exceptionMessage
+     * @param  mixed   $exceptionName
+     * @param  string  $exceptionMessage
+     * @param  integer $exceptionCode
      * @access public
      * @since  Method available since Release 3.2.0
      */
-    public function setExpectedException($exceptionName, $exceptionMessage = '')
+    public function setExpectedException($exceptionName, $exceptionMessage = '', $exceptionCode = 0)
     {
         $this->expectedException        = $exceptionName;
         $this->expectedExceptionMessage = $exceptionMessage;
+        $this->expectedExceptionCode    = $exceptionCode;
     }
 
     /**
@@ -474,6 +488,13 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
                     $this->assertContains(
                       $this->expectedExceptionMessage,
                       $e->getMessage()
+                    );
+                }
+
+                if (is_int($this->expectedExceptionCode) &&
+                    $this->expectedExceptionCode !== 0) {
+                    $this->assertEquals(
+                      $this->expectedExceptionCode, $e->getCode()
                     );
                 }
 

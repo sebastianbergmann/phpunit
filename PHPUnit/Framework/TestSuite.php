@@ -479,13 +479,22 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
             );
         }
 
-        if (preg_match('/@expectedException\s+([:.\w]+)(?:[\t ]+(.*)$)?/m', $docComment, $matches)) {
-            $expectedException        = $matches[1];
+        // @expectedException ExceptionClass              on TestCase::testMethod()
+        // @expectedException ExceptionClass message      on TestCase::testMethod()
+        // @expectedException ExceptionClass message code on TestCase::testMethod()
+        if (preg_match('(@expectedException\s+([:.\w]+)(?:[\t ]+(\S*))?(?:[\t ]+(\S*))?[\t ]*$)m', $docComment, $matches)) {
+            $expectedException = $matches[1];
 
             if (isset($matches[2])) {
-                $expectedExceptionMessage = $matches[2];
+                $expectedExceptionMessage = trim($matches[2]);
             } else {
                 $expectedExceptionMessage = '';
+            }
+
+            if (isset($matches[3])) {
+                $expectedExceptionCode = (int)$matches[3];
+            } else {
+                $expectedExceptionCode = 0;
             }
         }
 
@@ -514,7 +523,9 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
                         if ($_test instanceof PHPUnit_Framework_TestCase &&
                             isset($expectedException)) {
                             $_test->setExpectedException(
-                              $expectedException, $expectedExceptionMessage
+                              $expectedException,
+                              $expectedExceptionMessage,
+                              $expectedExceptionCode
                             );
                         }
 
@@ -531,7 +542,9 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
 
             if (isset($expectedException)) {
                 $test->setExpectedException(
-                  $expectedException, $expectedExceptionMessage
+                  $expectedException,
+                  $expectedExceptionMessage,
+                  $expectedExceptionCode
                 );
             }
         }
@@ -778,6 +791,7 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
             return TRUE;
         }
 
+        // @test on TestCase::testMethod()
         return strpos($method->getDocComment(), '@test') !== FALSE;
     }
 
