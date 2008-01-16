@@ -574,8 +574,7 @@ class PHPUnit_Framework_TestResult implements Countable
         $errorHandlerSet = FALSE;
 
         $oldErrorHandler = set_error_handler(
-          'PHPUnit_Util_ErrorHandler',
-          E_RECOVERABLE_ERROR | E_USER_ERROR | E_NOTICE | E_STRICT
+          'PHPUnit_Util_ErrorHandler', E_ALL | E_STRICT
         );
 
         if ($oldErrorHandler === NULL) {
