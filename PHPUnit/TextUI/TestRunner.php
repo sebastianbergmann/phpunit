@@ -213,8 +213,7 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
 
         if (isset($arguments['testdoxHTMLFile'])) {
             $result->addListener(
-              PHPUnit_Util_TestDox_ResultPrinter::factory(
-                'HTML',
+              new PHPUnit_Util_TestDox_ResultPrinter_HTML(
                 $arguments['testdoxHTMLFile']
               )
             );
@@ -222,8 +221,7 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
 
         if (isset($arguments['testdoxTextFile'])) {
             $result->addListener(
-              PHPUnit_Util_TestDox_ResultPrinter::factory(
-                'Text',
+              new PHPUnit_Util_TestDox_ResultPrinter_Text(
                 $arguments['testdoxTextFile']
               )
             );
