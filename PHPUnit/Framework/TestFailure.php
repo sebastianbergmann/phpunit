@@ -180,6 +180,14 @@ class PHPUnit_Framework_TestFailure
                     $buffer .= $e->getDescription() . "\n";
                 }
             }
+
+            else {
+                $buffer = $e->toString();
+
+                if (!empty($buffer)) {
+                    $buffer .= "\n";
+                }
+            }
         }
 
         else if ($e instanceof PHPUnit_Framework_Error) {
