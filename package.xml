@@ -17,14 +17,14 @@
   <email>sb@sebastian-bergmann.de</email>
   <active>yes</active>
  </lead>
- <date>2007-12-27</date>
+ <date>2008-MM-DD</date>
  <version>
-  <release>3.2.8</release>
-  <api>3.2.0</api>
+  <release>3.3.0-dev</release>
+  <api>3.3.0</api>
  </version>
  <stability>
-  <release>stable</release>
-  <api>stable</api>
+  <release>devel</release>
+  <api>devel</api>
  </stability>
  <license>BSD License</license>
  <notes>http://www.phpunit.de/wiki/ChangeLog</notes>
@@ -192,6 +192,43 @@
      </dir>
      <dir name="PhptTestCase">
       <file baseinstalldir="/" name="Logger.php" role="php">
+       <tasks:replace from="@package_version@" to="version" type="package-info" />
+      </file>
+     </dir>
+     <dir name="Story">
+      <dir name="ResultPrinter">
+       <dir name="Template">
+        <file baseinstalldir="/" name="scenario_header.html" role="php" />
+        <file baseinstalldir="/" name="scenario.html" role="php" />
+        <file baseinstalldir="/" name="scenarios.html" role="php" />
+        <file baseinstalldir="/" name="step.html" role="php" />
+       </dir>
+       <file baseinstalldir="/" name="HTML.php" role="php">
+        <tasks:replace from="@package_version@" to="version" type="package-info" />
+       </file>
+       <file baseinstalldir="/" name="Text.php" role="php">
+        <tasks:replace from="@package_version@" to="version" type="package-info" />
+       </file>
+      </dir>
+      <file baseinstalldir="/" name="Given.php" role="php">
+       <tasks:replace from="@package_version@" to="version" type="package-info" />
+      </file>
+      <file baseinstalldir="/" name="ResultPrinter.php" role="php">
+       <tasks:replace from="@package_version@" to="version" type="package-info" />
+      </file>
+      <file baseinstalldir="/" name="Scenario.php" role="php">
+       <tasks:replace from="@package_version@" to="version" type="package-info" />
+      </file>
+      <file baseinstalldir="/" name="Step.php" role="php">
+       <tasks:replace from="@package_version@" to="version" type="package-info" />
+      </file>
+      <file baseinstalldir="/" name="TestCase.php" role="php">
+       <tasks:replace from="@package_version@" to="version" type="package-info" />
+      </file>
+      <file baseinstalldir="/" name="Then.php" role="php">
+       <tasks:replace from="@package_version@" to="version" type="package-info" />
+      </file>
+      <file baseinstalldir="/" name="When.php" role="php">
        <tasks:replace from="@package_version@" to="version" type="package-info" />
       </file>
      </dir>
