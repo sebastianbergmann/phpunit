@@ -52,6 +52,7 @@ require_once 'PHPUnit/Util/Fileloader.php';
 require_once 'PHPUnit/Util/Filter.php';
 require_once 'PHPUnit/Util/Getopt.php';
 require_once 'PHPUnit/Util/Skeleton.php';
+require_once 'PHPUnit/Extensions/Story/ResultPrinter/Text.php';
 require_once 'PHPUnit/Util/TestDox/ResultPrinter/Text.php';
 
 PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
@@ -153,6 +154,9 @@ class PHPUnit_TextUI_Command
           'skeleton',
           'stop-on-failure',
           'tap',
+          'story',
+          'story-html=',
+          'story-text=',
           'testdox',
           'testdox-html=',
           'testdox-text=',
@@ -339,6 +343,21 @@ class PHPUnit_TextUI_Command
                 }
                 break;
 
+                case '--story': {
+                    $arguments['printer'] = new PHPUnit_Extensions_Story_ResultPrinter_Text;
+                }
+                break;
+
+                case '--story-html': {
+                    $arguments['storyHTMLFile'] = $option[1];
+                }
+                break;
+
+                case '--story-text': {
+                    $arguments['storyTextFile'] = $option[1];
+                }
+                break;
+
                 case '--testdox': {
                     $arguments['printer'] = new PHPUnit_Util_TestDox_ResultPrinter_Text;
                 }
@@ -503,13 +522,16 @@ class PHPUnit_TextUI_Command
                   "  --test-db-log-info ... Additional information for database logging.\n\n";
         }
 
-        print "  --testdox-html <file>  Write agile documentation in HTML format to file.\n" .
+        print "  --story-html <file>    Write Story/BDD results in HTML format to file.\n" .
+              "  --story-text <file>    Write Story/BDD results in Text format to file.\n\n" .
+              "  --testdox-html <file>  Write agile documentation in HTML format to file.\n" .
               "  --testdox-text <file>  Write agile documentation in Text format to file.\n\n" .
               "  --filter <pattern>     Filter which tests to run.\n" .
               "  --group ...            Only runs tests from the specified group(s).\n" .
               "  --exclude-group ...    Exclude tests from the specified group(s).\n\n" .
               "  --loader <loader>      TestSuiteLoader implementation to use.\n" .
               "  --repeat <times>       Runs the test(s) repeatedly.\n\n" .
+              "  --story                Report test execution progress in Story/BDD format.\n" .
               "  --tap                  Report test execution progress in TAP format.\n" .
               "  --testdox              Report test execution progress in TestDox format.\n\n" .
               "  --no-syntax-check      Disable syntax check of test source files.\n" .
