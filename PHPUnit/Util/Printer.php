@@ -67,7 +67,19 @@ abstract class PHPUnit_Util_Printer
      * @var    resource
      * @access protected
      */
-    protected $out = NULL;
+    protected $out;
+
+    /**
+     * @var    string
+     * @access protected
+     */
+    protected $outTarget;
+
+    /**
+     * @var    boolean
+     * @access protected
+     */
+    protected $printsHTML = FALSE;
 
     /**
      * Constructor.
@@ -91,6 +103,8 @@ abstract class PHPUnit_Util_Printer
                 } else {
                     $this->out = fopen($out, 'wt');
                 }
+
+                $this->outTarget = $out;
             } else {
                 $this->out = $out;
             }
@@ -98,7 +112,7 @@ abstract class PHPUnit_Util_Printer
     }
 
     /**
-     * Flush buffer and close output.
+     * Flush buffer, optionally tidy up HTML, and close output.
      *
      * @access public
      */
@@ -106,6 +120,12 @@ abstract class PHPUnit_Util_Printer
     {
         if ($this->out !== NULL) {
             fclose($this->out);
+        }
+
+        if ($this->printsHTML === TRUE && $this->outTarget !== NULL && extension_loaded('tidy')) {
+            file_put_contents(
+              $this->outTarget, tidy_repair_file($this->outTarget)
+            );
         }
     }
 
