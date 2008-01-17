@@ -51,7 +51,7 @@ PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
 
 trigger_error(
   "Class PHPUnit_Extensions_ExceptionTestCase is deprecated. ".
-  "It will be removed in PHPUnit 4.0. ".
+  "It will be removed in PHPUnit 3.3. ".
   "The functionality has been merged into PHPUnit_Framework_TestCase."
 );
 
