@@ -64,6 +64,12 @@ PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
 class PHPUnit_Util_TestDox_ResultPrinter_HTML extends PHPUnit_Util_TestDox_ResultPrinter
 {
     /**
+     * @var    boolean
+     * @access protected
+     */
+    protected $printsHTML = TRUE;
+
+    /**
      * Handler for 'start run' event.
      *
      * @access protected
