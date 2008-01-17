@@ -451,7 +451,6 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
     /**
      * Override to run the test and assert its state.
      *
-     * @param  mixed $data
      * @throws RuntimeException
      * @access protected
      */
