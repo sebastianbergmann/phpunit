@@ -253,9 +253,6 @@
      <file baseinstalldir="/" name="TestDecorator.php" role="php">
       <tasks:replace from="@package_version@" to="version" type="package-info" />
      </file>
-     <file baseinstalldir="/" name="TestSetup.php" role="php">
-      <tasks:replace from="@package_version@" to="version" type="package-info" />
-     </file>
     </dir>
     <dir name="Framework">
      <dir name="ComparisonFailure">
