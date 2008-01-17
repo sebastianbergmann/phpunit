@@ -103,6 +103,8 @@ PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
  *     <log type="pmd-xml" target="/tmp/pmd.xml" cpdMinLines="5" cpdMinMatches="70"/>
  *     <log type="tap" target="/tmp/logfile.tap"/>
  *     <log type="test-xml" target="/tmp/logfile.xml" logIncompleteSkipped="false"/>
+ *     <log type="story-html" target="/tmp/story.html"/>
+ *     <log type="story-text" target="/tmp/story.txt"/>
  *     <log type="testdox-html" target="/tmp/testdox.html"/>
  *     <log type="testdox-text" target="/tmp/testdox.txt"/>
  * 
