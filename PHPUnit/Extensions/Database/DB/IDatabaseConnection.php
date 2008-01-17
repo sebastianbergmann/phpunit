@@ -89,13 +89,6 @@ interface PHPUnit_Extensions_Database_DB_IDatabaseConnection
     public function createQueryTable($resultName, $sql);
 
     /**
-     * Returns this connection database configuration 
-     *
-     * @return PHPUnit_Extensions_Database_Database_DatabaseConfig
-     */
-    public function getConfig();
-
-    /**
      * Returns a PDO Connection
      *
      * @return PDO
