@@ -49,6 +49,9 @@ require_once 'PHPUnit/Extensions/Story/Step.php';
 require_once 'PHPUnit/Extensions/Story/Given.php';
 require_once 'PHPUnit/Extensions/Story/When.php';
 require_once 'PHPUnit/Extensions/Story/Then.php';
+require_once 'PHPUnit/Util/Filter.php';
+
+PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
 
 /**
  * A scenario.
