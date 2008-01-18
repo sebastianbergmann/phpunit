@@ -41,7 +41,7 @@
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    SVN: $Id$
  * @link       http://www.phpunit.de/
- * @since      File available since Release 3.3.0
+ * @since      File available since Release 3.2.10
  */
 
 if ( isset($_COOKIE['PHPUNIT_SELENIUM_TEST_ID']) &&
