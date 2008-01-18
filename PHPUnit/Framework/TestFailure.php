@@ -171,13 +171,17 @@ class PHPUnit_Framework_TestFailure
                         }
                     }
                 } else {
-                    $buffer = $e->toString();
+                    $buffer      = $e->toString();
+                    $description = $e->getDescription();
+                    $equal       = $buffer == $description;
 
                     if (!empty($buffer)) {
                         $buffer .= "\n";
                     }
 
-                    $buffer .= $e->getDescription() . "\n";
+                    if (!$equal) {
+                        $buffer .= $e->getDescription() . "\n";
+                    }
                 }
             }
 
