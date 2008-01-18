@@ -1661,7 +1661,7 @@ abstract class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_Tes
             );
 
             return $this->matchLocalAndRemotePaths(
-              eval('return ' . file_get_contents($url) . ';')
+              unserialize(file_get_contents($url))
             );
         } else {
             return array();
