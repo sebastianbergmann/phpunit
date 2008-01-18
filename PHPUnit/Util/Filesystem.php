@@ -74,6 +74,10 @@ class PHPUnit_Util_Filesystem
      * @since  Method available since Release 3.2.9
      */
     public static function fileExistsInIncludePath($file) {
+        if (file_exists($file)) {
+            return realpath($file);
+        }
+
         $paths = explode(PATH_SEPARATOR, get_include_path());
 
         foreach ($paths as $path) {
