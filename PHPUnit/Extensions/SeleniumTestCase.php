@@ -1675,10 +1675,10 @@ abstract class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_Tes
      * @author Mattis Stordalen Flister <mattis@xait.no>
      * @since  Method available since Release 3.2.9
      */
-    protected function matchLocalAndRemotePaths(array &$coverage) {
+    protected function matchLocalAndRemotePaths(array $coverage) {
         $coverageWithLocalPaths = array();
 
-        foreach($coverage as $originalRemotePath => $value) {
+        foreach ($coverage as $originalRemotePath => $value) {
             $remotePath = $originalRemotePath;
             $separator  = $this->findDirectorySeparator($remotePath);
 
