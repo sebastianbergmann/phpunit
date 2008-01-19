@@ -186,7 +186,7 @@ class PHPUnit_Framework_TestFailure
             }
 
             else {
-                $buffer = $e->toString();
+                $buffer = (string)$e;
 
                 if (!empty($buffer)) {
                     $buffer .= "\n";
