@@ -215,27 +215,29 @@ class PHPUnit_Util_Log_XML extends PHPUnit_Util_Printer implements PHPUnit_Frame
      */
     public function addFailure(PHPUnit_Framework_Test $test, PHPUnit_Framework_AssertionFailedError $e, $time)
     {
-        $failure = $this->document->createElement('failure');
-        $failure->setAttribute('type', get_class($e));
+        if (!$test instanceof PHPUnit_Framework_Warning) {
+            $failure = $this->document->createElement('failure');
+            $failure->setAttribute('type', get_class($e));
 
-        if ($test instanceof PHPUnit_Framework_SelfDescribing) {
-            $buffer = $test->toString() . "\n";
-        } else {
-            $buffer = '';
+            if ($test instanceof PHPUnit_Framework_SelfDescribing) {
+                $buffer = (string)$test . "\n";
+            } else {
+                $buffer = '';
+            }
+
+            $buffer .= PHPUnit_Framework_TestFailure::exceptionToString($e) . "\n" .
+                       PHPUnit_Util_Filter::getFilteredStacktrace($e, FALSE);
+
+            $failure->appendChild(
+              $this->document->createCDATASection(
+                utf8_encode($buffer)
+              )
+            );
+
+            $this->currentTestCase->appendChild($failure);
+
+            $this->testSuiteFailures[$this->testSuiteLevel]++;
         }
-
-        $buffer .= PHPUnit_Framework_TestFailure::exceptionToString($e) . "\n" .
-                   PHPUnit_Util_Filter::getFilteredStacktrace($e, FALSE);
-
-        $failure->appendChild(
-          $this->document->createCDATASection(
-            utf8_encode($buffer)
-          )
-        );
-
-        $this->currentTestCase->appendChild($failure);
-
-        $this->testSuiteFailures[$this->testSuiteLevel]++;
     }
 
     /**
@@ -386,19 +388,21 @@ class PHPUnit_Util_Log_XML extends PHPUnit_Util_Printer implements PHPUnit_Frame
      */
     public function startTest(PHPUnit_Framework_Test $test)
     {
-        $testCase = $this->document->createElement('testcase');
-        $testCase->setAttribute('name', $test->getName());
+        if (!$test instanceof PHPUnit_Framework_Warning) {
+            $testCase = $this->document->createElement('testcase');
+            $testCase->setAttribute('name', $test->getName());
 
-        if ($test instanceof PHPUnit_Framework_TestCase) {
-            $class  = new ReflectionClass($test);
-            $method = $class->getMethod($test->getName());
+            if ($test instanceof PHPUnit_Framework_TestCase) {
+                $class  = new ReflectionClass($test);
+                $method = $class->getMethod($test->getName());
 
-            $testCase->setAttribute('class', $class->getName());
-            $testCase->setAttribute('file', $class->getFileName());
-            $testCase->setAttribute('line', $method->getStartLine());
+                $testCase->setAttribute('class', $class->getName());
+                $testCase->setAttribute('file', $class->getFileName());
+                $testCase->setAttribute('line', $method->getStartLine());
+            }
+
+            $this->currentTestCase = $testCase;
         }
-
-        $this->currentTestCase = $testCase;
     }
 
     /**
@@ -410,19 +414,21 @@ class PHPUnit_Util_Log_XML extends PHPUnit_Util_Printer implements PHPUnit_Frame
      */
     public function endTest(PHPUnit_Framework_Test $test, $time)
     {
-        if ($this->attachCurrentTestCase) {
-            $this->currentTestCase->setAttribute('time', sprintf('%F', $time));
+        if (!$test instanceof PHPUnit_Framework_Warning) {
+            if ($this->attachCurrentTestCase) {
+                $this->currentTestCase->setAttribute('time', sprintf('%F', $time));
 
-            $this->testSuites[$this->testSuiteLevel]->appendChild(
-              $this->currentTestCase
-            );
+                $this->testSuites[$this->testSuiteLevel]->appendChild(
+                  $this->currentTestCase
+                );
 
-            $this->testSuiteTests[$this->testSuiteLevel]++;
-            $this->testSuiteTimes[$this->testSuiteLevel] += $time;
+                $this->testSuiteTests[$this->testSuiteLevel]++;
+                $this->testSuiteTimes[$this->testSuiteLevel] += $time;
+            }
         }
 
-        $this->currentTestCase       = NULL;
         $this->attachCurrentTestCase = TRUE;
+        $this->currentTestCase       = NULL;
     }
 
     /**
