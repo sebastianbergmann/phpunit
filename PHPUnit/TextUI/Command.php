@@ -162,7 +162,7 @@ class PHPUnit_TextUI_Command
           'wait'
         );
 
-        if (class_exists('Image_GraphViz', FALSE)) {
+        if (PHPUnit_Util_Filesystem::fileExistsInIncludePath('Image/GraphViz.php')) {
             $longOptions[] = 'log-graphviz=';
         }
 
@@ -481,7 +481,7 @@ class PHPUnit_TextUI_Command
 
         print "Usage: phpunit [switches] UnitTest [UnitTest.php]\n\n";
 
-        if (class_exists('Image_GraphViz', FALSE)) {
+        if (PHPUnit_Util_Filesystem::fileExistsInIncludePath('Image/GraphViz.php')) {
             print "  --log-graphviz <file>  Log test execution in GraphViz markup.\n";
         }
 

@@ -44,10 +44,6 @@
  * @since      File available since Release 3.2.0
  */
 
-if (PHPUnit_Util_Filesystem::fileExistsInIncludePath('Image/GraphViz.php')) {
-    require_once 'Image/GraphViz.php';
-}
-
 require_once 'PHPUnit/Util/Filter.php';
 require_once 'PHPUnit/Util/Metrics.php';
 
@@ -211,33 +207,35 @@ class PHPUnit_Util_Metrics_Project extends PHPUnit_Util_Metrics
      */
     public function getDependenciesAsDOT()
     {
-        if (class_exists('Image_GraphViz', FALSE)) {
-            $graph = new Image_GraphViz(
-              TRUE,
-              array(
-                'overlap'  => 'scale',
-                'splines'  => 'true',
-                'sep'      => '.1',
-                'fontsize' => '8'
-              )
-            );
+        if (PHPUnit_Util_Filesystem::fileExistsInIncludePath('Image/GraphViz.php')) {
+            require_once 'Image/GraphViz.php';
+        } else {
+            throw new RuntimeException('Image_GraphViz is not available.');
+        }
 
-            foreach (array_keys($this->dependencies) as $className) {
-                $graph->addNode($className);
-            }
+        $graph = new Image_GraphViz(
+          TRUE,
+          array(
+            'overlap'  => 'scale',
+            'splines'  => 'true',
+            'sep'      => '.1',
+            'fontsize' => '8'
+          )
+        );
 
-            foreach ($this->dependencies as $from => $dependencies) {
-                foreach ($dependencies as $to => $flag) {
-                    if ($flag === 1) {
-                        $graph->addEdge(array($from => $to));
-                    }
+        foreach (array_keys($this->dependencies) as $className) {
+            $graph->addNode($className);
+        }
+
+        foreach ($this->dependencies as $from => $dependencies) {
+            foreach ($dependencies as $to => $flag) {
+                if ($flag === 1) {
+                    $graph->addEdge(array($from => $to));
                 }
             }
-
-            return $graph;
-        } else {
-            throw new RuntimeException;
         }
+
+        return $graph;
     }
 
     /**
