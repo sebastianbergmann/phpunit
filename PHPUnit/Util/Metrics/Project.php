@@ -44,7 +44,9 @@
  * @since      File available since Release 3.2.0
  */
 
-@include_once 'Image/GraphViz.php';
+if (PHPUnit_Util_Filesystem::fileExistsInIncludePath('Image/GraphViz.php')) {
+    require_once 'Image/GraphViz.php';
+}
 
 require_once 'PHPUnit/Util/Filter.php';
 require_once 'PHPUnit/Util/Metrics.php';
