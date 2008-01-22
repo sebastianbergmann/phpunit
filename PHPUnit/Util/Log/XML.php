@@ -220,7 +220,7 @@ class PHPUnit_Util_Log_XML extends PHPUnit_Util_Printer implements PHPUnit_Frame
             $failure->setAttribute('type', get_class($e));
 
             if ($test instanceof PHPUnit_Framework_SelfDescribing) {
-                $buffer = (string)$test . "\n";
+                $buffer = $test->toString() . "\n";
             } else {
                 $buffer = '';
             }
