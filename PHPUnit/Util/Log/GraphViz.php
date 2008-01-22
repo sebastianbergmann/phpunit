@@ -44,10 +44,6 @@
  * @since      File available since Release 3.0.0
  */
 
-if (PHPUnit_Util_Filesystem::fileExistsInIncludePath('Image/GraphViz.php')) {
-    require_once 'Image/GraphViz.php';
-}
-
 require_once 'PHPUnit/Framework.php';
 require_once 'PHPUnit/Util/Filter.php';
 require_once 'PHPUnit/Util/Filesystem.php';
@@ -115,6 +111,12 @@ class PHPUnit_Util_Log_GraphViz extends PHPUnit_Util_Printer implements PHPUnit_
      */
     public function __construct($out = NULL)
     {
+        if (PHPUnit_Util_Filesystem::fileExistsInIncludePath('Image/GraphViz.php')) {
+            require_once 'Image/GraphViz.php';
+        } else {
+            throw new RuntimeException('Image_GraphViz is not available.');
+        }
+
         $this->graph = new Image_GraphViz(
           TRUE,
           array(
