@@ -44,10 +44,6 @@
  * @since      File available since Release 2.3.0
  */
 
-if (PHPUnit_Util_Filesystem::fileExistsInIncludePath('Log.php')) {
-    require_once 'Log.php';
-}
-
 require_once 'PHPUnit/Framework.php';
 require_once 'PHPUnit/Util/Filter.php';
 
@@ -91,6 +87,12 @@ class PHPUnit_Util_Log_PEAR implements PHPUnit_Framework_TestListener
      */
     public function __construct($type, $name = '', $ident = '', $conf = array(), $maxLevel = PEAR_LOG_DEBUG)
     {
+        if (PHPUnit_Util_Filesystem::fileExistsInIncludePath('Log.php')) {
+            require_once 'Log.php';
+        } else {
+            throw new RuntimeException('Log is not available.');
+        }
+
         $this->log = Log::factory($type, $name, $ident, $conf, $maxLevel);
     }
 
