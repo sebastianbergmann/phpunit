@@ -44,11 +44,13 @@
  * @since      File available since Release 3.1.4
  */
 
+if (PHPUnit_Util_Filesystem::fileExistsInIncludePath('PEAR/RunTest.php')) {
+    require_once 'PEAR/RunTest.php';
+}
+
 require_once 'PHPUnit/Framework.php';
 require_once 'PHPUnit/Extensions/PhptTestCase/Logger.php';
 require_once 'PHPUnit/Util/Filter.php';
-
-@include_once 'PEAR/RunTest.php';
 
 PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
 
