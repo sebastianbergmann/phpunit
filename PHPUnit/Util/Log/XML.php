@@ -393,12 +393,16 @@ class PHPUnit_Util_Log_XML extends PHPUnit_Util_Printer implements PHPUnit_Frame
             $testCase->setAttribute('name', $test->getName());
 
             if ($test instanceof PHPUnit_Framework_TestCase) {
-                $class  = new ReflectionClass($test);
-                $method = $class->getMethod($test->getName());
+                $class      = new ReflectionClass($test);
+                $methodName = $test->getName();
 
-                $testCase->setAttribute('class', $class->getName());
-                $testCase->setAttribute('file', $class->getFileName());
-                $testCase->setAttribute('line', $method->getStartLine());
+                if ($class->hasMethod($methodName)) {
+                    $method = $class->getMethod($test->getName());
+
+                    $testCase->setAttribute('class', $class->getName());
+                    $testCase->setAttribute('file', $class->getFileName());
+                    $testCase->setAttribute('line', $method->getStartLine());
+                }
             }
 
             $this->currentTestCase = $testCase;
