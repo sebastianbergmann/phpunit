@@ -44,7 +44,9 @@
  * @since      File available since Release 2.3.0
  */
 
-@include_once 'Log.php';
+if (PHPUnit_Util_Filesystem::fileExistsInIncludePath('Log.php')) {
+    require_once 'Log.php';
+}
 
 require_once 'PHPUnit/Framework.php';
 require_once 'PHPUnit/Util/Filter.php';
