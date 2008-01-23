@@ -110,7 +110,7 @@ class PHPUnit_Extensions_Story_ResultPrinter_HTML extends PHPUnit_Extensions_Sto
 
         $scenarioHeaderTemplate->setVar(
           array(
-            'name' => $name
+            'name' => $this->currentTestClassPrettified
           )
         );
 
