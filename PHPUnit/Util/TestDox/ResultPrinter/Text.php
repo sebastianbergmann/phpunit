@@ -71,7 +71,7 @@ class PHPUnit_Util_TestDox_ResultPrinter_Text extends PHPUnit_Util_TestDox_Resul
      */
     protected function startClass($name)
     {
-        $this->write($name . "\n");
+        $this->write($this->currentTestClassPrettified . "\n");
     }
 
     /**

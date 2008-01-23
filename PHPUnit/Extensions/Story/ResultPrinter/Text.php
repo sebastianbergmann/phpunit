@@ -74,7 +74,7 @@ class PHPUnit_Extensions_Story_ResultPrinter_Text extends PHPUnit_Extensions_Sto
      */
     protected function startClass($name)
     {
-        $this->write($name . "\n");
+        $this->write($this->currentTestClassPrettified . "\n");
     }
     
     /**
