@@ -69,6 +69,8 @@ class PHPUnit_Extensions_Database_Operation_Delete extends PHPUnit_Extensions_Da
 
     protected $operationName = 'DELETE';
 
+    protected $iteratorDirection = self::ITERATOR_TYPE_REVERSE;
+
     protected function buildOperationQuery(PHPUnit_Extensions_Database_DataSet_ITableMetaData $databaseTableMetaData, PHPUnit_Extensions_Database_DataSet_ITable $table, PHPUnit_Extensions_Database_DB_IDatabaseConnection $connection)
     {
         $keys = $databaseTableMetaData->getPrimaryKeys();
