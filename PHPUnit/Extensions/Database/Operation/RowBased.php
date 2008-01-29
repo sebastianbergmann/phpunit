@@ -71,8 +71,12 @@ PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
  */
 abstract class PHPUnit_Extensions_Database_Operation_RowBased implements PHPUnit_Extensions_Database_Operation_IDatabaseOperation
 {
+    const ITERATOR_TYPE_FORWARD = 0;
+    const ITERATOR_TYPE_REVERSE = 1;
 
     protected $operationName;
+
+    protected $iteratorDirection = self::ITERATOR_TYPE_FORWARD;
 
     protected abstract function buildOperationQuery(PHPUnit_Extensions_Database_DataSet_ITableMetaData $databaseTableMetaData, PHPUnit_Extensions_Database_DataSet_ITable $table, PHPUnit_Extensions_Database_DB_IDatabaseConnection $connection);
 
@@ -85,7 +89,10 @@ abstract class PHPUnit_Extensions_Database_Operation_RowBased implements PHPUnit
     public function execute(PHPUnit_Extensions_Database_DB_IDatabaseConnection $connection, PHPUnit_Extensions_Database_DataSet_IDataSet $dataSet)
     {
         $databaseDataSet = $connection->createDataSet();
-        foreach ($dataSet as $table) {
+
+        $dsIterator = $this->iteratorDirection == self::ITERATOR_TYPE_REVERSE ? $dataSet->getReverseIterator() : $dataSet->getIterator();
+
+        foreach ($dsIterator as $table) {
             /* @var $table PHPUnit_Extensions_Database_DataSet_ITable */
             $databaseTableMetaData = $databaseDataSet->getTableMetaData($table->getTableMetaData()->getTableName());
             $query = $this->buildOperationQuery($databaseTableMetaData, $table, $connection);
