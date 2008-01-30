@@ -91,6 +91,11 @@ abstract class PHPUnit_Extensions_Database_DB_MetaData implements PHPUnit_Extens
     protected $schemaObjectQuoteChar = '"';
 
     /**
+     * The command used to perform a TRUNCATE operation.
+     */
+    protected $truncateCommand = 'TRUNCATE';
+
+    /**
      * Creates a new database meta data object using the given pdo connection 
      * and schema name.
      *
@@ -174,6 +179,16 @@ abstract class PHPUnit_Extensions_Database_DB_MetaData implements PHPUnit_Extens
     	return $this->schemaObjectQuoteChar.
 		str_replace($this->schemaObjectQuoteChar, $this->schemaObjectQuoteChar.$this->schemaObjectQuoteChar, $object).
 		$this->schemaObjectQuoteChar;
+    }
+
+    /**
+     * Returns the command for the database to truncate a table.
+     *
+     * @return string
+     */
+    public function getTruncateCommand()
+    {
+        return $this->truncateCommand;
     }
 }
 
