@@ -69,6 +69,7 @@ class PHPUnit_Extensions_Database_DB_MetaData_Sqlite extends PHPUnit_Extensions_
 
     protected $keys = array();
 
+    protected $truncateCommand = 'DELETE FROM';
     /**
      * Returns an array containing the names of all the tables in the database.
      *
