@@ -210,5 +210,15 @@ class PHPUnit_Extensions_Database_DB_DefaultDatabaseConnection implements PHPUni
     	return $this->getMetaData()->quoteSchemaObject($object);
     }
 
+    /**
+     * Returns the command used to truncate a table.
+     *
+     * @return string
+     */
+    public function getTruncateCommand()
+    {
+        return $this->getMetaData()->getTruncateCommand();
+    }
+
 }
 ?>
