@@ -72,7 +72,7 @@ class PHPUnit_Extensions_Database_Operation_Truncate implements PHPUnit_Extensio
         foreach ($dataSet as $table) {
             /* @var $table PHPUnit_Extensions_Database_DataSet_ITable */
             $query = "
-                DELETE FROM {$connection->quoteSchemaObject($table->getTableMetaData()->getTableName())}
+                {$connection->getTruncateCommand()} {$connection->quoteSchemaObject($table->getTableMetaData()->getTableName())}
             ";
             
             try {
