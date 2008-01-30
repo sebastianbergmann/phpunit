@@ -66,6 +66,7 @@ PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
 abstract class PHPUnit_Extensions_Database_DB_MetaData implements PHPUnit_Extensions_Database_DB_IMetaData
 {
     protected static $metaDataClassMap = array(
+        'pgsql'  => 'PHPUnit_Extensions_Database_DB_MetaData_PgSQL',
         'mysql'  => 'PHPUnit_Extensions_Database_DB_MetaData_MySQL',
         'oci'    => 'PHPUnit_Extensions_Database_DB_MetaData_Oci',
         'sqlite' => 'PHPUnit_Extensions_Database_DB_MetaData_Sqlite'
@@ -200,5 +201,5 @@ abstract class PHPUnit_Extensions_Database_DB_MetaData implements PHPUnit_Extens
 require_once 'PHPUnit/Extensions/Database/DB/MetaData/Sqlite.php';
 require_once 'PHPUnit/Extensions/Database/DB/MetaData/InformationSchema.php';
 require_once 'PHPUnit/Extensions/Database/DB/MetaData/MySQL.php';
-
+require_once 'PHPUnit/Extensions/Database/DB/MetaData/PgSQL.php';
 ?>
