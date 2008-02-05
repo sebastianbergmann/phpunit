@@ -502,8 +502,14 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
     {
         if ($this->verbose) {
             $this->numberOfTests[count($this->numberOfTests)-1]++;
-        } else {
+        }
+
+        else if (isset($this->numberOfTests[0])) {
             $this->numberOfTests[0]++;
+        }
+
+        else {
+            $this->numberOfTests = array(1);
         }
 
         $this->lastEvent = self::EVENT_TEST_START;
