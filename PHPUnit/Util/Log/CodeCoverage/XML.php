@@ -76,21 +76,24 @@ class PHPUnit_Util_Log_CodeCoverage_XML extends PHPUnit_Util_Printer
      */
     public function process(PHPUnit_Framework_TestResult $result)
     {
+        $time = time();
+
         $document = new DOMDocument('1.0', 'UTF-8');
         $document->formatOutput = TRUE;
 
         $coverage = $document->createElement('coverage');
-        $coverage->setAttribute('generated', time());
+        $coverage->setAttribute('generated', $time);
         $coverage->setAttribute('phpunit', PHPUnit_Runner_Version::id());
         $document->appendChild($coverage);
 
         $project = $document->createElement('project');
         $project->setAttribute('name', $result->topTestSuite()->getName());
-        $project->setAttribute('timestamp', time());
+        $project->setAttribute('timestamp', $time);
         $coverage->appendChild($project);
 
         $codeCoverageInformation = $result->getCodeCoverageInformation();
         $files                   = PHPUnit_Util_CodeCoverage::getSummary($codeCoverageInformation);
+        $packages                = array();
 
         $projectFiles               = 0;
         $projectLoc                 = 0;
@@ -119,14 +122,21 @@ class PHPUnit_Util_Log_CodeCoverage_XML extends PHPUnit_Util_Printer
             $file = $document->createElement('file');
             $file->setAttribute('name', $filename);
 
-            $classes = PHPUnit_Util_Class::getClassesInFile($filename);
-            $lines   = array();
+            $namespace = 'global';
+            $classes   = PHPUnit_Util_Class::getClassesInFile($filename);
+            $lines     = array();
 
             foreach ($classes as $class) {
-                $methods    = $class->getMethods();
-                $numMethods = 0;
+                $className          = $class->getName();
+                $methods            = $class->getMethods();
+                $packageInformation = PHPUnit_Util_Class::getPackageInformation($className);
+                $numMethods         = 0;
                 $fileClasses++;
                 $projectClasses++;
+
+                if (!empty($packageInformation['namespace'])) {
+                    $namespace = $packageInformation['namespace'];
+                }
 
                 $classConditionals        = 0;
                 $classCoveredConditionals = 0;
@@ -187,7 +197,25 @@ class PHPUnit_Util_Log_CodeCoverage_XML extends PHPUnit_Util_Printer
                 }
 
                 $classXML = $document->createElement('class');
-                $classXML->setAttribute('name', $class->getName());
+                $classXML->setAttribute('name', $className);
+                $classXML->setAttribute('namespace', $namespace);
+
+                if (!empty($packageInformation['fullPackage'])) {
+                    $classXML->setAttribute('fullPackage', $packageInformation['fullPackage']);
+                }
+
+                if (!empty($packageInformation['category'])) {
+                    $classXML->setAttribute('category', $packageInformation['category']);
+                }
+
+                if (!empty($packageInformation['package'])) {
+                    $classXML->setAttribute('package', $packageInformation['package']);
+                }
+
+                if (!empty($packageInformation['subpackage'])) {
+                    $classXML->setAttribute('subpackage', $packageInformation['subpackage']);
+                }
+
                 $file->appendChild($classXML);
 
                 $classMetricsXML = $document->createElement('metrics');
@@ -258,7 +286,18 @@ class PHPUnit_Util_Log_CodeCoverage_XML extends PHPUnit_Util_Printer
                 $fileMetricsXML->setAttribute('coveredelements', $fileCoveredConditionals + $fileCoveredStatements + $fileCoveredMethods);
 
                 $file->appendChild($fileMetricsXML);
-                $project->appendChild($file);
+
+                if ($namespace == 'global') {
+                    $project->appendChild($file);
+                } else {
+                    if (!isset($packages[$namespace])) {
+                        $packages[$namespace] = $document->createElement('package');
+                        $packages[$namespace]->setAttribute('name', $namespace);
+                        $project->appendChild($packages[$namespace]);
+                    }
+
+                    $packages[$namespace]->appendChild($file);
+                }
 
                 $projectLoc               += $fileLoc;
                 $projectNcloc             += $fileNcloc;
