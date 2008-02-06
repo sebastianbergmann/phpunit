@@ -378,11 +378,19 @@ class PHPUnit_Util_Class
     public static function getPackageInformation($className)
     {
         $result = array(
+          'namespace'   => '',
           'fullPackage' => '',
           'category'    => '',
           'package'     => '',
           'subpackage'  => ''
         );
+
+        if (strpos($className, ':') !== FALSE) {
+            $namespace = explode('::', $className);
+            array_pop($namespace);
+
+            $result['namespace'] = join('::', $namespace);
+        }
 
         $class      = new ReflectionClass($className);
         $docComment = $class->getDocComment();
@@ -402,6 +410,8 @@ class PHPUnit_Util_Class
         }
 
         if (empty($result['fullPackage'])) {
+            $className = str_replace('::', '_', $className);
+
             $tmp = explode('_', $className);
 
             if (count($tmp) > 1) {
