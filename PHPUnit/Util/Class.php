@@ -322,6 +322,10 @@ class PHPUnit_Util_Class
                 $default = ' = ' . var_export($value, TRUE);
             }
 
+            else if ($parameter->isOptional()) {
+                $default = ' = null';
+            }
+
             $ref = '';
 
             if ($parameter->isPassedByReference()) {
