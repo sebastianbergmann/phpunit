@@ -176,7 +176,7 @@ class PHPUnit_Util_Class
      * @return array
      * @access public
      * @static
-     * @since  Class available since Release 3.2.0
+     * @since  Method available since Release 3.2.0
      * @todo   Find a better place for this method.
      */
     public static function getFunctionsInFile($filename, $commonPath = '', $clearCache = FALSE)
@@ -246,7 +246,7 @@ class PHPUnit_Util_Class
      * @return string
      * @access public
      * @static
-     * @since  Class available since Release 3.2.0
+     * @since  Method available since Release 3.2.0
      */
     public static function getMethodSignature(ReflectionMethod $method)
     {
@@ -289,7 +289,7 @@ class PHPUnit_Util_Class
      * @return string
      * @access public
      * @static
-     * @since  Class available since Release 3.2.0
+     * @since  Method available since Release 3.2.0
      */
     public static function getMethodParameters(ReflectionMethod $method)
     {
@@ -386,10 +386,9 @@ class PHPUnit_Util_Class
         );
 
         if (strpos($className, ':') !== FALSE) {
-            $namespace = explode('::', $className);
-            array_pop($namespace);
-
-            $result['namespace'] = join('::', $namespace);
+            $result['namespace'] = self::arrayToName(
+              explode('::', $className), '::'
+            );
         }
 
         $class      = new ReflectionClass($className);
@@ -410,15 +409,32 @@ class PHPUnit_Util_Class
         }
 
         if (empty($result['fullPackage'])) {
-            $className = str_replace('::', '_', $className);
+            $result['fullPackage'] = self::arrayToName(
+              explode('_', str_replace('::', '_', $className)), '.'
+            );
+        }
 
-            $tmp = explode('_', $className);
+        return $result;
+    }
 
-            if (count($tmp) > 1) {
-                unset($tmp[count($tmp)-1]);
+    /**
+     * Returns the package information of a user-defined class.
+     *
+     * @param  array $parts
+     * @param  string $join
+     * @return string
+     * @access protected
+     * @static
+     * @since  Method available since Release 3.2.12
+     */
+    protected static function arrayToName(array $parts, $join)
+    {
+        $result = '';
 
-                $result['fullPackage'] = join('.', $tmp);
-            }
+        if (count($parts) > 1) {
+            array_pop($parts);
+
+            $result = join($join, $parts);
         }
 
         return $result;
