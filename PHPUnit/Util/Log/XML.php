@@ -325,6 +325,14 @@ class PHPUnit_Util_Log_XML extends PHPUnit_Util_Printer implements PHPUnit_Frame
                   $suite->getName()
                 );
 
+                if (!empty($packageInformation['namespace'])) {
+                    $testSuite->setAttribute('namespace', $packageInformation['namespace']);
+                }
+
+                if (!empty($packageInformation['fullPackage'])) {
+                    $testSuite->setAttribute('fullPackage', $packageInformation['fullPackage']);
+                }
+
                 if (!empty($packageInformation['category'])) {
                     $testSuite->setAttribute('category', $packageInformation['category']);
                 }
