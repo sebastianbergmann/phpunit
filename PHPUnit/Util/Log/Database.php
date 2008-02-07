@@ -314,6 +314,17 @@ class PHPUnit_Util_Log_Database implements PHPUnit_Framework_TestListener
     public function endTestSuite(PHPUnit_Framework_TestSuite $suite)
     {
         array_pop($this->testSuites);
+
+        if (empty($this->testSuites)) {
+            $stmt = $this->dbh->prepare(
+              'UPDATE run
+                  SET completed = 1
+                WHERE run_id = :runId;'
+            );
+
+            $stmt->bindParam(':runId', $this->runId, PDO::PARAM_INT);
+            $stmt->execute();
+        }
     }
 
     /**
