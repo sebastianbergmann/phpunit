@@ -91,7 +91,7 @@ class PHPUnit_Framework_MockObject_Matcher_InvokedCount extends PHPUnit_Framewor
         if ($count > $this->expectedCount) {
             $message = (string)$invocation;
 
-            switch ($this->expectedCount == 0) {
+            switch ($this->expectedCount) {
                 case 0: {
                     $message .= ' was not expected to be called.';
                 }
