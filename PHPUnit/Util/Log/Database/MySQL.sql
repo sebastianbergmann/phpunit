@@ -40,7 +40,8 @@ CREATE TABLE IF NOT EXISTS run(
   run_id      INTEGER UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
   timestamp   INTEGER UNSIGNED NOT NULL,
   revision    INTEGER UNSIGNED NOT NULL,
-  information TEXT             NOT NULL
+  information TEXT             NOT NULL,
+  completed   BOOLEAN          NOT NULL DEFAULT 0
 ) ENGINE=InnoDB;
 
 CREATE TABLE IF NOT EXISTS test(
