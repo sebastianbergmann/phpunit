@@ -40,7 +40,8 @@ CREATE TABLE IF NOT EXISTS run(
   run_id      INTEGER PRIMARY KEY AUTOINCREMENT,
   timestamp   INTEGER,
   revision    INTEGER,
-  information STRING
+  information STRING,
+  completed   INTEGER DEFAULT 0
 );
 
 CREATE TABLE IF NOT EXISTS test(
