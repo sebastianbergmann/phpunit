@@ -60,12 +60,9 @@ require_once 'PHPUnit/Util/Report.php';
 require_once 'PHPUnit/Util/Timer.php';
 require_once 'PHPUnit/Util/Log/CodeCoverage/Database.php';
 require_once 'PHPUnit/Util/Log/CodeCoverage/XML.php';
-require_once 'PHPUnit/Util/Log/CPD.php';
 require_once 'PHPUnit/Util/Log/Database.php';
 require_once 'PHPUnit/Util/Log/JSON.php';
-require_once 'PHPUnit/Util/Log/Metrics.php';
 require_once 'PHPUnit/Util/Log/TAP.php';
-require_once 'PHPUnit/Util/Log/PMD.php';
 require_once 'PHPUnit/Util/Log/XML.php';
 
 PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
@@ -252,10 +249,7 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
             }
         }
 
-        if ((isset($arguments['coverageXML']) ||
-             isset($arguments['metricsXML'])  ||
-             isset($arguments['pmdXML'])) &&
-             extension_loaded('xdebug')) {
+        if (isset($arguments['coverageXML']) && extension_loaded('xdebug')) {
             $result->collectCodeCoverageInformation(TRUE);
         }
 
@@ -334,7 +328,7 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
         if ($writeToTestDatabase &&
             extension_loaded('tokenizer') &&
             extension_loaded('xdebug')) {
-            $this->printer->write("\nStoring code coverage and software metrics data in database.\nThis may take a moment.");
+            $this->printer->write("\nStoring code coverage data in database.\nThis may take a moment.");
 
             $testDb = new PHPUnit_Util_Log_CodeCoverage_Database($dbh);
             $testDb->storeCodeCoverage(
@@ -342,40 +336,6 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
               $dbListener->getRunId(),
               $arguments['testDatabaseLogRevision'],
               $arguments['testDatabasePrefix']
-            );
-
-            $this->printer->write("\n");
-        }
-
-        if (isset($arguments['metricsXML']) &&
-            extension_loaded('tokenizer') &&
-            extension_loaded('xdebug')) {
-            $this->printer->write("\nWriting metrics report XML file, this may take a moment.");
-
-            $writer = new PHPUnit_Util_Log_Metrics(
-              $arguments['metricsXML']
-            );
-
-            $writer->process($result);
-            $this->printer->write("\n");
-        }
-
-        if (isset($arguments['pmdXML']) &&
-            extension_loaded('tokenizer') &&
-            extension_loaded('xdebug')) {
-            $writer = new PHPUnit_Util_Log_PMD(
-              $arguments['pmdXML'], $arguments['pmd']
-            );
-
-            $this->printer->write("\nWriting violations report XML file, this may take a moment.");
-            $writer->process($result);
-
-            $writer = new PHPUnit_Util_Log_CPD(
-              str_replace('.xml', '-cpd.xml', $arguments['pmdXML'])
-            );
-
-            $writer->process(
-              $result, $arguments['cpdMinLines'], $arguments['cpdMinMatches']
             );
 
             $this->printer->write("\n");
@@ -578,10 +538,6 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
             $arguments['configuration'] = new PHPUnit_Util_Configuration(
               $arguments['configuration']
             );
-
-            $arguments['pmd'] = $arguments['configuration']->getPMDConfiguration();
-        } else {
-            $arguments['pmd'] = array();
         }
 
         $arguments['filter']             = @$arguments['filter']             ?: FALSE;
@@ -695,24 +651,8 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
                 $arguments['jsonLogfile'] = $loggingConfiguration['json'];
             }
 
-            if (isset($loggingConfiguration['metrics-xml']) && !isset($arguments['metricsXML'])) {
-                $arguments['metricsXML'] = $loggingConfiguration['metrics-xml'];
-            }
-
             if (isset($loggingConfiguration['plain'])) {
                 $arguments['listeners'][] = new PHPUnit_TextUI_ResultPrinter($loggingConfiguration['plain'], TRUE);
-            }
-
-            if (isset($loggingConfiguration['pmd-xml']) && !isset($arguments['pmdXML'])) {
-                if (isset($loggingConfiguration['cpdMinLines']) && !isset($arguments['cpdMinLines'])) {
-                    $arguments['cpdMinLines'] = $loggingConfiguration['cpdMinLines'];
-                }
-
-                if (isset($loggingConfiguration['cpdMinMatches']) && !isset($arguments['cpdMinMatches'])) {
-                    $arguments['cpdMinMatches'] = $loggingConfiguration['cpdMinMatches'];
-                }
-
-                $arguments['pmdXML'] = $loggingConfiguration['pmd-xml'];
             }
 
             if (isset($loggingConfiguration['tap']) && !isset($arguments['tapLogfile'])) {
@@ -751,8 +691,6 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
             }
         }
 
-        $arguments['cpdMinLines']          = @$arguments['cpdMinLines']          ?: 5;
-        $arguments['cpdMinMatches']        = @$arguments['cpdMinMatches']        ?: 70;
         $arguments['groups']               = @$arguments['groups']               ?: array();
         $arguments['excludeGroups']        = @$arguments['excludeGroups']        ?: array();
         $arguments['logIncompleteSkipped'] = @$arguments['logIncompleteSkipped'] ?: FALSE;

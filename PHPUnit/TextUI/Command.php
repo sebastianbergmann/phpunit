@@ -45,7 +45,6 @@
  */
 
 require_once 'PHPUnit/TextUI/TestRunner.php';
-require_once 'PHPUnit/Util/Log/PMD.php';
 require_once 'PHPUnit/Util/Log/TAP.php';
 require_once 'PHPUnit/Util/Configuration.php';
 require_once 'PHPUnit/Util/Fileloader.php';
@@ -180,8 +179,6 @@ class PHPUnit_TextUI_Command
         if (extension_loaded('xdebug')) {
             $longOptions[] = 'coverage-html=';
             $longOptions[] = 'coverage-xml=';
-            $longOptions[] = 'log-metrics=';
-            $longOptions[] = 'log-pmd=';
             $longOptions[] = 'report=';
         }
 
@@ -279,16 +276,6 @@ class PHPUnit_TextUI_Command
 
                 case '--log-xml': {
                     $arguments['xmlLogfile'] = $option[1];
-                }
-                break;
-
-                case '--log-pmd': {
-                    $arguments['pmdXML'] = $option[1];
-                }
-                break;
-
-                case '--log-metrics': {
-                    $arguments['metricsXML'] = $option[1];
                 }
                 break;
 
@@ -509,9 +496,7 @@ class PHPUnit_TextUI_Command
               "  --log-xml <file>       Log test execution in XML format to file.\n";
 
         if (extension_loaded('xdebug')) {
-            print "  --log-metrics <file>   Write metrics report in XML format.\n" .
-                  "  --log-pmd <file>       Write violations report in PMD XML format.\n\n" .
-                  "  --coverage-html <dir>  Generate code coverage report in HTML format.\n" .
+            print "  --coverage-html <dir>  Generate code coverage report in HTML format.\n" .
                   "  --coverage-xml <file>  Write code coverage information in XML format.\n\n";
         }
 

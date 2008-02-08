@@ -55,8 +55,6 @@ require_once 'PHPUnit/Framework/TestSuite.php';
 require_once 'PHPUnit/TextUI/TestRunner.php';
 
 require_once 'Util/Log/JSONTest.php';
-require_once 'Util/Log/MetricsTest.php';
-require_once 'Util/Log/PMDTest.php';
 require_once 'Util/Log/TAPTest.php';
 require_once 'Util/Log/PlainTest.php';
 require_once 'Util/Log/XMLTest.php';
@@ -103,8 +101,6 @@ class Util_Log_AllTests
         $suite = new PHPUnit_Framework_TestSuite('PHPUnit_Util_Log');
 
         $suite->addTestSuite('Util_Log_JSONTest');
-        $suite->addTestSuite('Util_Log_MetricsTest');
-        $suite->addTestSuite('Util_Log_PMDTest');
         $suite->addTestSuite('Util_Log_TAPTest');
         $suite->addTestSuite('Util_Log_PlainTest');
         $suite->addTestSuite('Util_Log_XMLTest');
