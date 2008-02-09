@@ -107,13 +107,18 @@ td.tableHead
 }
 
 /* Directory view/File view (all): filename entry format */
-td.coverFile
+td.coverItem, td.coverDirectory, td.coverFile
 {
   text-align: left;
   padding-left: 10px;
   padding-right: 20px;
   background-color: #d3d7cf;
   font-family: monospace;
+}
+
+td.coverDirectory
+{
+  font-weight: bold;
 }
 
 /* Directory view/File view (all): bar-graph entry format*/
