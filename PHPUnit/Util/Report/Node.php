@@ -279,11 +279,12 @@ abstract class PHPUnit_Util_Report_Node
         );
     }
 
-    protected function doRenderItemObject(PHPUnit_Util_Report_Node $item, $lowUpperBound, $highLowerBound, $link = NULL)
+    protected function doRenderItemObject(PHPUnit_Util_Report_Node $item, $lowUpperBound, $highLowerBound, $link = NULL, $itemClass = 'coverItem')
     {
         return $this->doRenderItem(
           array(
             'name'                 => $link != NULL ? $link : $item->getLink(FALSE),
+            'itemClass'            => $itemClass,
             'numClasses'           => $item->getNumClasses(),
             'numCalledClasses'     => $item->getNumCalledClasses(),
             'calledClassesPercent' => $item->getCalledClassesPercent(),
@@ -320,6 +321,7 @@ abstract class PHPUnit_Util_Report_Node
         $itemTemplate->setVar(
           array(
             'name'                     => $data['name'],
+            'itemClass'                => isset($data['itemClass']) ? $data['itemClass'] : 'coverItem',
             'classes_color'            => $classesColor,
             'classes_level'            => $classesLevel,
             'classes_called_width'     => floor($data['calledClassesPercent']),

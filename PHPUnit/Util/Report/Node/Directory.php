@@ -399,28 +399,33 @@ class PHPUnit_Util_Report_Node_Directory extends PHPUnit_Util_Report_Node
     }
 
     /**
+     * @param  float  $lowUpperBound
+     * @param  float  $highLowerBound
      * @return string
      * @access protected
      */
     protected function renderItems($lowUpperBound, $highLowerBound)
     {
-        $items  = $this->doRenderItems($this->directories, $lowUpperBound, $highLowerBound);
-        $items .= $this->doRenderItems($this->files, $lowUpperBound, $highLowerBound);
+        $items  = $this->doRenderItems($this->directories, $lowUpperBound, $highLowerBound, 'coverDirectory');
+        $items .= $this->doRenderItems($this->files, $lowUpperBound, $highLowerBound, 'coverFile');
 
         return $items;
     }
 
     /**
-     * @param  array    $items
+     * @param  array  $items
+     * @param  float  $lowUpperBound
+     * @param  float  $highLowerBound
+     * @param  string $itemClass
      * @return string
      * @access protected
      */
-    protected function doRenderItems(array $items, $lowUpperBound, $highLowerBound)
+    protected function doRenderItems(array $items, $lowUpperBound, $highLowerBound, $itemClass)
     {
         $result = '';
 
         foreach ($items as $item) {
-            $result .= $this->doRenderItemObject($item, $lowUpperBound, $highLowerBound);
+            $result .= $this->doRenderItemObject($item, $lowUpperBound, $highLowerBound, NULL, $itemClass);
         }
 
         return $result;
