@@ -69,7 +69,7 @@ class PHPUnit_Extensions_Database_DataSet_FlatXmlDataSet extends PHPUnit_Extensi
     protected function getTableInfo(Array &$tableColumns, Array &$tableValues)
     {
         if ($this->xmlFileContents->getName() != 'dataset') {
-            throw new Exception("The root element of a flat xml file must be called <dataset>");
+            throw new Exception("The root element of a flat xml data set file must be called <dataset>");
         }
         
         foreach ($this->xmlFileContents->children() as $row) {
