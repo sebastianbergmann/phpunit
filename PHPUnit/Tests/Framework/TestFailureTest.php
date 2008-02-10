@@ -41,7 +41,7 @@
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    SVN: $Id$
  * @link       http://www.phpunit.de/
- * @since      File available since Release 3.2.14
+ * @since      File available since Release 3.3.0
  */
 
 require_once 'PHPUnit/Framework/TestCase.php';
@@ -58,7 +58,7 @@ require_once '_files/ClassWithNonPublicAttributes.php';
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    Release: @package_version@
  * @link       http://www.phpunit.de/
- * @since      Class available since Release 3.2.14
+ * @since      Class available since Release 3.3.0
  */
 class Framework_TestFailureTest extends PHPUnit_Framework_TestCase
 {
