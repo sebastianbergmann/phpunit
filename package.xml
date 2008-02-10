@@ -695,6 +695,9 @@
       <file baseinstalldir="/" name="TestCaseTest.php" role="test">
        <tasks:replace from="@package_version@" to="version" type="package-info" />
       </file>
+      <file baseinstalldir="/" name="TestFailureTest.php" role="test">
+       <tasks:replace from="@package_version@" to="version" type="package-info" />
+      </file>
       <file baseinstalldir="/" name="TestImplementorTest.php" role="test">
        <tasks:replace from="@package_version@" to="version" type="package-info" />
       </file>

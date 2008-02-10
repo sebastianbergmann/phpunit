@@ -130,7 +130,11 @@ class PHPUnit_Framework_Constraint_IsIdentical extends PHPUnit_Framework_Constra
      */
     public function __toString()
     {
-        return 'is identical to ' . PHPUnit_Util_Type::toString($this->value);
+        if (is_object($this->value)) {
+            return 'is identical to an object of class "' . get_class($this->value) . '"';
+        } else {
+            return 'is identical to ' . PHPUnit_Util_Type::toString($this->value);
+        }
     }
 }
 ?>

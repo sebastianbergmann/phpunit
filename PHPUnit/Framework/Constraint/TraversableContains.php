@@ -100,5 +100,15 @@ class PHPUnit_Framework_Constraint_TraversableContains extends PHPUnit_Framework
     {
         return 'contains ' . PHPUnit_Util_Type::toString($this->value);
     }
+
+    protected function customFailureDescription($other, $description, $not)
+    {
+        return sprintf(
+          'Failed asserting that an %s %s.',
+
+           is_array($other) ? 'array' : 'iterator',
+           (string)$this
+        );
+    }
 }
 ?>

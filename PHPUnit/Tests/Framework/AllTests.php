@@ -46,6 +46,8 @@
 
 require_once 'PHPUnit/Util/Filter.php';
 
+PHPUnit_Util_Filter::addFileToFilter(__FILE__);
+
 if (!defined('PHPUnit_MAIN_METHOD')) {
     define('PHPUnit_MAIN_METHOD', 'Framework_AllTests::main');
     chdir(dirname(dirname(__FILE__)));
@@ -61,6 +63,7 @@ require_once 'Framework/ConstraintTest.php';
 require_once 'Framework/MockObjectTest.php';
 require_once 'Framework/SuiteTest.php';
 require_once 'Framework/TestCaseTest.php';
+require_once 'Framework/TestFailureTest.php';
 require_once 'Framework/TestImplementorTest.php';
 require_once 'Framework/TestListenerTest.php';
 
@@ -85,24 +88,6 @@ class Framework_AllTests
 
     public static function suite()
     {
-        if (!defined('PHPUNIT_TESTSUITE_WHITELIST_PREPARED')) {
-            PHPUnit_Util_Filter::addDirectoryToWhitelist(
-              dirname(dirname(dirname(__FILE__)))
-            );
-
-            PHPUnit_Util_Filter::removeDirectoryFromWhitelist(
-              dirname(dirname(dirname(__FILE__))) . DIRECTORY_SEPARATOR . 'Samples'
-            );
-
-            PHPUnit_Util_Filter::removeDirectoryFromWhitelist(
-              dirname(dirname(dirname(__FILE__))) . DIRECTORY_SEPARATOR . 'Tests'
-            );
-
-            PHPUnit_Util_Filter::$filterPHPUnit = FALSE;
-
-            define('PHPUNIT_TESTSUITE_WHITELIST_PREPARED', TRUE);
-        }
-
         $suite = new PHPUnit_Framework_TestSuite('PHPUnit_Framework');
 
         $suite->addTestSuite('Framework_AssertTest');
@@ -111,6 +96,7 @@ class Framework_AllTests
         $suite->addTestSuite('Framework_MockObjectTest');
         $suite->addTestSuite('Framework_SuiteTest');
         $suite->addTestSuite('Framework_TestCaseTest');
+        $suite->addTestSuite('Framework_TestFailureTest');
         $suite->addTestSuite('Framework_TestImplementorTest');
         $suite->addTestSuite('Framework_TestListenerTest');
 
