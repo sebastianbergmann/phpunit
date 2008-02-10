@@ -71,11 +71,13 @@ class PHPUnit_Framework_ExpectationFailedException extends PHPUnit_Framework_Ass
 {
     protected $comparisonFailure;
     protected $description;
+    protected $customMessage;
 
     public function __construct($description, PHPUnit_Framework_ComparisonFailure $comparisonFailure = NULL, $message = '')
     {
         $this->description       = $description;
         $this->comparisonFailure = $comparisonFailure;
+        $this->customMessage     = $message;
 
         if (!empty($message)) {
             $description .= "\n" . $message;
@@ -92,6 +94,11 @@ class PHPUnit_Framework_ExpectationFailedException extends PHPUnit_Framework_Ass
     public function getDescription()
     {
         return $this->description;
+    }
+
+    public function getCustomMessage()
+    {
+        return $this->customMessage;
     }
 }
 
