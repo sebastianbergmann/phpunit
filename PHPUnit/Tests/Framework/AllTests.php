@@ -63,6 +63,7 @@ require_once 'Framework/ConstraintTest.php';
 require_once 'Framework/MockObjectTest.php';
 require_once 'Framework/SuiteTest.php';
 require_once 'Framework/TestCaseTest.php';
+require_once 'Framework/TestFailureTest.php';
 require_once 'Framework/TestImplementorTest.php';
 require_once 'Framework/TestListenerTest.php';
 
@@ -95,6 +96,7 @@ class Framework_AllTests
         $suite->addTestSuite('Framework_MockObjectTest');
         $suite->addTestSuite('Framework_SuiteTest');
         $suite->addTestSuite('Framework_TestCaseTest');
+        $suite->addTestSuite('Framework_TestFailureTest');
         $suite->addTestSuite('Framework_TestImplementorTest');
         $suite->addTestSuite('Framework_TestListenerTest');
 
