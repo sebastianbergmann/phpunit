@@ -98,12 +98,18 @@ abstract class PHPUnit_Framework_Constraint implements PHPUnit_Framework_SelfDes
 
     protected function failureDescription($other, $description, $not)
     {
-        $failureDescription = sprintf(
-          'Failed asserting that %s %s.',
-
-           PHPUnit_Util_Type::toString($other),
-           (string)$this
+        $failureDescription = $this->customFailureDescription(
+          $other, $description, $not
         );
+
+        if ($failureDescription === NULL) {
+            $failureDescription = sprintf(
+              'Failed asserting that %s %s.',
+
+               PHPUnit_Util_Type::toString($other),
+               (string)$this
+            );
+        }
 
         if ($not) {
             $failureDescription = self::negate($failureDescription);
@@ -114,6 +120,10 @@ abstract class PHPUnit_Framework_Constraint implements PHPUnit_Framework_SelfDes
         }
 
         return $failureDescription;
+    }
+
+    protected function customFailureDescription($other, $description, $not)
+    {
     }
 
     public static function negate($string)

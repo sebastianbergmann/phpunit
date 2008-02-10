@@ -107,30 +107,15 @@ class PHPUnit_Extensions_Database_Constraint_DataSetIsEqual extends PHPUnit_Fram
         }
     }
 
-    /**
-     * @param   mixed   $other The value passed to evaluate() which failed the
-     *                         constraint check.
-     * @param   string  $description A string with extra description of what was
-     *                               going on while the evaluation failed.
-     * @param   boolean $not Flag to indicate negation.
-     * @throws  PHPUnit_Framework_ExpectationFailedException
-     */
-    protected function failureDescription($other, $description, $not)
+    protected function customFailureDescription($other, $description, $not)
     {
-        $failureDescription = sprintf('Failed asserting that %s %s Reason: %s', 
-            $other->__toString(), 
-            (string)$this, 
-            $this->failure_reason);
-        
-        if ($not) {
-            $failureDescription = self::negate($failureDescription);
-        }
-        
-        if (!empty($description)) {
-            $failureDescription = $description . "\n" . $failureDescription;
-        }
-        
-        return $failureDescription;
+        return sprintf(
+          'Failed asserting that %s %s Reason: %s',
+
+           (string)$other,
+           (string)$this,
+           $this->failure_reason
+         );
     }
 
     /**
@@ -141,10 +126,8 @@ class PHPUnit_Extensions_Database_Constraint_DataSetIsEqual extends PHPUnit_Fram
      */
     public function __toString()
     {
-        return sprintf(
-          'is equal to %s', 
-          $this->value->__toString()
-        );
+        return sprintf('is equal to %s', 
+            $this->value->__toString());
     }
 }
 ?>
