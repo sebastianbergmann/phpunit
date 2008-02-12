@@ -50,7 +50,7 @@ PHPUnit_Util_Filter::addFileToFilter(__FILE__);
 
 if (!defined('PHPUnit_MAIN_METHOD')) {
     define('PHPUnit_MAIN_METHOD', 'Framework_AllTests::main');
-    chdir(dirname(dirname(__FILE__)));
+    chdir(dirname(__DIR__));
 }
 
 require_once 'PHPUnit/Framework/TestSuite.php';

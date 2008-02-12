@@ -47,7 +47,7 @@
 require_once 'PHPUnit/Framework/TestCase.php';
 require_once 'PHPUnit/TextUI/ResultPrinter.php';
 
-require_once dirname(dirname(dirname(dirname(__FILE__)))) . DIRECTORY_SEPARATOR .
+require_once dirname(dirname(dirname(__DIR__))) . DIRECTORY_SEPARATOR .
              'Samples' . DIRECTORY_SEPARATOR .
              'BankAccount' . DIRECTORY_SEPARATOR . 'BankAccountTest.php';
 
@@ -70,7 +70,7 @@ class Util_Log_PlainTest extends PHPUnit_Framework_TestCase
         $suite  = new PHPUnit_Framework_TestSuite('BankAccountTest');
         $result = new PHPUnit_Framework_TestResult;
 
-        $file = dirname(dirname(dirname(__FILE__))) . DIRECTORY_SEPARATOR .
+        $file = dirname(dirname(__DIR__)) . DIRECTORY_SEPARATOR .
                 '_files' . DIRECTORY_SEPARATOR . 'BankAccount.txt';
 
 

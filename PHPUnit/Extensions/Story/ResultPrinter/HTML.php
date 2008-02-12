@@ -90,7 +90,7 @@ class PHPUnit_Extensions_Story_ResultPrinter_HTML extends PHPUnit_Extensions_Sto
         $this->templatePath = sprintf(
           '%s%sTemplate%s',
 
-          dirname(__FILE__),
+          __DIR__,
           DIRECTORY_SEPARATOR,
           DIRECTORY_SEPARATOR
         );
