@@ -80,7 +80,7 @@ class BankAccountCompositeTest extends PHPUnit_Framework_TestCase
 		$tester = new PHPUnit_Extensions_Database_DefaultTester($connection);
 		$tester->setSetUpOperation(PHPUnit_Extensions_Database_Operation_Factory::CLEAN_INSERT());
 		$tester->setTearDownOperation(PHPUnit_Extensions_Database_Operation_Factory::NONE());
-		$tester->setDataSet(new PHPUnit_Extensions_Database_DataSet_FlatXmlDataSet(dirname(__FILE__).'/_files/bank-account-seed.xml'));
+		$tester->setDataSet(new PHPUnit_Extensions_Database_DataSet_FlatXmlDataSet(__DIR__.'/_files/bank-account-seed.xml'));
 		
 		return $tester;
 	}
@@ -130,7 +130,7 @@ class BankAccountCompositeTest extends PHPUnit_Framework_TestCase
         $bank_account = new BankAccount('12348612357236185', $this->pdo);
         $bank_account->depositMoney(24);
         
-        $xml_dataset = new PHPUnit_Extensions_Database_DataSet_FlatXmlDataSet(dirname(__FILE__).'/_files/bank-account-after-deposits.xml');
+        $xml_dataset = new PHPUnit_Extensions_Database_DataSet_FlatXmlDataSet(__DIR__.'/_files/bank-account-after-deposits.xml');
         PHPUnit_Extensions_Database_TestCase::assertDataSetsEqual($xml_dataset, $tester->getConnection()->createDataSet());
         
         $tester->onTearDown();
@@ -150,7 +150,7 @@ class BankAccountCompositeTest extends PHPUnit_Framework_TestCase
         $bank_account = new BankAccount('12348612357236185', $this->pdo);
         $bank_account->withdrawMoney(24);
         
-        $xml_dataset = new PHPUnit_Extensions_Database_DataSet_FlatXmlDataSet(dirname(__FILE__).'/_files/bank-account-after-withdrawals.xml');
+        $xml_dataset = new PHPUnit_Extensions_Database_DataSet_FlatXmlDataSet(__DIR__.'/_files/bank-account-after-withdrawals.xml');
         PHPUnit_Extensions_Database_TestCase::assertDataSetsEqual($xml_dataset, $tester->getConnection()->createDataSet());
         
         $tester->onTearDown();
@@ -163,7 +163,7 @@ class BankAccountCompositeTest extends PHPUnit_Framework_TestCase
         
     	$bank_account = new BankAccount('12345678912345678', $this->pdo);
         
-        $xml_dataset = new PHPUnit_Extensions_Database_DataSet_FlatXmlDataSet(dirname(__FILE__).'/_files/bank-account-after-new-account.xml');
+        $xml_dataset = new PHPUnit_Extensions_Database_DataSet_FlatXmlDataSet(__DIR__.'/_files/bank-account-after-new-account.xml');
         PHPUnit_Extensions_Database_TestCase::assertDataSetsEqual($xml_dataset, $tester->getConnection()->createDataSet());
         
         $tester->onTearDown();

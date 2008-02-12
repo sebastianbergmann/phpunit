@@ -262,7 +262,7 @@ class PHPUnit_Util_Skeleton
                               sprintf(
                                 '%s%sSkeleton%s%s.tpl',
 
-                                dirname(__FILE__),
+                                __DIR__,
                                 DIRECTORY_SEPARATOR,
                                 DIRECTORY_SEPARATOR,
                                 $template
@@ -306,7 +306,7 @@ class PHPUnit_Util_Skeleton
                       sprintf(
                         '%s%sSkeleton%sIncompleteTestMethod.tpl',
 
-                        dirname(__FILE__),
+                        __DIR__,
                         DIRECTORY_SEPARATOR,
                         DIRECTORY_SEPARATOR
                       )
@@ -327,7 +327,7 @@ class PHPUnit_Util_Skeleton
           sprintf(
             '%s%sSkeleton%sTestClass.tpl',
 
-            dirname(__FILE__),
+            __DIR__,
             DIRECTORY_SEPARATOR,
             DIRECTORY_SEPARATOR
           )

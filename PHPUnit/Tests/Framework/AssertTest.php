@@ -636,14 +636,14 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
     public function testAssertXmlFileEqualsXmlFile()
     {
         $this->assertXmlFileEqualsXmlFile(
-          dirname(dirname(__FILE__)) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'foo.xml',
-          dirname(dirname(__FILE__)) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'foo.xml'
+          dirname(__DIR__) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'foo.xml',
+          dirname(__DIR__) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'foo.xml'
         );
 
         try {
             $this->assertXmlFileEqualsXmlFile(
-              dirname(dirname(__FILE__)) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'foo.xml',
-              dirname(dirname(__FILE__)) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'bar.xml'
+              dirname(__DIR__) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'foo.xml',
+              dirname(__DIR__) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'bar.xml'
             );
         }
 
@@ -657,14 +657,14 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
     public function testAssertXmlFileNotEqualsXmlFile()
     {
         $this->assertXmlFileNotEqualsXmlFile(
-          dirname(dirname(__FILE__)) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'foo.xml',
-          dirname(dirname(__FILE__)) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'bar.xml'
+          dirname(__DIR__) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'foo.xml',
+          dirname(__DIR__) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'bar.xml'
         );
 
         try {
             $this->assertXmlFileNotEqualsXmlFile(
-              dirname(dirname(__FILE__)) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'foo.xml',
-              dirname(dirname(__FILE__)) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'foo.xml'
+              dirname(__DIR__) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'foo.xml',
+              dirname(__DIR__) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'foo.xml'
             );
         }
 
@@ -916,10 +916,10 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
 
     public function testAssertFileExists()
     {
-        $this->assertFileExists(dirname(__FILE__) . DIRECTORY_SEPARATOR . 'AllTests.php');
+        $this->assertFileExists(__DIR__ . DIRECTORY_SEPARATOR . 'AllTests.php');
 
         try {
-            $this->assertFileExists(dirname(__FILE__) . DIRECTORY_SEPARATOR . 'NotExisting');
+            $this->assertFileExists(__DIR__ . DIRECTORY_SEPARATOR . 'NotExisting');
         }
 
         catch (PHPUnit_Framework_AssertionFailedError $e) {
@@ -931,10 +931,10 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
 
     public function testAssertFileNotExists()
     {
-        $this->assertFileNotExists(dirname(__FILE__) . DIRECTORY_SEPARATOR . 'NotExisting');
+        $this->assertFileNotExists(__DIR__ . DIRECTORY_SEPARATOR . 'NotExisting');
 
         try {
-            $this->assertFileNotExists(dirname(__FILE__) . DIRECTORY_SEPARATOR . 'AllTests.php');
+            $this->assertFileNotExists(__DIR__ . DIRECTORY_SEPARATOR . 'AllTests.php');
         }
 
         catch (PHPUnit_Framework_AssertionFailedError $e) {
@@ -2242,7 +2242,7 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
     public function testAssertThatFileExists()
     {
         $this->assertThat(
-          dirname(__FILE__) . DIRECTORY_SEPARATOR . 'AllTests.php',
+          __DIR__ . DIRECTORY_SEPARATOR . 'AllTests.php',
           $this->fileExists()
         );
     }

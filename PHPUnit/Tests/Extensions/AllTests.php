@@ -48,7 +48,7 @@ require_once 'PHPUnit/Util/Filter.php';
 
 if (!defined('PHPUnit_MAIN_METHOD')) {
     define('PHPUnit_MAIN_METHOD', 'Extensions_AllTests::main');
-    chdir(dirname(dirname(__FILE__)));
+    chdir(dirname(__DIR__));
 }
 
 require_once 'PHPUnit/Framework/TestSuite.php';
@@ -84,15 +84,15 @@ class Extensions_AllTests
     {
         if (!defined('PHPUNIT_TESTSUITE_WHITELIST_PREPARED')) {
             PHPUnit_Util_Filter::addDirectoryToWhitelist(
-              dirname(dirname(dirname(__FILE__)))
+              dirname(dirname(__DIR__))
             );
 
             PHPUnit_Util_Filter::removeDirectoryFromWhitelist(
-              dirname(dirname(dirname(__FILE__))) . DIRECTORY_SEPARATOR . 'Samples'
+              dirname(dirname(__DIR__)) . DIRECTORY_SEPARATOR . 'Samples'
             );
 
             PHPUnit_Util_Filter::removeDirectoryFromWhitelist(
-              dirname(dirname(dirname(__FILE__))) . DIRECTORY_SEPARATOR . 'Tests'
+              dirname(dirname(__DIR__)) . DIRECTORY_SEPARATOR . 'Tests'
             );
 
             PHPUnit_Util_Filter::$filterPHPUnit = FALSE;
