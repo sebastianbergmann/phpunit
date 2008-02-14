@@ -60,7 +60,7 @@ PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
 function PHPUnit_Util_ErrorHandler($errno, $errstr, $errfile, $errline)
 {
     if (!($errno & error_reporting())) {
-        return;
+        return FALSE;
     }
 
     $trace = debug_backtrace();
@@ -68,13 +68,13 @@ function PHPUnit_Util_ErrorHandler($errno, $errstr, $errfile, $errline)
 
     foreach ($trace as $frame) {
         if ($frame['function'] == '__toString') {
-            return;
+            return FALSE;
         }
     }
 
     if ($errno == E_NOTICE || $errno == E_STRICT) {
         if (PHPUnit_Framework_Notice::$enabled !== TRUE) {
-            return;
+            return FALSE;
         }
 
         $exception = 'PHPUnit_Framework_Notice';
