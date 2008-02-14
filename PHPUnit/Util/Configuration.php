@@ -57,7 +57,7 @@ PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
  * <code>
  * <?xml version="1.0" encoding="utf-8" ?>
  *
- * <phpunit>
+ * <phpunit stopOnFailure="false">
  *   <testsuite name="My Test Suite">
  *     <directory suffix="Test.php">/path/to/files</directory>
  *     <file>/path/to/MyTest.php</file>
@@ -322,6 +322,27 @@ class PHPUnit_Util_Configuration
             }
 
             $result['var'][$name] = $value;
+        }
+
+        return $result;
+    }
+
+    /**
+     * Returns the PHPUnit configuration.
+     *
+     * @return array
+     * @access public
+     * @since  Method available since Release 3.2.14
+     */
+    public function getPHPUnitConfiguration()
+    {
+        $result = array();
+
+        if ($this->document->documentElement->hasAttribute('stopOnFailure')) {
+            $result['stopOnFailure'] = $this->getBoolean(
+              (string)$this->document->documentElement('stopOnFailure'),
+              FALSE
+            );
         }
 
         return $result;

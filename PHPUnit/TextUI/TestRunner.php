@@ -543,7 +543,6 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
         $arguments['filter']             = @$arguments['filter']             ?: FALSE;
         $arguments['listeners']          = @$arguments['listeners']          ?: array();
         $arguments['repeat']             = @$arguments['repeat']             ?: FALSE;
-        $arguments['stopOnFailure']      = @$arguments['stopOnFailure']      ?: FALSE;
         $arguments['testDatabasePrefix'] = @$arguments['testDatabasePrefix'] ?: '';
         $arguments['verbose']            = @$arguments['verbose']            ?: FALSE;
         $arguments['wait']               = @$arguments['wait']               ?: FALSE;
@@ -591,6 +590,12 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
 
             foreach ($filterConfiguration['whitelist']['exclude']['file'] as $file) {
                 PHPUnit_Util_Filter::removeFileFromWhitelist($file);
+            }
+
+            $phpunitConfiguration = $arguments['configuration']->getPHPUnitConfiguration();
+
+            if (isset($phpunitConfiguration['stopOnFailure']) && !isset($arguments['stopOnFailure'])) {
+                $arguments['stopOnFailure'] = $phpunitConfiguration['stopOnFailure'];
             }
 
             $phpConfiguration = $arguments['configuration']->getPHPConfiguration();
@@ -694,6 +699,7 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
         $arguments['groups']               = @$arguments['groups']               ?: array();
         $arguments['excludeGroups']        = @$arguments['excludeGroups']        ?: array();
         $arguments['logIncompleteSkipped'] = @$arguments['logIncompleteSkipped'] ?: FALSE;
+        $arguments['stopOnFailure']        = @$arguments['stopOnFailure']        ?: FALSE;
         $arguments['reportCharset']        = @$arguments['reportCharset']        ?: 'ISO-8859-1';
         $arguments['reportYUI']            = @$arguments['reportYUI']            ?: TRUE;
         $arguments['reportHighlight']      = @$arguments['reportHighlight']      ?: FALSE;
