@@ -49,6 +49,8 @@ require_once 'PHPUnit/Runner/BaseTestRunner.php';
 require_once 'PHPUnit/Extensions/RepeatedTest.php';
 require_once 'PHPUnit/Runner/StandardTestSuiteLoader.php';
 require_once 'PHPUnit/Runner/Version.php';
+require_once 'PHPUnit/Extensions/Story/ResultPrinter/HTML.php';
+require_once 'PHPUnit/Extensions/Story/ResultPrinter/Text.php';
 require_once 'PHPUnit/TextUI/ResultPrinter.php';
 require_once 'PHPUnit/Util/TestDox/ResultPrinter.php';
 require_once 'PHPUnit/Util/Configuration.php';
@@ -209,6 +211,22 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
         }
 
         $result->addListener($this->printer);
+
+        if (isset($arguments['storyHTMLFile'])) {
+            $result->addListener(
+              new PHPUnit_Extensions_Story_ResultPrinter_HTML(
+                $arguments['storyHTMLFile']
+              )
+            );
+        }
+
+        if (isset($arguments['storyTextFile'])) {
+            $result->addListener(
+              new PHPUnit_Extensions_Story_ResultPrinter_Text(
+                $arguments['storyTextFile']
+              )
+            );
+        }
 
         if (isset($arguments['testdoxHTMLFile'])) {
             $result->addListener(
@@ -569,7 +587,6 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
         $arguments['filter']             = isset($arguments['filter'])             ? $arguments['filter']             : FALSE;
         $arguments['listeners']          = isset($arguments['listeners'])          ? $arguments['listeners']          : array();
         $arguments['repeat']             = isset($arguments['repeat'])             ? $arguments['repeat']             : FALSE;
-        $arguments['stopOnFailure']      = isset($arguments['stopOnFailure'])      ? $arguments['stopOnFailure']      : FALSE;
         $arguments['testDatabasePrefix'] = isset($arguments['testDatabasePrefix']) ? $arguments['testDatabasePrefix'] : '';
         $arguments['verbose']            = isset($arguments['verbose'])            ? $arguments['verbose']            : FALSE;
         $arguments['wait']               = isset($arguments['wait'])               ? $arguments['wait']               : FALSE;
@@ -617,6 +634,12 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
 
             foreach ($filterConfiguration['whitelist']['exclude']['file'] as $file) {
                 PHPUnit_Util_Filter::removeFileFromWhitelist($file);
+            }
+
+            $phpunitConfiguration = $arguments['configuration']->getPHPUnitConfiguration();
+
+            if (isset($phpunitConfiguration['stopOnFailure']) && !isset($arguments['stopOnFailure'])) {
+                $arguments['stopOnFailure'] = $phpunitConfiguration['stopOnFailure'];
             }
 
             $phpConfiguration = $arguments['configuration']->getPHPConfiguration();
@@ -709,6 +732,14 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
                 }
             }
 
+            if (isset($loggingConfiguration['story-html']) && !isset($arguments['storyHTMLFile'])) {
+                $arguments['storyHTMLFile'] = $loggingConfiguration['story-html'];
+            }
+
+            if (isset($loggingConfiguration['story-text']) && !isset($arguments['storyTextFile'])) {
+                $arguments['storsTextFile'] = $loggingConfiguration['story-text'];
+            }
+
             if (isset($loggingConfiguration['testdox-html']) && !isset($arguments['testdoxHTMLFile'])) {
                 $arguments['testdoxHTMLFile'] = $loggingConfiguration['testdox-html'];
             }
@@ -730,6 +761,7 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
         $arguments['groups']               = isset($arguments['groups'])               ? $arguments['groups']               : array();
         $arguments['excludeGroups']        = isset($arguments['excludeGroups'])        ? $arguments['excludeGroups']        : array();
         $arguments['logIncompleteSkipped'] = isset($arguments['logIncompleteSkipped']) ? $arguments['logIncompleteSkipped'] : FALSE;
+        $arguments['stopOnFailure']        = isset($arguments['stopOnFailure'])        ? $arguments['stopOnFailure']        : FALSE;
         $arguments['reportCharset']        = isset($arguments['reportCharset'])        ? $arguments['reportCharset']        : 'ISO-8859-1';
         $arguments['reportYUI']            = isset($arguments['reportYUI'])            ? $arguments['reportYUI']            : TRUE;
         $arguments['reportHighlight']      = isset($arguments['reportHighlight'])      ? $arguments['reportHighlight']      : FALSE;
