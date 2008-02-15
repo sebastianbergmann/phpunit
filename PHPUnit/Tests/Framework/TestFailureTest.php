@@ -471,8 +471,6 @@ class Framework_TestFailureTest extends PHPUnit_Framework_TestCase
 
     public function testFailureIsNotIdentical2()
     {
-        $this->markTestIncomplete();
-
         $a = new stdClass;
 
         $constraint = new PHPUnit_Framework_Constraint_Not(
@@ -485,7 +483,7 @@ class Framework_TestFailureTest extends PHPUnit_Framework_TestCase
 
         catch (PHPUnit_Framework_ExpectationFailedException $e) {
             $this->assertEquals(
-              '',
+              "custom message\nFailed asserting that \nstdClass Object\n(\n)\n is not identical to an object of class \"stdClass\".\n",
               PHPUnit_Framework_TestFailure::exceptionToString($e)
             );
 
