@@ -557,6 +557,48 @@ abstract class PHPUnit_Framework_Assert
     }
 
     /**
+     * Asserts that the contents of one file is equal to the contents of another
+     * file.
+     *
+     * @param  string $expected
+     * @param  string $actual
+     * @param  string $message
+     * @access public
+     * @static
+     * @since  Method available since Release 3.2.14
+     */
+    public static function assertFileEquals($expected, $actual, $message = '')
+    {
+        self::assertFileExists($expected, $message);
+        self::assertFileExists($actual, $message);
+
+        self::assertEquals(
+          file_get_contents($expected), file_get_contents($actual), $message
+        );
+    }
+
+    /**
+     * Asserts that the contents of one file is not equal to the contents of
+     * another file.
+     *
+     * @param  string $expected
+     * @param  string $actual
+     * @param  string $message
+     * @access public
+     * @static
+     * @since  Method available since Release 3.2.14
+     */
+    public static function assertFileNotEquals($expected, $actual, $message = '')
+    {
+        self::assertFileExists($expected, $message);
+        self::assertFileExists($actual, $message);
+
+        self::assertNotEquals(
+          file_get_contents($expected), file_get_contents($actual), $message
+        );
+    }
+
+    /**
      * Asserts that a file exists.
      *
      * @param  string $filename
