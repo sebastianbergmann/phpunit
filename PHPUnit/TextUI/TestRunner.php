@@ -49,8 +49,6 @@ require_once 'PHPUnit/Runner/BaseTestRunner.php';
 require_once 'PHPUnit/Extensions/RepeatedTest.php';
 require_once 'PHPUnit/Runner/StandardTestSuiteLoader.php';
 require_once 'PHPUnit/Runner/Version.php';
-require_once 'PHPUnit/Extensions/Story/ResultPrinter/HTML.php';
-require_once 'PHPUnit/Extensions/Story/ResultPrinter/Text.php';
 require_once 'PHPUnit/TextUI/ResultPrinter.php';
 require_once 'PHPUnit/Util/TestDox/ResultPrinter.php';
 require_once 'PHPUnit/Util/Configuration.php';
@@ -211,22 +209,6 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
         }
 
         $result->addListener($this->printer);
-
-        if (isset($arguments['storyHTMLFile'])) {
-            $result->addListener(
-              new PHPUnit_Extensions_Story_ResultPrinter_HTML(
-                $arguments['storyHTMLFile']
-              )
-            );
-        }
-
-        if (isset($arguments['storyTextFile'])) {
-            $result->addListener(
-              new PHPUnit_Extensions_Story_ResultPrinter_Text(
-                $arguments['storyTextFile']
-              )
-            );
-        }
 
         if (isset($arguments['testdoxHTMLFile'])) {
             $result->addListener(
@@ -730,14 +712,6 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
                 if (isset($loggingConfiguration['logIncompleteSkipped']) && !isset($arguments['logIncompleteSkipped'])) {
                     $arguments['logIncompleteSkipped'] = $loggingConfiguration['logIncompleteSkipped'];
                 }
-            }
-
-            if (isset($loggingConfiguration['story-html']) && !isset($arguments['storyHTMLFile'])) {
-                $arguments['storyHTMLFile'] = $loggingConfiguration['story-html'];
-            }
-
-            if (isset($loggingConfiguration['story-text']) && !isset($arguments['storyTextFile'])) {
-                $arguments['storsTextFile'] = $loggingConfiguration['story-text'];
             }
 
             if (isset($loggingConfiguration['testdox-html']) && !isset($arguments['testdoxHTMLFile'])) {
