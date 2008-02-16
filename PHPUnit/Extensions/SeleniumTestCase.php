@@ -890,7 +890,13 @@ abstract class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_Tes
             case 'getMouseSpeed':
             case 'getSpeed':
             case 'getXpathCount': {
-                return $this->getNumber($command, $arguments);
+                $result = $this->getNumber($command, $arguments);
+
+                if ($wait) {
+                    $this->doCommand('waitForPageToLoad', array($this->timeout));
+                }
+
+                return $result;
             }
             break;
 
@@ -913,7 +919,13 @@ abstract class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_Tes
             case 'getText':
             case 'getTitle':
             case 'getValue': {
-                return $this->getString($command, $arguments);
+                $result = $this->getString($command, $arguments);
+
+                if ($wait) {
+                    $this->doCommand('waitForPageToLoad', array($this->timeout));
+                }
+
+                return $result;
             }
             break;
 
@@ -929,7 +941,13 @@ abstract class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_Tes
             case 'getSelectedLabels':
             case 'getSelectedValues':
             case 'getSelectOptions': {
-                return $this->getStringArray($command, $arguments);
+                $result = $this->getStringArray($command, $arguments);
+
+                if ($wait) {
+                    $this->doCommand('waitForPageToLoad', array($this->timeout));
+                }
+
+                return $result;
             }
             break;
 
