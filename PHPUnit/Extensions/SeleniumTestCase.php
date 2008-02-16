@@ -852,10 +852,10 @@ abstract class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_Tes
 
                     default: {
                         if ($wait) {
-                            $this->doCommand('waitForPageToLoad', array($this->timeout));
+                            sleep($this->timeout / 1000);
                         }
 
-                        if ($this->sleep > 0) {
+                        if (!$wait && $this->sleep > 0) {
                             sleep($this->sleep);
                         }
 
