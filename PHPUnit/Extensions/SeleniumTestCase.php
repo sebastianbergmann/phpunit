@@ -597,9 +597,12 @@ abstract class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_Tes
      * @access public
      * @method unknown  addLocationStrategy()
      * @method unknown  addSelection()
+     * @method unknown  addSelectionAndWait()
      * @method unknown  allowNativeXpath()
      * @method unknown  altKeyDown()
+     * @method unknown  altKeyDownAndWait()
      * @method unknown  altKeyUp()
+     * @method unknown  altKeyUpAndWait()
      * @method unknown  answerOnNextPrompt()
      * @method unknown  assignId()
      * @method unknown  captureScreenshot()
@@ -608,17 +611,28 @@ abstract class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_Tes
      * @method unknown  click()
      * @method unknown  clickAndWait()
      * @method unknown  clickAt()
+     * @method unknown  clickAtAndWait()
      * @method unknown  close()
      * @method unknown  controlKeyDown()
+     * @method unknown  controlKeyDownAndWait()
      * @method unknown  controlKeyUp()
+     * @method unknown  controlKeyUpAndWait()
      * @method unknown  createCookie()
+     * @method unknown  createCookieAndWait()
      * @method unknown  deleteCookie()
+     * @method unknown  deleteCookieAndWait()
      * @method unknown  doubleClick()
+     * @method unknown  doubleClickAndWait()
      * @method unknown  doubleClickAt()
+     * @method unknown  doubleClickAtAndWait()
      * @method unknown  dragAndDrop()
+     * @method unknown  dragAndDropAndWait()
      * @method unknown  dragAndDropToObject()
+     * @method unknown  dragAndDropToObjectAndWait()
      * @method unknown  dragDrop()
+     * @method unknown  dragDropAndWait()
      * @method unknown  fireEvent()
+     * @method unknown  fireEventAndWait()
      * @method string   getAlert()
      * @method array    getAllButtons()
      * @method array    getAllFields()
@@ -654,6 +668,7 @@ abstract class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_Tes
      * @method string   getSelectedValue()
      * @method array    getSelectedValues()
      * @method unknown  getSpeed()
+     * @method unknown  getSpeedAndWait()
      * @method string   getTable()
      * @method string   getText()
      * @method string   getTitle()
@@ -662,7 +677,9 @@ abstract class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_Tes
      * @method boolean  getWhetherThisWindowMatchWindowExpression()
      * @method integer  getXpathCount()
      * @method unknown  goBack()
+     * @method unknown  goBackAndWait()
      * @method unknown  highlight()
+     * @method unknown  highlightAndWait()
      * @method boolean  isAlertPresent()
      * @method boolean  isChecked()
      * @method boolean  isConfirmationPresent()
@@ -674,36 +691,63 @@ abstract class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_Tes
      * @method boolean  isTextPresent()
      * @method boolean  isVisible()
      * @method unknown  keyDown()
+     * @method unknown  keyDownAndWait()
      * @method unknown  keyPress()
+     * @method unknown  keyPressAndWait()
      * @method unknown  keyUp()
+     * @method unknown  keyUpAndWait()
      * @method unknown  metaKeyDown()
+     * @method unknown  metaKeyDownAndWait()
      * @method unknown  metaKeyUp()
+     * @method unknown  metaKeyUpAndWait()
      * @method unknown  mouseDown()
+     * @method unknown  mouseDownAndWait()
      * @method unknown  mouseDownAt()
+     * @method unknown  mouseDownAtAndWait()
      * @method unknown  mouseMove()
+     * @method unknown  mouseMoveAndWait()
      * @method unknown  mouseMoveAt()
+     * @method unknown  mouseMoveAtAndWait()
      * @method unknown  mouseOut()
+     * @method unknown  mouseOutAndWait()
      * @method unknown  mouseOver()
+     * @method unknown  mouseOverAndWait()
      * @method unknown  mouseUp()
+     * @method unknown  mouseUpAndWait()
      * @method unknown  mouseUpAt()
+     * @method unknown  mouseUpAtAndWait()
      * @method unknown  open()
      * @method unknown  openWindow()
+     * @method unknown  openWindowAndWait()
      * @method unknown  refresh()
+     * @method unknown  refreshAndWait()
      * @method unknown  removeAllSelections()
+     * @method unknown  removeAllSelectionsAndWait()
      * @method unknown  removeSelection()
+     * @method unknown  removeSelectionAndWait()
      * @method unknown  select()
+     * @method unknown  selectAndWait()
      * @method unknown  selectFrame()
      * @method unknown  selectWindow()
      * @method unknown  setContext()
      * @method unknown  setCursorPosition()
+     * @method unknown  setCursorPositionAndWait()
      * @method unknown  setMouseSpeed()
+     * @method unknown  setMouseSpeedAndWait()
      * @method unknown  setSpeed()
+     * @method unknown  setSpeedAndWait()
      * @method unknown  shiftKeyDown()
+     * @method unknown  shiftKeyDownAndWait()
      * @method unknown  shiftKeyUp()
+     * @method unknown  shiftKeyUpAndWait()
      * @method unknown  submit()
+     * @method unknown  submitAndWait()
      * @method unknown  type()
+     * @method unknown  typeAndWait()
      * @method unknown  typeKeys()
+     * @method unknown  typeKeysAndWait()
      * @method unknown  uncheck()
+     * @method unknown  uncheckAndWait()
      * @method unknown  waitForCondition()
      * @method unknown  waitForPageToLoad()
      * @method unknown  waitForPopUp()
@@ -712,6 +756,13 @@ abstract class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_Tes
      */
     public function __call($command, $arguments)
     {
+        $wait = FALSE;
+
+        if (substr($command, -7, 7) == 'AndWait') {
+            $command = substr($command, 0, -7);
+            $wait    = TRUE;
+        }
+
         switch ($command) {
             case 'addLocationStrategy':
             case 'addSelection':
@@ -800,6 +851,10 @@ abstract class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_Tes
                     break;
 
                     default: {
+                        if ($wait) {
+                            $this->doCommand('waitForPageToLoad', array($this->timeout));
+                        }
+
                         if ($this->sleep > 0) {
                             sleep($this->sleep);
                         }
@@ -875,18 +930,6 @@ abstract class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_Tes
             case 'getSelectedValues':
             case 'getSelectOptions': {
                 return $this->getStringArray($command, $arguments);
-            }
-            break;
-
-            case 'clickAndWait': {
-                $this->doCommand('click', $arguments);
-                $this->doCommand('waitForPageToLoad', array($this->timeout));
-
-                if ($this->sleep > 0) {
-                    sleep($this->sleep);
-                }
-
-                $this->runDefaultAssertions($command);
             }
             break;
 
