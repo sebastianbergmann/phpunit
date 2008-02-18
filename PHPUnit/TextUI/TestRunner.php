@@ -187,6 +187,14 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
 
         $result = $this->createTestResult();
 
+        if (!$arguments['convertErrorsToExceptions']) {
+            $result->convertErrorsToExceptions(FALSE);
+        }
+
+        if (!$arguments['convertNoticesToExceptions']) {
+            PHPUnit_Framework_Notice::$enabled = FALSE;
+        }
+
         if ($arguments['stopOnFailure']) {
             $result->stopOnFailure(TRUE);
         }
@@ -638,6 +646,14 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
 
             $phpunitConfiguration = $arguments['configuration']->getPHPUnitConfiguration();
 
+            if (isset($phpunitConfiguration['convertErrorsToExceptions']) && !isset($arguments['convertErrorsToExceptions'])) {
+                $arguments['convertErrorsToExceptions'] = $phpunitConfiguration['convertErrorsToExceptions'];
+            }
+
+            if (isset($phpunitConfiguration['convertNoticesToExceptions']) && !isset($arguments['convertNoticesToExceptions'])) {
+                $arguments['convertNoticesToExceptions'] = $phpunitConfiguration['convertNoticesToExceptions'];
+            }
+
             if (isset($phpunitConfiguration['stopOnFailure']) && !isset($arguments['stopOnFailure'])) {
                 $arguments['stopOnFailure'] = $phpunitConfiguration['stopOnFailure'];
             }
@@ -756,17 +772,19 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
             }
         }
 
-        $arguments['cpdMinLines']          = isset($arguments['cpdMinLines'])          ? $arguments['cpdMinLines']          : 5;
-        $arguments['cpdMinMatches']        = isset($arguments['cpdMinMatches'])        ? $arguments['cpdMinMatches']        : 70;
-        $arguments['groups']               = isset($arguments['groups'])               ? $arguments['groups']               : array();
-        $arguments['excludeGroups']        = isset($arguments['excludeGroups'])        ? $arguments['excludeGroups']        : array();
-        $arguments['logIncompleteSkipped'] = isset($arguments['logIncompleteSkipped']) ? $arguments['logIncompleteSkipped'] : FALSE;
-        $arguments['stopOnFailure']        = isset($arguments['stopOnFailure'])        ? $arguments['stopOnFailure']        : FALSE;
-        $arguments['reportCharset']        = isset($arguments['reportCharset'])        ? $arguments['reportCharset']        : 'ISO-8859-1';
-        $arguments['reportYUI']            = isset($arguments['reportYUI'])            ? $arguments['reportYUI']            : TRUE;
-        $arguments['reportHighlight']      = isset($arguments['reportHighlight'])      ? $arguments['reportHighlight']      : FALSE;
-        $arguments['reportLowUpperBound']  = isset($arguments['reportLowUpperBound'])  ? $arguments['reportLowUpperBound']  : 35;
-        $arguments['reportHighLowerBound'] = isset($arguments['reportHighLowerBound']) ? $arguments['reportHighLowerBound'] : 70;
+        $arguments['cpdMinLines']                = isset($arguments['cpdMinLines'])                ? $arguments['cpdMinLines']                : 5;
+        $arguments['cpdMinMatches']              = isset($arguments['cpdMinMatches'])              ? $arguments['cpdMinMatches']              : 70;
+        $arguments['convertErrorsToExceptions']  = isset($arguments['convertErrorsToExceptions'])  ? $arguments['convertErrorsToExceptions']  : TRUE;
+        $arguments['convertNoticesToExceptions'] = isset($arguments['convertNoticesToExceptions']) ? $arguments['convertNoticesToExceptions'] : TRUE;
+        $arguments['excludeGroups']              = isset($arguments['excludeGroups'])              ? $arguments['excludeGroups']              : array();
+        $arguments['groups']                     = isset($arguments['groups'])                     ? $arguments['groups']                     : array();
+        $arguments['logIncompleteSkipped']       = isset($arguments['logIncompleteSkipped'])       ? $arguments['logIncompleteSkipped']       : FALSE;
+        $arguments['reportCharset']              = isset($arguments['reportCharset'])              ? $arguments['reportCharset']              : 'ISO-8859-1';
+        $arguments['reportHighlight']            = isset($arguments['reportHighlight'])            ? $arguments['reportHighlight']            : FALSE;
+        $arguments['reportHighLowerBound']       = isset($arguments['reportHighLowerBound'])       ? $arguments['reportHighLowerBound']       : 70;
+        $arguments['reportLowUpperBound']        = isset($arguments['reportLowUpperBound'])        ? $arguments['reportLowUpperBound']        : 35;
+        $arguments['reportYUI']                  = isset($arguments['reportYUI'])                  ? $arguments['reportYUI']                  : TRUE;
+        $arguments['stopOnFailure']              = isset($arguments['stopOnFailure'])              ? $arguments['stopOnFailure']              : FALSE;
 
         if (isset($arguments['reportDirectory'])) {
             $arguments['reportDirectory'] = $this->getDirectory($arguments['reportDirectory']);
