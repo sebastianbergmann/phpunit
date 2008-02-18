@@ -57,7 +57,7 @@ PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
  * <code>
  * <?xml version="1.0" encoding="utf-8" ?>
  *
- * <phpunit stopOnFailure="false">
+ * <phpunit convertErrorsToExceptions="true" convertNoticesToExceptions="true" stopOnFailure="false">
  *   <testsuite name="My Test Suite">
  *     <directory suffix="Test.php">/path/to/files</directory>
  *     <file>/path/to/MyTest.php</file>
@@ -374,6 +374,20 @@ class PHPUnit_Util_Configuration
     public function getPHPUnitConfiguration()
     {
         $result = array();
+
+        if ($this->document->documentElement->hasAttribute('convertErrorsToExceptions')) {
+            $result['convertErrorsToExceptions'] = $this->getBoolean(
+              (string)$this->document->documentElement('convertErrorsToExceptions'),
+              TRUE
+            );
+        }
+
+        if ($this->document->documentElement->hasAttribute('convertNoticesToExceptions')) {
+            $result['convertNoticesToExceptions'] = $this->getBoolean(
+              (string)$this->document->documentElement('convertNoticesToExceptions'),
+              TRUE
+            );
+        }
 
         if ($this->document->documentElement->hasAttribute('stopOnFailure')) {
             $result['stopOnFailure'] = $this->getBoolean(
