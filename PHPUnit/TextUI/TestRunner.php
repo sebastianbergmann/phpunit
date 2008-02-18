@@ -184,6 +184,14 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
 
         $result = $this->createTestResult();
 
+        if (!$arguments['convertErrorsToExceptions']) {
+            $result->convertErrorsToExceptions(FALSE);
+        }
+
+        if (!$arguments['convertNoticesToExceptions']) {
+            PHPUnit_Framework_Notice::$enabled = FALSE;
+        }
+
         if ($arguments['stopOnFailure']) {
             $result->stopOnFailure(TRUE);
         }
@@ -594,6 +602,14 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
 
             $phpunitConfiguration = $arguments['configuration']->getPHPUnitConfiguration();
 
+            if (isset($phpunitConfiguration['convertErrorsToExceptions']) && !isset($arguments['convertErrorsToExceptions'])) {
+                $arguments['convertErrorsToExceptions'] = $phpunitConfiguration['convertErrorsToExceptions'];
+            }
+
+            if (isset($phpunitConfiguration['convertNoticesToExceptions']) && !isset($arguments['convertNoticesToExceptions'])) {
+                $arguments['convertNoticesToExceptions'] = $phpunitConfiguration['convertNoticesToExceptions'];
+            }
+
             if (isset($phpunitConfiguration['stopOnFailure']) && !isset($arguments['stopOnFailure'])) {
                 $arguments['stopOnFailure'] = $phpunitConfiguration['stopOnFailure'];
             }
@@ -696,15 +712,17 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
             }
         }
 
-        $arguments['groups']               = @$arguments['groups']               ?: array();
-        $arguments['excludeGroups']        = @$arguments['excludeGroups']        ?: array();
-        $arguments['logIncompleteSkipped'] = @$arguments['logIncompleteSkipped'] ?: FALSE;
-        $arguments['stopOnFailure']        = @$arguments['stopOnFailure']        ?: FALSE;
-        $arguments['reportCharset']        = @$arguments['reportCharset']        ?: 'ISO-8859-1';
-        $arguments['reportYUI']            = @$arguments['reportYUI']            ?: TRUE;
-        $arguments['reportHighlight']      = @$arguments['reportHighlight']      ?: FALSE;
-        $arguments['reportLowUpperBound']  = @$arguments['reportLowUpperBound']  ?: 35;
-        $arguments['reportHighLowerBound'] = @$arguments['reportHighLowerBound'] ?: 70;
+        $arguments['convertErrorsToExceptions']  = @$arguments['convertErrorsToExceptions']  ?: TRUE;
+        $arguments['convertNoticesToExceptions'] = @$arguments['convertNoticesToExceptions'] ?: TRUE;
+        $arguments['excludeGroups']              = @$arguments['excludeGroups']              ?: array();
+        $arguments['groups']                     = @$arguments['groups']                     ?: array();
+        $arguments['logIncompleteSkipped']       = @$arguments['logIncompleteSkipped']       ?: FALSE;
+        $arguments['reportCharset']              = @$arguments['reportCharset']              ?: 'ISO-8859-1';
+        $arguments['reportHighlight']            = @$arguments['reportHighlight']            ?: FALSE;
+        $arguments['reportHighLowerBound']       = @$arguments['reportHighLowerBound']       ?: 70;
+        $arguments['reportLowUpperBound']        = @$arguments['reportLowUpperBound']        ?: 35;
+        $arguments['reportYUI']                  = @$arguments['reportYUI']                  ?: TRUE;
+        $arguments['stopOnFailure']              = @$arguments['stopOnFailure']              ?: FALSE;
 
         if (isset($arguments['reportDirectory'])) {
             $arguments['reportDirectory'] = $this->getDirectory($arguments['reportDirectory']);
