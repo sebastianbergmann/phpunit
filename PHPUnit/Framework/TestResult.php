@@ -138,6 +138,12 @@ class PHPUnit_Framework_TestResult implements Countable
      * @var    boolean
      * @access protected
      */
+    protected $convertErrorsToExceptions = TRUE;
+
+    /**
+     * @var    boolean
+     * @access protected
+     */
     protected $stop = FALSE;
 
     /**
@@ -575,14 +581,16 @@ class PHPUnit_Framework_TestResult implements Countable
 
         $errorHandlerSet = FALSE;
 
-        $oldErrorHandler = set_error_handler(
-          'PHPUnit_Util_ErrorHandler', E_ALL | E_STRICT
-        );
+        if ($this->convertErrorsToExceptions) {
+            $oldErrorHandler = set_error_handler(
+              'PHPUnit_Util_ErrorHandler', E_ALL | E_STRICT
+            );
 
-        if ($oldErrorHandler === NULL) {
-            $errorHandlerSet = TRUE;
-        } else {
-            restore_error_handler();
+            if ($oldErrorHandler === NULL) {
+                $errorHandlerSet = TRUE;
+            } else {
+                restore_error_handler();
+            }
         }
         $oldErrorHandler = set_error_handler(
           'PHPUnit_Util_ErrorHandler', E_ALL | E_STRICT
@@ -677,6 +685,23 @@ class PHPUnit_Framework_TestResult implements Countable
     public function stop()
     {
         $this->stop = TRUE;
+    }
+
+    /**
+     * Enables or disables the error-to-exception conversion.
+     *
+     * @param  boolean $flag
+     * @throws InvalidArgumentException
+     * @access public
+     * @since  Method available since Release 3.2.14
+     */
+    public function convertErrorsToExceptions($flag)
+    {
+        if (is_bool($flag)) {
+            $this->convertErrorsToExceptions = $flag;
+        } else {
+            throw new InvalidArgumentException;
+        }
     }
 
     /**
