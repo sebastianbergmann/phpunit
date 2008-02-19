@@ -577,7 +577,7 @@ class PHPUnit_Util_Report_Node_File extends PHPUnit_Util_Report_Node
 
             if (strpos($line, '@codeCoverageIgnore') !== FALSE) {
                 if (strpos($line, '@codeCoverageIgnoreStart') !== FALSE) {
-                    $ignoreStart = $line;
+                    $ignoreStart = $lineNumber;
                 }
 
                 else if (strpos($line, '@codeCoverageIgnoreEnd') !== FALSE) {
@@ -614,7 +614,7 @@ class PHPUnit_Util_Report_Node_File extends PHPUnit_Util_Report_Node
 
                     $this->numExecutableLines++;
 
-                    if ($ignoreStart != -1 && $line > $ignoreStart) {
+                    if ($ignoreStart != -1 && $lineNumber > $ignoreStart) {
                         if (isset($currentClass)) {
                             $currentClass['executedLines']++;
                         }
