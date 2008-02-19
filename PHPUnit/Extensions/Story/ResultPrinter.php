@@ -88,7 +88,6 @@ class PHPUnit_Extensions_Story_ResultPrinter extends PHPUnit_Util_TestDox_Result
 
     /**
      * @access protected
-     * @since  Method available since Release 2.3.0
      */
     protected function doEndClass()
     {
