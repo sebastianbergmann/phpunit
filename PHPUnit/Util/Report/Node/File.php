@@ -681,6 +681,7 @@ class PHPUnit_Util_Report_Node_File extends PHPUnit_Util_Report_Node
         }
 
         if (!$this->highlight) {
+            unset($lines[count($lines)-1]);
             return $lines;
         }
 
