@@ -153,6 +153,18 @@ abstract class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_Tes
     protected $inDefaultAssertions = FALSE;
 
     /**
+     * @var    boolean
+     * @access protected
+     */
+    protected $useWaitForPageToLoad = TRUE;
+
+    /**
+     * @var    boolean
+     * @access protected
+     */
+    protected $wait = 5;
+
+    /**
      * @param  string $name
      * @param  array  $browser
      * @throws InvalidArgumentException
@@ -558,6 +570,42 @@ abstract class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_Tes
     }
 
     /**
+     * Sets the number of seconds to sleep() after *AndWait commands
+     * when setWaitForPageToLoad(FALSE) is used.
+     *
+     * @param  integer $seconds
+     * @throws InvalidArgumentException
+     * @access public
+     * @since  Method available since Release 3.2.15
+     */
+    public function setWait($seconds)
+    {
+        if (!is_int($seconds)) {
+            throw new InvalidArgumentException;
+        }
+
+        $this->wait = $seconds;
+    }
+
+    /**
+     * Sets whether waitForPageToLoad (TRUE) or sleep() (FALSE)
+     * is used after *AndWait commands.
+     *
+     * @param  boolean $flag
+     * @throws InvalidArgumentException
+     * @access public
+     * @since  Method available since Release 3.2.15
+     */
+    public function setWaitForPageToLoad($flag)
+    {
+        if (!is_bool($flag)) {
+            throw new InvalidArgumentException;
+        }
+
+        $this->useWaitForPageToLoad = $flag;
+    }
+
+    /**
      * Runs a test from a Selenese (HTML) specification.
      *
      * @param string $filename
@@ -852,10 +900,14 @@ abstract class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_Tes
 
                     default: {
                         if ($wait) {
-                            sleep($this->timeout / 1000);
+                            if ($this->useWaitForPageToLoad) {
+                                $this->doCommand('waitForPageToLoad', array($this->timeout));
+                            } else {
+                                sleep($this->wait);
+                            }
                         }
 
-                        if (!$wait && $this->sleep > 0) {
+                        if ($this->sleep > 0) {
                             sleep($this->sleep);
                         }
 
