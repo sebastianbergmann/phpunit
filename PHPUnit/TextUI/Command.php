@@ -176,7 +176,7 @@ class PHPUnit_TextUI_Command
             $longOptions[] = 'test-db-log-info=';
         }
 
-        if (extension_loaded('xdebug')) {
+        if (extension_loaded('tokenizer') && extension_loaded('xdebug')) {
             $longOptions[] = 'coverage-html=';
             $longOptions[] = 'coverage-xml=';
             $longOptions[] = 'report=';
@@ -495,7 +495,7 @@ class PHPUnit_TextUI_Command
               "  --log-tap <file>       Log test execution in TAP format to file.\n" .
               "  --log-xml <file>       Log test execution in XML format to file.\n";
 
-        if (extension_loaded('xdebug')) {
+        if (extension_loaded('tokenizer') && extension_loaded('xdebug')) {
             print "  --coverage-html <dir>  Generate code coverage report in HTML format.\n" .
                   "  --coverage-xml <file>  Write code coverage information in XML format.\n\n";
         }
