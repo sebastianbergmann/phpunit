@@ -695,17 +695,6 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
     }
 
     /**
-     * Returns the number of tests in this suite.
-     *
-     * @return integer
-     * @access public
-     */
-    public function testCount()
-    {
-        return count($this->tests);
-    }
-
-    /**
      * Returns the tests as an enumeration.
      *
      * @return array
