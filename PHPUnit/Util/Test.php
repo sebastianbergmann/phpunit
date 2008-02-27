@@ -145,31 +145,33 @@ class PHPUnit_Util_Test
     public static function getLinesToBeCovered($className, $methodName)
     {
         $result = array();
+        $codeToCoverList = array();
 
         try {
             $class      = new ReflectionClass($className);
             $method     = new ReflectionMethod($className, $methodName);
             $docComment = $class->getDocComment() . $method->getDocComment();
 
-            if (preg_match_all('/@covers[\s]+([\:\.\w]+)/', $docComment, $matches)) {
-                foreach ($matches[1] as $method) {
-                    if (strpos($method, '::') !== FALSE) {
-                        list($className, $methodName) = explode('::', $method);
+            if (preg_match_all('/@covers[\s]+([\!<>\:\.\w]+)([\s]+<extended>)?/', $docComment, $matches)) {
+                foreach ($matches[1] as $i => $method) {
+                    $codeToCoverList = array_merge(
+                        $codeToCoverList,
+                        self::resolveCoversToReflectionObjects($method, !empty($matches[2][$i]))
+                    );
+                }
 
-                        $_method   = new ReflectionMethod($className, $methodName);
-                        $fileName  = $_method->getFileName();
-                        $startLine = $_method->getStartLine();
-                        $endLine   = $_method->getEndLine();
+                foreach ($codeToCoverList as $codeToCover) {
+                    $fileName  = $codeToCover->getFileName();
+                    $startLine = $codeToCover->getStartLine();
+                    $endLine   = $codeToCover->getEndLine();
 
-                        if (!isset($result[$fileName])) {
-                            $result[$fileName] = array();
-                        }
-
-                        $result[$fileName] = array_merge(
-                          $result[$fileName],
-                          range($startLine, $endLine)
-                        );
+                    if (!isset($result[$fileName])) {
+                        $result[$fileName] = array();
                     }
+
+                    $result[$fileName] = array_unique(
+                      array_merge($result[$fileName], range($startLine, $endLine))
+                    );
                 }
             }
         }
@@ -237,6 +239,86 @@ class PHPUnit_Util_Test
             catch (ReflectionException $e) {
             }
         }
+    }
+
+    /**
+     * Returns the files and lines a test method wants to cover.
+     *
+     * @param  string  $method
+     * @param  boolean $extended
+     * @return array
+     * @access private
+     * @static
+     * @since  Method available since Release 3.3.0
+     */
+    private static function resolveCoversToReflectionObjects($method, $extended)
+    {
+        $codeToCoverList = array();
+
+        if (strpos($method, '::') !== FALSE) {
+            list($className, $methodName) = explode('::', $method);
+
+            if ($methodName{0} == '<') {
+                $classes = array($className);
+
+                if ($extended) {
+                    $classes += class_implements($className);
+                    $classes += class_parents($className);
+                }
+
+                foreach ($classes as $className)
+                {
+                    $class   = new ReflectionClass($className);
+                    $methods = $class->getMethods();
+                    $inverse = isset($methodName{1}) && $methodName{1} == '!';
+
+                    if (strpos($methodName, 'protected')) {
+                        $visibility = 'isProtected';
+                    }
+
+                    else if (strpos($methodName, 'private')) {
+                        $visibility = 'isPrivate';
+                    }
+
+                    else if (strpos($methodName, 'public')) {
+                        $visibility = 'isPublic';
+                    }
+
+                    foreach ($methods as $method) {
+                        if ($inverse && !$method->$visibility()) {
+                            $codeToCoverList[] = $method;
+                        }
+
+                        else if (!$inverse && $method->$visibility()) {
+                            $codeToCoverList[] = $method;
+                        }
+                    }
+                }
+            } else {
+                $classes = array($className);
+
+                if ($extended) {
+                    $classes += class_parents($className);
+                }
+
+                foreach ($classes as $className) {
+                    $codeToCoverList[] = new ReflectionMethod($className, $methodName);
+                }
+            }
+        } else {
+            $classes = array($method);
+
+            if ($extended) {
+                $classes += class_implements($method);
+                $classes += class_parents($method);
+            }
+
+            foreach ($classes as $className) {
+                $codeToCoverList[] = new ReflectionClass($method);
+            }
+        }
+
+        return $codeToCoverList;
     }
 }
 ?>

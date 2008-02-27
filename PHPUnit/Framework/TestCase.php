@@ -181,12 +181,6 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
     protected $name = NULL;
 
     /**
-     * @var    Exception
-     * @access protected
-     */
-    protected $exception = NULL;
-
-    /**
      * @var    string
      * @access protected
      */
@@ -215,6 +209,12 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
      * @access protected
      */
     protected $mockObjects = array();
+
+    /**
+     * @var    integer
+     * @access protected
+     */
+    protected $status;
 
     /**
      * Constructs a test case with the given name.
@@ -325,23 +325,7 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
      */
     public function getStatus()
     {
-        if ($this->exception === NULL) {
-            return PHPUnit_Runner_BaseTestRunner::STATUS_PASSED;
-        }
-
-        if ($this->exception instanceof PHPUnit_Framework_IncompleteTest) {
-            return PHPUnit_Runner_BaseTestRunner::STATUS_INCOMPLETE;
-        }
-
-        if ($this->exception instanceof PHPUnit_Framework_SkippedTest) {
-            return PHPUnit_Runner_BaseTestRunner::STATUS_SKIPPED;
-        }
-
-        if ($this->exception instanceof PHPUnit_Framework_AssertionFailedError) {
-            return PHPUnit_Runner_BaseTestRunner::STATUS_FAILURE;
-        }
-
-        return PHPUnit_Runner_BaseTestRunner::STATUS_ERROR;
+        return $this->status;
     }
 
     /**
@@ -409,10 +393,22 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
             }
 
             $this->mockObjects = array();
+
+            $this->status = PHPUnit_Runner_BaseTestRunner::STATUS_PASSED;
         }
 
         catch (Exception $e) {
-            $this->exception = $e;
+            if ($e instanceof PHPUnit_Framework_IncompleteTest) {
+                $this->status = PHPUnit_Runner_BaseTestRunner::STATUS_INCOMPLETE;
+            }
+
+            if ($e instanceof PHPUnit_Framework_SkippedTest) {
+                $this->status = PHPUnit_Runner_BaseTestRunner::STATUS_SKIPPED;
+            }
+
+            if ($e instanceof PHPUnit_Framework_AssertionFailedError) {
+                $this->status = PHPUnit_Runner_BaseTestRunner::STATUS_FAILURE;
+            }
         }
 
         // Tear down the fixture.
@@ -443,8 +439,8 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
         clearstatcache();
 
         // Workaround for missing "finally".
-        if ($this->exception !== NULL) {
-            throw $this->exception;
+        if (isset($e)) {
+            throw $e;
         }
     }
 
