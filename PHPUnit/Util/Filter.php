@@ -141,6 +141,15 @@ class PHPUnit_Util_Filter
     protected static $whitelistedFiles = array();
 
     /**
+     * List of covered files.
+     *
+     * @var    array
+     * @access protected
+     * @static
+     */
+    protected static $coveredFiles = array();
+
+    /**
      * Adds a directory to the blacklist (recursively).
      *
      * @param  string $directory
@@ -309,11 +318,11 @@ class PHPUnit_Util_Filter
      * Returns data about files within code coverage information, specifically
      * which ones will be filtered out and which ones may be whitelisted but not
      * touched by coverage.
-     * 
-     * Returns a two-item array. The first item is an array indexed by filenames 
+     *
+     * Returns a two-item array. The first item is an array indexed by filenames
      * with a boolean payload of whether they should be filtered out.
-     * 
-     * The second item is an array of filenames which are 
+     *
+     * The second item is an array of filenames which are
      * whitelisted but which are absent from the coverage information.
      *
      * @param  array   $codeCoverageInformation
@@ -326,7 +335,7 @@ class PHPUnit_Util_Filter
     {
         if (!self::$filter) {
             return array(array(), array());
-        }             
+        }
 
         $isFilteredCache = array();
         $coveredFiles    = array();
@@ -339,15 +348,15 @@ class PHPUnit_Util_Filter
                     );
                 }
             }
-        }        
+        }
 
         $coveredFiles = array_keys($isFilteredCache);
-        $missedFiles  = array_diff(self::$whitelistedFiles,$coveredFiles);                
+        $missedFiles  = array_diff(self::$whitelistedFiles,$coveredFiles);
         $missedFiles  = array_filter($missedFiles,'file_exists');
 
         return array($isFilteredCache,$missedFiles);
     }
-    
+
     /**
      * @param  array   $codeCoverageInformation
      * @param  boolean $addUncoveredFilesFromWhitelist
@@ -358,38 +367,37 @@ class PHPUnit_Util_Filter
     public static function getFilteredCodeCoverage(array $codeCoverageInformation, $filterTests = TRUE)
     {
         if (self::$filter) {
-            list($isFilteredCache, $missedFiles) = self::getFileCodeCoverageDisposition(
-              $codeCoverageInformation, $filterTests
-            );
-
-            foreach ($codeCoverageInformation as $k => $test) {
-                foreach (array_keys($test['files']) as $file) {
-                    if ($isFilteredCache[$file]) {
-                        unset($codeCoverageInformation[$k]['files'][$file]);
-                    }
-                }
-            }
-
             if (self::$addUncoveredFilesFromWhitelist) {
-                foreach ($missedFiles as $missedFile) {
-                    xdebug_start_code_coverage(XDEBUG_CC_UNUSED | XDEBUG_CC_DEAD_CODE);
-                    include_once $missedFile;
-                    $coverage = xdebug_get_code_coverage();
-                    xdebug_stop_code_coverage();
 
-                    if (isset($coverage[$missedFile])) {
-                        foreach ($coverage[$missedFile] as $line => $flag) {
-                            if ($flag > 0) {
-                                $coverage[$missedFile][$line] = -1;
+                foreach (self::$whitelistedFiles as $whitelistedFile) {
+                    if (!isset(self::$coveredFiles[$whitelistedFile])) {
+                        if (file_exists($whitelistedFile)) {
+                            xdebug_start_code_coverage(XDEBUG_CC_UNUSED | XDEBUG_CC_DEAD_CODE);
+                            include_once $whitelistedFile;
+                            $coverage = xdebug_get_code_coverage();
+                            xdebug_stop_code_coverage();
+
+                            foreach ($coverage as $file => $fileCoverage)
+                            {
+                                if(!in_array($file, self::$whitelistedFiles) || isset(self::$coveredFiles[$file]))
+                                    continue;
+
+                                foreach ($fileCoverage as $line => $flag) {
+                                    if ($flag > 0) {
+                                        $fileCoverage[$line] = -1;
+                                    }
+                                }
+
+                                $codeCoverageInformation[] = array(
+                                  'test'  => NULL,
+                                  'files' => array(
+                                    $file => $fileCoverage
+                                  )
+                                );
+
+                                self::addCoveredFile($file);
                             }
                         }
-
-                        $codeCoverageInformation[] = array(
-                          'test'  => NULL,
-                          'files' => array(
-                            $missedFile => $coverage[$missedFile]
-                          )
-                        );
                     }
                 }
             }
@@ -483,7 +491,7 @@ class PHPUnit_Util_Filter
      * @static
      * @since  Method available since Release 2.1.3
      */
-    protected static function isFiltered($filename, $filterTests = TRUE, $ignoreWhitelist = FALSE)
+    public static function isFiltered($filename, $filterTests = TRUE, $ignoreWhitelist = FALSE)
     {
         $filename = realpath($filename);
 
@@ -543,6 +551,32 @@ class PHPUnit_Util_Filter
 
             return TRUE;
         }
+    }
+
+    /**
+     * Adds a file to the list of covered files.
+     *
+     * @param  string  $filename
+     * @access public
+     * @static
+     * @since  Method available since Release 3.3.0
+     */
+    public static function addCoveredFile($filename)
+    {
+        self::$coveredFiles[$filename] = TRUE;
+    }
+
+    /**
+     * Returns the list of covered files.
+     *
+     * @return array
+     * @access public
+     * @static
+     * @since  Method available since Release 3.3.0
+     */
+    public static function getCoveredFiles()
+    {
+        return self::$coveredFiles;
     }
 }
 

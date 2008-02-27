@@ -98,14 +98,21 @@ abstract class PHPUnit_Util_Report
         $commonPath              = self::reducePaths($files);
         $items                   = self::buildDirectoryStructure($files);
 
+        unset($codeCoverageInformation);
+        $name = $result->topTestSuite()->getName();
+        $result->cleanUp();
+        unset($result);
+
         $root = new PHPUnit_Util_Report_Node_Directory($commonPath, NULL);
 
         self::addItems($root, $items, $files, $yui, $highlight);
         self::copyFiles($target);
 
+        PHPUnit_Util_CodeCoverage::clearSummary();
+
         $root->render(
           $target,
-          $result->topTestSuite()->getName(),
+          $name,
           $charset,
           $highlight,
           $lowUpperBound,

@@ -346,6 +346,8 @@ class PHPUnit_Util_Report_Node_Directory extends PHPUnit_Util_Report_Node
               $target, $title, $charset, $highlight, $lowUpperBound, $highLowerBound
             );
         }
+
+        $this->children = array();
     }
 
     /**
@@ -396,6 +398,9 @@ class PHPUnit_Util_Report_Node_Directory extends PHPUnit_Util_Report_Node
         );
 
         $template->renderTo($file);
+
+        $this->directories = array();
+        $this->files       = array();
     }
 
     /**
