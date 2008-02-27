@@ -349,9 +349,11 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
             $this->printer->write("\n");
         }
 
-        if (isset($arguments['reportDirectory']) &&
-            extension_loaded('xdebug')) {
+        if (isset($arguments['reportDirectory']) && extension_loaded('xdebug')) {
             $this->printer->write("\nGenerating code coverage report, this may take a moment.");
+
+            $suite->cleanUp();
+            unset($suite);
 
             PHPUnit_Util_Report::render(
               $result,
