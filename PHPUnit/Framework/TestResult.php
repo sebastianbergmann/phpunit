@@ -486,33 +486,55 @@ class PHPUnit_Framework_TestResult implements Countable
      */
     public function appendCodeCoverageInformation(PHPUnit_Framework_Test $test, $data)
     {
+        $deadCode       = array();
+        $executableCode = array();
+
+        foreach (array_keys($data) as $file) {
+            if (PHPUnit_Util_Filter::isFiltered($file, TRUE))
+            {
+                unset($data[$file]);
+            }
+        }
+
+        $newFilesToCollect = array_diff_key($data, PHPUnit_Util_Filter::getCoveredFiles());
+
+        if (sizeof($newFilesToCollect) > 0)
+        {
+            $deadCode       = PHPUnit_Util_CodeCoverage::codeCoverageToBitString($newFilesToCollect, array(-2));
+            $executableCode = PHPUnit_Util_CodeCoverage::codeCoverageToBitString($newFilesToCollect, array(-1, 1));
+
+            foreach (array_keys($newFilesToCollect) as $file) {
+                PHPUnit_Util_Filter::addCoveredFile($file);
+            }
+
+            unset($newFilesToCollect);
+        }
+
         if ($test instanceof PHPUnit_Framework_TestCase) {
             $linesToBeCovered = PHPUnit_Util_Test::getLinesToBeCovered(
               get_class($test), $test->getName()
             );
 
             if (!empty($linesToBeCovered)) {
-                $filesToBeCovered = array_keys($linesToBeCovered);
-                $filesCovered     = array_keys($data);
-                $filesCovered     = array_intersect($filesCovered, $filesToBeCovered);
+                $data = array_intersect_key($data, $linesToBeCovered);
 
-                foreach ($filesCovered as $file) {
-                    $linesCovered    = array_keys($data[$file]);
-                    $linesNotToCover = array_diff($linesCovered, $linesToBeCovered[$file]);
-
-                    foreach ($linesNotToCover as $line) {
-                        if ($data[$file][$line] > 0) {
-                            $data[$file][$line] = -1;
-                        }
-                    }
+                foreach (array_keys($data) as $file) {
+                    $data[$file] = array_intersect_key($data[$file], array_flip($linesToBeCovered[$file]));
                 }
             }
         }
 
-        $this->codeCoverageInformation[] = array(
-          'test'  => $test,
-          'files' => $data
+        $executed = PHPUnit_Util_CodeCoverage::codeCoverageToBitString($data, array(1));
+        unset($data);
+
+        $result = array(
+          'test'       => $test,
+          'files'      => $executed,
+          'dead'       => $deadCode,
+          'executable' => $executableCode,
         );
+
+        $this->codeCoverageInformation[] = $result;
     }
 
     /**
@@ -563,7 +585,7 @@ class PHPUnit_Framework_TestResult implements Countable
           $this->codeCoverageInformation
         );
 
-        return($missing);  
+        return($missing);
     }
 
     /**
@@ -741,6 +763,16 @@ class PHPUnit_Framework_TestResult implements Countable
     public function wasSuccessful()
     {
         return empty($this->errors) && empty($this->failures);
+    }
+
+    function cleanUp()
+    {
+        $this->codeCoverageInformation = array();
+        $this->skipped                 = array();
+        $this->errors                  = array();
+        $this->failures                = array();
+        $this->notImplemented          = array();
+        $this->topTestSuite            = NULL;
     }
 }
 
