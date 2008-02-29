@@ -65,7 +65,7 @@ class PHPUnit_Util_Log_PMD_Rule_Class_TooManyFields extends PHPUnit_Util_Log_PMD
 {
     public function __construct($threshold = 15, $priority = 1)
     {
-        parent::__construct($threshold);
+        parent::__construct($threshold, $priority);
     }
 
     public function apply(PHPUnit_Util_Metrics $metrics)
