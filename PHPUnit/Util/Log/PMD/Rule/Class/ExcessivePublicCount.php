@@ -65,7 +65,7 @@ class PHPUnit_Util_Log_PMD_Rule_Class_ExcessivePublicCount extends PHPUnit_Util_
 {
     public function __construct($threshold = 45, $priority = 1)
     {
-        parent::__construct($threshold);
+        parent::__construct($threshold, $priority);
     }
 
     public function apply(PHPUnit_Util_Metrics $metrics)
