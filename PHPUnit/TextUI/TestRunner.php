@@ -60,6 +60,7 @@ require_once 'PHPUnit/Util/Log/CodeCoverage/Database.php';
 require_once 'PHPUnit/Util/Log/CodeCoverage/XML.php';
 require_once 'PHPUnit/Util/Log/CPD.php';
 require_once 'PHPUnit/Util/Log/Database.php';
+require_once 'PHPUnit/Util/Log/GraphViz.php';
 require_once 'PHPUnit/Util/Log/JSON.php';
 require_once 'PHPUnit/Util/Log/Metrics.php';
 require_once 'PHPUnit/Util/Log/TAP.php';
