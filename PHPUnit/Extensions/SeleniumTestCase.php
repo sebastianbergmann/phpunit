@@ -255,11 +255,12 @@ abstract class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_Tes
 
                     foreach ($files as $file) {
                         $browserSuite->addTest(
-                          new $className((string)$file, array(), $browser)
+                          new $className((string)$file, array(), $browser),
+                          $classGroups
                         );
                     }
 
-                    $suite->addTest($browserSuite, $classGroups);
+                    $suite->addTest($browserSuite);
                 }
             }
 
