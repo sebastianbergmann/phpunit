@@ -173,6 +173,10 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
     {
         $this->handleConfiguration($arguments);
 
+        if (isset($arguments['bootstrap'])) {
+            require_once $arguments['bootstrap'];
+        }
+
         if (is_integer($arguments['repeat'])) {
             $suite = new PHPUnit_Extensions_RepeatedTest(
               $suite,
