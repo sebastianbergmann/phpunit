@@ -141,6 +141,7 @@ class PHPUnit_TextUI_Command
         $arguments = array('syntaxCheck' => TRUE);
 
         $longOptions = array(
+          'bootstrap=',
           'configuration=',
           'exclude-group=',
           'filter=',
@@ -209,6 +210,11 @@ class PHPUnit_TextUI_Command
 
         foreach ($options[0] as $option) {
             switch ($option[0]) {
+                case '--bootstrap': {
+                    $arguments['bootstrap'] = $option[1];
+                }
+                break;
+
                 case '--configuration': {
                     $arguments['configuration'] = $option[1];
                 }
@@ -541,6 +547,7 @@ class PHPUnit_TextUI_Command
               "  --skeleton             Generate skeleton UnitTest class for Unit in Unit.php.\n\n" .
               "  --help                 Prints this usage information.\n" .
               "  --version              Prints the version and exits.\n\n" .
+              "  --bootstrap <file>     A \"bootstrap\" PHP file that is run before the tests.\n" .
               "  --configuration <file> Read configuration from XML file.\n" .
               "  -d key[=value]         Sets a php.ini value.\n";
     }
