@@ -51,7 +51,8 @@ require_once 'PHPUnit/Util/Configuration.php';
 require_once 'PHPUnit/Util/Fileloader.php';
 require_once 'PHPUnit/Util/Filter.php';
 require_once 'PHPUnit/Util/Getopt.php';
-require_once 'PHPUnit/Util/Skeleton.php';
+require_once 'PHPUnit/Util/Skeleton/Class.php';
+require_once 'PHPUnit/Util/Skeleton/Test.php';
 require_once 'PHPUnit/Extensions/Story/ResultPrinter/Text.php';
 require_once 'PHPUnit/Util/TestDox/ResultPrinter/Text.php';
 
@@ -93,7 +94,7 @@ class PHPUnit_TextUI_Command
 
         if ($suite->testAt(0) instanceof PHPUnit_Framework_Warning &&
             strpos($suite->testAt(0)->getMessage(), 'No tests found in class') !== FALSE) {
-            $skeleton = new PHPUnit_Util_Skeleton(
+            $skeleton = new PHPUnit_Util_Skeleton_Test(
                 $arguments['test'],
                 $arguments['testFile']
             );
@@ -153,6 +154,8 @@ class PHPUnit_TextUI_Command
           'log-xml=',
           'repeat=',
           'skeleton',
+          'skeleton-class',
+          'skeleton-test',
           'stop-on-failure',
           'tap',
           'story',
@@ -334,9 +337,42 @@ class PHPUnit_TextUI_Command
                 }
                 break;
 
-                case '--skeleton': {
-                    if (isset($arguments['test']) && isset($arguments['testFile'])) {
-                        self::doSkeleton($arguments['test'], $arguments['testFile']);
+                case '--skeleton':
+                case '--skeleton-class':
+                case '--skeleton-test': {
+                    if ($option[0] == '--skeleton-class') {
+                        $class = 'PHPUnit_Util_Skeleton_Class';
+                    } else {
+                        $class = 'PHPUnit_Util_Skeleton_Test';
+                    }
+
+                    if (isset($arguments['test']) && $arguments['test'] !== FALSE && isset($arguments['testFile'])) {
+                        PHPUnit_TextUI_TestRunner::printVersionString();
+
+                        try {
+                            $skeleton = new $class($arguments['test'], $arguments['testFile']);
+                            $skeleton->write();
+                        }
+
+                        catch (Exception $e) {
+                            print $e->getMessage() . "\n";
+
+                            printf(
+                              'Could not skeleton for "%s" to "%s".' . "\n",
+                              $skeleton->getOutClassName(),
+                              $skeleton->getOutSourceFile()
+                            );
+
+                            exit(PHPUnit_TextUI_TestRunner::FAILURE_EXIT);
+                        }
+
+                        printf(
+                          'Wrote skeleton for "%s" to "%s".' . "\n",
+                          $skeleton->getOutClassName(),
+                          $skeleton->getOutSourceFile()
+                        );
+
+                        exit(PHPUnit_TextUI_TestRunner::SUCCESS_EXIT);
                     } else {
                         self::showHelp();
                         exit(PHPUnit_TextUI_TestRunner::EXCEPTION_EXIT);
@@ -424,44 +460,6 @@ class PHPUnit_TextUI_Command
     }
 
     /**
-     * @param  string  $test
-     * @param  string  $testFile
-     * @access protected
-     * @static
-     */
-    protected static function doSkeleton($test, $testFile)
-    {
-        if ($test !== FALSE) {
-            PHPUnit_TextUI_TestRunner::printVersionString();
-
-            try {
-                $skeleton = new PHPUnit_Util_Skeleton($test, $testFile);
-                $skeleton->write();
-            }
-
-            catch (Exception $e) {
-                print $e->getMessage() . "\n";
-
-                printf(
-                  'Could not write test class skeleton for "%s" to "%s".' . "\n",
-                  $test,
-                  $testFile
-                );
-
-                exit(PHPUnit_TextUI_TestRunner::FAILURE_EXIT);
-            }
-
-            printf(
-              'Wrote test class skeleton for "%s" to "%s".' . "\n",
-              $test,
-              $skeleton->getTestSourceFile()
-            );
-
-            exit(PHPUnit_TextUI_TestRunner::SUCCESS_EXIT);
-        }
-    }
-
-    /**
      * @param  string  $loaderName
      * @access protected
      * @static
@@ -544,7 +542,8 @@ class PHPUnit_TextUI_Command
               "  --stop-on-failure      Stop execution upon first error or failure.\n" .
               "  --verbose              Output more verbose information.\n" .
               "  --wait                 Waits for a keystroke after each test.\n\n" .
-              "  --skeleton             Generate skeleton UnitTest class for Unit in Unit.php.\n\n" .
+              "  --skeleton-class       Generate skeleton Unit class for UnitTest in UnitTest.php.\n" .
+              "  --skeleton-test        Generate skeleton UnitTest class for Unit in Unit.php.\n\n" .
               "  --help                 Prints this usage information.\n" .
               "  --version              Prints the version and exits.\n\n" .
               "  --bootstrap <file>     A \"bootstrap\" PHP file that is run before the tests.\n" .
