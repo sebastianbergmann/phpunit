@@ -142,6 +142,7 @@ class PHPUnit_TextUI_Command
         $arguments = array('syntaxCheck' => TRUE);
 
         $longOptions = array(
+          'ansi',
           'bootstrap=',
           'configuration=',
           'exclude-group=',
@@ -213,6 +214,11 @@ class PHPUnit_TextUI_Command
 
         foreach ($options[0] as $option) {
             switch ($option[0]) {
+                case '--ansi': {
+                    $arguments['ansi'] = TRUE;
+                }
+                break;
+
                 case '--bootstrap': {
                     $arguments['bootstrap'] = $option[1];
                 }
@@ -540,10 +546,11 @@ class PHPUnit_TextUI_Command
               "  --testdox              Report test execution progress in TestDox format.\n\n" .
               "  --no-syntax-check      Disable syntax check of test source files.\n" .
               "  --stop-on-failure      Stop execution upon first error or failure.\n" .
+              "  --ansi                 Use ANSI colors in output.\n" .
               "  --verbose              Output more verbose information.\n" .
               "  --wait                 Waits for a keystroke after each test.\n\n" .
-              "  --skeleton-class       Generate skeleton Unit class for UnitTest in UnitTest.php.\n" .
-              "  --skeleton-test        Generate skeleton UnitTest class for Unit in Unit.php.\n\n" .
+              "  --skeleton-class       Generate Unit class for UnitTest in UnitTest.php.\n" .
+              "  --skeleton-test        Generate UnitTest class for Unit in Unit.php.\n\n" .
               "  --help                 Prints this usage information.\n" .
               "  --version              Prints the version and exits.\n\n" .
               "  --bootstrap <file>     A \"bootstrap\" PHP file that is run before the tests.\n" .

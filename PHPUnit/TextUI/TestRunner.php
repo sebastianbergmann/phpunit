@@ -210,7 +210,7 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
                 $this->printer = $arguments['printer'];
             } else {
                 $this->printer = new PHPUnit_TextUI_ResultPrinter(
-                  NULL, $arguments['verbose']
+                  NULL, $arguments['verbose'], $arguments['ansi']
                 );
             }
         }
@@ -653,6 +653,10 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
 
             $phpunitConfiguration = $arguments['configuration']->getPHPUnitConfiguration();
 
+            if (isset($phpunitConfiguration['ansi']) && !isset($arguments['ansi'])) {
+                $arguments['ansi'] = $phpunitConfiguration['ansi'];
+            }
+
             if (isset($phpunitConfiguration['convertErrorsToExceptions']) && !isset($arguments['convertErrorsToExceptions'])) {
                 $arguments['convertErrorsToExceptions'] = $phpunitConfiguration['convertErrorsToExceptions'];
             }
@@ -781,6 +785,7 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
 
         $arguments['cpdMinLines']                = isset($arguments['cpdMinLines'])                ? $arguments['cpdMinLines']                : 5;
         $arguments['cpdMinMatches']              = isset($arguments['cpdMinMatches'])              ? $arguments['cpdMinMatches']              : 70;
+        $arguments['ansi']                       = isset($arguments['ansi'])                       ? $arguments['ansi']                       : FALSE;
         $arguments['convertErrorsToExceptions']  = isset($arguments['convertErrorsToExceptions'])  ? $arguments['convertErrorsToExceptions']  : TRUE;
         $arguments['convertNoticesToExceptions'] = isset($arguments['convertNoticesToExceptions']) ? $arguments['convertNoticesToExceptions'] : TRUE;
         $arguments['excludeGroups']              = isset($arguments['excludeGroups'])              ? $arguments['excludeGroups']              : array();
