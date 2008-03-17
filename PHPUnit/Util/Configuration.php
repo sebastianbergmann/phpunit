@@ -377,21 +377,21 @@ class PHPUnit_Util_Configuration
 
         if ($this->document->documentElement->hasAttribute('convertErrorsToExceptions')) {
             $result['convertErrorsToExceptions'] = $this->getBoolean(
-              (string)$this->document->documentElement('convertErrorsToExceptions'),
+              (string)$this->document->documentElement->getAttribute('convertErrorsToExceptions'),
               TRUE
             );
         }
 
         if ($this->document->documentElement->hasAttribute('convertNoticesToExceptions')) {
             $result['convertNoticesToExceptions'] = $this->getBoolean(
-              (string)$this->document->documentElement('convertNoticesToExceptions'),
+              (string)$this->document->documentElement->getAttribute('convertNoticesToExceptions'),
               TRUE
             );
         }
 
         if ($this->document->documentElement->hasAttribute('stopOnFailure')) {
             $result['stopOnFailure'] = $this->getBoolean(
-              (string)$this->document->documentElement('stopOnFailure'),
+              (string)$this->document->documentElement->getAttribute('stopOnFailure'),
               FALSE
             );
         }
