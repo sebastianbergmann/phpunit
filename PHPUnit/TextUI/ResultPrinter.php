@@ -352,12 +352,13 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
             $this->write("\n");
 
             if ($this->ansi) {
-                $this->write("\x1b[37;41m\x1b[2K");
+                $this->write("\x1b[37;41m\x1b[2KFAILURES\n\x1b[0m\x1b[37;41m\x1b[2K");
+            } else {
+                $this->write("FAILURES\n");
             }
 
             $this->write(
               sprintf(
-                "FAILURES!\n" .
                 "Tests: %d%s%s%s%s.\n",
 
                 count($result),
