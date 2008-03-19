@@ -156,7 +156,7 @@ class PHPUnit_Util_Skeleton_Class extends PHPUnit_Util_Skeleton
      * that are called from the test methods.
      *
      * @return array
-     * @access public
+     * @access protected
      */
     protected function findMethods()
     {
