@@ -151,13 +151,6 @@ class PHPUnit_Util_Skeleton_Class extends PHPUnit_Util_Skeleton
         return $classTemplate->render();
     }
 
-    /**
-     * Returns the methods of the class under test
-     * that are called from the test methods.
-     *
-     * @return array
-     * @access public
-     */
     protected function findMethods()
     {
         $methods   = array();
@@ -165,11 +158,21 @@ class PHPUnit_Util_Skeleton_Class extends PHPUnit_Util_Skeleton
         $variables = $this->findVariablesThatReferenceClass();
 
         for ($i = 0; $i < $numTokens; $i++) {
-            if (is_array($this->tokens[$i]) && $this->tokens[$i][0] == T_OBJECT_OPERATOR &&
-                is_string($this->tokens[$i+2]) && trim($this->tokens[$i+2]) == '(' &&
-                in_array($this->findVariableName($i), $variables) &&
-                !in_array($this->tokens[$i+1][1], $methods)) {
-                $methods[] = $this->tokens[$i+1][1];
+            if (is_array($this->tokens[$i])) {
+                if ($this->tokens[$i][0] == T_DOUBLE_COLON &&
+                    $this->tokens[$i-1][0] == T_STRING &&
+                    $this->tokens[$i+1][0] == T_STRING &&
+                    trim($this->tokens[$i+2]) == '(' &&
+                    !in_array($this->tokens[$i+1][1], $methods)) {
+                    $methods[] = $this->tokens[$i+1][1];
+                }
+
+                else if ($this->tokens[$i][0] == T_OBJECT_OPERATOR &&
+                    is_string($this->tokens[$i+2]) && trim($this->tokens[$i+2]) == '(' &&
+                    in_array($this->findVariableName($i), $variables) &&
+                    !in_array($this->tokens[$i+1][1], $methods)) {
+                    $methods[] = $this->tokens[$i+1][1];
+                }
             }
         }
 
@@ -183,7 +186,7 @@ class PHPUnit_Util_Skeleton_Class extends PHPUnit_Util_Skeleton
      * that reference the class under test.
      *
      * @return array
-     * @access public
+     * @access protected
      */
     protected function findVariablesThatReferenceClass()
     {
@@ -230,7 +233,7 @@ class PHPUnit_Util_Skeleton_Class extends PHPUnit_Util_Skeleton
      *
      * @param  integer $start
      * @return mixed
-     * @access public
+     * @access protected
      */
     protected function findVariableName($start)
     {
