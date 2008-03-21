@@ -480,7 +480,7 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
         // @expectedException ExceptionClass              on TestCase::testMethod()
         // @expectedException ExceptionClass message      on TestCase::testMethod()
         // @expectedException ExceptionClass message code on TestCase::testMethod()
-        if (preg_match('(@expectedException\s+([:.\w]+)(?:[\t ]+(\S*))?(?:[\t ]+(\S*))?[\t ]*$)m', $docComment, $matches)) {
+        if (preg_match('(@expectedException\s+([:.\w]+)(?:[\t ]+(\S*))?(?:[\t ]+(\S*))?\s*$)m', $docComment, $matches)) {
             $expectedException = $matches[1];
 
             if (isset($matches[2])) {
