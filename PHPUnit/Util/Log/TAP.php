@@ -148,20 +148,11 @@ class PHPUnit_Util_Log_TAP extends PHPUnit_Util_Printer implements PHPUnit_Frame
      */
     public function startTestSuite(PHPUnit_Framework_TestSuite $suite)
     {
-        if ($this->testNumber == 0) {
-            $this->write(
-              sprintf(
-                "1..%d\n",
-
-                count($suite)
-              )
-            );
-        }
-
         $this->write(
           sprintf(
-            "# TestSuite \"%s\" started.\n",
+            "1..%d\n# TestSuite \"%s\" started.\n",
 
+            count($suite),
             $suite->getName()
           )
         );
