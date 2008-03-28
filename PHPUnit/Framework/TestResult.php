@@ -592,15 +592,6 @@ class PHPUnit_Framework_TestResult implements Countable
                 restore_error_handler();
             }
         }
-        $oldErrorHandler = set_error_handler(
-          'PHPUnit_Util_ErrorHandler', E_ALL | E_STRICT
-        );
-
-        if ($oldErrorHandler === NULL) {
-            $errorHandlerSet = TRUE;
-        } else {
-            restore_error_handler();
-        }
 
         if (self::$xdebugLoaded === NULL) {
             self::$xdebugLoaded = extension_loaded('xdebug');
