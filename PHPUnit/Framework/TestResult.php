@@ -605,7 +605,7 @@ class PHPUnit_Framework_TestResult implements Countable
 
         if ($this->convertErrorsToExceptions) {
             $oldErrorHandler = set_error_handler(
-              'PHPUnit_Util_ErrorHandler', E_ALL | E_STRICT
+              array('PHPUnit_Util_ErrorHandler', 'handleError'), E_ALL | E_STRICT
             );
 
             if ($oldErrorHandler === NULL) {
@@ -613,15 +613,6 @@ class PHPUnit_Framework_TestResult implements Countable
             } else {
                 restore_error_handler();
             }
-        }
-        $oldErrorHandler = set_error_handler(
-          'PHPUnit_Util_ErrorHandler', E_ALL | E_STRICT
-        );
-
-        if ($oldErrorHandler === NULL) {
-            $errorHandlerSet = TRUE;
-        } else {
-            restore_error_handler();
         }
 
         if (self::$xdebugLoaded === NULL) {
