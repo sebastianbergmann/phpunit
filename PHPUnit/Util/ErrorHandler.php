@@ -50,44 +50,70 @@ require_once 'PHPUnit/Util/Filter.php';
 PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
 
 /**
- * @param  integer $errno
- * @param  string  $errstr
- * @param  string  $errfile
- * @param  integer $errline
- * @throws PHPUnit_Framework_Error
- * @since  Function available since Release 2.3.0
+ * Error handler that converts PHP errors and warnings to exceptions.
+ *
+ * @category   Testing
+ * @package    PHPUnit
+ * @author     Sebastian Bergmann <sb@sebastian-bergmann.de>
+ * @copyright  2002-2008 Sebastian Bergmann <sb@sebastian-bergmann.de>
+ * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
+ * @version    Release: @package_version@
+ * @link       http://www.phpunit.de/
+ * @since      Class available since Release 3.3.0
  */
-function PHPUnit_Util_ErrorHandler($errno, $errstr, $errfile, $errline)
+class PHPUnit_Util_ErrorHandler
 {
-    if (!($errno & error_reporting())) {
-        return FALSE;
+    protected static $errorStack = array();
+
+    /**
+     * Returns the error stack.
+     *
+     * @return array
+     * @access public
+     * @static
+     */
+    public static function getErrorStack()
+    {
+        return self::$errorStack;
     }
 
-    $trace = debug_backtrace();
-    array_shift($trace);
+    /**
+     * @param  integer $errno
+     * @param  string  $errstr
+     * @param  string  $errfile
+     * @param  integer $errline
+     * @throws PHPUnit_Framework_Error
+     * @access public
+     * @static
+     */
+    public static function handleError($errno, $errstr, $errfile, $errline)
+    {
+        self::$errorStack[] = array($errno, $errstr, $errfile, $errline);
 
-    foreach ($trace as $frame) {
-        if ($frame['function'] == '__toString') {
+        if (!($errno & error_reporting())) {
             return FALSE;
         }
-    }
 
-    if ($errno == E_NOTICE || $errno == E_STRICT) {
-        if (PHPUnit_Framework_Notice::$enabled !== TRUE) {
-            return FALSE;
+        $trace = debug_backtrace();
+        array_shift($trace);
+
+        foreach ($trace as $frame) {
+            if ($frame['function'] == '__toString') {
+                return FALSE;
+            }
         }
 
-        $exception = 'PHPUnit_Framework_Notice';
-    } else {
-        $exception = 'PHPUnit_Framework_Error';
-    }
+        if ($errno == E_NOTICE || $errno == E_STRICT) {
+            if (PHPUnit_Framework_Notice::$enabled !== TRUE) {
+                return FALSE;
+            }
 
-    throw new $exception(
-      $errstr,
-      $errno,
-      $errfile,
-      $errline,
-      $trace
-    );
+            $exception = 'PHPUnit_Framework_Notice';
+        } else {
+            $exception = 'PHPUnit_Framework_Error';
+        }
+
+        throw new $exception($errstr, $errno, $errfile, $errline, $trace);
+    }
 }
 ?>
