@@ -233,7 +233,11 @@ class PHPUnit_Util_Test
                   $dataProviderClassName, $dataProviderMethodName
                 );
 
-                return $dataProviderMethod->invoke(NULL);
+                if ($dataProviderMethod->getNumberOfParameters() == 0) {
+                    return $dataProviderMethod->invoke(NULL);
+                } else {
+                    return $dataProviderMethod->invoke(NULL, $methodName);
+                }
             }
 
             catch (ReflectionException $e) {
