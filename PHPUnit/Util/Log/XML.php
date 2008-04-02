@@ -52,8 +52,9 @@ require_once 'PHPUnit/Util/Printer.php';
 PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
 
 /**
- * A TestListener that generates an XML-based logfile
- * of the test execution.
+ * A TestListener that generates a logfile of the test execution in XML markup.
+ *
+ * The XML markup used is the same as the one that is used by the JUnit Ant task.
  *
  * @category   Testing
  * @package    PHPUnit
@@ -82,7 +83,7 @@ class PHPUnit_Util_Log_XML extends PHPUnit_Util_Printer implements PHPUnit_Frame
      * @var    boolean
      * @access protected
      */
-    protected $logIncompleteSkipeed = FALSE;
+    protected $logIncompleteSkipped = FALSE;
 
     /**
      * @var    boolean
