@@ -82,7 +82,7 @@ class PHPUnit_Util_Log_XML extends PHPUnit_Util_Printer implements PHPUnit_Frame
      * @var    boolean
      * @access protected
      */
-    protected $logIncompleteSkipeed = FALSE;
+    protected $logIncompleteSkipped = FALSE;
 
     /**
      * @var    boolean
