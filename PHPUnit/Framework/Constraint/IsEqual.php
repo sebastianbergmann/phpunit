@@ -203,12 +203,28 @@ class PHPUnit_Framework_Constraint_IsEqual extends PHPUnit_Framework_Constraint
             return FALSE;
         }
 
-        if ($a instanceof DOMDocument) {
-            $a = $this->domToText($a);
-        }
+        if ($a instanceof DOMDocument || $b instanceof DOMDocument) {
+            if (!$a instanceof DOMDocument) {
+                $_a = new DOMDocument;
+                $_a->preserveWhiteSpace = FALSE;
+                $_a->loadXML($a);
+                $a = $_a;
+                unset($_a);
+            }
 
-        if ($b instanceof DOMDocument) {
-            $b = $this->domToText($b);
+            if (!$b instanceof DOMDocument) {
+                $_b = new DOMDocument;
+                $_b->preserveWhiteSpace = FALSE;
+                $_b->loadXML($b);
+                $b = $_b;
+                unset($_b);
+            }
+
+            if (version_compare(phpversion(), '5.2.0RC1', '>=')) {
+                return ($a->C14N() == $b->C14N());
+            } else {
+                return ($a->saveXML() == $b->saveXML());
+            }
         }
 
         if (is_object($a) && is_object($b) &&
@@ -256,10 +272,10 @@ class PHPUnit_Framework_Constraint_IsEqual extends PHPUnit_Framework_Constraint
     }
 
     /**
-     * Compares two numeric values - use delta if applieable
+     * Compares two numeric values - use delta if applicable.
      * 
-     * @param mixed $a First value
-     * @param mixed $b Second value
+     * @param mixed $a
+     * @param mixed $b
      * @return bool
      */
     protected function numericComparison($a, $b)
@@ -281,7 +297,6 @@ class PHPUnit_Framework_Constraint_IsEqual extends PHPUnit_Framework_Constraint
     protected function domToText(DOMDocument $document)
     {
         $document->formatOutput = true;
-        $document->preserveWhiteSpace = false;
         $document->normalizeDocument();
 
         return $document->saveXML();
