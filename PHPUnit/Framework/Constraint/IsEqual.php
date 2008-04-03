@@ -296,7 +296,7 @@ class PHPUnit_Framework_Constraint_IsEqual extends PHPUnit_Framework_Constraint
      */
     protected function domToText(DOMDocument $document)
     {
-        $document->formatOutput = true;
+        $document->formatOutput = TRUE;
         $document->normalizeDocument();
 
         return $document->saveXML();
