@@ -108,10 +108,6 @@ class PHPUnit_Util_Fileloader
     /**
      * Loads a PHP sourcefile.
      *
-     * When the Xdebug extension is loaded and its "xdebug.collect_vars"
-     * configuration directive is enabled, all global variables declared
-     * in the loaded PHP sourcefile will be added to $GLOBALS.
-     *
      * @param  string $filename
      * @access protected
      * @static
@@ -119,24 +115,16 @@ class PHPUnit_Util_Fileloader
      */
     protected static function load($filename)
     {
-        $xdebugLoaded      = extension_loaded('xdebug');
-        $xdebugCollectVars = $xdebugLoaded && ini_get('xdebug.collect_vars') == '1';
-
-        if ($xdebugCollectVars) {
-            $variables = xdebug_get_declared_vars();
-        }
+        $oldVariableNames = array_keys(get_defined_vars());
 
         include_once $filename;
 
-        if ($xdebugCollectVars) {
-            $variables = array_values(
-              array_diff(xdebug_get_declared_vars(), $variables)
-            );
+        $newVariables     = get_defined_vars();
+        $newVariableNames = array_diff(array_keys($newVariables), $oldVariableNames);
 
-            foreach ($variables as $variable) {
-                if (isset($$variable)) {
-                    $GLOBALS[$variable] = $$variable;
-                }
+        foreach ($newVariableNames as $variableName) {
+            if ($variableName != 'oldVariableNames') {
+                $GLOBALS[$variableName] = $newVariables[$variableName];
             }
         }
     }
