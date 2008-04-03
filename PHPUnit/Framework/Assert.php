@@ -1064,9 +1064,11 @@ abstract class PHPUnit_Framework_Assert
         self::assertFileExists($actualFile);
 
         $expected = new DOMDocument;
+        $expected->preserveWhiteSpace = FALSE;
         $expected->load($expectedFile);
 
         $actual = new DOMDocument;
+        $actual->preserveWhiteSpace = FALSE;
         $actual->load($actualFile);
 
         self::assertEquals($expected, $actual, $message);
@@ -1088,9 +1090,11 @@ abstract class PHPUnit_Framework_Assert
         self::assertFileExists($actualFile);
 
         $expected = new DOMDocument;
+        $expected->preserveWhiteSpace = FALSE;
         $expected->load($expectedFile);
 
         $actual = new DOMDocument;
+        $actual->preserveWhiteSpace = FALSE;
         $actual->load($actualFile);
 
         self::assertNotEquals($expected, $actual, $message);
@@ -1109,9 +1113,11 @@ abstract class PHPUnit_Framework_Assert
     public static function assertXmlStringEqualsXmlString($expectedXml, $actualXml, $message = '')
     {
         $expected = new DOMDocument;
+        $expected->preserveWhiteSpace = FALSE;
         $expected->loadXML($expectedXml);
 
         $actual = new DOMDocument;
+        $actual->preserveWhiteSpace = FALSE;
         $actual->loadXML($actualXml);
 
         self::assertEquals($expected, $actual, $message);
@@ -1130,9 +1136,11 @@ abstract class PHPUnit_Framework_Assert
     public static function assertXmlStringNotEqualsXmlString($expectedXml, $actualXml, $message = '')
     {
         $expected = new DOMDocument;
+        $expected->preserveWhiteSpace = FALSE;
         $expected->loadXML($expectedXml);
 
         $actual = new DOMDocument;
+        $actual->preserveWhiteSpace = FALSE;
         $actual->loadXML($actualXml);
 
         self::assertNotEquals($expected, $actual, $message);
