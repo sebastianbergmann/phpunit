@@ -449,7 +449,7 @@ class PHPUnit_Util_Metrics_Function extends PHPUnit_Util_Metrics
         }
 
         else {
-            $this->crap = pow($this->ccn, 2) * pow((1 - $this->coverage)/100, 3) + $this->ccn;
+            $this->crap = pow($this->ccn, 2) * pow(1 - $this->coverage/100, 3) + $this->ccn;
         }
     }
 
