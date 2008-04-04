@@ -237,6 +237,7 @@ class PHPUnit_Util_Metrics_Function extends PHPUnit_Util_Metrics
      * following PHP keywords/statements this value gets incremented by one:
      *
      *   - if
+     *   - elseif
      *   - for
      *   - foreach
      *   - while
@@ -318,6 +319,7 @@ class PHPUnit_Util_Metrics_Function extends PHPUnit_Util_Metrics
 
             switch ($token) {
                 case T_IF:
+                case T_ELSEIF:
                 case T_FOR:
                 case T_FOREACH:
                 case T_WHILE:
