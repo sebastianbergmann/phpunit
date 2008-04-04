@@ -708,9 +708,11 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
     public function testAssertEqualsDOMDocument()
     {
         $expected = new DOMDocument;
+        $expected->preserveWhiteSpace = FALSE;
         $expected->loadXML('<root></root>');
 
         $actual = new DOMDocument;
+        $actual->preserveWhiteSpace = FALSE;
         $actual->loadXML('<root/>');
 
         $this->assertEquals($expected, $actual);
@@ -729,9 +731,11 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
     public function testAssertEqualsDOMDocument2()
     {
         $expected = new DOMDocument;
+        $expected->preserveWhiteSpace = FALSE;
         $expected->loadXML('<foo></foo>');
 
         $actual = new DOMDocument;
+        $actual->preserveWhiteSpace = FALSE;
         $actual->loadXML('<bar/>');        
 
         $this->assertNotEquals($expected, $actual);
@@ -750,9 +754,11 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
     public function testAssertEqualsDOMDocument3()
     {
         $expected = new DOMDocument;
+        $expected->preserveWhiteSpace = FALSE;
         $expected->loadXML('<foo attr="bar"></foo>');
 
         $actual = new DOMDocument;
+        $actual->preserveWhiteSpace = FALSE;
         $actual->loadXML('<foo attr="bar"/>');
 
         $this->assertEquals($expected, $actual);
@@ -771,9 +777,11 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
     public function testAssertEqualsDOMDocument4()
     {
         $expected = new DOMDocument;
+        $expected->preserveWhiteSpace = FALSE;
         $expected->loadXML('<root><foo attr="bar"></foo></root>');
 
         $actual = new DOMDocument;
+        $actual->preserveWhiteSpace = FALSE;
         $actual->loadXML('<root><foo attr="bar"/></root>');
 
         $this->assertEquals($expected, $actual);
@@ -792,9 +800,11 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
     public function testAssertEqualsDOMDocument5()
     {
         $expected = new DOMDocument;
+        $expected->preserveWhiteSpace = FALSE;
         $expected->loadXML('<foo attr1="bar"/>');
 
         $actual = new DOMDocument;
+        $actual->preserveWhiteSpace = FALSE;
         $actual->loadXML('<foo attr1="foobar"/>');
 
         $this->assertNotEquals($expected, $actual);
@@ -813,9 +823,11 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
     public function testAssertEqualsDOMDocument6()
     {
         $expected = new DOMDocument;
+        $expected->preserveWhiteSpace = FALSE;
         $expected->loadXML('<foo> bar </foo>');
 
         $actual = new DOMDocument;
+        $actual->preserveWhiteSpace = FALSE;
         $actual->loadXML('<foo />');
 
         $this->assertNotEquals($expected, $actual);        
@@ -834,9 +846,11 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
     public function testAssertEqualsDOMDocument7()
     {
         $expected = new DOMDocument;
+        $expected->preserveWhiteSpace = FALSE;
         $expected->loadXML('<foo xmlns="urn:myns:bar"/>');
 
         $actual = new DOMDocument;
+        $actual->preserveWhiteSpace = FALSE;
         $actual->loadXML('<foo xmlns="urn:notmyns:bar"/>');
 
         $this->assertNotEquals($expected, $actual);
@@ -855,9 +869,11 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
     public function testAssertEqualsDOMDocument8()
     {
         $expected = new DOMDocument;
+        $expected->preserveWhiteSpace = FALSE;
         $expected->loadXML("<root>\n  <child/>\n</root>");
 
         $actual = new DOMDocument;
+        $actual->preserveWhiteSpace = FALSE;
         $actual->loadXML('<root><child/></root>');
 
         $this->assertEquals($expected, $actual);        
@@ -876,9 +892,11 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
     public function testAssertEqualsDOMDocument9()
     {
         $expected = new DOMDocument;
+        $expected->preserveWhiteSpace = FALSE;
         $expected->loadXML('<foo> bar </foo>');
 
         $actual = new DOMDocument;
+        $actual->preserveWhiteSpace = FALSE;
         $actual->loadXML('<foo> bir </foo>');
 
         $this->assertNotEquals($expected, $actual);        
