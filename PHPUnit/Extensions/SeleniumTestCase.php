@@ -230,6 +230,7 @@ abstract class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_Tes
     {
         $suite = new PHPUnit_Framework_TestSuite;
         $suite->setName($className);
+        $suite->setUserCreated(FALSE);
 
         $class            = new ReflectionClass($className);
         $classGroups      = PHPUnit_Util_Test::getGroups($class);
@@ -252,6 +253,7 @@ abstract class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_Tes
                 foreach ($staticProperties['browsers'] as $browser) {
                     $browserSuite = new PHPUnit_Framework_TestSuite;
                     $browserSuite->setName($className . ': ' . $browser['name']);
+                    $browserSuite->setUserCreated(FALSE);
 
                     foreach ($files as $file) {
                         $browserSuite->addTest(
@@ -277,6 +279,7 @@ abstract class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_Tes
             foreach ($staticProperties['browsers'] as $browser) {
                 $browserSuite = new PHPUnit_Framework_TestSuite;
                 $browserSuite->setName($className . ': ' . $browser['name']);
+                $browserSuite->setUserCreated(FALSE);
 
                 foreach ($class->getMethods() as $method) {
                     if (PHPUnit_Framework_TestSuite::isPublicTestMethod($method)) {
@@ -289,6 +292,8 @@ abstract class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_Tes
                             $dataSuite = new PHPUnit_Framework_TestSuite(
                               $className . '::' . $name
                             );
+
+                            $dataSuite->setUserCreated(FALSE);
 
                             foreach ($data as $_data) {
                                 $dataSuite->addTest(
@@ -326,6 +331,8 @@ abstract class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_Tes
                         $dataSuite = new PHPUnit_Framework_TestSuite(
                           $className . '::' . $name
                         );
+
+                        $dataSuite->setUserCreated(FALSE);
 
                         foreach ($data as $_data) {
                             $dataSuite->addTest(
