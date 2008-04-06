@@ -251,24 +251,7 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
           $class->name
         );
 
-        if (!empty($this->data)) {
-            if (is_string($this->dataName)) {
-                $buffer .= sprintf(
-                  ' with data set "%s"',
-
-                  $this->dataName
-                );
-            } else {
-                $buffer .= sprintf(
-                  ' with data set #%d (%s)',
-
-                  $this->dataName,
-                  $this->dataToString($this->data)
-                );
-            }
-        }
-
-        return $buffer;
+        return $buffer . $this->getDataSet();
     }
 
     /**
@@ -290,7 +273,7 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
      */
     public function getName()
     {
-        return $this->name;
+        return $this->name . $this->getDataSet(FALSE);
     }
 
     /**
@@ -790,6 +773,35 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
         }
 
         return join(', ', $result);
+    }
+
+    /**
+     * Gets the data set description of a TestCase.
+     *
+     * @param  boolean $includeData
+     * @return string
+     * @access protected
+     * @since  Method available since Release 3.3.0
+     */
+    protected function getDataSet($includeData = TRUE)
+    {
+        $buffer = '';
+
+        if (!empty($this->data)) {
+            if (is_int($this->dataName)) {
+                $buffer .= sprintf(' with data set #%d', $this->dataName);
+            } else {
+                $buffer .= sprintf(' with data set "%s"', $this->dataName);
+            }
+
+            if ($includeData) {
+                $buffer .= sprintf(
+                  $buffer . ' (%s)', $this->dataToString($this->data)
+                );
+            }
+        }
+
+        return $buffer;
     }
 
     /**
