@@ -147,52 +147,51 @@ class PHPUnit_Util_Log_CodeCoverage_XML extends PHPUnit_Util_Printer
                 foreach ($methods as $method) {
                     if ($method->getDeclaringClass()->getName() == $class->getName()) {
                         $startLine = $method->getStartLine();
-                        $numMethods++;
-                        $fileMethods++;
-                        $projectMethods++;
+                        $endLine   = $method->getEndLine();
+                        $tests     = array();
 
-                        if ($startLine) {
-                            $endLine = $method->getEndLine();
-                            $tests   = array();
+                        for ($i = $startLine; $i <= $endLine; $i++) {
+                            if (isset($files[$filename][$i])) {
+                                if (is_array($files[$filename][$i])) {
+                                    foreach ($files[$filename][$i] as $_test) {
+                                        $add = TRUE;
 
-                            for ($i = $startLine; $i <= $endLine; $i++) {
-                                if (isset($files[$filename][$i])) {
-                                    if (is_array($files[$filename][$i])) {
-                                        foreach ($files[$filename][$i] as $_test) {
-                                            $add = TRUE;
-
-                                            foreach ($tests as $test) {
-                                                if ($test === $_test) {
-                                                    $add = FALSE;
-                                                    break;
-                                                }
-                                            }
-
-                                            if ($add) {
-                                                $tests[] = $_test;
+                                        foreach ($tests as $test) {
+                                            if ($test === $_test) {
+                                                $add = FALSE;
+                                                break;
                                             }
                                         }
 
-                                        $classCoveredStatements++;
+                                        if ($add) {
+                                            $tests[] = $_test;
+                                        }
                                     }
 
-                                    $classStatements++;
+                                    $classCoveredStatements++;
                                 }
-                            }
 
-                            $count = count($tests);
-
-                            $lines[$startLine] = array(
-                              'count' => $count,
-                              'type' => 'method'
-                            );
-
-                            if ($count > 0) {
-                                $classCoveredMethods++;
-                                $fileCoveredMethods++;
-                                $projectCoveredMethods++;
+                                $classStatements++;
                             }
                         }
+
+                        $count = count($tests);
+
+                        $lines[$startLine] = array(
+                          'count' => $count,
+                          'type' => 'method'
+                        );
+
+                        if ($count > 0) {
+                            $classCoveredMethods++;
+                            $fileCoveredMethods++;
+                            $projectCoveredMethods++;
+                        }
+
+                        $classStatements--;
+                        $numMethods++;
+                        $fileMethods++;
+                        $projectMethods++;
                     }
                 }
 
