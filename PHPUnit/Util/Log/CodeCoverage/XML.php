@@ -91,15 +91,12 @@ class PHPUnit_Util_Log_CodeCoverage_XML extends PHPUnit_Util_Printer
         $project->setAttribute('timestamp', $time);
         $coverage->appendChild($project);
 
-        $codeCoverageInformation = $result->getCodeCoverageInformation();
-        $files                   = PHPUnit_Util_CodeCoverage::getSummary($codeCoverageInformation);
-        $packages                = array();
-
+        $codeCoverageInformation    = $result->getCodeCoverageInformation();
+        $files                      = PHPUnit_Util_CodeCoverage::getSummary($codeCoverageInformation);
+        $packages                   = array();
         $projectFiles               = 0;
         $projectLoc                 = 0;
         $projectNcloc               = 0;
-        $projectLinesExecutable     = 0;
-        $projectLinesExecuted       = 0;
         $projectClasses             = 0;
         $projectMethods             = 0;
         $projectCoveredMethods      = 0;
@@ -263,17 +260,13 @@ class PHPUnit_Util_Log_CodeCoverage_XML extends PHPUnit_Util_Printer
             }
 
             if (file_exists($filename)) {
-                $fileMetrics         = PHPUnit_Util_Metrics_File::factory($filename, $files);
-                $fileLoc             = $fileMetrics->getLoc();
-                $fileNcloc           = $fileMetrics->getNcloc();
-                $fileLinesExecutable = $fileMetrics->getLocExecutable();
-                $fileLinesExecuted   = $fileMetrics->getLocExecuted();
+                $fileMetrics = PHPUnit_Util_Metrics_File::factory($filename, $files);
+                $fileLoc     = $fileMetrics->getLoc();
+                $fileNcloc   = $fileMetrics->getNcloc();
 
                 $fileMetricsXML = $document->createElement('metrics');
                 $fileMetricsXML->setAttribute('loc', $fileLoc);
                 $fileMetricsXML->setAttribute('ncloc', $fileNcloc);
-                $fileMetricsXML->setAttribute('executablelines', $fileLinesExecutable);
-                $fileMetricsXML->setAttribute('executedlines', $fileLinesExecuted);
                 $fileMetricsXML->setAttribute('classes', $fileClasses);
                 $fileMetricsXML->setAttribute('methods', $fileMethods);
                 $fileMetricsXML->setAttribute('coveredmethods', $fileCoveredMethods);
@@ -300,8 +293,6 @@ class PHPUnit_Util_Log_CodeCoverage_XML extends PHPUnit_Util_Printer
 
                 $projectLoc               += $fileLoc;
                 $projectNcloc             += $fileNcloc;
-                $projectLinesExecutable   += $fileLinesExecutable;
-                $projectLinesExecuted     += $fileLinesExecuted;
                 $projectStatements        += $fileStatements;
                 $projectCoveredStatements += $fileCoveredStatements;
             }
@@ -311,8 +302,6 @@ class PHPUnit_Util_Log_CodeCoverage_XML extends PHPUnit_Util_Printer
         $projectMetricsXML->setAttribute('files', $projectFiles);
         $projectMetricsXML->setAttribute('loc', $projectLoc);
         $projectMetricsXML->setAttribute('ncloc', $projectNcloc);
-        $projectMetricsXML->setAttribute('executablelines', $projectLinesExecutable);
-        $projectMetricsXML->setAttribute('executedlines', $projectLinesExecuted);
         $projectMetricsXML->setAttribute('classes', $projectClasses);
         $projectMetricsXML->setAttribute('methods', $projectMethods);
         $projectMetricsXML->setAttribute('coveredmethods', $projectCoveredMethods);
