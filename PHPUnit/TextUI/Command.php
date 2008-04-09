@@ -508,7 +508,8 @@ class PHPUnit_TextUI_Command
     {
         PHPUnit_TextUI_TestRunner::printVersionString();
 
-        print "Usage: phpunit [switches] UnitTest [UnitTest.php]\n\n";
+        print "Usage: phpunit [switches] UnitTest [UnitTest.php]\n" .
+              "       phpunit [switches] <directory>\n\n";
 
         if (PHPUnit_Util_Filesystem::fileExistsInIncludePath('Image/GraphViz.php')) {
             print "  --log-graphviz <file>  Log test execution in GraphViz markup.\n";
