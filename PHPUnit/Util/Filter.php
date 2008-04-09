@@ -155,6 +155,7 @@ class PHPUnit_Util_Filter
      * @param  string $directory
      * @param  string $suffix
      * @param  string $group
+     * @throws RuntimeException
      * @access public
      * @static
      * @since  Method available since Release 3.1.5
@@ -165,6 +166,8 @@ class PHPUnit_Util_Filter
             foreach (self::getIterator($directory, $suffix) as $file) {
                 self::addFileToFilter($file->getPathName(), $group);
             }
+        } else {
+            throw new RuntimeException($directory . ' does not exist');
         }
     }
 
@@ -173,6 +176,7 @@ class PHPUnit_Util_Filter
      *
      * @param  string $filename
      * @param  string $group
+     * @throws RuntimeException
      * @access public
      * @static
      * @since  Method available since Release 2.1.0
@@ -189,6 +193,8 @@ class PHPUnit_Util_Filter
             else if (!in_array($filename, self::$blacklistedFiles[$group])) {
                 self::$blacklistedFiles[$group][] = $filename;
             }
+        } else {
+            throw new RuntimeException($filename . ' does not exist');
         }
     }
 
@@ -198,6 +204,7 @@ class PHPUnit_Util_Filter
      * @param  string $directory
      * @param  string $suffix
      * @param  string $group
+     * @throws RuntimeException
      * @access public
      * @static
      * @since  Method available since Release 3.1.5
@@ -208,6 +215,8 @@ class PHPUnit_Util_Filter
             foreach (self::getIterator($directory, $suffix) as $file) {
                 self::removeFileFromFilter($file->getPathName(), $group);
             }
+        } else {
+            throw new RuntimeException($directory . ' does not exist');
         }
     }
 
@@ -216,6 +225,7 @@ class PHPUnit_Util_Filter
      *
      * @param  string $filename
      * @param  string $group
+     * @throws RuntimeException
      * @access public
      * @static
      * @since  Method available since Release 2.1.0
@@ -232,6 +242,8 @@ class PHPUnit_Util_Filter
                     }
                 }
             }
+        } else {
+            throw new RuntimeException($filename . ' does not exist');
         }
     }
 
@@ -240,6 +252,7 @@ class PHPUnit_Util_Filter
      *
      * @param  string $directory
      * @param  string $suffix
+     * @throws RuntimeException
      * @access public
      * @static
      * @since  Method available since Release 3.1.5
@@ -250,6 +263,8 @@ class PHPUnit_Util_Filter
             foreach (self::getIterator($directory, $suffix) as $file) {
                 self::addFileToWhitelist($file->getPathName());
             }
+        } else {
+            throw new RuntimeException($directory . ' does not exist');
         }
     }
 
@@ -260,6 +275,7 @@ class PHPUnit_Util_Filter
      * When the whitelist is not empty, whitelisting is used.
      *
      * @param  string $filename
+     * @throws RuntimeException
      * @access public
      * @static
      * @since  Method available since Release 3.1.0
@@ -272,6 +288,8 @@ class PHPUnit_Util_Filter
             if (!in_array($filename, self::$whitelistedFiles)) {
                 self::$whitelistedFiles[] = $filename;
             }
+        } else {
+            throw new RuntimeException($filename . ' does not exist');
         }
     }
 
@@ -280,6 +298,7 @@ class PHPUnit_Util_Filter
      *
      * @param  string $directory
      * @param  string $suffix
+     * @throws RuntimeException
      * @access public
      * @static
      * @since  Method available since Release 3.1.5
@@ -290,6 +309,8 @@ class PHPUnit_Util_Filter
             foreach (self::getIterator($directory, $suffix) as $file) {
                 self::removeFileFromWhitelist($file->getPathName());
             }
+        } else {
+            throw new RuntimeException($directory . ' does not exist');
         }
     }
 
@@ -297,6 +318,7 @@ class PHPUnit_Util_Filter
      * Removes a file from the whitelist.
      *
      * @param  string $filename
+     * @throws RuntimeException
      * @access public
      * @static
      * @since  Method available since Release 3.1.0
@@ -311,6 +333,8 @@ class PHPUnit_Util_Filter
                     unset(self::$whitelistedFiles[$key]);
                 }
             }
+        } else {
+            throw new RuntimeException($filename . ' does not exist');
         }
     }
 
