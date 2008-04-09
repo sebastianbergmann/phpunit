@@ -194,7 +194,7 @@ abstract class PHPUnit_Runner_BaseTestRunner implements PHPUnit_Framework_TestLi
      */
     public function getTest($suiteClassName, $suiteClassFile = '', $syntaxCheck = TRUE)
     {
-        if (is_dir($suiteClassName)) {
+        if (is_dir($suiteClassName) && !is_file($suiteClassName . '.php') && empty($suiteClassFile)) {
             $testCollector = new PHPUnit_Runner_IncludePathTestCollector(
               array($suiteClassName)
             );
