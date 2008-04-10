@@ -251,7 +251,7 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
           $class->name
         );
 
-        return $buffer . $this->getDataSet();
+        return $buffer . $this->getDataSetAsString();
     }
 
     /**
@@ -273,7 +273,7 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
      */
     public function getName()
     {
-        return $this->name . $this->getDataSet(FALSE);
+        return $this->name . $this->getDataSetAsString(FALSE);
     }
 
     /**
@@ -783,7 +783,7 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
      * @access protected
      * @since  Method available since Release 3.3.0
      */
-    protected function getDataSet($includeData = TRUE)
+    protected function getDataSetAsString($includeData = TRUE)
     {
         $buffer = '';
 
