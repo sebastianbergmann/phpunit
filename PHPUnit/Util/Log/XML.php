@@ -48,6 +48,7 @@ require_once 'PHPUnit/Framework.php';
 require_once 'PHPUnit/Util/Class.php';
 require_once 'PHPUnit/Util/Filter.php';
 require_once 'PHPUnit/Util/Printer.php';
+require_once 'PHPUnit/Util/XML.php';
 
 PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
 
@@ -197,7 +198,7 @@ class PHPUnit_Util_Log_XML extends PHPUnit_Util_Printer implements PHPUnit_Frame
 
         $error->appendChild(
           $this->document->createCDATASection(
-            utf8_encode($buffer)
+            PHPUnit_Util_XML::convertToUtf8($buffer)
           )
         );
 
@@ -231,7 +232,7 @@ class PHPUnit_Util_Log_XML extends PHPUnit_Util_Printer implements PHPUnit_Frame
 
             $failure->appendChild(
               $this->document->createCDATASection(
-                utf8_encode($buffer)
+                PHPUnit_Util_XML::convertToUtf8($buffer)
               )
             );
 
@@ -257,7 +258,7 @@ class PHPUnit_Util_Log_XML extends PHPUnit_Util_Printer implements PHPUnit_Frame
 
             $error->appendChild(
               $this->document->createCDATASection(
-                utf8_encode(
+                PHPUnit_Util_XML::convertToUtf8(
                   "Incomplete Test\n" .
                   PHPUnit_Util_Filter::getFilteredStacktrace($e, FALSE)
                 )
@@ -289,7 +290,7 @@ class PHPUnit_Util_Log_XML extends PHPUnit_Util_Printer implements PHPUnit_Frame
 
             $error->appendChild(
               $this->document->createCDATASection(
-                utf8_encode(
+                PHPUnit_Util_XML::convertToUtf8(
                   "Skipped Test\n" .
                   PHPUnit_Util_Filter::getFilteredStacktrace($e, FALSE)
                 )
