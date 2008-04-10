@@ -62,6 +62,33 @@ PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
  */
 class PHPUnit_Util_XML
 {
+    /**
+     * Converts a string to UTF-8 encoding.
+     *
+     * @param  string $string
+     * @return string
+     * @access public
+     * @static
+     * @since  Method available since Release 3.3.0
+     */
+    public static function convertToUtf8($string)
+    {
+        if (function_exists('mb_convert_encoding')) {
+            return mb_convert_encoding($string, 'UTF-8');
+        } else {
+            return utf8_encode($string);
+        }
+    }
+
+    /**
+     * Loads an XML (or HTML) file into a DOMDocument object.
+     *
+     * @param  string  $filename
+     * @param  boolean $html
+     * @return DOMDocument
+     * @access public
+     * @static
+     */
     public static function load($filename, $html = FALSE)
     {
         $document = new DOMDocument;
