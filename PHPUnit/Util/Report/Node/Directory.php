@@ -368,24 +368,6 @@ class PHPUnit_Util_Report_Node_Directory extends PHPUnit_Util_Report_Node
 
         $this->setTemplateVars($template, $title, $charset);
 
-        $totalClassesPercent = $this->getCalledClassesPercent();
-
-        list($totalClassesColor, $totalClassesLevel) = $this->getColorLevel(
-          $totalClassesPercent, $lowUpperBound, $highLowerBound
-        );
-
-        $totalMethodsPercent = $this->getCalledMethodsPercent();
-
-        list($totalMethodsColor, $totalMethodsLevel) = $this->getColorLevel(
-          $totalMethodsPercent, $lowUpperBound, $highLowerBound
-        );
-
-        $totalLinesPercent = $this->getLineExecutedPercent();
-
-        list($totalLinesColor, $totalLinesLevel) = $this->getColorLevel(
-          $totalLinesPercent, $lowUpperBound, $highLowerBound
-        );
-
         $template->setVar(
           array(
             'total_item'       => $this->renderTotalItem($lowUpperBound, $highLowerBound),
