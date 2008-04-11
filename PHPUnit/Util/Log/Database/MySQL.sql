@@ -108,7 +108,7 @@ CREATE TABLE IF NOT EXISTS code_line(
   code_line_id      INTEGER UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
   code_line_number  INTEGER UNSIGNED NOT NULL,
   code_line         TEXT,
-  code_line_covered TINYINT UNSIGNED NOT NULL,
+  code_line_covered TINYINT          NOT NULL,
 
   INDEX (code_file_id)
 ) ENGINE=InnoDB;
