@@ -199,7 +199,15 @@ class PHPUnit_Util_Log_CodeCoverage_Database
                 $i = 1;
 
                 foreach ($lines as $line) {
-                    $covered = isset($summary[$file][$i]) ? 1 : 0;
+                    $covered = 0;
+
+                    if (isset($summary[$file][$i])) {
+                        if (is_int($summary[$file][$i])) {
+                            $covered = $summary[$file][$i];
+                        } else {
+                            $covered = 1;
+                        }
+                    }
 
                     $stmt->bindParam(':fileId', $fileId, PDO::PARAM_INT);
                     $stmt->bindParam(':lineNumber', $i, PDO::PARAM_INT);
