@@ -461,7 +461,11 @@ abstract class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_Tes
                 }
             }
 
-            $this->__call($action, $arguments);
+            if (method_exists($this, $action)) {
+                call_user_func_array(array($this, $action), $arguments);
+            } else {
+                $this->__call($action, $arguments);
+            }
         }
     }
 
