@@ -165,6 +165,14 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
     protected $expectedExceptionMessage = '';
 
     /**
+     * The code of the expected Exception.
+     *
+     * @var    integer
+     * @access protected
+     */
+    protected $expectedExceptionCode;
+
+    /**
      * Fixture that is shared between the tests of a test suite.
      *
      * @var    mixed
