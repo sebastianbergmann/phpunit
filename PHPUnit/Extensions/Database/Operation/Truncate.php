@@ -66,7 +66,13 @@ PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
  */
 class PHPUnit_Extensions_Database_Operation_Truncate implements PHPUnit_Extensions_Database_Operation_IDatabaseOperation
 {
-
+    protected $useCascade = false;
+    
+    public function setCascade($cascade = true)
+    {
+        $this->useCascade = $cascade;
+    }
+    
     public function execute(PHPUnit_Extensions_Database_DB_IDatabaseConnection $connection, PHPUnit_Extensions_Database_DataSet_IDataSet $dataSet)
     {
         foreach ($dataSet as $table) {
@@ -74,6 +80,10 @@ class PHPUnit_Extensions_Database_Operation_Truncate implements PHPUnit_Extensio
             $query = "
                 {$connection->getTruncateCommand()} {$connection->quoteSchemaObject($table->getTableMetaData()->getTableName())}
             ";
+                
+            if ($this->useCascade && $connection->allowsCascading()) {
+                $query .= " CASCADE";
+            }
             
             try {
                 $connection->getConnection()->query($query);
