@@ -49,6 +49,7 @@ require_once 'PHPUnit/Util/Metrics/Project.php';
 require_once 'PHPUnit/Util/CodeCoverage.php';
 require_once 'PHPUnit/Util/Filter.php';
 require_once 'PHPUnit/Util/Printer.php';
+require_once 'PHPUnit/Util/XML.php';
 
 PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
 
@@ -112,7 +113,7 @@ class PHPUnit_Util_Log_CPD extends PHPUnit_Util_Printer
 
             $codefragment->appendChild(
               $document->createCDATASection(
-                utf8_encode(
+                PHPUnit_Util_XML::convertToUtf8(
                   join(
                     '',
                     array_slice(
