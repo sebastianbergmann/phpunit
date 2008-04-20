@@ -47,7 +47,7 @@
 require_once 'PHPUnit/Framework.php';
 require_once 'PHPUnit/Util/Filter.php';
 
-require_once 'PHPUnit/Extensions/Database/Operation/IDatabaseOperation.php';
+require_once 'PHPUnit/Extensions/Database/Operation/RowBased.php';
 require_once 'PHPUnit/Extensions/Database/Operation/Exception.php';
 
 PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
