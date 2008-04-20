@@ -104,5 +104,11 @@ interface PHPUnit_Extensions_Database_DB_IMetaData
      */
     public function quoteSchemaObject($object);
 
+    /**
+     * Returns true if the rdbms allows cascading
+     * 
+     * @return bool
+     */
+    public function allowsCascading();
 }
 ?>
