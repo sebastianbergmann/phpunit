@@ -87,7 +87,10 @@ class PHPUnit_Extensions_Database_DataSet_FlatXmlDataSet extends PHPUnit_Extensi
                 
                 $values[$name] = $value;
             }
-            $tableValues[$tableName][] = $values;
+            
+            if (count($values)) {
+                $tableValues[$tableName][] = $values;
+            }
         }
     }
 }
