@@ -191,6 +191,16 @@ abstract class PHPUnit_Extensions_Database_DB_MetaData implements PHPUnit_Extens
     {
         return $this->truncateCommand;
     }
+
+    /**
+     * Returns true if the rdbms allows cascading
+     * 
+     * @return bool
+     */
+    public function allowsCascading()
+    {
+        return false;
+    }
 }
 
 /**
