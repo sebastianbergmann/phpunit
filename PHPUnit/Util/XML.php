@@ -69,7 +69,7 @@ class PHPUnit_Util_XML
      * @return string
      * @access public
      * @static
-     * @since  Method available since Release 3.3.0
+     * @since  Method available since Release 3.2.19
      */
     public static function convertToUtf8($string)
     {
