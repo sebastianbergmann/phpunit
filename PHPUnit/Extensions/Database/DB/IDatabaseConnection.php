@@ -119,5 +119,19 @@ interface PHPUnit_Extensions_Database_DB_IDatabaseConnection
      * @return string
      */
     public function quoteSchemaObject($object);
+    
+    /**
+     * Returns the command used to truncate a table.
+     *
+     * @return string
+     */
+    public function getTruncateCommand();
+    
+    /**
+     * Returns true if the connection allows cascading
+     * 
+     * @return bool
+     */
+    public function allowsCascading();
 }
 ?>

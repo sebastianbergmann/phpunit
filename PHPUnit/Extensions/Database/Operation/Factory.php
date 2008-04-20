@@ -88,11 +88,15 @@ class PHPUnit_Extensions_Database_Operation_Factory
      * Returns a clean insert database operation. It will remove all contents 
      * from the table prior to re-inserting rows.
      * 
+     * @param bool $cascadeTruncates Set to true to force truncates to cascade on databases that support this.
      * @return PHPUnit_Extensions_Database_Operation_IDatabaseOperation
      */
-    public static function CLEAN_INSERT()
+    public static function CLEAN_INSERT($cascadeTruncates = false)
     {
-        return new PHPUnit_Extensions_Database_Operation_Composite(array(new PHPUnit_Extensions_Database_Operation_Truncate(), new PHPUnit_Extensions_Database_Operation_Insert()));
+        return new PHPUnit_Extensions_Database_Operation_Composite(array(
+            self::TRUNCATE($cascadeTruncates),
+            self::INSERT()
+        ));
     }
 
     /**
@@ -108,11 +112,15 @@ class PHPUnit_Extensions_Database_Operation_Factory
     /**
      * Returns a truncate database operation.
      * 
+     * @param bool $cascadeTruncates Set to true to force truncates to cascade on databases that support this.
      * @return PHPUnit_Extensions_Database_Operation_IDatabaseOperation
      */
-    public static function TRUNCATE()
+    public static function TRUNCATE($cascadeTruncates = false)
     {
-        return new PHPUnit_Extensions_Database_Operation_Truncate();
+        $truncate = new PHPUnit_Extensions_Database_Operation_Truncate();
+        $truncate->setCascade($cascadeTruncates);
+        
+        return $truncate;
     }
 
     /**
