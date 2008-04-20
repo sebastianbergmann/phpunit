@@ -220,5 +220,14 @@ class PHPUnit_Extensions_Database_DB_DefaultDatabaseConnection implements PHPUni
         return $this->getMetaData()->getTruncateCommand();
     }
 
+    /**
+     * Returns true if the connection allows cascading
+     * 
+     * @return bool
+     */
+    public function allowsCascading()
+    {
+        return $this->getMetaData()->allowsCascading();
+    }
 }
 ?>

@@ -150,5 +150,15 @@ class PHPUnit_Extensions_Database_DB_MetaData_PgSQL extends PHPUnit_Extensions_D
             $this->keys[$tableName][] = $columName;
         }
     }
+
+    /**
+     * Returns true if the rdbms allows cascading
+     * 
+     * @return bool
+     */
+    public function allowsCascading()
+    {
+        return true;
+    }
 }
 ?>
