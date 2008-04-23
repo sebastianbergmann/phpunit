@@ -69,22 +69,28 @@ class PHPUnit_Framework_ComparisonFailure_Array extends PHPUnit_Framework_Compar
      * Returns a string describing the difference between the expected and the
      * actual array.
      *
-     * @note Diffing is only done for one level.
+     * @return string
      */
     public function toString()
     {
         if ($this->hasDiff()) {
-            return $this->diff(
-              print_r($this->expected, TRUE),
-              print_r($this->actual, TRUE)
+            $diff = $this->diff(
+              print_r($this->expected, TRUE), print_r($this->actual, TRUE)
             );
+
+            if (!empty($diff)) {
+                return $diff;
+            }
         }
+
+        // Fallback: Either diff is not available or the print_r() output for
+        // the expected and the actual array are equal (but the arrays are not).
 
         $expectedOnly = array();
         $actualOnly   = array();
         $diff         = '';
 
-        foreach($this->expected as $expectedKey => $expectedValue) {
+        foreach ($this->expected as $expectedKey => $expectedValue) {
             if (!array_key_exists($expectedKey, $this->actual)) {
                 $expectedOnly[] = $expectedKey;
                 continue;
@@ -96,19 +102,19 @@ class PHPUnit_Framework_ComparisonFailure_Array extends PHPUnit_Framework_Compar
             $diff .= $diffObject->toString() . "\n";
         }
 
-        foreach($this->actual as $actualKey => $actualValue) {
+        foreach ($this->actual as $actualKey => $actualValue) {
             if (!array_key_exists($actualKey, $this->expected)) {
                 $actualOnly[] = $actualKey;
                 continue;
             }
         }
 
-        foreach($expectedOnly as $expectedKey) {
+        foreach ($expectedOnly as $expectedKey) {
             $expectedValue = $this->expected[$expectedKey];
             $diff .= "array key <{$expectedKey}>: only in expected <{$expectedValue}>\n";
         }
 
-        foreach($actualOnly as $actualKey) {
+        foreach ($actualOnly as $actualKey) {
             $actualValue = $this->actual[$actualKey];
             $diff .= "array key <{$actualKey}>: only in actual <{$actualValue}>\n";
         }
