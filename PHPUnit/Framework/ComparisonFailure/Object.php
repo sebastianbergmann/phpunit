@@ -69,16 +69,22 @@ class PHPUnit_Framework_ComparisonFailure_Object extends PHPUnit_Framework_Compa
      * Returns a string describing the difference between the expected and the
      * actual object.
      *
-     * @note Diffing is only done for one level.
+     * @return string
      */
     public function __toString()
     {
         if ($this->hasDiff()) {
-            return $this->diff(
-              print_r($this->expected, TRUE),
-              print_r($this->actual, TRUE)
+            $diff = $this->diff(
+              print_r($this->expected, TRUE), print_r($this->actual, TRUE)
             );
+
+            if (!empty($diff)) {
+                return $diff;
+            }
         }
+
+        // Fallback: Either diff is not available or the print_r() output for
+        // the expected and the actual object are equal (but the objects are not).
 
         $expectedClass = get_class($this->expected);
         $actualClass   = get_class($this->actual);
