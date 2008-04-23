@@ -220,10 +220,10 @@ abstract class PHPUnit_Framework_ComparisonFailure extends PHPUnit_Framework_Ass
             $buffer[0] = "--- Expected";
             $buffer[1] = "+++ Actual";
 
-            return implode("\n", $buffer);
+            $buffer = implode("\n", $buffer);
         }
 
-        return '';
+        return $buffer;
     }
 
     public static function hasDiff()
