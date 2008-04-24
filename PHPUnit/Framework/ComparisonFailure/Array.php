@@ -96,9 +96,21 @@ class PHPUnit_Framework_ComparisonFailure_Array extends PHPUnit_Framework_Compar
                 continue;
             }
 
-            if ($expectedValue === $this->actual[$expectedKey]) continue;
+            if ($expectedValue === $this->actual[$expectedKey]) {
+                continue;
+            }
 
-            $diffObject = PHPUnit_Framework_ComparisonFailure::diffIdentical($expectedValue, $this->actual[$expectedKey], $this->message . "array key <{$expectedKey}>: ");
+            $diffObject = PHPUnit_Framework_ComparisonFailure::diffIdentical(
+              $expectedValue,
+              $this->actual[$expectedKey],
+              sprintf(
+                '%sarray key %s: ',
+
+                $this->message,
+                PHPUnit_Util_Type::toString($expectedKey)
+              )
+            );
+
             $diff .= $diffObject->toString() . "\n";
         }
 
@@ -110,13 +122,21 @@ class PHPUnit_Framework_ComparisonFailure_Array extends PHPUnit_Framework_Compar
         }
 
         foreach ($expectedOnly as $expectedKey) {
-            $expectedValue = $this->expected[$expectedKey];
-            $diff .= "array key <{$expectedKey}>: only in expected <{$expectedValue}>\n";
+            $diff .= sprintf(
+              "array key %s: only in expected %s\n",
+
+              PHPUnit_Util_Type::toString($expectedKey),
+              PHPUnit_Util_Type::toString($this->expected[$expectedKey])
+            );
         }
 
         foreach ($actualOnly as $actualKey) {
-            $actualValue = $this->actual[$actualKey];
-            $diff .= "array key <{$actualKey}>: only in actual <{$actualValue}>\n";
+            $diff .= sprintf(
+              "array key %s: only in expected %s\n",
+
+              PHPUnit_Util_Type::toString($actualKey),
+              PHPUnit_Util_Type::toString($this->actual[$actualKey])
+            );
         }
 
         return $diff;
