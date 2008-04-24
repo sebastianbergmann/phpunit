@@ -78,25 +78,25 @@ class PHPUnit_Extensions_Database_DB_MetaData_Sqlite extends PHPUnit_Extensions_
     public function getTableNames()
     {
         $query = "
-            SELECT name 
+            SELECT name
             FROM sqlite_master
-            WHERE 
-                type='table' AND 
+            WHERE
+                type='table' AND
                 name <> 'sqlite_sequence'
             ORDER BY name
         ";
-        
+
         $result = $this->pdo->query($query);
-        
+
         while ($tableName = $result->fetchColumn(0)) {
             $tableNames[] = $tableName;
         }
-        
+
         return $tableNames;
     }
 
     /**
-     * Returns an array containing the names of all the columns in the 
+     * Returns an array containing the names of all the columns in the
      * $tableName table,
      *
      * @param string $tableName
@@ -107,12 +107,12 @@ class PHPUnit_Extensions_Database_DB_MetaData_Sqlite extends PHPUnit_Extensions_
         if (!isset($this->columns[$tableName])) {
             $this->loadColumnInfo($tableName);
         }
-        
+
         return $this->columns[$tableName];
     }
 
     /**
-     * Returns an array containing the names of all the primary key columns in 
+     * Returns an array containing the names of all the primary key columns in
      * the $tableName table.
      *
      * @param string $tableName
@@ -123,7 +123,7 @@ class PHPUnit_Extensions_Database_DB_MetaData_Sqlite extends PHPUnit_Extensions_
         if (!isset($this->keys[$tableName])) {
             $this->loadColumnInfo($tableName);
         }
-        
+
         return $this->keys[$tableName];
     }
 
@@ -136,13 +136,13 @@ class PHPUnit_Extensions_Database_DB_MetaData_Sqlite extends PHPUnit_Extensions_
     {
         $query = "PRAGMA table_info('{$tableName}')";
         $statement = $this->pdo->query($query);
-        
+
         /* @var $statement PDOStatement */
         $this->columns[$tableName] = array();
         $this->keys[$tableName] = array();
         while ($columnData = $statement->fetch(PDO::FETCH_NUM)) {
             $this->columns[$tableName][] = $columnData[1];
-            
+
             if ($columnData[5] == 1) {
                 $this->keys[$tableName][] = $columnData[1];
             }

@@ -116,7 +116,7 @@ class PHPUnit_Extensions_Story_ResultPrinter_HTML extends PHPUnit_Extensions_Sto
 
         $this->scenarios .= $scenarioHeaderTemplate->render();
     }
-    
+
     /**
      * Handler for 'on test' event.
      *
@@ -149,11 +149,11 @@ class PHPUnit_Extensions_Story_ResultPrinter_HTML extends PHPUnit_Extensions_Sto
             $currentStepName = $step->getName();
 
             if ($lastStepName == $currentStepName) {
-            	$stepText = 'and';
+                $stepText = 'and';
             } else {
-            	$stepText = $currentStepName;
+                $stepText = $currentStepName;
             }
-            
+
             $lastStepName = $currentStepName;
 
             $stepTemplate = new PHPUnit_Util_Template(

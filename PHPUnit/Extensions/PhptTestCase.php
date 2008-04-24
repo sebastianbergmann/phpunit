@@ -177,11 +177,11 @@ class PHPUnit_Extensions_PhptTestCase implements PHPUnit_Framework_Test
         $phpFile      = $path . DIRECTORY_SEPARATOR . str_replace('.phpt', '.php', $base);
 
         if (is_object($buffer) && $buffer instanceof PEAR_Error) {
-            $result->addError( 
-              $this, 
+            $result->addError(
+              $this,
               new RuntimeException($buffer->getMessage()),
-              $time 
-            ); 
+              $time
+            );
         }
 
         else if ($buffer == 'SKIPPED') {

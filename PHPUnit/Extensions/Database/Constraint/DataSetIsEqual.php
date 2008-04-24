@@ -86,7 +86,7 @@ class PHPUnit_Extensions_Database_Constraint_DataSetIsEqual extends PHPUnit_Fram
     }
 
     /**
-     * Determines whether or not the given dataset matches the dataset used to 
+     * Determines whether or not the given dataset matches the dataset used to
      * create this constraint.
      *
      * @param PHPUnit_Extensions_Database_DataSet_IDataSet $other
@@ -126,7 +126,7 @@ class PHPUnit_Extensions_Database_Constraint_DataSetIsEqual extends PHPUnit_Fram
      */
     public function __toString()
     {
-        return sprintf('is equal to %s', 
+        return sprintf('is equal to %s',
             $this->value->__toString());
     }
 }

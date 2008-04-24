@@ -64,13 +64,13 @@ require_once 'BankAccount.php';
 class BankAccountDBTestMySQL extends PHPUnit_Extensions_Database_TestCase
 {
 	protected $pdo;
-	
+
 	public function __construct()
 	{
 		$this->pdo = new PDO('mysql:host=localhost;dbname=test', 'root', 'selkirk');
 		BankAccount::createTable($this->pdo);
 	}
-	
+
 	/**
 	 * Returns the test database connection.
 	 *
@@ -80,44 +80,44 @@ class BankAccountDBTestMySQL extends PHPUnit_Extensions_Database_TestCase
 	{
 		return $this->createDefaultDBConnection($this->pdo, 'test');
 	}
-	
+
 	protected function getDataSet()
 	{
 		return $this->createFlatXMLDataSet(__DIR__.'/_files/bank-account-seed.xml');
 	}
-	
+
     public function testNewAccountBalanceIsInitiallyZero()
     {
     	$bank_account = new BankAccount('12345678912345678', $this->pdo);
         $this->assertEquals(0, $bank_account->getBalance());
     }
-    
+
     public function testOldAccountInfoInitiallySet()
     {
     	$bank_account = new BankAccount('15934903649620486', $this->pdo);
         $this->assertEquals(100, $bank_account->getBalance());
         $this->assertEquals('15934903649620486', $bank_account->getAccountNumber());
-        
+
     	$bank_account = new BankAccount('15936487230215067', $this->pdo);
         $this->assertEquals(1216, $bank_account->getBalance());
         $this->assertEquals('15936487230215067', $bank_account->getAccountNumber());
-        
+
     	$bank_account = new BankAccount('12348612357236185', $this->pdo);
         $this->assertEquals(89, $bank_account->getBalance());
         $this->assertEquals('12348612357236185', $bank_account->getAccountNumber());
     }
-    
+
     public function testAccountBalanceDeposits()
     {
     	$bank_account = new BankAccount('15934903649620486', $this->pdo);
     	$bank_account->depositMoney(100);
-    	
+
     	$bank_account = new BankAccount('15936487230215067', $this->pdo);
     	$bank_account->depositMoney(230);
-    	
+
     	$bank_account = new BankAccount('12348612357236185', $this->pdo);
     	$bank_account->depositMoney(24);
-    	
+
 		$xml_dataset = $this->createFlatXMLDataSet(__DIR__.'/_files/bank-account-after-deposits.xml');
 		$this->assertDataSetsEqual($xml_dataset, $this->getConnection()->createDataSet());
     }
@@ -126,21 +126,21 @@ class BankAccountDBTestMySQL extends PHPUnit_Extensions_Database_TestCase
     {
     	$bank_account = new BankAccount('15934903649620486', $this->pdo);
     	$bank_account->withdrawMoney(100);
-    	
+
     	$bank_account = new BankAccount('15936487230215067', $this->pdo);
     	$bank_account->withdrawMoney(230);
-    	
+
     	$bank_account = new BankAccount('12348612357236185', $this->pdo);
     	$bank_account->withdrawMoney(24);
-    	
+
         $xml_dataset = $this->createFlatXMLDataSet(__DIR__.'/_files/bank-account-after-withdrawals.xml');
 		$this->assertDataSetsEqual($xml_dataset, $this->getConnection()->createDataSet());
     }
-    
+
     public function testNewAccountCreation()
     {
     	$bank_account = new BankAccount('12345678912345678', $this->pdo);
-    	
+
         $xml_dataset = $this->createFlatXMLDataSet(__DIR__.'/_files/bank-account-after-new-account.xml');
 		$this->assertDataSetsEqual($xml_dataset, $this->getConnection()->createDataSet());
     }

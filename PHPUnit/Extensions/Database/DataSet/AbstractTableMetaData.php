@@ -68,14 +68,14 @@ abstract class PHPUnit_Extensions_Database_DataSet_AbstractTableMetaData impleme
 
     /**
      * The names of all columns in the table.
-     * 
+     *
      * @var Array
      */
     protected $columns;
 
     /**
      * The names of all the primary keys in the table.
-     * 
+     *
      * @var Array
      */
     protected $primaryKeys;
@@ -125,11 +125,11 @@ abstract class PHPUnit_Extensions_Database_DataSet_AbstractTableMetaData impleme
         if ($this->getTableName() != $other->getTableName()) {
             throw new Exception("Expected table name of {$this->getTableName()}, has a name of {$other->getTableName()}");
         }
-        
+
         if ($this->getColumns() != $other->getColumns()) {
             throw new Exception("Expected following columns: " . implode(', ', $this->getColumns()) . "; has columns: " . implode(', ', $other->getColumns()));
         }
-        
+
         return TRUE;
     }
 }

@@ -760,8 +760,8 @@ class PHPUnit_Extensions_SeleniumTestCase_Driver
         $response = '';
 
         while ((!feof($handle)) && (!$info['timed_out'])) {
-            $response .= fgets($handle, 4096); 
-            $info = stream_get_meta_data($handle); 
+            $response .= fgets($handle, 4096);
+            $info = stream_get_meta_data($handle);
         }
 
         fclose($handle);

@@ -71,23 +71,23 @@ class PHPUnit_Extensions_Database_DataSet_FlatXmlDataSet extends PHPUnit_Extensi
         if ($this->xmlFileContents->getName() != 'dataset') {
             throw new Exception("The root element of a flat xml data set file must be called <dataset>");
         }
-        
+
         foreach ($this->xmlFileContents->children() as $row) {
             $tableName = $row->getName();
-            
+
             if (!isset($tableColumns[$tableName])) {
                 $tableColumns[$tableName] = array();
             }
-            
+
             $values = array();
             foreach ($row->attributes() as $name => $value) {
                 if (!in_array($name, $tableColumns[$tableName])) {
                     $tableColumns[$tableName][] = $name;
                 }
-                
+
                 $values[$name] = $value;
             }
-            
+
             if (count($values)) {
                 $tableValues[$tableName][] = $values;
             }

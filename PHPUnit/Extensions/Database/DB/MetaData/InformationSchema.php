@@ -78,27 +78,27 @@ class PHPUnit_Extensions_Database_DB_MetaData_InformationSchema extends PHPUnit_
     {
         $query = "
             SELECT DISTINCT
-            	TABLE_NAME 
+            	TABLE_NAME
             FROM INFORMATION_SCHEMA.TABLES
-            WHERE 
-                TABLE_TYPE='BASE TABLE' AND 
+            WHERE
+                TABLE_TYPE='BASE TABLE' AND
                 TABLE_SCHEMA = ?
             ORDER BY TABLE_NAME
         ";
-        
+
         $statement = $this->pdo->prepare($query);
         $statement->execute(array($this->getSchema()));
-        
+
         $tableNames = array();
         while ($tableName = $statement->fetchColumn(0)) {
             $tableNames[] = $tableName;
         }
-        
+
         return $tableNames;
     }
 
     /**
-     * Returns an array containing the names of all the columns in the 
+     * Returns an array containing the names of all the columns in the
      * $tableName table,
      *
      * @param string $tableName
@@ -109,12 +109,12 @@ class PHPUnit_Extensions_Database_DB_MetaData_InformationSchema extends PHPUnit_
         if (!isset($this->columns[$tableName])) {
             $this->loadColumnInfo($tableName);
         }
-        
+
         return $this->columns[$tableName];
     }
 
     /**
-     * Returns an array containing the names of all the primary key columns in 
+     * Returns an array containing the names of all the primary key columns in
      * the $tableName table.
      *
      * @param string $tableName
@@ -125,7 +125,7 @@ class PHPUnit_Extensions_Database_DB_MetaData_InformationSchema extends PHPUnit_
         if (!isset($this->keys[$tableName])) {
             $this->loadColumnInfo($tableName);
         }
-        
+
         return $this->keys[$tableName];
     }
 
@@ -138,24 +138,24 @@ class PHPUnit_Extensions_Database_DB_MetaData_InformationSchema extends PHPUnit_
     {
         $this->columns[$tableName] = array();
         $this->keys[$tableName] = array();
-        
+
         $columnQuery = "
             SELECT DISTINCT
-            	COLUMN_NAME 
+            	COLUMN_NAME
             FROM INFORMATION_SCHEMA.COLUMNS
-            WHERE 
-                TABLE_NAME = ? AND 
+            WHERE
+                TABLE_NAME = ? AND
                 TABLE_SCHEMA = ?
             ORDER BY ORDINAL_POSITION
         ";
-        
+
         $columnStatement = $this->pdo->prepare($columnQuery);
         $columnStatement->execute(array($tableName, $this->getSchema()));
-        
+
         while ($columName = $columnStatement->fetchColumn(0)) {
             $this->columns[$tableName][] = $columName;
         }
-        
+
         $keyQuery = "
 			SELECT
 				KCU.COLUMN_NAME
@@ -172,10 +172,10 @@ class PHPUnit_Extensions_Database_DB_MetaData_InformationSchema extends PHPUnit_
 			ORDER BY
 				KCU.ORDINAL_POSITION ASC
     	";
-        
+
         $keyStatement = $this->pdo->prepare($keyQuery);
         $keyStatement->execute(array($tableName, $this->getSchema()));
-        
+
         while ($columName = $keyStatement->fetchColumn(0)) {
             $this->keys[$tableName][] = $columName;
         }
