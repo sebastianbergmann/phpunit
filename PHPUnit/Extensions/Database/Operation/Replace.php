@@ -74,26 +74,26 @@ class PHPUnit_Extensions_Database_Operation_Replace extends PHPUnit_Extensions_D
     protected function buildOperationQuery(PHPUnit_Extensions_Database_DataSet_ITableMetaData $databaseTableMetaData, PHPUnit_Extensions_Database_DataSet_ITable $table, PHPUnit_Extensions_Database_DB_IDatabaseConnection $connection)
     {
         $keys = $databaseTableMetaData->getPrimaryKeys();
-        
+
         $whereStatement = 'WHERE ' . implode(' AND ', $this->buildPreparedColumnArray($keys, $connection));
-        
+
         $query = "
         	SELECT COUNT(*)
         	FROM {$connection->quoteSchemaObject($table->getTableMetaData()->getTableName())}
         	{$whereStatement}
         ";
-        
+
         return $query;
     }
 
     protected function buildOperationArguments(PHPUnit_Extensions_Database_DataSet_ITableMetaData $databaseTableMetaData, PHPUnit_Extensions_Database_DataSet_ITable $table, $row)
     {
         $args = array();
-        
+
         foreach ($databaseTableMetaData->getPrimaryKeys() as $columnName) {
             $args[] = $table->getValue($row, $columnName);
         }
-        
+
         return $args;
     }
 
@@ -105,28 +105,28 @@ class PHPUnit_Extensions_Database_Operation_Replace extends PHPUnit_Extensions_D
     {
         $insertOperation = new PHPUnit_Extensions_Database_Operation_Insert();
         $updateOperation = new PHPUnit_Extensions_Database_Operation_Update();
-        
+
         $databaseDataSet = $connection->createDataSet();
-        
+
         foreach ($dataSet as $table) {
             /* @var $table PHPUnit_Extensions_Database_DataSet_ITable */
             $databaseTableMetaData = $databaseDataSet->getTableMetaData($table->getTableMetaData()->getTableName());
-            
+
             $insertQuery = $insertOperation->buildOperationQuery($databaseTableMetaData, $table, $connection);
             $updateQuery = $updateOperation->buildOperationQuery($databaseTableMetaData, $table, $connection);
             $selectQuery = $this->buildOperationQuery($databaseTableMetaData, $table, $connection);
-            
+
             $insertStatement = $connection->getConnection()->prepare($insertQuery);
             $updateStatement = $connection->getConnection()->prepare($updateQuery);
             $selectStatement = $connection->getConnection()->prepare($selectQuery);
-            
+
             for ($i = 0; $i < $table->getRowCount(); $i++) {
                 $selectArgs = $this->buildOperationArguments($databaseTableMetaData, $table, $i);
                 $query = $selectQuery;
                 $args = $selectArgs;
                 try {
                     $selectStatement->execute($selectArgs);
-                    
+
                     if ($selectStatement->fetchColumn(0) > 0) {
                         $updateArgs = $updateOperation->buildOperationArguments($databaseTableMetaData, $table, $i);
                         $query = $updateQuery;

@@ -50,7 +50,7 @@ require_once 'PHPUnit/Util/Filter.php';
 PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
 
 /**
- * Provides a basic interface and functionality for executing database 
+ * Provides a basic interface and functionality for executing database
  * operations against a connection using a specific dataSet.
  *
  * @category   Testing
@@ -66,7 +66,7 @@ interface PHPUnit_Extensions_Database_Operation_IDatabaseOperation
 {
 
     /**
-     * Executes the database operation against the given $connection for the 
+     * Executes the database operation against the given $connection for the
      * given $dataSet.
      *
      * @param PHPUnit_Extensions_Database_DB_IDatabaseConnection $connection

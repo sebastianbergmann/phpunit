@@ -73,16 +73,16 @@ class PHPUnit_Extensions_Database_Operation_Update extends PHPUnit_Extensions_Da
     {
         $keys = $databaseTableMetaData->getPrimaryKeys();
         $columns = $table->getTableMetaData()->getColumns();
-        
+
         $whereStatement = 'WHERE ' . implode(' AND ', $this->buildPreparedColumnArray($keys, $connection));
         $setStatement = 'SET ' . implode(', ', $this->buildPreparedColumnArray($columns, $connection));
-        
+
         $query = "
 			UPDATE {$connection->quoteSchemaObject($table->getTableMetaData()->getTableName())}
 			{$setStatement}
 			{$whereStatement}
 		";
-        
+
         return $query;
     }
 
@@ -92,11 +92,11 @@ class PHPUnit_Extensions_Database_Operation_Update extends PHPUnit_Extensions_Da
         foreach ($table->getTableMetaData()->getColumns() as $columnName) {
             $args[] = $table->getValue($row, $columnName);
         }
-        
+
         foreach ($databaseTableMetaData->getPrimaryKeys() as $columnName) {
             $args[] = $table->getValue($row, $columnName);
         }
-        
+
         return $args;
     }
 }

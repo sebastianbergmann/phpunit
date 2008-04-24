@@ -95,7 +95,7 @@ class PHPUnit_Extensions_Database_DataSet_DefaultDataSet extends PHPUnit_Extensi
     }
 
     /**
-     * Creates an iterator over the tables in the data set. If $reverse is 
+     * Creates an iterator over the tables in the data set. If $reverse is
      * true a reverse iterator will be returned.
      *
      * @param bool $reverse

@@ -54,11 +54,11 @@ PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
 
 /**
  * Provides basic functionality for row based operations.
- * 
- * To create a row based operation you must create two functions. The first 
- * one, buildOperationQuery(), must return a query that will be used to create 
- * a prepared statement. The second one, buildOperationArguments(), should 
- * return an array containing arguments for each row. 
+ *
+ * To create a row based operation you must create two functions. The first
+ * one, buildOperationQuery(), must return a query that will be used to create
+ * a prepared statement. The second one, buildOperationArguments(), should
+ * return an array containing arguments for each row.
  *
  * @category   Testing
  * @package    PHPUnit
@@ -96,11 +96,11 @@ abstract class PHPUnit_Extensions_Database_Operation_RowBased implements PHPUnit
             /* @var $table PHPUnit_Extensions_Database_DataSet_ITable */
             $databaseTableMetaData = $databaseDataSet->getTableMetaData($table->getTableMetaData()->getTableName());
             $query = $this->buildOperationQuery($databaseTableMetaData, $table, $connection);
-            
+
             if ($query === false && $table->getRowCount() > 0) {
                 throw new PHPUnit_Extensions_Database_Operation_Exception($this->operationName, '', array(), $table, "Rows requested for insert, but no columns provided!");
             }
-            
+
             $statement = $connection->getConnection()->prepare($query);
             for ($i = 0; $i < $table->getRowCount(); $i++) {
                 $args = $this->buildOperationArguments($databaseTableMetaData, $table, $i);

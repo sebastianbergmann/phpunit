@@ -1245,7 +1245,7 @@ abstract class PHPUnit_Framework_Assert
     }
 
     /**
-     * 
+     *
      *
      * @param  PHPUnit_Framework_Constraint $constraint
      * @param  string                       $attributeName
@@ -1568,7 +1568,7 @@ abstract class PHPUnit_Framework_Assert
               $attributeName
             );
         }
-        
+
         else if (is_object($classOrObject)) {
             return self::getObjectAttribute(
               $classOrObject,

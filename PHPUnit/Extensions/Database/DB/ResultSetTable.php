@@ -52,7 +52,7 @@ PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
 require_once 'PHPUnit/Extensions/Database/DataSet/AbstractTable.php';
 
 /**
- * Provides the functionality to represent a database result set as a DBUnit 
+ * Provides the functionality to represent a database result set as a DBUnit
  * table.
  *
  * @category   Testing
@@ -76,13 +76,13 @@ class PHPUnit_Extensions_Database_DB_ResultSetTable extends PHPUnit_Extensions_D
     public function __construct($tableName, PDOStatement $pdoStatement)
     {
         $this->data = $pdoStatement->fetchAll(PDO::FETCH_ASSOC);
-        
+
         if (count($this->data)) {
             $columns = array_keys($this->data[0]);
         } else {
             $columns = array();
         }
-        
+
         $this->setTableMetaData(new PHPUnit_Extensions_Database_DataSet_DefaultTableMetaData($tableName, $columns));
     }
 }

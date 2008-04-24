@@ -86,7 +86,7 @@ class PHPUnit_Extensions_Database_Constraint_TableIsEqual extends PHPUnit_Framew
     }
 
     /**
-     * Determines whether or not the given table matches the table used to 
+     * Determines whether or not the given table matches the table used to
      * create this constraint.
      *
      * @param PHPUnit_Extensions_Database_DataSet_ITable $other
@@ -117,20 +117,20 @@ class PHPUnit_Extensions_Database_Constraint_TableIsEqual extends PHPUnit_Framew
      */
     protected function failureDescription($other, $description, $not)
     {
-        $failureDescription = sprintf('Failed asserting that %s %s Reason: %s', 
-            $other->__toString(), 
-            $this->toString(), 
+        $failureDescription = sprintf('Failed asserting that %s %s Reason: %s',
+            $other->__toString(),
+            $this->toString(),
             $this->failure_reason
         );
-        
+
         if ($not) {
             $failureDescription = self::negate($failureDescription);
         }
-        
+
         if (!empty($description)) {
             $failureDescription = $description . "\n" . $failureDescription;
         }
-        
+
         return $failureDescription;
     }
 
@@ -142,7 +142,7 @@ class PHPUnit_Extensions_Database_Constraint_TableIsEqual extends PHPUnit_Framew
      */
     public function toString()
     {
-        return sprintf('is equal to %s', 
+        return sprintf('is equal to %s',
 
         PHPUnit_Util_Type::toString($this->value));
     }
