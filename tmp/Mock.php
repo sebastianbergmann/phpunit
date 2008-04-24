@@ -351,7 +351,7 @@ class PHPUnit_Framework_MockObject_Mock
         if (!$this->callOriginalConstructor) {
             return "    public function __construct() {\n" .
                    "        \$this->invocationMocker = new PHPUnit_Framework_MockObject_InvocationMocker(\$this);\n" .
-                   "    }\n\n";      
+                   "    }\n\n";
         }
 
         $className   = $class->getName();
