@@ -74,14 +74,14 @@ class PHPUnit_Extensions_Database_Operation_Delete extends PHPUnit_Extensions_Da
     protected function buildOperationQuery(PHPUnit_Extensions_Database_DataSet_ITableMetaData $databaseTableMetaData, PHPUnit_Extensions_Database_DataSet_ITable $table, PHPUnit_Extensions_Database_DB_IDatabaseConnection $connection)
     {
         $keys = $databaseTableMetaData->getPrimaryKeys();
-        
+
         $whereStatement = 'WHERE ' . implode(' AND ', $this->buildPreparedColumnArray($keys, $connection));
-        
+
         $query = "
 			DELETE FROM {$connection->quoteSchemaObject($table->getTableMetaData()->getTableName())}
 			{$whereStatement}
 		";
-        
+
         return $query;
     }
 
@@ -91,7 +91,7 @@ class PHPUnit_Extensions_Database_Operation_Delete extends PHPUnit_Extensions_Da
         foreach ($databaseTableMetaData->getPrimaryKeys() as $columnName) {
             $args[] = $table->getValue($row, $columnName);
         }
-        
+
         return $args;
     }
 }

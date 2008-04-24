@@ -85,7 +85,7 @@ class Extensions_Database_DataSet_AllTests
 
         $suite->addTestSuite('Extensions_Database_DataSet_XmlDataSetsTest');
                 $suite->addTestSuite('Extensions_Database_DataSet_FilterTest');
-        
+
         return $suite;
     }
 }

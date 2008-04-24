@@ -88,7 +88,7 @@ abstract class PHPUnit_Extensions_Database_AbstractTester implements PHPUnit_Ext
 
     /**
      * Creates a new database tester.
-     * 
+     *
      * @param PHPUnit_Extensions_Database_DB_IDatabaseConnection $databaseConnection
      */
     public function __construct()

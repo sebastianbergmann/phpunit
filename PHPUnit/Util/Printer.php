@@ -97,7 +97,7 @@ abstract class PHPUnit_Util_Printer
 
                     if (sizeof($out) != 2) {
                         throw new InvalidArgumentException;
-                    }                    
+                    }
 
                     $this->out = fsockopen($out[0], $out[1]);
                 } else {

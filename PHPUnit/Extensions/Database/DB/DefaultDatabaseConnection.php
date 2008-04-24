@@ -69,7 +69,6 @@ PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
  */
 class PHPUnit_Extensions_Database_DB_DefaultDatabaseConnection implements PHPUnit_Extensions_Database_DB_IDatabaseConnection
 {
-
     /**
      * @var PDO
      */
@@ -82,7 +81,7 @@ class PHPUnit_Extensions_Database_DB_DefaultDatabaseConnection implements PHPUni
 
     /**
      * The metadata object used to retrieve table meta data from the database.
-     * 
+     *
      * @var PHPUnit_Extensions_Database_DB_IMetaData
      */
     protected $metaData;
@@ -98,7 +97,7 @@ class PHPUnit_Extensions_Database_DB_DefaultDatabaseConnection implements PHPUni
         $this->connection = $connection;
         $this->metaData = PHPUnit_Extensions_Database_DB_MetaData::createMetaData($connection, $schema);
         $this->schema = $schema;
-        
+
         $connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     }
 
@@ -111,7 +110,7 @@ class PHPUnit_Extensions_Database_DB_DefaultDatabaseConnection implements PHPUni
     }
 
     /**
-     * Returns a database metadata object that can be used to retrieve table 
+     * Returns a database metadata object that can be used to retrieve table
      * meta data from the database.
      *
      * @return PHPUnit_Extensions_Database_DB_IMetaData
@@ -132,8 +131,8 @@ class PHPUnit_Extensions_Database_DB_DefaultDatabaseConnection implements PHPUni
     }
 
     /**
-     * Creates a dataset containing the specified table names. If no table 
-     * names are specified then it will created a dataset over the entire 
+     * Creates a dataset containing the specified table names. If no table
+     * names are specified then it will created a dataset over the entire
      * database.
      *
      * @param array $tableNames
@@ -163,13 +162,13 @@ class PHPUnit_Extensions_Database_DB_DefaultDatabaseConnection implements PHPUni
     }
 
     /**
-     * Returns this connection database configuration 
+     * Returns this connection database configuration
      *
      * @return PHPUnit_Extensions_Database_Database_DatabaseConfig
      */
     public function getConfig()
     {
-    
+
     }
 
     /**
@@ -183,7 +182,7 @@ class PHPUnit_Extensions_Database_DB_DefaultDatabaseConnection implements PHPUni
     }
 
     /**
-     * Returns the number of rows in the given table. You can specify an 
+     * Returns the number of rows in the given table. You can specify an
      * optional where clause to return a subset of the table.
      *
      * @param string $tableName
@@ -193,7 +192,7 @@ class PHPUnit_Extensions_Database_DB_DefaultDatabaseConnection implements PHPUni
     public function getRowCount($tableName, $whereClause = null)
     {
         $query = "SELECT COUNT(*) FROM {$tableName}";
-        
+
         if (isset($whereClause)) {
             $query .= " WHERE {$whereClause}";
         }
@@ -207,7 +206,7 @@ class PHPUnit_Extensions_Database_DB_DefaultDatabaseConnection implements PHPUni
      */
     public function quoteSchemaObject($object)
     {
-    	return $this->getMetaData()->quoteSchemaObject($object);
+        return $this->getMetaData()->quoteSchemaObject($object);
     }
 
     /**
@@ -222,7 +221,7 @@ class PHPUnit_Extensions_Database_DB_DefaultDatabaseConnection implements PHPUni
 
     /**
      * Returns true if the connection allows cascading
-     * 
+     *
      * @return bool
      */
     public function allowsCascading()

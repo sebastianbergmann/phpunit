@@ -137,13 +137,13 @@ class PHPUnit_Extensions_Database_DataSet_AbstractTable implements PHPUnit_Exten
     {
         $thisMetaData = $this->getTableMetaData();
         $otherMetaData = $other->getTableMetaData();
-        
+
         $thisMetaData->assertEquals($otherMetaData);
-        
+
         if ($this->getRowCount() != $other->getRowCount()) {
             throw new Exception("Expected row count of {$this->getRowCount()}, has a row count of {$other->getRowCount()}");
         }
-        
+
         $columns = $thisMetaData->getColumns();
         for ($i = 0; $i < $this->getRowCount(); $i++) {
             foreach ($columns as $columnName) {
@@ -152,33 +152,33 @@ class PHPUnit_Extensions_Database_DataSet_AbstractTable implements PHPUnit_Exten
                 }
             }
         }
-        
+
         return TRUE;
     }
 
     public function __toString()
     {
         $columns = $this->getTableMetaData()->getColumns();
-        
+
         $lineSeperator = str_repeat('+----------------------', count($columns)) . "+\n";
         $lineLength = strlen($lineSeperator) - 1;
-        
+
         $tableString = $lineSeperator;
         $tableString .= '| ' . str_pad($this->getTableMetaData()->getTableName(), $lineLength - 4, ' ', STR_PAD_RIGHT) . " |\n";
         $tableString .= $lineSeperator;
         $tableString .= $this->rowToString($columns);
         $tableString .= $lineSeperator;
-        
+
         for ($i = 0; $i < $this->getRowCount(); $i++) {
             $values = array();
             foreach ($columns as $columnName) {
                 $values[] = $this->getValue($i, $columnName);
             }
-            
+
             $tableString .= $this->rowToString($values);
             $tableString .= $lineSeperator;
         }
-        
+
         return "\n" . $tableString . "\n";
     }
 
@@ -191,7 +191,7 @@ class PHPUnit_Extensions_Database_DataSet_AbstractTable implements PHPUnit_Exten
             }
             $rowString .= '| ' . str_pad(substr($value, 0, 20), 20, ' ', STR_PAD_BOTH) . ' ';
         }
-        
+
         return $rowString . "|\n";
     }
 }
