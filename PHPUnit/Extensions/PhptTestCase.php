@@ -143,19 +143,18 @@ class PHPUnit_Extensions_PhptTestCase implements PHPUnit_Framework_Test
             throw new InvalidArgumentException;
         }
 
-        $options = array_merge($options, $this->options);
-
         $coverage = $result->getCollectCodeCoverageInformation();
+        $options  = array_merge($options, $this->options);
 
         if ($coverage) {
-            $options = array('coverage' => TRUE);
+            $options['coverage'] = TRUE;
         } else {
-            $options = array();
+            $options['coverage'] = FALSE;
         }
 
         $runner = new PEAR_RunTest(new PHPUnit_Extensions_PhptTestCase_Logger, $options);
 
-        if ($coverage){
+        if ($coverage) {
             $runner->xdebug_loaded = TRUE;
         } else {
             $runner->xdebug_loaded = FALSE;
