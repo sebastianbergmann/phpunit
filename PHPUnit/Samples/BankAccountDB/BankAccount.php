@@ -67,7 +67,7 @@ class BankAccount
      * @access protected
      */
     protected $balance = 0;
-    
+
     /**
      * The bank account's number.
      *
@@ -75,22 +75,22 @@ class BankAccount
      * @access protected
      */
     protected $accountNumber = 0;
-    
+
     /**
      * The PDO connection used to store and retrieve bank account information.
      *
      * @var PDO
      */
     protected $pdo;
-    
+
     public function __construct($accountNumber, PDO $pdo)
     {
-    	$this->accountNumber = $accountNumber;
-    	$this->pdo = $pdo;
-    	
-    	$this->loadAccount();
+        $this->accountNumber = $accountNumber;
+        $this->pdo = $pdo;
+
+        $this->loadAccount();
     }
-    
+
     /**
      * Returns the bank account's balance.
      *
@@ -101,7 +101,7 @@ class BankAccount
     {
         return $this->balance;
     }
-    
+
     /**
      * Sets the bank account's balance.
      *
@@ -118,7 +118,7 @@ class BankAccount
             throw new BankAccountException;
         }
     }
-    
+
     /**
      * Returns the bank account's number.
      *
@@ -127,7 +127,7 @@ class BankAccount
      */
     public function getAccountNumber()
     {
-    	return $this->accountNumber;
+        return $this->accountNumber;
     }
 
     /**
@@ -157,61 +157,61 @@ class BankAccount
 
         return $this->getBalance();
     }
-    
+
     /**
      * Loads account information from the database.
      */
     protected function loadAccount()
     {
-    	$query = "SELECT * FROM bank_account WHERE account_number = ?";
-    	
-    	$statement = $this->pdo->prepare($query);
-    	
-    	$statement->execute(array($this->accountNumber));
-    	
-    	if ($bankAccountInfo = $statement->fetch(PDO::FETCH_ASSOC))
-    	{
-	    	$this->balance = $bankAccountInfo['balance'];
-    	}
-    	else 
-    	{
-    		$this->balance = 0;
-    		$this->addAccount();
-    	}
+        $query = "SELECT * FROM bank_account WHERE account_number = ?";
+
+        $statement = $this->pdo->prepare($query);
+
+        $statement->execute(array($this->accountNumber));
+
+        if ($bankAccountInfo = $statement->fetch(PDO::FETCH_ASSOC))
+        {
+            $this->balance = $bankAccountInfo['balance'];
+        }
+        else
+        {
+            $this->balance = 0;
+            $this->addAccount();
+        }
     }
-    
+
     /**
      * Saves account information to the database.
      */
     protected function updateAccount()
     {
-    	$query = "UPDATE bank_account SET balance = ? WHERE account_number = ?";
-    	
-    	$statement = $this->pdo->prepare($query);
-    	$statement->execute(array($this->balance, $this->accountNumber));
+        $query = "UPDATE bank_account SET balance = ? WHERE account_number = ?";
+
+        $statement = $this->pdo->prepare($query);
+        $statement->execute(array($this->balance, $this->accountNumber));
     }
-    
+
     /**
      * Adds account information to the database.
      */
     protected function addAccount()
     {
-    	$query = "INSERT INTO bank_account (balance, account_number) VALUES(?, ?)";
-    	
-    	$statement = $this->pdo->prepare($query);
-    	$statement->execute(array($this->balance, $this->accountNumber));
+        $query = "INSERT INTO bank_account (balance, account_number) VALUES(?, ?)";
+
+        $statement = $this->pdo->prepare($query);
+        $statement->execute(array($this->balance, $this->accountNumber));
     }
-    
+
     static public function createTable(PDO $pdo)
     {
-    	$query = "
-    		CREATE TABLE bank_account (
-    			account_number VARCHAR(17) PRIMARY KEY,
-    			balance DECIMAL(9,2) NOT NULL DEFAULT 0
-    		);
-    	";
-    	
-    	$pdo->query($query);
+        $query = "
+            CREATE TABLE bank_account (
+                account_number VARCHAR(17) PRIMARY KEY,
+                balance DECIMAL(9,2) NOT NULL DEFAULT 0
+            );
+        ";
+
+        $pdo->query($query);
     }
 }
 ?>

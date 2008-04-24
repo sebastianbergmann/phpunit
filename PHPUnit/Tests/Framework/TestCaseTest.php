@@ -129,8 +129,8 @@ class Framework_TestCaseTest extends PHPUnit_Framework_TestCase
     {
         $fails = new TornDown2;
 
-		    $this->verifyError($fails);
-		    $this->assertTrue($fails->tornDown);
+        $this->verifyError($fails);
+        $this->assertTrue($fails->tornDown);
     }
 
     public function testSetupFails()
@@ -147,8 +147,8 @@ class Framework_TestCaseTest extends PHPUnit_Framework_TestCase
     {
         $fails = new TornDown;
 
-		    $this->verifyError($fails);
-		    $this->assertTrue($fails->tornDown);
+        $this->verifyError($fails);
+        $this->assertTrue($fails->tornDown);
     }
 
     public function testTearDownFails()
@@ -160,8 +160,8 @@ class Framework_TestCaseTest extends PHPUnit_Framework_TestCase
     {
         $fails = new TornDown3;
 
-		    $this->verifyError($fails);
-		    $this->assertFalse($fails->tornDown);
+        $this->verifyError($fails);
+        $this->assertFalse($fails->tornDown);
     }
 
     public function testWasRun()

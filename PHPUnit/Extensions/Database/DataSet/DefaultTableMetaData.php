@@ -78,7 +78,7 @@ class PHPUnit_Extensions_Database_DataSet_DefaultTableMetaData extends PHPUnit_E
         $this->tableName = $tableName;
         $this->columns = $columns;
         $this->primaryKeys = array();
-        
+
         foreach ($primaryKeys as $columnName) {
             if (!in_array($columnName, $this->columns)) {
                 throw new InvalidArgumentException("Primary key column passed that is not in the column list.");

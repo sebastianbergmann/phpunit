@@ -140,7 +140,7 @@ class Extensions_SeleniumTestCaseTest extends PHPUnit_Extensions_SeleniumTestCas
             return;
         }
 
-        $this->fail();  
+        $this->fail();
     }
 
     public function testInPlaceEditor()

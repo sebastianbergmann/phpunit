@@ -53,9 +53,9 @@ require_once 'PHPUnit/Extensions/Database/Operation/Exception.php';
 PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
 
 /**
- * This class facilitates combining database operations. To create a composite 
- * operation pass an array of classes that implement 
- * PHPUnit_Extensions_Database_Operation_IDatabaseOperation and they will be 
+ * This class facilitates combining database operations. To create a composite
+ * operation pass an array of classes that implement
+ * PHPUnit_Extensions_Database_Operation_IDatabaseOperation and they will be
  * executed in that order against all data sets.
  *
  * @category   Testing

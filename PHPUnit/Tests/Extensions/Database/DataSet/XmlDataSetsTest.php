@@ -62,10 +62,10 @@ require_once 'PHPUnit/Extensions/Database/Constraint/DataSetIsEqual.php';
  * @link       http://www.phpunit.de/
  * @since      File available since Release 3.2.0
  */
-class Extensions_Database_DataSet_XmlDataSetsTest extends PHPUnit_Framework_TestCase  
+class Extensions_Database_DataSet_XmlDataSetsTest extends PHPUnit_Framework_TestCase
 {
 	protected $expectedDataSet;
-	
+
 	public function setUp()
 	{
 		$table1MetaData = new PHPUnit_Extensions_Database_DataSet_DefaultTableMetaData(
@@ -74,10 +74,10 @@ class Extensions_Database_DataSet_XmlDataSetsTest extends PHPUnit_Framework_Test
 		$table2MetaData = new PHPUnit_Extensions_Database_DataSet_DefaultTableMetaData(
 			'table2', array('table2_id', 'column5', 'column6', 'column7', 'column8')
 		);
-		
+
 		$table1 = new PHPUnit_Extensions_Database_DataSet_DefaultTable($table1MetaData);
 		$table2 = new PHPUnit_Extensions_Database_DataSet_DefaultTable($table2MetaData);
-		
+
 		$table1->addRow(array(
 			'table1_id' => 1,
 			'column1' => 'tgfahgasdf',
@@ -99,7 +99,7 @@ class Extensions_Database_DataSet_XmlDataSetsTest extends PHPUnit_Framework_Test
 			'column3' => 1654.4,
 			'column4' => 'asfgklg'
 		));
-		
+
 		$table2->addRow(array(
 			'table2_id' => 1,
 			'column5' => 'fhah',
@@ -121,23 +121,23 @@ class Extensions_Database_DataSet_XmlDataSetsTest extends PHPUnit_Framework_Test
 			'column7' => null,
 			'column8' => null
 		));
-		
+
 		$this->expectedDataSet = new PHPUnit_Extensions_Database_DataSet_DefaultDataSet(array($table1, $table2));
 	}
-	
+
 	public function testFlatXmlDataSet()
 	{
 		$constraint = new PHPUnit_Extensions_Database_Constraint_DataSetIsEqual($this->expectedDataSet);
 		$xmlFlatDataSet = new PHPUnit_Extensions_Database_DataSet_FlatXmlDataSet(__DIR__.'/../_files/XmlDataSets/FlatXmlDataSet.xml');
-		
+
 		self::assertThat($xmlFlatDataSet, $constraint);
 	}
-	
+
 	public function testXmlDataSet()
 	{
 		$constraint = new PHPUnit_Extensions_Database_Constraint_DataSetIsEqual($this->expectedDataSet);
 		$xmlDataSet = new PHPUnit_Extensions_Database_DataSet_XmlDataSet(__DIR__.'/../_files/XmlDataSets/XmlDataSet.xml');
-		
+
 		self::assertThat($xmlDataSet, $constraint);
 	}
 }

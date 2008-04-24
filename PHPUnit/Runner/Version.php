@@ -69,10 +69,10 @@ class PHPUnit_Runner_Version
      * @access public
      * @static
      */
-  	public static function id()
-  	{
-    		return '@package_version@';
-  	}
+    public static function id()
+    {
+        return '@package_version@';
+    }
 
     /**
      * @return string

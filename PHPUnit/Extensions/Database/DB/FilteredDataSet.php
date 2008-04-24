@@ -84,7 +84,7 @@ class PHPUnit_Extensions_Database_DB_FilteredDataSet extends PHPUnit_Extensions_
 
     /**
      * Returns a list of table names for the database
-     * 
+     *
      * @return Array
      */
     public function getTableNames()

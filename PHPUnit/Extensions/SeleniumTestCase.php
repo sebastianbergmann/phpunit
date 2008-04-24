@@ -672,7 +672,7 @@ abstract class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_Tes
      * @access public
      */
     public function assertChecked($locator, $message = '')
-    {    	
+    {
         if ($message == '') {
             $message = sprintf(
               '"%s" not checked.',
@@ -750,7 +750,7 @@ abstract class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_Tes
      * @param  string $message
      * @access public
      */
-    public function assertNotEditable($locator, $message = '')    
+    public function assertNotEditable($locator, $message = '')
     {
         if ($message == '') {
             $message = sprintf(

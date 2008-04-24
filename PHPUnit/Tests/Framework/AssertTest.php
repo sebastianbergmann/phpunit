@@ -736,7 +736,7 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
 
         $actual = new DOMDocument;
         $actual->preserveWhiteSpace = FALSE;
-        $actual->loadXML('<bar/>');        
+        $actual->loadXML('<bar/>');
 
         $this->assertNotEquals($expected, $actual);
 
@@ -830,10 +830,10 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
         $actual->preserveWhiteSpace = FALSE;
         $actual->loadXML('<foo />');
 
-        $this->assertNotEquals($expected, $actual);        
+        $this->assertNotEquals($expected, $actual);
 
         try {
-            $this->assertEquals($expected, $actual);        
+            $this->assertEquals($expected, $actual);
         }
 
         catch (PHPUnit_Framework_AssertionFailedError $e) {
@@ -876,10 +876,10 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
         $actual->preserveWhiteSpace = FALSE;
         $actual->loadXML('<root><child/></root>');
 
-        $this->assertEquals($expected, $actual);        
+        $this->assertEquals($expected, $actual);
 
         try {
-            $this->assertNotEquals($expected, $actual);        
+            $this->assertNotEquals($expected, $actual);
         }
 
         catch (PHPUnit_Framework_AssertionFailedError $e) {
@@ -899,10 +899,10 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
         $actual->preserveWhiteSpace = FALSE;
         $actual->loadXML('<foo> bir </foo>');
 
-        $this->assertNotEquals($expected, $actual);        
+        $this->assertNotEquals($expected, $actual);
 
         try {
-            $this->assertEquals($expected, $actual);        
+            $this->assertEquals($expected, $actual);
         }
 
         catch (PHPUnit_Framework_AssertionFailedError $e) {
