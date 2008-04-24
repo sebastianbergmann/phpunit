@@ -236,6 +236,9 @@
       <file baseinstalldir="/" name="Scenario.php" role="php">
        <tasks:replace from="@package_version@" to="version" type="package-info" />
       </file>
+      <file baseinstalldir="/" name="SeleniumTestCase.php" role="php">
+       <tasks:replace from="@package_version@" to="version" type="package-info" />
+      </file>
       <file baseinstalldir="/" name="Step.php" role="php">
        <tasks:replace from="@package_version@" to="version" type="package-info" />
       </file>
