@@ -45,16 +45,12 @@
  * @since      File available since Release 3.3.0
  */
 
-require_once 'PHPUnit/Extensions/Story/Step.php';
-require_once 'PHPUnit/Extensions/Story/Given.php';
-require_once 'PHPUnit/Extensions/Story/When.php';
-require_once 'PHPUnit/Extensions/Story/Then.php';
-require_once 'PHPUnit/Util/Filter.php';
-
-PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
+require_once 'PHPUnit/Extensions/Story/Scenario.php';
+require_once 'PHPUnit/Extensions/SeleniumTestCase.php';
+require_once 'PHPUnit/Extensions/Story/TestCase.php';
 
 /**
- * A scenario.
+ *
  *
  * @category   Testing
  * @package    PHPUnit
@@ -67,40 +63,57 @@ PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
  * @since      Class available since Release 3.3.0
  * @abstract
  */
-class PHPUnit_Extensions_Story_Scenario
+abstract class PHPUnit_Extensions_Story_SeleniumTestCase extends PHPUnit_Extensions_SeleniumTestCase
 {
-    /**
-     * @var    PHPUnit_Extensions_Story_TestCase
-     * @access protected
-     */
-    protected $test;
+    protected $scenario;
+    protected $world = array();
+
+    public function __construct($name = NULL, $data = array(), array $browser = array())
+    {
+        parent::__construct($name, $data, $browser);
+        $this->scenario = new PHPUnit_Extensions_Story_Scenario($this);
+    }
 
     /**
-     * @var    array
-     * @access protected
+     * @method PHPUnit_Extensions_Story_Step and($contextOrOutcome)
      */
-    protected $steps = array();
+    public function __call($command, $arguments)
+    {
+        switch($command) {
+            case 'and': {
+                return $this->scenario->_and($arguments);
+            }
+            break;
+
+            default: {
+                return parent::__call($command, $arguments);
+            }
+        }
+    }
 
     /**
-     * @var    string
-     * @access protected
-     */
-    protected $lastCalledMethod;
-
-    /**
-     * Constructor.
+     * Returns this test's scenario.
      *
-     * @param  PHPUnit_Extensions_Story_TestCase $caller
+     * @return PHPUnit_Extensions_Story_Scenario
      * @access public
      */
-    public function __construct($test)
+    public function getScenario()
     {
-        if($test instanceof PHPUnit_Extensions_Story_TestCase || $test instanceof PHPUnit_Extensions_Story_SeleniumTestCase) {
-            $this->test = $test;
+        return $this->scenario;
+    }
+
+    /**
+     * This method is used by __call
+     *
+     * @access protected
+     */
+    protected function notImplemented($action)
+    {
+        if (strstr($action, ' ')) {
+            $this->markTestIncomplete("step: $action not implemented.");
         }
-        else {
-            throw new Exception('$test must either be PHPUnit_Extensions_Story_TestCase or PHPUnit_Extensions_Story_SeleniumTestCase');
-        }
+
+        throw new BadMethodCallException("Method $action not defined.");
     }
 
     /**
@@ -108,11 +121,11 @@ class PHPUnit_Extensions_Story_Scenario
      *
      * @param  array $arguments
      * @return PHPUnit_Extensions_Story_TestCase
-     * @access public
+     * @access protected
      */
-    public function given($arguments)
+    protected function given($context)
     {
-        return $this->addStep(new PHPUnit_Extensions_Story_Given($arguments));
+        return $this->scenario->given(func_get_args());
     }
 
     /**
@@ -120,11 +133,11 @@ class PHPUnit_Extensions_Story_Scenario
      *
      * @param  array $arguments
      * @return PHPUnit_Extensions_Story_TestCase
-     * @access public
+     * @access protected
      */
-    public function when($arguments)
+    protected function when($event)
     {
-        return $this->addStep(new PHPUnit_Extensions_Story_When($arguments));
+        return $this->scenario->when(func_get_args());
     }
 
     /**
@@ -132,11 +145,11 @@ class PHPUnit_Extensions_Story_Scenario
      *
      * @param  array $arguments
      * @return PHPUnit_Extensions_Story_TestCase
-     * @access public
+     * @access protected
      */
-    public function then($arguments)
+    protected function then($outcome)
     {
-        return $this->addStep(new PHPUnit_Extensions_Story_Then($arguments));
+        return $this->scenario->then(func_get_args());
     }
 
     /**
@@ -144,68 +157,64 @@ class PHPUnit_Extensions_Story_Scenario
      *
      * @param  array $arguments
      * @return PHPUnit_Extensions_Story_TestCase
-     * @access public
+     * @access protected
      */
-    public function _and($arguments)
+    protected function _and($contextOrOutcome)
     {
-        $lastCalledStepClass = get_class($this->steps[count($this->steps)-1]);
-
-        return $this->addStep(new $lastCalledStepClass($arguments));
+        return $this->scenario->_and(func_get_args());
     }
 
     /**
-     * Runs this scenario.
+     * Run this test's scenario.
      *
-     * @param  array $world
-     * @access public
+     * @throws RuntimeException
+     * @access protected
      */
-    public function run(array &$world)
+    protected function runTest()
     {
-        foreach ($this->steps as $step)
-        {
-            if ($step instanceof PHPUnit_Extensions_Story_Given) {
-                $this->test->runGiven(
-                  $world, $step->getAction(), $step->getArguments()
-                );
-            }
+        $autostop       = $this->autoStop;
+        $this->autoStop = FALSE;
 
-            else if ($step instanceof PHPUnit_Extensions_Story_When) {
-                $this->test->runWhen(
-                  $world, $step->getAction(), $step->getArguments()
-                );
-            }
+        try {
+            parent::runTest();
+            $this->scenario->run($this->world);
+            $this->autoStop = $autostop;
+        }
 
-            else {
-                $this->test->runThen(
-                  $world, $step->getAction(), $step->getArguments()
-                );
-            }
+        catch (Exception $e) {
+            $this->autoStop = $autostop;
+            throw $e;
         }
     }
 
     /**
-     * Adds a step to the scenario.
+     * Implementation for "Given" steps.
      *
-     * @param  PHPUnit_Extensions_Story_Step $step
-     * @return PHPUnit_Extensions_Story_TestCase
-     * @access public
+     * @param  array  $world
+     * @param  string $action
+     * @param  array  $arguments
+     * @access protected
+     * @abstract
      */
-    protected function addStep(PHPUnit_Extensions_Story_Step $step)
-    {
-        $this->steps[] = $step;
-
-        return $this->test;
-    }
+    abstract protected function runGiven(&$world, $action, $arguments);
 
     /**
-     * Returns the steps of this scenario.
+     * Implementation for "When" steps.
      *
-     * @return array
-     * @access public
+     * @param  array  $world
+     * @param  string $action
+     * @param  array  $arguments
+     * @access protected
+     * @abstract
      */
-    public function getSteps()
-    {
-        return $this->steps;
-    }
+    abstract protected function runWhen(&$world, $action, $arguments);
+
+    /**
+     * Implementation for "Then" steps.
+     *
+     * @param  array  $world
+     * @param  string $action
+     * @param  array  $arguments
+     */
+    abstract protected function runThen(&$world, $action, $arguments);
 }
-?>
