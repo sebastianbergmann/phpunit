@@ -309,11 +309,11 @@ class PHPUnit_Util_Filter
      * Returns data about files within code coverage information, specifically
      * which ones will be filtered out and which ones may be whitelisted but not
      * touched by coverage.
-     * 
-     * Returns a two-item array. The first item is an array indexed by filenames 
+     *
+     * Returns a two-item array. The first item is an array indexed by filenames
      * with a boolean payload of whether they should be filtered out.
-     * 
-     * The second item is an array of filenames which are 
+     *
+     * The second item is an array of filenames which are
      * whitelisted but which are absent from the coverage information.
      *
      * @param  array   $codeCoverageInformation
@@ -326,7 +326,7 @@ class PHPUnit_Util_Filter
     {
         if (!self::$filter) {
             return array(array(), array());
-        }             
+        }
 
         $isFilteredCache = array();
         $coveredFiles    = array();
@@ -339,15 +339,15 @@ class PHPUnit_Util_Filter
                     );
                 }
             }
-        }        
+        }
 
         $coveredFiles = array_keys($isFilteredCache);
-        $missedFiles  = array_diff(self::$whitelistedFiles,$coveredFiles);                
+        $missedFiles  = array_diff(self::$whitelistedFiles,$coveredFiles);
         $missedFiles  = array_filter($missedFiles,'file_exists');
 
         return array($isFilteredCache,$missedFiles);
     }
-    
+
     /**
      * @param  array   $codeCoverageInformation
      * @param  boolean $addUncoveredFilesFromWhitelist

@@ -74,9 +74,9 @@ class PHPUnit_Extensions_Database_DB_TableIterator implements PHPUnit_Extensions
     protected $tableNames;
 
     /**
-     * If this property is true then the tables will be iterated in reverse 
+     * If this property is true then the tables will be iterated in reverse
      * order.
-     * 
+     *
      * @var bool
      */
     protected $reverse;
@@ -93,7 +93,7 @@ class PHPUnit_Extensions_Database_DB_TableIterator implements PHPUnit_Extensions
         $this->tableNames = $tableNames;
         $this->dataSet = $dataSet;
         $this->reverse = $reverse;
-        
+
         $this->rewind();
     }
 
@@ -165,7 +165,7 @@ class PHPUnit_Extensions_Database_DB_TableIterator implements PHPUnit_Extensions
 
     /**
      * Returns true if the current index is valid
-     * 
+     *
      * @return bool
      */
     public function valid()

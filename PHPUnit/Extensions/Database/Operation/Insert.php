@@ -72,24 +72,24 @@ class PHPUnit_Extensions_Database_Operation_Insert extends PHPUnit_Extensions_Da
     protected function buildOperationQuery(PHPUnit_Extensions_Database_DataSet_ITableMetaData $databaseTableMetaData, PHPUnit_Extensions_Database_DataSet_ITable $table, PHPUnit_Extensions_Database_DB_IDatabaseConnection $connection)
     {
         $columnCount = count($table->getTableMetaData()->getColumns());
-        
+
         if ($columnCount > 0) {
             $placeHolders = implode(', ', array_fill(0, $columnCount, '?'));
-            
+
             $columns = '';
             foreach ($table->getTableMetaData()->getColumns() as $column) {
                 $columns .= $connection->quoteSchemaObject($column).', ';
             }
-    
+
             $columns = substr($columns, 0, -2);
-    
+
             $query = "
                 INSERT INTO {$connection->quoteSchemaObject($table->getTableMetaData()->getTableName())}
                 ({$columns})
                 VALUES
                 ({$placeHolders})
             ";
-            
+
             return $query;
         } else {
             return false;

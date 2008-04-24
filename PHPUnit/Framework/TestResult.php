@@ -563,7 +563,7 @@ class PHPUnit_Framework_TestResult implements Countable
           $this->codeCoverageInformation
         );
 
-        return($missing);  
+        return($missing);
     }
 
     /**

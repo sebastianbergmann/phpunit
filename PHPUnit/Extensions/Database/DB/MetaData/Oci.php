@@ -102,7 +102,7 @@ class PHPUnit_Extensions_Database_DB_MetaData_Oci extends PHPUnit_Extensions_Dat
        if (!isset($this->columns[$tableName])) {
            $this->loadColumnInfo($tableName);
        }
-     
+
        return $this->columns[$tableName];
    }
 

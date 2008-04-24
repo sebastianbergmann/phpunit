@@ -86,7 +86,7 @@ class PHPUnit_Extensions_Database_Constraint_DataSetIsEqual extends PHPUnit_Fram
     }
 
     /**
-     * Determines whether or not the given dataset matches the dataset used to 
+     * Determines whether or not the given dataset matches the dataset used to
      * create this constraint.
      *
      * @param PHPUnit_Extensions_Database_DataSet_IDataSet $other
@@ -117,19 +117,19 @@ class PHPUnit_Extensions_Database_Constraint_DataSetIsEqual extends PHPUnit_Fram
      */
     protected function failureDescription($other, $description, $not)
     {
-        $failureDescription = sprintf('Failed asserting that %s %s Reason: %s', 
-            $other->__toString(), 
-            $this->toString(), 
+        $failureDescription = sprintf('Failed asserting that %s %s Reason: %s',
+            $other->__toString(),
+            $this->toString(),
             $this->failure_reason);
-        
+
         if ($not) {
             $failureDescription = self::negate($failureDescription);
         }
-        
+
         if (!empty($description)) {
             $failureDescription = $description . "\n" . $failureDescription;
         }
-        
+
         return $failureDescription;
     }
 
@@ -141,7 +141,7 @@ class PHPUnit_Extensions_Database_Constraint_DataSetIsEqual extends PHPUnit_Fram
      */
     public function toString()
     {
-        return sprintf('is equal to %s', 
+        return sprintf('is equal to %s',
             $this->value->__toString());
     }
 }

@@ -740,7 +740,7 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
     }
 
     /**
-     * 
+     *
      *
      * @param  Exception $exception
      * @return PHPUnit_Framework_MockObject_Stub_Exception

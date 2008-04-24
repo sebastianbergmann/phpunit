@@ -75,7 +75,7 @@ class PHPUnit_Extensions_Database_DB_Table extends PHPUnit_Extensions_Database_D
     public function __construct(PHPUnit_Extensions_Database_DataSet_ITableMetaData $tableMetaData, PHPUnit_Extensions_Database_DB_IDatabaseConnection $databaseConnection)
     {
         $this->setTableMetaData($tableMetaData);
-        
+
         $pdoStatement = $databaseConnection->getConnection()->prepare(PHPUnit_Extensions_Database_DB_DataSet::buildTableSelect($tableMetaData));
         $pdoStatement->execute();
         $this->data = $pdoStatement->fetchAll(PDO::FETCH_ASSOC);

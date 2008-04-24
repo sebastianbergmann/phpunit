@@ -71,11 +71,11 @@ class PHPUnit_Extensions_Database_Operation_DeleteAll implements PHPUnit_Extensi
     {
         foreach ($dataSet->getReverseIterator() as $table) {
             /* @var $table PHPUnit_Extensions_Database_DataSet_ITable */
-            
+
             $query = "
                 DELETE FROM {$connection->quoteSchemaObject($table->getTableMetaData()->getTableName())}
             ";
-            
+
             try {
                 $connection->getConnection()->query($query);
             } catch (PDOException $e) {

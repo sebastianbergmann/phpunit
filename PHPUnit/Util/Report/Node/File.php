@@ -699,7 +699,7 @@ class PHPUnit_Util_Report_Node_File extends PHPUnit_Util_Report_Node
                       htmlspecialchars($token)
                     );
 
-                    $stringFlag = !$stringFlag;   
+                    $stringFlag = !$stringFlag;
                 } else {
                     $result[$i] .= sprintf(
                       '<span class="keyword">%s</span>',
@@ -722,7 +722,7 @@ class PHPUnit_Util_Report_Node_File extends PHPUnit_Util_Report_Node
             if ($value === "\n") {
                 $result[++$i] = '';
             } else {
-                $lines = explode("\n", $value);              
+                $lines = explode("\n", $value);
 
                 foreach ($lines as $jj => $line) {
                     $line = trim($line);

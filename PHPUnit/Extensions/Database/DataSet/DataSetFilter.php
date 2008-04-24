@@ -53,7 +53,7 @@ require_once 'PHPUnit/Extensions/Database/DataSet/TableFilter.php';
 PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
 
 /**
- * A dataset decorator that allows filtering out tables and table columns from 
+ * A dataset decorator that allows filtering out tables and table columns from
  * results.
  *
  * @category   Testing
@@ -87,11 +87,11 @@ class PHPUnit_Extensions_Database_DataSet_DataSetFilter extends PHPUnit_Extensio
     protected $excludeColumns;
 
     /**
-     * Creates a new filtered data set. 
-     * 
-     * The $exclude tables should be an associative array using table names as 
-     * the key and an array of column names to exclude for the value. If you 
-     * would like to exclude a full table set the value of the table's entry 
+     * Creates a new filtered data set.
+     *
+     * The $exclude tables should be an associative array using table names as
+     * the key and an array of column names to exclude for the value. If you
+     * would like to exclude a full table set the value of the table's entry
      * to the special string '*'.
      *
      * @param PHPUnit_Extensions_Database_DataSet_IDataSet $originalDataSet
@@ -101,7 +101,7 @@ class PHPUnit_Extensions_Database_DataSet_DataSetFilter extends PHPUnit_Extensio
     {
         $this->originalDataSet = $originalDataSet;
         $this->excludeTables = $excludeTables;
-        
+
         foreach ($this->excludeTables as $tableName => $values) {
             if (is_array($values)) {
                 $this->excludeColumns[$tableName] = $values;
@@ -114,7 +114,7 @@ class PHPUnit_Extensions_Database_DataSet_DataSetFilter extends PHPUnit_Extensio
     }
 
     /**
-     * Creates an iterator over the tables in the data set. If $reverse is 
+     * Creates an iterator over the tables in the data set. If $reverse is
      * true a reverse iterator will be returned.
      *
      * @param bool $reverse
@@ -124,11 +124,11 @@ class PHPUnit_Extensions_Database_DataSet_DataSetFilter extends PHPUnit_Extensio
     {
         $original_tables = $this->originalDataSet->getIterator($reverse);
         $new_tables = array();
-        
+
         foreach ($original_tables as $table) {
             /* @var $table PHPUnit_Extensions_Database_DataSet_ITable */
             $tableName = $table->getTableMetaData()->getTableName();
-            
+
             if (in_array($tableName, $this->excludeTables)) {
                 continue;
             } elseif (array_key_exists($tableName, $this->excludeColumns)) {
@@ -137,7 +137,7 @@ class PHPUnit_Extensions_Database_DataSet_DataSetFilter extends PHPUnit_Extensio
                 $new_tables[] = $table;
             }
         }
-        
+
         return new PHPUnit_Extensions_Database_DataSet_DefaultTableIterator($new_tables);
     }
 }

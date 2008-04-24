@@ -74,23 +74,23 @@ class PHPUnit_Extensions_Database_DB_MetaData_PgSQL extends PHPUnit_Extensions_D
     {
         $query = "
             SELECT DISTINCT
-            	TABLE_NAME 
+            	TABLE_NAME
             FROM INFORMATION_SCHEMA.TABLES
-            WHERE 
-                TABLE_TYPE='BASE TABLE' AND 
+            WHERE
+                TABLE_TYPE='BASE TABLE' AND
                 TABLE_CATALOG = ? AND
                 TABLE_SCHEMA = 'public'
             ORDER BY TABLE_NAME
         ";
-        
+
         $statement = $this->pdo->prepare($query);
         $statement->execute(array($this->getSchema()));
-       
+
         $tableNames = array();
         while ($tableName = $statement->fetchColumn(0)) {
             $tableNames[] = $tableName;
         }
-       
+
         return $tableNames;
     }
 
@@ -103,26 +103,26 @@ class PHPUnit_Extensions_Database_DB_MetaData_PgSQL extends PHPUnit_Extensions_D
     {
         $this->columns[$tableName] = array();
         $this->keys[$tableName] = array();
-        
+
         $columnQuery = "
             SELECT DISTINCT
             	COLUMN_NAME,
-		ORDINAL_POSITION 
+		ORDINAL_POSITION
             FROM INFORMATION_SCHEMA.COLUMNS
-            WHERE 
-                TABLE_NAME = ? AND 
+            WHERE
+                TABLE_NAME = ? AND
                 TABLE_SCHEMA = 'public' AND
                 TABLE_CATALOG = ?
             ORDER BY ORDINAL_POSITION
         ";
-        
+
         $columnStatement = $this->pdo->prepare($columnQuery);
         $columnStatement->execute(array($tableName, $this->getSchema()));
-        
+
         while ($columName = $columnStatement->fetchColumn(0)) {
             $this->columns[$tableName][] = $columName;
         }
-        
+
         $keyQuery = "
 			SELECT
 				KCU.COLUMN_NAME,
@@ -142,10 +142,10 @@ class PHPUnit_Extensions_Database_DB_MetaData_PgSQL extends PHPUnit_Extensions_D
 			ORDER BY
 				KCU.ORDINAL_POSITION ASC
     	";
-        
+
         $keyStatement = $this->pdo->prepare($keyQuery);
         $keyStatement->execute(array($tableName, $this->getSchema()));
-        
+
         while ($columName = $keyStatement->fetchColumn(0)) {
             $this->keys[$tableName][] = $columName;
         }
@@ -153,7 +153,7 @@ class PHPUnit_Extensions_Database_DB_MetaData_PgSQL extends PHPUnit_Extensions_D
 
     /**
      * Returns true if the rdbms allows cascading
-     * 
+     *
      * @return bool
      */
     public function allowsCascading()

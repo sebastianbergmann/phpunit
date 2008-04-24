@@ -1069,7 +1069,7 @@ abstract class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_Tes
      * @access public
      */
     public function assertChecked($locator, $message = '')
-    {    	
+    {
         if ($message == '') {
             $message = sprintf(
               '"%s" not checked.',
@@ -1147,7 +1147,7 @@ abstract class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_Tes
      * @param  string $message
      * @access public
      */
-    public function assertNotEditable($locator, $message = '')    
+    public function assertNotEditable($locator, $message = '')
     {
         if ($message == '') {
             $message = sprintf(
@@ -1615,8 +1615,8 @@ abstract class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_Tes
         $response = '';
 
         while ((!feof($handle)) && (!$info['timed_out'])) {
-            $response .= fgets($handle, 4096); 
-            $info = stream_get_meta_data($handle); 
+            $response .= fgets($handle, 4096);
+            $info = stream_get_meta_data($handle);
         }
 
         fclose($handle);
