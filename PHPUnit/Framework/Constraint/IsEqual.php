@@ -175,7 +175,7 @@ class PHPUnit_Framework_Constraint_IsEqual extends PHPUnit_Framework_Constraint
 
     /**
      * Perform the actual recursive comparision of two values
-     * 
+     *
      * @param mixed $a First value
      * @param mixed $b Second value
      * @param int $depth Depth
@@ -273,7 +273,7 @@ class PHPUnit_Framework_Constraint_IsEqual extends PHPUnit_Framework_Constraint
 
     /**
      * Compares two numeric values - use delta if applicable.
-     * 
+     *
      * @param mixed $a
      * @param mixed $b
      * @return bool
@@ -290,7 +290,7 @@ class PHPUnit_Framework_Constraint_IsEqual extends PHPUnit_Framework_Constraint
     /**
      * Returns the normalized, whitespace-cleaned, and indented textual
      * representation of a DOMDocument.
-     * 
+     *
      * @param DOMDocument $document
      * @return string
      */

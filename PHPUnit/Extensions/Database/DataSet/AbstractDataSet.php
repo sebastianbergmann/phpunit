@@ -67,7 +67,7 @@ abstract class PHPUnit_Extensions_Database_DataSet_AbstractDataSet implements PH
 {
 
     /**
-     * Creates an iterator over the tables in the data set. If $reverse is 
+     * Creates an iterator over the tables in the data set. If $reverse is
      * true a reverse iterator will be returned.
      *
      * @param bool $reverse
@@ -83,12 +83,12 @@ abstract class PHPUnit_Extensions_Database_DataSet_AbstractDataSet implements PH
     public function getTableNames()
     {
         $tableNames = array();
-        
+
         foreach ($this->getIterator() as $table) {
             /* @var $table PHPUnit_Extensions_Database_DataSet_ITable */
             $tableNames[] = $table->getTableMetaData()->getTableName();
         }
-        
+
         return $tableNames;
     }
 
@@ -148,30 +148,30 @@ abstract class PHPUnit_Extensions_Database_DataSet_AbstractDataSet implements PH
     {
         $thisTableNames = $this->getTableNames();
         $otherTableNames = $other->getTableNames();
-        
+
         sort($thisTableNames);
         sort($otherTableNames);
-        
+
         if ($thisTableNames != $otherTableNames) {
             throw new Exception("Expected following tables: " . implode(', ', $thisTableNames) . "; has columns: " . implode(', ', $otherTableNames));
         }
-        
+
         foreach ($thisTableNames as $tableName) {
             $this->getTable($tableName)->assertEquals($other->getTable($tableName));
         }
-        
+
         return TRUE;
     }
 
     public function __toString()
     {
         $iterator = $this->getIterator();
-        
+
         $dataSetString = '';
         foreach ($iterator as $table) {
             $dataSetString .= $table->__toString();
         }
-        
+
         return $dataSetString;
     }
 }

@@ -61,56 +61,56 @@ PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
  */
 class DBUnitTestUtility
 {
-	public static function getSQLiteMemoryDB()
-	{
-		static $connection;
-		
-		if (empty($connection))
-		{
-			$connection = new PDO('sqlite::memory:');
-			self::setUpDatabase($connection);
-		}
-		
-		return $connection;
-	}
-	
-	protected static function setUpDatabase(PDO $connection)
-	{
+    public static function getSQLiteMemoryDB()
+    {
+        static $connection;
+
+        if (empty($connection))
+        {
+            $connection = new PDO('sqlite::memory:');
+            self::setUpDatabase($connection);
+        }
+
+        return $connection;
+    }
+
+    protected static function setUpDatabase(PDO $connection)
+    {
         $connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-        
-		$table1 = "
-			CREATE TABLE IF NOT EXISTS table1 (
-			    table1_id INTEGER PRIMARY KEY AUTOINCREMENT,
-			    column1 VARCHAR(20),
-			    column2 INT(10),
-			    column3 DECIMAL(6,2),
-			    column4 TEXT
-			)
-		";
-		
-		$table2 = "
-			CREATE TABLE IF NOT EXISTS table2 (
-			    table2_id INTEGER PRIMARY KEY AUTOINCREMENT,
-			    column5 VARCHAR(20),
-			    column6 INT(10),
-			    column7 DECIMAL(6,2),
-			    column8 TEXT
-			)
-		";
-		
-		$table3 = "
-			CREATE TABLE IF NOT EXISTS table3 (
-			    table3_id INTEGER PRIMARY KEY AUTOINCREMENT,
-			    column9 VARCHAR(20),
-			    column10 INT(10),
-			    column11 DECIMAL(6,2),
-			    column12 TEXT
-			)
-		";
-		
-		$connection->exec($table1);
-		$connection->exec($table2);
-		$connection->exec($table3);
-	}
+
+        $table1 = "
+            CREATE TABLE IF NOT EXISTS table1 (
+                table1_id INTEGER PRIMARY KEY AUTOINCREMENT,
+                column1 VARCHAR(20),
+                column2 INT(10),
+                column3 DECIMAL(6,2),
+                column4 TEXT
+            )
+        ";
+
+        $table2 = "
+            CREATE TABLE IF NOT EXISTS table2 (
+                table2_id INTEGER PRIMARY KEY AUTOINCREMENT,
+                column5 VARCHAR(20),
+                column6 INT(10),
+                column7 DECIMAL(6,2),
+                column8 TEXT
+            )
+        ";
+
+        $table3 = "
+            CREATE TABLE IF NOT EXISTS table3 (
+                table3_id INTEGER PRIMARY KEY AUTOINCREMENT,
+                column9 VARCHAR(20),
+                column10 INT(10),
+                column11 DECIMAL(6,2),
+                column12 TEXT
+            )
+        ";
+
+        $connection->exec($table1);
+        $connection->exec($table2);
+        $connection->exec($table3);
+    }
 }
 ?>

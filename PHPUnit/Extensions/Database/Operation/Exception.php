@@ -50,8 +50,8 @@ require_once 'PHPUnit/Util/Filter.php';
 PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
 
 /**
- * Thrown for exceptions encountered with database operations. Provides 
- * information regarding which operations failed and the query (if any) it 
+ * Thrown for exceptions encountered with database operations. Provides
+ * information regarding which operations failed and the query (if any) it
  * failed on.
  *
  * @category   Testing

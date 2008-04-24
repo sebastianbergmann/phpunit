@@ -54,7 +54,7 @@ require_once 'PHPUnit/Util/Filter.php';
 PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
 
 /**
- * 
+ *
  *
  * @category   Testing
  * @package    PHPUnit
@@ -281,7 +281,7 @@ class PHPUnit_Util_Log_CodeCoverage_Database
                            metrics_class_varsnp, metrics_class_varsi,
                            metrics_class_wmc, metrics_class_wmcnp, metrics_class_wmci)
                      VALUES(:runId, :classId, :coverage, :loc, :locExecutable,
-                            :locExecuted, :aif, :ahf, :cis, :csz, :dit, :impl, 
+                            :locExecuted, :aif, :ahf, :cis, :csz, :dit, :impl,
                             :mif, :mhf, :noc, :pf, :vars, :varsnp, :varsi,
                             :wmc, :wmcnp, :wmci);'
             );

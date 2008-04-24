@@ -76,7 +76,7 @@ class PHPUnit_Extensions_Story_ResultPrinter_Text extends PHPUnit_Extensions_Sto
     {
         $this->write($this->currentTestClassPrettified . "\n");
     }
-    
+
     /**
      * Handler for 'on test' event.
      *
@@ -111,11 +111,11 @@ class PHPUnit_Extensions_Story_ResultPrinter_Text extends PHPUnit_Extensions_Sto
             $currentStepName = $step->getName();
 
             if ($lastStepName == $currentStepName) {
-            	$stepText = 'and';
+                $stepText = 'and';
             } else {
-            	$stepText = $currentStepName;
+                $stepText = $currentStepName;
             }
-            
+
             $lastStepName = $currentStepName;
 
             $this->write('   ' . sprintf('%5s', $stepText) . ' ' . $step->getAction() . "\n");

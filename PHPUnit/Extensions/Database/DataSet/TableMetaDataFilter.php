@@ -52,7 +52,7 @@ require_once 'PHPUnit/Extensions/Database/DataSet/AbstractTableMetaData.php';
 PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
 
 /**
- * A TableMetaData decorator that allows filtering out columns from another 
+ * A TableMetaData decorator that allows filtering out columns from another
  * metaData object.
  *
  * @category   Testing
@@ -80,7 +80,7 @@ class PHPUnit_Extensions_Database_DataSet_TableMetaDataFilter extends PHPUnit_Ex
     protected $excludeColumns;
 
     /**
-     * Creates a new filtered table meta data object filtering out 
+     * Creates a new filtered table meta data object filtering out
      * $excludeColumns.
      *
      * @param PHPUnit_Extensions_Database_DataSet_ITableMetaData $originalMetaData

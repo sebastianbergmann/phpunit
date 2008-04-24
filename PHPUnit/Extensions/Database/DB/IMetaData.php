@@ -72,7 +72,7 @@ interface PHPUnit_Extensions_Database_DB_IMetaData
     public function getTableNames();
 
     /**
-     * Returns an array containing the names of all the columns in the 
+     * Returns an array containing the names of all the columns in the
      * $tableName table,
      *
      * @param string $tableName
@@ -81,7 +81,7 @@ interface PHPUnit_Extensions_Database_DB_IMetaData
     public function getTableColumns($tableName);
 
     /**
-     * Returns an array containing the names of all the primary key columns in 
+     * Returns an array containing the names of all the primary key columns in
      * the $tableName table.
      *
      * @param string $tableName
@@ -91,7 +91,7 @@ interface PHPUnit_Extensions_Database_DB_IMetaData
 
     /**
      * Returns the name of the default schema.
-     * 
+     *
      * @return string
      */
     public function getSchema();
@@ -106,7 +106,7 @@ interface PHPUnit_Extensions_Database_DB_IMetaData
 
     /**
      * Returns true if the rdbms allows cascading
-     * 
+     *
      * @return bool
      */
     public function allowsCascading();

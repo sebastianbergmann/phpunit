@@ -208,7 +208,7 @@ abstract class PHPUnit_Framework_ComparisonFailure extends PHPUnit_Framework_Ass
             'diff -u %s %s',
             escapeshellarg($expectedFile),
             escapeshellarg($actualFile)
-          )	
+          )
         );
 
         unlink($expectedFile);

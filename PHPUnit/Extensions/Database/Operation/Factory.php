@@ -76,7 +76,7 @@ class PHPUnit_Extensions_Database_Operation_Factory
 
     /**
      * Returns a null database operation
-     * 
+     *
      * @return PHPUnit_Extensions_Database_Operation_IDatabaseOperation
      */
     public static function NONE()
@@ -85,9 +85,9 @@ class PHPUnit_Extensions_Database_Operation_Factory
     }
 
     /**
-     * Returns a clean insert database operation. It will remove all contents 
+     * Returns a clean insert database operation. It will remove all contents
      * from the table prior to re-inserting rows.
-     * 
+     *
      * @param bool $cascadeTruncates Set to true to force truncates to cascade on databases that support this.
      * @return PHPUnit_Extensions_Database_Operation_IDatabaseOperation
      */
@@ -101,7 +101,7 @@ class PHPUnit_Extensions_Database_Operation_Factory
 
     /**
      * Returns an insert database operation.
-     * 
+     *
      * @return PHPUnit_Extensions_Database_Operation_IDatabaseOperation
      */
     public static function INSERT()
@@ -111,7 +111,7 @@ class PHPUnit_Extensions_Database_Operation_Factory
 
     /**
      * Returns a truncate database operation.
-     * 
+     *
      * @param bool $cascadeTruncates Set to true to force truncates to cascade on databases that support this.
      * @return PHPUnit_Extensions_Database_Operation_IDatabaseOperation
      */
@@ -119,13 +119,13 @@ class PHPUnit_Extensions_Database_Operation_Factory
     {
         $truncate = new PHPUnit_Extensions_Database_Operation_Truncate();
         $truncate->setCascade($cascadeTruncates);
-        
+
         return $truncate;
     }
 
     /**
      * Returns a delete database operation.
-     * 
+     *
      * @return PHPUnit_Extensions_Database_Operation_IDatabaseOperation
      */
     public static function DELETE()
@@ -135,7 +135,7 @@ class PHPUnit_Extensions_Database_Operation_Factory
 
     /**
      * Returns a delete_all database operation.
-     * 
+     *
      * @return PHPUnit_Extensions_Database_Operation_IDatabaseOperation
      */
     public static function DELETE_ALL()
@@ -145,7 +145,7 @@ class PHPUnit_Extensions_Database_Operation_Factory
 
     /**
      * Returns an update database operation.
-     * 
+     *
      * @return PHPUnit_Extensions_Database_Operation_IDatabaseOperation
      */
     public static function UPDATE()

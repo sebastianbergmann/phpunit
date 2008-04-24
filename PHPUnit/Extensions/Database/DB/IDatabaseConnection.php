@@ -70,8 +70,8 @@ interface PHPUnit_Extensions_Database_DB_IDatabaseConnection
     public function close();
 
     /**
-     * Creates a dataset containing the specified table names. If no table 
-     * names are specified then it will created a dataset over the entire 
+     * Creates a dataset containing the specified table names. If no table
+     * names are specified then it will created a dataset over the entire
      * database.
      *
      * @param array $tableNames
@@ -96,7 +96,7 @@ interface PHPUnit_Extensions_Database_DB_IDatabaseConnection
     public function getConnection();
 
     /**
-     * Returns the number of rows in the given table. You can specify an 
+     * Returns the number of rows in the given table. You can specify an
      * optional where clause to return a subset of the table.
      *
      * @param string $tableName
@@ -119,17 +119,17 @@ interface PHPUnit_Extensions_Database_DB_IDatabaseConnection
      * @return string
      */
     public function quoteSchemaObject($object);
-    
+
     /**
      * Returns the command used to truncate a table.
      *
      * @return string
      */
     public function getTruncateCommand();
-    
+
     /**
      * Returns true if the connection allows cascading
-     * 
+     *
      * @return bool
      */
     public function allowsCascading();
