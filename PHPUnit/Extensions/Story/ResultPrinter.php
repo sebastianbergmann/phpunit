@@ -64,8 +64,6 @@ PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
  */
 class PHPUnit_Extensions_Story_ResultPrinter extends PHPUnit_Util_TestDox_ResultPrinter
 {
-    protected $testTypeOfInterest = 'PHPUnit_Extensions_Story_TestCase';
-
     /**
      * A test ended.
      *
@@ -75,7 +73,8 @@ class PHPUnit_Extensions_Story_ResultPrinter extends PHPUnit_Util_TestDox_Result
      */
     public function endTest(PHPUnit_Framework_Test $test, $time)
     {
-        if ($test instanceof $this->testTypeOfInterest) {
+        if ($test instanceof PHPUnit_Extensions_Story_TestCase ||
+            $test instanceof PHPUnit_Extensions_Story_SeleniumTestCase) {
             if ($this->testStatus == PHPUnit_Runner_BaseTestRunner::STATUS_PASSED) {
                 $this->successful++;
             }
