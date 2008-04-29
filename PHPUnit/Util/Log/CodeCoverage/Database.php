@@ -298,6 +298,7 @@ class PHPUnit_Util_Log_CodeCoverage_Database
                 $stmt->execute();
 
                 $methodId = (int)$stmt->fetchColumn();
+                $stmt->closeCursor();
 
                 $stmt2->bindParam(':methodId', $methodId, PDO::PARAM_INT);
                 $stmt2->bindParam(':testId', $test->__db_id, PDO::PARAM_INT);
@@ -337,7 +338,8 @@ class PHPUnit_Util_Log_CodeCoverage_Database
                     $stmt2->bindParam(':revision', $revision, PDO::PARAM_INT);
                     $stmt2->execute();
 
-                    $parentClassId = (int)$stmt->fetchColumn();
+                    $parentClassId = (int)$stmt2->fetchColumn();
+                    $stmt2->closeCursor();
                 }
 
                 if ($parentClassId > 0) {
