@@ -146,6 +146,31 @@ class PHPUnit_Util_Filesystem
     }
 
     /**
+     * @param  string $directory
+     * @return string
+     * @throws RuntimeException
+     * @access protected
+     * @since  Method available since Release 3.3.0
+     */
+    public static function getDirectory($directory)
+    {
+        if (substr($directory, -1, 1) != DIRECTORY_SEPARATOR) {
+            $directory .= DIRECTORY_SEPARATOR;
+        }
+
+        if (is_dir($directory) || mkdir($directory, 0777, TRUE)) {
+            return $directory;
+        } else {
+            throw new RuntimeException(
+              sprintf(
+                'Directory "%s" does not exist.',
+                $directory
+              )
+            );
+        }
+    }
+
+    /**
      * Returns a filesystem safe version of the passed filename.
      * This function does not operate on full paths, just filenames.
      *
@@ -159,6 +184,112 @@ class PHPUnit_Util_Filesystem
     {
         /* characters allowed: A-Z, a-z, 0-9, _ and . */
         return preg_replace('#[^\w.]#', '_', $filename);
+    }
+
+    /**
+     * Reduces the paths by cutting the longest common start path.
+     *
+     * For instance,
+     *
+     * <code>
+     * Array
+     * (
+     *     [/home/sb/PHPUnit/Samples/Money/Money.php] => Array
+     *         (
+     *             ...
+     *         )
+     *
+     *     [/home/sb/PHPUnit/Samples/Money/MoneyBag.php] => Array
+     *         (
+     *             ...
+     *         )
+     * )
+     * </code>
+     *
+     * is reduced to
+     *
+     * <code>
+     * Array
+     * (
+     *     [Money.php] => Array
+     *         (
+     *             ...
+     *         )
+     *
+     *     [MoneyBag.php] => Array
+     *         (
+     *             ...
+     *         )
+     * )
+     * </code>
+     *
+     * @param  array $files
+     * @return string
+     * @access protected
+     * @static
+     * @since  Method available since Release 3.3.0
+     */
+    public static function reducePaths(&$files)
+    {
+        if (empty($files)) {
+            return '.';
+        }
+
+        $commonPath = '';
+        $paths      = array_keys($files);
+
+        if (count($files) == 1) {
+            $commonPath                 = dirname($paths[0]);
+            $files[basename($paths[0])] = $files[$paths[0]];
+
+            unset($files[$paths[0]]);
+
+            return $commonPath;
+        }
+
+        $max = count($paths);
+
+        for ($i = 0; $i < $max; $i++) {
+            $paths[$i] = explode(DIRECTORY_SEPARATOR, $paths[$i]);
+
+            if (empty($paths[$i][0])) {
+                $paths[$i][0] = DIRECTORY_SEPARATOR;
+            }
+        }
+
+        $done = FALSE;
+        $max  = count($paths);
+
+        while (!$done) {
+            for ($i = 0; $i < $max - 1; $i++) {
+                if (!isset($paths[$i][0]) ||
+                    !isset($paths[$i+1][0]) ||
+                    $paths[$i][0] != $paths[$i+1][0]) {
+                    $done = TRUE;
+                    break;
+                }
+            }
+
+            if (!$done) {
+                $commonPath .= $paths[0][0] . (($paths[0][0] != DIRECTORY_SEPARATOR) ? DIRECTORY_SEPARATOR : '');
+
+                for ($i = 0; $i < $max; $i++) {
+                    array_shift($paths[$i]);
+                }
+            }
+        }
+
+        $original = array_keys($files);
+        $max      = count($original);
+
+        for ($i = 0; $i < $max; $i++) {
+            $files[join('/', $paths[$i])] = $files[$original[$i]];
+            unset($files[$original[$i]]);
+        }
+
+        ksort($files);
+
+        return $commonPath;
     }
 }
 ?>

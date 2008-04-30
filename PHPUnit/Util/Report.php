@@ -45,8 +45,9 @@
  */
 
 require_once 'PHPUnit/Framework.php';
-require_once 'PHPUnit/Util/Filter.php';
 require_once 'PHPUnit/Util/CodeCoverage.php';
+require_once 'PHPUnit/Util/Filter.php';
+require_once 'PHPUnit/Util/Filesystem.php';
 require_once 'PHPUnit/Util/Report/Node/Directory.php';
 require_once 'PHPUnit/Util/Report/Node/File.php';
 
@@ -84,6 +85,8 @@ abstract class PHPUnit_Util_Report
      */
     public static function render(PHPUnit_Framework_TestResult $result, $target, $charset = 'ISO-8859-1', $yui = TRUE, $highlight = FALSE, $lowUpperBound = 35, $highLowerBound = 70)
     {
+        $target = PHPUnit_Util_Filesystem::getDirectory($target);
+
         self::$templatePath = sprintf(
           '%s%sReport%sTemplate%s',
 
@@ -95,7 +98,7 @@ abstract class PHPUnit_Util_Report
 
         $codeCoverageInformation = $result->getCodeCoverageInformation();
         $files                   = PHPUnit_Util_CodeCoverage::getSummary($codeCoverageInformation);
-        $commonPath              = self::reducePaths($files);
+        $commonPath              = PHPUnit_Util_Filesystem::reducePaths($files);
         $items                   = self::buildDirectoryStructure($files);
 
         unset($codeCoverageInformation);
@@ -217,112 +220,6 @@ abstract class PHPUnit_Util_Report
         }
 
         return $result;
-    }
-
-    /**
-     * Reduces the paths by cutting the longest common start path.
-     *
-     * For instance,
-     *
-     * <code>
-     * Array
-     * (
-     *     [/home/sb/PHPUnit/Samples/Money/Money.php] => Array
-     *         (
-     *             ...
-     *         )
-     *
-     *     [/home/sb/PHPUnit/Samples/Money/MoneyBag.php] => Array
-     *         (
-     *             ...
-     *         )
-     * )
-     * </code>
-     *
-     * is reduced to
-     *
-     * <code>
-     * Array
-     * (
-     *     [Money.php] => Array
-     *         (
-     *             ...
-     *         )
-     *
-     *     [MoneyBag.php] => Array
-     *         (
-     *             ...
-     *         )
-     * )
-     * </code>
-     *
-     * @param  array $files
-     * @return string
-     * @access protected
-     * @static
-     */
-    protected static function reducePaths(&$files)
-    {
-        if (empty($files)) {
-            return '.';
-        }
-
-        $commonPath = '';
-        $paths      = array_keys($files);
-
-        if (count($files) == 1) {
-            $commonPath                 = dirname($paths[0]);
-            $files[basename($paths[0])] = $files[$paths[0]];
-
-            unset($files[$paths[0]]);
-
-            return $commonPath;
-        }
-
-        $max = count($paths);
-
-        for ($i = 0; $i < $max; $i++) {
-            $paths[$i] = explode(DIRECTORY_SEPARATOR, $paths[$i]);
-
-            if (empty($paths[$i][0])) {
-                $paths[$i][0] = DIRECTORY_SEPARATOR;
-            }
-        }
-
-        $done = FALSE;
-
-        $max = count($paths);
-
-        while (!$done) {
-            for ($i = 0; $i < $max - 1; $i++) {
-                if (!isset($paths[$i][0]) ||
-                    !isset($paths[$i+1][0]) ||
-                    $paths[$i][0] != $paths[$i+1][0]) {
-                    $done = TRUE;
-                    break;
-                }
-            }
-
-            if (!$done) {
-                $commonPath .= $paths[0][0] . (($paths[0][0] != DIRECTORY_SEPARATOR) ? DIRECTORY_SEPARATOR : '');
-
-                for ($i = 0; $i < $max; $i++) {
-                    array_shift($paths[$i]);
-                }
-            }
-        }
-
-        $original = array_keys($files);
-        $max      = count($original);
-
-        for ($i = 0; $i < $max; $i++) {
-            $files[join('/', $paths[$i])] = $files[$original[$i]];
-            unset($files[$original[$i]]);
-        }
-
-        ksort($files);
-
-        return $commonPath;
     }
 
     /**

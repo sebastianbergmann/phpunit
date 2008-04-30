@@ -854,10 +854,15 @@
     <dir name="Util">
      <dir name="Log">
       <dir name="CodeCoverage">
+       <dir name="XML">
+        <file baseinstalldir="/" name="Clover.php" role="php">
+         <tasks:replace from="@package_version@" to="version" type="package-info" />
+        </file>
+        <file baseinstalldir="/" name="Source.php" role="php">
+         <tasks:replace from="@package_version@" to="version" type="package-info" />
+        </file>
+       </dir>
        <file baseinstalldir="/" name="Database.php" role="php">
-        <tasks:replace from="@package_version@" to="version" type="package-info" />
-       </file>
-       <file baseinstalldir="/" name="XML.php" role="php">
         <tasks:replace from="@package_version@" to="version" type="package-info" />
        </file>
       </dir>
