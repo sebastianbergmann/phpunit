@@ -95,7 +95,8 @@ PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
  *     <log type="coverage-html" target="/tmp/report" charset="UTF-8"
  *          yui="true" highlight="false"
  *          lowUpperBound="35" highLowerBound="70"/>
- *     <log type="coverage-xml" target="/tmp/coverage.xml"/>
+ *     <log type="coverage-clover" target="/tmp/clover.xml"/>
+ *     <log type="coverage-source" target="/tmp/coverage"/>
  *     <log type="graphviz" target="/tmp/logfile.dot"/>
  *     <log type="json" target="/tmp/logfile.json"/>
  *     <log type="metrics-xml" target="/tmp/metrics.xml"/>
