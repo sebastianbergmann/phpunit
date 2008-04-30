@@ -282,12 +282,17 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
     /**
      * Gets the name of a TestCase.
      *
+     * @param  boolean $withDataSet
      * @return string
      * @access public
      */
-    public function getName()
+    public function getName($withDataSet = TRUE)
     {
-        return $this->name . $this->getDataSetAsString(FALSE);
+        if ($withDataSet) {
+            return $this->name . $this->getDataSetAsString(FALSE);
+        } else {
+            return $this->name;
+        }
     }
 
     /**
