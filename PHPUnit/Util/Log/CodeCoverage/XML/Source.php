@@ -86,13 +86,29 @@ class PHPUnit_Util_Log_CodeCoverage_XML_Source
      */
     public function process(PHPUnit_Framework_TestResult $result)
     {
-        $codeCoverageInformation = $result->getCodeCoverageInformation();
-        $files                   = PHPUnit_Util_CodeCoverage::getSummary($codeCoverageInformation);
-        $commonPath              = PHPUnit_Util_Filesystem::reducePaths($files);
-        $time                    = time();
+        $sutData   = $result->getCodeCoverageInformation();
+        $sutFiles  = PHPUnit_Util_CodeCoverage::getSummary($sutData, TRUE);
+        $allData   = $result->getCodeCoverageInformation(FALSE);
+        $allFiles  = PHPUnit_Util_CodeCoverage::getSummary($allData, TRUE);
+        $testFiles = array_diff(array_keys($allFiles), array_keys($sutFiles));
 
-        foreach ($files as $filename => $data) {
-            $fullPath = $commonPath . DIRECTORY_SEPARATOR . $filename;
+        foreach (array_keys($allFiles) as $key) {
+            if (!in_array($key, $testFiles)) {
+                unset($allFiles[$key]);
+            }
+        }
+
+        $allCommonPath = PHPUnit_Util_Filesystem::reducePaths($allFiles);
+        $sutCommonPath = PHPUnit_Util_Filesystem::reducePaths($sutFiles);
+        $testFiles     = $allFiles;
+        $time          = time();
+
+        unset($allData);
+        unset($allFiles);
+        unset($sutData);
+
+        foreach ($sutFiles as $filename => $data) {
+            $fullPath = $sutCommonPath . DIRECTORY_SEPARATOR . $filename;
 
             if (file_exists($fullPath)) {
                 $document = new DOMDocument('1.0', 'UTF-8');
@@ -119,16 +135,114 @@ class PHPUnit_Util_Log_CodeCoverage_XML_Source
                         $count = -3;
                     }
 
-                    $xmlLine = $document->createElement('line');
+                    $xmlLine = $coveredFile->appendChild(
+                      $document->createElement('line')
+                    );
+
+                    $xmlLine->setAttribute('lineNumber', $lineNum);
                     $xmlLine->setAttribute('executed', $count);
 
-                    $xmlLine->appendChild(
+                    $xmlLineBody = $xmlLine->appendChild(
+                      $document->createElement('body')
+                    );
+
+                    $xmlLineBody->appendChild(
                       $document->createCDATASection(
                         PHPUnit_Util_XML::convertToUtf8($line)
                       )
                     );
 
-                    $coveredFile->appendChild($xmlLine);
+                    if (isset($data[$lineNum]) && is_array($data[$lineNum])) {
+                        $xmlTests = $document->createElement('tests');
+                        $xmlLine->appendChild($xmlTests);
+
+                        foreach ($data[$lineNum] as $test) {
+                            $xmlTest = $xmlTests->appendChild(
+                              $document->createElement('test')
+                            );
+
+                            $xmlTest->setAttribute('name', $test->getName());
+
+                            if ($test instanceof PHPUnit_Framework_TestCase) {
+                                $xmlTest->setAttribute('status', $test->getStatus());
+
+                                if ($test->hasFailed()) {
+                                    $xmlMessage = $xmlTest->appendChild(
+                                      $document->createElement('message')
+                                    );
+
+                                    $xmlMessage->appendChild(
+                                      $document->createCDATASection(
+                                        PHPUnit_Util_XML::convertToUtf8($test->getStatusMessage())
+                                      )
+                                    );
+                                }
+
+                                $class      = new ReflectionClass($test);
+                                $methodName = $test->getName();
+
+                                if ($class->hasMethod($methodName)) {
+                                    $method = $class->getMethod($test->getName());
+
+                                    $xmlTest->setAttribute('class', $class->getName());
+                                    $xmlTest->setAttribute('fullPath', $class->getFileName());
+                                    $xmlTest->setAttribute('shortenedPath', str_replace($allCommonPath, '', $class->getFileName()));
+                                    $xmlTest->setAttribute('line', $method->getStartLine());
+                                }
+                            }
+                        }
+                    }
+
+                    $lineNum++;
+                }
+
+                $document->save(
+                  sprintf(
+                    '%s%s.xml',
+
+                    $this->directory,
+                    PHPUnit_Util_Filesystem::getSafeFilename(
+                      str_replace(DIRECTORY_SEPARATOR, '_', $filename)
+                    )
+                  )
+                );
+            }
+        }
+
+        foreach ($testFiles as $filename => $data) {
+            $fullPath = $allCommonPath . DIRECTORY_SEPARATOR . $filename;
+
+            if (file_exists($fullPath)) {
+                $document = new DOMDocument('1.0', 'UTF-8');
+                $document->formatOutput = TRUE;
+
+                $testFile = $document->createElement('testFile');
+                $testFile->setAttribute('fullPath', $fullPath);
+                $testFile->setAttribute('shortenedPath', $filename);
+                $testFile->setAttribute('generated', $time);
+                $testFile->setAttribute('phpunit', PHPUnit_Runner_Version::id());
+                $document->appendChild($testFile);
+
+                $lines   = file($fullPath, FILE_IGNORE_NEW_LINES);
+                $lineNum = 1;
+
+                foreach ($lines as $line) {
+                    $xmlLine = $testFile->appendChild(
+                      $document->createElement('line')
+                    );
+
+                    $xmlLine->setAttribute('lineNumber', $lineNum);
+
+                    $xmlLineBody = $xmlLine->appendChild(
+                      $document->createElement('body')
+                    );
+
+                    $xmlLineBody->appendChild(
+                      $document->createCDATASection(
+                        PHPUnit_Util_XML::convertToUtf8($line)
+                      )
+                    );
+
                     $lineNum++;
                 }
 
