@@ -96,7 +96,7 @@ class PHPUnit_Util_Log_CodeCoverage_Database
      */
     public function storeCodeCoverage(PHPUnit_Framework_TestResult $result, $runId, $revision, $commonPath = '')
     {
-        $codeCoverage   = $result->getCodeCoverageInformation(FALSE, TRUE);
+        $codeCoverage   = $result->getCodeCoverageInformation(FALSE);
         $summary        = PHPUnit_Util_CodeCoverage::getSummary($codeCoverage);
         $files          = array_keys($summary);
         $projectMetrics = new PHPUnit_Util_Metrics_Project($files, $summary);
