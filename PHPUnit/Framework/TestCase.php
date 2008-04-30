@@ -225,6 +225,12 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
     protected $status;
 
     /**
+     * @var    string
+     * @access protected
+     */
+    protected $statusMessage = '';
+
+    /**
      * Constructs a test case with the given name.
      *
      * @param  string $name
@@ -320,6 +326,17 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
     }
 
     /**
+     * Returns the status message of this test.
+     *
+     * @return string
+     * @since  Method available since Release 3.3.0
+     */
+    public function getStatusMessage()
+    {
+        return $this->statusMessage;
+    }
+
+    /**
      * Returns whether or not this test has failed.
      *
      * @return boolean
@@ -383,8 +400,6 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
                 $mockObject->verify();
             }
 
-            $this->mockObjects = array();
-
             $this->status = PHPUnit_Runner_BaseTestRunner::STATUS_PASSED;
         }
 
@@ -400,7 +415,11 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
             if ($e instanceof PHPUnit_Framework_AssertionFailedError) {
                 $this->status = PHPUnit_Runner_BaseTestRunner::STATUS_FAILURE;
             }
+
+            $this->statusMessage = $e->getMessage();
         }
+
+        $this->mockObjects = array();
 
         // Tear down the fixture.
         $this->tearDown();

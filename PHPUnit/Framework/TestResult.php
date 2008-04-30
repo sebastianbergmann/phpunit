@@ -490,7 +490,7 @@ class PHPUnit_Framework_TestResult implements Countable
         $executableCode = array();
 
         foreach (array_keys($data) as $file) {
-            if (PHPUnit_Util_Filter::isFiltered($file, TRUE))
+            if (PHPUnit_Util_Filter::isFiltered($file, FALSE))
             {
                 unset($data[$file]);
             }
@@ -565,8 +565,7 @@ class PHPUnit_Framework_TestResult implements Countable
     public function getCodeCoverageInformation($filterTests = TRUE)
     {
         return PHPUnit_Util_Filter::getFilteredCodeCoverage(
-          $this->codeCoverageInformation,
-          $filterTests
+          $this->codeCoverageInformation, $filterTests
         );
     }
 
@@ -583,7 +582,7 @@ class PHPUnit_Framework_TestResult implements Countable
           $this->codeCoverageInformation
         );
 
-        return($missing);
+        return $missing;
     }
 
     /**

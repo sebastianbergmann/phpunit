@@ -365,7 +365,7 @@ class PHPUnit_Util_Filter
         $coveredFiles    = array();
 
         foreach ($codeCoverageInformation as $k => $test) {
-            foreach (array_keys($test['files']) as $file) {
+            foreach (array_keys($test['executable']) as $file) {
                 if (!isset($isFilteredCache[$file])) {
                     $isFilteredCache[$file] = self::isFiltered(
                       $file, $filterTests
@@ -375,15 +375,15 @@ class PHPUnit_Util_Filter
         }
 
         $coveredFiles = array_keys($isFilteredCache);
-        $missedFiles  = array_diff(self::$whitelistedFiles,$coveredFiles);
-        $missedFiles  = array_filter($missedFiles,'file_exists');
+        $missedFiles  = array_diff(self::$whitelistedFiles, $coveredFiles);
+        $missedFiles  = array_filter($missedFiles, 'file_exists');
 
-        return array($isFilteredCache,$missedFiles);
+        return array($isFilteredCache, $missedFiles);
     }
 
     /**
      * @param  array   $codeCoverageInformation
-     * @param  boolean $addUncoveredFilesFromWhitelist
+     * @param  boolean $filterTests
      * @return array
      * @access public
      * @static
@@ -391,8 +391,31 @@ class PHPUnit_Util_Filter
     public static function getFilteredCodeCoverage(array $codeCoverageInformation, $filterTests = TRUE)
     {
         if (self::$filter) {
-            if (self::$addUncoveredFilesFromWhitelist) {
+            list($isFilteredCache, $missedFiles) = self::getFileCodeCoverageDisposition(
+              $codeCoverageInformation, $filterTests
+            );
 
+            foreach ($codeCoverageInformation as $k => $test) {
+                foreach (array_keys($test['files']) as $file) {
+                    if ($isFilteredCache[$file]) {
+                        unset($codeCoverageInformation[$k]['files'][$file]);
+                    }
+                }
+
+                foreach (array_keys($test['dead']) as $file) {
+                    if ($isFilteredCache[$file]) {
+                        unset($codeCoverageInformation[$k]['dead'][$file]);
+                    }
+                }
+
+                foreach (array_keys($test['executable']) as $file) {
+                    if ($isFilteredCache[$file]) {
+                        unset($codeCoverageInformation[$k]['executable'][$file]);
+                    }
+                }
+            }
+
+            if (self::$addUncoveredFilesFromWhitelist) {
                 foreach (self::$whitelistedFiles as $whitelistedFile) {
                     if (!isset(self::$coveredFiles[$whitelistedFile])) {
                         if (file_exists($whitelistedFile)) {
@@ -403,7 +426,7 @@ class PHPUnit_Util_Filter
 
                             foreach ($coverage as $file => $fileCoverage)
                             {
-                                if(!in_array($file, self::$whitelistedFiles) || isset(self::$coveredFiles[$file]))
+                                if (!in_array($file, self::$whitelistedFiles) || isset(self::$coveredFiles[$file]))
                                     continue;
 
                                 foreach ($fileCoverage as $line => $flag) {
