@@ -92,16 +92,20 @@ class PHPUnit_Util_Log_CodeCoverage_XML_Source
         $time                    = time();
 
         foreach ($files as $filename => $data) {
-            if (file_exists($commonPath . DIRECTORY_SEPARATOR . $filename)) {
+            $fullPath = $commonPath . DIRECTORY_SEPARATOR . $filename;
+
+            if (file_exists($fullPath)) {
                 $document = new DOMDocument('1.0', 'UTF-8');
                 $document->formatOutput = TRUE;
 
                 $coveredFile = $document->createElement('coveredFile');
+                $coveredFile->setAttribute('fullPath', $fullPath);
+                $coveredFile->setAttribute('shortenedPath', $filename);
                 $coveredFile->setAttribute('generated', $time);
                 $coveredFile->setAttribute('phpunit', PHPUnit_Runner_Version::id());
                 $document->appendChild($coveredFile);
 
-                $lines   = file($filename, FILE_IGNORE_NEW_LINES);
+                $lines   = file($fullPath, FILE_IGNORE_NEW_LINES);
                 $lineNum = 1;
 
                 foreach ($lines as $line) {
