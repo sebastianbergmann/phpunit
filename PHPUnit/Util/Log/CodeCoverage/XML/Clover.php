@@ -41,7 +41,7 @@
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    SVN: $Id$
  * @link       http://www.phpunit.de/
- * @since      File available since Release 3.1.4
+ * @since      File available since Release 3.3.0
  */
 
 require_once 'PHPUnit/Runner/Version.php';
@@ -67,7 +67,7 @@ PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
  * @link       http://www.phpunit.de/
  * @since      Class available since Release 3.1.4
  */
-class PHPUnit_Util_Log_CodeCoverage_XML extends PHPUnit_Util_Printer
+class PHPUnit_Util_Log_CodeCoverage_XML_Clover extends PHPUnit_Util_Printer
 {
     /**
      * @param  PHPUnit_Framework_TestResult $result

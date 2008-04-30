@@ -55,11 +55,13 @@ require_once 'PHPUnit/TextUI/ResultPrinter.php';
 require_once 'PHPUnit/Util/TestDox/ResultPrinter.php';
 require_once 'PHPUnit/Util/Configuration.php';
 require_once 'PHPUnit/Util/PDO.php';
+require_once 'PHPUnit/Util/Filesystem.php';
 require_once 'PHPUnit/Util/Filter.php';
 require_once 'PHPUnit/Util/Report.php';
 require_once 'PHPUnit/Util/Timer.php';
 require_once 'PHPUnit/Util/Log/CodeCoverage/Database.php';
-require_once 'PHPUnit/Util/Log/CodeCoverage/XML.php';
+require_once 'PHPUnit/Util/Log/CodeCoverage/XML/Clover.php';
+require_once 'PHPUnit/Util/Log/CodeCoverage/XML/Source.php';
 require_once 'PHPUnit/Util/Log/CPD.php';
 require_once 'PHPUnit/Util/Log/Database.php';
 require_once 'PHPUnit/Util/Log/GraphViz.php';
@@ -265,7 +267,8 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
             }
         }
 
-        if ((isset($arguments['coverageXML']) ||
+        if ((isset($arguments['coverageClover']) ||
+             isset($arguments['coverageSource']) ||
              isset($arguments['metricsXML'])  ||
              isset($arguments['pmdXML'])) &&
              extension_loaded('xdebug')) {
@@ -331,86 +334,91 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
             $this->printer->printResult($result);
         }
 
-        if (isset($arguments['coverageXML']) &&
-            extension_loaded('tokenizer') &&
-            extension_loaded('xdebug')) {
-            $this->printer->write("\nWriting code coverage data to XML file, this may take a moment.");
+        if (extension_loaded('tokenizer') && extension_loaded('xdebug')) {
+            if (isset($arguments['coverageClover'])) {
+                $this->printer->write("\nWriting code coverage data to XML file, this may take a moment.");
 
-            $writer = new PHPUnit_Util_Log_CodeCoverage_XML(
-              $arguments['coverageXML']
-            );
+                $writer = new PHPUnit_Util_Log_CodeCoverage_XML_Clover(
+                  $arguments['coverageClover']
+                );
 
-            $writer->process($result);
-            $this->printer->write("\n");
-        }
+                $writer->process($result);
+                $this->printer->write("\n");
+            }
 
-        if ($writeToTestDatabase &&
-            extension_loaded('tokenizer') &&
-            extension_loaded('xdebug')) {
-            $this->printer->write("\nStoring code coverage and software metrics data in database.\nThis may take a moment.");
+            if (isset($arguments['coverageSource'])) {
+                $this->printer->write("\nWriting code coverage data to XML files, this may take a moment.");
 
-            $testDb = new PHPUnit_Util_Log_CodeCoverage_Database($dbh);
-            $testDb->storeCodeCoverage(
-              $result,
-              $dbListener->getRunId(),
-              $arguments['testDatabaseLogRevision'],
-              $arguments['testDatabasePrefix']
-            );
+                $writer = new PHPUnit_Util_Log_CodeCoverage_XML_Source(
+                  $arguments['coverageSource']
+                );
 
-            $this->printer->write("\n");
-        }
+                $writer->process($result);
+                $this->printer->write("\n");
+            }
 
-        if (isset($arguments['metricsXML']) &&
-            extension_loaded('tokenizer') &&
-            extension_loaded('xdebug')) {
-            $this->printer->write("\nWriting metrics report XML file, this may take a moment.");
+            if ($writeToTestDatabase) {
+                $this->printer->write("\nStoring code coverage and software metrics data in database.\nThis may take a moment.");
 
-            $writer = new PHPUnit_Util_Log_Metrics(
-              $arguments['metricsXML']
-            );
+                $testDb = new PHPUnit_Util_Log_CodeCoverage_Database($dbh);
+                $testDb->storeCodeCoverage(
+                  $result,
+                  $dbListener->getRunId(),
+                  $arguments['testDatabaseLogRevision'],
+                  $arguments['testDatabasePrefix']
+                );
 
-            $writer->process($result);
-            $this->printer->write("\n");
-        }
+                $this->printer->write("\n");
+            }
 
-        if (isset($arguments['pmdXML']) &&
-            extension_loaded('tokenizer') &&
-            extension_loaded('xdebug')) {
-            $writer = new PHPUnit_Util_Log_PMD(
-              $arguments['pmdXML'], $arguments['pmd']
-            );
+            if (isset($arguments['metricsXML'])) {
+                $this->printer->write("\nWriting metrics report XML file, this may take a moment.");
 
-            $this->printer->write("\nWriting violations report XML file, this may take a moment.");
-            $writer->process($result);
+                $writer = new PHPUnit_Util_Log_Metrics(
+                  $arguments['metricsXML']
+                );
 
-            $writer = new PHPUnit_Util_Log_CPD(
-              str_replace('.xml', '-cpd.xml', $arguments['pmdXML'])
-            );
+                $writer->process($result);
+                $this->printer->write("\n");
+            }
 
-            $writer->process(
-              $result, $arguments['cpdMinLines'], $arguments['cpdMinMatches']
-            );
+            if (isset($arguments['pmdXML'])) {
+                $writer = new PHPUnit_Util_Log_PMD(
+                  $arguments['pmdXML'], $arguments['pmd']
+                );
 
-            $this->printer->write("\n");
-        }
+                $this->printer->write("\nWriting violations report XML file, this may take a moment.");
+                $writer->process($result);
 
-        if (isset($arguments['reportDirectory']) && extension_loaded('xdebug')) {
-            $this->printer->write("\nGenerating code coverage report, this may take a moment.");
+                $writer = new PHPUnit_Util_Log_CPD(
+                  str_replace('.xml', '-cpd.xml', $arguments['pmdXML'])
+                );
 
-            $suite->cleanUp();
-            unset($suite);
+                $writer->process(
+                  $result, $arguments['cpdMinLines'], $arguments['cpdMinMatches']
+                );
 
-            PHPUnit_Util_Report::render(
-              $result,
-              $arguments['reportDirectory'],
-              $arguments['reportCharset'],
-              $arguments['reportYUI'],
-              $arguments['reportHighlight'],
-              $arguments['reportLowUpperBound'],
-              $arguments['reportHighLowerBound']
-            );
+                $this->printer->write("\n");
+            }
 
-            $this->printer->write("\n");
+            if (isset($arguments['reportDirectory'])) {
+                $this->printer->write("\nGenerating code coverage report, this may take a moment.");
+
+                $suite->cleanUp();
+                unset($suite);
+
+                PHPUnit_Util_Report::render(
+                  $result,
+                  $arguments['reportDirectory'],
+                  $arguments['reportCharset'],
+                  $arguments['reportYUI'],
+                  $arguments['reportHighlight'],
+                  $arguments['reportLowUpperBound'],
+                  $arguments['reportHighLowerBound']
+                );
+
+                $this->printer->write("\n");
+            }
         }
 
         $this->pause($arguments['wait']);
@@ -488,31 +496,6 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
         self::printVersionString();
         self::write($message);
         exit(self::FAILURE_EXIT);
-    }
-
-    /**
-     * @param  string $directory
-     * @return string
-     * @throws RuntimeException
-     * @access protected
-     * @since  Method available since Release 3.0.0
-     */
-    protected function getDirectory($directory)
-    {
-        if (substr($directory, -1, 1) != DIRECTORY_SEPARATOR) {
-            $directory .= DIRECTORY_SEPARATOR;
-        }
-
-        if (is_dir($directory) || mkdir($directory, 0777, TRUE)) {
-            return $directory;
-        } else {
-            throw new RuntimeException(
-              sprintf(
-                'Directory "%s" does not exist.',
-                $directory
-              )
-            );
-        }
     }
 
     /**
@@ -715,8 +698,16 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
                 $arguments['reportDirectory'] = $loggingConfiguration['coverage-html'];
             }
 
-            if (isset($loggingConfiguration['coverage-xml']) && !isset($arguments['coverageXML'])) {
-                $arguments['coverageXML'] = $loggingConfiguration['coverage-xml'];
+            if (isset($loggingConfiguration['coverage-clover']) && !isset($arguments['coverageClover'])) {
+                $arguments['coverageClover'] = $loggingConfiguration['coverage-clover'];
+            }
+
+            if (isset($loggingConfiguration['coverage-xml']) && !isset($arguments['coverageClover'])) {
+                $arguments['coverageClover'] = $loggingConfiguration['coverage-xml'];
+            }
+
+            if (isset($loggingConfiguration['coverage-source']) && !isset($arguments['coverageSource'])) {
+                $arguments['coverageSource'] = $loggingConfiguration['coverage-source'];
             }
 
             if (isset($loggingConfiguration['graphviz']) && !isset($arguments['graphvizLogfile'])) {
@@ -797,10 +788,6 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
         $arguments['reportLowUpperBound']        = isset($arguments['reportLowUpperBound'])        ? $arguments['reportLowUpperBound']        : 35;
         $arguments['reportYUI']                  = isset($arguments['reportYUI'])                  ? $arguments['reportYUI']                  : TRUE;
         $arguments['stopOnFailure']              = isset($arguments['stopOnFailure'])              ? $arguments['stopOnFailure']              : FALSE;
-
-        if (isset($arguments['reportDirectory'])) {
-            $arguments['reportDirectory'] = $this->getDirectory($arguments['reportDirectory']);
-        }
     }
 }
 ?>

@@ -184,6 +184,8 @@ class PHPUnit_TextUI_Command
 
         if (extension_loaded('tokenizer') && extension_loaded('xdebug')) {
             $longOptions[] = 'coverage-html=';
+            $longOptions[] = 'coverage-clover=';
+            $longOptions[] = 'coverage-source=';
             $longOptions[] = 'coverage-xml=';
             $longOptions[] = 'log-metrics=';
             $longOptions[] = 'log-pmd=';
@@ -229,8 +231,14 @@ class PHPUnit_TextUI_Command
                 }
                 break;
 
+                case '--coverage-source': {
+                    $arguments['coverageSource'] = $option[1];
+                }
+                break;
+
+                case '--coverage-clover':
                 case '--coverage-xml': {
-                    $arguments['coverageXML'] = $option[1];
+                    $arguments['coverageClover'] = $option[1];
                 }
                 break;
 
@@ -512,51 +520,52 @@ class PHPUnit_TextUI_Command
               "       phpunit [switches] <directory>\n\n";
 
         if (PHPUnit_Util_Filesystem::fileExistsInIncludePath('Image/GraphViz.php')) {
-            print "  --log-graphviz <file>  Log test execution in GraphViz markup.\n";
+            print "  --log-graphviz <file>    Log test execution in GraphViz markup.\n";
         }
 
-        print "  --log-json <file>      Log test execution in JSON format.\n" .
-              "  --log-tap <file>       Log test execution in TAP format to file.\n" .
-              "  --log-xml <file>       Log test execution in XML format to file.\n";
+        print "  --log-json <file>        Log test execution in JSON format.\n" .
+              "  --log-tap <file>         Log test execution in TAP format to file.\n" .
+              "  --log-xml <file>         Log test execution in XML format to file.\n";
 
         if (extension_loaded('tokenizer') && extension_loaded('xdebug')) {
-            print "  --log-metrics <file>   Write metrics report in XML format.\n" .
-                  "  --log-pmd <file>       Write violations report in PMD XML format.\n\n" .
-                  "  --coverage-html <dir>  Generate code coverage report in HTML format.\n" .
-                  "  --coverage-xml <file>  Write code coverage information in XML format.\n\n";
+            print "  --log-metrics <file>     Write metrics report in XML format.\n" .
+                  "  --log-pmd <file>         Write violations report in PMD XML format.\n\n" .
+                  "  --coverage-html <dir>    Generate code coverage report in HTML format.\n" .
+                  "  --coverage-clover <file> Write code coverage data in Clover XML format.\n" .
+                  "  --coverage-source <dir>  Write code coverage / source data in XML format.\n\n";
         }
 
         if (extension_loaded('pdo')) {
-            print "  --test-db-dsn <dsn>    DSN for the test database.\n" .
-                  "  --test-db-log-rev <r>  Revision information for database logging.\n" .
-                  "  --test-db-prefix ...   Prefix that should be stripped from filenames.\n" .
-                  "  --test-db-log-info ... Additional information for database logging.\n\n";
+            print "  --test-db-dsn <dsn>      DSN for the test database.\n" .
+                  "  --test-db-log-rev <rev>  Revision information for database logging.\n" .
+                  "  --test-db-prefix ...     Prefix that should be stripped from filenames.\n" .
+                  "  --test-db-log-info ...   Additional information for database logging.\n\n";
         }
 
-        print "  --story-html <file>    Write Story/BDD results in HTML format to file.\n" .
-              "  --story-text <file>    Write Story/BDD results in Text format to file.\n\n" .
-              "  --testdox-html <file>  Write agile documentation in HTML format to file.\n" .
-              "  --testdox-text <file>  Write agile documentation in Text format to file.\n\n" .
-              "  --filter <pattern>     Filter which tests to run.\n" .
-              "  --group ...            Only runs tests from the specified group(s).\n" .
-              "  --exclude-group ...    Exclude tests from the specified group(s).\n\n" .
-              "  --loader <loader>      TestSuiteLoader implementation to use.\n" .
-              "  --repeat <times>       Runs the test(s) repeatedly.\n\n" .
-              "  --story                Report test execution progress in Story/BDD format.\n" .
-              "  --tap                  Report test execution progress in TAP format.\n" .
-              "  --testdox              Report test execution progress in TestDox format.\n\n" .
-              "  --no-syntax-check      Disable syntax check of test source files.\n" .
-              "  --stop-on-failure      Stop execution upon first error or failure.\n" .
-              "  --ansi                 Use ANSI colors in output.\n" .
-              "  --verbose              Output more verbose information.\n" .
-              "  --wait                 Waits for a keystroke after each test.\n\n" .
-              "  --skeleton-class       Generate Unit class for UnitTest in UnitTest.php.\n" .
-              "  --skeleton-test        Generate UnitTest class for Unit in Unit.php.\n\n" .
-              "  --help                 Prints this usage information.\n" .
-              "  --version              Prints the version and exits.\n\n" .
-              "  --bootstrap <file>     A \"bootstrap\" PHP file that is run before the tests.\n" .
-              "  --configuration <file> Read configuration from XML file.\n" .
-              "  -d key[=value]         Sets a php.ini value.\n";
+        print "  --story-html <file>      Write Story/BDD results in HTML format to file.\n" .
+              "  --story-text <file>      Write Story/BDD results in Text format to file.\n\n" .
+              "  --testdox-html <file>    Write agile documentation in HTML format to file.\n" .
+              "  --testdox-text <file>    Write agile documentation in Text format to file.\n\n" .
+              "  --filter <pattern>       Filter which tests to run.\n" .
+              "  --group ...              Only runs tests from the specified group(s).\n" .
+              "  --exclude-group ...      Exclude tests from the specified group(s).\n\n" .
+              "  --loader <loader>        TestSuiteLoader implementation to use.\n" .
+              "  --repeat <times>         Runs the test(s) repeatedly.\n\n" .
+              "  --story                  Report test execution progress in Story/BDD format.\n" .
+              "  --tap                    Report test execution progress in TAP format.\n" .
+              "  --testdox                Report test execution progress in TestDox format.\n\n" .
+              "  --no-syntax-check        Disable syntax check of test source files.\n" .
+              "  --stop-on-failure        Stop execution upon first error or failure.\n" .
+              "  --ansi                   Use ANSI colors in output.\n" .
+              "  --verbose                Output more verbose information.\n" .
+              "  --wait                   Waits for a keystroke after each test.\n\n" .
+              "  --skeleton-class         Generate Unit class for UnitTest in UnitTest.php.\n" .
+              "  --skeleton-test          Generate UnitTest class for Unit in Unit.php.\n\n" .
+              "  --help                   Prints this usage information.\n" .
+              "  --version                Prints the version and exits.\n\n" .
+              "  --bootstrap <file>       A \"bootstrap\" PHP file that is run before the tests.\n" .
+              "  --configuration <file>   Read configuration from XML file.\n" .
+              "  -d key[=value]           Sets a php.ini value.\n";
     }
 }
 
