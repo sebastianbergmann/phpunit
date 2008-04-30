@@ -269,14 +269,10 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
 
         if ((isset($arguments['coverageClover']) ||
              isset($arguments['coverageSource']) ||
-             isset($arguments['metricsXML'])  ||
-             isset($arguments['pmdXML'])) &&
+             isset($arguments['metricsXML']) ||
+             isset($arguments['pmdXML']) ||
+             isset($arguments['reportDirectory'])) &&
              extension_loaded('xdebug')) {
-            $result->collectCodeCoverageInformation(TRUE);
-        }
-
-        if (isset($arguments['reportDirectory']) &&
-            extension_loaded('xdebug')) {
             $result->collectCodeCoverageInformation(TRUE);
         }
 
