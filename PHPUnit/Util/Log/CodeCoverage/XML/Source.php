@@ -101,11 +101,13 @@ class PHPUnit_Util_Log_CodeCoverage_XML_Source
         $allCommonPath = PHPUnit_Util_Filesystem::reducePaths($allFiles);
         $sutCommonPath = PHPUnit_Util_Filesystem::reducePaths($sutFiles);
         $testFiles     = $allFiles;
-        $time          = time();
 
         unset($allData);
         unset($allFiles);
         unset($sutData);
+
+        $testToCoveredLinesMap = array();
+        $time                  = time();
 
         foreach ($sutFiles as $filename => $data) {
             $fullPath = $sutCommonPath . DIRECTORY_SEPARATOR . $filename;
@@ -161,9 +163,8 @@ class PHPUnit_Util_Log_CodeCoverage_XML_Source
                               $document->createElement('test')
                             );
 
-                            $xmlTest->setAttribute('name', $test->getName());
-
                             if ($test instanceof PHPUnit_Framework_TestCase) {
+                                $xmlTest->setAttribute('name', $test->getName());
                                 $xmlTest->setAttribute('status', $test->getStatus());
 
                                 if ($test->hasFailed()) {
@@ -178,16 +179,32 @@ class PHPUnit_Util_Log_CodeCoverage_XML_Source
                                     );
                                 }
 
-                                $class      = new ReflectionClass($test);
-                                $methodName = $test->getName();
+                                $class             = new ReflectionClass($test);
+                                $testFullPath      = $class->getFileName();
+                                $testShortenedPath = str_replace($allCommonPath, '', $testFullPath);
+                                $methodName        = $test->getName(FALSE);
 
                                 if ($class->hasMethod($methodName)) {
-                                    $method = $class->getMethod($test->getName());
+                                    $method    = $class->getMethod($methodName);
+                                    $startLine = $method->getStartLine();
 
                                     $xmlTest->setAttribute('class', $class->getName());
-                                    $xmlTest->setAttribute('fullPath', $class->getFileName());
-                                    $xmlTest->setAttribute('shortenedPath', str_replace($allCommonPath, '', $class->getFileName()));
-                                    $xmlTest->setAttribute('line', $method->getStartLine());
+                                    $xmlTest->setAttribute('fullPath', $testFullPath);
+                                    $xmlTest->setAttribute('shortenedPath', $testShortenedPath);
+                                    $xmlTest->setAttribute('line', $startLine);
+
+                                    if (!isset($testToCoveredLinesMap[$testFullPath][$startLine])) {
+                                        $testToCoveredLinesMap[$testFullPath][$startLine] = array();
+                                    }
+
+                                    if (!isset($testToCoveredLinesMap[$testFullPath][$startLine][$fullPath])) {
+                                        $testToCoveredLinesMap[$testFullPath][$startLine][$fullPath] = array(
+                                          'coveredLines'  => array($lineNum),
+                                          'shortenedPath' => $filename
+                                        );
+                                    } else {
+                                        $testToCoveredLinesMap[$testFullPath][$startLine][$fullPath]['coveredLines'][] = $lineNum;
+                                    }
                                 }
                             }
                         }
@@ -242,6 +259,27 @@ class PHPUnit_Util_Log_CodeCoverage_XML_Source
                         PHPUnit_Util_XML::convertToUtf8($line)
                       )
                     );
+
+                    if (isset($testToCoveredLinesMap[$fullPath][$lineNum])) {
+                        $xmlCoveredFiles = $xmlLine->appendChild(
+                          $document->createElement('coveredFiles')
+                        );
+
+                        foreach ($testToCoveredLinesMap[$fullPath][$lineNum] as $coveredFileFullPath => $coveredFileData) {
+                            $xmlCoveredFile = $xmlCoveredFiles->appendChild(
+                              $document->createElement('coveredFile')
+                            );
+
+                            $xmlCoveredFile->setAttribute('fullPath', $fullPath);
+                            $xmlCoveredFile->setAttribute('shortenedPath', $coveredFileData['shortenedPath']);
+
+                            foreach ($coveredFileData['coveredLines'] as $coveredLineNum) {
+                                $xmlCoveredLine = $xmlCoveredFile->appendChild(
+                                  $document->createElement('coveredLine', $coveredLineNum)
+                                );
+                            }
+                        }
+                    }
 
                     $lineNum++;
                 }
