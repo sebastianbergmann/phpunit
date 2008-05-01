@@ -599,6 +599,12 @@
          <file baseinstalldir="/" name="DeleteOperationTest.xml" role="test">
           <tasks:replace from="@package_version@" to="version" type="package-info" />
          </file>
+         <file baseinstalldir="/" name="EmptyTableInsertResult.xml" role="test">
+          <tasks:replace from="@package_version@" to="version" type="package-info" />
+         </file>
+         <file baseinstalldir="/" name="EmptyTableInsertTest.xml" role="test">
+          <tasks:replace from="@package_version@" to="version" type="package-info" />
+         </file>
          <file baseinstalldir="/" name="FilteredTestComparison.xml" role="test">
           <tasks:replace from="@package_version@" to="version" type="package-info" />
          </file>
@@ -636,6 +642,9 @@
           <tasks:replace from="@package_version@" to="version" type="package-info" />
          </file>
         </dir>
+        <file baseinstalldir="/" name="DatabaseTestUtility.php" role="test">
+         <tasks:replace from="@package_version@" to="version" type="package-info" />
+        </file>
        </dir>
        <dir name="DataSet">
          <file baseinstalldir="/" name="AllTests.php" role="test">
