@@ -268,22 +268,26 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
      */
     public function addTest(PHPUnit_Framework_Test $test, $groups = array())
     {
-        $this->tests[]  = $test;
-        $this->numTests = -1;
+        $class = new ReflectionClass($test);
 
-        if ($test instanceof PHPUnit_Framework_TestSuite && empty($groups)) {
-            $groups = $test->getGroups();
-        }
+        if (!$class->isAbstract()) {
+            $this->tests[]  = $test;
+            $this->numTests = -1;
 
-        if (empty($groups)) {
-            $groups = array('__nogroup__');
-        }
+            if ($test instanceof PHPUnit_Framework_TestSuite && empty($groups)) {
+                $groups = $test->getGroups();
+            }
 
-        foreach ($groups as $group) {
-            if (!isset($this->groups[$group])) {
-                $this->groups[$group] = array($test);
-            } else {
-                $this->groups[$group][] = $test;
+            if (empty($groups)) {
+                $groups = array('__nogroup__');
+            }
+
+            foreach ($groups as $group) {
+                if (!isset($this->groups[$group])) {
+                    $this->groups[$group] = array($test);
+                } else {
+                    $this->groups[$group][] = $test;
+                }
             }
         }
     }
@@ -325,7 +329,7 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
                 }
             }
 
-            if (!$suiteMethod) {
+            if (!$suiteMethod && !$testClass->isAbstract()) {
                 $this->addTest(new PHPUnit_Framework_TestSuite($testClass));
             }
         }
