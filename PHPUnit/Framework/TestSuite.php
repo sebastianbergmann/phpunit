@@ -517,7 +517,8 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
 
             // TestCase($name, $data)
             else {
-                $data = PHPUnit_Util_Test::getProvidedData($className, $name);
+                $data   = PHPUnit_Util_Test::getProvidedData($className, $name);
+                $groups = PHPUnit_Util_Test::getGroups($method);
 
                 if (is_array($data) || $data instanceof Iterator) {
                      $test = new PHPUnit_Framework_TestSuite(
@@ -538,7 +539,7 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
                             );
                         }
 
-                        $test->addTest($_test);
+                        $test->addTest($_test, $groups);
                     }
                 } else {
                     $test = new $className;
