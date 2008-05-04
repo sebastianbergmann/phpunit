@@ -47,6 +47,7 @@
 require_once 'PHPUnit/Framework.php';
 require_once 'PHPUnit/Util/Filter.php';
 require_once 'PHPUnit/Util/Type.php';
+require_once 'PHPUnit/Util/XML.php';
 
 PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
 
@@ -1144,6 +1145,79 @@ abstract class PHPUnit_Framework_Assert
         $actual->loadXML($actualXml);
 
         self::assertNotEquals($expected, $actual, $message);
+    }
+
+    /**
+     * Asserts that a hierarchy of DOMNodes matches.
+     *
+     * @param DOMNode $expectedNode
+     * @param DOMNode $actualNode
+     * @param boolean $checkAttributes
+     * @param string  $message
+     * @access public
+     * @static 
+     * @author Mattis Stordalen Flister <mattis@xait.no>
+     * @since  Method available since Release 3.3.0
+     */
+    public static function assertEqualXMLStructure(DOMNode $expectedNode, DOMNode $actualNode, $checkAttributes = FALSE, $message = '') {
+        self::assertEquals(
+          $expectedNode->tagName,
+          $actualNode->tagName,
+          $message
+        );
+
+        if ($checkAttributes) {
+            self::assertEquals(
+              $expectedNode->attributes->length,
+              $actualNode->attributes->length,
+              sprintf(
+                '%s%sNumber of attributes on node "%s" does not match',
+                $message,
+                !empty($message) ? "\n" : '',
+                $expectedNode->tagName
+              )
+            );
+
+            for ($i = 0 ; $i < $expectedNode->attributes->length; $i++) {
+                $expectedAttribute = $expectedNode->attributes->item($i);
+                $actualAttribute   = $actualNode->attributes->getNamedItem($expectedAttribute->name);
+
+                if (!$actualAttribute) {
+                    self::fail(
+                      sprintf(
+                        '%s%sCould not find attribute "%s" on node "%s"',
+                        $message,
+                        !empty($message) ? "\n" : '',
+                        $expectedAttribute->name,
+                        $expectedNode->tagName
+                      )
+                    );
+                }
+            }
+        }
+
+        PHPUnit_Util_XML::removeCharacterDataNodes($expectedNode);
+        PHPUnit_Util_XML::removeCharacterDataNodes($actualNode);
+
+        self::assertEquals(
+          $expectedNode->childNodes->length,
+          $actualNode->childNodes->length,
+          sprintf(
+            '%s%sNumber of child nodes of "%s" differs',
+            $message,
+            !empty($message) ? "\n" : '',
+            $expectedNode->tagName
+          )
+        );
+
+        for ($i = 0; $i < $expectedNode->childNodes->length; $i++) {
+            self::assertEqualXMLStructure(
+              $expectedNode->childNodes->item($i),
+              $actualNode->childNodes->item($i),
+              $checkAttributes,
+              $message
+            );
+        }
     }
 
     /**
