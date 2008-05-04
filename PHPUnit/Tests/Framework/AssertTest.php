@@ -66,6 +66,13 @@ require_once '_files/WasRun.php';
  */
 class Framework_AssertTest extends PHPUnit_Framework_TestCase
 {
+    protected $filesDirectory;
+
+    protected function setUp()
+    {
+        $this->filesDirectory = dirname(dirname(__FILE__)) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR;
+    }
+
     public function testFail()
     {
         try {
@@ -910,6 +917,90 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
         }
 
         $this->fail();
+    }
+
+    public function testXMLStructureIsSame()
+    {
+        $expected = new DOMDocument;
+        $expected->load($this->filesDirectory . 'structureExpected.xml');
+
+        $actual = new DOMDocument;
+        $actual->load($this->filesDirectory . 'structureExpected.xml');
+
+        $this->assertEqualXMLStructure(
+          $expected->firstChild, $actual->firstChild, TRUE
+        );
+    }
+
+   /**
+    * @expectedException PHPUnit_Framework_ExpectationFailedException
+    */
+    public function testXMLStructureWrongNumberOfAttributes()
+    {
+        $expected = new DOMDocument;
+        $expected->load($this->filesDirectory . 'structureExpected.xml');
+
+        $actual = new DOMDocument;
+        $actual->load($this->filesDirectory . 'structureWrongNumberOfAttributes.xml');
+
+        $this->assertEqualXMLStructure(
+          $expected->firstChild, $actual->firstChild, TRUE
+        );
+    }
+
+   /**
+    * @expectedException PHPUnit_Framework_ExpectationFailedException
+    */
+    public function testXMLStructureWrongNumberOfNodes()
+    {
+        $expected = new DOMDocument;
+        $expected->load($this->filesDirectory . 'structureExpected.xml');
+
+        $actual = new DOMDocument;
+        $actual->load($this->filesDirectory . 'structureWrongNumberOfNodes.xml');
+
+        $this->assertEqualXMLStructure(
+          $expected->firstChild, $actual->firstChild, TRUE
+        );
+    }
+
+    public function testXMLStructureIsSameButDataIsNot()
+    {
+        $expected = new DOMDocument;
+        $expected->load($this->filesDirectory . 'structureExpected.xml');
+
+        $actual = new DOMDocument;
+        $actual->load($this->filesDirectory . 'structureIsSameButDataIsNot.xml');
+
+        $this->assertEqualXMLStructure(
+          $expected->firstChild, $actual->firstChild, TRUE
+        );
+    }
+
+    public function testXMLStructureAttributesAreSameButValuesAreNot()
+    {
+        $expected = new DOMDocument;
+        $expected->load($this->filesDirectory . 'structureExpected.xml');
+
+        $actual = new DOMDocument;
+        $actual->load($this->filesDirectory . 'structureAttributesAreSameButValuesAreNot.xml');
+
+        $this->assertEqualXMLStructure(
+          $expected->firstChild, $actual->firstChild, TRUE
+        );
+    }
+
+    public function testXMLStructureIgnoreTextNodes()
+    {
+        $expected = new DOMDocument;
+        $expected->load($this->filesDirectory . 'structureExpected.xml');
+
+        $actual = new DOMDocument;
+        $actual->load($this->filesDirectory . 'structureIgnoreTextNodes.xml');
+
+        $this->assertEqualXMLStructure(
+          $expected->firstChild, $actual->firstChild, TRUE
+        );
     }
 
     public function testAssertStringEqualsNumeric()
