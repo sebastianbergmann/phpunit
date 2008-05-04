@@ -129,5 +129,25 @@ class PHPUnit_Util_XML
 
         return $document;
     }
+
+    /**
+     *
+     *
+     * @param  DOMNode $node
+     * @access public
+     * @static
+     * @since  Method available since Release 3.3.0
+     * @author Mattis Stordalen Flister <mattis@xait.no>
+     */
+    public static function removeCharacterDataNodes(DOMNode $node)
+    {
+        if ($node->hasChildNodes()) {
+            for ($i = $node->childNodes->length - 1; $i >= 0; $i--) {
+                 if (($child = $node->childNodes->item($i)) instanceof DOMCharacterData) {
+                     $node->removeChild($child);
+                 }
+            }
+        }
+    }
 }
 ?>
