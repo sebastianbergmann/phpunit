@@ -47,6 +47,8 @@
 require_once 'PHPUnit/Framework/TestCase.php';
 
 require_once '_files/AnInterface.php';
+require_once '_files/FunctionCallback.php';
+require_once '_files/MethodCallback.php';
 
 /**
  *
@@ -144,6 +146,36 @@ class Framework_MockObjectTest extends PHPUnit_Framework_TestCase
              ->will($this->returnValue('something'));
 
         $this->assertEquals('something', $mock->doSomething());
+    }
+
+    public function testFunctionCallback()
+    {
+        $mock = $this->getMock('StdClass', array('callback'), array(), '', FALSE);
+        $mock->expects($this->once())
+             ->method('callback')
+             ->will($this->returnCallback('functionCallback'));
+
+        $this->assertEquals('pass', $mock->callback('foo', 'bar'));
+    }
+
+    public function testStaticMethodCallback()
+    {
+        $mock = $this->getMock('StdClass', array('callback'), array(), '', FALSE);
+        $mock->expects($this->once())
+             ->method('callback')
+             ->will($this->returnCallback(array('MethodCallback', 'staticCallback')));
+
+        $this->assertEquals('pass', $mock->callback('foo', 'bar'));
+    }
+
+    public function testPublicMethodCallback()
+    {
+        $mock = $this->getMock('StdClass', array('callback'), array(), '', FALSE);
+        $mock->expects($this->once())
+             ->method('callback')
+             ->will($this->returnCallback(array(new MethodCallback, 'nonStaticCallback')));
+
+        $this->assertEquals('pass', $mock->callback('foo', 'bar'));
     }
 }
 ?>
