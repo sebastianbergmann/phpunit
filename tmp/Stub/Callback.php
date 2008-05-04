@@ -36,54 +36,67 @@
  *
  * @category   Testing
  * @package    PHPUnit
- * @author     Jan Borsodi <jb@ez.no>
  * @author     Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @copyright  2002-2008 Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    SVN: $Id$
  * @link       http://www.phpunit.de/
- * @since      File available since Release 3.0.0
+ * @since      File available since Release 3.3.0
  */
 
-require_once 'PHPUnit/Framework.php';
 require_once 'PHPUnit/Util/Filter.php';
 require_once 'PHPUnit/Framework/MockObject/Invocation.php';
+require_once 'PHPUnit/Framework/MockObject/Stub.php';
 
 PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
 
 /**
- * An object that stubs the process of a normal method for a mock object.
  *
- * The stub object will replace the code for the stubbed method and return a
- * specific value instead of the original value.
  *
  * @category   Testing
  * @package    PHPUnit
- * @author     Jan Borsodi <jb@ez.no>
  * @author     Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @copyright  2002-2008 Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    Release: @package_version@
  * @link       http://www.phpunit.de/
- * @since      Interface available since Release 3.0.0
+ * @since      Class available since Release 3.3.0
  */
-interface PHPUnit_Framework_MockObject_Stub extends PHPUnit_Framework_SelfDescribing
+class PHPUnit_Framework_MockObject_Stub_Callback implements PHPUnit_Framework_MockObject_Stub
 {
-    /**
-     * Fakes the processesing of the invocation $invocation by returning a
-     * specific value.
-     *
-     * @return mixed
-     * @param PHPUnit_Framework_MockObject_Invocation $invocation The invocation which was mocked
-     *                                                  and matched by the current method
-     *                                                  and argument matchers.
-     */
-    public function invoke(PHPUnit_Framework_MockObject_Invocation $invocation);
-}
+    protected $callback;
 
-require_once 'PHPUnit/Framework/MockObject/Stub/Callback.php';
-require_once 'PHPUnit/Framework/MockObject/Stub/ConsecutiveCalls.php';
-require_once 'PHPUnit/Framework/MockObject/Stub/Exception.php';
-require_once 'PHPUnit/Framework/MockObject/Stub/MatcherCollection.php';
-require_once 'PHPUnit/Framework/MockObject/Stub/Return.php';
+    public function __construct($callback)
+    {
+        $this->callback = $callback;
+    }
+
+    public function invoke(PHPUnit_Framework_MockObject_Invocation $invocation)
+    {
+        return call_user_func_array($this->callback, $invocation->parameters);
+    }
+
+    public function toString()
+    {
+        if (is_array($this->callback)) {
+            if (is_object($this->callback[0])) {
+                $class = get_class($this->callback[0]);
+                $type  = '->';
+            } else {
+                $class = $this->callback[0];
+                $type  = '::';
+            }
+
+            return sprintf(
+              'return result of user defined callback %s%s%s() with the passed arguments',
+
+              $class,
+              $type,
+              $this->callback[1]
+            );
+        } else {
+            return 'return result of user defined callback ' . $this->callback . ' with the passed arguments';
+        }
+    }
+}
 ?>
