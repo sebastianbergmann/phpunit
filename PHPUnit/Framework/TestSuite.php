@@ -139,12 +139,6 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
     protected $numTests = -1;
 
     /**
-     * @var    boolean
-     * @access protected
-     */
-    protected $isUserCreated = TRUE;
-
-    /**
      * Constructs a new TestSuite:
      *
      *   - PHPUnit_Framework_TestSuite() constructs an empty TestSuite.
@@ -529,8 +523,6 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
                        $className . '::' . $name
                      );
 
-                    $test->setUserCreated(FALSE);
-
                     foreach ($data as $_dataName => $_data) {
                         $_test = new $className($name, $_data, $_dataName);
 
@@ -631,9 +623,7 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
             return $result;
         }
 
-        if ($this->isUserCreated) {
-            $result->startTestSuite($this);
-        }
+        $result->startTestSuite($this);
 
         $tests = new PHPUnit_Util_TestSuiteIterator_NameFilter(
           new PHPUnit_Util_TestSuiteIterator_GroupFilter(
@@ -664,10 +654,7 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
             }
         }
 
-        if ($this->isUserCreated) {
-            $result->endTestSuite($this);
-        }
-
+        $result->endTestSuite($this);
         $this->tearDown();
 
         return $result;
@@ -694,23 +681,6 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
     public function setName($name)
     {
         $this->name = $name;
-    }
-
-    /**
-     *
-     *
-     * @param  boolean $flag
-     * @throws InvalidArgumentException
-     * @access public
-     * @since  Method available since Release 3.3.0
-     */
-    public function setUserCreated($flag)
-    {
-        if (!is_bool($flag)) {
-            throw new InvalidArgumentException;
-        }
-
-        $this->isUserCreated = $flag;
     }
 
     /**
