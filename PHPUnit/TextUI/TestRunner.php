@@ -586,6 +586,8 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
         $arguments['wait']               = isset($arguments['wait'])               ? $arguments['wait']               : FALSE;
 
         if (isset($arguments['configuration'])) {
+            $arguments['configuration']->handlePHPConfiguration();
+
             $filterConfiguration = $arguments['configuration']->getFilterConfiguration();
 
             PHPUnit_Util_Filter::$addUncoveredFilesFromWhitelist = $filterConfiguration['whitelist']['addUncoveredFilesFromWhitelist'];
@@ -646,16 +648,6 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
 
             if (isset($phpunitConfiguration['stopOnFailure']) && !isset($arguments['stopOnFailure'])) {
                 $arguments['stopOnFailure'] = $phpunitConfiguration['stopOnFailure'];
-            }
-
-            $phpConfiguration = $arguments['configuration']->getPHPConfiguration();
-
-            foreach ($phpConfiguration['ini'] as $name => $value) {
-                ini_set($name, $value);
-            }
-
-            foreach ($phpConfiguration['var'] as $name => $value) {
-                $GLOBALS[$name] = $value;
             }
 
             $groupConfiguration = $arguments['configuration']->getGroupConfiguration();
