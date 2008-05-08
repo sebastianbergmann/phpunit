@@ -368,6 +368,25 @@ class PHPUnit_Util_Configuration
     }
 
     /**
+     * Handles the PHP configuration.
+     *
+     * @access public
+     * @since  Method available since Release 3.2.20
+     */
+    public function handlePHPConfiguration()
+    {
+        $configuration = $this->getPHPConfiguration();
+
+        foreach ($configuration['ini'] as $name => $value) {
+            ini_set($name, $value);
+        }
+
+        foreach ($configuration['var'] as $name => $value) {
+            $GLOBALS[$name] = $value;
+        }
+    }
+
+    /**
      * Returns the PHPUnit configuration.
      *
      * @return array

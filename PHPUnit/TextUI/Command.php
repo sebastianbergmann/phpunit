@@ -457,6 +457,7 @@ class PHPUnit_TextUI_Command
               $arguments['configuration']
             );
 
+            $configuration->handlePHPConfiguration();
             $testSuite = $configuration->getTestSuiteConfiguration();
 
             if ($testSuite !== NULL) {
