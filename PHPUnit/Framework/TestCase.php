@@ -231,6 +231,12 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
     protected $statusMessage = '';
 
     /**
+     * @var    integer
+     * @access protected
+     */
+    protected $numAssertions = 0;
+
+    /**
      * Constructs a test case with the given name.
      *
      * @param  string $name
@@ -647,6 +653,29 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
         $this->mockObjects[] = $mockObject;
 
         return $mockObject;
+    }
+
+    /**
+     * Returns the number of assertions performed by this test.
+     *
+     * @return integer
+     * @access public
+     * @since  Method available since Release 3.3.0
+     */
+    public function getNumAssertions()
+    {
+        return $this->numAssertions;
+    }
+
+    /**
+     * Increments the number of assertions performed by this test.
+     *
+     * @access public
+     * @since  Method available since Release 3.3.0
+     */
+    public function incrementAssertionCounter()
+    {
+        $this->numAssertions++;
     }
 
     /**

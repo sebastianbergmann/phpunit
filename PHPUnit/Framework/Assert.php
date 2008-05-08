@@ -1232,6 +1232,19 @@ abstract class PHPUnit_Framework_Assert
      */
     public static function assertThat($value, PHPUnit_Framework_Constraint $constraint, $message = '')
     {
+        $stack = debug_backtrace();
+
+        for ($i = 1; $i <= 2; $i++) {
+            if (isset($stack[$i]['object']) &&
+                $stack[$i]['object'] instanceof PHPUnit_Framework_TestCase) {
+                $test = $stack[$i]['object'];
+            }
+        }
+
+        if (isset($test)) {
+            $test->incrementAssertionCounter();
+        }
+
         if (!$constraint->evaluate($value)) {
             $constraint->fail($value, $message);
         }
