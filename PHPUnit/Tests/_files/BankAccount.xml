@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <testsuites>
-  <testsuite name="BankAccountTest" file="/usr/local/src/phpunit/trunk/PHPUnit/Samples/BankAccount/BankAccountTest.php" fullPackage="PHPUnit" category="Testing" package="PHPUnit" tests="3" failures="0" errors="0" time="0">
-    <testcase name="testBalanceIsInitiallyZero" class="BankAccountTest" file="/usr/local/src/phpunit/trunk/PHPUnit/Samples/BankAccount/BankAccountTest.php" line="74" time="0"/>
-    <testcase name="testBalanceCannotBecomeNegative" class="BankAccountTest" file="/usr/local/src/phpunit/trunk/PHPUnit/Samples/BankAccount/BankAccountTest.php" line="82" time="0"/>
-    <testcase name="testBalanceCannotBecomeNegative2" class="BankAccountTest" file="/usr/local/src/phpunit/trunk/PHPUnit/Samples/BankAccount/BankAccountTest.php" line="100" time="0"/>
+  <testsuite name="BankAccountTest" file="/usr/local/src/phpunit/trunk/PHPUnit/Samples/BankAccount/BankAccountTest.php" fullPackage="PHPUnit" category="Testing" package="PHPUnit" tests="3" assertions="3" failures="0" errors="0" time="0">
+    <testcase name="testBalanceIsInitiallyZero" class="BankAccountTest" file="/usr/local/src/phpunit/trunk/PHPUnit/Samples/BankAccount/BankAccountTest.php" line="74" assertions="1" time="0"/>
+    <testcase name="testBalanceCannotBecomeNegative" class="BankAccountTest" file="/usr/local/src/phpunit/trunk/PHPUnit/Samples/BankAccount/BankAccountTest.php" line="82" assertions="1" time="0"/>
+    <testcase name="testBalanceCannotBecomeNegative2" class="BankAccountTest" file="/usr/local/src/phpunit/trunk/PHPUnit/Samples/BankAccount/BankAccountTest.php" line="100" assertions="1" time="0"/>
   </testsuite>
 </testsuites>
