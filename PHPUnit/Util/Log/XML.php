@@ -108,6 +108,12 @@ class PHPUnit_Util_Log_XML extends PHPUnit_Util_Printer implements PHPUnit_Frame
      * @var    integer[]
      * @access protected
      */
+    protected $testSuiteAssertions = array(0);
+
+    /**
+     * @var    integer[]
+     * @access protected
+     */
     protected $testSuiteErrors = array(0);
 
     /**
@@ -359,11 +365,12 @@ class PHPUnit_Util_Log_XML extends PHPUnit_Util_Printer implements PHPUnit_Frame
         }
 
         $this->testSuiteLevel++;
-        $this->testSuites[$this->testSuiteLevel]        = $testSuite;
-        $this->testSuiteTests[$this->testSuiteLevel]    = 0;
-        $this->testSuiteErrors[$this->testSuiteLevel]   = 0;
-        $this->testSuiteFailures[$this->testSuiteLevel] = 0;
-        $this->testSuiteTimes[$this->testSuiteLevel]    = 0;
+        $this->testSuites[$this->testSuiteLevel]          = $testSuite;
+        $this->testSuiteTests[$this->testSuiteLevel]      = 0;
+        $this->testSuiteAssertions[$this->testSuiteLevel] = 0;
+        $this->testSuiteErrors[$this->testSuiteLevel]     = 0;
+        $this->testSuiteFailures[$this->testSuiteLevel]   = 0;
+        $this->testSuiteTimes[$this->testSuiteLevel]      = 0;
     }
 
     /**
@@ -376,15 +383,17 @@ class PHPUnit_Util_Log_XML extends PHPUnit_Util_Printer implements PHPUnit_Frame
     public function endTestSuite(PHPUnit_Framework_TestSuite $suite)
     {
         $this->testSuites[$this->testSuiteLevel]->setAttribute('tests', $this->testSuiteTests[$this->testSuiteLevel]);
+        $this->testSuites[$this->testSuiteLevel]->setAttribute('assertions', $this->testSuiteAssertions[$this->testSuiteLevel]);
         $this->testSuites[$this->testSuiteLevel]->setAttribute('failures', $this->testSuiteFailures[$this->testSuiteLevel]);
         $this->testSuites[$this->testSuiteLevel]->setAttribute('errors', $this->testSuiteErrors[$this->testSuiteLevel]);
         $this->testSuites[$this->testSuiteLevel]->setAttribute('time', sprintf('%F', $this->testSuiteTimes[$this->testSuiteLevel]));
 
         if ($this->testSuiteLevel > 1) {
-            $this->testSuiteTests[$this->testSuiteLevel - 1]    += $this->testSuiteTests[$this->testSuiteLevel];
-            $this->testSuiteErrors[$this->testSuiteLevel - 1]   += $this->testSuiteErrors[$this->testSuiteLevel];
-            $this->testSuiteFailures[$this->testSuiteLevel - 1] += $this->testSuiteFailures[$this->testSuiteLevel];
-            $this->testSuiteTimes[$this->testSuiteLevel - 1]    += $this->testSuiteTimes[$this->testSuiteLevel];
+            $this->testSuiteTests[$this->testSuiteLevel - 1]      += $this->testSuiteTests[$this->testSuiteLevel];
+            $this->testSuiteAssertions[$this->testSuiteLevel - 1] += $this->testSuiteAssertions[$this->testSuiteLevel];
+            $this->testSuiteErrors[$this->testSuiteLevel - 1]     += $this->testSuiteErrors[$this->testSuiteLevel];
+            $this->testSuiteFailures[$this->testSuiteLevel - 1]   += $this->testSuiteFailures[$this->testSuiteLevel];
+            $this->testSuiteTimes[$this->testSuiteLevel - 1]      += $this->testSuiteTimes[$this->testSuiteLevel];
         }
 
         $this->testSuiteLevel--;
@@ -430,6 +439,13 @@ class PHPUnit_Util_Log_XML extends PHPUnit_Util_Printer implements PHPUnit_Frame
     {
         if (!$test instanceof PHPUnit_Framework_Warning) {
             if ($this->attachCurrentTestCase) {
+                if ($test instanceof PHPUnit_Framework_TestCase) {
+                    $numAssertions = $test->getNumAssertions();
+                    $this->testSuiteAssertions[$this->testSuiteLevel] += $numAssertions;
+
+                    $this->currentTestCase->setAttribute('assertions', $numAssertions);
+                }
+
                 $this->currentTestCase->setAttribute('time', sprintf('%F', $time));
 
                 $this->testSuites[$this->testSuiteLevel]->appendChild(

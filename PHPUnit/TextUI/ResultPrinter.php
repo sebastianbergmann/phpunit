@@ -112,6 +112,12 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
     protected $verbose = FALSE;
 
     /**
+     * @var    integer
+     * @access protected
+     */
+    protected $numAssertions = 0;
+
+    /**
      * Constructor.
      *
      * @param  mixed   $out
@@ -321,10 +327,12 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
 
             $this->write(
               sprintf(
-                "OK (%d test%s)\n",
+                "OK (%d test%s, %d assertion%s)\n",
 
                 count($result),
-                (count($result) == 1) ? '' : 's'
+                (count($result) == 1) ? '' : 's',
+                $this->numAssertions,
+                ($this->numAssertions == 1) ? '' : 's'
               )
             );
 
@@ -339,9 +347,10 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
             $this->write(
               sprintf(
                 "OK, but incomplete or skipped tests!\n" .
-                "Tests: %d%s%s.\n",
+                "Tests: %d, Assertions: %d%s%s.\n",
 
                 count($result),
+                $this->numAssertions,
                 $this->getCountString($result->notImplementedCount(), 'Incomplete'),
                 $this->getCountString($result->skippedCount(), 'Skipped')
               )
@@ -359,9 +368,10 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
 
             $this->write(
               sprintf(
-                "Tests: %d%s%s%s%s.\n",
+                "Tests: %d, Assertions: %s%s%s%s.\n",
 
                 count($result),
+                $this->numAssertions,
                 $this->getCountString($result->failureCount(), 'Failures'),
                 $this->getCountString($result->errorCount(), 'Errors'),
                 $this->getCountString($result->notImplementedCount(), 'Incomplete'),
@@ -560,7 +570,11 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
             $this->writeProgress('.');
         }
 
-        $this->lastEvent = self::EVENT_TEST_END;
+        if ($test instanceof PHPUnit_Framework_TestCase) {
+            $this->numAssertions += $test->getNumAssertions();
+        }
+
+        $this->lastEvent      = self::EVENT_TEST_END;
         $this->lastTestFailed = FALSE;
     }
 
