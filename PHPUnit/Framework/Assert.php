@@ -652,17 +652,7 @@ abstract class PHPUnit_Framework_Assert
      */
     public static function assertTrue($condition, $message = '')
     {
-        if ($condition !== TRUE) {
-            throw new PHPUnit_Framework_ExpectationFailedException(
-              sprintf(
-                'Failed asserting that %s is true.',
-
-                PHPUnit_Util_Type::toString($condition)
-              ),
-              NULL,
-              $message
-            );
-        }
+        self::assertThat($condition, self::isTrue(), $message);
     }
 
     /**
@@ -676,17 +666,7 @@ abstract class PHPUnit_Framework_Assert
      */
     public static function assertFalse($condition, $message = '')
     {
-        if ($condition !== FALSE) {
-            throw new PHPUnit_Framework_ExpectationFailedException(
-              sprintf(
-                'Failed asserting that %s is false.',
-
-                PHPUnit_Util_Type::toString($condition)
-              ),
-              NULL,
-              $message
-            );
-        }
+        self::assertThat($condition, self::isFalse(), $message);
     }
 
     /**
@@ -699,11 +679,7 @@ abstract class PHPUnit_Framework_Assert
      */
     public static function assertNotNull($actual, $message = '')
     {
-        $constraint = new PHPUnit_Framework_Constraint_Not(
-          new PHPUnit_Framework_Constraint_IsIdentical(NULL)
-        );
-
-        self::assertThat($actual, $constraint, $message);
+        self::assertThat($actual, self::logicalNot(self::isNull()), $message);
     }
 
     /**
@@ -716,9 +692,7 @@ abstract class PHPUnit_Framework_Assert
      */
     public static function assertNull($actual, $message = '')
     {
-        $constraint = new PHPUnit_Framework_Constraint_IsIdentical(NULL);
-
-        self::assertThat($actual, $constraint, $message);
+        self::assertThat($actual, self::isNull(), $message);
     }
 
     /**
@@ -1329,6 +1303,45 @@ abstract class PHPUnit_Framework_Assert
     public static function anything()
     {
         return new PHPUnit_Framework_Constraint_IsAnything;
+    }
+
+    /**
+     *
+     *
+     * @return PHPUnit_Framework_Constraint_IsTrue
+     * @access public
+     * @since  Method available since Release 3.3.0
+     * @static
+     */
+    public static function isTrue()
+    {
+        return new PHPUnit_Framework_Constraint_IsTrue;
+    }
+
+    /**
+     *
+     *
+     * @return PHPUnit_Framework_Constraint_IsFalse
+     * @access public
+     * @since  Method available since Release 3.3.0
+     * @static
+     */
+    public static function isFalse()
+    {
+        return new PHPUnit_Framework_Constraint_IsFalse;
+    }
+
+    /**
+     *
+     *
+     * @return PHPUnit_Framework_Constraint_IsNull
+     * @access public
+     * @since  Method available since Release 3.3.0
+     * @static
+     */
+    public static function isNull()
+    {
+        return new PHPUnit_Framework_Constraint_IsNull;
     }
 
     /**
