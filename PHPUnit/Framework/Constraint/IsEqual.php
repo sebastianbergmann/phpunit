@@ -75,12 +75,14 @@ class PHPUnit_Framework_Constraint_IsEqual extends PHPUnit_Framework_Constraint
     protected $value;
     protected $delta = 0;
     protected $maxDepth = 10;
+    protected $canonicalizeEol = FALSE;
 
-    public function __construct($value, $delta = 0, $maxDepth = 10)
+    public function __construct($value, $delta = 0, $maxDepth = 10, $canonicalizeEol = FALSE)
     {
-        $this->value    = $value;
-        $this->delta    = $delta;
-        $this->maxDepth = $maxDepth;
+        $this->value           = $value;
+        $this->delta           = $delta;
+        $this->maxDepth        = $maxDepth;
+        $this->canonicalizeEol = $canonicalizeEol;
     }
 
     /**
@@ -238,9 +240,15 @@ class PHPUnit_Framework_Constraint_IsEqual extends PHPUnit_Framework_Constraint
             if (is_numeric($a) && is_numeric($b)) {
                 // Optionally apply delta on numeric values.
                 return $this->numericComparison($a, $b);
-            } else {
-                return ($a == $b);
             }
+            
+            if ($this->canonicalizeEol && PHP_EOL != "\n" &&
+                is_string($a) && is_string($b)) {
+                $a = str_replace(PHP_EOL, "\n", $a);
+                $b = str_replace(PHP_EOL, "\n", $b);
+            }
+
+            return ($a == $b);
         }
 
         if (is_object($a)) {
