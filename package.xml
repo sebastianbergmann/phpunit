@@ -438,6 +438,9 @@
        <file baseinstalldir="/" name="Return.php" role="php">
         <tasks:replace from="@package_version@" to="version" type="package-info" />
        </file>
+       <file baseinstalldir="/" name="ReturnArgument.php" role="php">
+        <tasks:replace from="@package_version@" to="version" type="package-info" />
+       </file>
       </dir>
       <file baseinstalldir="/" name="InvocationMocker.php" role="php">
        <tasks:replace from="@package_version@" to="version" type="package-info" />
