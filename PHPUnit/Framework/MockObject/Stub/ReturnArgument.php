@@ -36,55 +36,52 @@
  *
  * @category   Testing
  * @package    PHPUnit
- * @author     Jan Borsodi <jb@ez.no>
  * @author     Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @copyright  2002-2008 Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    SVN: $Id$
  * @link       http://www.phpunit.de/
- * @since      File available since Release 3.0.0
+ * @since      File available since Release 3.3.0
  */
 
-require_once 'PHPUnit/Framework.php';
 require_once 'PHPUnit/Util/Filter.php';
-require_once 'PHPUnit/Framework/MockObject/Invocation.php';
+require_once 'PHPUnit/Framework/MockObject/Stub/Return.php';
 
 PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
 
 /**
- * An object that stubs the process of a normal method for a mock object.
- *
- * The stub object will replace the code for the stubbed method and return a
- * specific value instead of the original value.
+ * Stubs a method by returning an argument that was passed to the mocked method.
  *
  * @category   Testing
  * @package    PHPUnit
- * @author     Jan Borsodi <jb@ez.no>
  * @author     Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @copyright  2002-2008 Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    Release: @package_version@
  * @link       http://www.phpunit.de/
- * @since      Interface available since Release 3.0.0
+ * @since      Class available since Release 3.3.0
  */
-interface PHPUnit_Framework_MockObject_Stub extends PHPUnit_Framework_SelfDescribing
+class PHPUnit_Framework_MockObject_Stub_ReturnArgument extends PHPUnit_Framework_MockObject_Stub_Return
 {
-    /**
-     * Fakes the processesing of the invocation $invocation by returning a
-     * specific value.
-     *
-     * @return mixed
-     * @param PHPUnit_Framework_MockObject_Invocation $invocation The invocation which was mocked
-     *                                                  and matched by the current method
-     *                                                  and argument matchers.
-     */
-    public function invoke(PHPUnit_Framework_MockObject_Invocation $invocation);
-}
+    protected $argumentIndex;
 
-require_once 'PHPUnit/Framework/MockObject/Stub/Callback.php';
-require_once 'PHPUnit/Framework/MockObject/Stub/ConsecutiveCalls.php';
-require_once 'PHPUnit/Framework/MockObject/Stub/Exception.php';
-require_once 'PHPUnit/Framework/MockObject/Stub/MatcherCollection.php';
-require_once 'PHPUnit/Framework/MockObject/Stub/Return.php';
-require_once 'PHPUnit/Framework/MockObject/Stub/ReturnArgument.php';
+    public function __construct($argumentIndex)
+    {
+        $this->argumentIndex = $argumentIndex;
+    }
+
+    public function invoke(PHPUnit_Framework_MockObject_Invocation $invocation)
+    {
+        if (isset($invocation->parameters[$this->argumentIndex - 1])) {
+            return $invocation->parameters[$this->argumentIndex - 1];
+        } else {
+            return NULL;
+        }
+    }
+
+    public function toString()
+    {
+        return sprintf('return argument #%d', $this->argumentIndex);
+    }
+}
 ?>
