@@ -774,6 +774,19 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
     /**
      *
      *
+     * @param  integer $argumentIndex
+     * @return PHPUnit_Framework_MockObject_Stub_ReturnArgument
+     * @access protected
+     * @since  Method available since Release 3.3.0
+     */
+    protected function returnArgument($argumentIndex)
+    {
+        return new PHPUnit_Framework_MockObject_Stub_ReturnArgument($argumentIndex);
+    }
+
+    /**
+     *
+     *
      * @param  mixed $callback
      * @return PHPUnit_Framework_MockObject_Stub_Callback
      * @access protected
