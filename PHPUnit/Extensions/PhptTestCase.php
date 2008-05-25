@@ -66,7 +66,7 @@ PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
  * @link       http://www.phpunit.de/
  * @since      Class available since Release 3.1.4
  */
-class PHPUnit_Extensions_PhptTestCase implements PHPUnit_Framework_Test
+class PHPUnit_Extensions_PhptTestCase implements PHPUnit_Framework_Test, PHPUnit_Framework_SelfDescribing
 {
     /**
      * The filename of the .phpt file.
@@ -76,6 +76,12 @@ class PHPUnit_Extensions_PhptTestCase implements PHPUnit_Framework_Test
      */
     protected $filename;
 
+    /**
+     * Options for PEAR_RunTest.
+     *
+     * @var    array
+     * @access protected
+     */
     protected $options = array();
 
     /**
