@@ -553,7 +553,7 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
      */
     protected function iniSet($varName, $newValue)
     {
-        if (!is_string($varName) || !is_string($newValue)) {
+        if (!is_string($varName)) {
             throw new InvalidArgumentException;
         }
 
