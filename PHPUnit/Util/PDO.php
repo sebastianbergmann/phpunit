@@ -121,7 +121,7 @@ class PHPUnit_Util_PDO
 
                 if ( !isset( $database ) )
                 {
-                    throw new InvalidArgumentException;
+                    throw new InvalidArgumentException('Invalid DSN.');
                 }
 
                 $dsn = "mysql:dbname=$database";
@@ -156,7 +156,7 @@ class PHPUnit_Util_PDO
             break;
 
             default: {
-                throw new InvalidArgumentException;
+                throw new InvalidArgumentException('Invalid DSN.');
             }
         }
 
