@@ -468,11 +468,12 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
     /**
      * @param  ReflectionClass $theClass
      * @param  string          $name
+     * @param  array           $classGroups
      * @return PHPUnit_Framework_Test
      * @access public
      * @static
      */
-    public static function createTest(ReflectionClass $theClass, $name)
+    public static function createTest(ReflectionClass $theClass, $name, array $classGroups = array())
     {
         $className  = $theClass->getName();
         $method     = new ReflectionMethod($className, $name);
@@ -516,7 +517,7 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
             // TestCase($name, $data)
             else {
                 $data   = PHPUnit_Util_Test::getProvidedData($className, $name);
-                $groups = PHPUnit_Util_Test::getGroups($method);
+                $groups = PHPUnit_Util_Test::getGroups($method, $classGroups);
 
                 if (is_array($data) || $data instanceof Iterator) {
                      $test = new PHPUnit_Framework_TestSuite(
@@ -744,7 +745,8 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
             $this->addTest(
               self::createTest(
                 $theClass,
-                $name
+                $name,
+                $groups
               ),
               $groups
             );
