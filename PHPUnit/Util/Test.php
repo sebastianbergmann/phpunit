@@ -195,7 +195,7 @@ class PHPUnit_Util_Test
         $docComment = $reflector->getDocComment();
 
         if (preg_match_all('/@group[\s]+([\.\w]+)/', $docComment, $matches)) {
-            $groups = array_merge($groups, $matches[1]);
+            $groups = array_unique(array_merge($groups, $matches[1]));
         }
 
         return $groups;
