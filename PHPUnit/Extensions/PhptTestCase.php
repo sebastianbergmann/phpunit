@@ -45,7 +45,9 @@
  */
 
 if (PHPUnit_Util_Filesystem::fileExistsInIncludePath('PEAR/RunTest.php')) {
+    $currentErrorReporting = error_reporting(E_ERROR | E_WARNING | E_PARSE);
     require_once 'PEAR/RunTest.php';
+    error_reporting($currentErrorReporting);
 }
 
 require_once 'PHPUnit/Framework.php';
@@ -158,7 +160,8 @@ class PHPUnit_Extensions_PhptTestCase implements PHPUnit_Framework_Test, PHPUnit
             $options['coverage'] = FALSE;
         }
 
-        $runner = new PEAR_RunTest(new PHPUnit_Extensions_PhptTestCase_Logger, $options);
+        $currentErrorReporting = error_reporting(E_ERROR | E_WARNING | E_PARSE);
+        $runner                = new PEAR_RunTest(new PHPUnit_Extensions_PhptTestCase_Logger, $options);
 
         if ($coverage) {
             $runner->xdebug_loaded = TRUE;
@@ -169,9 +172,9 @@ class PHPUnit_Extensions_PhptTestCase implements PHPUnit_Framework_Test, PHPUnit
         $result->startTest($this);
 
         PHPUnit_Util_Timer::start();
-        $buffer = $runner->run($this->filename, $options);
-        $time = PHPUnit_Util_Timer::stop();
-
+        $buffer       = $runner->run($this->filename, $options);
+        $time         = PHPUnit_Util_Timer::stop();
+        error_reporting($currentErrorReporting);
         $base         = basename($this->filename);
         $path         = dirname($this->filename);
         $coverageFile = $path . DIRECTORY_SEPARATOR . str_replace('.phpt', '.xdebug', $base);
