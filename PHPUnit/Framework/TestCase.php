@@ -647,8 +647,12 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
           $callAutoload
         );
 
-        $mockClass  = new ReflectionClass($mock->mockClassName);
-        $mockObject = $mockClass->newInstanceArgs($arguments);
+        if (count($arguments) == 0) {
+            $mockObject = new $mock->mockClassName;
+        } else {
+            $mockClass  = new ReflectionClass($mock->mockClassName);
+            $mockObject = $mockClass->newInstanceArgs($arguments);
+        }
 
         $this->mockObjects[] = $mockObject;
 
