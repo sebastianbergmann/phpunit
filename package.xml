@@ -805,6 +805,9 @@
       <file baseinstalldir="/" name="NotVoidTestCase.php" role="test">
        <tasks:replace from="@package_version@" to="version" type="package-info" />
       </file>
+      <file baseinstalldir="/" name="PartialMockTestClass.php" role="test">
+       <tasks:replace from="@package_version@" to="version" type="package-info" />
+      </file>
       <file baseinstalldir="/" name="OneTestCase.php" role="test">
        <tasks:replace from="@package_version@" to="version" type="package-info" />
       </file>
