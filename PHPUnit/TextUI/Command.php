@@ -52,6 +52,7 @@ require_once 'PHPUnit/Util/Filter.php';
 require_once 'PHPUnit/Util/Getopt.php';
 require_once 'PHPUnit/Util/Skeleton/Class.php';
 require_once 'PHPUnit/Util/Skeleton/Test.php';
+require_once 'PHPUnit/Extensions/PhptTestCase.php';
 require_once 'PHPUnit/Extensions/Story/ResultPrinter/Text.php';
 require_once 'PHPUnit/Util/TestDox/ResultPrinter/Text.php';
 
@@ -454,6 +455,13 @@ class PHPUnit_TextUI_Command
             if ($testSuite !== NULL) {
                 $arguments['test'] = $testSuite;
             }
+        }
+
+        if (is_string($arguments['test']) && substr($arguments['test'], -5, 5) == '.phpt') {
+            $test = new PHPUnit_Extensions_PhptTestCase($arguments['test']);
+
+            $arguments['test'] = new PHPUnit_Framework_TestSuite;
+            $arguments['test']->addTest($test);
         }
 
         if (!isset($arguments['test']) ||
