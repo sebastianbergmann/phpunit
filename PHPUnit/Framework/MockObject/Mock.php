@@ -98,6 +98,7 @@ class PHPUnit_Framework_MockObject_Mock
     protected $callOriginalConstructor;
     protected $callOriginalClone;
     protected $callAutoload;
+    protected static $cache = array();
 
     public function __construct($className, array $methods = array(), $mockClassName = '', $callOriginalConstructor = TRUE, $callOriginalClone = TRUE, $callAutoload = TRUE)
     {
@@ -149,6 +150,40 @@ class PHPUnit_Framework_MockObject_Mock
     }
 
     public static function generate($className, array $methods = array(), $mockClassName = '', $callOriginalConstructor = TRUE, $callOriginalClone = TRUE, $callAutoload = TRUE)
+    {
+        if ($mockClassName == '') {
+            $key = md5(
+              $className .
+              serialize($methods) .
+              serialize($callOriginalConstructor) .
+              serialize($callOriginalClone)
+            );
+
+            if (!isset(self::$cache[$key])) {
+                self::$cache[$key] = self::generateMock(
+                  $className,
+                  $methods,
+                  $mockClassName,
+                  $callOriginalConstructor,
+                  $callOriginalClone,
+                  $callAutoload
+                );
+            }
+
+            return self::$cache[$key];
+        }
+
+        return self::generateMock(
+          $className,
+          $methods,
+          $mockClassName,
+          $callOriginalConstructor,
+          $callOriginalClone,
+          $callAutoload
+        );
+    }
+
+    protected static function generateMock($className, array $methods, $mockClassName, $callOriginalConstructor, $callOriginalClone, $callAutoload)
     {
         $mock = new PHPUnit_Framework_MockObject_Mock(
           $className,
