@@ -470,7 +470,7 @@ class PHPUnit_TextUI_Command
             }
         }
 
-        if (is_string($arguments['test']) && substr($arguments['test'], -5, 5) == '.phpt') {
+        if (isset($arguments['test']) && is_string($arguments['test']) && substr($arguments['test'], -5, 5) == '.phpt') {
             $test = new PHPUnit_Extensions_PhptTestCase($arguments['test']);
 
             $arguments['test'] = new PHPUnit_Framework_TestSuite;
