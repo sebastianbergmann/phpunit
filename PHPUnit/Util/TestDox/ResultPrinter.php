@@ -344,7 +344,4 @@ abstract class PHPUnit_Util_TestDox_ResultPrinter extends PHPUnit_Util_Printer i
     {
     }
 }
-
-require_once 'PHPUnit/Util/TestDox/ResultPrinter/HTML.php';
-require_once 'PHPUnit/Util/TestDox/ResultPrinter/Text.php';
 ?>

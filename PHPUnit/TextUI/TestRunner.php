@@ -49,24 +49,13 @@ require_once 'PHPUnit/Runner/BaseTestRunner.php';
 require_once 'PHPUnit/Extensions/RepeatedTest.php';
 require_once 'PHPUnit/Runner/StandardTestSuiteLoader.php';
 require_once 'PHPUnit/Runner/Version.php';
-require_once 'PHPUnit/Extensions/Story/ResultPrinter/HTML.php';
-require_once 'PHPUnit/Extensions/Story/ResultPrinter/Text.php';
 require_once 'PHPUnit/TextUI/ResultPrinter.php';
-require_once 'PHPUnit/Util/TestDox/ResultPrinter.php';
 require_once 'PHPUnit/Util/Configuration.php';
 require_once 'PHPUnit/Util/PDO.php';
 require_once 'PHPUnit/Util/Filesystem.php';
 require_once 'PHPUnit/Util/Filter.php';
 require_once 'PHPUnit/Util/Report.php';
 require_once 'PHPUnit/Util/Timer.php';
-require_once 'PHPUnit/Util/Log/CodeCoverage/Database.php';
-require_once 'PHPUnit/Util/Log/CodeCoverage/Clover.php';
-require_once 'PHPUnit/Util/Log/CodeCoverage/Source.php';
-require_once 'PHPUnit/Util/Log/Database.php';
-require_once 'PHPUnit/Util/Log/GraphViz.php';
-require_once 'PHPUnit/Util/Log/JSON.php';
-require_once 'PHPUnit/Util/Log/TAP.php';
-require_once 'PHPUnit/Util/Log/XML.php';
 
 PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
 
@@ -225,6 +214,8 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
         $result->addListener($this->printer);
 
         if (isset($arguments['storyHTMLFile'])) {
+            require_once 'PHPUnit/Extensions/Story/ResultPrinter/HTML.php';
+
             $result->addListener(
               new PHPUnit_Extensions_Story_ResultPrinter_HTML(
                 $arguments['storyHTMLFile']
@@ -233,6 +224,8 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
         }
 
         if (isset($arguments['storyTextFile'])) {
+            require_once 'PHPUnit/Extensions/Story/ResultPrinter/Text.php';
+
             $result->addListener(
               new PHPUnit_Extensions_Story_ResultPrinter_Text(
                 $arguments['storyTextFile']
@@ -241,6 +234,8 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
         }
 
         if (isset($arguments['testdoxHTMLFile'])) {
+            require_once 'PHPUnit/Util/TestDox/ResultPrinter/HTML.php';
+
             $result->addListener(
               new PHPUnit_Util_TestDox_ResultPrinter_HTML(
                 $arguments['testdoxHTMLFile']
@@ -249,6 +244,8 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
         }
 
         if (isset($arguments['testdoxTextFile'])) {
+            require_once 'PHPUnit/Util/TestDox/ResultPrinter/Text.php';
+
             $result->addListener(
               new PHPUnit_Util_TestDox_ResultPrinter_Text(
                 $arguments['testdoxTextFile']
@@ -258,6 +255,8 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
 
         if (isset($arguments['graphvizLogfile'])) {
             if (PHPUnit_Util_Filesystem::fileExistsInIncludePath('Image/GraphViz.php')) {
+                require_once 'PHPUnit/Util/Log/GraphViz.php';
+
                 $result->addListener(
                   new PHPUnit_Util_Log_GraphViz($arguments['graphvizLogfile'])
                 );
@@ -272,18 +271,24 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
         }
 
         if (isset($arguments['jsonLogfile'])) {
+            require_once 'PHPUnit/Util/Log/JSON.php';
+
             $result->addListener(
               new PHPUnit_Util_Log_JSON($arguments['jsonLogfile'])
             );
         }
 
         if (isset($arguments['tapLogfile'])) {
+            require_once 'PHPUnit/Util/Log/TAP.php';
+
             $result->addListener(
               new PHPUnit_Util_Log_TAP($arguments['tapLogfile'])
             );
         }
 
         if (isset($arguments['xmlLogfile'])) {
+            require_once 'PHPUnit/Util/Log/XML.php';
+
             $result->addListener(
               new PHPUnit_Util_Log_XML(
                 $arguments['xmlLogfile'], $arguments['logIncompleteSkipped']
@@ -301,6 +306,8 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
 
         if ($writeToTestDatabase) {
             $dbh = PHPUnit_Util_PDO::factory($arguments['testDatabaseDSN']);
+
+            require_once 'PHPUnit/Util/Log/Database.php';
 
             $dbListener = PHPUnit_Util_Log_Database::getInstance(
               $dbh,
@@ -329,6 +336,8 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
             if (isset($arguments['coverageClover'])) {
                 $this->printer->write("\nWriting code coverage data to XML file, this may take a moment.");
 
+                require_once 'PHPUnit/Util/Log/CodeCoverage/Clover.php';
+
                 $writer = new PHPUnit_Util_Log_CodeCoverage_XML_Clover(
                   $arguments['coverageClover']
                 );
@@ -340,6 +349,8 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
             if (isset($arguments['coverageSource'])) {
                 $this->printer->write("\nWriting code coverage data to XML files, this may take a moment.");
 
+                require_once 'PHPUnit/Util/Log/CodeCoverage/Source.php';
+
                 $writer = new PHPUnit_Util_Log_CodeCoverage_XML_Source(
                   $arguments['coverageSource']
                 );
@@ -350,6 +361,8 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
 
             if ($writeToTestDatabase) {
                 $this->printer->write("\nStoring code coverage data in database.\nThis may take a moment.");
+
+                require_once 'PHPUnit/Util/Log/CodeCoverage/Database.php';
 
                 $testDb = new PHPUnit_Util_Log_CodeCoverage_Database($dbh);
                 $testDb->storeCodeCoverage(

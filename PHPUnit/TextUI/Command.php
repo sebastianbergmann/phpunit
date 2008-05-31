@@ -45,16 +45,10 @@
  */
 
 require_once 'PHPUnit/TextUI/TestRunner.php';
-require_once 'PHPUnit/Util/Log/TAP.php';
 require_once 'PHPUnit/Util/Configuration.php';
 require_once 'PHPUnit/Util/Fileloader.php';
 require_once 'PHPUnit/Util/Filter.php';
 require_once 'PHPUnit/Util/Getopt.php';
-require_once 'PHPUnit/Util/Skeleton/Class.php';
-require_once 'PHPUnit/Util/Skeleton/Test.php';
-require_once 'PHPUnit/Extensions/PhptTestCase.php';
-require_once 'PHPUnit/Extensions/Story/ResultPrinter/Text.php';
-require_once 'PHPUnit/Util/TestDox/ResultPrinter/Text.php';
 
 PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
 
@@ -98,6 +92,8 @@ class PHPUnit_TextUI_Command
 
         if ($suite->testAt(0) instanceof PHPUnit_Framework_Warning &&
             strpos($suite->testAt(0)->getMessage(), 'No tests found in class') !== FALSE) {
+            require_once 'PHPUnit/Util/Skeleton/Test.php';
+
             $skeleton = new PHPUnit_Util_Skeleton_Test(
                 $arguments['test'],
                 $arguments['testFile']
@@ -347,8 +343,12 @@ class PHPUnit_TextUI_Command
                 case '--skeleton-class':
                 case '--skeleton-test': {
                     if ($option[0] == '--skeleton-class') {
+                        require_once 'PHPUnit/Util/Skeleton/Class.php';
+
                         $class = 'PHPUnit_Util_Skeleton_Class';
                     } else {
+                        require_once 'PHPUnit/Util/Skeleton/Test.php';
+
                         $class = 'PHPUnit_Util_Skeleton_Test';
                     }
 
@@ -387,11 +387,15 @@ class PHPUnit_TextUI_Command
                 break;
 
                 case '--tap': {
+                    require_once 'PHPUnit/Util/Log/TAP.php';
+
                     $arguments['printer'] = new PHPUnit_Util_Log_TAP;
                 }
                 break;
 
                 case '--story': {
+                    require_once 'PHPUnit/Extensions/Story/ResultPrinter/Text.php';
+
                     $arguments['printer'] = new PHPUnit_Extensions_Story_ResultPrinter_Text;
                 }
                 break;
@@ -407,6 +411,8 @@ class PHPUnit_TextUI_Command
                 break;
 
                 case '--testdox': {
+                    require_once 'PHPUnit/Util/TestDox/ResultPrinter/Text.php';
+
                     $arguments['printer'] = new PHPUnit_Util_TestDox_ResultPrinter_Text;
                 }
                 break;
@@ -458,6 +464,8 @@ class PHPUnit_TextUI_Command
         }
 
         if (isset($arguments['test']) && is_string($arguments['test']) && substr($arguments['test'], -5, 5) == '.phpt') {
+            require_once 'PHPUnit/Extensions/PhptTestCase.php';
+
             $test = new PHPUnit_Extensions_PhptTestCase($arguments['test']);
 
             $arguments['test'] = new PHPUnit_Framework_TestSuite;
