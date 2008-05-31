@@ -54,7 +54,6 @@ if (!defined('PHPUnit_MAIN_METHOD')) {
 require_once 'PHPUnit/Framework/TestSuite.php';
 require_once 'PHPUnit/TextUI/TestRunner.php';
 
-require_once 'Util/Log/AllTests.php';
 require_once 'Util/TestDox/AllTests.php';
 require_once 'Util/TimerTest.php';
 
@@ -99,7 +98,6 @@ class Util_AllTests
 
         $suite = new PHPUnit_Framework_TestSuite('PHPUnit_Util');
 
-        $suite->addTest(Util_Log_AllTests::suite());
         $suite->addTest(Util_TestDox_AllTests::suite());
         $suite->addTestSuite('Util_TimerTest');
 
