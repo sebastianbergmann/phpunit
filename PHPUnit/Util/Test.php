@@ -233,10 +233,16 @@ class PHPUnit_Util_Test
                   $dataProviderClassName, $dataProviderMethodName
                 );
 
-                if ($dataProviderMethod->getNumberOfParameters() == 0) {
-                    return $dataProviderMethod->invoke(NULL);
+                if ($dataProviderMethod->isStatic()) {
+                    $object = NULL;
                 } else {
-                    return $dataProviderMethod->invoke(NULL, $methodName);
+                    $object = $dataProviderMethod->getDeclaringClass()->newInstance();
+                }
+
+                if ($dataProviderMethod->getNumberOfParameters() == 0) {
+                    return $dataProviderMethod->invoke($object);
+                } else {
+                    return $dataProviderMethod->invoke($object, $methodName);
                 }
             }
 
