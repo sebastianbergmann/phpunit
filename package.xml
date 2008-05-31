@@ -743,6 +743,11 @@
        <tasks:replace from="@package_version@" to="version" type="package-info" />
       </file>
      </dir>
+     <dir name="TextUI">
+      <file baseinstalldir="/" name="help.phpt" role="test" />
+      <file baseinstalldir="/" name="help2.phpt" role="test" />
+      <file baseinstalldir="/" name="log-graphviz.phpt" role="test" />
+     </dir>
      <dir name="Util">
       <dir name="TestDox">
        <file baseinstalldir="/" name="AllTests.php" role="test">
@@ -880,11 +885,6 @@
       <file baseinstalldir="/" name="WasRun.php" role="test">
        <tasks:replace from="@package_version@" to="version" type="package-info" />
       </file>
-      <file baseinstalldir="/" name="BankAccount.json" role="test" />
-      <file baseinstalldir="/" name="BankAccount.metrics" role="test" />
-      <file baseinstalldir="/" name="BankAccount.pmd" role="test" />
-      <file baseinstalldir="/" name="BankAccount.tap" role="test" />
-      <file baseinstalldir="/" name="BankAccount.xml" role="test" />
       <file baseinstalldir="/" name="bar.xml" role="test" />
       <file baseinstalldir="/" name="foo.xml" role="test" />
      </dir>
