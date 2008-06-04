@@ -160,6 +160,7 @@ class PHPUnit_Util_XML
      * @static
      * @since  Method available since Release 3.3.0
      * @author Mike Naberezny <mike@maintainable.com>
+     * @author Derek DeVries <derek@maintainable.com>
      */
     protected static function assertValidKeys($hash, $validKeys)
     {
@@ -208,6 +209,7 @@ class PHPUnit_Util_XML
      * @static
      * @since  Method available since Release 3.3.0
      * @author Mike Naberezny <mike@maintainable.com>
+     * @author Derek DeVries <derek@maintainable.com>
      */
     public static function convertSelectToTag($selector, $content = TRUE)
     {
@@ -309,6 +311,7 @@ class PHPUnit_Util_XML
      * @static
      * @since  Method available since Release 3.3.0
      * @author Mike Naberezny <mike@maintainable.com>
+     * @author Derek DeVries <derek@maintainable.com>
      */
     public static function findNodes(DOMDocument $dom, array $options)
     {
@@ -631,6 +634,7 @@ class PHPUnit_Util_XML
      * @static
      * @since  Method available since Release 3.3.0
      * @author Mike Naberezny <mike@maintainable.com>
+     * @author Derek DeVries <derek@maintainable.com>
      */
     protected static function getDescendants(DOMNode $node)
     {
@@ -659,6 +663,7 @@ class PHPUnit_Util_XML
      * @static
      * @since  Method available since Release 3.3.0
      * @author Mike Naberezny <mike@maintainable.com>
+     * @author Derek DeVries <derek@maintainable.com>
      */
     protected static function getNodeText(DOMNode $node)
     {

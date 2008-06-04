@@ -1303,6 +1303,7 @@ abstract class PHPUnit_Framework_Assert
      * @static
      * @since  Method available since Release 3.3.0
      * @author Mike Naberezny <mike@maintainable.com>
+     * @author Derek DeVries <derek@maintainable.com>
      */
     public static function assertXmlFileTag(array $options, $actualFile, $message = '')
     {
@@ -1325,6 +1326,7 @@ abstract class PHPUnit_Framework_Assert
      * @static
      * @since  Method available since Release 3.3.0
      * @author Mike Naberezny <mike@maintainable.com>
+     * @author Derek DeVries <derek@maintainable.com>
      */
     public static function assertXmlFileNotTag(array $options, $actualFile, $message = '')
     {
@@ -1432,6 +1434,7 @@ abstract class PHPUnit_Framework_Assert
      * @static
      * @since  Method available since Release 3.3.0
      * @author Mike Naberezny <mike@maintainable.com>
+     * @author Derek DeVries <derek@maintainable.com>
      */
     public static function assertXmlStringTag(array $options, $actualXml, $message = '')
     {
@@ -1452,6 +1455,7 @@ abstract class PHPUnit_Framework_Assert
      * @static
      * @since  Method available since Release 3.3.0
      * @author Mike Naberezny <mike@maintainable.com>
+     * @author Derek DeVries <derek@maintainable.com>
      */
     public static function assertXmlStringNotTag(array $options, $actualXml, $message = '')
     {
@@ -1520,6 +1524,7 @@ abstract class PHPUnit_Framework_Assert
      * @static
      * @since  Method available since Release 3.3.0
      * @author Mike Naberezny <mike@maintainable.com>
+     * @author Derek DeVries <derek@maintainable.com>
      */
     public static function assertXmlFileSelect($selector, $actualFile, $message = '', $content = TRUE, $exists = TRUE)
     {
@@ -1590,6 +1595,7 @@ abstract class PHPUnit_Framework_Assert
      * @static
      * @since  Method available since Release 3.3.0
      * @author Mike Naberezny <mike@maintainable.com>
+     * @author Derek DeVries <derek@maintainable.com>
      */
     public static function assertXmlStringSelect($selector, $actualXml, $message = '', $content = TRUE, $exists = TRUE)
     {
@@ -2239,6 +2245,7 @@ abstract class PHPUnit_Framework_Assert
      * @static
      * @since  Method available since Release 3.3.0
      * @author Mike Naberezny <mike@maintainable.com>
+     * @author Derek DeVries <derek@maintainable.com>
      */
     protected static function doXmlSelect($selector, DOMDocument $actual, $message, $content, $exists)
     {
@@ -2300,6 +2307,7 @@ abstract class PHPUnit_Framework_Assert
      * @static
      * @since  Method available since Release 3.3.0
      * @author Mike Naberezny <mike@maintainable.com>
+     * @author Derek DeVries <derek@maintainable.com>
      */
     protected static function doXmlTag(array $options, DOMDocument $actual)
     {
