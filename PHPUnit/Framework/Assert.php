@@ -1209,6 +1209,398 @@ abstract class PHPUnit_Framework_Assert
     }
 
     /**
+     * Evaluate XML file to assert its contents.
+     *
+     *  - `id`           : the node with the given id attribute must match the corresponsing value.
+     *  - `tag`          : the node type must match the corresponding value.
+     *  - `attributes`   : a hash. The node's attributres must match the corresponsing values in the hash.
+     *  - `content`      : The text content must match the given value.
+     *  - `parent`       : a hash. The node's parent must match the corresponsing hash.
+     *  - `child`        : a hash. At least one of the node's immediate children must meet the criteria described by the hash.
+     *  - `ancestor`     : a hash. At least one of the node's ancestors must meet the criteria described by the hash.
+     *  - `descendant`   : a hash. At least one of the node's descendants must meet the criteria described by the hash.
+     *  - `children`     : a hash, for counting children of a node. Accepts the keys:
+     *    - `count`        : a number which must equal the number of children that match
+     *    - `less_than`    : the number of matching children must be greater than this number
+     *    - `greater_than` : the number of matching children must be less than this number
+     *    - `only`         : another hash consisting of the keys to use to match on the children, and only matching children will be counted
+     *
+     * <code>
+     * // assert there is an element with an id="my_id"
+     * $this->assertXmlFileTag(array('id' => 'my_id'), $xmlFile);
+     *   
+     * // assert that there is a "span" tag
+     * $this->assertXmlFileTag(array('tag' => 'span'), $xmlFile);
+     *    
+     * // assert that there is a "span" tag with the content "Hello World"
+     * $this->assertXmlFileTag(array('tag'     => 'span',
+     *                               'content' => 'Hello World'),
+     *                         $xmlFile
+     *                        );
+     *    
+     * // assert that there is a "span" tag with content matching the regexp pattern
+     * $this->assertXmlFileTag(array('tag'     => 'span',
+     *                               'content' => '/Hello D(erek|allas)/'),
+     *                         $xmlFile
+     *                        );
+     *    
+     * // assert that there is a "span" with an "list" class attribute
+     * $this->assertXmlFileTag(array('tag' => 'span',
+     *                               'attributes' => array('class' => 'list')),
+     *                         $xmlFile
+     *                        );
+     *    
+     * // assert that there is a "span" inside of a "div"
+     * $this->assertXmlFileTag(array('tag'    => 'span',
+     *                               'parent' => array('tag' => 'div')),
+     *                         $xmlFile
+     *                        );
+     *    
+     * // assert that there is a "span" somewhere inside a "table"
+     * $this->assertXmlFileTag(array('tag'      => 'span',
+     *                               'ascestor' => array('tag' => 'table')),
+     *                         $xmlFile
+     *                        );
+     *    
+     * // assert that there is a "span" with at least one "em" child
+     * $this->assertXmlFileTag(array('tag'   => 'span',
+     *                               'child' => array('tag' => 'em')),
+     *                         $xmlFile
+     *                        );
+     *    
+     * // assert that there is a "span" containing a (possibly nesxted) "strong" tag.
+     * $this->assertXmlFileTag(array('tag'        => 'span',
+     *                               'descendant' => array('tag' => 'strong')),
+     *                         $xmlFile
+     *                        );
+     *    
+     * // assert that there is a "span" containing 5-10 "em" tags as immediate children
+     * $this->assertXmlFileTag(array('tag'       => 'span',
+     *                               'children'  => array('less_than'    => 11,
+     *                                                    'greater_than' => 4,
+     *                                                    'only'         => array('tag' => 'em'))),
+     *                         $xmlFile
+     *                        );
+     *    
+     * // get funky: assert that there is a "div", with an "ul" ancestor and a "li" parent
+     * // (with class="enum"), and containing a "span" descendant that contains element with
+     * // id="my_test" and the text Hello World.. phew
+     * $this->assertXmlFileTag(array('tag'      => 'div',
+     *                               'ancestor' => array('tag' => 'ul'),
+     *                               'parent'   => array('tag'        => 'li,
+     *                                                   'attributes' => array('class' => 'enum')),
+     *                               'descendant' => array('tag'   => 'span',
+     *                                                     'child' => array('id'      => 'my_test',
+     *                                                                      'content' => 'Hello World'))),
+     *                         $xmlFile
+     *                        );
+     * </code>
+     *
+     * @param  array  $options
+     * @param  string $actualFile
+     * @param  string $message
+     * @access public
+     * @static
+     * @since  Method available since Release 3.3.0
+     * @author Mike Naberezny <mike@maintainable.com>
+     */
+    public static function assertXmlFileTag(array $options, $actualFile, $message = '')
+    {
+        self::assertFileExists($actualFile);
+
+        $actual = new DOMDocument;
+        $actual->preserveWhiteSpace = FALSE;
+        $actual->load($actualFile);
+
+        self::assertTrue(self::doXmlTag($options, $actual), $message);
+    }
+
+    /**
+     * The exact opposite of assertXmlFileTag().
+     *
+     * @param  array  $options
+     * @param  string $actualFile
+     * @param  string $message
+     * @access public
+     * @static
+     * @since  Method available since Release 3.3.0
+     * @author Mike Naberezny <mike@maintainable.com>
+     */
+    public static function assertXmlFileNotTag(array $options, $actualFile, $message = '')
+    {
+        self::assertFileExists($actualFile);
+
+        $actual = new DOMDocument;
+        $actual->preserveWhiteSpace = FALSE;
+        $actual->load($actualFile);
+
+        self::assertFalse(self::doXmlTag($options, $actual), $message);
+    }
+
+    /**
+     * Evaluate XML string to assert its contents.
+     *
+     *  - `id`           : the node with the given id attribute must match the corresponsing value.
+     *  - `tag`          : the node type must match the corresponding value.
+     *  - `attributes`   : a hash. The node's attributres must match the corresponsing values in the hash.
+     *  - `content`      : The text content must match the given value.
+     *  - `parent`       : a hash. The node's parent must match the corresponsing hash.
+     *  - `child`        : a hash. At least one of the node's immediate children must meet the criteria described by the hash.
+     *  - `ancestor`     : a hash. At least one of the node's ancestors must meet the criteria described by the hash.
+     *  - `descendant`   : a hash. At least one of the node's descendants must meet the criteria described by the hash.
+     *  - `children`     : a hash, for counting children of a node. Accepts the keys:
+     *    - `count`        : a number which must equal the number of children that match
+     *    - `less_than`    : the number of matching children must be greater than this number
+     *    - `greater_than` : the number of matching children must be less than this number
+     *    - `only`         : another hash consisting of the keys to use to match on the children, and only matching children will be counted
+     *
+     * <code>
+     * // assert there is an element with an id="my_id"
+     * $this->assertXmlStringTag(array('id' => 'my_id'), $xml);
+     *   
+     * // assert that there is a "span" tag
+     * $this->assertXmlStringTag(array('tag' => 'span'), $xml);
+     *    
+     * // assert that there is a "span" tag with the content "Hello World"
+     * $this->assertXmlStringTag(array('tag'     => 'span',
+     *                                 'content' => 'Hello World'),
+     *                           $xml
+     *                          );
+     *    
+     * // assert that there is a "span" tag with content matching the regexp pattern
+     * $this->assertXmlStringTag(array('tag'     => 'span',
+     *                                 'content' => '/Hello D(erek|allas)/'),
+     *                           $xml
+     *                          );
+     *    
+     * // assert that there is a "span" with an "list" class attribute
+     * $this->assertXmlStringTag(array('tag' => 'span',
+     *                                 'attributes' => array('class' => 'list')),
+     *                           $xml
+     *                          );
+     *    
+     * // assert that there is a "span" inside of a "div"
+     * $this->assertXmlStringTag(array('tag'    => 'span',
+     *                                 'parent' => array('tag' => 'div')),
+     *                           $xml
+     *                          );
+     *    
+     * // assert that there is a "span" somewhere inside a "table"
+     * $this->assertXmlStringTag(array('tag'      => 'span',
+     *                                 'ascestor' => array('tag' => 'table')),
+     *                           $xml
+     *                          );
+     *    
+     * // assert that there is a "span" with at least one "em" child
+     * $this->assertXmlStringTag(array('tag'   => 'span',
+     *                                 'child' => array('tag' => 'em')),
+     *                           $xml
+     *                          );
+     *    
+     * // assert that there is a "span" containing a (possibly nesxted) "strong" tag.
+     * $this->assertXmlStringTag(array('tag'        => 'span',
+     *                                 'descendant' => array('tag' => 'strong')),
+     *                           $xml
+     *                          );
+     *    
+     * // assert that there is a "span" containing 5-10 "em" tags as immediate children
+     * $this->assertXmlStringTag(array('tag'       => 'span',
+     *                                 'children'  => array('less_than'    => 11,
+     *                                                      'greater_than' => 4,
+     *                                                      'only'         => array('tag' => 'em'))),
+     *                           $xml
+     *                          );
+     *    
+     * // get funky: assert that there is a "div", with an "ul" ancestor and a "li" parent
+     * // (with class="enum"), and containing a "span" descendant that contains element with
+     * // id="my_test" and the text Hello World.. phew
+     * $this->assertXmlStringTag(array('tag'      => 'div',
+     *                                 'ancestor' => array('tag' => 'ul'),
+     *                                 'parent'   => array('tag'        => 'li,
+     *                                                     'attributes' => array('class' => 'enum')),
+     *                                 'descendant' => array('tag'   => 'span',
+     *                                                       'child' => array('id'      => 'my_test',
+     *                                                                        'content' => 'Hello World'))),
+     *                           $xml
+     *                          );
+     * </code>
+     *
+     * @param  array  $options
+     * @param  string $actualXml
+     * @param  string $message
+     * @access public
+     * @static
+     * @since  Method available since Release 3.3.0
+     * @author Mike Naberezny <mike@maintainable.com>
+     */
+    public static function assertXmlStringTag(array $options, $actualXml, $message = '')
+    {
+        $actual = new DOMDocument;
+        $actual->preserveWhiteSpace = FALSE;
+        $actual->loadXML($actualXml);
+
+        self::assertTrue(self::doXmlTag($options, $actual), $message);
+    }
+
+    /**
+     * The exact opposite of assertXmlStringTag().
+     *
+     * @param  array  $options
+     * @param  string $actualFile
+     * @param  string $message
+     * @access public
+     * @static
+     * @since  Method available since Release 3.3.0
+     * @author Mike Naberezny <mike@maintainable.com>
+     */
+    public static function assertXmlStringNotTag(array $options, $actualXml, $message = '')
+    {
+        $actual = new DOMDocument;
+        $actual->preserveWhiteSpace = FALSE;
+        $actual->loadXML($actualXml);
+
+        self::assertFalse(self::doXmlTag($options, $actual), $message);
+    }
+
+    /**
+     * CSS-style selector-based assertion that makes assertXmlFileTag() look quite cumbersome.
+     * The first argument is a string that is essentially a standard CSS selectors used to
+     * match the element we want:
+     *
+     *  - `div`             : an element of type `div`
+     *  - `div.class_nm`    : an element of type `div` whose class is `warning`
+     *  - `div#myid`        : an element of type `div` whose ID equal to `myid`
+     *  - `div[foo="bar"]`  : an element of type `div` whose `foo` attribute value is exactly
+     *                        equal to `bar`
+     *  - `div[foo~="bar"]` : an element of type `div` whose `foo` attribute value is a list
+     *                        of space-separated values, one of which is exactly equal
+     *                        to `bar`
+     *  - `div[foo*="bar"]` : an element of type `div` whose `foo` attribute value contains
+     *                        the substring `bar`
+     *  - `div span`        : an span element descendant of a `div` element
+     *  - `div > span`      : a span element which is a direct child of a `div` element
+     *
+     * We can also do combinations to any degree:
+     *
+     *  - `div#folder.open a[href="http://foo"][title="bar"].selected.big > span`
+     *
+     * The second argument determines what we're matching in the content or number of tags.
+     * It can be one 4 options:
+     *
+     *  - `content`    : match the content of the tag
+     *  - `true/false` : match if the tag exists/doesn't exist
+     *  - `number`     : match a specific number of elements
+     *  - `range`      : to match a range of elements, we can use an array with the options
+     *                         `>` and `<`.
+     *
+     * <code>
+     * // There is an element with the id "binder_1" with the content "Test Foo"
+     * $this->assertXmlFileSelect("#binder_1", $xmlFile, "Test Foo");
+     *     
+     * // There are 10 div elements with the class folder:
+     * $this->assertXmlFileSelect("div.folder", $xmlFile, 10);
+     *     
+     * // There are more than 2, less than 10 li elements
+     * $this->assertXmlFileSelect("ul > li", array('>' => 2, '<' => 10), $xmlFile);
+     *     
+     * // The "#binder_foo" id exists
+     * $this->assertXmlFileSelect('#binder_foo", $xmlFile);
+     * $this->assertXmlFileSelect('#binder_foo", $xmlFile, '', TRUE);
+     *     
+     * // The "#binder_foo" id DOES NOT exist
+     * $this->assertXmlFileSelect('#binder_foo", $xmlFile, '', FALSE);
+     * </code>
+     *
+     * @param   string  $selector
+     * @param   string  $actualFile
+     * @param   string  $message
+     * @param   mixed   $content
+     * @param   boolean $exists
+     * @access public
+     * @static
+     * @since  Method available since Release 3.3.0
+     * @author Mike Naberezny <mike@maintainable.com>
+     */
+    public static function assertXmlFileSelect($selector, $actualFile, $message = '', $content = TRUE, $exists = TRUE)
+    {
+        self::assertFileExists($actualFile);
+
+        $actual = new DOMDocument;
+        $actual->preserveWhiteSpace = FALSE;
+        $actual->load($actualFile);
+
+        self::doXmlSelect($selector, $actual, $message, $content, $exists);
+    }
+
+    /**
+     * CSS-style selector-based assertion that makes assertXmlStringTag() look quite cumbersome.
+     * The first argument is a string that is essentially a standard CSS selectors used to
+     * match the element we want:
+     *
+     *  - `div`             : an element of type `div`
+     *  - `div.class_nm`    : an element of type `div` whose class is `warning`
+     *  - `div#myid`        : an element of type `div` whose ID equal to `myid`
+     *  - `div[foo="bar"]`  : an element of type `div` whose `foo` attribute value is exactly
+     *                        equal to `bar`
+     *  - `div[foo~="bar"]` : an element of type `div` whose `foo` attribute value is a list
+     *                        of space-separated values, one of which is exactly equal
+     *                        to `bar`
+     *  - `div[foo*="bar"]` : an element of type `div` whose `foo` attribute value contains
+     *                        the substring `bar`
+     *  - `div span`        : an span element descendant of a `div` element
+     *  - `div > span`      : a span element which is a direct child of a `div` element
+     *
+     * We can also do combinations to any degree:
+     *
+     *  - `div#folder.open a[href="http://foo"][title="bar"].selected.big > span`
+     *
+     * The second argument determines what we're matching in the content or number of tags.
+     * It can be one 4 options:
+     *
+     *  - `content`    : match the content of the tag
+     *  - `true/false` : match if the tag exists/doesn't exist
+     *  - `number`     : match a specific number of elements
+     *  - `range`      : to match a range of elements, we can use an array with the options
+     *                         `>` and `<`.
+     *
+     * <code>
+     * // There is an element with the id "binder_1" with the content "Test Foo"
+     * $this->assertXmlStringSelect("#binder_1", $xml, "Test Foo");
+     *     
+     * // There are 10 div elements with the class folder:
+     * $this->assertXmlStringSelect("div.folder", $xml, 10);
+     *     
+     * // There are more than 2, less than 10 li elements
+     * $this->assertXmlStringSelect("ul > li", array('>' => 2, '<' => 10), $xml);
+     *     
+     * // The "#binder_foo" id exists
+     * $this->assertXmlStringSelect('#binder_foo", $xml);
+     * $this->assertXmlStringSelect('#binder_foo", $xml, '', TRUE);
+     *     
+     * // The "#binder_foo" id DOES NOT exist
+     * $this->assertXmlStringSelect('#binder_foo", $xml, '', FALSE);
+     * </code>
+     *
+     * @param   string  $selector
+     * @param   string  $actualXml
+     * @param   string  $message
+     * @param   mixed   $content
+     * @param   boolean $exists
+     * @access public
+     * @static
+     * @since  Method available since Release 3.3.0
+     * @author Mike Naberezny <mike@maintainable.com>
+     */
+    public static function assertXmlStringSelect($selector, $actualXml, $message = '', $content = TRUE, $exists = TRUE)
+    {
+        $actual = new DOMDocument;
+        $actual->preserveWhiteSpace = FALSE;
+        $actual->loadXML($actualXml);
+
+        self::doXmlSelect($selector, $actual, $message, $content, $exists);
+    }
+
+    /**
      *
      *
      * @param  mixed                        $value
@@ -1835,6 +2227,85 @@ abstract class PHPUnit_Framework_Assert
     public static function markTestSkipped($message = '')
     {
         throw new PHPUnit_Framework_SkippedTestError($message);
+    }
+
+    /**
+     * @param   string      $selector
+     * @param   DOMDocument $actual
+     * @param   string      $message
+     * @param   mixed       $content
+     * @param   boolean     $exists
+     * @access protected
+     * @static
+     * @since  Method available since Release 3.3.0
+     * @author Mike Naberezny <mike@maintainable.com>
+     */
+    protected static function doXmlSelect($selector, DOMDocument $actual, $message, $content, $exists)
+    {
+        $options = PHPUnit_Util_XML::convertSelectToTag($selector, $content);
+        $tags    = PHPUnit_Util_XML::findNodes($actual, $options);
+
+        // check if any elements exist with given content
+        if (is_bool($content) || is_string($content)) {
+            if ($content === TRUE) {
+                self::assertFalse($tags, $message);
+            } else {
+                if ($exists === TRUE) {
+                    self::assertTrue(count($tags) > 0 && $tags[0] instanceof DOMNode, $message);
+                } elseif ($exists === false) {
+                    self::assertFalse(count($tags) > 0 && $tags[0] instanceof DOMNode, $message);
+                }
+            }
+        }
+
+        // check for specific number of elements
+        elseif (is_numeric($content)) {
+            $tagCount = $tags ? count($tags) : 0;
+            self::assertEquals($content, $tagCount);
+        }
+
+        // check for range number of elements
+        elseif (is_array($content) && (isset($content['>']) || isset($content['<']) || 
+                isset($content['>=']) || isset($content['<=']))) {
+            $tagCount = $tags ? count($tags) : 0;
+
+            if (isset($content['>'])) {
+                self::assertTrue($tagCount > $content['>'], $message);
+            }
+
+            if (isset($content['>='])) {
+                self::assertTrue($tagCount >= $content['>='], $message);
+            }
+
+            if (isset($content['<'])) {
+                self::assertTrue($tagCount < $content['<'], $message);
+            }
+
+            if (isset($content['<='])) {
+                self::assertTrue($tagCount <= $content['<='], $message);
+            }
+        }
+
+        // invalid content option
+        else {
+            throw new InvalidArgumentException;
+        }
+    }
+
+    /**
+     * @param  array       $options
+     * @param  DOMDocument $actual
+     * @return boolean
+     * @access protected
+     * @static
+     * @since  Method available since Release 3.3.0
+     * @author Mike Naberezny <mike@maintainable.com>
+     */
+    protected static function doXmlTag(array $options, DOMDocument $actual)
+    {
+        $tags = PHPUnit_Util_XML::findNodes($actual, $options);
+
+        return count($tags) > 0 && $tags[0] instanceof DOMNode;
     }
 }
 
