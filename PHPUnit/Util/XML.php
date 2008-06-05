@@ -156,13 +156,13 @@ class PHPUnit_Util_XML
      * @param  array $hash
      * @param  array $validKeys
      * @return array
-     * @access protected
+     * @access public
      * @static
      * @since  Method available since Release 3.3.0
      * @author Mike Naberezny <mike@maintainable.com>
      * @author Derek DeVries <derek@maintainable.com>
      */
-    protected static function assertValidKeys($hash, $validKeys)
+    public static function assertValidKeys($hash, $validKeys)
     {
         // $hash must be an array
         if ( !is_array($hash)) {
