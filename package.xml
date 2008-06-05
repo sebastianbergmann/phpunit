@@ -763,6 +763,9 @@
       <file baseinstalldir="/" name="TimerTest.php" role="test">
        <tasks:replace from="@package_version@" to="version" type="package-info" />
       </file>
+      <file baseinstalldir="/" name="XMLTest.php" role="test">
+       <tasks:replace from="@package_version@" to="version" type="package-info" />
+      </file>
      </dir>
      <dir name="_files">
       <file baseinstalldir="/" name="AnInterface.php" role="test">

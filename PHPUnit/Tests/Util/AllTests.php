@@ -56,6 +56,7 @@ require_once 'PHPUnit/TextUI/TestRunner.php';
 
 require_once 'Util/TestDox/AllTests.php';
 require_once 'Util/TimerTest.php';
+require_once 'Util/XMLTest.php';
 
 /**
  *
@@ -100,6 +101,7 @@ class Util_AllTests
 
         $suite->addTest(Util_TestDox_AllTests::suite());
         $suite->addTestSuite('Util_TimerTest');
+        $suite->addTestSuite('Util_XMLTest');
 
         return $suite;
     }
