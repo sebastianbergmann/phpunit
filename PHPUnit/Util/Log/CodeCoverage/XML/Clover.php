@@ -124,6 +124,10 @@ class PHPUnit_Util_Log_CodeCoverage_XML_Clover extends PHPUnit_Util_Printer
             $lines     = array();
 
             foreach ($classes as $class) {
+                if ($class->isInterface()) {
+                    continue;
+                }
+
                 $className          = $class->getName();
                 $methods            = $class->getMethods();
                 $packageInformation = PHPUnit_Util_Class::getPackageInformation($className);
@@ -225,8 +229,6 @@ class PHPUnit_Util_Log_CodeCoverage_XML_Clover extends PHPUnit_Util_Printer
                 $classMetricsXML->setAttribute('coveredelements', $classCoveredConditionals + $classCoveredStatements + $classCoveredMethods);
                 $classXML->appendChild($classMetricsXML);
 
-                $fileStatements += $classStatements;
-                $fileCoveredStatements += $classCoveredStatements;
             }
 
             foreach ($data as $_line => $_data) {
@@ -255,6 +257,14 @@ class PHPUnit_Util_Log_CodeCoverage_XML_Clover extends PHPUnit_Util_Printer
                 $line->setAttribute('num', $_line);
                 $line->setAttribute('type', $_data['type']);
                 $line->setAttribute('count', $_data['count']);
+
+                if ($_data['type'] == 'stmt') {
+                    if ($_data['count'] != 0) {
+                        $fileCoveredStatements++;
+                    }
+
+                    $fileStatements++;
+                }
 
                 $file->appendChild($line);
             }
