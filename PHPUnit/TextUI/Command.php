@@ -126,7 +126,7 @@ class PHPUnit_TextUI_Command
             exit(PHPUnit_TextUI_TestRunner::SUCCESS_EXIT);
         }
 
-        else if($result->errorCount() > 0) {
+        else if ($result->errorCount() > 0) {
             exit(PHPUnit_TextUI_TestRunner::EXCEPTION_EXIT);
         }
 
