@@ -95,10 +95,10 @@ class PHPUnit_Extensions_Story_Scenario
      */
     public function __construct($test)
     {
-        if($test instanceof PHPUnit_Extensions_Story_TestCase || $test instanceof PHPUnit_Extensions_Story_SeleniumTestCase) {
+        if ($test instanceof PHPUnit_Extensions_Story_TestCase ||
+            $test instanceof PHPUnit_Extensions_Story_SeleniumTestCase) {
             $this->test = $test;
-        }
-        else {
+        } else {
             throw new Exception('$test must either be PHPUnit_Extensions_Story_TestCase or PHPUnit_Extensions_Story_SeleniumTestCase');
         }
     }

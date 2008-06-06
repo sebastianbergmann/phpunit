@@ -90,11 +90,11 @@ class PHPUnit_Extensions_Story_ResultPrinter_Text extends PHPUnit_Extensions_Sto
             $scenarioStatus = 'failed';
         }
 
-        else if($this->testStatus == PHPUnit_Runner_BaseTestRunner::STATUS_SKIPPED) {
+        else if ($this->testStatus == PHPUnit_Runner_BaseTestRunner::STATUS_SKIPPED) {
             $scenarioStatus = 'skipped';
         }
 
-        else if($this->testStatus == PHPUnit_Runner_BaseTestRunner::STATUS_INCOMPLETE) {
+        else if ($this->testStatus == PHPUnit_Runner_BaseTestRunner::STATUS_INCOMPLETE) {
             $scenarioStatus = 'incomplete';
         }
 
