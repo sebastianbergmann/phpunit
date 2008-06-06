@@ -46,6 +46,7 @@
 
 require_once 'PHPUnit/Util/Filter.php';
 require_once 'PHPUnit/Runner/TestSuiteLoader.php';
+require_once 'PHPUnit/Util/Class.php';
 require_once 'PHPUnit/Util/Fileloader.php';
 
 PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
@@ -94,21 +95,38 @@ class PHPUnit_Runner_StandardTestSuiteLoader implements PHPUnit_Runner_TestSuite
                 }
             }
 
+            PHPUnit_Util_Class::collectStart();
             PHPUnit_Util_Fileloader::checkAndLoad($suiteClassFile, $syntaxCheck);
+            $loadedClasses = PHPUnit_Util_Class::collectEnd();
+        }
+
+        if (!class_exists($suiteClassName, FALSE) && !empty($loadedClasses)) {
+            $offset = 0 - strlen($suiteClassName);
+
+            foreach ($loadedClasses as $loadedClass) {
+                if (substr($loadedClass, $offset) === $suiteClassName) {
+                    $suiteClassName = $loadedClass;
+                    break;
+                }
+            }
         }
 
         if (class_exists($suiteClassName, FALSE)) {
-            return new ReflectionClass($suiteClassName);
-        } else {
-            throw new RuntimeException(
-              sprintf(
-                'Class %s could not be found in %s.',
+            $class = new ReflectionClass($suiteClassName);
 
-                $suiteClassName,
-                $suiteClassFile
-              )
-            );
+            if ($class->getFileName() == realpath($suiteClassFile)) {
+                return $class;
+            }
         }
+
+        throw new RuntimeException(
+          sprintf(
+            'Class %s could not be found in %s.',
+
+            $suiteClassName,
+            $suiteClassFile
+          )
+        );
     }
 
     /**
