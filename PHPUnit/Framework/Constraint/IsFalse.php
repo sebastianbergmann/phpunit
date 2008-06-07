@@ -81,7 +81,7 @@ class PHPUnit_Framework_Constraint_IsFalse extends PHPUnit_Framework_Constraint
      * @return string
      * @access public
      */
-    public function toString()
+    public function __toString()
     {
         return 'is false';
     }
