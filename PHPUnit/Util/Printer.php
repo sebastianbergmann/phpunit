@@ -64,6 +64,14 @@ PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
 abstract class PHPUnit_Util_Printer
 {
     /**
+     * If TRUE, flush output after every write.
+     *
+     * @var boolean
+     * @access protected
+     */
+    protected $autoFlush = FALSE;
+
+    /**
      * @var    resource
      * @access protected
      */
@@ -130,6 +138,24 @@ abstract class PHPUnit_Util_Printer
     }
 
     /**
+     * Performs a safe, incremental flush.
+     *
+     * Do not confuse this function with the flush() function of this class,
+     * since the flush() function may close the file being written to, rendering
+     * the current object no longer usable.
+     *
+     * @since  Method available since Release 3.3.0
+     */
+    public function incrementalFlush()
+    {
+        if ($this->out !== NULL) {
+            fflush($this->out);
+        } else {
+            flush();
+        }
+    }
+
+    /**
      * @param  string $buffer
      * @access public
      */
@@ -137,12 +163,50 @@ abstract class PHPUnit_Util_Printer
     {
         if ($this->out !== NULL) {
             fwrite($this->out, $buffer);
+
+            if ($this->autoFlush) {
+                $this->incrementalFlush();
+            }
         } else {
             if (php_sapi_name() != 'cli') {
                 $buffer = htmlentities($buffer);
             }
 
             print $buffer;
+
+            if ($this->autoFlush) {
+                $this->incrementalFlush();
+            }
+        }
+    }
+
+    /**
+     * Check auto-flush mode.
+     *
+     * @return boolean
+     * @since  Method available since Release 3.3.0
+     */
+    public function getAutoFlush()
+    {
+        return $this->autoFlush;
+    }
+
+    /**
+     * Set auto-flushing mode.
+     *
+     * If set, *incremental* flushes will be done after each write. This should
+     * not be confused with the different effects of this class' flush() method.
+     *
+     * @param boolean $autoFlush
+     * @access public
+     * @since  Method available since Release 3.3.0
+     */
+    public function setAutoFlush($autoFlush)
+    {
+        if (is_bool($autoFlush)) {
+            $this->autoFlush = $autoFlush;
+        } else {
+            throw new InvalidArgumentException;
         }
     }
 }
