@@ -145,23 +145,35 @@ class PHPUnit_TextUI_Command
           'ansi',
           'bootstrap=',
           'configuration=',
+          'coverage-html=',
+          'coverage-clover=',
+          'coverage-source=',
+          'coverage-xml=',
           'exclude-group=',
           'filter=',
           'group=',
           'help',
           'loader=',
+          'log-graphviz=',
           'log-json=',
+          'log-metrics=',
+          'log-pmd=',
           'log-tap=',
           'log-xml=',
           'repeat=',
+          'report=',
           'skeleton',
           'skeleton-class',
           'skeleton-test',
           'stop-on-failure',
-          'tap',
           'story',
           'story-html=',
           'story-text=',
+          'tap',
+          'test-db-dsn=',
+          'test-db-log-rev=',
+          'test-db-log-prefix=',
+          'test-db-log-info=',
           'testdox',
           'testdox-html=',
           'testdox-text=',
@@ -170,27 +182,6 @@ class PHPUnit_TextUI_Command
           'version',
           'wait'
         );
-
-        if (PHPUnit_Util_Filesystem::fileExistsInIncludePath('Image/GraphViz.php')) {
-            $longOptions[] = 'log-graphviz=';
-        }
-
-        if (extension_loaded('pdo')) {
-            $longOptions[] = 'test-db-dsn=';
-            $longOptions[] = 'test-db-log-rev=';
-            $longOptions[] = 'test-db-log-prefix=';
-            $longOptions[] = 'test-db-log-info=';
-        }
-
-        if (extension_loaded('tokenizer') && extension_loaded('xdebug')) {
-            $longOptions[] = 'coverage-html=';
-            $longOptions[] = 'coverage-clover=';
-            $longOptions[] = 'coverage-source=';
-            $longOptions[] = 'coverage-xml=';
-            $longOptions[] = 'log-metrics=';
-            $longOptions[] = 'log-pmd=';
-            $longOptions[] = 'report=';
-        }
 
         try {
             $options = PHPUnit_Util_Getopt::getopt(
@@ -231,14 +222,44 @@ class PHPUnit_TextUI_Command
                 }
                 break;
 
-                case '--coverage-source': {
-                    $arguments['coverageSource'] = $option[1];
+                case '--coverage-clover':
+                case '--coverage-xml': {
+                    if (extension_loaded('tokenizer') && extension_loaded('xdebug')) {
+                        $arguments['coverageClover'] = $option[1];
+                    } else {
+                        if (!extension_loaded('tokenizer')) {
+                            self::showMissingDependency('The tokenizer extension is not loaded.');
+                        } else {
+                            self::showMissingDependency('The Xdebug extension is not loaded.');
+                        }
+                    }
                 }
                 break;
 
-                case '--coverage-clover':
-                case '--coverage-xml': {
-                    $arguments['coverageClover'] = $option[1];
+                case '--coverage-source': {
+                    if (extension_loaded('tokenizer') && extension_loaded('xdebug')) {
+                        $arguments['coverageSource'] = $option[1];
+                    } else {
+                        if (!extension_loaded('tokenizer')) {
+                            self::showMissingDependency('The tokenizer extension is not loaded.');
+                        } else {
+                            self::showMissingDependency('The Xdebug extension is not loaded.');
+                        }
+                    }
+                }
+                break;
+
+                case '--coverage-html':
+                case '--report': {
+                    if (extension_loaded('tokenizer') && extension_loaded('xdebug')) {
+                        $arguments['reportDirectory'] = $option[1];
+                    } else {
+                        if (!extension_loaded('tokenizer')) {
+                            self::showMissingDependency('The tokenizer extension is not loaded.');
+                        } else {
+                            self::showMissingDependency('The Xdebug extension is not loaded.');
+                        }
+                    }
                 }
                 break;
 
@@ -291,7 +312,11 @@ class PHPUnit_TextUI_Command
                 break;
 
                 case '--log-graphviz': {
-                    $arguments['graphvizLogfile'] = $option[1];
+                    if (PHPUnit_Util_Filesystem::fileExistsInIncludePath('Image/GraphViz.php')) {
+                        $arguments['graphvizLogfile'] = $option[1];
+                    } else {
+                        self::showMissingDependency('The Image_GraphViz package is not installed.');
+                    }
                 }
                 break;
 
@@ -306,12 +331,28 @@ class PHPUnit_TextUI_Command
                 break;
 
                 case '--log-pmd': {
-                    $arguments['pmdXML'] = $option[1];
+                    if (extension_loaded('tokenizer') && extension_loaded('xdebug')) {
+                        $arguments['pmdXML'] = $option[1];
+                    } else {
+                        if (!extension_loaded('tokenizer')) {
+                            self::showMissingDependency('The tokenizer extension is not loaded.');
+                        } else {
+                            self::showMissingDependency('The Xdebug extension is not loaded.');
+                        }
+                    }
                 }
                 break;
 
                 case '--log-metrics': {
-                    $arguments['metricsXML'] = $option[1];
+                    if (extension_loaded('tokenizer') && extension_loaded('xdebug')) {
+                        $arguments['metricsXML'] = $option[1];
+                    } else {
+                        if (!extension_loaded('tokenizer')) {
+                            self::showMissingDependency('The tokenizer extension is not loaded.');
+                        } else {
+                            self::showMissingDependency('The Xdebug extension is not loaded.');
+                        }
+                    }
                 }
                 break;
 
@@ -326,28 +367,38 @@ class PHPUnit_TextUI_Command
                 break;
 
                 case '--test-db-dsn': {
-                    $arguments['testDatabaseDSN'] = $option[1];
+                    if (extension_loaded('pdo')) {
+                        $arguments['testDatabaseDSN'] = $option[1];
+                    } else {
+                        self::showMissingDependency('The PDO extension is not loaded.');
+                    }
                 }
                 break;
 
                 case '--test-db-log-rev': {
-                    $arguments['testDatabaseLogRevision'] = $option[1];
+                    if (extension_loaded('pdo')) {
+                        $arguments['testDatabaseLogRevision'] = $option[1];
+                    } else {
+                        self::showMissingDependency('The PDO extension is not loaded.');
+                    }
                 }
                 break;
 
                 case '--test-db-prefix': {
-                    $arguments['testDatabasePrefix'] = $option[1];
+                    if (extension_loaded('pdo')) {
+                        $arguments['testDatabasePrefix'] = $option[1];
+                    } else {
+                        self::showMissingDependency('The PDO extension is not loaded.');
+                    }
                 }
                 break;
 
                 case '--test-db-log-info': {
-                    $arguments['testDatabaseLogInfo'] = $option[1];
-                }
-                break;
-
-                case '--coverage-html':
-                case '--report': {
-                    $arguments['reportDirectory'] = $option[1];
+                    if (extension_loaded('pdo')) {
+                        $arguments['testDatabaseLogInfo'] = $option[1];
+                    } else {
+                        self::showMissingDependency('The PDO extension is not loaded.');
+                    }
                 }
                 break;
 
@@ -529,6 +580,18 @@ class PHPUnit_TextUI_Command
     }
 
     /**
+     * @param string $message
+     * @access public
+     * @static
+     */
+    public static function showMissingDependency($message)
+    {
+        PHPUnit_TextUI_TestRunner::printVersionString();
+        print $message . "\n";
+        exit(PHPUnit_TextUI_TestRunner::EXCEPTION_EXIT);
+    }
+
+    /**
      * @access public
      * @static
      */
@@ -536,56 +599,53 @@ class PHPUnit_TextUI_Command
     {
         PHPUnit_TextUI_TestRunner::printVersionString();
 
-        print "Usage: phpunit [switches] UnitTest [UnitTest.php]\n" .
-              "       phpunit [switches] <directory>\n\n";
+        print <<<EOT
+Usage: phpunit [switches] UnitTest [UnitTest.php]
+       phpunit [switches] <directory>
 
-        if (PHPUnit_Util_Filesystem::fileExistsInIncludePath('Image/GraphViz.php')) {
-            print "  --log-graphviz <file>    Log test execution in GraphViz markup.\n";
-        }
+  --log-graphviz <file>    Log test execution in GraphViz markup.
 
-        print "  --log-json <file>        Log test execution in JSON format.\n" .
-              "  --log-tap <file>         Log test execution in TAP format to file.\n" .
-              "  --log-xml <file>         Log test execution in XML format to file.\n";
+  --log-json <file>        Log test execution in JSON format.
+  --log-tap <file>         Log test execution in TAP format to file.
+  --log-xml <file>         Log test execution in XML format to file.
 
-        if (extension_loaded('tokenizer') && extension_loaded('xdebug')) {
-            print "  --log-metrics <file>     Write metrics report in XML format.\n" .
-                  "  --log-pmd <file>         Write violations report in PMD XML format.\n\n" .
-                  "  --coverage-html <dir>    Generate code coverage report in HTML format.\n" .
-                  "  --coverage-clover <file> Write code coverage data in Clover XML format.\n" .
-                  "  --coverage-source <dir>  Write code coverage / source data in XML format.\n\n";
-        }
+  --log-metrics <file>     Write metrics report in XML format.
+  --log-pmd <file>         Write violations report in PMD XML format.
+  --coverage-html <dir>    Generate code coverage report in HTML format.
+  --coverage-clover <file> Write code coverage data in Clover XML format.
+  --coverage-source <dir>  Write code coverage / source data in XML format.
 
-        if (extension_loaded('pdo')) {
-            print "  --test-db-dsn <dsn>      DSN for the test database.\n" .
-                  "  --test-db-log-rev <rev>  Revision information for database logging.\n" .
-                  "  --test-db-prefix ...     Prefix that should be stripped from filenames.\n" .
-                  "  --test-db-log-info ...   Additional information for database logging.\n\n";
-        }
+  --test-db-dsn <dsn>      DSN for the test database.
+  --test-db-log-rev <rev>  Revision information for database logging.
+  --test-db-prefix ...     Prefix that should be stripped from filenames.
+  --test-db-log-info ...   Additional information for database logging.
 
-        print "  --story-html <file>      Write Story/BDD results in HTML format to file.\n" .
-              "  --story-text <file>      Write Story/BDD results in Text format to file.\n\n" .
-              "  --testdox-html <file>    Write agile documentation in HTML format to file.\n" .
-              "  --testdox-text <file>    Write agile documentation in Text format to file.\n\n" .
-              "  --filter <pattern>       Filter which tests to run.\n" .
-              "  --group ...              Only runs tests from the specified group(s).\n" .
-              "  --exclude-group ...      Exclude tests from the specified group(s).\n\n" .
-              "  --loader <loader>        TestSuiteLoader implementation to use.\n" .
-              "  --repeat <times>         Runs the test(s) repeatedly.\n\n" .
-              "  --story                  Report test execution progress in Story/BDD format.\n" .
-              "  --tap                    Report test execution progress in TAP format.\n" .
-              "  --testdox                Report test execution progress in TestDox format.\n\n" .
-              "  --no-syntax-check        Disable syntax check of test source files.\n" .
-              "  --stop-on-failure        Stop execution upon first error or failure.\n" .
-              "  --ansi                   Use ANSI colors in output.\n" .
-              "  --verbose                Output more verbose information.\n" .
-              "  --wait                   Waits for a keystroke after each test.\n\n" .
-              "  --skeleton-class         Generate Unit class for UnitTest in UnitTest.php.\n" .
-              "  --skeleton-test          Generate UnitTest class for Unit in Unit.php.\n\n" .
-              "  --help                   Prints this usage information.\n" .
-              "  --version                Prints the version and exits.\n\n" .
-              "  --bootstrap <file>       A \"bootstrap\" PHP file that is run before the tests.\n" .
-              "  --configuration <file>   Read configuration from XML file.\n" .
-              "  -d key[=value]           Sets a php.ini value.\n";
+  --story-html <file>      Write Story/BDD results in HTML format to file.
+  --story-text <file>      Write Story/BDD results in Text format to file.
+  --testdox-html <file>    Write agile documentation in HTML format to file.
+  --testdox-text <file>    Write agile documentation in Text format to file.
+  --filter <pattern>       Filter which tests to run.
+  --group ...              Only runs tests from the specified group(s).
+  --exclude-group ...      Exclude tests from the specified group(s).
+  --loader <loader>        TestSuiteLoader implementation to use.
+  --repeat <times>         Runs the test(s) repeatedly.
+  --story                  Report test execution progress in Story/BDD format.
+  --tap                    Report test execution progress in TAP format.
+  --testdox                Report test execution progress in TestDox format.
+  --no-syntax-check        Disable syntax check of test source files.
+  --stop-on-failure        Stop execution upon first error or failure.
+  --ansi                   Use ANSI colors in output.
+  --verbose                Output more verbose informtion.
+  --wait                   Waits for a keystroke after each test.
+  --skeleton-class         Generate Unit class for UnitTest in UnitTest.php.
+  --skeleton-test          Generate UnitTest class for Unit in Unit.php.
+  --help                   Prints this usage information.
+  --version                Prints the version and exits.
+  --bootstrap <file>       A bootstrap PHP file that is run before the tests.
+  --configuration <file>   Read configuration from XML file.
+  -d key[=value]           Sets a php.ini value.
+
+EOT;
     }
 }
 
