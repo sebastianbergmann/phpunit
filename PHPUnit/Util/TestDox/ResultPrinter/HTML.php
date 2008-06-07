@@ -93,12 +93,21 @@ class PHPUnit_Util_TestDox_ResultPrinter_HTML extends PHPUnit_Util_TestDox_Resul
     /**
      * Handler for 'on test' event.
      *
-     * @param  string $name
+     * @param  string  $name
+     * @param  boolean $success
      * @access protected
      */
-    protected function onTest($name)
+    protected function onTest($name, $success = TRUE)
     {
-        $this->write('<li>' . $name . '</li>');
+        if (!$success) {
+            $strikeOpen  = '<strike>';
+            $strikeClose = '</strike>';
+        } else {
+            $strikeOpen  = '';
+            $strikeClose = '';
+        }
+
+        $this->write('<li>' . $strikeOpen . $name . $strikeClose . '</li>');
     }
 
     /**

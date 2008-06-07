@@ -288,9 +288,7 @@ abstract class PHPUnit_Util_TestDox_ResultPrinter extends PHPUnit_Util_Printer i
     protected function doEndClass()
     {
         foreach ($this->tests as $name => $data) {
-            if ($data['failure'] == 0) {
-                $this->onTest($name);
-            }
+            $this->onTest($name, $data['failure'] == 0);
         }
 
         $this->endClass($this->testClass);
@@ -318,10 +316,11 @@ abstract class PHPUnit_Util_TestDox_ResultPrinter extends PHPUnit_Util_Printer i
     /**
      * Handler for 'on test' event.
      *
-     * @param  string $name
+     * @param  string  $name
+     * @param  boolean $success
      * @access protected
      */
-    protected function onTest($name)
+    protected function onTest($name, $success = TRUE)
     {
     }
 
