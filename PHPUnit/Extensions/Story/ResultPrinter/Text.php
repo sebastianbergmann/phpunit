@@ -80,11 +80,12 @@ class PHPUnit_Extensions_Story_ResultPrinter_Text extends PHPUnit_Extensions_Sto
     /**
      * Handler for 'on test' event.
      *
-     * @param  string $name
-     * @param  array  $steps
+     * @param  string  $name
+     * @param  boolean $success
+     * @param  array   $steps
      * @access protected
      */
-    protected function onTest($name, array $steps = array())
+    protected function onTest($name, $success = TRUE, array $steps = array())
     {
         if ($this->testStatus == PHPUnit_Runner_BaseTestRunner::STATUS_FAILURE) {
             $scenarioStatus = 'failed';

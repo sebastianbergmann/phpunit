@@ -77,10 +77,15 @@ class PHPUnit_Extensions_Story_ResultPrinter extends PHPUnit_Util_TestDox_Result
             $test instanceof PHPUnit_Extensions_Story_SeleniumTestCase) {
             if ($this->testStatus == PHPUnit_Runner_BaseTestRunner::STATUS_PASSED) {
                 $this->successful++;
+                $success = TRUE;
+            } else {
+                $success = FALSE;
             }
 
             $this->onTest(
-              $this->currentTestMethodPrettified, $test->getScenario()->getSteps()
+              $this->currentTestMethodPrettified,
+              $success,
+              $test->getScenario()->getSteps()
             );
         }
     }
@@ -91,6 +96,18 @@ class PHPUnit_Extensions_Story_ResultPrinter extends PHPUnit_Util_TestDox_Result
     protected function doEndClass()
     {
         $this->endClass($this->testClass);
+    }
+
+    /**
+     * Handler for 'on test' event.
+     *
+     * @param  string  $name
+     * @param  boolean $success
+     * @param  array   $steps
+     * @access protected
+     */
+    protected function onTest($name, $success = TRUE, array $steps = array())
+    {
     }
 }
 ?>
