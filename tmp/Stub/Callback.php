@@ -76,7 +76,7 @@ class PHPUnit_Framework_MockObject_Stub_Callback implements PHPUnit_Framework_Mo
         return call_user_func_array($this->callback, $invocation->parameters);
     }
 
-    public function toString()
+    public function __toString()
     {
         if (is_array($this->callback)) {
             if (is_object($this->callback[0])) {
