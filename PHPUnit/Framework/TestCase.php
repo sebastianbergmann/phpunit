@@ -537,6 +537,20 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
     }
 
     /**
+     * Calling this method in setUp() has no effect!
+     *
+     * @param  boolean $backupGlobals
+     * @param  boolean $createGlobalsReference
+     * @access public
+     * @since  Method available since Release 3.3.0
+     */
+    public function setGlobalsBackup($backupGlobals = TRUE, $createGlobalsReference = FALSE)
+    {
+        $this->backupGlobals          = $backupGlobals;
+        $this->createGlobalsReference = $createGlobalsReference;
+    }
+
+    /**
      * Sets the shared fixture.
      *
      * @param  mixed $sharedFixture
