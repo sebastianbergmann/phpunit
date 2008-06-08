@@ -76,8 +76,6 @@ if (!defined('PHPUnit_MAIN_METHOD')) {
 class PHPUnit_TextUI_Command
 {
     /**
-     * @access public
-     * @static
      */
     public static function main()
     {
@@ -136,8 +134,6 @@ class PHPUnit_TextUI_Command
     }
 
     /**
-     * @access protected
-     * @static
      */
     protected static function handleArguments()
     {
@@ -406,8 +402,6 @@ class PHPUnit_TextUI_Command
     /**
      * @param  string  $test
      * @param  string  $testFile
-     * @access protected
-     * @static
      */
     protected static function doSkeleton($test, $testFile)
     {
@@ -443,8 +437,6 @@ class PHPUnit_TextUI_Command
 
     /**
      * @param  string  $loaderName
-     * @access protected
-     * @static
      */
     protected static function handleLoader($loaderName)
     {
@@ -477,8 +469,6 @@ class PHPUnit_TextUI_Command
     }
 
     /**
-     * @access public
-     * @static
      */
     public static function showHelp()
     {

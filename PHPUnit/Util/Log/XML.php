@@ -69,73 +69,61 @@ class PHPUnit_Util_Log_XML extends PHPUnit_Util_Printer implements PHPUnit_Frame
 {
     /**
      * @var    DOMDocument
-     * @access protected
      */
     protected $document;
 
     /**
      * @var    DOMElement
-     * @access protected
      */
     protected $root;
 
     /**
      * @var    boolean
-     * @access protected
      */
     protected $logIncompleteSkipped = FALSE;
 
     /**
      * @var    boolean
-     * @access protected
      */
     protected $writeDocument = TRUE;
 
     /**
      * @var    DOMElement[]
-     * @access protected
      */
     protected $testSuites = array();
 
     /**
      * @var    integer[]
-     * @access protected
      */
     protected $testSuiteTests = array(0);
 
     /**
      * @var    integer[]
-     * @access protected
      */
     protected $testSuiteErrors = array(0);
 
     /**
      * @var    integer[]
-     * @access protected
      */
     protected $testSuiteFailures = array(0);
 
     /**
      * @var    integer[]
-     * @access protected
      */
     protected $testSuiteTimes = array(0);
 
     /**
      * @var    integer
-     * @access protected
      */
     protected $testSuiteLevel = 0;
 
     /**
      * @var    DOMElement
-     * @access protected
      */
     protected $currentTestCase = NULL;
 
     /**
      * @var    boolean
-     * @access protected
      */
     protected $attachCurrentTestCase = TRUE;
 
@@ -144,7 +132,6 @@ class PHPUnit_Util_Log_XML extends PHPUnit_Util_Printer implements PHPUnit_Frame
      *
      * @param  mixed   $out
      * @param  boolean $logIncompleteSkipped
-     * @access public
      */
     public function __construct($out = NULL, $logIncompleteSkipped = FALSE)
     {
@@ -162,7 +149,6 @@ class PHPUnit_Util_Log_XML extends PHPUnit_Util_Printer implements PHPUnit_Frame
     /**
      * Flush buffer and close output.
      *
-     * @access public
      */
     public function flush()
     {
@@ -179,7 +165,6 @@ class PHPUnit_Util_Log_XML extends PHPUnit_Util_Printer implements PHPUnit_Frame
      * @param  PHPUnit_Framework_Test $test
      * @param  Exception              $e
      * @param  float                  $time
-     * @access public
      */
     public function addError(PHPUnit_Framework_Test $test, Exception $e, $time)
     {
@@ -212,7 +197,6 @@ class PHPUnit_Util_Log_XML extends PHPUnit_Util_Printer implements PHPUnit_Frame
      * @param  PHPUnit_Framework_Test                 $test
      * @param  PHPUnit_Framework_AssertionFailedError $e
      * @param  float                                  $time
-     * @access public
      */
     public function addFailure(PHPUnit_Framework_Test $test, PHPUnit_Framework_AssertionFailedError $e, $time)
     {
@@ -247,7 +231,6 @@ class PHPUnit_Util_Log_XML extends PHPUnit_Util_Printer implements PHPUnit_Frame
      * @param  PHPUnit_Framework_Test $test
      * @param  Exception              $e
      * @param  float                  $time
-     * @access public
      */
     public function addIncompleteTest(PHPUnit_Framework_Test $test, Exception $e, $time)
     {
@@ -278,7 +261,6 @@ class PHPUnit_Util_Log_XML extends PHPUnit_Util_Printer implements PHPUnit_Frame
      * @param  PHPUnit_Framework_Test $test
      * @param  Exception              $e
      * @param  float                  $time
-     * @access public
      * @since  Method available since Release 3.0.0
      */
     public function addSkippedTest(PHPUnit_Framework_Test $test, Exception $e, $time)
@@ -308,7 +290,6 @@ class PHPUnit_Util_Log_XML extends PHPUnit_Util_Printer implements PHPUnit_Frame
      * A testsuite started.
      *
      * @param  PHPUnit_Framework_TestSuite $suite
-     * @access public
      * @since  Method available since Release 2.2.0
      */
     public function startTestSuite(PHPUnit_Framework_TestSuite $suite)
@@ -369,7 +350,6 @@ class PHPUnit_Util_Log_XML extends PHPUnit_Util_Printer implements PHPUnit_Frame
      * A testsuite ended.
      *
      * @param  PHPUnit_Framework_TestSuite $suite
-     * @access public
      * @since  Method available since Release 2.2.0
      */
     public function endTestSuite(PHPUnit_Framework_TestSuite $suite)
@@ -393,7 +373,6 @@ class PHPUnit_Util_Log_XML extends PHPUnit_Util_Printer implements PHPUnit_Frame
      * A test started.
      *
      * @param  PHPUnit_Framework_Test $test
-     * @access public
      */
     public function startTest(PHPUnit_Framework_Test $test)
     {
@@ -423,7 +402,6 @@ class PHPUnit_Util_Log_XML extends PHPUnit_Util_Printer implements PHPUnit_Frame
      *
      * @param  PHPUnit_Framework_Test $test
      * @param  float                  $time
-     * @access public
      */
     public function endTest(PHPUnit_Framework_Test $test, $time)
     {
@@ -448,7 +426,6 @@ class PHPUnit_Util_Log_XML extends PHPUnit_Util_Printer implements PHPUnit_Frame
      * Returns the XML as a string.
      *
      * @return string
-     * @access public
      * @since  Method available since Release 2.2.0
      */
     public function getXML()
@@ -464,7 +441,6 @@ class PHPUnit_Util_Log_XML extends PHPUnit_Util_Printer implements PHPUnit_Frame
      * PHPUnit with Phing.
      *
      * @return string
-     * @access public
      * @since  Method available since Release 2.2.0
      */
     public function setWriteDocument($flag)

@@ -65,31 +65,26 @@ abstract class PHPUnit_Extensions_OutputTestCase extends PHPUnit_Framework_TestC
 {
     /**
      * @var    string
-     * @access protected
      */
     protected $expectedRegex = NULL;
 
     /**
      * @var    string
-     * @access protected
      */
     protected $expectedString = NULL;
 
     /**
      * @var    string
-     * @access protected
      */
     protected $output = '';
 
     /**
      * @var    mixed
-     * @access protected
      */
     protected $outputCallback = FALSE;
 
     /**
      * @return bool
-     * @access public
      */
     public function setOutputCallback($callback)
     {
@@ -105,7 +100,6 @@ abstract class PHPUnit_Extensions_OutputTestCase extends PHPUnit_Framework_TestC
 
     /**
      * @return string
-     * @access public
      */
     public function normalizeOutput($buffer)
     {
@@ -114,7 +108,6 @@ abstract class PHPUnit_Extensions_OutputTestCase extends PHPUnit_Framework_TestC
 
     /**
      * @return string
-     * @access public
      */
     public function getActualOutput()
     {
@@ -123,7 +116,6 @@ abstract class PHPUnit_Extensions_OutputTestCase extends PHPUnit_Framework_TestC
 
     /**
      * @return string
-     * @access public
      */
     public function expectedRegex()
     {
@@ -132,7 +124,6 @@ abstract class PHPUnit_Extensions_OutputTestCase extends PHPUnit_Framework_TestC
 
     /**
      * @param  string  $expectedRegex
-     * @access public
      */
     public function expectOutputRegex($expectedRegex)
     {
@@ -147,7 +138,6 @@ abstract class PHPUnit_Extensions_OutputTestCase extends PHPUnit_Framework_TestC
 
     /**
      * @return string
-     * @access public
      */
     public function expectedString()
     {
@@ -156,7 +146,6 @@ abstract class PHPUnit_Extensions_OutputTestCase extends PHPUnit_Framework_TestC
 
     /**
      * @param  string  $expectedString
-     * @access public
      */
     public function expectOutputString($expectedString)
     {
@@ -170,7 +159,6 @@ abstract class PHPUnit_Extensions_OutputTestCase extends PHPUnit_Framework_TestC
     }
 
     /**
-     * @access protected
      */
     protected function runTest()
     {

@@ -72,7 +72,6 @@ class PHPUnit_Framework_Error extends Exception
      * @param  string  $file
      * @param  integer $line
      * @param  array   $trace
-     * @access public
      */
     public function __construct($message, $code, $file, $line, $trace)
     {

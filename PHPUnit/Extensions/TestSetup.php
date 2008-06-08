@@ -79,7 +79,6 @@ class PHPUnit_Extensions_TestSetup extends PHPUnit_Extensions_TestDecorator
      * @param  PHPUnit_Framework_TestResult $result
      * @return PHPUnit_Framework_TestResult
      * @throws InvalidArgumentException
-     * @access public
      */
     public function run(PHPUnit_Framework_TestResult $result = NULL)
     {
@@ -98,7 +97,6 @@ class PHPUnit_Extensions_TestSetup extends PHPUnit_Extensions_TestDecorator
     /**
      * Copies the fixture set up by setUp() to the test.
      *
-     * @access private
      * @since  Method available since Release 2.3.0
      */
     private function copyFixtureToTest()
@@ -115,7 +113,6 @@ class PHPUnit_Extensions_TestSetup extends PHPUnit_Extensions_TestDecorator
     }
 
     /**
-     * @access private
      * @since  Method available since Release 2.3.0
      */
     private function doCopyFixtureToTest($object, $name, &$value)
@@ -133,7 +130,6 @@ class PHPUnit_Extensions_TestSetup extends PHPUnit_Extensions_TestDecorator
      * Sets up the fixture. Override to set up additional fixture
      * state.
      *
-     * @access protected
      */
     protected function setUp()
     {
@@ -143,7 +139,6 @@ class PHPUnit_Extensions_TestSetup extends PHPUnit_Extensions_TestDecorator
      * Tears down the fixture. Override to tear down the additional
      * fixture state.
      *
-     * @access protected
      */
     protected function tearDown()
     {

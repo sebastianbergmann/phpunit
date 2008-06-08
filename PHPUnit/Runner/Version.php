@@ -66,8 +66,6 @@ class PHPUnit_Runner_Version
      * Returns the current version of PHPUnit.
      *
      * @return string
-     * @access public
-     * @static
      */
     public static function id()
     {
@@ -76,8 +74,6 @@ class PHPUnit_Runner_Version
 
     /**
      * @return string
-     * @access public
-     * @static
      */
     public static function getVersionString()
     {

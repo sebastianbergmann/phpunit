@@ -67,8 +67,6 @@ class PHPUnit_Util_XML
      *
      * @param  string $string
      * @return string
-     * @access public
-     * @static
      * @since  Method available since Release 3.3.0
      */
     public static function convertToUtf8($string)
@@ -86,8 +84,6 @@ class PHPUnit_Util_XML
      * @param  string  $filename
      * @param  boolean $html
      * @return DOMDocument
-     * @access public
-     * @static
      */
     public static function load($filename, $html = FALSE)
     {

@@ -69,7 +69,6 @@ class PHPUnit_Util_Log_CPD extends PHPUnit_Util_Printer
 {
     /**
      * @param  PHPUnit_Framework_TestResult $result
-     * @access public
      */
     public function process(PHPUnit_Framework_TestResult $result, $minLines = 5, $minMatches = 70)
     {

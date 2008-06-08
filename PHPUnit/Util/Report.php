@@ -79,8 +79,6 @@ abstract class PHPUnit_Util_Report
      * @param  boolean                      $highlight
      * @param  integer                      $lowUpperBound
      * @param  integer                      $highLowerBound
-     * @access public
-     * @static
      */
     public static function render(PHPUnit_Framework_TestResult $result, $target, $charset = 'ISO-8859-1', $yui = TRUE, $highlight = FALSE, $lowUpperBound = 35, $highLowerBound = 70)
     {
@@ -119,8 +117,6 @@ abstract class PHPUnit_Util_Report
      * @param  array   $files
      * @param  boolean $yui
      * @param  boolean $highlight
-     * @access protected
-     * @static
      */
     protected static function addItems(PHPUnit_Util_Report_Node_Directory $root, array $items, array $files, $yui, $highlight)
     {
@@ -184,8 +180,6 @@ abstract class PHPUnit_Util_Report
      *
      * @param  array $files
      * @return array
-     * @access protected
-     * @static
      */
     protected static function buildDirectoryStructure($files)
     {
@@ -251,8 +245,6 @@ abstract class PHPUnit_Util_Report
      *
      * @param  array $files
      * @return string
-     * @access protected
-     * @static
      */
     protected static function reducePaths(&$files)
     {
@@ -320,8 +312,6 @@ abstract class PHPUnit_Util_Report
 
     /**
      * @param  string $target
-     * @access protected
-     * @static
      */
     protected static function copyFiles($target)
     {

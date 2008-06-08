@@ -67,13 +67,11 @@ class PHPUnit_Framework_TestFailure
 {
     /**
      * @var    PHPUnit_Framework_Test
-     * @access protected
      */
     protected $failedTest;
 
     /**
      * @var    Exception
-     * @access protected
      */
     protected $thrownException;
 
@@ -82,7 +80,6 @@ class PHPUnit_Framework_TestFailure
      *
      * @param  PHPUnit_Framework_Test $failedTest
      * @param  Exception               $thrownException
-     * @access public
      */
     public function __construct(PHPUnit_Framework_Test $failedTest, Exception $thrownException)
     {
@@ -94,7 +91,6 @@ class PHPUnit_Framework_TestFailure
      * Returns a short description of the failure.
      *
      * @return string
-     * @access public
      */
     public function toString()
     {
@@ -111,7 +107,6 @@ class PHPUnit_Framework_TestFailure
      *
      * @param  bool $verbose
      * @return string
-     * @access public
      * @since  Method available since Release 3.2.0
      */
     public function toStringVerbose($verbose = FALSE)
@@ -125,8 +120,6 @@ class PHPUnit_Framework_TestFailure
      * @param  Exception $e
      * @param  bool      $verbose
      * @return string
-     * @access public
-     * @static
      * @since  Method available since Release 3.2.0
      */
     public static function exceptionToString(Exception $e, $verbose = FALSE)
@@ -216,7 +209,6 @@ class PHPUnit_Framework_TestFailure
      * Gets the failed test.
      *
      * @return Test
-     * @access public
      */
     public function failedTest()
     {
@@ -227,7 +219,6 @@ class PHPUnit_Framework_TestFailure
      * Gets the thrown exception.
      *
      * @return Exception
-     * @access public
      */
     public function thrownException()
     {
@@ -238,7 +229,6 @@ class PHPUnit_Framework_TestFailure
      * Returns the exception's message.
      *
      * @return string
-     * @access public
      */
     public function exceptionMessage()
     {
@@ -250,7 +240,6 @@ class PHPUnit_Framework_TestFailure
      * is of type AssertionFailedError.
      *
      * @return boolean
-     * @access public
      */
     public function isFailure()
     {

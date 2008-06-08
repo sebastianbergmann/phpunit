@@ -67,13 +67,11 @@ class PHPUnit_Framework_Warning extends PHPUnit_Framework_TestCase
 {
     /**
      * @var    string
-     * @access protected
      */
     protected $message = '';
 
     /**
      * @param  string  $message
-     * @access public
      */
     public function __construct($message = '')
     {
@@ -82,7 +80,6 @@ class PHPUnit_Framework_Warning extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @access protected
      */
     protected function runTest()
     {
@@ -91,7 +88,6 @@ class PHPUnit_Framework_Warning extends PHPUnit_Framework_TestCase
 
     /**
      * @return string
-     * @access public
      * @since  Method available since Release 3.0.0
      */
     public function getMessage()
