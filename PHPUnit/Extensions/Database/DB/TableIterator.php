@@ -104,7 +104,7 @@ class PHPUnit_Extensions_Database_DB_TableIterator implements PHPUnit_Extensions
      */
     public function getTable()
     {
-        $this->current();
+        return $this->current();
     }
 
     /**
@@ -114,7 +114,7 @@ class PHPUnit_Extensions_Database_DB_TableIterator implements PHPUnit_Extensions
      */
     public function getTableMetaData()
     {
-        $this->current()->getTableMetaData();
+        return $this->current()->getTableMetaData();
     }
 
     /**
