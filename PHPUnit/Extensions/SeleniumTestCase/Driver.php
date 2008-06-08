@@ -749,7 +749,7 @@ class PHPUnit_Extensions_SeleniumTestCase_Driver
             $url .= sprintf('&%s=%s', 'sessionId', $this->sessionId);
         }
 
-        $handle = @fopen($url, 'r')
+        $handle = @fopen($url, 'r');
 
         if (!$handle) {
             throw new RuntimeException(
