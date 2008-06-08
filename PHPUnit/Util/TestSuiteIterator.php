@@ -64,13 +64,11 @@ class PHPUnit_Util_TestSuiteIterator implements RecursiveIterator
 {
     /**
      * @var    integer
-     * @access protected
      */
     protected $position;
 
     /**
      * @var    PHPUnit_Framework_Test[]
-     * @access protected
      */
     protected $tests;
 
@@ -78,7 +76,6 @@ class PHPUnit_Util_TestSuiteIterator implements RecursiveIterator
      * Constructor.
      *
      * @param  PHPUnit_Framework_TestSuite $suite
-     * @access public
      */
     public function __construct(PHPUnit_Framework_TestSuite $testSuite)
     {
@@ -88,7 +85,6 @@ class PHPUnit_Util_TestSuiteIterator implements RecursiveIterator
     /**
      * Rewinds the Iterator to the first element.
      *
-     * @access public
      */
     public function rewind()
     {
@@ -99,7 +95,6 @@ class PHPUnit_Util_TestSuiteIterator implements RecursiveIterator
      * Checks if there is a current element after calls to rewind() or next().
      *
      * @return boolean
-     * @access public
      */
     public function valid()
     {
@@ -110,7 +105,6 @@ class PHPUnit_Util_TestSuiteIterator implements RecursiveIterator
      * Returns the key of the current element.
      *
      * @return integer
-     * @access public
      */
     public function key()
     {
@@ -121,7 +115,6 @@ class PHPUnit_Util_TestSuiteIterator implements RecursiveIterator
      * Returns the current element.
      *
      * @return PHPUnit_Framework_Test
-     * @access public
      */
     public function current()
     {
@@ -131,7 +124,6 @@ class PHPUnit_Util_TestSuiteIterator implements RecursiveIterator
     /**
      * Moves forward to next element.
      *
-     * @access public
      */
     public function next()
     {
@@ -142,7 +134,6 @@ class PHPUnit_Util_TestSuiteIterator implements RecursiveIterator
      * Returns the sub iterator for the current element.
      *
      * @return PHPUnit_Util_TestSuiteIterator
-     * @access public
      */
     public function getChildren()
     {
@@ -153,7 +144,6 @@ class PHPUnit_Util_TestSuiteIterator implements RecursiveIterator
      * Checks whether the current element has children.
      *
      * @return boolean
-     * @access public
      */
     public function hasChildren()
     {

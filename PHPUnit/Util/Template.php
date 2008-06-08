@@ -64,19 +64,16 @@ class PHPUnit_Util_Template
 {
     /**
      * @var    string
-     * @access protected
      */
     protected static $date = '';
 
     /**
      * @var    string
-     * @access protected
      */
     protected $template = '';
 
     /**
      * @var    array
-     * @access protected
      */
     protected $values = array();
 
@@ -85,7 +82,6 @@ class PHPUnit_Util_Template
      *
      * @param  string $file
      * @throws InvalidArgumentException
-     * @access public
      */
     public function __construct($file = '')
     {
@@ -97,7 +93,6 @@ class PHPUnit_Util_Template
      *
      * @param  string $file
      * @throws InvalidArgumentException
-     * @access public
      */
     public function setFile($file)
     {
@@ -115,7 +110,6 @@ class PHPUnit_Util_Template
      *
      * @param  array   $values
      * @param  boolean $merge
-     * @access public
      */
     public function setVar(array $values, $merge = TRUE)
     {
@@ -130,7 +124,6 @@ class PHPUnit_Util_Template
      * Renders the template and returns the result.
      *
      * @return string
-     * @access public
      */
     public function render()
     {
@@ -147,7 +140,6 @@ class PHPUnit_Util_Template
      * Renders the template and writes the result to a file.
      *
      * @param string $target
-     * @access public
      */
     public function renderTo($target)
     {
@@ -165,7 +157,6 @@ class PHPUnit_Util_Template
      * Returns the cached result of date('D M j G:i:s T Y').
      *
      * @return string
-     * @access public
      * @since  Method available since Release 3.0.1
      */
     public static function getDate()

@@ -90,7 +90,6 @@ class PHPUnit_Framework_Constraint_LessThan extends PHPUnit_Framework_Constraint
      * Returns a string representation of the constraint.
      *
      * @return string
-     * @access public
      */
     public function toString()
     {

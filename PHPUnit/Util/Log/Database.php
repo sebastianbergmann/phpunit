@@ -66,38 +66,31 @@ class PHPUnit_Util_Log_Database implements PHPUnit_Framework_TestListener
 {
     /**
      * @var    PHPUnit_Util_Log_Database
-     * @access protected
-     * @static
      */
     protected static $instance = NULL;
 
     /**
      * @var    integer
-     * @access protected
      */
     protected $currentTestId;
 
     /**
      * @var    integer
-     * @access protected
      */
     protected $runId;
 
     /**
      * @var    integer[]
-     * @access protected
      */
     protected $testSuites = array();
 
     /**
      * @var    boolean
-     * @access protected
      */
     protected $currentTestSuccess = TRUE;
 
     /**
      * @var    PDO
-     * @access protected
      */
     protected $dbh;
 
@@ -109,7 +102,6 @@ class PHPUnit_Util_Log_Database implements PHPUnit_Framework_TestListener
      * @param  string  $information
      * @throws PDOException
      * @throws RuntimeException
-     * @access protected
      */
     protected function __construct(PDO $dbh, $revision, $information = '')
     {
@@ -139,8 +131,6 @@ class PHPUnit_Util_Log_Database implements PHPUnit_Framework_TestListener
      * @throws InvalidArgumentException
      * @throws PDOException
      * @throws RuntimeException
-     * @access public
-     * @static
      */
     public static function getInstance(PDO $dbh = NULL, $revision = '', $information = '')
     {
@@ -171,7 +161,6 @@ class PHPUnit_Util_Log_Database implements PHPUnit_Framework_TestListener
      * Returns the ID of the current test.
      *
      * @return integer
-     * @access public
      */
     public function getCurrentTestId()
     {
@@ -182,7 +171,6 @@ class PHPUnit_Util_Log_Database implements PHPUnit_Framework_TestListener
      * Returns the ID of this test run.
      *
      * @return integer
-     * @access public
      */
     public function getRunId()
     {
@@ -195,7 +183,6 @@ class PHPUnit_Util_Log_Database implements PHPUnit_Framework_TestListener
      * @param  PHPUnit_Framework_Test $test
      * @param  Exception              $e
      * @param  float                  $time
-     * @access public
      */
     public function addError(PHPUnit_Framework_Test $test, Exception $e, $time)
     {
@@ -221,7 +208,6 @@ class PHPUnit_Util_Log_Database implements PHPUnit_Framework_TestListener
      * @param  PHPUnit_Framework_Test                 $test
      * @param  PHPUnit_Framework_AssertionFailedError $e
      * @param  float                                  $time
-     * @access public
      */
     public function addFailure(PHPUnit_Framework_Test $test, PHPUnit_Framework_AssertionFailedError $e, $time)
     {
@@ -247,7 +233,6 @@ class PHPUnit_Util_Log_Database implements PHPUnit_Framework_TestListener
      * @param  PHPUnit_Framework_Test $test
      * @param  Exception              $e
      * @param  float                  $time
-     * @access public
      */
     public function addIncompleteTest(PHPUnit_Framework_Test $test, Exception $e, $time)
     {
@@ -269,7 +254,6 @@ class PHPUnit_Util_Log_Database implements PHPUnit_Framework_TestListener
      * @param  PHPUnit_Framework_Test $test
      * @param  Exception              $e
      * @param  float                  $time
-     * @access public
      */
     public function addSkippedTest(PHPUnit_Framework_Test $test, Exception $e, $time)
     {
@@ -289,7 +273,6 @@ class PHPUnit_Util_Log_Database implements PHPUnit_Framework_TestListener
      * A test suite started.
      *
      * @param  PHPUnit_Framework_TestSuite $suite
-     * @access public
      */
     public function startTestSuite(PHPUnit_Framework_TestSuite $suite)
     {
@@ -309,7 +292,6 @@ class PHPUnit_Util_Log_Database implements PHPUnit_Framework_TestListener
      * A test suite ended.
      *
      * @param  PHPUnit_Framework_TestSuite $suite
-     * @access public
      */
     public function endTestSuite(PHPUnit_Framework_TestSuite $suite)
     {
@@ -331,7 +313,6 @@ class PHPUnit_Util_Log_Database implements PHPUnit_Framework_TestListener
      * A test started.
      *
      * @param  PHPUnit_Framework_Test $test
-     * @access public
      */
     public function startTest(PHPUnit_Framework_Test $test)
     {
@@ -344,7 +325,6 @@ class PHPUnit_Util_Log_Database implements PHPUnit_Framework_TestListener
      *
      * @param  PHPUnit_Framework_Test $test
      * @param  float                  $time
-     * @access public
      */
     public function endTest(PHPUnit_Framework_Test $test, $time)
     {
@@ -363,7 +343,6 @@ class PHPUnit_Util_Log_Database implements PHPUnit_Framework_TestListener
      * @param  string $name
      * @return integer
      * @throws PDOException
-     * @access protected
      */
     protected function insertRootNode($name)
     {
@@ -401,7 +380,6 @@ class PHPUnit_Util_Log_Database implements PHPUnit_Framework_TestListener
      *
      * @param  PHPUnit_Framework_Test $test
      * @throws PDOException
-     * @access protected
      */
     protected function insertNode(PHPUnit_Framework_Test $test)
     {
@@ -481,7 +459,6 @@ class PHPUnit_Util_Log_Database implements PHPUnit_Framework_TestListener
      * @param  float   $time
      * @param  string  $message
      * @throws PDOException
-     * @access protected
      */
     protected function storeResult($result = PHPUnit_Runner_BaseTestRunner::STATUS_PASSED, $time = 0, $message = '')
     {
@@ -504,7 +481,6 @@ class PHPUnit_Util_Log_Database implements PHPUnit_Framework_TestListener
      * @param  float   $time
      * @param  integer $result
      * @throws PDOException
-     * @access protected
      */
     protected function updateParents($time, $result = NULL)
     {

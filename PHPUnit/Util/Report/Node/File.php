@@ -67,79 +67,66 @@ class PHPUnit_Util_Report_Node_File extends PHPUnit_Util_Report_Node
 {
     /**
      * @var    array
-     * @access protected
      */
     protected $codeLines;
 
     /**
      * @var    array
-     * @access protected
      */
     protected $codeLinesFillup = array();
 
     /**
      * @var    array
-     * @access protected
      */
     protected $executedLines;
 
     /**
      * @var    boolean
-     * @access protected
      */
     protected $yui = TRUE;
 
     /**
      * @var    boolean
-     * @access protected
      */
     protected $highlight = FALSE;
 
     /**
      * @var    integer
-     * @access protected
      */
     protected $numExecutableLines = 0;
 
     /**
      * @var    integer
-     * @access protected
      */
     protected $numExecutedLines = 0;
 
     /**
      * @var    array
-     * @access protected
      */
     protected $classes = array();
 
     /**
      * @var    integer
-     * @access protected
      */
     protected $numClasses = 0;
 
     /**
      * @var    integer
-     * @access protected
      */
     protected $numCalledClasses = 0;
 
     /**
      * @var    integer
-     * @access protected
      */
     protected $numMethods = 0;
 
     /**
      * @var    integer
-     * @access protected
      */
     protected $numCalledMethods = 0;
 
     /**
      * @var    string
-     * @access protected
      */
     protected $yuiPanelJS = '';
 
@@ -152,7 +139,6 @@ class PHPUnit_Util_Report_Node_File extends PHPUnit_Util_Report_Node
      * @param  boolean                  $yui
      * @param  boolean                  $highlight
      * @throws RuntimeException
-     * @access public
      */
     public function __construct($name, PHPUnit_Util_Report_Node $parent = NULL, array $executedLines, $yui = TRUE, $highlight = FALSE)
     {
@@ -176,7 +162,6 @@ class PHPUnit_Util_Report_Node_File extends PHPUnit_Util_Report_Node
      * Returns the classes of this node.
      *
      * @return array
-     * @access public
      */
     public function getClasses()
     {
@@ -187,7 +172,6 @@ class PHPUnit_Util_Report_Node_File extends PHPUnit_Util_Report_Node
      * Returns the number of executable lines.
      *
      * @return integer
-     * @access public
      */
     public function getNumExecutableLines()
     {
@@ -198,7 +182,6 @@ class PHPUnit_Util_Report_Node_File extends PHPUnit_Util_Report_Node
      * Returns the number of executed lines.
      *
      * @return integer
-     * @access public
      */
     public function getNumExecutedLines()
     {
@@ -209,7 +192,6 @@ class PHPUnit_Util_Report_Node_File extends PHPUnit_Util_Report_Node
      * Returns the number of classes.
      *
      * @return integer
-     * @access public
      */
     public function getNumClasses()
     {
@@ -221,7 +203,6 @@ class PHPUnit_Util_Report_Node_File extends PHPUnit_Util_Report_Node
      * has been called at least once.
      *
      * @return integer
-     * @access public
      */
     public function getNumCalledClasses()
     {
@@ -232,7 +213,6 @@ class PHPUnit_Util_Report_Node_File extends PHPUnit_Util_Report_Node
      * Returns the number of methods.
      *
      * @return integer
-     * @access public
      */
     public function getNumMethods()
     {
@@ -243,7 +223,6 @@ class PHPUnit_Util_Report_Node_File extends PHPUnit_Util_Report_Node
      * Returns the number of methods that has been called at least once.
      *
      * @return integer
-     * @access public
      */
     public function getNumCalledMethods()
     {
@@ -258,7 +237,6 @@ class PHPUnit_Util_Report_Node_File extends PHPUnit_Util_Report_Node
      * @param string  $charset
      * @param integer $lowUpperBound
      * @param integer $highLowerBound
-     * @access public
      */
     public function render($target, $title, $charset = 'ISO-8859-1', $lowUpperBound = 35, $highLowerBound = 70)
     {
@@ -513,7 +491,6 @@ class PHPUnit_Util_Report_Node_File extends PHPUnit_Util_Report_Node
     /**
      * Calculates coverage statistics for the file.
      *
-     * @access protected
      */
     protected function calculateStatistics()
     {
@@ -664,7 +641,6 @@ class PHPUnit_Util_Report_Node_File extends PHPUnit_Util_Report_Node
      * @author Sebastian Bergmann <sb@sebastian-bergmann.de>
      * @param  string  $file
      * @return array
-     * @access protected
      */
     protected function loadFile($file)
     {

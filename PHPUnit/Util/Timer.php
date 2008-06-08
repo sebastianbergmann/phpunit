@@ -67,8 +67,6 @@ class PHPUnit_Util_Timer
     /**
      * Starts the timer.
      *
-     * @access public
-     * @static
      */
     public static function start()
     {
@@ -79,8 +77,6 @@ class PHPUnit_Util_Timer
      * Returns the currently elapsed time.
      *
      * @return float
-     * @access public
-     * @static
      */
     public static function current()
     {
@@ -90,8 +86,6 @@ class PHPUnit_Util_Timer
     /**
      * Stops the timer and returns the elapsed time.
      *
-     * @access public
-     * @static
      */
     public static function stop()
     {
@@ -103,8 +97,6 @@ class PHPUnit_Util_Timer
      *
      * @param  float $time
      * @return float
-     * @access public
-     * @static
      */
     public static function secondsToTimeString($time)
     {

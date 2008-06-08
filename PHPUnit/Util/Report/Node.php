@@ -67,19 +67,16 @@ abstract class PHPUnit_Util_Report_Node
 {
     /**
      * @var    array
-     * @access protected
      */
     protected $cache = array();
 
     /**
      * @var    string
-     * @access protected
      */
     protected $name;
 
     /**
      * @var    PHPUnit_Util_Report_Node
-     * @access protected
      */
     protected $parent;
 
@@ -88,7 +85,6 @@ abstract class PHPUnit_Util_Report_Node
      *
      * @param  string                   $name
      * @param  PHPUnit_Util_Report_Node $parent
-     * @access public
      */
     public function __construct($name, PHPUnit_Util_Report_Node $parent = NULL)
     {
@@ -101,7 +97,6 @@ abstract class PHPUnit_Util_Report_Node
      * has been called at least once..
      *
      * @return integer
-     * @access public
      */
     public function getCalledClassesPercent()
     {
@@ -115,7 +110,6 @@ abstract class PHPUnit_Util_Report_Node
      * Returns the percentage of methods that has been called at least once.
      *
      * @return integer
-     * @access public
      */
     public function getCalledMethodsPercent()
     {
@@ -129,7 +123,6 @@ abstract class PHPUnit_Util_Report_Node
      * Returns the percentage of executed lines.
      *
      * @return integer
-     * @access public
      */
     public function getLineExecutedPercent()
     {
@@ -143,7 +136,6 @@ abstract class PHPUnit_Util_Report_Node
      * Returns this node's ID.
      *
      * @return string
-     * @access public
      */
     public function getId()
     {
@@ -169,7 +161,6 @@ abstract class PHPUnit_Util_Report_Node
      *
      * @param  boolean $includeParent
      * @return string
-     * @access public
      */
     public function getName($includeParent = FALSE, $includeCommonPath = FALSE)
     {
@@ -194,7 +185,6 @@ abstract class PHPUnit_Util_Report_Node
      *
      * @param  boolean $full
      * @return string
-     * @access public
      */
     public function getLink($full)
     {
@@ -232,7 +222,6 @@ abstract class PHPUnit_Util_Report_Node
      * Returns this node's path.
      *
      * @return string
-     * @access public
      */
     public function getPath()
     {
@@ -266,7 +255,6 @@ abstract class PHPUnit_Util_Report_Node
      * @param  integer $a
      * @param  integer $b
      * @return float   ($a / $b) * 100
-     * @access protected
      */
     protected function calculatePercent($a, $b)
     {
@@ -391,7 +379,6 @@ abstract class PHPUnit_Util_Report_Node
      * @param  PHPUnit_Util_Template $template
      * @param  string                $title
      * @param  string                $charset
-     * @access public
      */
     protected function setTemplateVars(PHPUnit_Util_Template $template, $title, $charset)
     {
@@ -414,8 +401,6 @@ abstract class PHPUnit_Util_Report_Node
      * Returns the classes of this node.
      *
      * @return array
-     * @access public
-     * @abstract
      */
     abstract public function getClasses();
 
@@ -423,8 +408,6 @@ abstract class PHPUnit_Util_Report_Node
      * Returns the number of executable lines.
      *
      * @return integer
-     * @access public
-     * @abstract
      */
     abstract public function getNumExecutableLines();
 
@@ -432,8 +415,6 @@ abstract class PHPUnit_Util_Report_Node
      * Returns the number of executed lines.
      *
      * @return integer
-     * @access public
-     * @abstract
      */
     abstract public function getNumExecutedLines();
 
@@ -441,8 +422,6 @@ abstract class PHPUnit_Util_Report_Node
      * Returns the number of classes.
      *
      * @return integer
-     * @access public
-     * @abstract
      */
     abstract public function getNumClasses();
 
@@ -451,8 +430,6 @@ abstract class PHPUnit_Util_Report_Node
      * has been called at least once.
      *
      * @return integer
-     * @access public
-     * @abstract
      */
     abstract public function getNumCalledClasses();
 
@@ -460,8 +437,6 @@ abstract class PHPUnit_Util_Report_Node
      * Returns the number of methods.
      *
      * @return integer
-     * @access public
-     * @abstract
      */
     abstract public function getNumMethods();
 
@@ -469,8 +444,6 @@ abstract class PHPUnit_Util_Report_Node
      * Returns the number of methods that has been called at least once.
      *
      * @return integer
-     * @access public
-     * @abstract
      */
     abstract public function getNumCalledMethods();
 
@@ -482,8 +455,6 @@ abstract class PHPUnit_Util_Report_Node
      * @param string  $charset
      * @param integer $lowUpperBound
      * @param integer $highLowerBound
-     * @access public
-     * @abstract
      */
     abstract public function render($target, $title, $charset = 'ISO-8859-1', $lowUpperBound = 35, $highLowerBound = 70);
 }

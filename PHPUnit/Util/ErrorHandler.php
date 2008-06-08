@@ -69,8 +69,6 @@ class PHPUnit_Util_ErrorHandler
      * Returns the error stack.
      *
      * @return array
-     * @access public
-     * @static
      */
     public static function getErrorStack()
     {
@@ -83,8 +81,6 @@ class PHPUnit_Util_ErrorHandler
      * @param  string  $errfile
      * @param  integer $errline
      * @throws PHPUnit_Framework_Error
-     * @access public
-     * @static
      */
     public static function handleError($errno, $errstr, $errfile, $errline)
     {

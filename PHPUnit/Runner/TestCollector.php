@@ -65,7 +65,6 @@ interface PHPUnit_Runner_TestCollector
 {
     /**
      * @return array
-     * @access public
      */
     public function collectTests();
 }

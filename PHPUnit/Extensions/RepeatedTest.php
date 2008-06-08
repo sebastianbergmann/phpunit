@@ -66,25 +66,21 @@ class PHPUnit_Extensions_RepeatedTest extends PHPUnit_Extensions_TestDecorator
 {
     /**
      * @var    mixed
-     * @access protected
      */
     protected $filter = FALSE;
 
     /**
      * @var    array
-     * @access protected
      */
     protected $groups = array();
 
     /**
      * @var    array
-     * @access protected
      */
     protected $excludeGroups = array();
 
     /**
      * @var    integer
-     * @access protected
      */
     protected $timesRepeat = 1;
 
@@ -97,7 +93,6 @@ class PHPUnit_Extensions_RepeatedTest extends PHPUnit_Extensions_TestDecorator
      * @param  array                  $groups
      * @param  array                  $excludeGroups
      * @throws InvalidArgumentException
-     * @access public
      */
     public function __construct(PHPUnit_Framework_Test $test, $timesRepeat = 1, $filter = FALSE, array $groups = array(), array $excludeGroups = array())
     {
@@ -122,7 +117,6 @@ class PHPUnit_Extensions_RepeatedTest extends PHPUnit_Extensions_TestDecorator
      * will be run by this test.
      *
      * @return integer
-     * @access public
      */
     public function count()
     {
@@ -136,7 +130,6 @@ class PHPUnit_Extensions_RepeatedTest extends PHPUnit_Extensions_TestDecorator
      * @param  PHPUnit_Framework_TestResult $result
      * @return PHPUnit_Framework_TestResult
      * @throws InvalidArgumentException
-     * @access public
      */
     public function run(PHPUnit_Framework_TestResult $result = NULL)
     {

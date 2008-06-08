@@ -67,13 +67,11 @@ abstract class PHPUnit_Extensions_Story_Step
 {
     /**
      * @var    string
-     * @access protected
      */
     protected $action;
 
     /**
      * @var    array
-     * @access protected
      */
     protected $arguments;
 
@@ -81,7 +79,6 @@ abstract class PHPUnit_Extensions_Story_Step
      * Constructor.
      *
      * @param  array $arguments
-     * @access public
      */
     public function __construct(array $arguments)
     {
@@ -93,7 +90,6 @@ abstract class PHPUnit_Extensions_Story_Step
      * Returns this step's action.
      *
      * @return string
-     * @access public
      */
     public function getAction()
     {
@@ -104,7 +100,6 @@ abstract class PHPUnit_Extensions_Story_Step
      * Returns this step's arguments.
      *
      * @return array
-     * @access public
      */
     public function getArguments()
     {
@@ -115,8 +110,6 @@ abstract class PHPUnit_Extensions_Story_Step
      * Returns this step's name.
      *
      * @return string
-     * @access public
-     * @abstract
      */
     abstract public function getName();
 }

@@ -71,8 +71,6 @@ abstract class PHPUnit_Util_CodeCoverage
      *
      * @param  array $data
      * @return array
-     * @access public
-     * @static
      */
     public static function getCoveredFiles(array &$data)
     {
@@ -99,8 +97,6 @@ abstract class PHPUnit_Util_CodeCoverage
      * @param  string  $line
      * @param  boolean $clear
      * @return array
-     * @access public
-     * @static
      */
     public static function getCoveringTests(array &$data, $file, $line, $clear = FALSE)
     {
@@ -143,8 +139,6 @@ abstract class PHPUnit_Util_CodeCoverage
      * @param  array $data
      * @param  boolean $clear
      * @return array
-     * @access public
-     * @static
      */
     public static function getSummary(array &$data, $clear = FALSE)
     {
@@ -223,8 +217,6 @@ abstract class PHPUnit_Util_CodeCoverage
      * @param  integer $startLine
      * @param  integer $endLine
      * @return array
-     * @access public
-     * @static
      * @since  Method available since Release 3.2.0
      */
     public static function getStatistics(array &$data, $filename, $startLine = 1, $endLine = FALSE)
@@ -267,8 +259,6 @@ abstract class PHPUnit_Util_CodeCoverage
     /**
      * @param  string $file
      * @return boolean
-     * @access protected
-     * @static
      */
     protected static function isFile($file)
     {
@@ -282,8 +272,6 @@ abstract class PHPUnit_Util_CodeCoverage
     /**
      *
      *
-     * @access public
-     * @static
      * @since  Method available since Release 3.3.0
      */
     public static function clearSummary()
@@ -297,8 +285,6 @@ abstract class PHPUnit_Util_CodeCoverage
      * @param  array $data
      * @param  array $requiredStatus
      * @return array
-     * @access public
-     * @static
      * @since  Method available since Release 3.3.0
      */
     public static function codeCoverageToBitString(array $data, array $requiredStatus)
@@ -337,8 +323,6 @@ abstract class PHPUnit_Util_CodeCoverage
     /**
      *
      *
-     * @access public
-     * @static
      * @since  Method available since Release 3.3.0
      */
     public static function bitStringToCodeCoverage($strings, $status)

@@ -69,7 +69,6 @@ class PHPUnit_Framework_AssertionFailedError extends Exception implements PHPUni
      * Returns the location where this failure occured.
      *
      * @return array
-     * @access public
      * @since  Method available since Release 3.0.0
      */
     public function getLocation()
@@ -92,7 +91,6 @@ class PHPUnit_Framework_AssertionFailedError extends Exception implements PHPUni
      * Wrapper for getMessage() which is declared as final.
      *
      * @return string
-     * @access public
      */
     public function toString()
     {

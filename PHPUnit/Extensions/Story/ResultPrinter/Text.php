@@ -70,7 +70,6 @@ class PHPUnit_Extensions_Story_ResultPrinter_Text extends PHPUnit_Extensions_Sto
      * Handler for 'start class' event.
      *
      * @param  string $name
-     * @access protected
      */
     protected function startClass($name)
     {
@@ -83,7 +82,6 @@ class PHPUnit_Extensions_Story_ResultPrinter_Text extends PHPUnit_Extensions_Sto
      * @param  string  $name
      * @param  boolean $success
      * @param  array   $steps
-     * @access protected
      */
     protected function onTest($name, $success = TRUE, array $steps = array())
     {
@@ -128,7 +126,6 @@ class PHPUnit_Extensions_Story_ResultPrinter_Text extends PHPUnit_Extensions_Sto
     /**
      * Handler for 'end run' event.
      *
-     * @access protected
      */
     protected function endRun()
     {

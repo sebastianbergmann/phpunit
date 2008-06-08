@@ -70,50 +70,41 @@ abstract class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_Tes
 {
     /**
      * @var    array
-     * @access public
-     * @static
      */
     public static $browsers = array();
 
     /**
      * @var    boolean
-     * @access protected
      */
     protected $autoStop = TRUE;
 
     /**
      * @var    string
-     * @access protected
      */
     protected $browserName;
 
     /**
      * @var    boolean
-     * @access protected
      */
     protected $collectCodeCoverageInformation = FALSE;
 
     /**
      * @var    string
-     * @access protected
      */
     protected $coverageScriptUrl = '';
 
     /**
      * @var    PHPUnit_Extensions_SeleniumTestCase_Driver[]
-     * @access protected
      */
     protected $drivers = array();
 
     /**
      * @var    boolean
-     * @access protected
      */
     protected $inDefaultAssertions = FALSE;
 
     /**
      * @var    string
-     * @access protected
      */
     protected $testId;
 
@@ -122,7 +113,6 @@ abstract class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_Tes
      * @param  array  $data
      * @param  array  $browser
      * @throws InvalidArgumentException
-     * @access public
      */
     public function __construct($name = NULL, array $data = array(), array $browser = array())
     {
@@ -133,7 +123,6 @@ abstract class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_Tes
     /**
      * @param  string $className
      * @return PHPUnit_Framework_TestSuite
-     * @access public
      */
     public static function suite($className)
     {
@@ -266,7 +255,6 @@ abstract class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_Tes
      * @param  PHPUnit_Framework_TestResult $result
      * @return PHPUnit_Framework_TestResult
      * @throws InvalidArgumentException
-     * @access public
      */
     public function run(PHPUnit_Framework_TestResult $result = NULL)
     {
@@ -296,7 +284,6 @@ abstract class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_Tes
     /**
      * @param  array $browser
      * @return PHPUnit_Extensions_SeleniumTestCase_Driver
-     * @access protected
      * @since  Method available since Release 3.3.0
      */
     protected function getDriver(array $browser)
@@ -355,7 +342,6 @@ abstract class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_Tes
     }
 
     /**
-     * @access protected
      */
     protected function runTest()
     {
@@ -382,7 +368,6 @@ abstract class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_Tes
      * parent::tearDown(). Otherwise the Selenium RC session will not be
      * closed upon test failure.
      *
-     * @access protected
      */
     protected function tearDown()
     {
@@ -400,7 +385,6 @@ abstract class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_Tes
      * Returns a string representation of the test case.
      *
      * @return string
-     * @access public
      */
     public function toString()
     {
@@ -416,7 +400,6 @@ abstract class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_Tes
     /**
      * @param  boolean $autoStop
      * @throws InvalidArgumentException
-     * @access public
      */
     public function setAutoStop($autoStop)
     {
@@ -431,7 +414,6 @@ abstract class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_Tes
      * Runs a test from a Selenese (HTML) specification.
      *
      * @param string $filename
-     * @access public
      */
     public function runSelenese($filename)
     {
@@ -468,7 +450,6 @@ abstract class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_Tes
      * @param  string $command
      * @param  array  $arguments
      * @return mixed
-     * @access public
      * @method unknown  addLocationStrategy()
      * @method unknown  addSelection()
      * @method unknown  addSelectionAndWait()
@@ -639,7 +620,6 @@ abstract class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_Tes
      * Asserts that an alert is present.
      *
      * @param  string $message
-     * @access public
      */
     public function assertAlertPresent($message = 'No alert present.')
     {
@@ -650,7 +630,6 @@ abstract class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_Tes
      * Asserts that no alert is present.
      *
      * @param  string $message
-     * @access public
      */
     public function assertNoAlertPresent($message = 'Alert present.')
     {
@@ -662,7 +641,6 @@ abstract class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_Tes
      *
      * @param  string $locator
      * @param  string $message
-     * @access public
      */
     public function assertChecked($locator, $message = '')
     {
@@ -681,7 +659,6 @@ abstract class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_Tes
      *
      * @param  string $locator
      * @param  string $message
-     * @access public
      */
     public function assertNotChecked($locator, $message = '')
     {
@@ -699,7 +676,6 @@ abstract class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_Tes
      * Assert that a confirmation is present.
      *
      * @param  string $message
-     * @access public
      */
     public function assertConfirmationPresent($message = 'No confirmation present.')
     {
@@ -710,7 +686,6 @@ abstract class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_Tes
      * Assert that no confirmation is present.
      *
      * @param  string $message
-     * @access public
      */
     public function assertNoConfirmationPresent($message = 'Confirmation present.')
     {
@@ -722,7 +697,6 @@ abstract class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_Tes
      *
      * @param  string $locator
      * @param  string $message
-     * @access public
      */
     public function assertEditable($locator, $message = '')
     {
@@ -741,7 +715,6 @@ abstract class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_Tes
      *
      * @param  string $locator
      * @param  string $message
-     * @access public
      */
     public function assertNotEditable($locator, $message = '')
     {
@@ -761,7 +734,6 @@ abstract class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_Tes
      * @param  string $locator
      * @param  string $text
      * @param  string $message
-     * @access public
      */
     public function assertElementValueEquals($locator, $text, $message = '')
     {
@@ -774,7 +746,6 @@ abstract class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_Tes
      * @param  string $locator
      * @param  string $text
      * @param  string $message
-     * @access public
      */
     public function assertElementValueNotEquals($locator, $text, $message = '')
     {
@@ -787,7 +758,6 @@ abstract class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_Tes
      * @param  string $locator
      * @param  string $text
      * @param  string $message
-     * @access public
      */
     public function assertElementContainsText($locator, $text, $message = '')
     {
@@ -800,7 +770,6 @@ abstract class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_Tes
      * @param  string $locator
      * @param  string $text
      * @param  string $message
-     * @access public
      */
     public function assertElementNotContainsText($locator, $text, $message = '')
     {
@@ -812,7 +781,6 @@ abstract class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_Tes
      *
      * @param  string $locator
      * @param  string $message
-     * @access public
      */
     public function assertElementPresent($locator, $message = '')
     {
@@ -831,7 +799,6 @@ abstract class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_Tes
      *
      * @param  string $locator
      * @param  string $message
-     * @access public
      */
     public function assertElementNotPresent($locator, $message = '')
     {
@@ -850,7 +817,6 @@ abstract class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_Tes
      *
      * @param  string $location
      * @param  string $message
-     * @access public
      */
     public function assertLocationEquals($location, $message = '')
     {
@@ -862,7 +828,6 @@ abstract class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_Tes
      *
      * @param  string $location
      * @param  string $message
-     * @access public
      */
     public function assertLocationNotEquals($location, $message = '')
     {
@@ -873,7 +838,6 @@ abstract class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_Tes
      * Asserts than a prompt is present.
      *
      * @param  string $message
-     * @access public
      */
     public function assertPromptPresent($message = 'No prompt present.')
     {
@@ -884,7 +848,6 @@ abstract class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_Tes
      * Asserts than no prompt is present.
      *
      * @param  string $message
-     * @access public
      */
     public function assertNoPromptPresent($message = 'Prompt present.')
     {
@@ -897,7 +860,6 @@ abstract class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_Tes
      * @param  string $selectLocator
      * @param  string $option
      * @param  string $message
-     * @access public
      * @since  Method available since Release 3.2.0
      */
     public function assertSelectHasOption($selectLocator, $option, $message = '')
@@ -911,7 +873,6 @@ abstract class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_Tes
      * @param  string $selectLocator
      * @param  string $option
      * @param  string $message
-     * @access public
      * @since  Method available since Release 3.2.0
      */
     public function assertSelectNotHasOption($selectLocator, $option, $message = '')
@@ -925,7 +886,6 @@ abstract class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_Tes
      * @param  string $selectLocator
      * @param  string $value
      * @param  string $message
-     * @access public
      * @since  Method available since Release 3.2.0
      */
     public function assertSelected($selectLocator, $option, $message = '')
@@ -951,7 +911,6 @@ abstract class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_Tes
      * @param  string $selectLocator
      * @param  string $value
      * @param  string $message
-     * @access public
      * @since  Method available since Release 3.2.0
      */
     public function assertNotSelected($selectLocator, $option, $message = '')
@@ -977,7 +936,6 @@ abstract class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_Tes
      * @param  string $selectLocator
      * @param  string $value
      * @param  string $message
-     * @access public
      */
     public function assertIsSelected($selectLocator, $value, $message = '')
     {
@@ -1001,7 +959,6 @@ abstract class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_Tes
      * @param  string $selectLocator
      * @param  string $value
      * @param  string $message
-     * @access public
      */
     public function assertIsNotSelected($selectLocator, $value, $message = '')
     {
@@ -1025,7 +982,6 @@ abstract class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_Tes
      *
      * @param  string $selectLocator
      * @param  string $message
-     * @access public
      */
     public function assertSomethingSelected($selectLocator, $message = '')
     {
@@ -1044,7 +1000,6 @@ abstract class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_Tes
      *
      * @param  string $selectLocator
      * @param  string $message
-     * @access public
      */
     public function assertNothingSelected($selectLocator, $message = '')
     {
@@ -1063,7 +1018,6 @@ abstract class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_Tes
      *
      * @param  string $pattern
      * @param  string $message
-     * @access public
      */
     public function assertTextPresent($pattern, $message = '')
     {
@@ -1082,7 +1036,6 @@ abstract class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_Tes
      *
      * @param  string $pattern
      * @param  string $message
-     * @access public
      */
     public function assertTextNotPresent($pattern, $message = '')
     {
@@ -1101,7 +1054,6 @@ abstract class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_Tes
      *
      * @param  string $title
      * @param  string $message
-     * @access public
      */
     public function assertTitleEquals($title, $message = '')
     {
@@ -1113,7 +1065,6 @@ abstract class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_Tes
      *
      * @param  string $title
      * @param  string $message
-     * @access public
      */
     public function assertTitleNotEquals($title, $message = '')
     {
@@ -1125,7 +1076,6 @@ abstract class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_Tes
      *
      * @param  string $locator
      * @param  string $message
-     * @access public
      */
     public function assertVisible($locator, $message = '')
     {
@@ -1144,7 +1094,6 @@ abstract class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_Tes
      *
      * @param  string $locator
      * @param  string $message
-     * @access public
      */
     public function assertNotVisible($locator, $message = '')
     {
@@ -1162,7 +1111,6 @@ abstract class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_Tes
      * Template Method that is called after Selenium actions.
      *
      * @param  string $action
-     * @access protected
      * @since  Method available since Release 3.1.0
      */
     protected function defaultAssertions($action)
@@ -1171,7 +1119,6 @@ abstract class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_Tes
 
     /**
      * @return array
-     * @access protected
      * @since  Method available since Release 3.2.0
      */
     protected function getCodeCoverage()
@@ -1194,7 +1141,6 @@ abstract class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_Tes
     /**
      * @param  array $coverage
      * @return array
-     * @access protected
      * @author Mattis Stordalen Flister <mattis@xait.no>
      * @since  Method available since Release 3.2.9
      */
@@ -1223,7 +1169,6 @@ abstract class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_Tes
     /**
      * @param  string $path
      * @return string
-     * @access protected
      * @author Mattis Stordalen Flister <mattis@xait.no>
      * @since  Method available since Release 3.2.9
      */
@@ -1239,7 +1184,6 @@ abstract class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_Tes
     /**
      * @param  string $path
      * @return array
-     * @access protected
      * @author Mattis Stordalen Flister <mattis@xait.no>
      * @since  Method available since Release 3.2.9
      */
@@ -1250,7 +1194,6 @@ abstract class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_Tes
 
     /**
      * @param  string $action
-     * @access public
      * @since  Method available since Release 3.2.0
      */
     public function runDefaultAssertions($action)

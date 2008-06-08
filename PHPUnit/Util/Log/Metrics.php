@@ -69,7 +69,6 @@ class PHPUnit_Util_Log_Metrics extends PHPUnit_Util_Printer
 {
     /**
      * @param  PHPUnit_Framework_TestResult $result
-     * @access public
      */
     public function process(PHPUnit_Framework_TestResult $result)
     {
@@ -166,7 +165,6 @@ class PHPUnit_Util_Log_Metrics extends PHPUnit_Util_Printer
     /**
      * @param  PHPUnit_Util_Metrics_Function $metrics
      * @param  DOMElement                    $element
-     * @access protected
      */
     protected function processFunctionOrMethod($metrics, DOMElement $element)
     {

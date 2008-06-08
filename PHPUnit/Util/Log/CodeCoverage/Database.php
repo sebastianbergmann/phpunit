@@ -69,7 +69,6 @@ class PHPUnit_Util_Log_CodeCoverage_Database
 {
     /**
      * @var    PDO
-     * @access protected
      */
     protected $dbh;
 
@@ -78,7 +77,6 @@ class PHPUnit_Util_Log_CodeCoverage_Database
      *
      * @param  PDO $dbh
      * @throws PDOException
-     * @access public
      */
     public function __construct(PDO $dbh)
     {
@@ -92,7 +90,6 @@ class PHPUnit_Util_Log_CodeCoverage_Database
      * @param  integer                      $runId
      * @param  integer                      $revision
      * @param  string                       $commonPath
-     * @access public
      */
     public function storeCodeCoverage(PHPUnit_Framework_TestResult $result, $runId, $revision, $commonPath = '')
     {

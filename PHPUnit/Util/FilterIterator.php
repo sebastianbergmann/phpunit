@@ -65,14 +65,12 @@ class PHPUnit_Util_FilterIterator extends FilterIterator
 {
     /**
      * @var    string
-     * @access protected
      */
     protected $suffix;
 
     /**
      * @param  Iterator $iterator
      * @param  string   $suffix
-     * @access public
      */
     public function __construct(Iterator $iterator, $suffix = 'Test.php')
     {
@@ -82,7 +80,6 @@ class PHPUnit_Util_FilterIterator extends FilterIterator
 
     /**
      * @return boolean
-     * @access public
      */
     public function accept()
     {

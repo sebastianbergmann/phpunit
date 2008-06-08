@@ -67,25 +67,21 @@ abstract class PHPUnit_Util_Printer
      * If TRUE, flush output after every write.
      *
      * @var boolean
-     * @access protected
      */
     protected $autoFlush = FALSE;
 
     /**
      * @var    resource
-     * @access protected
      */
     protected $out;
 
     /**
      * @var    string
-     * @access protected
      */
     protected $outTarget;
 
     /**
      * @var    boolean
-     * @access protected
      */
     protected $printsHTML = FALSE;
 
@@ -94,7 +90,6 @@ abstract class PHPUnit_Util_Printer
      *
      * @param  mixed $out
      * @throws InvalidArgumentException
-     * @access public
      */
     public function __construct($out = NULL)
     {
@@ -122,7 +117,6 @@ abstract class PHPUnit_Util_Printer
     /**
      * Flush buffer, optionally tidy up HTML, and close output.
      *
-     * @access public
      */
     public function flush()
     {
@@ -157,7 +151,6 @@ abstract class PHPUnit_Util_Printer
 
     /**
      * @param  string $buffer
-     * @access public
      */
     public function write($buffer)
     {
@@ -198,7 +191,6 @@ abstract class PHPUnit_Util_Printer
      * not be confused with the different effects of this class' flush() method.
      *
      * @param boolean $autoFlush
-     * @access public
      * @since  Method available since Release 3.3.0
      */
     public function setAutoFlush($autoFlush)
