@@ -128,7 +128,7 @@ class Extensions_Database_DataSet_XmlDataSetsTest extends PHPUnit_Framework_Test
     public function testFlatXmlDataSet()
     {
         $constraint = new PHPUnit_Extensions_Database_Constraint_DataSetIsEqual($this->expectedDataSet);
-        $xmlFlatDataSet = new PHPUnit_Extensions_Database_DataSet_FlatXmlDataSet(__DIR__.'/../_files/XmlDataSets/FlatXmlDataSet.xml');
+        $xmlFlatDataSet = new PHPUnit_Extensions_Database_DataSet_FlatXmlDataSet(dirname(__FILE__).'/../_files/XmlDataSets/FlatXmlDataSet.xml');
 
         self::assertThat($xmlFlatDataSet, $constraint);
     }
@@ -136,7 +136,7 @@ class Extensions_Database_DataSet_XmlDataSetsTest extends PHPUnit_Framework_Test
     public function testXmlDataSet()
     {
         $constraint = new PHPUnit_Extensions_Database_Constraint_DataSetIsEqual($this->expectedDataSet);
-        $xmlDataSet = new PHPUnit_Extensions_Database_DataSet_XmlDataSet(__DIR__.'/../_files/XmlDataSets/XmlDataSet.xml');
+        $xmlDataSet = new PHPUnit_Extensions_Database_DataSet_XmlDataSet(dirname(__FILE__).'/../_files/XmlDataSets/XmlDataSet.xml');
 
         self::assertThat($xmlDataSet, $constraint);
     }
