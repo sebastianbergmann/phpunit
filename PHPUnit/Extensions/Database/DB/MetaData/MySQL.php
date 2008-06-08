@@ -64,6 +64,6 @@ PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
  */
 class PHPUnit_Extensions_Database_DB_MetaData_MySQL extends PHPUnit_Extensions_Database_DB_MetaData_InformationSchema
 {
-	protected $schemaObjectQuoteChar = '`';
+    protected $schemaObjectQuoteChar = '`';
 }
 ?>

@@ -91,7 +91,7 @@ class PHPUnit_Extensions_Database_Operation_Factory
      * @param bool $cascadeTruncates Set to true to force truncates to cascade on databases that support this.
      * @return PHPUnit_Extensions_Database_Operation_IDatabaseOperation
      */
-    public static function CLEAN_INSERT($cascadeTruncates = false)
+    public static function CLEAN_INSERT($cascadeTruncates = FALSE)
     {
         return new PHPUnit_Extensions_Database_Operation_Composite(array(
             self::TRUNCATE($cascadeTruncates),
@@ -115,7 +115,7 @@ class PHPUnit_Extensions_Database_Operation_Factory
      * @param bool $cascadeTruncates Set to true to force truncates to cascade on databases that support this.
      * @return PHPUnit_Extensions_Database_Operation_IDatabaseOperation
      */
-    public static function TRUNCATE($cascadeTruncates = false)
+    public static function TRUNCATE($cascadeTruncates = FALSE)
     {
         $truncate = new PHPUnit_Extensions_Database_Operation_Truncate();
         $truncate->setCascade($cascadeTruncates);

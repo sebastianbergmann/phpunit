@@ -73,7 +73,8 @@ class PHPUnit_Util_Filesystem
      * @author Mattis Stordalen Flister <mattis@xait.no>
      * @since  Method available since Release 3.2.9
      */
-    public static function fileExistsInIncludePath($file) {
+    public static function fileExistsInIncludePath($file)
+    {
         if (file_exists($file)) {
             return realpath($file);
         }

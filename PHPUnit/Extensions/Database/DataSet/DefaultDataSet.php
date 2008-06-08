@@ -101,7 +101,7 @@ class PHPUnit_Extensions_Database_DataSet_DefaultDataSet extends PHPUnit_Extensi
      * @param bool $reverse
      * @return PHPUnit_Extensions_Database_DataSet_ITableIterator
      */
-    protected function createIterator($reverse = false)
+    protected function createIterator($reverse = FALSE)
     {
         return new PHPUnit_Extensions_Database_DataSet_DefaultTableIterator($this->tables, $reverse);
     }

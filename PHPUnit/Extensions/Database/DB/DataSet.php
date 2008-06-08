@@ -125,7 +125,7 @@ class PHPUnit_Extensions_Database_DB_DataSet extends PHPUnit_Extensions_Database
      * @param bool $reverse
      * @return PHPUnit_Extensions_Database_DB_TableIterator
      */
-    protected function createIterator($reverse = false)
+    protected function createIterator($reverse = FALSE)
     {
         return new PHPUnit_Extensions_Database_DB_TableIterator($this->getTableNames(), $this, $reverse);
     }

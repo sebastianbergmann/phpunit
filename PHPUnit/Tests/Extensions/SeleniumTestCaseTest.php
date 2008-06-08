@@ -155,7 +155,7 @@ class Extensions_SeleniumTestCaseTest extends PHPUnit_Extensions_SeleniumTestCas
         $this->click('tobeedited');
         $this->click("//input[@class='editor_ok_button']");
         $this->assertVisible('tobeedited');
-#       $this->waitForText('tobeedited', 'Server received: To be edited');
+        //$this->waitForText('tobeedited', 'Server received: To be edited');
         // Workaround for not yet implemented waitForText
         sleep(1);
         $this->assertElementContainsText('tobeedited', 'Server received: To be edited');
