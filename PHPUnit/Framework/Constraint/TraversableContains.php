@@ -94,7 +94,6 @@ class PHPUnit_Framework_Constraint_TraversableContains extends PHPUnit_Framework
      * Returns a string representation of the constraint.
      *
      * @return string
-     * @access public
      */
     public function toString()
     {

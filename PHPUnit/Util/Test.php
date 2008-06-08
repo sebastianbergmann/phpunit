@@ -66,8 +66,6 @@ class PHPUnit_Util_Test
      * @param  PHPUnit_Framework_Test $test
      * @param  boolean                $asString
      * @return mixed
-     * @access public
-     * @static
      */
     public static function describe(PHPUnit_Framework_Test $test, $asString = TRUE)
     {
@@ -98,8 +96,6 @@ class PHPUnit_Util_Test
      * @param  PHPUnit_Framework_Test       $test
      * @param  PHPUnit_Framework_TestResult $result
      * @return mixed
-     * @access public
-     * @static
      */
     public static function lookupResult(PHPUnit_Framework_Test $test, PHPUnit_Framework_TestResult $result)
     {
@@ -138,8 +134,6 @@ class PHPUnit_Util_Test
      * @param  string $className
      * @param  string $methodName
      * @return array
-     * @access public
-     * @static
      * @since  Method available since Release 3.2.0
      */
     public static function getLinesToBeCovered($className, $methodName)
@@ -188,8 +182,6 @@ class PHPUnit_Util_Test
      * @param  Reflector $reflector
      * @param  array     $groups
      * @return array
-     * @access public
-     * @static
      * @since  Method available since Release 3.2.0
      */
     public static function getGroups(Reflector $reflector, array $groups = array())
@@ -209,8 +201,6 @@ class PHPUnit_Util_Test
      * @param  string $className
      * @param  string $methodName
      * @return array
-     * @access public
-     * @static
      * @since  Method available since Release 3.2.0
      */
     public static function getProvidedData($className, $methodName)
@@ -257,8 +247,6 @@ class PHPUnit_Util_Test
      * @param  string  $method
      * @param  boolean $extended
      * @return array
-     * @access private
-     * @static
      * @since  Method available since Release 3.3.0
      */
     private static function resolveCoversToReflectionObjects($method, $extended)

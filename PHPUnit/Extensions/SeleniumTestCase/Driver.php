@@ -64,79 +64,66 @@ class PHPUnit_Extensions_SeleniumTestCase_Driver
 {
     /**
      * @var    PHPUnit_Extensions_SeleniumTestCase
-     * @access protected
      */
     protected $testCase;
 
     /**
      * @var    string
-     * @access protected
      */
     protected $name;
 
     /**
      * @var    string
-     * @access protected
      */
     protected $browser;
 
     /**
      * @var    string
-     * @access protected
      */
     protected $browserUrl;
 
     /**
      * @var    boolean
-     * @access protected
      */
     protected $collectCodeCoverageInformation = FALSE;
 
     /**
      * @var    string
-     * @access protected
      */
     protected $host = 'localhost';
 
     /**
      * @var    integer
-     * @access protected
      */
     protected $port = 4444;
 
     /**
      * @var    integer
-     * @access protected
      */
     protected $timeout = 30000;
 
     /**
      * @var    array
-     * @access protected
      */
     protected $sessionId;
 
     /**
      * @var    integer
-     * @access protected
      */
     protected $sleep = 0;
 
     /**
      * @var    boolean
-     * @access protected
      */
     protected $useWaitForPageToLoad = TRUE;
 
     /**
      * @var    boolean
-     * @access protected
      */
     protected $wait = 5;
 
     /**
      * @return string
-     * @access public
      */
     public function start()
     {
@@ -153,7 +140,6 @@ class PHPUnit_Extensions_SeleniumTestCase_Driver
     }
 
     /**
-     * @access public
      */
     public function stop()
     {
@@ -169,7 +155,6 @@ class PHPUnit_Extensions_SeleniumTestCase_Driver
     /**
      * @param  boolean $flag
      * @throws InvalidArgumentException
-     * @access public
      */
     public function setCollectCodeCoverageInformation($flag)
     {
@@ -182,7 +167,6 @@ class PHPUnit_Extensions_SeleniumTestCase_Driver
 
     /**
      * @param  PHPUnit_Extensions_SeleniumTestCase $testCase
-     * @access public
      */
     public function setTestCase(PHPUnit_Extensions_SeleniumTestCase $testCase)
     {
@@ -192,7 +176,6 @@ class PHPUnit_Extensions_SeleniumTestCase_Driver
     /**
      * @param  string $name
      * @throws InvalidArgumentException
-     * @access public
      */
     public function setName($name)
     {
@@ -206,7 +189,6 @@ class PHPUnit_Extensions_SeleniumTestCase_Driver
     /**
      * @param  string $browser
      * @throws InvalidArgumentException
-     * @access public
      */
     public function setBrowser($browser)
     {
@@ -220,7 +202,6 @@ class PHPUnit_Extensions_SeleniumTestCase_Driver
     /**
      * @param  string $browserUrl
      * @throws InvalidArgumentException
-     * @access public
      */
     public function setBrowserUrl($browserUrl)
     {
@@ -234,7 +215,6 @@ class PHPUnit_Extensions_SeleniumTestCase_Driver
     /**
      * @param  string $host
      * @throws InvalidArgumentException
-     * @access public
      */
     public function setHost($host)
     {
@@ -248,7 +228,6 @@ class PHPUnit_Extensions_SeleniumTestCase_Driver
     /**
      * @param  integer $port
      * @throws InvalidArgumentException
-     * @access public
      */
     public function setPort($port)
     {
@@ -262,7 +241,6 @@ class PHPUnit_Extensions_SeleniumTestCase_Driver
     /**
      * @param  integer $timeout
      * @throws InvalidArgumentException
-     * @access public
      */
     public function setTimeout($timeout)
     {
@@ -276,7 +254,6 @@ class PHPUnit_Extensions_SeleniumTestCase_Driver
     /**
      * @param  integer $seconds
      * @throws InvalidArgumentException
-     * @access public
      */
     public function setSleep($seconds)
     {
@@ -293,7 +270,6 @@ class PHPUnit_Extensions_SeleniumTestCase_Driver
      *
      * @param  integer $seconds
      * @throws InvalidArgumentException
-     * @access public
      */
     public function setWait($seconds)
     {
@@ -310,7 +286,6 @@ class PHPUnit_Extensions_SeleniumTestCase_Driver
      *
      * @param  boolean $flag
      * @throws InvalidArgumentException
-     * @access public
      */
     public function setWaitForPageToLoad($flag)
     {
@@ -327,7 +302,6 @@ class PHPUnit_Extensions_SeleniumTestCase_Driver
      * @param  string $command
      * @param  array  $arguments
      * @return mixed
-     * @access public
      * @method unknown  addLocationStrategy()
      * @method unknown  addSelection()
      * @method unknown  addSelectionAndWait()
@@ -725,7 +699,6 @@ class PHPUnit_Extensions_SeleniumTestCase_Driver
      * @param  string $command
      * @param  array  $arguments
      * @return string
-     * @access protected
      * @author Shin Ohno <ganchiku@gmail.com>
      * @author Bjoern Schotte <schotte@mayflower.de>
      */
@@ -788,7 +761,6 @@ class PHPUnit_Extensions_SeleniumTestCase_Driver
      * @param  string $command
      * @param  array  $arguments
      * @return boolean
-     * @access protected
      * @author Shin Ohno <ganchiku@gmail.com>
      * @author Bjoern Schotte <schotte@mayflower.de>
      */
@@ -818,7 +790,6 @@ class PHPUnit_Extensions_SeleniumTestCase_Driver
      * @param  string $command
      * @param  array  $arguments
      * @return numeric
-     * @access protected
      * @author Shin Ohno <ganchiku@gmail.com>
      * @author Bjoern Schotte <schotte@mayflower.de>
      */
@@ -844,7 +815,6 @@ class PHPUnit_Extensions_SeleniumTestCase_Driver
      * @param  string $command
      * @param  array  $arguments
      * @return string
-     * @access protected
      * @author Shin Ohno <ganchiku@gmail.com>
      * @author Bjoern Schotte <schotte@mayflower.de>
      */
@@ -870,7 +840,6 @@ class PHPUnit_Extensions_SeleniumTestCase_Driver
      * @param  string $command
      * @param  array  $arguments
      * @return array
-     * @access protected
      * @author Shin Ohno <ganchiku@gmail.com>
      * @author Bjoern Schotte <schotte@mayflower.de>
      */

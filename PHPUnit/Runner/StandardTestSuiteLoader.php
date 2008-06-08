@@ -71,7 +71,6 @@ class PHPUnit_Runner_StandardTestSuiteLoader implements PHPUnit_Runner_TestSuite
      * @param  boolean $syntaxCheck
      * @return ReflectionClass
      * @throws RuntimeException
-     * @access public
      */
     public function load($suiteClassName, $suiteClassFile = '', $syntaxCheck = TRUE)
     {
@@ -132,7 +131,6 @@ class PHPUnit_Runner_StandardTestSuiteLoader implements PHPUnit_Runner_TestSuite
     /**
      * @param  ReflectionClass  $aClass
      * @return ReflectionClass
-     * @access public
      */
     public function reload(ReflectionClass $aClass)
     {

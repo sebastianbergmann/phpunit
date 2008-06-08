@@ -73,7 +73,6 @@ class PHPUnit_Util_Log_CodeCoverage_XML_Source
 
     /**
      * @param  string $directory
-     * @access public
      */
     public function __construct($directory)
     {
@@ -82,7 +81,6 @@ class PHPUnit_Util_Log_CodeCoverage_XML_Source
 
     /**
      * @param  PHPUnit_Framework_TestResult $result
-     * @access public
      */
     public function process(PHPUnit_Framework_TestResult $result)
     {

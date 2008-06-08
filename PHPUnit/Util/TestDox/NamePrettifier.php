@@ -64,19 +64,16 @@ class PHPUnit_Util_TestDox_NamePrettifier
 {
     /**
      * @var    string
-     * @access protected
      */
     protected $prefix = 'Test';
 
     /**
      * @var    string
-     * @access protected
      */
     protected $suffix = 'Test';
 
     /**
      * @var    array
-     * @access protected
      */
     protected $strings = array();
 
@@ -85,7 +82,6 @@ class PHPUnit_Util_TestDox_NamePrettifier
      *
      * @param  string  $testClassName
      * @return string
-     * @access public
      */
     public function prettifyTestClass($testClassName)
     {
@@ -109,7 +105,6 @@ class PHPUnit_Util_TestDox_NamePrettifier
      *
      * @param  string  $testMethodName
      * @return string
-     * @access public
      */
     public function prettifyTestMethod($testMethodName)
     {
@@ -166,7 +161,6 @@ class PHPUnit_Util_TestDox_NamePrettifier
      * Sets the prefix of test names.
      *
      * @param  string  $prefix
-     * @access public
      */
     public function setPrefix($prefix)
     {
@@ -177,7 +171,6 @@ class PHPUnit_Util_TestDox_NamePrettifier
      * Sets the suffix of test names.
      *
      * @param  string  $prefix
-     * @access public
      */
     public function setSuffix($suffix)
     {

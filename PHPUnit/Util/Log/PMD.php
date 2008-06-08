@@ -89,7 +89,6 @@ class PHPUnit_Util_Log_PMD extends PHPUnit_Util_Printer
      * @param  mixed $out
      * @param  array $configuration
      * @throws InvalidArgumentException
-     * @access public
      */
     public function __construct($out = NULL, array $configuration = array())
     {
@@ -99,7 +98,6 @@ class PHPUnit_Util_Log_PMD extends PHPUnit_Util_Printer
 
     /**
      * @param  PHPUnit_Framework_TestResult $result
-     * @access public
      */
     public function process(PHPUnit_Framework_TestResult $result)
     {
@@ -201,7 +199,6 @@ class PHPUnit_Util_Log_PMD extends PHPUnit_Util_Printer
      * @param  string                    $package
      * @param  string                    $class
      * @param  string                    $method
-     * @access public
      */
     protected function addViolation($violation, DOMElement $element, PHPUnit_Util_Log_PMD_Rule $rule, $line = '', $toLine = '', $package = '', $class = '', $method = '', $function = '')
     {

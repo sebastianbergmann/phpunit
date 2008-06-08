@@ -65,31 +65,26 @@ abstract class PHPUnit_Util_Skeleton
 {
     /**
      * @var    string
-     * @access protected
      */
     protected $inClassName;
 
     /**
      * @var    string
-     * @access protected
      */
     protected $inSourceFile;
 
     /**
      * @var    string
-     * @access protected
      */
     protected $outClassName;
 
     /**
      * @var    string
-     * @access protected
      */
     protected $outSourceFile;
 
     /**
      * @return string
-     * @access public
      */
     public function getOutClassName()
     {
@@ -98,7 +93,6 @@ abstract class PHPUnit_Util_Skeleton
 
     /**
      * @return string
-     * @access public
      */
     public function getOutSourceFile()
     {
@@ -109,7 +103,6 @@ abstract class PHPUnit_Util_Skeleton
      * Generates the code and writes it to a source file.
      *
      * @param  string  $file
-     * @access public
      */
     public function write($file = '')
     {

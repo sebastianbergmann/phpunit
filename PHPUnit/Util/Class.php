@@ -69,8 +69,6 @@ class PHPUnit_Util_Class
     /**
      * Starts the collection of loaded classes.
      *
-     * @access public
-     * @static
      */
     public static function collectStart()
     {
@@ -82,8 +80,6 @@ class PHPUnit_Util_Class
      * returns the names of the loaded classes.
      *
      * @return array
-     * @access public
-     * @static
      */
     public static function collectEnd()
     {
@@ -97,8 +93,6 @@ class PHPUnit_Util_Class
      * returns the names of the files that declare the loaded classes.
      *
      * @return array
-     * @access public
-     * @static
      */
     public static function collectEndAsFiles()
     {
@@ -129,8 +123,6 @@ class PHPUnit_Util_Class
      * @param  string  $commonPath
      * @param  boolean $clearCache
      * @return array
-     * @access public
-     * @static
      */
     public static function getClassesInFile($filename, $commonPath = '', $clearCache = FALSE)
     {
@@ -174,8 +166,6 @@ class PHPUnit_Util_Class
      * @param  string  $commonPath
      * @param  boolean $clearCache
      * @return array
-     * @access public
-     * @static
      * @since  Method available since Release 3.2.0
      * @todo   Find a better place for this method.
      */
@@ -217,8 +207,6 @@ class PHPUnit_Util_Class
      *
      * @param  string  $className
      * @return array
-     * @access public
-     * @static
      */
     public static function getHierarchy($className)
     {
@@ -244,8 +232,6 @@ class PHPUnit_Util_Class
      *
      * @param  ReflectionClass $method
      * @return string
-     * @access public
-     * @static
      * @since  Method available since Release 3.2.0
      */
     public static function getMethodSignature(ReflectionMethod $method)
@@ -287,8 +273,6 @@ class PHPUnit_Util_Class
      *
      * @param  ReflectionClass $method
      * @return string
-     * @access public
-     * @static
      * @since  Method available since Release 3.2.0
      */
     public static function getMethodParameters(ReflectionMethod $method)
@@ -344,8 +328,6 @@ class PHPUnit_Util_Class
      * @param  string  $className
      * @param  string  $methodName
      * @return mixed
-     * @access public
-     * @static
      */
     public static function getMethodSource($className, $methodName)
     {
@@ -378,8 +360,6 @@ class PHPUnit_Util_Class
      *
      * @param  string $className
      * @return array
-     * @access public
-     * @static
      */
     public static function getPackageInformation($className)
     {
@@ -429,8 +409,6 @@ class PHPUnit_Util_Class
      * @param  array $parts
      * @param  string $join
      * @return string
-     * @access protected
-     * @static
      * @since  Method available since Release 3.2.12
      */
     protected static function arrayToName(array $parts, $join)

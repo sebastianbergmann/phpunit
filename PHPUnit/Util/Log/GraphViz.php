@@ -69,37 +69,31 @@ class PHPUnit_Util_Log_GraphViz extends PHPUnit_Util_Printer implements PHPUnit_
 {
     /**
      * @var    Image_GraphViz
-     * @access protected
      */
     protected $graph;
 
     /**
      * @var    boolean
-     * @access protected
      */
     protected $currentTestSuccess = TRUE;
 
     /**
      * @var    string[]
-     * @access protected
      */
     protected $testSuites = array();
 
     /**
      * @var    integer
-     * @access protected
      */
     protected $testSuiteLevel = 0;
 
     /**
      * @var    integer[]
-     * @access protected
      */
     protected $testSuiteFailureOrErrorCount = array(0);
 
     /**
      * @var    integer[]
-     * @access protected
      */
     protected $testSuiteIncompleteOrSkippedCount = array(0);
 
@@ -107,7 +101,6 @@ class PHPUnit_Util_Log_GraphViz extends PHPUnit_Util_Printer implements PHPUnit_
      * Constructor.
      *
      * @param  mixed $out
-     * @access public
      */
     public function __construct($out = NULL)
     {
@@ -133,7 +126,6 @@ class PHPUnit_Util_Log_GraphViz extends PHPUnit_Util_Printer implements PHPUnit_
     /**
      * Flush buffer and close output.
      *
-     * @access public
      */
     public function flush()
     {
@@ -148,7 +140,6 @@ class PHPUnit_Util_Log_GraphViz extends PHPUnit_Util_Printer implements PHPUnit_
      * @param  PHPUnit_Framework_Test $test
      * @param  Exception              $e
      * @param  float                  $time
-     * @access public
      */
     public function addError(PHPUnit_Framework_Test $test, Exception $e, $time)
     {
@@ -164,7 +155,6 @@ class PHPUnit_Util_Log_GraphViz extends PHPUnit_Util_Printer implements PHPUnit_
      * @param  PHPUnit_Framework_Test                 $test
      * @param  PHPUnit_Framework_AssertionFailedError $e
      * @param  float                                  $time
-     * @access public
      */
     public function addFailure(PHPUnit_Framework_Test $test, PHPUnit_Framework_AssertionFailedError $e, $time)
     {
@@ -180,7 +170,6 @@ class PHPUnit_Util_Log_GraphViz extends PHPUnit_Util_Printer implements PHPUnit_
      * @param  PHPUnit_Framework_Test $test
      * @param  Exception              $e
      * @param  float                  $time
-     * @access public
      */
     public function addIncompleteTest(PHPUnit_Framework_Test $test, Exception $e, $time)
     {
@@ -196,7 +185,6 @@ class PHPUnit_Util_Log_GraphViz extends PHPUnit_Util_Printer implements PHPUnit_
      * @param  PHPUnit_Framework_Test $test
      * @param  Exception              $e
      * @param  float                  $time
-     * @access public
      */
     public function addSkippedTest(PHPUnit_Framework_Test $test, Exception $e, $time)
     {
@@ -210,7 +198,6 @@ class PHPUnit_Util_Log_GraphViz extends PHPUnit_Util_Printer implements PHPUnit_
      * A testsuite started.
      *
      * @param  PHPUnit_Framework_TestSuite $suite
-     * @access public
      */
     public function startTestSuite(PHPUnit_Framework_TestSuite $suite)
     {
@@ -234,7 +221,6 @@ class PHPUnit_Util_Log_GraphViz extends PHPUnit_Util_Printer implements PHPUnit_
      * A testsuite ended.
      *
      * @param  PHPUnit_Framework_TestSuite $suite
-     * @access public
      */
     public function endTestSuite(PHPUnit_Framework_TestSuite $suite)
     {
@@ -267,7 +253,6 @@ class PHPUnit_Util_Log_GraphViz extends PHPUnit_Util_Printer implements PHPUnit_
      * A test started.
      *
      * @param  PHPUnit_Framework_Test $test
-     * @access public
      */
     public function startTest(PHPUnit_Framework_Test $test)
     {
@@ -279,7 +264,6 @@ class PHPUnit_Util_Log_GraphViz extends PHPUnit_Util_Printer implements PHPUnit_
      *
      * @param  PHPUnit_Framework_Test $test
      * @param  float                  $time
-     * @access public
      */
     public function endTest(PHPUnit_Framework_Test $test, $time)
     {
@@ -291,7 +275,6 @@ class PHPUnit_Util_Log_GraphViz extends PHPUnit_Util_Printer implements PHPUnit_
     /**
      * @param  PHPUnit_Framework_Test $test
      * @param  string                  $color
-     * @access protected
      */
     protected function addTestNode(PHPUnit_Framework_Test $test, $color)
     {

@@ -69,7 +69,6 @@ class PHPUnit_Extensions_Story_ResultPrinter extends PHPUnit_Util_TestDox_Result
      *
      * @param  PHPUnit_Framework_Test $test
      * @param  float                  $time
-     * @access public
      */
     public function endTest(PHPUnit_Framework_Test $test, $time)
     {
@@ -91,7 +90,6 @@ class PHPUnit_Extensions_Story_ResultPrinter extends PHPUnit_Util_TestDox_Result
     }
 
     /**
-     * @access protected
      */
     protected function doEndClass()
     {
@@ -104,7 +102,6 @@ class PHPUnit_Extensions_Story_ResultPrinter extends PHPUnit_Util_TestDox_Result
      * @param  string  $name
      * @param  boolean $success
      * @param  array   $steps
-     * @access protected
      */
     protected function onTest($name, $success = TRUE, array $steps = array())
     {

@@ -70,8 +70,6 @@ class PHPUnit_Extensions_Story_Then extends PHPUnit_Extensions_Story_Step
      * Returns this step's name.
      *
      * @return string
-     * @access public
-     * @abstract
      */
     public function getName()
     {

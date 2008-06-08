@@ -85,7 +85,6 @@ class PHPUnit_Util_Metrics_File extends PHPUnit_Util_Metrics
      * @param  string $filename
      * @param  array  $codeCoverage
      * @throws RuntimeException
-     * @access protected
      */
     protected function __construct($filename, &$codeCoverage = array())
     {
@@ -120,8 +119,6 @@ class PHPUnit_Util_Metrics_File extends PHPUnit_Util_Metrics
      * @param  string $filename
      * @param  array  $codeCoverage
      * @return PHPUnit_Util_Metrics_File
-     * @access public
-     * @static
      */
     public static function factory($filename, &$codeCoverage = array())
     {
@@ -138,7 +135,6 @@ class PHPUnit_Util_Metrics_File extends PHPUnit_Util_Metrics
 
     /**
      * @param  array $codeCoverage
-     * @access public
      */
     public function setCoverage(array &$codeCoverage)
     {
@@ -159,7 +155,6 @@ class PHPUnit_Util_Metrics_File extends PHPUnit_Util_Metrics
      * Returns the path to the file.
      *
      * @return string
-     * @access public
      */
     public function getPath()
     {
@@ -170,7 +165,6 @@ class PHPUnit_Util_Metrics_File extends PHPUnit_Util_Metrics
      * Classes.
      *
      * @return array
-     * @access public
      */
     public function getClasses()
     {
@@ -182,7 +176,6 @@ class PHPUnit_Util_Metrics_File extends PHPUnit_Util_Metrics
      *
      * @param  string $className
      * @return ReflectionClass
-     * @access public
      */
     public function getClass($className)
     {
@@ -193,7 +186,6 @@ class PHPUnit_Util_Metrics_File extends PHPUnit_Util_Metrics
      * Functions.
      *
      * @return array
-     * @access public
      */
     public function getFunctions()
     {
@@ -205,7 +197,6 @@ class PHPUnit_Util_Metrics_File extends PHPUnit_Util_Metrics
      *
      * @param  string $functionName
      * @return ReflectionClass
-     * @access public
      */
     public function getFunction($functionName)
     {
@@ -216,7 +207,6 @@ class PHPUnit_Util_Metrics_File extends PHPUnit_Util_Metrics
      * Lines.
      *
      * @return array
-     * @access public
      */
     public function getLines()
     {
@@ -227,7 +217,6 @@ class PHPUnit_Util_Metrics_File extends PHPUnit_Util_Metrics
      * Tokens.
      *
      * @return array
-     * @access public
      */
     public function getTokens()
     {
@@ -238,7 +227,6 @@ class PHPUnit_Util_Metrics_File extends PHPUnit_Util_Metrics
      * Returns the Code Coverage for the file.
      *
      * @return float
-     * @access public
      */
     public function getCoverage()
     {
@@ -249,7 +237,6 @@ class PHPUnit_Util_Metrics_File extends PHPUnit_Util_Metrics
      * Lines of Code (LOC).
      *
      * @return int
-     * @access public
      */
     public function getLoc()
     {
@@ -260,7 +247,6 @@ class PHPUnit_Util_Metrics_File extends PHPUnit_Util_Metrics
      * Executable Lines of Code (ELOC).
      *
      * @return int
-     * @access public
      */
     public function getLocExecutable()
     {
@@ -271,7 +257,6 @@ class PHPUnit_Util_Metrics_File extends PHPUnit_Util_Metrics
      * Executed Lines of Code.
      *
      * @return int
-     * @access public
      */
     public function getLocExecuted()
     {
@@ -282,7 +267,6 @@ class PHPUnit_Util_Metrics_File extends PHPUnit_Util_Metrics
      * Comment Lines of Code (CLOC).
      *
      * @return int
-     * @access public
      */
     public function getCloc()
     {
@@ -293,7 +277,6 @@ class PHPUnit_Util_Metrics_File extends PHPUnit_Util_Metrics
      * Non-Comment Lines of Code (NCLOC).
      *
      * @return int
-     * @access public
      */
     public function getNcloc()
     {
@@ -304,7 +287,6 @@ class PHPUnit_Util_Metrics_File extends PHPUnit_Util_Metrics
      * Calculates the Code Coverage for the class.
      *
      * @param  array $codeCoverage
-     * @access protected
      */
     protected function calculateCodeCoverage(&$codeCoverage)
     {
@@ -322,7 +304,6 @@ class PHPUnit_Util_Metrics_File extends PHPUnit_Util_Metrics
     }
 
     /**
-     * @access protected
      */
     protected function countLines()
     {

@@ -68,61 +68,51 @@ class PHPUnit_Util_Report_Node_Directory extends PHPUnit_Util_Report_Node
 {
     /**
      * @var    PHPUnit_Util_Report_Node[]
-     * @access protected
      */
     protected $children = array();
 
     /**
      * @var    PHPUnit_Util_Report_Node_Directory[]
-     * @access protected
      */
     protected $directories = array();
 
     /**
      * @var    PHPUnit_Util_Report_Node_File[]
-     * @access protected
      */
     protected $files = array();
 
     /**
      * @var    array
-     * @access protected
      */
     protected $classes;
 
     /**
      * @var    integer
-     * @access protected
      */
     protected $numExecutableLines = -1;
 
     /**
      * @var    integer
-     * @access protected
      */
     protected $numExecutedLines = -1;
 
     /**
      * @var    integer
-     * @access protected
      */
     protected $numClasses = -1;
 
     /**
      * @var    integer
-     * @access protected
      */
     protected $numCalledClasses = -1;
 
     /**
      * @var    integer
-     * @access protected
      */
     protected $numMethods = -1;
 
     /**
      * @var    integer
-     * @access protected
      */
     protected $numCalledMethods = -1;
 
@@ -130,7 +120,6 @@ class PHPUnit_Util_Report_Node_Directory extends PHPUnit_Util_Report_Node
      * Adds a new directory.
      *
      * @return PHPUnit_Util_Report_Node_Directory
-     * @access public
      */
     public function addDirectory($name)
     {
@@ -151,7 +140,6 @@ class PHPUnit_Util_Report_Node_Directory extends PHPUnit_Util_Report_Node
      * @param  boolean $highlight
      * @return PHPUnit_Util_Report_Node_File
      * @throws RuntimeException
-     * @access public
      */
     public function addFile($name, array $lines, $yui, $highlight)
     {
@@ -172,7 +160,6 @@ class PHPUnit_Util_Report_Node_Directory extends PHPUnit_Util_Report_Node
      * Returns the directories in this directory.
      *
      * @return
-     * @access public
      */
     public function getDirectories()
     {
@@ -183,7 +170,6 @@ class PHPUnit_Util_Report_Node_Directory extends PHPUnit_Util_Report_Node
      * Returns the files in this directory.
      *
      * @return
-     * @access public
      */
     public function getFiles()
     {
@@ -194,7 +180,6 @@ class PHPUnit_Util_Report_Node_Directory extends PHPUnit_Util_Report_Node
      * Returns the classes of this node.
      *
      * @return array
-     * @access public
      */
     public function getClasses()
     {
@@ -213,7 +198,6 @@ class PHPUnit_Util_Report_Node_Directory extends PHPUnit_Util_Report_Node
      * Returns the number of executable lines.
      *
      * @return integer
-     * @access public
      */
     public function getNumExecutableLines()
     {
@@ -232,7 +216,6 @@ class PHPUnit_Util_Report_Node_Directory extends PHPUnit_Util_Report_Node
      * Returns the number of executed lines.
      *
      * @return integer
-     * @access public
      */
     public function getNumExecutedLines()
     {
@@ -251,7 +234,6 @@ class PHPUnit_Util_Report_Node_Directory extends PHPUnit_Util_Report_Node
      * Returns the number of classes.
      *
      * @return integer
-     * @access public
      */
     public function getNumClasses()
     {
@@ -271,7 +253,6 @@ class PHPUnit_Util_Report_Node_Directory extends PHPUnit_Util_Report_Node
      * has been called at least once.
      *
      * @return integer
-     * @access public
      */
     public function getNumCalledClasses()
     {
@@ -290,7 +271,6 @@ class PHPUnit_Util_Report_Node_Directory extends PHPUnit_Util_Report_Node
      * Returns the number of methods.
      *
      * @return integer
-     * @access public
      */
     public function getNumMethods()
     {
@@ -309,7 +289,6 @@ class PHPUnit_Util_Report_Node_Directory extends PHPUnit_Util_Report_Node
      * Returns the number of methods that has been called at least once.
      *
      * @return integer
-     * @access public
      */
     public function getNumCalledMethods()
     {
@@ -332,7 +311,6 @@ class PHPUnit_Util_Report_Node_Directory extends PHPUnit_Util_Report_Node
      * @param string  $charset
      * @param integer $lowUpperBound
      * @param integer $highLowerBound
-     * @access public
      */
     public function render($target, $title, $charset = 'ISO-8859-1', $lowUpperBound = 35, $highLowerBound = 70)
     {
@@ -355,7 +333,6 @@ class PHPUnit_Util_Report_Node_Directory extends PHPUnit_Util_Report_Node
      * @param string  $charset
      * @param integer $lowUpperBound
      * @param integer $highLowerBound
-     * @access protected
      */
     protected function doRender($target, $title, $charset, $lowUpperBound, $highLowerBound)
     {
@@ -387,7 +364,6 @@ class PHPUnit_Util_Report_Node_Directory extends PHPUnit_Util_Report_Node
      * @param  float  $lowUpperBound
      * @param  float  $highLowerBound
      * @return string
-     * @access protected
      */
     protected function renderItems($lowUpperBound, $highLowerBound)
     {
@@ -403,7 +379,6 @@ class PHPUnit_Util_Report_Node_Directory extends PHPUnit_Util_Report_Node
      * @param  float  $highLowerBound
      * @param  string $itemClass
      * @return string
-     * @access protected
      */
     protected function doRenderItems(array $items, $lowUpperBound, $highLowerBound, $itemClass)
     {

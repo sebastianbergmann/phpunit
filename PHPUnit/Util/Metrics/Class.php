@@ -102,7 +102,6 @@ class PHPUnit_Util_Metrics_Class extends PHPUnit_Util_Metrics
      *
      * @param  ReflectionClass $class
      * @param  array           $codeCoverage
-     * @access protected
      */
     protected function __construct(ReflectionClass $class, &$codeCoverage = array())
     {
@@ -142,8 +141,6 @@ class PHPUnit_Util_Metrics_Class extends PHPUnit_Util_Metrics
      * @param  ReflectionClass $class
      * @param  array           $codeCoverage
      * @return PHPUnit_Util_Metrics_Class
-     * @access public
-     * @static
      */
     public static function factory(ReflectionClass $class, &$codeCoverage = array())
     {
@@ -162,7 +159,6 @@ class PHPUnit_Util_Metrics_Class extends PHPUnit_Util_Metrics
 
     /**
      * @param  array $codeCoverage
-     * @access public
      */
     public function setCoverage(array &$codeCoverage)
     {
@@ -177,7 +173,6 @@ class PHPUnit_Util_Metrics_Class extends PHPUnit_Util_Metrics
 
     /**
      * @param  PHPUnit_Util_Metrics_Project $project
-     * @access public
      */
     public function setProject(PHPUnit_Util_Metrics_Project $project)
     {
@@ -192,7 +187,6 @@ class PHPUnit_Util_Metrics_Class extends PHPUnit_Util_Metrics
      * Returns the class.
      *
      * @return ReflectionClass
-     * @access public
      */
     public function getClass()
     {
@@ -203,7 +197,6 @@ class PHPUnit_Util_Metrics_Class extends PHPUnit_Util_Metrics
      * Returns the package of this class.
      *
      * @return string
-     * @access public
      */
     public function getPackage()
     {
@@ -214,7 +207,6 @@ class PHPUnit_Util_Metrics_Class extends PHPUnit_Util_Metrics
      * Returns the methods of this class.
      *
      * @return array
-     * @access public
      */
     public function getMethods()
     {
@@ -225,7 +217,6 @@ class PHPUnit_Util_Metrics_Class extends PHPUnit_Util_Metrics
      * Returns the names of the classes this class depends on.
      *
      * @return array
-     * @access public
      */
     public function getDependencies()
     {
@@ -236,7 +227,6 @@ class PHPUnit_Util_Metrics_Class extends PHPUnit_Util_Metrics
      * Lines of Code (LOC).
      *
      * @return int
-     * @access public
      */
     public function getLoc()
     {
@@ -247,7 +237,6 @@ class PHPUnit_Util_Metrics_Class extends PHPUnit_Util_Metrics
      * Executable Lines of Code (ELOC).
      *
      * @return int
-     * @access public
      */
     public function getLocExecutable()
     {
@@ -258,7 +247,6 @@ class PHPUnit_Util_Metrics_Class extends PHPUnit_Util_Metrics
      * Executed Lines of Code.
      *
      * @return int
-     * @access public
      */
     public function getLocExecuted()
     {
@@ -269,7 +257,6 @@ class PHPUnit_Util_Metrics_Class extends PHPUnit_Util_Metrics
      * Returns the Number of Public Methods of the class.
      *
      * @return integer
-     * @access public
      */
     public function getPublicMethods()
     {
@@ -280,7 +267,6 @@ class PHPUnit_Util_Metrics_Class extends PHPUnit_Util_Metrics
      * Returns the Attribute Inheritance Factor (AIF) for the class.
      *
      * @return integer
-     * @access public
      * @see    http://www.aivosto.com/project/help/pm-oo-mood.html
      */
     public function getAIF()
@@ -292,7 +278,6 @@ class PHPUnit_Util_Metrics_Class extends PHPUnit_Util_Metrics
      * Returns the Attribute Hiding Factor (AHF) for the class.
      *
      * @return integer
-     * @access public
      * @see    http://www.aivosto.com/project/help/pm-oo-mood.html
      */
     public function getAHF()
@@ -307,7 +292,6 @@ class PHPUnit_Util_Metrics_Class extends PHPUnit_Util_Metrics
      * the class' responsibility.
      *
      * @return integer
-     * @access public
      */
     public function getCa()
     {
@@ -323,7 +307,6 @@ class PHPUnit_Util_Metrics_Class extends PHPUnit_Util_Metrics
      * of the class' independence.
      *
      * @return integer
-     * @access public
      */
     public function getCe()
     {
@@ -336,7 +319,6 @@ class PHPUnit_Util_Metrics_Class extends PHPUnit_Util_Metrics
      * Returns the Class Size (CSZ) of the class.
      *
      * @return integer
-     * @access public
      * @see    http://www.aivosto.com/project/help/pm-oo-misc.html
      */
     public function getCSZ()
@@ -348,7 +330,6 @@ class PHPUnit_Util_Metrics_Class extends PHPUnit_Util_Metrics
      * Returns the Class Interface Size (CIS) of the class.
      *
      * @return integer
-     * @access public
      * @see    http://www.aivosto.com/project/help/pm-oo-misc.html
      */
     public function getCIS()
@@ -360,7 +341,6 @@ class PHPUnit_Util_Metrics_Class extends PHPUnit_Util_Metrics
      * Returns the Code Coverage for the class.
      *
      * @return float
-     * @access public
      */
     public function getCoverage()
     {
@@ -371,7 +351,6 @@ class PHPUnit_Util_Metrics_Class extends PHPUnit_Util_Metrics
      * Returns the Depth of Inheritance Tree (DIT) for the class.
      *
      * @return integer
-     * @access public
      * @see    http://www.aivosto.com/project/help/pm-oo-ck.html
      */
     public function getDIT()
@@ -390,7 +369,6 @@ class PHPUnit_Util_Metrics_Class extends PHPUnit_Util_Metrics
      * stable class and I=1 indicating a completely instable class.
      *
      * @return float
-     * @access public
      */
     public function getI()
     {
@@ -403,7 +381,6 @@ class PHPUnit_Util_Metrics_Class extends PHPUnit_Util_Metrics
      * Returns the Number of Interfaces Implemented by the class (IMPL).
      *
      * @return integer
-     * @access public
      * @see    http://www.aivosto.com/project/help/pm-oo-misc.html
      */
     public function getIMPL()
@@ -415,7 +392,6 @@ class PHPUnit_Util_Metrics_Class extends PHPUnit_Util_Metrics
      * Returns the Method Inheritance Factor (MIF) for the class.
      *
      * @return float
-     * @access public
      * @see    http://www.aivosto.com/project/help/pm-oo-mood.html
      */
     public function getMIF()
@@ -427,7 +403,6 @@ class PHPUnit_Util_Metrics_Class extends PHPUnit_Util_Metrics
      * Returns the Method Hiding Factor (MHF) for the class.
      *
      * @return float
-     * @access public
      * @see    http://www.aivosto.com/project/help/pm-oo-mood.html
      */
     public function getMHF()
@@ -439,7 +414,6 @@ class PHPUnit_Util_Metrics_Class extends PHPUnit_Util_Metrics
      * Returns the Number of Children (NOC) for the class.
      *
      * @return integer
-     * @access public
      * @see    http://www.aivosto.com/project/help/pm-oo-ck.html
      */
     public function getNOC()
@@ -451,7 +425,6 @@ class PHPUnit_Util_Metrics_Class extends PHPUnit_Util_Metrics
      * Returns the Polymorphism Factor (PF) for the class.
      *
      * @return float
-     * @access public
      * @see    http://www.aivosto.com/project/help/pm-oo-mood.html
      */
     public function getPF()
@@ -463,7 +436,6 @@ class PHPUnit_Util_Metrics_Class extends PHPUnit_Util_Metrics
      * Returns the Number of Variables (VARS) defined by the class.
      *
      * @return integer
-     * @access public
      * @see    http://www.aivosto.com/project/help/pm-oo-misc.html
      */
     public function getVARS()
@@ -475,7 +447,6 @@ class PHPUnit_Util_Metrics_Class extends PHPUnit_Util_Metrics
      * Returns the Number of Non-Private Variables (VARSnp) defined by the class.
      *
      * @return integer
-     * @access public
      * @see    http://www.aivosto.com/project/help/pm-oo-misc.html
      */
     public function getVARSnp()
@@ -487,7 +458,6 @@ class PHPUnit_Util_Metrics_Class extends PHPUnit_Util_Metrics
      * Returns the Number of Variables (VARSi) defined and inherited by the class.
      *
      * @return integer
-     * @access public
      * @see    http://www.aivosto.com/project/help/pm-oo-misc.html
      */
     public function getVARSi()
@@ -499,7 +469,6 @@ class PHPUnit_Util_Metrics_Class extends PHPUnit_Util_Metrics
      * Returns the Weighted Methods Per Class (WMC) for the class.
      *
      * @return integer
-     * @access public
      * @see    http://www.aivosto.com/project/help/pm-oo-ck.html
      */
     public function getWMC()
@@ -511,7 +480,6 @@ class PHPUnit_Util_Metrics_Class extends PHPUnit_Util_Metrics
      * Returns the Weighted Non-Private Methods Per Class (WMCnp) for the class.
      *
      * @return integer
-     * @access public
      * @see    http://www.aivosto.com/project/help/pm-oo-misc.html
      */
     public function getWMCnp()
@@ -523,7 +491,6 @@ class PHPUnit_Util_Metrics_Class extends PHPUnit_Util_Metrics
      * Returns the Weighted Inherited Methods Per Class (WMCi) for the class.
      *
      * @return integer
-     * @access public
      * @see    http://www.aivosto.com/project/help/pm-oo-misc.html
      */
     public function getWMCi()
@@ -535,7 +502,6 @@ class PHPUnit_Util_Metrics_Class extends PHPUnit_Util_Metrics
      * Calculates the Attribute Inheritance Factor (AIF) and
      * Attribute Hiding Factor (AHF) metrics for the class.
      *
-     * @access protected
      */
     protected function calculateAttributeMetrics()
     {
@@ -572,7 +538,6 @@ class PHPUnit_Util_Metrics_Class extends PHPUnit_Util_Metrics
      * Weighted Non-Private Methods Per Class (WMCnp), and
      * Weighted Inherited Methods Per Class (WMCi) metrics for the class.
      *
-     * @access protected
      */
     protected function calculateMethodMetrics()
     {
@@ -613,7 +578,6 @@ class PHPUnit_Util_Metrics_Class extends PHPUnit_Util_Metrics
     /**
      * Calculates the Number of Children (NOC) metric for the class.
      *
-     * @access protected
      */
     protected function calculateNumberOfChildren()
     {
@@ -649,7 +613,6 @@ class PHPUnit_Util_Metrics_Class extends PHPUnit_Util_Metrics
      * Calculates the Polymorphism Factor (PF) metric for the class.
      *
      * @param  ReflectionClass $class
-     * @access protected
      */
     protected function calculatePolymorphismFactor()
     {
@@ -686,7 +649,6 @@ class PHPUnit_Util_Metrics_Class extends PHPUnit_Util_Metrics
      * Calculates the Code Coverage for the class.
      *
      * @param  array $codeCoverage
-     * @access protected
      */
     protected function calculateCodeCoverage(&$codeCoverage)
     {
@@ -706,7 +668,6 @@ class PHPUnit_Util_Metrics_Class extends PHPUnit_Util_Metrics
     /**
      * Calculates the dependencies for this class.
      *
-     * @access protected
      */
     protected function calculateDependencies()
     {
@@ -738,7 +699,6 @@ class PHPUnit_Util_Metrics_Class extends PHPUnit_Util_Metrics
     /**
      * Calculates the dependency-based metrics for this class.
      *
-     * @access protected
      */
     protected function calculateDependencyMetrics()
     {

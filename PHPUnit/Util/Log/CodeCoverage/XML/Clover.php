@@ -71,7 +71,6 @@ class PHPUnit_Util_Log_CodeCoverage_XML_Clover extends PHPUnit_Util_Printer
 {
     /**
      * @param  PHPUnit_Framework_TestResult $result
-     * @access public
      * @todo   Count conditionals.
      */
     public function process(PHPUnit_Framework_TestResult $result)

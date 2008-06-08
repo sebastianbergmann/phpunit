@@ -73,7 +73,6 @@ abstract class PHPUnit_Framework_Constraint implements PHPUnit_Framework_SelfDes
      *
      * @param mixed $other Value or object to evaluate.
      * @return bool
-     * @abstract
      */
     abstract public function evaluate($other);
 
