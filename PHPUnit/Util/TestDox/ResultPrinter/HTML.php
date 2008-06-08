@@ -65,14 +65,12 @@ class PHPUnit_Util_TestDox_ResultPrinter_HTML extends PHPUnit_Util_TestDox_Resul
 {
     /**
      * @var    boolean
-     * @access protected
      */
     protected $printsHTML = TRUE;
 
     /**
      * Handler for 'start run' event.
      *
-     * @access protected
      */
     protected function startRun()
     {
@@ -83,7 +81,6 @@ class PHPUnit_Util_TestDox_ResultPrinter_HTML extends PHPUnit_Util_TestDox_Resul
      * Handler for 'start class' event.
      *
      * @param  string $name
-     * @access protected
      */
     protected function startClass($name)
     {
@@ -94,7 +91,6 @@ class PHPUnit_Util_TestDox_ResultPrinter_HTML extends PHPUnit_Util_TestDox_Resul
      * Handler for 'on test' event.
      *
      * @param  string $name
-     * @access protected
      */
     protected function onTest($name)
     {
@@ -105,7 +101,6 @@ class PHPUnit_Util_TestDox_ResultPrinter_HTML extends PHPUnit_Util_TestDox_Resul
      * Handler for 'end class' event.
      *
      * @param  string $name
-     * @access protected
      */
     protected function endClass($name)
     {
@@ -115,7 +110,6 @@ class PHPUnit_Util_TestDox_ResultPrinter_HTML extends PHPUnit_Util_TestDox_Resul
     /**
      * Handler for 'end run' event.
      *
-     * @access protected
      */
     protected function endRun()
     {

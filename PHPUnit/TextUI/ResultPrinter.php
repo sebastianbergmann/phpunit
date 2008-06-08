@@ -71,37 +71,31 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
 
     /**
      * @var    integer
-     * @access protected
      */
     protected $column = 0;
 
     /**
      * @var    array
-     * @access protected
      */
     protected $numberOfTests = array();
 
     /**
      * @var    array
-     * @access protected
      */
     protected $testSuiteSize = array();
 
     /**
      * @var    integer
-     * @access protected
      */
     protected $lastEvent = -1;
 
     /**
      * @var    boolean
-     * @access protected
      */
     protected $lastTestFailed = FALSE;
 
     /**
      * @var    boolean
-     * @access protected
      */
     protected $verbose = FALSE;
 
@@ -111,7 +105,6 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
      * @param  mixed   $out
      * @param  boolean $verbose
      * @throws InvalidArgumentException
-     * @access public
      * @since  Method available since Release 3.0.0
      */
     public function __construct($out = NULL, $verbose = FALSE)
@@ -127,7 +120,6 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
 
     /**
      * @param  PHPUnit_Framework_TestResult $result
-     * @access public
      */
     public function printResult(PHPUnit_Framework_TestResult $result)
     {
@@ -170,7 +162,6 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
      * @param  array   $defects
      * @param  integer $count
      * @param  string  $type
-     * @access protected
      */
     protected function printDefects(array $defects, $count, $type)
     {
@@ -199,7 +190,6 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
     /**
      * @param  PHPUnit_Framework_TestFailure $defect
      * @param  integer                       $count
-     * @access protected
      */
     protected function printDefect(PHPUnit_Framework_TestFailure $defect, $count)
     {
@@ -210,7 +200,6 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
     /**
      * @param  PHPUnit_Framework_TestFailure $defect
      * @param  integer                       $count
-     * @access protected
      */
     protected function printDefectHeader(PHPUnit_Framework_TestFailure $defect, $count)
     {
@@ -234,7 +223,6 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
 
     /**
      * @param  PHPUnit_Framework_TestFailure $defect
-     * @access protected
      */
     protected function printDefectTrace(PHPUnit_Framework_TestFailure $defect)
     {
@@ -249,7 +237,6 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
 
     /**
      * @param  PHPUnit_Framework_TestResult  $result
-     * @access protected
      */
     protected function printErrors(PHPUnit_Framework_TestResult $result)
     {
@@ -258,7 +245,6 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
 
     /**
      * @param  PHPUnit_Framework_TestResult  $result
-     * @access protected
      */
     protected function printFailures(PHPUnit_Framework_TestResult $result)
     {
@@ -267,7 +253,6 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
 
     /**
      * @param  PHPUnit_Framework_TestResult  $result
-     * @access protected
      */
     protected function printIncompletes(PHPUnit_Framework_TestResult $result)
     {
@@ -276,7 +261,6 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
 
     /**
      * @param  PHPUnit_Framework_TestResult  $result
-     * @access protected
      * @since  Method available since Release 3.0.0
      */
     protected function printSkipped(PHPUnit_Framework_TestResult $result)
@@ -286,7 +270,6 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
 
     /**
      * @param  float   $timeElapsed
-     * @access protected
      */
     protected function printHeader($timeElapsed)
     {
@@ -295,7 +278,6 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
 
     /**
      * @param  PHPUnit_Framework_TestResult  $result
-     * @access protected
      */
     protected function printFooter(PHPUnit_Framework_TestResult $result)
     {
@@ -347,7 +329,6 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
      * @param  integer $count
      * @param  string  $name
      * @return string
-     * @access protected
      * @since  Method available since Release 3.0.0
      */
     protected function getCountString($count, $name)
@@ -367,7 +348,6 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
     }
 
     /**
-     * @access public
      */
     public function printWaitPrompt()
     {
@@ -380,7 +360,6 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
      * @param  PHPUnit_Framework_Test $test
      * @param  Exception              $e
      * @param  float                  $time
-     * @access public
      */
     public function addError(PHPUnit_Framework_Test $test, Exception $e, $time)
     {
@@ -394,7 +373,6 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
      * @param  PHPUnit_Framework_Test                 $test
      * @param  PHPUnit_Framework_AssertionFailedError $e
      * @param  float                                  $time
-     * @access public
      */
     public function addFailure(PHPUnit_Framework_Test $test, PHPUnit_Framework_AssertionFailedError $e, $time)
     {
@@ -408,7 +386,6 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
      * @param  PHPUnit_Framework_Test $test
      * @param  Exception              $e
      * @param  float                  $time
-     * @access public
      */
     public function addIncompleteTest(PHPUnit_Framework_Test $test, Exception $e, $time)
     {
@@ -422,7 +399,6 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
      * @param  PHPUnit_Framework_Test $test
      * @param  Exception              $e
      * @param  float                  $time
-     * @access public
      * @since  Method available since Release 3.0.0
      */
     public function addSkippedTest(PHPUnit_Framework_Test $test, Exception $e, $time)
@@ -435,7 +411,6 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
      * A testsuite started.
      *
      * @param  PHPUnit_Framework_TestSuite $suite
-     * @access public
      * @since  Method available since Release 2.2.0
      */
     public function startTestSuite(PHPUnit_Framework_TestSuite $suite)
@@ -473,7 +448,6 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
      * A testsuite ended.
      *
      * @param  PHPUnit_Framework_TestSuite $suite
-     * @access public
      * @since  Method available since Release 2.2.0
      */
     public function endTestSuite(PHPUnit_Framework_TestSuite $suite)
@@ -496,7 +470,6 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
      * A test started.
      *
      * @param  PHPUnit_Framework_Test $test
-     * @access public
      */
     public function startTest(PHPUnit_Framework_Test $test)
     {
@@ -520,7 +493,6 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
      *
      * @param  PHPUnit_Framework_Test $test
      * @param  float                  $time
-     * @access public
      */
     public function endTest(PHPUnit_Framework_Test $test, $time)
     {
@@ -534,7 +506,6 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
 
     /**
      * @param  string $progress
-     * @access protected
      */
     protected function writeProgress($progress)
     {

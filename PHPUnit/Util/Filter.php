@@ -62,29 +62,21 @@ class PHPUnit_Util_Filter
 {
     /**
      * @var    boolean
-     * @access public
-     * @static
      */
     public static $addUncoveredFilesFromWhitelist = TRUE;
 
     /**
      * @var    boolean
-     * @access public
-     * @static
      */
     public static $filterPHPUnit = TRUE;
 
     /**
      * @var    boolean
-     * @access protected
-     * @static
      */
     protected static $filter = TRUE;
 
     /**
      * @var    boolean
-     * @access protected
-     * @static
      */
     protected static $blackListConverstionForWindowsDone = FALSE;
 
@@ -92,8 +84,6 @@ class PHPUnit_Util_Filter
      * Source files that are blacklisted.
      *
      * @var    array
-     * @access protected
-     * @static
      */
     protected static $blacklistedFiles = array(
       'DEFAULT' => array(),
@@ -135,8 +125,6 @@ class PHPUnit_Util_Filter
      * Source files that are whitelisted.
      *
      * @var    array
-     * @access protected
-     * @static
      */
     protected static $whitelistedFiles = array();
 
@@ -146,8 +134,6 @@ class PHPUnit_Util_Filter
      * @param  string $directory
      * @param  string $suffix
      * @param  string $group
-     * @access public
-     * @static
      * @since  Method available since Release 3.1.5
      */
     public static function addDirectoryToFilter($directory, $suffix = '.php', $group = 'DEFAULT')
@@ -164,8 +150,6 @@ class PHPUnit_Util_Filter
      *
      * @param  string $filename
      * @param  string $group
-     * @access public
-     * @static
      * @since  Method available since Release 2.1.0
      */
     public static function addFileToFilter($filename, $group = 'DEFAULT')
@@ -189,8 +173,6 @@ class PHPUnit_Util_Filter
      * @param  string $directory
      * @param  string $suffix
      * @param  string $group
-     * @access public
-     * @static
      * @since  Method available since Release 3.1.5
      */
     public static function removeDirectoryFromFilter($directory, $suffix = '.php', $group = 'DEFAULT')
@@ -207,8 +189,6 @@ class PHPUnit_Util_Filter
      *
      * @param  string $filename
      * @param  string $group
-     * @access public
-     * @static
      * @since  Method available since Release 2.1.0
      */
     public static function removeFileFromFilter($filename, $group = 'DEFAULT')
@@ -231,8 +211,6 @@ class PHPUnit_Util_Filter
      *
      * @param  string $directory
      * @param  string $suffix
-     * @access public
-     * @static
      * @since  Method available since Release 3.1.5
      */
     public static function addDirectoryToWhitelist($directory, $suffix = '.php')
@@ -251,8 +229,6 @@ class PHPUnit_Util_Filter
      * When the whitelist is not empty, whitelisting is used.
      *
      * @param  string $filename
-     * @access public
-     * @static
      * @since  Method available since Release 3.1.0
      */
     public static function addFileToWhitelist($filename)
@@ -271,8 +247,6 @@ class PHPUnit_Util_Filter
      *
      * @param  string $directory
      * @param  string $suffix
-     * @access public
-     * @static
      * @since  Method available since Release 3.1.5
      */
     public static function removeDirectoryFromWhitelist($directory, $suffix = '.php')
@@ -288,8 +262,6 @@ class PHPUnit_Util_Filter
      * Removes a file from the whitelist.
      *
      * @param  string $filename
-     * @access public
-     * @static
      * @since  Method available since Release 3.1.0
      */
     public static function removeFileFromWhitelist($filename)
@@ -319,8 +291,6 @@ class PHPUnit_Util_Filter
      * @param  array   $codeCoverageInformation
      * @param  boolean $filterTests
      * @return array
-     * @access public
-     * @static
      */
     public static function getFileCodeCoverageDisposition(array $codeCoverageInformation, $filterTests = TRUE)
     {
@@ -352,8 +322,6 @@ class PHPUnit_Util_Filter
      * @param  array   $codeCoverageInformation
      * @param  boolean $addUncoveredFilesFromWhitelist
      * @return array
-     * @access public
-     * @static
      */
     public static function getFilteredCodeCoverage(array $codeCoverageInformation, $filterTests = TRUE)
     {
@@ -405,8 +373,6 @@ class PHPUnit_Util_Filter
      * @param  boolean   $filterTests
      * @param  boolean   $asString
      * @return string
-     * @access public
-     * @static
      */
     public static function getFilteredStacktrace(Exception $e, $filterTests = TRUE, $asString = TRUE)
     {
@@ -439,8 +405,6 @@ class PHPUnit_Util_Filter
      *
      * @param  boolean $filter
      * @throws InvalidArgumentException
-     * @access public
-     * @static
      * @since  Method available since Release 3.0.0
      */
     public static function setFilter($filter)
@@ -460,8 +424,6 @@ class PHPUnit_Util_Filter
      * @param  string $directory
      * @param  string $suffix
      * @return Iterator
-     * @access protected
-     * @static
      * @since  Method available since Release 3.1.5
      */
     protected static function getIterator($directory, $suffix)
@@ -479,8 +441,6 @@ class PHPUnit_Util_Filter
      * @param  boolean $filterTests
      * @param  boolean $ignoreWhitelist
      * @return boolean
-     * @access protected
-     * @static
      * @since  Method available since Release 2.1.3
      */
     protected static function isFiltered($filename, $filterTests = TRUE, $ignoreWhitelist = FALSE)

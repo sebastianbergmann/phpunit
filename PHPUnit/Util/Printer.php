@@ -65,19 +65,16 @@ abstract class PHPUnit_Util_Printer
 {
     /**
      * @var    resource
-     * @access protected
      */
     protected $out;
 
     /**
      * @var    string
-     * @access protected
      */
     protected $outTarget;
 
     /**
      * @var    boolean
-     * @access protected
      */
     protected $printsHTML = FALSE;
 
@@ -86,7 +83,6 @@ abstract class PHPUnit_Util_Printer
      *
      * @param  mixed $out
      * @throws InvalidArgumentException
-     * @access public
      */
     public function __construct($out = NULL)
     {
@@ -114,7 +110,6 @@ abstract class PHPUnit_Util_Printer
     /**
      * Flush buffer, optionally tidy up HTML, and close output.
      *
-     * @access public
      */
     public function flush()
     {
@@ -131,7 +126,6 @@ abstract class PHPUnit_Util_Printer
 
     /**
      * @param  string $buffer
-     * @access public
      */
     public function write($buffer)
     {

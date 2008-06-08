@@ -68,8 +68,6 @@ class PHPUnit_Util_Filesystem
      *
      * @param  string $file
      * @return mixed
-     * @access public
-     * @static
      * @author Mattis Stordalen Flister <mattis@xait.no>
      * @since  Method available since Release 3.2.9
      */
@@ -97,8 +95,6 @@ class PHPUnit_Util_Filesystem
      *
      * @param  array $paths
      * @return string
-     * @access public
-     * @static
      * @since  Method available since Release 3.1.0
      */
     public static function getCommonPath(array $paths)
@@ -152,8 +148,6 @@ class PHPUnit_Util_Filesystem
      *
      * @param  string $filename
      * @return string
-     * @access public
-     * @static
      * @author Michael Lively Jr. <m@digitalsandwich.com>
      */
     public static function getSafeFilename($filename)

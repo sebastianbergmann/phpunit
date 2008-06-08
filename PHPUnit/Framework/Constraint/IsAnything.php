@@ -92,7 +92,6 @@ class PHPUnit_Framework_Constraint_IsAnything extends PHPUnit_Framework_Constrai
      * Returns a string representation of the constraint.
      *
      * @return string
-     * @access public
      */
     public function toString()
     {

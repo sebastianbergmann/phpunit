@@ -70,7 +70,6 @@ interface PHPUnit_Framework_Test extends Countable
      *
      * @param  PHPUnit_Framework_TestResult $result
      * @return PHPUnit_Framework_TestResult
-     * @access public
      */
     public function run(PHPUnit_Framework_TestResult $result = NULL);
 }

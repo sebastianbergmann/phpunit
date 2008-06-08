@@ -64,7 +64,6 @@ class BankAccount
      * The bank account's balance.
      *
      * @var    float
-     * @access protected
      */
     protected $balance = 0;
 
@@ -72,7 +71,6 @@ class BankAccount
      * Returns the bank account's balance.
      *
      * @return float
-     * @access public
      */
     public function getBalance()
     {
@@ -84,7 +82,6 @@ class BankAccount
      *
      * @param  float $balance
      * @throws BankAccountException
-     * @access protected
      */
     protected function setBalance($balance)
     {
@@ -100,7 +97,6 @@ class BankAccount
      *
      * @param  float $balance
      * @throws BankAccountException
-     * @access public
      */
     public function depositMoney($balance)
     {
@@ -114,7 +110,6 @@ class BankAccount
      *
      * @param  float $balance
      * @throws BankAccountException
-     * @access public
      */
     public function withdrawMoney($balance)
     {

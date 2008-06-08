@@ -65,25 +65,21 @@ class PHPUnit_Util_Skeleton
 {
     /**
      * @var    string
-     * @access protected
      */
     protected $className;
 
     /**
      * @var    string
-     * @access protected
      */
     protected $classSourceFile;
 
     /**
      * @var    string
-     * @access protected
      */
     protected $testSourceFile;
 
     /**
      * @var    array
-     * @access protected
      */
     protected $methodNameCounter = array();
 
@@ -93,7 +89,6 @@ class PHPUnit_Util_Skeleton
      * @param  string  $className
      * @param  string  $classSourceFile
      * @throws RuntimeException
-     * @access public
      */
     public function __construct($className, $classSourceFile = '')
     {
@@ -157,7 +152,6 @@ class PHPUnit_Util_Skeleton
      *
      * @param  boolean $verbose
      * @return mixed
-     * @access public
      */
     public function generate($verbose = FALSE)
     {
@@ -367,7 +361,6 @@ class PHPUnit_Util_Skeleton
      * Generates the test class and writes it to a source file.
      *
      * @param  string  $file
-     * @access public
      */
     public function write($file = '')
     {
@@ -383,7 +376,6 @@ class PHPUnit_Util_Skeleton
 
     /**
      * @return string
-     * @access public
      * @since  Method available since Release 3.0.0
      */
     public function getTestSourceFile()

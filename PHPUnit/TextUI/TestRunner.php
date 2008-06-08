@@ -90,21 +90,16 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
 
     /**
      * @var    PHPUnit_Runner_TestSuiteLoader
-     * @access protected
-     * @static
      */
     protected static $loader = NULL;
 
     /**
      * @var    PHPUnit_TextUI_ResultPrinter
-     * @access protected
      */
     protected $printer = NULL;
 
     /**
      * @var    boolean
-     * @access protected
-     * @static
      */
     protected static $versionStringPrinted = FALSE;
 
@@ -112,8 +107,6 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
      * @param  mixed $test
      * @param  array $arguments
      * @throws InvalidArgumentException
-     * @access public
-     * @static
      */
     public static function run($test, array $arguments = array())
     {
@@ -139,8 +132,6 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
      * Runs a single test and waits until the user types RETURN.
      *
      * @param  PHPUnit_Framework_Test $suite
-     * @access public
-     * @static
      */
     public static function runAndWait(PHPUnit_Framework_Test $suite)
     {
@@ -157,7 +148,6 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
 
     /**
      * @return PHPUnit_Framework_TestResult
-     * @access protected
      */
     protected function createTestResult()
     {
@@ -168,7 +158,6 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
      * @param  PHPUnit_Framework_Test $suite
      * @param  array                  $arguments
      * @return PHPUnit_Framework_TestResult
-     * @access public
      */
     public function doRun(PHPUnit_Framework_Test $suite, array $arguments = array())
     {
@@ -396,7 +385,6 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
 
     /**
      * @param  boolean $wait
-     * @access protected
      */
     protected function pause($wait)
     {
@@ -413,7 +401,6 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
 
     /**
      * @param  PHPUnit_TextUI_ResultPrinter $resultPrinter
-     * @access public
      */
     public function setPrinter(PHPUnit_TextUI_ResultPrinter $resultPrinter)
     {
@@ -424,7 +411,6 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
      * A test started.
      *
      * @param  string  $testName
-     * @access public
      */
     public function testStarted($testName)
     {
@@ -434,7 +420,6 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
      * A test ended.
      *
      * @param  string  $testName
-     * @access public
      */
     public function testEnded($testName)
     {
@@ -446,7 +431,6 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
      * @param  integer                                 $status
      * @param  PHPUnit_Framework_Test                 $test
      * @param  PHPUnit_Framework_AssertionFailedError $e
-     * @access public
      */
     public function testFailed($status, PHPUnit_Framework_Test $test, PHPUnit_Framework_AssertionFailedError $e)
     {
@@ -457,7 +441,6 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
      * a test suite.
      *
      * @param  string  $message
-     * @access protected
      */
     protected function runFailed($message)
     {
@@ -470,7 +453,6 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
      * @param  string $directory
      * @return string
      * @throws RuntimeException
-     * @access protected
      * @since  Method available since Release 3.0.0
      */
     protected function getDirectory($directory)
@@ -493,7 +475,6 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
 
     /**
      * @param  string $buffer
-     * @access protected
      * @since  Method available since Release 3.1.0
      */
     protected static function write($buffer)
@@ -509,7 +490,6 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
      * Returns the loader to be used.
      *
      * @return PHPUnit_Runner_TestSuiteLoader
-     * @access public
      * @since  Method available since Release 2.2.0
      */
     public function getLoader()
@@ -525,8 +505,6 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
      * Sets the loader to be used.
      *
      * @param PHPUnit_Runner_TestSuiteLoader $loader
-     * @access public
-     * @static
      * @since  Method available since Release 3.0.0
      */
     public static function setLoader(PHPUnit_Runner_TestSuiteLoader $loader)
@@ -535,7 +513,6 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
     }
 
     /**
-     * @access public
      */
     public static function showError($message)
     {
@@ -547,8 +524,6 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
 
 
     /**
-     * @access public
-     * @static
      */
     public static function printVersionString()
     {
@@ -560,7 +535,6 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
 
     /**
      * @param  array $arguments
-     * @access protected
      * @since  Method available since Release 3.2.1
      */
     protected function handleConfiguration(array &$arguments)
