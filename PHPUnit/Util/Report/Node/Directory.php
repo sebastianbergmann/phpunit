@@ -330,20 +330,19 @@ class PHPUnit_Util_Report_Node_Directory extends PHPUnit_Util_Report_Node
      * @param string  $target
      * @param string  $title
      * @param string  $charset
-     * @param boolean $highlight
      * @param integer $lowUpperBound
      * @param integer $highLowerBound
      * @access public
      */
-    public function render($target, $title, $charset = 'ISO-8859-1', $highlight = FALSE, $lowUpperBound = 35, $highLowerBound = 70)
+    public function render($target, $title, $charset = 'ISO-8859-1', $lowUpperBound = 35, $highLowerBound = 70)
     {
         $this->doRender(
-          $target, $title, $charset, $highlight, $lowUpperBound, $highLowerBound
+          $target, $title, $charset, $lowUpperBound, $highLowerBound
         );
 
         foreach ($this->children as $child) {
             $child->render(
-              $target, $title, $charset, $highlight, $lowUpperBound, $highLowerBound
+              $target, $title, $charset, $lowUpperBound, $highLowerBound
             );
         }
 
@@ -354,12 +353,11 @@ class PHPUnit_Util_Report_Node_Directory extends PHPUnit_Util_Report_Node
      * @param string  $target
      * @param string  $title
      * @param string  $charset
-     * @param boolean $highlight
      * @param integer $lowUpperBound
      * @param integer $highLowerBound
      * @access protected
      */
-    protected function doRender($target, $title, $charset, $highlight, $lowUpperBound, $highLowerBound)
+    protected function doRender($target, $title, $charset, $lowUpperBound, $highLowerBound)
     {
         $cleanId = PHPUnit_Util_Filesystem::getSafeFilename($this->getId());
         $file    = $target . $cleanId . '.html';

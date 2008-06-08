@@ -145,7 +145,8 @@ abstract class PHPUnit_Util_Report_Node
      * @return string
      * @access public
      */
-    public function getId() {
+    public function getId()
+    {
         if (!isset($this->cache['id'])) {
             if ($this->parent === NULL) {
                 $this->cache['id'] = 'index';
@@ -195,7 +196,8 @@ abstract class PHPUnit_Util_Report_Node
      * @return string
      * @access public
      */
-    public function getLink($full) {
+    public function getLink($full)
+    {
         if (substr($this->name, -1) == DIRECTORY_SEPARATOR) {
             $name = substr($this->name, 0, -1);
         } else {
@@ -232,7 +234,8 @@ abstract class PHPUnit_Util_Report_Node
      * @return string
      * @access public
      */
-    public function getPath() {
+    public function getPath()
+    {
         if (!isset($this->cache['path'])) {
             if ($this->parent === NULL) {
                 $this->cache['path'] = $this->getName(FALSE, TRUE);
@@ -390,7 +393,7 @@ abstract class PHPUnit_Util_Report_Node
      * @param  string                $charset
      * @access public
      */
-   protected function setTemplateVars(PHPUnit_Util_Template $template, $title, $charset)
+    protected function setTemplateVars(PHPUnit_Util_Template $template, $title, $charset)
     {
         $template->setVar(
           array(
@@ -477,12 +480,11 @@ abstract class PHPUnit_Util_Report_Node
      * @param string  $target
      * @param string  $title
      * @param string  $charset
-     * @param boolean $highlight
      * @param integer $lowUpperBound
      * @param integer $highLowerBound
      * @access public
      * @abstract
      */
-    abstract public function render($target, $title, $charset = 'ISO-8859-1', $highlight = FALSE, $lowUpperBound = 35, $highLowerBound = 70);
+    abstract public function render($target, $title, $charset = 'ISO-8859-1', $lowUpperBound = 35, $highLowerBound = 70);
 }
 ?>

@@ -180,67 +180,72 @@ class Framework_MockObjectTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('pass', $mock->callback('foo', 'bar'));
     }
 
-     public function testMockClassOnlyGeneratedOnce()
-     {
-         $mock1 = $this->getMock('AnInterface');
-         $mock2 = $this->getMock('AnInterface');
-         $this->assertEquals(get_class($mock1), get_class($mock2));
-     }
+    public function testMockClassOnlyGeneratedOnce()
+    {
+        $mock1 = $this->getMock('AnInterface');
+        $mock2 = $this->getMock('AnInterface');
 
-     public function testMockClassDifferentForPartialMocks()
-     {
-         $mock1 = $this->getMock('PartialMockTestClass');
-         $mock2 = $this->getMock('PartialMockTestClass', array('doSomething'));
-         $mock3 = $this->getMock('PartialMockTestClass', array('doSomething'));
-         $mock4 = $this->getMock('PartialMockTestClass', array('doAnotherThing'));
-         $mock5 = $this->getMock('PartialMockTestClass', array('doAnotherThing'));
-         $this->assertNotEquals(get_class($mock1), get_class($mock2));
-         $this->assertNotEquals(get_class($mock1), get_class($mock3));
-         $this->assertNotEquals(get_class($mock1), get_class($mock4));
-         $this->assertNotEquals(get_class($mock1), get_class($mock5));
-         $this->assertEquals(get_class($mock2), get_class($mock3));
-         $this->assertNotEquals(get_class($mock2), get_class($mock4));
-         $this->assertNotEquals(get_class($mock2), get_class($mock5));
-         $this->assertEquals(get_class($mock4), get_class($mock5));
-     }
+        $this->assertEquals(get_class($mock1), get_class($mock2));
+    }
 
-     public function testMockClassStoreOverrulable()
-     {
-         $mock1 = $this->getMock('PartialMockTestClass');
-         $mock2 = $this->getMock('PartialMockTestClass', array(), array(), 'MyMockClassNameForPartialMockTestClass1');
-         $mock3 = $this->getMock('PartialMockTestClass');
-         $mock4 = $this->getMock('PartialMockTestClass', array('doSomething'), array(), 'AnotherMockClassNameForPartialMockTestClass');
-         $mock5 = $this->getMock('PartialMockTestClass', array(), array(), 'MyMockClassNameForPartialMockTestClass2');
-         $this->assertNotEquals(get_class($mock1), get_class($mock2));
-         $this->assertEquals(get_class($mock1), get_class($mock3));
-         $this->assertNotEquals(get_class($mock1), get_class($mock4));
-         $this->assertNotEquals(get_class($mock2), get_class($mock3));
-         $this->assertNotEquals(get_class($mock2), get_class($mock4));
-         $this->assertNotEquals(get_class($mock2), get_class($mock5));
-         $this->assertNotEquals(get_class($mock3), get_class($mock4));
-         $this->assertNotEquals(get_class($mock3), get_class($mock5));
-         $this->assertNotEquals(get_class($mock4), get_class($mock5));
-     }
+    public function testMockClassDifferentForPartialMocks()
+    {
+        $mock1 = $this->getMock('PartialMockTestClass');
+        $mock2 = $this->getMock('PartialMockTestClass', array('doSomething'));
+        $mock3 = $this->getMock('PartialMockTestClass', array('doSomething'));
+        $mock4 = $this->getMock('PartialMockTestClass', array('doAnotherThing'));
+        $mock5 = $this->getMock('PartialMockTestClass', array('doAnotherThing'));
 
-     public function testMockClassStoreOverruleSameClassNameThrowsException()
-     {
-         $mock1 = $this->getMock('PartialMockTestClass', array(), array(), __FUNCTION__);
-         $this->setExpectedException('RuntimeException');
-         $mock2 = $this->getMock('PartialMockTestClass', array(), array(), __FUNCTION__);
-     }
+        $this->assertNotEquals(get_class($mock1), get_class($mock2));
+        $this->assertNotEquals(get_class($mock1), get_class($mock3));
+        $this->assertNotEquals(get_class($mock1), get_class($mock4));
+        $this->assertNotEquals(get_class($mock1), get_class($mock5));
+        $this->assertEquals(get_class($mock2), get_class($mock3));
+        $this->assertNotEquals(get_class($mock2), get_class($mock4));
+        $this->assertNotEquals(get_class($mock2), get_class($mock5));
+        $this->assertEquals(get_class($mock4), get_class($mock5));
+    }
 
-     public function testOriginalConstructorSettingConsidered()
-     {
-         $mock1 = $this->getMock('PartialMockTestClass');
-         $mock2 = $this->getMock('PartialMockTestClass', array(), array(), '', FALSE);
-         $this->assertNotEquals(get_class($mock1), get_class($mock2));
-     }
+    public function testMockClassStoreOverrulable()
+    {
+        $mock1 = $this->getMock('PartialMockTestClass');
+        $mock2 = $this->getMock('PartialMockTestClass', array(), array(), 'MyMockClassNameForPartialMockTestClass1');
+        $mock3 = $this->getMock('PartialMockTestClass');
+        $mock4 = $this->getMock('PartialMockTestClass', array('doSomething'), array(), 'AnotherMockClassNameForPartialMockTestClass');
+        $mock5 = $this->getMock('PartialMockTestClass', array(), array(), 'MyMockClassNameForPartialMockTestClass2');
 
-     public function testOriginalCloneSettingConsidered()
-     {
-         $mock1 = $this->getMock('PartialMockTestClass');
-         $mock2 = $this->getMock('PartialMockTestClass', array(), array(), '', TRUE, FALSE);
-         $this->assertNotEquals(get_class($mock1), get_class($mock2));
-     }
+        $this->assertNotEquals(get_class($mock1), get_class($mock2));
+        $this->assertEquals(get_class($mock1), get_class($mock3));
+        $this->assertNotEquals(get_class($mock1), get_class($mock4));
+        $this->assertNotEquals(get_class($mock2), get_class($mock3));
+        $this->assertNotEquals(get_class($mock2), get_class($mock4));
+        $this->assertNotEquals(get_class($mock2), get_class($mock5));
+        $this->assertNotEquals(get_class($mock3), get_class($mock4));
+        $this->assertNotEquals(get_class($mock3), get_class($mock5));
+        $this->assertNotEquals(get_class($mock4), get_class($mock5));
+    }
+
+    public function testMockClassStoreOverruleSameClassNameThrowsException()
+    {
+        $mock1 = $this->getMock('PartialMockTestClass', array(), array(), __FUNCTION__);
+        $this->setExpectedException('RuntimeException');
+        $mock2 = $this->getMock('PartialMockTestClass', array(), array(), __FUNCTION__);
+    }
+
+    public function testOriginalConstructorSettingConsidered()
+    {
+        $mock1 = $this->getMock('PartialMockTestClass');
+        $mock2 = $this->getMock('PartialMockTestClass', array(), array(), '', FALSE);
+
+        $this->assertNotEquals(get_class($mock1), get_class($mock2));
+    }
+
+    public function testOriginalCloneSettingConsidered()
+    {
+        $mock1 = $this->getMock('PartialMockTestClass');
+        $mock2 = $this->getMock('PartialMockTestClass', array(), array(), '', TRUE, FALSE);
+
+        $this->assertNotEquals(get_class($mock1), get_class($mock2));
+    }
 }
 ?>

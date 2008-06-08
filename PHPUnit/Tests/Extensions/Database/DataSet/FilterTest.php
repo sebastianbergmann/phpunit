@@ -61,29 +61,29 @@ require_once 'PHPUnit/Extensions/Database/Constraint/DataSetIsEqual.php';
  */
 class Extensions_Database_DataSet_FilterTest extends PHPUnit_Framework_TestCase
 {
-	protected $expectedDataSet;
+    protected $expectedDataSet;
 
-	public function setUp()
-	{
-		$this->expectedDataSet = new PHPUnit_Extensions_Database_DataSet_FlatXmlDataSet(
-			__DIR__.'/../_files/XmlDataSets/FilteredTestFixture.xml'
-		);
-	}
+    public function setUp()
+    {
+        $this->expectedDataSet = new PHPUnit_Extensions_Database_DataSet_FlatXmlDataSet(
+            __DIR__.'/../_files/XmlDataSets/FilteredTestFixture.xml'
+        );
+    }
 
-	public function testFilteredDataSet()
-	{
-		$constraint = new PHPUnit_Extensions_Database_Constraint_DataSetIsEqual($this->expectedDataSet);
-		$dataSet = new PHPUnit_Extensions_Database_DataSet_FlatXmlDataSet(
-			__DIR__.'/../_files/XmlDataSets/FilteredTestComparison.xml'
-		);
+    public function testFilteredDataSet()
+    {
+        $constraint = new PHPUnit_Extensions_Database_Constraint_DataSetIsEqual($this->expectedDataSet);
+        $dataSet = new PHPUnit_Extensions_Database_DataSet_FlatXmlDataSet(
+            __DIR__.'/../_files/XmlDataSets/FilteredTestComparison.xml'
+        );
 
-		$filteredDataSet = new PHPUnit_Extensions_Database_DataSet_DataSetFilter($dataSet, array(
-			'table1' => array('table1_id'),
-			'table2' => '*',
-			'table3' => array('table3_id')
-		));
+        $filteredDataSet = new PHPUnit_Extensions_Database_DataSet_DataSetFilter($dataSet, array(
+            'table1' => array('table1_id'),
+            'table2' => '*',
+            'table3' => array('table3_id')
+        ));
 
-		self::assertThat($filteredDataSet, $constraint);
-	}
+        self::assertThat($filteredDataSet, $constraint);
+    }
 }
 ?>

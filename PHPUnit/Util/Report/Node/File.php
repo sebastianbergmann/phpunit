@@ -256,12 +256,11 @@ class PHPUnit_Util_Report_Node_File extends PHPUnit_Util_Report_Node
      * @param string  $target
      * @param string  $title
      * @param string  $charset
-     * @param boolean $highlight
      * @param integer $lowUpperBound
      * @param integer $highLowerBound
      * @access public
      */
-    public function render($target, $title, $charset = 'ISO-8859-1', $highlight = FALSE, $lowUpperBound = 35, $highLowerBound = 70)
+    public function render($target, $title, $charset = 'ISO-8859-1', $lowUpperBound = 35, $highLowerBound = 70)
     {
         if ($this->yui) {
             $template = new PHPUnit_Util_Template(
