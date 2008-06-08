@@ -92,7 +92,7 @@ class PHPUnit_Extensions_Database_Operation_Insert extends PHPUnit_Extensions_Da
 
             return $query;
         } else {
-            return false;
+            return FALSE;
         }
     }
 

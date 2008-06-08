@@ -125,7 +125,6 @@ class Extensions_Database_Operation_RowBasedTest extends PHPUnit_Extensions_Data
             'column4' => 'dvorak'
         ));
 
-
         $table2 = new PHPUnit_Extensions_Database_DataSet_DefaultTable(
             new PHPUnit_Extensions_Database_DataSet_DefaultTableMetaData('table2', array('table2_id', 'column5', 'column6', 'column7', 'column8'))
         );
@@ -182,7 +181,7 @@ class Extensions_Database_Operation_RowBasedTest extends PHPUnit_Extensions_Data
         /* @var $mockOperation PHPUnit_Extensions_Database_Operation_RowBased */
         $mockOperation->execute($connection, $dataSet);
 
-        $this->assertDataSetsEqual(new PHPUnit_Extensions_Database_DataSet_FlatXmlDataSet(dirname(__FILE__).'/../_files/XmlDataSets/RowBasedExecute.xml'), $connection->createDataSet(array('table1', 'table2')));
+        $this->assertDataSetsEqual(new PHPUnit_Extensions_Database_DataSet_FlatXmlDataSet(__DIR__.'/../_files/XmlDataSets/RowBasedExecute.xml'), $connection->createDataSet(array('table1', 'table2')));
     }
 }
 ?>

@@ -66,9 +66,9 @@ PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
  */
 class PHPUnit_Extensions_Database_Operation_Truncate implements PHPUnit_Extensions_Database_Operation_IDatabaseOperation
 {
-    protected $useCascade = false;
+    protected $useCascade = FALSE;
 
-    public function setCascade($cascade = true)
+    public function setCascade($cascade = TRUE)
     {
         $this->useCascade = $cascade;
     }

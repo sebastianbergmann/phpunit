@@ -738,7 +738,9 @@ class PHPUnit_Extensions_SeleniumTestCase_Driver
           urlencode($command)
         );
 
-        for ($i = 0; $i < count($arguments); $i++) {
+        $numArguments = count($arguments);
+
+        for ($i = 0; $i < $numArguments; $i++) {
             $argNum = strval($i + 1);
             $url .= sprintf('&%s=%s', $argNum, urlencode(trim($arguments[$i])));
         }
@@ -747,7 +749,9 @@ class PHPUnit_Extensions_SeleniumTestCase_Driver
             $url .= sprintf('&%s=%s', 'sessionId', $this->sessionId);
         }
 
-        if (!$handle = @fopen($url, 'r')) {
+        $handle = @fopen($url, 'r')
+
+        if (!$handle) {
             throw new RuntimeException(
               'Could not connect to the Selenium RC server.'
             );

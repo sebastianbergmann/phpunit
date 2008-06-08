@@ -360,8 +360,10 @@ class PHPUnit_Util_Class
         if (file_exists($filename)) {
             $file   = file($filename);
             $result = '';
+            $start  = $function->getStartLine() - 1;
+            $end    = $function->getEndLine() - 1;
 
-            for ($line = $function->getStartLine() - 1; $line <= $function->getEndLine() - 1; $line++) {
+            for ($line = $start; $line <= $end; $line++) {
                 $result .= $file[$line];
             }
 

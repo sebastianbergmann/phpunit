@@ -139,7 +139,7 @@ class PHPUnit_Extensions_Database_DB_DefaultDatabaseConnection implements PHPUni
      * @return PHPUnit_Extensions_Database_DataSet_IDataSet
      * @todo Implement the filtered data set.
      */
-    public function createDataSet(Array $tableNames = null)
+    public function createDataSet(Array $tableNames = NULL)
     {
         if (empty($tableNames)) {
             return new PHPUnit_Extensions_Database_DB_DataSet($this);
@@ -189,7 +189,7 @@ class PHPUnit_Extensions_Database_DB_DefaultDatabaseConnection implements PHPUni
      * @param string $whereClause
      * @param int
      */
-    public function getRowCount($tableName, $whereClause = null)
+    public function getRowCount($tableName, $whereClause = NULL)
     {
         $query = "SELECT COUNT(*) FROM {$tableName}";
 
