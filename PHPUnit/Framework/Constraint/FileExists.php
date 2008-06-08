@@ -112,7 +112,6 @@ class PHPUnit_Framework_Constraint_FileExists extends PHPUnit_Framework_Constrai
      * Returns a string representation of the constraint.
      *
      * @return string
-     * @access public
      */
     public function __toString()
     {

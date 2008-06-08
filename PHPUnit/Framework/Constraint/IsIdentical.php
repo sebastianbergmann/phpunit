@@ -125,7 +125,6 @@ class PHPUnit_Framework_Constraint_IsIdentical extends PHPUnit_Framework_Constra
      * Returns a string representation of the constraint.
      *
      * @return string
-     * @access public
      */
     public function __toString()
     {

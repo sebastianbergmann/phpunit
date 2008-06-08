@@ -71,19 +71,16 @@ class PHPUnit_Extensions_Story_Scenario
 {
     /**
      * @var    PHPUnit_Extensions_Story_TestCase
-     * @access protected
      */
     protected $test;
 
     /**
      * @var    array
-     * @access protected
      */
     protected $steps = array();
 
     /**
      * @var    string
-     * @access protected
      */
     protected $lastCalledMethod;
 
@@ -91,7 +88,6 @@ class PHPUnit_Extensions_Story_Scenario
      * Constructor.
      *
      * @param  PHPUnit_Extensions_Story_TestCase $caller
-     * @access public
      */
     public function __construct($test)
     {
@@ -108,7 +104,6 @@ class PHPUnit_Extensions_Story_Scenario
      *
      * @param  array $arguments
      * @return PHPUnit_Extensions_Story_TestCase
-     * @access public
      */
     public function given($arguments)
     {
@@ -120,7 +115,6 @@ class PHPUnit_Extensions_Story_Scenario
      *
      * @param  array $arguments
      * @return PHPUnit_Extensions_Story_TestCase
-     * @access public
      */
     public function when($arguments)
     {
@@ -132,7 +126,6 @@ class PHPUnit_Extensions_Story_Scenario
      *
      * @param  array $arguments
      * @return PHPUnit_Extensions_Story_TestCase
-     * @access public
      */
     public function then($arguments)
     {
@@ -144,7 +137,6 @@ class PHPUnit_Extensions_Story_Scenario
      *
      * @param  array $arguments
      * @return PHPUnit_Extensions_Story_TestCase
-     * @access public
      */
     public function _and($arguments)
     {
@@ -157,7 +149,6 @@ class PHPUnit_Extensions_Story_Scenario
      * Runs this scenario.
      *
      * @param  array $world
-     * @access public
      */
     public function run(array &$world)
     {
@@ -188,7 +179,6 @@ class PHPUnit_Extensions_Story_Scenario
      *
      * @param  PHPUnit_Extensions_Story_Step $step
      * @return PHPUnit_Extensions_Story_TestCase
-     * @access public
      */
     protected function addStep(PHPUnit_Extensions_Story_Step $step)
     {
@@ -201,7 +191,6 @@ class PHPUnit_Extensions_Story_Scenario
      * Returns the steps of this scenario.
      *
      * @return array
-     * @access public
      */
     public function getSteps()
     {

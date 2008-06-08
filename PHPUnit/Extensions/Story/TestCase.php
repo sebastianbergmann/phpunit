@@ -69,13 +69,11 @@ abstract class PHPUnit_Extensions_Story_TestCase extends PHPUnit_Framework_TestC
 {
     /**
      * @var    PHPUnit_Extensions_Story_Scenario
-     * @access protected
      */
     protected $scenario;
 
     /**
      * @var    array
-     * @access protected
      */
     protected $world = array();
 
@@ -85,7 +83,6 @@ abstract class PHPUnit_Extensions_Story_TestCase extends PHPUnit_Framework_TestC
      * @param  string $name
      * @param  array  $data
      * @param  string $dataName
-     * @access public
      */
     public function __construct($name = NULL, array $data = array(), $dataName = '')
     {
@@ -116,7 +113,6 @@ abstract class PHPUnit_Extensions_Story_TestCase extends PHPUnit_Framework_TestC
      * Returns this test's scenario.
      *
      * @return PHPUnit_Extensions_Story_Scenario
-     * @access public
      */
     public function getScenario()
     {
@@ -126,7 +122,6 @@ abstract class PHPUnit_Extensions_Story_TestCase extends PHPUnit_Framework_TestC
     /**
      *
      *
-     * @access protected
      */
     protected function notImplemented($action)
     {
@@ -142,7 +137,6 @@ abstract class PHPUnit_Extensions_Story_TestCase extends PHPUnit_Framework_TestC
      *
      * @param  array $arguments
      * @return PHPUnit_Extensions_Story_TestCase
-     * @access protected
      */
     protected function given($context)
     {
@@ -154,7 +148,6 @@ abstract class PHPUnit_Extensions_Story_TestCase extends PHPUnit_Framework_TestC
      *
      * @param  array $arguments
      * @return PHPUnit_Extensions_Story_TestCase
-     * @access protected
      */
     protected function when($event)
     {
@@ -166,7 +159,6 @@ abstract class PHPUnit_Extensions_Story_TestCase extends PHPUnit_Framework_TestC
      *
      * @param  array $arguments
      * @return PHPUnit_Extensions_Story_TestCase
-     * @access protected
      */
     protected function then($outcome)
     {
@@ -178,7 +170,6 @@ abstract class PHPUnit_Extensions_Story_TestCase extends PHPUnit_Framework_TestC
      *
      * @param  array $arguments
      * @return PHPUnit_Extensions_Story_TestCase
-     * @access protected
      */
     protected function _and($contextOrOutcome)
     {
@@ -189,7 +180,6 @@ abstract class PHPUnit_Extensions_Story_TestCase extends PHPUnit_Framework_TestC
      * Run this test's scenario.
      *
      * @throws RuntimeException
-     * @access protected
      */
     protected function runTest()
     {
@@ -203,8 +193,6 @@ abstract class PHPUnit_Extensions_Story_TestCase extends PHPUnit_Framework_TestC
      * @param  array  $world
      * @param  string $action
      * @param  array  $arguments
-     * @access protected
-     * @abstract
      */
     abstract protected function runGiven(&$world, $action, $arguments);
 
@@ -214,8 +202,6 @@ abstract class PHPUnit_Extensions_Story_TestCase extends PHPUnit_Framework_TestC
      * @param  array  $world
      * @param  string $action
      * @param  array  $arguments
-     * @access protected
-     * @abstract
      */
     abstract protected function runWhen(&$world, $action, $arguments);
 

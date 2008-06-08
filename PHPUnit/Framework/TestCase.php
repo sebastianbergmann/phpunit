@@ -121,7 +121,6 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
      * Setting this attribute in setUp() has no effect!
      *
      * @var    boolean
-     * @access protected
      */
     protected $backupGlobals = TRUE;
 
@@ -132,19 +131,16 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
      * Setting this attribute in setUp() has no effect!
      *
      * @var    boolean
-     * @access protected
      */
     protected $createGlobalsReference = FALSE;
 
     /**
      * @var    array
-     * @access protected
      */
     protected $data = array();
 
     /**
      * @var    string
-     * @access protected
      */
     protected $dataName = '';
 
@@ -152,7 +148,6 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
      * The name of the expected Exception.
      *
      * @var    mixed
-     * @access protected
      */
     protected $expectedException = NULL;
 
@@ -160,7 +155,6 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
      * The message of the expected Exception.
      *
      * @var    string
-     * @access protected
      */
     protected $expectedExceptionMessage = '';
 
@@ -168,7 +162,6 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
      * The code of the expected Exception.
      *
      * @var    integer
-     * @access protected
      */
     protected $expectedExceptionCode;
 
@@ -176,7 +169,6 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
      * Fixture that is shared between the tests of a test suite.
      *
      * @var    mixed
-     * @access protected
      */
     protected $sharedFixture;
 
@@ -184,55 +176,46 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
      * The name of the test case.
      *
      * @var    string
-     * @access protected
      */
     protected $name = NULL;
 
     /**
      * @var    string
-     * @access protected
      */
     protected $exceptionMessage = NULL;
 
     /**
      * @var    integer
-     * @access protected
      */
     protected $exceptionCode = 0;
 
     /**
      * @var    Array
-     * @access protected
      */
     protected $iniSettings = array();
 
     /**
      * @var    Array
-     * @access protected
      */
     protected $locale = array();
 
     /**
      * @var    Array
-     * @access protected
      */
     protected $mockObjects = array();
 
     /**
      * @var    integer
-     * @access protected
      */
     protected $status;
 
     /**
      * @var    string
-     * @access protected
      */
     protected $statusMessage = '';
 
     /**
      * @var    integer
-     * @access protected
      */
     protected $numAssertions = 0;
 
@@ -242,7 +225,6 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
      * @param  string $name
      * @param  array  $data
      * @param  string $dataName
-     * @access public
      */
     public function __construct($name = NULL, array $data = array(), $dataName = '')
     {
@@ -258,7 +240,6 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
      * Returns a string representation of the test case.
      *
      * @return string
-     * @access public
      */
     public function __toString()
     {
@@ -278,7 +259,6 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
      * Counts the number of test cases executed by run(TestResult result).
      *
      * @return integer
-     * @access public
      */
     public function count()
     {
@@ -290,7 +270,6 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
      *
      * @param  boolean $withDataSet
      * @return string
-     * @access public
      */
     public function getName($withDataSet = TRUE)
     {
@@ -303,7 +282,6 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
 
     /**
      * @return string
-     * @access public
      * @since  Method available since Release 3.2.0
      */
     public function getExpectedException()
@@ -315,7 +293,6 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
      * @param  mixed   $exceptionName
      * @param  string  $exceptionMessage
      * @param  integer $exceptionCode
-     * @access public
      * @since  Method available since Release 3.2.0
      */
     public function setExpectedException($exceptionName, $exceptionMessage = '', $exceptionCode = 0)
@@ -368,7 +345,6 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
      * @param  PHPUnit_Framework_TestResult $result
      * @return PHPUnit_Framework_TestResult
      * @throws InvalidArgumentException
-     * @access public
      */
     public function run(PHPUnit_Framework_TestResult $result = NULL)
     {
@@ -384,7 +360,6 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
     /**
      * Runs the bare test sequence.
      *
-     * @access public
      */
     public function runBare()
     {
@@ -469,7 +444,6 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
      * Override to run the test and assert its state.
      *
      * @throws RuntimeException
-     * @access protected
      */
     protected function runTest()
     {
@@ -529,7 +503,6 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
      * Sets the name of a TestCase.
      *
      * @param  string
-     * @access public
      */
     public function setName($name)
     {
@@ -541,7 +514,6 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
      *
      * @param  boolean $backupGlobals
      * @param  boolean $createGlobalsReference
-     * @access public
      * @since  Method available since Release 3.3.0
      */
     public function setGlobalsBackup($backupGlobals = TRUE, $createGlobalsReference = FALSE)
@@ -554,7 +526,6 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
      * Sets the shared fixture.
      *
      * @param  mixed $sharedFixture
-     * @access public
      * @since  Method available since Release 3.1.0
      */
     public function setSharedFixture($sharedFixture)
@@ -571,7 +542,6 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
      * @param  string  $newValue
      * @throws InvalidArgumentException
      * @throws RuntimeException
-     * @access protected
      * @since  Method available since Release 3.0.0
      */
     protected function iniSet($varName, $newValue)
@@ -597,7 +567,6 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
      * @param  string  $locale
      * @throws InvalidArgumentException
      * @throws RuntimeException
-     * @access protected
      * @since  Method available since Release 3.1.0
      */
     protected function setLocale()
@@ -643,7 +612,6 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
      * @param  boolean $callOriginalClone
      * @param  boolean $callAutoload
      * @return object
-     * @access protected
      * @since  Method available since Release 3.0.0
      */
     protected function getMock($className, array $methods = array(), array $arguments = array(), $mockClassName = '', $callOriginalConstructor = TRUE, $callOriginalClone = TRUE, $callAutoload = TRUE)
@@ -677,7 +645,6 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
      * Returns the number of assertions performed by this test.
      *
      * @return integer
-     * @access public
      * @since  Method available since Release 3.3.0
      */
     public function getNumAssertions()
@@ -688,7 +655,6 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
     /**
      * Increments the number of assertions performed by this test.
      *
-     * @access public
      * @since  Method available since Release 3.3.0
      */
     public function incrementAssertionCounter()
@@ -701,7 +667,6 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
      * is executed zero or more times.
      *
      * @return PHPUnit_Framework_MockObject_Matcher_AnyInvokedCount
-     * @access protected
      * @since  Method available since Release 3.0.0
      */
     protected function any()
@@ -714,7 +679,6 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
      * is never executed.
      *
      * @return PHPUnit_Framework_MockObject_Matcher_InvokedCount
-     * @access protected
      * @since  Method available since Release 3.0.0
      */
     protected function never()
@@ -727,7 +691,6 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
      * is executed at least once.
      *
      * @return PHPUnit_Framework_MockObject_Matcher_InvokedAtLeastOnce
-     * @access protected
      * @since  Method available since Release 3.0.0
      */
     protected function atLeastOnce()
@@ -740,7 +703,6 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
      * is executed exactly once.
      *
      * @return PHPUnit_Framework_MockObject_Matcher_InvokedCount
-     * @access protected
      * @since  Method available since Release 3.0.0
      */
     protected function once()
@@ -754,7 +716,6 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
      *
      * @param  integer $count
      * @return PHPUnit_Framework_MockObject_Matcher_InvokedCount
-     * @access protected
      * @since  Method available since Release 3.0.0
      */
     protected function exactly($count)
@@ -768,7 +729,6 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
      *
      * @param  integer $index
      * @return PHPUnit_Framework_MockObject_Matcher_InvokedAtIndex
-     * @access protected
      * @since  Method available since Release 3.0.0
      */
     protected function at($index)
@@ -781,7 +741,6 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
      *
      * @param  mixed $value
      * @return PHPUnit_Framework_MockObject_Stub_Return
-     * @access protected
      * @since  Method available since Release 3.0.0
      */
     protected function returnValue($value)
@@ -794,7 +753,6 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
      *
      * @param  integer $argumentIndex
      * @return PHPUnit_Framework_MockObject_Stub_ReturnArgument
-     * @access protected
      * @since  Method available since Release 3.3.0
      */
     protected function returnArgument($argumentIndex)
@@ -807,7 +765,6 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
      *
      * @param  mixed $callback
      * @return PHPUnit_Framework_MockObject_Stub_Callback
-     * @access protected
      * @since  Method available since Release 3.3.0
      */
     protected function returnCallback($callback)
@@ -820,7 +777,6 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
      *
      * @param  Exception $exception
      * @return PHPUnit_Framework_MockObject_Stub_Exception
-     * @access protected
      * @since  Method available since Release 3.1.0
      */
     protected function throwException(Exception $exception)
@@ -833,7 +789,6 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
      *
      * @param  mixed $value, ...
      * @return PHPUnit_Framework_MockObject_Stub_ConsecutiveCalls
-     * @access protected
      * @since  Method available since Release 3.0.0
      */
     protected function onConsecutiveCalls()
@@ -846,7 +801,6 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
     /**
      * @param  mixed $data
      * @return string
-     * @access protected
      * @since  Method available since Release 3.2.1
      */
     protected function dataToString($data)
@@ -885,7 +839,6 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
      *
      * @param  boolean $includeData
      * @return string
-     * @access protected
      * @since  Method available since Release 3.3.0
      */
     protected function getDataSetAsString($includeData = TRUE)
@@ -913,7 +866,6 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
      * Creates a default TestResult object.
      *
      * @return PHPUnit_Framework_TestResult
-     * @access protected
      */
     protected function createResult()
     {
@@ -924,7 +876,6 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
      * Sets up the fixture, for example, open a network connection.
      * This method is called before a test is executed.
      *
-     * @access protected
      */
     protected function setUp()
     {
@@ -936,7 +887,6 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
      * This method is called before the execution of a test starts
      * and after setUp() is called.
      *
-     * @access protected
      * @since  Method available since Release 3.2.8
      */
     protected function assertPreConditions()
@@ -949,7 +899,6 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
      * This method is called before the execution of a test ends
      * and before tearDown() is called.
      *
-     * @access protected
      * @since  Method available since Release 3.2.8
      */
     protected function assertPostConditions()
@@ -965,7 +914,6 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
      * Tears down the fixture, for example, close a network connection.
      * This method is called after a test is executed.
      *
-     * @access protected
      */
     protected function tearDown()
     {

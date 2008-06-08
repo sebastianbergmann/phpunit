@@ -71,7 +71,6 @@ class PHPUnit_Extensions_TestDecorator extends PHPUnit_Framework_Assert implemen
      * The Test to be decorated.
      *
      * @var    object
-     * @access protected
      */
     protected $test = NULL;
 
@@ -79,7 +78,6 @@ class PHPUnit_Extensions_TestDecorator extends PHPUnit_Framework_Assert implemen
      * Constructor.
      *
      * @param  PHPUnit_Framework_Test $test
-     * @access public
      */
     public function __construct(PHPUnit_Framework_Test $test)
     {
@@ -90,7 +88,6 @@ class PHPUnit_Extensions_TestDecorator extends PHPUnit_Framework_Assert implemen
      * Returns a string representation of the test.
      *
      * @return string
-     * @access public
      */
     public function __toString()
     {
@@ -102,7 +99,6 @@ class PHPUnit_Extensions_TestDecorator extends PHPUnit_Framework_Assert implemen
      * result in a TestResult.
      *
      * @param  PHPUnit_Framework_TestResult $result
-     * @access public
      */
     public function basicRun(PHPUnit_Framework_TestResult $result)
     {
@@ -114,7 +110,6 @@ class PHPUnit_Extensions_TestDecorator extends PHPUnit_Framework_Assert implemen
      * will be run by this test.
      *
      * @return integer
-     * @access public
      */
     public function count()
     {
@@ -125,7 +120,6 @@ class PHPUnit_Extensions_TestDecorator extends PHPUnit_Framework_Assert implemen
      * Creates a default TestResult object.
      *
      * @return PHPUnit_Framework_TestResult
-     * @access protected
      */
     protected function createResult()
     {
@@ -136,7 +130,6 @@ class PHPUnit_Extensions_TestDecorator extends PHPUnit_Framework_Assert implemen
      * Returns the test to be run.
      *
      * @return PHPUnit_Framework_Test
-     * @access public
      */
     public function getTest()
     {
@@ -150,7 +143,6 @@ class PHPUnit_Extensions_TestDecorator extends PHPUnit_Framework_Assert implemen
      * @param  PHPUnit_Framework_TestResult $result
      * @return PHPUnit_Framework_TestResult
      * @throws InvalidArgumentException
-     * @access public
      */
     public function run(PHPUnit_Framework_TestResult $result = NULL)
     {

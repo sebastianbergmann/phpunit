@@ -72,7 +72,6 @@ class PHPUnit_Util_Skeleton_Class extends PHPUnit_Util_Skeleton
      * @param  string  $inClassName
      * @param  string  $inSourceFile
      * @throws RuntimeException
-     * @access public
      */
     public function __construct($inClassName, $inSourceFile = '')
     {
@@ -103,7 +102,6 @@ class PHPUnit_Util_Skeleton_Class extends PHPUnit_Util_Skeleton
      * Generates the class' source.
      *
      * @return mixed
-     * @access public
      */
     public function generate()
     {
@@ -156,7 +154,6 @@ class PHPUnit_Util_Skeleton_Class extends PHPUnit_Util_Skeleton
      * that are called from the test methods.
      *
      * @return array
-     * @access protected
      */
     protected function findMethods()
     {
@@ -193,7 +190,6 @@ class PHPUnit_Util_Skeleton_Class extends PHPUnit_Util_Skeleton
      * that reference the class under test.
      *
      * @return array
-     * @access protected
      */
     protected function findVariablesThatReferenceClass()
     {
@@ -240,7 +236,6 @@ class PHPUnit_Util_Skeleton_Class extends PHPUnit_Util_Skeleton
      *
      * @param  integer $start
      * @return mixed
-     * @access protected
      */
     protected function findVariableName($start)
     {

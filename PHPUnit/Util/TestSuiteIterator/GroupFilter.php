@@ -65,13 +65,11 @@ class PHPUnit_Util_TestSuiteIterator_GroupFilter extends FilterIterator
 {
     /**
      * @var    array
-     * @access protected
      */
     protected $groups = array();
 
     /**
      * @var    array
-     * @access protected
      */
     protected $excludeGroups = array();
 
@@ -79,7 +77,6 @@ class PHPUnit_Util_TestSuiteIterator_GroupFilter extends FilterIterator
      * @param  Iterator $iterator
      * @param  array    $groups
      * @param  array    $excludeGroups
-     * @access public
      */
     public function __construct(Iterator $iterator, array $groups = array(), array $excludeGroups = array())
     {
@@ -91,7 +88,6 @@ class PHPUnit_Util_TestSuiteIterator_GroupFilter extends FilterIterator
 
     /**
      * @return boolean
-     * @access public
      */
     public function accept()
     {

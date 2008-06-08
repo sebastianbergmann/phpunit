@@ -66,8 +66,6 @@ class PHPUnit_Util_Fileloader
      * Path to the PHP interpreter that is to be used.
      *
      * @var    string $phpBinary
-     * @access public
-     * @static
      */
     public static $phpBinary = NULL;
 
@@ -79,8 +77,6 @@ class PHPUnit_Util_Fileloader
      * @param  string  $filename
      * @param  boolean $syntaxCheck
      * @throws RuntimeException
-     * @access public
-     * @static
      */
     public static function checkAndLoad($filename, $syntaxCheck = TRUE)
     {
@@ -109,8 +105,6 @@ class PHPUnit_Util_Fileloader
      * Loads a PHP sourcefile.
      *
      * @param  string $filename
-     * @access protected
-     * @static
      * @since  Method available since Release 3.0.0
      */
     protected static function load($filename)
@@ -156,8 +150,6 @@ class PHPUnit_Util_Fileloader
      *
      * @param  string $filename
      * @throws RuntimeException
-     * @access protected
-     * @static
      * @since  Method available since Release 3.0.0
      */
     protected static function syntaxCheck($filename)

@@ -112,7 +112,6 @@ class PHPUnit_Framework_Constraint_Attribute extends PHPUnit_Framework_Constrain
      * Returns a string representation of the constraint.
      *
      * @return string
-     * @access public
      */
     public function __toString()
     {

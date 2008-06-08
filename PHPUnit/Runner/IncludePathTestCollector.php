@@ -76,26 +76,22 @@ class PHPUnit_Runner_IncludePathTestCollector implements PHPUnit_Runner_TestColl
 {
     /**
      * @var    string
-     * @access protected
      */
     protected $filterIterator;
 
     /**
      * @var    array
-     * @access protected
      */
     protected $paths;
 
     /**
      * @var    string
-     * @access protected
      */
     protected $suffix;
 
     /**
      * @param  array  $paths
      * @param  string $suffix
-     * @access public
      */
     public function __construct(array $paths = array(), $suffix = 'Test.php')
     {
@@ -110,7 +106,6 @@ class PHPUnit_Runner_IncludePathTestCollector implements PHPUnit_Runner_TestColl
 
     /**
      * @return array
-     * @access public
      */
     public function collectTests()
     {
@@ -142,7 +137,6 @@ class PHPUnit_Runner_IncludePathTestCollector implements PHPUnit_Runner_TestColl
      *
      * @param  string $filterIterator
      * @throws InvalidArgumentException
-     * @access public
      */
     public function setFilterIterator($filterIterator)
     {

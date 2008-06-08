@@ -74,7 +74,6 @@ class PHPUnit_Extensions_PhptTestCase implements PHPUnit_Framework_Test, PHPUnit
      * The filename of the .phpt file.
      *
      * @var    string
-     * @access protected
      */
     protected $filename;
 
@@ -82,7 +81,6 @@ class PHPUnit_Extensions_PhptTestCase implements PHPUnit_Framework_Test, PHPUnit
      * Options for PEAR_RunTest.
      *
      * @var    array
-     * @access protected
      */
     protected $options = array();
 
@@ -92,7 +90,6 @@ class PHPUnit_Extensions_PhptTestCase implements PHPUnit_Framework_Test, PHPUnit
      * @param  string $filename
      * @param  array  $options Array with ini settings for the php instance run,
      *                         key being the name if the setting, value the ini value.
-     * @access public
      */
     public function __construct($filename, $options = array())
     {
@@ -121,7 +118,6 @@ class PHPUnit_Extensions_PhptTestCase implements PHPUnit_Framework_Test, PHPUnit
      * Counts the number of test cases executed by run(TestResult result).
      *
      * @return integer
-     * @access public
      */
     public function count()
     {
@@ -135,7 +131,6 @@ class PHPUnit_Extensions_PhptTestCase implements PHPUnit_Framework_Test, PHPUnit
      * @param  array $options Array with ini settings for the php instance run,
      *                        key being the name if the setting, value the ini value.
      * @return PHPUnit_Framework_TestResult
-     * @access public
      */
     public function run(PHPUnit_Framework_TestResult $result = NULL, $options = array())
     {
@@ -232,7 +227,6 @@ class PHPUnit_Extensions_PhptTestCase implements PHPUnit_Framework_Test, PHPUnit
      * Returns the name of the test case.
      *
      * @return string
-     * @access public
      */
     public function getName()
     {
@@ -243,7 +237,6 @@ class PHPUnit_Extensions_PhptTestCase implements PHPUnit_Framework_Test, PHPUnit
      * Returns a string representation of the test case.
      *
      * @return string
-     * @access public
      */
     public function __toString()
     {
