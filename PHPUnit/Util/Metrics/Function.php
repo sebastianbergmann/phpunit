@@ -82,7 +82,6 @@ class PHPUnit_Util_Metrics_Function extends PHPUnit_Util_Metrics
      * @param  string                              $scope
      * @param  ReflectionFunction|ReflectionMethod $function
      * @param  array                               $codeCoverage
-     * @access protected
      */
     protected function __construct($scope, $function, &$codeCoverage = array())
     {
@@ -106,8 +105,6 @@ class PHPUnit_Util_Metrics_Function extends PHPUnit_Util_Metrics
      * @param  ReflectionFunction|ReflectionMethod $function
      * @param  array                               $codeCoverage
      * @return PHPUnit_Util_Metrics_Method
-     * @access public
-     * @static
      */
     public static function factory($function, &$codeCoverage = array())
     {
@@ -132,7 +129,6 @@ class PHPUnit_Util_Metrics_Function extends PHPUnit_Util_Metrics
 
     /**
      * @param  array $codeCoverage
-     * @access public
      */
     public function setCoverage(array &$codeCoverage)
     {
@@ -145,7 +141,6 @@ class PHPUnit_Util_Metrics_Function extends PHPUnit_Util_Metrics
      * Returns the function.
      *
      * @return ReflectionFunction
-     * @access public
      */
     public function getFunction()
     {
@@ -157,7 +152,6 @@ class PHPUnit_Util_Metrics_Function extends PHPUnit_Util_Metrics
      * Alias for getFunction().
      *
      * @return ReflectionMethod
-     * @access public
      */
     public function getMethod()
     {
@@ -168,7 +162,6 @@ class PHPUnit_Util_Metrics_Function extends PHPUnit_Util_Metrics
      * Lines of Code (LOC).
      *
      * @return int
-     * @access public
      */
     public function getLoc()
     {
@@ -179,7 +172,6 @@ class PHPUnit_Util_Metrics_Function extends PHPUnit_Util_Metrics
      * Executable Lines of Code (ELOC).
      *
      * @return int
-     * @access public
      */
     public function getLocExecutable()
     {
@@ -190,7 +182,6 @@ class PHPUnit_Util_Metrics_Function extends PHPUnit_Util_Metrics
      * Executed Lines of Code.
      *
      * @return int
-     * @access public
      */
     public function getLocExecuted()
     {
@@ -201,7 +192,6 @@ class PHPUnit_Util_Metrics_Function extends PHPUnit_Util_Metrics
      * Returns the Code Coverage for the method.
      *
      * @return float
-     * @access public
      */
     public function getCoverage()
     {
@@ -212,7 +202,6 @@ class PHPUnit_Util_Metrics_Function extends PHPUnit_Util_Metrics
      * Calculates the Code Coverage for the method.
      *
      * @param  array $codeCoverage
-     * @access protected
      */
     protected function calculateCodeCoverage(&$codeCoverage)
     {

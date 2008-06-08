@@ -66,7 +66,6 @@ class PHPUnit_Util_Skeleton_Test extends PHPUnit_Util_Skeleton
 {
     /**
      * @var    array
-     * @access protected
      */
     protected $methodNameCounter = array();
 
@@ -76,7 +75,6 @@ class PHPUnit_Util_Skeleton_Test extends PHPUnit_Util_Skeleton
      * @param  string  $inClassName
      * @param  string  $inSourceFile
      * @throws RuntimeException
-     * @access public
      */
     public function __construct($inClassName, $inSourceFile = '')
     {
@@ -141,7 +139,6 @@ class PHPUnit_Util_Skeleton_Test extends PHPUnit_Util_Skeleton
      *
      * @param  boolean $verbose
      * @return mixed
-     * @access public
      */
     public function generate($verbose = FALSE)
     {

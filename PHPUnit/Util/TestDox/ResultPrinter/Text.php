@@ -67,7 +67,6 @@ class PHPUnit_Util_TestDox_ResultPrinter_Text extends PHPUnit_Util_TestDox_Resul
      * Handler for 'start class' event.
      *
      * @param  string $name
-     * @access protected
      */
     protected function startClass($name)
     {
@@ -79,7 +78,6 @@ class PHPUnit_Util_TestDox_ResultPrinter_Text extends PHPUnit_Util_TestDox_Resul
      *
      * @param  string  $name
      * @param  boolean $success
-     * @access protected
      */
     protected function onTest($name, $success = TRUE)
     {
@@ -96,7 +94,6 @@ class PHPUnit_Util_TestDox_ResultPrinter_Text extends PHPUnit_Util_TestDox_Resul
      * Handler for 'end class' event.
      *
      * @param  string $name
-     * @access protected
      */
     protected function endClass($name)
     {

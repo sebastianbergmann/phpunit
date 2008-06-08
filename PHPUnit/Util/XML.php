@@ -67,8 +67,6 @@ class PHPUnit_Util_XML
      *
      * @param  string $string
      * @return string
-     * @access public
-     * @static
      * @since  Method available since Release 3.2.19
      */
     public static function convertToUtf8($string)
@@ -86,8 +84,6 @@ class PHPUnit_Util_XML
      * @param  string  $filename
      * @param  boolean $html
      * @return DOMDocument
-     * @access public
-     * @static
      */
     public static function load($filename, $html = FALSE)
     {
@@ -134,8 +130,6 @@ class PHPUnit_Util_XML
      *
      *
      * @param  DOMNode $node
-     * @access public
-     * @static
      * @since  Method available since Release 3.3.0
      * @author Mattis Stordalen Flister <mattis@xait.no>
      */
@@ -156,8 +150,6 @@ class PHPUnit_Util_XML
      * @param  array $hash
      * @param  array $validKeys
      * @return array
-     * @access public
-     * @static
      * @since  Method available since Release 3.3.0
      * @author Mike Naberezny <mike@maintainable.com>
      * @author Derek DeVries <derek@maintainable.com>
@@ -205,8 +197,6 @@ class PHPUnit_Util_XML
      * @param  string $selector
      * @param  mixed  $content
      * @return array
-     * @access public
-     * @static
      * @since  Method available since Release 3.3.0
      * @author Mike Naberezny <mike@maintainable.com>
      * @author Derek DeVries <derek@maintainable.com>
@@ -315,8 +305,6 @@ class PHPUnit_Util_XML
      * @param  DOMDocument $dom
      * @param  array       $options
      * @return array
-     * @access public
-     * @static
      * @since  Method available since Release 3.3.0
      * @author Mike Naberezny <mike@maintainable.com>
      * @author Derek DeVries <derek@maintainable.com>
@@ -638,8 +626,6 @@ class PHPUnit_Util_XML
      *
      * @param  DOMNode $node
      * @return array
-     * @access protected
-     * @static
      * @since  Method available since Release 3.3.0
      * @author Mike Naberezny <mike@maintainable.com>
      * @author Derek DeVries <derek@maintainable.com>
@@ -667,8 +653,6 @@ class PHPUnit_Util_XML
      *
      * @param  DOMNode $node
      * @return string
-     * @access protected
-     * @static
      * @since  Method available since Release 3.3.0
      * @author Mike Naberezny <mike@maintainable.com>
      * @author Derek DeVries <derek@maintainable.com>

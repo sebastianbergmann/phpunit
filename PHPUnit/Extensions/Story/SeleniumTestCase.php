@@ -95,7 +95,6 @@ abstract class PHPUnit_Extensions_Story_SeleniumTestCase extends PHPUnit_Extensi
      * Returns this test's scenario.
      *
      * @return PHPUnit_Extensions_Story_Scenario
-     * @access public
      */
     public function getScenario()
     {
@@ -105,7 +104,6 @@ abstract class PHPUnit_Extensions_Story_SeleniumTestCase extends PHPUnit_Extensi
     /**
      * This method is used by __call
      *
-     * @access protected
      */
     protected function notImplemented($action)
     {
@@ -121,7 +119,6 @@ abstract class PHPUnit_Extensions_Story_SeleniumTestCase extends PHPUnit_Extensi
      *
      * @param  array $arguments
      * @return PHPUnit_Extensions_Story_TestCase
-     * @access protected
      */
     protected function given($context)
     {
@@ -133,7 +130,6 @@ abstract class PHPUnit_Extensions_Story_SeleniumTestCase extends PHPUnit_Extensi
      *
      * @param  array $arguments
      * @return PHPUnit_Extensions_Story_TestCase
-     * @access protected
      */
     protected function when($event)
     {
@@ -145,7 +141,6 @@ abstract class PHPUnit_Extensions_Story_SeleniumTestCase extends PHPUnit_Extensi
      *
      * @param  array $arguments
      * @return PHPUnit_Extensions_Story_TestCase
-     * @access protected
      */
     protected function then($outcome)
     {
@@ -157,7 +152,6 @@ abstract class PHPUnit_Extensions_Story_SeleniumTestCase extends PHPUnit_Extensi
      *
      * @param  array $arguments
      * @return PHPUnit_Extensions_Story_TestCase
-     * @access protected
      */
     protected function _and($contextOrOutcome)
     {
@@ -168,7 +162,6 @@ abstract class PHPUnit_Extensions_Story_SeleniumTestCase extends PHPUnit_Extensi
      * Run this test's scenario.
      *
      * @throws RuntimeException
-     * @access protected
      */
     protected function runTest()
     {
@@ -193,8 +186,6 @@ abstract class PHPUnit_Extensions_Story_SeleniumTestCase extends PHPUnit_Extensi
      * @param  array  $world
      * @param  string $action
      * @param  array  $arguments
-     * @access protected
-     * @abstract
      */
     abstract protected function runGiven(&$world, $action, $arguments);
 
@@ -204,8 +195,6 @@ abstract class PHPUnit_Extensions_Story_SeleniumTestCase extends PHPUnit_Extensi
      * @param  array  $world
      * @param  string $action
      * @param  array  $arguments
-     * @access protected
-     * @abstract
      */
     abstract protected function runWhen(&$world, $action, $arguments);
 

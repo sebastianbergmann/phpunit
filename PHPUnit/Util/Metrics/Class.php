@@ -80,7 +80,6 @@ class PHPUnit_Util_Metrics_Class extends PHPUnit_Util_Metrics
      *
      * @param  ReflectionClass $class
      * @param  array           $codeCoverage
-     * @access protected
      */
     protected function __construct(ReflectionClass $class, &$codeCoverage = array())
     {
@@ -108,8 +107,6 @@ class PHPUnit_Util_Metrics_Class extends PHPUnit_Util_Metrics
      * @param  ReflectionClass $class
      * @param  array           $codeCoverage
      * @return PHPUnit_Util_Metrics_Class
-     * @access public
-     * @static
      */
     public static function factory(ReflectionClass $class, &$codeCoverage = array())
     {
@@ -128,7 +125,6 @@ class PHPUnit_Util_Metrics_Class extends PHPUnit_Util_Metrics
 
     /**
      * @param  array $codeCoverage
-     * @access public
      */
     public function setCoverage(array &$codeCoverage)
     {
@@ -145,7 +141,6 @@ class PHPUnit_Util_Metrics_Class extends PHPUnit_Util_Metrics
      * Returns the class.
      *
      * @return ReflectionClass
-     * @access public
      */
     public function getClass()
     {
@@ -156,7 +151,6 @@ class PHPUnit_Util_Metrics_Class extends PHPUnit_Util_Metrics
      * Returns the methods of this class.
      *
      * @return array
-     * @access public
      */
     public function getMethods()
     {
@@ -167,7 +161,6 @@ class PHPUnit_Util_Metrics_Class extends PHPUnit_Util_Metrics
      * Lines of Code (LOC).
      *
      * @return int
-     * @access public
      */
     public function getLoc()
     {
@@ -178,7 +171,6 @@ class PHPUnit_Util_Metrics_Class extends PHPUnit_Util_Metrics
      * Executable Lines of Code (ELOC).
      *
      * @return int
-     * @access public
      */
     public function getLocExecutable()
     {
@@ -189,7 +181,6 @@ class PHPUnit_Util_Metrics_Class extends PHPUnit_Util_Metrics
      * Executed Lines of Code.
      *
      * @return int
-     * @access public
      */
     public function getLocExecuted()
     {
@@ -200,7 +191,6 @@ class PHPUnit_Util_Metrics_Class extends PHPUnit_Util_Metrics
      * Returns the Code Coverage for the class.
      *
      * @return float
-     * @access public
      */
     public function getCoverage()
     {
@@ -211,7 +201,6 @@ class PHPUnit_Util_Metrics_Class extends PHPUnit_Util_Metrics
      * Calculates the Code Coverage for the class.
      *
      * @param  array $codeCoverage
-     * @access protected
      */
     protected function calculateCodeCoverage(&$codeCoverage)
     {

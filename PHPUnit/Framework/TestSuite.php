@@ -102,7 +102,6 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
      * Enable or disable the backup and restoration of the $GLOBALS array.
      *
      * @var    boolean
-     * @access protected
      */
     protected $backupGlobals = TRUE;
 
@@ -111,7 +110,6 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
      * for the "global" keyword to work correctly.
      *
      * @var    boolean
-     * @access protected
      */
     protected $createGlobalsReference = FALSE;
 
@@ -119,7 +117,6 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
      * Fixture that is shared between the tests of this test suite.
      *
      * @var    mixed
-     * @access protected
      */
     protected $sharedFixture;
 
@@ -127,7 +124,6 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
      * The name of the test suite.
      *
      * @var    string
-     * @access protected
      */
     protected $name = '';
 
@@ -135,7 +131,6 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
      * The test groups of the test suite.
      *
      * @var    array
-     * @access protected
      */
     protected $groups = array();
 
@@ -143,7 +138,6 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
      * The tests in the test suite.
      *
      * @var    array
-     * @access protected
      */
     protected $tests = array();
 
@@ -151,7 +145,6 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
      * The number of tests in the test suite.
      *
      * @var    integer
-     * @access protected
      */
     protected $numTests = -1;
 
@@ -175,7 +168,6 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
      * @param  mixed  $theClass
      * @param  string $name
      * @throws InvalidArgumentException
-     * @access public
      */
     public function __construct($theClass = '', $name = '')
     {
@@ -266,7 +258,6 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
      * Returns a string representation of the test suite.
      *
      * @return string
-     * @access public
      */
     public function __toString()
     {
@@ -278,7 +269,6 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
      *
      * @param  PHPUnit_Framework_Test $test
      * @param  array                  $groups
-     * @access public
      */
     public function addTest(PHPUnit_Framework_Test $test, $groups = array())
     {
@@ -311,7 +301,6 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
      *
      * @param  mixed $testClass
      * @throws InvalidArgumentException
-     * @access public
      */
     public function addTestSuite($testClass)
     {
@@ -367,7 +356,6 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
      *                              run, key being the name if the setting,
      *                              value the ini value.
      * @throws InvalidArgumentException
-     * @access public
      * @since  Method available since Release 2.3.0
      * @author Stefano F. Rausch <stefano@rausch-e.net>
      */
@@ -446,7 +434,6 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
      *
      * @param  array|Iterator $filenames
      * @throws InvalidArgumentException
-     * @access public
      * @since  Method available since Release 2.3.0
      */
     public function addTestFiles($filenames)
@@ -465,7 +452,6 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
      * Counts the number of test cases that will be run by this test.
      *
      * @return integer
-     * @access public
      */
     public function count()
     {
@@ -487,8 +473,6 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
      * @param  string          $name
      * @param  array           $classGroups
      * @return PHPUnit_Framework_Test
-     * @access public
-     * @static
      */
     public static function createTest(ReflectionClass $theClass, $name, array $classGroups = array())
     {
@@ -580,7 +564,6 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
      * Creates a default TestResult object.
      *
      * @return PHPUnit_Framework_TestResult
-     * @access protected
      */
     protected function createResult()
     {
@@ -591,7 +574,6 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
      * Returns the name of the suite.
      *
      * @return string
-     * @access public
      */
     public function getName()
     {
@@ -602,7 +584,6 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
      * Returns the test groups of the suite.
      *
      * @return array
-     * @access public
      * @since  Method available since Release 3.2.0
      */
     public function getGroups()
@@ -619,7 +600,6 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
      * @param  array                        $excludeGroups
      * @return PHPUnit_Framework_TestResult
      * @throws InvalidArgumentException
-     * @access public
      */
     public function run(PHPUnit_Framework_TestResult $result = NULL, $filter = FALSE, array $groups = array(), array $excludeGroups = array())
     {
@@ -684,7 +664,6 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
      *
      * @param  PHPUnit_Framework_Test        $test
      * @param  PHPUnit_Framework_TestResult  $testResult
-     * @access public
      */
     public function runTest(PHPUnit_Framework_Test $test, PHPUnit_Framework_TestResult $result)
     {
@@ -695,7 +674,6 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
      * Sets the name of the suite.
      *
      * @param  string
-     * @access public
      */
     public function setName($name)
     {
@@ -707,7 +685,6 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
      *
      * @param  integer
      * @return PHPUnit_Framework_Test
-     * @access public
      */
     public function testAt($index)
     {
@@ -722,7 +699,6 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
      * Returns the tests as an enumeration.
      *
      * @return array
-     * @access public
      */
     public function tests()
     {
@@ -734,7 +710,6 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
      *
      * @param  string  $message
      * @throws PHPUnit_Framework_SkippedTestSuiteError
-     * @access public
      * @since  Method available since Release 3.0.0
      */
     public function markTestSuiteSkipped($message = '')
@@ -747,7 +722,6 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
      * @param  string           $groups
      * @param  array            $names
      * @param  ReflectionClass  $theClass
-     * @access protected
      */
     protected function addTestMethod(ReflectionMethod $method, $groups, Array &$names, ReflectionClass $theClass)
     {
@@ -786,8 +760,6 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
     /**
      * @param  ReflectionMethod $method
      * @return boolean
-     * @access public
-     * @static
      */
     public static function isPublicTestMethod(ReflectionMethod $method)
     {
@@ -797,8 +769,6 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
     /**
      * @param  ReflectionMethod $method
      * @return boolean
-     * @access public
-     * @static
      */
     public static function isTestMethod(ReflectionMethod $method)
     {
@@ -815,7 +785,6 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
     /**
      * @param  string  $message
      * @return PHPUnit_Framework_Warning
-     * @access protected
      */
     protected static function warning($message)
     {
@@ -825,7 +794,6 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
     /**
      * @param  boolean $backupGlobals
      * @param  boolean $createGlobalsReference
-     * @access public
      * @since  Method available since Release 3.3.0
      */
     public function setGlobalsBackup($backupGlobals = TRUE, $createGlobalsReference = FALSE)
@@ -838,7 +806,6 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
      * Sets the shared fixture for the tests of this test suite.
      *
      * @param  mixed $sharedFixture
-     * @access public
      * @since  Method available since Release 3.1.0
      */
     public function setSharedFixture($sharedFixture)
@@ -850,7 +817,6 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
      * Returns an iterator for this test suite.
      *
      * @return RecursiveIteratorIterator
-     * @access public
      * @since  Method available since Release 3.1.0
      */
     public function getIterator()
@@ -864,7 +830,6 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
      * Template Method that is called before the tests
      * of this test suite are run.
      *
-     * @access protected
      * @since  Method available since Release 3.1.0
      */
     protected function setUp()
@@ -875,7 +840,6 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
      * Template Method that is called after the tests
      * of this test suite have finished running.
      *
-     * @access protected
      * @since  Method available since Release 3.1.0
      */
     protected function tearDown()

@@ -67,12 +67,10 @@ abstract class PHPUnit_Extensions_PerformanceTestCase extends PHPUnit_Framework_
 {
     /**
      * @var    integer
-     * @access protected
      */
     protected $maxRunningTime = 0;
 
     /**
-     * @access protected
      */
     protected function runTest()
     {
@@ -96,7 +94,6 @@ abstract class PHPUnit_Extensions_PerformanceTestCase extends PHPUnit_Framework_
     /**
      * @param  integer $maxRunningTime
      * @throws InvalidArgumentException
-     * @access public
      * @since  Method available since Release 2.3.0
      */
     public function setMaxRunningTime($maxRunningTime)
@@ -111,7 +108,6 @@ abstract class PHPUnit_Extensions_PerformanceTestCase extends PHPUnit_Framework_
 
     /**
      * @return integer
-     * @access public
      * @since  Method available since Release 2.3.0
      */
     public function getMaxRunningTime()

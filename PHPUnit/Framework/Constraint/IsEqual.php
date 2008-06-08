@@ -141,7 +141,6 @@ class PHPUnit_Framework_Constraint_IsEqual extends PHPUnit_Framework_Constraint
      * Returns a string representation of the constraint.
      *
      * @return string
-     * @access public
      */
     public function __toString()
     {

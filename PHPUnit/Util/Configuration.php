@@ -137,7 +137,6 @@ class PHPUnit_Util_Configuration
      * Loads a PHPUnit configuration file.
      *
      * @param  string $filename
-     * @access public
      */
     public function __construct($filename)
     {
@@ -149,7 +148,6 @@ class PHPUnit_Util_Configuration
      * Returns the configuration for SUT filtering.
      *
      * @return array
-     * @access public
      * @since  Method available since Release 3.2.1
      */
     public function getFilterConfiguration()
@@ -211,7 +209,6 @@ class PHPUnit_Util_Configuration
      * Returns the configuration for groups.
      *
      * @return array
-     * @access public
      * @since  Method available since Release 3.2.1
      */
     public function getGroupConfiguration()
@@ -236,7 +233,6 @@ class PHPUnit_Util_Configuration
      * Returns the logging configuration.
      *
      * @return array
-     * @access public
      */
     public function getLoggingConfiguration()
     {
@@ -293,7 +289,6 @@ class PHPUnit_Util_Configuration
      * Returns the PHP configuration.
      *
      * @return array
-     * @access public
      * @since  Method available since Release 3.2.1
      */
     public function getPHPConfiguration()
@@ -331,7 +326,6 @@ class PHPUnit_Util_Configuration
     /**
      * Handles the PHP configuration.
      *
-     * @access public
      * @since  Method available since Release 3.2.20
      */
     public function handlePHPConfiguration()
@@ -351,7 +345,6 @@ class PHPUnit_Util_Configuration
      * Returns the PHPUnit configuration.
      *
      * @return array
-     * @access public
      * @since  Method available since Release 3.2.14
      */
     public function getPHPUnitConfiguration()
@@ -393,7 +386,6 @@ class PHPUnit_Util_Configuration
      * Returns the SeleniumTestCase browser configuration.
      *
      * @return array
-     * @access public
      * @since  Method available since Release 3.2.9
      */
     public function getSeleniumBrowserConfiguration()
@@ -438,7 +430,6 @@ class PHPUnit_Util_Configuration
      * Returns the test suite configuration.
      *
      * @return PHPUnit_Framework_TestSuite
-     * @access public
      * @since  Method available since Release 3.2.1
      */
     public function getTestSuiteConfiguration()
@@ -483,7 +474,6 @@ class PHPUnit_Util_Configuration
      * @param  string  $value
      * @param  boolean $default
      * @return boolean
-     * @access protected
      * @since  Method available since Release 3.2.3
      */
     protected function getBoolean($value, $default)
@@ -502,7 +492,6 @@ class PHPUnit_Util_Configuration
     /**
      * @param  string $query
      * @return array
-     * @access protected
      * @since  Method available since Release 3.2.3
      */
     protected function readFilterDirectories($query)
@@ -528,7 +517,6 @@ class PHPUnit_Util_Configuration
     /**
      * @param  string $query
      * @return array
-     * @access protected
      * @since  Method available since Release 3.2.3
      */
     protected function readFilterFiles($query)

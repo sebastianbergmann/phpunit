@@ -64,14 +64,12 @@ class PHPUnit_Util_TestSuiteIterator_NameFilter extends FilterIterator
 {
     /**
      * @var    string
-     * @access protected
      */
     protected $filter = FALSE;
 
     /**
      * @param  Iterator $iterator
      * @param  string   $filter
-     * @access public
      */
     public function __construct(Iterator $iterator, $filter = FALSE)
     {
@@ -82,7 +80,6 @@ class PHPUnit_Util_TestSuiteIterator_NameFilter extends FilterIterator
 
     /**
      * @return boolean
-     * @access public
      */
     public function accept()
     {

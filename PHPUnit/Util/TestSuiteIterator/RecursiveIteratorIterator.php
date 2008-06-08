@@ -64,7 +64,6 @@ class PHPUnit_Util_TestSuiteIterator_RecursiveIteratorIterator extends Recursive
 {
     /**
      * @var    PHPUnit_Framework_TestResult
-     * @access protected
      */
     protected $result;
 
@@ -75,7 +74,6 @@ class PHPUnit_Util_TestSuiteIterator_RecursiveIteratorIterator extends Recursive
      * @param  integer                        $mode
      * @param  integer                        $flags
      * @param  PHPUnit_Framework_TestResult   $result
-     * @access public
      */
     public function __construct(PHPUnit_Util_TestSuiteIterator $it, $mode = self::LEAVES_ONLY, $flags = 0, PHPUnit_Framework_TestResult $result)
     {
@@ -87,7 +85,6 @@ class PHPUnit_Util_TestSuiteIterator_RecursiveIteratorIterator extends Recursive
     /**
      * Called right after calling getChildren() and its rewind().
      *
-     * @access public
      */
     public function beginChildren()
     {
@@ -100,7 +97,6 @@ class PHPUnit_Util_TestSuiteIterator_RecursiveIteratorIterator extends Recursive
      * Called after current child iterator is invalid and right before it
      * gets destructed.
      *
-     * @access public
      */
     public function endChildren()
     {

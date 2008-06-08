@@ -72,7 +72,6 @@ class PHPUnit_Util_Metrics_Project extends PHPUnit_Util_Metrics
      *
      * @param  array   $files
      * @param  array   $codeCoverage
-     * @access public
      */
     public function __construct(Array $files, &$codeCoverage = array())
     {
@@ -98,7 +97,6 @@ class PHPUnit_Util_Metrics_Project extends PHPUnit_Util_Metrics
      * Returns the classes of this project.
      *
      * @return array
-     * @access public
      */
     public function getClasses()
     {
@@ -110,7 +108,6 @@ class PHPUnit_Util_Metrics_Project extends PHPUnit_Util_Metrics
      *
      * @param  string $className
      * @return ReflectionClass
-     * @access public
      */
     public function getClass($className)
     {
@@ -121,7 +118,6 @@ class PHPUnit_Util_Metrics_Project extends PHPUnit_Util_Metrics
      * Returns the files of this project.
      *
      * @return array
-     * @access public
      */
     public function getFiles()
     {
@@ -133,7 +129,6 @@ class PHPUnit_Util_Metrics_Project extends PHPUnit_Util_Metrics
      *
      * @param  string $className
      * @return ReflectionClass
-     * @access public
      */
     public function getFile($filename)
     {
@@ -144,7 +139,6 @@ class PHPUnit_Util_Metrics_Project extends PHPUnit_Util_Metrics
      * Functions.
      *
      * @return array
-     * @access public
      */
     public function getFunctions()
     {
@@ -156,7 +150,6 @@ class PHPUnit_Util_Metrics_Project extends PHPUnit_Util_Metrics
      *
      * @param  string $functionName
      * @return ReflectionClass
-     * @access public
      */
     public function getFunction($functionName)
     {
