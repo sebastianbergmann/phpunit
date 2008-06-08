@@ -553,6 +553,12 @@
       <dir name="Database">
        <dir name="_files">
         <dir name="XmlDataSets">
+         <file baseinstalldir="/" name="AllEmptyTableInsertResult.xml" role="test">
+          <tasks:replace from="@package_version@" to="version" type="package-info" />
+         </file>
+         <file baseinstalldir="/" name="AllEmptyTableInsertTest.xml" role="test">
+          <tasks:replace from="@package_version@" to="version" type="package-info" />
+         </file>
          <file baseinstalldir="/" name="DeleteAllOperationTest.xml" role="test">
           <tasks:replace from="@package_version@" to="version" type="package-info" />
          </file>
