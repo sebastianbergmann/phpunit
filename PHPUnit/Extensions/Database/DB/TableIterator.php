@@ -88,7 +88,7 @@ class PHPUnit_Extensions_Database_DB_TableIterator implements PHPUnit_Extensions
      */
     protected $dataSet;
 
-    public function __construct($tableNames, PHPUnit_Extensions_Database_DB_DataSet $dataSet, $reverse = false)
+    public function __construct($tableNames, PHPUnit_Extensions_Database_DB_DataSet $dataSet, $reverse = FALSE)
     {
         $this->tableNames = $tableNames;
         $this->dataSet = $dataSet;
@@ -170,7 +170,7 @@ class PHPUnit_Extensions_Database_DB_TableIterator implements PHPUnit_Extensions
      */
     public function valid()
     {
-        return (current($this->tableNames) !== false);
+        return (current($this->tableNames) !== FALSE);
     }
 }
 ?>

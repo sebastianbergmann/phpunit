@@ -1793,7 +1793,8 @@ abstract class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_Tes
      * @author Mattis Stordalen Flister <mattis@xait.no>
      * @since  Method available since Release 3.2.9
      */
-    protected function matchLocalAndRemotePaths(array $coverage) {
+    protected function matchLocalAndRemotePaths(array $coverage)
+    {
         $coverageWithLocalPaths = array();
 
         foreach ($coverage as $originalRemotePath => $value) {
@@ -1821,7 +1822,8 @@ abstract class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_Tes
      * @author Mattis Stordalen Flister <mattis@xait.no>
      * @since  Method available since Release 3.2.9
      */
-    protected function findDirectorySeparator($path) {
+    protected function findDirectorySeparator($path)
+    {
         if (strpos($path, '/') !== FALSE) {
             return '/';
         }
@@ -1836,7 +1838,8 @@ abstract class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_Tes
      * @author Mattis Stordalen Flister <mattis@xait.no>
      * @since  Method available since Release 3.2.9
      */
-    protected function explodeDirectories($path) {
+    protected function explodeDirectories($path)
+    {
         return explode($this->findDirectorySeparator($path), dirname($path));
     }
 

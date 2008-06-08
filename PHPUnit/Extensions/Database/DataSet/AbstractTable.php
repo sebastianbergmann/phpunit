@@ -123,7 +123,7 @@ class PHPUnit_Extensions_Database_DataSet_AbstractTable implements PHPUnit_Exten
             if (!in_array($column, $this->getTableMetaData()->getColumns()) || $this->getRowCount() <= $row) {
                 throw new InvalidArgumentException("The given row ({$row}) and column ({$column}) do not exist in table {$this->getTableMetaData()->getTableName()}");
             } else {
-                return null;
+                return NULL;
             }
         }
     }

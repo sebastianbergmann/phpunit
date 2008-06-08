@@ -158,7 +158,7 @@ class PHPUnit_Extensions_Database_DB_MetaData_PgSQL extends PHPUnit_Extensions_D
      */
     public function allowsCascading()
     {
-        return true;
+        return TRUE;
     }
 }
 ?>
