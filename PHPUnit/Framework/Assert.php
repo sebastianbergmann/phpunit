@@ -1143,11 +1143,12 @@ abstract class PHPUnit_Framework_Assert
      * @param boolean $checkAttributes
      * @param string  $message
      * @access public
-     * @static 
+     * @static
      * @author Mattis Stordalen Flister <mattis@xait.no>
      * @since  Method available since Release 3.3.0
      */
-    public static function assertEqualXMLStructure(DOMNode $expectedNode, DOMNode $actualNode, $checkAttributes = FALSE, $message = '') {
+    public static function assertEqualXMLStructure(DOMNode $expectedNode, DOMNode $actualNode, $checkAttributes = FALSE, $message = '')
+    {
         self::assertEquals(
           $expectedNode->tagName,
           $actualNode->tagName,
@@ -1228,52 +1229,52 @@ abstract class PHPUnit_Framework_Assert
      * <code>
      * // assert there is an element with an id="my_id"
      * $this->assertXmlFileTag(array('id' => 'my_id'), $xmlFile);
-     *   
+     *
      * // assert that there is a "span" tag
      * $this->assertXmlFileTag(array('tag' => 'span'), $xmlFile);
-     *    
+     *
      * // assert that there is a "span" tag with the content "Hello World"
      * $this->assertXmlFileTag(array('tag'     => 'span',
      *                               'content' => 'Hello World'),
      *                         $xmlFile
      *                        );
-     *    
+     *
      * // assert that there is a "span" tag with content matching the regexp pattern
      * $this->assertXmlFileTag(array('tag'     => 'span',
      *                               'content' => '/Hello D(erek|allas)/'),
      *                         $xmlFile
      *                        );
-     *    
+     *
      * // assert that there is a "span" with an "list" class attribute
      * $this->assertXmlFileTag(array('tag' => 'span',
      *                               'attributes' => array('class' => 'list')),
      *                         $xmlFile
      *                        );
-     *    
+     *
      * // assert that there is a "span" inside of a "div"
      * $this->assertXmlFileTag(array('tag'    => 'span',
      *                               'parent' => array('tag' => 'div')),
      *                         $xmlFile
      *                        );
-     *    
+     *
      * // assert that there is a "span" somewhere inside a "table"
      * $this->assertXmlFileTag(array('tag'      => 'span',
      *                               'ascestor' => array('tag' => 'table')),
      *                         $xmlFile
      *                        );
-     *    
+     *
      * // assert that there is a "span" with at least one "em" child
      * $this->assertXmlFileTag(array('tag'   => 'span',
      *                               'child' => array('tag' => 'em')),
      *                         $xmlFile
      *                        );
-     *    
+     *
      * // assert that there is a "span" containing a (possibly nesxted) "strong" tag.
      * $this->assertXmlFileTag(array('tag'        => 'span',
      *                               'descendant' => array('tag' => 'strong')),
      *                         $xmlFile
      *                        );
-     *    
+     *
      * // assert that there is a "span" containing 5-10 "em" tags as immediate children
      * $this->assertXmlFileTag(array('tag'       => 'span',
      *                               'children'  => array('less_than'    => 11,
@@ -1281,7 +1282,7 @@ abstract class PHPUnit_Framework_Assert
      *                                                    'only'         => array('tag' => 'em'))),
      *                         $xmlFile
      *                        );
-     *    
+     *
      * // get funky: assert that there is a "div", with an "ul" ancestor and a "li" parent
      * // (with class="enum"), and containing a "span" descendant that contains element with
      * // id="my_test" and the text Hello World.. phew
@@ -1359,52 +1360,52 @@ abstract class PHPUnit_Framework_Assert
      * <code>
      * // assert there is an element with an id="my_id"
      * $this->assertXmlStringTag(array('id' => 'my_id'), $xml);
-     *   
+     *
      * // assert that there is a "span" tag
      * $this->assertXmlStringTag(array('tag' => 'span'), $xml);
-     *    
+     *
      * // assert that there is a "span" tag with the content "Hello World"
      * $this->assertXmlStringTag(array('tag'     => 'span',
      *                                 'content' => 'Hello World'),
      *                           $xml
      *                          );
-     *    
+     *
      * // assert that there is a "span" tag with content matching the regexp pattern
      * $this->assertXmlStringTag(array('tag'     => 'span',
      *                                 'content' => '/Hello D(erek|allas)/'),
      *                           $xml
      *                          );
-     *    
+     *
      * // assert that there is a "span" with an "list" class attribute
      * $this->assertXmlStringTag(array('tag' => 'span',
      *                                 'attributes' => array('class' => 'list')),
      *                           $xml
      *                          );
-     *    
+     *
      * // assert that there is a "span" inside of a "div"
      * $this->assertXmlStringTag(array('tag'    => 'span',
      *                                 'parent' => array('tag' => 'div')),
      *                           $xml
      *                          );
-     *    
+     *
      * // assert that there is a "span" somewhere inside a "table"
      * $this->assertXmlStringTag(array('tag'      => 'span',
      *                                 'ascestor' => array('tag' => 'table')),
      *                           $xml
      *                          );
-     *    
+     *
      * // assert that there is a "span" with at least one "em" child
      * $this->assertXmlStringTag(array('tag'   => 'span',
      *                                 'child' => array('tag' => 'em')),
      *                           $xml
      *                          );
-     *    
+     *
      * // assert that there is a "span" containing a (possibly nesxted) "strong" tag.
      * $this->assertXmlStringTag(array('tag'        => 'span',
      *                                 'descendant' => array('tag' => 'strong')),
      *                           $xml
      *                          );
-     *    
+     *
      * // assert that there is a "span" containing 5-10 "em" tags as immediate children
      * $this->assertXmlStringTag(array('tag'       => 'span',
      *                                 'children'  => array('less_than'    => 11,
@@ -1412,7 +1413,7 @@ abstract class PHPUnit_Framework_Assert
      *                                                      'only'         => array('tag' => 'em'))),
      *                           $xml
      *                          );
-     *    
+     *
      * // get funky: assert that there is a "div", with an "ul" ancestor and a "li" parent
      * // (with class="enum"), and containing a "span" descendant that contains element with
      * // id="my_test" and the text Hello World.. phew
@@ -1500,17 +1501,17 @@ abstract class PHPUnit_Framework_Assert
      * <code>
      * // There is an element with the id "binder_1" with the content "Test Foo"
      * $this->assertXmlFileSelect("#binder_1", $xmlFile, "Test Foo");
-     *     
+     *
      * // There are 10 div elements with the class folder:
      * $this->assertXmlFileSelect("div.folder", $xmlFile, 10);
-     *     
+     *
      * // There are more than 2, less than 10 li elements
      * $this->assertXmlFileSelect("ul > li", array('>' => 2, '<' => 10), $xmlFile);
-     *     
+     *
      * // The "#binder_foo" id exists
      * $this->assertXmlFileSelect('#binder_foo", $xmlFile);
      * $this->assertXmlFileSelect('#binder_foo", $xmlFile, '', TRUE);
-     *     
+     *
      * // The "#binder_foo" id DOES NOT exist
      * $this->assertXmlFileSelect('#binder_foo", $xmlFile, '', FALSE);
      * </code>
@@ -1571,17 +1572,17 @@ abstract class PHPUnit_Framework_Assert
      * <code>
      * // There is an element with the id "binder_1" with the content "Test Foo"
      * $this->assertXmlStringSelect("#binder_1", $xml, "Test Foo");
-     *     
+     *
      * // There are 10 div elements with the class folder:
      * $this->assertXmlStringSelect("div.folder", $xml, 10);
-     *     
+     *
      * // There are more than 2, less than 10 li elements
      * $this->assertXmlStringSelect("ul > li", array('>' => 2, '<' => 10), $xml);
-     *     
+     *
      * // The "#binder_foo" id exists
      * $this->assertXmlStringSelect('#binder_foo", $xml);
      * $this->assertXmlStringSelect('#binder_foo", $xml, '', TRUE);
-     *     
+     *
      * // The "#binder_foo" id DOES NOT exist
      * $this->assertXmlStringSelect('#binder_foo", $xml, '', FALSE);
      * </code>
@@ -2175,7 +2176,7 @@ abstract class PHPUnit_Framework_Assert
         if (property_exists($object, $attributeName)) {
             return $object->$attributeName;
         } else {
-            $array         = (array) $object;
+            $array         = (array)$object;
             $protectedName = "\0*\0" . $attributeName;
 
             if (array_key_exists($protectedName, $array)) {
@@ -2259,20 +2260,22 @@ abstract class PHPUnit_Framework_Assert
             } else {
                 if ($exists === TRUE) {
                     self::assertTrue(count($tags) > 0 && $tags[0] instanceof DOMNode, $message);
-                } elseif ($exists === false) {
+                }
+
+                else if ($exists === FALSE) {
                     self::assertFalse(count($tags) > 0 && $tags[0] instanceof DOMNode, $message);
                 }
             }
         }
 
         // check for specific number of elements
-        elseif (is_numeric($content)) {
+        else if (is_numeric($content)) {
             $tagCount = $tags ? count($tags) : 0;
             self::assertEquals($content, $tagCount);
         }
 
         // check for range number of elements
-        elseif (is_array($content) && (isset($content['>']) || isset($content['<']) || 
+        else if (is_array($content) && (isset($content['>']) || isset($content['<']) ||
                 isset($content['>=']) || isset($content['<=']))) {
             $tagCount = $tags ? count($tags) : 0;
 

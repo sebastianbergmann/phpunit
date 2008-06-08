@@ -82,7 +82,7 @@ class Util_XMLTest extends PHPUnit_Framework_TestCase
     {
         $options   = array('testA' => 1, 'testB' => 2);
         $valid     = array('testA', 'testB', 'testC');
-        $expected  = array('testA' => 1, 'testB' => 2, 'testC' => null);
+        $expected  = array('testA' => 1, 'testB' => 2, 'testC' => NULL);
         $validated = PHPUnit_Util_XML::assertValidKeys($options, $valid);
 
         $this->assertEquals($expected, $validated);
@@ -140,7 +140,7 @@ class Util_XMLTest extends PHPUnit_Framework_TestCase
 
     public function testAssertValidKeysThrowsExceptionWhenTypeIsNotArray()
     {
-        foreach (array(null, 'foo', 42) as $bad) {
+        foreach (array(NULL, 'foo', 42) as $bad) {
             try {
                 PHPUnit_Util_XML::assertValidKeys($bad, array());
                 $this->fail();
@@ -327,7 +327,7 @@ class Util_XMLTest extends PHPUnit_Framework_TestCase
     public function testConvertAssertSelectTrue()
     {
         $selector  = '#foo';
-        $content   = true;
+        $content   = TRUE;
         $converted = PHPUnit_Util_XML::convertSelectToTag($selector, $content);
         $tag       = array('id' => 'foo');
 
@@ -339,7 +339,7 @@ class Util_XMLTest extends PHPUnit_Framework_TestCase
     public function testConvertAssertSelectFalse()
     {
         $selector  = '#foo';
-        $content   = false;
+        $content   = FALSE;
         $converted = PHPUnit_Util_XML::convertSelectToTag($selector, $content);
         $tag       = array('id' => 'foo');
 

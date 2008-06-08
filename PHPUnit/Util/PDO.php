@@ -68,14 +68,14 @@ class PHPUnit_Util_PDO
 
         switch ($parsed['phptype']) {
             case 'mysql': {
-                $database      = null;
-                $charset       = null;
-                $host          = null;
-                $port          = null;
-                $socket        = null;
-                $user          = null;
-                $pass          = null;
-                $driverOptions = null;
+                $database      = NULL;
+                $charset       = NULL;
+                $host          = NULL;
+                $port          = NULL;
+                $socket        = NULL;
+                $user          = NULL;
+                $pass          = NULL;
+                $driverOptions = NULL;
 
                 foreach ( $parsed as $key => $val )
                 {
@@ -204,15 +204,15 @@ class PHPUnit_Util_PDO
     public static function parseDSN( $dsn )
     {
         $parsed = array(
-            'phptype'  => false,
-            'dbsyntax' => false,
-            'username' => false,
-            'password' => false,
-            'protocol' => false,
-            'hostspec' => false,
-            'port'     => false,
-            'socket'   => false,
-            'database' => false,
+            'phptype'  => FALSE,
+            'dbsyntax' => FALSE,
+            'username' => FALSE,
+            'password' => FALSE,
+            'protocol' => FALSE,
+            'hostspec' => FALSE,
+            'port'     => FALSE,
+            'socket'   => FALSE,
+            'database' => FALSE,
         );
 
         if ( is_array( $dsn ) )
@@ -226,7 +226,7 @@ class PHPUnit_Util_PDO
         }
 
         // Find phptype and dbsyntax
-        if ( ( $pos = strpos( $dsn, '://' ) ) !== false )
+        if ( ( $pos = strpos( $dsn, '://' ) ) !== FALSE )
         {
             $str = substr( $dsn, 0, $pos );
             $dsn = substr( $dsn, $pos + 3 );
@@ -234,7 +234,7 @@ class PHPUnit_Util_PDO
         else
         {
             $str = $dsn;
-            $dsn = null;
+            $dsn = NULL;
         }
 
         // Get phptype and dbsyntax
@@ -257,11 +257,11 @@ class PHPUnit_Util_PDO
 
         // Get (if found): username and password
         // $dsn => username:password@protocol+hostspec/database
-        if ( ( $at = strrpos( (string) $dsn, '@' ) ) !== false )
+        if ( ( $at = strrpos( (string) $dsn, '@' ) ) !== FALSE )
         {
             $str = substr( $dsn, 0, $at );
             $dsn = substr( $dsn, $at + 1 );
-            if ( ( $pos = strpos( $str, ':' ) ) !== false )
+            if ( ( $pos = strpos( $str, ':' ) ) !== FALSE )
             {
                 $parsed['username'] = rawurldecode( substr( $str, 0, $pos ) );
                 $parsed['password'] = rawurldecode( substr( $str, $pos + 1 ) );
@@ -278,24 +278,24 @@ class PHPUnit_Util_PDO
         {
             // $dsn => proto(proto_opts)/database
             $proto       = $match[1];
-            $proto_opts  = $match[2] ? $match[2] : false;
+            $proto_opts  = $match[2] ? $match[2] : FALSE;
             $dsn         = $match[3];
         }
         else
         {
             // $dsn => protocol+hostspec/database (old format)
-            if ( strpos( $dsn, '+' ) !== false )
+            if ( strpos( $dsn, '+' ) !== FALSE )
             {
                 list( $proto, $dsn ) = explode( '+', $dsn, 2 );
             }
-            if ( strpos( $dsn, '/' ) !== false )
+            if ( strpos( $dsn, '/' ) !== FALSE )
             {
                 list( $proto_opts, $dsn ) = explode( '/', $dsn, 2 );
             }
             else
             {
                 $proto_opts = $dsn;
-                $dsn = null;
+                $dsn = NULL;
             }
         }
 
@@ -304,7 +304,7 @@ class PHPUnit_Util_PDO
         $proto_opts = rawurldecode( $proto_opts );
         if ( $parsed['protocol'] == 'tcp' )
         {
-            if ( strpos( $proto_opts, ':' ) !== false )
+            if ( strpos( $proto_opts, ':' ) !== FALSE )
             {
                 list( $parsed['hostspec'], $parsed['port'] ) = explode( ':', $proto_opts );
             }
@@ -322,7 +322,7 @@ class PHPUnit_Util_PDO
         // $dsn => database
         if ( $dsn )
         {
-            if ( ( $pos = strpos( $dsn, '?' ) ) === false )
+            if ( ( $pos = strpos( $dsn, '?' ) ) === FALSE )
             {
                 // /database
                 $parsed['database'] = rawurldecode( $dsn );
@@ -332,7 +332,7 @@ class PHPUnit_Util_PDO
                 // /database?param1=value1&param2=value2
                 $parsed['database'] = rawurldecode( substr( $dsn, 0, $pos ) );
                 $dsn = substr( $dsn, $pos + 1 );
-                if ( strpos( $dsn, '&') !== false )
+                if ( strpos( $dsn, '&') !== FALSE )
                 {
                     $opts = explode( '&', $dsn );
                 }

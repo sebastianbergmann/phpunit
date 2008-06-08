@@ -69,8 +69,8 @@ if (!class_exists('PHPUnit_Framework_TestResult', FALSE)) {
  */
 class PHPUnit_Framework_TestResult implements Countable
 {
-    protected static $xdebugLoaded = null;
-    protected static $useXdebug = null;
+    protected static $xdebugLoaded = NULL;
+    protected static $useXdebug = NULL;
 
     /**
      * @var    array
@@ -753,7 +753,13 @@ class PHPUnit_Framework_TestResult implements Countable
         return empty($this->errors) && empty($this->failures);
     }
 
-    function cleanUp()
+    /**
+     * Clean up the result object.
+     *
+     * @access public
+     * @since  Method available since Release 3.3.0
+     */
+    public function cleanUp()
     {
         $this->codeCoverageInformation = array();
         $this->skipped                 = array();

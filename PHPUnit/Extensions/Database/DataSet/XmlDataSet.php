@@ -112,7 +112,7 @@ class PHPUnit_Extensions_Database_DataSet_XmlDataSet extends PHPUnit_Extensions_
                             $index++;
                             break;
                         case 'null':
-                            $rowValues[$tableInstanceColumns[$index]] = null;
+                            $rowValues[$tableInstanceColumns[$index]] = NULL;
                             $index++;
                             break;
                         default:

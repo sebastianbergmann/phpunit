@@ -87,7 +87,8 @@ class PHPUnit_Util_Template
      * @throws InvalidArgumentException
      * @access public
      */
-    public function __construct($file = '') {
+    public function __construct($file = '')
+    {
         $this->setFile($file);
     }
 
@@ -98,7 +99,8 @@ class PHPUnit_Util_Template
      * @throws InvalidArgumentException
      * @access public
      */
-    public function setFile($file) {
+    public function setFile($file)
+    {
         if ($file != '' && file_exists($file)) {
             $this->template = file_get_contents($file);
         } else {
@@ -115,7 +117,8 @@ class PHPUnit_Util_Template
      * @param  boolean $merge
      * @access public
      */
-    public function setVar(array $values, $merge = TRUE) {
+    public function setVar(array $values, $merge = TRUE)
+    {
         if (!$merge || empty($this->values)) {
             $this->values = $values;
         } else {
@@ -129,7 +132,8 @@ class PHPUnit_Util_Template
      * @return string
      * @access public
      */
-    public function render() {
+    public function render()
+    {
         $keys = array();
 
         foreach ($this->values as $key => $value) {
@@ -145,8 +149,11 @@ class PHPUnit_Util_Template
      * @param string $target
      * @access public
      */
-    public function renderTo($target) {
-        if ($fp = @fopen($target, 'wt')) {
+    public function renderTo($target)
+    {
+        $fp = @fopen($target, 'wt');
+
+        if ($fp) {
             fwrite($fp, $this->render());
             fclose($fp);
         } else {
@@ -161,7 +168,8 @@ class PHPUnit_Util_Template
      * @access public
      * @since  Method available since Release 3.0.1
      */
-    public static function getDate() {
+    public static function getDate()
+    {
         if (self::$date == '') {
             self::$date = date('D M j G:i:s T Y');
         }

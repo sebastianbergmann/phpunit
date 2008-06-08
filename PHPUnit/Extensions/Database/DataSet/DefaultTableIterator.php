@@ -87,7 +87,7 @@ class PHPUnit_Extensions_Database_DataSet_DefaultTableIterator implements PHPUni
      * @param array $tables
      * @param bool $reverse
      */
-    public function __construct(Array $tables, $reverse = false)
+    public function __construct(Array $tables, $reverse = FALSE)
     {
         $this->tables = $tables;
         $this->reverse = $reverse;
@@ -167,7 +167,7 @@ class PHPUnit_Extensions_Database_DataSet_DefaultTableIterator implements PHPUni
      */
     public function valid()
     {
-        return ($this->current() !== false);
+        return ($this->current() !== FALSE);
     }
 }
 ?>
