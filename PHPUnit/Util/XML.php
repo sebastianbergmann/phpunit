@@ -143,9 +143,9 @@ class PHPUnit_Util_XML
     {
         if ($node->hasChildNodes()) {
             for ($i = $node->childNodes->length - 1; $i >= 0; $i--) {
-                 if (($child = $node->childNodes->item($i)) instanceof DOMCharacterData) {
-                     $node->removeChild($child);
-                 }
+                if (($child = $node->childNodes->item($i)) instanceof DOMCharacterData) {
+                    $node->removeChild($child);
+                }
             }
         }
     }
@@ -170,7 +170,7 @@ class PHPUnit_Util_XML
               'Expected array, got ' . gettype($hash)
             );
         }
-        
+
         // normalize validation keys so that we can use both key/associative arrays
         foreach ($validKeys as $key => $val) {
             is_int($key) ? $valids[$val] = NULL : $valids[$key] = $val;
@@ -247,13 +247,15 @@ class PHPUnit_Util_XML
                     // id matched
                     if (substr($match, 0, 1) == '#') {
                         $tag['id'] = substr($match, 1);
+                    }
 
                     // class matched
-                    } elseif (substr($match, 0, 1) == '.') {
+                    else if (substr($match, 0, 1) == '.') {
                         $classes[] = substr($match, 1);
+                    }
 
                     // attribute matched
-                    } elseif (substr($match, 0, 1) == '[' && substr($match, -1, 1) == ']') {
+                    else if (substr($match, 0, 1) == '[' && substr($match, -1, 1) == ']') {
                         $attribute = substr($match, 1, strlen($match) - 2);
                         $attribute = str_replace('"', '', $attribute);
 
@@ -261,12 +263,16 @@ class PHPUnit_Util_XML
                         if (strstr($attribute, '~=')) {
                             list($key, $value) = explode('~=', $attribute);
                             $value = "/.*\b$value\b.*/";
+                        }
+
                         // match substring
-                        } elseif (strstr($attribute, '*=')) {
+                        else if (strstr($attribute, '*=')) {
                             list($key, $value) = explode('*=', $attribute);
                             $value = "/.*$value.*/";
+                        }
+
                         // exact match
-                        } else {
+                        else {
                             list($key, $value) = explode('=', $attribute);
                         }
 
@@ -291,7 +297,9 @@ class PHPUnit_Util_XML
             // determine previous child/descendants
             if (!empty($previousTag['descendant'])) {
                 $tag['descendant'] = $previousTag['descendant'];
-            } elseif (!empty($previousTag['child'])) {
+            }
+
+            else if (!empty($previousTag['child'])) {
                 $tag['child'] = $previousTag['child'];
             }
 
@@ -387,7 +395,7 @@ class PHPUnit_Util_XML
                     }
 
                     // class can match only a part
-                    elseif ($name == 'class') {
+                    else if ($name == 'class') {
                         // split to individual classes
                         $findClasses = explode(' ', preg_replace("/\s+/", " ", $value));
                         $allClasses  = explode(' ', preg_replace("/\s+/", " ", $node->getAttribute($name)));
@@ -431,7 +439,7 @@ class PHPUnit_Util_XML
                         $invalid = TRUE;
                     }
                 }
-                
+
                 // match by exact string
                 else if (strstr(self::getNodeText($node), $options['content']) === FALSE) {
                     $invalid = TRUE;
@@ -567,7 +575,7 @@ class PHPUnit_Util_XML
                     }
 
                     // range count of children
-                    elseif ($childOptions['less_than']    !== NULL &&
+                    else if ($childOptions['less_than']    !== NULL &&
                             $childOptions['greater_than'] !== NULL) {
                         if (count($children) >= $childOptions['less_than'] ||
                             count($children) <= $childOptions['greater_than']) {
@@ -576,14 +584,14 @@ class PHPUnit_Util_XML
                     }
 
                     // less than a given count
-                    elseif ($childOptions['less_than'] !== NULL) {
+                    else if ($childOptions['less_than'] !== NULL) {
                         if (count($children) >= $childOptions['less_than']) {
                             break;
                         }
                     }
 
                     // more than a given count
-                    elseif ($childOptions['greater_than'] !== NULL) {
+                    else if ($childOptions['greater_than'] !== NULL) {
                         if (count($children) <= $childOptions['greater_than']) {
                             break;
                         }

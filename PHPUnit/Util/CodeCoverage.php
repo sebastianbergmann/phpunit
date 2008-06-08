@@ -227,7 +227,8 @@ abstract class PHPUnit_Util_CodeCoverage
      * @static
      * @since  Method available since Release 3.2.0
      */
-    public static function getStatistics(array &$data, $filename, $startLine = 1, $endLine = FALSE) {
+    public static function getStatistics(array &$data, $filename, $startLine = 1, $endLine = FALSE)
+    {
         $coverage      = 0;
         $locExecutable = 0;
         $locExecuted   = 0;

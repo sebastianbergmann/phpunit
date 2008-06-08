@@ -63,7 +63,7 @@ PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
  * @abstract
  */
 class PHPUnit_Util_Getopt {
-    public static function getopt(array $args, $short_options, $long_options = null)
+    public static function getopt(array $args, $short_options, $long_options = NULL)
     {
         if (empty($args)) {
             return array(array(), array());
@@ -107,22 +107,24 @@ class PHPUnit_Util_Getopt {
 
     protected static function parseShortOption($arg, $short_options, &$opts, &$args)
     {
-        for ($i = 0; $i < strlen($arg); $i++) {
-            $opt = $arg{$i};
-            $opt_arg = null;
+        $argLen = strlen($arg);
 
-            if (($spec = strstr($short_options, $opt)) === false || $arg{$i} == ':') {
+        for ($i = 0; $i < $argLen; $i++) {
+            $opt = $arg{$i};
+            $opt_arg = NULL;
+
+            if (($spec = strstr($short_options, $opt)) === FALSE || $arg{$i} == ':') {
                 throw new RuntimeException("unrecognized option -- $opt");
             }
 
             if (strlen($spec) > 1 && $spec{1} == ':') {
                 if (strlen($spec) > 2 && $spec{2} == ':') {
-                    if ($i + 1 < strlen($arg)) {
+                    if ($i + 1 < $argLen) {
                         $opts[] = array($opt, substr($arg, $i + 1));
                         break;
                     }
                 } else {
-                    if ($i + 1 < strlen($arg)) {
+                    if ($i + 1 < $argLen) {
                         $opts[] = array($opt, substr($arg, $i + 1));
                         break;
                     }

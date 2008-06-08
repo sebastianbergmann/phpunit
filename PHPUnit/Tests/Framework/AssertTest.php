@@ -932,9 +932,9 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
         );
     }
 
-   /**
-    * @expectedException PHPUnit_Framework_ExpectationFailedException
-    */
+    /**
+     * @expectedException PHPUnit_Framework_ExpectationFailedException
+     */
     public function testXMLStructureWrongNumberOfAttributes()
     {
         $expected = new DOMDocument;
@@ -948,9 +948,9 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
         );
     }
 
-   /**
-    * @expectedException PHPUnit_Framework_ExpectationFailedException
-    */
+    /**
+     * @expectedException PHPUnit_Framework_ExpectationFailedException
+     */
     public function testXMLStructureWrongNumberOfNodes()
     {
         $expected = new DOMDocument;

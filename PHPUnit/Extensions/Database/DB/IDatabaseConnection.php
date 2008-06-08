@@ -77,7 +77,7 @@ interface PHPUnit_Extensions_Database_DB_IDatabaseConnection
      * @param array $tableNames
      * @return PHPUnit_Extensions_Database_DataSet_IDataSet
      */
-    public function createDataSet(Array $tableNames = null);
+    public function createDataSet(Array $tableNames = NULL);
 
     /**
      * Creates a table with the result of the specified SQL statement.
@@ -103,7 +103,7 @@ interface PHPUnit_Extensions_Database_DB_IDatabaseConnection
      * @param string $whereClause
      * @param int
      */
-    public function getRowCount($tableName, $whereClause = null);
+    public function getRowCount($tableName, $whereClause = NULL);
 
     /**
      * Returns the schema for the connection.

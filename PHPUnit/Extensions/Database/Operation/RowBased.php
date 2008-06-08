@@ -97,7 +97,7 @@ abstract class PHPUnit_Extensions_Database_Operation_RowBased implements PHPUnit
             $databaseTableMetaData = $databaseDataSet->getTableMetaData($table->getTableMetaData()->getTableName());
             $query = $this->buildOperationQuery($databaseTableMetaData, $table, $connection);
 
-            if ($query === false && $table->getRowCount() > 0) {
+            if ($query === FALSE && $table->getRowCount() > 0) {
                 throw new PHPUnit_Extensions_Database_Operation_Exception($this->operationName, '', array(), $table, "Rows requested for insert, but no columns provided!");
             }
 

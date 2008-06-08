@@ -64,96 +64,96 @@ PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
  */
 class PHPUnit_Extensions_Database_DB_MetaData_Oci extends PHPUnit_Extensions_Database_DB_MetaData
 {
-   protected $columns = array();
-   protected $keys = array();
+    protected $columns = array();
+    protected $keys = array();
 
-   /**
-    * Returns an array containing the names of all the tables in the database.
-    *
-    * @return array
-    */
-   public function getTableNames()
-   {
+    /**
+     * Returns an array containing the names of all the tables in the database.
+     *
+     * @return array
+     */
+    public function getTableNames()
+    {
         $tableNames = array();
 
-       $query = "SELECT table_name
-                   FROM cat
-                  WHERE table_type='TABLE'
-                  ORDER BY table_name";
+        $query = "SELECT table_name
+                    FROM cat
+                   WHERE table_type='TABLE'
+                   ORDER BY table_name";
 
-       $result = $this->pdo->query($query);
+        $result = $this->pdo->query($query);
 
-       while ($tableName = $result->fetchColumn(0)) {
-           $tableNames[] = $tableName;
-       }
+        while ($tableName = $result->fetchColumn(0)) {
+            $tableNames[] = $tableName;
+        }
 
-       return $tableNames;
+        return $tableNames;
+    }
+
+    /**
+     * Returns an array containing the names of all the columns in the
+     * $tableName table,
+     *
+     * @param string $tableName
+     * @return array
+     */
+    public function getTableColumns($tableName)
+    {
+        if (!isset($this->columns[$tableName])) {
+            $this->loadColumnInfo($tableName);
+        }
+
+        return $this->columns[$tableName];
    }
 
-   /**
-    * Returns an array containing the names of all the columns in the
-    * $tableName table,
-    *
-    * @param string $tableName
-    * @return array
-    */
-   public function getTableColumns($tableName)
-   {
-       if (!isset($this->columns[$tableName])) {
-           $this->loadColumnInfo($tableName);
-       }
+    /**
+     * Returns an array containing the names of all the primary key columns in
+     * the $tableName table.
+     *
+     * @param string $tableName
+     * @return array
+     */
+    public function getTablePrimaryKeys($tableName)
+    {
+        if (!isset($this->keys[$tableName])) {
+            $this->loadColumnInfo($tableName);
+        }
 
-       return $this->columns[$tableName];
-   }
+        return $this->keys[$tableName];
+    }
 
-   /**
-    * Returns an array containing the names of all the primary key columns in
-    * the $tableName table.
-    *
-    * @param string $tableName
-    * @return array
-    */
-   public function getTablePrimaryKeys($tableName)
-   {
-       if (!isset($this->keys[$tableName])) {
-           $this->loadColumnInfo($tableName);
-       }
+    /**
+     * Loads column info from a oracle database.
+     *
+     * @param string $tableName
+     */
+    protected function loadColumnInfo($tableName)
+    {
+        $this->columns[$tableName] = array();
+        $this->keys[$tableName]    = array();
 
-       return $this->keys[$tableName];
-   }
+        $query = "SELECT DISTINCT COLUMN_NAME
+                    FROM USER_TAB_COLUMNS
+                   WHERE TABLE_NAME='".$tableName."'
+                   ORDER BY COLUMN_NAME";
 
-   /**
-    * Loads column info from a oracle database.
-    *
-    * @param string $tableName
-    */
-   protected function loadColumnInfo($tableName)
-   {
-       $this->columns[$tableName] = array();
-       $this->keys[$tableName]    = array();
+        $result = $this->pdo->query($query);
 
-       $query = "SELECT DISTINCT COLUMN_NAME
-                   FROM USER_TAB_COLUMNS
-                  WHERE TABLE_NAME='".$tableName."'
-                  ORDER BY COLUMN_NAME";
-
-       $result = $this->pdo->query($query);
-
-       while ($columnName = $result->fetchColumn(0)) {
+        while ($columnName = $result->fetchColumn(0)) {
             $this->columns[$tableName][] = $columnName;
-       }
+        }
 
-       $keyQuery = "SELECT b.column_name
-                      FROM all_constraints a, all_cons_columns b
-                     WHERE a.constraint_type='P'
-                       AND a.constraint_name=b.constraint_name
-                       AND a.table_name = '".$tableName."' ";
+        $keyQuery = "SELECT b.column_name
+                       FROM all_constraints a, all_cons_columns b
+                      WHERE a.constraint_type='P'
+                        AND a.constraint_name=b.constraint_name
+                        AND a.table_name = '".$tableName."' ";
 
         $result = $this->pdo->query($keyQuery);
 
         while ($columnName = $result->fetchColumn(0)) {
             $this->keys[$tableName][] = $columnName;
-       }
-   }
+        }
+    }
 }
 ?>

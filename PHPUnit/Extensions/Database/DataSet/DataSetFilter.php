@@ -120,7 +120,7 @@ class PHPUnit_Extensions_Database_DataSet_DataSetFilter extends PHPUnit_Extensio
      * @param bool $reverse
      * @return PHPUnit_Extensions_Database_DataSet_ITableIterator
      */
-    protected function createIterator($reverse = false)
+    protected function createIterator($reverse = FALSE)
     {
         $original_tables = $this->originalDataSet->getIterator($reverse);
         $new_tables = array();

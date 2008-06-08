@@ -142,7 +142,7 @@ abstract class PHPUnit_Extensions_Database_DataSet_AbstractXmlDataSet extends PH
      * @param bool $reverse
      * @return PHPUnit_Extensions_Database_DataSet_ITableIterator
      */
-    protected function createIterator($reverse = false)
+    protected function createIterator($reverse = FALSE)
     {
         return new PHPUnit_Extensions_Database_DataSet_DefaultTableIterator($this->tables, $reverse);
     }

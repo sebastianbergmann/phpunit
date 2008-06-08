@@ -241,7 +241,7 @@ class PHPUnit_Framework_Constraint_IsEqual extends PHPUnit_Framework_Constraint
                 // Optionally apply delta on numeric values.
                 return $this->numericComparison($a, $b);
             }
-            
+
             if ($this->canonicalizeEol && PHP_EOL != "\n" &&
                 is_string($a) && is_string($b)) {
                 $a = str_replace(PHP_EOL, "\n", $a);
@@ -252,8 +252,8 @@ class PHPUnit_Framework_Constraint_IsEqual extends PHPUnit_Framework_Constraint
         }
 
         if (is_object($a)) {
-            $a = (array) $a;
-            $b = (array) $b;
+            $a = (array)$a;
+            $b = (array)$b;
         }
 
         foreach ($a as $key => $v) {
