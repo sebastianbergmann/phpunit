@@ -42,6 +42,17 @@
        </file>
       </dir>
       <dir name="DataSet">
+       <dir name="Persistors">
+        <file baseinstalldir="/" name="Abstract.php" role="php">
+         <tasks:replace from="@package_version@" to="version" type="package-info" />
+        </file>
+        <file baseinstalldir="/" name="FlatXml.php" role="php">
+         <tasks:replace from="@package_version@" to="version" type="package-info" />
+        </file>
+        <file baseinstalldir="/" name="Xml.php" role="php">
+         <tasks:replace from="@package_version@" to="version" type="package-info" />
+        </file>
+       </dir>
        <file baseinstalldir="/" name="AbstractDataSet.php" role="php">
         <tasks:replace from="@package_version@" to="version" type="package-info" />
        </file>
@@ -72,6 +83,9 @@
         <tasks:replace from="@package_version@" to="version" type="package-info" />
        </file>
        <file baseinstalldir="/" name="IDataSet.php" role="php">
+        <tasks:replace from="@package_version@" to="version" type="package-info" />
+       </file>
+       <file baseinstalldir="/" name="IPersistable.php" role="php">
         <tasks:replace from="@package_version@" to="version" type="package-info" />
        </file>
        <file baseinstalldir="/" name="ITableIterator.php" role="php">
@@ -635,6 +649,9 @@
          <file baseinstalldir="/" name="FlatXmlDataSet.xml" role="test">
           <tasks:replace from="@package_version@" to="version" type="package-info" />
          </file>
+         <file baseinstalldir="/" name="FlatXmlWriter.xml" role="test">
+          <tasks:replace from="@package_version@" to="version" type="package-info" />
+         </file>
          <file baseinstalldir="/" name="InsertOperationResult.xml" role="test">
           <tasks:replace from="@package_version@" to="version" type="package-info" />
          </file>
@@ -662,6 +679,9 @@
          <file baseinstalldir="/" name="XmlDataSet.xml" role="test">
           <tasks:replace from="@package_version@" to="version" type="package-info" />
          </file>
+         <file baseinstalldir="/" name="XmlWriter.xml" role="test">
+          <tasks:replace from="@package_version@" to="version" type="package-info" />
+         </file>
         </dir>
         <file baseinstalldir="/" name="DatabaseTestUtility.php" role="test">
          <tasks:replace from="@package_version@" to="version" type="package-info" />
@@ -672,6 +692,9 @@
           <tasks:replace from="@package_version@" to="version" type="package-info" />
          </file>
          <file baseinstalldir="/" name="FilterTest.php" role="test">
+          <tasks:replace from="@package_version@" to="version" type="package-info" />
+         </file>
+         <file baseinstalldir="/" name="PersistorTest.php" role="test">
           <tasks:replace from="@package_version@" to="version" type="package-info" />
          </file>
          <file baseinstalldir="/" name="XmlDataSetsTest.php" role="test">
