@@ -129,6 +129,25 @@ class PHPUnit_Extensions_Database_DataSet_AbstractTable implements PHPUnit_Exten
     }
 
     /**
+     * Returns the an associative array keyed by columns for the given row.
+     *
+     * @param int $row
+     * @return array
+     */
+    public function getRow($row)
+    {
+        if (isset($this->data[$row])) {
+            return $this->data[$row];
+        } else {
+            if ($this->getRowCount() <= $row) {
+                throw new InvalidArgumentException("The given row ({$row}) does not exist in table {$this->getTableMetaData()->getTableName()}");
+            } else {
+                return NULL;
+            }
+        }
+    }
+    
+    /**
      * Asserts that the given table matches this table.
      *
      * @param PHPUnit_Extensions_Database_DataSet_ITable $other
