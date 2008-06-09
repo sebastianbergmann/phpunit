@@ -109,6 +109,12 @@ abstract class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_Tes
     protected $testId;
 
     /**
+     * @var    array
+     * @access protected
+     */
+    protected $verificationErrors = array();
+
+    /**
      * @param  string $name
      * @param  array  $data
      * @param  array  $browser
@@ -360,6 +366,10 @@ abstract class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_Tes
 
             catch (RuntimeException $e) {
             }
+        }
+
+        if (!empty($this->verificationErrors)) {
+            $this->fail(implode("\n", $this->verificationErrors));
         }
     }
 
