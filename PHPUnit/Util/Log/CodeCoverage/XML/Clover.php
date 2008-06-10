@@ -227,7 +227,6 @@ class PHPUnit_Util_Log_CodeCoverage_XML_Clover extends PHPUnit_Util_Printer
                 $classMetricsXML->setAttribute('elements', $classConditionals + $classStatements + $numMethods);
                 $classMetricsXML->setAttribute('coveredelements', $classCoveredConditionals + $classCoveredStatements + $classCoveredMethods);
                 $classXML->appendChild($classMetricsXML);
-
             }
 
             foreach ($data as $_line => $_data) {
