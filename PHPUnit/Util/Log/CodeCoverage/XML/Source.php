@@ -111,6 +111,8 @@ class PHPUnit_Util_Log_CodeCoverage_XML_Source
             $fullPath = $sutCommonPath . DIRECTORY_SEPARATOR . $filename;
 
             if (file_exists($fullPath)) {
+                $fullPath = realpath($fullPath);
+
                 $document = new DOMDocument('1.0', 'UTF-8');
                 $document->formatOutput = TRUE;
 
