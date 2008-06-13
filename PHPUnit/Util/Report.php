@@ -115,7 +115,6 @@ abstract class PHPUnit_Util_Report
           $target,
           $name,
           $charset,
-          $highlight,
           $lowUpperBound,
           $highLowerBound
         );
