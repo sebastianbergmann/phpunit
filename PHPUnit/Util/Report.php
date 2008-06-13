@@ -105,7 +105,6 @@ abstract class PHPUnit_Util_Report
           $target,
           $result->topTestSuite()->getName(),
           $charset,
-          $highlight,
           $lowUpperBound,
           $highLowerBound
         );
