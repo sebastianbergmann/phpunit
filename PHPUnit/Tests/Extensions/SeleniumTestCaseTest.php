@@ -64,15 +64,16 @@ class Extensions_SeleniumTestCaseTest extends PHPUnit_Extensions_SeleniumTestCas
 {
     public function setUp()
     {
-        if (!PHPUNIT_TESTSUITE_EXTENSION_SELENIUM_ENABLED) {
+        if (!isset($GLOBALS['PHPUNIT_TESTSUITE_EXTENSION_SELENIUM_ENABLED']) ||
+            !$GLOBALS['PHPUNIT_TESTSUITE_EXTENSION_SELENIUM_ENABLED']) {
             $this->markTestSkipped(
               'The Selenium tests are disabled.'
             );
         }
 
-        $this->setHost(PHPUNIT_TESTSUITE_EXTENSION_SELENIUM_HOST);
-        $this->setPort(PHPUNIT_TESTSUITE_EXTENSION_SELENIUM_PORT);
-        $this->setBrowser(PHPUNIT_TESTSUITE_EXTENSION_SELENIUM_BROWSER);
+        $this->setHost($GLOBALS['PHPUNIT_TESTSUITE_EXTENSION_SELENIUM_HOST']);
+        $this->setPort((int)$GLOBALS['PHPUNIT_TESTSUITE_EXTENSION_SELENIUM_PORT']);
+        $this->setBrowser($GLOBALS['PHPUNIT_TESTSUITE_EXTENSION_SELENIUM_BROWSER']);
         $this->setBrowserUrl('http://www.openqa.org/');
         $this->setTimeout(10000);
     }
