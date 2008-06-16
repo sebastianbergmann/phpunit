@@ -57,10 +57,10 @@ require_once 'PHPUnit/Framework/TestSuite.php';
 require_once 'PHPUnit/TextUI/TestRunner.php';
 require_once 'PHPUnit/Extensions/PhptTestSuite.php';
 
-require_once 'Framework/AllTests.php';
-require_once 'Extensions/AllTests.php';
-require_once 'Runner/AllTests.php';
-require_once 'Util/AllTests.php';
+require_once __DIR__ . DIRECTORY_SEPARATOR . 'Framework' . DIRECTORY_SEPARATOR . 'AllTests.php';
+require_once __DIR__ . DIRECTORY_SEPARATOR . 'Extensions' . DIRECTORY_SEPARATOR . 'AllTests.php';
+require_once __DIR__ . DIRECTORY_SEPARATOR . 'Runner' . DIRECTORY_SEPARATOR . 'AllTests.php';
+require_once __DIR__ . DIRECTORY_SEPARATOR . 'Util' . DIRECTORY_SEPARATOR . 'AllTests.php';
 
 /**
  *
@@ -107,7 +107,7 @@ class AllTests
         $suite->addTest(Extensions_AllTests::suite());
         $suite->addTest(Runner_AllTests::suite());
         $suite->addTest(Util_AllTests::suite());
-        $suite->addTest(new PHPUnit_Extensions_PhptTestSuite(dirname(__FILE__) . DIRECTORY_SEPARATOR . 'TextUI'));
+        $suite->addTest(new PHPUnit_Extensions_PhptTestSuite(__DIR__ . DIRECTORY_SEPARATOR . 'TextUI'));
 
         return $suite;
     }

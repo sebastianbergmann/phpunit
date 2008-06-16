@@ -46,7 +46,7 @@
 
 require_once 'PHPUnit/Framework/TestCase.php';
 
-require_once '_files/OutputTestCase.php';
+require_once dirname(__DIR__) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'OutputTestCase.php';
 
 /**
  *

@@ -62,9 +62,9 @@ class Extensions_Database_DataSet_PersistorTest extends PHPUnit_Framework_TestCa
 {
     public function testFlatXml()
     {
-        $dataSetFile = dirname(__FILE__).'/../_files/XmlDataSets/FlatXmlWriter.xml';
+        $dataSetFile = __DIR__.'/../_files/XmlDataSets/FlatXmlWriter.xml';
         
-        $filename = dirname(__FILE__).'/'.uniqid().'.xml';
+        $filename = __DIR__.'/'.uniqid().'.xml';
         $dataSet = new PHPUnit_Extensions_Database_DataSet_FlatXmlDataSet($dataSetFile);
         PHPUnit_Extensions_Database_DataSet_FlatXmlDataSet::write($dataSet, $filename);
         
@@ -74,9 +74,9 @@ class Extensions_Database_DataSet_PersistorTest extends PHPUnit_Framework_TestCa
     
     public function testXml()
     {
-        $dataSetFile = dirname(__FILE__).'/../_files/XmlDataSets/XmlWriter.xml';
+        $dataSetFile = __DIR__.'/../_files/XmlDataSets/XmlWriter.xml';
         
-        $filename = dirname(__FILE__).'/'.uniqid().'.xml';
+        $filename = __DIR__.'/'.uniqid().'.xml';
         $dataSet = new PHPUnit_Extensions_Database_DataSet_XmlDataSet($dataSetFile);
         PHPUnit_Extensions_Database_DataSet_XmlDataSet::write($dataSet, $filename);
         
