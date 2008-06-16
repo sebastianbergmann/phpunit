@@ -52,7 +52,7 @@ require_once 'PHPUnit/Extensions/Database/DataSet/DefaultTableMetaData.php';
 require_once 'PHPUnit/Extensions/Database/DataSet/FlatXmlDataSet.php';
 require_once 'PHPUnit/Extensions/Database/Operation/RowBased.php';
 
-require_once 'Extensions/Database/_files/DatabaseTestUtility.php';
+require_once dirname(__DIR__) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'DatabaseTestUtility.php';
 
 
 /**

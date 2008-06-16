@@ -54,9 +54,9 @@ if (!defined('PHPUnit_MAIN_METHOD')) {
 require_once 'PHPUnit/Framework/TestSuite.php';
 require_once 'PHPUnit/TextUI/TestRunner.php';
 
-require_once 'Util/TestDox/AllTests.php';
-require_once 'Util/TimerTest.php';
-require_once 'Util/XMLTest.php';
+require_once __DIR__ . DIRECTORY_SEPARATOR . 'TestDox' . DIRECTORY_SEPARATOR . 'AllTests.php';
+require_once __DIR__ . DIRECTORY_SEPARATOR . 'TimerTest.php';
+require_once __DIR__ . DIRECTORY_SEPARATOR . 'XMLTest.php';
 
 /**
  *

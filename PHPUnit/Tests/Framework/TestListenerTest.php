@@ -48,9 +48,9 @@ require_once 'PHPUnit/Framework/TestCase.php';
 require_once 'PHPUnit/Framework/TestListener.php';
 require_once 'PHPUnit/Framework/TestResult.php';
 
-require_once '_files/Error.php';
-require_once '_files/Failure.php';
-require_once '_files/Success.php';
+require_once dirname(__DIR__) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'Error.php';
+require_once dirname(__DIR__) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'Failure.php';
+require_once dirname(__DIR__) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'Success.php';
 
 /**
  *
