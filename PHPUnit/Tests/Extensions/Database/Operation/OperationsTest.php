@@ -187,9 +187,9 @@ class Extensions_Database_Operation_OperationsTest extends PHPUnit_Extensions_Da
     {
         $insertOperation = new PHPUnit_Extensions_Database_Operation_Insert();
 
-        $insertOperation->execute($this->getConnection(), new PHPUnit_Extensions_Database_DataSet_FlatXmlDataSet(__DIR__.'/../_files/XmlDataSets/AllEmptyTableInsertTest.xml'));
+        $insertOperation->execute($this->getConnection(), new PHPUnit_Extensions_Database_DataSet_FlatXmlDataSet(dirname(__FILE__).'/../_files/XmlDataSets/AllEmptyTableInsertTest.xml'));
 
-        $this->assertDataSetsEqual(new PHPUnit_Extensions_Database_DataSet_FlatXmlDataSet(__DIR__.'/../_files/XmlDataSets/AllEmptyTableInsertResult.xml'), $this->getConnection()->createDataSet());
+        $this->assertDataSetsEqual(new PHPUnit_Extensions_Database_DataSet_FlatXmlDataSet(dirname(__FILE__).'/../_files/XmlDataSets/AllEmptyTableInsertResult.xml'), $this->getConnection()->createDataSet());
     }
 }
 ?>
