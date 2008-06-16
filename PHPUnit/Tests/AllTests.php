@@ -97,12 +97,6 @@ class AllTests
     }
 }
 
-if (is_readable(dirname(__FILE__) . '/TestConfiguration.php')) {
-    require_once 'TestConfiguration.php';
-} else {
-    require_once 'TestConfiguration.php.dist';
-}
-
 if (PHPUnit_MAIN_METHOD == 'AllTests::main') {
     AllTests::main();
 }

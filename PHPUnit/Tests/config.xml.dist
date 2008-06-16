@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<phpunit>
+  <php>
+    <var name="PHPUNIT_TESTSUITE_EXTENSION_SELENIUM_ENABLED"
+         value="false"/>
+    <var name="PHPUNIT_TESTSUITE_EXTENSION_SELENIUM_HOST"
+         value="127.0.0.1"/>
+    <var name="PHPUNIT_TESTSUITE_EXTENSION_SELENIUM_PORT"
+         value="4444"/>
+    <var name="PHPUNIT_TESTSUITE_EXTENSION_SELENIUM_BROWSER"
+         value="*firefox /usr/lib/firefox/firefox-bin"/>
+  </php>
+</phpunit>
