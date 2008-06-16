@@ -57,9 +57,9 @@ require_once 'PHPUnit/Framework/TestSuite.php';
 require_once 'PHPUnit/TextUI/TestRunner.php';
 require_once 'PHPUnit/Util/Filter.php';
 
-require_once 'Extensions/Database/DataSet/XmlDataSetsTest.php';
-require_once 'Extensions/Database/DataSet/FilterTest.php';
-require_once 'Extensions/Database/DataSet/PersistorTest.php';
+require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'FilterTest.php';
+require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'PersistorTest.php';
+require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'XmlDataSetsTest.php';
 
 /**
  *
@@ -84,9 +84,9 @@ class Extensions_Database_DataSet_AllTests
     {
         $suite = new PHPUnit_Framework_TestSuite('PHPUnit_Extensions_Database_DataSet');
 
-        $suite->addTestSuite('Extensions_Database_DataSet_XmlDataSetsTest');
         $suite->addTestSuite('Extensions_Database_DataSet_FilterTest');
         $suite->addTestSuite('Extensions_Database_DataSet_PersistorTest');
+        $suite->addTestSuite('Extensions_Database_DataSet_XmlDataSetsTest');
         
         return $suite;
     }

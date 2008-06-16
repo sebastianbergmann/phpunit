@@ -46,10 +46,10 @@
 
 require_once 'PHPUnit/Framework/TestCase.php';
 
-require_once '_files/AnInterface.php';
-require_once '_files/FunctionCallback.php';
-require_once '_files/MethodCallback.php';
-require_once '_files/PartialMockTestClass.php';
+require_once dirname(dirname(__FILE__)) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'AnInterface.php';
+require_once dirname(dirname(__FILE__)) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'FunctionCallback.php';
+require_once dirname(dirname(__FILE__)) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'MethodCallback.php';
+require_once dirname(dirname(__FILE__)) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'PartialMockTestClass.php';
 
 /**
  *

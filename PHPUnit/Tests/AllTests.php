@@ -59,10 +59,10 @@ require_once 'PHPUnit/Framework/TestSuite.php';
 require_once 'PHPUnit/TextUI/TestRunner.php';
 require_once 'PHPUnit/Extensions/PhptTestSuite.php';
 
-require_once 'Framework/AllTests.php';
-require_once 'Extensions/AllTests.php';
-require_once 'Runner/AllTests.php';
-require_once 'Util/AllTests.php';
+require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'Framework' . DIRECTORY_SEPARATOR . 'AllTests.php';
+require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'Extensions' . DIRECTORY_SEPARATOR . 'AllTests.php';
+require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'Runner' . DIRECTORY_SEPARATOR . 'AllTests.php';
+require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'Util' . DIRECTORY_SEPARATOR . 'AllTests.php';
 
 /**
  *
