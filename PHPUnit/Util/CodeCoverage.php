@@ -231,7 +231,7 @@ abstract class PHPUnit_Util_CodeCoverage
             }
 
             foreach ($data[$filename] as $line => $_data) {
-                if ($line >= $startLine && $line <= $endLine) {
+                if ($line >= $startLine && $line < $endLine) {
                     if (is_array($_data)) {
                         $locExecutable++;
                         $locExecuted++;
@@ -245,6 +245,8 @@ abstract class PHPUnit_Util_CodeCoverage
 
             if ($locExecutable > 0) {
                 $coverage = ($locExecuted / $locExecutable) * 100;
+            } else {
+                $coverage = 100;
             }
         }
 
