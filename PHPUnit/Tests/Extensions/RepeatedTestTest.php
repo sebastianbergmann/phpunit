@@ -49,7 +49,7 @@ require_once 'PHPUnit/Framework/TestResult.php';
 require_once 'PHPUnit/Framework/TestSuite.php';
 require_once 'PHPUnit/Extensions/RepeatedTest.php';
 
-require_once '_files/Success.php';
+require_once dirname(dirname(__FILE__)) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'Success.php';
 
 /**
  *

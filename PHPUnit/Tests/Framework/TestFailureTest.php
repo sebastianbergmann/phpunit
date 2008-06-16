@@ -46,7 +46,7 @@
 
 require_once 'PHPUnit/Framework/TestCase.php';
 
-require_once '_files/ClassWithNonPublicAttributes.php';
+require_once dirname(dirname(__FILE__)) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'ClassWithNonPublicAttributes.php';
 
 /**
  *

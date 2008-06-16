@@ -58,7 +58,7 @@ require_once 'PHPUnit/Extensions/Database/Operation/Update.php';
 require_once 'PHPUnit/Extensions/Database/Operation/Truncate.php';
 require_once 'PHPUnit/Extensions/Database/Operation/Replace.php';
 
-require_once 'Extensions/Database/_files/DatabaseTestUtility.php';
+require_once dirname(dirname(__FILE__)) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'DatabaseTestUtility.php';
 
 /**
  * @category   Testing
