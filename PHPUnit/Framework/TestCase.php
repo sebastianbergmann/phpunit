@@ -383,6 +383,7 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
 
             // Verify Mock Object conditions.
             foreach ($this->mockObjects as $mockObject) {
+                $this->numAssertions++;
                 $mockObject->verify();
             }
 
