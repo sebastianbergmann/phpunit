@@ -101,7 +101,6 @@ abstract class PHPUnit_Util_Report
 
         unset($codeCoverageInformation);
         $name = $result->topTestSuite()->getName();
-        $result->cleanUp();
         unset($result);
 
         $root = new PHPUnit_Util_Report_Node_Directory($commonPath, NULL);
