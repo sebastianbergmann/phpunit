@@ -708,21 +708,6 @@ class PHPUnit_Framework_TestResult implements Countable
     {
         return empty($this->errors) && empty($this->failures);
     }
-
-    /**
-     * Clean up the result object.
-     *
-     * @since  Method available since Release 3.3.0
-     */
-    public function cleanUp()
-    {
-        $this->codeCoverageInformation = array();
-        $this->skipped                 = array();
-        $this->errors                  = array();
-        $this->failures                = array();
-        $this->notImplemented          = array();
-        $this->topTestSuite            = NULL;
-    }
 }
 
 }
