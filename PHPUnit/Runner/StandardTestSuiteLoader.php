@@ -110,6 +110,26 @@ class PHPUnit_Runner_StandardTestSuiteLoader implements PHPUnit_Runner_TestSuite
             }
         }
 
+        if (!class_exists($suiteClassName, FALSE) && !empty($loadedClasses)) {
+            foreach ($loadedClasses as $loadedClass) {
+                $class = new ReflectionClass($loadedClass);
+
+                if ($class->isSubclassOf('PHPUnit_Framework_TestCase')) {
+                    $suiteClassName = $loadedClass;
+                    break;
+                }
+
+                if ($class->hasMethod('suite')) {
+                    $method = $class->getMethod('suite');
+
+                    if (!$method->isAbstract() && $method->isPublic() && $method->isStatic()) {
+                        $suiteClassName = $loadedClass;
+                        break;
+                    }
+                }
+            }
+        }
+
         if (class_exists($suiteClassName, FALSE)) {
             $class = new ReflectionClass($suiteClassName);
 
