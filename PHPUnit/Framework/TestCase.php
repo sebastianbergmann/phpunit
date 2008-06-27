@@ -489,6 +489,8 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
                     );
                 }
 
+                $this->incrementAssertionCounter();
+
                 return;
             } else {
                 throw $e;
@@ -496,6 +498,7 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
         }
 
         if ($this->expectedException !== NULL) {
+            $this->incrementAssertionCounter();
             $this->fail('Expected exception ' . $this->expectedException);
         }
     }
