@@ -68,22 +68,32 @@ PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
  */
 class PHPUnit_Framework_Constraint_IsType extends PHPUnit_Framework_Constraint
 {
+    const TYPE_ARRAY    = 'array';
+    const TYPE_BOOL     = 'bool';
+    const TYPE_FLOAT    = 'float';
+    const TYPE_INT      = 'int';
+    const TYPE_NULL     = 'null';
+    const TYPE_NUMERIC  = 'numeric';
+    const TYPE_OBJECT   = 'object';
+    const TYPE_RESOURCE = 'resource';
+    const TYPE_STRING   = 'string';
+
     protected $type;
 
     public function __construct($type)
     {
         switch ($type) {
-            case 'numeric':
-            case 'integer':
-            case 'int':
-            case 'float':
-            case 'string':
+            case 'array':
             case 'boolean':
             case 'bool':
+            case 'float':
+            case 'integer':
+            case 'int':
             case 'null':
-            case 'array':
+            case 'numeric':
             case 'object':
-            case 'resource': {
+            case 'resource':
+            case 'string': {
               break;
             }
 
