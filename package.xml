@@ -776,9 +776,23 @@
       </file>
      </dir>
      <dir name="TextUI">
-      <file baseinstalldir="/" name="help.phpt" role="test" />
+      <file baseinstalldir="/" name="default.phpt" role="test" />
+      <file baseinstalldir="/" name="exclude-group.phpt" role="test" />
+      <file baseinstalldir="/" name="filter-class.phpt" role="test" />
+      <file baseinstalldir="/" name="filter-method.phpt" role="test" />
+      <file baseinstalldir="/" name="group.phpt" role="test" />
       <file baseinstalldir="/" name="help2.phpt" role="test" />
+      <file baseinstalldir="/" name="help.phpt" role="test" />
       <file baseinstalldir="/" name="log-graphviz.phpt" role="test" />
+      <file baseinstalldir="/" name="log-json.phpt" role="test" />
+      <file baseinstalldir="/" name="log-tap.phpt" role="test" />
+      <file baseinstalldir="/" name="log-xml.phpt" role="test" />
+      <file baseinstalldir="/" name="repeat.phpt" role="test" />
+      <file baseinstalldir="/" name="tap.phpt" role="test" />
+      <file baseinstalldir="/" name="testdox-html.phpt" role="test" />
+      <file baseinstalldir="/" name="testdox.phpt" role="test" />
+      <file baseinstalldir="/" name="testdox-text.phpt" role="test" />
+      <file baseinstalldir="/" name="verbose.phpt" role="test" />
      </dir>
      <dir name="Util">
       <dir name="TestDox">
