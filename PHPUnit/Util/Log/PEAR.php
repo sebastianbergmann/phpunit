@@ -86,12 +86,16 @@ class PHPUnit_Util_Log_PEAR implements PHPUnit_Framework_TestListener
     public function __construct($type, $name = '', $ident = '', $conf = array(), $maxLevel = PEAR_LOG_DEBUG)
     {
         if (PHPUnit_Util_Filesystem::fileExistsInIncludePath('Log.php')) {
+            PHPUnit_Util_Filesystem::collectStart();
             require_once 'Log.php';
+            $this->log = Log::factory($type, $name, $ident, $conf, $maxLevel);
+
+            foreach (PHPUnit_Util_Filesystem::collectEnd() as $blacklistedFile) {
+                PHPUnit_Util_Filter::addFileToFilter($blacklistedFile, 'PHPUNIT');
+            }
         } else {
             throw new RuntimeException('Log is not available.');
         }
-
-        $this->log = Log::factory($type, $name, $ident, $conf, $maxLevel);
     }
 
     /**
