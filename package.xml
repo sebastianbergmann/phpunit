@@ -776,6 +776,7 @@
       </file>
      </dir>
      <dir name="TextUI">
+      <file baseinstalldir="/" name="coverage-clover.phpt" role="test" />
       <file baseinstalldir="/" name="default.phpt" role="test" />
       <file baseinstalldir="/" name="exclude-group.phpt" role="test" />
       <file baseinstalldir="/" name="filter-class.phpt" role="test" />
