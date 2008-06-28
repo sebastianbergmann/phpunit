@@ -84,9 +84,17 @@ class PHPUnit_Util_TestSuiteIterator_NameFilter extends FilterIterator
     public function accept()
     {
         if ($this->filter !== FALSE ) {
-            $name = $this->getInnerIterator()->current()->getName();
+            $tmp = PHPUnit_Util_Test::describe(
+              $this->getInnerIterator()->current()->getName(), FALSE
+            );
 
-            if ($name !== NULL && preg_match($this->filter, $name) == 0) {
+            if ($tmp[0] != '') {
+                $name = join('::', $tmp);
+            } else {
+                $name = $tmp[1];
+            }
+
+            if (preg_match($this->filter, $name) == 0) {
                 return FALSE;
             }
         }
