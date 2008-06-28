@@ -63,6 +63,32 @@ PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
  */
 class PHPUnit_Util_Filesystem
 {
+    protected static $buffer = array();
+
+    /**
+     * Starts the collection of loaded files.
+     *
+     * @since  Method available since Release 3.3.0
+     */
+    public static function collectStart()
+    {
+        self::$buffer = get_included_files();
+    }
+
+    /**
+     * Stops the collection of loaded files and
+     * returns the names of the loaded files.
+     *
+     * @return array
+     * @since  Method available since Release 3.3.0
+     */
+    public static function collectEnd()
+    {
+        return array_values(
+          array_diff(get_included_files(), self::$buffer)
+        );
+    }
+
     /**
      * Wrapper for file_exists() that searches the include_path.
      *

@@ -105,22 +105,27 @@ class PHPUnit_Util_Log_GraphViz extends PHPUnit_Util_Printer implements PHPUnit_
     public function __construct($out = NULL)
     {
         if (PHPUnit_Util_Filesystem::fileExistsInIncludePath('Image/GraphViz.php')) {
+            PHPUnit_Util_Filesystem::collectStart();
             require_once 'Image/GraphViz.php';
+
+            $this->graph = new Image_GraphViz(
+              TRUE,
+              array(
+                'overlap'  => 'scale',
+                'splines'  => 'true',
+                'sep'      => '.1',
+                'fontsize' => '8'
+              )
+            );
+
+            parent::__construct($out);
+
+            foreach (PHPUnit_Util_Filesystem::collectEnd() as $blacklistedFile) {
+                PHPUnit_Util_Filter::addFileToFilter($blacklistedFile, 'PHPUNIT');
+            }
         } else {
             throw new RuntimeException('Image_GraphViz is not available.');
         }
-
-        $this->graph = new Image_GraphViz(
-          TRUE,
-          array(
-            'overlap'  => 'scale',
-            'splines'  => 'true',
-            'sep'      => '.1',
-            'fontsize' => '8'
-          )
-        );
-
-        parent::__construct($out);
     }
 
     /**
