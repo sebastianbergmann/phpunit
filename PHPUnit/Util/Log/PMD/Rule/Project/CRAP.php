@@ -44,6 +44,7 @@
  * @since      File available since Release 3.2.0
  */
 
+require_once 'PHPUnit/Util/Log/PMD/Rule/Project.php';
 require_once 'PHPUnit/Util/Log/PMD/Rule/Function.php';
 require_once 'PHPUnit/Util/Filter.php';
 
