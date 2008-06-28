@@ -652,9 +652,15 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
                 $runTest = TRUE;
 
                 if ($filter !== FALSE ) {
-                    $name = $test->getName();
+                    $tmp = PHPUnit_Util_Test::describe($test, FALSE);
 
-                    if ($name !== NULL && preg_match($filter, $name) == 0) {
+                    if ($tmp[0] != '') {
+                        $name = join('::', $tmp);
+                    } else {
+                        $name = $tmp[1];
+                    }
+
+                    if (preg_match($filter, $name) == 0) {
                         $runTest = FALSE;
                     }
                 }

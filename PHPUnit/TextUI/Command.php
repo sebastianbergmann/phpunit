@@ -280,7 +280,7 @@ class PHPUnit_TextUI_Command
 
                 case '--filter': {
                     if (preg_match('/^[a-zA-Z0-9_]/', $option[1])) {
-                        $arguments['filter'] = '/^' . $option[1] . '$/';
+                        $arguments['filter'] = '/' . $option[1] . '/';
                     } else {
                         $arguments['filter'] = $option[1];
                     }
