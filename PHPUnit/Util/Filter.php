@@ -76,11 +76,6 @@ class PHPUnit_Util_Filter
     protected static $filter = TRUE;
 
     /**
-     * @var    boolean
-     */
-    protected static $blackListConverstionForWindowsDone = FALSE;
-
-    /**
      * Source files that are blacklisted.
      *
      * @var    array
@@ -88,37 +83,7 @@ class PHPUnit_Util_Filter
     protected static $blacklistedFiles = array(
       'DEFAULT' => array(),
       'PHPUNIT' => array(),
-      'TESTS' => array(),
-      'PEAR' => array(
-        'Console/Getopt.php',
-        'Image/GraphViz.php',
-        'Log/composite.php',
-        'Log/console.php',
-        'Log/daemon.php',
-        'Log/display.php',
-        'Log/error_log.php',
-        'Log/file.php',
-        'Log/mail.php',
-        'Log/mcal.php',
-        'Log/mdb2.php',
-        'Log/null.php',
-        'Log/observer.php',
-        'Log/sql.php',
-        'Log/sqlite.php',
-        'Log/syslog.php',
-        'Log/win.php',
-        'Log.php',
-        'PEAR/Installer/Role/Common.php',
-        'PEAR/Installer/Role.php',
-        'PEAR/Config.php',
-        'PEAR/DependencyDB.php',
-        'PEAR/Registry.php',
-        'PEAR/Remote.php',
-        'PEAR/RunTest.php',
-        'PEAR/XMLParser.php',
-        'PEAR.php',
-        'System.php'
-      )
+      'TESTS' => array()
     );
 
     /**
@@ -502,23 +467,7 @@ class PHPUnit_Util_Filter
 
         // Use blacklist.
         if ($ignoreWhitelist || empty(self::$whitelistedFiles)) {
-            if (DIRECTORY_SEPARATOR == '\\' &&
-                !self::$blackListConverstionForWindowsDone) {
-                $count = count(self::$blacklistedFiles['PEAR']);
-
-                for ($i = 0; $i < $count; $i++) {
-                    self::$blacklistedFiles['PEAR'][$i] = str_replace(
-                      '/', '\\', self::$blacklistedFiles['PEAR'][$i]
-                    );
-                }
-
-                self::$blackListConverstionForWindowsDone = TRUE;
-            }
-
-            $blacklistedFiles = array_merge(
-              self::$blacklistedFiles['DEFAULT'],
-              self::$blacklistedFiles['PEAR']
-            );
+            $blacklistedFiles = self::$blacklistedFiles['DEFAULT'];
 
             if ($filterTests) {
                 $blacklistedFiles = array_merge(

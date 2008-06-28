@@ -46,8 +46,13 @@
 
 if (PHPUnit_Util_Filesystem::fileExistsInIncludePath('PEAR/RunTest.php')) {
     $currentErrorReporting = error_reporting(E_ERROR | E_WARNING | E_PARSE);
+    PHPUnit_Util_Filesystem::collectStart();
     require_once 'PEAR/RunTest.php';
     error_reporting($currentErrorReporting);
+
+    foreach (PHPUnit_Util_Filesystem::collectEnd() as $blacklistedFile) {
+        PHPUnit_Util_Filter::addFileToFilter($blacklistedFile, 'PHPUNIT');
+    }
 }
 
 require_once 'PHPUnit/Framework.php';
