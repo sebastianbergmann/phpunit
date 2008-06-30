@@ -47,7 +47,6 @@
 require_once 'PHPUnit/Util/Filter.php';
 
 require_once 'PHPUnit/Framework/TestSuite.php';
-require_once 'PHPUnit/TextUI/TestRunner.php';
 
 require_once __DIR__ . DIRECTORY_SEPARATOR . 'NamePrettifierTest.php';
 
