@@ -54,7 +54,7 @@ PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
 
 /**
  * An abstract implementation of a dataset persistor.
- * 
+ *
  * @category   Testing
  * @package    PHPUnit
  * @author     Mike Lively <m@digitalsandwich.com>
@@ -64,13 +64,13 @@ PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
  * @link       http://www.phpunit.de/
  * @since      Class available since Release 3.2.0
  */
-abstract class PHPUnit_Extensions_Database_DataSet_Persistors_Abstract implements PHPUnit_Extensions_Database_DataSet_IPersistable 
+abstract class PHPUnit_Extensions_Database_DataSet_Persistors_Abstract implements PHPUnit_Extensions_Database_DataSet_IPersistable
 {
     public function write(PHPUnit_Extensions_Database_DataSet_IDataSet $dataset)
     {
         $this->saveDataSet($dataset);
     }
-    
+
     /**
      * @param PHPUnit_Extensions_Database_DataSet_IDataSet $dataset
      */
@@ -83,7 +83,7 @@ abstract class PHPUnit_Extensions_Database_DataSet_Persistors_Abstract implement
         }
         $this->endDataSet($dataset);
     }
-    
+
     /**
      * @param PHPUnit_Extensions_Database_DataSet_ITable $table
      */
@@ -96,35 +96,35 @@ abstract class PHPUnit_Extensions_Database_DataSet_Persistors_Abstract implement
         }
         $this->endTable($table);
     }
-    
+
     /**
      * Override to save the start of a dataset.
      *
      * @param PHPUnit_Extensions_Database_DataSet_IDataSet $dataset
      */
     abstract protected function startDataSet(PHPUnit_Extensions_Database_DataSet_IDataSet $dataset);
-    
+
     /**
      * Override to save the end of a dataset.
      *
      * @param PHPUnit_Extensions_Database_DataSet_IDataSet $dataset
      */
     abstract protected function endDataSet(PHPUnit_Extensions_Database_DataSet_IDataSet $dataset);
-    
+
     /**
      * Override to save the start of a table.
      *
      * @param PHPUnit_Extensions_Database_DataSet_ITable $table
      */
     abstract protected function startTable(PHPUnit_Extensions_Database_DataSet_ITable $table);
-    
+
     /**
      * Override to save the end of a table.
      *
      * @param PHPUnit_Extensions_Database_DataSet_ITable $table
      */
     abstract protected function endTable(PHPUnit_Extensions_Database_DataSet_ITable $table);
-    
+
     /**
      * Override to save a table row.
      *

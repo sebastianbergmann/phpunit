@@ -85,7 +85,7 @@ interface PHPUnit_Extensions_Database_DataSet_ITable
      * @param int $column
      */
     public function getValue($row, $column);
-    
+
     /**
      * Returns the an associative array keyed by columns for the given row.
      *
