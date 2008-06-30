@@ -110,7 +110,7 @@ class PHPUnit_Extensions_Database_Constraint_TableIsEqual extends PHPUnit_Framew
     protected function customFailureDescription($other, $description, $not)
     {
         return sprintf(
-          'Failed asserting that %s %s Reason: %s',
+          'Failed asserting that actual %s %s Reason: %s',
 
            (string)$other,
            (string)$this,
@@ -125,7 +125,7 @@ class PHPUnit_Extensions_Database_Constraint_TableIsEqual extends PHPUnit_Framew
      */
     public function __toString()
     {
-        return sprintf('is equal to %s',
+        return sprintf('is equal to expected %s',
 
         PHPUnit_Util_Type::toString($this->value));
     }
