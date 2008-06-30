@@ -65,11 +65,11 @@ PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
 class PHPUnit_Extensions_Database_DB_MetaData_MySQL extends PHPUnit_Extensions_Database_DB_MetaData
 {
     protected $schemaObjectQuoteChar = '`';
-    
+
     protected $columns = array();
-    
+
     protected $keys = array();
-    
+
     /**
      * Returns an array containing the names of all the tables in the database.
      *
@@ -80,15 +80,15 @@ class PHPUnit_Extensions_Database_DB_MetaData_MySQL extends PHPUnit_Extensions_D
         $query = 'SHOW TABLES';
         $statement = $this->pdo->prepare($query);
         $statement->execute();
-        
+
         $tableNames = array();
         while (($tableName = $statement->fetchColumn(0))) {
             $tableNames[] = $tableName;
         }
-        
+
         return $tableNames;
     }
-    
+
     /**
      * Returns an array containing the names of all the columns in the
      * $tableName table,
@@ -101,15 +101,15 @@ class PHPUnit_Extensions_Database_DB_MetaData_MySQL extends PHPUnit_Extensions_D
         $query = 'SHOW COLUMNS FROM `' . $tableName . '`';
         $statement = $this->pdo->prepare($query);
         $statement->execute();
-        
+
         $columnNames = array();
         while (($columnName = $statement->fetchColumn(0))) {
             $columnNames[] = $columnName;
         }
-        
+
         return $columnNames;
     }
-    
+
     /**
      * Returns an array containing the names of all the primary key columns in
      * the $tableName table.
@@ -123,14 +123,14 @@ class PHPUnit_Extensions_Database_DB_MetaData_MySQL extends PHPUnit_Extensions_D
         $statement = $this->pdo->prepare($query);
         $statement->execute();
         $statement->setFetchMode(PDO::FETCH_ASSOC);
-        
+
         $columnNames = array();
         while (($column = $statement->fetch())) {
             if ($column['Key_name'] == 'PRIMARY') {
                 $columnNames[] = $column['Column_name'];
             }
         }
-        
+
         return $columnNames;
     }
 }

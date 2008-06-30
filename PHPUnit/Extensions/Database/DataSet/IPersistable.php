@@ -67,7 +67,7 @@ interface PHPUnit_Extensions_Database_DataSet_IPersistable
 {
 	/**
 	 * Writes the given dataset
-	 * 
+	 *
 	 * The previous dataset will be overwritten.
 	 *
 	 * @param PHPUnit_Extensions_Database_DataSet_IDataSet $dataset
