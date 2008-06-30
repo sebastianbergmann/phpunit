@@ -53,7 +53,7 @@ PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
 
 /**
  * A Flat XML dataset persistor.
- * 
+ *
  * @category   Testing
  * @package    PHPUnit
  * @author     Mike Lively <m@digitalsandwich.com>
@@ -69,12 +69,12 @@ class PHPUnit_Extensions_Database_DataSet_Persistors_FlatXml extends PHPUnit_Ext
      * @var string
      */
     protected $filename;
-    
+
     /**
      * @var resource
      */
     protected $fh;
-    
+
     /**
      * Sets the filename that this persistor will save to.
      *
@@ -84,7 +84,7 @@ class PHPUnit_Extensions_Database_DataSet_Persistors_FlatXml extends PHPUnit_Ext
     {
     	$this->filename = $filename;
     }
-    
+
     /**
      * Override to save the start of a dataset.
      *
@@ -93,15 +93,15 @@ class PHPUnit_Extensions_Database_DataSet_Persistors_FlatXml extends PHPUnit_Ext
     protected function startDataSet(PHPUnit_Extensions_Database_DataSet_IDataSet $dataset)
     {
         $this->fh = fopen($this->filename, 'w');
-        
+
         if ($this->fh === FALSE) {
            throw new RuntimeException("Could not open {$this->filename} for writing see " . __CLASS__ . "::setFileName()");
         }
-        
+
         fwrite($this->fh, "<?xml version=\"1.0\" encoding=\"UTF-8\" ?>\n");
         fwrite($this->fh, "<dataset>\n");
     }
-    
+
     /**
      * Override to save the end of a dataset.
      *
@@ -111,7 +111,7 @@ class PHPUnit_Extensions_Database_DataSet_Persistors_FlatXml extends PHPUnit_Ext
     {
         fwrite($this->fh, "</dataset>\n");
     }
-    
+
     /**
      * Override to save the start of a table.
      *
@@ -123,7 +123,7 @@ class PHPUnit_Extensions_Database_DataSet_Persistors_FlatXml extends PHPUnit_Ext
             fwrite($this->fh, "\t<{$table->getTableMetaData()->getTableName()} />\n");
         }
     }
-    
+
     /**
      * Override to save the end of a table.
      *
@@ -133,7 +133,7 @@ class PHPUnit_Extensions_Database_DataSet_Persistors_FlatXml extends PHPUnit_Ext
     {
         //do nothing
     }
-    
+
     /**
      * Override to save a table row.
      *
@@ -143,13 +143,13 @@ class PHPUnit_Extensions_Database_DataSet_Persistors_FlatXml extends PHPUnit_Ext
     protected function row(Array $row, PHPUnit_Extensions_Database_DataSet_ITable $table)
     {
         fwrite($this->fh, "\t<{$table->getTableMetaData()->getTableName()}\n");
-        
+
         foreach ($table->getTableMetaData()->getColumns() as $columnName) {
             if (isset($row[$columnName])) {
                 fwrite($this->fh, "\t\t{$columnName}=\"{$row[$columnName]}\"\n");
             }
         }
-        
+
         fwrite($this->fh, "\t/>\n");
     }
 }
