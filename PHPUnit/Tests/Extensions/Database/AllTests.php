@@ -49,7 +49,6 @@ error_reporting(E_ALL | E_STRICT);
 require_once 'PHPUnit/Util/Filter.php';
 
 require_once 'PHPUnit/Framework/TestSuite.php';
-require_once 'PHPUnit/TextUI/TestRunner.php';
 
 require_once __DIR__ . DIRECTORY_SEPARATOR . 'DataSet' . DIRECTORY_SEPARATOR . 'AllTests.php';
 require_once __DIR__ . DIRECTORY_SEPARATOR . 'Operation' . DIRECTORY_SEPARATOR . 'AllTests.php';
