@@ -110,7 +110,7 @@ class PHPUnit_Extensions_Database_Constraint_DataSetIsEqual extends PHPUnit_Fram
     protected function customFailureDescription($other, $description, $not)
     {
         return sprintf(
-          'Failed asserting that %s %s Reason: %s',
+          'Failed asserting that actual %s %s Reason: %s',
 
            $other->__toString(),
            $this->toString(),
@@ -125,7 +125,7 @@ class PHPUnit_Extensions_Database_Constraint_DataSetIsEqual extends PHPUnit_Fram
      */
     public function toString()
     {
-        return sprintf('is equal to %s',
+        return sprintf('is equal to expected %s',
             $this->value->__toString());
     }
 }
