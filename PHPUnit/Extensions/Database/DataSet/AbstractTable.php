@@ -146,7 +146,7 @@ class PHPUnit_Extensions_Database_DataSet_AbstractTable implements PHPUnit_Exten
             }
         }
     }
-    
+
     /**
      * Asserts that the given table matches this table.
      *
