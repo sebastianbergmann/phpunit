@@ -46,11 +46,6 @@
 
 require_once 'PHPUnit/Util/Filter.php';
 
-if (!defined('PHPUnit_MAIN_METHOD')) {
-    define('PHPUnit_MAIN_METHOD', 'Util_TestDox_AllTests::main');
-    chdir(dirname(dirname(__DIR__)));
-}
-
 require_once 'PHPUnit/Framework/TestSuite.php';
 require_once 'PHPUnit/TextUI/TestRunner.php';
 
@@ -70,11 +65,6 @@ require_once __DIR__ . DIRECTORY_SEPARATOR . 'NamePrettifierTest.php';
  */
 class Util_TestDox_AllTests
 {
-    public static function main()
-    {
-        PHPUnit_TextUI_TestRunner::run(self::suite());
-    }
-
     public static function suite()
     {
         if (!defined('PHPUNIT_TESTSUITE_WHITELIST_PREPARED')) {
@@ -101,9 +91,5 @@ class Util_TestDox_AllTests
 
         return $suite;
     }
-}
-
-if (PHPUnit_MAIN_METHOD == 'Util_TestDox_AllTests::main') {
-    Util_TestDox_AllTests::main();
 }
 ?>

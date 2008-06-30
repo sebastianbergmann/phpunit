@@ -46,11 +46,6 @@
 
 require_once 'PHPUnit/Util/Filter.php';
 
-if (!defined('PHPUnit_MAIN_METHOD')) {
-    define('PHPUnit_MAIN_METHOD', 'Util_AllTests::main');
-    chdir(dirname(__DIR__));
-}
-
 require_once 'PHPUnit/Framework/TestSuite.php';
 require_once 'PHPUnit/TextUI/TestRunner.php';
 
@@ -72,11 +67,6 @@ require_once __DIR__ . DIRECTORY_SEPARATOR . 'XMLTest.php';
  */
 class Util_AllTests
 {
-    public static function main()
-    {
-        PHPUnit_TextUI_TestRunner::run(self::suite());
-    }
-
     public static function suite()
     {
         if (!defined('PHPUNIT_TESTSUITE_WHITELIST_PREPARED')) {
@@ -105,9 +95,5 @@ class Util_AllTests
 
         return $suite;
     }
-}
-
-if (PHPUnit_MAIN_METHOD == 'Util_AllTests::main') {
-    Util_AllTests::main();
 }
 ?>
