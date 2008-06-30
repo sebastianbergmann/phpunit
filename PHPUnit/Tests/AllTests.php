@@ -50,11 +50,6 @@ require_once 'PHPUnit/Util/Filter.php';
 
 PHPUnit_Util_Filter::addFileToFilter(__FILE__);
 
-if (!defined('PHPUnit_MAIN_METHOD')) {
-    define('PHPUnit_MAIN_METHOD', 'AllTests::main');
-    chdir(dirname(__FILE__));
-}
-
 require_once 'PHPUnit/Framework/TestSuite.php';
 require_once 'PHPUnit/TextUI/TestRunner.php';
 require_once 'PHPUnit/Extensions/PhptTestSuite.php';
@@ -78,11 +73,6 @@ require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'Util' . DIRECTORY_SEPARA
  */
 class AllTests
 {
-    public static function main()
-    {
-        PHPUnit_TextUI_TestRunner::run(self::suite());
-    }
-
     public static function suite()
     {
         $suite = new PHPUnit_Framework_TestSuite('PHPUnit');
@@ -95,9 +85,5 @@ class AllTests
 
         return $suite;
     }
-}
-
-if (PHPUnit_MAIN_METHOD == 'AllTests::main') {
-    AllTests::main();
 }
 ?>
