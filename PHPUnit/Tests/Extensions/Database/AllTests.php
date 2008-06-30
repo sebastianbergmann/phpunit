@@ -48,11 +48,6 @@ error_reporting(E_ALL | E_STRICT);
 
 require_once 'PHPUnit/Util/Filter.php';
 
-if (!defined('PHPUnit_MAIN_METHOD')) {
-    define('PHPUnit_MAIN_METHOD', 'Extensions_Database_AllTests::main');
-    chdir(dirname(dirname(__DIR__)));
-}
-
 require_once 'PHPUnit/Framework/TestSuite.php';
 require_once 'PHPUnit/TextUI/TestRunner.php';
 
@@ -73,11 +68,6 @@ require_once __DIR__ . DIRECTORY_SEPARATOR . 'Operation' . DIRECTORY_SEPARATOR .
  */
 class Extensions_Database_AllTests
 {
-    public static function main()
-    {
-        PHPUnit_TextUI_TestRunner::run(self::suite());
-    }
-
     public static function suite()
     {
         if (!defined('PHPUNIT_TESTSUITE_WHITELIST_PREPARED')) {
@@ -105,9 +95,5 @@ class Extensions_Database_AllTests
 
         return $suite;
     }
-}
-
-if (PHPUnit_MAIN_METHOD == 'Extensions_Database_AllTests::main') {
-    Extensions_Database_AllTests::main();
 }
 ?>
