@@ -51,7 +51,6 @@ require_once 'PHPUnit/Util/Filter.php';
 PHPUnit_Util_Filter::addFileToFilter(__FILE__);
 
 require_once 'PHPUnit/Framework/TestSuite.php';
-require_once 'PHPUnit/TextUI/TestRunner.php';
 
 require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'DataSet' . DIRECTORY_SEPARATOR . 'AllTests.php';
 require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'Operation' . DIRECTORY_SEPARATOR . 'AllTests.php';
