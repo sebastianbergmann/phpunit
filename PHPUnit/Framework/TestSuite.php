@@ -198,10 +198,11 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
             throw new InvalidArgumentException;
         }
 
-        PHPUnit_Util_Filter::addFileToFilter(
-          realpath($theClass->getFilename()),
-          'TESTS'
-        );
+        $filename = $theClass->getFilename();
+ 
+        if (strpos($filename, 'eval()') === FALSE) {
+            PHPUnit_Util_Filter::addFileToFilter(realpath($filename), 'TESTS');
+        }
 
         if ($name != '') {
             $this->setName($name);
