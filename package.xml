@@ -789,6 +789,7 @@
       <file baseinstalldir="/" name="log-tap.phpt" role="test" />
       <file baseinstalldir="/" name="log-xml.phpt" role="test" />
       <file baseinstalldir="/" name="repeat.phpt" role="test" />
+      <file baseinstalldir="/" name="skeleton.phpt" role="test" />
       <file baseinstalldir="/" name="tap.phpt" role="test" />
       <file baseinstalldir="/" name="testdox-html.phpt" role="test" />
       <file baseinstalldir="/" name="testdox.phpt" role="test" />
@@ -816,6 +817,9 @@
      </dir>
      <dir name="_files">
       <file baseinstalldir="/" name="AnInterface.php" role="test">
+       <tasks:replace from="@package_version@" to="version" type="package-info" />
+      </file>
+      <file baseinstalldir="/" name="Calculator.php" role="test">
        <tasks:replace from="@package_version@" to="version" type="package-info" />
       </file>
       <file baseinstalldir="/" name="ClassWithNonPublicAttributes.php" role="test">
