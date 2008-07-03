@@ -348,6 +348,8 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
      */
     public function run(PHPUnit_Framework_TestResult $result = NULL)
     {
+        $this->numAssertions = 0;
+
         if ($result === NULL) {
             $result = $this->createResult();
         }
