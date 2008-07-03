@@ -68,24 +68,6 @@ class Util_AllTests
 {
     public static function suite()
     {
-        if (!defined('PHPUNIT_TESTSUITE_WHITELIST_PREPARED')) {
-            PHPUnit_Util_Filter::addDirectoryToWhitelist(
-              dirname(dirname(__DIR__))
-            );
-
-            PHPUnit_Util_Filter::removeDirectoryFromWhitelist(
-              dirname(dirname(__DIR__)) . DIRECTORY_SEPARATOR . 'Samples'
-            );
-
-            PHPUnit_Util_Filter::removeDirectoryFromWhitelist(
-              dirname(dirname(__DIR__)) . DIRECTORY_SEPARATOR . 'Tests'
-            );
-
-            PHPUnit_Util_Filter::$filterPHPUnit = FALSE;
-
-            define('PHPUNIT_TESTSUITE_WHITELIST_PREPARED', TRUE);
-        }
-
         $suite = new PHPUnit_Framework_TestSuite('PHPUnit_Util');
 
         $suite->addTest(Util_TestDox_AllTests::suite());
