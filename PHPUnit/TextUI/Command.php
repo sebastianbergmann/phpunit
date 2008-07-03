@@ -92,6 +92,10 @@ class PHPUnit_TextUI_Command
             strpos($suite->testAt(0)->getMessage(), 'No tests found in class') !== FALSE) {
             require_once 'PHPUnit/Util/Skeleton/Test.php';
 
+            if (isset($arguments['bootstrap'])) {
+                require_once $arguments['bootstrap'];
+            }
+
             $skeleton = new PHPUnit_Util_Skeleton_Test(
                 $arguments['test'],
                 $arguments['testFile']
@@ -401,6 +405,10 @@ class PHPUnit_TextUI_Command
                 case '--skeleton':
                 case '--skeleton-class':
                 case '--skeleton-test': {
+                    if (isset($arguments['bootstrap'])) {
+                        require_once $arguments['bootstrap'];
+                    }
+
                     if ($option[0] == '--skeleton-class') {
                         require_once 'PHPUnit/Util/Skeleton/Class.php';
 
