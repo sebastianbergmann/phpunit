@@ -103,14 +103,14 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
      *
      * @var    boolean
      */
-    protected $backupGlobals = TRUE;
+    protected $backupGlobals = NULL;
 
     /**
      * Enable or disable the cleanup of the $GLOBALS array.
      *
      * @var    boolean
      */
-    protected $cleanupGlobals = FALSE;
+    protected $cleanupGlobals = NULL;
 
     /**
      * Fixture that is shared between the tests of this test suite.
@@ -796,18 +796,22 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
      * @param  boolean $backupGlobals
      * @since  Method available since Release 3.3.0
      */
-    public function setBackupGlobals($backupGlobals = TRUE)
+    public function setBackupGlobals($backupGlobals)
     {
-        $this->backupGlobals = $backupGlobals;
+        if (is_null($this->backupGlobals) && is_bool($backupGlobals)) {
+            $this->backupGlobals = $backupGlobals;
+        }
     }
 
     /**
      * @param  boolean $cleanupGlobals
      * @since  Method available since Release 3.3.0
      */
-    public function setCleanupGlobals($cleanupGlobals = FALSE)
+    public function setCleanupGlobals($cleanupGlobals)
     {
-        $this->cleanupGlobals = $cleanupGlobals;
+        if (is_null($this->cleanupGlobals) && is_bool($cleanupGlobals)) {
+            $this->cleanupGlobals = $cleanupGlobals;
+        }
     }
 
     /**

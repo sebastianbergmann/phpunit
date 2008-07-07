@@ -122,7 +122,7 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
      *
      * @var    boolean
      */
-    protected $backupGlobals = TRUE;
+    protected $backupGlobals = NULL;
 
     /**
      * Enable or disable the cleanup of the $GLOBALS array.
@@ -131,7 +131,7 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
      *
      * @var    boolean
      */
-    protected $cleanupGlobals = FALSE;
+    protected $cleanupGlobals = NULL;
 
     /**
      * @var    array
@@ -365,7 +365,7 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
     public function runBare()
     {
         // Backup the $GLOBALS array.
-        if ($this->backupGlobals === TRUE) {
+        if ($this->backupGlobals === NULL || $this->backupGlobals === TRUE) {
             $globalsBackup = array();
 
             foreach ($GLOBALS as $k => $v) {
@@ -376,7 +376,7 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
         }
 
         // Cleanup the $GLOBALS array.
-        else if ($this->cleanupGlobals === TRUE) {
+        else if ($this->cleanupGlobals === NULL || $this->cleanupGlobals === TRUE) {
             $this->cleanupGlobals();
         }
 
@@ -424,7 +424,7 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
         $this->tearDown();
 
         // Restore the $GLOBALS array.
-        if ($this->backupGlobals === TRUE) {
+        if ($this->backupGlobals === NULL || $this->backupGlobals === TRUE) {
             $this->cleanupGlobals();
 
             foreach ($globalsBackup as $k => $v) {
@@ -433,7 +433,7 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
         }
 
         // Cleanup the $GLOBALS array.
-        else if ($this->cleanupGlobals === TRUE) {
+        else if ($this->cleanupGlobals === NULL || $this->cleanupGlobals === TRUE) {
             $this->cleanupGlobals();
         }
 
@@ -536,9 +536,11 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
      * @param  boolean $backupGlobals
      * @since  Method available since Release 3.3.0
      */
-    public function setBackupGlobals($backupGlobals = TRUE)
+    public function setBackupGlobals($backupGlobals)
     {
-        $this->backupGlobals = $backupGlobals;
+        if (is_null($this->backupGlobals) && is_bool($backupGlobals)) {
+            $this->backupGlobals = $backupGlobals;
+        }
     }
 
     /**
@@ -547,9 +549,11 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
      * @param  boolean $cleanupGlobals
      * @since  Method available since Release 3.3.0
      */
-    public function setCleanupGlobals($cleanupGlobals = FALSE)
+    public function setCleanupGlobals($cleanupGlobals)
     {
-        $this->cleanupGlobals = $cleanupGlobals;
+        if (is_null($this->cleanupGlobals) && is_bool($cleanupGlobals)) {
+            $this->cleanupGlobals = $cleanupGlobals;
+        }
     }
 
     /**
