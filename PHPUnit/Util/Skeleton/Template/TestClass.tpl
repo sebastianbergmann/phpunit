@@ -1,9 +1,4 @@
 <?php
-// Call {className}Test::main() if this source file is executed directly.
-if (!defined('PHPUnit_MAIN_METHOD')) {
-    define('PHPUnit_MAIN_METHOD', '{className}Test::main');
-}
-
 require_once 'PHPUnit/Framework.php';{requireClassFile}
 
 /**
@@ -17,20 +12,6 @@ class {className}Test extends PHPUnit_Framework_TestCase
      * @access protected
      */
     protected $object;
-
-    /**
-     * Runs the test methods of this class.
-     *
-     * @access public
-     * @static
-     */
-    public static function main()
-    {
-        require_once 'PHPUnit/TextUI/TestRunner.php';
-
-        $suite  = new PHPUnit_Framework_TestSuite('{className}Test');
-        $result = PHPUnit_TextUI_TestRunner::run($suite);
-    }
 
     /**
      * Sets up the fixture, for example, opens a network connection.
@@ -53,9 +34,4 @@ class {className}Test extends PHPUnit_Framework_TestCase
     {
     }
 {methods}}
-
-// Call {className}Test::main() if this source file is executed directly.
-if (PHPUnit_MAIN_METHOD == '{className}Test::main') {
-    {className}Test::main();
-}
 ?>
