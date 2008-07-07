@@ -103,12 +103,11 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
     protected $backupGlobals = TRUE;
 
     /**
-     * Enable or disable creating the $GLOBALS reference that is required
-     * for the "global" keyword to work correctly.
+     * Enable or disable the cleanup of the $GLOBALS array.
      *
      * @var    boolean
      */
-    protected $createGlobalsReference = FALSE;
+    protected $cleanupGlobals = FALSE;
 
     /**
      * Fixture that is shared between the tests of this test suite.
@@ -646,7 +645,8 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
             }
 
             if ($test instanceof PHPUnit_Framework_TestSuite) {
-                $test->setGlobalsBackup($this->backupGlobals, $this->createGlobalsReference);
+                $test->setBackupGlobals($this->backupGlobals);
+                $test->setCleanupGlobals($this->cleanupGlobals);
                 $test->setSharedFixture($this->sharedFixture);
                 $test->run($result, $filter, $groups, $excludeGroups);
             } else {
@@ -668,6 +668,8 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
 
                 if ($runTest) {
                     if ($test instanceof PHPUnit_Framework_TestCase) {
+                        $test->setBackupGlobals($this->backupGlobals);
+                        $test->setCleanupGlobals($this->cleanupGlobals);
                         $test->setSharedFixture($this->sharedFixture);
                     }
 
@@ -802,7 +804,7 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
         // @scenario on TestCase::testMethod()
         // @test     on TestCase::testMethod()
         return strpos($method->getDocComment(), '@test')     !== FALSE ||
-               strpos($method->getDocComment(), '@scenario') !== FALSE;
+                strpos($method->getDocComment(), '@scenario') !== FALSE;
     }
 
     /**
@@ -816,13 +818,20 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
 
     /**
      * @param  boolean $backupGlobals
-     * @param  boolean $createGlobalsReference
      * @since  Method available since Release 3.3.0
      */
-    public function setGlobalsBackup($backupGlobals = TRUE, $createGlobalsReference = FALSE)
+    public function setBackupGlobals($backupGlobals = TRUE)
     {
-        $this->backupGlobals          = $backupGlobals;
-        $this->createGlobalsReference = $createGlobalsReference;
+        $this->backupGlobals = $backupGlobals;
+    }
+
+    /**
+     * @param  boolean $cleanupGlobals
+     * @since  Method available since Release 3.3.0
+     */
+    public function setCleanupGlobals($cleanupGlobals = FALSE)
+    {
+        $this->cleanupGlobals = $cleanupGlobals;
     }
 
     /**
