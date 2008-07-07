@@ -125,14 +125,13 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
     protected $backupGlobals = TRUE;
 
     /**
-     * Enable or disable creating the $GLOBALS reference that is required
-     * for the "global" keyword to work correctly.
+     * Enable or disable the cleanup of the $GLOBALS array.
      * Overwrite this attribute in a child class of TestCase.
      * Setting this attribute in setUp() has no effect!
      *
      * @var    boolean
      */
-    protected $createGlobalsReference = FALSE;
+    protected $cleanupGlobals = FALSE;
 
     /**
      * @var    array
@@ -367,7 +366,18 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
     {
         // Backup the $GLOBALS array.
         if ($this->backupGlobals === TRUE) {
-            $globalsBackup = serialize($GLOBALS);
+            $globalsBackup = array();
+
+            foreach ($GLOBALS as $k => $v) {
+                if ($k != 'GLOBALS') {
+                    $globalsBackup[$k] = serialize($v);
+                }
+            }
+        }
+
+        // Cleanup the $GLOBALS array.
+        else if ($this->cleanupGlobals === TRUE) {
+            $this->cleanupGlobals();
         }
 
         // Set up the fixture.
@@ -415,11 +425,16 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
 
         // Restore the $GLOBALS array.
         if ($this->backupGlobals === TRUE) {
-            $GLOBALS = unserialize($globalsBackup);
+            $this->cleanupGlobals();
 
-            if ($this->createGlobalsReference) {
-                $GLOBALS['GLOBALS'] = &$GLOBALS;
+            foreach ($globalsBackup as $k => $v) {
+                $GLOBALS[$k] = unserialize($v);
             }
+        }
+
+        // Cleanup the $GLOBALS array.
+        else if ($this->cleanupGlobals === TRUE) {
+            $this->cleanupGlobals();
         }
 
         // Clean up INI settings.
@@ -519,13 +534,22 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
      * Calling this method in setUp() has no effect!
      *
      * @param  boolean $backupGlobals
-     * @param  boolean $createGlobalsReference
      * @since  Method available since Release 3.3.0
      */
-    public function setGlobalsBackup($backupGlobals = TRUE, $createGlobalsReference = FALSE)
+    public function setBackupGlobals($backupGlobals = TRUE)
     {
-        $this->backupGlobals          = $backupGlobals;
-        $this->createGlobalsReference = $createGlobalsReference;
+        $this->backupGlobals = $backupGlobals;
+    }
+
+    /**
+     * Calling this method in setUp() has no effect!
+     *
+     * @param  boolean $cleanupGlobals
+     * @since  Method available since Release 3.3.0
+     */
+    public function setCleanupGlobals($cleanupGlobals = FALSE)
+    {
+        $this->cleanupGlobals = $cleanupGlobals;
     }
 
     /**
@@ -919,10 +943,33 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
     /**
      * Tears down the fixture, for example, close a network connection.
      * This method is called after a test is executed.
-     *
      */
     protected function tearDown()
     {
+    }
+
+    /**
+     * @since Method available since Release 3.3.0
+     */
+    protected function cleanupGlobals()
+    {
+        $GLOBALS = array(
+          '_ENV' => array(),
+          'HTTP_ENV_VARS' => array(),
+          'argv' => array(),
+          'argc' => array(),
+          '_POST' => array(),
+          'HTTP_POST_VARS' => array(),
+          '_GET' => array(),
+          'HTTP_GET_VARS' => array(),
+          '_COOKIE' => array(),
+          'HTTP_COOKIE_VARS' => array(),
+          '_SERVER' => array(),
+          'HTTP_SERVER_VARS' => array(),
+          '_FILES' => array(),
+          'HTTP_POST_FILES' => array(),
+          '_REQUEST' => array()
+        );
     }
 }
 
