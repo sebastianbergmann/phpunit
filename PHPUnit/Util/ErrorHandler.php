@@ -100,12 +100,22 @@ class PHPUnit_Util_ErrorHandler
         }
 
         if ($errno == E_NOTICE || $errno == E_STRICT) {
-            if (PHPUnit_Framework_Notice::$enabled !== TRUE) {
+            if (PHPUnit_Framework_Error_Notice::$enabled !== TRUE) {
                 return FALSE;
             }
 
-            $exception = 'PHPUnit_Framework_Notice';
-        } else {
+            $exception = 'PHPUnit_Framework_Error_Notice';
+        }
+
+        else if ($errno == E_WARNING) {
+            if (PHPUnit_Framework_Error_Warning::$enabled !== TRUE) {
+                return FALSE;
+            }
+
+            $exception = 'PHPUnit_Framework_Error_Warning';
+        }
+
+        else {
             $exception = 'PHPUnit_Framework_Error';
         }
 

@@ -57,7 +57,7 @@ PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
  * <code>
  * <?xml version="1.0" encoding="utf-8" ?>
  *
- * <phpunit ansi="false" convertErrorsToExceptions="true" convertNoticesToExceptions="true" stopOnFailure="false">
+ * <phpunit ansi="false" convertErrorsToExceptions="true" convertNoticesToExceptions="true" convertWarningsToExceptions="true" stopOnFailure="false">
  *   <testsuite name="My Test Suite">
  *     <directory suffix="Test.php">/path/to/files</directory>
  *     <file>/path/to/MyTest.php</file>
@@ -368,6 +368,13 @@ class PHPUnit_Util_Configuration
         if ($this->document->documentElement->hasAttribute('convertNoticesToExceptions')) {
             $result['convertNoticesToExceptions'] = $this->getBoolean(
               (string)$this->document->documentElement->getAttribute('convertNoticesToExceptions'),
+              TRUE
+            );
+        }
+
+        if ($this->document->documentElement->hasAttribute('convertWarningsToExceptions')) {
+            $result['convertWarningsToExceptions'] = $this->getBoolean(
+              (string)$this->document->documentElement->getAttribute('convertWarningsToExceptions'),
               TRUE
             );
         }
