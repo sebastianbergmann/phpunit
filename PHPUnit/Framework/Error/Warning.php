@@ -41,21 +41,21 @@
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    SVN: $Id$
  * @link       http://www.phpunit.de/
- * @since      File available since Release 3.1.0
+ * @since      File available since Release 3.3.0
  */
 
 require_once 'PHPUnit/Util/Filter.php';
 
 PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
 
-if (!class_exists('PHPUnit_Framework_Notice', FALSE)) {
+if (!class_exists('PHPUnit_Framework_Error_Warning', FALSE)) {
 
 /**
- * Wrapper for PHP notices.
+ * Wrapper for PHP warnings.
  * You can disable notice-to-exception conversion by setting
  *
  * <code>
- * PHPUnit_Framework_Notice::$enabled = FALSE;
+ * PHPUnit_Framework_Error_Warning::$enabled = FALSE;
  * </code>
  *
  * @category   Testing
@@ -65,9 +65,9 @@ if (!class_exists('PHPUnit_Framework_Notice', FALSE)) {
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    Release: @package_version@
  * @link       http://www.phpunit.de/
- * @since      Class available since Release 3.1.0
+ * @since      Class available since Release 3.3.0
  */
-class PHPUnit_Framework_Notice extends PHPUnit_Framework_Error
+class PHPUnit_Framework_Error_Warning extends PHPUnit_Framework_Error
 {
     public static $enabled = TRUE;
 }
