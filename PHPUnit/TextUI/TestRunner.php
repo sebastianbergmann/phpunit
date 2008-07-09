@@ -174,7 +174,11 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
         }
 
         if (!$arguments['convertNoticesToExceptions']) {
-            PHPUnit_Framework_Notice::$enabled = FALSE;
+            PHPUnit_Framework_Error_Notice::$enabled = FALSE;
+        }
+
+        if (!$arguments['convertWarningsToExceptions']) {
+            PHPUnit_Framework_Error_Warning::$enabled = FALSE;
         }
 
         if ($arguments['stopOnFailure']) {
@@ -594,6 +598,10 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
                 $arguments['convertNoticesToExceptions'] = $phpunitConfiguration['convertNoticesToExceptions'];
             }
 
+            if (isset($phpunitConfiguration['convertWarningsToExceptions']) && !isset($arguments['convertWarningsToExceptions'])) {
+                $arguments['convertWarningsToExceptions'] = $phpunitConfiguration['convertWarningsToExceptions'];
+            }
+
             if (isset($phpunitConfiguration['stopOnFailure']) && !isset($arguments['stopOnFailure'])) {
                 $arguments['stopOnFailure'] = $phpunitConfiguration['stopOnFailure'];
             }
@@ -694,18 +702,19 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
             }
         }
 
-        $arguments['ansi']                       = @$arguments['ansi']                       ?: FALSE;
-        $arguments['convertErrorsToExceptions']  = @$arguments['convertErrorsToExceptions']  ?: TRUE;
-        $arguments['convertNoticesToExceptions'] = @$arguments['convertNoticesToExceptions'] ?: TRUE;
-        $arguments['excludeGroups']              = @$arguments['excludeGroups']              ?: array();
-        $arguments['groups']                     = @$arguments['groups']                     ?: array();
-        $arguments['logIncompleteSkipped']       = @$arguments['logIncompleteSkipped']       ?: FALSE;
-        $arguments['reportCharset']              = @$arguments['reportCharset']              ?: 'ISO-8859-1';
-        $arguments['reportHighlight']            = @$arguments['reportHighlight']            ?: FALSE;
-        $arguments['reportHighLowerBound']       = @$arguments['reportHighLowerBound']       ?: 70;
-        $arguments['reportLowUpperBound']        = @$arguments['reportLowUpperBound']        ?: 35;
-        $arguments['reportYUI']                  = @$arguments['reportYUI']                  ?: TRUE;
-        $arguments['stopOnFailure']              = @$arguments['stopOnFailure']              ?: FALSE;
+        $arguments['ansi']                        = @$arguments['ansi']                        ?: FALSE;
+        $arguments['convertErrorsToExceptions']   = @$arguments['convertErrorsToExceptions']   ?: TRUE;
+        $arguments['convertNoticesToExceptions']  = @$arguments['convertNoticesToExceptions']  ?: TRUE;
+        $arguments['convertWarningsToExceptions'] = @$arguments['convertWarningsToExceptions'] ?: TRUE;
+        $arguments['excludeGroups']               = @$arguments['excludeGroups']               ?: array();
+        $arguments['groups']                      = @$arguments['groups']                      ?: array();
+        $arguments['logIncompleteSkipped']        = @$arguments['logIncompleteSkipped']        ?: FALSE;
+        $arguments['reportCharset']               = @$arguments['reportCharset']               ?: 'ISO-8859-1';
+        $arguments['reportHighlight']             = @$arguments['reportHighlight']             ?: FALSE;
+        $arguments['reportHighLowerBound']        = @$arguments['reportHighLowerBound']        ?: 70;
+        $arguments['reportLowUpperBound']         = @$arguments['reportLowUpperBound']         ?: 35;
+        $arguments['reportYUI']                   = @$arguments['reportYUI']                   ?: TRUE;
+        $arguments['stopOnFailure']               = @$arguments['stopOnFailure']               ?: FALSE;
     }
 }
 ?>
