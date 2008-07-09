@@ -424,13 +424,18 @@ class PHPUnit_Util_Metrics_Project extends PHPUnit_Util_Metrics
                         }
                     } else {
                         if ($found) {
-                            if ($line + 1 - $firstLine > $minLines) {
+                            $fileA      = $this->cpdHashes[$firstHash][0];
+                            $firstLineA = $this->cpdHashes[$firstHash][1];
+
+                            if ($line + 1 - $firstLine > $minLines &&
+                                ($fileA->getPath() != $file->getPath() ||
+                                 $firstLineA       != $firstLine)) {
                                 $this->cpdDuplicates[] = array(
-                                  'fileA'      => $this->cpdHashes[$firstHash][0],
-                                  'firstLineA' => $this->cpdHashes[$firstHash][1],
+                                  'fileA'      => $fileA,
+                                  'firstLineA' => $firstLineA,
                                   'fileB'      => $file,
                                   'firstLineB' => $firstLine,
-                                  'numLines'   => $line + 1 - $firstLine,
+                                  'numLines'   => $line    + 1 - $firstLine,
                                   'numTokens'  => $tokenNr + 1 - $firstToken
                                 );
                             }
@@ -448,13 +453,18 @@ class PHPUnit_Util_Metrics_Project extends PHPUnit_Util_Metrics
             }
 
             if ($found) {
-                if ($line + 1 - $firstLine > $minLines) {
+                $fileA      = $this->cpdHashes[$firstHash][0];
+                $firstLineA = $this->cpdHashes[$firstHash][1];
+
+                if ($line + 1 - $firstLine > $minLines &&
+                    ($fileA->getPath() != $file->getPath() ||
+                     $firstLineA       != $firstLine)) {
                     $this->cpdDuplicates[] = array(
-                      'fileA'      => $this->cpdHashes[$firstHash][0],
-                      'firstLineA' => $this->cpdHashes[$firstHash][1],
+                      'fileA'      => $fileA,
+                      'firstLineA' => $firstLineA,
                       'fileB'      => $file,
                       'firstLineB' => $firstLine,
-                      'numLines'   => $line + 1 - $firstLine,
+                      'numLines'   => $line    + 1 - $firstLine,
                       'numTokens'  => $tokenNr + 1 - $firstToken
                     );
                 }
