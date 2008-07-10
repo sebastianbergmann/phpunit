@@ -604,6 +604,17 @@
        <tasks:replace from="@package_version@" to="version" type="package-info" />
       </file>
      </dir>
+     <dir name="BowlingGame">
+      <file baseinstalldir="/" name="BowlingGame.php" role="doc">
+       <tasks:replace from="@package_version@" to="version" type="package-info" />
+      </file>
+      <file baseinstalldir="/" name="BowlingGameSpec.php" role="doc">
+       <tasks:replace from="@package_version@" to="version" type="package-info" />
+      </file>
+      <file baseinstalldir="/" name="BowlingGameTest.php" role="doc">
+       <tasks:replace from="@package_version@" to="version" type="package-info" />
+      </file>
+     </dir>
      <dir name="Money">
       <file baseinstalldir="/" name="IMoney.php" role="doc">
        <tasks:replace from="@package_version@" to="version" type="package-info" />
@@ -796,6 +807,7 @@
       <file baseinstalldir="/" name="log-xml.phpt" role="test" />
       <file baseinstalldir="/" name="repeat.phpt" role="test" />
       <file baseinstalldir="/" name="skeleton.phpt" role="test" />
+      <file baseinstalldir="/" name="story.phpt" role="test" />
       <file baseinstalldir="/" name="tap.phpt" role="test" />
       <file baseinstalldir="/" name="testdox-html.phpt" role="test" />
       <file baseinstalldir="/" name="testdox.phpt" role="test" />
