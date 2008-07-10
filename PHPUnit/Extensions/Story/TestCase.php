@@ -93,7 +93,7 @@ abstract class PHPUnit_Extensions_Story_TestCase extends PHPUnit_Framework_TestC
     /**
      * @method PHPUnit_Extensions_Story_Step and($contextOrOutcome)
      */
-    protected function __call($command, $arguments)
+    public function __call($command, $arguments)
     {
         switch ($command) {
             case 'and': {
