@@ -73,7 +73,7 @@ class PHPUnit_TextUI_Command
 {
     /**
      */
-    public static function main()
+    public static function main($exit = TRUE)
     {
         $arguments = self::handleArguments();
         $runner    = new PHPUnit_TextUI_TestRunner;
@@ -122,16 +122,18 @@ class PHPUnit_TextUI_Command
             );
         }
 
-        if ($result->wasSuccessful()) {
-            exit(PHPUnit_TextUI_TestRunner::SUCCESS_EXIT);
-        }
+        if ($exit) {
+            if ($result->wasSuccessful()) {
+                exit(PHPUnit_TextUI_TestRunner::SUCCESS_EXIT);
+            }
 
-        else if ($result->errorCount() > 0) {
-            exit(PHPUnit_TextUI_TestRunner::EXCEPTION_EXIT);
-        }
+            else if ($result->errorCount() > 0) {
+                exit(PHPUnit_TextUI_TestRunner::EXCEPTION_EXIT);
+            }
 
-        else {
-            exit(PHPUnit_TextUI_TestRunner::FAILURE_EXIT);
+            else {
+                exit(PHPUnit_TextUI_TestRunner::FAILURE_EXIT);
+            }
         }
     }
 
