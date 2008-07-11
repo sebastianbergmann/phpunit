@@ -957,23 +957,22 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
      */
     protected function cleanupGlobals()
     {
-        $GLOBALS = array(
-          '_ENV' => array(),
-          'HTTP_ENV_VARS' => array(),
-          'argv' => array(),
-          'argc' => array(),
-          '_POST' => array(),
-          'HTTP_POST_VARS' => array(),
-          '_GET' => array(),
-          'HTTP_GET_VARS' => array(),
-          '_COOKIE' => array(),
-          'HTTP_COOKIE_VARS' => array(),
-          '_SERVER' => array(),
-          'HTTP_SERVER_VARS' => array(),
-          '_FILES' => array(),
-          'HTTP_POST_FILES' => array(),
-          '_REQUEST' => array()
-        );
+        $GLOBALS = array();
+        $_ENV = array();
+        $HTTP_ENV_VARS = array();
+        $argv = array();
+        $argc = array();
+        $_POST = array();
+        $HTTP_POST_VARS = array();
+        $_GET = array();
+        $HTTP_GET_VARS = array();
+        $_COOKIE = array();
+        $HTTP_COOKIE_VARS = array();
+        $_SERVER = array();
+        $HTTP_SERVER_VARS = array();
+        $_FILES = array();
+        $HTTP_POST_FILES = array();
+        $_REQUEST = array();
     }
 }
 
