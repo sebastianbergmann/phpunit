@@ -62,7 +62,7 @@ PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
  * @link       http://www.phpunit.de/
  * @since      Class available since Release 3.3.0
  */
-class PHPUnit_Framework_MockObject_Stub_Callback implements PHPUnit_Framework_MockObject_Stub
+class PHPUnit_Framework_MockObject_Stub_ReturnCallback implements PHPUnit_Framework_MockObject_Stub
 {
     protected $callback;
 
