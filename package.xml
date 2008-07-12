@@ -448,9 +448,6 @@
        </file>
       </dir>
       <dir name="Stub">
-       <file baseinstalldir="/" name="Callback.php" role="php">
-        <tasks:replace from="@package_version@" to="version" type="package-info" />
-       </file>
        <file baseinstalldir="/" name="ConsecutiveCalls.php" role="php">
         <tasks:replace from="@package_version@" to="version" type="package-info" />
        </file>
@@ -464,6 +461,9 @@
         <tasks:replace from="@package_version@" to="version" type="package-info" />
        </file>
        <file baseinstalldir="/" name="ReturnArgument.php" role="php">
+        <tasks:replace from="@package_version@" to="version" type="package-info" />
+       </file>
+       <file baseinstalldir="/" name="ReturnCallback.php" role="php">
         <tasks:replace from="@package_version@" to="version" type="package-info" />
        </file>
       </dir>
