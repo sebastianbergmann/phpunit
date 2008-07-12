@@ -798,12 +798,12 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
      *
      *
      * @param  mixed $callback
-     * @return PHPUnit_Framework_MockObject_Stub_Callback
+     * @return PHPUnit_Framework_MockObject_Stub_ReturnCallback
      * @since  Method available since Release 3.3.0
      */
     protected function returnCallback($callback)
     {
-        return new PHPUnit_Framework_MockObject_Stub_Callback($callback);
+        return new PHPUnit_Framework_MockObject_Stub_ReturnCallback($callback);
     }
 
     /**
