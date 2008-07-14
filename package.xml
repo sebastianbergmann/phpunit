@@ -801,6 +801,7 @@
       <file baseinstalldir="/" name="group.phpt" role="test" />
       <file baseinstalldir="/" name="help2.phpt" role="test" />
       <file baseinstalldir="/" name="help.phpt" role="test" />
+      <file baseinstalldir="/" name="list-groups.phpt" role="test" />
       <file baseinstalldir="/" name="log-graphviz.phpt" role="test" />
       <file baseinstalldir="/" name="log-json.phpt" role="test" />
       <file baseinstalldir="/" name="log-tap.phpt" role="test" />
