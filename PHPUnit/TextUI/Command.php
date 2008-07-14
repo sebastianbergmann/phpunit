@@ -109,6 +109,18 @@ class PHPUnit_TextUI_Command
             }
         }
 
+        if ($arguments['listGroups']) {
+            PHPUnit_TextUI_TestRunner::printVersionString();
+
+            print "Available test group(s):\n";
+
+            foreach ($suite->getGroups() as $group) {
+                print " - $group\n";
+            }
+
+            exit(PHPUnit_TextUI_TestRunner::SUCCESS_EXIT);
+        }
+
         try {
             $result = $runner->doRun(
               $suite,
@@ -141,7 +153,10 @@ class PHPUnit_TextUI_Command
      */
     protected static function handleArguments()
     {
-        $arguments = array('syntaxCheck' => TRUE);
+        $arguments = array(
+          'listGroups'  => FALSE,
+          'syntaxCheck' => TRUE
+        );
 
         $longOptions = array(
           'ansi',
@@ -155,6 +170,7 @@ class PHPUnit_TextUI_Command
           'filter=',
           'group=',
           'help',
+          'list-groups',
           'loader=',
           'log-graphviz=',
           'log-json=',
@@ -300,6 +316,11 @@ class PHPUnit_TextUI_Command
 
                 case '--exclude-group': {
                     $arguments['excludeGroups'] = explode(',', $option[1]);
+                }
+                break;
+
+                case '--list-groups': {
+                    $arguments['listGroups'] = TRUE;
                 }
                 break;
 
@@ -628,6 +649,7 @@ Usage: phpunit [switches] UnitTest [UnitTest.php]
   --filter <pattern>       Filter which tests to run.
   --group ...              Only runs tests from the specified group(s).
   --exclude-group ...      Exclude tests from the specified group(s).
+  --list-groups            List available test groups.
 
   --loader <loader>        TestSuiteLoader implementation to use.
   --repeat <times>         Runs the test(s) repeatedly.
