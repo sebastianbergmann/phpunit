@@ -957,22 +957,39 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
      */
     protected function cleanupGlobals()
     {
-        $GLOBALS = array();
-        $_ENV = array();
-        $HTTP_ENV_VARS = array();
-        $argv = array();
-        $argc = array();
-        $_POST = array();
-        $HTTP_POST_VARS = array();
-        $_GET = array();
-        $HTTP_GET_VARS = array();
-        $_COOKIE = array();
+        $_ENV             = array();
+        $HTTP_ENV_VARS    = array();
+        $argv             = array();
+        $argc             = array();
+        $_POST            = array();
+        $HTTP_POST_VARS   = array();
+        $_GET             = array();
+        $HTTP_GET_VARS    = array();
+        $_COOKIE          = array();
         $HTTP_COOKIE_VARS = array();
-        $_SERVER = array();
+        $_SERVER          = array();
         $HTTP_SERVER_VARS = array();
-        $_FILES = array();
-        $HTTP_POST_FILES = array();
-        $_REQUEST = array();
+        $_FILES           = array();
+        $HTTP_POST_FILES  = array();
+        $_REQUEST         = array();
+
+        $GLOBALS = array(
+          '_ENV'             => &$_ENV,
+          'HTTP_ENV_VARS'    => &$HTTP_ENV_VARS,
+          'argv'             => &$argv,
+          'argc'             => &$argc,
+          '_POST'            => &$_POST,
+          'HTTP_POST_VARS'   => &$HTTP_POST_VARS,
+          '_GET'             => &$_GET,
+          'HTTP_GET_VARS'    => &$HTTP_GET_VARS,
+          '_COOKIE'          => &$_COOKIE,
+          'HTTP_COOKIE_VARS' => &$HTTP_COOKIE_VARS,
+          '_SERVER'          => &$_SERVER,
+          'HTTP_SERVER_VARS' => &$HTTP_SERVER_VARS,
+          '_FILES'           => &$_FILES,
+          'HTTP_POST_FILES'  => &$HTTP_POST_FILES,
+          '_REQUEST'         => &$_REQUEST
+        );
     }
 }
 
