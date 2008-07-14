@@ -35,6 +35,7 @@ Usage: phpunit [switches] UnitTest [UnitTest.php]
   --filter <pattern>       Filter which tests to run.
   --group ...              Only runs tests from the specified group(s).
   --exclude-group ...      Exclude tests from the specified group(s).
+  --list-groups            List available test groups.
 
   --loader <loader>        TestSuiteLoader implementation to use.
   --repeat <times>         Runs the test(s) repeatedly.
