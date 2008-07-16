@@ -136,6 +136,11 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
     /**
      * @var    array
      */
+    protected $globalsBackup = array();
+
+    /**
+     * @var    array
+     */
     protected $data = array();
 
     /**
@@ -366,13 +371,7 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
     {
         // Backup the $GLOBALS array.
         if ($this->backupGlobals === NULL || $this->backupGlobals === TRUE) {
-            $globalsBackup = array();
-
-            foreach ($GLOBALS as $k => $v) {
-                if ($k != 'GLOBALS') {
-                    $globalsBackup[$k] = serialize($v);
-                }
-            }
+            $this->backupGlobals();
         }
 
         // Cleanup the $GLOBALS array.
@@ -425,11 +424,7 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
 
         // Restore the $GLOBALS array.
         if ($this->backupGlobals === NULL || $this->backupGlobals === TRUE) {
-            $this->cleanupGlobals();
-
-            foreach ($globalsBackup as $k => $v) {
-                $GLOBALS[$k] = unserialize($v);
-            }
+            $this->restoreGlobals();
         }
 
         // Cleanup the $GLOBALS array.
@@ -955,6 +950,20 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
     /**
      * @since Method available since Release 3.3.0
      */
+    protected function backupGlobals()
+    {
+        $this->globalsBackup = array();
+
+        foreach ($GLOBALS as $k => $v) {
+            if ($k != 'GLOBALS') {
+                $this->globalsBackup[$k] = serialize($v);
+            }
+        }
+    }
+
+    /**
+     * @since Method available since Release 3.3.0
+     */
     protected function cleanupGlobals()
     {
         $_ENV             = array();
@@ -974,6 +983,7 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
         $_REQUEST         = array();
 
         $GLOBALS = array(
+          'GLOBALS'          => &$GLOBALS,
           '_ENV'             => &$_ENV,
           'HTTP_ENV_VARS'    => &$HTTP_ENV_VARS,
           'argv'             => &$argv,
@@ -990,6 +1000,20 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
           'HTTP_POST_FILES'  => &$HTTP_POST_FILES,
           '_REQUEST'         => &$_REQUEST
         );
+    }
+
+    /**
+     * @since Method available since Release 3.3.0
+     */
+    protected function restoreGlobals()
+    {
+        $this->cleanupGlobals();
+
+        foreach ($this->globalsBackup as $k => $v) {
+            $GLOBALS[$k] = unserialize($v);
+        }
+
+        $this->globalsBackup = array();
     }
 }
 
