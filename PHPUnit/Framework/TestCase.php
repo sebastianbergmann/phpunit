@@ -125,15 +125,6 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
     protected $backupGlobals = NULL;
 
     /**
-     * Enable or disable the cleanup of the $GLOBALS array.
-     * Overwrite this attribute in a child class of TestCase.
-     * Setting this attribute in setUp() has no effect!
-     *
-     * @var    boolean
-     */
-    protected $cleanupGlobals = NULL;
-
-    /**
      * @var    array
      */
     protected $globalsBackup = array();
@@ -222,6 +213,25 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
      * @var    integer
      */
     protected $numAssertions = 0;
+
+    /**
+     * @var    array
+     */
+    protected static $superGlobalArrays = array(
+      '_ENV',
+      'HTTP_ENV_VARS',
+      '_POST',
+      'HTTP_POST_VARS',
+      '_GET',
+      'HTTP_GET_VARS',
+      '_COOKIE',
+      'HTTP_COOKIE_VARS',
+      '_SERVER',
+      'HTTP_SERVER_VARS',
+      '_FILES',
+      'HTTP_POST_FILES',
+      '_REQUEST'
+    );
 
     /**
      * Constructs a test case with the given name.
@@ -374,11 +384,6 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
             $this->backupGlobals();
         }
 
-        // Cleanup the $GLOBALS array.
-        else if ($this->cleanupGlobals === NULL || $this->cleanupGlobals === TRUE) {
-            $this->cleanupGlobals();
-        }
-
         // Set up the fixture.
         $this->setUp();
 
@@ -425,11 +430,6 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
         // Restore the $GLOBALS array.
         if ($this->backupGlobals === NULL || $this->backupGlobals === TRUE) {
             $this->restoreGlobals();
-        }
-
-        // Cleanup the $GLOBALS array.
-        else if ($this->cleanupGlobals === NULL || $this->cleanupGlobals === TRUE) {
-            $this->cleanupGlobals();
         }
 
         // Clean up INI settings.
@@ -535,19 +535,6 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
     {
         if (is_null($this->backupGlobals) && is_bool($backupGlobals)) {
             $this->backupGlobals = $backupGlobals;
-        }
-    }
-
-    /**
-     * Calling this method in setUp() has no effect!
-     *
-     * @param  boolean $cleanupGlobals
-     * @since  Method available since Release 3.3.0
-     */
-    public function setCleanupGlobals($cleanupGlobals)
-    {
-        if (is_null($this->cleanupGlobals) && is_bool($cleanupGlobals)) {
-            $this->cleanupGlobals = $cleanupGlobals;
         }
     }
 
@@ -954,52 +941,37 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
     {
         $this->globalsBackup = array();
 
-        foreach ($GLOBALS as $k => $v) {
-            if ($k != 'GLOBALS') {
-                $this->globalsBackup[$k] = serialize($v);
+        foreach (self::$superGlobalArrays as $superGlobalArray) {
+            $this->backupSuperGlobalArray($superGlobalArray);
+        }
+
+        foreach (array_keys($GLOBALS) as $key) {
+            if ($key != 'GLOBALS' && !in_array($key, self::$superGlobalArrays)) {
+                $this->globalsBackup['GLOBALS'][$key] = serialize($GLOBALS[$key]);
             }
         }
     }
 
-    /**
-     * @since Method available since Release 3.3.0
-     */
-    protected function cleanupGlobals()
+    protected function backupSuperGlobalArray($superGlobalArray)
     {
-        $_ENV             = array();
-        $HTTP_ENV_VARS    = array();
-        $argv             = array();
-        $argc             = array();
-        $_POST            = array();
-        $HTTP_POST_VARS   = array();
-        $_GET             = array();
-        $HTTP_GET_VARS    = array();
-        $_COOKIE          = array();
-        $HTTP_COOKIE_VARS = array();
-        $_SERVER          = array();
-        $HTTP_SERVER_VARS = array();
-        $_FILES           = array();
-        $HTTP_POST_FILES  = array();
-        $_REQUEST         = array();
+        $this->globalsBackup[$superGlobalArray] = array();
 
-        $GLOBALS = array(
-          'GLOBALS'          => &$GLOBALS,
-          '_ENV'             => &$_ENV,
-          'HTTP_ENV_VARS'    => &$HTTP_ENV_VARS,
-          'argv'             => &$argv,
-          'argc'             => &$argc,
-          '_POST'            => &$_POST,
-          'HTTP_POST_VARS'   => &$HTTP_POST_VARS,
-          '_GET'             => &$_GET,
-          'HTTP_GET_VARS'    => &$HTTP_GET_VARS,
-          '_COOKIE'          => &$_COOKIE,
-          'HTTP_COOKIE_VARS' => &$HTTP_COOKIE_VARS,
-          '_SERVER'          => &$_SERVER,
-          'HTTP_SERVER_VARS' => &$HTTP_SERVER_VARS,
-          '_FILES'           => &$_FILES,
-          'HTTP_POST_FILES'  => &$HTTP_POST_FILES,
-          '_REQUEST'         => &$_REQUEST
-        );
+        foreach ($GLOBALS[$superGlobalArray] as $key => $value) {
+            $this->globalsBackup[$superGlobalArray][$key] = serialize($value);
+        }
+    }
+
+    protected function restoreSuperGlobalArray($superGlobalArray)
+    {
+        foreach ($GLOBALS[$superGlobalArray] as $key => $value) {
+            if (isset($this->globalsBackup[$superGlobalArray][$key])) {
+                $GLOBALS[$superGlobalArray][$key] = unserialize($this->globalsBackup[$superGlobalArray][$key]);
+            } else {
+                unset($GLOBALS[$superGlobalArray][$key]);
+            }
+        }
+
+        $this->globalsBackup[$superGlobalArray] = array();
     }
 
     /**
@@ -1007,10 +979,18 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
      */
     protected function restoreGlobals()
     {
-        $this->cleanupGlobals();
+        foreach (self::$superGlobalArrays as $superGlobalArray) {
+            $this->restoreSuperGlobalArray($superGlobalArray);
+        }
 
-        foreach ($this->globalsBackup as $k => $v) {
-            $GLOBALS[$k] = unserialize($v);
+        foreach (array_keys($GLOBALS) as $key) {
+            if ($key != 'GLOBALS' && !in_array($key, self::$superGlobalArrays)) {
+                if (isset($this->globalsBackup['GLOBALS'][$key])) {
+                    $GLOBALS[$key] = unserialize($this->globalsBackup['GLOBALS'][$key]);
+                } else {
+                    unset($GLOBALS[$key]);
+                }
+            }
         }
 
         $this->globalsBackup = array();
