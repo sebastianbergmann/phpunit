@@ -60,6 +60,8 @@ require_once dirname(dirname(__FILE__)) . DIRECTORY_SEPARATOR . '_files' . DIREC
 require_once dirname(dirname(__FILE__)) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'TornDown4.php';
 require_once dirname(dirname(__FILE__)) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'WasRun.php';
 
+$GLOBALS['foo'] = 'bar';
+
 /**
  *
  *
@@ -203,6 +205,29 @@ class Framework_TestCaseTest extends PHPUnit_Framework_TestCase
 
         $this->assertEquals(1, $result->errorCount());
         $this->assertEquals(1, count($result));
+    }
+
+    public function testGlobalsBackupPre()
+    {
+        global $foo;
+
+        $this->assertEquals('bar', $GLOBALS['foo']);
+        $this->assertEquals('bar', $foo);
+
+        $GLOBALS['foo'] = 'baz';
+        $GLOBALS['bar'] = 'baz';
+
+        $this->assertEquals('baz', $GLOBALS['foo']);
+        $this->assertEquals('baz', $foo);
+    }
+
+    public function testGlobalsBackupPost()
+    {
+        global $foo;
+
+        $this->assertEquals('bar', $GLOBALS['foo']);
+        $this->assertEquals('bar', $foo);
+        $this->assertArrayNotHasKey('bar', $GLOBALS);
     }
 
     protected function verifyError(PHPUnit_Framework_TestCase $test)
