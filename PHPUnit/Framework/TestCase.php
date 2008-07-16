@@ -219,18 +219,24 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
      */
     protected static $superGlobalArrays = array(
       '_ENV',
-      'HTTP_ENV_VARS',
       '_POST',
-      'HTTP_POST_VARS',
       '_GET',
-      'HTTP_GET_VARS',
       '_COOKIE',
-      'HTTP_COOKIE_VARS',
       '_SERVER',
-      'HTTP_SERVER_VARS',
       '_FILES',
-      'HTTP_POST_FILES',
       '_REQUEST'
+    );
+
+    /**
+     * @var    array
+     */
+    protected static $superGlobalArraysLong = array(
+      'HTTP_ENV_VARS',
+      'HTTP_POST_VARS',
+      'HTTP_GET_VARS',
+      'HTTP_COOKIE_VARS',
+      'HTTP_SERVER_VARS',
+      'HTTP_POST_FILES'
     );
 
     /**
@@ -941,12 +947,20 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
     {
         $this->globalsBackup = array();
 
-        foreach (self::$superGlobalArrays as $superGlobalArray) {
+        if (ini_get('register_long_arrays') == '1') {
+            $superGlobalArrays = array_merge(
+              self::$superGlobalArrays, self::$superGlobalArraysLong
+            );
+        } else {
+            $superGlobalArrays = self::$superGlobalArrays;
+        }
+
+        foreach ($superGlobalArrays as $superGlobalArray) {
             $this->backupSuperGlobalArray($superGlobalArray);
         }
 
         foreach (array_keys($GLOBALS) as $key) {
-            if ($key != 'GLOBALS' && !in_array($key, self::$superGlobalArrays)) {
+            if ($key != 'GLOBALS' && !in_array($key, $superGlobalArrays)) {
                 $this->globalsBackup['GLOBALS'][$key] = serialize($GLOBALS[$key]);
             }
         }
@@ -979,12 +993,20 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
      */
     protected function restoreGlobals()
     {
-        foreach (self::$superGlobalArrays as $superGlobalArray) {
+        if (ini_get('register_long_arrays') == '1') {
+            $superGlobalArrays = array_merge(
+              self::$superGlobalArrays, self::$superGlobalArraysLong
+            );
+        } else {
+            $superGlobalArrays = self::$superGlobalArrays;
+        }
+
+        foreach ($superGlobalArrays as $superGlobalArray) {
             $this->restoreSuperGlobalArray($superGlobalArray);
         }
 
         foreach (array_keys($GLOBALS) as $key) {
-            if ($key != 'GLOBALS' && !in_array($key, self::$superGlobalArrays)) {
+            if ($key != 'GLOBALS' && !in_array($key, $superGlobalArrays)) {
                 if (isset($this->globalsBackup['GLOBALS'][$key])) {
                     $GLOBALS[$key] = unserialize($this->globalsBackup['GLOBALS'][$key]);
                 } else {
