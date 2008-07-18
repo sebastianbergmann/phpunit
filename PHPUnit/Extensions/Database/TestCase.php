@@ -215,6 +215,12 @@ abstract class PHPUnit_Extensions_Database_TestCase extends PHPUnit_Framework_Te
         $this->getDatabaseTester()->setTearDownOperation($this->getTearDownOperation());
         $this->getDatabaseTester()->setDataSet($this->getDataSet());
         $this->getDatabaseTester()->onTearDown();
+        
+        /**
+         * Destroy the tester after the test is run to keep DB connections 
+         * from piling up.
+         */
+		$this->databaseTester = NULL;
     }
 
     /**
