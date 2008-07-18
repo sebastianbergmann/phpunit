@@ -60,7 +60,14 @@ require_once dirname(__DIR__) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPAR
 require_once dirname(__DIR__) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'TornDown4.php';
 require_once dirname(__DIR__) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'WasRun.php';
 
-$GLOBALS['foo'] = 'bar';
+$GLOBALS['a']  = 'a';
+$_ENV['b']     = 'b';
+$_POST['c']    = 'c';
+$_GET['d']     = 'd';
+$_COOKIE['e']  = 'e';
+$_SERVER['f']  = 'f';
+$_FILES['g']   = 'g';
+$_REQUEST['h'] = 'h';
 
 /**
  *
@@ -209,25 +216,55 @@ class Framework_TestCaseTest extends PHPUnit_Framework_TestCase
 
     public function testGlobalsBackupPre()
     {
-        global $foo;
+        global $a;
 
+        $this->assertEquals('a', $a);
+        $this->assertEquals('a', $GLOBALS['a']);
+        $this->assertEquals('b', $_ENV['b']);
+        $this->assertEquals('c', $_POST['c']);
+        $this->assertEquals('d', $_GET['d']);
+        $this->assertEquals('e', $_COOKIE['e']);
+        $this->assertEquals('f', $_SERVER['f']);
+        $this->assertEquals('g', $_FILES['g']);
+        $this->assertEquals('h', $_REQUEST['h']);
+
+        $GLOBALS['a']   = 'aa';
+        $GLOBALS['foo'] = 'bar';
+        $_ENV['b']      = 'bb';
+        $_POST['c']     = 'cc';
+        $_GET['d']      = 'dd';
+        $_COOKIE['e']   = 'ee';
+        $_SERVER['f']   = 'ff';
+        $_FILES['g']    = 'gg';
+        $_REQUEST['h']  = 'hh';
+
+        $this->assertEquals('aa', $a);
+        $this->assertEquals('aa', $GLOBALS['a']);
         $this->assertEquals('bar', $GLOBALS['foo']);
-        $this->assertEquals('bar', $foo);
-
-        $GLOBALS['foo'] = 'baz';
-        $GLOBALS['bar'] = 'baz';
-
-        $this->assertEquals('baz', $GLOBALS['foo']);
-        $this->assertEquals('baz', $foo);
+        $this->assertEquals('bb', $_ENV['b']);
+        $this->assertEquals('cc', $_POST['c']);
+        $this->assertEquals('dd', $_GET['d']);
+        $this->assertEquals('ee', $_COOKIE['e']);
+        $this->assertEquals('ff', $_SERVER['f']);
+        $this->assertEquals('gg', $_FILES['g']);
+        $this->assertEquals('hh', $_REQUEST['h']);
     }
 
     public function testGlobalsBackupPost()
     {
-        global $foo;
+        global $a;
 
-        $this->assertEquals('bar', $GLOBALS['foo']);
-        $this->assertEquals('bar', $foo);
-        $this->assertArrayNotHasKey('bar', $GLOBALS);
+        $this->assertEquals('a', $a);
+        $this->assertEquals('a', $GLOBALS['a']);
+        $this->assertEquals('b', $_ENV['b']);
+        $this->assertEquals('c', $_POST['c']);
+        $this->assertEquals('d', $_GET['d']);
+        $this->assertEquals('e', $_COOKIE['e']);
+        $this->assertEquals('f', $_SERVER['f']);
+        $this->assertEquals('g', $_FILES['g']);
+        $this->assertEquals('h', $_REQUEST['h']);
+
+        $this->assertArrayNotHasKey('foo', $GLOBALS);
     }
 
     protected function verifyError(PHPUnit_Framework_TestCase $test)
