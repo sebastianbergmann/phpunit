@@ -100,7 +100,7 @@ class PHPUnit_Framework_MockObject_Mock
     protected $callAutoload;
     protected static $cache = array();
 
-    public function __construct($className, array $methods = array(), $mockClassName = '', $callOriginalConstructor = TRUE, $callOriginalClone = TRUE, $callAutoload = TRUE)
+    public function __construct($className, $methods = array(), $mockClassName = '', $callOriginalConstructor = TRUE, $callOriginalClone = TRUE, $callAutoload = TRUE)
     {
         $classNameParts = explode('::', $className);
 
@@ -132,7 +132,7 @@ class PHPUnit_Framework_MockObject_Mock
         $isClass     = class_exists($className, $callAutoload);
         $isInterface = interface_exists($className, $callAutoload);
 
-        if (empty($methods) && ($isClass || $isInterface)) {
+        if (is_array($methods) && empty($methods) && ($isClass || $isInterface)) {
             $methods = get_class_methods($className);
         }
 
@@ -149,7 +149,7 @@ class PHPUnit_Framework_MockObject_Mock
         $this->callAutoload            = $callAutoload;
     }
 
-    public static function generate($className, array $methods = array(), $mockClassName = '', $callOriginalConstructor = TRUE, $callOriginalClone = TRUE, $callAutoload = TRUE)
+    public static function generate($className, $methods = array(), $mockClassName = '', $callOriginalConstructor = TRUE, $callOriginalClone = TRUE, $callAutoload = TRUE)
     {
         if ($mockClassName == '') {
             $key = md5(
@@ -183,7 +183,7 @@ class PHPUnit_Framework_MockObject_Mock
         );
     }
 
-    protected static function generateMock($className, array $methods, $mockClassName, $callOriginalConstructor, $callOriginalClone, $callAutoload)
+    protected static function generateMock($className, $methods, $mockClassName, $callOriginalConstructor, $callOriginalClone, $callAutoload)
     {
         $mock = new PHPUnit_Framework_MockObject_Mock(
           $className,
@@ -262,17 +262,19 @@ class PHPUnit_Framework_MockObject_Mock
 
         $code .= $this->generateMockApi($class);
 
-        foreach ($this->methods as $methodName) {
-            try {
-                $method = $class->getMethod($methodName);
+        if (is_array($this->methods)) {
+            foreach ($this->methods as $methodName) {
+                try {
+                    $method = $class->getMethod($methodName);
 
-                if ($this->canMockMethod($method)) {
-                    $code .= $this->generateMethodDefinitionFromExisting($method);
+                    if ($this->canMockMethod($method)) {
+                        $code .= $this->generateMethodDefinitionFromExisting($method);
+                    }
                 }
-            }
 
-            catch (ReflectionException $e) {
-                $code .= $this->generateMethodDefinition($class->getName(), $methodName, 'public');
+                catch (ReflectionException $e) {
+                    $code .= $this->generateMethodDefinition($class->getName(), $methodName, 'public');
+                }
             }
         }
 
