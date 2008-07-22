@@ -191,7 +191,7 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
         }
 
         $filename = $theClass->getFilename();
- 
+
         if (strpos($filename, 'eval()') === FALSE) {
             PHPUnit_Util_Filter::addFileToFilter(realpath($filename), 'TESTS');
         }
