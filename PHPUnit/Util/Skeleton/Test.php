@@ -78,9 +78,8 @@ class PHPUnit_Util_Skeleton_Test extends PHPUnit_Util_Skeleton
      */
     public function __construct($inClassName, $inSourceFile = '')
     {
-        $this->inClassName   = $inClassName;
-        $this->outClassName  = $inClassName . 'Test';
-        $this->outSourceFile = $inClassName . 'Test.php';
+        $this->inClassName  = $inClassName;
+        $this->outClassName = $inClassName . 'Test';
 
         if (class_exists($inClassName)) {
             $this->inSourceFile = '<internal>';
@@ -132,6 +131,8 @@ class PHPUnit_Util_Skeleton_Test extends PHPUnit_Util_Skeleton
               )
             );
         }
+
+        $this->outSourceFile = dirname($inSourceFile) . DIRECTORY_SEPARATOR . $this->inClassName . 'Test.php';
     }
 
     /**
