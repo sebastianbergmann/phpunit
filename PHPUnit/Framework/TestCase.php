@@ -970,28 +970,6 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
         }
     }
 
-    protected function backupSuperGlobalArray($superGlobalArray)
-    {
-        $this->globalsBackup[$superGlobalArray] = array();
-
-        foreach ($GLOBALS[$superGlobalArray] as $key => $value) {
-            $this->globalsBackup[$superGlobalArray][$key] = serialize($value);
-        }
-    }
-
-    protected function restoreSuperGlobalArray($superGlobalArray)
-    {
-        foreach ($GLOBALS[$superGlobalArray] as $key => $value) {
-            if (isset($this->globalsBackup[$superGlobalArray][$key])) {
-                $GLOBALS[$superGlobalArray][$key] = unserialize($this->globalsBackup[$superGlobalArray][$key]);
-            } else {
-                unset($GLOBALS[$superGlobalArray][$key]);
-            }
-        }
-
-        $this->globalsBackup[$superGlobalArray] = array();
-    }
-
     /**
      * @since Method available since Release 3.3.0
      */
@@ -1020,6 +998,32 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
         }
 
         $this->globalsBackup = array();
+    }
+
+    protected function backupSuperGlobalArray($superGlobalArray)
+    {
+        $this->globalsBackup[$superGlobalArray] = array();
+
+        if (isset($GLOBALS[$superGlobalArray])) {
+            foreach ($GLOBALS[$superGlobalArray] as $key => $value) {
+                $this->globalsBackup[$superGlobalArray][$key] = serialize($value);
+            }
+        }
+    }
+
+    protected function restoreSuperGlobalArray($superGlobalArray)
+    {
+        if (isset($GLOBALS[$superGlobalArray])) {
+            foreach ($GLOBALS[$superGlobalArray] as $key => $value) {
+                if (isset($this->globalsBackup[$superGlobalArray][$key])) {
+                    $GLOBALS[$superGlobalArray][$key] = unserialize($this->globalsBackup[$superGlobalArray][$key]);
+                } else {
+                    unset($GLOBALS[$superGlobalArray][$key]);
+                }
+            }
+        }
+
+        $this->globalsBackup[$superGlobalArray] = array();
     }
 }
 
