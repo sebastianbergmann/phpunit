@@ -95,7 +95,7 @@ class PHPUnit_Util_Skeleton_Class extends PHPUnit_Util_Skeleton
 
         $this->inClassName   = $inClassName;
         $this->outClassName  = substr($inClassName, 0, strlen($inClassName) - 4);
-        $this->outSourceFile = $this->outClassName . '.php';
+        $this->outSourceFile = dirname($inSourceFile) . DIRECTORY_SEPARATOR . $this->outClassName . '.php';
     }
 
     /**
