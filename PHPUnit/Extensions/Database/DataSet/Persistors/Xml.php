@@ -119,11 +119,11 @@ class PHPUnit_Extensions_Database_DataSet_Persistors_Xml extends PHPUnit_Extensi
      */
     protected function startTable(PHPUnit_Extensions_Database_DataSet_ITable $table)
     {
-    	fwrite($this->fh, "\t<table name=\"{$table->getTableMetaData()->getTableName()}\">\n");
-    	foreach ($table->getTableMetaData()->getColumns() as $columnName)
-    	{
-    		fwrite($this->fh, "\t\t<column>{$columnName}</column>\n");
-    	}
+        fwrite($this->fh, "\t<table name=\"{$table->getTableMetaData()->getTableName()}\">\n");
+
+        foreach ($table->getTableMetaData()->getColumns() as $columnName) {
+            fwrite($this->fh, "\t\t<column>{$columnName}</column>\n");
+        }
     }
 
     /**
