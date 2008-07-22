@@ -82,7 +82,7 @@ class PHPUnit_Extensions_Database_DataSet_Persistors_FlatXml extends PHPUnit_Ext
      */
     public function setFileName($filename)
     {
-    	$this->filename = $filename;
+        $this->filename = $filename;
     }
 
     /**

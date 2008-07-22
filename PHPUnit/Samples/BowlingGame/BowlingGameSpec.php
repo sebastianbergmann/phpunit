@@ -46,7 +46,7 @@
 
 require_once 'PHPUnit/Extensions/Story/TestCase.php';
 require_once 'BowlingGame.php';
- 
+
 class BowlingGameSpec extends PHPUnit_Extensions_Story_TestCase
 {
     /**
@@ -60,7 +60,7 @@ class BowlingGameSpec extends PHPUnit_Extensions_Story_TestCase
              ->and('Player rolls', 3)
              ->then('Score should be', 16);
     }
- 
+
     public function runGiven(&$world, $action, $arguments)
     {
         switch($action) {
@@ -69,7 +69,7 @@ class BowlingGameSpec extends PHPUnit_Extensions_Story_TestCase
                 $world['rolls'] = 0;
             }
             break;
- 
+
             default: {
                 return $this->notImplemented($action);
             }
@@ -84,7 +84,7 @@ class BowlingGameSpec extends PHPUnit_Extensions_Story_TestCase
                 $world['rolls']++;
             }
             break;
- 
+
             default: {
                 return $this->notImplemented($action);
             }
@@ -98,11 +98,11 @@ class BowlingGameSpec extends PHPUnit_Extensions_Story_TestCase
                 for ($i = $world['rolls']; $i < 20; $i++) {
                     $world['game']->roll(0);
                 }
- 
+
                 $this->assertEquals($arguments[0], $world['game']->score());
             }
             break;
- 
+
             default: {
                 return $this->notImplemented($action);
             }
