@@ -128,7 +128,7 @@ class PHPUnit_Framework_MockObject_Matcher implements PHPUnit_Framework_MockObje
         }
 
         if ($this->afterMatchBuilderId !== NULL) {
-            $builder = $invocation->object->getInvocationMocker()->lookupId($this->afterMatchBuilderId);
+            $builder = $invocation->object->__phpunit_getInvocationMocker()->lookupId($this->afterMatchBuilderId);
 
             if (!$builder) {
                 throw new RuntimeException(
@@ -179,7 +179,7 @@ class PHPUnit_Framework_MockObject_Matcher implements PHPUnit_Framework_MockObje
     public function matches(PHPUnit_Framework_MockObject_Invocation $invocation)
     {
         if ($this->afterMatchBuilderId !== NULL) {
-            $builder = $invocation->object->getInvocationMocker()->lookupId($this->afterMatchBuilderId);
+            $builder = $invocation->object->__phpunit_getInvocationMocker()->lookupId($this->afterMatchBuilderId);
 
             if (!$builder) {
                 throw new RuntimeException(
