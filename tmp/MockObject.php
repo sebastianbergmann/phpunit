@@ -74,7 +74,7 @@ interface PHPUnit_Framework_MockObject_MockObject extends PHPUnit_Framework_Mock
      * and stubs.
      * @return PHPUnit_Framework_MockObject_InvocationMocker
      */
-    public function getInvocationMocker();
+    public function /*__phpunit_*/getInvocationMocker();
 
     /**
      * Registers a new expectation in the mock object and returns the match

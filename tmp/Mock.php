@@ -246,14 +246,14 @@ class PHPUnit_Framework_MockObject_Mock
 
         if ($class->isInterface()) {
             $code .= sprintf(
-              "%s implements %s%s, PHPUnit_Framework_MockObject_MockObject {\n",
+              "%s implements %s%s {\n",
               $this->mockClassName,
               !empty($this->namespaceName) ? $this->namespaceName . '::' : '',
               $this->className
             );
         } else {
             $code .= sprintf(
-              "%s extends %s%s implements PHPUnit_Framework_MockObject_MockObject {\n",
+              "%s extends %s%s {\n",
               $this->mockClassName,
               !empty($this->namespaceName) ? $this->namespaceName . '::' : '',
               $this->className
@@ -368,13 +368,13 @@ class PHPUnit_Framework_MockObject_Mock
           "    private \$invocationMocker;\n\n" .
           "%s" .
           "%s" .
-          "    public function getInvocationMocker() {\n" .
-          "        return \$this->invocationMocker;\n" .
-          "    }\n\n" .
           "    public function expects(PHPUnit_Framework_MockObject_Matcher_Invocation \$matcher) {\n" .
           "        return \$this->invocationMocker->expects(\$matcher);\n" .
           "    }\n\n" .
-          "    public function verify() {\n" .
+          "    public function __phpunit_getInvocationMocker() {\n" .
+          "        return \$this->invocationMocker;\n" .
+          "    }\n\n" .
+          "    public function __phpunit_verify() {\n" .
           "        \$this->invocationMocker->verify();\n" .
           "    }\n",
 

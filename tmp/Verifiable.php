@@ -70,6 +70,6 @@ interface PHPUnit_Framework_MockObject_Verifiable
      *
      * @throw PHPUnit_Framework_ExpectationFailedException
      */
-    public function verify();
+    public function /*__phpunit_*/verify();
 }
 ?>
