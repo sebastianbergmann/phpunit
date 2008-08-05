@@ -48,6 +48,7 @@ require_once 'PHPUnit/Framework.php';
 require_once 'PHPUnit/Util/Filter.php';
 
 require_once 'PHPUnit/Extensions/Database/DataSet/AbstractDataSet.php';
+require_once 'PHPUnit/Extensions/Database/DataSet/DefaultTableMetaData.php';
 require_once 'PHPUnit/Extensions/Database/DB/TableIterator.php';
 require_once 'PHPUnit/Extensions/Database/DB/Table.php';
 
