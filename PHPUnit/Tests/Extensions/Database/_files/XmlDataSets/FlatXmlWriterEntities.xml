@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<dataset>
+	<table1
+		col1="1"
+		col2="&lt;?xml version=&quot;1.0&quot;?&gt;&lt;myxml&gt;test&lt;/myxml&gt;"
+	/>
+</dataset>

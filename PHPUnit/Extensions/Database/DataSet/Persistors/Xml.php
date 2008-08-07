@@ -148,7 +148,7 @@ class PHPUnit_Extensions_Database_DataSet_Persistors_Xml extends PHPUnit_Extensi
 
         foreach ($table->getTableMetaData()->getColumns() as $columnName) {
             if (isset($row[$columnName])) {
-                fwrite($this->fh, "\t\t\t<value>{$row[$columnName]}</value>\n");
+                fwrite($this->fh, "\t\t\t<value>" . htmlspecialchars($row[$columnName]) . "</value>\n");
             } else {
                 fwrite($this->fh, "\t\t\t<null />\n");
             }
