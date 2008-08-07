@@ -47,6 +47,9 @@
 require_once 'PHPUnit/Framework/TestCase.php';
 require_once 'PHPUnit/Extensions/Database/DataSet/FlatXmlDataSet.php';
 require_once 'PHPUnit/Extensions/Database/DataSet/XmlDataSet.php';
+require_once 'PHPUnit/Extensions/Database/DataSet/DefaultDataSet.php';
+require_once 'PHPUnit/Extensions/Database/DataSet/DefaultTable.php';
+require_once 'PHPUnit/Extensions/Database/DataSet/DefaultTableMetaData.php';
 
 /**
  * @category   Testing
@@ -82,6 +85,36 @@ class Extensions_Database_DataSet_PersistorTest extends PHPUnit_Framework_TestCa
 
         $this->assertXmlFileEqualsXmlFile($dataSetFile, $filename);
         unlink($filename);
+    }
+
+    public function testEntitiesFlatXml()
+    {
+        $metaData = new PHPUnit_Extensions_Database_DataSet_DefaultTableMetaData('table1', array('col1', 'col2'), array('col1'));
+        $table = new PHPUnit_Extensions_Database_DataSet_DefaultTable($metaData);
+	$table->addRow(array('col1' => 1, 'col2' => '<?xml version="1.0"?><myxml>test</myxml>'));
+        $dataSet = new PHPUnit_Extensions_Database_DataSet_DefaultDataSet(array($table));
+
+	$expectedFile = __DIR__.'/../_files/XmlDataSets/FlatXmlWriterEntities.xml';
+	$filename = __DIR__.'/'.uniqid().'.xml';
+	PHPUnit_Extensions_Database_DataSet_FlatXmlDataSet::write($dataSet, $filename);
+
+	$this->assertXmlFileEqualsXmlFile($expectedFile, $filename);
+	unlink($filename);
+    }
+
+    public function testEntitiesXml()
+    {
+        $metaData = new PHPUnit_Extensions_Database_DataSet_DefaultTableMetaData('table1', array('col1', 'col2'), array('col1'));
+        $table = new PHPUnit_Extensions_Database_DataSet_DefaultTable($metaData);
+	$table->addRow(array('col1' => 1, 'col2' => '<?xml version="1.0"?><myxml>test</myxml>'));
+        $dataSet = new PHPUnit_Extensions_Database_DataSet_DefaultDataSet(array($table));
+
+	$expectedFile = __DIR__.'/../_files/XmlDataSets/XmlWriterEntities.xml';
+	$filename = __DIR__.'/'.uniqid().'.xml';
+	PHPUnit_Extensions_Database_DataSet_XmlDataSet::write($dataSet, $filename);
+
+	$this->assertXmlFileEqualsXmlFile($expectedFile, $filename);
+	unlink($filename);
     }
 }
 ?>

@@ -146,7 +146,7 @@ class PHPUnit_Extensions_Database_DataSet_Persistors_FlatXml extends PHPUnit_Ext
 
         foreach ($table->getTableMetaData()->getColumns() as $columnName) {
             if (isset($row[$columnName])) {
-                fwrite($this->fh, "\t\t{$columnName}=\"{$row[$columnName]}\"\n");
+                fwrite($this->fh, "\t\t{$columnName}=\"". htmlspecialchars($row[$columnName]) . "\"\n");
             }
         }
 
