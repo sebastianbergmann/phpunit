@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<dataset>
+	<table name="table1">
+		<column>col1</column>
+		<column>col2</column>
+		<row>
+			<value>1</value>
+			<value>&lt;?xml version=&quot;1.0&quot;?&gt;&lt;myxml&gt;test&lt;/myxml&gt;</value>
+		</row>
+	</table>
+</dataset>
