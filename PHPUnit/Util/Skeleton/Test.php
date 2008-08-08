@@ -132,7 +132,7 @@ class PHPUnit_Util_Skeleton_Test extends PHPUnit_Util_Skeleton
             );
         }
 
-        $this->outSourceFile = dirname($inSourceFile) . DIRECTORY_SEPARATOR . $this->inClassName . 'Test.php';
+        $this->outSourceFile = dirname($this->inSourceFile) . DIRECTORY_SEPARATOR . $this->inClassName . 'Test.php';
     }
 
     /**
