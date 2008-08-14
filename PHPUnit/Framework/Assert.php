@@ -1509,7 +1509,7 @@ abstract class PHPUnit_Framework_Assert
     {
         $stack = debug_backtrace();
 
-        for ($i = 1; $i <= 2; $i++) {
+        for ($i = 1; $i <= 3; $i++) {
             if (isset($stack[$i]['object']) &&
                 $stack[$i]['object'] instanceof PHPUnit_Framework_TestCase) {
                 $test = $stack[$i]['object'];
