@@ -10,7 +10,7 @@ $_SERVER['argv'][4] = '../Samples/BankAccount/BankAccountTest.php';
 require_once dirname(dirname(dirname(__FILE__))) . '/TextUI/Command.php';
 ?>
 --EXPECTF--
-PHPUnit @package_version@ by Sebastian Bergmann.
+PHPUnit %s by Sebastian Bergmann.
 
 1..3
 # TestSuite "BankAccountTest" started.
@@ -20,6 +20,6 @@ PHPUnit @package_version@ by Sebastian Bergmann.
 # TestSuite "BankAccountTest" ended.
 
 
-Time: 0 seconds
+Time: %i seconds
 
 OK (3 tests, 3 assertions)

@@ -24,17 +24,17 @@ unlink($tempPath . DIRECTORY_SEPARATOR . 'BankAccount.php.xml');
 unlink($tempPath . DIRECTORY_SEPARATOR . 'BankAccountTest.php.xml');
 ?>
 --EXPECTF--
-PHPUnit @package_version@ by Sebastian Bergmann.
+PHPUnit %s by Sebastian Bergmann.
 
 ...
 
-Time: 0 seconds
+Time: %i seconds
 
 OK (3 tests, 3 assertions)
 
 Writing code coverage data to XML files, this may take a moment.
 <?xml version="1.0" encoding="UTF-8"?>
-<coveredFile fullPath="%s" shortenedPath="BankAccount.php" generated="%d" phpunit="@package_version@">
+<coveredFile fullPath="%s" shortenedPath="BankAccount.php" generated="%d" phpunit="%s">
   <line lineNumber="1" executed="-3">
     <body><![CDATA[<?php]]></body>
   </line>
@@ -204,7 +204,7 @@ Writing code coverage data to XML files, this may take a moment.
     <body><![CDATA[ * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License]]></body>
   </line>
   <line lineNumber="57" executed="-3">
-    <body><![CDATA[ * @version    Release: @package_version@]]></body>
+    <body><![CDATA[ * @version    Release: %s]]></body>
   </line>
   <line lineNumber="58" executed="-3">
     <body><![CDATA[ * @link       http://www.phpunit.de/]]></body>
@@ -409,7 +409,7 @@ Writing code coverage data to XML files, this may take a moment.
   </line>
 </coveredFile>
 <?xml version="1.0" encoding="UTF-8"?>
-<testFile fullPath="%s" shortenedPath="BankAccountTest.php" generated="%d" phpunit="@package_version@">
+<testFile fullPath="%s" shortenedPath="BankAccountTest.php" generated="%d" phpunit="%s">
   <line lineNumber="1">
     <body><![CDATA[<?php]]></body>
   </line>
@@ -582,7 +582,7 @@ Writing code coverage data to XML files, this may take a moment.
     <body><![CDATA[ * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License]]></body>
   </line>
   <line lineNumber="58">
-    <body><![CDATA[ * @version    Release: @package_version@]]></body>
+    <body><![CDATA[ * @version    Release: %s]]></body>
   </line>
   <line lineNumber="59">
     <body><![CDATA[ * @link       http://www.phpunit.de/]]></body>

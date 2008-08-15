@@ -8,8 +8,8 @@ $_SERVER['argv'][3] = '../Samples/BowlingGame/BowlingGameSpec.php';
 
 require_once dirname(dirname(dirname(__FILE__))) . '/TextUI/Command.php';
 ?>
---EXPECT--
-PHPUnit @package_version@ by Sebastian Bergmann.
+--EXPECTF--
+PHPUnit %s by Sebastian Bergmann.
 
 BowlingGameSpec
  - Score for one spare is 16 [successful]
