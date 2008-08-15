@@ -10,7 +10,7 @@ $_SERVER['argv'][4] = dirname(dirname(__FILE__)) . '/_files/DataSetTest.php';
 require_once dirname(dirname(dirname(__FILE__))) . '/TextUI/Command.php';
 ?>
 --EXPECTF--
-PHPUnit @package_version@ by Sebastian Bergmann.
+PHPUnit %s by Sebastian Bergmann.
 
 ..F.<?xml version="1.0" encoding="UTF-8"?>
 <testsuites>
