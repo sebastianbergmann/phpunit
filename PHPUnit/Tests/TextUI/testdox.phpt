@@ -9,7 +9,7 @@ $_SERVER['argv'][3] = '../Samples/BankAccount/BankAccountTest.php';
 require_once dirname(dirname(dirname(__FILE__))) . '/TextUI/Command.php';
 ?>
 --EXPECTF--
-PHPUnit @package_version@ by Sebastian Bergmann.
+PHPUnit %s by Sebastian Bergmann.
 
 BankAccount
  [x] Balance is initially zero

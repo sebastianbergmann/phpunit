@@ -4,8 +4,8 @@ phpunit
 <?php
 require_once dirname(dirname(dirname(__FILE__))) . '/TextUI/Command.php';
 ?>
---EXPECT--
-PHPUnit @package_version@ by Sebastian Bergmann.
+--EXPECTF--
+PHPUnit %s by Sebastian Bergmann.
 
 Usage: phpunit [switches] UnitTest [UnitTest.php]
        phpunit [switches] <directory>

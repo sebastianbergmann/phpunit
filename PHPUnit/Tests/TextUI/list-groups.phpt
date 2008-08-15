@@ -8,7 +8,7 @@ $_SERVER['argv'][3] = '../Samples/BankAccount/BankAccountTest.php';
 
 require_once dirname(dirname(dirname(__FILE__))) . '/TextUI/Command.php';
 ?>
---EXPECT--
+--EXPECTF--
 PHPUnit @package_version@ by Sebastian Bergmann.
 
 Available test group(s):
