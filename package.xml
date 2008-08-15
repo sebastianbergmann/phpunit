@@ -794,6 +794,7 @@
      <dir name="TextUI">
       <file baseinstalldir="/" name="coverage-clover.phpt" role="test" />
       <file baseinstalldir="/" name="coverage-source.phpt" role="test" />
+      <file baseinstalldir="/" name="dataset-log-xml.phpt" role="test" />
       <file baseinstalldir="/" name="default.phpt" role="test" />
       <file baseinstalldir="/" name="exclude-group.phpt" role="test" />
       <file baseinstalldir="/" name="filter-class.phpt" role="test" />
@@ -842,6 +843,9 @@
        <tasks:replace from="@package_version@" to="version" type="package-info" />
       </file>
       <file baseinstalldir="/" name="ClassWithNonPublicAttributes.php" role="test">
+       <tasks:replace from="@package_version@" to="version" type="package-info" />
+      </file>
+      <file baseinstalldir="/" name="DataSetTest.php" role="test">
        <tasks:replace from="@package_version@" to="version" type="package-info" />
       </file>
       <file baseinstalldir="/" name="DoubleTestCase.php" role="test">
