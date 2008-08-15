@@ -10,16 +10,16 @@ $_SERVER['argv'][4] = '../Samples/BankAccount/BankAccountTest.php';
 require_once dirname(dirname(dirname(__FILE__))) . '/TextUI/Command.php';
 ?>
 --EXPECTF--
-PHPUnit @package_version@ by Sebastian Bergmann.
+PHPUnit %s by Sebastian Bergmann.
 
 ...
 
-Time: 0 seconds
+Time: %i seconds
 
 OK (3 tests, 3 assertions)
 
 Writing code coverage data to XML file, this may take a moment.<?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="%d" phpunit="@package_version@">
+<coverage generated="%d" phpunit="%s">
   <project name="BankAccountTest" timestamp="%d">
     <file name="%s/BankAccount.php">
       <class name="BankAccountException" namespace="global" fullPackage="PHPUnit" category="Testing" package="PHPUnit">
