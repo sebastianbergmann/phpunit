@@ -268,7 +268,7 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
         $buffer = sprintf(
           '%s(%s)',
 
-          $this->getName(),
+          $this->getName(FALSE),
           $class->name
         );
 
@@ -879,9 +879,7 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
             }
 
             if ($includeData) {
-                $buffer .= sprintf(
-                  $buffer . ' (%s)', $this->dataToString($this->data)
-                );
+                $buffer .= sprintf(' (%s)', $this->dataToString($this->data));
             }
         }
 
