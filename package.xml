@@ -792,7 +792,16 @@
       </file>
      </dir>
      <dir name="TextUI">
+      <file baseinstalldir="/" name="coverage-clover-class-extended.phpt" role="test" />
+      <file baseinstalldir="/" name="coverage-clover-class.phpt" role="test" />
+      <file baseinstalldir="/" name="coverage-clover-method.phpt" role="test" />
+      <file baseinstalldir="/" name="coverage-clover-not-private.phpt" role="test" />
+      <file baseinstalldir="/" name="coverage-clover-not-protected.phpt" role="test" />
+      <file baseinstalldir="/" name="coverage-clover-not-public.phpt" role="test" />
       <file baseinstalldir="/" name="coverage-clover.phpt" role="test" />
+      <file baseinstalldir="/" name="coverage-clover-private.phpt" role="test" />
+      <file baseinstalldir="/" name="coverage-clover-protected.phpt" role="test" />
+      <file baseinstalldir="/" name="coverage-clover-public.phpt" role="test" />
       <file baseinstalldir="/" name="coverage-source.phpt" role="test" />
       <file baseinstalldir="/" name="dataset-log-xml.phpt" role="test" />
       <file baseinstalldir="/" name="default.phpt" role="test" />
@@ -843,6 +852,36 @@
        <tasks:replace from="@package_version@" to="version" type="package-info" />
       </file>
       <file baseinstalldir="/" name="ClassWithNonPublicAttributes.php" role="test">
+       <tasks:replace from="@package_version@" to="version" type="package-info" />
+      </file>
+      <file baseinstalldir="/" name="CoverageClassExtendedTest.php" role="test">
+       <tasks:replace from="@package_version@" to="version" type="package-info" />
+      </file>
+      <file baseinstalldir="/" name="CoverageClassTest.php" role="test">
+       <tasks:replace from="@package_version@" to="version" type="package-info" />
+      </file>
+      <file baseinstalldir="/" name="CoverageMethodTest.php" role="test">
+       <tasks:replace from="@package_version@" to="version" type="package-info" />
+      </file>
+      <file baseinstalldir="/" name="CoverageNotPrivateTest.php" role="test">
+       <tasks:replace from="@package_version@" to="version" type="package-info" />
+      </file>
+      <file baseinstalldir="/" name="CoverageNotProtectedTest.php" role="test">
+       <tasks:replace from="@package_version@" to="version" type="package-info" />
+      </file>
+      <file baseinstalldir="/" name="CoverageNotPublicTest.php" role="test">
+       <tasks:replace from="@package_version@" to="version" type="package-info" />
+      </file>
+      <file baseinstalldir="/" name="CoveragePrivateTest.php" role="test">
+       <tasks:replace from="@package_version@" to="version" type="package-info" />
+      </file>
+      <file baseinstalldir="/" name="CoverageProtectedTest.php" role="test">
+       <tasks:replace from="@package_version@" to="version" type="package-info" />
+      </file>
+      <file baseinstalldir="/" name="CoveragePublicTest.php" role="test">
+       <tasks:replace from="@package_version@" to="version" type="package-info" />
+      </file>
+      <file baseinstalldir="/" name="CoveredClass.php" role="test">
        <tasks:replace from="@package_version@" to="version" type="package-info" />
       </file>
       <file baseinstalldir="/" name="DataSetTest.php" role="test">
