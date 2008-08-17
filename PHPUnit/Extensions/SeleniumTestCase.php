@@ -142,13 +142,9 @@ abstract class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_Tes
         // Create tests from Selenese/HTML files.
         if (isset($staticProperties['seleneseDirectory']) &&
             is_dir($staticProperties['seleneseDirectory'])) {
-            $files = new PHPUnit_Util_FilterIterator(
-              new RecursiveIteratorIterator(
-                new RecursiveDirectoryIterator(
-                  $staticProperties['seleneseDirectory']
-                )
-              ),
-              '.htm'
+            $files = array_merge(
+              self::getSeleneseFiles($staticProperties['seleneseDirectory'], '.htm'),
+              self::getSeleneseFiles($staticProperties['seleneseDirectory'], '.html')
             );
 
             // Create tests from Selenese/HTML files for multiple browsers.
@@ -159,7 +155,7 @@ abstract class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_Tes
 
                     foreach ($files as $file) {
                         $browserSuite->addTest(
-                          new $className((string)$file, array(), $browser),
+                          new $className($file, array(), $browser),
                           $classGroups
                         );
                     }
@@ -171,7 +167,7 @@ abstract class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_Tes
             // Create tests from Selenese/HTML files for single browser.
             else {
                 foreach ($files as $file) {
-                    $suite->addTest(new $className((string)$file), $classGroups);
+                    $suite->addTest(new $className($file), $classGroups);
                 }
             }
         }
@@ -1200,6 +1196,30 @@ abstract class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_Tes
     protected function explodeDirectories($path)
     {
         return explode($this->findDirectorySeparator($path), dirname($path));
+    }
+
+    /**
+     * @param  string $directory
+     * @param  string $suffix
+     * @return array
+     * @since  Method available since Release 3.3.0
+     */
+    protected static function getSeleneseFiles($directory, $suffix)
+    {
+        $files = array();
+
+        $iterator = new PHPUnit_Util_FilterIterator(
+          new RecursiveIteratorIterator(
+            new RecursiveDirectoryIterator($directory)
+          ),
+          $suffix
+        );
+
+        foreach ($iterator as $file) {
+            $files[] = (string)$file;
+        }
+
+        return $files;
     }
 
     /**
