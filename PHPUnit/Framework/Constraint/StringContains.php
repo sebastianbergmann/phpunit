@@ -103,7 +103,7 @@ class PHPUnit_Framework_Constraint_StringContains extends PHPUnit_Framework_Cons
      *
      * @return string
      */
-    public function __toString()
+    public function toString()
     {
         if ($this->case) {
             $string = $this->string;

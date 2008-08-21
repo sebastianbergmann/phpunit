@@ -207,7 +207,7 @@ class MoneyTest extends PHPUnit_Framework_TestCase
 
     public function testPrint()
     {
-        $this->assertEquals('[12 EUR]', (string)$this->f12EUR);
+        $this->assertEquals('[12 EUR]', $this->f12EUR->toString());
     }
 
     public function testSimpleAdd()

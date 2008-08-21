@@ -78,7 +78,7 @@ class PHPUnit_Framework_MockObject_Stub_Exception implements PHPUnit_Framework_M
         throw $this->exception;
     }
 
-    public function __toString()
+    public function toString()
     {
         return sprintf(
           'raise user-specified exception %s',

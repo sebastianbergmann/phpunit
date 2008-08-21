@@ -148,11 +148,11 @@ class PHPUnit_Util_Type
         $string = preg_replace('#\n|\r\n|\r#', ' ', $string);
 
         if (strlen($string) > 14) {
-            return self::toString(
+            return PHPUnit_Util_Type::toString(
               substr($string, 0, 7) . '...' . substr($string, -7)
             );
         } else {
-            return self::toString($string);
+            return PHPUnit_Util_Type::toString($string);
         }
     }
 

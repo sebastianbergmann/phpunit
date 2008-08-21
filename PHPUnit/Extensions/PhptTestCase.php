@@ -233,7 +233,7 @@ class PHPUnit_Extensions_PhptTestCase implements PHPUnit_Framework_Test, PHPUnit
      */
     public function getName()
     {
-        return (string)$this;
+        return $this->toString();
     }
 
     /**
@@ -241,7 +241,7 @@ class PHPUnit_Extensions_PhptTestCase implements PHPUnit_Framework_Test, PHPUnit
      *
      * @return string
      */
-    public function __toString()
+    public function toString()
     {
         return $this->filename;
     }

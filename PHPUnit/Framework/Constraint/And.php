@@ -123,7 +123,7 @@ class PHPUnit_Framework_Constraint_And extends PHPUnit_Framework_Constraint
      *
      * @return string
      */
-    public function __toString()
+    public function toString()
     {
         $text = '';
 
@@ -132,7 +132,7 @@ class PHPUnit_Framework_Constraint_And extends PHPUnit_Framework_Constraint
                 $text .= ' and ';
             }
 
-            $text .= (string)$constraint;
+            $text .= $constraint->toString();
         }
 
         return $text;

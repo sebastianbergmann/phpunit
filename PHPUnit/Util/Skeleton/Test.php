@@ -244,7 +244,7 @@ class PHPUnit_Util_Skeleton_Test extends PHPUnit_Util_Skeleton
                               sprintf(
                                 '%s%sTemplate%s%s.tpl',
 
-                                __DIR__,
+                                dirname(__FILE__),
                                 DIRECTORY_SEPARATOR,
                                 DIRECTORY_SEPARATOR,
                                 $template
@@ -288,7 +288,7 @@ class PHPUnit_Util_Skeleton_Test extends PHPUnit_Util_Skeleton
                       sprintf(
                         '%s%sTemplate%sIncompleteTestMethod.tpl',
 
-                        __DIR__,
+                        dirname(__FILE__),
                         DIRECTORY_SEPARATOR,
                         DIRECTORY_SEPARATOR
                       )
@@ -309,7 +309,7 @@ class PHPUnit_Util_Skeleton_Test extends PHPUnit_Util_Skeleton
           sprintf(
             '%s%sTemplate%sTestClass.tpl',
 
-            __DIR__,
+            dirname(__FILE__),
             DIRECTORY_SEPARATOR,
             DIRECTORY_SEPARATOR
           )

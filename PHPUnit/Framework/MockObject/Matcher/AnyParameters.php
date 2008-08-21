@@ -66,7 +66,7 @@ PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
  */
 class PHPUnit_Framework_MockObject_Matcher_AnyParameters extends PHPUnit_Framework_MockObject_Matcher_StatelessInvocation
 {
-    public function __toString()
+    public function toString()
     {
         return 'with any parameters';
     }

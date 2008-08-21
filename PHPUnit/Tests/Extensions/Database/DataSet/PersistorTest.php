@@ -65,9 +65,9 @@ class Extensions_Database_DataSet_PersistorTest extends PHPUnit_Framework_TestCa
 {
     public function testFlatXml()
     {
-        $dataSetFile = __DIR__.'/../_files/XmlDataSets/FlatXmlWriter.xml';
+        $dataSetFile = dirname(__FILE__).'/../_files/XmlDataSets/FlatXmlWriter.xml';
 
-        $filename = __DIR__.'/'.uniqid().'.xml';
+        $filename = dirname(__FILE__).'/'.uniqid().'.xml';
         $dataSet = new PHPUnit_Extensions_Database_DataSet_FlatXmlDataSet($dataSetFile);
         PHPUnit_Extensions_Database_DataSet_FlatXmlDataSet::write($dataSet, $filename);
 
@@ -77,9 +77,9 @@ class Extensions_Database_DataSet_PersistorTest extends PHPUnit_Framework_TestCa
 
     public function testXml()
     {
-        $dataSetFile = __DIR__.'/../_files/XmlDataSets/XmlWriter.xml';
+        $dataSetFile = dirname(__FILE__).'/../_files/XmlDataSets/XmlWriter.xml';
 
-        $filename = __DIR__.'/'.uniqid().'.xml';
+        $filename = dirname(__FILE__).'/'.uniqid().'.xml';
         $dataSet = new PHPUnit_Extensions_Database_DataSet_XmlDataSet($dataSetFile);
         PHPUnit_Extensions_Database_DataSet_XmlDataSet::write($dataSet, $filename);
 
@@ -94,8 +94,8 @@ class Extensions_Database_DataSet_PersistorTest extends PHPUnit_Framework_TestCa
 	$table->addRow(array('col1' => 1, 'col2' => '<?xml version="1.0"?><myxml>test</myxml>'));
         $dataSet = new PHPUnit_Extensions_Database_DataSet_DefaultDataSet(array($table));
 
-	$expectedFile = __DIR__.'/../_files/XmlDataSets/FlatXmlWriterEntities.xml';
-	$filename = __DIR__.'/'.uniqid().'.xml';
+	$expectedFile = dirname(__FILE__).'/../_files/XmlDataSets/FlatXmlWriterEntities.xml';
+	$filename = dirname(__FILE__).'/'.uniqid().'.xml';
 	PHPUnit_Extensions_Database_DataSet_FlatXmlDataSet::write($dataSet, $filename);
 
 	$this->assertXmlFileEqualsXmlFile($expectedFile, $filename);
@@ -109,8 +109,8 @@ class Extensions_Database_DataSet_PersistorTest extends PHPUnit_Framework_TestCa
 	$table->addRow(array('col1' => 1, 'col2' => '<?xml version="1.0"?><myxml>test</myxml>'));
         $dataSet = new PHPUnit_Extensions_Database_DataSet_DefaultDataSet(array($table));
 
-	$expectedFile = __DIR__.'/../_files/XmlDataSets/XmlWriterEntities.xml';
-	$filename = __DIR__.'/'.uniqid().'.xml';
+	$expectedFile = dirname(__FILE__).'/../_files/XmlDataSets/XmlWriterEntities.xml';
+	$filename = dirname(__FILE__).'/'.uniqid().'.xml';
 	PHPUnit_Extensions_Database_DataSet_XmlDataSet::write($dataSet, $filename);
 
 	$this->assertXmlFileEqualsXmlFile($expectedFile, $filename);

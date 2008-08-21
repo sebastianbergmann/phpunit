@@ -392,9 +392,9 @@ abstract class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_Tes
      *
      * @return string
      */
-    public function __toString()
+    public function toString()
     {
-        $buffer = parent::__toString();
+        $buffer = parent::toString();
 
         if (!empty($this->browserName)) {
             $buffer .= ' with browser ' . $this->browserName;

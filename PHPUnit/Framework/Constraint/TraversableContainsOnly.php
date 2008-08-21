@@ -102,7 +102,7 @@ class PHPUnit_Framework_Constraint_TraversableContainsOnly extends PHPUnit_Frame
      *
      * @return string
      */
-    public function __toString()
+    public function toString()
     {
         return 'contains only values of type "' . $this->type . '"';
     }

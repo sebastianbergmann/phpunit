@@ -5,9 +5,9 @@ phpunit --coverage-clover php://stdout CoverageClassExtendedTest ../_files/Cover
 $_SERVER['argv'][1] = '--coverage-clover';
 $_SERVER['argv'][2] = 'php://stdout';
 $_SERVER['argv'][3] = 'CoverageClassExtendedTest';
-$_SERVER['argv'][4] = dirname(__DIR__) . '/_files/CoverageClassExtendedTest.php';
+$_SERVER['argv'][4] = dirname(dirname(__FILE__)) . '/_files/CoverageClassExtendedTest.php';
 
-require_once dirname(dirname(__DIR__)) . '/TextUI/Command.php';
+require_once dirname(dirname(dirname(__FILE__))) . '/TextUI/Command.php';
 ?>
 --EXPECTF--
 PHPUnit %s by Sebastian Bergmann.

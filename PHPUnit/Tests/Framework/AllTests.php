@@ -50,15 +50,15 @@ PHPUnit_Util_Filter::addFileToFilter(__FILE__);
 
 require_once 'PHPUnit/Framework/TestSuite.php';
 
-require_once __DIR__ . DIRECTORY_SEPARATOR . 'AssertTest.php';
-require_once __DIR__ . DIRECTORY_SEPARATOR . 'ComparisonFailureTest.php';
-require_once __DIR__ . DIRECTORY_SEPARATOR . 'ConstraintTest.php';
-require_once __DIR__ . DIRECTORY_SEPARATOR . 'MockObjectTest.php';
-require_once __DIR__ . DIRECTORY_SEPARATOR . 'SuiteTest.php';
-require_once __DIR__ . DIRECTORY_SEPARATOR . 'TestCaseTest.php';
-require_once __DIR__ . DIRECTORY_SEPARATOR . 'TestFailureTest.php';
-require_once __DIR__ . DIRECTORY_SEPARATOR . 'TestImplementorTest.php';
-require_once __DIR__ . DIRECTORY_SEPARATOR . 'TestListenerTest.php';
+require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'AssertTest.php';
+require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'ComparisonFailureTest.php';
+require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'ConstraintTest.php';
+require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'MockObjectTest.php';
+require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'SuiteTest.php';
+require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'TestCaseTest.php';
+require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'TestFailureTest.php';
+require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'TestImplementorTest.php';
+require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'TestListenerTest.php';
 
 /**
  *

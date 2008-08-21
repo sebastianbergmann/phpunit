@@ -96,7 +96,7 @@ class PHPUnit_Framework_Constraint_PCREMatch extends PHPUnit_Framework_Constrain
      *
      * @return string
      */
-    public function __toString()
+    public function toString()
     {
         return sprintf(
           'matches PCRE pattern "%s"',

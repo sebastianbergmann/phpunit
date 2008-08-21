@@ -106,7 +106,7 @@ abstract class PHPUnit_Framework_Constraint implements PHPUnit_Framework_SelfDes
               'Failed asserting that %s %s.',
 
                PHPUnit_Util_Type::toString($other),
-               (string)$this
+               $this->toString()
             );
         }
 

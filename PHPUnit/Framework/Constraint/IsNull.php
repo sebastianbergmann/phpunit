@@ -80,7 +80,7 @@ class PHPUnit_Framework_Constraint_IsNull extends PHPUnit_Framework_Constraint
      *
      * @return string
      */
-    public function __toString()
+    public function toString()
     {
         return 'is null';
     }

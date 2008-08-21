@@ -41,16 +41,16 @@
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    SVN: $Id$
  * @link       http://www.phpunit.de/
- * @since      File available since Release 4.0.0
+ * @since      File available since Release 3.2.0
  */
 
+require_once 'PHPUnit/Util/Log/PMD/Rule/Function.php';
 require_once 'PHPUnit/Util/Filter.php';
-require_once 'PHPUnit/Util/Test.php';
 
 PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
 
 /**
- * FilterIterator for test groups.
+ *
  *
  * @category   Testing
  * @package    PHPUnit
@@ -59,71 +59,30 @@ PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    Release: @package_version@
  * @link       http://www.phpunit.de/
- * @since      Class available since Release 4.0.0
+ * @since      Class available since Release 3.2.0
  */
-class PHPUnit_Util_TestSuiteIterator_GroupFilter extends FilterIterator
+class PHPUnit_Util_Log_PMD_Rule_Function_CRAP extends PHPUnit_Util_Log_PMD_Rule_Function
 {
-    /**
-     * @var    array
-     */
-    protected $groups = array();
-
-    /**
-     * @var    array
-     */
-    protected $excludeGroups = array();
-
-    /**
-     * @param  Iterator $iterator
-     * @param  array    $groups
-     * @param  array    $excludeGroups
-     */
-    public function __construct(Iterator $iterator, array $groups = array(), array $excludeGroups = array())
+    public function __construct($threshold = 30, $priority = 1)
     {
-        parent::__construct($iterator);
-
-        $this->groups        = $groups;
-        $this->excludeGroups = $excludeGroups;
+        parent::__construct($threshold, $priority);
     }
 
-    /**
-     * @return boolean
-     */
-    public function accept()
+    public function apply(PHPUnit_Util_Metrics $metrics)
     {
-        $accept = TRUE;
+        $crap = $metrics->getCrapIndex();
 
-        if (!empty($this->groups) || !empty($this->excludeGroups)) {
-            if (!empty($this->groups)) {
-                $accept = FALSE;
-            }
-
-            $test = $this->getInnerIterator()->current();
-
-            if ($test instanceof PHPUnit_Framework_TestCase) {
-                $groups = PHPUnit_Util_Test::getGroups(
-                  new ReflectionMethod(get_class($test), $get->getName())
-                );
-
-                foreach ($groups as $group) {
-                    if (in_array($group, $this->groups)) {
-                        $accept = TRUE;
-                        break;
-                    }
-                }
-
-                if ($accept && !empty($this->excludeGroups)) {
-                    foreach ($groups as $group) {
-                        if (in_array($group, $this->excludeGroups)) {
-                            $accept = FALSE;
-                            break;
-                        }
-                    }
-                }
-            }
+        if ($crap >= $this->threshold) {
+            return sprintf(
+              "The CRAP index is %d.\n" .
+              'The Change Risk Analysis and Predictions (CRAP) index of a ' .
+              'function or method uses cyclomatic complexity and code coverage ' .
+              'from automated tests to help estimate the effort and risk ' .
+              'associated with maintaining legacy code. A CRAP index over 30 ' .
+              'is a good indicator of crappy code.',
+              $crap
+            );
         }
-
-        return $accept;
     }
 }
 ?>

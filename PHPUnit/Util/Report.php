@@ -88,7 +88,7 @@ abstract class PHPUnit_Util_Report
         self::$templatePath = sprintf(
           '%s%sReport%sTemplate%s',
 
-          __DIR__,
+          dirname(__FILE__),
           DIRECTORY_SEPARATOR,
           DIRECTORY_SEPARATOR,
           DIRECTORY_SEPARATOR

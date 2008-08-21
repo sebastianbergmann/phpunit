@@ -95,7 +95,7 @@ class PHPUnit_Framework_Constraint_ArrayHasKey extends PHPUnit_Framework_Constra
      *
      * @return string
      */
-    public function __toString()
+    public function toString()
     {
         return 'has the key ' . PHPUnit_Util_Type::toString($this->key);
     }
@@ -105,7 +105,7 @@ class PHPUnit_Framework_Constraint_ArrayHasKey extends PHPUnit_Framework_Constra
         return sprintf(
           'Failed asserting that an array %s.',
 
-           (string)$this
+           $this->toString()
         );
     }
 }

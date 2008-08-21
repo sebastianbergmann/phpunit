@@ -41,15 +41,16 @@
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    SVN: $Id$
  * @link       http://www.phpunit.de/
- * @since      File available since Release 4.0.0
+ * @since      File available since Release 3.2.0
  */
 
+require_once 'PHPUnit/Util/Log/PMD/Rule.php';
 require_once 'PHPUnit/Util/Filter.php';
 
 PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
 
 /**
- * Iterator for test suites.
+ * Abstract base class for PMD rule classes that operate on the project-level.
  *
  * @category   Testing
  * @package    PHPUnit
@@ -58,51 +59,9 @@ PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    Release: @package_version@
  * @link       http://www.phpunit.de/
- * @since      Class available since Release 4.0.0
+ * @since      Class available since Release 3.2.0
  */
-class PHPUnit_Util_TestSuiteIterator_RecursiveIteratorIterator extends RecursiveIteratorIterator
+abstract class PHPUnit_Util_Log_PMD_Rule_Project extends PHPUnit_Util_Log_PMD_Rule
 {
-    /**
-     * @var    PHPUnit_Framework_TestResult
-     */
-    protected $result;
-
-    /**
-     * Constructor.
-     *
-     * @param  PHPUnit_Util_TestSuiteIterator $it
-     * @param  integer                        $mode
-     * @param  integer                        $flags
-     * @param  PHPUnit_Framework_TestResult   $result
-     */
-    public function __construct(PHPUnit_Util_TestSuiteIterator $it, $mode = self::LEAVES_ONLY, $flags = 0, PHPUnit_Framework_TestResult $result)
-    {
-        parent::__construct($it, $mode, $flags);
-
-        $this->result = $result;
-    }
-
-    /**
-     * Called right after calling getChildren() and its rewind().
-     *
-     */
-    public function beginChildren()
-    {
-        if ($this->current() instanceof PHPUnit_Framework_TestSuite) {
-            $this->result->startTestSuite($this->current());
-        }
-    }
-
-    /**
-     * Called after current child iterator is invalid and right before it
-     * gets destructed.
-     *
-     */
-    public function endChildren()
-    {
-        if ($this->current() instanceof PHPUnit_Framework_TestSuite) {
-            $this->result->endTestSuite($this->current());
-        }
-    }
 }
 ?>

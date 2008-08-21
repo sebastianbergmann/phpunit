@@ -290,7 +290,7 @@ class PHPUnit_Util_Report_Node_File extends PHPUnit_Util_Report_Node
                                 $test->__liHtml = '';
 
                                 if ($test instanceof PHPUnit_Framework_SelfDescribing) {
-                                    $testName = (string)$test;
+                                    $testName = $test->toString();
 
                                     if ($test instanceof PHPUnit_Framework_TestCase) {
                                         switch ($test->getStatus()) {

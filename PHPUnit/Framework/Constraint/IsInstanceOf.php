@@ -119,7 +119,7 @@ class PHPUnit_Framework_Constraint_IsInstanceOf extends PHPUnit_Framework_Constr
      *
      * @return string
      */
-    public function __toString()
+    public function toString()
     {
         return sprintf(
           'is instance of class "%s"',

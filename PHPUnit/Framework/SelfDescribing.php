@@ -69,7 +69,7 @@ interface PHPUnit_Framework_SelfDescribing
      *
      * @return string
      */
-    public function __toString();
+    public function toString();
 }
 
 }
