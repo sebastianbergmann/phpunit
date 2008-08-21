@@ -71,7 +71,7 @@ class PHPUnit_Util_Test
     {
         if ($asString) {
             if ($test instanceof PHPUnit_Framework_SelfDescribing) {
-                return (string)$test;
+                return $test->toString();
             } else {
                 return get_class($test);
             }
@@ -83,7 +83,7 @@ class PHPUnit_Util_Test
             }
 
             else if ($test instanceof PHPUnit_Framework_SelfDescribing) {
-                return array('', (string)$test);
+                return array('', $test->toString());
             }
 
             else {

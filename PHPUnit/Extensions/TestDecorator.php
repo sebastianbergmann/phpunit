@@ -89,9 +89,9 @@ class PHPUnit_Extensions_TestDecorator extends PHPUnit_Framework_Assert implemen
      *
      * @return string
      */
-    public function __toString()
+    public function toString()
     {
-        return (string)$this->test;
+        return $this->test->toString();
     }
 
     /**

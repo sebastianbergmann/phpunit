@@ -91,7 +91,7 @@ class PHPUnit_Framework_Constraint_LessThan extends PHPUnit_Framework_Constraint
      *
      * @return string
      */
-    public function __toString()
+    public function toString()
     {
         return 'is less than ' . PHPUnit_Util_Type::toString($this->value);
     }

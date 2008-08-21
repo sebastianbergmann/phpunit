@@ -41,15 +41,16 @@
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    SVN: $Id$
  * @link       http://www.phpunit.de/
- * @since      File available since Release 4.0.0
+ * @since      File available since Release 3.2.0
  */
 
+require_once 'PHPUnit/Util/Log/PMD/Rule/Function.php';
 require_once 'PHPUnit/Util/Filter.php';
 
 PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
 
 /**
- * FilterIterator for test names.
+ *
  *
  * @category   Testing
  * @package    PHPUnit
@@ -58,48 +59,29 @@ PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    Release: @package_version@
  * @link       http://www.phpunit.de/
- * @since      Class available since Release 4.0.0
+ * @since      Class available since Release 3.2.0
  */
-class PHPUnit_Util_TestSuiteIterator_NameFilter extends FilterIterator
+class PHPUnit_Util_Log_PMD_Rule_Function_NPathComplexity extends PHPUnit_Util_Log_PMD_Rule_Function
 {
-    /**
-     * @var    string
-     */
-    protected $filter = FALSE;
-
-    /**
-     * @param  Iterator $iterator
-     * @param  string   $filter
-     */
-    public function __construct(Iterator $iterator, $filter = FALSE)
+    public function __construct($threshold = 200, $priority = 1)
     {
-        parent::__construct($iterator);
-
-        $this->filter = $filter;
+        parent::__construct($threshold, $priority);
     }
 
-    /**
-     * @return boolean
-     */
-    public function accept()
+    public function apply(PHPUnit_Util_Metrics $metrics)
     {
-        if ($this->filter !== FALSE ) {
-            $tmp = PHPUnit_Util_Test::describe(
-              $this->getInnerIterator()->current()->getName(), FALSE
+        $npath = $metrics->getNPath();
+
+        if ($npath >= $this->threshold) {
+            return sprintf(
+              "The NPath complexity is %d.\n" .
+              'The NPath complexity of a function or method is the number of ' .
+              'acyclic execution paths through that method. A threshold of 200 ' .
+              'is generally considered the point where measures should be taken ' .
+              'to reduce complexity.',
+              $npath
             );
-
-            if ($tmp[0] != '') {
-                $name = join('::', $tmp);
-            } else {
-                $name = $tmp[1];
-            }
-
-            if (preg_match($this->filter, $name) == 0) {
-                return FALSE;
-            }
         }
-
-        return TRUE;
     }
 }
 ?>

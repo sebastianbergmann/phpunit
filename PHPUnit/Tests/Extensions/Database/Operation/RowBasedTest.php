@@ -52,7 +52,7 @@ require_once 'PHPUnit/Extensions/Database/DataSet/DefaultTableMetaData.php';
 require_once 'PHPUnit/Extensions/Database/DataSet/FlatXmlDataSet.php';
 require_once 'PHPUnit/Extensions/Database/Operation/RowBased.php';
 
-require_once dirname(__DIR__) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'DatabaseTestUtility.php';
+require_once dirname(dirname(__FILE__)) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'DatabaseTestUtility.php';
 
 
 /**
@@ -181,7 +181,7 @@ class Extensions_Database_Operation_RowBasedTest extends PHPUnit_Extensions_Data
         /* @var $mockOperation PHPUnit_Extensions_Database_Operation_RowBased */
         $mockOperation->execute($connection, $dataSet);
 
-        $this->assertDataSetsEqual(new PHPUnit_Extensions_Database_DataSet_FlatXmlDataSet(__DIR__.'/../_files/XmlDataSets/RowBasedExecute.xml'), $connection->createDataSet(array('table1', 'table2')));
+        $this->assertDataSetsEqual(new PHPUnit_Extensions_Database_DataSet_FlatXmlDataSet(dirname(__FILE__).'/../_files/XmlDataSets/RowBasedExecute.xml'), $connection->createDataSet(array('table1', 'table2')));
     }
 }
 ?>

@@ -79,7 +79,7 @@ class PHPUnit_Framework_MockObject_Stub_ReturnArgument extends PHPUnit_Framework
         }
     }
 
-    public function __toString()
+    public function toString()
     {
         return sprintf('return argument #%d', $this->argumentIndex);
     }

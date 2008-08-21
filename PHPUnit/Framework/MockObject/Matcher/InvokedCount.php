@@ -77,7 +77,7 @@ class PHPUnit_Framework_MockObject_Matcher_InvokedCount extends PHPUnit_Framewor
         $this->expectedCount = $expectedCount;
     }
 
-    public function __toString()
+    public function toString()
     {
         return 'invoked ' . $this->expectedCount . ' time(s)';
     }
@@ -89,7 +89,7 @@ class PHPUnit_Framework_MockObject_Matcher_InvokedCount extends PHPUnit_Framewor
         $count = $this->getInvocationCount();
 
         if ($count > $this->expectedCount) {
-            $message = (string)$invocation;
+            $message = $invocation->toString();
 
             switch ($this->expectedCount) {
                 case 0: {

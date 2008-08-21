@@ -92,7 +92,7 @@ class PHPUnit_Framework_AssertionFailedError extends Exception implements PHPUni
      *
      * @return string
      */
-    public function __toString()
+    public function toString()
     {
         return $this->getMessage();
     }

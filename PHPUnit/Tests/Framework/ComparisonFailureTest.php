@@ -67,7 +67,7 @@ class Framework_ComparisonFailureTest extends PHPUnit_Framework_TestCase
 
         $this->assertEquals(
           "c expected string <a>\n  difference      <x>\n  got string      <b>",
-          (string)$failure
+          $failure->toString()
         );
     }
 
@@ -77,7 +77,7 @@ class Framework_ComparisonFailureTest extends PHPUnit_Framework_TestCase
 
         $this->assertEquals(
           "expected string <ba>\ndifference      < x>\ngot string      <bc>",
-          (string)$failure
+          $failure->toString()
         );
     }
 
@@ -87,7 +87,7 @@ class Framework_ComparisonFailureTest extends PHPUnit_Framework_TestCase
 
         $this->assertEquals(
           "expected string <ab>\ndifference      <x>\ngot string      <cb>",
-          (string)$failure
+          $failure->toString()
         );
     }
 
@@ -97,7 +97,7 @@ class Framework_ComparisonFailureTest extends PHPUnit_Framework_TestCase
 
         $this->assertEquals(
           "expected string <abc>\ndifference      < x>\ngot string      <adc>",
-          (string)$failure
+          $failure->toString()
         );
     }
 
@@ -107,7 +107,7 @@ class Framework_ComparisonFailureTest extends PHPUnit_Framework_TestCase
 
         $this->assertEquals(
           "expected string <ab>\ndifference      <  ?>\ngot string      <abc>",
-          (string)$failure
+          $failure->toString()
         );
     }
 
@@ -117,7 +117,7 @@ class Framework_ComparisonFailureTest extends PHPUnit_Framework_TestCase
 
         $this->assertEquals(
           "expected string <bc>\ndifference      <xx?>\ngot string      <abc>",
-          (string)$failure
+          $failure->toString()
         );
     }
 
@@ -127,7 +127,7 @@ class Framework_ComparisonFailureTest extends PHPUnit_Framework_TestCase
 
         $this->assertEquals(
           "expected string <abc>\ndifference      <  x?>\ngot string      <abbc>",
-          (string)$failure
+          $failure->toString()
         );
     }
 
@@ -137,7 +137,7 @@ class Framework_ComparisonFailureTest extends PHPUnit_Framework_TestCase
 
         $this->assertEquals(
           "expected string <abcdde>\ndifference      <    x?>\ngot string      <abcde>",
-          (string)$failure
+          $failure->toString()
         );
     }
 }

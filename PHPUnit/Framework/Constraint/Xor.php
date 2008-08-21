@@ -119,7 +119,7 @@ class PHPUnit_Framework_Constraint_Xor extends PHPUnit_Framework_Constraint
           sprintf(
             'Failed asserting that %s.',
 
-             (string)$this,
+             $this->toString(),
              NULL,
              $description
           )
@@ -131,7 +131,7 @@ class PHPUnit_Framework_Constraint_Xor extends PHPUnit_Framework_Constraint
      *
      * @return string
      */
-    public function __toString()
+    public function toString()
     {
         $text = '';
 
@@ -140,7 +140,7 @@ class PHPUnit_Framework_Constraint_Xor extends PHPUnit_Framework_Constraint
                 $text .= ' xor ';
             }
 
-            $text .= (string)$constraint;
+            $text .= $constraint->toString();
         }
 
         return $text;

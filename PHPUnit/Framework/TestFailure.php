@@ -92,7 +92,7 @@ class PHPUnit_Framework_TestFailure
      *
      * @return string
      */
-    public function __toString()
+    public function toString()
     {
         return sprintf(
           '%s: %s',
@@ -141,7 +141,7 @@ class PHPUnit_Framework_TestFailure
                         if ($comparisonFailure instanceof PHPUnit_Framework_ComparisonFailure_Object) {
                             $buffer .= "Failed asserting that two variables reference the same object.\n";
                         } else {
-                            $buffer .= (string)$comparisonFailure . "\n";
+                            $buffer .= $comparisonFailure->toString() . "\n";
                         }
                     } else {
                         if ($comparisonFailure instanceof PHPUnit_Framework_ComparisonFailure_Scalar) {
@@ -160,7 +160,7 @@ class PHPUnit_Framework_TestFailure
                               "Failed asserting that two %ss are equal.\n%s\n",
 
                               strtolower(substr(get_class($comparisonFailure), 36)),
-                              (string)$comparisonFailure
+                              $comparisonFailure->toString()
                             );
                         }
 
@@ -168,11 +168,11 @@ class PHPUnit_Framework_TestFailure
                            !$comparisonFailure instanceof PHPUnit_Framework_ComparisonFailure_Array &&
                            !$comparisonFailure instanceof PHPUnit_Framework_ComparisonFailure_Object &&
                            !$comparisonFailure instanceof PHPUnit_Framework_ComparisonFailure_String) {
-                            $buffer .= (string)$comparisonFailure . "\n";
+                            $buffer .= $comparisonFailure->toString() . "\n";
                         }
                     }
                 } else {
-                    $buffer .= (string)$e;
+                    $buffer .= $e->toString();
                     $equal   = $buffer == $description;
 
                     if (!empty($buffer)) {
@@ -186,7 +186,7 @@ class PHPUnit_Framework_TestFailure
             }
 
             else {
-                $buffer = (string)$e;
+                $buffer = $e->toString();
 
                 if (!empty($buffer)) {
                     $buffer .= "\n";

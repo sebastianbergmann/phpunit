@@ -138,7 +138,7 @@ class Money implements IMoney
         return $this->add($m->negate());
     }
 
-    public function __toString()
+    public function toString()
     {
         return '[' . $this->amount() . ' ' . $this->currency() . ']';
     }

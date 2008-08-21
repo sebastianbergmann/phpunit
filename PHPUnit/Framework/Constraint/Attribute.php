@@ -113,9 +113,9 @@ class PHPUnit_Framework_Constraint_Attribute extends PHPUnit_Framework_Constrain
      *
      * @return string
      */
-    public function __toString()
+    public function toString()
     {
-        return (string)$this->constraint;
+        return $this->constraint->toString();
     }
 }
 ?>

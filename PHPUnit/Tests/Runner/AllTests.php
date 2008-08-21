@@ -46,9 +46,11 @@
 
 require_once 'PHPUnit/Util/Filter.php';
 
+PHPUnit_Util_Filter::addFileToFilter(__FILE__);
+
 require_once 'PHPUnit/Framework/TestSuite.php';
 
-require_once __DIR__ . DIRECTORY_SEPARATOR . 'BaseTestRunnerTest.php';
+require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'BaseTestRunnerTest.php';
 
 /**
  *
@@ -66,24 +68,6 @@ class Runner_AllTests
 {
     public static function suite()
     {
-        if (!defined('PHPUNIT_TESTSUITE_WHITELIST_PREPARED')) {
-            PHPUnit_Util_Filter::addDirectoryToWhitelist(
-              dirname(dirname(__DIR__))
-            );
-
-            PHPUnit_Util_Filter::removeDirectoryFromWhitelist(
-              dirname(dirname(__DIR__)) . DIRECTORY_SEPARATOR . 'Samples'
-            );
-
-            PHPUnit_Util_Filter::removeDirectoryFromWhitelist(
-              dirname(dirname(__DIR__)) . DIRECTORY_SEPARATOR . 'Tests'
-            );
-
-            PHPUnit_Util_Filter::$filterPHPUnit = FALSE;
-
-            define('PHPUNIT_TESTSUITE_WHITELIST_PREPARED', TRUE);
-        }
-
         $suite = new PHPUnit_Framework_TestSuite('PHPUnit_Runner');
 
         $suite->addTestSuite('Runner_BaseTestRunnerTest');

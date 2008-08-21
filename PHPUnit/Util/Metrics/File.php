@@ -214,6 +214,16 @@ class PHPUnit_Util_Metrics_File extends PHPUnit_Util_Metrics
     }
 
     /**
+     * Tokens.
+     *
+     * @return array
+     */
+    public function getTokens()
+    {
+        return $this->tokens;
+    }
+
+    /**
      * Returns the Code Coverage for the file.
      *
      * @return float

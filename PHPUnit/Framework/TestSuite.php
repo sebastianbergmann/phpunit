@@ -51,9 +51,6 @@ require_once 'PHPUnit/Util/Fileloader.php';
 require_once 'PHPUnit/Util/Filter.php';
 require_once 'PHPUnit/Util/Test.php';
 require_once 'PHPUnit/Util/TestSuiteIterator.php';
-require_once 'PHPUnit/Util/TestSuiteIterator/GroupFilter.php';
-require_once 'PHPUnit/Util/TestSuiteIterator/NameFilter.php';
-require_once 'PHPUnit/Util/TestSuiteIterator/RecursiveIteratorIterator.php';
 
 PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
 
@@ -252,7 +249,7 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
      *
      * @return string
      */
-    public function __toString()
+    public function toString()
     {
         return $this->getName();
     }
@@ -514,9 +511,9 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
                 $groups = PHPUnit_Util_Test::getGroups($method, $classGroups);
 
                 if (is_array($data) || $data instanceof Iterator) {
-                     $test = new PHPUnit_Framework_TestSuite(
-                       $className . '::' . $name
-                     );
+                    $test = new PHPUnit_Framework_TestSuite(
+                      $className . '::' . $name
+                    );
 
                     foreach ($data as $_dataName => $_data) {
                         $_test = new $className($name, $_data, $_dataName);
@@ -615,34 +612,60 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
         }
 
         $result->startTestSuite($this);
+        $tests = array();
 
-        $tests = new PHPUnit_Util_TestSuiteIterator_NameFilter(
-          new PHPUnit_Util_TestSuiteIterator_GroupFilter(
-            new PHPUnit_Util_TestSuiteIterator_RecursiveIteratorIterator(
-              new PHPUnit_Util_TestSuiteIterator($this),
-              PHPUnit_Util_TestSuiteIterator_RecursiveIteratorIterator::SELF_FIRST,
-              0,
-              $result
-            ),
-            $groups,
-            $excludeGroups
-          ),
-          $filter
-        );
+        if (empty($excludeGroups)) {
+            if (empty($groups)) {
+                $tests = $this->tests;
+            } else {
+                foreach ($groups as $group) {
+                    if (isset($this->groups[$group])) {
+                        $tests = array_merge($tests, $this->groups[$group]);
+                    }
+                }
+            }
+        } else {
+            foreach ($this->groups as $_group => $_tests) {
+                if (!in_array($_group, $excludeGroups)) {
+                    $tests = array_merge($tests, $_tests);
+                }
+            }
+        }
 
         foreach ($tests as $test) {
             if ($result->shouldStop()) {
                 break;
             }
 
-            if ($test instanceof PHPUnit_Framework_TestCase ||
-                $test instanceof PHPUnit_Framework_TestSuite) {
+            if ($test instanceof PHPUnit_Framework_TestSuite) {
                 $test->setBackupGlobals($this->backupGlobals);
                 $test->setSharedFixture($this->sharedFixture);
-            }
+                $test->run($result, $filter, $groups, $excludeGroups);
+            } else {
+                $runTest = TRUE;
 
-            if (!$test instanceof PHPUnit_Framework_TestSuite) {
-                $this->runTest($test, $result);
+                if ($filter !== FALSE ) {
+                    $tmp = PHPUnit_Util_Test::describe($test, FALSE);
+
+                    if ($tmp[0] != '') {
+                        $name = join('::', $tmp);
+                    } else {
+                        $name = $tmp[1];
+                    }
+
+                    if (preg_match($filter, $name) == 0) {
+                        $runTest = FALSE;
+                    }
+                }
+
+                if ($runTest) {
+                    if ($test instanceof PHPUnit_Framework_TestCase) {
+                        $test->setBackupGlobals($this->backupGlobals);
+                        $test->setSharedFixture($this->sharedFixture);
+                    }
+
+                    $this->runTest($test, $result);
+                }
             }
         }
 

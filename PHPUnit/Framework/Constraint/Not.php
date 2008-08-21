@@ -107,19 +107,19 @@ class PHPUnit_Framework_Constraint_Not extends PHPUnit_Framework_Constraint
      *
      * @return string
      */
-    public function __toString()
+    public function toString()
     {
         switch (get_class($this->constraint)) {
             case 'PHPUnit_Framework_Constraint_And':
             case 'PHPUnit_Framework_Constraint_Not':
             case 'PHPUnit_Framework_Constraint_Or': {
-                return 'not( ' . (string)$this->constraint . ' )';
+                return 'not( ' . $this->constraint->toString() . ' )';
             }
             break;
 
             default: {
                 return PHPUnit_Framework_Constraint::negate(
-                  (string)$this->constraint
+                  $this->constraint->toString()
                 );
             }
         }

@@ -71,7 +71,7 @@ class PHPUnit_Framework_ComparisonFailure_Array extends PHPUnit_Framework_Compar
      *
      * @return string
      */
-    public function __toString()
+    public function toString()
     {
         if ($this->hasDiff()) {
             $diff = $this->diff(
@@ -111,7 +111,7 @@ class PHPUnit_Framework_ComparisonFailure_Array extends PHPUnit_Framework_Compar
               )
             );
 
-            $diff .= (string)$diffObject . "\n";
+            $diff .= $diffObject->toString() . "\n";
         }
 
         foreach ($this->actual as $actualKey => $actualValue) {

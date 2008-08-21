@@ -2,7 +2,7 @@
 phpunit --coverage-source /tmp BankAccountTest ../../Samples/BankAccount/BankAccountTest.php
 --FILE--
 <?php
-$tempPath = __DIR__;
+$tempPath = dirname(__FILE__);
 
 $_SERVER['argv'][1] = '--coverage-source';
 $_SERVER['argv'][2] = $tempPath;
@@ -10,7 +10,7 @@ $_SERVER['argv'][3] = 'BankAccountTest';
 $_SERVER['argv'][4] = '../Samples/BankAccount/BankAccountTest.php';
 
 define('PHPUnit_MAIN_METHOD', '');
-require_once dirname(dirname(__DIR__)) . '/TextUI/Command.php';
+require_once dirname(dirname(dirname(__FILE__))) . '/TextUI/Command.php';
 
 PHPUnit_TextUI_Command::main(FALSE);
 
@@ -19,7 +19,7 @@ print file_get_contents($tempPath . DIRECTORY_SEPARATOR . 'BankAccountTest.php.x
 ?>
 --CLEAN--
 <?php
-$tempPath = __DIR__;
+$tempPath = dirname(__FILE__);
 unlink($tempPath . DIRECTORY_SEPARATOR . 'BankAccount.php.xml');
 unlink($tempPath . DIRECTORY_SEPARATOR . 'BankAccountTest.php.xml');
 ?>
