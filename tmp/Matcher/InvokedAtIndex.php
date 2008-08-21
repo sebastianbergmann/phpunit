@@ -83,7 +83,7 @@ class PHPUnit_Framework_MockObject_Matcher_InvokedAtIndex implements PHPUnit_Fra
         $this->sequenceIndex = $sequenceIndex;
     }
 
-    public function __toString()
+    public function toString()
     {
         return 'invoked at sequence index ' . $this->sequenceIndex;
     }
