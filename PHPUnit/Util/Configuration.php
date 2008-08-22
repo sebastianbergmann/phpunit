@@ -169,7 +169,7 @@ class PHPUnit_Util_Configuration
      */
     public function __construct($filename)
     {
-        $this->document = PHPUnit_Util_XML::load($filename);
+        $this->document = PHPUnit_Util_XML::loadFile($filename);
         $this->xpath    = new DOMXPath($this->document);
     }
 
