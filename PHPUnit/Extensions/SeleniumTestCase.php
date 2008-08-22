@@ -423,7 +423,7 @@ abstract class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_Tes
      */
     public function runSelenese($filename)
     {
-        $document = PHPUnit_Util_XML::load($filename, TRUE);
+        $document = PHPUnit_Util_XML::loadFile($filename, TRUE);
         $xpath    = new DOMXPath($document);
         $rows     = $xpath->query('body/table/tbody/tr');
 
