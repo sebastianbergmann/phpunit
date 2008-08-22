@@ -82,39 +82,17 @@ class PHPUnit_Util_XML
      * Loads an XML (or HTML) file into a DOMDocument object.
      *
      * @param  string  $filename
-     * @param  boolean $html
+     * @param  boolean $isHtml
      * @return DOMDocument
+     * @since  Method available since Release 3.3.0
      */
-    public static function load($filename, $html = FALSE)
+    public static function loadFile($filename, $isHtml = FALSE)
     {
-        $document = new DOMDocument;
+        $reporting = error_reporting(0);
+        $contents  = file_get_contents($filename);
+        error_reporting($reporting);
 
-        if (is_readable($filename)) {
-            libxml_use_internal_errors(TRUE);
-
-            if (!$html) {
-                $loaded = @$document->load($filename);
-            } else {
-                $loaded = @$document->loadHTMLFile($filename);
-            }
-
-            if ($loaded === FALSE) {
-                $message = '';
-
-                foreach (libxml_get_errors() as $error) {
-                    $message .= $error->message;
-                }
-
-                throw new RuntimeException(
-                  sprintf(
-                    'Could not load "%s".%s',
-
-                    $filename,
-                    $message != '' ? "\n" . $message : ''
-                  )
-                );
-            }
-        } else {
+        if ($contents === FALSE) {
             throw new RuntimeException(
               sprintf(
                 'Could not read "%s".',
@@ -123,7 +101,65 @@ class PHPUnit_Util_XML
             );
         }
 
-        return $document;
+        return self::load($contents, $isHtml);
+    }
+
+    /**
+     * Load an $actual document into a DOMDocument.  This is called
+     * from the selector assertions.
+     *
+     * If $actual is already a DOMDocument, it is returned with
+     * no changes.  Otherwise, $actual is loaded into a new DOMDocument
+     * as either HTML or XML, depending on the value of $isHtml.
+     *
+     * Note: prior to PHPUnit 3.3.0, this method loaded a file and
+     * not a string as it currently does.  To load a file into a
+     * DOMDocument, use loadFile() instead.
+     *
+     * @param  string|DOMDocument  $actual
+     * @param  boolean             $isHtml
+     * @return DOMDocument
+     * @since  Method available since Release 3.3.0
+     * @author Mike Naberezny <mike@maintainable.com>
+     * @author Derek DeVries <derek@maintainable.com>
+     */
+    public static function load($actual, $isHtml = FALSE)
+    {
+        if ($actual instanceof DOMDocument) {
+            return $actual;
+        } 
+
+        $internal  = libxml_use_internal_errors(TRUE);
+        $reporting = error_reporting(0);
+        $dom       = new DOMDocument;
+
+        if ($isHtml) {
+            $loaded = $dom->loadHTML($actual);
+        } else {
+            $loaded = $dom->loadXML($actual);
+        }
+
+        libxml_use_internal_errors($internal);
+        error_reporting($reporting);
+
+        if ($loaded === FALSE) {
+            $message = '';
+
+            foreach (libxml_get_errors() as $error) {
+                $message .= $error->message;
+            }
+
+            throw new RuntimeException(
+              sprintf(
+                'Could not load "%s".%s',
+
+                $filename,
+                $message != '' ? "\n" . $message : ''
+              )
+            );
+        }
+
+        return $dom;
     }
 
     /**
@@ -145,7 +181,7 @@ class PHPUnit_Util_XML
     }
 
     /**
-     * Validate list of keys in the hash.
+     * Validate list of keys in the associative array.
      *
      * @param  array $hash
      * @param  array $validKeys
@@ -192,7 +228,8 @@ class PHPUnit_Util_XML
     }
 
     /**
-     * Convert an assertSelect() statement to an assertTag() struct.
+     * Parse a CSS selector into an associative array suitable for
+     * use with findNodes().
      *
      * @param  string $selector
      * @param  mixed  $content
@@ -203,13 +240,18 @@ class PHPUnit_Util_XML
      */
     public static function convertSelectToTag($selector, $content = TRUE)
     {
-        $selector    = trim(preg_replace("/\s+/", " ", $selector));
-        $selector    = preg_replace('/("[^"]+)\s([^"]+")/', "$1*space*$2", $selector);
+        $selector = trim(preg_replace("/\s+/", " ", $selector));
+
+        // substitute spaces within attribute value
+        while (preg_match('/\[[^\]]+"[^"]+\s[^"]+"\]/', $selector)) {
+            $selector = preg_replace('/(\[[^\]]+"[^"]+)\s([^"]+"\])/', "$1__SPACE__$2", $selector);
+        }
+
         $elements    = strstr($selector, ' ') ? explode(' ', $selector) : array($selector);
         $previousTag = array();
 
         foreach (array_reverse($elements) as $element) {
-            $element = str_replace('*space*', ' ', $element);
+            $element = str_replace('__SPACE__', ' ', $element);
 
             // child selector
             if ($element == '>') {
@@ -300,6 +342,36 @@ class PHPUnit_Util_XML
     }
 
     /**
+     * Parse an $actual document and return an array of DOMNodes
+     * matching the CSS $selector.  If an error occurs, it will
+     * return FALSE.
+     *
+     * To only return nodes containing a certain content, give
+     * the $content to match as a string.  Otherwise, setting
+     * $content to TRUE will return all nodes matching $selector.  
+     * 
+     * The $actual document may be a DOMDocument or a string 
+     * containing XML or HTML, identified by $isHtml.
+     *
+     * @param  array   $selector
+     * @param  string  $content
+     * @param  mixed   $actual
+     * @param  boolean $isHtml
+     * @return false|array
+     * @since  Method available since Release 3.3.0
+     * @author Mike Naberezny <mike@maintainable.com>
+     * @author Derek DeVries <derek@maintainable.com>
+     */
+    public static function cssSelect($selector, $content, $actual, $isHtml = TRUE)
+    {
+        $matcher = self::convertSelectToTag($selector, $content);
+        $dom     = self::load($actual, $isHtml);
+        $tags    = self::findNodes($dom, $matcher);
+        
+        return $tags;
+    }
+
+    /**
      * Parse out the options from the tag using DOM object tree.
      *
      * @param  DOMDocument $dom
@@ -374,14 +446,14 @@ class PHPUnit_Util_XML
             foreach ($nodes as $node) {
                 $invalid = FALSE;
 
-                foreach ($options['attributes'] as $name=>$value) {
-                    // match by regex
-                    if (preg_match('#^/.*/.?$#', $value)) {
-                        if (!preg_match($value, $node->getAttribute($name))) {
+                foreach ($options['attributes'] as $name => $value) {
+                    // match by regexp if like "regexp:/foo/i"
+                    if (preg_match('/^regexp\s*:\s*(.*)/i', $value, $matches)) {
+                        if (!preg_match($matches[1], $node->getAttribute($name))) {
                             $invalid = TRUE;
                         }
                     }
-
+                    
                     // class can match only a part
                     else if ($name == 'class') {
                         // split to individual classes
@@ -394,8 +466,10 @@ class PHPUnit_Util_XML
                                 $invalid = TRUE;
                             }
                         }
-                    } else {
-                        // match by exact string
+                    }
+
+                    // match by exact string
+                    else {
                         if ($node->getAttribute($name) != $value) {
                             $invalid = TRUE;
                         }
@@ -421,9 +495,9 @@ class PHPUnit_Util_XML
             foreach ($nodes as $node) {
                 $invalid = FALSE;
 
-                // match by regex
-                if (preg_match('#^/.*/.?$#', $options['content'])) {
-                    if (!preg_match($options['content'], self::getNodeText($node))) {
+                // match by regexp if like "regexp:/foo/i"
+                if (preg_match('/^regexp\s*:\s*(.*)/i', $options['content'], $matches)) {
+                    if (!preg_match($matches[1], self::getNodeText($node))) {
                         $invalid = TRUE;
                     }
                 }
