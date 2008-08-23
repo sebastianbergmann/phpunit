@@ -704,6 +704,12 @@ class PHPUnit_Extensions_SeleniumTestCase_Driver
      */
     protected function doCommand($command, array $arguments = array())
     {
+        if (!ini_get('allow_url_fopen')) {
+            throw new RuntimeException(
+              'Could not connect to the Selenium RC server because allow_url_fopen is disabled.'
+            );
+        }
+
         $url = sprintf(
           'http://%s:%s/selenium-server/driver/?cmd=%s',
           $this->host,
