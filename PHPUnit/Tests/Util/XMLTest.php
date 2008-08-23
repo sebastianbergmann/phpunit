@@ -211,6 +211,16 @@ class Util_XMLTest extends PHPUnit_Framework_TestCase
         $this->assertEquals($tag, $converted);
     }
 
+    public function testConvertAssertAttributeMultipleSpaces()
+    {
+        $selector = '[foo="bar baz"] div[value="foo bar baz"]';
+        $converted = PHPUnit_Util_XML::convertSelectToTag($selector);
+        $tag      = array('attributes' => array('foo' => 'bar baz'),
+                          'descendant' => array('tag' => 'div',
+                                                'attributes' => array('value' => 'foo bar baz')));
+        $this->assertEquals($tag, $converted);
+    }
+
     public function testConvertAssertSelectEltClass()
     {
         $selector  = 'div.foo';
