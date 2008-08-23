@@ -64,12 +64,14 @@ if (isset($_GET['PHPUNIT_SELENIUM_TEST_ID'])) {
 
         foreach ($data as $filename => $lines) {
             if (!isset($coverage[$filename])) {
-                $coverage[$filename] = $lines;
+                $coverage[$filename] = array(
+                  'md5' => md5_file($filename), 'coverage' => $lines
+                );
             } else {
                 foreach ($lines as $line => $flag) {
-                    if (!isset($coverage[$filename][$line]) ||
-                        $flag > $coverage[$filename][$line]) {
-                        $coverage[$filename][$line] = $flag;
+                    if (!isset($coverage[$filename]['coverage'][$line]) ||
+                        $flag > $coverage[$filename]['coverage'][$line]) {
+                        $coverage[$filename]['coverage'][$line] = $flag;
                     }
                 }
             }
