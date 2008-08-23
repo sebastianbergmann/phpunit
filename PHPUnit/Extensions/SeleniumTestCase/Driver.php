@@ -127,6 +127,12 @@ class PHPUnit_Extensions_SeleniumTestCase_Driver
      */
     public function start()
     {
+        if ($this->browserUrl == NULL) {
+            throw new RuntimeException(
+              'setBrowserUrl() needs to be called before start().'
+            );
+        }
+
         if (!isset($this->sessionId)) {
             $this->sessionId = $this->getString(
               'getNewBrowserSession',
