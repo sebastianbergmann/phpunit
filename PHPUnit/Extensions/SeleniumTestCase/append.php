@@ -56,10 +56,6 @@ if ( isset($_COOKIE['PHPUNIT_SELENIUM_TEST_ID']) &&
         unset($data[$file]);
     }
 
-    foreach ($data as $filename => $linecoverage) {
-        $data[$filename]['md5'] = md5_file($filename);
-    }
-
     file_put_contents(
       $_SERVER['SCRIPT_FILENAME'] . '.phpunit_' .
       $_COOKIE['PHPUNIT_SELENIUM_TEST_ID'],
