@@ -294,13 +294,13 @@ class PHPUnit_Util_XML
                         // match single word
                         if (strstr($attribute, '~=')) {
                             list($key, $value) = explode('~=', $attribute);
-                            $value = "/.*\b$value\b.*/";
+                            $value = "regexp:/.*\b$value\b.*/";
                         }
 
                         // match substring
                         else if (strstr($attribute, '*=')) {
                             list($key, $value) = explode('*=', $attribute);
-                            $value = "/.*$value.*/";
+                            $value = "regexp:/.*$value.*/";
                         }
 
                         // exact match
