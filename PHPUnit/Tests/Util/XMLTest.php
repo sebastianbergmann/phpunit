@@ -261,7 +261,7 @@ class Util_XMLTest extends PHPUnit_Framework_TestCase
     {
         $selector  = 'div[foo~="bar"]';
         $converted = PHPUnit_Util_XML::convertSelectToTag($selector);
-        $tag       = array('tag' => 'div', 'attributes' => array('foo' => '/.*\bbar\b.*/'));
+        $tag       = array('tag' => 'div', 'attributes' => array('foo' => 'regexp:/.*\bbar\b.*/'));
 
         $this->assertEquals($tag, $converted);
     }
@@ -270,7 +270,7 @@ class Util_XMLTest extends PHPUnit_Framework_TestCase
     {
         $selector  = 'div[foo*="bar"]';
         $converted = PHPUnit_Util_XML::convertSelectToTag($selector);
-        $tag       = array('tag' => 'div', 'attributes' => array('foo' => '/.*bar.*/'));
+        $tag       = array('tag' => 'div', 'attributes' => array('foo' => 'regexp:/.*bar.*/'));
 
         $this->assertEquals($tag, $converted);
     }
