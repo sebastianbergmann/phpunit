@@ -66,7 +66,6 @@ require_once 'PHPUnit/Util/XML.php';
  */
 class Util_XMLTest extends PHPUnit_Framework_TestCase
 {
-    // test validating keys
     public function testAssertValidKeysValidKeys()
     {
         $options   = array('testA' => 1, 'testB' => 2, 'testC' => 3);
@@ -77,7 +76,6 @@ class Util_XMLTest extends PHPUnit_Framework_TestCase
         $this->assertEquals($expected, $validated);
     }
 
-    // test validating keys
     public function testAssertValidKeysValidKeysEmpty()
     {
         $options   = array('testA' => 1, 'testB' => 2);
@@ -88,7 +86,6 @@ class Util_XMLTest extends PHPUnit_Framework_TestCase
         $this->assertEquals($expected, $validated);
     }
 
-    // test validating keys with defaults
     public function testAssertValidKeysDefaultValuesA()
     {
         $options   = array('testA' => 1, 'testB' => 2);
@@ -99,7 +96,6 @@ class Util_XMLTest extends PHPUnit_Framework_TestCase
         $this->assertEquals($expected, $validated);
     }
 
-    // test validating keys with defaults
     public function testAssertValidKeysDefaultValuesB()
     {
         $options   = array();
@@ -110,7 +106,6 @@ class Util_XMLTest extends PHPUnit_Framework_TestCase
         $this->assertEquals($expected, $validated);
     }
 
-    // test validating keys
     public function testAssertValidKeysInvalidKey()
     {
         $options = array('testA' => 1, 'testB' => 2, 'testD' => 3);
@@ -119,12 +114,13 @@ class Util_XMLTest extends PHPUnit_Framework_TestCase
         try {
             $validated = PHPUnit_Util_XML::assertValidKeys($options, $valid);
             $this->fail();
-        } catch (InvalidArgumentException $e) {
+        }
+
+        catch (InvalidArgumentException $e) {
             $this->assertEquals('Unknown key(s): testD', $e->getMessage());
         }
     }
 
-    // test validating keys
     public function testAssertValidKeysInvalidKeys()
     {
         $options = array('testA' => 1, 'testD' => 2, 'testE' => 3);
@@ -133,7 +129,9 @@ class Util_XMLTest extends PHPUnit_Framework_TestCase
         try {
             $validated = PHPUnit_Util_XML::assertValidKeys($options, $valid);
             $this->fail();
-        } catch (InvalidArgumentException $e) {
+        }
+
+        catch (InvalidArgumentException $e) {
             $this->assertEquals('Unknown key(s): testD, testE', $e->getMessage());
         }
     }
@@ -144,14 +142,14 @@ class Util_XMLTest extends PHPUnit_Framework_TestCase
             try {
                 PHPUnit_Util_XML::assertValidKeys($bad, array());
                 $this->fail();
-            } catch (InvalidArgumentException $e) {
+            }
+
+            catch (InvalidArgumentException $e) {
                 $this->assertRegExp('/expected array/i', $e->getMessage());
             }
         }
     }
 
-    // complex selector using most options
-    // 'div#folder.open a[href="http://www.xerox.com"][title="xerox"].selected.big > span
     public function testConvertAssertSelect()
     {
         $selector  = 'div#folder.open a[href="http://www.xerox.com"][title="xerox"].selected.big > span';
@@ -167,8 +165,6 @@ class Util_XMLTest extends PHPUnit_Framework_TestCase
          $this->assertEquals($tag, $converted);
     }
 
-    // selected based only on element
-    // 'div'
     public function testConvertAssertSelectElt()
     {
         $selector  = 'div';
@@ -178,8 +174,6 @@ class Util_XMLTest extends PHPUnit_Framework_TestCase
         $this->assertEquals($tag, $converted);
     }
 
-    // selector based on element class
-    // '.foo'
     public function testConvertAssertClass()
     {
         $selector  = '.foo';
@@ -189,8 +183,6 @@ class Util_XMLTest extends PHPUnit_Framework_TestCase
         $this->assertEquals($tag, $converted);
     }
 
-    // selector based on element id
-    // '#foo'
     public function testConvertAssertId()
     {
         $selector  = '#foo';
@@ -200,8 +192,6 @@ class Util_XMLTest extends PHPUnit_Framework_TestCase
         $this->assertEquals($tag, $converted);
     }
 
-    // selector based on element attribute value
-    // '[foo="bar"]'
     public function testConvertAssertAttribute()
     {
         $selector  = '[foo="bar"]';
@@ -211,7 +201,6 @@ class Util_XMLTest extends PHPUnit_Framework_TestCase
         $this->assertEquals($tag, $converted);
     }
 
-    // selector based on element attribute with spaces
     public function testConvertAssertAttributeSpaces()
     {
         $selector  = '[foo="bar baz"] div[value="foo bar"]';
@@ -222,8 +211,6 @@ class Util_XMLTest extends PHPUnit_Framework_TestCase
         $this->assertEquals($tag, $converted);
     }
 
-    // selector based on element and class
-    // 'div.foo'
     public function testConvertAssertSelectEltClass()
     {
         $selector  = 'div.foo';
@@ -233,8 +220,6 @@ class Util_XMLTest extends PHPUnit_Framework_TestCase
         $this->assertEquals($tag, $converted);
     }
 
-    // selector based on element and id
-    // 'div#foo'
     public function testConvertAssertSelectEltId()
     {
         $selector  = 'div#foo';
@@ -244,8 +229,6 @@ class Util_XMLTest extends PHPUnit_Framework_TestCase
         $this->assertEquals($tag, $converted);
     }
 
-    // selector based on element and attribute value
-    // 'div[foo="bar"]'
     public function testConvertAssertSelectEltAttrEqual()
     {
         $selector  = 'div[foo="bar"]';
@@ -255,8 +238,6 @@ class Util_XMLTest extends PHPUnit_Framework_TestCase
         $this->assertEquals($tag, $converted);
     }
 
-    // selector based on element and multiple attributes
-    // 'div[foo="bar"][baz="fob"]'
     public function testConvertAssertSelectEltMultiAttrEqual()
     {
         $selector  = 'div[foo="bar"][baz="fob"]';
@@ -266,8 +247,6 @@ class Util_XMLTest extends PHPUnit_Framework_TestCase
         $this->assertEquals($tag, $converted);
     }
 
-    // selector based on element with attribute that contains the given text using word boundaries
-    // 'div[foo~="bar"]'
     public function testConvertAssertSelectEltAttrHasOne()
     {
         $selector  = 'div[foo~="bar"]';
@@ -277,8 +256,6 @@ class Util_XMLTest extends PHPUnit_Framework_TestCase
         $this->assertEquals($tag, $converted);
     }
 
-    // selector based on element with attribute that contains the given text
-    // 'div[foo*="bar"]'
     public function testConvertAssertSelectEltAttrContains()
     {
         $selector  = 'div[foo*="bar"]';
@@ -288,8 +265,6 @@ class Util_XMLTest extends PHPUnit_Framework_TestCase
         $this->assertEquals($tag, $converted);
     }
 
-    // selector based on element with a child element
-    // 'div > a'
     public function testConvertAssertSelectEltChild()
     {
         $selector  = 'div > a';
@@ -299,8 +274,6 @@ class Util_XMLTest extends PHPUnit_Framework_TestCase
         $this->assertEquals($tag, $converted);
     }
 
-    // selector based on element with a descendant element
-    // 'div a'
     public function testConvertAssertSelectEltDescendant()
     {
         $selector  = 'div a';
@@ -310,8 +283,6 @@ class Util_XMLTest extends PHPUnit_Framework_TestCase
         $this->assertEquals($tag, $converted);
     }
 
-    // selector based on element with content
-    // '#foo', 'div contents'
     public function testConvertAssertSelectContent()
     {
         $selector  = '#foo';
@@ -322,8 +293,6 @@ class Util_XMLTest extends PHPUnit_Framework_TestCase
         $this->assertEquals($tag, $converted);
     }
 
-    // selector based on element that exists
-    // '#foo', true
     public function testConvertAssertSelectTrue()
     {
         $selector  = '#foo';
@@ -334,8 +303,6 @@ class Util_XMLTest extends PHPUnit_Framework_TestCase
         $this->assertEquals($tag, $converted);
     }
 
-    // selector based on element that doesn't exist
-    // '#foo', false
     public function testConvertAssertSelectFalse()
     {
         $selector  = '#foo';
@@ -346,8 +313,6 @@ class Util_XMLTest extends PHPUnit_Framework_TestCase
         $this->assertEquals($tag, $converted);
     }
 
-    // selector based on element class that appears 3 times
-    // '.foo', '3'
     public function testConvertAssertNumber()
     {
         $selector  = '.foo';
@@ -358,8 +323,6 @@ class Util_XMLTest extends PHPUnit_Framework_TestCase
         $this->assertEquals($tag, $converted);
     }
 
-    // selector based on element class that appears 6 to 9 times
-    // '#foo', array('greater_than' => 5, 'less_than' => 10)
     public function testConvertAssertRange()
     {
         $selector  = '#foo';
