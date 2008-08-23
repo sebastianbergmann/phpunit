@@ -1154,7 +1154,7 @@ abstract class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_Tes
     {
         $coverageWithLocalPaths = array();
 
-        foreach ($coverage as $originalRemotePath => $value) {
+        foreach ($coverage as $originalRemotePath => $data) {
             $remotePath = $originalRemotePath;
             $separator  = $this->findDirectorySeparator($remotePath);
 
@@ -1163,9 +1163,8 @@ abstract class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_Tes
                 $remotePath = substr($remotePath, strpos($remotePath, $separator) + 1);
             }
 
-            if ($localpath && md5_file($localpath) == $value['md5']) {
-                $coverageWithLocalPaths[$localpath] = $value;
-                unset($coverageWithLocalPaths[$localpath]['md5']);
+            if ($localpath && md5_file($localpath) == $data['md5']) {
+                $coverageWithLocalPaths[$localpath] = $data['coverage'];
             }
         }
 
