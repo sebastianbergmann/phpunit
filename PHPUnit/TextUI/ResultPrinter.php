@@ -471,12 +471,9 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
                 $name
               )
             );
-
-            array_push($this->numberOfTests, 0);
-            array_push($this->testSuiteSize, count($suite));
         }
 
-        else if (empty($this->numberOfTests)) {
+        if ($this->verbose || empty($this->numberOfTests)) {
             array_push($this->numberOfTests, 0);
             array_push($this->testSuiteSize, count($suite));
         }
