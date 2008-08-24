@@ -96,7 +96,13 @@ class PHPUnit_Util_Template
      */
     public function setFile($file)
     {
-        if ($file != '' && file_exists($file)) {
+        $distFile = $file . '.dist';
+
+        if (file_exists($distFile)) {
+            $file = $distFile;
+        }
+
+        if (file_exists($file)) {
             $this->template = file_get_contents($file);
         } else {
             throw new InvalidArgumentException(
