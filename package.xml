@@ -229,10 +229,10 @@
      <dir name="Story">
       <dir name="ResultPrinter">
        <dir name="Template">
-        <file baseinstalldir="/" name="scenario_header.html" role="php" />
-        <file baseinstalldir="/" name="scenario.html" role="php" />
-        <file baseinstalldir="/" name="scenarios.html" role="php" />
-        <file baseinstalldir="/" name="step.html" role="php" />
+        <file baseinstalldir="/" name="scenario_header.html.dist" role="php" />
+        <file baseinstalldir="/" name="scenario.html.dist" role="php" />
+        <file baseinstalldir="/" name="scenarios.html.dist" role="php" />
+        <file baseinstalldir="/" name="step.html.dist" role="php" />
        </dir>
        <file baseinstalldir="/" name="HTML.php" role="php">
         <tasks:replace from="@package_version@" to="version" type="package-info" />
@@ -947,7 +947,7 @@
       <file baseinstalldir="/" name="SampleClass.php" role="test">
        <tasks:replace from="@package_version@" to="version" type="package-info" />
       </file>
-      <file baseinstalldir="/" name="SelectorAssertionsFixture.html" role="test">
+      <file baseinstalldir="/" name="SelectorAssertionsFixture.html.dist" role="test">
        <tasks:replace from="@package_version@" to="version" type="package-info" />
       </file>
       <file baseinstalldir="/" name="SetupFailure.php" role="test">
@@ -1171,12 +1171,12 @@
        <file baseinstalldir="/" name="close12_1.gif" role="php" />
        <file baseinstalldir="/" name="container.css" role="php" />
        <file baseinstalldir="/" name="container-min.js" role="php" />
-       <file baseinstalldir="/" name="directory.html" role="php" />
-       <file baseinstalldir="/" name="file.html" role="php" />
-       <file baseinstalldir="/" name="file_no_yui.html" role="php" />
+       <file baseinstalldir="/" name="directory.html.dist" role="php" />
+       <file baseinstalldir="/" name="file.html.dist" role="php" />
+       <file baseinstalldir="/" name="file_no_yui.html.dist" role="php" />
        <file baseinstalldir="/" name="glass.png" role="php" />
-       <file baseinstalldir="/" name="item.html" role="php" />
-       <file baseinstalldir="/" name="method_item.html" role="php" />
+       <file baseinstalldir="/" name="item.html.dist" role="php" />
+       <file baseinstalldir="/" name="method_item.html.dist" role="php" />
        <file baseinstalldir="/" name="scarlet_red.png" role="php" />
        <file baseinstalldir="/" name="snow.png" role="php" />
        <file baseinstalldir="/" name="style.css" role="php" />
@@ -1186,34 +1186,34 @@
      </dir>
      <dir name="Skeleton">
       <dir name="Template">
-       <file baseinstalldir="/" name="Class.tpl" role="php">
+       <file baseinstalldir="/" name="Class.tpl.dist" role="php">
         <tasks:replace from="@package_version@" to="version" type="package-info" />
        </file>
-       <file baseinstalldir="/" name="IncompleteTestMethod.tpl" role="php">
+       <file baseinstalldir="/" name="IncompleteTestMethod.tpl.dist" role="php">
         <tasks:replace from="@package_version@" to="version" type="package-info" />
        </file>
-       <file baseinstalldir="/" name="Method.tpl" role="php">
+       <file baseinstalldir="/" name="Method.tpl.dist" role="php">
         <tasks:replace from="@package_version@" to="version" type="package-info" />
        </file>
-       <file baseinstalldir="/" name="TestClass.tpl" role="php">
+       <file baseinstalldir="/" name="TestClass.tpl.dist" role="php">
         <tasks:replace from="@package_version@" to="version" type="package-info" />
        </file>
-       <file baseinstalldir="/" name="TestMethod.tpl" role="php">
+       <file baseinstalldir="/" name="TestMethod.tpl.dist" role="php">
         <tasks:replace from="@package_version@" to="version" type="package-info" />
        </file>
-       <file baseinstalldir="/" name="TestMethodStatic.tpl" role="php">
+       <file baseinstalldir="/" name="TestMethodStatic.tpl.dist" role="php">
         <tasks:replace from="@package_version@" to="version" type="package-info" />
        </file>
-       <file baseinstalldir="/" name="TestMethodBool.tpl" role="php">
+       <file baseinstalldir="/" name="TestMethodBool.tpl.dist" role="php">
         <tasks:replace from="@package_version@" to="version" type="package-info" />
        </file>
-       <file baseinstalldir="/" name="TestMethodBoolStatic.tpl" role="php">
+       <file baseinstalldir="/" name="TestMethodBoolStatic.tpl.dist" role="php">
         <tasks:replace from="@package_version@" to="version" type="package-info" />
        </file>
-       <file baseinstalldir="/" name="TestMethodException.tpl" role="php">
+       <file baseinstalldir="/" name="TestMethodException.tpl.dist" role="php">
         <tasks:replace from="@package_version@" to="version" type="package-info" />
        </file>
-       <file baseinstalldir="/" name="TestMethodExceptionStatic.tpl" role="php">
+       <file baseinstalldir="/" name="TestMethodExceptionStatic.tpl.dist" role="php">
         <tasks:replace from="@package_version@" to="version" type="package-info" />
        </file>
       </dir>
