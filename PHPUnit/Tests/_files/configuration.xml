@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<phpunit ansi="false"
+         bootstrap="/path/to/bootstrap.php"
+         convertErrorsToExceptions="true"
+         convertNoticesToExceptions="true"
+         convertWarningsToExceptions="true"
+         stopOnFailure="false">
+  <testsuite name="My Test Suite">
+    <directory suffix="Test.php">/path/to/files</directory>
+    <file>/path/to/MyTest.php</file>
+  </testsuite>
+
+  <groups>
+    <include>
+      <group>name</group>
+    </include>
+    <exclude>
+      <group>name</group>
+    </exclude>
+  </groups>
+
+  <filter>
+    <blacklist>
+      <directory suffix=".php">/path/to/files</directory>
+      <file>/path/to/file</file>
+      <exclude>
+        <directory suffix=".php">/path/to/files</directory>
+        <file>/path/to/file</file>
+      </exclude>
+    </blacklist>
+    <whitelist addUncoveredFilesFromWhitelist="true">
+      <directory suffix=".php">/path/to/files</directory>
+      <file>/path/to/file</file>
+      <exclude>
+        <directory suffix=".php">/path/to/files</directory>
+        <file>/path/to/file</file>
+      </exclude>
+    </whitelist>
+  </filter>
+
+  <logging>
+    <log type="coverage-html" target="/tmp/report" charset="UTF-8"
+         yui="true" highlight="false"
+         lowUpperBound="35" highLowerBound="70"/>
+    <log type="coverage-clover" target="/tmp/clover.xml"/>
+    <log type="coverage-source" target="/tmp/coverage"/>
+    <log type="graphviz" target="/tmp/logfile.dot"/>
+    <log type="json" target="/tmp/logfile.json"/>
+    <log type="metrics-xml" target="/tmp/metrics.xml"/>
+    <log type="plain" target="/tmp/logfile.txt"/>
+    <log type="pmd-xml" target="/tmp/pmd.xml" cpdMinLines="5" cpdMinMatches="70"/>
+    <log type="tap" target="/tmp/logfile.tap"/>
+    <log type="test-xml" target="/tmp/logfile.xml" logIncompleteSkipped="false"/>
+    <log type="story-html" target="/tmp/story.html"/>
+    <log type="story-text" target="/tmp/story.txt"/>
+    <log type="testdox-html" target="/tmp/testdox.html"/>
+    <log type="testdox-text" target="/tmp/testdox.txt"/>
+
+    <pmd>
+      <rule class="PHPUnit_Util_Log_PMD_Rule_Project_CRAP"
+            threshold="5,30" priority="1"/>
+      <rule class="PHPUnit_Util_Log_PMD_Rule_Class_DepthOfInheritanceTree"
+            threshold="6" priority="1"/>
+      <rule class="PHPUnit_Util_Log_PMD_Rule_Class_EfferentCoupling"
+            threshold="20" priority="1"/>
+      <rule class="PHPUnit_Util_Log_PMD_Rule_Class_ExcessiveClassLength"
+            threshold="1000" priority="1"/>
+      <rule class="PHPUnit_Util_Log_PMD_Rule_Class_ExcessivePublicCount"
+            threshold="45" priority="1"/>
+      <rule class="PHPUnit_Util_Log_PMD_Rule_Class_TooManyFields"
+            threshold="15" priority="1"/>
+      <rule class="PHPUnit_Util_Log_PMD_Rule_Function_CodeCoverage"
+            threshold="35,70" priority="1"/>
+      <rule class="PHPUnit_Util_Log_PMD_Rule_Function_CRAP"
+            threshold="30" priority="1"/>
+      <rule class="PHPUnit_Util_Log_PMD_Rule_Function_CyclomaticComplexity"
+            threshold="20" priority="1"/>
+      <rule class="PHPUnit_Util_Log_PMD_Rule_Function_ExcessiveMethodLength"
+            threshold="100" priority="1"/>
+      <rule class="PHPUnit_Util_Log_PMD_Rule_Function_ExcessiveParameterList"
+            threshold="10" priority="1"/>
+      <rule class="PHPUnit_Util_Log_PMD_Rule_Function_NPathComplexity"
+            threshold="200" priority="1"/>
+    </pmd>
+  </logging>
+
+  <php>
+    <ini name="foo" value="bar"/>
+    <var name="foo" value="bar"/>
+  </php>
+
+  <selenium>
+    <browser name="Firefox on Linux"
+             browser="*firefox /usr/lib/firefox/firefox-bin"
+             host="my.linux.box"
+             port="4444"
+             timeout="30000"/>
+  </selenium>
+</phpunit>
+

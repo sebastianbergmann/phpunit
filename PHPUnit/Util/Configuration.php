@@ -57,7 +57,12 @@ PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
  * <code>
  * <?xml version="1.0" encoding="utf-8" ?>
  *
- * <phpunit ansi="false" convertErrorsToExceptions="true" convertNoticesToExceptions="true" convertWarningsToExceptions="true" stopOnFailure="false">
+ * <phpunit ansi="false"
+ *          bootstrap="/path/to/bootstrap.php"
+ *          convertErrorsToExceptions="true"
+ *          convertNoticesToExceptions="true"
+ *          convertWarningsToExceptions="true"
+ *          stopOnFailure="false">
  *   <testsuite name="My Test Suite">
  *     <directory suffix="Test.php">/path/to/files</directory>
  *     <file>/path/to/MyTest.php</file>
@@ -143,7 +148,11 @@ PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
  *   </php>
  *
  *   <selenium>
- *     <browser name="" browser="" host="" port="" timeout="">
+ *     <browser name="Firefox on Linux"
+ *              browser="*firefox /usr/lib/firefox/firefox-bin"
+ *              host="my.linux.box"
+ *              port="4444"
+ *              timeout="30000"/>
  *   </selenium>
  * </phpunit>
  * </code>
@@ -397,6 +406,10 @@ class PHPUnit_Util_Configuration
             );
         }
 
+        if ($this->document->documentElement->hasAttribute('bootstrap')) {
+            $result['bootstrap'] = (string)$this->document->documentElement->getAttribute('bootstrap');
+        }
+
         if ($this->document->documentElement->hasAttribute('convertErrorsToExceptions')) {
             $result['convertErrorsToExceptions'] = $this->getBoolean(
               (string)$this->document->documentElement->getAttribute('convertErrorsToExceptions'),
@@ -479,15 +492,15 @@ class PHPUnit_Util_Configuration
             }
 
             if ($config->hasAttribute('port')) {
-                $host = (int)$config->getAttribute('port');
+                $port = (int)$config->getAttribute('port');
             } else {
-                $host = 4444;
+                $port = 4444;
             }
 
             if ($config->hasAttribute('timeout')) {
-                $host = (int)$config->getAttribute('timeout');
+                $timeout = (int)$config->getAttribute('timeout');
             } else {
-                $host = 30000;
+                $timeout = 30000;
             }
 
             $result[] = array(
