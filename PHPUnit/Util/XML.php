@@ -101,7 +101,7 @@ class PHPUnit_Util_XML
             );
         }
 
-        return self::load($contents, $isHtml);
+        return self::load($contents, $isHtml, $filename);
     }
 
     /**
@@ -118,12 +118,13 @@ class PHPUnit_Util_XML
      *
      * @param  string|DOMDocument  $actual
      * @param  boolean             $isHtml
+     * @param  string              $filename
      * @return DOMDocument
      * @since  Method available since Release 3.3.0
      * @author Mike Naberezny <mike@maintainable.com>
      * @author Derek DeVries <derek@maintainable.com>
      */
-    public static function load($actual, $isHtml = FALSE)
+    public static function load($actual, $isHtml = FALSE, $filename = '')
     {
         if ($actual instanceof DOMDocument) {
             return $actual;
@@ -149,14 +150,18 @@ class PHPUnit_Util_XML
                 $message .= $error->message;
             }
 
-            throw new RuntimeException(
-              sprintf(
-                'Could not load "%s".%s',
+            if ($filename != '') {
+                throw new RuntimeException(
+                  sprintf(
+                    'Could not load "%s".%s',
 
-                $filename,
-                $message != '' ? "\n" . $message : ''
-              )
-            );
+                    $filename,
+                    $message != '' ? "\n" . $message : ''
+                  )
+                );
+            } else {
+                throw new RuntimeException($message);
+            }
         }
 
         return $dom;
