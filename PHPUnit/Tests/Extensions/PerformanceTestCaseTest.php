@@ -48,7 +48,7 @@ require_once 'PHPUnit/Framework/AssertionFailedError.php';
 require_once 'PHPUnit/Framework/TestCase.php';
 require_once 'PHPUnit/Framework/TestResult.php';
 
-require_once dirname(dirname(__FILE__)) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'Sleep.php';
+require_once dirname(dirname(__FILE__)) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'SleepTest.php';
 
 /**
  *
@@ -66,7 +66,7 @@ class Extensions_PerformanceTestCaseTest extends PHPUnit_Framework_TestCase
 {
     public function testDoesNotExceedMaxRunningTime()
     {
-        $test = new Sleep('testSleepTwoSeconds');
+        $test = new SleepTest('testSleepTwoSeconds');
         $test->setMaxRunningTime(3);
 
         $result = $test->run();
@@ -75,7 +75,7 @@ class Extensions_PerformanceTestCaseTest extends PHPUnit_Framework_TestCase
 
     public function testExceedsMaxRunningTime()
     {
-        $test = new Sleep('testSleepTwoSeconds');
+        $test = new SleepTest('testSleepTwoSeconds');
         $test->setMaxRunningTime(1);
 
         $result = $test->run();
