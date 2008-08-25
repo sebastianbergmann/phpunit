@@ -128,7 +128,7 @@ class PHPUnit_Util_XML
     {
         if ($actual instanceof DOMDocument) {
             return $actual;
-        } 
+        }
 
         $internal  = libxml_use_internal_errors(TRUE);
         $reporting = error_reporting(0);
@@ -353,9 +353,9 @@ class PHPUnit_Util_XML
      *
      * To only return nodes containing a certain content, give
      * the $content to match as a string.  Otherwise, setting
-     * $content to TRUE will return all nodes matching $selector.  
-     * 
-     * The $actual document may be a DOMDocument or a string 
+     * $content to TRUE will return all nodes matching $selector.
+     *
+     * The $actual document may be a DOMDocument or a string
      * containing XML or HTML, identified by $isHtml.
      *
      * @param  array   $selector
@@ -372,7 +372,7 @@ class PHPUnit_Util_XML
         $matcher = self::convertSelectToTag($selector, $content);
         $dom     = self::load($actual, $isHtml);
         $tags    = self::findNodes($dom, $matcher);
-        
+
         return $tags;
     }
 
@@ -458,7 +458,7 @@ class PHPUnit_Util_XML
                             $invalid = TRUE;
                         }
                     }
-                    
+
                     // class can match only a part
                     else if ($name == 'class') {
                         // split to individual classes
