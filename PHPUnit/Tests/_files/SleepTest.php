@@ -41,7 +41,7 @@
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    SVN: $Id$
  * @link       http://www.phpunit.de/
- * @since      File available since Release 2.0.0
+ * @since      File available since Release 3.3.0
  */
 
 require_once 'PHPUnit/Util/Filter.php';
@@ -60,9 +60,9 @@ require_once 'PHPUnit/Extensions/PerformanceTestCase.php';
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    Release: @package_version@
  * @link       http://www.phpunit.de/
- * @since      Class available since Release 2.0.0
+ * @since      Class available since Release 3.3.0
  */
-class Sleep extends PHPUnit_Extensions_PerformanceTestCase
+class SleepTest extends PHPUnit_Extensions_PerformanceTestCase
 {
     public function testSleepTwoSeconds()
     {

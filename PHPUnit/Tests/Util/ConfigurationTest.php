@@ -75,68 +75,68 @@ class Util_ConfigurationTest extends PHPUnit_Framework_TestCase
     {
         $this->assertEquals(
           array (
-            'blacklist' => 
+            'blacklist' =>
             array (
-              'include' => 
+              'include' =>
               array (
-                'directory' => 
+                'directory' =>
                 array (
-                  0 => 
+                  0 =>
                   array (
                     'path' => '/path/to/files',
                     'suffix' => '.php',
                   ),
                 ),
-                'file' => 
+                'file' =>
                 array (
                   0 => '/path/to/file',
                 ),
               ),
-              'exclude' => 
+              'exclude' =>
               array (
-                'directory' => 
+                'directory' =>
                 array (
-                  0 => 
+                  0 =>
                   array (
                     'path' => '/path/to/files',
                     'suffix' => '.php',
                   ),
                 ),
-                'file' => 
+                'file' =>
                 array (
                   0 => '/path/to/file',
                 ),
               ),
             ),
-            'whitelist' => 
+            'whitelist' =>
             array (
-              'addUncoveredFilesFromWhitelist' => true,
-              'include' => 
+              'addUncoveredFilesFromWhitelist' => TRUE,
+              'include' =>
               array (
-                'directory' => 
+                'directory' =>
                 array (
-                  0 => 
+                  0 =>
                   array (
                     'path' => '/path/to/files',
                     'suffix' => '.php',
                   ),
                 ),
-                'file' => 
+                'file' =>
                 array (
                   0 => '/path/to/file',
                 ),
               ),
-              'exclude' => 
+              'exclude' =>
               array (
-                'directory' => 
+                'directory' =>
                 array (
-                  0 => 
+                  0 =>
                   array (
                     'path' => '/path/to/files',
                     'suffix' => '.php',
                   ),
                 ),
-                'file' => 
+                'file' =>
                 array (
                   0 => '/path/to/file',
                 ),
@@ -151,11 +151,11 @@ class Util_ConfigurationTest extends PHPUnit_Framework_TestCase
     {
         $this->assertEquals(
           array (
-            'include' => 
+            'include' =>
             array (
               0 => 'name',
             ),
-            'exclude' => 
+            'exclude' =>
             array (
               0 => 'name',
             ),
@@ -171,8 +171,8 @@ class Util_ConfigurationTest extends PHPUnit_Framework_TestCase
             'charset' => 'UTF-8',
             'lowUpperBound' => '35',
             'highLowerBound' => '70',
-            'yui' => true,
-            'highlight' => false,
+            'yui' => TRUE,
+            'highlight' => FALSE,
             'coverage-html' => '/tmp/report',
             'coverage-clover' => '/tmp/clover.xml',
             'coverage-source' => '/tmp/coverage',
@@ -184,7 +184,7 @@ class Util_ConfigurationTest extends PHPUnit_Framework_TestCase
             'cpdMinMatches' => '70',
             'pmd-xml' => '/tmp/pmd.xml',
             'tap' => '/tmp/logfile.tap',
-            'logIncompleteSkipped' => false,
+            'logIncompleteSkipped' => FALSE,
             'test-xml' => '/tmp/logfile.xml',
             'story-html' => '/tmp/story.html',
             'story-text' => '/tmp/story.txt',
@@ -199,11 +199,11 @@ class Util_ConfigurationTest extends PHPUnit_Framework_TestCase
     {
         $this->assertEquals(
           array (
-            'ini' => 
+            'ini' =>
             array (
               'foo' => 'bar',
             ),
-            'var' => 
+            'var' =>
             array (
               'foo' => 'bar',
             ),
@@ -216,12 +216,12 @@ class Util_ConfigurationTest extends PHPUnit_Framework_TestCase
     {
         $this->assertEquals(
           array (
-            'ansi' => false,
+            'ansi' => FALSE,
             'bootstrap' => '/path/to/bootstrap.php',
-            'convertErrorsToExceptions' => true,
-            'convertNoticesToExceptions' => true,
-            'convertWarningsToExceptions' => true,
-            'stopOnFailure' => false,
+            'convertErrorsToExceptions' => TRUE,
+            'convertNoticesToExceptions' => TRUE,
+            'convertWarningsToExceptions' => TRUE,
+            'stopOnFailure' => FALSE,
           ),
           $this->configuration->getPHPUnitConfiguration()
         );
@@ -231,70 +231,70 @@ class Util_ConfigurationTest extends PHPUnit_Framework_TestCase
     {
         $this->assertEquals(
           array (
-            'PHPUnit_Util_Log_PMD_Rule_Project_CRAP' => 
+            'PHPUnit_Util_Log_PMD_Rule_Project_CRAP' =>
             array (
-              'threshold' => 
+              'threshold' =>
               array (
                 0 => '5',
                 1 => '30',
               ),
               'priority' => 1,
             ),
-            'PHPUnit_Util_Log_PMD_Rule_Class_DepthOfInheritanceTree' => 
+            'PHPUnit_Util_Log_PMD_Rule_Class_DepthOfInheritanceTree' =>
             array (
               'threshold' => '6',
               'priority' => 1,
             ),
-            'PHPUnit_Util_Log_PMD_Rule_Class_EfferentCoupling' => 
+            'PHPUnit_Util_Log_PMD_Rule_Class_EfferentCoupling' =>
             array (
               'threshold' => '20',
               'priority' => 1,
             ),
-            'PHPUnit_Util_Log_PMD_Rule_Class_ExcessiveClassLength' => 
+            'PHPUnit_Util_Log_PMD_Rule_Class_ExcessiveClassLength' =>
             array (
               'threshold' => '1000',
               'priority' => 1,
             ),
-            'PHPUnit_Util_Log_PMD_Rule_Class_ExcessivePublicCount' => 
+            'PHPUnit_Util_Log_PMD_Rule_Class_ExcessivePublicCount' =>
             array (
               'threshold' => '45',
               'priority' => 1,
             ),
-            'PHPUnit_Util_Log_PMD_Rule_Class_TooManyFields' => 
+            'PHPUnit_Util_Log_PMD_Rule_Class_TooManyFields' =>
             array (
               'threshold' => '15',
               'priority' => 1,
             ),
-            'PHPUnit_Util_Log_PMD_Rule_Function_CodeCoverage' => 
+            'PHPUnit_Util_Log_PMD_Rule_Function_CodeCoverage' =>
             array (
-              'threshold' => 
+              'threshold' =>
               array (
                 0 => '35',
                 1 => '70',
               ),
               'priority' => 1,
             ),
-            'PHPUnit_Util_Log_PMD_Rule_Function_CRAP' => 
+            'PHPUnit_Util_Log_PMD_Rule_Function_CRAP' =>
             array (
               'threshold' => '30',
               'priority' => 1,
             ),
-            'PHPUnit_Util_Log_PMD_Rule_Function_CyclomaticComplexity' => 
+            'PHPUnit_Util_Log_PMD_Rule_Function_CyclomaticComplexity' =>
             array (
               'threshold' => '20',
               'priority' => 1,
             ),
-            'PHPUnit_Util_Log_PMD_Rule_Function_ExcessiveMethodLength' => 
+            'PHPUnit_Util_Log_PMD_Rule_Function_ExcessiveMethodLength' =>
             array (
               'threshold' => '100',
               'priority' => 1,
             ),
-            'PHPUnit_Util_Log_PMD_Rule_Function_ExcessiveParameterList' => 
+            'PHPUnit_Util_Log_PMD_Rule_Function_ExcessiveParameterList' =>
             array (
               'threshold' => '10',
               'priority' => 1,
             ),
-            'PHPUnit_Util_Log_PMD_Rule_Function_NPathComplexity' => 
+            'PHPUnit_Util_Log_PMD_Rule_Function_NPathComplexity' =>
             array (
               'threshold' => '200',
               'priority' => 1,
@@ -308,7 +308,7 @@ class Util_ConfigurationTest extends PHPUnit_Framework_TestCase
     {
         $this->assertEquals(
           array (
-            0 => 
+            0 =>
             array (
               'name' => 'Firefox on Linux',
               'browser' => '*firefox /usr/lib/firefox/firefox-bin',

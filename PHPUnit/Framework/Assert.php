@@ -1112,17 +1112,17 @@ abstract class PHPUnit_Framework_Assert
     }
 
     /**
-     * Assert the presence, absense, or count of elements in a document matching 
+     * Assert the presence, absense, or count of elements in a document matching
      * the CSS $selector, regardless of the contents of those elements.
      *
      * The first argument, $selector, is the CSS selector used to match
      * the elements in the $actual document.
      *
      * The second argument, $count, can be either boolean or numeric.  When boolean,
-     * it asserts for presence of elements matching the selector (TRUE) or absense 
+     * it asserts for presence of elements matching the selector (TRUE) or absense
      * of elements (FALSE).  When numeric, it asserts the count of elements
      *
-     * assertSelectCount("#binder", true, $xml);  // any?    
+     * assertSelectCount("#binder", true, $xml);  // any?
      * assertSelectCount(".binder", 3, $xml);     // exactly 3?
      *
      * @param  array   $selector
@@ -1133,7 +1133,7 @@ abstract class PHPUnit_Framework_Assert
      * @param  boolean $isHtml
      * @since  Method available since Release 3.3.0
      * @author Mike Naberezny <mike@maintainable.com>
-     * @author Derek DeVries <derek@maintainable.com>     
+     * @author Derek DeVries <derek@maintainable.com>
      */
     public static function assertSelectCount($selector, $count, $actual, $message = '', $isHtml = TRUE)
     {
@@ -1141,7 +1141,7 @@ abstract class PHPUnit_Framework_Assert
     }
 
     /**
-     * assertSelectRegexp("#binder .name", "/Mike|Derek/", true, $xml); // any?  
+     * assertSelectRegexp("#binder .name", "/Mike|Derek/", true, $xml); // any?
      * assertSelectRegexp("#binder .name", "/Mike|Derek/", 3, $xml);    // exactly 3?
      *
      * @param  array   $selector
@@ -1152,7 +1152,7 @@ abstract class PHPUnit_Framework_Assert
      * @param  boolean $isHtml
      * @since  Method available since Release 3.3.0
      * @author Mike Naberezny <mike@maintainable.com>
-     * @author Derek DeVries <derek@maintainable.com>     
+     * @author Derek DeVries <derek@maintainable.com>
      */
     public static function assertSelectRegexp($selector, $regexp, $count, $actual, $message = '', $isHtml = TRUE)
     {
@@ -1160,7 +1160,7 @@ abstract class PHPUnit_Framework_Assert
     }
 
     /**
-     * assertSelectEquals("#binder .name", "Chuck", true,  $xml);  // any?  
+     * assertSelectEquals("#binder .name", "Chuck", true,  $xml);  // any?
      * assertSelectEquals("#binder .name", "Chuck", false, $xml);  // none?
      *
      * @param  array   $selector
@@ -1171,7 +1171,7 @@ abstract class PHPUnit_Framework_Assert
      * @param  boolean $isHtml
      * @since  Method available since Release 3.3.0
      * @author Mike Naberezny <mike@maintainable.com>
-     * @author Derek DeVries <derek@maintainable.com>     
+     * @author Derek DeVries <derek@maintainable.com>
      */
     public static function assertSelectEquals($selector, $content, $count = 1, $actual, $message = '', $isHtml = TRUE)
     {
@@ -1217,7 +1217,7 @@ abstract class PHPUnit_Framework_Assert
             throw new InvalidArgumentException();
         }
     }
-    
+
     /**
      * Evaluate an HTML or XML string and assert its structure and/or contents.
      *
@@ -1288,7 +1288,7 @@ abstract class PHPUnit_Framework_Assert
      * $this->assertTag($matcher, $html);
      *
      * // complex: assert that there is a "div", with an "ul" ancestor and a "li" parent
-     * // (with class="enum"), and containing a "span" descendant that contains element 
+     * // (with class="enum"), and containing a "span" descendant that contains element
      * // with id="my_test" and the text "Hello World".
      * $matcher = array('tag' => 'div',
      *                  'ancestor' => array('tag' => 'ul'),
@@ -1303,13 +1303,13 @@ abstract class PHPUnit_Framework_Assert
      * The second argument ($actual) is a string containing either HTML or
      * XML text to be tested.
      *
-     * The third argument ($message) is an optional message that will be 
+     * The third argument ($message) is an optional message that will be
      * used if the assertion fails.
      *
      * The fourth argument ($html) is an optional flag specifying whether
      * to load the $actual string into a DOMDocument using the HTML or
      * XML load strategy.  It is TRUE by default, which assumes the HTML
-     * load strategy.  In many cases, this will be acceptable for XML as well. 
+     * load strategy.  In many cases, this will be acceptable for XML as well.
      *
      * @param  array   $matcher
      * @param  string  $text
@@ -1324,7 +1324,7 @@ abstract class PHPUnit_Framework_Assert
         $dom     = PHPUnit_Util_XML::load($actual, $isHtml);
         $tags    = PHPUnit_Util_XML::findNodes($dom, $matcher);
         $matched = count($tags) > 0 && $tags[0] instanceof DOMNode;
-        
+
         self::assertTrue($matched, $message);
     }
 
@@ -1345,7 +1345,7 @@ abstract class PHPUnit_Framework_Assert
         $dom     = PHPUnit_Util_XML::load($actual, $isHtml);
         $tags    = PHPUnit_Util_XML::findNodes($dom, $matcher);
         $matched = count($tags) > 0 && $tags[0] instanceof DOMNode;
-        
+
         self::assertFalse($matched, $message);
     }
 

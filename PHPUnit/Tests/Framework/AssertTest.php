@@ -73,7 +73,7 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
         $this->filesDirectory = dirname(dirname(__FILE__)) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR;
 
         if (isset($this->html)) { return; }
-        $this->html = file_get_contents( 
+        $this->html = file_get_contents(
             $this->filesDirectory . 'SelectorAssertionsFixture.html'
         );
     }
@@ -2404,7 +2404,7 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
     public function testAssertTagIdTrue()
     {
         $matcher = array('id' => 'test_text');
-        $this->assertTag($matcher, $this->html);        
+        $this->assertTag($matcher, $this->html);
     }
 
     /**
@@ -2414,11 +2414,11 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
     {
         $matcher = array('id' => 'test_text_doesnt_exist');
         $this->assertTag($matcher, $this->html);
-    }    
+    }
 
     public function testAssertTagStringContentTrue()
     {
-        $matcher = array('id' => 'test_text', 
+        $matcher = array('id' => 'test_text',
                          'content' => 'My test tag content');
         $this->assertTag($matcher, $this->html);
     }
@@ -2428,21 +2428,21 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
      */
     public function testAssertTagStringContentFalse()
     {
-        $matcher = array('id' => 'test_text', 
+        $matcher = array('id' => 'test_text',
                          'content' => 'My non existent tag content');
         $this->assertTag($matcher, $this->html);
-    }   
+    }
 
     public function testAssertTagRegexpContentTrue()
     {
-        $matcher = array('id' => 'test_text', 
+        $matcher = array('id' => 'test_text',
                          'content' => 'regexp:/test tag/');
         $this->assertTag($matcher, $this->html);
     }
 
     public function testAssertTagRegexpModifierContentTrue()
     {
-        $matcher = array('id' => 'test_text', 
+        $matcher = array('id' => 'test_text',
                          'content' => 'regexp:/TEST TAG/i');
         $this->assertTag($matcher, $this->html);
     }
@@ -2452,7 +2452,7 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
      */
     public function testAssertTagRegexpContentFalse()
     {
-        $matcher = array('id' => 'test_text', 
+        $matcher = array('id' => 'test_text',
                          'content' => 'regexp:/asdf/');
         $this->assertTag($matcher, $this->html);
     }
@@ -2479,7 +2479,7 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
         $matcher = array('tag' => 'span',
                          'attributes' => array('class' => 'test_missing_class'));
         $this->assertTag($matcher, $this->html);
-    }      
+    }
 
     public function testAssertTagAttributesRegexpTrueA()
     {
@@ -2564,7 +2564,7 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
         $matcher = array('tag' => 'head',
                          'parent' => array('tag' => 'div'));
         $this->assertTag($matcher, $this->html);
-    }   
+    }
 
     public function testAssertTagChildTrue()
     {
@@ -2587,7 +2587,7 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
     {
         $matcher = array('tag' => 'div',
                          'ancestor' => array('tag' => 'html'));
-        $this->assertTag($matcher, $this->html);                         
+        $this->assertTag($matcher, $this->html);
     }
 
     /**
@@ -2649,7 +2649,7 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
         $matcher = array('tag' => 'ul',
                          'children' => array('less_than' => 2));
         $this->assertTag($matcher, $this->html);
-    }   
+    }
 
     public function testAssertTagChildrenGreaterThanTrue()
     {
@@ -2694,13 +2694,13 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
     public function testAssertTagTypeIdTrueB()
     {
         $matcher = array('id' => 'my_ul', 'tag' => 'ul');
-        $this->assertTag($matcher, $this->html);        
+        $this->assertTag($matcher, $this->html);
     }
 
     public function testAssertTagTypeIdTrueC()
     {
         $matcher = array('tag' => 'input', 'id'  => 'input_test_id');
-        $this->assertTag($matcher, $this->html);        
+        $this->assertTag($matcher, $this->html);
     }
 
     /**
@@ -2728,7 +2728,7 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
                          'attributes' => array('id'    => 'test_id',
                                                'class' => 'my_test_class'),
                          'parent'     => array('tag' => 'body'));
-        $this->assertTag($matcher, $this->html);                         
+        $this->assertTag($matcher, $this->html);
     }
 
     public function testAssertChildContentAttributes()
@@ -2775,7 +2775,7 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
         $matcher = array('id'         => 'test_children',
                          'content'    => 'My Children',
                          'attributes' => array('class'  => 'children'),
-   
+
                          'children' => array('less_than'    => '25',
                                              'greater_than' => '2',
                                              'only'         => array('tag' => 'div',
@@ -2816,7 +2816,7 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
      {
          $selector = 'div#non_existent';
          $count    = TRUE;
-    
+
         $this->assertSelectCount($selector, $count, $this->html);
      }
 
@@ -2824,7 +2824,7 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
      {
          $selector = 'div#non_existent';
          $count    = FALSE;
-    
+
          $this->assertSelectCount($selector, $count, $this->html);
      }
 
@@ -2843,7 +2843,7 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
     {
         $selector = '#my_ul > li';
         $count    = 3;
-   
+
         $this->assertSelectCount($selector, $count, $this->html);
     }
 
@@ -2862,7 +2862,7 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
     {
         $selector = '#my_ul li';
         $count    = 3;
-   
+
         $this->assertSelectCount($selector, $count, $this->html);
     }
 
@@ -2873,7 +2873,7 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
     {
         $selector = '#my_ul li';
         $count    = 4;
-   
+
         $this->assertSelectCount($selector, $count, $this->html);
     }
 
@@ -2881,7 +2881,7 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
     {
         $selector = '#my_ul > li';
         $range    = array('>' => 2);
-   
+
         $this->assertSelectCount($selector, $range, $this->html);
     }
 
@@ -2900,7 +2900,7 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
     {
         $selector = '#my_ul > li';
         $range    = array('>=' => 3);
-   
+
         $this->assertSelectCount($selector, $range, $this->html);
     }
 
@@ -2913,13 +2913,13 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
         $range    = array('>=' => 4);
 
         $this->assertSelectCount($selector, $range, $this->html);
-    }   
+    }
 
     public function testAssertSelectCountLessThanTrue()
     {
         $selector = '#my_ul > li';
         $range    = array('<' => 4);
-   
+
         $this->assertSelectCount($selector, $range, $this->html);
     }
 
@@ -2938,7 +2938,7 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
     {
         $selector = '#my_ul > li';
         $range    = array('<=' => 3);
-   
+
         $this->assertSelectCount($selector, $range, $this->html);
     }
 
@@ -2957,7 +2957,7 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
     {
         $selector = '#my_ul > li';
         $range    = array('>' => 2, '<' => 4);
-   
+
         $this->assertSelectCount($selector, $range, $this->html);
     }
 
@@ -2968,7 +2968,7 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
     {
         $selector = '#my_ul > li';
         $range    = array('>' => 1, '<' => 3);
-   
+
         $this->assertSelectCount($selector, $range, $this->html);
     }
 
@@ -2976,8 +2976,8 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
     {
         $selector = 'span.test_class';
         $content  = 'Test Class Text';
-   
-        $this->assertSelectEquals($selector, $content, true, $this->html);
+
+        $this->assertSelectEquals($selector, $content, TRUE, $this->html);
     }
 
     /**
@@ -2988,15 +2988,15 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
         $selector = 'span.test_class';
         $content  = 'Test Nonexistent';
 
-        $this->assertSelectEquals($selector, $content, true, $this->html);
+        $this->assertSelectEquals($selector, $content, TRUE, $this->html);
     }
 
     public function testAssertSelectEqualsContentNotPresentTrue()
     {
         $selector = 'span.test_class';
         $content  = 'Test Nonexistent';
-   
-        $this->assertSelectEquals($selector, $content, false, $this->html);
+
+        $this->assertSelectEquals($selector, $content, FALSE, $this->html);
     }
 
     /**
@@ -3007,23 +3007,23 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
         $selector = 'span.test_class';
         $content  = 'Test Class Text';
 
-        $this->assertSelectEquals($selector, $content, false, $this->html);
+        $this->assertSelectEquals($selector, $content, FALSE, $this->html);
     }
 
     public function testAssertSelectRegexpContentPresentTrue()
     {
         $selector = 'span.test_class';
         $regexp   = '/Test.*Text/';
-   
-        $this->assertSelectRegexp($selector, $regexp, true, $this->html);
+
+        $this->assertSelectRegexp($selector, $regexp, TRUE, $this->html);
     }
 
     public function testAssertSelectRegexpContentPresentFalse()
     {
         $selector = 'span.test_class';
         $regexp   = '/Nonexistant/';
-   
-        $this->assertSelectRegexp($selector, $regexp, false, $this->html);
+
+        $this->assertSelectRegexp($selector, $regexp, FALSE, $this->html);
     }
 
     /**
