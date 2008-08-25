@@ -947,7 +947,7 @@
       <file baseinstalldir="/" name="SampleClass.php" role="test">
        <tasks:replace from="@package_version@" to="version" type="package-info" />
       </file>
-      <file baseinstalldir="/" name="SelectorAssertionsFixture.html.dist" role="test">
+      <file baseinstalldir="/" name="SelectorAssertionsFixture.html" role="test">
        <tasks:replace from="@package_version@" to="version" type="package-info" />
       </file>
       <file baseinstalldir="/" name="SetupFailure.php" role="test">
