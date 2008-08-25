@@ -540,6 +540,10 @@ class PHPUnit_TextUI_Command
             }
         }
 
+        if (!isset($arguments['configuration']) && file_exists('phpunit.xml')) {
+            $arguments['configuration'] = realpath('phpunit.xml');
+        }
+
         if (!isset($arguments['test']) && isset($arguments['configuration'])) {
             $configuration = new PHPUnit_Util_Configuration(
               $arguments['configuration']
