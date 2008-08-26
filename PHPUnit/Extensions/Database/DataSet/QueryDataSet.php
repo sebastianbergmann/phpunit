@@ -92,13 +92,13 @@ class PHPUnit_Extensions_Database_DataSet_QueryDataSet extends PHPUnit_Extension
     {
         $this->databaseConnection = $databaseConnection;
     }
-    
+
     public function addTable($tableName, $query = NULL)
     {
         if ($query === NULL) {
             $query = 'SELECT * FROM ' . $tableName;
         }
-        
+
         $this->tables[$tableName] = new PHPUnit_Extensions_Database_DataSet_QueryTable($tableName, $query, $this->databaseConnection);
     }
 
@@ -125,7 +125,7 @@ class PHPUnit_Extensions_Database_DataSet_QueryDataSet extends PHPUnit_Extension
         if (!isset($this->tables[$tableName])) {
             throw new InvalidArgumentException("$tableName is not a table in the current database.");
         }
-        
+
         return $this->tables[$tableName];
     }
 

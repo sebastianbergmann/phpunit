@@ -39,7 +39,7 @@
  * @author     Mike Lively <m@digitalsandwich.com>
  * @copyright  2002-2008 Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
- * @version    SVN: $Id: PersistorTest.php 3527 2008-08-07 04:47:01Z mlively $
+ * @version    SVN: $Id$
  * @link       http://www.phpunit.de/
  * @since      File available since Release 3.2.0
  */
@@ -55,7 +55,7 @@ require_once 'PHPUnit/Extensions/Database/DB/DefaultDatabaseConnection.php';
  * @author     Mike Lively <m@digitalsandwich.com>
  * @copyright  2002-2008 Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
- * @version    SVN: $Id: PersistorTest.php 3527 2008-08-07 04:47:01Z mlively $
+ * @version    SVN: $Id$
  * @link       http://www.phpunit.de/
  * @since      File available since Release 3.2.0
  */
@@ -65,11 +65,11 @@ class Extensions_Database_DataSet_QueryTableTest extends PHPUnit_Framework_TestC
      * @var PHPUnit_Extensions_Database_DataSet_QueryTable
      */
     protected $table;
-    
+
     public function setUp()
     {
         $query = "
-            SELECT 
+            SELECT
                 'value1' as col1,
                 'value2' as col2,
                 'value3' as col3
@@ -84,7 +84,7 @@ class Extensions_Database_DataSet_QueryTableTest extends PHPUnit_Framework_TestC
             new PHPUnit_Extensions_Database_DB_DefaultDatabaseConnection(new PDO('sqlite::memory:'), 'test')
         );
     }
-    
+
     public static function providerTestGetValue()
     {
         return array(
@@ -96,19 +96,19 @@ class Extensions_Database_DataSet_QueryTableTest extends PHPUnit_Framework_TestC
             array(1, 'col3', 'value6'),
         );
     }
-    
+
     public function testGetTableMetaData()
     {
         $metaData = new PHPUnit_Extensions_Database_DataSet_DefaultTableMetaData('table1', array('col1', 'col2', 'col3'));
-        
+
         $this->assertEquals($metaData, $this->table->getTableMetaData());
     }
-    
+
     public function testGetRowCount()
     {
         $this->assertEquals(2, $this->table->getRowCount());
     }
-    
+
     /**
      * @dataProvider providerTestGetValue
      */
@@ -116,12 +116,12 @@ class Extensions_Database_DataSet_QueryTableTest extends PHPUnit_Framework_TestC
     {
         $this->assertEquals($value, $this->table->getValue($row, $column));
     }
-    
+
     public function testGetRow()
     {
         $this->assertEquals(array('col1' => 'value1', 'col2' => 'value2', 'col3' => 'value3'), $this->table->getRow(0));
     }
-    
+
     public function testAssertEquals()
     {
         $expected_table = new PHPUnit_Extensions_Database_DataSet_DefaultTable(new PHPUnit_Extensions_Database_DataSet_DefaultTableMetaData('table1', array('col1', 'col2', 'col3')));
@@ -129,11 +129,11 @@ class Extensions_Database_DataSet_QueryTableTest extends PHPUnit_Framework_TestC
         $expected_table->addRow(array('col1' => 'value4', 'col2' => 'value5', 'col3' => 'value6'));
         $this->assertTrue($this->table->assertEquals($expected_table));
     }
-    
+
     public function testAssertEqualsFails()
     {
         $this->setExpectedException('Exception', 'Expected row count of 2, has a row count of 3');
-        
+
         $expected_table = new PHPUnit_Extensions_Database_DataSet_DefaultTable(new PHPUnit_Extensions_Database_DataSet_DefaultTableMetaData('table1', array('col1', 'col2', 'col3')));
         $expected_table->addRow(array('col1' => 'value1', 'col2' => 'value2', 'col3' => 'value3'));
         $expected_table->addRow(array('col1' => 'value4', 'col2' => 'value5', 'col3' => 'value6'));
