@@ -39,7 +39,7 @@
  * @author     Mike Lively <m@digitalsandwich.com>
  * @copyright  2002-2008 Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
- * @version    SVN: $Id: Table.php 2854 2008-04-24 08:34:46Z sb $
+ * @version    SVN: $Id$
  * @link       http://www.phpunit.de/
  * @since      File available since Release 3.2.0
  */
@@ -70,12 +70,12 @@ class PHPUnit_Extensions_Database_DataSet_QueryTable extends PHPUnit_Extensions_
      * @var string
      */
     protected $query;
-    
+
     /**
      * @var PHPUnit_Extensions_Database_DB_IDatabaseConnection
      */
     protected $databaseConnection;
-    
+
     /**
      * @var string
      */
@@ -151,7 +151,7 @@ class PHPUnit_Extensions_Database_DataSet_QueryTable extends PHPUnit_Extensions_
         $this->loadData();
         return parent::assertEquals($other);
     }
-    
+
     protected function loadData()
     {
         if ($this->data === NULL) {
@@ -159,7 +159,7 @@ class PHPUnit_Extensions_Database_DataSet_QueryTable extends PHPUnit_Extensions_
             $this->data = $pdoStatement->fetchAll(PDO::FETCH_ASSOC);
         }
     }
-    
+
     protected function createTableMetaData()
     {
         if ($this->tableMetaData === NULL)

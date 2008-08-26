@@ -39,7 +39,7 @@
  * @author     Mike Lively <m@digitalsandwich.com>
  * @copyright  2002-2008 Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
- * @version    SVN: $Id: PersistorTest.php 3527 2008-08-07 04:47:01Z mlively $
+ * @version    SVN: $Id$
  * @link       http://www.phpunit.de/
  * @since      File available since Release 3.2.0
  */
@@ -56,19 +56,19 @@ require_once dirname(__FILE__). '/../_files/DatabaseTestUtility.php';
  * @author     Mike Lively <m@digitalsandwich.com>
  * @copyright  2002-2008 Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
- * @version    SVN: $Id: PersistorTest.php 3527 2008-08-07 04:47:01Z mlively $
+ * @version    SVN: $Id$
  * @link       http://www.phpunit.de/
  * @since      File available since Release 3.2.0
  */
-class Extensions_Database_DataSet_QueryDataSetTest extends PHPUnit_Extensions_Database_TestCase 
+class Extensions_Database_DataSet_QueryDataSetTest extends PHPUnit_Extensions_Database_TestCase
 {
     /**
      * @var PHPUnit_Extensions_Database_DataSet_QueryDataSet
      */
     protected $dataSet;
-    
+
     protected $pdo;
-    
+
     /**
      * @return PHPUnit_Extensions_Database_DB_DefaultDatabaseConnection
      */
@@ -76,12 +76,12 @@ class Extensions_Database_DataSet_QueryDataSetTest extends PHPUnit_Extensions_Da
     {
         return $this->createDefaultDBConnection($this->pdo, 'test');
     }
-    
+
     protected function getDataSet()
     {
         return $this->createFlatXMLDataSet(dirname(__FILE__).'/../_files/XmlDataSets/QueryDataSetTest.xml');
     }
-    
+
     public function setUp()
     {
         $this->pdo = DBUnitTestUtility::getSQLiteMemoryDB();
@@ -89,43 +89,43 @@ class Extensions_Database_DataSet_QueryDataSetTest extends PHPUnit_Extensions_Da
         $this->dataSet = new PHPUnit_Extensions_Database_DataSet_QueryDataSet($this->getConnection());
         $this->dataSet->addTable('table1');
         $this->dataSet->addTable('query1', '
-            SELECT 
-                t1.column1 tc1, t2.column5 tc2 
+            SELECT
+                t1.column1 tc1, t2.column5 tc2
             FROM
                 table1 t1
                 JOIN table2 t2 ON t1.table1_id = t2.table2_id
         ');
     }
-    
+
     public function testGetTable()
     {
         $expectedTable1 = $this->getConnection()->createDataSet(array('table1'))->getTable('table1');
-        
+
         $expectedTable2 = new PHPUnit_Extensions_Database_DataSet_DefaultTable(
             new PHPUnit_Extensions_Database_DataSet_DefaultTableMetaData('query1', array('tc1', 'tc2'))
         );
-        
+
         $expectedTable2->addRow(array('tc1' => 'bar', 'tc2' => 'blah'));
-        
+
         $this->assertTablesEqual($expectedTable1, $this->dataSet->getTable('table1'));
         $this->assertTablesEqual($expectedTable2, $this->dataSet->getTable('query1'));
     }
-    
+
     public function testGetTableNames()
     {
         $this->assertEquals(array('table1', 'query1'), $this->dataSet->getTableNames());
     }
-    
+
     public function testCreateIterator()
     {
         $expectedTable1 = $this->getConnection()->createDataSet(array('table1'))->getTable('table1');
-        
+
         $expectedTable2 = new PHPUnit_Extensions_Database_DataSet_DefaultTable(
             new PHPUnit_Extensions_Database_DataSet_DefaultTableMetaData('query1', array('tc1', 'tc2'))
         );
-        
+
         $expectedTable2->addRow(array('tc1' => 'bar', 'tc2' => 'blah'));
-        
+
         foreach ($this->dataSet as $i => $table) {
             /* @var $table PHPUnit_Extensions_Database_DataSet_ITable */
             switch ($table->getTableMetaData()->getTableName()) {
