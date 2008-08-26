@@ -97,6 +97,12 @@
        <file baseinstalldir="/" name="ITable.php" role="php">
         <tasks:replace from="@package_version@" to="version" type="package-info" />
        </file>
+       <file baseinstalldir="/" name="QueryDataSet.php" role="php">
+        <tasks:replace from="@package_version@" to="version" type="package-info" />
+       </file>
+       <file baseinstalldir="/" name="QueryTable.php" role="php">
+        <tasks:replace from="@package_version@" to="version" type="package-info" />
+       </file>
        <file baseinstalldir="/" name="TableFilter.php" role="php">
         <tasks:replace from="@package_version@" to="version" type="package-info" />
        </file>
@@ -680,6 +686,9 @@
          <file baseinstalldir="/" name="OperationsTestFixture.xml" role="test">
           <tasks:replace from="@package_version@" to="version" type="package-info" />
          </file>
+         <file baseinstalldir="/" name="QueryDataSetTest.xml" role="test">
+          <tasks:replace from="@package_version@" to="version" type="package-info" />
+         </file>
          <file baseinstalldir="/" name="ReplaceOperationResult.xml" role="test">
           <tasks:replace from="@package_version@" to="version" type="package-info" />
          </file>
@@ -714,6 +723,12 @@
           <tasks:replace from="@package_version@" to="version" type="package-info" />
          </file>
          <file baseinstalldir="/" name="PersistorTest.php" role="test">
+          <tasks:replace from="@package_version@" to="version" type="package-info" />
+         </file>
+         <file baseinstalldir="/" name="QueryDataSetTest.php" role="test">
+          <tasks:replace from="@package_version@" to="version" type="package-info" />
+         </file>
+         <file baseinstalldir="/" name="QueryTableTest.php" role="test">
           <tasks:replace from="@package_version@" to="version" type="package-info" />
          </file>
          <file baseinstalldir="/" name="XmlDataSetsTest.php" role="test">
