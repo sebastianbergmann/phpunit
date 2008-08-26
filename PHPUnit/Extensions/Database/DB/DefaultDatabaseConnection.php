@@ -157,8 +157,7 @@ class PHPUnit_Extensions_Database_DB_DefaultDatabaseConnection implements PHPUni
      */
     public function createQueryTable($resultName, $sql)
     {
-        $statement = $this->connection->query($sql);
-        return new PHPUnit_Extensions_Database_DB_ResultSetTable($resultName, $statement);
+        return new PHPUnit_Extensions_Database_DataSet_QueryTable($resultName, $sql, $this);
     }
 
     /**
