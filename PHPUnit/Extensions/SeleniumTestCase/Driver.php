@@ -318,20 +318,29 @@ class PHPUnit_Extensions_SeleniumTestCase_Driver
      * @method unknown  altKeyUpAndWait()
      * @method unknown  answerOnNextPrompt()
      * @method unknown  assignId()
+     * @method unknown  break()
+     * @method unknown  captureEntirePageScreenshot()
      * @method unknown  captureScreenshot()
      * @method unknown  check()
      * @method unknown  chooseCancelOnNextConfirmation()
+     * @method unknown  chooseOkOnNextConfirmation()
      * @method unknown  click()
      * @method unknown  clickAndWait()
      * @method unknown  clickAt()
      * @method unknown  clickAtAndWait()
      * @method unknown  close()
+     * @method unknown  contextMenu()
+     * @method unknown  contextMenuAndWait()
+     * @method unknown  contextMenuAt()
+     * @method unknown  contextMenuAtAndWait()
      * @method unknown  controlKeyDown()
      * @method unknown  controlKeyDownAndWait()
      * @method unknown  controlKeyUp()
      * @method unknown  controlKeyUpAndWait()
      * @method unknown  createCookie()
      * @method unknown  createCookieAndWait()
+     * @method unknown  deleteAllVisibleCookies()
+     * @method unknown  deleteAllVisibleCookiesAndWait()
      * @method unknown  deleteCookie()
      * @method unknown  deleteCookieAndWait()
      * @method unknown  doubleClick()
@@ -344,6 +353,7 @@ class PHPUnit_Extensions_SeleniumTestCase_Driver
      * @method unknown  dragAndDropToObjectAndWait()
      * @method unknown  dragDrop()
      * @method unknown  dragDropAndWait()
+     * @method unknown  echo()
      * @method unknown  fireEvent()
      * @method unknown  fireEventAndWait()
      * @method unknown  focus()
@@ -394,6 +404,7 @@ class PHPUnit_Extensions_SeleniumTestCase_Driver
      * @method unknown  goBackAndWait()
      * @method unknown  highlight()
      * @method unknown  highlightAndWait()
+     * @method unknown  ignoreAttributesWithoutValue()
      * @method boolean  isAlertPresent()
      * @method boolean  isChecked()
      * @method boolean  isConfirmationPresent()
@@ -430,19 +441,26 @@ class PHPUnit_Extensions_SeleniumTestCase_Driver
      * @method unknown  mouseUpAndWait()
      * @method unknown  mouseUpAt()
      * @method unknown  mouseUpAtAndWait()
+     * @method unknown  mouseUpRight()
+     * @method unknown  mouseUpRightAndWait()
+     * @method unknown  mouseUpRightAt()
+     * @method unknown  mouseUpRightAtAndWait()
      * @method unknown  open()
      * @method unknown  openWindow()
      * @method unknown  openWindowAndWait()
+     * @method unknown  pause()
      * @method unknown  refresh()
      * @method unknown  refreshAndWait()
      * @method unknown  removeAllSelections()
      * @method unknown  removeAllSelectionsAndWait()
      * @method unknown  removeSelection()
      * @method unknown  removeSelectionAndWait()
+     * @method unknown  runScript()
      * @method unknown  select()
      * @method unknown  selectAndWait()
      * @method unknown  selectFrame()
      * @method unknown  selectWindow()
+     * @method unknown  setBrowserLogLevel()
      * @method unknown  setContext()
      * @method unknown  setCursorPosition()
      * @method unknown  setCursorPositionAndWait()
@@ -454,6 +472,60 @@ class PHPUnit_Extensions_SeleniumTestCase_Driver
      * @method unknown  shiftKeyDownAndWait()
      * @method unknown  shiftKeyUp()
      * @method unknown  shiftKeyUpAndWait()
+     * @method unknown  store()
+     * @method unknown  storeAlert()
+     * @method unknown  storeAlertPresent()
+     * @method unknown  storeAllButtons()
+     * @method unknown  storeAllFields()
+     * @method unknown  storeAllLinks()
+     * @method unknown  storeAllWindowIds()
+     * @method unknown  storeAllWindowNames()
+     * @method unknown  storeAllWindowTitle()s
+     * @method unknown  storeAttribute()
+     * @method unknown  storeAttributeFromAllWindows()
+     * @method unknown  storeBodyText()
+     * @method unknown  storeChecked()
+     * @method unknown  storeConfirmation()
+     * @method unknown  storeConfirmationPresent()
+     * @method unknown  storeCookie()
+     * @method unknown  storeCookieByName()
+     * @method unknown  storeCookiePresent()
+     * @method unknown  storeCursorPosition()
+     * @method unknown  storeEditable()
+     * @method unknown  storeElementHeight()
+     * @method unknown  storeElementIndex()
+     * @method unknown  storeElementPositionLeft()
+     * @method unknown  storeElementPositionTop()
+     * @method unknown  storeElementPresent()
+     * @method unknown  storeElementWidth()
+     * @method unknown  storeEval()
+     * @method unknown  storeExpression()
+     * @method unknown  storeHtmlSource()
+     * @method unknown  storeLocation()
+     * @method unknown  storeMouseSpeed()
+     * @method unknown  storeOrdered()
+     * @method unknown  storePrompt()
+     * @method unknown  storePromptPresent()
+     * @method unknown  storeSelectOptions()
+     * @method unknown  storeSelectedId()
+     * @method unknown  storeSelectedIds()
+     * @method unknown  storeSelectedIndex()
+     * @method unknown  storeSelectedIndexes()
+     * @method unknown  storeSelectedLabel()
+     * @method unknown  storeSelectedLabels()
+     * @method unknown  storeSelectedValue()
+     * @method unknown  storeSelectedValues()
+     * @method unknown  storeSomethingSelected()
+     * @method unknown  storeSpeed()
+     * @method unknown  storeTable()
+     * @method unknown  storeText()
+     * @method unknown  storeTextPresent()
+     * @method unknown  storeTitle()
+     * @method unknown  storeValue()
+     * @method unknown  storeVisible()
+     * @method unknown  storeWhetherThisFrameMatchFrameExpression()
+     * @method unknown  storeWhetherThisWindowMatchWindowExpression()
+     * @method unknown  storeXpathCount()
      * @method unknown  submit()
      * @method unknown  submitAndWait()
      * @method unknown  type()
@@ -485,25 +557,33 @@ class PHPUnit_Extensions_SeleniumTestCase_Driver
             case 'altKeyUp':
             case 'answerOnNextPrompt':
             case 'assignId':
+            case 'break':
+            case 'captureEntirePageScreenshot':
             case 'captureScreenshot':
             case 'check':
             case 'chooseCancelOnNextConfirmation':
+            case 'chooseOkOnNextConfirmation':
             case 'click':
             case 'clickAt':
             case 'close':
+            case 'contextMenu':
+            case 'contextMenuAt':
             case 'controlKeyDown':
             case 'controlKeyUp':
             case 'createCookie':
+            case 'deleteAllVisibleCookies':
             case 'deleteCookie':
             case 'doubleClick':
             case 'doubleClickAt':
             case 'dragAndDrop':
             case 'dragAndDropToObject':
             case 'dragDrop':
+            case 'echo':
             case 'fireEvent':
             case 'focus':
             case 'goBack':
             case 'highlight':
+            case 'ignoreAttributesWithoutValue':
             case 'keyDown':
             case 'keyPress':
             case 'keyUp':
@@ -517,20 +597,79 @@ class PHPUnit_Extensions_SeleniumTestCase_Driver
             case 'mouseOver':
             case 'mouseUp':
             case 'mouseUpAt':
+            case 'mouseUpRight':
+            case 'mouseUpRightAt':
             case 'open':
             case 'openWindow':
+            case 'pause':
             case 'refresh':
             case 'removeAllSelections':
             case 'removeSelection':
+            case 'runScript':
             case 'select':
             case 'selectFrame':
             case 'selectWindow':
+            case 'setBrowserLogLevel':
             case 'setContext':
             case 'setCursorPosition':
             case 'setMouseSpeed':
             case 'setSpeed':
             case 'shiftKeyDown':
             case 'shiftKeyUp':
+            case 'store':
+            case 'storeAlert':
+            case 'storeAlertPresent':
+            case 'storeAllButtons':
+            case 'storeAllFields':
+            case 'storeAllLinks':
+            case 'storeAllWindowIds':
+            case 'storeAllWindowNames':
+            case 'storeAllWindowTitles':
+            case 'storeAttribute':
+            case 'storeAttributeFromAllWindows':
+            case 'storeBodyText':
+            case 'storeChecked':
+            case 'storeConfirmation':
+            case 'storeConfirmationPresent':
+            case 'storeCookie':
+            case 'storeCookieByName':
+            case 'storeCookiePresent':
+            case 'storeCursorPosition':
+            case 'storeEditable':
+            case 'storeElementHeight':
+            case 'storeElementIndex':
+            case 'storeElementPositionLeft':
+            case 'storeElementPositionTop':
+            case 'storeElementPresent':
+            case 'storeElementWidth':
+            case 'storeEval':
+            case 'storeExpression':
+            case 'storeHtmlSource':
+            case 'storeLocation':
+            case 'storeMouseSpeed':
+            case 'storeOrdered':
+            case 'storePrompt':
+            case 'storePromptPresent':
+            case 'storeSelectOptions':
+            case 'storeSelectedId':
+            case 'storeSelectedIds':
+            case 'storeSelectedIndex':
+            case 'storeSelectedIndexes':
+            case 'storeSelectedLabel':
+            case 'storeSelectedLabels':
+            case 'storeSelectedValue':
+            case 'storeSelectedValues':
+            case 'storeSomethingSelected':
+            case 'storeSpeed':
+            case 'storeTable':
+            case 'storeText':
+            case 'storeTextPresent':
+            case 'storeTitle':
+            case 'storeValue':
+            case 'storeVisible':
+            case 'storeWhetherThisFrameMatchFrameExpression':
+            case 'storeWhetherThisWindowMatchWindowExpression':
+            case 'storeXpathCount':
             case 'submit':
             case 'type':
             case 'typeKeys':
@@ -671,6 +810,7 @@ class PHPUnit_Extensions_SeleniumTestCase_Driver
             break;
 
             case 'waitForCondition':
+            case 'waitForFrameToLoad':
             case 'waitForPopUp': {
                 if (count($arguments) == 1) {
                     $arguments[] = $this->timeout;
