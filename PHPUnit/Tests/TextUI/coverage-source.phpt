@@ -28,13 +28,13 @@ PHPUnit %s by Sebastian Bergmann.
 
 ...
 
-Time: %i seconds
+Time: 0 seconds
 
 OK (3 tests, 3 assertions)
 
 Writing code coverage data to XML files, this may take a moment.
 <?xml version="1.0" encoding="UTF-8"?>
-<coveredFile fullPath="%s" shortenedPath="BankAccount.php" generated="%d" phpunit="%s">
+<coveredFile fullPath="%s/BankAccount.php" shortenedPath="BankAccount.php" generated="%i" phpunit="%s">
   <line lineNumber="1" executed="-3">
     <body><![CDATA[<?php]]></body>
   </line>
@@ -159,7 +159,7 @@ Writing code coverage data to XML files, this may take a moment.
     <body><![CDATA[ * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License]]></body>
   </line>
   <line lineNumber="42" executed="-3">
-    <body><![CDATA[ * @version    SVN: $Id%s$]]></body>
+    <body><![CDATA[ * @version    SVN: $Id$]]></body>
   </line>
   <line lineNumber="43" executed="-3">
     <body><![CDATA[ * @link       http://www.phpunit.de/]]></body>
@@ -266,7 +266,7 @@ Writing code coverage data to XML files, this may take a moment.
   <line lineNumber="77" executed="1">
     <body><![CDATA[        return $this->balance;]]></body>
     <tests>
-      <test name="testBalanceIsInitiallyZero" status="0" class="BankAccountTest" fullPath="%s" shortenedPath="/BankAccountTest.php" line="75"/>
+      <test name="testBalanceIsInitiallyZero" status="0" class="BankAccountTest" fullPath="%s/BankAccountTest.php" shortenedPath="/BankAccountTest.php" line="76"/>
     </tests>
   </line>
   <line lineNumber="78" executed="-2">
@@ -347,7 +347,7 @@ Writing code coverage data to XML files, this may take a moment.
   <line lineNumber="103" executed="1">
     <body><![CDATA[        $this->setBalance($this->getBalance() + $balance);]]></body>
     <tests>
-      <test name="testBalanceCannotBecomeNegative2" status="0" class="BankAccountTest" fullPath="%s" shortenedPath="/BankAccountTest.php" line="103"/>
+      <test name="testBalanceCannotBecomeNegative2" status="0" class="BankAccountTest" fullPath="%s/BankAccountTest.php" shortenedPath="/BankAccountTest.php" line="106"/>
     </tests>
   </line>
   <line lineNumber="104" executed="-3">
@@ -389,7 +389,7 @@ Writing code coverage data to XML files, this may take a moment.
   <line lineNumber="116" executed="1">
     <body><![CDATA[        $this->setBalance($this->getBalance() - $balance);]]></body>
     <tests>
-      <test name="testBalanceCannotBecomeNegative" status="0" class="BankAccountTest" fullPath="%s" shortenedPath="/BankAccountTest.php" line="84"/>
+      <test name="testBalanceCannotBecomeNegative" status="0" class="BankAccountTest" fullPath="%s/BankAccountTest.php" shortenedPath="/BankAccountTest.php" line="86"/>
     </tests>
   </line>
   <line lineNumber="117" executed="-3">
@@ -409,7 +409,7 @@ Writing code coverage data to XML files, this may take a moment.
   </line>
 </coveredFile>
 <?xml version="1.0" encoding="UTF-8"?>
-<testFile fullPath="%s" shortenedPath="BankAccountTest.php" generated="%d" phpunit="%s">
+<testFile fullPath="%s/BankAccountTest.php" shortenedPath="BankAccountTest.php" generated="%i" phpunit="%s">
   <line lineNumber="1">
     <body><![CDATA[<?php]]></body>
   </line>
@@ -534,7 +534,7 @@ Writing code coverage data to XML files, this may take a moment.
     <body><![CDATA[ * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License]]></body>
   </line>
   <line lineNumber="42">
-    <body><![CDATA[ * @version    SVN: $Id%s$]]></body>
+    <body><![CDATA[ * @version    SVN: $Id$]]></body>
   </line>
   <line lineNumber="43">
     <body><![CDATA[ * @link       http://www.phpunit.de/]]></body>
@@ -630,204 +630,213 @@ Writing code coverage data to XML files, this may take a moment.
     <body><![CDATA[     * @group balanceIsInitiallyZero]]></body>
   </line>
   <line lineNumber="74">
-    <body><![CDATA[     */]]></body>
+    <body><![CDATA[     * @group specification]]></body>
   </line>
   <line lineNumber="75">
+    <body><![CDATA[     */]]></body>
+  </line>
+  <line lineNumber="76">
     <body><![CDATA[    public function testBalanceIsInitiallyZero()]]></body>
     <coveredFiles>
-      <coveredFile fullPath="%s" shortenedPath="BankAccount.php">
+      <coveredFile fullPath="%s/BankAccountTest.php" shortenedPath="BankAccount.php">
         <coveredLine>77</coveredLine>
       </coveredFile>
     </coveredFiles>
   </line>
-  <line lineNumber="76">
+  <line lineNumber="77">
     <body><![CDATA[    {]]></body>
   </line>
-  <line lineNumber="77">
+  <line lineNumber="78">
     <body><![CDATA[        $this->assertEquals(0, $this->ba->getBalance());]]></body>
   </line>
-  <line lineNumber="78">
+  <line lineNumber="79">
     <body><![CDATA[    }]]></body>
   </line>
-  <line lineNumber="79">
+  <line lineNumber="80">
     <body></body>
   </line>
-  <line lineNumber="80">
+  <line lineNumber="81">
     <body><![CDATA[    /**]]></body>
   </line>
-  <line lineNumber="81">
+  <line lineNumber="82">
     <body><![CDATA[     * @covers BankAccount::withdrawMoney]]></body>
   </line>
-  <line lineNumber="82">
+  <line lineNumber="83">
     <body><![CDATA[     * @group balanceCannotBecomeNegative]]></body>
   </line>
-  <line lineNumber="83">
+  <line lineNumber="84">
+    <body><![CDATA[     * @group specification]]></body>
+  </line>
+  <line lineNumber="85">
     <body><![CDATA[     */]]></body>
   </line>
-  <line lineNumber="84">
+  <line lineNumber="86">
     <body><![CDATA[    public function testBalanceCannotBecomeNegative()]]></body>
     <coveredFiles>
-      <coveredFile fullPath="%s" shortenedPath="BankAccount.php">
+      <coveredFile fullPath="%s/BankAccountTest.php" shortenedPath="BankAccount.php">
         <coveredLine>116</coveredLine>
       </coveredFile>
     </coveredFiles>
   </line>
-  <line lineNumber="85">
+  <line lineNumber="87">
     <body><![CDATA[    {]]></body>
   </line>
-  <line lineNumber="86">
+  <line lineNumber="88">
     <body><![CDATA[        try {]]></body>
   </line>
-  <line lineNumber="87">
+  <line lineNumber="89">
     <body><![CDATA[            $this->ba->withdrawMoney(1);]]></body>
   </line>
-  <line lineNumber="88">
-    <body><![CDATA[        }]]></body>
-  </line>
-  <line lineNumber="89">
-    <body></body>
-  </line>
   <line lineNumber="90">
-    <body><![CDATA[        catch (BankAccountException $e) {]]></body>
+    <body><![CDATA[        }]]></body>
   </line>
   <line lineNumber="91">
-    <body><![CDATA[            $this->assertEquals(0, $this->ba->getBalance());]]></body>
+    <body></body>
   </line>
   <line lineNumber="92">
-    <body></body>
+    <body><![CDATA[        catch (BankAccountException $e) {]]></body>
   </line>
   <line lineNumber="93">
-    <body><![CDATA[            return;]]></body>
+    <body><![CDATA[            $this->assertEquals(0, $this->ba->getBalance());]]></body>
   </line>
   <line lineNumber="94">
-    <body><![CDATA[        }]]></body>
+    <body></body>
   </line>
   <line lineNumber="95">
-    <body></body>
+    <body><![CDATA[            return;]]></body>
   </line>
   <line lineNumber="96">
-    <body><![CDATA[        $this->fail();]]></body>
+    <body><![CDATA[        }]]></body>
   </line>
   <line lineNumber="97">
-    <body><![CDATA[    }]]></body>
-  </line>
-  <line lineNumber="98">
     <body></body>
   </line>
+  <line lineNumber="98">
+    <body><![CDATA[        $this->fail();]]></body>
+  </line>
   <line lineNumber="99">
-    <body><![CDATA[    /**]]></body>
+    <body><![CDATA[    }]]></body>
   </line>
   <line lineNumber="100">
-    <body><![CDATA[     * @covers BankAccount::depositMoney]]></body>
+    <body></body>
   </line>
   <line lineNumber="101">
-    <body><![CDATA[     * @group balanceCannotBecomeNegative]]></body>
+    <body><![CDATA[    /**]]></body>
   </line>
   <line lineNumber="102">
-    <body><![CDATA[     */]]></body>
+    <body><![CDATA[     * @covers BankAccount::depositMoney]]></body>
   </line>
   <line lineNumber="103">
+    <body><![CDATA[     * @group balanceCannotBecomeNegative]]></body>
+  </line>
+  <line lineNumber="104">
+    <body><![CDATA[     * @group specification]]></body>
+  </line>
+  <line lineNumber="105">
+    <body><![CDATA[     */]]></body>
+  </line>
+  <line lineNumber="106">
     <body><![CDATA[    public function testBalanceCannotBecomeNegative2()]]></body>
     <coveredFiles>
-      <coveredFile fullPath="%s" shortenedPath="BankAccount.php">
+      <coveredFile fullPath="%s/BankAccountTest.php" shortenedPath="BankAccount.php">
         <coveredLine>103</coveredLine>
       </coveredFile>
     </coveredFiles>
   </line>
-  <line lineNumber="104">
+  <line lineNumber="107">
     <body><![CDATA[    {]]></body>
   </line>
-  <line lineNumber="105">
+  <line lineNumber="108">
     <body><![CDATA[        try {]]></body>
   </line>
-  <line lineNumber="106">
+  <line lineNumber="109">
     <body><![CDATA[            $this->ba->depositMoney(-1);]]></body>
   </line>
-  <line lineNumber="107">
-    <body><![CDATA[        }]]></body>
-  </line>
-  <line lineNumber="108">
-    <body></body>
-  </line>
-  <line lineNumber="109">
-    <body><![CDATA[        catch (BankAccountException $e) {]]></body>
-  </line>
   <line lineNumber="110">
-    <body><![CDATA[            $this->assertEquals(0, $this->ba->getBalance());]]></body>
+    <body><![CDATA[        }]]></body>
   </line>
   <line lineNumber="111">
     <body></body>
   </line>
   <line lineNumber="112">
-    <body><![CDATA[            return;]]></body>
+    <body><![CDATA[        catch (BankAccountException $e) {]]></body>
   </line>
   <line lineNumber="113">
-    <body><![CDATA[        }]]></body>
+    <body><![CDATA[            $this->assertEquals(0, $this->ba->getBalance());]]></body>
   </line>
   <line lineNumber="114">
     <body></body>
   </line>
   <line lineNumber="115">
-    <body><![CDATA[        $this->fail();]]></body>
+    <body><![CDATA[            return;]]></body>
   </line>
   <line lineNumber="116">
-    <body><![CDATA[    }]]></body>
+    <body><![CDATA[        }]]></body>
   </line>
   <line lineNumber="117">
     <body></body>
   </line>
   <line lineNumber="118">
-    <body><![CDATA[    /**]]></body>
+    <body><![CDATA[        $this->fail();]]></body>
   </line>
   <line lineNumber="119">
-    <body><![CDATA[     * @covers BankAccount::getBalance]]></body>
-  </line>
-  <line lineNumber="120">
-    <body><![CDATA[     * @covers BankAccount::depositMoney]]></body>
-  </line>
-  <line lineNumber="121">
-    <body><![CDATA[     * @covers BankAccount::withdrawMoney]]></body>
-  </line>
-  <line lineNumber="122">
-    <body><![CDATA[     * @group balanceCannotBecomeNegative]]></body>
-  </line>
-  <line lineNumber="123">
-    <body><![CDATA[     */]]></body>
-  </line>
-  <line lineNumber="124">
-    <body><![CDATA[/*]]></body>
-  </line>
-  <line lineNumber="125">
-    <body><![CDATA[    public function testDepositWithdrawMoney()]]></body>
-  </line>
-  <line lineNumber="126">
-    <body><![CDATA[    {]]></body>
-  </line>
-  <line lineNumber="127">
-    <body><![CDATA[        $this->assertEquals(0, $this->ba->getBalance());]]></body>
-  </line>
-  <line lineNumber="128">
-    <body><![CDATA[        $this->ba->depositMoney(1);]]></body>
-  </line>
-  <line lineNumber="129">
-    <body><![CDATA[        $this->assertEquals(1, $this->ba->getBalance());]]></body>
-  </line>
-  <line lineNumber="130">
-    <body><![CDATA[        $this->ba->withdrawMoney(1);]]></body>
-  </line>
-  <line lineNumber="131">
-    <body><![CDATA[        $this->assertEquals(0, $this->ba->getBalance());]]></body>
-  </line>
-  <line lineNumber="132">
     <body><![CDATA[    }]]></body>
   </line>
+  <line lineNumber="120">
+    <body></body>
+  </line>
+  <line lineNumber="121">
+    <body><![CDATA[    /**]]></body>
+  </line>
+  <line lineNumber="122">
+    <body><![CDATA[     * @covers BankAccount::getBalance]]></body>
+  </line>
+  <line lineNumber="123">
+    <body><![CDATA[     * @covers BankAccount::depositMoney]]></body>
+  </line>
+  <line lineNumber="124">
+    <body><![CDATA[     * @covers BankAccount::withdrawMoney]]></body>
+  </line>
+  <line lineNumber="125">
+    <body><![CDATA[     * @group balanceCannotBecomeNegative]]></body>
+  </line>
+  <line lineNumber="126">
+    <body><![CDATA[     */]]></body>
+  </line>
+  <line lineNumber="127">
+    <body><![CDATA[/*]]></body>
+  </line>
+  <line lineNumber="128">
+    <body><![CDATA[    public function testDepositWithdrawMoney()]]></body>
+  </line>
+  <line lineNumber="129">
+    <body><![CDATA[    {]]></body>
+  </line>
+  <line lineNumber="130">
+    <body><![CDATA[        $this->assertEquals(0, $this->ba->getBalance());]]></body>
+  </line>
+  <line lineNumber="131">
+    <body><![CDATA[        $this->ba->depositMoney(1);]]></body>
+  </line>
+  <line lineNumber="132">
+    <body><![CDATA[        $this->assertEquals(1, $this->ba->getBalance());]]></body>
+  </line>
   <line lineNumber="133">
-    <body><![CDATA[*/]]></body>
+    <body><![CDATA[        $this->ba->withdrawMoney(1);]]></body>
   </line>
   <line lineNumber="134">
-    <body><![CDATA[}]]></body>
+    <body><![CDATA[        $this->assertEquals(0, $this->ba->getBalance());]]></body>
   </line>
   <line lineNumber="135">
+    <body><![CDATA[    }]]></body>
+  </line>
+  <line lineNumber="136">
+    <body><![CDATA[*/]]></body>
+  </line>
+  <line lineNumber="137">
+    <body><![CDATA[}]]></body>
+  </line>
+  <line lineNumber="138">
     <body><![CDATA[?>]]></body>
   </line>
 </testFile>
