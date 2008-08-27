@@ -12,6 +12,6 @@ require_once dirname(dirname(dirname(__FILE__))) . '/TextUI/Command.php';
 PHPUnit @package_version@ by Sebastian Bergmann.
 
 Available test group(s):
- - balanceIsInitiallyZero
  - balanceCannotBecomeNegative
-
+ - balanceIsInitiallyZero
+ - specification
