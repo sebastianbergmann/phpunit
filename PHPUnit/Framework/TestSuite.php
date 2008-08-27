@@ -612,22 +612,15 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
         }
 
         $result->startTestSuite($this);
-        $tests = array();
 
-        if (empty($excludeGroups)) {
-            if (empty($groups)) {
-                $tests = $this->tests;
-            } else {
-                foreach ($groups as $group) {
-                    if (isset($this->groups[$group])) {
-                        $tests = array_merge($tests, $this->groups[$group]);
-                    }
-                }
-            }
+        if (empty($groups)) {
+            $tests = $this->tests;
         } else {
-            foreach ($this->groups as $_group => $_tests) {
-                if (!in_array($_group, $excludeGroups)) {
-                    $tests = array_merge($tests, $_tests);
+            $tests = array();
+
+            foreach ($groups as $group) {
+                if (isset($this->groups[$group])) {
+                    $tests = array_merge($tests, $this->groups[$group]);
                 }
             }
         }
@@ -655,6 +648,19 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
 
                     if (preg_match($filter, $name) == 0) {
                         $runTest = FALSE;
+                    }
+                }
+
+                if ($runTest && !empty($excludeGroups)) {
+                    foreach ($this->groups as $_group => $_tests) {
+                        if (in_array($_group, $excludeGroups)) {
+                            foreach ($_tests as $_test) {
+                                if ($test === $_test) {
+                                    $runTest = FALSE;
+                                    break 2;
+                                }
+                            }
+                        }
                     }
                 }
 
