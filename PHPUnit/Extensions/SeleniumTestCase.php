@@ -494,6 +494,7 @@ abstract class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_Tes
      * @method unknown  dragDropAndWait()
      * @method unknown  fireEvent()
      * @method unknown  fireEventAndWait()
+     * @method unknown  focus()
      * @method string   getAlert()
      * @method array    getAllButtons()
      * @method array    getAllFields()

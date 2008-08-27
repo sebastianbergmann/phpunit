@@ -346,6 +346,7 @@ class PHPUnit_Extensions_SeleniumTestCase_Driver
      * @method unknown  dragDropAndWait()
      * @method unknown  fireEvent()
      * @method unknown  fireEventAndWait()
+     * @method unknown  focus()
      * @method string   getAlert()
      * @method array    getAllButtons()
      * @method array    getAllFields()
@@ -500,6 +501,7 @@ class PHPUnit_Extensions_SeleniumTestCase_Driver
             case 'dragAndDropToObject':
             case 'dragDrop':
             case 'fireEvent':
+            case 'focus':
             case 'goBack':
             case 'highlight':
             case 'keyDown':
