@@ -114,7 +114,10 @@ class PHPUnit_TextUI_Command
 
             print "Available test group(s):\n";
 
-            foreach ($suite->getGroups() as $group) {
+            $groups = $suite->getGroups();
+            sort($groups);
+
+            foreach ($groups as $group) {
                 print " - $group\n";
             }
 

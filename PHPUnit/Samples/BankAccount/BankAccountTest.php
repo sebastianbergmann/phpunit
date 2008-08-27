@@ -71,6 +71,7 @@ class BankAccountTest extends PHPUnit_Framework_TestCase
     /**
      * @covers BankAccount::getBalance
      * @group balanceIsInitiallyZero
+     * @group specification
      */
     public function testBalanceIsInitiallyZero()
     {
@@ -80,6 +81,7 @@ class BankAccountTest extends PHPUnit_Framework_TestCase
     /**
      * @covers BankAccount::withdrawMoney
      * @group balanceCannotBecomeNegative
+     * @group specification
      */
     public function testBalanceCannotBecomeNegative()
     {
@@ -99,6 +101,7 @@ class BankAccountTest extends PHPUnit_Framework_TestCase
     /**
      * @covers BankAccount::depositMoney
      * @group balanceCannotBecomeNegative
+     * @group specification
      */
     public function testBalanceCannotBecomeNegative2()
     {
