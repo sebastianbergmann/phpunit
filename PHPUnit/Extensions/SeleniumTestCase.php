@@ -1209,12 +1209,14 @@ abstract class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_Tes
               $this->testId
             );
 
-            return $this->matchLocalAndRemotePaths(
-              unserialize(file_get_contents($url))
-            );
-        } else {
-            return array();
+            $buffer = @file_get_contents($url);
+
+            if ($buffer !== FALSE) {
+                return $this->matchLocalAndRemotePaths(unserialize($buffer));
+            }
         }
+
+        return array();
     }
 
     /**
