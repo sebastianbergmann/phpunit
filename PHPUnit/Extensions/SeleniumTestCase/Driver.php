@@ -70,6 +70,11 @@ class PHPUnit_Extensions_SeleniumTestCase_Driver
     /**
      * @var    string
      */
+    protected $testId;
+
+    /**
+     * @var    string
+     */
     protected $name;
 
     /**
