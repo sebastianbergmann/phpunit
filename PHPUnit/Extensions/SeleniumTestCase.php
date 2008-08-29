@@ -123,6 +123,7 @@ abstract class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_Tes
     public function __construct($name = NULL, array $data = array(), array $browser = array())
     {
         parent::__construct($name, $data);
+        $this->testId = md5(uniqid(rand(), TRUE));
         $this->getDriver($browser);
     }
 
@@ -337,6 +338,7 @@ abstract class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_Tes
         $driver->setPort($browser['port']);
         $driver->setTimeout($browser['timeout']);
         $driver->setTestCase($this);
+        $driver->setTestId($this->testId);
 
         $this->drivers[] = $driver;
 
