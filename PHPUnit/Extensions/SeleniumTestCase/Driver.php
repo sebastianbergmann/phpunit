@@ -70,6 +70,11 @@ class PHPUnit_Extensions_SeleniumTestCase_Driver
     /**
      * @var    string
      */
+    protected $testId;
+
+    /**
+     * @var    string
+     */
     protected $name;
 
     /**
@@ -177,6 +182,14 @@ class PHPUnit_Extensions_SeleniumTestCase_Driver
     public function setTestCase(PHPUnit_Extensions_SeleniumTestCase $testCase)
     {
         $this->testCase = $testCase;
+    }
+
+    /**
+     * @param  integer $testId
+     */
+    public function setTestId($testId)
+    {
+        $this->testId = $testId;
     }
 
     /**
