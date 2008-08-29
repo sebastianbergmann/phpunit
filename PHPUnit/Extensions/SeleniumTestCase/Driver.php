@@ -180,6 +180,14 @@ class PHPUnit_Extensions_SeleniumTestCase_Driver
     }
 
     /**
+     * @param  integer $testId
+     */
+    public function setTestId($testId)
+    {
+        $this->testId = $testId;
+    }
+
+    /**
      * @param  string $name
      * @throws InvalidArgumentException
      */
