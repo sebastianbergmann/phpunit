@@ -57,7 +57,8 @@ if ( isset($_COOKIE['PHPUNIT_SELENIUM_TEST_ID']) &&
     }
 
     file_put_contents(
-      $_SERVER['SCRIPT_FILENAME'] . '.phpunit_' .
+      $_SERVER['SCRIPT_FILENAME'] . '.' .
+      md5(uniqid(rand(), TRUE)) . '.' .
       $_COOKIE['PHPUNIT_SELENIUM_TEST_ID'],
       serialize($data)
     );
