@@ -262,7 +262,7 @@ abstract class PHPUnit_Util_CodeCoverage
      * @param  string $file
      * @return boolean
      */
-    protected static function isFile($file)
+    public static function isFile($file)
     {
         if (strpos($file, 'eval()\'d code') || strpos($file, 'runtime-created function') || strpos($file, 'assert code')) {
             return FALSE;
