@@ -55,6 +55,7 @@ require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'PersistorTest.php';
 require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'XmlDataSetsTest.php';
 require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'QueryTableTest.php';
 require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'QueryDataSetTest.php';
+require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'CsvDataSetTest.php';
 
 /**
  *
@@ -78,7 +79,7 @@ class Extensions_Database_DataSet_AllTests
         $suite->addTestSuite('Extensions_Database_DataSet_PersistorTest');
         $suite->addTestSuite('Extensions_Database_DataSet_XmlDataSetsTest');
         $suite->addTestSuite('Extensions_Database_DataSet_QueryTableTest');
-        $suite->addTestSuite('Extensions_Database_DataSet_QueryDataSetTest');
+        $suite->addTestSuite('Extensions_Database_DataSet_CsvDataSetTest');
 
         return $suite;
     }
