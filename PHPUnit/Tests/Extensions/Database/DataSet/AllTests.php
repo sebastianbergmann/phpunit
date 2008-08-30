@@ -57,6 +57,8 @@ require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'QueryTableTest.php';
 require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'QueryDataSetTest.php';
 require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'CsvDataSetTest.php';
 require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'CompositeDataSetTest.php';
+require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'ReplacementDataSetTest.php';
+require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'ReplacementTableTest.php';
 
 /**
  *
@@ -82,6 +84,8 @@ class Extensions_Database_DataSet_AllTests
         $suite->addTestSuite('Extensions_Database_DataSet_QueryTableTest');
         $suite->addTestSuite('Extensions_Database_DataSet_CsvDataSetTest');
         $suite->addTestSuite('Extensions_Database_DataSet_CompositeDataSetTest');
+        $suite->addTestSuite('Extensions_Database_DataSet_ReplacementDataSetTest');
+        $suite->addTestSuite('Extensions_Database_DataSet_ReplacementTableTest');
 
         return $suite;
     }

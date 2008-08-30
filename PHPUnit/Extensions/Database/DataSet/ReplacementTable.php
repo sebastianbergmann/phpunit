@@ -41,18 +41,17 @@
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    SVN: $Id$
  * @link       http://www.phpunit.de/
- * @since      File available since Release 3.2.0
+ * @since      File available since Release 3.3.0
  */
 
 require_once 'PHPUnit/Framework.php';
 require_once 'PHPUnit/Util/Filter.php';
-
 require_once 'PHPUnit/Extensions/Database/DataSet/ITable.php';
 
 PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
 
 /**
- * Provides a basic functionality for dbunit tables
+ * Allows for replacing arbitrary strings in your data sets with other values.
  *
  * @category   Testing
  * @package    PHPUnit
@@ -61,32 +60,64 @@ PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    Release: @package_version@
  * @link       http://www.phpunit.de/
- * @since      Class available since Release 3.2.0
+ * @since      Class available since Release 3.3.0
+ * @todo When setTableMetaData() is taken out of the AbstractTable this class should extend AbstractTable.
  */
-class PHPUnit_Extensions_Database_DataSet_AbstractTable implements PHPUnit_Extensions_Database_DataSet_ITable
+class PHPUnit_Extensions_Database_DataSet_ReplacementTable implements PHPUnit_Extensions_Database_DataSet_ITable
 {
-
     /**
-     * @var PHPUnit_Extensions_Database_DataSet_ITableMetaData
+     * @var PHPUnit_Extensions_Database_DataSet_ITable
      */
-    protected $tableMetaData;
+    protected $table;
 
     /**
-     * A 2-dimensional array containing the data for this table.
-     *
      * @var array
      */
-    protected $data;
+    protected $fullReplacements;
 
     /**
-     * Sets the metadata for this table.
-     *
-     * @param PHPUnit_Extensions_Database_DataSet_ITableMetaData $tableMetaData
-     * @deprecated
+     * @var array
      */
-    protected function setTableMetaData(PHPUnit_Extensions_Database_DataSet_ITableMetaData $tableMetaData)
+    protected $subStrReplacements;
+
+    /**
+     * Creates a new replacement table
+     *
+     * @param PHPUnit_Extensions_Database_DataSet_ITable $table
+     * @param array $fullReplacements
+     * @param array $subStrReplacements
+     */
+    public function __construct(PHPUnit_Extensions_Database_DataSet_ITable $table, Array $fullReplacements = array(), Array $subStrReplacements = array())
     {
-        $this->tableMetaData = $tableMetaData;
+        $this->table = $table;
+        $this->fullReplacements = $fullReplacements;
+        $this->subStrReplacements = $subStrReplacements;
+    }
+
+    /**
+     * Adds a new full replacement
+     *
+     * Full replacements will only replace values if the FULL value is a match
+     *
+     * @param string $value
+     * @param string $replacement
+     */
+    public function addFullReplacement($value, $replacement)
+    {
+        $this->fullReplacements[$value] = $replacement;
+    }
+
+    /**
+     * Adds a new substr replacement
+     *
+     * Substr replacements will replace all occurances of the substr in every column
+     *
+     * @param string $value
+     * @param string $replacement
+     */
+    public function addSubStrReplacement($value, $replacement)
+    {
+        $this->subStrReplacements[$value] = $replacement;
     }
 
     /**
@@ -96,7 +127,7 @@ class PHPUnit_Extensions_Database_DataSet_AbstractTable implements PHPUnit_Exten
      */
     public function getTableMetaData()
     {
-        return $this->tableMetaData;
+        return $this->table->getTableMetaData();
     }
 
     /**
@@ -106,7 +137,7 @@ class PHPUnit_Extensions_Database_DataSet_AbstractTable implements PHPUnit_Exten
      */
     public function getRowCount()
     {
-        return count($this->data);
+        return $this->table->getRowCount();
     }
 
     /**
@@ -114,19 +145,10 @@ class PHPUnit_Extensions_Database_DataSet_AbstractTable implements PHPUnit_Exten
      *
      * @param int $row
      * @param int $column
-     * @todo reorganize this function to throw the exception first.
      */
     public function getValue($row, $column)
     {
-        if (isset($this->data[$row][$column])) {
-            return (string)$this->data[$row][$column];
-        } else {
-            if (!in_array($column, $this->getTableMetaData()->getColumns()) || $this->getRowCount() <= $row) {
-                throw new InvalidArgumentException("The given row ({$row}) and column ({$column}) do not exist in table {$this->getTableMetaData()->getTableName()}");
-            } else {
-                return NULL;
-            }
-        }
+        return $this->getReplacedValue($this->table->getValue($row, $column));
     }
 
     /**
@@ -137,15 +159,9 @@ class PHPUnit_Extensions_Database_DataSet_AbstractTable implements PHPUnit_Exten
      */
     public function getRow($row)
     {
-        if (isset($this->data[$row])) {
-            return $this->data[$row];
-        } else {
-            if ($this->getRowCount() <= $row) {
-                throw new InvalidArgumentException("The given row ({$row}) does not exist in table {$this->getTableMetaData()->getTableName()}");
-            } else {
-                return NULL;
-            }
-        }
+        $row = $this->table->getRow($row);
+
+        return array_map(array($this, 'getReplacedValue'), $row);
     }
 
     /**
@@ -213,6 +229,22 @@ class PHPUnit_Extensions_Database_DataSet_AbstractTable implements PHPUnit_Exten
         }
 
         return $rowString . "|\n";
+    }
+
+    protected function getReplacedValue($value)
+    {
+        if (is_scalar($value) && array_key_exists((string)$value, $this->fullReplacements))
+        {
+            return $this->fullReplacements[$value];
+        }
+        elseif (count($this->subStrReplacements))
+        {
+            return str_replace(array_keys($this->subStrReplacements), array_values($this->subStrReplacements), $value);
+        }
+        else
+        {
+            return $value;
+        }
     }
 }
 ?>
