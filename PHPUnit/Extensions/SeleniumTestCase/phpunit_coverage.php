@@ -44,6 +44,7 @@
  * @since      File available since Release 3.2.10
  */
 
+require_once 'PHPUnit/Util/CodeCoverage.php';
 require_once 'PHPUnit/Util/FilterIterator.php';
 
 if (isset($_GET['PHPUNIT_SELENIUM_TEST_ID'])) {
@@ -51,27 +52,29 @@ if (isset($_GET['PHPUNIT_SELENIUM_TEST_ID'])) {
       new RecursiveIteratorIterator(
         new RecursiveDirectoryIterator(dirname(__FILE__))
       ),
-      '.phpunit_' . $_GET['PHPUNIT_SELENIUM_TEST_ID']
+      $_GET['PHPUNIT_SELENIUM_TEST_ID']
     );
 
     $coverage = array();
 
     foreach ($files as $file) {
         $filename = $file->getPathName();
-
-        $data = unserialize(file_get_contents($filename));
+        $data     = unserialize(file_get_contents($filename));
+        @unlink($filename);
         unset($filename);
 
         foreach ($data as $filename => $lines) {
-            if (!isset($coverage[$filename])) {
-                $coverage[$filename] = array(
-                  'md5' => md5_file($filename), 'coverage' => $lines
-                );
-            } else {
-                foreach ($lines as $line => $flag) {
-                    if (!isset($coverage[$filename]['coverage'][$line]) ||
-                        $flag > $coverage[$filename]['coverage'][$line]) {
-                        $coverage[$filename]['coverage'][$line] = $flag;
+            if (PHPUnit_Util_CodeCoverage::isFile($filename)) {
+                if (!isset($coverage[$filename])) {
+                    $coverage[$filename] = array(
+                      'md5' => md5_file($filename), 'coverage' => $lines
+                    );
+                } else {
+                    foreach ($lines as $line => $flag) {
+                        if (!isset($coverage[$filename]['coverage'][$line]) ||
+                            $flag > $coverage[$filename]['coverage'][$line]) {
+                            $coverage[$filename]['coverage'][$line] = $flag;
+                        }
                     }
                 }
             }
