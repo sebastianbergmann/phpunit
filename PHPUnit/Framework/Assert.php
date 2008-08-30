@@ -566,6 +566,54 @@ abstract class PHPUnit_Framework_Assert
     }
 
     /**
+     * Asserts that the contents of a string is equal
+     * to the contents of a file.
+     *
+     * @param  string  $expectedFile
+     * @param  string  $actualString
+     * @param  string  $message
+     * @param  boolean $canonicalizeEol
+     * @since  Method available since Release 3.3.0
+     */
+    public static function assertStringEqualsFile($expectedFile, $actualString, $message = '', $canonicalizeEol = FALSE)
+    {
+        self::assertFileExists($expectedFile, $message);
+
+        self::assertEquals(
+          file_get_contents($expectedFile),
+          $actualString,
+          $message,
+          0,
+          10,
+          $canonicalizeEol
+        );
+    }
+
+    /**
+     * Asserts that the contents of a string is not equal
+     * to the contents of a file.
+     *
+     * @param  string  $expected
+     * @param  string  $actual
+     * @param  string  $message
+     * @param  boolean $canonicalizeEol
+     * @since  Method available since Release 3.2.14
+     */
+    public static function assertStringNotEqualsFile($expected, $actual, $message = '', $canonicalizeEol = FALSE)
+    {
+        self::assertFileExists($expectedFile, $message);
+
+        self::assertNotEquals(
+          file_get_contents($expectedFile),
+          $actualString,
+          $message,
+          0,
+          10,
+          $canonicalizeEol
+        );
+    }
+
+    /**
      * Asserts that a file exists.
      *
      * @param  string $filename
@@ -993,6 +1041,52 @@ abstract class PHPUnit_Framework_Assert
         $actual = new DOMDocument;
         $actual->preserveWhiteSpace = FALSE;
         $actual->load($actualFile);
+
+        self::assertNotEquals($expected, $actual, $message);
+    }
+
+    /**
+     * Asserts that two XML documents are equal.
+     *
+     * @param  string $expectedFile
+     * @param  string $actualXml
+     * @param  string $message
+     * @since  Method available since Release 3.3.0
+     */
+    public static function assertXmlStringEqualsXmlFile($expectedFile, $actualXml, $message = '')
+    {
+        self::assertFileExists($expectedFile);
+
+        $expected = new DOMDocument;
+        $expected->preserveWhiteSpace = FALSE;
+        $expected->load($expectedFile);
+
+        $actual = new DOMDocument;
+        $actual->preserveWhiteSpace = FALSE;
+        $actual->loadXML($actualXml);
+
+        self::assertEquals($expected, $actual, $message);
+    }
+
+    /**
+     * Asserts that two XML documents are not equal.
+     *
+     * @param  string $expectedFile
+     * @param  string $actualXml
+     * @param  string $message
+     * @since  Method available since Release 3.3.0
+     */
+    public static function assertXmlStringNotEqualsXmlFile($expectedFile, $actualXml, $message = '')
+    {
+        self::assertFileExists($expectedFile);
+
+        $expected = new DOMDocument;
+        $expected->preserveWhiteSpace = FALSE;
+        $expected->load($expectedFile);
+
+        $actual = new DOMDocument;
+        $actual->preserveWhiteSpace = FALSE;
+        $actual->loadXML($actualXml);
 
         self::assertNotEquals($expected, $actual, $message);
     }
