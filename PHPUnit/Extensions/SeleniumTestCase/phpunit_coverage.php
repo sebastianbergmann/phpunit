@@ -52,15 +52,15 @@ if (isset($_GET['PHPUNIT_SELENIUM_TEST_ID'])) {
       new RecursiveIteratorIterator(
         new RecursiveDirectoryIterator(dirname(__FILE__))
       ),
-      '.phpunit_' . $_GET['PHPUNIT_SELENIUM_TEST_ID']
+      $_GET['PHPUNIT_SELENIUM_TEST_ID']
     );
 
     $coverage = array();
 
     foreach ($files as $file) {
         $filename = $file->getPathName();
-
-        $data = unserialize(file_get_contents($filename));
+        $data     = unserialize(file_get_contents($filename));
+        @unlink($filename);
         unset($filename);
 
         foreach ($data as $filename => $lines) {
