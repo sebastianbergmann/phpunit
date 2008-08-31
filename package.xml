@@ -56,12 +56,19 @@
        <file baseinstalldir="/" name="AbstractDataSet.php" role="php">
         <tasks:replace from="@package_version@" to="version" type="package-info" />
        </file>
-       <file baseinstalldir="/" name="AbstractTableMetaData.php" role="php">
+       <file baseinstalldir="/" name="AbstractTable.php" role="php">
         <tasks:replace from="@package_version@" to="version" type="package-info" />
-       </file>       <file baseinstalldir="/" name="AbstractTable.php" role="php">
+       </file>
+       <file baseinstalldir="/" name="AbstractTableMetaData.php" role="php">
         <tasks:replace from="@package_version@" to="version" type="package-info" />
        </file>
        <file baseinstalldir="/" name="AbstractXmlDataSet.php" role="php">
+        <tasks:replace from="@package_version@" to="version" type="package-info" />
+       </file>
+       <file baseinstalldir="/" name="CompositeDataSet.php" role="php">
+        <tasks:replace from="@package_version@" to="version" type="package-info" />
+       </file>
+       <file baseinstalldir="/" name="CsvDataSet.php" role="php">
         <tasks:replace from="@package_version@" to="version" type="package-info" />
        </file>
        <file baseinstalldir="/" name="DataSetFilter.php" role="php">
@@ -70,13 +77,13 @@
        <file baseinstalldir="/" name="DefaultDataSet.php" role="php">
         <tasks:replace from="@package_version@" to="version" type="package-info" />
        </file>
+       <file baseinstalldir="/" name="DefaultTable.php" role="php">
+        <tasks:replace from="@package_version@" to="version" type="package-info" />
+       </file>
        <file baseinstalldir="/" name="DefaultTableIterator.php" role="php">
         <tasks:replace from="@package_version@" to="version" type="package-info" />
        </file>
        <file baseinstalldir="/" name="DefaultTableMetaData.php" role="php">
-        <tasks:replace from="@package_version@" to="version" type="package-info" />
-       </file>
-       <file baseinstalldir="/" name="DefaultTable.php" role="php">
         <tasks:replace from="@package_version@" to="version" type="package-info" />
        </file>
        <file baseinstalldir="/" name="FlatXmlDataSet.php" role="php">
@@ -88,19 +95,28 @@
        <file baseinstalldir="/" name="IPersistable.php" role="php">
         <tasks:replace from="@package_version@" to="version" type="package-info" />
        </file>
+       <file baseinstalldir="/" name="ITable.php" role="php">
+        <tasks:replace from="@package_version@" to="version" type="package-info" />
+       </file>
        <file baseinstalldir="/" name="ITableIterator.php" role="php">
         <tasks:replace from="@package_version@" to="version" type="package-info" />
        </file>
        <file baseinstalldir="/" name="ITableMetaData.php" role="php">
         <tasks:replace from="@package_version@" to="version" type="package-info" />
        </file>
-       <file baseinstalldir="/" name="ITable.php" role="php">
-        <tasks:replace from="@package_version@" to="version" type="package-info" />
-       </file>
        <file baseinstalldir="/" name="QueryDataSet.php" role="php">
         <tasks:replace from="@package_version@" to="version" type="package-info" />
        </file>
        <file baseinstalldir="/" name="QueryTable.php" role="php">
+        <tasks:replace from="@package_version@" to="version" type="package-info" />
+       </file>
+       <file baseinstalldir="/" name="ReplacementDataSet.php" role="php">
+        <tasks:replace from="@package_version@" to="version" type="package-info" />
+       </file>
+       <file baseinstalldir="/" name="ReplacementTable.php" role="php">
+        <tasks:replace from="@package_version@" to="version" type="package-info" />
+       </file>
+       <file baseinstalldir="/" name="ReplacementTableIterator.php" role="php">
         <tasks:replace from="@package_version@" to="version" type="package-info" />
        </file>
        <file baseinstalldir="/" name="TableFilter.php" role="php">
@@ -643,73 +659,33 @@
      <dir name="Extensions">
       <dir name="Database">
        <dir name="_files">
+        <dir name="CsvDataSets">
+         <file baseinstalldir="/" name="table1.csv" role="test" />
+         <file baseinstalldir="/" name="table2.csv" role="test" />
+        </dir>
         <dir name="XmlDataSets">
-         <file baseinstalldir="/" name="AllEmptyTableInsertResult.xml" role="test">
-          <tasks:replace from="@package_version@" to="version" type="package-info" />
-         </file>
-         <file baseinstalldir="/" name="AllEmptyTableInsertTest.xml" role="test">
-          <tasks:replace from="@package_version@" to="version" type="package-info" />
-         </file>
-         <file baseinstalldir="/" name="DeleteAllOperationTest.xml" role="test">
-          <tasks:replace from="@package_version@" to="version" type="package-info" />
-         </file>
-         <file baseinstalldir="/" name="DeleteOperationResult.xml" role="test">
-          <tasks:replace from="@package_version@" to="version" type="package-info" />
-         </file>
-         <file baseinstalldir="/" name="DeleteOperationTest.xml" role="test">
-          <tasks:replace from="@package_version@" to="version" type="package-info" />
-         </file>
-         <file baseinstalldir="/" name="EmptyTableInsertResult.xml" role="test">
-          <tasks:replace from="@package_version@" to="version" type="package-info" />
-         </file>
-         <file baseinstalldir="/" name="EmptyTableInsertTest.xml" role="test">
-          <tasks:replace from="@package_version@" to="version" type="package-info" />
-         </file>
-         <file baseinstalldir="/" name="FilteredTestComparison.xml" role="test">
-          <tasks:replace from="@package_version@" to="version" type="package-info" />
-         </file>
-         <file baseinstalldir="/" name="FilteredTestFixture.xml" role="test">
-          <tasks:replace from="@package_version@" to="version" type="package-info" />
-         </file>
-         <file baseinstalldir="/" name="FlatXmlDataSet.xml" role="test">
-          <tasks:replace from="@package_version@" to="version" type="package-info" />
-         </file>
-         <file baseinstalldir="/" name="FlatXmlWriter.xml" role="test">
-          <tasks:replace from="@package_version@" to="version" type="package-info" />
-         </file>
-         <file baseinstalldir="/" name="InsertOperationResult.xml" role="test">
-          <tasks:replace from="@package_version@" to="version" type="package-info" />
-         </file>
-         <file baseinstalldir="/" name="InsertOperationTest.xml" role="test">
-          <tasks:replace from="@package_version@" to="version" type="package-info" />
-         </file>
-         <file baseinstalldir="/" name="OperationsTestFixture.xml" role="test">
-          <tasks:replace from="@package_version@" to="version" type="package-info" />
-         </file>
-         <file baseinstalldir="/" name="QueryDataSetTest.xml" role="test">
-          <tasks:replace from="@package_version@" to="version" type="package-info" />
-         </file>
-         <file baseinstalldir="/" name="ReplaceOperationResult.xml" role="test">
-          <tasks:replace from="@package_version@" to="version" type="package-info" />
-         </file>
-         <file baseinstalldir="/" name="ReplaceOperationTest.xml" role="test">
-          <tasks:replace from="@package_version@" to="version" type="package-info" />
-         </file>
-         <file baseinstalldir="/" name="RowBasedExecute.xml" role="test">
-          <tasks:replace from="@package_version@" to="version" type="package-info" />
-         </file>
-         <file baseinstalldir="/" name="UpdateOperationResult.xml" role="test">
-          <tasks:replace from="@package_version@" to="version" type="package-info" />
-         </file>
-         <file baseinstalldir="/" name="UpdateOperationTest.xml" role="test">
-          <tasks:replace from="@package_version@" to="version" type="package-info" />
-         </file>
-         <file baseinstalldir="/" name="XmlDataSet.xml" role="test">
-          <tasks:replace from="@package_version@" to="version" type="package-info" />
-         </file>
-         <file baseinstalldir="/" name="XmlWriter.xml" role="test">
-          <tasks:replace from="@package_version@" to="version" type="package-info" />
-         </file>
+         <file baseinstalldir="/" name="AllEmptyTableInsertResult.xml" role="test" />
+         <file baseinstalldir="/" name="AllEmptyTableInsertTest.xml" role="test" />
+         <file baseinstalldir="/" name="DeleteAllOperationTest.xml" role="test" />
+         <file baseinstalldir="/" name="DeleteOperationResult.xml" role="test" />
+         <file baseinstalldir="/" name="DeleteOperationTest.xml" role="test" />
+         <file baseinstalldir="/" name="EmptyTableInsertResult.xml" role="test" />
+         <file baseinstalldir="/" name="EmptyTableInsertTest.xml" role="test" />
+         <file baseinstalldir="/" name="FilteredTestComparison.xml" role="test" />
+         <file baseinstalldir="/" name="FilteredTestFixture.xml" role="test" />
+         <file baseinstalldir="/" name="FlatXmlDataSet.xml" role="test" />
+         <file baseinstalldir="/" name="FlatXmlWriter.xml" role="test" />
+         <file baseinstalldir="/" name="InsertOperationResult.xml" role="test" />
+         <file baseinstalldir="/" name="InsertOperationTest.xml" role="test" />
+         <file baseinstalldir="/" name="OperationsTestFixture.xml" role="test" />
+         <file baseinstalldir="/" name="QueryDataSetTest.xml" role="test" />
+         <file baseinstalldir="/" name="ReplaceOperationResult.xml" role="test" />
+         <file baseinstalldir="/" name="ReplaceOperationTest.xml" role="test" />
+         <file baseinstalldir="/" name="RowBasedExecute.xml" role="test" />
+         <file baseinstalldir="/" name="UpdateOperationResult.xml" role="test" />
+         <file baseinstalldir="/" name="UpdateOperationTest.xml" role="test" />
+         <file baseinstalldir="/" name="XmlDataSet.xml" role="test" />
+         <file baseinstalldir="/" name="XmlWriter.xml" role="test" />
         </dir>
         <file baseinstalldir="/" name="DatabaseTestUtility.php" role="test">
          <tasks:replace from="@package_version@" to="version" type="package-info" />
@@ -717,6 +693,12 @@
        </dir>
        <dir name="DataSet">
          <file baseinstalldir="/" name="AllTests.php" role="test">
+          <tasks:replace from="@package_version@" to="version" type="package-info" />
+         </file>
+         <file baseinstalldir="/" name="CompositeDataSetTest.php" role="test">
+          <tasks:replace from="@package_version@" to="version" type="package-info" />
+         </file>
+         <file baseinstalldir="/" name="CsvDataSetTest.php" role="test">
           <tasks:replace from="@package_version@" to="version" type="package-info" />
          </file>
          <file baseinstalldir="/" name="FilterTest.php" role="test">
@@ -729,6 +711,12 @@
           <tasks:replace from="@package_version@" to="version" type="package-info" />
          </file>
          <file baseinstalldir="/" name="QueryTableTest.php" role="test">
+          <tasks:replace from="@package_version@" to="version" type="package-info" />
+         </file>
+         <file baseinstalldir="/" name="ReplacementDataSetTest.php" role="test">
+          <tasks:replace from="@package_version@" to="version" type="package-info" />
+         </file>
+         <file baseinstalldir="/" name="ReplacementTableTest.php" role="test">
           <tasks:replace from="@package_version@" to="version" type="package-info" />
          </file>
          <file baseinstalldir="/" name="XmlDataSetsTest.php" role="test">
