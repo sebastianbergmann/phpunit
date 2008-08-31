@@ -755,7 +755,7 @@ class Framework_TestFailureTest extends PHPUnit_Framework_TestCase
 
         catch (PHPUnit_Framework_ExpectationFailedException $e) {
             $this->assertEquals(
-              "Failed asserting that \nstdClass Object\n(\n)\n has attribute \"foo\".\n",
+              "Failed asserting that object of class \"stdClass\" has attribute \"foo\".\n",
               PHPUnit_Framework_TestFailure::exceptionToString($e)
             );
 
@@ -775,7 +775,7 @@ class Framework_TestFailureTest extends PHPUnit_Framework_TestCase
 
         catch (PHPUnit_Framework_ExpectationFailedException $e) {
             $this->assertEquals(
-              "custom message\nFailed asserting that \nstdClass Object\n(\n)\n has attribute \"foo\".\n",
+              "custom message\nFailed asserting that object of class \"stdClass\" has attribute \"foo\".\n",
               PHPUnit_Framework_TestFailure::exceptionToString($e)
             );
 
@@ -800,7 +800,7 @@ class Framework_TestFailureTest extends PHPUnit_Framework_TestCase
 
         catch (PHPUnit_Framework_ExpectationFailedException $e) {
             $this->assertEquals(
-              "Failed asserting that \nstdClass Object\n(\n    [foo] => bar\n)\n does not have attribute \"foo\".\n",
+              "Failed asserting that object of class \"stdClass\" does not have attribute \"foo\".\n",
               PHPUnit_Framework_TestFailure::exceptionToString($e)
             );
 
@@ -825,7 +825,7 @@ class Framework_TestFailureTest extends PHPUnit_Framework_TestCase
 
         catch (PHPUnit_Framework_ExpectationFailedException $e) {
             $this->assertEquals(
-              "custom message\nFailed asserting that \nstdClass Object\n(\n    [foo] => bar\n)\n does not have attribute \"foo\".\n",
+              "custom message\nFailed asserting that object of class \"stdClass\" does not have attribute \"foo\".\n",
               PHPUnit_Framework_TestFailure::exceptionToString($e)
             );
 

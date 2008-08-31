@@ -101,5 +101,12 @@ class PHPUnit_Framework_Constraint_ClassHasAttribute extends PHPUnit_Framework_C
           $this->attributeName
         );
     }
+
+    protected function customFailureDescription($other, $description, $not)
+    {
+        return sprintf(
+          'Failed asserting that class "%s" %s.', $other, $this->toString()
+        );
+    }
 }
 ?>

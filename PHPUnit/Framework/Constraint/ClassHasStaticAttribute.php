@@ -86,5 +86,20 @@ class PHPUnit_Framework_Constraint_ClassHasStaticAttribute extends PHPUnit_Frame
             return FALSE;
         }
     }
+
+    /**
+     * Returns a string representation of the constraint.
+     *
+     * @return string
+     * @since  Method available since Release 3.3.0
+     */
+    public function toString()
+    {
+        return sprintf(
+          'has static attribute "%s"',
+
+          $this->attributeName
+        );
+    }
 }
 ?>
