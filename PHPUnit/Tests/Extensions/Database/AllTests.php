@@ -55,6 +55,8 @@ require_once 'PHPUnit/Framework/TestSuite.php';
 require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'DataSet' . DIRECTORY_SEPARATOR . 'AllTests.php';
 require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'Operation' . DIRECTORY_SEPARATOR . 'AllTests.php';
 
+PHPUnit_Util_Filter::$filterPHPUnit = FALSE;
+
 /**
  *
  *

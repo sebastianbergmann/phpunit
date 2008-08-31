@@ -60,6 +60,8 @@ require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'TestFailureTest.php';
 require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'TestImplementorTest.php';
 require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'TestListenerTest.php';
 
+PHPUnit_Util_Filter::$filterPHPUnit = FALSE;
+
 /**
  *
  *
