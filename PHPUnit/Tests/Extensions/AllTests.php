@@ -56,6 +56,8 @@ require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'RepeatedTestTest.php';
 require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'SeleniumTestCaseTest.php';
 require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'Database' . DIRECTORY_SEPARATOR . 'AllTests.php';
 
+PHPUnit_Util_Filter::$filterPHPUnit = FALSE;
+
 /**
  *
  *

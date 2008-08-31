@@ -52,6 +52,8 @@ require_once 'PHPUnit/Framework/TestSuite.php';
 
 require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'NamePrettifierTest.php';
 
+PHPUnit_Util_Filter::$filterPHPUnit = FALSE;
+
 /**
  *
  *

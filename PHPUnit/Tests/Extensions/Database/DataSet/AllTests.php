@@ -56,6 +56,8 @@ require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'XmlDataSetsTest.php';
 require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'QueryTableTest.php';
 require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'QueryDataSetTest.php';
 
+PHPUnit_Util_Filter::$filterPHPUnit = FALSE;
+
 /**
  *
  *
