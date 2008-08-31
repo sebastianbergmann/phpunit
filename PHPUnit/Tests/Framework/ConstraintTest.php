@@ -836,7 +836,7 @@ class Framework_ConstraintTest extends PHPUnit_Framework_TestCase
 
         catch (PHPUnit_Framework_ExpectationFailedException $e) {
             $this->assertEquals(
-              "Failed asserting that \nstdClass Object\n(\n)\n has attribute \"foo\".",
+              'Failed asserting that object of class "stdClass" has attribute "foo".',
               $e->getDescription()
             );
 
@@ -856,7 +856,7 @@ class Framework_ConstraintTest extends PHPUnit_Framework_TestCase
 
         catch (PHPUnit_Framework_ExpectationFailedException $e) {
             $this->assertEquals(
-              "custom message\nFailed asserting that \nstdClass Object\n(\n)\n has attribute \"foo\".",
+              "custom message\nFailed asserting that object of class \"stdClass\" has attribute \"foo\".",
               $e->getDescription()
             );
 
@@ -884,7 +884,7 @@ class Framework_ConstraintTest extends PHPUnit_Framework_TestCase
 
         catch (PHPUnit_Framework_ExpectationFailedException $e) {
             $this->assertEquals(
-              "Failed asserting that \nstdClass Object\n(\n    [foo] => bar\n)\n does not have attribute \"foo\".",
+              'Failed asserting that object of class "stdClass" does not have attribute "foo".',
               $e->getDescription()
             );
 
@@ -909,7 +909,7 @@ class Framework_ConstraintTest extends PHPUnit_Framework_TestCase
 
         catch (PHPUnit_Framework_ExpectationFailedException $e) {
             $this->assertEquals(
-              "custom message\nFailed asserting that \nstdClass Object\n(\n    [foo] => bar\n)\n does not have attribute \"foo\".",
+              "custom message\nFailed asserting that object of class \"stdClass\" does not have attribute \"foo\".",
               $e->getDescription()
             );
 
