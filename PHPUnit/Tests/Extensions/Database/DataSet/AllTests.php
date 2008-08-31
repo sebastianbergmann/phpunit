@@ -50,15 +50,15 @@ PHPUnit_Util_Filter::addFileToFilter(__FILE__);
 
 require_once 'PHPUnit/Framework/TestSuite.php';
 
+require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'CompositeDataSetTest.php';
+require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'CsvDataSetTest.php';
 require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'FilterTest.php';
 require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'PersistorTest.php';
-require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'XmlDataSetsTest.php';
-require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'QueryTableTest.php';
 require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'QueryDataSetTest.php';
-require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'CsvDataSetTest.php';
-require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'CompositeDataSetTest.php';
+require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'QueryTableTest.php';
 require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'ReplacementDataSetTest.php';
 require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'ReplacementTableTest.php';
+require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'XmlDataSetsTest.php';
 
 PHPUnit_Util_Filter::$filterPHPUnit = FALSE;
 
@@ -80,14 +80,15 @@ class Extensions_Database_DataSet_AllTests
     {
         $suite = new PHPUnit_Framework_TestSuite('PHPUnit_Extensions_Database_DataSet');
 
+        $suite->addTestSuite('Extensions_Database_DataSet_CompositeDataSetTest');
+        $suite->addTestSuite('Extensions_Database_DataSet_CsvDataSetTest');
         $suite->addTestSuite('Extensions_Database_DataSet_FilterTest');
         $suite->addTestSuite('Extensions_Database_DataSet_PersistorTest');
-        $suite->addTestSuite('Extensions_Database_DataSet_XmlDataSetsTest');
+        $suite->addTestSuite('Extensions_Database_DataSet_QueryDataSetTest');
         $suite->addTestSuite('Extensions_Database_DataSet_QueryTableTest');
-        $suite->addTestSuite('Extensions_Database_DataSet_CsvDataSetTest');
-        $suite->addTestSuite('Extensions_Database_DataSet_CompositeDataSetTest');
         $suite->addTestSuite('Extensions_Database_DataSet_ReplacementDataSetTest');
         $suite->addTestSuite('Extensions_Database_DataSet_ReplacementTableTest');
+        $suite->addTestSuite('Extensions_Database_DataSet_XmlDataSetsTest');
 
         return $suite;
     }
