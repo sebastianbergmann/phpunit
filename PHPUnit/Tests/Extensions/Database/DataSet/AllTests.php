@@ -60,6 +60,8 @@ require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'CompositeDataSetTest.php
 require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'ReplacementDataSetTest.php';
 require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'ReplacementTableTest.php';
 
+PHPUnit_Util_Filter::$filterPHPUnit = FALSE;
+
 /**
  *
  *

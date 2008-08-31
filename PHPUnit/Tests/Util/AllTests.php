@@ -53,6 +53,8 @@ require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'ConfigurationTest.php';
 require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'TimerTest.php';
 require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'XMLTest.php';
 
+PHPUnit_Util_Filter::$filterPHPUnit = FALSE;
+
 /**
  *
  *

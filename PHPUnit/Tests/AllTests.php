@@ -58,6 +58,8 @@ require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'Extensions' . DIRECTORY_
 require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'Runner' . DIRECTORY_SEPARATOR . 'AllTests.php';
 require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'Util' . DIRECTORY_SEPARATOR . 'AllTests.php';
 
+PHPUnit_Util_Filter::$filterPHPUnit = FALSE;
+
 /**
  *
  *
