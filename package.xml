@@ -17,14 +17,14 @@
   <email>sb@sebastian-bergmann.de</email>
   <active>yes</active>
  </lead>
- <date>2008-08-25</date>
+ <date>2008-09-01</date>
  <version>
-  <release>3.3.0beta4</release>
+  <release>3.3.0RC1</release>
   <api>3.3.0</api>
  </version>
  <stability>
   <release>beta</release>
-  <api>beta</api>
+  <api>stable</api>
  </stability>
  <license>BSD License</license>
  <notes>http://www.phpunit.de/wiki/ChangeLog</notes>
