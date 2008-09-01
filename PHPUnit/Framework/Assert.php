@@ -1455,15 +1455,12 @@ abstract class PHPUnit_Framework_Assert
     {
         $stack = debug_backtrace();
 
-        for ($i = 1; $i <= 3; $i++) {
-            if (isset($stack[$i]['object']) &&
-                $stack[$i]['object'] instanceof PHPUnit_Framework_TestCase) {
-                $test = $stack[$i]['object'];
+        foreach (debug_backtrace() as $step) {
+            if (isset($step['object']) &&
+                $step['object'] instanceof PHPUnit_Framework_TestCase) {
+                $step['object']->incrementAssertionCounter();
+                break;
             }
-        }
-
-        if (isset($test)) {
-            $test->incrementAssertionCounter();
         }
 
         if (!$constraint->evaluate($value)) {
