@@ -775,6 +775,10 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
         $arguments['reportLowUpperBound']         = isset($arguments['reportLowUpperBound'])         ? $arguments['reportLowUpperBound']         : 35;
         $arguments['reportYUI']                   = isset($arguments['reportYUI'])                   ? $arguments['reportYUI']                   : TRUE;
         $arguments['stopOnFailure']               = isset($arguments['stopOnFailure'])               ? $arguments['stopOnFailure']               : FALSE;
+
+        if ($arguments['filter'] !== FALSE && preg_match('/^[a-zA-Z0-9_]/', $arguments['filter'])) {
+            $arguments['filter'] = '/' . $arguments['filter'] . '/';
+        }
     }
 }
 ?>
