@@ -1944,8 +1944,9 @@ abstract class PHPUnit_Framework_Assert
         }
 
         self::assertObjectHasAttribute($attributeName, $object);
+        $attribute = new ReflectionProperty($object, $attributeName);
 
-        if (property_exists($object, $attributeName)) {
+        if ($attribute->isPublic()) {
             return $object->$attributeName;
         } else {
             $array         = (array)$object;
