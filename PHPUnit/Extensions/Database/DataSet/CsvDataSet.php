@@ -148,7 +148,11 @@ class PHPUnit_Extensions_Database_DataSet_CsvDataSet extends PHPUnit_Extensions_
      */
     protected function getCsvRow($fh)
     {
-        return fgetcsv($fh, NULL, $this->delimiter, $this->enclosure, $this->escape);
+        if (version_compare(PHP_VERSION, '5.3.0', '>')) {
+            return fgetcsv($fh, NULL, $this->delimiter, $this->enclosure, $this->escape);
+        } else {
+            return fgetcsv($fh, NULL, $this->delimiter, $this->enclosure);
+        }
     }
 }
 ?>
