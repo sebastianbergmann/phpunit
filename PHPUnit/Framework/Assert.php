@@ -1220,7 +1220,6 @@ abstract class PHPUnit_Framework_Assert
      * assertSelectCount(".binder", 3, $xml);     // exactly 3?
      *
      * @param  array   $selector
-     * @param  string  $regexp
      * @param  integer $count
      * @param  mixed   $actual
      * @param  string  $message
@@ -1239,7 +1238,7 @@ abstract class PHPUnit_Framework_Assert
      * assertSelectRegExp("#binder .name", "/Mike|Derek/", 3, $xml);    // exactly 3?
      *
      * @param  array   $selector
-     * @param  string  $regexp
+     * @param  string  $pattern
      * @param  integer $count
      * @param  mixed   $actual
      * @param  string  $message
@@ -1248,9 +1247,9 @@ abstract class PHPUnit_Framework_Assert
      * @author Mike Naberezny <mike@maintainable.com>
      * @author Derek DeVries <derek@maintainable.com>
      */
-    public static function assertSelectRegExp($selector, $regexp, $count, $actual, $message = '', $isHtml = TRUE)
+    public static function assertSelectRegExp($selector, $pattern, $count, $actual, $message = '', $isHtml = TRUE)
     {
-        self::assertSelectEquals($selector, "regexp:$regexp", $count, $actual, $message, $isHtml);
+        self::assertSelectEquals($selector, "regexp:$pattern", $count, $actual, $message, $isHtml);
     }
 
     /**
@@ -1267,7 +1266,7 @@ abstract class PHPUnit_Framework_Assert
      * @author Mike Naberezny <mike@maintainable.com>
      * @author Derek DeVries <derek@maintainable.com>
      */
-    public static function assertSelectEquals($selector, $content, $count = 1, $actual, $message = '', $isHtml = TRUE)
+    public static function assertSelectEquals($selector, $content, $count, $actual, $message = '', $isHtml = TRUE)
     {
         $tags = PHPUnit_Util_XML::cssSelect($selector, $content, $actual, $isHtml);
 
@@ -1406,7 +1405,7 @@ abstract class PHPUnit_Framework_Assert
      * load strategy.  In many cases, this will be acceptable for XML as well.
      *
      * @param  array   $matcher
-     * @param  string  $text
+     * @param  string  $actual
      * @param  string  $message
      * @param  boolean $isHtml
      * @since  Method available since Release 3.3.0
