@@ -3010,20 +3010,20 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
         $this->assertSelectEquals($selector, $content, FALSE, $this->html);
     }
 
-    public function testAssertSelectRegexpContentPresentTrue()
+    public function testassertSelectRegExpContentPresentTrue()
     {
         $selector = 'span.test_class';
         $regexp   = '/Test.*Text/';
 
-        $this->assertSelectRegexp($selector, $regexp, TRUE, $this->html);
+        $this->assertSelectRegExp($selector, $regexp, TRUE, $this->html);
     }
 
-    public function testAssertSelectRegexpContentPresentFalse()
+    public function testassertSelectRegExpContentPresentFalse()
     {
         $selector = 'span.test_class';
         $regexp   = '/Nonexistant/';
 
-        $this->assertSelectRegexp($selector, $regexp, FALSE, $this->html);
+        $this->assertSelectRegExp($selector, $regexp, FALSE, $this->html);
     }
 
     /**
