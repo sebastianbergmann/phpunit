@@ -1235,8 +1235,8 @@ abstract class PHPUnit_Framework_Assert
     }
 
     /**
-     * assertSelectRegexp("#binder .name", "/Mike|Derek/", true, $xml); // any?
-     * assertSelectRegexp("#binder .name", "/Mike|Derek/", 3, $xml);    // exactly 3?
+     * assertSelectRegExp("#binder .name", "/Mike|Derek/", true, $xml); // any?
+     * assertSelectRegExp("#binder .name", "/Mike|Derek/", 3, $xml);    // exactly 3?
      *
      * @param  array   $selector
      * @param  string  $regexp
@@ -1248,7 +1248,7 @@ abstract class PHPUnit_Framework_Assert
      * @author Mike Naberezny <mike@maintainable.com>
      * @author Derek DeVries <derek@maintainable.com>
      */
-    public static function assertSelectRegexp($selector, $regexp, $count, $actual, $message = '', $isHtml = TRUE)
+    public static function assertSelectRegExp($selector, $regexp, $count, $actual, $message = '', $isHtml = TRUE)
     {
         self::assertSelectEquals($selector, "regexp:$regexp", $count, $actual, $message, $isHtml);
     }
