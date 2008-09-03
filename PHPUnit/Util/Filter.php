@@ -400,7 +400,13 @@ class PHPUnit_Util_Filter
             $filteredStacktrace = array();
         }
 
-        foreach ($e->getTrace() as $frame) {
+        $eTrace = $e->getTrace();
+
+        array_unshift(
+          $eTrace, array('file' => $e->getFile(), 'line' => $e->getLine())
+        );
+
+        foreach ($eTrace as $frame) {
             if (!self::$filter || (isset($frame['file']) && !self::isFiltered($frame['file'], $filterTests, TRUE))) {
                 if ($asString === TRUE) {
                     $filteredStacktrace .= sprintf(
