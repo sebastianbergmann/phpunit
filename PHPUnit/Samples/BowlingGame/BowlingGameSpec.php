@@ -52,13 +52,84 @@ class BowlingGameSpec extends PHPUnit_Extensions_Story_TestCase
     /**
      * @scenario
      */
-    public function scoreForOneSpareIs16()
+    public function scoreForGutterGameIs0()
+    {
+        $this->given('New game')
+             ->then('Score should be', 0);
+    }
+
+    /**
+     * @scenario
+     */
+    public function scoreForAllOnesIs20()
+    {
+        $this->given('New game')
+             ->when('Player rolls', 1)
+             ->and('Player rolls', 1)
+             ->and('Player rolls', 1)
+             ->and('Player rolls', 1)
+             ->and('Player rolls', 1)
+             ->and('Player rolls', 1)
+             ->and('Player rolls', 1)
+             ->and('Player rolls', 1)
+             ->and('Player rolls', 1)
+             ->and('Player rolls', 1)
+             ->and('Player rolls', 1)
+             ->and('Player rolls', 1)
+             ->and('Player rolls', 1)
+             ->and('Player rolls', 1)
+             ->and('Player rolls', 1)
+             ->and('Player rolls', 1)
+             ->and('Player rolls', 1)
+             ->and('Player rolls', 1)
+             ->and('Player rolls', 1)
+             ->and('Player rolls', 1)
+             ->then('Score should be', 20);
+    }
+
+    /**
+     * @scenario
+     */
+    public function scoreForOneSpareAnd3Is16()
     {
         $this->given('New game')
              ->when('Player rolls', 5)
              ->and('Player rolls', 5)
              ->and('Player rolls', 3)
              ->then('Score should be', 16);
+    }
+
+    /**
+     * @scenario
+     */
+    public function scoreForOneStrikeAnd3And4Is24()
+    {
+        $this->given('New game')
+             ->when('Player rolls', 10)
+             ->and('Player rolls', 3)
+             ->and('Player rolls', 4)
+             ->then('Score should be', 24);
+    }
+
+    /**
+     * @scenario
+     */
+    public function scoreForPerfectGameIs300()
+    {
+        $this->given('New game')
+             ->when('Player rolls', 10)
+             ->and('Player rolls', 10)
+             ->and('Player rolls', 10)
+             ->and('Player rolls', 10)
+             ->and('Player rolls', 10)
+             ->and('Player rolls', 10)
+             ->and('Player rolls', 10)
+             ->and('Player rolls', 10)
+             ->and('Player rolls', 10)
+             ->and('Player rolls', 10)
+             ->and('Player rolls', 10)
+             ->and('Player rolls', 10)
+             ->then('Score should be', 300);
     }
 
     public function runGiven(&$world, $action, $arguments)
