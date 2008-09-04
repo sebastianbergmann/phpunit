@@ -101,7 +101,13 @@ class PHPUnit_Extensions_Story_ResultPrinter_Text extends PHPUnit_Extensions_Sto
             $scenarioStatus = 'successful';
         }
 
-        $this->write(' - ' . $name . ' [' . $scenarioStatus . "]\n\n");
+        $this->write(
+          sprintf(
+            " [%s] %s\n\n",
+            $scenarioStatus == 'successful' ? 'x' : ' ',
+            $name
+          )
+        );
 
         $lastStepName = '';
         $stepsBuffer  = '';
@@ -117,7 +123,14 @@ class PHPUnit_Extensions_Story_ResultPrinter_Text extends PHPUnit_Extensions_Sto
 
             $lastStepName = $currentStepName;
 
-            $this->write('   ' . sprintf('%5s', $stepText) . ' ' . $step->getAction() . "\n");
+            $this->write(
+              sprintf(
+                "   %5s %s %s\n",
+                $stepText,
+                $step->getAction(),
+                $step->getArguments(TRUE)
+              )
+            );
         }
 
         $this->write("\n");

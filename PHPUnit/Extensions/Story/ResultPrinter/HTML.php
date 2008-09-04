@@ -160,7 +160,7 @@ class PHPUnit_Extensions_Story_ResultPrinter_HTML extends PHPUnit_Extensions_Sto
             $stepTemplate->setVar(
               array(
                 'text'   => $stepText,
-                'action' => $step->getAction(),
+                'action' => $step->getAction() . ' ' . $step->getArguments(TRUE),
               )
             );
 
