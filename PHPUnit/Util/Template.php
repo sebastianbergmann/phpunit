@@ -98,13 +98,15 @@ class PHPUnit_Util_Template
     {
         $distFile = $file . '.dist';
 
-        if (file_exists($distFile)) {
-            $file = $distFile;
-        }
-
         if (file_exists($file)) {
             $this->template = file_get_contents($file);
-        } else {
+        }
+
+        else if (file_exists($distFile)) {
+            $this->template = file_get_contents($distFile);
+        }
+
+        else {
             throw new InvalidArgumentException(
               'Template file could not be loaded.'
             );
