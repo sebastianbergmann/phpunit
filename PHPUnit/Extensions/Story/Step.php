@@ -99,11 +99,30 @@ abstract class PHPUnit_Extensions_Story_Step
     /**
      * Returns this step's arguments.
      *
-     * @return array
+     * @param  boolean $asString
+     * @return array|string
      */
-    public function getArguments()
+    public function getArguments($asString = FALSE)
     {
-        return $this->arguments;
+        if (!$asString) {
+            return $this->arguments;
+        } else {
+            switch (count($this->arguments)) {
+                case 0: {
+                    return '';
+                }
+                break;
+
+                case 1: {
+                    return $this->arguments[0];
+                }
+                break;
+
+                default: {
+                    return var_export($this->arguments, TRUE);
+                }
+            }
+        }
     }
 
     /**
