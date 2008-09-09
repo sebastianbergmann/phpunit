@@ -144,13 +144,14 @@ class PHPUnit_Util_Log_CodeCoverage_XML_Source
                     $xmlLine->setAttribute('lineNumber', $lineNum);
                     $xmlLine->setAttribute('executed', $count);
 
-                    $xmlLineBody = $xmlLine->appendChild(
-                      $document->createElement('body')
-                    );
-
-                    $xmlLineBody->appendChild(
-                      $document->createCDATASection(
-                        PHPUnit_Util_XML::convertToUtf8($line)
+                    $xmlLine->appendChild(
+                      $document->createElement(
+                        'body',
+                        htmlspecialchars(
+                          PHPUnit_Util_XML::convertToUtf8($line),
+                          ENT_COMPAT,
+                          'UTF-8'
+                        )
                       )
                     );
 
@@ -168,13 +169,14 @@ class PHPUnit_Util_Log_CodeCoverage_XML_Source
                                 $xmlTest->setAttribute('status', $test->getStatus());
 
                                 if ($test->hasFailed()) {
-                                    $xmlMessage = $xmlTest->appendChild(
-                                      $document->createElement('message')
-                                    );
-
-                                    $xmlMessage->appendChild(
-                                      $document->createCDATASection(
-                                        PHPUnit_Util_XML::convertToUtf8($test->getStatusMessage())
+                                    $xmlTest->appendChild(
+                                      $document->createElement(
+                                        'message',
+                                        htmlspecialchars(
+                                          PHPUnit_Util_XML::convertToUtf8($test->getStatusMessage()),
+                                          ENT_COMPAT,
+                                          'UTF-8'
+                                        )
                                       )
                                     );
                                 }
@@ -250,13 +252,14 @@ class PHPUnit_Util_Log_CodeCoverage_XML_Source
 
                     $xmlLine->setAttribute('lineNumber', $lineNum);
 
-                    $xmlLineBody = $xmlLine->appendChild(
-                      $document->createElement('body')
-                    );
-
-                    $xmlLineBody->appendChild(
-                      $document->createCDATASection(
-                        PHPUnit_Util_XML::convertToUtf8($line)
+                    $xmlLine->appendChild(
+                      $document->createElement(
+                        'body',
+                        htmlspecialchars(
+                          PHPUnit_Util_XML::convertToUtf8($line),
+                          ENT_COMPAT,
+                          'UTF-8'
+                        )
                       )
                     );
 
