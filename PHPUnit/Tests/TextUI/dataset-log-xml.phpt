@@ -19,12 +19,12 @@ PHPUnit %s by Sebastian Bergmann.
       <testcase name="testAdd with data set #0" assertions="1" time="%f"/>
       <testcase name="testAdd with data set #1" assertions="1" time="%f"/>
       <testcase name="testAdd with data set #2" assertions="1" time="%f">
-        <failure type="PHPUnit_Framework_ExpectationFailedException"><![CDATA[testAdd(DataSetTest) with data set #2 (1, 1, 3)
-Failed asserting that <integer:2> matches expected value <integer:3>.
+        <failure type="PHPUnit_Framework_ExpectationFailedException">testAdd(DataSetTest) with data set #2 (1, 1, 3)
+Failed asserting that &lt;integer:2&gt; matches expected value &lt;integer:3&gt;.
 
 %s:%i
 %s:%i
-]]></failure>
+</failure>
       </testcase>
       <testcase name="testAdd with data set #3" assertions="1" time="%f"/>
     </testsuite>
