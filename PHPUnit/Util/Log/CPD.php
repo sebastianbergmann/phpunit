@@ -106,21 +106,22 @@ class PHPUnit_Util_Log_CPD extends PHPUnit_Util_Printer
             $xmlFile->setAttribute('path', $duplicate['fileB']->getPath());
             $xmlFile->setAttribute('line', $duplicate['firstLineB']);
 
-            $codefragment = $xmlDuplication->appendChild(
-              $document->createElement('codefragment')
-            );
-
-            $codefragment->appendChild(
-              $document->createCDATASection(
-                PHPUnit_Util_XML::convertToUtf8(
-                  join(
-                    '',
-                    array_slice(
-                      $duplicate['fileA']->getLines(),
-                      $duplicate['firstLineA'] - 1,
-                      $duplicate['numLines']
+            $xmlDuplication->appendChild(
+              $document->createElement(
+                'codefragment',
+                htmlspecialchars(
+                  PHPUnit_Util_XML::convertToUtf8(
+                    join(
+                      '',
+                      array_slice(
+                        $duplicate['fileA']->getLines(),
+                        $duplicate['firstLineA'] - 1,
+                        $duplicate['numLines']
+                      )
                     )
-                  )
+                  ),
+                  ENT_COMPAT,
+                  'UTF-8'
                 )
               )
             );
