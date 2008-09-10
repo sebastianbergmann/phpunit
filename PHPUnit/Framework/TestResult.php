@@ -45,6 +45,7 @@
  */
 
 require_once 'PHPUnit/Framework.php';
+require_once 'PHPUnit/Util/CodeCoverage.php';
 require_once 'PHPUnit/Util/ErrorHandler.php';
 require_once 'PHPUnit/Util/Filter.php';
 require_once 'PHPUnit/Util/Printer.php';
