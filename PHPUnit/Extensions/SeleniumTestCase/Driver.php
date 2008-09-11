@@ -903,7 +903,7 @@ class PHPUnit_Extensions_SeleniumTestCase_Driver
         $info     = stream_get_meta_data($handle);
         $response = '';
 
-        while ((!feof($handle)) && (!$info['timed_out'])) {
+        while (!$info['eof'] && !$info['timed_out']) {
             $response .= fgets($handle, 4096);
             $info = stream_get_meta_data($handle);
         }
