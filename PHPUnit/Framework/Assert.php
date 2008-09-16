@@ -829,7 +829,7 @@ abstract class PHPUnit_Framework_Assert
     public static function assertSame($expected, $actual, $message = '')
     {
         if (is_bool($expected) && is_bool($actual)) {
-            self::assertEquals($expected, $actual);
+            self::assertEquals($expected, $actual, $message);
         } else {
             $constraint = new PHPUnit_Framework_Constraint_IsIdentical($expected);
 
@@ -867,7 +867,7 @@ abstract class PHPUnit_Framework_Assert
     public static function assertNotSame($expected, $actual, $message = '')
     {
         if (is_bool($expected) && is_bool($actual)) {
-            self::assertNotEquals($expected, $actual);
+            self::assertNotEquals($expected, $actual, $message);
         } else {
             $constraint = new PHPUnit_Framework_Constraint_Not(
               new PHPUnit_Framework_Constraint_IsIdentical($expected)
