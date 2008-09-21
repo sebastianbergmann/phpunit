@@ -593,13 +593,13 @@ abstract class PHPUnit_Framework_Assert
      * Asserts that the contents of a string is not equal
      * to the contents of a file.
      *
-     * @param  string  $expected
-     * @param  string  $actual
+     * @param  string  $expectedFile
+     * @param  string  $actualString
      * @param  string  $message
      * @param  boolean $canonicalizeEol
-     * @since  Method available since Release 3.2.14
+     * @since  Method available since Release 3.3.0
      */
-    public static function assertStringNotEqualsFile($expected, $actual, $message = '', $canonicalizeEol = FALSE)
+    public static function assertStringNotEqualsFile($expectedFile, $actualString, $message = '', $canonicalizeEol = FALSE)
     {
         self::assertFileExists($expectedFile, $message);
 
