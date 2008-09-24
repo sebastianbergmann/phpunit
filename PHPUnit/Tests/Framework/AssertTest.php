@@ -3026,20 +3026,34 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
         $this->assertSelectRegExp($selector, $regexp, FALSE, $this->html);
     }
 
-    /**
-     * @expectedException PHPUnit_Framework_IncompleteTestError incomplete 0
-     */
     public function testMarkTestIncomplete()
     {
-        $this->markTestIncomplete('incomplete');
+        try {
+            $this->markTestIncomplete('incomplete');
+        }
+
+        catch (PHPUnit_Framework_IncompleteTestError $e) {
+            $this->assertEquals('incomplete', $e->getMessage());
+
+            return;
+        }
+
+        $this->fail();
     }
 
-    /**
-     * @expectedException PHPUnit_Framework_SkippedTestError
-     */
     public function testMarkTestSkipped()
     {
-        $this->markTestSkipped();
+        try {
+            $this->markTestSkipped('skipped');
+        }
+
+        catch (PHPUnit_Framework_SkippedTestError $e) {
+            $this->assertEquals('skipped', $e->getMessage());
+
+            return;
+        }
+
+        $this->fail();
     }
 }
 ?>
