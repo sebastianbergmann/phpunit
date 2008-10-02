@@ -2,7 +2,7 @@
 Copyright (c) 2008, Yahoo! Inc. All rights reserved.
 Code licensed under the BSD License:
 http://developer.yahoo.net/yui/license.txt
-version: 2.5.2
+version: 2.6.0
 */
 .yui-overlay,
 .yui-panel-container {
@@ -233,6 +233,9 @@ PLEASE NOTE:
     background:url(close12_1.gif) no-repeat;
     cursor:pointer;
     visibility:inherit;
+    text-indent:-10000em;
+    overflow:hidden;
+    text-decoration:none;
 }
 
 .yui-panel .ft {
@@ -315,4 +318,8 @@ PLEASE NOTE:
     background-color:#BBB;
     border-top-color:#333;
     border-left-color:#333;
+}
+
+.yui-override-padding {
+    padding:0 !important;
 }
