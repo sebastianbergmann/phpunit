@@ -162,7 +162,7 @@ abstract class PHPUnit_Util_Printer
             }
         } else {
             if (php_sapi_name() != 'cli') {
-                $buffer = htmlentities($buffer);
+                $buffer = htmlspecialchars($buffer);
             }
 
             print $buffer;
