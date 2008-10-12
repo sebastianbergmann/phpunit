@@ -402,9 +402,11 @@ class PHPUnit_Util_Filter
 
         $eTrace = $e->getTrace();
 
-        array_unshift(
-          $eTrace, array('file' => $e->getFile(), 'line' => $e->getLine())
-        );
+        if (!self::frameExists($eTrace, $e->getFile(), $e->getLine())) {
+            array_unshift(
+              $eTrace, array('file' => $e->getFile(), 'line' => $e->getLine())
+            );
+        }
 
         foreach ($eTrace as $frame) {
             if (!self::$filter || (isset($frame['file']) && !self::isFiltered($frame['file'], $filterTests, TRUE))) {
@@ -533,6 +535,25 @@ class PHPUnit_Util_Filter
     public static function getCoveredFiles()
     {
         return self::$coveredFiles;
+    }
+
+    /**
+     * @param  array  $trace
+     * @param  string $file
+     * @param  int    $line
+     * @return boolean
+     * @since  Method available since Release 3.3.2
+     */
+    public static function frameExists(array $trace, $file, $line)
+    {
+        foreach ($trace as $frame) {
+            if (isset($frame['file']) && $frame['file'] == $file &&
+                isset($frame['line']) && $frame['line'] == $line) {
+                return TRUE;
+            }
+        }
+        
+        return FALSE;
     }
 }
 
