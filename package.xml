@@ -794,6 +794,10 @@
        <tasks:replace from="@package_version@" to="version" type="package-info" />
       </file>
      </dir>
+     <dir name="Regression">
+      <file baseinstalldir="/" name="578.phpt" role="test" />
+      <file baseinstalldir="/" name="Issue578Test.php" role="test" />
+     </dir>
      <dir name="TextUI">
       <file baseinstalldir="/" name="coverage-clover-class-extended.phpt" role="test" />
       <file baseinstalldir="/" name="coverage-clover-class.phpt" role="test" />
