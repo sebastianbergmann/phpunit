@@ -82,6 +82,7 @@ class AllTests
         $suite->addTest(Extensions_AllTests::suite());
         $suite->addTest(Runner_AllTests::suite());
         $suite->addTest(Util_AllTests::suite());
+        $suite->addTest(new PHPUnit_Extensions_PhptTestSuite(dirname(__FILE__) . DIRECTORY_SEPARATOR . 'Regression'));
         $suite->addTest(new PHPUnit_Extensions_PhptTestSuite(dirname(__FILE__) . DIRECTORY_SEPARATOR . 'TextUI'));
 
         return $suite;
