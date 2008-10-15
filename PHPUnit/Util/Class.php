@@ -228,9 +228,34 @@ class PHPUnit_Util_Class
     }
 
     /**
+     * Returns the signature of a function.
+     *
+     * @param  ReflectionFunction $function
+     * @return string
+     * @since  Method available since Release 3.3.2
+     * @todo   Find a better place for this method.
+     */
+    public static function getFunctionSignature(ReflectionFunction $function)
+    {
+        if ($function->returnsReference()) {
+            $reference = '&';
+        } else {
+            $reference = '';
+        }
+
+        return sprintf(
+          'function %s%s(%s)',
+
+          $reference,
+          $function->getName(),
+          self::getMethodParameters($function)
+        );
+    }
+
+    /**
      * Returns the signature of a method.
      *
-     * @param  ReflectionClass $method
+     * @param  ReflectionMethod $method
      * @return string
      * @since  Method available since Release 3.2.0
      */
@@ -269,13 +294,13 @@ class PHPUnit_Util_Class
     }
 
     /**
-     * Returns the parameters of a method.
+     * Returns the parameters of a function or method.
      *
-     * @param  ReflectionClass $method
+     * @param  ReflectionFunction|ReflectionMethod $method
      * @return string
      * @since  Method available since Release 3.2.0
      */
-    public static function getMethodParameters(ReflectionMethod $method)
+    public static function getMethodParameters($method)
     {
         $parameters = array();
 

@@ -136,6 +136,28 @@ td.coverBarOutline
 }
 
 /* Directory view/File view (all): percentage entry for files with
+no coverage rate */
+td.coverPerNone
+{
+  text-align: right;
+  padding-left: 10px;
+  padding-right: 10px;
+  background-color: #d3d7cf;
+  font-weight: bold;
+}
+
+/* Directory view/File view (all): line count entry for files with
+no coverage rate */
+td.coverNumNone
+{
+  text-align: right;
+  padding-left: 10px;
+  padding-right: 10px;
+  background-color: #d3d7cf;
+  white-space: nowrap;
+}
+
+/* Directory view/File view (all): percentage entry for files with
 high coverage rate */
 td.coverPerHi
 {
