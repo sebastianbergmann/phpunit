@@ -74,9 +74,9 @@ class PHPUnit_Extensions_Database_DB_FilteredDataSet extends PHPUnit_Extensions_
     /**
      * Creates a new dataset using the given database connection.
      *
-     * @param PHPUnit_Extensions_Database_DB_DefaultDatabaseConnection $databaseConnection
+     * @param PHPUnit_Extensions_Database_DB_IDatabaseConnection $databaseConnection
      */
-    public function __construct(PHPUnit_Extensions_Database_DB_DefaultDatabaseConnection $databaseConnection, Array $tableNames)
+    public function __construct(PHPUnit_Extensions_Database_DB_IDatabaseConnection $databaseConnection, Array $tableNames)
     {
         parent::__construct($databaseConnection);
         $this->tableNames = $tableNames;
