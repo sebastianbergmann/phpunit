@@ -1,5 +1,14 @@
         <tr>
-          <td class="coverFile" colspan="4">{name}</td>
+          <td class="{itemClass}">{name}</td>
+          <td class="coverBar" align="center" width="100">
+            <table border="0" cellspacing="0" cellpadding="1">
+              <tr>
+                <td class="coverBarOutline"><img src="{classes_color}.png" width="{classes_called_width}" height="10" alt="{classes_called_percent}"><img src="snow.png" width="{classes_not_called_width}" height="10" alt="{classes_called_percent}"></td>
+              </tr>
+            </table>
+          </td>
+          <td class="coverPer{classes_level}">{classes_called_percent}</td>
+          <td class="coverNum{classes_level}">{classes_number}</td>
           <td class="coverBar" align="center" width="100">
             <table border="0" cellspacing="0" cellpadding="1">
               <tr>
