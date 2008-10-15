@@ -96,6 +96,14 @@ interface PHPUnit_Extensions_Database_DB_IDatabaseConnection
     public function getConnection();
 
     /**
+     * Returns a database metadata object that can be used to retrieve table
+     * meta data from the database.
+     *
+     * @return PHPUnit_Extensions_Database_DB_IMetaData
+     */
+    public function getMetaData();
+
+    /**
      * Returns the number of rows in the given table. You can specify an
      * optional where clause to return a subset of the table.
      *
