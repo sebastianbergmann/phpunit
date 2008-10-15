@@ -543,11 +543,20 @@ class PHPUnit_TextUI_Command
             $arguments['configuration'] = realpath('phpunit.xml');
         }
 
-        if (!isset($arguments['test']) && isset($arguments['configuration'])) {
+        if (isset($arguments['configuration'])) {
             $configuration = new PHPUnit_Util_Configuration(
               $arguments['configuration']
             );
 
+            $browsers = $configuration->getSeleniumBrowserConfiguration();
+
+            if (!empty($browsers)) {
+                require_once 'PHPUnit/Extensions/SeleniumTestCase.php';
+                PHPUnit_Extensions_SeleniumTestCase::$browsers = $browsers;
+            }
+        }
+
+        if (!isset($arguments['test']) && isset($configuration)) {
             $configuration->handlePHPConfiguration();
             $testSuite = $configuration->getTestSuiteConfiguration();
 
