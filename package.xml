@@ -1182,7 +1182,8 @@
        <file baseinstalldir="/" name="file.html.dist" role="php" />
        <file baseinstalldir="/" name="file_no_yui.html.dist" role="php" />
        <file baseinstalldir="/" name="glass.png" role="php" />
-       <file baseinstalldir="/" name="item.html.dist" role="php" />
+       <file baseinstalldir="/" name="directory_item.html.dist" role="php" />
+       <file baseinstalldir="/" name="file_item.html.dist" role="php" />
        <file baseinstalldir="/" name="method_item.html.dist" role="php" />
        <file baseinstalldir="/" name="scarlet_red.png" role="php" />
        <file baseinstalldir="/" name="snow.png" role="php" />
