@@ -79,16 +79,16 @@ class PHPUnit_Extensions_Database_DB_DataSet extends PHPUnit_Extensions_Database
     /**
      * The database connection this dataset is using.
      *
-     * @var PHPUnit_Extensions_Database_DB_DefaultDatabaseConnection
+     * @var PHPUnit_Extensions_Database_DB_IDatabaseConnection
      */
     protected $databaseConnection;
 
     /**
      * Creates a new dataset using the given database connection.
      *
-     * @param PHPUnit_Extensions_Database_DB_DefaultDatabaseConnection $databaseConnection
+     * @param PHPUnit_Extensions_Database_DB_IDatabaseConnection $databaseConnection
      */
-    public function __construct(PHPUnit_Extensions_Database_DB_DefaultDatabaseConnection $databaseConnection)
+    public function __construct(PHPUnit_Extensions_Database_DB_IDatabaseConnection $databaseConnection)
     {
         $this->databaseConnection = $databaseConnection;
     }
