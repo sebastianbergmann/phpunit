@@ -46,7 +46,7 @@ Usage: phpunit [switches] UnitTest [UnitTest.php]
 
   --no-syntax-check        Disable syntax check of test source files.
   --stop-on-failure        Stop execution upon first error or failure.
-  --ansi                   Use ANSI colors in output.
+  --colors                 Use colors in output.
   --verbose                Output more verbose information.
   --wait                   Waits for a keystroke after each test.
 

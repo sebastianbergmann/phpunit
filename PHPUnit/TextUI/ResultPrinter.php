@@ -97,7 +97,7 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
     /**
      * @var    boolean
      */
-    protected $ansi = FALSE;
+    protected $colors = FALSE;
 
     /**
      * @var    boolean
@@ -114,16 +114,16 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
      *
      * @param  mixed   $out
      * @param  boolean $verbose
-     * @param  boolean $ansi
+     * @param  boolean $colors
      * @throws InvalidArgumentException
      * @since  Method available since Release 3.0.0
      */
-    public function __construct($out = NULL, $verbose = FALSE, $ansi = FALSE)
+    public function __construct($out = NULL, $verbose = FALSE, $colors = FALSE)
     {
         parent::__construct($out);
 
-        if (is_bool($ansi)) {
-            $this->ansi = $ansi;
+        if (is_bool($colors)) {
+            $this->colors = $colors;
         } else {
             throw new InvalidArgumentException;
         }
@@ -301,7 +301,7 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
         if ($result->wasSuccessful() &&
             $result->allCompletlyImplemented() &&
             $result->noneSkipped()) {
-            if ($this->ansi) {
+            if ($this->colors) {
                 $this->write("\x1b[30;42m\x1b[2K");
             }
 
@@ -316,7 +316,7 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
               )
             );
 
-            if ($this->ansi) {
+            if ($this->colors) {
                 $this->write("\x1b[0m\x1b[2K");
             }
         }
@@ -324,9 +324,14 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
         else if ((!$result->allCompletlyImplemented() ||
                   !$result->noneSkipped())&&
                  $result->wasSuccessful()) {
+            if ($this->colors) {
+                $this->write("\x1b[30;43m\x1b[2KOK, but incomplete or skipped tests!\n\x1b[0m\x1b[30;43m\x1b[2K");
+            } else {
+                $this->write("OK, but incomplete or skipped tests!\n");
+            }
+
             $this->write(
               sprintf(
-                "OK, but incomplete or skipped tests!\n" .
                 "Tests: %d, Assertions: %d%s%s.\n",
 
                 count($result),
@@ -335,12 +340,16 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
                 $this->getCountString($result->skippedCount(), 'Skipped')
               )
             );
+
+            if ($this->colors) {
+                $this->write("\x1b[0m\x1b[2K");
+            }
         }
 
         else {
             $this->write("\n");
 
-            if ($this->ansi) {
+            if ($this->colors) {
                 $this->write("\x1b[37;41m\x1b[2KFAILURES!\n\x1b[0m\x1b[37;41m\x1b[2K");
             } else {
                 $this->write("FAILURES!\n");
@@ -359,7 +368,7 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
               )
             );
 
-            if ($this->ansi) {
+            if ($this->colors) {
                 $this->write("\x1b[0m\x1b[2K");
             }
         }
