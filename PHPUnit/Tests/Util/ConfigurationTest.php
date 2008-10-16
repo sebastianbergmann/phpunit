@@ -216,8 +216,8 @@ class Util_ConfigurationTest extends PHPUnit_Framework_TestCase
     {
         $this->assertEquals(
           array (
-            'ansi' => FALSE,
             'bootstrap' => '/path/to/bootstrap.php',
+            'colors' => FALSE,
             'convertErrorsToExceptions' => TRUE,
             'convertNoticesToExceptions' => TRUE,
             'convertWarningsToExceptions' => TRUE,
