@@ -57,8 +57,8 @@ PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
  * <code>
  * <?xml version="1.0" encoding="utf-8" ?>
  *
- * <phpunit ansi="false"
- *          bootstrap="/path/to/bootstrap.php"
+ * <phpunit bootstrap="/path/to/bootstrap.php"
+ *          colors="false"
  *          convertErrorsToExceptions="true"
  *          convertNoticesToExceptions="true"
  *          convertWarningsToExceptions="true"
@@ -399,8 +399,15 @@ class PHPUnit_Util_Configuration
     {
         $result = array();
 
-        if ($this->document->documentElement->hasAttribute('ansi')) {
-            $result['ansi'] = $this->getBoolean(
+        if ($this->document->documentElement->hasAttribute('colors')) {
+            $result['colors'] = $this->getBoolean(
+              (string)$this->document->documentElement->getAttribute('colors'),
+              FALSE
+            );
+        }
+
+        else if ($this->document->documentElement->hasAttribute('ansi')) {
+            $result['colors'] = $this->getBoolean(
               (string)$this->document->documentElement->getAttribute('ansi'),
               FALSE
             );
