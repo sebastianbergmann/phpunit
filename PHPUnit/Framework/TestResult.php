@@ -141,6 +141,11 @@ class PHPUnit_Framework_TestResult implements Countable
     protected $stopOnFailure = FALSE;
 
     /**
+     * @var    boolean
+     */
+    protected $lastTestFailed = FALSE;
+
+    /**
      * Registers a TestListener.
      *
      * @param  PHPUnit_Framework_TestListener
@@ -210,6 +215,9 @@ class PHPUnit_Framework_TestResult implements Countable
         foreach ($this->listeners as $listener) {
             $listener->$notifyMethod($test, $e, $time);
         }
+
+        $this->lastTestFailed = TRUE;
+        $this->time          += $time;
     }
 
     /**
@@ -244,6 +252,9 @@ class PHPUnit_Framework_TestResult implements Countable
         foreach ($this->listeners as $listener) {
             $listener->$notifyMethod($test, $e, $time);
         }
+
+        $this->lastTestFailed = TRUE;
+        $this->time          += $time;
     }
 
     /**
@@ -283,7 +294,8 @@ class PHPUnit_Framework_TestResult implements Countable
      */
     public function startTest(PHPUnit_Framework_Test $test)
     {
-        $this->runTests += count($test);
+        $this->lastTestFailed = FALSE;
+        $this->runTests      += count($test);
 
         foreach ($this->listeners as $listener) {
             $listener->startTest($test);
@@ -300,6 +312,10 @@ class PHPUnit_Framework_TestResult implements Countable
     {
         foreach ($this->listeners as $listener) {
             $listener->endTest($test, $time);
+        }
+
+        if (!$this->lastTestFailed) {
+            $this->time += $time;
         }
     }
 
@@ -625,8 +641,6 @@ class PHPUnit_Framework_TestResult implements Countable
         }
 
         $this->endTest($test, $time);
-
-        $this->time += $time;
     }
 
     /**
