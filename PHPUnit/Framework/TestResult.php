@@ -510,14 +510,12 @@ class PHPUnit_Framework_TestResult implements Countable
         $executed = PHPUnit_Util_CodeCoverage::codeCoverageToBitString($data, array(1));
         unset($data);
 
-        $result = array(
+        $this->codeCoverageInformation[] = array(
           'test'       => $test,
           'files'      => $executed,
           'dead'       => $deadCode,
           'executable' => $executableCode,
         );
-
-        $this->codeCoverageInformation[] = $result;
     }
 
     /**
