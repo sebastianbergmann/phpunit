@@ -227,6 +227,11 @@ class PHPUnit_TextUI_Command
             $arguments['testFile'] = '';
         }
 
+        if (isset($arguments['test']) && is_file($arguments['test'])) {
+            $arguments['testFile'] = realpath($arguments['test']);
+            $arguments['test']     = substr($arguments['test'], 0, strrpos($arguments['test'], '.'));
+        }
+
         foreach ($options[0] as $option) {
             switch ($option[0]) {
                 case '--ansi':
@@ -429,22 +434,22 @@ class PHPUnit_TextUI_Command
                 case '--skeleton':
                 case '--skeleton-class':
                 case '--skeleton-test': {
-                    if (isset($arguments['bootstrap'])) {
-                        require_once $arguments['bootstrap'];
-                    }
-
-                    if ($option[0] == '--skeleton-class') {
-                        require_once 'PHPUnit/Util/Skeleton/Class.php';
-
-                        $class = 'PHPUnit_Util_Skeleton_Class';
-                    } else {
-                        require_once 'PHPUnit/Util/Skeleton/Test.php';
-
-                        $class = 'PHPUnit_Util_Skeleton_Test';
-                    }
-
-                    if (isset($arguments['test']) && $arguments['test'] !== FALSE && isset($arguments['testFile'])) {
+                    if (isset($arguments['test']) && $arguments['test'] !== FALSE) {
                         PHPUnit_TextUI_TestRunner::printVersionString();
+
+                        if (isset($arguments['bootstrap'])) {
+                            require_once $arguments['bootstrap'];
+                        }
+
+                        if ($option[0] == '--skeleton-class') {
+                            require_once 'PHPUnit/Util/Skeleton/Class.php';
+
+                            $class = 'PHPUnit_Util_Skeleton_Class';
+                        } else {
+                            require_once 'PHPUnit/Util/Skeleton/Test.php';
+
+                            $class = 'PHPUnit_Util_Skeleton_Test';
+                        }
 
                         try {
                             $skeleton = new $class($arguments['test'], $arguments['testFile']);
