@@ -385,21 +385,12 @@ class PHPUnit_Framework_MockObject_Mock
 
     protected function generateConstructorCode(ReflectionClass $class)
     {
-        if (!$this->callOriginalConstructor) {
-            return "    public function __construct() {\n" .
-                   "        \$this->invocationMocker = new PHPUnit_Framework_MockObject_InvocationMocker(\$this);\n" .
-                   "    }\n\n";
-        }
+        $constructor = $class->getConstructor();
 
-        $className   = $class->getName();
-        $constructor = FALSE;
-
-        if ($class->hasMethod('__construct')) {
-            $constructor = $class->getMethod('__construct');
-        }
-
-        else if ($class->hasMethod($className)) {
-            $constructor = $class->getMethod($className);
+        if ($constructor !== NULL) {
+            $arguments = PHPUnit_Util_Class::getMethodParameters($constructor);
+        } else {
+            $arguments = '';
         }
 
         return sprintf(
@@ -407,15 +398,15 @@ class PHPUnit_Framework_MockObject_Mock
           "        \$this->invocationMocker = new PHPUnit_Framework_MockObject_InvocationMocker(\$this);\n" .
           "    }\n\n",
 
-          $constructor !== FALSE ? PHPUnit_Util_Class::getMethodParameters($constructor) : ''
+          $arguments
         );
     }
 
     protected function generateConstructorCodeWithParentCall(ReflectionClass $class)
     {
-        $constructor = $this->getConstructor($class);
+        $constructor = $class->getConstructor();
 
-        if ($constructor) {
+        if ($constructor !== NULL) {
             return sprintf(
               "    public function __construct(%s) {\n" .
               "        \$args = func_get_args();\n" .
@@ -444,22 +435,6 @@ class PHPUnit_Framework_MockObject_Mock
                "        \$this->invocationMocker = clone \$this->invocationMocker;\n" .
                "        parent::__clone();\n" .
                "    }\n\n";
-    }
-
-    protected function getConstructor(ReflectionClass $class)
-    {
-        $className   = $class->getName();
-        $constructor = NULL;
-
-        if ($class->hasMethod('__construct')) {
-            $constructor = $class->getMethod('__construct');
-        }
-
-        else if ($class->hasMethod($className)) {
-            $constructor = $class->getMethod($className);
-        }
-
-        return $constructor;
     }
 }
 ?>
