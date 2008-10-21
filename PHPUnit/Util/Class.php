@@ -206,19 +206,34 @@ class PHPUnit_Util_Class
      * Returns the class hierarchy for a given class.
      *
      * @param  string  $className
+     * @param  boolean $asReflectionObjects
      * @return array
      */
-    public static function getHierarchy($className)
+    public static function getHierarchy($className, $asReflectionObjects = FALSE)
     {
-        $classes = array($className);
+        if ($asReflectionObjects) {
+            $classes = array(new ReflectionClass($className));
+        } else {
+            $classes = array($className);
+        }
+
         $done    = FALSE;
 
         while (!$done) {
-            $class  = new ReflectionClass($classes[count($classes)-1]);
+            if ($asReflectionObjects) {
+                $class = new ReflectionClass($classes[count($classes)-1]->getName());
+            } else {
+                $class = new ReflectionClass($classes[count($classes)-1]);
+            }
+
             $parent = $class->getParentClass();
 
             if ($parent !== FALSE) {
-                $classes[] = $parent->getName();
+                if ($asReflectionObjects) {
+                    $classes[] = $parent;
+                } else {
+                    $classes[] = $parent->getName();
+                }
             } else {
                 $done = TRUE;
             }

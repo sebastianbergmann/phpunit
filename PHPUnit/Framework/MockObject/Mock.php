@@ -385,12 +385,20 @@ class PHPUnit_Framework_MockObject_Mock
 
     protected function generateConstructorCode(ReflectionClass $class)
     {
+        $arguments   = '';
         $constructor = $class->getConstructor();
 
         if ($constructor !== NULL) {
-            $arguments = PHPUnit_Util_Class::getMethodParameters($constructor);
-        } else {
-            $arguments = '';
+            $constructorName = $constructor->getName();
+
+            foreach (PHPUnit_Util_Class::getHierarchy($class->getName(), TRUE) as $_class) {
+                foreach ($_class->getInterfaces() as $interface) {
+                    if ($interface->hasMethod($constructorName)) {
+                        $arguments = PHPUnit_Util_Class::getMethodParameters($constructor);
+                        break 2;
+                    }
+                }
+            }
         }
 
         return sprintf(
