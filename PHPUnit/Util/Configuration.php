@@ -96,6 +96,10 @@ PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
  *     </whitelist>
  *   </filter>
  *
+ *   <listeners>
+ *     <listener class="MyListener" file="/optional/path/to/MyListener.php"/>
+ *   </listeners>
+ *
  *   <logging>
  *     <log type="coverage-html" target="/tmp/report" charset="UTF-8"
  *          yui="true" highlight="false"
@@ -265,6 +269,33 @@ class PHPUnit_Util_Configuration
         }
 
         return $groups;
+    }
+
+    /**
+     * Returns the configuration for listeners.
+     *
+     * @return array
+     * @since  Method available since Release 3.4.0
+     */
+    public function getListenerConfiguration()
+    {
+        $result = array();
+
+        foreach ($this->xpath->query('listeners/listener') as $listener) {
+            $class = (string)$listener->getAttribute('class');
+            $file  = '';
+
+            if ($listener->hasAttribute('file')) {
+                $file = (string)$listener->getAttribute('file');
+            }
+
+            $result[] = array(
+              'class' => $class,
+              'file'  => $file
+            );
+        }
+
+        return $result;
     }
 
     /**

@@ -658,6 +658,26 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
                 $arguments['excludeGroups'] = $groupConfiguration['exclude'];
             }
 
+            foreach ($arguments['configuration']->getListenerConfiguration() as $listener) {
+                if (!class_exists($listener['class'], FALSE) && $listener['file'] !== '') {
+                    $file = PHPUnit_Util_Filesystem::fileExistsInIncludePath(
+                      $listener['file']
+                    );
+
+                    if ($file !== FALSE) {
+                        require $file;
+                    }
+                }
+
+                if (class_exists($listener['class'], FALSE)) {
+                    $listener = new $listener['class'];
+
+                    if ($listener instanceof PHPUnit_Framework_TestListener) {
+                        $arguments['listeners'][] = $listener;
+                    }
+                }
+            }
+
             $loggingConfiguration = $arguments['configuration']->getLoggingConfiguration();
 
             if (isset($loggingConfiguration['coverage-html']) && !isset($arguments['reportDirectory'])) {
