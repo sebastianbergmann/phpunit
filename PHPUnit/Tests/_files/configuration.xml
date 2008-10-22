@@ -39,6 +39,10 @@
     </whitelist>
   </filter>
 
+  <listeners>
+    <listener class="MyListener" file="/optional/path/to/MyListener.php"/>
+  </listeners>
+
   <logging>
     <log type="coverage-html" target="/tmp/report" charset="UTF-8"
          yui="true" highlight="false"

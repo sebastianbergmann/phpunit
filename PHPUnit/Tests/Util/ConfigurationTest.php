@@ -164,6 +164,19 @@ class Util_ConfigurationTest extends PHPUnit_Framework_TestCase
         );
     }
 
+    public function testGetListenerConfiguration()
+    {
+        $this->assertEquals(
+          array (
+            array(
+              'class' => 'MyListener',
+              'file' => '/optional/path/to/MyListener.php',
+            ),
+          ),
+          $this->configuration->getListenerConfiguration()
+        );
+    }
+
     public function testGetLoggingConfiguration()
     {
         $this->assertEquals(
