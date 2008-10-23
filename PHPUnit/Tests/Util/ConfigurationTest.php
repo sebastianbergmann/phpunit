@@ -66,7 +66,7 @@ class Util_ConfigurationTest extends PHPUnit_Framework_TestCase
 
     protected function setUp()
     {
-        $this->configuration = new PHPUnit_Util_Configuration(
+        $this->configuration = PHPUnit_Util_Configuration::getInstance(
           dirname(dirname(__FILE__)) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'configuration.xml'
         );
     }
