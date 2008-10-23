@@ -551,7 +551,7 @@ class PHPUnit_TextUI_Command
         }
 
         if (isset($arguments['configuration'])) {
-            $configuration = new PHPUnit_Util_Configuration(
+            $configuration = PHPUnit_Util_Configuration::getInstance(
               $arguments['configuration']
             );
 

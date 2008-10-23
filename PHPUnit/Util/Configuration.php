@@ -172,6 +172,8 @@ PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
  */
 class PHPUnit_Util_Configuration
 {
+    private static $uniqueInstance = NULL;
+
     protected $document;
     protected $xpath;
 
@@ -180,10 +182,32 @@ class PHPUnit_Util_Configuration
      *
      * @param  string $filename
      */
-    public function __construct($filename)
+    protected function __construct($filename)
     {
         $this->document = PHPUnit_Util_XML::loadFile($filename);
         $this->xpath    = new DOMXPath($this->document);
+    }
+
+    /**
+     * @since  Method available since Release 3.4.0
+     */
+    private final function __clone()
+    {
+    }
+
+    /**
+     * Returns a PHPUnit configuration object.
+     *
+     * @param  string $filename
+     * @return PHPUnit_Util_Configuration
+     * @since  Method available since Release 3.4.0
+     */
+    public static function getInstance($filename) {
+        if (self::$uniqueInstance === NULL) {
+            self::$uniqueInstance = new PHPUnit_Util_Configuration($filename);
+        }
+ 
+        return self::$uniqueInstance;
     }
 
     /**
