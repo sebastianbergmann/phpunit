@@ -44,6 +44,10 @@
  * @since      File available since Release 3.1.0
  */
 
+if (!defined('T_NAMESPACE')) {
+    define('T_NAMESPACE', 377);
+}
+
 require_once 'PHPUnit/Util/Filter.php';
 
 PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
@@ -63,8 +67,7 @@ PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
 class PHPUnit_Util_Class
 {
     protected static $buffer = array();
-    protected static $fileClassMap = array();
-    protected static $fileFunctionMap = array();
+    protected static $fileMap = array();
 
     /**
      * Starts the collection of loaded classes.
@@ -117,89 +120,35 @@ class PHPUnit_Util_Class
     }
 
     /**
-     * Returns the names of the classes declared in a sourcefile.
+     * Returns information on the classes declared in a sourcefile.
      *
-     * @param  string  $filename
-     * @param  string  $commonPath
-     * @param  boolean $clearCache
+     * @param  string $filename
      * @return array
      */
-    public static function getClassesInFile($filename, $commonPath = '', $clearCache = FALSE)
+    public static function getClassesInFile($filename)
     {
-        if ($commonPath != '') {
-            $filename = str_replace($commonPath, '', $filename);
+        if (!isset(self::$fileMap[$filename])) {
+            self::parseFile($filename);
         }
 
-        if ($clearCache) {
-            self::$fileClassMap = array();
-        }
-
-        if (empty(self::$fileClassMap)) {
-            $classes = array_merge(get_declared_classes(), get_declared_interfaces());
-
-            foreach ($classes as $className) {
-                $class = new ReflectionClass($className);
-
-                if ($class->isUserDefined()) {
-                    $file = $class->getFileName();
-
-                    if ($commonPath != '') {
-                        $file = str_replace($commonPath, '', $file);
-                    }
-
-                    if (!isset(self::$fileClassMap[$file])) {
-                        self::$fileClassMap[$file] = array($class);
-                    } else {
-                        self::$fileClassMap[$file][] = $class;
-                    }
-                }
-            }
-        }
-
-        return isset(self::$fileClassMap[$filename]) ? self::$fileClassMap[$filename] : array();
+        return self::$fileMap[$filename]['classes'];
     }
 
     /**
-     * Returns the names of the classes declared in a sourcefile.
+     * Returns information on the functions declared in a sourcefile.
      *
-     * @param  string  $filename
-     * @param  string  $commonPath
-     * @param  boolean $clearCache
+     * @param  string $filename
      * @return array
      * @since  Method available since Release 3.2.0
      * @todo   Find a better place for this method.
      */
-    public static function getFunctionsInFile($filename, $commonPath = '', $clearCache = FALSE)
+    public static function getFunctionsInFile($filename)
     {
-        if ($commonPath != '') {
-            $filename = str_replace($commonPath, '', $filename);
+        if (!isset(self::$fileMap[$filename])) {
+            self::parseFile($filename);
         }
 
-        if ($clearCache) {
-            self::$fileFunctionMap = array();
-        }
-
-        if (empty(self::$fileFunctionMap)) {
-            $functions = get_defined_functions();
-
-            foreach ($functions['user'] as $functionName) {
-                $function = new ReflectionFunction($functionName);
-
-                $file = $function->getFileName();
-
-                if ($commonPath != '') {
-                    $file = str_replace($commonPath, '', $file);
-                }
-
-                if (!isset(self::$fileFunctionMap[$file])) {
-                    self::$fileFunctionMap[$file] = array($function);
-                } else {
-                    self::$fileFunctionMap[$file][] = $function;
-                }
-            }
-        }
-
-        return isset(self::$fileFunctionMap[$filename]) ? self::$fileFunctionMap[$filename] : array();
+        return self::$fileMap[$filename]['functions'];
     }
 
     /**
@@ -240,72 +189,6 @@ class PHPUnit_Util_Class
         }
 
         return $classes;
-    }
-
-    /**
-     * Returns the signature of a function.
-     *
-     * @param  ReflectionFunction $function
-     * @return string
-     * @since  Method available since Release 3.3.2
-     * @todo   Find a better place for this method.
-     */
-    public static function getFunctionSignature(ReflectionFunction $function)
-    {
-        if ($function->returnsReference()) {
-            $reference = '&';
-        } else {
-            $reference = '';
-        }
-
-        return sprintf(
-          'function %s%s(%s)',
-
-          $reference,
-          $function->getName(),
-          self::getMethodParameters($function)
-        );
-    }
-
-    /**
-     * Returns the signature of a method.
-     *
-     * @param  ReflectionMethod $method
-     * @return string
-     * @since  Method available since Release 3.2.0
-     */
-    public static function getMethodSignature(ReflectionMethod $method)
-    {
-        if ($method->isPrivate()) {
-            $modifier = 'private';
-        }
-
-        else if ($method->isProtected()) {
-            $modifier = 'protected';
-        }
-
-        else {
-            $modifier = 'public';
-        }
-
-        if ($method->isStatic()) {
-            $modifier .= ' static';
-        }
-
-        if ($method->returnsReference()) {
-            $reference = '&';
-        } else {
-            $reference = '';
-        }
-
-        return sprintf(
-          '%s function %s%s(%s)',
-
-          $modifier,
-          $reference,
-          $method->getName(),
-          self::getMethodParameters($method)
-        );
     }
 
     /**
@@ -399,9 +282,10 @@ class PHPUnit_Util_Class
      * Returns the package information of a user-defined class.
      *
      * @param  string $className
+     * @param  string $docComment
      * @return array
      */
-    public static function getPackageInformation($className)
+    public static function getPackageInformation($className, $docComment)
     {
         $result = array(
           'namespace'   => '',
@@ -416,9 +300,6 @@ class PHPUnit_Util_Class
               explode('::', $className), '::'
             );
         }
-
-        $class      = new ReflectionClass($className);
-        $docComment = $class->getDocComment();
 
         if (preg_match('/@category[\s]+([\.\w]+)/', $docComment, $matches)) {
             $result['category'] = $matches[1];
@@ -462,6 +343,191 @@ class PHPUnit_Util_Class
         }
 
         return $result;
+    }
+
+    /**
+     * Parses a file for class, method, and function information.
+     *
+     * @param string $filename
+     * @since Method available since Release 3.4.0
+     */
+    protected static function parseFile($filename)
+    {
+        self::$fileMap[$filename] = array(
+          'classes' => array(), 'functions' => array()
+        );
+
+        $tokens                     = token_get_all(file_get_contents($filename));
+        $numTokens                  = count($tokens);
+        $blocks                     = array();
+        $line                       = 1;
+        $name                       = array();
+        $currentBlock               = FALSE;
+        $currentNamespace           = FALSE;
+        $currentClass               = FALSE;
+        $currentFunction            = FALSE;
+        $currentFunctionStartLine   = FALSE;
+        $currentDocComment          = FALSE;
+        $currentSignature           = FALSE;
+        $currentSignatureStartToken = FALSE;
+
+        for ($i = 0; $i < $numTokens; $i++) {
+            if (is_string($tokens[$i])) {
+                if ($tokens[$i] == '{') {
+                    if ($currentBlock == T_CLASS) {
+                        $block = $currentClass;
+                    }
+
+                    else if ($currentBlock == T_FUNCTION) {
+                        $currentSignature = '';
+
+                        for ($j = $currentSignatureStartToken; $j < $i; $j++) {
+                            if (is_string($tokens[$j])) {
+                                $currentSignature .= $tokens[$j];
+                            } else {
+                                $currentSignature .= $tokens[$j][1];
+                            }
+                        }
+
+                        $currentSignature = trim($currentSignature);
+
+                        $block                      = $currentFunction;
+                        $currentSignatureStartToken = FALSE;
+                    }
+
+                    else {
+                        $block = FALSE;
+                    }
+
+                    array_push($blocks, $block);
+
+                    $currentBlock = FALSE;
+                }
+
+                else if ($tokens[$i] == '}') {
+                    $block = array_pop($blocks);
+
+                    if ($block !== FALSE && $block !== NULL) {
+                        if ($block == $currentClass) {
+                            self::$fileMap[$filename]['classes'][$currentClass]['endLine'] = $line;
+
+                            $currentClass          = FALSE;
+                            $currentClassStartLine = FALSE;
+                        }
+
+                        else if ($block == $currentFunction) {
+                            if ($currentDocComment !== FALSE) {
+                                $docComment        = $currentDocComment;
+                                $currentDocComment = FALSE;
+                            } else {
+                                $docComment = '';
+                            }
+
+                            $tmp = array(
+                              'docComment' => $docComment,
+                              'signature'  => $currentSignature,
+                              'startLine'  => $currentFunctionStartLine,
+                              'endLine'    => $line
+                            );
+
+                            if ($currentClass === FALSE) {
+                                self::$fileMap[$filename]['functions'][$currentFunction] = $tmp;
+                            } else {
+                                self::$fileMap[$filename]['classes'][$currentClass]['methods'][$currentFunction] = $tmp;
+                            }
+
+                            $currentFunction          = FALSE;
+                            $currentFunctionStartLine = FALSE;
+                            $currentSignature         = FALSE;
+                        }
+                    }
+                }
+
+                continue;
+            }
+
+            switch ($tokens[$i][0]) {
+                case T_NAMESPACE: {
+                    $currentNamespace = $tokens[$i+2][1];
+                }
+                break;
+
+                case T_CLASS: {
+                    $currentBlock = T_CLASS;
+
+                    if ($currentNamespace === FALSE) {
+                        $currentClass = $tokens[$i+2][1];
+                    } else {
+                        $currentClass = $currentNamespace . '::' . $tokens[$i+2][1];
+                    }
+
+                    if ($currentDocComment !== FALSE) {
+                        $docComment        = $currentDocComment;
+                        $currentDocComment = FALSE;
+                    } else {
+                        $docComment = '';
+                    }
+
+                    self::$fileMap[$filename]['classes'][$currentClass] = array(
+                      'methods'    => array(),
+                      'docComment' => $docComment,
+                      'startLine'  => $line
+                    );
+                }
+                break;
+
+                case T_FUNCTION: {
+                    $currentBlock             = T_FUNCTION;
+                    $currentFunctionStartLine = $line;
+
+                    $done                       = FALSE;
+                    $currentSignatureStartToken = $i - 1;
+
+                    do {
+                        switch ($tokens[$currentSignatureStartToken][0]) {
+                            case T_ABSTRACT:
+                            case T_FINAL:
+                            case T_PRIVATE:
+                            case T_PUBLIC:
+                            case T_PROTECTED:
+                            case T_STATIC:
+                            case T_WHITESPACE: {
+                                $currentSignatureStartToken--;
+                            }
+                            break;
+
+                            default: {
+                                $currentSignatureStartToken++;
+                                $done = TRUE;
+                            }
+                        }
+                    }
+                    while (!$done);
+
+                    if (isset($tokens[$i+2][1])) {
+                        $functionName = $tokens[$i+2][1];
+                    }
+
+                    else if (isset($tokens[$i+3][1])) {
+                        $functionName = $tokens[$i+3][1];
+                    }
+
+                    if ($currentNamespace === FALSE) {
+                        $currentFunction = $functionName;
+                    } else {
+                        $currentFunction = $currentNamespace . '::' . $functionName;
+                    }
+                }
+                break;
+
+                case T_DOC_COMMENT: {
+                    $currentDocComment = $tokens[$i][1];
+                }
+                break;
+            }
+
+            $line += substr_count($tokens[$i][1], "\n");
+        }
     }
 }
 ?>

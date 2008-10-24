@@ -104,12 +104,16 @@ class PHPUnit_Util_Metrics_File extends PHPUnit_Util_Metrics
         $this->countLines();
         $this->setCoverage($codeCoverage);
 
-        foreach (PHPUnit_Util_Class::getClassesInFile($filename) as $class) {
-            $this->classes[$class->getName()] = PHPUnit_Util_Metrics_Class::factory($class, $codeCoverage);
+        foreach (PHPUnit_Util_Class::getClassesInFile($filename) as $className => $class) {
+            $this->classes[$className] = PHPUnit_Util_Metrics_Class::factory(
+              new ReflectionClass($className), $codeCoverage
+            );
         }
 
-        foreach (PHPUnit_Util_Class::getFunctionsInFile($filename) as $function) {
-            $this->functions[$function->getName()] = PHPUnit_Util_Metrics_Function::factory($function, $codeCoverage);
+        foreach (PHPUnit_Util_Class::getFunctionsInFile($filename) as $functionName => $function) {
+            $this->functions[$functionName] = PHPUnit_Util_Metrics_Function::factory(
+              new ReflectionFunction($functionName), $codeCoverage
+            );
         }
     }
 
