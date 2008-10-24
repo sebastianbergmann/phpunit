@@ -109,7 +109,9 @@ class PHPUnit_Util_Metrics_Class extends PHPUnit_Util_Metrics
 
         $className = $class->getName();
 
-        $packageInformation = PHPUnit_Util_Class::getPackageInformation($className);
+        $packageInformation = PHPUnit_Util_Class::getPackageInformation(
+          $className, $class->getDocComment()
+        );
 
         if (!empty($packageInformation['fullPackage'])) {
             $this->package = $packageInformation['fullPackage'];

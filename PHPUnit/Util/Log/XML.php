@@ -318,7 +318,7 @@ class PHPUnit_Util_Log_XML extends PHPUnit_Util_Printer implements PHPUnit_Frame
                 $testSuite->setAttribute('file', $class->getFileName());
 
                 $packageInformation = PHPUnit_Util_Class::getPackageInformation(
-                  $suite->getName()
+                  $suite->getName(), $class->getDocComment()
                 );
 
                 if (!empty($packageInformation['namespace'])) {

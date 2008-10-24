@@ -122,15 +122,12 @@ class PHPUnit_Util_Log_CodeCoverage_XML_Clover extends PHPUnit_Util_Printer
             $classes   = PHPUnit_Util_Class::getClassesInFile($filename);
             $lines     = array();
 
-            foreach ($classes as $class) {
-                if ($class->isInterface()) {
-                    continue;
-                }
+            foreach ($classes as $className => $class) {
+                $packageInformation = PHPUnit_Util_Class::getPackageInformation(
+                  $className, $class['docComment']
+                );
 
-                $className          = $class->getName();
-                $methods            = $class->getMethods();
-                $packageInformation = PHPUnit_Util_Class::getPackageInformation($className);
-                $numMethods         = 0;
+                $numMethods = 0;
                 $fileClasses++;
                 $projectClasses++;
 
@@ -144,55 +141,51 @@ class PHPUnit_Util_Log_CodeCoverage_XML_Clover extends PHPUnit_Util_Printer
                 $classCoveredStatements   = 0;
                 $classCoveredMethods      = 0;
 
-                foreach ($methods as $method) {
-                    if ($method->getDeclaringClass()->getName() == $class->getName()) {
-                        $startLine = $method->getStartLine();
-                        $endLine   = $method->getEndLine();
-                        $tests     = array();
+                foreach ($class['methods'] as $methodName => $method) {
+                    $tests = array();
 
-                        for ($i = $startLine; $i <= $endLine; $i++) {
-                            if (isset($files[$filename][$i])) {
-                                if (is_array($files[$filename][$i])) {
-                                    foreach ($files[$filename][$i] as $_test) {
-                                        $add = TRUE;
+                    for ($i = $method['startLine']; $i <= $method['endLine']; $i++) {
+                        if (isset($files[$filename][$i])) {
+                            if (is_array($files[$filename][$i])) {
+                                foreach ($files[$filename][$i] as $_test) {
+                                    $add = TRUE;
 
-                                        foreach ($tests as $test) {
-                                            if ($test === $_test) {
-                                                $add = FALSE;
-                                                break;
-                                            }
-                                        }
-
-                                        if ($add) {
-                                            $tests[] = $_test;
+                                    foreach ($tests as $test) {
+                                        if ($test === $_test) {
+                                            $add = FALSE;
+                                            break;
                                         }
                                     }
 
-                                    $classCoveredStatements++;
+                                    if ($add) {
+                                        $tests[] = $_test;
+                                    }
                                 }
 
-                                $classStatements++;
+                                $classCoveredStatements++;
                             }
+
+                            $classStatements++;
                         }
-
-                        $count = count($tests);
-
-                        $lines[$startLine] = array(
-                          'count' => $count,
-                          'type' => 'method'
-                        );
-
-                        if ($count > 0) {
-                            $classCoveredMethods++;
-                            $fileCoveredMethods++;
-                            $projectCoveredMethods++;
-                        }
-
-                        $classStatements--;
-                        $numMethods++;
-                        $fileMethods++;
-                        $projectMethods++;
                     }
+
+                    $count = count($tests);
+
+                    $lines[$method['startLine']] = array(
+                      'count' => $count,
+                      'type' => 'method'
+                    );
+
+                    if ($count > 0) {
+                        $classCoveredMethods++;
+                        $fileCoveredMethods++;
+                        $projectCoveredMethods++;
+                    }
+
+                    $classStatements--;
+                    $numMethods++;
+                    $fileMethods++;
+                    $projectMethods++;
                 }
 
                 $classXML = $document->createElement('class');
