@@ -437,6 +437,14 @@
         <tasks:replace from="@package_version@" to="version" type="package-info" />
        </file>
       </dir>
+      <dir name="Generator">
+       <file baseinstalldir="/" name="mocked_class.tpl.dist" role="php" />
+       <file baseinstalldir="/" name="mocked_clone.tpl.dist" role="php" />
+       <file baseinstalldir="/" name="mocked_constructor.tpl.dist" role="php" />
+       <file baseinstalldir="/" name="mocked_method.tpl.dist" role="php" />
+       <file baseinstalldir="/" name="unmocked_clone.tpl.dist" role="php" />
+       <file baseinstalldir="/" name="unmocked_constructor.tpl.dist" role="php" />
+      </dir>
       <dir name="Matcher">
        <file baseinstalldir="/" name="AnyInvokedCount.php" role="php">
         <tasks:replace from="@package_version@" to="version" type="package-info" />
@@ -489,6 +497,9 @@
         <tasks:replace from="@package_version@" to="version" type="package-info" />
        </file>
       </dir>
+      <file baseinstalldir="/" name="Generator.php" role="php">
+       <tasks:replace from="@package_version@" to="version" type="package-info" />
+      </file>
       <file baseinstalldir="/" name="InvocationMocker.php" role="php">
        <tasks:replace from="@package_version@" to="version" type="package-info" />
       </file>
@@ -502,9 +513,6 @@
        <tasks:replace from="@package_version@" to="version" type="package-info" />
       </file>
       <file baseinstalldir="/" name="MockObject.php" role="php">
-       <tasks:replace from="@package_version@" to="version" type="package-info" />
-      </file>
-      <file baseinstalldir="/" name="Mock.php" role="php">
        <tasks:replace from="@package_version@" to="version" type="package-info" />
       </file>
       <file baseinstalldir="/" name="Stub.php" role="php">
