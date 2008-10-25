@@ -1,0 +1,11 @@
+
+    {modifier} function {reference}{method_name}({arguments})
+    {
+        $args = func_get_args();
+
+        return $this->invocationMocker->invoke(
+          new PHPUnit_Framework_MockObject_Invocation(
+            $this, '{class_name}', '{method_name}', $args
+          )
+        );
+    }

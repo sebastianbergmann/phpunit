@@ -1,0 +1,20 @@
+{prologue}{class_declaration}
+{
+    private $invocationMocker;
+
+{constructor}{clone}{mocked_methods}
+    public function expects(PHPUnit_Framework_MockObject_Matcher_Invocation $matcher)
+    {
+        return $this->invocationMocker->expects($matcher);
+    }
+
+    public function __phpunit_getInvocationMocker()
+    {
+        return $this->invocationMocker;
+    }
+
+    public function __phpunit_verify()
+    {
+        $this->invocationMocker->verify();
+    }
+}

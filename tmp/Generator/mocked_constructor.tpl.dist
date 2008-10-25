@@ -1,0 +1,4 @@
+    public function __construct({arguments})
+    {
+        $this->invocationMocker = new PHPUnit_Framework_MockObject_InvocationMocker($this);
+    }
