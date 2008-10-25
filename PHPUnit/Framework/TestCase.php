@@ -45,7 +45,7 @@
  */
 
 require_once 'PHPUnit/Framework.php';
-require_once 'PHPUnit/Framework/MockObject/Mock.php';
+require_once 'PHPUnit/Framework/MockObject/Generator.php';
 require_once 'PHPUnit/Framework/MockObject/Matcher/InvokedAtLeastOnce.php';
 require_once 'PHPUnit/Framework/MockObject/Matcher/InvokedAtIndex.php';
 require_once 'PHPUnit/Framework/MockObject/Matcher/InvokedCount.php';
@@ -638,9 +638,9 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
      * @return object
      * @since  Method available since Release 3.0.0
      */
-    protected function getMock($className, $methods = array(), array $arguments = array(), $mockClassName = '', $callOriginalConstructor = TRUE, $callOriginalClone = TRUE, $callAutoload = TRUE)
+    protected function getMock($originalClassName, $methods = array(), array $arguments = array(), $mockClassName = '', $callOriginalConstructor = TRUE, $callOriginalClone = TRUE, $callAutoload = TRUE)
     {
-        if (!is_string($className) || !is_string($mockClassName)) {
+        if (!is_string($originalClassName) || !is_string($mockClassName)) {
             throw new InvalidArgumentException;
         }
 
@@ -648,8 +648,17 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
             throw new InvalidArgumentException;
         }
 
-        $mock = PHPUnit_Framework_MockObject_Mock::generate(
-          $className,
+        if ($mockClassName != '' && class_exists($mockClassName, FALSE)) {
+            throw new RuntimeException(
+              sprintf(
+                'Class "%s" already exists.',
+                $mockClassName
+              )
+            );
+        }
+
+        $mock = PHPUnit_Framework_MockObject_Generator::generate(
+          $originalClassName,
           $methods,
           $mockClassName,
           $callOriginalConstructor,
@@ -657,10 +666,14 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
           $callAutoload
         );
 
+        if (!class_exists($mock['mockClassName'], FALSE)) {
+            eval($mock['code']);
+        }
+
         if (count($arguments) == 0) {
-            $mockObject = new $mock->mockClassName;
+            $mockObject = new $mock['mockClassName'];
         } else {
-            $mockClass  = new ReflectionClass($mock->mockClassName);
+            $mockClass  = new ReflectionClass($mock['mockClassName']);
             $mockObject = $mockClass->newInstanceArgs($arguments);
         }
 

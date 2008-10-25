@@ -1,0 +1,9 @@
+    public function __construct({arguments})
+    {
+        $args = func_get_args();
+
+        $this->invocationMocker = new PHPUnit_Framework_MockObject_InvocationMocker;
+
+        $class = new ReflectionClass($this);
+        $class->getParentClass()->getConstructor()->invokeArgs($this, $args);
+    }
