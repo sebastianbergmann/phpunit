@@ -670,7 +670,12 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
                 }
 
                 if (class_exists($listener['class'], FALSE)) {
-                    $listener = new $listener['class'];
+                    if (count($listener['arguments']) == 0) {
+                        $listener = new $listener['class'];
+                    } else {
+                        $listenerClass = new ReflectionClass($listener['class']);
+                        $listener      = $listenerClass->newInstanceArgs($listener['arguments']);
+                    }
 
                     if ($listener instanceof PHPUnit_Framework_TestListener) {
                         $arguments['listeners'][] = $listener;

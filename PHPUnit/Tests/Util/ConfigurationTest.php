@@ -168,9 +168,22 @@ class Util_ConfigurationTest extends PHPUnit_Framework_TestCase
     {
         $this->assertEquals(
           array (
-            array(
+            0 => 
+            array (
               'class' => 'MyListener',
               'file' => '/optional/path/to/MyListener.php',
+              'arguments' => 
+              array (
+                0 => 
+                array (
+                  0 => 'Sebastian',
+                ),
+                1 => 22,
+                2 => 'April',
+                3 => 19.78,
+                4 => NULL,
+                5 => new stdClass,
+              ),
             ),
           ),
           $this->configuration->getListenerConfiguration()

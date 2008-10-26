@@ -97,7 +97,20 @@ PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
  *   </filter>
  *
  *   <listeners>
- *     <listener class="MyListener" file="/optional/path/to/MyListener.php"/>
+ *     <listener class="MyListener" file="/optional/path/to/MyListener.php">
+ *       <arguments>
+ *         <array>
+ *           <element key="0">
+ *             <string>Sebastian</string>
+ *           </element>
+ *         </array>
+ *         <integer>22</integer>
+ *         <string>April</string>
+ *         <double>19.78</double>
+ *         <null/>
+ *         <object class="stdClass"/>
+ *       </arguments>
+ *     </listener>
  *   </listeners>
  *
  *   <logging>
@@ -306,16 +319,27 @@ class PHPUnit_Util_Configuration
         $result = array();
 
         foreach ($this->xpath->query('listeners/listener') as $listener) {
-            $class = (string)$listener->getAttribute('class');
-            $file  = '';
+            $class     = (string)$listener->getAttribute('class');
+            $file      = '';
+            $arguments = array();
 
             if ($listener->hasAttribute('file')) {
                 $file = (string)$listener->getAttribute('file');
             }
 
+            if ($listener->childNodes->item(1) instanceof DOMElement &&
+                $listener->childNodes->item(1)->tagName == 'arguments') {
+                foreach ($listener->childNodes->item(1)->childNodes as $argument) {
+                    if ($argument instanceof DOMElement) {
+                        $arguments[] = PHPUnit_Util_XML::xmlToVariable($argument);
+                    }
+                }
+            }
+
             $result[] = array(
-              'class' => $class,
-              'file'  => $file
+              'class'     => $class,
+              'file'      => $file,
+              'arguments' => $arguments
             );
         }
 

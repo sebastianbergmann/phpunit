@@ -215,6 +215,72 @@ class PHPUnit_Util_XML
     }
 
     /**
+     * "Convert" a DOMElement object into a PHP variable.
+     *
+     * @param  DOMElement $element
+     * @return mixed
+     * @since  Method available since Release 3.4.0
+     */
+    public static function xmlToVariable(DOMElement $element)
+    {
+        $variable = NULL;
+
+        switch ($element->tagName) {
+            case 'array': {
+                $variable = array();
+
+                foreach ($element->getElementsByTagName('element') as $element) {
+                    $value = self::xmlToVariable($element->childNodes->item(1));
+
+                    if ($element->hasAttribute('key')) {
+                        $variable[(string)$element->getAttribute('key')] = $value;
+                    } else {
+                        $variable[] = $value;
+                    }
+                }
+            }
+            break;
+
+            case 'object': {
+                $className = $element->getAttribute('class');
+
+                if ($element->hasChildNodes()) {
+                    $arguments       = $element->childNodes->item(1)->childNodes;
+                    $constructorArgs = array();
+
+                    foreach ($arguments as $argument) {
+                        if ($argument instanceof DOMElement) {
+                            $constructorArgs[] = self::xmlToVariable($argument);
+                        }
+                    }
+
+                    $class    = new ReflectionClass($className);
+                    $variable = $class->newInstanceArgs($constructorArgs);
+                } else {
+                    $variable = new $className;
+                }
+            }
+            break;
+
+            case 'boolean': {
+                $variable = $element->nodeValue == 'true' ? TRUE : FALSE;
+            }
+            break;
+
+            case 'integer':
+            case 'double':
+            case 'string': {
+                $variable = $element->nodeValue;
+
+                settype($variable, $element->tagName);
+            }
+            break;
+        }
+
+        return $variable;
+    }
+
+    /**
      * Validate list of keys in the associative array.
      *
      * @param  array $hash
