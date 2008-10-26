@@ -357,7 +357,7 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
 
             $this->write(
               sprintf(
-                "Tests: %d, Assertions: %s%s%s%s.\n",
+                "Tests: %d, Assertions: %s%s%s%s%s.\n",
 
                 count($result),
                 $this->numAssertions,
