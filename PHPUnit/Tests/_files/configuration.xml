@@ -40,7 +40,20 @@
   </filter>
 
   <listeners>
-    <listener class="MyListener" file="/optional/path/to/MyListener.php"/>
+    <listener class="MyListener" file="/optional/path/to/MyListener.php">
+      <arguments>
+        <array>
+          <element key="0">
+            <string>Sebastian</string>
+          </element>
+        </array>
+        <integer>22</integer>
+        <string>April</string>
+        <double>19.78</double>
+        <null/>
+        <object class="stdClass"/>
+      </arguments>
+    </listener>
   </listeners>
 
   <logging>
