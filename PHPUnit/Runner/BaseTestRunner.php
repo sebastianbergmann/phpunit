@@ -190,7 +190,7 @@ abstract class PHPUnit_Runner_BaseTestRunner implements PHPUnit_Framework_TestLi
             );
 
             $suite = new PHPUnit_Framework_TestSuite($suiteClassName);
-            $suite->addTestFiles($testCollector->collectTests());
+            $suite->addTestFiles($testCollector->collectTests(), $syntaxCheck);
 
             return $suite;
         }
