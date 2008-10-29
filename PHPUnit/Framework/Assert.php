@@ -69,6 +69,11 @@ if (!class_exists('PHPUnit_Framework_Assert', FALSE)) {
 abstract class PHPUnit_Framework_Assert
 {
     /**
+     * @var integer
+     */
+    protected static $count = 0;
+
+    /**
      * Asserts that an array has a specified key.
      *
      * @param  mixed  $key
@@ -1473,15 +1478,7 @@ abstract class PHPUnit_Framework_Assert
      */
     public static function assertThat($value, PHPUnit_Framework_Constraint $constraint, $message = '')
     {
-        $stack = debug_backtrace();
-
-        foreach (debug_backtrace() as $step) {
-            if (isset($step['object']) &&
-                $step['object'] instanceof PHPUnit_Framework_TestCase) {
-                $step['object']->incrementAssertionCounter();
-                break;
-            }
-        }
+        self::$count++;
 
         if (!$constraint->evaluate($value)) {
             $constraint->fail($value, $message);
@@ -2022,6 +2019,26 @@ abstract class PHPUnit_Framework_Assert
         throw new PHPUnit_Framework_SkippedTestError($message);
     }
 
+    /**
+     * Return the current assertion count.
+     *
+     * @return integer
+     * @since  Method available since Release 3.3.3
+     */
+    public static function getCount()
+    {
+        return self::$count;
+    }
+
+    /**
+     * Reset the assertion counter.
+     *
+     * @since  Method available since Release 3.3.3
+     */
+    public static function resetCount()
+    {
+        self::$count = 0;
+    }
 }
 
 }
