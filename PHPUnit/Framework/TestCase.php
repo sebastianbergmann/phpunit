@@ -368,8 +368,6 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
      */
     public function run(PHPUnit_Framework_TestResult $result = NULL)
     {
-        $this->numAssertions = 0;
-
         if ($result === NULL) {
             $result = $this->createResult();
         }
@@ -509,7 +507,7 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
                     );
                 }
 
-                $this->incrementAssertionCounter();
+                $this->numAssertions++;
 
                 return;
             } else {
@@ -518,7 +516,7 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
         }
 
         if ($this->expectedException !== NULL) {
-            $this->incrementAssertionCounter();
+            $this->numAssertions++;
             $this->fail('Expected exception ' . $this->expectedException);
         }
     }
@@ -670,6 +668,17 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
     }
 
     /**
+     * Adds a value to the assertion counter.
+     *
+     * @param integer $count
+     * @since Method available since Release 3.3.3
+     */
+    public function addToAssertionCount($count)
+    {
+        $this->numAssertions += $count;
+    }
+
+    /**
      * Returns the number of assertions performed by this test.
      *
      * @return integer
@@ -678,16 +687,6 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
     public function getNumAssertions()
     {
         return $this->numAssertions;
-    }
-
-    /**
-     * Increments the number of assertions performed by this test.
-     *
-     * @since  Method available since Release 3.3.0
-     */
-    public function incrementAssertionCounter()
-    {
-        $this->numAssertions++;
     }
 
     /**
