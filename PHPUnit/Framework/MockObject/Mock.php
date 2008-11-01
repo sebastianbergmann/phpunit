@@ -419,11 +419,12 @@ class PHPUnit_Framework_MockObject_Mock
               "    public function __construct(%s) {\n" .
               "        \$args = func_get_args();\n" .
               "        \$this->invocationMocker = new PHPUnit_Framework_MockObject_InvocationMocker;\n" .
-              "        \$class = new ReflectionClass(\$this);\n" .
+              "        \$class = new ReflectionClass('%s');\n" .
               "        \$class->getParentClass()->getConstructor()->invokeArgs(\$this, \$args);\n" .
               "    }\n\n",
 
-              PHPUnit_Util_Class::getMethodParameters($constructor)
+              PHPUnit_Util_Class::getMethodParameters($constructor),
+              $this->mockClassName
             );
         } else {
             return $this->generateConstructorCode($class);
