@@ -180,6 +180,7 @@ class PHPUnit_Framework_MockObject_Generator
             'constructor'       => self::generateMockConstructor(
                                      $templateDir,
                                      $class,
+                                     $mockClassName['mockClassName'],
                                      $callOriginalConstructor
                                    ),
             'clone'             => $cloneTemplate->render(),
@@ -244,7 +245,7 @@ class PHPUnit_Framework_MockObject_Generator
         return $buffer;
     }
 
-    protected static function generateMockConstructor($templateDir, ReflectionClass $class, $callOriginalConstructor)
+    protected static function generateMockConstructor($templateDir, ReflectionClass $class, $mockedClassName, $callOriginalConstructor)
     {
         $arguments              = '';
         $constructor            = $class->getConstructor();
@@ -276,7 +277,10 @@ class PHPUnit_Framework_MockObject_Generator
         }
 
         $template->setVar(
-          array('arguments' => $arguments)
+          array(
+            'arguments'         => $arguments,
+            'mocked_class_name' => $mockedClassName
+          )
         );
 
         return $template->render();

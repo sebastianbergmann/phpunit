@@ -4,6 +4,6 @@
 
         $this->invocationMocker = new PHPUnit_Framework_MockObject_InvocationMocker;
 
-        $class = new ReflectionClass($this);
+        $class = new ReflectionClass('{mocked_class_name}');
         $class->getParentClass()->getConstructor()->invokeArgs($this, $args);
     }
