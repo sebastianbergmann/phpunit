@@ -76,7 +76,7 @@ class PHPUnit_TextUI_Command
     public static function main($exit = TRUE)
     {
         $arguments = self::handleArguments();
-        $runner    = new PHPUnit_TextUI_TestRunner;
+        $runner    = new PHPUnit_TextUI_TestRunner($arguments['loader']);
 
         if (is_object($arguments['test']) && $arguments['test'] instanceof PHPUnit_Framework_Test) {
             $suite = $arguments['test'];
@@ -158,6 +158,7 @@ class PHPUnit_TextUI_Command
     {
         $arguments = array(
           'listGroups'  => FALSE,
+          'loader'      => NULL,
           'syntaxCheck' => TRUE
         );
 
@@ -331,7 +332,7 @@ class PHPUnit_TextUI_Command
                 break;
 
                 case '--loader': {
-                    self::handleLoader($option[1]);
+                    $arguments['loader'] = self::handleLoader($option[1]);
                 }
                 break;
 
@@ -555,6 +556,20 @@ class PHPUnit_TextUI_Command
               $arguments['configuration']
             );
 
+            $phpunit = $configuration->getPHPUnitConfiguration();
+
+            if (isset($phpunit['testSuiteLoaderClass'])) {
+                if (isset($phpunit['testSuiteLoaderFile'])) {
+                    $file = $phpunit['testSuiteLoaderFile'];
+                } else {
+                    $file = '';
+                }
+
+                $arguments['loader'] = self::handleLoader(
+                  $phpunit['testSuiteLoaderClass'], $file
+                );
+            }
+
             $browsers = $configuration->getSeleniumBrowserConfiguration();
 
             if (!empty($browsers)) {
@@ -591,18 +606,27 @@ class PHPUnit_TextUI_Command
     }
 
     /**
-     * @param  string  $loaderName
+     * @param  string  $loaderClass
+     * @param  string  $loaderFile
      */
-    protected static function handleLoader($loaderName)
+    protected static function handleLoader($loaderClass, $loaderFile = '')
     {
-        if (!class_exists($loaderName, FALSE)) {
-            PHPUnit_Util_Fileloader::checkAndLoad(
-              str_replace('_', '/', $loaderName) . '.php'
+        if (!class_exists($loaderClass, FALSE)) {
+            if ($loaderFile == '') {
+                $loaderFile = str_replace('_', '/', $loaderClass) . '.php';
+            }
+
+            $loaderFile = PHPUnit_Util_Filesystem::fileExistsInIncludePath(
+              $loaderFile
             );
+
+            if ($loaderFile !== FALSE) {
+                require $loaderFile;
+            }
         }
 
-        if (class_exists($loaderName, FALSE)) {
-            $class = new ReflectionClass($loaderName);
+        if (class_exists($loaderClass, FALSE)) {
+            $class = new ReflectionClass($loaderClass);
 
             if ($class->implementsInterface('PHPUnit_Runner_TestSuiteLoader') &&
                 $class->isInstantiable()) {
@@ -615,12 +639,12 @@ class PHPUnit_TextUI_Command
               sprintf(
                 'Could not use "%s" as loader.',
 
-                $loaderName
+                $loaderClass
               )
             );
         }
 
-        PHPUnit_TextUI_TestRunner::setLoader($loader);
+        return $loader;
     }
 
     /**
