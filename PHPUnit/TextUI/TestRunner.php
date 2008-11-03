@@ -81,7 +81,7 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
     /**
      * @var    PHPUnit_Runner_TestSuiteLoader
      */
-    protected static $loader = NULL;
+    protected $loader = NULL;
 
     /**
      * @var    PHPUnit_TextUI_ResultPrinter
@@ -92,6 +92,15 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
      * @var    boolean
      */
     protected static $versionStringPrinted = FALSE;
+
+    /**
+     * @param  PHPUnit_Runner_TestSuiteLoader $loader
+     * @since  Method available since Release 3.4.0
+     */
+    public function __construct(PHPUnit_Runner_TestSuiteLoader $loader = NULL)
+    {
+        $this->loader = $loader;
+    }
 
     /**
      * @param  mixed $test
@@ -475,7 +484,7 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
     /**
      * A test failed.
      *
-     * @param  integer                                 $status
+     * @param  integer                                $status
      * @param  PHPUnit_Framework_Test                 $test
      * @param  PHPUnit_Framework_AssertionFailedError $e
      */
@@ -517,22 +526,11 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
      */
     public function getLoader()
     {
-        if (self::$loader === NULL) {
-            self::$loader = new PHPUnit_Runner_StandardTestSuiteLoader;
+        if ($this->loader === NULL) {
+            $this->loader = new PHPUnit_Runner_StandardTestSuiteLoader;
         }
 
-        return self::$loader;
-    }
-
-    /**
-     * Sets the loader to be used.
-     *
-     * @param PHPUnit_Runner_TestSuiteLoader $loader
-     * @since  Method available since Release 3.0.0
-     */
-    public static function setLoader(PHPUnit_Runner_TestSuiteLoader $loader)
-    {
-        self::$loader = $loader;
+        return $this->loader;
     }
 
     /**
@@ -544,7 +542,6 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
 
         exit(self::FAILURE_EXIT);
     }
-
 
     /**
      */

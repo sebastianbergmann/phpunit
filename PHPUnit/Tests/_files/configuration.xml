@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8" ?>
 
-<phpunit ansi="false"
-         bootstrap="/path/to/bootstrap.php"
+<phpunit bootstrap="/path/to/bootstrap.php"
+         colors="false"
          convertErrorsToExceptions="true"
          convertNoticesToExceptions="true"
          convertWarningsToExceptions="true"
-         stopOnFailure="false">
+         stopOnFailure="false"
+         testSuiteLoaderClass="PHPUnit_Runner_StandardTestSuiteLoader">>
   <testsuite name="My Test Suite">
     <directory suffix="Test.php">/path/to/files</directory>
     <file>/path/to/MyTest.php</file>

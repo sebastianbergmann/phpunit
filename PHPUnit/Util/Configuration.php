@@ -62,7 +62,8 @@ PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
  *          convertErrorsToExceptions="true"
  *          convertNoticesToExceptions="true"
  *          convertWarningsToExceptions="true"
- *          stopOnFailure="false">
+ *          stopOnFailure="false"
+ *          testSuiteLoaderClass="PHPUnit_Runner_StandardTestSuiteLoader">
  *   <testsuite name="My Test Suite">
  *     <directory suffix="Test.php">/path/to/files</directory>
  *     <file>/path/to/MyTest.php</file>
@@ -522,6 +523,14 @@ class PHPUnit_Util_Configuration
               (string)$this->document->documentElement->getAttribute('stopOnFailure'),
               FALSE
             );
+        }
+
+        if ($this->document->documentElement->hasAttribute('testSuiteLoaderClass')) {
+            $result['testSuiteLoaderClass'] = (string)$this->document->documentElement->getAttribute('testSuiteLoaderClass');
+        }
+
+        if ($this->document->documentElement->hasAttribute('testSuiteLoaderFile')) {
+            $result['testSuiteLoaderFile'] = (string)$this->document->documentElement->getAttribute('testSuiteLoaderFile');
         }
 
         return $result;
