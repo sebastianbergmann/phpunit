@@ -90,7 +90,7 @@ class PHPUnit_Util_ErrorHandler
             return FALSE;
         }
 
-        $trace = debug_backtrace();
+        $trace = debug_backtrace(FALSE);
         array_shift($trace);
 
         foreach ($trace as $frame) {
