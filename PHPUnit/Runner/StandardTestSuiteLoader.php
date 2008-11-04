@@ -77,7 +77,7 @@ class PHPUnit_Runner_StandardTestSuiteLoader implements PHPUnit_Runner_TestSuite
         $suiteClassName = str_replace('.php', '', $suiteClassName);
 
         if (empty($suiteClassFile)) {
-            $suiteClassFile = str_replace(array('_', '::'), DIRECTORY_SEPARATOR, $suiteClassName) . '.php';
+            $suiteClassFile = str_replace(array('_', '\\'), DIRECTORY_SEPARATOR, $suiteClassName) . '.php';
         }
 
         if (!class_exists($suiteClassName, FALSE)) {

@@ -295,9 +295,9 @@ class PHPUnit_Util_Class
           'subpackage'  => ''
         );
 
-        if (strpos($className, ':') !== FALSE) {
+        if (strpos($className, '\\') !== FALSE) {
             $result['namespace'] = self::arrayToName(
-              explode('::', $className), '::'
+              explode('\\', $className), '\\'
             );
         }
 
@@ -317,7 +317,7 @@ class PHPUnit_Util_Class
 
         if (empty($result['fullPackage'])) {
             $result['fullPackage'] = self::arrayToName(
-              explode('_', str_replace('::', '_', $className)), '.'
+              explode('_', str_replace('\\', '_', $className)), '.'
             );
         }
 
@@ -458,7 +458,7 @@ class PHPUnit_Util_Class
                     if ($currentNamespace === FALSE) {
                         $currentClass = $tokens[$i+2][1];
                     } else {
-                        $currentClass = $currentNamespace . '::' . $tokens[$i+2][1];
+                        $currentClass = $currentNamespace . '\\' . $tokens[$i+2][1];
                     }
 
                     if ($currentDocComment !== FALSE) {
@@ -515,7 +515,7 @@ class PHPUnit_Util_Class
                     if ($currentNamespace === FALSE) {
                         $currentFunction = $functionName;
                     } else {
-                        $currentFunction = $currentNamespace . '::' . $functionName;
+                        $currentFunction = $currentNamespace . '\\' . $functionName;
                     }
                 }
                 break;
