@@ -196,12 +196,12 @@ class PHPUnit_Framework_MockObject_Generator
 
     protected static function generateMockClassName($originalClassName, $mockClassName)
     {
-        $classNameParts = explode('::', $originalClassName);
+        $classNameParts = explode('\\', $originalClassName);
 
         if (count($classNameParts) > 1) {
             $originalClassName = array_pop($classNameParts);
-            $namespaceName     = join('::', $classNameParts);
-            $fullClassName     = $namespaceName . '::' . $originalClassName;
+            $namespaceName     = join('\\', $classNameParts);
+            $fullClassName     = $namespaceName . '\\' . $originalClassName;
         } else {
             $namespaceName = '';
             $fullClassName = $originalClassName;
@@ -230,14 +230,14 @@ class PHPUnit_Framework_MockObject_Generator
             $buffer .= sprintf(
               "%s implements %s%s",
               $mockClassName['mockClassName'],
-              !empty($mockClassName['namespaceName']) ? $mockClassName['namespaceName'] . '::' : '',
+              !empty($mockClassName['namespaceName']) ? $mockClassName['namespaceName'] . '\\' : '',
               $mockClassName['className']
             );
         } else {
             $buffer .= sprintf(
               "%s extends %s%s",
               $mockClassName['mockClassName'],
-              !empty($mockClassName['namespaceName']) ? $mockClassName['namespaceName'] . '::' : '',
+              !empty($mockClassName['namespaceName']) ? $mockClassName['namespaceName'] . '\\' : '',
               $mockClassName['className']
             );
         }
