@@ -48,6 +48,7 @@ require_once 'PHPUnit/Framework.php';
 require_once 'PHPUnit/Util/Filter.php';
 require_once 'PHPUnit/Util/Printer.php';
 require_once 'PHPUnit/Util/Test.php';
+require_once 'PHPUnit/Util/YAML/sfYamlDumper.class.php';
 
 PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
 
@@ -116,6 +117,32 @@ class PHPUnit_Util_Log_TAP extends PHPUnit_Util_Printer implements PHPUnit_Frame
     public function addFailure(PHPUnit_Framework_Test $test, PHPUnit_Framework_AssertionFailedError $e, $time)
     {
         $this->writeNotOk($test, 'Failure');
+
+        $message    = explode("\n", PHPUnit_Framework_TestFailure::exceptionToString($e));
+        $diagnostic = array(
+          'message'  => $message[0],
+          'severity' => 'fail'
+        );
+
+        if ($e instanceof PHPUnit_Framework_ExpectationFailedException) {
+            $cf = $e->getComparisonFailure();
+
+            if ($cf !== NULL) {
+                $diagnostic['data'] = array(
+                  'got'      => $cf->getActual(),
+                  'expected' => $cf->getExpected()
+                );
+            }
+        }
+
+        $yaml = new sfYamlDumper();
+
+        $this->write(
+          sprintf(
+            "  ---\n%s  ...\n",
+            $yaml->dump($diagnostic, 2, 2)
+          )
+        );
     }
 
     /**

@@ -1259,6 +1259,12 @@
        <tasks:replace from="@package_version@" to="version" type="package-info" />
       </file>
      </dir>
+     <dir name="YAML">
+       <file baseinstalldir="/" name="sfYaml.class.php" role="php" />
+       <file baseinstalldir="/" name="sfYamlDumper.class.php" role="php" />
+       <file baseinstalldir="/" name="sfYamlInline.class.php" role="php" />
+       <file baseinstalldir="/" name="sfYamlParser.class.php" role="php" />
+     </dir>
      <file baseinstalldir="/" name="Class.php" role="php">
       <tasks:replace from="@package_version@" to="version" type="package-info" />
      </file>
