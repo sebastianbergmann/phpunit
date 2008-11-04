@@ -72,9 +72,27 @@ class PHPUnit_Util_Log_TAP extends PHPUnit_Util_Printer implements PHPUnit_Frame
     protected $testNumber = 0;
 
     /**
+     * @var    integer
+     */
+    protected $testSuiteLevel = 0;
+
+    /**
      * @var    boolean
      */
     protected $testSuccessful = TRUE;
+
+    /**
+     * Constructor.
+     *
+     * @param  mixed $out
+     * @throws InvalidArgumentException
+     * @since  Method available since Release 3.3.4
+     */
+    public function __construct($out = NULL)
+    {
+        parent::__construct($out);
+        $this->write("TAP version 13\n");
+    }
 
     /**
      * An error occurred.
@@ -141,14 +159,7 @@ class PHPUnit_Util_Log_TAP extends PHPUnit_Util_Printer implements PHPUnit_Frame
      */
     public function startTestSuite(PHPUnit_Framework_TestSuite $suite)
     {
-        $this->write(
-          sprintf(
-            "1..%d\n# TestSuite \"%s\" started.\n",
-
-            count($suite),
-            $suite->getName()
-          )
-        );
+        $this->testSuiteLevel++;
     }
 
     /**
@@ -158,13 +169,11 @@ class PHPUnit_Util_Log_TAP extends PHPUnit_Util_Printer implements PHPUnit_Frame
      */
     public function endTestSuite(PHPUnit_Framework_TestSuite $suite)
     {
-        $this->write(
-          sprintf(
-            "# TestSuite \"%s\" ended.\n",
+        $this->testSuiteLevel--;
 
-            $suite->getName()
-          )
-        );
+        if ($this->testSuiteLevel == 0) {
+            $this->write(sprintf("1..%d\n", $this->testNumber));
+        }
     }
 
     /**
