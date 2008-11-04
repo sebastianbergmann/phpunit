@@ -413,7 +413,7 @@ class PHPUnit_Util_Class
 
         if (strpos($className, ':') !== FALSE) {
             $result['namespace'] = self::arrayToName(
-              explode('::', $className), '::'
+              explode('\\', $className), '\\'
             );
         }
 
@@ -436,7 +436,7 @@ class PHPUnit_Util_Class
 
         if (empty($result['fullPackage'])) {
             $result['fullPackage'] = self::arrayToName(
-              explode('_', str_replace('::', '_', $className)), '.'
+              explode('_', str_replace('\\', '_', $className)), '.'
             );
         }
 

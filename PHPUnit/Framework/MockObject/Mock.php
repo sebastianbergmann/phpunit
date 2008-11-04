@@ -102,12 +102,12 @@ class PHPUnit_Framework_MockObject_Mock
 
     public function __construct($className, $methods = array(), $mockClassName = '', $callOriginalConstructor = TRUE, $callOriginalClone = TRUE, $callAutoload = TRUE)
     {
-        $classNameParts = explode('::', $className);
+        $classNameParts = explode('\\', $className);
 
         if (count($classNameParts) > 1) {
             $className           = array_pop($classNameParts);
-            $namespaceName       = join('::', $classNameParts);
-            $this->fullClassName = $namespaceName . '::' . $className;
+            $namespaceName       = join('\\', $classNameParts);
+            $this->fullClassName = $namespaceName . '\\' . $className;
         } else {
             $namespaceName       = '';
             $this->fullClassName = $className;
@@ -248,14 +248,14 @@ class PHPUnit_Framework_MockObject_Mock
             $code .= sprintf(
               "%s implements %s%s {\n",
               $this->mockClassName,
-              !empty($this->namespaceName) ? $this->namespaceName . '::' : '',
+              !empty($this->namespaceName) ? $this->namespaceName . '\\' : '',
               $this->className
             );
         } else {
             $code .= sprintf(
               "%s extends %s%s {\n",
               $this->mockClassName,
-              !empty($this->namespaceName) ? $this->namespaceName . '::' : '',
+              !empty($this->namespaceName) ? $this->namespaceName . '\\' : '',
               $this->className
             );
         }
