@@ -196,9 +196,11 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
             }
         }
 
-        $this->printer->write(
-          PHPUnit_Runner_Version::getVersionString() . "\n\n"
-        );
+        if (!$this->printer instanceof PHPUnit_Util_Log_TAP) {
+            $this->printer->write(
+              PHPUnit_Runner_Version::getVersionString() . "\n\n"
+            );
+        }
 
         foreach ($arguments['listeners'] as $listener) {
             $result->addListener($listener);
