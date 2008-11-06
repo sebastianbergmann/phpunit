@@ -127,6 +127,11 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
     /**
      * @var    array
      */
+    protected $backupGlobalsBlacklist = array();
+
+    /**
+     * @var    array
+     */
     protected $globalsBackup = array();
 
     /**
@@ -972,11 +977,14 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
         }
 
         foreach ($superGlobalArrays as $superGlobalArray) {
-            $this->backupSuperGlobalArray($superGlobalArray);
+            if (!in_array($superGlobalArray, $this->backupGlobalsBlacklist)) {
+                $this->backupSuperGlobalArray($superGlobalArray);
+            }
         }
 
         foreach (array_keys($GLOBALS) as $key) {
-            if ($key != 'GLOBALS' && !in_array($key, $superGlobalArrays)) {
+            if ($key != 'GLOBALS' && !in_array($key, $superGlobalArrays) &&
+                !in_array($key, $this->backupGlobalsBlacklist)) {
                 $this->globalsBackup['GLOBALS'][$key] = serialize($GLOBALS[$key]);
             }
         }
@@ -996,11 +1004,14 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
         }
 
         foreach ($superGlobalArrays as $superGlobalArray) {
-            $this->restoreSuperGlobalArray($superGlobalArray);
+            if (!in_array($superGlobalArray, $this->backupGlobalsBlacklist)) {
+                $this->restoreSuperGlobalArray($superGlobalArray);
+            }
         }
 
         foreach (array_keys($GLOBALS) as $key) {
-            if ($key != 'GLOBALS' && !in_array($key, $superGlobalArrays)) {
+            if ($key != 'GLOBALS' && !in_array($key, $superGlobalArrays) &&
+                !in_array($key, $this->backupGlobalsBlacklist)) {
                 if (isset($this->globalsBackup['GLOBALS'][$key])) {
                     $GLOBALS[$key] = unserialize($this->globalsBackup['GLOBALS'][$key]);
                 } else {
