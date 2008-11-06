@@ -68,6 +68,7 @@ $_COOKIE['e']  = 'e';
 $_SERVER['f']  = 'f';
 $_FILES['g']   = 'g';
 $_REQUEST['h'] = 'h';
+$GLOBALS['i']  = 'i';
 
 /**
  *
@@ -83,6 +84,8 @@ $_REQUEST['h'] = 'h';
  */
 class Framework_TestCaseTest extends PHPUnit_Framework_TestCase
 {
+    protected $backupGlobalsBlacklist = array('i');
+
     public function testCaseToString()
     {
         $this->assertEquals(
@@ -217,6 +220,7 @@ class Framework_TestCaseTest extends PHPUnit_Framework_TestCase
     public function testGlobalsBackupPre()
     {
         global $a;
+        global $i;
 
         $this->assertEquals('a', $a);
         $this->assertEquals('a', $GLOBALS['a']);
@@ -227,6 +231,8 @@ class Framework_TestCaseTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('f', $_SERVER['f']);
         $this->assertEquals('g', $_FILES['g']);
         $this->assertEquals('h', $_REQUEST['h']);
+        $this->assertEquals('i', $i);
+        $this->assertEquals('i', $GLOBALS['i']);
 
         $GLOBALS['a']   = 'aa';
         $GLOBALS['foo'] = 'bar';
@@ -237,6 +243,7 @@ class Framework_TestCaseTest extends PHPUnit_Framework_TestCase
         $_SERVER['f']   = 'ff';
         $_FILES['g']    = 'gg';
         $_REQUEST['h']  = 'hh';
+        $GLOBALS['i']   = 'ii';
 
         $this->assertEquals('aa', $a);
         $this->assertEquals('aa', $GLOBALS['a']);
@@ -248,11 +255,14 @@ class Framework_TestCaseTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('ff', $_SERVER['f']);
         $this->assertEquals('gg', $_FILES['g']);
         $this->assertEquals('hh', $_REQUEST['h']);
+        $this->assertEquals('ii', $i);
+        $this->assertEquals('ii', $GLOBALS['i']);
     }
 
     public function testGlobalsBackupPost()
     {
         global $a;
+        global $i;
 
         $this->assertEquals('a', $a);
         $this->assertEquals('a', $GLOBALS['a']);
@@ -263,6 +273,8 @@ class Framework_TestCaseTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('f', $_SERVER['f']);
         $this->assertEquals('g', $_FILES['g']);
         $this->assertEquals('h', $_REQUEST['h']);
+        $this->assertEquals('ii', $i);
+        $this->assertEquals('ii', $GLOBALS['i']);
 
         $this->assertArrayNotHasKey('foo', $GLOBALS);
     }
