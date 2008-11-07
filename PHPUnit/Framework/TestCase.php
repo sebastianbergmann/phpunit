@@ -388,6 +388,8 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
      */
     public function runBare()
     {
+        $this->numAssertions = 0;
+
         // Backup the $GLOBALS array.
         if ($this->backupGlobals === NULL || $this->backupGlobals === TRUE) {
             $this->backupGlobals();
