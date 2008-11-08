@@ -45,6 +45,7 @@
  */
 
 require_once 'PHPUnit/Util/Filter.php';
+require_once 'PHPUnit/Util/Filesystem.php';
 
 PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
 
@@ -109,16 +110,20 @@ class PHPUnit_Util_Fileloader
      */
     protected static function load($filename)
     {
-        $oldVariableNames = array_keys(get_defined_vars());
+        $filename = PHPUnit_Util_Filesystem::fileExistsInIncludePath($filename);
 
-        include_once $filename;
+        if ($filename) {
+            $oldVariableNames = array_keys(get_defined_vars());
 
-        $newVariables     = get_defined_vars();
-        $newVariableNames = array_diff(array_keys($newVariables), $oldVariableNames);
+            include_once $filename;
 
-        foreach ($newVariableNames as $variableName) {
-            if ($variableName != 'oldVariableNames') {
-                $GLOBALS[$variableName] = $newVariables[$variableName];
+            $newVariables     = get_defined_vars();
+            $newVariableNames = array_diff(array_keys($newVariables), $oldVariableNames);
+
+            foreach ($newVariableNames as $variableName) {
+                if ($variableName != 'oldVariableNames') {
+                    $GLOBALS[$variableName] = $newVariables[$variableName];
+                }
             }
         }
     }
