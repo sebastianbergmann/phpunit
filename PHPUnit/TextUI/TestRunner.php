@@ -163,7 +163,11 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
         $this->handleConfiguration($arguments);
 
         if (isset($arguments['bootstrap'])) {
-            require_once $arguments['bootstrap'];
+            $bootstrapFile = PHPUnit_Util_Filesystem::fileExistsInIncludePath($arguments['bootstrap']);
+
+            if ($bootstrapFile) {
+                require_once $bootstrapFile;
+            }
         }
 
         if (is_integer($arguments['repeat'])) {
@@ -627,6 +631,10 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
             }
 
             $phpunitConfiguration = $arguments['configuration']->getPHPUnitConfiguration();
+
+            if (isset($phpunitConfiguration['bootstrap']) && !isset($arguments['bootstrap'])) {
+                $arguments['bootstrap'] = $phpunitConfiguration['bootstrap'];
+            }
 
             if (isset($phpunitConfiguration['colors']) && !isset($arguments['colors'])) {
                 $arguments['colors'] = $phpunitConfiguration['colors'];
