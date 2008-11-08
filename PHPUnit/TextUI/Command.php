@@ -93,11 +93,7 @@ class PHPUnit_TextUI_Command
             require_once 'PHPUnit/Util/Skeleton/Test.php';
 
             if (isset($arguments['bootstrap'])) {
-                $bootstrapFile = PHPUnit_Util_Filesystem::fileExistsInIncludePath($arguments['bootstrap']);
-
-                if ($bootstrapFile) {
-                    require_once $bootstrapFile;
-                }
+                PHPUnit_Util_Fileloader::load($arguments['bootstrap']);
             }
 
             $skeleton = new PHPUnit_Util_Skeleton_Test(
@@ -449,11 +445,7 @@ class PHPUnit_TextUI_Command
                         PHPUnit_TextUI_TestRunner::printVersionString();
 
                         if (isset($arguments['bootstrap'])) {
-                            $bootstrapFile = PHPUnit_Util_Filesystem::fileExistsInIncludePath($arguments['bootstrap']);
-
-                            if ($bootstrapFile) {
-                                require_once $bootstrapFile;
-                            }
+                            PHPUnit_Util_Fileloader::load($arguments['bootstrap']);
                         }
 
                         if ($option[0] == '--skeleton-class') {
