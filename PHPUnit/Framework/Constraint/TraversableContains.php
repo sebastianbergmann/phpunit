@@ -97,7 +97,11 @@ class PHPUnit_Framework_Constraint_TraversableContains extends PHPUnit_Framework
      */
     public function toString()
     {
-        return 'contains ' . PHPUnit_Util_Type::toString($this->value);
+        if (is_string($this->value) && strpos($this->value, "\n") !== FALSE) {
+            return 'contains "' . $this->value . '"';
+        } else {
+            return 'contains ' . PHPUnit_Util_Type::toString($this->value);
+        }
     }
 
     protected function customFailureDescription($other, $description, $not)
