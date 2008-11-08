@@ -45,6 +45,7 @@
  */
 
 require_once 'PHPUnit/Framework.php';
+require_once 'PHPUnit/Util/Class.php';
 require_once 'PHPUnit/Util/Filter.php';
 require_once 'PHPUnit/Util/Type.php';
 require_once 'PHPUnit/Util/XML.php';
@@ -1866,14 +1867,14 @@ abstract class PHPUnit_Framework_Assert
                 throw new InvalidArgumentException;
             }
 
-            return self::getStaticAttribute(
+            return PHPUnit_Util_Class::getStaticAttribute(
               $classOrObject,
               $attributeName
             );
         }
 
         else if (is_object($classOrObject)) {
-            return self::getObjectAttribute(
+            return PHPUnit_Util_Class::getObjectAttribute(
               $classOrObject,
               $attributeName
             );
@@ -1882,117 +1883,6 @@ abstract class PHPUnit_Framework_Assert
         else {
             throw new InvalidArgumentException;
         }
-    }
-
-    /**
-     * Returns the value of a static attribute.
-     * This also works for attributes that are declared protected or private.
-     *
-     * @param  string  $className
-     * @param  string  $attributeName
-     * @return mixed
-     * @throws InvalidArgumentException
-     * @since  Method available since Release 3.1.0
-     */
-    public static function getStaticAttribute($className, $attributeName)
-    {
-        if (!is_string($className) || !class_exists($className) || !is_string($attributeName)) {
-            throw new InvalidArgumentException;
-        }
-
-        $class      = new ReflectionClass($className);
-        $attributes = $class->getStaticProperties();
-
-        if (isset($attributes[$attributeName])) {
-            return $attributes[$attributeName];
-        }
-
-        if (version_compare(PHP_VERSION, '5.2', '<')) {
-            $protectedName = "\0*\0" . $attributeName;
-        } else {
-            $protectedName = '*' . $attributeName;
-        }
-
-        if (isset($attributes[$protectedName])) {
-            return $attributes[$protectedName];
-        }
-
-        $classes = PHPUnit_Util_Class::getHierarchy($className);
-
-        foreach ($classes as $class) {
-            $privateName = sprintf(
-              "\0%s\0%s",
-
-              $class,
-              $attributeName
-            );
-
-            if (isset($attributes[$privateName])) {
-                return $attributes[$privateName];
-            }
-        }
-
-        throw new RuntimeException(
-          sprintf(
-            'Attribute "%s" not found in class.',
-
-            $attributeName
-          )
-        );
-    }
-
-    /**
-     * Returns the value of an object's attribute.
-     * This also works for attributes that are declared protected or private.
-     *
-     * @param  object  $object
-     * @param  string  $attributeName
-     * @return mixed
-     * @throws InvalidArgumentException
-     * @since  Method available since Release 3.1.0
-     */
-    public static function getObjectAttribute($object, $attributeName)
-    {
-        if (!is_object($object) || !is_string($attributeName)) {
-            throw new InvalidArgumentException;
-        }
-
-        self::assertObjectHasAttribute($attributeName, $object);
-        $attribute = new ReflectionProperty($object, $attributeName);
-
-        if ($attribute->isPublic()) {
-            return $object->$attributeName;
-        } else {
-            $array         = (array)$object;
-            $protectedName = "\0*\0" . $attributeName;
-
-            if (array_key_exists($protectedName, $array)) {
-                return $array[$protectedName];
-            } else {
-                $classes = PHPUnit_Util_Class::getHierarchy(get_class($object));
-
-                foreach ($classes as $class) {
-                    $privateName = sprintf(
-                      "\0%s\0%s",
-
-                      $class,
-                      $attributeName
-                    );
-
-                    if (array_key_exists($privateName, $array)) {
-                        return $array[$privateName];
-                    }
-                }
-            }
-        }
-
-        throw new RuntimeException(
-          sprintf(
-            'Attribute "%s" not found in object.',
-
-            $attributeName
-          )
-        );
     }
 
     /**
