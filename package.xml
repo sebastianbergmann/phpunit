@@ -811,6 +811,7 @@
       <file baseinstalldir="/" name="coverage-clover-public.phpt" role="test" />
       <file baseinstalldir="/" name="coverage-source.phpt" role="test" />
       <file baseinstalldir="/" name="dataset-log-xml.phpt" role="test" />
+      <file baseinstalldir="/" name="debug.phpt" role="test" />
       <file baseinstalldir="/" name="default.phpt" role="test" />
       <file baseinstalldir="/" name="exclude-group.phpt" role="test" />
       <file baseinstalldir="/" name="filter-class.phpt" role="test" />
