@@ -171,6 +171,7 @@ class PHPUnit_TextUI_Command
           'coverage-clover=',
           'coverage-source=',
           'coverage-xml=',
+          'debug',
           'exclude-group=',
           'filter=',
           'group=',
@@ -302,6 +303,11 @@ class PHPUnit_TextUI_Command
                             ini_set($ini[0], TRUE);
                         }
                     }
+                }
+                break;
+
+                case '--debug': {
+                    $arguments['debug'] = TRUE;
                 }
                 break;
 
