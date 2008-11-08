@@ -47,6 +47,7 @@
 require_once 'PHPUnit/Framework.php';
 require_once 'PHPUnit/Util/Filter.php';
 require_once 'PHPUnit/Util/Printer.php';
+require_once 'PHPUnit/Util/Test.php';
 
 PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
 
@@ -102,6 +103,11 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
     /**
      * @var    boolean
      */
+    protected $debug = FALSE;
+
+    /**
+     * @var    boolean
+     */
     protected $verbose = FALSE;
 
     /**
@@ -115,15 +121,22 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
      * @param  mixed   $out
      * @param  boolean $verbose
      * @param  boolean $colors
+     * @param  boolean $debug
      * @throws InvalidArgumentException
      * @since  Method available since Release 3.0.0
      */
-    public function __construct($out = NULL, $verbose = FALSE, $colors = FALSE)
+    public function __construct($out = NULL, $verbose = FALSE, $colors = FALSE, $debug = FALSE)
     {
         parent::__construct($out);
 
         if (is_bool($colors)) {
             $this->colors = $colors;
+        } else {
+            throw new InvalidArgumentException;
+        }
+
+        if (is_bool($debug)) {
+            $this->debug = $debug;
         } else {
             throw new InvalidArgumentException;
         }
@@ -532,6 +545,14 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
         }
 
         $this->lastEvent = self::EVENT_TEST_START;
+
+        if ($this->debug) {
+            $this->write(
+              sprintf(
+                "\nStarting test '%s'.\n", PHPUnit_Util_Test::describe($test)
+              )
+            );
+        }
     }
 
     /**
