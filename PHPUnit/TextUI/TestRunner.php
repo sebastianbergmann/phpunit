@@ -154,11 +154,7 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
         $this->handleConfiguration($arguments);
 
         if (isset($arguments['bootstrap'])) {
-            $bootstrapFile = PHPUnit_Util_Filesystem::fileExistsInIncludePath($arguments['bootstrap']);
-
-            if ($bootstrapFile) {
-                require_once $bootstrapFile;
-            }
+            PHPUnit_Util_Fileloader::load($arguments['bootstrap']);
         }
 
         if (is_integer($arguments['repeat'])) {
