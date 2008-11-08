@@ -108,7 +108,7 @@ class PHPUnit_Util_Fileloader
      * @param  string $filename
      * @since  Method available since Release 3.0.0
      */
-    protected static function load($filename)
+    public static function load($filename)
     {
         $filename = PHPUnit_Util_Filesystem::fileExistsInIncludePath($filename);
 
