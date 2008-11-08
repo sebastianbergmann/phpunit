@@ -200,7 +200,7 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
                 $this->printer = $arguments['printer'];
             } else {
                 $this->printer = new PHPUnit_TextUI_ResultPrinter(
-                  NULL, $arguments['verbose'], $arguments['colors']
+                  NULL, $arguments['verbose'], $arguments['colors'], $arguments['debug']
                 );
             }
         }
@@ -571,6 +571,7 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
             $arguments['pmd'] = array();
         }
 
+        $arguments['debug']              = isset($arguments['debug'])              ? $arguments['debug']              : FALSE;
         $arguments['filter']             = isset($arguments['filter'])             ? $arguments['filter']             : FALSE;
         $arguments['listeners']          = isset($arguments['listeners'])          ? $arguments['listeners']          : array();
         $arguments['repeat']             = isset($arguments['repeat'])             ? $arguments['repeat']             : FALSE;
