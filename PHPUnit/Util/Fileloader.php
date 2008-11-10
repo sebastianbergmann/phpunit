@@ -106,6 +106,7 @@ class PHPUnit_Util_Fileloader
      * Loads a PHP sourcefile.
      *
      * @param  string $filename
+     * @return mixed
      * @since  Method available since Release 3.0.0
      */
     public static function load($filename)
@@ -126,6 +127,8 @@ class PHPUnit_Util_Fileloader
                 }
             }
         }
+
+        return $filename;
     }
 
     /**
