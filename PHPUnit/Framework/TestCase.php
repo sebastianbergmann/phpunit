@@ -948,11 +948,6 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
      */
     protected function assertPostConditions()
     {
-        // assertPostConditions() was named sharedAssertions() in
-        // PHPUnit 3.0.0-3.2.7.
-        if (method_exists($this, 'sharedAssertions')) {
-            $this->sharedAssertions();
-        }
     }
 
     /**
