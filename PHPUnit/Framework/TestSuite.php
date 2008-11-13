@@ -216,17 +216,18 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
             return;
         }
 
-        $className   = $theClass->getName();
-        $names       = array();
-        $classGroups = PHPUnit_Util_Test::getGroups($theClass);
+        $className         = $theClass->getName();
+        $names             = array();
+        $classGroups       = PHPUnit_Util_Test::getGroups($theClass);
+        $classDependencies = PHPUnit_Util_Test::getDependencies($theClass);
 
         foreach ($theClass->getMethods() as $method) {
             if (strpos($method->getDeclaringClass()->getName(), 'PHPUnit_') !== 0) {
                 $this->addTestMethod(
                   $method,
+                  PHPUnit_Util_Test::getDependencies($method, $classDependencies),
                   PHPUnit_Util_Test::getGroups($method, $classGroups),
-                  $names,
-                  $theClass
+                  $names
                 );
             }
         }
@@ -743,9 +744,8 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
      * @param  ReflectionMethod $method
      * @param  string           $groups
      * @param  array            $names
-     * @param  ReflectionClass  $theClass
      */
-    protected function addTestMethod(ReflectionMethod $method, $groups, Array &$names, ReflectionClass $theClass)
+    protected function addTestMethod(ReflectionMethod $method, array $dependencies, array $groups, array &$names)
     {
         $name = $method->getName();
 
@@ -756,14 +756,19 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
         if ($this->isPublicTestMethod($method)) {
             $names[] = $name;
 
-            $this->addTest(
-              self::createTest(
-                $theClass,
-                $name,
-                $groups
-              ),
+            $test = self::createTest(
+              $method->getDeclaringClass(),
+              $name,
               $groups
             );
+
+            if (!$test instanceof PHPUnit_Framework_TestSuite) {
+                $test->setDependencies(
+                  PHPUnit_Util_Test::getDependencies($method, $dependencies)
+                );
+            }
+
+            $this->addTest($test, $groups);
         }
 
         else if ($this->isTestMethod($method)) {

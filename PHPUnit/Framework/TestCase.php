@@ -180,6 +180,11 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
     protected $name = NULL;
 
     /**
+     * @var    array
+     */
+    protected $dependencies = array();
+
+    /**
      * @var    string
      */
     protected $exceptionMessage = NULL;
@@ -243,6 +248,11 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
       'HTTP_SERVER_VARS',
       'HTTP_POST_FILES'
     );
+
+    /**
+     * @var PHPUnit_Framework_TestResult
+     */
+    protected $result;
 
     /**
      * Constructs a test case with the given name.
@@ -377,7 +387,9 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
             $result = $this->createResult();
         }
 
+        $this->result = $result;
         $result->run($this);
+        $this->result = NULL;
 
         return $result;
     }
@@ -389,6 +401,27 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
     public function runBare()
     {
         $this->numAssertions = 0;
+
+        if (!empty($this->dependencies)) {
+            $className = get_class($this);
+            $passed    = $this->result->passed();
+
+            foreach ($this->dependencies as $dependency) {
+                if (strpos($dependency, '::') === FALSE) {
+                    $dependency = $className . '::' . $dependency;
+                }
+
+                if (!isset($passed[$dependency])) {
+                    $this->markTestSkipped(
+                      sprintf(
+                        'This test depends on "%s" to pass.',
+
+                        $dependency
+                      )
+                    );
+                }
+            }
+        }
 
         // Backup the $GLOBALS array.
         if ($this->backupGlobals === NULL || $this->backupGlobals === TRUE) {
@@ -536,6 +569,17 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
     public function setName($name)
     {
         $this->name = $name;
+    }
+
+    /**
+     * Sets the dependencies of a TestCase.
+     *
+     * @param  array $dependencies
+     * @since  Method available since Release 3.4.0
+     */
+    public function setDependencies(array $dependencies)
+    {
+        $this->dependencies = $dependencies;
     }
 
     /**

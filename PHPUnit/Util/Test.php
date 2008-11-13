@@ -177,6 +177,25 @@ class PHPUnit_Util_Test
     }
 
     /**
+     * Returns the dependencies for a test class or method.
+     *
+     * @param  Reflector $reflector
+     * @param  array     $dependencies
+     * @return array
+     * @since  Method available since Release 3.4.0
+     */
+    public static function getDependencies(Reflector $reflector, array $dependencies = array())
+    {
+        $docComment = $reflector->getDocComment();
+
+        if (preg_match_all('/@depends\s+([a-zA-Z0-9._:-]+)/', $docComment, $matches)) {
+            $dependencies = array_unique(array_merge($dependencies, $matches[1]));
+        }
+
+        return $dependencies;
+    }
+
+    /**
      * Returns the groups for a test class or method.
      *
      * @param  Reflector $reflector
