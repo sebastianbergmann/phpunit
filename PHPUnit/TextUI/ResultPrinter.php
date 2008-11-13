@@ -195,14 +195,17 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
      */
     protected function printDefects(array $defects, $count, $type)
     {
+        static $called = FALSE;
+
         if ($count == 0) {
             return;
         }
 
         $this->write(
           sprintf(
-            "There %s %d %s%s:\n",
+            "%sThere %s %d %s%s:\n",
 
+            $called ? "\n" : '',
             ($count == 1) ? 'was' : 'were',
             $count,
             $type,
@@ -215,6 +218,8 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
         foreach ($defects as $defect) {
             $this->printDefect($defect, $i++);
         }
+
+        $called = TRUE;
     }
 
     /**
@@ -303,7 +308,13 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
      */
     protected function printHeader($timeElapsed)
     {
-        $this->write("\n\nTime: " . PHPUnit_Util_Timer::secondsToTimeString($timeElapsed) . "\n\n");
+        $this->write(
+          sprintf(
+            "%sTime: %s\n\n",
+            $this->verbose ? "\n" : "\n\n",
+            PHPUnit_Util_Timer::secondsToTimeString($timeElapsed)
+          )
+        );
     }
 
     /**
