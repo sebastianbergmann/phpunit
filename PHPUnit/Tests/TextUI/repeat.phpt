@@ -15,7 +15,6 @@ PHPUnit %s by Sebastian Bergmann.
 ............................................................ 60 / 63
 ...
 
-
 Time: %i seconds
 
 OK (63 tests, 63 assertions)
