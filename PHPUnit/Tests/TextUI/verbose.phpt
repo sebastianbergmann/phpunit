@@ -14,7 +14,6 @@ PHPUnit %s by Sebastian Bergmann.
 BankAccountTest
 ...
 
-
 Time: %i seconds
 
 OK (3 tests, 3 assertions)
