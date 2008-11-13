@@ -76,6 +76,11 @@ class PHPUnit_Framework_TestResult implements Countable
     /**
      * @var    array
      */
+    protected $passed = array();
+
+    /**
+     * @var    array
+     */
     protected $errors = array();
 
     /**
@@ -314,7 +319,8 @@ class PHPUnit_Framework_TestResult implements Countable
             $listener->endTest($test, $time);
         }
 
-        if (!$this->lastTestFailed) {
+        if (!$this->lastTestFailed && $test instanceof PHPUnit_Framework_TestCase) {
+            $this->passed[get_class($test) . '::' . $test->getName()] = TRUE;
             $this->time += $time;
         }
     }
@@ -420,6 +426,17 @@ class PHPUnit_Framework_TestResult implements Countable
     public function failures()
     {
         return $this->failures;
+    }
+
+    /**
+     * Returns the names of the tests that have passed.
+     *
+     * @return array
+     * @since  Method available since Release 3.4.0
+     */
+    public function passed()
+    {
+        return $this->passed;
     }
 
     /**
