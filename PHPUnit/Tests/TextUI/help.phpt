@@ -14,8 +14,6 @@ Usage: phpunit [switches] UnitTest [UnitTest.php]
   --log-json <file>        Log test execution in JSON format.
   --log-tap <file>         Log test execution in TAP format to file.
   --log-xml <file>         Log test execution in XML format to file.
-  --log-metrics <file>     Write metrics report in XML format.
-  --log-pmd <file>         Write violations report in PMD XML format.
 
   --coverage-html <dir>    Generate code coverage report in HTML format.
   --coverage-clover <file> Write code coverage data in Clover XML format.
