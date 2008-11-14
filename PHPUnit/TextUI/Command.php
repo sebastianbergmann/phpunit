@@ -258,9 +258,9 @@ class PHPUnit_TextUI_Command
                         $arguments['coverageClover'] = $option[1];
                     } else {
                         if (!extension_loaded('tokenizer')) {
-                            self::showMissingDependency('The tokenizer extension is not loaded.');
+                            self::showMessage('The tokenizer extension is not loaded.');
                         } else {
-                            self::showMissingDependency('The Xdebug extension is not loaded.');
+                            self::showMessage('The Xdebug extension is not loaded.');
                         }
                     }
                 }
@@ -271,9 +271,9 @@ class PHPUnit_TextUI_Command
                         $arguments['coverageSource'] = $option[1];
                     } else {
                         if (!extension_loaded('tokenizer')) {
-                            self::showMissingDependency('The tokenizer extension is not loaded.');
+                            self::showMessage('The tokenizer extension is not loaded.');
                         } else {
-                            self::showMissingDependency('The Xdebug extension is not loaded.');
+                            self::showMessage('The Xdebug extension is not loaded.');
                         }
                     }
                 }
@@ -285,9 +285,9 @@ class PHPUnit_TextUI_Command
                         $arguments['reportDirectory'] = $option[1];
                     } else {
                         if (!extension_loaded('tokenizer')) {
-                            self::showMissingDependency('The tokenizer extension is not loaded.');
+                            self::showMessage('The tokenizer extension is not loaded.');
                         } else {
-                            self::showMissingDependency('The Xdebug extension is not loaded.');
+                            self::showMessage('The Xdebug extension is not loaded.');
                         }
                     }
                 }
@@ -351,7 +351,7 @@ class PHPUnit_TextUI_Command
                     if (PHPUnit_Util_Filesystem::fileExistsInIncludePath('Image/GraphViz.php')) {
                         $arguments['graphvizLogfile'] = $option[1];
                     } else {
-                        self::showMissingDependency('The Image_GraphViz package is not installed.');
+                        self::showMessage('The Image_GraphViz package is not installed.');
                     }
                 }
                 break;
@@ -367,26 +367,36 @@ class PHPUnit_TextUI_Command
                 break;
 
                 case '--log-pmd': {
+                    self::showMessage(
+                      'The --log-pmd functionality is deprecated and will be removed in the future.',
+                      FALSE
+                    );
+
                     if (extension_loaded('tokenizer') && extension_loaded('xdebug')) {
                         $arguments['pmdXML'] = $option[1];
                     } else {
                         if (!extension_loaded('tokenizer')) {
-                            self::showMissingDependency('The tokenizer extension is not loaded.');
+                            self::showMessage('The tokenizer extension is not loaded.');
                         } else {
-                            self::showMissingDependency('The Xdebug extension is not loaded.');
+                            self::showMessage('The Xdebug extension is not loaded.');
                         }
                     }
                 }
                 break;
 
                 case '--log-metrics': {
+                    self::showMessage(
+                      'The --log-metrics functionality is deprecated and will be removed in the future.',
+                      FALSE
+                    );
+
                     if (extension_loaded('tokenizer') && extension_loaded('xdebug')) {
                         $arguments['metricsXML'] = $option[1];
                     } else {
                         if (!extension_loaded('tokenizer')) {
-                            self::showMissingDependency('The tokenizer extension is not loaded.');
+                            self::showMessage('The tokenizer extension is not loaded.');
                         } else {
-                            self::showMissingDependency('The Xdebug extension is not loaded.');
+                            self::showMessage('The Xdebug extension is not loaded.');
                         }
                     }
                 }
@@ -406,7 +416,7 @@ class PHPUnit_TextUI_Command
                     if (extension_loaded('pdo')) {
                         $arguments['testDatabaseDSN'] = $option[1];
                     } else {
-                        self::showMissingDependency('The PDO extension is not loaded.');
+                        self::showMessage('The PDO extension is not loaded.');
                     }
                 }
                 break;
@@ -415,7 +425,7 @@ class PHPUnit_TextUI_Command
                     if (extension_loaded('pdo')) {
                         $arguments['testDatabaseLogRevision'] = $option[1];
                     } else {
-                        self::showMissingDependency('The PDO extension is not loaded.');
+                        self::showMessage('The PDO extension is not loaded.');
                     }
                 }
                 break;
@@ -424,7 +434,7 @@ class PHPUnit_TextUI_Command
                     if (extension_loaded('pdo')) {
                         $arguments['testDatabasePrefix'] = $option[1];
                     } else {
-                        self::showMissingDependency('The PDO extension is not loaded.');
+                        self::showMessage('The PDO extension is not loaded.');
                     }
                 }
                 break;
@@ -433,7 +443,7 @@ class PHPUnit_TextUI_Command
                     if (extension_loaded('pdo')) {
                         $arguments['testDatabaseLogInfo'] = $option[1];
                     } else {
-                        self::showMissingDependency('The PDO extension is not loaded.');
+                        self::showMessage('The PDO extension is not loaded.');
                     }
                 }
                 break;
@@ -654,13 +664,19 @@ class PHPUnit_TextUI_Command
     }
 
     /**
-     * @param string $message
+     * @param string  $message
+     * @param boolean $exit
      */
-    public static function showMissingDependency($message)
+    public static function showMessage($message, $exit = TRUE)
     {
         PHPUnit_TextUI_TestRunner::printVersionString();
         print $message . "\n";
-        exit(PHPUnit_TextUI_TestRunner::EXCEPTION_EXIT);
+
+        if ($exit) {
+            exit(PHPUnit_TextUI_TestRunner::EXCEPTION_EXIT);
+        } else {
+            print "\n";
+        }
     }
 
     /**
@@ -677,8 +693,6 @@ Usage: phpunit [switches] UnitTest [UnitTest.php]
   --log-json <file>        Log test execution in JSON format.
   --log-tap <file>         Log test execution in TAP format to file.
   --log-xml <file>         Log test execution in XML format to file.
-  --log-metrics <file>     Write metrics report in XML format.
-  --log-pmd <file>         Write violations report in PMD XML format.
 
   --coverage-html <dir>    Generate code coverage report in HTML format.
   --coverage-clover <file> Write code coverage data in Clover XML format.
