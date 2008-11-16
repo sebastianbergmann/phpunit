@@ -720,7 +720,7 @@ class PHPUnit_Extensions_SeleniumTestCase_Driver
                     default: {
                         if ($wait) {
                             if ($this->useWaitForPageToLoad) {
-                                $this->doCommand('waitForPageToLoad', array($this->timeout));
+                                $this->waitForPageToLoad($this->timeout);
                             } else {
                                 sleep($this->wait);
                             }
@@ -764,7 +764,7 @@ class PHPUnit_Extensions_SeleniumTestCase_Driver
                 $result = $this->getNumber($command, $arguments);
 
                 if ($wait) {
-                    $this->doCommand('waitForPageToLoad', array($this->timeout));
+                    $this->waitForPageToLoad($this->timeout);
                 }
 
                 return $result;
@@ -793,7 +793,7 @@ class PHPUnit_Extensions_SeleniumTestCase_Driver
                 $result = $this->getString($command, $arguments);
 
                 if ($wait) {
-                    $this->doCommand('waitForPageToLoad', array($this->timeout));
+                    $this->waitForPageToLoad($this->timeout);
                 }
 
                 return $result;
@@ -815,7 +815,7 @@ class PHPUnit_Extensions_SeleniumTestCase_Driver
                 $result = $this->getStringArray($command, $arguments);
 
                 if ($wait) {
-                    $this->doCommand('waitForPageToLoad', array($this->timeout));
+                    $this->waitForPageToLoad($this->timeout);
                 }
 
                 return $result;
