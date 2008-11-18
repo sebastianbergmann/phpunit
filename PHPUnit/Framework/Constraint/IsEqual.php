@@ -221,7 +221,7 @@ class PHPUnit_Framework_Constraint_IsEqual extends PHPUnit_Framework_Constraint
                 unset($_b);
             }
 
-            if (version_compare(phpversion(), '5.2.0RC1', '>=')) {
+            if (version_compare(PHP_VERSION, '5.2.0RC1', '>=')) {
                 return ($a->C14N() == $b->C14N());
             } else {
                 return ($a->saveXML() == $b->saveXML());
