@@ -102,7 +102,7 @@ abstract class PHPUnit_Util_CodeCoverage
     {
         if (empty(self::$lineToTestMap) || $clear) {
             foreach ($data as $test) {
-                foreach ($test['files'] as $_file => $lines) {
+                foreach (self::bitStringToCodeCoverage($test['files'], 1) as $_file => $lines) {
                     foreach ($lines as $_line => $flag) {
                         if ($flag > 0) {
                             if (!isset(self::$lineToTestMap[$_file][$_line])) {
