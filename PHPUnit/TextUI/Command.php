@@ -592,14 +592,25 @@ class PHPUnit_TextUI_Command
                 require_once 'PHPUnit/Extensions/SeleniumTestCase.php';
                 PHPUnit_Extensions_SeleniumTestCase::$browsers = $browsers;
             }
-        }
 
-        if (!isset($arguments['test']) && isset($configuration)) {
-            $configuration->handlePHPConfiguration();
-            $testSuite = $configuration->getTestSuiteConfiguration();
+            if (!isset($arguments['test'])) {
+                $configuration->handlePHPConfiguration();
 
-            if ($testSuite !== NULL) {
-                $arguments['test'] = $testSuite;
+                if (isset($arguments['bootstrap'])) {
+                    PHPUnit_Util_Fileloader::load($arguments['bootstrap']);
+                } else {
+                    $phpunitConfiguration = $configuration->getPHPUnitConfiguration();
+
+                    if ($phpunitConfiguration['bootstrap']) {
+                        PHPUnit_Util_Fileloader::load($phpunitConfiguration['bootstrap']);
+                    }
+                }
+
+                $testSuite = $configuration->getTestSuiteConfiguration();
+
+                if ($testSuite !== NULL) {
+                    $arguments['test'] = $testSuite;
+                }
             }
         }
 
