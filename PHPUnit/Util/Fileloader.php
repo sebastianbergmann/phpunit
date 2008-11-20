@@ -167,14 +167,11 @@ class PHPUnit_Util_Fileloader
                 self::$phpBinary = '@php_bin@';
             }
 
-            else if (PHP_SAPI == 'cli' && isset($_SERVER['_'])) {
-                self::$phpBinary = $_SERVER['_'];
-
-                if (strpos(self::$phpBinary, 'phpunit') !== FALSE) {
-                    $file            = file(self::$phpBinary);
-                    $tmp             = explode(' ', $file[0]);
-                    self::$phpBinary = trim($tmp[1]);
-                }
+            else if (PHP_SAPI == 'cli' && isset($_SERVER['_']) &&
+                     strpos($_SERVER['_'], 'phpunit') !== FALSE) {
+                $file            = file($_SERVER['_']);
+                $tmp             = explode(' ', $file[0]);
+                self::$phpBinary = trim($tmp[1]);
             }
 
             if (!is_readable(self::$phpBinary)) {

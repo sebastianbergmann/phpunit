@@ -161,7 +161,7 @@ abstract class PHPUnit_Util_Printer
                 $this->incrementalFlush();
             }
         } else {
-            if (php_sapi_name() != 'cli') {
+            if (PHP_SAPI != 'cli') {
                 $buffer = htmlspecialchars($buffer);
             }
 
