@@ -514,7 +514,7 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
      */
     protected static function write($buffer)
     {
-        if (php_sapi_name() != 'cli') {
+        if (PHP_SAPI != 'cli') {
             $buffer = htmlspecialchars($buffer);
         }
 
