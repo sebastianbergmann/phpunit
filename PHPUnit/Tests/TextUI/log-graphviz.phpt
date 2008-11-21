@@ -12,6 +12,8 @@ require_once dirname(dirname(dirname(__FILE__))) . '/TextUI/Command.php';
 --EXPECTF--
 PHPUnit %s by Sebastian Bergmann.
 
+The --log-graphviz functionality is deprecated and will be removed in the future.
+
 ...strict digraph G {
     overlap=scale;
     splines=true;
