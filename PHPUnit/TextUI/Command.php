@@ -348,6 +348,11 @@ class PHPUnit_TextUI_Command
                 break;
 
                 case '--log-graphviz': {
+                    self::showMessage(
+                      'The --log-graphviz functionality is deprecated and will be removed in the future.',
+                      FALSE
+                    );
+
                     if (PHPUnit_Util_Filesystem::fileExistsInIncludePath('Image/GraphViz.php')) {
                         $arguments['graphvizLogfile'] = $option[1];
                     } else {
@@ -700,7 +705,6 @@ class PHPUnit_TextUI_Command
 Usage: phpunit [switches] UnitTest [UnitTest.php]
        phpunit [switches] <directory>
 
-  --log-graphviz <file>    Log test execution in GraphViz markup.
   --log-json <file>        Log test execution in JSON format.
   --log-tap <file>         Log test execution in TAP format to file.
   --log-xml <file>         Log test execution in XML format to file.
