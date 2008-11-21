@@ -46,6 +46,7 @@
  */
 
 require_once 'PHPUnit/Framework.php';
+require_once 'PHPUnit/Util/Diff.php';
 require_once 'PHPUnit/Util/Filter.php';
 
 PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
@@ -75,8 +76,10 @@ class PHPUnit_Framework_ComparisonFailure_String extends PHPUnit_Framework_Compa
         $actual   = (string)$this->actual;
 
         if (strpos($expected, "\n") !== FALSE || strpos($actual, "\n") !== FALSE) {
-            if ($this->hasDiff()) {
-                return $this->diff($expected, $actual);
+            $diff = PHPUnit_Util_Diff::diff($expected, $actual);
+
+            if ($diff !== FALSE) {
+                return $diff;
             } else {
                 return '';
             }
