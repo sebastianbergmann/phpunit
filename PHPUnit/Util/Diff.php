@@ -96,6 +96,10 @@ class PHPUnit_Util_Diff
             $result[0] = "--- Expected";
             $result[1] = "+++ Actual";
 
+            if (empty($result[count($result)-1])) {
+                unset($result[count($result)-1]);
+            }
+
             return implode("\n", $result);
         }
 
