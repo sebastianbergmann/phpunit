@@ -1285,6 +1285,9 @@
      <file baseinstalldir="/" name="Configuration.php" role="php">
       <tasks:replace from="@package_version@" to="version" type="package-info" />
      </file>
+     <file baseinstalldir="/" name="Diff.php" role="php">
+      <tasks:replace from="@package_version@" to="version" type="package-info" />
+     </file>
      <file baseinstalldir="/" name="ErrorHandler.php" role="php">
       <tasks:replace from="@package_version@" to="version" type="package-info" />
      </file>
@@ -1383,6 +1386,11 @@
    <package>
     <name>Log</name>
     <channel>pear.php.net</channel>
+   </package>
+   <package>
+    <name>Text_Diff</name>
+    <channel>pear.php.net</channel>
+    <min>1.1.0</min>
    </package>
    <extension>
     <name>json</name>

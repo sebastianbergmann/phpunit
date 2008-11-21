@@ -93,18 +93,13 @@ abstract class PHPUnit_Framework_ComparisonFailure extends PHPUnit_Framework_Ass
     protected $message;
 
     /**
-     * @var boolean
-     */
-    protected static $hasDiff = NULL;
-
-    /**
      * Initialises with the expected value and the actual value.
      *
      * @param mixed $expected Expected value retrieved.
      * @param mixed $actual Actual value retrieved.
      * @param boolean $identical
      * @param string $message A string which is prefixed on all returned lines
-     *                       in the difference output.
+     *                        in the difference output.
      */
     public function __construct($expected, $actual, $identical = FALSE, $message = '')
     {
@@ -138,7 +133,7 @@ abstract class PHPUnit_Framework_ComparisonFailure extends PHPUnit_Framework_Ass
      * @param mixed $expected Expected value retrieved.
      * @param mixed $actual Actual value retrieved.
      * @param string $message A string which is prefixed on all returned lines
-     *                       in the difference output.
+     *                        in the difference output.
      * @return PHPUnit_Framework_ComparisonFailure
      */
     public static function diffIdentical($expected, $actual, $message = '')
@@ -173,7 +168,7 @@ abstract class PHPUnit_Framework_ComparisonFailure extends PHPUnit_Framework_Ass
      * @param mixed $expected Expected value retrieved.
      * @param mixed $actual Actual value retrieved.
      * @param string $message A string which is prefixed on all returned lines
-     *                       in the difference output.
+     *                        in the difference output.
      * @return PHPUnit_Framework_ComparisonFailure
      */
     public static function diffEqual($expected, $actual, $message = '')
@@ -193,85 +188,6 @@ abstract class PHPUnit_Framework_ComparisonFailure extends PHPUnit_Framework_Ass
         elseif (is_object($expected)) {
             return new PHPUnit_Framework_ComparisonFailure_Object($expected, $actual, FALSE, $message);
         }
-    }
-
-    protected function diff($expected, $actual)
-    {
-        $expectedFile = tempnam('/tmp', 'expected');
-        file_put_contents($expectedFile, $expected);
-
-        $actualFile = tempnam('/tmp', 'actual');
-        file_put_contents($actualFile, $actual);
-
-        $buffer = shell_exec(
-          sprintf(
-            'diff -u %s %s',
-            escapeshellarg($expectedFile),
-            escapeshellarg($actualFile)
-          )
-        );
-
-        unlink($expectedFile);
-        unlink($actualFile);
-
-        if (!empty($buffer)) {
-            $buffer = explode("\n", $buffer);
-
-            $buffer[0] = "--- Expected";
-            $buffer[1] = "+++ Actual";
-
-            $buffer = implode("\n", $buffer);
-        }
-
-        return $buffer;
-    }
-
-    public static function hasDiff()
-    {
-        if (self::$hasDiff === NULL)
-        {
-            self::$hasDiff = FALSE;
-
-            $binary = 'diff';
-
-            if (substr(php_uname('s'), 0, 7) == 'Windows')
-            {
-                $binary .= '.exe';
-            }
-
-            if (isset($_ENV['PATH'])) {
-                $var = $_ENV['PATH'];
-            }
-
-            else if (isset($_ENV['Path'])) {
-                $var = $_ENV['Path'];
-            }
-
-            else if (isset($_SERVER['PATH'])) {
-                $var = $_SERVER['PATH'];
-            }
-
-            else if (isset($_SERVER['Path'])) {
-                $var = $_SERVER['Path'];
-            }
-
-            if (isset($var)) {
-                $paths = explode(PATH_SEPARATOR, $var);
-            } else {
-                $paths = array();
-            }
-
-            foreach ($paths as $path) {
-                if (file_exists($path . DIRECTORY_SEPARATOR . $binary) &&
-                    is_executable($path . DIRECTORY_SEPARATOR . $binary))
-                {
-                    self::$hasDiff = TRUE;
-                    break;
-                }
-            }
-        }
-
-        return self::$hasDiff;
     }
 }
 

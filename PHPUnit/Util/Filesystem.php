@@ -63,7 +63,15 @@ PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
  */
 class PHPUnit_Util_Filesystem
 {
+    /**
+     * @var array
+     */
     protected static $buffer = array();
+
+    /**
+     * @var array
+     */
+    protected static $hasBinary = array();
 
     /**
      * Starts the collection of loaded files.
@@ -204,6 +212,66 @@ class PHPUnit_Util_Filesystem
     {
         /* characters allowed: A-Z, a-z, 0-9, _ and . */
         return preg_replace('#[^\w.]#', '_', $filename);
+    }
+
+    /**
+     * @param  string $binary
+     * @return boolean
+     * @since  Method available since Release 3.4.0
+     */
+    public static function hasBinary($binary)
+    {
+        if (!isset(self::$hasBinary[$binary])) {
+            self::$hasBinary[$binary] = FALSE;
+
+            if (substr(php_uname('s'), 0, 7) == 'Windows') {
+                $binary .= '.exe';
+            }
+
+            $openBaseDir = ini_get('open_basedir');
+
+            if ($openBaseDir !== FALSE) {
+                $safeModeExecDir = ini_get('safe_mode_exec_dir');
+                $var             = $openBaseDir;
+
+                if (!empty($safeModeExecDir)) {
+                    $var .= PATH_SEPARATOR . $safeModeExecDir;
+                }
+            } else {
+                if (isset($_ENV['PATH'])) {
+                    $var = $_ENV['PATH'];
+                }
+
+                else if (isset($_ENV['Path'])) {
+                    $var = $_ENV['Path'];
+                }
+
+                else if (isset($_SERVER['PATH'])) {
+                    $var = $_SERVER['PATH'];
+                }
+
+                else if (isset($_SERVER['Path'])) {
+                    $var = $_SERVER['Path'];
+                }
+            }
+
+            if (isset($var)) {
+                $paths = explode(PATH_SEPARATOR, $var);
+            } else {
+                $paths = array();
+            }
+
+            foreach ($paths as $path) {
+                $_path = $path . DIRECTORY_SEPARATOR . $binary;
+
+                if (file_exists($_path) && is_executable($_path)) {
+                    self::$hasBinary[$binary] = TRUE;
+                    break;
+                }
+            }
+        }
+
+        return self::$hasBinary[$binary];
     }
 
     /**
