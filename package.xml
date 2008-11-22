@@ -1295,6 +1295,9 @@
       <tasks:replace from="@package_version@" to="version" type="package-info" />
       <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
      </file>
+     <file baseinstalldir="/" name="File.php" role="php">
+      <tasks:replace from="@package_version@" to="version" type="package-info" />
+     </file>
      <file baseinstalldir="/" name="Filesystem.php" role="php">
       <tasks:replace from="@package_version@" to="version" type="package-info" />
      </file>

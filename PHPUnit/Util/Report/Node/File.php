@@ -45,6 +45,7 @@
  */
 
 require_once 'PHPUnit/Util/Filter.php';
+require_once 'PHPUnit/Util/File.php';
 require_once 'PHPUnit/Util/Filesystem.php';
 require_once 'PHPUnit/Util/Template.php';
 require_once 'PHPUnit/Util/Report/Node.php';
@@ -787,7 +788,7 @@ class PHPUnit_Util_Report_Node_File extends PHPUnit_Util_Report_Node
 
     protected function processClasses()
     {
-        $classes = PHPUnit_Util_Class::getClassesInFile($this->getPath());
+        $classes = PHPUnit_Util_File::getClassesInFile($this->getPath());
 
         foreach ($classes as $className => $class) {
             $this->classes[$className] = array(
@@ -820,7 +821,7 @@ class PHPUnit_Util_Report_Node_File extends PHPUnit_Util_Report_Node
 
     protected function processFunctions()
     {
-        $functions = PHPUnit_Util_Class::getFunctionsInFile($this->getPath());
+        $functions = PHPUnit_Util_File::getFunctionsInFile($this->getPath());
 
         if (count($functions) > 0 && !isset($this->classes['*'])) {
             $this->classes['*'] = array(
