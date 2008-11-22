@@ -44,9 +44,9 @@
  * @since      File available since Release 3.2.0
  */
 
-require_once 'PHPUnit/Util/Class.php';
-require_once 'PHPUnit/Util/Metrics.php';
+require_once 'PHPUnit/Util/File.php';
 require_once 'PHPUnit/Util/Filter.php';
+require_once 'PHPUnit/Util/Metrics.php';
 
 PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
 
@@ -104,13 +104,13 @@ class PHPUnit_Util_Metrics_File extends PHPUnit_Util_Metrics
         $this->countLines();
         $this->setCoverage($codeCoverage);
 
-        foreach (PHPUnit_Util_Class::getClassesInFile($filename) as $className => $class) {
+        foreach (PHPUnit_Util_File::getClassesInFile($filename) as $className => $class) {
             $this->classes[$className] = PHPUnit_Util_Metrics_Class::factory(
               new ReflectionClass($className), $codeCoverage
             );
         }
 
-        foreach (PHPUnit_Util_Class::getFunctionsInFile($filename) as $functionName => $function) {
+        foreach (PHPUnit_Util_File::getFunctionsInFile($filename) as $functionName => $function) {
             $this->functions[$functionName] = PHPUnit_Util_Metrics_Function::factory(
               new ReflectionFunction($functionName), $codeCoverage
             );
