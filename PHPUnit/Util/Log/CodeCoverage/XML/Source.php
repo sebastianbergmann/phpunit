@@ -45,7 +45,6 @@
  */
 
 require_once 'PHPUnit/Runner/Version.php';
-require_once 'PHPUnit/Util/Metrics/File.php';
 require_once 'PHPUnit/Util/Class.php';
 require_once 'PHPUnit/Util/CodeCoverage.php';
 require_once 'PHPUnit/Util/Filter.php';

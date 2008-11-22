@@ -178,10 +178,7 @@ class PHPUnit_TextUI_Command
           'help',
           'list-groups',
           'loader=',
-          'log-graphviz=',
           'log-json=',
-          'log-metrics=',
-          'log-pmd=',
           'log-tap=',
           'log-xml=',
           'repeat=',
@@ -347,20 +344,6 @@ class PHPUnit_TextUI_Command
                 }
                 break;
 
-                case '--log-graphviz': {
-                    self::showMessage(
-                      'The --log-graphviz functionality is deprecated and will be removed in the future.',
-                      FALSE
-                    );
-
-                    if (PHPUnit_Util_Filesystem::fileExistsInIncludePath('Image/GraphViz.php')) {
-                        $arguments['graphvizLogfile'] = $option[1];
-                    } else {
-                        self::showMessage('The Image_GraphViz package is not installed.');
-                    }
-                }
-                break;
-
                 case '--log-tap': {
                     $arguments['tapLogfile'] = $option[1];
                 }
@@ -368,42 +351,6 @@ class PHPUnit_TextUI_Command
 
                 case '--log-xml': {
                     $arguments['xmlLogfile'] = $option[1];
-                }
-                break;
-
-                case '--log-pmd': {
-                    self::showMessage(
-                      'The --log-pmd functionality is deprecated and will be removed in the future.',
-                      FALSE
-                    );
-
-                    if (extension_loaded('tokenizer') && extension_loaded('xdebug')) {
-                        $arguments['pmdXML'] = $option[1];
-                    } else {
-                        if (!extension_loaded('tokenizer')) {
-                            self::showMessage('The tokenizer extension is not loaded.');
-                        } else {
-                            self::showMessage('The Xdebug extension is not loaded.');
-                        }
-                    }
-                }
-                break;
-
-                case '--log-metrics': {
-                    self::showMessage(
-                      'The --log-metrics functionality is deprecated and will be removed in the future.',
-                      FALSE
-                    );
-
-                    if (extension_loaded('tokenizer') && extension_loaded('xdebug')) {
-                        $arguments['metricsXML'] = $option[1];
-                    } else {
-                        if (!extension_loaded('tokenizer')) {
-                            self::showMessage('The tokenizer extension is not loaded.');
-                        } else {
-                            self::showMessage('The Xdebug extension is not loaded.');
-                        }
-                    }
                 }
                 break;
 

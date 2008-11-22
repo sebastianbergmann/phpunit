@@ -90,12 +90,7 @@ class PHPUnit_Util_ErrorHandler
             return FALSE;
         }
 
-        if (version_compare(PHP_VERSION, '5.2.5', '>=')) {
-            $trace = debug_backtrace(FALSE);
-        } else {
-            $trace = debug_backtrace();
-        }
-
+        $trace = debug_backtrace(FALSE);
         array_shift($trace);
 
         foreach ($trace as $frame) {

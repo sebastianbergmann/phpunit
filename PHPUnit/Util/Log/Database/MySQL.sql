@@ -120,19 +120,6 @@ CREATE TABLE IF NOT EXISTS code_coverage(
   PRIMARY KEY (test_id, code_line_id)
 ) ENGINE=InnoDB;
 
-CREATE TABLE IF NOT EXISTS metrics_project(
-  run_id                  INTEGER UNSIGNED NOT NULL,
-  metrics_project_cls     INTEGER UNSIGNED NOT NULL,
-  metrics_project_clsa    INTEGER UNSIGNED NOT NULL,
-  metrics_project_clsc    INTEGER UNSIGNED NOT NULL,
-  metrics_project_roots   INTEGER UNSIGNED NOT NULL,
-  metrics_project_leafs   INTEGER UNSIGNED NOT NULL,
-  metrics_project_interfs INTEGER UNSIGNED NOT NULL,
-  metrics_project_maxdit  INTEGER UNSIGNED NOT NULL,
-
-  INDEX (run_id)
-) ENGINE=InnoDB;
-
 CREATE TABLE IF NOT EXISTS metrics_file(
   run_id                      INTEGER UNSIGNED NOT NULL,
   code_file_id                INTEGER UNSIGNED NOT NULL REFERENCES code_file.code_file_id,
@@ -154,9 +141,6 @@ CREATE TABLE IF NOT EXISTS metrics_function(
   metrics_function_loc            INTEGER UNSIGNED NOT NULL,
   metrics_function_loc_executable INTEGER UNSIGNED NOT NULL,
   metrics_function_loc_executed   INTEGER UNSIGNED NOT NULL,
-  metrics_function_ccn            INTEGER UNSIGNED NOT NULL,
-  metrics_function_crap           FLOAT   UNSIGNED NOT NULL,
-  metrics_function_npath          INTEGER UNSIGNED NOT NULL,
 
   INDEX (run_id),
   INDEX (code_function_id)
@@ -169,22 +153,6 @@ CREATE TABLE IF NOT EXISTS metrics_class(
   metrics_class_loc            INTEGER UNSIGNED NOT NULL,
   metrics_class_loc_executable INTEGER UNSIGNED NOT NULL,
   metrics_class_loc_executed   INTEGER UNSIGNED NOT NULL,
-  metrics_class_aif            FLOAT   UNSIGNED NOT NULL,
-  metrics_class_ahf            FLOAT   UNSIGNED NOT NULL,
-  metrics_class_cis            INTEGER UNSIGNED NOT NULL,
-  metrics_class_csz            INTEGER UNSIGNED NOT NULL,
-  metrics_class_dit            INTEGER UNSIGNED NOT NULL,
-  metrics_class_impl           INTEGER UNSIGNED NOT NULL,
-  metrics_class_mif            FLOAT   UNSIGNED NOT NULL,
-  metrics_class_mhf            FLOAT   UNSIGNED NOT NULL,
-  metrics_class_noc            INTEGER UNSIGNED NOT NULL,
-  metrics_class_pf             FLOAT   UNSIGNED NOT NULL,
-  metrics_class_vars           INTEGER UNSIGNED NOT NULL,
-  metrics_class_varsnp         INTEGER UNSIGNED NOT NULL,
-  metrics_class_varsi          INTEGER UNSIGNED NOT NULL,
-  metrics_class_wmc            INTEGER UNSIGNED NOT NULL,
-  metrics_class_wmcnp          INTEGER UNSIGNED NOT NULL,
-  metrics_class_wmci           INTEGER UNSIGNED NOT NULL,
 
   INDEX (run_id),
   INDEX (code_class_id)
@@ -197,9 +165,6 @@ CREATE TABLE IF NOT EXISTS metrics_method(
   metrics_method_loc            INTEGER UNSIGNED NOT NULL,
   metrics_method_loc_executable INTEGER UNSIGNED NOT NULL,
   metrics_method_loc_executed   INTEGER UNSIGNED NOT NULL,
-  metrics_method_ccn            INTEGER UNSIGNED NOT NULL,
-  metrics_method_crap           FLOAT   UNSIGNED NOT NULL,
-  metrics_method_npath          INTEGER UNSIGNED NOT NULL,
 
   INDEX (run_id),
   INDEX (code_method_id)
