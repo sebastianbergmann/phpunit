@@ -141,6 +141,10 @@ class PHPUnit_Util_Test
         $result = array();
         $codeToCoverList = array();
 
+        if (($pos = strpos($methodName, ' ')) !== FALSE) {
+            $methodName = substr($methodName, 0, $pos);
+        }
+
         try {
             $class      = new ReflectionClass($className);
             $method     = new ReflectionMethod($className, $methodName);
@@ -332,7 +336,7 @@ class PHPUnit_Util_Test
             }
 
             foreach ($classes as $className) {
-                $codeToCoverList[] = new ReflectionClass($method);
+                $codeToCoverList[] = new ReflectionClass($className);
             }
         }
 
