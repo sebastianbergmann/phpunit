@@ -163,14 +163,12 @@ class PHPUnit_TextUI_Command
         );
 
         $longOptions = array(
-          'ansi',
-          'colors',
           'bootstrap=',
+          'colors',
           'configuration=',
-          'coverage-html=',
           'coverage-clover=',
+          'coverage-html=',
           'coverage-source=',
-          'coverage-xml=',
           'debug',
           'exclude-group=',
           'filter=',
@@ -181,9 +179,8 @@ class PHPUnit_TextUI_Command
           'log-json=',
           'log-tap=',
           'log-xml=',
+          'no-syntax-check',
           'repeat=',
-          'report=',
-          'skeleton',
           'skeleton-class',
           'skeleton-test',
           'stop-on-failure',
@@ -192,13 +189,12 @@ class PHPUnit_TextUI_Command
           'story-text=',
           'tap',
           'test-db-dsn=',
-          'test-db-log-rev=',
-          'test-db-log-prefix=',
           'test-db-log-info=',
+          'test-db-log-prefix=',
+          'test-db-log-rev=',
           'testdox',
           'testdox-html=',
           'testdox-text=',
-          'no-syntax-check',
           'verbose',
           'version',
           'wait'
@@ -233,14 +229,13 @@ class PHPUnit_TextUI_Command
 
         foreach ($options[0] as $option) {
             switch ($option[0]) {
-                case '--ansi':
-                case '--colors': {
-                    $arguments['colors'] = TRUE;
+                case '--bootstrap': {
+                    $arguments['bootstrap'] = $option[1];
                 }
                 break;
 
-                case '--bootstrap': {
-                    $arguments['bootstrap'] = $option[1];
+                case '--colors': {
+                    $arguments['colors'] = TRUE;
                 }
                 break;
 
@@ -249,8 +244,20 @@ class PHPUnit_TextUI_Command
                 }
                 break;
 
-                case '--coverage-clover':
-                case '--coverage-xml': {
+                case '--coverage-html': {
+                    if (extension_loaded('tokenizer') && extension_loaded('xdebug')) {
+                        $arguments['reportDirectory'] = $option[1];
+                    } else {
+                        if (!extension_loaded('tokenizer')) {
+                            self::showMessage('The tokenizer extension is not loaded.');
+                        } else {
+                            self::showMessage('The Xdebug extension is not loaded.');
+                        }
+                    }
+                }
+                break;
+
+                case '--coverage-clover': {
                     if (extension_loaded('tokenizer') && extension_loaded('xdebug')) {
                         $arguments['coverageClover'] = $option[1];
                     } else {
@@ -266,20 +273,6 @@ class PHPUnit_TextUI_Command
                 case '--coverage-source': {
                     if (extension_loaded('tokenizer') && extension_loaded('xdebug')) {
                         $arguments['coverageSource'] = $option[1];
-                    } else {
-                        if (!extension_loaded('tokenizer')) {
-                            self::showMessage('The tokenizer extension is not loaded.');
-                        } else {
-                            self::showMessage('The Xdebug extension is not loaded.');
-                        }
-                    }
-                }
-                break;
-
-                case '--coverage-html':
-                case '--report': {
-                    if (extension_loaded('tokenizer') && extension_loaded('xdebug')) {
-                        $arguments['reportDirectory'] = $option[1];
                     } else {
                         if (!extension_loaded('tokenizer')) {
                             self::showMessage('The tokenizer extension is not loaded.');
@@ -308,9 +301,8 @@ class PHPUnit_TextUI_Command
                 }
                 break;
 
-                case '--help': {
-                    self::showHelp();
-                    exit(PHPUnit_TextUI_TestRunner::SUCCESS_EXIT);
+                case '--exclude-group': {
+                    $arguments['excludeGroups'] = explode(',', $option[1]);
                 }
                 break;
 
@@ -324,8 +316,9 @@ class PHPUnit_TextUI_Command
                 }
                 break;
 
-                case '--exclude-group': {
-                    $arguments['excludeGroups'] = explode(',', $option[1]);
+                case '--help': {
+                    self::showHelp();
+                    exit(PHPUnit_TextUI_TestRunner::SUCCESS_EXIT);
                 }
                 break;
 
@@ -354,53 +347,16 @@ class PHPUnit_TextUI_Command
                 }
                 break;
 
+                case '--no-syntax-check': {
+                    $arguments['syntaxCheck'] = FALSE;
+                }
+                break;
+
                 case '--repeat': {
                     $arguments['repeat'] = (int)$option[1];
                 }
                 break;
 
-                case '--stop-on-failure': {
-                    $arguments['stopOnFailure'] = TRUE;
-                }
-                break;
-
-                case '--test-db-dsn': {
-                    if (extension_loaded('pdo')) {
-                        $arguments['testDatabaseDSN'] = $option[1];
-                    } else {
-                        self::showMessage('The PDO extension is not loaded.');
-                    }
-                }
-                break;
-
-                case '--test-db-log-rev': {
-                    if (extension_loaded('pdo')) {
-                        $arguments['testDatabaseLogRevision'] = $option[1];
-                    } else {
-                        self::showMessage('The PDO extension is not loaded.');
-                    }
-                }
-                break;
-
-                case '--test-db-prefix': {
-                    if (extension_loaded('pdo')) {
-                        $arguments['testDatabasePrefix'] = $option[1];
-                    } else {
-                        self::showMessage('The PDO extension is not loaded.');
-                    }
-                }
-                break;
-
-                case '--test-db-log-info': {
-                    if (extension_loaded('pdo')) {
-                        $arguments['testDatabaseLogInfo'] = $option[1];
-                    } else {
-                        self::showMessage('The PDO extension is not loaded.');
-                    }
-                }
-                break;
-
-                case '--skeleton':
                 case '--skeleton-class':
                 case '--skeleton-test': {
                     if (isset($arguments['test']) && $arguments['test'] !== FALSE) {
@@ -451,10 +407,8 @@ class PHPUnit_TextUI_Command
                 }
                 break;
 
-                case '--tap': {
-                    require_once 'PHPUnit/Util/Log/TAP.php';
-
-                    $arguments['printer'] = new PHPUnit_Util_Log_TAP;
+                case '--stop-on-failure': {
+                    $arguments['stopOnFailure'] = TRUE;
                 }
                 break;
 
@@ -475,6 +429,49 @@ class PHPUnit_TextUI_Command
                 }
                 break;
 
+                case '--tap': {
+                    require_once 'PHPUnit/Util/Log/TAP.php';
+
+                    $arguments['printer'] = new PHPUnit_Util_Log_TAP;
+                }
+                break;
+
+                case '--test-db-dsn': {
+                    if (extension_loaded('pdo')) {
+                        $arguments['testDatabaseDSN'] = $option[1];
+                    } else {
+                        self::showMessage('The PDO extension is not loaded.');
+                    }
+                }
+                break;
+
+                case '--test-db-log-info': {
+                    if (extension_loaded('pdo')) {
+                        $arguments['testDatabaseLogInfo'] = $option[1];
+                    } else {
+                        self::showMessage('The PDO extension is not loaded.');
+                    }
+                }
+                break;
+
+                case '--test-db-log-rev': {
+                    if (extension_loaded('pdo')) {
+                        $arguments['testDatabaseLogRevision'] = $option[1];
+                    } else {
+                        self::showMessage('The PDO extension is not loaded.');
+                    }
+                }
+                break;
+
+                case '--test-db-prefix': {
+                    if (extension_loaded('pdo')) {
+                        $arguments['testDatabasePrefix'] = $option[1];
+                    } else {
+                        self::showMessage('The PDO extension is not loaded.');
+                    }
+                }
+                break;
+
                 case '--testdox': {
                     require_once 'PHPUnit/Util/TestDox/ResultPrinter/Text.php';
 
@@ -489,11 +486,6 @@ class PHPUnit_TextUI_Command
 
                 case '--testdox-text': {
                     $arguments['testdoxTextFile'] = $option[1];
-                }
-                break;
-
-                case '--no-syntax-check': {
-                    $arguments['syntaxCheck'] = FALSE;
                 }
                 break;
 
@@ -683,9 +675,9 @@ Usage: phpunit [switches] UnitTest [UnitTest.php]
   --tap                    Report test execution progress in TAP format.
   --testdox                Report test execution progress in TestDox format.
 
+  --colors                 Use colors in output.
   --no-syntax-check        Disable syntax check of test source files.
   --stop-on-failure        Stop execution upon first error or failure.
-  --colors                 Use colors in output.
   --verbose                Output more verbose information.
   --wait                   Waits for a keystroke after each test.
 
