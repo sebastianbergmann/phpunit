@@ -43,9 +43,9 @@ Usage: phpunit [switches] UnitTest [UnitTest.php]
   --tap                    Report test execution progress in TAP format.
   --testdox                Report test execution progress in TestDox format.
 
+  --colors                 Use colors in output.
   --no-syntax-check        Disable syntax check of test source files.
   --stop-on-failure        Stop execution upon first error or failure.
-  --colors                 Use colors in output.
   --verbose                Output more verbose information.
   --wait                   Waits for a keystroke after each test.
 
