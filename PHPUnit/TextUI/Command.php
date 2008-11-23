@@ -471,7 +471,13 @@ class PHPUnit_TextUI_Command
                 }
                 break;
 
-                case '--skeleton':
+                case '--skeleton': {
+                    self::showMessage(
+                      'The --skeleton option is deprecated, please use --skeleton-test instead.',
+                      FALSE
+                    );
+                }
+
                 case '--skeleton-class':
                 case '--skeleton-test': {
                     if (isset($arguments['test']) && $arguments['test'] !== FALSE) {
