@@ -105,21 +105,21 @@ class PHPUnit_Util_Log_CodeCoverage_Database
 
         $this->dbh->beginTransaction();
 
-        foreach ($files as $file) {
-            $filename    = str_replace($commonPath, '', $file);
-            $fileId      = FALSE;
-            $fileMetrics = $projectMetrics->getFile($file);
-            $lines       = $fileMetrics->getLines();
-            $hash        = md5_file($file);
+        foreach ($files as $fileName) {
+            $shortenedFileName = str_replace($commonPath, '', $fileName);
+            $fileId            = FALSE;
+            $fileMetrics       = $projectMetrics->getFile($fileName);
+            $lines             = $fileMetrics->getLines();
+            $hash              = md5_file($fileName);
 
             $stmt = $this->dbh->prepare(
               'SELECT code_file_id
                  FROM code_file
-                WHERE code_file_name = :filename
+                WHERE code_file_name = :shortenedFileName
                   AND revision       = :revision;'
             );
 
-            $stmt->bindParam(':filename', $filename, PDO::PARAM_STR);
+            $stmt->bindParam(':shortenedFileName', $shortenedFileName, PDO::PARAM_STR);
             $stmt->bindParam(':revision', $revision, PDO::PARAM_INT);
             $stmt->execute();
 
@@ -132,11 +132,14 @@ class PHPUnit_Util_Log_CodeCoverage_Database
             if ($fileId == 0) {
                 $stmt = $this->dbh->prepare(
                   'INSERT INTO code_file
-                               (code_file_name, code_file_md5, revision)
-                         VALUES(:filename, :hash, :revision);'
+                               (code_file_name, code_full_file_name,
+                                code_file_md5, revision)
+                         VALUES(:shortenedFileName, :fullFileName,
+                                :hash, :revision);'
                 );
 
-                $stmt->bindParam(':filename', $filename, PDO::PARAM_STR);
+                $stmt->bindParam(':shortenedFileName', $shortenedFileName, PDO::PARAM_STR);
+                $stmt->bindParam(':fullFileName', $fileName, PDO::PARAM_STR);
                 $stmt->bindParam(':hash', $hash, PDO::PARAM_STR);
                 $stmt->bindParam(':revision', $revision, PDO::PARAM_INT);
                 $stmt->execute();
@@ -198,9 +201,9 @@ class PHPUnit_Util_Log_CodeCoverage_Database
                 foreach ($lines as $line) {
                     $covered = 0;
 
-                    if (isset($summary[$file][$i])) {
-                        if (is_int($summary[$file][$i])) {
-                            $covered = $summary[$file][$i];
+                    if (isset($summary[$fileName][$i])) {
+                        if (is_int($summary[$fileName][$i])) {
+                            $covered = $summary[$fileName][$i];
                         } else {
                             $covered = 1;
                         }
@@ -447,7 +450,7 @@ class PHPUnit_Util_Log_CodeCoverage_Database
 
             for ($lineNumber = 1; $lineNumber <= $fileLoc; $lineNumber++) {
                 $coveringTests = PHPUnit_Util_CodeCoverage::getCoveringTests(
-                  $codeCoverage, $file, $lineNumber
+                  $codeCoverage, $fileName, $lineNumber
                 );
 
                 if (is_array($coveringTests)) {
@@ -457,7 +460,7 @@ class PHPUnit_Util_Log_CodeCoverage_Database
 
                     $codeLineId      = (int)$stmt->fetchColumn(0);
                     $oldCoverageFlag = (int)$stmt->fetchColumn(1);
-                    $newCoverageFlag = isset($summary[$file][$lineNumber]) ? 1 : 0;
+                    $newCoverageFlag = isset($summary[$fileName][$lineNumber]) ? 1 : 0;
 
                     if (($oldCoverageFlag == 0 && $newCoverageFlag != 0) ||
                         ($oldCoverageFlag <  0 && $newCoverageFlag >  0)) {
