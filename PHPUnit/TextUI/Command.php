@@ -236,7 +236,13 @@ class PHPUnit_TextUI_Command
 
         foreach ($options[0] as $option) {
             switch ($option[0]) {
-                case '--ansi':
+                case '--ansi': {
+                    self::showMessage(
+                      'The --ansi option is deprecated, please use --colors instead.',
+                      FALSE
+                    );
+                }
+
                 case '--colors': {
                     $arguments['colors'] = TRUE;
                 }
@@ -252,8 +258,14 @@ class PHPUnit_TextUI_Command
                 }
                 break;
 
-                case '--coverage-clover':
                 case '--coverage-xml': {
+                    self::showMessage(
+                      'The --coverage-xml option is deprecated, please use --coverage-clover instead.',
+                      FALSE
+                    );
+                }
+
+                case '--coverage-clover': {
                     if (extension_loaded('tokenizer') && extension_loaded('xdebug')) {
                         $arguments['coverageClover'] = $option[1];
                     } else {
@@ -279,8 +291,14 @@ class PHPUnit_TextUI_Command
                 }
                 break;
 
-                case '--coverage-html':
                 case '--report': {
+                    self::showMessage(
+                      'The --report option is deprecated, please use --coverage-html instead.',
+                      FALSE
+                    );
+                }
+
+                case '--coverage-html': {
                     if (extension_loaded('tokenizer') && extension_loaded('xdebug')) {
                         $arguments['reportDirectory'] = $option[1];
                     } else {
@@ -736,9 +754,9 @@ Usage: phpunit [switches] UnitTest [UnitTest.php]
   --tap                    Report test execution progress in TAP format.
   --testdox                Report test execution progress in TestDox format.
 
+  --colors                 Use colors in output.
   --no-syntax-check        Disable syntax check of test source files.
   --stop-on-failure        Stop execution upon first error or failure.
-  --colors                 Use colors in output.
   --verbose                Output more verbose information.
   --wait                   Waits for a keystroke after each test.
 
