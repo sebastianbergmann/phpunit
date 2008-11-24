@@ -821,7 +821,7 @@ class PHPUnit_Util_Report_Node_File extends PHPUnit_Util_Report_Node
 
     protected function processFunctions()
     {
-        $functions = PHPUnit_Util_Class::getFunctionsInFile($this->getPath());
+        $functions = PHPUnit_Util_File::getFunctionsInFile($this->getPath());
 
         if (count($functions) > 0 && !isset($this->classes['*'])) {
             $this->classes['*'] = array(
