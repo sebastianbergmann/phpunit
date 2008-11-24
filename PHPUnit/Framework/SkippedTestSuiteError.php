@@ -45,11 +45,8 @@
  */
 
 require_once 'PHPUnit/Framework.php';
-require_once 'PHPUnit/Util/Filter.php';
 
 PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
-
-if (!class_exists('PHPUnit_Framework_SkippedTestSuiteError', FALSE)) {
 
 /**
  * Extension to PHPUnit_Framework_AssertionFailedError to mark the special
@@ -66,7 +63,5 @@ if (!class_exists('PHPUnit_Framework_SkippedTestSuiteError', FALSE)) {
  */
 class PHPUnit_Framework_SkippedTestSuiteError extends PHPUnit_Framework_AssertionFailedError implements PHPUnit_Framework_SkippedTest
 {
-}
-
 }
 ?>

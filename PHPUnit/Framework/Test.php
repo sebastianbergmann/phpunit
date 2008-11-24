@@ -45,11 +45,8 @@
  */
 
 require_once 'PHPUnit/Framework.php';
-require_once 'PHPUnit/Util/Filter.php';
 
 PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
-
-if (!interface_exists('PHPUnit_Framework_Test', FALSE)) {
 
 /**
  * A Test can be run and collect its results.
@@ -72,7 +69,5 @@ interface PHPUnit_Framework_Test extends Countable
      * @return PHPUnit_Framework_TestResult
      */
     public function run(PHPUnit_Framework_TestResult $result = NULL);
-}
-
 }
 ?>

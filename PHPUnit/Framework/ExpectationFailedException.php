@@ -45,11 +45,8 @@
  */
 
 require_once 'PHPUnit/Framework.php';
-require_once 'PHPUnit/Util/Filter.php';
 
 PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
-
-if (!class_exists('PHPUnit_Framework_ExpectationFailedException', FALSE)) {
 
 /**
  * Exception for expectations which failed their check.
@@ -100,7 +97,5 @@ class PHPUnit_Framework_ExpectationFailedException extends PHPUnit_Framework_Ass
     {
         return $this->customMessage;
     }
-}
-
 }
 ?>

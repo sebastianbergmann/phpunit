@@ -46,13 +46,10 @@
 
 require_once 'PHPUnit/Framework.php';
 require_once 'PHPUnit/Util/Class.php';
-require_once 'PHPUnit/Util/Filter.php';
 require_once 'PHPUnit/Util/Type.php';
 require_once 'PHPUnit/Util/XML.php';
 
 PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
-
-if (!class_exists('PHPUnit_Framework_Assert', FALSE)) {
 
 /**
  * A set of assert methods.
@@ -1929,7 +1926,5 @@ abstract class PHPUnit_Framework_Assert
     {
         self::$count = 0;
     }
-}
-
 }
 ?>
