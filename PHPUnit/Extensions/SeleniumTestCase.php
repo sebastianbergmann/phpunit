@@ -137,7 +137,7 @@ abstract class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_Tes
         $suite->setName($className);
 
         $class            = new ReflectionClass($className);
-        $classGroups      = PHPUnit_Util_Test::getGroups($class);
+        $classGroups      = PHPUnit_Util_Test::getGroups($class->getDocComment());
         $staticProperties = $class->getStaticProperties();
 
         // Create tests from Selenese/HTML files.
@@ -181,9 +181,10 @@ abstract class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_Tes
 
                 foreach ($class->getMethods() as $method) {
                     if (PHPUnit_Framework_TestSuite::isPublicTestMethod($method)) {
-                        $name   = $method->getName();
-                        $data   = PHPUnit_Util_Test::getProvidedData($className, $name);
-                        $groups = PHPUnit_Util_Test::getGroups($method, $classGroups);
+                        $name             = $method->getName();
+                        $methodDocComment = $method->getDocComment();
+                        $data             = PHPUnit_Util_Test::getProvidedData($className, $name, $methodDocComment);
+                        $groups           = PHPUnit_Util_Test::getGroups($methodDocComment, $classGroups);
 
                         // Test method with @dataProvider.
                         if (is_array($data) || $data instanceof Iterator) {
@@ -218,9 +219,10 @@ abstract class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_Tes
         else {
             foreach ($class->getMethods() as $method) {
                 if (PHPUnit_Framework_TestSuite::isPublicTestMethod($method)) {
-                    $name   = $method->getName();
-                    $data   = PHPUnit_Util_Test::getProvidedData($className, $name);
-                    $groups = PHPUnit_Util_Test::getGroups($method, $classGroups);
+                    $name             = $method->getName();
+                    $methodDocComment = $method->getDocComment();
+                    $data             = PHPUnit_Util_Test::getProvidedData($className, $name, $methodDocComment);
+                    $groups           = PHPUnit_Util_Test::getGroups($methodDocComment, $classGroups);
 
                     // Test method with @dataProvider.
                     if (is_array($data) || $data instanceof Iterator) {

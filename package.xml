@@ -860,6 +860,9 @@
       <file baseinstalldir="/" name="ConfigurationTest.php" role="test">
        <tasks:replace from="@package_version@" to="version" type="package-info" />
       </file>
+      <file baseinstalldir="/" name="TestTest.php" role="test">
+       <tasks:replace from="@package_version@" to="version" type="package-info" />
+      </file>
       <file baseinstalldir="/" name="TimerTest.php" role="test">
        <tasks:replace from="@package_version@" to="version" type="package-info" />
       </file>
