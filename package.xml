@@ -448,6 +448,14 @@
        <file baseinstalldir="/" name="unmocked_clone.tpl.dist" role="php" />
        <file baseinstalldir="/" name="unmocked_constructor.tpl.dist" role="php" />
       </dir>
+      <dir name="Invocation">
+       <file baseinstalldir="/" name="Object.php" role="php">
+        <tasks:replace from="@package_version@" to="version" type="package-info" />
+       </file>
+       <file baseinstalldir="/" name="Static.php" role="php">
+        <tasks:replace from="@package_version@" to="version" type="package-info" />
+       </file>
+      </dir>
       <dir name="Matcher">
        <file baseinstalldir="/" name="AnyInvokedCount.php" role="php">
         <tasks:replace from="@package_version@" to="version" type="package-info" />
