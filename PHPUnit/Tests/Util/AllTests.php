@@ -50,6 +50,7 @@ require_once 'PHPUnit/Framework/TestSuite.php';
 
 require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'TestDox' . DIRECTORY_SEPARATOR . 'AllTests.php';
 require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'ConfigurationTest.php';
+require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'TestTest.php';
 require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'TimerTest.php';
 require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'XMLTest.php';
 
@@ -75,6 +76,7 @@ class Util_AllTests
 
         $suite->addTest(Util_TestDox_AllTests::suite());
         $suite->addTestSuite('Util_ConfigurationTest');
+        $suite->addTestSuite('Util_TestTest');
         $suite->addTestSuite('Util_TimerTest');
         $suite->addTestSuite('Util_XMLTest');
 

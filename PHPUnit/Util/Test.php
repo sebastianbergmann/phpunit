@@ -62,6 +62,12 @@ PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
  */
 class PHPUnit_Util_Test
 {
+    const REGEX_COVERS             = '/@covers[\s]+([\!<>\:\.\w]+)([\s]+<extended>)?/';
+    const REGEX_DATA_PROVIDER      = '/@dataProvider\s+([a-zA-Z0-9._:-\\\]+)/';
+    const REGEX_DEPENDS            = '/@depends\s+([a-zA-Z0-9._:-\\\]+)/';
+    const REGEX_EXPECTED_EXCEPTION = '(@expectedException\s+([:.\w\\\]+)(?:[\t ]+(\S*))?(?:[\t ]+(\S*))?\s*$)m';
+    const REGEX_GROUP              = '/@group\s+([a-zA-Z0-9._-]+)/';
+
     /**
      * @param  PHPUnit_Framework_Test $test
      * @param  boolean                $asString
@@ -150,7 +156,7 @@ class PHPUnit_Util_Test
             $method     = new ReflectionMethod($className, $methodName);
             $docComment = $class->getDocComment() . $method->getDocComment();
 
-            if (preg_match_all('/@covers[\s]+([\!<>\:\.\w]+)([\s]+<extended>)?/', $docComment, $matches)) {
+            if (preg_match_all(self::REGEX_COVERS, $docComment, $matches)) {
                 foreach ($matches[1] as $i => $method) {
                     $codeToCoverList = array_merge(
                         $codeToCoverList,
@@ -183,16 +189,14 @@ class PHPUnit_Util_Test
     /**
      * Returns the dependencies for a test class or method.
      *
-     * @param  Reflector $reflector
-     * @param  array     $dependencies
+     * @param  string $docComment
+     * @param  array  $dependencies
      * @return array
      * @since  Method available since Release 3.4.0
      */
-    public static function getDependencies(Reflector $reflector, array $dependencies = array())
+    public static function getDependencies($docComment, array $dependencies = array())
     {
-        $docComment = $reflector->getDocComment();
-
-        if (preg_match_all('/@depends\s+([a-zA-Z0-9._:-]+)/', $docComment, $matches)) {
+        if (preg_match_all(self::REGEX_DEPENDS, $docComment, $matches)) {
             $dependencies = array_unique(array_merge($dependencies, $matches[1]));
         }
 
@@ -200,18 +204,46 @@ class PHPUnit_Util_Test
     }
 
     /**
+     * Returns the expected exception for a test.
+     *
+     * @param  string $docComment
+     * @return array
+     * @since  Method available since Release 3.3.6
+     */
+    public static function getExpectedException($docComment)
+    {
+        if (preg_match(self::REGEX_EXPECTED_EXCEPTION, $docComment, $matches)) {
+            $class   = $matches[1];
+            $code    = 0;
+            $message = '';
+
+            if (isset($matches[2])) {
+                $message = trim($matches[2]);
+            }
+
+            if (isset($matches[3])) {
+                $code = (int)$matches[3];
+            }
+
+            return array(
+              'class' => $class, 'code' => $code, 'message' => $message
+            );
+        }
+
+        return FALSE;
+    }
+
+    /**
      * Returns the groups for a test class or method.
      *
-     * @param  Reflector $reflector
-     * @param  array     $groups
+     * @param  string $docComment
+     * @param  array  $groups
      * @return array
      * @since  Method available since Release 3.2.0
      */
-    public static function getGroups(Reflector $reflector, array $groups = array())
+    public static function getGroups($docComment, array $groups = array())
     {
-        $docComment = $reflector->getDocComment();
-
-        if (preg_match_all('/@group\s+([a-zA-Z0-9._-]+)/', $docComment, $matches)) {
+        if (preg_match_all(self::REGEX_GROUP, $docComment, $matches)) {
             $groups = array_unique(array_merge($groups, $matches[1]));
         }
 
@@ -223,21 +255,26 @@ class PHPUnit_Util_Test
      *
      * @param  string $className
      * @param  string $methodName
+     * @param  string $docComment
      * @return array
      * @since  Method available since Release 3.2.0
      */
-    public static function getProvidedData($className, $methodName)
+    public static function getProvidedData($className, $methodName, $docComment)
     {
-        $method     = new ReflectionMethod($className, $methodName);
-        $docComment = $method->getDocComment();
-
-        if (preg_match('/@dataProvider\s+([a-zA-Z0-9._:-]+)/', $docComment, $matches)) {
+        if (preg_match(self::REGEX_DATA_PROVIDER, $docComment, $matches)) {
             try {
-                $dataProvider           = explode('::', $matches[1]);
-                $dataProviderMethodName = array_pop($dataProvider);
+                $dataProviderMethodNameNamespace = explode('\\', $matches[1]);
+                $leaf                            = explode('::', array_pop($dataProviderMethodNameNamespace));
+                $dataProviderMethodName          = array_pop($leaf);
 
-                if (!empty($dataProvider)) {
-                    $dataProviderClassName = join('::', $dataProvider);
+                if (!empty($dataProviderMethodNameNamespace)) {
+                    $dataProviderMethodNameNamespace = join('\\', $dataProviderMethodNameNamespace) . '\\';
+                } else {
+                    $dataProviderMethodNameNamespace = '';
+                }
+
+                if (!empty($leaf)) {
+                    $dataProviderClassName = $dataProviderMethodNameNamespace . array_pop($leaf);
                 } else {
                     $dataProviderClassName = $className;
                 }
