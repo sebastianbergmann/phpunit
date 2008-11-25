@@ -41,20 +41,12 @@
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    SVN: $Id$
  * @link       http://www.phpunit.de/
- * @since      File available since Release 2.3.0
+ * @since      File available since Release 3.3.6
  */
 
-require_once 'PHPUnit/Util/Filter.php';
+require_once 'PHPUnit/Framework/TestCase.php';
 
-require_once 'PHPUnit/Framework/TestSuite.php';
-
-require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'TestDox' . DIRECTORY_SEPARATOR . 'AllTests.php';
-require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'ConfigurationTest.php';
-require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'TestTest.php';
-require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'TimerTest.php';
-require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'XMLTest.php';
-
-PHPUnit_Util_Filter::$filterPHPUnit = FALSE;
+require_once 'PHPUnit/Util/Timer.php';
 
 /**
  *
@@ -66,21 +58,45 @@ PHPUnit_Util_Filter::$filterPHPUnit = FALSE;
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    Release: @package_version@
  * @link       http://www.phpunit.de/
- * @since      Class available since Release 2.0.0
+ * @since      Class available since Release 3.3.6
  */
-class Util_AllTests
+class Util_TestTest extends PHPUnit_Framework_TestCase
 {
-    public static function suite()
+    public function testGetExpectedException()
     {
-        $suite = new PHPUnit_Framework_TestSuite('PHPUnit_Util');
+        $this->assertEquals(
+          array('class' => 'FooBarBaz', 'code' => 0, 'message' => ''),
+          PHPUnit_Util_Test::getExpectedException('@expectedException FooBarBaz')
+        );
 
-        $suite->addTest(Util_TestDox_AllTests::suite());
-        $suite->addTestSuite('Util_ConfigurationTest');
-        $suite->addTestSuite('Util_TestTest');
-        $suite->addTestSuite('Util_TimerTest');
-        $suite->addTestSuite('Util_XMLTest');
+        $this->assertEquals(
+          array('class' => 'Foo_Bar_Baz', 'code' => 0, 'message' => ''),
+          PHPUnit_Util_Test::getExpectedException('@expectedException Foo_Bar_Baz')
+        );
 
-        return $suite;
+        $this->assertEquals(
+          array('class' => 'Foo\Bar\Baz', 'code' => 0, 'message' => ''),
+          PHPUnit_Util_Test::getExpectedException('@expectedException Foo\Bar\Baz')
+        );
+    }
+
+    public function testGetProvidedDataRegEx()
+    {
+        $result = preg_match(PHPUnit_Util_Test::REGEX_DATA_PROVIDER, '@dataProvider method', $matches);
+        $this->assertEquals(1, $result);
+        $this->assertEquals('method', $matches[1]);
+
+        $result = preg_match(PHPUnit_Util_Test::REGEX_DATA_PROVIDER, '@dataProvider class::method', $matches);
+        $this->assertEquals(1, $result);
+        $this->assertEquals('class::method', $matches[1]);
+
+        $result = preg_match(PHPUnit_Util_Test::REGEX_DATA_PROVIDER, '@dataProvider namespace\class::method', $matches);
+        $this->assertEquals(1, $result);
+        $this->assertEquals('namespace\class::method', $matches[1]);
+
+        $result = preg_match(PHPUnit_Util_Test::REGEX_DATA_PROVIDER, '@dataProvider namespace\namespace\class::method', $matches);
+        $this->assertEquals(1, $result);
+        $this->assertEquals('namespace\namespace\class::method', $matches[1]);
     }
 }
 ?>

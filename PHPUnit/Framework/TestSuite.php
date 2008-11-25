@@ -216,17 +216,19 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
             return;
         }
 
-        $className   = $theClass->getName();
-        $names       = array();
-        $classGroups = PHPUnit_Util_Test::getGroups($theClass);
+        $className       = $theClass->getName();
+        $classDocComment = $theClass->getDocComment();
+        $names           = array();
+        $classGroups     = PHPUnit_Util_Test::getGroups($classDocComment);
 
         foreach ($theClass->getMethods() as $method) {
             if (strpos($method->getDeclaringClass()->getName(), 'PHPUnit_') !== 0) {
+                $methodDocComment = $method->getDocComment();
+
                 $this->addTestMethod(
                   $method,
-                  PHPUnit_Util_Test::getGroups($method, $classGroups),
-                  $names,
-                  $theClass
+                  PHPUnit_Util_Test::getGroups($methodDocComment, $classGroups),
+                  $names
                 );
             }
         }
@@ -466,9 +468,9 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
      */
     public static function createTest(ReflectionClass $theClass, $name, array $classGroups = array())
     {
-        $className  = $theClass->getName();
-        $method     = new ReflectionMethod($className, $name);
-        $docComment = $method->getDocComment();
+        $className        = $theClass->getName();
+        $method           = new ReflectionMethod($className, $name);
+        $methodDocComment = $method->getDocComment();
 
         if (!$theClass->isInstantiable()) {
             return self::warning(
@@ -476,26 +478,8 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
             );
         }
 
-        // @expectedException ExceptionClass              on TestCase::testMethod()
-        // @expectedException ExceptionClass message      on TestCase::testMethod()
-        // @expectedException ExceptionClass message code on TestCase::testMethod()
-        if (preg_match('(@expectedException\s+([:.\w]+)(?:[\t ]+(\S*))?(?:[\t ]+(\S*))?\s*$)m', $docComment, $matches)) {
-            $expectedException = $matches[1];
-
-            if (isset($matches[2])) {
-                $expectedExceptionMessage = trim($matches[2]);
-            } else {
-                $expectedExceptionMessage = '';
-            }
-
-            if (isset($matches[3])) {
-                $expectedExceptionCode = (int)$matches[3];
-            } else {
-                $expectedExceptionCode = 0;
-            }
-        }
-
-        $constructor = $theClass->getConstructor();
+        $constructor       = $theClass->getConstructor();
+        $expectedException = PHPUnit_Util_Test::getExpectedException($methodDocComment);
 
         if ($constructor !== NULL) {
             $parameters = $constructor->getParameters();
@@ -507,8 +491,8 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
 
             // TestCase($name, $data)
             else {
-                $data   = PHPUnit_Util_Test::getProvidedData($className, $name);
-                $groups = PHPUnit_Util_Test::getGroups($method, $classGroups);
+                $data   = PHPUnit_Util_Test::getProvidedData($className, $name, $methodDocComment);
+                $groups = PHPUnit_Util_Test::getGroups($methodDocComment, $classGroups);
 
                 if (is_array($data) || $data instanceof Iterator) {
                     $test = new PHPUnit_Framework_TestSuite(
@@ -521,9 +505,9 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
                         if ($_test instanceof PHPUnit_Framework_TestCase &&
                             isset($expectedException)) {
                             $_test->setExpectedException(
-                              $expectedException,
-                              $expectedExceptionMessage,
-                              $expectedExceptionCode
+                              $expectedException['class'],
+                              $expectedException['message'],
+                              $expectedException['code']
                             );
                         }
 
@@ -540,9 +524,9 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
 
             if (isset($expectedException)) {
                 $test->setExpectedException(
-                  $expectedException,
-                  $expectedExceptionMessage,
-                  $expectedExceptionCode
+                  $expectedException['class'],
+                  $expectedException['message'],
+                  $expectedException['code']
                 );
             }
         }
@@ -743,9 +727,8 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
      * @param  ReflectionMethod $method
      * @param  string           $groups
      * @param  array            $names
-     * @param  ReflectionClass  $theClass
      */
-    protected function addTestMethod(ReflectionMethod $method, $groups, Array &$names, ReflectionClass $theClass)
+    protected function addTestMethod(ReflectionMethod $method, array $groups, array &$names)
     {
         $name = $method->getName();
 
@@ -756,14 +739,13 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
         if ($this->isPublicTestMethod($method)) {
             $names[] = $name;
 
-            $this->addTest(
-              self::createTest(
-                $theClass,
-                $name,
-                $groups
-              ),
+            $test = self::createTest(
+              $method->getDeclaringClass(),
+              $name,
               $groups
             );
+
+            $this->addTest($test, $groups);
         }
 
         else if ($this->isTestMethod($method)) {
