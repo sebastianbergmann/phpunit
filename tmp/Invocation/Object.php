@@ -41,7 +41,7 @@
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    SVN: $Id$
  * @link       http://www.phpunit.de/
- * @since      File available since Release 3.0.0
+ * @since      File available since Release 4.0.0
  */
 
 require_once 'PHPUnit/Framework.php';
@@ -50,7 +50,7 @@ require_once 'PHPUnit/Util/Filter.php';
 PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
 
 /**
- * Interface for invocations.
+ * Represents a non-static invocation.
  *
  * @category   Testing
  * @package    PHPUnit
@@ -59,12 +59,16 @@ PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    Release: @package_version@
  * @link       http://www.phpunit.de/
- * @since      Interface available since Release 4.0.0
+ * @since      Class available since Release 4.0.0
  */
-interface PHPUnit_Framework_MockObject_Invocation
+class PHPUnit_Framework_MockObject_Invocation_Object extends PHPUnit_Framework_MockObject_Invocation_Static
 {
-}
+    public $object;
 
-require_once 'PHPUnit/Framework/MockObject/Invocation/Static.php';
-require_once 'PHPUnit/Framework/MockObject/Invocation/Object.php';
+    public function __construct($className, $methodName, $parameters, $object)
+    {
+        parent::__construct($className, $methodName, $parameters);
+        $this->object = $object;
+    }
+}
 ?>
