@@ -93,7 +93,7 @@ class PHPUnit_Extensions_GroupTestSuite extends PHPUnit_Framework_TestSuite
                 $method = $class->getMethod($test->getName(FALSE));
 
                 $testGroups = PHPUnit_Util_Test::getGroups(
-                  $method, PHPUnit_Util_Test::getGroups($class)
+                  $method->getDocComment(), PHPUnit_Util_Test::getGroups($class)
                 );
 
                 foreach ($groups as $group) {
