@@ -105,12 +105,6 @@ class PHPUnit_Framework_MockObject_Generator
         $templateDir   = dirname(__FILE__) . DIRECTORY_SEPARATOR . 'Generator' . DIRECTORY_SEPARATOR;
         $classTemplate = new PHPUnit_Util_Template($templateDir . 'mocked_class.tpl');
 
-        if (!$callOriginalClone) {
-            $cloneTemplate = new PHPUnit_Util_Template($templateDir . 'mocked_clone.tpl');
-        } else {
-            $cloneTemplate = new PHPUnit_Util_Template($templateDir . 'unmocked_clone.tpl');
-        }
-
         $mockClassName = self::generateMockClassName(
           $originalClassName, $mockClassName
         );
@@ -145,6 +139,26 @@ class PHPUnit_Framework_MockObject_Generator
                 $mockClassName['fullClassName']
               )
             );
+        }
+
+        $cloneTemplate = '';
+
+        if ($class->hasMethod('__clone')) {
+            $cloneMethod = $class->getMethod('__clone');
+
+            if (!$cloneMethod->isFinal()) {
+                if ($callOriginalClone) {
+                    $cloneTemplate = new PHPUnit_Util_Template($templateDir . 'unmocked_clone.tpl');
+                } else {
+                    $cloneTemplate = new PHPUnit_Util_Template($templateDir . 'mocked_clone.tpl');
+                }
+            }
+        } else {
+            $cloneTemplate = new PHPUnit_Util_Template($templateDir . 'mocked_clone.tpl');
+        }
+
+        if (is_object($cloneTemplate)) {
+            $cloneTemplate = $cloneTemplate->render();
         }
 
         if (is_array($methods) && empty($methods) && ($isClass || $isInterface)) {
@@ -183,7 +197,7 @@ class PHPUnit_Framework_MockObject_Generator
                                      $mockClassName['mockClassName'],
                                      $callOriginalConstructor
                                    ),
-            'clone'             => $cloneTemplate->render(),
+            'clone'             => $cloneTemplate,
             'mocked_methods'    => $mockedMethods
           )
         );
@@ -250,6 +264,15 @@ class PHPUnit_Framework_MockObject_Generator
         $arguments              = '';
         $constructor            = $class->getConstructor();
         $constructorInInterface = FALSE;
+
+        if ($constructor !== NULL && $constructor->isFinal()) {
+            throw new RuntimeException(
+              sprintf(
+                'Constructor of class "%s" is declared "final". The class cannot be mocked.',
+                $mockedClassName
+              )
+            );
+        }
 
         if ($constructor !== NULL && $callOriginalConstructor) {
             $template = new PHPUnit_Util_Template($templateDir . 'unmocked_constructor.tpl');
