@@ -104,17 +104,17 @@ class PHPUnit_Framework_MockObject_Generator
     {
         $templateDir   = dirname(__FILE__) . DIRECTORY_SEPARATOR . 'Generator' . DIRECTORY_SEPARATOR;
         $classTemplate = new PHPUnit_Util_Template($templateDir . 'mocked_class.tpl');
+        $cloneTemplate = '';
+        $isClass       = FALSE;
+        $isInterface   = FALSE;
 
         $mockClassName = self::generateMockClassName(
           $originalClassName, $mockClassName
         );
 
         if (class_exists($originalClassName, $callAutoload)) {
-            $isClass     = TRUE;
-            $isInterface = FALSE;
+            $isClass = TRUE;
         } else {
-            $isClass = FALSE;
-
             if (interface_exists($originalClassName, $callAutoload)) {
                 $callOriginalConstructor = FALSE;
                 $isInterface             = TRUE;
@@ -128,33 +128,33 @@ class PHPUnit_Framework_MockObject_Generator
             if (!empty($mockClassName['namespaceName'])) {
                 $prologue = 'namespace ' . $mockClassName['namespaceName'] . ";\n\n" . $prologue;
             }
-        }
 
-        $class = new ReflectionClass($mockClassName['fullClassName']);
-
-        if ($class->isFinal()) {
-            throw new RuntimeException(
-              sprintf(
-                'Class "%s" is declared "final" and cannot be mocked.',
-                $mockClassName['fullClassName']
-              )
-            );
-        }
-
-        $cloneTemplate = '';
-
-        if ($class->hasMethod('__clone')) {
-            $cloneMethod = $class->getMethod('__clone');
-
-            if (!$cloneMethod->isFinal()) {
-                if ($callOriginalClone) {
-                    $cloneTemplate = new PHPUnit_Util_Template($templateDir . 'unmocked_clone.tpl');
-                } else {
-                    $cloneTemplate = new PHPUnit_Util_Template($templateDir . 'mocked_clone.tpl');
-                }
-            }
-        } else {
             $cloneTemplate = new PHPUnit_Util_Template($templateDir . 'mocked_clone.tpl');
+        } else {
+            $class = new ReflectionClass($mockClassName['fullClassName']);
+
+            if ($class->isFinal()) {
+                throw new RuntimeException(
+                  sprintf(
+                    'Class "%s" is declared "final" and cannot be mocked.',
+                    $mockClassName['fullClassName']
+                  )
+                );
+            }
+
+            if ($class->hasMethod('__clone')) {
+                $cloneMethod = $class->getMethod('__clone');
+
+                if (!$cloneMethod->isFinal()) {
+                    if ($callOriginalClone) {
+                        $cloneTemplate = new PHPUnit_Util_Template($templateDir . 'unmocked_clone.tpl');
+                    } else {
+                        $cloneTemplate = new PHPUnit_Util_Template($templateDir . 'mocked_clone.tpl');
+                    }
+                }
+            } else {
+                $cloneTemplate = new PHPUnit_Util_Template($templateDir . 'mocked_clone.tpl');
+            }
         }
 
         if (is_object($cloneTemplate)) {
@@ -167,20 +167,28 @@ class PHPUnit_Framework_MockObject_Generator
 
         $mockedMethods = '';
 
-        foreach ($methods as $methodName) {
-            try {
-                $method = $class->getMethod($methodName);
+        if (isset($class)) {
+            foreach ($methods as $methodName) {
+                try {
+                    $method = $class->getMethod($methodName);
 
-                if (self::canMockMethod($method)) {
-                    $mockedMethods .= self::generateMockedMethodDefinitionFromExisting(
-                      $templateDir, $method
+                    if (self::canMockMethod($method)) {
+                        $mockedMethods .= self::generateMockedMethodDefinitionFromExisting(
+                          $templateDir, $method
+                        );
+                    }
+                }
+
+                catch (ReflectionException $e) {
+                    $mockedMethods .= self::generateMockedMethodDefinition(
+                      $templateDir, $mockClassName['fullClassName'], $methodName
                     );
                 }
             }
-
-            catch (ReflectionException $e) {
+        } else {
+            foreach ($methods as $methodName) {
                 $mockedMethods .= self::generateMockedMethodDefinition(
-                  $templateDir, $class->getName(), $methodName
+                  $templateDir, $mockClassName['fullClassName'], $methodName
                 );
             }
         }
@@ -189,11 +197,11 @@ class PHPUnit_Framework_MockObject_Generator
           array(
             'prologue'          => isset($prologue) ? $prologue : '',
             'class_declaration' => self::generateMockClassDeclaration(
-                                     $class, $mockClassName
+                                     $mockClassName, $isInterface
                                    ),
             'constructor'       => self::generateMockConstructor(
                                      $templateDir,
-                                     $class,
+                                     isset($class) ? $class->getConstructor() : NULL,
                                      $mockClassName['mockClassName'],
                                      $callOriginalConstructor
                                    ),
@@ -236,11 +244,11 @@ class PHPUnit_Framework_MockObject_Generator
         );
     }
 
-    protected static function generateMockClassDeclaration(ReflectionClass $class, array $mockClassName)
+    protected static function generateMockClassDeclaration(array $mockClassName, $isInterface)
     {
         $buffer = 'class ';
 
-        if ($class->isInterface()) {
+        if ($isInterface) {
             $buffer .= sprintf(
               "%s implements %s%s",
               $mockClassName['mockClassName'],
@@ -259,10 +267,9 @@ class PHPUnit_Framework_MockObject_Generator
         return $buffer;
     }
 
-    protected static function generateMockConstructor($templateDir, ReflectionClass $class, $mockedClassName, $callOriginalConstructor)
+    protected static function generateMockConstructor($templateDir, $constructor, $mockedClassName, $callOriginalConstructor)
     {
         $arguments              = '';
-        $constructor            = $class->getConstructor();
         $constructorInInterface = FALSE;
 
         if ($constructor !== NULL && $constructor->isFinal()) {
@@ -284,7 +291,7 @@ class PHPUnit_Framework_MockObject_Generator
             if (!$callOriginalConstructor) {
                 $constructorName = $constructor->getName();
 
-                foreach (PHPUnit_Util_Class::getHierarchy($class->getName(), TRUE) as $_class) {
+                foreach (PHPUnit_Util_Class::getHierarchy($mockedClassName, TRUE) as $_class) {
                     foreach ($_class->getInterfaces() as $interface) {
                         if ($interface->hasMethod($constructorName)) {
                             $constructorInInterface = TRUE;
