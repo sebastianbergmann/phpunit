@@ -288,7 +288,7 @@ class PHPUnit_Framework_MockObject_Mock
         $className  = $method->getDeclaringClass()->getName();
         $methodName = $method->getName();
 
-        if ($method->isFinal() ||
+        if ($method->isFinal() || $method->isStatic() ||
             $methodName == '__construct' || $methodName == $className ||
             $methodName == '__destruct'  || $method->getName() == '__clone') {
             return FALSE;
@@ -309,10 +309,6 @@ class PHPUnit_Framework_MockObject_Mock
 
         else {
             $modifier = 'public';
-        }
-
-        if ($method->isStatic()) {
-            $modifier .= ' static';
         }
 
         if ($method->returnsReference()) {
