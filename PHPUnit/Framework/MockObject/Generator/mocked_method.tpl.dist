@@ -3,9 +3,11 @@
     {
         $args = func_get_args();
 
-        return $this->invocationMocker->invoke(
+        $result = $this->invocationMocker->invoke(
           new PHPUnit_Framework_MockObject_Invocation(
             $this, '{class_name}', '{method_name}', $args
           )
         );
+
+        return $result;
     }
