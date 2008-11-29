@@ -206,6 +206,7 @@ class PHPUnit_Framework_MockObject_Generator
                                      $callOriginalConstructor
                                    ),
             'clone'             => $cloneTemplate,
+            'mock_class_name'   => $mockClassName['mockClassName'],
             'mocked_methods'    => $mockedMethods
           )
         );
@@ -331,7 +332,9 @@ class PHPUnit_Framework_MockObject_Generator
         }
 
         if ($method->isStatic()) {
-            $modifier .= ' static';
+            $static = TRUE;
+        } else {
+            $static = FALSE;
         }
 
         if ($method->returnsReference()) {
@@ -346,13 +349,18 @@ class PHPUnit_Framework_MockObject_Generator
           $method->getName(),
           $modifier,
           PHPUnit_Util_Class::getMethodParameters($method),
-          $reference
+          $reference,
+          $static
         );
     }
 
-    protected static function generateMockedMethodDefinition($templateDir, $className, $methodName, $modifier = 'public', $arguments = '', $reference = '')
+    protected static function generateMockedMethodDefinition($templateDir, $className, $methodName, $modifier = 'public', $arguments = '', $reference = '', $static = FALSE)
     {
-        $template = new PHPUnit_Util_Template($templateDir . 'mocked_method.tpl');
+        if ($static) {
+            $template = new PHPUnit_Util_Template($templateDir . 'mocked_static_method.tpl');
+        } else {
+            $template = new PHPUnit_Util_Template($templateDir . 'mocked_object_method.tpl');
+        }
 
         $template->setVar(
           array(

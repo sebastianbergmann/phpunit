@@ -1,11 +1,17 @@
 {prologue}{class_declaration}
 {
+    public static $staticInvocationMocker;
     private $invocationMocker;
 
 {constructor}{clone}{mocked_methods}
     public function expects(PHPUnit_Framework_MockObject_Matcher_Invocation $matcher)
     {
         return $this->invocationMocker->expects($matcher);
+    }
+
+    public static function staticExpects(PHPUnit_Framework_MockObject_Matcher_Invocation $matcher)
+    {
+        return self::$staticInvocationMocker->expects($matcher);
     }
 
     public function __phpunit_getInvocationMocker()
@@ -15,6 +21,9 @@
 
     public function __phpunit_verify()
     {
+        self::$staticInvocationMocker->verify();
         $this->invocationMocker->verify();
     }
 }
+
+{mock_class_name}::$staticInvocationMocker = new PHPUnit_Framework_MockObject_InvocationMocker;
