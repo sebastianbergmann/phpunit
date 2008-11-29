@@ -50,6 +50,7 @@ require_once dirname(dirname(__FILE__)) . DIRECTORY_SEPARATOR . '_files' . DIREC
 require_once dirname(dirname(__FILE__)) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'FunctionCallback.php';
 require_once dirname(dirname(__FILE__)) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'MethodCallback.php';
 require_once dirname(dirname(__FILE__)) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'PartialMockTestClass.php';
+require_once dirname(dirname(__FILE__)) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'StaticMockTestClass.php';
 
 /**
  *
@@ -246,6 +247,18 @@ class Framework_MockObjectTest extends PHPUnit_Framework_TestCase
         $mock2 = $this->getMock('PartialMockTestClass', array(), array(), '', TRUE, FALSE);
 
         $this->assertNotEquals(get_class($mock1), get_class($mock2));
+    }
+
+    public function testStubbedReturnValueForStaticMethod()
+    {
+        $mock  = $this->getMock('StaticMockTestClass', array('doSomething'));
+        $class = get_class($mock);
+
+        $class::staticExpects($this->any())
+              ->method('doSomething')
+              ->will($this->returnValue('something'));
+
+        $this->assertEquals('something', $class::doSomething());
     }
 }
 ?>

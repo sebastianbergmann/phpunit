@@ -444,7 +444,8 @@
        <file baseinstalldir="/" name="mocked_class.tpl.dist" role="php" />
        <file baseinstalldir="/" name="mocked_clone.tpl.dist" role="php" />
        <file baseinstalldir="/" name="mocked_constructor.tpl.dist" role="php" />
-       <file baseinstalldir="/" name="mocked_method.tpl.dist" role="php" />
+       <file baseinstalldir="/" name="mocked_object_method.tpl.dist" role="php" />
+       <file baseinstalldir="/" name="mocked_static_method.tpl.dist" role="php" />
        <file baseinstalldir="/" name="unmocked_clone.tpl.dist" role="php" />
        <file baseinstalldir="/" name="unmocked_constructor.tpl.dist" role="php" />
       </dir>
@@ -971,9 +972,6 @@
       <file baseinstalldir="/" name="NotVoidTestCase.php" role="test">
        <tasks:replace from="@package_version@" to="version" type="package-info" />
       </file>
-      <file baseinstalldir="/" name="PartialMockTestClass.php" role="test">
-       <tasks:replace from="@package_version@" to="version" type="package-info" />
-      </file>
       <file baseinstalldir="/" name="OneTestCase.php" role="test">
        <tasks:replace from="@package_version@" to="version" type="package-info" />
       </file>
@@ -981,6 +979,9 @@
        <tasks:replace from="@package_version@" to="version" type="package-info" />
       </file>
       <file baseinstalldir="/" name="OverrideTestCase.php" role="test">
+       <tasks:replace from="@package_version@" to="version" type="package-info" />
+      </file>
+      <file baseinstalldir="/" name="PartialMockTestClass.php" role="test">
        <tasks:replace from="@package_version@" to="version" type="package-info" />
       </file>
       <file baseinstalldir="/" name="SampleClass.php" role="test">
@@ -993,6 +994,9 @@
        <tasks:replace from="@package_version@" to="version" type="package-info" />
       </file>
       <file baseinstalldir="/" name="SleepTest.php" role="test">
+       <tasks:replace from="@package_version@" to="version" type="package-info" />
+      </file>
+      <file baseinstalldir="/" name="StaticMockTestClass.php" role="test">
        <tasks:replace from="@package_version@" to="version" type="package-info" />
       </file>
       <file baseinstalldir="/" name="Struct.php" role="test">
