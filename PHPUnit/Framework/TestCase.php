@@ -428,6 +428,9 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
             $this->backupGlobals();
         }
 
+        // Clean up stat cache.
+        clearstatcache();
+
         // Set up the fixture.
         $this->setUp();
 
