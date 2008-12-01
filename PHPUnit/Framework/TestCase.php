@@ -428,11 +428,11 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
             $this->backupGlobals();
         }
 
-        // Clean up stat cache.
-        clearstatcache();
-
         // Set up the fixture.
         $this->setUp();
+
+        // Clean up stat cache.
+        clearstatcache();
 
         // Run the test.
         try {
@@ -474,6 +474,9 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
         // Tear down the fixture.
         $this->tearDown();
 
+        // Clean up stat cache.
+        clearstatcache();
+
         // Restore the $GLOBALS array.
         if ($this->backupGlobals === NULL || $this->backupGlobals === TRUE) {
             $this->restoreGlobals();
@@ -490,9 +493,6 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
         foreach ($this->locale as $category => $locale) {
             setlocale($category, $locale);
         }
-
-        // Clean up stat cache.
-        clearstatcache();
 
         // Workaround for missing "finally".
         if (isset($e)) {
