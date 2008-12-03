@@ -335,6 +335,29 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
     }
 
     /**
+     * @since  Method available since Release 3.4.0
+     */
+    protected function setExpectedExceptionFromAnnotation()
+    {
+        try {
+            $method            = new ReflectionMethod(get_class($this), $this->name);
+            $methodDocComment  = $method->getDocComment();
+            $expectedException = PHPUnit_Util_Test::getExpectedException($methodDocComment);
+
+            if ($expectedException !== FALSE) {
+                $this->setExpectedException(
+                  $expectedException['class'],
+                  $expectedException['message'],
+                  $expectedException['code']
+                );
+            }
+        }
+
+        catch (ReflectionException $e) {
+        }
+    }
+
+    /**
      * Returns the status of this test.
      *
      * @return integer
@@ -383,6 +406,8 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
         if ($result === NULL) {
             $result = $this->createResult();
         }
+
+        $this->setExpectedExceptionFromAnnotation();
 
         $this->result = $result;
         $result->run($this);

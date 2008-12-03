@@ -478,8 +478,7 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
             );
         }
 
-        $constructor       = $theClass->getConstructor();
-        $expectedException = PHPUnit_Util_Test::getExpectedException($methodDocComment);
+        $constructor = $theClass->getConstructor();
 
         if ($constructor !== NULL) {
             $parameters = $constructor->getParameters();
@@ -500,18 +499,9 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
                     );
 
                     foreach ($data as $_dataName => $_data) {
-                        $_test = new $className($name, $_data, $_dataName);
-
-                        if ($_test instanceof PHPUnit_Framework_TestCase &&
-                            isset($expectedException)) {
-                            $_test->setExpectedException(
-                              $expectedException['class'],
-                              $expectedException['message'],
-                              $expectedException['code']
-                            );
-                        }
-
-                        $test->addTest($_test, $groups);
+                        $test->addTest(
+                          new $className($name, $_data, $_dataName), $groups
+                        );
                     }
                 } else {
                     $test = new $className;
@@ -521,14 +511,6 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
 
         if ($test instanceof PHPUnit_Framework_TestCase) {
             $test->setName($name);
-
-            if (isset($expectedException)) {
-                $test->setExpectedException(
-                  $expectedException['class'],
-                  $expectedException['message'],
-                  $expectedException['code']
-                );
-            }
         }
 
         return $test;
