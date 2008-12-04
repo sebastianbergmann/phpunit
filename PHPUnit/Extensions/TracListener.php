@@ -65,6 +65,8 @@ PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
  */
 class PHPUnit_Extensions_TracListener implements PHPUnit_Framework_TestListener
 {
+    const REGEX_TICKET = '/@ticket\s+#?(\d+)/';
+
     protected $ticketCounts = array();
     protected $ran = FALSE;
     protected $username;
@@ -169,7 +171,7 @@ class PHPUnit_Extensions_TracListener implements PHPUnit_Framework_TestListener
         foreach ($class->getMethods() as $method) {
             $docComment = $method->getDocComment();
 
-            if (preg_match('/@tracTicket\s+#?(\d+)/', $docComment, $matches)) {
+            if (preg_match(self::REGEX_TICKET, $docComment, $matches)) {
                 $this->ticketCounts[$matches[1]][$method->getName()] = 1;
             }
         }
@@ -208,7 +210,7 @@ class PHPUnit_Extensions_TracListener implements PHPUnit_Framework_TestListener
         $method     = new ReflectionMethod(get_class($test), $test->getName());
         $docComment = $method->getDocComment();
 
-        if (preg_match('/@tracTicket\s+#?(\d+)/', $docComment, $matches)) {
+        if (preg_match(self::REGEX_TICKET, $docComment, $matches)) {
             $ticketNum = $matches[1];
  
             // Remove this test from the totals (if it passed).
