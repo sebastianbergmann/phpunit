@@ -288,6 +288,11 @@
        <tasks:replace from="@package_version@" to="version" type="package-info" />
       </file>
      </dir>
+     <dir name="TicketListener">
+      <file baseinstalldir="/" name="Trac.php" role="php">
+       <tasks:replace from="@package_version@" to="version" type="package-info" />
+      </file>
+     </dir>
      <file baseinstalldir="/" name="GroupTestSuite.php" role="php">
       <tasks:replace from="@package_version@" to="version" type="package-info" />
      </file>
@@ -312,7 +317,7 @@
      <file baseinstalldir="/" name="TestDecorator.php" role="php">
       <tasks:replace from="@package_version@" to="version" type="package-info" />
      </file>
-     <file baseinstalldir="/" name="TracListener.php" role="php">
+     <file baseinstalldir="/" name="TicketListener.php" role="php">
       <tasks:replace from="@package_version@" to="version" type="package-info" />
      </file>
     </dir>

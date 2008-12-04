@@ -46,12 +46,11 @@
  */
 
 require_once 'PHPUnit/Framework.php';
-require_once 'XML/RPC2/Client.php';
 
 PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
 
 /**
- * 
+ * Base class for test listeners that interact with an issue tracker.
  *
  * @category   Testing
  * @package    PHPUnit
@@ -63,32 +62,12 @@ PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
  * @link       http://www.phpunit.de/
  * @since      Class available since Release 3.4.0
  */
-class PHPUnit_Extensions_TracListener implements PHPUnit_Framework_TestListener
+abstract class PHPUnit_Extensions_TicketListener implements PHPUnit_Framework_TestListener
 {
     const REGEX_TICKET = '/@ticket\s+#?(\d+)/';
 
     protected $ticketCounts = array();
     protected $ran = FALSE;
-    protected $username;
-    protected $password;
-    protected $hostpath;
-    protected $scheme;
-    
-    /**
-     * Constructor
-     *
-     * @param string $user Trac-XMLRPC username
-     * @param string $pass Trac-XMLRPC password
-     * @param string $hostpath Trac-XMLRPC Host+Path (e.g. example.com/trac/login/xmlrpc)
-     * @param string $scheme Trac scheme (http or https)
-     */
-    public function __construct($username, $password, $hostpath, $scheme = 'http')
-    {
-        $this->username = $username;
-        $this->password = $password;
-        $this->hostpath = $hostpath;
-        $this->scheme   = $scheme;
-    }
     
     /**
      * An error occurred.
@@ -211,18 +190,18 @@ class PHPUnit_Extensions_TracListener implements PHPUnit_Framework_TestListener
         $docComment = $method->getDocComment();
 
         if (preg_match(self::REGEX_TICKET, $docComment, $matches)) {
-            $ticketNum = $matches[1];
+            $ticketId = $matches[1];
  
             // Remove this test from the totals (if it passed).
             if ($test->getStatus() == PHPUnit_Runner_BaseTestRunner::STATUS_PASSED) {
-                unset($this->ticketCounts[$ticketNum][$test->getName()]);
+                unset($this->ticketCounts[$ticketId][$test->getName()]);
             }
  
             // Only close tickets if ALL referenced cases pass
             // but reopen tickets if a single test fails.
             if ($cumulative) {
                 // Determine number of to-pass tests:
-                if (count($this->ticketCounts[$ticketNum]) > 0) {
+                if (count($this->ticketCounts[$ticketId]) > 0) {
                     // There exist remaining test cases with this reference.
                     $adjustTicket = FALSE;
                 } else {
@@ -233,56 +212,12 @@ class PHPUnit_Extensions_TracListener implements PHPUnit_Framework_TestListener
                 $adjustTicket = TRUE;
             }
 
-            $ticket = XML_RPC2_Client::create(
-              $this->scheme . '://' .
-              $this->username . ':' . $this->password . '@' .
-              $this->hostpath,
-              array('prefix' => 'ticket.')
-            );
-
-            try {
-                $ticketInfo = $ticket->get($ticketNum);
-            }
-
-            catch (XML_RPC2_FaultException $e) {
-                throw new RuntimeException(
-                  sprintf(
-                    "Trac fetch failure: %d: %s\n",
-                    $e->getFaultCode(),
-                    $e->getFaultString()
-                  )
-                );
-            }
-            
             if ($adjustTicket && in_array($ticketInfo[3]['status'], $ifStatus)) {
-                try {
-                    printf(
-                      "Updating Trac ticket #%d, status: %s\n",
-                      $ticketNum,
-                      $newStatus
-                    );
-
-                    $ticket->update(
-                      $ticketNum,
-                      $message,
-                      array(
-                        'status'     => $newStatus,
-                        'resolution' => $resolution
-                      )
-                    );
-                }
-
-                catch (XML_RPC2_FaultException $e) {
-                    throw new RuntimeException(
-                      sprintf(
-                        "Trac update failure: %d: %s\n",
-                        $e->getFaultCode(),
-                        $e->getFaultString()
-                      )
-                    );
-                }
+                $this->updateTicket($ticketId, $newStatus, $message, $resolution);
             }
         }
     }
+
+    abstract protected function updateTicket($ticketId, $newStatus, $message, $resolution);
 }
 ?>
