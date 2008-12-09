@@ -950,6 +950,9 @@
       <file baseinstalldir="/" name="FunctionCallback.php" role="test">
        <tasks:replace from="@package_version@" to="version" type="package-info" />
       </file>
+      <file baseinstalldir="/" name="GoogleSearch.wsdl" role="test">
+       <tasks:replace from="@package_version@" to="version" type="package-info" />
+      </file>
       <file baseinstalldir="/" name="InheritedTestCase.php" role="test">
        <tasks:replace from="@package_version@" to="version" type="package-info" />
       </file>
@@ -1335,6 +1338,9 @@
    </extension>
    <extension>
     <name>pdo_sqlite</name>
+   </extension>
+   <extension>
+    <name>soap</name>
    </extension>
    <extension>
     <name>tokenizer</name>

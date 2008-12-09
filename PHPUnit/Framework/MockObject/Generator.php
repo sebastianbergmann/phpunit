@@ -100,6 +100,37 @@ class PHPUnit_Framework_MockObject_Generator
         return $mock;
     }
 
+    public static function generateClassFromWsdl($wsdlFile, $originalClassName)
+    {
+        $client  = new SOAPClient($wsdlFile);
+        $methods = $client->__getFunctions();
+        unset($client);
+
+        $source = sprintf("class %s\n{", $originalClassName);
+
+        foreach ($methods as $method) {
+            $nameStart = strpos($method, ' ') + 1;
+            $nameEnd   = strpos($method, '(');
+            $name      = substr($method, $nameStart, $nameEnd - $nameStart);
+            $args      = explode(',', substr($method, $nameEnd + 1, strpos($method, ')') - $nameEnd - 1));
+            $numArgs   = count($args);
+
+            for ($i = 0; $i < $numArgs; $i++) {
+                $args[$i] = substr($args[$i], strpos($args[$i], '$'));
+            }
+
+            $source .= sprintf(
+              "\n    public function %s(%s)\n    {\n    }\n",
+              $name,
+              join(', ', $args)
+            );
+        }
+
+        $source .= "}\n";
+
+        return $source;
+    }
+
     protected static function generateMock($originalClassName, array $methods, $mockClassName, $callOriginalConstructor, $callOriginalClone, $callAutoload)
     {
         $templateDir   = dirname(__FILE__) . DIRECTORY_SEPARATOR . 'Generator' . DIRECTORY_SEPARATOR;

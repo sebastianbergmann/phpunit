@@ -260,5 +260,30 @@ class Framework_MockObjectTest extends PHPUnit_Framework_TestCase
 
         $this->assertEquals('something', $class::doSomething());
     }
+
+    public function testGenerateClassFromWsdl()
+    {
+        $this->assertEquals(
+          'class GoogleSearch
+{
+    public function doGetCachedPage($key, $url)
+    {
+    }
+
+    public function doSpellingSuggestion($key, $phrase)
+    {
+    }
+
+    public function doGoogleSearch($key, $q, $start, $maxResults, $filter, $restrict, $safeSearch, $lr, $ie, $oe)
+    {
+    }
+}
+',
+          PHPUnit_Framework_MockObject_Generator::generateClassFromWsdl(
+            dirname(dirname(__FILE__)) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'GoogleSearch.wsdl',
+            'GoogleSearch'
+          )
+        );
+    }
 }
 ?>

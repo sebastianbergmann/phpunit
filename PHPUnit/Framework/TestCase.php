@@ -757,6 +757,40 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
     }
 
     /**
+     * Returns a mock object based on the given WSDL file.
+     *
+     * @param  string  $wsdlFile
+     * @param  string  $originalClassName
+     * @param  string  $mockClassName
+     * @return object
+     * @since  Method available since Release 3.4.0
+     */
+    protected function getMockFromWsdl($wsdlFile, $originalClassName = '', $mockClassName = '')
+    {
+        if ($originalClassName === '') {
+            $originalClassName = str_replace(
+              '.wsdl', '', basename($wsdlFile)
+            );
+        }
+
+        eval(
+          PHPUnit_Framework_MockObject_Generator::generateClassFromWsdl(
+            $wsdlFile, $originalClassName
+          )
+        );
+
+        return $this->getMock(
+          $originalClassName,
+          array(),
+          array(),
+          $mockClassName,
+          FALSE,
+          FALSE,
+          FALSE
+        );
+    }
+
+    /**
      * Adds a value to the assertion counter.
      *
      * @param integer $count
