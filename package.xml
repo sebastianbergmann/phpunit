@@ -453,6 +453,8 @@
        <file baseinstalldir="/" name="mocked_static_method.tpl.dist" role="php" />
        <file baseinstalldir="/" name="unmocked_clone.tpl.dist" role="php" />
        <file baseinstalldir="/" name="unmocked_constructor.tpl.dist" role="php" />
+       <file baseinstalldir="/" name="wsdl_class.tpl.dist" role="php" />
+       <file baseinstalldir="/" name="wsdl_method.tpl.dist" role="php" />
       </dir>
       <dir name="Invocation">
        <file baseinstalldir="/" name="Object.php" role="php">
@@ -780,6 +782,10 @@
       </file>
      </dir>
      <dir name="Framework">
+      <dir name="MockObject">
+       <file baseinstalldir="/" name="wsdl_class.phpt" role="test" />
+       <file baseinstalldir="/" name="wsdl_class_partial.phpt" role="test" />
+     </dir>
       <file baseinstalldir="/" name="AllTests.php" role="test">
        <tasks:replace from="@package_version@" to="version" type="package-info" />
       </file>

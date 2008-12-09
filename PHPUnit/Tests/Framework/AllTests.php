@@ -49,6 +49,7 @@ require_once 'PHPUnit/Util/Filter.php';
 PHPUnit_Util_Filter::addFileToFilter(__FILE__);
 
 require_once 'PHPUnit/Framework/TestSuite.php';
+require_once 'PHPUnit/Extensions/PhptTestSuite.php';
 
 require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'AssertTest.php';
 require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'ComparisonFailureTest.php';
@@ -89,6 +90,7 @@ class Framework_AllTests
         $suite->addTestSuite('Framework_TestFailureTest');
         $suite->addTestSuite('Framework_TestImplementorTest');
         $suite->addTestSuite('Framework_TestListenerTest');
+        $suite->addTest(new PHPUnit_Extensions_PhptTestSuite(dirname(__FILE__) . DIRECTORY_SEPARATOR . 'MockObject'));
 
         return $suite;
     }
