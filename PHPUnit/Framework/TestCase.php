@@ -765,10 +765,12 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
      * @param  string  $wsdlFile
      * @param  string  $originalClassName
      * @param  string  $mockClassName
+     * @param  array   $methods
+     * @param  boolean $callOriginalConstructor
      * @return object
      * @since  Method available since Release 3.4.0
      */
-    protected function getMockFromWsdl($wsdlFile, $originalClassName = '', $mockClassName = '')
+    protected function getMockFromWsdl($wsdlFile, $originalClassName = '', $mockClassName = '', array $methods = array(), $callOriginalConstructor = TRUE)
     {
         if ($originalClassName === '') {
             $originalClassName = str_replace(
@@ -778,16 +780,16 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
 
         eval(
           PHPUnit_Framework_MockObject_Generator::generateClassFromWsdl(
-            $wsdlFile, $originalClassName
+            $wsdlFile, $originalClassName, $methods
           )
         );
 
         return $this->getMock(
           $originalClassName,
-          array(),
+          $methods,
           array(),
           $mockClassName,
-          FALSE,
+          $callOriginalConstructor,
           FALSE,
           FALSE
         );
