@@ -93,8 +93,14 @@ class PHPUnit_Util_Diff
         if (isset($result)) {
             $result = explode("\n", $result);
 
-            $result[0] = "--- Expected";
-            $result[1] = "+++ Actual";
+            if (self::$hasTextDiff) {
+                array_unshift($result, '--- Expected', '+++ Actual');
+            }
+
+            else if (self::$hasDiffCommand) {
+                $result[0] = '--- Expected';
+                $result[1] = '+++ Actual';
+            }
 
             if (empty($result[count($result)-1])) {
                 unset($result[count($result)-1]);
@@ -138,22 +144,22 @@ class PHPUnit_Util_Diff
      */
     protected static function doDiffCommand($from, $to)
     {
-        $expectedFile = tempnam('/tmp', 'expected');
-        file_put_contents($expectedFile, $expected);
+        $fromFile = tempnam('/tmp', 'expected');
+        file_put_contents($fromFile, $from);
 
-        $actualFile = tempnam('/tmp', 'actual');
-        file_put_contents($actualFile, $actual);
+        $toFile = tempnam('/tmp', 'actual');
+        file_put_contents($toFile, $to);
 
         $buffer = shell_exec(
           sprintf(
             'diff -u %s %s',
-            escapeshellarg($expectedFile),
-            escapeshellarg($actualFile)
+            escapeshellarg($fromFile),
+            escapeshellarg($toFile)
           )
         );
 
-        unlink($expectedFile);
-        unlink($actualFile);
+        unlink($fromFile);
+        unlink($toFile);
 
         return $buffer;
     }
@@ -184,8 +190,8 @@ class PHPUnit_Util_Diff
             self::$hasTextDiff = FALSE;
         }
 
-        if (!self::$hasTextDiff && self::$hasDiff === NULL) {
-            self::$hasDiff = PHPUnit_Util_Filesystem::hasBinary('diff');
+        if (!self::$hasTextDiff && self::$hasDiffCommand === NULL) {
+            self::$hasDiffCommand = PHPUnit_Util_Filesystem::hasBinary('diff');
         }
     }
 }
