@@ -100,35 +100,51 @@ class PHPUnit_Framework_MockObject_Generator
         return $mock;
     }
 
-    public static function generateClassFromWsdl($wsdlFile, $originalClassName)
+    public static function generateClassFromWsdl($wsdlFile, $originalClassName, array $methods = array())
     {
-        $client  = new SOAPClient($wsdlFile);
-        $methods = $client->__getFunctions();
+        $client   = new SOAPClient($wsdlFile);
+        $_methods = $client->__getFunctions();
         unset($client);
 
-        $source = sprintf("class %s\n{", $originalClassName);
+        $templateDir    = dirname(__FILE__) . DIRECTORY_SEPARATOR . 'Generator' . DIRECTORY_SEPARATOR;
+        $methodTemplate = new PHPUnit_Util_Template($templateDir . 'wsdl_method.tpl');
+        $methodsBuffer  = '';
 
-        foreach ($methods as $method) {
+        foreach ($_methods as $method) {
             $nameStart = strpos($method, ' ') + 1;
             $nameEnd   = strpos($method, '(');
             $name      = substr($method, $nameStart, $nameEnd - $nameStart);
-            $args      = explode(',', substr($method, $nameEnd + 1, strpos($method, ')') - $nameEnd - 1));
-            $numArgs   = count($args);
 
-            for ($i = 0; $i < $numArgs; $i++) {
-                $args[$i] = substr($args[$i], strpos($args[$i], '$'));
+            if (empty($methods) || in_array($name, $methods)) {
+                $args      = explode(',', substr($method, $nameEnd + 1, strpos($method, ')') - $nameEnd - 1));
+                $numArgs   = count($args);
+
+                for ($i = 0; $i < $numArgs; $i++) {
+                    $args[$i] = substr($args[$i], strpos($args[$i], '$'));
+                }
+
+                $methodTemplate->setVar(
+                  array(
+                    'method_name' => $name,
+                    'arguments'   => join(', ', $args)
+                  )
+                );
+
+                $methodsBuffer .= $methodTemplate->render();
             }
-
-            $source .= sprintf(
-              "\n    public function %s(%s)\n    {\n    }\n",
-              $name,
-              join(', ', $args)
-            );
         }
 
-        $source .= "}\n";
+        $classTemplate = new PHPUnit_Util_Template($templateDir . 'wsdl_class.tpl');
 
-        return $source;
+        $classTemplate->setVar(
+          array(
+            'class_name' => $originalClassName,
+            'wsdl'       => $wsdlFile,
+            'methods'    => $methodsBuffer
+          )
+        );
+
+        return $classTemplate->render();
     }
 
     protected static function generateMock($originalClassName, array $methods, $mockClassName, $callOriginalConstructor, $callOriginalClone, $callAutoload)
