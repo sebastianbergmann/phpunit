@@ -230,11 +230,11 @@ class PHPUnit_Util_Filesystem
 
             $openBaseDir = ini_get('open_basedir');
 
-            if ($openBaseDir !== FALSE) {
+            if (is_string($openBaseDir) && !empty($openBaseDir)) {
                 $safeModeExecDir = ini_get('safe_mode_exec_dir');
                 $var             = $openBaseDir;
 
-                if (!empty($safeModeExecDir)) {
+                if (is_string($safeModeExecDir) && !empty($safeModeExecDir)) {
                     $var .= PATH_SEPARATOR . $safeModeExecDir;
                 }
             } else {

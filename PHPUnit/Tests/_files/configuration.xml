@@ -105,6 +105,7 @@
 
   <php>
     <ini name="foo" value="bar"/>
+    <const name="foo" value="bar"/>
     <var name="foo" value="bar"/>
   </php>
 

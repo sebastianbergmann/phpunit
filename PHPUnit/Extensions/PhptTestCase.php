@@ -143,6 +143,14 @@ class PHPUnit_Extensions_PhptTestCase implements PHPUnit_Framework_Test, PHPUnit
             throw new RuntimeException('Class PEAR_RunTest not found.');
         }
 
+        if (isset($GLOBALS['_PEAR_destructor_object_list']) &&
+            is_array($GLOBALS['_PEAR_destructor_object_list']) &&
+            !empty($GLOBALS['_PEAR_destructor_object_list'])) {
+            $pearDestructorObjectListCount = count($GLOBALS['_PEAR_destructor_object_list']);
+        } else {
+            $pearDestructorObjectListCount = 0;
+        }
+
         if ($result === NULL) {
             $result = new PHPUnit_Framework_TestResult;
         }
@@ -222,6 +230,18 @@ class PHPUnit_Extensions_PhptTestCase implements PHPUnit_Framework_Test, PHPUnit
         }
 
         $result->endTest($this, $time);
+
+        // Do not invoke PEAR's destructor mechanism for PHP 4
+        // as it raises an E_STRICT.
+        if ($pearDestructorObjectListCount == 0) {
+            unset($GLOBALS['_PEAR_destructor_object_list']);
+        } else {
+            $count = count($GLOBALS['_PEAR_destructor_object_list']) - $pearDestructorObjectListCount;
+
+            for ($i = 0; $i < $count; $i++) {
+                array_pop($GLOBALS['_PEAR_destructor_object_list']);
+            }
+        }
 
         return $result;
     }

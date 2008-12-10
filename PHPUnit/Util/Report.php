@@ -100,7 +100,13 @@ abstract class PHPUnit_Util_Report
         $items                   = self::buildDirectoryStructure($files);
 
         unset($codeCoverageInformation);
-        $name = $result->topTestSuite()->getName();
+
+        $topTestSuite = $result->topTestSuite();
+
+        if ($topTestSuite instanceof PHPUnit_Framework_TestSuite) {
+            $name = $topTestSuite->getName();
+        }
+
         unset($result);
 
         $root = new PHPUnit_Util_Report_Node_Directory($commonPath, NULL);
