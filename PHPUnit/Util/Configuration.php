@@ -425,8 +425,9 @@ class PHPUnit_Util_Configuration
     public function getPHPConfiguration()
     {
         $result = array(
-          'ini' => array(),
-          'var' => array()
+          'ini'   => array(),
+          'const' => array(),
+          'var'   => array()
         );
 
         foreach ($this->xpath->query('php/ini') as $ini) {
