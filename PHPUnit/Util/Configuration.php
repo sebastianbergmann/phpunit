@@ -132,6 +132,7 @@ PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
  *
  *   <php>
  *     <ini name="foo" value="bar"/>
+ *     <const name="foo" value="bar"/>
  *     <var name="foo" value="bar"/>
  *   </php>
  *
@@ -393,6 +394,21 @@ class PHPUnit_Util_Configuration
             $result['ini'][$name] = $value;
         }
 
+        foreach ($this->xpath->query('php/const') as $const) {
+            $name  = (string)$const->getAttribute('name');
+            $value = (string)$const->getAttribute('value');
+
+            if (strtolower($value) == 'false') {
+                $value = FALSE;
+            }
+
+            else if (strtolower($value) == 'true') {
+                $value = TRUE;
+            }
+
+            $result['const'][$name] = $value;
+        }
+
         foreach ($this->xpath->query('php/var') as $var) {
             $name  = (string)$var->getAttribute('name');
             $value = (string)$var->getAttribute('value');
@@ -422,6 +438,12 @@ class PHPUnit_Util_Configuration
 
         foreach ($configuration['ini'] as $name => $value) {
             ini_set($name, $value);
+        }
+
+        foreach ($configuration['const'] as $name => $value) {
+            if (!defined($name)) {
+                define($name, $value);
+            }
         }
 
         foreach ($configuration['var'] as $name => $value) {
