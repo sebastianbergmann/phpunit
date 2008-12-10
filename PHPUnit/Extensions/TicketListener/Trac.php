@@ -46,7 +46,6 @@
  */
 
 require_once 'PHPUnit/Extensions/TicketListener.php';
-require_once 'XML/RPC2/Client.php';
 
 PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
 
@@ -63,7 +62,7 @@ PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
  * @link       http://www.phpunit.de/
  * @since      Class available since Release 3.4.0
  */
-class PHPUnit_Extensions_TicketListener_Trac extends PHPUnit_Extensions_TracListener
+class PHPUnit_Extensions_TicketListener_Trac extends PHPUnit_Extensions_TicketListener
 {
     protected $username;
     protected $password;
@@ -88,52 +87,63 @@ class PHPUnit_Extensions_TicketListener_Trac extends PHPUnit_Extensions_TracList
     
     protected function updateTicket($ticketId, $newStatus, $message, $resolution)
     {
-        $ticket = XML_RPC2_Client::create(
-          $this->scheme . '://' .
-          $this->username . ':' . $this->password . '@' .
-          $this->hostpath,
-          array('prefix' => 'ticket.')
-        );
+        if (PHPUnit_Util_Filesystem::fileExistsInIncludePath('XML/RPC2/Client.php')) {
+            PHPUnit_Util_Filesystem::collectStart();
+            require_once 'XML/RPC2/Client.php';
 
-        try {
-            $ticketInfo = $ticket->get($ticketId);
-        }
-
-        catch (XML_RPC2_FaultException $e) {
-            throw new RuntimeException(
-              sprintf(
-                "Trac fetch failure: %d: %s\n",
-                $e->getFaultCode(),
-                $e->getFaultString()
-              )
-            );
-        }
-            
-        try {
-            printf(
-              "Updating Trac ticket #%d, status: %s\n",
-              $ticketId,
-              $newStatus
+            $ticket = XML_RPC2_Client::create(
+              $this->scheme . '://' .
+              $this->username . ':' . $this->password . '@' .
+              $this->hostpath,
+              array('prefix' => 'ticket.')
             );
 
-            $ticket->update(
-              $ticketId,
-              $message,
-              array(
-                'status'     => $newStatus,
-                'resolution' => $resolution
-              )
-            );
-        }
+            try {
+                $ticketInfo = $ticket->get($ticketId);
+            }
 
-        catch (XML_RPC2_FaultException $e) {
-            throw new RuntimeException(
-              sprintf(
-                "Trac update failure: %d: %s\n",
-                $e->getFaultCode(),
-                $e->getFaultString()
-              )
-            );
+            catch (XML_RPC2_FaultException $e) {
+                throw new RuntimeException(
+                  sprintf(
+                    "Trac fetch failure: %d: %s\n",
+                    $e->getFaultCode(),
+                    $e->getFaultString()
+                  )
+                );
+            }
+                
+            try {
+                printf(
+                  "Updating Trac ticket #%d, status: %s\n",
+                  $ticketId,
+                  $newStatus
+                );
+
+                $ticket->update(
+                  $ticketId,
+                  $message,
+                  array(
+                    'status'     => $newStatus,
+                    'resolution' => $resolution
+                  )
+                );
+            }
+
+            catch (XML_RPC2_FaultException $e) {
+                throw new RuntimeException(
+                  sprintf(
+                    "Trac update failure: %d: %s\n",
+                    $e->getFaultCode(),
+                    $e->getFaultString()
+                  )
+                );
+            }
+
+            foreach (PHPUnit_Util_Filesystem::collectEnd() as $blacklistedFile) {
+                PHPUnit_Util_Filter::addFileToFilter($blacklistedFile, 'PHPUNIT');
+            }
+        } else {
+            throw new RuntimeException('XML_RPC2 is not available.');
         }
     }
 }

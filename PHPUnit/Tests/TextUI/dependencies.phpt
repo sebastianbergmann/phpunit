@@ -23,17 +23,17 @@ Time: %d seconds
 There was 1 failure:
 
 1) testOne(DependencyFailureTest)
-%s/dependencies.php:6
+%s/dependencies.php:%i
 
 There were 2 skipped tests:
 
 1) testTwo(DependencyFailureTest)
 This test depends on "DependencyFailureTest::testOne" to pass.
-%s/dependencies.php:6
+%s/dependencies.php:%i
 
 2) testThree(DependencyFailureTest)
 This test depends on "DependencyFailureTest::testTwo" to pass.
-%s/dependencies.php:6
+%s/dependencies.php:%i
 
 FAILURES!
 Tests: 6, Assertions: 0, Failures: 1, Skipped: 2.
