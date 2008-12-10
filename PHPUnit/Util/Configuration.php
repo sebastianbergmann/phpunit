@@ -157,7 +157,7 @@ PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
  */
 class PHPUnit_Util_Configuration
 {
-    private static $uniqueInstance = NULL;
+    private static $instances = array();
 
     protected $document;
     protected $xpath;
@@ -188,11 +188,13 @@ class PHPUnit_Util_Configuration
      * @since  Method available since Release 3.4.0
      */
     public static function getInstance($filename) {
-        if (self::$uniqueInstance === NULL) {
-            self::$uniqueInstance = new PHPUnit_Util_Configuration($filename);
+        $filename = realpath($filename);
+
+        if (!isset(self::$instances[$filename])) {
+            self::$instances[$filename] = new PHPUnit_Util_Configuration($filename);
         }
  
-        return self::$uniqueInstance;
+        return self::$instances[$filename];
     }
 
     /**
