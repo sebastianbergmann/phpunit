@@ -92,10 +92,6 @@ class PHPUnit_TextUI_Command
             strpos($suite->testAt(0)->getMessage(), 'No tests found in class') !== FALSE) {
             require_once 'PHPUnit/Util/Skeleton/Test.php';
 
-            if (isset($arguments['bootstrap'])) {
-                PHPUnit_Util_Fileloader::load($arguments['bootstrap']);
-            }
-
             $skeleton = new PHPUnit_Util_Skeleton_Test(
                 $arguments['test'],
                 $arguments['testFile']
@@ -238,6 +234,7 @@ class PHPUnit_TextUI_Command
                 case '--ansi':
                 case '--colors': {
                     $arguments['colors'] = TRUE;
+                    PHPUnit_Util_Fileloader::load($arguments['bootstrap']);
                 }
                 break;
 
@@ -443,10 +440,6 @@ class PHPUnit_TextUI_Command
                     if (isset($arguments['test']) && $arguments['test'] !== FALSE) {
                         PHPUnit_TextUI_TestRunner::printVersionString();
 
-                        if (isset($arguments['bootstrap'])) {
-                            PHPUnit_Util_Fileloader::load($arguments['bootstrap']);
-                        }
-
                         if ($option[0] == '--skeleton-class') {
                             require_once 'PHPUnit/Util/Skeleton/Class.php';
 
@@ -571,9 +564,7 @@ class PHPUnit_TextUI_Command
             if (!isset($arguments['test'])) {
                 $configuration->handlePHPConfiguration();
 
-                if (isset($arguments['bootstrap'])) {
-                    PHPUnit_Util_Fileloader::load($arguments['bootstrap']);
-                } else {
+                if (!isset($arguments['bootstrap'])) {
                     $phpunitConfiguration = $configuration->getPHPUnitConfiguration();
 
                     if ($phpunitConfiguration['bootstrap']) {
