@@ -229,6 +229,10 @@ class Util_ConfigurationTest extends PHPUnit_Framework_TestCase
             array (
               'foo' => 'bar',
             ),
+            'const' =>
+            array (
+              'foo' => 'bar',
+            ),
             'var' =>
             array (
               'foo' => 'bar',
