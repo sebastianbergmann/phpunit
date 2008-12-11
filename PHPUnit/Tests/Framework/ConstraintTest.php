@@ -62,6 +62,9 @@ require_once dirname(dirname(__FILE__)) . DIRECTORY_SEPARATOR . '_files' . DIREC
  */
 class Framework_ConstraintTest extends PHPUnit_Framework_TestCase
 {
+    /**
+     * @covers PHPUnit_Framework_Constraint_ArrayHasKey
+     */
     public function testConstraintArrayHasKey()
     {
         $constraint = new PHPUnit_Framework_Constraint_ArrayHasKey(0);
@@ -85,6 +88,9 @@ class Framework_ConstraintTest extends PHPUnit_Framework_TestCase
         $this->fail();
     }
 
+    /**
+     * @covers PHPUnit_Framework_Constraint_ArrayHasKey
+     */
     public function testConstraintArrayHasKey2()
     {
         $constraint = new PHPUnit_Framework_Constraint_ArrayHasKey(0);
@@ -105,6 +111,10 @@ class Framework_ConstraintTest extends PHPUnit_Framework_TestCase
         $this->fail();
     }
 
+    /**
+     * @covers PHPUnit_Framework_Constraint_ArrayHasKey
+     * @covers PHPUnit_Framework_Constraint_Not
+     */
     public function testConstraintArrayNotHasKey()
     {
         $constraint = new PHPUnit_Framework_Constraint_Not(
@@ -130,6 +140,10 @@ class Framework_ConstraintTest extends PHPUnit_Framework_TestCase
         $this->fail();
     }
 
+    /**
+     * @covers PHPUnit_Framework_Constraint_ArrayHasKey
+     * @covers PHPUnit_Framework_Constraint_Not
+     */
     public function testConstraintArrayNotHasKey2()
     {
         $constraint = new PHPUnit_Framework_Constraint_Not(
@@ -152,6 +166,9 @@ class Framework_ConstraintTest extends PHPUnit_Framework_TestCase
         $this->fail();
     }
 
+    /**
+     * @covers PHPUnit_Framework_Constraint_FileExists
+     */
     public function testConstraintFileExists()
     {
         $constraint = new PHPUnit_Framework_Constraint_FileExists;
@@ -175,6 +192,9 @@ class Framework_ConstraintTest extends PHPUnit_Framework_TestCase
         $this->fail();
     }
 
+    /**
+     * @covers PHPUnit_Framework_Constraint_FileExists
+     */
     public function testConstraintFileExists2()
     {
         $constraint = new PHPUnit_Framework_Constraint_FileExists;
@@ -195,6 +215,10 @@ class Framework_ConstraintTest extends PHPUnit_Framework_TestCase
         $this->fail();
     }
 
+    /**
+     * @covers PHPUnit_Framework_Constraint_FileExists
+     * @covers PHPUnit_Framework_Constraint_Not
+     */
     public function testConstraintFileNotExists()
     {
         $constraint = new PHPUnit_Framework_Constraint_Not(
@@ -220,6 +244,10 @@ class Framework_ConstraintTest extends PHPUnit_Framework_TestCase
         $this->fail();
     }
 
+    /**
+     * @covers PHPUnit_Framework_Constraint_FileExists
+     * @covers PHPUnit_Framework_Constraint_Not
+     */
     public function testConstraintFileNotExists2()
     {
         $constraint = new PHPUnit_Framework_Constraint_Not(
@@ -242,6 +270,9 @@ class Framework_ConstraintTest extends PHPUnit_Framework_TestCase
         $this->fail();
     }
 
+    /**
+     * @covers PHPUnit_Framework_Constraint_GreaterThan
+     */
     public function testConstraintGreaterThan()
     {
         $constraint = new PHPUnit_Framework_Constraint_GreaterThan(1);
@@ -266,6 +297,9 @@ class Framework_ConstraintTest extends PHPUnit_Framework_TestCase
         $this->fail();
     }
 
+    /**
+     * @covers PHPUnit_Framework_Constraint_GreaterThan
+     */
     public function testConstraintGreaterThan2()
     {
         $constraint = new PHPUnit_Framework_Constraint_GreaterThan(1);
@@ -286,6 +320,10 @@ class Framework_ConstraintTest extends PHPUnit_Framework_TestCase
         $this->fail();
     }
 
+    /**
+     * @covers PHPUnit_Framework_Constraint_GreaterThan
+     * @covers PHPUnit_Framework_Constraint_Not
+     */
     public function testConstraintNotGreaterThan()
     {
         $constraint = new PHPUnit_Framework_Constraint_Not(
@@ -311,6 +349,10 @@ class Framework_ConstraintTest extends PHPUnit_Framework_TestCase
         $this->fail();
     }
 
+    /**
+     * @covers PHPUnit_Framework_Constraint_GreaterThan
+     * @covers PHPUnit_Framework_Constraint_Not
+     */
     public function testConstraintNotGreaterThan2()
     {
         $constraint = new PHPUnit_Framework_Constraint_Not(
@@ -333,6 +375,9 @@ class Framework_ConstraintTest extends PHPUnit_Framework_TestCase
         $this->fail();
     }
 
+    /**
+     * @covers PHPUnit_Framework_Constraint_IsAnything
+     */
     public function testConstraintIsAnything()
     {
         $constraint = new PHPUnit_Framework_Constraint_IsAnything;
@@ -342,6 +387,10 @@ class Framework_ConstraintTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('is anything', $constraint->toString());
     }
 
+    /**
+     * @covers PHPUnit_Framework_Constraint_IsAnything
+     * @covers PHPUnit_Framework_Constraint_Not
+     */
     public function testConstraintNotIsAnything()
     {
         $constraint = new PHPUnit_Framework_Constraint_Not(
@@ -353,6 +402,9 @@ class Framework_ConstraintTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('is not anything', $constraint->toString());
     }
 
+    /**
+     * @covers PHPUnit_Framework_Constraint_IsEqual
+     */
     public function testConstraintIsEqual()
     {
         $constraint = new PHPUnit_Framework_Constraint_IsEqual(1);
@@ -377,6 +429,9 @@ class Framework_ConstraintTest extends PHPUnit_Framework_TestCase
         $this->fail();
     }
 
+    /**
+     * @covers PHPUnit_Framework_Constraint_IsEqual
+     */
     public function testConstraintIsEqual2()
     {
         $constraint = new PHPUnit_Framework_Constraint_IsEqual(1);
@@ -397,6 +452,10 @@ class Framework_ConstraintTest extends PHPUnit_Framework_TestCase
         $this->fail();
     }
 
+    /**
+     * @covers PHPUnit_Framework_Constraint_IsEqual
+     * @covers PHPUnit_Framework_Constraint_Not
+     */
     public function testConstraintIsNotEqual()
     {
         $constraint = new PHPUnit_Framework_Constraint_Not(
@@ -423,6 +482,10 @@ class Framework_ConstraintTest extends PHPUnit_Framework_TestCase
         $this->fail();
     }
 
+    /**
+     * @covers PHPUnit_Framework_Constraint_IsEqual
+     * @covers PHPUnit_Framework_Constraint_Not
+     */
     public function testConstraintIsNotEqual2()
     {
         $constraint = new PHPUnit_Framework_Constraint_Not(
@@ -445,6 +508,9 @@ class Framework_ConstraintTest extends PHPUnit_Framework_TestCase
         $this->fail();
     }
 
+    /**
+     * @covers PHPUnit_Framework_Constraint_IsIdentical
+     */
     public function testConstraintIsIdentical()
     {
         $a = new stdClass;
@@ -472,6 +538,9 @@ class Framework_ConstraintTest extends PHPUnit_Framework_TestCase
         $this->fail();
     }
 
+    /**
+     * @covers PHPUnit_Framework_Constraint_IsIdentical
+     */
     public function testConstraintIsIdentical2()
     {
         $a = new stdClass;
@@ -495,6 +564,10 @@ class Framework_ConstraintTest extends PHPUnit_Framework_TestCase
         $this->fail();
     }
 
+    /**
+     * @covers PHPUnit_Framework_Constraint_IsIdentical
+     * @covers PHPUnit_Framework_Constraint_Not
+     */
     public function testConstraintIsNotIdentical()
     {
         $a = new stdClass;
@@ -524,6 +597,10 @@ class Framework_ConstraintTest extends PHPUnit_Framework_TestCase
         $this->fail();
     }
 
+    /**
+     * @covers PHPUnit_Framework_Constraint_IsIdentical
+     * @covers PHPUnit_Framework_Constraint_Not
+     */
     public function testConstraintIsNotIdentical2()
     {
         $a = new stdClass;
@@ -548,6 +625,9 @@ class Framework_ConstraintTest extends PHPUnit_Framework_TestCase
         $this->fail();
     }
 
+    /**
+     * @covers PHPUnit_Framework_Constraint_IsInstanceOf
+     */
     public function testConstraintIsInstanceOf()
     {
         $constraint = new PHPUnit_Framework_Constraint_IsInstanceOf('Exception');
@@ -572,6 +652,9 @@ class Framework_ConstraintTest extends PHPUnit_Framework_TestCase
         $this->fail();
     }
 
+    /**
+     * @covers PHPUnit_Framework_Constraint_IsInstanceOf
+     */
     public function testConstraintIsInstanceOf2()
     {
         $constraint = new PHPUnit_Framework_Constraint_IsInstanceOf('Exception');
@@ -592,6 +675,10 @@ class Framework_ConstraintTest extends PHPUnit_Framework_TestCase
         $this->fail();
     }
 
+    /**
+     * @covers PHPUnit_Framework_Constraint_IsInstanceOf
+     * @covers PHPUnit_Framework_Constraint_Not
+     */
     public function testConstraintIsNotInstanceOf()
     {
         $constraint = new PHPUnit_Framework_Constraint_Not(
@@ -618,6 +705,10 @@ class Framework_ConstraintTest extends PHPUnit_Framework_TestCase
         $this->fail();
     }
 
+    /**
+     * @covers PHPUnit_Framework_Constraint_IsInstanceOf
+     * @covers PHPUnit_Framework_Constraint_Not
+     */
     public function testConstraintIsNotInstanceOf2()
     {
         $constraint = new PHPUnit_Framework_Constraint_Not(
@@ -640,6 +731,9 @@ class Framework_ConstraintTest extends PHPUnit_Framework_TestCase
         $this->fail();
     }
 
+    /**
+     * @covers PHPUnit_Framework_Constraint_IsType
+     */
     public function testConstraintIsType()
     {
         $constraint = new PHPUnit_Framework_Constraint_IsType('string');
@@ -664,6 +758,9 @@ class Framework_ConstraintTest extends PHPUnit_Framework_TestCase
         $this->fail();
     }
 
+    /**
+     * @covers PHPUnit_Framework_Constraint_IsType
+     */
     public function testConstraintIsType2()
     {
         $constraint = new PHPUnit_Framework_Constraint_IsType('string');
@@ -684,6 +781,10 @@ class Framework_ConstraintTest extends PHPUnit_Framework_TestCase
         $this->fail();
     }
 
+    /**
+     * @covers PHPUnit_Framework_Constraint_IsType
+     * @covers PHPUnit_Framework_Constraint_Not
+     */
     public function testConstraintIsNotType()
     {
         $constraint = new PHPUnit_Framework_Constraint_Not(
@@ -710,6 +811,10 @@ class Framework_ConstraintTest extends PHPUnit_Framework_TestCase
         $this->fail();
     }
 
+    /**
+     * @covers PHPUnit_Framework_Constraint_IsType
+     * @covers PHPUnit_Framework_Constraint_Not
+     */
     public function testConstraintIsNotType2()
     {
         $constraint = new PHPUnit_Framework_Constraint_Not(
@@ -732,6 +837,9 @@ class Framework_ConstraintTest extends PHPUnit_Framework_TestCase
         $this->fail();
     }
 
+    /**
+     * @covers PHPUnit_Framework_Constraint_LessThan
+     */
     public function testConstraintLessThan()
     {
         $constraint = new PHPUnit_Framework_Constraint_LessThan(1);
@@ -756,6 +864,9 @@ class Framework_ConstraintTest extends PHPUnit_Framework_TestCase
         $this->fail();
     }
 
+    /**
+     * @covers PHPUnit_Framework_Constraint_LessThan
+     */
     public function testConstraintLessThan2()
     {
         $constraint = new PHPUnit_Framework_Constraint_LessThan(1);
@@ -776,6 +887,10 @@ class Framework_ConstraintTest extends PHPUnit_Framework_TestCase
         $this->fail();
     }
 
+    /**
+     * @covers PHPUnit_Framework_Constraint_LessThan
+     * @covers PHPUnit_Framework_Constraint_Not
+     */
     public function testConstraintNotLessThan()
     {
         $constraint = new PHPUnit_Framework_Constraint_Not(
@@ -801,6 +916,10 @@ class Framework_ConstraintTest extends PHPUnit_Framework_TestCase
         $this->fail();
     }
 
+    /**
+     * @covers PHPUnit_Framework_Constraint_LessThan
+     * @covers PHPUnit_Framework_Constraint_Not
+     */
     public function testConstraintNotLessThan2()
     {
         $constraint = new PHPUnit_Framework_Constraint_Not(
@@ -823,6 +942,9 @@ class Framework_ConstraintTest extends PHPUnit_Framework_TestCase
         $this->fail();
     }
 
+    /**
+     * @covers PHPUnit_Framework_Constraint_ObjectHasAttribute
+     */
     public function testConstraintObjectHasAttribute()
     {
         $constraint = new PHPUnit_Framework_Constraint_ObjectHasAttribute('foo');
@@ -846,6 +968,9 @@ class Framework_ConstraintTest extends PHPUnit_Framework_TestCase
         $this->fail();
     }
 
+    /**
+     * @covers PHPUnit_Framework_Constraint_ObjectHasAttribute
+     */
     public function testConstraintObjectHasAttribute2()
     {
         $constraint = new PHPUnit_Framework_Constraint_ObjectHasAttribute('foo');
@@ -866,6 +991,10 @@ class Framework_ConstraintTest extends PHPUnit_Framework_TestCase
         $this->fail();
     }
 
+    /**
+     * @covers PHPUnit_Framework_Constraint_ObjectHasAttribute
+     * @covers PHPUnit_Framework_Constraint_Not
+     */
     public function testConstraintObjectNotHasAttribute()
     {
         $constraint = new PHPUnit_Framework_Constraint_Not(
@@ -894,6 +1023,10 @@ class Framework_ConstraintTest extends PHPUnit_Framework_TestCase
         $this->fail();
     }
 
+    /**
+     * @covers PHPUnit_Framework_Constraint_ObjectHasAttribute
+     * @covers PHPUnit_Framework_Constraint_Not
+     */
     public function testConstraintObjectNotHasAttribute2()
     {
         $constraint = new PHPUnit_Framework_Constraint_Not(
@@ -919,6 +1052,9 @@ class Framework_ConstraintTest extends PHPUnit_Framework_TestCase
         $this->fail();
     }
 
+    /**
+     * @covers PHPUnit_Framework_Constraint_PCREMatch
+     */
     public function testConstraintPCREMatch()
     {
         $constraint = new PHPUnit_Framework_Constraint_PCREMatch('/foo/');
@@ -943,6 +1079,9 @@ class Framework_ConstraintTest extends PHPUnit_Framework_TestCase
         $this->fail();
     }
 
+    /**
+     * @covers PHPUnit_Framework_Constraint_PCREMatch
+     */
     public function testConstraintPCREMatch2()
     {
         $constraint = new PHPUnit_Framework_Constraint_PCREMatch('/foo/');
@@ -963,6 +1102,10 @@ class Framework_ConstraintTest extends PHPUnit_Framework_TestCase
         $this->fail();
     }
 
+    /**
+     * @covers PHPUnit_Framework_Constraint_PCREMatch
+     * @covers PHPUnit_Framework_Constraint_Not
+     */
     public function testConstraintPCRENotMatch()
     {
         $constraint = new PHPUnit_Framework_Constraint_Not(
@@ -989,6 +1132,10 @@ class Framework_ConstraintTest extends PHPUnit_Framework_TestCase
         $this->fail();
     }
 
+    /**
+     * @covers PHPUnit_Framework_Constraint_PCREMatch
+     * @covers PHPUnit_Framework_Constraint_Not
+     */
     public function testConstraintPCRENotMatch2()
     {
         $constraint = new PHPUnit_Framework_Constraint_Not(
@@ -1011,6 +1158,9 @@ class Framework_ConstraintTest extends PHPUnit_Framework_TestCase
         $this->fail();
     }
 
+    /**
+     * @covers PHPUnit_Framework_Constraint_StringContains
+     */
     public function testConstraintStringContains()
     {
         $constraint = new PHPUnit_Framework_Constraint_StringContains('foo');
@@ -1035,6 +1185,9 @@ class Framework_ConstraintTest extends PHPUnit_Framework_TestCase
         $this->fail();
     }
 
+    /**
+     * @covers PHPUnit_Framework_Constraint_StringContains
+     */
     public function testConstraintStringContains2()
     {
         $constraint = new PHPUnit_Framework_Constraint_StringContains('foo');
@@ -1055,6 +1208,10 @@ class Framework_ConstraintTest extends PHPUnit_Framework_TestCase
         $this->fail();
     }
 
+    /**
+     * @covers PHPUnit_Framework_Constraint_StringContains
+     * @covers PHPUnit_Framework_Constraint_Not
+     */
     public function testConstraintStringNotContains()
     {
         $constraint = new PHPUnit_Framework_Constraint_Not(
@@ -1081,6 +1238,10 @@ class Framework_ConstraintTest extends PHPUnit_Framework_TestCase
         $this->fail();
     }
 
+    /**
+     * @covers PHPUnit_Framework_Constraint_StringContains
+     * @covers PHPUnit_Framework_Constraint_Not
+     */
     public function testConstraintStringNotContains2()
     {
         $constraint = new PHPUnit_Framework_Constraint_Not(
@@ -1103,6 +1264,9 @@ class Framework_ConstraintTest extends PHPUnit_Framework_TestCase
         $this->fail();
     }
 
+    /**
+     * @covers PHPUnit_Framework_Constraint_TraversableContains
+     */
     public function testConstraintTraversableContains()
     {
         $constraint = new PHPUnit_Framework_Constraint_TraversableContains('foo');
@@ -1127,6 +1291,9 @@ class Framework_ConstraintTest extends PHPUnit_Framework_TestCase
         $this->fail();
     }
 
+    /**
+     * @covers PHPUnit_Framework_Constraint_TraversableContains
+     */
     public function testConstraintTraversableContains2()
     {
         $constraint = new PHPUnit_Framework_Constraint_TraversableContains('foo');
@@ -1147,6 +1314,10 @@ class Framework_ConstraintTest extends PHPUnit_Framework_TestCase
         $this->fail();
     }
 
+    /**
+     * @covers PHPUnit_Framework_Constraint_TraversableContains
+     * @covers PHPUnit_Framework_Constraint_Not
+     */
     public function testConstraintTraversableNotContains()
     {
         $constraint = new PHPUnit_Framework_Constraint_Not(
@@ -1173,6 +1344,10 @@ class Framework_ConstraintTest extends PHPUnit_Framework_TestCase
         $this->fail();
     }
 
+    /**
+     * @covers PHPUnit_Framework_Constraint_TraversableContains
+     * @covers PHPUnit_Framework_Constraint_Not
+     */
     public function testConstraintTraversableNotContains2()
     {
         $constraint = new PHPUnit_Framework_Constraint_Not(
