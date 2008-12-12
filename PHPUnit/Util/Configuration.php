@@ -218,13 +218,22 @@ class PHPUnit_Util_Configuration
      * @since  Method available since Release 3.4.0
      */
     public static function getInstance($filename) {
-        $filename = realpath($filename);
+        $realpath = realpath($filename);
 
-        if (!isset(self::$instances[$filename])) {
-            self::$instances[$filename] = new PHPUnit_Util_Configuration($filename);
+        if ($realpath === FALSE) {
+            throw new RuntimeException(
+              sprintf(
+                'Could not read "%s".',
+                $filename
+              )
+            );
+        }
+
+        if (!isset(self::$instances[$realpath])) {
+            self::$instances[$realpath] = new PHPUnit_Util_Configuration($realpath);
         }
  
-        return self::$instances[$filename];
+        return self::$instances[$realpath];
     }
 
     /**
