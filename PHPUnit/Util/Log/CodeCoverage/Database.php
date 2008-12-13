@@ -370,7 +370,7 @@ class PHPUnit_Util_Log_CodeCoverage_Database
                 VALUES(:testId, :lineId);'
             );
 
-            for ($lineNumber = 1; $lineNumber <= $fileLoc; $lineNumber++) {
+            for ($lineNumber = 1; $lineNumber <= $count['loc']; $lineNumber++) {
                 $coveringTests = PHPUnit_Util_CodeCoverage::getCoveringTests(
                   $codeCoverage, $fileName, $lineNumber
                 );
