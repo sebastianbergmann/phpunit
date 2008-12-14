@@ -68,6 +68,7 @@ PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
 class PHPUnit_Framework_MockObject_Generator
 {
     protected static $cache = array();
+    protected static $soapLoaded = NULL;
 
     public static function generate($originalClassName, array $methods = array(), $mockClassName = '', $callOriginalConstructor = TRUE, $callOriginalClone = TRUE, $callAutoload = TRUE)
     {
@@ -102,49 +103,59 @@ class PHPUnit_Framework_MockObject_Generator
 
     public static function generateClassFromWsdl($wsdlFile, $originalClassName, array $methods = array())
     {
-        $client   = new SOAPClient($wsdlFile);
-        $_methods = $client->__getFunctions();
-        unset($client);
-
-        $templateDir    = dirname(__FILE__) . DIRECTORY_SEPARATOR . 'Generator' . DIRECTORY_SEPARATOR;
-        $methodTemplate = new PHPUnit_Util_Template($templateDir . 'wsdl_method.tpl');
-        $methodsBuffer  = '';
-
-        foreach ($_methods as $method) {
-            $nameStart = strpos($method, ' ') + 1;
-            $nameEnd   = strpos($method, '(');
-            $name      = substr($method, $nameStart, $nameEnd - $nameStart);
-
-            if (empty($methods) || in_array($name, $methods)) {
-                $args      = explode(',', substr($method, $nameEnd + 1, strpos($method, ')') - $nameEnd - 1));
-                $numArgs   = count($args);
-
-                for ($i = 0; $i < $numArgs; $i++) {
-                    $args[$i] = substr($args[$i], strpos($args[$i], '$'));
-                }
-
-                $methodTemplate->setVar(
-                  array(
-                    'method_name' => $name,
-                    'arguments'   => join(', ', $args)
-                  )
-                );
-
-                $methodsBuffer .= $methodTemplate->render();
-            }
+        if (self::$soapLoaded === NULL) {
+            self::$soapLoaded = extension_loaded('soap');
         }
 
-        $classTemplate = new PHPUnit_Util_Template($templateDir . 'wsdl_class.tpl');
+        if (self::$soapLoaded) {
+            $client   = new SOAPClient($wsdlFile);
+            $_methods = $client->__getFunctions();
+            unset($client);
 
-        $classTemplate->setVar(
-          array(
-            'class_name' => $originalClassName,
-            'wsdl'       => $wsdlFile,
-            'methods'    => $methodsBuffer
-          )
-        );
+            $templateDir    = dirname(__FILE__) . DIRECTORY_SEPARATOR . 'Generator' . DIRECTORY_SEPARATOR;
+            $methodTemplate = new PHPUnit_Util_Template($templateDir . 'wsdl_method.tpl');
+            $methodsBuffer  = '';
 
-        return $classTemplate->render();
+            foreach ($_methods as $method) {
+                $nameStart = strpos($method, ' ') + 1;
+                $nameEnd   = strpos($method, '(');
+                $name      = substr($method, $nameStart, $nameEnd - $nameStart);
+
+                if (empty($methods) || in_array($name, $methods)) {
+                    $args      = explode(',', substr($method, $nameEnd + 1, strpos($method, ')') - $nameEnd - 1));
+                    $numArgs   = count($args);
+
+                    for ($i = 0; $i < $numArgs; $i++) {
+                        $args[$i] = substr($args[$i], strpos($args[$i], '$'));
+                    }
+
+                    $methodTemplate->setVar(
+                      array(
+                        'method_name' => $name,
+                        'arguments'   => join(', ', $args)
+                      )
+                    );
+
+                    $methodsBuffer .= $methodTemplate->render();
+                }
+            }
+
+            $classTemplate = new PHPUnit_Util_Template($templateDir . 'wsdl_class.tpl');
+
+            $classTemplate->setVar(
+              array(
+                'class_name' => $originalClassName,
+                'wsdl'       => $wsdlFile,
+                'methods'    => $methodsBuffer
+              )
+            );
+
+            return $classTemplate->render();
+        } else {
+            throw new RuntimeException(
+              'The SOAP extension is required to generate a mock object from WSDL.'
+            );
+        }
     }
 
     protected static function generateMock($originalClassName, array $methods, $mockClassName, $callOriginalConstructor, $callOriginalClone, $callAutoload)

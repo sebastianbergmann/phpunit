@@ -1,5 +1,9 @@
 --TEST--
 PHPUnit_Framework_MockObject_Generator::generateClassFromWsdl('GoogleSearch.wsdl', 'GoogleSearch', array('doGoogleSearch'))
+--SKIPIF--
+<?php 
+if (!extension_loaded('soap')) die('SOAP extension is required');
+?>
 --FILE--
 <?php
 require_once dirname(dirname(dirname(dirname(__FILE__)))) . '/Framework/MockObject/Generator.php';
