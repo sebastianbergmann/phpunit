@@ -711,7 +711,8 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
     /**
      * @param  ReflectionClass  $class
      * @param  ReflectionMethod $method
-     * @param  string           $groups
+     * @param  array            $dependencies
+     * @param  array            $groups
      * @param  array            $names
      */
     protected function addTestMethod(ReflectionClass $class, ReflectionMethod $method, array $dependencies, array $groups, array &$names)
