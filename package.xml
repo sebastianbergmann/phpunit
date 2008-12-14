@@ -799,6 +799,8 @@
       <file baseinstalldir="/" name="Issue578Test.php" role="test" />
      </dir>
      <dir name="TextUI">
+      <file baseinstalldir="/" name="abstract-test-class.phpt" role="test" />
+      <file baseinstalldir="/" name="concrete-test-class.phpt" role="test" />
       <file baseinstalldir="/" name="coverage-clover-class-extended.phpt" role="test" />
       <file baseinstalldir="/" name="coverage-clover-class.phpt" role="test" />
       <file baseinstalldir="/" name="coverage-clover-method.phpt" role="test" />
@@ -859,6 +861,9 @@
       </file>
      </dir>
      <dir name="_files">
+      <file baseinstalldir="/" name="AbstractTest.php" role="test">
+       <tasks:replace from="@package_version@" to="version" type="package-info" />
+      </file>
       <file baseinstalldir="/" name="AnInterface.php" role="test">
        <tasks:replace from="@package_version@" to="version" type="package-info" />
       </file>
@@ -866,6 +871,9 @@
        <tasks:replace from="@package_version@" to="version" type="package-info" />
       </file>
       <file baseinstalldir="/" name="ClassWithNonPublicAttributes.php" role="test">
+       <tasks:replace from="@package_version@" to="version" type="package-info" />
+      </file>
+      <file baseinstalldir="/" name="ConcreteTest.php" role="test">
        <tasks:replace from="@package_version@" to="version" type="package-info" />
       </file>
       <file baseinstalldir="/" name="configuration.xml" role="test">
