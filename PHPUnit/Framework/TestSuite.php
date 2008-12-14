@@ -226,6 +226,7 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
                 $methodDocComment = $method->getDocComment();
 
                 $this->addTestMethod(
+                  $theClass,
                   $method,
                   PHPUnit_Util_Test::getGroups($methodDocComment, $classGroups),
                   $names
@@ -724,11 +725,12 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
     }
 
     /**
+     * @param  ReflectionClass  $class
      * @param  ReflectionMethod $method
      * @param  string           $groups
      * @param  array            $names
      */
-    protected function addTestMethod(ReflectionMethod $method, array $groups, array &$names)
+    protected function addTestMethod(ReflectionClass $class, ReflectionMethod $method, array $groups, array &$names)
     {
         $name = $method->getName();
 
@@ -739,11 +741,7 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
         if ($this->isPublicTestMethod($method)) {
             $names[] = $name;
 
-            $test = self::createTest(
-              $method->getDeclaringClass(),
-              $name,
-              $groups
-            );
+            $test = self::createTest($class, $name, $groups);
 
             $this->addTest($test, $groups);
         }
@@ -783,7 +781,7 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
         // @scenario on TestCase::testMethod()
         // @test     on TestCase::testMethod()
         return strpos($method->getDocComment(), '@test')     !== FALSE ||
-                strpos($method->getDocComment(), '@scenario') !== FALSE;
+               strpos($method->getDocComment(), '@scenario') !== FALSE;
     }
 
     /**
