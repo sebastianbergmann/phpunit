@@ -297,8 +297,7 @@ abstract class PHPUnit_Util_CodeCoverage
         $result = array();
 
         foreach ($data as $file => $coverage) {
-            end($coverage);
-            $maxLine = key($coverage);
+            $maxLine = max(array_keys($coverage));
 
             if ($maxLine == 0) {
                 $bitArray = array();
