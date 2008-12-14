@@ -218,7 +218,7 @@ class PHPUnit_Util_Log_CodeCoverage_Database
             );
 
             $count    = PHPUnit_Util_File::countLines($fileName);
-            $coverage = PHPUnit_Util_CodeCoverage::getStatistics($codeCoverage, $fileName);
+            $coverage = PHPUnit_Util_CodeCoverage::getStatistics($summary, $fileName);
 
             $stmt->bindParam(':runId', $runId, PDO::PARAM_INT);
             $stmt->bindParam(':fileId', $fileId, PDO::PARAM_INT);
@@ -289,7 +289,7 @@ class PHPUnit_Util_Log_CodeCoverage_Database
                 $stmtSelectFunctionId->closeCursor();
 
                 $coverage = PHPUnit_Util_CodeCoverage::getStatistics(
-                  $codeCoverage, $fileName, $functionData['startLine'], $functionData['endLine']
+                  $summary, $fileName, $functionData['startLine'], $functionData['endLine']
                 );
 
                 $stmtInsertFunction->bindParam(':runId', $runId, PDO::PARAM_INT);
@@ -310,7 +310,7 @@ class PHPUnit_Util_Log_CodeCoverage_Database
                 $stmtSelectClassId->closeCursor();
 
                 $coverage = PHPUnit_Util_CodeCoverage::getStatistics(
-                  $codeCoverage, $fileName, $classData['startLine'], $classData['endLine']
+                  $summary, $fileName, $classData['startLine'], $classData['endLine']
                 );
 
                 $stmtInsertClass->bindParam(':runId', $runId, PDO::PARAM_INT);
@@ -331,7 +331,7 @@ class PHPUnit_Util_Log_CodeCoverage_Database
                     $stmtSelectMethodId->closeCursor();
 
                     $coverage = PHPUnit_Util_CodeCoverage::getStatistics(
-                      $codeCoverage, $fileName, $methodData['startLine'], $methodData['endLine']
+                      $summary, $fileName, $methodData['startLine'], $methodData['endLine']
                     );
 
                     $stmtInsertMethod->bindParam(':runId', $runId, PDO::PARAM_INT);
