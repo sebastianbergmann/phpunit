@@ -4,10 +4,11 @@ phpunit --coverage-source /tmp BankAccountTest ../../Samples/BankAccount/BankAcc
 <?php
 $tempPath = dirname(__FILE__);
 
-$_SERVER['argv'][1] = '--coverage-source';
-$_SERVER['argv'][2] = $tempPath;
-$_SERVER['argv'][3] = 'BankAccountTest';
-$_SERVER['argv'][4] = '../Samples/BankAccount/BankAccountTest.php';
+$_SERVER['argv'][1] = '--no-configuration';
+$_SERVER['argv'][2] = '--coverage-source';
+$_SERVER['argv'][3] = $tempPath;
+$_SERVER['argv'][4] = 'BankAccountTest';
+$_SERVER['argv'][5] = '../Samples/BankAccount/BankAccountTest.php';
 
 define('PHPUnit_MAIN_METHOD', '');
 require_once dirname(dirname(dirname(__FILE__))) . '/TextUI/Command.php';

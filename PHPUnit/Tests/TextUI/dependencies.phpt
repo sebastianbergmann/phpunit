@@ -2,9 +2,10 @@
 phpunit --verbose DependencyTestSuite ../_files/DependencyTestSuite.php
 --FILE--
 <?php
-$_SERVER['argv'][1] = '--verbose';
-$_SERVER['argv'][2] = 'DependencyTestSuite';
-$_SERVER['argv'][3] = dirname(dirname(__FILE__)) . '/_files/DependencyTestSuite.php';
+$_SERVER['argv'][1] = '--no-configuration';
+$_SERVER['argv'][2] = '--verbose';
+$_SERVER['argv'][3] = 'DependencyTestSuite';
+$_SERVER['argv'][4] = dirname(dirname(__FILE__)) . '/_files/DependencyTestSuite.php';
 
 require_once dirname(dirname(dirname(__FILE__))) . '/TextUI/Command.php';
 ?>
