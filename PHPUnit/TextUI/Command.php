@@ -545,7 +545,7 @@ class PHPUnit_TextUI_Command
                 if (!isset($arguments['bootstrap'])) {
                     $phpunitConfiguration = $configuration->getPHPUnitConfiguration();
 
-                    if ($phpunitConfiguration['bootstrap']) {
+                    if (isset($phpunitConfiguration['bootstrap'])) {
                         PHPUnit_Util_Fileloader::load($phpunitConfiguration['bootstrap']);
                     }
                 }
