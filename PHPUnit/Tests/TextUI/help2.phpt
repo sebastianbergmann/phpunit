@@ -2,7 +2,8 @@
 phpunit --help
 --FILE--
 <?php
-$_SERVER['argv'][1] = '--help';
+$_SERVER['argv'][1] = '--no-configuration';
+$_SERVER['argv'][2] = '--help';
 
 require_once dirname(dirname(dirname(__FILE__))) . '/TextUI/Command.php';
 ?>
@@ -57,6 +58,7 @@ Usage: phpunit [switches] UnitTest [UnitTest.php]
 
   --bootstrap <file>       A "bootstrap" PHP file that is run before the tests.
   --configuration <file>   Read configuration from XML file.
+  --no-configuration       Ignore default configuration file (phpunit.xml).
   --include-path <path(s)> Prepend PHP's include_path with given path(s).
   -d key[=value]           Sets a php.ini value.
 
