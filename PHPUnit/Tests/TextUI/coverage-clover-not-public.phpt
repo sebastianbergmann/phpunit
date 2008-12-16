@@ -2,10 +2,11 @@
 phpunit --coverage-clover php://stdout CoverageNotPublicTest ../_files/CoverageNotPublicTest.php
 --FILE--
 <?php
-$_SERVER['argv'][1] = '--coverage-clover';
-$_SERVER['argv'][2] = 'php://stdout';
-$_SERVER['argv'][3] = 'CoverageNotPublicTest';
-$_SERVER['argv'][4] = dirname(dirname(__FILE__)) . '/_files/CoverageNotPublicTest.php';
+$_SERVER['argv'][1] = '--no-configuration';
+$_SERVER['argv'][2] = '--coverage-clover';
+$_SERVER['argv'][3] = 'php://stdout';
+$_SERVER['argv'][4] = 'CoverageNotPublicTest';
+$_SERVER['argv'][5] = dirname(dirname(__FILE__)) . '/_files/CoverageNotPublicTest.php';
 
 require_once dirname(dirname(dirname(__FILE__))) . '/TextUI/Command.php';
 ?>

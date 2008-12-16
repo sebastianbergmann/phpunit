@@ -2,10 +2,11 @@
 phpunit --log-xml php://stdout DataSetTest ../_files/DataSetTest.php
 --FILE--
 <?php
-$_SERVER['argv'][1] = '--log-xml';
-$_SERVER['argv'][2] = 'php://stdout';
-$_SERVER['argv'][3] = 'DataSetTest';
-$_SERVER['argv'][4] = dirname(dirname(__FILE__)) . '/_files/DataSetTest.php';
+$_SERVER['argv'][1] = '--no-configuration';
+$_SERVER['argv'][2] = '--log-xml';
+$_SERVER['argv'][3] = 'php://stdout';
+$_SERVER['argv'][4] = 'DataSetTest';
+$_SERVER['argv'][5] = dirname(dirname(__FILE__)) . '/_files/DataSetTest.php';
 
 require_once dirname(dirname(dirname(__FILE__))) . '/TextUI/Command.php';
 ?>
