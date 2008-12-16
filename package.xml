@@ -678,9 +678,6 @@
        <tasks:replace from="@package_version@" to="version" type="package-info" />
       </file>
      </dir>
-     <file baseinstalldir="/" name="FailureTest.php" role="doc">
-      <tasks:replace from="@package_version@" to="version" type="package-info" />
-     </file>
     </dir>
     <dir name="Tests">
      <dir name="Extensions">
@@ -848,6 +845,8 @@
       <file baseinstalldir="/" name="default.phpt" role="test" />
       <file baseinstalldir="/" name="dependencies.phpt" role="test" />
       <file baseinstalldir="/" name="exclude-group.phpt" role="test" />
+      <file baseinstalldir="/" name="failure.phpt" role="test" />
+      <file baseinstalldir="/" name="failure-verbose.phpt" role="test" />
       <file baseinstalldir="/" name="filter-class.phpt" role="test" />
       <file baseinstalldir="/" name="filter-method.phpt" role="test" />
       <file baseinstalldir="/" name="group.phpt" role="test" />
@@ -959,6 +958,9 @@
        <tasks:replace from="@package_version@" to="version" type="package-info" />
       </file>
       <file baseinstalldir="/" name="Failure.php" role="test">
+       <tasks:replace from="@package_version@" to="version" type="package-info" />
+      </file>
+      <file baseinstalldir="/" name="FailureTest.php" role="test">
        <tasks:replace from="@package_version@" to="version" type="package-info" />
       </file>
       <file baseinstalldir="/" name="FunctionCallback.php" role="test">
