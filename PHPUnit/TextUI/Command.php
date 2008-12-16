@@ -153,9 +153,10 @@ class PHPUnit_TextUI_Command
     protected static function handleArguments()
     {
         $arguments = array(
-          'listGroups'  => FALSE,
-          'loader'      => NULL,
-          'syntaxCheck' => TRUE
+          'listGroups'              => FALSE,
+          'loader'                  => NULL,
+          'useDefaultConfiguration' => TRUE,
+          'syntaxCheck'             => TRUE
         );
 
         $longOptions = array(
@@ -176,6 +177,7 @@ class PHPUnit_TextUI_Command
           'log-json=',
           'log-tap=',
           'log-xml=',
+          'no-configuration',
           'no-syntax-check',
           'repeat=',
           'skeleton-class',
@@ -353,6 +355,11 @@ class PHPUnit_TextUI_Command
                 }
                 break;
 
+                case '--no-configuration': {
+                    $arguments['useDefaultConfiguration'] = FALSE;
+                }
+                break;
+
                 case '--no-syntax-check': {
                     $arguments['syntaxCheck'] = FALSE;
                 }
@@ -509,8 +516,14 @@ class PHPUnit_TextUI_Command
             }
         }
 
-        if (!isset($arguments['configuration']) && file_exists('phpunit.xml')) {
-            $arguments['configuration'] = realpath('phpunit.xml');
+        if (!isset($arguments['configuration']) && $arguments['useDefaultConfiguration']) {
+            if (file_exists('phpunit.xml')) {
+                $arguments['configuration'] = realpath('phpunit.xml');
+            }
+
+            else if (file_exists('phpunit.xml.dist')) {
+                $arguments['configuration'] = realpath('phpunit.xml.dist');
+            }
         }
 
         if (isset($arguments['configuration'])) {
@@ -689,6 +702,7 @@ Usage: phpunit [switches] UnitTest [UnitTest.php]
 
   --bootstrap <file>       A "bootstrap" PHP file that is run before the tests.
   --configuration <file>   Read configuration from XML file.
+  --no-configuration       Ignore default configuration file (phpunit.xml).
   --include-path <path(s)> Prepend PHP's include_path with given path(s).
   -d key[=value]           Sets a php.ini value.
 
