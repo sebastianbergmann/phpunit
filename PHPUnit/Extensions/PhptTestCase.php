@@ -192,6 +192,10 @@ class PHPUnit_Extensions_PhptTestCase implements PHPUnit_Framework_Test, PHPUnit
         $outFile      = $path . DIRECTORY_SEPARATOR . str_replace('.phpt', '.out', $base);
         $phpFile      = $path . DIRECTORY_SEPARATOR . str_replace('.phpt', '.php', $base);
 
+        if (file_exists($phpFile)) {
+            PHPUnit_Util_Filter::addFileToFilter($phpFile, 'TESTS');
+        }
+
         if (is_object($buffer) && $buffer instanceof PEAR_Error) {
             $result->addError(
               $this,
