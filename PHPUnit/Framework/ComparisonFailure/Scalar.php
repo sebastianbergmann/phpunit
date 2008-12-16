@@ -71,7 +71,7 @@ class PHPUnit_Framework_ComparisonFailure_Scalar extends PHPUnit_Framework_Compa
      */
     public function toString()
     {
-        if (is_int($this->expected) || is_float($this->expected)) {
+        if (is_numeric($this->expected) && is_numeric($this->actual)) {
             $type             = gettype($this->expected);
             $expectedString   = print_r($this->expected, TRUE);
             $actualString     = print_r($this->actual, TRUE);
