@@ -72,9 +72,9 @@ class PHPUnit_Extensions_PhptTestSuite extends PHPUnit_Framework_TestSuite
      *                         key being the name if the setting, value the ini value.
      * @throws InvalidArgumentException
      */
-    public function __construct($directory, $options = array())
+    public function __construct($directory, array $options = array())
     {
-        if (is_dir($directory)) {
+        if (is_string($directory) && is_dir($directory)) {
             $this->setName($directory);
 
             $iterator = new PHPUnit_Util_FilterIterator(
@@ -88,7 +88,7 @@ class PHPUnit_Extensions_PhptTestSuite extends PHPUnit_Framework_TestSuite
                 $this->addTestFile($testFile->getPathname(), TRUE, $options);
             }
         } else {
-            throw new InvalidArgumentException;
+            throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'directory name');
         }
     }
 }

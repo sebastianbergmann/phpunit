@@ -141,19 +141,13 @@ class PHPUnit_Runner_IncludePathTestCollector implements PHPUnit_Runner_TestColl
     public function setFilterIterator($filterIterator)
     {
         if (is_string($filterIterator) && class_exists($filterIterator)) {
-            try {
-                $class = new ReflectionClass($filterIterator);
+            $class = new ReflectionClass($filterIterator);
 
-                if ($class->isSubclassOf('FilterIterator')) {
-                    $this->filterIterator = $filterIterator;
-                }
-            }
-
-            catch (ReflectionException $e) {
-                throw new InvalidArgumentException;
+            if ($class->isSubclassOf('FilterIterator')) {
+                $this->filterIterator = $filterIterator;
             }
         } else {
-            throw new InvalidArgumentException;
+            throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'class name');
         }
     }
 }
