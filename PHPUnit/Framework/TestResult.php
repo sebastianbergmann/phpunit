@@ -462,7 +462,7 @@ class PHPUnit_Framework_TestResult implements Countable
         if (is_bool($flag)) {
             $this->collectCodeCoverageInformation = $flag;
         } else {
-            throw new InvalidArgumentException;
+            throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'boolean');
         }
     }
 
@@ -703,7 +703,7 @@ class PHPUnit_Framework_TestResult implements Countable
         if (is_bool($flag)) {
             $this->convertErrorsToExceptions = $flag;
         } else {
-            throw new InvalidArgumentException;
+            throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'boolean');
         }
     }
 
@@ -719,7 +719,7 @@ class PHPUnit_Framework_TestResult implements Countable
         if (is_bool($flag)) {
             $this->stopOnFailure = $flag;
         } else {
-            throw new InvalidArgumentException;
+            throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'boolean');
         }
     }
 

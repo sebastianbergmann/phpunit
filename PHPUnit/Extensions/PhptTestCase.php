@@ -96,10 +96,10 @@ class PHPUnit_Extensions_PhptTestCase implements PHPUnit_Framework_Test, PHPUnit
      * @param  array  $options Array with ini settings for the php instance run,
      *                         key being the name if the setting, value the ini value.
      */
-    public function __construct($filename, $options = array())
+    public function __construct($filename, array $options = array())
     {
         if (!is_string($filename)) {
-            throw new InvalidArgumentException;
+            throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'string');
         }
 
         if (!is_file($filename)) {
@@ -109,10 +109,6 @@ class PHPUnit_Extensions_PhptTestCase implements PHPUnit_Framework_Test, PHPUnit
                 $filename
               )
             );
-        }
-
-        if (!is_array($options)) {
-            throw new InvalidArgumentException;
         }
 
         $this->filename = $filename;
@@ -137,7 +133,7 @@ class PHPUnit_Extensions_PhptTestCase implements PHPUnit_Framework_Test, PHPUnit
      *                        key being the name if the setting, value the ini value.
      * @return PHPUnit_Framework_TestResult
      */
-    public function run(PHPUnit_Framework_TestResult $result = NULL, $options = array())
+    public function run(PHPUnit_Framework_TestResult $result = NULL, array $options = array())
     {
         if (!class_exists('PEAR_RunTest', FALSE)) {
             throw new RuntimeException('Class PEAR_RunTest not found.');
@@ -153,10 +149,6 @@ class PHPUnit_Extensions_PhptTestCase implements PHPUnit_Framework_Test, PHPUnit
 
         if ($result === NULL) {
             $result = new PHPUnit_Framework_TestResult;
-        }
-
-        if (!is_array($options)) {
-            throw new InvalidArgumentException;
         }
 
         $coverage = $result->getCollectCodeCoverageInformation();

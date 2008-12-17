@@ -147,7 +147,7 @@ class PHPUnit_Util_Log_Database implements PHPUnit_Framework_TestListener
         }
 
         if (empty($revision)) {
-            throw new InvalidArgumentException;
+            throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'non-empty string');
         }
 
         self::$instance = new PHPUnit_Util_Log_Database(

@@ -357,7 +357,7 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
     public function addTestFile($filename, $syntaxCheck = TRUE, $phptOptions = array())
     {
         if (!is_string($filename)) {
-            throw new InvalidArgumentException;
+            throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'string');
         }
 
         if (file_exists($filename) && substr($filename, -5) == '.phpt') {

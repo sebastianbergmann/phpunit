@@ -648,7 +648,7 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
     protected function iniSet($varName, $newValue)
     {
         if (!is_string($varName)) {
-            throw new InvalidArgumentException;
+            throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'string');
         }
 
         $currentValue = ini_set($varName, $newValue);
@@ -717,8 +717,12 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
      */
     protected function getMock($originalClassName, $methods = array(), array $arguments = array(), $mockClassName = '', $callOriginalConstructor = TRUE, $callOriginalClone = TRUE, $callAutoload = TRUE)
     {
-        if (!is_string($originalClassName) || !is_string($mockClassName)) {
-            throw new InvalidArgumentException;
+        if (!is_string($originalClassName)) {
+            throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'string');
+        }
+
+        if (!is_string($mockClassName)) {
+            throw PHPUnit_Util_InvalidArgumentHelper::factory(4, 'string');
         }
 
         if (!is_array($methods) && !is_null($methods)) {

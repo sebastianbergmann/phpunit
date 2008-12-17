@@ -438,7 +438,7 @@ class PHPUnit_Util_Filter
         if (is_bool($filter)) {
             self::$filter = $filter;
         } else {
-            throw new InvalidArgumentException;
+            throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'boolean');
         }
     }
 

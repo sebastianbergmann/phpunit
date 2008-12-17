@@ -414,7 +414,7 @@ abstract class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_Tes
     public function setAutoStop($autoStop)
     {
         if (!is_bool($autoStop)) {
-            throw new InvalidArgumentException;
+            throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'boolean');
         }
 
         $this->autoStop = $autoStop;
