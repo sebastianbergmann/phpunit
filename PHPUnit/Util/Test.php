@@ -156,6 +156,14 @@ class PHPUnit_Util_Test
             $method     = new ReflectionMethod($className, $methodName);
             $docComment = $class->getDocComment() . $method->getDocComment();
 
+            foreach (array('setUp', 'assertPreConditions', 'assertPostConditions', 'tearDown') as $templateMethod) {
+                if ($class->hasMethod($templateMethod)) {
+                    $reflector = $class->getMethod($templateMethod);
+                    $docComment .= $reflector->getDocComment();
+                    unset($reflector);
+                }
+            }
+
             if (preg_match_all(self::REGEX_COVERS, $docComment, $matches)) {
                 foreach ($matches[1] as $i => $method) {
                     $codeToCoverList = array_merge(
