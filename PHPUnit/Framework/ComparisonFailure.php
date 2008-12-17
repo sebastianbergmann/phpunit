@@ -36,7 +36,6 @@
  *
  * @category   Testing
  * @package    PHPUnit
- * @author     Jan Borsodi <jb@ez.no>
  * @author     Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @copyright  2002-2008 Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
@@ -55,7 +54,6 @@ PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
  *
  * @category   Testing
  * @package    PHPUnit
- * @author     Jan Borsodi <jb@ez.no>
  * @author     Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @copyright  2002-2008 Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
@@ -139,20 +137,24 @@ abstract class PHPUnit_Framework_ComparisonFailure extends PHPUnit_Framework_Ass
             return new PHPUnit_Framework_ComparisonFailure_Type($expected, $actual, TRUE, $message);
         }
 
-        elseif (is_string($expected)) {
-            return new PHPUnit_Framework_ComparisonFailure_String($expected, $actual, TRUE, $message);
-        }
-
-        elseif (is_null($expected) || is_scalar($expected)) {
-            return new PHPUnit_Framework_ComparisonFailure_Scalar($expected, $actual, TRUE, $message);
-        }
-
-        elseif (is_array($expected)) {
+        else if (is_array($expected) && is_array($actual)) {
             return new PHPUnit_Framework_ComparisonFailure_Array($expected, $actual, TRUE, $message);
         }
 
-        elseif (is_object($expected)) {
+        else if (is_numeric($expected) && is_numeric($actual)) {
+            return new PHPUnit_Framework_ComparisonFailure_Numeric($expected, $actual, TRUE, $message);
+        }
+
+        else if (is_object($expected) && is_object($actual)) {
             return new PHPUnit_Framework_ComparisonFailure_Object($expected, $actual, TRUE, $message);
+        }
+
+        else if (is_string($expected) && !is_object($actual)) {
+            return new PHPUnit_Framework_ComparisonFailure_String($expected, $actual, TRUE, $message);
+        }
+
+        else if (is_null($expected) || is_scalar($expected)) {
+            return new PHPUnit_Framework_ComparisonFailure_Scalar($expected, $actual, TRUE, $message);
         }
     }
 
@@ -170,25 +172,30 @@ abstract class PHPUnit_Framework_ComparisonFailure extends PHPUnit_Framework_Ass
      */
     public static function diffEqual($expected, $actual, $message = '')
     {
-        if (is_string($expected) && !is_object($actual)) {
-            return new PHPUnit_Framework_ComparisonFailure_String($expected, $actual, FALSE, $message);
-        }
-
-        elseif (is_null($expected) || is_scalar($expected)) {
-            return new PHPUnit_Framework_ComparisonFailure_Scalar($expected, $actual, FALSE, $message);
-        }
-
-        elseif (is_array($expected)) {
+        if (is_array($expected) && is_array($actual)) {
             return new PHPUnit_Framework_ComparisonFailure_Array($expected, $actual, FALSE, $message);
         }
 
-        elseif (is_object($expected)) {
+        else if (is_numeric($expected) && is_numeric($actual)) {
+            return new PHPUnit_Framework_ComparisonFailure_Numeric($expected, $actual, FALSE, $message);
+        }
+
+        else if (is_object($expected) && is_object($actual)) {
             return new PHPUnit_Framework_ComparisonFailure_Object($expected, $actual, FALSE, $message);
+        }
+
+        else if (is_string($expected) && !is_object($actual)) {
+            return new PHPUnit_Framework_ComparisonFailure_String($expected, $actual, FALSE, $message);
+        }
+
+        else if (is_null($expected) || is_scalar($expected)) {
+            return new PHPUnit_Framework_ComparisonFailure_Scalar($expected, $actual, FALSE, $message);
         }
     }
 }
 
 require_once 'PHPUnit/Framework/ComparisonFailure/Array.php';
+require_once 'PHPUnit/Framework/ComparisonFailure/Numeric.php';
 require_once 'PHPUnit/Framework/ComparisonFailure/Object.php';
 require_once 'PHPUnit/Framework/ComparisonFailure/Scalar.php';
 require_once 'PHPUnit/Framework/ComparisonFailure/String.php';
