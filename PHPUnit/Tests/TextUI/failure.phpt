@@ -32,7 +32,7 @@ Failed asserting that two arrays are equal.
 %s/failure.php:%i
 
 2) testAssertIntegerEqualsInteger(FailureTest)
-Failed asserting that <integer:2> matches expected value <integer:1>.
+Failed asserting that <integer:2> matches expected <integer:1>.
 %s/FailureTest.php:%i
 %s/failure.php:%i
 
@@ -51,7 +51,7 @@ Failed asserting that two objects are equal.
 %s/failure.php:%i
 
 4) testAssertNullEqualsString(FailureTest)
-Failed asserting that <string:bar> matches expected value <null>.
+Failed asserting that <string:bar> matches expected <null>.
 %s/FailureTest.php:%i
 %s/failure.php:%i
 

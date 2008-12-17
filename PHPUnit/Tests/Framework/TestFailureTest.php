@@ -324,7 +324,7 @@ class Framework_TestFailureTest extends PHPUnit_Framework_TestCase
 
         catch (PHPUnit_Framework_ExpectationFailedException $e) {
             $this->assertEquals(
-              "Failed asserting that <integer:0> matches expected value <integer:1>.\n",
+              "Failed asserting that <integer:0> matches expected <integer:1>.\n",
               PHPUnit_Framework_TestFailure::exceptionToString($e)
             );
 
@@ -344,7 +344,7 @@ class Framework_TestFailureTest extends PHPUnit_Framework_TestCase
 
         catch (PHPUnit_Framework_ExpectationFailedException $e) {
             $this->assertEquals(
-              "custom message\nFailed asserting that <integer:0> matches expected value <integer:1>.\n",
+              "custom message\nFailed asserting that <integer:0> matches expected <integer:1>.\n",
               PHPUnit_Framework_TestFailure::exceptionToString($e)
             );
 
