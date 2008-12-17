@@ -41,18 +41,15 @@
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    SVN: $Id$
  * @link       http://www.phpunit.de/
- * @since      File available since Release 2.1.0
+ * @since      File available since Release 3.4.0
  */
 
-require_once 'PHPUnit/Framework.php';
 require_once 'PHPUnit/Util/Filter.php';
-require_once 'PHPUnit/Util/Timer.php';
 
 PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
 
 /**
- * A TestCase that expects a TestCase to be executed
- * meeting a given time limit.
+ * 
  *
  * @category   Testing
  * @package    PHPUnit
@@ -61,58 +58,23 @@ PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    Release: @package_version@
  * @link       http://www.phpunit.de/
- * @since      Class available since Release 2.1.0
+ * @since      Class available since Release 3.4.0
  */
-abstract class PHPUnit_Extensions_PerformanceTestCase extends PHPUnit_Framework_TestCase
+class PHPUnit_Util_InvalidArgumentHelper
 {
-    /**
-     * @var    integer
-     */
-    protected $maxRunningTime = 0;
-
-    /**
-     */
-    protected function runTest()
+    public static function factory($argument, $type)
     {
-        PHPUnit_Util_Timer::start();
-        parent::runTest();
-        $time = PHPUnit_Util_Timer::stop();
+        $stack = debug_backtrace(FALSE);
 
-        if ($this->maxRunningTime != 0 &&
-            $time > $this->maxRunningTime) {
-            $this->fail(
-              sprintf(
-                'expected running time: <= %s but was: %s',
-
-                $this->maxRunningTime,
-                $time
-              )
-            );
-        }
-    }
-
-    /**
-     * @param  integer $maxRunningTime
-     * @throws InvalidArgumentException
-     * @since  Method available since Release 2.3.0
-     */
-    public function setMaxRunningTime($maxRunningTime)
-    {
-        if (is_integer($maxRunningTime) &&
-            $maxRunningTime >= 0) {
-            $this->maxRunningTime = $maxRunningTime;
-        } else {
-            throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'positive integer');
-        }
-    }
-
-    /**
-     * @return integer
-     * @since  Method available since Release 2.3.0
-     */
-    public function getMaxRunningTime()
-    {
-        return $this->maxRunningTime;
+        return new InvalidArgumentException(
+          sprintf(
+            'Argument #%d of %s:%s() is no %s',
+            $argument,
+            $stack[1]['class'],
+            $stack[1]['function'],
+            $type
+          )
+        );
     }
 }
 ?>

@@ -170,7 +170,7 @@ class PHPUnit_Extensions_SeleniumTestCase_Driver
     public function setCollectCodeCoverageInformation($flag)
     {
         if (!is_bool($flag)) {
-            throw new InvalidArgumentException;
+            throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'boolean');
         }
 
         $this->collectCodeCoverageInformation = $flag;
@@ -199,7 +199,7 @@ class PHPUnit_Extensions_SeleniumTestCase_Driver
     public function setName($name)
     {
         if (!is_string($name)) {
-            throw new InvalidArgumentException;
+            throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'string');
         }
 
         $this->name = $name;
@@ -212,7 +212,7 @@ class PHPUnit_Extensions_SeleniumTestCase_Driver
     public function setBrowser($browser)
     {
         if (!is_string($browser)) {
-            throw new InvalidArgumentException;
+            throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'string');
         }
 
         $this->browser = $browser;
@@ -225,7 +225,7 @@ class PHPUnit_Extensions_SeleniumTestCase_Driver
     public function setBrowserUrl($browserUrl)
     {
         if (!is_string($browserUrl)) {
-            throw new InvalidArgumentException;
+            throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'string');
         }
 
         $this->browserUrl = $browserUrl;
@@ -238,7 +238,7 @@ class PHPUnit_Extensions_SeleniumTestCase_Driver
     public function setHost($host)
     {
         if (!is_string($host)) {
-            throw new InvalidArgumentException;
+            throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'string');
         }
 
         $this->host = $host;
@@ -251,7 +251,7 @@ class PHPUnit_Extensions_SeleniumTestCase_Driver
     public function setPort($port)
     {
         if (!is_int($port)) {
-            throw new InvalidArgumentException;
+            throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'integer');
         }
 
         $this->port = $port;
@@ -264,7 +264,7 @@ class PHPUnit_Extensions_SeleniumTestCase_Driver
     public function setTimeout($timeout)
     {
         if (!is_int($timeout)) {
-            throw new InvalidArgumentException;
+            throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'integer');
         }
 
         $this->timeout = $timeout;
@@ -277,7 +277,7 @@ class PHPUnit_Extensions_SeleniumTestCase_Driver
     public function setSleep($seconds)
     {
         if (!is_int($seconds)) {
-            throw new InvalidArgumentException;
+            throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'integer');
         }
 
         $this->sleep = $seconds;
@@ -293,7 +293,7 @@ class PHPUnit_Extensions_SeleniumTestCase_Driver
     public function setWait($seconds)
     {
         if (!is_int($seconds)) {
-            throw new InvalidArgumentException;
+            throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'integer');
         }
 
         $this->wait = $seconds;
@@ -309,7 +309,7 @@ class PHPUnit_Extensions_SeleniumTestCase_Driver
     public function setWaitForPageToLoad($flag)
     {
         if (!is_bool($flag)) {
-            throw new InvalidArgumentException;
+            throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'boolean');
         }
 
         $this->useWaitForPageToLoad = $flag;

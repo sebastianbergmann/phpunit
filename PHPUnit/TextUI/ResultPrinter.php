@@ -129,22 +129,22 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
     {
         parent::__construct($out);
 
+        if (is_bool($verbose)) {
+            $this->verbose = $verbose;
+        } else {
+            throw PHPUnit_Util_InvalidArgumentHelper::factory(2, 'boolean');
+        }
+
         if (is_bool($colors)) {
             $this->colors = $colors;
         } else {
-            throw new InvalidArgumentException;
+            throw PHPUnit_Util_InvalidArgumentHelper::factory(3, 'boolean');
         }
 
         if (is_bool($debug)) {
             $this->debug = $debug;
         } else {
-            throw new InvalidArgumentException;
-        }
-
-        if (is_bool($verbose)) {
-            $this->verbose = $verbose;
-        } else {
-            throw new InvalidArgumentException;
+            throw PHPUnit_Util_InvalidArgumentHelper::factory(4, 'boolean');
         }
     }
 
