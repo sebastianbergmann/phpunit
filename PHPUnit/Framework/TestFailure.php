@@ -144,9 +144,10 @@ class PHPUnit_Framework_TestFailure
                             $buffer .= $comparisonFailure->toString() . "\n";
                         }
                     } else {
-                        if ($comparisonFailure instanceof PHPUnit_Framework_ComparisonFailure_Scalar) {
+                        if ($comparisonFailure instanceof PHPUnit_Framework_ComparisonFailure_Numeric ||
+                            $comparisonFailure instanceof PHPUnit_Framework_ComparisonFailure_Scalar) {
                             $buffer .= sprintf(
-                              "Failed asserting that %s matches expected value %s.\n",
+                              "Failed asserting that %s matches expected %s.\n",
 
                               PHPUnit_Util_Type::toString($comparisonFailure->getActual()),
                               PHPUnit_Util_Type::toString($comparisonFailure->getExpected())

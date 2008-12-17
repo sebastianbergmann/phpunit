@@ -34,7 +34,7 @@ Failed asserting that two arrays are equal.
 %s/failure-verbose.php:%i
 
 2) testAssertIntegerEqualsInteger(FailureTest)
-Failed asserting that <integer:2> matches expected value <integer:1>.
+Failed asserting that <integer:2> matches expected <integer:1>.
 expected integer <1>
 difference       <1>
 got integer      <2>
@@ -56,7 +56,7 @@ Failed asserting that two objects are equal.
 %s/failure-verbose.php:%i
 
 4) testAssertNullEqualsString(FailureTest)
-Failed asserting that <string:bar> matches expected value <null>.
+Failed asserting that <string:bar> matches expected <null>.
 
 %s/FailureTest.php:%i
 %s/failure-verbose.php:%i
