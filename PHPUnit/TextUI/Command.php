@@ -240,7 +240,6 @@ class PHPUnit_TextUI_Command
                       'The --ansi option is deprecated, please use --colors instead.',
                       FALSE
                     );
-                    PHPUnit_Util_Fileloader::load($arguments['bootstrap']);
                 }
 
                 case '--colors': {
@@ -250,6 +249,7 @@ class PHPUnit_TextUI_Command
 
                 case '--bootstrap': {
                     $arguments['bootstrap'] = $option[1];
+                    PHPUnit_Util_Fileloader::load($arguments['bootstrap']);
                 }
                 break;
 
