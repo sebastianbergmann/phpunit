@@ -234,12 +234,12 @@ class PHPUnit_TextUI_Command
                 case '--ansi':
                 case '--colors': {
                     $arguments['colors'] = TRUE;
-                    PHPUnit_Util_Fileloader::load($arguments['bootstrap']);
                 }
                 break;
 
                 case '--bootstrap': {
                     $arguments['bootstrap'] = $option[1];
+                    PHPUnit_Util_Fileloader::load($arguments['bootstrap']);
                 }
                 break;
 
