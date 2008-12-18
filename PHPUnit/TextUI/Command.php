@@ -155,7 +155,7 @@ class PHPUnit_TextUI_Command
         $arguments = array(
           'listGroups'              => FALSE,
           'loader'                  => NULL,
-          'useDefaultConfiguration' => TRUE
+          'useDefaultConfiguration' => TRUE,
           'syntaxCheck'             => TRUE
         );
 
