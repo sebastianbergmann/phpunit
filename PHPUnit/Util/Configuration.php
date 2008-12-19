@@ -62,6 +62,7 @@ PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
  *          convertErrorsToExceptions="true"
  *          convertNoticesToExceptions="true"
  *          convertWarningsToExceptions="true"
+ *          processIsolation="false"
  *          stopOnFailure="false"
  *          testSuiteLoaderClass="PHPUnit_Runner_StandardTestSuiteLoader">
  *   <testsuite name="My Test Suite">
@@ -509,6 +510,13 @@ class PHPUnit_Util_Configuration
             $result['convertWarningsToExceptions'] = $this->getBoolean(
               (string)$this->document->documentElement->getAttribute('convertWarningsToExceptions'),
               TRUE
+            );
+        }
+
+        if ($this->document->documentElement->hasAttribute('processIsolation')) {
+            $result['processIsolation'] = $this->getBoolean(
+              (string)$this->document->documentElement->getAttribute('processIsolation'),
+              FALSE
             );
         }
 

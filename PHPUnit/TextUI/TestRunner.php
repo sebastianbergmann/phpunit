@@ -163,7 +163,11 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
         $this->handleConfiguration($arguments);
 
         if (isset($arguments['bootstrap'])) {
-            PHPUnit_Util_Fileloader::load($arguments['bootstrap']);
+            $bootstrap = PHPUnit_Util_Fileloader::load($arguments['bootstrap']);
+
+            if ($bootstrap) {
+                $GLOBALS['__PHPUNIT_BOOTSTRAP'] = $bootstrap;
+            }
         }
 
         if (is_integer($arguments['repeat'])) {
@@ -172,7 +176,8 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
               $arguments['repeat'],
               $arguments['filter'],
               $arguments['groups'],
-              $arguments['excludeGroups']
+              $arguments['excludeGroups'],
+              $arguments['processIsolation']
             );
         }
 
@@ -318,7 +323,8 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
           $result,
           $arguments['filter'],
           $arguments['groups'],
-          $arguments['excludeGroups']
+          $arguments['excludeGroups'],
+          $arguments['processIsolation']
         );
 
         $result->flushListeners();
@@ -597,6 +603,10 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
                 $arguments['convertWarningsToExceptions'] = $phpunitConfiguration['convertWarningsToExceptions'];
             }
 
+            if (isset($phpunitConfiguration['processIsolation']) && !isset($arguments['processIsolation'])) {
+                $arguments['processIsolation'] = $phpunitConfiguration['processIsolation'];
+            }
+
             if (isset($phpunitConfiguration['stopOnFailure']) && !isset($arguments['stopOnFailure'])) {
                 $arguments['stopOnFailure'] = $phpunitConfiguration['stopOnFailure'];
             }
@@ -720,6 +730,7 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
         $arguments['excludeGroups']               = isset($arguments['excludeGroups'])               ? $arguments['excludeGroups']               : array();
         $arguments['groups']                      = isset($arguments['groups'])                      ? $arguments['groups']                      : array();
         $arguments['logIncompleteSkipped']        = isset($arguments['logIncompleteSkipped'])        ? $arguments['logIncompleteSkipped']        : FALSE;
+        $arguments['processIsolation']            = isset($arguments['processIsolation'])            ? $arguments['processIsolation']            : FALSE;
         $arguments['reportCharset']               = isset($arguments['reportCharset'])               ? $arguments['reportCharset']               : 'ISO-8859-1';
         $arguments['reportHighlight']             = isset($arguments['reportHighlight'])             ? $arguments['reportHighlight']             : FALSE;
         $arguments['reportHighLowerBound']        = isset($arguments['reportHighLowerBound'])        ? $arguments['reportHighLowerBound']        : 70;

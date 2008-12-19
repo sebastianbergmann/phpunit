@@ -131,6 +131,11 @@ class PHPUnit_Framework_TestResult implements Countable
     /**
      * @var    boolean
      */
+    protected $collectRawCodeCoverageInformation = FALSE;
+
+    /**
+     * @var    boolean
+     */
     protected $convertErrorsToExceptions = TRUE;
 
     /**
@@ -465,6 +470,26 @@ class PHPUnit_Framework_TestResult implements Countable
     }
 
     /**
+     * Enables or disables the collection of raw Code Coverage information.
+     *
+     * @param  boolean $flag
+     * @throws InvalidArgumentException
+     * @since  Method available since Release 3.4.0
+     */
+    public function collectRawCodeCoverageInformation($flag)
+    {
+        if (is_bool($flag)) {
+            $this->collectRawCodeCoverageInformation = $flag;
+
+            if ($flag === TRUE) {
+                $this->collectCodeCoverageInformation = $flag;
+            }
+        } else {
+            throw new InvalidArgumentException;
+        }
+    }
+
+    /**
      * Returns whether code coverage information should be collected.
      *
      * @return boolean If code coverage should be collected
@@ -484,53 +509,70 @@ class PHPUnit_Framework_TestResult implements Countable
      */
     public function appendCodeCoverageInformation(PHPUnit_Framework_Test $test, $data)
     {
-        $deadCode       = array();
-        $executableCode = array();
-
-        foreach (array_keys($data) as $file) {
-            if (PHPUnit_Util_Filter::isFiltered($file, FALSE))
-            {
-                unset($data[$file]);
-            }
-        }
-
-        $newFilesToCollect = array_diff_key($data, PHPUnit_Util_Filter::getCoveredFiles());
-
-        if (sizeof($newFilesToCollect) > 0)
-        {
-            $deadCode       = PHPUnit_Util_CodeCoverage::codeCoverageToBitString($newFilesToCollect, array(-2));
-            $executableCode = PHPUnit_Util_CodeCoverage::codeCoverageToBitString($newFilesToCollect, array(-1, 1));
-
-            foreach (array_keys($newFilesToCollect) as $file) {
-                PHPUnit_Util_Filter::addCoveredFile($file);
-            }
-
-            unset($newFilesToCollect);
-        }
-
-        if ($test instanceof PHPUnit_Framework_TestCase) {
-            $linesToBeCovered = PHPUnit_Util_Test::getLinesToBeCovered(
-              get_class($test), $test->getName()
+        if ($this->collectRawCodeCoverageInformation) {
+            $this->codeCoverageInformation[] = array(
+              'test' => $test, 'data' => $data
             );
+        } else {
+            $deadCode       = array();
+            $executableCode = array();
 
-            if (!empty($linesToBeCovered)) {
-                $data = array_intersect_key($data, $linesToBeCovered);
-
-                foreach (array_keys($data) as $file) {
-                    $data[$file] = array_intersect_key($data[$file], array_flip($linesToBeCovered[$file]));
+            foreach (array_keys($data) as $file) {
+                if (PHPUnit_Util_Filter::isFiltered($file, FALSE))
+                {
+                    unset($data[$file]);
                 }
             }
+
+            $newFilesToCollect = array_diff_key($data, PHPUnit_Util_Filter::getCoveredFiles());
+
+            if (sizeof($newFilesToCollect) > 0)
+            {
+                $deadCode       = PHPUnit_Util_CodeCoverage::codeCoverageToBitString($newFilesToCollect, array(-2));
+                $executableCode = PHPUnit_Util_CodeCoverage::codeCoverageToBitString($newFilesToCollect, array(-1, 1));
+
+                foreach (array_keys($newFilesToCollect) as $file) {
+                    PHPUnit_Util_Filter::addCoveredFile($file);
+                }
+
+                unset($newFilesToCollect);
+            }
+
+            if ($test instanceof PHPUnit_Framework_TestCase) {
+                $linesToBeCovered = PHPUnit_Util_Test::getLinesToBeCovered(
+                  get_class($test), $test->getName()
+                );
+
+                if (!empty($linesToBeCovered)) {
+                    $data = array_intersect_key($data, $linesToBeCovered);
+
+                    foreach (array_keys($data) as $file) {
+                        $data[$file] = array_intersect_key($data[$file], array_flip($linesToBeCovered[$file]));
+                    }
+                }
+            }
+
+            $executed = PHPUnit_Util_CodeCoverage::codeCoverageToBitString($data, array(1));
+            unset($data);
+
+            $this->codeCoverageInformation[] = array(
+              'test'       => $test,
+              'files'      => $executed,
+              'dead'       => $deadCode,
+              'executable' => $executableCode,
+            );
         }
+    }
 
-        $executed = PHPUnit_Util_CodeCoverage::codeCoverageToBitString($data, array(1));
-        unset($data);
-
-        $this->codeCoverageInformation[] = array(
-          'test'       => $test,
-          'files'      => $executed,
-          'dead'       => $deadCode,
-          'executable' => $executableCode,
-        );
+    /**
+     * Returns the raw Code Coverage information.
+     *
+     * @return array
+     * @since  Method available since Release 3.4.0
+     */
+    public function getRawCodeCoverageInformation()
+    {
+        return $this->codeCoverageInformation;
     }
 
     /**

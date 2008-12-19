@@ -179,6 +179,7 @@ class PHPUnit_TextUI_Command
           'log-xml=',
           'no-configuration',
           'no-syntax-check',
+          'process-isolation',
           'repeat=',
           'skeleton-class',
           'skeleton-test',
@@ -362,6 +363,12 @@ class PHPUnit_TextUI_Command
 
                 case '--no-syntax-check': {
                     $arguments['syntaxCheck'] = FALSE;
+                }
+                break;
+
+                case '--process-isolation': {
+                    $arguments['processIsolation'] = TRUE;
+                    $arguments['syntaxCheck']      = FALSE;
                 }
                 break;
 
@@ -700,6 +707,7 @@ Usage: phpunit [switches] UnitTest [UnitTest.php]
   --help                   Prints this usage information.
   --version                Prints the version and exits.
 
+  --process-isolation      Run each test in a separate PHP process.
   --bootstrap <file>       A "bootstrap" PHP file that is run before the tests.
   --configuration <file>   Read configuration from XML file.
   --no-configuration       Ignore default configuration file (phpunit.xml).

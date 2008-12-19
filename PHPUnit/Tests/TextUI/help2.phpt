@@ -56,9 +56,9 @@ Usage: phpunit [switches] UnitTest [UnitTest.php]
   --help                   Prints this usage information.
   --version                Prints the version and exits.
 
+  --process-isolation      Run each test in a separate PHP process.
   --bootstrap <file>       A "bootstrap" PHP file that is run before the tests.
   --configuration <file>   Read configuration from XML file.
   --no-configuration       Ignore default configuration file (phpunit.xml).
   --include-path <path(s)> Prepend PHP's include_path with given path(s).
   -d key[=value]           Sets a php.ini value.
-
