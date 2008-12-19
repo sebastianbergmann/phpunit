@@ -103,6 +103,14 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
     protected $backupGlobals = NULL;
 
     /**
+     * Whether or not the tests of this test suite are
+     * to be run in separate PHP processes.
+     *
+     * @var    boolean
+     */
+    protected $runTestsInSeparateProcesses = NULL;
+
+    /**
      * Fixture that is shared between the tests of this test suite.
      *
      * @var    mixed
@@ -471,9 +479,11 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
      */
     public static function createTest(ReflectionClass $theClass, $name, array $classGroups = array())
     {
-        $className        = $theClass->getName();
-        $method           = new ReflectionMethod($className, $name);
-        $methodDocComment = $method->getDocComment();
+        $className                = $theClass->getName();
+        $classDocComment          = $theClass->getDocComment();
+        $method                   = new ReflectionMethod($className, $name);
+        $methodDocComment         = $method->getDocComment();
+        $runTestInSeparateProcess = FALSE;
 
         if (!$theClass->isInstantiable()) {
             return self::warning(
@@ -482,6 +492,13 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
         }
 
         $constructor = $theClass->getConstructor();
+
+        // @runTestsInSeparateProcesses on TestCase
+        // @runInSeparateProcess        on TestCase::testMethod()
+        if (strpos($classDocComment, '@runTestsInSeparateProcesses') !== FALSE ||
+            strpos($methodDocComment, '@runInSeparateProcess') !== FALSE) {
+            $runTestInSeparateProcess = TRUE;
+        }
 
         if ($constructor !== NULL) {
             $parameters = $constructor->getParameters();
@@ -514,6 +531,10 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
 
         if ($test instanceof PHPUnit_Framework_TestCase) {
             $test->setName($name);
+
+            if ($runTestInSeparateProcess) {
+                $test->setRunTestInSeparateProcess(TRUE);
+            }
         }
 
         return $test;
@@ -557,10 +578,11 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
      * @param  mixed                        $filter
      * @param  array                        $groups
      * @param  array                        $excludeGroups
+     * @param  boolean                      $processIsolation
      * @return PHPUnit_Framework_TestResult
      * @throws InvalidArgumentException
      */
-    public function run(PHPUnit_Framework_TestResult $result = NULL, $filter = FALSE, array $groups = array(), array $excludeGroups = array())
+    public function run(PHPUnit_Framework_TestResult $result = NULL, $filter = FALSE, array $groups = array(), array $excludeGroups = array(), $processIsolation = FALSE)
     {
         if ($result === NULL) {
             $result = $this->createResult();
@@ -602,7 +624,10 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
             if ($test instanceof PHPUnit_Framework_TestSuite) {
                 $test->setBackupGlobals($this->backupGlobals);
                 $test->setSharedFixture($this->sharedFixture);
-                $test->run($result, $filter, $groups, $excludeGroups);
+
+                $test->run(
+                  $result, $filter, $groups, $excludeGroups, $processIsolation
+                );
             } else {
                 $runTest = TRUE;
 
@@ -637,6 +662,7 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
                     if ($test instanceof PHPUnit_Framework_TestCase) {
                         $test->setBackupGlobals($this->backupGlobals);
                         $test->setSharedFixture($this->sharedFixture);
+                        $test->setRunTestInSeparateProcess($processIsolation);
                     }
 
                     $this->runTest($test, $result);
@@ -658,6 +684,10 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
      */
     public function runTest(PHPUnit_Framework_Test $test, PHPUnit_Framework_TestResult $result)
     {
+        if ($this->runTestsInSeparateProcesses === TRUE && $test instanceof PHPUnit_Framework_TestCase) {
+            $test->setRunTestInSeparateProcess(TRUE);
+        }
+
         $test->run($result);
     }
 
@@ -792,6 +822,20 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
     {
         if (is_null($this->backupGlobals) && is_bool($backupGlobals)) {
             $this->backupGlobals = $backupGlobals;
+        }
+    }
+
+    /**
+     * @param  boolean $runTestsInSeparateProcesses
+     * @throws InvalidArgumentException
+     * @since  Method available since Release 3.4.0
+     */
+    public function setRunTestsInSeparateProcesses($runTestsInSeparateProcesses)
+    {
+        if (is_null($this->runTestsInSeparateProcesses) && is_bool($runTestsInSeparateProcesses)) {
+            $this->runTestsInSeparateProcesses = $runTestsInSeparateProcesses;
+        } else {
+            throw new InvalidArgumentException;
         }
     }
 

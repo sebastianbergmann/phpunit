@@ -46,6 +46,7 @@
 
 require_once 'PHPUnit/Util/Filter.php';
 require_once 'PHPUnit/Util/Filesystem.php';
+require_once 'PHPUnit/Util/PHP.php';
 
 PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
 
@@ -63,13 +64,6 @@ PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
  */
 class PHPUnit_Util_Fileloader
 {
-    /**
-     * Path to the PHP interpreter that is to be used.
-     *
-     * @var    string $phpBinary
-     */
-    public static $phpBinary = NULL;
-
     /**
      * Checks if a PHP sourcefile is readable and is optionally checked for
      * syntax errors through the syntaxCheck() method. The sourcefile is
@@ -134,54 +128,13 @@ class PHPUnit_Util_Fileloader
     /**
      * Uses a separate process to perform a syntax check on a PHP sourcefile.
      *
-     * PHPUnit_Util_Fileloader::$phpBinary contains the path to the PHP
-     * interpreter used for this. If unset, the following assumptions will
-     * be made:
-     *
-     *   1. When the PHP CLI/CGI binary configured with the PEAR Installer
-     *      (php_bin configuration value) is readable, it will be used.
-     *
-     *   2. When PHPUnit is run using the CLI SAPI and the $_SERVER['_']
-     *      variable does not contain the string "PHPUnit", $_SERVER['_']
-     *      is assumed to contain the path to the current PHP interpreter
-     *      and that will be used.
-     *
-     *   3. When PHPUnit is run using the CLI SAPI and the $_SERVER['_']
-     *      variable contains the string "PHPUnit", the file that $_SERVER['_']
-     *      points is assumed to be the PHPUnit TextUI CLI wrapper script
-     *      "phpunit" and the binary set up using #! on that file's first
-     *      line of code is assumed to contain the path to the current PHP
-     *      interpreter and that will be used.
-     *
-     *   4. The current PHP interpreter is assumed to be in the $PATH and
-     *      to be invokable through "php".
-     *
      * @param  string $filename
      * @throws RuntimeException
      * @since  Method available since Release 3.0.0
      */
     protected static function syntaxCheck($filename)
     {
-        if (self::$phpBinary === NULL) {
-            if (is_readable('@php_bin@')) {
-                self::$phpBinary = '@php_bin@';
-            }
-
-            else if (PHP_SAPI == 'cli' && isset($_SERVER['_']) &&
-                     strpos($_SERVER['_'], 'phpunit') !== FALSE) {
-                $file            = file($_SERVER['_']);
-                $tmp             = explode(' ', $file[0]);
-                self::$phpBinary = trim($tmp[1]);
-            }
-
-            if (!is_readable(self::$phpBinary)) {
-                self::$phpBinary = 'php';
-            } else {
-                self::$phpBinary = escapeshellarg(self::$phpBinary);
-            }
-        }
-
-        $command = self::$phpBinary . ' -l ' . escapeshellarg($filename);
+        $command = PHPUnit_Util_PHP::getPhpBinary() . ' -l ' . escapeshellarg($filename);
 
         if (DIRECTORY_SEPARATOR == '\\') {
             $command = '"' . $command . '"';

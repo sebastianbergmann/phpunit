@@ -92,9 +92,10 @@ class PHPUnit_Extensions_RepeatedTest extends PHPUnit_Extensions_TestDecorator
      * @param  mixed                  $filter
      * @param  array                  $groups
      * @param  array                  $excludeGroups
+     * @param  boolean                $processIsolation
      * @throws InvalidArgumentException
      */
-    public function __construct(PHPUnit_Framework_Test $test, $timesRepeat = 1, $filter = FALSE, array $groups = array(), array $excludeGroups = array())
+    public function __construct(PHPUnit_Framework_Test $test, $timesRepeat = 1, $filter = FALSE, array $groups = array(), array $excludeGroups = array(), $processIsolation = FALSE)
     {
         parent::__construct($test);
 
@@ -107,9 +108,10 @@ class PHPUnit_Extensions_RepeatedTest extends PHPUnit_Extensions_TestDecorator
             );
         }
 
-        $this->filter        = $filter;
-        $this->groups        = $groups;
-        $this->excludeGroups = $excludeGroups;
+        $this->filter           = $filter;
+        $this->groups           = $groups;
+        $this->excludeGroups    = $excludeGroups;
+        $this->processIsolation = $processIsolation;
     }
 
     /**
@@ -140,7 +142,11 @@ class PHPUnit_Extensions_RepeatedTest extends PHPUnit_Extensions_TestDecorator
         for ($i = 0; $i < $this->timesRepeat && !$result->shouldStop(); $i++) {
             if ($this->test instanceof PHPUnit_Framework_TestSuite) {
                 $this->test->run(
-                  $result, $this->filter, $this->groups, $this->excludeGroups
+                  $result,
+                  $this->filter,
+                  $this->groups,
+                  $this->excludeGroups,
+                  $this->processIsolation
                 );
             } else {
                 $this->test->run($result);
