@@ -52,6 +52,8 @@ require_once 'PHPUnit/Framework/MockObject/Matcher/InvokedCount.php';
 require_once 'PHPUnit/Framework/MockObject/Stub.php';
 require_once 'PHPUnit/Runner/BaseTestRunner.php';
 require_once 'PHPUnit/Util/Filter.php';
+require_once 'PHPUnit/Util/PHP.php';
+require_once 'PHPUnit/Util/Template.php';
 
 PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
 
@@ -133,6 +135,20 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
      * @var    array
      */
     protected $globalsBackup = array();
+
+    /**
+     * Whether or not this test is to be run in a separate PHP process.
+     *
+     * @var    boolean
+     */
+    protected $runTestInSeparateProcess = NULL;
+
+    /**
+     * Whether or not this test is running in a separate PHP process.
+     *
+     * @var    boolean
+     */
+    protected $inIsolation = FALSE;
 
     /**
      * @var    array
@@ -413,7 +429,93 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
         $this->setExpectedExceptionFromAnnotation();
 
         $this->result = $result;
-        $result->run($this);
+
+        if ($this->runTestInSeparateProcess === TRUE &&
+            $this->inIsolation !== TRUE &&
+            !$this instanceof PHPUnit_Extensions_SeleniumTestCase &&
+            !$this instanceof PHPUnit_Extensions_PhptTestCase) {
+            $class                          = new ReflectionClass($this);
+            $collectCodeCoverageInformation = $result->getCollectCodeCoverageInformation();
+
+            $template = new PHPUnit_Util_Template(
+              sprintf(
+                '%s%sProcess%sTestCaseMethod.tpl',
+
+                dirname(__FILE__),
+                DIRECTORY_SEPARATOR,
+                DIRECTORY_SEPARATOR,
+                DIRECTORY_SEPARATOR
+              )
+            );
+
+            $template->setVar(
+              array(
+                'filename'                       => $class->getFileName(),
+                'className'                      => $class->getName(),
+                'methodName'                     => $this->name,
+                'data'                           => var_export($this->data, 1),
+                'dataName'                       => $this->dataName,
+                'collectCodeCoverageInformation' => $collectCodeCoverageInformation ? 'TRUE' : 'FALSE',
+                'globals'                        => $this->getGlobalsAsString(),
+                'include_path'                   => get_include_path()
+              )
+            );
+
+            $job = $template->render();
+            $result->startTest($this);
+
+            $jobResult = PHPUnit_Util_PHP::runJob($job);
+
+            if (!empty($jobResult['stderr'])) {
+                $time = 0;
+                $result->addError($this, new RuntimeException(trim($jobResult['stderr'])), $time);
+            } else {
+                $childResult = @unserialize($jobResult['stdout']);
+
+                if ($childResult !== FALSE) {
+                    $this->numAssertions = $childResult['numAssertions'];
+                    $childResult         = $childResult['result'];
+
+                    if ($collectCodeCoverageInformation) {
+                        $codeCoverageInformation = $childResult->getRawCodeCoverageInformation();
+
+                        $result->appendCodeCoverageInformation(
+                          $this, $codeCoverageInformation[0]['data']
+                        );
+                    }
+
+                    $time           = $childResult->time();
+                    $notImplemented = $childResult->notImplemented();
+                    $skipped        = $childResult->skipped();
+                    $errors         = $childResult->errors();
+                    $failures       = $childResult->failures();
+
+                    if (!empty($notImplemented)) {
+                        $result->addError($this, $notImplemented[0]->thrownException(), $time);
+                    }
+
+                    else if (!empty($skipped)) {
+                        $result->addError($this, $skipped[0]->thrownException(), $time);
+                    }
+
+                    else if (!empty($errors)) {
+                        $result->addError($this, $errors[0]->thrownException(), $time);
+                    }
+
+                    else if (!empty($failures)) {
+                        $result->addFailure($this, $failures[0]->thrownException(), $time);
+                    }
+                } else {
+                    $time = 0;
+                    $result->addError($this, new RuntimeException(trim($jobResult['stdout'])), $time);
+                }
+            }
+
+            $result->endTest($this, $time);
+        } else {
+            $result->run($this);
+        }
+
         $this->result = NULL;
 
         return $result;
@@ -449,7 +551,8 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
         }
 
         // Backup the $GLOBALS array.
-        if ($this->backupGlobals === NULL || $this->backupGlobals === TRUE) {
+        if ($this->runTestInSeparateProcess !== TRUE && $this->inIsolation !== TRUE &&
+           ($this->backupGlobals === NULL || $this->backupGlobals === TRUE)) {
             $this->backupGlobals();
         }
 
@@ -503,7 +606,8 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
         clearstatcache();
 
         // Restore the $GLOBALS array.
-        if ($this->backupGlobals === NULL || $this->backupGlobals === TRUE) {
+        if ($this->runTestInSeparateProcess !== TRUE && $this->inIsolation !== TRUE &&
+           ($this->backupGlobals === NULL || $this->backupGlobals === TRUE)) {
             $this->restoreGlobals();
         }
 
@@ -620,6 +724,36 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
     {
         if (is_null($this->backupGlobals) && is_bool($backupGlobals)) {
             $this->backupGlobals = $backupGlobals;
+        }
+    }
+
+    /**
+     * @param  boolean $runTestInSeparateProcess
+     * @throws InvalidArgumentException
+     * @since  Method available since Release 3.4.0
+     */
+    public function setRunTestInSeparateProcess($runTestInSeparateProcess)
+    {
+        if (is_bool($runTestInSeparateProcess)) {
+            if ($this->runTestInSeparateProcess === NULL) {
+                $this->runTestInSeparateProcess = $runTestInSeparateProcess;
+            }
+        } else {
+            throw new InvalidArgumentException;
+        }
+    }
+
+    /**
+     * @param  boolean $inIsolation
+     * @throws InvalidArgumentException
+     * @since  Method available since Release 3.4.0
+     */
+    public function setInIsolation($inIsolation)
+    {
+        if (is_bool($inIsolation)) {
+            $this->inIsolation = $inIsolation;
+        } else {
+            throw new InvalidArgumentException;
         }
     }
 
@@ -1076,14 +1210,7 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
     protected function backupGlobals()
     {
         $this->globalsBackup = array();
-
-        if (ini_get('register_long_arrays') == '1') {
-            $superGlobalArrays = array_merge(
-              self::$superGlobalArrays, self::$superGlobalArraysLong
-            );
-        } else {
-            $superGlobalArrays = self::$superGlobalArrays;
-        }
+        $superGlobalArrays   = $this->getSuperGlobalArrays();
 
         foreach ($superGlobalArrays as $superGlobalArray) {
             if (!in_array($superGlobalArray, $this->backupGlobalsBlacklist)) {
@@ -1156,6 +1283,48 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
         }
 
         $this->globalsBackup[$superGlobalArray] = array();
+    }
+
+    protected function getGlobalsAsString()
+    {
+        $result            = '';
+        $superGlobalArrays = $this->getSuperGlobalArrays();
+
+        foreach ($superGlobalArrays as $superGlobalArray) {
+            if (isset($GLOBALS[$superGlobalArray])) {
+                foreach ($GLOBALS[$superGlobalArray] as $key => $value) {
+                    $result .= sprintf(
+                      '$GLOBALS[\'%s\'][\'%s\'] = %s;' . "\n",
+                      $superGlobalArray,
+                      $key,
+                      var_export($GLOBALS[$superGlobalArray][$key], TRUE)
+                    );
+                }
+            }
+        }
+
+        foreach (array_keys($GLOBALS) as $key) {
+            if ($key != 'GLOBALS' && !in_array($key, $superGlobalArrays)) {
+                $result .= sprintf(
+                  '$GLOBALS[\'%s\'] = %s;' . "\n",
+                  $key,
+                  var_export($GLOBALS[$key], TRUE)
+                );
+            }
+        }
+
+        return $result;
+    }
+
+    protected function getSuperGlobalArrays()
+    {
+        if (ini_get('register_long_arrays') == '1') {
+            return array_merge(
+              self::$superGlobalArrays, self::$superGlobalArraysLong
+            );
+        } else {
+            return self::$superGlobalArrays;
+        }
     }
 }
 
