@@ -694,9 +694,17 @@ abstract class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_Tes
      */
     public function __call($command, $arguments)
     {
-        return call_user_func_array(
+        $result = call_user_func_array(
           array($this->drivers[0], $command), $arguments
         );
+
+        $this->verificationErrors = array_merge(
+          $this->verificationErrors, $this->drivers[0]->getVerificationErrors()
+        );
+
+        $this->drivers[0]->clearVerificationErrors();
+
+        return $result;
     }
 
     /**
