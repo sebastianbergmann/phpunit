@@ -393,7 +393,16 @@ class PHPUnit_TextUI_Command
                         }
 
                         try {
-                            $skeleton = new $class($arguments['test'], $arguments['testFile']);
+                            $args      = array();
+                            $reflector = new ReflectionClass($class);
+
+                            for ($i = 0; $i <= 3; $i++) {
+                                if (isset($options[1][$i])) {
+                                    $args[] = $options[1][$i];
+                                }
+                            }
+
+                            $skeleton = $reflector->newInstanceArgs($args);
                             $skeleton->write();
                         }
 

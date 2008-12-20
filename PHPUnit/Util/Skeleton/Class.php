@@ -69,16 +69,16 @@ class PHPUnit_Util_Skeleton_Class extends PHPUnit_Util_Skeleton
     /**
      * Constructor.
      *
-     * @param  string  $inClassName
-     * @param  string  $inSourceFile
+     * @param string $inClassName
+     * @param string $inSourceFile
+     * @param string $outClassName
+     * @param string $outSourceFile
      * @throws RuntimeException
      */
-    public function __construct($inClassName, $inSourceFile = '')
+    public function __construct($inClassName, $inSourceFile = '', $outClassName = '', $outSourceFile = '')
     {
         if (empty($inSourceFile)) {
-            $this->inSourceFile = $inClassName . '.php';
-        } else {
-            $this->inSourceFile = $inSourceFile;
+            $inSourceFile = $inClassName . '.php';
         }
 
         if (!is_file($this->inSourceFile)) {
@@ -93,9 +93,18 @@ class PHPUnit_Util_Skeleton_Class extends PHPUnit_Util_Skeleton
 
         $this->tokens = token_get_all(file_get_contents($this->inSourceFile));
 
+        if (empty($outClassName)) {
+            $outClassName = substr($inClassName, 0, strlen($inClassName) - 4);
+        }
+
+        if (empty($outSourceFile)) {
+            $outSourceFile = dirname($inSourceFile) . DIRECTORY_SEPARATOR . $outClassName . '.php';
+        }
+
         $this->inClassName   = $inClassName;
-        $this->outClassName  = substr($inClassName, 0, strlen($inClassName) - 4);
-        $this->outSourceFile = dirname($this->inSourceFile) . DIRECTORY_SEPARATOR . $this->outClassName . '.php';
+        $this->inSourceFile  = $inSourceFile;
+        $this->outClassName  = $outClassName;
+        $this->outSourceFile = $outSourceFile;
     }
 
     /**
