@@ -72,67 +72,81 @@ class PHPUnit_Util_Skeleton_Test extends PHPUnit_Util_Skeleton
     /**
      * Constructor.
      *
-     * @param  string  $inClassName
-     * @param  string  $inSourceFile
+     * @param string $inClassName
+     * @param string $inSourceFile
+     * @param string $outClassName
+     * @param string $outSourceFile
      * @throws RuntimeException
      */
-    public function __construct($inClassName, $inSourceFile = '')
+    public function __construct($inClassName, $inSourceFile = '', $outClassName = '', $outSourceFile = '')
     {
-        $this->inClassName  = $inClassName;
-        $this->outClassName = $inClassName . 'Test';
-
         if (class_exists($inClassName)) {
-            $this->inSourceFile = '<internal>';
-        }
+            $reflector    = new ReflectionClass($inClassName);
+            $inSourceFile = $reflector->getFileName();
 
-        else if (empty($inSourceFile) && is_file($inClassName . '.php')) {
-            $this->inSourceFile = $inClassName . '.php';
-        }
+            if ($inSourceFile !== FALSE) {
+                $inSourceFile = '<internal>';
+            }
 
-        else if (empty($inSourceFile) ||
-                 is_file(str_replace('_', '/', $inClassName) . '.php')) {
-            $this->inSourceFile  = str_replace('_', '/', $inClassName) . '.php';
-            $this->outSourceFile = str_replace('_', '/', $inClassName) . 'Test.php';
-        }
-
-        else if (empty($inSourceFile)) {
-            throw new RuntimeException(
-              sprintf(
-                'Neither "%s.php" nor "%s.php" could be opened.',
-                $inClassName,
-                str_replace('_', '/', $inClassName)
-              )
-            );
-        }
-
-        else if (!is_file($inSourceFile)) {
-            throw new RuntimeException(
-              sprintf(
-                '"%s" could not be opened.',
-
-                $inSourceFile
-              )
-            );
+            unset($reflector);
         } else {
-            $this->inSourceFile = $inSourceFile;
+            if (empty($inSourceFile)) {
+                if (is_file($inClassName . '.php')) {
+                    $inSourceFile = $inClassName . '.php';
+                }
+
+                else if (is_file(str_replace('_', '/', $inClassName) . '.php')) {
+                    $inSourceFile = str_replace('_', '/', $inClassName) . '.php';
+                }
+            }
+
+            if (empty($inSourceFile)) {
+                throw new RuntimeException(
+                  sprintf(
+                    'Neither "%s.php" nor "%s.php" could be opened.',
+                    $inClassName,
+                    str_replace('_', '/', $inClassName)
+                  )
+                );
+            }
+
+            if (!is_file($inSourceFile)) {
+                throw new RuntimeException(
+                  sprintf(
+                    '"%s" could not be opened.',
+
+                    $inSourceFile
+                  )
+                );
+            }
+
+            $inSourceFile = realpath($inSourceFile);
+            include_once $inSourceFile;
+
+            if (!class_exists($inClassName)) {
+                throw new RuntimeException(
+                  sprintf(
+                    'Could not find class "%s" in "%s".',
+
+                    $inClassName,
+                    $inSourceFile
+                  )
+                );
+            }
         }
 
-        if ($this->inSourceFile != '<internal>') {
-            include_once $this->inSourceFile;
+        if (empty($outClassName)) {
+            $outClassName = $inClassName . 'Test';
         }
 
-        if (!class_exists($inClassName)) {
-            throw new RuntimeException(
-              sprintf(
-                'Could not find class "%s" in "%s".',
-
-                $inClassName,
-                realpath($this->inSourceFile)
-              )
-            );
+        if (empty($outSourceFile)) {
+            $outSourceFile = dirname($inSourceFile) . DIRECTORY_SEPARATOR . $outClassName . '.php';
         }
 
-        $this->outSourceFile = dirname($this->inSourceFile) . DIRECTORY_SEPARATOR . $this->inClassName . 'Test.php';
+        $this->inClassName   = $inClassName;
+        $this->inSourceFile  = $inSourceFile;
+        $this->outClassName  = $outClassName;
+        $this->outSourceFile = $outSourceFile;
     }
 
     /**
