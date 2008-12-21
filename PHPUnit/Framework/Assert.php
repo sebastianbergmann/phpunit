@@ -1211,14 +1211,14 @@ abstract class PHPUnit_Framework_Assert
     }
 
     /**
-     * Assert the presence, absense, or count of elements in a document matching
+     * Assert the presence, absence, or count of elements in a document matching
      * the CSS $selector, regardless of the contents of those elements.
      *
      * The first argument, $selector, is the CSS selector used to match
      * the elements in the $actual document.
      *
      * The second argument, $count, can be either boolean or numeric.  When boolean,
-     * it asserts for presence of elements matching the selector (TRUE) or absense
+     * it asserts for presence of elements matching the selector (TRUE) or absence
      * of elements (FALSE).  When numeric, it asserts the count of elements
      *
      * assertSelectCount("#binder", true, $xml);  // any?
@@ -1469,7 +1469,7 @@ abstract class PHPUnit_Framework_Assert
     }
 
     /**
-     *
+     * Evaluates a PHPUnit_Framework_Constraint matcher object.
      *
      * @param  mixed                        $value
      * @param  PHPUnit_Framework_Constraint $constraint
@@ -1486,7 +1486,7 @@ abstract class PHPUnit_Framework_Assert
     }
 
     /**
-     * Logical AND.
+     * Returns a PHPUnit_Framework_Constraint_And matcher object.
      *
      * @return PHPUnit_Framework_Constraint_And
      * @since  Method available since Release 3.0.0
@@ -1502,7 +1502,7 @@ abstract class PHPUnit_Framework_Assert
     }
 
     /**
-     * Logical OR.
+     * Returns a PHPUnit_Framework_Constraint_Or matcher object.
      *
      * @return PHPUnit_Framework_Constraint_Or
      * @since  Method available since Release 3.0.0
@@ -1518,7 +1518,7 @@ abstract class PHPUnit_Framework_Assert
     }
 
     /**
-     * Logical NOT.
+     * Returns a PHPUnit_Framework_Constraint_Not matcher object.
      *
      * @param  PHPUnit_Framework_Constraint $constraint
      * @return PHPUnit_Framework_Constraint_Not
@@ -1530,7 +1530,7 @@ abstract class PHPUnit_Framework_Assert
     }
 
     /**
-     * Logical XOR.
+     * Returns a PHPUnit_Framework_Constraint_Xor matcher object.
      *
      * @return PHPUnit_Framework_Constraint_Xor
      * @since  Method available since Release 3.0.0
@@ -1546,7 +1546,7 @@ abstract class PHPUnit_Framework_Assert
     }
 
     /**
-     *
+     * Returns a PHPUnit_Framework_Constraint_IsAnything matcher object.
      *
      * @return PHPUnit_Framework_Constraint_IsAnything
      * @since  Method available since Release 3.0.0
@@ -1557,7 +1557,7 @@ abstract class PHPUnit_Framework_Assert
     }
 
     /**
-     *
+     * Returns a PHPUnit_Framework_Constraint_IsTrue matcher object.
      *
      * @return PHPUnit_Framework_Constraint_IsTrue
      * @since  Method available since Release 3.3.0
@@ -1568,7 +1568,7 @@ abstract class PHPUnit_Framework_Assert
     }
 
     /**
-     *
+     * Returns a PHPUnit_Framework_Constraint_IsFalse matcher object.
      *
      * @return PHPUnit_Framework_Constraint_IsFalse
      * @since  Method available since Release 3.3.0
@@ -1579,7 +1579,7 @@ abstract class PHPUnit_Framework_Assert
     }
 
     /**
-     *
+     * Returns a PHPUnit_Framework_Constraint_IsNull matcher object.
      *
      * @return PHPUnit_Framework_Constraint_IsNull
      * @since  Method available since Release 3.3.0
@@ -1590,7 +1590,7 @@ abstract class PHPUnit_Framework_Assert
     }
 
     /**
-     *
+     * Returns a PHPUnit_Framework_Constraint_Attribute matcher object.
      *
      * @param  PHPUnit_Framework_Constraint $constraint
      * @param  string                       $attributeName
@@ -1605,7 +1605,8 @@ abstract class PHPUnit_Framework_Assert
     }
 
     /**
-     *
+     * Returns a PHPUnit_Framework_Constraint_TraversableContains matcher
+     * object.
      *
      * @param  mixed $value
      * @return PHPUnit_Framework_Constraint_TraversableContains
@@ -1617,7 +1618,8 @@ abstract class PHPUnit_Framework_Assert
     }
 
     /**
-     *
+     * Returns a PHPUnit_Framework_Constraint_TraversableContainsOnly matcher
+     * object.
      *
      * @param  string $type
      * @return PHPUnit_Framework_Constraint_TraversableContainsOnly
@@ -1629,7 +1631,7 @@ abstract class PHPUnit_Framework_Assert
     }
 
     /**
-     *
+     * Returns a PHPUnit_Framework_Constraint_ArrayHasKey matcher object.
      *
      * @param  mixed $key
      * @return PHPUnit_Framework_Constraint_ArrayHasKey
@@ -1641,7 +1643,7 @@ abstract class PHPUnit_Framework_Assert
     }
 
     /**
-     *
+     * Returns a PHPUnit_Framework_Constraint_IsEqual matcher object.
      *
      * @param  mixed   $value
      * @param  float   $delta
@@ -1655,7 +1657,9 @@ abstract class PHPUnit_Framework_Assert
     }
 
     /**
-     *
+     * Returns a PHPUnit_Framework_Constraint_IsEqual matcher object
+     * that is wrapped in a PHPUnit_Framework_Constraint_Attribute matcher
+     * object.
      *
      * @param  string  $attributeName
      * @param  mixed   $value
@@ -1673,7 +1677,7 @@ abstract class PHPUnit_Framework_Assert
     }
 
     /**
-     *
+     * Returns a PHPUnit_Framework_Constraint_FileExists matcher object.
      *
      * @return PHPUnit_Framework_Constraint_FileExists
      * @since  Method available since Release 3.0.0
@@ -1684,7 +1688,7 @@ abstract class PHPUnit_Framework_Assert
     }
 
     /**
-     *
+     * Returns a PHPUnit_Framework_Constraint_GreaterThan matcher object.
      *
      * @param  mixed $value
      * @return PHPUnit_Framework_Constraint_GreaterThan
@@ -1696,7 +1700,9 @@ abstract class PHPUnit_Framework_Assert
     }
 
     /**
-     *
+     * Returns a PHPUnit_Framework_Constraint_Or matcher object that wraps
+     * a PHPUnit_Framework_Constraint_IsEqual and a
+     * PHPUnit_Framework_Constraint_GreaterThan matcher object.
      *
      * @param  mixed $value
      * @return PHPUnit_Framework_Constraint_Or
@@ -1711,7 +1717,7 @@ abstract class PHPUnit_Framework_Assert
     }
 
     /**
-     *
+     * Returns a PHPUnit_Framework_Constraint_ClassHasAttribute matcher object.
      *
      * @param  string $attributeName
      * @return PHPUnit_Framework_Constraint_ClassHasAttribute
@@ -1723,7 +1729,8 @@ abstract class PHPUnit_Framework_Assert
     }
 
     /**
-     *
+     * Returns a PHPUnit_Framework_Constraint_ClassHasStaticAttribute matcher
+     * object.
      *
      * @param  string $attributeName
      * @return PHPUnit_Framework_Constraint_ClassHasStaticAttribute
@@ -1735,7 +1742,7 @@ abstract class PHPUnit_Framework_Assert
     }
 
     /**
-     *
+     * Returns a PHPUnit_Framework_Constraint_ObjectHasAttribute matcher object.
      *
      * @param  string $attributeName
      * @return PHPUnit_Framework_Constraint_ObjectHasAttribute
@@ -1747,7 +1754,7 @@ abstract class PHPUnit_Framework_Assert
     }
 
     /**
-     *
+     * Returns a PHPUnit_Framework_Constraint_IsIdentical matcher object.
      *
      * @param  mixed $value
      * @return PHPUnit_Framework_Constraint_IsIdentical
@@ -1759,7 +1766,7 @@ abstract class PHPUnit_Framework_Assert
     }
 
     /**
-     *
+     * Returns a PHPUnit_Framework_Constraint_IsInstanceOf matcher object.
      *
      * @param  string $className
      * @return PHPUnit_Framework_Constraint_IsInstanceOf
@@ -1771,7 +1778,7 @@ abstract class PHPUnit_Framework_Assert
     }
 
     /**
-     *
+     * Returns a PHPUnit_Framework_Constraint_IsType matcher object.
      *
      * @param  string $type
      * @return PHPUnit_Framework_Constraint_IsType
@@ -1783,7 +1790,7 @@ abstract class PHPUnit_Framework_Assert
     }
 
     /**
-     *
+     * Returns a PHPUnit_Framework_Constraint_LessThan matcher object.
      *
      * @param  mixed $value
      * @return PHPUnit_Framework_Constraint_LessThan
@@ -1795,7 +1802,9 @@ abstract class PHPUnit_Framework_Assert
     }
 
     /**
-     *
+     * Returns a PHPUnit_Framework_Constraint_Or matcher object that wraps
+     * a PHPUnit_Framework_Constraint_IsEqual and a
+     * PHPUnit_Framework_Constraint_LessThan matcher object.
      *
      * @param  mixed $value
      * @return PHPUnit_Framework_Constraint_Or
@@ -1810,7 +1819,7 @@ abstract class PHPUnit_Framework_Assert
     }
 
     /**
-     *
+     * Returns a PHPUnit_Framework_Constraint_PCREMatch matcher object.
      *
      * @param  string $pattern
      * @return PHPUnit_Framework_Constraint_PCREMatch
@@ -1822,7 +1831,7 @@ abstract class PHPUnit_Framework_Assert
     }
 
     /**
-     *
+     * Returns a PHPUnit_Framework_Constraint_StringContains matcher object.
      *
      * @param  string  $string
      * @param  boolean $case
