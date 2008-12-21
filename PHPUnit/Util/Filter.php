@@ -348,17 +348,19 @@ class PHPUnit_Util_Filter
 
             if (self::$addUncoveredFilesFromWhitelist) {
                 foreach (self::$whitelistedFiles as $whitelistedFile) {
-                    if (!isset(self::$coveredFiles[$whitelistedFile])) {
+                    if (!isset(self::$coveredFiles[$whitelistedFile]) &&
+                        !self::isFiltered($whitelistedFile, $filterTests, TRUE)) {
                         if (file_exists($whitelistedFile)) {
                             xdebug_start_code_coverage(XDEBUG_CC_UNUSED | XDEBUG_CC_DEAD_CODE);
                             include_once $whitelistedFile;
                             $coverage = xdebug_get_code_coverage();
                             xdebug_stop_code_coverage();
 
-                            foreach ($coverage as $file => $fileCoverage)
-                            {
-                                if (!in_array($file, self::$whitelistedFiles) || isset(self::$coveredFiles[$file]))
+                            foreach ($coverage as $file => $fileCoverage) {
+                                if (!in_array($file, self::$whitelistedFiles) ||
+                                    isset(self::$coveredFiles[$file])) {
                                     continue;
+                                }
 
                                 foreach ($fileCoverage as $line => $flag) {
                                     if ($flag > 0) {
@@ -473,46 +475,29 @@ class PHPUnit_Util_Filter
     {
         $filename = realpath($filename);
 
-        // Use blacklist.
-        if ($ignoreWhitelist || empty(self::$whitelistedFiles)) {
-            $blacklistedFiles = self::$blacklistedFiles['DEFAULT'];
-
-            if ($filterTests) {
-                $blacklistedFiles = array_merge(
-                  $blacklistedFiles,
-                  self::$blacklistedFiles['TESTS']
-                );
-            }
-
-            if (self::$filterPHPUnit) {
-                $blacklistedFiles = array_merge(
-                  $blacklistedFiles,
-                  self::$blacklistedFiles['PHPUNIT']
-                );
-            }
-
-            if (in_array($filename, $blacklistedFiles)) {
-                return TRUE;
-            }
-
-            foreach ($blacklistedFiles as $filteredFile) {
-                if (strpos($filename, $filteredFile) !== FALSE) {
-                    return TRUE;
-                }
-            }
-
-            return FALSE;
+        if (!$ignoreWhitelist && !empty(self::$whitelistedFiles)) {
+            return !in_array($filename, self::$whitelistedFiles);
         }
 
-        // Use whitelist.
-        else
-        {
-            if (in_array($filename, self::$whitelistedFiles)) {
-                return FALSE;
-            }
+        $blacklistedFiles = self::$blacklistedFiles['DEFAULT'];
 
+        if ($filterTests) {
+            $blacklistedFiles = array_merge(
+              $blacklistedFiles, self::$blacklistedFiles['TESTS']
+            );
+        }
+
+        if (self::$filterPHPUnit) {
+            $blacklistedFiles = array_merge(
+              $blacklistedFiles, self::$blacklistedFiles['PHPUNIT']
+            );
+        }
+
+        if (in_array($filename, $blacklistedFiles)) {
             return TRUE;
         }
+
+        return FALSE;
     }
 
     /**
@@ -552,7 +537,7 @@ class PHPUnit_Util_Filter
                 return TRUE;
             }
         }
-        
+
         return FALSE;
     }
 }
