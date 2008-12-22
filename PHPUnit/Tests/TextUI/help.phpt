@@ -50,12 +50,12 @@ Usage: phpunit [switches] UnitTest [UnitTest.php]
   --skeleton-class         Generate Unit class for UnitTest in UnitTest.php.
   --skeleton-test          Generate UnitTest class for Unit in Unit.php.
 
-  --help                   Prints this usage information.
-  --version                Prints the version and exits.
-
   --process-isolation      Run each test in a separate PHP process.
   --bootstrap <file>       A "bootstrap" PHP file that is run before the tests.
   --configuration <file>   Read configuration from XML file.
   --no-configuration       Ignore default configuration file (phpunit.xml).
   --include-path <path(s)> Prepend PHP's include_path with given path(s).
   -d key[=value]           Sets a php.ini value.
+
+  --help                   Prints this usage information.
+  --version                Prints the version and exits.
