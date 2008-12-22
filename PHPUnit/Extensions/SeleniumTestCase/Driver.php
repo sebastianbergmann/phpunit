@@ -884,7 +884,15 @@ class PHPUnit_Extensions_SeleniumTestCase_Driver
             $url .= sprintf('&%s=%s', 'sessionId', $this->sessionId);
         }
 
-        $handle = @fopen($url, 'r');
+        $context = stream_context_create(
+          array(
+            'http' => array(
+              'timeout' => $this->timeout
+            )
+          )
+        );
+
+        $handle = @fopen($url, 'r', FALSE, $context);
 
         if (!$handle) {
             throw new RuntimeException(
@@ -1090,7 +1098,7 @@ class PHPUnit_Extensions_SeleniumTestCase_Driver
     protected function waitForCommand($command, $arguments, $info)
     {
         for ($second = 0; ; $second++) {
-            if ($second > 60) {
+            if ($second > $this->timeout / 1000) {
                 PHPUnit_Framework_Assert::fail('timeout');
             }
 
