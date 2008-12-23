@@ -788,8 +788,17 @@
      </dir>
      <dir name="Framework">
       <dir name="MockObject">
-       <file baseinstalldir="/" name="wsdl_class.phpt" role="test" />
+       <file baseinstalldir="/" name="class_call_parent_clone.phpt" role="test" />
+       <file baseinstalldir="/" name="class_call_parent_constructor.phpt" role="test" />
+       <file baseinstalldir="/" name="class_dont_call_parent_clone.phpt" role="test" />
+       <file baseinstalldir="/" name="class_dont_call_parent_constructor.phpt" role="test" />
+       <file baseinstalldir="/" name="class_implementing_interface_call_parent_constructor.phpt" role="test" />
+       <file baseinstalldir="/" name="class_implementing_interface_dont_call_parent_constructor.phpt" role="test" />
+       <file baseinstalldir="/" name="class_partial.phpt" role="test" />
+       <file baseinstalldir="/" name="class.phpt" role="test" />
+       <file baseinstalldir="/" name="interface.phpt" role="test" />
        <file baseinstalldir="/" name="wsdl_class_partial.phpt" role="test" />
+       <file baseinstalldir="/" name="wsdl_class.phpt" role="test" />
      </dir>
       <file baseinstalldir="/" name="AllTests.php" role="test">
        <tasks:replace from="@package_version@" to="version" type="package-info" />
