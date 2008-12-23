@@ -44,10 +44,6 @@
  * @since      File available since Release 3.1.0
  */
 
-if (!defined('T_NAMESPACE')) {
-    define('T_NAMESPACE', 377);
-}
-
 require_once 'PHPUnit/Util/Filter.php';
 
 PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
