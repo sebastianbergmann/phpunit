@@ -297,6 +297,10 @@ abstract class PHPUnit_Util_CodeCoverage
         $result = array();
 
         foreach ($data as $file => $coverage) {
+            if (empty($coverage)) {
+                continue;
+            }
+
             $maxLine = max(array_keys($coverage));
 
             if ($maxLine == 0) {
