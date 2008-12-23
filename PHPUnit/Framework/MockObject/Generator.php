@@ -260,6 +260,7 @@ class PHPUnit_Framework_MockObject_Generator
             'constructor'       => self::generateMockConstructor(
                                      $templateDir,
                                      isset($class) ? $class->getConstructor() : NULL,
+                                     $originalClassName,
                                      $mockClassName['mockClassName'],
                                      $callOriginalConstructor
                                    ),
@@ -326,7 +327,7 @@ class PHPUnit_Framework_MockObject_Generator
         return $buffer;
     }
 
-    protected static function generateMockConstructor($templateDir, $constructor, $mockedClassName, $callOriginalConstructor)
+    protected static function generateMockConstructor($templateDir, $constructor, $originalClassName, $mockedClassName, $callOriginalConstructor)
     {
         $arguments              = '';
         $constructorInInterface = FALSE;
@@ -350,7 +351,7 @@ class PHPUnit_Framework_MockObject_Generator
             if (!$callOriginalConstructor) {
                 $constructorName = $constructor->getName();
 
-                foreach (PHPUnit_Util_Class::getHierarchy($mockedClassName, TRUE) as $_class) {
+                foreach (PHPUnit_Util_Class::getHierarchy($originalClassName, TRUE) as $_class) {
                     foreach ($_class->getInterfaces() as $interface) {
                         if ($interface->hasMethod($constructorName)) {
                             $constructorInInterface = TRUE;
