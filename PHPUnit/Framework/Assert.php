@@ -1967,7 +1967,27 @@ abstract class PHPUnit_Framework_Assert
         }
 
         self::assertObjectHasAttribute($attributeName, $object);
-        $attribute = new ReflectionProperty($object, $attributeName);
+
+        if (version_compare(PHP_VERSION, '5.2.7', '>=')) {
+            $attribute = new ReflectionProperty($object, $attributeName);
+        } else {
+            // Workaround for http://bugs.php.net/46064
+            try {
+                $attribute = new ReflectionProperty($object, $attributeName);
+            }
+
+            catch (ReflectionException $e) {
+                $reflector  = new ReflectionObject($object);
+                $attributes = $reflector->getProperties();
+
+                foreach ($attributes as $_attribute) {
+                    if ($_attribute->getName() == $attributeName) {
+                        $attribute = $_attribute;
+                        break;
+                    }
+                }
+            }
+        }
 
         if ($attribute->isPublic()) {
             return $object->$attributeName;
