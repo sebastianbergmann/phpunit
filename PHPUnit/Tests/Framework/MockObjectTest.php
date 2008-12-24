@@ -238,7 +238,8 @@ class Framework_MockObjectTest extends PHPUnit_Framework_TestCase
         $mock1 = $this->getMock('PartialMockTestClass');
         $mock2 = $this->getMock('PartialMockTestClass', array(), array(), '', FALSE);
 
-        $this->assertNotEquals(get_class($mock1), get_class($mock2));
+        $this->assertTrue($mock1->constructorCalled);
+        $this->assertFalse($mock2->constructorCalled);
     }
 
     public function testOriginalCloneSettingConsidered()
