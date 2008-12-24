@@ -1,5 +1,5 @@
 --TEST--
-PHPUnit_Framework_MockObject_Generator::generate('Foo', array(), 'MockFoo', FALSE, TRUE)
+PHPUnit_Framework_MockObject_Generator::generate('Foo', array(), 'MockFoo', TRUE)
 --FILE--
 <?php
 interface IFoo
@@ -20,7 +20,6 @@ $mock = PHPUnit_Framework_MockObject_Generator::generate(
   'Foo',
   array(),
   'MockFoo',
-  FALSE,
   TRUE
 );
 
@@ -30,12 +29,7 @@ print $mock['code'];
 class MockFoo extends Foo
 {
     public static $staticInvocationMocker;
-    private $invocationMocker;
-
-    public function __construct($bar)
-    {
-        $this->invocationMocker = new PHPUnit_Framework_MockObject_InvocationMocker($this);
-    }
+    public $invocationMocker;
 
     public function __clone()
     {

@@ -1,4 +1,3 @@
-
     public function __clone()
     {
         $this->invocationMocker = clone $this->invocationMocker;
