@@ -876,7 +876,6 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
           $originalClassName,
           $methods,
           $mockClassName,
-          $callOriginalConstructor,
           $callOriginalClone,
           $callAutoload
         );
@@ -885,14 +884,23 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
             eval($mock['code']);
         }
 
-        if (count($arguments) == 0) {
-            $mockObject = new $mock['mockClassName'];
+        if ($callOriginalConstructor) {
+            if (count($arguments) == 0) {
+                $mockObject = new $mock['mockClassName'];
+            } else {
+                $mockClass  = new ReflectionClass($mock['mockClassName']);
+                $mockObject = $mockClass->newInstanceArgs($arguments);
+            }
         } else {
-            $mockClass  = new ReflectionClass($mock['mockClassName']);
-            $mockObject = $mockClass->newInstanceArgs($arguments);
+            // Use a trick to create a new object of a class
+            // without invoking its constructor.
+            $mockObject = unserialize(
+              sprintf('O:%d:"%s":0:{}', strlen($mock['mockClassName']), $mock['mockClassName'])
+            );
         }
 
         $this->mockObjects[] = $mockObject;
+        $mockObject->invocationMocker = new PHPUnit_Framework_MockObject_InvocationMocker($mockObject);
 
         return $mockObject;
     }
