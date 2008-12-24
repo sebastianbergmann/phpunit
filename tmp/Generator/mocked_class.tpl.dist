@@ -1,9 +1,9 @@
 {prologue}{class_declaration}
 {
     public static $staticInvocationMocker;
-    private $invocationMocker;
+    public $invocationMocker;
 
-{constructor}{clone}{mocked_methods}
+{clone}{mocked_methods}
     public function expects(PHPUnit_Framework_MockObject_Matcher_Invocation $matcher)
     {
         return $this->invocationMocker->expects($matcher);
