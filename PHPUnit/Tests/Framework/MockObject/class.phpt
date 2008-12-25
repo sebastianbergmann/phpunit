@@ -28,7 +28,6 @@ print $mock['code'];
 --EXPECTF--
 class MockFoo extends Foo
 {
-    public static $staticInvocationMocker;
     public $invocationMocker;
 
     public function __clone()
@@ -41,8 +40,8 @@ class MockFoo extends Foo
         $args = func_get_args();
 
         $result = $this->invocationMocker->invoke(
-          new PHPUnit_Framework_MockObject_Invocation_Object(
-            'Foo', 'bar', $args, $this
+          new PHPUnit_Framework_MockObject_Invocation(
+            $this, 'Foo', 'bar', $args
           )
         );
 
@@ -54,8 +53,8 @@ class MockFoo extends Foo
         $args = func_get_args();
 
         $result = $this->invocationMocker->invoke(
-          new PHPUnit_Framework_MockObject_Invocation_Object(
-            'Foo', 'baz', $args, $this
+          new PHPUnit_Framework_MockObject_Invocation(
+            $this, 'Foo', 'baz', $args
           )
         );
 
@@ -67,11 +66,6 @@ class MockFoo extends Foo
         return $this->invocationMocker->expects($matcher);
     }
 
-    public static function staticExpects(PHPUnit_Framework_MockObject_Matcher_Invocation $matcher)
-    {
-        return self::$staticInvocationMocker->expects($matcher);
-    }
-
     public function __phpunit_getInvocationMocker()
     {
         return $this->invocationMocker;
@@ -79,9 +73,7 @@ class MockFoo extends Foo
 
     public function __phpunit_verify()
     {
-        self::$staticInvocationMocker->verify();
         $this->invocationMocker->verify();
     }
 }
 
-MockFoo::$staticInvocationMocker = new PHPUnit_Framework_MockObject_InvocationMocker;
