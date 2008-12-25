@@ -1,11 +1,17 @@
 <?php
 class ParentClassWithPrivateAttributes
 {
-    protected static $privateStaticParentAttribute = 'parent';
-    protected $privateParentAttribute = 'parent';
+    private static $privateStaticParentAttribute = 'foo';
+    private $privateParentAttribute = 'bar';
 }
 
-class ClassWithNonPublicAttributes extends ParentClassWithPrivateAttributes
+class ParentClassWithProtectedAttributes extends ParentClassWithPrivateAttributes
+{
+    protected static $protectedStaticParentAttribute = 'foo';
+    protected $protectedParentAttribute = 'bar';
+}
+
+class ClassWithNonPublicAttributes extends ParentClassWithProtectedAttributes
 {
     public static $publicStaticAttribute = 'foo';
     protected static $protectedStaticAttribute = 'bar';
