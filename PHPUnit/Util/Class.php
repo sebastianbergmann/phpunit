@@ -366,15 +366,13 @@ class PHPUnit_Util_Class
 
         PHPUnit_Framework_Assert::assertObjectHasAttribute($attributeName, $object);
 
-        if (version_compare(PHP_VERSION, '5.2.7', '>=')) {
+        try {
             $attribute = new ReflectionProperty($object, $attributeName);
-        } else {
-            // Workaround for http://bugs.php.net/46064
-            try {
-                $attribute = new ReflectionProperty($object, $attributeName);
-            }
+        }
 
-            catch (ReflectionException $e) {
+        catch (ReflectionException $e) {
+            // Workaround for http://bugs.php.net/46064
+            if (version_compare(PHP_VERSION, '5.2.7', '<')) {
                 $reflector  = new ReflectionObject($object);
                 $attributes = $reflector->getProperties();
 
@@ -383,6 +381,18 @@ class PHPUnit_Util_Class
                         $attribute = $_attribute;
                         break;
                     }
+                }
+            }
+
+            $reflector = new ReflectionObject($object);
+
+            while ($reflector = $reflector->getParentClass()) {
+                try {
+                    $attribute = $reflector->getProperty($attributeName);
+                    break;
+                }
+
+                catch(ReflectionException $e) {
                 }
             }
         }
