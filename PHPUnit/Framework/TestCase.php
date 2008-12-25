@@ -873,6 +873,7 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
           $originalClassName,
           $methods,
           $mockClassName,
+          $callOriginalConstructor,
           $callOriginalClone,
           $callAutoload
         );
@@ -896,8 +897,11 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
             );
         }
 
+        if ($mockObject->invocationMocker === NULL) {
+            $mockObject->invocationMocker = new PHPUnit_Framework_MockObject_InvocationMocker($mockObject);
+        }
+
         $this->mockObjects[] = $mockObject;
-        $mockObject->invocationMocker = new PHPUnit_Framework_MockObject_InvocationMocker($mockObject);
 
         return $mockObject;
     }
