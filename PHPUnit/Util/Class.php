@@ -288,6 +288,134 @@ class PHPUnit_Util_Class
     }
 
     /**
+     * Returns the value of a static attribute.
+     * This also works for attributes that are declared protected or private.
+     *
+     * @param  string  $className
+     * @param  string  $attributeName
+     * @return mixed
+     * @throws InvalidArgumentException
+     * @since  Method available since Release 3.4.0
+     */
+    public static function getStaticAttribute($className, $attributeName)
+    {
+        if (!is_string($className) || !class_exists($className) || !is_string($attributeName)) {
+            throw new InvalidArgumentException;
+        }
+
+        $class      = new ReflectionClass($className);
+        $attributes = $class->getStaticProperties();
+
+        if (isset($attributes[$attributeName])) {
+            return $attributes[$attributeName];
+        }
+
+        if (version_compare(PHP_VERSION, '5.2', '<')) {
+            $protectedName = "\0*\0" . $attributeName;
+        } else {
+            $protectedName = '*' . $attributeName;
+        }
+
+        if (isset($attributes[$protectedName])) {
+            return $attributes[$protectedName];
+        }
+
+        $classes = self::getHierarchy($className);
+
+        foreach ($classes as $class) {
+            $privateName = sprintf(
+              "\0%s\0%s",
+
+              $class,
+              $attributeName
+            );
+
+            if (isset($attributes[$privateName])) {
+                return $attributes[$privateName];
+            }
+        }
+
+        throw new RuntimeException(
+          sprintf(
+            'Attribute "%s" not found in class.',
+
+            $attributeName
+          )
+        );
+    }
+
+    /**
+     * Returns the value of an object's attribute.
+     * This also works for attributes that are declared protected or private.
+     *
+     * @param  object  $object
+     * @param  string  $attributeName
+     * @return mixed
+     * @throws InvalidArgumentException
+     * @since  Method available since Release 3.4.0
+     */
+    public static function getObjectAttribute($object, $attributeName)
+    {
+        if (!is_object($object) || !is_string($attributeName)) {
+            throw new InvalidArgumentException;
+        }
+
+        PHPUnit_Framework_Assert::assertObjectHasAttribute($attributeName, $object);
+
+        try {
+            $attribute = new ReflectionProperty($object, $attributeName);
+        }
+
+        catch (ReflectionException $e) {
+            $reflector = new ReflectionObject($object);
+
+            while ($reflector = $reflector->getParentClass()) {
+                try {
+                    $attribute = $reflector->getProperty($attributeName);
+                    break;
+                }
+
+                catch(ReflectionException $e) {
+                }
+            }
+        }
+
+        if ($attribute->isPublic()) {
+            return $object->$attributeName;
+        } else {
+            $array         = (array)$object;
+            $protectedName = "\0*\0" . $attributeName;
+
+            if (array_key_exists($protectedName, $array)) {
+                return $array[$protectedName];
+            } else {
+                $classes = self::getHierarchy(get_class($object));
+
+                foreach ($classes as $class) {
+                    $privateName = sprintf(
+                      "\0%s\0%s",
+
+                      $class,
+                      $attributeName
+                    );
+
+                    if (array_key_exists($privateName, $array)) {
+                        return $array[$privateName];
+                    }
+                }
+            }
+        }
+
+        throw new RuntimeException(
+          sprintf(
+            'Attribute "%s" not found in object.',
+
+            $attributeName
+          )
+        );
+    }
+
+    /**
      * Returns the package information of a user-defined class.
      *
      * @param  array $parts

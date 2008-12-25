@@ -1888,19 +1888,30 @@ abstract class PHPUnit_Framework_Assert
      */
     public static function readAttribute($classOrObject, $attributeName)
     {
-        if (!is_string($attributeName) ||
-            (!(is_object($classOrObject) ||
-              (is_string($classOrObject) && class_exists($classOrObject))))) {
+        if (!is_string($attributeName)) {
             throw new InvalidArgumentException;
         }
 
-        $attribute = new ReflectionProperty($classOrObject, $attributeName);
-        $attribute->setAccessible(TRUE);
+        if (is_string($classOrObject)) {
+            if (!class_exists($classOrObject)) {
+                throw new InvalidArgumentException;
+            }
 
-        if (is_object($classOrObject)) {
-            return $attribute->getValue($classOrObject);
-        } else {
-            return $attribute->getValue();
+            return PHPUnit_Util_Class::getStaticAttribute(
+              $classOrObject,
+              $attributeName
+            );
+        }
+
+        else if (is_object($classOrObject)) {
+            return PHPUnit_Util_Class::getObjectAttribute(
+              $classOrObject,
+              $attributeName
+            );
+        }
+
+        else {
+            throw new InvalidArgumentException;
         }
     }
 
