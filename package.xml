@@ -951,10 +951,10 @@
       <file baseinstalldir="/" name="DataSetTest.php" role="test">
        <tasks:replace from="@package_version@" to="version" type="package-info" />
       </file>
-      <file baseinstalldir="/" name="DependencyFailure.php" role="test">
+      <file baseinstalldir="/" name="DependencyFailureTest.php" role="test">
        <tasks:replace from="@package_version@" to="version" type="package-info" />
       </file>
-      <file baseinstalldir="/" name="DependencySuccess.php" role="test">
+      <file baseinstalldir="/" name="DependencySuccessTest.php" role="test">
        <tasks:replace from="@package_version@" to="version" type="package-info" />
       </file>
       <file baseinstalldir="/" name="DependencyTestSuite.php" role="test">
