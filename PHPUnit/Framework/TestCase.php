@@ -900,10 +900,6 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
             );
         }
 
-        if ($mockObject->invocationMocker === NULL) {
-            $mockObject->invocationMocker = new PHPUnit_Framework_MockObject_InvocationMocker($mockObject);
-        }
-
         $this->mockObjects[] = $mockObject;
 
         return $mockObject;
