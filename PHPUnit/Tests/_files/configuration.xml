@@ -7,10 +7,12 @@
          convertWarningsToExceptions="true"
          stopOnFailure="false"
          testSuiteLoaderClass="PHPUnit_Runner_StandardTestSuiteLoader">>
-  <testsuite name="My Test Suite">
-    <directory suffix="Test.php">/path/to/files</directory>
-    <file>/path/to/MyTest.php</file>
-  </testsuite>
+  <testsuites>
+    <testsuite name="My Test Suite">
+      <directory suffix="Test.php">/path/to/files</directory>
+      <file>/path/to/MyTest.php</file>
+    </testsuite>
+  </testsuites>
 
   <groups>
     <include>
