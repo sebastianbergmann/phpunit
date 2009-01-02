@@ -159,7 +159,7 @@ Writing code coverage data to XML files, this may take a moment.
     <body> * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License</body>
   </line>
   <line lineNumber="42" executed="-3">
-    <body> * @version    SVN: $Id%s$</body>
+    <body> * @version    SVN: $%s$</body>
   </line>
   <line lineNumber="43" executed="-3">
     <body> * @link       http://www.phpunit.de/</body>
@@ -534,7 +534,7 @@ Writing code coverage data to XML files, this may take a moment.
     <body> * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License</body>
   </line>
   <line lineNumber="42">
-    <body> * @version    SVN: $Id%s$</body>
+    <body> * @version    SVN: $%s$</body>
   </line>
   <line lineNumber="43">
     <body> * @link       http://www.phpunit.de/</body>
