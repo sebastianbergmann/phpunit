@@ -65,10 +65,12 @@ PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
  *          processIsolation="false"
  *          stopOnFailure="false"
  *          testSuiteLoaderClass="PHPUnit_Runner_StandardTestSuiteLoader">
- *   <testsuite name="My Test Suite">
- *     <directory suffix="Test.php">/path/to/files</directory>
- *     <file>/path/to/MyTest.php</file>
- *   </testsuite>
+ *   <testsuites>
+ *     <testsuite name="My Test Suite">
+ *       <directory suffix="Test.php">/path/to/files</directory>
+ *       <file>/path/to/MyTest.php</file>
+ *     </testsuite>
+ *   </testsuites>
  *
  *   <groups>
  *     <include>
@@ -660,40 +662,53 @@ class PHPUnit_Util_Configuration
      */
     public function getTestSuiteConfiguration()
     {
-        $testSuiteNode = $this->xpath->query('testsuite');
+        $testSuiteNodes = $this->xpath->query('testsuites/testsuite');
 
-        if ($testSuiteNode->length > 0) {
-            $testSuiteNode = $testSuiteNode->item(0);
+        if ($testSuiteNodes->length > 0) {
+            $suite = new PHPUnit_Framework_TestSuite;
 
-            if ($testSuiteNode->hasAttribute('name')) {
-                $suite = new PHPUnit_Framework_TestSuite(
-                  (string)$testSuiteNode->getAttribute('name')
-                );
-            } else {
-                $suite = new PHPUnit_Framework_TestSuite;
-            }
-
-            foreach ($this->xpath->query('testsuite/directory') as $directoryNode) {
-                if ($directoryNode->hasAttribute('suffix')) {
-                    $suffix = (string)$directoryNode->getAttribute('suffix');
-                } else {
-                    $suffix = 'Test.php';
-                }
-
-                $testCollector = new PHPUnit_Runner_IncludePathTestCollector(
-                  array((string)$directoryNode->nodeValue),
-                  $suffix
-                );
-
-                $suite->addTestFiles($testCollector->collectTests());
-            }
-
-            foreach ($this->xpath->query('testsuite/file') as $fileNode) {
-                $suite->addTestFile((string)$fileNode->nodeValue);
+            foreach ($testSuiteNodes as $testSuiteNode) {
+                $suite->addTestSuite($this->getTestSuite($testSuiteNode));
             }
 
             return $suite;
         }
+    }
+
+    /**
+     * @param  DOMElement $testSuiteNode
+     * @return PHPUnit_Framework_TestSuite
+     * @since  Method available since Release 3.4.0
+     */
+    protected function getTestSuite(DOMElement $testSuiteNode)
+    {
+        if ($testSuiteNode->hasAttribute('name')) {
+            $suite = new PHPUnit_Framework_TestSuite(
+              (string)$testSuiteNode->getAttribute('name')
+            );
+        } else {
+            $suite = new PHPUnit_Framework_TestSuite;
+        }
+
+        foreach ($testSuiteNode->getElementsByTagName('directory') as $directoryNode) {
+            if ($directoryNode->hasAttribute('suffix')) {
+                $suffix = (string)$directoryNode->getAttribute('suffix');
+            } else {
+                $suffix = 'Test.php';
+            }
+
+            $testCollector = new PHPUnit_Runner_IncludePathTestCollector(
+              array((string)$directoryNode->nodeValue), $suffix
+            );
+
+            $suite->addTestFiles($testCollector->collectTests());
+        }
+
+        foreach ($testSuiteNode->getElementsByTagName('file') as $fileNode) {
+            $suite->addTestFile((string)$fileNode->nodeValue);
+        }
+
+        return $suite;
     }
 
     /**
