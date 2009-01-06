@@ -1912,7 +1912,7 @@ abstract class PHPUnit_Framework_Assert
         $class      = new ReflectionClass($className);
         $attributes = $class->getStaticProperties();
 
-        if (isset($attributes[$attributeName])) {
+        if (array_key_exists($attributeName, $attributes)) {
             return $attributes[$attributeName];
         }
 
@@ -1922,7 +1922,7 @@ abstract class PHPUnit_Framework_Assert
             $protectedName = '*' . $attributeName;
         }
 
-        if (isset($attributes[$protectedName])) {
+        if (array_key_exists($protectedName, $attributes)) {
             return $attributes[$protectedName];
         }
 
@@ -1936,7 +1936,7 @@ abstract class PHPUnit_Framework_Assert
               $attributeName
             );
 
-            if (isset($attributes[$privateName])) {
+            if (array_key_exists($privateName, $attributes)) {
                 return $attributes[$privateName];
             }
         }
