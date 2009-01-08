@@ -69,7 +69,7 @@ abstract class PHPUnit_Framework_Assert
     /**
      * @var integer
      */
-    protected static $count = 0;
+    private static $count = 0;
 
     /**
      * Asserts that an array has a specified key.
