@@ -754,6 +754,19 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
     }
 
     /**
+     * Calling this method in setUp() has no effect!
+     *
+     * @param  boolean $backupStaticAttributes
+     * @since  Method available since Release 3.4.0
+     */
+    public function setBackupStaticAttributes($backupStaticAttributes)
+    {
+        if (is_null($this->backupStaticAttributes) && is_bool($backupStaticAttributes)) {
+            $this->backupStaticAttributes = $backupStaticAttributes;
+        }
+    }
+
+    /**
      * @param  boolean $runTestInSeparateProcess
      * @throws InvalidArgumentException
      * @since  Method available since Release 3.4.0
@@ -1372,7 +1385,7 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
 
         for ($i = $declaredClassesNum - 1; $i >= 0; $i--) {
             if (strpos($declaredClasses[$i], 'PHPUnit') !== 0 &&
-                !PHPUnit_Util_Filter::isTestFile($declaredClasses[$i])) {
+                !$declaredClasses[$i] instanceof PHPUnit_Framework_Test) {
                 $class = new ReflectionClass($declaredClasses[$i]);
 
                 if (!$class->isUserDefined()) {

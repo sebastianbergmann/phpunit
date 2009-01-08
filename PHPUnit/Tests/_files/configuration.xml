@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8" ?>
 
-<phpunit bootstrap="/path/to/bootstrap.php"
+<phpunit backupGlobals="true"
+         backupStaticAttributes="true"
+         bootstrap="/path/to/bootstrap.php"
          colors="false"
          convertErrorsToExceptions="true"
          convertNoticesToExceptions="true"
