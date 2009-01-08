@@ -12,20 +12,18 @@ require_once dirname(dirname(dirname(__FILE__))) . '/TextUI/Command.php';
 --EXPECTF--
 PHPUnit %s by Sebastian Bergmann.
 
-...strict digraph G {
-    overlap=scale;
-    splines=true;
-    sep=.1;
-    fontsize=8;
-    BankAccountTest [ color=green ];
-    subgraph BankAccountTest {
-        testBalanceIsInitiallyZero [ color=green ];
-        testBalanceCannotBecomeNegative [ color=green ];
-        testBalanceCannotBecomeNegative2 [ color=green ];
-    }
-    BankAccountTest -> testBalanceIsInitiallyZero;
-    BankAccountTest -> testBalanceCannotBecomeNegative;
-    BankAccountTest -> testBalanceCannotBecomeNegative2;
+...digraph G {
+graph [ overlap="scale",splines="true",sep=".1",fontsize="8" ];
+"BankAccountTest" [ color="green" ];
+subgraph "cluster_BankAccountTest" {
+label="";
+"testBalanceIsInitiallyZero" [ color="green" ];
+"testBalanceCannotBecomeNegative" [ color="green" ];
+"testBalanceCannotBecomeNegative2" [ color="green" ];
+}
+"BankAccountTest" -> "testBalanceIsInitiallyZero";
+"BankAccountTest" -> "testBalanceCannotBecomeNegative";
+"BankAccountTest" -> "testBalanceCannotBecomeNegative2";
 }
 
 
