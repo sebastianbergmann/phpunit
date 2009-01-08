@@ -137,6 +137,25 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
     protected $globalsBackup = array();
 
     /**
+     * Enable or disable the backup and restoration of static attributes.
+     * Overwrite this attribute in a child class of TestCase.
+     * Setting this attribute in setUp() has no effect!
+     *
+     * @var    boolean
+     */
+    protected $backupStaticAttributes = NULL;
+
+    /**
+     * @var    array
+     */
+    protected $backupStaticAttributesBlacklist = array();
+
+    /**
+     * @var    array
+     */
+    protected $staticAttributesBackup = array();
+
+    /**
      * Whether or not this test is to be run in a separate PHP process.
      *
      * @var    boolean
@@ -550,10 +569,16 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
             }
         }
 
-        // Backup the $GLOBALS array.
-        if ($this->runTestInSeparateProcess !== TRUE && $this->inIsolation !== TRUE &&
-           ($this->backupGlobals === NULL || $this->backupGlobals === TRUE)) {
-            $this->backupGlobals();
+        // Backup the $GLOBALS array and static attributes.
+        if ($this->runTestInSeparateProcess !== TRUE && $this->inIsolation !== TRUE) {
+            if ($this->backupGlobals === NULL || $this->backupGlobals === TRUE) {
+                $this->backupGlobals();
+            }
+
+            if ((PHP_MAJOR_VERSION >= 6 || PHP_MINOR_VERSION >= 3) &&
+                ($this->backupStaticAttributes === NULL || $this->backupStaticAttributes === TRUE)) {
+                $this->backupStaticAttributes();
+            }
         }
 
         // Set up the fixture.
@@ -605,10 +630,16 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
         // Clean up stat cache.
         clearstatcache();
 
-        // Restore the $GLOBALS array.
-        if ($this->runTestInSeparateProcess !== TRUE && $this->inIsolation !== TRUE &&
-           ($this->backupGlobals === NULL || $this->backupGlobals === TRUE)) {
-            $this->restoreGlobals();
+        // Restore the $GLOBALS array and static attributes.
+        if ($this->runTestInSeparateProcess !== TRUE && $this->inIsolation !== TRUE) {
+            if ($this->backupGlobals === NULL || $this->backupGlobals === TRUE) {
+                $this->restoreGlobals();
+            }
+
+            if ((PHP_MAJOR_VERSION >= 6 || PHP_MINOR_VERSION >= 3) &&
+                ($this->backupStaticAttributes === NULL || $this->backupStaticAttributes === TRUE)) {
+                $this->restoreStaticAttributes();
+            }
         }
 
         // Clean up INI settings.
@@ -1333,6 +1364,61 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
         } else {
             return self::$superGlobalArrays;
         }
+    }
+
+    /**
+     * @since Method available since Release 3.4.0
+     */
+    protected function backupStaticAttributes()
+    {
+        $this->staticAttributesBackup = array();
+        $declaredClasses              = get_declared_classes();
+        $declaredClassesNum           = count($declaredClasses);
+
+        for ($i = $declaredClassesNum - 1; $i >= 0; $i--) {
+            if (strpos($declaredClasses[$i], 'PHPUnit') !== 0 &&
+                !PHPUnit_Util_Filter::isTestFile($declaredClasses[$i])) {
+                $class = new ReflectionClass($declaredClasses[$i]);
+
+                if (!$class->isUserDefined()) {
+                    break;
+                }
+
+                $backup = array();
+
+                foreach ($class->getProperties() as $attribute) {
+                    if ($attribute->isStatic()) {
+                        $name = $attribute->getName();
+
+                        if (!isset($this->backupStaticAttributesBlacklist[$declaredClasses[$i]]) ||
+                            !in_array($name, $this->backupStaticAttributesBlacklist[$declaredClasses[$i]])) {
+                            $attribute->setAccessible(TRUE);
+                            $backup[$name] = serialize($attribute->getValue());
+                        }
+                    }
+                }
+
+                if (!empty($backup)) {
+                    $this->staticAttributesBackup[$declaredClasses[$i]] = $backup;
+                }
+            }
+        }
+    }
+
+    /**
+     * @since Method available since Release 3.4.0
+     */
+    protected function restoreStaticAttributes()
+    {
+        foreach ($this->staticAttributesBackup as $className => $staticAttributes) {
+            foreach ($staticAttributes as $name => $value) {
+                $reflector = new ReflectionProperty($className, $name);
+                $reflector->setAccessible(TRUE);
+                $reflector->setValue(unserialize($value));
+            }
+        }
+
+        $this->staticAttributesBackup = array();
     }
 }
 
