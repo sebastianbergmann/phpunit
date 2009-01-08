@@ -1362,7 +1362,7 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
     }
 
     /**
-     * @since Method available since Release 4.0.0
+     * @since Method available since Release 3.4.0
      */
     protected function backupStaticAttributes()
     {
@@ -1371,7 +1371,8 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
         $declaredClassesNum           = count($declaredClasses);
 
         for ($i = $declaredClassesNum - 1; $i >= 0; $i--) {
-            if (strpos($declaredClasses[$i], 'PHPUnit') !== 0) {
+            if (strpos($declaredClasses[$i], 'PHPUnit') !== 0 &&
+                !PHPUnit_Util_Filter::isTestFile($declaredClasses[$i])) {
                 $class = new ReflectionClass($declaredClasses[$i]);
 
                 if (!$class->isUserDefined()) {
@@ -1400,7 +1401,7 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
     }
 
     /**
-     * @since Method available since Release 4.0.0
+     * @since Method available since Release 3.4.0
      */
     protected function restoreStaticAttributes()
     {
