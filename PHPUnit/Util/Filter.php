@@ -540,6 +540,16 @@ class PHPUnit_Util_Filter
 
         return FALSE;
     }
+
+    /**
+     * @param  string $file
+     * @return boolean
+     * @since  Method available since Release 3.4.0
+     */
+    public static function isTestFile($file)
+    {
+        return in_array($file, self::$blacklistedFiles['TESTS']);
+    }
 }
 
 PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');

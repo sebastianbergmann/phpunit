@@ -1026,6 +1026,9 @@
       <file baseinstalldir="/" name="SetupFailure.php" role="test">
        <tasks:replace from="@package_version@" to="version" type="package-info" />
       </file>
+      <file baseinstalldir="/" name="Singleton.php" role="test">
+       <tasks:replace from="@package_version@" to="version" type="package-info" />
+      </file>
       <file baseinstalldir="/" name="SleepTest.php" role="test">
        <tasks:replace from="@package_version@" to="version" type="package-info" />
       </file>

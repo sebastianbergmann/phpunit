@@ -50,6 +50,7 @@ require_once dirname(dirname(__FILE__)) . DIRECTORY_SEPARATOR . '_files' . DIREC
 require_once dirname(dirname(__FILE__)) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'Failure.php';
 require_once dirname(dirname(__FILE__)) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'NoArgTestCaseTest.php';
 require_once dirname(dirname(__FILE__)) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'SetupFailure.php';
+require_once dirname(dirname(__FILE__)) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'Singleton.php';
 require_once dirname(dirname(__FILE__)) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'Success.php';
 require_once dirname(dirname(__FILE__)) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'TearDownFailure.php';
 require_once dirname(dirname(__FILE__)) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'ThrowExceptionTestCase.php';
@@ -84,7 +85,7 @@ $GLOBALS['i']  = 'i';
  */
 class Framework_TestCaseTest extends PHPUnit_Framework_TestCase
 {
-    protected $backupGlobalsBlacklist = array('i');
+    protected $backupGlobalsBlacklist = array('i', 'singleton');
 
     public function testCaseToString()
     {
@@ -277,6 +278,16 @@ class Framework_TestCaseTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('ii', $GLOBALS['i']);
 
         $this->assertArrayNotHasKey('foo', $GLOBALS);
+    }
+
+    public function testStaticAttributesBackupPre()
+    {
+        $GLOBALS['singleton'] = Singleton::getInstance();
+    }
+
+    public function testStaticAttributesBackupPost()
+    {
+        $this->assertNotSame($GLOBALS['singleton'], Singleton::getInstance());
     }
 
     protected function verifyError(PHPUnit_Framework_TestCase $test)
