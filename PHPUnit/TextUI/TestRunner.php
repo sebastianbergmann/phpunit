@@ -170,6 +170,14 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
             }
         }
 
+        if ($arguments['backupGlobals'] === FALSE) {
+            $suite->setBackupGlobals(FALSE);
+        }
+
+        if ($arguments['backupStaticAttributes'] === FALSE) {
+            $suite->setBackupStaticAttributes(FALSE);
+        }
+
         if (is_integer($arguments['repeat'])) {
             $suite = new PHPUnit_Extensions_RepeatedTest(
               $suite,

@@ -246,6 +246,8 @@ class Util_ConfigurationTest extends PHPUnit_Framework_TestCase
     {
         $this->assertEquals(
           array (
+            'backupGlobals' => TRUE,
+            'backupStaticAttributes' => TRUE,
             'bootstrap' => '/path/to/bootstrap.php',
             'colors' => FALSE,
             'convertErrorsToExceptions' => TRUE,

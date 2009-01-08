@@ -62,11 +62,13 @@ PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
  */
 class PHPUnit_Util_Test
 {
-    const REGEX_COVERS             = '/@covers[\s]+([\!<>\:\.\w]+)([\s]+<extended>)?/';
-    const REGEX_DATA_PROVIDER      = '/@dataProvider\s+([a-zA-Z0-9._:-\\\]+)/';
-    const REGEX_DEPENDS            = '/@depends\s+([a-zA-Z0-9._:-\\\]+)/';
-    const REGEX_EXPECTED_EXCEPTION = '(@expectedException\s+([:.\w\\\]+)(?:[\t ]+(\S*))?(?:[\t ]+(\S*))?\s*$)m';
-    const REGEX_GROUP              = '/@group\s+([a-zA-Z0-9._-]+)/';
+    const REGEX_BACKUP_GLOBALS           = '/@backupGlobals\s+([a-zA-Z0-9._-]+)/';
+    const REGEX_BACKUP_STATIC_ATTRIBUTES = '/@backupStaticAttributes\s+([a-zA-Z0-9._-]+)/';
+    const REGEX_COVERS                   = '/@covers[\s]+([\!<>\:\.\w]+)([\s]+<extended>)?/';
+    const REGEX_DATA_PROVIDER            = '/@dataProvider\s+([a-zA-Z0-9._:-\\\]+)/';
+    const REGEX_DEPENDS                  = '/@depends\s+([a-zA-Z0-9._:-\\\]+)/';
+    const REGEX_EXPECTED_EXCEPTION       = '(@expectedException\s+([:.\w\\\]+)(?:[\t ]+(\S*))?(?:[\t ]+(\S*))?\s*$)m';
+    const REGEX_GROUP                    = '/@group\s+([a-zA-Z0-9._-]+)/';
 
     /**
      * @param  PHPUnit_Framework_Test $test
@@ -192,6 +194,65 @@ class PHPUnit_Util_Test
         }
 
         return $result;
+    }
+
+    /**
+     * Returns the dependencies for a test class or method.
+     *
+     * @param  string $classDocComment
+     * @param  string $methodDocComment
+     * @return array
+     * @since  Method available since Release 3.4.0
+     */
+    public static function getBackupSettings($classDocComment, $methodDocComment)
+    {
+        $backupGlobals          = NULL;
+        $backupStaticAttributes = NULL;
+
+        if (preg_match(self::REGEX_BACKUP_GLOBALS, $classDocComment, $matches)) {
+            if ($matches[1] == 'enabled') {
+                $backupGlobals = TRUE;
+            }
+
+            else if ($matches[1] == 'disabled') {
+                $backupGlobals = FALSE;
+            }
+        }
+
+        if (preg_match(self::REGEX_BACKUP_GLOBALS, $methodDocComment, $matches)) {
+            if ($matches[1] == 'enabled') {
+                $backupGlobals = TRUE;
+            }
+
+            else if ($matches[1] == 'disabled') {
+                $backupGlobals = FALSE;
+            }
+        }
+
+        if (preg_match(self::REGEX_BACKUP_STATIC_ATTRIBUTES, $classDocComment, $matches)) {
+            if ($matches[1] == 'enabled') {
+                $backupStaticAttributes = TRUE;
+            }
+
+            else if ($matches[1] == 'disabled') {
+                $backupStaticAttributes = FALSE;
+            }
+        }
+
+        if (preg_match(self::REGEX_BACKUP_STATIC_ATTRIBUTES, $methodDocComment, $matches)) {
+            if ($matches[1] == 'enabled') {
+                $backupStaticAttributes = TRUE;
+            }
+
+            else if ($matches[1] == 'disabled') {
+                $backupStaticAttributes = FALSE;
+            }
+        }
+
+        return array(
+          'backupGlobals'          => $backupGlobals,
+          'backupStaticAttributes' => $backupStaticAttributes
+        );
     }
 
     /**

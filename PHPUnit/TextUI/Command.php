@@ -153,6 +153,8 @@ class PHPUnit_TextUI_Command
     protected static function handleArguments()
     {
         $arguments = array(
+          'backupGlobals'           => NULL,
+          'backupStaticAttributes'  => NULL,
           'listGroups'              => FALSE,
           'loader'                  => NULL,
           'useDefaultConfiguration' => TRUE,
@@ -201,6 +203,8 @@ class PHPUnit_TextUI_Command
           'testdox-html=',
           'testdox-text=',
           'no-configuration',
+          'no-globals-backup',
+          'no-static-backup',
           'no-syntax-check',
           'verbose',
           'version',
@@ -594,6 +598,16 @@ class PHPUnit_TextUI_Command
                 }
                 break;
 
+                case '--no-globals-backup': {
+                    $arguments['backupGlobals'] = FALSE;
+                }
+                break;
+
+                case '--no-static-backup': {
+                    $arguments['backupStaticAttributes'] = FALSE;
+                }
+                break;
+
                 case '--no-syntax-check': {
                     $arguments['syntaxCheck'] = FALSE;
                 }
@@ -799,6 +813,9 @@ Usage: phpunit [switches] UnitTest [UnitTest.php]
   --skeleton-test          Generate UnitTest class for Unit in Unit.php.
 
   --process-isolation      Run each test in a separate PHP process.
+  --no-globals-backup      Do not backup and restore \$GLOBALS.
+  --no-static-backup       Do not backup and restore static attributes.
+
   --bootstrap <file>       A "bootstrap" PHP file that is run before the tests.
   --configuration <file>   Read configuration from XML file.
   --no-configuration       Ignore default configuration file (phpunit.xml).
