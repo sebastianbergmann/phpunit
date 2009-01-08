@@ -103,6 +103,13 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
     protected $backupGlobals = NULL;
 
     /**
+     * Enable or disable the backup and restoration of static attributes.
+     *
+     * @var    boolean
+     */
+    protected $backupStaticAttributes = NULL;
+
+    /**
      * Whether or not the tests of this test suite are
      * to be run in separate PHP processes.
      *
@@ -484,6 +491,7 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
         $method                   = new ReflectionMethod($className, $name);
         $methodDocComment         = $method->getDocComment();
         $runTestInSeparateProcess = FALSE;
+        $backupSettings           = PHPUnit_Util_Test::getBackupSettings($classDocComment, $methodDocComment);
 
         if (!$theClass->isInstantiable()) {
             return self::warning(
@@ -522,6 +530,18 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
                         $test->addTest(
                           new $className($name, $_data, $_dataName), $groups
                         );
+
+                        if ($runTestInSeparateProcess) {
+                            $test->setRunTestInSeparateProcess(TRUE);
+                        }
+
+                        if ($backupSettings['backupGlobals'] !== NULL) {
+                            $test->setBackupGlobals($backupSettings['backupGlobals']);
+                        }
+
+                        if ($backupSettings['backupStaticAttributes'] !== NULL) {
+                            $test->setBackupStaticAttributes($backupSettings['backupStaticAttributes']);
+                        }
                     }
                 } else {
                     $test = new $className;
@@ -534,6 +554,14 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
 
             if ($runTestInSeparateProcess) {
                 $test->setRunTestInSeparateProcess(TRUE);
+            }
+
+            if ($backupSettings['backupGlobals'] !== NULL) {
+                $test->setBackupGlobals($backupSettings['backupGlobals']);
+            }
+
+            if ($backupSettings['backupStaticAttributes'] !== NULL) {
+                $test->setBackupStaticAttributes($backupSettings['backupStaticAttributes']);
             }
         }
 
@@ -623,6 +651,7 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
 
             if ($test instanceof PHPUnit_Framework_TestSuite) {
                 $test->setBackupGlobals($this->backupGlobals);
+                $test->setBackupStaticAttributes($this->backupStaticAttributes);
                 $test->setSharedFixture($this->sharedFixture);
 
                 $test->run(
@@ -661,6 +690,7 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
                 if ($runTest) {
                     if ($test instanceof PHPUnit_Framework_TestCase) {
                         $test->setBackupGlobals($this->backupGlobals);
+                        $test->setBackupStaticAttributes($this->backupStaticAttributes);
                         $test->setSharedFixture($this->sharedFixture);
                         $test->setRunTestInSeparateProcess($processIsolation);
                     }
@@ -822,6 +852,17 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
     {
         if (is_null($this->backupGlobals) && is_bool($backupGlobals)) {
             $this->backupGlobals = $backupGlobals;
+        }
+    }
+
+    /**
+     * @param  boolean $backupStaticAttributes
+     * @since  Method available since Release 3.4.0
+     */
+    public function setBackupStaticAttributes($backupStaticAttributes)
+    {
+        if (is_null($this->backupStaticAttributes) && is_bool($backupStaticAttributes)) {
+            $this->backupStaticAttributes = $backupStaticAttributes;
         }
     }
 
