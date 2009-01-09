@@ -337,7 +337,7 @@ class PHPUnit_Util_Report_Node_File extends PHPUnit_Util_Report_Node
                                   '<li%s>%s</li>',
 
                                   $testCSS,
-                                  htmlspecialchars($testName)
+                                  addslashes(htmlspecialchars($testName))
                                 );
                             }
 
