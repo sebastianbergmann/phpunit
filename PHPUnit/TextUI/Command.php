@@ -153,8 +153,6 @@ class PHPUnit_TextUI_Command
     protected static function handleArguments()
     {
         $arguments = array(
-          'backupGlobals'           => NULL,
-          'backupStaticAttributes'  => NULL,
           'listGroups'              => FALSE,
           'loader'                  => NULL,
           'useDefaultConfiguration' => TRUE,
