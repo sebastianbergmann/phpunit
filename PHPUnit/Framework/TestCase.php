@@ -575,8 +575,8 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
                 $this->backupGlobals();
             }
 
-            if ((PHP_MAJOR_VERSION >= 6 || PHP_MINOR_VERSION >= 3) &&
-                ($this->backupStaticAttributes === NULL || $this->backupStaticAttributes === TRUE)) {
+            if (version_compare(PHP_VERSION, '5.3', '>') &&
+               ($this->backupStaticAttributes === NULL || $this->backupStaticAttributes === TRUE)) {
                 $this->backupStaticAttributes();
             }
         }
@@ -636,8 +636,8 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
                 $this->restoreGlobals();
             }
 
-            if ((PHP_MAJOR_VERSION >= 6 || PHP_MINOR_VERSION >= 3) &&
-                ($this->backupStaticAttributes === NULL || $this->backupStaticAttributes === TRUE)) {
+            if (version_compare(PHP_VERSION, '5.3', '>') &&
+               ($this->backupStaticAttributes === NULL || $this->backupStaticAttributes === TRUE)) {
                 $this->restoreStaticAttributes();
             }
         }
