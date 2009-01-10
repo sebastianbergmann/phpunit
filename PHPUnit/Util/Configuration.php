@@ -381,6 +381,10 @@ class PHPUnit_Util_Configuration
         $configuration = $this->getPHPConfiguration();
 
         foreach ($configuration['ini'] as $name => $value) {
+            if (defined($value)) {
+                $value = constant($value);
+            }
+
             ini_set($name, $value);
         }
 
