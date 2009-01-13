@@ -476,7 +476,7 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
                 'dataName'                       => $this->dataName,
                 'collectCodeCoverageInformation' => $collectCodeCoverageInformation ? 'TRUE' : 'FALSE',
                 'globals'                        => $this->getGlobalsAsString(),
-                'include_path'                   => get_include_path()
+                'include_path'                   => addslashes(get_include_path())
               )
             );
 
