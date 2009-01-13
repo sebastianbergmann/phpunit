@@ -482,20 +482,6 @@ class PHPUnit_Util_Configuration
     {
         $result = array();
 
-        if ($this->document->documentElement->hasAttribute('colors')) {
-            $result['colors'] = $this->getBoolean(
-              (string)$this->document->documentElement->getAttribute('colors'),
-              FALSE
-            );
-        }
-
-        else if ($this->document->documentElement->hasAttribute('ansi')) {
-            $result['colors'] = $this->getBoolean(
-              (string)$this->document->documentElement->getAttribute('ansi'),
-              FALSE
-            );
-        }
-
         if ($this->document->documentElement->hasAttribute('backupGlobals')) {
             $result['backupGlobals'] = $this->getBoolean(
               (string)$this->document->documentElement->getAttribute('backupGlobals'),
@@ -512,6 +498,13 @@ class PHPUnit_Util_Configuration
 
         if ($this->document->documentElement->hasAttribute('bootstrap')) {
             $result['bootstrap'] = (string)$this->document->documentElement->getAttribute('bootstrap');
+        }
+
+        if ($this->document->documentElement->hasAttribute('colors')) {
+            $result['colors'] = $this->getBoolean(
+              (string)$this->document->documentElement->getAttribute('colors'),
+              FALSE
+            );
         }
 
         if ($this->document->documentElement->hasAttribute('convertErrorsToExceptions')) {
