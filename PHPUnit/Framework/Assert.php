@@ -1025,6 +1025,102 @@ abstract class PHPUnit_Framework_Assert
     }
 
     /**
+     * Asserts that a string starts with a given prefix.
+     *
+     * @param  string $prefix
+     * @param  string $string
+     * @param  string $message
+     * @since  Method available since Release 3.4.0
+     */
+    public static function assertStringStartsWith($prefix, $string, $message = '')
+    {
+        if (!is_string($prefix)) {
+            throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'string');
+        }
+
+        if (!is_string($string)) {
+            throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'string');
+        }
+
+        $constraint = new PHPUnit_Framework_Constraint_StringStartsWith($prefix);
+
+        self::assertThat($string, $constraint, $message);
+    }
+
+    /**
+     * Asserts that a string starts not with a given prefix.
+     *
+     * @param  string $prefix
+     * @param  string $string
+     * @param  string $message
+     * @since  Method available since Release 3.4.0
+     */
+    public static function assertStringStartsNotWith($prefix, $string, $message = '')
+    {
+        if (!is_string($prefix)) {
+            throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'string');
+        }
+
+        if (!is_string($string)) {
+            throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'string');
+        }
+
+        $constraint = new PHPUnit_Framework_Constraint_Not(
+          new PHPUnit_Framework_Constraint_StringStartsWith($prefix)
+        );
+
+        self::assertThat($string, $constraint, $message);
+    }
+
+    /**
+     * Asserts that a string ends with a given prefix.
+     *
+     * @param  string $suffix
+     * @param  string $string
+     * @param  string $message
+     * @since  Method available since Release 3.4.0
+     */
+    public static function assertStringEndsWith($suffix, $string, $message = '')
+    {
+        if (!is_string($suffix)) {
+            throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'string');
+        }
+
+        if (!is_string($suffix)) {
+            throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'string');
+        }
+
+        $constraint = new PHPUnit_Framework_Constraint_StringEndsWith($suffix);
+
+        self::assertThat($string, $constraint, $message);
+    }
+
+    /**
+     * Asserts that a string ends not with a given prefix.
+     *
+     * @param  string $suffix
+     * @param  string $string
+     * @param  string $message
+     * @since  Method available since Release 3.4.0
+     */
+    public static function assertStringEndsNotWith($suffix, $string, $message = '')
+    {
+        if (!is_string($suffix)) {
+            throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'string');
+        }
+
+        if (!is_string($suffix)) {
+            throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'string');
+        }
+
+        $constraint = new PHPUnit_Framework_Constraint_Not(
+          new PHPUnit_Framework_Constraint_StringEndsWith($suffix)
+        );
+
+        self::assertThat($string, $constraint, $message);
+    }
+
+    /**
      * Asserts that two XML files are equal.
      *
      * @param  string $expectedFile
@@ -1853,6 +1949,18 @@ abstract class PHPUnit_Framework_Assert
     }
 
     /**
+     * Returns a PHPUnit_Framework_Constraint_StringStartsWith matcher object.
+     *
+     * @param  mixed $prefix
+     * @return PHPUnit_Framework_Constraint_StringStartsWith
+     * @since  Method available since Release 3.4.0
+     */
+    public static function stringStartsWith($prefix)
+    {
+        return new PHPUnit_Framework_Constraint_StringStartsWith($prefix);
+    }
+
+    /**
      * Returns a PHPUnit_Framework_Constraint_StringContains matcher object.
      *
      * @param  string  $string
@@ -1865,6 +1973,17 @@ abstract class PHPUnit_Framework_Assert
         return new PHPUnit_Framework_Constraint_StringContains($string, $case);
     }
 
+    /**
+     * Returns a PHPUnit_Framework_Constraint_StringEndsWith matcher object.
+     *
+     * @param  mixed $suffix
+     * @return PHPUnit_Framework_Constraint_StringEndsWith
+     * @since  Method available since Release 3.4.0
+     */
+    public static function stringEndsWith($suffix)
+    {
+        return new PHPUnit_Framework_Constraint_StringEndsWith($suffix);
+    }
 
     /**
      * Fails a test with the given message.

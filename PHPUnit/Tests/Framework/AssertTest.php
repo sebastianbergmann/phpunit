@@ -3807,6 +3807,78 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
     }
 
     /**
+     * @covers PHPUnit_Framework_Assert::assertStringStartsWith
+     */
+    public function testAssertStringStartsWith()
+    {
+        $this->assertStringStartsWith('prefix', 'prefixfoo');
+
+        try {
+            $this->assertStringStartsWith('prefix', 'foo');
+        }
+
+        catch (PHPUnit_Framework_AssertionFailedError $e) {
+            return;
+        }
+
+        $this->fail();
+    }
+
+    /**
+     * @covers PHPUnit_Framework_Assert::assertStringStartsNotWith
+     */
+    public function testAssertStringStartsNotWith()
+    {
+        $this->assertStringStartsNotWith('prefix', 'foo');
+
+        try {
+            $this->assertStringStartsNotWith('prefix', 'prefixfoo');
+        }
+
+        catch (PHPUnit_Framework_AssertionFailedError $e) {
+            return;
+        }
+
+        $this->fail();
+    }
+
+    /**
+     * @covers PHPUnit_Framework_Assert::assertStringEndsWith
+     */
+    public function testAssertStringEndsWith()
+    {
+        $this->assertStringEndsWith('suffix', 'foosuffix');
+
+        try {
+            $this->assertStringEndsWith('suffix', 'foo');
+        }
+
+        catch (PHPUnit_Framework_AssertionFailedError $e) {
+            return;
+        }
+
+        $this->fail();
+    }
+
+    /**
+     * @covers PHPUnit_Framework_Assert::assertStringEndsNotWith
+     */
+    public function testAssertStringEndsNotWith()
+    {
+        $this->assertStringEndsNotWith('suffix', 'foo');
+
+        try {
+            $this->assertStringEndsNotWith('suffix', 'foosuffix');
+        }
+
+        catch (PHPUnit_Framework_AssertionFailedError $e) {
+            return;
+        }
+
+        $this->fail();
+    }
+
+    /**
      * @covers PHPUnit_Framework_Assert::markTestIncomplete
      */
     public function testMarkTestIncomplete()

@@ -130,14 +130,18 @@ abstract class PHPUnit_Framework_Constraint implements PHPUnit_Framework_SelfDes
             'exists',
             'has ',
             'is ',
-            'matches '
+            'matches ',
+            'starts with ',
+            'ends with '
           ),
           array(
             'does not contain ',
             'does not exist',
             'does not have ',
             'is not ',
-            'does not match '
+            'does not match ',
+            'starts not with ',
+            'ends not with '
           ),
           $string
         );
@@ -164,6 +168,8 @@ require_once 'PHPUnit/Framework/Constraint/ObjectHasAttribute.php';
 require_once 'PHPUnit/Framework/Constraint/Or.php';
 require_once 'PHPUnit/Framework/Constraint/PCREMatch.php';
 require_once 'PHPUnit/Framework/Constraint/StringContains.php';
+require_once 'PHPUnit/Framework/Constraint/StringStartsWith.php';
+require_once 'PHPUnit/Framework/Constraint/StringEndsWith.php';
 require_once 'PHPUnit/Framework/Constraint/TraversableContains.php';
 require_once 'PHPUnit/Framework/Constraint/TraversableContainsOnly.php';
 require_once 'PHPUnit/Framework/Constraint/IsTrue.php';

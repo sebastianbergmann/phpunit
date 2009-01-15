@@ -1222,6 +1222,116 @@ class Framework_ConstraintTest extends PHPUnit_Framework_TestCase
     }
 
     /**
+     * @covers PHPUnit_Framework_Constraint_StringStartsWith
+     * @covers PHPUnit_Framework_Assert::stringStartsWith
+     */
+    public function testConstraintStringStartsWith()
+    {
+        $constraint = PHPUnit_Framework_Assert::stringStartsWith('prefix');
+
+        $this->assertFalse($constraint->evaluate('foo'));
+        $this->assertTrue($constraint->evaluate('prefixfoo'));
+        $this->assertEquals('starts with "prefix"', $constraint->toString());
+
+        try {
+            $constraint->fail('foo', '');
+        }
+
+        catch (PHPUnit_Framework_ExpectationFailedException $e) {
+            $this->assertEquals(
+              'Failed asserting that <string:foo> starts with "prefix".',
+              $e->getDescription()
+            );
+
+            return;
+        }
+
+        $this->fail();
+    }
+
+    /**
+     * @covers PHPUnit_Framework_Constraint_StringStartsWith
+     * @covers PHPUnit_Framework_Assert::stringStartsWith
+     */
+    public function testConstraintStringStartsWith2()
+    {
+        $constraint = PHPUnit_Framework_Assert::stringStartsWith('prefix');
+
+        try {
+            $constraint->fail('foo', 'custom message');
+        }
+
+        catch (PHPUnit_Framework_ExpectationFailedException $e) {
+            $this->assertEquals(
+              "custom message\nFailed asserting that <string:foo> starts with \"prefix\".",
+              $e->getDescription()
+            );
+
+            return;
+        }
+
+        $this->fail();
+    }
+
+    /**
+     * @covers PHPUnit_Framework_Constraint_StringStartsWith
+     * @covers PHPUnit_Framework_Constraint_Not
+     * @covers PHPUnit_Framework_Assert::stringStartsWith
+     * @covers PHPUnit_Framework_Assert::logicalNot
+     */
+    public function testConstraintStringStartsNotWith()
+    {
+        $constraint = PHPUnit_Framework_Assert::logicalNot(
+          PHPUnit_Framework_Assert::stringStartsWith('prefix')
+        );
+
+        $this->assertTrue($constraint->evaluate('foo'));
+        $this->assertFalse($constraint->evaluate('prefixfoo'));
+        $this->assertEquals('starts not with "prefix"', $constraint->toString());
+
+        try {
+            $constraint->fail('prefixfoo', '', TRUE);
+        }
+
+        catch (PHPUnit_Framework_ExpectationFailedException $e) {
+            $this->assertEquals(
+              'Failed asserting that <string:prefixfoo> starts not with "prefix".',
+              $e->getDescription()
+            );
+
+            return;
+        }
+
+        $this->fail();
+    }
+
+    /**
+     * @covers PHPUnit_Framework_Constraint_StringStartsWith
+     * @covers PHPUnit_Framework_Assert::stringStartsWith
+     */
+    public function testConstraintStringStartsNotWith2()
+    {
+        $constraint = PHPUnit_Framework_Assert::logicalNot(
+          PHPUnit_Framework_Assert::stringStartsWith('prefix')
+        );
+
+        try {
+            $constraint->fail('prefixfoo', 'custom message', TRUE);
+        }
+
+        catch (PHPUnit_Framework_ExpectationFailedException $e) {
+            $this->assertEquals(
+              "custom message\nFailed asserting that <string:prefixfoo> starts not with \"prefix\".",
+              $e->getDescription()
+            );
+
+            return;
+        }
+
+        $this->fail();
+    }
+
+    /**
      * @covers PHPUnit_Framework_Constraint_StringContains
      * @covers PHPUnit_Framework_Assert::stringContains
      */
@@ -1324,6 +1434,116 @@ class Framework_ConstraintTest extends PHPUnit_Framework_TestCase
         catch (PHPUnit_Framework_ExpectationFailedException $e) {
             $this->assertEquals(
               "custom message\nFailed asserting that <string:barfoobar> does not contain \"foo\".",
+              $e->getDescription()
+            );
+
+            return;
+        }
+
+        $this->fail();
+    }
+
+    /**
+     * @covers PHPUnit_Framework_Constraint_StringEndsWith
+     * @covers PHPUnit_Framework_Assert::stringEndsWith
+     */
+    public function testConstraintStringEndsWith()
+    {
+        $constraint = PHPUnit_Framework_Assert::stringEndsWith('suffix');
+
+        $this->assertFalse($constraint->evaluate('foo'));
+        $this->assertTrue($constraint->evaluate('foosuffix'));
+        $this->assertEquals('ends with "suffix"', $constraint->toString());
+
+        try {
+            $constraint->fail('foo', '');
+        }
+
+        catch (PHPUnit_Framework_ExpectationFailedException $e) {
+            $this->assertEquals(
+              'Failed asserting that <string:foo> ends with "suffix".',
+              $e->getDescription()
+            );
+
+            return;
+        }
+
+        $this->fail();
+    }
+
+    /**
+     * @covers PHPUnit_Framework_Constraint_StringEndsWith
+     * @covers PHPUnit_Framework_Assert::stringEndsWith
+     */
+    public function testConstraintStringEndsWith2()
+    {
+        $constraint = PHPUnit_Framework_Assert::stringEndsWith('suffix');
+
+        try {
+            $constraint->fail('foo', 'custom message');
+        }
+
+        catch (PHPUnit_Framework_ExpectationFailedException $e) {
+            $this->assertEquals(
+              "custom message\nFailed asserting that <string:foo> ends with \"suffix\".",
+              $e->getDescription()
+            );
+
+            return;
+        }
+
+        $this->fail();
+    }
+
+    /**
+     * @covers PHPUnit_Framework_Constraint_StringEndsWith
+     * @covers PHPUnit_Framework_Constraint_Not
+     * @covers PHPUnit_Framework_Assert::stringEndsWith
+     * @covers PHPUnit_Framework_Assert::logicalNot
+     */
+    public function testConstraintStringEndsNotWith()
+    {
+        $constraint = PHPUnit_Framework_Assert::logicalNot(
+          PHPUnit_Framework_Assert::stringEndsWith('suffix')
+        );
+
+        $this->assertTrue($constraint->evaluate('foo'));
+        $this->assertFalse($constraint->evaluate('foosuffix'));
+        $this->assertEquals('ends not with "suffix"', $constraint->toString());
+
+        try {
+            $constraint->fail('foosuffix', '', TRUE);
+        }
+
+        catch (PHPUnit_Framework_ExpectationFailedException $e) {
+            $this->assertEquals(
+              'Failed asserting that <string:foosuffix> ends not with "suffix".',
+              $e->getDescription()
+            );
+
+            return;
+        }
+
+        $this->fail();
+    }
+
+    /**
+     * @covers PHPUnit_Framework_Constraint_StringEndsWith
+     * @covers PHPUnit_Framework_Assert::stringEndsWith
+     */
+    public function testConstraintStringEndsNotWith2()
+    {
+        $constraint = PHPUnit_Framework_Assert::logicalNot(
+          PHPUnit_Framework_Assert::stringEndsWith('suffix')
+        );
+
+        try {
+            $constraint->fail('foosuffix', 'custom message', TRUE);
+        }
+
+        catch (PHPUnit_Framework_ExpectationFailedException $e) {
+            $this->assertEquals(
+              "custom message\nFailed asserting that <string:foosuffix> ends not with \"suffix\".",
               $e->getDescription()
             );
 
