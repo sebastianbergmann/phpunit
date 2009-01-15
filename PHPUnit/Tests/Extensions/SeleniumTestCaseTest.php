@@ -88,11 +88,11 @@ class Extensions_SeleniumTestCaseTest extends PHPUnit_Extensions_SeleniumTestCas
     public function testOpen()
     {
         $this->open($this->url . 'html/test_open.html');
-        $this->assertEndsWith('html/test_open.html', $this->getLocation());
+        $this->assertStringEndsWith('html/test_open.html', $this->getLocation());
         $this->assertEquals('This is a test of the open command.', $this->getBodyText());
 
         $this->open($this->url . 'html/test_page.slow.html');
-        $this->assertEndsWith('html/test_page.slow.html', $this->getLocation());
+        $this->assertStringEndsWith('html/test_page.slow.html', $this->getLocation());
         $this->assertEquals('Slow Loading Page', $this->getTitle());
     }
 
@@ -261,23 +261,23 @@ class Extensions_SeleniumTestCaseTest extends PHPUnit_Extensions_SeleniumTestCas
         $this->click('popupPage');
         $this->waitForPopUp('myPopupWindow', 1000);
         $this->selectWindow('myPopupWindow');
-        $this->assertEndsWith('html/test_select_window_popup.html', $this->getLocation());
+        $this->assertStringEndsWith('html/test_select_window_popup.html', $this->getLocation());
         $this->assertEquals('Select Window Popup', $this->getTitle());
         $this->close();
         $this->selectWindow('null');
 
-        $this->assertEndsWith('html/test_select_window.html', $this->getLocation());
+        $this->assertStringEndsWith('html/test_select_window.html', $this->getLocation());
         $this->click('popupPage');
         $this->waitForPopUp('myNewWindow', 1000);
         $this->selectWindow('myNewWindow');
-        $this->assertEndsWith('html/test_select_window_popup.html', $this->getLocation());
+        $this->assertStringEndsWith('html/test_select_window_popup.html', $this->getLocation());
         $this->close();
         $this->selectWindow('null');
 
         $this->click('popupAnonymous');
         $this->waitForPopUp('anonymouspopup', 1000);
         $this->selectWindow('anonymouspopup');
-        $this->assertEndsWith('html/test_select_window_popup.html', $this->getLocation());
+        $this->assertStringEndsWith('html/test_select_window_popup.html', $this->getLocation());
         $this->click('closePage');
 
     }
@@ -419,7 +419,7 @@ class Extensions_SeleniumTestCaseTest extends PHPUnit_Extensions_SeleniumTestCas
     public function testRefresh()
     {
         $this->open($this->url . 'html/test_page.slow.html');
-        $this->assertEndsWith('html/test_page.slow.html', $this->getLocation());
+        $this->assertStringEndsWith('html/test_page.slow.html', $this->getLocation());
         $this->assertEquals('Slow Loading Page', $this->getTitle());
 
         $this->click('changeSpan');
@@ -650,11 +650,6 @@ class Extensions_SeleniumTestCaseTest extends PHPUnit_Extensions_SeleniumTestCas
         $this->assertTrue($this->isEditable('normal_select'));
         $this->assertFalse($this->isEditable('disabled_text'));
         $this->assertFalse($this->isEditable('disabled_select'));
-    }
-
-    protected function assertEndsWith($substring, $actual)
-    {
-        $this->assertRegExp('/' . preg_quote($substring, '/') . '$/', $actual);
     }
 }
 ?>
