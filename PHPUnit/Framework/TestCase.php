@@ -972,7 +972,7 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
         return $this->getMock(
           $originalClassName,
           $methods,
-          array(),
+          array('', array()),
           $mockClassName,
           $callOriginalConstructor,
           FALSE,
