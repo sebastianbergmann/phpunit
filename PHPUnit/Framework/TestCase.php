@@ -472,7 +472,7 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
                 'filename'                       => $class->getFileName(),
                 'className'                      => $class->getName(),
                 'methodName'                     => $this->name,
-                'data'                           => serialize($this->data),
+                'data'                           => addcslashes(serialize($this->data), "'"),
                 'dataName'                       => $this->dataName,
                 'collectCodeCoverageInformation' => $collectCodeCoverageInformation ? 'TRUE' : 'FALSE',
                 'globals'                        => $this->getGlobalsAsString(),
