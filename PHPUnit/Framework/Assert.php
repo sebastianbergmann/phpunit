@@ -1366,7 +1366,7 @@ abstract class PHPUnit_Framework_Assert
      * // Matcher that asserts that there is a "span" somewhere inside a "table".
      * $matcher = array(
      *   'tag'      => 'span',
-     *   'ascestor' => array('tag' => 'table')
+     *   'ancestor' => array('tag' => 'table')
      * );
      *
      * // Matcher that asserts that there is a "span" with at least one "em" child.
