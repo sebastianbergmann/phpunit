@@ -335,6 +335,7 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
           $arguments['processIsolation']
         );
 
+        unset($suite);
         $result->flushListeners();
 
         if ($this->printer instanceof PHPUnit_TextUI_ResultPrinter) {
@@ -386,8 +387,6 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
 
             if (isset($arguments['reportDirectory'])) {
                 $this->printer->write("\nGenerating code coverage report, this may take a moment.");
-
-                unset($suite);
 
                 PHPUnit_Util_Report::render(
                   $result,
