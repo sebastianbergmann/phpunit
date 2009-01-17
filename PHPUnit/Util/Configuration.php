@@ -120,8 +120,8 @@ PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
  *   </listeners>
  *
  *   <logging>
- *     <log type="coverage-html" target="/tmp/report" charset="UTF-8"
- *          yui="true" highlight="false"
+ *     <log type="coverage-html" target="/tmp/report" title="My Project"
+            charset="UTF-8" yui="true" highlight="false"
  *          lowUpperBound="35" highLowerBound="70"/>
  *     <log type="coverage-clover" target="/tmp/clover.xml"/>
  *     <log type="coverage-source" target="/tmp/coverage"/>
@@ -378,6 +378,10 @@ class PHPUnit_Util_Configuration
             $target = (string)$log->getAttribute('target');
 
             if ($type == 'coverage-html') {
+                if ($log->hasAttribute('title')) {
+                    $result['title'] = (string)$log->getAttribute('title');
+                }
+
                 if ($log->hasAttribute('charset')) {
                     $result['charset'] = (string)$log->getAttribute('charset');
                 }
