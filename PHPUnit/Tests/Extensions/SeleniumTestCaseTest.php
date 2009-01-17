@@ -255,7 +255,7 @@ class Extensions_SeleniumTestCaseTest extends PHPUnit_Extensions_SeleniumTestCas
         $this->assertNotEquals('on', $this->getValue('option-chilli'));
     }
 
-    public function testSelectWidndow()
+    public function testSelectWindow()
     {
         $this->open($this->url . 'html/test_select_window.html');
         $this->click('popupPage');
@@ -279,7 +279,6 @@ class Extensions_SeleniumTestCaseTest extends PHPUnit_Extensions_SeleniumTestCas
         $this->selectWindow('anonymouspopup');
         $this->assertEndsWith('html/test_select_window_popup.html', $this->getLocation());
         $this->click('closePage');
-
     }
 
     public function testJavaScriptParameters()
