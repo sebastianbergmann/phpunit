@@ -74,6 +74,7 @@ abstract class PHPUnit_Util_Report
      * Renders the report.
      *
      * @param  PHPUnit_Framework_TestResult $result
+     * @param  string                       $title
      * @param  string                       $target
      * @param  string                       $charset
      * @param  boolean                      $yui
@@ -81,7 +82,7 @@ abstract class PHPUnit_Util_Report
      * @param  integer                      $lowUpperBound
      * @param  integer                      $highLowerBound
      */
-    public static function render(PHPUnit_Framework_TestResult $result, $target, $charset = 'ISO-8859-1', $yui = TRUE, $highlight = FALSE, $lowUpperBound = 35, $highLowerBound = 70)
+    public static function render(PHPUnit_Framework_TestResult $result, $target, $title = '', $charset = 'ISO-8859-1', $yui = TRUE, $highlight = FALSE, $lowUpperBound = 35, $highLowerBound = 70)
     {
         $target = PHPUnit_Util_Filesystem::getDirectory($target);
 
@@ -101,10 +102,12 @@ abstract class PHPUnit_Util_Report
 
         unset($codeCoverageInformation);
 
-        $topTestSuite = $result->topTestSuite();
+        if ($title == '') {
+            $topTestSuite = $result->topTestSuite();
 
-        if ($topTestSuite instanceof PHPUnit_Framework_TestSuite) {
-            $name = $topTestSuite->getName();
+            if ($topTestSuite instanceof PHPUnit_Framework_TestSuite) {
+                $title = $topTestSuite->getName();
+            }
         }
 
         unset($result);
@@ -118,7 +121,7 @@ abstract class PHPUnit_Util_Report
 
         $root->render(
           $target,
-          $name,
+          $title,
           $charset,
           $lowUpperBound,
           $highLowerBound
