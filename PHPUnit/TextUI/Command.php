@@ -155,8 +155,7 @@ class PHPUnit_TextUI_Command
         $arguments = array(
           'listGroups'              => FALSE,
           'loader'                  => NULL,
-          'useDefaultConfiguration' => TRUE,
-          'syntaxCheck'             => TRUE
+          'useDefaultConfiguration' => TRUE
         );
 
         $longOptions = array(
@@ -561,6 +560,10 @@ class PHPUnit_TextUI_Command
 
             $phpunit = $configuration->getPHPUnitConfiguration();
 
+            if (!isset($arguments['syntaxCheck']) && isset($phpunit['syntaxCheck'])) {
+                $arguments['syntaxCheck'] = $phpunit['syntaxCheck'];
+            }
+
             if (isset($phpunit['testSuiteLoaderClass'])) {
                 if (isset($phpunit['testSuiteLoaderFile'])) {
                     $file = $phpunit['testSuiteLoaderFile'];
@@ -612,6 +615,10 @@ class PHPUnit_TextUI_Command
             (isset($arguments['testDatabaseLogRevision']) && !isset($arguments['testDatabaseDSN']))) {
             self::showHelp();
             exit(PHPUnit_TextUI_TestRunner::EXCEPTION_EXIT);
+        }
+
+        if (!isset($arguments['syntaxCheck'])) {
+            $arguments['syntaxCheck'] = TRUE;
         }
 
         return $arguments;
