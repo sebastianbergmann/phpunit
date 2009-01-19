@@ -68,9 +68,9 @@ abstract class PHPUnit_Extensions_Story_SeleniumTestCase extends PHPUnit_Extensi
     protected $scenario;
     protected $world = array();
 
-    public function __construct($name = NULL, $data = array(), array $browser = array())
+    public function __construct($name = NULL, array $data = array(), $dataName = '', array $browser = array())
     {
-        parent::__construct($name, $data, $browser);
+        parent::__construct($name, $data, $dataName, $browser);
         $this->scenario = new PHPUnit_Extensions_Story_Scenario($this);
     }
 
