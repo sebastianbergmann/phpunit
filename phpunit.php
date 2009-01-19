@@ -1,8 +1,8 @@
-#! @php_bin@ -d safe_mode=Off
+#! /usr/bin/env php
 <?php
 /* PHPUnit
  *
- * Copyright (c) 2002-2008, Sebastian Bergmann <sb@sebastian-bergmann.de>.
+ * Copyright (c) 2002-2009, Sebastian Bergmann <sb@sebastian-bergmann.de>.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -37,9 +37,15 @@
  * $Id$
  */
 
+if (strpos('@php_bin@', '@php_bin') === 0) {
+    set_include_path('.' . PATH_SEPARATOR . dirname(__FILE__));
+}
+
 require_once 'PHPUnit/Util/Filter.php';
 
 PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
 
 require 'PHPUnit/TextUI/Command.php';
+
+PHPUnit_TextUI_Command::main();
 ?>

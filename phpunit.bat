@@ -1,7 +1,7 @@
 @echo off
 REM PHPUnit
 REM
-REM Copyright (c) 2002-2008, Sebastian Bergmann <sb@sebastian-bergmann.de>.
+REM Copyright (c) 2002-2009, Sebastian Bergmann <sb@sebastian-bergmann.de>.
 REM All rights reserved.
 REM
 REM Redistribution and use in source and binary forms, with or without
@@ -37,4 +37,4 @@ REM $Id$
 REM
 
 set PHPBIN="@php_bin@"
-"@php_bin@" -d safe_mode=Off "@php_dir@/PHPUnit/TextUI/Command.php" %*
+"@php_bin@" "@bin_dir@\phpunit" %*
