@@ -117,12 +117,13 @@ abstract class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_Tes
     /**
      * @param  string $name
      * @param  array  $data
+     * @param  string $dataName
      * @param  array  $browser
      * @throws InvalidArgumentException
      */
-    public function __construct($name = NULL, array $data = array(), array $browser = array())
+    public function __construct($name = NULL, array $data = array(), $dataName = '', array $browser = array())
     {
-        parent::__construct($name, $data);
+        parent::__construct($name, $data, $dataName);
         $this->testId = md5(uniqid(rand(), TRUE));
         $this->getDriver($browser);
     }
