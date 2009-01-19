@@ -177,9 +177,39 @@ abstract class PHPUnit_Extensions_Database_DB_MetaData implements PHPUnit_Extens
      */
     public function quoteSchemaObject($object)
     {
-        return $this->schemaObjectQuoteChar.
-        str_replace($this->schemaObjectQuoteChar, $this->schemaObjectQuoteChar.$this->schemaObjectQuoteChar, $object).
-        $this->schemaObjectQuoteChar;
+        $parts = explode('.', $object);
+        $quotedParts = array();
+
+        foreach ($parts as $part) {
+            $quotedParts[] = $this->schemaObjectQuoteChar .
+                str_replace($this->schemaObjectQuoteChar, $this->schemaObjectQuoteChar.$this->schemaObjectQuoteChar, $part).
+                $this->schemaObjectQuoteChar;
+        }
+
+        return implode('.', $quotedParts);
+    }
+
+    /**
+     * Seperates the schema and the table from a fully qualified table name.
+     *
+     * Returns an associative array containing the 'schema' and the 'table'.
+     *
+     * @param string $fullTableName
+     * @return array
+     */
+    public function splitTableName($fullTableName)
+    {
+        if (($dot = strpos($fullTableName, '.')) !== FALSE) {
+            return array(
+                'schema' => substr($fullTableName, 0, $dot),
+                'table' => substr($fullTableName, $dot + 1)
+            );
+        } else {
+            return array(
+                'schema' => NULL,
+                'table' => $fullTableName
+            );
+        }
     }
 
     /**
