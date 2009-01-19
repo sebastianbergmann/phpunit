@@ -653,6 +653,14 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
 
             $phpunitConfiguration = $arguments['configuration']->getPHPUnitConfiguration();
 
+            if (isset($phpunitConfiguration['backupGlobals']) && !isset($arguments['backupGlobals'])) {
+                $arguments['backupGlobals'] = $phpunitConfiguration['backupGlobals'];
+            }
+
+            if (isset($phpunitConfiguration['backupStaticAttributes']) && !isset($arguments['backupStaticAttributes'])) {
+                $arguments['backupStaticAttributes'] = $phpunitConfiguration['backupStaticAttributes'];
+            }
+
             if (isset($phpunitConfiguration['bootstrap']) && !isset($arguments['bootstrap'])) {
                 $arguments['bootstrap'] = $phpunitConfiguration['bootstrap'];
             }
