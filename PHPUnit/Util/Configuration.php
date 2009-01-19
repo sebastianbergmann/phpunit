@@ -66,6 +66,7 @@ PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
  *          convertWarningsToExceptions="true"
  *          processIsolation="false"
  *          stopOnFailure="false"
+ *          syntaxCheck="true"
  *          testSuiteLoaderClass="PHPUnit_Runner_StandardTestSuiteLoader">
  *   <testsuites>
  *     <testsuite name="My Test Suite">
@@ -590,6 +591,13 @@ class PHPUnit_Util_Configuration
             $result['stopOnFailure'] = $this->getBoolean(
               (string)$this->document->documentElement->getAttribute('stopOnFailure'),
               FALSE
+            );
+        }
+
+        if ($this->document->documentElement->hasAttribute('syntaxCheck')) {
+            $result['syntaxCheck'] = $this->getBoolean(
+              (string)$this->document->documentElement->getAttribute('syntaxCheck'),
+              TRUE
             );
         }
 
