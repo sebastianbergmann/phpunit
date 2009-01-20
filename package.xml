@@ -1326,11 +1326,12 @@
      <tasks:replace from="@package_version@" to="version" type="package-info" />
     </file>
    </dir>
-   <file baseinstalldir="/" name="pear-phpunit" role="script">
+   <file baseinstalldir="/" name="phpunit.php" role="script">
+    <tasks:replace from="/usr/bin/env php" to="php_bin" type="pear-config"/>
     <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
     <tasks:replace from="@package_version@" to="version" type="package-info" />
    </file>
-   <file baseinstalldir="/" name="pear-phpunit.bat" role="script">
+   <file baseinstalldir="/" name="phpunit.bat" role="script">
     <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
     <tasks:replace from="@php_dir@" to="php_dir" type="pear-config" />
     <tasks:replace from="@package_version@" to="version" type="package-info" />
@@ -1396,14 +1397,14 @@
    </os>
   </installconditions>
   <filelist>
-   <install as="phpunit" name="pear-phpunit" />
-   <install as="phpunit.bat" name="pear-phpunit.bat" />
+   <install as="phpunit" name="phpunit.php" />
+   <install as="phpunit.bat" name="phpunit.bat" />
   </filelist>
  </phprelease>
  <phprelease>
   <filelist>
-   <install as="phpunit" name="pear-phpunit" />
-   <ignore name="pear-phpunit.bat" />
+   <install as="phpunit" name="phpunit.php" />
+   <ignore name="phpunit.bat" />
   </filelist>
  </phprelease>
 </package>
