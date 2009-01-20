@@ -38,7 +38,7 @@
  */
 
 if (strpos('@php_bin@', '@php_bin') === 0) {
-    set_include_path('.' . PATH_SEPARATOR . dirname(__FILE__));
+    set_include_path(dirname(__FILE__) . PATH_SEPARATOR . get_include_path());
 }
 
 require_once 'PHPUnit/Util/Filter.php';
