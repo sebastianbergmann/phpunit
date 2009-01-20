@@ -52,10 +52,6 @@ require_once 'PHPUnit/Util/Getopt.php';
 
 PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
 
-if (!defined('PHPUnit_MAIN_METHOD')) {
-    define('PHPUnit_MAIN_METHOD', 'PHPUnit_TextUI_Command::main');
-}
-
 /**
  * A TestRunner for the Command Line Interface (CLI)
  * PHP SAPI Module.
@@ -703,9 +699,5 @@ Usage: phpunit [switches] UnitTest [UnitTest.php]
 
 EOT;
     }
-}
-
-if (PHPUnit_MAIN_METHOD == 'PHPUnit_TextUI_Command::main') {
-    PHPUnit_TextUI_Command::main();
 }
 ?>

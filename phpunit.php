@@ -1,4 +1,4 @@
-#! @php_bin@ -d safe_mode=Off
+#! /usr/bin/env php
 <?php
 /* PHPUnit
  *
@@ -37,9 +37,15 @@
  * $Id$
  */
 
+if (strpos('@php_bin@', '@php_bin') === 0) {
+    set_include_path('.' . PATH_SEPARATOR . dirname(__FILE__));
+}
+
 require_once 'PHPUnit/Util/Filter.php';
 
 PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
 
 require 'PHPUnit/TextUI/Command.php';
+
+PHPUnit_TextUI_Command::main();
 ?>
