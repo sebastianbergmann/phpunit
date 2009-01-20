@@ -1149,9 +1149,6 @@
       <file baseinstalldir="/" name="JSON.php" role="php">
        <tasks:replace from="@package_version@" to="version" type="package-info" />
       </file>
-      <file baseinstalldir="/" name="PEAR.php" role="php">
-       <tasks:replace from="@package_version@" to="version" type="package-info" />
-      </file>
       <file baseinstalldir="/" name="TAP.php" role="php">
        <tasks:replace from="@package_version@" to="version" type="package-info" />
       </file>
@@ -1367,10 +1364,6 @@
     <name>Image_GraphViz</name>
     <channel>pear.php.net</channel>
     <min>1.2.1</min>
-   </package>
-   <package>
-    <name>Log</name>
-    <channel>pear.php.net</channel>
    </package>
    <package>
     <name>Text_Diff</name>
