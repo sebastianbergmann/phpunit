@@ -21,14 +21,14 @@ Time: %i seconds
 OK (3 tests, 3 assertions)
 
 Writing code coverage data to XML file, this may take a moment.<?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="%d" phpunit="%s">
-  <project name="BankAccountTest" timestamp="%d">
+<coverage generated="%i" phpunit="%s">
+  <project name="BankAccountTest" timestamp="%i">
     <file name="%s/BankAccount.php">
       <class name="BankAccountException" namespace="global" fullPackage="PHPUnit" category="Testing" package="PHPUnit">
         <metrics methods="0" coveredmethods="0" statements="0" coveredstatements="0" elements="0" coveredelements="0"/>
       </class>
       <class name="BankAccount" namespace="global" fullPackage="PHPUnit" category="Testing" package="PHPUnit">
-        <metrics methods="4" coveredmethods="3" statements="9" coveredstatements="3" elements="13" coveredelements="6"/>
+        <metrics methods="4" coveredmethods="3" statements="10" coveredstatements="3" elements="14" coveredelements="6"/>
       </class>
       <line num="75" type="method" count="1"/>
       <line num="77" type="stmt" count="1"/>
