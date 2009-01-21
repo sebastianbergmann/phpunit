@@ -7,6 +7,7 @@ $_SERVER['argv'][2] = 'BankAccountTest';
 $_SERVER['argv'][3] = '../Samples/BankAccount/BankAccountTest.php';
 
 require_once dirname(dirname(dirname(__FILE__))) . '/TextUI/Command.php';
+PHPUnit_TextUI_Command::main();
 ?>
 --EXPECTF--
 TAP version 13
