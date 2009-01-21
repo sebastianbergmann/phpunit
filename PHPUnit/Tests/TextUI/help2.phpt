@@ -5,6 +5,7 @@ phpunit --help
 $_SERVER['argv'][1] = '--help';
 
 require_once dirname(dirname(dirname(__FILE__))) . '/TextUI/Command.php';
+PHPUnit_TextUI_Command::main();
 ?>
 --EXPECTF--
 PHPUnit %s by Sebastian Bergmann.

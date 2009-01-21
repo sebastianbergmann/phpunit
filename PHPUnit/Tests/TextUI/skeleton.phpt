@@ -6,6 +6,7 @@ $_SERVER['argv'][1] = 'Calculator';
 $_SERVER['argv'][2] = dirname(dirname(__FILE__)) . '/_files/Calculator.php';
 
 require_once dirname(dirname(dirname(__FILE__))) . '/TextUI/Command.php';
+PHPUnit_TextUI_Command::main();
 ?>
 --EXPECTF--
 PHPUnit %s by Sebastian Bergmann.
