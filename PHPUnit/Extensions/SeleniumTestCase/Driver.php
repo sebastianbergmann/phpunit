@@ -677,7 +677,7 @@ class PHPUnit_Extensions_SeleniumTestCase_Driver
                     case 'open':
                     case 'openWindow': {
                         if ($this->collectCodeCoverageInformation) {
-                            $this->deleteCookie('PHPUNIT_SELENIUM_TEST_ID', '/');
+                            $this->deleteCookie('PHPUNIT_SELENIUM_TEST_ID', 'path=/');
 
                             $this->createCookie(
                               'PHPUNIT_SELENIUM_TEST_ID=' . $this->testId,
