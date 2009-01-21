@@ -7,6 +7,7 @@ $_SERVER['argv'][2] = 'Bug578Test';
 $_SERVER['argv'][3] = 'Regression/Issue578Test.php';
 
 require_once dirname(dirname(dirname(__FILE__))) . '/TextUI/Command.php';
+PHPUnit_TextUI_Command::main();
 ?>
 --EXPECTF--
 PHPUnit %s by Sebastian Bergmann.
