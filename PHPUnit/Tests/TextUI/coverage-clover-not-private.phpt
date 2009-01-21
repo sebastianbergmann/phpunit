@@ -25,10 +25,10 @@ Writing code coverage data to XML file, this may take a moment.<?xml version="1.
   <project name="CoverageTest" timestamp="%i">
     <file name="%s/CoveredClass.php">
       <class name="CoveredParentClass" namespace="global">
-        <metrics methods="3" coveredmethods="0" statements="2" coveredstatements="0" elements="5" coveredelements="0"/>
+        <metrics methods="3" coveredmethods="0" statements="5" coveredstatements="0" elements="8" coveredelements="0"/>
       </class>
       <class name="CoveredClass" namespace="global">
-        <metrics methods="3" coveredmethods="2" statements="4" coveredstatements="6" elements="7" coveredelements="8"/>
+        <metrics methods="3" coveredmethods="6" statements="7" coveredstatements="6" elements="10" coveredelements="12"/>
       </class>
       <line num="4" type="method" count="0"/>
       <line num="6" type="stmt" count="0"/>
@@ -48,9 +48,8 @@ Writing code coverage data to XML file, this may take a moment.<?xml version="1.
       <line num="33" type="stmt" count="1"/>
       <line num="34" type="stmt" count="1"/>
       <line num="35" type="stmt" count="1"/>
-      <metrics loc="37" ncloc="37" classes="2" methods="6" coveredmethods="2" statements="12" coveredstatements="6" elements="18" coveredelements="8"/>
+      <metrics loc="37" ncloc="37" classes="2" methods="6" coveredmethods="6" statements="12" coveredstatements="6" elements="18" coveredelements="12"/>
     </file>
-    <metrics files="1" loc="37" ncloc="37" classes="2" methods="6" coveredmethods="2" statements="12" coveredstatements="6" elements="18" coveredelements="8"/>
+    <metrics files="1" loc="37" ncloc="37" classes="2" methods="6" coveredmethods="6" statements="12" coveredstatements="6" elements="18" coveredelements="12"/>
   </project>
 </coverage>
-
