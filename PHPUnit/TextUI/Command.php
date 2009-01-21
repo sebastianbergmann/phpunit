@@ -572,29 +572,29 @@ class PHPUnit_TextUI_Command
                 );
             }
 
-            $browsers = $configuration->getSeleniumBrowserConfiguration();
+            $configuration->handlePHPConfiguration();
 
-            if (!empty($browsers)) {
-                require_once 'PHPUnit/Extensions/SeleniumTestCase.php';
-                PHPUnit_Extensions_SeleniumTestCase::$browsers = $browsers;
+            if (!isset($arguments['bootstrap'])) {
+                $phpunitConfiguration = $configuration->getPHPUnitConfiguration();
+
+                if (isset($phpunitConfiguration['bootstrap'])) {
+                    PHPUnit_Util_Fileloader::load($phpunitConfiguration['bootstrap']);
+                }
             }
 
             if (!isset($arguments['test'])) {
-                $configuration->handlePHPConfiguration();
-
-                if (!isset($arguments['bootstrap'])) {
-                    $phpunitConfiguration = $configuration->getPHPUnitConfiguration();
-
-                    if (isset($phpunitConfiguration['bootstrap'])) {
-                        PHPUnit_Util_Fileloader::load($phpunitConfiguration['bootstrap']);
-                    }
-                }
-
                 $testSuite = $configuration->getTestSuiteConfiguration();
 
                 if ($testSuite !== NULL) {
                     $arguments['test'] = $testSuite;
                 }
+            }
+
+            $browsers = $configuration->getSeleniumBrowserConfiguration();
+
+            if (!empty($browsers)) {
+                require_once 'PHPUnit/Extensions/SeleniumTestCase.php';
+                PHPUnit_Extensions_SeleniumTestCase::$browsers = $browsers;
             }
         }
 
