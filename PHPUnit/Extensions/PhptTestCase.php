@@ -93,8 +93,7 @@ class PHPUnit_Extensions_PhptTestCase implements PHPUnit_Framework_Test, PHPUnit
      * Constructs a test case with the given filename.
      *
      * @param  string $filename
-     * @param  array  $options Array with ini settings for the php instance run,
-     *                         key being the name if the setting, value the ini value.
+     * @param  array  $options
      */
     public function __construct($filename, array $options = array())
     {
@@ -129,8 +128,7 @@ class PHPUnit_Extensions_PhptTestCase implements PHPUnit_Framework_Test, PHPUnit
      * Runs a test and collects its result in a TestResult instance.
      *
      * @param  PHPUnit_Framework_TestResult $result
-     * @param  array $options Array with ini settings for the php instance run,
-     *                        key being the name if the setting, value the ini value.
+     * @param  array                        $options
      * @return PHPUnit_Framework_TestResult
      */
     public function run(PHPUnit_Framework_TestResult $result = NULL, array $options = array())
@@ -153,6 +151,10 @@ class PHPUnit_Extensions_PhptTestCase implements PHPUnit_Framework_Test, PHPUnit
 
         $coverage = $result->getCollectCodeCoverageInformation();
         $options  = array_merge($options, $this->options);
+
+        if (!isset($options['include_path'])) {
+            $options['include_path'] = get_include_path();
+        }
 
         if ($coverage) {
             $options['coverage'] = TRUE;
