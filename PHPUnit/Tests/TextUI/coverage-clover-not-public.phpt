@@ -9,6 +9,7 @@ $_SERVER['argv'][4] = 'CoverageNotPublicTest';
 $_SERVER['argv'][5] = dirname(dirname(__FILE__)) . '/_files/CoverageNotPublicTest.php';
 
 require_once dirname(dirname(dirname(__FILE__))) . '/TextUI/Command.php';
+PHPUnit_TextUI_Command::main();
 ?>
 --EXPECTF--
 PHPUnit %s by Sebastian Bergmann.
