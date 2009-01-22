@@ -74,10 +74,11 @@ class PHPUnit_Util_File
     public static function countLines($filename)
     {
         if (!isset(self::$countCache[$filename])) {
-            $loc  = count(file($filename));
-            $cloc = 0;
+            $buffer = file_get_contents($filename);
+            $loc    = substr_count($buffer, "\n");
+            $cloc   = 0;
 
-            foreach (token_get_all(file_get_contents($filename)) as $i => $token) {
+            foreach (token_get_all($buffer) as $i => $token) {
                 if (is_string($token)) {
                     continue;
                 }
@@ -89,10 +90,8 @@ class PHPUnit_Util_File
                 }
             }
 
-            $ncloc = $loc - $cloc;
-
             self::$countCache[$filename] = array(
-              'loc' => $loc, 'cloc' => $cloc, 'ncloc' => $ncloc
+              'loc' => $loc, 'cloc' => $cloc, 'ncloc' => $loc - $cloc
             );
         }
 
