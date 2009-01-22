@@ -90,7 +90,7 @@ class PHPUnit_Util_File
                 list ($token, $value) = $token;
 
                 if ($token == T_COMMENT || $token == T_DOC_COMMENT) {
-                    $cloc += count(explode("\n", $value));
+                    $cloc += substr_count($value, "\n") + 1;
                 }
             }
 
