@@ -79,7 +79,8 @@
 
     <br />
 
-    <script language="javascript">
+    <script type="text/javascript">
+      //<![CDATA[
       $E = YAHOO.util.Event;
       YAHOO.namespace("phpunit.container");
       YAHOO.phpunit.container.panelsData = {
@@ -113,6 +114,7 @@
       }
 
       $E.addListener(window, "load", init);
+      //]]>
     </script>
   </body>
 </html>
