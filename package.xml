@@ -847,6 +847,8 @@
      <dir name="Regression">
       <file baseinstalldir="/" name="578.phpt" role="test" />
       <file baseinstalldir="/" name="Issue578Test.php" role="test" />
+      <file baseinstalldir="/" name="684.phpt" role="test" />
+      <file baseinstalldir="/" name="Issue684Test.php" role="test" />
      </dir>
      <dir name="TextUI">
       <file baseinstalldir="/" name="abstract-test-class.phpt" role="test" />
