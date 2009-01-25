@@ -3,7 +3,7 @@
 --FILE--
 <?php
 $_SERVER['argv'][1] = '--no-configuration';
-$_SERVER['argv'][2] = 'Bug578Test';
+$_SERVER['argv'][2] = 'Issue578Test';
 $_SERVER['argv'][3] = 'Regression/Issue578Test.php';
 
 require_once dirname(dirname(dirname(__FILE__))) . '/TextUI/Command.php';
