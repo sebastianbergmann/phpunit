@@ -374,7 +374,6 @@ class PHPUnit_Util_Metrics_Project extends PHPUnit_Util_Metrics
         foreach ($this->files as $file) {
             $currentTokenPositions = array();
             $currentSignature      = '';
-            $lines                 = $file->getLines();
             $tokens                = $file->getTokens();
             $tokenNr               = 0;
             $line                  = 1;
