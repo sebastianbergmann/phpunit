@@ -56,10 +56,16 @@ if ( isset($_COOKIE['PHPUNIT_SELENIUM_TEST_ID']) &&
         unset($data[$file]);
     }
 
+    if (is_string($GLOBALS['PHPUNIT_COVERAGE_DATA_DIRECTORY']) &&
+        is_dir($GLOBALS['PHPUNIT_COVERAGE_DATA_DIRECTORY'])) {
+        $file = dirname($GLOBALS['PHPUNIT_COVERAGE_DATA_DIRECTORY']) .
+                DIRECTORY_SEPARATOR . md5($_SERVER['SCRIPT_FILENAME']);
+    } else {
+        $file = $_SERVER['SCRIPT_FILENAME'];
+    }
+
     file_put_contents(
-      $_SERVER['SCRIPT_FILENAME'] . '.' .
-      md5(uniqid(rand(), TRUE)) . '.' .
-      $_COOKIE['PHPUNIT_SELENIUM_TEST_ID'],
+      $file . '.' . md5(uniqid(rand(), TRUE)) . '.' . $_COOKIE['PHPUNIT_SELENIUM_TEST_ID'],
       serialize($data)
     );
 }
