@@ -1067,10 +1067,6 @@ class PHPUnit_Extensions_SeleniumTestCase_Driver
             if (!isset($info['negative']) || !$info['negative']) {
                 PHPUnit_Framework_Assert::assertTrue($result);
             } else {
-                if ($command == 'waitForNotVisible') {
-                    $result = FALSE;
-                };
-
                 PHPUnit_Framework_Assert::assertFalse($result);
             }
         } else {
