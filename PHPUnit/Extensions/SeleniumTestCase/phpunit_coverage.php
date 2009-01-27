@@ -49,9 +49,7 @@ require_once 'PHPUnit/Util/FilterIterator.php';
 
 if (isset($_GET['PHPUNIT_SELENIUM_TEST_ID'])) {
     $files = new PHPUnit_Util_FilterIterator(
-      new RecursiveIteratorIterator(
-        new RecursiveDirectoryIterator(dirname(__FILE__))
-      ),
+      new RecursiveIteratorIterator(new RecursiveDirectoryIterator(getcwd())),
       $_GET['PHPUNIT_SELENIUM_TEST_ID']
     );
 

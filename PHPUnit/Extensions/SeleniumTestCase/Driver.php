@@ -1067,19 +1067,43 @@ class PHPUnit_Extensions_SeleniumTestCase_Driver
             if (!isset($info['negative']) || !$info['negative']) {
                 PHPUnit_Framework_Assert::assertTrue($result);
             } else {
-                if ($command == 'waitForNotVisible') {
-                    $result = FALSE;
-                };
-
                 PHPUnit_Framework_Assert::assertFalse($result);
             }
         } else {
             $expected = array_pop($arguments);
 
-            if (!isset($info['negative']) || !$info['negative']) {
-                PHPUnit_Framework_Assert::assertEquals($expected, $result);
+            if (strpos($expected, 'exact:') === 0) {
+                $expected = substr($expected, strlen('exact:'));
+
+                if (!isset($info['negative']) || !$info['negative']) {
+                    PHPUnit_Framework_Assert::assertEquals($expected, $result);
+                } else {
+                    PHPUnit_Framework_Assert::assertNotEquals($expected, $result);
+                }
             } else {
-                PHPUnit_Framework_Assert::assertNotEquals($expected, $result);
+                if (strpos($expected, 'regexp:') === 0) {
+                    $expected = substr($expected, strlen('regexp:'));
+                } else {
+                    if (strpos($expected, 'glob:') === 0) {
+                        $expected = substr($expected, strlen('glob:'));
+                    }
+
+                    $expected = str_replace(
+                      array('*', '?'), array('.*', '.?'), $expected
+                    );
+                }
+
+                $expected = str_replace('/', '\/', $expected);
+
+                if (!isset($info['negative']) || !$info['negative']) {
+                    PHPUnit_Framework_Assert::assertRegExp(
+                      '/' . $expected . '/', $result
+                    );
+                } else {
+                    PHPUnit_Framework_Assert::assertNotRegExp(
+                      '/' . $expected . '/', $result
+                    );
+                }
             }
         }
     }
