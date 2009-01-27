@@ -44,6 +44,8 @@
  * @since      File available since Release 3.2.10
  */
 
+$GLOBALS['PHPUNIT_COVERAGE_DATA_DIRECTORY'] = FALSE;
+
 if ( isset($_COOKIE['PHPUNIT_SELENIUM_TEST_ID']) &&
     !isset($_GET['PHPUNIT_SELENIUM_TEST_ID']) &&
     extension_loaded('xdebug')) {
