@@ -236,6 +236,9 @@ class PHPUnit_TextUI_Command
             $arguments['test']     = substr($arguments['test'], 0, strrpos($arguments['test'], '.'));
         }
 
+        $skeletonClass = FALSE;
+        $skeletonTest  = FALSE;
+
         foreach ($options[0] as $option) {
             switch ($option[0]) {
                 case '--ansi': {
@@ -252,7 +255,6 @@ class PHPUnit_TextUI_Command
 
                 case '--bootstrap': {
                     $arguments['bootstrap'] = $option[1];
-                    PHPUnit_Util_Fileloader::load($arguments['bootstrap']);
                 }
                 break;
 
@@ -354,10 +356,7 @@ class PHPUnit_TextUI_Command
                 break;
 
                 case '--include-path': {
-                    ini_set(
-                      'include_path',
-                      $option[1] . PATH_SEPARATOR . ini_get('include_path')
-                    );
+                    $includePath = $option[1];
                 }
                 break;
 
@@ -367,7 +366,7 @@ class PHPUnit_TextUI_Command
                 break;
 
                 case '--loader': {
-                    $arguments['loader'] = self::handleLoader($option[1]);
+                    $arguments['loader'] = $option[1];
                 }
                 break;
 
@@ -495,58 +494,15 @@ class PHPUnit_TextUI_Command
                     );
                 }
 
-                case '--skeleton-class':
                 case '--skeleton-test': {
-                    if (isset($arguments['test']) && $arguments['test'] !== FALSE) {
-                        PHPUnit_TextUI_TestRunner::printVersionString();
+                    $skeletonTest  = TRUE;
+                    $skeletonClass = FALSE;
+                }
+                break;
 
-                        if ($option[0] == '--skeleton-class') {
-                            require_once 'PHPUnit/Util/Skeleton/Class.php';
-
-                            $class = 'PHPUnit_Util_Skeleton_Class';
-                        } else {
-                            require_once 'PHPUnit/Util/Skeleton/Test.php';
-
-                            $class = 'PHPUnit_Util_Skeleton_Test';
-                        }
-
-                        try {
-                            $args      = array();
-                            $reflector = new ReflectionClass($class);
-
-                            for ($i = 0; $i <= 3; $i++) {
-                                if (isset($options[1][$i])) {
-                                    $args[] = $options[1][$i];
-                                }
-                            }
-
-                            $skeleton = $reflector->newInstanceArgs($args);
-                            $skeleton->write();
-                        }
-
-                        catch (Exception $e) {
-                            print $e->getMessage() . "\n";
-
-                            printf(
-                              'Could not skeleton for "%s" to "%s".' . "\n",
-                              $skeleton->getOutClassName(),
-                              $skeleton->getOutSourceFile()
-                            );
-
-                            exit(PHPUnit_TextUI_TestRunner::FAILURE_EXIT);
-                        }
-
-                        printf(
-                          'Wrote skeleton for "%s" to "%s".' . "\n",
-                          $skeleton->getOutClassName(),
-                          $skeleton->getOutSourceFile()
-                        );
-
-                        exit(PHPUnit_TextUI_TestRunner::SUCCESS_EXIT);
-                    } else {
-                        self::showHelp();
-                        exit(PHPUnit_TextUI_TestRunner::EXCEPTION_EXIT);
-                    }
+                case '--skeleton-class': {
+                    $skeletonClass = TRUE;
+                    $skeletonTest  = FALSE;
                 }
                 break;
 
@@ -629,6 +585,21 @@ class PHPUnit_TextUI_Command
             }
         }
 
+        if (isset($includePath)) {
+            ini_set(
+              'include_path',
+              $includePath . PATH_SEPARATOR . ini_get('include_path')
+            );
+        }
+
+        if (isset($arguments['bootstrap'])) {
+            PHPUnit_Util_Fileloader::load($arguments['bootstrap']);
+        }
+
+        if ($arguments['loader'] !== NULL) {
+            $arguments['loader'] = self::handleLoader($arguments['loader']);
+        }
+
         if (!isset($arguments['configuration']) && $arguments['useDefaultConfiguration']) {
             if (file_exists('phpunit.xml')) {
                 $arguments['configuration'] = realpath('phpunit.xml');
@@ -705,6 +676,52 @@ class PHPUnit_TextUI_Command
 
         if (!isset($arguments['syntaxCheck'])) {
             $arguments['syntaxCheck'] = TRUE;
+        }
+
+        if ($skeletonClass || $skeletonTest) {
+            if (isset($arguments['test']) && $arguments['test'] !== FALSE) {
+                PHPUnit_TextUI_TestRunner::printVersionString();
+
+                if ($skeletonClass) {
+                    require_once 'PHPUnit/Util/Skeleton/Class.php';
+
+                    $class = 'PHPUnit_Util_Skeleton_Class';
+                } else {
+                    require_once 'PHPUnit/Util/Skeleton/Test.php';
+
+                    $class = 'PHPUnit_Util_Skeleton_Test';
+                }
+
+                try {
+                    $args      = array();
+                    $reflector = new ReflectionClass($class);
+
+                    for ($i = 0; $i <= 3; $i++) {
+                        if (isset($options[1][$i])) {
+                            $args[] = $options[1][$i];
+                        }
+                    }
+
+                    $skeleton = $reflector->newInstanceArgs($args);
+                    $skeleton->write();
+                }
+
+                catch (Exception $e) {
+                    print $e->getMessage() . "\n";
+                    exit(PHPUnit_TextUI_TestRunner::FAILURE_EXIT);
+                }
+
+                printf(
+                  'Wrote skeleton for "%s" to "%s".' . "\n",
+                  $skeleton->getOutClassName(),
+                  $skeleton->getOutSourceFile()
+                );
+
+                exit(PHPUnit_TextUI_TestRunner::SUCCESS_EXIT);
+            } else {
+                self::showHelp();
+                exit(PHPUnit_TextUI_TestRunner::EXCEPTION_EXIT);
+            }
         }
 
         return $arguments;
