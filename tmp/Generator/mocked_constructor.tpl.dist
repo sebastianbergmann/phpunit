@@ -1,0 +1,4 @@
+    public function __construct({arguments})
+    {
+    }
+
