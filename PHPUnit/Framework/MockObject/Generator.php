@@ -223,9 +223,18 @@ class PHPUnit_Framework_MockObject_Generator
             $methods = get_class_methods($originalClassName);
         }
 
+        $constructor   = NULL;
         $mockedMethods = '';
 
         if (isset($class)) {
+            if ($class->hasMethod('__construct')) {
+                $constructor = $class->getMethod('__construct');
+            }
+
+            else if ($class->hasMethod($originalClassName)) {
+                $constructor = $class->getMethod($originalClassName);
+            }
+
             foreach ($methods as $methodName) {
                 try {
                     $method = $class->getMethod($methodName);
@@ -259,7 +268,7 @@ class PHPUnit_Framework_MockObject_Generator
                                    ),
             'constructor'       => self::generateMockConstructor(
                                      $templateDir,
-                                     isset($class) ? $class->getConstructor() : NULL,
+                                     $constructor,
                                      $originalClassName,
                                      $mockClassName['mockClassName'],
                                      $callOriginalConstructor
@@ -340,16 +349,18 @@ class PHPUnit_Framework_MockObject_Generator
 
             if ($callOriginalConstructor) {
                 $template = new PHPUnit_Util_Template($templateDir . 'unmocked_constructor.tpl');
-
-                $template->setVar(
-                  array(
-                    'arguments'         => PHPUnit_Util_Class::getMethodParameters($constructor),
-                    'mocked_class_name' => $mockedClassName
-                  )
-                );
-
-                return $template->render();
+            } else {
+                $template = new PHPUnit_Util_Template($templateDir . 'mocked_constructor.tpl');
             }
+
+            $template->setVar(
+              array(
+                'arguments'         => PHPUnit_Util_Class::getMethodParameters($constructor),
+                'mocked_class_name' => $mockedClassName
+              )
+            );
+
+            return $template->render();
         }
 
         return '';
