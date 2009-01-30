@@ -26,6 +26,10 @@ class MockFoo extends Foo
 {
     protected $invocationMocker;
 
+    public function __construct()
+    {
+    }
+
     public function __clone()
     {
         $this->invocationMocker = clone $this->invocationMocker;
