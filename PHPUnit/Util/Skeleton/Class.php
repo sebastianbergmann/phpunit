@@ -81,17 +81,17 @@ class PHPUnit_Util_Skeleton_Class extends PHPUnit_Util_Skeleton
             $this->inSourceFile = $inSourceFile;
         }
 
-        if (!is_file($this->inSourceFile)) {
+        if (!is_file($inSourceFile)) {
             throw new RuntimeException(
               sprintf(
                 '"%s" could not be opened.',
 
-                $this->inSourceFile
+                $inSourceFile
               )
             );
         }
 
-        $this->tokens = token_get_all(file_get_contents($this->inSourceFile));
+        $this->tokens = token_get_all(file_get_contents($inSourceFile));
 
         $this->inClassName   = $inClassName;
         $this->outClassName  = substr($inClassName, 0, strlen($inClassName) - 4);
