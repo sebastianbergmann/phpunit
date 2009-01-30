@@ -97,5 +97,13 @@ class PHPUnit_Framework_ExpectationFailedException extends PHPUnit_Framework_Ass
     {
         return $this->customMessage;
     }
+
+    /**
+     * @since Method available since Release 3.4.0
+     */
+    public function setCustomMessage($customMessage)
+    {
+        $this->customMessage = $customMessage;
+    }
 }
 ?>
