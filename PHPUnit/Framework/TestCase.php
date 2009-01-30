@@ -932,7 +932,7 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
             eval($mock['code']);
         }
 
-        if ($callOriginalConstructor) {
+        if ($callOriginalConstructor && !interface_exists($originalClassName, $callAutoload)) {
             if (count($arguments) == 0) {
                 $mockObject = new $mock['mockClassName'];
             } else {
