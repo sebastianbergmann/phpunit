@@ -354,10 +354,25 @@ abstract class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_Tes
     {
         $this->start();
 
-        if (!is_file($this->name)) {
-            parent::runTest();
-        } else {
-            $this->runSelenese($this->name);
+        try {
+            if (!is_file($this->name)) {
+                parent::runTest();
+            } else {
+                $this->runSelenese($this->name);
+            }
+        }
+
+        catch (PHPUnit_Framework_ExpectationFailedException $e) {
+            $buffer  = 'Current URL: ' . $this->drivers[0]->getLocation() . "\n";
+            $message = $e->getCustomMessage();
+
+            if (!empty($message)) {
+                $buffer .= "\n" . $message;
+            }
+
+            $e->setCustomMessage($buffer);
+
+            throw $e;
         }
 
         if ($this->autoStop) {
