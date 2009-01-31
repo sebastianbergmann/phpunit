@@ -115,6 +115,21 @@ abstract class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_Tes
     protected $verificationErrors = array();
 
     /**
+     * @var    boolean
+     */
+    protected $captureScreenshotOnFailure = FALSE;
+
+    /**
+     * @var    string
+     */
+    protected $screenshotPath = '';
+
+    /**
+     * @var    string
+     */
+    protected $screenshotUrl = '';
+
+    /**
      * @param  string $name
      * @param  array  $data
      * @param  string $dataName
@@ -365,6 +380,15 @@ abstract class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_Tes
         catch (PHPUnit_Framework_ExpectationFailedException $e) {
             $buffer  = 'Current URL: ' . $this->drivers[0]->getLocation() . "\n";
             $message = $e->getCustomMessage();
+
+            if ($this->captureScreenshotOnFailure &&
+                !empty($this->screenshotPath) && !empty($this->screenshotUrl)) {
+                $this->captureScreenshot(
+                  $this->screenshotPath . DIRECTORY_SEPARATOR . $this->testId . '.png'
+                );
+
+                $buffer .= 'Screenshot: ' . $this->screenshotUrl . '/' . $this->testId . ".png\n";
+            }
 
             if (!empty($message)) {
                 $buffer .= "\n" . $message;
