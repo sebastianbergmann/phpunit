@@ -909,6 +909,9 @@
       </file>
      </dir>
      <dir name="_files">
+      <file baseinstalldir="/" name="AbstractMockTestClass.php" role="test">
+       <tasks:replace from="@package_version@" to="version" type="package-info" />
+      </file>
       <file baseinstalldir="/" name="AbstractTest.php" role="test">
        <tasks:replace from="@package_version@" to="version" type="package-info" />
       </file>

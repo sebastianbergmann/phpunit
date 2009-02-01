@@ -46,6 +46,7 @@
 
 require_once 'PHPUnit/Framework/TestCase.php';
 
+require_once dirname(dirname(__FILE__)) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'AbstractMockTestClass.php';
 require_once dirname(dirname(__FILE__)) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'AnInterface.php';
 require_once dirname(dirname(__FILE__)) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'FunctionCallback.php';
 require_once dirname(dirname(__FILE__)) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'MethodCallback.php';
@@ -247,6 +248,13 @@ class Framework_MockObjectTest extends PHPUnit_Framework_TestCase
         $mock2 = $this->getMock('PartialMockTestClass', array(), array(), '', TRUE, FALSE);
 
         $this->assertNotEquals(get_class($mock1), get_class($mock2));
+    }
+
+    public function testGetMockForAbstractClass()
+    {
+        $mock = $this->getMock('AbstractMockTestClass');
+        $mock->expects($this->never())
+             ->method('doSomething');
     }
 }
 ?>
