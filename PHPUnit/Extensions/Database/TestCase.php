@@ -202,6 +202,8 @@ abstract class PHPUnit_Extensions_Database_TestCase extends PHPUnit_Framework_Te
     {
         parent::setUp();
 
+        $this->databaseTester = NULL;
+
         $this->getDatabaseTester()->setSetUpOperation($this->getSetUpOperation());
         $this->getDatabaseTester()->setDataSet($this->getDataSet());
         $this->getDatabaseTester()->onSetUp();

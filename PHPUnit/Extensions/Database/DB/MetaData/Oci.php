@@ -132,9 +132,18 @@ class PHPUnit_Extensions_Database_DB_MetaData_Oci extends PHPUnit_Extensions_Dat
         $this->columns[$tableName] = array();
         $this->keys[$tableName]    = array();
 
+        $tableParts = $this->splitTableName($tableName);
+
+        if (!empty($tableParts['schema']))
+        {
+            $ownerQuery = " AND OWNER = '{$schema}'";
+            $conOwnerQuery = " AND a.owner = '{$schema}'";
+        }
+
         $query = "SELECT DISTINCT COLUMN_NAME
                     FROM USER_TAB_COLUMNS
-                   WHERE TABLE_NAME='".$tableName."'
+                   WHERE TABLE_NAME='".$tableParts['table']."'
+                    $ownerQuery
                    ORDER BY COLUMN_NAME";
 
         $result = $this->pdo->query($query);
@@ -147,7 +156,8 @@ class PHPUnit_Extensions_Database_DB_MetaData_Oci extends PHPUnit_Extensions_Dat
                        FROM all_constraints a, all_cons_columns b
                       WHERE a.constraint_type='P'
                         AND a.constraint_name=b.constraint_name
-                        AND a.table_name = '".$tableName."' ";
+                        $conOwnerQuery
+                        AND a.table_name = '".$tableParts['table']."' ";
 
         $result = $this->pdo->query($keyQuery);
 
