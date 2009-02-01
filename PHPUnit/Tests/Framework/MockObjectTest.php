@@ -46,6 +46,7 @@
 
 require_once 'PHPUnit/Framework/TestCase.php';
 
+require_once dirname(dirname(__FILE__)) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'AbstractMockTestClass.php';
 require_once dirname(dirname(__FILE__)) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'AnInterface.php';
 require_once dirname(dirname(__FILE__)) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'FunctionCallback.php';
 require_once dirname(dirname(__FILE__)) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'MethodCallback.php';
@@ -260,6 +261,13 @@ class Framework_MockObjectTest extends PHPUnit_Framework_TestCase
               ->will($this->returnValue('something'));
 
         $this->assertEquals('something', $class::doSomething());
+    }
+
+    public function testGetMockForAbstractClass()
+    {
+        $mock = $this->getMock('AbstractMockTestClass');
+        $mock->expects($this->never())
+             ->method('doSomething');
     }
 }
 ?>
