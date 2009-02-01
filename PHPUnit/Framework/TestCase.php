@@ -891,7 +891,7 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
     /**
      * Returns a mock object for the specified class.
      *
-     * @param  string  $className
+     * @param  string  $originalClassName
      * @param  array   $methods
      * @param  array   $arguments
      * @param  string  $mockClassName
@@ -899,6 +899,7 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
      * @param  boolean $callOriginalClone
      * @param  boolean $callAutoload
      * @return object
+     * @throws InvalidArgumentException
      * @since  Method available since Release 3.0.0
      */
     protected function getMock($originalClassName, $methods = array(), array $arguments = array(), $mockClassName = '', $callOriginalConstructor = TRUE, $callOriginalClone = TRUE, $callAutoload = TRUE)
@@ -955,6 +956,59 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
         $this->mockObjects[] = $mockObject;
 
         return $mockObject;
+    }
+
+    /**
+     * Returns a mock object for the specified abstract class with all abstract
+     * methods of the class mocked. Concrete methods are not mocked.
+     *
+     * @param  string  $originalClassName
+     * @param  array   $arguments
+     * @param  string  $mockClassName
+     * @param  boolean $callOriginalConstructor
+     * @param  boolean $callOriginalClone
+     * @param  boolean $callAutoload
+     * @return object
+     * @since  Method available since Release 3.4.0
+     * @throws InvalidArgumentException
+     */
+    protected function getMockForAbstractClass($originalClassName, array $arguments = array(), $mockClassName = '', $callOriginalConstructor = TRUE, $callOriginalClone = TRUE, $callAutoload = TRUE)
+    {
+        if (!is_string($originalClassName)) {
+            throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'string');
+        }
+
+        if (!is_string($mockClassName)) {
+            throw PHPUnit_Util_InvalidArgumentHelper::factory(4, 'string');
+        }
+
+        if (class_exists($originalClassName, $callAutoload)) {
+            $methods   = array();
+            $reflector = new ReflectionClass($originalClassName);
+
+            foreach ($reflector->getMethods() as $method) {
+                if ($method->isAbstract()) {
+                    $methods[] = $method->getName();
+                }
+            }
+
+            return $this->getMock(
+              $originalClassName,
+              $methods,
+              $arguments,
+              $mockClassName,
+              $callOriginalConstructor,
+              $callOriginalClone,
+              $callAutoload
+            );
+        } else {
+            throw new RuntimeException(
+              sprintf(
+                'Class "%s" does not exist.',
+                $originalClassName
+              )
+            );
+        }
     }
 
     /**
