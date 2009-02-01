@@ -78,13 +78,25 @@ class PHPUnit_Extensions_Database_DataSet_DataSetFilter extends PHPUnit_Extensio
      * The tables to exclude from the data set.
      * @var Array
      */
-    protected $excludeTables;
+    protected $excludeTables = array();
+
+    /**
+     * The tables to exclude from the data set.
+     * @var Array
+     */
+    protected $includeTables = array();
 
     /**
      * The columns to exclude from the data set.
      * @var Array
      */
-    protected $excludeColumns;
+    protected $excludeColumns = array();
+
+    /**
+     * The columns to exclude from the data set.
+     * @var Array
+     */
+    protected $includeColumns = array();
 
     /**
      * Creates a new filtered data set.
@@ -95,22 +107,24 @@ class PHPUnit_Extensions_Database_DataSet_DataSetFilter extends PHPUnit_Extensio
      * to the special string '*'.
      *
      * @param PHPUnit_Extensions_Database_DataSet_IDataSet $originalDataSet
-     * @param Array $excludeTables
+     * @param Array $excludeTables @deprecated use set* methods instead.
      */
-    public function __construct(PHPUnit_Extensions_Database_DataSet_IDataSet $originalDataSet, Array $excludeTables)
+    public function __construct(PHPUnit_Extensions_Database_DataSet_IDataSet $originalDataSet, Array $excludeTables = array())
     {
         $this->originalDataSet = $originalDataSet;
-        $this->excludeTables = $excludeTables;
 
-        foreach ($this->excludeTables as $tableName => $values) {
+        $tables = array();
+        foreach ($excludeTables as $tableName => $values) {
             if (is_array($values)) {
-                $this->excludeColumns[$tableName] = $values;
+                $this->setExcludeColumnsForTable($tableName, $values);
             } elseif ($values == '*') {
-                $this->excludeTables[] = $tableName;
+                $tables[] = $tableName;
             } else {
-                $this->excludeColumns[$tableName] = (array)$values;
+                $this->setExcludeColumnsForTable($tableName, (array)$values);
             }
         }
+
+        $this->addExcludeTables($tables);
     }
 
     /**
@@ -129,16 +143,66 @@ class PHPUnit_Extensions_Database_DataSet_DataSetFilter extends PHPUnit_Extensio
             /* @var $table PHPUnit_Extensions_Database_DataSet_ITable */
             $tableName = $table->getTableMetaData()->getTableName();
 
-            if (in_array($tableName, $this->excludeTables)) {
+            if ((!in_array($tableName, $this->includeTables) && !empty($this->includeTables)) ||
+                    in_array($tableName, $this->excludeTables)
+            ) {
                 continue;
-            } elseif (array_key_exists($tableName, $this->excludeColumns)) {
-                $new_tables[] = new PHPUnit_Extensions_Database_DataSet_TableFilter($table, $this->excludeColumns[$tableName]);
+            } elseif (!empty($this->excludeColumns[$tableName]) || !empty($this->includeColumns[$tableName])) {
+                $new_table = new PHPUnit_Extensions_Database_DataSet_TableFilter($table);
+
+                if (!empty($this->includeColumns[$tableName])) {
+                    $new_table->addIncludeColumns($this->includeColumns[$tableName]);
+                }
+
+                if (!empty($this->excludeColumns[$tableName])) {
+                    $new_table->addExcludeColumns($this->excludeColumns[$tableName]);
+                }
+
+                $new_tables[] = $new_table;
             } else {
                 $new_tables[] = $table;
             }
         }
 
         return new PHPUnit_Extensions_Database_DataSet_DefaultTableIterator($new_tables);
+    }
+
+    /**
+     * Adds tables to be included in the data set.
+     * @param array $tables
+     */
+    public function addIncludeTables(Array $tables)
+    {
+        $this->includeTables = array_unique(array_merge($this->includeTables, $tables));
+    }
+
+    /**
+     * Adds tables to be included in the data set.
+     * @param array $tables
+     */
+    public function addExcludeTables(Array $tables)
+    {
+        $this->excludeTables = array_unique(array_merge($this->excludeTables, $tables));
+    }
+
+    /**
+     * Adds columns to include in the data set for the given table.
+     * @param string $table
+     * @param Array $columns
+     */
+    public function setIncludeColumnsForTable($table, Array $columns)
+    {
+        $this->includeColumns[$table] = $columns;
+    }
+
+    /**
+     * Adds columns to include in the data set for the given table.
+     * @param string $table
+     * @param Array $columns
+     */
+    public function setExcludeColumnsForTable($table, Array $columns)
+    {
+        $this->excludeColumns[$table] = $columns;
     }
 }
 ?>

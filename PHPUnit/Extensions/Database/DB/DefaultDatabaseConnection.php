@@ -190,7 +190,7 @@ class PHPUnit_Extensions_Database_DB_DefaultDatabaseConnection implements PHPUni
      */
     public function getRowCount($tableName, $whereClause = NULL)
     {
-        $query = "SELECT COUNT(*) FROM {$tableName}";
+        $query = "SELECT COUNT(*) FROM ".$this->quoteSchemaObject($tableName);
 
         if (isset($whereClause)) {
             $query .= " WHERE {$whereClause}";

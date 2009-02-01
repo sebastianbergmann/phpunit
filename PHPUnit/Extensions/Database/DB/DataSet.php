@@ -99,7 +99,7 @@ class PHPUnit_Extensions_Database_DB_DataSet extends PHPUnit_Extensions_Database
      * @param PHPUnit_Extensions_Database_DataSet_ITableMetaData $tableMetaData
      * @return unknown
      */
-    public static function buildTableSelect(PHPUnit_Extensions_Database_DataSet_ITableMetaData $tableMetaData)
+    public static function buildTableSelect(PHPUnit_Extensions_Database_DataSet_ITableMetaData $tableMetaData, PHPUnit_Extensions_Database_DB_IDatabaseConnection $databaseConnection = NULL)
     {
         if ($tableMetaData->getTableName() == '') {
             $e = new Exception("Empty Table Name");
@@ -107,16 +107,29 @@ class PHPUnit_Extensions_Database_DB_DataSet extends PHPUnit_Extensions_Database
             throw $e;
         }
 
-        $columnList = implode(', ', $tableMetaData->getColumns());
+        $columns = $tableMetaData->getColumns();
+        if ($databaseConnection) {
+        	$columns = array_map(array($databaseConnection, 'quoteSchemaObject'), $columns);
+        }
+        $columnList = implode(', ', $columns);
+
+        if ($databaseConnection) {
+        	$tableName = $databaseConnection->quoteSchemaObject($tableMetaData->getTableName());
+        } else {
+        	$tableName = $tableMetaData->getTableName();
+        }
 
         $primaryKeys = $tableMetaData->getPrimaryKeys();
+        if ($databaseConnection) {
+        	$primaryKeys = array_map(array($databaseConnection, 'quoteSchemaObject'), $primaryKeys);
+        }
         if (count($primaryKeys)) {
             $orderBy = 'ORDER BY ' . implode(' ASC, ', $primaryKeys) . ' ASC';
         } else {
             $orderBy = '';
         }
 
-        return "SELECT {$columnList} FROM {$tableMetaData->getTableName()} {$orderBy}";
+        return "SELECT {$columnList} FROM {$tableName} {$orderBy}";
     }
 
     /**
