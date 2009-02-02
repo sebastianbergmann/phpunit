@@ -52,6 +52,9 @@
         <file baseinstalldir="/" name="Xml.php" role="php">
          <tasks:replace from="@package_version@" to="version" type="package-info" />
         </file>
+        <file baseinstalldir="/" name="Yaml.php" role="php">
+         <tasks:replace from="@package_version@" to="version" type="package-info" />
+        </file>
        </dir>
        <file baseinstalldir="/" name="AbstractDataSet.php" role="php">
         <tasks:replace from="@package_version@" to="version" type="package-info" />
@@ -126,6 +129,9 @@
         <tasks:replace from="@package_version@" to="version" type="package-info" />
        </file>
        <file baseinstalldir="/" name="XmlDataSet.php" role="php">
+        <tasks:replace from="@package_version@" to="version" type="package-info" />
+       </file>
+       <file baseinstalldir="/" name="YamlDataSet.php" role="php">
         <tasks:replace from="@package_version@" to="version" type="package-info" />
        </file>
       </dir>
@@ -716,6 +722,9 @@
          <file baseinstalldir="/" name="XmlDataSet.xml" role="test" />
          <file baseinstalldir="/" name="XmlWriter.xml" role="test" />
         </dir>
+        <dir name="YamlDataSets">
+         <file baseinstalldir="/" name="testDataSet.yaml" role="test" />
+        </dir>
         <file baseinstalldir="/" name="DatabaseTestUtility.php" role="test">
          <tasks:replace from="@package_version@" to="version" type="package-info" />
         </file>
@@ -749,6 +758,9 @@
           <tasks:replace from="@package_version@" to="version" type="package-info" />
          </file>
          <file baseinstalldir="/" name="XmlDataSetsTest.php" role="test">
+          <tasks:replace from="@package_version@" to="version" type="package-info" />
+         </file>
+         <file baseinstalldir="/" name="YamlDataSetTest.php" role="test">
           <tasks:replace from="@package_version@" to="version" type="package-info" />
          </file>
        </dir>
