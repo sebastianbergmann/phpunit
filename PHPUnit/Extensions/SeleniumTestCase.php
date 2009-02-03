@@ -172,7 +172,7 @@ abstract class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_Tes
 
                     foreach ($files as $file) {
                         $browserSuite->addTest(
-                          new $className($file, array(), $browser),
+                          new $className($file, array(), '', $browser),
                           $classGroups
                         );
                     }
@@ -208,9 +208,9 @@ abstract class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_Tes
                               $className . '::' . $name
                             );
 
-                            foreach ($data as $_data) {
+                            foreach ($data as $_dataName => $_data) {
                                 $dataSuite->addTest(
-                                  new $className($name, $_data, $browser),
+                                  new $className($name, $_data, $_dataName, $browser),
                                   $groups
                                 );
                             }
@@ -221,7 +221,7 @@ abstract class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_Tes
                         // Test method without @dataProvider.
                         else {
                             $browserSuite->addTest(
-                              new $className($name, array(), $browser), $groups
+                              new $className($name, array(), '', $browser), $groups
                             );
                         }
                     }
@@ -246,9 +246,9 @@ abstract class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_Tes
                           $className . '::' . $name
                         );
 
-                        foreach ($data as $_data) {
+                        foreach ($data as $_dataName => $_data) {
                             $dataSuite->addTest(
-                              new $className($name, $_data),
+                              new $className($name, $_data, $_dataName),
                               $groups
                             );
                         }
