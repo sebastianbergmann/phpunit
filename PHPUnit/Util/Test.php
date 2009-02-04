@@ -69,6 +69,7 @@ class PHPUnit_Util_Test
     const REGEX_DEPENDS                  = '/@depends\s+([a-zA-Z0-9._:-\\\]+)/';
     const REGEX_EXPECTED_EXCEPTION       = '(@expectedException\s+([:.\w\\\]+)(?:[\t ]+(\S*))?(?:[\t ]+(\S*))?\s*$)m';
     const REGEX_GROUP                    = '/@group\s+([a-zA-Z0-9._-]+)/';
+    const REGEX_USE_OUTPUT_BUFFERING     = '/@outputBuffering\s+([a-zA-Z0-9._-]+)/';
 
     /**
      * @param  PHPUnit_Framework_Test $test
@@ -197,7 +198,7 @@ class PHPUnit_Util_Test
     }
 
     /**
-     * Returns the dependencies for a test class or method.
+     * Returns the backup settings for a test.
      *
      * @param  string $classDocComment
      * @param  string $methodDocComment
@@ -369,6 +370,41 @@ class PHPUnit_Util_Test
             catch (ReflectionException $e) {
             }
         }
+    }
+
+    /**
+     * Returns the output buffering settings for a test.
+     *
+     * @param  string $classDocComment
+     * @param  string $methodDocComment
+     * @return array
+     * @since  Method available since Release 3.4.0
+     */
+    public static function getOutputBuffering($classDocComment, $methodDocComment)
+    {
+        $outputBuffering = NULL;
+
+        if (preg_match(self::REGEX_USE_OUTPUT_BUFFERING, $classDocComment, $matches)) {
+            if ($matches[1] == 'enabled') {
+                $outputBuffering = TRUE;
+            }
+
+            else if ($matches[1] == 'disabled') {
+                $outputBuffering = FALSE;
+            }
+        }
+
+        if (preg_match(self::REGEX_USE_OUTPUT_BUFFERING, $methodDocComment, $matches)) {
+            if ($matches[1] == 'enabled') {
+                $outputBuffering = TRUE;
+            }
+
+            else if ($matches[1] == 'disabled') {
+                $outputBuffering = FALSE;
+            }
+        }
+
+        return $outputBuffering;
     }
 
     /**
