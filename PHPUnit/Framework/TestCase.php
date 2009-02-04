@@ -180,6 +180,11 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
     protected $dataName = '';
 
     /**
+     * @var    boolean
+     */
+    protected $useOutputBuffering = NULL;
+
+    /**
      * The name of the expected Exception.
      *
      * @var    mixed
@@ -396,6 +401,40 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
     }
 
     /**
+     * @param boolean $useOutputBuffering
+     * @since Method available since Release 3.4.0
+     */
+    public function setUseOutputBuffering($useOutputBuffering)
+    {
+        $this->useOutputBuffering = $useOutputBuffering;
+    }
+
+    /**
+     * @since Method available since Release 3.4.0
+     */
+    protected function setUseOutputBufferingFromAnnotation()
+    {
+        try {
+            $className        = get_class($this);
+            $class            = new ReflectionClass($className);
+            $classDocComment  = $class->getDocComment();
+            $method           = new ReflectionMethod($className, $this->name);
+            $methodDocComment = $method->getDocComment();
+
+            $useOutputBuffering = PHPUnit_Util_Test::getOutputBuffering(
+              $classDocComment, $methodDocComment
+            );
+
+            if ($useOutputBuffering !== NULL) {
+                $this->setUseOutputBuffering($useOutputBuffering);
+            }
+        }
+
+        catch (ReflectionException $e) {
+        }
+    }
+
+    /**
      * Returns the status of this test.
      *
      * @return integer
@@ -446,6 +485,7 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
         }
 
         $this->setExpectedExceptionFromAnnotation();
+        $this->setUseOutputBufferingFromAnnotation();
 
         $this->result = $result;
 
@@ -581,6 +621,11 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
             }
         }
 
+        // Start output buffering.
+        if ($this->useOutputBuffering === TRUE) {
+            ob_start();
+        }
+
         // Set up the fixture.
         $this->setUp();
 
@@ -626,6 +671,11 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
 
         // Tear down the fixture.
         $this->tearDown();
+
+        // Stop output buffering.
+        if ($this->useOutputBuffering === TRUE) {
+            ob_end_clean();
+        }
 
         // Clean up stat cache.
         clearstatcache();
