@@ -132,7 +132,7 @@ class PHPUnit_Framework_ComparisonFailure_Array extends PHPUnit_Framework_Compar
 
         foreach ($actualOnly as $actualKey) {
             $diff .= sprintf(
-              "array key %s: only in expected %s\n",
+              "array key %s: only in actual %s\n",
 
               PHPUnit_Util_Type::toString($actualKey),
               PHPUnit_Util_Type::toString($this->actual[$actualKey])
