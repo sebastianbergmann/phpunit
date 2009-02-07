@@ -421,7 +421,7 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
             $method           = new ReflectionMethod($className, $this->name);
             $methodDocComment = $method->getDocComment();
 
-            $useOutputBuffering = PHPUnit_Util_Test::getOutputBuffering(
+            $useOutputBuffering = PHPUnit_Util_Test::getOutputBufferingSettings(
               $classDocComment, $methodDocComment
             );
 

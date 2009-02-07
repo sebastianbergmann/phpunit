@@ -198,65 +198,6 @@ class PHPUnit_Util_Test
     }
 
     /**
-     * Returns the backup settings for a test.
-     *
-     * @param  string $classDocComment
-     * @param  string $methodDocComment
-     * @return array
-     * @since  Method available since Release 3.4.0
-     */
-    public static function getBackupSettings($classDocComment, $methodDocComment)
-    {
-        $backupGlobals          = NULL;
-        $backupStaticAttributes = NULL;
-
-        if (preg_match(self::REGEX_BACKUP_GLOBALS, $classDocComment, $matches)) {
-            if ($matches[1] == 'enabled') {
-                $backupGlobals = TRUE;
-            }
-
-            else if ($matches[1] == 'disabled') {
-                $backupGlobals = FALSE;
-            }
-        }
-
-        if (preg_match(self::REGEX_BACKUP_GLOBALS, $methodDocComment, $matches)) {
-            if ($matches[1] == 'enabled') {
-                $backupGlobals = TRUE;
-            }
-
-            else if ($matches[1] == 'disabled') {
-                $backupGlobals = FALSE;
-            }
-        }
-
-        if (preg_match(self::REGEX_BACKUP_STATIC_ATTRIBUTES, $classDocComment, $matches)) {
-            if ($matches[1] == 'enabled') {
-                $backupStaticAttributes = TRUE;
-            }
-
-            else if ($matches[1] == 'disabled') {
-                $backupStaticAttributes = FALSE;
-            }
-        }
-
-        if (preg_match(self::REGEX_BACKUP_STATIC_ATTRIBUTES, $methodDocComment, $matches)) {
-            if ($matches[1] == 'enabled') {
-                $backupStaticAttributes = TRUE;
-            }
-
-            else if ($matches[1] == 'disabled') {
-                $backupStaticAttributes = FALSE;
-            }
-        }
-
-        return array(
-          'backupGlobals'          => $backupGlobals,
-          'backupStaticAttributes' => $backupStaticAttributes
-        );
-    }
-
-    /**
      * Returns the dependencies for a test class or method.
      *
      * @param  string $docComment
@@ -373,38 +314,71 @@ class PHPUnit_Util_Test
     }
 
     /**
-     * Returns the output buffering settings for a test.
+     * Returns the backup settings for a test.
      *
      * @param  string $classDocComment
      * @param  string $methodDocComment
      * @return array
      * @since  Method available since Release 3.4.0
      */
-    public static function getOutputBuffering($classDocComment, $methodDocComment)
+    public static function getBackupSettings($classDocComment, $methodDocComment)
     {
-        $outputBuffering = NULL;
+        return array(
+          'backupGlobals' => self::getSettings(
+            $classDocComment, $methodDocComment, self::REGEX_BACKUP_GLOBALS
+          ),
+          'backupStaticAttributes' => self::getSettings(
+            $classDocComment, $methodDocComment, self::REGEX_BACKUP_STATIC_ATTRIBUTES
+          )
+        );
+    }
 
-        if (preg_match(self::REGEX_USE_OUTPUT_BUFFERING, $classDocComment, $matches)) {
+    /**
+     * Returns the output buffering settings for a test.
+     *
+     * @param  string $classDocComment
+     * @param  string $methodDocComment
+     * @return boolean
+     * @since  Method available since Release 3.4.0
+     */
+    public static function getOutputBufferingSettings($classDocComment, $methodDocComment)
+    {
+        return self::getSettings(
+          $classDocComment, $methodDocComment, self::REGEX_USE_OUTPUT_BUFFERING
+        );
+    }
+
+    /**
+     * @param  string $classDocComment
+     * @param  string $methodDocComment
+     * @return boolean
+     * @since  Method available since Release 3.4.0
+     */
+    private static function getSettings($classDocComment, $methodDocComment, $regex)
+    {
+        $result = NULL;
+
+        if (preg_match($regex, $classDocComment, $matches)) {
             if ($matches[1] == 'enabled') {
-                $outputBuffering = TRUE;
+                $result = TRUE;
             }
 
             else if ($matches[1] == 'disabled') {
-                $outputBuffering = FALSE;
+                $result = FALSE;
             }
         }
 
-        if (preg_match(self::REGEX_USE_OUTPUT_BUFFERING, $methodDocComment, $matches)) {
+        if (preg_match($regex, $methodDocComment, $matches)) {
             if ($matches[1] == 'enabled') {
-                $outputBuffering = TRUE;
+                $result = TRUE;
             }
 
             else if ($matches[1] == 'disabled') {
-                $outputBuffering = FALSE;
+                $result = FALSE;
             }
         }
 
-        return $outputBuffering;
+        return $result;
     }
 
     /**
