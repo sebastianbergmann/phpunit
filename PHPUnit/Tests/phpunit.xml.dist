@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<phpunit>
+<phpunit backupGlobals="false"
+         backupStaticAttributes="false"
+         syntaxCheck="false">
   <php>
     <var name="PHPUNIT_TESTSUITE_EXTENSION_SELENIUM_ENABLED"
          value="false"/>
