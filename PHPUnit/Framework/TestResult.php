@@ -748,6 +748,17 @@ class PHPUnit_Framework_TestResult implements Countable
     }
 
     /**
+     * Returns the error-to-exception conversion setting.
+     *
+     * @return boolean
+     * @since  Method available since Release 3.4.0
+     */
+    public function getConvertErrorsToExceptions()
+    {
+        return $this->convertErrorsToExceptions;
+    }
+
+    /**
      * Enables or disables the stopping when a failure or error occurs.
      *
      * @param  boolean $flag

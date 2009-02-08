@@ -67,6 +67,7 @@ class PHPUnit_Util_Test
     const REGEX_COVERS                   = '/@covers[\s]+([\!<>\:\.\w]+)([\s]+<extended>)?/';
     const REGEX_DATA_PROVIDER            = '/@dataProvider\s+([a-zA-Z0-9._:-\\\]+)/';
     const REGEX_DEPENDS                  = '/@depends\s+([a-zA-Z0-9._:-\\\]+)/';
+    const REGEX_USE_ERROR_HANDLER        = '/@errorHandler\s+([a-zA-Z0-9._-]+)/';
     const REGEX_EXPECTED_EXCEPTION       = '(@expectedException\s+([:.\w\\\]+)(?:[\t ]+(\S*))?(?:[\t ]+(\S*))?\s*$)m';
     const REGEX_GROUP                    = '/@group\s+([a-zA-Z0-9._-]+)/';
     const REGEX_USE_OUTPUT_BUFFERING     = '/@outputBuffering\s+([a-zA-Z0-9._-]+)/';
@@ -330,6 +331,21 @@ class PHPUnit_Util_Test
           'backupStaticAttributes' => self::getSettings(
             $classDocComment, $methodDocComment, self::REGEX_BACKUP_STATIC_ATTRIBUTES
           )
+        );
+    }
+
+    /**
+     * Returns the error handler settings for a test.
+     *
+     * @param  string $classDocComment
+     * @param  string $methodDocComment
+     * @return boolean
+     * @since  Method available since Release 3.4.0
+     */
+    public static function getErrorHandlerSettings($classDocComment, $methodDocComment)
+    {
+        return self::getSettings(
+          $classDocComment, $methodDocComment, self::REGEX_USE_ERROR_HANDLER
         );
     }
 
