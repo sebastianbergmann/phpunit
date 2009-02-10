@@ -108,23 +108,9 @@ class PHPUnit_Util_Log_CodeCoverage_XML_Clover extends PHPUnit_Util_Printer
         );
 
         foreach ($files as $filename => $data) {
-            $fileStatistics = array(
-              'classes'             => 0,
-              'methods'             => 0,
-              'coveredMethods'      => 0,
-              'conditionals'        => 0,
-              'coveredConditionals' => 0,
-              'statements'          => 0,
-              'coveredStatements'   => 0
-            );
-
-            $file = $document->createElement('file');
-            $file->setAttribute('name', $filename);
-
-            $lines = array();
-
-            foreach (PHPUnit_Util_File::getClassesInFile($filename) as $className => $_class) {
-                $classStatistics = array(
+            if (file_exists($filename)) {
+                $fileStatistics = array(
+                  'classes'             => 0,
                   'methods'             => 0,
                   'coveredMethods'      => 0,
                   'conditionals'        => 0,
@@ -133,113 +119,127 @@ class PHPUnit_Util_Log_CodeCoverage_XML_Clover extends PHPUnit_Util_Printer
                   'coveredStatements'   => 0
                 );
 
-                foreach ($_class['methods'] as $methodName => $method) {
-                    $classStatistics['methods']++;
+                $file = $document->createElement('file');
+                $file->setAttribute('name', $filename);
 
-                    $methodCount = 0;
+                $lines = array();
 
-                    for ($i = $method['startLine']; $i <= $method['endLine']; $i++) {
-                        $add   = TRUE;
-                        $count = 0;
+                foreach (PHPUnit_Util_File::getClassesInFile($filename) as $className => $_class) {
+                    $classStatistics = array(
+                      'methods'             => 0,
+                      'coveredMethods'      => 0,
+                      'conditionals'        => 0,
+                      'coveredConditionals' => 0,
+                      'statements'          => 0,
+                      'coveredStatements'   => 0
+                    );
 
-                        if (isset($files[$filename][$i])) {
-                            if ($files[$filename][$i] != -2) {
-                                $classStatistics['statements']++;
-                            }
+                    foreach ($_class['methods'] as $methodName => $method) {
+                        $classStatistics['methods']++;
 
-                            if (is_array($files[$filename][$i])) {
-                                $classStatistics['coveredStatements']++;
-                                $count = count($files[$filename][$i]);
-                                $classStatistics['coveredMethods']++;
-                            }
+                        $methodCount = 0;
 
-                            else if ($files[$filename][$i] == -2) {
+                        for ($i = $method['startLine']; $i <= $method['endLine']; $i++) {
+                            $add   = TRUE;
+                            $count = 0;
+
+                            if (isset($files[$filename][$i])) {
+                                if ($files[$filename][$i] != -2) {
+                                    $classStatistics['statements']++;
+                                }
+
+                                if (is_array($files[$filename][$i])) {
+                                    $classStatistics['coveredStatements']++;
+                                    $count = count($files[$filename][$i]);
+                                    $classStatistics['coveredMethods']++;
+                                }
+
+                                else if ($files[$filename][$i] == -2) {
+                                    $add = FALSE;
+                                }
+                            } else {
                                 $add = FALSE;
                             }
-                        } else {
-                            $add = FALSE;
+
+                            $methodCount = max($methodCount, $count);
+
+                            if ($add) {
+                                $lines[$i] = array(
+                                  'count' => $count,
+                                  'type'  => 'stmt'
+                                );
+                            }
                         }
 
-                        $methodCount = max($methodCount, $count);
-
-                        if ($add) {
-                            $lines[$i] = array(
-                              'count' => $count,
-                              'type'  => 'stmt'
-                            );
-                        }
+                        $lines[$method['startLine']] = array(
+                          'count' => $methodCount,
+                          'type'  => 'method'
+                        );
                     }
 
-                    $lines[$method['startLine']] = array(
-                      'count' => $methodCount,
-                      'type'  => 'method'
+                    $packageInformation = PHPUnit_Util_Class::getPackageInformation(
+                      $className, $_class['docComment']
                     );
+
+                    if (!empty($packageInformation['namespace'])) {
+                        $namespace = $packageInformation['namespace'];
+                    } else {
+                        $namespace = 'global';
+                    }
+
+                    $class = $document->createElement('class');
+                    $class->setAttribute('name', $className);
+                    $class->setAttribute('namespace', $namespace);
+
+                    if (!empty($packageInformation['fullPackage'])) {
+                        $class->setAttribute('fullPackage', $packageInformation['fullPackage']);
+                    }
+
+                    if (!empty($packageInformation['category'])) {
+                        $class->setAttribute('category', $packageInformation['category']);
+                    }
+
+                    if (!empty($packageInformation['package'])) {
+                        $class->setAttribute('package', $packageInformation['package']);
+                    }
+
+                    if (!empty($packageInformation['subpackage'])) {
+                        $class->setAttribute('subpackage', $packageInformation['subpackage']);
+                    }
+
+                    $file->appendChild($class);
+
+                    $metrics = $document->createElement('metrics');
+                    $metrics->setAttribute('methods', $classStatistics['methods']);
+                    $metrics->setAttribute('coveredmethods', $classStatistics['coveredMethods']);
+                    //$metrics->setAttribute('conditionals', $classStatistics['conditionals']);
+                    //$metrics->setAttribute('coveredconditionals', $classStatistics['coveredConditionals']);
+                    $metrics->setAttribute('statements', $classStatistics['statements']);
+                    $metrics->setAttribute('coveredstatements', $classStatistics['coveredStatements']);
+                    $metrics->setAttribute('elements', $classStatistics['conditionals'] + $classStatistics['statements'] + $classStatistics['methods']);
+                    $metrics->setAttribute('coveredelements', $classStatistics['coveredConditionals'] + $classStatistics['coveredStatements'] + $classStatistics['coveredMethods']);
+                    $class->appendChild($metrics);
+
+                    $fileStatistics['methods']             += $classStatistics['methods'];
+                    $fileStatistics['coveredMethods']      += $classStatistics['coveredMethods'];
+                    $fileStatistics['conditionals']        += $classStatistics['conditionals'];
+                    $fileStatistics['coveredConditionals'] += $classStatistics['coveredConditionals'];
+                    $fileStatistics['statements']          += $classStatistics['statements'];
+                    $fileStatistics['coveredStatements']   += $classStatistics['coveredStatements'];
+                    $fileStatistics['classes']++;
                 }
 
-                $packageInformation = PHPUnit_Util_Class::getPackageInformation(
-                  $className, $_class['docComment']
-                );
+                ksort($lines);
 
-                if (!empty($packageInformation['namespace'])) {
-                    $namespace = $packageInformation['namespace'];
-                } else {
-                    $namespace = 'global';
+                foreach ($lines as $_line => $_data) {
+                    $line = $document->createElement('line');
+                    $line->setAttribute('num', $_line);
+                    $line->setAttribute('type', $_data['type']);
+                    $line->setAttribute('count', $_data['count']);
+
+                    $file->appendChild($line);
                 }
 
-                $class = $document->createElement('class');
-                $class->setAttribute('name', $className);
-                $class->setAttribute('namespace', $namespace);
-
-                if (!empty($packageInformation['fullPackage'])) {
-                    $class->setAttribute('fullPackage', $packageInformation['fullPackage']);
-                }
-
-                if (!empty($packageInformation['category'])) {
-                    $class->setAttribute('category', $packageInformation['category']);
-                }
-
-                if (!empty($packageInformation['package'])) {
-                    $class->setAttribute('package', $packageInformation['package']);
-                }
-
-                if (!empty($packageInformation['subpackage'])) {
-                    $class->setAttribute('subpackage', $packageInformation['subpackage']);
-                }
-
-                $file->appendChild($class);
-
-                $metrics = $document->createElement('metrics');
-                $metrics->setAttribute('methods', $classStatistics['methods']);
-                $metrics->setAttribute('coveredmethods', $classStatistics['coveredMethods']);
-                //$metrics->setAttribute('conditionals', $classStatistics['conditionals']);
-                //$metrics->setAttribute('coveredconditionals', $classStatistics['coveredConditionals']);
-                $metrics->setAttribute('statements', $classStatistics['statements']);
-                $metrics->setAttribute('coveredstatements', $classStatistics['coveredStatements']);
-                $metrics->setAttribute('elements', $classStatistics['conditionals'] + $classStatistics['statements'] + $classStatistics['methods']);
-                $metrics->setAttribute('coveredelements', $classStatistics['coveredConditionals'] + $classStatistics['coveredStatements'] + $classStatistics['coveredMethods']);
-                $class->appendChild($metrics);
-
-                $fileStatistics['methods']             += $classStatistics['methods'];
-                $fileStatistics['coveredMethods']      += $classStatistics['coveredMethods'];
-                $fileStatistics['conditionals']        += $classStatistics['conditionals'];
-                $fileStatistics['coveredConditionals'] += $classStatistics['coveredConditionals'];
-                $fileStatistics['statements']          += $classStatistics['statements'];
-                $fileStatistics['coveredStatements']   += $classStatistics['coveredStatements'];
-                $fileStatistics['classes']++;
-            }
-
-            ksort($lines);
-
-            foreach ($lines as $_line => $_data) {
-                $line = $document->createElement('line');
-                $line->setAttribute('num', $_line);
-                $line->setAttribute('type', $_data['type']);
-                $line->setAttribute('count', $_data['count']);
-
-                $file->appendChild($line);
-            }
-
-            if (file_exists($filename)) {
                 $count = PHPUnit_Util_File::countLines($filename);
 
                 $metrics = $document->createElement('metrics');
