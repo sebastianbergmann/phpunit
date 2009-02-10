@@ -182,6 +182,11 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
     /**
      * @var    boolean
      */
+    protected $useErrorHandler = NULL;
+
+    /**
+     * @var    boolean
+     */
     protected $useOutputBuffering = NULL;
 
     /**
@@ -401,6 +406,40 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
     }
 
     /**
+     * @param boolean $useErrorHandler
+     * @since Method available since Release 3.4.0
+     */
+    public function setUseErrorHandler($useErrorHandler)
+    {
+        $this->useErrorHandler = $useErrorHandler;
+    }
+
+    /**
+     * @since Method available since Release 3.4.0
+     */
+    protected function setUseErrorHandlerFromAnnotation()
+    {
+        try {
+            $className        = get_class($this);
+            $class            = new ReflectionClass($className);
+            $classDocComment  = $class->getDocComment();
+            $method           = new ReflectionMethod($className, $this->name);
+            $methodDocComment = $method->getDocComment();
+
+            $useErrorHandler = PHPUnit_Util_Test::getErrorHandlerSettings(
+              $classDocComment, $methodDocComment
+            );
+
+            if ($useErrorHandler !== NULL) {
+                $this->setUseErrorHandler($useErrorHandler);
+            }
+        }
+
+        catch (ReflectionException $e) {
+        }
+    }
+
+    /**
      * @param boolean $useOutputBuffering
      * @since Method available since Release 3.4.0
      */
@@ -485,7 +524,13 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
         }
 
         $this->setExpectedExceptionFromAnnotation();
+        $this->setUseErrorHandlerFromAnnotation();
         $this->setUseOutputBufferingFromAnnotation();
+
+        if ($this->useErrorHandler !== NULL) {
+            $oldErrorHandlerSetting = $result->getConvertErrorsToExceptions();
+            $result->convertErrorsToExceptions($this->useErrorHandler);
+        }
 
         $this->result = $result;
 
@@ -573,6 +618,10 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
             $result->endTest($this, $time);
         } else {
             $result->run($this);
+        }
+
+        if ($this->useErrorHandler !== NULL) {
+            $result->convertErrorsToExceptions($oldErrorHandlerSetting);
         }
 
         $this->result = NULL;
