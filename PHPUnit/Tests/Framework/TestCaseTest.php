@@ -218,6 +218,9 @@ class Framework_TestCaseTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(1, count($result));
     }
 
+    /**
+     * @backupGlobals enabled
+     */
     public function testGlobalsBackupPre()
     {
         global $a;
@@ -280,6 +283,10 @@ class Framework_TestCaseTest extends PHPUnit_Framework_TestCase
         $this->assertArrayNotHasKey('foo', $GLOBALS);
     }
 
+    /**
+     * @backupGlobals enabled
+     * @backupStaticAttributes enabled
+     */
     public function testStaticAttributesBackupPre()
     {
         $GLOBALS['singleton'] = Singleton::getInstance();
