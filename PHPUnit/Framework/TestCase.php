@@ -343,6 +343,19 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
     }
 
     /**
+     * Returns the annotations for this test.
+     *
+     * @return array
+     * @since Method available since Release 3.4.0
+     */
+    public function getAnnotations()
+    {
+        return PHPUnit_Util_Test::parseTestMethodAnnotations(
+          get_class($this), $this->name
+        );
+    }
+
+    /**
      * Gets the name of a TestCase.
      *
      * @param  boolean $withDataSet
@@ -417,14 +430,8 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
     protected function setUseErrorHandlerFromAnnotation()
     {
         try {
-            $className        = get_class($this);
-            $class            = new ReflectionClass($className);
-            $classDocComment  = $class->getDocComment();
-            $method           = new ReflectionMethod($className, $this->name);
-            $methodDocComment = $method->getDocComment();
-
             $useErrorHandler = PHPUnit_Util_Test::getErrorHandlerSettings(
-              $classDocComment, $methodDocComment
+              get_class($this), $this->name
             );
 
             if ($useErrorHandler !== NULL) {
@@ -451,14 +458,8 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
     protected function setUseOutputBufferingFromAnnotation()
     {
         try {
-            $className        = get_class($this);
-            $class            = new ReflectionClass($className);
-            $classDocComment  = $class->getDocComment();
-            $method           = new ReflectionMethod($className, $this->name);
-            $methodDocComment = $method->getDocComment();
-
             $useOutputBuffering = PHPUnit_Util_Test::getOutputBufferingSettings(
-              $classDocComment, $methodDocComment
+              get_class($this), $this->name
             );
 
             if ($useOutputBuffering !== NULL) {

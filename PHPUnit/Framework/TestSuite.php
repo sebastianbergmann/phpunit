@@ -229,23 +229,11 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
             return;
         }
 
-        $className         = $theClass->getName();
-        $classDocComment   = $theClass->getDocComment();
-        $names             = array();
-        $classGroups       = PHPUnit_Util_Test::getGroups($classDocComment);
-        $classDependencies = PHPUnit_Util_Test::getDependencies($classDocComment);
+        $names = array();
 
         foreach ($theClass->getMethods() as $method) {
             if (strpos($method->getDeclaringClass()->getName(), 'PHPUnit_') !== 0) {
-                $methodDocComment = $method->getDocComment();
-
-                $this->addTestMethod(
-                  $theClass,
-                  $method,
-                  PHPUnit_Util_Test::getDependencies($methodDocComment, $classDependencies),
-                  PHPUnit_Util_Test::getGroups($methodDocComment, $classGroups),
-                  $names
-                );
+                $this->addTestMethod($theClass, $method, $names);
             }
         }
 
@@ -489,7 +477,7 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
         $method                   = new ReflectionMethod($className, $name);
         $methodDocComment         = $method->getDocComment();
         $runTestInSeparateProcess = FALSE;
-        $backupSettings           = PHPUnit_Util_Test::getBackupSettings($classDocComment, $methodDocComment);
+        $backupSettings           = PHPUnit_Util_Test::getBackupSettings($className, $name);
 
         if (!$theClass->isInstantiable()) {
             return self::warning(
@@ -516,8 +504,7 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
 
             // TestCase($name, $data)
             else {
-                $data   = PHPUnit_Util_Test::getProvidedData($className, $name, $methodDocComment);
-                $groups = PHPUnit_Util_Test::getGroups($methodDocComment, $classGroups);
+                $data = PHPUnit_Util_Test::getProvidedData($className, $name);
 
                 if (is_array($data) || $data instanceof Iterator) {
                     $test = new PHPUnit_Framework_TestSuite(
@@ -526,7 +513,8 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
 
                     foreach ($data as $_dataName => $_data) {
                         $test->addTest(
-                          new $className($name, $_data, $_dataName), $groups
+                          new $className($name, $_data, $_dataName),
+                          PHPUnit_Util_Test::getGroups($className, $name)
                         );
 
                         if ($runTestInSeparateProcess) {
@@ -769,11 +757,9 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
     /**
      * @param  ReflectionClass  $class
      * @param  ReflectionMethod $method
-     * @param  array            $dependencies
-     * @param  array            $groups
      * @param  array            $names
      */
-    protected function addTestMethod(ReflectionClass $class, ReflectionMethod $method, array $dependencies, array $groups, array &$names)
+    protected function addTestMethod(ReflectionClass $class, ReflectionMethod $method, array &$names)
     {
         $name = $method->getName();
 
@@ -784,15 +770,15 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
         if ($this->isPublicTestMethod($method)) {
             $names[] = $name;
 
-            $test = self::createTest($class, $name, $groups);
+            $test = self::createTest($class, $name);
 
             if (!$test instanceof PHPUnit_Framework_TestSuite) {
                 $test->setDependencies(
-                  PHPUnit_Util_Test::getDependencies($method->getDocComment(), $dependencies)
+                  PHPUnit_Util_Test::getDependencies($class->getName(), $name)
                 );
             }
 
-            $this->addTest($test, $groups);
+            $this->addTest($test, PHPUnit_Util_Test::getGroups($class->getName(), $name));
         }
 
         else if ($this->isTestMethod($method)) {
