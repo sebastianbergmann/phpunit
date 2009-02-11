@@ -71,7 +71,7 @@ abstract class PHPUnit_Util_CodeCoverage
      *
      * @param  array $data
      * @return array
-     * @since  Method available since Release 3.4.0
+     * @since  Method available since Release 3.3.15
      */
     public static function getExecutedLines(array $data)
     {
@@ -83,7 +83,7 @@ abstract class PHPUnit_Util_CodeCoverage
      *
      * @param  array $data
      * @return array
-     * @since  Method available since Release 3.4.0
+     * @since  Method available since Release 3.3.15
      */
     public static function getExecutableLines(array $data)
     {
@@ -95,7 +95,7 @@ abstract class PHPUnit_Util_CodeCoverage
      *
      * @param  array $data
      * @return array
-     * @since  Method available since Release 3.4.0
+     * @since  Method available since Release 3.3.15
      */
     public static function getNotExecutedLines(array $data)
     {
@@ -107,7 +107,7 @@ abstract class PHPUnit_Util_CodeCoverage
      *
      * @param  array $data
      * @return array
-     * @since  Method available since Release 3.4.0
+     * @since  Method available since Release 3.3.15
      */
     public static function getDeadLines(array $data)
     {
@@ -120,7 +120,7 @@ abstract class PHPUnit_Util_CodeCoverage
      * @param  array         $data
      * @param  array|integer $status
      * @return array
-     * @since  Method available since Release 3.4.0
+     * @since  Method available since Release 3.3.15
      */
     protected static function getLinesByStatus(array $data, $status)
     {
