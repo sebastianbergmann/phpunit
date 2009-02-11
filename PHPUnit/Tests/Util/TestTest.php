@@ -62,29 +62,6 @@ require_once 'PHPUnit/Util/Timer.php';
  */
 class Util_TestTest extends PHPUnit_Framework_TestCase
 {
-    public function testGetDependencies()
-    {
-        $this->assertEquals(
-          array('method'),
-          PHPUnit_Util_Test::getDependencies('@depends method')
-        );
-
-        $this->assertEquals(
-          array('class::method'),
-          PHPUnit_Util_Test::getDependencies('@depends class::method')
-        );
-
-        $this->assertEquals(
-          array('namespace\class::method'),
-          PHPUnit_Util_Test::getDependencies('@depends namespace\class::method')
-        );
-
-        $this->assertEquals(
-          array('namespace\namespace\class::method'),
-          PHPUnit_Util_Test::getDependencies('@depends namespace\namespace\class::method')
-        );
-    }
-
     public function testGetExpectedException()
     {
         $this->assertEquals(

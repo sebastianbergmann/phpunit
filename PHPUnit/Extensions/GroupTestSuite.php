@@ -89,11 +89,8 @@ class PHPUnit_Extensions_GroupTestSuite extends PHPUnit_Framework_TestSuite
 
         foreach ($tests as $test) {
             if ($test instanceof PHPUnit_Framework_TestCase) {
-                $class  = new ReflectionClass($test);
-                $method = $class->getMethod($test->getName(FALSE));
-
                 $testGroups = PHPUnit_Util_Test::getGroups(
-                  $method->getDocComment(), PHPUnit_Util_Test::getGroups($class)
+                  get_class($test), $test->getName(FALSE)
                 );
 
                 foreach ($groups as $group) {
