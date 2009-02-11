@@ -518,18 +518,16 @@ class PHPUnit_Framework_TestResult implements Countable
             $executableCode = array();
 
             foreach (array_keys($data) as $file) {
-                if (PHPUnit_Util_Filter::isFiltered($file, FALSE))
-                {
+                if (PHPUnit_Util_Filter::isFiltered($file, FALSE)) {
                     unset($data[$file]);
                 }
             }
 
             $newFilesToCollect = array_diff_key($data, PHPUnit_Util_Filter::getCoveredFiles());
 
-            if (sizeof($newFilesToCollect) > 0)
-            {
-                $deadCode       = PHPUnit_Util_CodeCoverage::codeCoverageToBitString($newFilesToCollect, array(-2));
-                $executableCode = PHPUnit_Util_CodeCoverage::codeCoverageToBitString($newFilesToCollect, array(-1, 1));
+            if (count($newFilesToCollect) > 0) {
+                $deadCode       = PHPUnit_Util_CodeCoverage::getDeadLines($newFilesToCollect);
+                $executableCode = PHPUnit_Util_CodeCoverage::getExecutableLines($newFilesToCollect);
 
                 foreach (array_keys($newFilesToCollect) as $file) {
                     PHPUnit_Util_Filter::addCoveredFile($file);
@@ -552,7 +550,7 @@ class PHPUnit_Framework_TestResult implements Countable
                 }
             }
 
-            $executed = PHPUnit_Util_CodeCoverage::codeCoverageToBitString($data, array(1));
+            $executed = PHPUnit_Util_CodeCoverage::getExecutedLines($data);
             unset($data);
 
             $this->codeCoverageInformation[] = array(
