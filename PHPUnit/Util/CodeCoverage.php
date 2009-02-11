@@ -67,26 +67,80 @@ abstract class PHPUnit_Util_CodeCoverage
     protected static $summary = array();
 
     /**
-     * Returns the names of the covered files.
+     * Returns only the executed lines.
      *
      * @param  array $data
      * @return array
+     * @since  Method available since Release 3.4.0
      */
-    public static function getCoveredFiles(array &$data)
+    public static function getExecutedLines(array $data)
     {
-        $files = array();
+        return self::getLinesByStatus($data, 1);
+    }
 
-        foreach ($data as $test) {
-            $_files = array_keys($test['files']);
+    /**
+     * Returns only the executable lines.
+     *
+     * @param  array $data
+     * @return array
+     * @since  Method available since Release 3.4.0
+     */
+    public static function getExecutableLines(array $data)
+    {
+        return self::getLinesByStatus($data, array(-1, 1));
+    }
 
-            foreach ($_files as $file) {
-                if (self::isFile($file) && !in_array($file, $files)) {
-                    $files[] = $file;
+    /**
+     * Returns only the lines that were not executed.
+     *
+     * @param  array $data
+     * @return array
+     * @since  Method available since Release 3.4.0
+     */
+    public static function getNotExecutedLines(array $data)
+    {
+        return self::getLinesByStatus($data, -1);
+    }
+
+    /**
+     * Returns only the dead code lines.
+     *
+     * @param  array $data
+     * @return array
+     * @since  Method available since Release 3.4.0
+     */
+    public static function getDeadLines(array $data)
+    {
+        return self::getLinesByStatus($data, -2);
+    }
+
+    /**
+     * Filters lines by status.
+     *
+     * @param  array         $data
+     * @param  array|integer $status
+     * @return array
+     * @since  Method available since Release 3.4.0
+     */
+    protected static function getLinesByStatus(array $data, $status)
+    {
+        if (!is_array($status)) {
+            $status = array($status);
+        }
+
+        $result = array();
+
+        foreach ($data as $file => $coverage) {
+            $result[$file] = array();
+
+            foreach ($coverage as $line => $_status) {
+                if (in_array($_status, $status)) {
+                    $result[$file][$line] = $_status;
                 }
             }
         }
 
-        return $files;
+        return $result;
     }
 
     /**
@@ -102,7 +156,7 @@ abstract class PHPUnit_Util_CodeCoverage
     {
         if (empty(self::$lineToTestMap) || $clear) {
             foreach ($data as $test) {
-                foreach (self::bitStringToCodeCoverage($test['files'], 1) as $_file => $lines) {
+                foreach ($test['files'] as $_file => $lines) {
                     foreach ($lines as $_line => $flag) {
                         if ($flag > 0) {
                             if (!isset(self::$lineToTestMap[$_file][$_line])) {
@@ -146,32 +200,6 @@ abstract class PHPUnit_Util_CodeCoverage
             $isFileCache = array();
 
             foreach ($data as $test) {
-                if (isset($test['dead'])) {
-                    $deadCode       = self::bitStringToCodeCoverage($test['dead'], -2);
-                    $executableCode = self::bitStringToCodeCoverage($test['executable'], -1);
-                    $executedCode   = self::bitStringToCodeCoverage($test['files'], 1);
-                    $keys           = array_merge(array_keys($deadCode), array_keys($executableCode), array_keys($executedCode));
-                    $tmp            = array();
-
-                    foreach ($keys as $file) {
-                        $tmp[$file] = array();
-
-                        if (isset($executedCode[$file])) {
-                            $tmp[$file] += $executedCode[$file];
-                        }
-
-                        if (isset($executableCode[$file])) {
-                            $tmp[$file] += $executableCode[$file];
-                        }
-
-                        if (isset($deadCode[$file])) {
-                            $tmp[$file] += $deadCode[$file];
-                        }
-                    }
-
-                    $test['files'] = $tmp;
-                }
-
                 foreach ($test['files'] as $file => $lines) {
                     if (!isset($isFileCache[$file])) {
                         $isFileCache[$file] = self::isFile($file);
@@ -181,27 +209,55 @@ abstract class PHPUnit_Util_CodeCoverage
                         continue;
                     }
 
-                    $fileSummary = &self::$summary[$file];
-
                     foreach ($lines as $line => $flag) {
-                        // +1: Line is executable and was executed.
                         if ($flag == 1) {
-                            if (isset($fileSummary[$line][0])) {
-                                $fileSummary[$line][] = $test['test'];
-                            }
-                            else {
-                                $fileSummary[$line] = array($test['test']);
+                            if (isset(self::$summary[$file][$line][0])) {
+                                self::$summary[$file][$line][] = $test['test'];
+                            } else {
+                                self::$summary[$file][$line] = array($test['test']);
                             }
                         }
 
-                        // -1: Line is executable and was not executed.
-                        // -2: Line is dead code.
-                        else if (!isset($fileSummary[$line])) {
-                            $fileSummary[$line] = $flag;
+                        else if (!isset(self::$summary[$file][$line])) {
+                            self::$summary[$file][$line] = $flag;
                         }
                     }
+                }
 
-                    unset($fileSummary);
+                foreach ($test['executable'] as $file => $lines) {
+                    if (!isset($isFileCache[$file])) {
+                        $isFileCache[$file] = self::isFile($file);
+                    }
+
+                    if (!$isFileCache[$file]) {
+                        continue;
+                    }
+
+                    foreach ($lines as $line => $flag) {
+                        if ($flag == 1 && !isset(self::$summary[$file][$line][0])) {
+                            self::$summary[$file][$line] = -1;
+                        }
+
+                        else if (!isset(self::$summary[$file][$line])) {
+                            self::$summary[$file][$line] = $flag;
+                        }
+                    }
+                }
+
+                foreach ($test['dead'] as $file => $lines) {
+                    if (!isset($isFileCache[$file])) {
+                        $isFileCache[$file] = self::isFile($file);
+                    }
+
+                    if (!$isFileCache[$file]) {
+                        continue;
+                    }
+
+                    foreach ($lines as $line => $flag) {
+                        if ($flag == -2 && !isset(self::$summary[$file][$line][0])) {
+                            self::$summary[$file][$line] = -2;
+                        }
+                    }
                 }
             }
         }
@@ -282,83 +338,6 @@ abstract class PHPUnit_Util_CodeCoverage
     public static function clearSummary()
     {
         self::$summary = array();
-    }
-
-    /**
-     *
-     *
-     * @param  array $data
-     * @param  array $requiredStatus
-     * @return array
-     * @since  Method available since Release 3.3.0
-     */
-    public static function codeCoverageToBitString(array $data, array $requiredStatus)
-    {
-        $result = array();
-
-        foreach ($data as $file => $coverage) {
-            if (empty($coverage)) {
-                continue;
-            }
-
-            $maxLine = max(array_keys($coverage));
-
-            if ($maxLine == 0) {
-                $bitArray = array();
-            } else {
-                $bitArray = array_fill(0, ceil($maxLine / 8), 0);
-            }
-
-            foreach ($coverage as $line => $status) {
-                if (!in_array($status, $requiredStatus)) {
-                    continue;
-                }
-
-                $line--;
-
-                $i             = ($line - ($line % 8)) / 8;
-                $bitArray[$i] |= 0x01 << ($line % 8);
-            }
-
-            if (isset($line)) {
-                $result[$file] = implode('', array_map('chr', $bitArray));
-            }
-        }
-
-        return $result;
-    }
-
-    /**
-     *
-     *
-     * @since  Method available since Release 3.3.0
-     */
-    public static function bitStringToCodeCoverage($strings, $status)
-    {
-        $result = array();
-
-        foreach ($strings as $file => $string) {
-            if (is_array($string)) {
-                return $strings;
-            }
-
-            $data   = array();
-            $length = strlen($string);
-
-            for ($i = 0; $i < $length; $i++) {
-                $ord = ord($string{$i});
-
-                for ($j = 0; $j < 8; $j++) {
-                    if ($ord & (0x01 << $j)) {
-                        $data[$i * 8 + $j + 1] = $status;
-                    }
-                }
-            }
-
-            $result[$file] = $data;
-        }
-
-        return $result;
     }
 }
 ?>
