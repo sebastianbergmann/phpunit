@@ -302,6 +302,8 @@ abstract class PHPUnit_Util_CodeCoverage
     }
 
     /**
+     * Checks whether a file (as seen by Xdebug) is actually a file.
+     *
      * @param  string $file
      * @return boolean
      */
@@ -318,7 +320,7 @@ abstract class PHPUnit_Util_CodeCoverage
     }
 
     /**
-     *
+     * Clears the cached summary information.
      *
      * @since  Method available since Release 3.3.0
      */
