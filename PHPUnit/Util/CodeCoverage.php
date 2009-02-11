@@ -128,9 +128,18 @@ abstract class PHPUnit_Util_CodeCoverage
             $status = array($status);
         }
 
-        $result = array();
+        $isFileCache = array();
+        $result      = array();
 
         foreach ($data as $file => $coverage) {
+            if (!isset($isFileCache[$file])) {
+                $isFileCache[$file] = self::isFile($file);
+            }
+
+            if (!$isFileCache[$file]) {
+                continue;
+            }
+
             $result[$file] = array();
 
             foreach ($coverage as $line => $_status) {
@@ -197,18 +206,8 @@ abstract class PHPUnit_Util_CodeCoverage
     public static function getSummary(array &$data, $clear = FALSE)
     {
         if (empty(self::$summary) || $clear) {
-            $isFileCache = array();
-
             foreach ($data as $test) {
                 foreach ($test['files'] as $file => $lines) {
-                    if (!isset($isFileCache[$file])) {
-                        $isFileCache[$file] = self::isFile($file);
-                    }
-
-                    if (!$isFileCache[$file]) {
-                        continue;
-                    }
-
                     foreach ($lines as $line => $flag) {
                         if ($flag == 1) {
                             if (isset(self::$summary[$file][$line][0])) {
@@ -224,38 +223,26 @@ abstract class PHPUnit_Util_CodeCoverage
                     }
                 }
 
-                foreach ($test['executable'] as $file => $lines) {
-                    if (!isset($isFileCache[$file])) {
-                        $isFileCache[$file] = self::isFile($file);
-                    }
+                if (isset($test['executable'])) {
+                    foreach ($test['executable'] as $file => $lines) {
+                        foreach ($lines as $line => $flag) {
+                            if ($flag == 1 && !isset(self::$summary[$file][$line][0])) {
+                                self::$summary[$file][$line] = -1;
+                            }
 
-                    if (!$isFileCache[$file]) {
-                        continue;
-                    }
-
-                    foreach ($lines as $line => $flag) {
-                        if ($flag == 1 && !isset(self::$summary[$file][$line][0])) {
-                            self::$summary[$file][$line] = -1;
-                        }
-
-                        else if (!isset(self::$summary[$file][$line])) {
-                            self::$summary[$file][$line] = $flag;
+                            else if (!isset(self::$summary[$file][$line])) {
+                                self::$summary[$file][$line] = $flag;
+                            }
                         }
                     }
                 }
 
-                foreach ($test['dead'] as $file => $lines) {
-                    if (!isset($isFileCache[$file])) {
-                        $isFileCache[$file] = self::isFile($file);
-                    }
-
-                    if (!$isFileCache[$file]) {
-                        continue;
-                    }
-
-                    foreach ($lines as $line => $flag) {
-                        if ($flag == -2 && !isset(self::$summary[$file][$line][0])) {
-                            self::$summary[$file][$line] = -2;
+                if (isset($test['dead'])) {
+                    foreach ($test['dead'] as $file => $lines) {
+                        foreach ($lines as $line => $flag) {
+                            if ($flag == -2 && !isset(self::$summary[$file][$line][0])) {
+                                self::$summary[$file][$line] = -2;
+                            }
                         }
                     }
                 }
