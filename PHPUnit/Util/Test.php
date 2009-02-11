@@ -62,15 +62,11 @@ PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
  */
 class PHPUnit_Util_Test
 {
-    const REGEX_BACKUP_GLOBALS           = '/@backupGlobals\s+([a-zA-Z0-9._-]+)/';
-    const REGEX_BACKUP_STATIC_ATTRIBUTES = '/@backupStaticAttributes\s+([a-zA-Z0-9._-]+)/';
     const REGEX_COVERS                   = '/@covers[\s]+([\!<>\:\.\w]+)([\s]+<extended>)?/';
     const REGEX_DATA_PROVIDER            = '/@dataProvider\s+([a-zA-Z0-9._:-\\\]+)/';
-    const REGEX_DEPENDS                  = '/@depends\s+([a-zA-Z0-9._:-\\\]+)/';
-    const REGEX_USE_ERROR_HANDLER        = '/@errorHandler\s+([a-zA-Z0-9._-]+)/';
     const REGEX_EXPECTED_EXCEPTION       = '(@expectedException\s+([:.\w\\\]+)(?:[\t ]+(\S*))?(?:[\t ]+(\S*))?\s*$)m';
-    const REGEX_GROUP                    = '/@group\s+([a-zA-Z0-9._-]+)/';
-    const REGEX_USE_OUTPUT_BUFFERING     = '/@outputBuffering\s+([a-zA-Z0-9._-]+)/';
+
+    private static $annotationCache = array();
 
     /**
      * @param  PHPUnit_Framework_Test $test
@@ -199,23 +195,6 @@ class PHPUnit_Util_Test
     }
 
     /**
-     * Returns the dependencies for a test class or method.
-     *
-     * @param  string $docComment
-     * @param  array  $dependencies
-     * @return array
-     * @since  Method available since Release 3.4.0
-     */
-    public static function getDependencies($docComment, array $dependencies = array())
-    {
-        if (preg_match_all(self::REGEX_DEPENDS, $docComment, $matches)) {
-            $dependencies = array_unique(array_merge($dependencies, $matches[1]));
-        }
-
-        return $dependencies;
-    }
-
-    /**
      * Returns the expected exception for a test.
      *
      * @param  string $docComment
@@ -246,33 +225,20 @@ class PHPUnit_Util_Test
     }
 
     /**
-     * Returns the groups for a test class or method.
-     *
-     * @param  string $docComment
-     * @param  array  $groups
-     * @return array
-     * @since  Method available since Release 3.2.0
-     */
-    public static function getGroups($docComment, array $groups = array())
-    {
-        if (preg_match_all(self::REGEX_GROUP, $docComment, $matches)) {
-            $groups = array_unique(array_merge($groups, $matches[1]));
-        }
-
-        return $groups;
-    }
-
-    /**
      * Returns the provided data for a method.
      *
      * @param  string $className
      * @param  string $methodName
      * @param  string $docComment
      * @return array
+     * @throws ReflectionException
      * @since  Method available since Release 3.2.0
      */
-    public static function getProvidedData($className, $methodName, $docComment)
+    public static function getProvidedData($className, $methodName)
     {
+        $reflector  = new ReflectionMethod($className, $methodName);
+        $docComment = $reflector->getDocComment();
+
         if (preg_match(self::REGEX_DATA_PROVIDER, $docComment, $matches)) {
             try {
                 $dataProviderMethodNameNamespace = explode('\\', $matches[1]);
@@ -312,89 +278,6 @@ class PHPUnit_Util_Test
             catch (ReflectionException $e) {
             }
         }
-    }
-
-    /**
-     * Returns the backup settings for a test.
-     *
-     * @param  string $classDocComment
-     * @param  string $methodDocComment
-     * @return array
-     * @since  Method available since Release 3.4.0
-     */
-    public static function getBackupSettings($classDocComment, $methodDocComment)
-    {
-        return array(
-          'backupGlobals' => self::getSettings(
-            $classDocComment, $methodDocComment, self::REGEX_BACKUP_GLOBALS
-          ),
-          'backupStaticAttributes' => self::getSettings(
-            $classDocComment, $methodDocComment, self::REGEX_BACKUP_STATIC_ATTRIBUTES
-          )
-        );
-    }
-
-    /**
-     * Returns the error handler settings for a test.
-     *
-     * @param  string $classDocComment
-     * @param  string $methodDocComment
-     * @return boolean
-     * @since  Method available since Release 3.4.0
-     */
-    public static function getErrorHandlerSettings($classDocComment, $methodDocComment)
-    {
-        return self::getSettings(
-          $classDocComment, $methodDocComment, self::REGEX_USE_ERROR_HANDLER
-        );
-    }
-
-    /**
-     * Returns the output buffering settings for a test.
-     *
-     * @param  string $classDocComment
-     * @param  string $methodDocComment
-     * @return boolean
-     * @since  Method available since Release 3.4.0
-     */
-    public static function getOutputBufferingSettings($classDocComment, $methodDocComment)
-    {
-        return self::getSettings(
-          $classDocComment, $methodDocComment, self::REGEX_USE_OUTPUT_BUFFERING
-        );
-    }
-
-    /**
-     * @param  string $classDocComment
-     * @param  string $methodDocComment
-     * @return boolean
-     * @since  Method available since Release 3.4.0
-     */
-    private static function getSettings($classDocComment, $methodDocComment, $regex)
-    {
-        $result = NULL;
-
-        if (preg_match($regex, $classDocComment, $matches)) {
-            if ($matches[1] == 'enabled') {
-                $result = TRUE;
-            }
-
-            else if ($matches[1] == 'disabled') {
-                $result = FALSE;
-            }
-        }
-
-        if (preg_match($regex, $methodDocComment, $matches)) {
-            if ($matches[1] == 'enabled') {
-                $result = TRUE;
-            }
-
-            else if ($matches[1] == 'disabled') {
-                $result = FALSE;
-            }
-        }
-
-        return $result;
     }
 
     /**
@@ -473,6 +356,184 @@ class PHPUnit_Util_Test
         }
 
         return $codeToCoverList;
+    }
+
+    /**
+     * @param  string $className
+     * @param  string $methodName
+     * @return array
+     * @throws ReflectionException
+     * @since  Method available since Release 3.4.0
+     */
+    public static function parseTestMethodAnnotations($className, $methodName)
+    {
+        if (!isset(self::$annotationCache[$className])) {
+            $class = new ReflectionClass($className);
+            self::$annotationCache[$className] = self::parseAnnotations($class->getDocComment());
+        }
+
+        if (!isset(self::$annotationCache[$className . '::' . $methodName])) {
+            $method = new ReflectionMethod($className, $methodName);
+            self::$annotationCache[$className . '::' . $methodName] = self::parseAnnotations($method->getDocComment());
+        }
+
+        return array(
+          'class'  => self::$annotationCache[$className],
+          'method' => self::$annotationCache[$className . '::' . $methodName]
+        );
+    }
+
+    /**
+     * @param  string $docblock
+     * @return array
+     * @since  Method available since Release 3.4.0
+     */
+    private static function parseAnnotations($docblock)
+    {
+        $annotations = array();
+
+        if (preg_match_all('(@(?P<name>[A-Za-z_-]+)\s+(?P<value>.*?)\s*$)m', $docblock, $matches)) {
+            $numMatches = count($matches[0]);
+
+            for ($i = 0; $i < $numMatches; ++$i) {
+                $annotations[$matches['name'][$i]][] = $matches['value'][$i];
+            }
+        }
+
+        return $annotations;
+    }
+
+    /**
+     * Returns the backup settings for a test.
+     *
+     * @param  string $className
+     * @param  string $methodName
+     * @return array
+     * @since  Method available since Release 3.4.0
+     */
+    public static function getBackupSettings($className, $methodName)
+    {
+        return array(
+          'backupGlobals' => self::getBooleanAnnotationSetting(
+            $className, $methodName, 'backupGlobals'
+          ),
+          'backupStaticAttributes' => self::getBooleanAnnotationSetting(
+            $className, $methodName, 'backupStaticAttributes'
+          )
+        );
+    }
+
+    /**
+     * Returns the dependencies for a test class or method.
+     *
+     * @param  string $className
+     * @param  string $methodName
+     * @return array
+     * @since  Method available since Release 3.4.0
+     */
+    public static function getDependencies($className, $methodName)
+    {
+        $annotations  = self::parseTestMethodAnnotations($className, $methodName);
+        $dependencies = array();
+
+        if (isset($annotations['class']['depends'])) {
+            $dependencies = $annotations['class']['depends'];
+        }
+
+        if (isset($annotations['method']['depends'])) {
+            $dependencies = array_merge($dependencies, $annotations['method']['depends']);
+        }
+
+        return array_unique($dependencies);
+    }
+
+    /**
+     * Returns the error handler settings for a test.
+     *
+     * @param  string $className
+     * @param  string $methodName
+     * @return boolean
+     * @since  Method available since Release 3.4.0
+     */
+    public static function getErrorHandlerSettings($className, $methodName)
+    {
+        return self::getBooleanAnnotationSetting(
+          $className, $methodName, 'errorHandler'
+        );
+    }
+
+    /**
+     * Returns the groups for a test class or method.
+     *
+     * @param  string $className
+     * @param  string $methodName
+     * @return array
+     * @since  Method available since Release 3.2.0
+     */
+    public static function getGroups($className, $methodName)
+    {
+        $annotations = self::parseTestMethodAnnotations($className, $methodName);
+        $groups      = array();
+
+        if (isset($annotations['class']['group'])) {
+            $groups = $annotations['class']['group'];
+        }
+
+        if (isset($annotations['method']['group'])) {
+            $groups = array_merge($groups, $annotations['method']['group']);
+        }
+
+        return array_unique($groups);
+    }
+
+    /**
+     * Returns the output buffering settings for a test.
+     *
+     * @param  string $className
+     * @param  string $methodName
+     * @return boolean
+     * @since  Method available since Release 3.4.0
+     */
+    public static function getOutputBufferingSettings($className, $methodName)
+    {
+        return self::getBooleanAnnotationSetting(
+          $className, $methodName, 'outputBuffering'
+        );
+    }
+
+    /**
+     * @param  string $className
+     * @param  string $methodName
+     * @param  string $settingName
+     * @return boolean
+     * @since  Method available since Release 3.4.0
+     */
+    private static function getBooleanAnnotationSetting($className, $methodName, $settingName)
+    {
+        $annotations = self::parseTestMethodAnnotations($className, $methodName);
+        $result      = NULL;
+
+        if (isset($annotations['class'][$settingName])) {
+            if ($annotations['class'][$settingName][0] == 'enabled') {
+                $result = TRUE;
+            }
+
+            else if ($annotations['class'][$settingName][0] == 'disabled') {
+                $result = FALSE;
+            }
+        }
+
+        if (isset($annotations['method'][$settingName])) {
+            if ($annotations['method'][$settingName][0] == 'enabled') {
+                $result = TRUE;
+            }
+
+            else if ($annotations['method'][$settingName][0] == 'disabled') {
+                $result = FALSE;
+            }
+        }
+
+        return $result;
     }
 }
 ?>
