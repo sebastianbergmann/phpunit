@@ -136,8 +136,8 @@ class PHPUnit_Extensions_Database_DB_MetaData_Oci extends PHPUnit_Extensions_Dat
 
         if (!empty($tableParts['schema']))
         {
-            $ownerQuery = " AND OWNER = '{$schema}'";
-            $conOwnerQuery = " AND a.owner = '{$schema}'";
+            $ownerQuery = " AND OWNER = '{$tableParts['schema']}'";
+            $conOwnerQuery = " AND a.owner = '{$tableParts['schema']}'";
         }
 
         $query = "SELECT DISTINCT COLUMN_NAME
