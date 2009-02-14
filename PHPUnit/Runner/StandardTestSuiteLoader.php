@@ -80,6 +80,8 @@ class PHPUnit_Runner_StandardTestSuiteLoader implements PHPUnit_Runner_TestSuite
             $suiteClassFile = str_replace(array('_', '\\'), DIRECTORY_SEPARATOR, $suiteClassName) . '.php';
         }
 
+        $suiteClassFile = realpath($suiteClassFile);
+
         if (!class_exists($suiteClassName, FALSE)) {
             if (!file_exists($suiteClassFile)) {
                 $includePaths = explode(PATH_SEPARATOR, get_include_path());
@@ -114,17 +116,19 @@ class PHPUnit_Runner_StandardTestSuiteLoader implements PHPUnit_Runner_TestSuite
             foreach ($loadedClasses as $loadedClass) {
                 $class = new ReflectionClass($loadedClass);
 
-                if ($class->isSubclassOf('PHPUnit_Framework_TestCase')) {
-                    $suiteClassName = $loadedClass;
-                    break;
-                }
-
-                if ($class->hasMethod('suite')) {
-                    $method = $class->getMethod('suite');
-
-                    if (!$method->isAbstract() && $method->isPublic() && $method->isStatic()) {
+                if ($class->getFileName() == $suiteClassFile) {
+                    if ($class->isSubclassOf('PHPUnit_Framework_TestCase')) {
                         $suiteClassName = $loadedClass;
                         break;
+                    }
+
+                    if ($class->hasMethod('suite')) {
+                        $method = $class->getMethod('suite');
+
+                        if (!$method->isAbstract() && $method->isPublic() && $method->isStatic()) {
+                            $suiteClassName = $loadedClass;
+                            break;
+                        }
                     }
                 }
             }
