@@ -881,6 +881,30 @@ abstract class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_Tes
     }
 
     /**
+     * Asserts that an element's value contains a given string.
+     *
+     * @param  string $locator
+     * @param  string $text
+     * @param  string $message
+     */
+    public function assertElementValueContains($locator, $text, $message = '')
+    {
+        $this->assertContains($text, $this->getValue($locator), $message);
+    }
+
+    /**
+     * Asserts that an element's value does not contain a given string.
+     *
+     * @param  string $locator
+     * @param  string $text
+     * @param  string $message
+     */
+    public function assertElementValueNotContains($locator, $text, $message = '')
+    {
+        $this->assertNotContains($text, $this->getValue($locator), $message);
+    }
+
+    /**
      * Asserts that an element contains a given string.
      *
      * @param  string $locator
@@ -889,7 +913,7 @@ abstract class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_Tes
      */
     public function assertElementContainsText($locator, $text, $message = '')
     {
-        $this->assertContains($text, $this->getValue($locator), $message);
+        $this->assertContains($text, $this->getText($locator), $message);
     }
 
     /**
@@ -901,7 +925,7 @@ abstract class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_Tes
      */
     public function assertElementNotContainsText($locator, $text, $message = '')
     {
-        $this->assertNotContains($text, $this->getValue($locator), $message);
+        $this->assertNotContains($text, $this->getText($locator), $message);
     }
 
     /**
