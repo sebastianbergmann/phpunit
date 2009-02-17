@@ -221,38 +221,37 @@ class PHPUnit_Util_XML
      * @param  array $hash
      * @param  array $validKeys
      * @return array
+     * @throws InvalidArgumentException
      * @since  Method available since Release 3.3.0
      * @author Mike Naberezny <mike@maintainable.com>
      * @author Derek DeVries <derek@maintainable.com>
      */
-    public static function assertValidKeys($hash, $validKeys)
+    public static function assertValidKeys(array $hash, array $validKeys)
     {
-        // $hash must be an array
-        if ( !is_array($hash)) {
-            throw new InvalidArgumentException(
-              'Expected array, got ' . gettype($hash)
-            );
-        }
+        $valids = array();
 
-        // normalize validation keys so that we can use both key/associative arrays
+        // Normalize validation keys so that we can use both indexed and
+        // associative arrays.
         foreach ($validKeys as $key => $val) {
             is_int($key) ? $valids[$val] = NULL : $valids[$key] = $val;
         }
 
-        // check for invalid keys
+        $validKeys = array_keys($valids);
+
+        // Check for invalid keys.
         foreach ($hash as $key => $value) {
-            if (!in_array($key, array_keys($valids))) {
+            if (!in_array($key, $validKeys)) {
                 $unknown[] = $key;
             }
         }
 
         if (!empty($unknown)) {
             throw new InvalidArgumentException(
-              'Unknown key(s): '.implode(', ', $unknown)
+              'Unknown key(s): ' . implode(', ', $unknown)
             );
         }
 
-        // add default values for any valid keys that are empty
+        // Add default values for any valid keys that are empty.
         foreach ($valids as $key => $value) {
             if (!isset($hash[$key])) {
               $hash[$key] = $value;

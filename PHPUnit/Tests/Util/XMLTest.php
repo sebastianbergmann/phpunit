@@ -136,20 +136,6 @@ class Util_XMLTest extends PHPUnit_Framework_TestCase
         }
     }
 
-    public function testAssertValidKeysThrowsExceptionWhenTypeIsNotArray()
-    {
-        foreach (array(NULL, 'foo', 42) as $bad) {
-            try {
-                PHPUnit_Util_XML::assertValidKeys($bad, array());
-                $this->fail();
-            }
-
-            catch (InvalidArgumentException $e) {
-                $this->assertRegExp('/expected array/i', $e->getMessage());
-            }
-        }
-    }
-
     public function testConvertAssertSelect()
     {
         $selector  = 'div#folder.open a[href="http://www.xerox.com"][title="xerox"].selected.big > span';
