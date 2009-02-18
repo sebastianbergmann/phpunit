@@ -303,8 +303,11 @@ class PHPUnit_Util_Test
                 $classes = array($className);
 
                 if ($extended) {
-                    $classes += class_implements($className);
-                    $classes += class_parents($className);
+                    $classes = array_merge(
+                      $classes,
+                      class_implements($className),
+                      class_parents($className)
+                    );
                 }
 
                 foreach ($classes as $className)
@@ -339,7 +342,7 @@ class PHPUnit_Util_Test
                 $classes = array($className);
 
                 if ($extended) {
-                    $classes += class_parents($className);
+                    $classes = array_merge($classes, class_parents($className));
                 }
 
                 foreach ($classes as $className) {
@@ -350,8 +353,11 @@ class PHPUnit_Util_Test
             $classes = array($method);
 
             if ($extended) {
-                $classes += class_implements($method);
-                $classes += class_parents($method);
+                $classes = array_merge(
+                  $classes,
+                  class_implements($method),
+                  class_parents($method)
+                );
             }
 
             foreach ($classes as $className) {
