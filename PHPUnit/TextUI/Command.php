@@ -538,7 +538,9 @@ class PHPUnit_TextUI_Command
             }
 
             if (!isset($arguments['test'])) {
-                $testSuite = $configuration->getTestSuiteConfiguration();
+                $testSuite = $configuration->getTestSuiteConfiguration(
+                  $arguments['syntaxCheck']
+                );
 
                 if ($testSuite !== NULL) {
                     $arguments['test'] = $testSuite;
