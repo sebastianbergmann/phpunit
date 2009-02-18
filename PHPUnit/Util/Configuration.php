@@ -529,10 +529,11 @@ class PHPUnit_Util_Configuration
     /**
      * Returns the test suite configuration.
      *
+     * @param  boolean $syntaxCheck
      * @return PHPUnit_Framework_TestSuite
      * @since  Method available since Release 3.2.1
      */
-    public function getTestSuiteConfiguration()
+    public function getTestSuiteConfiguration($syntaxCheck = TRUE)
     {
         $testSuiteNode = $this->xpath->query('testsuite');
 
@@ -559,11 +560,13 @@ class PHPUnit_Util_Configuration
                   $suffix
                 );
 
-                $suite->addTestFiles($testCollector->collectTests());
+                $suite->addTestFiles(
+                  $testCollector->collectTests(), $syntaxCheck
+                );
             }
 
             foreach ($this->xpath->query('testsuite/file') as $fileNode) {
-                $suite->addTestFile((string)$fileNode->nodeValue);
+                $suite->addTestFile((string)$fileNode->nodeValue, $syntaxCheck);
             }
 
             return $suite;
