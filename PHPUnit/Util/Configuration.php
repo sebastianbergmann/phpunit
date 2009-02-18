@@ -689,10 +689,11 @@ class PHPUnit_Util_Configuration
     /**
      * Returns the test suite configuration.
      *
+     * @param  boolean $syntaxCheck
      * @return PHPUnit_Framework_TestSuite
      * @since  Method available since Release 3.2.1
      */
-    public function getTestSuiteConfiguration()
+    public function getTestSuiteConfiguration($syntaxCheck = TRUE)
     {
         $testSuiteNodes = $this->xpath->query('testsuites/testsuite');
 
@@ -700,7 +701,9 @@ class PHPUnit_Util_Configuration
             $suite = new PHPUnit_Framework_TestSuite;
 
             foreach ($testSuiteNodes as $testSuiteNode) {
-                $suite->addTestSuite($this->getTestSuite($testSuiteNode));
+                $suite->addTestSuite(
+                  $this->getTestSuite($testSuiteNode), $syntaxCheck
+                );
             }
 
             return $suite;
@@ -709,10 +712,11 @@ class PHPUnit_Util_Configuration
 
     /**
      * @param  DOMElement $testSuiteNode
+     * @param  boolean    $syntaxCheck
      * @return PHPUnit_Framework_TestSuite
      * @since  Method available since Release 3.4.0
      */
-    protected function getTestSuite(DOMElement $testSuiteNode)
+    protected function getTestSuite(DOMElement $testSuiteNode, $syntaxCheck)
     {
         if ($testSuiteNode->hasAttribute('name')) {
             $suite = new PHPUnit_Framework_TestSuite(
@@ -733,11 +737,11 @@ class PHPUnit_Util_Configuration
               array((string)$directoryNode->nodeValue), $suffix
             );
 
-            $suite->addTestFiles($testCollector->collectTests());
+            $suite->addTestFiles($testCollector->collectTests(), $syntaxCheck);
         }
 
         foreach ($testSuiteNode->getElementsByTagName('file') as $fileNode) {
-            $suite->addTestFile((string)$fileNode->nodeValue);
+            $suite->addTestFile((string)$fileNode->nodeValue, $syntaxCheck);
         }
 
         return $suite;
