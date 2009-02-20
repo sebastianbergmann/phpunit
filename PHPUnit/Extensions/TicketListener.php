@@ -141,21 +141,23 @@ abstract class PHPUnit_Extensions_TicketListener implements PHPUnit_Framework_Te
      */
     public function startTest(PHPUnit_Framework_Test $test)
     {
-        if ($this->ran) {
-            return;
-        }
-
-        $class = new ReflectionClass(get_class($test));
-        
-        foreach ($class->getMethods() as $method) {
-            $docComment = $method->getDocComment();
-
-            if (preg_match(self::REGEX_TICKET, $docComment, $matches)) {
-                $this->ticketCounts[$matches[1]][$method->getName()] = 1;
+        if (!$test instanceof PHPUnit_Framework_Warning) {
+            if ($this->ran) {
+                return;
             }
-        }
 
-        $this->ran = TRUE;
+            $class = new ReflectionClass(get_class($test));
+            
+            foreach ($class->getMethods() as $method) {
+                $docComment = $method->getDocComment();
+
+                if (preg_match(self::REGEX_TICKET, $docComment, $matches)) {
+                    $this->ticketCounts[$matches[1]][$method->getName()] = 1;
+                }
+            }
+
+            $this->ran = TRUE;
+        }
     }
 
     /**
@@ -166,54 +168,56 @@ abstract class PHPUnit_Extensions_TicketListener implements PHPUnit_Framework_Te
      */
     public function endTest(PHPUnit_Framework_Test $test, $time)
     {
-        if ($test->getStatus() == PHPUnit_Runner_BaseTestRunner::STATUS_PASSED) {
-            $ifStatus   = array('assigned', 'new', 'reopened');
-            $newStatus  = 'closed';
-            $message    = 'Automatically closed by PHPUnit (test passed).';
-            $resolution = 'fixed';
-            $cumulative = TRUE;
-        }
-
-        else if ($test->getStatus() == PHPUnit_Runner_BaseTestRunner::STATUS_FAILURE) {
-            $ifStatus   = array('closed');
-            $newStatus  = 'reopened';
-            $message    = 'Automatically reopened by PHPUnit (test failed).';
-            $resolution = '';
-            $cumulative = FALSE;
-        }
-
-        else {
-            return;
-        }
-
-        $method     = new ReflectionMethod(get_class($test), $test->getName());
-        $docComment = $method->getDocComment();
-
-        if (preg_match(self::REGEX_TICKET, $docComment, $matches)) {
-            $ticketId = $matches[1];
- 
-            // Remove this test from the totals (if it passed).
+        if (!$test instanceof PHPUnit_Framework_Warning) {
             if ($test->getStatus() == PHPUnit_Runner_BaseTestRunner::STATUS_PASSED) {
-                unset($this->ticketCounts[$ticketId][$test->getName()]);
+                $ifStatus   = array('assigned', 'new', 'reopened');
+                $newStatus  = 'closed';
+                $message    = 'Automatically closed by PHPUnit (test passed).';
+                $resolution = 'fixed';
+                $cumulative = TRUE;
             }
- 
-            // Only close tickets if ALL referenced cases pass
-            // but reopen tickets if a single test fails.
-            if ($cumulative) {
-                // Determine number of to-pass tests:
-                if (count($this->ticketCounts[$ticketId]) > 0) {
-                    // There exist remaining test cases with this reference.
-                    $adjustTicket = FALSE;
+
+            else if ($test->getStatus() == PHPUnit_Runner_BaseTestRunner::STATUS_FAILURE) {
+                $ifStatus   = array('closed');
+                $newStatus  = 'reopened';
+                $message    = 'Automatically reopened by PHPUnit (test failed).';
+                $resolution = '';
+                $cumulative = FALSE;
+            }
+
+            else {
+                return;
+            }
+
+            $method     = new ReflectionMethod(get_class($test), $test->getName());
+            $docComment = $method->getDocComment();
+
+            if (preg_match(self::REGEX_TICKET, $docComment, $matches)) {
+                $ticketId = $matches[1];
+     
+                // Remove this test from the totals (if it passed).
+                if ($test->getStatus() == PHPUnit_Runner_BaseTestRunner::STATUS_PASSED) {
+                    unset($this->ticketCounts[$ticketId][$test->getName()]);
+                }
+     
+                // Only close tickets if ALL referenced cases pass
+                // but reopen tickets if a single test fails.
+                if ($cumulative) {
+                    // Determine number of to-pass tests:
+                    if (count($this->ticketCounts[$ticketId]) > 0) {
+                        // There exist remaining test cases with this reference.
+                        $adjustTicket = FALSE;
+                    } else {
+                        // No remaining tickets, go ahead and adjust.
+                        $adjustTicket = TRUE;
+                    }
                 } else {
-                    // No remaining tickets, go ahead and adjust.
                     $adjustTicket = TRUE;
                 }
-            } else {
-                $adjustTicket = TRUE;
-            }
 
-            if ($adjustTicket && in_array($ticketInfo[3]['status'], $ifStatus)) {
-                $this->updateTicket($ticketId, $newStatus, $message, $resolution);
+                if ($adjustTicket && in_array($ticketInfo[3]['status'], $ifStatus)) {
+                    $this->updateTicket($ticketId, $newStatus, $message, $resolution);
+                }
             }
         }
     }
