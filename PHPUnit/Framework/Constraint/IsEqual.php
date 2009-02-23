@@ -204,6 +204,26 @@ class PHPUnit_Framework_Constraint_IsEqual extends PHPUnit_Framework_Constraint
             return FALSE;
         }
 
+        if ($a instanceof SplObjectStorage XOR $b instanceof SplObjectStorage) {
+            return FALSE;
+        }
+
+        if ($a instanceof SplObjectStorage) {
+            foreach ($a as $object) {
+                if (!$b->contains($object)) {
+                    return FALSE;
+                }
+            }
+
+            foreach ($b as $object) {
+                if (!$a->contains($object)) {
+                    return FALSE;
+                }
+            }
+
+            return TRUE;
+        }
+
         if ($a instanceof DOMDocument || $b instanceof DOMDocument) {
             if (!$a instanceof DOMDocument) {
                 $_a = new DOMDocument;
