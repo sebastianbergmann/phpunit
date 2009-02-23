@@ -81,6 +81,10 @@ class PHPUnit_Framework_Constraint_TraversableContains extends PHPUnit_Framework
      */
     public function evaluate($other)
     {
+        if ($other instanceof SplObjectStorage) {
+            return $other->contains($this->value);
+        }
+
         foreach ($other as $straw) {
             if ($straw === $this->value) {
                 return TRUE;
