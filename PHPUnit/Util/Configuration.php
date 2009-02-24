@@ -625,7 +625,7 @@ class PHPUnit_Util_Configuration
 
             foreach ($testSuiteNodes as $testSuiteNode) {
                 $suite->addTestSuite(
-                  $this->getTestSuite($testSuiteNode), $syntaxCheck
+                  $this->getTestSuite($testSuiteNode, $syntaxCheck)
                 );
             }
 
