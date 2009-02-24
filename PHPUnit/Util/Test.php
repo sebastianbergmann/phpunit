@@ -493,6 +493,30 @@ class PHPUnit_Util_Test
     }
 
     /**
+     * Returns the tickets for a test class or method.
+     *
+     * @param  string $className
+     * @param  string $methodName
+     * @return array
+     * @since  Method available since Release 3.4.0
+     */
+    public static function getTickets($className, $methodName)
+    {
+        $annotations = self::parseTestMethodAnnotations($className, $methodName);
+        $tickets     = array();
+
+        if (isset($annotations['class']['ticket'])) {
+            $tickets = $annotations['class']['ticket'];
+        }
+
+        if (isset($annotations['method']['ticket'])) {
+            $tickets = array_merge($tickets, $annotations['method']['ticket']);
+        }
+
+        return array_unique($tickets);
+    }
+
+    /**
      * Returns the output buffering settings for a test.
      *
      * @param  string $className
