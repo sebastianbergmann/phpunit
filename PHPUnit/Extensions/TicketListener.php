@@ -46,6 +46,7 @@
  */
 
 require_once 'PHPUnit/Framework.php';
+require_once 'PHPUnit/Util/Test.php';
 
 PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
 
@@ -64,8 +65,6 @@ PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
  */
 abstract class PHPUnit_Extensions_TicketListener implements PHPUnit_Framework_TestListener
 {
-    const REGEX_TICKET = '/@ticket\s+#?(\d+)/';
-
     protected $ticketCounts = array();
     protected $ran = FALSE;
     
@@ -146,14 +145,11 @@ abstract class PHPUnit_Extensions_TicketListener implements PHPUnit_Framework_Te
                 return;
             }
 
-            $class = new ReflectionClass(get_class($test));
+            $name    = $test->getName();
+            $tickets = PHPUnit_Util_Test::getTickets(get_class($test), $name);
             
-            foreach ($class->getMethods() as $method) {
-                $docComment = $method->getDocComment();
-
-                if (preg_match(self::REGEX_TICKET, $docComment, $matches)) {
-                    $this->ticketCounts[$matches[1]][$method->getName()] = 1;
-                }
+            foreach ($tickets as $ticket) {
+                $this->ticketCounts[$ticket][$name] = 1;
             }
 
             $this->ran = TRUE;
@@ -189,22 +185,20 @@ abstract class PHPUnit_Extensions_TicketListener implements PHPUnit_Framework_Te
                 return;
             }
 
-            $method     = new ReflectionMethod(get_class($test), $test->getName());
-            $docComment = $method->getDocComment();
-
-            if (preg_match(self::REGEX_TICKET, $docComment, $matches)) {
-                $ticketId = $matches[1];
-     
+            $name    = $test->getName();
+            $tickets = PHPUnit_Util_Test::getTickets(get_class($test), $name);
+            
+            foreach ($tickets as $ticket) {
                 // Remove this test from the totals (if it passed).
                 if ($test->getStatus() == PHPUnit_Runner_BaseTestRunner::STATUS_PASSED) {
-                    unset($this->ticketCounts[$ticketId][$test->getName()]);
+                    unset($this->ticketCounts[$ticket][$name]);
                 }
      
                 // Only close tickets if ALL referenced cases pass
                 // but reopen tickets if a single test fails.
                 if ($cumulative) {
                     // Determine number of to-pass tests:
-                    if (count($this->ticketCounts[$ticketId]) > 0) {
+                    if (count($this->ticketCounts[$ticket]) > 0) {
                         // There exist remaining test cases with this reference.
                         $adjustTicket = FALSE;
                     } else {
@@ -216,7 +210,7 @@ abstract class PHPUnit_Extensions_TicketListener implements PHPUnit_Framework_Te
                 }
 
                 if ($adjustTicket && in_array($ticketInfo[3]['status'], $ifStatus)) {
-                    $this->updateTicket($ticketId, $newStatus, $message, $resolution);
+                    $this->updateTicket($ticket, $newStatus, $message, $resolution);
                 }
             }
         }
