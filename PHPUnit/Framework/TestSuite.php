@@ -49,6 +49,7 @@ require_once 'PHPUnit/Runner/BaseTestRunner.php';
 require_once 'PHPUnit/Util/Class.php';
 require_once 'PHPUnit/Util/Fileloader.php';
 require_once 'PHPUnit/Util/Filter.php';
+require_once 'PHPUnit/Util/InvalidArgumentHelper.php';
 require_once 'PHPUnit/Util/Test.php';
 require_once 'PHPUnit/Util/TestSuiteIterator.php';
 
@@ -307,7 +308,7 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
         }
 
         if (!is_object($testClass)) {
-            throw new InvalidArgumentException;
+            throw new PHPUnit_Util_InvalidArgumentHelper::factory(1, 'class name or object');
         }
 
         if ($testClass instanceof PHPUnit_Framework_TestSuite) {
@@ -438,7 +439,7 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
     {
         if (!(is_array($filenames) ||
              (is_object($filenames) && $filenames instanceof Iterator))) {
-            throw new InvalidArgumentException;
+            throw new PHPUnit_Util_InvalidArgumentHelper::factory(1, 'array or iterator');
         }
 
         foreach ($filenames as $filename) {
@@ -862,7 +863,7 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
         if (is_null($this->runTestsInSeparateProcesses) && is_bool($runTestsInSeparateProcesses)) {
             $this->runTestsInSeparateProcesses = $runTestsInSeparateProcesses;
         } else {
-            throw new InvalidArgumentException;
+            throw new PHPUnit_Util_InvalidArgumentHelper::factory(1, 'boolean');
         }
     }
 

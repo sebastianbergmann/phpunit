@@ -47,6 +47,7 @@
 require_once 'PHPUnit/Framework.php';
 require_once 'PHPUnit/Util/Class.php';
 require_once 'PHPUnit/Util/Filter.php';
+require_once 'PHPUnit/Util/InvalidArgumentHelper.php';
 require_once 'PHPUnit/Util/Type.php';
 require_once 'PHPUnit/Util/XML.php';
 
@@ -946,7 +947,7 @@ abstract class PHPUnit_Framework_Assert
             }
 
             else {
-                throw new InvalidArgumentException;
+                throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'class or interface name');
             }
         } else {
             throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'string');
@@ -979,7 +980,7 @@ abstract class PHPUnit_Framework_Assert
             }
 
             else {
-                throw new InvalidArgumentException;
+                throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'class or interface name');
             }
         } else {
             throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'string');
@@ -997,8 +998,12 @@ abstract class PHPUnit_Framework_Assert
      */
     public static function assertRegExp($pattern, $string, $message = '')
     {
-        if (!is_string($pattern) || !is_string($string)) {
-            throw new InvalidArgumentException;
+        if (!is_string($pattern)) {
+            throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'string');
+        }
+
+        if (!is_string($string)) {
+            throw PHPUnit_Util_InvalidArgumentHelper::factory(2, 'string');
         }
 
         $constraint = new PHPUnit_Framework_Constraint_PCREMatch($pattern);
@@ -1016,8 +1021,12 @@ abstract class PHPUnit_Framework_Assert
      */
     public static function assertNotRegExp($pattern, $string, $message = '')
     {
-        if (!is_string($pattern) || !is_string($string)) {
-            throw new InvalidArgumentException;
+        if (!is_string($pattern)) {
+            throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'string');
+        }
+
+        if (!is_string($string)) {
+            throw PHPUnit_Util_InvalidArgumentHelper::factory(2, 'string');
         }
 
         $constraint = new PHPUnit_Framework_Constraint_Not(
@@ -2011,12 +2020,12 @@ abstract class PHPUnit_Framework_Assert
     public static function readAttribute($classOrObject, $attributeName)
     {
         if (!is_string($attributeName)) {
-            throw new InvalidArgumentException;
+            throw PHPUnit_Util_InvalidArgumentHelper::factory(2, 'string');
         }
 
         if (is_string($classOrObject)) {
             if (!class_exists($classOrObject)) {
-                throw new InvalidArgumentException;
+                throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'class name');
             }
 
             return PHPUnit_Util_Class::getStaticAttribute(
@@ -2033,7 +2042,7 @@ abstract class PHPUnit_Framework_Assert
         }
 
         else {
-            throw new InvalidArgumentException;
+            throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'class name or object');
         }
     }
 
