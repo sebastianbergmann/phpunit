@@ -71,11 +71,14 @@ abstract class PHPUnit_Extensions_PerformanceTestCase extends PHPUnit_Framework_
     protected $maxRunningTime = 0;
 
     /**
+     * @param  mixed $dependencyInput
+     * @return mixed
+     * @throws RuntimeException
      */
-    protected function runTest()
+    protected function runTest($dependencyInput = NULL)
     {
         PHPUnit_Util_Timer::start();
-        parent::runTest();
+        $testResult = parent::runTest($dependencyInput);
         $time = PHPUnit_Util_Timer::stop();
 
         if ($this->maxRunningTime != 0 &&
@@ -89,6 +92,8 @@ abstract class PHPUnit_Extensions_PerformanceTestCase extends PHPUnit_Framework_
               )
             );
         }
+
+        return $testResult;
     }
 
     /**

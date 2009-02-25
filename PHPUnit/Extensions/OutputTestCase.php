@@ -159,13 +159,16 @@ abstract class PHPUnit_Extensions_OutputTestCase extends PHPUnit_Framework_TestC
     }
 
     /**
+     * @param  mixed $dependencyInput
+     * @return mixed
+     * @throws RuntimeException
      */
-    protected function runTest()
+    protected function runTest($dependencyInput = NULL)
     {
         ob_start();
 
         try {
-            parent::runTest();
+            $testResult = parent::runTest($dependencyInput);
         }
 
         catch (Exception $e) {
@@ -190,6 +193,8 @@ abstract class PHPUnit_Extensions_OutputTestCase extends PHPUnit_Framework_TestC
             $this->assertEquals($this->expectedString, $this->output);
             $this->expectedString = NULL;
         }
+
+        return $testResult;
     }
 }
 ?>
