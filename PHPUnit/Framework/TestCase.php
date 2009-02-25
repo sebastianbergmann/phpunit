@@ -300,6 +300,11 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
     protected $result;
 
     /**
+     * @var mixed
+     */
+    protected $testResult;
+
+    /**
      * Constructs a test case with the given name.
      *
      * @param  string $name
@@ -636,18 +641,20 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
      */
     public function runBare()
     {
+        $dependencyInput     = NULL;
         $this->numAssertions = 0;
 
         if (!empty($this->dependencies)) {
-            $className = get_class($this);
-            $passed    = $this->result->passed();
+            $className  = get_class($this);
+            $passed     = $this->result->passed();
+            $passedKeys = array_keys($passed);
 
             foreach ($this->dependencies as $dependency) {
                 if (strpos($dependency, '::') === FALSE) {
                     $dependency = $className . '::' . $dependency;
                 }
 
-                if (!isset($passed[$dependency])) {
+                if (!in_array($dependency, $passedKeys)) {
                     $this->markTestSkipped(
                       sprintf(
                         'This test depends on "%s" to pass.',
@@ -655,6 +662,8 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
                         $dependency
                       )
                     );
+                } else {
+                    $dependencyInput = $passed[$dependency];
                 }
             }
         }
@@ -687,7 +696,7 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
             // Assert pre-conditions.
             $this->assertPreConditions();
 
-            $this->runTest();
+            $this->testResult = $this->runTest($dependencyInput);
 
             // Assert post-conditions.
             $this->assertPostConditions();
@@ -763,9 +772,11 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
     /**
      * Override to run the test and assert its state.
      *
+     * @param  mixed $dependencyInput
+     * @return mixed
      * @throws RuntimeException
      */
-    protected function runTest()
+    protected function runTest($dependencyInput = NULL)
     {
         if ($this->name === NULL) {
             throw new RuntimeException(
@@ -784,9 +795,13 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
 
         try {
             if (empty($this->data)) {
-                $method->invoke($this);
+                if ($dependencyInput !== NULL) {
+                    $testResult = $method->invoke($this, $dependencyInput);
+                } else {
+                    $testResult = $method->invoke($this);
+                }
             } else {
-                $method->invokeArgs($this, $this->data);
+                $testResult = $method->invokeArgs($this, $this->data);
             }
         }
 
@@ -822,6 +837,8 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
             $this->numAssertions++;
             $this->fail('Expected exception ' . $this->expectedException);
         }
+
+        return $testResult;
     }
 
     /**
@@ -910,6 +927,24 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
     public function setSharedFixture($sharedFixture)
     {
         $this->sharedFixture = $sharedFixture;
+    }
+
+    /**
+     * @return mixed
+     * @since  Method available since Release 3.4.0
+     */
+    public function getResult()
+    {
+        return $this->testResult;
+    }
+
+    /**
+     * @param  mixed $result
+     * @since  Method available since Release 3.4.0
+     */
+    public function setResult($result)
+    {
+        $this->testResult = $result;
     }
 
     /**
