@@ -161,15 +161,17 @@ abstract class PHPUnit_Extensions_Story_SeleniumTestCase extends PHPUnit_Extensi
     /**
      * Run this test's scenario.
      *
+     * @param  mixed $dependencyInput
+     * @return mixed
      * @throws RuntimeException
      */
-    protected function runTest()
+    protected function runTest($dependencyInput = NULL)
     {
         $autostop       = $this->autoStop;
         $this->autoStop = FALSE;
 
         try {
-            parent::runTest();
+            $testResult = parent::runTest($dependencyInput);
             $this->scenario->run($this->world);
             $this->autoStop = $autostop;
         }
@@ -178,6 +180,8 @@ abstract class PHPUnit_Extensions_Story_SeleniumTestCase extends PHPUnit_Extensi
             $this->autoStop = $autostop;
             throw $e;
         }
+
+        return $testResult;
     }
 
     /**

@@ -193,7 +193,6 @@ class PHPUnit_Framework_TestResult implements Countable
 
     /**
      * Adds an error to the list of errors.
-     * The passed in exception caused the error.
      *
      * @param  PHPUnit_Framework_Test $test
      * @param  Exception              $e
@@ -323,7 +322,7 @@ class PHPUnit_Framework_TestResult implements Countable
         }
 
         if (!$this->lastTestFailed && $test instanceof PHPUnit_Framework_TestCase) {
-            $this->passed[get_class($test) . '::' . $test->getName()] = TRUE;
+            $this->passed[get_class($test) . '::' . $test->getName()] = $test->getResult();
             $this->time += $time;
         }
     }

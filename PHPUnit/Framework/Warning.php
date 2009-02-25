@@ -77,8 +77,10 @@ class PHPUnit_Framework_Warning extends PHPUnit_Framework_TestCase
     }
 
     /**
+     * @param  mixed $dependencyInput
+     * @throws RuntimeException
      */
-    protected function runTest()
+    protected function runTest($dependencyInput = NULL)
     {
         $this->fail($this->message);
     }

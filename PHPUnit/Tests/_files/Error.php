@@ -1,7 +1,7 @@
 <?php
 class Error extends PHPUnit_Framework_TestCase
 {
-    public function runTest()
+    protected function runTest($dependencyInput = NULL)
     {
         throw new Exception;
     }

@@ -9,7 +9,7 @@ class TornDown2 extends TornDown
         throw new Exception;
     }
 
-    protected function runTest()
+    protected function runTest($dependencyInput = NULL)
     {
         throw new Exception;
     }
