@@ -643,6 +643,13 @@ class PHPUnit_TextUI_Command
                 }
             }
 
+            $browsers = $configuration->getSeleniumBrowserConfiguration();
+
+            if (!empty($browsers)) {
+                require_once 'PHPUnit/Extensions/SeleniumTestCase.php';
+                PHPUnit_Extensions_SeleniumTestCase::$browsers = $browsers;
+            }
+
             if (!isset($arguments['test'])) {
                 $testSuite = $configuration->getTestSuiteConfiguration(
                   $arguments['syntaxCheck']
@@ -651,13 +658,6 @@ class PHPUnit_TextUI_Command
                 if ($testSuite !== NULL) {
                     $arguments['test'] = $testSuite;
                 }
-            }
-
-            $browsers = $configuration->getSeleniumBrowserConfiguration();
-
-            if (!empty($browsers)) {
-                require_once 'PHPUnit/Extensions/SeleniumTestCase.php';
-                PHPUnit_Extensions_SeleniumTestCase::$browsers = $browsers;
             }
         }
 
