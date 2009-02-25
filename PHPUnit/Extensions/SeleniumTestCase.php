@@ -153,6 +153,7 @@ abstract class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_Tes
         $suite->setName($className);
 
         $class            = new ReflectionClass($className);
+        $classGroups      = PHPUnit_Util_Test::getGroups($className);
         $staticProperties = $class->getStaticProperties();
 
         // Create tests from Selenese/HTML files.

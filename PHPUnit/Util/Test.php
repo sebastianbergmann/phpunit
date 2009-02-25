@@ -371,21 +371,21 @@ class PHPUnit_Util_Test
      * @throws ReflectionException
      * @since  Method available since Release 3.4.0
      */
-    public static function parseTestMethodAnnotations($className, $methodName)
+    public static function parseTestMethodAnnotations($className, $methodName = '')
     {
         if (!isset(self::$annotationCache[$className])) {
             $class = new ReflectionClass($className);
             self::$annotationCache[$className] = self::parseAnnotations($class->getDocComment());
         }
 
-        if (!isset(self::$annotationCache[$className . '::' . $methodName])) {
+        if (!empty($methodName) && !isset(self::$annotationCache[$className . '::' . $methodName])) {
             $method = new ReflectionMethod($className, $methodName);
             self::$annotationCache[$className . '::' . $methodName] = self::parseAnnotations($method->getDocComment());
         }
 
         return array(
           'class'  => self::$annotationCache[$className],
-          'method' => self::$annotationCache[$className . '::' . $methodName]
+          'method' => !empty($methodName) ? self::$annotationCache[$className . '::' . $methodName] : array()
         );
     }
 
@@ -476,7 +476,7 @@ class PHPUnit_Util_Test
      * @return array
      * @since  Method available since Release 3.2.0
      */
-    public static function getGroups($className, $methodName)
+    public static function getGroups($className, $methodName = '')
     {
         $annotations = self::parseTestMethodAnnotations($className, $methodName);
         $groups      = array();
