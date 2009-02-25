@@ -308,7 +308,9 @@ abstract class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_Tes
     {
         if (isset($browser['name'])) {
             if (!is_string($browser['name'])) {
-                throw new InvalidArgumentException;
+                throw new InvalidArgumentException(
+                  'Array element "name" is no string.'
+                );
             }
         } else {
             $browser['name'] = '';
@@ -316,7 +318,9 @@ abstract class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_Tes
 
         if (isset($browser['browser'])) {
             if (!is_string($browser['browser'])) {
-                throw new InvalidArgumentException;
+                throw new InvalidArgumentException(
+                  'Array element "browser" is no string.'
+                );
             }
         } else {
             $browser['browser'] = '';
@@ -324,7 +328,9 @@ abstract class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_Tes
 
         if (isset($browser['host'])) {
             if (!is_string($browser['host'])) {
-                throw new InvalidArgumentException;
+                throw new InvalidArgumentException(
+                  'Array element "host" is no string.'
+                );
             }
         } else {
             $browser['host'] = 'localhost';
@@ -332,7 +338,9 @@ abstract class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_Tes
 
         if (isset($browser['port'])) {
             if (!is_int($browser['port'])) {
-                throw new InvalidArgumentException;
+                throw new InvalidArgumentException(
+                  'Array element "port" is no integer.'
+                );
             }
         } else {
             $browser['port'] = 4444;
@@ -340,7 +348,9 @@ abstract class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_Tes
 
         if (isset($browser['timeout'])) {
             if (!is_int($browser['timeout'])) {
-                throw new InvalidArgumentException;
+                throw new InvalidArgumentException(
+                  'Array element "timeout" is no string.'
+                );
             }
         } else {
             $browser['timeout'] = 30000;

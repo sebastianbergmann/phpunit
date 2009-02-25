@@ -45,6 +45,7 @@
  */
 
 require_once 'PHPUnit/Util/Filter.php';
+require_once 'PHPUnit/Util/InvalidArgumentHelper.php';
 
 PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
 
@@ -299,8 +300,16 @@ class PHPUnit_Util_Class
      */
     public static function getStaticAttribute($className, $attributeName)
     {
-        if (!is_string($className) || !class_exists($className) || !is_string($attributeName)) {
-            throw new InvalidArgumentException;
+        if (!is_string($className)) {
+            throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'string');
+        }
+
+        if (!class_exists($className)) {
+            throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'class name');
+        }
+
+        if (!is_string($attributeName)) {
+            throw PHPUnit_Util_InvalidArgumentHelper::factory(2, 'string');
         }
 
         $class      = new ReflectionClass($className);
@@ -356,8 +365,12 @@ class PHPUnit_Util_Class
      */
     public static function getObjectAttribute($object, $attributeName)
     {
-        if (!is_object($object) || !is_string($attributeName)) {
-            throw new InvalidArgumentException;
+        if (!is_object($object)) {
+            throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'object');
+        }
+
+        if (!is_string($attributeName)) {
+            throw PHPUnit_Util_InvalidArgumentHelper::factory(2, 'string');
         }
 
         PHPUnit_Framework_Assert::assertObjectHasAttribute($attributeName, $object);
