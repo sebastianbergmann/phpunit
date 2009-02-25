@@ -15,18 +15,20 @@ PHPUnit %s by Sebastian Bergmann.
 
 The --log-graphviz functionality is deprecated and will be removed in the future.
 
-...digraph G {
-graph [ overlap="scale",splines="true",sep=".1",fontsize="8" ];
-"BankAccountTest" [ color="green" ];
-subgraph "cluster_BankAccountTest" {
-label="";
-"testBalanceIsInitiallyZero" [ color="green" ];
-"testBalanceCannotBecomeNegative" [ color="green" ];
-"testBalanceCannotBecomeNegative2" [ color="green" ];
-}
-"BankAccountTest" -> "testBalanceIsInitiallyZero";
-"BankAccountTest" -> "testBalanceCannotBecomeNegative";
-"BankAccountTest" -> "testBalanceCannotBecomeNegative2";
+...strict digraph G {
+    overlap=scale;
+    splines=true;
+    sep=.1;
+    fontsize=8;
+    BankAccountTest [ color=green ];
+    subgraph BankAccountTest {
+        testBalanceIsInitiallyZero [ color=green ];
+        testBalanceCannotBecomeNegative [ color=green ];
+        testBalanceCannotBecomeNegative2 [ color=green ];
+    }
+    BankAccountTest -> testBalanceIsInitiallyZero;
+    BankAccountTest -> testBalanceCannotBecomeNegative;
+    BankAccountTest -> testBalanceCannotBecomeNegative2;
 }
 
 
