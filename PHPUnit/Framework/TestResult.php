@@ -48,6 +48,7 @@ require_once 'PHPUnit/Framework.php';
 require_once 'PHPUnit/Util/CodeCoverage.php';
 require_once 'PHPUnit/Util/ErrorHandler.php';
 require_once 'PHPUnit/Util/Filter.php';
+require_once 'PHPUnit/Util/InvalidArgumentHelper.php';
 require_once 'PHPUnit/Util/Printer.php';
 require_once 'PHPUnit/Util/Test.php';
 require_once 'PHPUnit/Util/Timer.php';
@@ -486,7 +487,7 @@ class PHPUnit_Framework_TestResult implements Countable
                 $this->collectCodeCoverageInformation = $flag;
             }
         } else {
-            throw new InvalidArgumentException;
+            throw new PHPUnit_Util_InvalidArgumentHelper::factory(1, 'boolean');
         }
     }
 
