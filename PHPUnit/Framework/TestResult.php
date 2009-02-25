@@ -485,7 +485,7 @@ class PHPUnit_Framework_TestResult implements Countable
                 $this->collectCodeCoverageInformation = $flag;
             }
         } else {
-            throw new PHPUnit_Util_InvalidArgumentHelper::factory(1, 'boolean');
+            throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'boolean');
         }
     }
 
