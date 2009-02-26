@@ -857,31 +857,51 @@
      <dir name="TextUI">
       <file baseinstalldir="/" name="abstract-test-class.phpt" role="test" />
       <file baseinstalldir="/" name="concrete-test-class.phpt" role="test" />
+      <file baseinstalldir="/" name="coverage-clover-class-extended-isolation.phpt" role="test" />
       <file baseinstalldir="/" name="coverage-clover-class-extended.phpt" role="test" />
+      <file baseinstalldir="/" name="coverage-clover-class-isolation.phpt" role="test" />
       <file baseinstalldir="/" name="coverage-clover-class.phpt" role="test" />
+      <file baseinstalldir="/" name="coverage-clover-isolation.phpt" role="test" />
+      <file baseinstalldir="/" name="coverage-clover-method-isolation.phpt" role="test" />
       <file baseinstalldir="/" name="coverage-clover-method.phpt" role="test" />
+      <file baseinstalldir="/" name="coverage-clover-not-private-isolation.phpt" role="test" />
       <file baseinstalldir="/" name="coverage-clover-not-private.phpt" role="test" />
+      <file baseinstalldir="/" name="coverage-clover-not-protected-isolation.phpt" role="test" />
       <file baseinstalldir="/" name="coverage-clover-not-protected.phpt" role="test" />
+      <file baseinstalldir="/" name="coverage-clover-not-public-isolation.phpt" role="test" />
       <file baseinstalldir="/" name="coverage-clover-not-public.phpt" role="test" />
       <file baseinstalldir="/" name="coverage-clover.phpt" role="test" />
+      <file baseinstalldir="/" name="coverage-clover-private-isolation.phpt" role="test" />
       <file baseinstalldir="/" name="coverage-clover-private.phpt" role="test" />
+      <file baseinstalldir="/" name="coverage-clover-protected-isolation.phpt" role="test" />
       <file baseinstalldir="/" name="coverage-clover-protected.phpt" role="test" />
+      <file baseinstalldir="/" name="coverage-clover-public-isolation.phpt" role="test" />
       <file baseinstalldir="/" name="coverage-clover-public.phpt" role="test" />
+      <file baseinstalldir="/" name="coverage-source-isolation.phpt" role="test" />
       <file baseinstalldir="/" name="coverage-source.phpt" role="test" />
+      <file baseinstalldir="/" name="dataset-log-xml-isolation.phpt" role="test" />
       <file baseinstalldir="/" name="dataset-log-xml.phpt" role="test" />
       <file baseinstalldir="/" name="debug.phpt" role="test" />
+      <file baseinstalldir="/" name="default-isolation.phpt" role="test" />
       <file baseinstalldir="/" name="default.phpt" role="test" />
-      <file baseinstalldir="/" name="dependencies.phpt" role="test" />
       <file baseinstalldir="/" name="dependencies2.phpt" role="test" />
+      <file baseinstalldir="/" name="dependencies-isolation2.phpt" role="test" />
+      <file baseinstalldir="/" name="dependencies-isolation.phpt" role="test" />
+      <file baseinstalldir="/" name="dependencies.phpt" role="test" />
+      <file baseinstalldir="/" name="exclude-group-isolation.phpt" role="test" />
       <file baseinstalldir="/" name="exclude-group.phpt" role="test" />
+      <file baseinstalldir="/" name="failure-isolation.phpt" role="test" />
       <file baseinstalldir="/" name="failure.phpt" role="test" />
+      <file baseinstalldir="/" name="failure-verbose-isolation.phpt" role="test" />
       <file baseinstalldir="/" name="failure-verbose.phpt" role="test" />
+      <file baseinstalldir="/" name="filter-class-isolation.phpt" role="test" />
       <file baseinstalldir="/" name="filter-class.phpt" role="test" />
+      <file baseinstalldir="/" name="filter-method-isolation.phpt" role="test" />
       <file baseinstalldir="/" name="filter-method.phpt" role="test" />
+      <file baseinstalldir="/" name="group-isolation.phpt" role="test" />
       <file baseinstalldir="/" name="group.phpt" role="test" />
       <file baseinstalldir="/" name="help2.phpt" role="test" />
       <file baseinstalldir="/" name="help.phpt" role="test" />
-      <file baseinstalldir="/" name="isolated.phpt" role="test" />
       <file baseinstalldir="/" name="list-groups.phpt" role="test" />
       <file baseinstalldir="/" name="log-graphviz.phpt" role="test" />
       <file baseinstalldir="/" name="log-json.phpt" role="test" />
@@ -889,11 +909,13 @@
       <file baseinstalldir="/" name="log-xml.phpt" role="test" />
       <file baseinstalldir="/" name="repeat.phpt" role="test" />
       <file baseinstalldir="/" name="skeleton.phpt" role="test" />
+      <file baseinstalldir="/" name="story-isolation.phpt" role="test" />
       <file baseinstalldir="/" name="story.phpt" role="test" />
       <file baseinstalldir="/" name="tap.phpt" role="test" />
       <file baseinstalldir="/" name="testdox-html.phpt" role="test" />
       <file baseinstalldir="/" name="testdox.phpt" role="test" />
       <file baseinstalldir="/" name="testdox-text.phpt" role="test" />
+      <file baseinstalldir="/" name="verbose-isolation.phpt" role="test" />
       <file baseinstalldir="/" name="verbose.phpt" role="test" />
      </dir>
      <dir name="Util">
