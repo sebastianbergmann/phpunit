@@ -1,9 +1,9 @@
 --TEST--
-phpunit --verbose FailureTest ../../Samples/BankAccount/FailureTest.php
+phpunit --process-isolation FailureTest ../../Samples/BankAccount/FailureTest.php
 --FILE--
 <?php
 $_SERVER['argv'][1] = '--no-configuration';
-$_SERVER['argv'][2] = '--verbose';
+$_SERVER['argv'][2] = '--process-isolation';
 $_SERVER['argv'][3] = 'FailureTest';
 $_SERVER['argv'][4] = dirname(dirname(__FILE__)) . '/_files/FailureTest.php';
 
@@ -13,7 +13,6 @@ PHPUnit_TextUI_Command::main();
 --EXPECTF--
 PHPUnit %s by Sebastian Bergmann.
 
-FailureTest
 FFFFFFFFF
 
 Time: %i seconds
@@ -36,9 +35,6 @@ Failed asserting that two arrays are equal.
 
 2) testAssertIntegerEqualsInteger(FailureTest)
 Failed asserting that <integer:2> matches expected <integer:1>.
-expected integer <1>
-difference       <1>
-got integer      <2>
 %s:%i
 %s:%i
 
@@ -58,7 +54,6 @@ Failed asserting that two objects are equal.
 
 4) testAssertNullEqualsString(FailureTest)
 Failed asserting that <string:bar> matches expected <null>.
-
 %s:%i
 %s:%i
 

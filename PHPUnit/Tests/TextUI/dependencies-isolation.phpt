@@ -1,11 +1,12 @@
 --TEST--
-phpunit --verbose DependencyTestSuite ../_files/DependencyTestSuite.php
+phpunit --process-isolation --verbose DependencyTestSuite ../_files/DependencyTestSuite.php
 --FILE--
 <?php
 $_SERVER['argv'][1] = '--no-configuration';
-$_SERVER['argv'][2] = '--verbose';
-$_SERVER['argv'][3] = 'DependencyTestSuite';
-$_SERVER['argv'][4] = dirname(dirname(__FILE__)) . '/_files/DependencyTestSuite.php';
+$_SERVER['argv'][2] = '--process-isolation';
+$_SERVER['argv'][3] = '--verbose';
+$_SERVER['argv'][4] = 'DependencyTestSuite';
+$_SERVER['argv'][5] = dirname(dirname(__FILE__)) . '/_files/DependencyTestSuite.php';
 
 require_once dirname(dirname(dirname(__FILE__))) . '/TextUI/Command.php';
 PHPUnit_TextUI_Command::main();

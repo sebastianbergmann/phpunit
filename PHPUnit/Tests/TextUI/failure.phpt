@@ -29,13 +29,13 @@ Failed asserting that two arrays are equal.
 +    [0] => 2
  )
  
-%s/FailureTest.php:%i
-%s/failure.php:%i
+%s:%i
+%s:%i
 
 2) testAssertIntegerEqualsInteger(FailureTest)
 Failed asserting that <integer:2> matches expected <integer:1>.
-%s/FailureTest.php:%i
-%s/failure.php:%i
+%s:%i
+%s:%i
 
 3) testAssertObjectEqualsObject(FailureTest)
 Failed asserting that two objects are equal.
@@ -48,21 +48,21 @@ Failed asserting that two objects are equal.
 +    [bar] => foo
  )
  
-%s/FailureTest.php:%i
-%s/failure.php:%i
+%s:%i
+%s:%i
 
 4) testAssertNullEqualsString(FailureTest)
 Failed asserting that <string:bar> matches expected <null>.
-%s/FailureTest.php:%i
-%s/failure.php:%i
+%s:%i
+%s:%i
 
 5) testAssertStringEqualsString(FailureTest)
 Failed asserting that two strings are equal.
 expected string <foo>
 difference      <xxx>
 got string      <bar>
-%s/FailureTest.php:%i
-%s/failure.php:%i
+%s:%i
+%s:%i
 
 6) testAssertTextEqualsText(FailureTest)
 Failed asserting that two strings are equal.
@@ -73,25 +73,25 @@ Failed asserting that two strings are equal.
 -bar
 +baz
  
-%s/FailureTest.php:%i
-%s/failure.php:%i
+%s:%i
+%s:%i
 
 7) testAssertTextSameText(FailureTest)
 expected string <foo>
 difference      <xxx>
 got string      <bar>
-%s/FailureTest.php:%i
-%s/failure.php:%i
+%s:%i
+%s:%i
 
 8) testAssertObjectSameObject(FailureTest)
 Failed asserting that two variables reference the same object.
-%s/FailureTest.php:%i
-%s/failure.php:%i
+%s:%i
+%s:%i
 
 9) testAssertObjectSameNull(FailureTest)
 <null> does not match expected type "object".
-%s/FailureTest.php:%i
-%s/failure.php:%i
+%s:%i
+%s:%i
 
 FAILURES!
 Tests: 9, Assertions: 9, Failures: 9.
