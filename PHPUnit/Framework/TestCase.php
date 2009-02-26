@@ -635,11 +635,10 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
 
     /**
      * Runs the bare test sequence.
-     *
      */
     public function runBare()
     {
-        $dependencyInput     = NULL;
+        $dependencyInput     = array();
         $this->numAssertions = 0;
 
         if (!empty($this->dependencies)) {
@@ -661,7 +660,7 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
                       )
                     );
                 } else {
-                    $dependencyInput = $passed[$dependency];
+                    $dependencyInput[] = $passed[$dependency];
                 }
             }
         }
@@ -768,11 +767,11 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
     /**
      * Override to run the test and assert its state.
      *
-     * @param  mixed $dependencyInput
+     * @param  array $dependencyInput
      * @return mixed
      * @throws RuntimeException
      */
-    protected function runTest($dependencyInput = NULL)
+    protected function runTest(array $dependencyInput = array())
     {
         if ($this->name === NULL) {
             throw new RuntimeException(
@@ -791,11 +790,7 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
 
         try {
             if (empty($this->data)) {
-                if ($dependencyInput !== NULL) {
-                    $testResult = $method->invoke($this, $dependencyInput);
-                } else {
-                    $testResult = $method->invoke($this);
-                }
+                $testResult = $method->invokeArgs($this, $dependencyInput);
             } else {
                 $testResult = $method->invokeArgs($this, $this->data);
             }
