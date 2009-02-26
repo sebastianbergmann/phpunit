@@ -161,11 +161,11 @@ abstract class PHPUnit_Extensions_Story_SeleniumTestCase extends PHPUnit_Extensi
     /**
      * Run this test's scenario.
      *
-     * @param  mixed $dependencyInput
+     * @param  array $dependencyInput
      * @return mixed
      * @throws RuntimeException
      */
-    protected function runTest($dependencyInput = NULL)
+    protected function runTest(array $dependencyInput = array())
     {
         $autostop       = $this->autoStop;
         $this->autoStop = FALSE;
