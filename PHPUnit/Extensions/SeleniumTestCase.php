@@ -372,10 +372,10 @@ abstract class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_Tes
     }
 
     /**
-     * @param  mixed $dependencyInput
+     * @param  array $dependencyInput
      * @throws RuntimeException
      */
-    protected function runTest($dependencyInput = NULL)
+    protected function runTest(array $dependencyInput = array())
     {
         $this->start();
 
