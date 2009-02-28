@@ -8,7 +8,7 @@ class TornDown extends PHPUnit_Framework_TestCase
         $this->tornDown = TRUE;
     }
 
-    protected function runTest(array $dependencyInput = array())
+    protected function runTest()
     {
         throw new Exception;
     }

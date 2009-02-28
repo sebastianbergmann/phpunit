@@ -372,16 +372,15 @@ abstract class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_Tes
     }
 
     /**
-     * @param  array $dependencyInput
      * @throws RuntimeException
      */
-    protected function runTest(array $dependencyInput = array())
+    protected function runTest()
     {
         $this->start();
 
         try {
             if (!is_file($this->name)) {
-                parent::runTest($dependencyInput);
+                parent::runTest();
             } else {
                 $this->runSelenese($this->name);
             }

@@ -21,11 +21,12 @@ Test Dependencies
  DependencyFailureTest
  FSS
 
-Time: %d seconds
+Time: %i seconds
 
 There was 1 failure:
 
 1) testOne(DependencyFailureTest)
+%s:%i
 %s:%i
 
 There were 2 skipped tests:
@@ -39,4 +40,4 @@ This test depends on "DependencyFailureTest::testTwo" to pass.
 %s:%i
 
 FAILURES!
-Tests: 6, Assertions: 0, Failures: 1, Skipped: 2.
+Tests: 4, Assertions: 0, Failures: 1, Skipped: 2.

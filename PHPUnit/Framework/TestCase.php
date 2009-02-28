@@ -228,6 +228,11 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
     protected $dependencies = array();
 
     /**
+     * @var    array
+     */
+    protected $dependencyInput = array();
+
+    /**
      * @var    string
      */
     protected $exceptionMessage = NULL;
@@ -538,6 +543,34 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
 
         $this->result = $result;
 
+        if (!empty($this->dependencies)) {
+            $className  = get_class($this);
+            $passed     = $this->result->passed();
+            $passedKeys = array_keys($passed);
+
+            foreach ($this->dependencies as $dependency) {
+                if (strpos($dependency, '::') === FALSE) {
+                    $dependency = $className . '::' . $dependency;
+                }
+
+                if (!in_array($dependency, $passedKeys)) {
+                    $result->addError(
+                      $this,
+                      new PHPUnit_Framework_SkippedTestError(
+                        sprintf(
+                          'This test depends on "%s" to pass.', $dependency
+                        )
+                      ),
+                      0
+                    );
+
+                    return;
+                } else {
+                    $this->dependencyInput[] = $passed[$dependency];
+                }
+            }
+        }
+
         if ($this->runTestInSeparateProcess === TRUE &&
             $this->inIsolation !== TRUE &&
             !$this instanceof PHPUnit_Extensions_SeleniumTestCase &&
@@ -638,32 +671,7 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
      */
     public function runBare()
     {
-        $dependencyInput     = array();
         $this->numAssertions = 0;
-
-        if (!empty($this->dependencies)) {
-            $className  = get_class($this);
-            $passed     = $this->result->passed();
-            $passedKeys = array_keys($passed);
-
-            foreach ($this->dependencies as $dependency) {
-                if (strpos($dependency, '::') === FALSE) {
-                    $dependency = $className . '::' . $dependency;
-                }
-
-                if (!in_array($dependency, $passedKeys)) {
-                    $this->markTestSkipped(
-                      sprintf(
-                        'This test depends on "%s" to pass.',
-
-                        $dependency
-                      )
-                    );
-                } else {
-                    $dependencyInput[] = $passed[$dependency];
-                }
-            }
-        }
 
         // Backup the $GLOBALS array and static attributes.
         if ($this->runTestInSeparateProcess !== TRUE && $this->inIsolation !== TRUE) {
@@ -692,7 +700,7 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
             // Assert pre-conditions.
             $this->assertPreConditions();
 
-            $this->testResult = $this->runTest($dependencyInput);
+            $this->testResult = $this->runTest();
 
             // Assert post-conditions.
             $this->assertPostConditions();
@@ -767,11 +775,10 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
     /**
      * Override to run the test and assert its state.
      *
-     * @param  array $dependencyInput
      * @return mixed
      * @throws RuntimeException
      */
-    protected function runTest(array $dependencyInput = array())
+    protected function runTest()
     {
         if ($this->name === NULL) {
             throw new RuntimeException(
@@ -790,7 +797,7 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
 
         try {
             if (empty($this->data)) {
-                $testResult = $method->invokeArgs($this, $dependencyInput);
+                $testResult = $method->invokeArgs($this, $this->dependencyInput);
             } else {
                 $testResult = $method->invokeArgs($this, $this->data);
             }
