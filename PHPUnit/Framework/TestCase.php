@@ -543,7 +543,7 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
 
         $this->result = $result;
 
-        if (!empty($this->dependencies)) {
+        if (!empty($this->dependencies) && !$this->inIsolation) {
             $className  = get_class($this);
             $passed     = $this->result->passed();
             $passedKeys = array_keys($passed);
@@ -595,6 +595,7 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
                 'className'                      => $class->getName(),
                 'methodName'                     => $this->name,
                 'data'                           => addcslashes(serialize($this->data), "'"),
+                'dependencyInput'                => addcslashes(serialize($this->dependencyInput), "'"),
                 'dataName'                       => $this->dataName,
                 'collectCodeCoverageInformation' => $collectCodeCoverageInformation ? 'TRUE' : 'FALSE',
                 'globals'                        => $this->getGlobalsAsString(),
@@ -614,6 +615,7 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
                 $childResult = @unserialize($jobResult['stdout']);
 
                 if ($childResult !== FALSE) {
+                    $this->testResult    = $childResult['testResult'];
                     $this->numAssertions = $childResult['numAssertions'];
                     $childResult         = $childResult['result'];
 
@@ -858,6 +860,17 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
     public function setDependencies(array $dependencies)
     {
         $this->dependencies = $dependencies;
+    }
+
+    /**
+     * Sets 
+     *
+     * @param  array $dependencyInput
+     * @since  Method available since Release 3.4.0
+     */
+    public function setDependencyInput(array $dependencyInput)
+    {
+        $this->dependencyInput = $dependencyInput;
     }
 
     /**
