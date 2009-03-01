@@ -26,7 +26,6 @@ PHPUnit %s by Sebastian Bergmann.
 Failed asserting that &lt;integer:2&gt; matches expected &lt;integer:3&gt;.
 
 %s:%i
-%s:%i
 </failure>
       </testcase>
       <testcase name="testAdd with data set #3" assertions="1" time="%f"/>
@@ -41,7 +40,6 @@ There was 1 failure:
 
 1) testAdd(DataSetTest) with data set #2 (1, 1, 3)
 Failed asserting that <integer:2> matches expected <integer:3>.
-%s:%i
 %s:%i
 
 FAILURES!

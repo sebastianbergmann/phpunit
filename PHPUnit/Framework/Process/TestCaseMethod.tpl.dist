@@ -5,11 +5,16 @@ function __phpunit_run_isolated_test()
     $result->collectRawCodeCoverageInformation({collectCodeCoverageInformation});
 
     $test = new {className}('{methodName}', unserialize('{data}'), '{dataName}');
+    $test->setDependencyInput(unserialize('{dependencyInput}'));
     $test->setInIsolation(TRUE);
     $test->run($result);
 
     print serialize(
-      array('numAssertions' => $test->getNumAssertions(), 'result' => $result)
+      array(
+        'testResult'    => $test->getResult(),
+        'numAssertions' => $test->getNumAssertions(),
+        'result'        => $result
+      )
     );
 }
 

@@ -71,14 +71,13 @@ abstract class PHPUnit_Extensions_PerformanceTestCase extends PHPUnit_Framework_
     protected $maxRunningTime = 0;
 
     /**
-     * @param  array $dependencyInput
      * @return mixed
      * @throws RuntimeException
      */
-    protected function runTest(array $dependencyInput = array())
+    protected function runTest()
     {
         PHPUnit_Util_Timer::start();
-        $testResult = parent::runTest($dependencyInput);
+        $testResult = parent::runTest();
         $time = PHPUnit_Util_Timer::stop();
 
         if ($this->maxRunningTime != 0 &&
