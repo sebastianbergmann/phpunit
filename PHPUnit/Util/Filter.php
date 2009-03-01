@@ -411,7 +411,7 @@ class PHPUnit_Util_Filter
         }
 
         foreach ($eTrace as $frame) {
-            if (!self::$filter || (isset($frame['file']) && !self::isFiltered($frame['file'], $filterTests, TRUE))) {
+            if (!self::$filter || (isset($frame['file']) && is_file($frame['file']) && !self::isFiltered($frame['file'], $filterTests, TRUE))) {
                 if ($asString === TRUE) {
                     $filteredStacktrace .= sprintf(
                       "%s:%s\n",

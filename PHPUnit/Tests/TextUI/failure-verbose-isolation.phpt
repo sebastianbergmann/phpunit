@@ -33,16 +33,12 @@ Failed asserting that two arrays are equal.
  )
  
 %s:%i
-%s:%i
-%s:%i
 
 2) testAssertIntegerEqualsInteger(FailureTest)
 Failed asserting that <integer:2> matches expected <integer:1>.
 expected integer <1>
 difference       <1>
 got integer      <2>
-%s:%i
-%s:%i
 %s:%i
 
 3) testAssertObjectEqualsObject(FailureTest)
@@ -57,14 +53,10 @@ Failed asserting that two objects are equal.
  )
  
 %s:%i
-%s:%i
-%s:%i
 
 4) testAssertNullEqualsString(FailureTest)
 Failed asserting that <string:bar> matches expected <null>.
 
-%s:%i
-%s:%i
 %s:%i
 
 5) testAssertStringEqualsString(FailureTest)
@@ -72,8 +64,6 @@ Failed asserting that two strings are equal.
 expected string <foo>
 difference      <xxx>
 got string      <bar>
-%s:%i
-%s:%i
 %s:%i
 
 6) testAssertTextEqualsText(FailureTest)
@@ -86,27 +76,19 @@ Failed asserting that two strings are equal.
 +baz
  
 %s:%i
-%s:%i
-%s:%i
 
 7) testAssertTextSameText(FailureTest)
 expected string <foo>
 difference      <xxx>
 got string      <bar>
 %s:%i
-%s:%i
-%s:%i
 
 8) testAssertObjectSameObject(FailureTest)
 Failed asserting that two variables reference the same object.
 %s:%i
-%s:%i
-%s:%i
 
 9) testAssertObjectSameNull(FailureTest)
 <null> does not match expected type "object".
-%s:%i
-%s:%i
 %s:%i
 
 FAILURES!

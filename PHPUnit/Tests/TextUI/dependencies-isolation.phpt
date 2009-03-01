@@ -27,7 +27,6 @@ There was 1 failure:
 
 1) testOne(DependencyFailureTest)
 %s:%i
-%s:%i
 
 There were 2 skipped tests:
 
