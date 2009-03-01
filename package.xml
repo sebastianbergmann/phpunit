@@ -884,8 +884,8 @@
       <file baseinstalldir="/" name="debug.phpt" role="test" />
       <file baseinstalldir="/" name="default-isolation.phpt" role="test" />
       <file baseinstalldir="/" name="default.phpt" role="test" />
+      <file baseinstalldir="/" name="dependencies2-isolation.phpt" role="test" />
       <file baseinstalldir="/" name="dependencies2.phpt" role="test" />
-      <file baseinstalldir="/" name="dependencies-isolation2.phpt" role="test" />
       <file baseinstalldir="/" name="dependencies-isolation.phpt" role="test" />
       <file baseinstalldir="/" name="dependencies.phpt" role="test" />
       <file baseinstalldir="/" name="exclude-group-isolation.phpt" role="test" />

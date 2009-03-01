@@ -159,16 +159,15 @@ abstract class PHPUnit_Extensions_OutputTestCase extends PHPUnit_Framework_TestC
     }
 
     /**
-     * @param  array $dependencyInput
      * @return mixed
      * @throws RuntimeException
      */
-    protected function runTest(array $dependencyInput = array())
+    protected function runTest()
     {
         ob_start();
 
         try {
-            $testResult = parent::runTest($dependencyInput);
+            $testResult = parent::runTest();
         }
 
         catch (Exception $e) {

@@ -161,17 +161,16 @@ abstract class PHPUnit_Extensions_Story_SeleniumTestCase extends PHPUnit_Extensi
     /**
      * Run this test's scenario.
      *
-     * @param  array $dependencyInput
      * @return mixed
      * @throws RuntimeException
      */
-    protected function runTest(array $dependencyInput = array())
+    protected function runTest()
     {
         $autostop       = $this->autoStop;
         $this->autoStop = FALSE;
 
         try {
-            $testResult = parent::runTest($dependencyInput);
+            $testResult = parent::runTest();
             $this->scenario->run($this->world);
             $this->autoStop = $autostop;
         }

@@ -179,13 +179,12 @@ abstract class PHPUnit_Extensions_Story_TestCase extends PHPUnit_Framework_TestC
     /**
      * Run this test's scenario.
      *
-     * @param  array $dependencyInput
      * @return mixed
      * @throws RuntimeException
      */
-    protected function runTest(array $dependencyInput = array())
+    protected function runTest()
     {
-        $testResult = parent::runTest($dependencyInput);
+        $testResult = parent::runTest();
         $this->scenario->run($this->world);
         return $testResult;
     }
