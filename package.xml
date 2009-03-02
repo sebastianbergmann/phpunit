@@ -1328,6 +1328,9 @@
      <file baseinstalldir="/" name="Getopt.php" role="php">
       <tasks:replace from="@package_version@" to="version" type="package-info" />
      </file>
+     <file baseinstalldir="/" name="GlobalState.php" role="php">
+      <tasks:replace from="@package_version@" to="version" type="package-info" />
+     </file>
      <file baseinstalldir="/" name="InvalidArgumentHelper.php" role="php">
       <tasks:replace from="@package_version@" to="version" type="package-info" />
      </file>
