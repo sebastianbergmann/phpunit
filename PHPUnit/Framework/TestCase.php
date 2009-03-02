@@ -52,6 +52,7 @@ require_once 'PHPUnit/Framework/MockObject/Matcher/InvokedCount.php';
 require_once 'PHPUnit/Framework/MockObject/Stub.php';
 require_once 'PHPUnit/Runner/BaseTestRunner.php';
 require_once 'PHPUnit/Util/Filter.php';
+require_once 'PHPUnit/Util/GlobalState.php';
 require_once 'PHPUnit/Util/InvalidArgumentHelper.php';
 require_once 'PHPUnit/Util/PHP.php';
 require_once 'PHPUnit/Util/Template.php';
@@ -133,11 +134,6 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
     protected $backupGlobalsBlacklist = array();
 
     /**
-     * @var    array
-     */
-    protected $globalsBackup = array();
-
-    /**
      * Enable or disable the backup and restoration of static attributes.
      * Overwrite this attribute in a child class of TestCase.
      * Setting this attribute in setUp() has no effect!
@@ -150,11 +146,6 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
      * @var    array
      */
     protected $backupStaticAttributesBlacklist = array();
-
-    /**
-     * @var    array
-     */
-    protected $staticAttributesBackup = array();
 
     /**
      * Whether or not this test is to be run in a separate PHP process.
@@ -274,31 +265,6 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
      * @var    integer
      */
     protected $numAssertions = 0;
-
-    /**
-     * @var    array
-     */
-    protected static $superGlobalArrays = array(
-      '_ENV',
-      '_POST',
-      '_GET',
-      '_COOKIE',
-      '_SERVER',
-      '_FILES',
-      '_REQUEST'
-    );
-
-    /**
-     * @var    array
-     */
-    protected static $superGlobalArraysLong = array(
-      'HTTP_ENV_VARS',
-      'HTTP_POST_VARS',
-      'HTTP_GET_VARS',
-      'HTTP_COOKIE_VARS',
-      'HTTP_SERVER_VARS',
-      'HTTP_POST_FILES'
-    );
 
     /**
      * @var PHPUnit_Framework_TestResult
@@ -601,7 +567,7 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
                 'dependencyInput'                => addcslashes(serialize($this->dependencyInput), "'"),
                 'dataName'                       => $this->dataName,
                 'collectCodeCoverageInformation' => $collectCodeCoverageInformation ? 'TRUE' : 'FALSE',
-                'globals'                        => $this->getGlobalsAsString(),
+                'globals'                        => PHPUnit_Util_GlobalState::getGlobalsAsString(),
                 'include_path'                   => addslashes(get_include_path())
               )
             );
@@ -681,12 +647,11 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
         // Backup the $GLOBALS array and static attributes.
         if ($this->runTestInSeparateProcess !== TRUE && $this->inIsolation !== TRUE) {
             if ($this->backupGlobals === NULL || $this->backupGlobals === TRUE) {
-                $this->backupGlobals();
+                PHPUnit_Util_GlobalState::backupGlobals($this->backupGlobalsBlacklist);
             }
 
-            if (version_compare(PHP_VERSION, '5.3', '>') &&
-               ($this->backupStaticAttributes === NULL || $this->backupStaticAttributes === TRUE)) {
-                $this->backupStaticAttributes();
+            if ($this->backupStaticAttributes === NULL || $this->backupStaticAttributes === TRUE) {
+                PHPUnit_Util_GlobalState::backupStaticAttributes($this->backupStaticAttributesBlacklist);
             }
         }
 
@@ -752,12 +717,11 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
         // Restore the $GLOBALS array and static attributes.
         if ($this->runTestInSeparateProcess !== TRUE && $this->inIsolation !== TRUE) {
             if ($this->backupGlobals === NULL || $this->backupGlobals === TRUE) {
-                $this->restoreGlobals();
+                PHPUnit_Util_GlobalState::restoreGlobals($this->backupGlobalsBlacklist);
             }
 
-            if (version_compare(PHP_VERSION, '5.3', '>') &&
-               ($this->backupStaticAttributes === NULL || $this->backupStaticAttributes === TRUE)) {
-                $this->restoreStaticAttributes();
+            if ($this->backupStaticAttributes === NULL || $this->backupStaticAttributes === TRUE) {
+                PHPUnit_Util_GlobalState::restoreStaticAttributes();
             }
         }
 
@@ -1467,184 +1431,6 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
      */
     protected function tearDown()
     {
-    }
-
-    /**
-     * @since Method available since Release 3.3.0
-     */
-    protected function backupGlobals()
-    {
-        $this->globalsBackup = array();
-        $superGlobalArrays   = $this->getSuperGlobalArrays();
-
-        foreach ($superGlobalArrays as $superGlobalArray) {
-            if (!in_array($superGlobalArray, $this->backupGlobalsBlacklist)) {
-                $this->backupSuperGlobalArray($superGlobalArray);
-            }
-        }
-
-        foreach (array_keys($GLOBALS) as $key) {
-            if ($key != 'GLOBALS' && !in_array($key, $superGlobalArrays) &&
-                !in_array($key, $this->backupGlobalsBlacklist)) {
-                $this->globalsBackup['GLOBALS'][$key] = serialize($GLOBALS[$key]);
-            }
-        }
-    }
-
-    /**
-     * @since Method available since Release 3.3.0
-     */
-    protected function restoreGlobals()
-    {
-        if (ini_get('register_long_arrays') == '1') {
-            $superGlobalArrays = array_merge(
-              self::$superGlobalArrays, self::$superGlobalArraysLong
-            );
-        } else {
-            $superGlobalArrays = self::$superGlobalArrays;
-        }
-
-        foreach ($superGlobalArrays as $superGlobalArray) {
-            if (!in_array($superGlobalArray, $this->backupGlobalsBlacklist)) {
-                $this->restoreSuperGlobalArray($superGlobalArray);
-            }
-        }
-
-        foreach (array_keys($GLOBALS) as $key) {
-            if ($key != 'GLOBALS' && !in_array($key, $superGlobalArrays) &&
-                !in_array($key, $this->backupGlobalsBlacklist)) {
-                if (isset($this->globalsBackup['GLOBALS'][$key])) {
-                    $GLOBALS[$key] = unserialize($this->globalsBackup['GLOBALS'][$key]);
-                } else {
-                    unset($GLOBALS[$key]);
-                }
-            }
-        }
-
-        $this->globalsBackup = array();
-    }
-
-    protected function backupSuperGlobalArray($superGlobalArray)
-    {
-        $this->globalsBackup[$superGlobalArray] = array();
-
-        if (isset($GLOBALS[$superGlobalArray])) {
-            foreach ($GLOBALS[$superGlobalArray] as $key => $value) {
-                $this->globalsBackup[$superGlobalArray][$key] = serialize($value);
-            }
-        }
-    }
-
-    protected function restoreSuperGlobalArray($superGlobalArray)
-    {
-        if (isset($GLOBALS[$superGlobalArray])) {
-            foreach ($GLOBALS[$superGlobalArray] as $key => $value) {
-                if (isset($this->globalsBackup[$superGlobalArray][$key])) {
-                    $GLOBALS[$superGlobalArray][$key] = unserialize($this->globalsBackup[$superGlobalArray][$key]);
-                } else {
-                    unset($GLOBALS[$superGlobalArray][$key]);
-                }
-            }
-        }
-
-        $this->globalsBackup[$superGlobalArray] = array();
-    }
-
-    protected function getGlobalsAsString()
-    {
-        $result            = '';
-        $superGlobalArrays = $this->getSuperGlobalArrays();
-
-        foreach ($superGlobalArrays as $superGlobalArray) {
-            if (isset($GLOBALS[$superGlobalArray])) {
-                foreach ($GLOBALS[$superGlobalArray] as $key => $value) {
-                    $result .= sprintf(
-                      '$GLOBALS[\'%s\'][\'%s\'] = %s;' . "\n",
-                      $superGlobalArray,
-                      $key,
-                      var_export($GLOBALS[$superGlobalArray][$key], TRUE)
-                    );
-                }
-            }
-        }
-
-        foreach (array_keys($GLOBALS) as $key) {
-            if ($key != 'GLOBALS' && !in_array($key, $superGlobalArrays)) {
-                $result .= sprintf(
-                  '$GLOBALS[\'%s\'] = %s;' . "\n",
-                  $key,
-                  var_export($GLOBALS[$key], TRUE)
-                );
-            }
-        }
-
-        return $result;
-    }
-
-    protected function getSuperGlobalArrays()
-    {
-        if (ini_get('register_long_arrays') == '1') {
-            return array_merge(
-              self::$superGlobalArrays, self::$superGlobalArraysLong
-            );
-        } else {
-            return self::$superGlobalArrays;
-        }
-    }
-
-    /**
-     * @since Method available since Release 3.4.0
-     */
-    protected function backupStaticAttributes()
-    {
-        $this->staticAttributesBackup = array();
-        $declaredClasses              = get_declared_classes();
-        $declaredClassesNum           = count($declaredClasses);
-
-        for ($i = $declaredClassesNum - 1; $i >= 0; $i--) {
-            if (strpos($declaredClasses[$i], 'PHPUnit') !== 0 &&
-                !$declaredClasses[$i] instanceof PHPUnit_Framework_Test) {
-                $class = new ReflectionClass($declaredClasses[$i]);
-
-                if (!$class->isUserDefined()) {
-                    break;
-                }
-
-                $backup = array();
-
-                foreach ($class->getProperties() as $attribute) {
-                    if ($attribute->isStatic()) {
-                        $name = $attribute->getName();
-
-                        if (!isset($this->backupStaticAttributesBlacklist[$declaredClasses[$i]]) ||
-                            !in_array($name, $this->backupStaticAttributesBlacklist[$declaredClasses[$i]])) {
-                            $attribute->setAccessible(TRUE);
-                            $backup[$name] = serialize($attribute->getValue());
-                        }
-                    }
-                }
-
-                if (!empty($backup)) {
-                    $this->staticAttributesBackup[$declaredClasses[$i]] = $backup;
-                }
-            }
-        }
-    }
-
-    /**
-     * @since Method available since Release 3.4.0
-     */
-    protected function restoreStaticAttributes()
-    {
-        foreach ($this->staticAttributesBackup as $className => $staticAttributes) {
-            foreach ($staticAttributes as $name => $value) {
-                $reflector = new ReflectionProperty($className, $name);
-                $reflector->setAccessible(TRUE);
-                $reflector->setValue(unserialize($value));
-            }
-        }
-
-        $this->staticAttributesBackup = array();
     }
 }
 
