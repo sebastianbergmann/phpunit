@@ -650,7 +650,8 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
                 PHPUnit_Util_GlobalState::backupGlobals($this->backupGlobalsBlacklist);
             }
 
-            if ($this->backupStaticAttributes === NULL || $this->backupStaticAttributes === TRUE) {
+            if (version_compare(PHP_VERSION, '5.3', '>') &&
+               ($this->backupStaticAttributes === NULL || $this->backupStaticAttributes === TRUE)) {
                 PHPUnit_Util_GlobalState::backupStaticAttributes($this->backupStaticAttributesBlacklist);
             }
         }
@@ -720,7 +721,8 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
                 PHPUnit_Util_GlobalState::restoreGlobals($this->backupGlobalsBlacklist);
             }
 
-            if ($this->backupStaticAttributes === NULL || $this->backupStaticAttributes === TRUE) {
+            if (version_compare(PHP_VERSION, '5.3', '>') &&
+               ($this->backupStaticAttributes === NULL || $this->backupStaticAttributes === TRUE)) {
                 PHPUnit_Util_GlobalState::restoreStaticAttributes();
             }
         }
