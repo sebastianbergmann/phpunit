@@ -220,7 +220,7 @@ class PHPUnit_Util_Log_CodeCoverage_XML_Source
 
                     $this->directory,
                     PHPUnit_Util_Filesystem::getSafeFilename(
-                      str_replace(DIRECTORY_SEPARATOR, '_', $filename)
+                      basename($filename)
                     )
                   )
                 );
@@ -292,7 +292,7 @@ class PHPUnit_Util_Log_CodeCoverage_XML_Source
 
                     $this->directory,
                     PHPUnit_Util_Filesystem::getSafeFilename(
-                      str_replace(DIRECTORY_SEPARATOR, '_', $filename)
+                      basename($filename)
                     )
                   )
                 );
