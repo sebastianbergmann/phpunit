@@ -538,7 +538,8 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
      */
     protected function handleConfiguration(array &$arguments)
     {
-        if (isset($arguments['configuration'])) {
+        if (isset($arguments['configuration']) &&
+            !$arguments['configuration'] instanceof PHPUnit_Util_Configuration) {
             $arguments['configuration'] = PHPUnit_Util_Configuration::getInstance(
               $arguments['configuration']
             );
