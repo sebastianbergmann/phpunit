@@ -832,7 +832,7 @@ class PHPUnit_Extensions_SeleniumTestCase_Driver
         }
 
         stream_set_blocking($handle, 1);
-        stream_set_timeout($handle, 0, $this->timeout + 5);
+        stream_set_timeout($handle, 0, $this->timeout + 5000);
 
         $info     = stream_get_meta_data($handle);
         $response = '';
