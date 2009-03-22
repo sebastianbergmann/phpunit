@@ -818,7 +818,7 @@ class PHPUnit_Extensions_SeleniumTestCase_Driver
         $context = stream_context_create(
           array(
             'http' => array(
-              'timeout' => $this->timeout / 1000
+              'timeout' => ($this->timeout / 1000) + 5
             )
           )
         );
@@ -832,7 +832,7 @@ class PHPUnit_Extensions_SeleniumTestCase_Driver
         }
 
         stream_set_blocking($handle, 1);
-        stream_set_timeout($handle, 0, $this->timeout);
+        stream_set_timeout($handle, 0, $this->timeout + 5);
 
         $info     = stream_get_meta_data($handle);
         $response = '';
