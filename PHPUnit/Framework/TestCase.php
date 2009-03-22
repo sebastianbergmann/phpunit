@@ -569,6 +569,7 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
               )
             );
 
+            $this->prepareTemplate($template);
             $job = $template->render();
             $result->startTest($this);
 
@@ -1427,6 +1428,16 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
      * This method is called after a test is executed.
      */
     protected function tearDown()
+    {
+    }
+
+    /**
+     * Performs custom preparations on the process isolation template.
+     *
+     * @param PHPUnit_Util_Template $template
+     * @since Method available since Release 3.4.0
+     */
+    protected function prepareTemplate(PHPUnit_Util_Template $template)
     {
     }
 }
