@@ -105,7 +105,12 @@ class PHPUnit_Extensions_SeleniumTestCase_Driver
     /**
      * @var    integer
      */
-    protected $timeout = 30000;
+    protected $httpTimeout = 45;
+
+    /**
+     * @var    integer
+     */
+    protected $seleniumTimeout = 30;
 
     /**
      * @var    array
@@ -161,7 +166,7 @@ class PHPUnit_Extensions_SeleniumTestCase_Driver
               array($this->browser, $this->browserUrl)
             );
 
-            $this->doCommand('setTimeout', array($this->timeout));
+            $this->doCommand('setTimeout', array($this->seleniumTimeout * 1000));
         }
 
         return $this->sessionId;
@@ -275,7 +280,7 @@ class PHPUnit_Extensions_SeleniumTestCase_Driver
     }
 
     /**
-     * @param  integer $timeout
+     * @param  integer $timeout for Selenium RC in seconds
      * @throws InvalidArgumentException
      */
     public function setTimeout($timeout)
@@ -284,7 +289,20 @@ class PHPUnit_Extensions_SeleniumTestCase_Driver
             throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'integer');
         }
 
-        $this->timeout = $timeout;
+        $this->seleniumTimeout = $timeout;
+    }
+
+    /**
+     * @param  integer $timeout for HTTP connection to Selenium RC in seconds
+     * @throws InvalidArgumentException
+     */
+    public function setHttpTimeout($timeout)
+    {
+        if (!is_int($timeout)) {
+            throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'integer');
+        }
+
+        $this->httpTimeout = $timeout;
     }
 
     /**
@@ -644,7 +662,7 @@ class PHPUnit_Extensions_SeleniumTestCase_Driver
                     default: {
                         if ($wait) {
                             if ($this->useWaitForPageToLoad) {
-                                $this->waitForPageToLoad($this->timeout);
+                                $this->waitForPageToLoad($this->seleniumTimeout * 1000);
                             } else {
                                 sleep($this->wait);
                             }
@@ -689,7 +707,7 @@ class PHPUnit_Extensions_SeleniumTestCase_Driver
                 $result = $this->getNumber($command, $arguments);
 
                 if ($wait) {
-                    $this->waitForPageToLoad($this->timeout);
+                    $this->waitForPageToLoad($this->seleniumTimeout * 1000);
                 }
 
                 return $result;
@@ -719,7 +737,7 @@ class PHPUnit_Extensions_SeleniumTestCase_Driver
                 $result = $this->getString($command, $arguments);
 
                 if ($wait) {
-                    $this->waitForPageToLoad($this->timeout);
+                    $this->waitForPageToLoad($this->seleniumTimeout * 1000);
                 }
 
                 return $result;
@@ -741,7 +759,7 @@ class PHPUnit_Extensions_SeleniumTestCase_Driver
                 $result = $this->getStringArray($command, $arguments);
 
                 if ($wait) {
-                    $this->waitForPageToLoad($this->timeout);
+                    $this->waitForPageToLoad($this->seleniumTimeout * 1000);
                 }
 
                 return $result;
@@ -752,7 +770,7 @@ class PHPUnit_Extensions_SeleniumTestCase_Driver
             case 'waitForFrameToLoad':
             case 'waitForPopUp': {
                 if (count($arguments) == 1) {
-                    $arguments[] = $this->timeout;
+                    $arguments[] = $this->seleniumTimeout * 1000;
                 }
 
                 $this->doCommand($command, $arguments);
@@ -762,7 +780,7 @@ class PHPUnit_Extensions_SeleniumTestCase_Driver
 
             case 'waitForPageToLoad': {
                 if (empty($arguments)) {
-                    $arguments[] = $this->timeout;
+                    $arguments[] = $this->seleniumTimeout * 1000;
                 }
 
                 $this->doCommand($command, $arguments);
@@ -818,7 +836,7 @@ class PHPUnit_Extensions_SeleniumTestCase_Driver
         $context = stream_context_create(
           array(
             'http' => array(
-              'timeout' => ($this->timeout / 1000) + 5
+              'timeout' => $this->httpTimeout
             )
           )
         );
@@ -832,7 +850,7 @@ class PHPUnit_Extensions_SeleniumTestCase_Driver
         }
 
         stream_set_blocking($handle, 1);
-        stream_set_timeout($handle, 0, $this->timeout + 5000);
+        stream_set_timeout($handle, 0, $this->httpTimeout * 1000);
 
         $info     = stream_get_meta_data($handle);
         $response = '';
@@ -1053,7 +1071,7 @@ class PHPUnit_Extensions_SeleniumTestCase_Driver
     protected function waitForCommand($command, $arguments, $info)
     {
         for ($second = 0; ; $second++) {
-            if ($second > $this->timeout / 1000) {
+            if ($second > $this->httpTimeout) {
                 PHPUnit_Framework_Assert::fail('timeout');
             }
 
