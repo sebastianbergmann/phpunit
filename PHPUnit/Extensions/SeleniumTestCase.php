@@ -350,11 +350,21 @@ abstract class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_Tes
         if (isset($browser['timeout'])) {
             if (!is_int($browser['timeout'])) {
                 throw new InvalidArgumentException(
-                  'Array element "timeout" is no string.'
+                  'Array element "timeout" is no integer.'
                 );
             }
         } else {
-            $browser['timeout'] = 30000;
+            $browser['timeout'] = 30;
+        }
+
+        if (isset($browser['httpTimeout'])) {
+            if (!is_int($browser['httpTimeout'])) {
+                throw new InvalidArgumentException(
+                  'Array element "httpTimeout" is no integer.'
+                );
+            }
+        } else {
+            $browser['httpTimeout'] = 45;
         }
 
         $driver = new PHPUnit_Extensions_SeleniumTestCase_Driver;
@@ -363,6 +373,7 @@ abstract class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_Tes
         $driver->setHost($browser['host']);
         $driver->setPort($browser['port']);
         $driver->setTimeout($browser['timeout']);
+        $driver->setHttpTimeout($browser['httpTimeout']);
         $driver->setTestCase($this);
         $driver->setTestId($this->testId);
 
