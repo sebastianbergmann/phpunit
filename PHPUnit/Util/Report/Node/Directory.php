@@ -104,7 +104,7 @@ class PHPUnit_Util_Report_Node_Directory extends PHPUnit_Util_Report_Node
     /**
      * @var    integer
      */
-    protected $numCalledClasses = -1;
+    protected $numTestedClasses = -1;
 
     /**
      * @var    integer
@@ -114,7 +114,7 @@ class PHPUnit_Util_Report_Node_Directory extends PHPUnit_Util_Report_Node
     /**
      * @var    integer
      */
-    protected $numCalledMethods = -1;
+    protected $numTestedMethods = -1;
 
     /**
      * Adds a new directory.
@@ -249,22 +249,21 @@ class PHPUnit_Util_Report_Node_Directory extends PHPUnit_Util_Report_Node
     }
 
     /**
-     * Returns the number of classes of which at least one method
-     * has been called at least once.
+     * Returns the number of tested classes.
      *
      * @return integer
      */
-    public function getNumCalledClasses()
+    public function getNumTestedClasses()
     {
-        if ($this->numCalledClasses == -1) {
-            $this->numCalledClasses = 0;
+        if ($this->numTestedClasses == -1) {
+            $this->numTestedClasses = 0;
 
             foreach ($this->children as $child) {
-                $this->numCalledClasses += $child->getNumCalledClasses();
+                $this->numTestedClasses += $child->getNumTestedClasses();
             }
         }
 
-        return $this->numCalledClasses;
+        return $this->numTestedClasses;
     }
 
     /**
@@ -286,21 +285,21 @@ class PHPUnit_Util_Report_Node_Directory extends PHPUnit_Util_Report_Node
     }
 
     /**
-     * Returns the number of methods that has been called at least once.
+     * Returns the number of tested methods.
      *
      * @return integer
      */
-    public function getNumCalledMethods()
+    public function getNumTestedMethods()
     {
-        if ($this->numCalledMethods == -1) {
-            $this->numCalledMethods = 0;
+        if ($this->numTestedMethods == -1) {
+            $this->numTestedMethods = 0;
 
             foreach ($this->children as $child) {
-                $this->numCalledMethods += $child->getNumCalledMethods();
+                $this->numTestedMethods += $child->getNumTestedMethods();
             }
         }
 
-        return $this->numCalledMethods;
+        return $this->numTestedMethods;
     }
 
     /**
