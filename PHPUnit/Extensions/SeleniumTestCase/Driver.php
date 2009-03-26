@@ -866,7 +866,12 @@ class PHPUnit_Extensions_SeleniumTestCase_Driver
             $this->stop();
 
             throw new RuntimeException(
-              'The response from the Selenium RC server is invalid: ' . $response
+              sprintf(
+                "Invalid response from Selenium RC server for %s(%s).\n%s.\n",
+                $command,
+                join(', ', $arguments),
+                $response
+              )
             );
         }
 
