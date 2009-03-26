@@ -867,7 +867,7 @@ class PHPUnit_Extensions_SeleniumTestCase_Driver
 
             throw new RuntimeException(
               sprintf(
-                "Invalid response from Selenium RC server for %s(%s).\n%s.\n",
+                "Response from Selenium RC server for %s(%s).\n%s.\n",
                 $command,
                 join(', ', $arguments),
                 $response
