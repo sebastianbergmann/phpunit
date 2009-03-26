@@ -3,11 +3,11 @@
           <td class="coverBar" align="center" width="100">
             <table border="0" cellspacing="0" cellpadding="1">
               <tr>
-                <td class="coverBarOutline"><img src="{methods_color}.png" width="{methods_called_width}" height="10" alt="{methods_called_percent}"><img src="snow.png" width="{methods_not_called_width}" height="10" alt="{methods_called_percent}"></td>
+                <td class="coverBarOutline"><img src="{methods_color}.png" width="{methods_tested_width}" height="10" alt="{methods_tested_percent}"><img src="snow.png" width="{methods_not_tested_width}" height="10" alt="{methods_tested_percent}"></td>
               </tr>
             </table>
           </td>
-          <td class="coverPer{methods_level}">{methods_called_percent}</td>
+          <td class="coverPer{methods_level}">{methods_tested_percent}</td>
           <td class="coverNum{methods_level}">{methods_number}</td>
           <td class="coverBar" align="center" width="100">
             <table border="0" cellspacing="0" cellpadding="1">
