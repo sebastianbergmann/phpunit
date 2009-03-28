@@ -24,17 +24,17 @@ Time: %i seconds
 
 There was 1 failure:
 
-1) testOne(DependencyFailureTest)
+1) DependencyFailureTest::testOne
 %s:%i
 %s:%i
 
 There were 2 skipped tests:
 
-1) testTwo(DependencyFailureTest)
+1) DependencyFailureTest::testTwo
 This test depends on "DependencyFailureTest::testOne" to pass.
 %s:%i
 
-2) testThree(DependencyFailureTest)
+2) DependencyFailureTest::testThree
 This test depends on "DependencyFailureTest::testTwo" to pass.
 %s:%i
 

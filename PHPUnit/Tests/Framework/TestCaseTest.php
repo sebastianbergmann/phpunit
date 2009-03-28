@@ -90,7 +90,7 @@ class Framework_TestCaseTest extends PHPUnit_Framework_TestCase
     public function testCaseToString()
     {
         $this->assertEquals(
-          'testCaseToString(Framework_TestCaseTest)',
+          'Framework_TestCaseTest::testCaseToString',
           $this->toString()
         );
     }

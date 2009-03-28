@@ -18,7 +18,7 @@ Time: %i seconds
 
 There was 1 failure:
 
-1) Warning(PHPUnit_Framework_Warning)
+1) Warning
 Cannot instantiate class "AbstractTest".
 %s/abstract-test-class.php:%i
 

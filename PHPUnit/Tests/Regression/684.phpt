@@ -18,7 +18,7 @@ Time: %i seconds
 
 There was 1 failure:
 
-1) Warning(PHPUnit_Framework_Warning)
+1) Warning
 No tests found in class "Foo_Bar_Issue684Test".
 %s/684.php:%i
 

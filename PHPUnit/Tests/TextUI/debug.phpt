@@ -14,11 +14,11 @@ PHPUnit_TextUI_Command::main();
 PHPUnit %s by Sebastian Bergmann.
 
 
-Starting test 'testBalanceIsInitiallyZero(BankAccountTest)'.
+Starting test 'BankAccountTest::testBalanceIsInitiallyZero'.
 .
-Starting test 'testBalanceCannotBecomeNegative(BankAccountTest)'.
+Starting test 'BankAccountTest::testBalanceCannotBecomeNegative'.
 .
-Starting test 'testBalanceCannotBecomeNegative2(BankAccountTest)'.
+Starting test 'BankAccountTest::testBalanceCannotBecomeNegative2'.
 .
 
 Time: %i seconds

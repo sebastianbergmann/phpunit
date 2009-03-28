@@ -19,7 +19,7 @@ Time: %i seconds
 
 There were 9 failures:
 
-1) testAssertArrayEqualsArray(FailureTest)
+1) FailureTest::testAssertArrayEqualsArray
 Failed asserting that two arrays are equal.
 --- Expected
 +++ Actual
@@ -32,11 +32,11 @@ Failed asserting that two arrays are equal.
  
 %s:%i
 
-2) testAssertIntegerEqualsInteger(FailureTest)
+2) FailureTest::testAssertIntegerEqualsInteger
 Failed asserting that <integer:2> matches expected <integer:1>.
 %s:%i
 
-3) testAssertObjectEqualsObject(FailureTest)
+3) FailureTest::testAssertObjectEqualsObject
 Failed asserting that two objects are equal.
 --- Expected
 +++ Actual
@@ -49,18 +49,18 @@ Failed asserting that two objects are equal.
  
 %s:%i
 
-4) testAssertNullEqualsString(FailureTest)
+4) FailureTest::testAssertNullEqualsString
 Failed asserting that <string:bar> matches expected <null>.
 %s:%i
 
-5) testAssertStringEqualsString(FailureTest)
+5) FailureTest::testAssertStringEqualsString
 Failed asserting that two strings are equal.
 expected string <foo>
 difference      <xxx>
 got string      <bar>
 %s:%i
 
-6) testAssertTextEqualsText(FailureTest)
+6) FailureTest::testAssertTextEqualsText
 Failed asserting that two strings are equal.
 --- Expected
 +++ Actual
@@ -71,17 +71,17 @@ Failed asserting that two strings are equal.
  
 %s:%i
 
-7) testAssertTextSameText(FailureTest)
+7) FailureTest::testAssertTextSameText
 expected string <foo>
 difference      <xxx>
 got string      <bar>
 %s:%i
 
-8) testAssertObjectSameObject(FailureTest)
+8) FailureTest::testAssertObjectSameObject
 Failed asserting that two variables reference the same object.
 %s:%i
 
-9) testAssertObjectSameNull(FailureTest)
+9) FailureTest::testAssertObjectSameNull
 <null> does not match expected type "object".
 %s:%i
 
