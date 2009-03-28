@@ -92,5 +92,16 @@ class PHPUnit_Framework_Warning extends PHPUnit_Framework_TestCase
     {
         return $this->message;
     }
+
+    /**
+     * Returns a string representation of the test case.
+     *
+     * @return string
+     * @since  Method available since Release 3.4.0
+     */
+    public function toString()
+    {
+        return 'Warning';
+    }
 }
 ?>

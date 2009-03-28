@@ -300,10 +300,10 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
         $class = new ReflectionClass($this);
 
         $buffer = sprintf(
-          '%s(%s)',
+          '%s::%s',
 
-          $this->getName(FALSE),
-          $class->name
+          $class->name,
+          $this->getName(FALSE)
         );
 
         return $buffer . $this->getDataSetAsString();

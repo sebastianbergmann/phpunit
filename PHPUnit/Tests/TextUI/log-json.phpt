@@ -14,7 +14,7 @@ PHPUnit_TextUI_Command::main();
 --EXPECTF--
 PHPUnit %s by Sebastian Bergmann.
 
-{"event":"suiteStart","suite":"BankAccountTest","tests":3}.{"event":"test","suite":"BankAccountTest","test":"testBalanceIsInitiallyZero(BankAccountTest)","status":"pass","time":%f,"trace":[],"message":""}.{"event":"test","suite":"BankAccountTest","test":"testBalanceCannotBecomeNegative(BankAccountTest)","status":"pass","time":%f,"trace":[],"message":""}.{"event":"test","suite":"BankAccountTest","test":"testBalanceCannotBecomeNegative2(BankAccountTest)","status":"pass","time":%f,"trace":[],"message":""}
+{"event":"suiteStart","suite":"BankAccountTest","tests":3}.{"event":"test","suite":"BankAccountTest","test":"BankAccountTest::testBalanceIsInitiallyZero","status":"pass","time":%f,"trace":[],"message":""}.{"event":"test","suite":"BankAccountTest","test":"BankAccountTest::testBalanceCannotBecomeNegative","status":"pass","time":%f,"trace":[],"message":""}.{"event":"test","suite":"BankAccountTest","test":"BankAccountTest::testBalanceCannotBecomeNegative2","status":"pass","time":%f,"trace":[],"message":""}
 
 Time: %i seconds
 
