@@ -18,17 +18,17 @@ Time: %i seconds
 
 There were 3 errors:
 
-1) testNoticesDoublePrintStackTrace(Issue578Test)
+1) Issue578Test::testNoticesDoublePrintStackTrace
 Invalid error type specified
 %s/Issue578Test.php:%i
 %s/578.php:%i
 
-2) testWarningsDoublePrintStackTrace(Issue578Test)
+2) Issue578Test::testWarningsDoublePrintStackTrace
 Invalid error type specified
 %s/Issue578Test.php:%i
 %s/578.php:%i
 
-3) testUnexpectedExceptionsPrintsCorrectly(Issue578Test)
+3) Issue578Test::testUnexpectedExceptionsPrintsCorrectly
 Exception: Double printed exception
 %s/Issue578Test.php:%i
 %s/578.php:%i

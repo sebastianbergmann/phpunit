@@ -12,7 +12,7 @@ PHPUnit_TextUI_Command::main();
 ?>
 --EXPECTF--
 TAP version 13
-ok 1 - testBalanceIsInitiallyZero(BankAccountTest)
-ok 2 - testBalanceCannotBecomeNegative(BankAccountTest)
-ok 3 - testBalanceCannotBecomeNegative2(BankAccountTest)
+ok 1 - BankAccountTest::testBalanceIsInitiallyZero
+ok 2 - BankAccountTest::testBalanceCannotBecomeNegative
+ok 3 - BankAccountTest::testBalanceCannotBecomeNegative2
 1..3
