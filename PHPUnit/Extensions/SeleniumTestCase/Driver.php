@@ -140,6 +140,11 @@ class PHPUnit_Extensions_SeleniumTestCase_Driver
     /**
      * @var array
      */
+    protected $commands = array();
+
+    /**
+     * @var array
+     */
     protected $verificationErrors = array();
 
     public function __construct()
@@ -833,6 +838,8 @@ class PHPUnit_Extensions_SeleniumTestCase_Driver
             $url .= sprintf('&%s=%s', 'sessionId', $this->sessionId);
         }
 
+        $this->commands[] = sprintf('%s(%s)', $command, join(', ', $arguments));
+
         $context = stream_context_create(
           array(
             'http' => array(
@@ -867,9 +874,8 @@ class PHPUnit_Extensions_SeleniumTestCase_Driver
 
             throw new RuntimeException(
               sprintf(
-                "Response from Selenium RC server for %s(%s).\n%s.\n",
-                $command,
-                join(', ', $arguments),
+                "Response from Selenium RC server for %s.\n%s.\n",
+                $this->commands[count($this->commands)-1],
                 $response
               )
             );
