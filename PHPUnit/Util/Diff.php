@@ -144,10 +144,16 @@ class PHPUnit_Util_Diff
      */
     protected static function doDiffCommand($from, $to)
     {
-        $fromFile = tempnam('/tmp', 'expected');
-        file_put_contents($fromFile, $from);
+        if (defined('PHPUNIT_TMPDIR')) {
+            $tmpDir = PHPUNIT_TMPDIR;
+        } else {
+            $tmpDir = sys_get_temp_dir();
+        }
 
-        $toFile = tempnam('/tmp', 'actual');
+        $fromFile = tempnam($tmpDir, 'expected');
+        $toFile   = tempnam($tmpDir, 'actual');
+
+        file_put_contents($fromFile, $from);
         file_put_contents($toFile, $to);
 
         $buffer = shell_exec(
