@@ -838,7 +838,7 @@ class PHPUnit_Util_XML
 
         foreach ($childNodes as $child) {
             if ($child->nodeType === XML_TEXT_NODE) {
-                $text .= trim($child->data).' ';
+                $text .= trim($child->data) . ' ';
             } else {
                 $text .= self::getNodeText($child);
             }
