@@ -833,18 +833,21 @@ class PHPUnit_Util_XML
      */
     protected static function getNodeText(DOMNode $node)
     {
-        $childNodes = $node->childNodes instanceof DOMNodeList ? $node->childNodes : array();
-        $text       = '';
+        if (!$node->childNodes instanceof DOMNodeList) {
+            return '';
+        }
 
-        foreach ($childNodes as $child) {
-            if ($child->nodeType === XML_TEXT_NODE) {
-                $text .= trim($child->data) . ' ';
+        $result = '';
+
+        foreach ($node->childNodes as $childNode) {
+            if ($childNode->nodeType === XML_TEXT_NODE) {
+                $result .= trim($childNode->data) . ' ';
             } else {
-                $text .= self::getNodeText($child);
+                $result .= self::getNodeText($childNode);
             }
         }
 
-        return str_replace('  ', ' ', $text);
+        return str_replace('  ', ' ', $result);
     }
 }
 ?>
