@@ -197,10 +197,22 @@ abstract class PHPUnit_Framework_ComparisonFailure extends PHPUnit_Framework_Ass
 
     protected function diff($expected, $actual)
     {
-        $expectedFile = tempnam('/tmp', 'expected');
-        file_put_contents($expectedFile, $expected);
+        if (defined('PHPUNIT_TMPDIR')) {
+            $tmpDir = PHPUNIT_TMPDIR;
+        }
 
-        $actualFile = tempnam('/tmp', 'actual');
+        else if (function_exists('sys_get_temp_dir')) {
+            $tmpDir = sys_get_temp_dir();
+        }
+
+        else {
+            $tmpDir = '/tmp';
+        }
+
+        $expectedFile = tempnam($tmpDir, 'expected');
+        $actualFile   = tempnam($tmpDir, 'actual');
+
+        file_put_contents($expectedFile, $expected);
         file_put_contents($actualFile, $actual);
 
         $buffer = shell_exec(
