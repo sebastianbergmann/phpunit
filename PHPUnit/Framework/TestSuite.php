@@ -388,7 +388,6 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
         PHPUnit_Util_Class::collectStart();
         PHPUnit_Util_Fileloader::checkAndLoad($filename, $syntaxCheck);
         $newClasses = PHPUnit_Util_Class::collectEnd();
-
         $testsFound = FALSE;
 
         foreach ($newClasses as $className) {
@@ -413,14 +412,6 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
                     $testsFound = TRUE;
                 }
             }
-        }
-
-        if (!$testsFound) {
-            $this->addTest(
-              new PHPUnit_Framework_Warning(
-                'No tests found in file "' . $filename . '".'
-              )
-            );
         }
 
         $this->numTests = -1;
