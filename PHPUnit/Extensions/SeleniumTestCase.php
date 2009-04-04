@@ -491,14 +491,12 @@ abstract class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_Tes
         $xpath    = new DOMXPath($document);
         $rows     = $xpath->query('body/table/tbody/tr');
 
-        foreach ($rows as $row)
-        {
+        foreach ($rows as $row) {
             $action    = NULL;
             $arguments = array();
             $columns   = $xpath->query('td', $row);
 
-            foreach ($columns as $column)
-            {
+            foreach ($columns as $column) {
                 if ($action === NULL) {
                     $action = $column->nodeValue;
                 } else {
