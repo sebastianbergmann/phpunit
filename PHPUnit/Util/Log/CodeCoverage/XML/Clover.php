@@ -173,7 +173,8 @@ class PHPUnit_Util_Log_CodeCoverage_XML_Clover extends PHPUnit_Util_Printer
 
                         $lines[$method['startLine']] = array(
                           'count' => $methodCount,
-                          'type'  => 'method'
+                          'type'  => 'method',
+                          'name'  => $methodName
                         );
                     }
 
@@ -235,6 +236,11 @@ class PHPUnit_Util_Log_CodeCoverage_XML_Clover extends PHPUnit_Util_Printer
                     $line = $document->createElement('line');
                     $line->setAttribute('num', $_line);
                     $line->setAttribute('type', $_data['type']);
+
+                    if (isset($_data['name'])) {
+                        $line->setAttribute('name', $_data['name']);
+                    }
+
                     $line->setAttribute('count', $_data['count']);
 
                     $file->appendChild($line);

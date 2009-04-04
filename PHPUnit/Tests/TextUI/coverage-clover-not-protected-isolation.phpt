@@ -31,21 +31,21 @@ Writing code coverage data to XML file, this may take a moment.<?xml version="1.
       <class name="CoveredClass" namespace="global">
         <metrics methods="3" coveredmethods="4" statements="7" coveredstatements="4" elements="10" coveredelements="8"/>
       </class>
-      <line num="4" type="method" count="0"/>
+      <line num="4" type="method" name="privateMethod" count="0"/>
       <line num="6" type="stmt" count="0"/>
-      <line num="8" type="method" count="0"/>
+      <line num="8" type="method" name="protectedMethod" count="0"/>
       <line num="10" type="stmt" count="0"/>
       <line num="11" type="stmt" count="0"/>
-      <line num="13" type="method" count="0"/>
+      <line num="13" type="method" name="publicMethod" count="0"/>
       <line num="15" type="stmt" count="0"/>
       <line num="16" type="stmt" count="0"/>
-      <line num="21" type="method" count="1"/>
+      <line num="21" type="method" name="privateMethod" count="1"/>
       <line num="23" type="stmt" count="1"/>
-      <line num="25" type="method" count="0"/>
+      <line num="25" type="method" name="protectedMethod" count="0"/>
       <line num="27" type="stmt" count="0"/>
       <line num="28" type="stmt" count="0"/>
       <line num="29" type="stmt" count="0"/>
-      <line num="31" type="method" count="1"/>
+      <line num="31" type="method" name="publicMethod" count="1"/>
       <line num="33" type="stmt" count="1"/>
       <line num="34" type="stmt" count="1"/>
       <line num="35" type="stmt" count="1"/>
