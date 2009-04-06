@@ -1360,7 +1360,7 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
      */
     public function testAssertFileExists()
     {
-        $this->assertFileExists(dirname(__FILE__) . DIRECTORY_SEPARATOR . 'AllTests.php');
+        $this->assertFileExists(__FILE__);
 
         try {
             $this->assertFileExists(dirname(__FILE__) . DIRECTORY_SEPARATOR . 'NotExisting');
@@ -1381,7 +1381,7 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
         $this->assertFileNotExists(dirname(__FILE__) . DIRECTORY_SEPARATOR . 'NotExisting');
 
         try {
-            $this->assertFileNotExists(dirname(__FILE__) . DIRECTORY_SEPARATOR . 'AllTests.php');
+            $this->assertFileNotExists(__FILE__);
         }
 
         catch (PHPUnit_Framework_AssertionFailedError $e) {
@@ -2963,10 +2963,7 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
      */
     public function testAssertThatFileExists()
     {
-        $this->assertThat(
-          dirname(__FILE__) . DIRECTORY_SEPARATOR . 'AllTests.php',
-          $this->fileExists()
-        );
+        $this->assertThat(__FILE__, $this->fileExists());
     }
 
     /**
