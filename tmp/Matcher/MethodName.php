@@ -81,7 +81,9 @@ class PHPUnit_Framework_MockObject_Matcher_MethodName extends PHPUnit_Framework_
                 throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'string');
             }
 
-            $constraint = new PHPUnit_Framework_Constraint_IsEqual($constraint);
+            $constraint = new PHPUnit_Framework_Constraint_IsEqual(
+              $constraint, 0, 10, FALSE, TRUE
+            );
         }
 
         $this->constraint = $constraint;
