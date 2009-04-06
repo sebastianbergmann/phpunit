@@ -47,6 +47,7 @@
 
 require_once 'PHPUnit/Framework.php';
 require_once 'PHPUnit/Util/Filter.php';
+require_once 'PHPUnit/Util/InvalidArgumentHelper.php';
 require_once 'PHPUnit/Framework/MockObject/Matcher/StatelessInvocation.php';
 require_once 'PHPUnit/Framework/MockObject/Invocation.php';
 
@@ -75,8 +76,14 @@ class PHPUnit_Framework_MockObject_Matcher_MethodName extends PHPUnit_Framework_
 
     public function __construct($constraint)
     {
-        if (!($constraint instanceof PHPUnit_Framework_Constraint)) {
-            $constraint = new PHPUnit_Framework_Constraint_IsEqual($constraint);
+        if (!$constraint instanceof PHPUnit_Framework_Constraint) {
+            if (!is_string($constraint)) {
+                throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'string');
+            }
+
+            $constraint = new PHPUnit_Framework_Constraint_IsEqual(
+              $constraint, 0, 10, FALSE, TRUE
+            );
         }
 
         $this->constraint = $constraint;
