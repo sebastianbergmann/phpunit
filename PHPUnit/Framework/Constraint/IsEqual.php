@@ -76,13 +76,31 @@ class PHPUnit_Framework_Constraint_IsEqual extends PHPUnit_Framework_Constraint
     protected $delta = 0;
     protected $maxDepth = 10;
     protected $canonicalizeEol = FALSE;
+    protected $ignoreCase = FALSE;
 
-    public function __construct($value, $delta = 0, $maxDepth = 10, $canonicalizeEol = FALSE)
+    public function __construct($value, $delta = 0, $maxDepth = 10, $canonicalizeEol = FALSE, $ignoreCase = FALSE)
     {
+        if (!is_numeric($delta)) {
+            throw PHPUnit_Util_InvalidArgumentHelper::factory(2, 'numeric');
+        }
+
+        if (!is_int($maxDepth)) {
+            throw PHPUnit_Util_InvalidArgumentHelper::factory(3, 'integer');
+        }
+
+        if (!is_bool($canonicalizeEol)) {
+            throw PHPUnit_Util_InvalidArgumentHelper::factory(4, 'boolean');
+        }
+
+        if (!is_bool($ignoreCase)) {
+            throw PHPUnit_Util_InvalidArgumentHelper::factory(5, 'boolean');
+        }
+
         $this->value           = $value;
         $this->delta           = $delta;
         $this->maxDepth        = $maxDepth;
         $this->canonicalizeEol = $canonicalizeEol;
+        $this->ignoreCase      = $ignoreCase;
     }
 
     /**
@@ -261,10 +279,16 @@ class PHPUnit_Framework_Constraint_IsEqual extends PHPUnit_Framework_Constraint
                 return $this->numericComparison($a, $b);
             }
 
-            if ($this->canonicalizeEol && PHP_EOL != "\n" &&
-                is_string($a) && is_string($b)) {
-                $a = str_replace(PHP_EOL, "\n", $a);
-                $b = str_replace(PHP_EOL, "\n", $b);
+            if (is_string($a) && is_string($b)) {
+                if ($this->canonicalizeEol && PHP_EOL != "\n") {
+                    $a = str_replace(PHP_EOL, "\n", $a);
+                    $b = str_replace(PHP_EOL, "\n", $b);
+                }
+
+                if ($this->ignoreCase) {
+                    $a = strtolower($a);
+                    $b = strtolower($b);
+                }
             }
 
             return ($a == $b);
