@@ -320,11 +320,12 @@ abstract class PHPUnit_Framework_Assert
      * @param  float   $delta
      * @param  integer $maxDepth
      * @param  boolean $canonicalizeEol
+     * @param  boolean $ignoreCase
      */
-    public static function assertEquals($expected, $actual, $message = '', $delta = 0, $maxDepth = 10, $canonicalizeEol = FALSE)
+    public static function assertEquals($expected, $actual, $message = '', $delta = 0, $maxDepth = 10, $canonicalizeEol = FALSE, $ignoreCase = FALSE)
     {
         $constraint = new PHPUnit_Framework_Constraint_IsEqual(
-          $expected, $delta, $maxDepth, $canonicalizeEol
+          $expected, $delta, $maxDepth, $canonicalizeEol, $ignoreCase
         );
 
         self::assertThat($actual, $constraint, $message);
@@ -340,8 +341,9 @@ abstract class PHPUnit_Framework_Assert
      * @param  float   $delta
      * @param  integer $maxDepth
      * @param  boolean $canonicalizeEol
+     * @param  boolean $ignoreCase
      */
-    public static function assertAttributeEquals($expected, $actualAttributeName, $actualClassOrObject, $message = '', $delta = 0, $maxDepth = 10, $canonicalizeEol = FALSE)
+    public static function assertAttributeEquals($expected, $actualAttributeName, $actualClassOrObject, $message = '', $delta = 0, $maxDepth = 10, $canonicalizeEol = FALSE, $ignoreCase = FALSE)
     {
         self::assertEquals(
           $expected,
@@ -349,7 +351,8 @@ abstract class PHPUnit_Framework_Assert
           $message,
           $delta,
           $maxDepth,
-          $canonicalizeEol
+          $canonicalizeEol,
+          $ignoreCase
         );
     }
 
@@ -362,13 +365,14 @@ abstract class PHPUnit_Framework_Assert
      * @param  float   $delta
      * @param  integer $maxDepth
      * @param  boolean $canonicalizeEol
+     * @param  boolean $ignoreCase
      * @since  Method available since Release 2.3.0
      */
-    public static function assertNotEquals($expected, $actual, $message = '', $delta = 0, $maxDepth = 10, $canonicalizeEol = FALSE)
+    public static function assertNotEquals($expected, $actual, $message = '', $delta = 0, $maxDepth = 10, $canonicalizeEol = FALSE, $ignoreCase = FALSE)
     {
         $constraint = new PHPUnit_Framework_Constraint_Not(
           new PHPUnit_Framework_Constraint_IsEqual(
-            $expected, $delta, $maxDepth, $canonicalizeEol
+            $expected, $delta, $maxDepth, $canonicalizeEol, $ignoreCase
           )
         );
 
@@ -385,8 +389,9 @@ abstract class PHPUnit_Framework_Assert
      * @param  float   $delta
      * @param  integer $maxDepth
      * @param  boolean $canonicalizeEol
+     * @param  boolean $ignoreCase
      */
-    public static function assertAttributeNotEquals($expected, $actualAttributeName, $actualClassOrObject, $message = '', $delta = 0, $maxDepth = 10, $canonicalizeEol = FALSE)
+    public static function assertAttributeNotEquals($expected, $actualAttributeName, $actualClassOrObject, $message = '', $delta = 0, $maxDepth = 10, $canonicalizeEol = FALSE, $ignoreCase)
     {
         self::assertNotEquals(
           $expected,
@@ -394,7 +399,8 @@ abstract class PHPUnit_Framework_Assert
           $message,
           $delta,
           $maxDepth,
-          $canonicalizeEol
+          $canonicalizeEol,
+          $ignoreCase
         );
     }
 
@@ -530,9 +536,10 @@ abstract class PHPUnit_Framework_Assert
      * @param  string  $actual
      * @param  string  $message
      * @param  boolean $canonicalizeEol
+     * @param  boolean $ignoreCase
      * @since  Method available since Release 3.2.14
      */
-    public static function assertFileEquals($expected, $actual, $message = '', $canonicalizeEol = FALSE)
+    public static function assertFileEquals($expected, $actual, $message = '', $canonicalizeEol = FALSE, $ignoreCase = FALSE)
     {
         self::assertFileExists($expected, $message);
         self::assertFileExists($actual, $message);
@@ -543,7 +550,8 @@ abstract class PHPUnit_Framework_Assert
           $message,
           0,
           10,
-          $canonicalizeEol
+          $canonicalizeEol,
+          $ignoreCase
         );
     }
 
@@ -555,9 +563,10 @@ abstract class PHPUnit_Framework_Assert
      * @param  string  $actual
      * @param  string  $message
      * @param  boolean $canonicalizeEol
+     * @param  boolean $ignoreCase
      * @since  Method available since Release 3.2.14
      */
-    public static function assertFileNotEquals($expected, $actual, $message = '', $canonicalizeEol = FALSE)
+    public static function assertFileNotEquals($expected, $actual, $message = '', $canonicalizeEol = FALSE, $ignoreCase = FALSE)
     {
         self::assertFileExists($expected, $message);
         self::assertFileExists($actual, $message);
@@ -568,7 +577,8 @@ abstract class PHPUnit_Framework_Assert
           $message,
           0,
           10,
-          $canonicalizeEol
+          $canonicalizeEol,
+          $ignoreCase
         );
     }
 
@@ -580,9 +590,10 @@ abstract class PHPUnit_Framework_Assert
      * @param  string  $actualString
      * @param  string  $message
      * @param  boolean $canonicalizeEol
+     * @param  boolean $ignoreCase
      * @since  Method available since Release 3.3.0
      */
-    public static function assertStringEqualsFile($expectedFile, $actualString, $message = '', $canonicalizeEol = FALSE)
+    public static function assertStringEqualsFile($expectedFile, $actualString, $message = '', $canonicalizeEol = FALSE, $ignoreCase = FALSE)
     {
         self::assertFileExists($expectedFile, $message);
 
@@ -592,7 +603,8 @@ abstract class PHPUnit_Framework_Assert
           $message,
           0,
           10,
-          $canonicalizeEol
+          $canonicalizeEol,
+          $ignoreCase
         );
     }
 
@@ -604,9 +616,10 @@ abstract class PHPUnit_Framework_Assert
      * @param  string  $actualString
      * @param  string  $message
      * @param  boolean $canonicalizeEol
+     * @param  boolean $ignoreCase
      * @since  Method available since Release 3.3.0
      */
-    public static function assertStringNotEqualsFile($expectedFile, $actualString, $message = '', $canonicalizeEol = FALSE)
+    public static function assertStringNotEqualsFile($expectedFile, $actualString, $message = '', $canonicalizeEol = FALSE, $ignoreCase = FALSE)
     {
         self::assertFileExists($expectedFile, $message);
 
@@ -616,7 +629,8 @@ abstract class PHPUnit_Framework_Assert
           $message,
           0,
           10,
-          $canonicalizeEol
+          $canonicalizeEol,
+          $ignoreCase
         );
     }
 
