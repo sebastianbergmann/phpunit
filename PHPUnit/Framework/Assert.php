@@ -388,7 +388,7 @@ abstract class PHPUnit_Framework_Assert
      * @param  boolean $canonicalizeEol
      * @param  boolean $ignoreCase
      */
-    public static function assertAttributeNotEquals($expected, $actualAttributeName, $actualClassOrObject, $message = '', $delta = 0, $maxDepth = 10, $canonicalizeEol = FALSE, $ignoreCase)
+    public static function assertAttributeNotEquals($expected, $actualAttributeName, $actualClassOrObject, $message = '', $delta = 0, $maxDepth = 10, $canonicalizeEol = FALSE, $ignoreCase = FALSE)
     {
         self::assertNotEquals(
           $expected,
