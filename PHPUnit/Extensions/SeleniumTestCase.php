@@ -498,9 +498,9 @@ abstract class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_Tes
 
             foreach ($columns as $column) {
                 if ($action === NULL) {
-                    $action = $column->nodeValue;
+                    $action = PHPUnit_Util_XML::nodeToText($column);
                 } else {
-                    $arguments[] = $column->nodeValue;
+                    $arguments[] = PHPUnit_Util_XML::nodeToText($column);
                 }
             }
 
