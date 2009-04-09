@@ -174,29 +174,31 @@ class PHPUnit_Util_Log_XML extends PHPUnit_Util_Printer implements PHPUnit_Frame
      */
     public function addError(PHPUnit_Framework_Test $test, Exception $e, $time)
     {
-        if ($test instanceof PHPUnit_Framework_SelfDescribing) {
-            $buffer = $test->toString() . "\n";
-        } else {
-            $buffer = '';
+        if ($this->currentTestCase !== NULL) {
+            if ($test instanceof PHPUnit_Framework_SelfDescribing) {
+                $buffer = $test->toString() . "\n";
+            } else {
+                $buffer = '';
+            }
+
+            $buffer .= PHPUnit_Framework_TestFailure::exceptionToString($e) . "\n" .
+                       PHPUnit_Util_Filter::getFilteredStacktrace($e, FALSE);
+
+            $error = $this->document->createElement(
+              'error',
+              htmlspecialchars(
+                PHPUnit_Util_XML::convertToUtf8($buffer),
+                ENT_COMPAT,
+                'UTF-8'
+              )
+            );
+
+            $error->setAttribute('type', get_class($e));
+
+            $this->currentTestCase->appendChild($error);
+
+            $this->testSuiteErrors[$this->testSuiteLevel]++;
         }
-
-        $buffer .= PHPUnit_Framework_TestFailure::exceptionToString($e) . "\n" .
-                   PHPUnit_Util_Filter::getFilteredStacktrace($e, FALSE);
-
-        $error = $this->document->createElement(
-          'error',
-          htmlspecialchars(
-            PHPUnit_Util_XML::convertToUtf8($buffer),
-            ENT_COMPAT,
-            'UTF-8'
-          )
-        );
-
-        $error->setAttribute('type', get_class($e));
-
-        $this->currentTestCase->appendChild($error);
-
-        $this->testSuiteErrors[$this->testSuiteLevel]++;
     }
 
     /**
@@ -208,30 +210,32 @@ class PHPUnit_Util_Log_XML extends PHPUnit_Util_Printer implements PHPUnit_Frame
      */
     public function addFailure(PHPUnit_Framework_Test $test, PHPUnit_Framework_AssertionFailedError $e, $time)
     {
-        if (!$test instanceof PHPUnit_Framework_Warning) {
-            if ($test instanceof PHPUnit_Framework_SelfDescribing) {
-                $buffer = $test->toString() . "\n";
-            } else {
-                $buffer = '';
+        if ($this->currentTestCase !== NULL) {
+            if (!$test instanceof PHPUnit_Framework_Warning) {
+                if ($test instanceof PHPUnit_Framework_SelfDescribing) {
+                    $buffer = $test->toString() . "\n";
+                } else {
+                    $buffer = '';
+                }
+
+                $buffer .= PHPUnit_Framework_TestFailure::exceptionToString($e) . "\n" .
+                           PHPUnit_Util_Filter::getFilteredStacktrace($e, FALSE);
+
+                $failure = $this->document->createElement(
+                  'failure',
+                  htmlspecialchars(
+                    PHPUnit_Util_XML::convertToUtf8($buffer),
+                    ENT_COMPAT,
+                    'UTF-8'
+                  )
+                );
+
+                $failure->setAttribute('type', get_class($e));
+
+                $this->currentTestCase->appendChild($failure);
+
+                $this->testSuiteFailures[$this->testSuiteLevel]++;
             }
-
-            $buffer .= PHPUnit_Framework_TestFailure::exceptionToString($e) . "\n" .
-                       PHPUnit_Util_Filter::getFilteredStacktrace($e, FALSE);
-
-            $failure = $this->document->createElement(
-              'failure',
-              htmlspecialchars(
-                PHPUnit_Util_XML::convertToUtf8($buffer),
-                ENT_COMPAT,
-                'UTF-8'
-              )
-            );
-
-            $failure->setAttribute('type', get_class($e));
-
-            $this->currentTestCase->appendChild($failure);
-
-            $this->testSuiteFailures[$this->testSuiteLevel]++;
         }
     }
 
@@ -244,7 +248,7 @@ class PHPUnit_Util_Log_XML extends PHPUnit_Util_Printer implements PHPUnit_Frame
      */
     public function addIncompleteTest(PHPUnit_Framework_Test $test, Exception $e, $time)
     {
-        if ($this->logIncompleteSkipped) {
+        if ($this->logIncompleteSkipped && $this->currentTestCase !== NULL) {
             $error = $this->document->createElement(
               'error',
               htmlspecialchars(
@@ -277,7 +281,7 @@ class PHPUnit_Util_Log_XML extends PHPUnit_Util_Printer implements PHPUnit_Frame
      */
     public function addSkippedTest(PHPUnit_Framework_Test $test, Exception $e, $time)
     {
-        if ($this->logIncompleteSkipped) {
+        if ($this->logIncompleteSkipped && $this->currentTestCase !== NULL) {
             $error = $this->document->createElement(
               'error',
               htmlspecialchars(
