@@ -201,6 +201,24 @@ class PHPUnit_Util_XML
      *
      *
      * @param  DOMNode $node
+     * @return string
+     * @since  Method available since Release 3.4.0
+     */
+    public static function nodeToText(DOMNode $node)
+    {
+        $result = '';
+
+        foreach ($node->childNodes as $childNode) {
+            $result .= $node->ownerDocument->saveXML($childNode);
+        }
+
+        return $result;
+    }
+
+    /**
+     *
+     *
+     * @param  DOMNode $node
      * @since  Method available since Release 3.3.0
      * @author Mattis Stordalen Flister <mattis@xait.no>
      */
