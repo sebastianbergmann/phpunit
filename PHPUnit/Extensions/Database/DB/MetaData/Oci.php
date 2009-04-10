@@ -64,6 +64,11 @@ PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
  */
 class PHPUnit_Extensions_Database_DB_MetaData_Oci extends PHPUnit_Extensions_Database_DB_MetaData
 {
+    /**
+     * No character used to quote schema objects.
+     */
+    protected $schemaObjectQuoteChar = '';
+
     protected $columns = array();
     protected $keys = array();
 
