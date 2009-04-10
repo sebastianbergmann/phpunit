@@ -111,11 +111,14 @@ class PHPUnit_Runner_StandardTestSuiteLoader implements PHPUnit_Runner_TestSuite
         }
 
         if (!class_exists($suiteClassName, FALSE) && !empty($loadedClasses)) {
+            $testCaseClass = 'PHPUnit_Framework_TestCase';
+
             foreach ($loadedClasses as $loadedClass) {
                 $class = new ReflectionClass($loadedClass);
 
-                if ($class->isSubclassOf('PHPUnit_Framework_TestCase')) {
+                if ($class->isSubclassOf($testCaseClass)) {
                     $suiteClassName = $loadedClass;
+                    $testCaseClass  = $loadedClass;
 
                     if ($class->getFileName() == realpath($suiteClassFile)) {
                         break;
