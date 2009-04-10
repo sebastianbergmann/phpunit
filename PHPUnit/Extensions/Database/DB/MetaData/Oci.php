@@ -64,6 +64,11 @@ PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
  */
 class PHPUnit_Extensions_Database_DB_MetaData_Oci extends PHPUnit_Extensions_Database_DB_MetaData
 {
+    /**
+     * No character used to quote schema objects.
+     */
+    protected $schemaObjectQuoteChar = '';
+
     protected $columns = array();
     protected $keys = array();
 
@@ -153,7 +158,7 @@ class PHPUnit_Extensions_Database_DB_MetaData_Oci extends PHPUnit_Extensions_Dat
         }
 
         $keyQuery = "SELECT b.column_name
-                       FROM all_constraints a, all_cons_columns b
+                       FROM user_constraints a, user_cons_columns b
                       WHERE a.constraint_type='P'
                         AND a.constraint_name=b.constraint_name
                         $conOwnerQuery
