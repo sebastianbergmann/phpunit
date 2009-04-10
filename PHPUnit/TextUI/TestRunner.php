@@ -491,35 +491,6 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
     }
 
     /**
-     * A test started.
-     *
-     * @param  string  $testName
-     */
-    public function testStarted($testName)
-    {
-    }
-
-    /**
-     * A test ended.
-     *
-     * @param  string  $testName
-     */
-    public function testEnded($testName)
-    {
-    }
-
-    /**
-     * A test failed.
-     *
-     * @param  integer                                $status
-     * @param  PHPUnit_Framework_Test                 $test
-     * @param  PHPUnit_Framework_AssertionFailedError $e
-     */
-    public function testFailed($status, PHPUnit_Framework_Test $test, PHPUnit_Framework_AssertionFailedError $e)
-    {
-    }
-
-    /**
      * Override to define how to handle a failed loading of
      * a test suite.
      *
