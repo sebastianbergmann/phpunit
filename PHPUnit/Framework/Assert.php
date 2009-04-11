@@ -1585,7 +1585,7 @@ abstract class PHPUnit_Framework_Assert
     public static function assertTag($matcher, $actual, $message = '', $isHtml = TRUE)
     {
         $dom     = PHPUnit_Util_XML::load($actual, $isHtml);
-        $tags    = PHPUnit_Util_XML::findNodes($dom, $matcher);
+        $tags    = PHPUnit_Util_XML::findNodes($dom, $matcher, $isHtml);
         $matched = count($tags) > 0 && $tags[0] instanceof DOMNode;
 
         self::assertTrue($matched, $message);
@@ -1606,7 +1606,7 @@ abstract class PHPUnit_Framework_Assert
     public static function assertNotTag($matcher, $actual, $message = '', $isHtml = TRUE)
     {
         $dom     = PHPUnit_Util_XML::load($actual, $isHtml);
-        $tags    = PHPUnit_Util_XML::findNodes($dom, $matcher);
+        $tags    = PHPUnit_Util_XML::findNodes($dom, $matcher, $isHtml);
         $matched = count($tags) > 0 && $tags[0] instanceof DOMNode;
 
         self::assertFalse($matched, $message);
