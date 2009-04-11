@@ -494,12 +494,13 @@ class PHPUnit_Util_XML
      *
      * @param  DOMDocument $dom
      * @param  array       $options
+     * @param  boolean     $isHtml
      * @return array
      * @since  Method available since Release 3.3.0
      * @author Mike Naberezny <mike@maintainable.com>
      * @author Derek DeVries <derek@maintainable.com>
      */
-    public static function findNodes(DOMDocument $dom, array $options)
+    public static function findNodes(DOMDocument $dom, array $options, $isHtml = TRUE)
     {
         $valid = array(
           'id', 'class', 'tag', 'content', 'attributes', 'parent',
@@ -520,7 +521,11 @@ class PHPUnit_Util_XML
 
         // find the element by a tag type
         if ($options['tag']) {
-            $elements = $dom->getElementsByTagName($options['tag']);
+            if ($isHtml) {
+                $elements = self::getElementsByCaseInsensitiveTagName($dom, $options['tag']);
+            } else {
+                $elements = $dom->getElementsByTagName($options['tag']);
+            }
 
             foreach ($elements as $element) {
                 $nodes[] = $element;
@@ -547,7 +552,11 @@ class PHPUnit_Util_XML
             );
 
             foreach ($tags as $tag) {
-                $elements = $dom->getElementsByTagName($tag);
+                if ($isHtml) {
+                    $elements = self::getElementsByCaseInsensitiveTagName($dom, $tag);
+                } else {
+                    $elements = $dom->getElementsByTagName($tag);
+                }
 
                 foreach ($elements as $element) {
                     $nodes[] = $element;
@@ -838,6 +847,25 @@ class PHPUnit_Util_XML
         }
 
         return isset($allChildren) ? $allChildren : array();
+    }
+
+    /**
+     * Gets elements by case insensitive tagname.
+     *
+     * @param  DOMDocument $dom
+     * @param  string      $tag
+     * @return DOMNodeList
+     * @since  Method available since Release 3.4.0
+     */
+    protected static function getElementsByCaseInsensitiveTagName(DOMDocument $dom, $tag)
+    {
+        $elements = $dom->getElementsByTagName(strtolower($tag));
+
+        if ($elements->length == 0) {
+            $elements = $dom->getElementsByTagName(strtoupper($tag));
+        }
+
+        return $elements;
     }
 
     /**
