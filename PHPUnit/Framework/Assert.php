@@ -1065,7 +1065,7 @@ abstract class PHPUnit_Framework_Assert
         }
 
         if (!is_string($string)) {
-            throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'string');
+            throw PHPUnit_Util_InvalidArgumentHelper::factory(2, 'string');
         }
 
         $constraint = new PHPUnit_Framework_Constraint_StringStartsWith($prefix);
@@ -1088,7 +1088,7 @@ abstract class PHPUnit_Framework_Assert
         }
 
         if (!is_string($string)) {
-            throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'string');
+            throw PHPUnit_Util_InvalidArgumentHelper::factory(2, 'string');
         }
 
         $constraint = new PHPUnit_Framework_Constraint_Not(
@@ -1112,8 +1112,8 @@ abstract class PHPUnit_Framework_Assert
             throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'string');
         }
 
-        if (!is_string($suffix)) {
-            throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'string');
+        if (!is_string($string)) {
+            throw PHPUnit_Util_InvalidArgumentHelper::factory(2, 'string');
         }
 
         $constraint = new PHPUnit_Framework_Constraint_StringEndsWith($suffix);
@@ -1135,8 +1135,8 @@ abstract class PHPUnit_Framework_Assert
             throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'string');
         }
 
-        if (!is_string($suffix)) {
-            throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'string');
+        if (!is_string($string)) {
+            throw PHPUnit_Util_InvalidArgumentHelper::factory(2, 'string');
         }
 
         $constraint = new PHPUnit_Framework_Constraint_Not(
