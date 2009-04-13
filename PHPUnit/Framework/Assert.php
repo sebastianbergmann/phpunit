@@ -1815,10 +1815,8 @@ abstract class PHPUnit_Framework_Assert
      */
     public static function attributeEqualTo($attributeName, $value, $delta = 0, $maxDepth = 10, $canonicalizeEol = FALSE, $ignoreCase = FALSE)
     {
-        return new PHPUnit_Framework_Constraint_Attribute(
-          new PHPUnit_Framework_Constraint_IsEqual(
-            $value, $delta, $maxDepth, $canonicalizeEol, $ignoreCase
-          ),
+        return self::attribute(
+          self::equalTo($value, $delta, $maxDepth, $canonicalizeEol, $ignoreCase),
           $attributeName
         );
     }
