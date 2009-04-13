@@ -1789,12 +1789,14 @@ abstract class PHPUnit_Framework_Assert
      * @param  mixed   $value
      * @param  float   $delta
      * @param  integer $maxDepth
+     * @param  boolean $canonicalizeEol
+     * @param  boolean $ignoreCase
      * @return PHPUnit_Framework_Constraint_IsEqual
      * @since  Method available since Release 3.0.0
      */
-    public static function equalTo($value, $delta = 0, $maxDepth = 10)
+    public static function equalTo($value, $delta = 0, $maxDepth = 10, $canonicalizeEol = FALSE, $ignoreCase = FALSE)
     {
-        return new PHPUnit_Framework_Constraint_IsEqual($value, $delta, $maxDepth);
+        return new PHPUnit_Framework_Constraint_IsEqual($value, $delta, $maxDepth, $canonicalizeEol, $ignoreCase);
     }
 
     /**
@@ -1806,13 +1808,17 @@ abstract class PHPUnit_Framework_Assert
      * @param  mixed   $value
      * @param  float   $delta
      * @param  integer $maxDepth
+     * @param  boolean $canonicalizeEol
+     * @param  boolean $ignoreCase
      * @return PHPUnit_Framework_Constraint_Attribute
      * @since  Method available since Release 3.1.0
      */
-    public static function attributeEqualTo($attributeName, $value, $delta = 0, $maxDepth = 10)
+    public static function attributeEqualTo($attributeName, $value, $delta = 0, $maxDepth = 10, $canonicalizeEol = FALSE, $ignoreCase = FALSE)
     {
         return new PHPUnit_Framework_Constraint_Attribute(
-          new PHPUnit_Framework_Constraint_IsEqual($value, $delta, $maxDepth),
+          new PHPUnit_Framework_Constraint_IsEqual(
+            $value, $delta, $maxDepth, $canonicalizeEol, $ignoreCase
+          ),
           $attributeName
         );
     }
