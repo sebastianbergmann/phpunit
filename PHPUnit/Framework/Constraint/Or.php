@@ -140,5 +140,22 @@ class PHPUnit_Framework_Constraint_Or extends PHPUnit_Framework_Constraint
 
         return $text;
     }
+
+    /**
+     * Counts the number of constraint elements.
+     *
+     * @return integer
+     * @since  Method available since Release 3.4.0
+     */
+    public function count()
+    {
+        $count = 1;
+
+        foreach ($this->constraints as $constraint) {
+            $count += count($constraint);
+        }
+
+        return $count;
+    }
 }
 ?>
