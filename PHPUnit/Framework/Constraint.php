@@ -65,16 +65,18 @@ if (!class_exists('PHPUnit_Framework_Constraint', FALSE)) {
  * @link       http://www.phpunit.de/
  * @since      Interface available since Release 3.0.0
  */
-abstract class PHPUnit_Framework_Constraint implements PHPUnit_Framework_SelfDescribing
+abstract class PHPUnit_Framework_Constraint implements Countable, PHPUnit_Framework_SelfDescribing
 {
     /**
-     * Evaluates the constraint for parameter $other. Returns TRUE if the
-     * constraint is met, FALSE otherwise.
+     * Counts the number of constraint elements.
      *
-     * @param mixed $other Value or object to evaluate.
-     * @return bool
+     * @return integer
+     * @since  Method available since Release 3.4.0
      */
-    abstract public function evaluate($other);
+    public function count()
+    {
+        return 1;
+    }
 
     /**
      * Creates the appropriate exception for the constraint which can be caught
@@ -149,6 +151,15 @@ abstract class PHPUnit_Framework_Constraint implements PHPUnit_Framework_SelfDes
           $string
         );
     }
+
+    /**
+     * Evaluates the constraint for parameter $other. Returns TRUE if the
+     * constraint is met, FALSE otherwise.
+     *
+     * @param mixed $other Value or object to evaluate.
+     * @return bool
+     */
+    abstract public function evaluate($other);
 }
 
 }
