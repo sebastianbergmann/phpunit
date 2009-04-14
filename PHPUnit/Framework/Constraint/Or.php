@@ -100,28 +100,6 @@ class PHPUnit_Framework_Constraint_Or extends PHPUnit_Framework_Constraint
     }
 
     /**
-     * @param   mixed   $other The value passed to evaluate() which failed the
-     *                         constraint check.
-     * @param   string  $description A string with extra description of what was
-     *                               going on while the evaluation failed.
-     * @param   boolean $not Flag to indicate negation.
-     * @throws  PHPUnit_Framework_ExpectationFailedException
-     */
-    public function fail($other, $description, $not = FALSE)
-    {
-        throw new PHPUnit_Framework_ExpectationFailedException(
-          sprintf(
-            'Failed asserting that %s %s.',
-
-             PHPUnit_Util_Type::toString($other),
-             $this->toString()
-          ),
-          NULL,
-          $description
-        );
-    }
-
-    /**
      * Returns a string representation of the constraint.
      *
      * @return string
