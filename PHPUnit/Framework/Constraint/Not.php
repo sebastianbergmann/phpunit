@@ -99,7 +99,11 @@ class PHPUnit_Framework_Constraint_Not extends PHPUnit_Framework_Constraint
      */
     public function fail($other, $description, $not = FALSE)
     {
-        $this->constraint->fail($other, $description, TRUE);
+        if (count($this->constraint) == 1 || $this->constraint instanceof PHPUnit_Framework_Constraint_Attribute) {
+            $this->constraint->fail($other, $description, TRUE);
+        } else {
+            parent::fail($other, $description, !$not);
+        }
     }
 
     /**
