@@ -1619,7 +1619,7 @@ abstract class PHPUnit_Framework_Assert
      */
     public static function assertThat($value, PHPUnit_Framework_Constraint $constraint, $message = '')
     {
-        self::$count++;
+        self::$count += count($constraint);
 
         if (!$constraint->evaluate($value)) {
             $constraint->fail($value, $message);
