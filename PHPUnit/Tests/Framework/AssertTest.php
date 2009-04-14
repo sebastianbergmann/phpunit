@@ -2315,7 +2315,7 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers PHPUnit_Framework_Assert::testAssertPublicAttributeContainsOnly
+     * @covers PHPUnit_Framework_Assert::assertAttributeContainsOnly
      */
     public function testAssertPublicAttributeContainsOnly()
     {
@@ -3066,6 +3066,8 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
 
     /**
      * @covers PHPUnit_Framework_Assert::assertThat
+     * @covers PHPUnit_Framework_Assert::attribute
+     * @covers PHPUnit_Framework_Assert::equalTo
      */
     public function testAssertThatAttributeEquals()
     {
@@ -3080,6 +3082,8 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
 
     /**
      * @covers PHPUnit_Framework_Assert::assertThat
+     * @covers PHPUnit_Framework_Assert::attribute
+     * @covers PHPUnit_Framework_Assert::equalTo
      */
     public function testAssertThatAttributeEqualTo()
     {
@@ -3091,6 +3095,7 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
 
     /**
      * @covers PHPUnit_Framework_Assert::assertThat
+     * @covers PHPUnit_Framework_Assert::anything
      */
     public function testAssertThatAnything()
     {
@@ -3099,6 +3104,8 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
 
     /**
      * @covers PHPUnit_Framework_Assert::assertThat
+     * @covers PHPUnit_Framework_Assert::anything
+     * @covers PHPUnit_Framework_Assert::logicalAnd
      */
     public function testAssertThatAnythingAndAnything()
     {
@@ -3112,6 +3119,8 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
 
     /**
      * @covers PHPUnit_Framework_Assert::assertThat
+     * @covers PHPUnit_Framework_Assert::anything
+     * @covers PHPUnit_Framework_Assert::logicalOr
      */
     public function testAssertThatAnythingOrAnything()
     {
@@ -3125,6 +3134,9 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
 
     /**
      * @covers PHPUnit_Framework_Assert::assertThat
+     * @covers PHPUnit_Framework_Assert::anything
+     * @covers PHPUnit_Framework_Assert::logicalNot
+     * @covers PHPUnit_Framework_Assert::logicalXor
      */
     public function testAssertThatAnythingXorNotAnything()
     {
@@ -3139,6 +3151,7 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
 
     /**
      * @covers PHPUnit_Framework_Assert::assertThat
+     * @covers PHPUnit_Framework_Assert::contains
      */
     public function testAssertThatContains()
     {
@@ -3147,6 +3160,7 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
 
     /**
      * @covers PHPUnit_Framework_Assert::assertThat
+     * @covers PHPUnit_Framework_Assert::stringContains
      */
     public function testAssertThatStringContains()
     {
@@ -3155,6 +3169,7 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
 
     /**
      * @covers PHPUnit_Framework_Assert::assertThat
+     * @covers PHPUnit_Framework_Assert::containsOnly
      */
     public function testAssertThatContainsOnly()
     {
@@ -3163,6 +3178,7 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
 
     /**
      * @covers PHPUnit_Framework_Assert::assertThat
+     * @covers PHPUnit_Framework_Assert::arrayHasKey
      */
     public function testAssertThatArrayHasKey()
     {
@@ -3171,6 +3187,7 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
 
     /**
      * @covers PHPUnit_Framework_Assert::assertThat
+     * @covers PHPUnit_Framework_Assert::classHasAttribute
      */
     public function testAssertThatClassHasAttribute()
     {
@@ -3182,6 +3199,7 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
 
     /**
      * @covers PHPUnit_Framework_Assert::assertThat
+     * @covers PHPUnit_Framework_Assert::classHasStaticAttribute
      */
     public function testAssertThatClassHasStaticAttribute()
     {
@@ -3193,6 +3211,7 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
 
     /**
      * @covers PHPUnit_Framework_Assert::assertThat
+     * @covers PHPUnit_Framework_Assert::objectHasAttribute
      */
     public function testAssertThatObjectHasAttribute()
     {
@@ -3204,6 +3223,7 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
 
     /**
      * @covers PHPUnit_Framework_Assert::assertThat
+     * @covers PHPUnit_Framework_Assert::equalTo
      */
     public function testAssertThatEqualTo()
     {
@@ -3212,6 +3232,7 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
 
     /**
      * @covers PHPUnit_Framework_Assert::assertThat
+     * @covers PHPUnit_Framework_Assert::identicalTo
      */
     public function testAssertThatIdenticalTo()
     {
@@ -3223,6 +3244,7 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
 
     /**
      * @covers PHPUnit_Framework_Assert::assertThat
+     * @covers PHPUnit_Framework_Assert::isInstanceOf
      */
     public function testAssertThatIsInstanceOf()
     {
@@ -3231,6 +3253,7 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
 
     /**
      * @covers PHPUnit_Framework_Assert::assertThat
+     * @covers PHPUnit_Framework_Assert::isType
      */
     public function testAssertThatIsType()
     {
@@ -3239,6 +3262,7 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
 
     /**
      * @covers PHPUnit_Framework_Assert::assertThat
+     * @covers PHPUnit_Framework_Assert::fileExists
      */
     public function testAssertThatFileExists()
     {
@@ -3247,6 +3271,7 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
 
     /**
      * @covers PHPUnit_Framework_Assert::assertThat
+     * @covers PHPUnit_Framework_Assert::greaterThan
      */
     public function testAssertThatGreaterThan()
     {
@@ -3255,6 +3280,7 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
 
     /**
      * @covers PHPUnit_Framework_Assert::assertThat
+     * @covers PHPUnit_Framework_Assert::greaterThanOrEqual
      */
     public function testAssertThatGreaterThanOrEqual()
     {
@@ -3263,6 +3289,7 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
 
     /**
      * @covers PHPUnit_Framework_Assert::assertThat
+     * @covers PHPUnit_Framework_Assert::lessThan
      */
     public function testAssertThatLessThan()
     {
@@ -3271,6 +3298,7 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
 
     /**
      * @covers PHPUnit_Framework_Assert::assertThat
+     * @covers PHPUnit_Framework_Assert::lessThanOrEqual
      */
     public function testAssertThatLessThanOrEqual()
     {
@@ -3279,6 +3307,7 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
 
     /**
      * @covers PHPUnit_Framework_Assert::assertThat
+     * @covers PHPUnit_Framework_Assert::matchesRegularExpression
      */
     public function testAssertThatMatchesRegularExpression()
     {
@@ -3345,7 +3374,7 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers PHPUnit_Framework_Assert::assertThat
+     * @covers PHPUnit_Framework_Assert::assertTag
      */
     public function testAssertTagRegexpContentTrue()
     {
@@ -3355,7 +3384,7 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers PHPUnit_Framework_Assert::assertThat
+     * @covers PHPUnit_Framework_Assert::assertTag
      */
     public function testAssertTagRegexpModifierContentTrue()
     {
@@ -3376,7 +3405,7 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers PHPUnit_Framework_Assert::assertThat
+     * @covers PHPUnit_Framework_Assert::assertTag
      */
     public function testAssertTagAttributesTrueA()
     {
@@ -3386,7 +3415,7 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers PHPUnit_Framework_Assert::assertThat
+     * @covers PHPUnit_Framework_Assert::assertTag
      */
     public function testAssertTagAttributesTrueB()
     {
@@ -3407,7 +3436,7 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers PHPUnit_Framework_Assert::assertThat
+     * @covers PHPUnit_Framework_Assert::assertTag
      */
     public function testAssertTagAttributesRegexpTrueA()
     {
@@ -3417,7 +3446,7 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers PHPUnit_Framework_Assert::assertThat
+     * @covers PHPUnit_Framework_Assert::assertTag
      */
     public function testAssertTagAttributesRegexpTrueB()
     {
@@ -3427,7 +3456,7 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers PHPUnit_Framework_Assert::assertThat
+     * @covers PHPUnit_Framework_Assert::assertTag
      */
     public function testAssertTagAttributesRegexpModifierTrue()
     {
@@ -3459,7 +3488,7 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers PHPUnit_Framework_Assert::assertThat
+     * @covers PHPUnit_Framework_Assert::assertTag
      */
     public function testAssertTagAttributesMultiPartClassTrueA()
     {
@@ -3470,7 +3499,7 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers PHPUnit_Framework_Assert::assertThat
+     * @covers PHPUnit_Framework_Assert::assertTag
      */
     public function testAssertTagAttributesMultiPartClassTrueB()
     {
@@ -3493,7 +3522,7 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers PHPUnit_Framework_Assert::assertThat
+     * @covers PHPUnit_Framework_Assert::assertTag
      */
     public function testAssertTagParentTrue()
     {
@@ -3514,7 +3543,7 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers PHPUnit_Framework_Assert::assertThat
+     * @covers PHPUnit_Framework_Assert::assertTag
      */
     public function testAssertTagChildTrue()
     {
@@ -3535,7 +3564,7 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers PHPUnit_Framework_Assert::assertThat
+     * @covers PHPUnit_Framework_Assert::assertTag
      */
     public function testAssertTagAncestorTrue()
     {
@@ -3556,7 +3585,7 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers PHPUnit_Framework_Assert::assertThat
+     * @covers PHPUnit_Framework_Assert::assertTag
      */
     public function testAssertTagDescendantTrue()
     {
@@ -3577,7 +3606,7 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers PHPUnit_Framework_Assert::assertThat
+     * @covers PHPUnit_Framework_Assert::assertTag
      */
     public function testAssertTagChildrenCountTrue()
     {
@@ -3598,7 +3627,7 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers PHPUnit_Framework_Assert::assertThat
+     * @covers PHPUnit_Framework_Assert::assertTag
      */
     public function testAssertTagChildrenLessThanTrue()
     {
@@ -3619,7 +3648,7 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers PHPUnit_Framework_Assert::assertThat
+     * @covers PHPUnit_Framework_Assert::assertTag
      */
     public function testAssertTagChildrenGreaterThanTrue()
     {
@@ -3640,7 +3669,7 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers PHPUnit_Framework_Assert::assertThat
+     * @covers PHPUnit_Framework_Assert::assertTag
      */
     public function testAssertTagChildrenOnlyTrue()
     {
@@ -3661,7 +3690,7 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers PHPUnit_Framework_Assert::assertThat
+     * @covers PHPUnit_Framework_Assert::assertTag
      */
     public function testAssertTagTypeIdTrueA()
     {
@@ -3670,7 +3699,7 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers PHPUnit_Framework_Assert::assertThat
+     * @covers PHPUnit_Framework_Assert::assertTag
      */
     public function testAssertTagTypeIdTrueB()
     {
@@ -3679,7 +3708,7 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers PHPUnit_Framework_Assert::assertThat
+     * @covers PHPUnit_Framework_Assert::assertTag
      */
     public function testAssertTagTypeIdTrueC()
     {
@@ -3698,7 +3727,7 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers PHPUnit_Framework_Assert::assertThat
+     * @covers PHPUnit_Framework_Assert::assertTag
      */
     public function testAssertTagContentAttributes()
     {
@@ -3710,7 +3739,7 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers PHPUnit_Framework_Assert::assertThat
+     * @covers PHPUnit_Framework_Assert::assertTag
      */
     public function testAssertParentContentAttributes()
     {
@@ -3723,7 +3752,7 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers PHPUnit_Framework_Assert::assertThat
+     * @covers PHPUnit_Framework_Assert::assertTag
      */
     public function testAssertChildContentAttributes()
     {
@@ -3737,7 +3766,7 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers PHPUnit_Framework_Assert::assertThat
+     * @covers PHPUnit_Framework_Assert::assertTag
      */
     public function testAssertChildSubChildren()
     {
@@ -3748,7 +3777,7 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers PHPUnit_Framework_Assert::assertThat
+     * @covers PHPUnit_Framework_Assert::assertTag
      */
     public function testAssertAncestorContentAttributes()
     {
@@ -3761,7 +3790,7 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers PHPUnit_Framework_Assert::assertThat
+     * @covers PHPUnit_Framework_Assert::assertTag
      */
     public function testAssertDescendantContentAttributes()
     {
@@ -3774,7 +3803,7 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers PHPUnit_Framework_Assert::assertThat
+     * @covers PHPUnit_Framework_Assert::assertTag
      */
     public function testAssertChildrenContentAttributes()
     {
@@ -3791,7 +3820,7 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers PHPUnit_Framework_Assert::assertNotThat
+     * @covers PHPUnit_Framework_Assert::assertNotTag
      */
     public function testAssertNotTagTypeIdFalse()
     {
@@ -3800,7 +3829,7 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers            PHPUnit_Framework_Assert::assertNotThat
+     * @covers            PHPUnit_Framework_Assert::assertNotTag
      * @expectedException PHPUnit_Framework_AssertionFailedError
      */
     public function testAssertNotTagContentAttributes()
