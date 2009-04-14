@@ -128,5 +128,17 @@ class PHPUnit_Framework_Constraint_Attribute extends PHPUnit_Framework_Constrain
     {
         return count($this->constraint) + 1;
     }
+
+    /**
+     * @since Method available since Release 3.4.0
+     */
+    protected function customFailureDescription($other, $description, $not)
+    {
+        return sprintf(
+          'Failed asserting that %s.',
+
+           $this->toString()
+        );
+    }
 }
 ?>
