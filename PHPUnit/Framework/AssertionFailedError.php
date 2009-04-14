@@ -66,28 +66,6 @@ if (!class_exists('PHPUnit_Framework_AssertionFailedError', FALSE)) {
 class PHPUnit_Framework_AssertionFailedError extends Exception implements PHPUnit_Framework_SelfDescribing
 {
     /**
-     * Returns the location where this failure occured.
-     *
-     * @return array
-     * @since  Method available since Release 3.0.0
-     */
-    public function getLocation()
-    {
-        foreach ($this->getTrace() as $frame) {
-            if (!isset($frame['line'])) {
-                break;
-            }
-
-            $result = array(
-              'file' => $frame['file'],
-              'line' => $frame['line']
-            );
-        }
-
-        return $result;
-    }
-
-    /**
      * Wrapper for getMessage() which is declared as final.
      *
      * @return string
