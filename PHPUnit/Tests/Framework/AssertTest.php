@@ -2244,7 +2244,7 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
     /**
      * @covers PHPUnit_Framework_Assert::readAttribute
      */
-    public function testGetObjectAttribute()
+    public function testReadAttribute()
     {
         $obj = new ClassWithNonPublicAttributes;
 
@@ -2258,13 +2258,40 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
     /**
      * @covers PHPUnit_Framework_Assert::readAttribute
      */
-    public function testGetStaticAttribute()
+    public function testReadAttribute2()
     {
         $this->assertEquals('foo', $this->readAttribute('ClassWithNonPublicAttributes', 'publicStaticAttribute'));
         $this->assertEquals('bar', $this->readAttribute('ClassWithNonPublicAttributes', 'protectedStaticAttribute'));
         $this->assertEquals('baz', $this->readAttribute('ClassWithNonPublicAttributes', 'privateStaticAttribute'));
         $this->assertEquals('foo', $this->readAttribute('ClassWithNonPublicAttributes', 'protectedStaticParentAttribute'));
         $this->assertEquals('foo', $this->readAttribute('ClassWithNonPublicAttributes', 'privateStaticParentAttribute'));
+    }
+
+    /**
+     * @covers            PHPUnit_Framework_Assert::readAttribute
+     * @expectedException InvalidArgumentException
+     */
+    public function testReadAttribute3()
+    {
+        $this->readAttribute('StdClass', NULL);
+    }
+
+    /**
+     * @covers            PHPUnit_Framework_Assert::readAttribute
+     * @expectedException InvalidArgumentException
+     */
+    public function testReadAttribute4()
+    {
+        $this->readAttribute('NotExistingClass', 'foo');
+    }
+
+    /**
+     * @covers            PHPUnit_Framework_Assert::readAttribute
+     * @expectedException InvalidArgumentException
+     */
+    public function testReadAttribute5()
+    {
+        $this->readAttribute(NULL, 'foo');
     }
 
     /**
