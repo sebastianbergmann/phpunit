@@ -3081,6 +3081,23 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
     }
 
     /**
+     * @covers            PHPUnit_Framework_Assert::assertThat
+     * @covers            PHPUnit_Framework_Assert::attribute
+     * @covers            PHPUnit_Framework_Assert::equalTo
+     * @expectedException PHPUnit_Framework_AssertionFailedError
+     */
+    public function testAssertThatAttributeEquals2()
+    {
+        $this->assertThat(
+          new ClassWithNonPublicAttributes,
+          $this->attribute(
+            $this->equalTo('bar'),
+            'publicAttribute'
+          )
+        );
+    }
+
+    /**
      * @covers PHPUnit_Framework_Assert::assertThat
      * @covers PHPUnit_Framework_Assert::attribute
      * @covers PHPUnit_Framework_Assert::equalTo
