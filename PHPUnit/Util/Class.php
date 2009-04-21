@@ -134,7 +134,7 @@ class PHPUnit_Util_Class
             $classes = array($className);
         }
 
-        $done    = FALSE;
+        $done = FALSE;
 
         while (!$done) {
             if ($asReflectionObjects) {
