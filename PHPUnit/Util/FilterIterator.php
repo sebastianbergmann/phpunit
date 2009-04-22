@@ -69,13 +69,21 @@ class PHPUnit_Util_FilterIterator extends FilterIterator
     protected $suffix;
 
     /**
+     * @var    string
+     */
+    protected $prefix;
+
+    /**
      * @param  Iterator $iterator
      * @param  string   $suffix
+     * @param  string   $prefix
      */
-    public function __construct(Iterator $iterator, $suffix = 'Test.php')
+    public function __construct(Iterator $iterator, $suffix = '', $prefix = '')
     {
         parent::__construct($iterator);
+
         $this->suffix = $suffix;
+        $this->prefix = $prefix;
     }
 
     /**
@@ -83,7 +91,17 @@ class PHPUnit_Util_FilterIterator extends FilterIterator
      */
     public function accept()
     {
-        return substr($this->getInnerIterator()->current(), -1 * strlen($this->suffix)) == $this->suffix;
+        $string = (string)$this->getInnerIterator()->current();
+
+        if (!empty($this->prefix) && strpos($string, $this->prefix) !== 0) {
+            return FALSE;
+        }
+
+        if (!empty($this->suffix) && substr($string, -1 * strlen($this->suffix)) != $this->suffix) {
+            return FALSE;
+        }
+
+        return TRUE;
     }
 }
 ?>

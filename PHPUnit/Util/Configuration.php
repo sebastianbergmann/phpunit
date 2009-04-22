@@ -650,6 +650,12 @@ class PHPUnit_Util_Configuration
         }
 
         foreach ($testSuiteNode->getElementsByTagName('directory') as $directoryNode) {
+            if ($directoryNode->hasAttribute('prefix')) {
+                $prefix = (string)$directoryNode->getAttribute('prefix');
+            } else {
+                $prefix = '';
+            }
+
             if ($directoryNode->hasAttribute('suffix')) {
                 $suffix = (string)$directoryNode->getAttribute('suffix');
             } else {
@@ -657,7 +663,7 @@ class PHPUnit_Util_Configuration
             }
 
             $testCollector = new PHPUnit_Runner_IncludePathTestCollector(
-              array((string)$directoryNode->nodeValue), $suffix
+              array((string)$directoryNode->nodeValue), $suffix, $prefix
             );
 
             $suite->addTestFiles($testCollector->collectTests(), $syntaxCheck);
@@ -699,15 +705,29 @@ class PHPUnit_Util_Configuration
         $directories = array();
 
         foreach ($this->xpath->query($query) as $directory) {
+            if ($directory->hasAttribute('prefix')) {
+                $prefix = (string)$directory->getAttribute('prefix');
+            } else {
+                $prefix = '';
+            }
+
             if ($directory->hasAttribute('suffix')) {
                 $suffix = (string)$directory->getAttribute('suffix');
             } else {
                 $suffix = '.php';
             }
 
+            if ($directory->hasAttribute('group')) {
+                $group = (string)$directory->getAttribute('group');
+            } else {
+                $group = 'DEFAULT';
+            }
+
             $directories[] = array(
               'path'   => (string)$directory->nodeValue,
-              'suffix' => $suffix
+              'prefix' => $prefix,
+              'suffix' => $suffix,
+              'group'  => $group
             );
         }
 

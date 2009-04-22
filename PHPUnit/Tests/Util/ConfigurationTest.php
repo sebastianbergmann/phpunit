@@ -84,7 +84,9 @@ class Util_ConfigurationTest extends PHPUnit_Framework_TestCase
                   0 =>
                   array (
                     'path' => '/path/to/files',
+                    'prefix' => '',
                     'suffix' => '.php',
+                    'group' => 'DEFAULT'
                   ),
                 ),
                 'file' =>
@@ -99,7 +101,9 @@ class Util_ConfigurationTest extends PHPUnit_Framework_TestCase
                   0 =>
                   array (
                     'path' => '/path/to/files',
+                    'prefix' => '',
                     'suffix' => '.php',
+                    'group' => 'DEFAULT'
                   ),
                 ),
                 'file' =>
@@ -118,7 +122,9 @@ class Util_ConfigurationTest extends PHPUnit_Framework_TestCase
                   0 =>
                   array (
                     'path' => '/path/to/files',
+                    'prefix' => '',
                     'suffix' => '.php',
+                    'group' => 'DEFAULT'
                   ),
                 ),
                 'file' =>
@@ -133,7 +139,9 @@ class Util_ConfigurationTest extends PHPUnit_Framework_TestCase
                   0 =>
                   array (
                     'path' => '/path/to/files',
+                    'prefix' => '',
                     'suffix' => '.php',
+                    'group' => 'DEFAULT'
                   ),
                 ),
                 'file' =>
