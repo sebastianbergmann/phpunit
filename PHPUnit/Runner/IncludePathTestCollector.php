@@ -90,10 +90,16 @@ class PHPUnit_Runner_IncludePathTestCollector implements PHPUnit_Runner_TestColl
     protected $suffix;
 
     /**
+     * @var    string
+     */
+    protected $prefix;
+
+    /**
      * @param  array  $paths
      * @param  string $suffix
+     * @param  string $prefix
      */
-    public function __construct(array $paths = array(), $suffix = 'Test.php')
+    public function __construct(array $paths = array(), $suffix = 'Test.php', $prefix = '')
     {
         if (!empty($paths)) {
             $this->paths = $paths;
@@ -102,6 +108,7 @@ class PHPUnit_Runner_IncludePathTestCollector implements PHPUnit_Runner_TestColl
         }
 
         $this->suffix = $suffix;
+        $this->prefix = $prefix;
     }
 
     /**
@@ -121,7 +128,7 @@ class PHPUnit_Runner_IncludePathTestCollector implements PHPUnit_Runner_TestColl
         }
 
         $filterIterator = new PHPUnit_Util_FilterIterator(
-          $pathIterator, $this->suffix
+          $pathIterator, $this->suffix, $this->prefix
         );
 
         if ($this->filterIterator !== NULL) {

@@ -585,7 +585,7 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
 
             foreach ($filterConfiguration['blacklist']['include']['directory'] as $dir) {
                 PHPUnit_Util_Filter::addDirectoryToFilter(
-                  $dir['path'], $dir['suffix']
+                  $dir['path'], $dir['suffix'], $dir['group'], $dir['prefix']
                 );
             }
 
@@ -595,7 +595,7 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
 
             foreach ($filterConfiguration['blacklist']['exclude']['directory'] as $dir) {
                 PHPUnit_Util_Filter::removeDirectoryFromFilter(
-                  $dir['path'], $dir['suffix']
+                  $dir['path'], $dir['suffix'], $dir['group'], $dir['prefix']
                 );
             }
 
@@ -605,7 +605,7 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
 
             foreach ($filterConfiguration['whitelist']['include']['directory'] as $dir) {
                 PHPUnit_Util_Filter::addDirectoryToWhitelist(
-                  $dir['path'], $dir['suffix']
+                  $dir['path'], $dir['suffix'], $dir['group'], $dir['prefix']
                 );
             }
 
@@ -615,7 +615,7 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
 
             foreach ($filterConfiguration['whitelist']['exclude']['directory'] as $dir) {
                 PHPUnit_Util_Filter::removeDirectoryFromWhitelist(
-                  $dir['path'], $dir['suffix']
+                  $dir['path'], $dir['suffix'], $dir['group'], $dir['prefix']
                 );
             }
 

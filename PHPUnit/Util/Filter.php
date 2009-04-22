@@ -106,13 +106,14 @@ class PHPUnit_Util_Filter
      * @param  string $directory
      * @param  string $suffix
      * @param  string $group
+     * @param  string $prefix
      * @throws RuntimeException
      * @since  Method available since Release 3.1.5
      */
-    public static function addDirectoryToFilter($directory, $suffix = '.php', $group = 'DEFAULT')
+    public static function addDirectoryToFilter($directory, $suffix = '.php', $group = 'DEFAULT', $prefix = '')
     {
         if (file_exists($directory)) {
-            foreach (self::getIterator($directory, $suffix) as $file) {
+            foreach (self::getIterator($directory, $suffix, $prefix) as $file) {
                 self::addFileToFilter($file->getPathName(), $group);
             }
         } else {
@@ -151,13 +152,14 @@ class PHPUnit_Util_Filter
      * @param  string $directory
      * @param  string $suffix
      * @param  string $group
+     * @param  string $prefix
      * @throws RuntimeException
      * @since  Method available since Release 3.1.5
      */
-    public static function removeDirectoryFromFilter($directory, $suffix = '.php', $group = 'DEFAULT')
+    public static function removeDirectoryFromFilter($directory, $suffix = '.php', $group = 'DEFAULT', $prefix = '')
     {
         if (file_exists($directory)) {
-            foreach (self::getIterator($directory, $suffix) as $file) {
+            foreach (self::getIterator($directory, $suffix, $prefix) as $file) {
                 self::removeFileFromFilter($file->getPathName(), $group);
             }
         } else {
@@ -195,13 +197,14 @@ class PHPUnit_Util_Filter
      *
      * @param  string $directory
      * @param  string $suffix
+     * @param  string $prefix
      * @throws RuntimeException
      * @since  Method available since Release 3.1.5
      */
-    public static function addDirectoryToWhitelist($directory, $suffix = '.php')
+    public static function addDirectoryToWhitelist($directory, $suffix = '.php', $prefix = '')
     {
         if (file_exists($directory)) {
-            foreach (self::getIterator($directory, $suffix) as $file) {
+            foreach (self::getIterator($directory, $suffix, $prefix) as $file) {
                 self::addFileToWhitelist($file->getPathName());
             }
         } else {
@@ -237,13 +240,14 @@ class PHPUnit_Util_Filter
      *
      * @param  string $directory
      * @param  string $suffix
+     * @param  string $prefix
      * @throws RuntimeException
      * @since  Method available since Release 3.1.5
      */
-    public static function removeDirectoryFromWhitelist($directory, $suffix = '.php')
+    public static function removeDirectoryFromWhitelist($directory, $suffix = '.php', $prefix = '')
     {
         if (file_exists($directory)) {
-            foreach (self::getIterator($directory, $suffix) as $file) {
+            foreach (self::getIterator($directory, $suffix, $prefix) as $file) {
                 self::removeFileFromWhitelist($file->getPathName());
             }
         } else {
@@ -447,20 +451,22 @@ class PHPUnit_Util_Filter
     /**
      * Returns a PHPUnit_Util_FilterIterator that iterates
      * over all files in the given directory that have the
-     * given suffix.
+     * given suffix and prefix.
      *
      * @param  string $directory
      * @param  string $suffix
+     * @param  string $prefix
      * @return Iterator
      * @since  Method available since Release 3.1.5
      */
-    protected static function getIterator($directory, $suffix)
+    protected static function getIterator($directory, $suffix, $prefix)
     {
         return new PHPUnit_Util_FilterIterator(
           new RecursiveIteratorIterator(
             new RecursiveDirectoryIterator($directory)
           ),
-          $suffix
+          $suffix,
+          $prefix
         );
     }
 
