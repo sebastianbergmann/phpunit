@@ -371,9 +371,11 @@ class PHPUnit_Extensions_SeleniumTestCase_Driver
      * @method unknown  altKeyUpAndWait()
      * @method unknown  answerOnNextPrompt()
      * @method unknown  assignId()
+     * @method unknown  attachFile()
      * @method unknown  break()
      * @method unknown  captureEntirePageScreenshot()
      * @method unknown  captureScreenshot()
+     * @method unknown  captureScreenshotToString()
      * @method unknown  check()
      * @method unknown  chooseCancelOnNextConfirmation()
      * @method unknown  chooseOkOnNextConfirmation()
@@ -472,10 +474,16 @@ class PHPUnit_Extensions_SeleniumTestCase_Driver
      * @method boolean  isVisible()
      * @method unknown  keyDown()
      * @method unknown  keyDownAndWait()
+     * @method unknown  keyDownNative()
+     * @method unknown  keyDownNativeAndWait()
      * @method unknown  keyPress()
      * @method unknown  keyPressAndWait()
+     * @method unknown  keyPressNative()
+     * @method unknown  keyPressNativeAndWait()
      * @method unknown  keyUp()
      * @method unknown  keyUpAndWait()
+     * @method unknown  keyUpNative()
+     * @method unknown  keyUpNativeAndWait()
      * @method unknown  metaKeyDown()
      * @method unknown  metaKeyDownAndWait()
      * @method unknown  metaKeyUp()
@@ -511,6 +519,7 @@ class PHPUnit_Extensions_SeleniumTestCase_Driver
      * @method unknown  removeSelection()
      * @method unknown  removeSelectionAndWait()
      * @method unknown  runScript()
+     * @method unknown  rollup()
      * @method unknown  select()
      * @method unknown  selectAndWait()
      * @method unknown  selectFrame()
@@ -527,6 +536,7 @@ class PHPUnit_Extensions_SeleniumTestCase_Driver
      * @method unknown  shiftKeyDownAndWait()
      * @method unknown  shiftKeyUp()
      * @method unknown  shiftKeyUpAndWait()
+     * @method unknown  shutDownSeleniumServer()
      * @method unknown  store()
      * @method unknown  submit()
      * @method unknown  submitAndWait()
@@ -559,9 +569,11 @@ class PHPUnit_Extensions_SeleniumTestCase_Driver
             case 'altKeyUp':
             case 'answerOnNextPrompt':
             case 'assignId':
+            case 'attachFile':
             case 'break':
             case 'captureEntirePageScreenshot':
             case 'captureScreenshot':
+            case 'captureScreenshotToString':
             case 'check':
             case 'chooseCancelOnNextConfirmation':
             case 'chooseOkOnNextConfirmation':
@@ -587,8 +599,11 @@ class PHPUnit_Extensions_SeleniumTestCase_Driver
             case 'highlight':
             case 'ignoreAttributesWithoutValue':
             case 'keyDown':
+            case 'keyDownNative':
             case 'keyPress':
+            case 'keyPressNative':
             case 'keyUp':
+            case 'keyUpNative':
             case 'metaKeyDown':
             case 'metaKeyUp':
             case 'mouseDown':
@@ -607,6 +622,7 @@ class PHPUnit_Extensions_SeleniumTestCase_Driver
             case 'refresh':
             case 'removeAllSelections':
             case 'removeSelection':
+            case 'rollup':
             case 'runScript':
             case 'select':
             case 'selectFrame':
@@ -618,6 +634,7 @@ class PHPUnit_Extensions_SeleniumTestCase_Driver
             case 'setSpeed':
             case 'shiftKeyDown':
             case 'shiftKeyUp':
+            case 'shutDownSeleniumServer':
             case 'store':
             case 'submit':
             case 'type':
@@ -659,7 +676,9 @@ class PHPUnit_Extensions_SeleniumTestCase_Driver
                     case 'addLocationStrategy':
                     case 'allowNativeXpath':
                     case 'assignId':
-                    case 'captureScreenshot': {
+                    case 'captureEntirePageScreenshot':
+                    case 'captureScreenshot':
+                    case 'captureScreenshotToString': {
                         // intentionally empty
                     }
                     break;
