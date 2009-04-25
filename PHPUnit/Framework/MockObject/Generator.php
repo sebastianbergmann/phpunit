@@ -67,9 +67,25 @@ PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
  */
 class PHPUnit_Framework_MockObject_Generator
 {
+    /**
+     * @var array
+     */
     protected static $cache = array();
+
+    /**
+     * @var boolean
+     */
     protected static $soapLoaded = NULL;
 
+    /**
+     * @param  string  $originalClassName
+     * @param  array   $methods
+     * @param  string  $mockClassName
+     * @param  boolean $callOriginalConstructor
+     * @param  boolean $callOriginalClone
+     * @param  boolean $callAutoload
+     * @return array
+     */
     public static function generate($originalClassName, array $methods = array(), $mockClassName = '', $callOriginalConstructor = TRUE, $callOriginalClone = TRUE, $callAutoload = TRUE)
     {
         if ($mockClassName == '') {
@@ -101,6 +117,12 @@ class PHPUnit_Framework_MockObject_Generator
         return $mock;
     }
 
+    /**
+     * @param  string $wsdlFile
+     * @param  string $originalClassName
+     * @param  array  $methods
+     * @return array
+     */
     public static function generateClassFromWsdl($wsdlFile, $originalClassName, array $methods = array())
     {
         if (self::$soapLoaded === NULL) {
@@ -122,8 +144,8 @@ class PHPUnit_Framework_MockObject_Generator
                 $name      = substr($method, $nameStart, $nameEnd - $nameStart);
 
                 if (empty($methods) || in_array($name, $methods)) {
-                    $args      = explode(',', substr($method, $nameEnd + 1, strpos($method, ')') - $nameEnd - 1));
-                    $numArgs   = count($args);
+                    $args    = explode(',', substr($method, $nameEnd + 1, strpos($method, ')') - $nameEnd - 1));
+                    $numArgs = count($args);
 
                     for ($i = 0; $i < $numArgs; $i++) {
                         $args[$i] = substr($args[$i], strpos($args[$i], '$'));
@@ -158,6 +180,15 @@ class PHPUnit_Framework_MockObject_Generator
         }
     }
 
+    /**
+     * @param  string  $originalClassName
+     * @param  array   $methods
+     * @param  string  $mockClassName
+     * @param  boolean $callOriginalConstructor
+     * @param  boolean $callOriginalClone
+     * @param  boolean $callAutoload
+     * @return array
+     */
     protected static function generateMock($originalClassName, array $methods, $mockClassName, $callOriginalConstructor, $callOriginalClone, $callAutoload)
     {
         $templateDir   = dirname(__FILE__) . DIRECTORY_SEPARATOR . 'Generator' . DIRECTORY_SEPARATOR;
@@ -269,7 +300,6 @@ class PHPUnit_Framework_MockObject_Generator
             'constructor'       => self::generateMockConstructor(
                                      $templateDir,
                                      $constructor,
-                                     $originalClassName,
                                      $mockClassName['mockClassName'],
                                      $callOriginalConstructor
                                    ),
@@ -285,6 +315,11 @@ class PHPUnit_Framework_MockObject_Generator
         );
     }
 
+    /**
+     * @param  string $originalClassName
+     * @param  string $mockClassName
+     * @return array
+     */
     protected static function generateMockClassName($originalClassName, $mockClassName)
     {
         $classNameParts = explode('\\', $originalClassName);
@@ -313,6 +348,11 @@ class PHPUnit_Framework_MockObject_Generator
         );
     }
 
+    /**
+     * @param  array   $mockClassName
+     * @param  boolean $isInterface
+     * @return array
+     */
     protected static function generateMockClassDeclaration(array $mockClassName, $isInterface)
     {
         $buffer = 'class ';
@@ -336,7 +376,14 @@ class PHPUnit_Framework_MockObject_Generator
         return $buffer;
     }
 
-    protected static function generateMockConstructor($templateDir, $constructor, $originalClassName, $mockedClassName, $callOriginalConstructor)
+    /**
+     * @param  string                $templateDir
+     * @param  ReflectionMethod|null $constructor
+     * @param  string                $mockedClassName
+     * @param  boolean               $callOriginalConstructor
+     * @return string
+     */
+    protected static function generateMockConstructor($templateDir, ReflectionMethod $constructor = NULL, $mockedClassName, $callOriginalConstructor)
     {
         if ($constructor !== NULL) {
             if ($constructor->isFinal()) {
@@ -367,6 +414,11 @@ class PHPUnit_Framework_MockObject_Generator
         return '';
     }
 
+    /**
+     * @param  string           $templateDir
+     * @param  ReflectionMethod $method
+     * @return string
+     */
     protected static function generateMockedMethodDefinitionFromExisting($templateDir, ReflectionMethod $method)
     {
         if ($method->isPrivate()) {
@@ -404,6 +456,16 @@ class PHPUnit_Framework_MockObject_Generator
         );
     }
 
+    /**
+     * @param  string  $templateDir
+     * @param  string  $className
+     * @param  string  $methodName
+     * @param  string  $modifier
+     * @param  string  $arguments
+     * @param  string  $reference
+     * @param  boolean $static
+     * @return string
+     */
     protected static function generateMockedMethodDefinition($templateDir, $className, $methodName, $modifier = 'public', $arguments = '', $reference = '', $static = FALSE)
     {
         if ($static) {
@@ -425,6 +487,10 @@ class PHPUnit_Framework_MockObject_Generator
         return $template->render();
     }
 
+    /**
+     * @param  ReflectionMethod $method
+     * @return boolean
+     */
     protected static function canMockMethod(ReflectionMethod $method)
     {
         $className  = $method->getDeclaringClass()->getName();
