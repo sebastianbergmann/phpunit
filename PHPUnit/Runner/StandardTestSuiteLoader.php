@@ -48,6 +48,7 @@ require_once 'PHPUnit/Util/Filter.php';
 require_once 'PHPUnit/Runner/TestSuiteLoader.php';
 require_once 'PHPUnit/Util/Class.php';
 require_once 'PHPUnit/Util/Fileloader.php';
+require_once 'PHPUnit/Util/Filesystem.php';
 
 PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
 
@@ -77,7 +78,9 @@ class PHPUnit_Runner_StandardTestSuiteLoader implements PHPUnit_Runner_TestSuite
         $suiteClassName = str_replace('.php', '', $suiteClassName);
 
         if (empty($suiteClassFile)) {
-            $suiteClassFile = str_replace(array('_', '\\'), DIRECTORY_SEPARATOR, $suiteClassName) . '.php';
+            $suiteClassFile = PHPUnit_Util_Filesystem::classNameToFilename(
+              $suiteClassName
+            );
         }
 
         if (!class_exists($suiteClassName, FALSE)) {
