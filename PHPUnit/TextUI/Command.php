@@ -47,6 +47,7 @@
 require_once 'PHPUnit/TextUI/TestRunner.php';
 require_once 'PHPUnit/Util/Configuration.php';
 require_once 'PHPUnit/Util/Fileloader.php';
+require_once 'PHPUnit/Util/Filesystem.php';
 require_once 'PHPUnit/Util/Filter.php';
 require_once 'PHPUnit/Util/Getopt.php';
 
@@ -652,7 +653,9 @@ class PHPUnit_TextUI_Command
     {
         if (!class_exists($loaderClass, FALSE)) {
             if ($loaderFile == '') {
-                $loaderFile = str_replace('_', '/', $loaderClass) . '.php';
+                $loaderFile = PHPUnit_Util_Filesystem::classNameToFilename(
+                  $loaderClass
+                );
             }
 
             $loaderFile = PHPUnit_Util_Filesystem::fileExistsInIncludePath(
