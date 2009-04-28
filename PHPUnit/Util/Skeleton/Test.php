@@ -44,9 +44,10 @@
  * @since      File available since Release 3.3.0
  */
 
+require_once 'PHPUnit/Util/Filesystem.php';
 require_once 'PHPUnit/Util/Filter.php';
-require_once 'PHPUnit/Util/Template.php';
 require_once 'PHPUnit/Util/Skeleton.php';
+require_once 'PHPUnit/Util/Template.php';
 
 PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
 
@@ -91,21 +92,24 @@ class PHPUnit_Util_Skeleton_Test extends PHPUnit_Util_Skeleton
             unset($reflector);
         } else {
             if (empty($inSourceFile)) {
-                if (is_file($inClassName . '.php')) {
-                    $inSourceFile = $inClassName . '.php';
-                }
+                $possibleFilenames = array(
+                  $inClassName . '.php',
+                  PHPUnit_Util_Filesystem::classNameToFilename($inClassName)
+                );
 
-                else if (is_file(str_replace('_', '/', $inClassName) . '.php')) {
-                    $inSourceFile = str_replace('_', '/', $inClassName) . '.php';
+                foreach ($possibleFilenames as $possibleFilename) {
+                    if (is_file($possibleFilename)) {
+                        $inSourceFile = $possibleFilename;
+                    }
                 }
             }
 
             if (empty($inSourceFile)) {
                 throw new RuntimeException(
                   sprintf(
-                    'Neither "%s.php" nor "%s.php" could be opened.',
-                    $inClassName,
-                    str_replace('_', '/', $inClassName)
+                    'Neither "%s" nor "%s" could be opened.',
+                    $possibleFilenames[0],
+                    $possibleFilenames[1]
                   )
                 );
             }
