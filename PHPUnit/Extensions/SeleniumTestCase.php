@@ -389,58 +389,16 @@ abstract class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_Tes
     {
         $this->start();
 
-        try {
-            if (!is_file($this->name)) {
-                parent::runTest();
-            } else {
-                $this->runSelenese($this->name);
-            }
-        }
-
-        catch (PHPUnit_Framework_ExpectationFailedException $e) {
-            $buffer  = 'Current URL: ' . $this->drivers[0]->getLocation() . "\n";
-            $message = $e->getCustomMessage();
-
-            if ($this->captureScreenshotOnFailure &&
-                !empty($this->screenshotPath) && !empty($this->screenshotUrl)) {
-                $this->drivers[0]->captureEntirePageScreenshot(
-                  $this->screenshotPath . DIRECTORY_SEPARATOR . $this->testId . '.png'
-                );
-
-                $buffer .= 'Screenshot: ' . $this->screenshotUrl . '/' . $this->testId . ".png\n";
-            }
-
-            if (!empty($message)) {
-                $buffer .= "\n" . $message;
-            }
-
-            $e->setCustomMessage($buffer);
-
-            throw $e;
-        }
-
-        if ($this->autoStop) {
-            try {
-                $this->stop();
-            }
-
-            catch (RuntimeException $e) {
-            }
+        if (!is_file($this->name)) {
+            parent::runTest();
+        } else {
+            $this->runSelenese($this->name);
         }
 
         if (!empty($this->verificationErrors)) {
             $this->fail(implode("\n", $this->verificationErrors));
         }
-    }
 
-    /**
-     * If you want to override tearDown() make sure to either call stop() or
-     * parent::tearDown(). Otherwise the Selenium RC session will not be
-     * closed upon test failure.
-     *
-     */
-    protected function tearDown()
-    {
         if ($this->autoStop) {
             try {
                 $this->stop();
@@ -1093,6 +1051,48 @@ abstract class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_Tes
             $this->defaultAssertions($action);
             $this->inDefaultAssertions = FALSE;
         }
+    }
+
+    /**
+     * This method is called when a test method did not execute successfully.
+     *
+     * @param Exception $e
+     * @since Method available since Release 3.4.0
+     */
+    protected function onNotSuccessfulTest(Exception $e)
+    {
+        if (!$e instanceof RuntimeException &&
+            !$e instanceof PHPUnit_Framework_IncompleteTestError &&
+            !$e instanceof PHPUnit_Framework_SkippedTestError) {
+            $buffer  = 'Current URL: ' . $this->drivers[0]->getLocation() . "\n";
+            $message = $e->getCustomMessage();
+
+            if ($this->captureScreenshotOnFailure &&
+                !empty($this->screenshotPath) && !empty($this->screenshotUrl)) {
+                $this->drivers[0]->captureEntirePageScreenshot(
+                  $this->screenshotPath . DIRECTORY_SEPARATOR . $this->testId . '.png'
+                );
+
+                $buffer .= 'Screenshot: ' . $this->screenshotUrl . '/' . $this->testId . ".png\n";
+            }
+
+            if ($this->autoStop) {
+                try {
+                    $this->stop();
+                }
+
+                catch (RuntimeException $e) {
+                }
+            }
+
+            if (!empty($message)) {
+                $buffer .= "\n" . $message;
+            }
+
+            $e->setCustomMessage($buffer);
+        }
+
+        throw $e;
     }
 }
 ?>
