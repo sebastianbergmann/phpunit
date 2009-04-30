@@ -174,13 +174,12 @@ class PHPUnit_Framework_TestFailure
                     }
                 } else {
                     $buffer .= $e->toString();
-                    $equal   = $buffer == $description;
 
                     if (!empty($buffer)) {
                         $buffer .= "\n";
                     }
 
-                    if (!$equal) {
+                    if (strpos($buffer, $description) === FALSE) {
                         $buffer .= $description . "\n";
                     }
                 }
