@@ -746,7 +746,7 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
 
         // Workaround for missing "finally".
         if (isset($e)) {
-            throw $e;
+            $this->onNotSuccessfulTest($e);
         }
     }
 
@@ -1438,6 +1438,17 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
      */
     protected function tearDown()
     {
+    }
+
+    /**
+     * This method is called when a test method did not execute successfully.
+     *
+     * @param Exception $e
+     * @since Method available since Release 3.4.0
+     */
+    protected function onNotSuccessfulTest(Exception $e)
+    {
+        throw $e;
     }
 
     /**
