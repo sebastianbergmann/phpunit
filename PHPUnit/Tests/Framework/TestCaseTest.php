@@ -47,18 +47,17 @@
 require_once 'PHPUnit/Framework/TestCase.php';
 
 require_once dirname(dirname(__FILE__)) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'Error.php';
+require_once dirname(dirname(__FILE__)) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'ExceptionInAssertPostConditionsTest.php';
+require_once dirname(dirname(__FILE__)) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'ExceptionInAssertPreConditionsTest.php';
+require_once dirname(dirname(__FILE__)) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'ExceptionInSetUpTest.php';
+require_once dirname(dirname(__FILE__)) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'ExceptionInTearDownTest.php';
+require_once dirname(dirname(__FILE__)) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'ExceptionInTest.php';
 require_once dirname(dirname(__FILE__)) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'Failure.php';
 require_once dirname(dirname(__FILE__)) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'NoArgTestCaseTest.php';
-require_once dirname(dirname(__FILE__)) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'SetupFailure.php';
 require_once dirname(dirname(__FILE__)) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'Singleton.php';
 require_once dirname(dirname(__FILE__)) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'Success.php';
-require_once dirname(dirname(__FILE__)) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'TearDownFailure.php';
 require_once dirname(dirname(__FILE__)) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'ThrowExceptionTestCase.php';
 require_once dirname(dirname(__FILE__)) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'ThrowNoExceptionTestCase.php';
-require_once dirname(dirname(__FILE__)) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'TornDown.php';
-require_once dirname(dirname(__FILE__)) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'TornDown2.php';
-require_once dirname(dirname(__FILE__)) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'TornDown3.php';
-require_once dirname(dirname(__FILE__)) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'TornDown4.php';
 require_once dirname(dirname(__FILE__)) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'WasRun.php';
 
 $GLOBALS['a']  = 'a';
@@ -95,40 +94,99 @@ class Framework_TestCaseTest extends PHPUnit_Framework_TestCase
         );
     }
 
-    public function testError()
+    public function testSuccess()
     {
-        $this->verifyError(new Error);
-    }
+        $test   = new Success;
+        $result = $test->run();
 
-    public function testExceptionRunningAndTearDown()
-    {
-        $result = new PHPUnit_Framework_TestResult();
-        $t      = new TornDown4;
-
-        $t->run($result);
-
-        $errors = $result->errors();
-
-        $this->assertEquals(
-          'tearDown',
-          $errors[0]->thrownException()->getMessage()
-        );
+        $this->assertEquals(0, $result->errorCount());
+        $this->assertEquals(0, $result->failureCount());
+        $this->assertEquals(1, count($result));
     }
 
     public function testFailure()
     {
-        $this->verifyFailure(new Failure);
+        $test   = new Failure;
+        $result = $test->run();
+
+        $this->assertEquals(0, $result->errorCount());
+        $this->assertEquals(1, $result->failureCount());
+        $this->assertEquals(1, count($result));
     }
 
-    /* PHP does not support anonymous classes
-    public function testNamelessTestCase()
+    public function testError()
     {
+        $test   = new Error;
+        $result = $test->run();
+
+        $this->assertEquals(1, $result->errorCount());
+        $this->assertEquals(0, $result->failureCount());
+        $this->assertEquals(1, count($result));
     }
-    */
+
+    public function testExceptionInSetUp()
+    {
+        $test   = new ExceptionInSetUpTest('testSomething');
+        $result = $test->run();
+
+        $this->assertTrue($test->setUp);
+        $this->assertFalse($test->assertPreConditions);
+        $this->assertFalse($test->testSomething);
+        $this->assertFalse($test->assertPostConditions);
+        $this->assertTrue($test->tearDown);
+    }
+
+    public function testExceptionInAssertPreConditions()
+    {
+        $test   = new ExceptionInAssertPreConditionsTest('testSomething');
+        $result = $test->run();
+
+        $this->assertTrue($test->setUp);
+        $this->assertTrue($test->assertPreConditions);
+        $this->assertFalse($test->testSomething);
+        $this->assertFalse($test->assertPostConditions);
+        $this->assertTrue($test->tearDown);
+    }
+
+    public function testExceptionInTest()
+    {
+        $test   = new ExceptionInTest('testSomething');
+        $result = $test->run();
+
+        $this->assertTrue($test->setUp);
+        $this->assertTrue($test->assertPreConditions);
+        $this->assertTrue($test->testSomething);
+        $this->assertFalse($test->assertPostConditions);
+        $this->assertTrue($test->tearDown);
+    }
+
+    public function testExceptionInAssertPostConditions()
+    {
+        $test   = new ExceptionInAssertPostConditionsTest('testSomething');
+        $result = $test->run();
+
+        $this->assertTrue($test->setUp);
+        $this->assertTrue($test->assertPreConditions);
+        $this->assertTrue($test->testSomething);
+        $this->assertTrue($test->assertPostConditions);
+        $this->assertTrue($test->tearDown);
+    }
+
+    public function testExceptionInTearDown()
+    {
+        $test   = new ExceptionInTearDownTest('testSomething');
+        $result = $test->run();
+
+        $this->assertTrue($test->setUp);
+        $this->assertTrue($test->assertPreConditions);
+        $this->assertTrue($test->testSomething);
+        $this->assertTrue($test->assertPostConditions);
+        $this->assertTrue($test->tearDown);
+    }
 
     public function testNoArgTestCasePasses()
     {
-        $result = new PHPUnit_Framework_TestResult();
+        $result = new PHPUnit_Framework_TestResult;
         $t      = new PHPUnit_Framework_TestSuite('NoArgTestCaseTest');
 
         $t->run($result);
@@ -136,45 +194,6 @@ class Framework_TestCaseTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(1, count($result));
         $this->assertEquals(0, $result->failureCount());
         $this->assertEquals(0, $result->errorCount());
-    }
-
-    public function testRunAndTearDownFails()
-    {
-        $fails = new TornDown2;
-
-        $this->verifyError($fails);
-        $this->assertTrue($fails->tornDown);
-    }
-
-    public function testSetupFails()
-    {
-        $this->verifyError(new SetupFailure);
-    }
-
-    public function testSuccess()
-    {
-        $this->verifySuccess(new Success);
-    }
-
-    public function testTearDownAfterError()
-    {
-        $fails = new TornDown;
-
-        $this->verifyError($fails);
-        $this->assertTrue($fails->tornDown);
-    }
-
-    public function testTearDownFails()
-    {
-        $this->verifyError(new TearDownFailure);
-    }
-
-    public function testTearDownSetupFails()
-    {
-        $fails = new TornDown3;
-
-        $this->verifyError($fails);
-        $this->assertFalse($fails->tornDown);
     }
 
     public function testWasRun()
@@ -295,33 +314,6 @@ class Framework_TestCaseTest extends PHPUnit_Framework_TestCase
     public function testStaticAttributesBackupPost()
     {
         $this->assertNotSame($GLOBALS['singleton'], Singleton::getInstance());
-    }
-
-    protected function verifyError(PHPUnit_Framework_TestCase $test)
-    {
-        $result = $test->run();
-
-        $this->assertEquals(1, $result->errorCount());
-        $this->assertEquals(0, $result->failureCount());
-        $this->assertEquals(1, count($result));
-    }
-
-    protected function verifyFailure(PHPUnit_Framework_TestCase $test)
-    {
-        $result = $test->run();
-
-        $this->assertEquals(0, $result->errorCount());
-        $this->assertEquals(1, $result->failureCount());
-        $this->assertEquals(1, count($result));
-    }
-
-    protected function verifySuccess(PHPUnit_Framework_TestCase $test)
-    {
-        $result = $test->run();
-
-        $this->assertEquals(0, $result->errorCount());
-        $this->assertEquals(0, $result->failureCount());
-        $this->assertEquals(1, count($result));
     }
 }
 ?>
