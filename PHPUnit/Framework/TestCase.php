@@ -662,14 +662,14 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
             ob_start();
         }
 
-        // Set up the fixture.
-        $this->setUp();
-
         // Clean up stat cache.
         clearstatcache();
 
         // Run the test.
         try {
+            // Set up the fixture.
+            $this->setUp();
+
             // Assert pre-conditions.
             $this->assertPreConditions();
 
@@ -705,8 +705,17 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
 
         $this->mockObjects = array();
 
-        // Tear down the fixture.
-        $this->tearDown();
+        // Tear down the fixture. An exception raised in tearDown() will be
+        // caught and passed on when no exception was raised before.
+        try {
+            $this->tearDown();
+        }
+
+        catch (Exception $_e) {
+            if (!isset($e)) {
+                $e = $_e;
+            }
+        }
 
         // Stop output buffering.
         if ($this->useOutputBuffering === TRUE) {
