@@ -73,6 +73,61 @@ class PHPUnit_Framework_MockObject_Generator
     protected static $cache = array();
 
     /**
+     * @var array
+     */
+    protected static $blacklistedMethodNames = array(
+      '__clone' => TRUE,
+      '__destruct' => TRUE,
+      'abstract' => TRUE,
+      'and' => TRUE,
+      'array' => TRUE,
+      'as' => TRUE,
+      'break' => TRUE,
+      'case' => TRUE,
+      'catch' => TRUE,
+      'class' => TRUE,
+      'clone' => TRUE,
+      'const' => TRUE,
+      'continue' => TRUE,
+      'declare' => TRUE,
+      'default' => TRUE,
+      'do' => TRUE,
+      'else' => TRUE,
+      'elseif' => TRUE,
+      'enddeclare' => TRUE,
+      'endfor' => TRUE,
+      'endforeach' => TRUE,
+      'endif' => TRUE,
+      'endswitch' => TRUE,
+      'endwhile' => TRUE,
+      'extends' => TRUE,
+      'final' => TRUE,
+      'for' => TRUE,
+      'foreach' => TRUE,
+      'function' => TRUE,
+      'global' => TRUE,
+      'goto' => TRUE,
+      'if' => TRUE,
+      'implements' => TRUE,
+      'interface' => TRUE,
+      'instanceof' => TRUE,
+      'namespace' => TRUE,
+      'new' => TRUE,
+      'or' => TRUE,
+      'private' => TRUE,
+      'protected' => TRUE,
+      'public' => TRUE,
+      'static' => TRUE,
+      'switch' => TRUE,
+      'throw' => TRUE,
+      'try' => TRUE,
+      'use' => TRUE,
+      'var' => TRUE,
+      'while' => TRUE,
+      'xor' => TRUE
+    );
+
+    /**
      * @var boolean
      */
     protected static $soapLoaded = NULL;
@@ -493,12 +548,8 @@ class PHPUnit_Framework_MockObject_Generator
      */
     protected static function canMockMethod(ReflectionMethod $method)
     {
-        $className  = $method->getDeclaringClass()->getName();
-        $methodName = $method->getName();
-
-        if ($method->isFinal() ||
-            $methodName == '__construct' || $methodName == $className ||
-            $methodName == '__destruct'  || $method->getName() == '__clone') {
+        if ($method->isConstructor() || $method->isFinal() ||
+            isset(self::$blacklistedMethodNames[$method->getName()])) {
             return FALSE;
         }
 
