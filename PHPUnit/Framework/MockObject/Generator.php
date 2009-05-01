@@ -535,7 +535,9 @@ class PHPUnit_Framework_MockObject_Generator
      */
     protected static function canMockMethod(ReflectionMethod $method)
     {
-        if ($method->isConstructor() || $method->isFinal() ||
+        if ($method->isConstructor() ||
+            $method->isFinal() ||
+            $method->isStatic() ||
             isset(self::$blacklistedMethodNames[$method->getName()])) {
             return FALSE;
         }
