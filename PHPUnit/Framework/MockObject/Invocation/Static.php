@@ -90,10 +90,7 @@ class PHPUnit_Framework_MockObject_Invocation_Static implements PHPUnit_Framewor
           join(
             ', ',
             array_map(
-              create_function(
-                '$a',
-                'return PHPUnit_Util_Type::shortenedExport($a);'
-              ),
+              array('PHPUnit_Util_Type', 'shortenedExport'),
               $this->parameters
             )
           )
