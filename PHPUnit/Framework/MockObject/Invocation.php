@@ -102,10 +102,7 @@ class PHPUnit_Framework_MockObject_Invocation implements PHPUnit_Framework_SelfD
           join(
             ', ',
             array_map(
-              create_function(
-                '$a',
-                'return PHPUnit_Util_Type::shortenedExport($a);'
-              ),
+              array('PHPUnit_Util_Type', 'shortenedExport'),
               $this->parameters
             )
           )
