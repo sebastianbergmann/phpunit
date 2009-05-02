@@ -26,7 +26,7 @@ class MockFoo implements Foo
 
     public function __clone()
     {
-        $this->invocationMocker = clone $this->invocationMocker;
+        $this->invocationMocker = clone $this->__phpunit_getInvocationMocker();
     }
 
     public function bar(Foo $foo)

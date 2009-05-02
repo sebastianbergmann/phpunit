@@ -28,7 +28,7 @@ class MockFoo extends Foo
 
     public function __clone()
     {
-        $this->invocationMocker = clone $this->invocationMocker;
+        $this->invocationMocker = clone $this->__phpunit_getInvocationMocker();
     }
 
     public function expects(PHPUnit_Framework_MockObject_Matcher_Invocation $matcher)
