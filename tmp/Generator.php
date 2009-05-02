@@ -141,7 +141,7 @@ class PHPUnit_Framework_MockObject_Generator
      * @param  boolean $callAutoload
      * @return array
      */
-    public static function generate($originalClassName, array $methods = array(), $mockClassName = '', $callOriginalConstructor = TRUE, $callOriginalClone = TRUE, $callAutoload = TRUE)
+    public static function generate($originalClassName, array $methods = NULL, $mockClassName = '', $callOriginalConstructor = TRUE, $callOriginalClone = TRUE, $callAutoload = TRUE)
     {
         if ($mockClassName == '') {
             $key = md5(
@@ -244,7 +244,7 @@ class PHPUnit_Framework_MockObject_Generator
      * @param  boolean $callAutoload
      * @return array
      */
-    protected static function generateMock($originalClassName, array $methods, $mockClassName, $callOriginalConstructor, $callOriginalClone, $callAutoload)
+    protected static function generateMock($originalClassName, array $methods = NULL, $mockClassName, $callOriginalConstructor, $callOriginalClone, $callAutoload)
     {
         $templateDir   = dirname(__FILE__) . DIRECTORY_SEPARATOR . 'Generator' . DIRECTORY_SEPARATOR;
         $classTemplate = new PHPUnit_Util_Template($templateDir . 'mocked_class.tpl');
@@ -307,6 +307,10 @@ class PHPUnit_Framework_MockObject_Generator
 
         if (is_array($methods) && empty($methods) && ($isClass || $isInterface)) {
             $methods = get_class_methods($originalClassName);
+        }
+
+        if (!is_array($methods)) {
+            $methods = array();
         }
 
         $constructor   = NULL;
