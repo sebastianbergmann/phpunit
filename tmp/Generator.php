@@ -136,18 +136,16 @@ class PHPUnit_Framework_MockObject_Generator
      * @param  string  $originalClassName
      * @param  array   $methods
      * @param  string  $mockClassName
-     * @param  boolean $callOriginalConstructor
      * @param  boolean $callOriginalClone
      * @param  boolean $callAutoload
      * @return array
      */
-    public static function generate($originalClassName, array $methods = NULL, $mockClassName = '', $callOriginalConstructor = TRUE, $callOriginalClone = TRUE, $callAutoload = TRUE)
+    public static function generate($originalClassName, array $methods = NULL, $mockClassName = '', $callOriginalClone = TRUE, $callAutoload = TRUE)
     {
         if ($mockClassName == '') {
             $key = md5(
               $originalClassName .
               serialize($methods) .
-              serialize($callOriginalConstructor) .
               serialize($callOriginalClone)
             );
 
@@ -160,7 +158,6 @@ class PHPUnit_Framework_MockObject_Generator
           $originalClassName,
           $methods,
           $mockClassName,
-          $callOriginalConstructor,
           $callOriginalClone,
           $callAutoload
         );
@@ -239,12 +236,11 @@ class PHPUnit_Framework_MockObject_Generator
      * @param  string  $originalClassName
      * @param  array   $methods
      * @param  string  $mockClassName
-     * @param  boolean $callOriginalConstructor
      * @param  boolean $callOriginalClone
      * @param  boolean $callAutoload
      * @return array
      */
-    protected static function generateMock($originalClassName, array $methods = NULL, $mockClassName, $callOriginalConstructor, $callOriginalClone, $callAutoload)
+    protected static function generateMock($originalClassName, array $methods = NULL, $mockClassName, $callOriginalClone, $callAutoload)
     {
         $templateDir   = dirname(__FILE__) . DIRECTORY_SEPARATOR . 'Generator' . DIRECTORY_SEPARATOR;
         $classTemplate = new PHPUnit_Util_Template($templateDir . 'mocked_class.tpl');
@@ -260,8 +256,7 @@ class PHPUnit_Framework_MockObject_Generator
             $isClass = TRUE;
         } else {
             if (interface_exists($originalClassName, $callAutoload)) {
-                $callOriginalConstructor = FALSE;
-                $isInterface             = TRUE;
+                $isInterface = TRUE;
             }
         }
 
