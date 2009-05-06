@@ -32,10 +32,6 @@ class MockFoo extends Foo
     protected static $staticInvocationMocker;
     protected $invocationMocker;
 
-    public function __construct($bar)
-    {
-    }
-
     public function __clone()
     {
         $this->invocationMocker = clone $this->__phpunit_getInvocationMocker();
