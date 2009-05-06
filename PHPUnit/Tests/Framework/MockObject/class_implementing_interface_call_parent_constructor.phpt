@@ -31,14 +31,6 @@ class MockFoo extends Foo
 {
     protected $invocationMocker;
 
-    public function __construct($bar)
-    {
-        $args = func_get_args();
-
-        $class = new ReflectionClass('MockFoo');
-        $class->getParentClass()->getConstructor()->invokeArgs($this, $args);
-    }
-
     public function __clone()
     {
         $this->invocationMocker = clone $this->__phpunit_getInvocationMocker();

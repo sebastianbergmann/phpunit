@@ -463,10 +463,8 @@
       <dir name="Generator">
        <file baseinstalldir="/" name="mocked_class.tpl.dist" role="php" />
        <file baseinstalldir="/" name="mocked_clone.tpl.dist" role="php" />
-       <file baseinstalldir="/" name="mocked_constructor.tpl.dist" role="php" />
        <file baseinstalldir="/" name="mocked_method.tpl.dist" role="php" />
        <file baseinstalldir="/" name="unmocked_clone.tpl.dist" role="php" />
-       <file baseinstalldir="/" name="unmocked_constructor.tpl.dist" role="php" />
        <file baseinstalldir="/" name="wsdl_class.tpl.dist" role="php" />
        <file baseinstalldir="/" name="wsdl_method.tpl.dist" role="php" />
       </dir>
