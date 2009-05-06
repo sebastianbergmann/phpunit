@@ -1051,7 +1051,6 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
           $originalClassName,
           $methods,
           $mockClassName,
-          $callOriginalConstructor,
           $callOriginalClone,
           $callAutoload
         );
