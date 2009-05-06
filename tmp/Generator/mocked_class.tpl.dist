@@ -3,7 +3,7 @@
     protected static $staticInvocationMocker;
     protected $invocationMocker;
 
-{constructor}{clone}{mocked_methods}
+{clone}{mocked_methods}
     public function expects(PHPUnit_Framework_MockObject_Matcher_Invocation $matcher)
     {
         return $this->__phpunit_getInvocationMocker()->expects($matcher);

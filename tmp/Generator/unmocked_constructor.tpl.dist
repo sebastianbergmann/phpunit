@@ -1,8 +1,0 @@
-    public function __construct({arguments})
-    {
-        $args = func_get_args();
-
-        $class = new ReflectionClass('{mocked_class_name}');
-        $class->getParentClass()->getConstructor()->invokeArgs($this, $args);
-    }
-

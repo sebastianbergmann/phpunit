@@ -356,12 +356,6 @@ class PHPUnit_Framework_MockObject_Generator
             'class_declaration' => self::generateMockClassDeclaration(
                                      $mockClassName, $isInterface
                                    ),
-            'constructor'       => self::generateMockConstructor(
-                                     $templateDir,
-                                     $constructor,
-                                     $mockClassName['mockClassName'],
-                                     $callOriginalConstructor
-                                   ),
             'clone'             => $cloneTemplate,
             'mock_class_name'   => $mockClassName['mockClassName'],
             'mocked_methods'    => $mockedMethods
@@ -433,44 +427,6 @@ class PHPUnit_Framework_MockObject_Generator
         }
 
         return $buffer;
-    }
-
-    /**
-     * @param  string                $templateDir
-     * @param  ReflectionMethod|null $constructor
-     * @param  string                $mockedClassName
-     * @param  boolean               $callOriginalConstructor
-     * @return string
-     */
-    protected static function generateMockConstructor($templateDir, ReflectionMethod $constructor = NULL, $mockedClassName, $callOriginalConstructor)
-    {
-        if ($constructor !== NULL) {
-            if ($constructor->isFinal()) {
-                throw new RuntimeException(
-                  sprintf(
-                    'Constructor of class "%s" is declared "final". The class cannot be mocked.',
-                    $mockedClassName
-                  )
-                );
-            }
-
-            if ($callOriginalConstructor) {
-                $template = new PHPUnit_Util_Template($templateDir . 'unmocked_constructor.tpl');
-            } else {
-                $template = new PHPUnit_Util_Template($templateDir . 'mocked_constructor.tpl');
-            }
-
-            $template->setVar(
-              array(
-                'arguments'         => PHPUnit_Util_Class::getMethodParameters($constructor),
-                'mocked_class_name' => $mockedClassName
-              )
-            );
-
-            return $template->render();
-        }
-
-        return '';
     }
 
     /**
