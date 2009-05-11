@@ -122,6 +122,10 @@ class PHPUnit_Util_TestDox_NamePrettifier
             $this->strings[] = $string;
         }
 
+        if (strpos($testMethodName, '_') !== FALSE) {
+            return str_replace('_', ' ', $testMethodName);
+        }
+
         $max = strlen($testMethodName);
 
         if (substr($testMethodName, 0, 4) == 'test') {
