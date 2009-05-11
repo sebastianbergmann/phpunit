@@ -47,6 +47,7 @@
 require_once 'PHPUnit/Framework.php';
 require_once 'PHPUnit/Util/Filter.php';
 
+require_once 'PHPUnit/Extensions/Database/DataSet/QueryTable.php';
 require_once 'PHPUnit/Extensions/Database/DB/IDatabaseConnection.php';
 require_once 'PHPUnit/Extensions/Database/DB/MetaData.php';
 require_once 'PHPUnit/Extensions/Database/DB/ResultSetTable.php';
