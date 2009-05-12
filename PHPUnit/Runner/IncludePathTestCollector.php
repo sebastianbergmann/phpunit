@@ -75,31 +75,31 @@ PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
 class PHPUnit_Runner_IncludePathTestCollector implements PHPUnit_Runner_TestCollector
 {
     /**
-     * @var    string
+     * @var string
      */
     protected $filterIterator;
 
     /**
-     * @var    array
+     * @var array
      */
     protected $paths;
 
     /**
-     * @var    string
+     * @var mixed
      */
-    protected $suffix;
+    protected $suffixes;
 
     /**
-     * @var    string
+     * @var mixed
      */
-    protected $prefix;
+    protected $prefixes;
 
     /**
-     * @param  array  $paths
-     * @param  string $suffix
-     * @param  string $prefix
+     * @param array $paths
+     * @param mixed $suffixes
+     * @param mixed $prefixes
      */
-    public function __construct(array $paths = array(), $suffix = 'Test.php', $prefix = '')
+    public function __construct(array $paths = array(), $suffixes = array('Test.php', '.phpt'), $prefixes = array())
     {
         if (!empty($paths)) {
             $this->paths = $paths;
@@ -107,8 +107,8 @@ class PHPUnit_Runner_IncludePathTestCollector implements PHPUnit_Runner_TestColl
             $this->paths = explode(PATH_SEPARATOR, get_include_path());
         }
 
-        $this->suffix = $suffix;
-        $this->prefix = $prefix;
+        $this->suffixes = $suffixes;
+        $this->prefixes = $prefixes;
     }
 
     /**
@@ -128,7 +128,7 @@ class PHPUnit_Runner_IncludePathTestCollector implements PHPUnit_Runner_TestColl
         }
 
         $filterIterator = new PHPUnit_Util_FilterIterator(
-          $pathIterator, $this->suffix, $this->prefix
+          $pathIterator, $this->suffixes, $this->prefixes
         );
 
         if ($this->filterIterator !== NULL) {
