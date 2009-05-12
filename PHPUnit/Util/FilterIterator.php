@@ -64,26 +64,51 @@ PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
 class PHPUnit_Util_FilterIterator extends FilterIterator
 {
     /**
-     * @var    string
+     * @var array
      */
-    protected $suffix;
+    protected $suffixes = array();
 
     /**
-     * @var    string
+     * @var string
      */
-    protected $prefix;
+    protected $prefixes = array();
 
     /**
      * @param  Iterator $iterator
-     * @param  string   $suffix
-     * @param  string   $prefix
+     * @param  array    $suffixes
+     * @param  array    $prefixes
      */
-    public function __construct(Iterator $iterator, $suffix = '', $prefix = '')
+    public function __construct(Iterator $iterator, $suffixes = array(), $prefixes = array())
     {
-        parent::__construct($iterator);
+        if (is_string($suffixes)) {
+            if (!empty($suffixes)) {
+                $suffixes = array($suffixes);
+            } else {
+                $suffixes = array();
+            }
+        }
 
-        $this->suffix = $suffix;
-        $this->prefix = $prefix;
+        if (!is_array($suffixes)) {
+            throw PHPUnit_Util_InvalidArgumentHelper::factory(2, 'array or string');
+        }
+
+        $this->suffixes = $suffixes;
+
+        if (is_string($prefixes)) {
+            if (!empty($prefixes)) {
+                $prefixes = array($prefixes);
+            } else {
+                $prefixes = array();
+            }
+        }
+
+        if (!is_array($prefixes)) {
+            throw PHPUnit_Util_InvalidArgumentHelper::factory(3, 'array or string');
+        }
+
+        $this->prefixes = $prefixes;
+
+        parent::__construct($iterator);
     }
 
     /**
@@ -93,12 +118,34 @@ class PHPUnit_Util_FilterIterator extends FilterIterator
     {
         $string = (string)$this->getInnerIterator()->current();
 
-        if (!empty($this->prefix) && strpos($string, $this->prefix) !== 0) {
-            return FALSE;
+        if (!empty($this->prefixes)) {
+            $matched = FALSE;
+
+            foreach ($this->prefixes as $prefix) {
+                if (strpos($string, $prefix) === 0) {
+                    $matched = TRUE;
+                    break;
+                }
+            }
+
+            if (!$matched) {
+                return FALSE;
+            }
         }
 
-        if (!empty($this->suffix) && substr($string, -1 * strlen($this->suffix)) != $this->suffix) {
-            return FALSE;
+        if (!empty($this->suffixes)) {
+            $matched = FALSE;
+
+            foreach ($this->suffixes as $suffix) {
+                if (substr($string, -1 * strlen($suffix)) == $suffix) {
+                    $matched = TRUE;
+                    break;
+                }
+            }
+
+            if (!$matched) {
+                return FALSE;
+            }
         }
 
         return TRUE;
