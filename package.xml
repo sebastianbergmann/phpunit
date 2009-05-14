@@ -856,10 +856,21 @@
       </file>
      </dir>
      <dir name="Regression">
+      <dir name="578">
+       <file baseinstalldir="/" name="Issue578Test.php" role="test" />
+      </dir>
+      <dir name="684">
+       <file baseinstalldir="/" name="Issue684Test.php" role="test" />
+      </dir>
+      <dir name="783">
+       <file baseinstalldir="/" name="ChildSuite.php" role="test" />
+       <file baseinstalldir="/" name="OneTest.php" role="test" />
+       <file baseinstalldir="/" name="ParentSuite.php" role="test" />
+       <file baseinstalldir="/" name="TwoTest.php" role="test" />
+      </dir>
       <file baseinstalldir="/" name="578.phpt" role="test" />
-      <file baseinstalldir="/" name="Issue578Test.php" role="test" />
       <file baseinstalldir="/" name="684.phpt" role="test" />
-      <file baseinstalldir="/" name="Issue684Test.php" role="test" />
+      <file baseinstalldir="/" name="783.phpt" role="test" />
      </dir>
      <dir name="TextUI">
       <file baseinstalldir="/" name="abstract-test-class.phpt" role="test" />
