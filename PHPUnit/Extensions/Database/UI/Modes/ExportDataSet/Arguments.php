@@ -39,22 +39,13 @@
  * @author     Mike Lively <m@digitalsandwich.com>
  * @copyright  2002-2009 Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
- * @version    SVN: $Id: Abstract.php 4402 2008-12-31 09:25:57Z sb $
+ * @version    SVN: $Id: CsvDataSet.php 4402 2008-12-31 09:25:57Z sb $
  * @link       http://www.phpunit.de/
- * @since      File available since Release 3.2.0
+ * @since      File available since Release 3.4.0
  */
 
-require_once 'PHPUnit/Framework.php';
-require_once 'PHPUnit/Util/Filter.php';
-
-require_once 'PHPUnit/Extensions/Database/DataSet/IPersistable.php';
-require_once 'PHPUnit/Util/YAML/sfYaml.class.php';
-
-PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
-
-
 /**
- * A yaml dataset persistor
+ * Represents arguments received from a medium.
  *
  * @category   Testing
  * @package    PHPUnit
@@ -63,46 +54,103 @@ PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    Release: @package_version@
  * @link       http://www.phpunit.de/
- * @since      Class available since Release 3.2.0
+ * @since      Class available since Release 3.4.0
  */
-class PHPUnit_Extensions_Database_DataSet_Persistors_Yaml implements PHPUnit_Extensions_Database_DataSet_IPersistable
+class PHPUnit_Extensions_Database_UI_Modes_ExportDataSet_Arguments
 {
     /**
-     * @var string
+     * @var array
      */
-    protected $filename;
+    protected $arguments = array();
 
     /**
-     * Sets the filename that this persistor will save to.
-     *
-     * @param string $filename
+     * @param array $arguments
      */
-    public function setFileName($filename)
+    public function __construct(array $arguments)
     {
-        $this->filename = $filename;
+        foreach ($arguments as $argument) {
+            list($argName, $argValue) = explode('=', $argument, 2);
+
+            $argName = trim($argName, '-');
+
+            if (!isset($this->arguments[$argName])) {
+                $this->arguments[$argName] = array();
+            }
+
+            $this->arguments[$argName][] = $argValue;
+        }
     }
 
     /**
-     * Writes the dataset to a yaml file
+     * Returns an array of arguments matching the given $argName
      *
-     * @param PHPUnit_Extensions_Database_DataSet_IDataSet $dataset
+     * @param string $argName
+     * @return array
      */
-    public function write(PHPUnit_Extensions_Database_DataSet_IDataSet $dataset)
+    public function getArgumentArray($argName)
     {
-        $phpArr = array();
+        if ($this->argumentIsSet($argName)) {
+            return $this->arguments[$argName];
+        } else {
+            return NULL;
+        }
+    }
 
-        foreach ($dataset as $table)
-        {
-            $tableName = $table->getTableMetaData()->getTableName();
-            $phpArr[$tableName] = array();
+    /**
+     * Returns a single argument value.
+     *
+     * If $argName points to an array the first argument will be returned.
+     *
+     * @param string $argName
+     * @return mixed
+     */
+    public function getSingleArgument($argName)
+    {
+        if ($this->argumentIsSet($argName)) {
+            return reset($this->arguments[$argName]);
+        } else {
+            return NULL;
+        }
+    }
 
-            for ($i = 0; $i < $table->getRowCount(); $i++)
-            {
-                $phpArr[$tableName][] = $table->getRow($i);
-            }
+    /**
+     * Returns whether an argument is set.
+     *
+     * @param string $argName
+     * @return bool
+     */
+    public function argumentIsSet($argName)
+    {
+        return array_key_exists($argName, $this->arguments);
+    }
+
+    /**
+     * Returns an array containing the names of all arguments provided.
+     *
+     * @return array
+     */
+    public function getArgumentNames()
+    {
+        return array_keys($this->arguments);
+    }
+
+    /**
+     * Returns an array of database arguments keyed by name.
+     *
+     * @todo this should be moved.
+     * @return array
+     */
+    public function getDatabases()
+    {
+        $databases = $this->getArgumentArray('database');
+
+        $retDb = array();
+        foreach ($databases as $db) {
+            list($name, $arg) = explode(':', $db, 2);
+            $retDb[$name] = $arg;
         }
 
-        file_put_contents($this->filename, sfYaml::dump($phpArr, 3));
+        return $retDb;
     }
 }
 

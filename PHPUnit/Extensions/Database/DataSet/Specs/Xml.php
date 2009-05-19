@@ -39,22 +39,23 @@
  * @author     Mike Lively <m@digitalsandwich.com>
  * @copyright  2002-2009 Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
- * @version    SVN: $Id: Abstract.php 4402 2008-12-31 09:25:57Z sb $
+ * @version    SVN: $Id: CsvDataSet.php 4402 2008-12-31 09:25:57Z sb $
  * @link       http://www.phpunit.de/
- * @since      File available since Release 3.2.0
+ * @since      File available since Release 3.4.0CSV
  */
 
-require_once 'PHPUnit/Framework.php';
-require_once 'PHPUnit/Util/Filter.php';
-
-require_once 'PHPUnit/Extensions/Database/DataSet/IPersistable.php';
-require_once 'PHPUnit/Util/YAML/sfYaml.class.php';
-
-PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
-
+require_once ('PHPUnit/Extensions/Database/DataSet/ISpec.php');
+require_once ('PHPUnit/Extensions/Database/DataSet/XmlDataSet.php');
 
 /**
- * A yaml dataset persistor
+ * Creates a XML dataset based off of a spec string.
+ *
+ * The format of the spec string is as follows:
+ *
+ * <filename>
+ *
+ * The filename should be the location of a xml file relative to the
+ * current working directory.
  *
  * @category   Testing
  * @package    PHPUnit
@@ -62,47 +63,20 @@ PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
  * @copyright  2009 Mike Lively <m@digitalsandwich.com>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    Release: @package_version@
- * @link       http://www.phpunit.de/
- * @since      Class available since Release 3.2.0
+ * @link       http://www.phpunit.de//**
+ * @since      Class available since Release 3.4.0
  */
-class PHPUnit_Extensions_Database_DataSet_Persistors_Yaml implements PHPUnit_Extensions_Database_DataSet_IPersistable
+class PHPUnit_Extensions_Database_DataSet_Specs_Xml implements PHPUnit_Extensions_Database_DataSet_ISpec
 {
     /**
-     * @var string
-     */
-    protected $filename;
-
-    /**
-     * Sets the filename that this persistor will save to.
+     * Creates XML Data Set from a data set spec.
      *
-     * @param string $filename
+     * @param string $dataSetSpec
+     * @return PHPUnit_Extensions_Database_DataSet_XmlDataSet
      */
-    public function setFileName($filename)
+    public function getDataSet($dataSetSpec)
     {
-        $this->filename = $filename;
-    }
-
-    /**
-     * Writes the dataset to a yaml file
-     *
-     * @param PHPUnit_Extensions_Database_DataSet_IDataSet $dataset
-     */
-    public function write(PHPUnit_Extensions_Database_DataSet_IDataSet $dataset)
-    {
-        $phpArr = array();
-
-        foreach ($dataset as $table)
-        {
-            $tableName = $table->getTableMetaData()->getTableName();
-            $phpArr[$tableName] = array();
-
-            for ($i = 0; $i < $table->getRowCount(); $i++)
-            {
-                $phpArr[$tableName][] = $table->getRow($i);
-            }
-        }
-
-        file_put_contents($this->filename, sfYaml::dump($phpArr, 3));
+        return new PHPUnit_Extensions_Database_DataSet_XmlDataSet($dataSetSpec);
     }
 }
 

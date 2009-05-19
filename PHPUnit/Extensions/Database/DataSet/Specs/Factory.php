@@ -39,22 +39,15 @@
  * @author     Mike Lively <m@digitalsandwich.com>
  * @copyright  2002-2009 Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
- * @version    SVN: $Id: Abstract.php 4402 2008-12-31 09:25:57Z sb $
+ * @version    SVN: $Id: CsvDataSet.php 4402 2008-12-31 09:25:57Z sb $
  * @link       http://www.phpunit.de/
- * @since      File available since Release 3.2.0
+ * @since      File available since Release 3.4.0
  */
 
-require_once 'PHPUnit/Framework.php';
-require_once 'PHPUnit/Util/Filter.php';
-
-require_once 'PHPUnit/Extensions/Database/DataSet/IPersistable.php';
-require_once 'PHPUnit/Util/YAML/sfYaml.class.php';
-
-PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
-
+require_once ('PHPUnit/Extensions/Database/DataSet/Specs/IFactory.php');
 
 /**
- * A yaml dataset persistor
+ * Creates the appropriate DataSet Spec based on a given type.
  *
  * @category   Testing
  * @package    PHPUnit
@@ -62,47 +55,47 @@ PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
  * @copyright  2009 Mike Lively <m@digitalsandwich.com>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    Release: @package_version@
- * @link       http://www.phpunit.de/
- * @since      Class available since Release 3.2.0
+ * @link       http://www.phpunit.de//**
+ * @since      Class available since Release 3.4.0
  */
-class PHPUnit_Extensions_Database_DataSet_Persistors_Yaml implements PHPUnit_Extensions_Database_DataSet_IPersistable
+class PHPUnit_Extensions_Database_DataSet_Specs_Factory implements PHPUnit_Extensions_Database_DataSet_Specs_IFactory
 {
     /**
-     * @var string
-     */
-    protected $filename;
-
-    /**
-     * Sets the filename that this persistor will save to.
+     * Returns the data set
      *
-     * @param string $filename
+     * @param string $type
+     * @return PHPUnit_Extensions_Database_DataSet_ISpec
      */
-    public function setFileName($filename)
+    public function getDataSetSpecByType($type)
     {
-        $this->filename = $filename;
-    }
+        switch ($type) {
+            case 'xml':
+                require_once ('PHPUnit/Extensions/Database/DataSet/Specs/Xml.php');
+                return new PHPUnit_Extensions_Database_DataSet_Specs_Xml();
 
-    /**
-     * Writes the dataset to a yaml file
-     *
-     * @param PHPUnit_Extensions_Database_DataSet_IDataSet $dataset
-     */
-    public function write(PHPUnit_Extensions_Database_DataSet_IDataSet $dataset)
-    {
-        $phpArr = array();
+            case 'flatxml':
+                require_once ('PHPUnit/Extensions/Database/DataSet/Specs/FlatXml.php');
+                return new PHPUnit_Extensions_Database_DataSet_Specs_FlatXml();
 
-        foreach ($dataset as $table)
-        {
-            $tableName = $table->getTableMetaData()->getTableName();
-            $phpArr[$tableName] = array();
+            case 'csv':
+                require_once ('PHPUnit/Extensions/Database/DataSet/Specs/Csv.php');
+                return new PHPUnit_Extensions_Database_DataSet_Specs_Csv();
 
-            for ($i = 0; $i < $table->getRowCount(); $i++)
-            {
-                $phpArr[$tableName][] = $table->getRow($i);
-            }
+            case 'yaml':
+                require_once ('PHPUnit/Extensions/Database/DataSet/Specs/Yaml.php');
+                return new PHPUnit_Extensions_Database_DataSet_Specs_Yaml();
+
+            case 'dbtable':
+                require_once ('PHPUnit/Extensions/Database/DataSet/Specs/DbTable.php');
+                return new PHPUnit_Extensions_Database_DataSet_Specs_DbTable();
+
+            case 'dbquery':
+                require_once ('PHPUnit/Extensions/Database/DataSet/Specs/DbQuery.php');
+                return new PHPUnit_Extensions_Database_DataSet_Specs_DbQuery();
+
+            default:
+                throw new Exception("I don't know what you want from me.");
         }
-
-        file_put_contents($this->filename, sfYaml::dump($phpArr, 3));
     }
 }
 

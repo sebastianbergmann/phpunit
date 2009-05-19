@@ -39,22 +39,37 @@
  * @author     Mike Lively <m@digitalsandwich.com>
  * @copyright  2002-2009 Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
- * @version    SVN: $Id: Abstract.php 4402 2008-12-31 09:25:57Z sb $
+ * @version    SVN: $Id: CsvDataSet.php 4402 2008-12-31 09:25:57Z sb $
  * @link       http://www.phpunit.de/
- * @since      File available since Release 3.2.0
+ * @since      File available since Release 3.4.0
  */
 
-require_once 'PHPUnit/Framework.php';
-require_once 'PHPUnit/Util/Filter.php';
-
-require_once 'PHPUnit/Extensions/Database/DataSet/IPersistable.php';
-require_once 'PHPUnit/Util/YAML/sfYaml.class.php';
-
-PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
-
+require_once ('PHPUnit/Extensions/Database/DataSet/ISpec.php');
+require_once ('PHPUnit/Extensions/Database/DB/DefaultDatabaseConnection.php');
+require_once ('PHPUnit/Extensions/Database/IDatabaseListConsumer.php');
 
 /**
- * A yaml dataset persistor
+ * Creates DefaultDataSets based off of a spec string.
+ *
+ * This spec class requires a list of databases to be set to the object before
+ * it can return a list of databases.
+ *
+ * The format of the spec string is as follows:
+ *
+ * <db label>:<schema>:<table name>:<sql>
+ *
+ * The db label should be equal to one of the keys in the array of databases
+ * passed to setDatabases().
+ *
+ * The schema should be the primary schema you will be running the sql query
+ * against.
+ *
+ * The table name should be set to what you would like the table name in the
+ * dataset to be.
+ *
+ * The sql is the query you want to use to generate the table columns and data.
+ * The column names in the table will be identical to the column aliases in the
+ * query.
  *
  * @category   Testing
  * @package    PHPUnit
@@ -63,46 +78,42 @@ PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    Release: @package_version@
  * @link       http://www.phpunit.de/
- * @since      Class available since Release 3.2.0
+ * @since      Class available since Release 3.4.0
  */
-class PHPUnit_Extensions_Database_DataSet_Persistors_Yaml implements PHPUnit_Extensions_Database_DataSet_IPersistable
+class PHPUnit_Extensions_Database_DataSet_Specs_DbQuery implements PHPUnit_Extensions_Database_DataSet_ISpec, PHPUnit_Extensions_Database_IDatabaseListConsumer
 {
     /**
-     * @var string
+     * @var array
      */
-    protected $filename;
+    protected $databases = array();
 
     /**
-     * Sets the filename that this persistor will save to.
+     * Sets the database for the spec
      *
-     * @param string $filename
+     * @param array $databases
      */
-    public function setFileName($filename)
+    public function setDatabases(array $databases)
     {
-        $this->filename = $filename;
+        $this->databases = $databases;
     }
 
     /**
-     * Writes the dataset to a yaml file
+     * Creates a Default Data Set with a query table from a data set spec.
      *
-     * @param PHPUnit_Extensions_Database_DataSet_IDataSet $dataset
+     * @param string $dataSetSpec
+     * @return PHPUnit_Extensions_Database_DataSet_DefaultDataSet
      */
-    public function write(PHPUnit_Extensions_Database_DataSet_IDataSet $dataset)
+    public function getDataSet($dataSetSpec)
     {
-        $phpArr = array();
+        $pdoRflc = new ReflectionClass('PDO');
+        list($dbLabel, $schema, $table, $sql) = explode(':', $dataSetSpec, 4);
 
-        foreach ($dataset as $table)
-        {
-            $tableName = $table->getTableMetaData()->getTableName();
-            $phpArr[$tableName] = array();
+        $databaseInfo = $this->databases[$dbLabel];
+        $pdo = $pdoRflc->newInstanceArgs(explode('|', $databaseInfo));
 
-            for ($i = 0; $i < $table->getRowCount(); $i++)
-            {
-                $phpArr[$tableName][] = $table->getRow($i);
-            }
-        }
-
-        file_put_contents($this->filename, sfYaml::dump($phpArr, 3));
+        $dbConnection = new PHPUnit_Extensions_Database_DB_DefaultDatabaseConnection($pdo, $schema);
+        $table = $dbConnection->createQueryTable($table, $sql);
+        return new PHPUnit_Extensions_Database_DataSet_DefaultDataSet(array($table));
     }
 }
 

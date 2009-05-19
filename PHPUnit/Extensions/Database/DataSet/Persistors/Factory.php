@@ -39,22 +39,13 @@
  * @author     Mike Lively <m@digitalsandwich.com>
  * @copyright  2002-2009 Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
- * @version    SVN: $Id: Abstract.php 4402 2008-12-31 09:25:57Z sb $
+ * @version    SVN: $Id: CsvDataSet.php 4402 2008-12-31 09:25:57Z sb $
  * @link       http://www.phpunit.de/
- * @since      File available since Release 3.2.0
+ * @since      File available since Release 3.4.0
  */
 
-require_once 'PHPUnit/Framework.php';
-require_once 'PHPUnit/Util/Filter.php';
-
-require_once 'PHPUnit/Extensions/Database/DataSet/IPersistable.php';
-require_once 'PHPUnit/Util/YAML/sfYaml.class.php';
-
-PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
-
-
 /**
- * A yaml dataset persistor
+ * Creates the appropriate Persistor based on a given type and spec.
  *
  * @category   Testing
  * @package    PHPUnit
@@ -62,48 +53,42 @@ PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
  * @copyright  2009 Mike Lively <m@digitalsandwich.com>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    Release: @package_version@
- * @link       http://www.phpunit.de/
- * @since      Class available since Release 3.2.0
+ * @link       http://www.phpunit.de//**
+ * @since      Class available since Release 3.4.0
  */
-class PHPUnit_Extensions_Database_DataSet_Persistors_Yaml implements PHPUnit_Extensions_Database_DataSet_IPersistable
+class PHPUnit_Extensions_Database_DataSet_Persistors_Factory
 {
     /**
-     * @var string
-     */
-    protected $filename;
-
-    /**
-     * Sets the filename that this persistor will save to.
+     * Returns the persistor.
      *
-     * @param string $filename
+     * @param string $type
+     * @param string $spec
+     * @return PHPUnit_Extensions_Database_DataSet_IPersistable
      */
-    public function setFileName($filename)
+    public function getPersistorBySpec($type, $spec)
     {
-        $this->filename = $filename;
-    }
+        switch (strtolower($type)) {
+            case 'xml':
+                require_once ('PHPUnit/Extensions/Database/DataSet/Persistors/Xml.php');
+                $xmlPersistor = new PHPUnit_Extensions_Database_DataSet_Persistors_Xml();
+                $xmlPersistor->setFileName($spec);
+                return $xmlPersistor;
 
-    /**
-     * Writes the dataset to a yaml file
-     *
-     * @param PHPUnit_Extensions_Database_DataSet_IDataSet $dataset
-     */
-    public function write(PHPUnit_Extensions_Database_DataSet_IDataSet $dataset)
-    {
-        $phpArr = array();
+            case 'flatxml':
+                require_once ('PHPUnit/Extensions/Database/DataSet/Persistors/FlatXml.php');
+                $flatXmlPersistor = new PHPUnit_Extensions_Database_DataSet_Persistors_FlatXml();
+                $flatXmlPersistor->setFileName($spec);
+                return $flatXmlPersistor;
 
-        foreach ($dataset as $table)
-        {
-            $tableName = $table->getTableMetaData()->getTableName();
-            $phpArr[$tableName] = array();
+            case 'yaml':
+                require_once ('PHPUnit/Extensions/Database/DataSet/Persistors/Yaml.php');
+                $yamlPersistor = new PHPUnit_Extensions_Database_DataSet_Persistors_Yaml();
+                $yamlPersistor->setFileName($spec);
+                return $yamlPersistor;
 
-            for ($i = 0; $i < $table->getRowCount(); $i++)
-            {
-                $phpArr[$tableName][] = $table->getRow($i);
-            }
+            default:
+                throw new Exception("I don't know what you want from me. PERSISTOR");
         }
-
-        file_put_contents($this->filename, sfYaml::dump($phpArr, 3));
     }
 }
-
 ?>
