@@ -118,16 +118,16 @@ class Extensions_Database_DataSet_CsvDataSetTest extends PHPUnit_Framework_TestC
             'column5' => 'ajsdlkfguitah',
             'column6' => 654,
             'column7' => 'blah',
-            'column8' => 'thesethasdl 
+            'column8' => 'thesethasdl
 asdflkjsadf asdfsadfhl "adsf, halsdf" sadfhlasdf'
         ));
 
         $expectedDataSet = new PHPUnit_Extensions_Database_DataSet_DefaultDataSet(array($table1, $table2));
-        
+
         $csvDataSet = new PHPUnit_Extensions_Database_DataSet_CsvDataSet();
         $csvDataSet->addTable('table1', dirname(__FILE__).'/../_files/CsvDataSets/table1.csv');
         $csvDataSet->addTable('table2', dirname(__FILE__).'/../_files/CsvDataSets/table2.csv');
-        
+
         PHPUnit_Extensions_Database_TestCase::assertDataSetsEqual($expectedDataSet, $csvDataSet);
     }
 }

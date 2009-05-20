@@ -11,7 +11,7 @@
  *
  *   * Redistributions of source code must retain the above copyright
  *     notice, this list of conditions and the following disclaimer.
- * 
+ *
  *   * Redistributions in binary form must reproduce the above copyright
  *     notice, this list of conditions and the following disclaimer in
  *     the documentation and/or other materials provided with the
@@ -34,7 +34,7 @@
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  *
- * $Id: phpunit.php 4879 2009-05-12 06:49:53Z sb $
+ * $Id$
  */
 
 if (strpos('@php_bin@', '@php_bin') === 0) {
@@ -49,10 +49,10 @@ require_once 'PHPUnit/Util/Filter.php';
 
 PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
 
-require_once('PHPUnit/Extensions/Database/UI/Command.php');
-require_once('PHPUnit/Extensions/Database/UI/ModeFactory.php');
-require_once('PHPUnit/Extensions/Database/UI/Mediums/Text.php');
-require_once('PHPUnit/Extensions/Database/UI/Context.php');
+require_once 'PHPUnit/Extensions/Database/UI/Command.php';
+require_once 'PHPUnit/Extensions/Database/UI/ModeFactory.php';
+require_once 'PHPUnit/Extensions/Database/UI/Mediums/Text.php';
+require_once 'PHPUnit/Extensions/Database/UI/Context.php';
 
 $command = new PHPUnit_Extensions_Database_UI_Command(
 	new PHPUnit_Extensions_Database_UI_ModeFactory()
@@ -62,6 +62,4 @@ $command->main(
 	new PHPUnit_Extensions_Database_UI_Mediums_Text($_SERVER['argv']),
 	new PHPUnit_Extensions_Database_UI_Context()
 );
-
-
 ?>

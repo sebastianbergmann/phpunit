@@ -68,7 +68,7 @@ class PHPUnit_Extensions_TicketListener_Trac extends PHPUnit_Extensions_TicketLi
     protected $password;
     protected $hostpath;
     protected $scheme;
-    
+
     /**
      * Constructor
      *
@@ -84,7 +84,7 @@ class PHPUnit_Extensions_TicketListener_Trac extends PHPUnit_Extensions_TicketLi
         $this->hostpath = $hostpath;
         $this->scheme   = $scheme;
     }
-    
+
     protected function updateTicket($ticketId, $newStatus, $message, $resolution)
     {
         if (PHPUnit_Util_Filesystem::fileExistsInIncludePath('XML/RPC2/Client.php')) {
@@ -111,7 +111,7 @@ class PHPUnit_Extensions_TicketListener_Trac extends PHPUnit_Extensions_TicketLi
                   )
                 );
             }
-                
+
             try {
                 printf(
                   "Updating Trac ticket #%d, status: %s\n",

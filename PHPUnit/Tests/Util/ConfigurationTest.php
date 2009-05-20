@@ -176,13 +176,13 @@ class Util_ConfigurationTest extends PHPUnit_Framework_TestCase
     {
         $this->assertEquals(
           array (
-            0 => 
+            0 =>
             array (
               'class' => 'MyListener',
               'file' => '/optional/path/to/MyListener.php',
-              'arguments' => 
+              'arguments' =>
               array (
-                0 => 
+                0 =>
                 array (
                   0 => 'Sebastian',
                 ),
