@@ -374,6 +374,7 @@ class PHPUnit_Extensions_SeleniumTestCase_Driver
      * @method unknown  attachFile()
      * @method unknown  break()
      * @method unknown  captureEntirePageScreenshot()
+     * @method unknown  captureEntirePageScreenshotToString()
      * @method unknown  captureScreenshot()
      * @method unknown  captureScreenshotToString()
      * @method unknown  check()
@@ -518,6 +519,7 @@ class PHPUnit_Extensions_SeleniumTestCase_Driver
      * @method unknown  removeAllSelectionsAndWait()
      * @method unknown  removeSelection()
      * @method unknown  removeSelectionAndWait()
+     * @method unknown  retrieveLastRemoteControlLogs()
      * @method unknown  runScript()
      * @method unknown  rollup()
      * @method unknown  select()
@@ -572,6 +574,7 @@ class PHPUnit_Extensions_SeleniumTestCase_Driver
             case 'attachFile':
             case 'break':
             case 'captureEntirePageScreenshot':
+            case 'captureEntirePageScreenshotToString':
             case 'captureScreenshot':
             case 'captureScreenshotToString':
             case 'check':
@@ -622,6 +625,7 @@ class PHPUnit_Extensions_SeleniumTestCase_Driver
             case 'refresh':
             case 'removeAllSelections':
             case 'removeSelection':
+            case 'retrieveLastRemoteControlLogs':
             case 'rollup':
             case 'runScript':
             case 'select':
