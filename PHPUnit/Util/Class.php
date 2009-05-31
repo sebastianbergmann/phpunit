@@ -319,8 +319,13 @@ class PHPUnit_Util_Class
     {
         $parameters = array();
 
-        foreach ($method->getParameters() as $parameter) {
-            $name     = '$' . $parameter->getName();
+        foreach ($method->getParameters() as $i => $parameter) {
+            $name = '$' . $parameter->getName();
+
+            if ($name === '$') {
+                $name .= 'arg' . $i;
+            }
+
             $typeHint = '';
 
             if ($parameter->isArray()) {
