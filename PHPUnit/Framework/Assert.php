@@ -121,9 +121,10 @@ abstract class PHPUnit_Framework_Assert
      * @param  mixed   $needle
      * @param  mixed   $haystack
      * @param  string  $message
+     * @param  boolean $ignoreCase
      * @since  Method available since Release 2.1.0
      */
-    public static function assertContains($needle, $haystack, $message = '')
+    public static function assertContains($needle, $haystack, $message = '', $ignoreCase = FALSE)
     {
         if (is_array($haystack) ||
             is_object($haystack) && $haystack instanceof Iterator) {
@@ -131,7 +132,9 @@ abstract class PHPUnit_Framework_Assert
         }
 
         else if (is_string($haystack)) {
-            $constraint = new PHPUnit_Framework_Constraint_StringContains($needle);
+            $constraint = new PHPUnit_Framework_Constraint_StringContains(
+              $needle, $ignoreCase
+            );
         }
 
         else {
@@ -149,14 +152,16 @@ abstract class PHPUnit_Framework_Assert
      * @param  string  $haystackAttributeName
      * @param  mixed   $haystackClassOrObject
      * @param  string  $message
+     * @param  boolean $ignoreCase
      * @since  Method available since Release 3.0.0
      */
-    public static function assertAttributeContains($needle, $haystackAttributeName, $haystackClassOrObject, $message = '')
+    public static function assertAttributeContains($needle, $haystackAttributeName, $haystackClassOrObject, $message = '', $ignoreCase = FALSE)
     {
         self::assertContains(
           $needle,
           self::readAttribute($haystackClassOrObject, $haystackAttributeName),
-          $message
+          $message,
+          $ignoreCase
         );
     }
 
@@ -166,9 +171,10 @@ abstract class PHPUnit_Framework_Assert
      * @param  mixed   $needle
      * @param  mixed   $haystack
      * @param  string  $message
+     * @param  boolean $ignoreCase
      * @since  Method available since Release 2.1.0
      */
-    public static function assertNotContains($needle, $haystack, $message = '')
+    public static function assertNotContains($needle, $haystack, $message = '', $ignoreCase = FALSE)
     {
         if (is_array($haystack) ||
             is_object($haystack) && $haystack instanceof Iterator) {
@@ -179,7 +185,9 @@ abstract class PHPUnit_Framework_Assert
 
         else if (is_string($haystack)) {
             $constraint = new PHPUnit_Framework_Constraint_Not(
-              new PHPUnit_Framework_Constraint_StringContains($needle)
+              new PHPUnit_Framework_Constraint_StringContains(
+                $needle, $ignoreCase
+              )
             );
         }
 
@@ -198,14 +206,16 @@ abstract class PHPUnit_Framework_Assert
      * @param  string  $haystackAttributeName
      * @param  mixed   $haystackClassOrObject
      * @param  string  $message
+     * @param  boolean $ignoreCase
      * @since  Method available since Release 3.0.0
      */
-    public static function assertAttributeNotContains($needle, $haystackAttributeName, $haystackClassOrObject, $message = '')
+    public static function assertAttributeNotContains($needle, $haystackAttributeName, $haystackClassOrObject, $message = '', $ignoreCase = FALSE)
     {
         self::assertNotContains(
           $needle,
           self::readAttribute($haystackClassOrObject, $haystackAttributeName),
-          $message
+          $message,
+          $ignoreCase
         );
     }
 
