@@ -194,7 +194,7 @@ abstract class PHPUnit_Util_CodeCoverage
      * <code>
      * array(
      *   "/tested/code.php" => array(
-     *     linenumber => number of tests that executed the line
+     *     linenumber => array(tests that executed the line)
      *   )
      * )
      * </code>
