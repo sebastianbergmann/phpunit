@@ -74,12 +74,12 @@ class PHPUnit_Framework_Constraint_StringContains extends PHPUnit_Framework_Cons
 {
     protected $string;
 
-    protected $case;
+    protected $ignoreCase;
 
-    public function __construct($string, $case = TRUE)
+    public function __construct($string, $ignoreCase = FALSE)
     {
-        $this->string = $string;
-        $this->case   = $case;
+        $this->string     = $string;
+        $this->ignoreCase = $ignoreCase;
     }
 
     /**
@@ -91,10 +91,10 @@ class PHPUnit_Framework_Constraint_StringContains extends PHPUnit_Framework_Cons
      */
     public function evaluate($other)
     {
-        if ($this->case) {
-            return strpos($other, $this->string) !== FALSE;
-        } else {
+        if ($this->ignoreCase) {
             return stripos($other, $this->string) !== FALSE;
+        } else {
+            return strpos($other, $this->string) !== FALSE;
         }
     }
 
@@ -105,10 +105,10 @@ class PHPUnit_Framework_Constraint_StringContains extends PHPUnit_Framework_Cons
      */
     public function toString()
     {
-        if ($this->case) {
-            $string = $this->string;
-        } else {
+        if ($this->ignoreCase) {
             $string = strtolower($this->string);
+        } else {
+            $string = $this->string;
         }
 
         return sprintf(
