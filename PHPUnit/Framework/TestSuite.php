@@ -601,11 +601,13 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
         if (empty($groups)) {
             $tests = $this->tests;
         } else {
-            $tests = array();
+            $tests = new SplObjectStorage;
 
             foreach ($groups as $group) {
                 if (isset($this->groups[$group])) {
-                    $tests = array_merge($tests, $this->groups[$group]);
+                    foreach ($this->groups[$group] as $test) {
+                        $tests->attach($test);
+                    }
                 }
             }
         }
