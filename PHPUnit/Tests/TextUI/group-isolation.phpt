@@ -13,7 +13,7 @@ require_once dirname(dirname(dirname(__FILE__))) . '/TextUI/Command.php';
 PHPUnit_TextUI_Command::main();
 ?>
 --EXPECTF--
-PHPUnit @package_version@ by Sebastian Bergmann.
+PHPUnit %s by Sebastian Bergmann.
 
 .
 
