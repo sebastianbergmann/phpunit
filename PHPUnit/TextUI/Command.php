@@ -80,6 +80,11 @@ class PHPUnit_TextUI_Command
     /**
      * @var array
      */
+    protected $options = array();
+
+    /**
+     * @var array
+     */
     protected $longOptions = array(
       'bootstrap=' => NULL,
       'colors' => NULL,
@@ -162,8 +167,8 @@ class PHPUnit_TextUI_Command
             require_once 'PHPUnit/Util/Skeleton/Test.php';
 
             $skeleton = new PHPUnit_Util_Skeleton_Test(
-                $className,
-                $this->arguments['testFile']
+              $className,
+              $this->arguments['testFile']
             );
 
             $result = $skeleton->generate(TRUE);
@@ -190,10 +195,7 @@ class PHPUnit_TextUI_Command
         }
 
         try {
-            $result = $runner->doRun(
-              $suite,
-              $this->arguments
-            );
+            $result = $runner->doRun($suite, $this->arguments);
         }
 
         catch (Exception $e) {
@@ -246,7 +248,7 @@ class PHPUnit_TextUI_Command
     protected function handleArguments(array $argv)
     {
         try {
-            $options = PHPUnit_Util_Getopt::getopt(
+            $this->options = PHPUnit_Util_Getopt::getopt(
               $argv,
               'd:',
               array_keys($this->longOptions)
@@ -257,25 +259,10 @@ class PHPUnit_TextUI_Command
             PHPUnit_TextUI_TestRunner::showError($e->getMessage());
         }
 
-        if (isset($options[1][0])) {
-            $this->arguments['test'] = $options[1][0];
-        }
-
-        if (isset($options[1][1])) {
-            $this->arguments['testFile'] = $options[1][1];
-        } else {
-            $this->arguments['testFile'] = '';
-        }
-
-        if (isset($this->arguments['test']) && is_file($this->arguments['test'])) {
-            $this->arguments['testFile'] = realpath($this->arguments['test']);
-            $this->arguments['test']     = substr($this->arguments['test'], 0, strrpos($this->arguments['test'], '.'));
-        }
-
         $skeletonClass = FALSE;
         $skeletonTest  = FALSE;
 
-        foreach ($options[0] as $option) {
+        foreach ($this->options[0] as $option) {
             switch ($option[0]) {
                 case '--bootstrap': {
                     $this->arguments['bootstrap'] = $option[1];
@@ -557,6 +544,25 @@ class PHPUnit_TextUI_Command
             }
         }
 
+        $this->handleCustomTestSuite();
+
+        if (!isset($this->arguments['test'])) {
+            if (isset($this->options[1][0])) {
+                $this->arguments['test'] = $this->options[1][0];
+            }
+
+            if (isset($this->options[1][1])) {
+                $this->arguments['testFile'] = $this->options[1][1];
+            } else {
+                $this->arguments['testFile'] = '';
+            }
+
+            if (isset($this->arguments['test']) && is_file($this->arguments['test'])) {
+                $this->arguments['testFile'] = realpath($this->arguments['test']);
+                $this->arguments['test']     = substr($this->arguments['test'], 0, strrpos($this->arguments['test'], '.'));
+            }
+        }
+
         if (isset($includePath)) {
             ini_set(
               'include_path',
@@ -671,8 +677,8 @@ class PHPUnit_TextUI_Command
                     $reflector = new ReflectionClass($class);
 
                     for ($i = 0; $i <= 3; $i++) {
-                        if (isset($options[1][$i])) {
-                            $args[] = $options[1][$i];
+                        if (isset($this->options[1][$i])) {
+                            $args[] = $this->options[1][$i];
                         }
                     }
 
@@ -828,6 +834,13 @@ Usage: phpunit [switches] UnitTest [UnitTest.php]
   --version                Prints the version and exits.
 
 EOT;
+    }
+
+    /**
+     * Custom callback for test suite discovery.
+     */
+    protected function handleCustomTestSuite()
+    {
     }
 }
 ?>
