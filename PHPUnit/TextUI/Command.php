@@ -613,12 +613,14 @@ class PHPUnit_TextUI_Command
                 break;
 
                 default: {
-                    if (isset($this->longOptions[$option[0]])) {
-                        $handler = $this->longOptions[$option[0]];
+                    $optionName = str_replace('--', '', $option[0]);
+
+                    if (isset($this->longOptions[$optionName])) {
+                        $handler = $this->longOptions[$optionName];
                     }
 
-                    else if (isset($this->shortOptions[$option[0]])) {
-                        $handler = $this->shortOptions[$option[0]];
+                    else if (isset($this->longOptions[$optionName . '='])) {
+                        $handler = $this->longOptions[$optionName . '='];
                     }
 
                     if (isset($handler) && is_callable(array($this, $handler))) {
