@@ -194,6 +194,9 @@ class PHPUnit_TextUI_Command
             exit(PHPUnit_TextUI_TestRunner::SUCCESS_EXIT);
         }
 
+        unset($this->arguments['test']);
+        unset($this->arguments['testFile']);
+
         try {
             $result = $runner->doRun($suite, $this->arguments);
         }
