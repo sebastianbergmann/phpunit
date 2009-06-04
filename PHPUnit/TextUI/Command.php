@@ -223,8 +223,8 @@ class PHPUnit_TextUI_Command
      *         $this->longOptions['--my-switch'] = 'myHandler';
      *     }
      *
-     *     // --my-switch foo -> myHandler('foo)
-     *     protected function myHandler($value)
+     *     // --my-switch foo -> myHandler('foo', $arguments)
+     *     protected function myHandler($value, &$arguments)
      *     {
      *     }
      * }
@@ -547,7 +547,7 @@ class PHPUnit_TextUI_Command
                     }
 
                     if (isset($handler) && is_callable(array($this, $handler))) {
-                        $this->$handler($option[1]);
+                        $this->$handler($option[1], $arguments);
                     }
                 }
             }
