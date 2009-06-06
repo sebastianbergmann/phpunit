@@ -44,6 +44,7 @@
  * @since      File available since Release 2.3.0
  */
 
+require_once 'PHPUnit/Util/InvalidArgumentHelper.php';
 require_once 'PHPUnit/Util/Filter.php';
 require_once 'PHPUnit/Util/Filesystem.php';
 require_once 'PHPUnit/Util/PHP.php';
@@ -80,13 +81,7 @@ class PHPUnit_Util_Fileloader
         }
 
         if (!is_readable($filename)) {
-            throw new RuntimeException(
-              sprintf(
-                'File "%s" could not be found or is not readable.',
-
-                str_replace('./', '', $filename)
-              )
-            );
+            throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'existing file');
         }
 
         if ($syntaxCheck) {
@@ -107,18 +102,20 @@ class PHPUnit_Util_Fileloader
     {
         $filename = PHPUnit_Util_Filesystem::fileExistsInIncludePath($filename);
 
-        if ($filename) {
-            $oldVariableNames = array_keys(get_defined_vars());
+        if (!$filename) {
+            throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'existing file');
+        }
 
-            include_once $filename;
+        $oldVariableNames = array_keys(get_defined_vars());
 
-            $newVariables     = get_defined_vars();
-            $newVariableNames = array_diff(array_keys($newVariables), $oldVariableNames);
+        include_once $filename;
 
-            foreach ($newVariableNames as $variableName) {
-                if ($variableName != 'oldVariableNames') {
-                    $GLOBALS[$variableName] = $newVariables[$variableName];
-                }
+        $newVariables     = get_defined_vars();
+        $newVariableNames = array_diff(array_keys($newVariables), $oldVariableNames);
+
+        foreach ($newVariableNames as $variableName) {
+            if ($variableName != 'oldVariableNames') {
+                $GLOBALS[$variableName] = $newVariables[$variableName];
             }
         }
 
