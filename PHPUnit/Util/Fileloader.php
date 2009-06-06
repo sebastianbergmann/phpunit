@@ -44,7 +44,6 @@
  * @since      File available since Release 2.3.0
  */
 
-require_once 'PHPUnit/Util/InvalidArgumentHelper.php';
 require_once 'PHPUnit/Util/Filter.php';
 require_once 'PHPUnit/Util/Filesystem.php';
 
