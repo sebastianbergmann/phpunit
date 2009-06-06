@@ -124,9 +124,15 @@ abstract class PHPUnit_Util_Printer
             fclose($this->out);
         }
 
-        if ($this->printsHTML === TRUE && $this->outTarget !== NULL && extension_loaded('tidy')) {
+        if ($this->printsHTML === TRUE && $this->outTarget !== NULL &&
+            strpos($this->outTarget, 'php://') !== 0 &&
+            strpos($this->outTarget, 'socket://') !== 0 &&
+            extension_loaded('tidy')) {
             file_put_contents(
-              $this->outTarget, tidy_repair_file($this->outTarget)
+              $this->outTarget,
+              tidy_repair_file(
+                $this->outTarget, array('indent' => TRUE, 'wrap' => 0), 'utf8'
+              )
             );
         }
     }
