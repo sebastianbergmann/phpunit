@@ -419,7 +419,8 @@ abstract class PHPUnit_Util_Report_Node
             'lines_executed_percent' => $this->getLineExecutedPercent(),
             'date'                   => $template->getDate(),
             'phpunit_version'        => PHPUnit_Runner_Version::id(),
-            'xdebug_version'         => phpversion('xdebug')
+            'xdebug_version'         => phpversion('xdebug'),
+            'php_version'            => PHP_VERSION
           )
         );
     }
