@@ -131,13 +131,14 @@ class PHPUnit_Util_Fileloader
      */
     protected static function syntaxCheck($filename)
     {
-        $command = PHPUnit_Util_PHP::getPhpBinary() . ' -l ' . escapeshellarg($filename);
+        $command = PHPUnit_Util_PHP::getPhpBinary();
 
         if (DIRECTORY_SEPARATOR == '\\') {
-            $command = '"' . $command . '"';
+            $command = escapeshellarg($command);
         }
 
-        $output = shell_exec($command);
+        $command .= ' -l ' . escapeshellarg($filename);
+        $output   = shell_exec($command);
 
         if (strpos($output, 'Errors parsing') !== FALSE) {
             throw new RuntimeException($output);
