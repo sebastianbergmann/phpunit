@@ -240,11 +240,11 @@ class PHPUnit_Util_Filesystem
     public static function hasBinary($binary)
     {
         if (!isset(self::$hasBinary[$binary])) {
-            self::$hasBinary[$binary] = FALSE;
-
             if (substr(php_uname('s'), 0, 7) == 'Windows') {
                 $binary .= '.exe';
             }
+            
+            self::$hasBinary[$binary] = FALSE;
 
             $openBaseDir = ini_get('open_basedir');
 
