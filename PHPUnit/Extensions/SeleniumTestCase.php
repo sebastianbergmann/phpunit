@@ -1063,9 +1063,7 @@ abstract class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_Tes
      */
     protected function onNotSuccessfulTest(Exception $e)
     {
-        if (!$e instanceof RuntimeException &&
-            !$e instanceof PHPUnit_Framework_IncompleteTestError &&
-            !$e instanceof PHPUnit_Framework_SkippedTestError) {
+        if ($e instanceof PHPUnit_Framework_ExpectationFailedException) {
             $buffer  = 'Current URL: ' . $this->drivers[0]->getLocation() . "\n";
             $message = $e->getCustomMessage();
 
