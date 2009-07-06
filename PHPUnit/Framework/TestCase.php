@@ -1404,6 +1404,15 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
     }
 
     /**
+     * This method is called before the first test of this test class is run.
+     *
+     * @since Method available since Release 3.4.0
+     */
+    public static function setUpBeforeClass()
+    {
+    }
+
+    /**
      * Sets up the fixture, for example, open a network connection.
      * This method is called before a test is executed.
      *
@@ -1441,6 +1450,15 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
      * This method is called after a test is executed.
      */
     protected function tearDown()
+    {
+    }
+
+    /**
+     * This method is called after the last test of this test class is run.
+     *
+     * @since Method available since Release 3.4.0
+     */
+    public static function tearDownAfterClass()
     {
     }
 
