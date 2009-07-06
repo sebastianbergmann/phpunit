@@ -152,6 +152,16 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
     protected $numTests = -1;
 
     /**
+     * @var array
+     */
+    protected static $setUpBeforeClassCalled = array();
+
+    /**
+     * @var array
+     */
+    protected static $tearDownAfterClassCalled = array();
+
+    /**
      * Constructs a new TestSuite:
      *
      *   - PHPUnit_Framework_TestSuite() constructs an empty TestSuite.
@@ -624,6 +634,8 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
             }
         }
 
+        $currentClass = '';
+
         foreach ($tests as $test) {
             if ($result->shouldStop()) {
                 break;
@@ -673,11 +685,32 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
                         $test->setBackupStaticAttributes($this->backupStaticAttributes);
                         $test->setSharedFixture($this->sharedFixture);
                         $test->setRunTestInSeparateProcess($processIsolation);
+
+                        $_currentClass = get_class($test);
+
+                        if ($_currentClass != $currentClass) {
+                            if ($currentClass != '') {
+                                $currentClass::tearDownAfterClass();
+                                self::$tearDownAfterClassCalled[$currentClass] = TRUE;
+                            }
+
+                            $currentClass = $_currentClass;
+                        }
+
+                        if (!isset(self::$setUpBeforeClassCalled[$currentClass])) {
+                            $currentClass::setUpBeforeClass();
+                            self::$setUpBeforeClassCalled[$currentClass] = TRUE;
+                        }
                     }
 
                     $this->runTest($test, $result);
                 }
             }
+        }
+
+        if ($currentClass != '' &&
+            !isset(self::$tearDownAfterClassCalled[$currentClass])) {
+            $currentClass::tearDownAfterClass();
         }
 
         $result->endTestSuite($this);
