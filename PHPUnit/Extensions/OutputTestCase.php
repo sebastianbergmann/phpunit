@@ -79,6 +79,11 @@ abstract class PHPUnit_Extensions_OutputTestCase extends PHPUnit_Framework_TestC
     protected $output = '';
 
     /**
+     * @var    boolean
+     */
+    protected $obActive = FALSE;
+
+    /**
      * @var    mixed
      */
     protected $outputCallback = FALSE;
@@ -111,7 +116,11 @@ abstract class PHPUnit_Extensions_OutputTestCase extends PHPUnit_Framework_TestC
      */
     public function getActualOutput()
     {
-        return $this->output;
+        if (!$this->obActive) {
+            return $this->output;
+        } else {
+            return ob_get_contents();
+        }
     }
 
     /**
@@ -165,6 +174,7 @@ abstract class PHPUnit_Extensions_OutputTestCase extends PHPUnit_Framework_TestC
     protected function runTest()
     {
         ob_start();
+        $this->obActive = TRUE;
 
         try {
             $testResult = parent::runTest();
@@ -172,6 +182,7 @@ abstract class PHPUnit_Extensions_OutputTestCase extends PHPUnit_Framework_TestC
 
         catch (Exception $e) {
             ob_end_clean();
+            $this->obActive = FALSE;
             throw $e;
         }
 
@@ -182,6 +193,7 @@ abstract class PHPUnit_Extensions_OutputTestCase extends PHPUnit_Framework_TestC
         }
 
         ob_end_clean();
+        $this->obActive = FALSE;
 
         if ($this->expectedRegex !== NULL) {
             $this->assertRegExp($this->expectedRegex, $this->output);
