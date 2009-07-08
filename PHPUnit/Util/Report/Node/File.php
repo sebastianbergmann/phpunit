@@ -599,15 +599,17 @@ class PHPUnit_Util_Report_Node_File extends PHPUnit_Util_Report_Node
             $lineNumber++;
         }
 
-        foreach ($this->classes as $class) {
+        foreach ($this->classes as $className => $class) {
             foreach ($class['methods'] as $method) {
                 if ($method['executedLines'] == $method['executableLines']) {
                     $this->numTestedMethods++;
                 }
             }
 
-            if ($class['executedLines'] == $class['executableLines']) {
-                $this->numTestedClasses++;
+            if ($className != '*') {
+                if ($class['executedLines'] == $class['executableLines']) {
+                    $this->numTestedClasses++;
+                }
             }
         }
     }
