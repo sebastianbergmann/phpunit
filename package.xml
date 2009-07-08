@@ -1531,7 +1531,7 @@
    </extension>
    <extension>
     <name>xdebug</name>
-    <min>2.0.0</min>
+    <min>2.0.5</min>
    </extension>
   </optional>
  </dependencies>
