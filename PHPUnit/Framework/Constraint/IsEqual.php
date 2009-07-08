@@ -291,8 +291,17 @@ class PHPUnit_Framework_Constraint_IsEqual extends PHPUnit_Framework_Constraint
         }
 
         if (is_object($a)) {
-            $a = (array)$a;
-            $b = (array)$b;
+            $isMock = $a instanceof PHPUnit_Framework_MockObject_MockObject;
+            $a      = (array)$a;
+            $b      = (array)$b;
+
+            if ($isMock) {
+                unset($a["\0*\0invocationMocker"]);
+
+                if (isset($b["\0*\0invocationMocker"])) {
+                    unset($b["\0*\0invocationMocker"]);
+                }
+            }
         }
 
         foreach ($a as $key => $v) {
