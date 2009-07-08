@@ -1492,11 +1492,6 @@
   </required>
   <optional>
    <package>
-    <name>Image_GraphViz</name>
-    <channel>pear.php.net</channel>
-    <min>1.2.1</min>
-   </package>
-   <package>
     <name>Text_Diff</name>
     <channel>pear.php.net</channel>
     <min>1.1.0</min>
@@ -1521,7 +1516,7 @@
    </extension>
    <extension>
     <name>xdebug</name>
-    <min>2.0.0</min>
+    <min>2.0.5</min>
    </extension>
   </optional>
  </dependencies>
