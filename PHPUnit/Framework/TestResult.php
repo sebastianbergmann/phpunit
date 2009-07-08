@@ -672,22 +672,25 @@ class PHPUnit_Framework_TestResult implements Countable
             $error = TRUE;
         }
 
-        $time = PHPUnit_Util_Timer::stop();
+        $time          = PHPUnit_Util_Timer::stop();
+        $numAssertions = PHPUnit_Framework_Assert::getCount();
 
         if ($useXdebug) {
             $codeCoverage = xdebug_get_code_coverage();
             xdebug_stop_code_coverage();
 
-            $this->appendCodeCoverageInformation(
-              $test, $codeCoverage
-            );
+            if ($numAssertions > 0) {
+                $this->appendCodeCoverageInformation(
+                  $test, $codeCoverage
+                );
+            }
         }
 
         if ($errorHandlerSet === TRUE) {
             restore_error_handler();
         }
 
-        $test->addToAssertionCount(PHPUnit_Framework_Assert::getCount());
+        $test->addToAssertionCount($numAssertions);
 
         if ($error === TRUE) {
             $this->addError($test, $e, $time);
