@@ -124,7 +124,7 @@ abstract class PHPUnit_Framework_Assert
     public static function assertContains($needle, $haystack, $message = '', $ignoreCase = FALSE)
     {
         if (is_array($haystack) ||
-            is_object($haystack) && $haystack instanceof Iterator) {
+            is_object($haystack) && $haystack instanceof Traversable) {
             $constraint = new PHPUnit_Framework_Constraint_TraversableContains($needle);
         }
 
@@ -174,7 +174,7 @@ abstract class PHPUnit_Framework_Assert
     public static function assertNotContains($needle, $haystack, $message = '', $ignoreCase = FALSE)
     {
         if (is_array($haystack) ||
-            is_object($haystack) && $haystack instanceof Iterator) {
+            is_object($haystack) && $haystack instanceof Traversable) {
             $constraint = new PHPUnit_Framework_Constraint_Not(
               new PHPUnit_Framework_Constraint_TraversableContains($needle)
             );
@@ -228,7 +228,7 @@ abstract class PHPUnit_Framework_Assert
     public static function assertContainsOnly($type, $haystack, $isNativeType = NULL, $message = '')
     {
         if (!(is_array($haystack) ||
-            is_object($haystack) && $haystack instanceof Iterator)) {
+            is_object($haystack) && $haystack instanceof Traversable)) {
             throw PHPUnit_Util_InvalidArgumentHelper::factory(2, 'array or iterator');
         }
 
@@ -278,7 +278,7 @@ abstract class PHPUnit_Framework_Assert
     public static function assertNotContainsOnly($type, $haystack, $isNativeType = NULL, $message = '')
     {
         if (!(is_array($haystack) ||
-            is_object($haystack) && $haystack instanceof Iterator)) {
+            is_object($haystack) && $haystack instanceof Traversable)) {
             throw PHPUnit_Util_InvalidArgumentHelper::factory(2, 'array or iterator');
         }
 
