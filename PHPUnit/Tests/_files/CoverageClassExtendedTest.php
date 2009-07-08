@@ -10,5 +10,6 @@ class CoverageTest extends PHPUnit_Framework_TestCase
     {
         $o = new CoveredClass;
         $o->publicMethod();
+        $this->assertTrue(TRUE);
     }
 }
