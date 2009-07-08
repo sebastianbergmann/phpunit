@@ -20,7 +20,7 @@ $mock = PHPUnit_Framework_MockObject_Generator::generate(
 print $mock['code'];
 ?>
 --EXPECTF--
-class MockFoo implements Foo
+class MockFoo implements PHPUnit_Framework_MockObject_MockObject, Foo
 {
     protected $invocationMocker;
 

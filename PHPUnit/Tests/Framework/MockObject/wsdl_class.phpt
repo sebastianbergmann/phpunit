@@ -14,7 +14,7 @@ print PHPUnit_Framework_MockObject_Generator::generateClassFromWsdl(
 );
 ?>
 --EXPECTF--
-class GoogleSearch extends SOAPClient
+class GoogleSearch extends SOAPClient implements PHPUnit_Framework_MockObject_MockObject
 {
     public function __construct($wsdl, array $options)
     {

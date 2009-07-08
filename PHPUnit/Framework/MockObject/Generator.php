@@ -406,14 +406,14 @@ class PHPUnit_Framework_MockObject_Generator
 
         if ($isInterface) {
             $buffer .= sprintf(
-              "%s implements %s%s",
+              "%s implements PHPUnit_Framework_MockObject_MockObject, %s%s",
               $mockClassName['mockClassName'],
               !empty($mockClassName['namespaceName']) ? $mockClassName['namespaceName'] . '\\' : '',
               $mockClassName['className']
             );
         } else {
             $buffer .= sprintf(
-              "%s extends %s%s",
+              "%s extends %s%s implements PHPUnit_Framework_MockObject_MockObject",
               $mockClassName['mockClassName'],
               !empty($mockClassName['namespaceName']) ? $mockClassName['namespaceName'] . '\\' : '',
               $mockClassName['className']
