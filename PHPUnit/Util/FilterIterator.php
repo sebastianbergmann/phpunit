@@ -118,6 +118,10 @@ class PHPUnit_Util_FilterIterator extends FilterIterator
     {
         $string = (string)$this->getInnerIterator()->current();
 
+        if ($string[0] == '.') {
+            return FALSE;
+        }
+
         if (!empty($this->prefixes)) {
             $matched = FALSE;
 
