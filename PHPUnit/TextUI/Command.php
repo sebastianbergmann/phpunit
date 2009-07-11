@@ -633,6 +633,15 @@ class PHPUnit_TextUI_Command
             }
         }
 
+        if (isset($this->arguments['printer']) &&
+            $this->arguments['printer'] instanceof PHPUnit_Extensions_Story_ResultPrinter_Text &&
+            isset($this->arguments['processIsolation']) &&
+            $this->arguments['processIsolation']) {
+            $this->showMessage(
+              'The story result printer cannot be used in process isolation.'
+            );
+        }
+
         $this->handleCustomTestSuite();
 
         if (!isset($this->arguments['test'])) {
