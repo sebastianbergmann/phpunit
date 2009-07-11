@@ -324,31 +324,6 @@ class PHPUnit_Util_Class
             return $attributes[$attributeName];
         }
 
-        if (version_compare(PHP_VERSION, '5.2', '<')) {
-            $protectedName = "\0*\0" . $attributeName;
-        } else {
-            $protectedName = '*' . $attributeName;
-        }
-
-        if (array_key_exists($protectedName, $attributes)) {
-            return $attributes[$protectedName];
-        }
-
-        $classes = self::getHierarchy($className);
-
-        foreach ($classes as $class) {
-            $privateName = sprintf(
-              "\0%s\0%s",
-
-              $class,
-              $attributeName
-            );
-
-            if (array_key_exists($privateName, $attributes)) {
-                return $attributes[$privateName];
-            }
-        }
-
         throw new RuntimeException(
           sprintf(
             'Attribute "%s" not found in class.',
