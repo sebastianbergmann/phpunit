@@ -674,23 +674,11 @@ class PHPUnit_Framework_TestResult implements Countable
             $error = TRUE;
         }
 
-        $time          = PHPUnit_Util_Timer::stop();
-        $numAssertions = PHPUnit_Framework_Assert::getCount();
+        $time = PHPUnit_Util_Timer::stop();
 
         if ($useXdebug) {
             $codeCoverage = xdebug_get_code_coverage();
             xdebug_stop_code_coverage();
-
-            // Disregard code coverage information when nothing was asserted.
-            if ($numAssertions == 0) {
-                foreach ($codeCoverage as &$data) {
-                    foreach ($data as &$status) {
-                        if ($status > 0) {
-                            $status = -1;
-                        }
-                    }
-                }
-            }
 
             $this->appendCodeCoverageInformation(
               $test, $codeCoverage
@@ -701,7 +689,7 @@ class PHPUnit_Framework_TestResult implements Countable
             restore_error_handler();
         }
 
-        $test->addToAssertionCount($numAssertions);
+        $test->addToAssertionCount(PHPUnit_Framework_Assert::getCount());
 
         if ($error === TRUE) {
             $this->addError($test, $e, $time);
