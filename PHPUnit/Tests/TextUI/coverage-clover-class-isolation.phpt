@@ -19,7 +19,7 @@ PHPUnit %s by Sebastian Bergmann.
 
 Time: %i seconds
 
-OK (1 test, 1 assertion)
+OK (1 test, 0 assertions)
 
 Writing code coverage data to XML file, this may take a moment.<?xml version="1.0" encoding="UTF-8"?>
 <coverage generated="%i" phpunit="%s">
