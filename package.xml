@@ -886,7 +886,6 @@
       <file baseinstalldir="/" name="coverage-clover-protected.phpt" role="test" />
       <file baseinstalldir="/" name="coverage-clover-public-isolation.phpt" role="test" />
       <file baseinstalldir="/" name="coverage-clover-public.phpt" role="test" />
-      <file baseinstalldir="/" name="coverage-source-isolation.phpt" role="test" />
       <file baseinstalldir="/" name="coverage-source.phpt" role="test" />
       <file baseinstalldir="/" name="dataset-log-xml-isolation.phpt" role="test" />
       <file baseinstalldir="/" name="dataset-log-xml.phpt" role="test" />
@@ -918,7 +917,6 @@
       <file baseinstalldir="/" name="log-json.phpt" role="test" />
       <file baseinstalldir="/" name="log-tap.phpt" role="test" />
       <file baseinstalldir="/" name="log-xml.phpt" role="test" />
-      <file baseinstalldir="/" name="repeat.phpt" role="test" />
       <file baseinstalldir="/" name="skeleton.phpt" role="test" />
       <file baseinstalldir="/" name="story-isolation.phpt" role="test" />
       <file baseinstalldir="/" name="story.phpt" role="test" />
