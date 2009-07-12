@@ -679,11 +679,20 @@ class PHPUnit_Framework_TestResult implements Countable
             $codeCoverage = xdebug_get_code_coverage();
             xdebug_stop_code_coverage();
 
-            if ($numAssertions > 0) {
-                $this->appendCodeCoverageInformation(
-                  $test, $codeCoverage
-                );
+            // Disregard code coverage information when nothing was asserted.
+            if ($numAssertions == 0) {
+                foreach ($codeCoverage as &$data) {
+                    foreach ($data as &$status) {
+                        if ($status > 0) {
+                            $status = -1;
+                        }
+                    }
+                }
             }
+
+            $this->appendCodeCoverageInformation(
+              $test, $codeCoverage
+            );
         }
 
         if ($errorHandlerSet === TRUE) {
