@@ -6,7 +6,7 @@ if (!extension_loaded('soap')) die('SOAP extension is required');
 ?>
 --FILE--
 <?php
-require_once dirname(dirname(dirname(dirname(__FILE__)))) . '/Framework/MockObject/Generator.php';
+require_once dirname(dirname(dirname(dirname(__FILE__)))) . '/Framework.php';
 
 print PHPUnit_Framework_MockObject_Generator::generateClassFromWsdl(
   dirname(dirname(dirname(__FILE__))) . '/_files/GoogleSearch.wsdl',
