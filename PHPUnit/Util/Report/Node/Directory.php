@@ -159,7 +159,7 @@ class PHPUnit_Util_Report_Node_Directory extends PHPUnit_Util_Report_Node
     /**
      * Returns the directories in this directory.
      *
-     * @return
+     * @return array
      */
     public function getDirectories()
     {
@@ -169,7 +169,7 @@ class PHPUnit_Util_Report_Node_Directory extends PHPUnit_Util_Report_Node
     /**
      * Returns the files in this directory.
      *
-     * @return
+     * @return array
      */
     public function getFiles()
     {
