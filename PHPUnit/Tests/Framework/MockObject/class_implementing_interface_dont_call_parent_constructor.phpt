@@ -14,7 +14,7 @@ class Foo implements IFoo
     }
 }
 
-require_once dirname(dirname(dirname(dirname(__FILE__)))) . '/Framework/MockObject/Generator.php';
+require_once dirname(dirname(dirname(dirname(__FILE__)))) . '/Framework.php';
 
 $mock = PHPUnit_Framework_MockObject_Generator::generate(
   'Foo',
