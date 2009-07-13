@@ -116,9 +116,9 @@ class PHPUnit_Util_FilterIterator extends FilterIterator
      */
     public function accept()
     {
-        $string = (string)$this->getInnerIterator()->current();
+        $filename = $this->getInnerIterator()->current()->getFilename();
 
-        if ($string[0] == '.') {
+        if (strpos($filename, '.') === 0) {
             return FALSE;
         }
 
@@ -126,7 +126,7 @@ class PHPUnit_Util_FilterIterator extends FilterIterator
             $matched = FALSE;
 
             foreach ($this->prefixes as $prefix) {
-                if (strpos($string, $prefix) === 0) {
+                if (strpos($filename, $prefix) === 0) {
                     $matched = TRUE;
                     break;
                 }
@@ -141,7 +141,7 @@ class PHPUnit_Util_FilterIterator extends FilterIterator
             $matched = FALSE;
 
             foreach ($this->suffixes as $suffix) {
-                if (substr($string, -1 * strlen($suffix)) == $suffix) {
+                if (substr($filename, -1 * strlen($suffix)) == $suffix) {
                     $matched = TRUE;
                     break;
                 }
