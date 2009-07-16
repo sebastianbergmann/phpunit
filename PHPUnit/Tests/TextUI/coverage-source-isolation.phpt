@@ -30,13 +30,13 @@ PHPUnit %s by Sebastian Bergmann.
 
 ...
 
-Time: 0 seconds
+Time: %i seconds
 
 OK (3 tests, 3 assertions)
 
 Writing code coverage data to XML files, this may take a moment.
 <?xml version="1.0" encoding="UTF-8"?>
-<coveredFile fullPath="%s/BankAccount.php" shortenedPath="BankAccount.php" generated="%i" phpunit="%s">
+<coveredFile fullPath="%sBankAccount.php" shortenedPath="%sBankAccount.php" generated="%i" phpunit="%s">
   <line lineNumber="1" executed="-3">
     <body>&lt;?php</body>
   </line>
@@ -161,7 +161,7 @@ Writing code coverage data to XML files, this may take a moment.
     <body> * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License</body>
   </line>
   <line lineNumber="42" executed="-3">
-    <body> * @version    SVN: $%s$</body>
+    <body> * @version    SVN: %s</body>
   </line>
   <line lineNumber="43" executed="-3">
     <body> * @link       http://www.phpunit.de/</body>
@@ -268,7 +268,7 @@ Writing code coverage data to XML files, this may take a moment.
   <line lineNumber="77" executed="1">
     <body>        return $this-&gt;balance;</body>
     <tests>
-      <test name="testBalanceIsInitiallyZero" status="0" class="BankAccountTest" fullPath="%s/BankAccountTest.php" shortenedPath="/BankAccountTest.php" line="76"/>
+      <test name="testBalanceIsInitiallyZero" status="0" class="BankAccountTest" fullPath="%sBankAccountTest.php" shortenedPath="/BankAccountTest.php" line="76"/>
     </tests>
   </line>
   <line lineNumber="78" executed="-2">
@@ -349,7 +349,7 @@ Writing code coverage data to XML files, this may take a moment.
   <line lineNumber="103" executed="1">
     <body>        $this-&gt;setBalance($this-&gt;getBalance() + $balance);</body>
     <tests>
-      <test name="testBalanceCannotBecomeNegative2" status="0" class="BankAccountTest" fullPath="%s/BankAccountTest.php" shortenedPath="/BankAccountTest.php" line="106"/>
+      <test name="testBalanceCannotBecomeNegative2" status="0" class="BankAccountTest" fullPath="%sBankAccountTest.php" shortenedPath="/BankAccountTest.php" line="106"/>
     </tests>
   </line>
   <line lineNumber="104" executed="-3">
@@ -391,7 +391,7 @@ Writing code coverage data to XML files, this may take a moment.
   <line lineNumber="116" executed="1">
     <body>        $this-&gt;setBalance($this-&gt;getBalance() - $balance);</body>
     <tests>
-      <test name="testBalanceCannotBecomeNegative" status="0" class="BankAccountTest" fullPath="%s/BankAccountTest.php" shortenedPath="/BankAccountTest.php" line="86"/>
+      <test name="testBalanceCannotBecomeNegative" status="0" class="BankAccountTest" fullPath="%sBankAccountTest.php" shortenedPath="/BankAccountTest.php" line="86"/>
     </tests>
   </line>
   <line lineNumber="117" executed="-3">
@@ -411,7 +411,7 @@ Writing code coverage data to XML files, this may take a moment.
   </line>
 </coveredFile>
 <?xml version="1.0" encoding="UTF-8"?>
-<testFile fullPath="%s/BankAccountTest.php" shortenedPath="BankAccountTest.php" generated="%i" phpunit="%s">
+<testFile fullPath="%sBankAccountTest.php" shortenedPath="BankAccountTest.php" generated="%i" phpunit="%s">
   <line lineNumber="1">
     <body>&lt;?php</body>
   </line>
@@ -536,7 +536,7 @@ Writing code coverage data to XML files, this may take a moment.
     <body> * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License</body>
   </line>
   <line lineNumber="42">
-    <body> * @version    SVN: $%s$</body>
+    <body> * @version    SVN: %s</body>
   </line>
   <line lineNumber="43">
     <body> * @link       http://www.phpunit.de/</body>
@@ -640,7 +640,7 @@ Writing code coverage data to XML files, this may take a moment.
   <line lineNumber="76">
     <body>    public function testBalanceIsInitiallyZero()</body>
     <coveredFiles>
-      <coveredFile fullPath="%s/BankAccountTest.php" shortenedPath="BankAccount.php">
+      <coveredFile fullPath="%sBankAccountTest.php" shortenedPath="%sBankAccount.php">
         <coveredLine>77</coveredLine>
       </coveredFile>
     </coveredFiles>
@@ -675,7 +675,7 @@ Writing code coverage data to XML files, this may take a moment.
   <line lineNumber="86">
     <body>    public function testBalanceCannotBecomeNegative()</body>
     <coveredFiles>
-      <coveredFile fullPath="%s/BankAccountTest.php" shortenedPath="BankAccount.php">
+      <coveredFile fullPath="%sBankAccountTest.php" shortenedPath="%sBankAccount.php">
         <coveredLine>116</coveredLine>
       </coveredFile>
     </coveredFiles>
@@ -740,7 +740,7 @@ Writing code coverage data to XML files, this may take a moment.
   <line lineNumber="106">
     <body>    public function testBalanceCannotBecomeNegative2()</body>
     <coveredFiles>
-      <coveredFile fullPath="%s/BankAccountTest.php" shortenedPath="BankAccount.php">
+      <coveredFile fullPath="%sBankAccountTest.php" shortenedPath="%sBankAccount.php">
         <coveredLine>103</coveredLine>
       </coveredFile>
     </coveredFiles>
