@@ -332,9 +332,6 @@
       <file baseinstalldir="/" name="Array.php" role="php">
        <tasks:replace from="@package_version@" to="version" type="package-info" />
       </file>
-      <file baseinstalldir="/" name="Numeric.php" role="php">
-       <tasks:replace from="@package_version@" to="version" type="package-info" />
-      </file>
       <file baseinstalldir="/" name="Object.php" role="php">
        <tasks:replace from="@package_version@" to="version" type="package-info" />
       </file>

@@ -103,26 +103,24 @@ class PHPUnit_Framework_TestFailure
     }
 
     /**
-     * Returns a verbose description of the failure.
+     * Returns a description for the thrown exception.
      *
-     * @param  bool $verbose
      * @return string
-     * @since  Method available since Release 3.2.0
+     * @since  Method available since Release 3.4.0
      */
-    public function toStringVerbose($verbose = FALSE)
+    public function getExceptionAsString()
     {
-        return self::exceptionToString($this->thrownException, $verbose);
+        return self::exceptionToString($this->thrownException);
     }
 
     /**
-     * Returns a verbose description for an exception.
+     * Returns a description for an exception.
      *
      * @param  Exception $e
-     * @param  bool      $verbose
      * @return string
      * @since  Method available since Release 3.2.0
      */
-    public static function exceptionToString(Exception $e, $verbose = FALSE)
+    public static function exceptionToString(Exception $e)
     {
         if ($e instanceof PHPUnit_Framework_SelfDescribing) {
             if ($e instanceof PHPUnit_Framework_ExpectationFailedException) {
@@ -144,8 +142,7 @@ class PHPUnit_Framework_TestFailure
                             $buffer .= $comparisonFailure->toString() . "\n";
                         }
                     } else {
-                        if ($comparisonFailure instanceof PHPUnit_Framework_ComparisonFailure_Numeric ||
-                            $comparisonFailure instanceof PHPUnit_Framework_ComparisonFailure_Scalar) {
+                        if ($comparisonFailure instanceof PHPUnit_Framework_ComparisonFailure_Scalar) {
                             $buffer .= sprintf(
                               "Failed asserting that %s matches expected %s.\n",
 
@@ -163,13 +160,6 @@ class PHPUnit_Framework_TestFailure
                               strtolower(substr(get_class($comparisonFailure), 36)),
                               $comparisonFailure->toString()
                             );
-                        }
-
-                        if ($verbose &&
-                           !$comparisonFailure instanceof PHPUnit_Framework_ComparisonFailure_Array &&
-                           !$comparisonFailure instanceof PHPUnit_Framework_ComparisonFailure_Object &&
-                           !$comparisonFailure instanceof PHPUnit_Framework_ComparisonFailure_String) {
-                            $buffer .= $comparisonFailure->toString() . "\n";
                         }
                     }
                 } else {

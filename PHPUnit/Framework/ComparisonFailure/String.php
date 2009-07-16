@@ -74,50 +74,19 @@ class PHPUnit_Framework_ComparisonFailure_String extends PHPUnit_Framework_Compa
     {
         $expected = (string)$this->expected;
         $actual   = (string)$this->actual;
+        $diff     = PHPUnit_Util_Diff::diff($expected, $actual);
 
-        if (strpos($expected, "\n") !== FALSE || strpos($actual, "\n") !== FALSE) {
-            $diff = PHPUnit_Util_Diff::diff($expected, $actual);
-
-            if ($diff !== FALSE) {
-                return $diff;
-            } else {
-                return '';
-            }
+        if ($diff === FALSE) {
+            $diff = '';
         }
 
-        $expectedLen = strlen($expected);
-        $actualLen   = strlen($actual);
-        $minLen      = min($expectedLen, $actualLen);
-        $maxLen      = max($expectedLen, $actualLen);
-
-        for ($i = 0; $i < $minLen; ++$i) {
-            if ($expected[$i] != $actual[$i]) break;
+        if (!empty($this->message)) {
+            $buffer = $this->message . "\n";
+        } else {
+            $buffer = '';
         }
 
-        $startPos = $i;
-        $endPos   = $minLen;
-
-        if ($minLen > 0) {
-            for ($i = $minLen - 1; $i > $startPos; --$i) {
-                if ($expected[$i] != $actual[$i]) break;
-            }
-
-            $endPos = $i + 1;
-        }
-
-        return sprintf(
-          "%s%sexpected string <%s>\n" .
-          "%sdifference      <%s>\n" .
-          '%sgot string      <%s>',
-
-          $this->message,
-          ($this->message != '') ? ' ' : '',
-          $expected,
-          ($this->message != '') ? str_repeat(' ', strlen($this->message) + 1) : '',
-          str_repeat(' ', $startPos) . str_repeat('x', $endPos - $startPos) . str_repeat('?', $maxLen - $minLen),
-          ($this->message != '') ? str_repeat(' ', strlen($this->message) + 1) : '',
-          $actual
-        );
+        return trim($buffer . $diff);
     }
 }
 ?>

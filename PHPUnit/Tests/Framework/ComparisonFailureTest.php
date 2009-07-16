@@ -69,7 +69,7 @@ class Framework_ComparisonFailureTest extends PHPUnit_Framework_TestCase
         $failure = PHPUnit_Framework_ComparisonFailure::diffEqual('a', 'b', 'c');
 
         $this->assertEquals(
-          "c expected string <a>\n  difference      <x>\n  got string      <b>",
+          "c\n--- Expected\n+++ Actual\n@@ -1 +1 @@\n-a\n+b",
           $failure->toString()
         );
     }
@@ -82,7 +82,7 @@ class Framework_ComparisonFailureTest extends PHPUnit_Framework_TestCase
         $failure = PHPUnit_Framework_ComparisonFailure::diffEqual('ba', 'bc');
 
         $this->assertEquals(
-          "expected string <ba>\ndifference      < x>\ngot string      <bc>",
+          "--- Expected\n+++ Actual\n@@ -1 +1 @@\n-ba\n+bc",
           $failure->toString()
         );
     }
@@ -95,7 +95,7 @@ class Framework_ComparisonFailureTest extends PHPUnit_Framework_TestCase
         $failure = PHPUnit_Framework_ComparisonFailure::diffEqual('ab', 'cb');
 
         $this->assertEquals(
-          "expected string <ab>\ndifference      <x>\ngot string      <cb>",
+          "--- Expected\n+++ Actual\n@@ -1 +1 @@\n-ab\n+cb",
           $failure->toString()
         );
     }
@@ -108,7 +108,7 @@ class Framework_ComparisonFailureTest extends PHPUnit_Framework_TestCase
         $failure = PHPUnit_Framework_ComparisonFailure::diffEqual('abc', 'adc');
 
         $this->assertEquals(
-          "expected string <abc>\ndifference      < x>\ngot string      <adc>",
+          "--- Expected\n+++ Actual\n@@ -1 +1 @@\n-abc\n+adc",
           $failure->toString()
         );
     }
@@ -121,7 +121,7 @@ class Framework_ComparisonFailureTest extends PHPUnit_Framework_TestCase
         $failure = PHPUnit_Framework_ComparisonFailure::diffEqual('ab', 'abc');
 
         $this->assertEquals(
-          "expected string <ab>\ndifference      <  ?>\ngot string      <abc>",
+          "--- Expected\n+++ Actual\n@@ -1 +1 @@\n-ab\n+abc",
           $failure->toString()
         );
     }
@@ -134,7 +134,7 @@ class Framework_ComparisonFailureTest extends PHPUnit_Framework_TestCase
         $failure = PHPUnit_Framework_ComparisonFailure::diffEqual('bc', 'abc');
 
         $this->assertEquals(
-          "expected string <bc>\ndifference      <xx?>\ngot string      <abc>",
+          "--- Expected\n+++ Actual\n@@ -1 +1 @@\n-bc\n+abc",
           $failure->toString()
         );
     }
@@ -147,7 +147,7 @@ class Framework_ComparisonFailureTest extends PHPUnit_Framework_TestCase
         $failure = PHPUnit_Framework_ComparisonFailure::diffEqual('abc', 'abbc');
 
         $this->assertEquals(
-          "expected string <abc>\ndifference      <  x?>\ngot string      <abbc>",
+          "--- Expected\n+++ Actual\n@@ -1 +1 @@\n-abc\n+abbc",
           $failure->toString()
         );
     }
@@ -160,7 +160,7 @@ class Framework_ComparisonFailureTest extends PHPUnit_Framework_TestCase
         $failure = PHPUnit_Framework_ComparisonFailure::diffEqual('abcdde', 'abcde');
 
         $this->assertEquals(
-          "expected string <abcdde>\ndifference      <    x?>\ngot string      <abcde>",
+          "--- Expected\n+++ Actual\n@@ -1 +1 @@\n-abcdde\n+abcde",
           $failure->toString()
         );
     }
