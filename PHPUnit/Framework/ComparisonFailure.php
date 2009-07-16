@@ -141,10 +141,6 @@ abstract class PHPUnit_Framework_ComparisonFailure extends PHPUnit_Framework_Ass
             return new PHPUnit_Framework_ComparisonFailure_Array($expected, $actual, TRUE, $message);
         }
 
-        else if (is_numeric($expected) && is_numeric($actual)) {
-            return new PHPUnit_Framework_ComparisonFailure_Numeric($expected, $actual, TRUE, $message);
-        }
-
         else if (is_object($expected) && is_object($actual)) {
             return new PHPUnit_Framework_ComparisonFailure_Object($expected, $actual, TRUE, $message);
         }
@@ -176,10 +172,6 @@ abstract class PHPUnit_Framework_ComparisonFailure extends PHPUnit_Framework_Ass
             return new PHPUnit_Framework_ComparisonFailure_Array($expected, $actual, FALSE, $message);
         }
 
-        else if (is_numeric($expected) && is_numeric($actual)) {
-            return new PHPUnit_Framework_ComparisonFailure_Numeric($expected, $actual, FALSE, $message);
-        }
-
         else if (is_object($expected) && is_object($actual)) {
             return new PHPUnit_Framework_ComparisonFailure_Object($expected, $actual, FALSE, $message);
         }
@@ -195,7 +187,6 @@ abstract class PHPUnit_Framework_ComparisonFailure extends PHPUnit_Framework_Ass
 }
 
 require_once 'PHPUnit/Framework/ComparisonFailure/Array.php';
-require_once 'PHPUnit/Framework/ComparisonFailure/Numeric.php';
 require_once 'PHPUnit/Framework/ComparisonFailure/Object.php';
 require_once 'PHPUnit/Framework/ComparisonFailure/Scalar.php';
 require_once 'PHPUnit/Framework/ComparisonFailure/String.php';

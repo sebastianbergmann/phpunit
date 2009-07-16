@@ -3,12 +3,12 @@ class FailureTest extends PHPUnit_Framework_TestCase
 {
     public function testAssertArrayEqualsArray()
     {
-        $this->assertEquals(array(1), array(2));
+        $this->assertEquals(array(1), array(2), 'message');
     }
 
     public function testAssertIntegerEqualsInteger()
     {
-        $this->assertEquals(1, 2);
+        $this->assertEquals(1, 2, 'message');
     }
 
     public function testAssertObjectEqualsObject()
@@ -19,37 +19,42 @@ class FailureTest extends PHPUnit_Framework_TestCase
         $b = new StdClass;
         $b->bar = 'foo';
 
-        $this->assertEquals($a, $b);
+        $this->assertEquals($a, $b, 'message');
     }
 
     public function testAssertNullEqualsString()
     {
-        $this->assertEquals(NULL, 'bar');
+        $this->assertEquals(NULL, 'bar', 'message');
     }
 
     public function testAssertStringEqualsString()
     {
-        $this->assertEquals('foo', 'bar');
+        $this->assertEquals('foo', 'bar', 'message');
     }
 
     public function testAssertTextEqualsText()
     {
-        $this->assertEquals("foo\nbar\n", "foo\nbaz\n");
+        $this->assertEquals("foo\nbar\n", "foo\nbaz\n", 'message');
+    }
+
+    public function testAssertNumericEqualsNumeric()
+    {
+        $this->assertEquals(1, 2, 'message');
     }
 
     public function testAssertTextSameText()
     {
-        $this->assertSame('foo', 'bar');
+        $this->assertSame('foo', 'bar', 'message');
     }
 
     public function testAssertObjectSameObject()
     {
-        $this->assertSame(new StdClass, new StdClass);
+        $this->assertSame(new StdClass, new StdClass, 'message');
     }
 
     public function testAssertObjectSameNull()
     {
-        $this->assertSame(new StdClass, NULL);
+        $this->assertSame(new StdClass, NULL, 'message');
     }
 }
 ?>

@@ -262,7 +262,7 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
     protected function printDefectTrace(PHPUnit_Framework_TestFailure $defect)
     {
         $this->write(
-          $defect->toStringVerbose($this->verbose) .
+          $defect->getExceptionAsString() . "\n" .
           PHPUnit_Util_Filter::getFilteredStacktrace(
             $defect->thrownException(),
             FALSE
