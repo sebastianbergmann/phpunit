@@ -29,13 +29,13 @@ PHPUnit %s by Sebastian Bergmann.
 
 ...
 
-Time: 0 seconds
+Time: %i seconds
 
 OK (3 tests, 3 assertions)
 
 Writing code coverage data to XML files, this may take a moment.
 <?xml version="1.0" encoding="UTF-8"?>
-<coveredFile fullPath="%s/BankAccount.php" shortenedPath="BankAccount.php" generated="%i" phpunit="%s">
+<coveredFile fullPath="%sBankAccount.php" shortenedPath="BankAccount.php" generated="%i" phpunit="%s">
   <line lineNumber="1" executed="-3">
     <body>&lt;?php</body>
   </line>
