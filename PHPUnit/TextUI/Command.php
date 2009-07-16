@@ -74,6 +74,7 @@ class PHPUnit_TextUI_Command
     protected $arguments = array(
       'listGroups'              => FALSE,
       'loader'                  => NULL,
+      'syntaxCheck'             => TRUE,
       'useDefaultConfiguration' => TRUE
     );
 
@@ -600,7 +601,7 @@ class PHPUnit_TextUI_Command
 
             $phpunit = $configuration->getPHPUnitConfiguration();
 
-            if (!isset($this->arguments['syntaxCheck']) && isset($phpunit['syntaxCheck'])) {
+            if (isset($phpunit['syntaxCheck'])) {
                 $this->arguments['syntaxCheck'] = $phpunit['syntaxCheck'];
             }
 
