@@ -23,7 +23,7 @@ OK (1 test, 0 assertions)
 Writing code coverage data to XML file, this may take a moment.<?xml version="1.0" encoding="UTF-8"?>
 <coverage generated="%i" phpunit="%s">
   <project name="CoverageTest" timestamp="%i">
-    <file name="%s/CoveredClass.php">
+    <file name="%sCoveredClass.php">
       <class name="CoveredParentClass" namespace="global">
         <metrics methods="3" coveredmethods="0" statements="5" coveredstatements="0" elements="8" coveredelements="0"/>
       </class>

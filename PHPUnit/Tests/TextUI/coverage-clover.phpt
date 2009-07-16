@@ -23,7 +23,7 @@ OK (3 tests, 3 assertions)
 Writing code coverage data to XML file, this may take a moment.<?xml version="1.0" encoding="UTF-8"?>
 <coverage generated="%i" phpunit="%s">
   <project name="BankAccountTest" timestamp="%i">
-    <file name="%s/BankAccount.php">
+    <file name="%sBankAccount.php">
       <class name="BankAccountException" namespace="global" fullPackage="PHPUnit" category="Testing" package="PHPUnit">
         <metrics methods="0" coveredmethods="0" statements="0" coveredstatements="0" elements="0" coveredelements="0"/>
       </class>
