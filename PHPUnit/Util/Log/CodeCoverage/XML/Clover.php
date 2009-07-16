@@ -151,7 +151,6 @@ class PHPUnit_Util_Log_CodeCoverage_XML_Clover extends PHPUnit_Util_Printer
                                 if (is_array($files[$filename][$i])) {
                                     $classStatistics['coveredStatements']++;
                                     $count = count($files[$filename][$i]);
-                                    $classStatistics['coveredMethods']++;
                                 }
 
                                 else if ($files[$filename][$i] == -2) {
@@ -169,6 +168,10 @@ class PHPUnit_Util_Log_CodeCoverage_XML_Clover extends PHPUnit_Util_Printer
                                   'type'  => 'stmt'
                                 );
                             }
+                        }
+
+                        if ($methodCount > 0) {
+                            $classStatistics['coveredMethods']++;
                         }
 
                         $lines[$method['startLine']] = array(
