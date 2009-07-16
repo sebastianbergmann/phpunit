@@ -23,12 +23,12 @@ OK (1 test, 0 assertions)
 Writing code coverage data to XML file, this may take a moment.<?xml version="1.0" encoding="UTF-8"?>
 <coverage generated="%i" phpunit="%s">
   <project name="CoverageTest" timestamp="%i">
-    <file name="%s/CoveredClass.php">
+    <file name="%sCoveredClass.php">
       <class name="CoveredParentClass" namespace="global">
         <metrics methods="3" coveredmethods="0" statements="5" coveredstatements="0" elements="8" coveredelements="0"/>
       </class>
       <class name="CoveredClass" namespace="global">
-        <metrics methods="3" coveredmethods="6" statements="7" coveredstatements="6" elements="10" coveredelements="12"/>
+        <metrics methods="3" coveredmethods="2" statements="7" coveredstatements="6" elements="10" coveredelements="8"/>
       </class>
       <line num="4" type="method" name="privateMethod" count="0"/>
       <line num="6" type="stmt" count="0"/>
@@ -48,8 +48,8 @@ Writing code coverage data to XML file, this may take a moment.<?xml version="1.
       <line num="33" type="stmt" count="1"/>
       <line num="34" type="stmt" count="1"/>
       <line num="35" type="stmt" count="1"/>
-      <metrics loc="37" ncloc="37" classes="2" methods="6" coveredmethods="6" statements="12" coveredstatements="6" elements="18" coveredelements="12"/>
+      <metrics loc="37" ncloc="37" classes="2" methods="6" coveredmethods="2" statements="12" coveredstatements="6" elements="18" coveredelements="8"/>
     </file>
-    <metrics files="1" loc="37" ncloc="37" classes="2" methods="6" coveredmethods="6" statements="12" coveredstatements="6" elements="18" coveredelements="12"/>
+    <metrics files="1" loc="37" ncloc="37" classes="2" methods="6" coveredmethods="2" statements="12" coveredstatements="6" elements="18" coveredelements="8"/>
   </project>
 </coverage>
