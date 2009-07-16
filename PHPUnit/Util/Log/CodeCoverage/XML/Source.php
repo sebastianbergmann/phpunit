@@ -165,6 +165,8 @@ class PHPUnit_Util_Log_CodeCoverage_XML_Source
 
                             if ($test instanceof PHPUnit_Framework_TestCase) {
                                 $xmlTest->setAttribute('name', $test->getName());
+                                // TODO: $test->getStatus() returns NULL when
+                                //       the test is run in process isolation.
                                 $xmlTest->setAttribute('status', $test->getStatus());
 
                                 if ($test->hasFailed()) {
