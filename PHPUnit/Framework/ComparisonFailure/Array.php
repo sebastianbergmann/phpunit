@@ -80,7 +80,7 @@ class PHPUnit_Framework_ComparisonFailure_Array extends PHPUnit_Framework_Compar
         );
 
         if ($diff !== FALSE) {
-            return $diff;
+            return trim($diff);
         }
 
         // Fallback: Either diff is not available or the print_r() output for
