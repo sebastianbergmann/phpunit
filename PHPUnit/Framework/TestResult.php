@@ -69,7 +69,14 @@ PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
  */
 class PHPUnit_Framework_TestResult implements Countable
 {
+    /**
+     * @var boolean
+     */
     protected static $xdebugLoaded = NULL;
+
+    /**
+     * @var boolean
+     */
     protected static $useXdebug = NULL;
 
     /**
@@ -545,7 +552,9 @@ class PHPUnit_Framework_TestResult implements Countable
                     $data = array_intersect_key($data, $linesToBeCovered);
 
                     foreach (array_keys($data) as $file) {
-                        $data[$file] = array_intersect_key($data[$file], array_flip($linesToBeCovered[$file]));
+                        $data[$file] = array_intersect_key(
+                          $data[$file], array_flip($linesToBeCovered[$file])
+                        );
                     }
                 }
             }
@@ -649,10 +658,12 @@ class PHPUnit_Framework_TestResult implements Countable
 
         if (self::$xdebugLoaded === NULL) {
             self::$xdebugLoaded = extension_loaded('xdebug');
-            self::$useXdebug = self::$xdebugLoaded;
+            self::$useXdebug    = self::$xdebugLoaded;
         }
 
-        $useXdebug = self::$useXdebug && $this->collectCodeCoverageInformation && !$test instanceof PHPUnit_Extensions_SeleniumTestCase;
+        $useXdebug = self::$useXdebug &&
+                     $this->collectCodeCoverageInformation &&
+                     !$test instanceof PHPUnit_Extensions_SeleniumTestCase;
 
         if ($useXdebug) {
             xdebug_start_code_coverage(XDEBUG_CC_UNUSED | XDEBUG_CC_DEAD_CODE);
