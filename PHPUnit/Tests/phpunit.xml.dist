@@ -4,14 +4,9 @@
          backupStaticAttributes="false"
          syntaxCheck="false">
   <php>
-    <var name="PHPUNIT_TESTSUITE_EXTENSION_SELENIUM_ENABLED"
-         value="false"/>
-    <var name="PHPUNIT_TESTSUITE_EXTENSION_SELENIUM_HOST"
-         value="127.0.0.1"/>
-    <var name="PHPUNIT_TESTSUITE_EXTENSION_SELENIUM_PORT"
-         value="4444"/>
-    <var name="PHPUNIT_TESTSUITE_EXTENSION_SELENIUM_BROWSER"
-         value="*firefox"/>
+    <const name="PHPUNIT_TESTSUITE_EXTENSION_SELENIUM_HOST" value="127.0.0.1"/>
+    <const name="PHPUNIT_TESTSUITE_EXTENSION_SELENIUM_PORT" value="4444"/>
+    <const name="PHPUNIT_TESTSUITE_EXTENSION_SELENIUM_BROWSER" value="*firefox"/>
   </php>
   <filter>
     <whitelist addUncoveredFilesFromWhitelist="true">
