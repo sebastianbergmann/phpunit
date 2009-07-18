@@ -66,22 +66,25 @@ class Extensions_SeleniumTestCaseTest extends PHPUnit_Extensions_SeleniumTestCas
 
     public function setUp()
     {
-        if (!isset($GLOBALS['PHPUNIT_TESTSUITE_EXTENSION_SELENIUM_ENABLED']) ||
-            !$GLOBALS['PHPUNIT_TESTSUITE_EXTENSION_SELENIUM_ENABLED']) {
+        if (!@fsockopen(PHPUNIT_TESTSUITE_EXTENSION_SELENIUM_HOST, PHPUNIT_TESTSUITE_EXTENSION_SELENIUM_PORT, $errno, $errstr)) {
             $this->markTestSkipped(
-              'The Selenium tests are disabled.'
+              sprintf(
+                'Selenium RC not running on %s:%d.',
+                PHPUNIT_TESTSUITE_EXTENSION_SELENIUM_HOST,
+                PHPUNIT_TESTSUITE_EXTENSION_SELENIUM_PORT
+              )
             );
         }
 
         $this->url = sprintf(
           'http://%s:%d/selenium-server/tests/',
-          $GLOBALS['PHPUNIT_TESTSUITE_EXTENSION_SELENIUM_HOST'],
-          $GLOBALS['PHPUNIT_TESTSUITE_EXTENSION_SELENIUM_PORT']
+          PHPUNIT_TESTSUITE_EXTENSION_SELENIUM_HOST,
+          PHPUNIT_TESTSUITE_EXTENSION_SELENIUM_PORT
         );
 
-        $this->setHost($GLOBALS['PHPUNIT_TESTSUITE_EXTENSION_SELENIUM_HOST']);
-        $this->setPort((int)$GLOBALS['PHPUNIT_TESTSUITE_EXTENSION_SELENIUM_PORT']);
-        $this->setBrowser($GLOBALS['PHPUNIT_TESTSUITE_EXTENSION_SELENIUM_BROWSER']);
+        $this->setHost(PHPUNIT_TESTSUITE_EXTENSION_SELENIUM_HOST);
+        $this->setPort((int)PHPUNIT_TESTSUITE_EXTENSION_SELENIUM_PORT);
+        $this->setBrowser(PHPUNIT_TESTSUITE_EXTENSION_SELENIUM_BROWSER);
         $this->setBrowserUrl($this->url);
     }
 
