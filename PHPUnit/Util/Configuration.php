@@ -66,7 +66,6 @@ PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
  *          convertWarningsToExceptions="true"
  *          processIsolation="false"
  *          stopOnFailure="false"
- *          syntaxCheck="true"
  *          testSuiteLoaderClass="PHPUnit_Runner_StandardTestSuiteLoader">
  *   <testsuites>
  *     <testsuite name="My Test Suite">
@@ -547,13 +546,6 @@ class PHPUnit_Util_Configuration
             );
         }
 
-        if ($this->document->documentElement->hasAttribute('syntaxCheck')) {
-            $result['syntaxCheck'] = $this->getBoolean(
-              (string)$this->document->documentElement->getAttribute('syntaxCheck'),
-              TRUE
-            );
-        }
-
         if ($this->document->documentElement->hasAttribute('testSuiteLoaderClass')) {
             $result['testSuiteLoaderClass'] = (string)$this->document->documentElement->getAttribute('testSuiteLoaderClass');
         }
@@ -612,11 +604,10 @@ class PHPUnit_Util_Configuration
     /**
      * Returns the test suite configuration.
      *
-     * @param  boolean $syntaxCheck
      * @return PHPUnit_Framework_TestSuite
      * @since  Method available since Release 3.2.1
      */
-    public function getTestSuiteConfiguration($syntaxCheck = TRUE)
+    public function getTestSuiteConfiguration()
     {
         $testSuiteNodes = $this->xpath->query('testsuites/testsuite');
 
@@ -624,9 +615,7 @@ class PHPUnit_Util_Configuration
             $suite = new PHPUnit_Framework_TestSuite;
 
             foreach ($testSuiteNodes as $testSuiteNode) {
-                $suite->addTestSuite(
-                  $this->getTestSuite($testSuiteNode, $syntaxCheck)
-                );
+                $suite->addTestSuite($this->getTestSuite($testSuiteNode));
             }
 
             return $suite;
@@ -635,11 +624,10 @@ class PHPUnit_Util_Configuration
 
     /**
      * @param  DOMElement $testSuiteNode
-     * @param  boolean    $syntaxCheck
      * @return PHPUnit_Framework_TestSuite
      * @since  Method available since Release 3.4.0
      */
-    protected function getTestSuite(DOMElement $testSuiteNode, $syntaxCheck)
+    protected function getTestSuite(DOMElement $testSuiteNode)
     {
         if ($testSuiteNode->hasAttribute('name')) {
             $suite = new PHPUnit_Framework_TestSuite(
@@ -666,11 +654,11 @@ class PHPUnit_Util_Configuration
               array((string)$directoryNode->nodeValue), $suffix, $prefix
             );
 
-            $suite->addTestFiles($testCollector->collectTests(), $syntaxCheck);
+            $suite->addTestFiles($testCollector->collectTests());
         }
 
         foreach ($testSuiteNode->getElementsByTagName('file') as $fileNode) {
-            $suite->addTestFile((string)$fileNode->nodeValue, $syntaxCheck);
+            $suite->addTestFile((string)$fileNode->nodeValue);
         }
 
         return $suite;

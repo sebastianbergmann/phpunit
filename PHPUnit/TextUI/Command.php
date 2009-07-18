@@ -74,7 +74,6 @@ class PHPUnit_TextUI_Command
     protected $arguments = array(
       'listGroups'              => FALSE,
       'loader'                  => NULL,
-      'syntaxCheck'             => TRUE,
       'useDefaultConfiguration' => TRUE
     );
 
@@ -107,7 +106,6 @@ class PHPUnit_TextUI_Command
       'no-configuration' => NULL,
       'no-globals-backup' => NULL,
       'no-static-backup' => NULL,
-      'no-syntax-check' => NULL,
       'process-isolation' => NULL,
       'repeat=' => NULL,
       'skeleton-class' => NULL,
@@ -153,8 +151,7 @@ class PHPUnit_TextUI_Command
         } else {
             $suite = $runner->getTest(
               $this->arguments['test'],
-              $this->arguments['testFile'],
-              $this->arguments['syntaxCheck']
+              $this->arguments['testFile']
             );
         }
 
@@ -406,14 +403,8 @@ class PHPUnit_TextUI_Command
                 }
                 break;
 
-                case '--no-syntax-check': {
-                    $this->arguments['syntaxCheck'] = FALSE;
-                }
-                break;
-
                 case '--process-isolation': {
                     $this->arguments['processIsolation'] = TRUE;
-                    $this->arguments['syntaxCheck']      = FALSE;
                 }
                 break;
 
@@ -601,10 +592,6 @@ class PHPUnit_TextUI_Command
 
             $phpunit = $configuration->getPHPUnitConfiguration();
 
-            if (isset($phpunit['syntaxCheck'])) {
-                $this->arguments['syntaxCheck'] = $phpunit['syntaxCheck'];
-            }
-
             if (isset($phpunit['testSuiteLoaderClass'])) {
                 if (isset($phpunit['testSuiteLoaderFile'])) {
                     $file = $phpunit['testSuiteLoaderFile'];
@@ -635,9 +622,7 @@ class PHPUnit_TextUI_Command
             }
 
             if (!isset($this->arguments['test'])) {
-                $testSuite = $configuration->getTestSuiteConfiguration(
-                  $this->arguments['syntaxCheck']
-                );
+                $testSuite = $configuration->getTestSuiteConfiguration();
 
                 if ($testSuite !== NULL) {
                     $this->arguments['test'] = $testSuite;
@@ -658,10 +643,6 @@ class PHPUnit_TextUI_Command
             (isset($this->arguments['testDatabaseLogRevision']) && !isset($this->arguments['testDatabaseDSN']))) {
             $this->showHelp();
             exit(PHPUnit_TextUI_TestRunner::EXCEPTION_EXIT);
-        }
-
-        if (!isset($this->arguments['syntaxCheck'])) {
-            $this->arguments['syntaxCheck'] = TRUE;
         }
 
         if ($skeletonClass || $skeletonTest) {
@@ -818,7 +799,6 @@ Usage: phpunit [switches] UnitTest [UnitTest.php]
   --testdox                Report test execution progress in TestDox format.
 
   --colors                 Use colors in output.
-  --no-syntax-check        Disable syntax check of test source files.
   --stop-on-failure        Stop execution upon first error or failure.
   --verbose                Output more verbose information.
   --wait                   Waits for a keystroke after each test.

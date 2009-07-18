@@ -125,17 +125,17 @@ class PHPUnit_Util_Filesystem
      */
     public static function fileExistsInIncludePath($file)
     {
-        if (file_exists($file)) {
+        if (file_exists($file) && is_readable($file)) {
             return realpath($file);
         }
 
         $paths = explode(PATH_SEPARATOR, get_include_path());
 
         foreach ($paths as $path) {
-            $fullpath = $path . DIRECTORY_SEPARATOR . $file;
+            $fullPath = $path . DIRECTORY_SEPARATOR . $file;
 
-            if (file_exists($fullpath)) {
-                return realpath($fullpath);
+            if (file_exists($fullPath) && is_readable($fullPath)) {
+                return realpath($fullPath);
             }
         }
 
