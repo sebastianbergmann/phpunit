@@ -6,7 +6,7 @@ namespace NS;
 
 interface Foo
 {
-    public function bar(NS\Foo $foo);
+    public function bar(Foo $foo);
 }
 
 require_once dirname(dirname(dirname(dirname(__FILE__)))) . '/Framework.php';

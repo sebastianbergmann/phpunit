@@ -6,11 +6,11 @@ namespace NS;
 
 class Foo
 {
-    public function bar(Bar $foo)
+    public function bar(Foo $foo)
     {
     }
 
-    public function baz(Bar $foo)
+    public function baz(Foo $foo)
     {
     }
 }
@@ -38,7 +38,7 @@ class MockFoo extends NS\Foo implements PHPUnit_Framework_MockObject_MockObject
         $this->invocationMocker = clone $this->__phpunit_getInvocationMocker();
     }
 
-    public function bar(Bar $foo)
+    public function bar(NS\Foo $foo)
     {
         $args = func_get_args();
 
@@ -51,7 +51,7 @@ class MockFoo extends NS\Foo implements PHPUnit_Framework_MockObject_MockObject
         return $result;
     }
 
-    public function baz(Bar $foo)
+    public function baz(NS\Foo $foo)
     {
         $args = func_get_args();
 

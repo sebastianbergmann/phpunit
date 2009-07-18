@@ -6,11 +6,11 @@ namespace NS;
 
 class Foo
 {
-    public function bar(NS\Foo $foo)
+    public function bar(Foo $foo)
     {
     }
 
-    public function baz(NS\Foo $foo)
+    public function baz(Foo $foo)
     {
     }
 }
