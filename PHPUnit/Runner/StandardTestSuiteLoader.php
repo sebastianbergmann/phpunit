@@ -73,7 +73,7 @@ class PHPUnit_Runner_StandardTestSuiteLoader implements PHPUnit_Runner_TestSuite
      * @return ReflectionClass
      * @throws RuntimeException
      */
-    public function load($suiteClassName, $suiteClassFile = '', $syntaxCheck = TRUE)
+    public function load($suiteClassName, $suiteClassFile = '', $syntaxCheck = FALSE)
     {
         $suiteClassName = str_replace('.php', '', $suiteClassName);
 

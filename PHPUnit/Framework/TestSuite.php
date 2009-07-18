@@ -368,7 +368,7 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
      * @since  Method available since Release 2.3.0
      * @author Stefano F. Rausch <stefano@rausch-e.net>
      */
-    public function addTestFile($filename, $syntaxCheck = TRUE, $phptOptions = array())
+    public function addTestFile($filename, $syntaxCheck = FALSE, $phptOptions = array())
     {
         if (!is_string($filename)) {
             throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'string');
@@ -436,7 +436,7 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
      * @throws InvalidArgumentException
      * @since  Method available since Release 2.3.0
      */
-    public function addTestFiles($filenames, $syntaxCheck = TRUE)
+    public function addTestFiles($filenames, $syntaxCheck = FALSE)
     {
         if (!(is_array($filenames) ||
              (is_object($filenames) && $filenames instanceof Iterator))) {

@@ -66,7 +66,7 @@ PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
  *          convertWarningsToExceptions="true"
  *          processIsolation="false"
  *          stopOnFailure="false"
- *          syntaxCheck="true"
+ *          syntaxCheck="false"
  *          testSuiteLoaderClass="PHPUnit_Runner_StandardTestSuiteLoader">
  *   <testsuites>
  *     <testsuite name="My Test Suite">
@@ -597,7 +597,7 @@ class PHPUnit_Util_Configuration
         if ($this->document->documentElement->hasAttribute('syntaxCheck')) {
             $result['syntaxCheck'] = $this->getBoolean(
               (string)$this->document->documentElement->getAttribute('syntaxCheck'),
-              TRUE
+              FALSE
             );
         }
 
@@ -693,7 +693,7 @@ class PHPUnit_Util_Configuration
      * @return PHPUnit_Framework_TestSuite
      * @since  Method available since Release 3.2.1
      */
-    public function getTestSuiteConfiguration($syntaxCheck = TRUE)
+    public function getTestSuiteConfiguration($syntaxCheck = FALSE)
     {
         $testSuiteNodes = $this->xpath->query('testsuites/testsuite');
 

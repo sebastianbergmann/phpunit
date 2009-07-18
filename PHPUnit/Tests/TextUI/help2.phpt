@@ -46,7 +46,6 @@ Usage: phpunit [switches] UnitTest [UnitTest.php]
   --testdox                Report test execution progress in TestDox format.
 
   --colors                 Use colors in output.
-  --no-syntax-check        Disable syntax check of test source files.
   --stop-on-failure        Stop execution upon first error or failure.
   --verbose                Output more verbose information.
   --wait                   Waits for a keystroke after each test.
@@ -57,6 +56,7 @@ Usage: phpunit [switches] UnitTest [UnitTest.php]
   --process-isolation      Run each test in a separate PHP process.
   --no-globals-backup      Do not backup and restore $GLOBALS.
   --no-static-backup       Do not backup and restore static attributes.
+  --syntax-check           Try to check source files for syntax errors.
 
   --bootstrap <file>       A "bootstrap" PHP file that is run before the tests.
   --configuration <file>   Read configuration from XML file.

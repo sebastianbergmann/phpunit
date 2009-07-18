@@ -74,7 +74,7 @@ class PHPUnit_Util_Fileloader
      * @param  boolean $syntaxCheck
      * @throws RuntimeException
      */
-    public static function checkAndLoad($filename, $syntaxCheck = TRUE)
+    public static function checkAndLoad($filename, $syntaxCheck = FALSE)
     {
         if (!is_readable($filename)) {
             $filename = './' . $filename;
