@@ -252,10 +252,10 @@ class PHPUnit_Framework_MockObject_Generator
           $originalClassName, $mockClassName
         );
 
-        if (class_exists($originalClassName, $callAutoload)) {
+        if (class_exists($mockClassName['fullClassName'], $callAutoload)) {
             $isClass = TRUE;
         } else {
-            if (interface_exists($originalClassName, $callAutoload)) {
+            if (interface_exists($mockClassName['fullClassName'], $callAutoload)) {
                 $isInterface = TRUE;
             }
         }
@@ -301,7 +301,7 @@ class PHPUnit_Framework_MockObject_Generator
         }
 
         if (is_array($methods) && empty($methods) && ($isClass || $isInterface)) {
-            $methods = get_class_methods($originalClassName);
+            $methods = get_class_methods($mockClassName['fullClassName']);
         }
 
         if (!is_array($methods)) {
