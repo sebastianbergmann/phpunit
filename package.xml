@@ -886,6 +886,15 @@
        <file baseinstalldir="/" name="class_partial.phpt" role="test" />
        <file baseinstalldir="/" name="class.phpt" role="test" />
        <file baseinstalldir="/" name="interface.phpt" role="test" />
+       <file baseinstalldir="/" name="namespaced_class_call_parent_clone.phpt" role="test" />
+       <file baseinstalldir="/" name="namespaced_class_call_parent_constructor.phpt" role="test" />
+       <file baseinstalldir="/" name="namespaced_class_dont_call_parent_clone.phpt" role="test" />
+       <file baseinstalldir="/" name="namespaced_class_dont_call_parent_constructor.phpt" role="test" />
+       <file baseinstalldir="/" name="namespaced_class_implementing_interface_call_parent_constructor.phpt" role="test" />
+       <file baseinstalldir="/" name="namespaced_class_implementing_interface_dont_call_parent_constructor.phpt" role="test" />
+       <file baseinstalldir="/" name="namespaced_class_partial.phpt" role="test" />
+       <file baseinstalldir="/" name="namespaced_class.phpt" role="test" />
+       <file baseinstalldir="/" name="namespaced_interface.phpt" role="test" />
        <file baseinstalldir="/" name="wsdl_class_partial.phpt" role="test" />
        <file baseinstalldir="/" name="wsdl_class.phpt" role="test" />
      </dir>
