@@ -92,7 +92,7 @@ abstract class PHPUnit_Runner_BaseTestRunner
      * @param  boolean $syntaxCheck
      * @return PHPUnit_Framework_Test
      */
-    public function getTest($suiteClassName, $suiteClassFile = '', $syntaxCheck = TRUE)
+    public function getTest($suiteClassName, $suiteClassFile = '', $syntaxCheck = FALSE)
     {
         if (is_dir($suiteClassName) && !is_file($suiteClassName . '.php') && empty($suiteClassFile)) {
             $testCollector = new PHPUnit_Runner_IncludePathTestCollector(
@@ -161,7 +161,7 @@ abstract class PHPUnit_Runner_BaseTestRunner
      * @param  boolean $syntaxCheck
      * @return ReflectionClass
      */
-    protected function loadSuiteClass($suiteClassName, $suiteClassFile = '', $syntaxCheck = TRUE)
+    protected function loadSuiteClass($suiteClassName, $suiteClassFile = '', $syntaxCheck = FALSE)
     {
         $loader = $this->getLoader();
 
