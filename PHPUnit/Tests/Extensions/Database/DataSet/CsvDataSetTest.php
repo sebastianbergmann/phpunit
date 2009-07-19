@@ -118,7 +118,7 @@ class Extensions_Database_DataSet_CsvDataSetTest extends PHPUnit_Framework_TestC
             'column5' => 'ajsdlkfguitah',
             'column6' => 654,
             'column7' => 'blah',
-            'column8' => 'thesethasdl
+            'column8' => 'thesethasdl 
 asdflkjsadf asdfsadfhl "adsf, halsdf" sadfhlasdf'
         ));
 
