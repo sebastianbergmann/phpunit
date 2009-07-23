@@ -828,7 +828,6 @@
       <file baseinstalldir="/" name="log-json.phpt" role="test" />
       <file baseinstalldir="/" name="log-tap.phpt" role="test" />
       <file baseinstalldir="/" name="log-xml.phpt" role="test" />
-      <file baseinstalldir="/" name="repeat.phpt" role="test" />
       <file baseinstalldir="/" name="skeleton.phpt" role="test" />
       <file baseinstalldir="/" name="story.phpt" role="test" />
       <file baseinstalldir="/" name="tap.phpt" role="test" />
