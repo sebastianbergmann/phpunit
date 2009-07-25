@@ -235,7 +235,7 @@ abstract class PHPUnit_Util_TestDox_ResultPrinter extends PHPUnit_Util_Printer i
             if (isset($annotations['method']['testdox'][0])) {
                 $this->currentTestMethodPrettified = $annotations['method']['testdox'][0];
             } else {
-                $this->currentTestMethodPrettified = $this->prettifier->prettifyTestMethod($test->getName());
+                $this->currentTestMethodPrettified = $this->prettifier->prettifyTestMethod($test->getName(FALSE));
             }
 
             $this->testStatus = PHPUnit_Runner_BaseTestRunner::STATUS_PASSED;
