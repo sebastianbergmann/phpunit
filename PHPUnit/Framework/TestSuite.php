@@ -508,30 +508,34 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
 
             // TestCase($name, $data)
             else {
-                $data = PHPUnit_Util_Test::getProvidedData($className, $name);
+                $data   = PHPUnit_Util_Test::getProvidedData($className, $name);
+                $groups = PHPUnit_Util_Test::getGroups($className, $name);
 
                 if (is_array($data) || $data instanceof Iterator) {
                     $test = new PHPUnit_Framework_TestSuite(
                       $className . '::' . $name
                     );
 
+                    if ($runTestInSeparateProcess) {
+                        $test->setRunTestsInSeparateProcesses(TRUE);
+                    }
+
+                    if ($backupSettings['backupGlobals'] !== NULL) {
+                        $test->setBackupGlobals(
+                          $backupSettings['backupGlobals']
+                        );
+                    }
+
+                    if ($backupSettings['backupStaticAttributes'] !== NULL) {
+                        $test->setBackupStaticAttributes(
+                          $backupSettings['backupStaticAttributes']
+                        );
+                    }
+
                     foreach ($data as $_dataName => $_data) {
                         $test->addTest(
-                          new $className($name, $_data, $_dataName),
-                          PHPUnit_Util_Test::getGroups($className, $name)
+                          new $className($name, $_data, $_dataName), $groups
                         );
-
-                        if ($runTestInSeparateProcess) {
-                            $test->setRunTestInSeparateProcess(TRUE);
-                        }
-
-                        if ($backupSettings['backupGlobals'] !== NULL) {
-                            $test->setBackupGlobals($backupSettings['backupGlobals']);
-                        }
-
-                        if ($backupSettings['backupStaticAttributes'] !== NULL) {
-                            $test->setBackupStaticAttributes($backupSettings['backupStaticAttributes']);
-                        }
                     }
                 } else {
                     $test = new $className;
