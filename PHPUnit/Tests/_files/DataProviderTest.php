@@ -1,5 +1,5 @@
 <?php
-class DataSetTest extends PHPUnit_Framework_TestCase
+class DataProviderTest extends PHPUnit_Framework_TestCase
 {
     /**
      * @dataProvider providerMethod

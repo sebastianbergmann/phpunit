@@ -979,8 +979,9 @@
       <file baseinstalldir="/" name="coverage-clover-public.phpt" role="test" />
       <file baseinstalldir="/" name="coverage-source-isolation.phpt" role="test" />
       <file baseinstalldir="/" name="coverage-source.phpt" role="test" />
-      <file baseinstalldir="/" name="dataset-log-xml-isolation.phpt" role="test" />
-      <file baseinstalldir="/" name="dataset-log-xml.phpt" role="test" />
+      <file baseinstalldir="/" name="dataprovider-log-xml-isolation.phpt" role="test" />
+      <file baseinstalldir="/" name="dataprovider-log-xml.phpt" role="test" />
+      <file baseinstalldir="/" name="dataprovider-testdox.phpt" role="test" />
       <file baseinstalldir="/" name="debug.phpt" role="test" />
       <file baseinstalldir="/" name="default-isolation.phpt" role="test" />
       <file baseinstalldir="/" name="default.phpt" role="test" />
@@ -1096,7 +1097,7 @@
       <file baseinstalldir="/" name="CoveredClass.php" role="test">
        <tasks:replace from="@package_version@" to="version" type="package-info" />
       </file>
-      <file baseinstalldir="/" name="DataSetTest.php" role="test">
+      <file baseinstalldir="/" name="DataProviderTest.php" role="test">
        <tasks:replace from="@package_version@" to="version" type="package-info" />
       </file>
       <file baseinstalldir="/" name="DependencyFailureTest.php" role="test">
