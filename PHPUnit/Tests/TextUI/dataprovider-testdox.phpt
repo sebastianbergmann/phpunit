@@ -14,7 +14,4 @@ PHPUnit_TextUI_Command::main();
 PHPUnit %s by Sebastian Bergmann.
 
 DataProvider
- [x] Add with data set #0
- [x] Add with data set #1
- [ ] Add with data set #2
- [x] Add with data set #3
+ [ ] Add
