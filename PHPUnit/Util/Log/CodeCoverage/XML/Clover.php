@@ -108,6 +108,8 @@ class PHPUnit_Util_Log_CodeCoverage_XML_Clover extends PHPUnit_Util_Printer
         );
 
         foreach ($files as $filename => $data) {
+            $namespace = 'global';
+
             if (file_exists($filename)) {
                 $fileStatistics = array(
                   'classes'             => 0,
@@ -187,8 +189,6 @@ class PHPUnit_Util_Log_CodeCoverage_XML_Clover extends PHPUnit_Util_Printer
 
                     if (!empty($packageInformation['namespace'])) {
                         $namespace = $packageInformation['namespace'];
-                    } else {
-                        $namespace = 'global';
                     }
 
                     $class = $document->createElement('class');
