@@ -390,9 +390,6 @@
      <file baseinstalldir="/" name="PhptTestSuite.php" role="php">
       <tasks:replace from="@package_version@" to="version" type="package-info" />
      </file>
-     <file baseinstalldir="/" name="RepeatedTest.php" role="php">
-      <tasks:replace from="@package_version@" to="version" type="package-info" />
-     </file>
      <file baseinstalldir="/" name="SeleniumTestCase.php" role="php">
       <tasks:replace from="@package_version@" to="version" type="package-info" />
      </file>
@@ -873,9 +870,6 @@
       <file baseinstalldir="/" name="PerformanceTestCaseTest.php" role="test">
        <tasks:replace from="@package_version@" to="version" type="package-info" />
       </file>
-      <file baseinstalldir="/" name="RepeatedTestTest.php" role="test">
-       <tasks:replace from="@package_version@" to="version" type="package-info" />
-      </file>
       <file baseinstalldir="/" name="SeleniumTestCaseTest.php" role="test">
        <tasks:replace from="@package_version@" to="version" type="package-info" />
       </file>
@@ -1014,7 +1008,6 @@
       <file baseinstalldir="/" name="log-json.phpt" role="test" />
       <file baseinstalldir="/" name="log-tap.phpt" role="test" />
       <file baseinstalldir="/" name="log-xml.phpt" role="test" />
-      <file baseinstalldir="/" name="repeat.phpt" role="test" />
       <file baseinstalldir="/" name="skeleton.phpt" role="test" />
       <file baseinstalldir="/" name="story-isolation.phpt" role="test" />
       <file baseinstalldir="/" name="story.phpt" role="test" />
