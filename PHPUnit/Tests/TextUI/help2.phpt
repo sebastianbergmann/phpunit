@@ -20,7 +20,6 @@ Usage: phpunit [switches] UnitTest [UnitTest.php]
 
   --coverage-html <dir>    Generate code coverage report in HTML format.
   --coverage-clover <file> Write code coverage data in Clover XML format.
-  --coverage-source <dir>  Write code coverage / source data in XML format.
 
   --test-db-dsn <dsn>      DSN for the test database.
   --test-db-log-rev <rev>  Revision information for database logging.

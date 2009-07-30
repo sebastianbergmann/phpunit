@@ -210,7 +210,6 @@ class Util_ConfigurationTest extends PHPUnit_Framework_TestCase
             'highlight' => FALSE,
             'coverage-html' => '/tmp/report',
             'coverage-clover' => '/tmp/clover.xml',
-            'coverage-source' => '/tmp/coverage',
             'json' => '/tmp/logfile.json',
             'plain' => '/tmp/logfile.txt',
             'tap' => '/tmp/logfile.tap',

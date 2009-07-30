@@ -260,7 +260,6 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
         }
 
         if ((isset($arguments['coverageClover']) ||
-             isset($arguments['coverageSource']) ||
              isset($arguments['reportDirectory'])) &&
              extension_loaded('xdebug')) {
             $result->collectCodeCoverageInformation(TRUE);
@@ -334,23 +333,10 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
             if (isset($arguments['coverageClover'])) {
                 $this->printer->write("\nWriting code coverage data to XML file, this may take a moment.");
 
-                require_once 'PHPUnit/Util/Log/CodeCoverage/XML/Clover.php';
+                require_once 'PHPUnit/Util/Log/CodeCoverage/Clover.php';
 
-                $writer = new PHPUnit_Util_Log_CodeCoverage_XML_Clover(
+                $writer = new PHPUnit_Util_Log_CodeCoverage_Clover(
                   $arguments['coverageClover']
-                );
-
-                $writer->process($result);
-                $this->printer->write("\n");
-            }
-
-            if (isset($arguments['coverageSource'])) {
-                $this->printer->write("\nWriting code coverage data to XML files, this may take a moment.");
-
-                require_once 'PHPUnit/Util/Log/CodeCoverage/XML/Source.php';
-
-                $writer = new PHPUnit_Util_Log_CodeCoverage_XML_Source(
-                  $arguments['coverageSource']
                 );
 
                 $writer->process($result);
@@ -663,10 +649,6 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
 
             if (isset($loggingConfiguration['coverage-xml']) && !isset($arguments['coverageClover'])) {
                 $arguments['coverageClover'] = $loggingConfiguration['coverage-xml'];
-            }
-
-            if (isset($loggingConfiguration['coverage-source']) && !isset($arguments['coverageSource'])) {
-                $arguments['coverageSource'] = $loggingConfiguration['coverage-source'];
             }
 
             if (isset($loggingConfiguration['json']) && !isset($arguments['jsonLogfile'])) {

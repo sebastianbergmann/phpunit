@@ -970,8 +970,6 @@
       <file baseinstalldir="/" name="coverage-clover-protected.phpt" role="test" />
       <file baseinstalldir="/" name="coverage-clover-public-isolation.phpt" role="test" />
       <file baseinstalldir="/" name="coverage-clover-public.phpt" role="test" />
-      <file baseinstalldir="/" name="coverage-source-isolation.phpt" role="test" />
-      <file baseinstalldir="/" name="coverage-source.phpt" role="test" />
       <file baseinstalldir="/" name="dataprovider-log-xml-isolation.phpt" role="test" />
       <file baseinstalldir="/" name="dataprovider-log-xml.phpt" role="test" />
       <file baseinstalldir="/" name="dataprovider-testdox.phpt" role="test" />
@@ -1251,14 +1249,9 @@
     <dir name="Util">
      <dir name="Log">
       <dir name="CodeCoverage">
-       <dir name="XML">
-        <file baseinstalldir="/" name="Clover.php" role="php">
-         <tasks:replace from="@package_version@" to="version" type="package-info" />
-        </file>
-        <file baseinstalldir="/" name="Source.php" role="php">
-         <tasks:replace from="@package_version@" to="version" type="package-info" />
-        </file>
-       </dir>
+       <file baseinstalldir="/" name="Clover.php" role="php">
+        <tasks:replace from="@package_version@" to="version" type="package-info" />
+       </file>
        <file baseinstalldir="/" name="Database.php" role="php">
         <tasks:replace from="@package_version@" to="version" type="package-info" />
        </file>

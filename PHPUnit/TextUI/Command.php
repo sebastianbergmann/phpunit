@@ -91,7 +91,6 @@ class PHPUnit_TextUI_Command
       'configuration=' => NULL,
       'coverage-clover=' => NULL,
       'coverage-html=' => NULL,
-      'coverage-source=' => NULL,
       'debug' => NULL,
       'exclude-group=' => NULL,
       'filter=' => NULL,
@@ -295,19 +294,6 @@ class PHPUnit_TextUI_Command
                 case '--coverage-clover': {
                     if (extension_loaded('tokenizer') && extension_loaded('xdebug')) {
                         $this->arguments['coverageClover'] = $option[1];
-                    } else {
-                        if (!extension_loaded('tokenizer')) {
-                            $this->showMessage('The tokenizer extension is not loaded.');
-                        } else {
-                            $this->showMessage('The Xdebug extension is not loaded.');
-                        }
-                    }
-                }
-                break;
-
-                case '--coverage-source': {
-                    if (extension_loaded('tokenizer') && extension_loaded('xdebug')) {
-                        $this->arguments['coverageSource'] = $option[1];
                     } else {
                         if (!extension_loaded('tokenizer')) {
                             $this->showMessage('The tokenizer extension is not loaded.');
@@ -767,7 +753,6 @@ Usage: phpunit [switches] UnitTest [UnitTest.php]
 
   --coverage-html <dir>    Generate code coverage report in HTML format.
   --coverage-clover <file> Write code coverage data in Clover XML format.
-  --coverage-source <dir>  Write code coverage / source data in XML format.
 
   --test-db-dsn <dsn>      DSN for the test database.
   --test-db-log-rev <rev>  Revision information for database logging.
