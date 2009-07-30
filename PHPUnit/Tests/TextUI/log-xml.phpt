@@ -1,9 +1,9 @@
 --TEST--
-phpunit --log-xml php://stdout BankAccountTest ../../Samples/BankAccount/BankAccountTest.php
+phpunit --log-junit php://stdout BankAccountTest ../../Samples/BankAccount/BankAccountTest.php
 --FILE--
 <?php
 $_SERVER['argv'][1] = '--no-configuration';
-$_SERVER['argv'][2] = '--log-xml';
+$_SERVER['argv'][2] = '--log-junit';
 $_SERVER['argv'][3] = 'php://stdout';
 $_SERVER['argv'][4] = 'BankAccountTest';
 $_SERVER['argv'][5] = '../Samples/BankAccount/BankAccountTest.php';

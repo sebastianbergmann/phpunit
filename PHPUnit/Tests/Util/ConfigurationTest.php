@@ -220,7 +220,7 @@ class Util_ConfigurationTest extends PHPUnit_Framework_TestCase
             'pmd-xml' => '/tmp/pmd.xml',
             'tap' => '/tmp/logfile.tap',
             'logIncompleteSkipped' => FALSE,
-            'test-xml' => '/tmp/logfile.xml',
+            'junit' => '/tmp/logfile.xml',
             'story-html' => '/tmp/story.html',
             'story-text' => '/tmp/story.txt',
             'testdox-html' => '/tmp/testdox.html',

@@ -306,12 +306,12 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
             );
         }
 
-        if (isset($arguments['xmlLogfile'])) {
-            require_once 'PHPUnit/Util/Log/XML.php';
+        if (isset($arguments['junitLogfile'])) {
+            require_once 'PHPUnit/Util/Log/JUnit.php';
 
             $result->addListener(
-              new PHPUnit_Util_Log_XML(
-                $arguments['xmlLogfile'], $arguments['logIncompleteSkipped']
+              new PHPUnit_Util_Log_JUnit(
+                $arguments['junitLogfile'], $arguments['logIncompleteSkipped']
               )
             );
         }
@@ -766,8 +766,8 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
                 $arguments['tapLogfile'] = $loggingConfiguration['tap'];
             }
 
-            if (isset($loggingConfiguration['test-xml']) && !isset($arguments['xmlLogfile'])) {
-                $arguments['xmlLogfile'] = $loggingConfiguration['test-xml'];
+            if (isset($loggingConfiguration['junit']) && !isset($arguments['junitLogfile'])) {
+                $arguments['junitLogfile'] = $loggingConfiguration['junit'];
 
                 if (isset($loggingConfiguration['logIncompleteSkipped']) && !isset($arguments['logIncompleteSkipped'])) {
                     $arguments['logIncompleteSkipped'] = $loggingConfiguration['logIncompleteSkipped'];

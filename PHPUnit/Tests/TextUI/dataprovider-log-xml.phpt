@@ -1,9 +1,9 @@
 --TEST--
-phpunit --log-xml php://stdout DataProviderTest ../_files/DataProviderTest.php
+phpunit --log-junit php://stdout DataProviderTest ../_files/DataProviderTest.php
 --FILE--
 <?php
 $_SERVER['argv'][1] = '--no-configuration';
-$_SERVER['argv'][2] = '--log-xml';
+$_SERVER['argv'][2] = '--log-junit';
 $_SERVER['argv'][3] = 'php://stdout';
 $_SERVER['argv'][4] = 'DataProviderTest';
 $_SERVER['argv'][5] = dirname(dirname(__FILE__)) . '/_files/DataProviderTest.php';
