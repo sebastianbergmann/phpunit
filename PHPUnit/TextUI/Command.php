@@ -483,6 +483,11 @@ class PHPUnit_TextUI_Command
                 break;
 
                 case '--repeat': {
+                    $this->showMessage(
+                      'The --repeat functionality is deprecated and will be removed in the future.',
+                      FALSE
+                    );
+
                     $this->arguments['repeat'] = (int)$option[1];
                 }
                 break;
@@ -912,7 +917,6 @@ Usage: phpunit [switches] UnitTest [UnitTest.php]
   --list-groups            List available test groups.
 
   --loader <loader>        TestSuiteLoader implementation to use.
-  --repeat <times>         Runs the test(s) repeatedly.
 
   --story                  Report test execution progress in Story/BDD format.
   --tap                    Report test execution progress in TAP format.
