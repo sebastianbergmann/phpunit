@@ -652,15 +652,7 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
                 $test->run(
                   $result, $filter, $groups, $excludeGroups, $processIsolation
                 );
-            }
-        }
-
-        foreach ($tests as $test) {
-            if ($result->shouldStop()) {
-                break;
-            }
-
-            if (!$test instanceof PHPUnit_Framework_TestSuite) {
+            } else {
                 $runTest = TRUE;
 
                 if ($filter !== FALSE ) {
