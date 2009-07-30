@@ -65,12 +65,10 @@ PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
  */
 class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUnit_Framework_TestListener
 {
-    const EVENT_TEST_START         = 0;
-    const EVENT_TEST_END           = 1;
-    const EVENT_TESTSUITE_START    = 2;
-    const EVENT_TESTSUITE_END      = 3;
-    const EVENT_DATAPROVIDER_START = 4;
-    const EVENT_DATAPROVIDER_END   = 5;
+    const EVENT_TEST_START      = 0;
+    const EVENT_TEST_END        = 1;
+    const EVENT_TESTSUITE_START = 2;
+    const EVENT_TESTSUITE_END   = 3;
 
     /**
      * @var integer
@@ -539,14 +537,14 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
                 $name = preg_replace( '(^.*::(.*?)$)', '\\1', $name );
             }
 
-            if ($this->lastEvent == self::EVENT_TESTSUITE_END) {
-                $this->write("\n");
-            }
-
             $this->write(
               sprintf(
-                "%s%s",
+                "%s%s%s",
 
+                $this->lastEvent == self::EVENT_TESTSUITE_END ||
+                $suite instanceof PHPUnit_Framework_TestSuite_DataProvider ?
+                "\n" :
+                '',
                 str_repeat(' ', $this->indent),
                 $name
               )
@@ -555,11 +553,7 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
             $this->writeNewLine();
         }
 
-        if ($suite instanceof PHPUnit_Framework_TestSuite_DataProvider) {
-            $this->lastEvent = self::EVENT_DATAPROVIDER_START;
-        } else {
-            $this->lastEvent = self::EVENT_TESTSUITE_START;
-        }
+        $this->lastEvent = self::EVENT_TESTSUITE_START;
     }
 
     /**
@@ -578,11 +572,7 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
             }
         }
 
-        if ($suite instanceof PHPUnit_Framework_TestSuite_DataProvider) {
-            $this->lastEvent = self::EVENT_DATAPROVIDER_END;
-        } else {
-            $this->lastEvent = self::EVENT_TESTSUITE_END;
-        }
+        $this->lastEvent = self::EVENT_TESTSUITE_END;
     }
 
     /**
@@ -634,15 +624,17 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
         $this->column++;
 
         if ($this->column == 60) {
-            $this->write(
-              sprintf(
-                ' %' . $this->numTestsWidth . 'd / %' . 
-                       $this->numTestsWidth . "d",
+            if (!$this->verbose) {
+                $this->write(
+                  sprintf(
+                    ' %' . $this->numTestsWidth . 'd / %' . 
+                           $this->numTestsWidth . "d",
 
-                $this->numTestsRun,
-                $this->numTests
-              )
-            );
+                    $this->numTestsRun,
+                    $this->numTests
+                  )
+                );
+            }
 
             $this->writeNewLine();
         }
