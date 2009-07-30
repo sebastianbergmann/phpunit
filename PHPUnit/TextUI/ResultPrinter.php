@@ -285,7 +285,11 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
      */
     protected function printFailures(PHPUnit_Framework_TestResult $result)
     {
-        $this->printDefects($result->failures(), $result->failureCount(), 'failure');
+        $this->printDefects(
+          $result->failures(),
+          $result->failureCount(),
+          'failure'
+        );
     }
 
     /**
@@ -293,7 +297,11 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
      */
     protected function printIncompletes(PHPUnit_Framework_TestResult $result)
     {
-        $this->printDefects($result->notImplemented(), $result->notImplementedCount(), 'incomplete test');
+        $this->printDefects(
+          $result->notImplemented(),
+          $result->notImplementedCount(),
+          'incomplete test'
+        );
     }
 
     /**
@@ -302,7 +310,11 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
      */
     protected function printSkipped(PHPUnit_Framework_TestResult $result)
     {
-        $this->printDefects($result->skipped(), $result->skippedCount(), 'skipped test');
+        $this->printDefects(
+          $result->skipped(),
+          $result->skippedCount(),
+          'skipped test'
+        );
     }
 
     /**
@@ -351,7 +363,10 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
                   !$result->noneSkipped())&&
                  $result->wasSuccessful()) {
             if ($this->colors) {
-                $this->write("\x1b[30;43m\x1b[2KOK, but incomplete or skipped tests!\n\x1b[0m\x1b[30;43m\x1b[2K");
+                $this->write(
+                  "\x1b[30;43m\x1b[2KOK, but incomplete or skipped tests!\n" .
+                  "\x1b[0m\x1b[30;43m\x1b[2K"
+                );
             } else {
                 $this->write("OK, but incomplete or skipped tests!\n");
             }
@@ -362,8 +377,12 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
 
                 count($result),
                 $this->numAssertions,
-                $this->getCountString($result->notImplementedCount(), 'Incomplete'),
-                $this->getCountString($result->skippedCount(), 'Skipped')
+                $this->getCountString(
+                  $result->notImplementedCount(), 'Incomplete'
+                ),
+                $this->getCountString(
+                  $result->skippedCount(), 'Skipped'
+                )
               )
             );
 
@@ -376,7 +395,9 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
             $this->write("\n");
 
             if ($this->colors) {
-                $this->write("\x1b[37;41m\x1b[2KFAILURES!\n\x1b[0m\x1b[37;41m\x1b[2K");
+                $this->write(
+                  "\x1b[37;41m\x1b[2KFAILURES!\n\x1b[0m\x1b[37;41m\x1b[2K"
+                );
             } else {
                 $this->write("FAILURES!\n");
             }
@@ -389,7 +410,9 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
                 $this->numAssertions,
                 $this->getCountString($result->failureCount(), 'Failures'),
                 $this->getCountString($result->errorCount(), 'Errors'),
-                $this->getCountString($result->notImplementedCount(), 'Incomplete'),
+                $this->getCountString(
+                  $result->notImplementedCount(), 'Incomplete'
+                ),
                 $this->getCountString($result->skippedCount(), 'Skipped')
               )
             );
