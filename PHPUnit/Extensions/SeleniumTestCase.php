@@ -203,7 +203,7 @@ abstract class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_Tes
 
                         // Test method with @dataProvider.
                         if (is_array($data) || $data instanceof Iterator) {
-                            $dataSuite = new PHPUnit_Framework_TestSuite(
+                            $dataSuite = new PHPUnit_Framework_TestSuite_DataProvider(
                               $className . '::' . $name
                             );
 
@@ -240,7 +240,7 @@ abstract class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_Tes
 
                     // Test method with @dataProvider.
                     if (is_array($data) || $data instanceof Iterator) {
-                        $dataSuite = new PHPUnit_Framework_TestSuite(
+                        $dataSuite = new PHPUnit_Framework_TestSuite_DataProvider(
                           $className . '::' . $name
                         );
 

@@ -509,7 +509,7 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
                 $groups = PHPUnit_Util_Test::getGroups($className, $name);
 
                 if (is_array($data) || $data instanceof Iterator) {
-                    $test = new PHPUnit_Framework_TestSuite(
+                    $test = new PHPUnit_Framework_TestSuite_DataProvider(
                       $className . '::' . $name
                     );
 

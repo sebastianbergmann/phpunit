@@ -41,33 +41,27 @@
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    SVN: $Id$
  * @link       http://www.phpunit.de/
- * @since      File available since Release 3.0.0
+ * @since      File available since Release 3.4.0
  */
 
+require_once 'PHPUnit/Framework.php';
 require_once 'PHPUnit/Util/Filter.php';
 
 PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
 
-require 'PHPUnit/Framework/SelfDescribing.php';
-require 'PHPUnit/Framework/AssertionFailedError.php';
-require 'PHPUnit/Framework/Assert.php';
-require 'PHPUnit/Framework/Error.php';
-require 'PHPUnit/Framework/Error/Notice.php';
-require 'PHPUnit/Framework/Error/Warning.php';
-require 'PHPUnit/Framework/IncompleteTest.php';
-require 'PHPUnit/Framework/SkippedTest.php';
-require 'PHPUnit/Framework/Test.php';
-require 'PHPUnit/Framework/TestFailure.php';
-require 'PHPUnit/Framework/TestListener.php';
-require 'PHPUnit/Framework/TestResult.php';
-require 'PHPUnit/Framework/ExpectationFailedException.php';
-require 'PHPUnit/Framework/IncompleteTestError.php';
-require 'PHPUnit/Framework/SkippedTestError.php';
-require 'PHPUnit/Framework/SkippedTestSuiteError.php';
-require 'PHPUnit/Framework/TestCase.php';
-require 'PHPUnit/Framework/TestSuite.php';
-require 'PHPUnit/Framework/TestSuite/DataProvider.php';
-require 'PHPUnit/Framework/Warning.php';
-require 'PHPUnit/Framework/Constraint.php';
-require 'PHPUnit/Framework/ComparisonFailure.php';
+/**
+ * 
+ *
+ * @category   Testing
+ * @package    PHPUnit
+ * @author     Sebastian Bergmann <sb@sebastian-bergmann.de>
+ * @copyright  2002-2009 Sebastian Bergmann <sb@sebastian-bergmann.de>
+ * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
+ * @version    Release: @package_version@
+ * @link       http://www.phpunit.de/
+ * @since      Class available since Release 3.4.0
+ */
+class PHPUnit_Framework_TestSuite_DataProvider extends PHPUnit_Framework_TestSuite
+{
+}
 ?>
