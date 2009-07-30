@@ -65,10 +65,12 @@ PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
  */
 class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUnit_Framework_TestListener
 {
-    const EVENT_TEST_START      = 0;
-    const EVENT_TEST_END        = 1;
-    const EVENT_TESTSUITE_START = 2;
-    const EVENT_TESTSUITE_END   = 3;
+    const EVENT_TEST_START         = 0;
+    const EVENT_TEST_END           = 1;
+    const EVENT_TESTSUITE_START    = 2;
+    const EVENT_TESTSUITE_END      = 3;
+    const EVENT_DATAPROVIDER_START = 4;
+    const EVENT_DATAPROVIDER_END   = 5;
 
     /**
      * @var    integer
@@ -493,6 +495,8 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
 
             if (empty($name)) {
                 $name = 'Test Suite';
+            } else {
+                $name = preg_replace( '(^.*::(.*?)$)', '\\1', $name );
             }
 
             $this->write(
@@ -511,7 +515,11 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
             array_push($this->testSuiteSize, count($suite));
         }
 
-        $this->lastEvent = self::EVENT_TESTSUITE_START;
+        if ($suite instanceof PHPUnit_Framework_TestSuite_DataProvider) {
+            $this->lastEvent = self::EVENT_DATAPROVIDER_START;
+        } else {
+            $this->lastEvent = self::EVENT_TESTSUITE_START;
+        }
     }
 
     /**
@@ -533,7 +541,11 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
             }
         }
 
-        $this->lastEvent = self::EVENT_TESTSUITE_END;
+        if ($suite instanceof PHPUnit_Framework_TestSuite_DataProvider) {
+            $this->lastEvent = self::EVENT_DATAPROVIDER_END;
+        } else {
+            $this->lastEvent = self::EVENT_TESTSUITE_END;
+        }
     }
 
     /**
