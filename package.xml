@@ -547,6 +547,11 @@
        <tasks:replace from="@package_version@" to="version" type="package-info" />
       </file>
      </dir>
+     <dir name="TestSuite">
+      <file baseinstalldir="/" name="DataProvider.php" role="php">
+       <tasks:replace from="@package_version@" to="version" type="package-info" />
+      </file>
+     </dir>
      <file baseinstalldir="/" name="AssertionFailedError.php" role="php">
       <tasks:replace from="@package_version@" to="version" type="package-info" />
      </file>
