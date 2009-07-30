@@ -14,9 +14,9 @@ PHPUnit %s by Sebastian Bergmann.
 Usage: phpunit [switches] UnitTest [UnitTest.php]
        phpunit [switches] <directory>
 
-  --log-json <file>        Log test execution in JSON format.
+  --log-junit <file>       Log test execution in JUnit XML format to file.
   --log-tap <file>         Log test execution in TAP format to file.
-  --log-xml <file>         Log test execution in XML format to file.
+  --log-json <file>        Log test execution in JSON format.
 
   --coverage-html <dir>    Generate code coverage report in HTML format.
   --coverage-clover <file> Write code coverage data in Clover XML format.

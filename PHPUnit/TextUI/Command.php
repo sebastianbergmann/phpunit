@@ -100,8 +100,8 @@ class PHPUnit_TextUI_Command
       'list-groups' => NULL,
       'loader=' => NULL,
       'log-json=' => NULL,
+      'log-junit=' => NULL,
       'log-tap=' => NULL,
-      'log-xml=' => NULL,
       'no-configuration' => NULL,
       'no-globals-backup' => NULL,
       'no-static-backup' => NULL,
@@ -363,13 +363,13 @@ class PHPUnit_TextUI_Command
                 }
                 break;
 
-                case '--log-tap': {
-                    $this->arguments['tapLogfile'] = $option[1];
+                case '--log-junit': {
+                    $this->arguments['junitLogfile'] = $option[1];
                 }
                 break;
 
-                case '--log-xml': {
-                    $this->arguments['xmlLogfile'] = $option[1];
+                case '--log-tap': {
+                    $this->arguments['tapLogfile'] = $option[1];
                 }
                 break;
 
@@ -747,9 +747,9 @@ class PHPUnit_TextUI_Command
 Usage: phpunit [switches] UnitTest [UnitTest.php]
        phpunit [switches] <directory>
 
-  --log-json <file>        Log test execution in JSON format.
+  --log-junit <file>       Log test execution in JUnit XML format to file.
   --log-tap <file>         Log test execution in TAP format to file.
-  --log-xml <file>         Log test execution in XML format to file.
+  --log-json <file>        Log test execution in JSON format.
 
   --coverage-html <dir>    Generate code coverage report in HTML format.
   --coverage-clover <file> Write code coverage data in Clover XML format.

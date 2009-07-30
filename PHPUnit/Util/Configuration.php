@@ -127,7 +127,7 @@ PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
  *     <log type="json" target="/tmp/logfile.json"/>
  *     <log type="plain" target="/tmp/logfile.txt"/>
  *     <log type="tap" target="/tmp/logfile.tap"/>
- *     <log type="test-xml" target="/tmp/logfile.xml" logIncompleteSkipped="false"/>
+ *     <log type="junit" target="/tmp/logfile.xml" logIncompleteSkipped="false"/>
  *     <log type="story-html" target="/tmp/story.html"/>
  *     <log type="story-text" target="/tmp/story.txt"/>
  *     <log type="testdox-html" target="/tmp/testdox.html"/>
@@ -378,7 +378,7 @@ class PHPUnit_Util_Configuration
                 }
             }
 
-            else if ($type == 'test-xml') {
+            else if ($type == 'junit') {
                 if ($log->hasAttribute('logIncompleteSkipped')) {
                     $result['logIncompleteSkipped'] = $this->getBoolean(
                       (string)$log->getAttribute('logIncompleteSkipped'),
