@@ -1,10 +1,10 @@
 --TEST--
-phpunit --process-isolation --log-xml php://stdout DataProviderTest ../_files/DataProviderTest.php
+phpunit --process-isolation --log-junit php://stdout DataProviderTest ../_files/DataProviderTest.php
 --FILE--
 <?php
 $_SERVER['argv'][1] = '--no-configuration';
 $_SERVER['argv'][2] = '--process-isolation';
-$_SERVER['argv'][3] = '--log-xml';
+$_SERVER['argv'][3] = '--log-junit';
 $_SERVER['argv'][4] = 'php://stdout';
 $_SERVER['argv'][5] = 'DataProviderTest';
 $_SERVER['argv'][6] = dirname(dirname(__FILE__)) . '/_files/DataProviderTest.php';
