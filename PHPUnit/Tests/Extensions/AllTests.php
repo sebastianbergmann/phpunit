@@ -51,7 +51,6 @@ PHPUnit_Util_Filter::addFileToFilter(__FILE__);
 require_once 'PHPUnit/Framework/TestSuite.php';
 
 require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'OutputTestCaseTest.php';
-require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'PerformanceTestCaseTest.php';
 require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'SeleniumTestCaseTest.php';
 require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'Database' . DIRECTORY_SEPARATOR . 'AllTests.php';
 
@@ -76,7 +75,6 @@ class Extensions_AllTests
         $suite = new PHPUnit_Framework_TestSuite('PHPUnit_Extensions');
 
         $suite->addTestSuite('Extensions_OutputTestCaseTest');
-        $suite->addTestSuite('Extensions_PerformanceTestCaseTest');
         $suite->addTestSuite('Extensions_SeleniumTestCaseTest');
         $suite->addTest(Extensions_Database_AllTests::suite());
 
