@@ -55,7 +55,6 @@ require_once 'PHPUnit/Util/PDO.php';
 require_once 'PHPUnit/Util/Filesystem.php';
 require_once 'PHPUnit/Util/Filter.php';
 require_once 'PHPUnit/Util/Report.php';
-require_once 'PHPUnit/Util/Timer.php';
 
 PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
 
