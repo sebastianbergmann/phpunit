@@ -1,6 +1,16 @@
 <?php
 function __phpunit_run_isolated_test()
 {
+    // Only required for PHPUnit's own test suite.
+    if (!class_exists('PHPUnit_Framework_TestResult')) {
+        require_once 'PHPUnit/Framework.php';
+    }
+
+    // Only required for PHPUnit's own test suite.
+    if (!class_exists('{className}')) {
+        require_once '{filename}';
+    }
+
     $result = new PHPUnit_Framework_TestResult;
     $result->collectRawCodeCoverageInformation({collectCodeCoverageInformation});
 
@@ -18,6 +28,7 @@ function __phpunit_run_isolated_test()
     );
 }
 
+{included_files}
 {constants}
 {globals}
 set_include_path('{include_path}');
@@ -26,9 +37,6 @@ if (isset($GLOBALS['__PHPUNIT_BOOTSTRAP'])) {
     require_once $GLOBALS['__PHPUNIT_BOOTSTRAP'];
     unset($GLOBALS['__PHPUNIT_BOOTSTRAP']);
 }
-
-require_once 'PHPUnit/Framework.php';
-require_once '{filename}';
 
 __phpunit_run_isolated_test()
 ?>
