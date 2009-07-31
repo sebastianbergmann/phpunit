@@ -14,7 +14,7 @@ PHPUnit %s by Sebastian Bergmann.
 
 ..
 
-Time: %i seconds
+Time: %i %s
 
 OK (2 tests, 5 assertions)
 

@@ -21,6 +21,6 @@ TAP version 13
 1..3
 
 
-Time: %i seconds
+Time: %i %s
 
 OK (3 tests, 3 assertions)
