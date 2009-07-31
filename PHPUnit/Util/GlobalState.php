@@ -170,6 +170,25 @@ class PHPUnit_Util_GlobalState
         self::$globals[$superGlobalArray] = array();
     }
 
+    public static function getConstantsAsString()
+    {
+        $constants = get_defined_constants(TRUE);
+        $result    = '';
+
+        if (isset($constants['user'])) {
+            foreach ($constants['user'] as $name => $value) {
+                $result .= sprintf(
+                  'if (!defined(\'%s\')) define(\'%s\', %s);' . "\n",
+                  $name,
+                  $name,
+                  var_export($value, TRUE)
+                );
+            }
+        }
+
+        return $result;
+    }
+
     public static function getGlobalsAsString()
     {
         $result            = '';
