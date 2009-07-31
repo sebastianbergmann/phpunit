@@ -219,8 +219,12 @@ class PHPUnit_Util_GlobalState
             }
         }
 
+        $blacklist   = $superGlobalArrays;
+        $blacklist[] = 'GLOBALS';
+        $blacklist[] = '_PEAR_Config_instance';
+
         foreach (array_keys($GLOBALS) as $key) {
-            if ($key != 'GLOBALS' && !in_array($key, $superGlobalArrays)) {
+            if (!in_array($key, $blacklist)) {
                 $result .= sprintf(
                   '$GLOBALS[\'%s\'] = %s;' . "\n",
                   $key,
