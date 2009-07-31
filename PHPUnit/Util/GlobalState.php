@@ -170,6 +170,18 @@ class PHPUnit_Util_GlobalState
         self::$globals[$superGlobalArray] = array();
     }
 
+    public static function getIncludedFilesAsString()
+    {
+        $files  = get_included_files();
+        $result = '';
+
+        for ($i = count($files) - 1; strpos($files[$i], 'PHPUnit') === FALSE; $i--) {
+            $result = 'require_once \'' . $files[$i] . "';\n" . $result;
+        }
+
+        return $result;
+    }
+
     public static function getConstantsAsString()
     {
         $constants = get_defined_constants(TRUE);

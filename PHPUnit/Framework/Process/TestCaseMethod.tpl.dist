@@ -18,6 +18,7 @@ function __phpunit_run_isolated_test()
     );
 }
 
+{included_files}
 {constants}
 {globals}
 set_include_path('{include_path}');
@@ -26,9 +27,6 @@ if (isset($GLOBALS['__PHPUNIT_BOOTSTRAP'])) {
     require_once $GLOBALS['__PHPUNIT_BOOTSTRAP'];
     unset($GLOBALS['__PHPUNIT_BOOTSTRAP']);
 }
-
-require_once 'PHPUnit/Framework.php';
-require_once '{filename}';
 
 __phpunit_run_isolated_test()
 ?>
