@@ -48,6 +48,7 @@ require_once 'PHPUnit/Framework.php';
 require_once 'PHPUnit/Util/Filter.php';
 require_once 'PHPUnit/Util/Printer.php';
 require_once 'PHPUnit/Util/Test.php';
+require_once 'PHPUnit/Util/Timer.php';
 
 PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
 
@@ -326,10 +327,15 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
     }
 
     /**
-     * @param  float   $timeElapsed
+     * @param float $timeElapsed
      */
     protected function printHeader($timeElapsed)
     {
+        if (isset($_SERVER['REQUEST_TIME'])) {
+            $timeElapsed = PHPUnit_Util_Timer::secondsToTimeString(time() -
+                           $_SERVER['REQUEST_TIME']);
+        }
+
         $this->write(
           sprintf(
             "%sTime: %s\n\n",
