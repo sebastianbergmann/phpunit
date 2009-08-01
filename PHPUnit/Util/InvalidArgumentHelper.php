@@ -64,11 +64,7 @@ class PHPUnit_Util_InvalidArgumentHelper
 {
     public static function factory($argument, $type)
     {
-        if (version_compare(PHP_VERSION, '5.2.5', '>=')) {
-            $stack = debug_backtrace(FALSE);
-        } else {
-            $stack = debug_backtrace();
-        }
+        $stack = debug_backtrace(FALSE);
 
         return new InvalidArgumentException(
           sprintf(
