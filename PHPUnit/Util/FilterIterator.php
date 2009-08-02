@@ -118,7 +118,10 @@ class PHPUnit_Util_FilterIterator extends FilterIterator
     {
         $filename = $this->getInnerIterator()->current()->getFilename();
 
-        if (strpos($filename, '.') === 0) {
+        if (strpos($filename, '.') === 0 ||
+            preg_match(
+              '=/\.[^/]*/=',
+              $this->getInnerIterator()->current()->getPathname())) {
             return FALSE;
         }
 
