@@ -1248,19 +1248,7 @@
     </dir>
     <dir name="Util">
      <dir name="Log">
-      <dir name="CodeCoverage">
-       <file baseinstalldir="/" name="Clover.php" role="php">
-        <tasks:replace from="@package_version@" to="version" type="package-info" />
-       </file>
-       <file baseinstalldir="/" name="Database.php" role="php">
-        <tasks:replace from="@package_version@" to="version" type="package-info" />
-       </file>
-      </dir>
-      <dir name="Database">
-       <file baseinstalldir="/" name="MySQL.sql" role="php" />
-       <file baseinstalldir="/" name="SQLite3.sql" role="php" />
-      </dir>
-      <file baseinstalldir="/" name="Database.php" role="php">
+      <file baseinstalldir="/" name="Clover.php" role="php">
        <tasks:replace from="@package_version@" to="version" type="package-info" />
       </file>
       <file baseinstalldir="/" name="JSON.php" role="php">
@@ -1407,9 +1395,6 @@
      <file baseinstalldir="/" name="InvalidArgumentHelper.php" role="php">
       <tasks:replace from="@package_version@" to="version" type="package-info" />
      </file>
-     <file baseinstalldir="/" name="PDO.php" role="php">
-      <tasks:replace from="@package_version@" to="version" type="package-info" />
-     </file>
      <file baseinstalldir="/" name="PHP.php" role="php">
       <tasks:replace from="@package_version@" to="version" type="package-info" />
       <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
@@ -1490,12 +1475,6 @@
    </extension>
    <extension>
     <name>pdo</name>
-   </extension>
-   <extension>
-    <name>pdo_mysql</name>
-   </extension>
-   <extension>
-    <name>pdo_sqlite</name>
    </extension>
    <extension>
     <name>soap</name>

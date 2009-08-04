@@ -113,10 +113,6 @@ class PHPUnit_TextUI_Command
       'story-html=' => NULL,
       'story-text=' => NULL,
       'tap' => NULL,
-      'test-db-dsn=' => NULL,
-      'test-db-log-info=' => NULL,
-      'test-db-log-prefix=' => NULL,
-      'test-db-log-rev=' => NULL,
       'testdox' => NULL,
       'testdox-html=' => NULL,
       'testdox-text=' => NULL,
@@ -434,42 +430,6 @@ class PHPUnit_TextUI_Command
                 }
                 break;
 
-                case '--test-db-dsn': {
-                    if (extension_loaded('pdo')) {
-                        $this->arguments['testDatabaseDSN'] = $option[1];
-                    } else {
-                        $this->showMessage('The PDO extension is not loaded.');
-                    }
-                }
-                break;
-
-                case '--test-db-log-info': {
-                    if (extension_loaded('pdo')) {
-                        $this->arguments['testDatabaseLogInfo'] = $option[1];
-                    } else {
-                        $this->showMessage('The PDO extension is not loaded.');
-                    }
-                }
-                break;
-
-                case '--test-db-log-rev': {
-                    if (extension_loaded('pdo')) {
-                        $this->arguments['testDatabaseLogRevision'] = $option[1];
-                    } else {
-                        $this->showMessage('The PDO extension is not loaded.');
-                    }
-                }
-                break;
-
-                case '--test-db-prefix': {
-                    if (extension_loaded('pdo')) {
-                        $this->arguments['testDatabasePrefix'] = $option[1];
-                    } else {
-                        $this->showMessage('The PDO extension is not loaded.');
-                    }
-                }
-                break;
-
                 case '--testdox': {
                     require_once 'PHPUnit/Util/TestDox/ResultPrinter/Text.php';
 
@@ -619,8 +579,7 @@ class PHPUnit_TextUI_Command
             $this->arguments['test']->addTest($test);
         }
 
-        if (!isset($this->arguments['test']) ||
-            (isset($this->arguments['testDatabaseLogRevision']) && !isset($this->arguments['testDatabaseDSN']))) {
+        if (!isset($this->arguments['test'])) {
             $this->showHelp();
             exit(PHPUnit_TextUI_TestRunner::EXCEPTION_EXIT);
         }
@@ -753,11 +712,6 @@ Usage: phpunit [switches] UnitTest [UnitTest.php]
 
   --coverage-html <dir>    Generate code coverage report in HTML format.
   --coverage-clover <file> Write code coverage data in Clover XML format.
-
-  --test-db-dsn <dsn>      DSN for the test database.
-  --test-db-log-rev <rev>  Revision information for database logging.
-  --test-db-prefix ...     Prefix that should be stripped from filenames.
-  --test-db-log-info ...   Additional information for database logging.
 
   --story-html <file>      Write Story/BDD results in HTML format to file.
   --story-text <file>      Write Story/BDD results in Text format to file.

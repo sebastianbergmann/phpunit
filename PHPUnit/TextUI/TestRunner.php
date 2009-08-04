@@ -290,29 +290,6 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
             );
         }
 
-        if (isset($arguments['testDatabaseDSN']) &&
-            isset($arguments['testDatabaseLogRevision']) &&
-            extension_loaded('pdo')) {
-            $writeToTestDatabase = TRUE;
-        } else {
-            $writeToTestDatabase = FALSE;
-        }
-
-        if ($writeToTestDatabase) {
-            $dbh = PHPUnit_Util_PDO::factory($arguments['testDatabaseDSN']);
-
-            require_once 'PHPUnit/Util/Log/Database.php';
-
-            $dbListener = PHPUnit_Util_Log_Database::getInstance(
-              $dbh,
-              $arguments['testDatabaseLogRevision'],
-              isset($arguments['testDatabaseLogInfo']) ? $arguments['testDatabaseLogInfo'] : ''
-            );
-
-            $result->addListener($dbListener);
-            $result->collectCodeCoverageInformation(TRUE);
-        }
-
         $suite->run(
           $result,
           $arguments['filter'],
@@ -332,29 +309,13 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
             if (isset($arguments['coverageClover'])) {
                 $this->printer->write("\nWriting code coverage data to XML file, this may take a moment.");
 
-                require_once 'PHPUnit/Util/Log/CodeCoverage/Clover.php';
+                require_once 'PHPUnit/Util/Log/Clover.php';
 
-                $writer = new PHPUnit_Util_Log_CodeCoverage_Clover(
+                $writer = new PHPUnit_Util_Log_Clover(
                   $arguments['coverageClover']
                 );
 
                 $writer->process($result);
-                $this->printer->write("\n");
-            }
-
-            if ($writeToTestDatabase) {
-                $this->printer->write("\nStoring code coverage data in database.\nThis may take a moment.");
-
-                require_once 'PHPUnit/Util/Log/CodeCoverage/Database.php';
-
-                $testDb = new PHPUnit_Util_Log_CodeCoverage_Database($dbh);
-                $testDb->storeCodeCoverage(
-                  $result,
-                  $dbListener->getRunId(),
-                  $arguments['testDatabaseLogRevision'],
-                  $arguments['testDatabasePrefix']
-                );
-
                 $this->printer->write("\n");
             }
 
@@ -489,12 +450,11 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
             );
         }
 
-        $arguments['debug']              = isset($arguments['debug'])              ? $arguments['debug']              : FALSE;
-        $arguments['filter']             = isset($arguments['filter'])             ? $arguments['filter']             : FALSE;
-        $arguments['listeners']          = isset($arguments['listeners'])          ? $arguments['listeners']          : array();
-        $arguments['testDatabasePrefix'] = isset($arguments['testDatabasePrefix']) ? $arguments['testDatabasePrefix'] : '';
-        $arguments['verbose']            = isset($arguments['verbose'])            ? $arguments['verbose']            : FALSE;
-        $arguments['wait']               = isset($arguments['wait'])               ? $arguments['wait']               : FALSE;
+        $arguments['debug']     = isset($arguments['debug'])     ? $arguments['debug']     : FALSE;
+        $arguments['filter']    = isset($arguments['filter'])    ? $arguments['filter']    : FALSE;
+        $arguments['listeners'] = isset($arguments['listeners']) ? $arguments['listeners'] : array();
+        $arguments['verbose']   = isset($arguments['verbose'])   ? $arguments['verbose']   : FALSE;
+        $arguments['wait']      = isset($arguments['wait'])      ? $arguments['wait']      : FALSE;
 
         if (isset($arguments['configuration'])) {
             $arguments['configuration']->handlePHPConfiguration();

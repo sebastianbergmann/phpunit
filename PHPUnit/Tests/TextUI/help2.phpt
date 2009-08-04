@@ -21,11 +21,6 @@ Usage: phpunit [switches] UnitTest [UnitTest.php]
   --coverage-html <dir>    Generate code coverage report in HTML format.
   --coverage-clover <file> Write code coverage data in Clover XML format.
 
-  --test-db-dsn <dsn>      DSN for the test database.
-  --test-db-log-rev <rev>  Revision information for database logging.
-  --test-db-prefix ...     Prefix that should be stripped from filenames.
-  --test-db-log-info ...   Additional information for database logging.
-
   --story-html <file>      Write Story/BDD results in HTML format to file.
   --story-text <file>      Write Story/BDD results in Text format to file.
 
