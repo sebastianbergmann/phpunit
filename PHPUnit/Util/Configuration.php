@@ -420,7 +420,7 @@ class PHPUnit_Util_Configuration
                 }
             }
 
-            else if ($type == 'junit') {
+            else if ($type == 'junit' || $type == 'test-xml') {
                 if ($log->hasAttribute('logIncompleteSkipped')) {
                     $result['logIncompleteSkipped'] = $this->getBoolean(
                       (string)$log->getAttribute('logIncompleteSkipped'),
