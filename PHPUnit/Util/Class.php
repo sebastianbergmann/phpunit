@@ -317,11 +317,16 @@ class PHPUnit_Util_Class
             throw PHPUnit_Util_InvalidArgumentHelper::factory(2, 'string');
         }
 
-        $class      = new ReflectionClass($className);
-        $attributes = $class->getStaticProperties();
+        $class = new ReflectionClass($className);
 
-        if (array_key_exists($attributeName, $attributes)) {
-            return $attributes[$attributeName];
+        while ($class) {
+            $attributes = $class->getStaticProperties();
+
+            if (array_key_exists($attributeName, $attributes)) {
+                return $attributes[$attributeName];
+            }
+
+            $class = $class->getParentClass();
         }
 
         throw new RuntimeException(
