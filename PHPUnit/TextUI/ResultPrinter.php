@@ -332,15 +332,20 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
     protected function printHeader($timeElapsed)
     {
         if (isset($_SERVER['REQUEST_TIME'])) {
-            $timeElapsed = PHPUnit_Util_Timer::secondsToTimeString(time() -
-                           $_SERVER['REQUEST_TIME']);
+            $timeElapsed = PHPUnit_Util_Timer::secondsToTimeString(
+              time() - $_SERVER['REQUEST_TIME']
+            );
+        } else {
+            $timeElapsed = PHPUnit_Util_Timer::secondsToTimeString(
+              $timeElapsed
+            );
         }
 
         $this->write(
           sprintf(
             "%sTime: %s\n\n",
             $this->verbose ? "\n" : "\n\n",
-            PHPUnit_Util_Timer::secondsToTimeString($timeElapsed)
+            $timeElapsed
           )
         );
     }
