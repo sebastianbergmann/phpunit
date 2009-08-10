@@ -36,7 +36,7 @@
  *
  * @category   Testing
  * @package    PHPUnit
- * @author     Sebastian Bergmann <sb@sebastian-bergmann.de>
+ * @author     Mike Lively <m@digitalsandwich.com>
  * @copyright  2002-2009 Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    SVN: $Id$
@@ -44,37 +44,50 @@
  * @since      File available since Release 3.4.0
  */
 
-require_once 'PHPUnit/Util/Filter.php';
-
-PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
-
 /**
- *
+ * Delegates database extension commands to the appropriate mode classes.
  *
  * @category   Testing
  * @package    PHPUnit
- * @author     Sebastian Bergmann <sb@sebastian-bergmann.de>
- * @copyright  2002-2009 Sebastian Bergmann <sb@sebastian-bergmann.de>
+ * @author     Mike Lively <m@digitalsandwich.com>
+ * @copyright  2009 Mike Lively <m@digitalsandwich.com>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    Release: @package_version@
- * @link       http://www.phpunit.de/
+ * @link       http://www.phpunit.de//**
  * @since      Class available since Release 3.4.0
  */
-class PHPUnit_Util_InvalidArgumentHelper
+class PHPUnit_Extensions_Database_UI_Command
 {
-    public static function factory($argument, $type)
-    {
-        $stack = debug_backtrace(FALSE);
+    /**
+     * @var PHPUnit_Extensions_Database_UI_IModeFactory
+     */
+    protected $modeFactory;
 
-        return new InvalidArgumentException(
-          sprintf(
-            'Argument #%d of %s:%s() is no %s',
-            $argument,
-            $stack[1]['class'],
-            $stack[1]['function'],
-            $type
-          )
-        );
+    /**
+     * @param PHPUnit_Extensions_Database_UI_IModeFactory $modeFactory
+     */
+    public function __construct(PHPUnit_Extensions_Database_UI_IModeFactory $modeFactory)
+    {
+        $this->modeFactory = $modeFactory;
+    }
+
+    /**
+     * Executes the database extension ui.
+     *
+     * @param PHPUnit_Extensions_Database_UI_IMedium $medium
+     * @param PHPUnit_Extensions_Database_UI_Context $context
+     */
+    public function main(PHPUnit_Extensions_Database_UI_IMedium $medium, PHPUnit_Extensions_Database_UI_Context $context)
+    {
+        try {
+            $medium->buildContext($context);
+            $mode = $this->modeFactory->getMode($context->getMode());
+            $mode->execute($context->getModeArguments(), $medium);
+
+        } catch (Exception $e) {
+            $medium->handleException($e);
+        }
     }
 }
+
 ?>

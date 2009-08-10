@@ -41,20 +41,16 @@
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    SVN: $Id$
  * @link       http://www.phpunit.de/
- * @since      File available since Release 3.2.0
+ * @since      File available since Release 3.4.0
  */
 
-require_once 'PHPUnit/Framework.php';
-require_once 'PHPUnit/Util/Filter.php';
-
-require_once 'PHPUnit/Extensions/Database/DataSet/IPersistable.php';
-require_once 'PHPUnit/Util/YAML/sfYaml.class.php';
-
-PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
-
+require_once ('PHPUnit/Extensions/Database/UI/IMedium.php');
 
 /**
- * A yaml dataset persistor
+ * A text medium for the database extension tool.
+ *
+ * This class builds the call context based on command line parameters and
+ * prints output to stdout and stderr as appropriate.
  *
  * @category   Testing
  * @package    PHPUnit
@@ -63,46 +59,85 @@ PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    Release: @package_version@
  * @link       http://www.phpunit.de/
- * @since      Class available since Release 3.2.0
+ * @since      Class available since Release 3.4.0
  */
-class PHPUnit_Extensions_Database_DataSet_Persistors_Yaml implements PHPUnit_Extensions_Database_DataSet_IPersistable
+class PHPUnit_Extensions_Database_UI_Mediums_Text implements PHPUnit_Extensions_Database_UI_IMedium
 {
+    /**
+     * @var array
+     */
+    protected $arguments;
+
     /**
      * @var string
      */
-    protected $filename;
+    protected $command;
 
     /**
-     * Sets the filename that this persistor will save to.
-     *
-     * @param string $filename
+     * @param array $arguments
      */
-    public function setFileName($filename)
+    public function __construct(Array $arguments)
     {
-        $this->filename = $filename;
+        $this->arguments = $arguments;
     }
 
     /**
-     * Writes the dataset to a yaml file
+     * Builds the context for the application.
      *
-     * @param PHPUnit_Extensions_Database_DataSet_IDataSet $dataset
+     * @param PHPUnit_Extensions_Database_UI_Context $context
      */
-    public function write(PHPUnit_Extensions_Database_DataSet_IDataSet $dataset)
+    public function buildContext(PHPUnit_Extensions_Database_UI_Context $context)
     {
-        $phpArr = array();
+        $arguments = $this->arguments;
+        $this->command = array_shift($arguments);
 
-        foreach ($dataset as $table)
-        {
-            $tableName = $table->getTableMetaData()->getTableName();
-            $phpArr[$tableName] = array();
+        $context->setMode(array_shift($arguments));
+        $context->setModeArguments($arguments);
+    }
 
-            for ($i = 0; $i < $table->getRowCount(); $i++)
-            {
-                $phpArr[$tableName][] = $table->getRow($i);
+    /**
+     * Handles the displaying of exceptions received from the application.
+     *
+     * @param Exception $e
+     */
+    public function handleException(Exception $e)
+    {
+        try {
+            throw $e;
+        } catch (PHPUnit_Extensions_Database_UI_InvalidModeException $invalidMode) {
+            if ($invalidMode->getMode() == '') {
+                $this->error('Please Specify a Command!' . PHP_EOL);
+            } else {
+                $this->error('Command Does Not Exist: ' . $invalidMode->getMode() . PHP_EOL);
             }
-        }
+            $this->error('Valid Commands:' . PHP_EOL);
 
-        file_put_contents($this->filename, sfYaml::dump($phpArr, 3));
+            foreach ($invalidMode->getValidModes() as $mode) {
+                $this->error('    ' . $mode . PHP_EOL);
+            }
+        } catch (Exception $e) {
+            $this->error('Unknown Error: ' . $e->getMessage() . PHP_EOL);
+        }
+    }
+
+    /**
+     * Prints the message to stdout.
+     *
+     * @param string $message
+     */
+    public function output($message)
+    {
+        echo $message;
+    }
+
+    /**
+     * Prints the message to stderr
+     *
+     * @param string $message
+     */
+    public function error($message)
+    {
+        fputs(STDERR, $message);
     }
 }
 

@@ -238,7 +238,7 @@ class PHPUnit_Util_Configuration
         if (!isset(self::$instances[$realpath])) {
             self::$instances[$realpath] = new PHPUnit_Util_Configuration($realpath);
         }
- 
+
         return self::$instances[$realpath];
     }
 

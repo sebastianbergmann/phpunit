@@ -846,7 +846,7 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
     }
 
     /**
-     * Sets 
+     * Sets
      *
      * @param  array $dependencyInput
      * @since  Method available since Release 3.4.0

@@ -36,45 +36,48 @@
  *
  * @category   Testing
  * @package    PHPUnit
- * @author     Sebastian Bergmann <sb@sebastian-bergmann.de>
+ * @author     Mike Lively <m@digitalsandwich.com>
  * @copyright  2002-2009 Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    SVN: $Id$
  * @link       http://www.phpunit.de/
- * @since      File available since Release 3.4.0
+ * @since      File available since Release 3.4.0CSV
  */
 
-require_once 'PHPUnit/Util/Filter.php';
-
-PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
+require_once ('PHPUnit/Extensions/Database/DataSet/ISpec.php');
+require_once ('PHPUnit/Extensions/Database/DataSet/FlatXmlDataSet.php');
 
 /**
+ * Creates a FlatXML dataset based off of a spec string.
  *
+ * The format of the spec string is as follows:
+ *
+ * <filename>
+ *
+ * The filename should be the location of a flat xml file relative to the
+ * current working directory.
  *
  * @category   Testing
  * @package    PHPUnit
- * @author     Sebastian Bergmann <sb@sebastian-bergmann.de>
- * @copyright  2002-2009 Sebastian Bergmann <sb@sebastian-bergmann.de>
+ * @author     Mike Lively <m@digitalsandwich.com>
+ * @copyright  2009 Mike Lively <m@digitalsandwich.com>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    Release: @package_version@
- * @link       http://www.phpunit.de/
+ * @link       http://www.phpunit.de//**
  * @since      Class available since Release 3.4.0
  */
-class PHPUnit_Util_InvalidArgumentHelper
+class PHPUnit_Extensions_Database_DataSet_Specs_FlatXml implements PHPUnit_Extensions_Database_DataSet_ISpec
 {
-    public static function factory($argument, $type)
+    /**
+     * Creates Flat XML Data Set from a data set spec.
+     *
+     * @param string $dataSetSpec
+     * @return PHPUnit_Extensions_Database_DataSet_FlatXmlDataSet
+     */
+    public function getDataSet($dataSetSpec)
     {
-        $stack = debug_backtrace(FALSE);
-
-        return new InvalidArgumentException(
-          sprintf(
-            'Argument #%d of %s:%s() is no %s',
-            $argument,
-            $stack[1]['class'],
-            $stack[1]['function'],
-            $type
-          )
-        );
+        return new PHPUnit_Extensions_Database_DataSet_FlatXmlDataSet($dataSetSpec);
     }
 }
+
 ?>

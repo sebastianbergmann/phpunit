@@ -123,11 +123,11 @@ asdflkjsadf asdfsadfhl "adsf, halsdf" sadfhlasdf'
         ));
 
         $expectedDataSet = new PHPUnit_Extensions_Database_DataSet_DefaultDataSet(array($table1, $table2));
-        
+
         $csvDataSet = new PHPUnit_Extensions_Database_DataSet_CsvDataSet();
         $csvDataSet->addTable('table1', dirname(__FILE__).'/../_files/CsvDataSets/table1.csv');
         $csvDataSet->addTable('table2', dirname(__FILE__).'/../_files/CsvDataSets/table2.csv');
-        
+
         PHPUnit_Extensions_Database_TestCase::assertDataSetsEqual($expectedDataSet, $csvDataSet);
     }
 }

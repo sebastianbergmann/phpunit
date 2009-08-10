@@ -46,7 +46,36 @@
         <file baseinstalldir="/" name="Abstract.php" role="php">
          <tasks:replace from="@package_version@" to="version" type="package-info" />
         </file>
+        <file baseinstalldir="/" name="Factory.php" role="php">
+         <tasks:replace from="@package_version@" to="version" type="package-info" />
+        </file>
         <file baseinstalldir="/" name="FlatXml.php" role="php">
+         <tasks:replace from="@package_version@" to="version" type="package-info" />
+        </file>
+        <file baseinstalldir="/" name="Xml.php" role="php">
+         <tasks:replace from="@package_version@" to="version" type="package-info" />
+        </file>
+        <file baseinstalldir="/" name="Yaml.php" role="php">
+         <tasks:replace from="@package_version@" to="version" type="package-info" />
+        </file>
+       </dir>
+       <dir name="Specs">
+        <file baseinstalldir="/" name="Csv.php" role="php">
+         <tasks:replace from="@package_version@" to="version" type="package-info" />
+        </file>
+        <file baseinstalldir="/" name="DbQuery.php" role="php">
+         <tasks:replace from="@package_version@" to="version" type="package-info" />
+        </file>
+        <file baseinstalldir="/" name="DbTable.php" role="php">
+         <tasks:replace from="@package_version@" to="version" type="package-info" />
+        </file>
+        <file baseinstalldir="/" name="Factory.php" role="php">
+         <tasks:replace from="@package_version@" to="version" type="package-info" />
+        </file>
+        <file baseinstalldir="/" name="FlatXml.php" role="php">
+         <tasks:replace from="@package_version@" to="version" type="package-info" />
+        </file>
+        <file baseinstalldir="/" name="IFactory.php" role="php">
          <tasks:replace from="@package_version@" to="version" type="package-info" />
         </file>
         <file baseinstalldir="/" name="Xml.php" role="php">
@@ -96,6 +125,9 @@
         <tasks:replace from="@package_version@" to="version" type="package-info" />
        </file>
        <file baseinstalldir="/" name="IPersistable.php" role="php">
+        <tasks:replace from="@package_version@" to="version" type="package-info" />
+       </file>
+       <file baseinstalldir="/" name="ISpec.php" role="php">
         <tasks:replace from="@package_version@" to="version" type="package-info" />
        </file>
        <file baseinstalldir="/" name="ITable.php" role="php">
@@ -222,10 +254,54 @@
         <tasks:replace from="@package_version@" to="version" type="package-info" />
        </file>
       </dir>
+      <dir name="UI">
+       <dir name="Mediums">
+        <file baseinstalldir="/" name="Text.php" role="php">
+         <tasks:replace from="@package_version@" to="version" type="package-info" />
+        </file>
+       </dir>
+       <dir name="Modes">
+        <dir name="ExportDataSet">
+         <file baseinstalldir="/" name="Arguments.php" role="php">
+          <tasks:replace from="@package_version@" to="version" type="package-info" />
+         </file>
+        </dir>
+        <file baseinstalldir="/" name="ExportDataSet.php" role="php">
+         <tasks:replace from="@package_version@" to="version" type="package-info" />
+        </file>
+       </dir>
+       <file baseinstalldir="/" name="Command.php" role="php">
+        <tasks:replace from="@package_version@" to="version" type="package-info" />
+       </file>
+       <file baseinstalldir="/" name="Context.php" role="php">
+        <tasks:replace from="@package_version@" to="version" type="package-info" />
+       </file>
+       <file baseinstalldir="/" name="IMedium.php" role="php">
+        <tasks:replace from="@package_version@" to="version" type="package-info" />
+       </file>
+       <file baseinstalldir="/" name="IMediumPrinter.php" role="php">
+        <tasks:replace from="@package_version@" to="version" type="package-info" />
+       </file>
+       <file baseinstalldir="/" name="IModeFactory.php" role="php">
+        <tasks:replace from="@package_version@" to="version" type="package-info" />
+       </file>
+       <file baseinstalldir="/" name="IMode.php" role="php">
+        <tasks:replace from="@package_version@" to="version" type="package-info" />
+       </file>
+       <file baseinstalldir="/" name="InvalidModeException.php" role="php">
+        <tasks:replace from="@package_version@" to="version" type="package-info" />
+       </file>
+       <file baseinstalldir="/" name="ModeFactory.php" role="php">
+        <tasks:replace from="@package_version@" to="version" type="package-info" />
+       </file>
+      </dir>
       <file baseinstalldir="/" name="AbstractTester.php" role="php">
        <tasks:replace from="@package_version@" to="version" type="package-info" />
       </file>
       <file baseinstalldir="/" name="DefaultTester.php" role="php">
+       <tasks:replace from="@package_version@" to="version" type="package-info" />
+      </file>
+      <file baseinstalldir="/" name="IDatabaseListConsumer.php" role="php">
        <tasks:replace from="@package_version@" to="version" type="package-info" />
       </file>
       <file baseinstalldir="/" name="ITester.php" role="php">
@@ -1554,12 +1630,16 @@
   <filelist>
    <install as="phpunit" name="phpunit.php" />
    <install as="phpunit.bat" name="phpunit.bat" />
+   <install as="dbunit" name="dbunit.php" />
+   <install as="dbunit.bat" name="dbunit.bat" />
   </filelist>
  </phprelease>
  <phprelease>
   <filelist>
    <install as="phpunit" name="phpunit.php" />
    <ignore name="phpunit.bat" />
+   <install as="dbunit" name="dbunit.php" />
+   <ignore name="dbunit.bat" />
   </filelist>
  </phprelease>
 </package>

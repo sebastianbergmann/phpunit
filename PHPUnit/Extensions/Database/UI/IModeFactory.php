@@ -1,6 +1,6 @@
-#!/usr/bin/env php
 <?php
-/* PHPUnit
+/**
+ * PHPUnit
  *
  * Copyright (c) 2002-2009, Sebastian Bergmann <sb@sebastian-bergmann.de>.
  * All rights reserved.
@@ -29,25 +29,49 @@
  * INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING,
  * BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
  * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
- * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRIC
+ * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
  * LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  *
- * $Id$
+ * @category   Testing
+ * @package    PHPUnit
+ * @author     Mike Lively <m@digitalsandwich.com>
+ * @copyright  2002-2009 Sebastian Bergmann <sb@sebastian-bergmann.de>
+ * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
+ * @version    SVN: $Id$
+ * @link       http://www.phpunit.de/
+ * @since      File available since Release 3.4.0
  */
 
-if (strpos('@php_bin@', '@php_bin') === 0) {
-    set_include_path(dirname(__FILE__) . PATH_SEPARATOR . get_include_path());
+/**
+ * Defines the interface necessary to create new mode factories
+ *
+ * @category   Testing
+ * @package    PHPUnit
+ * @author     Mike Lively <m@digitalsandwich.com>
+ * @copyright  2009 Mike Lively <m@digitalsandwich.com>
+ * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
+ * @version    Release: @package_version@
+ * @link       http://www.phpunit.de//**
+ * @since      Class available since Release 3.4.0
+ */
+interface PHPUnit_Extensions_Database_UI_IModeFactory
+{
+    /**
+     * Generates a new mode based on a given name.
+     *
+     * @param string $mode
+     * @return PHPUnit_Extensions_Database_UI_IMode
+     */
+    public function getMode($mode);
+
+    /**
+     * Returns the names of valid modes this factory can create.
+     *
+     * @return array
+     */
+    public function getModeList();
 }
 
-require_once 'PHPUnit/Util/Filter.php';
-
-PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
-
-require 'PHPUnit/TextUI/Command.php';
-
-define('PHPUnit_MAIN_METHOD', 'PHPUnit_TextUI_Command::main');
-
-PHPUnit_TextUI_Command::main();
 ?>

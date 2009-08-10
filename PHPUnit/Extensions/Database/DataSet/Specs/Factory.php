@@ -36,7 +36,7 @@
  *
  * @category   Testing
  * @package    PHPUnit
- * @author     Sebastian Bergmann <sb@sebastian-bergmann.de>
+ * @author     Mike Lively <m@digitalsandwich.com>
  * @copyright  2002-2009 Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    SVN: $Id$
@@ -44,37 +44,59 @@
  * @since      File available since Release 3.4.0
  */
 
-require_once 'PHPUnit/Util/Filter.php';
-
-PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
+require_once ('PHPUnit/Extensions/Database/DataSet/Specs/IFactory.php');
 
 /**
- *
+ * Creates the appropriate DataSet Spec based on a given type.
  *
  * @category   Testing
  * @package    PHPUnit
- * @author     Sebastian Bergmann <sb@sebastian-bergmann.de>
- * @copyright  2002-2009 Sebastian Bergmann <sb@sebastian-bergmann.de>
+ * @author     Mike Lively <m@digitalsandwich.com>
+ * @copyright  2009 Mike Lively <m@digitalsandwich.com>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    Release: @package_version@
- * @link       http://www.phpunit.de/
+ * @link       http://www.phpunit.de//**
  * @since      Class available since Release 3.4.0
  */
-class PHPUnit_Util_InvalidArgumentHelper
+class PHPUnit_Extensions_Database_DataSet_Specs_Factory implements PHPUnit_Extensions_Database_DataSet_Specs_IFactory
 {
-    public static function factory($argument, $type)
+    /**
+     * Returns the data set
+     *
+     * @param string $type
+     * @return PHPUnit_Extensions_Database_DataSet_ISpec
+     */
+    public function getDataSetSpecByType($type)
     {
-        $stack = debug_backtrace(FALSE);
+        switch ($type) {
+            case 'xml':
+                require_once ('PHPUnit/Extensions/Database/DataSet/Specs/Xml.php');
+                return new PHPUnit_Extensions_Database_DataSet_Specs_Xml();
 
-        return new InvalidArgumentException(
-          sprintf(
-            'Argument #%d of %s:%s() is no %s',
-            $argument,
-            $stack[1]['class'],
-            $stack[1]['function'],
-            $type
-          )
-        );
+            case 'flatxml':
+                require_once ('PHPUnit/Extensions/Database/DataSet/Specs/FlatXml.php');
+                return new PHPUnit_Extensions_Database_DataSet_Specs_FlatXml();
+
+            case 'csv':
+                require_once ('PHPUnit/Extensions/Database/DataSet/Specs/Csv.php');
+                return new PHPUnit_Extensions_Database_DataSet_Specs_Csv();
+
+            case 'yaml':
+                require_once ('PHPUnit/Extensions/Database/DataSet/Specs/Yaml.php');
+                return new PHPUnit_Extensions_Database_DataSet_Specs_Yaml();
+
+            case 'dbtable':
+                require_once ('PHPUnit/Extensions/Database/DataSet/Specs/DbTable.php');
+                return new PHPUnit_Extensions_Database_DataSet_Specs_DbTable();
+
+            case 'dbquery':
+                require_once ('PHPUnit/Extensions/Database/DataSet/Specs/DbQuery.php');
+                return new PHPUnit_Extensions_Database_DataSet_Specs_DbQuery();
+
+            default:
+                throw new Exception("I don't know what you want from me.");
+        }
     }
 }
+
 ?>
