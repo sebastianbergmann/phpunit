@@ -36,7 +36,7 @@
  *
  * @category   Testing
  * @package    PHPUnit
- * @author     Sebastian Bergmann <sb@sebastian-bergmann.de>
+ * @author     Mike Lively <m@digitalsandwich.com>
  * @copyright  2002-2009 Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    SVN: $Id$
@@ -44,37 +44,57 @@
  * @since      File available since Release 3.4.0
  */
 
-require_once 'PHPUnit/Util/Filter.php';
-
-PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
-
 /**
- *
+ * An exception thrown when an invalid mode is requested from a mode factory.
  *
  * @category   Testing
  * @package    PHPUnit
- * @author     Sebastian Bergmann <sb@sebastian-bergmann.de>
- * @copyright  2002-2009 Sebastian Bergmann <sb@sebastian-bergmann.de>
+ * @author     Mike Lively <m@digitalsandwich.com>
+ * @copyright  2009 Mike Lively <m@digitalsandwich.com>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    Release: @package_version@
- * @link       http://www.phpunit.de/
+ * @link       http://www.phpunit.de//**
  * @since      Class available since Release 3.4.0
  */
-class PHPUnit_Util_InvalidArgumentHelper
+class PHPUnit_Extensions_Database_UI_InvalidModeException extends LogicException
 {
-    public static function factory($argument, $type)
-    {
-        $stack = debug_backtrace(FALSE);
+    /**
+     * @var string
+     */
+    protected $mode;
 
-        return new InvalidArgumentException(
-          sprintf(
-            'Argument #%d of %s:%s() is no %s',
-            $argument,
-            $stack[1]['class'],
-            $stack[1]['function'],
-            $type
-          )
-        );
+    /**
+     * @var PHPUnit_Extensions_Database_UI_IModeFactory
+     */
+    protected $modeFactory;
+
+    /**
+     * @param string $mode
+     * @param string $msg
+     * @param PHPUnit_Extensions_Database_UI_IModeFactory $modeFactory
+     */
+    public function __construct($mode, $msg, PHPUnit_Extensions_Database_UI_IModeFactory $modeFactory)
+    {
+        $this->mode = $mode;
+        $this->modeFactory = $modeFactory;
+        parent::__construct($msg);
+    }
+
+    /**
+     * @return string
+     */
+    public function getMode()
+    {
+        return $this->mode;
+    }
+
+    /**
+     * @return array
+     */
+    public function getValidModes()
+    {
+        return $this->modeFactory->getModeList();
     }
 }
+
 ?>

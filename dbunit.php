@@ -41,13 +41,25 @@ if (strpos('@php_bin@', '@php_bin') === 0) {
     set_include_path(dirname(__FILE__) . PATH_SEPARATOR . get_include_path());
 }
 
+if (isset($_ENV['PWD'])) {
+    chdir($_ENV['PWD']);
+}
+
 require_once 'PHPUnit/Util/Filter.php';
 
 PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
 
-require 'PHPUnit/TextUI/Command.php';
+require_once 'PHPUnit/Extensions/Database/UI/Command.php';
+require_once 'PHPUnit/Extensions/Database/UI/ModeFactory.php';
+require_once 'PHPUnit/Extensions/Database/UI/Mediums/Text.php';
+require_once 'PHPUnit/Extensions/Database/UI/Context.php';
 
-define('PHPUnit_MAIN_METHOD', 'PHPUnit_TextUI_Command::main');
+$command = new PHPUnit_Extensions_Database_UI_Command(
+	new PHPUnit_Extensions_Database_UI_ModeFactory()
+);
 
-PHPUnit_TextUI_Command::main();
+$command->main(
+	new PHPUnit_Extensions_Database_UI_Mediums_Text($_SERVER['argv']),
+	new PHPUnit_Extensions_Database_UI_Context()
+);
 ?>

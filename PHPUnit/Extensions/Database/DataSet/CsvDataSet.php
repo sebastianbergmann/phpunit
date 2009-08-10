@@ -55,7 +55,7 @@ PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
 
 /**
  * Creates CsvDataSets.
- * 
+ *
  * You can incrementally add CSV files as tables to your datasets
  *
  * @category   Testing
@@ -76,7 +76,7 @@ class PHPUnit_Extensions_Database_DataSet_CsvDataSet extends PHPUnit_Extensions_
 
     /**
      * Creates a new CSV dataset
-     * 
+     *
      * You can pass in the parameters for how csv files will be read.
      *
      * @param string $delimiter
@@ -92,8 +92,8 @@ class PHPUnit_Extensions_Database_DataSet_CsvDataSet extends PHPUnit_Extensions_
 
     /**
      * Adds a table to the dataset
-     * 
-     * The table will be given the passed name. $csvFile should be a path to 
+     *
+     * The table will be given the passed name. $csvFile should be a path to
      * a valid csv file (based on the arguments passed to the constructor.)
      *
      * @param string $tableName
