@@ -270,7 +270,7 @@ class PHPUnit_Util_Class
 
         if (strpos($className, '\\') !== FALSE) {
             $result['namespace'] = self::arrayToName(
-              explode('\\', $className), '\\'
+              explode('\\', $className)
             );
         }
 
@@ -418,14 +418,38 @@ class PHPUnit_Util_Class
     }
 
     /**
+     *
+     *
+     * @param  string $className
+     * @return array
+     * @since  Method available since Release 3.4.0
+     */
+    public static function parseFullyQualifiedClassName($className)
+    {
+        $result = array(
+          'namespace'               => '',
+          'className'               => $className,
+          'fullyQualifiedClassName' => $className
+        );
+
+        if (strpos($className, '\\') !== FALSE) {
+            $tmp                 = explode('\\', $className);
+            $result['className'] = $tmp[count($tmp)-1];
+            $result['namespace'] = self::arrayToName($tmp);
+        }
+
+        return $result;
+    }
+
+    /**
      * Returns the package information of a user-defined class.
      *
-     * @param  array $parts
+     * @param  array  $parts
      * @param  string $join
      * @return string
      * @since  Method available since Release 3.2.12
      */
-    protected static function arrayToName(array $parts, $join)
+    protected static function arrayToName(array $parts, $join = '\\')
     {
         $result = '';
 

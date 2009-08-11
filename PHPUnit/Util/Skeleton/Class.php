@@ -101,10 +101,9 @@ class PHPUnit_Util_Skeleton_Class extends PHPUnit_Util_Skeleton
             $outSourceFile = dirname($inSourceFile) . DIRECTORY_SEPARATOR . $outClassName . '.php';
         }
 
-        $this->inClassName   = $inClassName;
-        $this->inSourceFile  = $inSourceFile;
-        $this->outClassName  = $outClassName;
-        $this->outSourceFile = $outSourceFile;
+        parent::__construct(
+          $inClassName, $inSourceFile, $outClassName, $outSourceFile
+        );
     }
 
     /**
@@ -148,7 +147,7 @@ class PHPUnit_Util_Skeleton_Class extends PHPUnit_Util_Skeleton
 
         $classTemplate->setVar(
           array(
-            'className' => $this->outClassName,
+            'className' => $this->outClassName['fullyQualifiedClassName'],
             'methods'   => $methods,
             'date'      => date('Y-m-d'),
             'time'      => date('H:i:s')
@@ -225,7 +224,7 @@ class PHPUnit_Util_Skeleton_Class extends PHPUnit_Util_Skeleton
 
                 case T_STRING: {
                     if ($inNew) {
-                        if ($_value == $this->outClassName) {
+                        if ($_value == $this->outClassName['fullyQualifiedClassName']) {
                             $variables[] = $this->findVariableName($i);
                         }
                     }
