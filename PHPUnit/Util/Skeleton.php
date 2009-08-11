@@ -95,15 +95,24 @@ abstract class PHPUnit_Util_Skeleton
      */
     public function __construct($inClassName, $inSourceFile = '', $outClassName = '', $outSourceFile = '')
     {
-        $this->inSourceFile  = $inSourceFile;
-        $this->outSourceFile = $outSourceFile;
-
         $this->inClassName = PHPUnit_Util_Class::parseFullyQualifiedClassName(
           $inClassName
         );
 
         $this->outClassName = PHPUnit_Util_Class::parseFullyQualifiedClassName(
           $outClassName
+        );
+
+        $this->inSourceFile = str_replace(
+          $this->inClassName['fullyQualifiedClassName'],
+          $this->inClassName['className'],
+          $inSourceFile
+        );
+
+        $this->outSourceFile = str_replace(
+          $this->outClassName['fullyQualifiedClassName'],
+          $this->outClassName['className'],
+          $outSourceFile
         );
     }
 
