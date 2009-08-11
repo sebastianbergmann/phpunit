@@ -342,9 +342,16 @@ class PHPUnit_Util_Skeleton_Test extends PHPUnit_Util_Skeleton
             $requireClassFile = '';
         }
 
+        if ($this->outClassName['namespace'] != '') {
+            $namespace = "\nnamespace " . $this->outClassName['namespace'] . ";\n";
+        } else {
+            $namespace = '';
+        }
+
         $classTemplate->setVar(
           array(
-            'className'        => $this->inClassName['fullyQualifiedClassName'],
+            'namespace'        => $namespace,
+            'className'        => $this->outClassName['className'],
             'requireClassFile' => $requireClassFile,
             'methods'          => $methods . $incompleteMethods,
             'date'             => date('Y-m-d'),
