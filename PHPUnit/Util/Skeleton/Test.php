@@ -160,7 +160,7 @@ class PHPUnit_Util_Skeleton_Test extends PHPUnit_Util_Skeleton
      */
     public function generate($verbose = FALSE)
     {
-        $class             = new ReflectionClass($this->inClassName);
+        $class             = new ReflectionClass($this->inClassName['fullyQualifiedClassName']);
         $methods           = '';
         $incompleteMethods = '';
 
@@ -168,7 +168,7 @@ class PHPUnit_Util_Skeleton_Test extends PHPUnit_Util_Skeleton
             if (!$method->isConstructor() &&
                 !$method->isAbstract() &&
                  $method->isPublic() &&
-                 $method->getDeclaringClass()->getName() == $this->inClassName) {
+                 $method->getDeclaringClass()->getName() == $this->inClassName['fullyQualifiedClassName']) {
                 $assertAnnotationFound = FALSE;
 
                 if (preg_match_all('/@assert(.*)$/Um', $method->getDocComment(), $annotations)) {
@@ -288,7 +288,7 @@ class PHPUnit_Util_Skeleton_Test extends PHPUnit_Util_Skeleton
                                 'assertion'      => isset($assertion) ? $assertion : '',
                                 'expected'       => $matches[3],
                                 'origMethodName' => $origMethodName,
-                                'className'      => $this->inClassName,
+                                'className'      => $this->inClassName['fullyQualifiedClassName'],
                                 'methodName'     => $methodName
                               )
                             );
@@ -344,7 +344,7 @@ class PHPUnit_Util_Skeleton_Test extends PHPUnit_Util_Skeleton
 
         $classTemplate->setVar(
           array(
-            'className'        => $this->inClassName,
+            'className'        => $this->inClassName['fullyQualifiedClassName'],
             'requireClassFile' => $requireClassFile,
             'methods'          => $methods . $incompleteMethods,
             'date'             => date('Y-m-d'),

@@ -45,6 +45,7 @@
  */
 
 require_once 'PHPUnit/Util/Filter.php';
+require_once 'PHPUnit/Util/Class.php';
 require_once 'PHPUnit/Util/Template.php';
 
 PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
@@ -64,22 +65,22 @@ PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
 abstract class PHPUnit_Util_Skeleton
 {
     /**
-     * @var    string
+     * @var array
      */
     protected $inClassName;
 
     /**
-     * @var    string
+     * @var string
      */
     protected $inSourceFile;
 
     /**
-     * @var    string
+     * @var array
      */
     protected $outClassName;
 
     /**
-     * @var    string
+     * @var string
      */
     protected $outSourceFile;
 
@@ -94,10 +95,16 @@ abstract class PHPUnit_Util_Skeleton
      */
     public function __construct($inClassName, $inSourceFile = '', $outClassName = '', $outSourceFile = '')
     {
-        $this->inClassName   = $inClassName;
         $this->inSourceFile  = $inSourceFile;
-        $this->outClassName  = $outClassName;
         $this->outSourceFile = $outSourceFile;
+
+        $this->inClassName = PHPUnit_Util_Class::parseFullyQualifiedClassName(
+          $inClassName
+        );
+
+        $this->outClassName = PHPUnit_Util_Class::parseFullyQualifiedClassName(
+          $outClassName
+        );
     }
 
     /**
