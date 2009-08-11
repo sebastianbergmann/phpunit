@@ -112,7 +112,7 @@ abstract class PHPUnit_Util_Skeleton
      */
     public function getOutClassName()
     {
-        return $this->outClassName;
+        return $this->outClassName['fullyQualifiedClassName'];
     }
 
     /**
