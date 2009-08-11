@@ -430,7 +430,7 @@ class PHPUnit_Util_Class
 
         if (strpos($className, '\\') !== FALSE) {
             $tmp                 = explode('\\', $className);
-            $result['className'] = $tmp[0];
+            $result['className'] = $tmp[count($tmp)-1];
             $result['namespace'] = self::arrayToName($tmp);
         }
 
