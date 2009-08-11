@@ -351,7 +351,8 @@ class PHPUnit_Util_Skeleton_Test extends PHPUnit_Util_Skeleton
         $classTemplate->setVar(
           array(
             'namespace'        => $namespace,
-            'className'        => $this->outClassName['className'],
+            'className'        => $this->inClassName['className'],
+            'testClassName'    => $this->outClassName['className'],
             'requireClassFile' => $requireClassFile,
             'methods'          => $methods . $incompleteMethods,
             'date'             => date('Y-m-d'),
