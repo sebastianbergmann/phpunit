@@ -45,6 +45,7 @@
  */
 
 require_once 'PHPUnit/Util/Filter.php';
+require_once 'PHPUnit/Util/Class.php';
 require_once 'PHPUnit/Util/Template.php';
 
 PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
@@ -64,31 +65,63 @@ PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
 abstract class PHPUnit_Util_Skeleton
 {
     /**
-     * @var    string
+     * @var array
      */
     protected $inClassName;
 
     /**
-     * @var    string
+     * @var string
      */
     protected $inSourceFile;
 
     /**
-     * @var    string
+     * @var array
      */
     protected $outClassName;
 
     /**
-     * @var    string
+     * @var string
      */
     protected $outSourceFile;
+
+    /**
+     * Constructor.
+     *
+     * @param string $inClassName
+     * @param string $inSourceFile
+     * @param string $outClassName
+     * @param string $outSourceFile
+     * @since Method available since Release 3.4.0
+     */
+    public function __construct($inClassName, $inSourceFile = '', $outClassName = '', $outSourceFile = '')
+    {
+        $this->inClassName = PHPUnit_Util_Class::parseFullyQualifiedClassName(
+          $inClassName
+        );
+
+        $this->outClassName = PHPUnit_Util_Class::parseFullyQualifiedClassName(
+          $outClassName
+        );
+
+        $this->inSourceFile = str_replace(
+          $this->inClassName['fullyQualifiedClassName'],
+          $this->inClassName['className'],
+          $inSourceFile
+        );
+
+        $this->outSourceFile = str_replace(
+          $this->outClassName['fullyQualifiedClassName'],
+          $this->outClassName['className'],
+          $outSourceFile
+        );
+    }
 
     /**
      * @return string
      */
     public function getOutClassName()
     {
-        return $this->outClassName;
+        return $this->outClassName['fullyQualifiedClassName'];
     }
 
     /**

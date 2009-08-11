@@ -147,10 +147,9 @@ class PHPUnit_Util_Skeleton_Test extends PHPUnit_Util_Skeleton
             $outSourceFile = dirname($inSourceFile) . DIRECTORY_SEPARATOR . $outClassName . '.php';
         }
 
-        $this->inClassName   = $inClassName;
-        $this->inSourceFile  = $inSourceFile;
-        $this->outClassName  = $outClassName;
-        $this->outSourceFile = $outSourceFile;
+        parent::__construct(
+          $inClassName, $inSourceFile, $outClassName, $outSourceFile
+        );
     }
 
     /**
@@ -161,7 +160,7 @@ class PHPUnit_Util_Skeleton_Test extends PHPUnit_Util_Skeleton
      */
     public function generate($verbose = FALSE)
     {
-        $class             = new ReflectionClass($this->inClassName);
+        $class             = new ReflectionClass($this->inClassName['fullyQualifiedClassName']);
         $methods           = '';
         $incompleteMethods = '';
 
@@ -169,7 +168,7 @@ class PHPUnit_Util_Skeleton_Test extends PHPUnit_Util_Skeleton
             if (!$method->isConstructor() &&
                 !$method->isAbstract() &&
                  $method->isPublic() &&
-                 $method->getDeclaringClass()->getName() == $this->inClassName) {
+                 $method->getDeclaringClass()->getName() == $this->inClassName['fullyQualifiedClassName']) {
                 $assertAnnotationFound = FALSE;
 
                 if (preg_match_all('/@assert(.*)$/Um', $method->getDocComment(), $annotations)) {
@@ -289,7 +288,7 @@ class PHPUnit_Util_Skeleton_Test extends PHPUnit_Util_Skeleton
                                 'assertion'      => isset($assertion) ? $assertion : '',
                                 'expected'       => $matches[3],
                                 'origMethodName' => $origMethodName,
-                                'className'      => $this->inClassName,
+                                'className'      => $this->inClassName['fullyQualifiedClassName'],
                                 'methodName'     => $methodName
                               )
                             );
@@ -343,9 +342,17 @@ class PHPUnit_Util_Skeleton_Test extends PHPUnit_Util_Skeleton
             $requireClassFile = '';
         }
 
+        if ($this->outClassName['namespace'] != '') {
+            $namespace = "\nnamespace " . $this->outClassName['namespace'] . ";\n";
+        } else {
+            $namespace = '';
+        }
+
         $classTemplate->setVar(
           array(
-            'className'        => $this->inClassName,
+            'namespace'        => $namespace,
+            'className'        => $this->inClassName['className'],
+            'testClassName'    => $this->outClassName['className'],
             'requireClassFile' => $requireClassFile,
             'methods'          => $methods . $incompleteMethods,
             'date'             => date('Y-m-d'),
