@@ -84,6 +84,23 @@ abstract class PHPUnit_Util_Skeleton
     protected $outSourceFile;
 
     /**
+     * Constructor.
+     *
+     * @param string $inClassName
+     * @param string $inSourceFile
+     * @param string $outClassName
+     * @param string $outSourceFile
+     * @since Method available since Release 3.4.0
+     */
+    public function __construct($inClassName, $inSourceFile = '', $outClassName = '', $outSourceFile = '')
+    {
+        $this->inClassName   = $inClassName;
+        $this->inSourceFile  = $inSourceFile;
+        $this->outClassName  = $outClassName;
+        $this->outSourceFile = $outSourceFile;
+    }
+
+    /**
      * @return string
      */
     public function getOutClassName()
