@@ -269,14 +269,14 @@ class PHPUnit_Util_Report_Node_File extends PHPUnit_Util_Report_Node
         $ignore = FALSE;
 
         foreach ($this->codeLines as $line) {
-            if (strpos($line, '@codeCoverageIgnore') !== FALSE) {
-                if (strpos($line, '@codeCoverageIgnoreStart') !== FALSE) {
-                    $ignore = TRUE;
-                }
+            $trimmedLine = trim($line);
 
-                else if (strpos($line, '@codeCoverageIgnoreEnd') !== FALSE) {
-                    $ignore = FALSE;
-                }
+            if ($trimmedLine == '// @codeCoverageIgnoreStart') {
+                $ignore = TRUE;
+            }
+
+            else if ($trimmedLine == '// @codeCoverageIgnoreEnd') {
+                $ignore = FALSE;
             }
 
             $css = '';
