@@ -1012,6 +1012,24 @@ abstract class PHPUnit_Framework_Assert
     }
 
     /**
+     * Asserts that an attribute is of a given type.
+     *
+     * @param  string  $expected
+     * @param  string  $attributeName
+     * @param  mixed   $classOrObject
+     * @param  string  $message
+     * @since  Method available since Release 3.4.0
+     */
+    public static function assertAttributeType($expected, $attributeName, $classOrObject, $message = '')
+    {
+        self::assertType(
+          $expected,
+          self::readAttribute($classOrObject, $attributeName),
+          $message
+        );
+    }
+
+    /**
      * Asserts that a variable is not of a given type.
      *
      * @param  string $expected
@@ -1044,6 +1062,24 @@ abstract class PHPUnit_Framework_Assert
         }
 
         self::assertThat($actual, $constraint, $message);
+    }
+
+    /**
+     * Asserts that an attribute is of a given type.
+     *
+     * @param  string  $expected
+     * @param  string  $attributeName
+     * @param  mixed   $classOrObject
+     * @param  string  $message
+     * @since  Method available since Release 3.4.0
+     */
+    public static function assertAttributeNotType($expected, $attributeName, $classOrObject, $message = '')
+    {
+        self::assertNotType(
+          $expected,
+          self::readAttribute($classOrObject, $attributeName),
+          $message
+        );
     }
 
     /**
