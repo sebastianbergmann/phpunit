@@ -329,9 +329,12 @@ class PHPUnit_Util_Test
                 $classes = array($className);
 
                 foreach ($classes as $className) {
-                    $codeToCoverList[] = new ReflectionMethod(
-                      $className, $methodName
-                    );
+                    if (class_exists($className) &&
+                        method_exists($className, $methodName)) {
+                        $codeToCoverList[] = new ReflectionMethod(
+                          $className, $methodName
+                        );
+                    }
                 }
             }
         } else {
