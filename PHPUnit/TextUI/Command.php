@@ -189,15 +189,7 @@ class PHPUnit_TextUI_Command
         unset($this->arguments['test']);
         unset($this->arguments['testFile']);
 
-        try {
-            $result = $runner->doRun($suite, $this->arguments);
-        }
-
-        catch (Exception $e) {
-            throw new RuntimeException(
-              'Could not create and run test suite: ' . $e->getMessage()
-            );
-        }
+        $result = $runner->doRun($suite, $this->arguments);
 
         if ($exit) {
             if ($result->wasSuccessful()) {
