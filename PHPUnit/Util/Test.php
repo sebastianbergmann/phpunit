@@ -68,6 +68,10 @@ class PHPUnit_Util_Test
 
     private static $annotationCache = array();
 
+    protected static $templateMethods = array(
+      'setUp', 'assertPreConditions', 'assertPostConditions', 'tearDown'
+    );
+
     /**
      * @param  PHPUnit_Framework_Test $test
      * @param  boolean                $asString
@@ -144,51 +148,50 @@ class PHPUnit_Util_Test
      */
     public static function getLinesToBeCovered($className, $methodName)
     {
-        $result = array();
         $codeToCoverList = array();
+        $result          = array();
 
         if (($pos = strpos($methodName, ' ')) !== FALSE) {
             $methodName = substr($methodName, 0, $pos);
         }
 
-        try {
-            $class      = new ReflectionClass($className);
-            $method     = new ReflectionMethod($className, $methodName);
-            $docComment = $class->getDocComment() . $method->getDocComment();
+        $class      = new ReflectionClass($className);
+        $method     = new ReflectionMethod($className, $methodName);
+        $docComment = $class->getDocComment() . $method->getDocComment();
 
-            foreach (array('setUp', 'assertPreConditions', 'assertPostConditions', 'tearDown') as $templateMethod) {
-                if ($class->hasMethod($templateMethod)) {
-                    $reflector = $class->getMethod($templateMethod);
-                    $docComment .= $reflector->getDocComment();
-                    unset($reflector);
-                }
-            }
-
-            if (preg_match_all(self::REGEX_COVERS, $docComment, $matches)) {
-                foreach ($matches[1] as $i => $method) {
-                    $codeToCoverList = array_merge(
-                        $codeToCoverList,
-                        self::resolveCoversToReflectionObjects($method, !empty($matches[2][$i]))
-                    );
-                }
-
-                foreach ($codeToCoverList as $codeToCover) {
-                    $fileName  = $codeToCover->getFileName();
-                    $startLine = $codeToCover->getStartLine();
-                    $endLine   = $codeToCover->getEndLine();
-
-                    if (!isset($result[$fileName])) {
-                        $result[$fileName] = array();
-                    }
-
-                    $result[$fileName] = array_unique(
-                      array_merge($result[$fileName], range($startLine, $endLine))
-                    );
-                }
+        foreach (self::$templateMethods as $templateMethod) {
+            if ($class->hasMethod($templateMethod)) {
+                $reflector   = $class->getMethod($templateMethod);
+                $docComment .= $reflector->getDocComment();
+                unset($reflector);
             }
         }
 
-        catch (ReflectionException $e) {
+        $annotations = self::parseAnnotations($docComment);
+
+        if (isset($annotations['covers'])) {
+            foreach ($annotations['covers'] as $coveredElement) {
+                $codeToCoverList = array_merge(
+                    $codeToCoverList,
+                    self::resolveCoversToReflectionObjects($coveredElement)
+                );
+            }
+
+            foreach ($codeToCoverList as $codeToCover) {
+                $fileName  = $codeToCover->getFileName();
+                $startLine = $codeToCover->getStartLine();
+                $endLine   = $codeToCover->getEndLine();
+
+                if (!isset($result[$fileName])) {
+                    $result[$fileName] = array();
+                }
+
+                $result[$fileName] = array_unique(
+                  array_merge(
+                    $result[$fileName], range($startLine, $endLine)
+                  )
+                );
+            }
         }
 
         return $result;
@@ -281,30 +284,18 @@ class PHPUnit_Util_Test
     }
 
     /**
-     * Returns the files and lines a test method wants to cover.
-     *
-     * @param  string  $method
-     * @param  boolean $extended
+     * @param  string $coveredElement
      * @return array
-     * @since  Method available since Release 3.3.0
      */
-    private static function resolveCoversToReflectionObjects($method, $extended)
+    private static function resolveCoversToReflectionObjects($coveredElement)
     {
         $codeToCoverList = array();
 
-        if (strpos($method, '::') !== FALSE) {
-            list($className, $methodName) = explode('::', $method);
+        if (strpos($coveredElement, '::') !== FALSE) {
+            list($className, $methodName) = explode('::', $coveredElement);
 
             if ($methodName{0} == '<') {
                 $classes = array($className);
-
-                if ($extended) {
-                    $classes = array_merge(
-                      $classes,
-                      class_implements($className),
-                      class_parents($className)
-                    );
-                }
 
                 foreach ($classes as $className)
                 {
@@ -337,27 +328,37 @@ class PHPUnit_Util_Test
             } else {
                 $classes = array($className);
 
-                if ($extended) {
-                    $classes = array_merge($classes, class_parents($className));
-                }
-
                 foreach ($classes as $className) {
-                    $codeToCoverList[] = new ReflectionMethod($className, $methodName);
+                    $codeToCoverList[] = new ReflectionMethod(
+                      $className, $methodName
+                    );
                 }
             }
         } else {
-            $classes = array($method);
+            $extended = FALSE;
+
+            if (strpos($coveredElement, '<extended>') !== FALSE) {
+                $coveredElement = str_replace(
+                  '<extended>', '', $coveredElement
+                );
+
+                $extended = TRUE;
+            }
+
+            $classes = array($coveredElement);
 
             if ($extended) {
                 $classes = array_merge(
                   $classes,
-                  class_implements($method),
-                  class_parents($method)
+                  class_implements($coveredElement),
+                  class_parents($coveredElement)
                 );
             }
 
             foreach ($classes as $className) {
-                $codeToCoverList[] = new ReflectionClass($className);
+                if (class_exists($className)) {
+                    $codeToCoverList[] = new ReflectionClass($className);
+                }
             }
         }
 
