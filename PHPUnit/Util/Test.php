@@ -299,6 +299,15 @@ class PHPUnit_Util_Test
 
                 foreach ($classes as $className)
                 {
+                    if (!class_exists($className)) {
+                        throw new RuntimeException(
+                          sprintf(
+                            'Trying to @cover not existing class "%s".',
+                            $className
+                          )
+                        );
+                    }
+
                     $class   = new ReflectionClass($className);
                     $methods = $class->getMethods();
                     $inverse = isset($methodName{1}) && $methodName{1} == '!';
@@ -329,12 +338,20 @@ class PHPUnit_Util_Test
                 $classes = array($className);
 
                 foreach ($classes as $className) {
-                    if (class_exists($className) &&
-                        method_exists($className, $methodName)) {
-                        $codeToCoverList[] = new ReflectionMethod(
-                          $className, $methodName
+                    if (!(class_exists($className) &&
+                          method_exists($className, $methodName))) {
+                        throw new RuntimeException(
+                          sprintf(
+                            'Trying to @cover not existing method "%s:%s".',
+                            $className,
+                            $methodName
+                          )
                         );
                     }
+
+                    $codeToCoverList[] = new ReflectionMethod(
+                      $className, $methodName
+                    );
                 }
             }
         } else {
@@ -359,9 +376,16 @@ class PHPUnit_Util_Test
             }
 
             foreach ($classes as $className) {
-                if (class_exists($className)) {
-                    $codeToCoverList[] = new ReflectionClass($className);
+                if (!class_exists($className)) {
+                    throw new RuntimeException(
+                      sprintf(
+                        'Trying to @cover not existing class "%s".',
+                        $className
+                      )
+                    );
                 }
+
+                $codeToCoverList[] = new ReflectionClass($className);
             }
         }
 
