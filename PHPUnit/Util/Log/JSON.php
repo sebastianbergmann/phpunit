@@ -171,7 +171,7 @@ class PHPUnit_Util_Log_JSON extends PHPUnit_Util_Printer implements PHPUnit_Fram
           'tests' => count($suite)
         );
 
-        $this->write(json_encode($message));
+        $this->write($this->encode($message));
     }
 
     /**
@@ -227,7 +227,56 @@ class PHPUnit_Util_Log_JSON extends PHPUnit_Util_Printer implements PHPUnit_Fram
           'message' => $message
         );
 
-        $this->write(json_encode($message));
+        $this->write($this->encode($message));
+    }
+
+    /**
+     * @param  array $message
+     * @return string
+     */
+    protected function encode($message)
+    {
+        if (function_exists('json_encode')) {
+            return json_encode($message);
+        }
+
+        $first  = TRUE;
+        $result = '';
+
+        if (is_scalar($message)) {
+            $message = array ($message);
+        }
+
+        foreach ($message as $key => $value) {
+            if (!$first) {
+                $result .= ',';
+            } else {
+                $first = FALSE;
+            }
+
+            $result .= sprintf('"%s":', $this->escape($key));
+
+            if (is_array($value) || is_object($value)) {
+                $result .= sprintf('%s', $this->encode($value));
+            } else {
+                $result .= sprintf('"%s"', $this->escape($value));
+            }
+        }
+
+        return '{' . $result . '}';
+    }
+
+    /**
+     * @param  string $value
+     * @return string
+     */
+    protected function escape($value)
+    {
+        return str_replace(
+          array("\\",   "\"", "/",  "\b", "\f", "\n", "\r", "\t"),
+          array('\\\\', '\"', '\/', '\b', '\f', '\n', '\r', '\t'),
+          $value
+        );
     }
 }
 ?>
