@@ -132,7 +132,10 @@ class PHPUnit_Runner_StandardTestSuiteLoader implements PHPUnit_Runner_TestSuite
 
                     if (!$method->isAbstract() && $method->isPublic() && $method->isStatic()) {
                         $suiteClassName = $loadedClass;
-                        break;
+
+                        if ($class->getFileName() == realpath($suiteClassFile)) {
+                            break;
+                        }
                     }
                 }
             }
