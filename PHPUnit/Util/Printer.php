@@ -119,7 +119,7 @@ abstract class PHPUnit_Util_Printer
      */
     public function flush()
     {
-        if ($this->out !== NULL) {
+        if ($this->out !== NULL && $this->outTarget !== 'php://stderr') {
             fclose($this->out);
         }
 
