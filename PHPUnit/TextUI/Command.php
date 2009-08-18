@@ -108,6 +108,7 @@ class PHPUnit_TextUI_Command
       'process-isolation' => NULL,
       'skeleton-class' => NULL,
       'skeleton-test' => NULL,
+      'stderr' => NULL,
       'stop-on-failure' => NULL,
       'story' => NULL,
       'story-html=' => NULL,
@@ -390,6 +391,14 @@ class PHPUnit_TextUI_Command
                 case '--skeleton-test': {
                     $skeletonTest  = TRUE;
                     $skeletonClass = FALSE;
+                }
+                break;
+
+                case '--stderr': {
+                    $this->arguments['printer'] = new PHPUnit_TextUI_ResultPrinter(
+                      'php://stderr',
+                      isset($this->arguments['verbose']) ? $this->arguments['verbose'] : FALSE
+                    );
                 }
                 break;
 
@@ -723,6 +732,7 @@ Usage: phpunit [switches] UnitTest [UnitTest.php]
   --testdox                Report test execution progress in TestDox format.
 
   --colors                 Use colors in output.
+  --stderr                 Write to STDERR instead of STDOUT.
   --stop-on-failure        Stop execution upon first error or failure.
   --verbose                Output more verbose information.
   --wait                   Waits for a keystroke after each test.
