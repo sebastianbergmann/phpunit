@@ -36,6 +36,7 @@ Usage: phpunit [switches] UnitTest [UnitTest.php]
   --testdox                Report test execution progress in TestDox format.
 
   --colors                 Use colors in output.
+  --stderr                 Write to STDERR instead of STDOUT.
   --stop-on-failure        Stop execution upon first error or failure.
   --verbose                Output more verbose information.
   --wait                   Waits for a keystroke after each test.
