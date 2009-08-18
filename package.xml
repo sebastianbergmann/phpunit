@@ -1574,7 +1574,7 @@
  <dependencies>
   <required>
    <php>
-    <min>5.2.10</min>
+    <min>5.1.4</min>
    </php>
    <pearinstaller>
     <min>1.8.1</min>
