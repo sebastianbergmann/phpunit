@@ -118,7 +118,7 @@ class PHPUnit_Runner_StandardTestSuiteLoader implements PHPUnit_Runner_TestSuite
             foreach ($loadedClasses as $loadedClass) {
                 $class = new ReflectionClass($loadedClass);
 
-                if ($class->isSubclassOf($testCaseClass)) {
+                if ($class->isSubclassOf($testCaseClass) && !$class->isAbstract()) {
                     $suiteClassName = $loadedClass;
                     $testCaseClass  = $loadedClass;
 
