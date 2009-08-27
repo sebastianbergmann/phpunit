@@ -342,7 +342,7 @@ class PHPUnit_Util_Test
                           method_exists($className, $methodName))) {
                         throw new PHPUnit_Framework_Exception(
                           sprintf(
-                            'Trying to @cover not existing method "%s:%s".',
+                            'Trying to @cover not existing method "%s::%s".',
                             $className,
                             $methodName
                           )
