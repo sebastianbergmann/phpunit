@@ -776,11 +776,9 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
         }
 
         try {
-            if (empty($this->data)) {
-                $testResult = $method->invokeArgs($this, $this->dependencyInput);
-            } else {
-                $testResult = $method->invokeArgs($this, $this->data);
-            }
+            $testResult = $method->invokeArgs(
+              $this, array_merge($this->data, $this->dependencyInput)
+            );
         }
 
         catch (Exception $e) {
