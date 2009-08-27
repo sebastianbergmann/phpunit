@@ -175,8 +175,10 @@ class PHPUnit_Util_GlobalState
         $files  = get_included_files();
         $result = '';
 
-        for ($i = count($files) - 1; strpos($files[$i], 'PHPUnit') === FALSE; $i--) {
-            $result = 'require_once \'' . $files[$i] . "';\n" . $result;
+        for ($i = count($files) - 1; $i >= 0; $i--) {
+            if (strpos($files[$i], 'PHPUnit') === FALSE) {
+                $result = 'require_once \'' . $files[$i] . "';\n" . $result;
+            }
         }
 
         return $result;
