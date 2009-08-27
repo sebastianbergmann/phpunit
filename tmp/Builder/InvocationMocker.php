@@ -115,11 +115,11 @@ class PHPUnit_Framework_MockObject_Builder_InvocationMocker implements PHPUnit_F
         $args = func_get_args();
 
         if ($this->matcher->methodNameMatcher === NULL) {
-            throw new RuntimeException('Method name matcher is not defined, cannot define parameter matcher without one');
+            throw new PHPUnit_Framework_Exception('Method name matcher is not defined, cannot define parameter matcher without one');
         }
 
         if ( $this->matcher->parametersMatcher !== NULL) {
-            throw new RuntimeException('Parameter matcher is already defined, cannot redefine');
+            throw new PHPUnit_Framework_Exception('Parameter matcher is already defined, cannot redefine');
         }
 
         $this->matcher->parametersMatcher = new PHPUnit_Framework_MockObject_Matcher_Parameters($args);
@@ -130,11 +130,11 @@ class PHPUnit_Framework_MockObject_Builder_InvocationMocker implements PHPUnit_F
     public function withAnyParameters()
     {
         if ($this->matcher->methodNameMatcher === NULL) {
-            throw new RuntimeException('Method name matcher is not defined, cannot define parameter matcher without one');
+            throw new PHPUnit_Framework_Exception('Method name matcher is not defined, cannot define parameter matcher without one');
         }
 
         if ($this->matcher->parametersMatcher !== NULL) {
-            throw new RuntimeException('Parameter matcher is already defined, cannot redefine');
+            throw new PHPUnit_Framework_Exception('Parameter matcher is already defined, cannot redefine');
         }
 
         $this->matcher->parametersMatcher = new PHPUnit_Framework_MockObject_Matcher_AnyParameters();
@@ -145,7 +145,7 @@ class PHPUnit_Framework_MockObject_Builder_InvocationMocker implements PHPUnit_F
     public function method($constraint)
     {
         if ($this->matcher->methodNameMatcher !== NULL) {
-            throw new RuntimeException('Method name matcher is already defined, cannot redefine');
+            throw new PHPUnit_Framework_Exception('Method name matcher is already defined, cannot redefine');
         }
 
         $this->matcher->methodNameMatcher = new PHPUnit_Framework_MockObject_Matcher_MethodName($constraint);
