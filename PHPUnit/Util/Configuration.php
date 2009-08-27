@@ -195,7 +195,7 @@ class PHPUnit_Util_Configuration
         $realpath = realpath($filename);
 
         if ($realpath === FALSE) {
-            throw new RuntimeException(
+            throw new PHPUnit_Framework_Exception(
               sprintf(
                 'Could not read "%s".',
                 $filename

@@ -102,7 +102,7 @@ class PHPUnit_Extensions_PhptTestCase implements PHPUnit_Framework_Test, PHPUnit
         }
 
         if (!is_file($filename)) {
-            throw new RuntimeException(
+            throw new PHPUnit_Framework_Exception(
               sprintf(
                 'File "%s" does not exist.',
                 $filename
@@ -134,7 +134,7 @@ class PHPUnit_Extensions_PhptTestCase implements PHPUnit_Framework_Test, PHPUnit
     public function run(PHPUnit_Framework_TestResult $result = NULL, array $options = array())
     {
         if (!class_exists('PEAR_RunTest', FALSE)) {
-            throw new RuntimeException('Class PEAR_RunTest not found.');
+            throw new PHPUnit_Framework_Exception('Class PEAR_RunTest not found.');
         }
 
         if (isset($GLOBALS['_PEAR_destructor_object_list']) &&

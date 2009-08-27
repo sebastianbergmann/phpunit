@@ -209,7 +209,7 @@ class PHPUnit_Util_Filesystem
         if (is_dir($directory) || mkdir($directory, 0777, TRUE)) {
             return $directory;
         } else {
-            throw new RuntimeException(
+            throw new PHPUnit_Framework_Exception(
               sprintf(
                 'Directory "%s" does not exist.',
                 $directory

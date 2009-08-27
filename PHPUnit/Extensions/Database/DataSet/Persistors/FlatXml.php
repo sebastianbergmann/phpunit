@@ -95,7 +95,7 @@ class PHPUnit_Extensions_Database_DataSet_Persistors_FlatXml extends PHPUnit_Ext
         $this->fh = fopen($this->filename, 'w');
 
         if ($this->fh === FALSE) {
-           throw new RuntimeException("Could not open {$this->filename} for writing see " . __CLASS__ . "::setFileName()");
+           throw new PHPUnit_Framework_Exception("Could not open {$this->filename} for writing see " . __CLASS__ . "::setFileName()");
         }
 
         fwrite($this->fh, "<?xml version=\"1.0\" encoding=\"UTF-8\" ?>\n");

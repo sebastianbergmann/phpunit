@@ -105,7 +105,7 @@ class PHPUnit_Util_Skeleton_Test extends PHPUnit_Util_Skeleton
             }
 
             if (empty($inSourceFile)) {
-                throw new RuntimeException(
+                throw new PHPUnit_Framework_Exception(
                   sprintf(
                     'Neither "%s" nor "%s" could be opened.',
                     $possibleFilenames[0],
@@ -115,7 +115,7 @@ class PHPUnit_Util_Skeleton_Test extends PHPUnit_Util_Skeleton
             }
 
             if (!is_file($inSourceFile)) {
-                throw new RuntimeException(
+                throw new PHPUnit_Framework_Exception(
                   sprintf(
                     '"%s" could not be opened.',
 
@@ -128,7 +128,7 @@ class PHPUnit_Util_Skeleton_Test extends PHPUnit_Util_Skeleton
             include_once $inSourceFile;
 
             if (!class_exists($inClassName)) {
-                throw new RuntimeException(
+                throw new PHPUnit_Framework_Exception(
                   sprintf(
                     'Could not find class "%s" in "%s".',
 
@@ -221,7 +221,7 @@ class PHPUnit_Util_Skeleton_Test extends PHPUnit_Util_Skeleton
                                 break;
 
                                 default: {
-                                    throw new RuntimeException;
+                                    throw new PHPUnit_Framework_Exception;
                                 }
                             }
 
