@@ -158,7 +158,9 @@ class PHPUnit_Util_Report_Node_File extends PHPUnit_Util_Report_Node
         $path = $this->getPath();
 
         if (!file_exists($path)) {
-            throw new PHPUnit_Framework_Exception;
+            throw new PHPUnit_Framework_Exception(
+              sprintf('Path "%s" does not exist.', $path)
+            );
         }
 
         $this->executedLines = $executedLines;

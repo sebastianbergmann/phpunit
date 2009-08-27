@@ -958,7 +958,13 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
         if ($currentValue !== FALSE) {
             $this->iniSettings[$varName] = $currentValue;
         } else {
-            throw new PHPUnit_Framework_Exception;
+            throw new PHPUnit_Framework_Exception(
+              sprintf(
+                'INI setting "%s" could not be set to "%s".',
+                $varName,
+                $newValue
+              )
+            );
         }
     }
 
