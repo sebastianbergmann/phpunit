@@ -226,7 +226,7 @@ class PHPUnit_Framework_MockObject_Generator
 
             return $classTemplate->render();
         } else {
-            throw new RuntimeException(
+            throw new PHPUnit_Framework_Exception(
               'The SOAP extension is required to generate a mock object from WSDL.'
             );
         }
@@ -273,7 +273,7 @@ class PHPUnit_Framework_MockObject_Generator
             $class = new ReflectionClass($mockClassName['fullClassName']);
 
             if ($class->isFinal()) {
-                throw new RuntimeException(
+                throw new PHPUnit_Framework_Exception(
                   sprintf(
                     'Class "%s" is declared "final" and cannot be mocked.',
                     $mockClassName['fullClassName']

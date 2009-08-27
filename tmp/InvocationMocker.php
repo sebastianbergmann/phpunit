@@ -96,7 +96,7 @@ class PHPUnit_Framework_MockObject_InvocationMocker implements PHPUnit_Framework
     public function registerId($id, PHPUnit_Framework_MockObject_Builder_Match $builder)
     {
         if (isset($this->builderMap[$id])) {
-            throw new RuntimeException("Match builder with id <{$id}> is already registered.");
+            throw new PHPUnit_Framework_Exception("Match builder with id <{$id}> is already registered.");
         }
 
         $this->builderMap[$id] = $builder;
