@@ -814,7 +814,8 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
 
             $test = self::createTest($class, $name);
 
-            if (!$test instanceof PHPUnit_Framework_TestSuite) {
+            if ($test instanceof PHPUnit_Framework_TestCase ||
+                $test instanceof PHPUnit_Framework_TestSuite_DataProvider) {
                 $test->setDependencies(
                   PHPUnit_Util_Test::getDependencies($class->getName(), $name)
                 );
