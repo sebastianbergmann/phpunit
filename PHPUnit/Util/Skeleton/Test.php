@@ -221,7 +221,12 @@ class PHPUnit_Util_Skeleton_Test extends PHPUnit_Util_Skeleton
                                 break;
 
                                 default: {
-                                    throw new PHPUnit_Framework_Exception;
+                                    throw new PHPUnit_Framework_Exception(
+                                      sprintf(
+                                        'Token "%s" could not be parsed in @assert annotation.',
+                                        $matches[2]
+                                      )
+                                    );
                                 }
                             }
 
