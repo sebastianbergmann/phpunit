@@ -643,6 +643,9 @@
      <file baseinstalldir="/" name="Error.php" role="php">
       <tasks:replace from="@package_version@" to="version" type="package-info" />
      </file>
+     <file baseinstalldir="/" name="Exception.php" role="php">
+      <tasks:replace from="@package_version@" to="version" type="package-info" />
+     </file>
      <file baseinstalldir="/" name="ExpectationFailedException.php" role="php">
       <tasks:replace from="@package_version@" to="version" type="package-info" />
      </file>

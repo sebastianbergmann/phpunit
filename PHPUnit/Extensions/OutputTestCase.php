@@ -137,7 +137,7 @@ abstract class PHPUnit_Extensions_OutputTestCase extends PHPUnit_Framework_TestC
     public function expectOutputRegex($expectedRegex)
     {
         if ($this->expectedString !== NULL) {
-            throw new RuntimeException;
+            throw new PHPUnit_Framework_Exception;
         }
 
         if (is_string($expectedRegex) || is_null($expectedRegex)) {
@@ -159,7 +159,7 @@ abstract class PHPUnit_Extensions_OutputTestCase extends PHPUnit_Framework_TestC
     public function expectOutputString($expectedString)
     {
         if ($this->expectedRegex !== NULL) {
-            throw new RuntimeException;
+            throw new PHPUnit_Framework_Exception;
         }
 
         if (is_string($expectedString) || is_null($expectedString)) {

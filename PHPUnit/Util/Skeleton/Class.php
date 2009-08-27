@@ -82,7 +82,7 @@ class PHPUnit_Util_Skeleton_Class extends PHPUnit_Util_Skeleton
         }
 
         if (!is_file($inSourceFile)) {
-            throw new RuntimeException(
+            throw new PHPUnit_Framework_Exception(
               sprintf(
                 '"%s" could not be opened.',
 

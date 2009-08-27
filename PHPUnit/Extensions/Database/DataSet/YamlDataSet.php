@@ -143,7 +143,7 @@ class PHPUnit_Extensions_Database_DataSet_YamlDataSet extends PHPUnit_Extensions
         try {
             $pers->write($dataset);
         } catch (RuntimeException $e) {
-            throw new RuntimeException(__METHOD__ . ' called with an unwritable file.');
+            throw new PHPUnit_Framework_Exception(__METHOD__ . ' called with an unwritable file.');
         }
     }
 }

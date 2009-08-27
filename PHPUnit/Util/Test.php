@@ -300,7 +300,7 @@ class PHPUnit_Util_Test
                 foreach ($classes as $className)
                 {
                     if (!class_exists($className)) {
-                        throw new RuntimeException(
+                        throw new PHPUnit_Framework_Exception(
                           sprintf(
                             'Trying to @cover not existing class "%s".',
                             $className
@@ -340,7 +340,7 @@ class PHPUnit_Util_Test
                 foreach ($classes as $className) {
                     if (!(class_exists($className) &&
                           method_exists($className, $methodName))) {
-                        throw new RuntimeException(
+                        throw new PHPUnit_Framework_Exception(
                           sprintf(
                             'Trying to @cover not existing method "%s:%s".',
                             $className,
@@ -377,7 +377,7 @@ class PHPUnit_Util_Test
 
             foreach ($classes as $className) {
                 if (!class_exists($className)) {
-                    throw new RuntimeException(
+                    throw new PHPUnit_Framework_Exception(
                       sprintf(
                         'Trying to @cover not existing class "%s".',
                         $className

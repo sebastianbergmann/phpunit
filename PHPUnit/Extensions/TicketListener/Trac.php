@@ -103,7 +103,7 @@ class PHPUnit_Extensions_TicketListener_Trac extends PHPUnit_Extensions_TicketLi
             }
 
             catch (XML_RPC2_FaultException $e) {
-                throw new RuntimeException(
+                throw new PHPUnit_Framework_Exception(
                   sprintf(
                     "Trac fetch failure: %d: %s\n",
                     $e->getFaultCode(),
@@ -130,7 +130,7 @@ class PHPUnit_Extensions_TicketListener_Trac extends PHPUnit_Extensions_TicketLi
             }
 
             catch (XML_RPC2_FaultException $e) {
-                throw new RuntimeException(
+                throw new PHPUnit_Framework_Exception(
                   sprintf(
                     "Trac update failure: %d: %s\n",
                     $e->getFaultCode(),
@@ -143,7 +143,7 @@ class PHPUnit_Extensions_TicketListener_Trac extends PHPUnit_Extensions_TicketLi
                 PHPUnit_Util_Filter::addFileToFilter($blacklistedFile, 'PHPUNIT');
             }
         } else {
-            throw new RuntimeException('XML_RPC2 is not available.');
+            throw new PHPUnit_Framework_Exception('XML_RPC2 is not available.');
         }
     }
 }

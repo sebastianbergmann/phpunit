@@ -766,7 +766,7 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
     protected function runTest()
     {
         if ($this->name === NULL) {
-            throw new RuntimeException(
+            throw new PHPUnit_Framework_Exception(
               'PHPUnit_Framework_TestCase::$name must not be NULL.'
             );
         }
@@ -963,7 +963,7 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
         if ($currentValue !== FALSE) {
             $this->iniSettings[$varName] = $currentValue;
         } else {
-            throw new RuntimeException;
+            throw new PHPUnit_Framework_Exception;
         }
     }
 
@@ -1009,7 +1009,7 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
         $result = call_user_func_array( 'setlocale', $args );
 
         if ($result === FALSE) {
-            throw new RuntimeException(
+            throw new PHPUnit_Framework_Exception(
               'The locale functionality is not implemented on your platform, ' .
               'the specified locale does not exist or the category name is ' .
               'invalid.'
@@ -1046,7 +1046,7 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
         }
 
         if ($mockClassName != '' && class_exists($mockClassName, FALSE)) {
-            throw new RuntimeException(
+            throw new PHPUnit_Framework_Exception(
               sprintf(
                 'Class "%s" already exists.',
                 $mockClassName
@@ -1130,7 +1130,7 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
               $callAutoload
             );
         } else {
-            throw new RuntimeException(
+            throw new PHPUnit_Framework_Exception(
               sprintf(
                 'Class "%s" does not exist.',
                 $originalClassName

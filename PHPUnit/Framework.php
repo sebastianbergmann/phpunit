@@ -48,6 +48,7 @@ require_once 'PHPUnit/Util/Filter.php';
 
 PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
 
+require 'PHPUnit/Framework/Exception.php';
 require 'PHPUnit/Framework/SelfDescribing.php';
 require 'PHPUnit/Framework/AssertionFailedError.php';
 require 'PHPUnit/Framework/Assert.php';

@@ -114,7 +114,7 @@ class PHPUnit_Util_Getopt {
             $opt_arg = NULL;
 
             if (($spec = strstr($short_options, $opt)) === FALSE || $arg{$i} == ':') {
-                throw new RuntimeException("unrecognized option -- $opt");
+                throw new PHPUnit_Framework_Exception("unrecognized option -- $opt");
             }
 
             if (strlen($spec) > 1 && $spec{1} == ':') {
@@ -133,7 +133,7 @@ class PHPUnit_Util_Getopt {
                     }
 
                     else {
-                        throw new RuntimeException("option requires an argument -- $opt");
+                        throw new PHPUnit_Framework_Exception("option requires an argument -- $opt");
                     }
                 }
             }
@@ -158,26 +158,26 @@ class PHPUnit_Util_Getopt {
             if ($opt_rest != '' && $opt{0} != '=' &&
                 $i + 1 < count($long_options) &&
                 $opt == substr($long_options[$i+1], 0, $opt_len)) {
-                throw new RuntimeException("option --$opt is ambiguous");
+                throw new PHPUnit_Framework_Exception("option --$opt is ambiguous");
             }
 
             if (substr($long_opt, -1) == '=') {
                 if (substr($long_opt, -2) != '==') {
                     if (!strlen($opt_arg) && !(list(, $opt_arg) = each($args))) {
-                        throw new RuntimeException("option --$opt requires an argument");
+                        throw new PHPUnit_Framework_Exception("option --$opt requires an argument");
                     }
                 }
             }
 
             else if ($opt_arg) {
-                throw new RuntimeException("option --$opt doesn't allow an argument");
+                throw new PHPUnit_Framework_Exception("option --$opt doesn't allow an argument");
             }
 
             $opts[] = array('--' . $opt, $opt_arg);
             return;
         }
 
-        throw new RuntimeException("unrecognized option --$opt");
+        throw new PHPUnit_Framework_Exception("unrecognized option --$opt");
     }
 }
 ?>

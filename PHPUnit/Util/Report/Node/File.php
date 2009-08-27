@@ -158,7 +158,7 @@ class PHPUnit_Util_Report_Node_File extends PHPUnit_Util_Report_Node
         $path = $this->getPath();
 
         if (!file_exists($path)) {
-            throw new RuntimeException;
+            throw new PHPUnit_Framework_Exception;
         }
 
         $this->executedLines = $executedLines;

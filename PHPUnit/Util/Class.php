@@ -333,7 +333,7 @@ class PHPUnit_Util_Class
             $class = $class->getParentClass();
         }
 
-        throw new RuntimeException(
+        throw new PHPUnit_Framework_Exception(
           sprintf(
             'Attribute "%s" not found in class.',
 
@@ -421,7 +421,7 @@ class PHPUnit_Util_Class
             }
         }
 
-        throw new RuntimeException(
+        throw new PHPUnit_Framework_Exception(
           sprintf(
             'Attribute "%s" not found in object.',
 
