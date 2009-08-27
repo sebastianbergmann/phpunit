@@ -160,7 +160,7 @@ class PHPUnit_Extensions_SeleniumTestCase_Driver
     public function start()
     {
         if ($this->browserUrl == NULL) {
-            throw new RuntimeException(
+            throw new PHPUnit_Framework_Exception(
               'setBrowserUrl() needs to be called before start().'
             );
         }
@@ -838,7 +838,7 @@ class PHPUnit_Extensions_SeleniumTestCase_Driver
     protected function doCommand($command, array $arguments = array())
     {
         if (!ini_get('allow_url_fopen')) {
-            throw new RuntimeException(
+            throw new PHPUnit_Framework_Exception(
               'Could not connect to the Selenium RC server because allow_url_fopen is disabled.'
             );
         }
@@ -874,7 +874,7 @@ class PHPUnit_Extensions_SeleniumTestCase_Driver
         $handle = @fopen($url, 'r', FALSE, $context);
 
         if (!$handle) {
-            throw new RuntimeException(
+            throw new PHPUnit_Framework_Exception(
               'Could not connect to the Selenium RC server.'
             );
         }
@@ -895,7 +895,7 @@ class PHPUnit_Extensions_SeleniumTestCase_Driver
         if (!preg_match('/^OK/', $response)) {
             $this->stop();
 
-            throw new RuntimeException(
+            throw new PHPUnit_Framework_Exception(
               sprintf(
                 "Response from Selenium RC server for %s.\n%s.\n",
                 $this->commands[count($this->commands)-1],
@@ -929,7 +929,7 @@ class PHPUnit_Extensions_SeleniumTestCase_Driver
             default: {
                 $this->stop();
 
-                throw new RuntimeException(
+                throw new PHPUnit_Framework_Exception(
                   'Result is neither "true" nor "false": ' . PHPUnit_Util_Type::toString($result, TRUE)
                 );
             }
@@ -953,7 +953,7 @@ class PHPUnit_Extensions_SeleniumTestCase_Driver
         if (!is_numeric($result)) {
             $this->stop();
 
-            throw new RuntimeException(
+            throw new PHPUnit_Framework_Exception(
               'Result is not numeric: ' . PHPUnit_Util_Type::toString($result, TRUE)
             );
         }

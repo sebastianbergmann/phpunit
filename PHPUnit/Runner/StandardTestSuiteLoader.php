@@ -150,7 +150,7 @@ class PHPUnit_Runner_StandardTestSuiteLoader implements PHPUnit_Runner_TestSuite
             }
         }
 
-        throw new RuntimeException(
+        throw new PHPUnit_Framework_Exception(
           sprintf(
             'Class %s could not be found in %s.',
 

@@ -117,7 +117,7 @@ class PHPUnit_Util_Filter
                 self::addFileToFilter($file->getPathName(), $group);
             }
         } else {
-            throw new RuntimeException($directory . ' does not exist');
+            throw new PHPUnit_Framework_Exception($directory . ' does not exist');
         }
     }
 
@@ -142,7 +142,7 @@ class PHPUnit_Util_Filter
                 self::$blacklistedFiles[$group][] = $filename;
             }
         } else {
-            throw new RuntimeException($filename . ' does not exist');
+            throw new PHPUnit_Framework_Exception($filename . ' does not exist');
         }
     }
 
@@ -163,7 +163,7 @@ class PHPUnit_Util_Filter
                 self::removeFileFromFilter($file->getPathName(), $group);
             }
         } else {
-            throw new RuntimeException($directory . ' does not exist');
+            throw new PHPUnit_Framework_Exception($directory . ' does not exist');
         }
     }
 
@@ -188,7 +188,7 @@ class PHPUnit_Util_Filter
                 }
             }
         } else {
-            throw new RuntimeException($filename . ' does not exist');
+            throw new PHPUnit_Framework_Exception($filename . ' does not exist');
         }
     }
 
@@ -208,7 +208,7 @@ class PHPUnit_Util_Filter
                 self::addFileToWhitelist($file->getPathName());
             }
         } else {
-            throw new RuntimeException($directory . ' does not exist');
+            throw new PHPUnit_Framework_Exception($directory . ' does not exist');
         }
     }
 
@@ -231,7 +231,7 @@ class PHPUnit_Util_Filter
                 self::$whitelistedFiles[] = $filename;
             }
         } else {
-            throw new RuntimeException($filename . ' does not exist');
+            throw new PHPUnit_Framework_Exception($filename . ' does not exist');
         }
     }
 
@@ -251,7 +251,7 @@ class PHPUnit_Util_Filter
                 self::removeFileFromWhitelist($file->getPathName());
             }
         } else {
-            throw new RuntimeException($directory . ' does not exist');
+            throw new PHPUnit_Framework_Exception($directory . ' does not exist');
         }
     }
 
@@ -273,7 +273,7 @@ class PHPUnit_Util_Filter
                 }
             }
         } else {
-            throw new RuntimeException($filename . ' does not exist');
+            throw new PHPUnit_Framework_Exception($filename . ' does not exist');
         }
     }
 

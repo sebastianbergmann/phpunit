@@ -207,14 +207,20 @@ class PHPUnit_TextUI_Command
         unset($this->arguments['test']);
         unset($this->arguments['testFile']);
 
-        $result = $runner->doRun($suite, $this->arguments);
+        try {
+            $result = $runner->doRun($suite, $this->arguments);
+        }
+
+        catch (PHPUnit_Framework_Exception $e) {
+            print $e->getMessage() . "\n";
+        }
 
         if ($exit) {
-            if ($result->wasSuccessful()) {
+            if (isset($result) && $result->wasSuccessful()) {
                 exit(PHPUnit_TextUI_TestRunner::SUCCESS_EXIT);
             }
 
-            else if ($result->errorCount() > 0) {
+            else if (!isset($result) || $result->errorCount() > 0) {
                 exit(PHPUnit_TextUI_TestRunner::EXCEPTION_EXIT);
             }
 

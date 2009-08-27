@@ -123,7 +123,7 @@ class PHPUnit_Util_XML
         error_reporting($reporting);
 
         if ($contents === FALSE) {
-            throw new RuntimeException(
+            throw new PHPUnit_Framework_Exception(
               sprintf(
                 'Could not read "%s".',
                 $filename
@@ -181,7 +181,7 @@ class PHPUnit_Util_XML
             }
 
             if ($filename != '') {
-                throw new RuntimeException(
+                throw new PHPUnit_Framework_Exception(
                   sprintf(
                     'Could not load "%s".%s',
 
@@ -190,7 +190,7 @@ class PHPUnit_Util_XML
                   )
                 );
             } else {
-                throw new RuntimeException($message);
+                throw new PHPUnit_Framework_Exception($message);
             }
         }
 
