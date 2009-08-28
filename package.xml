@@ -1605,11 +1605,6 @@
     <name>Log</name>
     <channel>pear.php.net</channel>
    </package>
-   <package>
-    <name>Text_Diff</name>
-    <channel>pear.php.net</channel>
-    <min>1.1.1</min>
-   </package>
    <extension>
     <name>json</name>
    </extension>

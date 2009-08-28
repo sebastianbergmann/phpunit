@@ -69,7 +69,7 @@ class Framework_ComparisonFailureTest extends PHPUnit_Framework_TestCase
         $failure = PHPUnit_Framework_ComparisonFailure::diffEqual('a', 'b', 'c');
 
         $this->assertEquals(
-          "c\n--- Expected\n+++ Actual\n@@ -1 +1 @@\n-a\n+b",
+          "c\n--- Expected\n+++ Actual\n@@ @@\n-a\n+b",
           $failure->toString()
         );
     }
@@ -82,7 +82,7 @@ class Framework_ComparisonFailureTest extends PHPUnit_Framework_TestCase
         $failure = PHPUnit_Framework_ComparisonFailure::diffEqual('ba', 'bc');
 
         $this->assertEquals(
-          "--- Expected\n+++ Actual\n@@ -1 +1 @@\n-ba\n+bc",
+          "--- Expected\n+++ Actual\n@@ @@\n-ba\n+bc",
           $failure->toString()
         );
     }
@@ -95,7 +95,7 @@ class Framework_ComparisonFailureTest extends PHPUnit_Framework_TestCase
         $failure = PHPUnit_Framework_ComparisonFailure::diffEqual('ab', 'cb');
 
         $this->assertEquals(
-          "--- Expected\n+++ Actual\n@@ -1 +1 @@\n-ab\n+cb",
+          "--- Expected\n+++ Actual\n@@ @@\n-ab\n+cb",
           $failure->toString()
         );
     }
@@ -108,7 +108,7 @@ class Framework_ComparisonFailureTest extends PHPUnit_Framework_TestCase
         $failure = PHPUnit_Framework_ComparisonFailure::diffEqual('abc', 'adc');
 
         $this->assertEquals(
-          "--- Expected\n+++ Actual\n@@ -1 +1 @@\n-abc\n+adc",
+          "--- Expected\n+++ Actual\n@@ @@\n-abc\n+adc",
           $failure->toString()
         );
     }
@@ -121,7 +121,7 @@ class Framework_ComparisonFailureTest extends PHPUnit_Framework_TestCase
         $failure = PHPUnit_Framework_ComparisonFailure::diffEqual('ab', 'abc');
 
         $this->assertEquals(
-          "--- Expected\n+++ Actual\n@@ -1 +1 @@\n-ab\n+abc",
+          "--- Expected\n+++ Actual\n@@ @@\n-ab\n+abc",
           $failure->toString()
         );
     }
@@ -134,7 +134,7 @@ class Framework_ComparisonFailureTest extends PHPUnit_Framework_TestCase
         $failure = PHPUnit_Framework_ComparisonFailure::diffEqual('bc', 'abc');
 
         $this->assertEquals(
-          "--- Expected\n+++ Actual\n@@ -1 +1 @@\n-bc\n+abc",
+          "--- Expected\n+++ Actual\n@@ @@\n-bc\n+abc",
           $failure->toString()
         );
     }
@@ -147,7 +147,7 @@ class Framework_ComparisonFailureTest extends PHPUnit_Framework_TestCase
         $failure = PHPUnit_Framework_ComparisonFailure::diffEqual('abc', 'abbc');
 
         $this->assertEquals(
-          "--- Expected\n+++ Actual\n@@ -1 +1 @@\n-abc\n+abbc",
+          "--- Expected\n+++ Actual\n@@ @@\n-abc\n+abbc",
           $failure->toString()
         );
     }
@@ -160,7 +160,7 @@ class Framework_ComparisonFailureTest extends PHPUnit_Framework_TestCase
         $failure = PHPUnit_Framework_ComparisonFailure::diffEqual('abcdde', 'abcde');
 
         $this->assertEquals(
-          "--- Expected\n+++ Actual\n@@ -1 +1 @@\n-abcdde\n+abcde",
+          "--- Expected\n+++ Actual\n@@ @@\n-abcdde\n+abcde",
           $failure->toString()
         );
     }
