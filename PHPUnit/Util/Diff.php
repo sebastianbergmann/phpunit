@@ -37,6 +37,7 @@
  * @category   Testing
  * @package    PHPUnit
  * @author     Sebastian Bergmann <sb@sebastian-bergmann.de>
+ * @author     Kore Nordmann <mail@kore-nordmann.de>
  * @copyright  2002-2009 Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    SVN: $Id$
@@ -50,11 +51,12 @@ require_once 'PHPUnit/Util/Filter.php';
 PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
 
 /**
- * Diff helpers.
+ * Diff implementation.
  *
  * @category   Testing
  * @package    PHPUnit
  * @author     Sebastian Bergmann <sb@sebastian-bergmann.de>
+ * @author     Kore Nordmann <mail@kore-nordmann.de>
  * @copyright  2002-2009 Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    Release: @package_version@
@@ -64,141 +66,204 @@ PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
 class PHPUnit_Util_Diff
 {
     /**
-     * @var boolean
-     */
-    protected static $hasTextDiff = NULL;
-
-    /**
-     * @var boolean
-     */
-    protected static $hasDiffCommand = NULL;
-
-    /**
-     * @param  string $from
-     * @param  string $to
+     * Returns the diff between two arrays or strings.
+     *
+     * @param  array|string $from
+     * @param  array|string $to
      * @return string
      */
     public static function diff($from, $to)
     {
-        self::setUp();
-
-        if (self::$hasTextDiff) {
-            $result = self::doTextDiff($from, $to);
+        if (is_string($from)) {
+            $from = preg_split('(\r\n|\r|\n)', $from);
         }
 
-        else if (self::$hasDiffCommand) {
-            $result = self::doDiffCommand($from, $to);
+        if (is_string($to)) {
+            $to = preg_split('(\r\n|\r|\n)', $to);
         }
 
-        if (isset($result)) {
-            $result = explode("\n", $result);
+        $buffer     = "--- Expected\n+++ Actual\n";
+        $start      = array();
+        $end        = array();
+        $fromLength = count($from);
+        $toLength   = count($to);
+        $length     = min($fromLength, $toLength);
 
-            if (self::$hasTextDiff) {
-                array_unshift($result, '--- Expected', '+++ Actual');
+        for ($i = 0; $i < $length; ++$i) {
+            if ($from[$i] === $to[$i]) {
+                $start[] = $from[$i];
+                unset($from[$i], $to[$i]);
+            } else {
+                break;
             }
+        }
 
-            else if (self::$hasDiffCommand) {
-                $result[0] = '--- Expected';
-                $result[1] = '+++ Actual';
+        $length -= $i;
+
+        for ($i = 1; $i < $length; ++$i) {
+            if ($from[$fromLength - $i] === $to[$toLength - $i]) {
+                array_unshift($end, $from[$fromLength - $i]);
+                unset($from[$fromLength - $i], $to[$toLength - $i]);
+            } else {
+                break;
             }
-
-            if (empty($result[count($result)-1])) {
-                unset($result[count($result)-1]);
-            }
-
-            return implode("\n", $result);
         }
 
-        return FALSE;
-    }
-
-    /**
-     * @param  string $from
-     * @param  string $to
-     * @return string
-     */
-    protected static function doTextDiff($from, $to)
-    {
-        $from = explode("\n", $from);
-        $to   = explode("\n", $to);
-
-        $currentErrorReporting = error_reporting(E_ERROR | E_WARNING | E_PARSE);
-        PHPUnit_Util_Filesystem::collectStart();
-
-        $renderer = new Text_Diff_Renderer_unified;
-        $diff     = $renderer->render(new Text_Diff($from, $to));
-
-        foreach (PHPUnit_Util_Filesystem::collectEnd() as $blacklistedFile) {
-            PHPUnit_Util_Filter::addFileToFilter($blacklistedFile, 'PHPUNIT');
-        }
-
-        error_reporting($currentErrorReporting);
-
-        return $diff;
-    }
-
-    /**
-     * @param  string $from
-     * @param  string $to
-     * @return string
-     */
-    protected static function doDiffCommand($from, $to)
-    {
-        if (defined('PHPUNIT_TMPDIR')) {
-            $tmpDir = PHPUNIT_TMPDIR;
-        } else {
-            $tmpDir = sys_get_temp_dir();
-        }
-
-        $fromFile = tempnam($tmpDir, 'expected');
-        $toFile   = tempnam($tmpDir, 'actual');
-
-        file_put_contents($fromFile, $from);
-        file_put_contents($toFile, $to);
-
-        $buffer = shell_exec(
-          sprintf(
-            'diff -u %s %s',
-            escapeshellarg($fromFile),
-            escapeshellarg($toFile)
-          )
+        $common = self::longestCommonSubsequence(
+          array_values($from), array_values($to)
         );
 
-        unlink($fromFile);
-        unlink($toFile);
+        $diff = array();
+        $line = 0;
+
+        foreach ($start as $token) {
+            $diff[] = array($token, 0 /* OLD */);
+        }
+
+        reset($from);
+        reset($to);
+
+        foreach ($common as $token) {
+            while ((($fromToken = reset($from)) !== $token)) {
+                $diff[] = array(array_shift($from), 2 /* REMOVED */);
+            }
+
+            while ((($toToken = reset($to)) !== $token)) {
+                $diff[] = array(array_shift($to), 1 /* ADDED */);
+            }
+
+            $diff[] = array($token, 0 /* OLD */);
+
+            array_shift($from);
+            array_shift($to);
+        }
+
+        while (($token = array_shift($from)) !== NULL) {
+            $diff[] = array($token, 2 /* REMOVED */);
+        }
+
+        while (($token = array_shift($to)) !== NULL) {
+            $diff[] = array($token, 1 /* ADDED */);
+        }
+
+        foreach ($end as $token) {
+            $diff[] = array($token, 0 /* OLD */);
+        }
+
+        $inOld = FALSE;
+        $i     = 0;
+        $old   = array();
+
+        foreach ($diff as $line) {
+            if ($line[1] === 0 /* OLD */) {
+                if ($inOld === FALSE) {
+                    $inOld = $i;
+                }
+            }
+
+            else if ($inOld !== FALSE) {
+                if (($i - $inOld) > 5) {
+                    $old[$inOld] = $i - 1;
+                }
+
+                $inOld = FALSE;
+            }
+
+            ++$i;
+        }
+
+        $start = isset($old[0]) ? $old[0] : 0;
+        $end   = count($diff);
+        $i     = 0;
+
+        if ($tmp = array_search($end, $old)) {
+            $end = $tmp;
+        }
+
+        $newChunk = TRUE;
+
+        for ($i = $start; $i < $end; $i++) {
+            if (isset($old[$i])) {
+                $buffer  .= "\n";
+                $newChunk = TRUE;
+                $i        = $old[$i];
+            }
+
+            if ($newChunk) {
+                // TODO: Implement chunk range information.
+                $buffer  .= "@@ @@\n";
+                $newChunk = FALSE;
+            }
+
+            if ($diff[$i][1] === 1 /* ADDED */) {
+                $buffer .= '+' . $diff[$i][0] . "\n";
+            }
+
+            else if ($diff[$i][1] === 2 /* REMOVED */) {
+                $buffer .= '-' . $diff[$i][0] . "\n";
+            }
+
+            else {
+                $buffer .= ' ' . $diff[$i][0] . "\n";
+            }
+        }
 
         return $buffer;
     }
 
     /**
-     * - Tries to find the Text_Diff PEAR package.
-     * - Tries to find the "diff" command.
+     * Calculates the longest common subsequence of two arrays.
+     *
+     * @param  array $from
+     * @param  array $to
+     * @return array
      */
-    protected static function setUp()
+    protected static function longestCommonSubsequence(array $from, array $to)
     {
-        if (self::$hasTextDiff === NULL) {
-            if (PHPUnit_Util_Filesystem::fileExistsInIncludePath('Text/Diff.php')) {
-                $currentErrorReporting = error_reporting(E_ERROR | E_WARNING | E_PARSE);
-                PHPUnit_Util_Filesystem::collectStart();
-                require_once 'Text/Diff.php';
-                require_once 'Text/Diff/Renderer/unified.php';
-                error_reporting($currentErrorReporting);
+        $common     = array();
+        $longest    = 0;
+        $matrix     = array();
+        $fromLength = count($from);
+        $toLength   = count($to);
 
-                foreach (PHPUnit_Util_Filesystem::collectEnd() as $blacklistedFile) {
-                    PHPUnit_Util_Filter::addFileToFilter($blacklistedFile, 'PHPUNIT');
-                }
+        for ($i = 0; $i <= $fromLength; ++$i) {
+            $matrix[$i][0] = 0;
+        }
+
+        for ($j = 0; $j <= $toLength; ++$j) {
+            $matrix[0][$j] = 0;
+        }
+
+        for ($i = 1; $i <= $fromLength; ++$i) {
+            for ($j = 1; $j <= $toLength; ++$j) {
+                $matrix[$i][$j] = max(
+                  $matrix[$i-1][$j],
+                  $matrix[$i][$j-1],
+                  $from[$i-1] === $to[$j-1] ? $matrix[$i-1][$j-1] + 1 : 0
+                );
             }
         }
 
-        if (class_exists('Text_Diff', FALSE)) {
-            self::$hasTextDiff = TRUE;
-        } else {
-            self::$hasTextDiff = FALSE;
+        $i = $fromLength;
+        $j = $toLength;
+
+        while ($i > 0 && $j > 0) {
+            if ($from[$i-1] === $to[$j-1]) {
+                array_unshift($common, $from[$i-1]);
+                --$i;
+                --$j;
+            }
+
+            else if ($matrix[$i][$j-1] > $matrix[$i-1][$j]) {
+                --$j;
+            }
+
+            else {
+                --$i;
+            }
         }
 
-        if (!self::$hasTextDiff && self::$hasDiffCommand === NULL) {
-            self::$hasDiffCommand = PHPUnit_Util_Filesystem::hasBinary('diff');
-        }
+        return $common;
     }
 }
 ?>

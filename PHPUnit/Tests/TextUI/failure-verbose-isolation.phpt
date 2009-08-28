@@ -26,7 +26,7 @@ message
 Failed asserting that two arrays are equal.
 --- Expected
 +++ Actual
-@@ -1,5 +1,5 @@
+@@ @@
  Array
  (
 -    [0] => 1
@@ -46,7 +46,7 @@ message
 Failed asserting that two objects are equal.
 --- Expected
 +++ Actual
-@@ -1,5 +1,5 @@
+@@ @@
  stdClass Object
  (
 -    [foo] => bar
@@ -66,7 +66,7 @@ message
 Failed asserting that two strings are equal.
 --- Expected
 +++ Actual
-@@ -1 +1 @@
+@@ @@
 -foo
 +bar
 
@@ -77,7 +77,7 @@ message
 Failed asserting that two strings are equal.
 --- Expected
 +++ Actual
-@@ -1,3 +1,3 @@
+@@ @@
  foo
 -bar
 +baz
@@ -94,7 +94,7 @@ Failed asserting that <integer:2> matches expected <integer:1>.
 message
 --- Expected
 +++ Actual
-@@ -1 +1 @@
+@@ @@
 -foo
 +bar
 
