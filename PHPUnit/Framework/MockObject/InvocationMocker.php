@@ -73,15 +73,28 @@ PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
  */
 class PHPUnit_Framework_MockObject_InvocationMocker implements PHPUnit_Framework_MockObject_Stub_MatcherCollection, PHPUnit_Framework_MockObject_Invokable, PHPUnit_Framework_MockObject_Builder_Namespace
 {
+    /**
+     * @var PHPUnit_Framework_MockObject_Matcher_Invocation[]
+     */
     protected $matchers = array();
 
+    /**
+     * @var PHPUnit_Framework_MockObject_Builder_Match[]
+     */
     protected $builderMap = array();
 
+    /**
+     * @param PHPUnit_Framework_MockObject_Matcher_Invocation $matcher
+     */
     public function addMatcher(PHPUnit_Framework_MockObject_Matcher_Invocation $matcher)
     {
         $this->matchers[] = $matcher;
     }
 
+    /**
+     * @param  mixed $id
+     * @return boolean|null
+     */
     public function lookupId($id)
     {
         if (isset($this->builderMap[$id])) {
@@ -91,6 +104,11 @@ class PHPUnit_Framework_MockObject_InvocationMocker implements PHPUnit_Framework
         return NULL;
     }
 
+    /**
+     * @param  mixed                                      $id
+     * @param  PHPUnit_Framework_MockObject_Builder_Match $builder
+     * @throws PHPUnit_Framework_Exception
+     */
     public function registerId($id, PHPUnit_Framework_MockObject_Builder_Match $builder)
     {
         if (isset($this->builderMap[$id])) {
@@ -102,6 +120,10 @@ class PHPUnit_Framework_MockObject_InvocationMocker implements PHPUnit_Framework
         $this->builderMap[$id] = $builder;
     }
 
+    /**
+     * @param  PHPUnit_Framework_MockObject_Matcher_Invocation $matcher
+     * @return PHPUnit_Framework_MockObject_Builder_InvocationMocker
+     */
     public function expects(PHPUnit_Framework_MockObject_Matcher_Invocation $matcher)
     {
         return new PHPUnit_Framework_MockObject_Builder_InvocationMocker(
@@ -109,6 +131,10 @@ class PHPUnit_Framework_MockObject_InvocationMocker implements PHPUnit_Framework
         );
     }
 
+    /**
+     * @param  PHPUnit_Framework_MockObject_Invocation $invocation
+     * @return mixed
+     */
     public function invoke(PHPUnit_Framework_MockObject_Invocation $invocation)
     {
         $exception      = NULL;
@@ -144,6 +170,10 @@ class PHPUnit_Framework_MockObject_InvocationMocker implements PHPUnit_Framework
         return $returnValue;
     }
 
+    /**
+     * @param  PHPUnit_Framework_MockObject_Invocation $invocation
+     * @return boolean
+     */
     public function matches(PHPUnit_Framework_MockObject_Invocation $invocation)
     {
         foreach($this->matchers as $matcher) {
@@ -155,6 +185,9 @@ class PHPUnit_Framework_MockObject_InvocationMocker implements PHPUnit_Framework
         return TRUE;
     }
 
+    /**
+     * @return boolean
+     */
     public function verify()
     {
         foreach($this->matchers as $matcher) {

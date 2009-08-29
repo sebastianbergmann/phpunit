@@ -70,18 +70,31 @@ PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
  */
 class PHPUnit_Framework_MockObject_Matcher_InvokedCount extends PHPUnit_Framework_MockObject_Matcher_InvokedRecorder
 {
+    /**
+     * @var integer
+     */
     protected $expectedCount;
 
+    /**
+     * @param interger $expectedCount
+     */
     public function __construct($expectedCount)
     {
         $this->expectedCount = $expectedCount;
     }
 
+    /**
+     * @return string
+     */
     public function toString()
     {
         return 'invoked ' . $this->expectedCount . ' time(s)';
     }
 
+    /**
+     * @param  PHPUnit_Framework_MockObject_Invocation $invocation
+     * @throws PHPUnit_Framework_ExpectationFailedException
+     */
     public function invoked(PHPUnit_Framework_MockObject_Invocation $invocation)
     {
         parent::invoked($invocation);
@@ -115,6 +128,12 @@ class PHPUnit_Framework_MockObject_Matcher_InvokedCount extends PHPUnit_Framewor
         }
     }
 
+    /**
+     * Verifies that the current expectation is valid. If everything is OK the
+     * code should just return, if not it must throw an exception.
+     *
+     * @throws PHPUnit_Framework_ExpectationFailedException
+     */
     public function verify()
     {
         $count = $this->getInvocationCount();

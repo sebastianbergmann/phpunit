@@ -63,9 +63,18 @@ PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
  */
 class PHPUnit_Framework_MockObject_Invocation_Object extends PHPUnit_Framework_MockObject_Invocation_Static
 {
+    /**
+     * @var object
+     */
     public $object;
 
-    public function __construct($className, $methodName, $parameters, $object)
+    /**
+     * @param string $className
+     * @param string $methodname
+     * @param array  $parameters
+     * @param object $object
+     */
+    public function __construct($className, $methodName, array $parameters, $object)
     {
         parent::__construct($className, $methodName, $parameters);
         $this->object = $object;
