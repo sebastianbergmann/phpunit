@@ -45,11 +45,8 @@
  */
 
 require_once 'PHPUnit/Framework.php';
-require_once 'PHPUnit/Util/Filter.php';
 
 PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
-
-if (!interface_exists('PHPUnit_Framework_TestListener', FALSE)) {
 
 /**
  * A Listener for test progress.
@@ -132,7 +129,5 @@ interface PHPUnit_Framework_TestListener
      * @param  float                  $time
      */
     public function endTest(PHPUnit_Framework_Test $test, $time);
-}
-
 }
 ?>

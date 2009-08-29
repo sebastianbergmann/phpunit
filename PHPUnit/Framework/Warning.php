@@ -45,11 +45,8 @@
  */
 
 require_once 'PHPUnit/Framework.php';
-require_once 'PHPUnit/Util/Filter.php';
 
 PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
-
-if (!class_exists('PHPUnit_Framework_Warning', FALSE)) {
 
 /**
  * A warning.
@@ -106,7 +103,5 @@ class PHPUnit_Framework_Warning extends PHPUnit_Framework_TestCase
     {
         return 'Warning';
     }
-}
-
 }
 ?>

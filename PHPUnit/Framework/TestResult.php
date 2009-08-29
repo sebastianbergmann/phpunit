@@ -45,17 +45,15 @@
  */
 
 require_once 'PHPUnit/Framework.php';
+
 require_once 'PHPUnit/Util/CodeCoverage.php';
 require_once 'PHPUnit/Util/ErrorHandler.php';
-require_once 'PHPUnit/Util/Filter.php';
 require_once 'PHPUnit/Util/InvalidArgumentHelper.php';
 require_once 'PHPUnit/Util/Printer.php';
 require_once 'PHPUnit/Util/Test.php';
 require_once 'PHPUnit/Util/Timer.php';
 
 PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
-
-if (!class_exists('PHPUnit_Framework_TestResult', FALSE)) {
 
 /**
  * A TestResult collects the results of executing a test case.
@@ -804,7 +802,5 @@ class PHPUnit_Framework_TestResult implements Countable
     {
         return empty($this->errors) && empty($this->failures);
     }
-}
-
 }
 ?>
