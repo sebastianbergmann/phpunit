@@ -104,16 +104,25 @@ abstract class PHPUnit_Framework_ComparisonFailure extends PHPUnit_Framework_Ass
         $this->message   = $message;
     }
 
+    /**
+     * @return mixed
+     */
     public function getActual()
     {
         return $this->actual;
     }
 
+    /**
+     * @return mixed
+     */
     public function getExpected()
     {
         return $this->expected;
     }
 
+    /**
+     * @return boolean
+     */
     public function identical()
     {
         return $this->identical;

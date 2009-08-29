@@ -76,6 +76,9 @@ class PHPUnit_Framework_Constraint_IsType extends PHPUnit_Framework_Constraint
     const TYPE_RESOURCE = 'resource';
     const TYPE_STRING   = 'string';
 
+    /**
+     * @var array
+     */
     protected $types = array(
       'array' => TRUE,
       'boolean' => TRUE,
@@ -90,8 +93,15 @@ class PHPUnit_Framework_Constraint_IsType extends PHPUnit_Framework_Constraint
       'string' => TRUE
     );
 
+    /**
+     * @var string
+     */
     protected $type;
 
+    /**
+     * @param  string $type
+     * @throws InvalidArgumentException
+     */
     public function __construct($type)
     {
         if (!isset($this->types[$type])) {

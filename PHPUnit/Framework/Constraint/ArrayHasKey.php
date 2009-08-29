@@ -69,8 +69,14 @@ PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
  */
 class PHPUnit_Framework_Constraint_ArrayHasKey extends PHPUnit_Framework_Constraint
 {
+    /**
+     * @var integer|string
+     */
     protected $key;
 
+    /**
+     * @param integer|string $key
+     */
     public function __construct($key)
     {
         $this->key = $key;
@@ -98,6 +104,11 @@ class PHPUnit_Framework_Constraint_ArrayHasKey extends PHPUnit_Framework_Constra
         return 'has the key ' . PHPUnit_Util_Type::toString($this->key);
     }
 
+    /**
+     * @param mixed   $other
+     * @param string  $description
+     * @param boolean $not
+     */
     protected function customFailureDescription($other, $description, $not)
     {
         return sprintf(

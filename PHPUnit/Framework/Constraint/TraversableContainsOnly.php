@@ -65,9 +65,20 @@ PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
  */
 class PHPUnit_Framework_Constraint_TraversableContainsOnly extends PHPUnit_Framework_Constraint
 {
+    /**
+     * @var PHPUnit_Framework_Constraint
+     */
     protected $constraint;
+
+    /**
+     * @var string
+     */
     protected $type;
 
+    /**
+     * @param string  $type
+     * @param boolean $isNativeType
+     */
     public function __construct($type, $isNativeType = TRUE)
     {
         if ($isNativeType) {

@@ -64,8 +64,14 @@ PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
 
 class PHPUnit_Framework_Constraint_Not extends PHPUnit_Framework_Constraint
 {
+    /**
+     * @var PHPUnit_Framework_Constraint
+     */
     protected $constraint;
 
+    /**
+     * @param PHPUnit_Framework_Constraint $constraint
+     */
     public function __construct($constraint)
     {
         if (!($constraint instanceof PHPUnit_Framework_Constraint)) {

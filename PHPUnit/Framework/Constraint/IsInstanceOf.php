@@ -67,8 +67,14 @@ PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
  */
 class PHPUnit_Framework_Constraint_IsInstanceOf extends PHPUnit_Framework_Constraint
 {
+    /**
+     * @var string
+     */
     protected $className;
 
+    /**
+     * @param string $className
+     */
     public function __construct($className)
     {
         $this->className = $className;

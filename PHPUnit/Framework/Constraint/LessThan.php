@@ -65,8 +65,14 @@ PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
  */
 class PHPUnit_Framework_Constraint_LessThan extends PHPUnit_Framework_Constraint
 {
+    /**
+     * @var numeric
+     */
     protected $value;
 
+    /**
+     * @param numeric $value
+     */
     public function __construct($value)
     {
         $this->value = $value;
