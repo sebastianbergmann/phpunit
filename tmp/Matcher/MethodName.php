@@ -70,8 +70,15 @@ PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
  */
 class PHPUnit_Framework_MockObject_Matcher_MethodName extends PHPUnit_Framework_MockObject_Matcher_StatelessInvocation
 {
+    /**
+     * @var PHPUnit_Framework_Constraint
+     */
     protected $constraint;
 
+    /**
+     * @param  PHPUnit_Framework_Constraint|string
+     * @throws PHPUnit_Framework_Constraint
+     */
     public function __construct($constraint)
     {
         if (!$constraint instanceof PHPUnit_Framework_Constraint) {
@@ -87,11 +94,18 @@ class PHPUnit_Framework_MockObject_Matcher_MethodName extends PHPUnit_Framework_
         $this->constraint = $constraint;
     }
 
+    /**
+     * @return string
+     */
     public function toString()
     {
         return 'method name ' . $this->constraint->toString();
     }
 
+    /**
+     * @param  PHPUnit_Framework_MockObject_Invocation $invocation
+     * @return boolean
+     */
     public function matches(PHPUnit_Framework_MockObject_Invocation $invocation)
     {
         return $this->constraint->evaluate($invocation->methodName);

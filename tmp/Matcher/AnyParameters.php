@@ -64,11 +64,18 @@ PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
  */
 class PHPUnit_Framework_MockObject_Matcher_AnyParameters extends PHPUnit_Framework_MockObject_Matcher_StatelessInvocation
 {
+    /**
+     * @return string
+     */
     public function toString()
     {
         return 'with any parameters';
     }
 
+    /**
+     * @param  PHPUnit_Framework_MockObject_Invocation $invocation
+     * @return boolean
+     */
     public function matches(PHPUnit_Framework_MockObject_Invocation $invocation)
     {
         return TRUE;
