@@ -63,11 +63,27 @@ PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
  */
 class PHPUnit_Framework_MockObject_Invocation_Static implements PHPUnit_Framework_MockObject_Invocation, PHPUnit_Framework_SelfDescribing
 {
+    /**
+     * @var string
+     */
     public $className;
+
+    /**
+     * @var string
+     */
     public $methodName;
+
+    /**
+     * @var array
+     */
     public $parameters;
 
-    public function __construct($className, $methodName, $parameters)
+    /**
+     * @param string $className
+     * @param string $methodname
+     * @param array  $parameters
+     */
+    public function __construct($className, $methodName, array $parameters)
     {
         $this->className  = $className;
         $this->methodName = $methodName;
@@ -80,6 +96,9 @@ class PHPUnit_Framework_MockObject_Invocation_Static implements PHPUnit_Framewor
         }
     }
 
+    /**
+     * @return string
+     */
     public function toString()
     {
         return sprintf(
@@ -97,6 +116,10 @@ class PHPUnit_Framework_MockObject_Invocation_Static implements PHPUnit_Framewor
         );
     }
 
+    /**
+     * @param  object $original
+     * @return object
+     */
     protected function cloneObject($original)
     {
         $object = new ReflectionObject($original);
