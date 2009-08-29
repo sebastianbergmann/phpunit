@@ -186,8 +186,11 @@ class PHPUnit_Framework_MockObject_Generator
             $_methods = $client->__getFunctions();
             unset($client);
 
-            $templateDir    = dirname(__FILE__) . DIRECTORY_SEPARATOR . 'Generator' . DIRECTORY_SEPARATOR;
-            $methodTemplate = new PHPUnit_Util_Template($templateDir . 'wsdl_method.tpl');
+            $templateDir    = dirname(__FILE__) . DIRECTORY_SEPARATOR .
+                              'Generator' . DIRECTORY_SEPARATOR;
+            $methodTemplate = new PHPUnit_Util_Template(
+                                $templateDir . 'wsdl_method.tpl'
+                              );
             $methodsBuffer  = '';
 
             foreach ($_methods as $method) {
@@ -196,7 +199,14 @@ class PHPUnit_Framework_MockObject_Generator
                 $name      = substr($method, $nameStart, $nameEnd - $nameStart);
 
                 if (empty($methods) || in_array($name, $methods)) {
-                    $args    = explode(',', substr($method, $nameEnd + 1, strpos($method, ')') - $nameEnd - 1));
+                    $args    = explode(
+                                 ',',
+                                 substr(
+                                   $method,
+                                   $nameEnd + 1,
+                                   strpos($method, ')') - $nameEnd - 1
+                                 )
+                               );
                     $numArgs = count($args);
 
                     for ($i = 0; $i < $numArgs; $i++) {
@@ -214,7 +224,9 @@ class PHPUnit_Framework_MockObject_Generator
                 }
             }
 
-            $classTemplate = new PHPUnit_Util_Template($templateDir . 'wsdl_class.tpl');
+            $classTemplate = new PHPUnit_Util_Template(
+              $templateDir . 'wsdl_class.tpl'
+            );
 
             $classTemplate->setVar(
               array(
@@ -227,7 +239,8 @@ class PHPUnit_Framework_MockObject_Generator
             return $classTemplate->render();
         } else {
             throw new PHPUnit_Framework_Exception(
-              'The SOAP extension is required to generate a mock object from WSDL.'
+              'The SOAP extension is required to generate a mock object ' .
+              'from WSDL.'
             );
         }
     }
@@ -242,8 +255,11 @@ class PHPUnit_Framework_MockObject_Generator
      */
     protected static function generateMock($originalClassName, array $methods = NULL, $mockClassName, $callOriginalClone, $callAutoload)
     {
-        $templateDir   = dirname(__FILE__) . DIRECTORY_SEPARATOR . 'Generator' . DIRECTORY_SEPARATOR;
-        $classTemplate = new PHPUnit_Util_Template($templateDir . 'mocked_class.tpl');
+        $templateDir   = dirname(__FILE__) . DIRECTORY_SEPARATOR . 'Generator' .
+                         DIRECTORY_SEPARATOR;
+        $classTemplate = new PHPUnit_Util_Template(
+                           $templateDir . 'mocked_class.tpl'
+                         );
         $cloneTemplate = '';
         $isClass       = FALSE;
         $isInterface   = FALSE;
@@ -265,10 +281,13 @@ class PHPUnit_Framework_MockObject_Generator
             $prologue = 'class ' . $mockClassName['className'] . "\n{\n}\n\n";
 
             if (!empty($mockClassName['namespaceName'])) {
-                $prologue = 'namespace ' . $mockClassName['namespaceName'] . ";\n\n" . $prologue;
+                $prologue = 'namespace ' . $mockClassName['namespaceName'] .
+                            ";\n\n" . $prologue;
             }
 
-            $cloneTemplate = new PHPUnit_Util_Template($templateDir . 'mocked_clone.tpl');
+            $cloneTemplate = new PHPUnit_Util_Template(
+              $templateDir . 'mocked_clone.tpl'
+            );
         } else {
             $class = new ReflectionClass($mockClassName['fullClassName']);
 
@@ -286,13 +305,19 @@ class PHPUnit_Framework_MockObject_Generator
 
                 if (!$cloneMethod->isFinal()) {
                     if ($callOriginalClone) {
-                        $cloneTemplate = new PHPUnit_Util_Template($templateDir . 'unmocked_clone.tpl');
+                        $cloneTemplate = new PHPUnit_Util_Template(
+                          $templateDir . 'unmocked_clone.tpl'
+                        );
                     } else {
-                        $cloneTemplate = new PHPUnit_Util_Template($templateDir . 'mocked_clone.tpl');
+                        $cloneTemplate = new PHPUnit_Util_Template(
+                          $templateDir . 'mocked_clone.tpl'
+                        );
                     }
                 }
             } else {
-                $cloneTemplate = new PHPUnit_Util_Template($templateDir . 'mocked_clone.tpl');
+                $cloneTemplate = new PHPUnit_Util_Template(
+                  $templateDir . 'mocked_clone.tpl'
+                );
             }
         }
 
@@ -300,7 +325,8 @@ class PHPUnit_Framework_MockObject_Generator
             $cloneTemplate = $cloneTemplate->render();
         }
 
-        if (is_array($methods) && empty($methods) && ($isClass || $isInterface)) {
+        if (is_array($methods) && empty($methods) &&
+            ($isClass || $isInterface)) {
             $methods = get_class_methods($mockClassName['fullClassName']);
         }
 
@@ -383,7 +409,8 @@ class PHPUnit_Framework_MockObject_Generator
 
         if ($mockClassName == '') {
             do {
-                $mockClassName = 'Mock_' . $originalClassName . '_' . substr(md5(microtime()), 0, 8);
+                $mockClassName = 'Mock_' . $originalClassName . '_' .
+                                 substr(md5(microtime()), 0, 8);
             }
             while (class_exists($mockClassName, FALSE));
         }
@@ -479,9 +506,13 @@ class PHPUnit_Framework_MockObject_Generator
     protected static function generateMockedMethodDefinition($templateDir, $className, $methodName, $modifier = 'public', $arguments = '', $reference = '', $static = FALSE)
     {
         if ($static) {
-            $template = new PHPUnit_Util_Template($templateDir . 'mocked_static_method.tpl');
+            $template = new PHPUnit_Util_Template(
+              $templateDir . 'mocked_static_method.tpl'
+            );
         } else {
-            $template = new PHPUnit_Util_Template($templateDir . 'mocked_object_method.tpl');
+            $template = new PHPUnit_Util_Template(
+              $templateDir . 'mocked_object_method.tpl'
+            );
         }
 
         $template->setVar(

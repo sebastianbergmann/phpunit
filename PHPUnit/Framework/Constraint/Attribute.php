@@ -115,7 +115,8 @@ class PHPUnit_Framework_Constraint_Attribute extends PHPUnit_Framework_Constrain
      */
     public function toString()
     {
-        return 'attribute "' . $this->attributeName . '" ' . $this->constraint->toString();
+        return 'attribute "' . $this->attributeName . '" ' .
+               $this->constraint->toString();
     }
 
     /**

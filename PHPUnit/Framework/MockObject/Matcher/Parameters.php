@@ -36,7 +36,6 @@
  *
  * @category   Testing
  * @package    PHPUnit
- * @author     Jan Borsodi <jb@ez.no>
  * @author     Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @copyright  2002-2009 Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
@@ -61,7 +60,6 @@ PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
  *
  * @category   Testing
  * @package    PHPUnit
- * @author     Jan Borsodi <jb@ez.no>
  * @author     Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @copyright  2002-2009 Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
@@ -79,7 +77,9 @@ class PHPUnit_Framework_MockObject_Matcher_Parameters extends PHPUnit_Framework_
     {
         foreach($parameters as $parameter) {
             if (!($parameter instanceof PHPUnit_Framework_Constraint)) {
-                $parameter = new PHPUnit_Framework_Constraint_IsEqual($parameter);
+                $parameter = new PHPUnit_Framework_Constraint_IsEqual(
+                  $parameter
+                );
             }
 
             $this->parameters[] = $parameter;
@@ -132,7 +132,8 @@ class PHPUnit_Framework_MockObject_Matcher_Parameters extends PHPUnit_Framework_
                 $parameter->fail(
                   $this->invocation->parameters[$i],
                   sprintf(
-                    'Parameter %s for invocation %s does not match expected value.',
+                    'Parameter %s for invocation %s does not match expected ' .
+                    'value.',
 
                     $i,
                     $this->invocation->toString()

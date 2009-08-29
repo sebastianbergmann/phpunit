@@ -54,8 +54,8 @@ PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
 /**
  * Constraint that checks if one value is equal to another.
  *
- * Equality is checked with PHP's == operator, the operator is explained in detail
- * at {@url http://www.php.net/manual/en/types.comparisons.php}.
+ * Equality is checked with PHP's == operator, the operator is explained in
+ * detail at {@url http://www.php.net/manual/en/types.comparisons.php}.
  * Two values are equal if they have the same value disregarding type.
  *
  * The expected value is passed in the constructor.
@@ -72,12 +72,38 @@ PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
  */
 class PHPUnit_Framework_Constraint_IsEqual extends PHPUnit_Framework_Constraint
 {
+    /**
+     * @var mixed
+     */
     protected $value;
+
+    /**
+     * @var float
+     */
     protected $delta = 0;
+
+    /**
+     * @var integer
+     */
     protected $maxDepth = 10;
+
+    /**
+     * @var boolean
+     */
     protected $canonicalizeEol = FALSE;
+
+    /**
+     * @var boolean
+     */
     protected $ignoreCase = FALSE;
 
+    /**
+     * @param mixed   $value
+     * @param float   $delta
+     * @param integer $maxDepth
+     * @param boolean $canonicalizeEol
+     * @param boolean $ignoreCase
+     */
     public function __construct($value, $delta = 0, $maxDepth = 10, $canonicalizeEol = FALSE, $ignoreCase = FALSE)
     {
         if (!is_numeric($delta)) {

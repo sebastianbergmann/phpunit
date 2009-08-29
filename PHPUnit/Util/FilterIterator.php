@@ -89,7 +89,9 @@ class PHPUnit_Util_FilterIterator extends FilterIterator
         }
 
         if (!is_array($suffixes)) {
-            throw PHPUnit_Util_InvalidArgumentHelper::factory(2, 'array or string');
+            throw PHPUnit_Util_InvalidArgumentHelper::factory(
+              2, 'array or string'
+            );
         }
 
         $this->suffixes = $suffixes;
@@ -103,7 +105,9 @@ class PHPUnit_Util_FilterIterator extends FilterIterator
         }
 
         if (!is_array($prefixes)) {
-            throw PHPUnit_Util_InvalidArgumentHelper::factory(3, 'array or string');
+            throw PHPUnit_Util_InvalidArgumentHelper::factory(
+              3, 'array or string'
+            );
         }
 
         $this->prefixes = $prefixes;

@@ -117,7 +117,9 @@ class PHPUnit_Util_Filter
                 self::addFileToFilter($file->getPathName(), $group);
             }
         } else {
-            throw new PHPUnit_Framework_Exception($directory . ' does not exist');
+            throw new PHPUnit_Framework_Exception(
+              $directory . ' does not exist'
+            );
         }
     }
 
@@ -142,7 +144,9 @@ class PHPUnit_Util_Filter
                 self::$blacklistedFiles[$group][] = $filename;
             }
         } else {
-            throw new PHPUnit_Framework_Exception($filename . ' does not exist');
+            throw new PHPUnit_Framework_Exception(
+              $filename . ' does not exist'
+            );
         }
     }
 
@@ -163,7 +167,9 @@ class PHPUnit_Util_Filter
                 self::removeFileFromFilter($file->getPathName(), $group);
             }
         } else {
-            throw new PHPUnit_Framework_Exception($directory . ' does not exist');
+            throw new PHPUnit_Framework_Exception(
+              $directory . ' does not exist'
+            );
         }
     }
 
@@ -188,7 +194,9 @@ class PHPUnit_Util_Filter
                 }
             }
         } else {
-            throw new PHPUnit_Framework_Exception($filename . ' does not exist');
+            throw new PHPUnit_Framework_Exception(
+              $filename . ' does not exist'
+            );
         }
     }
 
@@ -208,7 +216,9 @@ class PHPUnit_Util_Filter
                 self::addFileToWhitelist($file->getPathName());
             }
         } else {
-            throw new PHPUnit_Framework_Exception($directory . ' does not exist');
+            throw new PHPUnit_Framework_Exception(
+              $directory . ' does not exist'
+            );
         }
     }
 
@@ -231,7 +241,9 @@ class PHPUnit_Util_Filter
                 self::$whitelistedFiles[] = $filename;
             }
         } else {
-            throw new PHPUnit_Framework_Exception($filename . ' does not exist');
+            throw new PHPUnit_Framework_Exception(
+              $filename . ' does not exist'
+            );
         }
     }
 
@@ -251,7 +263,9 @@ class PHPUnit_Util_Filter
                 self::removeFileFromWhitelist($file->getPathName());
             }
         } else {
-            throw new PHPUnit_Framework_Exception($directory . ' does not exist');
+            throw new PHPUnit_Framework_Exception(
+              $directory . ' does not exist'
+            );
         }
     }
 
@@ -273,7 +287,9 @@ class PHPUnit_Util_Filter
                 }
             }
         } else {
-            throw new PHPUnit_Framework_Exception($filename . ' does not exist');
+            throw new PHPUnit_Framework_Exception(
+              $filename . ' does not exist'
+            );
         }
     }
 
@@ -345,7 +361,9 @@ class PHPUnit_Util_Filter
 
                 foreach (array_keys($test['executable']) as $file) {
                     if ($isFilteredCache[$file]) {
-                        unset($codeCoverageInformation[$k]['executable'][$file]);
+                        unset(
+                          $codeCoverageInformation[$k]['executable'][$file]
+                        );
                     }
                 }
             }
@@ -355,7 +373,9 @@ class PHPUnit_Util_Filter
                     if (!isset(self::$coveredFiles[$whitelistedFile]) &&
                         !self::isFiltered($whitelistedFile, $filterTests, TRUE)) {
                         if (file_exists($whitelistedFile)) {
-                            xdebug_start_code_coverage(XDEBUG_CC_UNUSED | XDEBUG_CC_DEAD_CODE);
+                            xdebug_start_code_coverage(
+                              XDEBUG_CC_UNUSED | XDEBUG_CC_DEAD_CODE
+                            );
                             include_once $whitelistedFile;
                             $coverage = xdebug_get_code_coverage();
                             xdebug_stop_code_coverage();
@@ -415,7 +435,9 @@ class PHPUnit_Util_Filter
         }
 
         foreach ($eTrace as $frame) {
-            if (!self::$filter || (isset($frame['file']) && is_file($frame['file']) && !self::isFiltered($frame['file'], $filterTests, TRUE))) {
+            if (!self::$filter || (isset($frame['file']) &&
+                is_file($frame['file']) &&
+                !self::isFiltered($frame['file'], $filterTests, TRUE))) {
                 if ($asString === TRUE) {
                     $filteredStacktrace .= sprintf(
                       "%s:%s\n",

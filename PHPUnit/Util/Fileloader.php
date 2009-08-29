@@ -77,7 +77,9 @@ class PHPUnit_Util_Fileloader
         $filename = PHPUnit_Util_Filesystem::fileExistsInIncludePath($filename);
 
         if (!$filename) {
-            throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'existing file');
+            throw PHPUnit_Util_InvalidArgumentHelper::factory(
+              1, 'existing file'
+            );
         }
 
         $oldVariableNames = array_keys(get_defined_vars());
@@ -85,7 +87,9 @@ class PHPUnit_Util_Fileloader
         include_once $filename;
 
         $newVariables     = get_defined_vars();
-        $newVariableNames = array_diff(array_keys($newVariables), $oldVariableNames);
+        $newVariableNames = array_diff(
+                              array_keys($newVariables), $oldVariableNames
+                            );
 
         foreach ($newVariableNames as $variableName) {
             if ($variableName != 'oldVariableNames') {

@@ -134,23 +134,33 @@ abstract class PHPUnit_Framework_ComparisonFailure extends PHPUnit_Framework_Ass
     public static function diffIdentical($expected, $actual, $message = '')
     {
         if (gettype($expected) !== gettype($actual)) {
-            return new PHPUnit_Framework_ComparisonFailure_Type($expected, $actual, TRUE, $message);
+            return new PHPUnit_Framework_ComparisonFailure_Type(
+              $expected, $actual, TRUE, $message
+            );
         }
 
         else if (is_array($expected) && is_array($actual)) {
-            return new PHPUnit_Framework_ComparisonFailure_Array($expected, $actual, TRUE, $message);
+            return new PHPUnit_Framework_ComparisonFailure_Array(
+              $expected, $actual, TRUE, $message
+            );
         }
 
         else if (is_object($expected) && is_object($actual)) {
-            return new PHPUnit_Framework_ComparisonFailure_Object($expected, $actual, TRUE, $message);
+            return new PHPUnit_Framework_ComparisonFailure_Object(
+              $expected, $actual, TRUE, $message
+            );
         }
 
         else if (is_string($expected) && !is_object($actual)) {
-            return new PHPUnit_Framework_ComparisonFailure_String($expected, $actual, TRUE, $message);
+            return new PHPUnit_Framework_ComparisonFailure_String(
+              $expected, $actual, TRUE, $message
+            );
         }
 
         else if (is_null($expected) || is_scalar($expected)) {
-            return new PHPUnit_Framework_ComparisonFailure_Scalar($expected, $actual, TRUE, $message);
+            return new PHPUnit_Framework_ComparisonFailure_Scalar(
+              $expected, $actual, TRUE, $message
+            );
         }
     }
 
@@ -169,19 +179,27 @@ abstract class PHPUnit_Framework_ComparisonFailure extends PHPUnit_Framework_Ass
     public static function diffEqual($expected, $actual, $message = '')
     {
         if (is_array($expected) && is_array($actual)) {
-            return new PHPUnit_Framework_ComparisonFailure_Array($expected, $actual, FALSE, $message);
+            return new PHPUnit_Framework_ComparisonFailure_Array(
+              $expected, $actual, FALSE, $message
+            );
         }
 
         else if (is_object($expected) && is_object($actual)) {
-            return new PHPUnit_Framework_ComparisonFailure_Object($expected, $actual, FALSE, $message);
+            return new PHPUnit_Framework_ComparisonFailure_Object(
+              $expected, $actual, FALSE, $message
+            );
         }
 
         else if (is_string($expected) && !is_object($actual)) {
-            return new PHPUnit_Framework_ComparisonFailure_String($expected, $actual, FALSE, $message);
+            return new PHPUnit_Framework_ComparisonFailure_String(
+              $expected, $actual, FALSE, $message
+            );
         }
 
         else if (is_null($expected) || is_scalar($expected)) {
-            return new PHPUnit_Framework_ComparisonFailure_Scalar($expected, $actual, FALSE, $message);
+            return new PHPUnit_Framework_ComparisonFailure_Scalar(
+              $expected, $actual, FALSE, $message
+            );
         }
     }
 }

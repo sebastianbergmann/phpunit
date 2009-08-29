@@ -36,7 +36,6 @@
  *
  * @category   Testing
  * @package    PHPUnit
- * @author     Jan Borsodi <jb@ez.no>
  * @author     Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @copyright  2002-2009 Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
@@ -73,7 +72,9 @@ class PHPUnit_Framework_Constraint_Xor extends PHPUnit_Framework_Constraint
 
         foreach($constraints as $key => $constraint) {
             if (!($constraint instanceof PHPUnit_Framework_Constraint)) {
-                $constraint = new PHPUnit_Framework_Constraint_IsEqual($constraint);
+                $constraint = new PHPUnit_Framework_Constraint_IsEqual(
+                  $constraint
+                );
             }
 
             $this->constraints[] = $constraint;

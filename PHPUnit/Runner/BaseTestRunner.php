@@ -93,7 +93,8 @@ abstract class PHPUnit_Runner_BaseTestRunner
      */
     public function getTest($suiteClassName, $suiteClassFile = '')
     {
-        if (is_dir($suiteClassName) && !is_file($suiteClassName . '.php') && empty($suiteClassFile)) {
+        if (is_dir($suiteClassName) &&
+            !is_file($suiteClassName . '.php') && empty($suiteClassFile)) {
             $testCollector = new PHPUnit_Runner_IncludePathTestCollector(
               array($suiteClassName)
             );

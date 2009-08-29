@@ -36,7 +36,6 @@
  *
  * @category   Testing
  * @package    PHPUnit
- * @author     Jan Borsodi <jb@ez.no>
  * @author     Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @copyright  2002-2009 Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
@@ -56,7 +55,6 @@ PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
  *
  * @category   Testing
  * @package    PHPUnit
- * @author     Jan Borsodi <jb@ez.no>
  * @author     Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @copyright  2002-2009 Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
@@ -76,7 +74,10 @@ class PHPUnit_Framework_Constraint_And extends PHPUnit_Framework_Constraint
 
         foreach($constraints as $key => $constraint) {
             if (!($constraint instanceof PHPUnit_Framework_Constraint)) {
-                throw new InvalidArgumentException('All parameters to ' . __CLASS__ . ' must be a constraint object.');
+                throw new InvalidArgumentException(
+                  'All parameters to ' . __CLASS__ .
+                  ' must be a constraint object.'
+                );
             }
 
             $this->constraints[] = $constraint;

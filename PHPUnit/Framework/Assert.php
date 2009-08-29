@@ -1555,19 +1555,31 @@ abstract class PHPUnit_Framework_Assert
      * The first argument ($matcher) is an associative array that specifies the
      * match criteria for the assertion:
      *
-     *  - `id`           : the node with the given id attribute must match the corresponsing value.
+     *  - `id`           : the node with the given id attribute must match the
+     *                     corresponsing value.
      *  - `tag`          : the node type must match the corresponding value.
-     *  - `attributes`   : a hash. The node's attributres must match the corresponsing values in the hash.
+     *  - `attributes`   : a hash. The node's attributres must match the
+     *                     corresponsing values in the hash.
      *  - `content`      : The text content must match the given value.
-     *  - `parent`       : a hash. The node's parent must match the corresponsing hash.
-     *  - `child`        : a hash. At least one of the node's immediate children must meet the criteria described by the hash.
-     *  - `ancestor`     : a hash. At least one of the node's ancestors must meet the criteria described by the hash.
-     *  - `descendant`   : a hash. At least one of the node's descendants must meet the criteria described by the hash.
-     *  - `children`     : a hash, for counting children of a node. Accepts the keys:
-     *    - `count`        : a number which must equal the number of children that match
-     *    - `less_than`    : the number of matching children must be greater than this number
-     *    - `greater_than` : the number of matching children must be less than this number
-     *    - `only`         : another hash consisting of the keys to use to match on the children, and only matching children will be counted
+     *  - `parent`       : a hash. The node's parent must match the
+     *                     corresponsing hash.
+     *  - `child`        : a hash. At least one of the node's immediate children
+     *                     must meet the criteria described by the hash.
+     *  - `ancestor`     : a hash. At least one of the node's ancestors must
+     *                     meet the criteria described by the hash.
+     *  - `descendant`   : a hash. At least one of the node's descendants must
+     *                     meet the criteria described by the hash.
+     *  - `children`     : a hash, for counting children of a node.
+     *                     Accepts the keys:
+     *    - `count`        : a number which must equal the number of children
+     *                       that match
+     *    - `less_than`    : the number of matching children must be greater
+     *                       than this number
+     *    - `greater_than` : the number of matching children must be less than
+     *                       this number
+     *    - `only`         : another hash consisting of the keys to use to match
+     *                       on the children, and only matching children will be
+     *                       counted
      *
      * <code>
      * // Matcher that asserts that there is an element with an id="my_id".
@@ -1618,8 +1630,8 @@ abstract class PHPUnit_Framework_Assert
      *   'descendant' => array('tag' => 'strong')
      * );
      *
-     * // Matcher that asserts that there is a "span" containing 5-10 "em" tags as
-     * // immediate children.
+     * // Matcher that asserts that there is a "span" containing 5-10 "em" tags
+     * // as immediate children.
      * $matcher = array(
      *   'tag'      => 'span',
      *   'children' => array(
@@ -1629,9 +1641,9 @@ abstract class PHPUnit_Framework_Assert
      *   )
      * );
      *
-     * // Matcher that asserts that there is a "div", with an "ul" ancestor and a "li"
-     * // parent (with class="enum"), and containing a "span" descendant that contains
-     * // an element with id="my_test" and the text "Hello World".
+     * // Matcher that asserts that there is a "div", with an "ul" ancestor and 
+     * // a "li" parent (with class="enum"), and containing a "span" descendant
+     * // that contains an element with id="my_test" and the text "Hello World".
      * $matcher = array(
      *   'tag'        => 'div',
      *   'ancestor'   => array('tag' => 'ul'),
@@ -1684,8 +1696,10 @@ abstract class PHPUnit_Framework_Assert
     }
 
     /**
-     * This assertion is the exact opposite of assertTag().  Rather than asserting
-     * that $matcher results in a match, it asserts that $matcher does not match.
+     * This assertion is the exact opposite of assertTag().
+     *
+     * Rather than asserting that $matcher results in a match, it asserts that
+     * $matcher does not match.
      *
      * @param  array   $matcher
      * @param  string  $actual

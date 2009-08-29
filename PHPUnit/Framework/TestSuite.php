@@ -285,7 +285,8 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
             $this->tests[]  = $test;
             $this->numTests = -1;
 
-            if ($test instanceof PHPUnit_Framework_TestSuite && empty($groups)) {
+            if ($test instanceof PHPUnit_Framework_TestSuite &&
+                empty($groups)) {
                 $groups = $test->getGroups();
             }
 
@@ -316,7 +317,9 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
         }
 
         if (!is_object($testClass)) {
-            throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'class name or object');
+            throw PHPUnit_Util_InvalidArgumentHelper::factory(
+              1, 'class name or object'
+            );
         }
 
         if ($testClass instanceof PHPUnit_Framework_TestSuite) {
@@ -333,7 +336,10 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
                     );
 
                     if ($method->isStatic()) {
-                        $this->addTest($method->invoke(NULL, $testClass->getName()));
+                        $this->addTest(
+                          $method->invoke(NULL, $testClass->getName())
+                        );
+
                         $suiteMethod = TRUE;
                     }
                 }
@@ -446,7 +452,9 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
     {
         if (!(is_array($filenames) ||
              (is_object($filenames) && $filenames instanceof Iterator))) {
-            throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'array or iterator');
+            throw PHPUnit_Util_InvalidArgumentHelper::factory(
+              1, 'array or iterator'
+            );
         }
 
         foreach ($filenames as $filename) {
@@ -487,7 +495,9 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
         $method                   = new ReflectionMethod($className, $name);
         $methodDocComment         = $method->getDocComment();
         $runTestInSeparateProcess = FALSE;
-        $backupSettings           = PHPUnit_Util_Test::getBackupSettings($className, $name);
+        $backupSettings           = PHPUnit_Util_Test::getBackupSettings(
+                                      $className, $name
+                                    );
 
         if (!$theClass->isInstantiable()) {
             return self::warning(
@@ -561,7 +571,9 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
             }
 
             if ($backupSettings['backupStaticAttributes'] !== NULL) {
-                $test->setBackupStaticAttributes($backupSettings['backupStaticAttributes']);
+                $test->setBackupStaticAttributes(
+                  $backupSettings['backupStaticAttributes']
+                );
             }
         }
 
@@ -694,7 +706,9 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
                 if ($runTest) {
                     if ($test instanceof PHPUnit_Framework_TestCase) {
                         $test->setBackupGlobals($this->backupGlobals);
-                        $test->setBackupStaticAttributes($this->backupStaticAttributes);
+                        $test->setBackupStaticAttributes(
+                          $this->backupStaticAttributes
+                        );
                         $test->setSharedFixture($this->sharedFixture);
                         $test->setRunTestInSeparateProcess($processIsolation);
 
@@ -739,7 +753,8 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
      */
     public function runTest(PHPUnit_Framework_Test $test, PHPUnit_Framework_TestResult $result)
     {
-        if ($this->runTestsInSeparateProcesses === TRUE && $test instanceof PHPUnit_Framework_TestCase) {
+        if ($this->runTestsInSeparateProcesses === TRUE &&
+            $test instanceof PHPUnit_Framework_TestCase) {
             $test->setRunTestInSeparateProcess(TRUE);
         }
 
@@ -818,7 +833,9 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
                 );
             }
 
-            $this->addTest($test, PHPUnit_Util_Test::getGroups($class->getName(), $name));
+            $this->addTest($test, PHPUnit_Util_Test::getGroups(
+              $class->getName(), $name)
+            );
         }
 
         else if ($this->isTestMethod($method)) {
@@ -885,7 +902,8 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
      */
     public function setBackupStaticAttributes($backupStaticAttributes)
     {
-        if (is_null($this->backupStaticAttributes) && is_bool($backupStaticAttributes)) {
+        if (is_null($this->backupStaticAttributes) &&
+            is_bool($backupStaticAttributes)) {
             $this->backupStaticAttributes = $backupStaticAttributes;
         }
     }
@@ -897,7 +915,8 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
      */
     public function setRunTestsInSeparateProcesses($runTestsInSeparateProcesses)
     {
-        if (is_null($this->runTestsInSeparateProcesses) && is_bool($runTestsInSeparateProcesses)) {
+        if (is_null($this->runTestsInSeparateProcesses) &&
+            is_bool($runTestsInSeparateProcesses)) {
             $this->runTestsInSeparateProcesses = $runTestsInSeparateProcesses;
         } else {
             throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'boolean');
