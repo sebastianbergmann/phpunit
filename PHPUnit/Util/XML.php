@@ -94,14 +94,30 @@ class PHPUnit_Util_XML
         $length = strlen($string);
 
         for ($i = 0; $i < $length; $i++) {
-            if      (ord($string[$i]) < 0x80)          $n = 0;
-            elseif ((ord($string[$i]) & 0xE0) == 0xC0) $n = 1;
-            elseif ((ord($string[$i]) & 0xF0) == 0xE0) $n = 2;
-            elseif ((ord($string[$i]) & 0xF0) == 0xF0) $n = 3;
-            else   return FALSE;
+            if (ord($string[$i]) < 0x80) {
+                $n = 0;
+            }
+
+            else if ((ord($string[$i]) & 0xE0) == 0xC0) {
+                $n = 1;
+            }
+
+            else if ((ord($string[$i]) & 0xF0) == 0xE0) {
+                $n = 2;
+            }
+
+            else if ((ord($string[$i]) & 0xF0) == 0xF0) {
+                $n = 3;
+            }
+
+            else {
+                return FALSE;
+            }
 
             for ($j = 0; $j < $n; $j++) {
-                if ((++$i == $length) || ((ord($string[$i]) & 0xC0) != 0x80)) return FALSE;
+                if ((++$i == $length) || ((ord($string[$i]) & 0xC0) != 0x80)) {
+                    return FALSE;
+                }
             }
         }
 
@@ -338,7 +354,7 @@ class PHPUnit_Util_XML
         // Add default values for any valid keys that are empty.
         foreach ($valids as $key => $value) {
             if (!isset($hash[$key])) {
-              $hash[$key] = $value;
+                $hash[$key] = $value;
             }
         }
 
@@ -362,10 +378,17 @@ class PHPUnit_Util_XML
 
         // substitute spaces within attribute value
         while (preg_match('/\[[^\]]+"[^"]+\s[^"]+"\]/', $selector)) {
-            $selector = preg_replace('/(\[[^\]]+"[^"]+)\s([^"]+"\])/', "$1__SPACE__$2", $selector);
+            $selector = preg_replace(
+              '/(\[[^\]]+"[^"]+)\s([^"]+"\])/', "$1__SPACE__$2", $selector
+            );
         }
 
-        $elements    = strstr($selector, ' ') ? explode(' ', $selector) : array($selector);
+        if (strstr($selector, ' ')) {
+            $elements = explode(' ', $selector);
+        } else {
+            $elements = array($selector);
+        }
+
         $previousTag = array();
 
         foreach (array_reverse($elements) as $element) {
@@ -386,8 +409,11 @@ class PHPUnit_Util_XML
                 $tag['tag'] = $eltMatches[1];
             }
 
-            // match attributes (\[[^\]]*\]*), ids (#[^\.#\[]*), and classes (\.[^\.#\[]*))
-            preg_match_all("/(\[[^\]]*\]*|#[^\.#\[]*|\.[^\.#\[]*)/", $element, $matches);
+            // match attributes (\[[^\]]*\]*), ids (#[^\.#\[]*),
+            // and classes (\.[^\.#\[]*))
+            preg_match_all(
+              "/(\[[^\]]*\]*|#[^\.#\[]*|\.[^\.#\[]*)/", $element, $matches
+            );
 
             if (!empty($matches[1])) {
                 $classes = array();
@@ -405,20 +431,21 @@ class PHPUnit_Util_XML
                     }
 
                     // attribute matched
-                    else if (substr($match, 0, 1) == '[' && substr($match, -1, 1) == ']') {
+                    else if (substr($match, 0, 1) == '[' &&
+                             substr($match, -1, 1) == ']') {
                         $attribute = substr($match, 1, strlen($match) - 2);
                         $attribute = str_replace('"', '', $attribute);
 
                         // match single word
                         if (strstr($attribute, '~=')) {
                             list($key, $value) = explode('~=', $attribute);
-                            $value = "regexp:/.*\b$value\b.*/";
+                            $value             = "regexp:/.*\b$value\b.*/";
                         }
 
                         // match substring
                         else if (strstr($attribute, '*=')) {
                             list($key, $value) = explode('*=', $attribute);
-                            $value = "regexp:/.*$value.*/";
+                            $value             = "regexp:/.*$value.*/";
                         }
 
                         // exact match
@@ -522,7 +549,9 @@ class PHPUnit_Util_XML
         // find the element by a tag type
         if ($options['tag']) {
             if ($isHtml) {
-                $elements = self::getElementsByCaseInsensitiveTagName($dom, $options['tag']);
+                $elements = self::getElementsByCaseInsensitiveTagName(
+                  $dom, $options['tag']
+                );
             } else {
                 $elements = $dom->getElementsByTagName($options['tag']);
             }
@@ -534,9 +563,10 @@ class PHPUnit_Util_XML
             if (empty($nodes)) {
                 return FALSE;
             }
+        }
 
         // no tag selected, get them all
-        } else {
+        else {
             $tags = array(
               'a', 'abbr', 'acronym', 'address', 'area', 'b', 'base', 'bdo',
               'big', 'blockquote', 'body', 'br', 'button', 'caption', 'cite',
@@ -553,7 +583,9 @@ class PHPUnit_Util_XML
 
             foreach ($tags as $tag) {
                 if ($isHtml) {
-                    $elements = self::getElementsByCaseInsensitiveTagName($dom, $tag);
+                    $elements = self::getElementsByCaseInsensitiveTagName(
+                      $dom, $tag
+                    );
                 } else {
                     $elements = $dom->getElementsByTagName($tag);
                 }
@@ -584,8 +616,14 @@ class PHPUnit_Util_XML
                     // class can match only a part
                     else if ($name == 'class') {
                         // split to individual classes
-                        $findClasses = explode(' ', preg_replace("/\s+/", " ", $value));
-                        $allClasses  = explode(' ', preg_replace("/\s+/", " ", $node->getAttribute($name)));
+                        $findClasses = explode(
+                          ' ', preg_replace("/\s+/", " ", $value)
+                        );
+
+                        $allClasses = explode(
+                          ' ',
+                          preg_replace("/\s+/", " ", $node->getAttribute($name))
+                        );
 
                         // make sure each class given is in the actual node
                         foreach ($findClasses as $findClass) {
@@ -742,7 +780,9 @@ class PHPUnit_Util_XML
         // filter by children
         if ($options['children']) {
             $validChild   = array('count', 'greater_than', 'less_than', 'only');
-            $childOptions = self::assertValidKeys($options['children'], $validChild);
+            $childOptions = self::assertValidKeys(
+                              $options['children'], $validChild
+                            );
 
             foreach ($nodes as $node) {
                 $childNodes = $node->childNodes;
@@ -756,7 +796,7 @@ class PHPUnit_Util_XML
 
                 // we must have children to pass this filter
                 if (!empty($children)) {
-                   // exact count of children
+                    // exact count of children
                     if ($childOptions['count'] !== NULL) {
                         if (count($children) !== $childOptions['count']) {
                             break;
@@ -788,7 +828,9 @@ class PHPUnit_Util_XML
 
                     // match each child against a specific tag
                     if ($childOptions['only']) {
-                        $onlyNodes = self::findNodes($dom, $childOptions['only']);
+                        $onlyNodes = self::findNodes(
+                          $dom, $childOptions['only']
+                        );
 
                         // try to match each child to one of the 'only' nodes
                         foreach ($children as $child) {

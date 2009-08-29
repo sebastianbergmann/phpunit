@@ -160,7 +160,9 @@ class PHPUnit_Util_Skeleton_Test extends PHPUnit_Util_Skeleton
      */
     public function generate($verbose = FALSE)
     {
-        $class             = new ReflectionClass($this->inClassName['fullyQualifiedClassName']);
+        $class             = new ReflectionClass(
+                               $this->inClassName['fullyQualifiedClassName']
+                             );
         $methods           = '';
         $incompleteMethods = '';
 
@@ -234,22 +236,26 @@ class PHPUnit_Util_Skeleton_Test extends PHPUnit_Util_Skeleton
                                 $template = 'TestMethodException';
                             }
 
-                            else if ($assertion == 'Equals' && strtolower($matches[3]) == 'true') {
+                            else if ($assertion == 'Equals' &&
+                                     strtolower($matches[3]) == 'true') {
                                 $assertion = 'True';
                                 $template  = 'TestMethodBool';
                             }
 
-                            else if ($assertion == 'NotEquals' && strtolower($matches[3]) == 'true') {
+                            else if ($assertion == 'NotEquals' &&
+                                     strtolower($matches[3]) == 'true') {
                                 $assertion = 'False';
                                 $template  = 'TestMethodBool';
                             }
 
-                            else if ($assertion == 'Equals' && strtolower($matches[3]) == 'false') {
+                            else if ($assertion == 'Equals' &&
+                                     strtolower($matches[3]) == 'false') {
                                 $assertion = 'False';
                                 $template  = 'TestMethodBool';
                             }
 
-                            else if ($assertion == 'NotEquals' && strtolower($matches[3]) == 'false') {
+                            else if ($assertion == 'NotEquals' &&
+                                     strtolower($matches[3]) == 'false') {
                                 $assertion = 'True';
                                 $template  = 'TestMethodBool';
                             }
@@ -348,7 +354,8 @@ class PHPUnit_Util_Skeleton_Test extends PHPUnit_Util_Skeleton
         }
 
         if ($this->outClassName['namespace'] != '') {
-            $namespace = "\nnamespace " . $this->outClassName['namespace'] . ";\n";
+            $namespace = "\nnamespace " .
+                         $this->outClassName['namespace'] . ";\n";
         } else {
             $namespace = '';
         }

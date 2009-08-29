@@ -157,7 +157,8 @@ class PHPUnit_TextUI_Command
 
         $runner = new PHPUnit_TextUI_TestRunner($this->arguments['loader']);
 
-        if (is_object($this->arguments['test']) && $this->arguments['test'] instanceof PHPUnit_Framework_Test) {
+        if (is_object($this->arguments['test']) &&
+            $this->arguments['test'] instanceof PHPUnit_Framework_Test) {
             $suite = $this->arguments['test'];
         } else {
             $suite = $runner->getTest(
@@ -185,7 +186,9 @@ class PHPUnit_TextUI_Command
 
             if (!$result['incomplete']) {
                 eval(str_replace(array('<?php', '?>'), '', $result['code']));
-                $suite = new PHPUnit_Framework_TestSuite($this->arguments['test'] . 'Test');
+                $suite = new PHPUnit_Framework_TestSuite(
+                  $this->arguments['test'] . 'Test'
+                );
             }
         }
 
@@ -276,7 +279,8 @@ class PHPUnit_TextUI_Command
             switch ($option[0]) {
                 case '--ansi': {
                     $this->showMessage(
-                      'The --ansi option is deprecated, please use --colors instead.',
+                      'The --ansi option is deprecated, please use --colors ' .
+                      'instead.',
                       FALSE
                     );
                 }
@@ -298,32 +302,43 @@ class PHPUnit_TextUI_Command
 
                 case '--coverage-xml': {
                     $this->showMessage(
-                      'The --coverage-xml option is deprecated, please use --coverage-clover instead.',
+                      'The --coverage-xml option is deprecated, please use ' .
+                      '--coverage-clover instead.',
                       FALSE
                     );
                 }
 
                 case '--coverage-clover': {
-                    if (extension_loaded('tokenizer') && extension_loaded('xdebug')) {
+                    if (extension_loaded('tokenizer') &&
+                        extension_loaded('xdebug')) {
                         $this->arguments['coverageClover'] = $option[1];
                     } else {
                         if (!extension_loaded('tokenizer')) {
-                            $this->showMessage('The tokenizer extension is not loaded.');
+                            $this->showMessage(
+                              'The tokenizer extension is not loaded.'
+                            );
                         } else {
-                            $this->showMessage('The Xdebug extension is not loaded.');
+                            $this->showMessage(
+                              'The Xdebug extension is not loaded.'
+                            );
                         }
                     }
                 }
                 break;
 
                 case '--coverage-source': {
-                    if (extension_loaded('tokenizer') && extension_loaded('xdebug')) {
+                    if (extension_loaded('tokenizer') &&
+                        extension_loaded('xdebug')) {
                         $this->arguments['coverageSource'] = $option[1];
                     } else {
                         if (!extension_loaded('tokenizer')) {
-                            $this->showMessage('The tokenizer extension is not loaded.');
+                            $this->showMessage(
+                              'The tokenizer extension is not loaded.'
+                            );
                         } else {
-                            $this->showMessage('The Xdebug extension is not loaded.');
+                            $this->showMessage(
+                              'The Xdebug extension is not loaded.'
+                            );
                         }
                     }
                 }
@@ -331,19 +346,25 @@ class PHPUnit_TextUI_Command
 
                 case '--report': {
                     $this->showMessage(
-                      'The --report option is deprecated, please use --coverage-html instead.',
+                      'The --report option is deprecated, please use ' .
+                      '--coverage-html instead.',
                       FALSE
                     );
                 }
 
                 case '--coverage-html': {
-                    if (extension_loaded('tokenizer') && extension_loaded('xdebug')) {
+                    if (extension_loaded('tokenizer') &&
+                        extension_loaded('xdebug')) {
                         $this->arguments['reportDirectory'] = $option[1];
                     } else {
                         if (!extension_loaded('tokenizer')) {
-                            $this->showMessage('The tokenizer extension is not loaded.');
+                            $this->showMessage(
+                              'The tokenizer extension is not loaded.'
+                            );
                         } else {
-                            $this->showMessage('The Xdebug extension is not loaded.');
+                            $this->showMessage(
+                              'The Xdebug extension is not loaded.'
+                            );
                         }
                     }
                 }
@@ -384,7 +405,9 @@ class PHPUnit_TextUI_Command
                 break;
 
                 case '--exclude-group': {
-                    $this->arguments['excludeGroups'] = explode(',', $option[1]);
+                    $this->arguments['excludeGroups'] = explode(
+                      ',', $option[1]
+                    );
                 }
                 break;
 
@@ -410,7 +433,8 @@ class PHPUnit_TextUI_Command
 
                 case '--log-xml': {
                     $this->showMessage(
-                      'The --log-xml option is deprecated, please use --log-junit instead.',
+                      'The --log-xml option is deprecated, please use ' .
+                      '--log-junit instead.',
                       FALSE
                     );
                 }
@@ -422,14 +446,17 @@ class PHPUnit_TextUI_Command
 
                 case '--log-graphviz': {
                     $this->showMessage(
-                      'The --log-graphviz functionality is deprecated and will be removed in the future.',
+                      'The --log-graphviz functionality is deprecated and ' .
+                      'will be removed in the future.',
                       FALSE
                     );
 
                     if (PHPUnit_Util_Filesystem::fileExistsInIncludePath('Image/GraphViz.php')) {
                         $this->arguments['graphvizLogfile'] = $option[1];
                     } else {
-                        $this->showMessage('The Image_GraphViz package is not installed.');
+                        $this->showMessage(
+                          'The Image_GraphViz package is not installed.'
+                        );
                     }
                 }
                 break;
@@ -441,17 +468,23 @@ class PHPUnit_TextUI_Command
 
                 case '--log-pmd': {
                     $this->showMessage(
-                      'The --log-pmd functionality is deprecated and will be removed in the future.',
+                      'The --log-pmd functionality is deprecated and will be ' .
+                      'removed in the future.',
                       FALSE
                     );
 
-                    if (extension_loaded('tokenizer') && extension_loaded('xdebug')) {
+                    if (extension_loaded('tokenizer') &&
+                        extension_loaded('xdebug')) {
                         $this->arguments['pmdXML'] = $option[1];
                     } else {
                         if (!extension_loaded('tokenizer')) {
-                            $this->showMessage('The tokenizer extension is not loaded.');
+                            $this->showMessage(
+                              'The tokenizer extension is not loaded.'
+                            );
                         } else {
-                            $this->showMessage('The Xdebug extension is not loaded.');
+                            $this->showMessage(
+                              'The Xdebug extension is not loaded.'
+                            );
                         }
                     }
                 }
@@ -459,17 +492,23 @@ class PHPUnit_TextUI_Command
 
                 case '--log-metrics': {
                     $this->showMessage(
-                      'The --log-metrics functionality is deprecated and will be removed in the future.',
+                      'The --log-metrics functionality is deprecated and ' .
+                      'will be removed in the future.',
                       FALSE
                     );
 
-                    if (extension_loaded('tokenizer') && extension_loaded('xdebug')) {
+                    if (extension_loaded('tokenizer') &&
+                        extension_loaded('xdebug')) {
                         $this->arguments['metricsXML'] = $option[1];
                     } else {
                         if (!extension_loaded('tokenizer')) {
-                            $this->showMessage('The tokenizer extension is not loaded.');
+                            $this->showMessage(
+                              'The tokenizer extension is not loaded.'
+                            );
                         } else {
-                            $this->showMessage('The Xdebug extension is not loaded.');
+                            $this->showMessage(
+                              'The Xdebug extension is not loaded.'
+                            );
                         }
                     }
                 }
@@ -483,7 +522,8 @@ class PHPUnit_TextUI_Command
 
                 case '--repeat': {
                     $this->showMessage(
-                      'The --repeat functionality is deprecated and will be removed in the future.',
+                      'The --repeat functionality is deprecated and will be ' .
+                      'removed in the future.',
                       FALSE
                     );
 
@@ -506,7 +546,8 @@ class PHPUnit_TextUI_Command
 
                 case '--test-db-dsn': {
                     $this->showMessage(
-                      'The test database functionality is deprecated and will be removed in the future.',
+                      'The test database functionality is deprecated and ' .
+                      'will be removed in the future.',
                       FALSE
                     );
 
@@ -547,7 +588,8 @@ class PHPUnit_TextUI_Command
 
                 case '--skeleton': {
                     $this->showMessage(
-                      'The --skeleton option is deprecated, please use --skeleton-test instead.',
+                      'The --skeleton option is deprecated, please use ' .
+                      '--skeleton-test instead.',
                       FALSE
                     );
                 }

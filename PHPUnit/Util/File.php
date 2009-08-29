@@ -66,7 +66,14 @@ PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
  */
 class PHPUnit_Util_File
 {
+    /**
+     * @var array
+     */
     protected static $countCache = array();
+
+    /**
+     * @var array
+     */
     protected static $classesFunctionsCache = array();
 
     /**
@@ -143,7 +150,9 @@ class PHPUnit_Util_File
           'classes' => array(), 'functions' => array()
         );
 
-        $tokens                     = token_get_all(file_get_contents($filename));
+        $tokens                     = token_get_all(
+                                        file_get_contents($filename)
+                                      );
         $numTokens                  = count($tokens);
         $blocks                     = array();
         $line                       = 1;
@@ -244,7 +253,8 @@ class PHPUnit_Util_File
                     if ($currentNamespace === FALSE) {
                         $currentClass = $tokens[$i+2][1];
                     } else {
-                        $currentClass = $currentNamespace . '\\' . $tokens[$i+2][1];
+                        $currentClass = $currentNamespace . '\\' .
+                                        $tokens[$i+2][1];
                     }
 
                     if ($currentDocComment !== FALSE) {
@@ -301,7 +311,8 @@ class PHPUnit_Util_File
                     if ($currentNamespace === FALSE) {
                         $currentFunction = $functionName;
                     } else {
-                        $currentFunction = $currentNamespace . '\\' . $functionName;
+                        $currentFunction = $currentNamespace . '\\' .
+                                           $functionName;
                     }
                 }
                 break;

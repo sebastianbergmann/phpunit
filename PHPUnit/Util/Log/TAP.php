@@ -118,7 +118,10 @@ class PHPUnit_Util_Log_TAP extends PHPUnit_Util_Printer implements PHPUnit_Frame
     {
         $this->writeNotOk($test, 'Failure');
 
-        $message    = explode("\n", PHPUnit_Framework_TestFailure::exceptionToString($e));
+        $message = explode(
+          "\n", PHPUnit_Framework_TestFailure::exceptionToString($e)
+        );
+
         $diagnostic = array(
           'message'  => $message[0],
           'severity' => 'fail'

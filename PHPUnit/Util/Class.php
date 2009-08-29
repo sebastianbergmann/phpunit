@@ -138,7 +138,9 @@ class PHPUnit_Util_Class
 
         while (!$done) {
             if ($asReflectionObjects) {
-                $class = new ReflectionClass($classes[count($classes)-1]->getName());
+                $class = new ReflectionClass(
+                  $classes[count($classes)-1]->getName()
+                );
             } else {
                 $class = new ReflectionClass($classes[count($classes)-1]);
             }
@@ -284,7 +286,7 @@ class PHPUnit_Util_Class
         }
 
         if (preg_match('/@subpackage[\s]+([\.\w]+)/', $docComment, $matches)) {
-            $result['subpackage'] = $matches[1];
+            $result['subpackage']   = $matches[1];
             $result['fullPackage'] .= '.' . $matches[1];
         }
 
@@ -362,7 +364,9 @@ class PHPUnit_Util_Class
             throw PHPUnit_Util_InvalidArgumentHelper::factory(2, 'string');
         }
 
-        PHPUnit_Framework_Assert::assertObjectHasAttribute($attributeName, $object);
+        PHPUnit_Framework_Assert::assertObjectHasAttribute(
+          $attributeName, $object
+        );
 
         try {
             $attribute = new ReflectionProperty($object, $attributeName);

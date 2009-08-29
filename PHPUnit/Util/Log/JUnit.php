@@ -181,7 +181,8 @@ class PHPUnit_Util_Log_JUnit extends PHPUnit_Util_Printer implements PHPUnit_Fra
                 $buffer = '';
             }
 
-            $buffer .= PHPUnit_Framework_TestFailure::exceptionToString($e) . "\n" .
+            $buffer .= PHPUnit_Framework_TestFailure::exceptionToString($e) .
+                       "\n" .
                        PHPUnit_Util_Filter::getFilteredStacktrace($e, FALSE);
 
             $error = $this->document->createElement(
@@ -218,8 +219,11 @@ class PHPUnit_Util_Log_JUnit extends PHPUnit_Util_Printer implements PHPUnit_Fra
                     $buffer = '';
                 }
 
-                $buffer .= PHPUnit_Framework_TestFailure::exceptionToString($e) . "\n" .
-                           PHPUnit_Util_Filter::getFilteredStacktrace($e, FALSE);
+                $buffer .= PHPUnit_Framework_TestFailure::exceptionToString($e).
+                           "\n" .
+                           PHPUnit_Util_Filter::getFilteredStacktrace(
+                             $e, FALSE
+                           );
 
                 $failure = $this->document->createElement(
                   'failure',
@@ -326,23 +330,33 @@ class PHPUnit_Util_Log_JUnit extends PHPUnit_Util_Printer implements PHPUnit_Fra
                 );
 
                 if (!empty($packageInformation['namespace'])) {
-                    $testSuite->setAttribute('namespace', $packageInformation['namespace']);
+                    $testSuite->setAttribute(
+                      'namespace', $packageInformation['namespace']
+                    );
                 }
 
                 if (!empty($packageInformation['fullPackage'])) {
-                    $testSuite->setAttribute('fullPackage', $packageInformation['fullPackage']);
+                    $testSuite->setAttribute(
+                      'fullPackage', $packageInformation['fullPackage']
+                    );
                 }
 
                 if (!empty($packageInformation['category'])) {
-                    $testSuite->setAttribute('category', $packageInformation['category']);
+                    $testSuite->setAttribute(
+                      'category', $packageInformation['category']
+                    );
                 }
 
                 if (!empty($packageInformation['package'])) {
-                    $testSuite->setAttribute('package', $packageInformation['package']);
+                    $testSuite->setAttribute(
+                      'package', $packageInformation['package']
+                    );
                 }
 
                 if (!empty($packageInformation['subpackage'])) {
-                    $testSuite->setAttribute('subpackage', $packageInformation['subpackage']);
+                    $testSuite->setAttribute(
+                      'subpackage', $packageInformation['subpackage']
+                    );
                 }
             }
 
@@ -373,11 +387,25 @@ class PHPUnit_Util_Log_JUnit extends PHPUnit_Util_Printer implements PHPUnit_Fra
      */
     public function endTestSuite(PHPUnit_Framework_TestSuite $suite)
     {
-        $this->testSuites[$this->testSuiteLevel]->setAttribute('tests', $this->testSuiteTests[$this->testSuiteLevel]);
-        $this->testSuites[$this->testSuiteLevel]->setAttribute('assertions', $this->testSuiteAssertions[$this->testSuiteLevel]);
-        $this->testSuites[$this->testSuiteLevel]->setAttribute('failures', $this->testSuiteFailures[$this->testSuiteLevel]);
-        $this->testSuites[$this->testSuiteLevel]->setAttribute('errors', $this->testSuiteErrors[$this->testSuiteLevel]);
-        $this->testSuites[$this->testSuiteLevel]->setAttribute('time', sprintf('%F', $this->testSuiteTimes[$this->testSuiteLevel]));
+        $this->testSuites[$this->testSuiteLevel]->setAttribute(
+          'tests', $this->testSuiteTests[$this->testSuiteLevel]
+        );
+
+        $this->testSuites[$this->testSuiteLevel]->setAttribute(
+          'assertions', $this->testSuiteAssertions[$this->testSuiteLevel]
+        );
+
+        $this->testSuites[$this->testSuiteLevel]->setAttribute(
+          'failures', $this->testSuiteFailures[$this->testSuiteLevel]
+        );
+
+        $this->testSuites[$this->testSuiteLevel]->setAttribute(
+          'errors', $this->testSuiteErrors[$this->testSuiteLevel]
+        );
+
+        $this->testSuites[$this->testSuiteLevel]->setAttribute(
+          'time', sprintf('%F', $this->testSuiteTimes[$this->testSuiteLevel])
+        );
 
         if ($this->testSuiteLevel > 1) {
             $this->testSuiteTests[$this->testSuiteLevel - 1]      += $this->testSuiteTests[$this->testSuiteLevel];
@@ -432,10 +460,14 @@ class PHPUnit_Util_Log_JUnit extends PHPUnit_Util_Printer implements PHPUnit_Fra
                     $numAssertions = $test->getNumAssertions();
                     $this->testSuiteAssertions[$this->testSuiteLevel] += $numAssertions;
 
-                    $this->currentTestCase->setAttribute('assertions', $numAssertions);
+                    $this->currentTestCase->setAttribute(
+                      'assertions', $numAssertions
+                    );
                 }
 
-                $this->currentTestCase->setAttribute('time', sprintf('%F', $time));
+                $this->currentTestCase->setAttribute(
+                  'time', sprintf('%F', $time)
+                );
 
                 $this->testSuites[$this->testSuiteLevel]->appendChild(
                   $this->currentTestCase

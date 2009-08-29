@@ -36,7 +36,6 @@
  *
  * @category   Testing
  * @package    PHPUnit
- * @author     Jan Borsodi <jb@ez.no>
  * @author     Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @copyright  2002-2009 Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
@@ -55,7 +54,6 @@ PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
  *
  * @category   Testing
  * @package    PHPUnit
- * @author     Jan Borsodi <jb@ez.no>
  * @author     Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @copyright  2002-2009 Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
@@ -99,7 +97,8 @@ class PHPUnit_Framework_Constraint_Not extends PHPUnit_Framework_Constraint
      */
     public function fail($other, $description, $not = FALSE)
     {
-        if (count($this->constraint) == 1 || $this->constraint instanceof PHPUnit_Framework_Constraint_Attribute) {
+        if (count($this->constraint) == 1 ||
+            $this->constraint instanceof PHPUnit_Framework_Constraint_Attribute) {
             $this->constraint->fail($other, $description, TRUE);
         } else {
             parent::fail($other, $description, !$not);

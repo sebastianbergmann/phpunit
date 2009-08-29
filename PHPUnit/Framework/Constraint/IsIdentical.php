@@ -36,7 +36,6 @@
  *
  * @category   Testing
  * @package    PHPUnit
- * @author     Jan Borsodi <jb@ez.no>
  * @author     Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @copyright  2002-2009 Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
@@ -54,15 +53,16 @@ PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
 /**
  * Constraint that asserts that one value is identical to another.
  *
- * Identical check is performed with PHP's === operator, the operator is explained
- * in detail at {@url http://www.php.net/manual/en/types.comparisons.php}.
- * Two values are identical if they have the same value and are of the same type.
+ * Identical check is performed with PHP's === operator, the operator is
+ * explained in detail at
+ * {@url http://www.php.net/manual/en/types.comparisons.php}.
+ * Two values are identical if they have the same value and are of the same
+ * type.
  *
  * The expected value is passed in the constructor.
  *
  * @category   Testing
  * @package    PHPUnit
- * @author     Jan Borsodi <jb@ez.no>
  * @author     Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @copyright  2002-2009 Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
@@ -110,7 +110,9 @@ class PHPUnit_Framework_Constraint_IsIdentical extends PHPUnit_Framework_Constra
         if (!$not) {
             throw new PHPUnit_Framework_ExpectationFailedException(
               $failureDescription,
-              PHPUnit_Framework_ComparisonFailure::diffIdentical($this->value, $other),
+              PHPUnit_Framework_ComparisonFailure::diffIdentical(
+                $this->value, $other
+              ),
               $description
             );
         } else {
@@ -129,9 +131,11 @@ class PHPUnit_Framework_Constraint_IsIdentical extends PHPUnit_Framework_Constra
     public function toString()
     {
         if (is_object($this->value)) {
-            return 'is identical to an object of class "' . get_class($this->value) . '"';
+            return 'is identical to an object of class "' .
+                   get_class($this->value) . '"';
         } else {
-            return 'is identical to ' . PHPUnit_Util_Type::toString($this->value);
+            return 'is identical to ' .
+                   PHPUnit_Util_Type::toString($this->value);
         }
     }
 }

@@ -80,20 +80,20 @@ class PHPUnit_Util_TestDox_NamePrettifier
     /**
      * Prettifies the name of a test class.
      *
-     * @param  string  $testClassName
+     * @param  string  $name
      * @return string
      */
-    public function prettifyTestClass($testClassName)
+    public function prettifyTestClass($name)
     {
-        $title = $testClassName;
+        $title = $name;
 
         if ($this->suffix !== NULL &&
-            $this->suffix == substr($testClassName, -1 * strlen($this->suffix))) {
+            $this->suffix == substr($name, -1 * strlen($this->suffix))) {
             $title = substr($title, 0, strripos($title, $this->suffix));
         }
 
         if ($this->prefix !== NULL &&
-            $this->prefix == substr($testClassName, 0, strlen($this->prefix))) {
+            $this->prefix == substr($name, 0, strlen($this->prefix))) {
             $title = substr($title, strlen($this->prefix));
         }
 
@@ -103,47 +103,47 @@ class PHPUnit_Util_TestDox_NamePrettifier
     /**
      * Prettifies the name of a test method.
      *
-     * @param  string  $testMethodName
+     * @param  string  $name
      * @return string
      */
-    public function prettifyTestMethod($testMethodName)
+    public function prettifyTestMethod($name)
     {
         $buffer = '';
 
-        if (!is_string($testMethodName) || strlen($testMethodName) == 0) {
+        if (!is_string($name) || strlen($name) == 0) {
             return $buffer;
         }
 
-        $string = preg_replace('#\d+$#', '', $testMethodName);
+        $string = preg_replace('#\d+$#', '', $name);
 
         if (in_array($string, $this->strings)) {
-            $testMethodName = $string;
+            $name = $string;
         } else {
             $this->strings[] = $string;
         }
 
-        if (strpos($testMethodName, '_') !== FALSE) {
-            return str_replace('_', ' ', $testMethodName);
+        if (strpos($name, '_') !== FALSE) {
+            return str_replace('_', ' ', $name);
         }
 
-        $max = strlen($testMethodName);
+        $max = strlen($name);
 
-        if (substr($testMethodName, 0, 4) == 'test') {
+        if (substr($name, 0, 4) == 'test') {
             $offset = 4;
         } else {
             $offset = 0;
-            $testMethodName[0] = strtoupper($testMethodName[0]);
+            $name[0] = strtoupper($name[0]);
         }
 
         $wasNumeric = FALSE;
 
         for ($i = $offset; $i < $max; $i++) {
             if ($i > $offset &&
-                ord($testMethodName[$i]) >= 65 &&
-                ord($testMethodName[$i]) <= 90) {
-                $buffer .= ' ' . strtolower($testMethodName[$i]);
+                ord($name[$i]) >= 65 &&
+                ord($name[$i]) <= 90) {
+                $buffer .= ' ' . strtolower($name[$i]);
             } else {
-                $isNumeric = is_numeric($testMethodName[$i]);
+                $isNumeric = is_numeric($name[$i]);
 
                 if (!$wasNumeric && $isNumeric) {
                     $buffer .= ' ';
@@ -154,7 +154,7 @@ class PHPUnit_Util_TestDox_NamePrettifier
                     $wasNumeric = FALSE;
                 }
 
-                $buffer .= $testMethodName[$i];
+                $buffer .= $name[$i];
             }
         }
 

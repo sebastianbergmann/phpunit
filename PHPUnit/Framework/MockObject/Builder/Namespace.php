@@ -36,7 +36,6 @@
  *
  * @category   Testing
  * @package    PHPUnit
- * @author     Jan Borsodi <jb@ez.no>
  * @author     Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @copyright  2002-2009 Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
@@ -57,7 +56,6 @@ PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
  *
  * @category   Testing
  * @package    PHPUnit
- * @author     Jan Borsodi <jb@ez.no>
  * @author     Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @copyright  2002-2009 Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
@@ -80,8 +78,10 @@ interface PHPUnit_Framework_MockObject_Builder_Namespace
      * builder can later be looked up using lookupId() to figure out if it
      * has been invoked.
      *
-     * @param string $id The identification of the match builder.
-     * @param PHPUnit_Framework_MockObject_Builder_Match $builder The builder which is being registered.
+     * @param string                                     $id
+     *        The identification of the match builder.
+     * @param PHPUnit_Framework_MockObject_Builder_Match $builder
+     *        The builder which is being registered.
      */
     public function registerId($id, PHPUnit_Framework_MockObject_Builder_Match $builder);
 }

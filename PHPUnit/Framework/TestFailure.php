@@ -134,7 +134,8 @@ class PHPUnit_Framework_TestFailure
                 if ($comparisonFailure !== NULL) {
                     if ($comparisonFailure->identical()) {
                         if ($comparisonFailure instanceof PHPUnit_Framework_ComparisonFailure_Object) {
-                            $buffer .= "Failed asserting that two variables reference the same object.\n";
+                            $buffer .= 'Failed asserting that two variables ' .
+                                       "reference the same object.\n";
                         } else {
                             $buffer .= $comparisonFailure->toString() . "\n";
                         }
@@ -143,8 +144,12 @@ class PHPUnit_Framework_TestFailure
                             $buffer .= sprintf(
                               "Failed asserting that %s matches expected %s.\n",
 
-                              PHPUnit_Util_Type::toString($comparisonFailure->getActual()),
-                              PHPUnit_Util_Type::toString($comparisonFailure->getExpected())
+                              PHPUnit_Util_Type::toString(
+                                $comparisonFailure->getActual()
+                              ),
+                              PHPUnit_Util_Type::toString(
+                                $comparisonFailure->getExpected()
+                              )
                             );
                         }
 
@@ -154,7 +159,9 @@ class PHPUnit_Framework_TestFailure
                             $buffer .= sprintf(
                               "Failed asserting that two %ss are equal.\n%s\n",
 
-                              strtolower(substr(get_class($comparisonFailure), 36)),
+                              strtolower(
+                                substr(get_class($comparisonFailure), 36)
+                              ),
                               $comparisonFailure->toString()
                             );
                         }

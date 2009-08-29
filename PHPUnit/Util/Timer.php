@@ -103,7 +103,10 @@ class PHPUnit_Util_Timer
         $buffer = '';
 
         $hours   = sprintf('%02d', ($time >= 3600) ? floor($time / 3600) : 0);
-        $minutes = sprintf('%02d', ($time >= 60)   ? floor($time /   60) - 60 * $hours : 0);
+        $minutes = sprintf(
+                     '%02d',
+                     ($time >= 60)   ? floor($time /   60) - 60 * $hours : 0
+                   );
         $seconds = sprintf('%02d', $time - 60 * 60 * $hours - 60 * $minutes);
 
         if ($hours == 0 && $minutes == 0) {
