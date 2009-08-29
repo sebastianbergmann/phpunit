@@ -36,7 +36,6 @@
  *
  * @category   Testing
  * @package    PHPUnit
- * @author     Jan Borsodi <jb@ez.no>
  * @author     Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @copyright  2002-2009 Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
@@ -59,7 +58,6 @@ PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
  *
  * @category   Testing
  * @package    PHPUnit
- * @author     Jan Borsodi <jb@ez.no>
  * @author     Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @copyright  2002-2009 Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
@@ -70,13 +68,13 @@ PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
 interface PHPUnit_Framework_MockObject_Stub extends PHPUnit_Framework_SelfDescribing
 {
     /**
-     * Fakes the processesing of the invocation $invocation by returning a
+     * Fakes the processing of the invocation $invocation by returning a
      * specific value.
      *
+     * @param  PHPUnit_Framework_MockObject_Invocation $invocation
+     *         The invocation which was mocked and matched by the current method
+     *         and argument matchers.
      * @return mixed
-     * @param PHPUnit_Framework_MockObject_Invocation $invocation The invocation which was mocked
-     *                                                  and matched by the current method
-     *                                                  and argument matchers.
      */
     public function invoke(PHPUnit_Framework_MockObject_Invocation $invocation);
 }

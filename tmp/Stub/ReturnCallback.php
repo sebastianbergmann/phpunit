@@ -88,14 +88,16 @@ class PHPUnit_Framework_MockObject_Stub_ReturnCallback implements PHPUnit_Framew
             }
 
             return sprintf(
-              'return result of user defined callback %s%s%s() with the passed arguments',
+              'return result of user defined callback %s%s%s() with the ' .
+              'passed arguments',
 
               $class,
               $type,
               $this->callback[1]
             );
         } else {
-            return 'return result of user defined callback ' . $this->callback . ' with the passed arguments';
+            return 'return result of user defined callback ' . $this->callback .
+                   ' with the passed arguments';
         }
     }
 }
