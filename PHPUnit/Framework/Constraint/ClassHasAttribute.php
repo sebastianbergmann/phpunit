@@ -67,8 +67,14 @@ PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
  */
 class PHPUnit_Framework_Constraint_ClassHasAttribute extends PHPUnit_Framework_Constraint
 {
+    /**
+     * @var string
+     */
     protected $attributeName;
 
+    /**
+     * @param string $attributeName
+     */
     public function __construct($attributeName)
     {
         $this->attributeName = $attributeName;

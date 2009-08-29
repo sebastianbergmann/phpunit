@@ -64,10 +64,19 @@ PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
  */
 class PHPUnit_Framework_Constraint_And extends PHPUnit_Framework_Constraint
 {
+    /**
+     * @var PHPUnit_Framework_Constraint[]
+     */
     protected $constraints = array();
 
+    /**
+     * @var PHPUnit_Framework_Constraint
+     */
     protected $lastConstraint = NULL;
 
+    /**
+     * @param PHPUnit_Framework_Constraint[] $constraints
+     */
     public function setConstraints(array $constraints)
     {
         $this->constraints = array();
