@@ -44,11 +44,9 @@
  * @since      File available since Release 3.3.0
  */
 
-require_once 'PHPUnit/Util/Filter.php';
+require_once 'PHPUnit/Framework.php';
 
 PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
-
-if (!class_exists('PHPUnit_Framework_Error_Notice', FALSE)) {
 
 /**
  * Wrapper for PHP notices.
@@ -70,7 +68,5 @@ if (!class_exists('PHPUnit_Framework_Error_Notice', FALSE)) {
 class PHPUnit_Framework_Error_Notice extends PHPUnit_Framework_Error
 {
     public static $enabled = TRUE;
-}
-
 }
 ?>
