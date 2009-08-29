@@ -62,9 +62,9 @@ PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
  */
 class PHPUnit_Util_Test
 {
-    const REGEX_COVERS                   = '/@covers[\s]+([A-Za-z!<>:.\\\\]+)([\s]+<extended>)?/';
-    const REGEX_DATA_PROVIDER            = '/@dataProvider\s+([a-zA-Z0-9._:-\\\]+)/';
-    const REGEX_EXPECTED_EXCEPTION       = '(@expectedException\s+([:.\w\\\]+)(?:[\t ]+(\S*))?(?:[\t ]+(\S*))?\s*$)m';
+    const REGEX_COVERS             = '/@covers[\s]+([A-Za-z!<>:.\\\\]+)([\s]+<extended>)?/';
+    const REGEX_DATA_PROVIDER      = '/@dataProvider\s+([a-zA-Z0-9._:-\\\]+)/';
+    const REGEX_EXPECTED_EXCEPTION = '(@expectedException\s+([:.\w\\\]+)(?:[\t ]+(\S*))?(?:[\t ]+(\S*))?\s*$)m';
 
     private static $annotationCache = array();
 
@@ -467,7 +467,10 @@ class PHPUnit_Util_Test
      */
     public static function getDependencies($className, $methodName)
     {
-        $annotations  = self::parseTestMethodAnnotations($className, $methodName);
+        $annotations = self::parseTestMethodAnnotations(
+          $className, $methodName
+        );
+
         $dependencies = array();
 
         if (isset($annotations['class']['depends'])) {
@@ -475,7 +478,9 @@ class PHPUnit_Util_Test
         }
 
         if (isset($annotations['method']['depends'])) {
-            $dependencies = array_merge($dependencies, $annotations['method']['depends']);
+            $dependencies = array_merge(
+              $dependencies, $annotations['method']['depends']
+            );
         }
 
         return array_unique($dependencies);
@@ -506,8 +511,11 @@ class PHPUnit_Util_Test
      */
     public static function getGroups($className, $methodName = '')
     {
-        $annotations = self::parseTestMethodAnnotations($className, $methodName);
-        $groups      = array();
+        $annotations = self::parseTestMethodAnnotations(
+          $className, $methodName
+        );
+
+        $groups = array();
 
         if (isset($annotations['class']['group'])) {
             $groups = $annotations['class']['group'];
@@ -530,8 +538,11 @@ class PHPUnit_Util_Test
      */
     public static function getTickets($className, $methodName)
     {
-        $annotations = self::parseTestMethodAnnotations($className, $methodName);
-        $tickets     = array();
+        $annotations = self::parseTestMethodAnnotations(
+          $className, $methodName
+        );
+
+        $tickets = array();
 
         if (isset($annotations['class']['ticket'])) {
             $tickets = $annotations['class']['ticket'];
@@ -568,8 +579,11 @@ class PHPUnit_Util_Test
      */
     private static function getBooleanAnnotationSetting($className, $methodName, $settingName)
     {
-        $annotations = self::parseTestMethodAnnotations($className, $methodName);
-        $result      = NULL;
+        $annotations = self::parseTestMethodAnnotations(
+          $className, $methodName
+        );
+
+        $result = NULL;
 
         if (isset($annotations['class'][$settingName])) {
             if ($annotations['class'][$settingName][0] == 'enabled') {

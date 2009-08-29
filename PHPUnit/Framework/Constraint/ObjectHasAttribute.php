@@ -84,7 +84,8 @@ class PHPUnit_Framework_Constraint_ObjectHasAttribute extends PHPUnit_Framework_
     protected function customFailureDescription($other, $description, $not)
     {
         return sprintf(
-          'Failed asserting that object of class "%s" %s.', get_class($other), $this->toString()
+          'Failed asserting that object of class "%s" %s.',
+          get_class($other), $this->toString()
         );
     }
 }

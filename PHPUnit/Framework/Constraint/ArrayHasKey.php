@@ -36,7 +36,6 @@
  *
  * @category   Testing
  * @package    PHPUnit
- * @author     Jan Borsodi <jb@ez.no>
  * @author     Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @copyright  2002-2009 Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
@@ -54,14 +53,13 @@ PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
 /**
  * Constraint that asserts that the array it is evaluated for has a given key.
  *
- * Uses array_key_exists() to check if the key is found in the input array, if not
- * found the evaluaton fails.
+ * Uses array_key_exists() to check if the key is found in the input array, if
+ * not found the evaluaton fails.
  *
  * The array key is passed in the constructor.
  *
  * @category   Testing
  * @package    PHPUnit
- * @author     Jan Borsodi <jb@ez.no>
  * @author     Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @copyright  2002-2009 Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License

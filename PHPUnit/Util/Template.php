@@ -157,7 +157,9 @@ class PHPUnit_Util_Template
             fwrite($fp, $this->render());
             fclose($fp);
         } else {
-            throw new PHPUnit_Framework_Exception('Could not write to ' . $target . '.');
+            throw new PHPUnit_Framework_Exception(
+              'Could not write to ' . $target . '.'
+            );
         }
     }
 

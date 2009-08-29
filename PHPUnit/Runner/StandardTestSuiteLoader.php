@@ -88,7 +88,8 @@ class PHPUnit_Runner_StandardTestSuiteLoader implements PHPUnit_Runner_TestSuite
                 $includePaths = explode(PATH_SEPARATOR, get_include_path());
 
                 foreach ($includePaths as $includePath) {
-                    $file = $includePath . DIRECTORY_SEPARATOR . $suiteClassFile;
+                    $file = $includePath . DIRECTORY_SEPARATOR .
+                            $suiteClassFile;
 
                     if (file_exists($file)) {
                         $suiteClassFile = $file;
@@ -117,13 +118,15 @@ class PHPUnit_Runner_StandardTestSuiteLoader implements PHPUnit_Runner_TestSuite
             $testCaseClass = 'PHPUnit_Framework_TestCase';
 
             foreach ($loadedClasses as $loadedClass) {
-                $class = new ReflectionClass($loadedClass);
+                $class     = new ReflectionClass($loadedClass);
+                $classFile = $class->getFileName();
 
-                if ($class->isSubclassOf($testCaseClass) && !$class->isAbstract()) {
+                if ($class->isSubclassOf($testCaseClass) &&
+                    !$class->isAbstract()) {
                     $suiteClassName = $loadedClass;
                     $testCaseClass  = $loadedClass;
 
-                    if ($class->getFileName() == realpath($suiteClassFile)) {
+                    if ($classFile == realpath($suiteClassFile)) {
                         break;
                     }
                 }
@@ -131,10 +134,12 @@ class PHPUnit_Runner_StandardTestSuiteLoader implements PHPUnit_Runner_TestSuite
                 if ($class->hasMethod('suite')) {
                     $method = $class->getMethod('suite');
 
-                    if (!$method->isAbstract() && $method->isPublic() && $method->isStatic()) {
+                    if (!$method->isAbstract() &&
+                        $method->isPublic() &&
+                        $method->isStatic()) {
                         $suiteClassName = $loadedClass;
 
-                        if ($class->getFileName() == realpath($suiteClassFile)) {
+                        if ($classFile == realpath($suiteClassFile)) {
                             break;
                         }
                     }

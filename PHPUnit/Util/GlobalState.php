@@ -109,7 +109,9 @@ class PHPUnit_Util_GlobalState
         }
 
         foreach (array_keys($GLOBALS) as $key) {
-            if ($key != 'GLOBALS' && !in_array($key, $superGlobalArrays) && !in_array($key, $blacklist)) {
+            if ($key != 'GLOBALS' &&
+                !in_array($key, $superGlobalArrays) &&
+                !in_array($key, $blacklist)) {
                 self::$globals['GLOBALS'][$key] = serialize($GLOBALS[$key]);
             }
         }
@@ -132,9 +134,13 @@ class PHPUnit_Util_GlobalState
         }
 
         foreach (array_keys($GLOBALS) as $key) {
-            if ($key != 'GLOBALS' && !in_array($key, $superGlobalArrays) && !in_array($key, $blacklist)) {
+            if ($key != 'GLOBALS' &&
+                !in_array($key, $superGlobalArrays) &&
+                !in_array($key, $blacklist)) {
                 if (isset(self::$globals['GLOBALS'][$key])) {
-                    $GLOBALS[$key] = unserialize(self::$globals['GLOBALS'][$key]);
+                    $GLOBALS[$key] = unserialize(
+                      self::$globals['GLOBALS'][$key]
+                    );
                 } else {
                     unset($GLOBALS[$key]);
                 }
@@ -160,7 +166,9 @@ class PHPUnit_Util_GlobalState
         if (isset($GLOBALS[$superGlobalArray])) {
             foreach ($GLOBALS[$superGlobalArray] as $key => $value) {
                 if (isset(self::$globals[$superGlobalArray][$key])) {
-                    $GLOBALS[$superGlobalArray][$key] = unserialize(self::$globals[$superGlobalArray][$key]);
+                    $GLOBALS[$superGlobalArray][$key] = unserialize(
+                      self::$globals[$superGlobalArray][$key]
+                    );
                 } else {
                     unset($GLOBALS[$superGlobalArray][$key]);
                 }
@@ -254,7 +262,8 @@ class PHPUnit_Util_GlobalState
         $declaredClassesNum     = count($declaredClasses);
 
         for ($i = $declaredClassesNum - 1; $i >= 0; $i--) {
-            if (strpos($declaredClasses[$i], 'PHPUnit') !== 0 && !$declaredClasses[$i] instanceof PHPUnit_Framework_Test) {
+            if (strpos($declaredClasses[$i], 'PHPUnit') !== 0 &&
+                !$declaredClasses[$i] instanceof PHPUnit_Framework_Test) {
                 $class = new ReflectionClass($declaredClasses[$i]);
 
                 if (!$class->isUserDefined()) {
@@ -267,7 +276,8 @@ class PHPUnit_Util_GlobalState
                     if ($attribute->isStatic()) {
                         $name = $attribute->getName();
 
-                        if (!isset($blacklist[$declaredClasses[$i]]) || !in_array($name, $blacklist[$declaredClasses[$i]])) {
+                        if (!isset($blacklist[$declaredClasses[$i]]) ||
+                           !in_array($name, $blacklist[$declaredClasses[$i]])) {
                             $attribute->setAccessible(TRUE);
                             $backup[$name] = serialize($attribute->getValue());
                         }

@@ -209,8 +209,11 @@ class PHPUnit_Framework_TestResult implements Countable
     public function addError(PHPUnit_Framework_Test $test, Exception $e, $time)
     {
         if ($e instanceof PHPUnit_Framework_IncompleteTest) {
-            $this->notImplemented[] = new PHPUnit_Framework_TestFailure($test, $e);
-            $notifyMethod           = 'addIncompleteTest';
+            $this->notImplemented[] = new PHPUnit_Framework_TestFailure(
+              $test, $e
+            );
+
+            $notifyMethod = 'addIncompleteTest';
         }
 
         else if ($e instanceof PHPUnit_Framework_SkippedTest) {
@@ -246,8 +249,11 @@ class PHPUnit_Framework_TestResult implements Countable
     public function addFailure(PHPUnit_Framework_Test $test, PHPUnit_Framework_AssertionFailedError $e, $time)
     {
         if ($e instanceof PHPUnit_Framework_IncompleteTest) {
-            $this->notImplemented[] = new PHPUnit_Framework_TestFailure($test, $e);
-            $notifyMethod           = 'addIncompleteTest';
+            $this->notImplemented[] = new PHPUnit_Framework_TestFailure(
+              $test, $e
+            );
+
+            $notifyMethod = 'addIncompleteTest';
         }
 
         else if ($e instanceof PHPUnit_Framework_SkippedTest) {
@@ -533,8 +539,13 @@ class PHPUnit_Framework_TestResult implements Countable
             $newFilesToCollect = array_diff_key($data, PHPUnit_Util_Filter::getCoveredFiles());
 
             if (count($newFilesToCollect) > 0) {
-                $deadCode       = PHPUnit_Util_CodeCoverage::getDeadLines($newFilesToCollect);
-                $executableCode = PHPUnit_Util_CodeCoverage::getExecutableLines($newFilesToCollect);
+                $deadCode = PHPUnit_Util_CodeCoverage::getDeadLines(
+                  $newFilesToCollect
+                );
+
+                $executableCode = PHPUnit_Util_CodeCoverage::getExecutableLines(
+                  $newFilesToCollect
+                );
 
                 foreach (array_keys($newFilesToCollect) as $file) {
                     PHPUnit_Util_Filter::addCoveredFile($file);
@@ -646,7 +657,8 @@ class PHPUnit_Framework_TestResult implements Countable
 
         if ($this->convertErrorsToExceptions) {
             $oldErrorHandler = set_error_handler(
-              array('PHPUnit_Util_ErrorHandler', 'handleError'), E_ALL | E_STRICT
+              array('PHPUnit_Util_ErrorHandler', 'handleError'),
+              E_ALL | E_STRICT
             );
 
             if ($oldErrorHandler === NULL) {

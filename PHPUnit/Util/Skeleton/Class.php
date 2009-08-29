@@ -98,7 +98,8 @@ class PHPUnit_Util_Skeleton_Class extends PHPUnit_Util_Skeleton
         }
 
         if (empty($outSourceFile)) {
-            $outSourceFile = dirname($inSourceFile) . DIRECTORY_SEPARATOR . $outClassName . '.php';
+            $outSourceFile = dirname($inSourceFile) . DIRECTORY_SEPARATOR .
+                             $outClassName . '.php';
         }
 
         parent::__construct(
@@ -180,7 +181,8 @@ class PHPUnit_Util_Skeleton_Class extends PHPUnit_Util_Skeleton
                 }
 
                 else if ($this->tokens[$i][0] == T_OBJECT_OPERATOR &&
-                    is_string($this->tokens[$i+2]) && trim($this->tokens[$i+2]) == '(' &&
+                    is_string($this->tokens[$i+2]) &&
+                    trim($this->tokens[$i+2]) == '(' &&
                     in_array($this->findVariableName($i), $variables) &&
                     !in_array($this->tokens[$i+1][1], $methods)) {
                     $methods[] = $this->tokens[$i+1][1];
@@ -248,10 +250,12 @@ class PHPUnit_Util_Skeleton_Class extends PHPUnit_Util_Skeleton
     protected function findVariableName($start)
     {
         for ($i = $start - 1; $i >= 0; $i--) {
-            if (is_array($this->tokens[$i]) && $this->tokens[$i][0] == T_VARIABLE) {
+            if (is_array($this->tokens[$i]) &&
+                $this->tokens[$i][0] == T_VARIABLE) {
                 $variable = $this->tokens[$i][1];
 
-                if (is_array($this->tokens[$i+1]) && $this->tokens[$i+1][0] == T_OBJECT_OPERATOR) {
+                if (is_array($this->tokens[$i+1]) &&
+                    $this->tokens[$i+1][0] == T_OBJECT_OPERATOR) {
                     $variable .= '->' . $this->tokens[$i+2][1];
                 }
 

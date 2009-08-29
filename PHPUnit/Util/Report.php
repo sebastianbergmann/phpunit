@@ -96,7 +96,9 @@ abstract class PHPUnit_Util_Report
         );
 
         $codeCoverageInformation = $result->getCodeCoverageInformation();
-        $files                   = PHPUnit_Util_CodeCoverage::getSummary($codeCoverageInformation);
+        $files                   = PHPUnit_Util_CodeCoverage::getSummary(
+                                     $codeCoverageInformation
+                                   );
         $commonPath              = PHPUnit_Util_Filesystem::reducePaths($files);
         $items                   = self::buildDirectoryStructure($files);
 
