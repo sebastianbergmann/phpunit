@@ -44,11 +44,9 @@
  * @since      File available since Release 2.0.0
  */
 
-require_once 'PHPUnit/Util/Filter.php';
+require_once 'PHPUnit/Framework.php';
 
 PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
-
-if (!interface_exists('PHPUnit_Framework_IncompleteTest', FALSE)) {
 
 /**
  * A marker interface for marking any exception/error as result of an unit
@@ -65,7 +63,5 @@ if (!interface_exists('PHPUnit_Framework_IncompleteTest', FALSE)) {
  */
 interface PHPUnit_Framework_IncompleteTest
 {
-}
-
 }
 ?>

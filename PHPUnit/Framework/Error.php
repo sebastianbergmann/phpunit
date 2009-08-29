@@ -44,11 +44,9 @@
  * @since      File available since Release 2.2.0
  */
 
-require_once 'PHPUnit/Util/Filter.php';
+require_once 'PHPUnit/Framework.php';
 
 PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
-
-if (!class_exists('PHPUnit_Framework_Error', FALSE)) {
 
 /**
  * Wrapper for PHP errors.
@@ -81,7 +79,5 @@ class PHPUnit_Framework_Error extends Exception
         $this->line  = $line;
         $this->trace = $trace;
     }
-}
-
 }
 ?>

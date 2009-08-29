@@ -45,17 +45,15 @@
  */
 
 require_once 'PHPUnit/Framework.php';
+
 require_once 'PHPUnit/Runner/BaseTestRunner.php';
 require_once 'PHPUnit/Util/Class.php';
 require_once 'PHPUnit/Util/Fileloader.php';
-require_once 'PHPUnit/Util/Filter.php';
 require_once 'PHPUnit/Util/InvalidArgumentHelper.php';
 require_once 'PHPUnit/Util/Test.php';
 require_once 'PHPUnit/Util/TestSuiteIterator.php';
 
 PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
-
-if (!class_exists('PHPUnit_Framework_TestSuite', FALSE)) {
 
 /**
  * A TestSuite is a composite of Tests. It runs a collection of test cases.
@@ -950,7 +948,5 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
     protected function tearDown()
     {
     }
-}
-
 }
 ?>

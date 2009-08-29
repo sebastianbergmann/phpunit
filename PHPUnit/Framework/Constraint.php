@@ -46,11 +46,8 @@
  */
 
 require_once 'PHPUnit/Framework.php';
-require_once 'PHPUnit/Util/Filter.php';
 
 PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
-
-if (!class_exists('PHPUnit_Framework_Constraint', FALSE)) {
 
 /**
  * Abstract base class for constraints. which are placed upon any value.
@@ -160,8 +157,6 @@ abstract class PHPUnit_Framework_Constraint implements Countable, PHPUnit_Framew
      * @return bool
      */
     abstract public function evaluate($other);
-}
-
 }
 
 require_once 'PHPUnit/Framework/Constraint/And.php';

@@ -44,11 +44,9 @@
  * @since      File available since Release 3.0.0
  */
 
-require_once 'PHPUnit/Util/Filter.php';
+require_once 'PHPUnit/Framework.php';
 
 PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
-
-if (!interface_exists('PHPUnit_Framework_SkippedTest', FALSE)) {
 
 /**
  * A marker interface for marking a unit test as being skipped.
@@ -64,7 +62,5 @@ if (!interface_exists('PHPUnit_Framework_SkippedTest', FALSE)) {
  */
 interface PHPUnit_Framework_SkippedTest
 {
-}
-
 }
 ?>

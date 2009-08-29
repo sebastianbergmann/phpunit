@@ -45,11 +45,8 @@
  */
 
 require_once 'PHPUnit/Framework.php';
-require_once 'PHPUnit/Util/Filter.php';
 
 PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
-
-if (!class_exists('PHPUnit_Framework_AssertionFailedError', FALSE)) {
 
 /**
  * Thrown when an assertion failed.
@@ -74,7 +71,5 @@ class PHPUnit_Framework_AssertionFailedError extends Exception implements PHPUni
     {
         return $this->getMessage();
     }
-}
-
 }
 ?>

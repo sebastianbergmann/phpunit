@@ -45,12 +45,9 @@
  */
 
 require_once 'PHPUnit/Framework.php';
-require_once 'PHPUnit/Util/Filter.php';
 require_once 'PHPUnit/Util/Type.php';
 
 PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
-
-if (!class_exists('PHPUnit_Framework_ComparisonFailure', FALSE)) {
 
 /**
  * Thrown when an assertion for string equality failed.
@@ -187,8 +184,6 @@ abstract class PHPUnit_Framework_ComparisonFailure extends PHPUnit_Framework_Ass
             return new PHPUnit_Framework_ComparisonFailure_Scalar($expected, $actual, FALSE, $message);
         }
     }
-}
-
 }
 
 require_once 'PHPUnit/Framework/ComparisonFailure/Array.php';
