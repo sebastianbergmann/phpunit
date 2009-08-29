@@ -70,10 +70,20 @@ PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
  */
 class PHPUnit_Framework_MockObject_Builder_InvocationMocker implements PHPUnit_Framework_MockObject_Builder_MethodNameMatch
 {
+    /**
+     * @var PHPUnit_Framework_MockObject_Stub_MatcherCollection
+     */
     protected $collection;
 
+    /**
+     * @var PHPUnit_Framework_MockObject_Matcher
+     */
     protected $matcher;
 
+    /**
+     * @param PHPUnit_Framework_MockObject_Stub_MatcherCollection $collection
+     * @param PHPUnit_Framework_MockObject_Matcher_Invocation $invocationMatcher
+     */
     public function __construct(PHPUnit_Framework_MockObject_Stub_MatcherCollection $collection, PHPUnit_Framework_MockObject_Matcher_Invocation $invocationMatcher)
     {
         $this->collection = $collection;
@@ -84,11 +94,18 @@ class PHPUnit_Framework_MockObject_Builder_InvocationMocker implements PHPUnit_F
         $this->collection->addMatcher($this->matcher);
     }
 
+    /**
+     * @return PHPUnit_Framework_MockObject_Matcher
+     */
     public function getMatcher()
     {
         return $this->matcher;
     }
 
+    /**
+     * @param  mixed $id
+     * @return PHPUnit_Framework_MockObject_Builder_InvocationMocker
+     */
     public function id($id)
     {
         $this->collection->registerId($id, $this);
@@ -96,6 +113,10 @@ class PHPUnit_Framework_MockObject_Builder_InvocationMocker implements PHPUnit_F
         return $this;
     }
 
+    /**
+     * @param  PHPUnit_Framework_MockObject_Stub $stub
+     * @return PHPUnit_Framework_MockObject_Builder_InvocationMocker
+     */
     public function will(PHPUnit_Framework_MockObject_Stub $stub)
     {
         $this->matcher->stub = $stub;
@@ -103,6 +124,10 @@ class PHPUnit_Framework_MockObject_Builder_InvocationMocker implements PHPUnit_F
         return $this;
     }
 
+    /**
+     * @param  mixed $id
+     * @return PHPUnit_Framework_MockObject_Builder_InvocationMocker
+     */
     public function after($id)
     {
         $this->matcher->afterMatchBuilderId = $id;
@@ -110,6 +135,10 @@ class PHPUnit_Framework_MockObject_Builder_InvocationMocker implements PHPUnit_F
         return $this;
     }
 
+    /**
+     * @param  mixed $argument, ...
+     * @return PHPUnit_Framework_MockObject_Builder_InvocationMocker
+     */
     public function with()
     {
         $args = func_get_args();
@@ -121,7 +150,7 @@ class PHPUnit_Framework_MockObject_Builder_InvocationMocker implements PHPUnit_F
             );
         }
 
-        if ( $this->matcher->parametersMatcher !== NULL) {
+        if ($this->matcher->parametersMatcher !== NULL) {
             throw new PHPUnit_Framework_Exception(
               'Parameter matcher is already defined, cannot redefine'
             );
@@ -132,6 +161,9 @@ class PHPUnit_Framework_MockObject_Builder_InvocationMocker implements PHPUnit_F
         return $this;
     }
 
+    /**
+     * @return PHPUnit_Framework_MockObject_Builder_InvocationMocker
+     */
     public function withAnyParameters()
     {
         if ($this->matcher->methodNameMatcher === NULL) {
@@ -152,6 +184,10 @@ class PHPUnit_Framework_MockObject_Builder_InvocationMocker implements PHPUnit_F
         return $this;
     }
 
+    /**
+     * @param  PHPUnit_Framework_Constraint|string $constraint
+     * @return PHPUnit_Framework_MockObject_Builder_InvocationMocker
+     */
     public function method($constraint)
     {
         if ($this->matcher->methodNameMatcher !== NULL) {

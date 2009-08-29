@@ -69,11 +69,20 @@ PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
  */
 class PHPUnit_Framework_MockObject_Matcher_Parameters extends PHPUnit_Framework_MockObject_Matcher_StatelessInvocation
 {
+    /**
+     * @var array
+     */
     protected $parameters = array();
 
+    /**
+     * @var PHPUnit_Framework_MockObject_Invocation
+     */
     protected $invocation;
 
-    public function __construct($parameters)
+    /**
+     * @param array $parameters
+     */
+    public function __construct(array $parameters)
     {
         foreach($parameters as $parameter) {
             if (!($parameter instanceof PHPUnit_Framework_Constraint)) {
@@ -86,6 +95,9 @@ class PHPUnit_Framework_MockObject_Matcher_Parameters extends PHPUnit_Framework_
         }
     }
 
+    /**
+     * @return string
+     */
     public function toString()
     {
         $text = 'with parameter';
@@ -101,6 +113,10 @@ class PHPUnit_Framework_MockObject_Matcher_Parameters extends PHPUnit_Framework_
         return $text;
     }
 
+    /**
+     * @param  PHPUnit_Framework_MockObject_Invocation $invocation
+     * @return boolean
+     */
     public function matches(PHPUnit_Framework_MockObject_Invocation $invocation)
     {
         $this->invocation = $invocation;
@@ -109,6 +125,17 @@ class PHPUnit_Framework_MockObject_Matcher_Parameters extends PHPUnit_Framework_
         return count($invocation->parameters) < count($this->parameters);
     }
 
+    /**
+     * Checks if the invocation $invocation matches the current rules. If it
+     * does the matcher will get the invoked() method called which should check 
+     * if an expectation is met.
+     *
+     * @param  PHPUnit_Framework_MockObject_Invocation $invocation
+     *         Object containing information on a mocked or stubbed method which
+     *         was invoked.
+     * @return bool
+     * @throws PHPUnit_Framework_ExpectationFailedException
+     */
     public function verify()
     {
         if ($this->invocation === NULL) {
