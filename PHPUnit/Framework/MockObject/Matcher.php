@@ -71,23 +71,47 @@ PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
  */
 class PHPUnit_Framework_MockObject_Matcher implements PHPUnit_Framework_MockObject_Matcher_Invocation
 {
+    /**
+     * @var PHPUnit_Framework_MockObject_Matcher_Invocation
+     */
     public $invocationMatcher;
 
+    /**
+     * @var mixed
+     */
     public $afterMatchBuilderId = NULL;
 
+    /**
+     * @var boolean
+     */
     public $afterMatchBuilderIsInvoked = FALSE;
 
+    /**
+     * @var PHPUnit_Framework_MockObject_Matcher_MethodName
+     */
     public $methodNameMatcher = NULL;
 
+    /**
+     * @var PHPUnit_Framework_MockObject_Matcher_Parameters
+     */
     public $parametersMatcher = NULL;
 
+    /**
+     * @var PHPUnit_Framework_MockObject_Stub
+     */
     public $stub = NULL;
 
+    /**
+     * @param PHPUnit_Framework_MockObject_Matcher_Invocation $invocationMatcher
+     */
     public function __construct(PHPUnit_Framework_MockObject_Matcher_Invocation $invocationMatcher)
     {
         $this->invocationMatcher = $invocationMatcher;
     }
 
+    /**
+     * @return string
+     */
     public function toString()
     {
         $list = array();
@@ -115,6 +139,10 @@ class PHPUnit_Framework_MockObject_Matcher implements PHPUnit_Framework_MockObje
         return join(' ', $list);
     }
 
+    /**
+     * @param  PHPUnit_Framework_MockObject_Invocation $invocation
+     * @return mixed
+     */
     public function invoked(PHPUnit_Framework_MockObject_Invocation $invocation)
     {
         if ($this->invocationMatcher === NULL) {
@@ -178,6 +206,10 @@ class PHPUnit_Framework_MockObject_Matcher implements PHPUnit_Framework_MockObje
         return NULL;
     }
 
+    /**
+     * @param  PHPUnit_Framework_MockObject_Invocation $invocation
+     * @return boolean
+     */
     public function matches(PHPUnit_Framework_MockObject_Invocation $invocation)
     {
         if ($this->afterMatchBuilderId !== NULL) {
@@ -242,6 +274,10 @@ class PHPUnit_Framework_MockObject_Matcher implements PHPUnit_Framework_MockObje
         return TRUE;
     }
 
+    /**
+     * @throws PHPUnit_Framework_Exception
+     * @throws PHPUnit_Framework_ExpectationFailedException
+     */
     public function verify()
     {
         if ($this->invocationMatcher === NULL) {

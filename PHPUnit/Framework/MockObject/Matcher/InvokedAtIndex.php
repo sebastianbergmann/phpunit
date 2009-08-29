@@ -72,20 +72,36 @@ PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
  */
 class PHPUnit_Framework_MockObject_Matcher_InvokedAtIndex implements PHPUnit_Framework_MockObject_Matcher_Invocation
 {
+    /**
+     * @var integer
+     */
     protected $sequenceIndex;
 
+    /**
+     * @var integer
+     */
     protected $currentIndex = -1;
 
+    /**
+     * @param integer $sequenceIndex
+     */
     public function __construct($sequenceIndex)
     {
         $this->sequenceIndex = $sequenceIndex;
     }
 
+    /**
+     * @return string
+     */
     public function toString()
     {
         return 'invoked at sequence index ' . $this->sequenceIndex;
     }
 
+    /**
+     * @param  PHPUnit_Framework_MockObject_Invocation $invocation
+     * @return boolean
+     */
     public function matches(PHPUnit_Framework_MockObject_Invocation $invocation)
     {
         $this->currentIndex++;
@@ -93,10 +109,19 @@ class PHPUnit_Framework_MockObject_Matcher_InvokedAtIndex implements PHPUnit_Fra
         return $this->currentIndex == $this->sequenceIndex;
     }
 
+    /**
+     * @param PHPUnit_Framework_MockObject_Invocation $invocation
+     */
     public function invoked(PHPUnit_Framework_MockObject_Invocation $invocation)
     {
     }
 
+    /**
+     * Verifies that the current expectation is valid. If everything is OK the
+     * code should just return, if not it must throw an exception.
+     *
+     * @throws PHPUnit_Framework_ExpectationFailedException
+     */
     public function verify()
     {
         if ($this->currentIndex < $this->sequenceIndex) {
