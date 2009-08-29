@@ -70,10 +70,20 @@ PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
  */
 class PHPUnit_Framework_Constraint_StringContains extends PHPUnit_Framework_Constraint
 {
+    /**
+     * @var string
+     */
     protected $string;
 
+    /**
+     * @var boolean
+     */
     protected $ignoreCase;
 
+    /**
+     * @param string  $string
+     * @param boolean $ignoreCase
+     */
     public function __construct($string, $ignoreCase = FALSE)
     {
         $this->string     = $string;

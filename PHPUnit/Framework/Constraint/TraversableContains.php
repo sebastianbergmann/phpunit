@@ -65,8 +65,14 @@ PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
  */
 class PHPUnit_Framework_Constraint_TraversableContains extends PHPUnit_Framework_Constraint
 {
+    /**
+     * @var mixed
+     */
     protected $value;
 
+    /**
+     * @param mixed $value
+     */
     public function __construct($value)
     {
         $this->value = $value;

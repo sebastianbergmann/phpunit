@@ -64,8 +64,14 @@ PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
  */
 class PHPUnit_Framework_Constraint_StringEndsWith extends PHPUnit_Framework_Constraint
 {
+    /**
+     * @var string
+     */
     protected $suffix;
 
+    /**
+     * @param string $suffix
+     */
     public function __construct($suffix)
     {
         $this->suffix = $suffix;

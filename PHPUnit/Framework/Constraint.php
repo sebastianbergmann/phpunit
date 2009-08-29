@@ -93,6 +93,11 @@ abstract class PHPUnit_Framework_Constraint implements Countable, PHPUnit_Framew
         );
     }
 
+    /**
+     * @param mixed   $other
+     * @param string  $description
+     * @param boolean $not
+     */
     protected function failureDescription($other, $description, $not)
     {
         $failureDescription = $this->customFailureDescription(
@@ -119,10 +124,19 @@ abstract class PHPUnit_Framework_Constraint implements Countable, PHPUnit_Framew
         return $failureDescription;
     }
 
+    /**
+     * @param mixed   $other
+     * @param string  $description
+     * @param boolean $not
+     */
     protected function customFailureDescription($other, $description, $not)
     {
     }
 
+    /**
+     * @param  string $string
+     * @return string
+     */
     public static function negate($string)
     {
         return str_replace(

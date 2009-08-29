@@ -64,8 +64,14 @@ PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
  */
 class PHPUnit_Framework_Constraint_StringStartsWith extends PHPUnit_Framework_Constraint
 {
+    /**
+     * @var string
+     */
     protected $prefix;
 
+    /**
+     * @param string $prefix
+     */
     public function __construct($prefix)
     {
         $this->prefix = $prefix;
