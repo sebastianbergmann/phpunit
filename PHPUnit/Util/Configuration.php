@@ -701,7 +701,11 @@ class PHPUnit_Util_Configuration
             $testSuiteNodes = $this->xpath->query('testsuite');
         }
 
-        if ($testSuiteNodes->length > 0) {
+        if ($testSuiteNodes->length == 1) {
+            return $this->getTestSuite($testSuiteNodes->item(0), $syntaxCheck);
+        }
+
+        if ($testSuiteNodes->length > 1) {
             $suite = new PHPUnit_Framework_TestSuite;
 
             foreach ($testSuiteNodes as $testSuiteNode) {
