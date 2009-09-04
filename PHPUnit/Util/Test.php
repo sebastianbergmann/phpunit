@@ -298,10 +298,12 @@ class PHPUnit_Util_Test
 
                 foreach ($classes as $className)
                 {
-                    if (!class_exists($className)) {
+                    if (!class_exists($className) &&
+                        !interface_exists($className)) {
                         throw new PHPUnit_Framework_Exception(
                           sprintf(
-                            'Trying to @cover not existing class "%s".',
+                            'Trying to @cover not existing class or ' .
+                            'interface "%s".',
                             $className
                           )
                         );
@@ -337,7 +339,8 @@ class PHPUnit_Util_Test
                 $classes = array($className);
 
                 foreach ($classes as $className) {
-                    if (!(class_exists($className) &&
+                    if (!((class_exists($className) ||
+                           interface_exists($className)) &&
                           method_exists($className, $methodName))) {
                         throw new PHPUnit_Framework_Exception(
                           sprintf(
@@ -375,10 +378,12 @@ class PHPUnit_Util_Test
             }
 
             foreach ($classes as $className) {
-                if (!class_exists($className)) {
+                if (!class_exists($className) &&
+                    !interface_exists($className)) {
                     throw new PHPUnit_Framework_Exception(
                       sprintf(
-                        'Trying to @cover not existing class "%s".',
+                        'Trying to @cover not existing class or ' .
+                        'interface "%s".',
                         $className
                       )
                     );
