@@ -570,6 +570,21 @@ class PHPUnit_Util_Test
     }
 
     /**
+     * Returns the preserve global state settings for a test.
+     *
+     * @param  string $className
+     * @param  string $methodName
+     * @return boolean
+     * @since  Method available since Release 3.4.0
+     */
+    public static function getPreserveGlobalStateSettings($className, $methodName)
+    {
+        return self::getBooleanAnnotationSetting(
+          $className, $methodName, 'preserveGlobalState'
+        );
+    }
+
+    /**
      * @param  string $className
      * @param  string $methodName
      * @param  string $settingName

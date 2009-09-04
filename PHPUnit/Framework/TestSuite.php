@@ -117,6 +117,14 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
     protected $runTestsInSeparateProcesses = NULL;
 
     /**
+     * Whether or not the global state should be preserved between tests
+     * running in separate PHP processes.
+     *
+     * @var    boolean
+     */
+    protected $preserveGlobalState = TRUE;
+
+    /**
      * Fixture that is shared between the tests of this test suite.
      *
      * @var    mixed
@@ -495,6 +503,9 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
         $method                   = new ReflectionMethod($className, $name);
         $methodDocComment         = $method->getDocComment();
         $runTestInSeparateProcess = FALSE;
+        $preserveGlobalState      = PHPUnit_Util_Test::getPreserveGlobalStateSettings(
+                                      $className, $name
+                                    );
         $backupSettings           = PHPUnit_Util_Test::getBackupSettings(
                                       $className, $name
                                     );
@@ -534,6 +545,10 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
 
                     if ($runTestInSeparateProcess) {
                         $test->setRunTestsInSeparateProcesses(TRUE);
+
+                        if ($preserveGlobalState !== NULL) {
+                            $test->setPreserveGlobalState($preserveGlobalState);
+                        }
                     }
 
                     if ($backupSettings['backupGlobals'] !== NULL) {
@@ -564,6 +579,10 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
 
             if ($runTestInSeparateProcess) {
                 $test->setRunTestInSeparateProcess(TRUE);
+
+                if ($preserveGlobalState !== NULL) {
+                    $test->setPreserveGlobalState($preserveGlobalState);
+                }
             }
 
             if ($backupSettings['backupGlobals'] !== NULL) {
@@ -756,6 +775,7 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
         if ($this->runTestsInSeparateProcesses === TRUE &&
             $test instanceof PHPUnit_Framework_TestCase) {
             $test->setRunTestInSeparateProcess(TRUE);
+            $test->setPreserveGlobalState($this->preserveGlobalState);
         }
 
         $test->run($result);

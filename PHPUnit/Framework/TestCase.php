@@ -152,6 +152,13 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
     protected $runTestInSeparateProcess = NULL;
 
     /**
+     * Whether or not this test should preserve the global state when running in a separate PHP process.
+     *
+     * @var    boolean
+     */
+    protected $preserveGlobalState = TRUE;
+
+    /**
      * Whether or not this test is running in a separate PHP process.
      *
      * @var    boolean
@@ -564,9 +571,9 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
                 'dependencyInput'                => addcslashes(serialize($this->dependencyInput), "'"),
                 'dataName'                       => $this->dataName,
                 'collectCodeCoverageInformation' => $collectCodeCoverageInformation ? 'TRUE' : 'FALSE',
-                'included_files'                 => PHPUnit_Util_GlobalState::getIncludedFilesAsString(),
-                'constants'                      => PHPUnit_Util_GlobalState::getConstantsAsString(),
-                'globals'                        => PHPUnit_Util_GlobalState::getGlobalsAsString(),
+                'included_files'                 => $this->preserveGlobalState ? PHPUnit_Util_GlobalState::getIncludedFilesAsString() : '',
+                'constants'                      => $this->preserveGlobalState ? PHPUnit_Util_GlobalState::getConstantsAsString() : '',
+                'globals'                        => $this->preserveGlobalState ? PHPUnit_Util_GlobalState::getGlobalsAsString() : '',
                 'include_path'                   => addslashes(get_include_path())
               )
             );
@@ -913,6 +920,20 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
             if ($this->runTestInSeparateProcess === NULL) {
                 $this->runTestInSeparateProcess = $runTestInSeparateProcess;
             }
+        } else {
+            throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'boolean');
+        }
+    }
+
+    /**
+     * @param  boolean $preserveGlobalState
+     * @throws InvalidArgumentException
+     * @since  Method available since Release 3.4.0
+     */
+    public function setPreserveGlobalState($preserveGlobalState)
+    {
+        if (is_bool($preserveGlobalState)) {
+            $this->preserveGlobalState = $preserveGlobalState;
         } else {
             throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'boolean');
         }
