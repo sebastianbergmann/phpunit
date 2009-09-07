@@ -701,9 +701,11 @@ class PHPUnit_Framework_TestResult implements Countable
             $codeCoverage = xdebug_get_code_coverage();
             xdebug_stop_code_coverage();
 
-            $this->appendCodeCoverageInformation(
-              $test, $codeCoverage
-            );
+            if (!$test instanceof PHPUnit_Framework_Warning) {
+                $this->appendCodeCoverageInformation(
+                  $test, $codeCoverage
+                );
+            }
         }
 
         if ($errorHandlerSet === TRUE) {

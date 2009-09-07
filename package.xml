@@ -985,6 +985,8 @@
       <file baseinstalldir="/" name="dependencies-isolation.phpt" role="test" />
       <file baseinstalldir="/" name="dependencies2-isolation.phpt" role="test" />
       <file baseinstalldir="/" name="dependencies3-isolation.phpt" role="test" />
+      <file baseinstalldir="/" name="empty-testcase.phpt" role="test" />
+      <file baseinstalldir="/" name="empty-testcase-coverage.phpt" role="test" />
       <file baseinstalldir="/" name="exclude-group-isolation.phpt" role="test" />
       <file baseinstalldir="/" name="exclude-group.phpt" role="test" />
       <file baseinstalldir="/" name="failure-isolation.phpt" role="test" />
@@ -1103,6 +1105,9 @@
        <tasks:replace from="@package_version@" to="version" type="package-info" />
       </file>
       <file baseinstalldir="/" name="DoubleTestCase.php" role="test">
+       <tasks:replace from="@package_version@" to="version" type="package-info" />
+      </file>
+      <file baseinstalldir="/" name="EmptyTestCaseTest.php" role="test">
        <tasks:replace from="@package_version@" to="version" type="package-info" />
       </file>
       <file baseinstalldir="/" name="Error.php" role="test">
