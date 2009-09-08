@@ -713,19 +713,23 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
             $this->status = PHPUnit_Runner_BaseTestRunner::STATUS_PASSED;
         }
 
+        catch (PHPUnit_Framework_IncompleteTest $e) {
+            $this->status = PHPUnit_Runner_BaseTestRunner::STATUS_INCOMPLETE;
+            $this->statusMessage = $e->getMessage();
+        }
+
+        catch (PHPUnit_Framework_SkippedTest $e) {
+            $this->status = PHPUnit_Runner_BaseTestRunner::STATUS_SKIPPED;
+            $this->statusMessage = $e->getMessage();
+        }
+
+        catch (PHPUnit_Framework_AssertionFailedError $e) {
+            $this->status = PHPUnit_Runner_BaseTestRunner::STATUS_FAILURE;
+            $this->statusMessage = $e->getMessage();
+        }
+
         catch (Exception $e) {
-            if ($e instanceof PHPUnit_Framework_IncompleteTest) {
-                $this->status = PHPUnit_Runner_BaseTestRunner::STATUS_INCOMPLETE;
-            }
-
-            if ($e instanceof PHPUnit_Framework_SkippedTest) {
-                $this->status = PHPUnit_Runner_BaseTestRunner::STATUS_SKIPPED;
-            }
-
-            if ($e instanceof PHPUnit_Framework_AssertionFailedError) {
-                $this->status = PHPUnit_Runner_BaseTestRunner::STATUS_FAILURE;
-            }
-
+            $this->status = PHPUnit_Runner_BaseTestRunner::STATUS_ERROR;
             $this->statusMessage = $e->getMessage();
         }
 
