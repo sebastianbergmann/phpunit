@@ -62,7 +62,8 @@ PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
  * @since      Class available since Release 3.0.0
  * @abstract
  */
-class PHPUnit_Util_Getopt {
+class PHPUnit_Util_Getopt
+{
     public static function getopt(array $args, $short_options, $long_options = NULL)
     {
         if (empty($args)) {
