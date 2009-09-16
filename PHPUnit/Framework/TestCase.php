@@ -594,6 +594,10 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
                 $childResult = @unserialize($jobResult['stdout']);
 
                 if ($childResult !== FALSE) {
+                    if (!empty($childResult['output'])) {
+                        print $childResult['output'];
+                    }
+
                     $this->testResult    = $childResult['testResult'];
                     $this->numAssertions = $childResult['numAssertions'];
                     $childResult         = $childResult['result'];
