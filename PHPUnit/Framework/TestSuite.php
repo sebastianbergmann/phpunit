@@ -499,17 +499,7 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
      */
     public static function createTest(ReflectionClass $theClass, $name, array $classGroups = array())
     {
-        $className                = $theClass->getName();
-        $classDocComment          = $theClass->getDocComment();
-        $method                   = new ReflectionMethod($className, $name);
-        $methodDocComment         = $method->getDocComment();
-        $runTestInSeparateProcess = FALSE;
-        $preserveGlobalState      = PHPUnit_Util_Test::getPreserveGlobalStateSettings(
-                                      $className, $name
-                                    );
-        $backupSettings           = PHPUnit_Util_Test::getBackupSettings(
-                                      $className, $name
-                                    );
+        $className = $theClass->getName();
 
         if (!$theClass->isInstantiable()) {
             return self::warning(
@@ -517,14 +507,20 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
             );
         }
 
-        $constructor = $theClass->getConstructor();
+        $classDocComment          = $theClass->getDocComment();
+        $method                   = new ReflectionMethod($className, $name);
+        $methodDocComment         = $method->getDocComment();
+        $backupSettings           = PHPUnit_Util_Test::getBackupSettings(
+                                      $className, $name
+                                    );
+        $preserveGlobalState      = PHPUnit_Util_Test::getPreserveGlobalStateSettings(
+                                      $className, $name
+                                    );
+        $runTestInSeparateProcess = PHPUnit_Util_Test::getProcessIsolationSettings(
+                                      $className, $name
+                                    );
 
-        // @runTestsInSeparateProcesses on TestCase
-        // @runInSeparateProcess        on TestCase::testMethod()
-        if (strpos($classDocComment, '@runTestsInSeparateProcesses') !== FALSE ||
-            strpos($methodDocComment, '@runInSeparateProcess') !== FALSE) {
-            $runTestInSeparateProcess = TRUE;
-        }
+        $constructor = $theClass->getConstructor();
 
         if ($constructor !== NULL) {
             $parameters = $constructor->getParameters();

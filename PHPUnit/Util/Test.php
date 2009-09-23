@@ -575,6 +575,28 @@ class PHPUnit_Util_Test
     }
 
     /**
+     * Returns the process isolation settings for a test.
+     *
+     * @param  string $className
+     * @param  string $methodName
+     * @return boolean
+     * @since  Method available since Release 3.4.1
+     */
+    public static function getProcessIsolationSettings($className, $methodName)
+    {
+        $annotations = self::parseTestMethodAnnotations(
+          $className, $methodName
+        );
+
+        if (isset($annotations['class']['runTestsInSeparateProcesses']) ||
+            isset($annotations['method']['runInSeparateProcess'])) {
+            return TRUE;
+        } else {
+            return FALSE;
+        }
+    }
+
+    /**
      * Returns the preserve global state settings for a test.
      *
      * @param  string $className
