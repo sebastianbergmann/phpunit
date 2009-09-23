@@ -1166,7 +1166,7 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
         }
 
         if (!is_string($mockClassName)) {
-            throw PHPUnit_Util_InvalidArgumentHelper::factory(4, 'string');
+            throw PHPUnit_Util_InvalidArgumentHelper::factory(3, 'string');
         }
 
         if (class_exists($originalClassName, $callAutoload)) {
