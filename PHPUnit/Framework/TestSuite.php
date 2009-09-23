@@ -498,13 +498,14 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
      */
     public static function createTest(ReflectionClass $theClass, $name, array $classGroups = array())
     {
+        $className = $theClass->getName();
+
         if (!$theClass->isInstantiable()) {
             return self::warning(
               sprintf('Cannot instantiate class "%s".', $className)
             );
         }
 
-        $className                = $theClass->getName();
         $classDocComment          = $theClass->getDocComment();
         $method                   = new ReflectionMethod($className, $name);
         $methodDocComment         = $method->getDocComment();
