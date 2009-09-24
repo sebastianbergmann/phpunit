@@ -232,7 +232,8 @@ abstract class PHPUnit_Util_TestDox_ResultPrinter extends PHPUnit_Util_Printer i
 
             $prettified = FALSE;
 
-            if ($test instanceof PHPUnit_Framework_TestCase) {
+            if ($test instanceof PHPUnit_Framework_TestCase &&
+               !$test instanceof PHPUnit_Framework_Warning) {
                 $annotations = $test->getAnnotations();
 
                 if (isset($annotations['method']['testdox'][0])) {
