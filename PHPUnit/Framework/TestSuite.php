@@ -539,30 +539,30 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
                       $className . '::' . $name
                     );
 
-                    if ($runTestInSeparateProcess) {
-                        $test->setRunTestsInSeparateProcesses(TRUE);
-
-                        if ($preserveGlobalState !== NULL) {
-                            $test->setPreserveGlobalState($preserveGlobalState);
-                        }
-                    }
-
-                    if ($backupSettings['backupGlobals'] !== NULL) {
-                        $test->setBackupGlobals(
-                          $backupSettings['backupGlobals']
-                        );
-                    }
-
-                    if ($backupSettings['backupStaticAttributes'] !== NULL) {
-                        $test->setBackupStaticAttributes(
-                          $backupSettings['backupStaticAttributes']
-                        );
-                    }
-
                     foreach ($data as $_dataName => $_data) {
-                        $test->addTest(
-                          new $className($name, $_data, $_dataName), $groups
-                        );
+                        $_test = new $className($name, $_data, $_dataName);
+
+                        if ($runTestInSeparateProcess) {
+                            $_test->setRunTestInSeparateProcess(TRUE);
+
+                            if ($preserveGlobalState !== NULL) {
+                                $_test->setPreserveGlobalState($preserveGlobalState);
+                            }
+                        }
+
+                        if ($backupSettings['backupGlobals'] !== NULL) {
+                            $_test->setBackupGlobals(
+                              $backupSettings['backupGlobals']
+                            );
+                        }
+
+                        if ($backupSettings['backupStaticAttributes'] !== NULL) {
+                            $_test->setBackupStaticAttributes(
+                              $backupSettings['backupStaticAttributes']
+                            );
+                        }
+
+                        $test->addTest($_test, $groups);
                     }
                 } else {
                     $test = new $className;
@@ -921,21 +921,6 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
         if (is_null($this->backupStaticAttributes) &&
             is_bool($backupStaticAttributes)) {
             $this->backupStaticAttributes = $backupStaticAttributes;
-        }
-    }
-
-    /**
-     * @param  boolean $runTestsInSeparateProcesses
-     * @throws InvalidArgumentException
-     * @since  Method available since Release 3.4.0
-     */
-    public function setRunTestsInSeparateProcesses($runTestsInSeparateProcesses)
-    {
-        if (is_null($this->runTestsInSeparateProcesses) &&
-            is_bool($runTestsInSeparateProcesses)) {
-            $this->runTestsInSeparateProcesses = $runTestsInSeparateProcesses;
-        } else {
-            throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'boolean');
         }
     }
 
