@@ -199,14 +199,7 @@ class PHPUnit_Util_File
                     $block = array_pop($blocks);
 
                     if ($block !== FALSE && $block !== NULL) {
-                        if ($block == $currentClass) {
-                            self::$classesFunctionsCache[$filename]['classes'][$currentClass]['endLine'] = $line;
-
-                            $currentClass          = FALSE;
-                            $currentClassStartLine = FALSE;
-                        }
-
-                        else if ($block == $currentFunction) {
+                        if ($block == $currentFunction) {
                             if ($currentDocComment !== FALSE) {
                                 $docComment        = $currentDocComment;
                                 $currentDocComment = FALSE;
@@ -230,6 +223,13 @@ class PHPUnit_Util_File
                             $currentFunction          = FALSE;
                             $currentFunctionStartLine = FALSE;
                             $currentSignature         = FALSE;
+                        }
+
+                        else if ($block == $currentClass) {
+                            self::$classesFunctionsCache[$filename]['classes'][$currentClass]['endLine'] = $line;
+
+                            $currentClass          = FALSE;
+                            $currentClassStartLine = FALSE;
                         }
                     }
                 }
