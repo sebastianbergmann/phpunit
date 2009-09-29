@@ -247,6 +247,18 @@ class PHPUnit_Util_File
                 }
                 break;
 
+                case T_CURLY_OPEN: {
+                    $currentBlock = T_CURLY_OPEN;
+                    array_push($blocks, $currentBlock);
+                }
+                break;
+
+                case T_DOLLAR_OPEN_CURLY_BRACES: {
+                    $currentBlock = T_DOLLAR_OPEN_CURLY_BRACES;
+                    array_push($blocks, $currentBlock);
+                }
+                break;
+
                 case T_CLASS: {
                     $currentBlock = T_CLASS;
 
