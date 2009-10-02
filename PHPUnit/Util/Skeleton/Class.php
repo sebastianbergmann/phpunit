@@ -64,7 +64,15 @@ PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
  */
 class PHPUnit_Util_Skeleton_Class extends PHPUnit_Util_Skeleton
 {
+    /**
+     * @var array
+     */
     protected $tokens = array();
+
+    /**
+     * @var integer
+     */
+    protected $numTokens = 0;
 
     /**
      * Constructor.
@@ -91,7 +99,8 @@ class PHPUnit_Util_Skeleton_Class extends PHPUnit_Util_Skeleton
             );
         }
 
-        $this->tokens = token_get_all(file_get_contents($inSourceFile));
+        $this->tokens    = token_get_all(file_get_contents($inSourceFile));
+        $this->numTokens = count($this->tokens);
 
         if (empty($outClassName)) {
             $outClassName = substr($inClassName, 0, strlen($inClassName) - 4);
@@ -167,10 +176,9 @@ class PHPUnit_Util_Skeleton_Class extends PHPUnit_Util_Skeleton
     protected function findMethods()
     {
         $methods   = array();
-        $numTokens = count($this->tokens);
         $variables = $this->findVariablesThatReferenceClass();
 
-        for ($i = 0; $i < $numTokens; $i++) {
+        for ($i = 0; $i < $this->numTokens; $i++) {
             if (is_array($this->tokens[$i])) {
                 if ($this->tokens[$i][0] == T_DOUBLE_COLON &&
                     $this->tokens[$i-1][0] == T_STRING &&
@@ -204,10 +212,9 @@ class PHPUnit_Util_Skeleton_Class extends PHPUnit_Util_Skeleton
     protected function findVariablesThatReferenceClass()
     {
         $inNew     = FALSE;
-        $numTokens = count($this->tokens);
         $variables = array();
 
-        for ($i = 0; $i < $numTokens; $i++) {
+        for ($i = 0; $i < $this->numTokens; $i++) {
             if (is_string($this->tokens[$i])) {
                 if (trim($this->tokens[$i]) == ';') {
                     $inNew = FALSE;
