@@ -164,6 +164,10 @@ class PHPUnit_Util_File
         $currentSignatureStartToken = FALSE;
 
         for ($i = 0; $i < $numTokens; $i++) {
+            if ($currentFunction !== FALSE) {
+                $currentFunctionTokens[] = $tokens[$i];
+            }
+
             if (is_string($tokens[$i])) {
                 if ($tokens[$i] == '{') {
                     if ($currentBlock == T_CLASS) {
@@ -332,10 +336,6 @@ class PHPUnit_Util_File
                     $currentDocComment = $tokens[$i][1];
                 }
                 break;
-            }
-
-            if ($currentFunction !== FALSE) {
-                $currentFunctionTokens[] = $tokens[$i];
             }
 
             $line += substr_count($tokens[$i][1], "\n");
