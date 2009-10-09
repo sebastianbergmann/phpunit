@@ -162,11 +162,16 @@ class PHPUnit_Util_File
         $currentClass               = FALSE;
         $currentFunction            = FALSE;
         $currentFunctionStartLine   = FALSE;
+        $currentFunctionTokens      = array();
         $currentDocComment          = FALSE;
         $currentSignature           = FALSE;
         $currentSignatureStartToken = FALSE;
 
         for ($i = 0; $i < $numTokens; $i++) {
+            if ($currentFunction !== FALSE) {
+                $currentFunctionTokens[] = $tokens[$i];
+            }
+
             if (is_string($tokens[$i])) {
                 if ($tokens[$i] == '{') {
                     if ($currentBlock == T_CLASS) {
@@ -215,7 +220,8 @@ class PHPUnit_Util_File
                               'docComment' => $docComment,
                               'signature'  => $currentSignature,
                               'startLine'  => $currentFunctionStartLine,
-                              'endLine'    => $line
+                              'endLine'    => $line,
+                              'tokens'     => $currentFunctionTokens
                             );
 
                             if ($currentClass === FALSE) {
@@ -226,6 +232,7 @@ class PHPUnit_Util_File
 
                             $currentFunction          = FALSE;
                             $currentFunctionStartLine = FALSE;
+                            $currentFunctionTokens    = array();
                             $currentSignature         = FALSE;
                         }
 
