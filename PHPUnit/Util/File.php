@@ -152,7 +152,6 @@ class PHPUnit_Util_File
         $numTokens                  = count($tokens);
         $blocks                     = array();
         $line                       = 1;
-        $name                       = array();
         $currentBlock               = FALSE;
         $currentNamespace           = FALSE;
         $currentClass               = FALSE;
