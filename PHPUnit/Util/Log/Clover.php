@@ -245,22 +245,25 @@ class PHPUnit_Util_Log_Clover extends PHPUnit_Util_Printer
                 }
 
                 foreach ($data as $_line => $_data) {
-                    if (is_array($_data)) {
-                        $count = count($_data);
-                    }
-
-                    else if ($_data == -1) {
-                        $count = 0;
-                    }
-
-                    else if ($_data == -2) {
+                    if (isset($lines[$_line])) {
                         continue;
                     }
 
-                    $lines[$_line] = array(
-                      'count' => $count,
-                      'type' => 'stmt'
-                    );
+                    if ($_data != -2) {
+                        $fileStatistics['statements']++;
+
+                        if (is_array($_data)) {
+                            $count = count($_data);
+                            $fileStatistics['coveredStatements']++;
+                        } else {
+                            $count = 0;
+                        }
+
+                        $lines[$_line] = array(
+                          'count' => $count,
+                          'type' => 'stmt'
+                        );
+                    }
                 }
 
                 ksort($lines);
