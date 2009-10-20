@@ -960,6 +960,7 @@
       <file baseinstalldir="/" name="coverage-clover-class-extended.phpt" role="test" />
       <file baseinstalldir="/" name="coverage-clover-class-isolation.phpt" role="test" />
       <file baseinstalldir="/" name="coverage-clover-class.phpt" role="test" />
+      <file baseinstalldir="/" name="coverage-clover-function.phpt" role="test" />
       <file baseinstalldir="/" name="coverage-clover-isolation.phpt" role="test" />
       <file baseinstalldir="/" name="coverage-clover-method-isolation.phpt" role="test" />
       <file baseinstalldir="/" name="coverage-clover-method.phpt" role="test" />
@@ -1073,6 +1074,9 @@
       <file baseinstalldir="/" name="CoverageClassTest.php" role="test">
        <tasks:replace from="@package_version@" to="version" type="package-info" />
       </file>
+      <file baseinstalldir="/" name="CoverageFunctionTest.php" role="test">
+       <tasks:replace from="@package_version@" to="version" type="package-info" />
+      </file>
       <file baseinstalldir="/" name="CoverageMethodTest.php" role="test">
        <tasks:replace from="@package_version@" to="version" type="package-info" />
       </file>
@@ -1095,6 +1099,9 @@
        <tasks:replace from="@package_version@" to="version" type="package-info" />
       </file>
       <file baseinstalldir="/" name="CoveredClass.php" role="test">
+       <tasks:replace from="@package_version@" to="version" type="package-info" />
+      </file>
+      <file baseinstalldir="/" name="CoveredFunction.php" role="test">
        <tasks:replace from="@package_version@" to="version" type="package-info" />
       </file>
       <file baseinstalldir="/" name="DataProviderTest.php" role="test">
