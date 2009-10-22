@@ -132,7 +132,7 @@ class PHPUnit_TextUI_Command
       'testdox-text=' => NULL,
       'no-configuration' => NULL,
       'no-globals-backup' => NULL,
-      'no-static-backup' => NULL,
+      'static-backup' => NULL,
       'verbose' => NULL,
       'version' => NULL,
       'wait' => NULL
@@ -662,8 +662,8 @@ class PHPUnit_TextUI_Command
                 }
                 break;
 
-                case '--no-static-backup': {
-                    $this->arguments['backupStaticAttributes'] = FALSE;
+                case '--static-backup': {
+                    $this->arguments['backupStaticAttributes'] = TRUE;
                 }
                 break;
 
@@ -981,8 +981,8 @@ Usage: phpunit [switches] UnitTest [UnitTest.php]
   --skeleton-test          Generate UnitTest class for Unit in Unit.php.
 
   --process-isolation      Run each test in a separate PHP process.
-  --no-globals-backup      Do not backup and restore \$GLOBALS.
-  --no-static-backup       Do not backup and restore static attributes.
+  --no-globals-backup      Do not backup and restore \$GLOBALS for each test.
+  --static-backup          Backup and restore static attributes for each test.
   --syntax-check           Try to check source files for syntax errors.
 
   --bootstrap <file>       A "bootstrap" PHP file that is run before the tests.

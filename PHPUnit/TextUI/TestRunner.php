@@ -173,8 +173,8 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
             $suite->setBackupGlobals(FALSE);
         }
 
-        if ($arguments['backupStaticAttributes'] === FALSE) {
-            $suite->setBackupStaticAttributes(FALSE);
+        if ($arguments['backupStaticAttributes'] === TRUE) {
+            $suite->setBackupStaticAttributes(TRUE);
         }
 
         if (is_integer($arguments['repeat'])) {

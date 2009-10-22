@@ -49,8 +49,8 @@ Usage: phpunit [switches] UnitTest [UnitTest.php]
   --skeleton-test          Generate UnitTest class for Unit in Unit.php.
 
   --process-isolation      Run each test in a separate PHP process.
-  --no-globals-backup      Do not backup and restore $GLOBALS.
-  --no-static-backup       Do not backup and restore static attributes.
+  --no-globals-backup      Do not backup and restore $GLOBALS for each test.
+  --static-backup          Backup and restore static attributes for each test.
   --syntax-check           Try to check source files for syntax errors.
 
   --bootstrap <file>       A "bootstrap" PHP file that is run before the tests.
