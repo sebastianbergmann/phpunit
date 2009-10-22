@@ -58,7 +58,7 @@ PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
  * <?xml version="1.0" encoding="utf-8" ?>
  *
  * <phpunit backupGlobals="true"
- *          backupStaticAttributes="true"
+ *          backupStaticAttributes="false"
  *          bootstrap="/path/to/bootstrap.php"
  *          colors="false"
  *          convertErrorsToExceptions="true"
@@ -551,7 +551,7 @@ class PHPUnit_Util_Configuration
         if ($this->document->documentElement->hasAttribute('backupStaticAttributes')) {
             $result['backupStaticAttributes'] = $this->getBoolean(
               (string)$this->document->documentElement->getAttribute('backupStaticAttributes'),
-              TRUE
+              FALSE
             );
         }
 

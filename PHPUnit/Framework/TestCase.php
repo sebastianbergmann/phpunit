@@ -680,8 +680,7 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
             }
 
             if (version_compare(PHP_VERSION, '5.3', '>') &&
-               ($this->backupStaticAttributes === NULL ||
-                $this->backupStaticAttributes === TRUE)) {
+                $this->backupStaticAttributes === TRUE) {
                 PHPUnit_Util_GlobalState::backupStaticAttributes(
                   $this->backupStaticAttributesBlacklist
                 );
@@ -771,8 +770,7 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
             }
 
             if (version_compare(PHP_VERSION, '5.3', '>') &&
-               ($this->backupStaticAttributes === NULL ||
-                $this->backupStaticAttributes === TRUE)) {
+                $this->backupStaticAttributes === TRUE) {
                 PHPUnit_Util_GlobalState::restoreStaticAttributes();
             }
         }
