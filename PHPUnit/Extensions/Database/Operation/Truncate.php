@@ -75,7 +75,7 @@ class PHPUnit_Extensions_Database_Operation_Truncate implements PHPUnit_Extensio
 
     public function execute(PHPUnit_Extensions_Database_DB_IDatabaseConnection $connection, PHPUnit_Extensions_Database_DataSet_IDataSet $dataSet)
     {
-        foreach ($dataSet as $table) {
+        foreach ($dataSet->getReverseIterator() as $table) {
             /* @var $table PHPUnit_Extensions_Database_DataSet_ITable */
             $query = "
                 {$connection->getTruncateCommand()} {$connection->quoteSchemaObject($table->getTableMetaData()->getTableName())}
