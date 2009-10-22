@@ -672,15 +672,13 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
         // Backup the $GLOBALS array and static attributes.
         if ($this->runTestInSeparateProcess !== TRUE &&
             $this->inIsolation !== TRUE) {
-            if ($this->backupGlobals === NULL ||
-                $this->backupGlobals === TRUE) {
+            if ($this->backupGlobals === TRUE) {
                 PHPUnit_Util_GlobalState::backupGlobals(
                   $this->backupGlobalsBlacklist
                 );
             }
 
-            if ($this->backupStaticAttributes === NULL ||
-                $this->backupStaticAttributes === TRUE) {
+            if ($this->backupStaticAttributes === TRUE) {
                 PHPUnit_Util_GlobalState::backupStaticAttributes(
                   $this->backupStaticAttributesBlacklist
                 );
@@ -762,15 +760,13 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
         // Restore the $GLOBALS array and static attributes.
         if ($this->runTestInSeparateProcess !== TRUE &&
             $this->inIsolation !== TRUE) {
-            if ($this->backupGlobals === NULL ||
-                $this->backupGlobals === TRUE) {
+            if ($this->backupGlobals === TRUE) {
                 PHPUnit_Util_GlobalState::restoreGlobals(
                   $this->backupGlobalsBlacklist
                 );
             }
 
-            if ($this->backupStaticAttributes === NULL ||
-                $this->backupStaticAttributes === TRUE) {
+            if ($this->backupStaticAttributes === TRUE) {
                 PHPUnit_Util_GlobalState::restoreStaticAttributes();
             }
         }
