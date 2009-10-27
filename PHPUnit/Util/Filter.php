@@ -348,19 +348,22 @@ class PHPUnit_Util_Filter
 
             foreach ($codeCoverageInformation as $k => $test) {
                 foreach (array_keys($test['files']) as $file) {
-                    if ($isFilteredCache[$file]) {
+                    if (isset($isFilteredCache[$file]) &&
+                        $isFilteredCache[$file]) {
                         unset($codeCoverageInformation[$k]['files'][$file]);
                     }
                 }
 
                 foreach (array_keys($test['dead']) as $file) {
-                    if ($isFilteredCache[$file]) {
+                    if (isset($isFilteredCache[$file]) &&
+                        $isFilteredCache[$file]) {
                         unset($codeCoverageInformation[$k]['dead'][$file]);
                     }
                 }
 
                 foreach (array_keys($test['executable']) as $file) {
-                    if ($isFilteredCache[$file]) {
+                    if (isset($isFilteredCache[$file]) &&
+                        $isFilteredCache[$file]) {
                         unset(
                           $codeCoverageInformation[$k]['executable'][$file]
                         );
