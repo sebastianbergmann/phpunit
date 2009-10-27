@@ -134,10 +134,12 @@ class PHPUnit_Extensions_Database_DB_MetaData_Oci extends PHPUnit_Extensions_Dat
      */
     protected function loadColumnInfo($tableName)
     {
+        $ownerQuery    = '';
+        $conOwnerQuery = '';
+        $tableParts    = $this->splitTableName($tableName);
+
         $this->columns[$tableName] = array();
         $this->keys[$tableName]    = array();
-
-        $tableParts = $this->splitTableName($tableName);
 
         if (!empty($tableParts['schema']))
         {
