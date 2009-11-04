@@ -1064,27 +1064,33 @@ abstract class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_Tes
     protected function onNotSuccessfulTest(Exception $e)
     {
         if ($e instanceof PHPUnit_Framework_ExpectationFailedException) {
-            $buffer  = 'Current URL: ' . $this->drivers[0]->getLocation() . "\n";
+            $buffer  = 'Current URL: ' . $this->drivers[0]->getLocation() .
+                       "\n";
             $message = $e->getCustomMessage();
 
             if ($this->captureScreenshotOnFailure &&
-                !empty($this->screenshotPath) && !empty($this->screenshotUrl)) {
+                !empty($this->screenshotPath) &&
+                !empty($this->screenshotUrl)) {
                 $this->drivers[0]->captureEntirePageScreenshot(
-                  $this->screenshotPath . DIRECTORY_SEPARATOR . $this->testId . '.png'
+                  $this->screenshotPath . DIRECTORY_SEPARATOR . $this->testId .
+                  '.png'
                 );
 
-                $buffer .= 'Screenshot: ' . $this->screenshotUrl . '/' . $this->testId . ".png\n";
+                $buffer .= 'Screenshot: ' . $this->screenshotUrl . '/' .
+                           $this->testId . ".png\n";
+            }
+        }
+
+        if ($this->autoStop) {
+            try {
+                $this->stop();
             }
 
-            if ($this->autoStop) {
-                try {
-                    $this->stop();
-                }
-
-                catch (RuntimeException $e) {
-                }
+            catch (RuntimeException $e) {
             }
+        }
 
+        if ($e instanceof PHPUnit_Framework_ExpectationFailedException) {
             if (!empty($message)) {
                 $buffer .= "\n" . $message;
             }
