@@ -154,7 +154,12 @@ class PHPUnit_Util_Test
             $methodName = substr($methodName, 0, $pos);
         }
 
-        $class      = new ReflectionClass($className);
+        $class = new ReflectionClass($className);
+
+        if (!$class->hasMethod($methodName)) {
+            return $result;
+        }
+
         $method     = new ReflectionMethod($className, $methodName);
         $docComment = $class->getDocComment() . $method->getDocComment();
 
