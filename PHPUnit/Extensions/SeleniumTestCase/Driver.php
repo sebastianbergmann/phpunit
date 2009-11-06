@@ -362,24 +362,33 @@ class PHPUnit_Extensions_SeleniumTestCase_Driver
      * @param  array  $arguments
      * @return mixed
      * @method unknown  addLocationStrategy()
+     * @method unknown  addLocationStrategyAndWait()
+     * @method unknown  addScript()
+     * @method unknown  addScriptAndWait()
      * @method unknown  addSelection()
      * @method unknown  addSelectionAndWait()
      * @method unknown  allowNativeXpath()
+     * @method unknown  allowNativeXpathAndWait()
      * @method unknown  altKeyDown()
      * @method unknown  altKeyDownAndWait()
      * @method unknown  altKeyUp()
      * @method unknown  altKeyUpAndWait()
      * @method unknown  answerOnNextPrompt()
      * @method unknown  assignId()
+     * @method unknown  assignIdAndWait()
      * @method unknown  attachFile()
      * @method unknown  break()
      * @method unknown  captureEntirePageScreenshot()
-     * @method unknown  captureEntirePageScreenshotToString()
-     * @method unknown  captureScreenshot()
-     * @method unknown  captureScreenshotToString()
+     * @method unknown  captureEntirePageScreenshotAndWait()
+     * @method unknown  captureEntirePageScreenshotToStringAndWait()
+     * @method unknown  captureScreenshotAndWait()
+     * @method unknown  captureScreenshotToStringAndWait()
      * @method unknown  check()
+     * @method unknown  checkAndWait()
      * @method unknown  chooseCancelOnNextConfirmation()
+     * @method unknown  chooseCancelOnNextConfirmationAndWait()
      * @method unknown  chooseOkOnNextConfirmation()
+     * @method unknown  chooseOkOnNextConfirmationAndWait()
      * @method unknown  click()
      * @method unknown  clickAndWait()
      * @method unknown  clickAt()
@@ -399,6 +408,8 @@ class PHPUnit_Extensions_SeleniumTestCase_Driver
      * @method unknown  deleteAllVisibleCookiesAndWait()
      * @method unknown  deleteCookie()
      * @method unknown  deleteCookieAndWait()
+     * @method unknown  deselectPopUp()
+     * @method unknown  deselectPopUpAndWait()
      * @method unknown  doubleClick()
      * @method unknown  doubleClickAndWait()
      * @method unknown  doubleClickAt()
@@ -413,6 +424,7 @@ class PHPUnit_Extensions_SeleniumTestCase_Driver
      * @method unknown  fireEvent()
      * @method unknown  fireEventAndWait()
      * @method unknown  focus()
+     * @method unknown  focusAndWait()
      * @method string   getAlert()
      * @method array    getAllButtons()
      * @method array    getAllFields()
@@ -462,6 +474,7 @@ class PHPUnit_Extensions_SeleniumTestCase_Driver
      * @method unknown  highlight()
      * @method unknown  highlightAndWait()
      * @method unknown  ignoreAttributesWithoutValue()
+     * @method unknown  ignoreAttributesWithoutValueAndWait()
      * @method boolean  isAlertPresent()
      * @method boolean  isChecked()
      * @method boolean  isConfirmationPresent()
@@ -517,16 +530,23 @@ class PHPUnit_Extensions_SeleniumTestCase_Driver
      * @method unknown  refreshAndWait()
      * @method unknown  removeAllSelections()
      * @method unknown  removeAllSelectionsAndWait()
+     * @method unknown  removeScript()
+     * @method unknown  removeScriptAndWait()
      * @method unknown  removeSelection()
      * @method unknown  removeSelectionAndWait()
      * @method unknown  retrieveLastRemoteControlLogs()
-     * @method unknown  runScript()
      * @method unknown  rollup()
+     * @method unknown  rollupAndWait()
+     * @method unknown  runScript()
+     * @method unknown  runScriptAndWait()
      * @method unknown  select()
      * @method unknown  selectAndWait()
      * @method unknown  selectFrame()
+     * @method unknown  selectPopUp()
+     * @method unknown  selectPopUpAndWait()
      * @method unknown  selectWindow()
      * @method unknown  setBrowserLogLevel()
+     * @method unknown  setBrowserLogLevelAndWait()
      * @method unknown  setContext()
      * @method unknown  setCursorPosition()
      * @method unknown  setCursorPositionAndWait()
@@ -548,6 +568,8 @@ class PHPUnit_Extensions_SeleniumTestCase_Driver
      * @method unknown  typeKeysAndWait()
      * @method unknown  uncheck()
      * @method unknown  uncheckAndWait()
+     * @method unknown  useXpathLibrary()
+     * @method unknown  useXpathLibraryAndWait()
      * @method unknown  waitForCondition()
      * @method unknown  waitForPageToLoad()
      * @method unknown  waitForPopUp()
@@ -565,6 +587,7 @@ class PHPUnit_Extensions_SeleniumTestCase_Driver
 
         switch ($command) {
             case 'addLocationStrategy':
+            case 'addScript':
             case 'addSelection':
             case 'allowNativeXpath':
             case 'altKeyDown':
@@ -590,6 +613,7 @@ class PHPUnit_Extensions_SeleniumTestCase_Driver
             case 'createCookie':
             case 'deleteAllVisibleCookies':
             case 'deleteCookie':
+            case 'deselectPopUp':
             case 'doubleClick':
             case 'doubleClickAt':
             case 'dragAndDrop':
@@ -624,12 +648,14 @@ class PHPUnit_Extensions_SeleniumTestCase_Driver
             case 'pause':
             case 'refresh':
             case 'removeAllSelections':
+            case 'removeScript':
             case 'removeSelection':
             case 'retrieveLastRemoteControlLogs':
             case 'rollup':
             case 'runScript':
             case 'select':
             case 'selectFrame':
+            case 'selectPopUp':
             case 'selectWindow':
             case 'setBrowserLogLevel':
             case 'setContext':
@@ -644,6 +670,7 @@ class PHPUnit_Extensions_SeleniumTestCase_Driver
             case 'type':
             case 'typeKeys':
             case 'uncheck':
+            case 'useXpathLibrary':
             case 'windowFocus':
             case 'windowMaximize':
             case isset(self::$autoGeneratedCommands[$command]): {
