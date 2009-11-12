@@ -736,6 +736,7 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
         if ($currentClass != '' &&
             !isset(self::$tearDownAfterClassCalled[$currentClass])) {
             $currentClass::tearDownAfterClass();
+            self::$tearDownAfterClassCalled[$currentClass] = TRUE;
         }
 
         $result->endTestSuite($this);
