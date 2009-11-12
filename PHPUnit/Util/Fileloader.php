@@ -78,7 +78,7 @@ class PHPUnit_Util_Fileloader
 
         if (!$filename) {
             throw PHPUnit_Util_InvalidArgumentHelper::factory(
-              1, 'existing file'
+              1, 'existing file', $filename
             );
         }
 
