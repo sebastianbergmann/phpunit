@@ -49,7 +49,7 @@ require_once 'PHPUnit/Util/Filter.php';
 PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
 
 /**
- *
+ * Factory for InvalidArgumentException objects.
  *
  * @category   Testing
  * @package    PHPUnit
@@ -62,7 +62,12 @@ PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
  */
 class PHPUnit_Util_InvalidArgumentHelper
 {
-    public static function factory($argument, $type)
+    /**
+     * @param integer $argument
+     * @param string  $type
+     * @param mixed   $value
+     */ 
+    public static function factory($argument, $type, $value = NULL)
     {
         if (version_compare(PHP_VERSION, '5.2.5', '>=')) {
             $stack = debug_backtrace(FALSE);
@@ -72,8 +77,9 @@ class PHPUnit_Util_InvalidArgumentHelper
 
         return new InvalidArgumentException(
           sprintf(
-            'Argument #%d of %s:%s() is no %s',
+            'Argument #%d%sof %s:%s() is no %s',
             $argument,
+            $value !== NULL ? ' (' . $value . ')' : ' ',
             $stack[1]['class'],
             $stack[1]['function'],
             $type
