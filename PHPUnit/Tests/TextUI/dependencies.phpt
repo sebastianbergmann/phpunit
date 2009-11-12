@@ -39,4 +39,4 @@ This test depends on "DependencyFailureTest::testTwo" to pass.
 %s:%i
 
 FAILURES!
-Tests: 4, Assertions: 0, Failures: 1, Skipped: 2.
+Tests: 6, Assertions: 0, Failures: 1, Skipped: 2.
