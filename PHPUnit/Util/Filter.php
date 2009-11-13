@@ -554,6 +554,17 @@ class PHPUnit_Util_Filter
     }
 
     /**
+     * Returns the list of blacklisted files.
+     *
+     * @return array
+     * @since  Method available since Release 3.4.3
+     */
+    public static function getBlacklistedFiles()
+    {
+        return self::$blacklistedFiles;
+    }
+
+    /**
      * @param  array  $trace
      * @param  string $file
      * @param  int    $line
