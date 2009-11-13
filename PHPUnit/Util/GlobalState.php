@@ -180,11 +180,15 @@ class PHPUnit_Util_GlobalState
 
     public static function getIncludedFilesAsString()
     {
-        $files  = get_included_files();
-        $result = '';
+        $blacklist = PHPUnit_Util_Filter::getBlacklistedFiles();
+        $blacklist = array_flip($blacklist['PHPUNIT']);
+        $files     = get_included_files();
+        $result    = '';
 
-        for ($i = count($files) - 1; strpos($files[$i], 'PHPUnit') === FALSE; $i--) {
-            $result = 'require_once \'' . $files[$i] . "';\n" . $result;
+        for ($i = count($files) - 1; $i > 0; $i--) {
+            if (!isset($blacklist[$files[$i]]) && is_file($files[$i])) {
+                $result = 'require_once \'' . $files[$i] . "';\n" . $result;
+            }
         }
 
         return $result;

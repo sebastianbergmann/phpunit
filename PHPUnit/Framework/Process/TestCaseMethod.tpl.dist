@@ -1,18 +1,9 @@
 <?php
+require_once 'PHPUnit/Framework.php';
 ob_start();
 
 function __phpunit_run_isolated_test()
 {
-    // Only required for PHPUnit's own test suite.
-    if (!class_exists('PHPUnit_Framework_TestResult')) { 
-        require_once 'PHPUnit/Framework.php';
-    }
-
-    // Only required for PHPUnit's own test suite.
-    if (!class_exists('{className}')) {
-        require_once '{filename}';
-    }
-
     $result = new PHPUnit_Framework_TestResult;
     $result->collectRawCodeCoverageInformation({collectCodeCoverageInformation});
 
