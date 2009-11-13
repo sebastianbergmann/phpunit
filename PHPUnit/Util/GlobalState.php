@@ -201,7 +201,7 @@ class PHPUnit_Util_GlobalState
                   'if (!defined(\'%s\')) define(\'%s\', %s);' . "\n",
                   $name,
                   $name,
-                  var_export($value, TRUE)
+                  self::exportVariable($value)
                 );
             }
         }
@@ -221,7 +221,7 @@ class PHPUnit_Util_GlobalState
                       '$GLOBALS[\'%s\'][\'%s\'] = %s;' . "\n",
                       $superGlobalArray,
                       $key,
-                      var_export($GLOBALS[$superGlobalArray][$key], TRUE)
+                      self::exportVariable($GLOBALS[$superGlobalArray][$key])
                     );
                 }
             }
@@ -236,7 +236,7 @@ class PHPUnit_Util_GlobalState
                 $result .= sprintf(
                   '$GLOBALS[\'%s\'] = %s;' . "\n",
                   $key,
-                  var_export($GLOBALS[$key], TRUE)
+                  self::exportVariable($GLOBALS[$key])
                 );
             }
         }
@@ -302,6 +302,37 @@ class PHPUnit_Util_GlobalState
         }
 
         self::$staticAttributes = array();
+    }
+
+    protected static function exportVariable($variable)
+    {
+        if (is_scalar($variable) || is_null($variable) ||
+           (is_array($variable) && self::arrayOnlyContainsScalars($variable))) {
+            return var_export($variable, TRUE);
+        }
+
+        return 'unserialize(\'' . serialize($variable) . '\')';
+    }
+
+    protected function arrayOnlyContainsScalars(array $array)
+    {
+        $result = TRUE;
+
+        foreach ($array as $element) {
+            if (is_array($element)) {
+                $result = self::arrayOnlyContainsScalars($element);
+            }
+
+            else if (!is_scalar($element) && !is_null($element)) {
+                $result = FALSE;
+            }
+
+            if ($result === FALSE) {
+                break;
+            }
+        }
+
+        return $result;
     }
 }
 ?>
