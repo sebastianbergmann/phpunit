@@ -314,7 +314,7 @@ class PHPUnit_Util_GlobalState
         return 'unserialize(\'' . serialize($variable) . '\')';
     }
 
-    protected function arrayOnlyContainsScalars(array $array)
+    protected static function arrayOnlyContainsScalars(array $array)
     {
         $result = TRUE;
 
