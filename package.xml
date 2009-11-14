@@ -482,6 +482,9 @@
       <file baseinstalldir="/" name="StringEndsWith.php" role="php">
        <tasks:replace from="@package_version@" to="version" type="package-info" />
       </file>
+      <file baseinstalldir="/" name="StringMatches.php" role="php">
+       <tasks:replace from="@package_version@" to="version" type="package-info" />
+      </file>
       <file baseinstalldir="/" name="StringStartsWith.php" role="php">
        <tasks:replace from="@package_version@" to="version" type="package-info" />
       </file>
