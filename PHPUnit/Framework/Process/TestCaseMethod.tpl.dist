@@ -1,4 +1,5 @@
 <?php
+set_include_path('{include_path}');
 require_once 'PHPUnit/Framework.php';
 ob_start();
 
@@ -37,7 +38,6 @@ if (isset($GLOBALS['__PHPUNIT_BOOTSTRAP'])) {
 {included_files}
 {constants}
 {globals}
-set_include_path('{include_path}');
 
 __phpunit_run_isolated_test();
 ob_end_clean();
