@@ -73,14 +73,28 @@ class PHPUnit_Framework_Constraint_StringMatches extends PHPUnit_Framework_Const
      */
     public function __construct($string)
     {
-        $this->pattern = preg_replace('/\r\n/', "\n", $string);
-        $this->pattern = preg_quote($this->pattern, '/');
-        $this->pattern = str_replace("%s", ".+?", $this->pattern);
-        $this->pattern = str_replace("%i", "[+\-]?[0-9]+", $this->pattern);
-        $this->pattern = str_replace("%d", "[0-9]+", $this->pattern);
-        $this->pattern = str_replace("%x", "[0-9a-fA-F]+", $this->pattern);
-        $this->pattern = str_replace("%f", "[+\-]?\.?[0-9]+\.?[0-9]*(E-?[0-9]+)?", $this->pattern);
-        $this->pattern = '/^' . str_replace("%c", ".", $this->pattern) . '$/s';
+        $this->pattern = preg_quote(preg_replace('/\r\n/', "\n", $string), '/');
+        $this->pattern = str_replace(
+          array(
+            '%s',
+            '%i',
+            '%d',
+            '%x',
+            '%f',
+            '%c'
+          ),
+          array(
+            '.+?',
+            '[+\-]?[0-9]+',
+            '[0-9]+',
+            '[0-9a-fA-F]+',
+            '[+\-]?\.?[0-9]+\.?[0-9]*(E-?[0-9]+)?',
+            '.'
+          ),
+          $this->pattern
+        );
+
+        $this->pattern = '/^' . $this->pattern . '$/s';
         $this->string  = $string;
     }
 
