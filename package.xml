@@ -27,7 +27,7 @@
   <api>stable</api>
  </stability>
  <license>BSD License</license>
- <notes>http://www.phpunit.de/wiki/ChangeLog</notes>
+ <notes>http://www.phpunit.de/wiki/ChangeLog34</notes>
  <contents>
   <dir name="/">
    <dir name="PHPUnit">
