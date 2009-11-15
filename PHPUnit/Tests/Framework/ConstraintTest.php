@@ -1723,6 +1723,76 @@ class Framework_ConstraintTest extends PHPUnit_Framework_TestCase
     }
 
     /**
+     * @covers PHPUnit_Framework_Constraint_StringMatches
+     * @covers PHPUnit_Framework_Assert::matches
+     * @covers PHPUnit_Framework_Constraint::count
+     */
+    public function testConstraintStringMatches()
+    {
+        $constraint = PHPUnit_Framework_Assert::matches('*%s*');
+        $this->assertFalse($constraint->evaluate('**'));
+        $this->assertTrue($constraint->evaluate('***'));
+        $this->assertEquals('matches PCRE pattern "/^\*.+?\*$/s"', $constraint->toString());
+        $this->assertEquals(1, count($constraint));
+    }
+
+    /**
+     * @covers PHPUnit_Framework_Constraint_StringMatches
+     * @covers PHPUnit_Framework_Assert::matches
+     * @covers PHPUnit_Framework_Constraint::count
+     */
+    public function testConstraintStringMatches2()
+    {
+        $constraint = PHPUnit_Framework_Assert::matches('*%i*');
+        $this->assertFalse($constraint->evaluate('**'));
+        $this->assertTrue($constraint->evaluate('*0*'));
+        $this->assertEquals('matches PCRE pattern "/^\*[+\-]?[0-9]+\*$/s"', $constraint->toString());
+        $this->assertEquals(1, count($constraint));
+    }
+
+    /**
+     * @covers PHPUnit_Framework_Constraint_StringMatches
+     * @covers PHPUnit_Framework_Assert::matches
+     * @covers PHPUnit_Framework_Constraint::count
+     */
+    public function testConstraintStringMatches3()
+    {
+        $constraint = PHPUnit_Framework_Assert::matches('*%d*');
+        $this->assertFalse($constraint->evaluate('**'));
+        $this->assertTrue($constraint->evaluate('*0*'));
+        $this->assertEquals('matches PCRE pattern "/^\*[0-9]+\*$/s"', $constraint->toString());
+        $this->assertEquals(1, count($constraint));
+    }
+
+    /**
+     * @covers PHPUnit_Framework_Constraint_StringMatches
+     * @covers PHPUnit_Framework_Assert::matches
+     * @covers PHPUnit_Framework_Constraint::count
+     */
+    public function testConstraintStringMatches4()
+    {
+        $constraint = PHPUnit_Framework_Assert::matches('*%x*');
+        $this->assertFalse($constraint->evaluate('**'));
+        $this->assertTrue($constraint->evaluate('*0f0f0f*'));
+        $this->assertEquals('matches PCRE pattern "/^\*[0-9a-fA-F]+\*$/s"', $constraint->toString());
+        $this->assertEquals(1, count($constraint));
+    }
+
+    /**
+     * @covers PHPUnit_Framework_Constraint_StringMatches
+     * @covers PHPUnit_Framework_Assert::matches
+     * @covers PHPUnit_Framework_Constraint::count
+     */
+    public function testConstraintStringMatches5()
+    {
+        $constraint = PHPUnit_Framework_Assert::matches('*%f*');
+        $this->assertFalse($constraint->evaluate('**'));
+        $this->assertTrue($constraint->evaluate('*1.0*'));
+        $this->assertEquals('matches PCRE pattern "/^\*[+\-]?\.?[0-9]+\.?[0-9]*(E-?[0-9]+)?\*$/s"', $constraint->toString());
+        $this->assertEquals(1, count($constraint));
+    }
+
+    /**
      * @covers PHPUnit_Framework_Constraint_StringStartsWith
      * @covers PHPUnit_Framework_Assert::stringStartsWith
      * @covers PHPUnit_Framework_Constraint::count

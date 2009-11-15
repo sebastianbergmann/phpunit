@@ -4373,6 +4373,42 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
     }
 
     /**
+     * @covers PHPUnit_Framework_Assert::assertStringMatchesFormat
+     */
+    public function testAssertStringMatchesFormat()
+    {
+        $this->assertStringMatchesFormat('*%s*', '***');
+
+        try {
+            $this->assertStringMatchesFormat('*%s*', '**');
+        }
+
+        catch (PHPUnit_Framework_AssertionFailedError $e) {
+            return;
+        }
+
+        $this->fail();
+    }
+
+    /**
+     * @covers PHPUnit_Framework_Assert::assertStringNotMatchesFormat
+     */
+    public function testAssertStringNotMatchesFormat()
+    {
+        $this->assertStringNotMatchesFormat('*%s*', '**');
+
+        try {
+            $this->assertStringMatchesFormat('*%s*', '**');
+        }
+
+        catch (PHPUnit_Framework_AssertionFailedError $e) {
+            return;
+        }
+
+        $this->fail();
+    }
+
+    /**
      * @covers PHPUnit_Framework_Assert::markTestIncomplete
      */
     public function testMarkTestIncomplete()

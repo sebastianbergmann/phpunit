@@ -1127,6 +1127,54 @@ abstract class PHPUnit_Framework_Assert
     }
 
     /**
+     * Asserts that a string matches a given format string.
+     *
+     * @param  string $format
+     * @param  string $string
+     * @param  string $message
+     * @since  Method available since Release 3.5.0
+     */
+    public static function assertStringMatchesFormat($format, $string, $message = '')
+    {
+        if (!is_string($format)) {
+            throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'string');
+        }
+
+        if (!is_string($string)) {
+            throw PHPUnit_Util_InvalidArgumentHelper::factory(2, 'string');
+        }
+
+        $constraint = new PHPUnit_Framework_Constraint_StringMatches($format);
+
+        self::assertThat($string, $constraint, $message);
+    }
+
+    /**
+     * Asserts that a string does not match a given format string.
+     *
+     * @param  string $format
+     * @param  string $string
+     * @param  string $message
+     * @since  Method available since Release 3.5.0
+     */
+    public static function assertStringNotMatchesFormat($format, $string, $message = '')
+    {
+        if (!is_string($format)) {
+            throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'string');
+        }
+
+        if (!is_string($string)) {
+            throw PHPUnit_Util_InvalidArgumentHelper::factory(2, 'string');
+        }
+
+        $constraint = new PHPUnit_Framework_Constraint_Not(
+          new PHPUnit_Framework_Constraint_StringMatches($format)
+        );
+
+        self::assertThat($string, $constraint, $message);
+    }
+
+    /**
      * Asserts that a string starts with a given prefix.
      *
      * @param  string $prefix
@@ -2092,6 +2140,18 @@ abstract class PHPUnit_Framework_Assert
     public static function matchesRegularExpression($pattern)
     {
         return new PHPUnit_Framework_Constraint_PCREMatch($pattern);
+    }
+
+    /**
+     * Returns a PHPUnit_Framework_Constraint_StringMatches matcher object.
+     *
+     * @param  string $string
+     * @return PHPUnit_Framework_Constraint_StringMatches
+     * @since  Method available since Release 3.5.0
+     */
+    public static function matches($string)
+    {
+        return new PHPUnit_Framework_Constraint_StringMatches($string);
     }
 
     /**

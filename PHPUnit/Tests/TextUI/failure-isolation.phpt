@@ -13,11 +13,11 @@ PHPUnit_TextUI_Command::main();
 --EXPECTF--
 PHPUnit %s by Sebastian Bergmann.
 
-FFFFFFFFFF
+FFFFFFFFFFF
 
 Time: %i %s
 
-There were 10 failures:
+There were 11 failures:
 
 1) FailureTest::testAssertArrayEqualsArray
 message
@@ -82,13 +82,24 @@ Failed asserting that two strings are equal.
 
 %s:%i
 
-7) FailureTest::testAssertNumericEqualsNumeric
+7) FailureTest::testAssertStringMatchesFormat
+message
+Failed asserting that two strings are equal.
+--- Expected
++++ Actual
+@@ @@
+-*%s*
++**
+
+%s:%i
+
+8) FailureTest::testAssertNumericEqualsNumeric
 message
 Failed asserting that <integer:2> matches expected <integer:1>.
 
 %s:%i
 
-8) FailureTest::testAssertTextSameText
+9) FailureTest::testAssertTextSameText
 message
 --- Expected
 +++ Actual
@@ -98,17 +109,17 @@ message
 
 %s:%i
 
-9) FailureTest::testAssertObjectSameObject
+10) FailureTest::testAssertObjectSameObject
 message
 Failed asserting that two variables reference the same object.
 
 %s:%i
 
-10) FailureTest::testAssertObjectSameNull
+11) FailureTest::testAssertObjectSameNull
 message
 <null> does not match expected type "object".
 
 %s:%i
 
 FAILURES!
-Tests: 10, Assertions: 10, Failures: 10.
+Tests: 11, Assertions: 11, Failures: 11.

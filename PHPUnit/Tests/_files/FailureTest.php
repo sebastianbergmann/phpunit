@@ -37,6 +37,11 @@ class FailureTest extends PHPUnit_Framework_TestCase
         $this->assertEquals("foo\nbar\n", "foo\nbaz\n", 'message');
     }
 
+    public function testAssertStringMatchesFormat()
+    {
+        $this->assertStringMatchesFormat('*%s*', '**', 'message');
+    }
+
     public function testAssertNumericEqualsNumeric()
     {
         $this->assertEquals(1, 2, 'message');

@@ -191,6 +191,7 @@ require_once 'PHPUnit/Framework/Constraint/IsNull.php';
 require_once 'PHPUnit/Framework/Constraint/ObjectHasAttribute.php';
 require_once 'PHPUnit/Framework/Constraint/Or.php';
 require_once 'PHPUnit/Framework/Constraint/PCREMatch.php';
+require_once 'PHPUnit/Framework/Constraint/StringMatches.php';
 require_once 'PHPUnit/Framework/Constraint/StringContains.php';
 require_once 'PHPUnit/Framework/Constraint/StringStartsWith.php';
 require_once 'PHPUnit/Framework/Constraint/StringEndsWith.php';

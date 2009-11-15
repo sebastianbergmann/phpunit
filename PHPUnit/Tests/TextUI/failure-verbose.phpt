@@ -14,11 +14,11 @@ PHPUnit_TextUI_Command::main();
 PHPUnit %s by Sebastian Bergmann.
 
 FailureTest
-FFFFFFFFFF
+FFFFFFFFFFF
 
 Time: %i %s
 
-There were 10 failures:
+There were 11 failures:
 
 1) FailureTest::testAssertArrayEqualsArray
 message
@@ -33,11 +33,13 @@ Failed asserting that two arrays are equal.
  )
 
 %s:%i
+%s:%i
 
 2) FailureTest::testAssertIntegerEqualsInteger
 message
 Failed asserting that <integer:2> matches expected <integer:1>.
 
+%s:%i
 %s:%i
 
 3) FailureTest::testAssertObjectEqualsObject
@@ -53,11 +55,13 @@ Failed asserting that two objects are equal.
  )
 
 %s:%i
+%s:%i
 
 4) FailureTest::testAssertNullEqualsString
 message
 Failed asserting that <string:bar> matches expected <null>.
 
+%s:%i
 %s:%i
 
 5) FailureTest::testAssertStringEqualsString
@@ -69,6 +73,7 @@ Failed asserting that two strings are equal.
 -foo
 +bar
 
+%s:%i
 %s:%i
 
 6) FailureTest::testAssertTextEqualsText
@@ -82,14 +87,28 @@ Failed asserting that two strings are equal.
 +baz
 
 %s:%i
+%s:%i
 
-7) FailureTest::testAssertNumericEqualsNumeric
+7) FailureTest::testAssertStringMatchesFormat
+message
+Failed asserting that two strings are equal.
+--- Expected
++++ Actual
+@@ @@
+-*%s*
++**
+
+%s:%i
+%s:%i
+
+8) FailureTest::testAssertNumericEqualsNumeric
 message
 Failed asserting that <integer:2> matches expected <integer:1>.
 
 %s:%i
+%s:%i
 
-8) FailureTest::testAssertTextSameText
+9) FailureTest::testAssertTextSameText
 message
 --- Expected
 +++ Actual
@@ -98,18 +117,21 @@ message
 +bar
 
 %s:%i
+%s:%i
 
-9) FailureTest::testAssertObjectSameObject
+10) FailureTest::testAssertObjectSameObject
 message
 Failed asserting that two variables reference the same object.
 
 %s:%i
+%s:%i
 
-10) FailureTest::testAssertObjectSameNull
+11) FailureTest::testAssertObjectSameNull
 message
 <null> does not match expected type "object".
 
 %s:%i
+%s:%i
 
 FAILURES!
-Tests: 10, Assertions: 10, Failures: 10.
+Tests: 11, Assertions: 11, Failures: 11.
