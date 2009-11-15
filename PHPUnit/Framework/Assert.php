@@ -1157,7 +1157,7 @@ abstract class PHPUnit_Framework_Assert
      * @param  string $message
      * @since  Method available since Release 3.5.0
      */
-    public static function assertNotStringMatchesFormat($format, $string, $message = '')
+    public static function assertStringNotMatchesFormat($format, $string, $message = '')
     {
         if (!is_string($format)) {
             throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'string');
