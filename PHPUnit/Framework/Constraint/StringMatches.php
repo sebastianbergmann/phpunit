@@ -76,7 +76,12 @@ class PHPUnit_Framework_Constraint_StringMatches extends PHPUnit_Framework_Const
         $this->pattern = preg_quote(preg_replace('/\r\n/', "\n", $string), '/');
         $this->pattern = str_replace(
           array(
+            '%e',
             '%s',
+            '%S',
+            '%a',
+            '%A',
+            '%w',
             '%i',
             '%d',
             '%x',
@@ -84,11 +89,16 @@ class PHPUnit_Framework_Constraint_StringMatches extends PHPUnit_Framework_Const
             '%c'
           ),
           array(
-            '.+?',
-            '[+\-]?[0-9]+',
-            '[0-9]+',
+            '\\' . DIRECTORY_SEPARATOR,
+            '[^\r\n]+',
+            '[^\r\n]*',
+            '.+',
+            '.*',
+            '\s*',
+            '[+-]?\d+',
+            '\d+',
             '[0-9a-fA-F]+',
-            '[+\-]?\.?[0-9]+\.?[0-9]*(E-?[0-9]+)?',
+            '[+-]?\.?\d+\.?\d*(?:[Ee][+-]?\d+)?',
             '.'
           ),
           $this->pattern

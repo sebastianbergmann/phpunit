@@ -1746,7 +1746,7 @@ class Framework_ConstraintTest extends PHPUnit_Framework_TestCase
         $constraint = PHPUnit_Framework_Assert::matches('*%s*');
         $this->assertFalse($constraint->evaluate('**'));
         $this->assertTrue($constraint->evaluate('***'));
-        $this->assertEquals('matches PCRE pattern "/^\*.+?\*$/s"', $constraint->toString());
+        $this->assertEquals('matches PCRE pattern "/^\*[^\r\n]+\*$/s"', $constraint->toString());
         $this->assertEquals(1, count($constraint));
     }
 
@@ -1760,7 +1760,7 @@ class Framework_ConstraintTest extends PHPUnit_Framework_TestCase
         $constraint = PHPUnit_Framework_Assert::matches('*%i*');
         $this->assertFalse($constraint->evaluate('**'));
         $this->assertTrue($constraint->evaluate('*0*'));
-        $this->assertEquals('matches PCRE pattern "/^\*[+\-]?[0-9]+\*$/s"', $constraint->toString());
+        $this->assertEquals('matches PCRE pattern "/^\*[+-]?\d+\*$/s"', $constraint->toString());
         $this->assertEquals(1, count($constraint));
     }
 
@@ -1774,7 +1774,7 @@ class Framework_ConstraintTest extends PHPUnit_Framework_TestCase
         $constraint = PHPUnit_Framework_Assert::matches('*%d*');
         $this->assertFalse($constraint->evaluate('**'));
         $this->assertTrue($constraint->evaluate('*0*'));
-        $this->assertEquals('matches PCRE pattern "/^\*[0-9]+\*$/s"', $constraint->toString());
+        $this->assertEquals('matches PCRE pattern "/^\*\d+\*$/s"', $constraint->toString());
         $this->assertEquals(1, count($constraint));
     }
 
@@ -1802,7 +1802,7 @@ class Framework_ConstraintTest extends PHPUnit_Framework_TestCase
         $constraint = PHPUnit_Framework_Assert::matches('*%f*');
         $this->assertFalse($constraint->evaluate('**'));
         $this->assertTrue($constraint->evaluate('*1.0*'));
-        $this->assertEquals('matches PCRE pattern "/^\*[+\-]?\.?[0-9]+\.?[0-9]*(E-?[0-9]+)?\*$/s"', $constraint->toString());
+        $this->assertEquals('matches PCRE pattern "/^\*[+-]?\.?\d+\.?\d*(?:[Ee][+-]?\d+)?\*$/s"', $constraint->toString());
         $this->assertEquals(1, count($constraint));
     }
 
