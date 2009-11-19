@@ -44,13 +44,12 @@
  * @since      File available since Release 3.2.10
  */
 
+require_once 'File/Iterator/Factory.php';
 require_once 'PHPUnit/Util/CodeCoverage.php';
-require_once 'PHPUnit/Util/FilterIterator.php';
 
 if (isset($_GET['PHPUNIT_SELENIUM_TEST_ID'])) {
-    $files = new PHPUnit_Util_FilterIterator(
-      new RecursiveIteratorIterator(new RecursiveDirectoryIterator(getcwd())),
-      $_GET['PHPUNIT_SELENIUM_TEST_ID']
+    $files = File_Iterator_Factory::getFileIterator(
+      getcwd(), $_GET['PHPUNIT_SELENIUM_TEST_ID']
     );
 
     $coverage = array();
