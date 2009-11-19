@@ -125,45 +125,14 @@ PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
             charset="UTF-8" yui="true" highlight="false"
  *          lowUpperBound="35" highLowerBound="70"/>
  *     <log type="coverage-clover" target="/tmp/clover.xml"/>
- *     <log type="coverage-source" target="/tmp/coverage"/>
- *     <log type="graphviz" target="/tmp/logfile.dot"/>
  *     <log type="json" target="/tmp/logfile.json"/>
- *     <log type="metrics-xml" target="/tmp/metrics.xml"/>
  *     <log type="plain" target="/tmp/logfile.txt"/>
- *     <log type="pmd-xml" target="/tmp/pmd.xml" cpdMinLines="5" cpdMinMatches="70"/>
  *     <log type="tap" target="/tmp/logfile.tap"/>
  *     <log type="junit" target="/tmp/logfile.xml" logIncompleteSkipped="false"/>
  *     <log type="story-html" target="/tmp/story.html"/>
  *     <log type="story-text" target="/tmp/story.txt"/>
  *     <log type="testdox-html" target="/tmp/testdox.html"/>
  *     <log type="testdox-text" target="/tmp/testdox.txt"/>
- *
- *     <pmd>
- *       <rule class="PHPUnit_Util_Log_PMD_Rule_Project_CRAP"
- *             threshold="5,30" priority="1"/>
- *       <rule class="PHPUnit_Util_Log_PMD_Rule_Class_DepthOfInheritanceTree"
- *             threshold="6" priority="1"/>
- *       <rule class="PHPUnit_Util_Log_PMD_Rule_Class_EfferentCoupling"
- *             threshold="20" priority="1"/>
- *       <rule class="PHPUnit_Util_Log_PMD_Rule_Class_ExcessiveClassLength"
- *             threshold="1000" priority="1"/>
- *       <rule class="PHPUnit_Util_Log_PMD_Rule_Class_ExcessivePublicCount"
- *             threshold="45" priority="1"/>
- *       <rule class="PHPUnit_Util_Log_PMD_Rule_Class_TooManyFields"
- *             threshold="15" priority="1"/>
- *       <rule class="PHPUnit_Util_Log_PMD_Rule_Function_CodeCoverage"
- *             threshold="35,70" priority="1"/>
- *       <rule class="PHPUnit_Util_Log_PMD_Rule_Function_CRAP"
- *             threshold="30" priority="1"/>
- *       <rule class="PHPUnit_Util_Log_PMD_Rule_Function_CyclomaticComplexity"
- *             threshold="20" priority="1"/>
- *       <rule class="PHPUnit_Util_Log_PMD_Rule_Function_ExcessiveMethodLength"
- *             threshold="100" priority="1"/>
- *       <rule class="PHPUnit_Util_Log_PMD_Rule_Function_ExcessiveParameterList"
- *             threshold="10" priority="1"/>
- *       <rule class="PHPUnit_Util_Log_PMD_Rule_Function_NPathComplexity"
- *             threshold="200" priority="1"/>
- *     </pmd>
  *   </logging>
  *
  *   <php>
@@ -410,17 +379,7 @@ class PHPUnit_Util_Configuration
                 }
             }
 
-            else if ($type == 'pmd-xml') {
-                if ($log->hasAttribute('cpdMinLines')) {
-                    $result['cpdMinLines'] = (string)$log->getAttribute('cpdMinLines');
-                }
-
-                if ($log->hasAttribute('cpdMinMatches')) {
-                    $result['cpdMinMatches'] = (string)$log->getAttribute('cpdMinMatches');
-                }
-            }
-
-            else if ($type == 'junit' || $type == 'test-xml') {
+            else if ($type == 'junit') {
                 if ($log->hasAttribute('logIncompleteSkipped')) {
                     $result['logIncompleteSkipped'] = $this->getBoolean(
                       (string)$log->getAttribute('logIncompleteSkipped'),
@@ -607,36 +566,6 @@ class PHPUnit_Util_Configuration
 
         if ($this->document->documentElement->hasAttribute('testSuiteLoaderFile')) {
             $result['testSuiteLoaderFile'] = (string)$this->document->documentElement->getAttribute('testSuiteLoaderFile');
-        }
-
-        return $result;
-    }
-
-    /**
-     * Returns the configuration for PMD rules.
-     *
-     * @return array
-     */
-    public function getPMDConfiguration()
-    {
-        $result = array();
-
-        foreach ($this->xpath->query('logging/pmd/rule') as $rule) {
-            $class     = (string)$rule->getAttribute('class');
-
-            $threshold = (string)$rule->getAttribute('threshold');
-            $threshold = explode(',', $threshold);
-
-            if (count($threshold) == 1) {
-                $threshold = $threshold[0];
-            }
-
-            $priority = (int)$rule->getAttribute('priority');
-
-            $result[$class] = array(
-              'threshold' => $threshold,
-              'priority'  => $priority
-            );
         }
 
         return $result;

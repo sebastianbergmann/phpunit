@@ -46,7 +46,6 @@
 
 require_once 'PHPUnit/Framework.php';
 require_once 'PHPUnit/Runner/BaseTestRunner.php';
-require_once 'PHPUnit/Extensions/RepeatedTest.php';
 require_once 'PHPUnit/Runner/StandardTestSuiteLoader.php';
 require_once 'PHPUnit/Runner/Version.php';
 require_once 'PHPUnit/TextUI/ResultPrinter.php';
@@ -54,7 +53,6 @@ require_once 'PHPUnit/Util/Configuration.php';
 require_once 'PHPUnit/Util/PDO.php';
 require_once 'PHPUnit/Util/Filesystem.php';
 require_once 'PHPUnit/Util/Filter.php';
-require_once 'PHPUnit/Util/Report.php';
 
 PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
 
@@ -177,17 +175,6 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
             $suite->setBackupStaticAttributes(TRUE);
         }
 
-        if (is_integer($arguments['repeat'])) {
-            $suite = new PHPUnit_Extensions_RepeatedTest(
-              $suite,
-              $arguments['repeat'],
-              $arguments['filter'],
-              $arguments['groups'],
-              $arguments['excludeGroups'],
-              $arguments['processIsolation']
-            );
-        }
-
         $result = $this->createTestResult();
 
         if (!$arguments['convertErrorsToExceptions']) {
@@ -273,20 +260,7 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
             );
         }
 
-        if (isset($arguments['graphvizLogfile'])) {
-            if (PHPUnit_Util_Filesystem::fileExistsInIncludePath('Image/GraphViz.php')) {
-                require_once 'PHPUnit/Util/Log/GraphViz.php';
-
-                $result->addListener(
-                  new PHPUnit_Util_Log_GraphViz($arguments['graphvizLogfile'])
-                );
-            }
-        }
-
         if ((isset($arguments['coverageClover']) ||
-             isset($arguments['coverageSource']) ||
-             isset($arguments['metricsXML']) ||
-             isset($arguments['pmdXML']) ||
              isset($arguments['reportDirectory'])) &&
              extension_loaded('xdebug')) {
             $result->collectCodeCoverageInformation(TRUE);
@@ -318,29 +292,6 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
             );
         }
 
-        if (isset($arguments['testDatabaseDSN']) &&
-            isset($arguments['testDatabaseLogRevision']) &&
-            extension_loaded('pdo')) {
-            $writeToTestDatabase = TRUE;
-        } else {
-            $writeToTestDatabase = FALSE;
-        }
-
-        if ($writeToTestDatabase) {
-            $dbh = PHPUnit_Util_PDO::factory($arguments['testDatabaseDSN']);
-
-            require_once 'PHPUnit/Util/Log/Database.php';
-
-            $dbListener = PHPUnit_Util_Log_Database::getInstance(
-              $dbh,
-              $arguments['testDatabaseLogRevision'],
-              isset($arguments['testDatabaseLogInfo']) ? $arguments['testDatabaseLogInfo'] : ''
-            );
-
-            $result->addListener($dbListener);
-            $result->collectCodeCoverageInformation(TRUE);
-        }
-
         $suite->run(
           $result,
           $arguments['filter'],
@@ -363,92 +314,13 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
                   'this may take a moment.'
                 );
 
-                require_once 'PHPUnit/Util/Log/CodeCoverage/XML/Clover.php';
+                require_once 'PHPUnit/Util/Log/Clover.php';
 
-                $writer = new PHPUnit_Util_Log_CodeCoverage_XML_Clover(
+                $writer = new PHPUnit_Util_Log_Clover(
                   $arguments['coverageClover']
                 );
 
                 $writer->process($result);
-                $this->printer->write("\n");
-            }
-
-            if (isset($arguments['coverageSource'])) {
-                $this->printer->write(
-                  "\nWriting code coverage data to XML files, " .
-                  'this may take a moment.'
-                );
-
-                require_once 'PHPUnit/Util/Log/CodeCoverage/XML/Source.php';
-
-                $writer = new PHPUnit_Util_Log_CodeCoverage_XML_Source(
-                  $arguments['coverageSource']
-                );
-
-                $writer->process($result);
-                $this->printer->write("\n");
-            }
-
-            if ($writeToTestDatabase) {
-                $this->printer->write(
-                  "\nStoring code coverage and software metrics data in " .
-                  "database.\nThis may take a moment."
-                );
-
-                require_once 'PHPUnit/Util/Log/CodeCoverage/Database.php';
-
-                $testDb = new PHPUnit_Util_Log_CodeCoverage_Database($dbh);
-                $testDb->storeCodeCoverage(
-                  $result,
-                  $dbListener->getRunId(),
-                  $arguments['testDatabaseLogRevision'],
-                  $arguments['testDatabasePrefix']
-                );
-
-                $this->printer->write("\n");
-            }
-
-            if (isset($arguments['metricsXML'])) {
-                $this->printer->write(
-                  "\nWriting metrics report XML file, this may take a moment."
-                );
-
-                require_once 'PHPUnit/Util/Log/Metrics.php';
-
-                $writer = new PHPUnit_Util_Log_Metrics(
-                  $arguments['metricsXML']
-                );
-
-                $writer->process($result);
-                $this->printer->write("\n");
-            }
-
-            if (isset($arguments['pmdXML'])) {
-                require_once 'PHPUnit/Util/Log/PMD.php';
-
-                $writer = new PHPUnit_Util_Log_PMD(
-                  $arguments['pmdXML'], $arguments['pmd']
-                );
-
-                $this->printer->write(
-                  "\nWriting violations report XML file, " .
-                  'this may take a moment.'
-                );
-
-                $writer->process($result);
-
-                require_once 'PHPUnit/Util/Log/CPD.php';
-
-                $writer = new PHPUnit_Util_Log_CPD(
-                  str_replace('.xml', '-cpd.xml', $arguments['pmdXML'])
-                );
-
-                $writer->process(
-                  $result,
-                  $arguments['cpdMinLines'],
-                  $arguments['cpdMinMatches']
-                );
-
                 $this->printer->write("\n");
             }
 
@@ -466,6 +338,8 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
                         $title = $loggingConfiguration['title'];
                     }
                 }
+
+                require_once 'PHPUnit/Util/Report.php';
 
                 PHPUnit_Util_Report::render(
                   $result,
@@ -583,19 +457,13 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
             $arguments['configuration'] = PHPUnit_Util_Configuration::getInstance(
               $arguments['configuration']
             );
-
-            $arguments['pmd'] = $arguments['configuration']->getPMDConfiguration();
-        } else {
-            $arguments['pmd'] = array();
         }
 
-        $arguments['debug']              = isset($arguments['debug'])              ? $arguments['debug']              : FALSE;
-        $arguments['filter']             = isset($arguments['filter'])             ? $arguments['filter']             : FALSE;
-        $arguments['listeners']          = isset($arguments['listeners'])          ? $arguments['listeners']          : array();
-        $arguments['repeat']             = isset($arguments['repeat'])             ? $arguments['repeat']             : FALSE;
-        $arguments['testDatabasePrefix'] = isset($arguments['testDatabasePrefix']) ? $arguments['testDatabasePrefix'] : '';
-        $arguments['verbose']            = isset($arguments['verbose'])            ? $arguments['verbose']            : FALSE;
-        $arguments['wait']               = isset($arguments['wait'])               ? $arguments['wait']               : FALSE;
+        $arguments['debug']     = isset($arguments['debug'])     ? $arguments['debug']     : FALSE;
+        $arguments['filter']    = isset($arguments['filter'])    ? $arguments['filter']    : FALSE;
+        $arguments['listeners'] = isset($arguments['listeners']) ? $arguments['listeners'] : array();
+        $arguments['verbose']   = isset($arguments['verbose'])   ? $arguments['verbose']   : FALSE;
+        $arguments['wait']      = isset($arguments['wait'])      ? $arguments['wait']      : FALSE;
 
         if (isset($arguments['configuration'])) {
             $arguments['configuration']->handlePHPConfiguration();
@@ -770,48 +638,13 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
                 $arguments['coverageClover'] = $loggingConfiguration['coverage-clover'];
             }
 
-            if (isset($loggingConfiguration['coverage-xml']) &&
-                !isset($arguments['coverageClover'])) {
-                $arguments['coverageClover'] = $loggingConfiguration['coverage-xml'];
-            }
-
-            if (isset($loggingConfiguration['coverage-source']) &&
-                !isset($arguments['coverageSource'])) {
-                $arguments['coverageSource'] = $loggingConfiguration['coverage-source'];
-            }
-
-            if (isset($loggingConfiguration['graphviz']) &&
-                !isset($arguments['graphvizLogfile'])) {
-                $arguments['graphvizLogfile'] = $loggingConfiguration['graphviz'];
-            }
-
             if (isset($loggingConfiguration['json']) &&
                 !isset($arguments['jsonLogfile'])) {
                 $arguments['jsonLogfile'] = $loggingConfiguration['json'];
             }
 
-            if (isset($loggingConfiguration['metrics-xml']) &&
-                !isset($arguments['metricsXML'])) {
-                $arguments['metricsXML'] = $loggingConfiguration['metrics-xml'];
-            }
-
             if (isset($loggingConfiguration['plain'])) {
                 $arguments['listeners'][] = new PHPUnit_TextUI_ResultPrinter($loggingConfiguration['plain'], TRUE);
-            }
-
-            if (isset($loggingConfiguration['pmd-xml']) &&
-                !isset($arguments['pmdXML'])) {
-                if (isset($loggingConfiguration['cpdMinLines']) &&
-                    !isset($arguments['cpdMinLines'])) {
-                    $arguments['cpdMinLines'] = $loggingConfiguration['cpdMinLines'];
-                }
-
-                if (isset($loggingConfiguration['cpdMinMatches']) &&
-                    !isset($arguments['cpdMinMatches'])) {
-                    $arguments['cpdMinMatches'] = $loggingConfiguration['cpdMinMatches'];
-                }
-
-                $arguments['pmdXML'] = $loggingConfiguration['pmd-xml'];
             }
 
             if (isset($loggingConfiguration['tap']) &&
@@ -851,8 +684,6 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
 
         $arguments['backupGlobals']               = isset($arguments['backupGlobals'])               ? $arguments['backupGlobals']               : NULL;
         $arguments['backupStaticAttributes']      = isset($arguments['backupStaticAttributes'])      ? $arguments['backupStaticAttributes']      : NULL;
-        $arguments['cpdMinLines']                 = isset($arguments['cpdMinLines'])                 ? $arguments['cpdMinLines']                 : 5;
-        $arguments['cpdMinMatches']               = isset($arguments['cpdMinMatches'])               ? $arguments['cpdMinMatches']               : 70;
         $arguments['colors']                      = isset($arguments['colors'])                      ? $arguments['colors']                      : FALSE;
         $arguments['convertErrorsToExceptions']   = isset($arguments['convertErrorsToExceptions'])   ? $arguments['convertErrorsToExceptions']   : TRUE;
         $arguments['convertNoticesToExceptions']  = isset($arguments['convertNoticesToExceptions'])  ? $arguments['convertNoticesToExceptions']  : TRUE;

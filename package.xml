@@ -390,9 +390,6 @@
      <file baseinstalldir="/" name="PhptTestSuite.php" role="php">
       <tasks:replace from="@package_version@" to="version" type="package-info" />
      </file>
-     <file baseinstalldir="/" name="RepeatedTest.php" role="php">
-      <tasks:replace from="@package_version@" to="version" type="package-info" />
-     </file>
      <file baseinstalldir="/" name="SeleniumTestCase.php" role="php">
       <tasks:replace from="@package_version@" to="version" type="package-info" />
      </file>
@@ -870,9 +867,6 @@
       <file baseinstalldir="/" name="PerformanceTestCaseTest.php" role="test">
        <tasks:replace from="@package_version@" to="version" type="package-info" />
       </file>
-      <file baseinstalldir="/" name="RepeatedTestTest.php" role="test">
-       <tasks:replace from="@package_version@" to="version" type="package-info" />
-      </file>
       <file baseinstalldir="/" name="SeleniumTestCaseTest.php" role="test">
        <tasks:replace from="@package_version@" to="version" type="package-info" />
       </file>
@@ -980,7 +974,6 @@
       <file baseinstalldir="/" name="coverage-clover-protected.phpt" role="test" />
       <file baseinstalldir="/" name="coverage-clover-public-isolation.phpt" role="test" />
       <file baseinstalldir="/" name="coverage-clover-public.phpt" role="test" />
-      <file baseinstalldir="/" name="coverage-source.phpt" role="test" />
       <file baseinstalldir="/" name="dataprovider-log-xml-isolation.phpt" role="test" />
       <file baseinstalldir="/" name="dataprovider-log-xml.phpt" role="test" />
       <file baseinstalldir="/" name="dataprovider-testdox.phpt" role="test" />
@@ -1010,7 +1003,6 @@
       <file baseinstalldir="/" name="help2.phpt" role="test" />
       <file baseinstalldir="/" name="help.phpt" role="test" />
       <file baseinstalldir="/" name="list-groups.phpt" role="test" />
-      <file baseinstalldir="/" name="log-graphviz.phpt" role="test" />
       <file baseinstalldir="/" name="log-json.phpt" role="test" />
       <file baseinstalldir="/" name="log-tap.phpt" role="test" />
       <file baseinstalldir="/" name="log-xml.phpt" role="test" />
@@ -1271,91 +1263,7 @@
     </dir>
     <dir name="Util">
      <dir name="Log">
-      <dir name="CodeCoverage">
-       <dir name="XML">
-        <file baseinstalldir="/" name="Clover.php" role="php">
-         <tasks:replace from="@package_version@" to="version" type="package-info" />
-        </file>
-        <file baseinstalldir="/" name="Source.php" role="php">
-         <tasks:replace from="@package_version@" to="version" type="package-info" />
-        </file>
-       </dir>
-       <file baseinstalldir="/" name="Database.php" role="php">
-        <tasks:replace from="@package_version@" to="version" type="package-info" />
-       </file>
-      </dir>
-      <dir name="Database">
-       <file baseinstalldir="/" name="MySQL.sql" role="php" />
-       <file baseinstalldir="/" name="SQLite3.sql" role="php" />
-      </dir>
-      <dir name="PMD">
-       <dir name="Rule">
-        <dir name="Class">
-         <file baseinstalldir="/" name="DepthOfInheritanceTree.php" role="php">
-          <tasks:replace from="@package_version@" to="version" type="package-info" />
-         </file>
-         <file baseinstalldir="/" name="EfferentCoupling.php" role="php">
-          <tasks:replace from="@package_version@" to="version" type="package-info" />
-         </file>
-         <file baseinstalldir="/" name="ExcessiveClassLength.php" role="php">
-          <tasks:replace from="@package_version@" to="version" type="package-info" />
-         </file>
-         <file baseinstalldir="/" name="ExcessivePublicCount.php" role="php">
-          <tasks:replace from="@package_version@" to="version" type="package-info" />
-         </file>
-         <file baseinstalldir="/" name="TooManyFields.php" role="php">
-          <tasks:replace from="@package_version@" to="version" type="package-info" />
-         </file>
-        </dir>
-        <dir name="Function">
-         <file baseinstalldir="/" name="CodeCoverage.php" role="php">
-          <tasks:replace from="@package_version@" to="version" type="package-info" />
-         </file>
-         <file baseinstalldir="/" name="CRAP.php" role="php">
-          <tasks:replace from="@package_version@" to="version" type="package-info" />
-         </file>
-         <file baseinstalldir="/" name="CyclomaticComplexity.php" role="php">
-          <tasks:replace from="@package_version@" to="version" type="package-info" />
-         </file>
-         <file baseinstalldir="/" name="ExcessiveMethodLength.php" role="php">
-          <tasks:replace from="@package_version@" to="version" type="package-info" />
-         </file>
-         <file baseinstalldir="/" name="ExcessiveParameterList.php" role="php">
-          <tasks:replace from="@package_version@" to="version" type="package-info" />
-         </file>
-         <file baseinstalldir="/" name="NPathComplexity.php" role="php">
-          <tasks:replace from="@package_version@" to="version" type="package-info" />
-         </file>
-        </dir>
-        <dir name="Project">
-         <file baseinstalldir="/" name="CRAP.php" role="php">
-          <tasks:replace from="@package_version@" to="version" type="package-info" />
-         </file>
-        </dir>
-        <file baseinstalldir="/" name="Class.php" role="php">
-         <tasks:replace from="@package_version@" to="version" type="package-info" />
-        </file>
-        <file baseinstalldir="/" name="File.php" role="php">
-         <tasks:replace from="@package_version@" to="version" type="package-info" />
-        </file>
-        <file baseinstalldir="/" name="Function.php" role="php">
-         <tasks:replace from="@package_version@" to="version" type="package-info" />
-        </file>
-        <file baseinstalldir="/" name="Project.php" role="php">
-         <tasks:replace from="@package_version@" to="version" type="package-info" />
-        </file>
-       </dir>
-       <file baseinstalldir="/" name="Rule.php" role="php">
-        <tasks:replace from="@package_version@" to="version" type="package-info" />
-       </file>
-      </dir>
-      <file baseinstalldir="/" name="CPD.php" role="php">
-       <tasks:replace from="@package_version@" to="version" type="package-info" />
-      </file>
-      <file baseinstalldir="/" name="Database.php" role="php">
-       <tasks:replace from="@package_version@" to="version" type="package-info" />
-      </file>
-      <file baseinstalldir="/" name="GraphViz.php" role="php">
+      <file baseinstalldir="/" name="Clover.php" role="php">
        <tasks:replace from="@package_version@" to="version" type="package-info" />
       </file>
       <file baseinstalldir="/" name="JSON.php" role="php">
@@ -1364,30 +1272,7 @@
       <file baseinstalldir="/" name="JUnit.php" role="php">
        <tasks:replace from="@package_version@" to="version" type="package-info" />
       </file>
-      <file baseinstalldir="/" name="Metrics.php" role="php">
-       <tasks:replace from="@package_version@" to="version" type="package-info" />
-      </file>
-      <file baseinstalldir="/" name="PEAR.php" role="php">
-       <tasks:replace from="@package_version@" to="version" type="package-info" />
-      </file>
-      <file baseinstalldir="/" name="PMD.php" role="php">
-       <tasks:replace from="@package_version@" to="version" type="package-info" />
-      </file>
       <file baseinstalldir="/" name="TAP.php" role="php">
-       <tasks:replace from="@package_version@" to="version" type="package-info" />
-      </file>
-     </dir>
-     <dir name="Metrics">
-      <file baseinstalldir="/" name="Class.php" role="php">
-       <tasks:replace from="@package_version@" to="version" type="package-info" />
-      </file>
-      <file baseinstalldir="/" name="File.php" role="php">
-       <tasks:replace from="@package_version@" to="version" type="package-info" />
-      </file>
-      <file baseinstalldir="/" name="Function.php" role="php">
-       <tasks:replace from="@package_version@" to="version" type="package-info" />
-      </file>
-      <file baseinstalldir="/" name="Project.php" role="php">
        <tasks:replace from="@package_version@" to="version" type="package-info" />
       </file>
      </dir>
@@ -1522,9 +1407,6 @@
      <file baseinstalldir="/" name="InvalidArgumentHelper.php" role="php">
       <tasks:replace from="@package_version@" to="version" type="package-info" />
      </file>
-     <file baseinstalldir="/" name="Metrics.php" role="php">
-      <tasks:replace from="@package_version@" to="version" type="package-info" />
-     </file>
      <file baseinstalldir="/" name="PDO.php" role="php">
       <tasks:replace from="@package_version@" to="version" type="package-info" />
      </file>
@@ -1615,15 +1497,6 @@
    </package>
   </required>
   <optional>
-   <package>
-    <name>Image_GraphViz</name>
-    <channel>pear.php.net</channel>
-    <min>1.2.1</min>
-   </package>
-   <package>
-    <name>Log</name>
-    <channel>pear.php.net</channel>
-   </package>
    <extension>
     <name>json</name>
    </extension>

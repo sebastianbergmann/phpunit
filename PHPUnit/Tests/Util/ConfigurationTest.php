@@ -210,14 +210,8 @@ class Util_ConfigurationTest extends PHPUnit_Framework_TestCase
             'highlight' => FALSE,
             'coverage-html' => '/tmp/report',
             'coverage-clover' => '/tmp/clover.xml',
-            'coverage-source' => '/tmp/coverage',
-            'graphviz' => '/tmp/logfile.dot',
             'json' => '/tmp/logfile.json',
-            'metrics-xml' => '/tmp/metrics.xml',
             'plain' => '/tmp/logfile.txt',
-            'cpdMinLines' => '5',
-            'cpdMinMatches' => '70',
-            'pmd-xml' => '/tmp/pmd.xml',
             'tap' => '/tmp/logfile.tap',
             'logIncompleteSkipped' => FALSE,
             'junit' => '/tmp/logfile.xml',
@@ -267,83 +261,6 @@ class Util_ConfigurationTest extends PHPUnit_Framework_TestCase
             'testSuiteLoaderClass' => 'PHPUnit_Runner_StandardTestSuiteLoader'
           ),
           $this->configuration->getPHPUnitConfiguration()
-        );
-    }
-
-    public function testGetPMDConfiguration()
-    {
-        $this->assertEquals(
-          array (
-            'PHPUnit_Util_Log_PMD_Rule_Project_CRAP' =>
-            array (
-              'threshold' =>
-              array (
-                0 => '5',
-                1 => '30',
-              ),
-              'priority' => 1,
-            ),
-            'PHPUnit_Util_Log_PMD_Rule_Class_DepthOfInheritanceTree' =>
-            array (
-              'threshold' => '6',
-              'priority' => 1,
-            ),
-            'PHPUnit_Util_Log_PMD_Rule_Class_EfferentCoupling' =>
-            array (
-              'threshold' => '20',
-              'priority' => 1,
-            ),
-            'PHPUnit_Util_Log_PMD_Rule_Class_ExcessiveClassLength' =>
-            array (
-              'threshold' => '1000',
-              'priority' => 1,
-            ),
-            'PHPUnit_Util_Log_PMD_Rule_Class_ExcessivePublicCount' =>
-            array (
-              'threshold' => '45',
-              'priority' => 1,
-            ),
-            'PHPUnit_Util_Log_PMD_Rule_Class_TooManyFields' =>
-            array (
-              'threshold' => '15',
-              'priority' => 1,
-            ),
-            'PHPUnit_Util_Log_PMD_Rule_Function_CodeCoverage' =>
-            array (
-              'threshold' =>
-              array (
-                0 => '35',
-                1 => '70',
-              ),
-              'priority' => 1,
-            ),
-            'PHPUnit_Util_Log_PMD_Rule_Function_CRAP' =>
-            array (
-              'threshold' => '30',
-              'priority' => 1,
-            ),
-            'PHPUnit_Util_Log_PMD_Rule_Function_CyclomaticComplexity' =>
-            array (
-              'threshold' => '20',
-              'priority' => 1,
-            ),
-            'PHPUnit_Util_Log_PMD_Rule_Function_ExcessiveMethodLength' =>
-            array (
-              'threshold' => '100',
-              'priority' => 1,
-            ),
-            'PHPUnit_Util_Log_PMD_Rule_Function_ExcessiveParameterList' =>
-            array (
-              'threshold' => '10',
-              'priority' => 1,
-            ),
-            'PHPUnit_Util_Log_PMD_Rule_Function_NPathComplexity' =>
-            array (
-              'threshold' => '200',
-              'priority' => 1,
-            ),
-          ),
-          $this->configuration->getPMDConfiguration()
         );
     }
 
