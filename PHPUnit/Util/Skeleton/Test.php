@@ -44,10 +44,10 @@
  * @since      File available since Release 3.3.0
  */
 
+require_once 'Text/Template.php';
 require_once 'PHPUnit/Util/Filesystem.php';
 require_once 'PHPUnit/Util/Filter.php';
 require_once 'PHPUnit/Util/Skeleton.php';
-require_once 'PHPUnit/Util/Template.php';
 
 PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
 
@@ -268,7 +268,7 @@ class PHPUnit_Util_Skeleton_Test extends PHPUnit_Util_Skeleton
                                 $template .= 'Static';
                             }
 
-                            $methodTemplate = new PHPUnit_Util_Template(
+                            $methodTemplate = new Text_Template(
                               sprintf(
                                 '%s%sTemplate%s%s.tpl',
 
@@ -312,7 +312,7 @@ class PHPUnit_Util_Skeleton_Test extends PHPUnit_Util_Skeleton
                 }
 
                 if (!$assertAnnotationFound) {
-                    $methodTemplate = new PHPUnit_Util_Template(
+                    $methodTemplate = new Text_Template(
                       sprintf(
                         '%s%sTemplate%sIncompleteTestMethod.tpl',
 
@@ -333,7 +333,7 @@ class PHPUnit_Util_Skeleton_Test extends PHPUnit_Util_Skeleton
             }
         }
 
-        $classTemplate = new PHPUnit_Util_Template(
+        $classTemplate = new Text_Template(
           sprintf(
             '%s%sTemplate%sTestClass.tpl',
 

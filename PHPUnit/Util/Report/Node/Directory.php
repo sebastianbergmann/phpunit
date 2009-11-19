@@ -44,9 +44,9 @@
  * @since      File available since Release 3.2.0
  */
 
+require_once 'Text/Template.php';
 require_once 'PHPUnit/Util/Filter.php';
 require_once 'PHPUnit/Util/Filesystem.php';
-require_once 'PHPUnit/Util/Template.php';
 require_once 'PHPUnit/Util/Report/Node.php';
 require_once 'PHPUnit/Util/Report/Node/File.php';
 
@@ -338,7 +338,7 @@ class PHPUnit_Util_Report_Node_Directory extends PHPUnit_Util_Report_Node
         $cleanId = PHPUnit_Util_Filesystem::getSafeFilename($this->getId());
         $file    = $target . $cleanId . '.html';
 
-        $template = new PHPUnit_Util_Template(
+        $template = new Text_Template(
           PHPUnit_Util_Report::$templatePath . 'directory.html'
         );
 

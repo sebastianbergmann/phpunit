@@ -532,6 +532,7 @@ class PHPUnit_Framework_TestResult implements Countable
 
             foreach (array_keys($data) as $file) {
                 if (PHPUnit_Util_Filter::isFiltered($file, FALSE) ||
+                    substr($file, -17) == 'Text/Template.php' ||
                     substr($file, -17) == 'File/Iterator.php' ||
                     substr($file, -25) == 'File/Iterator/Factory.php') {
                     unset($data[$file]);

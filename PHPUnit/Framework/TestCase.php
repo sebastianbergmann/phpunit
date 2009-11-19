@@ -44,6 +44,7 @@
  * @since      File available since Release 2.0.0
  */
 
+require_once 'Text/Template.php';
 require_once 'PHPUnit/Framework.php';
 require_once 'PHPUnit/Framework/MockObject/Generator.php';
 require_once 'PHPUnit/Framework/MockObject/Matcher/InvokedAtLeastOnce.php';
@@ -54,7 +55,6 @@ require_once 'PHPUnit/Runner/BaseTestRunner.php';
 require_once 'PHPUnit/Util/GlobalState.php';
 require_once 'PHPUnit/Util/InvalidArgumentHelper.php';
 require_once 'PHPUnit/Util/PHP.php';
-require_once 'PHPUnit/Util/Template.php';
 
 PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
 
@@ -551,7 +551,7 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
             $class                          = new ReflectionClass($this);
             $collectCodeCoverageInformation = $result->getCollectCodeCoverageInformation();
 
-            $template = new PHPUnit_Util_Template(
+            $template = new Text_Template(
               sprintf(
                 '%s%sProcess%sTestCaseMethod.tpl',
 
@@ -1535,10 +1535,10 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
     /**
      * Performs custom preparations on the process isolation template.
      *
-     * @param PHPUnit_Util_Template $template
+     * @param Text_Template $template
      * @since Method available since Release 3.4.0
      */
-    protected function prepareTemplate(PHPUnit_Util_Template $template)
+    protected function prepareTemplate(Text_Template $template)
     {
     }
 }
