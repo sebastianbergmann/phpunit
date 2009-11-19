@@ -46,7 +46,6 @@
 
 require_once 'File/Iterator/Factory.php';
 require_once 'PHPUnit/Framework.php';
-require_once 'PHPUnit/Util/Log/Database.php';
 require_once 'PHPUnit/Util/Filter.php';
 require_once 'PHPUnit/Util/Test.php';
 require_once 'PHPUnit/Util/XML.php';
