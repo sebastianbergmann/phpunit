@@ -45,7 +45,6 @@
  */
 
 require_once 'PHPUnit/Util/Filter.php';
-require_once 'PHPUnit/Util/Template.php';
 require_once 'PHPUnit/Util/TestDox/ResultPrinter.php';
 
 PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
