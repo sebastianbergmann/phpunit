@@ -44,10 +44,10 @@
  * @since      File available since Release 3.2.0
  */
 
+require_once 'Text/Template.php';
 require_once 'PHPUnit/Util/Filter.php';
 require_once 'PHPUnit/Util/File.php';
 require_once 'PHPUnit/Util/Filesystem.php';
-require_once 'PHPUnit/Util/Template.php';
 require_once 'PHPUnit/Util/Report/Node.php';
 
 PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
@@ -253,15 +253,15 @@ class PHPUnit_Util_Report_Node_File extends PHPUnit_Util_Report_Node
     public function render($target, $title, $charset = 'ISO-8859-1', $lowUpperBound = 35, $highLowerBound = 70)
     {
         if ($this->yui) {
-            $template = new PHPUnit_Util_Template(
+            $template = new Text_Template(
               PHPUnit_Util_Report::$templatePath . 'file.html'
             );
 
-            $yuiTemplate = new PHPUnit_Util_Template(
+            $yuiTemplate = new Text_Template(
               PHPUnit_Util_Report::$templatePath . 'yui_item.js'
             );
         } else {
-            $template = new PHPUnit_Util_Template(
+            $template = new Text_Template(
               PHPUnit_Util_Report::$templatePath . 'file_no_yui.html'
             );
         }

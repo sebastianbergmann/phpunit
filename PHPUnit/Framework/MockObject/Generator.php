@@ -44,12 +44,12 @@
  * @since      File available since Release 3.4.0
  */
 
+require_once 'Text/Template.php';
 require_once 'PHPUnit/Framework/MockObject/Matcher.php';
 require_once 'PHPUnit/Framework/MockObject/Invocation.php';
 require_once 'PHPUnit/Framework/MockObject/MockObject.php';
 require_once 'PHPUnit/Util/Class.php';
 require_once 'PHPUnit/Util/Filter.php';
-require_once 'PHPUnit/Util/Template.php';
 
 PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
 
@@ -188,7 +188,7 @@ class PHPUnit_Framework_MockObject_Generator
 
             $templateDir    = dirname(__FILE__) . DIRECTORY_SEPARATOR .
                              'Generator' . DIRECTORY_SEPARATOR;
-            $methodTemplate = new PHPUnit_Util_Template(
+            $methodTemplate = new Text_Template(
                                 $templateDir . 'wsdl_method.tpl'
                               );
             $methodsBuffer  = '';
@@ -224,7 +224,7 @@ class PHPUnit_Framework_MockObject_Generator
                 }
             }
 
-            $classTemplate = new PHPUnit_Util_Template(
+            $classTemplate = new Text_Template(
               $templateDir . 'wsdl_class.tpl'
             );
 
@@ -257,7 +257,7 @@ class PHPUnit_Framework_MockObject_Generator
     {
         $templateDir   = dirname(__FILE__) . DIRECTORY_SEPARATOR . 'Generator' .
                          DIRECTORY_SEPARATOR;
-        $classTemplate = new PHPUnit_Util_Template(
+        $classTemplate = new Text_Template(
                            $templateDir . 'mocked_class.tpl'
                          );
         $cloneTemplate = '';
@@ -285,7 +285,7 @@ class PHPUnit_Framework_MockObject_Generator
                             ";\n\n" . $prologue;
             }
 
-            $cloneTemplate = new PHPUnit_Util_Template(
+            $cloneTemplate = new Text_Template(
               $templateDir . 'mocked_clone.tpl'
             );
         } else {
@@ -305,17 +305,17 @@ class PHPUnit_Framework_MockObject_Generator
 
                 if (!$cloneMethod->isFinal()) {
                     if ($callOriginalClone) {
-                        $cloneTemplate = new PHPUnit_Util_Template(
+                        $cloneTemplate = new Text_Template(
                           $templateDir . 'unmocked_clone.tpl'
                         );
                     } else {
-                        $cloneTemplate = new PHPUnit_Util_Template(
+                        $cloneTemplate = new Text_Template(
                           $templateDir . 'mocked_clone.tpl'
                         );
                     }
                 }
             } else {
-                $cloneTemplate = new PHPUnit_Util_Template(
+                $cloneTemplate = new Text_Template(
                   $templateDir . 'mocked_clone.tpl'
                 );
             }
@@ -496,7 +496,7 @@ class PHPUnit_Framework_MockObject_Generator
      */
     protected static function generateMockedMethodDefinition($templateDir, $className, $methodName, $modifier = 'public', $arguments = '', $reference = '')
     {
-        $template = new PHPUnit_Util_Template(
+        $template = new Text_Template(
           $templateDir . 'mocked_method.tpl'
         );
 

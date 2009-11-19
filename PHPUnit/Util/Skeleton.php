@@ -46,7 +46,6 @@
 
 require_once 'PHPUnit/Util/Filter.php';
 require_once 'PHPUnit/Util/Class.php';
-require_once 'PHPUnit/Util/Template.php';
 
 PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
 

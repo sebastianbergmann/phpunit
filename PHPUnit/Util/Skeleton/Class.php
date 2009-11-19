@@ -44,8 +44,8 @@
  * @since      File available since Release 3.3.0
  */
 
+require_once 'Text/Template.php';
 require_once 'PHPUnit/Util/Filter.php';
-require_once 'PHPUnit/Util/Template.php';
 require_once 'PHPUnit/Util/Skeleton.php';
 
 PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
@@ -113,7 +113,7 @@ class PHPUnit_Util_Skeleton_Class extends PHPUnit_Util_Skeleton
         $methods = '';
 
         foreach ($this->findTestedMethods() as $method) {
-            $methodTemplate = new PHPUnit_Util_Template(
+            $methodTemplate = new Text_Template(
               sprintf(
                 '%s%sTemplate%sMethod.tpl',
 
@@ -132,7 +132,7 @@ class PHPUnit_Util_Skeleton_Class extends PHPUnit_Util_Skeleton
             $methods .= $methodTemplate->render();
         }
 
-        $classTemplate = new PHPUnit_Util_Template(
+        $classTemplate = new Text_Template(
           sprintf(
             '%s%sTemplate%sClass.tpl',
 

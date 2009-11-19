@@ -44,6 +44,7 @@
  * @since      File available since Release 3.2.0
  */
 
+require_once 'Text/Template.php';
 require_once 'PHPUnit/Framework.php';
 require_once 'PHPUnit/Util/Filter.php';
 require_once 'PHPUnit/Util/Filesystem.php';
@@ -300,7 +301,7 @@ abstract class PHPUnit_Util_Report_Node
             }
         }
 
-        $itemTemplate = new PHPUnit_Util_Template(
+        $itemTemplate = new Text_Template(
           PHPUnit_Util_Report::$templatePath . $template
         );
 
@@ -403,11 +404,11 @@ abstract class PHPUnit_Util_Report_Node
     }
 
     /**
-     * @param  PHPUnit_Util_Template $template
+     * @param  Text_Template $template
      * @param  string                $title
      * @param  string                $charset
      */
-    protected function setTemplateVars(PHPUnit_Util_Template $template, $title, $charset)
+    protected function setTemplateVars(Text_Template $template, $title, $charset)
     {
         $template->setVar(
           array(
@@ -417,7 +418,7 @@ abstract class PHPUnit_Util_Report_Node
             'num_executable_lines'   => $this->getNumExecutableLines(),
             'num_executed_lines'     => $this->getNumExecutedLines(),
             'lines_executed_percent' => $this->getLineExecutedPercent(),
-            'date'                   => $template->getDate(),
+            'date'                   => date('D M j G:i:s T Y'),
             'phpunit_version'        => PHPUnit_Runner_Version::id(),
             'xdebug_version'         => phpversion('xdebug'),
             'php_version'            => PHP_VERSION
