@@ -44,9 +44,9 @@
  * @since      File available since Release 3.1.4
  */
 
+require_once 'File/Iterator/Factory.php';
 require_once 'PHPUnit/Framework.php';
 require_once 'PHPUnit/Util/Filter.php';
-require_once 'PHPUnit/Util/FilterIterator.php';
 
 PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
 
@@ -77,11 +77,8 @@ class PHPUnit_Extensions_PhptTestSuite extends PHPUnit_Framework_TestSuite
         if (is_string($directory) && is_dir($directory)) {
             $this->setName($directory);
 
-            $iterator = new PHPUnit_Util_FilterIterator(
-              new RecursiveIteratorIterator(
-                new RecursiveDirectoryIterator($directory)
-              ),
-              '.phpt'
+            $iterator = File_Iterator_Factory::getFileIterator(
+              $directory, '.phpt'
             );
 
             foreach ($iterator as $testFile) {

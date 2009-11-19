@@ -1401,9 +1401,6 @@
      <file baseinstalldir="/" name="Filter.php" role="php">
       <tasks:replace from="@package_version@" to="version" type="package-info" />
      </file>
-     <file baseinstalldir="/" name="FilterIterator.php" role="php">
-      <tasks:replace from="@package_version@" to="version" type="package-info" />
-     </file>
      <file baseinstalldir="/" name="Getopt.php" role="php">
       <tasks:replace from="@package_version@" to="version" type="package-info" />
      </file>
@@ -1491,6 +1488,11 @@
    <extension>
     <name>spl</name>
    </extension>
+   <package>
+    <name>File_Iterator</name>
+    <channel>pear.phpunit.de</channel>
+    <min>1.1.0</min>
+   </package>
   </required>
   <optional>
    <extension>

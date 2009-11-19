@@ -44,9 +44,9 @@
  * @since      File available since Release 2.1.0
  */
 
+require_once 'File/Iterator/Factory.php';
 require_once 'PHPUnit/Util/Filter.php';
 require_once 'PHPUnit/Runner/TestCollector.php';
-require_once 'PHPUnit/Util/FilterIterator.php';
 
 PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
 
@@ -112,31 +112,20 @@ class PHPUnit_Runner_IncludePathTestCollector implements PHPUnit_Runner_TestColl
     }
 
     /**
-     * @return array
+     * @return File_Iterator
      */
     public function collectTests()
     {
-        $pathIterator = new AppendIterator;
-        $result       = array();
-
-        foreach ($this->paths as $path) {
-            $pathIterator->append(
-              new RecursiveIteratorIterator(
-                new RecursiveDirectoryIterator($path)
-              )
-            );
-        }
-
-        $filterIterator = new PHPUnit_Util_FilterIterator(
-          $pathIterator, $this->suffixes, $this->prefixes
+        $iterator = File_Iterator_Factory::getFileIterator(
+          $this->paths, $this->suffixes, $this->prefixes
         );
 
         if ($this->filterIterator !== NULL) {
             $class          = new ReflectionClass($this->filterIterator);
-            $filterIterator = $class->newInstance($filterIterator);
+            $filterIterator = $class->newInstance($iterator);
         }
 
-        return $filterIterator;
+        return $iterator;
     }
 
     /**

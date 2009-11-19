@@ -37,7 +37,7 @@
  * $Id$
  */
 
-require 'PHPUnit/Util/FilterIterator.php';
+require 'File/Iterator/Factory.php';
 
 $stub = <<<ENDSTUB
 #!/usr/bin/env php
@@ -50,13 +50,9 @@ ENDSTUB;
 
 $phar = new Phar('phpunit.phar', 0, 'phpunit.phar');
 $phar->startBuffering();
- 
+
 $phar->buildFromIterator(
-  new PHPUnit_Util_FilterIterator(
-    new RecursiveIteratorIterator(
-      new RecursiveDirectoryIterator('PHPUnit')
-    )
-  ),
+  File_Iterator_Factory::getFileIterator('PHPUnit'),
   dirname(__FILE__) . DIRECTORY_SEPARATOR . 'PHPUnit'
 );
 

@@ -44,6 +44,7 @@
  * @since      File available since Release 3.0.0
  */
 
+require_once 'File/Iterator/Factory.php';
 require_once 'PHPUnit/Framework.php';
 require_once 'PHPUnit/Util/Log/Database.php';
 require_once 'PHPUnit/Util/Filter.php';
@@ -995,14 +996,8 @@ abstract class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_Tes
      */
     protected static function getSeleneseFiles($directory, $suffix)
     {
-        $files = array();
-
-        $iterator = new PHPUnit_Util_FilterIterator(
-          new RecursiveIteratorIterator(
-            new RecursiveDirectoryIterator($directory)
-          ),
-          $suffix
-        );
+        $files    = array();
+        $iterator = File_Iterator_Factory::getFileIterator($directory, $suffix);
 
         foreach ($iterator as $file) {
             $files[] = (string)$file;
