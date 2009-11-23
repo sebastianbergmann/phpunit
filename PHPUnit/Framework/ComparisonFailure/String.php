@@ -44,11 +44,9 @@
  * @since      File available since Release 3.0.0
  */
 
-require_once 'PHPUnit/Framework.php';
 require_once 'PHPUnit/Util/Diff.php';
-require_once 'PHPUnit/Util/Filter.php';
 
-PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
+PHP_CodeCoverage_Filter::getInstance()->addFileToBlacklist(__FILE__, 'PHPUNIT');
 
 /**
  * Thrown when an assertion for string equality failed.

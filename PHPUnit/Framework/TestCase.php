@@ -56,7 +56,7 @@ require_once 'PHPUnit/Util/GlobalState.php';
 require_once 'PHPUnit/Util/InvalidArgumentHelper.php';
 require_once 'PHPUnit/Util/PHP.php';
 
-PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
+PHP_CodeCoverage_Filter::getInstance()->addFileToBlacklist(__FILE__, 'PHPUNIT');
 
 /**
  * A TestCase defines the fixture to run multiple tests.
@@ -605,8 +605,8 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
                     if ($collectCodeCoverageInformation) {
                         $codeCoverageInformation = $childResult->getRawCodeCoverageInformation();
 
-                        $result->appendCodeCoverageInformation(
-                          $this, $codeCoverageInformation[0]['data']
+                        $result->getCodeCoverage()->append(
+                          $codeCoverageInformation[0], $this
                         );
                     }
 

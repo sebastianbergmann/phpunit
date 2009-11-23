@@ -46,12 +46,11 @@
 
 require_once 'File/Iterator/Factory.php';
 require_once 'PHPUnit/Framework.php';
-require_once 'PHPUnit/Util/Filter.php';
 require_once 'PHPUnit/Util/Test.php';
 require_once 'PHPUnit/Util/XML.php';
 require_once 'PHPUnit/Extensions/SeleniumTestCase/Driver.php';
 
-PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
+PHP_CodeCoverage_Filter::getInstance()->addFileToBlacklist(__FILE__, 'PHPUNIT');
 
 /**
  * TestCase class that uses Selenium to provide
@@ -292,8 +291,8 @@ abstract class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_Tes
         $result->run($this);
 
         if ($this->collectCodeCoverageInformation) {
-            $result->appendCodeCoverageInformation(
-              $this, $this->getCodeCoverage()
+            $this->codeCoverage->getCodeCoverage()->append(
+              $this->getCodeCoverage(), $this
             );
         }
 

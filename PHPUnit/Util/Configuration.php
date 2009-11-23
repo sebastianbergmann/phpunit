@@ -44,11 +44,10 @@
  * @since      File available since Release 3.2.0
  */
 
-require_once 'PHPUnit/Util/Filter.php';
 require_once 'PHPUnit/Runner/IncludePathTestCollector.php';
 require_once 'PHPUnit/Util/XML.php';
 
-PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
+PHP_CodeCoverage_Filter::getInstance()->addFileToBlacklist(__FILE__, 'PHPUNIT');
 
 /**
  * Wrapper for the PHPUnit XML configuration file.

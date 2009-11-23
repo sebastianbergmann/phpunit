@@ -44,8 +44,6 @@
  * @since      File available since Release 2.3.0
  */
 
-require_once 'PHPUnit/Util/Filter.php';
-
 require_once 'PHPUnit/Framework/TestSuite.php';
 
 require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'TestDox' . DIRECTORY_SEPARATOR . 'AllTests.php';
@@ -53,8 +51,6 @@ require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'ConfigurationTest.php';
 require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'TestTest.php';
 require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'TimerTest.php';
 require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'XMLTest.php';
-
-PHPUnit_Util_Filter::$filterPHPUnit = FALSE;
 
 /**
  *

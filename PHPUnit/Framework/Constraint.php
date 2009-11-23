@@ -46,7 +46,7 @@
 
 require_once 'PHPUnit/Framework.php';
 
-PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
+PHP_CodeCoverage_Filter::getInstance()->addFileToBlacklist(__FILE__, 'PHPUNIT');
 
 /**
  * Abstract base class for constraints. which are placed upon any value.

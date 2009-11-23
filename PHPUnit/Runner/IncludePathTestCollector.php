@@ -45,10 +45,9 @@
  */
 
 require_once 'File/Iterator/Factory.php';
-require_once 'PHPUnit/Util/Filter.php';
 require_once 'PHPUnit/Runner/TestCollector.php';
 
-PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
+PHP_CodeCoverage_Filter::getInstance()->addFileToBlacklist(__FILE__, 'PHPUNIT');
 
 /**
  * A test collector that collects tests from one or more directories

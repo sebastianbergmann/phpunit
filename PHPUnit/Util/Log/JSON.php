@@ -49,8 +49,6 @@ require_once 'PHPUnit/Util/Filter.php';
 require_once 'PHPUnit/Util/Printer.php';
 require_once 'PHPUnit/Util/Test.php';
 
-PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
-
 /**
  * A TestListener that generates JSON messages.
  *

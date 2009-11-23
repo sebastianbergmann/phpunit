@@ -44,12 +44,10 @@
  * @since      File available since Release 3.3.0
  */
 
-require_once 'PHPUnit/Util/Filter.php';
-
 require_once 'PHPUnit/Extensions/Database/DataSet/AbstractDataSet.php';
 require_once 'PHPUnit/Extensions/Database/DataSet/ReplacementTableIterator.php';
 
-PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
+PHP_CodeCoverage_Filter::getInstance()->addFileToBlacklist(__FILE__, 'PHPUNIT');
 
 /**
  * Allows for replacing arbitrary values or portions of values with new data.

@@ -46,14 +46,15 @@
 
 require_once 'PHPUnit/Framework.php';
 
-require_once 'PHPUnit/Util/CodeCoverage.php';
 require_once 'PHPUnit/Util/ErrorHandler.php';
 require_once 'PHPUnit/Util/InvalidArgumentHelper.php';
 require_once 'PHPUnit/Util/Printer.php';
 require_once 'PHPUnit/Util/Test.php';
 require_once 'PHPUnit/Util/Timer.php';
 
-PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
+require_once 'PHP/CodeCoverage.php';
+
+PHP_CodeCoverage_Filter::getInstance()->addFileToBlacklist(__FILE__, 'PHPUNIT');
 
 /**
  * A TestResult collects the results of executing a test case.
@@ -80,86 +81,103 @@ class PHPUnit_Framework_TestResult implements Countable
     protected static $useXdebug = NULL;
 
     /**
-     * @var    array
+     * @var array
      */
     protected $passed = array();
 
     /**
-     * @var    array
+     * @var array
      */
     protected $errors = array();
 
     /**
-     * @var    array
+     * @var array
      */
     protected $failures = array();
 
     /**
-     * @var    array
+     * @var array
      */
     protected $notImplemented = array();
 
     /**
-     * @var    array
+     * @var array
      */
     protected $skipped = array();
 
     /**
-     * @var    array
+     * @var array
      */
     protected $listeners = array();
 
     /**
-     * @var    integer
+     * @var integer
      */
     protected $runTests = 0;
 
     /**
-     * @var    float
+     * @var float
      */
     protected $time = 0;
 
     /**
-     * @var    PHPUnit_Framework_TestSuite
+     * @var PHPUnit_Framework_TestSuite
      */
     protected $topTestSuite = NULL;
 
     /**
-     * Code Coverage information provided by Xdebug.
+     * Code Coverage information.
      *
-     * @var    array
+     * @var array
      */
-    protected $codeCoverageInformation = array();
+    protected $codeCoverage;
 
     /**
-     * @var    boolean
+     * @var boolean
      */
     protected $collectCodeCoverageInformation = FALSE;
 
     /**
-     * @var    boolean
+     * @var boolean
      */
     protected $collectRawCodeCoverageInformation = FALSE;
 
     /**
-     * @var    boolean
+     * @var array
+     */
+    protected $rawCodeCoverageInformation = array();
+
+    /**
+     * @var boolean
      */
     protected $convertErrorsToExceptions = TRUE;
 
     /**
-     * @var    boolean
+     * @var boolean
      */
     protected $stop = FALSE;
 
     /**
-     * @var    boolean
+     * @var boolean
      */
     protected $stopOnFailure = FALSE;
 
     /**
-     * @var    boolean
+     * @var boolean
      */
     protected $lastTestFailed = FALSE;
+
+    /**
+     * @param PHP_CodeCoverage $codeCoverage
+     */
+    public function __construct(PHP_CodeCoverage $codeCoverage = NULL)
+    {
+        if ($codeCoverage === NULL) {
+            $codeCoverage = PHP_CodeCoverage::getInstance();
+        }
+
+        $this->codeCoverage = $codeCoverage;
+    }
 
     /**
      * Registers a TestListener.
@@ -514,78 +532,6 @@ class PHPUnit_Framework_TestResult implements Countable
     }
 
     /**
-     * Appends code coverage information to the test
-     *
-     * @param PHPUnit_Framework_Test $test
-     * @param array                  $data
-     * @since Method available since Release 3.2.0
-     */
-    public function appendCodeCoverageInformation(PHPUnit_Framework_Test $test, $data)
-    {
-        if ($this->collectRawCodeCoverageInformation) {
-            $this->codeCoverageInformation[] = array(
-              'test' => $test, 'data' => $data
-            );
-        } else {
-            $deadCode       = array();
-            $executableCode = array();
-
-            foreach (array_keys($data) as $file) {
-                if (PHPUnit_Util_Filter::isFiltered($file, FALSE) ||
-                    substr($file, -17) == 'Text/Template.php' ||
-                    substr($file, -17) == 'File/Iterator.php' ||
-                    substr($file, -25) == 'File/Iterator/Factory.php') {
-                    unset($data[$file]);
-                }
-            }
-
-            $newFilesToCollect = array_diff_key($data, PHPUnit_Util_Filter::getCoveredFiles());
-
-            if (count($newFilesToCollect) > 0) {
-                $deadCode = PHPUnit_Util_CodeCoverage::getDeadLines(
-                  $newFilesToCollect
-                );
-
-                $executableCode = PHPUnit_Util_CodeCoverage::getExecutableLines(
-                  $newFilesToCollect
-                );
-
-                foreach (array_keys($newFilesToCollect) as $file) {
-                    PHPUnit_Util_Filter::addCoveredFile($file);
-                }
-
-                unset($newFilesToCollect);
-            }
-
-            if ($test instanceof PHPUnit_Framework_TestCase) {
-                $linesToBeCovered = PHPUnit_Util_Test::getLinesToBeCovered(
-                  get_class($test), $test->getName()
-                );
-
-                if (!empty($linesToBeCovered)) {
-                    $data = array_intersect_key($data, $linesToBeCovered);
-
-                    foreach (array_keys($data) as $file) {
-                        $data[$file] = array_intersect_key(
-                          $data[$file], array_flip($linesToBeCovered[$file])
-                        );
-                    }
-                }
-            }
-
-            $executed = PHPUnit_Util_CodeCoverage::getExecutedLines($data);
-            unset($data);
-
-            $this->codeCoverageInformation[] = array(
-              'test'       => $test,
-              'files'      => $executed,
-              'dead'       => $deadCode,
-              'executable' => $executableCode,
-            );
-        }
-    }
-
-    /**
      * Returns the raw Code Coverage information.
      *
      * @return array
@@ -593,53 +539,7 @@ class PHPUnit_Framework_TestResult implements Countable
      */
     public function getRawCodeCoverageInformation()
     {
-        return $this->codeCoverageInformation;
-    }
-
-    /**
-     * Returns Code Coverage data per test case.
-     *
-     * Format of the result array:
-     *
-     * <code>
-     * array(
-     *   array(
-     *     'test'  => PHPUnit_Framework_Test
-     *     'files' => array(
-     *       "/tested/code.php" => array(
-     *         linenumber => flag
-     *       )
-     *     )
-     *   )
-     * )
-     * </code>
-     *
-     * flag < 0: Line is executable but was not executed.
-     * flag > 0: Line was executed.
-     *
-     * @param  boolean $filterTests
-     * @return array
-     */
-    public function getCodeCoverageInformation($filterTests = TRUE)
-    {
-        return PHPUnit_Util_Filter::getFilteredCodeCoverage(
-          $this->codeCoverageInformation, $filterTests
-        );
-    }
-
-    /**
-     * Returns unfiltered Code Coverage data per test case.
-     * Returns data in the same form as getCodeCoverageInformation().
-     *
-     * @return array
-     */
-    public function getUncoveredWhitelistFiles()
-    {
-        list(, $missing) = PHPUnit_Util_Filter::getFileCodeCoverageDisposition(
-          $this->codeCoverageInformation
-        );
-
-        return $missing;
+        return $this->rawCodeCoverageInformation;
     }
 
     /**
@@ -678,10 +578,11 @@ class PHPUnit_Framework_TestResult implements Countable
 
         $useXdebug = self::$useXdebug &&
                      $this->collectCodeCoverageInformation &&
-                     !$test instanceof PHPUnit_Extensions_SeleniumTestCase;
+                     !$test instanceof PHPUnit_Extensions_SeleniumTestCase &&
+                     !$test instanceof PHPUnit_Framework_Warning;
 
         if ($useXdebug) {
-            xdebug_start_code_coverage(XDEBUG_CC_UNUSED | XDEBUG_CC_DEAD_CODE);
+            $this->codeCoverage->start($test);
         }
 
         PHPUnit_Util_Timer::start();
@@ -701,13 +602,18 @@ class PHPUnit_Framework_TestResult implements Countable
         $time = PHPUnit_Util_Timer::stop();
 
         if ($useXdebug) {
-            $codeCoverage = xdebug_get_code_coverage();
-            xdebug_stop_code_coverage();
+            $data = $this->codeCoverage->stop(FALSE);
 
-            if (!$test instanceof PHPUnit_Framework_Warning) {
-                $this->appendCodeCoverageInformation(
-                  $test, $codeCoverage
-                );
+            if ($this->collectRawCodeCoverageInformation) {
+                $this->rawCodeCoverageInformation[] = $data;
+            } else {
+                $filterGroups = array('DEFAULT', 'TESTS');
+
+                if (!defined('PHPUNIT_TESTSUITE')) {
+                    $groups[] = 'PHPUNIT';
+                }
+
+                $this->codeCoverage->append($data, $test, $filterGroups);
             }
         }
 
@@ -755,6 +661,17 @@ class PHPUnit_Framework_TestResult implements Countable
     public function stop()
     {
         $this->stop = TRUE;
+    }
+
+    /**
+     * Returns the PHP_CodeCoverage object.
+     *
+     * @return PHP_CodeCoverage
+     * @since  Method available since Release 3.5.0
+     */
+    public function getCodeCoverage()
+    {
+        return $this->codeCoverage;
     }
 
     /**

@@ -44,9 +44,7 @@
  * @since      File available since Release 3.4.0
  */
 
-require_once 'PHPUnit/Util/Filter.php';
-
-PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
+PHP_CodeCoverage_Filter::getInstance()->addFileToBlacklist(__FILE__, 'PHPUNIT');
 
 /**
  *
@@ -180,7 +178,7 @@ class PHPUnit_Util_GlobalState
 
     public static function getIncludedFilesAsString()
     {
-        $blacklist = PHPUnit_Util_Filter::getBlacklistedFiles();
+        $blacklist = PHP_CodeCoverage::getInstance()->filter()->getBlacklist();
         $blacklist = array_flip($blacklist['PHPUNIT']);
         $files     = get_included_files();
         $result    = '';

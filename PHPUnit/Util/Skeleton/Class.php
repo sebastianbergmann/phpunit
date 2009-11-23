@@ -45,10 +45,7 @@
  */
 
 require_once 'Text/Template.php';
-require_once 'PHPUnit/Util/Filter.php';
 require_once 'PHPUnit/Util/Skeleton.php';
-
-PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
 
 /**
  * Generator for class skeletons from test classes.

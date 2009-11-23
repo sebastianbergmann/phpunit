@@ -44,10 +44,6 @@
  * @since      File available since Release 2.3.0
  */
 
-require_once 'PHPUnit/Util/Filter.php';
-
-PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
-
 /**
  * Prettifies class and method names for use in TestDox documentation.
  *

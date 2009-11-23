@@ -44,12 +44,11 @@
  * @since      File available since Release 3.0.0
  */
 
-require_once 'PHPUnit/Util/Filter.php';
 require_once 'PHPUnit/Framework/MockObject/Builder/MethodNameMatch.php';
 require_once 'PHPUnit/Framework/MockObject/Matcher.php';
 require_once 'PHPUnit/Framework/MockObject/Stub.php';
 
-PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
+PHP_CodeCoverage_Filter::getInstance()->addFileToBlacklist(__FILE__, 'PHPUNIT');
 
 /**
  * Builder for mocked or stubbed invocations.

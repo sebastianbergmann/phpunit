@@ -45,11 +45,10 @@
  */
 
 require_once 'PHPUnit/Util/InvalidArgumentHelper.php';
-require_once 'PHPUnit/Util/Filter.php';
 require_once 'PHPUnit/Util/Filesystem.php';
 require_once 'PHPUnit/Util/PHP.php';
 
-PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
+PHP_CodeCoverage_Filter::getInstance()->addFileToBlacklist(__FILE__, 'PHPUNIT');
 
 /**
  * Utility methods to load PHP sourcefiles.
