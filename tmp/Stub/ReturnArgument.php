@@ -44,10 +44,9 @@
  * @since      File available since Release 3.3.0
  */
 
-require_once 'PHPUnit/Util/Filter.php';
 require_once 'PHPUnit/Framework/MockObject/Stub/Return.php';
 
-PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
+PHP_CodeCoverage_Filter::getInstance()->addFileToBlacklist(__FILE__, 'PHPUNIT');
 
 /**
  * Stubs a method by returning an argument that was passed to the mocked method.

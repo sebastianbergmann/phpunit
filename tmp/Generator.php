@@ -49,9 +49,8 @@ require_once 'PHPUnit/Framework/MockObject/Matcher.php';
 require_once 'PHPUnit/Framework/MockObject/Invocation.php';
 require_once 'PHPUnit/Framework/MockObject/MockObject.php';
 require_once 'PHPUnit/Util/Class.php';
-require_once 'PHPUnit/Util/Filter.php';
 
-PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
+PHP_CodeCoverage_Filter::getInstance()->addFileToBlacklist(__FILE__, 'PHPUNIT');
 
 /**
  * Mock Object Code Generator
