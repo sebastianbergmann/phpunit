@@ -98,6 +98,7 @@ class PHPUnit_TextUI_Command
       'include-path=' => NULL,
       'list-groups' => NULL,
       'loader=' => NULL,
+      'log-dbus' => NULL,
       'log-json=' => NULL,
       'log-junit=' => NULL,
       'log-tap=' => NULL,
@@ -364,6 +365,11 @@ class PHPUnit_TextUI_Command
 
                 case '--loader': {
                     $this->arguments['loader'] = $option[1];
+                }
+                break;
+
+                case '--log-dbus': {
+                    $this->arguments['logDbus'] = TRUE;
                 }
                 break;
 
@@ -752,6 +758,7 @@ Usage: phpunit [switches] UnitTest [UnitTest.php]
 
   --log-junit <file>       Log test execution in JUnit XML format to file.
   --log-tap <file>         Log test execution in TAP format to file.
+  --log-dbus               Log test execution to DBUS.
   --log-json <file>        Log test execution in JSON format.
 
   --coverage-html <dir>    Generate code coverage report in HTML format.
