@@ -1199,6 +1199,9 @@
     </dir>
     <dir name="Util">
      <dir name="Log">
+      <file baseinstalldir="/" name="DBUS.php" role="php">
+       <tasks:replace from="@package_version@" to="version" type="package-info" />
+      </file>
       <file baseinstalldir="/" name="JSON.php" role="php">
        <tasks:replace from="@package_version@" to="version" type="package-info" />
       </file>
@@ -1400,6 +1403,9 @@
    </package>
   </required>
   <optional>
+   <extension>
+    <name>dbus</name>
+   </extension>
    <extension>
     <name>json</name>
    </extension>

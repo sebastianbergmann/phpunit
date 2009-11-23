@@ -264,6 +264,12 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
             $result->collectCodeCoverageInformation(TRUE);
         }
 
+        if (isset($arguments['logDbus'])) {
+            require_once 'PHPUnit/Util/Log/DBUS.php';
+
+            $result->addListener(new PHPUnit_Util_Log_DBUS);
+        }
+
         if (isset($arguments['jsonLogfile'])) {
             require_once 'PHPUnit/Util/Log/JSON.php';
 
