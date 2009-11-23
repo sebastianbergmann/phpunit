@@ -956,27 +956,6 @@
      <dir name="TextUI">
       <file baseinstalldir="/" name="abstract-test-class.phpt" role="test" />
       <file baseinstalldir="/" name="concrete-test-class.phpt" role="test" />
-      <file baseinstalldir="/" name="coverage-clover-class-extended-isolation.phpt" role="test" />
-      <file baseinstalldir="/" name="coverage-clover-class-extended.phpt" role="test" />
-      <file baseinstalldir="/" name="coverage-clover-class-isolation.phpt" role="test" />
-      <file baseinstalldir="/" name="coverage-clover-class.phpt" role="test" />
-      <file baseinstalldir="/" name="coverage-clover-function.phpt" role="test" />
-      <file baseinstalldir="/" name="coverage-clover-isolation.phpt" role="test" />
-      <file baseinstalldir="/" name="coverage-clover-method-isolation.phpt" role="test" />
-      <file baseinstalldir="/" name="coverage-clover-method.phpt" role="test" />
-      <file baseinstalldir="/" name="coverage-clover-not-private-isolation.phpt" role="test" />
-      <file baseinstalldir="/" name="coverage-clover-not-private.phpt" role="test" />
-      <file baseinstalldir="/" name="coverage-clover-not-protected-isolation.phpt" role="test" />
-      <file baseinstalldir="/" name="coverage-clover-not-protected.phpt" role="test" />
-      <file baseinstalldir="/" name="coverage-clover-not-public-isolation.phpt" role="test" />
-      <file baseinstalldir="/" name="coverage-clover-not-public.phpt" role="test" />
-      <file baseinstalldir="/" name="coverage-clover.phpt" role="test" />
-      <file baseinstalldir="/" name="coverage-clover-private-isolation.phpt" role="test" />
-      <file baseinstalldir="/" name="coverage-clover-private.phpt" role="test" />
-      <file baseinstalldir="/" name="coverage-clover-protected-isolation.phpt" role="test" />
-      <file baseinstalldir="/" name="coverage-clover-protected.phpt" role="test" />
-      <file baseinstalldir="/" name="coverage-clover-public-isolation.phpt" role="test" />
-      <file baseinstalldir="/" name="coverage-clover-public.phpt" role="test" />
       <file baseinstalldir="/" name="dataprovider-log-xml-isolation.phpt" role="test" />
       <file baseinstalldir="/" name="dataprovider-log-xml.phpt" role="test" />
       <file baseinstalldir="/" name="dataprovider-testdox.phpt" role="test" />
@@ -990,7 +969,6 @@
       <file baseinstalldir="/" name="dependencies2-isolation.phpt" role="test" />
       <file baseinstalldir="/" name="dependencies3-isolation.phpt" role="test" />
       <file baseinstalldir="/" name="empty-testcase.phpt" role="test" />
-      <file baseinstalldir="/" name="empty-testcase-coverage.phpt" role="test" />
       <file baseinstalldir="/" name="exclude-group-isolation.phpt" role="test" />
       <file baseinstalldir="/" name="exclude-group.phpt" role="test" />
       <file baseinstalldir="/" name="failure-isolation.phpt" role="test" />
@@ -1064,42 +1042,6 @@
        <tasks:replace from="@package_version@" to="version" type="package-info" />
       </file>
       <file baseinstalldir="/" name="configuration.xml" role="test">
-       <tasks:replace from="@package_version@" to="version" type="package-info" />
-      </file>
-      <file baseinstalldir="/" name="CoverageClassExtendedTest.php" role="test">
-       <tasks:replace from="@package_version@" to="version" type="package-info" />
-      </file>
-      <file baseinstalldir="/" name="CoverageClassTest.php" role="test">
-       <tasks:replace from="@package_version@" to="version" type="package-info" />
-      </file>
-      <file baseinstalldir="/" name="CoverageFunctionTest.php" role="test">
-       <tasks:replace from="@package_version@" to="version" type="package-info" />
-      </file>
-      <file baseinstalldir="/" name="CoverageMethodTest.php" role="test">
-       <tasks:replace from="@package_version@" to="version" type="package-info" />
-      </file>
-      <file baseinstalldir="/" name="CoverageNotPrivateTest.php" role="test">
-       <tasks:replace from="@package_version@" to="version" type="package-info" />
-      </file>
-      <file baseinstalldir="/" name="CoverageNotProtectedTest.php" role="test">
-       <tasks:replace from="@package_version@" to="version" type="package-info" />
-      </file>
-      <file baseinstalldir="/" name="CoverageNotPublicTest.php" role="test">
-       <tasks:replace from="@package_version@" to="version" type="package-info" />
-      </file>
-      <file baseinstalldir="/" name="CoveragePrivateTest.php" role="test">
-       <tasks:replace from="@package_version@" to="version" type="package-info" />
-      </file>
-      <file baseinstalldir="/" name="CoverageProtectedTest.php" role="test">
-       <tasks:replace from="@package_version@" to="version" type="package-info" />
-      </file>
-      <file baseinstalldir="/" name="CoveragePublicTest.php" role="test">
-       <tasks:replace from="@package_version@" to="version" type="package-info" />
-      </file>
-      <file baseinstalldir="/" name="CoveredClass.php" role="test">
-       <tasks:replace from="@package_version@" to="version" type="package-info" />
-      </file>
-      <file baseinstalldir="/" name="CoveredFunction.php" role="test">
        <tasks:replace from="@package_version@" to="version" type="package-info" />
       </file>
       <file baseinstalldir="/" name="DataProviderTest.php" role="test">
@@ -1266,9 +1208,6 @@
     </dir>
     <dir name="Util">
      <dir name="Log">
-      <file baseinstalldir="/" name="Clover.php" role="php">
-       <tasks:replace from="@package_version@" to="version" type="package-info" />
-      </file>
       <file baseinstalldir="/" name="JSON.php" role="php">
        <tasks:replace from="@package_version@" to="version" type="package-info" />
       </file>
@@ -1278,38 +1217,6 @@
       <file baseinstalldir="/" name="TAP.php" role="php">
        <tasks:replace from="@package_version@" to="version" type="package-info" />
       </file>
-     </dir>
-     <dir name="Report">
-      <dir name="Node">
-       <file baseinstalldir="/" name="Directory.php" role="php">
-        <tasks:replace from="@package_version@" to="version" type="package-info" />
-       </file>
-       <file baseinstalldir="/" name="File.php" role="php">
-        <tasks:replace from="@package_version@" to="version" type="package-info" />
-       </file>
-      </dir>
-      <file baseinstalldir="/" name="Node.php" role="php">
-       <tasks:replace from="@package_version@" to="version" type="package-info" />
-      </file>
-      <dir name="Template">
-       <file baseinstalldir="/" name="butter.png" role="php" />
-       <file baseinstalldir="/" name="chameleon.png" role="php" />
-       <file baseinstalldir="/" name="close12_1.gif" role="php" />
-       <file baseinstalldir="/" name="container.css" role="php" />
-       <file baseinstalldir="/" name="container-min.js" role="php" />
-       <file baseinstalldir="/" name="directory.html.dist" role="php" />
-       <file baseinstalldir="/" name="file.html.dist" role="php" />
-       <file baseinstalldir="/" name="file_no_yui.html.dist" role="php" />
-       <file baseinstalldir="/" name="glass.png" role="php" />
-       <file baseinstalldir="/" name="directory_item.html.dist" role="php" />
-       <file baseinstalldir="/" name="file_item.html.dist" role="php" />
-       <file baseinstalldir="/" name="method_item.html.dist" role="php" />
-       <file baseinstalldir="/" name="scarlet_red.png" role="php" />
-       <file baseinstalldir="/" name="snow.png" role="php" />
-       <file baseinstalldir="/" name="style.css" role="php" />
-       <file baseinstalldir="/" name="yahoo-dom-event.js" role="php" />
-       <file baseinstalldir="/" name="yui_item.js" role="php" />
-      </dir>
      </dir>
      <dir name="Skeleton">
       <dir name="Template">
@@ -1374,9 +1281,6 @@
        <file baseinstalldir="/" name="sfYamlParser.class.php" role="php" />
      </dir>
      <file baseinstalldir="/" name="Class.php" role="php">
-      <tasks:replace from="@package_version@" to="version" type="package-info" />
-     </file>
-     <file baseinstalldir="/" name="CodeCoverage.php" role="php">
       <tasks:replace from="@package_version@" to="version" type="package-info" />
      </file>
      <file baseinstalldir="/" name="Configuration.php" role="php">
@@ -1495,6 +1399,11 @@
     <channel>pear.phpunit.de</channel>
     <min>1.0.0</min>
    </package>
+   <package>
+    <name>PHP_CodeCoverage</name>
+    <channel>pear.phpunit.de</channel>
+    <min>1.0.0</min>
+   </package>
   </required>
   <optional>
    <extension>
@@ -1508,10 +1417,6 @@
    </extension>
    <extension>
     <name>tokenizer</name>
-   </extension>
-   <extension>
-    <name>xdebug</name>
-    <min>2.0.5</min>
    </extension>
   </optional>
  </dependencies>

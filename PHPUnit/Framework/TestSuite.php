@@ -53,7 +53,7 @@ require_once 'PHPUnit/Util/InvalidArgumentHelper.php';
 require_once 'PHPUnit/Util/Test.php';
 require_once 'PHPUnit/Util/TestSuiteIterator.php';
 
-PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
+PHP_CodeCoverage_Filter::getInstance()->addFileToBlacklist(__FILE__, 'PHPUNIT');
 
 /**
  * A TestSuite is a composite of Tests. It runs a collection of test cases.
@@ -206,7 +206,9 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
         $filename = $theClass->getFilename();
 
         if (strpos($filename, 'eval()') === FALSE) {
-            PHPUnit_Util_Filter::addFileToFilter(realpath($filename), 'TESTS');
+            PHP_CodeCoverage::getInstance()->filter()->addFileToBlacklist(
+              realpath($filename), 'TESTS'
+            );
         }
 
         if ($name != '') {

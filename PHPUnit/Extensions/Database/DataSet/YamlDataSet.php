@@ -44,8 +44,6 @@
  * @since      File available since Release 3.2.0
  */
 
-require_once 'PHPUnit/Util/Filter.php';
-
 require_once 'PHPUnit/Extensions/Database/DataSet/AbstractDataSet.php';
 require_once 'PHPUnit/Extensions/Database/DataSet/DefaultTableIterator.php';
 require_once 'PHPUnit/Extensions/Database/DataSet/DefaultTable.php';
@@ -53,7 +51,7 @@ require_once 'PHPUnit/Extensions/Database/DataSet/DefaultTableMetaData.php';
 require_once 'PHPUnit/Extensions/Database/DataSet/Persistors/Yaml.php';
 require_once 'PHPUnit/Util/YAML/sfYaml.class.php';
 
-PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
+PHP_CodeCoverage_Filter::getInstance()->addFileToBlacklist(__FILE__, 'PHPUNIT');
 
 /**
  * Creates CsvDataSets.

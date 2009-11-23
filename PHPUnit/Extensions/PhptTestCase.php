@@ -51,15 +51,16 @@ if (PHPUnit_Util_Filesystem::fileExistsInIncludePath('PEAR/RunTest.php')) {
     error_reporting($currentErrorReporting);
 
     foreach (PHPUnit_Util_Filesystem::collectEnd() as $blacklistedFile) {
-        PHPUnit_Util_Filter::addFileToFilter($blacklistedFile, 'PHPUNIT');
+        PHP_CodeCoverage_Filter::getInstance()->addFileToBlacklist(
+          $blacklistedFile, 'PHPUNIT'
+        );
     }
 }
 
-require_once 'PHPUnit/Framework.php';
 require_once 'PHPUnit/Extensions/PhptTestCase/Logger.php';
-require_once 'PHPUnit/Util/Filter.php';
+require_once 'PHP/CodeCoverage.php';
 
-PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
+PHP_CodeCoverage_Filter::getInstance()->addFileToBlacklist(__FILE__, 'PHPUNIT');
 
 /**
  * Wrapper to run .phpt test cases.
@@ -187,7 +188,9 @@ class PHPUnit_Extensions_PhptTestCase implements PHPUnit_Framework_Test, PHPUnit
         $phpFile      = $path . DIRECTORY_SEPARATOR . str_replace('.phpt', '.php', $base);
 
         if (file_exists($phpFile)) {
-            PHPUnit_Util_Filter::addFileToFilter($phpFile, 'TESTS');
+            PHP_CodeCoverage_Filter::getInstance()->addFileToBlacklist(
+              $phpFile, 'TESTS'
+            );
         }
 
         if (is_object($buffer) && $buffer instanceof PEAR_Error) {
@@ -223,7 +226,7 @@ class PHPUnit_Extensions_PhptTestCase implements PHPUnit_Framework_Test, PHPUnit
             eval('$coverageData = ' . file_get_contents($coverageFile) . ';');
             unset($coverageData[$phpFile]);
 
-            $result->appendCodeCoverageInformation($this, $coverageData);
+            $result->getCodeCoverage()->append($coverageData, $this);
             unlink($coverageFile);
         }
 

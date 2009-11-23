@@ -47,7 +47,7 @@
 
 require_once 'PHPUnit/Extensions/TicketListener.php';
 
-PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
+PHP_CodeCoverage_Filter::getInstance()->addFileToBlacklist(__FILE__, 'PHPUNIT');
 
 /**
  * A test listener that interact with Trac.
@@ -140,7 +140,9 @@ class PHPUnit_Extensions_TicketListener_Trac extends PHPUnit_Extensions_TicketLi
             }
 
             foreach (PHPUnit_Util_Filesystem::collectEnd() as $blacklistedFile) {
-                PHPUnit_Util_Filter::addFileToFilter($blacklistedFile, 'PHPUNIT');
+                PHP_CodeCoverage_Filter::getInstance()->addFileToBlacklist(
+                  $blacklistedFile, 'PHPUNIT'
+                );
             }
         } else {
             throw new PHPUnit_Framework_Exception('XML_RPC2 is not available.');

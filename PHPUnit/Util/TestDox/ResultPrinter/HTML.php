@@ -44,10 +44,7 @@
  * @since      File available since Release 2.3.0
  */
 
-require_once 'PHPUnit/Util/Filter.php';
 require_once 'PHPUnit/Util/TestDox/ResultPrinter.php';
-
-PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
 
 /**
  * Prints TestDox documentation in HTML format.

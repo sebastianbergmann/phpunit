@@ -26,16 +26,19 @@ Time: %i %s
 There was 1 failure:
 
 1) DependencyFailureTest::testOne
+
 %s:%i
 
 There were 2 skipped tests:
 
 1) DependencyFailureTest::testTwo
 This test depends on "DependencyFailureTest::testOne" to pass.
+
 %s:%i
 
 2) DependencyFailureTest::testThree
 This test depends on "DependencyFailureTest::testTwo" to pass.
+
 %s:%i
 
 FAILURES!

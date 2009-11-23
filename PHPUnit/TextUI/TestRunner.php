@@ -50,12 +50,9 @@ require_once 'PHPUnit/Runner/StandardTestSuiteLoader.php';
 require_once 'PHPUnit/Runner/Version.php';
 require_once 'PHPUnit/TextUI/ResultPrinter.php';
 require_once 'PHPUnit/Util/Configuration.php';
-require_once 'PHPUnit/Util/PDO.php';
 require_once 'PHPUnit/Util/Filesystem.php';
-require_once 'PHPUnit/Util/Filter.php';
-require_once 'PHPUnit/Util/Report.php';
 
-PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
+PHP_CodeCoverage_Filter::getInstance()->addFileToBlacklist(__FILE__, 'PHPUNIT');
 
 /**
  * A TestRunner for the Command Line Interface (CLI)
@@ -315,14 +312,15 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
                   'a moment.'
                 );
 
-                require_once 'PHPUnit/Util/Log/Clover.php';
+                require_once 'PHP/CodeCoverage/Report/Clover.php';
 
-                $writer = new PHPUnit_Util_Log_Clover(
-                  $arguments['coverageClover']
+                $writer = new PHP_CodeCoverage_Report_Clover;
+                $writer->process(
+                  $result->getCodeCoverage(), $arguments['coverageClover']
                 );
 
-                $writer->process($result);
                 $this->printer->write("\n");
+                unset($writer);
             }
 
             if (isset($arguments['reportDirectory'])) {
@@ -340,8 +338,11 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
                     }
                 }
 
-                PHPUnit_Util_Report::render(
-                  $result,
+                require_once 'PHP/CodeCoverage/Report/HTML.php';
+
+                $writer = new PHP_CodeCoverage_Report_HTML;
+                $writer->process(
+                  $result->getCodeCoverage(),
                   $arguments['reportDirectory'],
                   $title,
                   $arguments['reportCharset'],
@@ -352,6 +353,7 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
                 );
 
                 $this->printer->write("\n");
+                unset($writer);
             }
         }
 
@@ -469,46 +471,49 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
 
             $filterConfiguration = $arguments['configuration']->getFilterConfiguration();
 
-            PHPUnit_Util_Filter::$addUncoveredFilesFromWhitelist = $filterConfiguration['whitelist']['addUncoveredFilesFromWhitelist'];
+            // TODO
+            //PHPUnit_Util_Filter::$addUncoveredFilesFromWhitelist = $filterConfiguration['whitelist']['addUncoveredFilesFromWhitelist'];
+
+            $filter = PHP_CodeCoverage_Filter::getInstance();
 
             foreach ($filterConfiguration['blacklist']['include']['directory'] as $dir) {
-                PHPUnit_Util_Filter::addDirectoryToFilter(
-                  $dir['path'], $dir['suffix'], $dir['group'], $dir['prefix']
+                $filter->addDirectoryToBlacklist(
+                  $dir['path'], $dir['suffix'], $dir['prefix'], $dir['group']
                 );
             }
 
             foreach ($filterConfiguration['blacklist']['include']['file'] as $file) {
-                PHPUnit_Util_Filter::addFileToFilter($file);
+                $filter->addFileToBlacklist($file);
             }
 
             foreach ($filterConfiguration['blacklist']['exclude']['directory'] as $dir) {
-                PHPUnit_Util_Filter::removeDirectoryFromFilter(
-                  $dir['path'], $dir['suffix'], $dir['group'], $dir['prefix']
+                $filter->removeDirectoryFromBlacklist(
+                  $dir['path'], $dir['suffix'], $dir['prefix'], $dir['group']
                 );
             }
 
             foreach ($filterConfiguration['blacklist']['exclude']['file'] as $file) {
-                PHPUnit_Util_Filter::removeFileFromFilter($file);
+                $filter->removeFileFromBlacklist($file);
             }
 
             foreach ($filterConfiguration['whitelist']['include']['directory'] as $dir) {
-                PHPUnit_Util_Filter::addDirectoryToWhitelist(
+                $filter->addDirectoryToWhitelist(
                   $dir['path'], $dir['suffix'], $dir['prefix']
                 );
             }
 
             foreach ($filterConfiguration['whitelist']['include']['file'] as $file) {
-                PHPUnit_Util_Filter::addFileToWhitelist($file);
+                $filter->addFileToWhitelist($file);
             }
 
             foreach ($filterConfiguration['whitelist']['exclude']['directory'] as $dir) {
-                PHPUnit_Util_Filter::removeDirectoryFromWhitelist(
+                $filter->removeDirectoryFromWhitelist(
                   $dir['path'], $dir['suffix'], $dir['prefix']
                 );
             }
 
             foreach ($filterConfiguration['whitelist']['exclude']['file'] as $file) {
-                PHPUnit_Util_Filter::removeFileFromWhitelist($file);
+                $filter->removeFileFromWhitelist($file);
             }
 
             $phpunitConfiguration = $arguments['configuration']->getPHPUnitConfiguration();
@@ -635,11 +640,6 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
             if (isset($loggingConfiguration['coverage-clover']) &&
                 !isset($arguments['coverageClover'])) {
                 $arguments['coverageClover'] = $loggingConfiguration['coverage-clover'];
-            }
-
-            if (isset($loggingConfiguration['coverage-xml']) &&
-                !isset($arguments['coverageClover'])) {
-                $arguments['coverageClover'] = $loggingConfiguration['coverage-xml'];
             }
 
             if (isset($loggingConfiguration['json']) &&

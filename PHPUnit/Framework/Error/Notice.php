@@ -46,8 +46,6 @@
 
 require_once 'PHPUnit/Framework.php';
 
-PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
-
 /**
  * Wrapper for PHP notices.
  * You can disable notice-to-exception conversion by setting

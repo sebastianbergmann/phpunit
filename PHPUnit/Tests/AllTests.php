@@ -46,9 +46,8 @@
 
 error_reporting(E_ALL | E_STRICT);
 
-require_once 'PHPUnit/Util/Filter.php';
-
-PHPUnit_Util_Filter::addFileToFilter(__FILE__);
+require_once 'PHP/CodeCoverage/Filter.php';
+PHP_CodeCoverage_Filter::getInstance()->addFileToBlacklist(__FILE__, 'TESTS');
 
 require_once 'PHPUnit/Framework/TestSuite.php';
 require_once 'PHPUnit/Extensions/PhptTestSuite.php';
@@ -57,8 +56,6 @@ require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'Framework' . DIRECTORY_S
 require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'Extensions' . DIRECTORY_SEPARATOR . 'AllTests.php';
 require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'Runner' . DIRECTORY_SEPARATOR . 'AllTests.php';
 require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'Util' . DIRECTORY_SEPARATOR . 'AllTests.php';
-
-PHPUnit_Util_Filter::$filterPHPUnit = FALSE;
 
 /**
  *

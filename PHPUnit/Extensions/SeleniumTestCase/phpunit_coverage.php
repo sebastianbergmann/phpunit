@@ -45,7 +45,7 @@
  */
 
 require_once 'File/Iterator/Factory.php';
-require_once 'PHPUnit/Util/CodeCoverage.php';
+require_once 'PHP/CodeCoverage/Filter.php';
 
 if (isset($_GET['PHPUNIT_SELENIUM_TEST_ID'])) {
     $files = File_Iterator_Factory::getFileIterator(
@@ -61,7 +61,7 @@ if (isset($_GET['PHPUNIT_SELENIUM_TEST_ID'])) {
         unset($filename);
 
         foreach ($data as $filename => $lines) {
-            if (PHPUnit_Util_CodeCoverage::isFile($filename)) {
+            if (PHP_CodeCoverage_Filter::isFile($filename)) {
                 if (!isset($coverage[$filename])) {
                     $coverage[$filename] = array(
                       'md5' => md5_file($filename), 'coverage' => $lines

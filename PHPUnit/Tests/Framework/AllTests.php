@@ -44,9 +44,8 @@
  * @since      File available since Release 2.0.0
  */
 
-require_once 'PHPUnit/Util/Filter.php';
-
-PHPUnit_Util_Filter::addFileToFilter(__FILE__);
+require_once 'PHP/CodeCoverage/Filter.php';
+PHP_CodeCoverage_Filter::getInstance()->addFileToBlacklist(__FILE__, 'TESTS');
 
 require_once 'PHPUnit/Framework/TestSuite.php';
 require_once 'PHPUnit/Extensions/PhptTestSuite.php';
@@ -60,8 +59,6 @@ require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'TestCaseTest.php';
 require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'TestFailureTest.php';
 require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'TestImplementorTest.php';
 require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'TestListenerTest.php';
-
-PHPUnit_Util_Filter::$filterPHPUnit = FALSE;
 
 /**
  *
