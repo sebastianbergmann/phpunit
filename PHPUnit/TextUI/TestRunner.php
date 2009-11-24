@@ -477,8 +477,9 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
 
             $filterConfiguration = $arguments['configuration']->getFilterConfiguration();
 
-            // TODO
-            //PHPUnit_Util_Filter::$addUncoveredFilesFromWhitelist = $filterConfiguration['whitelist']['addUncoveredFilesFromWhitelist'];
+            PHP_CodeCoverage::getInstance()->setProcessUncoveredFilesFromWhitelist(
+              $filterConfiguration['whitelist']['addUncoveredFilesFromWhitelist']
+            );
 
             $filter = PHP_CodeCoverage_Filter::getInstance();
 
