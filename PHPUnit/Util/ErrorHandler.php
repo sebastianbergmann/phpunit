@@ -84,11 +84,11 @@ class PHPUnit_Util_ErrorHandler
      */
     public static function handleError($errno, $errstr, $errfile, $errline)
     {
-        self::$errorStack[] = array($errno, $errstr, $errfile, $errline);
-
         if (!($errno & error_reporting())) {
             return FALSE;
         }
+
+        self::$errorStack[] = array($errno, $errstr, $errfile, $errline);
 
         if (version_compare(PHP_VERSION, '5.2.5', '>=')) {
             $trace = debug_backtrace(FALSE);
