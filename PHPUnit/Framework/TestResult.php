@@ -610,7 +610,7 @@ class PHPUnit_Framework_TestResult implements Countable
                 $filterGroups = array('DEFAULT', 'TESTS');
 
                 if (!defined('PHPUNIT_TESTSUITE')) {
-                    $groups[] = 'PHPUNIT';
+                    $filterGroups[] = 'PHPUNIT';
                 }
 
                 $this->codeCoverage->append($data, $test, $filterGroups);
