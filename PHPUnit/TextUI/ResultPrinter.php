@@ -343,7 +343,7 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
 
         if (function_exists('memory_get_peak_usage')) {
             $memory = sprintf(
-              ' , Memory: %4.2fMb',
+              ', Memory: %4.2fMb',
               memory_get_peak_usage(TRUE) / 1048576
             );
         } else {
