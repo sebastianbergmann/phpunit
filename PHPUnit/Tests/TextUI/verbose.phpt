@@ -16,6 +16,6 @@ PHPUnit %s by Sebastian Bergmann.
 BankAccountTest
 ...
 
-Time: %i %s
+Time: %i %s, Memory: %sMb
 
 OK (3 tests, 3 assertions)

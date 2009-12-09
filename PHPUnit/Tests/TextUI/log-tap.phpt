@@ -21,6 +21,6 @@ TAP version 13
 1..3
 
 
-Time: %i %s
+Time: %i %s, Memory: %sMb
 
 OK (3 tests, 3 assertions)
