@@ -24,6 +24,6 @@ PHPUnit %s by Sebastian Bergmann.
 </testsuites>
 
 
-Time: %i %s
+Time: %i %s, Memory: %sMb
 
 OK (3 tests, 3 assertions)

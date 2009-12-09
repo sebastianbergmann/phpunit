@@ -34,7 +34,7 @@ Failed asserting that &lt;integer:2&gt; matches expected &lt;integer:3&gt;.
 </testsuites>
 
 
-Time: %i %s
+Time: %i %s, Memory: %sMb
 
 There was 1 failure:
 
