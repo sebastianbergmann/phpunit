@@ -343,9 +343,10 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
 
         $this->write(
           sprintf(
-            "%sTime: %s\n\n",
+            "%sTime: %s, Memory: %4.2fMb\n\n",
             $this->verbose ? "\n" : "\n\n",
-            $timeElapsed
+            $timeElapsed,
+            memory_get_peak_usage(TRUE) / 1048576
           )
         );
     }

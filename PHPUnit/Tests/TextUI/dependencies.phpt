@@ -20,7 +20,7 @@ Test Dependencies
  DependencyFailureTest
  FSS
 
-Time: %i %s
+Time: %i %s, Memory: %sMb
 
 There was 1 failure:
 
