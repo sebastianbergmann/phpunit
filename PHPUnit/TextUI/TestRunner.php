@@ -475,54 +475,6 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
         if (isset($arguments['configuration'])) {
             $arguments['configuration']->handlePHPConfiguration();
 
-            $filterConfiguration = $arguments['configuration']->getFilterConfiguration();
-
-            PHP_CodeCoverage::getInstance()->setProcessUncoveredFilesFromWhitelist(
-              $filterConfiguration['whitelist']['addUncoveredFilesFromWhitelist']
-            );
-
-            $filter = PHP_CodeCoverage_Filter::getInstance();
-
-            foreach ($filterConfiguration['blacklist']['include']['directory'] as $dir) {
-                $filter->addDirectoryToBlacklist(
-                  $dir['path'], $dir['suffix'], $dir['prefix'], $dir['group']
-                );
-            }
-
-            foreach ($filterConfiguration['blacklist']['include']['file'] as $file) {
-                $filter->addFileToBlacklist($file);
-            }
-
-            foreach ($filterConfiguration['blacklist']['exclude']['directory'] as $dir) {
-                $filter->removeDirectoryFromBlacklist(
-                  $dir['path'], $dir['suffix'], $dir['prefix'], $dir['group']
-                );
-            }
-
-            foreach ($filterConfiguration['blacklist']['exclude']['file'] as $file) {
-                $filter->removeFileFromBlacklist($file);
-            }
-
-            foreach ($filterConfiguration['whitelist']['include']['directory'] as $dir) {
-                $filter->addDirectoryToWhitelist(
-                  $dir['path'], $dir['suffix'], $dir['prefix']
-                );
-            }
-
-            foreach ($filterConfiguration['whitelist']['include']['file'] as $file) {
-                $filter->addFileToWhitelist($file);
-            }
-
-            foreach ($filterConfiguration['whitelist']['exclude']['directory'] as $dir) {
-                $filter->removeDirectoryFromWhitelist(
-                  $dir['path'], $dir['suffix'], $dir['prefix']
-                );
-            }
-
-            foreach ($filterConfiguration['whitelist']['exclude']['file'] as $file) {
-                $filter->removeFileFromWhitelist($file);
-            }
-
             $phpunitConfiguration = $arguments['configuration']->getPHPUnitConfiguration();
 
             if (isset($phpunitConfiguration['backupGlobals']) &&
@@ -693,6 +645,60 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
             if (isset($loggingConfiguration['testdox-text']) &&
                 !isset($arguments['testdoxTextFile'])) {
                 $arguments['testdoxTextFile'] = $loggingConfiguration['testdox-text'];
+            }
+        }
+
+        if (isset($arguments['configuration'])) {
+            $filterConfiguration = $arguments['configuration']->getFilterConfiguration();
+
+            $filter = PHP_CodeCoverage_Filter::getInstance();
+
+            foreach ($filterConfiguration['blacklist']['include']['directory'] as $dir) {
+                $filter->addDirectoryToBlacklist(
+                  $dir['path'], $dir['suffix'], $dir['prefix'], $dir['group']
+                );
+            }
+
+            foreach ($filterConfiguration['blacklist']['include']['file'] as $file) {
+                $filter->addFileToBlacklist($file);
+            }
+
+            foreach ($filterConfiguration['blacklist']['exclude']['directory'] as $dir) {
+                $filter->removeDirectoryFromBlacklist(
+                  $dir['path'], $dir['suffix'], $dir['prefix'], $dir['group']
+                );
+            }
+
+            foreach ($filterConfiguration['blacklist']['exclude']['file'] as $file) {
+                $filter->removeFileFromBlacklist($file);
+            }
+
+            if ((isset($arguments['coverageClover']) ||
+                isset($arguments['reportDirectory'])) &&
+                extension_loaded('xdebug')) {
+                PHP_CodeCoverage::getInstance()->setProcessUncoveredFilesFromWhitelist(
+                  $filterConfiguration['whitelist']['addUncoveredFilesFromWhitelist']
+                );
+
+                foreach ($filterConfiguration['whitelist']['include']['directory'] as $dir) {
+                    $filter->addDirectoryToWhitelist(
+                      $dir['path'], $dir['suffix'], $dir['prefix']
+                    );
+                }
+
+                foreach ($filterConfiguration['whitelist']['include']['file'] as $file) {
+                    $filter->addFileToWhitelist($file);
+                }
+
+                foreach ($filterConfiguration['whitelist']['exclude']['directory'] as $dir) {
+                    $filter->removeDirectoryFromWhitelist(
+                      $dir['path'], $dir['suffix'], $dir['prefix']
+                    );
+                }
+
+                foreach ($filterConfiguration['whitelist']['exclude']['file'] as $file) {
+                    $filter->removeFileFromWhitelist($file);
+                }
             }
         }
 
