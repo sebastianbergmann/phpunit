@@ -1308,9 +1308,6 @@
      <file baseinstalldir="/" name="InvalidArgumentHelper.php" role="php">
       <tasks:replace from="@package_version@" to="version" type="package-info" />
      </file>
-     <file baseinstalldir="/" name="PDO.php" role="php">
-      <tasks:replace from="@package_version@" to="version" type="package-info" />
-     </file>
      <file baseinstalldir="/" name="PHP.php" role="php">
       <tasks:replace from="@package_version@" to="version" type="package-info" />
       <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
@@ -1411,12 +1408,6 @@
    </extension>
    <extension>
     <name>pdo</name>
-   </extension>
-   <extension>
-    <name>pdo_mysql</name>
-   </extension>
-   <extension>
-    <name>pdo_sqlite</name>
    </extension>
    <extension>
     <name>soap</name>
