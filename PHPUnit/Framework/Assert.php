@@ -1175,6 +1175,54 @@ abstract class PHPUnit_Framework_Assert
     }
 
     /**
+     * Asserts that a string matches a given format file.
+     *
+     * @param  string $formatFile
+     * @param  string $string
+     * @param  string $message
+     * @since  Method available since Release 3.5.0
+     */
+    public static function assertStringMatchesFormatFile($formatFile, $string, $message = '')
+    {
+        self::assertFileExists($formatFile, $message);
+
+        if (!is_string($string)) {
+            throw PHPUnit_Util_InvalidArgumentHelper::factory(2, 'string');
+        }
+
+        $constraint = new PHPUnit_Framework_Constraint_StringMatches(
+          file_get_contents($formatFile)
+        );
+
+        self::assertThat($string, $constraint, $message);
+    }
+
+    /**
+     * Asserts that a string does not match a given format string.
+     *
+     * @param  string $formatFile
+     * @param  string $string
+     * @param  string $message
+     * @since  Method available since Release 3.5.0
+     */
+    public static function assertStringNotMatchesFormatFile($formatFile, $string, $message = '')
+    {
+        self::assertFileExists($formatFile, $message);
+
+        if (!is_string($string)) {
+            throw PHPUnit_Util_InvalidArgumentHelper::factory(2, 'string');
+        }
+
+        $constraint = new PHPUnit_Framework_Constraint_Not(
+          new PHPUnit_Framework_Constraint_StringMatches(
+            file_get_contents($formatFile)
+          )
+        );
+
+        self::assertThat($string, $constraint, $message);
+    }
+
+    /**
      * Asserts that a string starts with a given prefix.
      *
      * @param  string $prefix
