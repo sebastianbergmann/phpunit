@@ -203,6 +203,11 @@ class PHPUnit_Util_PDO
      */
     public static function parseDSN( $dsn )
     {
+        if ( $dsn == 'sqlite::memory:' )
+        {
+            $dsn = 'sqlite://:memory:';
+        }
+
         $parsed = array(
             'phptype'  => FALSE,
             'dbsyntax' => FALSE,
