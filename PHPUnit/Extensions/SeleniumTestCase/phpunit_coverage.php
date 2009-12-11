@@ -47,9 +47,15 @@
 require_once 'File/Iterator/Factory.php';
 require_once 'PHP/CodeCoverage/Filter.php';
 
+// Set this to the directory that contains the code coverage files.
+// It defaults to getcwd(). If you have configured a different directory
+// in prepend.php, you need to configure the same directory here.
+$GLOBALS['PHPUNIT_COVERAGE_DATA_DIRECTORY'] = getcwd();
+
 if (isset($_GET['PHPUNIT_SELENIUM_TEST_ID'])) {
     $files = File_Iterator_Factory::getFileIterator(
-      getcwd(), $_GET['PHPUNIT_SELENIUM_TEST_ID']
+      $GLOBALS['PHPUNIT_COVERAGE_DATA_DIRECTORY'],
+      $_GET['PHPUNIT_SELENIUM_TEST_ID']
     );
 
     $coverage = array();
