@@ -75,6 +75,7 @@ class PHPUnit_Framework_Constraint_IsType extends PHPUnit_Framework_Constraint
     const TYPE_OBJECT   = 'object';
     const TYPE_RESOURCE = 'resource';
     const TYPE_STRING   = 'string';
+    const TYPE_SCALAR   = 'scalar';
 
     /**
      * @var array
@@ -90,7 +91,8 @@ class PHPUnit_Framework_Constraint_IsType extends PHPUnit_Framework_Constraint
       'numeric' => TRUE,
       'object' => TRUE,
       'resource' => TRUE,
-      'string' => TRUE
+      'string' => TRUE,
+      'scalar' => TRUE
     );
 
     /**
@@ -163,6 +165,10 @@ class PHPUnit_Framework_Constraint_IsType extends PHPUnit_Framework_Constraint
 
             case 'resource': {
                 return is_resource($other);
+            }
+
+            case 'scalar': {
+                return is_scalar($other);
             }
         }
     }
