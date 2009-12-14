@@ -99,15 +99,19 @@ class PHPUnit_Util_Fileloader
      */
     public static function load($filename)
     {
-        $filename = PHPUnit_Util_Filesystem::fileExistsInIncludePath($filename);
+        $_filename = PHPUnit_Util_Filesystem::fileExistsInIncludePath(
+          $filename
+        );
 
-        if (!$filename) {
-            throw PHPUnit_Util_InvalidArgumentHelper::factory(
-              1, 'existing file', $filename
+        if (!$_filename) {
+            throw new RuntimeException(
+              sprintf('Cannot open file "%s".' . "\n", $filename)
             );
         }
 
+        $filename         = $_filename;
         $oldVariableNames = array_keys(get_defined_vars());
+        unset($_filename);
 
         include_once $filename;
 
