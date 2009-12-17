@@ -77,7 +77,8 @@ class PHPUnit_Util_Type
             'null',
             'array',
             'object',
-            'resource'
+            'resource',
+            'scalar'
           )
         );
     }
