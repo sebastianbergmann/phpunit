@@ -47,7 +47,7 @@
 require_once 'PHPUnit/Framework.php';
 require_once 'PHPUnit/Util/Printer.php';
 require_once 'PHPUnit/Util/Test.php';
-require_once 'PHPUnit/Util/YAML/sfYamlDumper.class.php';
+require_once 'SymfonyComponents/YAML/sfYamlDumper.php';
 
 PHP_CodeCoverage_Filter::getInstance()->addFileToBlacklist(__FILE__, 'PHPUNIT');
 

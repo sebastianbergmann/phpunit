@@ -47,7 +47,7 @@
 require_once 'PHPUnit/Framework.php';
 
 require_once 'PHPUnit/Extensions/Database/DataSet/IPersistable.php';
-require_once 'PHPUnit/Util/YAML/sfYaml.class.php';
+require_once 'SymfonyComponents/YAML/sfYaml.php';
 
 PHP_CodeCoverage_Filter::getInstance()->addFileToBlacklist(__FILE__, 'PHPUNIT');
 
