@@ -50,7 +50,7 @@ require_once 'PHPUnit/Extensions/Database/DataSet/DefaultTableIterator.php';
 require_once 'PHPUnit/Extensions/Database/DataSet/DefaultTable.php';
 require_once 'PHPUnit/Extensions/Database/DataSet/DefaultTableMetaData.php';
 require_once 'PHPUnit/Extensions/Database/DataSet/Persistors/Yaml.php';
-require_once 'PHPUnit/Util/YAML/sfYaml.class.php';
+require_once 'SymfonyComponents/YAML/sfYaml.php';
 
 PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
 

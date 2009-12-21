@@ -13,6 +13,7 @@ PHPUnit 3.4.6
 * Fixed TRAC-945: File not found error (and other weird stuff) comes up if shell sends `\n` in `argv`.
 * Fixed TRAC-949: Invalid XML generated on binary diffs.
 * Fixed TRAC-969: Destructors cannot be mocked.
+* The [YAML](http://components.symfony-project.org/yaml/) component from the [Symfony Components](http://components.symfony-project.org/) is no longer bundled but required as a dependency.
 
 PHPUnit 3.4.5
 -------------
