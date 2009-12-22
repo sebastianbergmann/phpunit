@@ -82,8 +82,13 @@ class PHPUnit_Util_Getopt
         }
 
         reset($args);
+        array_map('trim', $args);
 
         while (list($i, $arg) = each($args)) {
+            if ($arg == '') {
+                continue;
+            }
+
             if ($arg == '--') {
                 $non_opts = array_merge($non_opts, array_slice($args, $i + 1));
                 break;
