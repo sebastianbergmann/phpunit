@@ -37,6 +37,10 @@
  * $Id$
  */
 
+if (extension_loaded('xdebug')) {
+    ini_set('xdebug.show_exception_trace', 0);
+}
+
 if (strpos('@php_bin@', '@php_bin') === 0) {
     set_include_path(dirname(__FILE__) . PATH_SEPARATOR . get_include_path());
 }
