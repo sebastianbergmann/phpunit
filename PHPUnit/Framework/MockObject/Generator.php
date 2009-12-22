@@ -77,7 +77,6 @@ class PHPUnit_Framework_MockObject_Generator
      */
     protected static $blacklistedMethodNames = array(
       '__clone' => TRUE,
-      '__destruct' => TRUE,
       'abstract' => TRUE,
       'and' => TRUE,
       'array' => TRUE,
