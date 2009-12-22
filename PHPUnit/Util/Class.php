@@ -216,39 +216,6 @@ class PHPUnit_Util_Class
     }
 
     /**
-     * Returns the sourcecode of a user-defined class.
-     *
-     * @param  string  $className
-     * @param  string  $methodName
-     * @return mixed
-     */
-    public static function getMethodSource($className, $methodName)
-    {
-        if ($className != 'global') {
-            $function = new ReflectionMethod($className, $methodName);
-        } else {
-            $function = new ReflectionFunction($methodName);
-        }
-
-        $filename = $function->getFileName();
-
-        if (file_exists($filename)) {
-            $file   = file($filename);
-            $result = '';
-            $start  = $function->getStartLine() - 1;
-            $end    = $function->getEndLine() - 1;
-
-            for ($line = $start; $line <= $end; $line++) {
-                $result .= $file[$line];
-            }
-
-            return $result;
-        } else {
-            return FALSE;
-        }
-    }
-
-    /**
      * Returns the package information of a user-defined class.
      *
      * @param  string $className
