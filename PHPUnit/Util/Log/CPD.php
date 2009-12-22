@@ -109,19 +109,15 @@ class PHPUnit_Util_Log_CPD extends PHPUnit_Util_Printer
             $xmlDuplication->appendChild(
               $document->createElement(
                 'codefragment',
-                htmlspecialchars(
-                  PHPUnit_Util_XML::convertToUtf8(
-                    join(
-                      '',
-                      array_slice(
-                        $duplicate['fileA']->getLines(),
-                        $duplicate['firstLineA'] - 1,
-                        $duplicate['numLines']
-                      )
+                PHPUnit_Util_XML::prepareString(
+                  join(
+                    '',
+                    array_slice(
+                      $duplicate['fileA']->getLines(),
+                      $duplicate['firstLineA'] - 1,
+                      $duplicate['numLines']
                     )
-                  ),
-                  ENT_COMPAT,
-                  'UTF-8'
+                  )
                 )
               )
             );

@@ -145,12 +145,7 @@ class PHPUnit_Util_Log_CodeCoverage_XML_Source
 
                     $xmlLine->appendChild(
                       $document->createElement(
-                        'body',
-                        htmlspecialchars(
-                          PHPUnit_Util_XML::convertToUtf8($line),
-                          ENT_COMPAT,
-                          'UTF-8'
-                        )
+                        'body', PHPUnit_Util_XML::prepareString($line)
                       )
                     );
 
@@ -171,10 +166,8 @@ class PHPUnit_Util_Log_CodeCoverage_XML_Source
                                     $xmlTest->appendChild(
                                       $document->createElement(
                                         'message',
-                                        htmlspecialchars(
-                                          PHPUnit_Util_XML::convertToUtf8($test->getStatusMessage()),
-                                          ENT_COMPAT,
-                                          'UTF-8'
+                                        PHPUnit_Util_XML::prepareString(
+                                          $test->getStatusMessage()
                                         )
                                       )
                                     );
@@ -253,12 +246,7 @@ class PHPUnit_Util_Log_CodeCoverage_XML_Source
 
                     $xmlLine->appendChild(
                       $document->createElement(
-                        'body',
-                        htmlspecialchars(
-                          PHPUnit_Util_XML::convertToUtf8($line),
-                          ENT_COMPAT,
-                          'UTF-8'
-                        )
+                        'body', PHPUnit_Util_XML::prepareString($line)
                       )
                     );
 

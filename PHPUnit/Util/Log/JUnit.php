@@ -186,12 +186,7 @@ class PHPUnit_Util_Log_JUnit extends PHPUnit_Util_Printer implements PHPUnit_Fra
                        PHPUnit_Util_Filter::getFilteredStacktrace($e, FALSE);
 
             $error = $this->document->createElement(
-              'error',
-              htmlspecialchars(
-                PHPUnit_Util_XML::convertToUtf8($buffer),
-                ENT_COMPAT,
-                'UTF-8'
-              )
+              'error', PHPUnit_Util_XML::prepareString($buffer)
             );
 
             $error->setAttribute('type', get_class($e));
@@ -226,12 +221,7 @@ class PHPUnit_Util_Log_JUnit extends PHPUnit_Util_Printer implements PHPUnit_Fra
                            );
 
                 $failure = $this->document->createElement(
-                  'failure',
-                  htmlspecialchars(
-                    PHPUnit_Util_XML::convertToUtf8($buffer),
-                    ENT_COMPAT,
-                    'UTF-8'
-                  )
+                  'failure', PHPUnit_Util_XML::prepareString($buffer)
                 );
 
                 $failure->setAttribute('type', get_class($e));
@@ -255,13 +245,9 @@ class PHPUnit_Util_Log_JUnit extends PHPUnit_Util_Printer implements PHPUnit_Fra
         if ($this->logIncompleteSkipped && $this->currentTestCase !== NULL) {
             $error = $this->document->createElement(
               'error',
-              htmlspecialchars(
-                PHPUnit_Util_XML::convertToUtf8(
-                  "Incomplete Test\n" .
-                  PHPUnit_Util_Filter::getFilteredStacktrace($e, FALSE)
-                ),
-                ENT_COMPAT,
-                'UTF-8'
+              PHPUnit_Util_XML::prepareString(
+                "Incomplete Test\n" .
+                PHPUnit_Util_Filter::getFilteredStacktrace($e, FALSE)
               )
             );
 
@@ -288,13 +274,9 @@ class PHPUnit_Util_Log_JUnit extends PHPUnit_Util_Printer implements PHPUnit_Fra
         if ($this->logIncompleteSkipped && $this->currentTestCase !== NULL) {
             $error = $this->document->createElement(
               'error',
-              htmlspecialchars(
-                PHPUnit_Util_XML::convertToUtf8(
-                  "Skipped Test\n" .
-                  PHPUnit_Util_Filter::getFilteredStacktrace($e, FALSE)
-                ),
-                ENT_COMPAT,
-                'UTF-8'
+              PHPUnit_Util_XML::prepareString(
+                "Skipped Test\n" .
+                PHPUnit_Util_Filter::getFilteredStacktrace($e, FALSE)
               )
             );
 
