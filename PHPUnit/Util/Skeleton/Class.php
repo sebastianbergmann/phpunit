@@ -45,6 +45,7 @@
  */
 
 require_once 'PHPUnit/Util/Filter.php';
+require_once 'PHPUnit/Util/File.php';
 require_once 'PHPUnit/Util/Template.php';
 require_once 'PHPUnit/Util/Skeleton.php';
 
@@ -208,10 +209,6 @@ class PHPUnit_Util_Skeleton_Class extends PHPUnit_Util_Skeleton
             );
 
             foreach ($testMethod['tokens'] as $i => $token) {
-                if (is_array($token) && $token[0] == T_OBJECT_OPERATOR) {
-                    var_dump($this->findVariableName($testMethod['tokens'], $i));
-                }
-
                 // Class::method()
                 if (is_array($token) && $token[0] == T_DOUBLE_COLON &&
                     is_array($testMethod['tokens'][$i-1]) &&
