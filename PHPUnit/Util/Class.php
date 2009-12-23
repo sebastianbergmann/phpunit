@@ -87,34 +87,6 @@ class PHPUnit_Util_Class
     }
 
     /**
-     * Stops the collection of loaded classes and
-     * returns the names of the files that declare the loaded classes.
-     *
-     * @return array
-     */
-    public static function collectEndAsFiles()
-    {
-        $result = self::collectEnd();
-        $count  = count($result);
-
-        for ($i = 0; $i < $count; $i++) {
-            $class = new ReflectionClass($result[$i]);
-
-            if ($class->isUserDefined()) {
-                $file = $class->getFileName();
-
-                if (file_exists($file)) {
-                    $result[$i] = $file;
-                } else {
-                    unset($result[$i]);
-                }
-            }
-        }
-
-        return $result;
-    }
-
-    /**
      * Returns the class hierarchy for a given class.
      *
      * @param  string  $className
