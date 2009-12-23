@@ -160,11 +160,18 @@ class PHPUnit_Util_Getopt
 
     protected static function parseLongOption($arg, $long_options, &$opts, &$args)
     {
-        @list($opt, $opt_arg) = explode('=', $arg);
-        $opt_len              = strlen($opt);
-        $count_long_options   = count($long_options);
+        $count   = count($long_options);
+        $list    = explode('=', $arg);
+        $opt     = $list[0];
+        $opt_arg = NULL;
 
-        for ($i = 0; $i < $count_long_options; $i++) {
+        if (count($list) > 1) {
+            $opt_arg = $list[1];
+        }
+
+        $opt_len = strlen($opt);
+
+        for ($i = 0; $i < $count; $i++) {
             $long_opt  = $long_options[$i];
             $opt_start = substr($long_opt, 0, $opt_len);
 
@@ -174,8 +181,7 @@ class PHPUnit_Util_Getopt
 
             $opt_rest = substr($long_opt, $opt_len);
 
-            if ($opt_rest != '' && $opt{0} != '=' &&
-                $i + 1 < $count_long_options &&
+            if ($opt_rest != '' && $opt{0} != '=' && $i + 1 < $count &&
                 $opt == substr($long_options[$i+1], 0, $opt_len)) {
                 throw new PHPUnit_Framework_Exception(
                   "option --$opt is ambiguous"
