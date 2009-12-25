@@ -58,7 +58,7 @@ if ( isset($_COOKIE['PHPUNIT_SELENIUM_TEST_ID']) &&
 
     if (is_string($GLOBALS['PHPUNIT_COVERAGE_DATA_DIRECTORY']) &&
         is_dir($GLOBALS['PHPUNIT_COVERAGE_DATA_DIRECTORY'])) {
-        $file = dirname($GLOBALS['PHPUNIT_COVERAGE_DATA_DIRECTORY']) .
+        $file = $GLOBALS['PHPUNIT_COVERAGE_DATA_DIRECTORY'] .
                 DIRECTORY_SEPARATOR . md5($_SERVER['SCRIPT_FILENAME']);
     } else {
         $file = $_SERVER['SCRIPT_FILENAME'];
