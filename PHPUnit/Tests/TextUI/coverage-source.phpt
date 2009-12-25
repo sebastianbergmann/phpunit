@@ -35,7 +35,7 @@ OK (3 tests, 3 assertions)
 
 Writing code coverage data to XML files, this may take a moment.
 <?xml version="1.0" encoding="UTF-8"?>
-<coveredFile fullPath="%sBankAccount.php" shortenedPath="BankAccount.php" generated="%i" phpunit="%s">
+<coveredFile fullPath="%s/BankAccount.php" shortenedPath="BankAccount.php" generated="%i" phpunit="%s">
   <line lineNumber="1" executed="-3">
     <body>&lt;?php</body>
   </line>
@@ -160,251 +160,249 @@ Writing code coverage data to XML files, this may take a moment.
     <body> * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License</body>
   </line>
   <line lineNumber="42" executed="-3">
+    <body> * @link       http://www.phpunit.de/</body>
   </line>
   <line lineNumber="43" executed="-3">
-    <body> * @link       http://www.phpunit.de/</body>
-  </line>
-  <line lineNumber="44" executed="-3">
     <body> * @since      File available since Release 2.3.0</body>
   </line>
-  <line lineNumber="45" executed="-3">
+  <line lineNumber="44" executed="-3">
     <body> */</body>
+  </line>
+  <line lineNumber="45" executed="-3">
+    <body></body>
   </line>
   <line lineNumber="46" executed="-3">
-    <body></body>
-  </line>
-  <line lineNumber="47" executed="-3">
     <body>class BankAccountException extends RuntimeException {}</body>
   </line>
-  <line lineNumber="48" executed="-3">
+  <line lineNumber="47" executed="-3">
     <body></body>
   </line>
-  <line lineNumber="49" executed="-3">
+  <line lineNumber="48" executed="-3">
     <body>/**</body>
   </line>
-  <line lineNumber="50" executed="-3">
+  <line lineNumber="49" executed="-3">
     <body> * A bank account.</body>
   </line>
-  <line lineNumber="51" executed="-3">
+  <line lineNumber="50" executed="-3">
     <body> *</body>
   </line>
-  <line lineNumber="52" executed="-3">
+  <line lineNumber="51" executed="-3">
     <body> * @category   Testing</body>
   </line>
-  <line lineNumber="53" executed="-3">
+  <line lineNumber="52" executed="-3">
     <body> * @package    PHPUnit</body>
   </line>
-  <line lineNumber="54" executed="-3">
+  <line lineNumber="53" executed="-3">
     <body> * @author     Sebastian Bergmann &lt;sb@sebastian-bergmann.de&gt;</body>
   </line>
-  <line lineNumber="55" executed="-3">
+  <line lineNumber="54" executed="-3">
     <body> * @copyright  2002-2009 Sebastian Bergmann &lt;sb@sebastian-bergmann.de&gt;</body>
   </line>
-  <line lineNumber="56" executed="-3">
+  <line lineNumber="55" executed="-3">
     <body> * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License</body>
   </line>
-  <line lineNumber="57" executed="-3">
-    <body> * @version    Release: %s</body>
+  <line lineNumber="56" executed="-3">
+    <body> * @version    Release: @package_version@</body>
   </line>
-  <line lineNumber="58" executed="-3">
+  <line lineNumber="57" executed="-3">
     <body> * @link       http://www.phpunit.de/</body>
   </line>
-  <line lineNumber="59" executed="-3">
+  <line lineNumber="58" executed="-3">
     <body> * @since      Class available since Release 2.3.0</body>
   </line>
-  <line lineNumber="60" executed="-3">
+  <line lineNumber="59" executed="-3">
     <body> */</body>
   </line>
-  <line lineNumber="61" executed="-3">
+  <line lineNumber="60" executed="-3">
     <body>class BankAccount</body>
   </line>
-  <line lineNumber="62" executed="-3">
+  <line lineNumber="61" executed="-3">
     <body>{</body>
   </line>
-  <line lineNumber="63" executed="-3">
+  <line lineNumber="62" executed="-3">
     <body>    /**</body>
   </line>
-  <line lineNumber="64" executed="-3">
+  <line lineNumber="63" executed="-3">
     <body>     * The bank account's balance.</body>
   </line>
-  <line lineNumber="65" executed="-3">
+  <line lineNumber="64" executed="-3">
     <body>     *</body>
   </line>
-  <line lineNumber="66" executed="-3">
+  <line lineNumber="65" executed="-3">
     <body>     * @var    float</body>
   </line>
-  <line lineNumber="67" executed="-3">
+  <line lineNumber="66" executed="-3">
     <body>     */</body>
   </line>
-  <line lineNumber="68" executed="-3">
+  <line lineNumber="67" executed="-3">
     <body>    protected $balance = 0;</body>
   </line>
-  <line lineNumber="69" executed="-3">
+  <line lineNumber="68" executed="-3">
     <body></body>
+  </line>
+  <line lineNumber="69" executed="-3">
+    <body>    /**</body>
   </line>
   <line lineNumber="70" executed="-3">
-    <body>    /**</body>
-  </line>
-  <line lineNumber="71" executed="-3">
     <body>     * Returns the bank account's balance.</body>
   </line>
-  <line lineNumber="72" executed="-3">
+  <line lineNumber="71" executed="-3">
     <body>     *</body>
   </line>
-  <line lineNumber="73" executed="-3">
+  <line lineNumber="72" executed="-3">
     <body>     * @return float</body>
   </line>
-  <line lineNumber="74" executed="-3">
+  <line lineNumber="73" executed="-3">
     <body>     */</body>
   </line>
-  <line lineNumber="75" executed="-3">
+  <line lineNumber="74" executed="-3">
     <body>    public function getBalance()</body>
   </line>
-  <line lineNumber="76" executed="-3">
+  <line lineNumber="75" executed="-3">
     <body>    {</body>
   </line>
-  <line lineNumber="77" executed="1">
+  <line lineNumber="76" executed="1">
     <body>        return $this-&gt;balance;</body>
     <tests>
-      <test name="testBalanceIsInitiallyZero" status="0" class="BankAccountTest" fullPath="%s/BankAccountTest.php" shortenedPath="/BankAccountTest.php" line="76"/>
+      <test name="testBalanceIsInitiallyZero" status="0" class="BankAccountTest" fullPath="%s/BankAccountTest.php" shortenedPath="/BankAccountTest.php" line="75"/>
     </tests>
   </line>
-  <line lineNumber="78" executed="-2">
+  <line lineNumber="77" executed="-2">
     <body>    }</body>
+  </line>
+  <line lineNumber="78" executed="-3">
+    <body></body>
   </line>
   <line lineNumber="79" executed="-3">
-    <body></body>
+    <body>    /**</body>
   </line>
   <line lineNumber="80" executed="-3">
-    <body>    /**</body>
-  </line>
-  <line lineNumber="81" executed="-3">
     <body>     * Sets the bank account's balance.</body>
   </line>
-  <line lineNumber="82" executed="-3">
+  <line lineNumber="81" executed="-3">
     <body>     *</body>
+  </line>
+  <line lineNumber="82" executed="-3">
+    <body>     * @param  float $balance</body>
   </line>
   <line lineNumber="83" executed="-3">
-    <body>     * @param  float $balance</body>
+    <body>     * @throws BankAccountException</body>
   </line>
   <line lineNumber="84" executed="-3">
-    <body>     * @throws BankAccountException</body>
+    <body>     */</body>
   </line>
   <line lineNumber="85" executed="-3">
-    <body>     */</body>
-  </line>
-  <line lineNumber="86" executed="-3">
     <body>    protected function setBalance($balance)</body>
   </line>
-  <line lineNumber="87" executed="-3">
+  <line lineNumber="86" executed="-3">
     <body>    {</body>
   </line>
-  <line lineNumber="88" executed="-1">
+  <line lineNumber="87" executed="-1">
     <body>        if ($balance &gt;= 0) {</body>
   </line>
-  <line lineNumber="89" executed="-1">
+  <line lineNumber="88" executed="-1">
     <body>            $this-&gt;balance = $balance;</body>
   </line>
-  <line lineNumber="90" executed="-1">
+  <line lineNumber="89" executed="-1">
     <body>        } else {</body>
   </line>
-  <line lineNumber="91" executed="-1">
+  <line lineNumber="90" executed="-1">
     <body>            throw new BankAccountException;</body>
   </line>
-  <line lineNumber="92" executed="-3">
+  <line lineNumber="91" executed="-3">
     <body>        }</body>
   </line>
-  <line lineNumber="93" executed="-1">
+  <line lineNumber="92" executed="-1">
     <body>    }</body>
+  </line>
+  <line lineNumber="93" executed="-3">
+    <body></body>
   </line>
   <line lineNumber="94" executed="-3">
-    <body></body>
+    <body>    /**</body>
   </line>
   <line lineNumber="95" executed="-3">
-    <body>    /**</body>
-  </line>
-  <line lineNumber="96" executed="-3">
     <body>     * Deposits an amount of money to the bank account.</body>
   </line>
-  <line lineNumber="97" executed="-3">
+  <line lineNumber="96" executed="-3">
     <body>     *</body>
+  </line>
+  <line lineNumber="97" executed="-3">
+    <body>     * @param  float $balance</body>
   </line>
   <line lineNumber="98" executed="-3">
-    <body>     * @param  float $balance</body>
+    <body>     * @throws BankAccountException</body>
   </line>
   <line lineNumber="99" executed="-3">
-    <body>     * @throws BankAccountException</body>
+    <body>     */</body>
   </line>
   <line lineNumber="100" executed="-3">
-    <body>     */</body>
-  </line>
-  <line lineNumber="101" executed="-3">
     <body>    public function depositMoney($balance)</body>
   </line>
-  <line lineNumber="102" executed="-3">
+  <line lineNumber="101" executed="-3">
     <body>    {</body>
   </line>
-  <line lineNumber="103" executed="1">
+  <line lineNumber="102" executed="1">
     <body>        $this-&gt;setBalance($this-&gt;getBalance() + $balance);</body>
     <tests>
-      <test name="testBalanceCannotBecomeNegative2" status="0" class="BankAccountTest" fullPath="%s/BankAccountTest.php" shortenedPath="/BankAccountTest.php" line="106"/>
+      <test name="testBalanceCannotBecomeNegative2" status="0" class="BankAccountTest" fullPath="%s/BankAccountTest.php" shortenedPath="/BankAccountTest.php" line="105"/>
     </tests>
   </line>
-  <line lineNumber="104" executed="-3">
+  <line lineNumber="103" executed="-3">
     <body></body>
   </line>
-  <line lineNumber="105" executed="-1">
+  <line lineNumber="104" executed="-1">
     <body>        return $this-&gt;getBalance();</body>
   </line>
-  <line lineNumber="106" executed="-2">
+  <line lineNumber="105" executed="-2">
     <body>    }</body>
+  </line>
+  <line lineNumber="106" executed="-3">
+    <body></body>
   </line>
   <line lineNumber="107" executed="-3">
-    <body></body>
-  </line>
-  <line lineNumber="108" executed="-3">
     <body>    /**</body>
   </line>
-  <line lineNumber="109" executed="-3">
+  <line lineNumber="108" executed="-3">
     <body>     * Withdraws an amount of money from the bank account.</body>
   </line>
-  <line lineNumber="110" executed="-3">
+  <line lineNumber="109" executed="-3">
     <body>     *</body>
   </line>
-  <line lineNumber="111" executed="-3">
+  <line lineNumber="110" executed="-3">
     <body>     * @param  float $balance</body>
   </line>
-  <line lineNumber="112" executed="-3">
+  <line lineNumber="111" executed="-3">
     <body>     * @throws BankAccountException</body>
   </line>
-  <line lineNumber="113" executed="-3">
+  <line lineNumber="112" executed="-3">
     <body>     */</body>
   </line>
-  <line lineNumber="114" executed="-3">
+  <line lineNumber="113" executed="-3">
     <body>    public function withdrawMoney($balance)</body>
   </line>
-  <line lineNumber="115" executed="-3">
+  <line lineNumber="114" executed="-3">
     <body>    {</body>
   </line>
-  <line lineNumber="116" executed="1">
+  <line lineNumber="115" executed="1">
     <body>        $this-&gt;setBalance($this-&gt;getBalance() - $balance);</body>
     <tests>
-      <test name="testBalanceCannotBecomeNegative" status="0" class="BankAccountTest" fullPath="%s/BankAccountTest.php" shortenedPath="/BankAccountTest.php" line="86"/>
+      <test name="testBalanceCannotBecomeNegative" status="0" class="BankAccountTest" fullPath="%s/BankAccountTest.php" shortenedPath="/BankAccountTest.php" line="85"/>
     </tests>
   </line>
-  <line lineNumber="117" executed="-3">
+  <line lineNumber="116" executed="-3">
     <body></body>
   </line>
-  <line lineNumber="118" executed="-1">
+  <line lineNumber="117" executed="-1">
     <body>        return $this-&gt;getBalance();</body>
   </line>
-  <line lineNumber="119" executed="-2">
+  <line lineNumber="118" executed="-2">
     <body>    }</body>
   </line>
-  <line lineNumber="120" executed="-3">
+  <line lineNumber="119" executed="-3">
     <body>}</body>
   </line>
-  <line lineNumber="121" executed="-3">
+  <line lineNumber="120" executed="-3">
     <body>?&gt;</body>
   </line>
 </coveredFile>
@@ -534,308 +532,306 @@ Writing code coverage data to XML files, this may take a moment.
     <body> * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License</body>
   </line>
   <line lineNumber="42">
+    <body> * @link       http://www.phpunit.de/</body>
   </line>
   <line lineNumber="43">
-    <body> * @link       http://www.phpunit.de/</body>
-  </line>
-  <line lineNumber="44">
     <body> * @since      File available since Release 2.3.0</body>
   </line>
-  <line lineNumber="45">
+  <line lineNumber="44">
     <body> */</body>
+  </line>
+  <line lineNumber="45">
+    <body></body>
   </line>
   <line lineNumber="46">
-    <body></body>
-  </line>
-  <line lineNumber="47">
     <body>require_once 'PHPUnit/Framework/TestCase.php';</body>
   </line>
-  <line lineNumber="48">
+  <line lineNumber="47">
     <body>require_once 'BankAccount.php';</body>
   </line>
-  <line lineNumber="49">
+  <line lineNumber="48">
     <body></body>
   </line>
-  <line lineNumber="50">
+  <line lineNumber="49">
     <body>/**</body>
   </line>
-  <line lineNumber="51">
+  <line lineNumber="50">
     <body> * Tests for the BankAccount class.</body>
   </line>
-  <line lineNumber="52">
+  <line lineNumber="51">
     <body> *</body>
   </line>
-  <line lineNumber="53">
+  <line lineNumber="52">
     <body> * @category   Testing</body>
   </line>
-  <line lineNumber="54">
+  <line lineNumber="53">
     <body> * @package    PHPUnit</body>
   </line>
-  <line lineNumber="55">
+  <line lineNumber="54">
     <body> * @author     Sebastian Bergmann &lt;sb@sebastian-bergmann.de&gt;</body>
   </line>
-  <line lineNumber="56">
+  <line lineNumber="55">
     <body> * @copyright  2002-2009 Sebastian Bergmann &lt;sb@sebastian-bergmann.de&gt;</body>
   </line>
-  <line lineNumber="57">
+  <line lineNumber="56">
     <body> * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License</body>
   </line>
-  <line lineNumber="58">
-    <body> * @version    Release: %s</body>
+  <line lineNumber="57">
+    <body> * @version    Release: @package_version@</body>
   </line>
-  <line lineNumber="59">
+  <line lineNumber="58">
     <body> * @link       http://www.phpunit.de/</body>
   </line>
-  <line lineNumber="60">
+  <line lineNumber="59">
     <body> * @since      Class available since Release 2.3.0</body>
   </line>
-  <line lineNumber="61">
+  <line lineNumber="60">
     <body> */</body>
   </line>
-  <line lineNumber="62">
+  <line lineNumber="61">
     <body>class BankAccountTest extends PHPUnit_Framework_TestCase</body>
   </line>
-  <line lineNumber="63">
+  <line lineNumber="62">
     <body>{</body>
   </line>
-  <line lineNumber="64">
+  <line lineNumber="63">
     <body>    protected $ba;</body>
   </line>
-  <line lineNumber="65">
+  <line lineNumber="64">
     <body></body>
   </line>
-  <line lineNumber="66">
+  <line lineNumber="65">
     <body>    protected function setUp()</body>
   </line>
-  <line lineNumber="67">
+  <line lineNumber="66">
     <body>    {</body>
   </line>
-  <line lineNumber="68">
+  <line lineNumber="67">
     <body>        $this-&gt;ba = new BankAccount;</body>
   </line>
-  <line lineNumber="69">
+  <line lineNumber="68">
     <body>    }</body>
   </line>
-  <line lineNumber="70">
+  <line lineNumber="69">
     <body></body>
   </line>
-  <line lineNumber="71">
+  <line lineNumber="70">
     <body>    /**</body>
   </line>
-  <line lineNumber="72">
+  <line lineNumber="71">
     <body>     * @covers BankAccount::getBalance</body>
   </line>
-  <line lineNumber="73">
+  <line lineNumber="72">
     <body>     * @group balanceIsInitiallyZero</body>
   </line>
-  <line lineNumber="74">
+  <line lineNumber="73">
     <body>     * @group specification</body>
   </line>
-  <line lineNumber="75">
+  <line lineNumber="74">
     <body>     */</body>
   </line>
-  <line lineNumber="76">
+  <line lineNumber="75">
     <body>    public function testBalanceIsInitiallyZero()</body>
     <coveredFiles>
       <coveredFile fullPath="%s/BankAccountTest.php" shortenedPath="BankAccount.php">
-        <coveredLine>77</coveredLine>
+        <coveredLine>76</coveredLine>
       </coveredFile>
     </coveredFiles>
   </line>
-  <line lineNumber="77">
+  <line lineNumber="76">
     <body>    {</body>
   </line>
-  <line lineNumber="78">
+  <line lineNumber="77">
     <body>        $this-&gt;assertEquals(0, $this-&gt;ba-&gt;getBalance());</body>
   </line>
-  <line lineNumber="79">
+  <line lineNumber="78">
     <body>    }</body>
   </line>
-  <line lineNumber="80">
+  <line lineNumber="79">
     <body></body>
   </line>
-  <line lineNumber="81">
+  <line lineNumber="80">
     <body>    /**</body>
   </line>
-  <line lineNumber="82">
+  <line lineNumber="81">
     <body>     * @covers BankAccount::withdrawMoney</body>
   </line>
-  <line lineNumber="83">
+  <line lineNumber="82">
     <body>     * @group balanceCannotBecomeNegative</body>
   </line>
-  <line lineNumber="84">
+  <line lineNumber="83">
     <body>     * @group specification</body>
   </line>
-  <line lineNumber="85">
+  <line lineNumber="84">
     <body>     */</body>
   </line>
-  <line lineNumber="86">
+  <line lineNumber="85">
     <body>    public function testBalanceCannotBecomeNegative()</body>
     <coveredFiles>
       <coveredFile fullPath="%s/BankAccountTest.php" shortenedPath="BankAccount.php">
-        <coveredLine>116</coveredLine>
+        <coveredLine>115</coveredLine>
       </coveredFile>
     </coveredFiles>
   </line>
-  <line lineNumber="87">
+  <line lineNumber="86">
     <body>    {</body>
   </line>
-  <line lineNumber="88">
+  <line lineNumber="87">
     <body>        try {</body>
   </line>
-  <line lineNumber="89">
+  <line lineNumber="88">
     <body>            $this-&gt;ba-&gt;withdrawMoney(1);</body>
   </line>
-  <line lineNumber="90">
+  <line lineNumber="89">
     <body>        }</body>
+  </line>
+  <line lineNumber="90">
+    <body></body>
   </line>
   <line lineNumber="91">
-    <body></body>
-  </line>
-  <line lineNumber="92">
     <body>        catch (BankAccountException $e) {</body>
   </line>
-  <line lineNumber="93">
+  <line lineNumber="92">
     <body>            $this-&gt;assertEquals(0, $this-&gt;ba-&gt;getBalance());</body>
   </line>
-  <line lineNumber="94">
+  <line lineNumber="93">
     <body></body>
   </line>
-  <line lineNumber="95">
+  <line lineNumber="94">
     <body>            return;</body>
   </line>
-  <line lineNumber="96">
+  <line lineNumber="95">
     <body>        }</body>
   </line>
-  <line lineNumber="97">
+  <line lineNumber="96">
     <body></body>
   </line>
-  <line lineNumber="98">
+  <line lineNumber="97">
     <body>        $this-&gt;fail();</body>
   </line>
-  <line lineNumber="99">
+  <line lineNumber="98">
     <body>    }</body>
   </line>
-  <line lineNumber="100">
+  <line lineNumber="99">
     <body></body>
   </line>
-  <line lineNumber="101">
+  <line lineNumber="100">
     <body>    /**</body>
   </line>
-  <line lineNumber="102">
+  <line lineNumber="101">
     <body>     * @covers BankAccount::depositMoney</body>
   </line>
-  <line lineNumber="103">
+  <line lineNumber="102">
     <body>     * @group balanceCannotBecomeNegative</body>
   </line>
-  <line lineNumber="104">
+  <line lineNumber="103">
     <body>     * @group specification</body>
   </line>
-  <line lineNumber="105">
+  <line lineNumber="104">
     <body>     */</body>
   </line>
-  <line lineNumber="106">
+  <line lineNumber="105">
     <body>    public function testBalanceCannotBecomeNegative2()</body>
     <coveredFiles>
       <coveredFile fullPath="%s/BankAccountTest.php" shortenedPath="BankAccount.php">
-        <coveredLine>103</coveredLine>
+        <coveredLine>102</coveredLine>
       </coveredFile>
     </coveredFiles>
   </line>
-  <line lineNumber="107">
+  <line lineNumber="106">
     <body>    {</body>
   </line>
-  <line lineNumber="108">
+  <line lineNumber="107">
     <body>        try {</body>
   </line>
-  <line lineNumber="109">
+  <line lineNumber="108">
     <body>            $this-&gt;ba-&gt;depositMoney(-1);</body>
   </line>
-  <line lineNumber="110">
+  <line lineNumber="109">
     <body>        }</body>
+  </line>
+  <line lineNumber="110">
+    <body></body>
   </line>
   <line lineNumber="111">
-    <body></body>
-  </line>
-  <line lineNumber="112">
     <body>        catch (BankAccountException $e) {</body>
   </line>
-  <line lineNumber="113">
+  <line lineNumber="112">
     <body>            $this-&gt;assertEquals(0, $this-&gt;ba-&gt;getBalance());</body>
   </line>
-  <line lineNumber="114">
+  <line lineNumber="113">
     <body></body>
   </line>
-  <line lineNumber="115">
+  <line lineNumber="114">
     <body>            return;</body>
   </line>
-  <line lineNumber="116">
+  <line lineNumber="115">
     <body>        }</body>
   </line>
-  <line lineNumber="117">
+  <line lineNumber="116">
     <body></body>
   </line>
-  <line lineNumber="118">
+  <line lineNumber="117">
     <body>        $this-&gt;fail();</body>
   </line>
-  <line lineNumber="119">
+  <line lineNumber="118">
     <body>    }</body>
   </line>
-  <line lineNumber="120">
+  <line lineNumber="119">
     <body></body>
   </line>
-  <line lineNumber="121">
+  <line lineNumber="120">
     <body>    /**</body>
   </line>
-  <line lineNumber="122">
+  <line lineNumber="121">
     <body>     * @covers BankAccount::getBalance</body>
   </line>
-  <line lineNumber="123">
+  <line lineNumber="122">
     <body>     * @covers BankAccount::depositMoney</body>
   </line>
-  <line lineNumber="124">
+  <line lineNumber="123">
     <body>     * @covers BankAccount::withdrawMoney</body>
   </line>
-  <line lineNumber="125">
+  <line lineNumber="124">
     <body>     * @group balanceCannotBecomeNegative</body>
   </line>
-  <line lineNumber="126">
+  <line lineNumber="125">
     <body>     */</body>
   </line>
-  <line lineNumber="127">
+  <line lineNumber="126">
     <body>/*</body>
   </line>
-  <line lineNumber="128">
+  <line lineNumber="127">
     <body>    public function testDepositWithdrawMoney()</body>
   </line>
-  <line lineNumber="129">
+  <line lineNumber="128">
     <body>    {</body>
   </line>
-  <line lineNumber="130">
+  <line lineNumber="129">
     <body>        $this-&gt;assertEquals(0, $this-&gt;ba-&gt;getBalance());</body>
   </line>
-  <line lineNumber="131">
+  <line lineNumber="130">
     <body>        $this-&gt;ba-&gt;depositMoney(1);</body>
   </line>
-  <line lineNumber="132">
+  <line lineNumber="131">
     <body>        $this-&gt;assertEquals(1, $this-&gt;ba-&gt;getBalance());</body>
   </line>
-  <line lineNumber="133">
+  <line lineNumber="132">
     <body>        $this-&gt;ba-&gt;withdrawMoney(1);</body>
   </line>
-  <line lineNumber="134">
+  <line lineNumber="133">
     <body>        $this-&gt;assertEquals(0, $this-&gt;ba-&gt;getBalance());</body>
   </line>
-  <line lineNumber="135">
+  <line lineNumber="134">
     <body>    }</body>
   </line>
-  <line lineNumber="136">
+  <line lineNumber="135">
     <body>*/</body>
   </line>
-  <line lineNumber="137">
+  <line lineNumber="136">
     <body>}</body>
   </line>
-  <line lineNumber="138">
+  <line lineNumber="137">
     <body>?&gt;</body>
   </line>
 </testFile>

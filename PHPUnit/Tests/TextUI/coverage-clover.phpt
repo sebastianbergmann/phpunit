@@ -30,22 +30,22 @@ Writing code coverage data to XML file, this may take a moment.<?xml version="1.
       <class name="BankAccount" namespace="global" fullPackage="PHPUnit" category="Testing" package="PHPUnit">
         <metrics methods="4" coveredmethods="3" statements="10" coveredstatements="3" elements="14" coveredelements="6"/>
       </class>
-      <line num="75" type="method" name="getBalance" count="1"/>
-      <line num="77" type="stmt" count="1"/>
-      <line num="86" type="method" name="setBalance" count="0"/>
+      <line num="74" type="method" name="getBalance" count="1"/>
+      <line num="76" type="stmt" count="1"/>
+      <line num="85" type="method" name="setBalance" count="0"/>
+      <line num="87" type="stmt" count="0"/>
       <line num="88" type="stmt" count="0"/>
       <line num="89" type="stmt" count="0"/>
       <line num="90" type="stmt" count="0"/>
-      <line num="91" type="stmt" count="0"/>
-      <line num="93" type="stmt" count="0"/>
-      <line num="101" type="method" name="depositMoney" count="1"/>
-      <line num="103" type="stmt" count="1"/>
-      <line num="105" type="stmt" count="0"/>
-      <line num="114" type="method" name="withdrawMoney" count="1"/>
-      <line num="116" type="stmt" count="1"/>
-      <line num="118" type="stmt" count="0"/>
-      <metrics loc="121" ncloc="37" classes="2" methods="4" coveredmethods="3" statements="10" coveredstatements="3" elements="14" coveredelements="6"/>
+      <line num="92" type="stmt" count="0"/>
+      <line num="100" type="method" name="depositMoney" count="1"/>
+      <line num="102" type="stmt" count="1"/>
+      <line num="104" type="stmt" count="0"/>
+      <line num="113" type="method" name="withdrawMoney" count="1"/>
+      <line num="115" type="stmt" count="1"/>
+      <line num="117" type="stmt" count="0"/>
+      <metrics loc="120" ncloc="37" classes="2" methods="4" coveredmethods="3" statements="10" coveredstatements="3" elements="14" coveredelements="6"/>
     </file>
-    <metrics files="1" loc="121" ncloc="37" classes="2" methods="4" coveredmethods="3" statements="10" coveredstatements="3" elements="14" coveredelements="6"/>
+    <metrics files="1" loc="120" ncloc="37" classes="2" methods="4" coveredmethods="3" statements="10" coveredstatements="3" elements="14" coveredelements="6"/>
   </project>
 </coverage>
