@@ -25,4 +25,3 @@ PHPUnit 3.5.0
 * `PHPUnit_Extensions_RepeatedTest` has been removed.
 * Replaced `PHPUnit_Util_FilterIterator` with the [PHP_FileIterator](http://github.com/sebastianbergmann/php-file-iterator) component.
 * Replaced `PHPUnit_Util_Template` with the [Text_Template](http://github.com/sebastianbergmann/php-text-template) component.
-* The [YAML](http://components.symfony-project.org/yaml/) component from the [Symfony Components](http://components.symfony-project.org/) is no longer bundled but required as a dependency.
