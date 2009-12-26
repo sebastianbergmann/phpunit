@@ -8,7 +8,8 @@
          convertNoticesToExceptions="true"
          convertWarningsToExceptions="true"
          stopOnFailure="false"
-         testSuiteLoaderClass="PHPUnit_Runner_StandardTestSuiteLoader">>
+         testSuiteLoaderClass="PHPUnit_Runner_StandardTestSuiteLoader"
+         verbose="false">
   <testsuites>
     <testsuite name="My Test Suite">
       <directory suffix="Test.php">/path/to/files</directory>

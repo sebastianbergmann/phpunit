@@ -256,7 +256,8 @@ class Util_ConfigurationTest extends PHPUnit_Framework_TestCase
             'convertNoticesToExceptions' => TRUE,
             'convertWarningsToExceptions' => TRUE,
             'stopOnFailure' => FALSE,
-            'testSuiteLoaderClass' => 'PHPUnit_Runner_StandardTestSuiteLoader'
+            'testSuiteLoaderClass' => 'PHPUnit_Runner_StandardTestSuiteLoader',
+            'verbose' => FALSE
           ),
           $this->configuration->getPHPUnitConfiguration()
         );
