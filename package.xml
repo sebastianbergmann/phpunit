@@ -943,7 +943,7 @@
     <min>5.1.4</min>
    </php>
    <pearinstaller>
-    <min>1.8.1</min>
+    <min>1.9.0</min>
    </pearinstaller>
    <extension>
     <name>dom</name>
