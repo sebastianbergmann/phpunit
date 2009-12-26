@@ -10,6 +10,7 @@ PHPUnit 3.5.0
 * Implemented TRAC-948: Add D-BUS test listener.
 * Implemented TRAC-967: Only populate whitelist when code coverage is used.
 * Added `assertStringMatchesFormat()` and `assertStringNotMatchesFormat()` as well as `assertStringMatchesFormatFile()` and `assertStringNotMatchesFormatFile()` for `EXPECTF`-like (`run-tests.php`) format string matching.
+* Added the `verbose` attribute to the `<phpunit>` element of the XML configuration file.
 * The `--log-metrics` and `--log-pmd` switches have been removed. Their functionality has been or will be merged into [PHP_Depend](http://pdepend.org/) and [PHPMD](http://phpmd.org/). Details can be found [here](http://sebastian-bergmann.de/archives/744-On-PHPUnit-and-Software-Metrics.html).
 * The `--ansi` switch has been removed, please use `--colors` instead.
 * The `--coverage-source` switch has been removed.

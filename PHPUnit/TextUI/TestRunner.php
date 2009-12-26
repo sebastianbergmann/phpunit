@@ -468,7 +468,6 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
         $arguments['debug']     = isset($arguments['debug'])     ? $arguments['debug']     : FALSE;
         $arguments['filter']    = isset($arguments['filter'])    ? $arguments['filter']    : FALSE;
         $arguments['listeners'] = isset($arguments['listeners']) ? $arguments['listeners'] : array();
-        $arguments['verbose']   = isset($arguments['verbose'])   ? $arguments['verbose']   : FALSE;
         $arguments['wait']      = isset($arguments['wait'])      ? $arguments['wait']      : FALSE;
 
         if (isset($arguments['configuration'])) {
@@ -519,6 +518,11 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
             if (isset($phpunitConfiguration['stopOnFailure']) &&
                 !isset($arguments['stopOnFailure'])) {
                 $arguments['stopOnFailure'] = $phpunitConfiguration['stopOnFailure'];
+            }
+
+            if (isset($phpunitConfiguration['verbose']) &&
+                !isset($arguments['verbose'])) {
+                $arguments['verbose'] = $phpunitConfiguration['verbose'];
             }
 
             $groupConfiguration = $arguments['configuration']->getGroupConfiguration();
@@ -717,6 +721,7 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
         $arguments['reportLowUpperBound']         = isset($arguments['reportLowUpperBound'])         ? $arguments['reportLowUpperBound']         : 35;
         $arguments['reportYUI']                   = isset($arguments['reportYUI'])                   ? $arguments['reportYUI']                   : TRUE;
         $arguments['stopOnFailure']               = isset($arguments['stopOnFailure'])               ? $arguments['stopOnFailure']               : FALSE;
+        $arguments['verbose']                     = isset($arguments['verbose'])                     ? $arguments['verbose']                     : FALSE;
 
         if ($arguments['filter'] !== FALSE &&
             preg_match('/^[a-zA-Z0-9_]/', $arguments['filter'])) {

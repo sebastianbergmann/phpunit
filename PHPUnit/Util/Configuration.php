@@ -65,7 +65,8 @@ PHP_CodeCoverage_Filter::getInstance()->addFileToBlacklist(__FILE__, 'PHPUNIT');
  *          processIsolation="false"
  *          stopOnFailure="false"
  *          syntaxCheck="false"
- *          testSuiteLoaderClass="PHPUnit_Runner_StandardTestSuiteLoader">
+ *          testSuiteLoaderClass="PHPUnit_Runner_StandardTestSuiteLoader"
+ *          verbose="false">
  *   <testsuites>
  *     <testsuite name="My Test Suite">
  *       <directory suffix="Test.php">/path/to/files</directory>
@@ -564,6 +565,13 @@ class PHPUnit_Util_Configuration
 
         if ($this->document->documentElement->hasAttribute('testSuiteLoaderFile')) {
             $result['testSuiteLoaderFile'] = (string)$this->document->documentElement->getAttribute('testSuiteLoaderFile');
+        }
+
+        if ($this->document->documentElement->hasAttribute('verbose')) {
+            $result['verbose'] = $this->getBoolean(
+              (string)$this->document->documentElement->getAttribute('verbose'),
+              FALSE
+            );
         }
 
         return $result;
