@@ -138,11 +138,7 @@ class PHPUnit_Extensions_TicketListener_Trac extends PHPUnit_Extensions_TicketLi
                 );
             }
 
-            foreach (PHPUnit_Util_Filesystem::collectEnd() as $blacklistedFile) {
-                PHP_CodeCoverage_Filter::getInstance()->addFileToBlacklist(
-                  $blacklistedFile, 'PHPUNIT'
-                );
-            }
+            PHPUnit_Util_Filesystem::collectEndAndAddToBlacklist();
         } else {
             throw new PHPUnit_Framework_Exception('XML_RPC2 is not available.');
         }

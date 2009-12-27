@@ -49,11 +49,7 @@ if (PHPUnit_Util_Filesystem::fileExistsInIncludePath('PEAR/RunTest.php')) {
     require_once 'PEAR/RunTest.php';
     error_reporting($currentErrorReporting);
 
-    foreach (PHPUnit_Util_Filesystem::collectEnd() as $blacklistedFile) {
-        PHP_CodeCoverage_Filter::getInstance()->addFileToBlacklist(
-          $blacklistedFile, 'PHPUNIT'
-        );
-    }
+    PHPUnit_Util_Filesystem::collectEndAndAddToBlacklist();
 }
 
 require_once 'PHPUnit/Extensions/PhptTestCase/Logger.php';
