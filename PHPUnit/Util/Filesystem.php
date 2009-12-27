@@ -115,6 +115,20 @@ class PHPUnit_Util_Filesystem
     }
 
     /**
+     * Stops the collection of loaded files and adds
+     * the names of the loaded files to the blacklist.
+     *
+     * @return array
+     * @since  Method available since Release 3.4.6
+     */
+    public static function collectEndAndAddToBlacklist()
+    {
+        foreach (self::collectEnd() as $blacklistedFile) {
+            PHPUnit_Util_Filter::addFileToFilter($blacklistedFile, 'PHPUNIT');
+        }
+    }
+
+    /**
      * Wrapper for file_exists() that searches the include_path.
      *
      * @param  string $file
