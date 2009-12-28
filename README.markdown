@@ -6,6 +6,7 @@ This is the list of changes for the PHPUnit 3.4 release series.
 PHPUnit 3.4.6
 -------------
 
+* `assertContains()` and `assertNotContains()` no longer use `===` for non-objects.
 * Implemented TRAC-968: Support `scalar` in `assertType()`.
 * Fixed TRAC-779: `PHPUnit_Util_Getopt::parseLongOption()` causes problems with custom error handlers.
 * Fixed TRAC-942: Process Isolation should define constants before including files.

@@ -90,9 +90,17 @@ class PHPUnit_Framework_Constraint_TraversableContains extends PHPUnit_Framework
             return $other->contains($this->value);
         }
 
-        foreach ($other as $straw) {
-            if ($straw === $this->value) {
-                return TRUE;
+        if (is_object($this->value)) {
+            foreach ($other as $element) {
+                if ($element === $this->value) {
+                    return TRUE;
+                }
+            }
+        } else {
+            foreach ($other as $element) {
+                if ($element == $this->value) {
+                    return TRUE;
+                }
             }
         }
 
