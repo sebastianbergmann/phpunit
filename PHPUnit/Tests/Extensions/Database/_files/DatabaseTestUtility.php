@@ -73,6 +73,30 @@ class DBUnitTestUtility
         return $connection;
     }
 
+    /**
+     * Creates connection to test MySQL database
+     * 
+     * MySQL server must be installed locally, with root access
+     * and empty password and listening on unix socket 
+     * 
+     * @see DBUnitTestUtility::setUpMySqlDatabase()
+     * 
+     * @return PDO
+     */
+    public static function getMySQLDB()
+    {
+        static $connection;
+
+        if (empty($connection))
+        {            
+        	$connection = new PDO("mysql:dbname=test;unix_socket=/tmp/mysql.sock");
+
+            self::setUpMySQLDatabase($connection);
+        }
+
+        return $connection;
+    }
+
     protected static function setUpDatabase(PDO $connection)
     {
         $connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
@@ -105,6 +129,62 @@ class DBUnitTestUtility
                 column11 DECIMAL(6,2),
                 column12 TEXT
             )
+        ";
+
+        $connection->exec($table1);
+        $connection->exec($table2);
+        $connection->exec($table3);
+    }
+
+    /**
+     * Creates default testing schema for MySQL database
+     * 
+     * Tables must containt foreign keys and use InnoDb storage engine
+     * for constraint tests to be executed properly
+     * 
+     * @see DBUnitTestUtility::getMySQLDB()
+     * 
+     * @param PDO $connection PDO instance representing connection to MySQL database
+     * 
+     * @return void
+     */
+	protected static function setUpMySqlDatabase(PDO $connection)
+    {
+        $table1 = "
+            CREATE TABLE IF NOT EXISTS table1 (
+                table1_id INTEGER AUTO_INCREMENT,
+                column1 VARCHAR(20),
+                column2 INT(10),
+                column3 DECIMAL(6,2),
+                column4 TEXT,
+                PRIMARY KEY (table1_id)
+            ) ENGINE=INNODB;
+        ";
+
+        $table2 = "
+            CREATE TABLE IF NOT EXISTS table2 (
+                table2_id INTEGER AUTO_INCREMENT,
+                table1_id INTEGER, 
+                column5 VARCHAR(20),
+                column6 INT(10),
+                column7 DECIMAL(6,2),
+                column8 TEXT,
+                PRIMARY KEY (table2_id),
+                FOREIGN KEY (table1_id) REFERENCES table1(table1_id)
+            ) ENGINE=INNODB;
+        ";
+
+        $table3 = "
+            CREATE TABLE IF NOT EXISTS table3 (
+                table3_id INTEGER AUTO_INCREMENT,
+                table2_id INTEGER,
+                column9 VARCHAR(20),
+                column10 INT(10),
+                column11 DECIMAL(6,2),
+                column12 TEXT,
+                PRIMARY KEY (table3_id),
+                FOREIGN KEY (table2_id) REFERENCES table2(table2_id)
+            ) ENGINE=INNODB;
         ";
 
         $connection->exec($table1);
