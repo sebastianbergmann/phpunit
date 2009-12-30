@@ -1174,6 +1174,10 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
                 }
             }
 
+            if (empty($methods)) {
+                $methods = NULL;
+            }
+
             return $this->getMock(
               $originalClassName,
               $methods,
