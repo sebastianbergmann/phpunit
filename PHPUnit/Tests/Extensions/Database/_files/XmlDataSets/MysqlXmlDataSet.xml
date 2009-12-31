@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mysqldump xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+<database name="database_name">
+	<table_data name="table1">
+    <row>
+        <field name="table1_id">1</field>
+        <field name="column1">tgfahgasdf</field>
+        <field name="column2">200</field>
+        <field name="column3">34.64</field>
+        <field name="column4">yghkf;a  hahfg8ja h;</field>
+    </row>
+    <row>
+        <field name="table1_id">2</field>
+        <field name="column1">hk;afg</field>
+        <field name="column2">654</field>
+        <field name="column3">46.54</field>
+        <field name="column4">24rwehhads</field>
+    </row>
+    <row>
+        <field name="table1_id">3</field>
+        <field name="column1">ha;gyt</field>
+        <field name="column2">462</field>
+        <field name="column3">1654.4</field>
+        <field name="column4">asfgklg</field>
+    </row>
+	</table_data>
+	<table_data name="table2">
+    <row>
+        <field name="table2_id">1</field>
+        <field name="column5">fhah</field>
+        <field name="column6">456</field>
+        <field name="column7">46.5</field>
+        <field name="column8">fsdbghfdas</field>
+    </row>
+    <row>
+        <field name="table2_id">2</field>
+        <field name="column5">asdhfoih</field>
+        <field name="column6">654</field>
+        <field name="column7" xsi:nil="true" />
+        <field name="column8">43asdfhgj</field>
+    </row>
+    <row>
+        <field name="table2_id">3</field>
+        <field name="column5">ajsdlkfguitah</field>
+        <field name="column6">654</field>
+        <field name="column7" xsi:nil="true" />
+        <field name="column8" xsi:nil="true" />
+    </row>
+	</table_data>
+</database>
+</mysqldump>

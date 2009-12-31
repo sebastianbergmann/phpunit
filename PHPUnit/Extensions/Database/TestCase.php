@@ -182,6 +182,18 @@ abstract class PHPUnit_Extensions_Database_TestCase extends PHPUnit_Framework_Te
     }
 
     /**
+     * Create a a new MysqlXmlDataSet with the given $xmlFile. (absolute path.)
+     *
+     * @param string $xmlFile
+     * @return PHPUnit_Extensions_Database_DataSet_MysqlXmlDataSet
+     */
+    protected function createMySQLXMLDataSet($xmlFile)
+    {
+        require_once 'PHPUnit/Extensions/Database/DataSet/MysqlXmlDataSet.php';
+        return new PHPUnit_Extensions_Database_DataSet_MysqlXmlDataSet($xmlFile);
+    }
+
+    /**
      * Returns an operation factory instance that can be used to instantiate
      * new operations.
      *
