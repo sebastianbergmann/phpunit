@@ -186,6 +186,7 @@ abstract class PHPUnit_Extensions_Database_TestCase extends PHPUnit_Framework_Te
      *
      * @param string $xmlFile
      * @return PHPUnit_Extensions_Database_DataSet_MysqlXmlDataSet
+     * @since  Method available since Release 3.5.0
      */
     protected function createMySQLXMLDataSet($xmlFile)
     {
