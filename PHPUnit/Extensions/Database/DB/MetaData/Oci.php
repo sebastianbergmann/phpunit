@@ -67,6 +67,11 @@ class PHPUnit_Extensions_Database_DB_MetaData_Oci extends PHPUnit_Extensions_Dat
      */
     protected $schemaObjectQuoteChar = '';
 
+    /**
+     * The command used to perform a TRUNCATE operation.
+     */
+    protected $truncateCommand = 'TRUNCATE TABLE';
+
     protected $columns = array();
     protected $keys = array();
 
