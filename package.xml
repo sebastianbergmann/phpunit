@@ -52,6 +52,9 @@
         <file baseinstalldir="/" name="FlatXml.php" role="php">
          <tasks:replace from="@package_version@" to="version" type="package-info" />
         </file>
+        <file baseinstalldir="/" name="MysqlXml.php" role="php">
+         <tasks:replace from="@package_version@" to="version" type="package-info" />
+        </file>
         <file baseinstalldir="/" name="Xml.php" role="php">
          <tasks:replace from="@package_version@" to="version" type="package-info" />
         </file>
@@ -137,6 +140,9 @@
         <tasks:replace from="@package_version@" to="version" type="package-info" />
        </file>
        <file baseinstalldir="/" name="ITableMetaData.php" role="php">
+        <tasks:replace from="@package_version@" to="version" type="package-info" />
+       </file>
+       <file baseinstalldir="/" name="MysqlXmlDataSet.php" role="php">
         <tasks:replace from="@package_version@" to="version" type="package-info" />
        </file>
        <file baseinstalldir="/" name="QueryDataSet.php" role="php">
