@@ -2,7 +2,7 @@
 /**
  * PHPUnit
  *
- * Copyright (c) 2002-2009, Sebastian Bergmann <sb@sebastian-bergmann.de>.
+ * Copyright (c) 2002-2010, Sebastian Bergmann <sb@sebastian-bergmann.de>.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -37,30 +37,29 @@
  * @category   Testing
  * @package    PHPUnit
  * @author     Matthew Turland <tobias382@gmail.com>
- * @copyright  2002-2009 Sebastian Bergmann <sb@sebastian-bergmann.de>
+ * @copyright  2002-2010 Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @link       http://www.phpunit.de/
- * @since      File available since Release 3.4.6
+ * @since      File available since Release 3.5.0
  */
 
 require_once 'PHPUnit/Framework.php';
-require_once 'PHPUnit/Util/Filter.php';
 
 require_once 'PHPUnit/Extensions/Database/DataSet/Persistors/Abstract.php';
 
-PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
+PHP_CodeCoverage_Filter::getInstance()->addFileToBlacklist(__FILE__, 'PHPUNIT');
 
 /**
  * A MySQL XML dataset persistor.
  *
  * @category   Testing
  * @package    PHPUnit
- * @author     Matthew Turland <tobias382@gmail.com> 
- * @copyright  2009 Matthew Turland <tobias382@gmail.com>
+ * @author     Matthew Turland <tobias382@gmail.com>
+ * @copyright  2010 Matthew Turland <tobias382@gmail.com>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    Release: @package_version@
  * @link       http://www.phpunit.de/
- * @since      Class available since Release 3.4.6
+ * @since      Class available since Release 3.5.0
  */
 class PHPUnit_Extensions_Database_DataSet_Persistors_MysqlXml extends PHPUnit_Extensions_Database_DataSet_Persistors_Abstract
 {
@@ -114,7 +113,7 @@ class PHPUnit_Extensions_Database_DataSet_Persistors_MysqlXml extends PHPUnit_Ex
 
         fwrite($this->fh, '<?xml version="1.0" encoding="UTF-8"?>' . "\n");
         fwrite($this->fh, '<mysqldump xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">' . "\n");
-        fwrite($this->fh, '<database name="' . $this->database . '">' . "\n"); 
+        fwrite($this->fh, '<database name="' . $this->database . '">' . "\n");
     }
 
     /**
@@ -163,7 +162,7 @@ class PHPUnit_Extensions_Database_DataSet_Persistors_MysqlXml extends PHPUnit_Ex
             if (isset($row[$columnName])) {
                 fwrite($this->fh, '>' . htmlspecialchars($row[$columnName]) . '</field>' . "\n");
             } else {
-                fwrite($this->fh, ' xsi:nil="true" />' . "\n"); 
+                fwrite($this->fh, ' xsi:nil="true" />' . "\n");
             }
         }
 

@@ -2,7 +2,7 @@
 /**
  * PHPUnit
  *
- * Copyright (c) 2002-2009, Sebastian Bergmann <sb@sebastian-bergmann.de>.
+ * Copyright (c) 2002-2010, Sebastian Bergmann <sb@sebastian-bergmann.de>.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -36,32 +36,31 @@
  *
  * @category   Testing
  * @package    PHPUnit
- * @author     Matthew Turland <tobias382@gmail.com> 
- * @copyright  2002-2009 Sebastian Bergmann <sb@sebastian-bergmann.de>
+ * @author     Matthew Turland <tobias382@gmail.com>
+ * @copyright  2002-2010 Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @link       http://www.phpunit.de/
- * @since      File available since Release 3.4.6
+ * @since      File available since Release 3.5.0
  */
 
 require_once 'PHPUnit/Framework.php';
-require_once 'PHPUnit/Util/Filter.php';
 
 require_once 'PHPUnit/Extensions/Database/DataSet/AbstractXmlDataSet.php';
 require_once 'PHPUnit/Extensions/Database/DataSet/Persistors/MysqlXml.php';
 
-PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
+PHP_CodeCoverage_Filter::getInstance()->addFileToBlacklist(__FILE__, 'PHPUNIT');
 
 /**
- * Data set implementation for the output of mysqldump --xml -t. 
+ * Data set implementation for the output of mysqldump --xml -t.
  *
  * @category   Testing
  * @package    PHPUnit
- * @author     Matthew Turland <tobias382@gmail.com> 
- * @copyright  2009 Matthew Turland <tobias382@gmail.com> 
+ * @author     Matthew Turland <tobias382@gmail.com>
+ * @copyright  2010 Matthew Turland <tobias382@gmail.com>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    Release: @package_version@
  * @link       http://www.phpunit.de/
- * @since      Class available since Release 3.4.6
+ * @since      Class available since Release 3.5.0
  */
 class PHPUnit_Extensions_Database_DataSet_MysqlXmlDataSet extends PHPUnit_Extensions_Database_DataSet_AbstractXmlDataSet
 {
@@ -88,7 +87,7 @@ class PHPUnit_Extensions_Database_DataSet_MysqlXmlDataSet extends PHPUnit_Extens
             }
 
             foreach ($tableElement->xpath('./row/field') as $columnElement) {
-                $columnName = (string)$columnElement['name']; 
+                $columnName = (string)$columnElement['name'];
                 if (empty($columnName)) {
                     throw new Exception('<field> element name attributes cannot be empty');
                 }
