@@ -49,6 +49,7 @@ require_once 'PHPUnit/Extensions/Database/DataSet/DefaultTable.php';
 require_once 'PHPUnit/Extensions/Database/DataSet/DefaultTableMetaData.php';
 require_once 'PHPUnit/Extensions/Database/DataSet/FlatXmlDataSet.php';
 require_once 'PHPUnit/Extensions/Database/DataSet/XmlDataSet.php';
+require_once 'PHPUnit/Extensions/Database/DataSet/MysqlXmlDataSet.php';
 require_once 'PHPUnit/Extensions/Database/Constraint/DataSetIsEqual.php';
 
 /**
@@ -137,6 +138,14 @@ class Extensions_Database_DataSet_XmlDataSetsTest extends PHPUnit_Framework_Test
         $xmlDataSet = new PHPUnit_Extensions_Database_DataSet_XmlDataSet(dirname(__FILE__).'/../_files/XmlDataSets/XmlDataSet.xml');
 
         self::assertThat($xmlDataSet, $constraint);
+    }
+
+    public function testMysqlXmlDataSet()
+    {
+        $constraint = new PHPUnit_Extensions_Database_Constraint_DataSetIsEqual($this->expectedDataSet);
+        $mysqlXmlDataSet = new PHPUnit_Extensions_Database_DataSet_MysqlXmlDataSet(dirname(__FILE__).'/../_files/XmlDataSets/MysqlXmlDataSet.xml');
+
+        self::assertThat($mysqlXmlDataSet, $constraint);
     }
 }
 ?>
