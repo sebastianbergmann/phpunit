@@ -1102,6 +1102,11 @@
    <pearinstaller>
     <min>1.8.1</min>
    </pearinstaller>
+   <package>
+    <name>YAML</name>
+    <channel>pear.symfony-project.com</channel>
+    <min>1.0.2</min>
+   </package>
    <extension>
     <name>dom</name>
    </extension>
@@ -1114,11 +1119,6 @@
    <extension>
     <name>spl</name>
    </extension>
-   <package>
-    <name>YAML</name>
-    <channel>pear.symfony-project.com</channel>
-    <min>1.0.2</min>
-   </package>
   </required>
   <optional>
    <package>
