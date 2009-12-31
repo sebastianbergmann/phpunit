@@ -2,7 +2,7 @@
 /**
  * PHPUnit
  *
- * Copyright (c) 2002-2009, Sebastian Bergmann <sb@sebastian-bergmann.de>.
+ * Copyright (c) 2002-2010, Sebastian Bergmann <sb@sebastian-bergmann.de>.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -37,7 +37,7 @@
  * @category   Testing
  * @package    PHPUnit
  * @author     Sebastian Bergmann <sb@sebastian-bergmann.de>
- * @copyright  2002-2009 Sebastian Bergmann <sb@sebastian-bergmann.de>
+ * @copyright  2002-2010 Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @link       http://www.phpunit.de/
  * @since      File available since Release 3.0.0
@@ -57,7 +57,7 @@ PHP_CodeCoverage_Filter::getInstance()->addFileToBlacklist(__FILE__, 'PHPUNIT');
  * @category   Testing
  * @package    PHPUnit
  * @author     Sebastian Bergmann <sb@sebastian-bergmann.de>
- * @copyright  2002-2009 Sebastian Bergmann <sb@sebastian-bergmann.de>
+ * @copyright  2002-2010 Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    Release: @package_version@
  * @link       http://www.phpunit.de/
@@ -75,9 +75,23 @@ interface PHPUnit_Framework_MockObject_MockObject /*extends PHPUnit_Framework_Mo
     public function expects(PHPUnit_Framework_MockObject_Matcher_Invocation $matcher);
 
     /**
+     * Registers a new static expectation in the mock object and returns the
+     * match object which can be infused with further details.
+     *
+     * @param  PHPUnit_Framework_MockObject_Matcher_Invocation $matcher
+     * @return PHPUnit_Framework_MockObject_Builder_InvocationMocker
+     */
+    public static function staticExpects(PHPUnit_Framework_MockObject_Matcher_Invocation $matcher);
+
+    /**
      * @return PHPUnit_Framework_MockObject_InvocationMocker
      */
     public function __phpunit_getInvocationMocker();
+
+    /**
+     * @return PHPUnit_Framework_MockObject_InvocationMocker
+     */
+    public static function __phpunit_getStaticInvocationMocker();
 
     /**
      * Verifies that the current expectation is valid. If everything is OK the

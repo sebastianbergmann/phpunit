@@ -36,53 +36,109 @@
  *
  * @category   Testing
  * @package    PHPUnit
- * @author     Oliver Schlicht <o.schlicht@bitExpert.de>
  * @author     Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @copyright  2002-2010 Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @link       http://www.phpunit.de/
- * @since      File available since Release 3.1.0
+ * @since      File available since Release 4.0.0
  */
 
-require_once 'PHPUnit/Framework/MockObject/Invocation.php';
-require_once 'PHPUnit/Framework/MockObject/Stub.php';
+require_once 'PHPUnit/Framework.php';
 
 PHP_CodeCoverage_Filter::getInstance()->addFileToBlacklist(__FILE__, 'PHPUNIT');
 
 /**
- * Stubs a method by raising a user-defined exception.
+ * Represents a static invocation.
  *
  * @category   Testing
  * @package    PHPUnit
- * @author     Oliver Schlicht <o.schlicht@bitExpert.de>
  * @author     Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @copyright  2002-2010 Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    Release: @package_version@
  * @link       http://www.phpunit.de/
- * @since      Class available since Release 3.1.0
+ * @since      Class available since Release 4.0.0
  */
-class PHPUnit_Framework_MockObject_Stub_Exception implements PHPUnit_Framework_MockObject_Stub
+class PHPUnit_Framework_MockObject_Invocation_Static implements PHPUnit_Framework_MockObject_Invocation, PHPUnit_Framework_SelfDescribing
 {
-    protected $exception;
+    /**
+     * @var string
+     */
+    public $className;
 
-    public function __construct(Exception $exception)
+    /**
+     * @var string
+     */
+    public $methodName;
+
+    /**
+     * @var array
+     */
+    public $parameters;
+
+    /**
+     * @param string $className
+     * @param string $methodname
+     * @param array  $parameters
+     */
+    public function __construct($className, $methodName, array $parameters)
     {
-        $this->exception = $exception;
+        $this->className  = $className;
+        $this->methodName = $methodName;
+        $this->parameters = $parameters;
+
+        foreach ($this->parameters as $key => $value) {
+            if (is_object($value)) {
+                $this->parameters[$key] = $this->cloneObject($value);
+            }
+        }
     }
 
-    public function invoke(PHPUnit_Framework_MockObject_Invocation $invocation)
-    {
-        throw $this->exception;
-    }
-
+    /**
+     * @return string
+     */
     public function toString()
     {
         return sprintf(
-          'raise user-specified exception %s',
+          "%s::%s(%s)",
 
-          PHPUnit_Util_Type::toString($this->exception)
+          $this->className,
+          $this->methodName,
+          join(
+            ', ',
+            array_map(
+              array('PHPUnit_Util_Type', 'shortenedExport'),
+              $this->parameters
+            )
+          )
         );
+    }
+
+    /**
+     * @param  object $original
+     * @return object
+     */
+    protected function cloneObject($original)
+    {
+        $object = new ReflectionObject($original);
+
+        if ($object->hasMethod('__clone')) {
+            $method = $object->getMethod('__clone');
+
+            if (!$method->isPublic()) {
+                return $original;
+            }
+
+            try {
+                return clone $original;
+            }
+
+            catch (Exception $e) {
+                return $original;
+            }
+        }
+
+        return clone $original;
     }
 }
 ?>
