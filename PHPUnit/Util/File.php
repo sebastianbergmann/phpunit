@@ -240,6 +240,15 @@ class PHPUnit_Util_File
                 break;
 
                 case T_FUNCTION: {
+                    if (!((is_array($tokens[$i+2]) &&
+                          $tokens[$i+2][0] == T_STRING) ||
+                         (is_string($tokens[$i+2]) &&
+                          $tokens[$i+2] == '&' &&
+                          is_array($tokens[$i+3]) &&
+                          $tokens[$i+3][0] == T_STRING))) {
+                        continue;
+                    }
+
                     $currentBlock             = T_FUNCTION;
                     $currentFunctionStartLine = $line;
 
