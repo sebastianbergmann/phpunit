@@ -40,13 +40,15 @@
  * @copyright  2002-2010 Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @link       http://www.phpunit.de/
- * @since      File available since Release 3.0.0
+ * @since      File available since Release 4.0.0
  */
+
+require_once 'PHPUnit/Framework.php';
 
 PHP_CodeCoverage_Filter::getInstance()->addFileToBlacklist(__FILE__, 'PHPUNIT');
 
 /**
- * Interface for invocations.
+ * Represents a non-static invocation.
  *
  * @category   Testing
  * @package    PHPUnit
@@ -55,12 +57,25 @@ PHP_CodeCoverage_Filter::getInstance()->addFileToBlacklist(__FILE__, 'PHPUNIT');
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    Release: @package_version@
  * @link       http://www.phpunit.de/
- * @since      Interface available since Release 4.0.0
+ * @since      Class available since Release 4.0.0
  */
-interface PHPUnit_Framework_MockObject_Invocation
+class PHPUnit_Framework_MockObject_Invocation_Object extends PHPUnit_Framework_MockObject_Invocation_Static
 {
-}
+    /**
+     * @var object
+     */
+    public $object;
 
-require_once 'PHPUnit/Framework/MockObject/Invocation/Static.php';
-require_once 'PHPUnit/Framework/MockObject/Invocation/Object.php';
+    /**
+     * @param string $className
+     * @param string $methodname
+     * @param array  $parameters
+     * @param object $object
+     */
+    public function __construct($className, $methodName, array $parameters, $object)
+    {
+        parent::__construct($className, $methodName, $parameters);
+        $this->object = $object;
+    }
+}
 ?>

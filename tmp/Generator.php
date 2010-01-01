@@ -312,7 +312,7 @@ class PHPUnit_Framework_MockObject_Generator
             unset($client);
 
             $templateDir    = dirname(__FILE__) . DIRECTORY_SEPARATOR .
-                             'Generator' . DIRECTORY_SEPARATOR;
+                              'Generator' . DIRECTORY_SEPARATOR;
             $methodTemplate = new Text_Template(
                                 $templateDir . 'wsdl_method.tpl'
                               );
@@ -503,6 +503,7 @@ class PHPUnit_Framework_MockObject_Generator
                                      $mockClassName, $isInterface
                                    ),
             'clone'             => $cloneTemplate,
+            'mock_class_name'   => $mockClassName['mockClassName'],
             'mocked_methods'    => $mockedMethods
           )
         );
@@ -594,6 +595,12 @@ class PHPUnit_Framework_MockObject_Generator
             $modifier = 'public';
         }
 
+        if ($method->isStatic()) {
+            $static = TRUE;
+        } else {
+            $static = FALSE;
+        }
+
         if ($method->returnsReference()) {
             $reference = '&';
         } else {
@@ -606,7 +613,8 @@ class PHPUnit_Framework_MockObject_Generator
           $method->getName(),
           $modifier,
           PHPUnit_Util_Class::getMethodParameters($method),
-          $reference
+          $reference,
+          $static
         );
     }
 
@@ -617,13 +625,20 @@ class PHPUnit_Framework_MockObject_Generator
      * @param  string  $modifier
      * @param  string  $arguments
      * @param  string  $reference
+     * @param  boolean $static
      * @return string
      */
-    protected static function generateMockedMethodDefinition($templateDir, $className, $methodName, $modifier = 'public', $arguments = '', $reference = '')
+    protected static function generateMockedMethodDefinition($templateDir, $className, $methodName, $modifier = 'public', $arguments = '', $reference = '', $static = FALSE)
     {
-        $template = new Text_Template(
-          $templateDir . 'mocked_method.tpl'
-        );
+        if ($static) {
+            $template = new Text_Template(
+              $templateDir . 'mocked_static_method.tpl'
+            );
+        } else {
+            $template = new Text_Template(
+              $templateDir . 'mocked_object_method.tpl'
+            );
+        }
 
         $template->setVar(
           array(
@@ -644,9 +659,7 @@ class PHPUnit_Framework_MockObject_Generator
      */
     protected static function canMockMethod(ReflectionMethod $method)
     {
-        if ($method->isConstructor() ||
-            $method->isFinal() ||
-            $method->isStatic() ||
+        if ($method->isConstructor() || $method->isFinal() ||
             isset(self::$blacklistedMethodNames[$method->getName()])) {
             return FALSE;
         }

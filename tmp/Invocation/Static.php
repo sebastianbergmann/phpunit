@@ -40,13 +40,15 @@
  * @copyright  2002-2010 Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @link       http://www.phpunit.de/
- * @since      File available since Release 3.0.0
+ * @since      File available since Release 4.0.0
  */
+
+require_once 'PHPUnit/Framework.php';
 
 PHP_CodeCoverage_Filter::getInstance()->addFileToBlacklist(__FILE__, 'PHPUNIT');
 
 /**
- * Interface for invocations.
+ * Represents a static invocation.
  *
  * @category   Testing
  * @package    PHPUnit
@@ -55,12 +57,88 @@ PHP_CodeCoverage_Filter::getInstance()->addFileToBlacklist(__FILE__, 'PHPUNIT');
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    Release: @package_version@
  * @link       http://www.phpunit.de/
- * @since      Interface available since Release 4.0.0
+ * @since      Class available since Release 4.0.0
  */
-interface PHPUnit_Framework_MockObject_Invocation
+class PHPUnit_Framework_MockObject_Invocation_Static implements PHPUnit_Framework_MockObject_Invocation, PHPUnit_Framework_SelfDescribing
 {
-}
+    /**
+     * @var string
+     */
+    public $className;
 
-require_once 'PHPUnit/Framework/MockObject/Invocation/Static.php';
-require_once 'PHPUnit/Framework/MockObject/Invocation/Object.php';
+    /**
+     * @var string
+     */
+    public $methodName;
+
+    /**
+     * @var array
+     */
+    public $parameters;
+
+    /**
+     * @param string $className
+     * @param string $methodname
+     * @param array  $parameters
+     */
+    public function __construct($className, $methodName, array $parameters)
+    {
+        $this->className  = $className;
+        $this->methodName = $methodName;
+        $this->parameters = $parameters;
+
+        foreach ($this->parameters as $key => $value) {
+            if (is_object($value)) {
+                $this->parameters[$key] = $this->cloneObject($value);
+            }
+        }
+    }
+
+    /**
+     * @return string
+     */
+    public function toString()
+    {
+        return sprintf(
+          "%s::%s(%s)",
+
+          $this->className,
+          $this->methodName,
+          join(
+            ', ',
+            array_map(
+              array('PHPUnit_Util_Type', 'shortenedExport'),
+              $this->parameters
+            )
+          )
+        );
+    }
+
+    /**
+     * @param  object $original
+     * @return object
+     */
+    protected function cloneObject($original)
+    {
+        $object = new ReflectionObject($original);
+
+        if ($object->hasMethod('__clone')) {
+            $method = $object->getMethod('__clone');
+
+            if (!$method->isPublic()) {
+                return $original;
+            }
+
+            try {
+                return clone $original;
+            }
+
+            catch (Exception $e) {
+                return $original;
+            }
+        }
+
+        return clone $original;
+    }
+}
 ?>
