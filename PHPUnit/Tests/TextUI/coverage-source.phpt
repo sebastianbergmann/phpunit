@@ -49,7 +49,7 @@ Writing code coverage data to XML files, this may take a moment.
     <body> *</body>
   </line>
   <line lineNumber="5" executed="-3">
-    <body> * Copyright (c) 2002-2009, Sebastian Bergmann &lt;sb@sebastian-bergmann.de&gt;.</body>
+    <body> * Copyright (c) 2002-2010, Sebastian Bergmann &lt;sb@sebastian-bergmann.de&gt;.</body>
   </line>
   <line lineNumber="6" executed="-3">
     <body> * All rights reserved.</body>
@@ -154,7 +154,7 @@ Writing code coverage data to XML files, this may take a moment.
     <body> * @author     Sebastian Bergmann &lt;sb@sebastian-bergmann.de&gt;</body>
   </line>
   <line lineNumber="40" executed="-3">
-    <body> * @copyright  2002-2009 Sebastian Bergmann &lt;sb@sebastian-bergmann.de&gt;</body>
+    <body> * @copyright  2002-2010 Sebastian Bergmann &lt;sb@sebastian-bergmann.de&gt;</body>
   </line>
   <line lineNumber="41" executed="-3">
     <body> * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License</body>
@@ -196,7 +196,7 @@ Writing code coverage data to XML files, this may take a moment.
     <body> * @author     Sebastian Bergmann &lt;sb@sebastian-bergmann.de&gt;</body>
   </line>
   <line lineNumber="54" executed="-3">
-    <body> * @copyright  2002-2009 Sebastian Bergmann &lt;sb@sebastian-bergmann.de&gt;</body>
+    <body> * @copyright  2002-2010 Sebastian Bergmann &lt;sb@sebastian-bergmann.de&gt;</body>
   </line>
   <line lineNumber="55" executed="-3">
     <body> * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License</body>
@@ -421,7 +421,7 @@ Writing code coverage data to XML files, this may take a moment.
     <body> *</body>
   </line>
   <line lineNumber="5">
-    <body> * Copyright (c) 2002-2009, Sebastian Bergmann &lt;sb@sebastian-bergmann.de&gt;.</body>
+    <body> * Copyright (c) 2002-2010, Sebastian Bergmann &lt;sb@sebastian-bergmann.de&gt;.</body>
   </line>
   <line lineNumber="6">
     <body> * All rights reserved.</body>
@@ -526,7 +526,7 @@ Writing code coverage data to XML files, this may take a moment.
     <body> * @author     Sebastian Bergmann &lt;sb@sebastian-bergmann.de&gt;</body>
   </line>
   <line lineNumber="40">
-    <body> * @copyright  2002-2009 Sebastian Bergmann &lt;sb@sebastian-bergmann.de&gt;</body>
+    <body> * @copyright  2002-2010 Sebastian Bergmann &lt;sb@sebastian-bergmann.de&gt;</body>
   </line>
   <line lineNumber="41">
     <body> * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License</body>
@@ -571,7 +571,7 @@ Writing code coverage data to XML files, this may take a moment.
     <body> * @author     Sebastian Bergmann &lt;sb@sebastian-bergmann.de&gt;</body>
   </line>
   <line lineNumber="55">
-    <body> * @copyright  2002-2009 Sebastian Bergmann &lt;sb@sebastian-bergmann.de&gt;</body>
+    <body> * @copyright  2002-2010 Sebastian Bergmann &lt;sb@sebastian-bergmann.de&gt;</body>
   </line>
   <line lineNumber="56">
     <body> * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License</body>
