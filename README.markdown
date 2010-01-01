@@ -12,6 +12,7 @@ PHPUnit 3.4.6
 * Fixed TRAC-892: Oracle's `TRUNCATE` requires additional `TABLE` statement.
 * Fixed TRAC-942: Process Isolation should define constants before including files.
 * Fixed TRAC-943: `xdebug.show_exception_trace=On` breaks PHPUnit.
+* Fixed TRAC-944: Closures might trick the metrics analyzer.
 * Fixed TRAC-945: File not found error (and other weird stuff) comes up if shell sends `\n` in `argv`.
 * Fixed TRAC-949: Invalid XML generated on binary diffs.
 * Fixed TRAC-969: Destructors cannot be mocked.
