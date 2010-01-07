@@ -227,6 +227,7 @@ class Util_ConfigurationTest extends PHPUnit_Framework_TestCase
     {
         $this->assertEquals(
           array (
+            'include_path' => '.',
             'ini' =>
             array (
               'foo' => 'bar',

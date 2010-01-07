@@ -135,6 +135,7 @@ PHP_CodeCoverage_Filter::getInstance()->addFileToBlacklist(__FILE__, 'PHPUNIT');
  *   </logging>
  *
  *   <php>
+ *     <includePath>.</includePath>
  *     <ini name="foo" value="bar"/>
  *     <const name="foo" value="bar"/>
  *     <var name="foo" value="bar"/>
@@ -402,10 +403,17 @@ class PHPUnit_Util_Configuration
     public function getPHPConfiguration()
     {
         $result = array(
-          'ini'   => array(),
-          'const' => array(),
-          'var'   => array()
+          'include_path' => '',
+          'ini'          => array(),
+          'const'        => array(),
+          'var'          => array()
         );
+
+        $nl = $this->xpath->query('php/includePath');
+
+        if ($nl->length == 1) {
+            $result['include_path'] = (string)$nl->item(0)->nodeValue;
+        }
 
         foreach ($this->xpath->query('php/ini') as $ini) {
             $name  = (string)$ini->getAttribute('name');
@@ -455,6 +463,14 @@ class PHPUnit_Util_Configuration
     public function handlePHPConfiguration()
     {
         $configuration = $this->getPHPConfiguration();
+
+        if ($configuration['include_path'] != '') {
+            ini_set(
+              'include_path',
+              $configuration['include_path'] . PATH_SEPARATOR .
+              ini_get('include_path')
+            );
+        }
 
         foreach ($configuration['ini'] as $name => $value) {
             if (defined($value)) {
