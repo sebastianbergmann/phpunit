@@ -3,6 +3,11 @@ PHPUnit 3.4
 
 This is the list of changes for the PHPUnit 3.4 release series.
 
+PHPUnit 3.4.7
+-------------
+
+* Fixed TRAC-979: `@codeCoverageIgnoreStart` is being ignored.
+
 PHPUnit 3.4.6
 -------------
 
