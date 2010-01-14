@@ -73,8 +73,6 @@ class PHPUnit_Util_Metrics_File extends PHPUnit_Util_Metrics
     protected $filename;
     protected $classes = array();
     protected $functions = array();
-    protected $lines = array();
-    protected $tokens = array();
 
     protected static $cache = array();
 
@@ -97,8 +95,6 @@ class PHPUnit_Util_Metrics_File extends PHPUnit_Util_Metrics
         }
 
         $this->filename = $filename;
-        $this->lines    = file($filename);
-        $this->tokens   = token_get_all(file_get_contents($filename));
 
         $this->countLines();
         $this->setCoverage($codeCoverage);
@@ -213,7 +209,7 @@ class PHPUnit_Util_Metrics_File extends PHPUnit_Util_Metrics
      */
     public function getLines()
     {
-        return $this->lines;
+        return file($this->filename);
     }
 
     /**
@@ -223,7 +219,7 @@ class PHPUnit_Util_Metrics_File extends PHPUnit_Util_Metrics
      */
     public function getTokens()
     {
-        return $this->tokens;
+    	return token_get_all(file_get_contents($this->filename));
     }
 
     /**
@@ -297,7 +293,7 @@ class PHPUnit_Util_Metrics_File extends PHPUnit_Util_Metrics
           $codeCoverage,
           $this->filename,
           1,
-          count($this->lines)
+          $this->loc
         );
 
         $this->coverage      = $statistics['coverage'];
@@ -310,22 +306,8 @@ class PHPUnit_Util_Metrics_File extends PHPUnit_Util_Metrics
      */
     protected function countLines()
     {
-        $this->loc  = count($this->lines);
-        $this->cloc = 0;
-
-        foreach ($this->tokens as $i => $token) {
-            if (is_string($token)) {
-                continue;
-            }
-
-            list ($token, $value) = $token;
-
-            if ($token == T_COMMENT || $token == T_DOC_COMMENT) {
-                $this->cloc += count(explode("\n", $value));
-            }
-        }
-
-        $this->ncloc = $this->loc - $this->cloc;
+    	foreach (PHPUnit_Util_File::countLines($this->filename)  as $name => $value)
+    		$this->$name = $value;
     }
 }
 ?>
