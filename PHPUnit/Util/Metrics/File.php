@@ -96,7 +96,10 @@ class PHPUnit_Util_Metrics_File extends PHPUnit_Util_Metrics
 
         $this->filename = $filename;
 
-        $this->countLines();
+        foreach (PHPUnit_Util_File::countLines($this->filename) as $name => $value) {
+            $this->$name = $value;
+        }
+
         $this->setCoverage($codeCoverage);
 
         foreach (PHPUnit_Util_File::getClassesInFile($filename) as $className => $class) {
@@ -219,7 +222,7 @@ class PHPUnit_Util_Metrics_File extends PHPUnit_Util_Metrics
      */
     public function getTokens()
     {
-    	return token_get_all(file_get_contents($this->filename));
+        return token_get_all(file_get_contents($this->filename));
     }
 
     /**
@@ -300,14 +303,6 @@ class PHPUnit_Util_Metrics_File extends PHPUnit_Util_Metrics
         $this->loc           = $statistics['loc'];
         $this->locExecutable = $statistics['locExecutable'];
         $this->locExecuted   = $statistics['locExecuted'];
-    }
-
-    /**
-     */
-    protected function countLines()
-    {
-    	foreach (PHPUnit_Util_File::countLines($this->filename)  as $name => $value)
-    		$this->$name = $value;
     }
 }
 ?>
