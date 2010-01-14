@@ -7,6 +7,19 @@
     <const name="PHPUNIT_TESTSUITE_EXTENSION_SELENIUM_PORT" value="4444"/>
     <const name="PHPUNIT_TESTSUITE_EXTENSION_SELENIUM_BROWSER" value="*firefox"/>
   </php>
+
+  <testsuites>
+    <testsuite name="PHPUnit">
+      <directory suffix="Test.php">Framework</directory>
+      <directory suffix=".phpt">Framework/MockObject</directory>
+      <directory suffix="Test.php">Extensions</directory>
+      <directory suffix=".phpt">Regression</directory>
+      <directory suffix="Test.php">Runner</directory>
+      <directory suffix=".phpt">TextUI</directory>
+      <directory suffix="Test.php">Util</directory>
+    </testsuite>
+  </testsuites>
+
   <filter>
     <whitelist addUncoveredFilesFromWhitelist="true">
       <directory suffix=".php">../Extensions</directory>
