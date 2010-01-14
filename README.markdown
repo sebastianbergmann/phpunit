@@ -9,6 +9,7 @@ PHPUnit 3.5.0
 * Implemented TRAC-834: Refactor collection, processing, and rendering of code coverage information using the [PHP_CodeCoverage](http://github.com/sebastianbergmann/php-code-coverage) component.
 * Implemented TRAC-948: Add D-BUS test listener.
 * Implemented TRAC-967: Only populate whitelist when code coverage is used.
+* Implemented TRAC-985: Sort arrays before diff.
 * Added `assertStringMatchesFormat()` and `assertStringNotMatchesFormat()` as well as `assertStringMatchesFormatFile()` and `assertStringNotMatchesFormatFile()` for `EXPECTF`-like (`run-tests.php`) format string matching.
 * Added support for the [XML format of mysqldump](http://dev.mysql.com/doc/refman/5.1/en/mysqldump.html#option_mysqldump_xml) to the database extension.
 * Added the `<includePath>` element to the `<php>` section of the XML configuration file.
