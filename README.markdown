@@ -7,6 +7,7 @@ PHPUnit 3.4.7
 -------------
 
 * Fixed TRAC-979: `@codeCoverageIgnoreStart` is being ignored.
+* Fixed TRAC-986: Memory leaks with mock objects.
 
 PHPUnit 3.4.6
 -------------
