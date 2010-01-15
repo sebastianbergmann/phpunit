@@ -711,6 +711,7 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
             foreach ($this->mockObjects as $mockObject) {
                 $this->numAssertions++;
                 $mockObject->__phpunit_verify();
+                $mockObject->__phpunit_cleanup();
             }
 
             $this->status = PHPUnit_Runner_BaseTestRunner::STATUS_PASSED;
