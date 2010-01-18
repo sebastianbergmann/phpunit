@@ -3,6 +3,7 @@
 <phpunit backupGlobals="false">
   <php>
     <const name="PHPUNIT_TESTSUITE" value="true"/>
+    <!--<const name="PHPUNIT_TESTSUITE_EXTENSION_DATABASE_MYSQL" value="mysql:dbname=test;unix_socket=/tmp/mysql.sock"/>-->
     <const name="PHPUNIT_TESTSUITE_EXTENSION_SELENIUM_HOST" value="127.0.0.1"/>
     <const name="PHPUNIT_TESTSUITE_EXTENSION_SELENIUM_PORT" value="4444"/>
     <const name="PHPUNIT_TESTSUITE_EXTENSION_SELENIUM_BROWSER" value="*firefox"/>

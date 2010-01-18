@@ -71,14 +71,8 @@ class Extensions_Database_Operation_OperationsMySQLTest extends PHPUnit_Extensio
             $this->markTestSkipped('pdo_mysql is required to run this test.');
         }
 
-        try {
-            $connection = new PDO(
-              'mysql:dbname=test;unix_socket=/tmp/mysql.sock'
-            );
-        }
-
-        catch (PDOException $e) {
-            $this->markTestSkipped('MySQL not running on /tmp/mysql.sock.');
+        if (!defined('PHPUNIT_TESTSUITE_EXTENSION_DATABASE_MYSQL')) {
+            $this->markTestSkipped('No MySQL server configured for this test.');
         }
 
         parent::setUp();
