@@ -290,7 +290,7 @@ abstract class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_Tes
         $result->run($this);
 
         if ($this->collectCodeCoverageInformation) {
-            $this->codeCoverage->getCodeCoverage()->append(
+            $result->getCodeCoverage()->append(
               $this->getCodeCoverage(), $this
             );
         }
