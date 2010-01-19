@@ -35,28 +35,21 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
+require_once 'PHP/CodeCoverage/Filter.php';
+PHP_CodeCoverage_Filter::getInstance()->addFileToBlacklist(__FILE__, 'PHPUNIT');
+
 if (strpos('@php_bin@', '@php_bin') === 0) {
     set_include_path(dirname(__FILE__) . PATH_SEPARATOR . get_include_path());
 }
 
-if (isset($_ENV['PWD'])) {
-    chdir($_ENV['PWD']);
-}
-
-require_once 'PHP/CodeCoverage/Filter.php';
-PHP_CodeCoverage_Filter::getInstance()->addFileToBlacklist(__FILE__, 'PHPUNIT');
-
-require_once 'PHPUnit/Extensions/Database/UI/Command.php';
-require_once 'PHPUnit/Extensions/Database/UI/ModeFactory.php';
-require_once 'PHPUnit/Extensions/Database/UI/Mediums/Text.php';
-require_once 'PHPUnit/Extensions/Database/UI/Context.php';
+require_once 'PHPUnit/Autoload.php';
 
 $command = new PHPUnit_Extensions_Database_UI_Command(
-	new PHPUnit_Extensions_Database_UI_ModeFactory()
+  new PHPUnit_Extensions_Database_UI_ModeFactory()
 );
 
 $command->main(
-	new PHPUnit_Extensions_Database_UI_Mediums_Text($_SERVER['argv']),
-	new PHPUnit_Extensions_Database_UI_Context()
+  new PHPUnit_Extensions_Database_UI_Mediums_Text($_SERVER['argv']),
+  new PHPUnit_Extensions_Database_UI_Context()
 );
 ?>
