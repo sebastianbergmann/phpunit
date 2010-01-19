@@ -43,10 +43,6 @@
  * @since      File available since Release 2.3.0
  */
 
-require_once 'PHPUnit/Framework.php';
-
-PHP_CodeCoverage_Filter::getInstance()->addFileToBlacklist(__FILE__, 'PHPUNIT');
-
 /**
  * Error handler that converts PHP errors and warnings to exceptions.
  *

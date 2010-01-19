@@ -43,8 +43,6 @@
  * @since      File available since Release 3.1.4
  */
 
-PHP_CodeCoverage_Filter::getInstance()->addFileToBlacklist(__FILE__, 'PHPUNIT');
-
 /**
  * Dummy logger for PEAR_RunTest.
  *

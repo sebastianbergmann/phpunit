@@ -43,10 +43,6 @@
  * @since      File available since Release 3.3.0
  */
 
-require_once 'PHPUnit/Util/TestDox/ResultPrinter.php';
-
-PHP_CodeCoverage_Filter::getInstance()->addFileToBlacklist(__FILE__, 'PHPUNIT');
-
 /**
  * Base for Story result printers.
  *

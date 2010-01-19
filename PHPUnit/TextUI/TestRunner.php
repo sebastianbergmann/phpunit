@@ -43,16 +43,6 @@
  * @since      File available since Release 2.0.0
  */
 
-require_once 'PHPUnit/Framework.php';
-require_once 'PHPUnit/Runner/BaseTestRunner.php';
-require_once 'PHPUnit/Runner/StandardTestSuiteLoader.php';
-require_once 'PHPUnit/Runner/Version.php';
-require_once 'PHPUnit/TextUI/ResultPrinter.php';
-require_once 'PHPUnit/Util/Configuration.php';
-require_once 'PHPUnit/Util/Filesystem.php';
-
-PHP_CodeCoverage_Filter::getInstance()->addFileToBlacklist(__FILE__, 'PHPUNIT');
-
 /**
  * A TestRunner for the Command Line Interface (CLI)
  * PHP SAPI Module.
@@ -218,8 +208,6 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
         $result->addListener($this->printer);
 
         if (isset($arguments['storyHTMLFile'])) {
-            require_once 'PHPUnit/Extensions/Story/ResultPrinter/HTML.php';
-
             $result->addListener(
               new PHPUnit_Extensions_Story_ResultPrinter_HTML(
                 $arguments['storyHTMLFile']
@@ -228,8 +216,6 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
         }
 
         if (isset($arguments['storyTextFile'])) {
-            require_once 'PHPUnit/Extensions/Story/ResultPrinter/Text.php';
-
             $result->addListener(
               new PHPUnit_Extensions_Story_ResultPrinter_Text(
                 $arguments['storyTextFile']
@@ -238,8 +224,6 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
         }
 
         if (isset($arguments['testdoxHTMLFile'])) {
-            require_once 'PHPUnit/Util/TestDox/ResultPrinter/HTML.php';
-
             $result->addListener(
               new PHPUnit_Util_TestDox_ResultPrinter_HTML(
                 $arguments['testdoxHTMLFile']
@@ -248,8 +232,6 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
         }
 
         if (isset($arguments['testdoxTextFile'])) {
-            require_once 'PHPUnit/Util/TestDox/ResultPrinter/Text.php';
-
             $result->addListener(
               new PHPUnit_Util_TestDox_ResultPrinter_Text(
                 $arguments['testdoxTextFile']
@@ -264,30 +246,22 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
         }
 
         if (isset($arguments['logDbus'])) {
-            require_once 'PHPUnit/Util/Log/DBUS.php';
-
             $result->addListener(new PHPUnit_Util_Log_DBUS);
         }
 
         if (isset($arguments['jsonLogfile'])) {
-            require_once 'PHPUnit/Util/Log/JSON.php';
-
             $result->addListener(
               new PHPUnit_Util_Log_JSON($arguments['jsonLogfile'])
             );
         }
 
         if (isset($arguments['tapLogfile'])) {
-            require_once 'PHPUnit/Util/Log/TAP.php';
-
             $result->addListener(
               new PHPUnit_Util_Log_TAP($arguments['tapLogfile'])
             );
         }
 
         if (isset($arguments['junitLogfile'])) {
-            require_once 'PHPUnit/Util/Log/JUnit.php';
-
             $result->addListener(
               new PHPUnit_Util_Log_JUnit(
                 $arguments['junitLogfile'], $arguments['logIncompleteSkipped']

@@ -43,9 +43,6 @@
  * @since      File available since Release 3.4.0
  */
 
-require_once ('PHPUnit/Extensions/Database/DataSet/ISpec.php');
-require_once ('PHPUnit/Extensions/Database/DataSet/CsvDataSet.php');
-
 /**
  * Creates CsvDataSets based off of a spec string.
  *

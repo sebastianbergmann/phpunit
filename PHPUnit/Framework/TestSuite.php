@@ -43,16 +43,7 @@
  * @since      File available since Release 2.0.0
  */
 
-require_once 'PHPUnit/Framework.php';
-
-require_once 'PHPUnit/Runner/BaseTestRunner.php';
-require_once 'PHPUnit/Util/Class.php';
-require_once 'PHPUnit/Util/Fileloader.php';
-require_once 'PHPUnit/Util/InvalidArgumentHelper.php';
-require_once 'PHPUnit/Util/Test.php';
-require_once 'PHPUnit/Util/TestSuiteIterator.php';
-
-PHP_CodeCoverage_Filter::getInstance()->addFileToBlacklist(__FILE__, 'PHPUNIT');
+require_once 'PHP/CodeCoverage.php';
 
 /**
  * A TestSuite is a composite of Tests. It runs a collection of test cases.
@@ -372,8 +363,6 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
         }
 
         if (file_exists($filename) && substr($filename, -5) == '.phpt') {
-            require_once 'PHPUnit/Extensions/PhptTestCase.php';
-
             $this->addTest(
               new PHPUnit_Extensions_PhptTestCase($filename, $phptOptions)
             );

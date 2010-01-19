@@ -43,10 +43,6 @@
  * @since      File available since Release 3.0.0
  */
 
-require_once 'PHPUnit/Framework/MockObject/Builder/Stub.php';
-
-PHP_CodeCoverage_Filter::getInstance()->addFileToBlacklist(__FILE__, 'PHPUNIT');
-
 /**
  * Builder interface for invocation order matches.
  *

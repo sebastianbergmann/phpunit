@@ -43,8 +43,6 @@
  * @since      File available since Release 3.3.0
  */
 
-require_once 'PHPUnit/Framework.php';
-
 /**
  * Wrapper for PHP notices.
  * You can disable notice-to-exception conversion by setting

@@ -43,14 +43,6 @@
  * @since      File available since Release 3.0.0
  */
 
-require_once 'PHPUnit/TextUI/TestRunner.php';
-require_once 'PHPUnit/Util/Configuration.php';
-require_once 'PHPUnit/Util/Fileloader.php';
-require_once 'PHPUnit/Util/Filesystem.php';
-require_once 'PHPUnit/Util/Getopt.php';
-
-PHP_CodeCoverage_Filter::getInstance()->addFileToBlacklist(__FILE__, 'PHPUNIT');
-
 /**
  * A TestRunner for the Command Line Interface (CLI)
  * PHP SAPI Module.
@@ -159,8 +151,6 @@ class PHPUnit_TextUI_Command
             $start     = strpos($message, '"') + 1;
             $end       = strpos($message, '"', $start);
             $className = substr($message, $start, $end - $start);
-
-            require_once 'PHPUnit/Util/Skeleton/Test.php';
 
             $skeleton = new PHPUnit_Util_Skeleton_Test(
               $className,
@@ -421,15 +411,11 @@ class PHPUnit_TextUI_Command
                 break;
 
                 case '--tap': {
-                    require_once 'PHPUnit/Util/Log/TAP.php';
-
                     $this->arguments['printer'] = new PHPUnit_Util_Log_TAP;
                 }
                 break;
 
                 case '--story': {
-                    require_once 'PHPUnit/Extensions/Story/ResultPrinter/Text.php';
-
                     $this->arguments['printer'] = new PHPUnit_Extensions_Story_ResultPrinter_Text;
                 }
                 break;
@@ -450,8 +436,6 @@ class PHPUnit_TextUI_Command
                 break;
 
                 case '--testdox': {
-                    require_once 'PHPUnit/Util/TestDox/ResultPrinter/Text.php';
-
                     $this->arguments['printer'] = new PHPUnit_Util_TestDox_ResultPrinter_Text;
                 }
                 break;
@@ -604,7 +588,6 @@ class PHPUnit_TextUI_Command
             $browsers = $configuration->getSeleniumBrowserConfiguration();
 
             if (!empty($browsers)) {
-                require_once 'PHPUnit/Extensions/SeleniumTestCase.php';
                 PHPUnit_Extensions_SeleniumTestCase::$browsers = $browsers;
             }
 
@@ -620,8 +603,6 @@ class PHPUnit_TextUI_Command
         }
 
         if (isset($this->arguments['test']) && is_string($this->arguments['test']) && substr($this->arguments['test'], -5, 5) == '.phpt') {
-            require_once 'PHPUnit/Extensions/PhptTestCase.php';
-
             $test = new PHPUnit_Extensions_PhptTestCase($this->arguments['test']);
 
             $this->arguments['test'] = new PHPUnit_Framework_TestSuite;
@@ -643,12 +624,8 @@ class PHPUnit_TextUI_Command
                 PHPUnit_TextUI_TestRunner::printVersionString();
 
                 if ($skeletonClass) {
-                    require_once 'PHPUnit/Util/Skeleton/Class.php';
-
                     $class = 'PHPUnit_Util_Skeleton_Class';
                 } else {
-                    require_once 'PHPUnit/Util/Skeleton/Test.php';
-
                     $class = 'PHPUnit_Util_Skeleton_Test';
                 }
 

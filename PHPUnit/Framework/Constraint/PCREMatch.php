@@ -43,8 +43,6 @@
  * @since      File available since Release 3.0.0
  */
 
-PHP_CodeCoverage_Filter::getInstance()->addFileToBlacklist(__FILE__, 'PHPUNIT');
-
 /**
  * Constraint that asserts that the string it is evaluated for matches
  * a regular expression.

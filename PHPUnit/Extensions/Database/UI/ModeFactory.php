@@ -43,9 +43,6 @@
  * @since      File available since Release 3.4.0
  */
 
-require_once ('PHPUnit/Extensions/Database/UI/IModeFactory.php');
-require_once ('PHPUnit/Extensions/Database/UI/InvalidModeException.php');
-
 /**
  * The default factory for db extension modes.
  *

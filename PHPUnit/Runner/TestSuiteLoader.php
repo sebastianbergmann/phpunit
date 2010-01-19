@@ -43,8 +43,6 @@
  * @since      File available since Release 2.0.0
  */
 
-PHP_CodeCoverage_Filter::getInstance()->addFileToBlacklist(__FILE__, 'PHPUNIT');
-
 /**
  * An interface to define how a test suite should be loaded.
  *

@@ -44,10 +44,6 @@
  * @since      File available since Release 3.3.0
  */
 
-require_once 'PHPUnit/Extensions/Story/Step.php';
-
-PHP_CodeCoverage_Filter::getInstance()->addFileToBlacklist(__FILE__, 'PHPUNIT');
-
 /**
  * A "Given" step.
  *

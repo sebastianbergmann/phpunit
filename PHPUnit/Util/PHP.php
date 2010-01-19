@@ -43,8 +43,6 @@
  * @since      File available since Release 3.4.0
  */
 
-PHP_CodeCoverage_Filter::getInstance()->addFileToBlacklist(__FILE__, 'PHPUNIT');
-
 /**
  * Utility methods for PHP sub-processes.
  *

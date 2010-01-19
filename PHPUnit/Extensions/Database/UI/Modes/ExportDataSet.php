@@ -43,12 +43,6 @@
  * @since      File available since Release 3.4.0
  */
 
-require_once ('PHPUnit/Extensions/Database/UI/IMode.php');
-require_once ('PHPUnit/Extensions/Database/UI/Modes/ExportDataSet/Arguments.php');
-require_once ('PHPUnit/Extensions/Database/DataSet/CompositeDataSet.php');
-require_once ('PHPUnit/Extensions/Database/DataSet/Specs/Factory.php');
-require_once ('PHPUnit/Extensions/Database/DataSet/Persistors/Factory.php');
-
 /**
  * The class for the export-dataset command.
  *

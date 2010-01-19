@@ -43,9 +43,6 @@
  * @since      File available since Release 3.4.0CSV
  */
 
-require_once ('PHPUnit/Extensions/Database/DataSet/ISpec.php');
-require_once ('PHPUnit/Extensions/Database/DataSet/YamlDataSet.php');
-
 /**
  * Creates a YAML dataset based off of a spec string.
  *

@@ -43,10 +43,6 @@
  * @since      File available since Release 3.1.4
  */
 
-require_once 'PHPUnit/Util/Type.php';
-
-PHP_CodeCoverage_Filter::getInstance()->addFileToBlacklist(__FILE__, 'PHPUNIT');
-
 /**
  * Constraint that asserts that the Traversable it is applied to contains
  * only values of a given type.

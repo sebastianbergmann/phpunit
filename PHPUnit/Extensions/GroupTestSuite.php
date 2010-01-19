@@ -43,10 +43,6 @@
  * @since      File available since Release 3.3.0
  */
 
-require_once 'PHPUnit/Framework.php';
-
-PHP_CodeCoverage_Filter::getInstance()->addFileToBlacklist(__FILE__, 'PHPUNIT');
-
 /**
  * We have a TestSuite object A.
  * In TestSuite object A we have Tests tagged with @group.

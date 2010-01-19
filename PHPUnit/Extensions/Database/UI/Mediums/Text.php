@@ -43,8 +43,6 @@
  * @since      File available since Release 3.4.0
  */
 
-require_once ('PHPUnit/Extensions/Database/UI/IMedium.php');
-
 /**
  * A text medium for the database extension tool.
  *

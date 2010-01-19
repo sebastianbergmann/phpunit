@@ -43,10 +43,6 @@
  * @since      File available since Release 2.1.0
  */
 
-require_once 'PHPUnit/Util/Class.php';
-
-PHP_CodeCoverage_Filter::getInstance()->addFileToBlacklist(__FILE__, 'PHPUNIT');
-
 /**
  * Generator for skeletons.
  *

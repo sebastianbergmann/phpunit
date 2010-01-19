@@ -43,15 +43,9 @@
  * @since      File available since Release 3.0.0
  */
 
-require_once 'PHPUnit/Framework.php';
-require_once 'PHPUnit/Util/Printer.php';
-require_once 'PHPUnit/Util/Test.php';
-
 if (PHPUnit_Util_Filesystem::fileExistsInIncludePath('SymfonyComponents/YAML/sfYamlDumper.php')) {
     require_once 'SymfonyComponents/YAML/sfYamlDumper.php';
 }
-
-PHP_CodeCoverage_Filter::getInstance()->addFileToBlacklist(__FILE__, 'PHPUNIT');
 
 /**
  * A TestListener that generates a logfile of the

@@ -43,13 +43,6 @@
  * @since      File available since Release 3.5.0
  */
 
-require_once 'PHPUnit/Framework.php';
-
-require_once 'PHPUnit/Extensions/Database/DataSet/AbstractXmlDataSet.php';
-require_once 'PHPUnit/Extensions/Database/DataSet/Persistors/MysqlXml.php';
-
-PHP_CodeCoverage_Filter::getInstance()->addFileToBlacklist(__FILE__, 'PHPUNIT');
-
 /**
  * Data set implementation for the output of mysqldump --xml -t.
  *

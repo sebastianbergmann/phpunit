@@ -43,10 +43,6 @@
  * @since      File available since Release 3.4.0
  */
 
-require_once ('PHPUnit/Extensions/Database/DataSet/ISpec.php');
-require_once ('PHPUnit/Extensions/Database/DB/DefaultDatabaseConnection.php');
-require_once ('PHPUnit/Extensions/Database/IDatabaseListConsumer.php');
-
 /**
  * Creates a database dataset based off of a spec string.
  *

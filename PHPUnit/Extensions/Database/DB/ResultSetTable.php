@@ -43,12 +43,6 @@
  * @since      File available since Release 3.2.0
  */
 
-require_once 'PHPUnit/Framework.php';
-
-PHP_CodeCoverage_Filter::getInstance()->addFileToBlacklist(__FILE__, 'PHPUNIT');
-
-require_once 'PHPUnit/Extensions/Database/DataSet/AbstractTable.php';
-
 /**
  * Provides the functionality to represent a database result set as a DBUnit
  * table.

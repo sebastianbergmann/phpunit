@@ -44,10 +44,6 @@
  * @since      File available since Release 3.0.0
  */
 
-require_once 'PHPUnit/Util/Type.php';
-
-PHP_CodeCoverage_Filter::getInstance()->addFileToBlacklist(__FILE__, 'PHPUNIT');
-
 /**
  * Constraint that checks if one value is equal to another.
  *

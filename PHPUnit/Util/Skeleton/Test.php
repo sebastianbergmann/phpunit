@@ -44,10 +44,6 @@
  */
 
 require_once 'Text/Template.php';
-require_once 'PHPUnit/Util/Filesystem.php';
-require_once 'PHPUnit/Util/Skeleton.php';
-
-PHP_CodeCoverage_Filter::getInstance()->addFileToBlacklist(__FILE__, 'PHPUNIT');
 
 /**
  * Generator for test class skeletons from classes.

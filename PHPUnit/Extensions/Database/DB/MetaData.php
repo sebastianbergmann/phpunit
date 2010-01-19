@@ -43,11 +43,6 @@
  * @since      File available since Release 3.2.0
  */
 
-require_once 'PHPUnit/Framework.php';
-require_once 'PHPUnit/Extensions/Database/DB/IMetaData.php';
-
-PHP_CodeCoverage_Filter::getInstance()->addFileToBlacklist(__FILE__, 'PHPUNIT');
-
 /**
  * Provides a basic constructor for all meta data classes and a factory for
  * generating the appropriate meta data class.
@@ -230,14 +225,4 @@ abstract class PHPUnit_Extensions_Database_DB_MetaData implements PHPUnit_Extens
         return FALSE;
     }
 }
-
-/**
- * I am not sure why these requires can't go above the class, but when they do
- * the classes can't find the PHPUnit_Extensions_Database_DB_MetaData
- * class.
- */
-require_once 'PHPUnit/Extensions/Database/DB/MetaData/Sqlite.php';
-require_once 'PHPUnit/Extensions/Database/DB/MetaData/InformationSchema.php';
-require_once 'PHPUnit/Extensions/Database/DB/MetaData/MySQL.php';
-require_once 'PHPUnit/Extensions/Database/DB/MetaData/PgSQL.php';
 ?>
