@@ -1,6 +1,6 @@
-#!/usr/bin/env php
 <?php
-/* PHPUnit
+/**
+ * PHPUnit
  *
  * Copyright (c) 2002-2010, Sebastian Bergmann <sb@sebastian-bergmann.de>.
  * All rights reserved.
@@ -29,26 +29,41 @@
  * INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING,
  * BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
  * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
- * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRIC
+ * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
  * LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
+ *
+ * @category   Testing
+ * @package    PHPUnit
+ * @author     Sebastian Bergmann <sb@sebastian-bergmann.de>
+ * @copyright  2002-2010 Sebastian Bergmann <sb@sebastian-bergmann.de>
+ * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
+ * @link       http://www.phpunit.de/
+ * @since      File available since Release 3.5.0
  */
 
+require_once 'PHPUnit/Util/Filesystem.php';
 require_once 'PHP/CodeCoverage/Filter.php';
 PHP_CodeCoverage_Filter::getInstance()->addFileToBlacklist(__FILE__, 'PHPUNIT');
 
-if (extension_loaded('xdebug')) {
-    ini_set('xdebug.show_exception_trace', 0);
+if (!function_exists('phpunit_autoload')) {
+    function phpunit_autoload($class)
+    {
+        if (strpos($class, 'PHPUnit_') === 0) {
+            $file = str_replace('_', '/', $class) . '.php';
+            $file = PHPUnit_Util_Filesystem::fileExistsInIncludePath($file);
+
+            if ($file) {
+                require_once $file;
+
+                PHP_CodeCoverage_Filter::getInstance()->addFileToBlacklist(
+                  $file, 'PHPUNIT'
+                );
+            }
+        }
+    }
+
+    spl_autoload_register('phpunit_autoload');
 }
-
-if (strpos('@php_bin@', '@php_bin') === 0) {
-    set_include_path(dirname(__FILE__) . PATH_SEPARATOR . get_include_path());
-}
-
-require_once 'PHPUnit/Autoload.php';
-
-define('PHPUnit_MAIN_METHOD', 'PHPUnit_TextUI_Command::main');
-
-PHPUnit_TextUI_Command::main();
 ?>
