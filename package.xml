@@ -1102,11 +1102,6 @@
    <pearinstaller>
     <min>1.8.1</min>
    </pearinstaller>
-   <package>
-    <name>YAML</name>
-    <channel>pear.symfony-project.com</channel>
-    <min>1.0.2</min>
-   </package>
    <extension>
     <name>dom</name>
    </extension>
@@ -1129,6 +1124,11 @@
    <package>
     <name>Log</name>
     <channel>pear.php.net</channel>
+   </package>
+   <package>
+    <name>YAML</name>
+    <channel>pear.symfony-project.com</channel>
+    <min>1.0.2</min>
    </package>
    <extension>
     <name>json</name>
