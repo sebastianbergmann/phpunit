@@ -43,11 +43,6 @@
  * @since      File available since Release 3.0.0
  */
 
-require_once 'PHPUnit/Framework/MockObject/Matcher/StatelessInvocation.php';
-require_once 'PHPUnit/Framework/MockObject/Invocation.php';
-
-PHP_CodeCoverage_Filter::getInstance()->addFileToBlacklist(__FILE__, 'PHPUNIT');
-
 /**
  * Invocation matcher which looks for specific parameters in the invocations.
  *

@@ -44,12 +44,6 @@
  */
 
 require_once 'Text/Template.php';
-require_once 'PHPUnit/Framework/MockObject/Matcher.php';
-require_once 'PHPUnit/Framework/MockObject/Invocation.php';
-require_once 'PHPUnit/Framework/MockObject/MockObject.php';
-require_once 'PHPUnit/Util/Class.php';
-
-PHP_CodeCoverage_Filter::getInstance()->addFileToBlacklist(__FILE__, 'PHPUNIT');
 
 /**
  * Mock Object Code Generator

@@ -44,8 +44,6 @@
  * @since      File available since Release 3.0.0
  */
 
-PHP_CodeCoverage_Filter::getInstance()->addFileToBlacklist(__FILE__, 'PHPUNIT');
-
 /**
  * Encapsulates information on a method invocation which can be passed to matchers.
  *
