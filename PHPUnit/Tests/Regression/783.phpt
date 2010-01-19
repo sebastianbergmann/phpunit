@@ -8,7 +8,7 @@ $_SERVER['argv'][3] = 'foo,bar';
 $_SERVER['argv'][4] = 'ParentSuite';
 $_SERVER['argv'][5] = 'Regression/783/ParentSuite.php';
 
-require_once dirname(dirname(dirname(__FILE__))) . '/TextUI/Command.php';
+require_once dirname(dirname(dirname(__FILE__))) . '/Autoload.php';
 PHPUnit_TextUI_Command::main();
 ?>
 --EXPECTF--

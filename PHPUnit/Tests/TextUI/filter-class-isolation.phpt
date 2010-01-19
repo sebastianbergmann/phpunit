@@ -9,7 +9,7 @@ $_SERVER['argv'][4] = 'BankAccountTest';
 $_SERVER['argv'][5] = 'BankAccountTest';
 $_SERVER['argv'][6] = '../Samples/BankAccount/BankAccountTest.php';
 
-require_once dirname(dirname(dirname(__FILE__))) . '/TextUI/Command.php';
+require_once dirname(dirname(dirname(__FILE__))) . '/Autoload.php';
 PHPUnit_TextUI_Command::main();
 ?>
 --EXPECTF--
