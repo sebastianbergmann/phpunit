@@ -83,9 +83,7 @@ class DBUnitTestUtility
     public static function getMySQLDB()
     {
         if (self::$connection === NULL) {
-            $connection = new PDO(
-              'mysql:dbname=test;unix_socket=/tmp/mysql.sock'
-            );
+            $connection = new PDO(PHPUNIT_TESTSUITE_EXTENSION_DATABASE_MYSQL);
 
             self::setUpMySQLDatabase($connection);
         }
