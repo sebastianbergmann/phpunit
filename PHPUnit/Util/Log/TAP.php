@@ -46,7 +46,10 @@
 require_once 'PHPUnit/Framework.php';
 require_once 'PHPUnit/Util/Printer.php';
 require_once 'PHPUnit/Util/Test.php';
-require_once 'SymfonyComponents/YAML/sfYamlDumper.php';
+
+if (PHPUnit_Util_Filesystem::fileExistsInIncludePath('SymfonyComponents/YAML/sfYamlDumper.php')) {
+    require_once 'SymfonyComponents/YAML/sfYamlDumper.php';
+}
 
 PHP_CodeCoverage_Filter::getInstance()->addFileToBlacklist(__FILE__, 'PHPUNIT');
 
@@ -136,14 +139,16 @@ class PHPUnit_Util_Log_TAP extends PHPUnit_Util_Printer implements PHPUnit_Frame
             }
         }
 
-        $yaml = new sfYamlDumper();
+        if (class_exists('sfYamlDumper')) {
+            $yaml = new sfYamlDumper;
 
-        $this->write(
-          sprintf(
-            "  ---\n%s  ...\n",
-            $yaml->dump($diagnostic, 2, 2)
-          )
-        );
+            $this->write(
+              sprintf(
+                "  ---\n%s  ...\n",
+                $yaml->dump($diagnostic, 2, 2)
+              )
+            );
+        }
     }
 
     /**

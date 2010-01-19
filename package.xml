@@ -17,7 +17,7 @@
   <email>sb@sebastian-bergmann.de</email>
   <active>yes</active>
  </lead>
- <date>2009-MM-DD</date>
+ <date>2010-MM-DD</date>
  <version>
   <release>3.5.0-dev</release>
   <api>3.5.0</api>
@@ -895,9 +895,6 @@
      <file baseinstalldir="/" name="Printer.php" role="php">
       <tasks:replace from="@package_version@" to="version" type="package-info" />
      </file>
-     <file baseinstalldir="/" name="Report.php" role="php">
-      <tasks:replace from="@package_version@" to="version" type="package-info" />
-     </file>
      <file baseinstalldir="/" name="Skeleton.php" role="php">
       <tasks:replace from="@package_version@" to="version" type="package-info" />
      </file>
@@ -951,18 +948,6 @@
    <pearinstaller>
     <min>1.9.0</min>
    </pearinstaller>
-   <extension>
-    <name>dom</name>
-   </extension>
-   <extension>
-    <name>pcre</name>
-   </extension>
-   <extension>
-    <name>reflection</name>
-   </extension>
-   <extension>
-    <name>spl</name>
-   </extension>
    <package>
     <name>File_Iterator</name>
     <channel>pear.phpunit.de</channel>
@@ -978,13 +963,25 @@
     <channel>pear.phpunit.de</channel>
     <min>1.0.0</min>
    </package>
+   <extension>
+    <name>dom</name>
+   </extension>
+   <extension>
+    <name>pcre</name>
+   </extension>
+   <extension>
+    <name>reflection</name>
+   </extension>
+   <extension>
+    <name>spl</name>
+   </extension>
+  </required>
+  <optional>
    <package>
     <name>YAML</name>
     <channel>pear.symfony-project.com</channel>
     <min>1.0.2</min>
    </package>
-  </required>
-  <optional>
    <extension>
     <name>dbus</name>
    </extension>
