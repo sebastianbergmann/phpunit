@@ -3,6 +3,11 @@ PHPUnit 3.4
 
 This is the list of changes for the PHPUnit 3.4 release series.
 
+PHPUnit 3.4.8
+-------------
+
+* Made dependency on YAML component optional.
+
 PHPUnit 3.4.7
 -------------
 
