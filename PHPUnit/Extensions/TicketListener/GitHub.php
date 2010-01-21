@@ -41,7 +41,7 @@
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    SVN: $Id$
  * @link       http://www.phpunit.de/
- * @since      File available since Release 3.4.8
+ * @since      File available since Release 3.5.0
  */
 require_once('PHPUnit/Extensions/TicketListener.php');
 PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
@@ -56,7 +56,7 @@ PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    Release: @package_version@
  * @link       http://www.phpunit.de/
- * @since      Class available since Release 3.4.8
+ * @since      Class available since Release 3.5.0
  */
 class PHPUnit_Extensions_TicketListener_GitHub extends 
     PHPUnit_Extensions_TicketListener
