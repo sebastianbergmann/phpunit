@@ -123,7 +123,7 @@ class PHPUnit_Util_FilterIterator extends FilterIterator
         $filename = $current->getFilename();
 
         if (strpos($filename, '.') === 0 ||
-            preg_match('=/\.[^/]*/=', $current->getRealPath())) {
+            preg_match('=/\.[^/]*/=', realpath($current->getPathname()))) {
             return FALSE;
         }
 
