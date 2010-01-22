@@ -99,7 +99,7 @@ class DBUnitTestUtility
         $connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
         $connection->exec(
-          'CREATE TABLE IF NOT EXISTS table1 (
+          'CREATE TABLE table1 (
             table1_id INTEGER PRIMARY KEY AUTOINCREMENT,
             column1 VARCHAR(20),
             column2 INT(10),
@@ -109,7 +109,7 @@ class DBUnitTestUtility
         );
 
         $connection->exec(
-          'CREATE TABLE IF NOT EXISTS table2 (
+          'CREATE TABLE table2 (
             table2_id INTEGER PRIMARY KEY AUTOINCREMENT,
             column5 VARCHAR(20),
             column6 INT(10),
@@ -119,7 +119,7 @@ class DBUnitTestUtility
         );
 
         $connection->exec(
-          'CREATE TABLE IF NOT EXISTS table3 (
+          'CREATE TABLE table3 (
             table3_id INTEGER PRIMARY KEY AUTOINCREMENT,
             column9 VARCHAR(20),
             column10 INT(10),

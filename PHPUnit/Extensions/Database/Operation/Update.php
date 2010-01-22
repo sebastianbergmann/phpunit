@@ -68,7 +68,7 @@ class PHPUnit_Extensions_Database_Operation_Update extends PHPUnit_Extensions_Da
 
     protected $operationName = 'UPDATE';
 
-    protected function buildOperationQuery(PHPUnit_Extensions_Database_DataSet_ITableMetaData $databaseTableMetaData, PHPUnit_Extensions_Database_DataSet_ITable $table, PHPUnit_Extensions_Database_DB_IDatabaseConnection $connection)
+    public function buildOperationQuery(PHPUnit_Extensions_Database_DataSet_ITableMetaData $databaseTableMetaData, PHPUnit_Extensions_Database_DataSet_ITable $table, PHPUnit_Extensions_Database_DB_IDatabaseConnection $connection)
     {
         $keys = $databaseTableMetaData->getPrimaryKeys();
         $columns = $table->getTableMetaData()->getColumns();
@@ -85,7 +85,7 @@ class PHPUnit_Extensions_Database_Operation_Update extends PHPUnit_Extensions_Da
         return $query;
     }
 
-    protected function buildOperationArguments(PHPUnit_Extensions_Database_DataSet_ITableMetaData $databaseTableMetaData, PHPUnit_Extensions_Database_DataSet_ITable $table, $row)
+    public function buildOperationArguments(PHPUnit_Extensions_Database_DataSet_ITableMetaData $databaseTableMetaData, PHPUnit_Extensions_Database_DataSet_ITable $table, $row)
     {
         $args = array();
         foreach ($table->getTableMetaData()->getColumns() as $columnName) {
