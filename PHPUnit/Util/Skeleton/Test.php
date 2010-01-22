@@ -84,7 +84,7 @@ class PHPUnit_Util_Skeleton_Test extends PHPUnit_Util_Skeleton
             $reflector    = new ReflectionClass($inClassName);
             $inSourceFile = $reflector->getFileName();
 
-            if ($inSourceFile !== FALSE) {
+            if ($inSourceFile === FALSE) {
                 $inSourceFile = '<internal>';
             }
 
