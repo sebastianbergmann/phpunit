@@ -3,6 +3,11 @@ PHPUnit 3.4
 
 This is the list of changes for the PHPUnit 3.4 release series.
 
+PHPUnit 3.4.9
+-------------
+
+* Removed usage of `SplFileInfo::getRealPath()` which is not available in PHP 5.1.6.
+
 PHPUnit 3.4.8
 -------------
 
