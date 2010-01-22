@@ -310,19 +310,6 @@ class PHPUnit_Util_Class
         }
 
         catch (ReflectionException $e) {
-            // Workaround for http://bugs.php.net/46064
-            if (version_compare(PHP_VERSION, '5.2.7', '<')) {
-                $reflector  = new ReflectionObject($object);
-                $attributes = $reflector->getProperties();
-
-                foreach ($attributes as $_attribute) {
-                    if ($_attribute->getName() == $attributeName) {
-                        $attribute = $_attribute;
-                        break;
-                    }
-                }
-            }
-
             $reflector = new ReflectionObject($object);
 
             while ($reflector = $reflector->getParentClass()) {

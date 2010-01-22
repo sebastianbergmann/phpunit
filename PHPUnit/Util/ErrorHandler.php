@@ -88,12 +88,7 @@ class PHPUnit_Util_ErrorHandler
 
         self::$errorStack[] = array($errno, $errstr, $errfile, $errline);
 
-        if (version_compare(PHP_VERSION, '5.2.5', '>=')) {
-            $trace = debug_backtrace(FALSE);
-        } else {
-            $trace = debug_backtrace();
-        }
-
+        $trace = debug_backtrace(FALSE);
         array_shift($trace);
 
         foreach ($trace as $frame) {
