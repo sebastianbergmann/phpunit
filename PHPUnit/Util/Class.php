@@ -327,8 +327,22 @@ class PHPUnit_Util_Class
         while ($class) {
             $attributes = $class->getStaticProperties();
 
-            if (array_key_exists($attributeName, $attributes)) {
-                return $attributes[$attributeName];
+            $key = $attributeName;
+
+            if (isset($attributes[$key])) {
+                return $attributes[$key];
+            }
+
+            $key = "\0*\0" . $attributeName;
+
+            if (isset($attributes[$key])) {
+                return $attributes[$key];
+            }
+
+            $key = "\0" . $class->getName() . "\0" . $attributeName;
+
+            if (isset($attributes[$key])) {
+                return $attributes[$key];
             }
 
             $class = $class->getParentClass();
