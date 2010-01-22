@@ -43,11 +43,6 @@
  * @since      File available since Release 2.0.0
  */
 
-require_once 'PHPUnit/Framework.php';
-require_once 'PHPUnit/Runner/StandardTestSuiteLoader.php';
-
-PHP_CodeCoverage_Filter::getInstance()->addFileToBlacklist(__FILE__, 'PHPUNIT');
-
 /**
  * Base class for all test runners.
  *

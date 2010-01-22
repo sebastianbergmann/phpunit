@@ -43,11 +43,6 @@
  * @since      File available since Release 3.0.0
  */
 
-require_once 'PHPUnit/Framework.php';
-require_once 'PHPUnit/Util/Filter.php';
-require_once 'PHPUnit/Util/Printer.php';
-require_once 'PHPUnit/Util/Test.php';
-
 /**
  * A TestListener that generates JSON messages.
  *

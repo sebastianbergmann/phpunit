@@ -44,11 +44,6 @@
  * @since      File available since Release 3.3.0
  */
 
-require_once 'Text/Template.php';
-require_once 'PHPUnit/Extensions/Story/ResultPrinter.php';
-
-PHP_CodeCoverage_Filter::getInstance()->addFileToBlacklist(__FILE__, 'PHPUNIT');
-
 /**
  * Prints stories in HTML format.
  *

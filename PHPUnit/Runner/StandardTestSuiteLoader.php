@@ -43,13 +43,6 @@
  * @since      File available since Release 2.0.0
  */
 
-require_once 'PHPUnit/Runner/TestSuiteLoader.php';
-require_once 'PHPUnit/Util/Class.php';
-require_once 'PHPUnit/Util/Fileloader.php';
-require_once 'PHPUnit/Util/Filesystem.php';
-
-PHP_CodeCoverage_Filter::getInstance()->addFileToBlacklist(__FILE__, 'PHPUNIT');
-
 /**
  * The standard test suite loader.
  *

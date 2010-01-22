@@ -43,17 +43,7 @@
  * @since      File available since Release 2.0.0
  */
 
-require_once 'PHPUnit/Framework.php';
-
-require_once 'PHPUnit/Util/ErrorHandler.php';
-require_once 'PHPUnit/Util/InvalidArgumentHelper.php';
-require_once 'PHPUnit/Util/Printer.php';
-require_once 'PHPUnit/Util/Test.php';
-require_once 'PHPUnit/Util/Timer.php';
-
 require_once 'PHP/CodeCoverage.php';
-
-PHP_CodeCoverage_Filter::getInstance()->addFileToBlacklist(__FILE__, 'PHPUNIT');
 
 /**
  * A TestResult collects the results of executing a test case.

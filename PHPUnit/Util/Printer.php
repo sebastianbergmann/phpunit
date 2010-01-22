@@ -43,8 +43,6 @@
  * @since      File available since Release 2.0.0
  */
 
-PHP_CodeCoverage_Filter::getInstance()->addFileToBlacklist(__FILE__, 'PHPUNIT');
-
 /**
  * Utility class that can print to STDOUT or write to a file.
  *

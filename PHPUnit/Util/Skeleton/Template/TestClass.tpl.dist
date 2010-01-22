@@ -1,5 +1,4 @@
-<?php{namespace}
-require_once 'PHPUnit/Framework.php';{requireClassFile}
+<?php{namespace}{requireClassFile}
 
 /**
  * Test class for {className}.

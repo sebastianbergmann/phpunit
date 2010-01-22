@@ -46,27 +46,7 @@
 require_once 'PHP/CodeCoverage/Filter.php';
 PHP_CodeCoverage_Filter::getInstance()->addFileToBlacklist(__FILE__, 'PHPUNIT');
 
-require 'PHPUnit/Framework/Exception.php';
-require 'PHPUnit/Framework/SelfDescribing.php';
-require 'PHPUnit/Framework/AssertionFailedError.php';
-require 'PHPUnit/Framework/Assert.php';
-require 'PHPUnit/Framework/Error.php';
-require 'PHPUnit/Framework/Error/Notice.php';
-require 'PHPUnit/Framework/Error/Warning.php';
-require 'PHPUnit/Framework/IncompleteTest.php';
-require 'PHPUnit/Framework/SkippedTest.php';
-require 'PHPUnit/Framework/Test.php';
-require 'PHPUnit/Framework/TestFailure.php';
-require 'PHPUnit/Framework/TestListener.php';
-require 'PHPUnit/Framework/TestResult.php';
-require 'PHPUnit/Framework/ExpectationFailedException.php';
-require 'PHPUnit/Framework/IncompleteTestError.php';
-require 'PHPUnit/Framework/SkippedTestError.php';
-require 'PHPUnit/Framework/SkippedTestSuiteError.php';
-require 'PHPUnit/Framework/TestCase.php';
-require 'PHPUnit/Framework/TestSuite.php';
-require 'PHPUnit/Framework/TestSuite/DataProvider.php';
-require 'PHPUnit/Framework/Warning.php';
-require 'PHPUnit/Framework/Constraint.php';
-require 'PHPUnit/Framework/ComparisonFailure.php';
+trigger_error(
+  'Please no longer include "PHPUnit/Framework.php".', E_USER_NOTICE
+);
 ?>

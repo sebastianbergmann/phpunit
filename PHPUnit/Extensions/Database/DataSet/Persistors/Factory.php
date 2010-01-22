@@ -68,19 +68,16 @@ class PHPUnit_Extensions_Database_DataSet_Persistors_Factory
     {
         switch (strtolower($type)) {
             case 'xml':
-                require_once ('PHPUnit/Extensions/Database/DataSet/Persistors/Xml.php');
                 $xmlPersistor = new PHPUnit_Extensions_Database_DataSet_Persistors_Xml();
                 $xmlPersistor->setFileName($spec);
                 return $xmlPersistor;
 
             case 'flatxml':
-                require_once ('PHPUnit/Extensions/Database/DataSet/Persistors/FlatXml.php');
                 $flatXmlPersistor = new PHPUnit_Extensions_Database_DataSet_Persistors_FlatXml();
                 $flatXmlPersistor->setFileName($spec);
                 return $flatXmlPersistor;
 
             case 'yaml':
-                require_once ('PHPUnit/Extensions/Database/DataSet/Persistors/Yaml.php');
                 $yamlPersistor = new PHPUnit_Extensions_Database_DataSet_Persistors_Yaml();
                 $yamlPersistor->setFileName($spec);
                 return $yamlPersistor;

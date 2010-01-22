@@ -45,8 +45,6 @@
 
 require_once 'File/Iterator/Factory.php';
 
-PHP_CodeCoverage_Filter::getInstance()->addFileToBlacklist(__FILE__, 'PHPUNIT');
-
 /**
  * Utility class for code filtering.
  *

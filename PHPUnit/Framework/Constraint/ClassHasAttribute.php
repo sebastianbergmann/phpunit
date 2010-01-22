@@ -43,8 +43,6 @@
  * @since      File available since Release 3.1.0
  */
 
-PHP_CodeCoverage_Filter::getInstance()->addFileToBlacklist(__FILE__, 'PHPUNIT');
-
 /**
  * Constraint that asserts that the class it is evaluated for has a given
  * attribute.

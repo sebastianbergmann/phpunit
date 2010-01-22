@@ -52,10 +52,7 @@ if (PHPUnit_Util_Filesystem::fileExistsInIncludePath('PEAR/RunTest.php')) {
     PHPUnit_Util_Filesystem::collectEndAndAddToBlacklist();
 }
 
-require_once 'PHPUnit/Extensions/PhptTestCase/Logger.php';
 require_once 'PHP/CodeCoverage.php';
-
-PHP_CodeCoverage_Filter::getInstance()->addFileToBlacklist(__FILE__, 'PHPUNIT');
 
 /**
  * Wrapper to run .phpt test cases.

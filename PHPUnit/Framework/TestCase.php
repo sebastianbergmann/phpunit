@@ -44,18 +44,6 @@
  */
 
 require_once 'Text/Template.php';
-require_once 'PHPUnit/Framework.php';
-require_once 'PHPUnit/Framework/MockObject/Generator.php';
-require_once 'PHPUnit/Framework/MockObject/Matcher/InvokedAtLeastOnce.php';
-require_once 'PHPUnit/Framework/MockObject/Matcher/InvokedAtIndex.php';
-require_once 'PHPUnit/Framework/MockObject/Matcher/InvokedCount.php';
-require_once 'PHPUnit/Framework/MockObject/Stub.php';
-require_once 'PHPUnit/Runner/BaseTestRunner.php';
-require_once 'PHPUnit/Util/GlobalState.php';
-require_once 'PHPUnit/Util/InvalidArgumentHelper.php';
-require_once 'PHPUnit/Util/PHP.php';
-
-PHP_CodeCoverage_Filter::getInstance()->addFileToBlacklist(__FILE__, 'PHPUNIT');
 
 /**
  * A TestCase defines the fixture to run multiple tests.
@@ -74,8 +62,6 @@ PHP_CodeCoverage_Filter::getInstance()->addFileToBlacklist(__FILE__, 'PHPUNIT');
  *
  * <code>
  * <?php
- * require_once 'PHPUnit/Framework/TestCase.php';
- *
  * class MathTest extends PHPUnit_Framework_TestCase
  * {
  *     public $value1;

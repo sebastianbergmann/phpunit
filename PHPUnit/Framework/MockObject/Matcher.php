@@ -43,11 +43,6 @@
  * @since      File available since Release 3.0.0
  */
 
-require_once 'PHPUnit/Framework/MockObject/Matcher/Invocation.php';
-require_once 'PHPUnit/Framework/MockObject/Invocation.php';
-
-PHP_CodeCoverage_Filter::getInstance()->addFileToBlacklist(__FILE__, 'PHPUNIT');
-
 /**
  * Main matcher which defines a full expectation using method, parameter and 
  * invocation matchers.
@@ -308,14 +303,4 @@ class PHPUnit_Framework_MockObject_Matcher implements PHPUnit_Framework_MockObje
         }
     }
 }
-
-require_once 'PHPUnit/Framework/MockObject/Matcher/AnyInvokedCount.php';
-require_once 'PHPUnit/Framework/MockObject/Matcher/AnyParameters.php';
-require_once 'PHPUnit/Framework/MockObject/Matcher/InvokedAtIndex.php';
-require_once 'PHPUnit/Framework/MockObject/Matcher/InvokedAtLeastOnce.php';
-require_once 'PHPUnit/Framework/MockObject/Matcher/InvokedCount.php';
-require_once 'PHPUnit/Framework/MockObject/Matcher/InvokedRecorder.php';
-require_once 'PHPUnit/Framework/MockObject/Matcher/MethodName.php';
-require_once 'PHPUnit/Framework/MockObject/Matcher/Parameters.php';
-require_once 'PHPUnit/Framework/MockObject/Matcher/StatelessInvocation.php';
 ?>

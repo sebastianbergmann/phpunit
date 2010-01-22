@@ -43,8 +43,6 @@
  * @since      File available since Release 2.0.0
  */
 
-PHP_CodeCoverage_Filter::getInstance()->addFileToBlacklist(__FILE__, 'PHPUNIT');
-
 /**
  * This class defines the current version of PHPUnit.
  *

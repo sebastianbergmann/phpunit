@@ -47,10 +47,6 @@ if (!defined('T_NAMESPACE')) {
     define('T_NAMESPACE', 377);
 }
 
-require_once 'PHPUnit/Util/InvalidArgumentHelper.php';
-
-PHP_CodeCoverage_Filter::getInstance()->addFileToBlacklist(__FILE__, 'PHPUNIT');
-
 /**
  * Class helpers.
  *

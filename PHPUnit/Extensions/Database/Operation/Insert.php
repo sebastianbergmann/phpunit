@@ -43,13 +43,6 @@
  * @since      File available since Release 3.2.0
  */
 
-require_once 'PHPUnit/Framework.php';
-
-require_once 'PHPUnit/Extensions/Database/Operation/RowBased.php';
-require_once 'PHPUnit/Extensions/Database/Operation/Exception.php';
-
-PHP_CodeCoverage_Filter::getInstance()->addFileToBlacklist(__FILE__, 'PHPUNIT');
-
 /**
  * This class provides functionality for inserting rows from a dataset into a database.
  *

@@ -43,13 +43,6 @@
  * @since      File available since Release 3.2.0
  */
 
-require_once 'PHPUnit/Framework.php';
-
-require_once 'PHPUnit/Extensions/Database/Operation/IDatabaseOperation.php';
-require_once 'PHPUnit/Extensions/Database/Operation/Exception.php';
-
-PHP_CodeCoverage_Filter::getInstance()->addFileToBlacklist(__FILE__, 'PHPUNIT');
-
 /**
  * Provides basic functionality for row based operations.
  *

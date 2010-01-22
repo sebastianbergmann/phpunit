@@ -43,10 +43,6 @@
  * @since      File available since Release 2.3.0
  */
 
-require_once 'PHPUnit/Util/TestDox/ResultPrinter.php';
-
-PHP_CodeCoverage_Filter::getInstance()->addFileToBlacklist(__FILE__, 'PHPUNIT');
-
 /**
  * Prints TestDox documentation in text format.
  *

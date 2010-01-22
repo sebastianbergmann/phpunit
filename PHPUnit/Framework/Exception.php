@@ -43,10 +43,6 @@
  * @since      File available since Release 3.4.0
  */
 
-PHP_CodeCoverage_Filter::getInstance()->addFileToBlacklist(__FILE__, 'PHPUNIT');
-
-if (!class_exists('PHPUnit_Framework_Exception', FALSE)) {
-
 /**
  * Exception for PHPUnit runtime errors.
  *
@@ -61,7 +57,5 @@ if (!class_exists('PHPUnit_Framework_Exception', FALSE)) {
  */
 class PHPUnit_Framework_Exception extends RuntimeException
 {
-}
-
 }
 ?>

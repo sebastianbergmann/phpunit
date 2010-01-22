@@ -43,12 +43,6 @@
  * @since      File available since Release 2.3.0
  */
 
-require_once 'PHPUnit/Util/InvalidArgumentHelper.php';
-require_once 'PHPUnit/Util/Filesystem.php';
-require_once 'PHPUnit/Util/PHP.php';
-
-PHP_CodeCoverage_Filter::getInstance()->addFileToBlacklist(__FILE__, 'PHPUNIT');
-
 /**
  * Utility methods to load PHP sourcefiles.
  *

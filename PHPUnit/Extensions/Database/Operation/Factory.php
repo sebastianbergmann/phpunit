@@ -43,20 +43,6 @@
  * @since      File available since Release 3.2.0
  */
 
-require_once 'PHPUnit/Framework.php';
-
-require_once 'PHPUnit/Extensions/Database/Operation/IDatabaseOperation.php';
-
-PHP_CodeCoverage_Filter::getInstance()->addFileToBlacklist(__FILE__, 'PHPUNIT');
-
-require_once 'PHPUnit/Extensions/Database/Operation/Composite.php';
-require_once 'PHPUnit/Extensions/Database/Operation/DeleteAll.php';
-require_once 'PHPUnit/Extensions/Database/Operation/Delete.php';
-require_once 'PHPUnit/Extensions/Database/Operation/Insert.php';
-require_once 'PHPUnit/Extensions/Database/Operation/Null.php';
-require_once 'PHPUnit/Extensions/Database/Operation/Update.php';
-require_once 'PHPUnit/Extensions/Database/Operation/Truncate.php';
-
 /**
  * A class factory to easily return database operations.
  *

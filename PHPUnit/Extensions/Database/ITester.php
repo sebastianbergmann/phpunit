@@ -43,10 +43,6 @@
  * @since      File available since Release 3.2.0
  */
 
-require_once 'PHPUnit/Framework.php';
-
-PHP_CodeCoverage_Filter::getInstance()->addFileToBlacklist(__FILE__, 'PHPUNIT');
-
 /**
  * This is the interface for DatabaseTester objects. These objects are used to
  * add database testing to existing test cases using composition instead of

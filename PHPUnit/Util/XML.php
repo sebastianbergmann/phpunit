@@ -43,8 +43,6 @@
  * @since      File available since Release 3.2.0
  */
 
-PHP_CodeCoverage_Filter::getInstance()->addFileToBlacklist(__FILE__, 'PHPUNIT');
-
 /**
  * XML helpers.
  *

@@ -43,11 +43,6 @@
  * @since      File available since Release 3.3.0
  */
 
-require_once 'PHPUnit/Framework.php';
-require_once 'PHPUnit/Extensions/Database/DataSet/ITable.php';
-
-PHP_CodeCoverage_Filter::getInstance()->addFileToBlacklist(__FILE__, 'PHPUNIT');
-
 /**
  * Allows for replacing arbitrary strings in your data sets with other values.
  *

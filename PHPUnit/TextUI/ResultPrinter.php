@@ -43,14 +43,6 @@
  * @since      File available since Release 2.0.0
  */
 
-require_once 'PHPUnit/Framework.php';
-require_once 'PHPUnit/Util/Filter.php';
-require_once 'PHPUnit/Util/Printer.php';
-require_once 'PHPUnit/Util/Test.php';
-require_once 'PHPUnit/Util/Timer.php';
-
-PHP_CodeCoverage_Filter::getInstance()->addFileToBlacklist(__FILE__, 'PHPUNIT');
-
 /**
  * Prints the result of a TextUI TestRunner run.
  *

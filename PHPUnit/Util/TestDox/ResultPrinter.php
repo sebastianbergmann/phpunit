@@ -43,12 +43,6 @@
  * @since      File available since Release 2.3.0
  */
 
-require_once 'PHPUnit/Framework.php';
-require_once 'PHPUnit/Util/TestDox/NamePrettifier.php';
-require_once 'PHPUnit/Util/Printer.php';
-
-PHP_CodeCoverage_Filter::getInstance()->addFileToBlacklist(__FILE__, 'PHPUNIT');
-
 /**
  * Base class for printers of TestDox documentation.
  *

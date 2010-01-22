@@ -47,8 +47,6 @@ if (!defined('T_NAMESPACE')) {
     define('T_NAMESPACE', 377);
 }
 
-PHP_CodeCoverage_Filter::getInstance()->addFileToBlacklist(__FILE__, 'PHPUNIT');
-
 /**
  * File helpers.
  *

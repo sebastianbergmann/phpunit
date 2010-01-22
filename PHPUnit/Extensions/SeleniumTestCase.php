@@ -44,12 +44,6 @@
  */
 
 require_once 'File/Iterator/Factory.php';
-require_once 'PHPUnit/Framework.php';
-require_once 'PHPUnit/Util/Test.php';
-require_once 'PHPUnit/Util/XML.php';
-require_once 'PHPUnit/Extensions/SeleniumTestCase/Driver.php';
-
-PHP_CodeCoverage_Filter::getInstance()->addFileToBlacklist(__FILE__, 'PHPUNIT');
 
 /**
  * TestCase class that uses Selenium to provide

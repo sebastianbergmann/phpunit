@@ -43,8 +43,6 @@
  * @since      File available since Release 3.4.0
  */
 
-require_once ('PHPUnit/Extensions/Database/DataSet/Specs/IFactory.php');
-
 /**
  * Creates the appropriate DataSet Spec based on a given type.
  *
@@ -69,27 +67,21 @@ class PHPUnit_Extensions_Database_DataSet_Specs_Factory implements PHPUnit_Exten
     {
         switch ($type) {
             case 'xml':
-                require_once ('PHPUnit/Extensions/Database/DataSet/Specs/Xml.php');
                 return new PHPUnit_Extensions_Database_DataSet_Specs_Xml();
 
             case 'flatxml':
-                require_once ('PHPUnit/Extensions/Database/DataSet/Specs/FlatXml.php');
                 return new PHPUnit_Extensions_Database_DataSet_Specs_FlatXml();
 
             case 'csv':
-                require_once ('PHPUnit/Extensions/Database/DataSet/Specs/Csv.php');
                 return new PHPUnit_Extensions_Database_DataSet_Specs_Csv();
 
             case 'yaml':
-                require_once ('PHPUnit/Extensions/Database/DataSet/Specs/Yaml.php');
                 return new PHPUnit_Extensions_Database_DataSet_Specs_Yaml();
 
             case 'dbtable':
-                require_once ('PHPUnit/Extensions/Database/DataSet/Specs/DbTable.php');
                 return new PHPUnit_Extensions_Database_DataSet_Specs_DbTable();
 
             case 'dbquery':
-                require_once ('PHPUnit/Extensions/Database/DataSet/Specs/DbQuery.php');
                 return new PHPUnit_Extensions_Database_DataSet_Specs_DbQuery();
 
             default:

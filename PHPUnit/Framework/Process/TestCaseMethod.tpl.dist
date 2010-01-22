@@ -1,6 +1,6 @@
 <?php
 set_include_path('{include_path}');
-require_once 'PHPUnit/Framework.php';
+require_once 'PHPUnit/Autoload.php';
 ob_start();
 
 function __phpunit_run_isolated_test()

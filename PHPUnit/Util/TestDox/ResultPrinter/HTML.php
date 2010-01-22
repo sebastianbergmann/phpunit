@@ -43,8 +43,6 @@
  * @since      File available since Release 2.3.0
  */
 
-require_once 'PHPUnit/Util/TestDox/ResultPrinter.php';
-
 /**
  * Prints TestDox documentation in HTML format.
  *

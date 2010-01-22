@@ -43,10 +43,6 @@
  * @since      File available since Release 3.3.0
  */
 
-require_once 'Text/Template.php';
-require_once 'PHPUnit/Util/File.php';
-require_once 'PHPUnit/Util/Skeleton.php';
-
 /**
  * Generator for class skeletons from test classes.
  *
