@@ -37,6 +37,7 @@
  * @category   Testing
  * @package    PHPUnit
  * @author     Sean Coates <sean@caedmon.net>
+ * @author     Raphael Stolt <raphael.stolt@gmail.com>
  * @author     Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @copyright  2002-2010 Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
@@ -202,7 +203,7 @@ abstract class PHPUnit_Extensions_TicketListener implements PHPUnit_Framework_Te
                 } else {
                     $adjustTicket = TRUE;
                 }
-                
+
                 $ticketInfo = $this->getTicketInfo($ticket);
 
                 if ($adjustTicket && in_array($ticketInfo['status'], $ifStatus)) {

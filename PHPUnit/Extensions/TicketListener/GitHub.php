@@ -43,8 +43,6 @@
  * @link       http://www.phpunit.de/
  * @since      File available since Release 3.5.0
  */
-require_once('PHPUnit/Extensions/TicketListener.php');
-PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
 
 /**
  * A ticket listener that interacts with the GitHub issue API.
@@ -58,65 +56,68 @@ PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
  * @link       http://www.phpunit.de/
  * @since      Class available since Release 3.5.0
  */
-class PHPUnit_Extensions_TicketListener_GitHub extends 
-    PHPUnit_Extensions_TicketListener
+class PHPUnit_Extensions_TicketListener_GitHub extends PHPUnit_Extensions_TicketListener
 {
     const STATUS_CLOSE = 'closed';
     const STATUS_REOPEN = 'reopened';
-    
-    private $_username = null;
-    private $_apiToken = null;
-    private $_repository = null;
-    private $_apiPath = null;
-    private $_printTicketStateChanges = false;
-    
+
+    private $username;
+    private $apiToken;
+    private $repository;
+    private $apiPath = 'http://github.com/api/v2/json/issues';
+    private $printTicketStateChanges;
+
     /**
      * @param string $username   The username associated with the GitHub account.
      * @param string $apiToken   The API token associated with the GitHub account.
      * @param string $repository The repository of the system under test (SUT) on GitHub.
-     * @param string $printTicketChanges Boolean flag to print the ticket state 
+     * @param string $printTicketChanges Boolean flag to print the ticket state
      * changes in the test result.
      * @throws RuntimeException
      */
-    public function __construct($username, $apiToken, $repository, 
-        $printTicketStateChanges = false)
+    public function __construct($username, $apiToken, $repository, $printTicketStateChanges = FALSE)
     {
-        if ($this->_isCurlAvailable() === false) {
-            throw new RuntimeException('The dependent curl extension is not available');
+        if (!extension_loaded('curl')) {
+            throw new RuntimeException('ext/curl is not available');
         }
-        if ($this->_isJsonAvailable() === false) {
-            throw new RuntimeException('The dependent json extension is not available');
-        }
-        $this->_username = $username;
-        $this->_apiToken = $apiToken;
-        $this->_repository = $repository;
-        $this->_apiPath = 'http://github.com/api/v2/json/issues';
-        $this->_printTicketStateChanges = $printTicketStateChanges;
-    }
-    
-    /**
-     * @param  integer $ticketId 
-     * @return string
-     * @throws PHPUnit_Framework_Exception
-     */
-    public function getTicketInfo($ticketId = null) 
-    {
-        if (!ctype_digit($ticketId)) {
-            return $ticketInfo = array('status' => 'invalid_ticket_id');
-        }                
-        $ticketInfo = array();
-        
-        $apiEndpoint = "{$this->_apiPath}/show/{$this->_username}/"
-            . "{$this->_repository}/{$ticketId}";
-            
-        $issueProperties = $this->_callGitHubIssueApiWithEnpoint($apiEndpoint, true);
 
-        if ($issueProperties['state'] === 'open') {
-            return $ticketInfo = array('status' => 'new');
-        } elseif ($issueProperties['state'] === 'closed') {
-            return $ticketInfo = array('status' => 'closed');
-        } elseif ($issueProperties['state'] === 'unknown_ticket') {
-            return $ticketInfo = array('status' => $issueProperties['state']);
+        if (!extension_loaded('json')) {
+            throw new RuntimeException('ext/json is not available');
+        }
+
+        $this->username                = $username;
+        $this->apiToken                = $apiToken;
+        $this->repository              = $repository;
+        $this->printTicketStateChanges = $printTicketStateChanges;
+    }
+
+    /**
+     * @param  integer $ticketId
+     * @return string
+     * @throws RuntimeException
+     */
+    public function getTicketInfo($ticketId = null)
+    {
+        if (!is_numeric($ticketId)) {
+            return array('status' => 'invalid_ticket_id');
+        }
+
+        $ticket = $this->callGitHub(
+          $this->apiPath . '/show/' . $this->username . '/' .
+          $this->repository . '/' . $ticketId,
+          TRUE
+        );
+
+        if ($ticket['state'] === 'open') {
+            return array('status' => 'new');
+        }
+
+        if ($ticket['state'] === 'closed') {
+            return array('status' => 'closed');
+        }
+
+        if ($ticket['state'] === 'unknown_ticket') {
+            return array('status' => 'unknown_ticket');
         }
     }
 
@@ -125,83 +126,80 @@ class PHPUnit_Extensions_TicketListener_GitHub extends
      * @param string $statusToBe The status of the TUT after running the associated test.
      * @param string $message    The additional message for the TUT.
      * @param string $resolution The resolution for the TUT.
-     * @throws PHPUnit_Framework_Exception
+     * @throws RuntimeException
      */
     protected function updateTicket($ticketId, $statusToBe, $message, $resolution)
     {
-        $apiEndpoint = null;
         $acceptedResponseIssueStates = array('open', 'closed');
-        
+
         if ($statusToBe === self::STATUS_CLOSE) {
-            $apiEndpoint = "{$this->_apiPath}/close/{$this->_username}/"
-                . "{$this->_repository}/{$ticketId}";
-        } elseif ($statusToBe === self::STATUS_REOPEN) {
-            $apiEndpoint = "{$this->_apiPath}/reopen/{$this->_username}/"
-                . "{$this->_repository}/{$ticketId}";
+            $apiEndpoint = $this->apiPath . '/close/' .
+                           $this->username . '/' . $this->repository . '/' .
+                           $ticketId;
         }
-        if (!is_null($apiEndpoint)) {
-            $issueProperties = $this->_callGitHubIssueApiWithEnpoint($apiEndpoint);
-            if (!in_array($issueProperties['state'], $acceptedResponseIssueStates)) {
-                throw new PHPUnit_Framework_Exception(
-                    'Recieved an unaccepted issue state from the GitHub Api');
+
+        else if ($statusToBe === self::STATUS_REOPEN) {
+            $apiEndpoint = $this->apiPath . '/reopen/' .
+                           $this->username . '/' . $this->repository . '/' .
+                           $ticketId;
+        }
+
+        if (!isset($apiEndpoint)) {
+            $ticket = $this->callGitHub($apiEndpoint);
+
+            if (!in_array($ticket['state'], $acceptedResponseIssueStates)) {
+                throw new RuntimeException(
+                  'Received an unaccepted issue state from the GitHub Api'
+                );
             }
-            if ($this->_printTicketStateChanges) {
-                printf("\nUpdating GitHub issue #%d, status: %s\n", $ticketId, 
-                    $statusToBe);
+
+            if ($this->printTicketStateChanges) {
+                printf(
+                  "\nUpdating GitHub issue #%d, status: %s\n",
+                  $ticketId,
+                  $statusToBe
+                );
             }
         }
     }
-    /**
-     * @return boolean 
-     */
-    private function _isCurlAvailable()
-    {
-        return extension_loaded('curl');
-    }
-    /**
-     * @return boolean 
-     */
-    private function _isJsonAvailable()
-    {
-        return extension_loaded('json');
-    }
+
     /**
      * @param string  $apiEndpoint API endpoint to call against the GitHub issue API.
-     * @param boolean $isShowMethodCall Show method of the GitHub issue API is called? 
+     * @param boolean $isShowMethodCall Show method of the GitHub issue API is called?
      * @return array
-     * @throws PHPUnit_Framework_Exception
+     * @throws RuntimeException
      */
-    private function _callGitHubIssueApiWithEnpoint($apiEndpoint, 
-        $isShowMethodCall = false) 
+    private function callGitHub($apiEndpoint, $isShowMethodCall = FALSE)
     {
-            $curlHandle = curl_init();
+        $curlHandle = curl_init();
 
-            curl_setopt($curlHandle, CURLOPT_URL, $apiEndpoint);
-            curl_setopt($curlHandle, CURLOPT_FOLLOWLOCATION, true);
-            curl_setopt($curlHandle, CURLOPT_FAILONERROR, true);
-            curl_setopt($curlHandle, CURLOPT_FRESH_CONNECT, true);
-            curl_setopt($curlHandle, CURLOPT_RETURNTRANSFER, true);
-            curl_setopt($curlHandle, CURLOPT_HTTPPROXYTUNNEL, true);
-            curl_setopt($curlHandle, CURLOPT_USERAGENT, __CLASS__);  
-            curl_setopt($curlHandle, CURLOPT_POSTFIELDS,
-                "login={$this->_username}&token={$this->_apiToken}");
+        curl_setopt($curlHandle, CURLOPT_URL, $apiEndpoint);
+        curl_setopt($curlHandle, CURLOPT_FOLLOWLOCATION, TRUE);
+        curl_setopt($curlHandle, CURLOPT_FAILONERROR, TRUE);
+        curl_setopt($curlHandle, CURLOPT_FRESH_CONNECT, TRUE);
+        curl_setopt($curlHandle, CURLOPT_RETURNTRANSFER, TRUE);
+        curl_setopt($curlHandle, CURLOPT_HTTPPROXYTUNNEL, TRUE);
+        curl_setopt($curlHandle, CURLOPT_USERAGENT, __CLASS__);
+        curl_setopt(
+          $curlHandle,
+          CURLOPT_POSTFIELDS,
+          'login=' . $this->username . '&token=' . $this->apiToken
+        );
 
-            $response = curl_exec($curlHandle);
-            
-            // Unknown tickets throw a 403 error
-            if (!$response && $isGetTicketInfoCall) {
-                return array('state' => 'unknown_ticket');
-            }
+        $response = curl_exec($curlHandle);
 
-            if (!$response) {
-                $curlErrorMessage = curl_error($curlHandle);
-                $exceptionMessage = "A failure occured while talking to the "
-                    . "GitHub issue Api. {$curlErrorMessage}.";
-                throw new PHPUnit_Framework_Exception($exceptionMessage);
-            }
-            $issue = (array) json_decode($response);
-            $issueProperties = (array) $issue['issue'];
-            curl_close($curlHandle);
-            return $issueProperties;
+        if (!$response && $isShowMethodCall) {
+            return array('state' => 'unknown_ticket');
+        }
+
+        if (!$response) {
+            throw new RuntimeException(curl_error($curlHandle));
+        }
+
+        curl_close($curlHandle);
+
+        $issue = (array)json_decode($response);
+
+        return (array)$issue['issue'];
     }
 }
