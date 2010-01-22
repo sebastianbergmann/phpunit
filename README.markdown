@@ -14,6 +14,7 @@ PHPUnit 3.5.0
 * Added support for the [XML format of mysqldump](http://dev.mysql.com/doc/refman/5.1/en/mysqldump.html#option_mysqldump_xml) to the database extension.
 * Added the `<includePath>` element to the `<php>` section of the XML configuration file.
 * Added the `verbose` attribute to the `<phpunit>` element of the XML configuration file.
+* Added a ticket listener that interacts with the GitHub issue API.
 * The `--log-metrics` and `--log-pmd` switches have been removed. Their functionality has been or will be merged into [PHP_Depend](http://pdepend.org/) and [PHPMD](http://phpmd.org/). Details can be found [here](http://sebastian-bergmann.de/archives/744-On-PHPUnit-and-Software-Metrics.html).
 * The `--ansi` switch has been removed, please use `--colors` instead.
 * The `--coverage-source` switch has been removed.
@@ -27,6 +28,7 @@ PHPUnit 3.5.0
 * The test database functionality has been removed.
 * `PHPUnit_Extensions_PerformanceTestCase` has been removed.
 * `PHPUnit_Extensions_RepeatedTest` has been removed.
+* `PHPUnit_Extensions_TicketListener_GitHub` has been removed.
 * Replaced `PHPUnit_Util_FilterIterator` with the [PHP_FileIterator](http://github.com/sebastianbergmann/php-file-iterator) component.
 * Replaced `PHPUnit_Util_Template` with the [Text_Template](http://github.com/sebastianbergmann/php-text-template) component.
 * PHPUnit now requires PHP 5.2.7 (or later) but PHP 5.3.0 (or later) is highly recommended.
