@@ -3,6 +3,11 @@ PHPUnit 3.4
 
 This is the list of changes for the PHPUnit 3.4 release series.
 
+PHPUnit 3.4.10
+--------------
+
+* Made `PHPUnit_Framework_Assert::readAttribute()` compatible with PHP 5.1.6.
+
 PHPUnit 3.4.9
 -------------
 
