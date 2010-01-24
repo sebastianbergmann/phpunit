@@ -333,8 +333,10 @@ class PHPUnit_Framework_Constraint_IsEqual extends PHPUnit_Framework_Constraint
             }
         }
 
+        $keysInB = array_flip(array_keys($b));
+
         foreach ($a as $key => $v) {
-            if (!array_key_exists($key, $b)) {
+            if (!isset($keysInB[$key])) {
                 // Abort on missing key in $b.
                 return FALSE;
             }
