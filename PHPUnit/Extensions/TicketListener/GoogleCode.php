@@ -36,11 +36,9 @@
  *
  * @category   Testing
  * @package    PHPUnit
- * @author     Raphael Stolt <raphael.stolt@gmail.com>
  * @author     Jan Sorgalla <jsorgalla@googlemail.com>
  * @copyright  2002-2010 Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
- * @version    SVN: $Id$
  * @link       http://www.phpunit.de/
  * @since      File available since Release 3.5.0
  */
@@ -50,7 +48,6 @@
  *
  * @category   Testing
  * @package    PHPUnit
- * @author     Raphael Stolt <raphael.stolt@gmail.com>
  * @author     Jan Sorgalla <jsorgalla@googlemail.com>
  * @copyright  2002-2010 Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
@@ -63,12 +60,12 @@ class PHPUnit_Extensions_TicketListener_GoogleCode extends PHPUnit_Extensions_Ti
     private $email;
     private $password;
     private $project;
-    
+
     private $statusClosed;
     private $statusReopened;
-    
+
     private $printTicketStateChanges;
-    
+
     private $authUrl    = 'https://www.google.com/accounts/ClientLogin';
     private $apiBaseUrl = 'http://code.google.com/feeds/issues/p/%s/issues';
     private $authToken;
@@ -82,23 +79,19 @@ class PHPUnit_Extensions_TicketListener_GoogleCode extends PHPUnit_Extensions_Ti
      * @param string $statusReopened The status name of the reopened state.
      * @throws RuntimeException
      */
-    public function __construct($email, $password, $project, $printTicketStateChanges = FALSE, 
-                                $statusClosed = 'Fixed', $statusReopened = 'Started')
+    public function __construct($email, $password, $project, $printTicketStateChanges = FALSE, $statusClosed = 'Fixed', $statusReopened = 'Started')
     {
         if (!extension_loaded('curl')) {
             throw new RuntimeException('ext/curl is not available');
         }
 
-        $this->email          = $email;
-        $this->password       = $password;
-        $this->project        = $project;
-        
-        $this->statusClosed   = $statusClosed;
-        $this->statusReopened = $statusReopened;
-        
+        $this->email                   = $email;
+        $this->password                = $password;
+        $this->project                 = $project;
+        $this->statusClosed            = $statusClosed;
+        $this->statusReopened          = $statusReopened;
         $this->printTicketStateChanges = $printTicketStateChanges;
-
-        $this->apiBaseUrl     = sprintf($this->apiBaseUrl, $project);
+        $this->apiBaseUrl              = sprintf($this->apiBaseUrl, $project);
     }
 
     /**
@@ -112,10 +105,9 @@ class PHPUnit_Extensions_TicketListener_GoogleCode extends PHPUnit_Extensions_Ti
             return array('status' => 'invalid_ticket_id');
         }
 
-        $url = $this->apiBaseUrl . '/full/' . $ticketId;
-
+        $url    = $this->apiBaseUrl . '/full/' . $ticketId;
         $header = array(
-            'Authorization: GoogleLogin auth=' . $this->getAuthToken(),
+          'Authorization: GoogleLogin auth=' . $this->getAuthToken()
         );
 
         list($status, $response) = $this->callGoogleCode($url, $header);
@@ -125,14 +117,13 @@ class PHPUnit_Extensions_TicketListener_GoogleCode extends PHPUnit_Extensions_Ti
         }
 
         $ticket = new SimpleXMLElement(str_replace("xmlns=", "ns=", $response));
-
         $result = $ticket->xpath('//issues:state');
         $state  = (string) $result[0];
 
         if ($state === 'open') {
             return array('status' => 'new');
         }
-        
+
         if ($state === 'closed') {
             return array('status' => 'closed');
         }
@@ -152,24 +143,28 @@ class PHPUnit_Extensions_TicketListener_GoogleCode extends PHPUnit_Extensions_Ti
         $url = $this->apiBaseUrl . '/' . $ticketId . '/comments/full';
 
         $header = array(
-            'Authorization: GoogleLogin auth=' . $this->getAuthToken(),
-            'Content-Type: application/atom+xml',
+          'Authorization: GoogleLogin auth=' . $this->getAuthToken(),
+          'Content-Type: application/atom+xml'
         );
 
-        $ticketStatus = $statusToBe == 'closed' ? $this->statusClosed : $this->statusReopened;
+        if ($statusToBe == 'closed') {
+            $ticketStatus = $this->statusClosed;
+        } else {
+            $ticketStatus = $this->statusReopened;
+        }
 
         list($author,) = explode('@', $this->email);
 
-        $post = '<?xml version="1.0" encoding="UTF-8"?>' . 
-                '<entry xmlns="http://www.w3.org/2005/Atom" ' . 
-                '       xmlns:issues="http://schemas.google.com/projecthosting/issues/2009">' . 
-                '  <content type="html">' . htmlspecialchars($message, ENT_COMPAT, 'UTF-8') . '</content>' . 
-                '  <author>' . 
-                '    <name>' . htmlspecialchars($author, ENT_COMPAT, 'UTF-8') . '</name>' . 
-                '  </author>' . 
-                '  <issues:updates>' . 
-                '    <issues:status>' . htmlspecialchars($ticketStatus, ENT_COMPAT, 'UTF-8') . '</issues:status>' . 
-                '  </issues:updates>' . 
+        $post = '<?xml version="1.0" encoding="UTF-8"?>' .
+                '<entry xmlns="http://www.w3.org/2005/Atom" ' .
+                '       xmlns:issues="http://schemas.google.com/projecthosting/issues/2009">' .
+                '  <content type="html">' . htmlspecialchars($message, ENT_COMPAT, 'UTF-8') . '</content>' .
+                '  <author>' .
+                '    <name>' . htmlspecialchars($author, ENT_COMPAT, 'UTF-8') . '</name>' .
+                '  </author>' .
+                '  <issues:updates>' .
+                '    <issues:status>' . htmlspecialchars($ticketStatus, ENT_COMPAT, 'UTF-8') . '</issues:status>' .
+                '  </issues:updates>' .
                 '</entry>';
 
         list($status, $response) = $this->callGoogleCode($url, $header, $post);
@@ -210,8 +205,8 @@ class PHPUnit_Extensions_TicketListener_GoogleCode extends PHPUnit_Extensions_Ti
         );
 
         list($status, $response) = $this->callGoogleCode(
-            $this->authUrl, 
-            $header, 
+            $this->authUrl,
+            $header,
             http_build_query($post, null, '&')
         );
 
@@ -268,7 +263,7 @@ class PHPUnit_Extensions_TicketListener_GoogleCode extends PHPUnit_Extensions_Ti
         if (!$response) {
             throw new RuntimeException(curl_error($curlHandle));
         }
-        
+
         curl_close($curlHandle);
 
         return array($status, $response);
