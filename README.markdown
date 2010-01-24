@@ -15,6 +15,7 @@ PHPUnit 3.5.0
 * Added the `<includePath>` element to the `<php>` section of the XML configuration file.
 * Added the `verbose` attribute to the `<phpunit>` element of the XML configuration file.
 * Added a ticket listener that interacts with the GitHub issue API.
+* Added a ticket listener that interacts with the GoogleCode issue API.
 * The `--log-metrics` and `--log-pmd` switches have been removed. Their functionality has been or will be merged into [PHP_Depend](http://pdepend.org/) and [PHPMD](http://phpmd.org/). Details can be found [here](http://sebastian-bergmann.de/archives/744-On-PHPUnit-and-Software-Metrics.html).
 * The `--ansi` switch has been removed, please use `--colors` instead.
 * The `--coverage-source` switch has been removed.
