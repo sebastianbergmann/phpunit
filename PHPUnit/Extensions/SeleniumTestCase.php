@@ -216,6 +216,19 @@ abstract class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_Tes
                             $browserSuite->addTest($dataSuite);
                         }
 
+                        // Test method with invalid @dataProvider.
+                        else if ($data === FALSE) {
+                            $browserSuite->addTest(
+                              new PHPUnit_Framework_Warning(
+                                sprintf(
+                                  'The data provider specified for %s::%s is invalid.',
+                                  $className,
+                                  $name
+                                )
+                              )
+                            );
+                        }
+
                         // Test method without @dataProvider.
                         else {
                             $browserSuite->addTest(
@@ -251,6 +264,19 @@ abstract class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_Tes
                         }
 
                         $suite->addTest($dataSuite);
+                    }
+
+                    // Test method with invalid @dataProvider.
+                    else if ($data === FALSE) {
+                        $suite->addTest(
+                          new PHPUnit_Framework_Warning(
+                            sprintf(
+                              'The data provider specified for %s::%s is invalid.',
+                              $className,
+                              $name
+                            )
+                          )
+                        );
                     }
 
                     // Test method without @dataProvider.

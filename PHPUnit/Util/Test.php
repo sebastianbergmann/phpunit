@@ -236,7 +236,9 @@ class PHPUnit_Util_Test
      * @param  string $className
      * @param  string $methodName
      * @param  string $docComment
-     * @return array
+     * @return mixed  array|Iterator when a data provider is specified and exists
+     *                false          when a data provider is specified and does not exist
+     *                null           when no data provider is specified
      * @throws ReflectionException
      * @since  Method available since Release 3.2.0
      */
@@ -263,9 +265,8 @@ class PHPUnit_Util_Test
                     $dataProviderClassName = $className;
                 }
 
-                $dataProviderClass  = new ReflectionClass($dataProviderClassName);
-                $dataProviderMethod = $dataProviderClass->getMethod(
-                  $dataProviderMethodName
+                $dataProviderMethod = new ReflectionMethod(
+                  $dataProviderClassName, $dataProviderMethodName
                 );
 
                 if ($dataProviderMethod->isStatic()) {
@@ -282,6 +283,7 @@ class PHPUnit_Util_Test
             }
 
             catch (ReflectionException $e) {
+                return FALSE;
             }
         }
     }
