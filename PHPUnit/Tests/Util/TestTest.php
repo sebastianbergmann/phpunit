@@ -96,6 +96,10 @@ class Util_TestTest extends PHPUnit_Framework_TestCase
         $result = preg_match(PHPUnit_Util_Test::REGEX_DATA_PROVIDER, '@dataProvider namespace\namespace\class::method', $matches);
         $this->assertEquals(1, $result);
         $this->assertEquals('namespace\namespace\class::method', $matches[1]);
+
+        $result = preg_match(PHPUnit_Util_Test::REGEX_DATA_PROVIDER, '@dataProvider メソッド', $matches);
+        $this->assertEquals(1, $result);
+        $this->assertEquals('メソッド', $matches[1]);
     }
 }
 ?>
