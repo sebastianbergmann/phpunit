@@ -96,4 +96,3 @@ class PHPUnit_Extensions_Database_UI_InvalidModeException extends LogicException
     }
 }
 
-?>

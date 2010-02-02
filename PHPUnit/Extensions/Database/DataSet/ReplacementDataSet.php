@@ -129,4 +129,3 @@ class PHPUnit_Extensions_Database_DataSet_ReplacementDataSet extends PHPUnit_Ext
         return new PHPUnit_Extensions_Database_DataSet_ReplacementTableIterator($innerIterator, $this->fullReplacements, $this->subStrReplacements);
     }
 }
-?>

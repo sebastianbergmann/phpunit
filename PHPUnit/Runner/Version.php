@@ -75,4 +75,3 @@ class PHPUnit_Runner_Version
         return 'PHPUnit @package_version@ by Sebastian Bergmann.';
     }
 }
-?>

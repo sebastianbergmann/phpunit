@@ -165,4 +165,3 @@ class PHPUnit_Runner_StandardTestSuiteLoader implements PHPUnit_Runner_TestSuite
         return $aClass;
     }
 }
-?>

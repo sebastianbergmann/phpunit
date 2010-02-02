@@ -20,4 +20,3 @@ class DependencyFailureTest extends PHPUnit_Framework_TestCase
     {
     }
 }
-?>

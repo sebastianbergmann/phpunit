@@ -147,4 +147,3 @@ class PHPUnit_Framework_Constraint_Attribute extends PHPUnit_Framework_Constrain
         );
     }
 }
-?>

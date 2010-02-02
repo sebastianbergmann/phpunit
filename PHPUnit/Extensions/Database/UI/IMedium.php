@@ -72,4 +72,3 @@ interface PHPUnit_Extensions_Database_UI_IMedium extends PHPUnit_Extensions_Data
     public function handleException(Exception $e);
 }
 
-?>

@@ -84,4 +84,3 @@ class PHPUnit_Extensions_PhptTestSuite extends PHPUnit_Framework_TestSuite
         }
     }
 }
-?>

@@ -148,4 +148,3 @@ class Extensions_Database_DataSet_XmlDataSetsTest extends PHPUnit_Framework_Test
         self::assertThat($mysqlXmlDataSet, $constraint);
     }
 }
-?>

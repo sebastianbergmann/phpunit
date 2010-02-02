@@ -94,4 +94,3 @@ class PHPUnit_Framework_MockObject_Stub_ReturnCallback implements PHPUnit_Framew
         }
     }
 }
-?>

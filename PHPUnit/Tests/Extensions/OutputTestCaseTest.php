@@ -97,4 +97,3 @@ class Extensions_OutputTestCaseTest extends PHPUnit_Framework_TestCase
         $this->assertFalse($result->wasSuccessful());
     }
 }
-?>

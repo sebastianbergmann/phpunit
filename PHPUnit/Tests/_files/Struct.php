@@ -8,4 +8,3 @@ class Struct
         $this->var = $var;
     }
 }
-?>

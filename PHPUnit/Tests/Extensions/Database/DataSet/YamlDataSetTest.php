@@ -129,4 +129,3 @@ asdflkjsadf asdfsadfhl "adsf, halsdf" sadfhlasdf'
         PHPUnit_Extensions_Database_TestCase::assertDataSetsEqual($expectedDataSet, $yamlDataSet);
     }
 }
-?>

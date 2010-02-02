@@ -84,4 +84,3 @@ class PHPUnit_Extensions_Database_DefaultTester extends PHPUnit_Extensions_Datab
         return $this->connection;
     }
 }
-?>

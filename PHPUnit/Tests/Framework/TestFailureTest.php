@@ -1086,4 +1086,3 @@ class Framework_TestFailureTest extends PHPUnit_Framework_TestCase
         $this->fail();
     }
 }
-?>

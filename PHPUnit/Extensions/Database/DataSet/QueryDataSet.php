@@ -128,4 +128,3 @@ class PHPUnit_Extensions_Database_DataSet_QueryDataSet extends PHPUnit_Extension
         return array_keys($this->tables);
     }
 }
-?>

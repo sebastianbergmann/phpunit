@@ -259,4 +259,3 @@ class PHPUnit_Extensions_PhptTestCase implements PHPUnit_Framework_Test, PHPUnit
         return $this->filename;
     }
 }
-?>

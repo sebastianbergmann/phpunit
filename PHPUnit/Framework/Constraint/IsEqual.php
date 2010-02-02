@@ -379,4 +379,3 @@ class PHPUnit_Framework_Constraint_IsEqual extends PHPUnit_Framework_Constraint
         return $document->saveXML();
     }
 }
-?>

@@ -98,4 +98,3 @@ class PHPUnit_Extensions_GroupTestSuite extends PHPUnit_Framework_TestSuite
         }
     }
 }
-?>

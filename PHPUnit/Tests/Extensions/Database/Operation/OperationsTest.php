@@ -190,4 +190,3 @@ class Extensions_Database_Operation_OperationsTest extends PHPUnit_Extensions_Da
         $this->assertDataSetsEqual(new PHPUnit_Extensions_Database_DataSet_FlatXmlDataSet(dirname(__FILE__).'/../_files/XmlDataSets/AllEmptyTableInsertResult.xml'), $this->getConnection()->createDataSet());
     }
 }
-?>

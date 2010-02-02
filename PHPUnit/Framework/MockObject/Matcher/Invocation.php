@@ -88,4 +88,3 @@ interface PHPUnit_Framework_MockObject_Matcher_Invocation extends PHPUnit_Framew
      */
     public function matches(PHPUnit_Framework_MockObject_Invocation $invocation);
 }
-?>

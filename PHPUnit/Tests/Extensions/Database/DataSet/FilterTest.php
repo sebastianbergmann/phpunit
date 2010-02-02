@@ -132,4 +132,3 @@ class Extensions_Database_DataSet_FilterTest extends PHPUnit_Framework_TestCase
         self::assertThat($filteredDataSet, $constraint);
     }
 }
-?>

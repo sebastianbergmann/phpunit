@@ -95,4 +95,3 @@ class PHPUnit_Framework_Constraint_ClassHasStaticAttribute extends PHPUnit_Frame
         );
     }
 }
-?>

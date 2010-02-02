@@ -6,4 +6,3 @@ class NonStatic
         return NULL;
     }
 }
-?>

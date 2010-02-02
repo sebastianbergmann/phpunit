@@ -2328,4 +2328,3 @@ abstract class PHPUnit_Framework_Assert
         self::$count = 0;
     }
 }
-?>

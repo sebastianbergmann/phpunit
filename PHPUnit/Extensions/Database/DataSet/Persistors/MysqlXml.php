@@ -163,4 +163,3 @@ class PHPUnit_Extensions_Database_DataSet_Persistors_MysqlXml extends PHPUnit_Ex
         fwrite($this->fh, "\t" . '</row>' . "\n");
     }
 }
-?>

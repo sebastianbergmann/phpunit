@@ -334,4 +334,3 @@ class PHPUnit_Util_GlobalState
         return $result;
     }
 }
-?>

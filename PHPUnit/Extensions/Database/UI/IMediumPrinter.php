@@ -72,4 +72,3 @@ interface PHPUnit_Extensions_Database_UI_IMediumPrinter
     public function error($message);
 }
 
-?>

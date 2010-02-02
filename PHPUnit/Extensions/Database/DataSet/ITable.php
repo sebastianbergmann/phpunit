@@ -95,4 +95,3 @@ interface PHPUnit_Extensions_Database_DataSet_ITable
      */
     public function assertEquals(PHPUnit_Extensions_Database_DataSet_ITable $other);
 }
-?>

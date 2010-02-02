@@ -70,4 +70,3 @@ class PHPUnit_Extensions_Story_Given extends PHPUnit_Extensions_Story_Step
         return 'Given';
     }
 }
-?>

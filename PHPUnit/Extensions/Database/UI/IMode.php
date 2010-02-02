@@ -66,4 +66,3 @@ interface PHPUnit_Extensions_Database_UI_IMode
     public function execute(array $modeArguments, PHPUnit_Extensions_Database_UI_IMediumPrinter $medium);
 }
 
-?>

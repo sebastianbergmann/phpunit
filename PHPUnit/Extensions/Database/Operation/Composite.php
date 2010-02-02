@@ -94,4 +94,3 @@ class PHPUnit_Extensions_Database_Operation_Composite implements PHPUnit_Extensi
         }
     }
 }
-?>

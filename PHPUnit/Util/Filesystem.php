@@ -148,4 +148,3 @@ class PHPUnit_Util_Filesystem
         return FALSE;
     }
 }
-?>

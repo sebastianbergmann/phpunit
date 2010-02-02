@@ -145,4 +145,3 @@ class PHPUnit_Extensions_Database_DataSet_CsvDataSet extends PHPUnit_Extensions_
         }
     }
 }
-?>

@@ -135,4 +135,3 @@ class PHPUnit_Framework_Constraint_Or extends PHPUnit_Framework_Constraint
         return $count;
     }
 }
-?>

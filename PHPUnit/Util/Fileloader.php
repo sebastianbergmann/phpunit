@@ -139,4 +139,3 @@ class PHPUnit_Util_Fileloader
         }
     }
 }
-?>

@@ -86,4 +86,3 @@ class PHPUnit_Extensions_Database_Operation_Delete extends PHPUnit_Extensions_Da
         return $args;
     }
 }
-?>

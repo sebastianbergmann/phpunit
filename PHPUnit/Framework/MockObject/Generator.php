@@ -648,4 +648,3 @@ class PHPUnit_Framework_MockObject_Generator
         return TRUE;
     }
 }
-?>

@@ -66,4 +66,3 @@ interface PHPUnit_Framework_MockObject_Builder_Match extends PHPUnit_Framework_M
      */
     public function after($id);
 }
-?>

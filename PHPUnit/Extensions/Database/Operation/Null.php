@@ -63,4 +63,3 @@ class PHPUnit_Extensions_Database_Operation_Null implements PHPUnit_Extensions_D
         /* do nothing */
     }
 }
-?>

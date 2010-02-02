@@ -136,4 +136,3 @@ abstract class PHPUnit_Extensions_Database_DataSet_AbstractXmlDataSet extends PH
         return new PHPUnit_Extensions_Database_DataSet_DefaultTableIterator($this->tables, $reverse);
     }
 }
-?>

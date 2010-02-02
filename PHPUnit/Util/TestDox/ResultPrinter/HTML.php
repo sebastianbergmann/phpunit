@@ -122,4 +122,3 @@ class PHPUnit_Util_TestDox_ResultPrinter_HTML extends PHPUnit_Util_TestDox_Resul
         $this->write('</body></html>');
     }
 }
-?>

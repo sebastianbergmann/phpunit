@@ -8,4 +8,3 @@ class WasRun extends PHPUnit_Framework_TestCase
         $this->wasRun = TRUE;
     }
 }
-?>

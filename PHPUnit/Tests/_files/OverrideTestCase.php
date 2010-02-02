@@ -7,4 +7,3 @@ class OverrideTestCase extends OneTestCase
     {
     }
 }
-?>

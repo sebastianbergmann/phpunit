@@ -7,4 +7,3 @@ function functionCallback()
         return 'pass';
     }
 }
-?>

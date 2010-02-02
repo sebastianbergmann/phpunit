@@ -13,4 +13,3 @@ class ChildSuite
         return $suite;
     }
 }
-?>

@@ -94,4 +94,3 @@ class PHPUnit_Util_TestDox_ResultPrinter_Text extends PHPUnit_Util_TestDox_Resul
         $this->write("\n");
     }
 }
-?>

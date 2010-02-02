@@ -112,4 +112,3 @@ class PHPUnit_Extensions_Database_DataSet_Specs_DbQuery implements PHPUnit_Exten
     }
 }
 
-?>

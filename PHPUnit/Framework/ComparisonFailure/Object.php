@@ -168,4 +168,3 @@ class PHPUnit_Framework_ComparisonFailure_Object extends PHPUnit_Framework_Compa
         }
     }
 }
-?>

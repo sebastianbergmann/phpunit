@@ -122,4 +122,3 @@ class PHPUnit_Extensions_Database_Constraint_DataSetIsEqual extends PHPUnit_Fram
             $this->value->__toString());
     }
 }
-?>

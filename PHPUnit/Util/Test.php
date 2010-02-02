@@ -438,4 +438,3 @@ class PHPUnit_Util_Test
         return $result;
     }
 }
-?>

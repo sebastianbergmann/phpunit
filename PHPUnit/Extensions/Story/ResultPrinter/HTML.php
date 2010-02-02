@@ -199,4 +199,3 @@ class PHPUnit_Extensions_Story_ResultPrinter_HTML extends PHPUnit_Extensions_Sto
         $this->write($scenariosTemplate->render());
     }
 }
-?>

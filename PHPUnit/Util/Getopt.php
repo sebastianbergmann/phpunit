@@ -207,4 +207,3 @@ class PHPUnit_Util_Getopt
         throw new PHPUnit_Framework_Exception("unrecognized option --$opt");
     }
 }
-?>

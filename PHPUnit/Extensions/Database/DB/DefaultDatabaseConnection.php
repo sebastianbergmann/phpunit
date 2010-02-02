@@ -216,4 +216,3 @@ class PHPUnit_Extensions_Database_DB_DefaultDatabaseConnection implements PHPUni
         return $this->getMetaData()->allowsCascading();
     }
 }
-?>

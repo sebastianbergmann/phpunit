@@ -129,4 +129,3 @@ class PHPUnit_Extensions_Database_DataSet_XmlDataSet extends PHPUnit_Extensions_
         }
     }
 }
-?>

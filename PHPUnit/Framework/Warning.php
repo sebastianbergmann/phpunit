@@ -99,4 +99,3 @@ class PHPUnit_Framework_Warning extends PHPUnit_Framework_TestCase
         return 'Warning';
     }
 }
-?>

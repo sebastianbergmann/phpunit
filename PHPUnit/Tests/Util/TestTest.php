@@ -98,4 +98,3 @@ class Util_TestTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('namespace\namespace\class::method', $matches[1]);
     }
 }
-?>

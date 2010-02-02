@@ -27,4 +27,3 @@ class OutputTestCase extends PHPUnit_Extensions_OutputTestCase
         print 'bar';
     }
 }
-?>

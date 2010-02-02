@@ -78,4 +78,3 @@ class PHPUnit_Framework_MockObject_Stub_ReturnArgument extends PHPUnit_Framework
         return sprintf('return argument #%d', $this->argumentIndex);
     }
 }
-?>

@@ -207,4 +207,3 @@ class PHPUnit_Extensions_Database_DataSet_AbstractTable implements PHPUnit_Exten
         return $rowString . "|\n";
     }
 }
-?>

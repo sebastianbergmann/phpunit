@@ -75,4 +75,3 @@ class PHPUnit_Framework_Error extends Exception
         $this->trace = $trace;
     }
 }
-?>

@@ -83,4 +83,3 @@ class Framework_TestImplementorTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(0, $result->failureCount());
     }
 }
-?>

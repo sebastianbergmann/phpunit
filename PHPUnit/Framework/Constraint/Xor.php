@@ -142,4 +142,3 @@ class PHPUnit_Framework_Constraint_Xor extends PHPUnit_Framework_Constraint
         return $count;
     }
 }
-?>

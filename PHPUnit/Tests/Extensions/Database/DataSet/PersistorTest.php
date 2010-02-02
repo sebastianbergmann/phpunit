@@ -111,4 +111,3 @@ class Extensions_Database_DataSet_PersistorTest extends PHPUnit_Framework_TestCa
         unlink($filename);
     }
 }
-?>

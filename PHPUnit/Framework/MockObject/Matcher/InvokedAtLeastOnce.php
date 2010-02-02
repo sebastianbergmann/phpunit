@@ -85,4 +85,3 @@ class PHPUnit_Framework_MockObject_Matcher_InvokedAtLeastOnce extends PHPUnit_Fr
         }
     }
 }
-?>

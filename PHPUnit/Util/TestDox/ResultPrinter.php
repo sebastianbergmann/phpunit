@@ -328,4 +328,3 @@ abstract class PHPUnit_Util_TestDox_ResultPrinter extends PHPUnit_Util_Printer i
     {
     }
 }
-?>

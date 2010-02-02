@@ -149,4 +149,3 @@ class PHPUnit_Extensions_TestDecorator extends PHPUnit_Framework_Assert implemen
         return $result;
     }
 }
-?>

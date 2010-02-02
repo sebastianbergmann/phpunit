@@ -125,4 +125,3 @@ class PHPUnit_Framework_Constraint_TraversableContains extends PHPUnit_Framework
         );
     }
 }
-?>

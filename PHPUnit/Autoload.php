@@ -66,4 +66,3 @@ if (!function_exists('phpunit_autoload')) {
 
     spl_autoload_register('phpunit_autoload');
 }
-?>

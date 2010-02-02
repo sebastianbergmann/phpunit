@@ -100,4 +100,3 @@ class PHPUnit_Extensions_Database_UI_Context
     }
 }
 
-?>

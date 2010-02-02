@@ -63,4 +63,3 @@ interface PHPUnit_Runner_TestCollector
      */
     public function collectTests();
 }
-?>

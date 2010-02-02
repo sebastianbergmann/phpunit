@@ -664,4 +664,3 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
         }
     }
 }
-?>

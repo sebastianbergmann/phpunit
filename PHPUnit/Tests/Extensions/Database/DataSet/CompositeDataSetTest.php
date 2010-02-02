@@ -169,4 +169,3 @@ asdflkjsadf asdfsadfhl "adsf, halsdf" sadfhlasdf'
         new PHPUnit_Extensions_Database_DataSet_CompositeDataSet(array($this->expectedDataSet1, $this->expectedDataSet1));
     }
 }
-?>

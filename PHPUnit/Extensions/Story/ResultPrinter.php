@@ -100,4 +100,3 @@ class PHPUnit_Extensions_Story_ResultPrinter extends PHPUnit_Util_TestDox_Result
     {
     }
 }
-?>

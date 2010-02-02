@@ -244,4 +244,3 @@ class MoneyTest extends PHPUnit_Framework_TestCase
         $this->assertTrue($expected->equals($this->f14EUR->subtract($this->f12EUR)));
     }
 }
-?>

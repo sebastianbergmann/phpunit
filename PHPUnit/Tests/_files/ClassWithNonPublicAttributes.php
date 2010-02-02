@@ -27,4 +27,3 @@ class ClassWithNonPublicAttributes extends ParentClassWithProtectedAttributes
     protected $protectedArray = array('bar');
     protected $privateArray = array('baz');
 }
-?>

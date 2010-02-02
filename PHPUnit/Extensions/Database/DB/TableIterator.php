@@ -165,4 +165,3 @@ class PHPUnit_Extensions_Database_DB_TableIterator implements PHPUnit_Extensions
         return (current($this->tableNames) !== FALSE);
     }
 }
-?>

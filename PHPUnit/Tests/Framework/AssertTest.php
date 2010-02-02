@@ -4443,4 +4443,3 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
         $this->fail();
     }
 }
-?>

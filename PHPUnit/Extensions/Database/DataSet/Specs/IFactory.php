@@ -66,4 +66,3 @@ interface PHPUnit_Extensions_Database_DataSet_Specs_IFactory
     public function getDataSetSpecByType($type);
 }
 
-?>

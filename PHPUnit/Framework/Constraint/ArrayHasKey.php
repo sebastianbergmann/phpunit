@@ -111,4 +111,3 @@ class PHPUnit_Framework_Constraint_ArrayHasKey extends PHPUnit_Framework_Constra
         );
     }
 }
-?>

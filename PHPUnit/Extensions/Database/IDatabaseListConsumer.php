@@ -65,4 +65,3 @@ interface PHPUnit_Extensions_Database_IDatabaseListConsumer
     public function setDatabases(array $databases);
 }
 
-?>

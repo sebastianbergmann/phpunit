@@ -80,4 +80,3 @@ class PHPUnit_Extensions_Database_DataSet_DefaultTableMetaData extends PHPUnit_E
         }
     }
 }
-?>

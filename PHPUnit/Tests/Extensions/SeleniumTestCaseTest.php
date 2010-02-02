@@ -653,4 +653,3 @@ class Extensions_SeleniumTestCaseTest extends PHPUnit_Extensions_SeleniumTestCas
         $this->assertFalse($this->isEditable('disabled_select'));
     }
 }
-?>

@@ -80,4 +80,3 @@ class PHPUnit_Framework_ComparisonFailure_String extends PHPUnit_Framework_Compa
         return trim($buffer . $diff);
     }
 }
-?>

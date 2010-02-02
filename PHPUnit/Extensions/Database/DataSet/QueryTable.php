@@ -160,4 +160,3 @@ class PHPUnit_Extensions_Database_DataSet_QueryTable extends PHPUnit_Extensions_
         }
     }
 }
-?>

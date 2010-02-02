@@ -56,4 +56,3 @@ $phar->buildFromIterator(
 
 $phar->setStub($stub);
 $phar->stopBuffering();
-?>

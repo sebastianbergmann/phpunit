@@ -139,4 +139,3 @@ class Extensions_Database_DataSet_QueryDataSetTest extends PHPUnit_Extensions_Da
         }
     }
 }
-?>

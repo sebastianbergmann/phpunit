@@ -139,4 +139,3 @@ class PHPUnit_Framework_Constraint_Not extends PHPUnit_Framework_Constraint
         return count($this->constraint) + 1;
     }
 }
-?>

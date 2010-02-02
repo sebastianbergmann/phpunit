@@ -123,4 +123,3 @@ class PHPUnit_Extensions_Database_Constraint_TableIsEqual extends PHPUnit_Framew
         PHPUnit_Util_Type::toString($this->value));
     }
 }
-?>

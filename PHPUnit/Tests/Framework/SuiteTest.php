@@ -194,4 +194,3 @@ class Framework_SuiteTest extends PHPUnit_Framework_TestCase {
         $this->assertEquals(1, count($this->result));
     }
 }
-?>

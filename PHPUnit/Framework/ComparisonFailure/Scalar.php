@@ -66,4 +66,3 @@ class PHPUnit_Framework_ComparisonFailure_Scalar extends PHPUnit_Framework_Compa
         return '';
     }
 }
-?>

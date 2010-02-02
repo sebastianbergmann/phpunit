@@ -130,4 +130,3 @@ class PHPUnit_Extensions_Database_UI_ModeFactory implements PHPUnit_Extensions_D
     }
 }
 
-?>

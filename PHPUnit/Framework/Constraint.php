@@ -166,4 +166,3 @@ abstract class PHPUnit_Framework_Constraint implements Countable, PHPUnit_Framew
      */
     abstract public function evaluate($other);
 }
-?>

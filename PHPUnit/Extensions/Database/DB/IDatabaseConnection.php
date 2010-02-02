@@ -136,4 +136,3 @@ interface PHPUnit_Extensions_Database_DB_IDatabaseConnection
      */
     public function allowsCascading();
 }
-?>

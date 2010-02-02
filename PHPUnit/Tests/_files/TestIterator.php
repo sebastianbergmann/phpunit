@@ -34,4 +34,3 @@ class TestIterator implements Iterator
         $this->position++;
     }
 }
-?>

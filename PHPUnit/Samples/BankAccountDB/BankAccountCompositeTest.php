@@ -168,4 +168,3 @@ class BankAccountCompositeTest extends PHPUnit_Framework_TestCase
         $tester->onTearDown();
     }
 }
-?>

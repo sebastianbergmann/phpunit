@@ -235,4 +235,3 @@ class PHPUnit_Framework_TestFailure
         return ($this->thrownException() instanceof PHPUnit_Framework_AssertionFailedError);
     }
 }
-?>

@@ -66,4 +66,3 @@ interface PHPUnit_Extensions_Database_DataSet_IPersistable
      */
     public function write(PHPUnit_Extensions_Database_DataSet_IDataSet $dataset);
 }
-?>

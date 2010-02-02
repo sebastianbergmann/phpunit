@@ -176,4 +176,3 @@ class PHPUnit_Util_TestDox_NamePrettifier
         $this->suffix = $suffix;
     }
 }
-?>

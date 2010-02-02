@@ -86,4 +86,3 @@ interface PHPUnit_Extensions_Database_DataSet_ITableMetaData
      */
     public function assertEquals(PHPUnit_Extensions_Database_DataSet_ITableMetaData $other);
 }
-?>

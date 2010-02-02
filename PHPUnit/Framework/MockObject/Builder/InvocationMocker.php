@@ -193,4 +193,3 @@ class PHPUnit_Framework_MockObject_Builder_InvocationMocker implements PHPUnit_F
         return $this;
     }
 }
-?>

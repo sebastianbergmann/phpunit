@@ -90,4 +90,3 @@ class PHPUnit_Extensions_Database_DataSet_Specs_Factory implements PHPUnit_Exten
     }
 }
 
-?>

@@ -78,4 +78,3 @@ class PHPUnit_Util_InvalidArgumentHelper
         );
     }
 }
-?>

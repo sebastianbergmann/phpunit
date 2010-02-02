@@ -3,4 +3,3 @@ interface AnInterface
 {
     public function doSomething();
 }
-?>

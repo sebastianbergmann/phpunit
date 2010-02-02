@@ -328,4 +328,3 @@ class Util_XMLTest extends PHPUnit_Framework_TestCase
         $this->assertEquals($tag, $converted);
     }
 }
-?>

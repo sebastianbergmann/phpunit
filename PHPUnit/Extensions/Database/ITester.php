@@ -119,4 +119,3 @@ interface PHPUnit_Extensions_Database_ITester
      */
     public function setTearDownOperation(PHPUnit_Extensions_Database_Operation_IDatabaseOperation $tearDownOperation);
 }
-?>

@@ -68,4 +68,3 @@ if ( isset($_COOKIE['PHPUNIT_SELENIUM_TEST_ID']) &&
       serialize($data)
     );
 }
-?>

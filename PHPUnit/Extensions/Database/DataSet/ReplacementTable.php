@@ -240,4 +240,3 @@ class PHPUnit_Extensions_Database_DataSet_ReplacementTable implements PHPUnit_Ex
         }
     }
 }
-?>

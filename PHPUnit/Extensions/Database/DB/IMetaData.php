@@ -105,4 +105,3 @@ interface PHPUnit_Extensions_Database_DB_IMetaData
      */
     public function allowsCascading();
 }
-?>

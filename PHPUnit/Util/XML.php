@@ -950,4 +950,3 @@ class PHPUnit_Util_XML
         return str_replace('  ', ' ', $result);
     }
 }
-?>

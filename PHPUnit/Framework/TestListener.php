@@ -125,4 +125,3 @@ interface PHPUnit_Framework_TestListener
      */
     public function endTest(PHPUnit_Framework_Test $test, $time);
 }
-?>

@@ -162,4 +162,3 @@ class PHPUnit_Extensions_Database_DataSet_DefaultTableIterator implements PHPUni
         return ($this->current() !== FALSE);
     }
 }
-?>

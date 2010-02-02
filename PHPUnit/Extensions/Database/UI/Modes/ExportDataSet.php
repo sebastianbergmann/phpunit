@@ -119,4 +119,3 @@ class PHPUnit_Extensions_Database_UI_Modes_ExportDataSet implements PHPUnit_Exte
     }
 }
 
-?>

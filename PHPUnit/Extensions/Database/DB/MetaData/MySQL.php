@@ -127,4 +127,3 @@ class PHPUnit_Extensions_Database_DB_MetaData_MySQL extends PHPUnit_Extensions_D
         return $columnNames;
     }
 }
-?>

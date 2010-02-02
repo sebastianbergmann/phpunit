@@ -49,4 +49,3 @@ PHP_CodeCoverage_Filter::getInstance()->addFileToBlacklist(__FILE__, 'PHPUNIT');
 trigger_error(
   'Please no longer include "PHPUnit/Framework.php".', E_USER_NOTICE
 );
-?>

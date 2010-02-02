@@ -206,4 +206,3 @@ abstract class PHPUnit_Framework_ComparisonFailure extends PHPUnit_Framework_Ass
         }
     }
 }
-?>

@@ -19,4 +19,3 @@ class DependencySuccessTest extends PHPUnit_Framework_TestCase
     {
     }
 }
-?>

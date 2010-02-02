@@ -114,4 +114,3 @@ class Extensions_Database_Operation_OperationsMySQLTest extends PHPUnit_Extensio
         $this->assertDataSetsEqual($expectedDataSet, $this->getConnection()->createDataSet());
     }
 }
-?>

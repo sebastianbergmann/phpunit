@@ -148,4 +148,3 @@ class PHPUnit_Extensions_Story_ResultPrinter_Text extends PHPUnit_Extensions_Sto
         );
     }
 }
-?>

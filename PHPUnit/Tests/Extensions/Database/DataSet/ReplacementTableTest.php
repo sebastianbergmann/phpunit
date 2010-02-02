@@ -260,4 +260,3 @@ class Extensions_Database_DataSet_ReplacementTableTest extends PHPUnit_Framework
         $this->assertEquals('My name is Mike Lively', $actual->getValue(0, 'column1'));
     }
 }
-?>

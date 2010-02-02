@@ -6,4 +6,3 @@ class ThrowExceptionTestCase extends PHPUnit_Framework_TestCase
         throw new Exception;
     }
 }
-?>

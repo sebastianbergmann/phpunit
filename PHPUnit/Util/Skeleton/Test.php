@@ -377,4 +377,3 @@ class PHPUnit_Util_Skeleton_Test extends PHPUnit_Util_Skeleton
         }
     }
 }
-?>

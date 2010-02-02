@@ -1212,4 +1212,3 @@ class PHPUnit_Extensions_SeleniumTestCase_Driver
         }
     }
 }
-?>

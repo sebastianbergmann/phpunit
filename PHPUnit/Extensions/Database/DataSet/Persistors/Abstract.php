@@ -125,4 +125,3 @@ abstract class PHPUnit_Extensions_Database_DataSet_Persistors_Abstract implement
     abstract protected function row(Array $row, PHPUnit_Extensions_Database_DataSet_ITable $table);
 }
 
-?>

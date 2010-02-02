@@ -190,4 +190,3 @@ class PHPUnit_Util_Type
         return '<' . $type . $value . '>';
     }
 }
-?>

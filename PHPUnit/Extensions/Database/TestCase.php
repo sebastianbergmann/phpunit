@@ -250,4 +250,3 @@ abstract class PHPUnit_Extensions_Database_TestCase extends PHPUnit_Framework_Te
         self::assertThat($actual, $constraint, $message);
     }
 }
-?>

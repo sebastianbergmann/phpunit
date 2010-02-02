@@ -206,4 +206,3 @@ class BankAccount
         $pdo->query($query);
     }
 }
-?>

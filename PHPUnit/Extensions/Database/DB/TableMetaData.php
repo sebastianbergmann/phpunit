@@ -65,4 +65,3 @@ class PHPUnit_Extensions_Database_DB_TableMetaData extends PHPUnit_Extensions_Da
         $this->primaryKeys = $databaseMetaData->getTablePrimaryKeys($tableName);
     }
 }
-?>

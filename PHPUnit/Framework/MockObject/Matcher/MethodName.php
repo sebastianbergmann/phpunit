@@ -102,4 +102,3 @@ class PHPUnit_Framework_MockObject_Matcher_MethodName extends PHPUnit_Framework_
         return $this->constraint->evaluate($invocation->methodName);
     }
 }
-?>

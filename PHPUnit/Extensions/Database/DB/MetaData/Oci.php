@@ -171,4 +171,3 @@ class PHPUnit_Extensions_Database_DB_MetaData_Oci extends PHPUnit_Extensions_Dat
         }
     }
 }
-?>

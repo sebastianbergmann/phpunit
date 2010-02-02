@@ -102,4 +102,3 @@ class PHPUnit_Framework_Constraint_PCREMatch extends PHPUnit_Framework_Constrain
         );
     }
 }
-?>

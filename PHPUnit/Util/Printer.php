@@ -202,4 +202,3 @@ abstract class PHPUnit_Util_Printer
         }
     }
 }
-?>

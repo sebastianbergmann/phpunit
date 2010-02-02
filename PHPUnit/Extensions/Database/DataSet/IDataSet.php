@@ -95,4 +95,3 @@ interface PHPUnit_Extensions_Database_DataSet_IDataSet extends IteratorAggregate
      */
     public function assertEquals(PHPUnit_Extensions_Database_DataSet_IDataSet $other);
 }
-?>

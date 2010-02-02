@@ -162,4 +162,3 @@ class PHPUnit_Framework_MockObject_Matcher_Parameters extends PHPUnit_Framework_
         }
     }
 }
-?>

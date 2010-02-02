@@ -23,4 +23,3 @@ class DoubleTestCase implements PHPUnit_Framework_Test
         $result->endTest($this, 0);
     }
 }
-?>

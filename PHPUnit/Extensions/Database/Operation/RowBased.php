@@ -113,4 +113,3 @@ abstract class PHPUnit_Extensions_Database_Operation_RowBased implements PHPUnit
         return $columnArray;
     }
 }
-?>

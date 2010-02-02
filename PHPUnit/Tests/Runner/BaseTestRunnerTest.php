@@ -68,4 +68,3 @@ class Runner_BaseTestRunnerTest extends PHPUnit_Framework_TestCase
         $runner->getTest('NonStatic');
     }
 }
-?>

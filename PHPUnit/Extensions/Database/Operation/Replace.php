@@ -134,4 +134,3 @@ class PHPUnit_Extensions_Database_Operation_Replace extends PHPUnit_Extensions_D
         }
     }
 }
-?>

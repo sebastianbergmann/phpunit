@@ -196,4 +196,3 @@ class PHPUnit_Extensions_Database_DataSet_DataSetFilter extends PHPUnit_Extensio
         $this->excludeColumns[$table] = $columns;
     }
 }
-?>

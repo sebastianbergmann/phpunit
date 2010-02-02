@@ -138,4 +138,3 @@ class PHPUnit_Extensions_Database_UI_Mediums_Text implements PHPUnit_Extensions_
     }
 }
 
-?>

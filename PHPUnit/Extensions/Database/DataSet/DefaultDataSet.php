@@ -97,4 +97,3 @@ class PHPUnit_Extensions_Database_DataSet_DefaultDataSet extends PHPUnit_Extensi
         return new PHPUnit_Extensions_Database_DataSet_DefaultTableIterator($this->tables, $reverse);
     }
 }
-?>

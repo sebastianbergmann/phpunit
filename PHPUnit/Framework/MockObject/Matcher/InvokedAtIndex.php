@@ -127,4 +127,3 @@ class PHPUnit_Framework_MockObject_Matcher_InvokedAtIndex implements PHPUnit_Fra
         }
     }
 }
-?>

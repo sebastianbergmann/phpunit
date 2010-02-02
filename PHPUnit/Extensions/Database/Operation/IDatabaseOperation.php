@@ -69,4 +69,3 @@ interface PHPUnit_Extensions_Database_Operation_IDatabaseOperation
      */
     public function execute(PHPUnit_Extensions_Database_DB_IDatabaseConnection $connection, PHPUnit_Extensions_Database_DataSet_IDataSet $dataSet);
 }
-?>

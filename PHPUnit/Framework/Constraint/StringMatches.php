@@ -138,4 +138,3 @@ class PHPUnit_Framework_Constraint_StringMatches extends PHPUnit_Framework_Const
         }
     }
 }
-?>

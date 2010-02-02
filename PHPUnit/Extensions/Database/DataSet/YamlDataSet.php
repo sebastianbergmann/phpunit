@@ -137,4 +137,3 @@ class PHPUnit_Extensions_Database_DataSet_YamlDataSet extends PHPUnit_Extensions
         }
     }
 }
-?>

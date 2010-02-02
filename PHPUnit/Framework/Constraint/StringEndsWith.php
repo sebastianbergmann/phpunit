@@ -93,4 +93,3 @@ class PHPUnit_Framework_Constraint_StringEndsWith extends PHPUnit_Framework_Cons
         return 'ends with "' . $this->suffix . '"';
     }
 }
-?>

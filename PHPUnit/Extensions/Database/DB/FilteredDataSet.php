@@ -84,4 +84,3 @@ class PHPUnit_Extensions_Database_DB_FilteredDataSet extends PHPUnit_Extensions_
         return $this->tableNames;
     }
 }
-?>

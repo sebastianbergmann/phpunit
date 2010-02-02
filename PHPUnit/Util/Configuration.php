@@ -781,4 +781,3 @@ class PHPUnit_Util_Configuration
         return $files;
     }
 }
-?>

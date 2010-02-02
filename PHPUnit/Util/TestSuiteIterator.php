@@ -147,4 +147,3 @@ class PHPUnit_Util_TestSuiteIterator implements RecursiveIterator
         return $this->tests[$this->position] instanceof PHPUnit_Framework_TestSuite;
     }
 }
-?>

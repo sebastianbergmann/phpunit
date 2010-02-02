@@ -69,4 +69,3 @@ interface IMoney
     public function subtract(IMoney $m);
     public function appendTo(MoneyBag $m);
 }
-?>

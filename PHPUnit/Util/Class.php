@@ -399,4 +399,3 @@ class PHPUnit_Util_Class
         return $result;
     }
 }
-?>

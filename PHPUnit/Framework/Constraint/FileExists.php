@@ -110,4 +110,3 @@ class PHPUnit_Framework_Constraint_FileExists extends PHPUnit_Framework_Constrai
         return 'file exists';
     }
 }
-?>

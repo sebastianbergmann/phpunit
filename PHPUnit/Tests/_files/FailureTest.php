@@ -62,4 +62,3 @@ class FailureTest extends PHPUnit_Framework_TestCase
         $this->assertSame(new StdClass, NULL, 'message');
     }
 }
-?>

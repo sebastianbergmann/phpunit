@@ -12,4 +12,3 @@ class SampleClass
         $this->c = $c;
     }
 }
-?>

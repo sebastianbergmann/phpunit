@@ -91,4 +91,3 @@ class PHPUnit_Extensions_Database_Operation_Update extends PHPUnit_Extensions_Da
         return $args;
     }
 }
-?>

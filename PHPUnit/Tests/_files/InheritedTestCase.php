@@ -7,4 +7,3 @@ class InheritedTestCase extends OneTestCase
     {
     }
 }
-?>

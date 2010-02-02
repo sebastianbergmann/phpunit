@@ -125,4 +125,3 @@ class PHPUnit_Extensions_Database_DataSet_Specs_Csv implements PHPUnit_Extension
     }
 }
 
-?>

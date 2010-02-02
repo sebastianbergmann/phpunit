@@ -123,4 +123,3 @@ class PHPUnit_Util_Timer
         return $buffer;
     }
 }
-?>

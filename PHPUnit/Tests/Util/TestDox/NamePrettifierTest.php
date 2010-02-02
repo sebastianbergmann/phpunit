@@ -104,4 +104,3 @@ class Util_TestDox_NamePrettifierTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('Foo for baz is 1', $this->namePrettifier->prettifyTestMethod('testFooForBazIs1'));
     }
 }
-?>

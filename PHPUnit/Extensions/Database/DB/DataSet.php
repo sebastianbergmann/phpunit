@@ -173,4 +173,3 @@ class PHPUnit_Extensions_Database_DB_DataSet extends PHPUnit_Extensions_Database
         return $this->databaseConnection->getMetaData()->getTableNames();
     }
 }
-?>

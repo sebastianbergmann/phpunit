@@ -144,4 +144,3 @@ abstract class PHPUnit_Util_Skeleton
 
     abstract public function generate();
 }
-?>

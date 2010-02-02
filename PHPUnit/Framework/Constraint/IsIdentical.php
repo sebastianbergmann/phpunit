@@ -138,4 +138,3 @@ class PHPUnit_Framework_Constraint_IsIdentical extends PHPUnit_Framework_Constra
         }
     }
 }
-?>

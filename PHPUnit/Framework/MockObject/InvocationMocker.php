@@ -183,4 +183,3 @@ class PHPUnit_Framework_MockObject_InvocationMocker implements PHPUnit_Framework
         }
     }
 }
-?>

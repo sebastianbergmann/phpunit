@@ -79,4 +79,3 @@ class PHPUnit_Framework_Constraint_IsTrue extends PHPUnit_Framework_Constraint
         return 'is true';
     }
 }
-?>

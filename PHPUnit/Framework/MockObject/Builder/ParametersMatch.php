@@ -89,4 +89,3 @@ interface PHPUnit_Framework_MockObject_Builder_ParametersMatch extends PHPUnit_F
      */
     public function withAnyParameters();
 }
-?>

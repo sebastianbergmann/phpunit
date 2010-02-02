@@ -150,4 +150,3 @@ class PHPUnit_Extensions_Database_DataSet_Persistors_Xml extends PHPUnit_Extensi
     }
 }
 
-?>

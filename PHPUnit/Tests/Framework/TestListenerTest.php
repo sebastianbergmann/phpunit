@@ -150,4 +150,3 @@ class Framework_TestListenerTest extends PHPUnit_Framework_TestCase implements P
         $this->assertEquals(1, $this->endCount);
     }
 }
-?>

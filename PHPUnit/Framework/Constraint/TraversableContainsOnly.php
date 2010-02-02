@@ -113,4 +113,3 @@ class PHPUnit_Framework_Constraint_TraversableContainsOnly extends PHPUnit_Frame
         return 'contains only values of type "' . $this->type . '"';
     }
 }
-?>

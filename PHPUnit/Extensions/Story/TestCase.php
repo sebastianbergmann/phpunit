@@ -209,4 +209,3 @@ abstract class PHPUnit_Extensions_Story_TestCase extends PHPUnit_Framework_TestC
      */
     abstract protected function runThen(&$world, $action, $arguments);
 }
-?>

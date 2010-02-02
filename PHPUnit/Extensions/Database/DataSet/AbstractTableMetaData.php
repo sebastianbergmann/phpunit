@@ -125,4 +125,3 @@ abstract class PHPUnit_Extensions_Database_DataSet_AbstractTableMetaData impleme
         return TRUE;
     }
 }
-?>

@@ -8,4 +8,3 @@ class SleepTest extends PHPUnit_Extensions_PerformanceTestCase
         sleep(2);
     }
 }
-?>

@@ -195,4 +195,3 @@ abstract class PHPUnit_Extensions_Database_AbstractTester implements PHPUnit_Ext
         return $this->tearDownOperation;
     }
 }
-?>

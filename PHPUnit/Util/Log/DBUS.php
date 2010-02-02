@@ -224,4 +224,3 @@ class PHPUnit_Util_Log_DBUS implements PHPUnit_Framework_TestListener
         );
     }
 }
-?>

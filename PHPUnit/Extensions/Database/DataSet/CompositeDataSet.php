@@ -120,4 +120,3 @@ class PHPUnit_Extensions_Database_DataSet_CompositeDataSet extends PHPUnit_Exten
         return $iterator;
     }
 }
-?>

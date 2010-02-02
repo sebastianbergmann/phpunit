@@ -14,4 +14,3 @@ class DependencyTestSuite
         return $suite;
     }
 }
-?>

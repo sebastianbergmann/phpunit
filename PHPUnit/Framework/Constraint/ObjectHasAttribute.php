@@ -82,4 +82,3 @@ class PHPUnit_Framework_Constraint_ObjectHasAttribute extends PHPUnit_Framework_
         );
     }
 }
-?>

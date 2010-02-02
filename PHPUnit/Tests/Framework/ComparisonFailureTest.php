@@ -164,4 +164,3 @@ class Framework_ComparisonFailureTest extends PHPUnit_Framework_TestCase
         );
     }
 }
-?>

@@ -76,4 +76,3 @@ class PHPUnit_Extensions_Database_DataSet_Specs_FlatXml implements PHPUnit_Exten
     }
 }
 
-?>

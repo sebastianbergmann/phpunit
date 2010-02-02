@@ -139,4 +139,3 @@ class Extensions_Database_DataSet_QueryTableTest extends PHPUnit_Framework_TestC
         $this->table->assertEquals($expected_table);
     }
 }
-?>

@@ -182,4 +182,3 @@ class Extensions_Database_Operation_RowBasedTest extends PHPUnit_Extensions_Data
         $this->assertDataSetsEqual(new PHPUnit_Extensions_Database_DataSet_FlatXmlDataSet(dirname(__FILE__).'/../_files/XmlDataSets/RowBasedExecute.xml'), $connection->createDataSet(array('table1', 'table2')));
     }
 }
-?>

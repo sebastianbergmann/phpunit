@@ -116,4 +116,3 @@ class PHPUnit_Util_ErrorHandler
         throw new $exception($errstr, $errno, $errfile, $errline, $trace);
     }
 }
-?>

@@ -74,4 +74,3 @@ class Util_TimerTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('01:00:01', PHPUnit_Util_Timer::secondsToTimeString(3601));
     }
 }
-?>

@@ -225,4 +225,3 @@ abstract class PHPUnit_Extensions_Database_DB_MetaData implements PHPUnit_Extens
         return FALSE;
     }
 }
-?>

@@ -146,4 +146,3 @@ class BankAccountDBTestMySQL extends PHPUnit_Extensions_Database_TestCase
     /*
     */
 }
-?>

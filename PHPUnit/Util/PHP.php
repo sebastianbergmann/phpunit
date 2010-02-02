@@ -155,4 +155,3 @@ class PHPUnit_Util_PHP
         }
     }
 }
-?>

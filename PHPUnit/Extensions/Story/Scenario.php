@@ -188,4 +188,3 @@ class PHPUnit_Extensions_Story_Scenario
         return $this->steps;
     }
 }
-?>

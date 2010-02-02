@@ -325,4 +325,3 @@ class Extensions_Database_DataSet_ReplacementDataSetTest extends PHPUnit_Framewo
         PHPUnit_Extensions_Database_TestCase::assertDataSetsEqual($expected, $actual);
     }
 }
-?>

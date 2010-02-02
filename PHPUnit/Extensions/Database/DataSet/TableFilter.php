@@ -136,4 +136,3 @@ class PHPUnit_Extensions_Database_DataSet_TableFilter extends PHPUnit_Extensions
         $this->tableMetaData->clearExcludeColumns();
     }
 }
-?>

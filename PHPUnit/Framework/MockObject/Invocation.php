@@ -151,4 +151,3 @@ class PHPUnit_Framework_MockObject_Invocation implements PHPUnit_Framework_SelfD
         return clone $original;
     }
 }
-?>

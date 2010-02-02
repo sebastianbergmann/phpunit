@@ -127,4 +127,3 @@ abstract class PHPUnit_Extensions_Story_Step
      */
     abstract public function getName();
 }
-?>

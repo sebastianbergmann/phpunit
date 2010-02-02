@@ -126,4 +126,3 @@ class PHPUnit_Framework_Constraint_IsInstanceOf extends PHPUnit_Framework_Constr
         );
     }
 }
-?>

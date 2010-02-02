@@ -158,4 +158,3 @@ class PHPUnit_Framework_Constraint_And extends PHPUnit_Framework_Constraint
         return $count;
     }
 }
-?>

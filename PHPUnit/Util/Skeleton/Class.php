@@ -315,4 +315,3 @@ class PHPUnit_Util_Skeleton_Class extends PHPUnit_Util_Skeleton
         return FALSE;
     }
 }
-?>

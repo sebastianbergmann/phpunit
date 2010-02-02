@@ -119,4 +119,3 @@ class PHPUnit_Framework_Constraint_StringContains extends PHPUnit_Framework_Cons
         );
     }
 }
-?>

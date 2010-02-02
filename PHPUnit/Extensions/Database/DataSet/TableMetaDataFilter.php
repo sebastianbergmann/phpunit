@@ -165,4 +165,3 @@ class PHPUnit_Extensions_Database_DataSet_TableMetaDataFilter extends PHPUnit_Ex
         $this->excludeColumns = array();
     }
 }
-?>

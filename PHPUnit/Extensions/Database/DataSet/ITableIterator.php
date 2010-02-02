@@ -72,4 +72,3 @@ interface PHPUnit_Extensions_Database_DataSet_ITableIterator extends Iterator
      */
     public function getTableMetaData();
 }
-?>

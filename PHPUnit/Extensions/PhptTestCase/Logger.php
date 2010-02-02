@@ -61,4 +61,3 @@ class PHPUnit_Extensions_PhptTestCase_Logger
     {
     }
 }
-?>

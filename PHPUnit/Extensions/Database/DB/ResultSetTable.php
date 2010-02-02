@@ -81,4 +81,3 @@ class PHPUnit_Extensions_Database_DB_ResultSetTable extends PHPUnit_Extensions_D
         $this->setTableMetaData(new PHPUnit_Extensions_Database_DataSet_DefaultTableMetaData($tableName, $columns));
     }
 }
-?>

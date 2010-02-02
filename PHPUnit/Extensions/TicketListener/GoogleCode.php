@@ -269,4 +269,3 @@ class PHPUnit_Extensions_TicketListener_GoogleCode extends PHPUnit_Extensions_Ti
         return array($status, $response);
     }
 }
-?>

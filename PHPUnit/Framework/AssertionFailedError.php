@@ -67,4 +67,3 @@ class PHPUnit_Framework_AssertionFailedError extends Exception implements PHPUni
         return $this->getMessage();
     }
 }
-?>

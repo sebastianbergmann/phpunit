@@ -260,4 +260,3 @@ class PHPUnit_Util_Diff
         return $common;
     }
 }
-?>

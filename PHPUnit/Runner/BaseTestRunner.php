@@ -182,4 +182,3 @@ abstract class PHPUnit_Runner_BaseTestRunner
      */
     abstract protected function runFailed($message);
 }
-?>

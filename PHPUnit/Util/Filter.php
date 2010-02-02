@@ -132,4 +132,3 @@ class PHPUnit_Util_Filter
         return FALSE;
     }
 }
-?>

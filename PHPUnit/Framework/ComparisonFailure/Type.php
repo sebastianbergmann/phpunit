@@ -71,4 +71,3 @@ class PHPUnit_Framework_ComparisonFailure_Type extends PHPUnit_Framework_Compari
         );
     }
 }
-?>

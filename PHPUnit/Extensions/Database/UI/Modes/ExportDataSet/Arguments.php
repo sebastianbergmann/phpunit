@@ -153,4 +153,3 @@ class PHPUnit_Extensions_Database_UI_Modes_ExportDataSet_Arguments
     }
 }
 
-?>

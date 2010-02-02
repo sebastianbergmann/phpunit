@@ -1082,4 +1082,3 @@ abstract class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_Tes
         throw $e;
     }
 }
-?>

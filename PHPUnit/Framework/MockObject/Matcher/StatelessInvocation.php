@@ -96,4 +96,3 @@ abstract class PHPUnit_Framework_MockObject_Matcher_StatelessInvocation implemen
     {
     }
 }
-?>

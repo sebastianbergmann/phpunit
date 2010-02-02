@@ -136,4 +136,3 @@ class PHPUnit_Framework_ComparisonFailure_Array extends PHPUnit_Framework_Compar
         return $diff;
     }
 }
-?>

@@ -93,4 +93,3 @@ class PHPUnit_Framework_Constraint_StringStartsWith extends PHPUnit_Framework_Co
         return 'starts with "' . $this->prefix . '"';
     }
 }
-?>

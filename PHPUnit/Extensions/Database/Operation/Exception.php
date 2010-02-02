@@ -128,4 +128,3 @@ class PHPUnit_Extensions_Database_Operation_Exception extends RuntimeException
         return $this->error;
     }
 }
-?>

@@ -142,4 +142,3 @@ class PHPUnit_Runner_IncludePathTestCollector implements PHPUnit_Runner_TestColl
         }
     }
 }
-?>

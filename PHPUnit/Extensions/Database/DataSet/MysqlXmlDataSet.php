@@ -116,4 +116,3 @@ class PHPUnit_Extensions_Database_DataSet_MysqlXmlDataSet extends PHPUnit_Extens
         }
     }
 }
-?>

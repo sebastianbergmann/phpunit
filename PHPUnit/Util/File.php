@@ -303,4 +303,3 @@ class PHPUnit_Util_File
         return $result;
     }
 }
-?>

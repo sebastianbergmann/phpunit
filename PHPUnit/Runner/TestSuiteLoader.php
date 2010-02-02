@@ -70,4 +70,3 @@ interface PHPUnit_Runner_TestSuiteLoader
      */
     public function reload(ReflectionClass $aClass);
 }
-?>

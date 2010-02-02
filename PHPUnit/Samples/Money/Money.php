@@ -147,4 +147,3 @@ class Money implements IMoney
         $m->appendMoney($this);
     }
 }
-?>

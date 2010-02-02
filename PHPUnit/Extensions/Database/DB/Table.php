@@ -73,4 +73,3 @@ class PHPUnit_Extensions_Database_DB_Table extends PHPUnit_Extensions_Database_D
         $this->data = $pdoStatement->fetchAll(PDO::FETCH_ASSOC);
     }
 }
-?>

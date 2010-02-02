@@ -75,4 +75,3 @@ class PHPUnit_Extensions_Database_Operation_DeleteAll implements PHPUnit_Extensi
         }
     }
 }
-?>

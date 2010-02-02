@@ -65,4 +65,3 @@ interface PHPUnit_Extensions_Database_DataSet_ISpec
      */
     public function getDataSet($dataSetSpec);
 }
-?>

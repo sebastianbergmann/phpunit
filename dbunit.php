@@ -52,4 +52,3 @@ $command->main(
   new PHPUnit_Extensions_Database_UI_Mediums_Text($_SERVER['argv']),
   new PHPUnit_Extensions_Database_UI_Context()
 );
-?>

@@ -110,4 +110,3 @@ class PHPUnit_Extensions_Database_DataSet_Specs_DbTable implements PHPUnit_Exten
     }
 }
 
-?>

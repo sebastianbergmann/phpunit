@@ -167,4 +167,3 @@ abstract class PHPUnit_Extensions_Database_DataSet_AbstractDataSet implements PH
         return $dataSetString;
     }
 }
-?>

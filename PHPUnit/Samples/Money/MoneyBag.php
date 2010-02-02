@@ -246,4 +246,3 @@ class MoneyBag implements IMoney
         $m->appendBag($this);
     }
 }
-?>

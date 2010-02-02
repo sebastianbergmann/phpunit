@@ -70,4 +70,3 @@ class PHPUnit_Extensions_Story_When extends PHPUnit_Extensions_Story_Step
         return 'When';
     }
 }
-?>

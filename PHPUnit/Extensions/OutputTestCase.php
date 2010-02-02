@@ -202,4 +202,3 @@ abstract class PHPUnit_Extensions_OutputTestCase extends PHPUnit_Framework_TestC
         return $testResult;
     }
 }
-?>

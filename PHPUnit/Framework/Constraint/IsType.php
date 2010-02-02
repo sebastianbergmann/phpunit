@@ -181,4 +181,3 @@ class PHPUnit_Framework_Constraint_IsType extends PHPUnit_Framework_Constraint
         );
     }
 }
-?>
