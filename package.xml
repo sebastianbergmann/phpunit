@@ -449,6 +449,9 @@
       <file baseinstalldir="/" name="IsAnything.php" role="php">
        <tasks:replace from="@package_version@" to="version" type="package-info" />
       </file>
+      <file baseinstalldir="/" name="IsEmpty.php" role="php">
+       <tasks:replace from="@package_version@" to="version" type="package-info" />
+      </file>
       <file baseinstalldir="/" name="IsEqual.php" role="php">
        <tasks:replace from="@package_version@" to="version" type="package-info" />
       </file>

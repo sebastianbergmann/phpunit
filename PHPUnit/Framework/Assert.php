@@ -418,6 +418,30 @@ abstract class PHPUnit_Framework_Assert
     }
 
     /**
+     * Asserts that a variable is empty.
+     *
+     * @param  mixed   $actual
+     * @param  string  $message
+     * @throws PHPUnit_Framework_AssertionFailedError
+     */
+    public static function assertEmpty($actual, $message = '')
+    {
+        self::assertThat($actual, self::isEmpty(), $message);
+    }
+
+    /**
+     * Asserts that a variable is not empty.
+     *
+     * @param  mixed   $actual
+     * @param  string  $message
+     * @throws PHPUnit_Framework_AssertionFailedError
+     */
+    public static function assertNotEmpty($actual, $message = '')
+    {
+        self::assertThat($actual, self::logicalNot(self::isEmpty()), $message);
+    }
+
+    /**
      * Asserts that a value is greater than another value.
      *
      * @param  mixed   $expected
@@ -2021,6 +2045,16 @@ abstract class PHPUnit_Framework_Assert
         );
     }
 
+    /**
+     * Returns a PHPUnit_Framework_Constraint_IsEmpty matcher object.
+     *
+     * @return PHPUnit_Framework_Constraint_IsEmpty
+     * @since  Method available since Release 3.5.0
+     */
+    public static function isEmpty()
+    {
+        return new PHPUnit_Framework_Constraint_IsEmpty;
+    }
     /**
      * Returns a PHPUnit_Framework_Constraint_FileExists matcher object.
      *

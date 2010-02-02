@@ -4408,6 +4408,42 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
     }
 
     /**
+     * @covers PHPUnit_Framework_Assert::assertEmpty
+     */
+    public function testAssertEmpty()
+    {
+        $this->assertEmpty(array());
+
+        try {
+            $this->assertEmpty(array('foo'));
+        }
+
+        catch (PHPUnit_Framework_AssertionFailedError $e) {
+            return;
+        }
+
+        $this->fail();
+    }
+
+    /**
+     * @covers PHPUnit_Framework_Assert::assertNotEmpty
+     */
+    public function testAssertNotEmpty()
+    {
+        $this->assertNotEmpty(array('foo'));
+
+        try {
+            $this->assertNotEmpty(array());
+        }
+
+        catch (PHPUnit_Framework_AssertionFailedError $e) {
+            return;
+        }
+
+        $this->fail();
+    }
+
+    /**
      * @covers PHPUnit_Framework_Assert::markTestIncomplete
      */
     public function testMarkTestIncomplete()

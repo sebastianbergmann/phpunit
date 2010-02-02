@@ -2434,4 +2434,56 @@ class Framework_ConstraintTest extends PHPUnit_Framework_TestCase
 
         $this->fail();
     }
+
+    /**
+     * @covers PHPUnit_Framework_Constraint_IsEmpty
+     * @covers PHPUnit_Framework_Constraint::count
+     */
+    public function testConstraintIsEmpty()
+    {
+        $constraint = new PHPUnit_Framework_Constraint_IsEmpty;
+
+        $this->assertFalse($constraint->evaluate(array('foo')));
+        $this->assertTrue($constraint->evaluate(array()));
+        $this->assertEquals('is empty', $constraint->toString());
+        $this->assertEquals(1, count($constraint));
+
+        try {
+            $constraint->fail(array('foo'), '');
+        }
+
+        catch (PHPUnit_Framework_ExpectationFailedException $e) {
+            $this->assertEquals(
+              "Failed asserting that \nArray\n(\n    [0] => foo\n)\n is empty.",
+              $e->getDescription()
+            );
+
+            return;
+        }
+
+        $this->fail();
+    }
+
+    /**
+     * @covers PHPUnit_Framework_Constraint_IsEmpty
+     */
+    public function testConstraintIsEmpty2()
+    {
+        $constraint = new PHPUnit_Framework_Constraint_IsEmpty;
+
+        try {
+            $constraint->fail(array('foo'), 'custom message');
+        }
+
+        catch (PHPUnit_Framework_ExpectationFailedException $e) {
+            $this->assertEquals(
+              "custom message\nFailed asserting that \nArray\n(\n    [0] => foo\n)\n is empty.",
+              $e->getDescription()
+            );
+
+            return;
+        }
+
+        $this->fail();
+    }
 }
