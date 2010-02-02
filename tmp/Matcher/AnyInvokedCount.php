@@ -72,4 +72,3 @@ class PHPUnit_Framework_MockObject_Matcher_AnyInvokedCount extends PHPUnit_Frame
     {
     }
 }
-?>

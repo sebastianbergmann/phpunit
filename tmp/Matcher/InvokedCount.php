@@ -143,4 +143,3 @@ class PHPUnit_Framework_MockObject_Matcher_InvokedCount extends PHPUnit_Framewor
         }
     }
 }
-?>

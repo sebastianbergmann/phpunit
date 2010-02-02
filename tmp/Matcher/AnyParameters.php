@@ -74,4 +74,3 @@ class PHPUnit_Framework_MockObject_Matcher_AnyParameters extends PHPUnit_Framewo
         return TRUE;
     }
 }
-?>

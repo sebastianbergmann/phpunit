@@ -80,4 +80,3 @@ interface PHPUnit_Framework_MockObject_MockObject /*extends PHPUnit_Framework_Mo
      */
     public function __phpunit_verify();
 }
-?>

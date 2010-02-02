@@ -78,4 +78,3 @@ class PHPUnit_Framework_MockObject_Stub_Return implements PHPUnit_Framework_Mock
         );
     }
 }
-?>

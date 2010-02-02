@@ -79,4 +79,3 @@ interface PHPUnit_Framework_MockObject_Invokable extends PHPUnit_Framework_MockO
      */
     public function matches(PHPUnit_Framework_MockObject_Invocation $invocation);
 }
-?>

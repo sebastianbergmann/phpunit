@@ -68,4 +68,3 @@ interface PHPUnit_Framework_MockObject_Builder_MethodNameMatch extends PHPUnit_F
      */
     public function method($name);
 }
-?>

@@ -80,4 +80,3 @@ class PHPUnit_Framework_MockObject_Stub_Exception implements PHPUnit_Framework_M
         );
     }
 }
-?>

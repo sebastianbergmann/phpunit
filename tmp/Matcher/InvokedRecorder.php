@@ -107,4 +107,3 @@ abstract class PHPUnit_Framework_MockObject_Matcher_InvokedRecorder implements P
         return TRUE;
     }
 }
-?>
