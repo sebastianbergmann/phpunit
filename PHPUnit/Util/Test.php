@@ -265,8 +265,9 @@ class PHPUnit_Util_Test
                     $dataProviderClassName = $className;
                 }
 
-                $dataProviderMethod = new ReflectionMethod(
-                  $dataProviderClassName, $dataProviderMethodName
+                $dataProviderClass  = new ReflectionClass($dataProviderClassName);
+                $dataProviderMethod = $dataProviderClass->getMethod(
+                  $dataProviderMethodName
                 );
 
                 if ($dataProviderMethod->isStatic()) {
