@@ -310,8 +310,16 @@ class PHPUnit_Util_Test
 
         $groups = array();
 
+        if (isset($annotations['method']['author'])) {
+            $groups = $annotations['method']['author'];
+        }
+
+        else if (isset($annotations['class']['author'])) {
+            $groups = $annotations['class']['author'];
+        }
+
         if (isset($annotations['class']['group'])) {
-            $groups = $annotations['class']['group'];
+            $groups = array_merge($groups, $annotations['class']['group']);
         }
 
         if (isset($annotations['method']['group'])) {
