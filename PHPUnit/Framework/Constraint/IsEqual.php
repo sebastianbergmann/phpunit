@@ -83,7 +83,7 @@ class PHPUnit_Framework_Constraint_IsEqual extends PHPUnit_Framework_Constraint
     /**
      * @var boolean
      */
-    protected $canonicalizeEol = FALSE;
+    protected $canonicalize = FALSE;
 
     /**
      * @var boolean
@@ -94,10 +94,10 @@ class PHPUnit_Framework_Constraint_IsEqual extends PHPUnit_Framework_Constraint
      * @param mixed   $value
      * @param float   $delta
      * @param integer $maxDepth
-     * @param boolean $canonicalizeEol
+     * @param boolean $canonicalize
      * @param boolean $ignoreCase
      */
-    public function __construct($value, $delta = 0, $maxDepth = 10, $canonicalizeEol = FALSE, $ignoreCase = FALSE)
+    public function __construct($value, $delta = 0, $maxDepth = 10, $canonicalize = FALSE, $ignoreCase = FALSE)
     {
         if (!is_numeric($delta)) {
             throw PHPUnit_Util_InvalidArgumentHelper::factory(2, 'numeric');
@@ -107,7 +107,7 @@ class PHPUnit_Framework_Constraint_IsEqual extends PHPUnit_Framework_Constraint
             throw PHPUnit_Util_InvalidArgumentHelper::factory(3, 'integer');
         }
 
-        if (!is_bool($canonicalizeEol)) {
+        if (!is_bool($canonicalize)) {
             throw PHPUnit_Util_InvalidArgumentHelper::factory(4, 'boolean');
         }
 
@@ -115,11 +115,11 @@ class PHPUnit_Framework_Constraint_IsEqual extends PHPUnit_Framework_Constraint
             throw PHPUnit_Util_InvalidArgumentHelper::factory(5, 'boolean');
         }
 
-        $this->value           = $value;
-        $this->delta           = $delta;
-        $this->maxDepth        = $maxDepth;
-        $this->canonicalizeEol = $canonicalizeEol;
-        $this->ignoreCase      = $ignoreCase;
+        $this->value        = $value;
+        $this->delta        = $delta;
+        $this->maxDepth     = $maxDepth;
+        $this->canonicalize = $canonicalize;
+        $this->ignoreCase   = $ignoreCase;
     }
 
     /**
@@ -295,7 +295,7 @@ class PHPUnit_Framework_Constraint_IsEqual extends PHPUnit_Framework_Constraint
             }
 
             if (is_string($a) && is_string($b)) {
-                if ($this->canonicalizeEol && PHP_EOL != "\n") {
+                if ($this->canonicalize && PHP_EOL != "\n") {
                     $a = str_replace(PHP_EOL, "\n", $a);
                     $b = str_replace(PHP_EOL, "\n", $b);
                 }
