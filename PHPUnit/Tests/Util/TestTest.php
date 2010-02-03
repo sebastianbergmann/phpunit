@@ -106,5 +106,19 @@ class Util_TestTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(1, $result);
         $this->assertEquals('メソッド', $matches[1]);
     }
+
+    public function testParseAnnotation()
+    {
+        $this->assertEquals(
+          array('Foo', 'ほげ'),
+          PHPUnit_Util_Test::getDependencies(get_class($this), 'methodForTestParseAnnotation')
+        );
+    }
+
+    /**
+     * @depends Foo
+     * @depends ほげ
+     */
+    public function methodForTestParseAnnotation() {}
 }
 ?>
