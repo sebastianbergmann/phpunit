@@ -29,6 +29,7 @@ PHPUnit 3.5.0
 * The `--skeleton` switch has been removed, please use `--skeleton-test` instead.
 * The `TestListener` implementation that logs to [PEAR::Log](http://pear.php.net/package/Log) sinks has been removed.
 * The test database functionality has been removed.
+* The shared fixture functionality has been removed.
 * `PHPUnit_Extensions_PerformanceTestCase` has been removed.
 * `PHPUnit_Extensions_RepeatedTest` has been removed.
 * `PHPUnit_Extensions_TicketListener_Trac` has been removed.

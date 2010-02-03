@@ -99,13 +99,6 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
     protected $backupStaticAttributes = NULL;
 
     /**
-     * Fixture that is shared between the tests of this test suite.
-     *
-     * @var    mixed
-     */
-    protected $sharedFixture;
-
-    /**
      * The name of the test suite.
      *
      * @var    string
@@ -672,7 +665,6 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
             if ($test instanceof PHPUnit_Framework_TestSuite) {
                 $test->setBackupGlobals($this->backupGlobals);
                 $test->setBackupStaticAttributes($this->backupStaticAttributes);
-                $test->setSharedFixture($this->sharedFixture);
 
                 $test->run(
                   $result, $filter, $groups, $excludeGroups, $processIsolation
@@ -713,7 +705,6 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
                         $test->setBackupStaticAttributes(
                           $this->backupStaticAttributes
                         );
-                        $test->setSharedFixture($this->sharedFixture);
                         $test->setRunTestInSeparateProcess($processIsolation);
 
                         $_currentClass = get_class($test);
@@ -906,17 +897,6 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
             is_bool($backupStaticAttributes)) {
             $this->backupStaticAttributes = $backupStaticAttributes;
         }
-    }
-
-    /**
-     * Sets the shared fixture for the tests of this test suite.
-     *
-     * @param  mixed $sharedFixture
-     * @since  Method available since Release 3.1.0
-     */
-    public function setSharedFixture($sharedFixture)
-    {
-        $this->sharedFixture = $sharedFixture;
     }
 
     /**
