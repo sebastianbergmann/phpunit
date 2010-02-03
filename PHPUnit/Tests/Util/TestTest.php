@@ -77,6 +77,11 @@ class Util_TestTest extends PHPUnit_Framework_TestCase
           array('class' => 'Foo\Bar\Baz', 'code' => 0, 'message' => ''),
           PHPUnit_Util_Test::getExpectedException('@expectedException Foo\Bar\Baz')
         );
+
+        $this->assertEquals(
+          array('class' => 'ほげ', 'code' => 0, 'message' => ''),
+          PHPUnit_Util_Test::getExpectedException('@expectedException ほげ')
+        );
     }
 
     public function testGetProvidedDataRegEx()
