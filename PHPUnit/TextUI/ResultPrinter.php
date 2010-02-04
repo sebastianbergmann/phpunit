@@ -332,21 +332,15 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
             );
         }
 
-        if (function_exists('memory_get_peak_usage')) {
-            $memory = sprintf(
-              ', Memory: %4.2fMb',
-              memory_get_peak_usage(TRUE) / 1048576
-            );
-        } else {
-            $memory = '';
-        }
-
         $this->write(
           sprintf(
             "%sTime: %s%s\n\n",
             $this->verbose ? "\n" : "\n\n",
             $timeElapsed,
-            $memory
+            sprintf(
+              ', Memory: %4.2fMb',
+              memory_get_peak_usage(TRUE) / 1048576
+            )
           )
         );
     }
