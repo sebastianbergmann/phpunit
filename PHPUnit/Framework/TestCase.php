@@ -558,7 +558,7 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
 
             $this->prepareTemplate($template);
 
-            PHPUnit_Util_PHP::runJob($this, $result, $template->render());
+            PHPUnit_Util_PHP::runJob($template->render(), $this, $result);
         } else {
             $result->run($this);
         }
