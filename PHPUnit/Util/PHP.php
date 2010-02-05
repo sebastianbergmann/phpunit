@@ -130,16 +130,19 @@ class PHPUnit_Util_PHP
     /**
      * Runs a single job (PHP code) using a separate PHP process.
      *
-     * @param  string $job
-     * @return string
+     * @param PHPUnit_Framework_TestCase   $test
+     * @param PHPUnit_Framework_TestResult $result
+     * @param string                       $job
      */
-    public static function runJob($job)
+    public static function runJob(PHPUnit_Framework_Test $test, PHPUnit_Framework_TestResult $result, $job)
     {
         $process = proc_open(
           self::getPhpBinary(), self::$descriptorSpec, $pipes
         );
 
         if (is_resource($process)) {
+            $result->startTest($test);
+
             fwrite($pipes[0], $job);
             fclose($pipes[0]);
 
@@ -151,7 +154,72 @@ class PHPUnit_Util_PHP
 
             proc_close($process);
 
-            return array('stdout' => $stdout, 'stderr' => $stderr);
+            if (!empty($stderr)) {
+                $time = 0;
+                $result->addError(
+                  $test,
+                  new RuntimeException(trim($stderr)), $time
+                );
+            } else {
+                $childResult = @unserialize($stdout);
+
+                if ($childResult !== FALSE) {
+                    if (!empty($childResult['output'])) {
+                        print $childResult['output'];
+                    }
+
+                    $test->setResult($childResult['testResult']);
+                    $test->addToAssertionCount($childResult['numAssertions']);
+
+                    $childResult = $childResult['result'];
+
+                    if ($result->getCollectCodeCoverageInformation()) {
+                        $codeCoverageInformation = $childResult->getRawCodeCoverageInformation();
+
+                        $result->getCodeCoverage()->append(
+                          $codeCoverageInformation[0], $test
+                        );
+                    }
+
+                    $time           = $childResult->time();
+                    $notImplemented = $childResult->notImplemented();
+                    $skipped        = $childResult->skipped();
+                    $errors         = $childResult->errors();
+                    $failures       = $childResult->failures();
+
+                    if (!empty($notImplemented)) {
+                        $result->addError(
+                          $test, $notImplemented[0]->thrownException(), $time
+                        );
+                    }
+
+                    else if (!empty($skipped)) {
+                        $result->addError(
+                          $test, $skipped[0]->thrownException(), $time
+                        );
+                    }
+
+                    else if (!empty($errors)) {
+                        $result->addError(
+                          $test, $errors[0]->thrownException(), $time
+                        );
+                    }
+
+                    else if (!empty($failures)) {
+                        $result->addFailure(
+                          $test, $failures[0]->thrownException(), $time
+                        );
+                    }
+                } else {
+                    $time = 0;
+                    $result->addError(
+                      $test,
+                      new RuntimeException(trim($stdout)), $time
+                    );
+                }
+            }
+
+            $result->endTest($test, $time);
         }
     }
 }

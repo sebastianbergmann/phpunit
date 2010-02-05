@@ -557,76 +557,8 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
             );
 
             $this->prepareTemplate($template);
-            $job = $template->render();
-            $result->startTest($this);
 
-            $jobResult = PHPUnit_Util_PHP::runJob($job);
-
-            if (!empty($jobResult['stderr'])) {
-                $time = 0;
-                $result->addError(
-                  $this,
-                  new RuntimeException(trim($jobResult['stderr'])), $time
-                );
-            } else {
-                $childResult = @unserialize($jobResult['stdout']);
-
-                if ($childResult !== FALSE) {
-                    if (!empty($childResult['output'])) {
-                        print $childResult['output'];
-                    }
-
-                    $this->testResult    = $childResult['testResult'];
-                    $this->numAssertions = $childResult['numAssertions'];
-                    $childResult         = $childResult['result'];
-
-                    if ($collectCodeCoverageInformation) {
-                        $codeCoverageInformation = $childResult->getRawCodeCoverageInformation();
-
-                        $result->getCodeCoverage()->append(
-                          $codeCoverageInformation[0], $this
-                        );
-                    }
-
-                    $time           = $childResult->time();
-                    $notImplemented = $childResult->notImplemented();
-                    $skipped        = $childResult->skipped();
-                    $errors         = $childResult->errors();
-                    $failures       = $childResult->failures();
-
-                    if (!empty($notImplemented)) {
-                        $result->addError(
-                          $this, $notImplemented[0]->thrownException(), $time
-                        );
-                    }
-
-                    else if (!empty($skipped)) {
-                        $result->addError(
-                          $this, $skipped[0]->thrownException(), $time
-                        );
-                    }
-
-                    else if (!empty($errors)) {
-                        $result->addError(
-                          $this, $errors[0]->thrownException(), $time
-                        );
-                    }
-
-                    else if (!empty($failures)) {
-                        $result->addFailure(
-                          $this, $failures[0]->thrownException(), $time
-                        );
-                    }
-                } else {
-                    $time = 0;
-                    $result->addError(
-                      $this,
-                      new RuntimeException(trim($jobResult['stdout'])), $time
-                    );
-                }
-            }
-
-            $result->endTest($this, $time);
+            PHPUnit_Util_PHP::runJob($this, $result, $template->render());
         } else {
             $result->run($this);
         }
