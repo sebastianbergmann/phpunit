@@ -8,6 +8,7 @@ PHPUnit 3.4.10
 
 * Invalid data provider specifications are now handled gracefully.
 * Fixed TRAC-993: Incorrect test on `$reflector->getFileName()`.
+* Fixed TRAC-994: Cannot use multibyte characters in the provider method name.
 * Made `PHPUnit_Framework_Assert::readAttribute()` compatible with PHP 5.1.6.
 * Made `PHPUnit_Extensions_Database_Operation_RowBased` compatible with PHP 5.1.6.
 
