@@ -53,7 +53,7 @@
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    Release: @package_version@
  * @link       http://www.phpunit.de/
- * @since      Interface available since Release 4.0.0
+ * @since      Interface available since Release 3.5.0
  */
 interface PHPUnit_Framework_MockObject_Invocation
 {
