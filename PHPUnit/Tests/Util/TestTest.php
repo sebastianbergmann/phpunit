@@ -77,6 +77,11 @@ class Util_TestTest extends PHPUnit_Framework_TestCase
           array('class' => 'Foo\Bar\Baz', 'code' => 0, 'message' => ''),
           PHPUnit_Util_Test::getExpectedException('@expectedException Foo\Bar\Baz')
         );
+
+        $this->assertEquals(
+          array('class' => 'ほげ', 'code' => 0, 'message' => ''),
+          PHPUnit_Util_Test::getExpectedException('@expectedException ほげ')
+        );
     }
 
     public function testGetProvidedDataRegEx()
@@ -96,5 +101,23 @@ class Util_TestTest extends PHPUnit_Framework_TestCase
         $result = preg_match(PHPUnit_Util_Test::REGEX_DATA_PROVIDER, '@dataProvider namespace\namespace\class::method', $matches);
         $this->assertEquals(1, $result);
         $this->assertEquals('namespace\namespace\class::method', $matches[1]);
+
+        $result = preg_match(PHPUnit_Util_Test::REGEX_DATA_PROVIDER, '@dataProvider メソッド', $matches);
+        $this->assertEquals(1, $result);
+        $this->assertEquals('メソッド', $matches[1]);
     }
+
+    public function testParseAnnotation()
+    {
+        $this->assertEquals(
+          array('Foo', 'ほげ'),
+          PHPUnit_Util_Test::getDependencies(get_class($this), 'methodForTestParseAnnotation')
+        );
+    }
+
+    /**
+     * @depends Foo
+     * @depends ほげ
+     */
+    public function methodForTestParseAnnotation() {}
 }
