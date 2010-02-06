@@ -163,7 +163,10 @@ class PHPUnit_Util_GlobalState
     protected static function restoreSuperGlobalArray($superGlobalArray)
     {
         if (isset($GLOBALS[$superGlobalArray])) {
-            foreach ($GLOBALS[$superGlobalArray] as $key => $value) {
+            // Take into account variables that may have been removed from globals by tests
+            $keys = $GLOBALS[$superGlobalArray] + self::$globals[$superGlobalArray];
+            	    
+            foreach(array_keys($keys) as $key){
                 if (isset(self::$globals[$superGlobalArray][$key])) {
                     $GLOBALS[$superGlobalArray][$key] = unserialize(
                       self::$globals[$superGlobalArray][$key]
