@@ -130,9 +130,10 @@ class PHPUnit_Util_PHP
     /**
      * Runs a single job (PHP code) using a separate PHP process.
      *
-     * @param string                       $job
-     * @param PHPUnit_Framework_TestCase   $test
-     * @param PHPUnit_Framework_TestResult $result
+     * @param  string                       $job
+     * @param  PHPUnit_Framework_TestCase   $test
+     * @param  PHPUnit_Framework_TestResult $result
+     * @return array|null
      */
     public static function runJob($job, PHPUnit_Framework_Test $test = NULL, PHPUnit_Framework_TestResult $result = NULL)
     {
@@ -158,6 +159,8 @@ class PHPUnit_Util_PHP
 
             if ($result !== NULL) {
                 self::processChildResult($test, $result, $stdout, $stderr);
+            } else {
+                return array('stdout' => $stdout, 'stderr' => $stderr);
             }
         }
     }
