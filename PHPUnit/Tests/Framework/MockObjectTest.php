@@ -266,6 +266,22 @@ class Framework_MockObjectTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('something', $class::doSomething());
     }
 
+    public function testStubbedReturnValueForStaticMethod2()
+    {
+        if (!version_compare(PHP_VERSION, '5.3.0', '>=')) {
+            $this->markTestSkipped('PHP 5.3 (or later) is required.');
+        }
+
+        $mock  = $this->getMock('StaticMockTestClass', array('doSomething'));
+        $class = get_class($mock);
+
+        $class::staticExpects($this->any())
+              ->method('doSomething')
+              ->will($this->returnValue('something'));
+
+        $this->assertEquals('something', $class::doSomethingElse());
+    }
+
     public function testGetMockForAbstractClass()
     {
         $mock = $this->getMock('AbstractMockTestClass');
