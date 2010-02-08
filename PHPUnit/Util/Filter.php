@@ -43,6 +43,7 @@
  * @since      File available since Release 2.0.0
  */
 
+require_once 'PHPUnit/Framework/Exception.php';
 require_once 'PHPUnit/Util/FilterIterator.php';
 
 /**

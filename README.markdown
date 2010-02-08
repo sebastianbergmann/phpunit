@@ -3,6 +3,11 @@ PHPUnit 3.4
 
 This is the list of changes for the PHPUnit 3.4 release series.
 
+PHPUnit 3.4.11
+--------------
+
+* Fixed TRAC-997: Missing include of `PHPUnit_Framework_Exception` in `PHPUnit/Util/Filter.php`.
+
 PHPUnit 3.4.10
 --------------
 
