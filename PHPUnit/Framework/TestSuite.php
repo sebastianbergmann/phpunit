@@ -143,14 +143,9 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
     protected $numTests = -1;
 
     /**
-     * @var array
+     * @var boolean
      */
-    protected static $setUpBeforeClassCalled = array();
-
-    /**
-     * @var array
-     */
-    protected static $tearDownAfterClassCalled = array();
+    protected $testCase = FALSE;
 
     /**
      * Constructs a new TestSuite:
@@ -250,6 +245,8 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
               )
             );
         }
+
+        $this->testCase = TRUE;
     }
 
     /**
@@ -641,8 +638,15 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
             $result = $this->createResult();
         }
 
+        $result->startTestSuite($this);
+
         try {
             $this->setUp();
+
+            if ($this->testCase &&
+                method_exists($this->name, 'setUpBeforeClass')) {
+                call_user_func(array($this->name, 'setUpBeforeClass'));
+            }
         }
 
         catch (PHPUnit_Framework_SkippedTestSuiteError $e) {
@@ -654,8 +658,6 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
 
             return $result;
         }
-
-        $result->startTestSuite($this);
 
         if (empty($groups)) {
             $tests = $this->tests;
@@ -670,8 +672,6 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
                 }
             }
         }
-
-        $currentClass = '';
 
         foreach ($tests as $test) {
             if ($result->shouldStop()) {
@@ -724,22 +724,6 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
                         );
                         $test->setSharedFixture($this->sharedFixture);
                         $test->setRunTestInSeparateProcess($processIsolation);
-
-                        $_currentClass = get_class($test);
-
-                        if ($_currentClass != $currentClass) {
-                            if ($currentClass != '') {
-                                call_user_func(array($currentClass, 'tearDownAfterClass'));
-                                self::$tearDownAfterClassCalled[$currentClass] = TRUE;
-                            }
-
-                            $currentClass = $_currentClass;
-                        }
-
-                        if (!isset(self::$setUpBeforeClassCalled[$currentClass])) {
-                            call_user_func(array($currentClass, 'setUpBeforeClass'));
-                            self::$setUpBeforeClassCalled[$currentClass] = TRUE;
-                        }
                     }
 
                     $this->runTest($test, $result);
@@ -747,14 +731,13 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
             }
         }
 
-        if ($currentClass != '' &&
-            !isset(self::$tearDownAfterClassCalled[$currentClass])) {
-            call_user_func(array($currentClass, 'tearDownAfterClass'));
-            self::$tearDownAfterClassCalled[$currentClass] = TRUE;
+        if ($this->testCase &&
+            method_exists($this->name, 'setUpBeforeClass')) {
+            call_user_func(array($this->name, 'tearDownAfterClass'));
         }
 
-        $result->endTestSuite($this);
         $this->tearDown();
+        $result->endTestSuite($this);
 
         return $result;
     }
