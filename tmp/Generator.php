@@ -181,7 +181,7 @@ class PHPUnit_Framework_MockObject_Generator
 
         if (self::$soapLoaded) {
             $client   = new SOAPClient($wsdlFile);
-            $_methods = $client->__getFunctions();
+            $_methods = array_unique($client->__getFunctions());
             unset($client);
 
             $templateDir    = dirname(__FILE__) . DIRECTORY_SEPARATOR .
