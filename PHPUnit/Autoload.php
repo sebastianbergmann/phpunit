@@ -45,7 +45,16 @@
 
 require_once 'PHPUnit/Util/Filesystem.php';
 require_once 'PHP/CodeCoverage/Filter.php';
+
 PHP_CodeCoverage_Filter::getInstance()->addFileToBlacklist(__FILE__, 'PHPUNIT');
+
+PHP_CodeCoverage_Filter::getInstance()->addFileToBlacklist(
+  dirname(__FILE__) . '/Framework/TestCase.php', 'PHPUNIT'
+);
+
+PHP_CodeCoverage_Filter::getInstance()->addFileToBlacklist(
+  dirname(__FILE__) . '/Util/Filesystem.php', 'PHPUNIT'
+);
 
 if (!function_exists('phpunit_autoload')) {
     function phpunit_autoload($class)
