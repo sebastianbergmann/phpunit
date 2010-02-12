@@ -35,4 +35,4 @@ PHPUnit 3.5.0
 * `PHPUnit_Extensions_TicketListener_Trac` has been removed.
 * Replaced `PHPUnit_Util_FilterIterator` with the [PHP_FileIterator](http://github.com/sebastianbergmann/php-file-iterator) component.
 * Replaced `PHPUnit_Util_Template` with the [Text_Template](http://github.com/sebastianbergmann/php-text-template) component.
-* PHPUnit now requires PHP 5.2.7 (or later) but PHP 5.3.0 (or later) is highly recommended.
+* PHPUnit now requires PHP 5.2.7 (or later) but PHP 5.3.2 (or later) is highly recommended.
