@@ -36,7 +36,6 @@
  *
  * @category   Testing
  * @package    PHPUnit
- * @author     Jan Borsodi <jb@ez.no>
  * @author     Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @copyright  2002-2010 Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
@@ -45,109 +44,17 @@
  */
 
 /**
- * Encapsulates information on a method invocation which can be passed to matchers.
- *
- * The invocation consists of the object it occured from, the class name, the
- * method name and all the parameters. The mock object must instantiate this
- * class with the values from the mocked method and pass it to an object of
- * PHPUnit_Framework_MockObject_Invokable.
+ * Interface for invocations.
  *
  * @category   Testing
  * @package    PHPUnit
- * @author     Jan Borsodi <jb@ez.no>
  * @author     Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @copyright  2002-2010 Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    Release: @package_version@
  * @link       http://www.phpunit.de/
- * @since      Class available since Release 3.0.0
+ * @since      Interface available since Release 3.5.0
  */
-class PHPUnit_Framework_MockObject_Invocation implements PHPUnit_Framework_SelfDescribing
+interface PHPUnit_Framework_MockObject_Invocation
 {
-    /**
-     * @var object
-     */
-    public $object;
-
-    /**
-     * @var string
-     */
-    public $className;
-
-    /**
-     * @var string
-     */
-    public $methodName;
-
-    /**
-     * @var array
-     */
-    public $parameters;
-
-    /**
-     * @param string $className
-     * @param string $methodname
-     * @param array  $parameters
-     * @param object $object
-     */
-    public function __construct($object, $className, $methodName, array $parameters)
-    {
-        $this->object     = $object;
-        $this->className  = $className;
-        $this->methodName = $methodName;
-        $this->parameters = $parameters;
-
-        foreach ($this->parameters as $key => $value) {
-            if (is_object($value)) {
-                $this->parameters[$key] = $this->cloneObject($value);
-            }
-        }
-    }
-
-    /**
-     * @return string
-     */
-    public function toString()
-    {
-        return sprintf(
-          "%s::%s(%s)",
-
-          $this->className,
-          $this->methodName,
-          join(
-            ', ',
-            array_map(
-              array('PHPUnit_Util_Type', 'shortenedExport'),
-              $this->parameters
-            )
-          )
-        );
-    }
-
-    /**
-     * @param  object $original
-     * @return object
-     */
-    protected function cloneObject($original)
-    {
-        $object = new ReflectionObject($original);
-
-        if ($object->hasMethod('__clone')) {
-            $method = $object->getMethod('__clone');
-
-            if (!$method->isPublic()) {
-                return $original;
-            }
-
-            try {
-                return clone $original;
-            }
-
-            catch (Exception $e) {
-                return $original;
-            }
-        }
-
-        return clone $original;
-    }
 }
