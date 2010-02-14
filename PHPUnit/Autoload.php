@@ -61,29 +61,30 @@ if (!function_exists('phpunit_autoload')) {
 
     spl_autoload_register('phpunit_autoload');
 
+    $dir    = dirname(__FILE__);
     $filter = PHP_CodeCoverage_Filter::getInstance();
 
     $filter->addDirectoryToBlacklist(
-      dirname(__FILE__) . '/Extensions', 'PHPUNIT'
+      $dir . '/Extensions', '.php', '', 'PHPUNIT', FALSE
     );
 
     $filter->addDirectoryToBlacklist(
-      dirname(__FILE__) . '/Framework', 'PHPUNIT'
+      $dir . '/Framework', '.php', '', 'PHPUNIT', FALSE
     );
 
     $filter->addDirectoryToBlacklist(
-      dirname(__FILE__) . '/Runner', 'PHPUNIT'
+      $dir . '/Runner', '.php', '', 'PHPUNIT', FALSE
     );
 
     $filter->addDirectoryToBlacklist(
-      dirname(__FILE__) . '/TextUI', 'PHPUNIT'
+      $dir . '/TextUI', '.php', '', 'PHPUNIT', FALSE
     );
 
     $filter->addDirectoryToBlacklist(
-      dirname(__FILE__) . '/Util', 'PHPUNIT'
+      $dir . '/Util', '.php', '', 'PHPUNIT', FALSE
     );
 
-    $filter->addFileToBlacklist(__FILE__, 'PHPUNIT');
+    $filter->addFileToBlacklist(__FILE__, 'PHPUNIT', FALSE);
 
-    unset($filter);
+    unset($dir, $filter);
 }
