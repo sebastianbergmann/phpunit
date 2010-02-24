@@ -143,7 +143,7 @@ class PHPUnit_Extensions_TicketListener_GitHub extends PHPUnit_Extensions_Ticket
                            $ticketId;
         }
 
-        if (!isset($apiEndpoint)) {
+        if (isset($apiEndpoint)) {
             $ticket = $this->callGitHub($apiEndpoint);
 
             if (!in_array($ticket['state'], $acceptedResponseIssueStates)) {
