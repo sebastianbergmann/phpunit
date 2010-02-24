@@ -360,9 +360,9 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
     protected function setExpectedExceptionFromAnnotation()
     {
         try {
-            $method            = new ReflectionMethod(get_class($this), $this->name);
-            $methodDocComment  = $method->getDocComment();
-            $expectedException = PHPUnit_Util_Test::getExpectedException($methodDocComment);
+            $expectedException = PHPUnit_Util_Test::getExpectedException(
+              get_class($this), $this->name
+            );
 
             if ($expectedException !== FALSE) {
                 $this->setExpectedException(

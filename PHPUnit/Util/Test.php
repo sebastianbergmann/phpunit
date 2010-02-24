@@ -99,12 +99,16 @@ class PHPUnit_Util_Test
     /**
      * Returns the expected exception for a test.
      *
-     * @param  string $docComment
+     * @param  string $className
+     * @param  string $methodName
      * @return array
      * @since  Method available since Release 3.3.6
      */
-    public static function getExpectedException($docComment)
+    public static function getExpectedException($className, $methodName)
     {
+        $reflector  = new ReflectionMethod($className, $methodName);
+        $docComment = $reflector->getDocComment();
+
         if (preg_match(self::REGEX_EXPECTED_EXCEPTION, $docComment, $matches)) {
             $class   = $matches[1];
             $code    = 0;

@@ -47,6 +47,8 @@ require_once 'PHPUnit/Framework/TestCase.php';
 
 require_once 'PHPUnit/Util/Timer.php';
 
+require_once dirname(dirname(__FILE__)) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'ExceptionTest.php';
+
 /**
  *
  *
@@ -65,22 +67,27 @@ class Util_TestTest extends PHPUnit_Framework_TestCase
     {
         $this->assertEquals(
           array('class' => 'FooBarBaz', 'code' => 0, 'message' => ''),
-          PHPUnit_Util_Test::getExpectedException('@expectedException FooBarBaz')
+          PHPUnit_Util_Test::getExpectedException('ExceptionTest', 'testOne')
         );
 
         $this->assertEquals(
           array('class' => 'Foo_Bar_Baz', 'code' => 0, 'message' => ''),
-          PHPUnit_Util_Test::getExpectedException('@expectedException Foo_Bar_Baz')
+          PHPUnit_Util_Test::getExpectedException('ExceptionTest', 'testTwo')
         );
 
         $this->assertEquals(
           array('class' => 'Foo\Bar\Baz', 'code' => 0, 'message' => ''),
-          PHPUnit_Util_Test::getExpectedException('@expectedException Foo\Bar\Baz')
+          PHPUnit_Util_Test::getExpectedException('ExceptionTest', 'testThree')
         );
 
         $this->assertEquals(
           array('class' => 'ほげ', 'code' => 0, 'message' => ''),
-          PHPUnit_Util_Test::getExpectedException('@expectedException ほげ')
+          PHPUnit_Util_Test::getExpectedException('ExceptionTest', 'testFour')
+        );
+
+        $this->assertEquals(
+          array('class' => 'Class', 'code' => 1234, 'message' => 'Message'),
+          PHPUnit_Util_Test::getExpectedException('ExceptionTest', 'testFive')
         );
     }
 
