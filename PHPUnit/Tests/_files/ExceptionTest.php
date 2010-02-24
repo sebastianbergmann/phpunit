@@ -35,4 +35,13 @@ class ExceptionTest extends PHPUnit_Framework_TestCase
     public function testFive()
     {
     }
+
+    /**
+     * @expectedException Class
+     * @expectedExceptionMessage Message
+     * @expectedExceptionCode 1234
+     */
+    public function testSix()
+    {
+    }
 }

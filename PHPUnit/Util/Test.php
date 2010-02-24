@@ -110,6 +110,10 @@ class PHPUnit_Util_Test
         $docComment = $reflector->getDocComment();
 
         if (preg_match(self::REGEX_EXPECTED_EXCEPTION, $docComment, $matches)) {
+            $annotations = self::parseTestMethodAnnotations(
+              $className, $methodName
+            );
+
             $class   = $matches[1];
             $code    = 0;
             $message = '';
@@ -118,8 +122,16 @@ class PHPUnit_Util_Test
                 $message = trim($matches[2]);
             }
 
+            else if (isset($annotations['method']['expectedExceptionMessage'])) {
+                $message = $annotations['method']['expectedExceptionMessage'][0];
+            }
+
             if (isset($matches[3])) {
                 $code = (int)$matches[3];
+            }
+
+            else if (isset($annotations['method']['expectedExceptionCode'])) {
+                $code = (int)$annotations['method']['expectedExceptionCode'][0];
             }
 
             return array(
