@@ -1004,6 +1004,35 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
     }
 
     /**
+     * Mocks the specified class and returns the name of the mocked class.
+     *
+     * @param  string  $originalClassName
+     * @param  array   $methods
+     * @param  array   $arguments
+     * @param  string  $mockClassName
+     * @param  boolean $callOriginalConstructor
+     * @param  boolean $callOriginalClone
+     * @param  boolean $callAutoload
+     * @return string
+     * @throws InvalidArgumentException
+     * @since  Method available since Release 3.5.0
+     */
+    protected function getMockClass($originalClassName, $methods = array(), array $arguments = array(), $mockClassName = '', $callOriginalConstructor = FALSE, $callOriginalClone = TRUE, $callAutoload = TRUE)
+    {
+        $mock = $this->getMock(
+          $originalClassName,
+          $methods,
+          $arguments,
+          $mockClassName,
+          $callOriginalConstructor,
+          $callOriginalClone,
+          $callAutoload
+        );
+
+        return get_class($mock);
+    }
+
+    /**
      * Returns a mock object for the specified abstract class with all abstract
      * methods of the class mocked. Concrete methods are not mocked.
      *
