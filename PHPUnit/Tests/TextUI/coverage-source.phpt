@@ -802,7 +802,7 @@ Writing code coverage data to XML files, this may take a moment.
     <body>/*</body>
   </line>
   <line lineNumber="127">
-    <body>    public function testDepositWithdrawMoney()</body>
+    <body>    public function testDepositingAndWithdrawingMoneyWorks()</body>
   </line>
   <line lineNumber="128">
     <body>    {</body>
