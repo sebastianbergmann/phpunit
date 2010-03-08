@@ -300,7 +300,7 @@ class PHPUnit_Util_Test
         if (strpos($coveredElement, '::') !== FALSE) {
             list($className, $methodName) = explode('::', $coveredElement);
 
-            if ($methodName{0} == '<') {
+            if ($methodName[0] == '<') {
                 $classes = array($className);
 
                 foreach ($classes as $className)
@@ -318,7 +318,7 @@ class PHPUnit_Util_Test
 
                     $class   = new ReflectionClass($className);
                     $methods = $class->getMethods();
-                    $inverse = isset($methodName{1}) && $methodName{1} == '!';
+                    $inverse = isset($methodName[1]) && $methodName[1] == '!';
 
                     if (strpos($methodName, 'protected')) {
                         $visibility = 'isProtected';

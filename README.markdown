@@ -3,6 +3,11 @@ PHPUnit 3.4
 
 This is the list of changes for the PHPUnit 3.4 release series.
 
+PHPUnit 3.4.12
+--------------
+
+* Fixed TRAC-1016: Usage of `{}` to access string offsets is deprecated.
+
 PHPUnit 3.4.11
 --------------
 
