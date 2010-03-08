@@ -72,7 +72,7 @@ class PHPUnit_Util_Getopt
             sort($long_options);
         }
 
-        if (isset($args[0]{0}) && $args[0]{0} != '-') {
+        if (isset($args[0][0]) && $args[0][0] != '-') {
             array_shift($args);
         }
 
@@ -89,13 +89,13 @@ class PHPUnit_Util_Getopt
                 break;
             }
 
-            if ($arg{0} != '-' ||
-                (strlen($arg) > 1 && $arg{1} == '-' && !$long_options)) {
+            if ($arg[0] != '-' ||
+                (strlen($arg) > 1 && $arg[1] == '-' && !$long_options)) {
                 $non_opts = array_merge($non_opts, array_slice($args, $i));
                 break;
             }
 
-            elseif (strlen($arg) > 1 && $arg{1} == '-') {
+            elseif (strlen($arg) > 1 && $arg[1] == '-') {
                 self::parseLongOption(
                   substr($arg, 2), $long_options, $opts, $args
                 );
@@ -116,18 +116,18 @@ class PHPUnit_Util_Getopt
         $argLen = strlen($arg);
 
         for ($i = 0; $i < $argLen; $i++) {
-            $opt     = $arg{$i};
+            $opt     = $arg[$i];
             $opt_arg = NULL;
 
             if (($spec = strstr($short_options, $opt)) === FALSE ||
-                $arg{$i} == ':') {
+                $arg[$i] == ':') {
                 throw new PHPUnit_Framework_Exception(
                   "unrecognized option -- $opt"
                 );
             }
 
-            if (strlen($spec) > 1 && $spec{1} == ':') {
-                if (strlen($spec) > 2 && $spec{2} == ':') {
+            if (strlen($spec) > 1 && $spec[1] == ':') {
+                if (strlen($spec) > 2 && $spec[2] == ':') {
                     if ($i + 1 < $argLen) {
                         $opts[] = array($opt, substr($arg, $i + 1));
                         break;
@@ -176,7 +176,7 @@ class PHPUnit_Util_Getopt
 
             $opt_rest = substr($long_opt, $opt_len);
 
-            if ($opt_rest != '' && $opt{0} != '=' && $i + 1 < $count &&
+            if ($opt_rest != '' && $opt[0] != '=' && $i + 1 < $count &&
                 $opt == substr($long_options[$i+1], 0, $opt_len)) {
                 throw new PHPUnit_Framework_Exception(
                   "option --$opt is ambiguous"
