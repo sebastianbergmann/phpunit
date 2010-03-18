@@ -430,6 +430,23 @@ abstract class PHPUnit_Framework_Assert
     }
 
     /**
+     * Asserts that a static attribute of a class or an attribute of an object
+     * is empty.
+     *
+     * @param string $haystackAttributeName
+     * @param mixed  $haystackClassOrObject
+     * @param string $message
+     * @since Method available since Release 3.5.0
+     */
+    public static function assertAttributeEmpty($haystackAttributeName, $haystackClassOrObject, $message = '')
+    {
+        self::assertEmpty(
+          self::readAttribute($haystackClassOrObject, $haystackAttributeName),
+          $message
+        );
+    }
+
+    /**
      * Asserts that a variable is not empty.
      *
      * @param  mixed   $actual
@@ -439,6 +456,23 @@ abstract class PHPUnit_Framework_Assert
     public static function assertNotEmpty($actual, $message = '')
     {
         self::assertThat($actual, self::logicalNot(self::isEmpty()), $message);
+    }
+
+    /**
+     * Asserts that a static attribute of a class or an attribute of an object
+     * is not empty.
+     *
+     * @param string $haystackAttributeName
+     * @param mixed  $haystackClassOrObject
+     * @param string $message
+     * @since Method available since Release 3.5.0
+     */
+    public static function assertAttributeNotEmpty($haystackAttributeName, $haystackClassOrObject, $message = '')
+    {
+        self::assertNotEmpty(
+          self::readAttribute($haystackClassOrObject, $haystackAttributeName),
+          $message
+        );
     }
 
     /**
