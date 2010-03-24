@@ -76,7 +76,7 @@ class PHPUnit_Util_InvalidArgumentHelper
 
         return new InvalidArgumentException(
           sprintf(
-            'Argument #%d%sof %s:%s() is no %s',
+            'Argument #%d%sof %s::%s() is no %s',
             $argument,
             $value !== NULL ? ' (' . $value . ')' : ' ',
             $stack[1]['class'],
