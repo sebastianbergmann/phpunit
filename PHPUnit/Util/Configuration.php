@@ -161,6 +161,7 @@ class PHPUnit_Util_Configuration
 
     protected $document;
     protected $xpath;
+    protected $filename;
 
     /**
      * Loads a PHPUnit configuration file.
@@ -169,6 +170,7 @@ class PHPUnit_Util_Configuration
      */
     protected function __construct($filename)
     {
+        $this->filename = $filename;
         $this->document = PHPUnit_Util_XML::loadFile($filename);
         $this->xpath    = new DOMXPath($this->document);
     }
@@ -340,7 +342,7 @@ class PHPUnit_Util_Configuration
 
         foreach ($this->xpath->query('logging/log') as $log) {
             $type   = (string)$log->getAttribute('type');
-            $target = (string)$log->getAttribute('target');
+            $target = $this->toAbsolutePath((string)$log->getAttribute('target'));
 
             if ($type == 'coverage-html') {
                 if ($log->hasAttribute('title')) {
@@ -407,7 +409,7 @@ class PHPUnit_Util_Configuration
         $nl = $this->xpath->query('php/includePath');
 
         if ($nl->length == 1) {
-            $result['include_path'] = (string)$nl->item(0)->nodeValue;
+            $result['include_path'] = $this->toAbsolutePath((string)$nl->item(0)->nodeValue);
         }
 
         foreach ($this->xpath->query('php/ini') as $ini) {
@@ -525,7 +527,7 @@ class PHPUnit_Util_Configuration
         }
 
         if ($this->document->documentElement->hasAttribute('bootstrap')) {
-            $result['bootstrap'] = (string)$this->document->documentElement->getAttribute('bootstrap');
+            $result['bootstrap'] = $this->toAbsolutePath((string)$this->document->documentElement->getAttribute('bootstrap'));
         }
 
         if ($this->document->documentElement->hasAttribute('convertErrorsToExceptions')) {
@@ -694,7 +696,7 @@ class PHPUnit_Util_Configuration
             }
 
             $testCollector = new PHPUnit_Runner_IncludePathTestCollector(
-              array((string)$directoryNode->nodeValue), $suffix, $prefix
+              array($this->toAbsolutePath((string)$directoryNode->nodeValue)), $suffix, $prefix
             );
 
             $suite->addTestFiles($testCollector->collectTests(), $syntaxCheck);
@@ -755,7 +757,7 @@ class PHPUnit_Util_Configuration
             }
 
             $directories[] = array(
-              'path'   => (string)$directory->nodeValue,
+              'path'   => $this->toAbsolutePath((string)$directory->nodeValue),
               'prefix' => $prefix,
               'suffix' => $suffix,
               'group'  => $group
@@ -775,9 +777,24 @@ class PHPUnit_Util_Configuration
         $files = array();
 
         foreach ($this->xpath->query($query) as $file) {
-            $files[] = (string)$file->nodeValue;
+            $files[] = $this->toAbsolutePath((string)$file->nodeValue);
         }
 
         return $files;
+    }
+
+    protected function toAbsolutePath($path)
+    {
+        // is the path already an absolute path?
+        if ($path[0] === '/' || $path[0] === '\\' ||
+            (strlen($path) > 3 && ctype_alpha($path[0]) &&
+             $path[1] === ':' &&
+             ($path[2] === '\\' || $path[2] === '/')
+            )
+        ) {
+            return $path;
+        }
+
+        return dirname($this->filename).DIRECTORY_SEPARATOR.$path;
     }
 }

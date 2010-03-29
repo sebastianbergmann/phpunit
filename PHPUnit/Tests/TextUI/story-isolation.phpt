@@ -6,7 +6,7 @@ $_SERVER['argv'][1] = '--no-configuration';
 $_SERVER['argv'][2] = '--process-isolation';
 $_SERVER['argv'][3] = '--story';
 $_SERVER['argv'][4] = 'BowlingGameSpec';
-$_SERVER['argv'][5] = '../Samples/BowlingGame/BowlingGameSpec.php';
+$_SERVER['argv'][5] = dirname(__FILE__).'/../../Samples/BowlingGame/BowlingGameSpec.php';
 
 require_once dirname(dirname(dirname(__FILE__))) . '/Autoload.php';
 PHPUnit_TextUI_Command::main();
