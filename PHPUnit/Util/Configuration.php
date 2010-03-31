@@ -783,18 +783,20 @@ class PHPUnit_Util_Configuration
         return $files;
     }
 
+    /**
+     * @param  string $path
+     * @return string
+     * @since  Method available since Release 3.5.0
+     */
     protected function toAbsolutePath($path)
     {
         // is the path already an absolute path?
         if ($path[0] === '/' || $path[0] === '\\' ||
             (strlen($path) > 3 && ctype_alpha($path[0]) &&
-             $path[1] === ':' &&
-             ($path[2] === '\\' || $path[2] === '/')
-            )
-        ) {
+             $path[1] === ':' && ($path[2] === '\\' || $path[2] === '/'))) {
             return $path;
         }
 
-        return dirname($this->filename).DIRECTORY_SEPARATOR.$path;
+        return dirname($this->filename) . DIRECTORY_SEPARATOR . $path;
     }
 }
