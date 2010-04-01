@@ -6,6 +6,7 @@ This is the list of changes for the PHPUnit 3.4 release series.
 PHPUnit 3.4.12
 --------------
 
+* Implemented TRAC-1027: Declare a decent return-type in `PHPUnit_Framework_TestCase::getMock()`.
 * Fixed TRAC-1013: `Undefined index: _ENV` running supplied tests.
 * Fixed TRAC-1016: Usage of `{}` to access string offsets is deprecated.
 
