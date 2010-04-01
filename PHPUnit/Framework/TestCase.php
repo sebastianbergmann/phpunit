@@ -498,13 +498,24 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
             $className  = get_class($this);
             $passed     = $this->result->passed();
             $passedKeys = array_keys($passed);
+            $numKeys    = count($passedKeys);
+
+            for ($i = 0; $i < $numKeys; $i++) {
+                $pos = strpos($passedKeys[$i], ' with data set');
+
+                if ($pos !== FALSE) {
+                    $passedKeys[$i] = substr($passedKeys[$i], 0, $pos);
+                }
+            }
+
+            $passedKeys = array_flip(array_unique($passedKeys));
 
             foreach ($this->dependencies as $dependency) {
                 if (strpos($dependency, '::') === FALSE) {
                     $dependency = $className . '::' . $dependency;
                 }
 
-                if (!in_array($dependency, $passedKeys)) {
+                if (!isset($passedKeys[$dependency])) {
                     $result->addError(
                       $this,
                       new PHPUnit_Framework_SkippedTestError(
@@ -517,7 +528,11 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
 
                     return;
                 } else {
-                    $this->dependencyInput[] = $passed[$dependency];
+                    if (isset($passed[$dependency])) {
+                        $this->dependencyInput[] = $passed[$dependency];
+                    } else {
+                        $this->dependencyInput[] = NULL;
+                    }
                 }
             }
         }
