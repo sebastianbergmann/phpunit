@@ -2,16 +2,16 @@
 class Issue1021Test extends PHPUnit_Framework_TestCase
 {
     /**
-      * @dataProvider provider
-      */
+     * @dataProvider provider
+     */
     public function testSomething($data)
     {
         $this->assertTrue($data);
     }
 
     /**
-      * @depends testSomething
-      */
+     * @depends testSomething
+     */
     public function testSomethingElse()
     {
     }
