@@ -518,14 +518,14 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
         if (!empty($this->dependencies) && !$this->inIsolation) {
             $className  = get_class($this);
             $passed     = $this->result->passed();
-            $passedKeys = array_keys($passed);
+            $passedKeys = array_flip(array_keys($passed));
 
             foreach ($this->dependencies as $dependency) {
                 if (strpos($dependency, '::') === FALSE) {
                     $dependency = $className . '::' . $dependency;
                 }
 
-                if (!in_array($dependency, $passedKeys)) {
+                if (!isset($passedKeys[$dependency])) {
                     $result->addError(
                       $this,
                       new PHPUnit_Framework_SkippedTestError(
