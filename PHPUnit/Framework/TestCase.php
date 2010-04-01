@@ -982,7 +982,7 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
      * @param  boolean $callOriginalConstructor
      * @param  boolean $callOriginalClone
      * @param  boolean $callAutoload
-     * @return object
+     * @return PHPUnit_Framework_MockObject_MockObject
      * @throws InvalidArgumentException
      * @since  Method available since Release 3.0.0
      */
@@ -1042,7 +1042,7 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
      * @param  boolean $callOriginalConstructor
      * @param  boolean $callOriginalClone
      * @param  boolean $callAutoload
-     * @return object
+     * @return PHPUnit_Framework_MockObject_MockObject
      * @since  Method available since Release 3.4.0
      * @throws InvalidArgumentException
      */
@@ -1070,7 +1070,7 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
      * @param  string  $mockClassName
      * @param  array   $methods
      * @param  boolean $callOriginalConstructor
-     * @return object
+     * @return PHPUnit_Framework_MockObject_MockObject
      * @since  Method available since Release 3.4.0
      */
     protected function getMockFromWsdl($wsdlFile, $originalClassName = '', $mockClassName = '', array $methods = array(), $callOriginalConstructor = TRUE)
