@@ -34,5 +34,5 @@ REM ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 REM POSSIBILITY OF SUCH DAMAGE.
 REM
 
-set PHPBIN="@php_bin@"
+if "%PHPBIN%" == "" set PHPBIN="@php_bin@"
 %PHPBIN% "@bin_dir@\phpunit" %*
