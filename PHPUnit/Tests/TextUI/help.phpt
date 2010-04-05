@@ -2,6 +2,8 @@
 phpunit
 --FILE--
 <?php
+$_SERVER['argv'][1] = '--no-configuration';
+
 require_once dirname(dirname(dirname(__FILE__))) . '/Autoload.php';
 PHPUnit_TextUI_Command::main();
 ?>
