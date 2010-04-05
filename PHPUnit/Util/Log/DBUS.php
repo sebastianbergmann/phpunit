@@ -34,8 +34,8 @@
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  *
- * @category   Testing
  * @package    PHPUnit
+ * @subpackage Util_Log
  * @author     Benjamin Eberlei <kontakt@beberlei.de>
  * @author     Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @copyright  2002-2010 Sebastian Bergmann <sb@sebastian-bergmann.de>
@@ -47,8 +47,8 @@
 /**
  * A TestListener that integrates with DBUS.
  *
- * @category   Testing
  * @package    PHPUnit
+ * @subpackage Util_Log
  * @author     Benjamin Eberlei <kontakt@beberlei.de>
  * @author     Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @copyright  2002-2010 Sebastian Bergmann <sb@sebastian-bergmann.de>

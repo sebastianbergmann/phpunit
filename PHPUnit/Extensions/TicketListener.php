@@ -34,8 +34,8 @@
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  *
- * @category   Testing
  * @package    PHPUnit
+ * @subpackage Extensions_TicketListener
  * @author     Sean Coates <sean@caedmon.net>
  * @author     Raphael Stolt <raphael.stolt@gmail.com>
  * @author     Sebastian Bergmann <sb@sebastian-bergmann.de>
@@ -48,8 +48,8 @@
 /**
  * Base class for test listeners that interact with an issue tracker.
  *
- * @category   Testing
  * @package    PHPUnit
+ * @subpackage Extensions_TicketListener
  * @author     Sean Coates <sean@caedmon.net>
  * @author     Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @copyright  2002-2010 Sebastian Bergmann <sb@sebastian-bergmann.de>

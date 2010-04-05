@@ -34,8 +34,8 @@
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  *
- * @category   Testing
  * @package    PHPUnit
+ * @subpackage Util
  * @author     Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @author     Kore Nordmann <mail@kore-nordmann.de>
  * @copyright  2002-2010 Sebastian Bergmann <sb@sebastian-bergmann.de>
@@ -47,8 +47,8 @@
 /**
  * Diff implementation.
  *
- * @category   Testing
  * @package    PHPUnit
+ * @subpackage Util
  * @author     Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @author     Kore Nordmann <mail@kore-nordmann.de>
  * @copyright  2002-2010 Sebastian Bergmann <sb@sebastian-bergmann.de>
