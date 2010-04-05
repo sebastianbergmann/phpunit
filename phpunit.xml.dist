@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<phpunit backupGlobals="false">
+  <php>
+    <const name="PHPUNIT_TESTSUITE" value="true"/>
+    <!--<const name="PHPUNIT_TESTSUITE_EXTENSION_DATABASE_MYSQL" value="mysql:dbname=test;unix_socket=/tmp/mysql.sock"/>-->
+    <const name="PHPUNIT_TESTSUITE_EXTENSION_SELENIUM_HOST" value="127.0.0.1"/>
+    <const name="PHPUNIT_TESTSUITE_EXTENSION_SELENIUM_PORT" value="4444"/>
+    <const name="PHPUNIT_TESTSUITE_EXTENSION_SELENIUM_BROWSER" value="*firefox"/>
+  </php>
+
+  <testsuites>
+    <testsuite name="PHPUnit">
+      <directory suffix="Test.php">PHPUnit/Tests/Framework</directory>
+      <directory suffix=".phpt">PHPUnit/Tests/Framework/MockObject</directory>
+      <directory suffix="Test.php">PHPUnit/Tests/Extensions</directory>
+      <directory suffix=".phpt">PHPUnit/Tests/Regression</directory>
+      <directory suffix="Test.php">PHPUnit/Tests/Runner</directory>
+      <directory suffix=".phpt">PHPUnit/Tests/TextUI</directory>
+      <directory suffix="Test.php">PHPUnit/Tests/Util</directory>
+    </testsuite>
+  </testsuites>
+
+  <filter>
+    <whitelist addUncoveredFilesFromWhitelist="true">
+      <directory suffix=".php">PHPUnit/Extensions</directory>
+      <directory suffix=".php">PHPUnit/Framework</directory>
+      <directory suffix=".php">PHPUnit/Runner</directory>
+      <directory suffix=".php">PHPUnit/TextUI</directory>
+      <directory suffix=".php">PHPUnit/Util</directory>
+    </whitelist>
+  </filter>
+</phpunit>
