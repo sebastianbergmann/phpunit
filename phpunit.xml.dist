@@ -11,13 +11,13 @@
 
   <testsuites>
     <testsuite name="PHPUnit">
-      <directory suffix="Test.php">PHPUnit/Tests/Framework</directory>
-      <directory suffix=".phpt">PHPUnit/Tests/Framework/MockObject</directory>
-      <directory suffix="Test.php">PHPUnit/Tests/Extensions</directory>
-      <directory suffix=".phpt">PHPUnit/Tests/Regression</directory>
-      <directory suffix="Test.php">PHPUnit/Tests/Runner</directory>
-      <directory suffix=".phpt">PHPUnit/Tests/TextUI</directory>
-      <directory suffix="Test.php">PHPUnit/Tests/Util</directory>
+      <directory suffix="Test.php">Tests/Framework</directory>
+      <directory suffix=".phpt">Tests/Framework/MockObject</directory>
+      <directory suffix="Test.php">Tests/Extensions</directory>
+      <directory suffix=".phpt">Tests/Regression</directory>
+      <directory suffix="Test.php">Tests/Runner</directory>
+      <directory suffix=".phpt">Tests/TextUI</directory>
+      <directory suffix="Test.php">Tests/Util</directory>
     </testsuite>
   </testsuites>
 
