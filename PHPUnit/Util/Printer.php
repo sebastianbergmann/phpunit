@@ -99,11 +99,6 @@ abstract class PHPUnit_Util_Printer
 
                     $this->out = fsockopen($out[0], $out[1]);
                 } else {
-                    if (!is_dir(dirname($out)))
-                    {
-                      mkdir(dirname($out), 0777, true);
-                    }
-
                     $this->out = fopen($out, 'wt');
                 }
 
