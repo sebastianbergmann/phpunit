@@ -2,7 +2,7 @@
 PHPUnit_Framework_MockObject_Generator::generate('NS\Foo', array('bar'), 'MockFoo', TRUE, TRUE)
 --SKIPIF--
 <?php
-if (!version_compare(PHP_VERSION, '5.3.0', '>=')) die('PHP 5.3 only');
+if (!version_compare(PHP_VERSION, '5.3.0', '>=')) echo 'skip: PHP 5.3 only';
 ?>
 --FILE--
 <?php

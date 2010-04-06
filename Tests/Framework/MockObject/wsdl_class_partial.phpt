@@ -2,7 +2,7 @@
 PHPUnit_Framework_MockObject_Generator::generateClassFromWsdl('GoogleSearch.wsdl', 'GoogleSearch', array('doGoogleSearch'))
 --SKIPIF--
 <?php
-if (!extension_loaded('soap')) die('SOAP extension is required');
+if (!extension_loaded('soap')) echo 'skip: SOAP extension is required';
 ?>
 --FILE--
 <?php
