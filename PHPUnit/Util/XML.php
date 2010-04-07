@@ -238,6 +238,10 @@ class PHPUnit_Util_XML
      */
     public static function nodeToText(DOMNode $node)
     {
+        if ($node->childNodes->length == 1) {
+            return $node->nodeValue;
+        }
+
         $result = '';
 
         foreach ($node->childNodes as $childNode) {

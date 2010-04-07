@@ -10,6 +10,7 @@ PHPUnit 3.4.12
 * Fixed TRAC-1013: `Undefined index: _ENV` running supplied tests.
 * Fixed TRAC-1016: Usage of `{}` to access string offsets is deprecated.
 * Fixed TRAC-1021: Depending on a test that uses a data provider does not work.
+* Fixed TRAC-1030: Selenese tests cause double escaping of Selenium actions and arguments.
 
 PHPUnit 3.4.11
 --------------
