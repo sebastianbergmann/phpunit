@@ -50,7 +50,10 @@ require_once dirname(dirname(__FILE__)) . DIRECTORY_SEPARATOR . '_files' . DIREC
 require_once dirname(dirname(__FILE__)) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'FunctionCallback.php';
 require_once dirname(dirname(__FILE__)) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'MethodCallback.php';
 require_once dirname(dirname(__FILE__)) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'PartialMockTestClass.php';
-require_once dirname(dirname(__FILE__)) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'StaticMockTestClass.php';
+
+if (version_compare(PHP_VERSION, '5.3.0', '>=')) {
+    require_once dirname(dirname(__FILE__)) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'StaticMockTestClass.php';
+}
 
 /**
  *
@@ -256,14 +259,20 @@ class Framework_MockObjectTest extends PHPUnit_Framework_TestCase
             $this->markTestSkipped('PHP 5.3 (or later) is required.');
         }
 
-        $mock  = $this->getMock('StaticMockTestClass', array('doSomething'));
-        $class = get_class($mock);
+        $this->getMockClass(
+          'StaticMockTestClass',
+          array('doSomething'),
+          array(),
+          'StaticMockTestClassMock'
+        );
 
-        $class::staticExpects($this->any())
-              ->method('doSomething')
-              ->will($this->returnValue('something'));
+        StaticMockTestClassMock::staticExpects($this->any())
+          ->method('doSomething')
+          ->will($this->returnValue('something'));
 
-        $this->assertEquals('something', $class::doSomething());
+        $this->assertEquals(
+          'something', StaticMockTestClassMock::doSomething()
+        );
     }
 
     public function testStubbedReturnValueForStaticMethod2()
@@ -272,14 +281,20 @@ class Framework_MockObjectTest extends PHPUnit_Framework_TestCase
             $this->markTestSkipped('PHP 5.3 (or later) is required.');
         }
 
-        $mock  = $this->getMock('StaticMockTestClass', array('doSomething'));
-        $class = get_class($mock);
+        $this->getMockClass(
+          'StaticMockTestClass',
+          array('doSomething'),
+          array(),
+          'StaticMockTestClassMock2'
+        );
 
-        $class::staticExpects($this->any())
-              ->method('doSomething')
-              ->will($this->returnValue('something'));
+        StaticMockTestClassMock2::staticExpects($this->any())
+          ->method('doSomething')
+          ->will($this->returnValue('something'));
 
-        $this->assertEquals('something', $class::doSomethingElse());
+        $this->assertEquals(
+          'something', StaticMockTestClassMock2::doSomethingElse()
+        );
     }
 
     public function testGetMockForAbstractClass()
