@@ -40,7 +40,10 @@ Usage: phpunit [switches] UnitTest [UnitTest.php]
 
   --colors                 Use colors in output.
   --stderr                 Write to STDERR instead of STDOUT.
+  --stop-on-error          Stop execution upon first error.
   --stop-on-failure        Stop execution upon first error or failure.
+  --stop-on-skipped        Stop execution upon first skipped test.
+  --stop-on-incomplete     Stop execution upon first incomplete test.
   --verbose                Output more verbose information.
   --wait                   Waits for a keystroke after each test.
 

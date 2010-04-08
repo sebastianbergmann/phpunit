@@ -58,7 +58,10 @@
  *          convertNoticesToExceptions="true"
  *          convertWarningsToExceptions="true"
  *          processIsolation="false"
+ *          stopOnError="false"
  *          stopOnFailure="false"
+ *          stopOnIncomplete="false"
+ *          stopOnSkipped="false"
  *          syntaxCheck="false"
  *          testSuiteLoaderClass="PHPUnit_Runner_StandardTestSuiteLoader"
  *          verbose="false">
@@ -558,9 +561,30 @@ class PHPUnit_Util_Configuration
             );
         }
 
+        if ($this->document->documentElement->hasAttribute('stopOnError')) {
+            $result['stopOnError'] = $this->getBoolean(
+              (string)$this->document->documentElement->getAttribute('stopOnError'),
+              FALSE
+            );
+        }
+
         if ($this->document->documentElement->hasAttribute('stopOnFailure')) {
             $result['stopOnFailure'] = $this->getBoolean(
               (string)$this->document->documentElement->getAttribute('stopOnFailure'),
+              FALSE
+            );
+        }
+
+        if ($this->document->documentElement->hasAttribute('stopOnIncomplete')) {
+            $result['stopOnIncomplete'] = $this->getBoolean(
+              (string)$this->document->documentElement->getAttribute('stopOnIncomplete'),
+              FALSE
+            );
+        }
+
+        if ($this->document->documentElement->hasAttribute('stopOnSkipped')) {
+            $result['stopOnSkipped'] = $this->getBoolean(
+              (string)$this->document->documentElement->getAttribute('stopOnSkipped'),
               FALSE
             );
         }

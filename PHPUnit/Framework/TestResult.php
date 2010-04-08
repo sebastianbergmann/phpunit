@@ -149,7 +149,22 @@ class PHPUnit_Framework_TestResult implements Countable
     /**
      * @var boolean
      */
+    protected $stopOnError = FALSE;
+
+    /**
+     * @var boolean
+     */
     protected $stopOnFailure = FALSE;
+
+    /**
+     * @var boolean
+     */
+    protected $stopOnIncomplete = FALSE;
+
+    /**
+     * @var boolean
+     */
+    protected $stopOnSkipped = FALSE;
 
     /**
      * @var boolean
@@ -221,18 +236,26 @@ class PHPUnit_Framework_TestResult implements Countable
             );
 
             $notifyMethod = 'addIncompleteTest';
+
+            if ($this->stopOnIncomplete) {
+                $this->stop();
+            }
         }
 
         else if ($e instanceof PHPUnit_Framework_SkippedTest) {
             $this->skipped[] = new PHPUnit_Framework_TestFailure($test, $e);
             $notifyMethod    = 'addSkippedTest';
+
+            if ($this->stopOnSkipped) {
+                $this->stop();
+            }
         }
 
         else {
             $this->errors[] = new PHPUnit_Framework_TestFailure($test, $e);
             $notifyMethod   = 'addError';
 
-            if ($this->stopOnFailure) {
+            if ($this->stopOnError) {
                 $this->stop();
             }
         }
@@ -261,18 +284,26 @@ class PHPUnit_Framework_TestResult implements Countable
             );
 
             $notifyMethod = 'addIncompleteTest';
+
+            if ($this->stopOnIncomplete) {
+                $this->stop();
+            }
         }
 
         else if ($e instanceof PHPUnit_Framework_SkippedTest) {
             $this->skipped[] = new PHPUnit_Framework_TestFailure($test, $e);
             $notifyMethod    = 'addSkippedTest';
+
+            if ($this->stopOnSkipped) {
+                $this->stop();
+            }
         }
 
         else {
             $this->failures[] = new PHPUnit_Framework_TestFailure($test, $e);
             $notifyMethod     = 'addFailure';
 
-            if ($this->stopOnFailure) {
+            if ($this->stopOnFailure || $this->stopOnError) {
                 $this->stop();
             }
         }
@@ -691,7 +722,23 @@ class PHPUnit_Framework_TestResult implements Countable
     }
 
     /**
-     * Enables or disables the stopping when a failure or error occurs.
+     * Enables or disables the stopping when an error occurs.
+     *
+     * @param  boolean $flag
+     * @throws InvalidArgumentException
+     * @since  Method available since Release 3.5.0
+     */
+    public function stopOnError($flag)
+    {
+        if (is_bool($flag)) {
+            $this->stopOnError = $flag;
+        } else {
+            throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'boolean');
+        }
+    }
+
+    /**
+     * Enables or disables the stopping when a failure occurs.
      *
      * @param  boolean $flag
      * @throws InvalidArgumentException
@@ -701,6 +748,38 @@ class PHPUnit_Framework_TestResult implements Countable
     {
         if (is_bool($flag)) {
             $this->stopOnFailure = $flag;
+        } else {
+            throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'boolean');
+        }
+    }
+
+    /**
+     * Enables or disables the stopping for incomplete tests.
+     *
+     * @param  boolean $flag
+     * @throws InvalidArgumentException
+     * @since  Method available since Release 3.5.0
+     */
+    public function stopOnIncomplete($flag)
+    {
+        if (is_bool($flag)) {
+            $this->stopOnIncomplete = $flag;
+        } else {
+            throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'boolean');
+        }
+    }
+
+    /**
+     * Enables or disables the stopping for skipped tests.
+     *
+     * @param  boolean $flag
+     * @throws InvalidArgumentException
+     * @since  Method available since Release 3.1.0
+     */
+    public function stopOnSkipped($flag)
+    {
+        if (is_bool($flag)) {
+            $this->stopOnSkipped = $flag;
         } else {
             throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'boolean');
         }

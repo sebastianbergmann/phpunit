@@ -98,7 +98,10 @@ class PHPUnit_TextUI_Command
       'skeleton-class' => NULL,
       'skeleton-test' => NULL,
       'stderr' => NULL,
+      'stop-on-error' => NULL,
       'stop-on-failure' => NULL,
+      'stop-on-incomplete' => NULL,
+      'stop-on-skipped' => NULL,
       'story' => NULL,
       'story-html=' => NULL,
       'story-text=' => NULL,
@@ -393,8 +396,23 @@ class PHPUnit_TextUI_Command
                 }
                 break;
 
+                case '--stop-on-error': {
+                    $this->arguments['stopOnError'] = TRUE;
+                }
+                break;
+
                 case '--stop-on-failure': {
                     $this->arguments['stopOnFailure'] = TRUE;
+                }
+                break;
+
+                case '--stop-on-incomplete': {
+                    $this->arguments['stopOnIncomplete'] = TRUE;
+                }
+                break;
+
+                case '--stop-on-skipped': {
+                    $this->arguments['stopOnSkipped'] = TRUE;
                 }
                 break;
 
@@ -764,7 +782,10 @@ Usage: phpunit [switches] UnitTest [UnitTest.php]
 
   --colors                 Use colors in output.
   --stderr                 Write to STDERR instead of STDOUT.
+  --stop-on-error          Stop execution upon first error.
   --stop-on-failure        Stop execution upon first error or failure.
+  --stop-on-skipped        Stop execution upon first skipped test.
+  --stop-on-incomplete     Stop execution upon first incomplete test.
   --verbose                Output more verbose information.
   --wait                   Waits for a keystroke after each test.
 

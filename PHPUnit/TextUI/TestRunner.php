@@ -176,8 +176,20 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
             PHPUnit_Framework_Error_Warning::$enabled = FALSE;
         }
 
+        if ($arguments['stopOnError']) {
+            $result->stopOnError(TRUE);
+        }
+
         if ($arguments['stopOnFailure']) {
             $result->stopOnFailure(TRUE);
+        }
+
+        if ($arguments['stopOnIncomplete']) {
+            $result->stopOnIncomplete(TRUE);
+        }
+
+        if ($arguments['stopOnSkipped']) {
+            $result->stopOnSkipped(TRUE);
         }
 
         if ($this->printer === NULL) {
@@ -698,7 +710,10 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
         $arguments['reportHighLowerBound']        = isset($arguments['reportHighLowerBound'])        ? $arguments['reportHighLowerBound']        : 70;
         $arguments['reportLowUpperBound']         = isset($arguments['reportLowUpperBound'])         ? $arguments['reportLowUpperBound']         : 35;
         $arguments['reportYUI']                   = isset($arguments['reportYUI'])                   ? $arguments['reportYUI']                   : TRUE;
+        $arguments['stopOnError']                 = isset($arguments['stopOnError'])                 ? $arguments['stopOnError']                 : FALSE;
         $arguments['stopOnFailure']               = isset($arguments['stopOnFailure'])               ? $arguments['stopOnFailure']               : FALSE;
+        $arguments['stopOnIncomplete']            = isset($arguments['stopOnIncomplete'])            ? $arguments['stopOnIncomplete']            : FALSE;
+        $arguments['stopOnSkipped']               = isset($arguments['stopOnSkipped'])               ? $arguments['stopOnSkipped']               : FALSE;
         $arguments['verbose']                     = isset($arguments['verbose'])                     ? $arguments['verbose']                     : FALSE;
 
         if ($arguments['filter'] !== FALSE &&
