@@ -39,7 +39,7 @@
  <!-- Generate pmd.xml -->
  <target name="phpmd">
   <exec executable="phpmd">
-   <arg line="PHPUnit xml codesize --reportfile ${basedir}/build/logs/pmd.xml" />
+   <arg line="PHPUnit xml codesize,unusedcode --reportfile ${basedir}/build/logs/pmd.xml" />
   </exec>
  </target>
 
