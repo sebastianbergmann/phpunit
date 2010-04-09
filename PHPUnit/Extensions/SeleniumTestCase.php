@@ -66,11 +66,6 @@ abstract class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_Tes
     public static $browsers = array();
 
     /**
-     * @var    boolean
-     */
-    protected $autoStop = TRUE;
-
-    /**
      * @var    string
      */
     protected $browserName;
@@ -417,13 +412,11 @@ abstract class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_Tes
             $this->fail(implode("\n", $this->verificationErrors));
         }
 
-        if ($this->autoStop) {
-            try {
-                $this->stop();
-            }
+        try {
+            $this->stop();
+        }
 
-            catch (RuntimeException $e) {
-            }
+        catch (RuntimeException $e) {
         }
     }
 
@@ -441,19 +434,6 @@ abstract class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_Tes
         }
 
         return $buffer;
-    }
-
-    /**
-     * @param  boolean $autoStop
-     * @throws InvalidArgumentException
-     */
-    public function setAutoStop($autoStop)
-    {
-        if (!is_bool($autoStop)) {
-            throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'boolean');
-        }
-
-        $this->autoStop = $autoStop;
     }
 
     /**
@@ -1062,13 +1042,11 @@ abstract class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_Tes
             }
         }
 
-        if ($this->autoStop) {
-            try {
-                $this->stop();
-            }
+        try {
+            $this->stop();
+        }
 
-            catch (RuntimeException $e) {
-            }
+        catch (RuntimeException $e) {
         }
 
         if ($e instanceof PHPUnit_Framework_ExpectationFailedException) {

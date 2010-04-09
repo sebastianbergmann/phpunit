@@ -22,6 +22,7 @@ PHPUnit 3.5.0
 * Added a ticket listener that interacts with the GoogleCode issue API.
 * The paths in the XML configuration file can now be relative to the directory that contains the XML configuration file.
 * The `@author` annotation is now an alias for `@group` allowing to filter tests based on their authors.
+* The `PHPUnit_Extensions_SeleniumTestCase::$autoStop` flag has been removed, please start Selenium RC with `-browserSessionReuse` instead.
 * The `--log-metrics` and `--log-pmd` switches have been removed. Their functionality has been or will be merged into [PHP_Depend](http://pdepend.org/) and [PHPMD](http://phpmd.org/). Details can be found [here](http://sebastian-bergmann.de/archives/744-On-PHPUnit-and-Software-Metrics.html).
 * The `--ansi` switch has been removed, please use `--colors` instead.
 * The `--coverage-source` switch has been removed.
