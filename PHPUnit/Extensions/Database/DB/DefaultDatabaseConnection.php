@@ -75,11 +75,6 @@ class PHPUnit_Extensions_Database_DB_DefaultDatabaseConnection implements PHPUni
     protected $connection;
 
     /**
-     * @var string
-     */
-    protected $schema;
-
-    /**
      * The metadata object used to retrieve table meta data from the database.
      *
      * @var PHPUnit_Extensions_Database_DB_IMetaData
@@ -92,12 +87,10 @@ class PHPUnit_Extensions_Database_DB_DefaultDatabaseConnection implements PHPUni
      * @param PDO $connection
      * @param string $schema - The name of the database schema you will be testing against.
      */
-    public function __construct(PDO $connection, $schema)
+    public function __construct(PDO $connection, $schema = '')
     {
         $this->connection = $connection;
         $this->metaData = PHPUnit_Extensions_Database_DB_MetaData::createMetaData($connection, $schema);
-        $this->schema = $schema;
-
         $connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     }
 
@@ -127,7 +120,7 @@ class PHPUnit_Extensions_Database_DB_DefaultDatabaseConnection implements PHPUni
      */
     public function getSchema()
     {
-        return $this->schema;
+        return $this->getMetaData()->getSchema();
     }
 
     /**

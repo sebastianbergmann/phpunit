@@ -50,7 +50,7 @@ require_once 'PHPUnit/Extensions/Database/DB/MetaData/InformationSchema.php';
 PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
 
 /**
- * Provides functionality to retrieve meta data from a postgres database.
+ * Provides functionality to retrieve meta data from a PostgreSQL database.
  *
  * @category   Testing
  * @package    PHPUnit
@@ -61,7 +61,7 @@ PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
  * @link       http://www.phpunit.de/
  * @since      Class available since Release 3.2.0
  */
-class PHPUnit_Extensions_Database_DB_MetaData_PgSQL extends PHPUnit_Extensions_Database_DB_MetaData_InformationSchema
+class PHPUnit_Extensions_Database_DB_MetaData_PgSQL extends PHPUnit_Extensions_Database_DB_MetaData
 {
 
     /**
@@ -77,8 +77,7 @@ class PHPUnit_Extensions_Database_DB_MetaData_PgSQL extends PHPUnit_Extensions_D
             FROM INFORMATION_SCHEMA.TABLES
             WHERE
                 TABLE_TYPE='BASE TABLE' AND
-                TABLE_CATALOG = ? AND
-                TABLE_SCHEMA = 'public'
+                TABLE_SCHEMA = ?
             ORDER BY TABLE_NAME
         ";
 
@@ -93,8 +92,40 @@ class PHPUnit_Extensions_Database_DB_MetaData_PgSQL extends PHPUnit_Extensions_D
         return $tableNames;
     }
 
-    /**
-     * Loads column info from a sqlite database.
+	/**
+	 * Returns an array containing the names of all the columns in the
+	 * $tableName table,
+	 *
+	 * @param string $tableName
+	 * @return array
+	 */
+	public function getTableColumns($tableName)
+	{
+		if (!isset($this->columns[$tableName])) {
+			$this->loadColumnInfo($tableName);
+		}
+
+		return $this->columns[$tableName];
+	}
+
+	/**
+	 * Returns an array containing the names of all the primary key columns in
+	 * the $tableName table.
+	 *
+	 * @param string $tableName
+	 * @return array
+	 */
+	public function getTablePrimaryKeys($tableName)
+	{
+		if (!isset($this->keys[$tableName])) {
+			$this->loadColumnInfo($tableName);
+		}
+		
+		return $this->keys[$tableName];
+	}
+
+	/**
+	 * Loads column info from a database table.
      *
      * @param string $tableName
      */
@@ -105,13 +136,11 @@ class PHPUnit_Extensions_Database_DB_MetaData_PgSQL extends PHPUnit_Extensions_D
 
         $columnQuery = "
             SELECT DISTINCT
-            	COLUMN_NAME,
-		ORDINAL_POSITION
+            	COLUMN_NAME, ORDINAL_POSITION
             FROM INFORMATION_SCHEMA.COLUMNS
             WHERE
                 TABLE_NAME = ? AND
-                TABLE_SCHEMA = 'public' AND
-                TABLE_CATALOG = ?
+                TABLE_SCHEMA = ?
             ORDER BY ORDINAL_POSITION
         ";
 
@@ -127,17 +156,13 @@ class PHPUnit_Extensions_Database_DB_MetaData_PgSQL extends PHPUnit_Extensions_D
 				KCU.COLUMN_NAME,
 				KCU.ORDINAL_POSITION
 			FROM
-				INFORMATION_SCHEMA.TABLE_CONSTRAINTS as TC,
 				INFORMATION_SCHEMA.KEY_COLUMN_USAGE as KCU
+			LEFT JOIN INFORMATION_SCHEMA.TABLE_CONSTRAINTS as TC
+				ON TC.TABLE_NAME = KCU.TABLE_NAME
 			WHERE
-				TC.CONSTRAINT_NAME = KCU.CONSTRAINT_NAME AND
-				TC.TABLE_NAME = KCU.TABLE_NAME AND
-				TC.TABLE_SCHEMA = KCU.TABLE_SCHEMA AND
-                                TC.TABLE_CATALOG = KCU.TABLE_CATALOG AND
 				TC.CONSTRAINT_TYPE = 'PRIMARY KEY' AND
 				TC.TABLE_NAME = ? AND
-				TC.TABLE_SCHEMA = 'public' AND
-                                TC.TABLE_CATALOG = ?
+				TC.TABLE_SCHEMA = ?
 			ORDER BY
 				KCU.ORDINAL_POSITION ASC
     	";
@@ -149,6 +174,20 @@ class PHPUnit_Extensions_Database_DB_MetaData_PgSQL extends PHPUnit_Extensions_D
             $this->keys[$tableName][] = $columName;
         }
     }
+
+	/**
+	 * Returns the schema for the connection.
+	 *
+	 * @return string
+	 */
+	public function getSchema()
+	{
+		if (empty($this->schema)) {
+			return 'public';
+		} else {
+			return $this->schema;
+		}
+	}
 
     /**
      * Returns true if the rdbms allows cascading

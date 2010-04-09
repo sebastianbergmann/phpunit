@@ -153,7 +153,7 @@ abstract class PHPUnit_Extensions_Database_TestCase extends PHPUnit_Framework_Te
      * @param string $schema
      * @return PHPUnit_Extensions_Database_DB_DefaultDatabaseConnection
      */
-    protected function createDefaultDBConnection(PDO $connection, $schema)
+    protected function createDefaultDBConnection(PDO $connection, $schema = '')
     {
         return new PHPUnit_Extensions_Database_DB_DefaultDatabaseConnection($connection, $schema);
     }

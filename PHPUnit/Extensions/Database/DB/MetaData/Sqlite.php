@@ -50,7 +50,7 @@ require_once 'PHPUnit/Extensions/Database/DB/MetaData.php';
 PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
 
 /**
- * Provides functionality to retrieve meta data from a sqlite database.
+ * Provides functionality to retrieve meta data from an Sqlite database.
  *
  * @category   Testing
  * @package    PHPUnit
