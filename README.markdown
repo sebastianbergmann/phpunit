@@ -3,6 +3,11 @@ PHPUnit 3.4
 
 This is the list of changes for the PHPUnit 3.4 release series.
 
+PHPUnit 3.4.13
+--------------
+
+* Fixed TRAC-1035: PostgreSQL MetaData queries are incorrect.
+
 PHPUnit 3.4.12
 --------------
 
