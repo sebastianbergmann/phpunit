@@ -44,7 +44,7 @@
  */
 
 /**
- * Provides functionality to retrieve meta data from a sqlite database.
+ * Provides functionality to retrieve meta data from an Sqlite database.
  *
  * @package    PHPUnit
  * @subpackage Extensions_Database_DB_MetaData

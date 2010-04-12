@@ -44,7 +44,7 @@
  */
 
 /**
- * Provides functionality to retrieve meta data from a database with information_schema support.
+ * Provides functionality to retrieve meta data from a MySQL database.
  *
  * @package    PHPUnit
  * @subpackage Extensions_Database_DB_MetaData
@@ -58,10 +58,6 @@
 class PHPUnit_Extensions_Database_DB_MetaData_MySQL extends PHPUnit_Extensions_Database_DB_MetaData
 {
     protected $schemaObjectQuoteChar = '`';
-
-    protected $columns = array();
-
-    protected $keys = array();
 
     /**
      * Returns an array containing the names of all the tables in the database.
