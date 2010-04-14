@@ -1120,6 +1120,84 @@ abstract class PHPUnit_Framework_Assert
     /**
      * Asserts that a variable is of a given type.
      *
+     * @param string $expected
+     * @param mixed  $actual
+     * @param string $message
+     * @since Method available since Release 3.5.0
+     */
+    public static function assertInternalType($expected, $actual, $message = '')
+    {
+        if (is_string($expected)) {
+            $constraint = new PHPUnit_Framework_Constraint_IsType(
+              $expected
+            );
+        } else {
+            throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'string');
+        }
+
+        self::assertThat($actual, $constraint, $message);
+    }
+
+    /**
+     * Asserts that an attribute is of a given type.
+     *
+     * @param string $expected
+     * @param string $attributeName
+     * @param mixed  $classOrObject
+     * @param string $message
+     * @since Method available since Release 3.5.0
+     */
+    public static function assertAttributeInternalType($expected, $attributeName, $classOrObject, $message = '')
+    {
+        self::assertInternalType(
+          $expected,
+          self::readAttribute($classOrObject, $attributeName),
+          $message
+        );
+    }
+
+    /**
+     * Asserts that a variable is not of a given type.
+     *
+     * @param string $expected
+     * @param mixed  $actual
+     * @param string $message
+     * @since Method available since Release 3.5.0
+     */
+    public static function assertNotInternalType($expected, $actual, $message = '')
+    {
+        if (is_string($expected)) {
+            $constraint = new PHPUnit_Framework_Constraint_Not(
+              new PHPUnit_Framework_Constraint_IsType($expected)
+            );
+        } else {
+            throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'string');
+        }
+
+        self::assertThat($actual, $constraint, $message);
+    }
+
+    /**
+     * Asserts that an attribute is of a given type.
+     *
+     * @param string $expected
+     * @param string $attributeName
+     * @param mixed  $classOrObject
+     * @param string $message
+     * @since Method available since Release 3.5.0
+     */
+    public static function assertAttributeNotInternalType($expected, $attributeName, $classOrObject, $message = '')
+    {
+        self::assertNotInternalType(
+          $expected,
+          self::readAttribute($classOrObject, $attributeName),
+          $message
+        );
+    }
+
+    /**
+     * Asserts that a variable is of a given type.
+     *
      * @param  string $expected
      * @param  mixed  $actual
      * @param  string $message
@@ -1128,6 +1206,12 @@ abstract class PHPUnit_Framework_Assert
     {
         if (is_string($expected)) {
             if (PHPUnit_Util_Type::isType($expected)) {
+                if (class_exists($expected) || interface_exists($expected)) {
+                    throw new InvalidArgumentException(
+                      sprintf('"%s" is ambigious', $expected)
+                    );
+                }
+
                 $constraint = new PHPUnit_Framework_Constraint_IsType(
                   $expected
                 );
@@ -1181,6 +1265,12 @@ abstract class PHPUnit_Framework_Assert
     {
         if (is_string($expected)) {
             if (PHPUnit_Util_Type::isType($expected)) {
+                if (class_exists($expected) || interface_exists($expected)) {
+                    throw new InvalidArgumentException(
+                      sprintf('"%s" is ambigious', $expected)
+                    );
+                }
+
                 $constraint = new PHPUnit_Framework_Constraint_Not(
                   new PHPUnit_Framework_Constraint_IsType($expected)
                 );
