@@ -7,6 +7,7 @@ PHPUnit 3.4.13
 --------------
 
 * Fixed TRAC-1035: PostgreSQL MetaData queries are incorrect.
+* Fixed TRAC-1038: `assertType()` and user-defined classes/interfaces.
 * The `--repeat` switch is no longer deprecated.
 
 PHPUnit 3.4.12

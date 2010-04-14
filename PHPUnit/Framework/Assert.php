@@ -983,21 +983,21 @@ abstract class PHPUnit_Framework_Assert
     public static function assertType($expected, $actual, $message = '')
     {
         if (is_string($expected)) {
-            if (PHPUnit_Util_Type::isType($expected)) {
-                $constraint = new PHPUnit_Framework_Constraint_IsType(
+            if (class_exists($expected) || interface_exists($expected)) {
+                $constraint = new PHPUnit_Framework_Constraint_IsInstanceOf(
                   $expected
                 );
             }
 
-            else if (class_exists($expected) || interface_exists($expected)) {
-                $constraint = new PHPUnit_Framework_Constraint_IsInstanceOf(
+            else if (PHPUnit_Util_Type::isType($expected)) {
+                $constraint = new PHPUnit_Framework_Constraint_IsType(
                   $expected
                 );
             }
 
             else {
                 throw PHPUnit_Util_InvalidArgumentHelper::factory(
-                  1, 'class or interface name'
+                  1, 'class, interface or type name'
                 );
             }
         } else {
@@ -1036,21 +1036,21 @@ abstract class PHPUnit_Framework_Assert
     public static function assertNotType($expected, $actual, $message = '')
     {
         if (is_string($expected)) {
-            if (PHPUnit_Util_Type::isType($expected)) {
-                $constraint = new PHPUnit_Framework_Constraint_Not(
-                  new PHPUnit_Framework_Constraint_IsType($expected)
-                );
-            }
-
-            else if (class_exists($expected) || interface_exists($expected)) {
+            if (class_exists($expected) || interface_exists($expected)) {
                 $constraint = new PHPUnit_Framework_Constraint_Not(
                   new PHPUnit_Framework_Constraint_IsInstanceOf($expected)
                 );
             }
 
+            else if (PHPUnit_Util_Type::isType($expected)) {
+                $constraint = new PHPUnit_Framework_Constraint_Not(
+                  new PHPUnit_Framework_Constraint_IsType($expected)
+                );
+            }
+
             else {
                 throw PHPUnit_Util_InvalidArgumentHelper::factory(
-                  1, 'class or interface name'
+                  1, 'class, interface or type name'
                 );
             }
         } else {
