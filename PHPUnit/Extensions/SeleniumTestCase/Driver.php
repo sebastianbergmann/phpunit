@@ -1086,9 +1086,13 @@ class PHPUnit_Extensions_SeleniumTestCase_Driver
                     PHPUnit_Framework_Assert::assertNotEquals($expected, $result);
                 }
             } else {
+                $caseInsensitive = false;
                 if (strpos($expected, 'regexp:') === 0) {
                     $expected = substr($expected, strlen('regexp:'));
-                } else {
+                } else if (strpos($expected, 'regexpi:') === 0) {
+                    $expected = substr($expected, strlen('regexpi:'));
+                    $caseInsensitive = true;
+                } else  {
                     if (strpos($expected, 'glob:') === 0) {
                         $expected = substr($expected, strlen('glob:'));
                     }
@@ -1099,14 +1103,18 @@ class PHPUnit_Extensions_SeleniumTestCase_Driver
                 }
 
                 $expected = str_replace('/', '\/', $expected);
+                $regExp = '/' . $expected . '/';
+                if ($caseInsensitive === true) {
+                    $regExp .= 'i';
+                }
 
                 if (!isset($info['negative']) || !$info['negative']) {
                     PHPUnit_Framework_Assert::assertRegExp(
-                      '/' . $expected . '/', $result
+                      $regExp, $result
                     );
                 } else {
                     PHPUnit_Framework_Assert::assertNotRegExp(
-                      '/' . $expected . '/', $result
+                      $regExp, $result
                     );
                 }
             }
