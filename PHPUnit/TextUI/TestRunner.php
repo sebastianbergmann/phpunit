@@ -162,6 +162,17 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
             $suite->setBackupStaticAttributes(TRUE);
         }
 
+        if (is_integer($arguments['repeat'])) {
+            $suite = new PHPUnit_Extensions_RepeatedTest(
+              $suite,
+              $arguments['repeat'],
+              $arguments['filter'],
+              $arguments['groups'],
+              $arguments['excludeGroups'],
+              $arguments['processIsolation']
+            );
+        }
+
         $result = $this->createTestResult();
 
         if (!$arguments['convertErrorsToExceptions']) {
@@ -705,6 +716,7 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
         $arguments['groups']                      = isset($arguments['groups'])                      ? $arguments['groups']                      : array();
         $arguments['logIncompleteSkipped']        = isset($arguments['logIncompleteSkipped'])        ? $arguments['logIncompleteSkipped']        : FALSE;
         $arguments['processIsolation']            = isset($arguments['processIsolation'])            ? $arguments['processIsolation']            : FALSE;
+        $arguments['repeat']                      = isset($arguments['repeat'])                      ? $arguments['repeat']                      : FALSE;
         $arguments['reportCharset']               = isset($arguments['reportCharset'])               ? $arguments['reportCharset']               : 'UTF-8';
         $arguments['reportHighlight']             = isset($arguments['reportHighlight'])             ? $arguments['reportHighlight']             : FALSE;
         $arguments['reportHighLowerBound']        = isset($arguments['reportHighLowerBound'])        ? $arguments['reportHighLowerBound']        : 70;

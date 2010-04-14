@@ -95,6 +95,7 @@ class PHPUnit_TextUI_Command
       'log-junit=' => NULL,
       'log-tap=' => NULL,
       'process-isolation' => NULL,
+      'repeat=' => NULL,
       'skeleton-class' => NULL,
       'skeleton-test' => NULL,
       'stderr' => NULL,
@@ -385,6 +386,11 @@ class PHPUnit_TextUI_Command
                 case '--process-isolation': {
                     $this->arguments['processIsolation'] = TRUE;
                     $this->arguments['syntaxCheck']      = FALSE;
+                }
+                break;
+
+                case '--repeat': {
+                    $this->arguments['repeat'] = (int)$option[1];
                 }
                 break;
 
@@ -775,6 +781,7 @@ Usage: phpunit [switches] UnitTest [UnitTest.php]
   --list-groups            List available test groups.
 
   --loader <loader>        TestSuiteLoader implementation to use.
+  --repeat <times>         Runs the test(s) repeatedly.
 
   --story                  Report test execution progress in Story/BDD format.
   --tap                    Report test execution progress in TAP format.
