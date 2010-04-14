@@ -7,6 +7,7 @@ PHPUnit 3.4.13
 --------------
 
 * Fixed TRAC-1035: PostgreSQL MetaData queries are incorrect.
+* The `--repeat` switch is no longer deprecated.
 
 PHPUnit 3.4.12
 --------------
