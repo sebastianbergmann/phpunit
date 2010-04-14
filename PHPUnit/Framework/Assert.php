@@ -1026,6 +1026,100 @@ abstract class PHPUnit_Framework_Assert
     /**
      * Asserts that a variable is of a given type.
      *
+     * @param string $expected
+     * @param mixed  $actual
+     * @param string $message
+     * @since Method available since Release 3.5.0
+     */
+    public static function assertInstanceOf($expected, $actual, $message = '')
+    {
+        if (is_string($expected)) {
+            if (class_exists($expected) || interface_exists($expected)) {
+                $constraint = new PHPUnit_Framework_Constraint_IsInstanceOf(
+                  $expected
+                );
+            }
+
+            else {
+                throw PHPUnit_Util_InvalidArgumentHelper::factory(
+                  1, 'class or interface name'
+                );
+            }
+        } else {
+            throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'string');
+        }
+
+        self::assertThat($actual, $constraint, $message);
+    }
+
+    /**
+     * Asserts that an attribute is of a given type.
+     *
+     * @param string $expected
+     * @param string $attributeName
+     * @param mixed  $classOrObject
+     * @param string $message
+     * @since Method available since Release 3.5.0
+     */
+    public static function assertAttributeInstanceOf($expected, $attributeName, $classOrObject, $message = '')
+    {
+        self::assertInstanceOf(
+          $expected,
+          self::readAttribute($classOrObject, $attributeName),
+          $message
+        );
+    }
+
+    /**
+     * Asserts that a variable is not of a given type.
+     *
+     * @param string $expected
+     * @param mixed  $actual
+     * @param string $message
+     * @since Method available since Release 3.5.0
+     */
+    public static function assertNotInstanceOf($expected, $actual, $message = '')
+    {
+        if (is_string($expected)) {
+            if (class_exists($expected) || interface_exists($expected)) {
+                $constraint = new PHPUnit_Framework_Constraint_Not(
+                  new PHPUnit_Framework_Constraint_IsInstanceOf($expected)
+                );
+            }
+
+            else {
+                throw PHPUnit_Util_InvalidArgumentHelper::factory(
+                  1, 'class or interface name'
+                );
+            }
+        } else {
+            throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'string');
+        }
+
+        self::assertThat($actual, $constraint, $message);
+    }
+
+    /**
+     * Asserts that an attribute is of a given type.
+     *
+     * @param string $expected
+     * @param string $attributeName
+     * @param mixed  $classOrObject
+     * @param string $message
+     * @since Method available since Release 3.5.0
+     */
+    public static function assertAttributeNotInstanceOf($expected, $attributeName, $classOrObject, $message = '')
+    {
+        self::assertNotInstanceOf(
+          $expected,
+          self::readAttribute($classOrObject, $attributeName),
+          $message
+        );
+    }
+
+    /**
+     * Asserts that a variable is of a given type.
+     *
      * @param  string $expected
      * @param  mixed  $actual
      * @param  string $message

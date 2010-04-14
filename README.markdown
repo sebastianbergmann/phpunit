@@ -11,6 +11,7 @@ PHPUnit 3.5.0
 * Implemented TRAC-967: Only populate whitelist when code coverage is used.
 * Implemented TRAC-985: Sort arrays before diff.
 * Implemented TRAC-1033: Supplement commandline option `--stop-on-error` and friends.
+* Implemented TRAC-1038: Add `assertInstanceOf()`, `assertAttributeInstanceOf()`, `assertNotInstanceOf()`, and `assertAttributeNotInstanceOf()`.
 * Added support for mocking/stubbing of static methods. This requires PHP 5.3 and late static binding.
 * Added `assertStringMatchesFormat()` and `assertStringNotMatchesFormat()` as well as `assertStringMatchesFormatFile()` and `assertStringNotMatchesFormatFile()` for `EXPECTF`-like (`run-tests.php`) format string matching.
 * Added `assertEmpty()` and `assertNotEmpty()`.
