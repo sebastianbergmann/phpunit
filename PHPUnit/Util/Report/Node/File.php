@@ -466,7 +466,7 @@ class PHPUnit_Util_Report_Node_File extends PHPUnit_Util_Report_Node
                       '&nbsp;<a href="#%d">%s</a>',
 
                       $methodData['startLine'],
-                      $methodData['signature']
+                      htmlspecialchars($methodData['signature'])
                     ),
                     'numClasses'           => '',
                     'numTestedClasses'     => '',

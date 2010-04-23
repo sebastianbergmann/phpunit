@@ -7,6 +7,7 @@ PHPUnit 3.4.13
 --------------
 
 * Fixed TRAC-1035: PostgreSQL MetaData queries are incorrect.
+* Fixed TRAC-1043: Method names in HTML code coverage report are not properly escaped.
 * The `--repeat` switch is no longer deprecated.
 
 PHPUnit 3.4.12
