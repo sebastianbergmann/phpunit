@@ -869,7 +869,11 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
 
         if ($arguments['filter'] !== FALSE &&
             preg_match('/^[a-zA-Z0-9_]/', $arguments['filter'])) {
-            $arguments['filter'] = '/' . $arguments['filter'] . '/';
+            // Escape delimiters in regular expression. Do NOT use preg_quote,
+            // to keep magic characters.
+            $arguments['filter'] = '/' . str_replace(
+              '/', '\\/', $arguments['filter']
+            ) . '/';
         }
     }
 }
