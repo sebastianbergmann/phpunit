@@ -89,4 +89,15 @@ class PHPUnit_Framework_Constraint_IsAnything extends PHPUnit_Framework_Constrai
     {
         return 'is anything';
     }
+
+    /**
+     * Counts the number of constraint elements.
+     *
+     * @return integer
+     * @since  Method available since Release 3.5.0
+     */
+    public function count()
+    {
+        return 0;
+    }
 }
