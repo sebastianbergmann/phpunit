@@ -1,6 +1,0 @@
-      <tr>
-       <td width="60">{text}</td>
-       <td class="stepName">{action}</td>
-       <td>&nbsp;</td>
-      </tr>
-
