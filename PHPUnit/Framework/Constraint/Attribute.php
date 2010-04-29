@@ -132,7 +132,7 @@ class PHPUnit_Framework_Constraint_Attribute extends PHPUnit_Framework_Constrain
      */
     public function count()
     {
-        return count($this->constraint) + 1;
+        return count($this->constraint);
     }
 
     /**
