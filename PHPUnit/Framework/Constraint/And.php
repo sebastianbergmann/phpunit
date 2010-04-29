@@ -149,7 +149,7 @@ class PHPUnit_Framework_Constraint_And extends PHPUnit_Framework_Constraint
      */
     public function count()
     {
-        $count = 1;
+        $count = 0;
 
         foreach ($this->constraints as $constraint) {
             $count += count($constraint);

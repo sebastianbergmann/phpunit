@@ -136,6 +136,6 @@ class PHPUnit_Framework_Constraint_Not extends PHPUnit_Framework_Constraint
      */
     public function count()
     {
-        return count($this->constraint) + 1;
+        return count($this->constraint);
     }
 }
