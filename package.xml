@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<package packagerversion="1.4.10" version="2.0"
+  xmlns="http://pear.php.net/dtd/package-2.0"
+  xmlns:tasks="http://pear.php.net/dtd/tasks-1.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://pear.php.net/dtd/tasks-1.0
+                      http://pear.php.net/dtd/tasks-1.0.xsd
+                      http://pear.php.net/dtd/package-2.0
+                      http://pear.php.net/dtd/package-2.0.xsd">
+ <name>PHPUnit_MockObject</name>
+ <channel>pear.phpunit.de</channel>
+ <summary>Mock Object library for PHPUnit</summary>
+ <description>Mock Object library for PHPUnit</description>
+ <lead>
+  <name>Sebastian Bergmann</name>
+  <user>sb</user>
+  <email>sb@sebastian-bergmann.de</email>
+  <active>yes</active>
+ </lead>
+ <date>2010-MM-DD</date>
+ <version>
+  <release>3.5.0-dev</release>
+  <api>3.5.0</api>
+ </version>
+ <stability>
+  <release>devel</release>
+  <api>devel</api>
+ </stability>
+ <license>BSD License</license>
+ <notes>http://github.com/sebastianbergmann/phpunit-mock-objects/blob/master/README.markdown</notes>
+ <contents>
+  <dir name="/">
+   <dir name="PHPUnit">
+    <dir name="Framework">
+     <dir name="MockObject">
+      <dir name="Builder">
+       <file baseinstalldir="/" name="Identity.php" role="php">
+        <tasks:replace from="@package_version@" to="version" type="package-info" />
+       </file>
+       <file baseinstalldir="/" name="InvocationMocker.php" role="php">
+        <tasks:replace from="@package_version@" to="version" type="package-info" />
+       </file>
+       <file baseinstalldir="/" name="Match.php" role="php">
+        <tasks:replace from="@package_version@" to="version" type="package-info" />
+       </file>
+       <file baseinstalldir="/" name="MethodNameMatch.php" role="php">
+        <tasks:replace from="@package_version@" to="version" type="package-info" />
+       </file>
+       <file baseinstalldir="/" name="Namespace.php" role="php">
+        <tasks:replace from="@package_version@" to="version" type="package-info" />
+       </file>
+       <file baseinstalldir="/" name="ParametersMatch.php" role="php">
+        <tasks:replace from="@package_version@" to="version" type="package-info" />
+       </file>
+       <file baseinstalldir="/" name="Stub.php" role="php">
+        <tasks:replace from="@package_version@" to="version" type="package-info" />
+       </file>
+      </dir>
+      <dir name="Generator">
+       <file baseinstalldir="/" name="mocked_class.tpl.dist" role="php" />
+       <file baseinstalldir="/" name="mocked_clone.tpl.dist" role="php" />
+       <file baseinstalldir="/" name="mocked_object_method.tpl.dist" role="php" />
+       <file baseinstalldir="/" name="mocked_static_method.tpl.dist" role="php" />
+       <file baseinstalldir="/" name="unmocked_clone.tpl.dist" role="php" />
+       <file baseinstalldir="/" name="wsdl_class.tpl.dist" role="php" />
+       <file baseinstalldir="/" name="wsdl_method.tpl.dist" role="php" />
+      </dir>
+      <dir name="Matcher">
+       <file baseinstalldir="/" name="AnyInvokedCount.php" role="php">
+        <tasks:replace from="@package_version@" to="version" type="package-info" />
+       </file>
+       <file baseinstalldir="/" name="AnyParameters.php" role="php">
+        <tasks:replace from="@package_version@" to="version" type="package-info" />
+       </file>
+       <file baseinstalldir="/" name="Invocation.php" role="php">
+        <tasks:replace from="@package_version@" to="version" type="package-info" />
+       </file>
+       <file baseinstalldir="/" name="InvokedAtIndex.php" role="php">
+        <tasks:replace from="@package_version@" to="version" type="package-info" />
+       </file>
+       <file baseinstalldir="/" name="InvokedAtLeastOnce.php" role="php">
+        <tasks:replace from="@package_version@" to="version" type="package-info" />
+       </file>
+       <file baseinstalldir="/" name="InvokedCount.php" role="php">
+        <tasks:replace from="@package_version@" to="version" type="package-info" />
+       </file>
+       <file baseinstalldir="/" name="InvokedRecorder.php" role="php">
+        <tasks:replace from="@package_version@" to="version" type="package-info" />
+       </file>
+       <file baseinstalldir="/" name="MethodName.php" role="php">
+        <tasks:replace from="@package_version@" to="version" type="package-info" />
+       </file>
+       <file baseinstalldir="/" name="Parameters.php" role="php">
+        <tasks:replace from="@package_version@" to="version" type="package-info" />
+       </file>
+       <file baseinstalldir="/" name="StatelessInvocation.php" role="php">
+        <tasks:replace from="@package_version@" to="version" type="package-info" />
+       </file>
+      </dir>
+      <dir name="Stub">
+       <file baseinstalldir="/" name="ConsecutiveCalls.php" role="php">
+        <tasks:replace from="@package_version@" to="version" type="package-info" />
+       </file>
+       <file baseinstalldir="/" name="Exception.php" role="php">
+        <tasks:replace from="@package_version@" to="version" type="package-info" />
+       </file>
+       <file baseinstalldir="/" name="MatcherCollection.php" role="php">
+        <tasks:replace from="@package_version@" to="version" type="package-info" />
+       </file>
+       <file baseinstalldir="/" name="Return.php" role="php">
+        <tasks:replace from="@package_version@" to="version" type="package-info" />
+       </file>
+       <file baseinstalldir="/" name="ReturnArgument.php" role="php">
+        <tasks:replace from="@package_version@" to="version" type="package-info" />
+       </file>
+       <file baseinstalldir="/" name="ReturnCallback.php" role="php">
+        <tasks:replace from="@package_version@" to="version" type="package-info" />
+       </file>
+      </dir>
+      <file baseinstalldir="/" name="Generator.php" role="php">
+       <tasks:replace from="@package_version@" to="version" type="package-info" />
+      </file>
+      <file baseinstalldir="/" name="InvocationMocker.php" role="php">
+       <tasks:replace from="@package_version@" to="version" type="package-info" />
+      </file>
+      <file baseinstalldir="/" name="Invocation.php" role="php">
+       <tasks:replace from="@package_version@" to="version" type="package-info" />
+      </file>
+      <file baseinstalldir="/" name="Invokable.php" role="php">
+       <tasks:replace from="@package_version@" to="version" type="package-info" />
+      </file>
+      <file baseinstalldir="/" name="Matcher.php" role="php">
+       <tasks:replace from="@package_version@" to="version" type="package-info" />
+      </file>
+      <file baseinstalldir="/" name="MockObject.php" role="php">
+       <tasks:replace from="@package_version@" to="version" type="package-info" />
+      </file>
+      <file baseinstalldir="/" name="Stub.php" role="php">
+       <tasks:replace from="@package_version@" to="version" type="package-info" />
+      </file>
+      <file baseinstalldir="/" name="Verifiable.php" role="php">
+       <tasks:replace from="@package_version@" to="version" type="package-info" />
+      </file>
+     </dir>
+    </dir>
+   </dir>
+  </dir>
+ </contents>
+ <dependencies>
+  <required>
+   <php>
+    <min>5.2.7</min>
+   </php>
+   <pearinstaller>
+    <min>1.9.0</min>
+   </pearinstaller>
+   <package>
+    <name>Text_Template</name>
+    <channel>pear.phpunit.de</channel>
+    <min>1.0.0</min>
+   </package>
+  </required>
+ </dependencies>
+ <phprelease/>
+</package>
