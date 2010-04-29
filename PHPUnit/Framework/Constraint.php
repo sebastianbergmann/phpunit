@@ -142,7 +142,8 @@ abstract class PHPUnit_Framework_Constraint implements Countable, PHPUnit_Framew
             'is ',
             'matches ',
             'starts with ',
-            'ends with '
+            'ends with ',
+            'not not '
           ),
           array(
             'does not contain ',
@@ -151,7 +152,8 @@ abstract class PHPUnit_Framework_Constraint implements Countable, PHPUnit_Framew
             'is not ',
             'does not match ',
             'starts not with ',
-            'ends not with '
+            'ends not with ',
+            'not '
           ),
           $string
         );
