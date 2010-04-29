@@ -19,8 +19,8 @@
  </lead>
  <date>2010-MM-DD</date>
  <version>
-  <release>3.5.0-dev</release>
-  <api>3.5.0</api>
+  <release>1.0.0-dev</release>
+  <api>1.0.0</api>
  </version>
  <stability>
   <release>devel</release>
