@@ -9,6 +9,7 @@ PHPUnit 3.4.13
 * Fixed TRAC-1035: PostgreSQL MetaData queries are incorrect.
 * Fixed TRAC-1043: Method names in HTML code coverage report are not properly escaped.
 * Fixed TRAC-1045: `--filter` has problems with umlaut characters.
+* Fixed TRAC-1047: `tearDownAfterClass()` not called for `SeleniumTestCase`.
 * The `--repeat` switch is no longer deprecated.
 
 PHPUnit 3.4.12
