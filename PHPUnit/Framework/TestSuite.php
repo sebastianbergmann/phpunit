@@ -714,7 +714,7 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
         }
 
         if ($this->testCase &&
-            method_exists($this->name, 'setUpBeforeClass')) {
+            method_exists($this->name, 'tearDownAfterClass')) {
             call_user_func(array($this->name, 'tearDownAfterClass'));
         }
 
