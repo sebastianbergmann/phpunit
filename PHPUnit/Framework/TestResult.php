@@ -44,6 +44,7 @@
  */
 
 require_once 'PHP/CodeCoverage.php';
+require_once 'PHP/Timer.php';
 
 /**
  * A TestResult collects the results of executing a test case.
@@ -605,7 +606,7 @@ class PHPUnit_Framework_TestResult implements Countable
             $this->codeCoverage->start($test);
         }
 
-        PHPUnit_Util_Timer::start();
+        PHP_Timer::start();
 
         try {
             $test->runBare();
@@ -619,7 +620,7 @@ class PHPUnit_Framework_TestResult implements Countable
             $error = TRUE;
         }
 
-        $time = PHPUnit_Util_Timer::stop();
+        $time = PHP_Timer::stop();
 
         if ($useXdebug) {
             $data = $this->codeCoverage->stop(FALSE);

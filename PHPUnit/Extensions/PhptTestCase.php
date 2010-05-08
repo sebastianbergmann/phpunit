@@ -53,6 +53,7 @@ if (PHPUnit_Util_Filesystem::fileExistsInIncludePath('PEAR/RunTest.php')) {
 }
 
 require_once 'PHP/CodeCoverage.php';
+require_once 'PHP/Timer.php';
 
 /**
  * Wrapper to run .phpt test cases.
@@ -166,9 +167,9 @@ class PHPUnit_Extensions_PhptTestCase implements PHPUnit_Framework_Test, PHPUnit
 
         $result->startTest($this);
 
-        PHPUnit_Util_Timer::start();
+        PHP_Timer::start();
         $buffer       = $runner->run($this->filename, $options);
-        $time         = PHPUnit_Util_Timer::stop();
+        $time         = PHP_Timer::stop();
         error_reporting($currentErrorReporting);
         $base         = basename($this->filename);
         $path         = dirname($this->filename);

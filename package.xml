@@ -741,9 +741,6 @@
      <file baseinstalldir="/" name="TestSuiteIterator.php" role="php">
       <tasks:replace from="@package_version@" to="version" type="package-info" />
      </file>
-     <file baseinstalldir="/" name="Timer.php" role="php">
-      <tasks:replace from="@package_version@" to="version" type="package-info" />
-     </file>
      <file baseinstalldir="/" name="Type.php" role="php">
       <tasks:replace from="@package_version@" to="version" type="package-info" />
      </file>
@@ -860,6 +857,11 @@
    </package>
    <package>
     <name>PHP_CodeCoverage</name>
+    <channel>pear.phpunit.de</channel>
+    <min>1.0.0</min>
+   </package>
+   <package>
+    <name>PHP_Timer</name>
     <channel>pear.phpunit.de</channel>
     <min>1.0.0</min>
    </package>

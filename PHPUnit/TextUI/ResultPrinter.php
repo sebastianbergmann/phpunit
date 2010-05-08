@@ -43,6 +43,8 @@
  * @since      File available since Release 2.0.0
  */
 
+require_once 'PHP/Timer.php';
+
 /**
  * Prints the result of a TextUI TestRunner run.
  *
@@ -323,11 +325,11 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
     protected function printHeader($timeElapsed)
     {
         if (isset($_SERVER['REQUEST_TIME'])) {
-            $timeElapsed = PHPUnit_Util_Timer::secondsToTimeString(
+            $timeElapsed = PHP_Timer::secondsToTimeString(
               time() - $_SERVER['REQUEST_TIME']
             );
         } else {
-            $timeElapsed = PHPUnit_Util_Timer::secondsToTimeString(
+            $timeElapsed = PHP_Timer::secondsToTimeString(
               $timeElapsed
             );
         }

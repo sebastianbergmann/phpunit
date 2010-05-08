@@ -45,8 +45,6 @@
 
 require_once 'PHPUnit/Framework/TestCase.php';
 
-require_once 'PHPUnit/Util/Timer.php';
-
 require_once dirname(dirname(__FILE__)) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'ExceptionTest.php';
 
 /**
