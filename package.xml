@@ -27,7 +27,7 @@
   <api>stable</api>
  </stability>
  <license>BSD License</license>
- <notes>http://www.phpunit.de/wiki/ChangeLog34</notes>
+ <notes>http://github.com/sebastianbergmann/phpunit/blob/3.4/README.markdown</notes>
  <contents>
   <dir name="/">
    <dir name="PHPUnit">
