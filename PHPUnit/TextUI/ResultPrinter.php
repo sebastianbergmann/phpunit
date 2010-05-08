@@ -157,7 +157,7 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
      */
     public function printResult(PHPUnit_Framework_TestResult $result)
     {
-        $this->printHeader($result->time());
+        $this->printHeader();
 
         if ($result->errorCount() > 0) {
             $this->printErrors($result);
@@ -319,32 +319,10 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
         );
     }
 
-    /**
-     * @param float $timeElapsed
-     */
-    protected function printHeader($timeElapsed)
+    protected function printHeader()
     {
-        if (isset($_SERVER['REQUEST_TIME'])) {
-            $timeElapsed = PHP_Timer::secondsToTimeString(
-              time() - $_SERVER['REQUEST_TIME']
-            );
-        } else {
-            $timeElapsed = PHP_Timer::secondsToTimeString(
-              $timeElapsed
-            );
-        }
-
-        $this->write(
-          sprintf(
-            "%sTime: %s%s\n\n",
-            $this->verbose ? "\n" : "\n\n",
-            $timeElapsed,
-            sprintf(
-              ', Memory: %4.2fMb',
-              memory_get_peak_usage(TRUE) / 1048576
-            )
-          )
-        );
+        $this->write($this->verbose ? "\n" : "\n\n");
+        $this->write(PHP_Timer::resourceUsage() . "\n\n");
     }
 
     /**
