@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<phpunit backupGlobals="false">
+  <php>
+    <const name="PHPUNIT_TESTSUITE" value="true"/>
+  </php>
+
+  <testsuites>
+    <testsuite name="PHPUnit Mock Objects">
+      <directory suffix=".phpt">Tests/MockObject</directory>
+      <file>Tests/MockObjectTest.php</file>
+    </testsuite>
+  </testsuites>
+
+  <logging>
+    <log type="coverage-html" target="build/coverage" title="PHPUnit Mock Objects"
+         charset="UTF-8" yui="true" highlight="true"
+         lowUpperBound="35" highLowerBound="70"/>
+    <log type="coverage-clover" target="build/logs/clover.xml"/>
+    <log type="junit" target="build/logs/junit.xml" logIncompleteSkipped="false"/>
+  </logging>
+
+  <filter>
+    <whitelist addUncoveredFilesFromWhitelist="true">
+      <directory suffix=".php">PHPUnit</directory>
+    </whitelist>
+  </filter>
+</phpunit>
