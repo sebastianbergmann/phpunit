@@ -11,7 +11,7 @@ PHPUnit 3.4.13
 * Fixed TRAC-1045: `--filter` has problems with umlaut characters.
 * Fixed TRAC-1047: `tearDownAfterClass()` not called for `SeleniumTestCase`.
 * The `--repeat` switch is no longer deprecated.
-* SQLite 2 MetaData driver mapping
+* `PHPUnit_Extensions_Database_TestCase` now supports SQLite 2.
 
 PHPUnit 3.4.12
 --------------
