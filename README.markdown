@@ -39,6 +39,7 @@ PHPUnit 3.5.0
 * `PHPUnit_Extensions_PerformanceTestCase` has been removed.
 * `PHPUnit_Extensions_TicketListener_Trac` has been removed.
 * Replaced `PHPUnit_Framework_MockObject` with the [PHP_MockObject](http://github.com/sebastianbergmann/php-mock-objects) component.
+* Replaced `PHPUnit_Extensions_Database_TestCase` with the [DbUnit](http://github.com/sebastianbergmann/dbunit) component.
 * Replaced `PHPUnit_Util_FilterIterator` with the [PHP_FileIterator](http://github.com/sebastianbergmann/php-file-iterator) component.
 * Replaced `PHPUnit_Util_Template` with the [Text_Template](http://github.com/sebastianbergmann/php-text-template) component.
 * Replaced `PHPUnit_Util_Timer` with the [PHP_Timer](http://github.com/sebastianbergmann/php-timer) component.
