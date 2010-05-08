@@ -1,0 +1,72 @@
+<project name="phpunit-mock-objects" default="build" basedir=".">
+ <target name="clean">
+  <!-- Clean up -->
+  <delete dir="build"/>
+
+  <!-- Create build directories -->
+  <mkdir dir="${basedir}/build/api"/>
+  <mkdir dir="${basedir}/build/code-browser"/>
+  <mkdir dir="${basedir}/build/coverage"/>
+  <mkdir dir="${basedir}/build/logs"/>
+  <mkdir dir="${basedir}/build/pdepend"/>
+ </target>
+
+ <!-- Run unit tests and generate junit.xml and clover.xml -->
+ <target name="phpunit">
+  <exec executable="phpunit" failonerror="true"/>
+ </target>
+
+ <!-- Run pdepend, phpmd, phpcpd, and phpcs in parallel -->
+ <target name="parallelTasks">
+  <parallel>
+   <antcall target="pdepend"/>
+   <antcall target="phpmd"/>
+   <antcall target="phpcpd"/>
+   <antcall target="phpcs"/>
+  </parallel>
+ </target>
+
+ <!-- Generate jdepend.xml and software metrics charts -->
+ <target name="pdepend">
+  <exec executable="pdepend">
+   <arg line="--jdepend-xml=${basedir}/build/logs/jdepend.xml
+              --jdepend-chart=${basedir}/build/pdepend/08-dependencies.svg
+              --overview-pyramid=${basedir}/build/pdepend/09-overview-pyramid.svg
+              PHPUnit" />
+  </exec>
+ </target>
+
+ <!-- Generate pmd.xml -->
+ <target name="phpmd">
+  <exec executable="phpmd">
+   <arg line="PHPUnit xml codesize,unusedcode --reportfile ${basedir}/build/logs/pmd.xml" />
+  </exec>
+ </target>
+
+ <!-- Generate pmd-cpd.xml -->
+ <target name="phpcpd">
+  <exec executable="phpcpd">
+   <arg line="--log-pmd ${basedir}/build/logs/pmd-cpd.xml PHPUnit" />
+  </exec>
+ </target>
+
+ <!-- Generate checkstyle.xml -->
+ <target name="phpcs">
+  <exec executable="phpcs" output="/dev/null">
+   <arg line="--report=checkstyle
+              --report-file=${basedir}/build/logs/checkstyle.xml
+              --standard=Sebastian
+              PHPUnit" />
+  </exec>
+ </target>
+
+ <target name="phpcb">
+  <exec executable="phpcb">
+   <arg line="--log    ${basedir}/build/logs
+              --source ${basedir}/PHPUnit
+              --output ${basedir}/build/code-browser" />
+  </exec>
+ </target>
+
+ <target name="build" depends="clean,parallelTasks,phpunit,phpcb"/>
+</project>
