@@ -30,8 +30,8 @@
  <target name="pdepend">
   <exec executable="pdepend">
    <arg line="--jdepend-xml=${basedir}/build/logs/jdepend.xml
-              --jdepend-chart=${basedir}/build/pdepend/08-dependencies.svg
-              --overview-pyramid=${basedir}/build/pdepend/09-overview-pyramid.svg
+              --jdepend-chart=${basedir}/build/pdepend/dependencies.svg
+              --overview-pyramid=${basedir}/build/pdepend/overview-pyramid.svg
               PHPUnit" />
   </exec>
  </target>
