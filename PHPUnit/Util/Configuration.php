@@ -504,111 +504,103 @@ class PHPUnit_Util_Configuration
 
         if ($root->hasAttribute('colors')) {
             $result['colors'] = $this->getBoolean(
-              (string)$root->getAttribute('colors'),
-              FALSE
+              (string)$root->getAttribute('colors'), FALSE
             );
         }
 
         else if ($root->hasAttribute('ansi')) {
             $result['colors'] = $this->getBoolean(
-              (string)$root->getAttribute('ansi'),
-              FALSE
+              (string)$root->getAttribute('ansi'), FALSE
             );
         }
 
         if ($root->hasAttribute('backupGlobals')) {
             $result['backupGlobals'] = $this->getBoolean(
-              (string)$root->getAttribute('backupGlobals'),
-              TRUE
+              (string)$root->getAttribute('backupGlobals'), TRUE
             );
         }
 
         if ($root->hasAttribute('backupStaticAttributes')) {
             $result['backupStaticAttributes'] = $this->getBoolean(
-              (string)$root->getAttribute('backupStaticAttributes'),
-              FALSE
+              (string)$root->getAttribute('backupStaticAttributes'), FALSE
             );
         }
 
         if ($root->hasAttribute('bootstrap')) {
-            $result['bootstrap'] = $this->toAbsolutePath((string)$root->getAttribute('bootstrap'));
+            $result['bootstrap'] = $this->toAbsolutePath(
+              (string)$root->getAttribute('bootstrap')
+            );
         }
 
         if ($root->hasAttribute('convertErrorsToExceptions')) {
             $result['convertErrorsToExceptions'] = $this->getBoolean(
-              (string)$root->getAttribute('convertErrorsToExceptions'),
-              TRUE
+              (string)$root->getAttribute('convertErrorsToExceptions'), TRUE
             );
         }
 
         if ($root->hasAttribute('convertNoticesToExceptions')) {
             $result['convertNoticesToExceptions'] = $this->getBoolean(
-              (string)$root->getAttribute('convertNoticesToExceptions'),
-              TRUE
+              (string)$root->getAttribute('convertNoticesToExceptions'), TRUE
             );
         }
 
         if ($root->hasAttribute('convertWarningsToExceptions')) {
             $result['convertWarningsToExceptions'] = $this->getBoolean(
-              (string)$root->getAttribute('convertWarningsToExceptions'),
-              TRUE
+              (string)$root->getAttribute('convertWarningsToExceptions'), TRUE
             );
         }
 
         if ($root->hasAttribute('processIsolation')) {
             $result['processIsolation'] = $this->getBoolean(
-              (string)$root->getAttribute('processIsolation'),
-              FALSE
+              (string)$root->getAttribute('processIsolation'), FALSE
             );
         }
 
         if ($root->hasAttribute('stopOnError')) {
             $result['stopOnError'] = $this->getBoolean(
-              (string)$root->getAttribute('stopOnError'),
-              FALSE
+              (string)$root->getAttribute('stopOnError'), FALSE
             );
         }
 
         if ($root->hasAttribute('stopOnFailure')) {
             $result['stopOnFailure'] = $this->getBoolean(
-              (string)$root->getAttribute('stopOnFailure'),
-              FALSE
+              (string)$root->getAttribute('stopOnFailure'), FALSE
             );
         }
 
         if ($root->hasAttribute('stopOnIncomplete')) {
             $result['stopOnIncomplete'] = $this->getBoolean(
-              (string)$root->getAttribute('stopOnIncomplete'),
-              FALSE
+              (string)$root->getAttribute('stopOnIncomplete'), FALSE
             );
         }
 
         if ($root->hasAttribute('stopOnSkipped')) {
             $result['stopOnSkipped'] = $this->getBoolean(
-              (string)$root->getAttribute('stopOnSkipped'),
-              FALSE
+              (string)$root->getAttribute('stopOnSkipped'), FALSE
             );
         }
 
         if ($root->hasAttribute('syntaxCheck')) {
             $result['syntaxCheck'] = $this->getBoolean(
-              (string)$root->getAttribute('syntaxCheck'),
-              FALSE
+              (string)$root->getAttribute('syntaxCheck'), FALSE
             );
         }
 
         if ($root->hasAttribute('testSuiteLoaderClass')) {
-            $result['testSuiteLoaderClass'] = (string)$root->getAttribute('testSuiteLoaderClass');
+            $result['testSuiteLoaderClass'] = (string)$root->getAttribute(
+              'testSuiteLoaderClass'
+            );
         }
 
         if ($root->hasAttribute('testSuiteLoaderFile')) {
-            $result['testSuiteLoaderFile'] = (string)$root->getAttribute('testSuiteLoaderFile');
+            $result['testSuiteLoaderFile'] = (string)$root->getAttribute(
+              'testSuiteLoaderFile'
+            );
         }
 
         if ($root->hasAttribute('verbose')) {
             $result['verbose'] = $this->getBoolean(
-              (string)$root->getAttribute('verbose'),
-              FALSE
+              (string)$root->getAttribute('verbose'), FALSE
             );
         }
 
