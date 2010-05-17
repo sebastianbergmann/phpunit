@@ -500,113 +500,114 @@ class PHPUnit_Util_Configuration
     public function getPHPUnitConfiguration()
     {
         $result = array();
+        $root   = $this->document->documentElement;
 
-        if ($this->document->documentElement->hasAttribute('colors')) {
+        if ($root->hasAttribute('colors')) {
             $result['colors'] = $this->getBoolean(
-              (string)$this->document->documentElement->getAttribute('colors'),
+              (string)$root->getAttribute('colors'),
               FALSE
             );
         }
 
-        else if ($this->document->documentElement->hasAttribute('ansi')) {
+        else if ($root->hasAttribute('ansi')) {
             $result['colors'] = $this->getBoolean(
-              (string)$this->document->documentElement->getAttribute('ansi'),
+              (string)$root->getAttribute('ansi'),
               FALSE
             );
         }
 
-        if ($this->document->documentElement->hasAttribute('backupGlobals')) {
+        if ($root->hasAttribute('backupGlobals')) {
             $result['backupGlobals'] = $this->getBoolean(
-              (string)$this->document->documentElement->getAttribute('backupGlobals'),
+              (string)$root->getAttribute('backupGlobals'),
               TRUE
             );
         }
 
-        if ($this->document->documentElement->hasAttribute('backupStaticAttributes')) {
+        if ($root->hasAttribute('backupStaticAttributes')) {
             $result['backupStaticAttributes'] = $this->getBoolean(
-              (string)$this->document->documentElement->getAttribute('backupStaticAttributes'),
+              (string)$root->getAttribute('backupStaticAttributes'),
               FALSE
             );
         }
 
-        if ($this->document->documentElement->hasAttribute('bootstrap')) {
-            $result['bootstrap'] = $this->toAbsolutePath((string)$this->document->documentElement->getAttribute('bootstrap'));
+        if ($root->hasAttribute('bootstrap')) {
+            $result['bootstrap'] = $this->toAbsolutePath((string)$root->getAttribute('bootstrap'));
         }
 
-        if ($this->document->documentElement->hasAttribute('convertErrorsToExceptions')) {
+        if ($root->hasAttribute('convertErrorsToExceptions')) {
             $result['convertErrorsToExceptions'] = $this->getBoolean(
-              (string)$this->document->documentElement->getAttribute('convertErrorsToExceptions'),
+              (string)$root->getAttribute('convertErrorsToExceptions'),
               TRUE
             );
         }
 
-        if ($this->document->documentElement->hasAttribute('convertNoticesToExceptions')) {
+        if ($root->hasAttribute('convertNoticesToExceptions')) {
             $result['convertNoticesToExceptions'] = $this->getBoolean(
-              (string)$this->document->documentElement->getAttribute('convertNoticesToExceptions'),
+              (string)$root->getAttribute('convertNoticesToExceptions'),
               TRUE
             );
         }
 
-        if ($this->document->documentElement->hasAttribute('convertWarningsToExceptions')) {
+        if ($root->hasAttribute('convertWarningsToExceptions')) {
             $result['convertWarningsToExceptions'] = $this->getBoolean(
-              (string)$this->document->documentElement->getAttribute('convertWarningsToExceptions'),
+              (string)$root->getAttribute('convertWarningsToExceptions'),
               TRUE
             );
         }
 
-        if ($this->document->documentElement->hasAttribute('processIsolation')) {
+        if ($root->hasAttribute('processIsolation')) {
             $result['processIsolation'] = $this->getBoolean(
-              (string)$this->document->documentElement->getAttribute('processIsolation'),
+              (string)$root->getAttribute('processIsolation'),
               FALSE
             );
         }
 
-        if ($this->document->documentElement->hasAttribute('stopOnError')) {
+        if ($root->hasAttribute('stopOnError')) {
             $result['stopOnError'] = $this->getBoolean(
-              (string)$this->document->documentElement->getAttribute('stopOnError'),
+              (string)$root->getAttribute('stopOnError'),
               FALSE
             );
         }
 
-        if ($this->document->documentElement->hasAttribute('stopOnFailure')) {
+        if ($root->hasAttribute('stopOnFailure')) {
             $result['stopOnFailure'] = $this->getBoolean(
-              (string)$this->document->documentElement->getAttribute('stopOnFailure'),
+              (string)$root->getAttribute('stopOnFailure'),
               FALSE
             );
         }
 
-        if ($this->document->documentElement->hasAttribute('stopOnIncomplete')) {
+        if ($root->hasAttribute('stopOnIncomplete')) {
             $result['stopOnIncomplete'] = $this->getBoolean(
-              (string)$this->document->documentElement->getAttribute('stopOnIncomplete'),
+              (string)$root->getAttribute('stopOnIncomplete'),
               FALSE
             );
         }
 
-        if ($this->document->documentElement->hasAttribute('stopOnSkipped')) {
+        if ($root->hasAttribute('stopOnSkipped')) {
             $result['stopOnSkipped'] = $this->getBoolean(
-              (string)$this->document->documentElement->getAttribute('stopOnSkipped'),
+              (string)$root->getAttribute('stopOnSkipped'),
               FALSE
             );
         }
 
-        if ($this->document->documentElement->hasAttribute('syntaxCheck')) {
+        if ($root->hasAttribute('syntaxCheck')) {
             $result['syntaxCheck'] = $this->getBoolean(
-              (string)$this->document->documentElement->getAttribute('syntaxCheck'),
+              (string)$root->getAttribute('syntaxCheck'),
               FALSE
             );
         }
 
-        if ($this->document->documentElement->hasAttribute('testSuiteLoaderClass')) {
-            $result['testSuiteLoaderClass'] = (string)$this->document->documentElement->getAttribute('testSuiteLoaderClass');
+        if ($root->hasAttribute('testSuiteLoaderClass')) {
+            $result['testSuiteLoaderClass'] = (string)$root->getAttribute('testSuiteLoaderClass');
         }
 
-        if ($this->document->documentElement->hasAttribute('testSuiteLoaderFile')) {
-            $result['testSuiteLoaderFile'] = (string)$this->document->documentElement->getAttribute('testSuiteLoaderFile');
+        if ($root->hasAttribute('testSuiteLoaderFile')) {
+            $result['testSuiteLoaderFile'] = (string)$root->getAttribute('testSuiteLoaderFile');
         }
 
-        if ($this->document->documentElement->hasAttribute('verbose')) {
+        if ($root->hasAttribute('verbose')) {
             $result['verbose'] = $this->getBoolean(
-              (string)$this->document->documentElement->getAttribute('verbose'),
+              (string)$root->getAttribute('verbose'),
               FALSE
             );
         }
