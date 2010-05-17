@@ -27,7 +27,7 @@
   <api>devel</api>
  </stability>
  <license>BSD License</license>
- <notes>http://github.com/sebastianbergmann/phpunit/blob/3.5/README.markdown</notes>
+ <notes>http://github.com/sebastianbergmann/phpunit/blob/master/README.markdown</notes>
  <contents>
   <dir name="/">
    <dir name="PHPUnit">
