@@ -256,6 +256,8 @@ class Util_ConfigurationTest extends PHPUnit_Framework_TestCase
             'convertErrorsToExceptions' => TRUE,
             'convertNoticesToExceptions' => TRUE,
             'convertWarningsToExceptions' => TRUE,
+            'forceCoversAnnotation' => FALSE,
+            'mapTestClassNameToCoveredClassName' => FALSE,
             'stopOnFailure' => FALSE,
             'syntaxCheck' => FALSE,
             'testSuiteLoaderClass' => 'PHPUnit_Runner_StandardTestSuiteLoader',

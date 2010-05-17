@@ -526,6 +526,16 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
                 $arguments['verbose'] = $phpunitConfiguration['verbose'];
             }
 
+            if (isset($phpunitConfiguration['forceCoversAnnotation']) &&
+                !isset($arguments['forceCoversAnnotation'])) {
+                $arguments['forceCoversAnnotation'] = $phpunitConfiguration['forceCoversAnnotation'];
+            }
+
+            if (isset($phpunitConfiguration['mapTestClassNameToCoveredClassName']) &&
+                !isset($arguments['mapTestClassNameToCoveredClassName'])) {
+                $arguments['mapTestClassNameToCoveredClassName'] = $phpunitConfiguration['mapTestClassNameToCoveredClassName'];
+            }
+
             $groupConfiguration = $arguments['configuration']->getGroupConfiguration();
 
             if (!empty($groupConfiguration['include']) &&
@@ -680,9 +690,23 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
             if ((isset($arguments['coverageClover']) ||
                 isset($arguments['reportDirectory'])) &&
                 extension_loaded('xdebug')) {
-                PHP_CodeCoverage::getInstance()->setProcessUncoveredFilesFromWhitelist(
+                $coverage = PHP_CodeCoverage::getInstance();
+
+                $coverage->setProcessUncoveredFilesFromWhitelist(
                   $filterConfiguration['whitelist']['addUncoveredFilesFromWhitelist']
                 );
+
+                if (isset($arguments['forceCoversAnnotation'])) {
+                    $coverage->setForceCoversAnnotation(
+                      $arguments['forceCoversAnnotation']
+                    );
+                }
+
+                if (isset($arguments['mapTestClassNameToCoveredClassName'])) {
+                    $coverage->setMapTestClassNameToCoveredClassName(
+                      $arguments['mapTestClassNameToCoveredClassName']
+                    );
+                }
 
                 foreach ($filterConfiguration['whitelist']['include']['directory'] as $dir) {
                     $filter->addDirectoryToWhitelist(

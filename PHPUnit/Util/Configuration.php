@@ -57,6 +57,8 @@
  *          convertErrorsToExceptions="true"
  *          convertNoticesToExceptions="true"
  *          convertWarningsToExceptions="true"
+ *          forceCoversAnnotation="false"
+ *          mapTestClassNameToCoveredClassName="false"
  *          processIsolation="false"
  *          stopOnError="false"
  *          stopOnFailure="false"
@@ -547,6 +549,19 @@ class PHPUnit_Util_Configuration
         if ($root->hasAttribute('convertWarningsToExceptions')) {
             $result['convertWarningsToExceptions'] = $this->getBoolean(
               (string)$root->getAttribute('convertWarningsToExceptions'), TRUE
+            );
+        }
+
+        if ($root->hasAttribute('forceCoversAnnotation')) {
+            $result['forceCoversAnnotation'] = $this->getBoolean(
+              (string)$root->getAttribute('forceCoversAnnotation'), FALSE
+            );
+        }
+
+        if ($root->hasAttribute('mapTestClassNameToCoveredClassName')) {
+            $result['mapTestClassNameToCoveredClassName'] = $this->getBoolean(
+              (string)$root->getAttribute('mapTestClassNameToCoveredClassName'),
+              FALSE
             );
         }
 
