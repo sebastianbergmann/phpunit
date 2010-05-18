@@ -54,7 +54,6 @@
  * @version    Release: @package_version@
  * @link       http://www.phpunit.de/
  * @since      Class available since Release 2.0.0
- * @abstract
  */
 abstract class PHPUnit_Util_Printer
 {

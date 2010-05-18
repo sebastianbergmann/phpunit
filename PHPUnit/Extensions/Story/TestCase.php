@@ -56,7 +56,6 @@
  * @version    Release: @package_version@
  * @link       http://www.phpunit.de/
  * @since      Class available since Release 3.3.0
- * @abstract
  */
 abstract class PHPUnit_Extensions_Story_TestCase extends PHPUnit_Framework_TestCase
 {
