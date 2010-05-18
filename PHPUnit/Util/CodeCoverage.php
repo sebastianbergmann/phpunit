@@ -58,7 +58,6 @@ PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
  * @version    Release: @package_version@
  * @link       http://www.phpunit.de/
  * @since      Class available since Release 3.1.0
- * @abstract
  */
 abstract class PHPUnit_Util_CodeCoverage
 {
