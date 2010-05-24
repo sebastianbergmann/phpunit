@@ -57,7 +57,8 @@ if (isset($_GET['PHPUNIT_SELENIUM_TEST_ID'])) {
         new RecursiveDirectoryIterator(
           $GLOBALS['PHPUNIT_COVERAGE_DATA_DIRECTORY']
         )
-      )
+      ),
+      $_GET['PHPUNIT_SELENIUM_TEST_ID']
     );
 
     $coverage = array();

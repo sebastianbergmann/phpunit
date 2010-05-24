@@ -3,6 +3,11 @@ PHPUnit 3.4
 
 This is the list of changes for the PHPUnit 3.4 release series.
 
+PHPUnit 3.4.14
+--------------
+
+* Fixed TRAC-1057: `phpunit_coverage.php` deletes all files in web server document root.
+
 PHPUnit 3.4.13
 --------------
 
