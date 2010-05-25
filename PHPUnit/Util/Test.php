@@ -239,54 +239,63 @@ class PHPUnit_Util_Test
      * @return mixed  array|Iterator when a data provider is specified and exists
      *                false          when a data provider is specified and does not exist
      *                null           when no data provider is specified
-     * @throws ReflectionException
      * @since  Method available since Release 3.2.0
      */
     public static function getProvidedData($className, $methodName)
     {
         $reflector  = new ReflectionMethod($className, $methodName);
         $docComment = $reflector->getDocComment();
+        $data       = NULL;
 
         if (preg_match(self::REGEX_DATA_PROVIDER, $docComment, $matches)) {
-            try {
-                $dataProviderMethodNameNamespace = explode('\\', $matches[1]);
-                $leaf                            = explode('::', array_pop($dataProviderMethodNameNamespace));
-                $dataProviderMethodName          = array_pop($leaf);
+            $dataProviderMethodNameNamespace = explode('\\', $matches[1]);
+            $leaf                            = explode('::', array_pop($dataProviderMethodNameNamespace));
+            $dataProviderMethodName          = array_pop($leaf);
 
-                if (!empty($dataProviderMethodNameNamespace)) {
-                    $dataProviderMethodNameNamespace = join('\\', $dataProviderMethodNameNamespace) . '\\';
-                } else {
-                    $dataProviderMethodNameNamespace = '';
-                }
-
-                if (!empty($leaf)) {
-                    $dataProviderClassName = $dataProviderMethodNameNamespace . array_pop($leaf);
-                } else {
-                    $dataProviderClassName = $className;
-                }
-
-                $dataProviderClass  = new ReflectionClass($dataProviderClassName);
-                $dataProviderMethod = $dataProviderClass->getMethod(
-                  $dataProviderMethodName
-                );
-
-                if ($dataProviderMethod->isStatic()) {
-                    $object = NULL;
-                } else {
-                    $object = $dataProviderClass->newInstance();
-                }
-
-                if ($dataProviderMethod->getNumberOfParameters() == 0) {
-                    return $dataProviderMethod->invoke($object);
-                } else {
-                    return $dataProviderMethod->invoke($object, $methodName);
-                }
+            if (!empty($dataProviderMethodNameNamespace)) {
+                $dataProviderMethodNameNamespace = join('\\', $dataProviderMethodNameNamespace) . '\\';
+            } else {
+                $dataProviderMethodNameNamespace = '';
             }
 
-            catch (ReflectionException $e) {
-                return FALSE;
+            if (!empty($leaf)) {
+                $dataProviderClassName = $dataProviderMethodNameNamespace . array_pop($leaf);
+            } else {
+                $dataProviderClassName = $className;
+            }
+
+            $dataProviderClass  = new ReflectionClass($dataProviderClassName);
+            $dataProviderMethod = $dataProviderClass->getMethod(
+              $dataProviderMethodName
+            );
+
+            if ($dataProviderMethod->isStatic()) {
+                $object = NULL;
+            } else {
+                $object = $dataProviderClass->newInstance();
+            }
+
+            if ($dataProviderMethod->getNumberOfParameters() == 0) {
+                $data = $dataProviderMethod->invoke($object);
+            } else {
+                $data = $dataProviderMethod->invoke($object, $methodName);
             }
         }
+
+        if ($data !== NULL) {
+            foreach ($data as $key => $value) {
+                if (!is_array($value)) {
+                    throw new InvalidArgumentException(
+                      sprintf(
+                        'Data set %s is invalid.',
+                        is_int($key) ? '#' . $key : '"' . $key . '"'
+                      )
+                    );
+                }
+            }
+        }
+
+        return $data;
     }
 
     /**

@@ -512,11 +512,32 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
 
             // TestCase($name, $data)
             else {
-                $data   = PHPUnit_Util_Test::getProvidedData($className, $name);
+                try {
+                    $data = PHPUnit_Util_Test::getProvidedData(
+                      $className, $name
+                    );
+                }
+
+                catch (Exception $e) {
+                    $message = sprintf(
+                      'The data provider specified for %s::%s is invalid.',
+                      $className,
+                      $name
+                    );
+
+                    $_message = $e->getMessage();
+
+                    if (!empty($_message)) {
+                        $message .= "\n" . $_message;
+                    }
+
+                    return new PHPUnit_Framework_Warning($message);
+                }
+
                 $groups = PHPUnit_Util_Test::getGroups($className, $name);
 
                 // Test method with @dataProvider.
-                if (is_array($data) || $data instanceof Iterator) {
+                if (isset($data)) {
                     $test = new PHPUnit_Framework_TestSuite_DataProvider(
                       $className . '::' . $name
                     );
@@ -546,17 +567,6 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
 
                         $test->addTest($_test, $groups);
                     }
-                }
-
-                // Test method with invalid @dataProvider.
-                else if ($data === FALSE) {
-                    $test = new PHPUnit_Framework_Warning(
-                      sprintf(
-                        'The data provider specified for %s::%s is invalid.',
-                        $className,
-                        $name
-                      )
-                    );
                 }
 
                 else {
