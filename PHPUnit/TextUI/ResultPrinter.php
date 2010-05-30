@@ -577,8 +577,6 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
               )
             );
         }
-
-        $this->numTestsRun++;
     }
 
     /**
@@ -608,6 +606,7 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
     {
         $this->write($progress);
         $this->column++;
+        $this->numTestsRun++;
 
         if ($this->column == 60) {
             if (!$this->verbose) {
