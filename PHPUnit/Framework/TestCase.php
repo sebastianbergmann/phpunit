@@ -619,20 +619,12 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
         // Clean up stat cache.
         clearstatcache();
 
-        // Run the test.
         try {
-            // Set up the fixture.
             $this->setUp();
-
-            // Assert pre-conditions.
             $this->assertPreConditions();
-
             $this->testResult = $this->runTest();
-
-            // Assert post-conditions.
             $this->assertPostConditions();
 
-            // Verify Mock Object conditions.
             foreach ($this->mockObjects as $mockObject) {
                 $this->numAssertions++;
                 $mockObject->__phpunit_verify();
