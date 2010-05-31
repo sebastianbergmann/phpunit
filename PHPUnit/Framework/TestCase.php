@@ -623,14 +623,8 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
             $this->setUp();
             $this->assertPreConditions();
             $this->testResult = $this->runTest();
+            $this->verifyMockObjects();
             $this->assertPostConditions();
-
-            foreach ($this->mockObjects as $mockObject) {
-                $this->numAssertions++;
-                $mockObject->__phpunit_verify();
-                $mockObject->__phpunit_cleanup();
-            }
-
             $this->status = PHPUnit_Runner_BaseTestRunner::STATUS_PASSED;
         }
 
@@ -653,8 +647,6 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
             $this->status = PHPUnit_Runner_BaseTestRunner::STATUS_ERROR;
             $this->statusMessage = $e->getMessage();
         }
-
-        $this->mockObjects = array();
 
         // Tear down the fixture. An exception raised in tearDown() will be
         // caught and passed on when no exception was raised before.
@@ -773,6 +765,22 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
         }
 
         return $testResult;
+    }
+
+    /**
+     * Verifies the mock object expectations.
+     *
+     * @since Method available since Release 3.5.0
+     */
+    protected function verifyMockObjects()
+    {
+        foreach ($this->mockObjects as $mockObject) {
+            $this->numAssertions++;
+            $mockObject->__phpunit_verify();
+            $mockObject->__phpunit_cleanup();
+        }
+
+        $this->mockObjects = array();
     }
 
     /**
