@@ -157,13 +157,13 @@ class PHPUnit_Util_Log_JSON extends PHPUnit_Util_Printer implements PHPUnit_Fram
         $this->currentTestSuiteName = $suite->getName();
         $this->currentTestName      = '';
 
-        $message = array(
-          'event' => 'suiteStart',
-          'suite' => $this->currentTestSuiteName,
-          'tests' => count($suite)
+        $this->write(
+          array(
+            'event' => 'suiteStart',
+            'suite' => $this->currentTestSuiteName,
+            'tests' => count($suite)
+          )
         );
-
-        $this->write(json_encode($message));
     }
 
     /**
@@ -209,16 +209,24 @@ class PHPUnit_Util_Log_JSON extends PHPUnit_Util_Printer implements PHPUnit_Fram
      */
     protected function writeCase($status, $time, array $trace = array(), $message = '')
     {
-        $message = array(
-          'event'   => 'test',
-          'suite'   => $this->currentTestSuiteName,
-          'test'    => $this->currentTestName,
-          'status'  => $status,
-          'time'    => $time,
-          'trace'   => $trace,
-          'message' => $message
+        $this->write(
+          array(
+            'event'   => 'test',
+            'suite'   => $this->currentTestSuiteName,
+            'test'    => $this->currentTestName,
+            'status'  => $status,
+            'time'    => $time,
+            'trace'   => $trace,
+            'message' => $message
+          )
         );
+    }
 
-        $this->write(json_encode($message));
+    /**
+     * @param string $buffer
+     */
+    public function write($buffer)
+    {
+        parent::write(json_encode($buffer));
     }
 }
