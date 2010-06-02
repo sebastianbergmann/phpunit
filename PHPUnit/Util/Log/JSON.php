@@ -186,6 +186,14 @@ class PHPUnit_Util_Log_JSON extends PHPUnit_Util_Printer implements PHPUnit_Fram
     {
         $this->currentTestName = PHPUnit_Util_Test::describe($test);
         $this->currentTestPass = TRUE;
+
+        $this->write(
+          array(
+            'event' => 'testStart',
+            'suite' => $this->currentTestSuiteName,
+            'test'  => $this->currentTestName
+          )
+        );
     }
 
     /**
