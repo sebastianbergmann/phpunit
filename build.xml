@@ -13,7 +13,7 @@
 
  <!-- Run unit tests and generate junit.xml and clover.xml -->
  <target name="phpunit">
-  <exec executable="phpunit" failonerror="true"/>
+  <exec executable="${basedir}/phpunit.php" failonerror="true"/>
  </target>
 
  <!-- Run pdepend, phpmd, phpcpd, and phpcs in parallel -->
