@@ -23,6 +23,7 @@
    <antcall target="phpmd"/>
    <antcall target="phpcpd"/>
    <antcall target="phpcs"/>
+   <antcall target="phpdoc"/>
   </parallel>
  </target>
 
@@ -57,6 +58,13 @@
               --report-file=${basedir}/build/logs/checkstyle.xml
               --standard=Sebastian
               PHPUnit" />
+  </exec>
+ </target>
+
+ <!-- Generate API documentation -->
+ <target name="phpdoc">
+  <exec executable="phpdoc">
+   <arg line="-d PHPUnit -t build/api" />
   </exec>
  </target>
 
