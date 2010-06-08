@@ -19,7 +19,7 @@
  </lead>
  <date>2010-06-08</date>
  <version>
-  <release>1.0.0beta1</release>
+  <release>1.0.0beta2</release>
   <api>1.0.0</api>
  </version>
  <stability>
@@ -64,6 +64,14 @@
        <file baseinstalldir="/" name="unmocked_clone.tpl.dist" role="php" />
        <file baseinstalldir="/" name="wsdl_class.tpl.dist" role="php" />
        <file baseinstalldir="/" name="wsdl_method.tpl.dist" role="php" />
+      </dir>
+      <dir name="Invocation">
+       <file baseinstalldir="/" name="Object.php" role="php">
+        <tasks:replace from="@package_version@" to="version" type="package-info" />
+       </file>
+       <file baseinstalldir="/" name="Static.php" role="php">
+        <tasks:replace from="@package_version@" to="version" type="package-info" />
+       </file>
       </dir>
       <dir name="Matcher">
        <file baseinstalldir="/" name="AnyInvokedCount.php" role="php">
