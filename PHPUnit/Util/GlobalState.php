@@ -159,6 +159,7 @@ class PHPUnit_Util_GlobalState
     protected static function restoreSuperGlobalArray($superGlobalArray)
     {
         if (isset($GLOBALS[$superGlobalArray]) &&
+            is_array($GLOBALS[$superGlobalArray]) &&
             isset(self::$globals[$superGlobalArray])) {
             $keys = array_keys(
               array_merge(
