@@ -223,7 +223,7 @@ class PHPUnit_Util_GlobalState
 
         foreach ($superGlobalArrays as $superGlobalArray) {
             if (isset($GLOBALS[$superGlobalArray])) {
-                foreach ($GLOBALS[$superGlobalArray] as $key => $value) {
+                foreach (array_keys($GLOBALS[$superGlobalArray]) as $key) {
                     $result .= sprintf(
                       '$GLOBALS[\'%s\'][\'%s\'] = %s;' . "\n",
                       $superGlobalArray,
