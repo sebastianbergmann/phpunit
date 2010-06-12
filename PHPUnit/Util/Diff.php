@@ -215,7 +215,6 @@ class PHPUnit_Util_Diff
     protected static function longestCommonSubsequence(array $from, array $to)
     {
         $common     = array();
-        $longest    = 0;
         $matrix     = array();
         $fromLength = count($from);
         $toLength   = count($to);
