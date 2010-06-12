@@ -136,7 +136,8 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
     protected $runTestInSeparateProcess = NULL;
 
     /**
-     * Whether or not this test should preserve the global state when running in a separate PHP process.
+     * Whether or not this test should preserve the global state when
+     * running in a separate PHP process.
      *
      * @var    boolean
      */
@@ -540,8 +541,7 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
             $this->inIsolation !== TRUE &&
             !$this instanceof PHPUnit_Extensions_SeleniumTestCase &&
             !$this instanceof PHPUnit_Extensions_PhptTestCase) {
-            $class                          = new ReflectionClass($this);
-            $collectCodeCoverageInformation = $result->getCollectCodeCoverageInformation();
+            $class = new ReflectionClass($this);
 
             $template = new Text_Template(
               sprintf(
@@ -554,19 +554,41 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
               )
             );
 
+            if ($this->preserveGlobalState) {
+                $constants     = PHPUnit_Util_GlobalState::getIncludedFilesAsString();
+                $globals       = PHPUnit_Util_GlobalState::getConstantsAsString();
+                $includedFiles = PHPUnit_Util_GlobalState::getGlobalsAsString();
+            } else {
+                $constants     = '';
+                $globals       = '';
+                $includedFiles = '';
+            }
+
+            if ($result->getCollectCodeCoverageInformation()) {
+                $coverage = 'TRUE';
+            } else {
+                $coverage = 'FALSE';
+            }
+
+            $data            = addcslashes(serialize($this->data), "'");
+            $dependencyInput = addcslashes(
+              serialize($this->dependencyInput), "'"
+            );
+            $includePath     = addslashes(get_include_path());
+
             $template->setVar(
               array(
                 'filename'                       => $class->getFileName(),
                 'className'                      => $class->getName(),
                 'methodName'                     => $this->name,
-                'data'                           => addcslashes(serialize($this->data), "'"),
-                'dependencyInput'                => addcslashes(serialize($this->dependencyInput), "'"),
+                'collectCodeCoverageInformation' => $coverage,
+                'data'                           => $data,
                 'dataName'                       => $this->dataName,
-                'collectCodeCoverageInformation' => $collectCodeCoverageInformation ? 'TRUE' : 'FALSE',
-                'included_files'                 => $this->preserveGlobalState ? PHPUnit_Util_GlobalState::getIncludedFilesAsString() : '',
-                'constants'                      => $this->preserveGlobalState ? PHPUnit_Util_GlobalState::getConstantsAsString() : '',
-                'globals'                        => $this->preserveGlobalState ? PHPUnit_Util_GlobalState::getGlobalsAsString() : '',
-                'include_path'                   => addslashes(get_include_path())
+                'dependencyInput'                => $dependencyInput,
+                'constants'                      => $constants,
+                'globals'                        => $globals,
+                'include_path'                   => $includePath,
+                'included_files'                 => $includedFiles
               )
             );
 
