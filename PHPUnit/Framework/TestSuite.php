@@ -470,9 +470,7 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
             );
         }
 
-        $classDocComment          = $theClass->getDocComment();
         $method                   = new ReflectionMethod($className, $name);
-        $methodDocComment         = $method->getDocComment();
         $backupSettings           = PHPUnit_Util_Test::getBackupSettings(
                                       $className, $name
                                     );
