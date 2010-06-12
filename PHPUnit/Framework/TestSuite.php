@@ -458,10 +458,9 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
     /**
      * @param  ReflectionClass $theClass
      * @param  string          $name
-     * @param  array           $classGroups
      * @return PHPUnit_Framework_Test
      */
-    public static function createTest(ReflectionClass $theClass, $name, array $classGroups = array())
+    public static function createTest(ReflectionClass $theClass, $name)
     {
         $className = $theClass->getName();
 
