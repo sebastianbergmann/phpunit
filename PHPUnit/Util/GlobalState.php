@@ -149,7 +149,8 @@ class PHPUnit_Util_GlobalState
     {
         self::$globals[$superGlobalArray] = array();
 
-        if (isset($GLOBALS[$superGlobalArray])) {
+        if (isset($GLOBALS[$superGlobalArray]) &&
+            is_array($GLOBALS[$superGlobalArray])) {
             foreach ($GLOBALS[$superGlobalArray] as $key => $value) {
                 self::$globals[$superGlobalArray][$key] = serialize($value);
             }
@@ -222,7 +223,8 @@ class PHPUnit_Util_GlobalState
         $superGlobalArrays = self::getSuperGlobalArrays();
 
         foreach ($superGlobalArrays as $superGlobalArray) {
-            if (isset($GLOBALS[$superGlobalArray])) {
+            if (isset($GLOBALS[$superGlobalArray]) &&
+                is_array($GLOBALS[$superGlobalArray])) {
                 foreach (array_keys($GLOBALS[$superGlobalArray]) as $key) {
                     $result .= sprintf(
                       '$GLOBALS[\'%s\'][\'%s\'] = %s;' . "\n",
