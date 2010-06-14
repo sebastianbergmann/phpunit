@@ -566,12 +566,16 @@ class PHPUnit_TextUI_Command
             $this->arguments['loader'] = $this->handleLoader($this->arguments['loader']);
         }
 
-        if (!isset($this->arguments['configuration']) && $this->arguments['useDefaultConfiguration']) {
+        if (isset($this->arguments['configuration']) && is_dir($this->arguments['configuration'])) {
+            if (file_exists($this->arguments['configuration'].'/phpunit.xml')) {
+                $this->arguments['configuration'] = realpath($this->arguments['configuration'].'/phpunit.xml');
+            } else if (file_exists($this->arguments['configuration'].'/phpunit.xml.dist')) {
+                $this->arguments['configuration'] = realpath($this->arguments['configuration'].'/phpunit.xml.dist');
+            }
+        } elseif (!isset($this->arguments['configuration']) && $this->arguments['useDefaultConfiguration']) {
             if (file_exists('phpunit.xml')) {
                 $this->arguments['configuration'] = realpath('phpunit.xml');
-            }
-
-            else if (file_exists('phpunit.xml.dist')) {
+            } else if (file_exists('phpunit.xml.dist')) {
                 $this->arguments['configuration'] = realpath('phpunit.xml.dist');
             }
         }
