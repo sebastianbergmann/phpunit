@@ -99,7 +99,7 @@ class PHPUnit_Extensions_TicketListener_GoogleCode extends PHPUnit_Extensions_Ti
      * @return array
      * @throws RuntimeException
      */
-    public function getTicketInfo($ticketId = null)
+    public function getTicketInfo($ticketId = NULL)
     {
         if (!is_numeric($ticketId)) {
             return array('status' => 'invalid_ticket_id');
@@ -188,7 +188,7 @@ class PHPUnit_Extensions_TicketListener_GoogleCode extends PHPUnit_Extensions_Ti
      */
     private function getAuthToken()
     {
-        if (null !== $this->authToken) {
+        if (NULL !== $this->authToken) {
             return $this->authToken;
         }
 
@@ -207,7 +207,7 @@ class PHPUnit_Extensions_TicketListener_GoogleCode extends PHPUnit_Extensions_Ti
         list($status, $response) = $this->callGoogleCode(
             $this->authUrl,
             $header,
-            http_build_query($post, null, '&')
+            http_build_query($post, NULL, '&')
         );
 
         if ($status != 200) {
@@ -222,7 +222,7 @@ class PHPUnit_Extensions_TicketListener_GoogleCode extends PHPUnit_Extensions_Ti
             }
         }
 
-        if (null === $this->authToken) {
+        if (NULL === $this->authToken) {
             throw new RuntimeException('Could not detect auth token in response');
         }
 
@@ -235,7 +235,7 @@ class PHPUnit_Extensions_TicketListener_GoogleCode extends PHPUnit_Extensions_Ti
      * @param string  $post Post data
      * @return array
      */
-    private function callGoogleCode($url, array $header = null, $post = null)
+    private function callGoogleCode($url, array $header = NULL, $post = NULL)
     {
         $curlHandle = curl_init();
 
@@ -248,11 +248,11 @@ class PHPUnit_Extensions_TicketListener_GoogleCode extends PHPUnit_Extensions_Ti
         curl_setopt($curlHandle, CURLOPT_USERAGENT, __CLASS__);
         curl_setopt($curlHandle, CURLOPT_SSL_VERIFYPEER, FALSE);
 
-        if (null !== $header) {
+        if (NULL !== $header) {
             curl_setopt($curlHandle, CURLOPT_HTTPHEADER, $header);
         }
 
-        if (null !== $post) {
+        if (NULL !== $post) {
             curl_setopt($curlHandle, CURLOPT_POST, TRUE);
             curl_setopt($curlHandle, CURLOPT_POSTFIELDS, $post);
         }
