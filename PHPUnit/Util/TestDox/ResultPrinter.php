@@ -58,38 +58,57 @@
 abstract class PHPUnit_Util_TestDox_ResultPrinter extends PHPUnit_Util_Printer implements PHPUnit_Framework_TestListener
 {
     /**
-     * @var    PHPUnit_Util_TestDox_NamePrettifier
+     * @var PHPUnit_Util_TestDox_NamePrettifier
      */
     protected $prettifier;
 
     /**
-     * @var    string
+     * @var string
      */
     protected $testClass = '';
 
     /**
-     * @var    integer
+     * @var integer
      */
     protected $testStatus = FALSE;
 
     /**
-     * @var    array
+     * @var array
      */
     protected $tests = array();
 
+    /**
+     * @var integer
+     */
     protected $successful = 0;
+
+    /**
+     * @var integer
+     */
     protected $failed = 0;
+
+    /**
+     * @var integer
+     */
     protected $skipped = 0;
+
+    /**
+     * @var integer
+     */
     protected $incomplete = 0;
+
+    /**
+     * @var string
+     */
     protected $testTypeOfInterest = 'PHPUnit_Framework_TestCase';
 
     /**
-     * @var    string
+     * @var string
      */
     protected $currentTestClassPrettified;
 
     /**
-     * @var    string
+     * @var string
      */
     protected $currentTestMethodPrettified;
 
