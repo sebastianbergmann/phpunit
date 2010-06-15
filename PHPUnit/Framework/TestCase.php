@@ -651,22 +651,22 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
         }
 
         catch (PHPUnit_Framework_IncompleteTest $e) {
-            $this->status = PHPUnit_Runner_BaseTestRunner::STATUS_INCOMPLETE;
+            $this->status        = PHPUnit_Runner_BaseTestRunner::STATUS_INCOMPLETE;
             $this->statusMessage = $e->getMessage();
         }
 
         catch (PHPUnit_Framework_SkippedTest $e) {
-            $this->status = PHPUnit_Runner_BaseTestRunner::STATUS_SKIPPED;
+            $this->status        = PHPUnit_Runner_BaseTestRunner::STATUS_SKIPPED;
             $this->statusMessage = $e->getMessage();
         }
 
         catch (PHPUnit_Framework_AssertionFailedError $e) {
-            $this->status = PHPUnit_Runner_BaseTestRunner::STATUS_FAILURE;
+            $this->status        = PHPUnit_Runner_BaseTestRunner::STATUS_FAILURE;
             $this->statusMessage = $e->getMessage();
         }
 
         catch (Exception $e) {
-            $this->status = PHPUnit_Runner_BaseTestRunner::STATUS_ERROR;
+            $this->status        = PHPUnit_Runner_BaseTestRunner::STATUS_ERROR;
             $this->statusMessage = $e->getMessage();
         }
 

@@ -376,7 +376,7 @@ class PHPUnit_Framework_TestResult implements Countable
 
         if (!$this->lastTestFailed && $test instanceof PHPUnit_Framework_TestCase) {
             $this->passed[get_class($test) . '::' . $test->getName()] = $test->getResult();
-            $this->time += $time;
+            $this->time                                              += $time;
         }
     }
 
