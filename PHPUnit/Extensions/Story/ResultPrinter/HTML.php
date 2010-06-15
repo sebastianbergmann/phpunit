@@ -60,12 +60,23 @@
 class PHPUnit_Extensions_Story_ResultPrinter_HTML extends PHPUnit_Extensions_Story_ResultPrinter
 {
     /**
-     * @var    boolean
+     * @var boolean
      */
     protected $printsHTML = TRUE;
 
+    /**
+     * @var integer
+     */
     protected $id = 0;
+
+    /**
+     * @var string
+     */
     protected $scenarios = '';
+
+    /**
+     * @var string
+     */
     protected $templatePath;
 
     /**
