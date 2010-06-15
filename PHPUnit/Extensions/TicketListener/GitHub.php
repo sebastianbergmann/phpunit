@@ -57,7 +57,7 @@
  */
 class PHPUnit_Extensions_TicketListener_GitHub extends PHPUnit_Extensions_TicketListener
 {
-    const STATUS_CLOSE = 'closed';
+    const STATUS_CLOSE  = 'closed';
     const STATUS_REOPEN = 'reopened';
 
     private $username;
