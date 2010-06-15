@@ -60,7 +60,14 @@
  */
 abstract class PHPUnit_Extensions_TicketListener implements PHPUnit_Framework_TestListener
 {
+    /**
+     * @var array
+     */
     protected $ticketCounts = array();
+
+    /**
+     * @var boolean
+     */
     protected $ran = FALSE;
 
     /**
