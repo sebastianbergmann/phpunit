@@ -194,7 +194,8 @@ class PHPUnit_Util_Configuration
      * @return PHPUnit_Util_Configuration
      * @since  Method available since Release 3.4.0
      */
-    public static function getInstance($filename) {
+    public static function getInstance($filename)
+    {
         $realpath = realpath($filename);
 
         if ($realpath === FALSE) {
