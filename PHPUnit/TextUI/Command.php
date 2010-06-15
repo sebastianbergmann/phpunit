@@ -242,7 +242,7 @@ class PHPUnit_TextUI_Command
         try {
             $this->options = PHPUnit_Util_Getopt::getopt(
               $argv,
-              'd:',
+              'd:c:',
               array_keys($this->longOptions)
             );
         }
@@ -266,6 +266,7 @@ class PHPUnit_TextUI_Command
                 }
                 break;
 
+                case 'c':
                 case '--configuration': {
                     $this->arguments['configuration'] = $option[1];
                 }
