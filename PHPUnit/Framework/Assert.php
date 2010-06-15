@@ -1969,7 +1969,7 @@ abstract class PHPUnit_Framework_Assert
      *   )
      * );
      *
-     * // Matcher that asserts that there is a "div", with an "ul" ancestor and 
+     * // Matcher that asserts that there is a "div", with an "ul" ancestor and
      * // a "li" parent (with class="enum"), and containing a "span" descendant
      * // that contains an element with id="my_test" and the text "Hello World".
      * $matcher = array(

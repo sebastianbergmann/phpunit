@@ -61,7 +61,7 @@ class PHPUnit_Util_InvalidArgumentHelper
      * @param integer $argument
      * @param string  $type
      * @param mixed   $value
-     */ 
+     */
     public static function factory($argument, $type, $value = NULL)
     {
         $stack = debug_backtrace(FALSE);

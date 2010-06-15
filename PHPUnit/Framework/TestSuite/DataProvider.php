@@ -44,7 +44,7 @@
  */
 
 /**
- * 
+ *
  *
  * @package    PHPUnit
  * @subpackage Framework_TestSuite

@@ -206,14 +206,14 @@ class PHPUnit_Util_Log_DBUS implements PHPUnit_Framework_TestListener
         );
 
         $n->Notify(
-          'PHPUnit_Util_Log_DBUS', 
+          'PHPUnit_Util_Log_DBUS',
           new DBusUInt32(0),
-          'phpunit', 
+          'phpunit',
           'PHPUnit Test Report',
           sprintf(
             "Suite: %s\n%d tests run in %s minutes.\n%d errors, %d failures",
             $this->suiteName,
-            $this->tests, 
+            $this->tests,
             (date('i:s', time() - $this->startTime)),
             $this->errors,
             $this->failures

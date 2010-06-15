@@ -612,7 +612,7 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
             if (!$this->verbose) {
                 $this->write(
                   sprintf(
-                    ' %' . $this->numTestsWidth . 'd / %' . 
+                    ' %' . $this->numTestsWidth . 'd / %' .
                            $this->numTestsWidth . "d",
 
                     $this->numTestsRun,

@@ -189,7 +189,7 @@ class PHPUnit_Util_File
             switch ($tokens[$i][0]) {
                 case T_NAMESPACE: {
                     $currentNamespace = $tokens[$i+2][1];
-                    
+
                     for ($j = $i+3; $j < $numTokens; $j += 2) {
                         if ($tokens[$j][0] == T_NS_SEPARATOR) {
                             $currentNamespace .= '\\' . $tokens[$j+1][1];
