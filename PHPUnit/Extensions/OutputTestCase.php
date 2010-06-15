@@ -89,12 +89,10 @@ abstract class PHPUnit_Extensions_OutputTestCase extends PHPUnit_Framework_TestC
     {
         if (is_callable($callback)) {
             $this->outputCallback = $callback;
-            $set = TRUE;
-        } else {
-            $set = FALSE;
+            return TRUE;
         }
 
-        return $set;
+        return FALSE;
     }
 
     /**
