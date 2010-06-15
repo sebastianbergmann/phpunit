@@ -168,17 +168,32 @@ class PHPUnit_Extensions_PhptTestCase implements PHPUnit_Framework_Test, PHPUnit
         $result->startTest($this);
 
         PHP_Timer::start();
-        $buffer       = $runner->run($this->filename, $options);
-        $time         = PHP_Timer::stop();
+
+        $buffer = $runner->run($this->filename, $options);
+        $time   = PHP_Timer::stop();
+
         error_reporting($currentErrorReporting);
+
         $base         = basename($this->filename);
         $path         = dirname($this->filename);
-        $coverageFile = $path . DIRECTORY_SEPARATOR . str_replace('.phpt', '.xdebug', $base);
-        $diffFile     = $path . DIRECTORY_SEPARATOR . str_replace('.phpt', '.diff', $base);
-        $expFile      = $path . DIRECTORY_SEPARATOR . str_replace('.phpt', '.exp', $base);
-        $logFile      = $path . DIRECTORY_SEPARATOR . str_replace('.phpt', '.log', $base);
-        $outFile      = $path . DIRECTORY_SEPARATOR . str_replace('.phpt', '.out', $base);
-        $phpFile      = $path . DIRECTORY_SEPARATOR . str_replace('.phpt', '.php', $base);
+        $coverageFile = $path . DIRECTORY_SEPARATOR . str_replace(
+                          '.phpt', '.xdebug', $base
+                        );
+        $diffFile     = $path . DIRECTORY_SEPARATOR . str_replace(
+                          '.phpt', '.diff', $base
+                        );
+        $expFile      = $path . DIRECTORY_SEPARATOR . str_replace(
+                          '.phpt', '.exp', $base
+                        );
+        $logFile      = $path . DIRECTORY_SEPARATOR . str_replace(
+                          '.phpt', '.log', $base
+                        );
+        $outFile      = $path . DIRECTORY_SEPARATOR . str_replace(
+                          '.phpt', '.out', $base
+                        );
+        $phpFile      = $path . DIRECTORY_SEPARATOR . str_replace(
+                          '.phpt', '.php', $base
+                        );
 
         if (file_exists($phpFile)) {
             PHP_CodeCoverage_Filter::getInstance()->addFileToBlacklist(
