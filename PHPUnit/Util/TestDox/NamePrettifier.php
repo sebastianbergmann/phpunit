@@ -126,7 +126,7 @@ class PHPUnit_Util_TestDox_NamePrettifier
         if (substr($name, 0, 4) == 'test') {
             $offset = 4;
         } else {
-            $offset = 0;
+            $offset  = 0;
             $name[0] = strtoupper($name[0]);
         }
 
@@ -141,7 +141,7 @@ class PHPUnit_Util_TestDox_NamePrettifier
                 $isNumeric = is_numeric($name[$i]);
 
                 if (!$wasNumeric && $isNumeric) {
-                    $buffer .= ' ';
+                    $buffer    .= ' ';
                     $wasNumeric = TRUE;
                 }
 
