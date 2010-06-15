@@ -95,7 +95,7 @@ class PHPUnit_Extensions_TicketListener_GitHub extends PHPUnit_Extensions_Ticket
      * @return string
      * @throws RuntimeException
      */
-    public function getTicketInfo($ticketId = null)
+    public function getTicketInfo($ticketId = NULL)
     {
         if (!is_numeric($ticketId)) {
             return array('status' => 'invalid_ticket_id');
