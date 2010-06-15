@@ -118,7 +118,7 @@ class PHPUnit_Extensions_TicketListener_GoogleCode extends PHPUnit_Extensions_Ti
 
         $ticket = new SimpleXMLElement(str_replace("xmlns=", "ns=", $response));
         $result = $ticket->xpath('//issues:state');
-        $state  = (string) $result[0];
+        $state  = (string)$result[0];
 
         if ($state === 'open') {
             return array('status' => 'new');
@@ -217,7 +217,7 @@ class PHPUnit_Extensions_TicketListener_GoogleCode extends PHPUnit_Extensions_Ti
         foreach (explode("\n", $response) as $line) {
             if (strpos(trim($line), 'Auth') === 0) {
                 list($name, $token) = explode('=', $line);
-                $this->authToken = trim($token);
+                $this->authToken    = trim($token);
                 break;
             }
         }
