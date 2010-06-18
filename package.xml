@@ -102,6 +102,11 @@
      </file>
     </dir>
     <dir name="Framework">
+     <dir name="Assert">
+      <file baseinstalldir="/" name="Functions.php" role="php">
+       <tasks:replace from="@package_version@" to="version" type="package-info" />
+      </file>
+     </dir>
      <dir name="ComparisonFailure">
       <file baseinstalldir="/" name="Array.php" role="php">
        <tasks:replace from="@package_version@" to="version" type="package-info" />
