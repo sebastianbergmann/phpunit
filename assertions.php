@@ -12,12 +12,13 @@ foreach ($class->getMethods() as $method) {
 
     if (strpos($name, 'assert') === 0) {
         $methods[$name] = array(
-          'docblock'  => $method->getDocComment(),
-          'signature' => str_replace(
+          'docblock' => $method->getDocComment(),
+          'sigDecl'  => str_replace(
             array('= false', '= true'),
             array('= FALSE', '= TRUE'),
             PHPUnit_Util_Class::getMethodParameters($method)
-          )
+          ),
+          'sigCall'  => PHPUnit_Util_Class::getMethodParameters($method, TRUE)
         );
     }
 }
@@ -28,11 +29,12 @@ $buffer = '';
 
 foreach ($methods as $name => $data) {
     $buffer .= sprintf(
-      "\n\n%s\nfunction %s(%s)\n{\n    \$args = func_get_args();\n    call_user_func_array(array('PHPUnit_Framework_Assert', '%s'), \$args);\n}",
+      "\n\n%s\nfunction %s(%s)\n{\n    PHPUnit_Framework_Assert::%s(%s);\n}",
       str_replace('    ', '', $data['docblock']),
       $name,
-      $data['signature'],
-      $name
+      $data['sigDecl'],
+      $name,
+      $data['sigCall']
     );
 }
 

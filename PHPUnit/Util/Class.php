@@ -131,10 +131,11 @@ class PHPUnit_Util_Class
      * Returns the parameters of a function or method.
      *
      * @param  ReflectionFunction|ReflectionMethod $method
+     * @param  boolean                             $forCall
      * @return string
      * @since  Method available since Release 3.2.0
      */
-    public static function getMethodParameters($method)
+    public static function getMethodParameters($method, $forCall = FALSE)
     {
         $parameters = array();
 
@@ -145,33 +146,34 @@ class PHPUnit_Util_Class
                 $name .= 'arg' . $i;
             }
 
+            $default  = '';
             $typeHint = '';
 
-            if ($parameter->isArray()) {
-                $typeHint = 'array ';
-            } else {
-                try {
-                    $class = $parameter->getClass();
+            if (!$forCall) {
+                if ($parameter->isArray()) {
+                    $typeHint = 'array ';
+                } else {
+                    try {
+                        $class = $parameter->getClass();
+                    }
+
+                    catch (ReflectionException $e) {
+                        $class = FALSE;
+                    }
+
+                    if ($class) {
+                        $typeHint = $class->getName() . ' ';
+                    }
                 }
 
-                catch (ReflectionException $e) {
-                    $class = FALSE;
+                if ($parameter->isDefaultValueAvailable()) {
+                    $value   = $parameter->getDefaultValue();
+                    $default = ' = ' . var_export($value, TRUE);
                 }
 
-                if ($class) {
-                    $typeHint = $class->getName() . ' ';
+                else if ($parameter->isOptional()) {
+                    $default = ' = null';
                 }
-            }
-
-            $default = '';
-
-            if ($parameter->isDefaultValueAvailable()) {
-                $value   = $parameter->getDefaultValue();
-                $default = ' = ' . var_export($value, TRUE);
-            }
-
-            else if ($parameter->isOptional()) {
-                $default = ' = null';
             }
 
             $ref = '';
