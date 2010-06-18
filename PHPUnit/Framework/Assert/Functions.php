@@ -44,6 +44,29 @@
  */
 
 /**
+ * Returns a PHPUnit_Framework_Constraint_IsAnything matcher object.
+ *
+ * @return PHPUnit_Framework_Constraint_IsAnything
+ * @since  Method available since Release 3.0.0
+ */
+function anything()
+{
+    PHPUnit_Framework_Assert::anything();
+}
+
+/**
+ * Returns a PHPUnit_Framework_Constraint_ArrayHasKey matcher object.
+ *
+ * @param  mixed $key
+ * @return PHPUnit_Framework_Constraint_ArrayHasKey
+ * @since  Method available since Release 3.0.0
+ */
+function arrayHasKey($key)
+{
+    PHPUnit_Framework_Assert::arrayHasKey($key);
+}
+
+/**
  * Asserts that an array has a specified key.
  *
  * @param  mixed  $key
@@ -1307,4 +1330,434 @@ function assertXmlStringNotEqualsXmlFile($expectedFile, $actualXml, $message = '
 function assertXmlStringNotEqualsXmlString($expectedXml, $actualXml, $message = '')
 {
     PHPUnit_Framework_Assert::assertXmlStringNotEqualsXmlString($expectedXml, $actualXml, $message);
+}
+
+/**
+ * Returns a PHPUnit_Framework_Constraint_Attribute matcher object.
+ *
+ * @param  PHPUnit_Framework_Constraint $constraint
+ * @param  string   $attributeName
+ * @return PHPUnit_Framework_Constraint_Attribute
+ * @since  Method available since Release 3.1.0
+ */
+function attribute($constraint, $attributeName)
+{
+    PHPUnit_Framework_Assert::attribute($constraint, $attributeName);
+}
+
+/**
+ * Returns a PHPUnit_Framework_Constraint_IsEqual matcher object
+ * that is wrapped in a PHPUnit_Framework_Constraint_Attribute matcher
+ * object.
+ *
+ * @param  string  $attributeName
+ * @param  mixed   $value
+ * @param  float   $delta
+ * @param  integer $maxDepth
+ * @param  boolean $canonicalize
+ * @param  boolean $ignoreCase
+ * @return PHPUnit_Framework_Constraint_Attribute
+ * @since  Method available since Release 3.1.0
+ */
+function attributeEqualTo($attributeName, $value, $delta = 0, $maxDepth = 10, $canonicalize = FALSE, $ignoreCase = FALSE)
+{
+    PHPUnit_Framework_Assert::attributeEqualTo($attributeName, $value, $delta, $maxDepth, $canonicalize, $ignoreCase);
+}
+
+/**
+ * Returns a PHPUnit_Framework_Constraint_ClassHasAttribute matcher object.
+ *
+ * @param  string $attributeName
+ * @return PHPUnit_Framework_Constraint_ClassHasAttribute
+ * @since  Method available since Release 3.1.0
+ */
+function classHasAttribute($attributeName)
+{
+    PHPUnit_Framework_Assert::classHasAttribute($attributeName);
+}
+
+/**
+ * Returns a PHPUnit_Framework_Constraint_ClassHasStaticAttribute matcher
+ * object.
+ *
+ * @param  string $attributeName
+ * @return PHPUnit_Framework_Constraint_ClassHasStaticAttribute
+ * @since  Method available since Release 3.1.0
+ */
+function classHasStaticAttribute($attributeName)
+{
+    PHPUnit_Framework_Assert::classHasStaticAttribute($attributeName);
+}
+
+/**
+ * Returns a PHPUnit_Framework_Constraint_TraversableContains matcher
+ * object.
+ *
+ * @param  mixed $value
+ * @return PHPUnit_Framework_Constraint_TraversableContains
+ * @since  Method available since Release 3.0.0
+ */
+function contains($value)
+{
+    PHPUnit_Framework_Assert::contains($value);
+}
+
+/**
+ * Returns a PHPUnit_Framework_Constraint_TraversableContainsOnly matcher
+ * object.
+ *
+ * @param  string $type
+ * @return PHPUnit_Framework_Constraint_TraversableContainsOnly
+ * @since  Method available since Release 3.1.4
+ */
+function containsOnly($type)
+{
+    PHPUnit_Framework_Assert::containsOnly($type);
+}
+
+/**
+ * Returns a PHPUnit_Framework_Constraint_IsEqual matcher object.
+ *
+ * @param  mixed   $value
+ * @param  float   $delta
+ * @param  integer $maxDepth
+ * @param  boolean $canonicalize
+ * @param  boolean $ignoreCase
+ * @return PHPUnit_Framework_Constraint_IsEqual
+ * @since  Method available since Release 3.0.0
+ */
+function equalTo($value, $delta = 0, $maxDepth = 10, $canonicalize = FALSE, $ignoreCase = FALSE)
+{
+    PHPUnit_Framework_Assert::equalTo($value, $delta, $maxDepth, $canonicalize, $ignoreCase);
+}
+
+/**
+ * Fails a test with the given message.
+ *
+ * @param  string $message
+ * @throws PHPUnit_Framework_AssertionFailedError
+ */
+function fail($message = '')
+{
+    PHPUnit_Framework_Assert::fail($message);
+}
+
+/**
+ * Returns a PHPUnit_Framework_Constraint_FileExists matcher object.
+ *
+ * @return PHPUnit_Framework_Constraint_FileExists
+ * @since  Method available since Release 3.0.0
+ */
+function fileExists()
+{
+    PHPUnit_Framework_Assert::fileExists();
+}
+
+/**
+ * Return the current assertion count.
+ *
+ * @return integer
+ * @since  Method available since Release 3.3.3
+ */
+function getCount()
+{
+    PHPUnit_Framework_Assert::getCount();
+}
+
+/**
+ * Returns a PHPUnit_Framework_Constraint_GreaterThan matcher object.
+ *
+ * @param  mixed $value
+ * @return PHPUnit_Framework_Constraint_GreaterThan
+ * @since  Method available since Release 3.0.0
+ */
+function greaterThan($value)
+{
+    PHPUnit_Framework_Assert::greaterThan($value);
+}
+
+/**
+ * Returns a PHPUnit_Framework_Constraint_Or matcher object that wraps
+ * a PHPUnit_Framework_Constraint_IsEqual and a
+ * PHPUnit_Framework_Constraint_GreaterThan matcher object.
+ *
+ * @param  mixed $value
+ * @return PHPUnit_Framework_Constraint_Or
+ * @since  Method available since Release 3.1.0
+ */
+function greaterThanOrEqual($value)
+{
+    PHPUnit_Framework_Assert::greaterThanOrEqual($value);
+}
+
+/**
+ * Returns a PHPUnit_Framework_Constraint_IsIdentical matcher object.
+ *
+ * @param  mixed $value
+ * @return PHPUnit_Framework_Constraint_IsIdentical
+ * @since  Method available since Release 3.0.0
+ */
+function identicalTo($value)
+{
+    PHPUnit_Framework_Assert::identicalTo($value);
+}
+
+/**
+ * Returns a PHPUnit_Framework_Constraint_IsEmpty matcher object.
+ *
+ * @return PHPUnit_Framework_Constraint_IsEmpty
+ * @since  Method available since Release 3.5.0
+ */
+function isEmpty()
+{
+    PHPUnit_Framework_Assert::isEmpty();
+}
+
+/**
+ * Returns a PHPUnit_Framework_Constraint_IsFalse matcher object.
+ *
+ * @return PHPUnit_Framework_Constraint_IsFalse
+ * @since  Method available since Release 3.3.0
+ */
+function isFalse()
+{
+    PHPUnit_Framework_Assert::isFalse();
+}
+
+/**
+ * Returns a PHPUnit_Framework_Constraint_IsInstanceOf matcher object.
+ *
+ * @param  string $className
+ * @return PHPUnit_Framework_Constraint_IsInstanceOf
+ * @since  Method available since Release 3.0.0
+ */
+function isInstanceOf($className)
+{
+    PHPUnit_Framework_Assert::isInstanceOf($className);
+}
+
+/**
+ * Returns a PHPUnit_Framework_Constraint_IsNull matcher object.
+ *
+ * @return PHPUnit_Framework_Constraint_IsNull
+ * @since  Method available since Release 3.3.0
+ */
+function isNull()
+{
+    PHPUnit_Framework_Assert::isNull();
+}
+
+/**
+ * Returns a PHPUnit_Framework_Constraint_IsTrue matcher object.
+ *
+ * @return PHPUnit_Framework_Constraint_IsTrue
+ * @since  Method available since Release 3.3.0
+ */
+function isTrue()
+{
+    PHPUnit_Framework_Assert::isTrue();
+}
+
+/**
+ * Returns a PHPUnit_Framework_Constraint_IsType matcher object.
+ *
+ * @param  string $type
+ * @return PHPUnit_Framework_Constraint_IsType
+ * @since  Method available since Release 3.0.0
+ */
+function isType($type)
+{
+    PHPUnit_Framework_Assert::isType($type);
+}
+
+/**
+ * Returns a PHPUnit_Framework_Constraint_LessThan matcher object.
+ *
+ * @param  mixed $value
+ * @return PHPUnit_Framework_Constraint_LessThan
+ * @since  Method available since Release 3.0.0
+ */
+function lessThan($value)
+{
+    PHPUnit_Framework_Assert::lessThan($value);
+}
+
+/**
+ * Returns a PHPUnit_Framework_Constraint_Or matcher object that wraps
+ * a PHPUnit_Framework_Constraint_IsEqual and a
+ * PHPUnit_Framework_Constraint_LessThan matcher object.
+ *
+ * @param  mixed $value
+ * @return PHPUnit_Framework_Constraint_Or
+ * @since  Method available since Release 3.1.0
+ */
+function lessThanOrEqual($value)
+{
+    PHPUnit_Framework_Assert::lessThanOrEqual($value);
+}
+
+/**
+ * Returns a PHPUnit_Framework_Constraint_And matcher object.
+ *
+ * @return PHPUnit_Framework_Constraint_And
+ * @since  Method available since Release 3.0.0
+ */
+function logicalAnd()
+{
+    PHPUnit_Framework_Assert::logicalAnd();
+}
+
+/**
+ * Returns a PHPUnit_Framework_Constraint_Not matcher object.
+ *
+ * @param  PHPUnit_Framework_Constraint $constraint
+ * @return PHPUnit_Framework_Constraint_Not
+ * @since  Method available since Release 3.0.0
+ */
+function logicalNot($constraint)
+{
+    PHPUnit_Framework_Assert::logicalNot($constraint);
+}
+
+/**
+ * Returns a PHPUnit_Framework_Constraint_Or matcher object.
+ *
+ * @return PHPUnit_Framework_Constraint_Or
+ * @since  Method available since Release 3.0.0
+ */
+function logicalOr()
+{
+    PHPUnit_Framework_Assert::logicalOr();
+}
+
+/**
+ * Returns a PHPUnit_Framework_Constraint_Xor matcher object.
+ *
+ * @return PHPUnit_Framework_Constraint_Xor
+ * @since  Method available since Release 3.0.0
+ */
+function logicalXor()
+{
+    PHPUnit_Framework_Assert::logicalXor();
+}
+
+/**
+ * Mark the test as incomplete.
+ *
+ * @param  string  $message
+ * @throws PHPUnit_Framework_IncompleteTestError
+ * @since  Method available since Release 3.0.0
+ */
+function markTestIncomplete($message = '')
+{
+    PHPUnit_Framework_Assert::markTestIncomplete($message);
+}
+
+/**
+ * Mark the test as skipped.
+ *
+ * @param  string  $message
+ * @throws PHPUnit_Framework_SkippedTestError
+ * @since  Method available since Release 3.0.0
+ */
+function markTestSkipped($message = '')
+{
+    PHPUnit_Framework_Assert::markTestSkipped($message);
+}
+
+/**
+ * Returns a PHPUnit_Framework_Constraint_StringMatches matcher object.
+ *
+ * @param  string $string
+ * @return PHPUnit_Framework_Constraint_StringMatches
+ * @since  Method available since Release 3.5.0
+ */
+function matches($string)
+{
+    PHPUnit_Framework_Assert::matches($string);
+}
+
+/**
+ * Returns a PHPUnit_Framework_Constraint_PCREMatch matcher object.
+ *
+ * @param  string $pattern
+ * @return PHPUnit_Framework_Constraint_PCREMatch
+ * @since  Method available since Release 3.0.0
+ */
+function matchesRegularExpression($pattern)
+{
+    PHPUnit_Framework_Assert::matchesRegularExpression($pattern);
+}
+
+/**
+ * Returns a PHPUnit_Framework_Constraint_ObjectHasAttribute matcher object.
+ *
+ * @param  string $attributeName
+ * @return PHPUnit_Framework_Constraint_ObjectHasAttribute
+ * @since  Method available since Release 3.0.0
+ */
+function objectHasAttribute($attributeName)
+{
+    PHPUnit_Framework_Assert::objectHasAttribute($attributeName);
+}
+
+/**
+ * Returns the value of an attribute of a class or an object.
+ * This also works for attributes that are declared protected or private.
+ *
+ * @param  mixed   $classOrObject
+ * @param  string  $attributeName
+ * @return mixed
+ * @throws InvalidArgumentException
+ */
+function readAttribute($classOrObject, $attributeName)
+{
+    PHPUnit_Framework_Assert::readAttribute($classOrObject, $attributeName);
+}
+
+/**
+ * Reset the assertion counter.
+ *
+ * @since  Method available since Release 3.3.3
+ */
+function resetCount()
+{
+    PHPUnit_Framework_Assert::resetCount();
+}
+
+/**
+ * Returns a PHPUnit_Framework_Constraint_StringContains matcher object.
+ *
+ * @param  string  $string
+ * @param  boolean $case
+ * @return PHPUnit_Framework_Constraint_StringContains
+ * @since  Method available since Release 3.0.0
+ */
+function stringContains($string, $case = TRUE)
+{
+    PHPUnit_Framework_Assert::stringContains($string, $case);
+}
+
+/**
+ * Returns a PHPUnit_Framework_Constraint_StringEndsWith matcher object.
+ *
+ * @param  mixed $suffix
+ * @return PHPUnit_Framework_Constraint_StringEndsWith
+ * @since  Method available since Release 3.4.0
+ */
+function stringEndsWith($suffix)
+{
+    PHPUnit_Framework_Assert::stringEndsWith($suffix);
+}
+
+/**
+ * Returns a PHPUnit_Framework_Constraint_StringStartsWith matcher object.
+ *
+ * @param  mixed $prefix
+ * @return PHPUnit_Framework_Constraint_StringStartsWith
+ * @since  Method available since Release 3.4.0
+ */
+function stringStartsWith($prefix)
+{
+    PHPUnit_Framework_Assert::stringStartsWith($prefix);
 }

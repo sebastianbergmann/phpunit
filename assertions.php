@@ -8,11 +8,13 @@ $class   = new ReflectionClass('PHPUnit_Framework_Assert');
 $methods = array();
 
 foreach ($class->getMethods() as $method) {
-    $name = $method->getName();
+    $docblock = $method->getDocComment();
+    $name     = $method->getName();
 
-    if (strpos($name, 'assert') === 0) {
+    if (strpos($name, 'assert') === 0 ||
+        strpos($docblock, '@return PHPUnit_Framework_Constraint') !== 0) {
         $methods[$name] = array(
-          'docblock' => $method->getDocComment(),
+          'docblock' => $docblock,
           'sigDecl'  => str_replace(
             array('= false', '= true'),
             array('= FALSE', '= TRUE'),
