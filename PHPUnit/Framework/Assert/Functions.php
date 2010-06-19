@@ -1432,17 +1432,6 @@ function equalTo($value, $delta = 0, $maxDepth = 10, $canonicalize = FALSE, $ign
 }
 
 /**
- * Fails a test with the given message.
- *
- * @param  string $message
- * @throws PHPUnit_Framework_AssertionFailedError
- */
-function fail($message = '')
-{
-    PHPUnit_Framework_Assert::fail($message);
-}
-
-/**
  * Returns a PHPUnit_Framework_Constraint_FileExists matcher object.
  *
  * @return PHPUnit_Framework_Constraint_FileExists
@@ -1451,17 +1440,6 @@ function fail($message = '')
 function fileExists()
 {
     PHPUnit_Framework_Assert::fileExists();
-}
-
-/**
- * Return the current assertion count.
- *
- * @return integer
- * @since  Method available since Release 3.3.3
- */
-function getCount()
-{
-    PHPUnit_Framework_Assert::getCount();
 }
 
 /**
@@ -1642,30 +1620,6 @@ function logicalXor()
 }
 
 /**
- * Mark the test as incomplete.
- *
- * @param  string  $message
- * @throws PHPUnit_Framework_IncompleteTestError
- * @since  Method available since Release 3.0.0
- */
-function markTestIncomplete($message = '')
-{
-    PHPUnit_Framework_Assert::markTestIncomplete($message);
-}
-
-/**
- * Mark the test as skipped.
- *
- * @param  string  $message
- * @throws PHPUnit_Framework_SkippedTestError
- * @since  Method available since Release 3.0.0
- */
-function markTestSkipped($message = '')
-{
-    PHPUnit_Framework_Assert::markTestSkipped($message);
-}
-
-/**
  * Returns a PHPUnit_Framework_Constraint_StringMatches matcher object.
  *
  * @param  string $string
@@ -1699,30 +1653,6 @@ function matchesRegularExpression($pattern)
 function objectHasAttribute($attributeName)
 {
     PHPUnit_Framework_Assert::objectHasAttribute($attributeName);
-}
-
-/**
- * Returns the value of an attribute of a class or an object.
- * This also works for attributes that are declared protected or private.
- *
- * @param  mixed   $classOrObject
- * @param  string  $attributeName
- * @return mixed
- * @throws InvalidArgumentException
- */
-function readAttribute($classOrObject, $attributeName)
-{
-    PHPUnit_Framework_Assert::readAttribute($classOrObject, $attributeName);
-}
-
-/**
- * Reset the assertion counter.
- *
- * @since  Method available since Release 3.3.3
- */
-function resetCount()
-{
-    PHPUnit_Framework_Assert::resetCount();
 }
 
 /**

@@ -12,7 +12,7 @@ foreach ($class->getMethods() as $method) {
     $name     = $method->getName();
 
     if (strpos($name, 'assert') === 0 ||
-        strpos($docblock, '@return PHPUnit_Framework_Constraint') !== 0) {
+        strpos($docblock, '@return PHPUnit_Framework_Constraint') !== FALSE) {
         $methods[$name] = array(
           'docblock' => $docblock,
           'sigDecl'  => str_replace(
