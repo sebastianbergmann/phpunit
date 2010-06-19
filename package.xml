@@ -334,6 +334,9 @@
       <file baseinstalldir="/" name="TAP.php" role="php">
        <tasks:replace from="@package_version@" to="version" type="package-info" />
       </file>
+      <file baseinstalldir="/" name="XHProf.php" role="php">
+       <tasks:replace from="@package_version@" to="version" type="package-info" />
+      </file>
      </dir>
      <dir name="Skeleton">
       <dir name="Template">
