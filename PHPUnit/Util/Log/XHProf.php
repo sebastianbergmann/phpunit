@@ -51,7 +51,7 @@
  *
  * <code>
  * <listeners>
- *  <listener class="MyListener" file="/optional/path/to/MyListener.php">
+ *  <listener class="PHPUnit_Util_Log_XHProf">
  *   <arguments>
  *    <array>
  *     <element key="xhprofLibFile">
