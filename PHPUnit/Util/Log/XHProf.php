@@ -61,7 +61,7 @@
  *      <string>/var/www/xhprof_lib/utils/xhprof_runs.php</string>
  *     </element>
  *     <element key="xhprofWeb">
- *      <string>http://localhost/xhprof_html/index.php&lt;/string>
+ *      <string>http://localhost/xhprof_html/index.php</string>
  *     </element>
  *     <element key="appNamespace">
  *      <string>Doctrine2</string>
