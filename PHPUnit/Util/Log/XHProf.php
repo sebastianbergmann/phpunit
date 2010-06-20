@@ -240,7 +240,7 @@ class PHPUnit_Util_Log_XHProf implements PHPUnit_Framework_TestListener
         $this->suites--;
 
         if ($this->suites == 0) {
-            print 'XHProf runs: ' . count($this->runs) . "\n";
+            print "\n\nXHProf runs: " . count($this->runs) . "\n";
 
             foreach ($this->runs as $run) {
                 print ' * ' . $run . "\n";
