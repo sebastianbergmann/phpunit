@@ -128,16 +128,12 @@ class Framework_SuiteTest extends PHPUnit_Framework_TestCase {
         $this->assertEquals(1, count($this->result));
     }
 
+    /**
+     * @expectedException InvalidArgumentException
+     */
     public function testNoTestCaseClass()
     {
-        $suite = new PHPUnit_Framework_TestSuite(
-          'NoTestCaseClass'
-        );
-
-        $suite->run($this->result);
-
-        $this->assertTrue(!$this->result->wasSuccessful());
-        $this->assertEquals(1, count($this->result));
+        $suite = new PHPUnit_Framework_TestSuite('NoTestCaseClass');
     }
 
     public function testNotExistingTestCase()

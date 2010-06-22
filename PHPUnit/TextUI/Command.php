@@ -149,15 +149,9 @@ class PHPUnit_TextUI_Command
             );
         }
 
-        if ($suite->testAt(0) instanceof PHPUnit_Framework_Warning &&
-            strpos($suite->testAt(0)->getMessage(), 'No tests found in class') !== FALSE) {
-            $message   = $suite->testAt(0)->getMessage();
-            $start     = strpos($message, '"') + 1;
-            $end       = strpos($message, '"', $start);
-            $className = substr($message, $start, $end - $start);
-
+        if (count($suite) == 0) {
             $skeleton = new PHPUnit_Util_Skeleton_Test(
-              $className,
+              $suite->getName(),
               $this->arguments['testFile']
             );
 

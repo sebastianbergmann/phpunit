@@ -138,7 +138,14 @@ abstract class PHPUnit_Runner_BaseTestRunner
         }
 
         catch (ReflectionException $e) {
-            $test = new PHPUnit_Framework_TestSuite($testClass);
+            try {
+                $test = new PHPUnit_Framework_TestSuite($testClass);
+            }
+
+            catch (InvalidArgumentException $e) {
+                $test = new PHPUnit_Framework_TestSuite;
+                $test->setName($suiteClassName);
+            }
         }
 
         $this->clearStatus();
