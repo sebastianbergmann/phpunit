@@ -459,6 +459,7 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
      * @param  ReflectionClass $theClass
      * @param  string          $name
      * @return PHPUnit_Framework_Test
+     * @throws RuntimeException
      */
     public static function createTest(ReflectionClass $theClass, $name)
     {
@@ -553,6 +554,10 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
                     $test = new $className;
                 }
             }
+        }
+
+        if (!isset($test)) {
+            throw new RuntimeException('No valid test provided.');
         }
 
         if ($test instanceof PHPUnit_Framework_TestCase) {
