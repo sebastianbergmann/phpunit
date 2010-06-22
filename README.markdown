@@ -15,7 +15,7 @@ PHPUnit 3.5.0
 * Implemented TRAC-1039: Added support for `regexpi:` matcher to Selenium RC driver.
 * Added support for mocking/stubbing of static methods. This requires PHP 5.3 and late static binding.
 * Added `assertStringMatchesFormat()` and `assertStringNotMatchesFormat()` as well as `assertStringMatchesFormatFile()` and `assertStringNotMatchesFormatFile()` for `EXPECTF`-like (`run-tests.php`) format string matching.
-* Added `assertEmpty()` and `assertNotEmpty()`.
+* Added `assertEmpty()` and `assertNotEmpty()` as well as `assertAttributeEmpty()` and `assertAttributeNotEmpty()`.
 * Added the `@expectedExceptionCode` and `@expectedExceptionMessage` annotations.
 * Added support for the [XML format of mysqldump](http://dev.mysql.com/doc/refman/5.1/en/mysqldump.html#option_mysqldump_xml) to the database extension.
 * Added the `<includePath>` element to the `<php>` section of the XML configuration file.
