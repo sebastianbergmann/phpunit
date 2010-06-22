@@ -161,8 +161,9 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
             $argumentsValid = TRUE;
         }
 
-        else if (is_string($theClass) && $theClass !== ''
-                 && class_exists($theClass, FALSE)) {
+        else if (is_string($theClass) &&
+                 $theClass !== '' &&
+                 class_exists($theClass, FALSE)) {
             $argumentsValid = TRUE;
 
             if ($name == '') {
