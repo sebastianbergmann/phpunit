@@ -212,11 +212,9 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
             return;
         }
 
-        $names = array();
-
         foreach ($theClass->getMethods() as $method) {
             if (strpos($method->getDeclaringClass()->getName(), 'PHPUnit_') !== 0) {
-                $this->addTestMethod($theClass, $method, $names);
+                $this->addTestMethod($theClass, $method);
             }
         }
 
@@ -794,21 +792,14 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
     }
 
     /**
-     * @param  ReflectionClass  $class
-     * @param  ReflectionMethod $method
-     * @param  array            $names
+     * @param ReflectionClass  $class
+     * @param ReflectionMethod $method
      */
-    protected function addTestMethod(ReflectionClass $class, ReflectionMethod $method, array &$names)
+    protected function addTestMethod(ReflectionClass $class, ReflectionMethod $method)
     {
         $name = $method->getName();
 
-        if (in_array($name, $names)) {
-            return;
-        }
-
         if ($this->isPublicTestMethod($method)) {
-            $names[] = $name;
-
             $test = self::createTest($class, $name);
 
             if ($test instanceof PHPUnit_Framework_TestCase ||
