@@ -136,16 +136,7 @@ class PHPUnit_Framework_TestFailure
                         }
                     } else {
                         if ($comparisonFailure instanceof PHPUnit_Framework_ComparisonFailure_Scalar) {
-                            $buffer .= sprintf(
-                              "Failed asserting that %s matches expected %s.\n",
-
-                              PHPUnit_Util_Type::toString(
-                                $comparisonFailure->getActual()
-                              ),
-                              PHPUnit_Util_Type::toString(
-                                $comparisonFailure->getExpected()
-                              )
-                            );
+                            $buffer .= $comparisonFailure->toString() . "\n";
                         }
 
                         else if ($comparisonFailure instanceof PHPUnit_Framework_ComparisonFailure_Array ||

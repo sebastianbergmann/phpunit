@@ -13,11 +13,11 @@ PHPUnit_TextUI_Command::main();
 --EXPECTF--
 PHPUnit %s by Sebastian Bergmann.
 
-FFFFFFFFFFF
+FFFFFFFFFFFF
 
 Time: %i %s, Memory: %sMb
 
-There were 11 failures:
+There were 12 failures:
 
 1) FailureTest::testAssertArrayEqualsArray
 message
@@ -121,5 +121,11 @@ message
 
 %s:%i
 
+12) FailureTest::testAssertFloatSameFloat
+message
+Failed asserting that <double:1.5> is identical to <double:1>.
+
+%s:%i
+
 FAILURES!
-Tests: 11, Assertions: 11, Failures: 11.
+Tests: 12, Assertions: 12, Failures: 12.

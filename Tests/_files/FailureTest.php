@@ -61,4 +61,9 @@ class FailureTest extends PHPUnit_Framework_TestCase
     {
         $this->assertSame(new StdClass, NULL, 'message');
     }
+
+    public function testAssertFloatSameFloat()
+    {
+        $this->assertSame(1.0, 1.5, 'message');
+    }
 }

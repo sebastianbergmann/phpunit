@@ -63,6 +63,12 @@ class PHPUnit_Framework_ComparisonFailure_Scalar extends PHPUnit_Framework_Compa
      */
     public function toString()
     {
-        return '';
+        return sprintf(
+          'Failed asserting that %s %s %s.',
+
+          PHPUnit_Util_Type::toString($this->actual),
+          $this->identical ? 'is identical to' : 'matches expected',
+          PHPUnit_Util_Type::toString($this->expected)
+        );
     }
 }
