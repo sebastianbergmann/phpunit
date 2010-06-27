@@ -100,7 +100,12 @@ class PHPUnit_Util_TestDox_ResultPrinter_HTML extends PHPUnit_Util_TestDox_Resul
             $strikeClose = '';
         }
 
-        $this->write('<li>' . $strikeOpen . $name . $strikeClose . '</li>');
+        $errors = NULL;
+        foreach ($this->tests[$name]['errors'] as $error) {
+            $errors .= "<blockquote>{$error->getMessage()}</blockquote>";
+        }
+
+        $this->write('<li>' . $strikeOpen . $name . $strikeClose . $errors . '</li>');
     }
 
     /**
