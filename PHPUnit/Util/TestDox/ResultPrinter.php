@@ -73,6 +73,11 @@ abstract class PHPUnit_Util_TestDox_ResultPrinter extends PHPUnit_Util_Printer i
     protected $testStatus = FALSE;
 
     /**
+     * @var string
+     */
+    protected $testError;
+
+    /**
      * @var array
      */
     protected $tests = array();
@@ -148,6 +153,7 @@ abstract class PHPUnit_Util_TestDox_ResultPrinter extends PHPUnit_Util_Printer i
     {
         if ($test instanceof $this->testTypeOfInterest) {
             $this->testStatus = PHPUnit_Runner_BaseTestRunner::STATUS_ERROR;
+            $this->testError = $e;
             $this->failed++;
         }
     }
@@ -163,6 +169,7 @@ abstract class PHPUnit_Util_TestDox_ResultPrinter extends PHPUnit_Util_Printer i
     {
         if ($test instanceof $this->testTypeOfInterest) {
             $this->testStatus = PHPUnit_Runner_BaseTestRunner::STATUS_FAILURE;
+            $this->testError = $e;
             $this->failed++;
         }
     }
@@ -225,6 +232,8 @@ abstract class PHPUnit_Util_TestDox_ResultPrinter extends PHPUnit_Util_Printer i
      */
     public function startTest(PHPUnit_Framework_Test $test)
     {
+        $this->testError = NULL;
+
         if ($test instanceof $this->testTypeOfInterest) {
             $class = get_class($test);
 
@@ -247,7 +256,25 @@ abstract class PHPUnit_Util_TestDox_ResultPrinter extends PHPUnit_Util_Printer i
                 $annotations = $test->getAnnotations();
 
                 if (isset($annotations['method']['testdox'][0])) {
-                    $this->currentTestMethodPrettified = $annotations['method']['testdox'][0];
+                    $prettyTestName = $annotations['method']['testdox'][0];
+                    $iterationTestName = NULL;
+                    if (isset($annotations['method']['dataProviderTestdoxArgument'][0]))
+                    {
+                        $dataProviderTestNameArgIndex = (int) $annotations['method']['dataProviderTestdoxArgument'][0];
+                        $iterationArgs = $test->getData();
+                        if (isset($iterationArgs[$dataProviderTestNameArgIndex]))
+                        {
+                            $iterationTestName =  ' ' . $iterationArgs[$dataProviderTestNameArgIndex];
+                        }
+                    }
+                    if (!$iterationTestName)
+                    {
+                        $iterationTestName = $test->getDataSetAsString(FALSE);
+                    }
+                    $prettyTestName .= $iterationTestName;
+                    $prettyTestName = trim($prettyTestName);
+
+                    $this->currentTestMethodPrettified = $prettyTestName;
                     $prettified                        = TRUE;
                 }
             }
@@ -273,15 +300,18 @@ abstract class PHPUnit_Util_TestDox_ResultPrinter extends PHPUnit_Util_Printer i
                 if ($this->testStatus == PHPUnit_Runner_BaseTestRunner::STATUS_PASSED) {
                     $this->tests[$this->currentTestMethodPrettified]['success'] = 1;
                     $this->tests[$this->currentTestMethodPrettified]['failure'] = 0;
+                    $this->tests[$this->currentTestMethodPrettified]['errors'] = array();
                 } else {
                     $this->tests[$this->currentTestMethodPrettified]['success'] = 0;
                     $this->tests[$this->currentTestMethodPrettified]['failure'] = 1;
+                    $this->tests[$this->currentTestMethodPrettified]['errors'] = array($this->testError);
                 }
             } else {
                 if ($this->testStatus == PHPUnit_Runner_BaseTestRunner::STATUS_PASSED) {
                     $this->tests[$this->currentTestMethodPrettified]['success']++;
                 } else {
                     $this->tests[$this->currentTestMethodPrettified]['failure']++;
+                    $this->tests[$this->currentTestMethodPrettified]['errors'][] = $this->testError;
                 }
             }
 
