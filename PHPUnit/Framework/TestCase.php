@@ -316,6 +316,11 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
         $this->mockObjectGenerator = new PHPUnit_Framework_MockObject_Generator;
     }
 
+    public function getData()
+    {
+        return $this->data;
+    }
+
     /**
      * Returns a string representation of the test case.
      *
@@ -1755,7 +1760,7 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
      * @return string
      * @since  Method available since Release 3.3.0
      */
-    protected function getDataSetAsString($includeData = TRUE)
+    public function getDataSetAsString($includeData = TRUE)
     {
         $buffer = '';
 
