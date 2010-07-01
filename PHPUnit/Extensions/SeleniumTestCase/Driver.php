@@ -596,9 +596,7 @@ class PHPUnit_Extensions_SeleniumTestCase_Driver
             case 'attachFile':
             case 'break':
             case 'captureEntirePageScreenshot':
-            case 'captureEntirePageScreenshotToString':
             case 'captureScreenshot':
-            case 'captureScreenshotToString':
             case 'check':
             case 'chooseCancelOnNextConfirmation':
             case 'chooseOkOnNextConfirmation':
@@ -707,8 +705,7 @@ class PHPUnit_Extensions_SeleniumTestCase_Driver
                     case 'allowNativeXpath':
                     case 'assignId':
                     case 'captureEntirePageScreenshot':
-                    case 'captureScreenshot':
-                    case 'captureScreenshotToString': {
+                    case 'captureScreenshot': {
                         // intentionally empty
                     }
                     break;
@@ -787,6 +784,8 @@ class PHPUnit_Extensions_SeleniumTestCase_Driver
             case 'getTable':
             case 'getText':
             case 'getTitle':
+            case 'captureEntirePageScreenshotToString':
+            case 'captureScreenshotToString':
             case 'getValue': {
                 $result = $this->getString($command, $arguments);
 
