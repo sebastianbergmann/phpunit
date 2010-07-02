@@ -3,6 +3,11 @@ PHPUnit 3.4
 
 This is the list of changes for the PHPUnit 3.4 release series.
 
+PHPUnit 3.4.15
+--------------
+
+* Fixed TRAC-907: Commands `captureEntirePageScreenshotToString` and `captureScreenshotToString` do not work for Selenium extension.
+
 PHPUnit 3.4.14
 --------------
 
