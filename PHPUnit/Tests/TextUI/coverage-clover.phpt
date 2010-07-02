@@ -44,8 +44,8 @@ Writing code coverage data to XML file, this may take a moment.<?xml version="1.
       <line num="113" type="method" name="withdrawMoney" count="1"/>
       <line num="115" type="stmt" count="1"/>
       <line num="117" type="stmt" count="0"/>
-      <metrics loc="120" ncloc="37" classes="2" methods="4" coveredmethods="3" statements="10" coveredstatements="3" elements="14" coveredelements="6"/>
+      <metrics loc="119" ncloc="36" classes="2" methods="4" coveredmethods="3" statements="10" coveredstatements="3" elements="14" coveredelements="6"/>
     </file>
-    <metrics files="1" loc="120" ncloc="37" classes="2" methods="4" coveredmethods="3" statements="10" coveredstatements="3" elements="14" coveredelements="6"/>
+    <metrics files="1" loc="119" ncloc="36" classes="2" methods="4" coveredmethods="3" statements="10" coveredstatements="3" elements="14" coveredelements="6"/>
   </project>
 </coverage>
