@@ -642,6 +642,10 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
         clearstatcache();
 
         try {
+            if ($this->inIsolation) {
+                $this->setUpBeforeClass();
+            }
+
             $this->setUp();
             $this->assertPreConditions();
             $this->testResult = $this->runTest();
@@ -674,6 +678,10 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
         // caught and passed on when no exception was raised before.
         try {
             $this->tearDown();
+
+            if ($this->inIsolation) {
+                $this->tearDownAfterClass();
+            }
         }
 
         catch (Exception $_e) {
