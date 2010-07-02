@@ -711,6 +711,10 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
         // Run the test.
         try {
             // Set up the fixture.
+            if ($this->inIsolation) {
+                $this->setUpBeforeClass();
+            }
+
             $this->setUp();
 
             // Assert pre-conditions.
@@ -757,6 +761,10 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
         // caught and passed on when no exception was raised before.
         try {
             $this->tearDown();
+
+            if ($this->inIsolation) {
+                $this->tearDownAfterClass();
+            }
         }
 
         catch (Exception $_e) {
