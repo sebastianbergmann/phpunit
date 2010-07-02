@@ -61,6 +61,8 @@
         <double>19.78</double>
         <null/>
         <object class="stdClass"/>
+        <file>MyTestFile.php</file>
+        <directory>MyRelativePath</directory>
       </arguments>
     </listener>
   </listeners>
