@@ -191,7 +191,7 @@ class Util_ConfigurationTest extends PHPUnit_Framework_TestCase
                 4 => NULL,
                 5 => new stdClass,
                 6 => dirname(dirname(__FILE__)) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'MyTestFile.php',
-                7 => dirname(dirname(__FILE__)) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'MyRelativePath', 
+                7 => dirname(dirname(__FILE__)) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'MyRelativePath',
               ),
             ),
           ),
