@@ -722,6 +722,12 @@ class PHPUnit_Util_Configuration
         }
 
         foreach ($testSuiteNode->getElementsByTagName('directory') as $directoryNode) {
+            $directory = (string)$directoryNode->nodeValue;
+
+            if (empty($directory)) {
+                continue;
+            }
+
             if ($directoryNode->hasAttribute('prefix')) {
                 $prefix = (string)$directoryNode->getAttribute('prefix');
             } else {
@@ -735,14 +741,20 @@ class PHPUnit_Util_Configuration
             }
 
             $testCollector = new PHPUnit_Runner_IncludePathTestCollector(
-              array($this->toAbsolutePath((string)$directoryNode->nodeValue)), $suffix, $prefix
+              array($this->toAbsolutePath($directory)), $suffix, $prefix
             );
 
             $suite->addTestFiles($testCollector->collectTests(), $syntaxCheck);
         }
 
         foreach ($testSuiteNode->getElementsByTagName('file') as $fileNode) {
-            $suite->addTestFile((string)$fileNode->nodeValue, $syntaxCheck);
+            $file = (string)$fileNode->nodeValue;
+
+            if (empty($file)) {
+                continue;
+            }
+
+            $suite->addTestFile($file, $syntaxCheck);
         }
 
         return $suite;
