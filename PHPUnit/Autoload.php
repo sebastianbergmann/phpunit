@@ -164,10 +164,10 @@ if (!function_exists('phpunit_autoload')) {
           'phpunit_extensions_ticketlistener' => '/Extensions/TicketListener.php'
         );
 
-        $cn = strtolower($class);
+        $class = strtolower($class);
 
-        if (isset($classes[$cn])) {
-            require __DIR__ . $classes[$cn];
+        if (isset($classes[$class])) {
+            require __DIR__ . $classes[$class];
         }
     }
 

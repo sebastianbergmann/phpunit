@@ -52,10 +52,10 @@ if (!function_exists('phpunit_autoload')) {
           ___CLASSLIST___
         );
 
-        $cn = strtolower($class);
+        $class = strtolower($class);
 
-        if (isset($classes[$cn])) {
-            require ___BASEDIR___$classes[$cn];
+        if (isset($classes[$class])) {
+            require ___BASEDIR___$classes[$class];
         }
     }
 
