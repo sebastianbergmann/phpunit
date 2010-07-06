@@ -9,6 +9,7 @@ PHPUnit 3.4.15
 * Fixed TRAC-907: Commands `captureEntirePageScreenshotToString` and `captureScreenshotToString` do not work for Selenium extension.
 * Fixed TRAC-939: Missing test classes when using process isolation.
 * Fixed TRAC-1024: `setUpBeforeClass()` does not work in process isolation.
+* Fixed TRAC-1075: Empty `<file></file>` in `phpunit.xml` causes errors.
 
 PHPUnit 3.4.14
 --------------
