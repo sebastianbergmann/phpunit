@@ -47,6 +47,7 @@ Usage: phpunit [switches] UnitTest [UnitTest.php]
   --stop-on-incomplete     Stop execution upon first incomplete test.
   --verbose                Output more verbose information.
   --wait                   Waits for a keystroke after each test.
+  --assert-strict          Mark test as incomplete if no assertions made.
 
   --skeleton-class         Generate Unit class for UnitTest in UnitTest.php.
   --skeleton-test          Generate UnitTest class for Unit in Unit.php.

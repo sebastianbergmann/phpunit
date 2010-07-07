@@ -116,7 +116,8 @@ class PHPUnit_TextUI_Command
       'static-backup' => NULL,
       'verbose' => NULL,
       'version' => NULL,
-      'wait' => NULL
+      'wait' => NULL,
+      'assert-strict' => NULL
     );
 
     /**
@@ -500,6 +501,10 @@ class PHPUnit_TextUI_Command
                 }
                 break;
 
+                case '--assert-strict' : {
+                    $this->arguments['assertStrict'] = TRUE;
+                }
+
                 default: {
                     $optionName = str_replace('--', '', $option[0]);
 
@@ -809,6 +814,7 @@ Usage: phpunit [switches] UnitTest [UnitTest.php]
   --stop-on-incomplete     Stop execution upon first incomplete test.
   --verbose                Output more verbose information.
   --wait                   Waits for a keystroke after each test.
+  --assert-strict          Mark test as incomplete if no assertions made.
 
   --skeleton-class         Generate Unit class for UnitTest in UnitTest.php.
   --skeleton-test          Generate UnitTest class for Unit in Unit.php.
