@@ -23,6 +23,7 @@ PHPUnit 3.5.0
 * Added a ticket listener that interacts with the GitHub issue API.
 * Added a ticket listener that interacts with the GoogleCode issue API.
 * Added a test listener that uses [XHProf](http://mirror.facebook.net/facebook/xhprof/doc.html) to profile the tested code.
+* Added the `--strict` switch to mark tests that perform no assertions as incomplete.
 * The paths in the XML configuration file can now be relative to the directory that contains the XML configuration file.
 * The `@author` annotation is now an alias for `@group` allowing to filter tests based on their authors.
 * The `PHPUnit_Extensions_SeleniumTestCase::$autoStop` flag has been removed, please start Selenium RC with `-browserSessionReuse` instead.
