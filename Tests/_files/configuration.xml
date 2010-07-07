@@ -12,6 +12,7 @@
          stopOnFailure="false"
          syntaxCheck="false"
          testSuiteLoaderClass="PHPUnit_Runner_StandardTestSuiteLoader"
+         strict="false"
          verbose="false">
   <testsuites>
     <testsuite name="My Test Suite">

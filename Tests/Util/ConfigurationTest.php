@@ -261,6 +261,7 @@ class Util_ConfigurationTest extends PHPUnit_Framework_TestCase
             'forceCoversAnnotation' => FALSE,
             'mapTestClassNameToCoveredClassName' => FALSE,
             'stopOnFailure' => FALSE,
+            'strict' => FALSE,
             'syntaxCheck' => FALSE,
             'testSuiteLoaderClass' => 'PHPUnit_Runner_StandardTestSuiteLoader',
             'verbose' => FALSE

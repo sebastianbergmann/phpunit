@@ -66,6 +66,7 @@
  *          stopOnSkipped="false"
  *          syntaxCheck="false"
  *          testSuiteLoaderClass="PHPUnit_Runner_StandardTestSuiteLoader"
+ *          strict="false"
  *          verbose="false">
  *   <testsuites>
  *     <testsuite name="My Test Suite">
@@ -617,6 +618,12 @@ class PHPUnit_Util_Configuration
         if ($root->hasAttribute('testSuiteLoaderFile')) {
             $result['testSuiteLoaderFile'] = (string)$root->getAttribute(
               'testSuiteLoaderFile'
+            );
+        }
+
+        if ($root->hasAttribute('strict')) {
+            $result['strict'] = $this->getBoolean(
+              (string)$root->getAttribute('strict'), FALSE
             );
         }
 
