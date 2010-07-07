@@ -292,8 +292,8 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
             );
         }
 
-        if (isset($arguments['assertStrict'])) {
-            $result->assertStrict(TRUE);
+        if (isset($arguments['strict'])) {
+            $result->strictAssertions(TRUE);
         }
 
         $suite->run(

@@ -160,7 +160,7 @@ class PHPUnit_Framework_TestResult implements Countable
     /**
      * @var boolean
      */
-    protected $assertStrict = FALSE;
+    protected $strictAssertions = FALSE;
 
     /**
      * @var boolean
@@ -649,11 +649,13 @@ class PHPUnit_Framework_TestResult implements Countable
 
         $test->addToAssertionCount(PHPUnit_Framework_Assert::getCount());
 
-        if ($this->assertStrict && $test->getNumAssertions() == 0) {
+        if ($this->strictAssertions && $test->getNumAssertions() == 0) {
             $this->addFailure(
-                $test,
-                new PHPUnit_Framework_IncompleteTestError('This test did not perform any assertions'),
-                $time
+              $test,
+              new PHPUnit_Framework_IncompleteTestError(
+                'This test did not perform any assertions'
+              ),
+              $time
             );
         }
 
@@ -768,18 +770,17 @@ class PHPUnit_Framework_TestResult implements Countable
     }
 
     /**
-     * Enables tests to be marked as incomplete if no assertions are made in the
-     * unit tests
+     * Enables or disables the marking of a test as incomplete if no assertions
+     * are made.
      *
      * @param  boolean $flag
      * @throws InvalidArgumentException
-     *
-     * @return void
+     * @since  Method available since Release 3.5.0
      */
-    public function assertStrict($flag)
+    public function strictAssertions($flag)
     {
         if (is_bool($flag)) {
-            $this->assertStrict = $flag;
+            $this->strictAssertions = $flag;
         } else {
             throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'boolean');
         }
