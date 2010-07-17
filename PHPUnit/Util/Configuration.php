@@ -450,15 +450,7 @@ class PHPUnit_Util_Configuration
             $name  = (string)$const->getAttribute('name');
             $value = (string)$const->getAttribute('value');
 
-            if (strtolower($value) == 'false') {
-                $value = FALSE;
-            }
-
-            else if (strtolower($value) == 'true') {
-                $value = TRUE;
-            }
-
-            $result['const'][$name] = $value;
+            $result['const'][$name] = $this->getBoolean($value, $value);
         }
 
         foreach (array('var', 'env', 'post', 'get', 'cookie', 'server', 'files', 'request') as $array) {
@@ -466,15 +458,7 @@ class PHPUnit_Util_Configuration
                 $name  = (string)$var->getAttribute('name');
                 $value = (string)$var->getAttribute('value');
 
-                if (strtolower($value) == 'false') {
-                    $value = FALSE;
-                }
-
-                else if (strtolower($value) == 'true') {
-                    $value = TRUE;
-                }
-
-                $result[$array][$name] = $value;
+                $result[$array][$name] = $this->getBoolean($value, $value);
             }
         }
 
