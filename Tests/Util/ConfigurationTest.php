@@ -78,7 +78,7 @@ class Util_ConfigurationTest extends PHPUnit_Framework_TestCase
         PHPUnit_Util_Configuration::getInstance('not_existing_file.xml');
     }
 
-    public function testGetFilterConfiguration()
+    public function testFilterConfigurationIsReadCorrectly()
     {
         $this->assertEquals(
           array(
@@ -162,7 +162,7 @@ class Util_ConfigurationTest extends PHPUnit_Framework_TestCase
         );
     }
 
-    public function testGetGroupConfiguration()
+    public function testGroupConfigurationIsReadCorrectly()
     {
         $this->assertEquals(
           array(
@@ -179,7 +179,7 @@ class Util_ConfigurationTest extends PHPUnit_Framework_TestCase
         );
     }
 
-    public function testGetListenerConfiguration()
+    public function testListenerConfigurationIsReadCorrectly()
     {
         $this->assertEquals(
           array(
@@ -207,7 +207,7 @@ class Util_ConfigurationTest extends PHPUnit_Framework_TestCase
         );
     }
 
-    public function testGetLoggingConfiguration()
+    public function testLoggingConfigurationIsReadCorrectly()
     {
         $this->assertEquals(
           array(
@@ -233,7 +233,7 @@ class Util_ConfigurationTest extends PHPUnit_Framework_TestCase
         );
     }
 
-    public function testGetPHPConfiguration()
+    public function testPHPConfigurationIsReadCorrectly()
     {
         $this->assertEquals(
           array(
@@ -253,7 +253,7 @@ class Util_ConfigurationTest extends PHPUnit_Framework_TestCase
         );
     }
 
-    public function testGetPHPUnitConfiguration()
+    public function testPHPUnitConfigurationIsReadCorrectly()
     {
         $this->assertEquals(
           array(
@@ -276,7 +276,7 @@ class Util_ConfigurationTest extends PHPUnit_Framework_TestCase
         );
     }
 
-    public function testGetSeleniumBrowserConfiguration()
+    public function testSeleniumBrowserConfigurationIsReadCorrectly()
     {
         $this->assertEquals(
           array(
