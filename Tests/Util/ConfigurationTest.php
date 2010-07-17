@@ -231,9 +231,9 @@ class Util_ConfigurationTest extends PHPUnit_Framework_TestCase
           array(
             'include_path' => '/usr/local/src/phpunit/Tests/_files/.',
             'ini'=> array('foo' => 'bar'),
-            'const'=> array('foo' => 'bar'),
-            'var'=> array('foo' => 'bar'),
-            'env'=> array('foo' => 'bar'),
+            'const'=> array('foo' => FALSE, 'bar' => TRUE),
+            'var'=> array('foo' => FALSE),
+            'env'=> array('foo' => TRUE),
             'post'=> array('foo' => 'bar'),
             'get'=> array('foo' => 'bar'),
             'cookie'=> array('foo' => 'bar'),

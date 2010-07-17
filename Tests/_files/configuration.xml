@@ -86,9 +86,10 @@
   <php>
     <includePath>.</includePath>
     <ini name="foo" value="bar"/>
-    <const name="foo" value="bar"/>
-    <var name="foo" value="bar"/>
-    <env name="foo" value="bar"/>
+    <const name="foo" value="false"/>
+    <const name="bar" value="true"/>
+    <var name="foo" value="false"/>
+    <env name="foo" value="true"/>
     <post name="foo" value="bar"/>
     <get name="foo" value="bar"/>
     <cookie name="foo" value="bar"/>
