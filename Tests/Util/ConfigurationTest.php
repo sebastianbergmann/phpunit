@@ -70,6 +70,14 @@ class Util_ConfigurationTest extends PHPUnit_Framework_TestCase
         );
     }
 
+    /**
+     * @expectedException PHPUnit_Framework_Exception
+     */
+    public function testExceptionIsThrownForNotExistingConfigurationFile()
+    {
+        PHPUnit_Util_Configuration::getInstance('not_existing_file.xml');
+    }
+
     public function testGetFilterConfiguration()
     {
         $this->assertEquals(
