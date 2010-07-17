@@ -13,6 +13,7 @@ PHPUnit 3.5.0
 * Implemented TRAC-1033: Supplement commandline option `--stop-on-error` and friends.
 * Implemented TRAC-1038: Add `assertInstanceOf()`, `assertAttributeInstanceOf()`, `assertNotInstanceOf()`, and `assertAttributeNotInstanceOf()` as well as `assertInternalType()`, `assertAttributeInternalType()`, `assertNotInternalType()`, and `assertAttributeNotInternalType()`.
 * Implemented TRAC-1039: Added support for `regexpi:` matcher to Selenium RC driver.
+* Implemented TRAC-1078: Added support for setting superglobals via the XML configuration file.
 * Added support for mocking/stubbing of static methods. This requires PHP 5.3 and late static binding.
 * Added `assertStringMatchesFormat()` and `assertStringNotMatchesFormat()` as well as `assertStringMatchesFormatFile()` and `assertStringNotMatchesFormatFile()` for `EXPECTF`-like (`run-tests.php`) format string matching.
 * Added `assertEmpty()` and `assertNotEmpty()` as well as `assertAttributeEmpty()` and `assertAttributeNotEmpty()`.
