@@ -73,15 +73,15 @@ class Util_ConfigurationTest extends PHPUnit_Framework_TestCase
     public function testGetFilterConfiguration()
     {
         $this->assertEquals(
-          array (
+          array(
             'blacklist' =>
-            array (
+            array(
               'include' =>
-              array (
+              array(
                 'directory' =>
-                array (
+                array(
                   0 =>
-                  array (
+                  array(
                     'path' => '/path/to/files',
                     'prefix' => '',
                     'suffix' => '.php',
@@ -89,16 +89,16 @@ class Util_ConfigurationTest extends PHPUnit_Framework_TestCase
                   ),
                 ),
                 'file' =>
-                array (
+                array(
                   0 => '/path/to/file',
                 ),
               ),
               'exclude' =>
-              array (
+              array(
                 'directory' =>
-                array (
+                array(
                   0 =>
-                  array (
+                  array(
                     'path' => '/path/to/files',
                     'prefix' => '',
                     'suffix' => '.php',
@@ -106,20 +106,20 @@ class Util_ConfigurationTest extends PHPUnit_Framework_TestCase
                   ),
                 ),
                 'file' =>
-                array (
+                array(
                   0 => '/path/to/file',
                 ),
               ),
             ),
             'whitelist' =>
-            array (
+            array(
               'addUncoveredFilesFromWhitelist' => TRUE,
               'include' =>
-              array (
+              array(
                 'directory' =>
-                array (
+                array(
                   0 =>
-                  array (
+                  array(
                     'path' => '/path/to/files',
                     'prefix' => '',
                     'suffix' => '.php',
@@ -127,16 +127,16 @@ class Util_ConfigurationTest extends PHPUnit_Framework_TestCase
                   ),
                 ),
                 'file' =>
-                array (
+                array(
                   0 => '/path/to/file',
                 ),
               ),
               'exclude' =>
-              array (
+              array(
                 'directory' =>
-                array (
+                array(
                   0 =>
-                  array (
+                  array(
                     'path' => '/path/to/files',
                     'prefix' => '',
                     'suffix' => '.php',
@@ -144,7 +144,7 @@ class Util_ConfigurationTest extends PHPUnit_Framework_TestCase
                   ),
                 ),
                 'file' =>
-                array (
+                array(
                   0 => '/path/to/file',
                 ),
               ),
@@ -157,13 +157,13 @@ class Util_ConfigurationTest extends PHPUnit_Framework_TestCase
     public function testGetGroupConfiguration()
     {
         $this->assertEquals(
-          array (
+          array(
             'include' =>
-            array (
+            array(
               0 => 'name',
             ),
             'exclude' =>
-            array (
+            array(
               0 => 'name',
             ),
           ),
@@ -174,15 +174,15 @@ class Util_ConfigurationTest extends PHPUnit_Framework_TestCase
     public function testGetListenerConfiguration()
     {
         $this->assertEquals(
-          array (
+          array(
             0 =>
-            array (
+            array(
               'class' => 'MyListener',
               'file' => '/optional/path/to/MyListener.php',
               'arguments' =>
-              array (
+              array(
                 0 =>
-                array (
+                array(
                   0 => 'Sebastian',
                 ),
                 1 => 22,
@@ -202,7 +202,7 @@ class Util_ConfigurationTest extends PHPUnit_Framework_TestCase
     public function testGetLoggingConfiguration()
     {
         $this->assertEquals(
-          array (
+          array(
             'title' => 'My Project',
             'charset' => 'UTF-8',
             'lowUpperBound' => '35',
@@ -228,20 +228,18 @@ class Util_ConfigurationTest extends PHPUnit_Framework_TestCase
     public function testGetPHPConfiguration()
     {
         $this->assertEquals(
-          array (
-            'include_path' => dirname(dirname(__FILE__)).'/_files/.',
-            'ini' =>
-            array (
-              'foo' => 'bar',
-            ),
-            'const' =>
-            array (
-              'foo' => 'bar',
-            ),
-            'var' =>
-            array (
-              'foo' => 'bar',
-            ),
+          array(
+            'include_path' => '/usr/local/src/phpunit/Tests/_files/.',
+            'ini'=> array('foo' => 'bar'),
+            'const'=> array('foo' => 'bar'),
+            'var'=> array('foo' => 'bar'),
+            'env'=> array('foo' => 'bar'),
+            'post'=> array('foo' => 'bar'),
+            'get'=> array('foo' => 'bar'),
+            'cookie'=> array('foo' => 'bar'),
+            'server'=> array('foo' => 'bar'),
+            'files'=> array('foo' => 'bar'),
+            'request'=> array('foo' => 'bar'),
           ),
           $this->configuration->getPHPConfiguration()
         );
@@ -250,7 +248,7 @@ class Util_ConfigurationTest extends PHPUnit_Framework_TestCase
     public function testGetPHPUnitConfiguration()
     {
         $this->assertEquals(
-          array (
+          array(
             'backupGlobals' => TRUE,
             'backupStaticAttributes' => FALSE,
             'bootstrap' => '/path/to/bootstrap.php',
@@ -273,9 +271,9 @@ class Util_ConfigurationTest extends PHPUnit_Framework_TestCase
     public function testGetSeleniumBrowserConfiguration()
     {
         $this->assertEquals(
-          array (
+          array(
             0 =>
-            array (
+            array(
               'name' => 'Firefox on Linux',
               'browser' => '*firefox /usr/lib/firefox/firefox-bin',
               'host' => 'my.linux.box',
