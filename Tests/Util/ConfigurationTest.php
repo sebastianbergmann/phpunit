@@ -237,7 +237,7 @@ class Util_ConfigurationTest extends PHPUnit_Framework_TestCase
     {
         $this->assertEquals(
           array(
-            'include_path' => '/usr/local/src/phpunit/Tests/_files/.',
+            'include_path' => dirname(dirname(__FILE__)).'/_files/.',
             'ini'=> array('foo' => 'bar'),
             'const'=> array('foo' => FALSE, 'bar' => TRUE),
             'var'=> array('foo' => FALSE),
