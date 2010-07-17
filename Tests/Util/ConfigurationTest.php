@@ -253,6 +253,25 @@ class Util_ConfigurationTest extends PHPUnit_Framework_TestCase
         );
     }
 
+    /**
+     * @backupGlobals enabled
+     */
+    public function testPHPConfigurationIsHandledCorrectly()
+    {
+        $this->configuration->handlePHPConfiguration();
+
+        $this->assertEquals(FALSE, foo);
+        $this->assertEquals(TRUE, bar);
+        $this->assertEquals(FALSE, $GLOBALS['foo']);
+        $this->assertEquals(TRUE, $_ENV['foo']);
+        $this->assertEquals('bar', $_POST['foo']);
+        $this->assertEquals('bar', $_GET['foo']);
+        $this->assertEquals('bar', $_COOKIE['foo']);
+        $this->assertEquals('bar', $_SERVER['foo']);
+        $this->assertEquals('bar', $_FILES['foo']);
+        $this->assertEquals('bar', $_REQUEST['foo']);
+    }
+
     public function testPHPUnitConfigurationIsReadCorrectly()
     {
         $this->assertEquals(
