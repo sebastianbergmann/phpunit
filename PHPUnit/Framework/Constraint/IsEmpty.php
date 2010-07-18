@@ -78,4 +78,25 @@ class PHPUnit_Framework_Constraint_IsEmpty extends PHPUnit_Framework_Constraint
     {
         return 'is empty';
     }
+
+    /**
+     * @param mixed   $other
+     * @param string  $description
+     * @param boolean $not
+     */
+    protected function customFailureDescription($other, $description, $not)
+    {
+        $type = gettype($other);
+
+        if ($type[0] == 'a' || $type[0] == 'o') {
+            $type = 'an ' . $type;
+        } else {
+            $type = 'a ' . $type;
+        }
+
+        return sprintf(
+          'Failed asserting that %s is empty.',
+          $type
+        );
+    }
 }
