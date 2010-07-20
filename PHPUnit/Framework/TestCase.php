@@ -555,9 +555,9 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
             );
 
             if ($this->preserveGlobalState) {
-                $constants     = PHPUnit_Util_GlobalState::getIncludedFilesAsString();
-                $globals       = PHPUnit_Util_GlobalState::getConstantsAsString();
-                $includedFiles = PHPUnit_Util_GlobalState::getGlobalsAsString();
+                $constants     = PHPUnit_Util_GlobalState::getConstantsAsString();
+                $globals       = PHPUnit_Util_GlobalState::getGlobalsAsString();
+                $includedFiles = PHPUnit_Util_GlobalState::getIncludedFilesAsString();
             } else {
                 $constants     = '';
                 $globals       = '';
