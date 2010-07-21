@@ -17,14 +17,14 @@
   <email>sb@sebastian-bergmann.de</email>
   <active>yes</active>
  </lead>
- <date>2010-06-08</date>
+ <date>2010-07-21</date>
  <version>
-  <release>1.0.0beta2</release>
+  <release>1.0.0RC1</release>
   <api>1.0.0</api>
  </version>
  <stability>
   <release>beta</release>
-  <api>beta</api>
+  <api>stable</api>
  </stability>
  <license>BSD License</license>
  <notes>http://github.com/sebastianbergmann/phpunit-mock-objects/blob/master/README.markdown</notes>
@@ -160,12 +160,12 @@
     <min>5.2.7</min>
    </php>
    <pearinstaller>
-    <min>1.9.0</min>
+    <min>1.9.1</min>
    </pearinstaller>
    <package>
     <name>PHPUnit</name>
     <channel>pear.phpunit.de</channel>
-    <min>3.5.0beta1</min>
+    <min>3.5.0RC1</min>
    </package>
    <package>
     <name>Text_Template</name>
