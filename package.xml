@@ -17,14 +17,14 @@
   <email>sebastian@phpunit.de</email>
   <active>yes</active>
  </lead>
- <date>2010-06-08</date>
+ <date>2010-07-21</date>
  <version>
-  <release>3.5.0beta1</release>
+  <release>3.5.0RC1</release>
   <api>3.5.0</api>
  </version>
  <stability>
   <release>beta</release>
-  <api>beta</api>
+  <api>stable</api>
  </stability>
  <license>BSD License</license>
  <notes>http://github.com/sebastianbergmann/phpunit/blob/master/README.markdown</notes>
@@ -516,12 +516,12 @@
    <package>
     <name>DbUnit</name>
     <channel>pear.phpunit.de</channel>
-    <min>1.0.0beta1</min>
+    <min>1.0.0RC1</min>
    </package>
    <package>
     <name>File_Iterator</name>
     <channel>pear.phpunit.de</channel>
-    <min>1.2.1</min>
+    <min>1.2.2</min>
    </package>
    <package>
     <name>Text_Template</name>
@@ -531,7 +531,7 @@
    <package>
     <name>PHP_CodeCoverage</name>
     <channel>pear.phpunit.de</channel>
-    <min>1.0.0beta1</min>
+    <min>1.0.0RC1</min>
    </package>
    <package>
     <name>PHP_Timer</name>
@@ -541,12 +541,12 @@
    <package>
     <name>PHPUnit_MockObject</name>
     <channel>pear.phpunit.de</channel>
-    <min>1.0.0beta1</min>
+    <min>1.0.0RC1</min>
    </package>
    <package>
     <name>PHPUnit_Selenium</name>
     <channel>pear.phpunit.de</channel>
-    <min>1.0.0beta1</min>
+    <min>1.0.0RC1</min>
    </package>
    <package>
     <name>YAML</name>

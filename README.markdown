@@ -13,6 +13,7 @@ PHPUnit 3.5.0
 * Implemented TRAC-1033: Supplement commandline option `--stop-on-error` and friends.
 * Implemented TRAC-1038: Add `assertInstanceOf()`, `assertAttributeInstanceOf()`, `assertNotInstanceOf()`, and `assertAttributeNotInstanceOf()` as well as `assertInternalType()`, `assertAttributeInternalType()`, `assertNotInternalType()`, and `assertAttributeNotInternalType()`.
 * Implemented TRAC-1039: Added support for `regexpi:` matcher to Selenium RC driver.
+* Implemented TRAC-1078: Added support for setting superglobals via the XML configuration file.
 * Added support for mocking/stubbing of static methods. This requires PHP 5.3 and late static binding.
 * Added `assertStringMatchesFormat()` and `assertStringNotMatchesFormat()` as well as `assertStringMatchesFormatFile()` and `assertStringNotMatchesFormatFile()` for `EXPECTF`-like (`run-tests.php`) format string matching.
 * Added `assertEmpty()` and `assertNotEmpty()` as well as `assertAttributeEmpty()` and `assertAttributeNotEmpty()`.
@@ -40,11 +41,11 @@ PHPUnit 3.5.0
 * The shared fixture functionality has been removed.
 * `PHPUnit_Extensions_PerformanceTestCase` has been removed.
 * `PHPUnit_Extensions_TicketListener_Trac` has been removed.
-* Replaced `PHPUnit_Framework_MockObject` with the [PHP_MockObject](http://github.com/sebastianbergmann/php-mock-objects) component.
+* Replaced `PHPUnit_Framework_MockObject` with the [PHP_MockObject](http://github.com/sebastianbergmann/phpunit-mock-objects) component.
 * Replaced `PHPUnit_Extensions_Database_TestCase` with the [DbUnit](http://github.com/sebastianbergmann/dbunit) component.
 * Replaced `PHPUnit_Extensions_SeleniumTestCase` with the [PHPUnit_Selenium](http://github.com/sebastianbergmann/phpunit-selenium) component.
 * Replaced `PHPUnit_Util_FilterIterator` with the [PHP_FileIterator](http://github.com/sebastianbergmann/php-file-iterator) component.
 * Replaced `PHPUnit_Util_Template` with the [Text_Template](http://github.com/sebastianbergmann/php-text-template) component.
 * Replaced `PHPUnit_Util_Timer` with the [PHP_Timer](http://github.com/sebastianbergmann/php-timer) component.
 * Fixed TRAC-1068: `assertSame()` on two floats does not print the error message.
-* PHPUnit now requires PHP 5.2.7 (or later) but PHP 5.3.2 (or later) is highly recommended.
+* PHPUnit now requires PHP 5.2.7 (or later) but PHP 5.3.3 (or later) is highly recommended.

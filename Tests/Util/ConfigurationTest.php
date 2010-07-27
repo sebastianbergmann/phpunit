@@ -70,18 +70,26 @@ class Util_ConfigurationTest extends PHPUnit_Framework_TestCase
         );
     }
 
-    public function testGetFilterConfiguration()
+    /**
+     * @expectedException PHPUnit_Framework_Exception
+     */
+    public function testExceptionIsThrownForNotExistingConfigurationFile()
+    {
+        PHPUnit_Util_Configuration::getInstance('not_existing_file.xml');
+    }
+
+    public function testFilterConfigurationIsReadCorrectly()
     {
         $this->assertEquals(
-          array (
+          array(
             'blacklist' =>
-            array (
+            array(
               'include' =>
-              array (
+              array(
                 'directory' =>
-                array (
+                array(
                   0 =>
-                  array (
+                  array(
                     'path' => '/path/to/files',
                     'prefix' => '',
                     'suffix' => '.php',
@@ -89,16 +97,16 @@ class Util_ConfigurationTest extends PHPUnit_Framework_TestCase
                   ),
                 ),
                 'file' =>
-                array (
+                array(
                   0 => '/path/to/file',
                 ),
               ),
               'exclude' =>
-              array (
+              array(
                 'directory' =>
-                array (
+                array(
                   0 =>
-                  array (
+                  array(
                     'path' => '/path/to/files',
                     'prefix' => '',
                     'suffix' => '.php',
@@ -106,20 +114,20 @@ class Util_ConfigurationTest extends PHPUnit_Framework_TestCase
                   ),
                 ),
                 'file' =>
-                array (
+                array(
                   0 => '/path/to/file',
                 ),
               ),
             ),
             'whitelist' =>
-            array (
+            array(
               'addUncoveredFilesFromWhitelist' => TRUE,
               'include' =>
-              array (
+              array(
                 'directory' =>
-                array (
+                array(
                   0 =>
-                  array (
+                  array(
                     'path' => '/path/to/files',
                     'prefix' => '',
                     'suffix' => '.php',
@@ -127,16 +135,16 @@ class Util_ConfigurationTest extends PHPUnit_Framework_TestCase
                   ),
                 ),
                 'file' =>
-                array (
+                array(
                   0 => '/path/to/file',
                 ),
               ),
               'exclude' =>
-              array (
+              array(
                 'directory' =>
-                array (
+                array(
                   0 =>
-                  array (
+                  array(
                     'path' => '/path/to/files',
                     'prefix' => '',
                     'suffix' => '.php',
@@ -144,7 +152,7 @@ class Util_ConfigurationTest extends PHPUnit_Framework_TestCase
                   ),
                 ),
                 'file' =>
-                array (
+                array(
                   0 => '/path/to/file',
                 ),
               ),
@@ -154,16 +162,16 @@ class Util_ConfigurationTest extends PHPUnit_Framework_TestCase
         );
     }
 
-    public function testGetGroupConfiguration()
+    public function testGroupConfigurationIsReadCorrectly()
     {
         $this->assertEquals(
-          array (
+          array(
             'include' =>
-            array (
+            array(
               0 => 'name',
             ),
             'exclude' =>
-            array (
+            array(
               0 => 'name',
             ),
           ),
@@ -171,18 +179,18 @@ class Util_ConfigurationTest extends PHPUnit_Framework_TestCase
         );
     }
 
-    public function testGetListenerConfiguration()
+    public function testListenerConfigurationIsReadCorrectly()
     {
         $this->assertEquals(
-          array (
+          array(
             0 =>
-            array (
+            array(
               'class' => 'MyListener',
               'file' => '/optional/path/to/MyListener.php',
               'arguments' =>
-              array (
+              array(
                 0 =>
-                array (
+                array(
                   0 => 'Sebastian',
                 ),
                 1 => 22,
@@ -199,10 +207,10 @@ class Util_ConfigurationTest extends PHPUnit_Framework_TestCase
         );
     }
 
-    public function testGetLoggingConfiguration()
+    public function testLoggingConfigurationIsReadCorrectly()
     {
         $this->assertEquals(
-          array (
+          array(
             'title' => 'My Project',
             'charset' => 'UTF-8',
             'lowUpperBound' => '35',
@@ -225,32 +233,49 @@ class Util_ConfigurationTest extends PHPUnit_Framework_TestCase
         );
     }
 
-    public function testGetPHPConfiguration()
+    public function testPHPConfigurationIsReadCorrectly()
     {
         $this->assertEquals(
-          array (
+          array(
             'include_path' => dirname(dirname(__FILE__)).'/_files/.',
-            'ini' =>
-            array (
-              'foo' => 'bar',
-            ),
-            'const' =>
-            array (
-              'foo' => 'bar',
-            ),
-            'var' =>
-            array (
-              'foo' => 'bar',
-            ),
+            'ini'=> array('foo' => 'bar'),
+            'const'=> array('foo' => FALSE, 'bar' => TRUE),
+            'var'=> array('foo' => FALSE),
+            'env'=> array('foo' => TRUE),
+            'post'=> array('foo' => 'bar'),
+            'get'=> array('foo' => 'bar'),
+            'cookie'=> array('foo' => 'bar'),
+            'server'=> array('foo' => 'bar'),
+            'files'=> array('foo' => 'bar'),
+            'request'=> array('foo' => 'bar'),
           ),
           $this->configuration->getPHPConfiguration()
         );
     }
 
-    public function testGetPHPUnitConfiguration()
+    /**
+     * @backupGlobals enabled
+     */
+    public function testPHPConfigurationIsHandledCorrectly()
+    {
+        $this->configuration->handlePHPConfiguration();
+
+        $this->assertEquals(FALSE, foo);
+        $this->assertEquals(TRUE, bar);
+        $this->assertEquals(FALSE, $GLOBALS['foo']);
+        $this->assertEquals(TRUE, $_ENV['foo']);
+        $this->assertEquals('bar', $_POST['foo']);
+        $this->assertEquals('bar', $_GET['foo']);
+        $this->assertEquals('bar', $_COOKIE['foo']);
+        $this->assertEquals('bar', $_SERVER['foo']);
+        $this->assertEquals('bar', $_FILES['foo']);
+        $this->assertEquals('bar', $_REQUEST['foo']);
+    }
+
+    public function testPHPUnitConfigurationIsReadCorrectly()
     {
         $this->assertEquals(
-          array (
+          array(
             'backupGlobals' => TRUE,
             'backupStaticAttributes' => FALSE,
             'bootstrap' => '/path/to/bootstrap.php',
@@ -270,12 +295,12 @@ class Util_ConfigurationTest extends PHPUnit_Framework_TestCase
         );
     }
 
-    public function testGetSeleniumBrowserConfiguration()
+    public function testSeleniumBrowserConfigurationIsReadCorrectly()
     {
         $this->assertEquals(
-          array (
+          array(
             0 =>
-            array (
+            array(
               'name' => 'Firefox on Linux',
               'browser' => '*firefox /usr/lib/firefox/firefox-bin',
               'host' => 'my.linux.box',

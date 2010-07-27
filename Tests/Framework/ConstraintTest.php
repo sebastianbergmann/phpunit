@@ -2453,7 +2453,7 @@ class Framework_ConstraintTest extends PHPUnit_Framework_TestCase
 
         catch (PHPUnit_Framework_ExpectationFailedException $e) {
             $this->assertEquals(
-              "Failed asserting that \nArray\n(\n    [0] => foo\n)\n is empty.",
+              'Failed asserting that an array is empty.',
               $e->getDescription()
             );
 
@@ -2476,7 +2476,7 @@ class Framework_ConstraintTest extends PHPUnit_Framework_TestCase
 
         catch (PHPUnit_Framework_ExpectationFailedException $e) {
             $this->assertEquals(
-              "custom message\nFailed asserting that \nArray\n(\n    [0] => foo\n)\n is empty.",
+              "custom message\nFailed asserting that an array is empty.",
               $e->getDescription()
             );
 

@@ -142,6 +142,13 @@
  *     <ini name="foo" value="bar"/>
  *     <const name="foo" value="bar"/>
  *     <var name="foo" value="bar"/>
+ *     <env name="foo" value="bar"/>
+ *     <post name="foo" value="bar"/>
+ *     <get name="foo" value="bar"/>
+ *     <cookie name="foo" value="bar"/>
+ *     <server name="foo" value="bar"/>
+ *     <files name="foo" value="bar"/>
+ *     <request name="foo" value="bar"/>
  *   </php>
  *
  *   <selenium>
@@ -416,7 +423,14 @@ class PHPUnit_Util_Configuration
           'include_path' => '',
           'ini'          => array(),
           'const'        => array(),
-          'var'          => array()
+          'var'          => array(),
+          'env'          => array(),
+          'post'         => array(),
+          'get'          => array(),
+          'cookie'       => array(),
+          'server'       => array(),
+          'files'        => array(),
+          'request'      => array()
         );
 
         $nl = $this->xpath->query('php/includePath');
@@ -436,30 +450,16 @@ class PHPUnit_Util_Configuration
             $name  = (string)$const->getAttribute('name');
             $value = (string)$const->getAttribute('value');
 
-            if (strtolower($value) == 'false') {
-                $value = FALSE;
-            }
-
-            else if (strtolower($value) == 'true') {
-                $value = TRUE;
-            }
-
-            $result['const'][$name] = $value;
+            $result['const'][$name] = $this->getBoolean($value, $value);
         }
 
-        foreach ($this->xpath->query('php/var') as $var) {
-            $name  = (string)$var->getAttribute('name');
-            $value = (string)$var->getAttribute('value');
+        foreach (array('var', 'env', 'post', 'get', 'cookie', 'server', 'files', 'request') as $array) {
+            foreach ($this->xpath->query('php/' . $array) as $var) {
+                $name  = (string)$var->getAttribute('name');
+                $value = (string)$var->getAttribute('value');
 
-            if (strtolower($value) == 'false') {
-                $value = FALSE;
+                $result[$array][$name] = $this->getBoolean($value, $value);
             }
-
-            else if (strtolower($value) == 'true') {
-                $value = TRUE;
-            }
-
-            $result['var'][$name] = $value;
         }
 
         return $result;
@@ -496,8 +496,16 @@ class PHPUnit_Util_Configuration
             }
         }
 
-        foreach ($configuration['var'] as $name => $value) {
-            $GLOBALS[$name] = $value;
+        foreach (array('var', 'env', 'post', 'get', 'cookie', 'server', 'files', 'request') as $array) {
+            if ($array == 'var') {
+                $target = &$GLOBALS;
+            } else {
+                $target = &$GLOBALS['_' . strtoupper($array)];
+            }
+
+            foreach ($configuration[$array] as $name => $value) {
+                $target[$name] = $value;
+            }
         }
     }
 
