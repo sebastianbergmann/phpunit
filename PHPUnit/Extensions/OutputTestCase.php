@@ -149,7 +149,7 @@ abstract class PHPUnit_Extensions_OutputTestCase extends PHPUnit_Framework_TestC
      */
     public function expectedString()
     {
-        return $this->expectedOutput;
+        return $this->expectedString;
     }
 
     /**

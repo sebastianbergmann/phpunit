@@ -79,6 +79,11 @@ class PHPUnit_Extensions_RepeatedTest extends PHPUnit_Extensions_TestDecorator
     protected $excludeGroups = array();
 
     /**
+     * @var boolean
+     */
+    protected $processIsolation = FALSE;
+
+    /**
      * @var    integer
      */
     protected $timesRepeat = 1;
