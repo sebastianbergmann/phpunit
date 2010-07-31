@@ -320,7 +320,8 @@ abstract class PHPUnit_Util_CodeCoverage
      */
     public static function isFile($file)
     {
-        if (strpos($file, 'eval()\'d code') ||
+        if ($filename == '-' ||
+            strpos($file, 'eval()\'d code') ||
             strpos($file, 'runtime-created function') ||
             strpos($file, 'assert code') ||
             strpos($file, 'regexp code')) {
