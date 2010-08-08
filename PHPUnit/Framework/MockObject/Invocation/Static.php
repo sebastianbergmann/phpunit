@@ -61,28 +61,28 @@ class PHPUnit_Framework_MockObject_Invocation_Static implements PHPUnit_Framewor
      * @var array
      */
     protected static $uncloneableExtensions = array(
-        'mysqli',
-        'SQLite',
-        'sqlite3',
-        'tidy',
-        'xmlwriter',
-        'xsl'
+      'mysqli',
+      'SQLite',
+      'sqlite3',
+      'tidy',
+      'xmlwriter',
+      'xsl'
     );
 
     /**
      * @var array
      */
     protected static $uncloneableClasses = array(
-        'AppendIterator',
-        'CachingIterator',
-        'Closure',
-        'COMPersistHelper',
-        'IteratorIterator',
-        'LimitIterator',
-        'RecursiveCachingIterator',
-        'RecursiveRegexIterator',
-        'RegexIterator',
-        'ZipArchive'
+      'AppendIterator',
+      'CachingIterator',
+      'Closure',
+      'COMPersistHelper',
+      'IteratorIterator',
+      'LimitIterator',
+      'RecursiveCachingIterator',
+      'RecursiveRegexIterator',
+      'RegexIterator',
+      'ZipArchive'
     );
 
     /**
