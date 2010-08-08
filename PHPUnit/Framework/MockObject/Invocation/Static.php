@@ -58,6 +58,34 @@
 class PHPUnit_Framework_MockObject_Invocation_Static implements PHPUnit_Framework_MockObject_Invocation, PHPUnit_Framework_SelfDescribing
 {
     /**
+     * @var array
+     */
+    protected static $uncloneableExtensions = array(
+        'mysqli',
+        'SQLite',
+        'sqlite3',
+        'tidy',
+        'xmlwriter',
+        'xsl'
+    );
+
+    /**
+     * @var array
+     */
+    protected static $uncloneableClasses = array(
+        'AppendIterator',
+        'CachingIterator',
+        'Closure',
+        'COMPersistHelper',
+        'IteratorIterator',
+        'LimitIterator',
+        'RecursiveCachingIterator',
+        'RecursiveRegexIterator',
+        'RegexIterator',
+        'ZipArchive'
+    );
+
+    /**
      * @var string
      */
     public $className;
@@ -132,6 +160,12 @@ class PHPUnit_Framework_MockObject_Invocation_Static implements PHPUnit_Framewor
             catch (Exception $e) {
                 return $original;
             }
+        }
+
+        if ($object->isInternal() &&
+           (in_array($object->getExtensionName(), self::$uncloneableExtensions) ||
+            in_array($object->getName(), self::$uncloneableClasses))) {
+                return $original;
         }
 
         return clone $original;
