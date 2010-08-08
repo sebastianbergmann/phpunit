@@ -61,28 +61,28 @@ class PHPUnit_Framework_MockObject_Invocation_Static implements PHPUnit_Framewor
      * @var array
      */
     protected static $uncloneableExtensions = array(
-      'mysqli',
-      'SQLite',
-      'sqlite3',
-      'tidy',
-      'xmlwriter',
-      'xsl'
+      'mysqli' => TRUE,
+      'SQLite' => TRUE,
+      'sqlite3' => TRUE,
+      'tidy' => TRUE,
+      'xmlwriter' => TRUE,
+      'xsl' => TRUE
     );
 
     /**
      * @var array
      */
     protected static $uncloneableClasses = array(
-      'AppendIterator',
-      'CachingIterator',
-      'Closure',
-      'COMPersistHelper',
-      'IteratorIterator',
-      'LimitIterator',
-      'RecursiveCachingIterator',
-      'RecursiveRegexIterator',
-      'RegexIterator',
-      'ZipArchive'
+      'AppendIterator' => TRUE,
+      'CachingIterator' => TRUE,
+      'Closure' => TRUE,
+      'COMPersistHelper' => TRUE,
+      'IteratorIterator' => TRUE,
+      'LimitIterator' => TRUE,
+      'RecursiveCachingIterator' => TRUE,
+      'RecursiveRegexIterator' => TRUE,
+      'RegexIterator' => TRUE,
+      'ZipArchive' => TRUE
     );
 
     /**
@@ -163,9 +163,9 @@ class PHPUnit_Framework_MockObject_Invocation_Static implements PHPUnit_Framewor
         }
 
         if ($object->isInternal() &&
-           (in_array($object->getExtensionName(), self::$uncloneableExtensions) ||
-            in_array($object->getName(), self::$uncloneableClasses))) {
-                return $original;
+            isset(self::$uncloneableExtensions[$object->getExtensionName()]) ||
+            isset(self::$uncloneableClasses[$object->getName()])) {
+            return $original;
         }
 
         return clone $original;
