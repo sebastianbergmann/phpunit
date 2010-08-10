@@ -423,7 +423,7 @@ class PHPUnit_Framework_MockObject_Generator
                 $cloneMethod = $class->getMethod('__clone');
 
                 if (!$cloneMethod->isFinal()) {
-                    if ($callOriginalClone) {
+                    if ($callOriginalClone && !$isInterface) {
                         $cloneTemplate = new Text_Template(
                           $templateDir . 'unmocked_clone.tpl'
                         );
