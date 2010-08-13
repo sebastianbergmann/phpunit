@@ -269,8 +269,7 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
      * @var array
      */
     protected static $templateMethods = array(
-      'setUpBeforeClass', 'setUp', 'assertPreConditions',
-      'assertPostConditions', 'tearDown', 'tearDownAfterClass'
+      'setUp', 'assertPreConditions', 'assertPostConditions', 'tearDown'
     );
 
     /**
