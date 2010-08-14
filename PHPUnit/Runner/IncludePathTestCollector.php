@@ -116,8 +116,8 @@ class PHPUnit_Runner_IncludePathTestCollector implements PHPUnit_Runner_TestColl
         );
 
         if ($this->filterIterator !== NULL) {
-            $class          = new ReflectionClass($this->filterIterator);
-            $filterIterator = $class->newInstance($iterator);
+            $class    = new ReflectionClass($this->filterIterator);
+            $iterator = $class->newInstance($iterator);
         }
 
         return $iterator;
