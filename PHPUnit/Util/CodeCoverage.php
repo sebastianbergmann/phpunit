@@ -315,16 +315,16 @@ abstract class PHPUnit_Util_CodeCoverage
     /**
      * Checks whether a file (as seen by Xdebug) is actually a file.
      *
-     * @param  string $file
+     * @param  string $filename
      * @return boolean
      */
-    public static function isFile($file)
+    public static function isFile($filename)
     {
         if ($filename == '-' ||
-            strpos($file, 'eval()\'d code') ||
-            strpos($file, 'runtime-created function') ||
-            strpos($file, 'assert code') ||
-            strpos($file, 'regexp code')) {
+            strpos($filename, 'eval()\'d code') ||
+            strpos($filename, 'runtime-created function') ||
+            strpos($filename, 'assert code') ||
+            strpos($filename, 'regexp code')) {
             return FALSE;
         }
 
