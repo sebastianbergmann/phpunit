@@ -3,6 +3,11 @@ PHPUnit 3.4
 
 This is the list of changes for the PHPUnit 3.4 release series.
 
+PHPUnit 3.4.16
+--------------
+
+* Fixed GH-2: Process Isolation yields parse error on global data with single quotes.
+
 PHPUnit 3.4.15
 --------------
 
