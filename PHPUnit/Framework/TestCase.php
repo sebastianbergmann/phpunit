@@ -192,6 +192,13 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
     protected $expectedExceptionCode;
 
     /**
+     * The stack trace to where the expected exception was set.
+     *
+     * @var    array
+     */
+    protected $expectedExceptionTrace = array();
+
+    /**
      * The name of the test case.
      *
      * @var    string
@@ -352,6 +359,7 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
         $this->expectedException        = $exceptionName;
         $this->expectedExceptionMessage = $exceptionMessage;
         $this->expectedExceptionCode    = $exceptionCode;
+        $this->expectedExceptionTrace   = debug_backtrace();
     }
 
     /**
@@ -791,7 +799,7 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
 
         if ($this->expectedException !== NULL) {
             $this->numAssertions++;
-            $this->fail('Expected exception ' . $this->expectedException);
+            $this->syntheticFail('Expected exception ' . $this->expectedException, '', 0, $this->expectedExceptionTrace);
         }
 
         return $testResult;

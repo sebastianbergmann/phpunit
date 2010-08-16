@@ -35,7 +35,7 @@
  * POSSIBILITY OF SUCH DAMAGE.
  *
  * @package    PHPUnit
- * @subpackage Util
+ * @subpackage Framework
  * @author     Sebastian Bergmann <sebastian@phpunit.de>
  * @copyright  2002-2010 Sebastian Bergmann <sebastian@phpunit.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
@@ -43,13 +43,11 @@
  * @since      File available since Release 2.0.0
  */
 
-require_once 'File/Iterator/Factory.php';
-
 /**
- * Utility class for code filtering.
+ * Creates a synthetic failed assertion.
  *
  * @package    PHPUnit
- * @subpackage Util
+ * @subpackage Framework
  * @author     Sebastian Bergmann <sebastian@phpunit.de>
  * @copyright  2002-2010 Sebastian Bergmann <sebastian@phpunit.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
@@ -57,82 +55,68 @@ require_once 'File/Iterator/Factory.php';
  * @link       http://www.phpunit.de/
  * @since      Class available since Release 2.0.0
  */
-class PHPUnit_Util_Filter
+class PHPUnit_Framework_SyntheticError extends PHPUnit_Framework_AssertionFailedError
 {
     /**
-     * Filters stack frames from PHPUnit classes.
+     * The synthetic file.
      *
-     * @param  Exception $e
-     * @param  boolean   $filterTests
-     * @param  boolean   $asString
-     * @return string
+     * @var    string
      */
-    public static function getFilteredStacktrace(Exception $e, $filterTests = TRUE, $asString = TRUE)
+    protected $syntheticFile = '';
+
+    /**
+     * The synthetic line number.
+     *
+     * @var    integer
+     */
+    protected $syntheticLine = 0;
+
+    /**
+     * The synthetic trace.
+     *
+     * @var    array
+     */
+    protected $syntheticTrace = array();
+
+    /**
+     * Constructor.
+     *
+     * @param  string  $message
+     * @param  integer $code
+     * @param  string  $file
+     * @param  integer $line
+     * @param  array   $trace
+     */
+    public function __construct($message, $code, $file, $line, $trace)
     {
-        if ($asString === TRUE) {
-            $filteredStacktrace = '';
-        } else {
-            $filteredStacktrace = array();
-        }
+        parent::__construct($message, $code);
 
-        $groups = array('DEFAULT');
-
-        if (!defined('PHPUNIT_TESTSUITE')) {
-            $groups[] = 'PHPUNIT';
-        }
-
-        if ($filterTests) {
-            $groups[] = 'TESTS';
-        }
-
-        if (method_exists($e, 'getSyntheticTrace')) {
-            $eTrace = $e->getSyntheticTrace();
-        } else {
-            $eTrace = $e->getTrace();
-        }
-
-        if (!self::frameExists($eTrace, $e->getFile(), $e->getLine())) {
-            array_unshift(
-              $eTrace, array('file' => $e->getFile(), 'line' => $e->getLine())
-            );
-        }
-
-        foreach ($eTrace as $frame) {
-            if (isset($frame['file']) && is_file($frame['file']) &&
-                !PHP_CodeCoverage::getInstance()->filter()->isFiltered(
-                  $frame['file'], $groups, TRUE)) {
-                if ($asString === TRUE) {
-                    $filteredStacktrace .= sprintf(
-                      "%s:%s\n",
-
-                      $frame['file'],
-                      isset($frame['line']) ? $frame['line'] : '?'
-                    );
-                } else {
-                    $filteredStacktrace[] = $frame;
-                }
-            }
-        }
-
-        return $filteredStacktrace;
+        $this->syntheticFile  = $file;
+        $this->syntheticLine  = $line;
+        $this->syntheticTrace = $trace;
     }
 
     /**
-     * @param  array  $trace
-     * @param  string $file
-     * @param  int    $line
-     * @return boolean
-     * @since  Method available since Release 3.3.2
+     * @return string
      */
-    public static function frameExists(array $trace, $file, $line)
+    public function getSyntheticFile()
     {
-        foreach ($trace as $frame) {
-            if (isset($frame['file']) && $frame['file'] == $file &&
-                isset($frame['line']) && $frame['line'] == $line) {
-                return TRUE;
-            }
-        }
+        return $this->syntheticFile;
+    }
 
-        return FALSE;
+    /**
+     * @return integer
+     */
+    public function getSyntheticLine()
+    {
+        return $this->syntheticLine;
+    }
+
+    /**
+     * @return array
+     */
+    public function getSyntheticTrace()
+    {
+        return $this->syntheticTrace;
     }
 }
