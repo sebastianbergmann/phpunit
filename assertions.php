@@ -50,7 +50,7 @@ ksort($methods);
 
 foreach ($methods as $name => $data) {
     $buffer .= sprintf(
-      "\n\n%s\nfunction %s(%s)\n{\n    %s::%s(%s);\n}",
+      "\n\n%s\nfunction %s(%s)\n{\n    return %s::%s(%s);\n}",
       str_replace('    ', '', $data['docblock']),
       $name,
       $data['sigDecl'],
