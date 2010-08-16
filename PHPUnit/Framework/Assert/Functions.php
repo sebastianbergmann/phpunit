@@ -1225,7 +1225,7 @@ function assertTag($matcher, $actual, $message = '', $isHtml = TRUE)
  * @param  string   $message
  * @since  Method available since Release 3.0.0
  */
-function assertThat($value, $constraint, $message = '')
+function assertThat($value, PHPUnit_Framework_Constraint $constraint, $message = '')
 {
     PHPUnit_Framework_Assert::assertThat($value, $constraint, $message);
 }
@@ -1340,7 +1340,7 @@ function assertXmlStringNotEqualsXmlString($expectedXml, $actualXml, $message = 
  * @return PHPUnit_Framework_Constraint_Attribute
  * @since  Method available since Release 3.1.0
  */
-function attribute($constraint, $attributeName)
+function attribute(PHPUnit_Framework_Constraint $constraint, $attributeName)
 {
     PHPUnit_Framework_Assert::attribute($constraint, $attributeName);
 }
@@ -1592,7 +1592,7 @@ function logicalAnd()
  * @return PHPUnit_Framework_Constraint_Not
  * @since  Method available since Release 3.0.0
  */
-function logicalNot($constraint)
+function logicalNot(PHPUnit_Framework_Constraint $constraint)
 {
     PHPUnit_Framework_Assert::logicalNot($constraint);
 }
@@ -1690,4 +1690,138 @@ function stringEndsWith($suffix)
 function stringStartsWith($prefix)
 {
     PHPUnit_Framework_Assert::stringStartsWith($prefix);
+}
+
+/**
+ * Returns a matcher that matches when the method it is evaluated for
+ * is executed zero or more times.
+ *
+ * @return PHPUnit_Framework_MockObject_Matcher_AnyInvokedCount
+ * @since  Method available since Release 3.0.0
+ */
+function any()
+{
+    PHPUnit_Framework_TestCase::any();
+}
+
+/**
+ * Returns a matcher that matches when the method it is evaluated for
+ * is invoked at the given $index.
+ *
+ * @param  integer $index
+ * @return PHPUnit_Framework_MockObject_Matcher_InvokedAtIndex
+ * @since  Method available since Release 3.0.0
+ */
+function at($index)
+{
+    PHPUnit_Framework_TestCase::at($index);
+}
+
+/**
+ * Returns a matcher that matches when the method it is evaluated for
+ * is executed at least once.
+ *
+ * @return PHPUnit_Framework_MockObject_Matcher_InvokedAtLeastOnce
+ * @since  Method available since Release 3.0.0
+ */
+function atLeastOnce()
+{
+    PHPUnit_Framework_TestCase::atLeastOnce();
+}
+
+/**
+ * Returns a matcher that matches when the method it is evaluated for
+ * is executed exactly $count times.
+ *
+ * @param  integer $count
+ * @return PHPUnit_Framework_MockObject_Matcher_InvokedCount
+ * @since  Method available since Release 3.0.0
+ */
+function exactly($count)
+{
+    PHPUnit_Framework_TestCase::exactly($count);
+}
+
+/**
+ * Returns a matcher that matches when the method it is evaluated for
+ * is never executed.
+ *
+ * @return PHPUnit_Framework_MockObject_Matcher_InvokedCount
+ * @since  Method available since Release 3.0.0
+ */
+function never()
+{
+    PHPUnit_Framework_TestCase::never();
+}
+
+/**
+ *
+ *
+ * @param  mixed $value, ...
+ * @return PHPUnit_Framework_MockObject_Stub_ConsecutiveCalls
+ * @since  Method available since Release 3.0.0
+ */
+function onConsecutiveCalls()
+{
+    PHPUnit_Framework_TestCase::onConsecutiveCalls();
+}
+
+/**
+ * Returns a matcher that matches when the method it is evaluated for
+ * is executed exactly once.
+ *
+ * @return PHPUnit_Framework_MockObject_Matcher_InvokedCount
+ * @since  Method available since Release 3.0.0
+ */
+function once()
+{
+    PHPUnit_Framework_TestCase::once();
+}
+
+/**
+ *
+ *
+ * @param  integer $argumentIndex
+ * @return PHPUnit_Framework_MockObject_Stub_ReturnArgument
+ * @since  Method available since Release 3.3.0
+ */
+function returnArgument($argumentIndex)
+{
+    PHPUnit_Framework_TestCase::returnArgument($argumentIndex);
+}
+
+/**
+ *
+ *
+ * @param  mixed $callback
+ * @return PHPUnit_Framework_MockObject_Stub_ReturnCallback
+ * @since  Method available since Release 3.3.0
+ */
+function returnCallback($callback)
+{
+    PHPUnit_Framework_TestCase::returnCallback($callback);
+}
+
+/**
+ *
+ *
+ * @param  mixed $value
+ * @return PHPUnit_Framework_MockObject_Stub_Return
+ * @since  Method available since Release 3.0.0
+ */
+function returnValue($value)
+{
+    PHPUnit_Framework_TestCase::returnValue($value);
+}
+
+/**
+ *
+ *
+ * @param  Exception $exception
+ * @return PHPUnit_Framework_MockObject_Stub_Exception
+ * @since  Method available since Release 3.1.0
+ */
+function throwException(Exception $exception)
+{
+    PHPUnit_Framework_TestCase::throwException($exception);
 }
