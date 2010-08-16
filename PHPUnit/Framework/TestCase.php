@@ -799,7 +799,13 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
 
         if ($this->expectedException !== NULL) {
             $this->numAssertions++;
-            $this->syntheticFail('Expected exception ' . $this->expectedException, '', 0, $this->expectedExceptionTrace);
+
+            $this->syntheticFail(
+              'Expected exception ' . $this->expectedException,
+              '',
+              0,
+              $this->expectedExceptionTrace
+            );
         }
 
         return $testResult;

@@ -40,7 +40,7 @@
  * @copyright  2002-2010 Sebastian Bergmann <sebastian@phpunit.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @link       http://www.phpunit.de/
- * @since      File available since Release 2.0.0
+ * @since      File available since Release 3.5.0
  */
 
 /**
@@ -53,39 +53,39 @@
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    Release: @package_version@
  * @link       http://www.phpunit.de/
- * @since      Class available since Release 2.0.0
+ * @since      Class available since Release 3.5.0
  */
 class PHPUnit_Framework_SyntheticError extends PHPUnit_Framework_AssertionFailedError
 {
     /**
      * The synthetic file.
      *
-     * @var    string
+     * @var string
      */
     protected $syntheticFile = '';
 
     /**
      * The synthetic line number.
      *
-     * @var    integer
+     * @var integer
      */
     protected $syntheticLine = 0;
 
     /**
      * The synthetic trace.
      *
-     * @var    array
+     * @var array
      */
     protected $syntheticTrace = array();
 
     /**
      * Constructor.
      *
-     * @param  string  $message
-     * @param  integer $code
-     * @param  string  $file
-     * @param  integer $line
-     * @param  array   $trace
+     * @param string  $message
+     * @param integer $code
+     * @param string  $file
+     * @param integer $line
+     * @param array   $trace
      */
     public function __construct($message, $code, $file, $line, $trace)
     {

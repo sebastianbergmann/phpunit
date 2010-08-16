@@ -85,7 +85,7 @@ class PHPUnit_Util_Filter
             $groups[] = 'TESTS';
         }
 
-        if (method_exists($e, 'getSyntheticTrace')) {
+        if ($e instanceof PHPUnit_Framework_SyntheticError) {
             $eTrace = $e->getSyntheticTrace();
         } else {
             $eTrace = $e->getTrace();
