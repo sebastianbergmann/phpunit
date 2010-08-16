@@ -2,6 +2,7 @@
 <?php
 require_once 'PHPUnit/Autoload.php';
 
+$buffer  = '';
 $class   = new ReflectionClass('PHPUnit_Framework_Assert');
 $methods = array();
 
@@ -12,6 +13,7 @@ foreach ($class->getMethods() as $method) {
     if (strpos($name, 'assert') === 0 ||
         strpos($docblock, '@return PHPUnit_Framework_Constraint') !== FALSE) {
         $methods[$name] = array(
+          'class'    => 'PHPUnit_Framework_Assert',
           'docblock' => $docblock,
           'sigDecl'  => str_replace(
             array('= false', '= true'),
@@ -23,23 +25,7 @@ foreach ($class->getMethods() as $method) {
     }
 }
 
-ksort($methods);
-
-$buffer = '';
-
-foreach ($methods as $name => $data) {
-    $buffer .= sprintf(
-      "\n\n%s\nfunction %s(%s)\n{\n    PHPUnit_Framework_Assert::%s(%s);\n}",
-      str_replace('    ', '', $data['docblock']),
-      $name,
-      $data['sigDecl'],
-      $name,
-      $data['sigCall']
-    );
-}
-
-$class   = new ReflectionClass('PHPUnit_Framework_TestCase');
-$methods = array();
+$class = new ReflectionClass('PHPUnit_Framework_TestCase');
 
 foreach ($class->getMethods() as $method) {
     $docblock = $method->getDocComment();
@@ -48,6 +34,7 @@ foreach ($class->getMethods() as $method) {
     if (strpos($docblock, '@return PHPUnit_Framework_MockObject_Matcher') !== FALSE ||
         strpos($docblock, '@return PHPUnit_Framework_MockObject_Stub') !== FALSE) {
         $methods[$name] = array(
+          'class'    => 'PHPUnit_Framework_TestCase',
           'docblock' => $docblock,
           'sigDecl'  => str_replace(
             array('= false', '= true'),
@@ -63,10 +50,11 @@ ksort($methods);
 
 foreach ($methods as $name => $data) {
     $buffer .= sprintf(
-      "\n\n%s\nfunction %s(%s)\n{\n    PHPUnit_Framework_TestCase::%s(%s);\n}",
+      "\n\n%s\nfunction %s(%s)\n{\n    %s::%s(%s);\n}",
       str_replace('    ', '', $data['docblock']),
       $name,
       $data['sigDecl'],
+      $data['class'],
       $name,
       $data['sigCall']
     );

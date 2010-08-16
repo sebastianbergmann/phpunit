@@ -44,6 +44,18 @@
  */
 
 /**
+ * Returns a matcher that matches when the method it is evaluated for
+ * is executed zero or more times.
+ *
+ * @return PHPUnit_Framework_MockObject_Matcher_AnyInvokedCount
+ * @since  Method available since Release 3.0.0
+ */
+function any()
+{
+    PHPUnit_Framework_TestCase::any();
+}
+
+/**
  * Returns a PHPUnit_Framework_Constraint_IsAnything matcher object.
  *
  * @return PHPUnit_Framework_Constraint_IsAnything
@@ -1333,6 +1345,31 @@ function assertXmlStringNotEqualsXmlString($expectedXml, $actualXml, $message = 
 }
 
 /**
+ * Returns a matcher that matches when the method it is evaluated for
+ * is invoked at the given $index.
+ *
+ * @param  integer $index
+ * @return PHPUnit_Framework_MockObject_Matcher_InvokedAtIndex
+ * @since  Method available since Release 3.0.0
+ */
+function at($index)
+{
+    PHPUnit_Framework_TestCase::at($index);
+}
+
+/**
+ * Returns a matcher that matches when the method it is evaluated for
+ * is executed at least once.
+ *
+ * @return PHPUnit_Framework_MockObject_Matcher_InvokedAtLeastOnce
+ * @since  Method available since Release 3.0.0
+ */
+function atLeastOnce()
+{
+    PHPUnit_Framework_TestCase::atLeastOnce();
+}
+
+/**
  * Returns a PHPUnit_Framework_Constraint_Attribute matcher object.
  *
  * @param  PHPUnit_Framework_Constraint $constraint
@@ -1429,6 +1466,19 @@ function containsOnly($type)
 function equalTo($value, $delta = 0, $maxDepth = 10, $canonicalize = FALSE, $ignoreCase = FALSE)
 {
     PHPUnit_Framework_Assert::equalTo($value, $delta, $maxDepth, $canonicalize, $ignoreCase);
+}
+
+/**
+ * Returns a matcher that matches when the method it is evaluated for
+ * is executed exactly $count times.
+ *
+ * @param  integer $count
+ * @return PHPUnit_Framework_MockObject_Matcher_InvokedCount
+ * @since  Method available since Release 3.0.0
+ */
+function exactly($count)
+{
+    PHPUnit_Framework_TestCase::exactly($count);
 }
 
 /**
@@ -1644,105 +1694,6 @@ function matchesRegularExpression($pattern)
 }
 
 /**
- * Returns a PHPUnit_Framework_Constraint_ObjectHasAttribute matcher object.
- *
- * @param  string $attributeName
- * @return PHPUnit_Framework_Constraint_ObjectHasAttribute
- * @since  Method available since Release 3.0.0
- */
-function objectHasAttribute($attributeName)
-{
-    PHPUnit_Framework_Assert::objectHasAttribute($attributeName);
-}
-
-/**
- * Returns a PHPUnit_Framework_Constraint_StringContains matcher object.
- *
- * @param  string  $string
- * @param  boolean $case
- * @return PHPUnit_Framework_Constraint_StringContains
- * @since  Method available since Release 3.0.0
- */
-function stringContains($string, $case = TRUE)
-{
-    PHPUnit_Framework_Assert::stringContains($string, $case);
-}
-
-/**
- * Returns a PHPUnit_Framework_Constraint_StringEndsWith matcher object.
- *
- * @param  mixed $suffix
- * @return PHPUnit_Framework_Constraint_StringEndsWith
- * @since  Method available since Release 3.4.0
- */
-function stringEndsWith($suffix)
-{
-    PHPUnit_Framework_Assert::stringEndsWith($suffix);
-}
-
-/**
- * Returns a PHPUnit_Framework_Constraint_StringStartsWith matcher object.
- *
- * @param  mixed $prefix
- * @return PHPUnit_Framework_Constraint_StringStartsWith
- * @since  Method available since Release 3.4.0
- */
-function stringStartsWith($prefix)
-{
-    PHPUnit_Framework_Assert::stringStartsWith($prefix);
-}
-
-/**
- * Returns a matcher that matches when the method it is evaluated for
- * is executed zero or more times.
- *
- * @return PHPUnit_Framework_MockObject_Matcher_AnyInvokedCount
- * @since  Method available since Release 3.0.0
- */
-function any()
-{
-    PHPUnit_Framework_TestCase::any();
-}
-
-/**
- * Returns a matcher that matches when the method it is evaluated for
- * is invoked at the given $index.
- *
- * @param  integer $index
- * @return PHPUnit_Framework_MockObject_Matcher_InvokedAtIndex
- * @since  Method available since Release 3.0.0
- */
-function at($index)
-{
-    PHPUnit_Framework_TestCase::at($index);
-}
-
-/**
- * Returns a matcher that matches when the method it is evaluated for
- * is executed at least once.
- *
- * @return PHPUnit_Framework_MockObject_Matcher_InvokedAtLeastOnce
- * @since  Method available since Release 3.0.0
- */
-function atLeastOnce()
-{
-    PHPUnit_Framework_TestCase::atLeastOnce();
-}
-
-/**
- * Returns a matcher that matches when the method it is evaluated for
- * is executed exactly $count times.
- *
- * @param  integer $count
- * @return PHPUnit_Framework_MockObject_Matcher_InvokedCount
- * @since  Method available since Release 3.0.0
- */
-function exactly($count)
-{
-    PHPUnit_Framework_TestCase::exactly($count);
-}
-
-/**
  * Returns a matcher that matches when the method it is evaluated for
  * is never executed.
  *
@@ -1752,6 +1703,18 @@ function exactly($count)
 function never()
 {
     PHPUnit_Framework_TestCase::never();
+}
+
+/**
+ * Returns a PHPUnit_Framework_Constraint_ObjectHasAttribute matcher object.
+ *
+ * @param  string $attributeName
+ * @return PHPUnit_Framework_Constraint_ObjectHasAttribute
+ * @since  Method available since Release 3.0.0
+ */
+function objectHasAttribute($attributeName)
+{
+    PHPUnit_Framework_Assert::objectHasAttribute($attributeName);
 }
 
 /**
@@ -1812,6 +1775,43 @@ function returnCallback($callback)
 function returnValue($value)
 {
     PHPUnit_Framework_TestCase::returnValue($value);
+}
+
+/**
+ * Returns a PHPUnit_Framework_Constraint_StringContains matcher object.
+ *
+ * @param  string  $string
+ * @param  boolean $case
+ * @return PHPUnit_Framework_Constraint_StringContains
+ * @since  Method available since Release 3.0.0
+ */
+function stringContains($string, $case = TRUE)
+{
+    PHPUnit_Framework_Assert::stringContains($string, $case);
+}
+
+/**
+ * Returns a PHPUnit_Framework_Constraint_StringEndsWith matcher object.
+ *
+ * @param  mixed $suffix
+ * @return PHPUnit_Framework_Constraint_StringEndsWith
+ * @since  Method available since Release 3.4.0
+ */
+function stringEndsWith($suffix)
+{
+    PHPUnit_Framework_Assert::stringEndsWith($suffix);
+}
+
+/**
+ * Returns a PHPUnit_Framework_Constraint_StringStartsWith matcher object.
+ *
+ * @param  mixed $prefix
+ * @return PHPUnit_Framework_Constraint_StringStartsWith
+ * @since  Method available since Release 3.4.0
+ */
+function stringStartsWith($prefix)
+{
+    PHPUnit_Framework_Assert::stringStartsWith($prefix);
 }
 
 /**
