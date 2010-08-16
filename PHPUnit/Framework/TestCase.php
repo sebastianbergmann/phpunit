@@ -1185,7 +1185,7 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
      * @return PHPUnit_Framework_MockObject_Matcher_AnyInvokedCount
      * @since  Method available since Release 3.0.0
      */
-    public static function any()
+    protected function any()
     {
         return new PHPUnit_Framework_MockObject_Matcher_AnyInvokedCount;
     }
@@ -1197,7 +1197,7 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
      * @return PHPUnit_Framework_MockObject_Matcher_InvokedCount
      * @since  Method available since Release 3.0.0
      */
-    public static function never()
+    protected function never()
     {
         return new PHPUnit_Framework_MockObject_Matcher_InvokedCount(0);
     }
@@ -1209,7 +1209,7 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
      * @return PHPUnit_Framework_MockObject_Matcher_InvokedAtLeastOnce
      * @since  Method available since Release 3.0.0
      */
-    public static function atLeastOnce()
+    protected function atLeastOnce()
     {
         return new PHPUnit_Framework_MockObject_Matcher_InvokedAtLeastOnce;
     }
@@ -1221,7 +1221,7 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
      * @return PHPUnit_Framework_MockObject_Matcher_InvokedCount
      * @since  Method available since Release 3.0.0
      */
-    public static function once()
+    protected function once()
     {
         return new PHPUnit_Framework_MockObject_Matcher_InvokedCount(1);
     }
@@ -1234,7 +1234,7 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
      * @return PHPUnit_Framework_MockObject_Matcher_InvokedCount
      * @since  Method available since Release 3.0.0
      */
-    public static function exactly($count)
+    protected function exactly($count)
     {
         return new PHPUnit_Framework_MockObject_Matcher_InvokedCount($count);
     }
@@ -1247,7 +1247,7 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
      * @return PHPUnit_Framework_MockObject_Matcher_InvokedAtIndex
      * @since  Method available since Release 3.0.0
      */
-    public static function at($index)
+    protected function at($index)
     {
         return new PHPUnit_Framework_MockObject_Matcher_InvokedAtIndex($index);
     }
@@ -1259,7 +1259,7 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
      * @return PHPUnit_Framework_MockObject_Stub_Return
      * @since  Method available since Release 3.0.0
      */
-    public static function returnValue($value)
+    protected function returnValue($value)
     {
         return new PHPUnit_Framework_MockObject_Stub_Return($value);
     }
@@ -1271,7 +1271,7 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
      * @return PHPUnit_Framework_MockObject_Stub_ReturnArgument
      * @since  Method available since Release 3.3.0
      */
-    public static function returnArgument($argumentIndex)
+    protected function returnArgument($argumentIndex)
     {
         return new PHPUnit_Framework_MockObject_Stub_ReturnArgument(
           $argumentIndex
@@ -1285,7 +1285,7 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
      * @return PHPUnit_Framework_MockObject_Stub_ReturnCallback
      * @since  Method available since Release 3.3.0
      */
-    public static function returnCallback($callback)
+    protected function returnCallback($callback)
     {
         return new PHPUnit_Framework_MockObject_Stub_ReturnCallback($callback);
     }
@@ -1297,7 +1297,7 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
      * @return PHPUnit_Framework_MockObject_Stub_Exception
      * @since  Method available since Release 3.1.0
      */
-    public static function throwException(Exception $exception)
+    protected function throwException(Exception $exception)
     {
         return new PHPUnit_Framework_MockObject_Stub_Exception($exception);
     }
@@ -1309,7 +1309,7 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
      * @return PHPUnit_Framework_MockObject_Stub_ConsecutiveCalls
      * @since  Method available since Release 3.0.0
      */
-    public static function onConsecutiveCalls()
+    protected function onConsecutiveCalls()
     {
         $args = func_get_args();
 
