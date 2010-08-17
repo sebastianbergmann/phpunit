@@ -48,4 +48,5 @@ PHPUnit 3.5.0
 * Replaced `PHPUnit_Util_Template` with the [Text_Template](http://github.com/sebastianbergmann/php-text-template) component.
 * Replaced `PHPUnit_Util_Timer` with the [PHP_Timer](http://github.com/sebastianbergmann/php-timer) component.
 * Fixed TRAC-1068: `assertSame()` on two floats does not print the error message.
+* Fixed GH-7: Code paths that create a `PHPUnit_Framework_Warning` end up serializing/unserializing globals unconditionally.
 * PHPUnit now requires PHP 5.2.7 (or later) but PHP 5.3.3 (or later) is highly recommended.
