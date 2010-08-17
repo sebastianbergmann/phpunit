@@ -1,0 +1,4 @@
+- add last 2 arguments to parameter object
+- refactor getMock() in the other repository to not pass $this to MockSpecification 
+-- refactor MockSpecification to use static factory method directly
+- add fluent interface
