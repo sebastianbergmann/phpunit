@@ -58,7 +58,7 @@
 class PHPUnit_Framework_Warning extends PHPUnit_Framework_TestCase
 {
     /**
-     * @var    string
+     * @var string
      */
     protected $message = '';
 
@@ -88,7 +88,7 @@ class PHPUnit_Framework_Warning extends PHPUnit_Framework_TestCase
     protected $useOutputBuffering = FALSE;
 
     /**
-     * @param  string  $message
+     * @param string $message
      */
     public function __construct($message = '')
     {
