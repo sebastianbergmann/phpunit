@@ -81,7 +81,8 @@ class PHPUnit_Framework_MockObject_MockBuilder
                                         $this->constructorArgs,
                                         $this->mockClassName,
                                         $this->originalConstructor,
-                                        $this->originalClone);
+                                        $this->originalClone,
+                                        $this->autoload);
     }
 
     /**
