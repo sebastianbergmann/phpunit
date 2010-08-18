@@ -90,6 +90,14 @@ class Framework_MockSpecificationTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(array(null, null), $mock->constructorArgs);
     }
 
+    public function testMockClassNameCanBeSpecified()
+    {
+        $spec = $this->getMockSpecification('Mockable');
+        $spec->setMockClassName('ACustomClassName');
+        $mock = $spec->getMock();
+        $this->assertTrue($mock instanceof ACustomClassName);
+    }
+
     public function testConstructorArgumentsCanBeSpecified()
     {
         $spec = $this->getMockSpecification('Mockable');
@@ -124,4 +132,19 @@ class Framework_MockSpecificationTest extends PHPUnit_Framework_TestCase
         $this->assertFalse($cloned->cloned);
     }
 
+    public function testCallingAutoloadCanBeDisabled()
+    {
+        $this->markTestIncomplete();
+    }
+
+    public function testProvidesAFluentInterface()
+    {
+        $spec = $this->getMockSpecification('Mockable')
+                     ->setMethods(array('mockableMethod'))
+                     ->setConstructorArgs(array())
+                     ->setMockClassName('DummyClassName')
+                     ->disableOriginalConstructor()
+                     ->disableOriginalClone();
+        $this->assertTrue($spec instanceof PHPUnit_Framework_MockSpecification);
+    }
 }
