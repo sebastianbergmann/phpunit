@@ -69,7 +69,10 @@ class PHPUnit_Framework_MockObject_MockBuilder
     }
 
     /**
-     * @return object
+     * Creates the mock object according to the specifications
+     * set up via the other methods.
+     *
+     * @return object   a Mock of the class $this->className
      */
     public function getMock()
     {
@@ -82,6 +85,9 @@ class PHPUnit_Framework_MockObject_MockBuilder
     }
 
     /**
+     * Specifies a subset of methods to mock. Default is to mock all of them.
+     *
+     * @param array $method     methods to mock
      * @return PHPUnit_Framework_MockSpecification  provides a fluent interface
      */
     public function setMethods(array $methods)
@@ -91,6 +97,9 @@ class PHPUnit_Framework_MockObject_MockBuilder
     }
 
     /**
+     * Specifies arguments to pass to the constructor during instantiation.
+     * Default is to pass nothing.
+     *
      * @return PHPUnit_Framework_MockSpecification  provides a fluent interface
      */
     public function setConstructorArgs(array $args)
@@ -100,6 +109,9 @@ class PHPUnit_Framework_MockObject_MockBuilder
     }
 
     /**
+     * Defines class name of the generated subclass.
+     * Default is a generated name.
+     *
      * @param string
      * @return PHPUnit_Framework_MockSpecification  provides a fluent interface
      */
@@ -110,6 +122,9 @@ class PHPUnit_Framework_MockObject_MockBuilder
     }
 
     /**
+     * Disables the call to the original constructor.
+     * Default is to call it.
+     *
      * @return PHPUnit_Framework_MockSpecification  provides a fluent interface
      */
     public function disableOriginalConstructor()
@@ -119,6 +134,9 @@ class PHPUnit_Framework_MockObject_MockBuilder
     } 
 
     /**
+     * Disables the original __clone() method.
+     * Default is to leave it intact.
+     *
      * @return PHPUnit_Framework_MockSpecification  provides a fluent interface
      */
     public function disableOriginalClone()
@@ -128,6 +146,9 @@ class PHPUnit_Framework_MockObject_MockBuilder
     } 
 
     /**
+     * Disables autoload calls during creation of the Mock.
+     * Default is to leave it active.
+     *
      * @return PHPUnit_Framework_MockSpecification  provides a fluent interface
      */
     public function disableAutoload()
