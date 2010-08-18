@@ -40,7 +40,7 @@
  * @copyright  2002-2010 Sebastian Bergmann <sebastian@phpunit.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @link       http://www.phpunit.de/
- * @since      File available since Release 3.5?
+ * @since      File available since Release 3.5
  */
 
 require_once 'PHPUnit/Framework/TestCase.php';
@@ -55,20 +55,20 @@ require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPA
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    Release: @package_version@
  * @link       http://www.phpunit.de/
- * @since      Class available since Release 3.5?
+ * @since      Class available since Release 3.5
  */
-class Framework_MockSpecificationTest extends PHPUnit_Framework_TestCase
+class Framework_MockBuilderTest extends PHPUnit_Framework_TestCase
 {
-    public function testMockSpecificationRequiresClassName()
+    public function testMockBuilderRequiresClassName()
     {
-        $spec = $this->getMockSpecification('Mockable');
+        $spec = $this->getMockBuilder('Mockable');
         $mock = $spec->getMock();
         $this->assertTrue($mock instanceof Mockable);
     }
 
     public function testByDefaultMocksAllMethods()
     {
-        $spec = $this->getMockSpecification('Mockable');
+        $spec = $this->getMockBuilder('Mockable');
         $mock = $spec->getMock();
         $this->assertNull($mock->mockableMethod());
         $this->assertNull($mock->anotherMockableMethod());
@@ -76,7 +76,7 @@ class Framework_MockSpecificationTest extends PHPUnit_Framework_TestCase
 
     public function testMethodsToMockCanBeSpecified()
     {
-        $spec = $this->getMockSpecification('Mockable');
+        $spec = $this->getMockBuilder('Mockable');
         $spec->setMethods(array('mockableMethod'));
         $mock = $spec->getMock();
         $this->assertNull($mock->mockableMethod());
@@ -85,14 +85,14 @@ class Framework_MockSpecificationTest extends PHPUnit_Framework_TestCase
 
     public function testByDefaultDoesNotPassArgumentsToTheConstructor()
     {
-        $spec = $this->getMockSpecification('Mockable');
+        $spec = $this->getMockBuilder('Mockable');
         $mock = $spec->getMock();
         $this->assertEquals(array(null, null), $mock->constructorArgs);
     }
 
     public function testMockClassNameCanBeSpecified()
     {
-        $spec = $this->getMockSpecification('Mockable');
+        $spec = $this->getMockBuilder('Mockable');
         $spec->setMockClassName('ACustomClassName');
         $mock = $spec->getMock();
         $this->assertTrue($mock instanceof ACustomClassName);
@@ -100,7 +100,7 @@ class Framework_MockSpecificationTest extends PHPUnit_Framework_TestCase
 
     public function testConstructorArgumentsCanBeSpecified()
     {
-        $spec = $this->getMockSpecification('Mockable');
+        $spec = $this->getMockBuilder('Mockable');
         $spec->setConstructorArgs($expected = array(23, 42));
         $mock = $spec->getMock();
         $this->assertEquals($expected, $mock->constructorArgs);
@@ -108,7 +108,7 @@ class Framework_MockSpecificationTest extends PHPUnit_Framework_TestCase
 
     public function testOriginalConstructorCanBeDisabled()
     {
-        $spec = $this->getMockSpecification('Mockable');
+        $spec = $this->getMockBuilder('Mockable');
         $spec->disableOriginalConstructor();
         $mock = $spec->getMock();
         $this->assertNull($mock->constructorArgs);
@@ -116,7 +116,7 @@ class Framework_MockSpecificationTest extends PHPUnit_Framework_TestCase
 
     public function testByDefaultOriginalCloneIsPreserved()
     {
-        $spec = $this->getMockSpecification('Mockable');
+        $spec = $this->getMockBuilder('Mockable');
         $mock = $spec->getMock();
         $cloned = clone $mock;
         $this->assertTrue($cloned->cloned);
@@ -124,7 +124,7 @@ class Framework_MockSpecificationTest extends PHPUnit_Framework_TestCase
 
     public function testOriginalCloneCanBeDisabled()
     {
-        $spec = $this->getMockSpecification('Mockable');
+        $spec = $this->getMockBuilder('Mockable');
         $spec->disableOriginalClone();
         $mock = $spec->getMock();
         $mock->cloned = false;
@@ -134,17 +134,20 @@ class Framework_MockSpecificationTest extends PHPUnit_Framework_TestCase
 
     public function testCallingAutoloadCanBeDisabled()
     {
+        // it is not clear to me how to test this nor the difference
+        // between calling it or not
         $this->markTestIncomplete();
     }
 
     public function testProvidesAFluentInterface()
     {
-        $spec = $this->getMockSpecification('Mockable')
+        $spec = $this->getMockBuilder('Mockable')
                      ->setMethods(array('mockableMethod'))
                      ->setConstructorArgs(array())
                      ->setMockClassName('DummyClassName')
                      ->disableOriginalConstructor()
-                     ->disableOriginalClone();
-        $this->assertTrue($spec instanceof PHPUnit_Framework_MockSpecification);
+                     ->disableOriginalClone()
+                     ->disableAutoload();
+        $this->assertTrue($spec instanceof PHPUnit_Framework_MockObject_MockBuilder);
     }
 }
