@@ -1,2 +1,1 @@
-- add last 2 arguments to parameter object
-- add fluent interface
+- add last argument to parameter object
