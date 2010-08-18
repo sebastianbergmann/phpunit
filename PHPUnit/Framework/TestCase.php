@@ -1063,11 +1063,11 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
 
     /**
      * @param string
-     * @return PHPUnit_Framework_MockSpecification
+     * @return PHPUnit_Framework_MockObject_MockBuilder
      */
-    protected function getMockSpecification($className)
+    protected function getMockBuilder($className)
     {
-        return new PHPUnit_Framework_MockSpecification($this, $className);
+        return new PHPUnit_Framework_MockObject_MockBuilder($this, $className);
     }
 
     /**
