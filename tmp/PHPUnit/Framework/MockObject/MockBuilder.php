@@ -34,8 +34,7 @@
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  *
- * @package    PHPUnit
- * @subpackage Framework_MockObject
+ * @package    PHPUnit_MockObject
  * @author     Giorgio Sironi <piccoloprincipeazzurro@gmail.com>
  * @author     Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @copyright  2010 Sebastian Bergmann <sb@sebastian-bergmann.de>
@@ -47,8 +46,7 @@
 /**
  * Implementation of the Builder pattern for Mock objects.
  *
- * @package    PHPUnit
- * @subpackage Framework_MockObject
+ * @package    PHPUnit_MockObject
  * @author     Giorgio Sironi <piccoloprincipeazzurro@gmail.com>
  * @author     Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @copyright  2010 Sebastian Bergmann <sb@sebastian-bergmann.de>
