@@ -262,6 +262,9 @@
      <file baseinstalldir="/" name="SkippedTestSuiteError.php" role="php">
       <tasks:replace from="@package_version@" to="version" type="package-info" />
      </file>
+     <file baseinstalldir="/" name="SyntheticError.php" role="php">
+      <tasks:replace from="@package_version@" to="version" type="package-info" />
+     </file>
      <file baseinstalldir="/" name="TestCase.php" role="php">
       <tasks:replace from="@package_version@" to="version" type="package-info" />
      </file>
