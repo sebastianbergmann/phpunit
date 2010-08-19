@@ -33,6 +33,15 @@
  * LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
+ *
+ * @package    PHPUnit
+ * @subpackage Framework_MockObject
+ * @author     Giorgio Sironi <piccoloprincipeazzurro@gmail.com>
+ * @author     Sebastian Bergmann <sb@sebastian-bergmann.de>
+ * @copyright  2010 Sebastian Bergmann <sb@sebastian-bergmann.de>
+ * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
+ * @link       http://github.com/sebastianbergmann/phpunit-mock-objects
+ * @since      File available since Release 1.0.0
  */
 
 /**
@@ -41,120 +50,154 @@
  * @package    PHPUnit
  * @subpackage Framework_MockObject
  * @author     Giorgio Sironi <piccoloprincipeazzurro@gmail.com>
- * @copyright  2010 Giorgio Sironi <piccoloprincipeazzurro@gmail.com>
+ * @author     Sebastian Bergmann <sb@sebastian-bergmann.de>
+ * @copyright  2010 Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @link       http://github.com/sebastianbergmann/phpunit-mock-objects
- * @since      File available since Release 3.5
+ * @since      File available since Release 1.0.0
  */
 class PHPUnit_Framework_MockObject_MockBuilder
 {
+    /**
+     * @var PHPUnit_Framework_TestCase
+     */
     protected $testCase;
+
+    /**
+     * @var string
+     */
     protected $className;
+
+    /**
+     * @var array
+     */
     protected $methods = array();
+
+    /**
+     * @var string
+     */
     protected $mockClassName = '';
+
+    /**
+     * @var array
+     */
     protected $constructorArgs = array();
-    protected $originalConstructor = true;
-    protected $originalClone = true;
-    protected $autoload = true;
+
+    /**
+     * @var boolean
+     */
+    protected $originalConstructor = TRUE;
+
+    /**
+     * @var boolean
+     */
+    protected $originalClone = TRUE;
+
+    /**
+     * @var boolean
+     */
+    protected $autoload = TRUE;
 
     /**
      * @param PHPUnit_Framework_TestCase
      * @param string
      */
-    public function __construct(PHPUnit_Framework_TestCase $testCase,
-                                $className)
+    public function __construct(PHPUnit_Framework_TestCase $testCase, $className)
     {
-        $this->testCase = $testCase;
+        $this->testCase  = $testCase;
         $this->className = $className;
     }
 
     /**
-     * Creates the mock object according to the specifications
-     * set up via the other methods.
+     * Creates a mock object using a fluent interface.
      *
-     * @return object   a Mock of the class $this->className
+     * @return PHPUnit_Framework_MockObject_MockObject
      */
     public function getMock()
     {
-        return $this->testCase->getMock($this->className,
-                                        $this->methods,
-                                        $this->constructorArgs,
-                                        $this->mockClassName,
-                                        $this->originalConstructor,
-                                        $this->originalClone,
-                                        $this->autoload);
+        return $this->testCase->getMock(
+          $this->className,
+          $this->methods,
+          $this->constructorArgs,
+          $this->mockClassName,
+          $this->originalConstructor,
+          $this->originalClone,
+          $this->autoload
+        );
     }
 
     /**
-     * Specifies a subset of methods to mock. Default is to mock all of them.
+     * Specifies the subset of methods to mock. Default is to mock all of them.
      *
-     * @param array $method     methods to mock
-     * @return PHPUnit_Framework_MockSpecification  provides a fluent interface
+     * @param  array $methods
+     * @return PHPUnit_Framework_MockObject_MockBuilder
      */
     public function setMethods(array $methods)
     {
         $this->methods = $methods;
+
         return $this;
     }
 
     /**
-     * Specifies arguments to pass to the constructor during instantiation.
-     * Default is to pass nothing.
+     * Specifies the arguments for the constructor.
      *
-     * @return PHPUnit_Framework_MockSpecification  provides a fluent interface
+     * @param  array $args
+     * @return PHPUnit_Framework_MockObject_MockBuilder
      */
     public function setConstructorArgs(array $args)
     {
         $this->constructorArgs = $args;
+
         return $this;
     }
 
     /**
-     * Defines class name of the generated subclass.
-     * Default is a generated name.
+     * Specifies the name for the mock class.
      *
-     * @param string
-     * @return PHPUnit_Framework_MockSpecification  provides a fluent interface
+     * @param string $name
+     * @return PHPUnit_Framework_MockObject_MockBuilder
      */
     public function setMockClassName($name)
     {
         $this->mockClassName = $name;
+
         return $this;
     }
 
     /**
-     * Disables the call to the original constructor.
-     * Default is to call it.
+     * Suppresses the invocation of the original constructor.
      *
-     * @return PHPUnit_Framework_MockSpecification  provides a fluent interface
+     * @return PHPUnit_Framework_MockObject_MockBuilder
      */
     public function disableOriginalConstructor()
     {
-        $this->originalConstructor = false;
+        $this->originalConstructor = FALSE;
+
         return $this;
     } 
 
     /**
-     * Disables the original __clone() method.
-     * Default is to leave it intact.
+     * Suppresses the invocation of the original clone constructor.
      *
-     * @return PHPUnit_Framework_MockSpecification  provides a fluent interface
+     * @return PHPUnit_Framework_MockObject_MockBuilder
      */
     public function disableOriginalClone()
     {
-        $this->originalClone = false;
+        $this->originalClone = FALSE;
+
         return $this;
     } 
 
     /**
-     * Disables autoload calls during creation of the Mock.
-     * Default is to leave it active.
+     * Suppresses the use of class autoloading while creating the mock object.
      *
-     * @return PHPUnit_Framework_MockSpecification  provides a fluent interface
+     * @return PHPUnit_Framework_MockObject_MockBuilder
      */
     public function disableAutoload()
     {
-        $this->autoload = false;
+        $this->autoload = FALSE;
+
         return $this;
     }
 }
