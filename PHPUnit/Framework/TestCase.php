@@ -1062,12 +1062,17 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
     }
 
     /**
-     * @param string
+     * Returns a builder object to create mock objects using a fluent interface.
+     *
+     * @param  string $className
      * @return PHPUnit_Framework_MockObject_MockBuilder
+     * @since  Method available since Release 3.5.0
      */
-    protected function getMockBuilder($className)
+    public function getMockBuilder($className)
     {
-        return new PHPUnit_Framework_MockObject_MockBuilder($this, $className);
+        return new PHPUnit_Framework_MockObject_MockBuilder(
+          $this, $className
+        );
     }
 
     /**
