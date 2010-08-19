@@ -34,8 +34,7 @@
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  *
- * @package    PHPUnit
- * @subpackage Framework_MockObject_Stub
+ * @package    PHPUnit_MockObject
  * @author     Patrick Müller <elias0@gmx.net>
  * @author     Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @copyright  2010 Sebastian Bergmann <sb@sebastian-bergmann.de>
@@ -47,8 +46,7 @@
 /**
  * Stubs a method by returning a user-defined stack of values.
  *
- * @package    PHPUnit
- * @subpackage Framework_MockObject_Stub
+ * @package    PHPUnit_MockObject
  * @author     Patrick Müller <elias0@gmx.net>
  * @author     Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @copyright  2010 Sebastian Bergmann <sb@sebastian-bergmann.de>

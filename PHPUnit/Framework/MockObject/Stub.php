@@ -34,8 +34,7 @@
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  *
- * @package    PHPUnit
- * @subpackage Framework_MockObject
+ * @package    PHPUnit_MockObject
  * @author     Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @copyright  2010 Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
@@ -49,8 +48,7 @@
  * The stub object will replace the code for the stubbed method and return a
  * specific value instead of the original value.
  *
- * @package    PHPUnit
- * @subpackage Framework_MockObject
+ * @package    PHPUnit_MockObject
  * @author     Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @copyright  2010 Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License

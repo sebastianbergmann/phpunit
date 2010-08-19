@@ -34,8 +34,7 @@
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  *
- * @package    PHPUnit
- * @subpackage Framework_MockObject_Stub
+ * @package    PHPUnit_MockObject
  * @author     Oliver Schlicht <o.schlicht@bitExpert.de>
  * @author     Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @copyright  2010 Sebastian Bergmann <sb@sebastian-bergmann.de>
@@ -47,8 +46,7 @@
 /**
  * Stubs a method by raising a user-defined exception.
  *
- * @package    PHPUnit
- * @subpackage Framework_MockObject_Stub
+ * @package    PHPUnit_MockObject
  * @author     Oliver Schlicht <o.schlicht@bitExpert.de>
  * @author     Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @copyright  2010 Sebastian Bergmann <sb@sebastian-bergmann.de>

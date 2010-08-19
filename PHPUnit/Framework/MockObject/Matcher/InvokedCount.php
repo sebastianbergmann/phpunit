@@ -34,8 +34,7 @@
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  *
- * @package    PHPUnit
- * @subpackage Framework_MockObject_Matcher
+ * @package    PHPUnit_MockObject
  * @author     Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @copyright  2010 Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
@@ -51,8 +50,7 @@
  * If the number is less it will later be checked in verify() and also throw an
  * exception.
  *
- * @package    PHPUnit
- * @subpackage Framework_MockObject_Matcher
+ * @package    PHPUnit_MockObject
  * @author     Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @copyright  2010 Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
