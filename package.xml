@@ -102,6 +102,11 @@
      </file>
     </dir>
     <dir name="Framework">
+     <dir name="Assert">
+      <file baseinstalldir="/" name="Functions.php" role="php">
+       <tasks:replace from="@package_version@" to="version" type="package-info" />
+      </file>
+     </dir>
      <dir name="ComparisonFailure">
       <file baseinstalldir="/" name="Array.php" role="php">
        <tasks:replace from="@package_version@" to="version" type="package-info" />
@@ -260,6 +265,9 @@
       <tasks:replace from="@package_version@" to="version" type="package-info" />
      </file>
      <file baseinstalldir="/" name="SkippedTestSuiteError.php" role="php">
+      <tasks:replace from="@package_version@" to="version" type="package-info" />
+     </file>
+     <file baseinstalldir="/" name="SyntheticError.php" role="php">
       <tasks:replace from="@package_version@" to="version" type="package-info" />
      </file>
      <file baseinstalldir="/" name="TestCase.php" role="php">
