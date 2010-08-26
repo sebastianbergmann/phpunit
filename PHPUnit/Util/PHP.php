@@ -198,9 +198,12 @@ class PHPUnit_Util_PHP
                 if ($result->getCollectCodeCoverageInformation()) {
                     $codeCoverageInformation = $childResult->getRawCodeCoverageInformation();
 
-                    $result->getCodeCoverage()->append(
-                      $codeCoverageInformation[0], $test
-                    );
+                    if (isset($codeCoverageInformation[0]) &&
+                         is_array($codeCoverageInformation[0])) {
+                        $result->getCodeCoverage()->append(
+                          $codeCoverageInformation[0], $test
+                        );
+                    }
                 }
 
                 $time           = $childResult->time();
