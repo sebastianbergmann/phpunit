@@ -234,9 +234,9 @@ class PHPUnit_Util_PHP
                 }
             } else {
                 $time = 0;
+
                 $result->addError(
-                  $test,
-                  new RuntimeException(trim($stdout)), $time
+                  $test, new RuntimeException(trim($stdout)), $time
                 );
             }
         }
