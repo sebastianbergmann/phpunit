@@ -166,11 +166,6 @@
     <min>1.9.1</min>
    </pearinstaller>
    <package>
-    <name>PHPUnit</name>
-    <channel>pear.phpunit.de</channel>
-    <min>3.5.0RC1</min>
-   </package>
-   <package>
     <name>Text_Template</name>
     <channel>pear.phpunit.de</channel>
     <min>1.0.0</min>
