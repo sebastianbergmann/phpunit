@@ -543,6 +543,7 @@ class PHPUnit_Util_XML
      * @since  Method available since Release 3.3.0
      * @author Mike Naberezny <mike@maintainable.com>
      * @author Derek DeVries <derek@maintainable.com>
+     * @author Tobias Schlitt <toby@php.net>
      */
     public static function findNodes(DOMDocument $dom, array $options, $isHtml = TRUE)
     {
@@ -704,7 +705,7 @@ class PHPUnit_Util_XML
 
         // filter by parent node
         if ($options['parent']) {
-            $parentNodes = self::findNodes($dom, $options['parent']);
+            $parentNodes = self::findNodes($dom, $options['parent'], $isHtml);
             $parentNode  = isset($parentNodes[0]) ? $parentNodes[0] : NULL;
 
             foreach ($nodes as $node) {
@@ -725,7 +726,7 @@ class PHPUnit_Util_XML
 
         // filter by child node
         if ($options['child']) {
-            $childNodes = self::findNodes($dom, $options['child']);
+            $childNodes = self::findNodes($dom, $options['child'], $isHtml);
             $childNodes = !empty($childNodes) ? $childNodes : array();
 
             foreach ($nodes as $node) {
@@ -748,7 +749,7 @@ class PHPUnit_Util_XML
 
         // filter by ancestor
         if ($options['ancestor']) {
-            $ancestorNodes = self::findNodes($dom, $options['ancestor']);
+            $ancestorNodes = self::findNodes($dom, $options['ancestor'], $isHtml);
             $ancestorNode  = isset($ancestorNodes[0]) ? $ancestorNodes[0] : NULL;
 
             foreach ($nodes as $node) {
@@ -773,7 +774,7 @@ class PHPUnit_Util_XML
 
         // filter by descendant
         if ($options['descendant']) {
-            $descendantNodes = self::findNodes($dom, $options['descendant']);
+            $descendantNodes = self::findNodes($dom, $options['descendant'], $isHtml);
             $descendantNodes = !empty($descendantNodes) ? $descendantNodes : array();
 
             foreach ($nodes as $node) {
@@ -846,7 +847,7 @@ class PHPUnit_Util_XML
                     // match each child against a specific tag
                     if ($childOptions['only']) {
                         $onlyNodes = self::findNodes(
-                          $dom, $childOptions['only']
+                          $dom, $childOptions['only'], $isHtml
                         );
 
                         // try to match each child to one of the 'only' nodes
