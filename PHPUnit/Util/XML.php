@@ -526,12 +526,13 @@ class PHPUnit_Util_XML
      * @since  Method available since Release 3.3.0
      * @author Mike Naberezny <mike@maintainable.com>
      * @author Derek DeVries <derek@maintainable.com>
+     * @author Tobias Schlitt <toby@php.net>
      */
     public static function cssSelect($selector, $content, $actual, $isHtml = TRUE)
     {
         $matcher = self::convertSelectToTag($selector, $content);
         $dom     = self::load($actual, $isHtml);
-        $tags    = self::findNodes($dom, $matcher);
+        $tags    = self::findNodes($dom, $matcher, $isHtml);
 
         return $tags;
     }
