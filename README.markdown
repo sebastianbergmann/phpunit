@@ -7,6 +7,7 @@ PHPUnit 3.4.16
 --------------
 
 * Fixed GH-2: Process Isolation yields parse error on global data with single quotes.
+* Fixed GH-20: `PHPUnit_Util_XML::cssSelect()` does not populate $isHtml correctly.
 
 PHPUnit 3.4.15
 --------------
