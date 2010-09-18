@@ -87,6 +87,17 @@ class PHPUnit_Util_Filter
     );
 
     /**
+     * Regular expressions that match files that are blacklisted.
+     *
+     * @var    array
+     */
+    protected static $blacklistedRegex = array(
+      'DEFAULT' => array(),
+      'PHPUNIT' => array(),
+      'TESTS' => array()
+    );
+
+    /**
      * Source files that are whitelisted.
      *
      * @var    array
@@ -151,6 +162,25 @@ class PHPUnit_Util_Filter
     }
 
     /**
+     * Adds a new regex to be filtered (blacklist).
+     *
+     * @param  string $regex
+     * @param  string $group
+     * @throws PHPUnit_Framework_Exception
+     * @since  TBD
+     */
+    public static function addRegexToFilter($regex, $group = 'DEFAULT')
+    {
+        if (!isset(self::$blacklistedRegex[$group])) {
+            self::$blacklistedRegex[$group] = array($regex);
+        }
+
+        else if (!in_array($regex, self::$blacklistedRegex[$group])) {
+            self::$blacklistedRegex[$group][] = $regex;
+        }
+    }
+
+    /**
      * Removes a directory from the blacklist (recursively).
      *
      * @param  string $directory
@@ -197,6 +227,27 @@ class PHPUnit_Util_Filter
             throw new PHPUnit_Framework_Exception(
               $filename . ' does not exist'
             );
+        }
+    }
+
+    /**
+     * Removes a regex from the filter (blacklist).
+     *
+     * @param  string $regex
+     * @param  string $group
+     * @throws PHPUnit_Framework_Exception
+     * @since  TBD
+     */
+    public static function removeRegexFromFilter($regex, $group = 'DEFAULT')
+    {
+        if (isset(self::$blacklistedRegex[$group])) {
+            $regex = realpath($regex);
+
+            foreach (self::$blacklistedRegex[$group] as $key => $_regex) {
+                if ($regex == $_regex) {
+                    unset(self::$blacklistedRegex[$group][$key]);
+                }
+            }
         }
     }
 
@@ -511,10 +562,14 @@ class PHPUnit_Util_Filter
         }
 
         $blacklistedFiles = self::$blacklistedFiles['DEFAULT'];
+        $blacklistedRegex = self::$blacklistedRegex['DEFAULT'];
 
         if ($filterTests) {
             $blacklistedFiles = array_merge(
               $blacklistedFiles, self::$blacklistedFiles['TESTS']
+            );
+            $blacklistedRegex = array_merge(
+              $blacklistedRegex, self::$blacklistedRegex['TESTS']
             );
         }
 
@@ -522,10 +577,21 @@ class PHPUnit_Util_Filter
             $blacklistedFiles = array_merge(
               $blacklistedFiles, self::$blacklistedFiles['PHPUNIT']
             );
+            $blacklistedRegex = array_merge(
+              $blacklistedRegex, self::$blacklistedRegex['PHPUNIT']
+            );
         }
 
         if (in_array($filename, $blacklistedFiles)) {
             return TRUE;
+        }
+		
+        foreach($blacklistedRegex as $regex)
+        {
+            if (preg_match($regex, $filename))
+            {
+                return true;
+            }
         }
 
         return FALSE;
@@ -562,6 +628,17 @@ class PHPUnit_Util_Filter
     public static function getBlacklistedFiles()
     {
         return self::$blacklistedFiles;
+    }
+
+    /**
+     * Returns the list of blacklisted regexes.
+     *
+     * @return array
+     * @since  TBD
+     */
+    public static function getBlacklistedRegexes()
+    {
+        return self::$blacklistedRegex;
     }
 
     /**
