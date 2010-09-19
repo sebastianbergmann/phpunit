@@ -42,7 +42,7 @@ PHPUnit 3.5.0
 * `PHPUnit_Extensions_PerformanceTestCase` has been removed.
 * `PHPUnit_Extensions_TicketListener_Trac` has been removed.
 * The `PHPUnit_Extensions_Story_TestCase` functionality has been deprecated.
-* Replaced `PHPUnit_Framework_MockObject` with the [PHP_MockObject](http://github.com/sebastianbergmann/phpunit-mock-objects) component.
+* Replaced `PHPUnit_Framework_MockObject` with the [PHPUnit_MockObject](http://github.com/sebastianbergmann/phpunit-mock-objects) component.
 * Replaced `PHPUnit_Extensions_Database_TestCase` with the [DbUnit](http://github.com/sebastianbergmann/dbunit) component.
 * Replaced `PHPUnit_Extensions_SeleniumTestCase` with the [PHPUnit_Selenium](http://github.com/sebastianbergmann/phpunit-selenium) component.
 * Replaced `PHPUnit_Util_FilterIterator` with the [PHP_FileIterator](http://github.com/sebastianbergmann/php-file-iterator) component.
