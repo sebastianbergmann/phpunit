@@ -103,9 +103,6 @@ class PHPUnit_TextUI_Command
       'stop-on-failure' => NULL,
       'stop-on-incomplete' => NULL,
       'stop-on-skipped' => NULL,
-      'story' => NULL,
-      'story-html=' => NULL,
-      'story-text=' => NULL,
       'strict' => NULL,
       'syntax-check' => NULL,
       'tap' => NULL,
@@ -435,39 +432,6 @@ class PHPUnit_TextUI_Command
                 }
                 break;
 
-                case '--story': {
-                    $this->showMessage(
-                      'The --story functionality is deprecated and ' .
-                      'will be removed in the future.',
-                      FALSE
-                    );
-
-                    $this->arguments['printer'] = new PHPUnit_Extensions_Story_ResultPrinter_Text;
-                }
-                break;
-
-                case '--story-html': {
-                    $this->showMessage(
-                      'The --story-html functionality is deprecated and ' .
-                      'will be removed in the future.',
-                      FALSE
-                    );
-
-                    $this->arguments['storyHTMLFile'] = $option[1];
-                }
-                break;
-
-                case '--story-text': {
-                    $this->showMessage(
-                      'The --story-text functionality is deprecated and ' .
-                      'will be removed in the future.',
-                      FALSE
-                    );
-
-                    $this->arguments['storyTextFile'] = $option[1];
-                }
-                break;
-
                 case '--syntax-check': {
                     $this->arguments['syntaxCheck'] = TRUE;
                 }
@@ -540,15 +504,6 @@ class PHPUnit_TextUI_Command
                     }
                 }
             }
-        }
-
-        if (isset($this->arguments['printer']) &&
-            $this->arguments['printer'] instanceof PHPUnit_Extensions_Story_ResultPrinter_Text &&
-            isset($this->arguments['processIsolation']) &&
-            $this->arguments['processIsolation']) {
-            $this->showMessage(
-              'The story result printer cannot be used in process isolation.'
-            );
         }
 
         $this->handleCustomTestSuite();

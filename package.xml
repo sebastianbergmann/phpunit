@@ -17,14 +17,14 @@
   <email>sebastian@phpunit.de</email>
   <active>yes</active>
  </lead>
- <date>2010-08-31</date>
+ <date>2011-MM-DD</date>
  <version>
-  <release>3.5.0RC2</release>
-  <api>3.5.0</api>
+  <release>3.6.0-dev</release>
+  <api>3.6.0</api>
  </version>
  <stability>
-  <release>beta</release>
-  <api>stable</api>
+  <release>devel</release>
+  <api>devel</api>
  </stability>
  <license>BSD License</license>
  <notes>http://github.com/sebastianbergmann/phpunit/blob/master/README.markdown</notes>
@@ -34,43 +34,6 @@
     <dir name="Extensions">
      <dir name="PhptTestCase">
       <file baseinstalldir="/" name="Logger.php" role="php">
-       <tasks:replace from="@package_version@" to="version" type="package-info" />
-      </file>
-     </dir>
-     <dir name="Story">
-      <dir name="ResultPrinter">
-       <dir name="Template">
-        <file baseinstalldir="/" name="scenario_header.html.dist" role="php" />
-        <file baseinstalldir="/" name="scenario.html.dist" role="php" />
-        <file baseinstalldir="/" name="scenarios.html.dist" role="php" />
-        <file baseinstalldir="/" name="step.html.dist" role="php" />
-       </dir>
-       <file baseinstalldir="/" name="HTML.php" role="php">
-        <tasks:replace from="@package_version@" to="version" type="package-info" />
-       </file>
-       <file baseinstalldir="/" name="Text.php" role="php">
-        <tasks:replace from="@package_version@" to="version" type="package-info" />
-       </file>
-      </dir>
-      <file baseinstalldir="/" name="Given.php" role="php">
-       <tasks:replace from="@package_version@" to="version" type="package-info" />
-      </file>
-      <file baseinstalldir="/" name="ResultPrinter.php" role="php">
-       <tasks:replace from="@package_version@" to="version" type="package-info" />
-      </file>
-      <file baseinstalldir="/" name="Scenario.php" role="php">
-       <tasks:replace from="@package_version@" to="version" type="package-info" />
-      </file>
-      <file baseinstalldir="/" name="Step.php" role="php">
-       <tasks:replace from="@package_version@" to="version" type="package-info" />
-      </file>
-      <file baseinstalldir="/" name="TestCase.php" role="php">
-       <tasks:replace from="@package_version@" to="version" type="package-info" />
-      </file>
-      <file baseinstalldir="/" name="Then.php" role="php">
-       <tasks:replace from="@package_version@" to="version" type="package-info" />
-      </file>
-      <file baseinstalldir="/" name="When.php" role="php">
        <tasks:replace from="@package_version@" to="version" type="package-info" />
       </file>
      </dir>
@@ -472,9 +435,6 @@
     </dir>
     <dir name="BowlingGame">
      <file baseinstalldir="/" name="BowlingGame.php" role="doc">
-      <tasks:replace from="@package_version@" to="version" type="package-info" />
-     </file>
-     <file baseinstalldir="/" name="BowlingGameSpec.php" role="doc">
       <tasks:replace from="@package_version@" to="version" type="package-info" />
      </file>
      <file baseinstalldir="/" name="BowlingGameTest.php" role="doc">

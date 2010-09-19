@@ -222,8 +222,6 @@ class Util_ConfigurationTest extends PHPUnit_Framework_TestCase
             'tap' => '/tmp/logfile.tap',
             'logIncompleteSkipped' => FALSE,
             'junit' => '/tmp/logfile.xml',
-            'story-html' => '/tmp/story.html',
-            'story-text' => '/tmp/story.txt',
             'testdox-html' => '/tmp/testdox.html',
             'testdox-text' => '/tmp/testdox.txt',
           ),
