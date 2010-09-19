@@ -14,4 +14,6 @@ PHPUnit_TextUI_Command::main();
 --EXPECTF--
 PHPUnit %s by Sebastian Bergmann.
 
+The --story functionality is deprecated and will be removed in the future.
+
 The story result printer cannot be used in process isolation.

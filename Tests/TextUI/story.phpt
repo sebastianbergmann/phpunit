@@ -13,6 +13,8 @@ PHPUnit_TextUI_Command::main();
 --EXPECTF--
 PHPUnit %s by Sebastian Bergmann.
 
+The --story functionality is deprecated and will be removed in the future.
+
 BowlingGameSpec
  [x] Score for gutter game is 0
 

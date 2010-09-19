@@ -22,9 +22,6 @@ Usage: phpunit [switches] UnitTest [UnitTest.php]
   --coverage-html <dir>    Generate code coverage report in HTML format.
   --coverage-clover <file> Write code coverage data in Clover XML format.
 
-  --story-html <file>      Write Story/BDD results in HTML format to file.
-  --story-text <file>      Write Story/BDD results in Text format to file.
-
   --testdox-html <file>    Write agile documentation in HTML format to file.
   --testdox-text <file>    Write agile documentation in Text format to file.
 
@@ -36,7 +33,6 @@ Usage: phpunit [switches] UnitTest [UnitTest.php]
   --loader <loader>        TestSuiteLoader implementation to use.
   --repeat <times>         Runs the test(s) repeatedly.
 
-  --story                  Report test execution progress in Story/BDD format.
   --tap                    Report test execution progress in TAP format.
   --testdox                Report test execution progress in TestDox format.
 
