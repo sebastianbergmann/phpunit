@@ -370,7 +370,7 @@ class PHPUnit_Framework_MockObject_Generator
      * @param  boolean $callAutoload
      * @return array
      */
-    protected static function generateMock($originalClassName, array $methods, $mockClassName, $callOriginalClone, $callAutoload)
+    protected static function generateMock($originalClassName, array $methods = NULL, $mockClassName, $callOriginalClone, $callAutoload)
     {
         $templateDir   = dirname(__FILE__) . DIRECTORY_SEPARATOR . 'Generator' .
                          DIRECTORY_SEPARATOR;
