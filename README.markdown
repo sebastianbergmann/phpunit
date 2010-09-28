@@ -3,6 +3,11 @@ PHPUnit 3.5
 
 This is the list of changes for the PHPUnit 3.5 release series.
 
+PHPUnit 3.5.1
+-------------
+
+* Fixed GH-30: `--repeat` option does not work.
+
 PHPUnit 3.5.0
 -------------
 
