@@ -10,7 +10,6 @@
          forceCoversAnnotation="false"
          mapTestClassNameToCoveredClassName="false"
          stopOnFailure="false"
-         syntaxCheck="false"
          testSuiteLoaderClass="PHPUnit_Runner_StandardTestSuiteLoader"
          strict="false"
          verbose="false">

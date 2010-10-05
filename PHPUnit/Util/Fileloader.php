@@ -2,7 +2,7 @@
 /**
  * PHPUnit
  *
- * Copyright (c) 2002-2011, Sebastian Bergmann <sebastian@phpunit.de>.
+ * Copyright (c) 2002-2010, Sebastian Bergmann <sebastian@phpunit.de>.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -37,7 +37,7 @@
  * @package    PHPUnit
  * @subpackage Util
  * @author     Sebastian Bergmann <sebastian@phpunit.de>
- * @copyright  2002-2011 Sebastian Bergmann <sebastian@phpunit.de>
+ * @copyright  2002-2010 Sebastian Bergmann <sebastian@phpunit.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @link       http://www.phpunit.de/
  * @since      File available since Release 2.3.0
@@ -49,7 +49,7 @@
  * @package    PHPUnit
  * @subpackage Util
  * @author     Sebastian Bergmann <sebastian@phpunit.de>
- * @copyright  2002-2011 Sebastian Bergmann <sebastian@phpunit.de>
+ * @copyright  2002-2010 Sebastian Bergmann <sebastian@phpunit.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    Release: @package_version@
  * @link       http://www.phpunit.de/
@@ -58,34 +58,25 @@
 class PHPUnit_Util_Fileloader
 {
     /**
-     * Checks if a PHP sourcefile is readable and is optionally checked for
-     * syntax errors through the syntaxCheck() method. The sourcefile is
-     * loaded through the load() method.
+     * Checks if a PHP sourcefile is readable.
+     * The sourcefile is loaded through the load() method.
      *
-     * @param  string  $filename
-     * @param  boolean $syntaxCheck
-     * @return string
+     * @param  string $filename
      * @throws RuntimeException
      */
-    public static function checkAndLoad($filename, $syntaxCheck = FALSE)
+    public static function checkAndLoad($filename)
     {
-        $includePathFilename = PHPUnit_Util_Filesystem::fileExistsInIncludePath(
-          $filename
-        );
+        if (!is_readable($filename)) {
+            $filename = './' . $filename;
+        }
 
-        if (!$includePathFilename || !is_readable($includePathFilename)) {
+        if (!is_readable($filename)) {
             throw new RuntimeException(
               sprintf('Cannot open file "%s".' . "\n", $filename)
             );
         }
 
-        if ($syntaxCheck) {
-            self::syntaxCheck($includePathFilename);
-        }
-
-        self::load($includePathFilename);
-
-        return $includePathFilename;
+        self::load($filename);
     }
 
     /**
@@ -97,6 +88,10 @@ class PHPUnit_Util_Fileloader
      */
     public static function load($filename)
     {
+        $filename = PHPUnit_Util_Filesystem::fileExistsInIncludePath(
+          $filename
+        );
+
         $oldVariableNames = array_keys(get_defined_vars());
 
         include_once $filename;
@@ -113,28 +108,5 @@ class PHPUnit_Util_Fileloader
         }
 
         return $filename;
-    }
-
-    /**
-     * Uses a separate process to perform a syntax check on a PHP sourcefile.
-     *
-     * @param  string $filename
-     * @throws RuntimeException
-     * @since  Method available since Release 3.0.0
-     */
-    protected static function syntaxCheck($filename)
-    {
-        $command = PHPUnit_Util_PHP::getPhpBinary();
-
-        if (DIRECTORY_SEPARATOR == '\\') {
-            $command = escapeshellcmd($command);
-        }
-
-        $command .= ' -l ' . escapeshellarg($filename);
-        $output   = shell_exec($command);
-
-        if (strpos($output, 'Errors parsing') !== FALSE) {
-            throw new RuntimeException($output);
-        }
     }
 }

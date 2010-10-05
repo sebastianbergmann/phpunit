@@ -283,7 +283,6 @@ class Util_ConfigurationTest extends PHPUnit_Framework_TestCase
             'mapTestClassNameToCoveredClassName' => FALSE,
             'stopOnFailure' => FALSE,
             'strict' => FALSE,
-            'syntaxCheck' => FALSE,
             'testSuiteLoaderClass' => 'PHPUnit_Runner_StandardTestSuiteLoader',
             'verbose' => FALSE
           ),
