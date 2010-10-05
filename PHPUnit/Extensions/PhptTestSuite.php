@@ -77,7 +77,7 @@ class PHPUnit_Extensions_PhptTestSuite extends PHPUnit_Framework_TestSuite
             );
 
             foreach ($iterator as $testFile) {
-                $this->addTestFile($testFile->getPathname(), TRUE, $options);
+                $this->addTestFile($testFile->getPathname(), $options);
             }
         } else {
             throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'directory name');
