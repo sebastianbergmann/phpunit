@@ -266,6 +266,11 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
     protected $testResult;
 
     /**
+     * @var array
+     */
+    protected $cleanupCallbacks;
+
+    /**
      * Constructs a test case with the given name.
      *
      * @param  string $name
@@ -649,6 +654,9 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
         // Clean up stat cache.
         clearstatcache();
 
+        // Clean up callbacks.
+        $this->cleanupCallbacks = array();
+
         try {
             if ($this->inIsolation) {
                 $this->setUpBeforeClass();
@@ -737,6 +745,12 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
         // Workaround for missing "finally".
         if (isset($e)) {
             $this->onNotSuccessfulTest($e);
+        }
+
+        // Apply cleanup callbacks.
+        $callbacksReversed = array_reverse($this->cleanupCallbacks);
+        foreach ($callbacksReversed as $callback) {
+            call_user_func($callback['function'], $callback['data']);
         }
     }
 
@@ -1480,5 +1494,21 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
      */
     protected function prepareTemplate(Text_Template $template)
     {
+    }
+
+    /**
+     * Registers a cleanup callback. This method may be called within the test
+     * or utility functions or methods, which are friends of the test-case class
+     * and find the test-case object in the call stack (that is why this method is public).
+     * Cleanup callbacks are actions which will mandatoryly be called by the runBare
+     * regardless from the test's result.
+     *
+     * @param mixed $callback
+     * @param mixed $data
+     * @since Method available since Release 3.5.1
+     */
+    public function addCleanupCallback($callback, $data = NULL)
+    {
+        $this->cleanupCallbacks[] = array('function' => $callback, 'data' => $data);
     }
 }
