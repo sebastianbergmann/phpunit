@@ -479,9 +479,6 @@
     <file baseinstalldir="/" name="Autoload.php" role="php">
      <tasks:replace from="@package_version@" to="version" type="package-info" />
     </file>
-    <file baseinstalldir="/" name="Framework.php" role="php">
-     <tasks:replace from="@package_version@" to="version" type="package-info" />
-    </file>
    </dir>
    <file baseinstalldir="/" name="ChangeLog.markdown" role="doc"/>
    <file baseinstalldir="/" name="LICENSE" role="doc"/>
