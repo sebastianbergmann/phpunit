@@ -742,15 +742,15 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
             setlocale($category, $locale);
         }
 
-        // Workaround for missing "finally".
-        if (isset($e)) {
-            $this->onNotSuccessfulTest($e);
-        }
-
         // Apply cleanup callbacks.
         $callbacksReversed = array_reverse($this->cleanupCallbacks);
         foreach ($callbacksReversed as $callback) {
             call_user_func($callback['function'], $callback['data']);
+        }
+
+        // Workaround for missing "finally".
+        if (isset($e)) {
+            $this->onNotSuccessfulTest($e);
         }
     }
 
