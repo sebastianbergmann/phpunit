@@ -81,10 +81,9 @@ abstract class PHPUnit_Runner_BaseTestRunner
      *
      * @param  string  $suiteClassName
      * @param  string  $suiteClassFile
-     * @param  boolean $syntaxCheck
      * @return PHPUnit_Framework_Test
      */
-    public function getTest($suiteClassName, $suiteClassFile = '', $syntaxCheck = FALSE)
+    public function getTest($suiteClassName, $suiteClassFile = '')
     {
         if (is_dir($suiteClassName) &&
             !is_file($suiteClassName . '.php') && empty($suiteClassFile)) {
@@ -93,14 +92,14 @@ abstract class PHPUnit_Runner_BaseTestRunner
             );
 
             $suite = new PHPUnit_Framework_TestSuite($suiteClassName);
-            $suite->addTestFiles($testCollector->collectTests(), $syntaxCheck);
+            $suite->addTestFiles($testCollector->collectTests());
 
             return $suite;
         }
 
         try {
             $testClass = $this->loadSuiteClass(
-              $suiteClassName, $suiteClassFile, $syntaxCheck
+              $suiteClassName, $suiteClassFile
             );
         }
 
@@ -158,15 +157,14 @@ abstract class PHPUnit_Runner_BaseTestRunner
      *
      * @param  string  $suiteClassName
      * @param  string  $suiteClassFile
-     * @param  boolean $syntaxCheck
      * @return ReflectionClass
      */
-    protected function loadSuiteClass($suiteClassName, $suiteClassFile = '', $syntaxCheck = FALSE)
+    protected function loadSuiteClass($suiteClassName, $suiteClassFile = '')
     {
         $loader = $this->getLoader();
 
         if ($loader instanceof PHPUnit_Runner_StandardTestSuiteLoader) {
-            return $loader->load($suiteClassName, $suiteClassFile, $syntaxCheck);
+            return $loader->load($suiteClassName, $suiteClassFile);
         } else {
             return $loader->load($suiteClassName, $suiteClassFile);
         }

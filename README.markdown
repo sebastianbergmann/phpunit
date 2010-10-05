@@ -7,3 +7,4 @@ PHPUnit 3.6.0
 -------------
 
 * The `PHPUnit_Extensions_Story_TestCase` functionality has been removed.
+* The syntax check functionality has been removed.

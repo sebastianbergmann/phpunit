@@ -58,15 +58,13 @@
 class PHPUnit_Util_Fileloader
 {
     /**
-     * Checks if a PHP sourcefile is readable and is optionally checked for
-     * syntax errors through the syntaxCheck() method. The sourcefile is
-     * loaded through the load() method.
+     * Checks if a PHP sourcefile is readable.
+     * The sourcefile is loaded through the load() method.
      *
-     * @param  string  $filename
-     * @param  boolean $syntaxCheck
+     * @param  string $filename
      * @throws RuntimeException
      */
-    public static function checkAndLoad($filename, $syntaxCheck = FALSE)
+    public static function checkAndLoad($filename)
     {
         if (!is_readable($filename)) {
             $filename = './' . $filename;
@@ -76,10 +74,6 @@ class PHPUnit_Util_Fileloader
             throw new RuntimeException(
               sprintf('Cannot open file "%s".' . "\n", $filename)
             );
-        }
-
-        if ($syntaxCheck) {
-            self::syntaxCheck($filename);
         }
 
         self::load($filename);
@@ -114,28 +108,5 @@ class PHPUnit_Util_Fileloader
         }
 
         return $filename;
-    }
-
-    /**
-     * Uses a separate process to perform a syntax check on a PHP sourcefile.
-     *
-     * @param  string $filename
-     * @throws RuntimeException
-     * @since  Method available since Release 3.0.0
-     */
-    protected static function syntaxCheck($filename)
-    {
-        $command = PHPUnit_Util_PHP::getPhpBinary();
-
-        if (DIRECTORY_SEPARATOR == '\\') {
-            $command = escapeshellarg($command);
-        }
-
-        $command .= ' -l ' . escapeshellarg($filename);
-        $output   = shell_exec($command);
-
-        if (strpos($output, 'Errors parsing') !== FALSE) {
-            throw new RuntimeException($output);
-        }
     }
 }
