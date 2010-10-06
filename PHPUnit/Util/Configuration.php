@@ -43,6 +43,8 @@
  * @since      File available since Release 3.2.0
  */
 
+require_once 'File/Iterator/Factory.php';
+
 /**
  * Wrapper for the PHPUnit XML configuration file.
  *
@@ -738,11 +740,14 @@ class PHPUnit_Util_Configuration
                 $suffix = 'Test.php';
             }
 
-            $testCollector = new PHPUnit_Runner_IncludePathTestCollector(
-              array($this->toAbsolutePath($directory)), $suffix, $prefix
+            $suite->addTestFiles(
+              File_Iterator_Factory::getFilesAsArray(
+                $this->toAbsolutePath($directory),
+                $suffix,
+                $prefix,
+                array()
+              )
             );
-
-            $suite->addTestFiles($testCollector->collectTests());
         }
 
         foreach ($testSuiteNode->getElementsByTagName('file') as $fileNode) {
