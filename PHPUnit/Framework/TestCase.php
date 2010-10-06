@@ -745,7 +745,14 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
         // Apply cleanup callbacks.
         $callbacksReversed = array_reverse($this->cleanupCallbacks);
         foreach ($callbacksReversed as $callback) {
-            call_user_func($callback['function'], $callback['data']);
+            try {
+                call_user_func($callback['function'], $callback['data']);
+            }
+            catch (Exception $_ce) {
+                if (empty($e)) {
+                    $e = $_ce;
+                }
+            }
         }
 
         // Workaround for missing "finally".
