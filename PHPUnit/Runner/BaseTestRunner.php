@@ -43,6 +43,8 @@
  * @since      File available since Release 2.0.0
  */
 
+require_once 'File/Iterator/Factory.php';
+
 /**
  * Base class for all test runners.
  *
@@ -87,12 +89,14 @@ abstract class PHPUnit_Runner_BaseTestRunner
     {
         if (is_dir($suiteClassName) &&
             !is_file($suiteClassName . '.php') && empty($suiteClassFile)) {
-            $testCollector = new PHPUnit_Runner_IncludePathTestCollector(
-              array($suiteClassName)
-            );
-
             $suite = new PHPUnit_Framework_TestSuite($suiteClassName);
-            $suite->addTestFiles($testCollector->collectTests());
+
+            $suite->addTestFiles(
+              File_Iterator_Factory::getFilesAsArray(
+                $suiteClassName,
+                array('Test.php', '.phpt')
+              )
+            );
 
             return $suite;
         }
