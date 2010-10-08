@@ -351,6 +351,14 @@ class PHPUnit_Util_Test
             $groups = array_merge($groups, $annotations['method']['group']);
         }
 
+        if (isset($annotations['class']['ticket'])) {
+            $groups = array_merge($groups, $annotations['class']['ticket']);
+        }
+
+        if (isset($annotations['method']['ticket'])) {
+            $groups = array_merge($groups, $annotations['method']['ticket']);
+        }
+
         return array_unique($groups);
     }
 
