@@ -473,12 +473,12 @@
    <package>
     <name>DbUnit</name>
     <channel>pear.phpunit.de</channel>
-    <min>1.0.0RC2</min>
+    <min>1.0.0</min>
    </package>
    <package>
     <name>File_Iterator</name>
     <channel>pear.phpunit.de</channel>
-    <min>1.2.2</min>
+    <min>1.2.3</min>
    </package>
    <package>
     <name>Text_Template</name>
@@ -488,7 +488,7 @@
    <package>
     <name>PHP_CodeCoverage</name>
     <channel>pear.phpunit.de</channel>
-    <min>1.0.0RC2</min>
+    <min>1.1.0</min>
    </package>
    <package>
     <name>PHP_Timer</name>
@@ -498,12 +498,12 @@
    <package>
     <name>PHPUnit_MockObject</name>
     <channel>pear.phpunit.de</channel>
-    <min>1.0.0RC2</min>
+    <min>1.0.0</min>
    </package>
    <package>
     <name>PHPUnit_Selenium</name>
     <channel>pear.phpunit.de</channel>
-    <min>1.0.0RC2</min>
+    <min>1.0.0</min>
    </package>
    <package>
     <name>YAML</name>
