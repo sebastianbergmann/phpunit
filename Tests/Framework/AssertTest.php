@@ -4520,4 +4520,63 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
 
         $this->fail();
     }
+
+    /**
+     * @covers PHPUnit_Framework_Assert::assertCount
+     */
+    public function testAssertCount()
+    {
+        $this->assertCount(2, array(1,2));
+
+        try {
+            $this->assertCount(2, array(1,2,3));
+        }
+
+        catch (PHPUnit_Framework_AssertionFailedError $e) {
+            $this->assertEquals('Count of 3 does not match expected count of 2', $e->getMessage());
+
+            return;
+        }
+
+        $this->fail();
+    }
+
+    /**
+     * @covers PHPUnit_Framework_Assert::assertCount
+     */
+    public function testAssertCountThrowsExceptionIfExpectedCountIsNoInteger()
+    {
+
+        try {
+            $this->assertCount('a', array());
+        }
+
+        catch (InvalidArgumentException $e) {
+            $this->assertEquals('Argument #1 of PHPUnit_Framework_Assert::assertCount() must be a integer', $e->getMessage());
+
+            return;
+        }
+
+        $this->fail();
+    }
+
+
+    /**
+     * @covers PHPUnit_Framework_Assert::assertCount
+     */
+    public function testAssertCountThrowsExceptionIfElementIsNotCountable()
+    {
+
+        try {
+            $this->assertCount(2, '');
+        }
+
+        catch (InvalidArgumentException $e) {
+            $this->assertEquals('Argument #2 of PHPUnit_Framework_Assert::assertCount() must be a countable type', $e->getMessage());
+
+            return;
+        }
+
+        $this->fail();
+    }
 }
