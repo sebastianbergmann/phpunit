@@ -2592,4 +2592,34 @@ abstract class PHPUnit_Framework_Assert
     {
         self::$count = 0;
     }
+
+    /**
+     * Asserts the count of an array, Iterator or Countable object
+     *
+     * @param integer $expectedCount
+     * @param mixed $element
+     * @param string $message
+     */
+    public function assertCount($expectedCount, $element, $message = '')
+    {
+        if (!is_int($expectedCount)) {
+            throw PHPUnit_Util_InvalidArgumentHelper::factory(
+                1, 'integer'
+            );
+        }
+
+        if (!$element instanceof Countable &&
+            !$element instanceof Iterator &&
+            !is_array($element)) {
+            throw PHPUnit_Util_InvalidArgumentHelper::factory(
+                2, 'countable type'
+            );
+        }
+
+        $constraint = new PHPUnit_Framework_Constraint_Count(
+            $expectedCount
+        );
+
+        self::assertThat($element, $constraint, $message);
+    }
 }
