@@ -649,7 +649,15 @@ class PHPUnit_Framework_TestResult implements Countable
 
         $test->addToAssertionCount(PHPUnit_Framework_Assert::getCount());
 
-        if ($this->strictAssertions && $test->getNumAssertions() == 0) {
+        if ($error === TRUE) {
+            $this->addError($test, $e, $time);
+        }
+
+        else if ($failure === TRUE) {
+            $this->addFailure($test, $e, $time);
+        }
+
+        else if ($this->strictAssertions && $test->getNumAssertions() == 0) {
             $this->addFailure(
               $test,
               new PHPUnit_Framework_IncompleteTestError(
@@ -657,14 +665,6 @@ class PHPUnit_Framework_TestResult implements Countable
               ),
               $time
             );
-        }
-
-        if ($error === TRUE) {
-            $this->addError($test, $e, $time);
-        }
-
-        else if ($failure === TRUE) {
-            $this->addFailure($test, $e, $time);
         }
 
         $this->endTest($test, $time);
