@@ -237,6 +237,16 @@ class PHPUnit_Framework_Constraint_IsEqual extends PHPUnit_Framework_Constraint
             return FALSE;
         }
 
+        if (is_string($b) &&
+            is_object($a) && method_exists($a, '__toString')) {
+            $a = (string)$a;
+        }
+
+        else if (is_string($a) &&
+            is_object($b) && method_exists($b, '__toString')) {
+            $b = (string)$b;
+        }
+
         if (is_object($a) XOR is_object($b)) {
             return FALSE;
         }
