@@ -17,9 +17,9 @@
   <email>sebastian@phpunit.de</email>
   <active>yes</active>
  </lead>
- <date>2010-09-25</date>
+ <date>2010-10-16</date>
  <version>
-  <release>3.5.0</release>
+  <release>3.5.1</release>
   <api>3.5.0</api>
  </version>
  <stability>
