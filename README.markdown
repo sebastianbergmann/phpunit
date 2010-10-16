@@ -7,6 +7,7 @@ PHPUnit 3.5.1
 -------------
 
 * Fixed GH-30: `--repeat` option does not work.
+* Fixed GH-48: Remove strict incomplete duplication.
 
 PHPUnit 3.5.0
 -------------
