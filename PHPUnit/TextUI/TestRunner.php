@@ -293,7 +293,7 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
         }
 
         if ($arguments['strict']) {
-            $result->strictAssertions(TRUE);
+            $result->strictMode(TRUE);
         }
 
         $suite->run(
