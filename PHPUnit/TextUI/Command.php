@@ -778,13 +778,13 @@ class PHPUnit_TextUI_Command
      */
     protected function handleBootstrap($filename, $syntaxCheck = FALSE)
     {
-       try {
-           PHPUnit_Util_Fileloader::checkAndLoad($filename, $syntaxCheck);
-       }
+        try {
+            PHPUnit_Util_Fileloader::checkAndLoad($filename, $syntaxCheck);
+        }
 
-       catch (RuntimeException $e) {
-           PHPUnit_TextUI_TestRunner::showError($e->getMessage());
-       }
+        catch (RuntimeException $e) {
+            PHPUnit_TextUI_TestRunner::showError($e->getMessage());
+        }
     }
 
     /**
