@@ -3,6 +3,11 @@ PHPUnit 3.5
 
 This is the list of changes for the PHPUnit 3.5 release series.
 
+PHPUnit 3.5.2
+-------------
+
+* Fixed GH-34: Bogus bootstrap file raises cryptic error.
+
 PHPUnit 3.5.1
 -------------
 
