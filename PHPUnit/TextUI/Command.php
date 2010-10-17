@@ -525,7 +525,7 @@ class PHPUnit_TextUI_Command
         }
 
         if (isset($this->arguments['bootstrap'])) {
-            PHPUnit_Util_Fileloader::load($this->arguments['bootstrap']);
+            $this->handleBootstrap($this->arguments['bootstrap'], $this->arguments['syntaxCheck']);
         }
 
         if ($this->arguments['loader'] !== NULL) {
@@ -586,7 +586,7 @@ class PHPUnit_TextUI_Command
                 $phpunitConfiguration = $configuration->getPHPUnitConfiguration();
 
                 if (isset($phpunitConfiguration['bootstrap'])) {
-                    PHPUnit_Util_Fileloader::load($phpunitConfiguration['bootstrap']);
+                    $this->handleBootstrap($phpunitConfiguration['bootstrap'], $this->arguments['syntaxCheck']);
                 }
             }
 
@@ -705,6 +705,23 @@ class PHPUnit_TextUI_Command
         }
 
         return $loader;
+    }
+
+    /**
+     * Loads a bootstrap file.
+     *
+     * @param  string  $filename
+     * @param  boolean $syntaxCheck
+     */
+    protected function handleBootstrap($filename, $syntaxCheck = FALSE)
+    {
+        try {
+            PHPUnit_Util_Fileloader::checkAndLoad($filename, $syntaxCheck);
+        }
+
+        catch (RuntimeException $e) {
+            PHPUnit_TextUI_TestRunner::showError($e->getMessage());
+        }
     }
 
     /**
