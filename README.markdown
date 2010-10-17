@@ -6,6 +6,7 @@ This is the list of changes for the PHPUnit 3.5 release series.
 PHPUnit 3.5.2
 -------------
 
+* Tests that are incomplete or skipped no longer yield code coverage in strict mode.
 * Fixed GH-34: Bogus bootstrap file raises cryptic error.
 
 PHPUnit 3.5.1

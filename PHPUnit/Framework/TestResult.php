@@ -577,8 +577,10 @@ class PHPUnit_Framework_TestResult implements Countable
     {
         PHPUnit_Framework_Assert::resetCount();
 
-        $error   = FALSE;
-        $failure = FALSE;
+        $error      = FALSE;
+        $failure    = FALSE;
+        $incomplete = FALSE;
+        $skipped    = FALSE;
 
         $this->startTest($test);
 
@@ -619,6 +621,14 @@ class PHPUnit_Framework_TestResult implements Countable
 
         catch (PHPUnit_Framework_AssertionFailedError $e) {
             $failure = TRUE;
+
+            if ($e instanceof PHPUnit_Framework_IncompleteTestError) {
+                $incomplete = TRUE;
+            }
+
+            else if ($e instanceof PHPUnit_Framework_SkippedTestError) {
+                $skipped = TRUE;
+            }
         }
 
         catch (Exception $e) {
@@ -630,16 +640,18 @@ class PHPUnit_Framework_TestResult implements Countable
         if ($useXdebug) {
             $data = $this->codeCoverage->stop(FALSE);
 
-            if ($this->collectRawCodeCoverageInformation) {
-                $this->rawCodeCoverageInformation[] = $data;
-            } else {
-                $filterGroups = array('DEFAULT', 'TESTS');
+            if (!$this->strictMode || (!$incomplete && !$skipped)) {
+                if ($this->collectRawCodeCoverageInformation) {
+                    $this->rawCodeCoverageInformation[] = $data;
+                } else {
+                    $filterGroups = array('DEFAULT', 'TESTS');
 
-                if (!defined('PHPUNIT_TESTSUITE')) {
-                    $filterGroups[] = 'PHPUNIT';
+                    if (!defined('PHPUNIT_TESTSUITE')) {
+                        $filterGroups[] = 'PHPUNIT';
+                    }
+
+                    $this->codeCoverage->append($data, $test, $filterGroups);
                 }
-
-                $this->codeCoverage->append($data, $test, $filterGroups);
             }
         }
 
@@ -774,6 +786,7 @@ class PHPUnit_Framework_TestResult implements Countable
      *
      * When active
      *   * Tests that do not assert anything will be marked as incomplete.
+     *   * Tests that are incomplete or skipped yield no code coverage.
      *
      * @param  boolean $flag
      * @throws InvalidArgumentException
