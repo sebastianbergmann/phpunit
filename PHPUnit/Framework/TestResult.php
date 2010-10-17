@@ -653,6 +653,8 @@ class PHPUnit_Framework_TestResult implements Countable
                     $this->codeCoverage->append($data, $test, $filterGroups);
                 }
             }
+
+            unset($data);
         }
 
         if ($errorHandlerSet === TRUE) {
