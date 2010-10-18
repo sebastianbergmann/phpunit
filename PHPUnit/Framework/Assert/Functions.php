@@ -1766,6 +1766,19 @@ function returnCallback($callback)
 }
 
 /**
+ * Returns the current object.
+ *
+ * This method is useful when mocking a fluent interface.
+ *
+ * @return PHPUnit_Framework_MockObject_Stub_ReturnSelf
+ * @since  Method available since Release 3.6.0
+ */
+function returnSelf()
+{
+    return PHPUnit_Framework_TestCase::returnSelf();
+}
+
+/**
  *
  *
  * @param  mixed $value
