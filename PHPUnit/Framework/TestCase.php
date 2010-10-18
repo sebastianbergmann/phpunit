@@ -1288,7 +1288,7 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
      * This method is useful when mocking a fluent interface.
      *
      * @return PHPUnit_Framework_MockObject_Stub_ReturnSelf
-     * @since  Method available since Release 3.5.2
+     * @since  Method available since Release 3.6.0
      */
     public static function returnSelf()
     {
