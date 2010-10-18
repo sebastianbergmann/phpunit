@@ -17,10 +17,10 @@
   <email>sebastian@phpunit.de</email>
   <active>yes</active>
  </lead>
- <date>2010-10-16</date>
+ <date>2010-10-18</date>
  <version>
-  <release>3.5.1</release>
-  <api>3.5.0</api>
+  <release>3.5.2</release>
+  <api>3.5.2</api>
  </version>
  <stability>
   <release>stable</release>
