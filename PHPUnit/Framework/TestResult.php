@@ -571,6 +571,16 @@ class PHPUnit_Framework_TestResult implements Countable
     }
 
     /**
+     * Returns the strict mode configuration option
+     *
+     * @return boolean
+     */
+    public function isStrict()
+    {
+        return $this->strictMode;
+    }
+
+    /**
      * Runs a TestCase.
      *
      * @param  PHPUnit_Framework_Test $test
