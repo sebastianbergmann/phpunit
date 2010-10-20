@@ -380,8 +380,10 @@ class PHPUnit_Framework_TestResult implements Countable
         }
 
         if (!$this->lastTestFailed && $test instanceof PHPUnit_Framework_TestCase) {
-            $this->passed[get_class($test) . '::' . $test->getName()] = $test->getResult();
-            $this->time                                              += $time;
+            $key = get_class($test) . '::' . $test->getName();
+
+            $this->passed[$key] = $test->getResult();
+            $this->time        += $time;
         }
     }
 
