@@ -535,12 +535,12 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
                     );
 
                     return;
+                }
+
+                if (isset($passed[$dependency])) {
+                    $this->dependencyInput[] = $passed[$dependency];
                 } else {
-                    if (isset($passed[$dependency])) {
-                        $this->dependencyInput[] = $passed[$dependency];
-                    } else {
-                        $this->dependencyInput[] = NULL;
-                    }
+                    $this->dependencyInput[] = NULL;
                 }
             }
         }
