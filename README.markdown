@@ -3,6 +3,11 @@ PHPUnit 3.5
 
 This is the list of changes for the PHPUnit 3.5 release series.
 
+PHPUnit 3.5.3
+-------------
+
+* Strict mode is now compatible with process isolation.
+
 PHPUnit 3.5.2
 -------------
 
