@@ -106,6 +106,9 @@
       <file baseinstalldir="/" name="ClassHasStaticAttribute.php" role="php">
        <tasks:replace from="@package_version@" to="version" type="package-info" />
       </file>
+      <file baseinstalldir="/" name="Count.php" role="php">
+       <tasks:replace from="@package_version@" to="version" type="package-info" />
+      </file>
       <file baseinstalldir="/" name="FileExists.php" role="php">
        <tasks:replace from="@package_version@" to="version" type="package-info" />
       </file>
