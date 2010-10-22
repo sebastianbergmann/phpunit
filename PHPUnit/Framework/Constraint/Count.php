@@ -40,7 +40,7 @@
  * @copyright  2002-2010 Sebastian Bergmann <sebastian@phpunit.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @link       http://www.phpunit.de/
- * @since      File available since Release 3.5.x
+ * @since      File available since Release 3.6.0
  */
 
 /**
@@ -53,39 +53,33 @@
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    Release: @package_version@
  * @link       http://www.phpunit.de/
- * @since      Class available since Release 3.5.x
+ * @since      Class available since Release 3.6.0
  */
-
 class PHPUnit_Framework_Constraint_Count extends PHPUnit_Framework_Constraint
 {
-
     /**
      * @var integer
      */
-    protected $_expectedCount = 0;
+    protected $expectedCount = 0;
 
     /**
      * @param integer $expected
-     * @param boolean $strict
      */
     public function __construct($expected)
     {
-        $this->_expectedCount = $expected;
+        $this->expectedCount = $expected;
     }
 
     /**
-     * Evaluate
+     * Evaluates the constraint for parameter $other. Returns TRUE if the
+     * constraint is met, FALSE otherwise.
      *
      * @param mixed $other
      * @return boolean
      */
     public function evaluate($other)
     {
-        if ($this->_expectedCount === $this->getCountOf($other)) {
-            return true;
-        }
-
-        return false;
+        return $this->expectedCount === $this->getCountOf($other);
     }
 
     /**
@@ -94,10 +88,11 @@ class PHPUnit_Framework_Constraint_Count extends PHPUnit_Framework_Constraint
      */
     protected function getCountOf($other)
     {
-        if ($other instanceof Countable ||
-            is_array($other)) {
+        if ($other instanceof Countable || is_array($other)) {
             return count($other);
-        } else if ($other instanceof Iterator) {
+        }
+
+        else if ($other instanceof Iterator) {
             return iterator_count($other);
         }
     }
@@ -110,8 +105,11 @@ class PHPUnit_Framework_Constraint_Count extends PHPUnit_Framework_Constraint
      */
     protected function failureDescription($other, $description, $not)
     {
-        return 'Count of ' . $this->getCountOf($other) .
-        ' does not match expected count of ' . $this->_expectedCount;
+        return sprintf(
+          'Count of %d does not match expected count of %d',
+          $this->getCountOf($other),
+          $this->expectedCount
+        );
     }
 
     /**
