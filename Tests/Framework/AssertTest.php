@@ -4572,7 +4572,7 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
         }
 
         catch (InvalidArgumentException $e) {
-            $this->assertEquals('Argument #2 of PHPUnit_Framework_Assert::assertCount() must be a countable type', $e->getMessage());
+            $this->assertEquals('Argument #2 of PHPUnit_Framework_Assert::assertCount() must be a countable', $e->getMessage());
 
             return;
         }
