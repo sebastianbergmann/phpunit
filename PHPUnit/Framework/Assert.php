@@ -350,6 +350,32 @@ abstract class PHPUnit_Framework_Assert
     }
 
     /**
+     * Asserts the number of elements of an array, Countable or Iterator.
+     *
+     * @param integer $expectedCount
+     * @param mixed   $haystack
+     * @param string  $message
+     */
+    public function assertNotCount($expectedCount, $haystack, $message = '')
+    {
+        if (!is_int($expectedCount)) {
+            throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'integer');
+        }
+
+        if (!$haystack instanceof Countable &&
+            !$haystack instanceof Iterator &&
+            !is_array($haystack)) {
+            throw PHPUnit_Util_InvalidArgumentHelper::factory(2, 'countable');
+        }
+
+        $constraint = new PHPUnit_Framework_Constraint_Not(
+          new PHPUnit_Framework_Constraint_Count($expectedCount)
+        );
+
+        self::assertThat($haystack, $constraint, $message);
+    }
+
+    /**
      * Asserts that two variables are equal.
      *
      * @param  mixed   $expected
