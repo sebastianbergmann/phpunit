@@ -141,6 +141,11 @@ class PHPUnit_Util_PHP
           self::getPhpBinary(), self::$descriptorSpec, $pipes
         );
 
+        if($_SERVER["OS"] == "Windows_NT") {
+            // workaround for bug in Windows, see also: http://bugs.php.net/bug.php?id=52911
+            sleep(2);
+        }
+
         if (is_resource($process)) {
             if ($result !== NULL) {
                 $result->startTest($test);
