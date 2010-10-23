@@ -141,8 +141,8 @@ class PHPUnit_Util_PHP
           self::getPhpBinary(), self::$descriptorSpec, $pipes
         );
 
-        if($_SERVER["OS"] == "Windows_NT") {
-            // workaround for bug in Windows, see also: http://bugs.php.net/bug.php?id=52911
+        // Workaround for http://bugs.php.net/bug.php?id=52911
+        if ($_SERVER["OS"] == "Windows_NT") {
             sleep(2);
         }
 
