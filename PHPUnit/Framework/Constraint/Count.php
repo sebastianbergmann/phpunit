@@ -106,7 +106,7 @@ class PHPUnit_Framework_Constraint_Count extends PHPUnit_Framework_Constraint
     protected function failureDescription($other, $description, $not)
     {
         return sprintf(
-          'Count of %d does not match expected count of %d',
+          'Count of %d does not match expected count of %d.',
           $this->getCountOf($other),
           $this->expectedCount
         );
