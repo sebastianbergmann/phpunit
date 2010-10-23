@@ -142,7 +142,7 @@ class PHPUnit_Util_PHP
         );
 
         // Workaround for http://bugs.php.net/bug.php?id=52911
-        if ($_SERVER["OS"] == "Windows_NT") {
+        if (DIRECTORY_SEPARATOR == '\\') {
             sleep(2);
         }
 
