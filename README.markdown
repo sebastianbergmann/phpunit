@@ -7,6 +7,7 @@ PHPUnit 3.5.3
 -------------
 
 * Strict mode is now compatible with process isolation.
+* Worked around http://bugs.php.net/bug.php?id=52911 to make process isolation work on Windows.
 
 PHPUnit 3.5.2
 -------------
