@@ -141,6 +141,11 @@ class PHPUnit_Util_PHP
           self::getPhpBinary(), self::$descriptorSpec, $pipes
         );
 
+        // Workaround for http://bugs.php.net/bug.php?id=52911
+        if (DIRECTORY_SEPARATOR == '\\') {
+            sleep(2);
+        }
+
         if (is_resource($process)) {
             if ($result !== NULL) {
                 $result->startTest($test);
