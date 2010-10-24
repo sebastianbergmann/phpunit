@@ -516,10 +516,8 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
                         $message .= "\n" . $_message;
                     }
 
-                    return new PHPUnit_Framework_Warning($message);
+                    $data = self::warning($message);
                 }
-
-                $groups = PHPUnit_Util_Test::getGroups($className, $name);
 
                 // Test method with @dataProvider.
                 if (isset($data)) {
@@ -527,30 +525,47 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
                       $className . '::' . $name
                     );
 
-                    foreach ($data as $_dataName => $_data) {
-                        $_test = new $className($name, $_data, $_dataName);
+                    if (empty($data)) {
+                        $data = self::warning(
+                          sprintf(
+                            'No tests found in suite "%s".',
+                            $test->getName()
+                          )
+                        );
+                    }
 
-                        if ($runTestInSeparateProcess) {
-                            $_test->setRunTestInSeparateProcess(TRUE);
+                    if ($data instanceof PHPUnit_Framework_Warning) {
+                        $test->addTest($data);
+                    }
 
-                            if ($preserveGlobalState !== NULL) {
-                                $_test->setPreserveGlobalState($preserveGlobalState);
+                    else {
+                        $groups = PHPUnit_Util_Test::getGroups($className, $name);
+
+                        foreach ($data as $_dataName => $_data) {
+                            $_test = new $className($name, $_data, $_dataName);
+
+                            if ($runTestInSeparateProcess) {
+                                $_test->setRunTestInSeparateProcess(TRUE);
+
+                                if ($preserveGlobalState !== NULL) {
+                                    $_test->setPreserveGlobalState($preserveGlobalState);
+                                }
                             }
-                        }
 
-                        if ($backupSettings['backupGlobals'] !== NULL) {
-                            $_test->setBackupGlobals(
-                              $backupSettings['backupGlobals']
-                            );
-                        }
+                            if ($backupSettings['backupGlobals'] !== NULL) {
+                                $_test->setBackupGlobals(
+                                  $backupSettings['backupGlobals']
+                                );
+                            }
 
-                        if ($backupSettings['backupStaticAttributes'] !== NULL) {
-                            $_test->setBackupStaticAttributes(
-                              $backupSettings['backupStaticAttributes']
-                            );
-                        }
+                            if ($backupSettings['backupStaticAttributes'] !== NULL) {
+                                $_test->setBackupStaticAttributes(
+                                  $backupSettings['backupStaticAttributes']
+                                );
+                            }
 
-                        $test->addTest($_test, $groups);
+                            $test->addTest($_test, $groups);
+                        }
                     }
                 }
 
