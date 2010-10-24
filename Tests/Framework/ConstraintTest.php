@@ -2532,7 +2532,7 @@ class Framework_ConstraintTest extends PHPUnit_Framework_TestCase
 
         catch (PHPUnit_Framework_ExpectationFailedException $e) {
             $this->assertEquals(
-              "Count of 2 does not match expected count of 5",
+              'Count of 2 does not match expected count of 5.',
               $e->getDescription()
             );
 
