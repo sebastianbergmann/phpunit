@@ -187,6 +187,11 @@ class PHPUnit_Util_File
             }
 
             switch ($tokens[$i][0]) {
+                case T_HALT_COMPILER: {
+                    return;
+                }
+                break;
+
                 case T_NAMESPACE: {
                     $currentNamespace = $tokens[$i+2][1];
 
