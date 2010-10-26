@@ -7,6 +7,7 @@ PHPUnit 3.5.3
 -------------
 
 * Fixed GH-13: Result XML inconsistent when data provider returns empty array or does not exist.
+* Fixed the skeleton generator for tested classes.
 * Strict mode is now compatible with process isolation.
 * Worked around http://bugs.php.net/bug.php?id=52911 to make process isolation work on Windows.
 
