@@ -199,6 +199,13 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
     protected $coveredElements = array();
 
     /**
+     * The stack trace to where the expected exception was set.
+     *
+     * @var    array
+     */
+    protected $expectedExceptionTrace = array();
+
+    /**
      * The name of the test case.
      *
      * @var    string
@@ -398,6 +405,7 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
         $this->expectedException        = $exceptionName;
         $this->expectedExceptionMessage = $exceptionMessage;
         $this->expectedExceptionCode    = $exceptionCode;
+        $this->expectedExceptionTrace   = debug_backtrace();
     }
 
     /**
@@ -529,6 +537,8 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
             $result = $this->createResult();
         }
 
+        $this->result = $result;
+
         $this->setExpectedExceptionFromAnnotation();
         $this->setUseErrorHandlerFromAnnotation();
         $this->setUseOutputBufferingFromAnnotation();
@@ -538,49 +548,8 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
             $result->convertErrorsToExceptions($this->useErrorHandler);
         }
 
-        $this->result = $result;
-
-        if (!empty($this->dependencies) && !$this->inIsolation) {
-            $className  = get_class($this);
-            $passed     = $this->result->passed();
-            $passedKeys = array_keys($passed);
-            $numKeys    = count($passedKeys);
-
-            for ($i = 0; $i < $numKeys; $i++) {
-                $pos = strpos($passedKeys[$i], ' with data set');
-
-                if ($pos !== FALSE) {
-                    $passedKeys[$i] = substr($passedKeys[$i], 0, $pos);
-                }
-            }
-
-            $passedKeys = array_flip(array_unique($passedKeys));
-
-            foreach ($this->dependencies as $dependency) {
-                if (strpos($dependency, '::') === FALSE) {
-                    $dependency = $className . '::' . $dependency;
-                }
-
-                if (!isset($passedKeys[$dependency])) {
-                    $result->addError(
-                      $this,
-                      new PHPUnit_Framework_SkippedTestError(
-                        sprintf(
-                          'This test depends on "%s" to pass.', $dependency
-                        )
-                      ),
-                      0
-                    );
-
-                    return;
-                } else {
-                    if (isset($passed[$dependency])) {
-                        $this->dependencyInput[] = $passed[$dependency];
-                    } else {
-                        $this->dependencyInput[] = NULL;
-                    }
-                }
-            }
+        if (!$this->handleDependencies()) {
+            return;
         }
 
         if ($this->runTestInSeparateProcess === TRUE &&
@@ -616,6 +585,12 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
                 $coverage = 'FALSE';
             }
 
+            if ($result->isStrict()) {
+                $strict = 'TRUE';
+            } else {
+                $strict = 'FALSE';
+            }
+
             $data            = addcslashes(serialize($this->data), "'");
             $dependencyInput = addcslashes(
               serialize($this->dependencyInput), "'"
@@ -634,7 +609,8 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
                 'constants'                      => $constants,
                 'globals'                        => $globals,
                 'include_path'                   => $includePath,
-                'included_files'                 => $includedFiles
+                'included_files'                 => $includedFiles,
+                'strict'                         => $strict
               )
             );
 
@@ -837,7 +813,13 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
 
         if ($this->expectedException !== NULL) {
             $this->numAssertions++;
-            $this->fail('Expected exception ' . $this->expectedException);
+
+            $this->syntheticFail(
+              'Expected exception ' . $this->expectedException,
+              '',
+              0,
+              $this->expectedExceptionTrace
+            );
         }
 
         return $testResult;
@@ -1076,7 +1058,7 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
      * @throws InvalidArgumentException
      * @since  Method available since Release 3.0.0
      */
-    protected function getMock($originalClassName, $methods = array(), array $arguments = array(), $mockClassName = '', $callOriginalConstructor = TRUE, $callOriginalClone = TRUE, $callAutoload = TRUE)
+    public function getMock($originalClassName, $methods = array(), array $arguments = array(), $mockClassName = '', $callOriginalConstructor = TRUE, $callOriginalClone = TRUE, $callAutoload = TRUE)
     {
         $mockObject = PHPUnit_Framework_MockObject_Generator::getMock(
           $originalClassName,
@@ -1091,6 +1073,20 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
         $this->mockObjects[] = $mockObject;
 
         return $mockObject;
+    }
+
+    /**
+     * Returns a builder object to create mock objects using a fluent interface.
+     *
+     * @param  string $className
+     * @return PHPUnit_Framework_MockObject_MockBuilder
+     * @since  Method available since Release 3.5.0
+     */
+    public function getMockBuilder($className)
+    {
+        return new PHPUnit_Framework_MockObject_MockBuilder(
+          $this, $className
+        );
     }
 
     /**
@@ -1217,7 +1213,7 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
      * @return PHPUnit_Framework_MockObject_Matcher_AnyInvokedCount
      * @since  Method available since Release 3.0.0
      */
-    protected function any()
+    public static function any()
     {
         return new PHPUnit_Framework_MockObject_Matcher_AnyInvokedCount;
     }
@@ -1229,7 +1225,7 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
      * @return PHPUnit_Framework_MockObject_Matcher_InvokedCount
      * @since  Method available since Release 3.0.0
      */
-    protected function never()
+    public static function never()
     {
         return new PHPUnit_Framework_MockObject_Matcher_InvokedCount(0);
     }
@@ -1241,7 +1237,7 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
      * @return PHPUnit_Framework_MockObject_Matcher_InvokedAtLeastOnce
      * @since  Method available since Release 3.0.0
      */
-    protected function atLeastOnce()
+    public static function atLeastOnce()
     {
         return new PHPUnit_Framework_MockObject_Matcher_InvokedAtLeastOnce;
     }
@@ -1253,7 +1249,7 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
      * @return PHPUnit_Framework_MockObject_Matcher_InvokedCount
      * @since  Method available since Release 3.0.0
      */
-    protected function once()
+    public static function once()
     {
         return new PHPUnit_Framework_MockObject_Matcher_InvokedCount(1);
     }
@@ -1266,7 +1262,7 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
      * @return PHPUnit_Framework_MockObject_Matcher_InvokedCount
      * @since  Method available since Release 3.0.0
      */
-    protected function exactly($count)
+    public static function exactly($count)
     {
         return new PHPUnit_Framework_MockObject_Matcher_InvokedCount($count);
     }
@@ -1279,7 +1275,7 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
      * @return PHPUnit_Framework_MockObject_Matcher_InvokedAtIndex
      * @since  Method available since Release 3.0.0
      */
-    protected function at($index)
+    public static function at($index)
     {
         return new PHPUnit_Framework_MockObject_Matcher_InvokedAtIndex($index);
     }
@@ -1291,7 +1287,7 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
      * @return PHPUnit_Framework_MockObject_Stub_Return
      * @since  Method available since Release 3.0.0
      */
-    protected function returnValue($value)
+    public static function returnValue($value)
     {
         return new PHPUnit_Framework_MockObject_Stub_Return($value);
     }
@@ -1303,7 +1299,7 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
      * @return PHPUnit_Framework_MockObject_Stub_ReturnArgument
      * @since  Method available since Release 3.3.0
      */
-    protected function returnArgument($argumentIndex)
+    public static function returnArgument($argumentIndex)
     {
         return new PHPUnit_Framework_MockObject_Stub_ReturnArgument(
           $argumentIndex
@@ -1317,9 +1313,22 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
      * @return PHPUnit_Framework_MockObject_Stub_ReturnCallback
      * @since  Method available since Release 3.3.0
      */
-    protected function returnCallback($callback)
+    public static function returnCallback($callback)
     {
         return new PHPUnit_Framework_MockObject_Stub_ReturnCallback($callback);
+    }
+
+    /**
+     * Returns the current object.
+     *
+     * This method is useful when mocking a fluent interface.
+     *
+     * @return PHPUnit_Framework_MockObject_Stub_ReturnSelf
+     * @since  Method available since Release 3.6.0
+     */
+    public static function returnSelf()
+    {
+        return new PHPUnit_Framework_MockObject_Stub_ReturnSelf();
     }
 
     /**
@@ -1329,7 +1338,7 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
      * @return PHPUnit_Framework_MockObject_Stub_Exception
      * @since  Method available since Release 3.1.0
      */
-    protected function throwException(Exception $exception)
+    public static function throwException(Exception $exception)
     {
         return new PHPUnit_Framework_MockObject_Stub_Exception($exception);
     }
@@ -1341,7 +1350,7 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
      * @return PHPUnit_Framework_MockObject_Stub_ConsecutiveCalls
      * @since  Method available since Release 3.0.0
      */
-    protected function onConsecutiveCalls()
+    public static function onConsecutiveCalls()
     {
         $args = func_get_args();
 
@@ -1418,6 +1427,57 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
     protected function createResult()
     {
         return new PHPUnit_Framework_TestResult;
+    }
+
+    /**
+     * @since Method available since Release 3.5.4
+     */
+    protected function handleDependencies()
+    {
+        if (!empty($this->dependencies) && !$this->inIsolation) {
+            $className  = get_class($this);
+            $passed     = $this->result->passed();
+            $passedKeys = array_keys($passed);
+            $numKeys    = count($passedKeys);
+
+            for ($i = 0; $i < $numKeys; $i++) {
+                $pos = strpos($passedKeys[$i], ' with data set');
+
+                if ($pos !== FALSE) {
+                    $passedKeys[$i] = substr($passedKeys[$i], 0, $pos);
+                }
+            }
+
+            $passedKeys = array_flip(array_unique($passedKeys));
+
+            foreach ($this->dependencies as $dependency) {
+                if (strpos($dependency, '::') === FALSE) {
+                    $dependency = $className . '::' . $dependency;
+                }
+
+                if (!isset($passedKeys[$dependency])) {
+                    $this->result->addError(
+                      $this,
+                      new PHPUnit_Framework_SkippedTestError(
+                        sprintf(
+                          'This test depends on "%s" to pass.', $dependency
+                        )
+                      ),
+                      0
+                    );
+
+                    return FALSE;
+                } else {
+                    if (isset($passed[$dependency])) {
+                        $this->dependencyInput[] = $passed[$dependency];
+                    } else {
+                        $this->dependencyInput[] = NULL;
+                    }
+                }
+            }
+        }
+
+        return TRUE;
     }
 
     /**

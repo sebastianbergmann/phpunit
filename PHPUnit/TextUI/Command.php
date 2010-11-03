@@ -64,7 +64,6 @@ class PHPUnit_TextUI_Command
     protected $arguments = array(
       'listGroups'              => FALSE,
       'loader'                  => NULL,
-      'syntaxCheck'             => FALSE,
       'useDefaultConfiguration' => TRUE
     );
 
@@ -103,9 +102,6 @@ class PHPUnit_TextUI_Command
       'stop-on-failure' => NULL,
       'stop-on-incomplete' => NULL,
       'stop-on-skipped' => NULL,
-      'story' => NULL,
-      'story-html=' => NULL,
-      'story-text=' => NULL,
       'strict' => NULL,
       'syntax-check' => NULL,
       'tap' => NULL,
@@ -145,8 +141,7 @@ class PHPUnit_TextUI_Command
         } else {
             $suite = $runner->getTest(
               $this->arguments['test'],
-              $this->arguments['testFile'],
-              $this->arguments['syntaxCheck']
+              $this->arguments['testFile']
             );
         }
 
@@ -381,7 +376,6 @@ class PHPUnit_TextUI_Command
 
                 case '--process-isolation': {
                     $this->arguments['processIsolation'] = TRUE;
-                    $this->arguments['syntaxCheck']      = FALSE;
                 }
                 break;
 
@@ -432,26 +426,6 @@ class PHPUnit_TextUI_Command
 
                 case '--tap': {
                     $this->arguments['printer'] = new PHPUnit_Util_Log_TAP;
-                }
-                break;
-
-                case '--story': {
-                    $this->arguments['printer'] = new PHPUnit_Extensions_Story_ResultPrinter_Text;
-                }
-                break;
-
-                case '--story-html': {
-                    $this->arguments['storyHTMLFile'] = $option[1];
-                }
-                break;
-
-                case '--story-text': {
-                    $this->arguments['storyTextFile'] = $option[1];
-                }
-                break;
-
-                case '--syntax-check': {
-                    $this->arguments['syntaxCheck'] = TRUE;
                 }
                 break;
 
@@ -524,15 +498,6 @@ class PHPUnit_TextUI_Command
             }
         }
 
-        if (isset($this->arguments['printer']) &&
-            $this->arguments['printer'] instanceof PHPUnit_Extensions_Story_ResultPrinter_Text &&
-            isset($this->arguments['processIsolation']) &&
-            $this->arguments['processIsolation']) {
-            $this->showMessage(
-              'The story result printer cannot be used in process isolation.'
-            );
-        }
-
         $this->handleCustomTestSuite();
 
         if (!isset($this->arguments['test'])) {
@@ -560,7 +525,7 @@ class PHPUnit_TextUI_Command
         }
 
         if (isset($this->arguments['bootstrap'])) {
-            PHPUnit_Util_Fileloader::load($this->arguments['bootstrap']);
+            $this->handleBootstrap($this->arguments['bootstrap'], $this->arguments['syntaxCheck']);
         }
 
         if ($this->arguments['loader'] !== NULL) {
@@ -603,10 +568,6 @@ class PHPUnit_TextUI_Command
 
             $phpunit = $configuration->getPHPUnitConfiguration();
 
-            if (isset($phpunit['syntaxCheck'])) {
-                $this->arguments['syntaxCheck'] = $phpunit['syntaxCheck'];
-            }
-
             if (isset($phpunit['testSuiteLoaderClass'])) {
                 if (isset($phpunit['testSuiteLoaderFile'])) {
                     $file = $phpunit['testSuiteLoaderFile'];
@@ -625,7 +586,7 @@ class PHPUnit_TextUI_Command
                 $phpunitConfiguration = $configuration->getPHPUnitConfiguration();
 
                 if (isset($phpunitConfiguration['bootstrap'])) {
-                    PHPUnit_Util_Fileloader::load($phpunitConfiguration['bootstrap']);
+                    $this->handleBootstrap($phpunitConfiguration['bootstrap'], $this->arguments['syntaxCheck']);
                 }
             }
 
@@ -636,9 +597,7 @@ class PHPUnit_TextUI_Command
             }
 
             if (!isset($this->arguments['test'])) {
-                $testSuite = $configuration->getTestSuiteConfiguration(
-                  $this->arguments['syntaxCheck']
-                );
+                $testSuite = $configuration->getTestSuiteConfiguration();
 
                 if ($testSuite !== NULL) {
                     $this->arguments['test'] = $testSuite;
@@ -657,10 +616,6 @@ class PHPUnit_TextUI_Command
             (isset($this->arguments['testDatabaseLogRevision']) && !isset($this->arguments['testDatabaseDSN']))) {
             $this->showHelp();
             exit(PHPUnit_TextUI_TestRunner::EXCEPTION_EXIT);
-        }
-
-        if (!isset($this->arguments['syntaxCheck'])) {
-            $this->arguments['syntaxCheck'] = FALSE;
         }
 
         if ($skeletonClass || $skeletonTest) {
@@ -753,6 +708,23 @@ class PHPUnit_TextUI_Command
     }
 
     /**
+     * Loads a bootstrap file.
+     *
+     * @param  string  $filename
+     * @param  boolean $syntaxCheck
+     */
+    protected function handleBootstrap($filename, $syntaxCheck = FALSE)
+    {
+        try {
+            PHPUnit_Util_Fileloader::checkAndLoad($filename, $syntaxCheck);
+        }
+
+        catch (RuntimeException $e) {
+            PHPUnit_TextUI_TestRunner::showError($e->getMessage());
+        }
+    }
+
+    /**
      * Shows a message.
      *
      * @param string  $message
@@ -789,9 +761,6 @@ Usage: phpunit [switches] UnitTest [UnitTest.php]
   --coverage-html <dir>    Generate code coverage report in HTML format.
   --coverage-clover <file> Write code coverage data in Clover XML format.
 
-  --story-html <file>      Write Story/BDD results in HTML format to file.
-  --story-text <file>      Write Story/BDD results in Text format to file.
-
   --testdox-html <file>    Write agile documentation in HTML format to file.
   --testdox-text <file>    Write agile documentation in Text format to file.
 
@@ -803,7 +772,6 @@ Usage: phpunit [switches] UnitTest [UnitTest.php]
   --loader <loader>        TestSuiteLoader implementation to use.
   --repeat <times>         Runs the test(s) repeatedly.
 
-  --story                  Report test execution progress in Story/BDD format.
   --tap                    Report test execution progress in TAP format.
   --testdox                Report test execution progress in TestDox format.
 

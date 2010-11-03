@@ -34,7 +34,6 @@
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  *
- * @category   Testing
  * @package    PHPUnit
  * @author     Sebastian Bergmann <sebastian@phpunit.de>
  * @copyright  2002-2010 Sebastian Bergmann <sebastian@phpunit.de>
@@ -47,10 +46,11 @@ require_once 'PHPUnit/Framework/TestCase.php';
 
 require_once dirname(dirname(__FILE__)) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'ClassWithNonPublicAttributes.php';
 
+require_once dirname(dirname(__FILE__)) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'TestIterator.php';
+
 /**
  *
  *
- * @category   Testing
  * @package    PHPUnit
  * @author     Sebastian Bergmann <sebastian@phpunit.de>
  * @copyright  2002-2010 Sebastian Bergmann <sebastian@phpunit.de>
@@ -2477,6 +2477,62 @@ class Framework_ConstraintTest extends PHPUnit_Framework_TestCase
         catch (PHPUnit_Framework_ExpectationFailedException $e) {
             $this->assertEquals(
               "custom message\nFailed asserting that an array is empty.",
+              $e->getDescription()
+            );
+
+            return;
+        }
+
+        $this->fail();
+    }
+
+    /**
+     * @covers PHPUnit_Framework_Constraint_Count
+     */
+    public function testConstraintCountWithAnArray()
+    {
+        $constraint = new PHPUnit_Framework_Constraint_Count(5);
+
+        $this->assertTrue($constraint->evaluate(array(1,2,3,4,5)));
+        $this->assertFalse($constraint->evaluate(array(1,2,3,4)));
+    }
+
+    /**
+     * @covers PHPUnit_Framework_Constraint_Count
+     */
+    public function testConstraintCountWithAnIteratorWhichDoesNotImplementCountable()
+    {
+        $constraint = new PHPUnit_Framework_Constraint_Count(5);
+
+        $this->assertTrue($constraint->evaluate(new TestIterator(array(1,2,3,4,5))));
+        $this->assertFalse($constraint->evaluate(new TestIterator(array(1,2,3,4))));
+    }
+
+    /**
+     * @covers PHPUnit_Framework_Constraint_Count
+     */
+    public function testConstraintCountWithAnObjectImplementingCountable()
+    {
+        $constraint = new PHPUnit_Framework_Constraint_Count(5);
+
+        $this->assertTrue($constraint->evaluate(new ArrayObject(array(1,2,3,4,5))));
+        $this->assertFalse($constraint->evaluate(new ArrayObject(array(1,2,3,4))));
+    }
+
+    /**
+     * @covers PHPUnit_Framework_Constraint_Count
+     */
+    public function testConstraintCountFailing()
+    {
+        $constraint = new PHPUnit_Framework_Constraint_Count(5);
+
+        try {
+            $constraint->fail(array(1,2), '');
+        }
+
+        catch (PHPUnit_Framework_ExpectationFailedException $e) {
+            $this->assertEquals(
+              'Count of 2 does not match expected count of 5.',
               $e->getDescription()
             );
 

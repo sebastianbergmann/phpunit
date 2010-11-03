@@ -43,6 +43,8 @@
  * @since      File available since Release 2.0.0
  */
 
+require_once 'File/Iterator/Factory.php';
+
 /**
  * Base class for all test runners.
  *
@@ -81,26 +83,27 @@ abstract class PHPUnit_Runner_BaseTestRunner
      *
      * @param  string  $suiteClassName
      * @param  string  $suiteClassFile
-     * @param  boolean $syntaxCheck
      * @return PHPUnit_Framework_Test
      */
-    public function getTest($suiteClassName, $suiteClassFile = '', $syntaxCheck = FALSE)
+    public function getTest($suiteClassName, $suiteClassFile = '')
     {
         if (is_dir($suiteClassName) &&
             !is_file($suiteClassName . '.php') && empty($suiteClassFile)) {
-            $testCollector = new PHPUnit_Runner_IncludePathTestCollector(
-              array($suiteClassName)
-            );
-
             $suite = new PHPUnit_Framework_TestSuite($suiteClassName);
-            $suite->addTestFiles($testCollector->collectTests(), $syntaxCheck);
+
+            $suite->addTestFiles(
+              File_Iterator_Factory::getFilesAsArray(
+                $suiteClassName,
+                array('Test.php', '.phpt')
+              )
+            );
 
             return $suite;
         }
 
         try {
             $testClass = $this->loadSuiteClass(
-              $suiteClassName, $suiteClassFile, $syntaxCheck
+              $suiteClassName, $suiteClassFile
             );
         }
 
@@ -158,15 +161,14 @@ abstract class PHPUnit_Runner_BaseTestRunner
      *
      * @param  string  $suiteClassName
      * @param  string  $suiteClassFile
-     * @param  boolean $syntaxCheck
      * @return ReflectionClass
      */
-    protected function loadSuiteClass($suiteClassName, $suiteClassFile = '', $syntaxCheck = FALSE)
+    protected function loadSuiteClass($suiteClassName, $suiteClassFile = '')
     {
         $loader = $this->getLoader();
 
         if ($loader instanceof PHPUnit_Runner_StandardTestSuiteLoader) {
-            return $loader->load($suiteClassName, $suiteClassFile, $syntaxCheck);
+            return $loader->load($suiteClassName, $suiteClassFile);
         } else {
             return $loader->load($suiteClassName, $suiteClassFile);
         }

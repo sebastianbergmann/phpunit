@@ -34,7 +34,6 @@
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  *
- * @category   Testing
  * @package    PHPUnit
  * @author     Sebastian Bergmann <sebastian@phpunit.de>
  * @copyright  2002-2010 Sebastian Bergmann <sebastian@phpunit.de>
@@ -50,7 +49,6 @@ require_once 'PHPUnit/Util/Configuration.php';
 /**
  *
  *
- * @category   Testing
  * @package    PHPUnit
  * @author     Sebastian Bergmann <sebastian@phpunit.de>
  * @copyright  2002-2010 Sebastian Bergmann <sebastian@phpunit.de>
@@ -224,8 +222,6 @@ class Util_ConfigurationTest extends PHPUnit_Framework_TestCase
             'tap' => '/tmp/logfile.tap',
             'logIncompleteSkipped' => FALSE,
             'junit' => '/tmp/logfile.xml',
-            'story-html' => '/tmp/story.html',
-            'story-text' => '/tmp/story.txt',
             'testdox-html' => '/tmp/testdox.html',
             'testdox-text' => '/tmp/testdox.txt',
           ),
@@ -287,7 +283,6 @@ class Util_ConfigurationTest extends PHPUnit_Framework_TestCase
             'mapTestClassNameToCoveredClassName' => FALSE,
             'stopOnFailure' => FALSE,
             'strict' => FALSE,
-            'syntaxCheck' => FALSE,
             'testSuiteLoaderClass' => 'PHPUnit_Runner_StandardTestSuiteLoader',
             'verbose' => FALSE
           ),

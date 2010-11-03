@@ -343,7 +343,6 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
      * leaving the current test run untouched.
      *
      * @param  string  $filename
-     * @param  boolean $syntaxCheck
      * @param  array   $phptOptions Array with ini settings for the php instance
      *                              run, key being the name if the setting,
      *                              value the ini value.
@@ -351,7 +350,7 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
      * @since  Method available since Release 2.3.0
      * @author Stefano F. Rausch <stefano@rausch-e.net>
      */
-    public function addTestFile($filename, $syntaxCheck = FALSE, $phptOptions = array())
+    public function addTestFile($filename, $phptOptions = array())
     {
         if (!is_string($filename)) {
             throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'string');
@@ -379,7 +378,7 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
         }
 
         PHPUnit_Util_Class::collectStart();
-        PHPUnit_Util_Fileloader::checkAndLoad($filename, $syntaxCheck);
+        PHPUnit_Util_Fileloader::checkAndLoad($filename);
         $newClasses = PHPUnit_Util_Class::collectEnd();
         $baseName   = str_replace('.php', '', basename($filename));
 
@@ -426,7 +425,7 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
      * @throws InvalidArgumentException
      * @since  Method available since Release 2.3.0
      */
-    public function addTestFiles($filenames, $syntaxCheck = FALSE)
+    public function addTestFiles($filenames)
     {
         if (!(is_array($filenames) ||
              (is_object($filenames) && $filenames instanceof Iterator))) {
@@ -436,7 +435,7 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
         }
 
         foreach ($filenames as $filename) {
-            $this->addTestFile((string)$filename, $syntaxCheck);
+            $this->addTestFile((string)$filename);
         }
     }
 
@@ -517,10 +516,8 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
                         $message .= "\n" . $_message;
                     }
 
-                    return new PHPUnit_Framework_Warning($message);
+                    $data = self::warning($message);
                 }
-
-                $groups = PHPUnit_Util_Test::getGroups($className, $name);
 
                 // Test method with @dataProvider.
                 if (isset($data)) {
@@ -528,30 +525,47 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
                       $className . '::' . $name
                     );
 
-                    foreach ($data as $_dataName => $_data) {
-                        $_test = new $className($name, $_data, $_dataName);
+                    if (empty($data)) {
+                        $data = self::warning(
+                          sprintf(
+                            'No tests found in suite "%s".',
+                            $test->getName()
+                          )
+                        );
+                    }
 
-                        if ($runTestInSeparateProcess) {
-                            $_test->setRunTestInSeparateProcess(TRUE);
+                    if ($data instanceof PHPUnit_Framework_Warning) {
+                        $test->addTest($data);
+                    }
 
-                            if ($preserveGlobalState !== NULL) {
-                                $_test->setPreserveGlobalState($preserveGlobalState);
+                    else {
+                        $groups = PHPUnit_Util_Test::getGroups($className, $name);
+
+                        foreach ($data as $_dataName => $_data) {
+                            $_test = new $className($name, $_data, $_dataName);
+
+                            if ($runTestInSeparateProcess) {
+                                $_test->setRunTestInSeparateProcess(TRUE);
+
+                                if ($preserveGlobalState !== NULL) {
+                                    $_test->setPreserveGlobalState($preserveGlobalState);
+                                }
                             }
-                        }
 
-                        if ($backupSettings['backupGlobals'] !== NULL) {
-                            $_test->setBackupGlobals(
-                              $backupSettings['backupGlobals']
-                            );
-                        }
+                            if ($backupSettings['backupGlobals'] !== NULL) {
+                                $_test->setBackupGlobals(
+                                  $backupSettings['backupGlobals']
+                                );
+                            }
 
-                        if ($backupSettings['backupStaticAttributes'] !== NULL) {
-                            $_test->setBackupStaticAttributes(
-                              $backupSettings['backupStaticAttributes']
-                            );
-                        }
+                            if ($backupSettings['backupStaticAttributes'] !== NULL) {
+                                $_test->setBackupStaticAttributes(
+                                  $backupSettings['backupStaticAttributes']
+                                );
+                            }
 
-                        $test->addTest($_test, $groups);
+                            $test->addTest($_test, $groups);
+                        }
                     }
                 }
 

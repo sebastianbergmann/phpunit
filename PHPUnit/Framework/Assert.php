@@ -324,6 +324,58 @@ abstract class PHPUnit_Framework_Assert
     }
 
     /**
+     * Asserts the number of elements of an array, Countable or Iterator.
+     *
+     * @param integer $expectedCount
+     * @param mixed   $haystack
+     * @param string  $message
+     */
+    public function assertCount($expectedCount, $haystack, $message = '')
+    {
+        if (!is_int($expectedCount)) {
+            throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'integer');
+        }
+
+        if (!$haystack instanceof Countable &&
+            !$haystack instanceof Iterator &&
+            !is_array($haystack)) {
+            throw PHPUnit_Util_InvalidArgumentHelper::factory(2, 'countable');
+        }
+
+        self::assertThat(
+          $haystack,
+          new PHPUnit_Framework_Constraint_Count($expectedCount),
+          $message
+        );
+    }
+
+    /**
+     * Asserts the number of elements of an array, Countable or Iterator.
+     *
+     * @param integer $expectedCount
+     * @param mixed   $haystack
+     * @param string  $message
+     */
+    public function assertNotCount($expectedCount, $haystack, $message = '')
+    {
+        if (!is_int($expectedCount)) {
+            throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'integer');
+        }
+
+        if (!$haystack instanceof Countable &&
+            !$haystack instanceof Iterator &&
+            !is_array($haystack)) {
+            throw PHPUnit_Util_InvalidArgumentHelper::factory(2, 'countable');
+        }
+
+        $constraint = new PHPUnit_Framework_Constraint_Not(
+          new PHPUnit_Framework_Constraint_Count($expectedCount)
+        );
+
+        self::assertThat($haystack, $constraint, $message);
+    }
+
+    /**
      * Asserts that two variables are equal.
      *
      * @param  mixed   $expected
@@ -1837,7 +1889,7 @@ abstract class PHPUnit_Framework_Assert
         // assert specific number of elements
         if (is_numeric($count)) {
             $counted = $tags ? count($tags) : 0;
-            self::assertEquals($count, $counted);
+            self::assertEquals($count, $counted, $message);
         }
 
         // assert any elements exist if true, assert no elements exist if false
@@ -2490,6 +2542,20 @@ abstract class PHPUnit_Framework_Assert
     public static function fail($message = '')
     {
         throw new PHPUnit_Framework_AssertionFailedError($message);
+    }
+
+    /**
+     * Fails a test with a synthetic error.
+     *
+     * @param  string  $message
+     * @param  string  $file
+     * @param  integer $line
+     * @param  array   $trace
+     * @throws PHPUnit_Framework_SyntheticError
+     */
+    public static function syntheticFail($message = '', $file = '', $line = 0, $trace = array())
+    {
+        throw new PHPUnit_Framework_SyntheticError($message, 0, $file, $line, $trace);
     }
 
     /**

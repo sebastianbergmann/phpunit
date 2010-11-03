@@ -141,6 +141,11 @@ class PHPUnit_Util_PHP
           self::getPhpBinary(), self::$descriptorSpec, $pipes
         );
 
+        // Workaround for http://bugs.php.net/bug.php?id=52911
+        if (DIRECTORY_SEPARATOR == '\\') {
+            sleep(2);
+        }
+
         if (is_resource($process)) {
             if ($result !== NULL) {
                 $result->startTest($test);
@@ -198,9 +203,12 @@ class PHPUnit_Util_PHP
                 if ($result->getCollectCodeCoverageInformation()) {
                     $codeCoverageInformation = $childResult->getRawCodeCoverageInformation();
 
-                    $result->getCodeCoverage()->append(
-                      $codeCoverageInformation[0], $test
-                    );
+                    if (isset($codeCoverageInformation[0]) &&
+                         is_array($codeCoverageInformation[0])) {
+                        $result->getCodeCoverage()->append(
+                          $codeCoverageInformation[0], $test
+                        );
+                    }
                 }
 
                 $time           = $childResult->time();
@@ -234,9 +242,9 @@ class PHPUnit_Util_PHP
                 }
             } else {
                 $time = 0;
+
                 $result->addError(
-                  $test,
-                  new RuntimeException(trim($stdout)), $time
+                  $test, new RuntimeException(trim($stdout)), $time
                 );
             }
         }

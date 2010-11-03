@@ -43,6 +43,8 @@
  * @since      File available since Release 3.2.0
  */
 
+require_once 'File/Iterator/Factory.php';
+
 /**
  * Wrapper for the PHPUnit XML configuration file.
  *
@@ -64,7 +66,6 @@
  *          stopOnFailure="false"
  *          stopOnIncomplete="false"
  *          stopOnSkipped="false"
- *          syntaxCheck="false"
  *          testSuiteLoaderClass="PHPUnit_Runner_StandardTestSuiteLoader"
  *          strict="false"
  *          verbose="false">
@@ -131,8 +132,6 @@
  *     <log type="plain" target="/tmp/logfile.txt"/>
  *     <log type="tap" target="/tmp/logfile.tap"/>
  *     <log type="junit" target="/tmp/logfile.xml" logIncompleteSkipped="false"/>
- *     <log type="story-html" target="/tmp/story.html"/>
- *     <log type="story-text" target="/tmp/story.txt"/>
  *     <log type="testdox-html" target="/tmp/testdox.html"/>
  *     <log type="testdox-text" target="/tmp/testdox.txt"/>
  *   </logging>
@@ -611,12 +610,6 @@ class PHPUnit_Util_Configuration
             );
         }
 
-        if ($root->hasAttribute('syntaxCheck')) {
-            $result['syntaxCheck'] = $this->getBoolean(
-              (string)$root->getAttribute('syntaxCheck'), FALSE
-            );
-        }
-
         if ($root->hasAttribute('testSuiteLoaderClass')) {
             $result['testSuiteLoaderClass'] = (string)$root->getAttribute(
               'testSuiteLoaderClass'
@@ -691,11 +684,10 @@ class PHPUnit_Util_Configuration
     /**
      * Returns the test suite configuration.
      *
-     * @param  boolean $syntaxCheck
      * @return PHPUnit_Framework_TestSuite
      * @since  Method available since Release 3.2.1
      */
-    public function getTestSuiteConfiguration($syntaxCheck = FALSE)
+    public function getTestSuiteConfiguration()
     {
         $testSuiteNodes = $this->xpath->query('testsuites/testsuite');
 
@@ -704,7 +696,7 @@ class PHPUnit_Util_Configuration
         }
 
         if ($testSuiteNodes->length == 1) {
-            return $this->getTestSuite($testSuiteNodes->item(0), $syntaxCheck);
+            return $this->getTestSuite($testSuiteNodes->item(0));
         }
 
         if ($testSuiteNodes->length > 1) {
@@ -712,7 +704,7 @@ class PHPUnit_Util_Configuration
 
             foreach ($testSuiteNodes as $testSuiteNode) {
                 $suite->addTestSuite(
-                  $this->getTestSuite($testSuiteNode, $syntaxCheck)
+                  $this->getTestSuite($testSuiteNode)
                 );
             }
 
@@ -722,11 +714,10 @@ class PHPUnit_Util_Configuration
 
     /**
      * @param  DOMElement $testSuiteNode
-     * @param  boolean    $syntaxCheck
      * @return PHPUnit_Framework_TestSuite
      * @since  Method available since Release 3.4.0
      */
-    protected function getTestSuite(DOMElement $testSuiteNode, $syntaxCheck)
+    protected function getTestSuite(DOMElement $testSuiteNode)
     {
         if ($testSuiteNode->hasAttribute('name')) {
             $suite = new PHPUnit_Framework_TestSuite(
@@ -755,11 +746,14 @@ class PHPUnit_Util_Configuration
                 $suffix = 'Test.php';
             }
 
-            $testCollector = new PHPUnit_Runner_IncludePathTestCollector(
-              array($this->toAbsolutePath($directory)), $suffix, $prefix
+            $suite->addTestFiles(
+              File_Iterator_Factory::getFilesAsArray(
+                $this->toAbsolutePath($directory),
+                $suffix,
+                $prefix,
+                array()
+              )
             );
-
-            $suite->addTestFiles($testCollector->collectTests(), $syntaxCheck);
         }
 
         foreach ($testSuiteNode->getElementsByTagName('file') as $fileNode) {
@@ -769,7 +763,7 @@ class PHPUnit_Util_Configuration
                 continue;
             }
 
-            $suite->addTestFile($file, $syntaxCheck);
+            $suite->addTestFile($file);
         }
 
         return $suite;

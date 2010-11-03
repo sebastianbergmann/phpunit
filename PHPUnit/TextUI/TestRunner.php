@@ -230,22 +230,6 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
 
         $result->addListener($this->printer);
 
-        if (isset($arguments['storyHTMLFile'])) {
-            $result->addListener(
-              new PHPUnit_Extensions_Story_ResultPrinter_HTML(
-                $arguments['storyHTMLFile']
-              )
-            );
-        }
-
-        if (isset($arguments['storyTextFile'])) {
-            $result->addListener(
-              new PHPUnit_Extensions_Story_ResultPrinter_Text(
-                $arguments['storyTextFile']
-              )
-            );
-        }
-
         if (isset($arguments['testdoxHTMLFile'])) {
             $result->addListener(
               new PHPUnit_Util_TestDox_ResultPrinter_HTML(
@@ -293,7 +277,7 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
         }
 
         if ($arguments['strict']) {
-            $result->strictAssertions(TRUE);
+            $result->strictMode(TRUE);
         }
 
         $suite->run(
@@ -648,16 +632,6 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
                     !isset($arguments['logIncompleteSkipped'])) {
                     $arguments['logIncompleteSkipped'] = $loggingConfiguration['logIncompleteSkipped'];
                 }
-            }
-
-            if (isset($loggingConfiguration['story-html']) &&
-                !isset($arguments['storyHTMLFile'])) {
-                $arguments['storyHTMLFile'] = $loggingConfiguration['story-html'];
-            }
-
-            if (isset($loggingConfiguration['story-text']) &&
-                !isset($arguments['storyTextFile'])) {
-                $arguments['storsTextFile'] = $loggingConfiguration['story-text'];
             }
 
             if (isset($loggingConfiguration['testdox-html']) &&

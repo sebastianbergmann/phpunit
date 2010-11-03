@@ -10,7 +10,6 @@
          forceCoversAnnotation="false"
          mapTestClassNameToCoveredClassName="false"
          stopOnFailure="false"
-         syntaxCheck="false"
          testSuiteLoaderClass="PHPUnit_Runner_StandardTestSuiteLoader"
          strict="false"
          verbose="false">
@@ -77,8 +76,6 @@
     <log type="plain" target="/tmp/logfile.txt"/>
     <log type="tap" target="/tmp/logfile.tap"/>
     <log type="junit" target="/tmp/logfile.xml" logIncompleteSkipped="false"/>
-    <log type="story-html" target="/tmp/story.html"/>
-    <log type="story-text" target="/tmp/story.txt"/>
     <log type="testdox-html" target="/tmp/testdox.html"/>
     <log type="testdox-text" target="/tmp/testdox.txt"/>
   </logging>

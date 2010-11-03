@@ -85,7 +85,11 @@ class PHPUnit_Util_Filter
             $groups[] = 'TESTS';
         }
 
-        $eTrace = $e->getTrace();
+        if ($e instanceof PHPUnit_Framework_SyntheticError) {
+            $eTrace = $e->getSyntheticTrace();
+        } else {
+            $eTrace = $e->getTrace();
+        }
 
         if (!self::frameExists($eTrace, $e->getFile(), $e->getLine())) {
             array_unshift(

@@ -320,7 +320,9 @@ class PHPUnit_Util_GlobalState
             return var_export($variable, TRUE);
         }
 
-        return 'unserialize(\'' . serialize($variable) . '\')';
+        return 'unserialize(\'' .
+                str_replace("'", "\'", serialize($variable)) .
+                '\')';
     }
 
     protected static function arrayOnlyContainsScalars(array $array)

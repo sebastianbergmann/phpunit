@@ -35,110 +35,88 @@
  * POSSIBILITY OF SUCH DAMAGE.
  *
  * @package    PHPUnit
- * @subpackage Runner
+ * @subpackage Framework_Constraint
  * @author     Sebastian Bergmann <sebastian@phpunit.de>
  * @copyright  2002-2010 Sebastian Bergmann <sebastian@phpunit.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @link       http://www.phpunit.de/
- * @since      File available since Release 2.1.0
+ * @since      File available since Release 3.6.0
  */
 
-require_once 'File/Iterator/Factory.php';
-
 /**
- * A test collector that collects tests from one or more directories
- * recursively. If no directories are specified, the include_path is searched.
  *
- * <code>
- * $testCollector = new PHPUnit_Runner_IncludePathTestCollector(
- *   array('/path/to/*Test.php files')
- * );
- *
- * $suite = new PHPUnit_Framework_TestSuite('My Test Suite');
- * $suite->addTestFiles($testCollector->collectTests());
- * </code>
  *
  * @package    PHPUnit
- * @subpackage Runner
+ * @subpackage Framework_Constraint
  * @author     Sebastian Bergmann <sebastian@phpunit.de>
  * @copyright  2002-2010 Sebastian Bergmann <sebastian@phpunit.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    Release: @package_version@
  * @link       http://www.phpunit.de/
- * @since      Class available since Release 2.1.0
+ * @since      Class available since Release 3.6.0
  */
-class PHPUnit_Runner_IncludePathTestCollector implements PHPUnit_Runner_TestCollector
+class PHPUnit_Framework_Constraint_Count extends PHPUnit_Framework_Constraint
 {
     /**
-     * @var string
+     * @var integer
      */
-    protected $filterIterator;
+    protected $expectedCount = 0;
 
     /**
-     * @var array
+     * @param integer $expected
      */
-    protected $paths;
-
-    /**
-     * @var mixed
-     */
-    protected $suffixes;
-
-    /**
-     * @var mixed
-     */
-    protected $prefixes;
-
-    /**
-     * @param array $paths
-     * @param mixed $suffixes
-     * @param mixed $prefixes
-     */
-    public function __construct(array $paths = array(), $suffixes = array('Test.php', '.phpt'), $prefixes = array())
+    public function __construct($expected)
     {
-        if (!empty($paths)) {
-            $this->paths = $paths;
-        } else {
-            $this->paths = explode(PATH_SEPARATOR, get_include_path());
-        }
-
-        $this->suffixes = $suffixes;
-        $this->prefixes = $prefixes;
+        $this->expectedCount = $expected;
     }
 
     /**
-     * @return File_Iterator
-     */
-    public function collectTests()
-    {
-        $iterator = File_Iterator_Factory::getFileIterator(
-          $this->paths, $this->suffixes, $this->prefixes
-        );
-
-        if ($this->filterIterator !== NULL) {
-            $class          = new ReflectionClass($this->filterIterator);
-            $filterIterator = $class->newInstance($iterator);
-        }
-
-        return $iterator;
-    }
-
-    /**
-     * Adds a FilterIterator to filter the source files to be collected.
+     * Evaluates the constraint for parameter $other. Returns TRUE if the
+     * constraint is met, FALSE otherwise.
      *
-     * @param  string $filterIterator
-     * @throws InvalidArgumentException
+     * @param mixed $other
+     * @return boolean
      */
-    public function setFilterIterator($filterIterator)
+    public function evaluate($other)
     {
-        if (is_string($filterIterator) && class_exists($filterIterator)) {
-            $class = new ReflectionClass($filterIterator);
+        return $this->expectedCount === $this->getCountOf($other);
+    }
 
-            if ($class->isSubclassOf('FilterIterator')) {
-                $this->filterIterator = $filterIterator;
-            }
-        } else {
-            throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'class name');
+    /**
+     * @param mixed $other
+     * @return boolean
+     */
+    protected function getCountOf($other)
+    {
+        if ($other instanceof Countable || is_array($other)) {
+            return count($other);
         }
+
+        else if ($other instanceof Iterator) {
+            return iterator_count($other);
+        }
+    }
+
+    /**
+     * @param mixed   $other
+     * @param string  $description
+     * @param boolean $not
+     * @return string
+     */
+    protected function failureDescription($other, $description, $not)
+    {
+        return sprintf(
+          'Count of %d does not match expected count of %d.',
+          $this->getCountOf($other),
+          $this->expectedCount
+        );
+    }
+
+    /**
+     * @return string
+     */
+    public function toString()
+    {
+        return 'count matches ';
     }
 }
