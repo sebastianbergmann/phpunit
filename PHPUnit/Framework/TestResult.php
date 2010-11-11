@@ -261,7 +261,7 @@ class PHPUnit_Framework_TestResult implements Countable
             $this->errors[] = new PHPUnit_Framework_TestFailure($test, $e);
             $notifyMethod   = 'addError';
 
-            if ($this->stopOnError) {
+            if ($this->stopOnError || $this->stopOnFailure) {
                 $this->stop();
             }
         }
@@ -309,7 +309,7 @@ class PHPUnit_Framework_TestResult implements Countable
             $this->failures[] = new PHPUnit_Framework_TestFailure($test, $e);
             $notifyMethod     = 'addFailure';
 
-            if ($this->stopOnFailure || $this->stopOnError) {
+            if ($this->stopOnFailure) {
                 $this->stop();
             }
         }
