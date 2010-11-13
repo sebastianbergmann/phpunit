@@ -55,7 +55,7 @@ class MockFoo extends NS\Foo implements PHPUnit_Framework_MockObject_MockObject
     public function __phpunit_getInvocationMocker()
     {
         if ($this->invocationMocker === NULL) {
-            $this->invocationMocker = new PHPUnit_Framework_MockObject_InvocationMocker($this);
+            $this->invocationMocker = new PHPUnit_Framework_MockObject_InvocationMocker;
         }
 
         return $this->invocationMocker;
@@ -78,7 +78,8 @@ class MockFoo extends NS\Foo implements PHPUnit_Framework_MockObject_MockObject
 
     public function __phpunit_cleanup()
     {
-        $this->invocationMocker = NULL;
+        self::$staticInvocationMocker = NULL;
+        $this->invocationMocker       = NULL;
     }
 }
 
