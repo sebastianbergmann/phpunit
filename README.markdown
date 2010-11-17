@@ -3,6 +3,14 @@ PHPUnit 3.5
 
 This is the list of changes for the PHPUnit 3.5 release series.
 
+PHPUnit 3.5.4
+-------------
+
+* Added a ticket listener that interacts with the Trac issue API.
+* Added support for `E_USER_NOTICE` and `E_USER_WARNING` to `PHPUnit_Framework_Error_Notice` and `PHPUnit_Framework_Error_Warning`, respectively.
+* Refactored test dependency handling (required for a bugfix in `PHPUnit_Selenium`).
+* Fixed `--stop-on-failure`.
+
 PHPUnit 3.5.3
 -------------
 
