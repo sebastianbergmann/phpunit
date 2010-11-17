@@ -17,10 +17,10 @@
   <email>sebastian@phpunit.de</email>
   <active>yes</active>
  </lead>
- <date>2010-10-27</date>
+ <date>2010-11-17</date>
  <version>
-  <release>3.5.3</release>
-  <api>3.5.2</api>
+  <release>3.5.4</release>
+  <api>3.5.4</api>
  </version>
  <stability>
   <release>stable</release>
@@ -540,7 +540,7 @@
    <package>
     <name>PHP_CodeCoverage</name>
     <channel>pear.phpunit.de</channel>
-    <min>1.0.0</min>
+    <min>1.0.2</min>
    </package>
    <package>
     <name>PHP_Timer</name>
@@ -550,12 +550,12 @@
    <package>
     <name>PHPUnit_MockObject</name>
     <channel>pear.phpunit.de</channel>
-    <min>1.0.0</min>
+    <min>1.0.2</min>
    </package>
    <package>
     <name>PHPUnit_Selenium</name>
     <channel>pear.phpunit.de</channel>
-    <min>1.0.0</min>
+    <min>1.0.1</min>
    </package>
    <package>
     <name>YAML</name>
