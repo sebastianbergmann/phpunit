@@ -1,5 +1,4 @@
 <?php
-
 /**
  * PHPUnit
  *
@@ -43,13 +42,31 @@
  * @copyright  2002-2010 Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @link       http://www.phpunit.de/
- * @since      Class available since Release 3.5.0
+ * @since      Class available since Release 3.5.4
  */
 
 /**
- * A ticket listener that interact with Trac.
+ * A ticket listener that interacts with Trac.
  *
- * @depends    PEAR/XML_RPC2
+ * <code>
+ * <phpunit>
+ *  <listeners>
+ *   <!-- You may need to update the path to the TicketListener -->
+ *   <listener class="PHPUnit_Extensions_TicketListener_Trac"
+ *             file="/usr/lib/php/PHPUnit/Extensions/TicketListener/Trac.php">
+ *    <arguments>
+ *     <!-- A user and their password. This user must have XML_RPC permissions -->
+ *     <string>trac_username</string>
+ *     <string>trac_password</string>
+ *     <!-- The URL for your XML-RPC endpoint. -->
+ *     <!-- For example, if trac is at 127.0.0.1/trac: -->
+ *     <string>127.0.0.1/trac/login/xmlrpc</string>
+ *    </arguments>
+ *   </listener>
+ *  </listeners>
+ * </phpunit>
+ * </code>
+ *
  * @category   Testing
  * @package    PHPUnit
  * @author     Graham Christensen <graham@grahamc.com>
@@ -59,126 +76,114 @@
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    Release: @package_version@
  * @link       http://www.phpunit.de/
- * @since      Class available since Release 3.5.0
- * @example    Create a PHPUnit config XML with (or add to it):
- *
- *  <phpunit>
- *   <listeners>
- *     <!-- You may need to update the path to the TicketListener -->
- *     <listener class="PHPUnit_Extensions_TicketListener_Trac"
- *               file="/usr/lib/php/PHPUnit/Extensions/TicketListener/Trac.php">
- *       <arguments>
- *         <!-- A user and their password. This user must have XML_RPC permissions -->
- *         <string>trac_username</string>
- *         <string>trac_password</string>
- *         <!-- The URL for your XML-RPC endpoint. -->
- *         <!-- For example, if trac is at 127.0.0.1/trac: -->
- *         <string>127.0.0.1/trac/login/xmlrpc</string>
- *       </arguments>
- *     </listener>
- *   </listeners>
- * </phpunit>
+ * @since      Class available since Release 3.5.4
  */
 class PHPUnit_Extensions_TicketListener_Trac extends PHPUnit_Extensions_TicketListener
 {
+    protected $username;
+    protected $password;
+    protected $hostpath;
+    protected $scheme;
+    private $printTicketStateChanges;
 
-	protected $username;
-	protected $password;
-	protected $hostpath;
-	protected $scheme;
-	private $printTicketStateChanges;
+    /**
+     * Constructor
+     *
+     * @param string $username Trac-XMLRPC username
+     * @param string $password Trac-XMLRPC password
+     * @param string $hostpath Trac-XMLRPC Host+Path (e.g. example.com/trac/login/xmlrpc)
+     * @param string $scheme Trac scheme (http or https)
+     * @param bool   $printTicketStateChanges To display changes or not
+     */
+    public function __construct($username, $password, $hostpath, $scheme = 'http', $printTicketStateChanges = FALSE)
+    {
+        $this->username                = $username;
+        $this->password                = $password;
+        $this->hostpath                = $hostpath;
+        $this->scheme                  = $scheme;
+        $this->printTicketStateChanges = $printTicketStateChanges;
+    }
 
-	/**
-	 * Constructor
-	 *
-	 * @param string $username Trac-XMLRPC username
-	 * @param string $password Trac-XMLRPC password
-	 * @param string $hostpath Trac-XMLRPC Host+Path (e.g. example.com/trac/login/xmlrpc)
-	 * @param string $scheme Trac scheme (http or https)
-	 * @param bool $printTicketStateChanges To display changes or not
-	 */
-	public function __construct($username, $password, $hostpath, $scheme = 'http', $printTicketStateChanges = FALSE)
-	{
-		$this->username = $username;
-		$this->password = $password;
-		$this->hostpath = $hostpath;
-		$this->scheme = $scheme;
-		$this->printTicketStateChanges = $printTicketStateChanges;
-	}
+    /**
+     * Get the status of a ticket message
+     *
+     * @param  integer $ticketId The ticket ID
+     * @return array('status' => $status) ($status = new|closed|unknown_ticket)
+     */
+    public function getTicketInfo($ticketId = NULL)
+    {
+        if (!is_numeric($ticketId)) {
+            return array('status' => 'invalid_ticket_id');
+        }
 
-	/**
-	 * Get the status of a ticket message
-	 * 
-	 * @param  integer $ticketId The ticket ID
-	 * @return array('status' => $status) ($status = new|closed|unknown_ticket)
-	 */
-	public function getTicketInfo($ticketId = NULL)
-	{
-		if (!is_numeric($ticketId)) {
-			return array('status' => 'invalid_ticket_id');
-		}
+        try {
+            $info = $this->getClient()->get($ticketId);
 
-		try {
-			$info = $this->getClient()->get($ticketId);
+            switch ($info[3]['status']) {
+                case 'closed': {
+                    return array('status' => 'closed');
+                }
+                break;
 
-			switch ($info[3]['status']) {
-				case 'closed':
-					return array('status' => 'closed');
-					break;
-				case 'new':
-				case 'reopened':
-					return array('status' => 'new');
-					break;
-				default:
-					return array('status' => 'unknown_ticket');
-			}
-		} catch (Exception $e) {
-			return array('status' => 'unknown_ticket');
-		}
-	}
+                case 'new':
+                case 'reopened': {
+                    return array('status' => 'new');
+                }
+                break;
 
-	/**
-	 * Update a ticket with a new status
-	 * 
-	 * @param string $ticketId   The ticket number of the ticket under test (TUT).
-	 * @param string $statusToBe The status of the TUT after running the associated test.
-	 * @param string $message    The additional message for the TUT.
-	 * @param string $resolution The resolution for the TUT.
-	 */
-	protected function updateTicket($ticketId, $statusToBe, $message, $resolution)
-	{
-		$change = array(
-			'status' => $statusToBe,
-			'resolution' => $resolution);
-		
-		$this->getClient()->update((int) $ticketId, $message, $change);
+                default: {
+                    return array('status' => 'unknown_ticket');
+                }
+            }
+        }
 
-		if ($this->printTicketStateChanges) {
-			printf(
-					"\nUpdating Trac issue #%d, status: %s\n", $ticketId, $statusToBe
-			);
-		}
-	}
+        catch (Exception $e) {
+            return array('status' => 'unknown_ticket');
+        }
+    }
 
-	/**
-	 * Get a Trac XML_RPC2 client
-	 * 
-	 * @return XML_RPC2_Client
-	 */
-	protected function getClient()
-	{
-		if (!PHPUnit_Util_Filesystem::fileExistsInIncludePath('XML/RPC2/Client.php')) {
-			throw new PHPUnit_Framework_Exception('PEAR/XML_RPC2 is not available.');
-		}
+    /**
+     * Update a ticket with a new status
+     *
+     * @param string $ticketId   The ticket number of the ticket under test (TUT).
+     * @param string $statusToBe The status of the TUT after running the associated test.
+     * @param string $message    The additional message for the TUT.
+     * @param string $resolution The resolution for the TUT.
+     */
+    protected function updateTicket($ticketId, $statusToBe, $message, $resolution)
+    {
+        $change = array('status' => $statusToBe, 'resolution' => $resolution);
 
-		require_once 'XML/RPC2/Client.php';
+        $this->getClient()->update((int)$ticketId, $message, $change);
 
-		$str = '%s://%s:%s@%s';
-		$url = sprintf($str, $this->scheme, $this->username, $this->password, $this->hostpath);
+        if ($this->printTicketStateChanges) {
+            printf(
+              "\nUpdating Trac issue #%d, status: %s\n", $ticketId, $statusToBe
+            );
+        }
+    }
 
-		return XML_RPC2_Client::create($url, array('prefix' => 'ticket.'));
-	}
+    /**
+     * Get a Trac XML_RPC2 client
+     *
+     * @return XML_RPC2_Client
+     */
+    protected function getClient()
+    {
+        if (!PHPUnit_Util_Filesystem::fileExistsInIncludePath('XML/RPC2/Client.php')) {
+            throw new PHPUnit_Framework_Exception('PEAR/XML_RPC2 is not available.');
+        }
 
+        require_once 'XML/RPC2/Client.php';
+
+        $url = sprintf(
+          '%s://%s:%s@%s',
+          $this->scheme,
+          $this->username,
+          $this->password,
+          $this->hostpath
+        );
+
+        return XML_RPC2_Client::create($url, array('prefix' => 'ticket.'));
+    }
 }
-
-?>
