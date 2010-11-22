@@ -125,6 +125,23 @@ class PHPUnit_Framework_MockObject_MockBuilder
     }
 
     /**
+     * Creates a mock object for an abstract class using a fluent interface.
+     *
+     * @return PHPUnit_Framework_MockObject_MockObject
+     */
+    public function getMockForAbstractClass()
+    {
+        return $this->testCase->getMockForAbstractClass(
+          $this->className,
+          $this->constructorArgs,
+          $this->mockClassName,
+          $this->originalConstructor,
+          $this->originalClone,
+          $this->autoload
+        );
+    }
+
+    /**
      * Specifies the subset of methods to mock. Default is to mock all of them.
      *
      * @param  array $methods
