@@ -3,6 +3,11 @@ PHPUnit 3.5
 
 This is the list of changes for the PHPUnit 3.5 release series.
 
+PHPUnit 3.5.5
+-------------
+
+* Added support for `getMockForAbstractClass()` to the mock builder API.
+
 PHPUnit 3.5.4
 -------------
 
