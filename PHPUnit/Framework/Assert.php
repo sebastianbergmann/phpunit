@@ -1207,7 +1207,7 @@ abstract class PHPUnit_Framework_Assert
             if (PHPUnit_Util_Type::isType($expected)) {
                 if (class_exists($expected) || interface_exists($expected)) {
                     throw new InvalidArgumentException(
-                      sprintf('"%s" is ambigious', $expected)
+                      sprintf('"%s" is ambiguous', $expected)
                     );
                 }
 
@@ -1266,7 +1266,7 @@ abstract class PHPUnit_Framework_Assert
             if (PHPUnit_Util_Type::isType($expected)) {
                 if (class_exists($expected) || interface_exists($expected)) {
                     throw new InvalidArgumentException(
-                      sprintf('"%s" is ambigious', $expected)
+                      sprintf('"%s" is ambiguous', $expected)
                     );
                 }
 
