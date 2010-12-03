@@ -43,8 +43,6 @@
  * @since      File available since Release 2.0.0
  */
 
-require_once 'File/Iterator/Factory.php';
-
 /**
  * Base class for all test runners.
  *
