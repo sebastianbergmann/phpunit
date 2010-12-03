@@ -43,8 +43,6 @@
  * @since      File available since Release 2.0.0
  */
 
-require_once 'PHP/CodeCoverage.php';
-
 /**
  * A TestSuite is a composite of Tests. It runs a collection of test cases.
  *

@@ -43,7 +43,8 @@
  */
 
 require_once 'PHPUnit/Util/Filesystem.php';
-require_once 'PHP/CodeCoverage/Filter.php';
+
+require_once 'PHP/CodeCoverage/Autoload.php';
 
 if (!function_exists('phpunit_autoload')) {
     function phpunit_autoload($class)

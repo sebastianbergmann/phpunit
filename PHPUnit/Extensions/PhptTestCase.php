@@ -52,7 +52,6 @@ if (PHPUnit_Util_Filesystem::fileExistsInIncludePath('PEAR/RunTest.php')) {
     PHPUnit_Util_Filesystem::collectEndAndAddToBlacklist();
 }
 
-require_once 'PHP/CodeCoverage.php';
 require_once 'PHP/Timer.php';
 
 /**
