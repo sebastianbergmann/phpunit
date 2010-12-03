@@ -35,7 +35,7 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-require 'File/Iterator/Factory.php';
+require 'File/Iterator/Autoload.php';
 
 $stub = <<<ENDSTUB
 #!/usr/bin/env php

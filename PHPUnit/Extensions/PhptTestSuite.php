@@ -43,8 +43,6 @@
  * @since      File available since Release 3.1.4
  */
 
-require_once 'File/Iterator/Factory.php';
-
 /**
  * Suite for .phpt test cases.
  *

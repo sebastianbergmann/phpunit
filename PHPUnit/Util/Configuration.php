@@ -43,8 +43,6 @@
  * @since      File available since Release 3.2.0
  */
 
-require_once 'File/Iterator/Factory.php';
-
 /**
  * Wrapper for the PHPUnit XML configuration file.
  *

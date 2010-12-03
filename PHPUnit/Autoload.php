@@ -44,6 +44,7 @@
 
 require_once 'PHPUnit/Util/Filesystem.php';
 
+require_once 'File/Iterator/Autoload.php';
 require_once 'PHP/CodeCoverage/Autoload.php';
 
 if (!function_exists('phpunit_autoload')) {
