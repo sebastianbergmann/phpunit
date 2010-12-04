@@ -42,8 +42,6 @@
  * @since      File available since Release 1.0.0
  */
 
-require_once 'Text/Template.php';
-
 /**
  * Mock Object Code Generator
  *
