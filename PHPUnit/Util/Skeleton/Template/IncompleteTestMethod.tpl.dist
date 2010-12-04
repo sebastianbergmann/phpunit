@@ -1,5 +1,6 @@
 
     /**
+     * @covers {className}::{origMethodName}
      * @todo Implement test{methodName}().
      */
     public function test{methodName}()
