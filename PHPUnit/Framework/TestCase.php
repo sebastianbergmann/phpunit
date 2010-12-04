@@ -43,8 +43,6 @@
  * @since      File available since Release 2.0.0
  */
 
-require_once 'Text/Template.php';
-
 /**
  * A TestCase defines the fixture to run multiple tests.
  *
