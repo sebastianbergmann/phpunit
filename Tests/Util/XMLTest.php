@@ -44,10 +44,6 @@
  * @since      File available since Release 3.3.0
  */
 
-require_once 'PHPUnit/Framework/TestCase.php';
-
-require_once 'PHPUnit/Util/XML.php';
-
 /**
  *
  *

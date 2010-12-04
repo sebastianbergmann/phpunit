@@ -1,6 +1,4 @@
 <?php
-require_once 'PHPUnit/Framework/TestCase.php';
-
 class Issue578Test extends PHPUnit_Framework_TestCase
 {
     public function testNoticesDoublePrintStackTrace()

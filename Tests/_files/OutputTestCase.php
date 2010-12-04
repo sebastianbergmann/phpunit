@@ -1,6 +1,4 @@
 <?php
-require_once 'PHPUnit/Extensions/OutputTestCase.php';
-
 class OutputTestCase extends PHPUnit_Extensions_OutputTestCase
 {
     public function testExpectOutputStringFooActualFoo()
