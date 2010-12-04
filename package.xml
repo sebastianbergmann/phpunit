@@ -128,6 +128,9 @@
         <tasks:replace from="@package_version@" to="version" type="package-info" />
        </file>
       </dir>
+      <file baseinstalldir="/" name="Autoload.php" role="php">
+       <tasks:replace from="@package_version@" to="version" type="package-info" />
+      </file>
       <file baseinstalldir="/" name="Generator.php" role="php">
        <tasks:replace from="@package_version@" to="version" type="package-info" />
       </file>
