@@ -43,8 +43,6 @@
  * @since      File available since Release 3.3.0
  */
 
-require_once 'Text/Template.php';
-
 /**
  * Generator for test class skeletons from classes.
  *
