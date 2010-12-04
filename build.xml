@@ -11,6 +11,12 @@
   <mkdir dir="${basedir}/build/pdepend"/>
  </target>
 
+ <target name="phpab">
+  <exec executable="phpab">
+   <arg line='-o PHPUnit/Autoload.php -c -t PHPUnit/Autoload.php.in --indent "          " PHPUnit' />
+  </exec>
+ </target>
+
  <!-- Run unit tests and generate junit.xml and clover.xml -->
  <target name="phpunit">
   <exec executable="${basedir}/phpunit.php" failonerror="true"/>
