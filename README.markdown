@@ -1,15 +1,35 @@
-PHPUnit 3.6
-===========
+PHPUnit
+=======
 
-This is the list of changes for the PHPUnit 3.6 release series.
+PHPUnit is the de-facto standard for unit testing in PHP projects. It provides both a framework that makes the writing of tests easy as well as the functionality to easily run the tests and analyse their results.
 
-PHPUnit 3.6.0
+Installation
+------------
+
+PHPUnit should be installed using the [PEAR Installer](http://pear.php.net/). This installer is the backbone of PEAR, which provides a distribution system for PHP packages, and is shipped with every release of PHP since version 4.3.0.
+
+The PEAR channel (`pear.phpunit.de`) that is used to distribute PHPUnit needs to be registered with the local PEAR environment. Furthermore, components that PHPUnit depends upon are hosted on additional PEAR channels.
+
+    pear channel-discover pear.phpunit.de
+    pear channel-discover components.ez.no
+    pear channel-discover pear.symfony-project.com
+
+This has to be done only once. Now the PEAR Installer can be used to install packages from the PHPUnit channel:
+
+    pear install phpunit/PHPUnit
+
+After the installation you can find the PHPUnit source files inside your local PEAR directory; the path is usually `/usr/lib/php/PHPUnit`.
+
+Documentation
 -------------
 
-* Added `assertCount()` and `assertNotCount()` to assert the number of elements in an array as well as `Countable` or `Iterator` objects.
-* Added `returnSelf()` to ease the mocking and stubbing of fluent interfaces.
-* Implemented GH-82: Test Skeleton Generator should create `@covers` annotations.
-* `assertEquals()` now looks for (and invokes) a `__toString()` method when an object and string are compared.
-* `@ticket` is now an alias for `@group`.
-* The `PHPUnit_Extensions_Story_TestCase` functionality has been removed.
-* The syntax check functionality has been removed.
+The documentation for PHPUnit is available in different formats:
+
+* [English, multiple HTML files](http://www.phpunit.de/manual/3.6/en/index.html)
+* [English, single HTML file](http://www.phpunit.de/manual/3.6/en/phpunit-book.html)
+* [English, PDF](http://www.phpunit.de/manual/3.6/en/phpunit-book.pdf)
+* [English, ePub](http://www.phpunit.de/manual/3.6/en/phpunit-book.epub)
+* [Japanese, multiple HTML files](http://www.phpunit.de/manual/3.6/ja/index.html)
+* [Japanese, single HTML file](http://www.phpunit.de/manual/3.6/ja/phpunit-book.html)
+* [Japanese, PDF](http://www.phpunit.de/manual/3.6/ja/phpunit-book.pdf)
+* [Japanese, ePub](http://www.phpunit.de/manual/3.6/ja/phpunit-book.epub)
