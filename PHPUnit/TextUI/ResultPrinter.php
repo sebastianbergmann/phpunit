@@ -475,7 +475,11 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
      */
     public function addError(PHPUnit_Framework_Test $test, Exception $e, $time)
     {
-        $this->writeProgress('E');
+        $out = 'E';
+        if ($this->colors) {
+            $out = "\x1b[31;1mE\x1b[0m";
+        }
+        $this->writeProgress($out);
         $this->lastTestFailed = TRUE;
     }
 
@@ -488,7 +492,11 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
      */
     public function addFailure(PHPUnit_Framework_Test $test, PHPUnit_Framework_AssertionFailedError $e, $time)
     {
-        $this->writeProgress('F');
+        $out = 'F';
+        if ($this->colors) {
+            $out = "\x1b[41;37mF\x1b[0m";
+        }
+        $this->writeProgress($out);
         $this->lastTestFailed = TRUE;
     }
 
@@ -501,7 +509,11 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
      */
     public function addIncompleteTest(PHPUnit_Framework_Test $test, Exception $e, $time)
     {
-        $this->writeProgress('I');
+        $out = 'I';
+        if ($this->colors) {
+            $out = "\x1b[33;1mI\x1b[0m";
+        }
+        $this->writeProgress($out);
         $this->lastTestFailed = TRUE;
     }
 
@@ -515,7 +527,11 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
      */
     public function addSkippedTest(PHPUnit_Framework_Test $test, Exception $e, $time)
     {
-        $this->writeProgress('S');
+        $out = 'S';
+        if ($this->colors) {
+            $out = "\x1b[36;1mS\x1b[0m";
+        }
+        $this->writeProgress($out);
         $this->lastTestFailed = TRUE;
     }
 
