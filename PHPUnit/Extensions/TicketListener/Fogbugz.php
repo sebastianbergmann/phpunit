@@ -71,15 +71,22 @@ class PHPUnit_Extensions_TicketListener_Fogbugz extends PHPUnit_Extensions_Ticke
     private $authToken;
 
     /**
+     * Constructor, which often takes its parameters from an XML file of config.
+     * 
+     * Note: This is how the logon takes place.
+     * 
+     * api.asp?cmd=logon&email=xxx@example.com&password=BigMac
+     * 
      * @param string $email          The email associated with the Fogbugz account.
      * @param string $password       The password associated with the Fogbugz account.
-     * @param string $siteApiUrl     The URL to Fogbugz installation api.asp?cmd=logon&email=xxx@example.com&password=BigMac
+     * @param string $siteApiUrl     The URL to Fogbugz installation, for
+     * instance fogbugz.company.com/api.asp
      * @param string $printTicketChanges Boolean flag to print the ticket state changes in the test result.
      * @param string $statusClosed   The status name of the closed state.
      * @param string $statusReopened The status name of the reopened state.
      * @throws RuntimeException
      */
-    public function __construct($email, $password, $siteApiUrl, $usesAsp=false, $printTicketStateChanges = FALSE, $statusClosed = 'Fixed', $statusReopened = 'Started')
+    public function __construct($email, $password, $siteApiUrl, $printTicketStateChanges = FALSE, $statusClosed = 'Fixed', $statusReopened = 'Started')
     {
         if (!extension_loaded('curl')) {
             throw new RuntimeException('ext/curl is not available');
@@ -90,8 +97,8 @@ class PHPUnit_Extensions_TicketListener_Fogbugz extends PHPUnit_Extensions_Ticke
         $this->statusClosed            = $statusClosed;
         $this->statusReopened          = $statusReopened;
         $this->printTicketStateChanges = $printTicketStateChanges;
-        $this->apiBaseUrl              = $siteApiUrl;
-        $this->authUrl                 = $this->apiBaseUrl . 'cmd=logon&email=%s&password=%s';
+        $this->apiBaseUrl              = $siteApiUrl . '?';
+        $this->authUrl                 = sprintf($this->apiBaseUrl . 'cmd=logon&email=%s&password=%s', $email, $password);
     }
 
     /**
@@ -104,8 +111,68 @@ class PHPUnit_Extensions_TicketListener_Fogbugz extends PHPUnit_Extensions_Ticke
         if (!is_numeric($ticketId)) {
             return array('status' => 'invalid_ticket_id');
         }
-
-        $url    = $this->apiBaseUrl . '/full/' . $ticketId;
+		// cmd=search&q=4239&cols=id&token=4nv48nf2ss076kiad4nbf6e7phtl23
+		
+		$fields = array(
+			'ixBug',
+			'ixBugParent',
+			'ixBugChildren',
+			'tags',
+			'fOpen',
+			'sTitle',
+			'sOriginalTitle ',
+			'sLatestTextSummary',
+			'ixBugEventLatestText',
+			'ixProject',
+			'sProject',
+			'ixArea',
+			'sArea',
+			'ixGroup',
+			'ixPersonAssignedTo',
+			'sPersonAssignedTo',
+			'sEmailAssignedTo',
+			'ixPersonOpenedBy',
+			'ixPersonResolvedBy',
+			'ixPersonClosedBy',
+			'ixPersonLastEditedBy',
+			'ixStatus ',
+			'sStatus',
+			'ixPriority ',
+			'sPriority',
+			'ixFixFor',
+			'sFixFor',
+			'dtFixFor',
+			'sVersion',
+			'sComputer',
+			'hrsOrigEst',
+			'hrsCurrEst',
+			'hrsElapsed',
+			'c',
+			'sCustomerEmail ',
+			'ixMailbox',
+			'ixCategory',
+			'sCategory',
+			'dtOpened',
+			'dtResolved ',
+			'dtClosed',
+			'ixBugEventLatest',
+			'dtLastUpdated',
+			'fReplied',
+			'fForwarded',
+			'sTicket',
+			'ixDiscussTopic',
+			'dtDue',
+			'sReleaseNotes',
+			'ixBugEventLastView',
+			'dtLastView',
+			'ixRelatedBugs',
+			'sScoutDescription',
+			'sScoutMessage',
+			'fScoutStopReporting',
+			'fSubscribed');
+		$fewFields = array('ixBug', 'sTitle', 'fOpen', 'ixStatus', 'sStatus');
+		
+        $url    = $this->apiBaseUrl . 'cmd=search&q=' . $ticketId . '&cols=' . implode(',', $fewFields) . '&token='.$this->getAuthToken();
 
         list($status, $response) = $this->callFogbugz($url);
 
@@ -113,11 +180,18 @@ class PHPUnit_Extensions_TicketListener_Fogbugz extends PHPUnit_Extensions_Ticke
             return array('state' => 'unknown_ticket');
         }
 
-        $ticket = new SimpleXMLElement(str_replace("xmlns=", "ns=", $response));
-        $result = $ticket->xpath('//issues:state');
+        $ticket = new SimpleXMLElement($response);
+        $nCases = $ticket->xpath('//response/cases');
+		var_dump($nCases);
+		var_dump($response);
+		
+        if (count($nCases) < 1) {
+            return array('state' => 'unknown_ticket');
+        }
+        $result = $ticket->xpath('//ixStatus');
         $state  = (string)$result[0];
 
-        if ($state === 'open') {
+        if ($state === '1') {
             return array('status' => 'new');
         }
 
@@ -193,31 +267,18 @@ class PHPUnit_Extensions_TicketListener_Fogbugz extends PHPUnit_Extensions_Ticke
             'Content-Type: application/x-www-form-urlencoded',
         );
 
-        $post = array(
-            'accountType' => 'GOOGLE',
-            'Email'       => $this->email,
-            'Passwd'      => $this->password,
-            'service'     => 'code',
-            'source'      => 'PHPUnit-TicketListener_Fogbugz-' . PHPUnit_Runner_Version::id(),
-        );
-
         list($status, $response) = $this->callFogbugz(
-            $this->authUrl,
-            $header,
-            http_build_query($post, NULL, '&')
+            $this->authUrl
         );
-
         if ($status != 200) {
-            throw new RuntimeException('Google account authentication failed');
+            throw new RuntimeException('Fogbugz authentication failed');
         }
-
-        foreach (explode("\n", $response) as $line) {
-            if (strpos(trim($line), 'Auth') === 0) {
-                list($name, $token) = explode('=', $line);
-                $this->authToken    = trim($token);
-                break;
-            }
-        }
+		$xml = new SimpleXMLElement($response);
+		$tokenChunk = $xml->xpath('//response/token');
+		$tokenString = (string)$tokenChunk[0];
+		// TODO: Cut out the TOKEN of the resulting XML.
+		// save it in the $this->authToken slot
+        $this->authToken    = trim($tokenString);
 
         if (NULL === $this->authToken) {
             throw new RuntimeException('Could not detect auth token in response');
@@ -235,7 +296,7 @@ class PHPUnit_Extensions_TicketListener_Fogbugz extends PHPUnit_Extensions_Ticke
     private function callFogbugz($url, array $header = NULL, $post = NULL)
     {
         $curlHandle = curl_init();
-
+		
         curl_setopt($curlHandle, CURLOPT_URL, $url);
         curl_setopt($curlHandle, CURLOPT_FOLLOWLOCATION, TRUE);
         curl_setopt($curlHandle, CURLOPT_FAILONERROR, TRUE);

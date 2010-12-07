@@ -3,6 +3,11 @@ PHPUnit 3.5
 
 This is the list of changes for the PHPUnit 3.5 release series.
 
+Unreleased
+----------
+
+* Added a ticket listener that interacts with the FogBugz issue API.
+
 PHPUnit 3.5.5
 -------------
 
