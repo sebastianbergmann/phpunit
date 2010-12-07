@@ -651,7 +651,12 @@ class PHPUnit_Framework_TestResult implements Countable
         if ($useXdebug) {
             $data = $this->codeCoverage->stop(FALSE);
 
-            if (!$this->strictMode || (!$incomplete && !$skipped)) {
+            $assertions = $test->getNumAssertions() + PHPUnit_Framework_Assert::getCount();
+            if ($this->strictMode && $assertions == 0) {
+                $incomplete = true;
+            }
+
+            if (!$incomplete && !$skipped) {
                 if ($this->collectRawCodeCoverageInformation) {
                     $this->rawCodeCoverageInformation[] = $data;
                 } else {
