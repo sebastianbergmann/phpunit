@@ -1,6 +1,8 @@
 <?php
 class ExceptionTest extends PHPUnit_Framework_TestCase
 {
+    const CODE_ONE = 12345;
+
     /**
      * @expectedException FooBarBaz
      */
@@ -42,6 +44,14 @@ class ExceptionTest extends PHPUnit_Framework_TestCase
      * @expectedExceptionCode 1234
      */
     public function testSix()
+    {
+    }
+
+    /**
+     * @expectedException Class
+     * @expectedExceptionCode ExceptionTest::CODE_ONE
+     */
+    public function testSeven()
     {
     }
 }
