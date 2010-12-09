@@ -321,7 +321,7 @@ class PHPUnit_Util_Class
             }
         }
 
-        if ($attribute->isPublic()) {
+        if ($attribute == NULL || $attribute->isPublic()) {
             return $object->$attributeName;
         } else {
             $array         = (array)$object;
