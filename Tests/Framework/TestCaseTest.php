@@ -202,7 +202,7 @@ class Framework_TestCaseTest extends PHPUnit_Framework_TestCase
     public function testException()
     {
         $test = new ThrowExceptionTestCase('test');
-        $test->setExpectedException('Exception');
+        $test->setExpectedException('RuntimeException');
 
         $result = $test->run();
 
@@ -213,7 +213,7 @@ class Framework_TestCaseTest extends PHPUnit_Framework_TestCase
     public function testNoException()
     {
         $test = new ThrowNoExceptionTestCase('test');
-        $test->setExpectedException('Exception');
+        $test->setExpectedException('RuntimeException');
 
         $result = $test->run();
 
@@ -224,7 +224,7 @@ class Framework_TestCaseTest extends PHPUnit_Framework_TestCase
     public function testWrongException()
     {
         $test = new ThrowExceptionTestCase('test');
-        $test->setExpectedException('RuntimeException');
+        $test->setExpectedException('InvalidArgumentException');
 
         $result = $test->run();
 
