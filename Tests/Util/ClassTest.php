@@ -40,7 +40,7 @@
  * @copyright  2002-2010 Sebastian Bergmann <sebastian@phpunit.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @link       http://www.phpunit.de/
- * @since      File available since Release 3.5.5
+ * @since      File available since Release 3.5.6
  */
 
 require_once 'PHPUnit/Framework/TestCase.php';
@@ -57,7 +57,7 @@ require_once 'PHPUnit/Util/Class.php';
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    Release: @package_version@
  * @link       http://www.phpunit.de/
- * @since      Class available since Release 3.5.5
+ * @since      Class available since Release 3.5.6
  */
 class Util_ClassTest extends PHPUnit_Framework_TestCase
 {
