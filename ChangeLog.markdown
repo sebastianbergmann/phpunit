@@ -3,6 +3,11 @@ PHPUnit 3.5
 
 This is the list of changes for the PHPUnit 3.5 release series.
 
+PHPUnit 3.5.6
+-------------
+
+* Fixed GH-87: Fatal error when calling `isPublic()` on dynamically created variable.
+
 PHPUnit 3.5.5
 -------------
 
