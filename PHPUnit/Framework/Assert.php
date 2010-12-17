@@ -2,7 +2,7 @@
 /**
  * PHPUnit
  *
- * Copyright (c) 2002-2011, Sebastian Bergmann <sebastian@phpunit.de>.
+ * Copyright (c) 2002-2010, Sebastian Bergmann <sebastian@phpunit.de>.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -37,7 +37,7 @@
  * @package    PHPUnit
  * @subpackage Framework
  * @author     Sebastian Bergmann <sebastian@phpunit.de>
- * @copyright  2002-2011 Sebastian Bergmann <sebastian@phpunit.de>
+ * @copyright  2002-2010 Sebastian Bergmann <sebastian@phpunit.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @link       http://www.phpunit.de/
  * @since      File available since Release 2.0.0
@@ -49,7 +49,7 @@
  * @package    PHPUnit
  * @subpackage Framework
  * @author     Sebastian Bergmann <sebastian@phpunit.de>
- * @copyright  2002-2011 Sebastian Bergmann <sebastian@phpunit.de>
+ * @copyright  2002-2010 Sebastian Bergmann <sebastian@phpunit.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    Release: @package_version@
  * @link       http://www.phpunit.de/
@@ -1247,148 +1247,6 @@ abstract class PHPUnit_Framework_Assert
     }
 
     /**
-     * Asserts that a variable is of a given type.
-     *
-     * @param  string $expected
-     * @param  mixed  $actual
-     * @param  string $message
-     * @deprecated
-     */
-    public static function assertType($expected, $actual, $message = '')
-    {
-        PHPUnit_Util_DeprecatedFeature_Logger::log(
-          'assertType() will be removed in PHPUnit 3.6 and should no longer ' .
-          'be used. assertInternalType() should be used for asserting ' .
-          'internal types such as "integer" or "string" whereas ' .
-          'assertInstanceOf() should be used for asserting that an object is ' .
-          'an instance of a specified class or interface.'
-        );
-
-        if (is_string($expected)) {
-            if (PHPUnit_Util_Type::isType($expected)) {
-                $constraint = new PHPUnit_Framework_Constraint_IsType(
-                  $expected
-                );
-            }
-
-            else if (class_exists($expected) || interface_exists($expected)) {
-                $constraint = new PHPUnit_Framework_Constraint_IsInstanceOf(
-                  $expected
-                );
-            }
-
-            else {
-                throw PHPUnit_Util_InvalidArgumentHelper::factory(
-                  1, 'class or interface name'
-                );
-            }
-        } else {
-            throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'string');
-        }
-
-        self::assertThat($actual, $constraint, $message);
-    }
-
-    /**
-     * Asserts that an attribute is of a given type.
-     *
-     * @param  string  $expected
-     * @param  string  $attributeName
-     * @param  mixed   $classOrObject
-     * @param  string  $message
-     * @since  Method available since Release 3.4.0
-     * @deprecated
-     */
-    public static function assertAttributeType($expected, $attributeName, $classOrObject, $message = '')
-    {
-        PHPUnit_Util_DeprecatedFeature_Logger::log(
-          'assertAttributeType() will be removed in PHPUnit 3.6 and should ' .
-          'no longer be used. assertAttributeInternalType() should be used ' .
-          'for asserting internal types such as "integer" or "string" ' .
-          'whereas assertAttributeInstanceOf() should be used for asserting ' .
-          'that an object is an instance of a specified class or interface.'
-        );
-
-        self::assertType(
-          $expected,
-          self::readAttribute($classOrObject, $attributeName),
-          $message
-        );
-    }
-
-    /**
-     * Asserts that a variable is not of a given type.
-     *
-     * @param  string $expected
-     * @param  mixed  $actual
-     * @param  string $message
-     * @since  Method available since Release 2.2.0
-     * @deprecated
-     */
-    public static function assertNotType($expected, $actual, $message = '')
-    {
-        PHPUnit_Util_DeprecatedFeature_Logger::log(
-          'assertNotType() will be removed in PHPUnit 3.6 and should no ' .
-          'longer be used. assertNotInternalType() should be used for ' .
-          'asserting internal types such as "integer" or "string" whereas ' .
-          'assertNotInstanceOf() should be used for asserting that an object ' .
-          'is not an instance of a specified class or interface.'
-        );
-
-        if (is_string($expected)) {
-            if (PHPUnit_Util_Type::isType($expected)) {
-                $constraint = new PHPUnit_Framework_Constraint_Not(
-                  new PHPUnit_Framework_Constraint_IsType($expected)
-                );
-            }
-
-            else if (class_exists($expected) || interface_exists($expected)) {
-                $constraint = new PHPUnit_Framework_Constraint_Not(
-                  new PHPUnit_Framework_Constraint_IsInstanceOf($expected)
-                );
-            }
-
-            else {
-                throw PHPUnit_Util_InvalidArgumentHelper::factory(
-                  1, 'class or interface name'
-                );
-            }
-        } else {
-            throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'string');
-        }
-
-        self::assertThat($actual, $constraint, $message);
-    }
-
-    /**
-     * Asserts that an attribute is of a given type.
-     *
-     * @param  string  $expected
-     * @param  string  $attributeName
-     * @param  mixed   $classOrObject
-     * @param  string  $message
-     * @since  Method available since Release 3.4.0
-     * @deprecated
-     */
-    public static function assertAttributeNotType($expected, $attributeName, $classOrObject, $message = '')
-    {
-        PHPUnit_Util_DeprecatedFeature_Logger::log(
-          'assertAttributeNotType() will be removed in PHPUnit 3.6 and ' .
-          'should no longer be used. assertAttributeNotInternalType() should ' .
-          'be used for asserting internal types such as "integer" or ' .
-          '"string" whereas assertAttributeNotInstanceOf() should be used ' .
-          'for asserting that an object is an instance of a specified class ' .
-          'or interface.'
-        );
-
-        self::assertNotType(
-          $expected,
-          self::readAttribute($classOrObject, $attributeName),
-          $message
-        );
-    }
-
-    /**
      * Asserts that a string matches a given regular expression.
      *
      * @param  string $pattern
@@ -1766,38 +1624,38 @@ abstract class PHPUnit_Framework_Assert
     }
 
     /**
-     * Asserts that a hierarchy of DOMElements matches.
+     * Asserts that a hierarchy of DOMNodes matches.
      *
-     * @param DOMElement $expectedElement
-     * @param DOMElement $actualElement
+     * @param DOMNode $expectedNode
+     * @param DOMNode $actualNode
      * @param boolean $checkAttributes
      * @param string  $message
      * @author Mattis Stordalen Flister <mattis@xait.no>
      * @since  Method available since Release 3.3.0
      */
-    public static function assertEqualXMLStructure(DOMElement $expectedElement, DOMElement $actualElement, $checkAttributes = FALSE, $message = '')
+    public static function assertEqualXMLStructure(DOMNode $expectedNode, DOMNode $actualNode, $checkAttributes = FALSE, $message = '')
     {
         self::assertEquals(
-          $expectedElement->tagName,
-          $actualElement->tagName,
+          $expectedNode->tagName,
+          $actualNode->tagName,
           $message
         );
 
         if ($checkAttributes) {
             self::assertEquals(
-              $expectedElement->attributes->length,
-              $actualElement->attributes->length,
+              $expectedNode->attributes->length,
+              $actualNode->attributes->length,
               sprintf(
                 '%s%sNumber of attributes on node "%s" does not match',
                 $message,
                 !empty($message) ? "\n" : '',
-                $expectedElement->tagName
+                $expectedNode->tagName
               )
             );
 
-            for ($i = 0 ; $i < $expectedElement->attributes->length; $i++) {
-                $expectedAttribute = $expectedElement->attributes->item($i);
-                $actualAttribute   = $actualElement->attributes->getNamedItem(
+            for ($i = 0 ; $i < $expectedNode->attributes->length; $i++) {
+                $expectedAttribute = $expectedNode->attributes->item($i);
+                $actualAttribute   = $actualNode->attributes->getNamedItem(
                   $expectedAttribute->name
                 );
 
@@ -1808,31 +1666,31 @@ abstract class PHPUnit_Framework_Assert
                         $message,
                         !empty($message) ? "\n" : '',
                         $expectedAttribute->name,
-                        $expectedElement->tagName
+                        $expectedNode->tagName
                       )
                     );
                 }
             }
         }
 
-        PHPUnit_Util_XML::removeCharacterDataNodes($expectedElement);
-        PHPUnit_Util_XML::removeCharacterDataNodes($actualElement);
+        PHPUnit_Util_XML::removeCharacterDataNodes($expectedNode);
+        PHPUnit_Util_XML::removeCharacterDataNodes($actualNode);
 
         self::assertEquals(
-          $expectedElement->childNodes->length,
-          $actualElement->childNodes->length,
+          $expectedNode->childNodes->length,
+          $actualNode->childNodes->length,
           sprintf(
             '%s%sNumber of child nodes of "%s" differs',
             $message,
             !empty($message) ? "\n" : '',
-            $expectedElement->tagName
+            $expectedNode->tagName
           )
         );
 
-        for ($i = 0; $i < $expectedElement->childNodes->length; $i++) {
+        for ($i = 0; $i < $expectedNode->childNodes->length; $i++) {
             self::assertEqualXMLStructure(
-              $expectedElement->childNodes->item($i),
-              $actualElement->childNodes->item($i),
+              $expectedNode->childNodes->item($i),
+              $actualNode->childNodes->item($i),
               $checkAttributes,
               $message
             );

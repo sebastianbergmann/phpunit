@@ -13,5 +13,6 @@ PHPUnit 3.6.0
 * Implemented GH-88: `@expectedException` (and `setExpectedException()`) no longer accept `Exception` as the expected exception class.
 * `assertEquals()` now looks for (and invokes) a `__toString()` method when an object and string are compared.
 * `@ticket` is now an alias for `@group`.
+* `assertType()` and `assertNotType()` as well as `assertAttributeType()` and `assertAttributeNotType()` have been removed. `assertInternalType()` should be used for asserting internal types such as `integer` or `string` whereas `assertInstanceOf()` should be used for asserting that an object is an instance of a specified class or interface.
 * The `PHPUnit_Extensions_Story_TestCase` functionality has been removed.
 * The syntax check functionality has been removed.
