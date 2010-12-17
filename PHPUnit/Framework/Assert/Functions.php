@@ -2,7 +2,7 @@
 /**
  * PHPUnit
  *
- * Copyright (c) 2002-2011, Sebastian Bergmann <sebastian@phpunit.de>.
+ * Copyright (c) 2002-2010, Sebastian Bergmann <sebastian@phpunit.de>.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -37,7 +37,7 @@
  * @package    PHPUnit
  * @subpackage Framework
  * @author     Sebastian Bergmann <sebastian@phpunit.de>
- * @copyright  2002-2011 Sebastian Bergmann <sebastian@phpunit.de>
+ * @copyright  2002-2010 Sebastian Bergmann <sebastian@phpunit.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @link       http://www.phpunit.de/
  * @since      File available since Release 3.5.0
@@ -358,21 +358,6 @@ function assertAttributeNotSame($expected, $actualAttributeName, $actualClassOrO
 }
 
 /**
- * Asserts that an attribute is of a given type.
- *
- * @param  string  $expected
- * @param  string  $attributeName
- * @param  mixed   $classOrObject
- * @param  string  $message
- * @since  Method available since Release 3.4.0
- * @deprecated
- */
-function assertAttributeNotType($expected, $attributeName, $classOrObject, $message = '')
-{
-    return PHPUnit_Framework_Assert::assertAttributeNotType($expected, $attributeName, $classOrObject, $message);
-}
-
-/**
  * Asserts that a variable and an attribute of an object have the same type
  * and value.
  *
@@ -384,21 +369,6 @@ function assertAttributeNotType($expected, $attributeName, $classOrObject, $mess
 function assertAttributeSame($expected, $actualAttributeName, $actualClassOrObject, $message = '')
 {
     return PHPUnit_Framework_Assert::assertAttributeSame($expected, $actualAttributeName, $actualClassOrObject, $message);
-}
-
-/**
- * Asserts that an attribute is of a given type.
- *
- * @param  string  $expected
- * @param  string  $attributeName
- * @param  mixed   $classOrObject
- * @param  string  $message
- * @since  Method available since Release 3.4.0
- * @deprecated
- */
-function assertAttributeType($expected, $attributeName, $classOrObject, $message = '')
-{
-    return PHPUnit_Framework_Assert::assertAttributeType($expected, $attributeName, $classOrObject, $message);
 }
 
 /**
@@ -482,6 +452,18 @@ function assertContainsOnly($type, $haystack, $isNativeType = NULL, $message = '
 }
 
 /**
+ * Asserts the number of elements of an array, Countable or Iterator.
+ *
+ * @param integer $expectedCount
+ * @param mixed   $haystack
+ * @param string  $message
+ */
+function assertCount($expectedCount, $haystack, $message = '')
+{
+    return PHPUnit_Framework_Assert::assertCount($expectedCount, $haystack, $message);
+}
+
+/**
  * Asserts that a variable is empty.
  *
  * @param  mixed   $actual
@@ -494,18 +476,18 @@ function assertEmpty($actual, $message = '')
 }
 
 /**
- * Asserts that a hierarchy of DOMElements matches.
+ * Asserts that a hierarchy of DOMNodes matches.
  *
- * @param DOMElement $expectedElement
- * @param DOMElement $actualElement
+ * @param DOMNode $expectedNode
+ * @param DOMNode $actualNode
  * @param boolean $checkAttributes
  * @param string  $message
  * @author Mattis Stordalen Flister <mattis@xait.no>
  * @since  Method available since Release 3.3.0
  */
-function assertEqualXMLStructure(DOMElement $expectedElement, DOMElement $actualElement, $checkAttributes = FALSE, $message = '')
+function assertEqualXMLStructure(DOMNode $expectedNode, DOMNode $actualNode, $checkAttributes = FALSE, $message = '')
 {
-    return PHPUnit_Framework_Assert::assertEqualXMLStructure($expectedElement, $actualElement, $checkAttributes, $message);
+    return PHPUnit_Framework_Assert::assertEqualXMLStructure($expectedNode, $actualNode, $checkAttributes, $message);
 }
 
 /**
@@ -699,6 +681,18 @@ function assertNotContainsOnly($type, $haystack, $isNativeType = NULL, $message 
 }
 
 /**
+ * Asserts the number of elements of an array, Countable or Iterator.
+ *
+ * @param integer $expectedCount
+ * @param mixed   $haystack
+ * @param string  $message
+ */
+function assertNotCount($expectedCount, $haystack, $message = '')
+{
+    return PHPUnit_Framework_Assert::assertNotCount($expectedCount, $haystack, $message);
+}
+
+/**
  * Asserts that a variable is not empty.
  *
  * @param  mixed   $actual
@@ -808,20 +802,6 @@ function assertNotSame($expected, $actual, $message = '')
 function assertNotTag($matcher, $actual, $message = '', $isHtml = TRUE)
 {
     return PHPUnit_Framework_Assert::assertNotTag($matcher, $actual, $message, $isHtml);
-}
-
-/**
- * Asserts that a variable is not of a given type.
- *
- * @param  string $expected
- * @param  mixed  $actual
- * @param  string $message
- * @since  Method available since Release 2.2.0
- * @deprecated
- */
-function assertNotType($expected, $actual, $message = '')
-{
-    return PHPUnit_Framework_Assert::assertNotType($expected, $actual, $message);
 }
 
 /**
@@ -1255,19 +1235,6 @@ function assertThat($value, PHPUnit_Framework_Constraint $constraint, $message =
 function assertTrue($condition, $message = '')
 {
     return PHPUnit_Framework_Assert::assertTrue($condition, $message);
-}
-
-/**
- * Asserts that a variable is of a given type.
- *
- * @param  string $expected
- * @param  mixed  $actual
- * @param  string $message
- * @deprecated
- */
-function assertType($expected, $actual, $message = '')
-{
-    return PHPUnit_Framework_Assert::assertType($expected, $actual, $message);
 }
 
 /**
