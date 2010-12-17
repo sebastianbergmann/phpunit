@@ -358,20 +358,6 @@ function assertAttributeNotSame($expected, $actualAttributeName, $actualClassOrO
 }
 
 /**
- * Asserts that an attribute is of a given type.
- *
- * @param  string  $expected
- * @param  string  $attributeName
- * @param  mixed   $classOrObject
- * @param  string  $message
- * @since  Method available since Release 3.4.0
- */
-function assertAttributeNotType($expected, $attributeName, $classOrObject, $message = '')
-{
-    return PHPUnit_Framework_Assert::assertAttributeNotType($expected, $attributeName, $classOrObject, $message);
-}
-
-/**
  * Asserts that a variable and an attribute of an object have the same type
  * and value.
  *
@@ -383,20 +369,6 @@ function assertAttributeNotType($expected, $attributeName, $classOrObject, $mess
 function assertAttributeSame($expected, $actualAttributeName, $actualClassOrObject, $message = '')
 {
     return PHPUnit_Framework_Assert::assertAttributeSame($expected, $actualAttributeName, $actualClassOrObject, $message);
-}
-
-/**
- * Asserts that an attribute is of a given type.
- *
- * @param  string  $expected
- * @param  string  $attributeName
- * @param  mixed   $classOrObject
- * @param  string  $message
- * @since  Method available since Release 3.4.0
- */
-function assertAttributeType($expected, $attributeName, $classOrObject, $message = '')
-{
-    return PHPUnit_Framework_Assert::assertAttributeType($expected, $attributeName, $classOrObject, $message);
 }
 
 /**
@@ -477,6 +449,18 @@ function assertContains($needle, $haystack, $message = '', $ignoreCase = FALSE)
 function assertContainsOnly($type, $haystack, $isNativeType = NULL, $message = '')
 {
     return PHPUnit_Framework_Assert::assertContainsOnly($type, $haystack, $isNativeType, $message);
+}
+
+/**
+ * Asserts the number of elements of an array, Countable or Iterator.
+ *
+ * @param integer $expectedCount
+ * @param mixed   $haystack
+ * @param string  $message
+ */
+function assertCount($expectedCount, $haystack, $message = '')
+{
+    return PHPUnit_Framework_Assert::assertCount($expectedCount, $haystack, $message);
 }
 
 /**
@@ -697,6 +681,18 @@ function assertNotContainsOnly($type, $haystack, $isNativeType = NULL, $message 
 }
 
 /**
+ * Asserts the number of elements of an array, Countable or Iterator.
+ *
+ * @param integer $expectedCount
+ * @param mixed   $haystack
+ * @param string  $message
+ */
+function assertNotCount($expectedCount, $haystack, $message = '')
+{
+    return PHPUnit_Framework_Assert::assertNotCount($expectedCount, $haystack, $message);
+}
+
+/**
  * Asserts that a variable is not empty.
  *
  * @param  mixed   $actual
@@ -806,19 +802,6 @@ function assertNotSame($expected, $actual, $message = '')
 function assertNotTag($matcher, $actual, $message = '', $isHtml = TRUE)
 {
     return PHPUnit_Framework_Assert::assertNotTag($matcher, $actual, $message, $isHtml);
-}
-
-/**
- * Asserts that a variable is not of a given type.
- *
- * @param  string $expected
- * @param  mixed  $actual
- * @param  string $message
- * @since  Method available since Release 2.2.0
- */
-function assertNotType($expected, $actual, $message = '')
-{
-    return PHPUnit_Framework_Assert::assertNotType($expected, $actual, $message);
 }
 
 /**
@@ -1252,18 +1235,6 @@ function assertThat($value, PHPUnit_Framework_Constraint $constraint, $message =
 function assertTrue($condition, $message = '')
 {
     return PHPUnit_Framework_Assert::assertTrue($condition, $message);
-}
-
-/**
- * Asserts that a variable is of a given type.
- *
- * @param  string $expected
- * @param  mixed  $actual
- * @param  string $message
- */
-function assertType($expected, $actual, $message = '')
-{
-    return PHPUnit_Framework_Assert::assertType($expected, $actual, $message);
 }
 
 /**
