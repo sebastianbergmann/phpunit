@@ -7,6 +7,7 @@ PHPUnit 3.5.6
 -------------
 
 * Fixed GH-87: Fatal error when calling `isPublic()` on dynamically created variable.
+* Properly marked `assertType()` and `assertNotType()` as well as `assertAttributeType()` and `assertAttributeNotType()` as deprecated. These assertions will removed in PHPUnit 3.6 and should no longer be used. `assertInternalType()` should be used for asserting internal types such as `integer` or `string` whereas `assertInstanceOf()` should be used for asserting that an object is an instance of a specified class or interface.
 
 PHPUnit 3.5.5
 -------------
