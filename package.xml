@@ -467,6 +467,9 @@
      <tasks:replace from="@package_version@" to="version" type="package-info" />
     </file>
    </dir>
+   <file baseinstalldir="/" name="ChangeLog.markdown" role="doc"/>
+   <file baseinstalldir="/" name="LICENSE" role="doc"/>
+   <file baseinstalldir="/" name="README.markdown" role="doc"/>
    <file baseinstalldir="/" name="phpunit.php" role="script">
     <tasks:replace from="/usr/bin/env php" to="php_bin" type="pear-config"/>
     <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
