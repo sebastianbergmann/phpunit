@@ -45,7 +45,7 @@
  */
 
 /**
- * Abstract base class for constraints. which are placed upon any value.
+ * A listener that is utilized to notify the developer that a deprecated feature was used in a test
  *
  * @package    PHPUnit
  * @subpackage Framework
@@ -59,8 +59,23 @@
  */
 class PHPUnit_Framework_DeprecatedFeatureListener implements PHPUnit_Framework_TestListener
 {
+
+    /**
+     * This will minimally be a PHPUnit_Framework_Test, but most likely a PHPUnit_Framework_TestCase
+     * 
+     * @var PHPUnit_Framework_TestCase
+     */
     protected static $currentTest = null;
-    
+
+    /**
+     * This is the publically accessible API for notifying the system that a deprecated feature has been used
+     * 
+     * If it is run via a TestRunner and the test extends PHPUnit_Framework_TestCase, then this will inject
+     * the result into the test runner for display, if not, it will throw the notice to STDERR.
+     * 
+     * @param string $message
+     * @param int|bool $backtraceDepth
+     */
     public static function log($message, $backtraceDepth = 2)
     {
         
