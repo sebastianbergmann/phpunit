@@ -65,8 +65,10 @@ class PHPUnit_Framework_ComparisonFailure_Array extends PHPUnit_Framework_Compar
      */
     public function toString()
     {
-        ksort($this->expected);
-        ksort($this->actual);
+        if (!$this->identical) {
+            ksort($this->expected);
+            ksort($this->actual);
+        }
 
         $diff = PHPUnit_Util_Diff::diff(
           print_r($this->expected, TRUE),
