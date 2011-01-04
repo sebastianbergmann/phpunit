@@ -1204,15 +1204,13 @@ abstract class PHPUnit_Framework_Assert
      */
     public static function assertType($expected, $actual, $message = '')
     {
-        file_put_contents(
-          'php://stderr',
-          "\n\n" .
-          'assertType() will be removed in PHPUnit 3.6 and should no longer ' .
-          'be used. assertInternalType() should be used for asserting ' .
-          'internal types such as "integer" or "string" whereas ' .
-          'assertInstanceOf() should be used for asserting that an object is ' .
-          "an instance of a specified class or interface.\n\n"
-        );
+        $message = 'assertType() will be removed in PHPUnit 3.6 and should no longer ' .
+            'be used. assertInternalType() should be used for asserting ' .
+            'internal types such as "integer" or "string" whereas ' .
+            'assertInstanceOf() should be used for asserting that an object is ' .
+            'an instance of a specified class or interface.';
+
+        PHPUnit_Framework_DeprecatedFeatureListener::log($message);
 
         if (is_string($expected)) {
             if (PHPUnit_Util_Type::isType($expected)) {
@@ -1251,15 +1249,13 @@ abstract class PHPUnit_Framework_Assert
      */
     public static function assertAttributeType($expected, $attributeName, $classOrObject, $message = '')
     {
-        file_put_contents(
-          'php://stderr',
-          "\n\n" .
-          'assertAttributeType() will be removed in PHPUnit 3.6 and should ' .
-          'no longer be used. assertAttributeInternalType() should be used ' .
-          'for asserting internal types such as "integer" or "string" ' .
-          'whereas assertAttributeInstanceOf() should be used for asserting ' .
-          "that an object is an instance of a specified class or interface.\n\n"
-        );
+        $message = 'assertAttributeType() will be removed in PHPUnit 3.6 and should ' .
+            'no longer be used. assertAttributeInternalType() should be used ' .
+            'for asserting internal types such as "integer" or "string" ' .
+            'whereas assertAttributeInstanceOf() should be used for asserting ' .
+            'that an object is an instance of a specified class or interface.';
+
+        PHPUnit_Framework_DeprecatedFeatureListener::log($message);
 
         self::assertType(
           $expected,
@@ -1279,15 +1275,13 @@ abstract class PHPUnit_Framework_Assert
      */
     public static function assertNotType($expected, $actual, $message = '')
     {
-        file_put_contents(
-          'php://stderr',
-          "\n\n" .
-          'assertNotType() will be removed in PHPUnit 3.6 and should no ' .
-          'longer be used. assertNotInternalType() should be used for ' .
-          'asserting internal types such as "integer" or "string" whereas ' .
-          'assertNotInstanceOf() should be used for asserting that an object ' .
-          "is not an instance of a specified class or interface.\n\n"
-        );
+        $message = 'assertNotType() will be removed in PHPUnit 3.6 and should no ' .
+            'longer be used. assertNotInternalType() should be used for ' .
+            'asserting internal types such as "integer" or "string" whereas ' .
+            'assertNotInstanceOf() should be used for asserting that an object ' .
+            'is not an instance of a specified class or interface.';
+
+        PHPUnit_Framework_DeprecatedFeatureListener::log($message);
 
         if (is_string($expected)) {
             if (PHPUnit_Util_Type::isType($expected)) {
@@ -1326,16 +1320,14 @@ abstract class PHPUnit_Framework_Assert
      */
     public static function assertAttributeNotType($expected, $attributeName, $classOrObject, $message = '')
     {
-        file_put_contents(
-          'php://stderr',
-          "\n\n" .
-          'assertAttributeNotType() will be removed in PHPUnit 3.6 and ' .
-          'should no longer be used. assertAttributeNotInternalType() should ' .
-          'be used for asserting internal types such as "integer" or ' .
-          '"string" whereas assertAttributeNotInstanceOf() should be used ' .
-          'for asserting that an object is an instance of a specified class ' .
-          "or interface.\n\n"
-        );
+        $message = 'assertAttributeNotType() will be removed in PHPUnit 3.6 and ' .
+            'should no longer be used. assertAttributeNotInternalType() should ' .
+            'be used for asserting internal types such as "integer" or ' .
+            '"string" whereas assertAttributeNotInstanceOf() should be used ' .
+            'for asserting that an object is an instance of a specified class ' .
+            'or interface.';
+
+        PHPUnit_Framework_DeprecatedFeatureListener::log($message);
 
         self::assertNotType(
           $expected,

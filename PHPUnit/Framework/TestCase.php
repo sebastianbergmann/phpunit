@@ -917,6 +917,15 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
     }
 
     /**
+     * @param mixed $result
+     * @since  Method available since Release 3.5.6
+     */
+    public function getCurrentRunResult()
+    {
+        return $this->result;
+    }
+
+    /**
      * This method is a wrapper for the ini_set() function that automatically
      * resets the modified php.ini setting to its original value after the
      * test is run.

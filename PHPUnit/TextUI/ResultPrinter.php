@@ -415,6 +415,16 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
                 $this->write("\x1b[0m\x1b[2K");
             }
         }
+
+        if (($depCount = count($result->deprecatedFeatures())) > 0) {
+            if ($this->colors) {
+                $this->write(
+                  "\x1b[37;41m\x1b[2kWarning: Deprecated PHPUnit features are being used $depCount times in tests! Use --debug for greater detail.\n\x1b[0m\x1b[37;41m\x1b[2K"
+                );
+            } else {
+                $this->write("Warning: Deprecated PHPUnit features are being used $depCount times in tests! Use --debug for greater detail.\n");
+            }
+        }
     }
 
     /**
@@ -589,6 +599,15 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
     {
         if (!$this->lastTestFailed) {
             $this->writeProgress('.');
+        }
+
+        if ($this->debug && ($test instanceof PHPUnit_Framework_TestCase)) {
+            $deprecatedFeatures = $test->getCurrentRunResult()->deprecatedFeatures();
+            if (count($deprecatedFeatures) > 0) {
+                foreach ($deprecatedFeatures as $deprecatedFeature) {
+                    $this->write("\n" . $deprecatedFeature->__toString() . "\n");
+                }
+            }
         }
 
         if ($test instanceof PHPUnit_Framework_TestCase) {
