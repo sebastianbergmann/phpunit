@@ -3,6 +3,11 @@ PHPUnit 3.5
 
 This is the list of changes for the PHPUnit 3.5 release series.
 
+PHPUnit 3.5.7
+-------------
+
+* Fixed GH-100: `assertSame()` does not give useful output on misordered arrays.
+
 PHPUnit 3.5.6
 -------------
 
