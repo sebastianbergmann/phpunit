@@ -336,7 +336,7 @@ class PHPUnit_Framework_TestResult implements Countable
     {
         $this->deprecatedFeatures[] = $deprecatedFeature;
     }
-    
+
     /**
      * Informs the result that a testsuite will be started.
      *

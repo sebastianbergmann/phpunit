@@ -62,36 +62,36 @@ class PHPUnit_Framework_DeprecatedFeatureListener implements PHPUnit_Framework_T
 
     /**
      * This will minimally be a PHPUnit_Framework_Test, but most likely a PHPUnit_Framework_TestCase
-     * 
+     *
      * @var PHPUnit_Framework_TestCase
      */
     protected static $currentTest = null;
 
     /**
      * This is the publically accessible API for notifying the system that a deprecated feature has been used
-     * 
+     *
      * If it is run via a TestRunner and the test extends PHPUnit_Framework_TestCase, then this will inject
      * the result into the test runner for display, if not, it will throw the notice to STDERR.
-     * 
+     *
      * @param string $message
      * @param int|bool $backtraceDepth
      */
     public static function log($message, $backtraceDepth = 2)
     {
-        
+
         if ($backtraceDepth !== false) {
             $trace = debug_backtrace(false);
-            
+
             if (is_int($backtraceDepth)) {
                 $traceItem = $trace[$backtraceDepth];
             }
-            
+
             // fill in missing file (debug_backtrace does not fill in line file from call_user_func)
             if (!isset($traceItem['file'])) {
                 $reflectionClass = new ReflectionClass($traceItem['class']);
                 $traceItem['file'] = $reflectionClass->getFileName();
             }
-            
+
             // fill in missing line (debug_backtrace does not fill in line file from call_user_func)
             if (!isset($traceItem['line']) && isset($traceItem['class']) && isset($traceItem['function'])) {
                 $reflectionClass = (isset($reflectionClass)) ? $reflectionClass : new ReflectionClass($traceItem['class']);
@@ -99,9 +99,9 @@ class PHPUnit_Framework_DeprecatedFeatureListener implements PHPUnit_Framework_T
                 $traceItem['line'] = '(between ' . $methodReflection->getStartLine() . ' and ' . $methodReflection->getEndLine() . ')';
             }
         }
-        
+
         $deprecatedFeature = new PHPUnit_Framework_DeprecatedFeature($message, $traceItem);
-        
+
         if (self::$currentTest instanceof PHPUnit_Framework_TestCase) {
             /* @var $result PHPUnit_Framework_TestResult */
             $result = self::$currentTest->getResult();
@@ -110,7 +110,7 @@ class PHPUnit_Framework_DeprecatedFeatureListener implements PHPUnit_Framework_T
             file_put_contents('php://stderr', $deprecatedFeature->__toString());
         }
     }
-    
+
     /**
      * An error occurred.
      *
@@ -190,6 +190,6 @@ class PHPUnit_Framework_DeprecatedFeatureListener implements PHPUnit_Framework_T
     {
         self::$currentTest = null;
     }
-    
+
 }
 

@@ -101,5 +101,5 @@ class PHPUnit_Framework_DeprecatedFeature
         $string .= $this->message;
         return $string;
     }
-    
+
 }
