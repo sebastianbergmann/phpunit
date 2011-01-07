@@ -41,7 +41,7 @@
  * @copyright  2002-2010 Sebastian Bergmann <sebastian@phpunit.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @link       http://www.phpunit.de/
- * @since      File available since Release 3.5.6
+ * @since      File available since Release 3.5.7
  */
 
 /**
@@ -55,7 +55,7 @@
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    Release: @package_version@
  * @link       http://www.phpunit.de/
- * @since      Interface available since Release 3.5.6
+ * @since      Interface available since Release 3.5.7
  */
 class PHPUnit_Framework_DeprecatedFeature
 {
