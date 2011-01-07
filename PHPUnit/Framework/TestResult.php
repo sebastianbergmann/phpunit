@@ -617,7 +617,6 @@ class PHPUnit_Framework_TestResult implements Countable
         $incomplete = FALSE;
         $skipped    = FALSE;
 
-        $test->setResult($this);
         $this->startTest($test);
 
         $errorHandlerSet = FALSE;
