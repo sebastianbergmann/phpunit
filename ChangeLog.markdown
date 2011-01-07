@@ -7,6 +7,7 @@ PHPUnit 3.5.7
 -------------
 
 * Fixed GH-100: `assertSame()` does not give useful output on misordered arrays.
+* Fixed GH-105: Backup of static attributes causes memory exhaustion.
 
 PHPUnit 3.5.6
 -------------
