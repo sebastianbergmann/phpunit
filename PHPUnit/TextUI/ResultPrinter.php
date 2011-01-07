@@ -416,14 +416,21 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
             }
         }
 
-        if (($depCount = count($result->deprecatedFeatures())) > 0) {
+        $deprecatedFeaturesCount = count($result->deprecatedFeatures());
+
+        if ($deprecatedFeaturesCount > 0) {
+            $message = sprintf(
+              'Warning: Deprecated PHPUnit features are being used %s times!' .
+              " Use --debug for more information.\n",
+              $deprecatedFeaturesCount
+            );
+
             if ($this->colors) {
-                $this->write(
-                  "\x1b[37;41m\x1b[2kWarning: Deprecated PHPUnit features are being used $depCount times in tests! Use --debug for greater detail.\n\x1b[0m\x1b[37;41m\x1b[2K"
-                );
-            } else {
-                $this->write("Warning: Deprecated PHPUnit features are being used $depCount times in tests! Use --debug for greater detail.\n");
+                $message = "\x1b[37;41m\x1b[2K" . $message .
+                           "\x1b[0m";
             }
+
+            $this->write("\n" . $message);
         }
     }
 
