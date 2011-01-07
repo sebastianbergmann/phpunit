@@ -354,7 +354,7 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
         }
 
         else if ((!$result->allCompletlyImplemented() ||
-                  !$result->noneSkipped())&&
+                  !$result->noneSkipped()) &&
                  $result->wasSuccessful()) {
             if ($this->colors) {
                 $this->write(

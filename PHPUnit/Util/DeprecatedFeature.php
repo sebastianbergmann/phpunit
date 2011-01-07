@@ -59,7 +59,6 @@
  */
 class PHPUnit_Util_DeprecatedFeature
 {
-
     /**
      * @var array
      */
@@ -68,20 +67,16 @@ class PHPUnit_Util_DeprecatedFeature
     /**
      * @var string
      */
-    protected $message = null;
+    protected $message = NULL;
 
     /**
-     * Constructs a deprecated feature object
-     *
      * @param  string $message
      * @param  array  $traceInfo
      */
-    public function __construct($message, Array $traceInfo = null)
+    public function __construct($message, array $traceInfo = array())
     {
-        $this->message = $message;
-        if ($traceInfo) {
-            $this->traceInfo = $traceInfo;
-        }
+        $this->message   = $message;
+        $this->traceInfo = $traceInfo;
     }
 
     /**
@@ -92,14 +87,17 @@ class PHPUnit_Util_DeprecatedFeature
     public function __toString()
     {
         $string = '';
+
         if (isset($this->traceInfo['file'])) {
             $string .= $this->traceInfo['file'];
+
             if (isset($this->traceInfo['line'])) {
                 $string .= ':' . $this->traceInfo['line'] . ' - ';
             }
         }
+
         $string .= $this->message;
+
         return $string;
     }
-
 }

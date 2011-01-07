@@ -122,7 +122,8 @@ class PHPUnit_Util_DeprecatedFeature_Logger implements PHPUnit_Framework_TestLis
      * @param  float                  $time
      */
     public function addError(PHPUnit_Framework_Test $test, Exception $e, $time)
-    {}
+    {
+    }
 
     /**
      * A failure occurred.
@@ -132,7 +133,8 @@ class PHPUnit_Util_DeprecatedFeature_Logger implements PHPUnit_Framework_TestLis
      * @param  float                                  $time
      */
     public function addFailure(PHPUnit_Framework_Test $test, PHPUnit_Framework_AssertionFailedError $e, $time)
-    {}
+    {
+    }
 
     /**
      * Incomplete test.
@@ -142,7 +144,8 @@ class PHPUnit_Util_DeprecatedFeature_Logger implements PHPUnit_Framework_TestLis
      * @param  float                  $time
      */
     public function addIncompleteTest(PHPUnit_Framework_Test $test, Exception $e, $time)
-    {}
+    {
+    }
 
     /**
      * Skipped test.
@@ -153,7 +156,8 @@ class PHPUnit_Util_DeprecatedFeature_Logger implements PHPUnit_Framework_TestLis
      * @since  Method available since Release 3.0.0
      */
     public function addSkippedTest(PHPUnit_Framework_Test $test, Exception $e, $time)
-    {}
+    {
+    }
 
     /**
      * A test suite started.
@@ -162,7 +166,8 @@ class PHPUnit_Util_DeprecatedFeature_Logger implements PHPUnit_Framework_TestLis
      * @since  Method available since Release 2.2.0
      */
     public function startTestSuite(PHPUnit_Framework_TestSuite $suite)
-    {}
+    {
+    }
 
     /**
      * A test suite ended.
@@ -171,7 +176,8 @@ class PHPUnit_Util_DeprecatedFeature_Logger implements PHPUnit_Framework_TestLis
      * @since  Method available since Release 2.2.0
      */
     public function endTestSuite(PHPUnit_Framework_TestSuite $suite)
-    {}
+    {
+    }
 
     /**
      * A test started.
@@ -191,8 +197,6 @@ class PHPUnit_Util_DeprecatedFeature_Logger implements PHPUnit_Framework_TestLis
      */
     public function endTest(PHPUnit_Framework_Test $test, $time)
     {
-        self::$currentTest = null;
+        self::$currentTest = NULL;
     }
-
 }
-
