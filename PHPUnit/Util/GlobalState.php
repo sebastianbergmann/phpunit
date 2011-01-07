@@ -272,6 +272,9 @@ class PHPUnit_Util_GlobalState
 
         for ($i = $declaredClassesNum - 1; $i >= 0; $i--) {
             if (strpos($declaredClasses[$i], 'PHPUnit') !== 0 &&
+                strpos($declaredClasses[$i], 'PHP_CodeCoverage') !== 0 &&
+                strpos($declaredClasses[$i], 'PHP_TokenStream') !== 0 &&
+                strpos($declaredClasses[$i], 'PHP_Timer') !== 0 &&
                 !$declaredClasses[$i] instanceof PHPUnit_Framework_Test) {
                 $class = new ReflectionClass($declaredClasses[$i]);
 
