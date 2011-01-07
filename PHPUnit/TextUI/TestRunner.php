@@ -231,7 +231,7 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
         $result->addListener($this->printer);
 
         if ($this->printer instanceof PHPUnit_TextUI_ResultPrinter) {
-            $result->addListener(new PHPUnit_Framework_DeprecatedFeatureListener());
+            $result->addListener(new PHPUnit_Util_DeprecatedFeature_Logger());
         }
 
         if (isset($arguments['storyHTMLFile'])) {

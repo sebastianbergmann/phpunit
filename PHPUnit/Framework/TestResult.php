@@ -330,9 +330,9 @@ class PHPUnit_Framework_TestResult implements Countable
     /**
      * Adds a deprecated feature notice to the list of deprecated features used during run
      *
-     * @param PHPUnit_Framework_DeprecatedFeature $deprecatedFeature
+     * @param PHPUnit_Util_DeprecatedFeature $deprecatedFeature
      */
-    public function addDeprecatedFeature(PHPUnit_Framework_DeprecatedFeature $deprecatedFeature)
+    public function addDeprecatedFeature(PHPUnit_Util_DeprecatedFeature $deprecatedFeature)
     {
         $this->deprecatedFeatures[] = $deprecatedFeature;
     }

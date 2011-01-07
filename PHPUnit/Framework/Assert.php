@@ -1204,7 +1204,7 @@ abstract class PHPUnit_Framework_Assert
      */
     public static function assertType($expected, $actual, $message = '')
     {
-        PHPUnit_Framework_DeprecatedFeatureListener::log(
+        PHPUnit_Util_DeprecatedFeature_Logger::log(
           'assertType() will be removed in PHPUnit 3.6 and should no longer ' .
           'be used. assertInternalType() should be used for asserting ' .
           'internal types such as "integer" or "string" whereas ' .
@@ -1249,7 +1249,7 @@ abstract class PHPUnit_Framework_Assert
      */
     public static function assertAttributeType($expected, $attributeName, $classOrObject, $message = '')
     {
-        PHPUnit_Framework_DeprecatedFeatureListener::log(
+        PHPUnit_Util_DeprecatedFeature_Logger::log(
           'assertAttributeType() will be removed in PHPUnit 3.6 and should ' .
           'no longer be used. assertAttributeInternalType() should be used ' .
           'for asserting internal types such as "integer" or "string" ' .
@@ -1275,7 +1275,7 @@ abstract class PHPUnit_Framework_Assert
      */
     public static function assertNotType($expected, $actual, $message = '')
     {
-        PHPUnit_Framework_DeprecatedFeatureListener::log(
+        PHPUnit_Util_DeprecatedFeature_Logger::log(
           'assertNotType() will be removed in PHPUnit 3.6 and should no ' .
           'longer be used. assertNotInternalType() should be used for ' .
           'asserting internal types such as "integer" or "string" whereas ' .
@@ -1320,7 +1320,7 @@ abstract class PHPUnit_Framework_Assert
      */
     public static function assertAttributeNotType($expected, $attributeName, $classOrObject, $message = '')
     {
-        PHPUnit_Framework_DeprecatedFeatureListener::log(
+        PHPUnit_Util_DeprecatedFeature_Logger::log(
           'assertAttributeNotType() will be removed in PHPUnit 3.6 and ' .
           'should no longer be used. assertAttributeNotInternalType() should ' .
           'be used for asserting internal types such as "integer" or ' .

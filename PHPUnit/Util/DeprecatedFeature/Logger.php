@@ -45,7 +45,7 @@
  */
 
 /**
- * A listener that is utilized to notify the developer that a deprecated feature was used in a test
+ * Test Listener that tracks the usage of deprecated features.
  *
  * @package    PHPUnit
  * @subpackage Framework
@@ -57,50 +57,54 @@
  * @link       http://www.phpunit.de/
  * @since      Class available since Release 3.5.7
  */
-class PHPUnit_Framework_DeprecatedFeatureListener implements PHPUnit_Framework_TestListener
+class PHPUnit_Util_DeprecatedFeature_Logger implements PHPUnit_Framework_TestListener
 {
-
     /**
-     * This will minimally be a PHPUnit_Framework_Test, but most likely a PHPUnit_Framework_TestCase
-     *
      * @var PHPUnit_Framework_TestCase
      */
-    protected static $currentTest = null;
+    protected static $currentTest = NULL;
 
     /**
-     * This is the publically accessible API for notifying the system that a deprecated feature has been used
+     * This is the publically accessible API for notifying the system that a
+     * deprecated feature has been used.
      *
-     * If it is run via a TestRunner and the test extends PHPUnit_Framework_TestCase, then this will inject
-     * the result into the test runner for display, if not, it will throw the notice to STDERR.
+     * If it is run via a TestRunner and the test extends
+     * PHPUnit_Framework_TestCase, then this will inject the result into the
+     * test runner for display, if not, it will throw the notice to STDERR.
      *
      * @param string $message
      * @param int|bool $backtraceDepth
      */
     public static function log($message, $backtraceDepth = 2)
     {
-
-        if ($backtraceDepth !== false) {
-            $trace = debug_backtrace(false);
+        if ($backtraceDepth !== FALSE) {
+            $trace = debug_backtrace(FALSE);
 
             if (is_int($backtraceDepth)) {
                 $traceItem = $trace[$backtraceDepth];
             }
 
-            // fill in missing file (debug_backtrace does not fill in line file from call_user_func)
             if (!isset($traceItem['file'])) {
-                $reflectionClass = new ReflectionClass($traceItem['class']);
+                $reflectionClass   = new ReflectionClass($traceItem['class']);
                 $traceItem['file'] = $reflectionClass->getFileName();
             }
 
-            // fill in missing line (debug_backtrace does not fill in line file from call_user_func)
-            if (!isset($traceItem['line']) && isset($traceItem['class']) && isset($traceItem['function'])) {
-                $reflectionClass = (isset($reflectionClass)) ? $reflectionClass : new ReflectionClass($traceItem['class']);
-                $methodReflection = $reflectionClass->getMethod($traceItem['function']);
-                $traceItem['line'] = '(between ' . $methodReflection->getStartLine() . ' and ' . $methodReflection->getEndLine() . ')';
+            if (!isset($traceItem['line']) &&
+                 isset($traceItem['class']) &&
+                 isset($traceItem['function'])) {
+                if (!isset($reflectionClass)) {
+                    $reflectionClass = new ReflectionClass($traceItem['class']);
+                }
+
+                $method = $reflectionClass->getMethod($traceItem['function']);
+                $traceItem['line'] = '(between ' . $method->getStartLine() .
+                                     ' and ' . $method->getEndLine() . ')';
             }
         }
 
-        $deprecatedFeature = new PHPUnit_Framework_DeprecatedFeature($message, $traceItem);
+        $deprecatedFeature = new PHPUnit_Util_DeprecatedFeature(
+          $message, $traceItem
+        );
 
         if (self::$currentTest instanceof PHPUnit_Framework_TestCase) {
             /* @var $result PHPUnit_Framework_TestResult */

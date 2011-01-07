@@ -57,7 +57,7 @@
  * @link       http://www.phpunit.de/
  * @since      Interface available since Release 3.5.7
  */
-class PHPUnit_Framework_DeprecatedFeature
+class PHPUnit_Util_DeprecatedFeature
 {
 
     /**
