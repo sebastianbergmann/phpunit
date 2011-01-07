@@ -602,7 +602,7 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
         }
 
         if ($this->debug && ($test instanceof PHPUnit_Framework_TestCase)) {
-            $deprecatedFeatures = $test->getCurrentRunResult()->deprecatedFeatures();
+            $deprecatedFeatures = $test->getTestResultObject()->deprecatedFeatures();
             if (count($deprecatedFeatures) > 0) {
                 foreach ($deprecatedFeatures as $deprecatedFeature) {
                     $this->write("\n" . $deprecatedFeature->__toString() . "\n");

@@ -920,7 +920,7 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
      * @return PHPUnit_Framework_TestResult
      * @since  Method available since Release 3.5.7
      */
-    public function getCurrentRunResult()
+    public function getTestResultObject()
     {
         return $this->result;
     }
