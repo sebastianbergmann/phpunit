@@ -330,6 +330,11 @@
      </file>
     </dir>
     <dir name="Util">
+     <dir name="DeprecatedFeature">
+      <file baseinstalldir="/" name="Logger.php" role="php">
+       <tasks:replace from="@package_version@" to="version" type="package-info" />
+      </file>
+     </dir>
      <dir name="Log">
       <file baseinstalldir="/" name="DBUS.php" role="php">
        <tasks:replace from="@package_version@" to="version" type="package-info" />
@@ -407,6 +412,9 @@
       <tasks:replace from="@package_version@" to="version" type="package-info" />
      </file>
      <file baseinstalldir="/" name="Configuration.php" role="php">
+      <tasks:replace from="@package_version@" to="version" type="package-info" />
+     </file>
+     <file baseinstalldir="/" name="DeprecatedFeature.php" role="php">
       <tasks:replace from="@package_version@" to="version" type="package-info" />
      </file>
      <file baseinstalldir="/" name="Diff.php" role="php">
