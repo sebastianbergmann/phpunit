@@ -82,6 +82,11 @@ class PHPUnit_Framework_TestResult implements Countable
     /**
      * @var array
      */
+    protected $deprecatedFeatures = array();
+
+    /**
+     * @var array
+     */
     protected $failures = array();
 
     /**
@@ -322,6 +327,16 @@ class PHPUnit_Framework_TestResult implements Countable
     }
 
     /**
+     * Adds a deprecated feature notice to the list of deprecated features used during run
+     *
+     * @param PHPUnit_Util_DeprecatedFeature $deprecatedFeature
+     */
+    public function addDeprecatedFeature(PHPUnit_Util_DeprecatedFeature $deprecatedFeature)
+    {
+        $this->deprecatedFeatures[] = $deprecatedFeature;
+    }
+
+    /**
      * Informs the result that a testsuite will be started.
      *
      * @param  PHPUnit_Framework_TestSuite $suite
@@ -467,6 +482,16 @@ class PHPUnit_Framework_TestResult implements Countable
     public function errors()
     {
         return $this->errors;
+    }
+
+    /**
+     * Returns an Enumeration for the deprecated features used.
+     *
+     * @return array
+     */
+    public function deprecatedFeatures()
+    {
+        return $this->deprecatedFeatures;
     }
 
     /**

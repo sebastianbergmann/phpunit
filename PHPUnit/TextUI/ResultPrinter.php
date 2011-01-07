@@ -354,7 +354,7 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
         }
 
         else if ((!$result->allCompletlyImplemented() ||
-                  !$result->noneSkipped())&&
+                  !$result->noneSkipped()) &&
                  $result->wasSuccessful()) {
             if ($this->colors) {
                 $this->write(
@@ -414,6 +414,23 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
             if ($this->colors) {
                 $this->write("\x1b[0m\x1b[2K");
             }
+        }
+
+        $deprecatedFeaturesCount = count($result->deprecatedFeatures());
+
+        if ($deprecatedFeaturesCount > 0) {
+            $message = sprintf(
+              'Warning: Deprecated PHPUnit features are being used %s times!' .
+              " Use --debug for more information.\n",
+              $deprecatedFeaturesCount
+            );
+
+            if ($this->colors) {
+                $message = "\x1b[37;41m\x1b[2K" . $message .
+                           "\x1b[0m";
+            }
+
+            $this->write("\n" . $message);
         }
     }
 
@@ -609,6 +626,16 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
     {
         if (!$this->lastTestFailed) {
             $this->writeProgress('.');
+        }
+
+        if ($this->debug && ($test instanceof PHPUnit_Framework_TestCase)) {
+            $deprecatedFeatures = $test->getTestResultObject()->deprecatedFeatures();
+
+            if (count($deprecatedFeatures) > 0) {
+                foreach ($deprecatedFeatures as $deprecatedFeature) {
+                    $this->write("\n" . $deprecatedFeature . "\n");
+                }
+            }
         }
 
         if ($test instanceof PHPUnit_Framework_TestCase) {

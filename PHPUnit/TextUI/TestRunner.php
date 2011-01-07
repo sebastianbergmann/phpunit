@@ -230,6 +230,10 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
 
         $result->addListener($this->printer);
 
+        if ($this->printer instanceof PHPUnit_TextUI_ResultPrinter) {
+            $result->addListener(new PHPUnit_Util_DeprecatedFeature_Logger);
+        }
+
         if (isset($arguments['testdoxHTMLFile'])) {
             $result->addListener(
               new PHPUnit_Util_TestDox_ResultPrinter_HTML(

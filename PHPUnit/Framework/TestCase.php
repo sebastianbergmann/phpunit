@@ -922,6 +922,15 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
     }
 
     /**
+     * @return PHPUnit_Framework_TestResult
+     * @since  Method available since Release 3.5.7
+     */
+    public function getTestResultObject()
+    {
+        return $this->result;
+    }
+
+    /**
      * This method is a wrapper for the ini_set() function that automatically
      * resets the modified php.ini setting to its original value after the
      * test is run.
