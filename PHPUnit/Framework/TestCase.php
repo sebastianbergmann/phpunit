@@ -917,8 +917,8 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
     }
 
     /**
-     * @param mixed $result
-     * @since  Method available since Release 3.5.6
+     * @return PHPUnit_Framework_TestResult
+     * @since  Method available since Release 3.5.7
      */
     public function getCurrentRunResult()
     {
