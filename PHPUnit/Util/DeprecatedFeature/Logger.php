@@ -110,7 +110,7 @@ class PHPUnit_Util_DeprecatedFeature_Logger implements PHPUnit_Framework_TestLis
             $result = self::$currentTest->getTestResultObject();
             $result->addDeprecatedFeature($deprecatedFeature);
         } else {
-            file_put_contents('php://stderr', $deprecatedFeature->__toString());
+            file_put_contents('php://stderr', $deprecatedFeature);
         }
     }
 
