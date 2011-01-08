@@ -9,6 +9,7 @@ PHPUnit 3.5.7
 * Implemented GH-103: Improved handling of deprecated PHPUnit features.
 * Fixed GH-100: `assertSame()` does not give useful output on misordered arrays.
 * Fixed GH-105: Backup of static attributes causes memory exhaustion.
+* The TextUI test runner now prints the normal progress output in verbose mode.
 
 PHPUnit 3.5.6
 -------------

@@ -70,16 +70,6 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
     protected $column = 0;
 
     /**
-     * @var integer
-     */
-    protected $indent = 0;
-
-    /**
-     * @var integer
-     */
-    protected $lastEvent = -1;
-
-    /**
      * @var boolean
      */
     protected $lastTestFailed = FALSE;
@@ -331,8 +321,7 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
 
     protected function printHeader()
     {
-        $this->write($this->verbose ? "\n" : "\n\n");
-        $this->write(PHP_Timer::resourceUsage() . "\n\n");
+        $this->write("\n\n" . PHP_Timer::resourceUsage() . "\n\n");
     }
 
     /**
@@ -536,36 +525,7 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
         if ($this->numTests == -1) {
             $this->numTests      = count($suite);
             $this->numTestsWidth = strlen((string)$this->numTests);
-        } else {
-            $this->indent++;
         }
-
-        if ($this->verbose) {
-            $name = $suite->getName();
-
-            if (empty($name)) {
-                $name = 'Test Suite';
-            } else {
-                $name = preg_replace( '(^.*::(.*?)$)', '\\1', $name );
-            }
-
-            $this->write(
-              sprintf(
-                "%s%s%s",
-
-                $this->lastEvent == self::EVENT_TESTSUITE_END ||
-                $suite instanceof PHPUnit_Framework_TestSuite_DataProvider ?
-                "\n" :
-                '',
-                str_repeat(' ', $this->indent),
-                $name
-              )
-            );
-
-            $this->writeNewLine();
-        }
-
-        $this->lastEvent = self::EVENT_TESTSUITE_START;
     }
 
     /**
@@ -576,15 +536,6 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
      */
     public function endTestSuite(PHPUnit_Framework_TestSuite $suite)
     {
-        $this->indent--;
-
-        if ($this->verbose) {
-            if ($this->lastEvent != self::EVENT_TESTSUITE_END) {
-                $this->writeNewLine();
-            }
-        }
-
-        $this->lastEvent = self::EVENT_TESTSUITE_END;
     }
 
     /**
@@ -594,8 +545,6 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
      */
     public function startTest(PHPUnit_Framework_Test $test)
     {
-        $this->lastEvent = self::EVENT_TEST_START;
-
         if ($this->debug) {
             $this->write(
               sprintf(
@@ -621,7 +570,6 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
             $this->numAssertions += $test->getNumAssertions();
         }
 
-        $this->lastEvent      = self::EVENT_TEST_END;
         $this->lastTestFailed = FALSE;
     }
 
@@ -635,17 +583,15 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
         $this->numTestsRun++;
 
         if ($this->column == 60) {
-            if (!$this->verbose) {
-                $this->write(
-                  sprintf(
-                    ' %' . $this->numTestsWidth . 'd / %' .
-                           $this->numTestsWidth . "d",
+            $this->write(
+              sprintf(
+                ' %' . $this->numTestsWidth . 'd / %' .
+                       $this->numTestsWidth . "d",
 
-                    $this->numTestsRun,
-                    $this->numTests
-                  )
-                );
-            }
+                $this->numTestsRun,
+                $this->numTests
+              )
+            );
 
             $this->writeNewLine();
         }
@@ -653,13 +599,7 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
 
     protected function writeNewLine()
     {
+        $this->column = 0;
         $this->write("\n");
-
-        if ($this->verbose) {
-            $this->column = $this->indent;
-            $this->write(str_repeat(' ', max(0, $this->indent)));
-        } else {
-            $this->column = 0;
-        }
     }
 }

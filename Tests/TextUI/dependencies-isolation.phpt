@@ -14,12 +14,7 @@ PHPUnit_TextUI_Command::main();
 --EXPECTF--
 PHPUnit %s by Sebastian Bergmann.
 
-Test Dependencies
- DependencySuccessTest
- ...
-
- DependencyFailureTest
- FSS
+...FSS
 
 Time: %i %s, Memory: %sMb
 
