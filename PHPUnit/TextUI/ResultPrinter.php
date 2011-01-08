@@ -172,6 +172,16 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
         }
 
         if ($this->verbose) {
+            if ($result->deprecatedFeaturesCount() > 0) {
+                if ($result->failureCount() > 0) {
+                    print "\n--\n\nDeprecated PHPUnit features are being used";
+                }
+
+                foreach ($result->deprecatedFeatures() as $deprecatedFeature) {
+                    $this->write($deprecatedFeature . "\n\n");
+                }
+            }
+
             if ($result->notImplementedCount() > 0) {
                 if ($result->failureCount() > 0) {
                     print "\n--\n\n";
@@ -416,13 +426,12 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
             }
         }
 
-        $deprecatedFeaturesCount = count($result->deprecatedFeatures());
-
-        if ($deprecatedFeaturesCount > 0) {
+        if (!$this->verbose &&
+            $result->deprecatedFeaturesCount() > 0) {
             $message = sprintf(
-              'Warning: Deprecated PHPUnit features are being used %s times!' .
-              " Use --debug for more information.\n",
-              $deprecatedFeaturesCount
+              "Warning: Deprecated PHPUnit features are being used %s times!\n".
+              "Use --verbose for more information.\n",
+              $result->deprecatedFeaturesCount()
             );
 
             if ($this->colors) {
@@ -606,16 +615,6 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
     {
         if (!$this->lastTestFailed) {
             $this->writeProgress('.');
-        }
-
-        if ($this->debug && ($test instanceof PHPUnit_Framework_TestCase)) {
-            $deprecatedFeatures = $test->getTestResultObject()->deprecatedFeatures();
-
-            if (count($deprecatedFeatures) > 0) {
-                foreach ($deprecatedFeatures as $deprecatedFeature) {
-                    $this->write("\n" . $deprecatedFeature . "\n");
-                }
-            }
         }
 
         if ($test instanceof PHPUnit_Framework_TestCase) {

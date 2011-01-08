@@ -487,10 +487,22 @@ class PHPUnit_Framework_TestResult implements Countable
      * Returns an Enumeration for the deprecated features used.
      *
      * @return array
+     * @since  Method available since Release 3.5.7
      */
     public function deprecatedFeatures()
     {
         return $this->deprecatedFeatures;
+    }
+
+    /**
+     * Returns an Enumeration for the deprecated features used.
+     *
+     * @return array
+     * @since  Method available since Release 3.5.7
+     */
+    public function deprecatedFeaturesCount()
+    {
+        return count($this->deprecatedFeatures);
     }
 
     /**
