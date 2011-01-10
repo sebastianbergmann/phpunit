@@ -44,6 +44,7 @@
  */
 
 require_once 'Text/Template.php';
+require_once 'PHPUnit/Extensions/SimpleStub.php';
 
 /**
  * A TestCase defines the fixture to run multiple tests.
@@ -1036,6 +1037,15 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
         $this->mockObjects[] = $mockObject;
 
         return $mockObject;
+    }
+
+    /**
+     * Return a SimpleStub
+     * 
+     * @param object $object
+     */
+    public function getStub($object = null){
+        return new SimpleStub($object);
     }
 
     /**
