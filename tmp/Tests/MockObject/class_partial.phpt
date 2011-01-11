@@ -38,11 +38,9 @@ class MockFoo extends Foo implements PHPUnit_Framework_MockObject_MockObject
 
     public function bar(Foo $foo)
     {
-        $args = func_get_args();
-
         $result = $this->__phpunit_getInvocationMocker()->invoke(
           new PHPUnit_Framework_MockObject_Invocation_Object(
-            'Foo', 'bar', $args, $this
+            'Foo', 'bar', array($foo), $this
           )
         );
 
