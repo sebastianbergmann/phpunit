@@ -5,4 +5,9 @@ class SomeClass
     {
         return NULL;
     }
+
+    public function doSomethingElse($c)
+    {
+        return NULL;
+    }
 }

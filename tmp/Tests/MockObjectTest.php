@@ -107,12 +107,12 @@ class Framework_MockObjectTest extends PHPUnit_Framework_TestCase
 
     public function testMockedMethodIsCalledOnceWithParameter()
     {
-        $mock = $this->getMock('AnInterface');
+        $mock = $this->getMock('SomeClass');
         $mock->expects($this->once())
-             ->method('doSomething')
+             ->method('doSomethingElse')
              ->with($this->equalTo('something'));
 
-        $mock->doSomething('something');
+        $mock->doSomethingElse('something');
     }
 
     public function testMockedMethodIsCalledExactly()
