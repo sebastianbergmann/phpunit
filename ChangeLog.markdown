@@ -3,6 +3,11 @@ PHPUnit 3.5
 
 This is the list of changes for the PHPUnit 3.5 release series.
 
+PHPUnit 3.5.8
+-------------
+
+* Fixed GH-84: If no assertions are made the code should not be marked as covered.
+
 PHPUnit 3.5.7
 -------------
 

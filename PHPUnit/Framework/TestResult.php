@@ -683,11 +683,16 @@ class PHPUnit_Framework_TestResult implements Countable
         }
 
         $time = PHP_Timer::stop();
+        $test->addToAssertionCount(PHPUnit_Framework_Assert::getCount());
+
+        if ($this->strictMode && $test->getNumAssertions() == 0) {
+            $incomplete = TRUE;
+        }
 
         if ($useXdebug) {
             $data = $this->codeCoverage->stop(FALSE);
 
-            if (!$this->strictMode || (!$incomplete && !$skipped)) {
+            if (!$incomplete && !$skipped) {
                 if ($this->collectRawCodeCoverageInformation) {
                     $this->rawCodeCoverageInformation[] = $data;
                 } else {
@@ -707,8 +712,6 @@ class PHPUnit_Framework_TestResult implements Countable
         if ($errorHandlerSet === TRUE) {
             restore_error_handler();
         }
-
-        $test->addToAssertionCount(PHPUnit_Framework_Assert::getCount());
 
         if ($error === TRUE) {
             $this->addError($test, $e, $time);
