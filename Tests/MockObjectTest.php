@@ -49,6 +49,7 @@ require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPA
 require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'FunctionCallback.php';
 require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'MethodCallback.php';
 require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'PartialMockTestClass.php';
+require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'SomeClass.php';
 
 if (version_compare(PHP_VERSION, '5.3.0', '>=')) {
     require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'StaticMockTestClass.php';
@@ -106,12 +107,12 @@ class Framework_MockObjectTest extends PHPUnit_Framework_TestCase
 
     public function testMockedMethodIsCalledOnceWithParameter()
     {
-        $mock = $this->getMock('AnInterface');
+        $mock = $this->getMock('SomeClass');
         $mock->expects($this->once())
-             ->method('doSomething')
+             ->method('doSomethingElse')
              ->with($this->equalTo('something'));
 
-        $mock->doSomething('something');
+        $mock->doSomethingElse('something');
     }
 
     public function testMockedMethodIsCalledExactly()
@@ -154,32 +155,32 @@ class Framework_MockObjectTest extends PHPUnit_Framework_TestCase
 
     public function testFunctionCallback()
     {
-        $mock = $this->getMock('StdClass', array('callback'), array(), '', FALSE);
+        $mock = $this->getMock('SomeClass', array('doSomething'), array(), '', FALSE);
         $mock->expects($this->once())
-             ->method('callback')
+             ->method('doSomething')
              ->will($this->returnCallback('functionCallback'));
 
-        $this->assertEquals('pass', $mock->callback('foo', 'bar'));
+        $this->assertEquals('pass', $mock->doSomething('foo', 'bar'));
     }
 
     public function testStaticMethodCallback()
     {
-        $mock = $this->getMock('StdClass', array('callback'), array(), '', FALSE);
+        $mock = $this->getMock('SomeClass', array('doSomething'), array(), '', FALSE);
         $mock->expects($this->once())
-             ->method('callback')
+             ->method('doSomething')
              ->will($this->returnCallback(array('MethodCallback', 'staticCallback')));
 
-        $this->assertEquals('pass', $mock->callback('foo', 'bar'));
+        $this->assertEquals('pass', $mock->doSomething('foo', 'bar'));
     }
 
     public function testPublicMethodCallback()
     {
-        $mock = $this->getMock('StdClass', array('callback'), array(), '', FALSE);
+        $mock = $this->getMock('SomeClass', array('doSomething'), array(), '', FALSE);
         $mock->expects($this->once())
-             ->method('callback')
+             ->method('doSomething')
              ->will($this->returnCallback(array(new MethodCallback, 'nonStaticCallback')));
 
-        $this->assertEquals('pass', $mock->callback('foo', 'bar'));
+        $this->assertEquals('pass', $mock->doSomething('foo', 'bar'));
     }
 
     public function testMockClassOnlyGeneratedOnce()
