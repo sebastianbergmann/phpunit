@@ -60,6 +60,10 @@ class PHPUnit_Util_Test
     const REGEX_DATA_PROVIDER      = '/@dataProvider\s+([a-zA-Z0-9._:-\\\\x7f-\xff]+)/';
     const REGEX_EXPECTED_EXCEPTION = '(@expectedException\s+([:.\w\\\\x7f-\xff]+)(?:[\t ]+(\S*))?(?:[\t ]+(\S*))?\s*$)m';
 
+    const SMALL  = 0;
+    const MEDIUM = 1;
+    const LARGE  = 2;
+
     private static $annotationCache = array();
 
     protected static $templateMethods = array(
@@ -359,7 +363,41 @@ class PHPUnit_Util_Test
             $groups = array_merge($groups, $annotations['method']['ticket']);
         }
 
+        foreach (array('small', 'medium', 'large') as $size) {
+            if (isset($annotations['method'][$size])) {
+                $groups[] = $size;
+            }
+
+            else if (isset($annotations['class'][$size])) {
+                $groups[] = $size;
+            }
+        }
+
         return array_unique($groups);
+    }
+
+    /**
+     * Returns the size of the test.
+     *
+     * @param  string $className
+     * @param  string $methodName
+     * @return integer
+     * @since  Method available since Release 3.6.0
+     */
+    public static function getSize($className, $methodName)
+    {
+        $groups = array_flip(self::getGroups($className, $methodName));
+        $size   = self::SMALL;
+
+        if (isset($groups['medium'])) {
+            $size = self::MEDIUM;
+        }
+
+        else if (isset($groups['large'])) {
+            $size = self::LARGE;
+        }
+
+        return $size;
     }
 
     /**
