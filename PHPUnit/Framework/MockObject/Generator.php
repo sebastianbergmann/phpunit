@@ -605,6 +605,7 @@ class PHPUnit_Framework_MockObject_Generator
           $method->getName(),
           $modifier,
           PHPUnit_Util_Class::getMethodParameters($method),
+          PHPUnit_Util_Class::getMethodParameters($method, TRUE),
           $reference,
           $static
         );
@@ -615,12 +616,13 @@ class PHPUnit_Framework_MockObject_Generator
      * @param  string  $className
      * @param  string  $methodName
      * @param  string  $modifier
-     * @param  string  $arguments
+     * @param  string  $arguments_decl
+     * @param  string  $arguments_call
      * @param  string  $reference
      * @param  boolean $static
      * @return string
      */
-    protected static function generateMockedMethodDefinition($templateDir, $className, $methodName, $modifier = 'public', $arguments = '', $reference = '', $static = FALSE)
+    protected static function generateMockedMethodDefinition($templateDir, $className, $methodName, $modifier = 'public', $arguments_decl = '', $arguments_call = '', $reference = '', $static = FALSE)
     {
         if ($static) {
             $template = new Text_Template(
@@ -634,11 +636,12 @@ class PHPUnit_Framework_MockObject_Generator
 
         $template->setVar(
           array(
-            'arguments'   => $arguments,
-            'class_name'  => $className,
-            'method_name' => $methodName,
-            'modifier'    => $modifier,
-            'reference'   => $reference
+            'arguments_decl' => $arguments_decl,
+            'arguments_call' => $arguments_call,
+            'class_name'     => $className,
+            'method_name'    => $methodName,
+            'modifier'       => $modifier,
+            'reference'      => $reference
           )
         );
 
