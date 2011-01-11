@@ -394,10 +394,17 @@ class PHPUnit_Framework_TestResult implements Countable
         }
 
         if (!$this->lastTestFailed && $test instanceof PHPUnit_Framework_TestCase) {
-            $key = get_class($test) . '::' . $test->getName();
+            $class  = get_class($test);
+            $key    =  $class . '::' . $test->getName();
 
-            $this->passed[$key] = $test->getResult();
-            $this->time        += $time;
+            $this->passed[$key] = array(
+              'result' => $test->getResult(),
+              'size'   => PHPUnit_Util_Test::getSize(
+                            $class, $test->getName(FALSE)
+                          )
+            );
+
+            $this->time += $time;
         }
     }
 
