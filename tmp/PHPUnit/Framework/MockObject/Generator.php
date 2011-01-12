@@ -264,6 +264,61 @@ class PHPUnit_Framework_MockObject_Generator
     }
 
     /**
+     * Returns an object for the specified trait.
+     *
+     * @param  string  $traitName
+     * @param  array   $arguments
+     * @param  string  $traitClassName
+     * @param  boolean $callOriginalConstructor
+     * @param  boolean $callOriginalClone
+     * @param  boolean $callAutoload
+     * @return object
+     * @since  Method available since Release 1.1.0
+     * @throws InvalidArgumentException
+     */
+    public static function getObjectForTrait($traitName, array $arguments = array(), $traitClassName = '', $callOriginalConstructor = TRUE, $callOriginalClone = TRUE, $callAutoload = TRUE)
+    {
+        if (!is_string($traitName)) {
+            throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'string');
+        }
+
+        if (!is_string($traitClassName)) {
+            throw PHPUnit_Util_InvalidArgumentHelper::factory(3, 'string');
+        }
+
+        if (!trait_exists($traitName, $callAutoload)) {
+            throw new PHPUnit_Framework_Exception(
+              sprintf(
+                'Trait "%s" does not exist.',
+                $traitName
+              )
+            );
+        }
+
+        $className = self::generateClassName(
+          $traitName, $traitClassName, 'Trait_'
+        );
+
+        $templateDir   = dirname(__FILE__) . DIRECTORY_SEPARATOR . 'Generator' .
+                         DIRECTORY_SEPARATOR;
+        $classTemplate = new Text_Template(
+                           $templateDir . 'trait_class.tpl'
+                         );
+
+        $classTemplate->setVar(
+          array(
+            'class_name' => $className['className'],
+            'trait_name' => $traitName
+          )
+        );
+
+        return self::getObject(
+          $classTemplate->render(),
+          $className['className']
+        );
+    }
+
+    /**
      * @param  string  $originalClassName
      * @param  array   $methods
      * @param  string  $mockClassName
