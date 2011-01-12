@@ -379,8 +379,8 @@ class PHPUnit_Framework_MockObject_Generator
         $isClass       = FALSE;
         $isInterface   = FALSE;
 
-        $mockClassName = self::generateMockClassName(
-          $originalClassName, $mockClassName
+        $mockClassName = self::generateClassName(
+          $originalClassName, $mockClassName, 'Mock_'
         );
 
         if (class_exists($mockClassName['fullClassName'], $callAutoload)) {
@@ -393,7 +393,7 @@ class PHPUnit_Framework_MockObject_Generator
 
         if (!class_exists($mockClassName['fullClassName'], $callAutoload) &&
             !interface_exists($mockClassName['fullClassName'], $callAutoload)) {
-            $prologue = 'class ' . $mockClassName['className'] . "\n{\n}\n\n";
+            $prologue = 'class ' . $mockClassName['originalClassName'] . "\n{\n}\n\n";
 
             if (!empty($mockClassName['namespaceName'])) {
                 $prologue = 'namespace ' . $mockClassName['namespaceName'] .
@@ -493,23 +493,24 @@ class PHPUnit_Framework_MockObject_Generator
                                      $mockClassName, $isInterface
                                    ),
             'clone'             => $cloneTemplate,
-            'mock_class_name'   => $mockClassName['mockClassName'],
+            'mock_class_name'   => $mockClassName['className'],
             'mocked_methods'    => $mockedMethods
           )
         );
 
         return array(
           'code'          => $classTemplate->render(),
-          'mockClassName' => $mockClassName['mockClassName']
+          'mockClassName' => $mockClassName['className']
         );
     }
 
     /**
      * @param  string $originalClassName
-     * @param  string $mockClassName
+     * @param  string $className
+     * @param  string $prefix
      * @return array
      */
-    protected static function generateMockClassName($originalClassName, $mockClassName)
+    protected static function generateClassName($originalClassName, $className, $prefix)
     {
         $classNameParts = explode('\\', $originalClassName);
 
@@ -522,19 +523,19 @@ class PHPUnit_Framework_MockObject_Generator
             $fullClassName = $originalClassName;
         }
 
-        if ($mockClassName == '') {
+        if ($className == '') {
             do {
-                $mockClassName = 'Mock_' . $originalClassName . '_' .
-                                 substr(md5(microtime()), 0, 8);
+                $className = $prefix . $originalClassName . '_' .
+                             substr(md5(microtime()), 0, 8);
             }
-            while (class_exists($mockClassName, FALSE));
+            while (class_exists($className, FALSE));
         }
 
         return array(
-          'mockClassName' => $mockClassName,
-          'className'     => $originalClassName,
-          'fullClassName' => $fullClassName,
-          'namespaceName' => $namespaceName
+          'className'         => $className,
+          'originalClassName' => $originalClassName,
+          'fullClassName'     => $fullClassName,
+          'namespaceName'     => $namespaceName
         );
     }
 
@@ -550,16 +551,16 @@ class PHPUnit_Framework_MockObject_Generator
         if ($isInterface) {
             $buffer .= sprintf(
               "%s implements PHPUnit_Framework_MockObject_MockObject, %s%s",
-              $mockClassName['mockClassName'],
+              $mockClassName['className'],
               !empty($mockClassName['namespaceName']) ? $mockClassName['namespaceName'] . '\\' : '',
-              $mockClassName['className']
+              $mockClassName['originalClassName']
             );
         } else {
             $buffer .= sprintf(
               "%s extends %s%s implements PHPUnit_Framework_MockObject_MockObject",
-              $mockClassName['mockClassName'],
+              $mockClassName['className'],
               !empty($mockClassName['namespaceName']) ? $mockClassName['namespaceName'] . '\\' : '',
-              $mockClassName['className']
+              $mockClassName['originalClassName']
             );
         }
 
