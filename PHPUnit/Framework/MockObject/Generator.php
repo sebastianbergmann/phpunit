@@ -164,30 +164,46 @@ class PHPUnit_Framework_MockObject_Generator
           $callAutoload
         );
 
-        if (!class_exists($mock['mockClassName'], FALSE)) {
-            eval($mock['code']);
+        return self::getObject(
+          $mock['code'],
+          $mock['mockClassName'],
+          $originalClassName,
+          $callOriginalConstructor,
+          $callAutoload,
+          $arguments
+        );
+    }
+
+    /**
+     * @param  string $code
+     * @param  string $className
+     * @param  string $originalClassName
+     * @param  string $callOriginalConstructor
+     * @param  string $callAutoload
+     * @param  array  $arguments
+     * @return object
+     */
+    protected static function getObject($code, $className, $originalClassName = '', $callOriginalConstructor = FALSE, $callAutoload = FALSE, array $arguments = array())
+    {
+        if (!class_exists($className, FALSE)) {
+            eval($code);
         }
 
         if ($callOriginalConstructor &&
             !interface_exists($originalClassName, $callAutoload)) {
             if (count($arguments) == 0) {
-                $mockObject = new $mock['mockClassName'];
+                return new $className;
             } else {
-                $mockClass  = new ReflectionClass($mock['mockClassName']);
-                $mockObject = $mockClass->newInstanceArgs($arguments);
+                $class = new ReflectionClass($className);
+                return $class->newInstanceArgs($arguments);
             }
         } else {
             // Use a trick to create a new object of a class
             // without invoking its constructor.
-            $mockObject = unserialize(
-              sprintf(
-                'O:%d:"%s":0:{}',
-                strlen($mock['mockClassName']), $mock['mockClassName']
-              )
+            return unserialize(
+              sprintf('O:%d:"%s":0:{}', strlen($className), $className)
             );
         }
-
-        return $mockObject;
     }
 
     /**
