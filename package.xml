@@ -162,6 +162,8 @@
      </dir>
     </dir>
    </dir>
+   <file baseinstalldir="/" name="ChangeLog.markdown" role="doc"/>
+   <file baseinstalldir="/" name="LICENSE" role="doc"/>
   </dir>
  </contents>
  <dependencies>
