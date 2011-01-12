@@ -1153,6 +1153,31 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
     }
 
     /**
+     * Returns an object for the specified trait.
+     *
+     * @param  string  $traitName
+     * @param  array   $arguments
+     * @param  string  $traitClassName
+     * @param  boolean $callOriginalConstructor
+     * @param  boolean $callOriginalClone
+     * @param  boolean $callAutoload
+     * @return object
+     * @since  Method available since Release 3.6.0
+     * @throws InvalidArgumentException
+     */
+    protected function getObjectForTrait($traitName, array $arguments = array(), $traitClassName = '', $callOriginalConstructor = TRUE, $callOriginalClone = TRUE, $callAutoload = TRUE)
+    {
+        return PHPUnit_Framework_MockObject_Generator::getObjectForTrait(
+          $traitName,
+          $arguments,
+          $traitClassName,
+          $callOriginalConstructor,
+          $callOriginalClone,
+          $callAutoload
+        );
+    }
+
+    /**
      * Adds a value to the assertion counter.
      *
      * @param integer $count
