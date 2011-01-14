@@ -7,6 +7,7 @@ PHPUnit 3.5.8
 -------------
 
 * Fixed GH-84: If no assertions are made the code should not be marked as covered.
+* Fixed GH-115: Make most of the attributes in `PHPUnit_Framework_TestCase` private.
 
 PHPUnit 3.5.7
 -------------
