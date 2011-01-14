@@ -12,11 +12,9 @@
             }
         }
 
-        $result = self::__phpunit_getStaticInvocationMocker()->invoke(
+        return self::__phpunit_getStaticInvocationMocker()->invoke(
           new PHPUnit_Framework_MockObject_Invocation_Static(
             '{class_name}', '{method_name}', $arguments
           )
         );
-
-        return $result;
     }
