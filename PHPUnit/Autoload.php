@@ -47,6 +47,7 @@ require_once 'PHP/CodeCoverage/Autoload.php';
 require_once 'PHPUnit/Framework/MockObject/Autoload.php';
 require_once 'PHPUnit/Extensions/Database/Autoload.php';
 require_once 'PHPUnit/Extensions/SeleniumTestCase/Autoload.php';
+require_once 'PHPUnit/Extensions/Story/Autoload.php';
 require_once 'Text/Template/Autoload.php';
 
 function phpunit_autoload($class) {
