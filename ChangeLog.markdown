@@ -3,6 +3,11 @@ PHPUnit_MockObject 1.0
 
 This is the list of changes for the PHPUnit_MockObject 1.0 release series.
 
+PHPUnit_MockObject 1.0.5
+------------------------
+
+* Fixed GH-34: Mocking methods with variable parameter count impossible since 1.0.4.
+
 PHPUnit_MockObject 1.0.4
 ------------------------
 
