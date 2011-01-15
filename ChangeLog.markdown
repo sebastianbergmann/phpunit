@@ -3,6 +3,11 @@ PHPUnit 3.5
 
 This is the list of changes for the PHPUnit 3.5 release series.
 
+PHPUnit 3.5.9
+-------------
+
+* Fixed GH-17: Process Isolation breaks for global objects that implement the `Serializable` interface.
+
 PHPUnit 3.5.8
 -------------
 
