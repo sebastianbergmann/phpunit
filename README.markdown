@@ -33,3 +33,44 @@ The documentation for PHPUnit is available in different formats:
 * [Japanese, single HTML file](http://www.phpunit.de/manual/3.6/ja/phpunit-book.html)
 * [Japanese, PDF](http://www.phpunit.de/manual/3.6/ja/phpunit-book.pdf)
 * [Japanese, ePub](http://www.phpunit.de/manual/3.6/ja/phpunit-book.epub)
+
+Using PHPUnit From a Git Checkout
+---------------------------------
+
+The following commands can be used to perform the initial checkout of PHPUnit and its dependencies from Git:
+
+    mkdir phpunit && cd phpunit
+    git clone git://github.com/sebastianbergmann/phpunit.git
+    git clone git://github.com/sebastianbergmann/dbunit.git
+    git clone git://github.com/sebastianbergmann/php-file-iterator.git
+    git clone git://github.com/sebastianbergmann/php-text-template.git
+    git clone git://github.com/sebastianbergmann/php-code-coverage.git
+    git clone git://github.com/sebastianbergmann/php-token-stream.git
+    git clone git://github.com/sebastianbergmann/php-timer.git
+    git clone git://github.com/sebastianbergmann/phpunit-mock-objects.git
+    git clone git://github.com/sebastianbergmann/phpunit-selenium.git
+    git clone git://github.com/sebastianbergmann/phpunit-story.git
+
+The `dbunit`, `php-code-coverage`, `php-file-iterator`, `php-text-template`, `php-timer`, `php-token-stream`, `phpunit`, `phpunit-mock-objects`, `phpunit-selenium`, and `phpunit-story` directories need to be added to the `include_path`.
+
+The `phpunit/phpunit.php` script can be used to invoke the PHPUnit test runner.
+
+The following commands can be used to check out the appropriate branches for PHPUnit 3.5:
+
+    cd phpunit && git co 3.5 && cd ..
+    cd dbunit && git co 1.0 && cd ..
+    cd php-file-iterator && git co 1.2 && cd ..
+    cd php-code-coverage && git co 1.0 && cd ..
+    cd php-token-stream && git co 1.0 && cd ..
+    cd phpunit-mock-objects && git co 1.0 && cd ..
+    cd phpunit-selenium && git co 1.0 && cd ..
+
+The following commands can be used to check out the appropriate branches for PHPUnit 3.6:
+
+    cd phpunit && git co master && cd ..
+    cd dbunit && git co master && cd ..
+    cd php-file-iterator && git co master && cd ..
+    cd php-code-coverage && git co master && cd ..
+    cd php-token-stream && git co master && cd ..
+    cd phpunit-mock-objects && git co master && cd ..
+    cd phpunit-selenium && git co master && cd ..
