@@ -16,5 +16,5 @@ PHPUnit 3.6.0
 * A test must not `@depend` on a test that is larger than itself.
 * `@ticket` is now an alias for `@group`.
 * `assertType()` and `assertNotType()` as well as `assertAttributeType()` and `assertAttributeNotType()` have been removed. `assertInternalType()` should be used for asserting internal types such as `integer` or `string` whereas `assertInstanceOf()` should be used for asserting that an object is an instance of a specified class or interface.
-* The `PHPUnit_Extensions_Story_TestCase` functionality has been removed.
+* The `PHPUnit_Extensions_Story_TestCase` functionality has been moved to a separate package.
 * The syntax check functionality has been removed.
