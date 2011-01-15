@@ -49,8 +49,9 @@ The following commands can be used to perform the initial checkout of PHPUnit an
     git clone git://github.com/sebastianbergmann/php-timer.git
     git clone git://github.com/sebastianbergmann/phpunit-mock-objects.git
     git clone git://github.com/sebastianbergmann/phpunit-selenium.git
+    git clone git://github.com/sebastianbergmann/phpunit-story.git
 
-The `dbunit`, `php-code-coverage`, `php-file-iterator`, `php-text-template`, `php-timer`, `php-token-stream`, `phpunit`, `phpunit-mock-objects`, and `phpunit-selenium` directories need to be added to the `include_path`.
+The `dbunit`, `php-code-coverage`, `php-file-iterator`, `php-text-template`, `php-timer`, `php-token-stream`, `phpunit`, `phpunit-mock-objects`, `phpunit-selenium`, and `phpunit-story` directories need to be added to the `include_path`.
 
 The `phpunit/phpunit.php` script can be used to invoke the PHPUnit test runner.
 
