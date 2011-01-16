@@ -134,16 +134,6 @@ class PHPUnit_Framework_TestResult implements Countable
     /**
      * @var boolean
      */
-    protected $collectRawCodeCoverageInformation = FALSE;
-
-    /**
-     * @var array
-     */
-    protected $rawCodeCoverageInformation = array();
-
-    /**
-     * @var boolean
-     */
     protected $convertErrorsToExceptions = TRUE;
 
     /**
@@ -572,26 +562,6 @@ class PHPUnit_Framework_TestResult implements Countable
     }
 
     /**
-     * Enables or disables the collection of raw Code Coverage information.
-     *
-     * @param  boolean $flag
-     * @throws InvalidArgumentException
-     * @since  Method available since Release 3.4.0
-     */
-    public function collectRawCodeCoverageInformation($flag)
-    {
-        if (is_bool($flag)) {
-            $this->collectRawCodeCoverageInformation = $flag;
-
-            if ($flag === TRUE) {
-                $this->collectCodeCoverageInformation = $flag;
-            }
-        } else {
-            throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'boolean');
-        }
-    }
-
-    /**
      * Returns whether code coverage information should be collected.
      *
      * @return boolean If code coverage should be collected
@@ -600,17 +570,6 @@ class PHPUnit_Framework_TestResult implements Countable
     public function getCollectCodeCoverageInformation()
     {
         return $this->collectCodeCoverageInformation;
-    }
-
-    /**
-     * Returns the raw Code Coverage information.
-     *
-     * @return array
-     * @since  Method available since Release 3.4.0
-     */
-    public function getRawCodeCoverageInformation()
-    {
-        return $this->rawCodeCoverageInformation;
     }
 
     /**
@@ -665,7 +624,13 @@ class PHPUnit_Framework_TestResult implements Countable
                      !$test instanceof PHPUnit_Framework_Warning;
 
         if ($useXdebug) {
-            $this->codeCoverage->start($test);
+            $filterGroups = array('DEFAULT', 'TESTS');
+
+            if (!defined('PHPUNIT_TESTSUITE')) {
+                $filterGroups[] = 'PHPUNIT';
+            }
+
+            $this->codeCoverage->start($test, $filterGroups);
         }
 
         PHP_Timer::start();
@@ -698,23 +663,7 @@ class PHPUnit_Framework_TestResult implements Countable
         }
 
         if ($useXdebug) {
-            $data = $this->codeCoverage->stop(FALSE);
-
-            if (!$incomplete && !$skipped) {
-                if ($this->collectRawCodeCoverageInformation) {
-                    $this->rawCodeCoverageInformation[] = $data;
-                } else {
-                    $filterGroups = array('DEFAULT', 'TESTS');
-
-                    if (!defined('PHPUNIT_TESTSUITE')) {
-                        $filterGroups[] = 'PHPUNIT';
-                    }
-
-                    $this->codeCoverage->append($data, $test, $filterGroups);
-                }
-            }
-
-            unset($data);
+            $this->codeCoverage->stop(!$incomplete && !$skipped);
         }
 
         if ($errorHandlerSet === TRUE) {
