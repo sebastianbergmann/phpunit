@@ -75,20 +75,6 @@ class PHPUnit_Runner_StandardTestSuiteLoader implements PHPUnit_Runner_TestSuite
         }
 
         if (!class_exists($suiteClassName, FALSE)) {
-            if (!file_exists($suiteClassFile)) {
-                $includePaths = explode(PATH_SEPARATOR, get_include_path());
-
-                foreach ($includePaths as $includePath) {
-                    $file = $includePath . DIRECTORY_SEPARATOR .
-                            $suiteClassFile;
-
-                    if (file_exists($file)) {
-                        $suiteClassFile = $file;
-                        break;
-                    }
-                }
-            }
-
             PHPUnit_Util_Class::collectStart();
             PHPUnit_Util_Fileloader::checkAndLoad($suiteClassFile, $syntaxCheck);
             $loadedClasses = PHPUnit_Util_Class::collectEnd();

@@ -147,11 +147,7 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
         $this->handleConfiguration($arguments);
 
         if (isset($arguments['bootstrap'])) {
-            $bootstrap = PHPUnit_Util_Fileloader::load($arguments['bootstrap']);
-
-            if ($bootstrap) {
-                $GLOBALS['__PHPUNIT_BOOTSTRAP'] = $bootstrap;
-            }
+            $GLOBALS['__PHPUNIT_BOOTSTRAP'] = $arguments['bootstrap'];
         }
 
         if ($arguments['backupGlobals'] === FALSE) {
