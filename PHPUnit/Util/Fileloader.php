@@ -69,9 +69,9 @@ class PHPUnit_Util_Fileloader
     public static function checkAndLoad($filename, $syntaxCheck = FALSE)
     {
         $includePathFilename = PHPUnit_Util_Filesystem::fileExistsInIncludePath(
-            $filename
-        );	
-	
+          $filename
+        );
+
         if (!$includePathFilename || !is_readable($includePathFilename)) {
             throw new RuntimeException(
               sprintf('Cannot open file "%s".' . "\n", $filename)
