@@ -7,6 +7,8 @@ PHPUnit 3.5.9
 -------------
 
 * Fixed GH-17: Process Isolation breaks for global objects that implement the `Serializable` interface.
+* Fixed GH-64: `./` added to path to test when using PHPUnit on Windows terminal.
+* Fixed GH-104: Bootstrap must be relative to the current directory.
 
 PHPUnit 3.5.8
 -------------
