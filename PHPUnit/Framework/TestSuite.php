@@ -362,19 +362,6 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
             return;
         }
 
-        if (!file_exists($filename)) {
-            $includePaths = explode(PATH_SEPARATOR, get_include_path());
-
-            foreach ($includePaths as $includePath) {
-                $file = $includePath . DIRECTORY_SEPARATOR . $filename;
-
-                if (file_exists($file)) {
-                    $filename = $file;
-                    break;
-                }
-            }
-        }
-
         PHPUnit_Util_Class::collectStart();
         PHPUnit_Util_Fileloader::checkAndLoad($filename);
         $newClasses = PHPUnit_Util_Class::collectEnd();

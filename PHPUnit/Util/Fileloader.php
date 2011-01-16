@@ -66,17 +66,17 @@ class PHPUnit_Util_Fileloader
      */
     public static function checkAndLoad($filename)
     {
-        if (!is_readable($filename)) {
-            $filename = './' . $filename;
-        }
+        $includePathFilename = PHPUnit_Util_Filesystem::fileExistsInIncludePath(
+          $filename
+        );
 
-        if (!is_readable($filename)) {
+        if (!$includePathFilename || !is_readable($includePathFilename)) {
             throw new RuntimeException(
               sprintf('Cannot open file "%s".' . "\n", $filename)
             );
         }
 
-        self::load($filename);
+        self::load($includePathFilename);
     }
 
     /**
@@ -88,10 +88,6 @@ class PHPUnit_Util_Fileloader
      */
     public static function load($filename)
     {
-        $filename = PHPUnit_Util_Filesystem::fileExistsInIncludePath(
-          $filename
-        );
-
         $oldVariableNames = array_keys(get_defined_vars());
 
         include_once $filename;
