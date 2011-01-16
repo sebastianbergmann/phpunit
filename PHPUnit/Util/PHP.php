@@ -201,14 +201,9 @@ class PHPUnit_Util_PHP
                 $childResult = $childResult['result'];
 
                 if ($result->getCollectCodeCoverageInformation()) {
-                    $codeCoverageInformation = $childResult->getRawCodeCoverageInformation();
-
-                    if (isset($codeCoverageInformation[0]) &&
-                         is_array($codeCoverageInformation[0])) {
-                        $result->getCodeCoverage()->append(
-                          $codeCoverageInformation[0], $test
-                        );
-                    }
+                    $result->getCodeCoverage()->merge(
+                      $childResult->getCodeCoverage()
+                    );
                 }
 
                 $time           = $childResult->time();
