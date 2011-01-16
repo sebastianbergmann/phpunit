@@ -706,12 +706,13 @@ class PHPUnit_Framework_MockObject_Generator
 
         $template->setVar(
           array(
-            'arguments_decl' => $arguments_decl,
-            'arguments_call' => $arguments_call,
-            'class_name'     => $className,
-            'method_name'    => $methodName,
-            'modifier'       => $modifier,
-            'reference'      => $reference
+            'arguments_decl'  => $arguments_decl,
+            'arguments_call'  => $arguments_call,
+            'arguments_count' => count(explode(',', $arguments_call)),
+            'class_name'      => $className,
+            'method_name'     => $methodName,
+            'modifier'        => $modifier,
+            'reference'       => $reference
           )
         );
 
