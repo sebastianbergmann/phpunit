@@ -69,8 +69,8 @@
  *          verbose="false">
  *   <testsuites>
  *     <testsuite name="My Test Suite">
- *       <directory suffix="Test.php">/path/to/files</directory>
- *       <file>/path/to/MyTest.php</file>
+ *       <directory suffix="Test.php" phpVersion="5.3.0" phpVersionOperator=">=">/path/to/files</directory>
+ *       <file phpVersion="5.3.0" phpVersionOperator=">=">/path/to/MyTest.php</file>
  *     </testsuite>
  *   </testsuites>
  *
@@ -726,6 +726,22 @@ class PHPUnit_Util_Configuration
                 continue;
             }
 
+            if ($directoryNode->hasAttribute('phpVersion')) {
+                $phpVersion = (string)$directoryNode->getAttribute('phpVersion');
+            } else {
+                $phpVersion = PHP_VERSION;
+            }
+
+            if ($directoryNode->hasAttribute('phpVersionOperator')) {
+                $phpVersionOperator = (string)$directoryNode->getAttribute('phpVersionOperator');
+            } else {
+                $phpVersionOperator = '>=';
+            }
+
+            if (!version_compare(PHP_VERSION, $phpVersion, $phpVersionOperator)) {
+                continue;
+            }
+
             if ($directoryNode->hasAttribute('prefix')) {
                 $prefix = (string)$directoryNode->getAttribute('prefix');
             } else {
@@ -752,6 +768,22 @@ class PHPUnit_Util_Configuration
             $file = (string)$fileNode->nodeValue;
 
             if (empty($file)) {
+                continue;
+            }
+
+            if ($fileNode->hasAttribute('phpVersion')) {
+                $phpVersion = (string)$fileNode->getAttribute('phpVersion');
+            } else {
+                $phpVersion = PHP_VERSION;
+            }
+
+            if ($fileNode->hasAttribute('phpVersionOperator')) {
+                $phpVersionOperator = (string)$fileNode->getAttribute('phpVersionOperator');
+            } else {
+                $phpVersionOperator = '>=';
+            }
+
+            if (!version_compare(PHP_VERSION, $phpVersion, $phpVersionOperator)) {
                 continue;
             }
 

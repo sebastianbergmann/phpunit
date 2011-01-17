@@ -15,8 +15,8 @@
          verbose="false">
   <testsuites>
     <testsuite name="My Test Suite">
-      <directory suffix="Test.php">/path/to/files</directory>
-      <file>/path/to/MyTest.php</file>
+      <directory suffix="Test.php" phpVersion="5.3.0" phpVersionOperator=">=">/path/to/files</directory>
+      <file phpVersion="5.3.0" phpVersionOperator=">=">/path/to/MyTest.php</file>
     </testsuite>
   </testsuites>
 
