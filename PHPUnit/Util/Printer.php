@@ -98,6 +98,10 @@ abstract class PHPUnit_Util_Printer
 
                     $this->out = fsockopen($out[0], $out[1]);
                 } else {
+                    if (!is_dir(dirname($out))) {
+                      mkdir(dirname($out), 0, TRUE);
+                    }
+
                     $this->out = fopen($out, 'wt');
                 }
 
@@ -113,11 +117,12 @@ abstract class PHPUnit_Util_Printer
      */
     public function flush()
     {
-        if ($this->out !== NULL && $this->outTarget !== 'php://stderr') {
+        if ($this->out && $this->outTarget !== 'php://stderr') {
             fclose($this->out);
         }
 
-        if ($this->printsHTML === TRUE && $this->outTarget !== NULL &&
+        if ($this->printsHTML === TRUE &&
+            $this->outTarget !== NULL &&
             strpos($this->outTarget, 'php://') !== 0 &&
             strpos($this->outTarget, 'socket://') !== 0 &&
             extension_loaded('tidy')) {
@@ -141,7 +146,7 @@ abstract class PHPUnit_Util_Printer
      */
     public function incrementalFlush()
     {
-        if ($this->out !== NULL) {
+        if ($this->out) {
             fflush($this->out);
         } else {
             flush();
@@ -153,7 +158,7 @@ abstract class PHPUnit_Util_Printer
      */
     public function write($buffer)
     {
-        if ($this->out !== NULL) {
+        if ($this->out) {
             fwrite($this->out, $buffer);
 
             if ($this->autoFlush) {
