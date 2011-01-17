@@ -56,20 +56,20 @@ The `phpunit/phpunit.php` script can be used to invoke the PHPUnit test runner.
 
 The following commands can be used to check out the appropriate branches for PHPUnit 3.5:
 
-    cd phpunit && git co 3.5 && cd ..
-    cd dbunit && git co 1.0 && cd ..
-    cd php-file-iterator && git co 1.2 && cd ..
-    cd php-code-coverage && git co 1.0 && cd ..
-    cd php-token-stream && git co 1.0 && cd ..
-    cd phpunit-mock-objects && git co 1.0 && cd ..
-    cd phpunit-selenium && git co 1.0 && cd ..
+    cd phpunit && git checkout 3.5 && cd ..
+    cd dbunit && git checkout 1.0 && cd ..
+    cd php-file-iterator && git checkout 1.2 && cd ..
+    cd php-code-coverage && git checkout 1.0 && cd ..
+    cd php-token-stream && git checkout 1.0 && cd ..
+    cd phpunit-mock-objects && git checkout 1.0 && cd ..
+    cd phpunit-selenium && git checkout 1.0 && cd ..
 
 The following commands can be used to check out the appropriate branches for PHPUnit 3.6:
 
-    cd phpunit && git co master && cd ..
-    cd dbunit && git co master && cd ..
-    cd php-file-iterator && git co master && cd ..
-    cd php-code-coverage && git co master && cd ..
-    cd php-token-stream && git co master && cd ..
-    cd phpunit-mock-objects && git co master && cd ..
-    cd phpunit-selenium && git co master && cd ..
+    cd phpunit && git checkout master && cd ..
+    cd dbunit && git checkout master && cd ..
+    cd php-file-iterator && git checkout master && cd ..
+    cd php-code-coverage && git checkout master && cd ..
+    cd php-token-stream && git checkout master && cd ..
+    cd phpunit-mock-objects && git checkout master && cd ..
+    cd phpunit-selenium && git checkout master && cd ..
