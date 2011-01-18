@@ -64,6 +64,7 @@ class PHPUnit_Util_Fileloader
      *
      * @param  string  $filename
      * @param  boolean $syntaxCheck
+     * @return string
      * @throws RuntimeException
      */
     public static function checkAndLoad($filename, $syntaxCheck = FALSE)
@@ -83,6 +84,8 @@ class PHPUnit_Util_Fileloader
         }
 
         self::load($includePathFilename);
+
+        return $includePathFilename;
     }
 
     /**
