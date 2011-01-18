@@ -3,6 +3,11 @@ PHPUnit_MockObject 1.0
 
 This is the list of changes for the PHPUnit_MockObject 1.0 release series.
 
+PHPUnit_MockObject 1.0.6
+------------------------
+
+* Fixed GH-35: Mocking undeclared methods impossible since 1.0.4.
+
 PHPUnit_MockObject 1.0.5
 ------------------------
 
