@@ -708,7 +708,7 @@ class PHPUnit_Framework_MockObject_Generator
           array(
             'arguments_decl'  => $arguments_decl,
             'arguments_call'  => $arguments_call,
-            'arguments_count' => count(explode(',', $arguments_call)),
+            'arguments_count' => !empty($arguments_call) ? count(explode(',', $arguments_call)) : 0,
             'class_name'      => $className,
             'method_name'     => $methodName,
             'modifier'        => $modifier,
