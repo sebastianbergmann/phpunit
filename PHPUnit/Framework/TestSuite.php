@@ -372,8 +372,8 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
 
         foreach ($newClasses as $className) {
             if (substr($className, 0 - strlen($baseName)) == $baseName) {
-                $class = new ReflectionClass($className);                
-                
+                $class = new ReflectionClass($className);
+
                 if ($class->getFileName() == $filename) {
                     $newClasses = array($className);
                     break;
