@@ -110,6 +110,7 @@ class PHPUnit_TextUI_Command
       'testdox-text=' => NULL,
       'no-configuration' => NULL,
       'no-globals-backup' => NULL,
+      'printer=' => NULL,
       'static-backup' => NULL,
       'verbose' => NULL,
       'version' => NULL,
@@ -349,6 +350,11 @@ class PHPUnit_TextUI_Command
                 }
                 break;
 
+                case '--printer': {
+                    $this->arguments['printer'] = $option[1];
+                }
+                break;
+
                 case '--loader': {
                     $this->arguments['loader'] = $option[1];
                 }
@@ -528,6 +534,11 @@ class PHPUnit_TextUI_Command
             $this->handleBootstrap($this->arguments['bootstrap']);
         }
 
+        if (isset($this->arguments['printer']) &&
+            is_string($this->arguments['printer'])) {
+            $this->arguments['printer'] = $this->handlePrinter($this->arguments['printer']);
+        }
+
         if ($this->arguments['loader'] !== NULL) {
             $this->arguments['loader'] = $this->handleLoader($this->arguments['loader']);
         }
@@ -567,6 +578,18 @@ class PHPUnit_TextUI_Command
             );
 
             $phpunit = $configuration->getPHPUnitConfiguration();
+
+            if (isset($phpunit['printerClass'])) {
+                if (isset($phpunit['printerFile'])) {
+                    $file = $phpunit['printerFile'];
+                } else {
+                    $file = '';
+                }
+
+                $this->arguments['printer'] = $this->handlePrinter(
+                  $phpunit['printerClass'], $file
+                );
+            }
 
             if (isset($phpunit['testSuiteLoaderClass'])) {
                 if (isset($phpunit['testSuiteLoaderFile'])) {
@@ -666,6 +689,7 @@ class PHPUnit_TextUI_Command
      *
      * @param  string  $loaderClass
      * @param  string  $loaderFile
+     * @return PHPUnit_Runner_TestSuiteLoader
      */
     protected function handleLoader($loaderClass, $loaderFile = '')
     {
@@ -705,6 +729,54 @@ class PHPUnit_TextUI_Command
         }
 
         return $loader;
+    }
+
+    /**
+     * Handles the loading of the PHPUnit_Util_Printer implementation.
+     *
+     * @param  string $printerClass
+     * @param  string $printerFile
+     * @return PHPUnit_Util_Printer
+     */
+    protected function handlePrinter($printerClass, $printerFile = '')
+    {
+        if (!class_exists($printerClass, FALSE)) {
+            if ($printerFile == '') {
+                $printerFile = PHPUnit_Util_Filesystem::classNameToFilename(
+                  $printerClass
+                );
+            }
+
+            $printerFile = PHPUnit_Util_Filesystem::fileExistsInIncludePath(
+              $printerFile
+            );
+
+            if ($printerFile !== FALSE) {
+                require $printerFile;
+            }
+        }
+
+        if (class_exists($printerClass, FALSE)) {
+            $class = new ReflectionClass($printerClass);
+
+            if ($class->implementsInterface('PHPUnit_Framework_TestListener') &&
+                $class->isSubclassOf('PHPUnit_Util_Printer') &&
+                $class->isInstantiable()) {
+                $printer = $class->newInstance();
+            }
+        }
+
+        if (!isset($printer)) {
+            PHPUnit_TextUI_TestRunner::showError(
+              sprintf(
+                'Could not use "%s" as printer.',
+
+                $printerClass
+              )
+            );
+        }
+
+        return $printer;
     }
 
     /**
@@ -769,6 +841,7 @@ Usage: phpunit [switches] UnitTest [UnitTest.php]
   --list-groups            List available test groups.
 
   --loader <loader>        TestSuiteLoader implementation to use.
+  --printer <printer>      TestSuiteListener implementation to use.
   --repeat <times>         Runs the test(s) repeatedly.
 
   --tap                    Report test execution progress in TAP format.
