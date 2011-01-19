@@ -45,9 +45,9 @@
 
 // Workaround for http://bugs.php.net/bug.php?id=47987,
 // see https://github.com/sebastianbergmann/phpunit/issues#issue/125 for details
+require_once 'PHPUnit/Framework/Error.php';
 require_once 'PHPUnit/Framework/Error/Notice.php';
 require_once 'PHPUnit/Framework/Error/Warning.php';
-require_once 'PHPUnit/Framework/Error.php';
 
 /**
  * Error handler that converts PHP errors and warnings to exceptions.
