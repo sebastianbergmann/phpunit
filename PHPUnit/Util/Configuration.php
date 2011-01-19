@@ -59,6 +59,7 @@
  *          convertWarningsToExceptions="true"
  *          forceCoversAnnotation="false"
  *          mapTestClassNameToCoveredClassName="false"
+ *          printerClass="PHPUnit_TextUI_ResultPrinter"
  *          processIsolation="false"
  *          stopOnError="false"
  *          stopOnFailure="false"
@@ -611,6 +612,18 @@ class PHPUnit_Util_Configuration
         if ($root->hasAttribute('testSuiteLoaderFile')) {
             $result['testSuiteLoaderFile'] = (string)$root->getAttribute(
               'testSuiteLoaderFile'
+            );
+        }
+
+        if ($root->hasAttribute('printerClass')) {
+            $result['printerClass'] = (string)$root->getAttribute(
+              'printerClass'
+            );
+        }
+
+        if ($root->hasAttribute('printerFile')) {
+            $result['printerFile'] = (string)$root->getAttribute(
+              'printerFile'
             );
         }
 
