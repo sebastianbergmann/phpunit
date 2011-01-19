@@ -363,14 +363,18 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
         }
 
         PHPUnit_Util_Class::collectStart();
-        PHPUnit_Util_Fileloader::checkAndLoad($filename);
+        $filename   = PHPUnit_Util_Fileloader::checkAndLoad($filename);
         $newClasses = PHPUnit_Util_Class::collectEnd();
         $baseName   = str_replace('.php', '', basename($filename));
 
         foreach ($newClasses as $className) {
             if (substr($className, 0 - strlen($baseName)) == $baseName) {
-                $newClasses = array($className);
-                break;
+                $class = new ReflectionClass($className);
+
+                if ($class->getFileName() == $filename) {
+                    $newClasses = array($className);
+                    break;
+                }
             }
         }
 

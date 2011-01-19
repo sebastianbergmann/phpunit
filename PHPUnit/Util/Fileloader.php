@@ -77,6 +77,8 @@ class PHPUnit_Util_Fileloader
         }
 
         self::load($includePathFilename);
+
+        return $includePathFilename;
     }
 
     /**
