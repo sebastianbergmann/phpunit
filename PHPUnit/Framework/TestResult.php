@@ -663,7 +663,17 @@ class PHPUnit_Framework_TestResult implements Countable
         }
 
         if ($useXdebug) {
-            $this->codeCoverage->stop(!$incomplete && !$skipped);
+            try {
+                $this->codeCoverage->stop(!$incomplete && !$skipped);
+            }
+
+            catch (PHP_CodeCoverage_Exception $cce) {
+                $error = TRUE;
+
+                if (!isset($e)) {
+                    $e = $cce;
+                }
+            }
         }
 
         if ($errorHandlerSet === TRUE) {
