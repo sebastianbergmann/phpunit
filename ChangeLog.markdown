@@ -6,6 +6,7 @@ This is the list of changes for the PHPUnit 3.5 release series.
 PHPUnit 3.5.10
 --------------
 
+* Fixed GH-71: `PHPUnit_Framework_TestSuite::addTestFile()` has problems identifying the correct test suite.
 * Fixed GH-120: Printer class does not handle "file does not exist" problems correctly.
 
 PHPUnit 3.5.9
