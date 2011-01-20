@@ -220,17 +220,13 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
             );
 
             if (isset($arguments['configuration'])) {
-                $configurationFile = $arguments['configuration']->getFilename();
-            } else {
-                $configurationFile = 'None';
+                $this->printer->write(
+                  sprintf(
+                    "Configuration read from %s\n\n",
+                    $arguments['configuration']->getFilename()
+                  )
+                );
             }
-
-            $this->printer->write(
-              sprintf(
-                "Configuration File: %s\n\n",
-                $configurationFile
-              )
-            );
         }
 
         foreach ($arguments['listeners'] as $listener) {
