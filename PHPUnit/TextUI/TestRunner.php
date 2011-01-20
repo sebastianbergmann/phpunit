@@ -218,6 +218,19 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
             $this->printer->write(
               PHPUnit_Runner_Version::getVersionString() . "\n\n"
             );
+
+            if (isset($arguments['configuration'])) {
+                $configurationFile = $arguments['configuration']->getFilename();
+            } else {
+                $configurationFile = 'None';
+            }
+
+            $this->printer->write(
+              sprintf(
+                "Configuration File: %s\n\n",
+                $configurationFile
+              )
+            );
         }
 
         foreach ($arguments['listeners'] as $listener) {
