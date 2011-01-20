@@ -223,6 +223,17 @@ class PHPUnit_Util_Configuration
     }
 
     /**
+     * Returns the realpath to the configuration file.
+     *
+     * @return string
+     * @since  Method available since Release 3.6.0
+     */
+    public function getFilename()
+    {
+        return $this->filename;
+    }
+
+    /**
      * Returns the configuration for SUT filtering.
      *
      * @return array
