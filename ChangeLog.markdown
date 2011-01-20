@@ -12,6 +12,7 @@ PHPUnit 3.6.0
 * Implemented GH-82: Test Skeleton Generator should create `@covers` annotations.
 * Implemented GH-83: Test errors and failures as well as incomplete and skipped tests now get coloured letters in the test progress.
 * Implemented GH-88: `@expectedException` (and `setExpectedException()`) no longer accept `Exception` as the expected exception class.
+* Implemented GH-126: Show used configuration file.
 * `assertEquals()` now looks for (and invokes) a `__toString()` method when an object and string are compared.
 * Using the `@small` (alias for `@group small`), `@medium` (alias for `@group medium`), and `@large` (alias for `@group large`) annotations, a test can now be marked to be of a certain size. By default, a test is "small".
 * A test must not `@depend` on a test that is larger than itself.
