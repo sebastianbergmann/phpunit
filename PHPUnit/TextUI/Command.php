@@ -615,9 +615,16 @@ class PHPUnit_TextUI_Command
         }
 
         if (isset($this->arguments['configuration'])) {
-            $configuration = PHPUnit_Util_Configuration::getInstance(
-              $this->arguments['configuration']
-            );
+            try {
+                $configuration = PHPUnit_Util_Configuration::getInstance(
+                  $this->arguments['configuration']
+                );
+            }
+
+            catch (Exception $e) {
+                print $e->getMessage() . "\n";
+                exit(PHPUnit_TextUI_TestRunner::FAILURE_EXIT);
+            }
 
             $phpunit = $configuration->getPHPUnitConfiguration();
 
