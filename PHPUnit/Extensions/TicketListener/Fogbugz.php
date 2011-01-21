@@ -182,20 +182,29 @@ class PHPUnit_Extensions_TicketListener_Fogbugz extends PHPUnit_Extensions_Ticke
 
         $ticket = new SimpleXMLElement($response);
         $nCases = $ticket->xpath('//response/cases');
-		var_dump($nCases);
-		var_dump($response);
+		// "<response>
+		// 		<cases count="1">
+		//			<case ixBug="2" operations="edit,reopen,reply,forward,remind">
+		//				<ixBug>2</ixBug>
+		//				<sTitle><![CDATA[Telenor opsamling]]></sTitle>
+		//				<fOpen>false</fOpen>
+		//				<ixStatus>2</ixStatus>
+		//				<sStatus><![CDATA[Closed (Fixed)]]></sStatus>
+		//			</case>
+		//		</cases>
+		//	</response>"
 		
         if (count($nCases) < 1) {
             return array('state' => 'unknown_ticket');
         }
         $result = $ticket->xpath('//ixStatus');
-        $state  = (string)$result[0];
+        $state  = (string)$result[0]; // TODO: Map which output a ticket status can have
 
         if ($state === '1') {
             return array('status' => 'new');
         }
 
-        if ($state === 'closed') {
+        if ($state === '2') {
             return array('status' => 'closed');
         }
 
@@ -212,9 +221,9 @@ class PHPUnit_Extensions_TicketListener_Fogbugz extends PHPUnit_Extensions_Ticke
     protected function updateTicket($ticketId, $statusToBe, $message, $resolution)
     {
         $url = $this->apiBaseUrl . '/' . $ticketId . '/comments/full';
-
+		// TODO: Which Content-Type do they want?
         $header = array(
-          'Authorization: GoogleLogin auth=' . $this->getAuthToken(),
+          //'Authorization: GoogleLogin auth=' . $this->getAuthToken(),
           'Content-Type: application/atom+xml'
         );
 
@@ -224,14 +233,13 @@ class PHPUnit_Extensions_TicketListener_Fogbugz extends PHPUnit_Extensions_Ticke
             $ticketStatus = $this->statusReopened;
         }
 
-        list($author,) = explode('@', $this->email);
-
+		// TODO: Update namespace to Fogbugz!
         $post = '<?xml version="1.0" encoding="UTF-8"?>' .
                 '<entry xmlns="http://www.w3.org/2005/Atom" ' .
                 '       xmlns:issues="http://schemas.google.com/projecthosting/issues/2009">' .
                 '  <content type="html">' . htmlspecialchars($message, ENT_COMPAT, 'UTF-8') . '</content>' .
                 '  <author>' .
-                '    <name>' . htmlspecialchars($author, ENT_COMPAT, 'UTF-8') . '</name>' .
+                '    <name>' . htmlspecialchars($this->email, ENT_COMPAT, 'UTF-8') . '</name>' .
                 '  </author>' .
                 '  <issues:updates>' .
                 '    <issues:status>' . htmlspecialchars($ticketStatus, ENT_COMPAT, 'UTF-8') . '</issues:status>' .
@@ -267,9 +275,13 @@ class PHPUnit_Extensions_TicketListener_Fogbugz extends PHPUnit_Extensions_Ticke
             'Content-Type: application/x-www-form-urlencoded',
         );
 
-        list($status, $response) = $this->callFogbugz(
-            $this->authUrl
-        );
+		try {
+	        list($status, $response) = $this->callFogbugz(
+	            $this->authUrl
+	        );
+		} catch (RuntimeException $e) {
+			$this->complainAndQuit($e);
+		}
         if ($status != 200) {
             throw new RuntimeException('Fogbugz authentication failed');
         }
@@ -326,4 +338,12 @@ class PHPUnit_Extensions_TicketListener_Fogbugz extends PHPUnit_Extensions_Ticke
 
         return array($status, $response);
     }
+
+	/**
+	 * Complain and quit.
+	 */
+	protected function complainAndQuit(Exception $e) {
+		echo "Error: " . $e->getMessage() . "\n\n";
+		exit(-1);
+	}
 }
