@@ -3,6 +3,11 @@ PHPUnit 3.5
 
 This is the list of changes for the PHPUnit 3.5 release series.
 
+PHPUnit 3.5.11
+--------------
+
+* Fixed GH-127: PHPUnit does not report errors in XML configuration files.
+
 PHPUnit 3.5.10
 --------------
 
