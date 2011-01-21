@@ -218,28 +218,31 @@ class PHPUnit_Extensions_TicketListener_Fogbugz extends PHPUnit_Extensions_Ticke
      */
     protected function updateTicket($ticketId, $statusToBe, $message, $resolution)
     {
-		$url = sprintf($this->apiBaseUrl. 'ixBug=%s', $ticketId);
+		$url = sprintf($this->apiBaseUrl. 'ixBug=%s&token=%s', $ticketId, $this->getAuthToken());
 
 		// Change the URL
         if ($statusToBe == 'closed') {
-			$url .= 'cmd=resolve';
-            $ticketStatus = $this->statusClosed;
+			$url .= '&cmd=resolve';
         } else {
-			$url .= 'cmd=reopen';
-            $ticketStatus = $this->statusReopened;
+			$url .= '&cmd=reopen';
         }
 		
-		$header = NULL;
-		// TODO: Add more things to this POST!
 		$post = array(
 			'sEvent'=> htmlspecialchars($message, ENT_COMPAT, 'UTF-8')
 		);
-        list($status, $response) = $this->callFogbugz($url, $header, $post);
-
-        if ($status != 201) {
+        list($status, $response) = $this->callFogbugz($url, NULL, $post);
+        if ($status != 200) {
             throw new RuntimeException('Updating Fogbugz issue failed with status code ' . $status);
         }
-
+		$ticket = new SimpleXMLElement($response);
+		// We hope for
+		// <response><case ixBug="2" operations="edit,assign,resolve,reply,forward,remind"></case></response>
+		// If error, it could be:
+		// <response><error code="3">Not logged on</error></response>
+        $error = $ticket->xpath('//response/error');
+		if (!empty($error)) {
+            throw new RuntimeException('Updating Fogbugz issue failed with status code ' . $status);
+		}
         if ($this->printTicketStateChanges) {
             printf(
                 "\nUpdating Fogbugz issue #%d, status: %s\n",
