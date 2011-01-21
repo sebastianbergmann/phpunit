@@ -188,26 +188,25 @@ class PHPUnit_Util_XML
             return $actual;
         }
 
+        $document  = new DOMDocument;
         $internal  = libxml_use_internal_errors(TRUE);
+        $message   = '';
         $reporting = error_reporting(0);
-        $dom       = new DOMDocument;
 
         if ($isHtml) {
-            $loaded = $dom->loadHTML($actual);
+            $loaded = $document->loadHTML($actual);
         } else {
-            $loaded = $dom->loadXML($actual);
+            $loaded = $document->loadXML($actual);
+        }
+
+        foreach (libxml_get_errors() as $error) {
+            $message .= $error->message;
         }
 
         libxml_use_internal_errors($internal);
         error_reporting($reporting);
 
         if ($loaded === FALSE) {
-            $message = '';
-
-            foreach (libxml_get_errors() as $error) {
-                $message .= $error->message;
-            }
-
             if ($filename != '') {
                 throw new PHPUnit_Framework_Exception(
                   sprintf(
@@ -222,7 +221,7 @@ class PHPUnit_Util_XML
             }
         }
 
-        return $dom;
+        return $document;
     }
 
     /**
