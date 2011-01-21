@@ -36,7 +36,7 @@
  *
  * @package    PHPUnit
  * @subpackage Extensions_TicketListener
- * @author     Jan Sorgalla <jsorgalla@googlemail.com>
+ * @author     Olle Jonsson <olle.jonsson@gmail.com>
  * @copyright  2002-2010 Sebastian Bergmann <sebastian@phpunit.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @link       http://www.phpunit.de/
@@ -48,7 +48,7 @@
  *
  * @package    PHPUnit
  * @subpackage Extensions_TicketListener
- * @author     Jan Sorgalla <jsorgalla@googlemail.com>
+ * @author     Olle Jonsson <olle.jonsson@gmail.com>
  * @copyright  2002-2010 Sebastian Bergmann <sebastian@phpunit.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    Release: @package_version@
@@ -91,7 +91,6 @@ class PHPUnit_Extensions_TicketListener_Fogbugz extends PHPUnit_Extensions_Ticke
         if (!extension_loaded('curl')) {
             throw new RuntimeException('ext/curl is not available');
         }
-
         $this->email                   = $email;
         $this->password                = $password;
         $this->statusClosed            = $statusClosed;
@@ -113,66 +112,9 @@ class PHPUnit_Extensions_TicketListener_Fogbugz extends PHPUnit_Extensions_Ticke
         }
 		// cmd=search&q=4239&cols=id&token=4nv48nf2ss076kiad4nbf6e7phtl23
 		
-		$fields = array(
-			'ixBug',
-			'ixBugParent',
-			'ixBugChildren',
-			'tags',
-			'fOpen',
-			'sTitle',
-			'sOriginalTitle ',
-			'sLatestTextSummary',
-			'ixBugEventLatestText',
-			'ixProject',
-			'sProject',
-			'ixArea',
-			'sArea',
-			'ixGroup',
-			'ixPersonAssignedTo',
-			'sPersonAssignedTo',
-			'sEmailAssignedTo',
-			'ixPersonOpenedBy',
-			'ixPersonResolvedBy',
-			'ixPersonClosedBy',
-			'ixPersonLastEditedBy',
-			'ixStatus ',
-			'sStatus',
-			'ixPriority ',
-			'sPriority',
-			'ixFixFor',
-			'sFixFor',
-			'dtFixFor',
-			'sVersion',
-			'sComputer',
-			'hrsOrigEst',
-			'hrsCurrEst',
-			'hrsElapsed',
-			'c',
-			'sCustomerEmail ',
-			'ixMailbox',
-			'ixCategory',
-			'sCategory',
-			'dtOpened',
-			'dtResolved ',
-			'dtClosed',
-			'ixBugEventLatest',
-			'dtLastUpdated',
-			'fReplied',
-			'fForwarded',
-			'sTicket',
-			'ixDiscussTopic',
-			'dtDue',
-			'sReleaseNotes',
-			'ixBugEventLastView',
-			'dtLastView',
-			'ixRelatedBugs',
-			'sScoutDescription',
-			'sScoutMessage',
-			'fScoutStopReporting',
-			'fSubscribed');
 		$fewFields = array('ixBug', 'sTitle', 'fOpen', 'ixStatus', 'sStatus', 'sProject', 'ixProject');
 		
-        $url    = $this->apiBaseUrl . 'cmd=search&q=' . $ticketId . '&cols=' . implode(',', $fewFields) . '&token='.$this->getAuthToken();
+        $url = $this->apiBaseUrl . 'cmd=search&q=' . $ticketId . '&cols=' . implode(',', $fewFields) . '&token='.$this->getAuthToken();
 
         list($status, $response) = $this->callFogbugz($url);
 
@@ -186,7 +128,7 @@ class PHPUnit_Extensions_TicketListener_Fogbugz extends PHPUnit_Extensions_Ticke
 		// 		<cases count="1">
 		//			<case ixBug="2" operations="edit,reopen,reply,forward,remind">
 		//				<ixBug>2</ixBug>
-		//				<sTitle><![CDATA[Telenor opsamling]]></sTitle>
+		//				<sTitle><![CDATA[My little ticket]]></sTitle>
 		//				<fOpen>false</fOpen>
 		//				<ixStatus>2</ixStatus>
 		//				<sStatus><![CDATA[Closed (Fixed)]]></sStatus>
@@ -278,15 +220,10 @@ class PHPUnit_Extensions_TicketListener_Fogbugz extends PHPUnit_Extensions_Ticke
         }
 		$xml = new SimpleXMLElement($response);
 		$tokenChunk = $xml->xpath('//response/token');
-		$tokenString = (string)$tokenChunk[0];
-		// TODO: Cut out the TOKEN of the resulting XML.
-		// save it in the $this->authToken slot
-        $this->authToken    = trim($tokenString);
-
-        if (NULL === $this->authToken) {
+        $this->authToken = trim((string)$tokenChunk[0]);
+        if (NULL === $this->authToken || empty($this->authToken)) {
             throw new RuntimeException('Could not detect auth token in response');
         }
-
         return $this->authToken;
     }
 
