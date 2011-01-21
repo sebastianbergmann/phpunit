@@ -170,7 +170,7 @@ class PHPUnit_Extensions_TicketListener_Fogbugz extends PHPUnit_Extensions_Ticke
 			'sScoutMessage',
 			'fScoutStopReporting',
 			'fSubscribed');
-		$fewFields = array('ixBug', 'sTitle', 'fOpen', 'ixStatus', 'sStatus');
+		$fewFields = array('ixBug', 'sTitle', 'fOpen', 'ixStatus', 'sStatus', 'sProject', 'ixProject');
 		
         $url    = $this->apiBaseUrl . 'cmd=search&q=' . $ticketId . '&cols=' . implode(',', $fewFields) . '&token='.$this->getAuthToken();
 
@@ -202,13 +202,11 @@ class PHPUnit_Extensions_TicketListener_Fogbugz extends PHPUnit_Extensions_Ticke
 
         if ($state === '1') {
             return array('status' => 'new');
-        }
-
-        if ($state === '2') {
+        } elseif ($state === '2') {
             return array('status' => 'closed');
-        }
-
-        return array('status' => $state);
+        } else {
+			return array('status' => $state);
+		}
     }
 
     /**
@@ -220,32 +218,22 @@ class PHPUnit_Extensions_TicketListener_Fogbugz extends PHPUnit_Extensions_Ticke
      */
     protected function updateTicket($ticketId, $statusToBe, $message, $resolution)
     {
-        $url = $this->apiBaseUrl . '/' . $ticketId . '/comments/full';
-		// TODO: Which Content-Type do they want?
-        $header = array(
-          //'Authorization: GoogleLogin auth=' . $this->getAuthToken(),
-          'Content-Type: application/atom+xml'
-        );
+		$url = sprintf($this->apiBaseUrl. 'ixBug=%s', $ticketId);
 
+		// Change the URL
         if ($statusToBe == 'closed') {
+			$url .= 'cmd=resolve';
             $ticketStatus = $this->statusClosed;
         } else {
+			$url .= 'cmd=reopen';
             $ticketStatus = $this->statusReopened;
         }
-
-		// TODO: Update namespace to Fogbugz!
-        $post = '<?xml version="1.0" encoding="UTF-8"?>' .
-                '<entry xmlns="http://www.w3.org/2005/Atom" ' .
-                '       xmlns:issues="http://schemas.google.com/projecthosting/issues/2009">' .
-                '  <content type="html">' . htmlspecialchars($message, ENT_COMPAT, 'UTF-8') . '</content>' .
-                '  <author>' .
-                '    <name>' . htmlspecialchars($this->email, ENT_COMPAT, 'UTF-8') . '</name>' .
-                '  </author>' .
-                '  <issues:updates>' .
-                '    <issues:status>' . htmlspecialchars($ticketStatus, ENT_COMPAT, 'UTF-8') . '</issues:status>' .
-                '  </issues:updates>' .
-                '</entry>';
-
+		
+		$header = NULL;
+		// TODO: Add more things to this POST!
+		$post = array(
+			'sEvent'=> htmlspecialchars($message, ENT_COMPAT, 'UTF-8')
+		);
         list($status, $response) = $this->callFogbugz($url, $header, $post);
 
         if ($status != 201) {
