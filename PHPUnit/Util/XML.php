@@ -188,17 +188,17 @@ class PHPUnit_Util_XML
             return $actual;
         }
 
+        $document  = new DOMDocument;
         $internal  = libxml_use_internal_errors(TRUE);
+        $message   = '';
         $reporting = error_reporting(0);
-        $dom       = new DOMDocument;
 
         if ($isHtml) {
-            $loaded = $dom->loadHTML($actual);
+            $loaded = $document->loadHTML($actual);
         } else {
-            $loaded = $dom->loadXML($actual);
+            $loaded = $document->loadXML($actual);
         }
 
-        $message = '';
         foreach (libxml_get_errors() as $error) {
             $message .= $error->message;
         }
@@ -221,7 +221,7 @@ class PHPUnit_Util_XML
             }
         }
 
-        return $dom;
+        return $document;
     }
 
     /**
