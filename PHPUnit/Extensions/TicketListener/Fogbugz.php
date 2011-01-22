@@ -72,11 +72,11 @@ class PHPUnit_Extensions_TicketListener_Fogbugz extends PHPUnit_Extensions_Ticke
 
     /**
      * Constructor, which often takes its parameters from an XML file of config.
-     * 
+     *
      * Note: This is how the logon takes place.
-     * 
+     *
      * api.asp?cmd=logon&email=xxx@example.com&password=BigMac
-     * 
+     *
      * @param string $email          The email associated with the Fogbugz account.
      * @param string $password       The password associated with the Fogbugz account.
      * @param string $siteApiUrl     The URL to Fogbugz installation, for
@@ -111,9 +111,9 @@ class PHPUnit_Extensions_TicketListener_Fogbugz extends PHPUnit_Extensions_Ticke
             return array('status' => 'invalid_ticket_id');
         }
 		// cmd=search&q=4239&cols=id&token=4nv48nf2ss076kiad4nbf6e7phtl23
-		
+
 		$fewFields = array('ixBug', 'sTitle', 'fOpen', 'ixStatus', 'sStatus', 'sProject', 'ixProject');
-		
+
         $url = $this->apiBaseUrl . 'cmd=search&q=' . $ticketId . '&cols=' . implode(',', $fewFields) . '&token='.$this->getAuthToken();
 
         list($status, $response) = $this->callFogbugz($url);
@@ -135,7 +135,7 @@ class PHPUnit_Extensions_TicketListener_Fogbugz extends PHPUnit_Extensions_Ticke
 		//			</case>
 		//		</cases>
 		//	</response>"
-		
+
         if (count($nCases) < 1) {
             return array('state' => 'unknown_ticket');
         }
@@ -168,7 +168,7 @@ class PHPUnit_Extensions_TicketListener_Fogbugz extends PHPUnit_Extensions_Ticke
         } else {
 			$url .= '&cmd=reopen';
         }
-		
+
 		$post = array(
 			'sEvent'=> htmlspecialchars($message, ENT_COMPAT, 'UTF-8')
 		);
@@ -236,7 +236,7 @@ class PHPUnit_Extensions_TicketListener_Fogbugz extends PHPUnit_Extensions_Ticke
     private function callFogbugz($url, array $header = NULL, $post = NULL)
     {
         $curlHandle = curl_init();
-		
+
         curl_setopt($curlHandle, CURLOPT_URL, $url);
         curl_setopt($curlHandle, CURLOPT_FOLLOWLOCATION, TRUE);
         curl_setopt($curlHandle, CURLOPT_FAILONERROR, TRUE);
