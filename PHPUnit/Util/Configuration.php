@@ -535,6 +535,12 @@ class PHPUnit_Util_Configuration
             );
         }
 
+        else if ($root->hasAttribute('ansi')) {
+            $result['colors'] = $this->getBoolean(
+              (string)$root->getAttribute('ansi'), FALSE
+            );
+        }
+
         if ($root->hasAttribute('backupGlobals')) {
             $result['backupGlobals'] = $this->getBoolean(
               (string)$root->getAttribute('backupGlobals'), TRUE
