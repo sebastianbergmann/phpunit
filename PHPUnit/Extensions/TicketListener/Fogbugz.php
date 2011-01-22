@@ -91,13 +91,19 @@ class PHPUnit_Extensions_TicketListener_Fogbugz extends PHPUnit_Extensions_Ticke
         if (!extension_loaded('curl')) {
             throw new RuntimeException('ext/curl is not available');
         }
+
         $this->email                   = $email;
         $this->password                = $password;
         $this->statusClosed            = $statusClosed;
         $this->statusReopened          = $statusReopened;
         $this->printTicketStateChanges = $printTicketStateChanges;
         $this->apiBaseUrl              = $siteApiUrl . '?';
-        $this->authUrl                 = sprintf($this->apiBaseUrl . 'cmd=logon&email=%s&password=%s', $email, $password);
+        $this->authUrl                 = sprintf(
+                                           $this->apiBaseUrl .
+                                           'cmd=logon&email=%s&password=%s',
+                                           $email,
+                                           $password
+                                         );
     }
 
     /**
@@ -110,11 +116,20 @@ class PHPUnit_Extensions_TicketListener_Fogbugz extends PHPUnit_Extensions_Ticke
         if (!is_numeric($ticketId)) {
             return array('status' => 'invalid_ticket_id');
         }
-		// cmd=search&q=4239&cols=id&token=4nv48nf2ss076kiad4nbf6e7phtl23
+        // cmd=search&q=4239&cols=id&token=4nv48nf2ss076kiad4nbf6e7phtl23
 
-		$fewFields = array('ixBug', 'sTitle', 'fOpen', 'ixStatus', 'sStatus', 'sProject', 'ixProject');
+        $fewFields = array(
+          'ixBug',
+          'sTitle',
+          'fOpen',
+          'ixStatus',
+          'sStatus',
+          'sProject',
+          'ixProject'
+        );
 
-        $url = $this->apiBaseUrl . 'cmd=search&q=' . $ticketId . '&cols=' . implode(',', $fewFields) . '&token='.$this->getAuthToken();
+        $url = $this->apiBaseUrl . 'cmd=search&q=' . $ticketId . '&cols=' .
+               implode(',', $fewFields) . '&token=' . $this->getAuthToken();
 
         list($status, $response) = $this->callFogbugz($url);
 
@@ -124,31 +139,37 @@ class PHPUnit_Extensions_TicketListener_Fogbugz extends PHPUnit_Extensions_Ticke
 
         $ticket = new SimpleXMLElement($response);
         $nCases = $ticket->xpath('//response/cases');
-		// "<response>
-		// 		<cases count="1">
-		//			<case ixBug="2" operations="edit,reopen,reply,forward,remind">
-		//				<ixBug>2</ixBug>
-		//				<sTitle><![CDATA[My little ticket]]></sTitle>
-		//				<fOpen>false</fOpen>
-		//				<ixStatus>2</ixStatus>
-		//				<sStatus><![CDATA[Closed (Fixed)]]></sStatus>
-		//			</case>
-		//		</cases>
-		//	</response>"
+        // "<response>
+        //         <cases count="1">
+        //            <case ixBug="2" operations="edit,reopen,reply,forward,remind">
+        //                <ixBug>2</ixBug>
+        //                <sTitle><![CDATA[My little ticket]]></sTitle>
+        //                <fOpen>false</fOpen>
+        //                <ixStatus>2</ixStatus>
+        //                <sStatus><![CDATA[Closed (Fixed)]]></sStatus>
+        //            </case>
+        //        </cases>
+        //    </response>"
 
         if (count($nCases) < 1) {
             return array('state' => 'unknown_ticket');
         }
+
         $result = $ticket->xpath('//ixStatus');
-        $state  = (string)$result[0]; // TODO: Map which output a ticket status can have
+        // TODO: Map which output a ticket status can have
+        $state = (string)$result[0];
 
         if ($state === '1') {
             return array('status' => 'new');
-        } elseif ($state === '2') {
+        }
+
+        else if ($state === '2') {
             return array('status' => 'closed');
-        } else {
-			return array('status' => $state);
-		}
+        }
+
+        else {
+            return array('status' => $state);
+        }
     }
 
     /**
@@ -160,36 +181,45 @@ class PHPUnit_Extensions_TicketListener_Fogbugz extends PHPUnit_Extensions_Ticke
      */
     protected function updateTicket($ticketId, $statusToBe, $message, $resolution)
     {
-		$url = sprintf($this->apiBaseUrl. 'ixBug=%s&token=%s', $ticketId, $this->getAuthToken());
+        $url = sprintf($this->apiBaseUrl. 'ixBug=%s&token=%s', $ticketId, $this->getAuthToken());
 
-		// Change the URL
         if ($statusToBe == 'closed') {
-			$url .= '&cmd=resolve';
+            $url .= '&cmd=resolve';
         } else {
-			$url .= '&cmd=reopen';
+            $url .= '&cmd=reopen';
         }
 
-		$post = array(
-			'sEvent'=> htmlspecialchars($message, ENT_COMPAT, 'UTF-8')
-		);
+        $post = array(
+          'sEvent'=> htmlspecialchars($message, ENT_COMPAT, 'UTF-8')
+        );
+
         list($status, $response) = $this->callFogbugz($url, NULL, $post);
+
         if ($status != 200) {
-            throw new RuntimeException('Updating Fogbugz issue failed with status code ' . $status);
+            throw new RuntimeException(
+              'Updating Fogbugz issue failed with status code ' . $status
+            );
         }
-		$ticket = new SimpleXMLElement($response);
-		// We hope for
-		// <response><case ixBug="2" operations="edit,assign,resolve,reply,forward,remind"></case></response>
-		// If error, it could be:
-		// <response><error code="3">Not logged on</error></response>
+
+        $ticket = new SimpleXMLElement($response);
+
+        // We hope for
+        // <response><case ixBug="2" operations="edit,assign,resolve,reply,forward,remind"></case></response>
+        // If error, it could be:
+        // <response><error code="3">Not logged on</error></response>
         $error = $ticket->xpath('//response/error');
-		if (!empty($error)) {
-            throw new RuntimeException('Updating Fogbugz issue failed with status code ' . $status);
-		}
+
+        if (!empty($error)) {
+            throw new RuntimeException(
+              'Updating Fogbugz issue failed with status code ' . $status
+            );
+        }
+
         if ($this->printTicketStateChanges) {
             printf(
-                "\nUpdating Fogbugz issue #%d, status: %s\n",
-                $ticketId,
-                $statusToBe
+              "\nUpdating Fogbugz issue #%d, status: %s\n",
+              $ticketId,
+              $statusToBe
             );
         }
     }
@@ -204,26 +234,33 @@ class PHPUnit_Extensions_TicketListener_Fogbugz extends PHPUnit_Extensions_Ticke
             return $this->authToken;
         }
 
-        $header = array(
-            'Content-Type: application/x-www-form-urlencoded',
-        );
+        $header = array('Content-Type: application/x-www-form-urlencoded');
 
-		try {
-	        list($status, $response) = $this->callFogbugz(
-	            $this->authUrl
-	        );
-		} catch (RuntimeException $e) {
-			$this->complainAndQuit($e);
-		}
+        try {
+            list($status, $response) = $this->callFogbugz(
+              $this->authUrl
+            );
+        }
+
+        catch (RuntimeException $e) {
+            print 'Error: ' . $e->getMessage() . "\n\n";
+            exit(-1);
+        }
+
         if ($status != 200) {
             throw new RuntimeException('Fogbugz authentication failed');
         }
-		$xml = new SimpleXMLElement($response);
-		$tokenChunk = $xml->xpath('//response/token');
+
+        $xml             = new SimpleXMLElement($response);
+        $tokenChunk      = $xml->xpath('//response/token');
         $this->authToken = trim((string)$tokenChunk[0]);
+
         if (NULL === $this->authToken || empty($this->authToken)) {
-            throw new RuntimeException('Could not detect auth token in response');
+            throw new RuntimeException(
+              'Could not detect auth token in response'
+            );
         }
+
         return $this->authToken;
     }
 
@@ -266,12 +303,4 @@ class PHPUnit_Extensions_TicketListener_Fogbugz extends PHPUnit_Extensions_Ticke
 
         return array($status, $response);
     }
-
-	/**
-	 * Complain and quit.
-	 */
-	protected function complainAndQuit(Exception $e) {
-		echo "Error: " . $e->getMessage() . "\n\n";
-		exit(-1);
-	}
 }
