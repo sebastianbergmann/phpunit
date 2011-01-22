@@ -38,6 +38,9 @@
       </file>
      </dir>
      <dir name="TicketListener">
+      <file baseinstalldir="/" name="Fogbugz.php" role="php">
+       <tasks:replace from="@package_version@" to="version" type="package-info" />
+      </file>
       <file baseinstalldir="/" name="GitHub.php" role="php">
        <tasks:replace from="@package_version@" to="version" type="package-info" />
       </file>
