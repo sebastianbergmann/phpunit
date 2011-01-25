@@ -92,6 +92,11 @@ class PHPUnit_Util_GlobalState
       'HTTP_POST_FILES'
     );
 
+    /**
+     * @var array
+     */
+    protected static $phpunitFiles;
+
     public static function backupGlobals(array $blacklist)
     {
         self::$globals     = array();
@@ -184,7 +189,7 @@ class PHPUnit_Util_GlobalState
 
     public static function getIncludedFilesAsString()
     {
-        $blacklist = array_flip(phpunit_autoload());
+        $blacklist = self::phpunitFiles();
         $files     = get_included_files();
         $result    = '';
 
@@ -349,5 +354,30 @@ class PHPUnit_Util_GlobalState
         }
 
         return $result;
+    }
+
+    /**
+     * @return array
+     * @since  Method available since Release 3.6.0
+     */
+    public static function phpunitFiles()
+    {
+        if (self::$phpunitFiles === NULL) {
+            self::$phpunitFiles = array_flip(
+              array_merge(
+                phpunit_autoload(),
+                phpunit_dbunit_autoload(),
+                phpunit_mockobject_autoload(),
+                phpunit_selenium_autoload(),
+                phpunit_story_autoload(),
+                file_iterator_autoload(),
+                php_codecoverage_autoload(),
+                php_tokenstream_autoload(),
+                text_template_autoload()
+              )
+            );
+        }
+
+        return self::$phpunitFiles;
     }
 }

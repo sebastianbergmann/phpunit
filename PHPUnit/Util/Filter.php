@@ -58,11 +58,6 @@
 class PHPUnit_Util_Filter
 {
     /**
-     * @var array
-     */
-    protected static $blacklist;
-
-    /**
      * Filters stack frames from PHPUnit classes.
      *
      * @param  Exception $e
@@ -71,8 +66,10 @@ class PHPUnit_Util_Filter
      */
     public static function getFilteredStacktrace(Exception $e, $asString = TRUE)
     {
-        if (self::$blacklist === NULL) {
-            self::setupBlacklist();
+        if (!defined('PHPUNIT_TESTSUITE')) {
+            $blacklist = PHPUnit_Util_GlobalState::phpunitFiles();
+        } else {
+            $blacklist = array();
         }
 
         if ($asString === TRUE) {
@@ -95,7 +92,7 @@ class PHPUnit_Util_Filter
 
         foreach ($eTrace as $frame) {
             if (isset($frame['file']) && is_file($frame['file']) &&
-                !isset(self::$blacklist[$frame['file']])) {
+                !isset($blacklist[$frame['file']])) {
                 if ($asString === TRUE) {
                     $filteredStacktrace .= sprintf(
                       "%s:%s\n",
@@ -129,29 +126,5 @@ class PHPUnit_Util_Filter
         }
 
         return FALSE;
-    }
-
-    /**
-     * @since Method available since Release 3.6.0
-     */
-    protected static function setupBlacklist()
-    {
-        if (!defined('PHPUNIT_TESTSUITE')) {
-            self::$blacklist = array_flip(
-              array_merge(
-                phpunit_autoload(),
-                phpunit_dbunit_autoload(),
-                phpunit_mockobject_autoload(),
-                phpunit_selenium_autoload(),
-                phpunit_story_autoload(),
-                file_iterator_autoload(),
-                php_codecoverage_autoload(),
-                php_tokenstream_autoload(),
-                text_template_autoload()
-              )
-            );
-        } else {
-            self::$blacklist = array();
-        }
     }
 }
