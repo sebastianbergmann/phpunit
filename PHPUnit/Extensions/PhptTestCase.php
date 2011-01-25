@@ -45,11 +45,8 @@
 
 if (PHPUnit_Util_Filesystem::fileExistsInIncludePath('PEAR/RunTest.php')) {
     $currentErrorReporting = error_reporting(E_ERROR | E_WARNING | E_PARSE);
-    PHPUnit_Util_Filesystem::collectStart();
     require_once 'PEAR/RunTest.php';
     error_reporting($currentErrorReporting);
-
-    PHPUnit_Util_Filesystem::collectEndAndAddToBlacklist();
 }
 
 require_once 'PHP/Timer.php';
@@ -193,12 +190,6 @@ class PHPUnit_Extensions_PhptTestCase implements PHPUnit_Framework_Test, PHPUnit
         $phpFile      = $path . DIRECTORY_SEPARATOR . str_replace(
                           '.phpt', '.php', $base
                         );
-
-        if (file_exists($phpFile)) {
-            PHP_CodeCoverage_Filter::getInstance()->addFileToBlacklist(
-              $phpFile, 'TESTS'
-            );
-        }
 
         if (is_object($buffer) && $buffer instanceof PEAR_Error) {
             $result->addError(
