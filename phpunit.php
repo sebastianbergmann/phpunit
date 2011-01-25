@@ -43,8 +43,6 @@ if (strpos('@php_bin@', '@php_bin') === 0) {
 
 require 'PHPUnit/Autoload.php';
 
-PHP_CodeCoverage_Filter::getInstance()->addFileToBlacklist(__FILE__, 'PHPUNIT');
-
 if (extension_loaded('xdebug')) {
     xdebug_disable();
 }

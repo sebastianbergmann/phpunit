@@ -186,14 +186,6 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
             );
         }
 
-        $filename = $theClass->getFilename();
-
-        if (strpos($filename, 'eval()') === FALSE) {
-            PHP_CodeCoverage::getInstance()->filter()->addFileToBlacklist(
-              realpath($filename), 'TESTS'
-            );
-        }
-
         if ($name != '') {
             $this->setName($name);
         } else {

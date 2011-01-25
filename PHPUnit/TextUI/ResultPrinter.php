@@ -273,8 +273,7 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
         $this->write(
           $defect->getExceptionAsString() . "\n" .
           PHPUnit_Util_Filter::getFilteredStacktrace(
-            $defect->thrownException(),
-            FALSE
+            $defect->thrownException()
           )
         );
     }

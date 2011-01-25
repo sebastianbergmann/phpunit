@@ -184,8 +184,7 @@ class PHPUnit_Util_GlobalState
 
     public static function getIncludedFilesAsString()
     {
-        $blacklist = PHP_CodeCoverage::getInstance()->filter()->getBlacklist();
-        $blacklist = array_flip($blacklist['PHPUNIT']);
+        $blacklist = array_flip(phpunit_autoload());
         $files     = get_included_files();
         $result    = '';
 

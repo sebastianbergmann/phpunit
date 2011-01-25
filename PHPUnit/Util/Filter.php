@@ -61,11 +61,10 @@ class PHPUnit_Util_Filter
      * Filters stack frames from PHPUnit classes.
      *
      * @param  Exception $e
-     * @param  boolean   $filterTests
      * @param  boolean   $asString
      * @return string
      */
-    public static function getFilteredStacktrace(Exception $e, $filterTests = TRUE, $asString = TRUE)
+    public static function getFilteredStacktrace(Exception $e, $asString = TRUE)
     {
         if ($asString === TRUE) {
             $filteredStacktrace = '';
@@ -73,14 +72,10 @@ class PHPUnit_Util_Filter
             $filteredStacktrace = array();
         }
 
-        $groups = array('DEFAULT');
-
         if (!defined('PHPUNIT_TESTSUITE')) {
-            $groups[] = 'PHPUNIT';
-        }
-
-        if ($filterTests) {
-            $groups[] = 'TESTS';
+            $blacklist = array_flip(phpunit_autoload());
+        } else {
+            $blacklist = array();
         }
 
         if ($e instanceof PHPUnit_Framework_SyntheticError) {
@@ -97,8 +92,7 @@ class PHPUnit_Util_Filter
 
         foreach ($eTrace as $frame) {
             if (isset($frame['file']) && is_file($frame['file']) &&
-                !PHP_CodeCoverage::getInstance()->filter()->isFiltered(
-                  $frame['file'], $groups, TRUE)) {
+                !isset($blacklist[$frame['file']])) {
                 if ($asString === TRUE) {
                     $filteredStacktrace .= sprintf(
                       "%s:%s\n",

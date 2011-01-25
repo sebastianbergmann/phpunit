@@ -81,48 +81,7 @@ class PHPUnit_Util_Filesystem
     }
 
     /**
-     * Starts the collection of loaded files.
-     *
-     * @since  Method available since Release 3.3.0
-     */
-    public static function collectStart()
-    {
-        self::$buffer = get_included_files();
-    }
-
-    /**
-     * Stops the collection of loaded files and
-     * returns the names of the loaded files.
-     *
-     * @return array
-     * @since  Method available since Release 3.3.0
-     */
-    public static function collectEnd()
-    {
-        return array_values(
-          array_diff(get_included_files(), self::$buffer)
-        );
-    }
-
-    /**
-     * Stops the collection of loaded files and adds
-     * the names of the loaded files to the blacklist.
-     *
-     * @return array
-     * @since  Method available since Release 3.4.6
-     */
-    public static function collectEndAndAddToBlacklist()
-    {
-        foreach (self::collectEnd() as $blacklistedFile) {
-            PHP_CodeCoverage_Filter::getInstance()->addFileToBlacklist(
-              $blacklistedFile, 'PHPUNIT'
-            );
-        }
-    }
-
-    /**
-     * Implementation of stream_resolve_include_path() in PHP
-     * for version before PHP 5.3.2.
+     * Wrapper for file_exists() that searches the include_path.
      *
      * @param  string $file
      * @return mixed
@@ -131,10 +90,6 @@ class PHPUnit_Util_Filesystem
      */
     public static function fileExistsInIncludePath($file)
     {
-        if (function_exists('stream_resolve_include_path')) {
-            return stream_resolve_include_path($file);
-        }
-
         if (file_exists($file)) {
             return realpath($file);
         }
