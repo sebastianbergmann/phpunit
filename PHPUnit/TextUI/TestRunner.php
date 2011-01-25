@@ -63,27 +63,33 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
     const EXCEPTION_EXIT = 2;
 
     /**
-     * @var    PHPUnit_Runner_TestSuiteLoader
+     * @var PHP_CodeCoverage
+     */
+    protected $codeCoverage;
+
+    /**
+     * @var PHPUnit_Runner_TestSuiteLoader
      */
     protected $loader = NULL;
 
     /**
-     * @var    PHPUnit_TextUI_ResultPrinter
+     * @var PHPUnit_TextUI_ResultPrinter
      */
     protected $printer = NULL;
 
     /**
-     * @var    boolean
+     * @var boolean
      */
     protected static $versionStringPrinted = FALSE;
 
     /**
-     * @param  PHPUnit_Runner_TestSuiteLoader $loader
-     * @since  Method available since Release 3.4.0
+     * @param PHPUnit_Runner_TestSuiteLoader $loader
+     * @since Method available since Release 3.4.0
      */
     public function __construct(PHPUnit_Runner_TestSuiteLoader $loader = NULL)
     {
-        $this->loader = $loader;
+        $this->codeCoverage = new PHP_CodeCoverage;
+        $this->loader       = $loader;
     }
 
     /**
@@ -270,7 +276,7 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
         if ((isset($arguments['coverageClover']) ||
              isset($arguments['reportDirectory'])) &&
              extension_loaded('xdebug')) {
-            $result->collectCodeCoverageInformation(TRUE);
+            $result->setCodeCoverage($this->codeCoverage);
         }
 
         if (isset($arguments['logDbus'])) {
@@ -325,7 +331,7 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
 
                 $writer = new PHP_CodeCoverage_Report_Clover;
                 $writer->process(
-                  $result->getCodeCoverage(), $arguments['coverageClover']
+                  $this->codeCoverage, $arguments['coverageClover']
                 );
 
                 $this->printer->write("\n");
@@ -360,7 +366,7 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
                 );
 
                 $writer->process(
-                  $result->getCodeCoverage(), $arguments['reportDirectory']
+                  $this->codeCoverage, $arguments['reportDirectory']
                 );
 
                 $this->printer->write("\n");
@@ -675,7 +681,7 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
         if (isset($arguments['configuration'])) {
             $filterConfiguration = $arguments['configuration']->getFilterConfiguration();
 
-            $filter = PHP_CodeCoverage_Filter::getInstance();
+            $filter = $this->codeCoverage->filter();
 
             foreach ($filterConfiguration['blacklist']['include']['directory'] as $dir) {
                 $filter->addDirectoryToBlacklist(
@@ -700,20 +706,18 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
             if ((isset($arguments['coverageClover']) ||
                 isset($arguments['reportDirectory'])) &&
                 extension_loaded('xdebug')) {
-                $coverage = PHP_CodeCoverage::getInstance();
-
-                $coverage->setProcessUncoveredFilesFromWhitelist(
+                $this->codeCoverage->setProcessUncoveredFilesFromWhitelist(
                   $filterConfiguration['whitelist']['addUncoveredFilesFromWhitelist']
                 );
 
                 if (isset($arguments['forceCoversAnnotation'])) {
-                    $coverage->setForceCoversAnnotation(
+                    $this->codeCoverage->setForceCoversAnnotation(
                       $arguments['forceCoversAnnotation']
                     );
                 }
 
                 if (isset($arguments['mapTestClassNameToCoveredClassName'])) {
-                    $coverage->setMapTestClassNameToCoveredClassName(
+                    $this->codeCoverage->setMapTestClassNameToCoveredClassName(
                       $arguments['mapTestClassNameToCoveredClassName']
                     );
                 }

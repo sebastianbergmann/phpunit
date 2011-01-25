@@ -122,14 +122,9 @@ class PHPUnit_Framework_TestResult implements Countable
     /**
      * Code Coverage information.
      *
-     * @var array
+     * @var PHP_CodeCoverage
      */
     protected $codeCoverage;
-
-    /**
-     * @var boolean
-     */
-    protected $collectCodeCoverageInformation = FALSE;
 
     /**
      * @var boolean
@@ -170,18 +165,6 @@ class PHPUnit_Framework_TestResult implements Countable
      * @var boolean
      */
     protected $lastTestFailed = FALSE;
-
-    /**
-     * @param PHP_CodeCoverage $codeCoverage
-     */
-    public function __construct(PHP_CodeCoverage $codeCoverage = NULL)
-    {
-        if ($codeCoverage === NULL) {
-            $codeCoverage = PHP_CodeCoverage::getInstance();
-        }
-
-        $this->codeCoverage = $codeCoverage;
-    }
 
     /**
      * Registers a TestListener.
@@ -546,22 +529,6 @@ class PHPUnit_Framework_TestResult implements Countable
     }
 
     /**
-     * Enables or disables the collection of Code Coverage information.
-     *
-     * @param  boolean $flag
-     * @throws InvalidArgumentException
-     * @since  Method available since Release 2.3.0
-     */
-    public function collectCodeCoverageInformation($flag)
-    {
-        if (is_bool($flag)) {
-            $this->collectCodeCoverageInformation = $flag;
-        } else {
-            throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'boolean');
-        }
-    }
-
-    /**
      * Returns whether code coverage information should be collected.
      *
      * @return boolean If code coverage should be collected
@@ -569,7 +536,7 @@ class PHPUnit_Framework_TestResult implements Countable
      */
     public function getCollectCodeCoverageInformation()
     {
-        return $this->collectCodeCoverageInformation;
+        return $this->codeCoverage !== NULL;
     }
 
     /**
@@ -619,7 +586,7 @@ class PHPUnit_Framework_TestResult implements Countable
         }
 
         $useXdebug = self::$useXdebug &&
-                     $this->collectCodeCoverageInformation &&
+                     $this->codeCoverage !== NULL &&
                      !$test instanceof PHPUnit_Extensions_SeleniumTestCase &&
                      !$test instanceof PHPUnit_Framework_Warning;
 
@@ -733,6 +700,17 @@ class PHPUnit_Framework_TestResult implements Countable
     public function getCodeCoverage()
     {
         return $this->codeCoverage;
+    }
+
+    /**
+     * Returns the PHP_CodeCoverage object.
+     *
+     * @return PHP_CodeCoverage
+     * @since  Method available since Release 3.6.0
+     */
+    public function setCodeCoverage(PHP_CodeCoverage $codeCoverage)
+    {
+        $this->codeCoverage = $codeCoverage;
     }
 
     /**
