@@ -624,13 +624,7 @@ class PHPUnit_Framework_TestResult implements Countable
                      !$test instanceof PHPUnit_Framework_Warning;
 
         if ($useXdebug) {
-            $filterGroups = array('DEFAULT', 'TESTS');
-
-            if (!defined('PHPUNIT_TESTSUITE')) {
-                $filterGroups[] = 'PHPUNIT';
-            }
-
-            $this->codeCoverage->start($test, $filterGroups);
+            $this->codeCoverage->start($test);
         }
 
         PHP_Timer::start();
