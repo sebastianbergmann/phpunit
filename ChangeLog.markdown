@@ -22,3 +22,4 @@ PHPUnit 3.6.0
 * `assertType()` and `assertNotType()` as well as `assertAttributeType()` and `assertAttributeNotType()` have been removed. `assertInternalType()` should be used for asserting internal types such as `integer` or `string` whereas `assertInstanceOf()` should be used for asserting that an object is an instance of a specified class or interface.
 * The `PHPUnit_Extensions_Story_TestCase` functionality has been moved to a separate package.
 * The syntax check functionality has been removed.
+* The XML configuration file is now the only way to configure the blacklist and whitelist for code coverage reporting.
