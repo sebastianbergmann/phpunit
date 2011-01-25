@@ -65,6 +65,7 @@ function phpunit_autoload($class) {
           'phpunit_extensions_repeatedtest' => '/Extensions/RepeatedTest.php',
           'phpunit_extensions_testdecorator' => '/Extensions/TestDecorator.php',
           'phpunit_extensions_ticketlistener' => '/Extensions/TicketListener.php',
+          'phpunit_extensions_ticketlistener_fogbugz' => '/Extensions/TicketListener/Fogbugz.php',
           'phpunit_extensions_ticketlistener_github' => '/Extensions/TicketListener/GitHub.php',
           'phpunit_extensions_ticketlistener_googlecode' => '/Extensions/TicketListener/GoogleCode.php',
           'phpunit_extensions_ticketlistener_trac' => '/Extensions/TicketListener/Trac.php',
