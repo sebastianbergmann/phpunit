@@ -73,7 +73,19 @@ class PHPUnit_Util_Filter
         }
 
         if (!defined('PHPUNIT_TESTSUITE')) {
-            $blacklist = array_flip(phpunit_autoload());
+            $blacklist = array_flip(
+              array_merge(
+                phpunit_autoload(),
+                phpunit_dbunit_autoload(),
+                phpunit_mockobject_autoload(),
+                phpunit_selenium_autoload(),
+                phpunit_story_autoload(),
+                file_iterator_autoload(),
+                php_codecoverage_autoload(),
+                php_tokenstream_autoload(),
+                text_template_autoload()
+              )
+            );
         } else {
             $blacklist = array();
         }
