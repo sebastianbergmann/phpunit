@@ -42,53 +42,60 @@
  * @since      File available since Release 1.1.0
  */
 
-function phpunit_mockobject_autoload($class) {
+function phpunit_mockobject_autoload($class = NULL) {
     static $classes = NULL;
     static $path = NULL;
-    static $filter = NULL;
 
     if ($classes === NULL) {
         $classes = array(
-          'phpunit_framework_mockobject_mockbuilder' => '/Framework/MockObject/MockBuilder.php',
-          'phpunit_framework_mockobject_invocationmocker' => '/Framework/MockObject/InvocationMocker.php',
-          'phpunit_framework_mockobject_invocation' => '/Framework/MockObject/Invocation.php',
-          'phpunit_framework_mockobject_mockobject' => '/Framework/MockObject/MockObject.php',
-          'phpunit_framework_mockobject_builder_parametersmatch' => '/Framework/MockObject/Builder/ParametersMatch.php',
-          'phpunit_framework_mockobject_builder_invocationmocker' => '/Framework/MockObject/Builder/InvocationMocker.php',
           'phpunit_framework_mockobject_builder_identity' => '/Framework/MockObject/Builder/Identity.php',
-          'phpunit_framework_mockobject_builder_stub' => '/Framework/MockObject/Builder/Stub.php',
-          'phpunit_framework_mockobject_builder_namespace' => '/Framework/MockObject/Builder/Namespace.php',
+          'phpunit_framework_mockobject_builder_invocationmocker' => '/Framework/MockObject/Builder/InvocationMocker.php',
           'phpunit_framework_mockobject_builder_match' => '/Framework/MockObject/Builder/Match.php',
           'phpunit_framework_mockobject_builder_methodnamematch' => '/Framework/MockObject/Builder/MethodNameMatch.php',
-          'phpunit_framework_mockobject_matcher_invokedrecorder' => '/Framework/MockObject/Matcher/InvokedRecorder.php',
-          'phpunit_framework_mockobject_matcher_invocation' => '/Framework/MockObject/Matcher/Invocation.php',
-          'phpunit_framework_mockobject_matcher_statelessinvocation' => '/Framework/MockObject/Matcher/StatelessInvocation.php',
-          'phpunit_framework_mockobject_matcher_invokedcount' => '/Framework/MockObject/Matcher/InvokedCount.php',
-          'phpunit_framework_mockobject_matcher_parameters' => '/Framework/MockObject/Matcher/Parameters.php',
-          'phpunit_framework_mockobject_matcher_anyparameters' => '/Framework/MockObject/Matcher/AnyParameters.php',
-          'phpunit_framework_mockobject_matcher_methodname' => '/Framework/MockObject/Matcher/MethodName.php',
-          'phpunit_framework_mockobject_matcher_anyinvokedcount' => '/Framework/MockObject/Matcher/AnyInvokedCount.php',
-          'phpunit_framework_mockobject_matcher_invokedatindex' => '/Framework/MockObject/Matcher/InvokedAtIndex.php',
-          'phpunit_framework_mockobject_matcher_invokedatleastonce' => '/Framework/MockObject/Matcher/InvokedAtLeastOnce.php',
-          'phpunit_framework_mockobject_stub' => '/Framework/MockObject/Stub.php',
-          'phpunit_framework_mockobject_matcher' => '/Framework/MockObject/Matcher.php',
+          'phpunit_framework_mockobject_builder_namespace' => '/Framework/MockObject/Builder/Namespace.php',
+          'phpunit_framework_mockobject_builder_parametersmatch' => '/Framework/MockObject/Builder/ParametersMatch.php',
+          'phpunit_framework_mockobject_builder_stub' => '/Framework/MockObject/Builder/Stub.php',
+          'phpunit_framework_mockobject_generator' => '/Framework/MockObject/Generator.php',
+          'phpunit_framework_mockobject_invocation' => '/Framework/MockObject/Invocation.php',
           'phpunit_framework_mockobject_invocation_object' => '/Framework/MockObject/Invocation/Object.php',
           'phpunit_framework_mockobject_invocation_static' => '/Framework/MockObject/Invocation/Static.php',
-          'phpunit_framework_mockobject_verifiable' => '/Framework/MockObject/Verifiable.php',
+          'phpunit_framework_mockobject_invocationmocker' => '/Framework/MockObject/InvocationMocker.php',
           'phpunit_framework_mockobject_invokable' => '/Framework/MockObject/Invokable.php',
-          'phpunit_framework_mockobject_generator' => '/Framework/MockObject/Generator.php',
-          'phpunit_framework_mockobject_stub_matchercollection' => '/Framework/MockObject/Stub/MatcherCollection.php',
+          'phpunit_framework_mockobject_matcher' => '/Framework/MockObject/Matcher.php',
+          'phpunit_framework_mockobject_matcher_anyinvokedcount' => '/Framework/MockObject/Matcher/AnyInvokedCount.php',
+          'phpunit_framework_mockobject_matcher_anyparameters' => '/Framework/MockObject/Matcher/AnyParameters.php',
+          'phpunit_framework_mockobject_matcher_invocation' => '/Framework/MockObject/Matcher/Invocation.php',
+          'phpunit_framework_mockobject_matcher_invokedatindex' => '/Framework/MockObject/Matcher/InvokedAtIndex.php',
+          'phpunit_framework_mockobject_matcher_invokedatleastonce' => '/Framework/MockObject/Matcher/InvokedAtLeastOnce.php',
+          'phpunit_framework_mockobject_matcher_invokedcount' => '/Framework/MockObject/Matcher/InvokedCount.php',
+          'phpunit_framework_mockobject_matcher_invokedrecorder' => '/Framework/MockObject/Matcher/InvokedRecorder.php',
+          'phpunit_framework_mockobject_matcher_methodname' => '/Framework/MockObject/Matcher/MethodName.php',
+          'phpunit_framework_mockobject_matcher_parameters' => '/Framework/MockObject/Matcher/Parameters.php',
+          'phpunit_framework_mockobject_matcher_statelessinvocation' => '/Framework/MockObject/Matcher/StatelessInvocation.php',
+          'phpunit_framework_mockobject_mockbuilder' => '/Framework/MockObject/MockBuilder.php',
+          'phpunit_framework_mockobject_mockobject' => '/Framework/MockObject/MockObject.php',
+          'phpunit_framework_mockobject_stub' => '/Framework/MockObject/Stub.php',
           'phpunit_framework_mockobject_stub_consecutivecalls' => '/Framework/MockObject/Stub/ConsecutiveCalls.php',
-          'phpunit_framework_mockobject_stub_return' => '/Framework/MockObject/Stub/Return.php',
-          'phpunit_framework_mockobject_stub_returncallback' => '/Framework/MockObject/Stub/ReturnCallback.php',
           'phpunit_framework_mockobject_stub_exception' => '/Framework/MockObject/Stub/Exception.php',
+          'phpunit_framework_mockobject_stub_matchercollection' => '/Framework/MockObject/Stub/MatcherCollection.php',
+          'phpunit_framework_mockobject_stub_return' => '/Framework/MockObject/Stub/Return.php',
+          'phpunit_framework_mockobject_stub_returnargument' => '/Framework/MockObject/Stub/ReturnArgument.php',
+          'phpunit_framework_mockobject_stub_returncallback' => '/Framework/MockObject/Stub/ReturnCallback.php',
           'phpunit_framework_mockobject_stub_returnself' => '/Framework/MockObject/Stub/ReturnSelf.php',
-          'phpunit_framework_mockobject_stub_returnargument' => '/Framework/MockObject/Stub/ReturnArgument.php'
+          'phpunit_framework_mockobject_verifiable' => '/Framework/MockObject/Verifiable.php'
         );
 
         $path = dirname(dirname(dirname(__FILE__)));
+    }
 
-        $filter = PHP_CodeCoverage_Filter::getInstance();
+    if ($class === NULL) {
+        $result = array();
+
+        foreach ($classes as $file) {
+            $result[] = $path . $file;
+        }
+
+        return $result;
     }
 
     $cn = strtolower($class);
@@ -97,8 +104,6 @@ function phpunit_mockobject_autoload($class) {
         $file = $path . $classes[$cn];
 
         require $file;
-
-        $filter->addFileToBlackList($file, 'PHPUNIT');
     }
 }
 
