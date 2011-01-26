@@ -52,8 +52,10 @@ $phar->startBuffering();
 $files = array_keys(PHPUnit_Util_GlobalState::phpunitFiles());
 unset($files[1]);
 
+$offset = substr_count(__FILE__, '/');
+
 foreach ($files as $file) {
-    $phar->addFile($file);
+    $phar->addFile($file, join('/', array_slice(explode('/', $file), $offset)));
 }
 
 $phar->setStub($stub);
