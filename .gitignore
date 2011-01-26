@@ -1,2 +1,3 @@
 build
+phpunit.phar
 phpunit.xml

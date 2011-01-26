@@ -1,6 +1,6 @@
+#!/usr/bin/env php
 <?php
-/**
- * PHPUnit
+/* PHPUnit
  *
  * Copyright (c) 2002-2011, Sebastian Bergmann <sebastian@phpunit.de>.
  * All rights reserved.
@@ -29,40 +29,32 @@
  * INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING,
  * BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
  * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
- * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
+ * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRIC
  * LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
- *
- * @package    PHPUnit
- * @subpackage Util
- * @author     Sebastian Bergmann <sebastian@phpunit.de>
- * @copyright  2002-2011 Sebastian Bergmann <sebastian@phpunit.de>
- * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
- * @link       http://www.phpunit.de/
- * @since      File available since Release 3.5.12
  */
 
-/**
- * Default utility for PHP sub-processes.
- *
- * @package    PHPUnit
- * @subpackage Util
- * @author     Sebastian Bergmann <sebastian@phpunit.de>
- * @copyright  2002-2011 Sebastian Bergmann <sebastian@phpunit.de>
- * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
- * @version    Release: @package_version@
- * @link       http://www.phpunit.de/
- * @since      Class available since Release 3.5.12
- */
-class PHPUnit_Util_PHP_Default extends PHPUnit_Util_PHP
-{
-    /**
-     * @param resource $pipe
-     * @since Method available since Release 3.5.12
-     */
-    protected function process($pipe, $job)
-    {
-        fwrite($pipe, $job);
-    }
+require 'PHPUnit/Autoload.php';
+
+$stub = <<<ENDSTUB
+#!/usr/bin/env php
+<?php
+Phar::mapPhar('phpunit.phar');
+require 'phar://phpunit.phar/PHPUnit/Autoload.php';
+PHPUnit_TextUI_Command::main();
+__HALT_COMPILER();
+ENDSTUB;
+
+$phar = new Phar('phpunit.phar', 0, 'phpunit.phar');
+$phar->startBuffering();
+
+$files = array_keys(PHPUnit_Util_GlobalState::phpunitFiles());
+unset($files[1]);
+
+foreach ($files as $file) {
+    $phar->addFile($file);
 }
+
+$phar->setStub($stub);
+$phar->stopBuffering();
