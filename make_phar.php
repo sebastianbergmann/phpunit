@@ -35,13 +35,13 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-require 'File/Iterator/Autoload.php';
+require 'PHPUnit/Autoload.php';
 
 $stub = <<<ENDSTUB
 #!/usr/bin/env php
 <?php
 Phar::mapPhar('phpunit.phar');
-require 'phar://phpunit.phar/TextUI/Command.php';
+require 'phar://phpunit.phar/PHPUnit/Autoload.php';
 PHPUnit_TextUI_Command::main();
 __HALT_COMPILER();
 ENDSTUB;
@@ -49,10 +49,12 @@ ENDSTUB;
 $phar = new Phar('phpunit.phar', 0, 'phpunit.phar');
 $phar->startBuffering();
 
-$phar->buildFromIterator(
-  File_Iterator_Factory::getFileIterator('PHPUnit'),
-  dirname(__FILE__) . DIRECTORY_SEPARATOR . 'PHPUnit'
-);
+$files = array_keys(PHPUnit_Util_GlobalState::phpunitFiles());
+unset($files[1]);
+
+foreach ($files as $file) {
+    $phar->addFile($file);
+}
 
 $phar->setStub($stub);
 $phar->stopBuffering();
