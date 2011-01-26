@@ -34,6 +34,17 @@ The documentation for PHPUnit is available in different formats:
 * [Japanese, PDF](http://www.phpunit.de/manual/3.5/ja/phpunit-book.pdf)
 * [Japanese, ePub](http://www.phpunit.de/manual/3.5/ja/phpunit-book.epub)
 
+Mailing Lists
+-------------
+
+* Send an email to `user-subscribe@phpunit.de` to subscribe to the `phpunit-user` mailing list. This is a medium volume list for general PHPUnit support; ask PHPUnit questions here.
+* Send an email to `dev-subscribe@phpunit.de` to subscribe to the `phpunit-dev` mailing list. This is a low volume list for those who want to help out with the development of PHPUnit.
+
+IRC
+---
+
+The [#phpunit channel on the Freenode IRC network](irc://freenode.net/phpunit) is a place to chat about PHPUnit.
+
 Using PHPUnit From a Git Checkout
 ---------------------------------
 
