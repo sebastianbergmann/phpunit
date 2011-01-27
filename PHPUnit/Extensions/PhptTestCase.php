@@ -49,8 +49,6 @@ if (PHPUnit_Util_Filesystem::fileExistsInIncludePath('PEAR/RunTest.php')) {
     error_reporting($currentErrorReporting);
 }
 
-require_once 'PHP/Timer.php';
-
 /**
  * Wrapper to run .phpt test cases.
  *

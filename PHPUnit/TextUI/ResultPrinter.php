@@ -43,8 +43,6 @@
  * @since      File available since Release 2.0.0
  */
 
-require_once 'PHP/Timer.php';
-
 /**
  * Prints the result of a TextUI TestRunner run.
  *
