@@ -43,8 +43,6 @@
  * @since      File available since Release 2.0.0
  */
 
-require_once 'PHP/Timer.php';
-
 /**
  * A TestResult collects the results of executing a test case.
  *

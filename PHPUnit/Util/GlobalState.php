@@ -372,6 +372,7 @@ class PHPUnit_Util_GlobalState
                 phpunit_story_autoload(),
                 file_iterator_autoload(),
                 php_codecoverage_autoload(),
+                php_timer_autoload(),
                 php_tokenstream_autoload(),
                 text_template_autoload()
               )
