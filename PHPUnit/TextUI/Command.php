@@ -866,7 +866,7 @@ Usage: phpunit [switches] UnitTest [UnitTest.php]
   --syntax-check           Try to check source files for syntax errors.
 
   --bootstrap <file>       A "bootstrap" PHP file that is run before the tests.
-  --configuration <file>   Read configuration from XML file.
+  -c <file>|--configuration <file> Read configuration from XML file.
   --no-configuration       Ignore default configuration file (phpunit.xml).
   --include-path <path(s)> Prepend PHP's include_path with given path(s).
   -d key[=value]           Sets a php.ini value.
