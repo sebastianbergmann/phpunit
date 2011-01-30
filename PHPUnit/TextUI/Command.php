@@ -237,7 +237,7 @@ class PHPUnit_TextUI_Command
         try {
             $this->options = PHPUnit_Util_Getopt::getopt(
               $argv,
-              'd:c:',
+              'd:c:hv',
               array_keys($this->longOptions)
             );
         }
@@ -321,6 +321,7 @@ class PHPUnit_TextUI_Command
                 }
                 break;
 
+                case 'h':
                 case '--help': {
                     $this->showHelp();
                     exit(PHPUnit_TextUI_TestRunner::SUCCESS_EXIT);
@@ -503,6 +504,7 @@ class PHPUnit_TextUI_Command
                 }
                 break;
 
+                case 'v':
                 case '--verbose': {
                     $this->arguments['verbose'] = TRUE;
                 }
@@ -852,7 +854,7 @@ Usage: phpunit [switches] UnitTest [UnitTest.php]
   --stop-on-skipped        Stop execution upon first skipped test.
   --stop-on-incomplete     Stop execution upon first incomplete test.
   --strict                 Mark a test as incomplete if no assertions are made.
-  --verbose                Output more verbose information.
+  -v|--verbose             Output more verbose information.
   --wait                   Waits for a keystroke after each test.
 
   --skeleton-class         Generate Unit class for UnitTest in UnitTest.php.
@@ -869,7 +871,7 @@ Usage: phpunit [switches] UnitTest [UnitTest.php]
   --include-path <path(s)> Prepend PHP's include_path with given path(s).
   -d key[=value]           Sets a php.ini value.
 
-  --help                   Prints this usage information.
+  -h|--help                Prints this usage information.
   --version                Prints the version and exits.
 
 EOT;
