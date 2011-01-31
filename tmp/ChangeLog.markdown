@@ -3,6 +3,11 @@ PHPUnit_MockObject 1.0
 
 This is the list of changes for the PHPUnit_MockObject 1.0 release series.
 
+PHPUnit_MockObject 1.0.7
+------------------------
+
+* Fixed GH-38: Cannot mock methods that return a reference.
+
 PHPUnit_MockObject 1.0.6
 ------------------------
 
