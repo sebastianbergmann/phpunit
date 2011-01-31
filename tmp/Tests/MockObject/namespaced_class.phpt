@@ -55,11 +55,13 @@ class MockFoo extends NS\Foo implements PHPUnit_Framework_MockObject_MockObject
             }
         }
 
-        return $this->__phpunit_getInvocationMocker()->invoke(
+        $result = $this->__phpunit_getInvocationMocker()->invoke(
           new PHPUnit_Framework_MockObject_Invocation_Object(
             'NS\Foo', 'bar', $arguments, $this
           )
         );
+
+        return $result;
     }
 
     public function baz(NS\Foo $foo)
@@ -75,11 +77,13 @@ class MockFoo extends NS\Foo implements PHPUnit_Framework_MockObject_MockObject
             }
         }
 
-        return $this->__phpunit_getInvocationMocker()->invoke(
+        $result = $this->__phpunit_getInvocationMocker()->invoke(
           new PHPUnit_Framework_MockObject_Invocation_Object(
             'NS\Foo', 'baz', $arguments, $this
           )
         );
+
+        return $result;
     }
 
     public function expects(PHPUnit_Framework_MockObject_Matcher_Invocation $matcher)
