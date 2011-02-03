@@ -53,6 +53,7 @@
  * <phpunit backupGlobals="true"
  *          backupStaticAttributes="false"
  *          bootstrap="/path/to/bootstrap.php"
+ *          cacheTokens="true"
  *          colors="false"
  *          convertErrorsToExceptions="true"
  *          convertNoticesToExceptions="true"
@@ -528,6 +529,12 @@ class PHPUnit_Util_Configuration
     {
         $result = array();
         $root   = $this->document->documentElement;
+
+        if ($root->hasAttribute('cacheTokens')) {
+            $result['cacheTokens'] = $this->getBoolean(
+              (string)$root->getAttribute('cacheTokens'), TRUE
+            );
+        }
 
         if ($root->hasAttribute('colors')) {
             $result['colors'] = $this->getBoolean(

@@ -271,6 +271,7 @@ class Util_ConfigurationTest extends PHPUnit_Framework_TestCase
             'backupGlobals' => TRUE,
             'backupStaticAttributes' => FALSE,
             'bootstrap' => '/path/to/bootstrap.php',
+            'cacheTokens' => TRUE,
             'colors' => FALSE,
             'convertErrorsToExceptions' => TRUE,
             'convertNoticesToExceptions' => TRUE,

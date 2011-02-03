@@ -329,7 +329,10 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
                   'a moment.'
                 );
 
-                $writer = new PHP_CodeCoverage_Report_Clover;
+                $writer = new PHP_CodeCoverage_Report_Clover(
+                  $arguments['cacheTokens']
+                );
+
                 $writer->process(
                   $this->codeCoverage, $arguments['coverageClover']
                 );
@@ -356,6 +359,7 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
                 $writer = new PHP_CodeCoverage_Report_HTML(
                   array(
                     'title'          => $title,
+                    'cacheTokens'    => $arguments['cacheTokens'],
                     'charset'        => $arguments['reportCharset'],
                     'yui'            => $arguments['reportYUI'],
                     'highlight'      => $arguments['reportHighlight'],
@@ -500,6 +504,11 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
             if (isset($phpunitConfiguration['bootstrap']) &&
                 !isset($arguments['bootstrap'])) {
                 $arguments['bootstrap'] = $phpunitConfiguration['bootstrap'];
+            }
+
+            if (isset($phpunitConfiguration['cacheTokens']) &&
+                !isset($arguments['cacheTokens'])) {
+                $arguments['cacheTokens'] = $phpunitConfiguration['cacheTokens'];
             }
 
             if (isset($phpunitConfiguration['colors']) &&
@@ -746,6 +755,7 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
 
         $arguments['backupGlobals']               = isset($arguments['backupGlobals'])               ? $arguments['backupGlobals']               : NULL;
         $arguments['backupStaticAttributes']      = isset($arguments['backupStaticAttributes'])      ? $arguments['backupStaticAttributes']      : NULL;
+        $arguments['cacheTokens']                 = isset($arguments['cacheTokens'])                 ? $arguments['cacheTokens']                 : TRUE;
         $arguments['colors']                      = isset($arguments['colors'])                      ? $arguments['colors']                      : FALSE;
         $arguments['convertErrorsToExceptions']   = isset($arguments['convertErrorsToExceptions'])   ? $arguments['convertErrorsToExceptions']   : TRUE;
         $arguments['convertNoticesToExceptions']  = isset($arguments['convertNoticesToExceptions'])  ? $arguments['convertNoticesToExceptions']  : TRUE;

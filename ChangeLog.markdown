@@ -19,6 +19,7 @@ PHPUnit 3.6.0
 * `@ticket` is now an alias for `@group`.
 * Added `--printer` to specify a class (that extends `PHPUnit_Util_Printer` and implements `PHPUnit_Framework_TestListener`) to print test runner output.
 * Added a ticket listener that interacts with the Fogbugz issue API.
+* Added an option to disable the caching of `PHP_Token_Stream` objects during code coverage report generation to reduce the memory usage.
 * `assertType()` and `assertNotType()` as well as `assertAttributeType()` and `assertAttributeNotType()` have been removed. `assertInternalType()` should be used for asserting internal types such as `integer` or `string` whereas `assertInstanceOf()` should be used for asserting that an object is an instance of a specified class or interface.
 * The `PHPUnit_Extensions_Story_TestCase` functionality has been moved to a separate package.
 * The syntax check functionality has been removed.
