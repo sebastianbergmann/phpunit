@@ -393,7 +393,7 @@ class PHPUnit_Util_Configuration
                 if ($log->hasAttribute('yui')) {
                     $result['yui'] = $this->getBoolean(
                       (string)$log->getAttribute('yui'),
-                      FALSE
+                      TRUE
                     );
                 }
 
