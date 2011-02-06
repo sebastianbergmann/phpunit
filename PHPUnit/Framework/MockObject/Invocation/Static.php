@@ -71,16 +71,16 @@ class PHPUnit_Framework_MockObject_Invocation_Static implements PHPUnit_Framewor
      * @var array
      */
     protected static $uncloneableClasses = array(
-      'AppendIterator' => TRUE,
-      'CachingIterator' => TRUE,
-      'Closure' => TRUE,
-      'COMPersistHelper' => TRUE,
-      'IteratorIterator' => TRUE,
-      'LimitIterator' => TRUE,
-      'RecursiveCachingIterator' => TRUE,
-      'RecursiveRegexIterator' => TRUE,
-      'RegexIterator' => TRUE,
-      'ZipArchive' => TRUE
+      'AppendIterator',
+      'CachingIterator',
+      'Closure',
+      'COMPersistHelper',
+      'IteratorIterator',
+      'LimitIterator',
+      'RecursiveCachingIterator',
+      'RecursiveRegexIterator',
+      'RegexIterator',
+      'ZipArchive'
     );
 
     /**
@@ -142,22 +142,35 @@ class PHPUnit_Framework_MockObject_Invocation_Static implements PHPUnit_Framewor
      */
     protected function cloneObject($original)
     {
-        $cloneable = TRUE;
+        $cloneable = NULL;
         $object    = new ReflectionObject($original);
 
         if (method_exists($object, 'isCloneable')) {
             $cloneable = $object->isCloneable();
         }
 
-        else if ($object->isInternal() &&
-            isset(self::$uncloneableExtensions[$object->getExtensionName()]) ||
-            isset(self::$uncloneableClasses[$object->getName()])) {
+        if ($cloneable === NULL &&
+            $object->isInternal() &&
+            isset(self::$uncloneableExtensions[$object->getExtensionName()])) {
             $cloneable = FALSE;
         }
 
-        else if ($object->hasMethod('__clone')) {
+        if ($cloneable === NULL && $object->hasMethod('__clone')) {
             $method    = $object->getMethod('__clone');
             $cloneable = $method->isPublic();
+        }
+
+        if ($cloneable === NULL) {
+            foreach (self::$uncloneableClasses as $class) {
+                if ($original instanceof $class) {
+                    $cloneable = FALSE;
+                    break;
+                }
+            }
+        }
+
+        if ($cloneable === NULL) {
+            $cloneable = TRUE;
         }
 
         if ($cloneable) {
