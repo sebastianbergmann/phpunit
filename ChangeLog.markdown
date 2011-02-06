@@ -3,6 +3,11 @@ PHPUnit_MockObject 1.0
 
 This is the list of changes for the PHPUnit_MockObject 1.0 release series.
 
+PHPUnit_MockObject 1.0.8
+------------------------
+
+* The blacklist of uncloneable classes did not work for classes that extend an uncloneable class.
+
 PHPUnit_MockObject 1.0.7
 ------------------------
 
