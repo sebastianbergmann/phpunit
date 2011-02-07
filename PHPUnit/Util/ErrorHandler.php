@@ -48,6 +48,7 @@
 require_once 'PHPUnit/Framework/Error.php';
 require_once 'PHPUnit/Framework/Error/Notice.php';
 require_once 'PHPUnit/Framework/Error/Warning.php';
+require_once 'PHPUnit/Framework/Error/Deprecated.php';
 
 /**
  * Error handler that converts PHP errors and warnings to exceptions.
@@ -113,6 +114,14 @@ class PHPUnit_Util_ErrorHandler
             }
 
             $exception = 'PHPUnit_Framework_Error_Warning';
+        }
+
+        else if ($errno == E_DEPRECATED || $errno == E_USER_DEPRECATED) {
+            if (PHPUnit_Framework_Error_Deprecated::$enabled !== TRUE) {
+                return FALSE;
+            }
+
+            $exception = 'PHPUnit_Framework_Error_Deprecated';
         }
 
         else {
