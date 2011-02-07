@@ -309,6 +309,8 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
           $result->notImplementedCount(),
           'incomplete test'
         );
+
+        print "\n";
     }
 
     /**
@@ -322,6 +324,8 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
           $result->skippedCount(),
           'skipped test'
         );
+
+        print "\n";
     }
 
     protected function printHeader()
