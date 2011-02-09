@@ -71,15 +71,12 @@ class PHPUnit_Framework_MockObject_Invocation_Static implements PHPUnit_Framewor
      * @var array
      */
     protected static $uncloneableClasses = array(
-      'AppendIterator',
-      'CachingIterator',
       'Closure',
       'COMPersistHelper',
       'IteratorIterator',
-      'LimitIterator',
-      'RecursiveCachingIterator',
-      'RecursiveRegexIterator',
-      'RegexIterator',
+      'RecursiveIteratorIterator',
+      'SplFileObject',
+      'PDORow',
       'ZipArchive'
     );
 
