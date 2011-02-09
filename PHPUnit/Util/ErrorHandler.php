@@ -116,7 +116,7 @@ class PHPUnit_Util_ErrorHandler
             $exception = 'PHPUnit_Framework_Error_Warning';
         }
 
-        else if ($errno == E_DEPRECATED || $errno == E_USER_DEPRECATED) {
+        else if (version_compare(PHP_VERSION, '5.3', '>=') && ($errno == E_DEPRECATED || $errno == E_USER_DEPRECATED)) {
             if (PHPUnit_Framework_Error_Deprecated::$enabled !== TRUE) {
                 return FALSE;
             }
