@@ -71,8 +71,8 @@ class PHPUnit_Framework_ComparisonFailure_Array extends PHPUnit_Framework_Compar
         }
 
         $diff = PHPUnit_Util_Diff::diff(
-          print_r($this->expected, TRUE),
-          print_r($this->actual, TRUE)
+          self::dumpArray($this->expected),
+          self::dumpArray($this->actual)
         );
 
         if ($diff !== FALSE) {
@@ -136,5 +136,20 @@ class PHPUnit_Framework_ComparisonFailure_Array extends PHPUnit_Framework_Compar
         }
 
         return $diff;
+    }
+
+    /**
+     * Dumps the contents of an array to a string.
+     *
+     * @param  array $array
+     * @return string
+     * @since  Method available since Release 3.5.11
+     */
+    protected static function dumpArray($array)
+    {
+        ob_start();
+        var_dump($array);
+
+        return ob_get_clean();
     }
 }
