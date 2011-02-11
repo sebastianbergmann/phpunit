@@ -134,24 +134,26 @@ class PHPUnit_Util_PHP
      * @param  PHPUnit_Framework_TestCase   $test
      * @param  PHPUnit_Framework_TestResult $result
      * @return array|null
+     * @throws PHPUnit_Framework_Exception
      */
     public static function runJob($job, PHPUnit_Framework_Test $test = NULL, PHPUnit_Framework_TestResult $result = NULL)
     {
+        if(!($file = tempnam(sys_get_temp_dir(), 'PHPUnit')) || file_put_contents($file, $job) === false) {
+            throw new PHPUnit_Framework_Exception(
+              'Unable to write temporary files for process isolation.'
+            );
+        }
+
         $process = proc_open(
           self::getPhpBinary(), self::$descriptorSpec, $pipes
         );
-
-        // Workaround for http://bugs.php.net/bug.php?id=52911
-        if (DIRECTORY_SEPARATOR == '\\') {
-            sleep(2);
-        }
 
         if (is_resource($process)) {
             if ($result !== NULL) {
                 $result->startTest($test);
             }
 
-            fwrite($pipes[0], $job);
+            fwrite($pipes[0], "<?php require_once '" . addcslashes($file, "'") .  "'; ?>");
             fclose($pipes[0]);
 
             $stdout = stream_get_contents($pipes[1]);
@@ -161,12 +163,15 @@ class PHPUnit_Util_PHP
             fclose($pipes[2]);
 
             proc_close($process);
+            unlink($file);
 
             if ($result !== NULL) {
                 self::processChildResult($test, $result, $stdout, $stderr);
             } else {
                 return array('stdout' => $stdout, 'stderr' => $stderr);
             }
+        } else {
+            unlink($file);
         }
     }
 
