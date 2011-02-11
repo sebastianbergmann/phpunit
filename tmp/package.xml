@@ -172,7 +172,18 @@
     <channel>pear.phpunit.de</channel>
     <min>1.0.0</min>
    </package>
+   <extension>
+    <name>reflection</name>
+   </extension>
+   <extension>
+    <name>spl</name>
+   </extension>
   </required>
+  <optional>
+   <extension>
+    <name>soap</name>
+   </extension>
+  </optional>
  </dependencies>
  <phprelease/>
 </package>
