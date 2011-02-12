@@ -635,13 +635,13 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
 
         $result->startTestSuite($this);
 
-        $doSetup = true;
+        $doSetup = TRUE;
+
         if (!empty($excludeGroups)) {
             foreach ($this->groups as $_group => $_tests) {
-                if (in_array($_group, $excludeGroups) && count($_tests) == count($this->tests)) {
-                    // all tests would be skipped; therefore,
-                    // there is no reason to perform setup.
-                    $doSetup = false;
+                if (in_array($_group, $excludeGroups) &&
+                    count($_tests) == count($this->tests)) {
+                    $doSetup = FALSE;
                 }
             }
         }
