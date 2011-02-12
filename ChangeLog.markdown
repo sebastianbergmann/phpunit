@@ -14,10 +14,12 @@ PHPUnit 3.6.0
 * Implemented GH-88: `@expectedException` (and `setExpectedException()`) no longer accept `Exception` as the expected exception class.
 * Implemented GH-126: Show used configuration file.
 * `assertEquals()` now looks for (and invokes) a `__toString()` method when an object and string are compared.
+* `setUpBeforeClass()` and `tearDownAfterClass()` are no longer invoked when all tests of the class are skipped.
 * Using the `@small` (alias for `@group small`), `@medium` (alias for `@group medium`), and `@large` (alias for `@group large`) annotations, a test can now be marked to be of a certain size. By default, a test is "small".
 * A test must not `@depend` on a test that is larger than itself.
 * `@ticket` is now an alias for `@group`.
 * Added `--printer` to specify a class (that extends `PHPUnit_Util_Printer` and implements `PHPUnit_Framework_TestListener`) to print test runner output.
+* Added `-h` as alias for `--help` and `-c` as alias for `--configuration`.
 * Added a ticket listener that interacts with the Fogbugz issue API.
 * Added an option to disable the caching of `PHP_Token_Stream` objects during code coverage report generation to reduce the memory usage.
 * `assertType()` and `assertNotType()` as well as `assertAttributeType()` and `assertAttributeNotType()` have been removed. `assertInternalType()` should be used for asserting internal types such as `integer` or `string` whereas `assertInstanceOf()` should be used for asserting that an object is an instance of a specified class or interface.
