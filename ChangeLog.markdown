@@ -7,6 +7,7 @@ PHPUnit_MockObject 1.0.8
 ------------------------
 
 * The blacklist of uncloneable classes did not work for classes that extend an uncloneable class.
+* Updated list of dependencies in `package.xml`.
 
 PHPUnit_MockObject 1.0.7
 ------------------------
