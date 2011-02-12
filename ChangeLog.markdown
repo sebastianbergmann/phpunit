@@ -7,6 +7,8 @@ PHPUnit 3.5.11
 --------------
 
 * Fixed GH-127: PHPUnit does not report errors in XML configuration files.
+* Fixed an issue with ticket listeners related to tests that use data providers.
+* Updated list of dependencies in `package.xml` and added missing runtime checks for optional dependencies.
 
 PHPUnit 3.5.10
 --------------
