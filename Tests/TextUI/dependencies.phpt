@@ -2,6 +2,8 @@
 phpunit --verbose DependencyTestSuite ../_files/DependencyTestSuite.php
 --FILE--
 <?php
+define('PHPUNIT_TESTSUITE', TRUE);
+
 $_SERVER['argv'][1] = '--no-configuration';
 $_SERVER['argv'][2] = '--verbose';
 $_SERVER['argv'][3] = 'DependencyTestSuite';

@@ -2,6 +2,8 @@
 phpunit TemplateMethodsTest ../_files/TemplateMethodsTest.php
 --FILE--
 <?php
+define('PHPUNIT_TESTSUITE', TRUE);
+
 $_SERVER['argv'][1] = '--no-configuration';
 $_SERVER['argv'][2] = 'TemplateMethodsTest';
 $_SERVER['argv'][3] = dirname(dirname(__FILE__)) . '/_files/TemplateMethodsTest.php';
