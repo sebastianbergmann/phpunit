@@ -134,40 +134,15 @@ class PHPUnit_Util_PHP
      * @param  PHPUnit_Framework_TestCase   $test
      * @param  PHPUnit_Framework_TestResult $result
      * @return array|null
+     * @throws PHPUnit_Framework_Exception
      */
     public static function runJob($job, PHPUnit_Framework_Test $test = NULL, PHPUnit_Framework_TestResult $result = NULL)
     {
-        $process = proc_open(
-          self::getPhpBinary(), self::$descriptorSpec, $pipes
-        );
-
-        // Workaround for http://bugs.php.net/bug.php?id=52911
         if (DIRECTORY_SEPARATOR == '\\') {
-            sleep(2);
+            return PHPUnit_Util_PHP_Windows::runJob($job, $test, $result);
         }
 
-        if (is_resource($process)) {
-            if ($result !== NULL) {
-                $result->startTest($test);
-            }
-
-            fwrite($pipes[0], $job);
-            fclose($pipes[0]);
-
-            $stdout = stream_get_contents($pipes[1]);
-            fclose($pipes[1]);
-
-            $stderr = stream_get_contents($pipes[2]);
-            fclose($pipes[2]);
-
-            proc_close($process);
-
-            if ($result !== NULL) {
-                self::processChildResult($test, $result, $stdout, $stderr);
-            } else {
-                return array('stdout' => $stdout, 'stderr' => $stderr);
-            }
-        }
+        return PHPUnit_Util_PHP_Default::runJob($job, $test, $result);
     }
 
     /**
