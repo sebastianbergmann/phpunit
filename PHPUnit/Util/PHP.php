@@ -138,41 +138,11 @@ class PHPUnit_Util_PHP
      */
     public static function runJob($job, PHPUnit_Framework_Test $test = NULL, PHPUnit_Framework_TestResult $result = NULL)
     {
-        if(!($file = tempnam(sys_get_temp_dir(), 'PHPUnit')) || file_put_contents($file, $job) === false) {
-            throw new PHPUnit_Framework_Exception(
-              'Unable to write temporary files for process isolation.'
-            );
+        if (DIRECTORY_SEPARATOR == '\\') {
+            return PHPUnit_Util_PHP_Windows::runJob($job, $test, $result);
         }
 
-        $process = proc_open(
-          self::getPhpBinary(), self::$descriptorSpec, $pipes
-        );
-
-        if (is_resource($process)) {
-            if ($result !== NULL) {
-                $result->startTest($test);
-            }
-
-            fwrite($pipes[0], "<?php require_once '" . addcslashes($file, "'") .  "'; ?>");
-            fclose($pipes[0]);
-
-            $stdout = stream_get_contents($pipes[1]);
-            fclose($pipes[1]);
-
-            $stderr = stream_get_contents($pipes[2]);
-            fclose($pipes[2]);
-
-            proc_close($process);
-            unlink($file);
-
-            if ($result !== NULL) {
-                self::processChildResult($test, $result, $stdout, $stderr);
-            } else {
-                return array('stdout' => $stdout, 'stderr' => $stderr);
-            }
-        } else {
-            unlink($file);
-        }
+        return PHPUnit_Util_PHP_Default::runJob($job, $test, $result);
     }
 
     /**
