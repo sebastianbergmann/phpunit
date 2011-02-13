@@ -68,7 +68,7 @@ class PHPUnit_Util_PHP_Windows extends PHPUnit_Util_PHP
      */
     public static function runJob($job, PHPUnit_Framework_Test $test = NULL, PHPUnit_Framework_TestResult $result = NULL)
     {
-        if(!($file = tempnam(sys_get_temp_dir(), 'PHPUnit')) || file_put_contents($file, $job) === false) {
+        if(!($file = tempnam(sys_get_temp_dir(), 'PHPUnit')) || file_put_contents($file, $job) === FALSE) {
             throw new PHPUnit_Framework_Exception(
               'Unable to write temporary files for process isolation.'
             );
