@@ -2,6 +2,8 @@
 phpunit FailureTest ../_files/FailureTest.php
 --FILE--
 <?php
+define('PHPUNIT_TESTSUITE', TRUE);
+
 $_SERVER['argv'][1] = '--no-configuration';
 $_SERVER['argv'][2] = 'FailureTest';
 $_SERVER['argv'][3] = dirname(dirname(__FILE__)) . '/_files/FailureTest.php';

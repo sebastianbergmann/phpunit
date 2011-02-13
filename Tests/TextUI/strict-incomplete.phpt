@@ -2,6 +2,8 @@
 phpunit --strict IncompleteTest ../_files/IncompleteTest.php
 --FILE--
 <?php
+define('PHPUNIT_TESTSUITE', TRUE);
+
 $_SERVER['argv'][1] = '--no-configuration';
 $_SERVER['argv'][2] = '--strict';
 $_SERVER['argv'][3] = 'IncompleteTest';

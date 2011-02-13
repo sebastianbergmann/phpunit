@@ -2,6 +2,8 @@
 phpunit
 --FILE--
 <?php
+define('PHPUNIT_TESTSUITE', TRUE);
+
 $_SERVER['argv'][1] = '--no-configuration';
 
 require_once dirname(dirname(dirname(__FILE__))) . '/PHPUnit/Autoload.php';
