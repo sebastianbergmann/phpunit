@@ -134,7 +134,7 @@ class PHPUnit_TextUI_Command
     {
         $this->handleArguments($argv);
 
-        $runner = new PHPUnit_TextUI_TestRunner($this->arguments['loader']);
+        $runner = $this->createRunner();
 
         if (is_object($this->arguments['test']) &&
             $this->arguments['test'] instanceof PHPUnit_Framework_Test) {
@@ -201,6 +201,16 @@ class PHPUnit_TextUI_Command
                 exit(PHPUnit_TextUI_TestRunner::FAILURE_EXIT);
             }
         }
+    }
+
+    /**
+     * Create a TestRunner, override in subclasses.
+     *
+     * @return PHPUnit_TextUI_TestRunner
+     */
+    protected function createRunner()
+    {
+        return new PHPUnit_TextUI_TestRunner($this->arguments['loader']);
     }
 
     /**
