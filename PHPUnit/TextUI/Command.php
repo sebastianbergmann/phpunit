@@ -207,6 +207,7 @@ class PHPUnit_TextUI_Command
      * Create a TestRunner, override in subclasses.
      *
      * @return PHPUnit_TextUI_TestRunner
+     * @since  Method available since Release 3.6.0
      */
     protected function createRunner()
     {
