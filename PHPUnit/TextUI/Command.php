@@ -117,7 +117,8 @@ class PHPUnit_TextUI_Command
       'static-backup' => NULL,
       'verbose' => NULL,
       'version' => NULL,
-      'wait' => NULL
+      'wait' => NULL,
+      'detailed-progress' => NULL
     );
 
     /**
@@ -524,6 +525,11 @@ class PHPUnit_TextUI_Command
                 }
                 break;
 
+                case '--detailed-progress': {
+                    $this->arguments['printer'] = new PHPUnit_TextUI_DetailedResultPrinter;
+                }
+                break;
+                
                 default: {
                     $optionName = str_replace('--', '', $option[0]);
 
