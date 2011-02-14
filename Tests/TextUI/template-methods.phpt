@@ -33,8 +33,7 @@ There was 1 failure:
 1) TemplateMethodsTest::testTwo
 Failed asserting that <boolean:false> is true.
 
-%s/TemplateMethodsTest.php:28
-%s/template-methods.php:7
+%s
 
 FAILURES!
 Tests: 2, Assertions: 2, Failures: 1.
