@@ -57,13 +57,30 @@
  */
 class PHPUnit_TextUI_DetailedResultPrinter extends PHPUnit_Util_Printer implements PHPUnit_Framework_TestListener
 {
-    private $tab_stops = 0;
-    private $test_failed = false;
+    /**
+     * @var boolean
+     */
+    private $testFailed = false;
     
-    private $first_suite = true;
+    /**
+     * @var boolean
+     */
+    private $firstSuite = true;
     
-    private $maximum_columns = 50;
-    private $current_column = 0;
+    /**
+     * @var int
+     */
+    private $maximumColumns = 70;
+    
+    /**
+     * @var int
+     */
+    private $currentColumn = 0;
+    
+    /**
+     * @var int
+     */
+    private $tabStops = 0;
     
     /**
      * An error occurred.
@@ -75,7 +92,7 @@ class PHPUnit_TextUI_DetailedResultPrinter extends PHPUnit_Util_Printer implemen
     public function addError(PHPUnit_Framework_Test $test, Exception $e, $time)
     {
     	 $this->write('E');
-    	 $this->test_failed = true;
+    	 $this->testFailed = true;
     }
 
     /**
@@ -88,7 +105,7 @@ class PHPUnit_TextUI_DetailedResultPrinter extends PHPUnit_Util_Printer implemen
     public function addFailure(PHPUnit_Framework_Test $test, PHPUnit_Framework_AssertionFailedError $e, $time)
     {
     	 $this->write('F');
-    	 $this->test_failed = true;
+    	 $this->testFailed = true;
     }
 
     /**
@@ -101,7 +118,7 @@ class PHPUnit_TextUI_DetailedResultPrinter extends PHPUnit_Util_Printer implemen
     public function addIncompleteTest(PHPUnit_Framework_Test $test, Exception $e, $time)
     {
         $this->write('I');
-        $this->test_failed = true;
+        $this->testFailed = true;
     }
 
     /**
@@ -115,7 +132,7 @@ class PHPUnit_TextUI_DetailedResultPrinter extends PHPUnit_Util_Printer implemen
     public function addSkippedTest(PHPUnit_Framework_Test $test, Exception $e, $time)
     {
     	  $this->write('S');
-    	  $this->test_failed = true;
+    	  $this->testFailed = true;
     }
 
     /**
@@ -127,15 +144,15 @@ class PHPUnit_TextUI_DetailedResultPrinter extends PHPUnit_Util_Printer implemen
     public function startTestSuite(PHPUnit_Framework_TestSuite $suite)
     {
     	  if($suite_name = $suite->getName()) {
-    	  	if($this->first_suite) {
-    	  		$this->first_suite = false;
+    	  	if($this->firstSuite) {
+    	  		$this->firstSuite = false;
     	  	}
     	  	
     	  	else {
 		          $this->printNewLine();       
     	  	}
     	  	
-	    	  $this->tab_stops++;
+	    	  $this->tabStops++;
 	    	  
 	        $this->write($suite_name);
 	        $this->printNewLine();    	  	
@@ -151,7 +168,7 @@ class PHPUnit_TextUI_DetailedResultPrinter extends PHPUnit_Util_Printer implemen
     public function endTestSuite(PHPUnit_Framework_TestSuite $suite)
     {
     	 if($suite->getName()) {
-	    	 $this->tab_stops--;
+	    	 $this->tabStops--;
     	 }
     }
 
@@ -160,10 +177,7 @@ class PHPUnit_TextUI_DetailedResultPrinter extends PHPUnit_Util_Printer implemen
      *
      * @param  PHPUnit_Framework_Test $test
      */
-    public function startTest(PHPUnit_Framework_Test $test)
-    {
-    	 	
-    }
+    public function startTest(PHPUnit_Framework_Test $test) { }
 
     /**
      * A test ended.
@@ -173,27 +187,27 @@ class PHPUnit_TextUI_DetailedResultPrinter extends PHPUnit_Util_Printer implemen
      */
     public function endTest(PHPUnit_Framework_Test $test, $time) 
     {  
-        if(!$this->test_failed) {
+        if(!$this->testFailed) {
         	 $this->write('.');
         }
         
-        $this->test_failed = false;
+        $this->testFailed = false;
     }
     
     public function write($buffer) {
         parent::write($buffer);
        
-        $this->current_column += strlen($buffer);
+        $this->currentColumn += strlen($buffer);
         
-        if($this->current_column >= $this->maximum_columns) {
+        if($this->currentColumn >= $this->maximumColumns) {
         	  $this->printNewLine();
         }
     }
     
     private function printNewLine() {
-	      $padding = str_pad('', $this->tab_stops * 2);
+	      $padding = str_pad('', $this->tabStops * 2);
 	      parent::write(PHP_EOL . $padding);
-	      $this->current_column = strlen($padding);
+	      $this->currentColumn = strlen($padding);
     }
     
     public function __destruct() {
