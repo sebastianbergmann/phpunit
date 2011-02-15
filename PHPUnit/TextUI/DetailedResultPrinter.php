@@ -55,86 +55,23 @@
  * @link       http://www.phpunit.de/
  * @since      Class available since Release xx
  */
-class PHPUnit_TextUI_DetailedResultPrinter extends PHPUnit_Util_Printer implements PHPUnit_Framework_TestListener
+class PHPUnit_TextUI_DetailedResultPrinter extends PHPUnit_TextUI_ResultPrinter
 {
     /**
      * @var boolean
      */
-    private $testFailed = false;
-    
-    /**
-     * @var boolean
-     */
-    private $firstSuite = true;
+    protected $firstSuite = true;
     
     /**
      * @var int
      */
-    private $maximumColumns = 70;
+    protected $maxColumn = 70;
     
     /**
      * @var int
      */
-    private $currentColumn = 0;
+    protected $tabStops = 0;
     
-    /**
-     * @var int
-     */
-    private $tabStops = 0;
-    
-    /**
-     * An error occurred.
-     *
-     * @param  PHPUnit_Framework_Test $test
-     * @param  Exception              $e
-     * @param  float                  $time
-     */
-    public function addError(PHPUnit_Framework_Test $test, Exception $e, $time)
-    {
-    	 $this->write('E');
-    	 $this->testFailed = true;
-    }
-
-    /**
-     * A failure occurred.
-     *
-     * @param  PHPUnit_Framework_Test                 $test
-     * @param  PHPUnit_Framework_AssertionFailedError $e
-     * @param  float                                  $time
-     */
-    public function addFailure(PHPUnit_Framework_Test $test, PHPUnit_Framework_AssertionFailedError $e, $time)
-    {
-    	 $this->write('F');
-    	 $this->testFailed = true;
-    }
-
-    /**
-     * Incomplete test.
-     *
-     * @param  PHPUnit_Framework_Test $test
-     * @param  Exception              $e
-     * @param  float                  $time
-     */
-    public function addIncompleteTest(PHPUnit_Framework_Test $test, Exception $e, $time)
-    {
-        $this->write('I');
-        $this->testFailed = true;
-    }
-
-    /**
-     * Skipped test.
-     *
-     * @param  PHPUnit_Framework_Test $test
-     * @param  Exception              $e
-     * @param  float                  $time
-     * @since  Method available since Release 3.0.0
-     */
-    public function addSkippedTest(PHPUnit_Framework_Test $test, Exception $e, $time)
-    {
-    	  $this->write('S');
-    	  $this->testFailed = true;
-    }
-
     /**
      * A test suite started.
      *
@@ -143,20 +80,20 @@ class PHPUnit_TextUI_DetailedResultPrinter extends PHPUnit_Util_Printer implemen
      */
     public function startTestSuite(PHPUnit_Framework_TestSuite $suite)
     {
-    	  if($suite_name = $suite->getName()) {
-    	  	if($this->firstSuite) {
-    	  		$this->firstSuite = false;
-    	  	}
-    	  	
-    	  	else {
-		          $this->printNewLine();       
-    	  	}
-    	  	
-	    	  $this->tabStops++;
-	    	  
-	        $this->write($suite_name);
-	        $this->printNewLine();    	  	
-    	  }
+        if($suite_name = $suite->getName()) {
+            if($this->firstSuite) {
+                $this->firstSuite = false;
+            }
+
+            else {
+                $this->writeNewLine();
+            }
+
+            $this->tabStops++;
+
+            $this->write($suite_name);
+            $this->writeNewLine();
+        }
     }
 
     /**
@@ -167,9 +104,9 @@ class PHPUnit_TextUI_DetailedResultPrinter extends PHPUnit_Util_Printer implemen
      */
     public function endTestSuite(PHPUnit_Framework_TestSuite $suite)
     {
-    	 if($suite->getName()) {
-	    	 $this->tabStops--;
-    	 }
+        if($suite->getName()) {
+            $this->tabStops--;
+        }
     }
 
     /**
@@ -177,40 +114,30 @@ class PHPUnit_TextUI_DetailedResultPrinter extends PHPUnit_Util_Printer implemen
      *
      * @param  PHPUnit_Framework_Test $test
      */
-    public function startTest(PHPUnit_Framework_Test $test) { }
+    public function startTest(PHPUnit_Framework_Test $test)
+    {
+    }
 
-    /**
-     * A test ended.
-     *
-     * @param  PHPUnit_Framework_Test $test
-     * @param  float                  $time
-     */
-    public function endTest(PHPUnit_Framework_Test $test, $time) 
-    {  
-        if(!$this->testFailed) {
-        	 $this->write('.');
-        }
-        
-        $this->testFailed = false;
+    protected function writeProgress($progress) 
+    {
+        $this->write($progress);
     }
     
-    public function write($buffer) {
+    public function write($buffer) 
+    {
         parent::write($buffer);
        
-        $this->currentColumn += strlen($buffer);
+        $this->column += strlen($buffer);
         
-        if($this->currentColumn >= $this->maximumColumns) {
-        	  $this->printNewLine();
+        if($this->column >= $this->maxColumn) {
+            $this->writeNewLine();
         }
     }
     
-    private function printNewLine() {
-	      $padding = str_pad('', $this->tabStops * 2);
-	      parent::write(PHP_EOL . $padding);
-	      $this->currentColumn = strlen($padding);
-    }
-    
-    public function __destruct() {
-    	$this->printNewLine();
+    protected function writeNewLine() 
+    {
+        $padding = str_pad('', $this->tabStops * 2);
+        parent::write(PHP_EOL . $padding);
+        $this->column = strlen($padding);
     }
 }

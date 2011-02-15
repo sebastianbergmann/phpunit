@@ -526,7 +526,7 @@ class PHPUnit_TextUI_Command
                 break;
 
                 case '--detailed-progress': {
-                    $this->arguments['printer'] = new PHPUnit_TextUI_DetailedResultPrinter;
+                    $this->arguments['detailed-progress'] = TRUE;
                 }
                 break;
                 

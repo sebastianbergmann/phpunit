@@ -204,12 +204,23 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
                 $arguments['printer'] instanceof PHPUnit_Util_Printer) {
                 $this->printer = $arguments['printer'];
             } else {
-                $this->printer = new PHPUnit_TextUI_ResultPrinter(
-                  NULL,
-                  $arguments['verbose'],
-                  $arguments['colors'],
-                  $arguments['debug']
-                );
+                if(isset($arguments['detailed-progress'])) {
+                    $this->printer = new PHPUnit_TextUI_DetailedResultPrinter(
+                      NULL,
+                      $arguments['verbose'],
+                      $arguments['colors'],
+                      $arguments['debug']
+                    );
+                }
+                
+                else {
+                    $this->printer = new PHPUnit_TextUI_ResultPrinter(
+                      NULL,
+                      $arguments['verbose'],
+                      $arguments['colors'],
+                      $arguments['debug']
+                    );
+                }
             }
         }
 
