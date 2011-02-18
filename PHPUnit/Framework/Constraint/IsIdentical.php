@@ -87,6 +87,9 @@ class PHPUnit_Framework_Constraint_IsIdentical extends PHPUnit_Framework_Constra
      */
     public function evaluate($other)
     {
+        if (is_object($this->value) and $this->isSPLHash($other)) {
+            return spl_object_hash($this->value) == $other;
+        }
         return $this->value === $other;
     }
 
@@ -100,11 +103,15 @@ class PHPUnit_Framework_Constraint_IsIdentical extends PHPUnit_Framework_Constra
      */
     public function fail($other, $description, $not = FALSE)
     {
-        $failureDescription = $this->failureDescription(
-          $other,
-          $description,
-          $not
-        );
+        if ($this->isSPLHash($other)) {
+            $failureDescription = "Failed asserting that object with hash\n$other\n is identical to object with hash\n" . spl_object_hash($this->value) . "\n.";
+        } else {
+            $failureDescription = $this->failureDescription(
+              $other,
+              $description,
+              $not
+            );
+        }
 
         if (!$not) {
             throw new PHPUnit_Framework_ExpectationFailedException(
@@ -136,5 +143,10 @@ class PHPUnit_Framework_Constraint_IsIdentical extends PHPUnit_Framework_Constra
             return 'is identical to ' .
                    PHPUnit_Util_Type::toString($this->value);
         }
+    }
+
+    private function isSPLHash($value)
+    {
+        return is_string($value) and strlen($value) == 32;
     }
 }

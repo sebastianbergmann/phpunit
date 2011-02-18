@@ -669,6 +669,36 @@ class Framework_ConstraintTest extends PHPUnit_Framework_TestCase
     /**
      * @covers PHPUnit_Framework_Constraint_IsIdentical
      * @covers PHPUnit_Framework_Assert::identicalTo
+     */
+    public function testConstraintIsIdenticalByObjectHash()
+    {
+        $a = new stdClass;
+        $b = new stdClass;
+
+        $constraint = PHPUnit_Framework_Assert::identicalTo($a);
+
+        $this->assertFalse($constraint->evaluate(spl_object_hash($b)));
+        $this->assertTrue($constraint->evaluate(spl_object_hash($a)));
+
+        try {
+            $constraint->fail(spl_object_hash($b), '');
+        }
+
+        catch (PHPUnit_Framework_ExpectationFailedException $e) {
+            $this->assertEquals(
+              "Failed asserting that object with hash\n" . spl_object_hash($b) . "\n is identical to object with hash\n" . spl_object_hash($a) . "\n.",
+              $e->getDescription()
+            );
+
+            return;
+        }
+
+        $this->fail();
+    }
+
+    /**
+     * @covers PHPUnit_Framework_Constraint_IsIdentical
+     * @covers PHPUnit_Framework_Assert::identicalTo
      * @covers PHPUnit_Framework_Constraint::count
      */
     public function testConstraintIsIdentical()
