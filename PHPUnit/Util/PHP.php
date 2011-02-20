@@ -58,11 +58,9 @@
 abstract class PHPUnit_Util_PHP
 {
     /**
-     * Path to the PHP interpreter that is to be used.
-     *
-     * @var    string $phpBinary
+     * @var string $phpBinary
      */
-    protected static $phpBinary = NULL;
+    protected $phpBinary;
 
     /**
      * Returns the path to a PHP interpreter.
@@ -92,28 +90,28 @@ abstract class PHPUnit_Util_PHP
      *
      * @return string
      */
-    public static function getPhpBinary()
+    protected function getPhpBinary()
     {
-        if (self::$phpBinary === NULL) {
+        if ($this->phpBinary === NULL) {
             if (is_readable('@php_bin@')) {
-                self::$phpBinary = '@php_bin@';
+                $this->phpBinary = '@php_bin@';
             }
 
             else if (PHP_SAPI == 'cli' && isset($_SERVER['_']) &&
                      strpos($_SERVER['_'], 'phpunit') !== FALSE) {
                 $file            = file($_SERVER['_']);
                 $tmp             = explode(' ', $file[0]);
-                self::$phpBinary = trim($tmp[1]);
+                $this->phpBinary = trim($tmp[1]);
             }
 
-            if (!is_readable(self::$phpBinary)) {
-                self::$phpBinary = 'php';
+            if (!is_readable($this->phpBinary)) {
+                $this->phpBinary = 'php';
             } else {
-                self::$phpBinary = escapeshellarg(self::$phpBinary);
+                $this->phpBinary = escapeshellarg($this->phpBinary);
             }
         }
 
-        return self::$phpBinary;
+        return $this->phpBinary;
     }
 
     /**
@@ -141,7 +139,7 @@ abstract class PHPUnit_Util_PHP
     public function runJob($job, PHPUnit_Framework_Test $test = NULL, PHPUnit_Framework_TestResult $result = NULL)
     {
         $process = proc_open(
-          self::getPhpBinary(),
+          $this->getPhpBinary(),
           array(
             0 => array('pipe', 'r'),
             1 => array('pipe', 'w'),
