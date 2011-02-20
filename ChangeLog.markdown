@@ -3,6 +3,14 @@ PHPUnit 3.5
 
 This is the list of changes for the PHPUnit 3.5 release series.
 
+PHPUnit 3.5.12
+--------------
+
+* Fixed GH-14: Weird `RuntimeException` when running test suite with process isolation.
+* Fixed GH-27: Process isolation does not work on Windows 7 x64.
+* Fixed GH-41: Process isolation on Windows does not work.
+* Fixed GH-147: Parse error when using process isolation on Windows.
+
 PHPUnit 3.5.11
 --------------
 
