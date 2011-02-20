@@ -150,7 +150,7 @@ class PHPUnit_Util_PHP
      * @param  PHPUnit_Framework_TestCase   $test
      * @param  PHPUnit_Framework_TestResult $result
      * @return array|null
-     * @since Method available since Release 3.5.12
+     * @since  Method available since Release 3.5.12
      */
     protected static function doRun($job, PHPUnit_Framework_Test $test = NULL, PHPUnit_Framework_TestResult $result = NULL)
     {
