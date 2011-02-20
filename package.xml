@@ -353,9 +353,6 @@
       </file>
      </dir>
      <dir name="PHP">
-      <file baseinstalldir="/" name="Default.php" role="php">
-       <tasks:replace from="@package_version@" to="version" type="package-info" />
-      </file>
       <file baseinstalldir="/" name="Windows.php" role="php">
        <tasks:replace from="@package_version@" to="version" type="package-info" />
       </file>

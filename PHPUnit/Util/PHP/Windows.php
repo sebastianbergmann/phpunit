@@ -53,7 +53,7 @@
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    Release: @package_version@
  * @link       http://www.phpunit.de/
- * @since      Class available since Release 3.5.11
+ * @since      Class available since Release 3.5.12
  */
 class PHPUnit_Util_PHP_Windows extends PHPUnit_Util_PHP
 {
@@ -74,34 +74,11 @@ class PHPUnit_Util_PHP_Windows extends PHPUnit_Util_PHP
             );
         }
 
-        $process = proc_open(
-          self::getPhpBinary(), self::$descriptorSpec, $pipes
-        );
+        $job = "<?php require_once '" . addcslashes($file, "'") .  "'; ?>";
+        $return = self::doRun($job, $test, $result);
 
-        if (is_resource($process)) {
-            if ($result !== NULL) {
-                $result->startTest($test);
-            }
+        unlink($file);
 
-            fwrite($pipes[0], "<?php require_once '" . addcslashes($file, "'") .  "'; ?>");
-            fclose($pipes[0]);
-
-            $stdout = stream_get_contents($pipes[1]);
-            fclose($pipes[1]);
-
-            $stderr = stream_get_contents($pipes[2]);
-            fclose($pipes[2]);
-
-            proc_close($process);
-            unlink($file);
-
-            if ($result !== NULL) {
-                self::processChildResult($test, $result, $stdout, $stderr);
-            } else {
-                return array('stdout' => $stdout, 'stderr' => $stderr);
-            }
-        } else {
-            unlink($file);
-        }
+        return $return;
     }
 }
