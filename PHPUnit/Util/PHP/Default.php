@@ -58,40 +58,11 @@
 class PHPUnit_Util_PHP_Default extends PHPUnit_Util_PHP
 {
     /**
-     * Runs a single job (PHP code) using a separate PHP process.
-     *
-     * @param  string                       $job
-     * @param  PHPUnit_Framework_TestCase   $test
-     * @param  PHPUnit_Framework_TestResult $result
-     * @return array|null
+     * @param resource $pipe
+     * @since Method available since Release 3.5.12
      */
-    public static function runJob($job, PHPUnit_Framework_Test $test = NULL, PHPUnit_Framework_TestResult $result = NULL)
+    protected function process($pipe, $job)
     {
-        $process = proc_open(
-          self::getPhpBinary(), self::$descriptorSpec, $pipes
-        );
-
-        if (is_resource($process)) {
-            if ($result !== NULL) {
-                $result->startTest($test);
-            }
-
-            fwrite($pipes[0], $job);
-            fclose($pipes[0]);
-
-            $stdout = stream_get_contents($pipes[1]);
-            fclose($pipes[1]);
-
-            $stderr = stream_get_contents($pipes[2]);
-            fclose($pipes[2]);
-
-            proc_close($process);
-
-            if ($result !== NULL) {
-                self::processChildResult($test, $result, $stdout, $stderr);
-            } else {
-                return array('stdout' => $stdout, 'stderr' => $stderr);
-            }
-        }
+        fwrite($pipe, $job);
     }
 }
