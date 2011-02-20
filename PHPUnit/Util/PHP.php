@@ -55,7 +55,7 @@
  * @link       http://www.phpunit.de/
  * @since      Class available since Release 3.4.0
  */
-class PHPUnit_Util_PHP
+abstract class PHPUnit_Util_PHP
 {
     /**
      * Path to the PHP interpreter that is to be used.
@@ -128,6 +128,19 @@ class PHPUnit_Util_PHP
     }
 
     /**
+     * @return PHPUnit_Util_PHP
+     * @since  Method available since Release 3.5.12
+     */
+    public static function factory()
+    {
+        if (DIRECTORY_SEPARATOR == '\\') {
+            return new PHPUnit_Util_PHP_Windows;
+        }
+
+        return new PHPUnit_Util_PHP_Default;
+    }
+
+    /**
      * Runs a single job (PHP code) using a separate PHP process.
      *
      * @param  string                       $job
@@ -136,17 +149,57 @@ class PHPUnit_Util_PHP
      * @return array|null
      * @throws PHPUnit_Framework_Exception
      */
-    public static function runJob($job, PHPUnit_Framework_Test $test = NULL, PHPUnit_Framework_TestResult $result = NULL)
+    public function runJob($job, PHPUnit_Framework_Test $test = NULL, PHPUnit_Framework_TestResult $result = NULL)
     {
-        if (DIRECTORY_SEPARATOR == '\\') {
-            return PHPUnit_Util_PHP_Windows::runJob($job, $test, $result);
+        $process = proc_open(
+          self::getPhpBinary(), self::$descriptorSpec, $pipes
+        );
+
+        if (!is_resource($process)) {
+            throw new PHPUnit_Framework_Exception(
+              'Unable to create process for process isolation.'
+            );
         }
 
-        return PHPUnit_Util_PHP_Default::runJob($job, $test, $result);
+        if ($result !== NULL) {
+            $result->startTest($test);
+        }
+
+        $this->process($pipes[0], $job);
+        fclose($pipes[0]);
+
+        $stdout = stream_get_contents($pipes[1]);
+        fclose($pipes[1]);
+
+        $stderr = stream_get_contents($pipes[2]);
+        fclose($pipes[2]);
+
+        proc_close($process);
+        $this->cleanup();
+
+        if ($result !== NULL) {
+            $this->processChildResult($test, $result, $stdout, $stderr);
+        } else {
+            return array('stdout' => $stdout, 'stderr' => $stderr);
+        }
     }
 
     /**
-     * Runs a single job (PHP code) using a separate PHP process.
+     * @param resource $pipe
+     * @param string   $job
+     * @since Method available since Release 3.5.12
+     */
+    abstract protected function process($pipe, $job);
+
+    /**
+     * @since Method available since Release 3.5.12
+     */
+    protected function cleanup()
+    {
+    }
+
+    /**
+     * Processes the TestResult object from an isolated process.
      *
      * @param PHPUnit_Framework_TestCase   $test
      * @param PHPUnit_Framework_TestResult $result
@@ -154,7 +207,7 @@ class PHPUnit_Util_PHP
      * @param string                       $stderr
      * @since Method available since Release 3.5.0
      */
-    protected static function processChildResult(PHPUnit_Framework_Test $test, PHPUnit_Framework_TestResult $result, $stdout, $stderr)
+    protected function processChildResult(PHPUnit_Framework_Test $test, PHPUnit_Framework_TestResult $result, $stdout, $stderr)
     {
         if (!empty($stderr)) {
             $time = 0;

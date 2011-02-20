@@ -58,50 +58,34 @@
 class PHPUnit_Util_PHP_Windows extends PHPUnit_Util_PHP
 {
     /**
-     * Runs a single job (PHP code) using a separate PHP process.
-     *
-     * @param  string                       $job
-     * @param  PHPUnit_Framework_TestCase   $test
-     * @param  PHPUnit_Framework_TestResult $result
-     * @return array|null
-     * @throws PHPUnit_Framework_Exception
+     * @var string
      */
-    public static function runJob($job, PHPUnit_Framework_Test $test = NULL, PHPUnit_Framework_TestResult $result = NULL)
+    protected $tempFile;
+
+    /**
+     * @param resource $pipe
+     * @since Method available since Release 3.5.12
+     */
+    protected function process($pipe, $job)
     {
-        if(!($file = tempnam(sys_get_temp_dir(), 'PHPUnit')) || file_put_contents($file, $job) === FALSE) {
+        if (!($this->tempFile = tempnam(sys_get_temp_dir(), 'PHPUnit')) ||
+            file_put_contents($this->tempFile, $job) === FALSE) {
             throw new PHPUnit_Framework_Exception(
               'Unable to write temporary files for process isolation.'
             );
         }
 
-        $process = proc_open(
-          self::getPhpBinary(), self::$descriptorSpec, $pipes
+        fwrite(
+          $pipe,
+          "<?php require_once '" . addcslashes($this->tempFile, "'") .  "'; ?>"
         );
+    }
 
-        if (is_resource($process)) {
-            if ($result !== NULL) {
-                $result->startTest($test);
-            }
-
-            fwrite($pipes[0], "<?php require_once '" . addcslashes($file, "'") .  "'; ?>");
-            fclose($pipes[0]);
-
-            $stdout = stream_get_contents($pipes[1]);
-            fclose($pipes[1]);
-
-            $stderr = stream_get_contents($pipes[2]);
-            fclose($pipes[2]);
-
-            proc_close($process);
-            unlink($file);
-
-            if ($result !== NULL) {
-                self::processChildResult($test, $result, $stdout, $stderr);
-            } else {
-                return array('stdout' => $stdout, 'stderr' => $stderr);
-            }
-        } else {
-            unlink($file);
-        }
+    /**
+     * @since Method available since Release 3.5.12
+     */
+    protected function cleanup()
+    {
+        unlink($this->tempFile);
     }
 }
