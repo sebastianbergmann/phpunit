@@ -65,17 +65,6 @@ abstract class PHPUnit_Util_PHP
     protected static $phpBinary = NULL;
 
     /**
-     * Descriptor specification for proc_open().
-     *
-     * @var    array
-     */
-    protected static $descriptorSpec = array(
-      0 => array('pipe', 'r'),
-      1 => array('pipe', 'w'),
-      2 => array('pipe', 'w')
-    );
-
-    /**
      * Returns the path to a PHP interpreter.
      *
      * PHPUnit_Util_PHP::$phpBinary contains the path to the PHP
@@ -152,7 +141,13 @@ abstract class PHPUnit_Util_PHP
     public function runJob($job, PHPUnit_Framework_Test $test = NULL, PHPUnit_Framework_TestResult $result = NULL)
     {
         $process = proc_open(
-          self::getPhpBinary(), self::$descriptorSpec, $pipes
+          self::getPhpBinary(),
+          array(
+            0 => array('pipe', 'r'),
+            1 => array('pipe', 'w'),
+            2 => array('pipe', 'w')
+          ),
+          $pipes
         );
 
         if (!is_resource($process)) {
