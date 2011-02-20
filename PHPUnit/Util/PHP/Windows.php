@@ -40,7 +40,7 @@
  * @copyright  2002-2011 Sebastian Bergmann <sebastian@phpunit.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @link       http://www.phpunit.de/
- * @since      File available since Release 3.5.11
+ * @since      File available since Release 3.5.12
  */
 
 /**
@@ -53,7 +53,7 @@
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    Release: @package_version@
  * @link       http://www.phpunit.de/
- * @since      Class available since Release 3.5.11
+ * @since      Class available since Release 3.5.12
  */
 class PHPUnit_Util_PHP_Windows extends PHPUnit_Util_PHP
 {
