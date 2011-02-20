@@ -315,6 +315,14 @@
        <tasks:replace from="@package_version@" to="version" type="package-info" />
       </file>
      </dir>
+     <dir name="PHP">
+      <file baseinstalldir="/" name="Default.php" role="php">
+       <tasks:replace from="@package_version@" to="version" type="package-info" />
+      </file>
+      <file baseinstalldir="/" name="Windows.php" role="php">
+       <tasks:replace from="@package_version@" to="version" type="package-info" />
+      </file>
+     </dir>
      <dir name="Skeleton">
       <dir name="Template">
        <file baseinstalldir="/" name="Class.tpl.dist" role="php">
