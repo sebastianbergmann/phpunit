@@ -70,12 +70,11 @@ class PHPUnit_Extensions_PhptTestSuite extends PHPUnit_Framework_TestSuite
         if (is_string($directory) && is_dir($directory)) {
             $this->setName($directory);
 
-            $iterator = File_Iterator_Factory::getFileIterator(
-              $directory, '.phpt'
-            );
+            $facade = new File_Iterator_Facade;
+            $files  = $facade->getFilesAsArray($directory, '.phpt');
 
-            foreach ($iterator as $testFile) {
-                $this->addTestFile($testFile->getPathname(), $options);
+            foreach ($files as $file) {
+                $this->addTestFile($file, $options);
             }
         } else {
             throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'directory name');
