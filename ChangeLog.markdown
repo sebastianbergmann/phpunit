@@ -18,6 +18,8 @@ PHPUnit 3.6.0
 * `setUpBeforeClass()` and `tearDownAfterClass()` are no longer invoked when all tests of the class are skipped.
 * Using the `@small` (alias for `@group small`), `@medium` (alias for `@group medium`), and `@large` (alias for `@group large`) annotations, a test can now be marked to be of a certain size. By default, a test is "small".
 * A test must not `@depend` on a test that is larger than itself.
+* In strict mode, a test must not print any output.
+* Any output made by a test is now "swallowed".
 * `@ticket` is now an alias for `@group`.
 * Added `--printer` to specify a class (that extends `PHPUnit_Util_Printer` and implements `PHPUnit_Framework_TestListener`) to print test runner output.
 * Added `-h` as alias for `--help` and `-c` as alias for `--configuration`.

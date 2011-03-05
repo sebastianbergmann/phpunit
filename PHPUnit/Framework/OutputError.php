@@ -35,61 +35,27 @@
  * POSSIBILITY OF SUCH DAMAGE.
  *
  * @package    PHPUnit
+ * @subpackage Framework
  * @author     Sebastian Bergmann <sebastian@phpunit.de>
  * @copyright  2002-2011 Sebastian Bergmann <sebastian@phpunit.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @link       http://www.phpunit.de/
- * @since      File available since Release 3.0.0
+ * @since      File available since Release 3.6.0
  */
 
-require_once dirname(dirname(__FILE__)) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'OutputTestCase.php';
-
 /**
- *
+ * Extension to PHPUnit_Framework_AssertionFailedError to mark the special
+ * case of a test that printed output.
  *
  * @package    PHPUnit
+ * @subpackage Framework
  * @author     Sebastian Bergmann <sebastian@phpunit.de>
  * @copyright  2002-2011 Sebastian Bergmann <sebastian@phpunit.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    Release: @package_version@
  * @link       http://www.phpunit.de/
- * @since      Class available since Release 3.0.0
+ * @since      Class available since Release 3.6.0
  */
-class Extensions_OutputTestCaseTest extends PHPUnit_Framework_TestCase
+class PHPUnit_Framework_OutputError extends PHPUnit_Framework_AssertionFailedError
 {
-    public function testExpectOutputStringFooActualFoo()
-    {
-        $test   = new OutputTestCase('testExpectOutputStringFooActualFoo');
-        $result = $test->run();
-
-        $this->assertEquals(1, count($result));
-        $this->assertTrue($result->wasSuccessful());
-    }
-
-    public function testExpectOutputStringFooActualBar()
-    {
-        $test   = new OutputTestCase('testExpectOutputStringFooActualBar');
-        $result = $test->run();
-
-        $this->assertEquals(1, count($result));
-        $this->assertFalse($result->wasSuccessful());
-    }
-
-    public function testExpectOutputRegexFooActualFoo()
-    {
-        $test   = new OutputTestCase('testExpectOutputRegexFooActualFoo');
-        $result = $test->run();
-
-        $this->assertEquals(1, count($result));
-        $this->assertTrue($result->wasSuccessful());
-    }
-
-    public function testExpectOutputRegexFooActualBar()
-    {
-        $test   = new OutputTestCase('testExpectOutputRegexFooActualBar');
-        $result = $test->run();
-
-        $this->assertEquals(1, count($result));
-        $this->assertFalse($result->wasSuccessful());
-    }
 }

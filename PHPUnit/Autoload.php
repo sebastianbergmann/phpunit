@@ -58,7 +58,6 @@ function phpunit_autoload($class = NULL) {
     if ($classes === NULL) {
         $classes = array(
           'phpunit_extensions_grouptestsuite' => '/Extensions/GroupTestSuite.php',
-          'phpunit_extensions_outputtestcase' => '/Extensions/OutputTestCase.php',
           'phpunit_extensions_phpttestcase' => '/Extensions/PhptTestCase.php',
           'phpunit_extensions_phpttestcase_logger' => '/Extensions/PhptTestCase/Logger.php',
           'phpunit_extensions_phpttestsuite' => '/Extensions/PhptTestSuite.php',
@@ -114,6 +113,7 @@ function phpunit_autoload($class = NULL) {
           'phpunit_framework_expectationfailedexception' => '/Framework/ExpectationFailedException.php',
           'phpunit_framework_incompletetest' => '/Framework/IncompleteTest.php',
           'phpunit_framework_incompletetesterror' => '/Framework/IncompleteTestError.php',
+          'phpunit_framework_outputerror' => '/Framework/OutputError.php',
           'phpunit_framework_selfdescribing' => '/Framework/SelfDescribing.php',
           'phpunit_framework_skippedtest' => '/Framework/SkippedTest.php',
           'phpunit_framework_skippedtesterror' => '/Framework/SkippedTestError.php',

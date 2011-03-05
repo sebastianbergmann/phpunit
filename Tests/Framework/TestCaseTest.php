@@ -50,6 +50,7 @@ require_once dirname(dirname(__FILE__)) . DIRECTORY_SEPARATOR . '_files' . DIREC
 require_once dirname(dirname(__FILE__)) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'ExceptionInTest.php';
 require_once dirname(dirname(__FILE__)) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'Failure.php';
 require_once dirname(dirname(__FILE__)) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'NoArgTestCaseTest.php';
+require_once dirname(dirname(__FILE__)) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'OutputTestCase.php';
 require_once dirname(dirname(__FILE__)) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'Singleton.php';
 require_once dirname(dirname(__FILE__)) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'Success.php';
 require_once dirname(dirname(__FILE__)) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'ThrowExceptionTestCase.php';
@@ -317,5 +318,41 @@ class Framework_TestCaseTest extends PHPUnit_Framework_TestCase
         }
 
         $this->assertNotSame($GLOBALS['singleton'], Singleton::getInstance());
+    }
+
+    public function testExpectOutputStringFooActualFoo()
+    {
+        $test   = new OutputTestCase('testExpectOutputStringFooActualFoo');
+        $result = $test->run();
+
+        $this->assertEquals(1, count($result));
+        $this->assertTrue($result->wasSuccessful());
+    }
+
+    public function testExpectOutputStringFooActualBar()
+    {
+        $test   = new OutputTestCase('testExpectOutputStringFooActualBar');
+        $result = $test->run();
+
+        $this->assertEquals(1, count($result));
+        $this->assertFalse($result->wasSuccessful());
+    }
+
+    public function testExpectOutputRegexFooActualFoo()
+    {
+        $test   = new OutputTestCase('testExpectOutputRegexFooActualFoo');
+        $result = $test->run();
+
+        $this->assertEquals(1, count($result));
+        $this->assertTrue($result->wasSuccessful());
+    }
+
+    public function testExpectOutputRegexFooActualBar()
+    {
+        $test   = new OutputTestCase('testExpectOutputRegexFooActualBar');
+        $result = $test->run();
+
+        $this->assertEquals(1, count($result));
+        $this->assertFalse($result->wasSuccessful());
     }
 }
