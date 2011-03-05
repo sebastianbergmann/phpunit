@@ -657,6 +657,19 @@ class PHPUnit_Framework_TestResult implements Countable
             );
         }
 
+        else if ($this->strictMode && $test->hasOutput()) {
+            $this->addFailure(
+              $test,
+              new PHPUnit_Framework_OutputError(
+                sprintf(
+                  'This test printed output: %s',
+                  $test->getActualOutput()
+                )
+              ),
+              $time
+            );
+        }
+
         $this->endTest($test, $time);
     }
 

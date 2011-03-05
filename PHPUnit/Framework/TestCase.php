@@ -264,6 +264,31 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
     private $testResult;
 
     /**
+     * @var string
+     */
+    private $output = '';
+
+    /**
+     * @var string
+     */
+    private $outputExpectedRegex = NULL;
+
+    /**
+     * @var string
+     */
+    private $outputExpectedString = NULL;
+
+    /**
+     * @var mixed
+     */
+    private $outputCallback = FALSE;
+
+    /**
+     * @var boolean
+     */
+    private $outputBufferingActive = FALSE;
+
+    /**
      * Constructs a test case with the given name.
      *
      * @param  string $name
@@ -334,6 +359,58 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
             return $this->name . $this->getDataSetAsString(FALSE);
         } else {
             return $this->name;
+        }
+    }
+
+    /**
+     * @return string
+     * @since  Method available since Release 3.6.0
+     */
+    public function getActualOutput()
+    {
+        if (!$this->outputBufferingActive) {
+            return $this->output;
+        } else {
+            return ob_get_contents();
+        }
+    }
+
+    /**
+     * @return string
+     * @since  Method available since Release 3.6.0
+     */
+    public function hasOutput()
+    {
+        return !empty($this->output);
+    }
+
+    /**
+     * @param string $expectedRegex
+     * @since Method available since Release 3.6.0
+     */
+    public function expectOutputRegex($expectedRegex)
+    {
+        if ($this->outputExpectedString !== NULL) {
+            throw new PHPUnit_Framework_Exception;
+        }
+
+        if (is_string($expectedRegex) || is_null($expectedRegex)) {
+            $this->outputExpectedRegex = $expectedRegex;
+        }
+    }
+
+    /**
+     * @param string $expectedString
+     * @since Method available since Release 3.6.0
+     */
+    public function expectOutputString($expectedString)
+    {
+        if ($this->outputExpectedRegex !== NULL) {
+            throw new PHPUnit_Framework_Exception;
+        }
+
+        if (is_string($expectedString) || is_null($expectedString)) {
+            $this->outputExpectedString = $expectedString;
         }
     }
 
@@ -616,9 +693,8 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
         }
 
         // Start output buffering.
-        if ($this->useOutputBuffering === TRUE) {
-            ob_start();
-        }
+        ob_start();
+        $this->outputBufferingActive = TRUE;
 
         // Clean up stat cache.
         clearstatcache();
@@ -673,9 +749,18 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
         }
 
         // Stop output buffering.
-        if ($this->useOutputBuffering === TRUE) {
-            ob_end_clean();
+        if ($this->useOutputBuffering !== TRUE) {
+            if ($this->outputCallback === FALSE) {
+                $this->output = ob_get_contents();
+            } else {
+                $this->output = call_user_func_array(
+                  $this->outputCallback, array(ob_get_contents())
+                );
+            }
         }
+
+        ob_end_clean();
+        $this->outputBufferingActive = FALSE;
 
         // Clean up stat cache.
         clearstatcache();
@@ -706,6 +791,25 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
         // Clean up locale settings.
         foreach ($this->locale as $category => $locale) {
             setlocale($category, $locale);
+        }
+
+        // Perform assertion on output.
+        if (!isset($e)) {
+            try {
+                if ($this->outputExpectedRegex !== NULL) {
+                    $this->assertRegExp($this->outputExpectedRegex, $this->output);
+                    $this->outputExpectedRegex = NULL;
+                }
+
+                else if ($this->outputExpectedString !== NULL) {
+                    $this->assertEquals($this->outputExpectedString, $this->output);
+                    $this->outputExpectedString = NULL;
+                }
+            }
+
+            catch (Exception $_e) {
+                $e = $_e;
+            }
         }
 
         // Workaround for missing "finally".
@@ -920,6 +1024,19 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
     public function setResult($result)
     {
         $this->testResult = $result;
+    }
+
+    /**
+     * @param callable $callback
+     * @since Method available since Release 3.6.0
+     */
+    public function setOutputCallback($callback)
+    {
+        if (!is_callable($callback)) {
+            throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'callback');
+        }
+
+        $this->outputCallback = $callback;
     }
 
     /**
