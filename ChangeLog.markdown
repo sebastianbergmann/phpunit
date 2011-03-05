@@ -26,6 +26,7 @@ PHPUnit 3.6.0
 * Added a ticket listener that interacts with the Fogbugz issue API.
 * Added an option to disable the caching of `PHP_Token_Stream` objects during code coverage report generation to reduce the memory usage.
 * `assertType()` and `assertNotType()` as well as `assertAttributeType()` and `assertAttributeNotType()` have been removed. `assertInternalType()` should be used for asserting internal types such as `integer` or `string` whereas `assertInstanceOf()` should be used for asserting that an object is an instance of a specified class or interface.
+* The `PHPUnit_Extensions_OutputTestCase` functionality has been merged into `PHPUnit_Framework_TestCase`.
 * The `PHPUnit_Extensions_Story_TestCase` functionality has been moved to a separate package.
 * The syntax check functionality has been removed.
 * The XML configuration file is now the only way to configure the blacklist and whitelist for code coverage reporting.
