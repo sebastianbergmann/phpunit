@@ -844,6 +844,10 @@ class PHPUnit_TextUI_Command
      */
     protected function showExtensionNotLoadedMessage($extension, $message = '')
     {
+        if (!empty($message)) {
+            $message = ' ' . $message;
+        }
+
         $this->showMessage(
           'The ' . $extension . ' extension is not loaded.' . $message . "\n",
           FALSE
