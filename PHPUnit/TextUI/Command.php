@@ -280,12 +280,12 @@ class PHPUnit_TextUI_Command
                         $this->arguments['coverageClover'] = $option[1];
                     } else {
                         if (!extension_loaded('tokenizer')) {
-                            $this->showMessage(
-                              'The tokenizer extension is not loaded. No --coverage-clover will be generated.'
+                            $this->showExtensionNotLoadedMessage(
+                              'tokenizer', 'No code coverage will be generated.'
                             );
                         } else {
-                            $this->showMessage(
-                              'The Xdebug extension is not loaded. No --coverage-clover will be generated.'
+                            $this->showExtensionNotLoadedMessage(
+                              'Xdebug', 'No code coverage will be generated.'
                             );
                         }
                     }
@@ -298,12 +298,12 @@ class PHPUnit_TextUI_Command
                         $this->arguments['reportDirectory'] = $option[1];
                     } else {
                         if (!extension_loaded('tokenizer')) {
-                            $this->showMessage(
-                              'The tokenizer extension is not loaded. No --coverage-html will be generated.'
+                            $this->showExtensionNotLoadedMessage(
+                              'tokenizer', 'No code coverage will be generated.'
                             );
                         } else {
-                            $this->showMessage(
-                              'The Xdebug extension is not loaded. No --coverage-html will be generated.'
+                            $this->showExtensionNotLoadedMessage(
+                              'Xdebug', 'No code coverage will be generated.'
                             );
                         }
                     }
@@ -619,24 +619,24 @@ class PHPUnit_TextUI_Command
             $logging = $configuration->getLoggingConfiguration();
             if(isset($logging["coverage-html"])) {
                 if (!extension_loaded('tokenizer')) {
-                    $this->showMessage(
-                        'The tokenizer extension is not loaded. No coverage-html will be generated.', false
+                    $this->showExtensionNotLoadedMessage(
+                      'tokenizer', 'No code coverage will be generated.'
                     );
                 } else {
-                    $this->showMessage(
-                        'The Xdebug extension is not loaded. No coverage-html will be generated.', false
+                    $this->showExtensionNotLoadedMessage(
+                      'Xdebug', 'No code coverage will be generated.'
                     );
                }
             }
 
             if(isset($logging["coverage-clover"])) {
                 if (!extension_loaded('tokenizer')) {
-                    $this->showMessage(
-                        'The tokenizer extension is not loaded. No coverage-clover will be generated.', false
+                    $this->showExtensionNotLoadedMessage(
+                      'tokenizer', 'No code coverage will be generated.'
                     );
                 } else {
-                    $this->showMessage(
-                        'The Xdebug extension is not loaded. No coverage-clover will be generated.', false
+                    $this->showExtensionNotLoadedMessage(
+                      'Xdebug', 'No code coverage will be generated.'
                     );
                }
             }
@@ -831,6 +831,18 @@ class PHPUnit_TextUI_Command
         catch (RuntimeException $e) {
             PHPUnit_TextUI_TestRunner::showError($e->getMessage());
         }
+    }
+
+    /**
+     * @param string  $message
+     * @since Method available since Release 3.6.0
+     */
+    protected function showExtensionNotLoadedMessage($extension, $message = '')
+    {
+        $this->showMessage(
+          'The ' . $extension . ' extension is not loaded.' . $message . "\n",
+          FALSE
+        );
     }
 
     /**
