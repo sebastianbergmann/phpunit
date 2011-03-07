@@ -3,6 +3,11 @@ PHPUnit 3.5
 
 This is the list of changes for the PHPUnit 3.5 release series.
 
+PHPUnit 3.5.13
+--------------
+
+* The `--debug` switch is now "public" (listed in `--help`).
+
 PHPUnit 3.5.12
 --------------
 
