@@ -617,7 +617,8 @@ class PHPUnit_TextUI_Command
             }
 
             $logging = $configuration->getLoggingConfiguration();
-            if(isset($logging["coverage-html"])) {
+
+            if (isset($logging['coverage-html'])) {
                 if (!extension_loaded('tokenizer')) {
                     $this->showExtensionNotLoadedMessage(
                       'tokenizer', 'No code coverage will be generated.'
@@ -629,7 +630,7 @@ class PHPUnit_TextUI_Command
                }
             }
 
-            if(isset($logging["coverage-clover"])) {
+            if (isset($logging['coverage-clover'])) {
                 if (!extension_loaded('tokenizer')) {
                     $this->showExtensionNotLoadedMessage(
                       'tokenizer', 'No code coverage will be generated.'
