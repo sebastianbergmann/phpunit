@@ -281,11 +281,11 @@ class PHPUnit_TextUI_Command
                     } else {
                         if (!extension_loaded('tokenizer')) {
                             $this->showMessage(
-                              'The tokenizer extension is not loaded.'
+                              'The tokenizer extension is not loaded. No --coverage-clover will be generated.'
                             );
                         } else {
                             $this->showMessage(
-                              'The Xdebug extension is not loaded.'
+                              'The Xdebug extension is not loaded. No --coverage-clover will be generated.'
                             );
                         }
                     }
@@ -299,11 +299,11 @@ class PHPUnit_TextUI_Command
                     } else {
                         if (!extension_loaded('tokenizer')) {
                             $this->showMessage(
-                              'The tokenizer extension is not loaded.'
+                              'The tokenizer extension is not loaded. No --coverage-html will be generated.'
                             );
                         } else {
                             $this->showMessage(
-                              'The Xdebug extension is not loaded.'
+                              'The Xdebug extension is not loaded. No --coverage-html will be generated.'
                             );
                         }
                     }
@@ -614,6 +614,31 @@ class PHPUnit_TextUI_Command
                 $this->arguments['loader'] = $this->handleLoader(
                   $phpunit['testSuiteLoaderClass'], $file
                 );
+            }
+
+            $logging = $configuration->getLoggingConfiguration();
+            if(isset($logging["coverage-html"])) {
+                if (!extension_loaded('tokenizer')) {
+                    $this->showMessage(
+                        'The tokenizer extension is not loaded. No coverage-html will be generated.', false
+                    );
+                } else {
+                    $this->showMessage(
+                        'The Xdebug extension is not loaded. No coverage-html will be generated.', false
+                    );
+               }
+            }
+
+            if(isset($logging["coverage-clover"])) {
+                if (!extension_loaded('tokenizer')) {
+                    $this->showMessage(
+                        'The tokenizer extension is not loaded. No coverage-clover will be generated.', false
+                    );
+                } else {
+                    $this->showMessage(
+                        'The Xdebug extension is not loaded. No coverage-clover will be generated.', false
+                    );
+               }
             }
 
             $configuration->handlePHPConfiguration();
