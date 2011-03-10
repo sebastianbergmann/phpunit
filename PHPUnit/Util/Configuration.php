@@ -178,6 +178,11 @@ class PHPUnit_Util_Configuration
     protected $filename;
 
     /**
+     * @var PHPUnit_Util_Configuration
+     */
+    protected $inheritedConfigurations = NULL;
+
+    /**
      * Loads a PHPUnit configuration file.
      *
      * @param  string $filename
@@ -187,6 +192,21 @@ class PHPUnit_Util_Configuration
         $this->filename = $filename;
         $this->document = PHPUnit_Util_XML::loadFile($filename);
         $this->xpath    = new DOMXPath($this->document);
+        $root           = $this->document->documentElement;
+
+        if ($root->hasAttribute('inherit')) {
+            $inheritFilename = (string)$root->getAttribute('inherit');
+
+            if ($inheritFilename != '') {
+                $inheritFilename = $this->toAbsolutePath($inheritFilename);
+
+                if ($inheritFilename != realpath($this->filename)) {
+                    $this->inheritedConfigurations = new PHPUnit_Util_Configuration(
+                      $inheritFilename
+                    );
+                }
+            }
+        }
     }
 
     /**
@@ -235,6 +255,17 @@ class PHPUnit_Util_Configuration
     }
 
     /**
+     * Returns the inherited configurations.
+     *
+     * @return PHPUnit_Util_Configuration
+     * @since  Method available since Release 3.6.0
+     */
+    public function getInheritedConfigurations()
+    {
+        return $this->inheritedConfigurations;
+    }
+
+    /**
      * Returns the configuration for SUT filtering.
      *
      * @return array
@@ -242,6 +273,11 @@ class PHPUnit_Util_Configuration
      */
     public function getFilterConfiguration()
     {
+        if ($this->inheritedConfigurations !== NULL &&
+            $this->xpath->query('filter')->length == 0) {
+            return $this->inheritedConfigurations->getFilterConfiguration();
+        }
+
         $addUncoveredFilesFromWhitelist = TRUE;
 
         $tmp = $this->xpath->query('filter/whitelist');
@@ -303,6 +339,11 @@ class PHPUnit_Util_Configuration
      */
     public function getGroupConfiguration()
     {
+        if ($this->inheritedConfigurations !== NULL &&
+            $this->xpath->query('groups')->length == 0) {
+            return $this->inheritedConfigurations->getGroupConfiguration();
+        }
+
         $groups = array(
           'include' => array(),
           'exclude' => array()
@@ -327,6 +368,11 @@ class PHPUnit_Util_Configuration
      */
     public function getListenerConfiguration()
     {
+        if ($this->inheritedConfigurations !== NULL &&
+            $this->xpath->query('listeners')->length == 0) {
+            return $this->inheritedConfigurations->getListenerConfiguration();
+        }
+
         $result = array();
 
         foreach ($this->xpath->query('listeners/listener') as $listener) {
@@ -368,6 +414,11 @@ class PHPUnit_Util_Configuration
      */
     public function getLoggingConfiguration()
     {
+        if ($this->inheritedConfigurations !== NULL &&
+            $this->xpath->query('logging')->length == 0) {
+            return $this->inheritedConfigurations->getLoggingConfiguration();
+        }
+
         $result = array();
 
         foreach ($this->xpath->query('logging/log') as $log) {
@@ -429,6 +480,11 @@ class PHPUnit_Util_Configuration
      */
     public function getPHPConfiguration()
     {
+        if ($this->inheritedConfigurations !== NULL &&
+            $this->xpath->query('php')->length == 0) {
+            return $this->inheritedConfigurations->getPHPConfiguration();
+        }
+
         $result = array(
           'include_path' => '',
           'ini'          => array(),
@@ -529,6 +585,10 @@ class PHPUnit_Util_Configuration
     {
         $result = array();
         $root   = $this->document->documentElement;
+
+        if ($this->inheritedConfigurations !== NULL) {
+            $result = $this->inheritedConfigurations->getPHPUnitConfiguration();
+        }
 
         if ($root->hasAttribute('cacheTokens')) {
             $result['cacheTokens'] = $this->getBoolean(
@@ -668,6 +728,11 @@ class PHPUnit_Util_Configuration
      */
     public function getSeleniumBrowserConfiguration()
     {
+        if ($this->inheritedConfigurations !== NULL &&
+            $this->xpath->query('selenium')->length == 0) {
+            return $this->inheritedConfigurations->getSeleniumBrowserConfiguration();
+        }
+
         $result = array();
 
         foreach ($this->xpath->query('selenium/browser') as $config) {
@@ -712,6 +777,11 @@ class PHPUnit_Util_Configuration
      */
     public function getTestSuiteConfiguration()
     {
+        if ($this->inheritedConfigurations !== NULL &&
+            $this->xpath->query('testsuites')->length == 0) {
+            return $this->inheritedConfigurations->getTestSuiteConfiguration();
+        }
+
         $testSuiteNodes = $this->xpath->query('testsuites/testsuite');
 
         if ($testSuiteNodes->length == 0) {

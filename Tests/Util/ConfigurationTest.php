@@ -304,4 +304,129 @@ class Util_ConfigurationTest extends PHPUnit_Framework_TestCase
           $this->configuration->getSeleniumBrowserConfiguration()
         );
     }
+
+    public function testInheritGetsParentValues()
+    {
+        $this->configuration = PHPUnit_Util_Configuration::getInstance(
+          dirname(dirname(__FILE__)) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'configuration.inheritall.xml'
+        );
+
+        $this->testFilterConfigurationIsReadCorrectly();
+        $this->testGroupConfigurationIsReadCorrectly();
+        $this->testListenerConfigurationIsReadCorrectly();
+        $this->testLoggingConfigurationIsReadCorrectly();
+        $this->testPHPConfigurationIsReadCorrectly();
+        $this->testPHPUnitConfigurationIsReadCorrectly();
+        $this->testSeleniumBrowserConfigurationIsReadCorrectly();
+    }
+
+    public function testCantInheritSelf()
+    {
+        $this->configuration = PHPUnit_Util_Configuration::getInstance(
+          dirname(dirname(__FILE__)) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'configuration.inheritself.xml'
+        );
+
+        $this->assertEmpty($this->configuration->getInheritedConfigurations());
+    }
+
+    public function testInheritOverridesParentValues()
+    {
+        $this->configuration = PHPUnit_Util_Configuration::getInstance(
+          dirname(dirname(__FILE__)) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'configuration.overrideall.xml'
+        );
+
+        $this->assertEquals(
+          array(),
+          $this->configuration->getListenerConfiguration()
+        );
+
+        $this->assertEquals(
+          array(),
+          $this->configuration->getLoggingConfiguration()
+        );
+
+        $this->assertEquals(
+          array(),
+          $this->configuration->getSeleniumBrowserConfiguration()
+        );
+
+        $this->assertEquals(
+          array(
+            'include' => array(),
+            'exclude' => array(),
+          ),
+          $this->configuration->getGroupConfiguration()
+        );
+
+        $this->assertEquals(
+          array(
+            'include_path' => NULL,
+            'ini'     => array(),
+            'const'   => array(),
+            'var'     => array(),
+            'env'     => array(),
+            'post'    => array(),
+            'get'     => array(),
+            'cookie'  => array(),
+            'server'  => array(),
+            'files'   => array(),
+            'request' => array(),
+          ),
+          $this->configuration->getPHPConfiguration()
+        );
+
+        $this->assertEquals(
+          array(
+            'backupGlobals' => FALSE,
+            'backupStaticAttributes' => TRUE,
+            'bootstrap' => '/path/to/override.php',
+            'cacheTokens' => FALSE,
+            'colors' => TRUE,
+            'convertErrorsToExceptions' => FALSE,
+            'convertNoticesToExceptions' => FALSE,
+            'convertWarningsToExceptions' => FALSE,
+            'forceCoversAnnotation' => TRUE,
+            'mapTestClassNameToCoveredClassName' => TRUE,
+            'printerClass' => 'PHPUnit_TextUI_OverridePrinter',
+            'stopOnFailure' => TRUE,
+            'strict' => TRUE,
+            'testSuiteLoaderClass' => 'PHPUnit_Runner_OverrideTestSuiteLoader',
+            'verbose' => TRUE
+          ),
+          $this->configuration->getPHPUnitConfiguration()
+        );
+
+        $this->assertEquals(
+          array(
+            'blacklist' =>
+            array(
+              'include' =>
+              array(
+                'directory' => array(),
+                'file'      => array(),
+              ),
+              'exclude' =>
+              array(
+                'directory' => array(),
+                'file'      => array(),
+              ),
+            ),
+            'whitelist' =>
+            array(
+              'addUncoveredFilesFromWhitelist' => TRUE,
+              'include' =>
+              array(
+                'directory' => array(),
+                'file'      => array(),
+              ),
+              'exclude' =>
+              array(
+                'directory' => array(),
+                'file'      => array(),
+              ),
+            ),
+          ),
+          $this->configuration->getFilterConfiguration()
+        );
+    }
 }
