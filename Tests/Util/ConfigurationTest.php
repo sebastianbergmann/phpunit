@@ -57,10 +57,10 @@ class Util_ConfigurationTest extends PHPUnit_Framework_TestCase
 {
     protected $configuration;
 
-    protected function setUp()
+    protected function getConfigurations($filename)
     {
-        $this->configuration = PHPUnit_Util_Configuration::getInstance(
-          dirname(dirname(__FILE__)) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'configuration.xml'
+        return PHPUnit_Util_Configuration::getInstance(
+          dirname(dirname(__FILE__)) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . $filename
         );
     }
 
@@ -69,11 +69,12 @@ class Util_ConfigurationTest extends PHPUnit_Framework_TestCase
      */
     public function testExceptionIsThrownForNotExistingConfigurationFile()
     {
-        PHPUnit_Util_Configuration::getInstance('not_existing_file.xml');
+        $this->getConfigurations('not_existing_file.xml');
     }
 
     public function testFilterConfigurationIsReadCorrectly()
     {
+        $this->configuration = $this->getConfigurations('configuration.xml');
         $this->assertEquals(
           array(
             'blacklist' =>
@@ -156,8 +157,57 @@ class Util_ConfigurationTest extends PHPUnit_Framework_TestCase
         );
     }
 
+    public function testFilterConfigurationInheritsParentValues()
+    {
+        $this->configuration = $this->getConfigurations(
+            'configuration.inheritall.xml'
+        );
+        $this->testFilterConfigurationIsReadCorrectly();
+    }
+
+    public function testFilterConfigurationOverridesParentValues()
+    {
+        $this->configuration = $this->getConfigurations(
+            'configuration.overrideall.xml'
+        );
+
+        $this->assertEquals(
+          array(
+            'blacklist' =>
+            array(
+              'include' =>
+              array(
+                'directory' => array(),
+                'file'      => array(),
+              ),
+              'exclude' =>
+              array(
+                'directory' => array(),
+                'file'      => array(),
+              ),
+            ),
+            'whitelist' =>
+            array(
+              'addUncoveredFilesFromWhitelist' => TRUE,
+              'include' =>
+              array(
+                'directory' => array(),
+                'file'      => array(),
+              ),
+              'exclude' =>
+              array(
+                'directory' => array(),
+                'file'      => array(),
+              ),
+            ),
+          ),
+          $this->configuration->getFilterConfiguration()
+        );
+    }
+
     public function testGroupConfigurationIsReadCorrectly()
     {
+        $this->configuration = $this->getConfigurations('configuration.xml');
         $this->assertEquals(
           array(
             'include' =>
@@ -173,8 +223,32 @@ class Util_ConfigurationTest extends PHPUnit_Framework_TestCase
         );
     }
 
+    public function testGroupConfigurationInheritsParentValues()
+    {
+        $this->configuration = $this->getConfigurations(
+            'configuration.inheritall.xml'
+        );
+        $this->testGroupConfigurationIsReadCorrectly();
+    }
+
+    public function testGroupConfigurationOverridesParentValues()
+    {
+        $this->configuration = $this->getConfigurations(
+            'configuration.overrideall.xml'
+        );
+
+        $this->assertEquals(
+          array(
+            'include' => array(),
+            'exclude' => array(),
+          ),
+          $this->configuration->getGroupConfiguration()
+        );
+    }
+
     public function testListenerConfigurationIsReadCorrectly()
     {
+        $this->configuration = $this->getConfigurations('configuration.xml');
         $this->assertEquals(
           array(
             0 =>
@@ -201,8 +275,29 @@ class Util_ConfigurationTest extends PHPUnit_Framework_TestCase
         );
     }
 
+    public function testListenerConfigurationInheritsParentValues()
+    {
+        $this->configuration = $this->getConfigurations(
+            'configuration.inheritall.xml'
+        );
+        $this->testListenerConfigurationIsReadCorrectly();
+    }
+
+    public function testListenerConfigurationOverridesParentValues()
+    {
+        $this->configuration = $this->getConfigurations(
+            'configuration.overrideall.xml'
+        );
+
+        $this->assertEquals(
+          array(),
+          $this->configuration->getListenerConfiguration()
+        );
+    }
+
     public function testLoggingConfigurationIsReadCorrectly()
     {
+        $this->configuration = $this->getConfigurations('configuration.xml');
         $this->assertEquals(
           array(
             'title' => 'My Project',
@@ -225,8 +320,29 @@ class Util_ConfigurationTest extends PHPUnit_Framework_TestCase
         );
     }
 
+    public function testLoggingConfigurationInheritsParentValues()
+    {
+        $this->configuration = $this->getConfigurations(
+            'configuration.inheritall.xml'
+        );
+        $this->testLoggingConfigurationIsReadCorrectly();
+    }
+
+    public function testLoggingConfigurationOverridesParentValues()
+    {
+        $this->configuration = $this->getConfigurations(
+            'configuration.overrideall.xml'
+        );
+
+        $this->assertEquals(
+          array(),
+          $this->configuration->getLoggingConfiguration()
+        );
+    }
+
     public function testPHPConfigurationIsReadCorrectly()
     {
+        $this->configuration = $this->getConfigurations('configuration.xml');
         $this->assertEquals(
           array(
             'include_path' => dirname(dirname(__FILE__)).'/_files/.',
@@ -245,11 +361,44 @@ class Util_ConfigurationTest extends PHPUnit_Framework_TestCase
         );
     }
 
+    public function testPHPConfigurationInheritsParentValues()
+    {
+        $this->configuration = $this->getConfigurations(
+            'configuration.inheritall.xml'
+        );
+        $this->testPHPConfigurationIsReadCorrectly();
+    }
+
+    public function testPHPConfigurationOverridesParentValues()
+    {
+        $this->configuration = $this->getConfigurations(
+            'configuration.overrideall.xml'
+        );
+
+        $this->assertEquals(
+          array(
+            'include_path' => NULL,
+            'ini'     => array(),
+            'const'   => array(),
+            'var'     => array(),
+            'env'     => array(),
+            'post'    => array(),
+            'get'     => array(),
+            'cookie'  => array(),
+            'server'  => array(),
+            'files'   => array(),
+            'request' => array(),
+          ),
+          $this->configuration->getPHPConfiguration()
+        );
+    }
+
     /**
      * @backupGlobals enabled
      */
     public function testPHPConfigurationIsHandledCorrectly()
     {
+        $this->configuration = $this->getConfigurations('configuration.xml');
         $this->configuration->handlePHPConfiguration();
 
         $this->assertEquals(FALSE, foo);
@@ -266,6 +415,7 @@ class Util_ConfigurationTest extends PHPUnit_Framework_TestCase
 
     public function testPHPUnitConfigurationIsReadCorrectly()
     {
+        $this->configuration = $this->getConfigurations('configuration.xml');
         $this->assertEquals(
           array(
             'backupGlobals' => TRUE,
@@ -288,91 +438,18 @@ class Util_ConfigurationTest extends PHPUnit_Framework_TestCase
         );
     }
 
-    public function testSeleniumBrowserConfigurationIsReadCorrectly()
+    public function testPHPUnitConfigurationInheritsParentValues()
     {
-        $this->assertEquals(
-          array(
-            0 =>
-            array(
-              'name' => 'Firefox on Linux',
-              'browser' => '*firefox /usr/lib/firefox/firefox-bin',
-              'host' => 'my.linux.box',
-              'port' => 4444,
-              'timeout' => 30000,
-            ),
-          ),
-          $this->configuration->getSeleniumBrowserConfiguration()
+        $this->configuration = $this->getConfigurations(
+            'configuration.inheritall.xml'
         );
-    }
-
-    public function testInheritGetsParentValues()
-    {
-        $this->configuration = PHPUnit_Util_Configuration::getInstance(
-          dirname(dirname(__FILE__)) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'configuration.inheritall.xml'
-        );
-
-        $this->testFilterConfigurationIsReadCorrectly();
-        $this->testGroupConfigurationIsReadCorrectly();
-        $this->testListenerConfigurationIsReadCorrectly();
-        $this->testLoggingConfigurationIsReadCorrectly();
-        $this->testPHPConfigurationIsReadCorrectly();
         $this->testPHPUnitConfigurationIsReadCorrectly();
-        $this->testSeleniumBrowserConfigurationIsReadCorrectly();
     }
 
-    public function testCantInheritSelf()
+    public function testPHPUnitConfigurationOverridesParentValues()
     {
-        $this->configuration = PHPUnit_Util_Configuration::getInstance(
-          dirname(dirname(__FILE__)) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'configuration.inheritself.xml'
-        );
-
-        $this->assertEmpty($this->configuration->getInheritedConfigurations());
-    }
-
-    public function testInheritOverridesParentValues()
-    {
-        $this->configuration = PHPUnit_Util_Configuration::getInstance(
-          dirname(dirname(__FILE__)) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'configuration.overrideall.xml'
-        );
-
-        $this->assertEquals(
-          array(),
-          $this->configuration->getListenerConfiguration()
-        );
-
-        $this->assertEquals(
-          array(),
-          $this->configuration->getLoggingConfiguration()
-        );
-
-        $this->assertEquals(
-          array(),
-          $this->configuration->getSeleniumBrowserConfiguration()
-        );
-
-        $this->assertEquals(
-          array(
-            'include' => array(),
-            'exclude' => array(),
-          ),
-          $this->configuration->getGroupConfiguration()
-        );
-
-        $this->assertEquals(
-          array(
-            'include_path' => NULL,
-            'ini'     => array(),
-            'const'   => array(),
-            'var'     => array(),
-            'env'     => array(),
-            'post'    => array(),
-            'get'     => array(),
-            'cookie'  => array(),
-            'server'  => array(),
-            'files'   => array(),
-            'request' => array(),
-          ),
-          $this->configuration->getPHPConfiguration()
+        $this->configuration = $this->getConfigurations(
+            'configuration.overrideall.xml'
         );
 
         $this->assertEquals(
@@ -395,38 +472,52 @@ class Util_ConfigurationTest extends PHPUnit_Framework_TestCase
           ),
           $this->configuration->getPHPUnitConfiguration()
         );
+    }
 
+    public function testSeleniumBrowserConfigurationIsReadCorrectly()
+    {
+        $this->configuration = $this->getConfigurations('configuration.xml');
         $this->assertEquals(
           array(
-            'blacklist' =>
+            0 =>
             array(
-              'include' =>
-              array(
-                'directory' => array(),
-                'file'      => array(),
-              ),
-              'exclude' =>
-              array(
-                'directory' => array(),
-                'file'      => array(),
-              ),
-            ),
-            'whitelist' =>
-            array(
-              'addUncoveredFilesFromWhitelist' => TRUE,
-              'include' =>
-              array(
-                'directory' => array(),
-                'file'      => array(),
-              ),
-              'exclude' =>
-              array(
-                'directory' => array(),
-                'file'      => array(),
-              ),
+              'name' => 'Firefox on Linux',
+              'browser' => '*firefox /usr/lib/firefox/firefox-bin',
+              'host' => 'my.linux.box',
+              'port' => 4444,
+              'timeout' => 30000,
             ),
           ),
-          $this->configuration->getFilterConfiguration()
+          $this->configuration->getSeleniumBrowserConfiguration()
         );
+    }
+
+    public function testSeleniumBrowserConfigurationInheritsParentValues()
+    {
+        $this->configuration = $this->getConfigurations(
+            'configuration.inheritall.xml'
+        );
+        $this->testSeleniumBrowserConfigurationIsReadCorrectly();
+    }
+
+    public function testSeleniumBrowserConfigurationOverridesParentValues()
+    {
+        $this->configuration = $this->getConfigurations(
+            'configuration.overrideall.xml'
+        );
+
+        $this->assertEquals(
+          array(),
+          $this->configuration->getSeleniumBrowserConfiguration()
+        );
+    }
+
+    public function testCantInheritSelf()
+    {
+        $this->configuration = PHPUnit_Util_Configuration::getInstance(
+          dirname(dirname(__FILE__)) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'configuration.inheritself.xml'
+        );
+
+        $this->assertEmpty($this->configuration->getInheritedConfigurations());
     }
 }
