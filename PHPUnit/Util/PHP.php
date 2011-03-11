@@ -209,9 +209,8 @@ abstract class PHPUnit_Util_PHP
               new RuntimeException(trim($stderr)), $time
             );
         } else {
-            $childResult = @unserialize($stdout);
-
-            if ($childResult !== FALSE) {
+            try {
+                $childResult = PHPUnit_Util_Unserialize::factory()->unserialize($stdout);
                 if (!empty($childResult['output'])) {
                     print $childResult['output'];
                 }
@@ -256,11 +255,12 @@ abstract class PHPUnit_Util_PHP
                       $test, $failures[0]->thrownException(), $time
                     );
                 }
-            } else {
+            } catch(ErrorException $excp) {
                 $time = 0;
 
+                //! Pass as previous exception
                 $result->addError(
-                  $test, new RuntimeException(trim($stdout)), $time
+                  $test, new RuntimeException(trim($stdout), 0, $excp), $time
                 );
             }
         }
