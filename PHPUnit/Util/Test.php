@@ -388,8 +388,14 @@ class PHPUnit_Util_Test
     {
         $groups = array_flip(self::getGroups($className, $methodName));
         $size   = self::SMALL;
+        $class  = new ReflectionClass($className);
 
-        if (isset($groups['medium'])) {
+        if ($class->isSubclassOf('PHPUnit_Extensions_Database_TestCase') ||
+            $class->isSubclassOf('PHPUnit_Extensions_SeleniumTestCase')) {
+            $size = self::LARGE;
+        }
+
+        else if (isset($groups['medium'])) {
             $size = self::MEDIUM;
         }
 
