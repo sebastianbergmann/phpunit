@@ -121,7 +121,8 @@ class PHPUnit_Util_Filesystem
     }
 
     /**
-     * Wrapper for file_exists() that searches the include_path.
+     * Implementation of stream_resolve_include_path() in PHP
+     * for version before PHP 5.3.2.
      *
      * @param  string $file
      * @return mixed
@@ -130,6 +131,10 @@ class PHPUnit_Util_Filesystem
      */
     public static function fileExistsInIncludePath($file)
     {
+        if (function_exists('stream_resolve_include_path')) {
+            return stream_resolve_include_path($file);
+        }
+
         if (file_exists($file)) {
             return realpath($file);
         }
