@@ -28,6 +28,7 @@
 
  <target name="phar" description="Generates PHP Archive (PHAR)">
   <exec executable="${basedir}/build/create-phar.php" />
+  <chmod file="${basedir}/phpunit.phar" perm="+x"/>
  </target>
 
  <target name="create-assertion-wrappers" description="Generates global functions that act as wrappers for PHPUnit_Framework_Assert">
