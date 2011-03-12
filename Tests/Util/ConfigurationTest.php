@@ -157,6 +157,9 @@ class Util_ConfigurationTest extends PHPUnit_Framework_TestCase
         );
     }
 
+    /**
+     * @depends testFilterConfigurationIsReadCorrectly
+     */
     public function testFilterConfigurationInheritsParentValues()
     {
         $this->configuration = $this->getConfigurations(
@@ -223,6 +226,9 @@ class Util_ConfigurationTest extends PHPUnit_Framework_TestCase
         );
     }
 
+    /**
+     * @depends testGroupConfigurationIsReadCorrectly
+     */
     public function testGroupConfigurationInheritsParentValues()
     {
         $this->configuration = $this->getConfigurations(
@@ -275,6 +281,9 @@ class Util_ConfigurationTest extends PHPUnit_Framework_TestCase
         );
     }
 
+    /**
+     * @depends testListenerConfigurationIsReadCorrectly
+     */
     public function testListenerConfigurationInheritsParentValues()
     {
         $this->configuration = $this->getConfigurations(
@@ -320,6 +329,9 @@ class Util_ConfigurationTest extends PHPUnit_Framework_TestCase
         );
     }
 
+    /**
+     * @depends testLoggingConfigurationIsReadCorrectly
+     */
     public function testLoggingConfigurationInheritsParentValues()
     {
         $this->configuration = $this->getConfigurations(
@@ -361,6 +373,9 @@ class Util_ConfigurationTest extends PHPUnit_Framework_TestCase
         );
     }
 
+    /**
+     * @depends testPHPConfigurationIsReadCorrectly
+     */
     public function testPHPConfigurationInheritsParentValues()
     {
         $this->configuration = $this->getConfigurations(
@@ -438,6 +453,9 @@ class Util_ConfigurationTest extends PHPUnit_Framework_TestCase
         );
     }
 
+    /**
+     * @depends testPHPUnitConfigurationIsReadCorrectly
+     */
     public function testPHPUnitConfigurationInheritsParentValues()
     {
         $this->configuration = $this->getConfigurations(
@@ -492,6 +510,9 @@ class Util_ConfigurationTest extends PHPUnit_Framework_TestCase
         );
     }
 
+    /**
+     * @depends testSeleniumBrowserConfigurationIsReadCorrectly
+     */
     public function testSeleniumBrowserConfigurationInheritsParentValues()
     {
         $this->configuration = $this->getConfigurations(
