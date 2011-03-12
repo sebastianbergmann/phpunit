@@ -51,7 +51,7 @@ $phar->startBuffering();
 
 $files  = array_keys(PHPUnit_Util_GlobalState::phpunitFiles());
 $offset = substr_count(dirname(__FILE__), '/');
-var_dump($files);
+
 foreach ($files as $file) {
     $phar->addFile($file, join('/', array_slice(explode('/', $file), $offset)));
 }
