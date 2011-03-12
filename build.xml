@@ -106,5 +106,21 @@
   </exec>
  </target>
 
+ <target name="ant2dot" description="Visualize this build script using GraphViz">
+  <property name="build.xml" value="${ant.file}"/>
+  <property name="ant2dot.xsl" value="${basedir}/build/ant2dot.xsl"/>
+  <basename property="basename.script" file="${build.xml}" suffix=".xml"/>
+  <property name="dot.file" value="${basename.script}.dot"/>
+  <property name="png.file" value="${basename.script}.png"/>
+
+  <xslt in="${build.xml}" out="${dot.file}" style="${ant2dot.xsl}" force="true" />
+
+  <exec executable="dot" dir="${basedir}">
+   <arg line="-Tpng ${dot.file} -o ${png.file}" />
+  </exec>
+
+  <delete file="${dot.file}"/>
+ </target>
+
  <target name="build" depends="clean,parallelTasks,phpunit,phpcb"/>
 </project>

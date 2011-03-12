@@ -5,3 +5,4 @@ build/logs
 build/pdepend
 phpunit.xml
 phpunit.phar
+build.png
