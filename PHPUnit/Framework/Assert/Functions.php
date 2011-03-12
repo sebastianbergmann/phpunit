@@ -113,11 +113,12 @@ function assertArrayNotHasKey($key, array $array, $message = '')
  * @param  mixed   $haystackClassOrObject
  * @param  string  $message
  * @param  boolean $ignoreCase
+ * @param  boolean $checkForObjectIdentity
  * @since  Method available since Release 3.0.0
  */
-function assertAttributeContains($needle, $haystackAttributeName, $haystackClassOrObject, $message = '', $ignoreCase = FALSE)
+function assertAttributeContains($needle, $haystackAttributeName, $haystackClassOrObject, $message = '', $ignoreCase = FALSE, $checkForObjectIdentity = TRUE)
 {
-    return PHPUnit_Framework_Assert::assertAttributeContains($needle, $haystackAttributeName, $haystackClassOrObject, $message, $ignoreCase);
+    return PHPUnit_Framework_Assert::assertAttributeContains($needle, $haystackAttributeName, $haystackClassOrObject, $message, $ignoreCase, $checkForObjectIdentity);
 }
 
 /**
@@ -260,11 +261,12 @@ function assertAttributeLessThanOrEqual($expected, $actualAttributeName, $actual
  * @param  mixed   $haystackClassOrObject
  * @param  string  $message
  * @param  boolean $ignoreCase
+ * @param  boolean $checkForObjectIdentity
  * @since  Method available since Release 3.0.0
  */
-function assertAttributeNotContains($needle, $haystackAttributeName, $haystackClassOrObject, $message = '', $ignoreCase = FALSE)
+function assertAttributeNotContains($needle, $haystackAttributeName, $haystackClassOrObject, $message = '', $ignoreCase = FALSE, $checkForObjectIdentity = TRUE)
 {
-    return PHPUnit_Framework_Assert::assertAttributeNotContains($needle, $haystackAttributeName, $haystackClassOrObject, $message, $ignoreCase);
+    return PHPUnit_Framework_Assert::assertAttributeNotContains($needle, $haystackAttributeName, $haystackClassOrObject, $message, $ignoreCase, $checkForObjectIdentity);
 }
 
 /**
@@ -430,11 +432,12 @@ function assertClassNotHasStaticAttribute($attributeName, $className, $message =
  * @param  mixed   $haystack
  * @param  string  $message
  * @param  boolean $ignoreCase
+ * @param  boolean $checkForObjectIdentity
  * @since  Method available since Release 2.1.0
  */
-function assertContains($needle, $haystack, $message = '', $ignoreCase = FALSE)
+function assertContains($needle, $haystack, $message = '', $ignoreCase = FALSE, $checkForObjectIdentity = TRUE)
 {
-    return PHPUnit_Framework_Assert::assertContains($needle, $haystack, $message, $ignoreCase);
+    return PHPUnit_Framework_Assert::assertContains($needle, $haystack, $message, $ignoreCase, $checkForObjectIdentity);
 }
 
 /**
@@ -659,11 +662,12 @@ function assertLessThanOrEqual($expected, $actual, $message = '')
  * @param  mixed   $haystack
  * @param  string  $message
  * @param  boolean $ignoreCase
+ * @param  boolean $checkForObjectIdentity
  * @since  Method available since Release 2.1.0
  */
-function assertNotContains($needle, $haystack, $message = '', $ignoreCase = FALSE)
+function assertNotContains($needle, $haystack, $message = '', $ignoreCase = FALSE, $checkForObjectIdentity = TRUE)
 {
-    return PHPUnit_Framework_Assert::assertNotContains($needle, $haystack, $message, $ignoreCase);
+    return PHPUnit_Framework_Assert::assertNotContains($needle, $haystack, $message, $ignoreCase, $checkForObjectIdentity);
 }
 
 /**
@@ -1401,13 +1405,14 @@ function classHasStaticAttribute($attributeName)
  * Returns a PHPUnit_Framework_Constraint_TraversableContains matcher
  * object.
  *
- * @param  mixed $value
+ * @param  mixed   $value
+ * @param  boolean $checkForObjectIdentity
  * @return PHPUnit_Framework_Constraint_TraversableContains
  * @since  Method available since Release 3.0.0
  */
-function contains($value)
+function contains($value, $checkForObjectIdentity = TRUE)
 {
-    return PHPUnit_Framework_Assert::contains($value);
+    return PHPUnit_Framework_Assert::contains($value, $checkForObjectIdentity);
 }
 
 /**
