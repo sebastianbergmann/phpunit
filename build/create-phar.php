@@ -35,7 +35,7 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-require 'PHPUnit/Autoload.php';
+require dirname(dirname(__FILE__)) . '/PHPUnit/Autoload.php';
 
 $stub = <<<ENDSTUB
 #!/usr/bin/env php

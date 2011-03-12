@@ -1,6 +1,6 @@
 #!/usr/bin/env php
 <?php
-require_once 'PHPUnit/Autoload.php';
+require dirname(dirname(__FILE__)) . '/PHPUnit/Autoload.php';
 
 $buffer  = '';
 $class   = new ReflectionClass('PHPUnit_Framework_Assert');
@@ -60,6 +60,6 @@ foreach ($methods as $name => $data) {
     );
 }
 
-$template = new Text_Template('PHPUnit/Framework/Assert/Functions.php.in');
+$template = new Text_Template(dirname(dirname(__FILE__)) . '/PHPUnit/Framework/Assert/Functions.php.in');
 $template->setVar(array('functions' => $buffer));
-$template->renderTo('PHPUnit/Framework/Assert/Functions.php');
+$template->renderTo(dirname(dirname(__FILE__)) . '/PHPUnit/Framework/Assert/Functions.php');
