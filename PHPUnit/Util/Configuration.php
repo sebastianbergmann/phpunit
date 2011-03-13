@@ -171,19 +171,37 @@
  */
 class PHPUnit_Util_Configuration
 {
+    /**
+     * @var array
+     */
     private static $instances = array();
 
+    /**
+     * @var DOMDocument
+     */
     protected $document;
+    /**
+     * @var DOMXPath
+     */
     protected $xpath;
+    /**
+     * @var string
+     */
     protected $filename;
 
+    /**
+     * @var boolean
+     */
     protected $inheritedFilenames = array();
+    /**
+     * @var boolean
+     */
     protected $parents = array();
 
     /**
      * @var PHPUnit_Util_Configuration
      */
-    protected $inheritedConfigurations = NULL;
+    protected $inheritedConfigurations;
 
     /**
      * Loads a PHPUnit configuration file.
@@ -197,7 +215,7 @@ class PHPUnit_Util_Configuration
         $this->document = PHPUnit_Util_XML::loadFile($filename);
         $this->xpath    = new DOMXPath($this->document);
 
-        if($parents !== NULL) {
+        if ($parents !== NULL) {
             $this->parents = $parents;
         }
     }
