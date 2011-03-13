@@ -533,12 +533,23 @@ class Util_ConfigurationTest extends PHPUnit_Framework_TestCase
         );
     }
 
+    /**
+     * @expectedException PHPUnit_Framework_Exception
+     */
     public function testCantInheritSelf()
     {
         $this->configuration = PHPUnit_Util_Configuration::getInstance(
           dirname(dirname(__FILE__)) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'configuration.inheritself.xml'
         );
+    }
 
-        $this->assertEmpty($this->configuration->getInheritedConfigurations());
+    /**
+     * @expectedException PHPUnit_Framework_Exception
+     */
+    public function testCantCircularReference()
+    {
+        $this->configuration = PHPUnit_Util_Configuration::getInstance(
+          dirname(dirname(__FILE__)) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'configuration.circular1.xml'
+        );
     }
 }

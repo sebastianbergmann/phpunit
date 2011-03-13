@@ -177,6 +177,9 @@ class PHPUnit_Util_Configuration
     protected $xpath;
     protected $filename;
 
+    protected $inheritedFilenames = array();
+    protected $parents = array();
+
     /**
      * @var PHPUnit_Util_Configuration
      */
@@ -186,26 +189,16 @@ class PHPUnit_Util_Configuration
      * Loads a PHPUnit configuration file.
      *
      * @param  string $filename
+     * @param  array|null $parents
      */
-    protected function __construct($filename)
+    protected function __construct($filename, array $parents = NULL)
     {
-        $this->filename = $filename;
-        $this->document = PHPUnit_Util_XML::loadFile($filename);
-        $this->xpath    = new DOMXPath($this->document);
-        $root           = $this->document->documentElement;
+        $this->filename     = $filename;
+        $this->document     = PHPUnit_Util_XML::loadFile($filename);
+        $this->xpath        = new DOMXPath($this->document);
 
-        if ($root->hasAttribute('inherit')) {
-            $inheritFilename = (string)$root->getAttribute('inherit');
-
-            if ($inheritFilename != '') {
-                $inheritFilename = $this->toAbsolutePath($inheritFilename);
-
-                if ($inheritFilename != realpath($this->filename)) {
-                    $this->inheritedConfigurations = new PHPUnit_Util_Configuration(
-                      $inheritFilename
-                    );
-                }
-            }
+        if($parents !== NULL) {
+            $this->parents = $parents;
         }
     }
 
@@ -220,10 +213,11 @@ class PHPUnit_Util_Configuration
      * Returns a PHPUnit configuration object.
      *
      * @param  string $filename
+     * @param  array|null $parents
      * @return PHPUnit_Util_Configuration
      * @since  Method available since Release 3.4.0
      */
-    public static function getInstance($filename)
+    public static function getInstance($filename, array $parents = NULL)
     {
         $realpath = realpath($filename);
 
@@ -236,11 +230,94 @@ class PHPUnit_Util_Configuration
             );
         }
 
+        if ($parents !== NULL) {
+            foreach ($parents as $parent) {
+                self::$instances[$parent]->addInheritedFilename($realpath);
+            }
+        }
+
         if (!isset(self::$instances[$realpath])) {
-            self::$instances[$realpath] = new PHPUnit_Util_Configuration($realpath);
+            self::$instances[$realpath] = new PHPUnit_Util_Configuration(
+              $realpath, $parents
+            );
+            self::$instances[$realpath]->handleInheritedConfigurations();
         }
 
         return self::$instances[$realpath];
+    }
+
+    /**
+     * Handles the PHPUnit inherit configuration option.
+     *
+     * @since  Method available since Release 3.6.0
+     */
+    protected function handleInheritedConfigurations()
+    {
+        $root = $this->document->documentElement;
+
+        if ($root->hasAttribute('inherit')) {
+            $inheritFilename = (string)$root->getAttribute('inherit');
+
+            if ($inheritFilename != '') {
+                $inheritFilename = $this->toAbsolutePath($inheritFilename);
+                $rootFilename    = $this->getRootFilename();
+                $rootConfig      = self::getInstance($rootFilename);
+
+                if ($inheritFilename == $this->filename ||
+                    $inheritFilename == $rootFilename ||
+                    $rootConfig->isInheritedFilename($inheritFilename)) {
+                    throw new PHPUnit_Framework_Exception(
+                      'Configurations contain circular inheritance references'
+                    );
+                }
+
+                $this->inheritedConfigurations = self::getInstance(
+                  $inheritFilename,
+                  array_merge(
+                    $this->parents,
+                    array($this->filename)
+                  )
+                );
+            }
+        }
+    }
+
+    /**
+     * Gets the root filename from the configuration inheritance hierarchy.
+     *
+     * @return string
+     * @since  Method available since Release 3.6.0
+     */
+    protected function getRootFilename()
+    {
+        if (empty($this->parents)) {
+            return $this->filename;
+        }
+
+        return $this->parents[0];
+    }
+
+    /**
+     * Adds a filename to the list of inherited filenames
+     *
+     * @param  string $filename
+     * @since  Method available since Release 3.6.0
+     */
+    protected function addInheritedFilename($filename)
+    {
+        $this->inheritedFilenames[] = $filename;
+    }
+
+    /**
+     * Checks if a filename has already been inherited from.
+     *
+     * @param  string $filename
+     * @return boolean
+     * @since  Method available since Release 3.6.0
+     */
+    protected function isInheritedFilename($filename)
+    {
+        return in_array($filename, $this->inheritedFilenames);
     }
 
     /**
