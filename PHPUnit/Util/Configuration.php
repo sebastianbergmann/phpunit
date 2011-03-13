@@ -193,9 +193,9 @@ class PHPUnit_Util_Configuration
      */
     protected function __construct($filename, array $parents = NULL)
     {
-        $this->filename     = $filename;
-        $this->document     = PHPUnit_Util_XML::loadFile($filename);
-        $this->xpath        = new DOMXPath($this->document);
+        $this->filename = $filename;
+        $this->document = PHPUnit_Util_XML::loadFile($filename);
+        $this->xpath    = new DOMXPath($this->document);
 
         if($parents !== NULL) {
             $this->parents = $parents;
