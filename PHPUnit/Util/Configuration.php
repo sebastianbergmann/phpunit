@@ -237,24 +237,32 @@ class PHPUnit_Util_Configuration
      */
     public static function getInstance($filename, array $parents = NULL)
     {
-        $realpath = realpath($filename);
+        if (isset(self::$instances[$filename])) {
+            $realpath = $filename;
+        } else {
+            $realpath = realpath($filename);
 
-        if ($realpath === FALSE) {
-            throw new PHPUnit_Framework_Exception(
-              sprintf(
-                'Could not read "%s".',
-                $filename
-              )
-            );
-        }
-
-        if ($parents !== NULL) {
-            foreach ($parents as $parent) {
-                self::$instances[$parent]->addInheritedFilename($realpath);
+            if ($realpath === FALSE) {
+                throw new PHPUnit_Framework_Exception(
+                  sprintf(
+                    'Could not read "%s".',
+                    $filename
+                  )
+                );
             }
         }
 
         if (!isset(self::$instances[$realpath])) {
+            if ($parents !== NULL) {
+                foreach ($parents as $parent) {
+                    if (isset(self::$instances[$parent])) {
+                        self::$instances[$parent]->addInheritedFilename(
+                            $realpath
+                        );
+                    }
+                }
+            }
+
             self::$instances[$realpath] = new PHPUnit_Util_Configuration(
               $realpath, $parents
             );
