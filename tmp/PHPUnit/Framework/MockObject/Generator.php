@@ -208,7 +208,8 @@ class PHPUnit_Framework_MockObject_Generator
 
     /**
      * Returns a mock object for the specified abstract class with all abstract
-     * methods of the class mocked. Concrete methods are not mocked.
+     * methods of the class mocked. Concrete methods to mock can be specified with
+     * the last parameter
      *
      * @param  string  $originalClassName
      * @param  array   $arguments
@@ -216,11 +217,12 @@ class PHPUnit_Framework_MockObject_Generator
      * @param  boolean $callOriginalConstructor
      * @param  boolean $callOriginalClone
      * @param  boolean $callAutoload
+     * @param  array   $mockedMethods
      * @return object
      * @since  Method available since Release 1.0.0
      * @throws InvalidArgumentException
      */
-    public static function getMockForAbstractClass($originalClassName, array $arguments = array(), $mockClassName = '', $callOriginalConstructor = TRUE, $callOriginalClone = TRUE, $callAutoload = TRUE)
+    public static function getMockForAbstractClass($originalClassName, array $arguments = array(), $mockClassName = '', $callOriginalConstructor = TRUE, $callOriginalClone = TRUE, $callAutoload = TRUE, $mockedMethods = array())
     {
         if (!is_string($originalClassName)) {
             throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'string');
@@ -235,7 +237,7 @@ class PHPUnit_Framework_MockObject_Generator
             $reflector = new ReflectionClass($originalClassName);
 
             foreach ($reflector->getMethods() as $method) {
-                if ($method->isAbstract()) {
+                if ($method->isAbstract() || in_array($method->getName(), $mockedMethods)) {
                     $methods[] = $method->getName();
                 }
             }
