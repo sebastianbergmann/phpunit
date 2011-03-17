@@ -1587,6 +1587,16 @@ function isTrue()
 }
 
 /**
+ * Returns a PHPUnit_Framework_Constraint_Callback matcher object.
+ *
+ * @return PHPUnit_Framework_Constraint_Callback
+ */
+function callback()
+{
+    return PHPUnit_Framework_Assert::callback();
+}
+
+/**
  * Returns a PHPUnit_Framework_Constraint_IsType matcher object.
  *
  * @param  string $type

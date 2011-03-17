@@ -2169,6 +2169,16 @@ abstract class PHPUnit_Framework_Assert
     {
         return new PHPUnit_Framework_Constraint_IsTrue;
     }
+    
+    /**
+     * Returns a PHPUnit_Framework_Constraint_Callback matcher object.
+     *
+     * @return PHPUnit_Framework_Constraint_Callback
+     */
+    public static function callback($callback)
+    {
+        return new PHPUnit_Framework_Constraint_Callback($callback);
+    }
 
     /**
      * Returns a PHPUnit_Framework_Constraint_IsFalse matcher object.
