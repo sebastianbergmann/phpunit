@@ -1808,6 +1808,75 @@ EOF
 
         $this->fail();
     }
+    
+    /**
+     * @covers PHPUnit_Framework_Constraint_Callback
+     */
+    public function testConstraintCallback()
+    {
+        // Test closures. Requires PHP 5.3.
+        $closureReflect = function($parameter) {
+            return $parameter;
+        };
+        
+        $closureWithoutParameter = function() {
+            return true;
+        };
+        
+        $constraint = PHPUnit_Framework_Assert::callback($closureWithoutParameter);
+        $this->assertTrue($constraint->evaluate());
+        
+        $constraint = PHPUnit_Framework_Assert::callback($closureReflect);
+        $this->assertTrue($constraint->evaluate(true));
+        $this->assertFalse($constraint->evaluate(false));
+        
+        // Test callbacks.
+        $helperConstraint = PHPUnit_Framework_Assert::isTrue();
+        $callback = array($helperConstraint, 'evaluate');
+        
+        $constraint = PHPUnit_Framework_Assert::callback($callback);
+        $this->assertTrue($constraint->evaluate(true));
+        $this->assertFalse($constraint->evaluate(false));
+        
+        $this->assertEquals('is accepted by specified callback', $constraint->toString());
+
+        try {
+            $constraint->fail(true, '');
+        }
+
+        catch (PHPUnit_Framework_ExpectationFailedException $e) {
+            $this->assertEquals(
+              'Failed asserting that <boolean:true> is accepted by specified callback.',
+              $e->getDescription()
+            );
+
+            return;
+        }
+
+        $this->fail();
+    }
+    
+    /**
+     * @covers PHPUnit_Framework_Constraint_Callback
+     */
+    public function testConstraintCallbackInvalidArgument()
+    {
+
+        try {
+            $constraint = PHPUnit_Framework_Assert::callback('invalid callback');
+        }
+
+        catch (InvalidArgumentException $e) {
+            $this->assertEquals(
+              'Callback specified for PHPUnit_Framework_Constraint_Callback <invalid callback> is not callable.',
+              $e->getMessage()
+            );
+
+            return;
+        }
+
+        $this->fail();
+    }
 
     /**
      * @covers PHPUnit_Framework_Constraint_IsEqual
