@@ -82,14 +82,15 @@ abstract class PHPUnit_Runner_BaseTestRunner
      * @param  string  $suiteClassName
      * @param  string  $suiteClassFile
      * @param  boolean $syntaxCheck
+     * @param  mixed   $suffixes
      * @return PHPUnit_Framework_Test
      */
-    public function getTest($suiteClassName, $suiteClassFile = '', $syntaxCheck = FALSE)
+    public function getTest($suiteClassName, $suiteClassFile = '', $syntaxCheck = FALSE,  $suffixes = '')
     {
         if (is_dir($suiteClassName) &&
             !is_file($suiteClassName . '.php') && empty($suiteClassFile)) {
             $testCollector = new PHPUnit_Runner_IncludePathTestCollector(
-              array($suiteClassName)
+              array($suiteClassName), $suffixes
             );
 
             $suite = new PHPUnit_Framework_TestSuite($suiteClassName);

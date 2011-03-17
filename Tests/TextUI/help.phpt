@@ -28,6 +28,8 @@ Usage: phpunit [switches] UnitTest [UnitTest.php]
   --group ...               Only runs tests from the specified group(s).
   --exclude-group ...       Exclude tests from the specified group(s).
   --list-groups             List available test groups.
+  --test-suffix ...         Only search for tests in a given <directory> with
+                            specified suffix(es). Default: Test.php,.phpt
 
   --loader <loader>         TestSuiteLoader implementation to use.
   --repeat <times>          Runs the test(s) repeatedly.
