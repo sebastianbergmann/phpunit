@@ -904,6 +904,16 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
 
         $this->mockObjects = array();
     }
+    
+    /**
+     * Adds a mock object to the list of active mock objects.
+     * 
+     * @param PHPUnit_Framework_MockObject_MockObject $mock The mock object instance.
+     */
+    protected function addMockObject(PHPUnit_Framework_MockObject_MockObject $mock)
+    {
+        $this->mockObjects[] = $mock;
+    }
 
     /**
      * Sets the name of a TestCase.
