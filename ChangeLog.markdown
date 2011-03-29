@@ -24,6 +24,7 @@ PHPUnit 3.6.0
 * Added `--printer` to specify a class (that extends `PHPUnit_Util_Printer` and implements `PHPUnit_Framework_TestListener`) to print test runner output.
 * Added `-h` as alias for `--help` and `-c` as alias for `--configuration`.
 * Added a ticket listener that interacts with the Fogbugz issue API.
+* The XHProf test listener now prints the test name as well as the run so it is easier to understand the data being generated.
 * Added an option to disable the caching of `PHP_Token_Stream` objects during code coverage report generation to reduce the memory usage.
 * `assertType()` and `assertNotType()` as well as `assertAttributeType()` and `assertAttributeNotType()` have been removed. `assertInternalType()` should be used for asserting internal types such as `integer` or `string` whereas `assertInstanceOf()` should be used for asserting that an object is an instance of a specified class or interface.
 * The `PHPUnit_Extensions_OutputTestCase` functionality has been merged into `PHPUnit_Framework_TestCase`.
