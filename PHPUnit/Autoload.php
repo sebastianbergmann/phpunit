@@ -100,6 +100,7 @@ function phpunit_autoload($class = NULL) {
           'phpunit_framework_constraint_objecthasattribute' => '/Framework/Constraint/ObjectHasAttribute.php',
           'phpunit_framework_constraint_or' => '/Framework/Constraint/Or.php',
           'phpunit_framework_constraint_pcrematch' => '/Framework/Constraint/PCREMatch.php',
+          'phpunit_framework_constraint_samesize' => '/Framework/Constraint/SameSize.php',
           'phpunit_framework_constraint_stringcontains' => '/Framework/Constraint/StringContains.php',
           'phpunit_framework_constraint_stringendswith' => '/Framework/Constraint/StringEndsWith.php',
           'phpunit_framework_constraint_stringmatches' => '/Framework/Constraint/StringMatches.php',

@@ -1302,6 +1302,64 @@ abstract class PHPUnit_Framework_Assert
     }
 
     /**
+     * Assert that the size of two arrays (or `Countable` or `Iterator` objects)
+     * is the same.
+     *
+     * @param integer $expected
+     * @param mixed   $actual
+     * @param string  $message
+     */
+    public function assertSameSize($expected, $actual, $message = '')
+    {
+        if (!$expected instanceof Countable &&
+            !$expected instanceof Iterator &&
+            !is_array($expected)) {
+            throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'countable');
+        }
+
+        if (!$actual instanceof Countable &&
+            !$actual instanceof Iterator &&
+            !is_array($actual)) {
+            throw PHPUnit_Util_InvalidArgumentHelper::factory(2, 'countable');
+        }
+
+        self::assertThat(
+          $actual,
+          new PHPUnit_Framework_Constraint_SameSize($expected),
+          $message
+        );
+    }
+
+    /**
+     * Assert that the size of two arrays (or `Countable` or `Iterator` objects)
+     * is not the same.
+     *
+     * @param integer $expected
+     * @param mixed   $actual
+     * @param string  $message
+     */
+    public function assertNotSameSize($expectedCount, $haystack, $message = '')
+    {
+        if (!$expected instanceof Countable &&
+            !$expected instanceof Iterator &&
+            !is_array($expected)) {
+            throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'countable');
+        }
+
+        if (!$actual instanceof Countable &&
+            !$actual instanceof Iterator &&
+            !is_array($actual)) {
+            throw PHPUnit_Util_InvalidArgumentHelper::factory(2, 'countable');
+        }
+
+        $constraint = new PHPUnit_Framework_Constraint_Not(
+          new PHPUnit_Framework_Constraint_SameSize($expected)
+        );
+
+        self::assertThat($actual, $constraint, $message);
+    }
+
+    /**
      * Asserts that a string matches a given format string.
      *
      * @param  string $format

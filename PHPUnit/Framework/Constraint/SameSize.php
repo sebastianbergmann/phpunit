@@ -2,7 +2,7 @@
 /**
  * PHPUnit
  *
- * Copyright (c) 2002-2010, Sebastian Bergmann <sebastian@phpunit.de>.
+ * Copyright (c) 2002-2011, Sebastian Bergmann <sebastian@phpunit.de>.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -37,7 +37,7 @@
  * @package    PHPUnit
  * @subpackage Framework_Constraint
  * @author     Sebastian Bergmann <sebastian@phpunit.de>
- * @copyright  2002-2010 Sebastian Bergmann <sebastian@phpunit.de>
+ * @copyright  2002-2011 Sebastian Bergmann <sebastian@phpunit.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @link       http://www.phpunit.de/
  * @since      File available since Release 3.6.0
@@ -49,74 +49,24 @@
  * @package    PHPUnit
  * @subpackage Framework_Constraint
  * @author     Sebastian Bergmann <sebastian@phpunit.de>
- * @copyright  2002-2010 Sebastian Bergmann <sebastian@phpunit.de>
+ * @copyright  2002-2011 Sebastian Bergmann <sebastian@phpunit.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    Release: @package_version@
  * @link       http://www.phpunit.de/
  * @since      Class available since Release 3.6.0
  */
-class PHPUnit_Framework_Constraint_Count extends PHPUnit_Framework_Constraint
+class PHPUnit_Framework_Constraint_SameSize extends PHPUnit_Framework_Constraint_Count
 {
     /**
      * @var integer
      */
-    protected $expectedCount = 0;
+    protected $expectedCount;
 
     /**
      * @param integer $expected
      */
     public function __construct($expected)
     {
-        $this->expectedCount = $expected;
-    }
-
-    /**
-     * Evaluates the constraint for parameter $other. Returns TRUE if the
-     * constraint is met, FALSE otherwise.
-     *
-     * @param mixed $other
-     * @return boolean
-     */
-    public function evaluate($other)
-    {
-        return $this->expectedCount === $this->getCountOf($other);
-    }
-
-    /**
-     * @param mixed $other
-     * @return boolean
-     */
-    protected function getCountOf($other)
-    {
-        if ($other instanceof Countable || is_array($other)) {
-            return count($other);
-        }
-
-        else if ($other instanceof Iterator) {
-            return iterator_count($other);
-        }
-    }
-
-    /**
-     * @param mixed   $other
-     * @param string  $description
-     * @param boolean $not
-     * @return string
-     */
-    protected function failureDescription($other, $description, $not)
-    {
-        return sprintf(
-          'Actual size %d does not match expected size %d.',
-          $this->getCountOf($other),
-          $this->expectedCount
-        );
-    }
-
-    /**
-     * @return string
-     */
-    public function toString()
-    {
-        return 'count matches ';
+        $this->expectedCount = $this->getCountOf($expected);
     }
 }
