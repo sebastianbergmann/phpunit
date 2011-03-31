@@ -163,6 +163,9 @@
       <file baseinstalldir="/" name="PCREMatch.php" role="php">
        <tasks:replace from="@package_version@" to="version" type="package-info" />
       </file>
+      <file baseinstalldir="/" name="SameSize.php" role="php">
+       <tasks:replace from="@package_version@" to="version" type="package-info" />
+      </file>
       <file baseinstalldir="/" name="StringContains.php" role="php">
        <tasks:replace from="@package_version@" to="version" type="package-info" />
       </file>

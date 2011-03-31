@@ -790,6 +790,19 @@ function assertNotSame($expected, $actual, $message = '')
 }
 
 /**
+ * Assert that the size of two arrays (or `Countable` or `Iterator` objects)
+ * is not the same.
+ *
+ * @param integer $expected
+ * @param mixed   $actual
+ * @param string  $message
+ */
+function assertNotSameSize($expectedCount, $haystack, $message = '')
+{
+    return PHPUnit_Framework_Assert::assertNotSameSize($expectedCount, $haystack, $message);
+}
+
+/**
  * This assertion is the exact opposite of assertTag().
  *
  * Rather than asserting that $matcher results in a match, it asserts that
@@ -869,6 +882,19 @@ function assertRegExp($pattern, $string, $message = '')
 function assertSame($expected, $actual, $message = '')
 {
     return PHPUnit_Framework_Assert::assertSame($expected, $actual, $message);
+}
+
+/**
+ * Assert that the size of two arrays (or `Countable` or `Iterator` objects)
+ * is the same.
+ *
+ * @param integer $expected
+ * @param mixed   $actual
+ * @param string  $message
+ */
+function assertSameSize($expected, $actual, $message = '')
+{
+    return PHPUnit_Framework_Assert::assertSameSize($expected, $actual, $message);
 }
 
 /**
