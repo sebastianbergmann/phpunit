@@ -153,6 +153,23 @@ class Framework_MockObjectTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('something', $mock->doSomething());
     }
 
+    public function testStubbedReturnValueMap()
+    {
+        $map = array(
+            array('a', 'b', 'c', 'd'),
+            array('e', 'f', 'g', 'h')
+        );
+
+        $mock = $this->getMock('AnInterface');
+        $mock->expects($this->any())
+             ->method('doSomething')
+             ->will($this->returnValueMap($map));
+
+        $this->assertEquals('d', $mock->doSomething('a', 'b', 'c'));
+        $this->assertEquals('h', $mock->doSomething('e', 'f', 'g'));
+        $this->assertEquals(NULL, $mock->doSomething('foo', 'bar'));
+    }
+
     public function testFunctionCallback()
     {
         $mock = $this->getMock('SomeClass', array('doSomething'), array(), '', FALSE);
