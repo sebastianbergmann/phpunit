@@ -1411,9 +1411,7 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
      */
     public static function returnValueMap(array $valueMap)
     {
-        return new PHPUnit_Framework_MockObject_Stub_ReturnValueMap(
-          $valueMap
-        );
+        return new PHPUnit_Framework_MockObject_Stub_ReturnValueMap($valueMap);
     }
 
     /**
