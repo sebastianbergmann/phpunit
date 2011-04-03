@@ -1405,6 +1405,20 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
     /**
      *
      *
+     * @param  array $valueMap
+     * @return PHPUnit_Framework_MockObject_Stub_ReturnValueMap
+     * @since  Method available since Release 3.6.0
+     */
+    public static function returnValueMap(array $valueMap)
+    {
+        return new PHPUnit_Framework_MockObject_Stub_ReturnValueMap(
+          $valueMap
+        );
+    }
+
+    /**
+     *
+     *
      * @param  integer $argumentIndex
      * @return PHPUnit_Framework_MockObject_Stub_ReturnArgument
      * @since  Method available since Release 3.3.0
