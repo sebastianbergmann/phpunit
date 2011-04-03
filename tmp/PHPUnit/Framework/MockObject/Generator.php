@@ -399,7 +399,10 @@ class PHPUnit_Framework_MockObject_Generator
 
             if (!empty($mockClassName['namespaceName'])) {
                 $prologue = 'namespace ' . $mockClassName['namespaceName'] .
-                            ";\n\n" . $prologue;
+                            " {\n\n" . $prologue . "}\n\n" .
+                            "namespace {\n\n";
+
+                $epilogue = "\n\n}";
             }
 
             $cloneTemplate = new Text_Template(
@@ -491,6 +494,7 @@ class PHPUnit_Framework_MockObject_Generator
         $classTemplate->setVar(
           array(
             'prologue'          => isset($prologue) ? $prologue : '',
+            'epilogue'          => isset($epilogue) ? $epilogue : '',
             'class_declaration' => self::generateMockClassDeclaration(
                                      $mockClassName, $isInterface
                                    ),
@@ -513,6 +517,10 @@ class PHPUnit_Framework_MockObject_Generator
      */
     protected static function generateMockClassName($originalClassName, $mockClassName)
     {
+        if ($originalClassName[0] == '\\') {
+            $originalClassName = substr($originalClassName, 1);
+        }
+
         $classNameParts = explode('\\', $originalClassName);
 
         if (count($classNameParts) > 1) {
