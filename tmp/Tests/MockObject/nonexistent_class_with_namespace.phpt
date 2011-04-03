@@ -1,9 +1,44 @@
-{prologue}{class_declaration}
+--TEST--
+PHPUnit_Framework_MockObject_Generator::generate('Foo', array(), 'MockFoo', TRUE, TRUE)
+--SKIPIF--
+<?php
+if (!version_compare(PHP_VERSION, '5.3.0', '>=')) echo 'skip: PHP 5.3 only';
+?>
+--FILE--
+<?php
+require_once 'PHPUnit/Autoload.php';
+
+$mock = PHPUnit_Framework_MockObject_Generator::generate(
+  'NS\Foo',
+  array(),
+  'MockFoo',
+  TRUE,
+  TRUE
+);
+
+print $mock['code'];
+?>
+--EXPECTF--
+namespace NS {
+
+class Foo
+{
+}
+
+}
+
+namespace {
+
+class MockFoo extends NS\Foo implements PHPUnit_Framework_MockObject_MockObject
 {
     protected static $staticInvocationMocker;
     protected $invocationMocker;
 
-{clone}{mocked_methods}
+    public function __clone()
+    {
+        $this->invocationMocker = clone $this->__phpunit_getInvocationMocker();
+    }
+
     public function expects(PHPUnit_Framework_MockObject_Matcher_Invocation $matcher)
     {
         return $this->__phpunit_getInvocationMocker()->expects($matcher);
@@ -43,4 +78,6 @@
         self::$staticInvocationMocker = NULL;
         $this->invocationMocker       = NULL;
     }
-}{epilogue}
+}
+
+}
