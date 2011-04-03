@@ -1767,6 +1767,18 @@ function returnValue($value)
 }
 
 /**
+ *
+ *
+ * @param  array $valueMap
+ * @return PHPUnit_Framework_MockObject_Stub_ReturnValueMap
+ * @since  Method available since Release 3.6.0
+ */
+function returnValueMap(array $valueMap)
+{
+    return PHPUnit_Framework_TestCase::returnValueMap($valueMap);
+}
+
+/**
  * Returns a PHPUnit_Framework_Constraint_StringContains matcher object.
  *
  * @param  string  $string
