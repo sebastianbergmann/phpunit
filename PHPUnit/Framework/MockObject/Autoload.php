@@ -82,6 +82,7 @@ function phpunit_mockobject_autoload($class = NULL) {
           'phpunit_framework_mockobject_stub_returnargument' => '/Framework/MockObject/Stub/ReturnArgument.php',
           'phpunit_framework_mockobject_stub_returncallback' => '/Framework/MockObject/Stub/ReturnCallback.php',
           'phpunit_framework_mockobject_stub_returnself' => '/Framework/MockObject/Stub/ReturnSelf.php',
+          'phpunit_framework_mockobject_stub_returnvaluemap' => '/Framework/MockObject/Stub/ReturnValueMap.php',
           'phpunit_framework_mockobject_verifiable' => '/Framework/MockObject/Verifiable.php'
         );
 
