@@ -6,6 +6,7 @@ This is the list of changes for the PHPUnit_MockObject 1.0 release series.
 PHPUnit_MockObject 1.0.9
 ------------------------
 
+* Fixed GH-50: Error when trying to mock `isset()` or `echo()` methods.
 * Mocking nonexistent classes in a namespace is now possible.
 
 PHPUnit_MockObject 1.0.8
