@@ -363,6 +363,19 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
     }
 
     /**
+     * Returns the size of the test.
+     *
+     * @return integer
+     * @since  Method available since Release 3.6.0
+     */
+    public function getSize()
+    {
+        return PHPUnit_Util_Test::getSize(
+          get_class($this), $this->getName(FALSE)
+        );
+    }
+
+    /**
      * @return string
      * @since  Method available since Release 3.6.0
      */
@@ -1591,12 +1604,8 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
                     return FALSE;
                 }
 
-                $size = PHPUnit_Util_Test::getSize(
-                  $className, $this->getName(FALSE)
-                );
-
                 if (isset($passed[$dependency])) {
-                    if ($passed[$dependency]['size'] > $size) {
+                    if ($passed[$dependency]['size'] > $this->getSize()) {
                         $this->result->addError(
                           $this,
                           new PHPUnit_Framework_SkippedTestError(

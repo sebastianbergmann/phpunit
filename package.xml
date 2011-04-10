@@ -535,6 +535,11 @@
    </extension>
   </required>
   <optional>
+   <package>
+    <name>PHP_Invoker</name>
+    <channel>pear.phpunit.de</channel>
+    <min>1.0.0</min>
+   </package>
    <extension>
     <name>curl</name>
    </extension>
