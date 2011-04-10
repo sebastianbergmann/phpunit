@@ -47,6 +47,9 @@
       <file baseinstalldir="/" name="GoogleCode.php" role="php">
        <tasks:replace from="@package_version@" to="version" type="package-info" />
       </file>
+      <file baseinstalldir="/" name="Trac.php" role="php">
+       <tasks:replace from="@package_version@" to="version" type="package-info" />
+      </file>
      </dir>
      <file baseinstalldir="/" name="GroupTestSuite.php" role="php">
       <tasks:replace from="@package_version@" to="version" type="package-info" />
@@ -296,6 +299,11 @@
      </file>
     </dir>
     <dir name="Util">
+     <dir name="DeprecatedFeature">
+      <file baseinstalldir="/" name="Logger.php" role="php">
+       <tasks:replace from="@package_version@" to="version" type="package-info" />
+      </file>
+     </dir>
      <dir name="Log">
       <file baseinstalldir="/" name="DBUS.php" role="php">
        <tasks:replace from="@package_version@" to="version" type="package-info" />
@@ -310,6 +318,14 @@
        <tasks:replace from="@package_version@" to="version" type="package-info" />
       </file>
       <file baseinstalldir="/" name="XHProf.php" role="php">
+       <tasks:replace from="@package_version@" to="version" type="package-info" />
+      </file>
+     </dir>
+     <dir name="PHP">
+      <file baseinstalldir="/" name="Default.php" role="php">
+       <tasks:replace from="@package_version@" to="version" type="package-info" />
+      </file>
+      <file baseinstalldir="/" name="Windows.php" role="php">
        <tasks:replace from="@package_version@" to="version" type="package-info" />
       </file>
      </dir>
@@ -375,6 +391,9 @@
      <file baseinstalldir="/" name="Configuration.php" role="php">
       <tasks:replace from="@package_version@" to="version" type="package-info" />
      </file>
+     <file baseinstalldir="/" name="DeprecatedFeature.php" role="php">
+      <tasks:replace from="@package_version@" to="version" type="package-info" />
+     </file>
      <file baseinstalldir="/" name="Diff.php" role="php">
       <tasks:replace from="@package_version@" to="version" type="package-info" />
      </file>
@@ -430,38 +449,9 @@
      <tasks:replace from="@package_version@" to="version" type="package-info" />
     </file>
    </dir>
-   <dir name="Samples">
-    <dir name="BankAccount">
-     <file baseinstalldir="/" name="BankAccount.php" role="doc">
-      <tasks:replace from="@package_version@" to="version" type="package-info" />
-     </file>
-     <file baseinstalldir="/" name="BankAccountTest.php" role="doc">
-      <tasks:replace from="@package_version@" to="version" type="package-info" />
-     </file>
-    </dir>
-    <dir name="BowlingGame">
-     <file baseinstalldir="/" name="BowlingGame.php" role="doc">
-      <tasks:replace from="@package_version@" to="version" type="package-info" />
-     </file>
-     <file baseinstalldir="/" name="BowlingGameTest.php" role="doc">
-      <tasks:replace from="@package_version@" to="version" type="package-info" />
-     </file>
-    </dir>
-    <dir name="Money">
-     <file baseinstalldir="/" name="IMoney.php" role="doc">
-      <tasks:replace from="@package_version@" to="version" type="package-info" />
-     </file>
-     <file baseinstalldir="/" name="Money.php" role="doc">
-      <tasks:replace from="@package_version@" to="version" type="package-info" />
-     </file>
-     <file baseinstalldir="/" name="MoneyBag.php" role="doc">
-      <tasks:replace from="@package_version@" to="version" type="package-info" />
-     </file>
-     <file baseinstalldir="/" name="MoneyTest.php" role="doc">
-      <tasks:replace from="@package_version@" to="version" type="package-info" />
-     </file>
-    </dir>
-   </dir>
+   <file baseinstalldir="/" name="ChangeLog.markdown" role="doc"/>
+   <file baseinstalldir="/" name="LICENSE" role="doc"/>
+   <file baseinstalldir="/" name="README.markdown" role="doc"/>
    <file baseinstalldir="/" name="phpunit.php" role="script">
     <tasks:replace from="/usr/bin/env php" to="php_bin" type="pear-config"/>
     <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
@@ -480,7 +470,7 @@
     <min>5.2.7</min>
    </php>
    <pearinstaller>
-    <min>1.9.1</min>
+    <min>1.9.2</min>
    </pearinstaller>
    <package>
     <name>DbUnit</name>
@@ -527,6 +517,10 @@
     <channel>pear.symfony-project.com</channel>
     <min>1.0.2</min>
    </package>
+   <package>
+    <name>XML_RPC2</name>
+    <channel>pear.php.net</channel>
+   </package>
    <extension>
     <name>dom</name>
    </extension>
@@ -542,16 +536,16 @@
   </required>
   <optional>
    <extension>
+    <name>curl</name>
+   </extension>
+   <extension>
     <name>dbus</name>
    </extension>
    <extension>
     <name>json</name>
    </extension>
    <extension>
-    <name>pdo</name>
-   </extension>
-   <extension>
-    <name>soap</name>
+    <name>simplexml</name>
    </extension>
    <extension>
     <name>tokenizer</name>
