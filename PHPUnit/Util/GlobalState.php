@@ -278,6 +278,7 @@ class PHPUnit_Util_GlobalState
             if (strpos($declaredClasses[$i], 'PHPUnit') !== 0 &&
                 strpos($declaredClasses[$i], 'File_Iterator') !== 0 &&
                 strpos($declaredClasses[$i], 'PHP_CodeCoverage') !== 0 &&
+                strpos($declaredClasses[$i], 'PHP_Invoker') !== 0 &&
                 strpos($declaredClasses[$i], 'PHP_Timer') !== 0 &&
                 strpos($declaredClasses[$i], 'PHP_TokenStream') !== 0 &&
                 strpos($declaredClasses[$i], 'sfYaml') !== 0 &&
@@ -372,6 +373,7 @@ class PHPUnit_Util_GlobalState
                 phpunit_story_autoload(),
                 file_iterator_autoload(),
                 php_codecoverage_autoload(),
+                php_invoker_autoload(),
                 php_timer_autoload(),
                 php_tokenstream_autoload(),
                 text_template_autoload()
