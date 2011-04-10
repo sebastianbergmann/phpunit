@@ -519,6 +519,7 @@
    </package>
    <package>
     <name>XML_RPC2</name>
+    <channel>pear.php.net</channel>
    </package>
    <extension>
     <name>dom</name>
