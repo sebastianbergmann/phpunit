@@ -3,6 +3,11 @@ PHPUnit 3.5
 
 This is the list of changes for the PHPUnit 3.5 release series.
 
+PHPUnit 3.5.14
+--------------
+
+* Fixed GH-222: `assertAttribute*()` is too strict.
+
 PHPUnit 3.5.13
 --------------
 
