@@ -567,7 +567,7 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
         $this->setRequirementsFromAnnotation();
 
         if ($this->requiredPhp &&
-            !version_compare(PHP_VERSION, $this->requiredPhp, '>=')) {
+            version_compare(PHP_VERSION, $this->requiredPhp, '<')) {
             $this->markTestSkipped(
               sprintf(
                 'PHP %s (or later) is required.',
@@ -578,7 +578,7 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
 
         $phpunitVersion = PHPUnit_Runner_Version::id();
         if ($this->requiredPhpUnit &&
-            !version_compare($phpunitVersion, $this->requiredPhpUnit, '>=')) {
+            version_compare($phpunitVersion, $this->requiredPhpUnit, '<')) {
             $this->markTestSkipped(
               sprintf(
                 'PHPUnit %s (or later) is required.',
