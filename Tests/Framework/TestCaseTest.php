@@ -51,6 +51,7 @@ require_once dirname(dirname(__FILE__)) . DIRECTORY_SEPARATOR . '_files' . DIREC
 require_once dirname(dirname(__FILE__)) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'Failure.php';
 require_once dirname(dirname(__FILE__)) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'NoArgTestCaseTest.php';
 require_once dirname(dirname(__FILE__)) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'OutputTestCase.php';
+require_once dirname(dirname(__FILE__)) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'RequirementsTest.php';
 require_once dirname(dirname(__FILE__)) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'Singleton.php';
 require_once dirname(dirname(__FILE__)) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'Success.php';
 require_once dirname(dirname(__FILE__)) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'ThrowExceptionTestCase.php';
@@ -354,5 +355,29 @@ class Framework_TestCaseTest extends PHPUnit_Framework_TestCase
 
         $this->assertEquals(1, count($result));
         $this->assertFalse($result->wasSuccessful());
+    }
+
+    public function testSkipsIfRequiresHigherVersionOfPHPUnit()
+    {
+        $test   = new RequirementsTest('testAlwaysSkip');
+        $result = $test->run();
+
+        $this->assertEquals(1, $result->skippedCount());
+        $this->assertEquals(
+          'PHPUnit 1111111 (or later) is required.',
+          $test->getStatusMessage()
+        );
+    }
+
+    public function testSkipsIfRequiresHigherVersionOfPHP()
+    {
+        $test   = new RequirementsTest('testAlwaysSkip2');
+        $result = $test->run();
+
+        $this->assertEquals(1, $result->skippedCount());
+        $this->assertEquals(
+          'PHP 9999999 (or later) is required.',
+          $test->getStatusMessage()
+        );
     }
 }

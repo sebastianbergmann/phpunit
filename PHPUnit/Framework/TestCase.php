@@ -197,6 +197,19 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
     private $expectedExceptionTrace = array();
 
     /**
+     * The required version of PHP.
+     *
+     * @var    string
+     */
+    private $requiredPhp = '';
+    /**
+     * The required version of PHPUnit.
+     *
+     * @var    string
+     */
+    private $requiredPhpUnit = '';
+
+    /**
      * The name of the test case.
      *
      * @var    string
@@ -524,6 +537,58 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
     }
 
     /**
+     * @since Method available since Release 3.6.0
+     */
+    protected function setRequirementsFromAnnotation()
+    {
+        try {
+            $requirements = PHPUnit_Util_Test::getRequirements(
+              get_class($this), $this->name
+            );
+
+            if (isset($requirements['PHP'])) {
+                $this->requiredPhp = $requirements['PHP'];
+            }
+
+            if (isset($requirements['PHPUnit'])) {
+                $this->requiredPhpUnit = $requirements['PHPUnit'];
+            }
+        }
+
+        catch (ReflectionException $e) {
+        }
+    }
+
+    /**
+     * @since Method available since Release 3.6.0
+     */
+    protected function testRequirements()
+    {
+        $this->setRequirementsFromAnnotation();
+
+        if ($this->requiredPhp &&
+            !version_compare(PHP_VERSION, $this->requiredPhp, '>=')) {
+            $this->markTestSkipped(
+              sprintf(
+                'PHP %s (or later) is required.',
+                $this->requiredPhp
+              )
+            );
+        }
+
+        $phpunitVersion = PHPUnit_Runner_Version::id();
+        if ($this->requiredPhpUnit &&
+            !version_compare($phpunitVersion, $this->requiredPhpUnit, '>=')) {
+            $this->markTestSkipped(
+              sprintf(
+                'PHPUnit %s (or later) is required.',
+                $this->requiredPhpUnit
+              )
+            );
+        }
+    }
+
+    /**
      * Returns the status of this test.
      *
      * @return integer
@@ -705,6 +770,7 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
             }
 
             $this->setUp();
+            $this->testRequirements();
             $this->assertPreConditions();
             $this->testResult = $this->runTest();
             $this->verifyMockObjects();

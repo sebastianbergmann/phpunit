@@ -59,6 +59,7 @@ class PHPUnit_Util_Test
 {
     const REGEX_DATA_PROVIDER      = '/@dataProvider\s+([a-zA-Z0-9._:-\\\\x7f-\xff]+)/';
     const REGEX_EXPECTED_EXCEPTION = '(@expectedException\s+([:.\w\\\\x7f-\xff]+)(?:[\t ]+(\S*))?(?:[\t ]+(\S*))?\s*$)m';
+    const REGEX_REQUIRES           = '/@requires\s+(?P<name>PHP(?:Unit)?)\s+(?P<value>[\d\.]+)[ \t]*\r?$/m';
 
     const SMALL  = 0;
     const MEDIUM = 1;
@@ -98,6 +99,29 @@ class PHPUnit_Util_Test
                 return array('', get_class($test));
             }
         }
+    }
+
+    /**
+     * Returns the requirements for a test.
+     *
+     * @param  string $className
+     * @param  string $methodName
+     * @return array
+     * @since  Method available since Release 3.6.0
+     */
+    public static function getRequirements($className, $methodName)
+    {
+        $reflector  = new ReflectionMethod($className, $methodName);
+        $docComment = $reflector->getDocComment();
+        $requires   = array();
+
+        if ($count = preg_match_all(self::REGEX_REQUIRES, $docComment, $matches)) {
+            for ($i = 0; $i < $count; $i++) {
+                $requires[$matches['name'][$i]] = $matches['value'][$i];
+            }
+        }
+
+        return $requires;
     }
 
     /**
