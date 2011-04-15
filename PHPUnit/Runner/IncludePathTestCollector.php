@@ -70,9 +70,14 @@ require_once 'File/Iterator/Factory.php';
 class PHPUnit_Runner_IncludePathTestCollector implements PHPUnit_Runner_TestCollector
 {
     /**
-     * @var string
+     * @var ReflectionClass
      */
-    protected $filterIterator;
+    protected $filterIteratorClass;
+
+    /**
+     * @var array
+     */
+    protected $filterIteratorArgs;
 
     /**
      * @var array
@@ -115,9 +120,13 @@ class PHPUnit_Runner_IncludePathTestCollector implements PHPUnit_Runner_TestColl
           $this->paths, $this->suffixes, $this->prefixes
         );
 
-        if ($this->filterIterator !== NULL) {
-            $class    = new ReflectionClass($this->filterIterator);
-            $iterator = $class->newInstance($iterator);
+        if ($this->filterIteratorClass !== NULL) {
+            if ($this->filterIteratorArgs !== NULL) {
+                array_unshift($this->filterIteratorArgs, $iterator);
+                $iterator = $this->filterIteratorClass->newInstanceArgs($this->filterIteratorArgs);
+            } else {
+                $iterator = $this->filterIteratorClass->newInstance($iterator);
+            }
         }
 
         return $iterator;
@@ -126,19 +135,39 @@ class PHPUnit_Runner_IncludePathTestCollector implements PHPUnit_Runner_TestColl
     /**
      * Adds a FilterIterator to filter the source files to be collected.
      *
-     * @param  string $filterIterator
+     * @param  string | array $filterIterator
      * @throws InvalidArgumentException
      */
     public function setFilterIterator($filterIterator)
     {
+        $class = NULL;
+        $args = NULL;
         if (is_string($filterIterator) && class_exists($filterIterator)) {
             $class = new ReflectionClass($filterIterator);
+        } else if (is_array($filterIterator)) {
+            if (!class_exists($filterIterator['class'], FALSE) &&
+                $filterIterator['file'] !== '') {
+                $file = PHPUnit_Util_FileSystem::fileExistsInIncludePath(
+                  $filterIterator['file']
+                );
+                if ($file != FALSE) {
+                    require $file;
+                }
+            }
 
-            if ($class->isSubclassOf('FilterIterator')) {
-                $this->filterIterator = $filterIterator;
+            if (class_exists($filterIterator['class'], FALSE)) {
+                $class = new ReflectionClass($filterIterator['class']);
+                if (count($filterIterator['arguments']) > 0) {
+                    $args = $filterIterator['arguments'];
+                }
             }
         } else {
             throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'class name');
+        }
+
+        if ($class != NULL && $class->isSubclassOf('FilterIterator')) {
+            $this->filterIteratorClass = $class;
+            $this->filterIteratorArgs = $args;
         }
     }
 }

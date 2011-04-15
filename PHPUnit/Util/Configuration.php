@@ -310,7 +310,7 @@ class PHPUnit_Util_Configuration
     }
 
     /**
-     * Returns the configuration for listeners.
+     * Returns the listeners.
      *
      * @return array
      * @since  Method available since Release 3.4.0
@@ -319,33 +319,8 @@ class PHPUnit_Util_Configuration
     {
         $result = array();
 
-        foreach ($this->xpath->query('listeners/listener') as $listener) {
-            $class     = (string)$listener->getAttribute('class');
-            $file      = '';
-            $arguments = array();
-
-            if ($listener->hasAttribute('file')) {
-                $file = $this->toAbsolutePath((string)$listener->getAttribute('file'));
-            }
-
-            if ($listener->childNodes->item(1) instanceof DOMElement &&
-                $listener->childNodes->item(1)->tagName == 'arguments') {
-                foreach ($listener->childNodes->item(1)->childNodes as $argument) {
-                    if ($argument instanceof DOMElement) {
-                        if($argument->tagName == 'file' || $argument->tagName == 'directory') {
-                            $arguments[] = $this->toAbsolutePath((string)$argument->nodeValue);
-                        } else {
-                            $arguments[] = PHPUnit_Util_XML::xmlToVariable($argument);
-                        }
-                    }
-                }
-            }
-
-            $result[] = array(
-              'class'     => $class,
-              'file'      => $file,
-              'arguments' => $arguments
-            );
+        foreach ($this->xpath->query('listeners/listener') as $listenerNode) {
+            $result[] = $this->getObjectConfiguration($listenerNode);
         }
 
         return $result;
@@ -730,6 +705,8 @@ class PHPUnit_Util_Configuration
             $suite = new PHPUnit_Framework_TestSuite;
         }
 
+        $filterIterator = $this->getTestSuiteFilter($testSuiteNode);
+
         foreach ($testSuiteNode->getElementsByTagName('directory') as $directoryNode) {
             $directory = (string)$directoryNode->nodeValue;
 
@@ -752,6 +729,9 @@ class PHPUnit_Util_Configuration
             $testCollector = new PHPUnit_Runner_IncludePathTestCollector(
               array($this->toAbsolutePath($directory)), $suffix, $prefix
             );
+            if ($filterIterator) {
+                $testCollector->setFilterIterator($filterIterator);
+            }
 
             $suite->addTestFiles($testCollector->collectTests(), $syntaxCheck);
         }
@@ -767,6 +747,44 @@ class PHPUnit_Util_Configuration
         }
 
         return $suite;
+    }
+
+    protected function getTestSuiteFilter(DOMElement $testSuiteNode) {
+        $filterNode = $testSuiteNode->getElementsByTagName('filter')->item(0);
+        if (!$filterNode) {
+            return null;
+        }
+
+        return $this->getObjectConfiguration($filterNode);
+    }
+
+    protected function getObjectConfiguration(DOMElement $objectNode) {
+        $class     = (string)$objectNode->getAttribute('class');
+        $file      = '';
+        $arguments = array();
+
+        if ($objectNode->hasAttribute('file')) {
+            $file = $this->toAbsolutePath((string)$objectNode->getAttribute('file'));
+        }
+
+        if ($objectNode->childNodes->item(1) instanceof DOMElement &&
+            $objectNode->childNodes->item(1)->tagName == 'arguments') {
+            foreach ($objectNode->childNodes->item(1)->childNodes as $argument) {
+                if ($argument instanceof DOMElement) {
+                    if($argument->tagName == 'file' || $argument->tagName == 'directory') {
+                        $arguments[] = $this->toAbsolutePath((string)$argument->nodeValue);
+                    } else {
+                        $arguments[] = PHPUnit_Util_XML::xmlToVariable($argument);
+                    }
+                }
+            }
+        }
+
+        return array(
+          'class'     => $class,
+          'file'      => $file,
+          'arguments' => $arguments
+        );
     }
 
     /**
