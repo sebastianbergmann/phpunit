@@ -72,6 +72,13 @@
  *     <testsuite name="My Test Suite">
  *       <directory suffix="Test.php">/path/to/files</directory>
  *       <file>/path/to/MyTest.php</file>
+ *       <filter class="MyFilterIterator" file="/optional/path/to/MyFilterIterator.php">
+ *         <arguments>
+ *           <element key="0">
+ *             <string>Bad Test</string>
+ *           </element>
+ *         </arguments>
+ *       </filter>
  *     </testsuite>
  *   </testsuites>
  *

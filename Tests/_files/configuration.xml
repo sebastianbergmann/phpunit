@@ -18,6 +18,15 @@
     <testsuite name="My Test Suite">
       <directory suffix="Test.php">/path/to/files</directory>
       <file>/path/to/MyTest.php</file>
+      <filter class="MyFilterIterator" file="/optional/path/to/MyFilterIterator.php">
+        <arguments>
+          <array>
+            <element key="0">
+              <string>BadTest</string>
+            </element>
+          </array>
+        </arguments>
+      </filter>
     </testsuite>
   </testsuites>
 
