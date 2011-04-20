@@ -44,6 +44,7 @@
 
 require_once 'File/Iterator/Autoload.php';
 require_once 'PHP/CodeCoverage/Autoload.php';
+require_once 'PHP/Invoker/Autoload.php';
 require_once 'PHP/Timer/Autoload.php';
 require_once 'PHPUnit/Framework/MockObject/Autoload.php';
 require_once 'PHPUnit/Extensions/Database/Autoload.php';

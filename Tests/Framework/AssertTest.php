@@ -4207,7 +4207,7 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
         }
 
         catch (PHPUnit_Framework_AssertionFailedError $e) {
-            $this->assertEquals('Count of 3 does not match expected count of 2.', $e->getMessage());
+            $this->assertEquals('Actual size 3 does not match expected size 2.', $e->getMessage());
 
             return;
         }

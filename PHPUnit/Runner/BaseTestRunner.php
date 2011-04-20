@@ -87,14 +87,13 @@ abstract class PHPUnit_Runner_BaseTestRunner
     {
         if (is_dir($suiteClassName) &&
             !is_file($suiteClassName . '.php') && empty($suiteClassFile)) {
-            $suite = new PHPUnit_Framework_TestSuite($suiteClassName);
-
-            $suite->addTestFiles(
-              File_Iterator_Factory::getFilesAsArray(
-                $suiteClassName,
-                array('Test.php', '.phpt')
-              )
+            $facade = new File_Iterator_Facade;
+            $files  = $facade->getFilesAsArray(
+              $suiteClassName, array('Test.php', '.phpt')
             );
+
+            $suite = new PHPUnit_Framework_TestSuite($suiteClassName);
+            $suite->addTestFiles($files);
 
             return $suite;
         }

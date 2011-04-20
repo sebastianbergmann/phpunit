@@ -35,61 +35,57 @@
  * POSSIBILITY OF SUCH DAMAGE.
  *
  * @package    PHPUnit
+ * @subpackage Util
  * @author     Sebastian Bergmann <sebastian@phpunit.de>
  * @copyright  2002-2011 Sebastian Bergmann <sebastian@phpunit.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @link       http://www.phpunit.de/
- * @since      File available since Release 3.0.0
+ * @since      File available since Release 3.5.12
  */
 
-require_once dirname(dirname(__FILE__)) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'OutputTestCase.php';
-
 /**
- *
+ * Windows utility for PHP sub-processes.
  *
  * @package    PHPUnit
+ * @subpackage Util
  * @author     Sebastian Bergmann <sebastian@phpunit.de>
  * @copyright  2002-2011 Sebastian Bergmann <sebastian@phpunit.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    Release: @package_version@
  * @link       http://www.phpunit.de/
- * @since      Class available since Release 3.0.0
+ * @since      Class available since Release 3.5.12
  */
-class Extensions_OutputTestCaseTest extends PHPUnit_Framework_TestCase
+class PHPUnit_Util_PHP_Windows extends PHPUnit_Util_PHP
 {
-    public function testExpectOutputStringFooActualFoo()
-    {
-        $test   = new OutputTestCase('testExpectOutputStringFooActualFoo');
-        $result = $test->run();
+    /**
+     * @var string
+     */
+    protected $tempFile;
 
-        $this->assertEquals(1, count($result));
-        $this->assertTrue($result->wasSuccessful());
+    /**
+     * @param resource $pipe
+     * @since Method available since Release 3.5.12
+     */
+    protected function process($pipe, $job)
+    {
+        if (!($this->tempFile = tempnam(sys_get_temp_dir(), 'PHPUnit')) ||
+            file_put_contents($this->tempFile, $job) === FALSE) {
+            throw new PHPUnit_Framework_Exception(
+              'Unable to write temporary files for process isolation.'
+            );
+        }
+
+        fwrite(
+          $pipe,
+          "<?php require_once '" . addcslashes($this->tempFile, "'") .  "'; ?>"
+        );
     }
 
-    public function testExpectOutputStringFooActualBar()
+    /**
+     * @since Method available since Release 3.5.12
+     */
+    protected function cleanup()
     {
-        $test   = new OutputTestCase('testExpectOutputStringFooActualBar');
-        $result = $test->run();
-
-        $this->assertEquals(1, count($result));
-        $this->assertFalse($result->wasSuccessful());
-    }
-
-    public function testExpectOutputRegexFooActualFoo()
-    {
-        $test   = new OutputTestCase('testExpectOutputRegexFooActualFoo');
-        $result = $test->run();
-
-        $this->assertEquals(1, count($result));
-        $this->assertTrue($result->wasSuccessful());
-    }
-
-    public function testExpectOutputRegexFooActualBar()
-    {
-        $test   = new OutputTestCase('testExpectOutputRegexFooActualBar');
-        $result = $test->run();
-
-        $this->assertEquals(1, count($result));
-        $this->assertFalse($result->wasSuccessful());
+        unlink($this->tempFile);
     }
 }

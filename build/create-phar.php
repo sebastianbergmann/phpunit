@@ -1,6 +1,6 @@
+#!/usr/bin/env php
 <?php
-/**
- * PHPUnit
+/* PHPUnit
  *
  * Copyright (c) 2002-2011, Sebastian Bergmann <sebastian@phpunit.de>.
  * All rights reserved.
@@ -29,16 +29,32 @@
  * INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING,
  * BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
  * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
- * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
+ * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRIC
  * LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
- *
- * @package    PHPUnit
- * @subpackage Framework
- * @author     Sebastian Bergmann <sebastian@phpunit.de>
- * @copyright  2002-2011 Sebastian Bergmann <sebastian@phpunit.de>
- * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
- * @link       http://www.phpunit.de/
- * @since      File available since Release 3.5.0
- */{functions}
+ */
+
+require dirname(dirname(__FILE__)) . '/PHPUnit/Autoload.php';
+
+$stub = <<<ENDSTUB
+#!/usr/bin/env php
+<?php
+Phar::mapPhar('phpunit.phar');
+require 'phar://phpunit.phar/PHPUnit/Autoload.php';
+PHPUnit_TextUI_Command::main();
+__HALT_COMPILER();
+ENDSTUB;
+
+$phar = new Phar('phpunit.phar', 0, 'phpunit.phar');
+$phar->startBuffering();
+
+$files  = array_keys(PHPUnit_Util_GlobalState::phpunitFiles());
+$offset = substr_count(dirname(__FILE__), '/');
+
+foreach ($files as $file) {
+    $phar->addFile($file, join('/', array_slice(explode('/', $file), $offset)));
+}
+
+$phar->setStub($stub);
+$phar->stopBuffering();

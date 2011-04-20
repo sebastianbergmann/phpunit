@@ -35,88 +35,34 @@
  * POSSIBILITY OF SUCH DAMAGE.
  *
  * @package    PHPUnit
- * @subpackage Framework_Constraint
+ * @subpackage Util
  * @author     Sebastian Bergmann <sebastian@phpunit.de>
  * @copyright  2002-2011 Sebastian Bergmann <sebastian@phpunit.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @link       http://www.phpunit.de/
- * @since      File available since Release 3.6.0
+ * @since      File available since Release 3.5.12
  */
 
 /**
- *
+ * Default utility for PHP sub-processes.
  *
  * @package    PHPUnit
- * @subpackage Framework_Constraint
+ * @subpackage Util
  * @author     Sebastian Bergmann <sebastian@phpunit.de>
  * @copyright  2002-2011 Sebastian Bergmann <sebastian@phpunit.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    Release: @package_version@
  * @link       http://www.phpunit.de/
- * @since      Class available since Release 3.6.0
+ * @since      Class available since Release 3.5.12
  */
-class PHPUnit_Framework_Constraint_Count extends PHPUnit_Framework_Constraint
+class PHPUnit_Util_PHP_Default extends PHPUnit_Util_PHP
 {
     /**
-     * @var integer
+     * @param resource $pipe
+     * @since Method available since Release 3.5.12
      */
-    protected $expectedCount = 0;
-
-    /**
-     * @param integer $expected
-     */
-    public function __construct($expected)
+    protected function process($pipe, $job)
     {
-        $this->expectedCount = $expected;
-    }
-
-    /**
-     * Evaluates the constraint for parameter $other. Returns TRUE if the
-     * constraint is met, FALSE otherwise.
-     *
-     * @param mixed $other
-     * @return boolean
-     */
-    public function evaluate($other)
-    {
-        return $this->expectedCount === $this->getCountOf($other);
-    }
-
-    /**
-     * @param mixed $other
-     * @return boolean
-     */
-    protected function getCountOf($other)
-    {
-        if ($other instanceof Countable || is_array($other)) {
-            return count($other);
-        }
-
-        else if ($other instanceof Iterator) {
-            return iterator_count($other);
-        }
-    }
-
-    /**
-     * @param mixed   $other
-     * @param string  $description
-     * @param boolean $not
-     * @return string
-     */
-    protected function failureDescription($other, $description, $not)
-    {
-        return sprintf(
-          'Actual size %d does not match expected size %d.',
-          $this->getCountOf($other),
-          $this->expectedCount
-        );
-    }
-
-    /**
-     * @return string
-     */
-    public function toString()
-    {
-        return 'count matches ';
+        fwrite($pipe, $job);
     }
 }

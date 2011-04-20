@@ -44,6 +44,7 @@
 
 require_once 'File/Iterator/Autoload.php';
 require_once 'PHP/CodeCoverage/Autoload.php';
+require_once 'PHP/Invoker/Autoload.php';
 require_once 'PHP/Timer/Autoload.php';
 require_once 'PHPUnit/Framework/MockObject/Autoload.php';
 require_once 'PHPUnit/Extensions/Database/Autoload.php';
@@ -100,6 +101,7 @@ function phpunit_autoload($class = NULL) {
           'phpunit_framework_constraint_objecthasattribute' => '/Framework/Constraint/ObjectHasAttribute.php',
           'phpunit_framework_constraint_or' => '/Framework/Constraint/Or.php',
           'phpunit_framework_constraint_pcrematch' => '/Framework/Constraint/PCREMatch.php',
+          'phpunit_framework_constraint_samesize' => '/Framework/Constraint/SameSize.php',
           'phpunit_framework_constraint_stringcontains' => '/Framework/Constraint/StringContains.php',
           'phpunit_framework_constraint_stringendswith' => '/Framework/Constraint/StringEndsWith.php',
           'phpunit_framework_constraint_stringmatches' => '/Framework/Constraint/StringMatches.php',
@@ -114,6 +116,7 @@ function phpunit_autoload($class = NULL) {
           'phpunit_framework_expectationfailedexception' => '/Framework/ExpectationFailedException.php',
           'phpunit_framework_incompletetest' => '/Framework/IncompleteTest.php',
           'phpunit_framework_incompletetesterror' => '/Framework/IncompleteTestError.php',
+          'phpunit_framework_outputerror' => '/Framework/OutputError.php',
           'phpunit_framework_selfdescribing' => '/Framework/SelfDescribing.php',
           'phpunit_framework_skippedtest' => '/Framework/SkippedTest.php',
           'phpunit_framework_skippedtesterror' => '/Framework/SkippedTestError.php',
@@ -153,6 +156,8 @@ function phpunit_autoload($class = NULL) {
           'phpunit_util_log_tap' => '/Util/Log/TAP.php',
           'phpunit_util_log_xhprof' => '/Util/Log/XHProf.php',
           'phpunit_util_php' => '/Util/PHP.php',
+          'phpunit_util_php_default' => '/Util/PHP/Default.php',
+          'phpunit_util_php_windows' => '/Util/PHP/Windows.php',
           'phpunit_util_printer' => '/Util/Printer.php',
           'phpunit_util_skeleton' => '/Util/Skeleton.php',
           'phpunit_util_skeleton_class' => '/Util/Skeleton/Class.php',

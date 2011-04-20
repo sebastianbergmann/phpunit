@@ -59,16 +59,28 @@
 class PHPUnit_Framework_Constraint_TraversableContains extends PHPUnit_Framework_Constraint
 {
     /**
+     * @var boolean
+     */
+    protected $checkForObjectIdentity;
+
+    /**
      * @var mixed
      */
     protected $value;
 
     /**
-     * @param mixed $value
+     * @param  boolean $value
+     * @param  mixed   $checkForObjectIdentity
+     * @throws InvalidArgumentException
      */
-    public function __construct($value)
+    public function __construct($value, $checkForObjectIdentity = TRUE)
     {
-        $this->value = $value;
+        if (!is_bool($checkForObjectIdentity)) {
+            throw PHPUnit_Util_InvalidArgumentHelper::factory(2, 'boolean');
+        }
+
+        $this->checkForObjectIdentity = $checkForObjectIdentity;
+        $this->value                  = $value;
     }
 
     /**
@@ -86,7 +98,10 @@ class PHPUnit_Framework_Constraint_TraversableContains extends PHPUnit_Framework
 
         if (is_object($this->value)) {
             foreach ($other as $element) {
-                if ($element === $this->value) {
+                if (($this->checkForObjectIdentity &&
+                     $element === $this->value) ||
+                    (!$this->checkForObjectIdentity &&
+                     $element == $this->value)) {
                     return TRUE;
                 }
             }

@@ -85,6 +85,10 @@ class PHPUnit_Extensions_TicketListener_GoogleCode extends PHPUnit_Extensions_Ti
             throw new RuntimeException('ext/curl is not available');
         }
 
+        if (!extension_loaded('simplexml')) {
+            throw new RuntimeException('ext/simplexml is not available');
+        }
+
         $this->email                   = $email;
         $this->password                = $password;
         $this->project                 = $project;

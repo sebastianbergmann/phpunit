@@ -95,6 +95,16 @@ class PHPUnit_Util_Log_DBUS implements PHPUnit_Framework_TestListener
     protected $endedSuites = 0;
 
     /**
+     *
+     */
+    public function __construct()
+    {
+        if (!extension_loaded('dbus')) {
+            throw new RuntimeException('ext/dbus is not available');
+        }
+    }
+
+    /**
      * An error occurred.
      *
      * @param  PHPUnit_Framework_Test $test

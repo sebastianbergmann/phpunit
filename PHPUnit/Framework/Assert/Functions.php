@@ -113,11 +113,12 @@ function assertArrayNotHasKey($key, array $array, $message = '')
  * @param  mixed   $haystackClassOrObject
  * @param  string  $message
  * @param  boolean $ignoreCase
+ * @param  boolean $checkForObjectIdentity
  * @since  Method available since Release 3.0.0
  */
-function assertAttributeContains($needle, $haystackAttributeName, $haystackClassOrObject, $message = '', $ignoreCase = FALSE)
+function assertAttributeContains($needle, $haystackAttributeName, $haystackClassOrObject, $message = '', $ignoreCase = FALSE, $checkForObjectIdentity = TRUE)
 {
-    return PHPUnit_Framework_Assert::assertAttributeContains($needle, $haystackAttributeName, $haystackClassOrObject, $message, $ignoreCase);
+    return PHPUnit_Framework_Assert::assertAttributeContains($needle, $haystackAttributeName, $haystackClassOrObject, $message, $ignoreCase, $checkForObjectIdentity);
 }
 
 /**
@@ -260,11 +261,12 @@ function assertAttributeLessThanOrEqual($expected, $actualAttributeName, $actual
  * @param  mixed   $haystackClassOrObject
  * @param  string  $message
  * @param  boolean $ignoreCase
+ * @param  boolean $checkForObjectIdentity
  * @since  Method available since Release 3.0.0
  */
-function assertAttributeNotContains($needle, $haystackAttributeName, $haystackClassOrObject, $message = '', $ignoreCase = FALSE)
+function assertAttributeNotContains($needle, $haystackAttributeName, $haystackClassOrObject, $message = '', $ignoreCase = FALSE, $checkForObjectIdentity = TRUE)
 {
-    return PHPUnit_Framework_Assert::assertAttributeNotContains($needle, $haystackAttributeName, $haystackClassOrObject, $message, $ignoreCase);
+    return PHPUnit_Framework_Assert::assertAttributeNotContains($needle, $haystackAttributeName, $haystackClassOrObject, $message, $ignoreCase, $checkForObjectIdentity);
 }
 
 /**
@@ -430,11 +432,12 @@ function assertClassNotHasStaticAttribute($attributeName, $className, $message =
  * @param  mixed   $haystack
  * @param  string  $message
  * @param  boolean $ignoreCase
+ * @param  boolean $checkForObjectIdentity
  * @since  Method available since Release 2.1.0
  */
-function assertContains($needle, $haystack, $message = '', $ignoreCase = FALSE)
+function assertContains($needle, $haystack, $message = '', $ignoreCase = FALSE, $checkForObjectIdentity = TRUE)
 {
-    return PHPUnit_Framework_Assert::assertContains($needle, $haystack, $message, $ignoreCase);
+    return PHPUnit_Framework_Assert::assertContains($needle, $haystack, $message, $ignoreCase, $checkForObjectIdentity);
 }
 
 /**
@@ -659,11 +662,12 @@ function assertLessThanOrEqual($expected, $actual, $message = '')
  * @param  mixed   $haystack
  * @param  string  $message
  * @param  boolean $ignoreCase
+ * @param  boolean $checkForObjectIdentity
  * @since  Method available since Release 2.1.0
  */
-function assertNotContains($needle, $haystack, $message = '', $ignoreCase = FALSE)
+function assertNotContains($needle, $haystack, $message = '', $ignoreCase = FALSE, $checkForObjectIdentity = TRUE)
 {
-    return PHPUnit_Framework_Assert::assertNotContains($needle, $haystack, $message, $ignoreCase);
+    return PHPUnit_Framework_Assert::assertNotContains($needle, $haystack, $message, $ignoreCase, $checkForObjectIdentity);
 }
 
 /**
@@ -786,6 +790,19 @@ function assertNotSame($expected, $actual, $message = '')
 }
 
 /**
+ * Assert that the size of two arrays (or `Countable` or `Iterator` objects)
+ * is not the same.
+ *
+ * @param integer $expected
+ * @param mixed   $actual
+ * @param string  $message
+ */
+function assertNotSameSize($expectedCount, $haystack, $message = '')
+{
+    return PHPUnit_Framework_Assert::assertNotSameSize($expectedCount, $haystack, $message);
+}
+
+/**
  * This assertion is the exact opposite of assertTag().
  *
  * Rather than asserting that $matcher results in a match, it asserts that
@@ -865,6 +882,19 @@ function assertRegExp($pattern, $string, $message = '')
 function assertSame($expected, $actual, $message = '')
 {
     return PHPUnit_Framework_Assert::assertSame($expected, $actual, $message);
+}
+
+/**
+ * Assert that the size of two arrays (or `Countable` or `Iterator` objects)
+ * is the same.
+ *
+ * @param integer $expected
+ * @param mixed   $actual
+ * @param string  $message
+ */
+function assertSameSize($expected, $actual, $message = '')
+{
+    return PHPUnit_Framework_Assert::assertSameSize($expected, $actual, $message);
 }
 
 /**
@@ -1401,13 +1431,14 @@ function classHasStaticAttribute($attributeName)
  * Returns a PHPUnit_Framework_Constraint_TraversableContains matcher
  * object.
  *
- * @param  mixed $value
+ * @param  mixed   $value
+ * @param  boolean $checkForObjectIdentity
  * @return PHPUnit_Framework_Constraint_TraversableContains
  * @since  Method available since Release 3.0.0
  */
-function contains($value)
+function contains($value, $checkForObjectIdentity = TRUE)
 {
-    return PHPUnit_Framework_Assert::contains($value);
+    return PHPUnit_Framework_Assert::contains($value, $checkForObjectIdentity);
 }
 
 /**
@@ -1759,6 +1790,18 @@ function returnSelf()
 function returnValue($value)
 {
     return PHPUnit_Framework_TestCase::returnValue($value);
+}
+
+/**
+ *
+ *
+ * @param  array $valueMap
+ * @return PHPUnit_Framework_MockObject_Stub_ReturnValueMap
+ * @since  Method available since Release 3.6.0
+ */
+function returnValueMap(array $valueMap)
+{
+    return PHPUnit_Framework_TestCase::returnValueMap($valueMap);
 }
 
 /**

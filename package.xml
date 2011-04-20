@@ -163,6 +163,9 @@
       <file baseinstalldir="/" name="PCREMatch.php" role="php">
        <tasks:replace from="@package_version@" to="version" type="package-info" />
       </file>
+      <file baseinstalldir="/" name="SameSize.php" role="php">
+       <tasks:replace from="@package_version@" to="version" type="package-info" />
+      </file>
       <file baseinstalldir="/" name="StringContains.php" role="php">
        <tasks:replace from="@package_version@" to="version" type="package-info" />
       </file>
@@ -228,6 +231,9 @@
       <tasks:replace from="@package_version@" to="version" type="package-info" />
      </file>
      <file baseinstalldir="/" name="IncompleteTest.php" role="php">
+      <tasks:replace from="@package_version@" to="version" type="package-info" />
+     </file>
+     <file baseinstalldir="/" name="OutputError.php" role="php">
       <tasks:replace from="@package_version@" to="version" type="package-info" />
      </file>
      <file baseinstalldir="/" name="SelfDescribing.php" role="php">
@@ -312,6 +318,14 @@
        <tasks:replace from="@package_version@" to="version" type="package-info" />
       </file>
       <file baseinstalldir="/" name="XHProf.php" role="php">
+       <tasks:replace from="@package_version@" to="version" type="package-info" />
+      </file>
+     </dir>
+     <dir name="PHP">
+      <file baseinstalldir="/" name="Default.php" role="php">
+       <tasks:replace from="@package_version@" to="version" type="package-info" />
+      </file>
+      <file baseinstalldir="/" name="Windows.php" role="php">
        <tasks:replace from="@package_version@" to="version" type="package-info" />
       </file>
      </dir>
@@ -456,7 +470,7 @@
     <min>5.2.7</min>
    </php>
    <pearinstaller>
-    <min>1.9.1</min>
+    <min>1.9.2</min>
    </pearinstaller>
    <package>
     <name>DbUnit</name>
@@ -503,6 +517,10 @@
     <channel>pear.symfony-project.com</channel>
     <min>1.0.2</min>
    </package>
+   <package>
+    <name>XML_RPC2</name>
+    <channel>pear.php.net</channel>
+   </package>
    <extension>
     <name>dom</name>
    </extension>
@@ -517,6 +535,14 @@
    </extension>
   </required>
   <optional>
+   <package>
+    <name>PHP_Invoker</name>
+    <channel>pear.phpunit.de</channel>
+    <min>1.0.0</min>
+   </package>
+   <extension>
+    <name>curl</name>
+   </extension>
    <extension>
     <name>dbus</name>
    </extension>
@@ -524,10 +550,7 @@
     <name>json</name>
    </extension>
    <extension>
-    <name>pdo</name>
-   </extension>
-   <extension>
-    <name>soap</name>
+    <name>simplexml</name>
    </extension>
    <extension>
     <name>tokenizer</name>

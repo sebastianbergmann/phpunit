@@ -785,14 +785,15 @@ class PHPUnit_Util_Configuration
                 $suffix = 'Test.php';
             }
 
-            $suite->addTestFiles(
-              File_Iterator_Factory::getFilesAsArray(
-                $this->toAbsolutePath($directory),
-                $suffix,
-                $prefix,
-                array()
-              )
+            $facade = new File_Iterator_Facade;
+            $files  = $facade->getFilesAsArray(
+              $this->toAbsolutePath($directory),
+              $suffix,
+              $prefix,
+              array()
             );
+
+            $suite->addTestFiles($files);
         }
 
         foreach ($testSuiteNode->getElementsByTagName('file') as $fileNode) {

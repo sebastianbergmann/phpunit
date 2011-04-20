@@ -147,7 +147,7 @@ abstract class PHPUnit_Extensions_TicketListener implements PHPUnit_Framework_Te
                 return;
             }
 
-            $name    = $test->getName();
+            $name    = $test->getName(FALSE);
             $tickets = PHPUnit_Util_Test::getTickets(get_class($test), $name);
 
             foreach ($tickets as $ticket) {
@@ -187,7 +187,7 @@ abstract class PHPUnit_Extensions_TicketListener implements PHPUnit_Framework_Te
                 return;
             }
 
-            $name    = $test->getName();
+            $name    = $test->getName(FALSE);
             $tickets = PHPUnit_Util_Test::getTickets(get_class($test), $name);
 
             foreach ($tickets as $ticket) {

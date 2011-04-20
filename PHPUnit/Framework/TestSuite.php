@@ -635,23 +635,36 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
 
         $result->startTestSuite($this);
 
-        try {
-            $this->setUp();
+        $doSetup = TRUE;
 
-            if ($this->testCase &&
-                method_exists($this->name, 'setUpBeforeClass')) {
-                call_user_func(array($this->name, 'setUpBeforeClass'));
+        if (!empty($excludeGroups)) {
+            foreach ($this->groups as $_group => $_tests) {
+                if (in_array($_group, $excludeGroups) &&
+                    count($_tests) == count($this->tests)) {
+                    $doSetup = FALSE;
+                }
             }
         }
+        
+        if ($doSetup) {
+            try {
+                $this->setUp();
 
-        catch (PHPUnit_Framework_SkippedTestSuiteError $e) {
-            $numTests = count($this);
-
-            for ($i = 0; $i < $numTests; $i++) {
-                $result->addFailure($this, $e, 0);
+                if ($this->testCase &&
+                    method_exists($this->name, 'setUpBeforeClass')) {
+                    call_user_func(array($this->name, 'setUpBeforeClass'));
+                }
             }
 
-            return $result;
+            catch (PHPUnit_Framework_SkippedTestSuiteError $e) {
+                $numTests = count($this);
+
+                for ($i = 0; $i < $numTests; $i++) {
+                    $result->addFailure($this, $e, 0);
+                }
+
+                return $result;
+            }
         }
 
         if (empty($groups)) {
@@ -724,12 +737,15 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
             }
         }
 
-        if ($this->testCase &&
-            method_exists($this->name, 'tearDownAfterClass')) {
-            call_user_func(array($this->name, 'tearDownAfterClass'));
-        }
+        if ($doSetup) {
+            if ($this->testCase &&
+                method_exists($this->name, 'tearDownAfterClass')) {
+                call_user_func(array($this->name, 'tearDownAfterClass'));
+            }
 
-        $this->tearDown();
+            $this->tearDown();
+        }
+        
         $result->endTestSuite($this);
 
         return $result;
@@ -820,9 +836,9 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
             $this->addTest(
               self::warning(
                 sprintf(
-                  'Test method "%s" is not public.',
-
-                  $name
+                  'Test method "%s" in test class "%s" is not public.',
+                  $name,
+                  $class->getName()
                 )
               )
             );

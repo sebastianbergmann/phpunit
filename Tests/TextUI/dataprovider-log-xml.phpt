@@ -2,6 +2,8 @@
 phpunit --log-junit php://stdout DataProviderTest ../_files/DataProviderTest.php
 --FILE--
 <?php
+define('PHPUNIT_TESTSUITE', TRUE);
+
 $_SERVER['argv'][1] = '--no-configuration';
 $_SERVER['argv'][2] = '--log-junit';
 $_SERVER['argv'][3] = 'php://stdout';
