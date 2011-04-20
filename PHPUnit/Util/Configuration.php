@@ -335,7 +335,7 @@ class PHPUnit_Util_Configuration
             $arguments = array();
 
             if ($listener->hasAttribute('file')) {
-                $file = $this->toAbsolutePath((string)$listener->getAttribute('file'));
+                $file = (string)$listener->getAttribute('file');
             }
 
             if ($listener->childNodes->item(1) instanceof DOMElement &&
