@@ -654,7 +654,7 @@ class PHPUnit_Util_XML
 
             foreach ($nodes as $node) {
                 if ($parentNode !== $node->parentNode) {
-                    break;
+                    continue;
                 }
 
                 $filtered[] = $node;
