@@ -1204,17 +1204,13 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
      */
     protected function getMockClass($originalClassName, $methods = array(), array $arguments = array(), $mockClassName = '', $callOriginalConstructor = FALSE, $callOriginalClone = TRUE, $callAutoload = TRUE)
     {
-        $mock = $this->getMock(
+        return PHPUnit_Framework_MockObject_Generator::getClass(
           $originalClassName,
           $methods,
-          $arguments,
           $mockClassName,
-          $callOriginalConstructor,
           $callOriginalClone,
           $callAutoload
         );
-
-        return get_class($mock);
     }
 
     /**
