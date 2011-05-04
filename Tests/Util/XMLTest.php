@@ -325,4 +325,14 @@ class Util_XMLTest extends PHPUnit_Framework_TestCase
 
         $this->assertEquals($tag, $converted);
     }
+    
+    public function testPrepareString() {
+        for($i = 0; $i < 256; $i++) {
+            $escapedString = PHPUnit_Util_XML::prepareString(chr($i));
+            
+            $xml = "<?xml version='1.0' encoding='UTF-8' ?><tag>$escapedString</tag>";
+
+            DOMDocument::loadXML($xml); // Throws an exception, if invalid chars are found
+        }
+    }
 }

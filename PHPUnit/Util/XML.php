@@ -58,6 +58,11 @@
 class PHPUnit_Util_XML
 {
     /**
+     * Escapes a string for the use in XML documents
+     * Any Unicode character is allowed, excluding the surrogate blocks, FFFE, 
+     * and FFFF (not even as character reference).
+     * See http://www.w3.org/TR/xml/#charsets
+     *
      * @param  string $string
      * @return string
      * @author Kore Nordmann <mail@kore-nordmann.de>
@@ -66,10 +71,10 @@ class PHPUnit_Util_XML
     public static function prepareString($string)
     {
         return preg_replace(
-          '([\\x00-\\x04\\x0b\\x0c\\x0e-\\x1f\\x7f])e',
-          'sprintf( "&#x%02x;", ord( "\\1" ) )',
+          '([\\x00-\\x08\\x0b\\x0c\\x0e-\\x1f\\x7f])e',
+          '',
           htmlspecialchars(
-            self::convertToUtf8($string), ENT_COMPAT, 'UTF-8'
+            self::convertToUtf8($string), ENT_QUOTES, 'UTF-8'
           )
         );
     }
