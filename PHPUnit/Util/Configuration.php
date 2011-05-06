@@ -759,7 +759,7 @@ class PHPUnit_Util_Configuration
 
         $exclude = array();
         foreach ($testSuiteNode->getElementsByTagName('exclude') as $excludeNode) {
-            $exclude[] = $excludeNode;
+            $exclude[] = (string)$excludeNode->nodeValue;
         }
 
         foreach ($testSuiteNode->getElementsByTagName('directory') as $directoryNode) {
