@@ -109,11 +109,11 @@ class PHPUnit_Util_TestDox_NamePrettifier
             return $buffer;
         }
 
-        $string = preg_replace('#\d+$#', '', $name);
+        $string = preg_replace('#\d+$#', '', $name, -1, $count);
 
         if (in_array($string, $this->strings)) {
             $name = $string;
-        } else {
+        } else if ($count == 0) {
             $this->strings[] = $string;
         }
 
