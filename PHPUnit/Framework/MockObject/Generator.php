@@ -537,18 +537,9 @@ class PHPUnit_Framework_MockObject_Generator
             $methods = array();
         }
 
-        $constructor   = NULL;
         $mockedMethods = '';
 
         if (isset($class)) {
-            if ($class->hasMethod('__construct')) {
-                $constructor = $class->getMethod('__construct');
-            }
-
-            else if ($class->hasMethod($originalClassName)) {
-                $constructor = $class->getMethod($originalClassName);
-            }
-
             foreach ($methods as $methodName) {
                 try {
                     $method = $class->getMethod($methodName);
