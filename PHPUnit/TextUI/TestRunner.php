@@ -682,9 +682,7 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
                 !isset($arguments['testdoxTextFile'])) {
                 $arguments['testdoxTextFile'] = $loggingConfiguration['testdox-text'];
             }
-        }
 
-        if (isset($arguments['configuration'])) {
             $filterConfiguration = $arguments['configuration']->getFilterConfiguration();
 
             $filter = $this->codeCoverage->filter();
