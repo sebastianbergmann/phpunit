@@ -73,6 +73,7 @@
  *     <testsuite name="My Test Suite">
  *       <directory suffix="Test.php" phpVersion="5.3.0" phpVersionOperator=">=">/path/to/files</directory>
  *       <file phpVersion="5.3.0" phpVersionOperator=">=">/path/to/MyTest.php</file>
+ *       <exclude>/path/to/files/exclude</exclude>
  *     </testsuite>
  *   </testsuites>
  *
@@ -750,6 +751,11 @@ class PHPUnit_Util_Configuration
             $suite = new PHPUnit_Framework_TestSuite;
         }
 
+        $exclude = array();
+        foreach ($testSuiteNode->getElementsByTagName('exclude') as $excludeNode) {
+            $exclude[] = $excludeNode;
+        }
+
         foreach ($testSuiteNode->getElementsByTagName('directory') as $directoryNode) {
             $directory = (string)$directoryNode->nodeValue;
 
@@ -790,7 +796,7 @@ class PHPUnit_Util_Configuration
               $this->toAbsolutePath($directory),
               $suffix,
               $prefix,
-              array()
+              $exclude
             );
 
             $suite->addTestFiles($files);
