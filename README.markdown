@@ -61,8 +61,9 @@ The following commands can be used to perform the initial checkout of PHPUnit an
     git clone git://github.com/sebastianbergmann/phpunit-mock-objects.git
     git clone git://github.com/sebastianbergmann/phpunit-selenium.git
     git clone git://github.com/sebastianbergmann/phpunit-story.git
+    git clone git://github.com/sebastianbergmann/php-invoker.git
 
-The `dbunit`, `php-code-coverage`, `php-file-iterator`, `php-text-template`, `php-timer`, `php-token-stream`, `phpunit`, `phpunit-mock-objects`, `phpunit-selenium`, and `phpunit-story` directories need to be added to the `include_path`.
+The `dbunit`, `php-code-coverage`, `php-file-iterator`, `php-text-template`, `php-timer`, `php-token-stream`, `phpunit`, `phpunit-mock-objects`, `phpunit-selenium`, `phpunit-story`, and `php-invoker` directories need to be added to the `include_path`.
 
 The `phpunit/phpunit.php` script can be used to invoke the PHPUnit test runner.
 
@@ -85,3 +86,5 @@ The following commands can be used to check out the appropriate branches for PHP
     cd php-token-stream && git checkout master && cd ..
     cd phpunit-mock-objects && git checkout master && cd ..
     cd phpunit-selenium && git checkout master && cd ..
+    cd php-invoker && git checkout master && cd ..
+
