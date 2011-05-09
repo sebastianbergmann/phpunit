@@ -34,6 +34,17 @@ The documentation for PHPUnit is available in different formats:
 * [Japanese, PDF](http://www.phpunit.de/manual/3.6/ja/phpunit-book.pdf)
 * [Japanese, ePub](http://www.phpunit.de/manual/3.6/ja/phpunit-book.epub)
 
+Mailing Lists
+-------------
+
+* Send an email to `user-subscribe@phpunit.de` to subscribe to the `phpunit-user` mailing list. This is a medium volume list for general PHPUnit support; ask PHPUnit questions here.
+* Send an email to `dev-subscribe@phpunit.de` to subscribe to the `phpunit-dev` mailing list. This is a low volume list for those who want to help out with the development of PHPUnit.
+
+IRC
+---
+
+The [#phpunit channel on the Freenode IRC network](irc://freenode.net/phpunit) is a place to chat about PHPUnit.
+
 Using PHPUnit From a Git Checkout
 ---------------------------------
 
@@ -50,27 +61,30 @@ The following commands can be used to perform the initial checkout of PHPUnit an
     git clone git://github.com/sebastianbergmann/phpunit-mock-objects.git
     git clone git://github.com/sebastianbergmann/phpunit-selenium.git
     git clone git://github.com/sebastianbergmann/phpunit-story.git
+    git clone git://github.com/sebastianbergmann/php-invoker.git
 
-The `dbunit`, `php-code-coverage`, `php-file-iterator`, `php-text-template`, `php-timer`, `php-token-stream`, `phpunit`, `phpunit-mock-objects`, `phpunit-selenium`, and `phpunit-story` directories need to be added to the `include_path`.
+The `dbunit`, `php-code-coverage`, `php-file-iterator`, `php-text-template`, `php-timer`, `php-token-stream`, `phpunit`, `phpunit-mock-objects`, `phpunit-selenium`, `phpunit-story`, and `php-invoker` directories need to be added to the `include_path`.
 
 The `phpunit/phpunit.php` script can be used to invoke the PHPUnit test runner.
 
 The following commands can be used to check out the appropriate branches for PHPUnit 3.5:
 
-    cd phpunit && git co 3.5 && cd ..
-    cd dbunit && git co 1.0 && cd ..
-    cd php-file-iterator && git co 1.2 && cd ..
-    cd php-code-coverage && git co 1.0 && cd ..
-    cd php-token-stream && git co 1.0 && cd ..
-    cd phpunit-mock-objects && git co 1.0 && cd ..
-    cd phpunit-selenium && git co 1.0 && cd ..
+    cd phpunit && git checkout 3.5 && cd ..
+    cd dbunit && git checkout 1.0 && cd ..
+    cd php-file-iterator && git checkout 1.2 && cd ..
+    cd php-code-coverage && git checkout 1.0 && cd ..
+    cd php-token-stream && git checkout 1.0 && cd ..
+    cd phpunit-mock-objects && git checkout 1.0 && cd ..
+    cd phpunit-selenium && git checkout 1.0 && cd ..
 
 The following commands can be used to check out the appropriate branches for PHPUnit 3.6:
 
-    cd phpunit && git co master && cd ..
-    cd dbunit && git co master && cd ..
-    cd php-file-iterator && git co master && cd ..
-    cd php-code-coverage && git co master && cd ..
-    cd php-token-stream && git co master && cd ..
-    cd phpunit-mock-objects && git co master && cd ..
-    cd phpunit-selenium && git co master && cd ..
+    cd phpunit && git checkout master && cd ..
+    cd dbunit && git checkout master && cd ..
+    cd php-file-iterator && git checkout master && cd ..
+    cd php-code-coverage && git checkout master && cd ..
+    cd php-token-stream && git checkout master && cd ..
+    cd phpunit-mock-objects && git checkout master && cd ..
+    cd phpunit-selenium && git checkout master && cd ..
+    cd php-invoker && git checkout master && cd ..
+
