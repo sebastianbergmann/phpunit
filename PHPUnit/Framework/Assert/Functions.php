@@ -365,6 +365,7 @@ function assertAttributeNotSame($expected, $actualAttributeName, $actualClassOrO
  * @param  mixed   $classOrObject
  * @param  string  $message
  * @since  Method available since Release 3.4.0
+ * @deprecated
  */
 function assertAttributeNotType($expected, $attributeName, $classOrObject, $message = '')
 {
@@ -393,6 +394,7 @@ function assertAttributeSame($expected, $actualAttributeName, $actualClassOrObje
  * @param  mixed   $classOrObject
  * @param  string  $message
  * @since  Method available since Release 3.4.0
+ * @deprecated
  */
 function assertAttributeType($expected, $attributeName, $classOrObject, $message = '')
 {
@@ -815,6 +817,7 @@ function assertNotTag($matcher, $actual, $message = '', $isHtml = TRUE)
  * @param  mixed  $actual
  * @param  string $message
  * @since  Method available since Release 2.2.0
+ * @deprecated
  */
 function assertNotType($expected, $actual, $message = '')
 {
@@ -1260,6 +1263,7 @@ function assertTrue($condition, $message = '')
  * @param  string $expected
  * @param  mixed  $actual
  * @param  string $message
+ * @deprecated
  */
 function assertType($expected, $actual, $message = '')
 {
