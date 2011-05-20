@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<phpunit backupGlobals="false"
+         backupStaticAttributes="true"
+         bootstrap="/path/to/override.php"
+         cacheTokens="false"
+         colors="true"
+         convertErrorsToExceptions="false"
+         convertNoticesToExceptions="false"
+         convertWarningsToExceptions="false"
+         forceCoversAnnotation="true"
+         inherit="configuration.xml"
+         mapTestClassNameToCoveredClassName="true"
+         printerClass="PHPUnit_TextUI_OverridePrinter"
+         stopOnFailure="true"
+         testSuiteLoaderClass="PHPUnit_Runner_OverrideTestSuiteLoader"
+         strict="true"
+         verbose="true">
+
+  <testsuites />
+  <groups />
+  <filter />
+  <listeners />
+  <logging />
+  <php />
+  <selenium />
+</phpunit>
+
