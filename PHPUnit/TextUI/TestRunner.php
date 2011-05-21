@@ -573,13 +573,7 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
             foreach ($arguments['configuration']->getListenerConfiguration() as $listener) {
                 if (!class_exists($listener['class'], FALSE) &&
                     $listener['file'] !== '') {
-                    $file = PHPUnit_Util_Filesystem::fileExistsInIncludePath(
-                      $listener['file']
-                    );
-
-                    if ($file !== FALSE) {
-                        require $file;
-                    }
+                    require_once $listener['file'];
                 }
 
                 if (class_exists($listener['class'], FALSE)) {
