@@ -67,6 +67,7 @@
         <directory>MyRelativePath</directory>
       </arguments>
     </listener>
+    <listener class="IncludePathListener" file="ConfigurationTest.php" />
   </listeners>
 
   <logging>
