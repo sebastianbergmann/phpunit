@@ -80,13 +80,17 @@ class PHPUnit_Util_Filter
 
         if ($e instanceof PHPUnit_Framework_SyntheticError) {
             $eTrace = $e->getSyntheticTrace();
+            $eFile  = $e->getSyntheticFile();
+            $eLine  = $e->getSyntheticLine();
         } else {
             $eTrace = $e->getTrace();
+            $eFile  = $e->getFile();
+            $eLine  = $e->getLine();
         }
 
-        if (!self::frameExists($eTrace, $e->getFile(), $e->getLine())) {
+        if (!self::frameExists($eTrace, $eFile, $eLine)) {
             array_unshift(
-              $eTrace, array('file' => $e->getFile(), 'line' => $e->getLine())
+              $eTrace, array('file' => $eFile, 'line' => $eLine)
             );
         }
 
