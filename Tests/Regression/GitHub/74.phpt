@@ -24,7 +24,7 @@ There was 1 error:
 1) Issue74Test::testCreateAndThrowNewExceptionInProcessIsolation
 NewException: Testing GH-74
 
-%s/Tests/Regression/GitHub/74/Issue74Test.php:9
+%s/Tests/Regression/GitHub/74/Issue74Test.php:7
 %s
 
 FAILURES!
