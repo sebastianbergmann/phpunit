@@ -235,25 +235,25 @@ abstract class PHPUnit_Util_PHP
 
                 if (!empty($notImplemented)) {
                     $result->addError(
-                      $test, $notImplemented[0]->thrownException(), $time
+                      $test, $this->getException($notImplemented[0]), $time
                     );
                 }
 
                 else if (!empty($skipped)) {
                     $result->addError(
-                      $test, $skipped[0]->thrownException(), $time
+                      $test, $this->getException($skipped[0]), $time
                     );
                 }
 
                 else if (!empty($errors)) {
                     $result->addError(
-                      $test, $errors[0]->thrownException(), $time
+                      $test, $this->getException($errors[0]), $time
                     );
                 }
 
                 else if (!empty($failures)) {
                     $result->addFailure(
-                      $test, $failures[0]->thrownException(), $time
+                      $test, $this->getException($failures[0]), $time
                     );
                 }
             } else {
@@ -266,5 +266,38 @@ abstract class PHPUnit_Util_PHP
         }
 
         $result->endTest($test, $time);
+    }
+
+    /**
+     * Gets the thrown exception from a PHPUnit_Framework_TestFailure.
+     *
+     * @param PHPUnit_Framework_TestFailure $error
+     * @since Method available since Release 3.6.0
+     * @see   https://github.com/sebastianbergmann/phpunit/issues/74
+     */
+    protected function getException(PHPUnit_Framework_TestFailure $error) {
+        $exception = $error->thrownException();
+
+        if ($exception instanceof __PHP_Incomplete_Class) {
+            $exceptionArray = array();
+            foreach ((array)$exception as $key => $value) {
+                $key = substr($key, strrpos($key, "\0") + 1);
+                $exceptionArray[$key] = $value;
+            }
+
+            $exception = new PHPUnit_Framework_SyntheticError(
+              sprintf(
+                '%s: %s',
+                $exceptionArray['_PHP_Incomplete_Class_Name'],
+                $exceptionArray['message']
+              ),
+              $exceptionArray['code'],
+              $exceptionArray['file'],
+              $exceptionArray['line'],
+              $exceptionArray['trace']
+            );
+        }
+
+        return $exception;
     }
 }
