@@ -336,7 +336,9 @@ class PHPUnit_Util_Configuration
             $arguments = array();
 
             if ($listener->hasAttribute('file')) {
-                $file = $this->toAbsolutePath((string)$listener->getAttribute('file'));
+                $file = $this->toAbsolutePath(
+                  (string)$listener->getAttribute('file'), TRUE
+                );
             }
 
             if ($listener->childNodes->item(1) instanceof DOMElement &&
@@ -906,11 +908,12 @@ class PHPUnit_Util_Configuration
     }
 
     /**
-     * @param  string $path
+     * @param  string  $path
+     * @param  boolean $useIncludePath
      * @return string
      * @since  Method available since Release 3.5.0
      */
-    protected function toAbsolutePath($path)
+    protected function toAbsolutePath($path, $useIncludePath = FALSE)
     {
         // is the path already an absolute path?
         if ($path[0] === '/' || $path[0] === '\\' ||
@@ -919,6 +922,18 @@ class PHPUnit_Util_Configuration
             return $path;
         }
 
-        return dirname($this->filename) . DIRECTORY_SEPARATOR . $path;
+        $file = dirname($this->filename) . DIRECTORY_SEPARATOR . $path;
+
+        if ($useIncludePath && !file_exists($file)) {
+            $includePathFile = PHPUnit_Util_Filesystem::fileExistsInIncludePath(
+              $path
+            );
+
+            if ($includePathFile) {
+                $file = $includePathFile;
+            }
+        }
+
+        return $file;
     }
 }

@@ -175,6 +175,11 @@ class Util_ConfigurationTest extends PHPUnit_Framework_TestCase
 
     public function testListenerConfigurationIsReadCorrectly()
     {
+        $dir = dirname(__FILE__);
+        $includePath = ini_get('include_path');
+
+        ini_set('include_path', $dir . PATH_SEPARATOR . $includePath);
+
         $this->assertEquals(
           array(
             0 =>
@@ -196,9 +201,16 @@ class Util_ConfigurationTest extends PHPUnit_Framework_TestCase
                 7 => dirname(dirname(__FILE__)) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'MyRelativePath',
               ),
             ),
+            array(
+              'class' => 'IncludePathListener',
+              'file' => __FILE__,
+              'arguments' => array()
+            )
           ),
           $this->configuration->getListenerConfiguration()
         );
+
+        ini_set('include_path', $includePath);
     }
 
     public function testLoggingConfigurationIsReadCorrectly()
