@@ -494,16 +494,16 @@ function assertEmpty($actual, $message = '')
 }
 
 /**
- * Asserts that a hierarchy of DOMNodes matches.
+ * Asserts that a hierarchy of DOMElements matches.
  *
- * @param DOMNode $expectedNode
- * @param DOMNode $actualNode
+ * @param DOMElement $expectedNode
+ * @param DOMElement $actualNode
  * @param boolean $checkAttributes
  * @param string  $message
  * @author Mattis Stordalen Flister <mattis@xait.no>
  * @since  Method available since Release 3.3.0
  */
-function assertEqualXMLStructure(DOMNode $expectedNode, DOMNode $actualNode, $checkAttributes = FALSE, $message = '')
+function assertEqualXMLStructure(DOMElement $expectedNode, DOMElement $actualNode, $checkAttributes = FALSE, $message = '')
 {
     return PHPUnit_Framework_Assert::assertEqualXMLStructure($expectedNode, $actualNode, $checkAttributes, $message);
 }

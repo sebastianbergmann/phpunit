@@ -1714,16 +1714,16 @@ abstract class PHPUnit_Framework_Assert
     }
 
     /**
-     * Asserts that a hierarchy of DOMNodes matches.
+     * Asserts that a hierarchy of DOMElements matches.
      *
-     * @param DOMNode $expectedNode
-     * @param DOMNode $actualNode
+     * @param DOMElement $expectedNode
+     * @param DOMElement $actualNode
      * @param boolean $checkAttributes
      * @param string  $message
      * @author Mattis Stordalen Flister <mattis@xait.no>
      * @since  Method available since Release 3.3.0
      */
-    public static function assertEqualXMLStructure(DOMNode $expectedNode, DOMNode $actualNode, $checkAttributes = FALSE, $message = '')
+    public static function assertEqualXMLStructure(DOMElement $expectedNode, DOMElement $actualNode, $checkAttributes = FALSE, $message = '')
     {
         self::assertEquals(
           $expectedNode->tagName,
