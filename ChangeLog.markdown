@@ -7,6 +7,8 @@ PHPUnit 3.5.14
 --------------
 
 * Fixed GH-222: `assertAttribute*()` is too strict.
+* Fixed grouping of TestDox messages. Test method names should only be grouped if they are part of a sequence, starting with the initial test method not ending in a number.
+* `stream_resolve_include_path()` is now used when available.
 
 PHPUnit 3.5.13
 --------------
