@@ -640,6 +640,7 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
             // arrays
             array(array('a' => 1, 'b' => 2), array('b' => 2, 'a' => 1)),
             array(array(1), array('1')),
+            array(array(3, 2, 1), array(2, 3, 1), 0, true), // canonicalized comparison
             // floats
             array(2.3, 2.5, 0.5),
             array(array(2.3), array(2.5), 0.5),
@@ -705,19 +706,19 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
      * @covers PHPUnit_Framework_Assert::assertEquals
      * @dataProvider equalProvider
      */
-    public function testAssertEqualsSucceeds($a, $b, $delta = 0)
+    public function testAssertEqualsSucceeds($a, $b, $delta = 0, $canonicalize = FALSE)
     {
-        $this->assertEquals($a, $b, '', $delta);
+        $this->assertEquals($a, $b, '', $delta, 10, $canonicalize);
     }
 
     /**
      * @covers PHPUnit_Framework_Assert::assertEquals
      * @dataProvider notEqualProvider
      */
-    public function testAssertEqualsFails($a, $b, $delta = 0)
+    public function testAssertEqualsFails($a, $b, $delta = 0, $canonicalize = FALSE)
     {
         try {
-            $this->assertEquals($a, $b, '', $delta);
+            $this->assertEquals($a, $b, '', $delta, 10, $canonicalize);
         }
 
         catch (PHPUnit_Framework_AssertionFailedError $e) {
@@ -731,19 +732,19 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
      * @covers PHPUnit_Framework_Assert::assertNotEquals
      * @dataProvider notEqualProvider
      */
-    public function testAssertNotEqualsSucceeds($a, $b, $delta = 0)
+    public function testAssertNotEqualsSucceeds($a, $b, $delta = 0, $canonicalize = FALSE)
     {
-        $this->assertNotEquals($a, $b, '', $delta);
+        $this->assertNotEquals($a, $b, '', $delta, 10, $canonicalize);
     }
 
     /**
      * @covers PHPUnit_Framework_Assert::assertNotEquals
      * @dataProvider equalProvider
      */
-    public function testAssertNotEqualsFails($a, $b, $delta = 0)
+    public function testAssertNotEqualsFails($a, $b, $delta = 0, $canonicalize = FALSE)
     {
         try {
-            $this->assertNotEquals($a, $b, '', $delta);
+            $this->assertNotEquals($a, $b, '', $delta, 10, $canonicalize);
         }
 
         catch (PHPUnit_Framework_AssertionFailedError $e) {
