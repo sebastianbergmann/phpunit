@@ -514,6 +514,7 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
             array(0, 0),
             // floats
             array(2.3, 2.3),
+            array(1/3, 1 - 2/3),
             array(log(0), log(0)),
             // arrays
             array(array(), array()),
