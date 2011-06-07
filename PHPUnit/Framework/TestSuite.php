@@ -645,7 +645,23 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
                 }
             }
         }
-        
+
+        // TODO: Temporary hack. Where shall we put this initialization code?
+        static $loaded = false;
+
+        if (!$loaded) {
+            $loaded = true;
+            PHPUnit_Framework_Comparator::register(new PHPUnit_Framework_Comparator_Type);
+            PHPUnit_Framework_Comparator::register(new PHPUnit_Framework_Comparator_Scalar);
+            PHPUnit_Framework_Comparator::register(new PHPUnit_Framework_Comparator_Double);
+            PHPUnit_Framework_Comparator::register(new PHPUnit_Framework_Comparator_Array);
+            PHPUnit_Framework_Comparator::register(new PHPUnit_Framework_Comparator_Resource);
+            PHPUnit_Framework_Comparator::register(new PHPUnit_Framework_Comparator_Object);
+            PHPUnit_Framework_Comparator::register(new PHPUnit_Framework_Comparator_Exception);
+            PHPUnit_Framework_Comparator::register(new PHPUnit_Framework_Comparator_SplObjectStorage);
+            PHPUnit_Framework_Comparator::register(new PHPUnit_Framework_Comparator_DOMDocument);
+        }
+
         if ($doSetup) {
             try {
                 $this->setUp();
@@ -755,7 +771,7 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
 
             $this->tearDown();
         }
-        
+
         $result->endTestSuite($this);
 
         return $result;
