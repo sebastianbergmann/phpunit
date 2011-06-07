@@ -60,21 +60,21 @@ class PHPUnit_Framework_Comparator_DOMDocument extends PHPUnit_Framework_Compara
     /**
      * Returns whether the comparator can compare two values.
      *
-     * @param  mixed $a The first value to compare
-     * @param  mixed $b The second value to compare
+     * @param  mixed $expected The first value to compare
+     * @param  mixed $actual The second value to compare
      * @return boolean
      * @since  Method available since Release 3.6.0
      */
-    public function accepts($a, $b)
+    public function accepts($expected, $actual)
     {
-        return $a instanceof DOMDocument && $b instanceof DOMDocument;
+        return $expected instanceof DOMDocument && $actual instanceof DOMDocument;
     }
 
     /**
      * Asserts that two values are equal.
      *
-     * @param  mixed $a The first value to compare
-     * @param  mixed $b The second value to compare
+     * @param  mixed $expected The first value to compare
+     * @param  mixed $actual The second value to compare
      * @param  float $delta The allowed numerical distance between two values to
      *                      consider them equal
      * @param  bool  $canonicalize If set to TRUE, arrays are sorted before
@@ -86,14 +86,14 @@ class PHPUnit_Framework_Comparator_DOMDocument extends PHPUnit_Framework_Compara
      *                           specific errors that lead to the failure.
      * @since  Method available since Release 3.6.0
      */
-    public function assertEquals($a, $b, $delta = 0, $canonicalize = FALSE, $ignoreCase = FALSE)
+    public function assertEquals($expected, $actual, $delta = 0, $canonicalize = FALSE, $ignoreCase = FALSE)
     {
-        if ($a->C14N() !== $b->C14N()) {
+        if ($expected->C14N() !== $actual->C14N()) {
             throw new PHPUnit_Framework_ComparisonFailure(
-              $a,
-              $b,
-              $this->domToText($a),
-              $this->domToText($b),
+              $expected,
+              $actual,
+              $this->domToText($expected),
+              $this->domToText($actual),
               FALSE,
               'Failed asserting that two DOM documents are equal.'
             );

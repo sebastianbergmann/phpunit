@@ -67,21 +67,21 @@ class PHPUnit_Framework_Comparator_Double extends PHPUnit_Framework_Comparator_S
     /**
      * Returns whether the comparator can compare two values.
      *
-     * @param  mixed $a The first value to compare
-     * @param  mixed $b The second value to compare
+     * @param  mixed $expected The first value to compare
+     * @param  mixed $actual The second value to compare
      * @return boolean
      * @since  Method available since Release 3.6.0
      */
-    public function accepts($a, $b)
+    public function accepts($expected, $actual)
     {
-        return (is_double($a) || is_double($b)) && is_numeric($a) && is_numeric($b);
+        return (is_double($expected) || is_double($actual)) && is_numeric($expected) && is_numeric($actual);
     }
 
     /**
      * Asserts that two values are equal.
      *
-     * @param  mixed $a The first value to compare
-     * @param  mixed $b The second value to compare
+     * @param  mixed $expected The first value to compare
+     * @param  mixed $actual The second value to compare
      * @param  float $delta The allowed numerical distance between two values to
      *                      consider them equal
      * @param  bool  $canonicalize If set to TRUE, arrays are sorted before
@@ -93,9 +93,9 @@ class PHPUnit_Framework_Comparator_Double extends PHPUnit_Framework_Comparator_S
      *                           specific errors that lead to the failure.
      * @since  Method available since Release 3.6.0
      */
-    public function assertEquals($a, $b, $delta = 0, $canonicalize = FALSE, $ignoreCase = FALSE)
+    public function assertEquals($expected, $actual, $delta = 0, $canonicalize = FALSE, $ignoreCase = FALSE)
     {
-        if (is_infinite($b) && is_infinite($a)) {
+        if (is_infinite($actual) && is_infinite($expected)) {
             return;
         }
 
@@ -103,18 +103,18 @@ class PHPUnit_Framework_Comparator_Double extends PHPUnit_Framework_Comparator_S
             $delta = self::EPSILON;
         }
 
-        if (abs($b - $a) >= $delta) {
+        if (abs($actual - $expected) >= $delta) {
             throw new PHPUnit_Framework_ComparisonFailure(
-              $a,
-              $b,
+              $expected,
+              $actual,
               '',
               '',
               FALSE,
               sprintf(
                 'Failed asserting that %s matches expected %s.',
 
-                PHPUnit_Util_Type::toString($b),
-                PHPUnit_Util_Type::toString($a)
+                PHPUnit_Util_Type::toString($actual),
+                PHPUnit_Util_Type::toString($expected)
               )
             );
         }

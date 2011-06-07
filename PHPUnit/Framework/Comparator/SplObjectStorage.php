@@ -60,21 +60,21 @@ class PHPUnit_Framework_Comparator_SplObjectStorage extends PHPUnit_Framework_Co
     /**
      * Returns whether the comparator can compare two values.
      *
-     * @param  mixed $a The first value to compare
-     * @param  mixed $b The second value to compare
+     * @param  mixed $expected The first value to compare
+     * @param  mixed $actual The second value to compare
      * @return boolean
      * @since  Method available since Release 3.6.0
      */
-    public function accepts($a, $b)
+    public function accepts($expected, $actual)
     {
-        return $a instanceof SplObjectStorage && $b instanceof SplObjectStorage;
+        return $expected instanceof SplObjectStorage && $actual instanceof SplObjectStorage;
     }
 
     /**
      * Asserts that two values are equal.
      *
-     * @param  mixed $a The first value to compare
-     * @param  mixed $b The second value to compare
+     * @param  mixed $expected The first value to compare
+     * @param  mixed $actual The second value to compare
      * @param  float $delta The allowed numerical distance between two values to
      *                      consider them equal
      * @param  bool  $canonicalize If set to TRUE, arrays are sorted before
@@ -86,28 +86,28 @@ class PHPUnit_Framework_Comparator_SplObjectStorage extends PHPUnit_Framework_Co
      *                           specific errors that lead to the failure.
      * @since  Method available since Release 3.6.0
      */
-    public function assertEquals($a, $b, $delta = 0, $canonicalize = FALSE, $ignoreCase = FALSE)
+    public function assertEquals($expected, $actual, $delta = 0, $canonicalize = FALSE, $ignoreCase = FALSE)
     {
-        foreach ($b as $object) {
-            if (!$a->contains($object)) {
+        foreach ($actual as $object) {
+            if (!$expected->contains($object)) {
                 throw new PHPUnit_Framework_ComparisonFailure(
-                  $a,
-                  $b,
-                  print_r($a, true),
-                  print_r($b, true),
+                  $expected,
+                  $actual,
+                  print_r($expected, true),
+                  print_r($actual, true),
                   FALSE,
                   'Failed asserting that two objects are equal.'
                 );
             }
         }
 
-        foreach ($a as $object) {
-            if (!$b->contains($object)) {
+        foreach ($expected as $object) {
+            if (!$actual->contains($object)) {
                 throw new PHPUnit_Framework_ComparisonFailure(
-                  $a,
-                  $b,
-                  print_r($a, true),
-                  print_r($b, true),
+                  $expected,
+                  $actual,
+                  print_r($expected, true),
+                  print_r($actual, true),
                   FALSE,
                   'Failed asserting that two objects are equal.'
                 );

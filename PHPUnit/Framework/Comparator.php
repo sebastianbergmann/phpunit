@@ -65,20 +65,20 @@ abstract class PHPUnit_Framework_Comparator
     /**
      * Returns the correct comparator for comparing two values.
      *
-     * @param  mixed $a The first value to compare
-     * @param  mixed $b The second value to compare
+     * @param  mixed $expected The first value to compare
+     * @param  mixed $actual The second value to compare
      * @return PHPUnit_Framework_Comparator
      * @since  Method available since Release 3.0.0
      */
-    public static function getInstance($a, $b)
+    public static function getInstance($expected, $actual)
     {
         foreach (self::$comparators as $comparator) {
-            if ($comparator->accepts($a, $b)) {
+            if ($comparator->accepts($expected, $actual)) {
                 return $comparator;
             }
         }
 
-        throw new InvalidArgumentException(sprintf('No comparator is registered for comparing the types "%s" and "%s"', gettype($a), gettype($b)));
+        throw new InvalidArgumentException(sprintf('No comparator is registered for comparing the types "%s" and "%s"', gettype($expected), gettype($actual)));
     }
 
     /**
@@ -116,18 +116,18 @@ abstract class PHPUnit_Framework_Comparator
     /**
      * Returns whether the comparator can compare two values.
      *
-     * @param  mixed $a The first value to compare
-     * @param  mixed $b The second value to compare
+     * @param  mixed $expected The first value to compare
+     * @param  mixed $actual The second value to compare
      * @return boolean
      * @since  Method available since Release 3.0.0
      */
-    abstract public function accepts($a, $b);
+    abstract public function accepts($expected, $actual);
 
     /**
      * Asserts that two values are equal.
      *
-     * @param  mixed $a The first value to compare
-     * @param  mixed $b The second value to compare
+     * @param  mixed $expected The first value to compare
+     * @param  mixed $actual The second value to compare
      * @param  float $delta The allowed numerical distance between two values to
      *                      consider them equal
      * @param  bool  $canonicalize If set to TRUE, arrays are sorted before
@@ -139,5 +139,5 @@ abstract class PHPUnit_Framework_Comparator
      *                           specific errors that lead to the failure.
      * @since  Method available since Release 3.0.0
      */
-    abstract public function assertEquals($a, $b, $delta = 0, $canonicalize = FALSE, $ignoreCase = FALSE);
+    abstract public function assertEquals($expected, $actual, $delta = 0, $canonicalize = FALSE, $ignoreCase = FALSE);
 }
