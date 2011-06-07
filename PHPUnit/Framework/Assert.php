@@ -2059,9 +2059,7 @@ abstract class PHPUnit_Framework_Assert
     {
         self::$count += count($constraint);
 
-        if (!$constraint->evaluate($value)) {
-            $constraint->fail($value, $message);
-        }
+        $constraint->evaluate($value, $message);
     }
 
     /**

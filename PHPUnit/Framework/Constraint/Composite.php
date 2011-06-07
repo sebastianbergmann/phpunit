@@ -36,59 +36,72 @@
  *
  * @package    PHPUnit
  * @subpackage Framework_Constraint
- * @author     Sebastian Bergmann <sebastian@phpunit.de>
  * @author     Bernhard Schussek <bschussek@2bepublished.at>
  * @copyright  2002-2011 Sebastian Bergmann <sebastian@phpunit.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @link       http://www.phpunit.de/
- * @since      File available since Release 3.0.0
+ * @since      File available since Release 3.6.0
  */
 
 /**
- * Constraint that accepts any input value.
+ *
  *
  * @package    PHPUnit
  * @subpackage Framework_Constraint
- * @author     Sebastian Bergmann <sebastian@phpunit.de>
  * @author     Bernhard Schussek <bschussek@2bepublished.at>
  * @copyright  2002-2011 Sebastian Bergmann <sebastian@phpunit.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    Release: @package_version@
  * @link       http://www.phpunit.de/
- * @since      Class available since Release 3.0.0
+ * @since      Class available since Release 3.6.0
  */
-class PHPUnit_Framework_Constraint_IsAnything extends PHPUnit_Framework_Constraint
+
+abstract class PHPUnit_Framework_Constraint_Composite extends PHPUnit_Framework_Constraint
 {
     /**
-     * Evaluates the constraint for parameter $other. Returns TRUE if the
-     * constraint is met, FALSE otherwise.
+     * @var PHPUnit_Framework_Constraint
+     */
+    protected $innerConstraint;
+
+    /**
+     * @param PHPUnit_Framework_Constraint $innerConstraint
+     * @param string                       $attributeName
+     */
+    public function __construct(PHPUnit_Framework_Constraint $innerConstraint)
+    {
+        $this->innerConstraint = $innerConstraint;
+    }
+
+    /**
+     * Evaluates the innerConstraint for parameter $other. Returns TRUE if the
+     * innerConstraint is met, FALSE otherwise.
      *
      * @param mixed $other Value or object to evaluate.
      * @return bool
      */
     public function evaluate($other, $description = '', $returnResult = FALSE)
     {
-        return $returnResult ? TRUE : NULL;
-    }
+        try {
+            return $this->innerConstraint->evaluate(
+              $other,
+              $description,
+              $returnResult
+            );
+        }
 
-    /**
-     * Returns a string representation of the constraint.
-     *
-     * @return string
-     */
-    public function toString()
-    {
-        return 'is anything';
+        catch (PHPUnit_Framework_ExpectationFailedException $e) {
+            $this->fail($other, $description);
+        }
     }
 
     /**
      * Counts the number of constraint elements.
      *
      * @return integer
-     * @since  Method available since Release 3.5.0
+     * @since  Method available since Release 3.4.0
      */
     public function count()
     {
-        return 0;
+        return count($this->innerConstraint);
     }
 }

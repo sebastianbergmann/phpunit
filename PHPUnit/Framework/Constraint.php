@@ -49,6 +49,7 @@
  * @package    PHPUnit
  * @subpackage Framework
  * @author     Sebastian Bergmann <sebastian@phpunit.de>
+ * @author     Bernhard Schussek <bschussek@2bepublished.at>
  * @copyright  2002-2011 Sebastian Bergmann <sebastian@phpunit.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    Release: @package_version@
@@ -57,6 +58,49 @@
  */
 abstract class PHPUnit_Framework_Constraint implements Countable, PHPUnit_Framework_SelfDescribing
 {
+
+    /**
+     * Removes spaces in front of and after newlines
+     *
+     * @param  string $string
+     * @return string
+     */
+    public static function trimnl($string)
+    {
+        return preg_replace('/[ ]*\n/', "\n", $string);
+    }
+
+    /**
+     * Evaluates the constraint for parameter $other. Returns TRUE if the
+     * constraint is met, FALSE otherwise.
+     *
+     * @param mixed $other Value or object to evaluate.
+     * @param mixed $description
+     * @param mixed $returnResult
+     * @return mixed
+     */
+    public function evaluate($other, $description = '', $returnResult = FALSE)
+    {
+        $success = FALSE;
+
+        if ($this->matches($other)) {
+            $success = TRUE;
+        }
+
+        if ($returnResult) {
+            return $success;
+        }
+
+        if (!$success) {
+            $this->fail($other, $description);
+        }
+    }
+
+    protected function matches($other)
+    {
+        return FALSE;
+    }
+
     /**
      * Counts the number of constraint elements.
      *
@@ -69,31 +113,11 @@ abstract class PHPUnit_Framework_Constraint implements Countable, PHPUnit_Framew
     }
 
     /**
-     * Creates the appropriate exception for the constraint which can be caught
-     * by the unit test system. This can be called if a call to evaluate()
-     * fails.
-     *
-     * @param   mixed   $other The value passed to evaluate() which failed the
-     *                         constraint check.
-     * @param   string  $description A string with extra description of what was
-     *                               going on while the evaluation failed.
-     * @param   boolean $not Flag to indicate negation.
-     * @throws  PHPUnit_Framework_ExpectationFailedException
-     */
-    public function fail($other, $description, $not = FALSE)
-    {
-        throw new PHPUnit_Framework_ExpectationFailedException(
-          $this->failureDescription($other, $description, $not),
-          NULL
-        );
-    }
-
-    /**
      * @param mixed   $other
      * @param string  $description
      * @param boolean $not
      */
-    protected function failureDescription($other, $description, $not)
+    protected function __failureDescription($other, $description, $not)
     {
         $failureDescription = $this->customFailureDescription(
           $other, $description, $not
@@ -119,52 +143,30 @@ abstract class PHPUnit_Framework_Constraint implements Countable, PHPUnit_Framew
         return $failureDescription;
     }
 
-    /**
-     * @param mixed   $other
-     * @param string  $description
-     * @param boolean $not
-     */
-    protected function customFailureDescription($other, $description, $not)
+    protected function fail($other, $description, PHPUnit_Framework_ComparisonFailure $comparisonFailure = null)
     {
-    }
+        $failureDescription = self::trimnl(sprintf(
+          'Failed asserting that %s.',
 
-    /**
-     * @param  string $string
-     * @return string
-     */
-    public static function negate($string)
-    {
-        return str_replace(
-          array(
-            'contains ',
-            'exists',
-            'has ',
-            'is ',
-            'matches ',
-            'starts with ',
-            'ends with ',
-            'not not '
-          ),
-          array(
-            'does not contain ',
-            'does not exist',
-            'does not have ',
-            'is not ',
-            'does not match ',
-            'starts not with ',
-            'ends not with ',
-            'not '
-          ),
-          $string
+          $this->failureDescription($other)
+        ));
+
+        if (!empty($description)) {
+            $failureDescription = $description . "\n" . $failureDescription;
+        }
+
+        throw new PHPUnit_Framework_ExpectationFailedException(
+          $failureDescription,
+          $comparisonFailure
         );
     }
 
     /**
-     * Evaluates the constraint for parameter $other. Returns TRUE if the
-     * constraint is met, FALSE otherwise.
-     *
-     * @param mixed $other Value or object to evaluate.
-     * @return bool
+     * @param mixed   $other
+     * @param string  $text
      */
-    abstract public function evaluate($other);
+    protected function failureDescription($other)
+    {
+        return PHPUnit_Util_Type::toString($other) . ' ' . $this->toString();
+    }
 }

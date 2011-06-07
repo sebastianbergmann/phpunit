@@ -582,6 +582,22 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
      */
     public function run(PHPUnit_Framework_TestResult $result = NULL)
     {
+        // TODO: Temporary hack. Where shall we put this initialization code?
+        static $loaded = false;
+
+        if (!$loaded) {
+            $loaded = true;
+            PHPUnit_Framework_Comparator::register(new PHPUnit_Framework_Comparator_Type);
+            PHPUnit_Framework_Comparator::register(new PHPUnit_Framework_Comparator_Scalar);
+            PHPUnit_Framework_Comparator::register(new PHPUnit_Framework_Comparator_Double);
+            PHPUnit_Framework_Comparator::register(new PHPUnit_Framework_Comparator_Array);
+            PHPUnit_Framework_Comparator::register(new PHPUnit_Framework_Comparator_Resource);
+            PHPUnit_Framework_Comparator::register(new PHPUnit_Framework_Comparator_Object);
+            PHPUnit_Framework_Comparator::register(new PHPUnit_Framework_Comparator_Exception);
+            PHPUnit_Framework_Comparator::register(new PHPUnit_Framework_Comparator_SplObjectStorage);
+            PHPUnit_Framework_Comparator::register(new PHPUnit_Framework_Comparator_DOMDocument);
+        }
+
         if ($result === NULL) {
             $result = $this->createResult();
         }

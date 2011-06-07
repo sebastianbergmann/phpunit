@@ -37,6 +37,7 @@
  * @package    PHPUnit
  * @subpackage Framework_Constraint
  * @author     Sebastian Bergmann <sebastian@phpunit.de>
+ * @author     Bernhard Schussek <bschussek@2bepublished.at>
  * @copyright  2002-2011 Sebastian Bergmann <sebastian@phpunit.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @link       http://www.phpunit.de/
@@ -57,6 +58,7 @@
  * @package    PHPUnit
  * @subpackage Framework_Constraint
  * @author     Sebastian Bergmann <sebastian@phpunit.de>
+ * @author     Bernhard Schussek <bschussek@2bepublished.at>
  * @copyright  2002-2011 Sebastian Bergmann <sebastian@phpunit.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    Release: @package_version@
@@ -90,45 +92,55 @@ class PHPUnit_Framework_Constraint_IsIdentical extends PHPUnit_Framework_Constra
      * @param mixed $other Value or object to evaluate.
      * @return bool
      */
-    public function evaluate($other)
+    protected function matches($other)
+    {
+    }
+    public function evaluate($other, $description = '', $returnResult = FALSE)
     {
         if (is_double($this->value) && is_double($other)) {
-            return abs($this->value - $other) < self::EPSILON;
+            $success = abs($this->value - $other) < self::EPSILON;
         }
 
-        return $this->value === $other;
+        else {
+            $success = $this->value === $other;
+        }
+
+        if ($returnResult) {
+            return $success;
+        }
+
+        if (!$success) {
+            $f = NULL;
+
+            // if both values are strings, make sure a diff is generated
+            if (is_string($this->value) && is_string($other)) {
+                $f = new PHPUnit_Framework_ComparisonFailure(
+                  $this->value,
+                  $other,
+                  $this->value,
+                  $other
+                );
+            }
+
+            $this->fail($other, $description, $f);
+        }
     }
 
     /**
-     * @param   mixed   $other The value passed to evaluate() which failed the
-     *                         constraint check.
-     * @param   string  $description A string with extra description of what was
-     *                               going on while the evaluation failed.
-     * @param   boolean $not Flag to indicate negation.
-     * @throws  PHPUnit_Framework_ExpectationFailedException
+     * @param mixed   $other
+     * @param string  $text
      */
-    public function fail($other, $description, $not = FALSE)
+    protected function failureDescription($other)
     {
-        $failureDescription = $this->failureDescription(
-          $other,
-          $description,
-          $not
-        );
-
-        if (!$not) {
-            throw new PHPUnit_Framework_ExpectationFailedException(
-              $failureDescription,
-              PHPUnit_Framework_ComparisonFailure::diffIdentical(
-                $this->value, $other
-              ),
-              $description
-            );
-        } else {
-            throw new PHPUnit_Framework_ExpectationFailedException(
-              $failureDescription,
-              NULL
-            );
+        if (is_object($this->value) && is_object($other)) {
+            return 'two variables reference the same object';
         }
+
+        if (is_string($this->value) && is_string($other)) {
+            return 'two strings are identical';
+        }
+
+        return parent::failureDescription($other);
     }
 
     /**

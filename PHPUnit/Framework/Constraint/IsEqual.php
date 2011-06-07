@@ -38,6 +38,7 @@
  * @subpackage Framework_Constraint
  * @author     Kore Nordmann <kn@ez.no>
  * @author     Sebastian Bergmann <sebastian@phpunit.de>
+ * @author     Bernhard Schussek <bschussek@2bepublished.at>
  * @copyright  2002-2011 Sebastian Bergmann <sebastian@phpunit.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @link       http://www.phpunit.de/
@@ -57,6 +58,7 @@
  * @subpackage Framework_Constraint
  * @author     Kore Nordmann <kn@ez.no>
  * @author     Sebastian Bergmann <sebastian@phpunit.de>
+ * @author     Bernhard Schussek <bschussek@2bepublished.at>
  * @copyright  2002-2011 Sebastian Bergmann <sebastian@phpunit.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    Release: @package_version@
@@ -89,6 +91,11 @@ class PHPUnit_Framework_Constraint_IsEqual extends PHPUnit_Framework_Constraint
      * @var boolean
      */
     protected $ignoreCase = FALSE;
+
+    /**
+     * @var PHPUnit_Framework_ComparisonFailure
+     */
+    protected $lastFailure;
 
     /**
      * @param mixed   $value
@@ -129,58 +136,25 @@ class PHPUnit_Framework_Constraint_IsEqual extends PHPUnit_Framework_Constraint
      * @param mixed $other Value or object to evaluate.
      * @return bool
      */
-    public function evaluate($other)
+    public function evaluate($other, $description = '', $returnResult = FALSE)
     {
         try {
             $comparator = PHPUnit_Framework_Comparator::getInstance($other, $this->value);
-            $comparator->assertEquals($other, $this->value, $this->delta, $this->canonicalize, $this->ignoreCase);
-
-            return TRUE;
+            $comparator->assertEquals($this->value, $other, $this->delta, $this->canonicalize, $this->ignoreCase);
         }
 
         catch (PHPUnit_Framework_ComparisonFailure $f) {
-            return FALSE;
-        }
-    }
-
-    /**
-     * @param   mixed   $other The value passed to evaluate() which failed the
-     *                         constraint check.
-     * @param   string  $description A string with extra description of what was
-     *                               going on while the evaluation failed.
-     * @param   boolean $not Flag to indicate negation.
-     * @throws  PHPUnit_Framework_ExpectationFailedException
-     */
-    public function fail($other, $description, $not = FALSE)
-    {
-        $failureDescription = $this->failureDescription(
-          $other,
-          $description,
-          $not
-        );
-
-        if (!$not) {
-            if ($this->value instanceof DOMDocument) {
-                $value = $this->domToText($this->value);
-            } else {
-                $value = $this->value;
-            }
-
-            if ($other instanceof DOMDocument) {
-                $other = $this->domToText($other);
+            if ($returnResult) {
+                return FALSE;
             }
 
             throw new PHPUnit_Framework_ExpectationFailedException(
-              $failureDescription,
-              PHPUnit_Framework_ComparisonFailure::diffEqual($value, $other),
-              $description
-            );
-        } else {
-            throw new PHPUnit_Framework_ExpectationFailedException(
-              $failureDescription,
-              NULL
+              trim($description."\n".$f->getMessage()),
+              $f
             );
         }
+
+        return TRUE;
     }
 
     /**
@@ -218,20 +192,5 @@ class PHPUnit_Framework_Constraint_IsEqual extends PHPUnit_Framework_Constraint
               $delta
             );
         }
-    }
-
-    /**
-     * Returns the normalized, whitespace-cleaned, and indented textual
-     * representation of a DOMDocument.
-     *
-     * @param DOMDocument $document
-     * @return string
-     */
-    protected function domToText(DOMDocument $document)
-    {
-        $document->formatOutput = TRUE;
-        $document->normalizeDocument();
-
-        return $document->saveXML();
     }
 }

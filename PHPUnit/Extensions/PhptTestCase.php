@@ -55,6 +55,7 @@ if (PHPUnit_Util_Filesystem::fileExistsInIncludePath('PEAR/RunTest.php')) {
  * @package    PHPUnit
  * @subpackage Extensions_PhptTestCase
  * @author     Sebastian Bergmann <sebastian@phpunit.de>
+ * @author     Bernhard Schussek <bschussek@2bepublished.at>
  * @copyright  2002-2011 Sebastian Bergmann <sebastian@phpunit.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    Release: @package_version@
@@ -202,11 +203,16 @@ class PHPUnit_Extensions_PhptTestCase implements PHPUnit_Framework_Test, PHPUnit
         }
 
         else if ($buffer != 'PASSED') {
+            $expContent = file_get_contents($expFile);
+            $outContent = file_get_contents($outFile);
+
             $result->addFailure(
               $this,
-              PHPUnit_Framework_ComparisonFailure::diffEqual(
-                file_get_contents($expFile),
-                file_get_contents($outFile)
+              new PHPUnit_Framework_ComparisonFailure(
+                $expContent,
+                $outContent,
+                $expContent,
+                $outContent
               ),
               $time
             );

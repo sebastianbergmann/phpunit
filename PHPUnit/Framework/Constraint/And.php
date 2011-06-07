@@ -37,6 +37,7 @@
  * @package    PHPUnit
  * @subpackage Framework_Constraint
  * @author     Sebastian Bergmann <sebastian@phpunit.de>
+ * @author     Bernhard Schussek <bschussek@2bepublished.at>
  * @copyright  2002-2011 Sebastian Bergmann <sebastian@phpunit.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @link       http://www.phpunit.de/
@@ -49,6 +50,7 @@
  * @package    PHPUnit
  * @subpackage Framework_Constraint
  * @author     Sebastian Bergmann <sebastian@phpunit.de>
+ * @author     Bernhard Schussek <bschussek@2bepublished.at>
  * @copyright  2002-2011 Sebastian Bergmann <sebastian@phpunit.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    Release: @package_version@
@@ -93,32 +95,25 @@ class PHPUnit_Framework_Constraint_And extends PHPUnit_Framework_Constraint
      * @param mixed $other Value or object to evaluate.
      * @return bool
      */
-    public function evaluate($other)
+    public function evaluate($other, $description = '', $returnResult = FALSE)
     {
-        $this->lastConstraint = NULL;
+        $success = TRUE;
+        $constraint = NULL;
 
         foreach($this->constraints as $constraint) {
-            $this->lastConstraint = $constraint;
-
-            if (!$constraint->evaluate($other)) {
-                return FALSE;
+            if (!$constraint->evaluate($other, $description, TRUE)) {
+                $success = FALSE;
+                break;
             }
         }
 
-        return TRUE;
-    }
+        if ($returnResult) {
+            return $success;
+        }
 
-    /**
-     * @param   mixed   $other The value passed to evaluate() which failed the
-     *                         constraint check.
-     * @param   string  $description A string with extra description of what was
-     *                               going on while the evaluation failed.
-     * @param   boolean $not Flag to indicate negation.
-     * @throws  PHPUnit_Framework_ExpectationFailedException
-     */
-    public function fail($other, $description, $not = FALSE)
-    {
-        $this->lastConstraint->fail($other, $description, $not);
+        if (!$success) {
+            $this->fail($other, $description);
+        }
     }
 
     /**

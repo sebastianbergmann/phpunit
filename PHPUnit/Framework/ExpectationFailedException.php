@@ -66,27 +66,11 @@ class PHPUnit_Framework_ExpectationFailedException extends PHPUnit_Framework_Ass
      */
     protected $comparisonFailure;
 
-    /**
-     * @var string
-     */
-    protected $description;
-
-    /**
-     * @var string
-     */
-    protected $customMessage;
-
-    public function __construct($description, PHPUnit_Framework_ComparisonFailure $comparisonFailure = NULL, $message = '')
+    public function __construct($message, PHPUnit_Framework_ComparisonFailure $comparisonFailure = null)
     {
-        $this->description       = $description;
         $this->comparisonFailure = $comparisonFailure;
-        $this->customMessage     = $message;
 
-        if (!empty($message)) {
-            $description .= "\n" . $message;
-        }
-
-        parent::__construct($description);
+        parent::__construct($message);
     }
 
     /**
@@ -95,30 +79,5 @@ class PHPUnit_Framework_ExpectationFailedException extends PHPUnit_Framework_Ass
     public function getComparisonFailure()
     {
         return $this->comparisonFailure;
-    }
-
-    /**
-     * @return string
-     */
-    public function getDescription()
-    {
-        return $this->description;
-    }
-
-    /**
-     * @return string
-     */
-    public function getCustomMessage()
-    {
-        return $this->customMessage;
-    }
-
-    /**
-     * @param string $customMessage
-     * @since Method available since Release 3.4.0
-     */
-    public function setCustomMessage($customMessage)
-    {
-        $this->customMessage = $customMessage;
     }
 }

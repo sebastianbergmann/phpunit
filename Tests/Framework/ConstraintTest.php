@@ -36,6 +36,7 @@
  *
  * @package    PHPUnit
  * @author     Sebastian Bergmann <sebastian@phpunit.de>
+ * @author     Bernhard Schussek <bschussek@2bepublished.at>
  * @copyright  2002-2011 Sebastian Bergmann <sebastian@phpunit.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @link       http://www.phpunit.de/
@@ -73,17 +74,18 @@ class Framework_ConstraintTest extends PHPUnit_Framework_TestCase
      * @covers PHPUnit_Framework_Constraint_ArrayHasKey
      * @covers PHPUnit_Framework_Assert::arrayHasKey
      * @covers PHPUnit_Framework_Constraint::count
+     * @covers PHPUnit_Framework_TestFailure::exceptionToString
      */
     public function testConstraintArrayHasKey()
     {
         $constraint = PHPUnit_Framework_Assert::arrayHasKey(0);
 
-        $this->assertFalse($constraint->evaluate(array()));
+        $this->assertFalse($constraint->evaluate(array(), '', TRUE));
         $this->assertEquals('has the key <integer:0>', $constraint->toString());
         $this->assertEquals(1, count($constraint));
 
         try {
-            $constraint->fail(array(), '');
+            $constraint->evaluate(array());
         }
 
         catch (PHPUnit_Framework_ExpectationFailedException $e) {
@@ -104,13 +106,14 @@ EOF
     /**
      * @covers PHPUnit_Framework_Constraint_ArrayHasKey
      * @covers PHPUnit_Framework_Assert::arrayHasKey
+     * @covers PHPUnit_Framework_TestFailure::exceptionToString
      */
     public function testConstraintArrayHasKey2()
     {
         $constraint = PHPUnit_Framework_Assert::arrayHasKey(0);
 
         try {
-            $constraint->fail(array(), 'custom message');
+            $constraint->evaluate(array(), 'custom message');
         }
 
         catch (PHPUnit_Framework_ExpectationFailedException $e) {
@@ -134,6 +137,7 @@ EOF
      * @covers PHPUnit_Framework_Constraint_Not
      * @covers PHPUnit_Framework_Assert::arrayHasKey
      * @covers PHPUnit_Framework_Assert::logicalNot
+     * @covers PHPUnit_Framework_TestFailure::exceptionToString
      */
     public function testConstraintArrayNotHasKey()
     {
@@ -141,12 +145,12 @@ EOF
           PHPUnit_Framework_Assert::arrayHasKey(0)
         );
 
-        $this->assertTrue($constraint->evaluate(array()));
+        $this->assertFalse($constraint->evaluate(array(0 => 1), '', TRUE));
         $this->assertEquals('does not have the key <integer:0>', $constraint->toString());
         $this->assertEquals(1, count($constraint));
 
         try {
-            $constraint->fail(array(0), '', TRUE);
+            $constraint->evaluate(array(0 => 1));
         }
 
         catch (PHPUnit_Framework_ExpectationFailedException $e) {
@@ -170,6 +174,7 @@ EOF
      * @covers PHPUnit_Framework_Constraint_Not
      * @covers PHPUnit_Framework_Assert::arrayHasKey
      * @covers PHPUnit_Framework_Assert::logicalNot
+     * @covers PHPUnit_Framework_TestFailure::exceptionToString
      */
     public function testConstraintArrayNotHasKey2()
     {
@@ -178,7 +183,7 @@ EOF
         );
 
         try {
-            $constraint->fail(array(0), 'custom message', TRUE);
+            $constraint->evaluate(array(0), 'custom message');
         }
 
         catch (PHPUnit_Framework_ExpectationFailedException $e) {
@@ -202,17 +207,18 @@ EOF
      * @covers PHPUnit_Framework_Constraint_FileExists
      * @covers PHPUnit_Framework_Assert::fileExists
      * @covers PHPUnit_Framework_Constraint::count
+     * @covers PHPUnit_Framework_TestFailure::exceptionToString
      */
     public function testConstraintFileExists()
     {
         $constraint = PHPUnit_Framework_Assert::fileExists();
 
-        $this->assertFalse($constraint->evaluate('foo'));
+        $this->assertFalse($constraint->evaluate('foo', '', TRUE));
         $this->assertEquals('file exists', $constraint->toString());
         $this->assertEquals(1, count($constraint));
 
         try {
-            $constraint->fail('foo', '');
+            $constraint->evaluate('foo');
         }
 
         catch (PHPUnit_Framework_ExpectationFailedException $e) {
@@ -234,13 +240,14 @@ EOF
     /**
      * @covers PHPUnit_Framework_Constraint_FileExists
      * @covers PHPUnit_Framework_Assert::fileExists
+     * @covers PHPUnit_Framework_TestFailure::exceptionToString
      */
     public function testConstraintFileExists2()
     {
         $constraint = PHPUnit_Framework_Assert::fileExists();
 
         try {
-            $constraint->fail('foo', 'custom message');
+            $constraint->evaluate('foo', 'custom message');
         }
 
         catch (PHPUnit_Framework_ExpectationFailedException $e) {
@@ -264,25 +271,28 @@ EOF
      * @covers PHPUnit_Framework_Constraint_Not
      * @covers PHPUnit_Framework_Assert::logicalNot
      * @covers PHPUnit_Framework_Assert::fileExists
+     * @covers PHPUnit_Framework_TestFailure::exceptionToString
      */
     public function testConstraintFileNotExists()
     {
+        $file = dirname(dirname(__FILE__)) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'ClassWithNonPublicAttributes.php';
+
         $constraint = PHPUnit_Framework_Assert::logicalNot(
           PHPUnit_Framework_Assert::fileExists()
         );
 
-        $this->assertTrue($constraint->evaluate('foo'));
+        $this->assertFalse($constraint->evaluate($file, '', TRUE));
         $this->assertEquals('file does not exist', $constraint->toString());
         $this->assertEquals(1, count($constraint));
 
         try {
-            $constraint->fail('foo', '', TRUE);
+            $constraint->evaluate($file);
         }
 
         catch (PHPUnit_Framework_ExpectationFailedException $e) {
             $this->assertEquals(
               <<<EOF
-Failed asserting that file "foo" does not exist.
+Failed asserting that file "$file" does not exist.
 
 EOF
               ,
@@ -300,21 +310,24 @@ EOF
      * @covers PHPUnit_Framework_Constraint_Not
      * @covers PHPUnit_Framework_Assert::logicalNot
      * @covers PHPUnit_Framework_Assert::fileExists
+     * @covers PHPUnit_Framework_TestFailure::exceptionToString
      */
     public function testConstraintFileNotExists2()
     {
+        $file = dirname(dirname(__FILE__)) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'ClassWithNonPublicAttributes.php';
+
         $constraint = PHPUnit_Framework_Assert::logicalNot(
           PHPUnit_Framework_Assert::fileExists()
         );
 
         try {
-            $constraint->fail('foo', 'custom message', TRUE);
+            $constraint->evaluate($file, 'custom message');
         }
 
         catch (PHPUnit_Framework_ExpectationFailedException $e) {
             $this->assertEquals(<<<EOF
 custom message
-Failed asserting that file "foo" does not exist.
+Failed asserting that file "$file" does not exist.
 
 EOF
               ,
@@ -331,18 +344,19 @@ EOF
      * @covers PHPUnit_Framework_Constraint_GreaterThan
      * @covers PHPUnit_Framework_Assert::greaterThan
      * @covers PHPUnit_Framework_Constraint::count
+     * @covers PHPUnit_Framework_TestFailure::exceptionToString
      */
     public function testConstraintGreaterThan()
     {
         $constraint = PHPUnit_Framework_Assert::greaterThan(1);
 
-        $this->assertFalse($constraint->evaluate(0));
-        $this->assertTrue($constraint->evaluate(2));
+        $this->assertFalse($constraint->evaluate(0, '', TRUE));
+        $this->assertTrue($constraint->evaluate(2, '', TRUE));
         $this->assertEquals('is greater than <integer:1>', $constraint->toString());
         $this->assertEquals(1, count($constraint));
 
         try {
-            $constraint->fail(0, '');
+            $constraint->evaluate(0);
         }
 
         catch (PHPUnit_Framework_ExpectationFailedException $e) {
@@ -364,13 +378,14 @@ EOF
     /**
      * @covers PHPUnit_Framework_Constraint_GreaterThan
      * @covers PHPUnit_Framework_Assert::greaterThan
+     * @covers PHPUnit_Framework_TestFailure::exceptionToString
      */
     public function testConstraintGreaterThan2()
     {
         $constraint = PHPUnit_Framework_Assert::greaterThan(1);
 
         try {
-            $constraint->fail(0, 'custom message');
+            $constraint->evaluate(0, 'custom message');
         }
 
         catch (PHPUnit_Framework_ExpectationFailedException $e) {
@@ -395,6 +410,7 @@ EOF
      * @covers PHPUnit_Framework_Constraint_Not
      * @covers PHPUnit_Framework_Assert::greaterThan
      * @covers PHPUnit_Framework_Assert::logicalNot
+     * @covers PHPUnit_Framework_TestFailure::exceptionToString
      */
     public function testConstraintNotGreaterThan()
     {
@@ -402,18 +418,18 @@ EOF
           PHPUnit_Framework_Assert::greaterThan(1)
         );
 
-        $this->assertTrue($constraint->evaluate(1));
+        $this->assertTrue($constraint->evaluate(1, '', TRUE));
         $this->assertEquals('is not greater than <integer:1>', $constraint->toString());
         $this->assertEquals(1, count($constraint));
 
         try {
-            $constraint->fail(1, '', TRUE);
+            $constraint->evaluate(2);
         }
 
         catch (PHPUnit_Framework_ExpectationFailedException $e) {
             $this->assertEquals(
               <<<EOF
-Failed asserting that <integer:1> is not greater than <integer:1>.
+Failed asserting that <integer:2> is not greater than <integer:1>.
 
 EOF
               ,
@@ -431,6 +447,7 @@ EOF
      * @covers PHPUnit_Framework_Constraint_Not
      * @covers PHPUnit_Framework_Assert::greaterThan
      * @covers PHPUnit_Framework_Assert::logicalNot
+     * @covers PHPUnit_Framework_TestFailure::exceptionToString
      */
     public function testConstraintNotGreaterThan2()
     {
@@ -439,14 +456,14 @@ EOF
         );
 
         try {
-            $constraint->fail(1, 'custom message', TRUE);
+            $constraint->evaluate(2, 'custom message');
         }
 
         catch (PHPUnit_Framework_ExpectationFailedException $e) {
             $this->assertEquals(
               <<<EOF
 custom message
-Failed asserting that <integer:1> is not greater than <integer:1>.
+Failed asserting that <integer:2> is not greater than <integer:1>.
 
 EOF
               ,
@@ -464,18 +481,19 @@ EOF
      * @covers PHPUnit_Framework_Constraint_GreaterThan
      * @covers PHPUnit_Framework_Constraint_Or
      * @covers PHPUnit_Framework_Assert::greaterThanOrEqual
+     * @covers PHPUnit_Framework_TestFailure::exceptionToString
      */
     public function testConstraintGreaterThanOrEqual()
     {
         $constraint = PHPUnit_Framework_Assert::greaterThanOrEqual(1);
 
-        $this->assertTrue($constraint->evaluate(1));
-        $this->assertFalse($constraint->evaluate(0));
+        $this->assertTrue($constraint->evaluate(1, '', TRUE));
+        $this->assertFalse($constraint->evaluate(0, '', TRUE));
         $this->assertEquals('is equal to <integer:1> or is greater than <integer:1>', $constraint->toString());
         $this->assertEquals(2, count($constraint));
 
         try {
-            $constraint->fail(0, '');
+            $constraint->evaluate(0);
         }
 
         catch (PHPUnit_Framework_ExpectationFailedException $e) {
@@ -499,13 +517,14 @@ EOF
      * @covers PHPUnit_Framework_Constraint_GreaterThan
      * @covers PHPUnit_Framework_Constraint_Or
      * @covers PHPUnit_Framework_Assert::greaterThanOrEqual
+     * @covers PHPUnit_Framework_TestFailure::exceptionToString
      */
     public function testConstraintGreaterThanOrEqual2()
     {
         $constraint = PHPUnit_Framework_Assert::greaterThanOrEqual(1);
 
         try {
-            $constraint->fail(0, 'custom message');
+            $constraint->evaluate(0, 'custom message');
         }
 
         catch (PHPUnit_Framework_ExpectationFailedException $e) {
@@ -532,6 +551,7 @@ EOF
      * @covers PHPUnit_Framework_Constraint_Not
      * @covers PHPUnit_Framework_Assert::greaterThanOrEqual
      * @covers PHPUnit_Framework_Assert::logicalNot
+     * @covers PHPUnit_Framework_TestFailure::exceptionToString
      */
     public function testConstraintNotGreaterThanOrEqual()
     {
@@ -539,18 +559,18 @@ EOF
           PHPUnit_Framework_Assert::greaterThanOrEqual(1)
         );
 
-        $this->assertTrue($constraint->evaluate(0));
+        $this->assertFalse($constraint->evaluate(1, '', TRUE));
         $this->assertEquals('not( is equal to <integer:1> or is greater than <integer:1> )', $constraint->toString());
         $this->assertEquals(2, count($constraint));
 
         try {
-            $constraint->fail(1, '', TRUE);
+            $constraint->evaluate(1);
         }
 
         catch (PHPUnit_Framework_ExpectationFailedException $e) {
             $this->assertEquals(
               <<<EOF
-Failed asserting that <integer:1> not( is equal to <integer:1> or is greater than <integer:1> ).
+Failed asserting that not( <integer:1> is equal to <integer:1> or is greater than <integer:1> ).
 
 EOF
               ,
@@ -570,6 +590,7 @@ EOF
      * @covers PHPUnit_Framework_Constraint_Not
      * @covers PHPUnit_Framework_Assert::greaterThanOrEqual
      * @covers PHPUnit_Framework_Assert::logicalNot
+     * @covers PHPUnit_Framework_TestFailure::exceptionToString
      */
     public function testConstraintNotGreaterThanOrEqual2()
     {
@@ -578,14 +599,14 @@ EOF
         );
 
         try {
-            $constraint->fail(1, 'custom message', TRUE);
+            $constraint->evaluate(1, 'custom message');
         }
 
         catch (PHPUnit_Framework_ExpectationFailedException $e) {
             $this->assertEquals(
               <<<EOF
 custom message
-Failed asserting that <integer:1> not( is equal to <integer:1> or is greater than <integer:1> ).
+Failed asserting that not( <integer:1> is equal to <integer:1> or is greater than <integer:1> ).
 
 EOF
               ,
@@ -602,13 +623,14 @@ EOF
      * @covers PHPUnit_Framework_Constraint_IsAnything
      * @covers PHPUnit_Framework_Assert::anything
      * @covers PHPUnit_Framework_Constraint::count
+     * @covers PHPUnit_Framework_TestFailure::exceptionToString
      */
     public function testConstraintIsAnything()
     {
         $constraint = PHPUnit_Framework_Assert::anything();
 
-        $this->assertTrue($constraint->evaluate(NULL));
-        $this->assertNull($constraint->fail(NULL, ''));
+        $this->assertTrue($constraint->evaluate(NULL, '', TRUE));
+        $this->assertNull($constraint->evaluate(NULL));
         $this->assertEquals('is anything', $constraint->toString());
         $this->assertEquals(0, count($constraint));
     }
@@ -618,6 +640,7 @@ EOF
      * @covers PHPUnit_Framework_Constraint_Not
      * @covers PHPUnit_Framework_Assert::anything
      * @covers PHPUnit_Framework_Assert::logicalNot
+     * @covers PHPUnit_Framework_TestFailure::exceptionToString
      */
     public function testConstraintNotIsAnything()
     {
@@ -625,27 +648,47 @@ EOF
           PHPUnit_Framework_Assert::anything()
         );
 
-        $this->assertFalse($constraint->evaluate(NULL));
+        $this->assertFalse($constraint->evaluate(NULL, '', TRUE));
         $this->assertEquals('is not anything', $constraint->toString());
         $this->assertEquals(0, count($constraint));
+
+        try {
+            $constraint->evaluate(NULL);
+        }
+
+        catch (PHPUnit_Framework_ExpectationFailedException $e) {
+            $this->assertEquals(
+              <<<EOF
+Failed asserting that <null> is not anything.
+
+EOF
+              ,
+              PHPUnit_Framework_TestFailure::exceptionToString($e)
+            );
+
+            return;
+        }
+
+        $this->fail();
     }
 
     /**
      * @covers PHPUnit_Framework_Constraint_IsEqual
      * @covers PHPUnit_Framework_Assert::equalTo
      * @covers PHPUnit_Framework_Constraint::count
+     * @covers PHPUnit_Framework_TestFailure::exceptionToString
      */
     public function testConstraintIsEqual()
     {
         $constraint = PHPUnit_Framework_Assert::equalTo(1);
 
-        $this->assertFalse($constraint->evaluate(0));
-        $this->assertTrue($constraint->evaluate(1));
+        $this->assertTrue($constraint->evaluate(1, '', TRUE));
+        $this->assertFalse($constraint->evaluate(0, '', TRUE));
         $this->assertEquals('is equal to <integer:1>', $constraint->toString());
         $this->assertEquals(1, count($constraint));
 
         try {
-            $constraint->fail(0, '');
+            $constraint->evaluate(0);
         }
 
         catch (PHPUnit_Framework_ExpectationFailedException $e) {
@@ -741,24 +784,12 @@ Failed asserting that two strings are equal.
 EOF
             ),
             array(1, array(0), <<<EOF
-Failed asserting that
-Array
-(
-   [0] => 0
-)
-matches expected <integer:1>.
+array( <integer:0> => <integer:0> ) does not match expected type "integer".
 
 EOF
             ),
             array(array(0), 1, <<<EOF
-custom message
-Failed asserting that <integer:1> is equal to
-Array
-(
-    [0] => 0
-)
-.
-custom message
+<integer:1> does not match expected type "array".
 
 EOF
             ),
@@ -788,48 +819,19 @@ Failed asserting that two arrays are equal.
 -            [0] => 1
 +            [0] => 4
          )
-
-     [2] => Array
-         (
-             [0] => 2
-         )
-
+     [2] => Array (...)
      [3] => 3
  )
 
 EOF
             ),
             array($a, array(0), <<<EOF
-custom message
-Failed asserting that
-Array
-(
-    [0] => 0
-)
- is equal to
-stdClass Object
-(
-    [foo] => bar
-)
-.
-custom message
+array( <integer:0> => <integer:0> ) does not match expected type "object".
 
 EOF
             ),
             array(array(0), $a, <<<EOF
-custom message
-Failed asserting that
-stdClass Object
-(
-    [foo] => bar
-)
- is equal to
-Array
-(
-    [0] => 0
-)
-.
-custom message
+stdClass(...) does not match expected type "array".
 
 EOF
             ),
@@ -865,56 +867,17 @@ Failed asserting that two objects are equal.
 
 @@ @@
              [foo] => a
--b
-+p
+-                b
++                p
 
 @@ @@
- i
--j
-+w
-
-@@ @@
-     [c] => stdClass Object
-+        (
-+            [foo] => bar
-+            [int] => 1
-+            [array] => Array
-+                (
-+                    [0] => 0
-+                    [1] => Array
-+                        (
-+                            [0] => 1
-+                        )
-+
-+                    [2] => Array
-+                        (
-+                            [0] => 2
-+                        )
-+
-+                    [3] => 3
-+                )
-+
-+            [related] => stdClass Object
-+                (
-+                    [foo] => a
-+b
-+c
-+d
-+e
-+f
-+g
-+h
-+i
-+j
-+k
-+                )
-+
-+            [self] => stdClass Object
-  *RECURSION*
-+            [c] => stdClass Object
-+ *RECURSION*
-+        )
-+
+                 i
+-                j
++                w
+                 k
+         )
+     [self] => stdClass Object (...)
+     [c] => stdClass Object (...)
  )
 
 EOF
@@ -954,7 +917,7 @@ Failed asserting that two objects are equal.
 EOF
             ),
             array($dom1, $dom2, <<<EOF
-Failed asserting that two strings are equal.
+Failed asserting that two DOM documents are equal.
 --- Expected
 +++ Actual
 @@ @@
@@ -973,13 +936,14 @@ EOF
      * @dataProvider isEqualProvider
      * @covers PHPUnit_Framework_Constraint_IsEqual
      * @covers PHPUnit_Framework_Assert::equalTo
+     * @covers PHPUnit_Framework_TestFailure::exceptionToString
      */
     public function testConstraintIsEqual2($expected, $actual, $message)
     {
         $constraint = PHPUnit_Framework_Assert::equalTo($expected);
 
         try {
-            $constraint->fail($actual, 'custom message');
+            $constraint->evaluate($actual, 'custom message');
         }
 
         catch (PHPUnit_Framework_ExpectationFailedException $e) {
@@ -999,6 +963,7 @@ EOF
      * @covers PHPUnit_Framework_Constraint_Not
      * @covers PHPUnit_Framework_Assert::equalTo
      * @covers PHPUnit_Framework_Assert::logicalNot
+     * @covers PHPUnit_Framework_TestFailure::exceptionToString
      */
     public function testConstraintIsNotEqual()
     {
@@ -1006,13 +971,13 @@ EOF
           PHPUnit_Framework_Assert::equalTo(1)
         );
 
-        $this->assertTrue($constraint->evaluate(0));
-        $this->assertFalse($constraint->evaluate(1));
+        $this->assertTrue($constraint->evaluate(0, '', TRUE));
+        $this->assertFalse($constraint->evaluate(1, '', TRUE));
         $this->assertEquals('is not equal to <integer:1>', $constraint->toString());
         $this->assertEquals(1, count($constraint));
 
         try {
-            $constraint->fail(1, '', TRUE);
+            $constraint->evaluate(1);
         }
 
         catch (PHPUnit_Framework_ExpectationFailedException $e) {
@@ -1036,6 +1001,7 @@ EOF
      * @covers PHPUnit_Framework_Constraint_Not
      * @covers PHPUnit_Framework_Assert::equalTo
      * @covers PHPUnit_Framework_Assert::logicalNot
+     * @covers PHPUnit_Framework_TestFailure::exceptionToString
      */
     public function testConstraintIsNotEqual2()
     {
@@ -1044,7 +1010,7 @@ EOF
         );
 
         try {
-            $constraint->fail(1, 'custom message', TRUE);
+            $constraint->evaluate(1, 'custom message');
         }
 
         catch (PHPUnit_Framework_ExpectationFailedException $e) {
@@ -1068,6 +1034,7 @@ EOF
      * @covers PHPUnit_Framework_Constraint_IsIdentical
      * @covers PHPUnit_Framework_Assert::identicalTo
      * @covers PHPUnit_Framework_Constraint::count
+     * @covers PHPUnit_Framework_TestFailure::exceptionToString
      */
     public function testConstraintIsIdentical()
     {
@@ -1076,13 +1043,13 @@ EOF
 
         $constraint = PHPUnit_Framework_Assert::identicalTo($a);
 
-        $this->assertFalse($constraint->evaluate($b));
-        $this->assertTrue($constraint->evaluate($a));
+        $this->assertFalse($constraint->evaluate($b, '', TRUE));
+        $this->assertTrue($constraint->evaluate($a, '', TRUE));
         $this->assertEquals('is identical to an object of class "stdClass"', $constraint->toString());
         $this->assertEquals(1, count($constraint));
 
         try {
-            $constraint->fail($b, '');
+            $constraint->evaluate($b);
         }
 
         catch (PHPUnit_Framework_ExpectationFailedException $e) {
@@ -1103,6 +1070,7 @@ EOF
     /**
      * @covers PHPUnit_Framework_Constraint_IsIdentical
      * @covers PHPUnit_Framework_Assert::identicalTo
+     * @covers PHPUnit_Framework_TestFailure::exceptionToString
      */
     public function testConstraintIsIdentical2()
     {
@@ -1112,7 +1080,7 @@ EOF
         $constraint = PHPUnit_Framework_Assert::identicalTo($a);
 
         try {
-            $constraint->fail($b, 'custom message');
+            $constraint->evaluate($b, 'custom message');
         }
 
         catch (PHPUnit_Framework_ExpectationFailedException $e) {
@@ -1133,9 +1101,44 @@ EOF
 
     /**
      * @covers PHPUnit_Framework_Constraint_IsIdentical
+     * @covers PHPUnit_Framework_Assert::identicalTo
+     * @covers PHPUnit_Framework_TestFailure::exceptionToString
+     */
+    public function testConstraintIsIdentical3()
+    {
+        $constraint = PHPUnit_Framework_Assert::identicalTo('a');
+
+        try {
+            $constraint->evaluate('b', 'custom message');
+        }
+
+        catch (PHPUnit_Framework_ExpectationFailedException $e) {
+            $this->assertEquals(<<<EOF
+custom message
+Failed asserting that two strings are identical.
+--- Expected
++++ Actual
+@@ @@
+-a
++b
+
+EOF
+              ,
+              PHPUnit_Framework_TestFailure::exceptionToString($e)
+            );
+
+            return;
+        }
+
+        $this->fail();
+    }
+
+    /**
+     * @covers PHPUnit_Framework_Constraint_IsIdentical
      * @covers PHPUnit_Framework_Constraint_Not
      * @covers PHPUnit_Framework_Assert::identicalTo
      * @covers PHPUnit_Framework_Assert::logicalNot
+     * @covers PHPUnit_Framework_TestFailure::exceptionToString
      */
     public function testConstraintIsNotIdentical()
     {
@@ -1146,22 +1149,18 @@ EOF
           PHPUnit_Framework_Assert::identicalTo($a)
         );
 
-        $this->assertTrue($constraint->evaluate($b));
-        $this->assertFalse($constraint->evaluate($a));
+        $this->assertTrue($constraint->evaluate($b, '', TRUE));
+        $this->assertFalse($constraint->evaluate($a, '', TRUE));
         $this->assertEquals('is not identical to an object of class "stdClass"', $constraint->toString());
         $this->assertEquals(1, count($constraint));
 
         try {
-            $constraint->fail($a, '', TRUE);
+            $constraint->evaluate($a);
         }
 
         catch (PHPUnit_Framework_ExpectationFailedException $e) {
             $this->assertEquals(<<<EOF
-Failed asserting that
-stdClass Object
-(
-)
- is not identical to an object of class "stdClass".
+Failed asserting that two variables don't reference the same object.
 
 EOF
               ,
@@ -1179,6 +1178,7 @@ EOF
      * @covers PHPUnit_Framework_Constraint_Not
      * @covers PHPUnit_Framework_Assert::identicalTo
      * @covers PHPUnit_Framework_Assert::logicalNot
+     * @covers PHPUnit_Framework_TestFailure::exceptionToString
      */
     public function testConstraintIsNotIdentical2()
     {
@@ -1189,17 +1189,46 @@ EOF
         );
 
         try {
-            $constraint->fail($a, 'custom message', TRUE);
+            $constraint->evaluate($a, 'custom message');
         }
 
         catch (PHPUnit_Framework_ExpectationFailedException $e) {
             $this->assertEquals(<<<EOF
 custom message
-Failed asserting that
-stdClass Object
-(
-)
- is not identical to an object of class "stdClass".
+Failed asserting that two variables don't reference the same object.
+
+EOF
+              ,
+              PHPUnit_Framework_TestFailure::exceptionToString($e)
+            );
+
+            return;
+        }
+
+        $this->fail();
+    }
+
+    /**
+     * @covers PHPUnit_Framework_Constraint_IsIdentical
+     * @covers PHPUnit_Framework_Constraint_Not
+     * @covers PHPUnit_Framework_Assert::identicalTo
+     * @covers PHPUnit_Framework_Assert::logicalNot
+     * @covers PHPUnit_Framework_TestFailure::exceptionToString
+     */
+    public function testConstraintIsNotIdentical3()
+    {
+        $constraint = PHPUnit_Framework_Assert::logicalNot(
+          PHPUnit_Framework_Assert::identicalTo('a')
+        );
+
+        try {
+            $constraint->evaluate('a', 'custom message');
+        }
+
+        catch (PHPUnit_Framework_ExpectationFailedException $e) {
+            $this->assertEquals(<<<EOF
+custom message
+Failed asserting that two strings are not identical.
 
 EOF
               ,
@@ -1216,18 +1245,19 @@ EOF
      * @covers PHPUnit_Framework_Constraint_IsInstanceOf
      * @covers PHPUnit_Framework_Assert::isInstanceOf
      * @covers PHPUnit_Framework_Constraint::count
+     * @covers PHPUnit_Framework_TestFailure::exceptionToString
      */
     public function testConstraintIsInstanceOf()
     {
         $constraint = PHPUnit_Framework_Assert::isInstanceOf('Exception');
 
-        $this->assertFalse($constraint->evaluate(new stdClass));
-        $this->assertTrue($constraint->evaluate(new Exception));
+        $this->assertFalse($constraint->evaluate(new stdClass, '', TRUE));
+        $this->assertTrue($constraint->evaluate(new Exception, '', TRUE));
         $this->assertEquals('is instance of class "Exception"', $constraint->toString());
         $this->assertEquals(1, count($constraint));
 
         try {
-            $constraint->fail(new stdClass, '');
+            $constraint->evaluate(new stdClass);
         }
 
         catch (PHPUnit_Framework_ExpectationFailedException $e) {
@@ -1249,13 +1279,14 @@ EOF
     /**
      * @covers PHPUnit_Framework_Constraint_IsInstanceOf
      * @covers PHPUnit_Framework_Assert::isInstanceOf
+     * @covers PHPUnit_Framework_TestFailure::exceptionToString
      */
     public function testConstraintIsInstanceOf2()
     {
         $constraint = PHPUnit_Framework_Assert::isInstanceOf('Exception');
 
         try {
-            $constraint->fail(new stdClass, 'custom message');
+            $constraint->evaluate(new stdClass, 'custom message');
         }
 
         catch (PHPUnit_Framework_ExpectationFailedException $e) {
@@ -1279,6 +1310,7 @@ EOF
      * @covers PHPUnit_Framework_Constraint_Not
      * @covers PHPUnit_Framework_Assert::isInstanceOf
      * @covers PHPUnit_Framework_Assert::logicalNot
+     * @covers PHPUnit_Framework_TestFailure::exceptionToString
      */
     public function testConstraintIsNotInstanceOf()
     {
@@ -1286,13 +1318,13 @@ EOF
           PHPUnit_Framework_Assert::isInstanceOf('stdClass')
         );
 
-        $this->assertFalse($constraint->evaluate(new stdClass));
-        $this->assertTrue($constraint->evaluate(new Exception));
+        $this->assertFalse($constraint->evaluate(new stdClass, '', TRUE));
+        $this->assertTrue($constraint->evaluate(new Exception, '', TRUE));
         $this->assertEquals('is not instance of class "stdClass"', $constraint->toString());
         $this->assertEquals(1, count($constraint));
 
         try {
-            $constraint->fail(new stdClass, '', TRUE);
+            $constraint->evaluate(new stdClass);
         }
 
         catch (PHPUnit_Framework_ExpectationFailedException $e) {
@@ -1316,6 +1348,7 @@ EOF
      * @covers PHPUnit_Framework_Constraint_Not
      * @covers PHPUnit_Framework_Assert::isInstanceOf
      * @covers PHPUnit_Framework_Assert::logicalNot
+     * @covers PHPUnit_Framework_TestFailure::exceptionToString
      */
     public function testConstraintIsNotInstanceOf2()
     {
@@ -1324,7 +1357,7 @@ EOF
         );
 
         try {
-            $constraint->fail(new stdClass, 'custom message', TRUE);
+            $constraint->evaluate(new stdClass, 'custom message');
         }
 
         catch (PHPUnit_Framework_ExpectationFailedException $e) {
@@ -1347,18 +1380,19 @@ EOF
      * @covers PHPUnit_Framework_Constraint_IsType
      * @covers PHPUnit_Framework_Assert::isType
      * @covers PHPUnit_Framework_Constraint::count
+     * @covers PHPUnit_Framework_TestFailure::exceptionToString
      */
     public function testConstraintIsType()
     {
         $constraint = PHPUnit_Framework_Assert::isType('string');
 
-        $this->assertFalse($constraint->evaluate(0));
-        $this->assertTrue($constraint->evaluate(''));
+        $this->assertFalse($constraint->evaluate(0, '', TRUE));
+        $this->assertTrue($constraint->evaluate('', '', TRUE));
         $this->assertEquals('is of type "string"', $constraint->toString());
         $this->assertEquals(1, count($constraint));
 
         try {
-            $constraint->fail(new stdClass, '');
+            $constraint->evaluate(new stdClass);
         }
 
         catch (PHPUnit_Framework_ExpectationFailedException $e) {
@@ -1383,13 +1417,14 @@ EOF
     /**
      * @covers PHPUnit_Framework_Constraint_IsType
      * @covers PHPUnit_Framework_Assert::isType
+     * @covers PHPUnit_Framework_TestFailure::exceptionToString
      */
     public function testConstraintIsType2()
     {
         $constraint = PHPUnit_Framework_Assert::isType('string');
 
         try {
-            $constraint->fail(new stdClass, 'custom message');
+            $constraint->evaluate(new stdClass, 'custom message');
         }
 
         catch (PHPUnit_Framework_ExpectationFailedException $e) {
@@ -1417,6 +1452,7 @@ EOF
      * @covers PHPUnit_Framework_Constraint_Not
      * @covers PHPUnit_Framework_Assert::isType
      * @covers PHPUnit_Framework_Assert::logicalNot
+     * @covers PHPUnit_Framework_TestFailure::exceptionToString
      */
     public function testConstraintIsNotType()
     {
@@ -1424,13 +1460,13 @@ EOF
           PHPUnit_Framework_Assert::isType('string')
         );
 
-        $this->assertTrue($constraint->evaluate(0));
-        $this->assertFalse($constraint->evaluate(''));
+        $this->assertTrue($constraint->evaluate(0, '', TRUE));
+        $this->assertFalse($constraint->evaluate('', '', TRUE));
         $this->assertEquals('is not of type "string"', $constraint->toString());
         $this->assertEquals(1, count($constraint));
 
         try {
-            $constraint->fail('', '', TRUE);
+            $constraint->evaluate('');
         }
 
         catch (PHPUnit_Framework_ExpectationFailedException $e) {
@@ -1454,6 +1490,7 @@ EOF
      * @covers PHPUnit_Framework_Constraint_Not
      * @covers PHPUnit_Framework_Assert::isType
      * @covers PHPUnit_Framework_Assert::logicalNot
+     * @covers PHPUnit_Framework_TestFailure::exceptionToString
      */
     public function testConstraintIsNotType2()
     {
@@ -1462,7 +1499,7 @@ EOF
         );
 
         try {
-            $constraint->fail('', 'custom message', TRUE);
+            $constraint->evaluate('', 'custom message');
         }
 
         catch (PHPUnit_Framework_ExpectationFailedException $e) {
@@ -1482,27 +1519,127 @@ EOF
     }
 
     /**
-     * @covers PHPUnit_Framework_Constraint_LessThan
-     * @covers PHPUnit_Framework_Assert::lessThan
+     * @covers PHPUnit_Framework_Constraint_IsNull
+     * @covers PHPUnit_Framework_Assert::isNull
      * @covers PHPUnit_Framework_Constraint::count
+     * @covers PHPUnit_Framework_TestFailure::exceptionToString
      */
-    public function testConstraintLessThan()
+    public function testConstraintIsNull()
     {
-        $constraint = PHPUnit_Framework_Assert::lessThan(1);
+        $constraint = PHPUnit_Framework_Assert::isNull();
 
-        $this->assertTrue($constraint->evaluate(0));
-        $this->assertFalse($constraint->evaluate(2));
-        $this->assertEquals('is less than <integer:1>', $constraint->toString());
+        $this->assertFalse($constraint->evaluate(0, '', TRUE));
+        $this->assertTrue($constraint->evaluate(NULL, '', TRUE));
+        $this->assertEquals('is null', $constraint->toString());
         $this->assertEquals(1, count($constraint));
 
         try {
-            $constraint->fail(0, '');
+            $constraint->evaluate(0);
         }
 
         catch (PHPUnit_Framework_ExpectationFailedException $e) {
-            $this->assertEquals(
-              <<<EOF
-Failed asserting that <integer:0> is less than <integer:1>.
+            $this->assertEquals(<<<EOF
+Failed asserting that <integer:0> is null.
+
+EOF
+              ,
+              PHPUnit_Framework_TestFailure::exceptionToString($e)
+            );
+
+            return;
+        }
+
+        $this->fail();
+    }
+
+    /**
+     * @covers PHPUnit_Framework_Constraint_IsNull
+     * @covers PHPUnit_Framework_Assert::isNull
+     * @covers PHPUnit_Framework_TestFailure::exceptionToString
+     */
+    public function testConstraintIsNull2()
+    {
+        $constraint = PHPUnit_Framework_Assert::isNull();
+
+        try {
+            $constraint->evaluate(0, 'custom message');
+        }
+
+        catch (PHPUnit_Framework_ExpectationFailedException $e) {
+            $this->assertEquals(<<<EOF
+custom message
+Failed asserting that <integer:0> is null.
+
+EOF
+              ,
+              PHPUnit_Framework_TestFailure::exceptionToString($e)
+            );
+
+            return;
+        }
+
+        $this->fail();
+    }
+
+    /**
+     * @covers PHPUnit_Framework_Constraint_IsNull
+     * @covers PHPUnit_Framework_Constraint_Not
+     * @covers PHPUnit_Framework_Assert::isNull
+     * @covers PHPUnit_Framework_Assert::logicalNot
+     * @covers PHPUnit_Framework_Constraint::count
+     * @covers PHPUnit_Framework_TestFailure::exceptionToString
+     */
+    public function testConstraintIsNotNull()
+    {
+        $constraint = PHPUnit_Framework_Assert::logicalNot(
+          PHPUnit_Framework_Assert::isNull()
+        );
+
+        $this->assertFalse($constraint->evaluate(NULL, '', TRUE));
+        $this->assertTrue($constraint->evaluate(0, '', TRUE));
+        $this->assertEquals('is not null', $constraint->toString());
+        $this->assertEquals(1, count($constraint));
+
+        try {
+            $constraint->evaluate(NULL);
+        }
+
+        catch (PHPUnit_Framework_ExpectationFailedException $e) {
+            $this->assertEquals(<<<EOF
+Failed asserting that <null> is not null.
+
+EOF
+              ,
+              PHPUnit_Framework_TestFailure::exceptionToString($e)
+            );
+
+            return;
+        }
+
+        $this->fail();
+    }
+
+    /**
+     * @covers PHPUnit_Framework_Constraint_IsNull
+     * @covers PHPUnit_Framework_Constraint_Not
+     * @covers PHPUnit_Framework_Assert::isNull
+     * @covers PHPUnit_Framework_Assert::logicalNot
+     * @covers PHPUnit_Framework_TestFailure::exceptionToString
+     */
+    public function testConstraintIsNotNull2()
+    {
+        $constraint = PHPUnit_Framework_Assert::logicalNot(
+          PHPUnit_Framework_Assert::isNull()
+        );
+
+        try {
+            $constraint->evaluate(NULL, 'custom message');
+        }
+
+        catch (PHPUnit_Framework_ExpectationFailedException $e) {
+            $this->assertEquals(<<<EOF
+custom message
+Failed asserting that <null> is not null.
 
 EOF
               ,
@@ -1518,20 +1655,56 @@ EOF
     /**
      * @covers PHPUnit_Framework_Constraint_LessThan
      * @covers PHPUnit_Framework_Assert::lessThan
+     * @covers PHPUnit_Framework_Constraint::count
+     * @covers PHPUnit_Framework_TestFailure::exceptionToString
+     */
+    public function testConstraintLessThan()
+    {
+        $constraint = PHPUnit_Framework_Assert::lessThan(1);
+
+        $this->assertTrue($constraint->evaluate(0, '', TRUE));
+        $this->assertFalse($constraint->evaluate(1, '', TRUE));
+        $this->assertEquals('is less than <integer:1>', $constraint->toString());
+        $this->assertEquals(1, count($constraint));
+
+        try {
+            $constraint->evaluate(1);
+        }
+
+        catch (PHPUnit_Framework_ExpectationFailedException $e) {
+            $this->assertEquals(
+              <<<EOF
+Failed asserting that <integer:1> is less than <integer:1>.
+
+EOF
+              ,
+              PHPUnit_Framework_TestFailure::exceptionToString($e)
+            );
+
+            return;
+        }
+
+        $this->fail();
+    }
+
+    /**
+     * @covers PHPUnit_Framework_Constraint_LessThan
+     * @covers PHPUnit_Framework_Assert::lessThan
+     * @covers PHPUnit_Framework_TestFailure::exceptionToString
      */
     public function testConstraintLessThan2()
     {
         $constraint = PHPUnit_Framework_Assert::lessThan(1);
 
         try {
-            $constraint->fail(0, 'custom message');
+            $constraint->evaluate(1, 'custom message');
         }
 
         catch (PHPUnit_Framework_ExpectationFailedException $e) {
             $this->assertEquals(
               <<<EOF
 custom message
-Failed asserting that <integer:0> is less than <integer:1>.
+Failed asserting that <integer:1> is less than <integer:1>.
 
 EOF
               ,
@@ -1549,6 +1722,7 @@ EOF
      * @covers PHPUnit_Framework_Constraint_Not
      * @covers PHPUnit_Framework_Assert::lessThan
      * @covers PHPUnit_Framework_Assert::logicalNot
+     * @covers PHPUnit_Framework_TestFailure::exceptionToString
      */
     public function testConstraintNotLessThan()
     {
@@ -1556,18 +1730,19 @@ EOF
           PHPUnit_Framework_Assert::lessThan(1)
         );
 
-        $this->assertTrue($constraint->evaluate(1));
+        $this->assertTrue($constraint->evaluate(1, '', TRUE));
+        $this->assertFalse($constraint->evaluate(0, '', TRUE));
         $this->assertEquals('is not less than <integer:1>', $constraint->toString());
         $this->assertEquals(1, count($constraint));
 
         try {
-            $constraint->fail(1, '', TRUE);
+            $constraint->evaluate(0);
         }
 
         catch (PHPUnit_Framework_ExpectationFailedException $e) {
             $this->assertEquals(
               <<<EOF
-Failed asserting that <integer:1> is not less than <integer:1>.
+Failed asserting that <integer:0> is not less than <integer:1>.
 
 EOF
               ,
@@ -1585,6 +1760,7 @@ EOF
      * @covers PHPUnit_Framework_Constraint_Not
      * @covers PHPUnit_Framework_Assert::lessThan
      * @covers PHPUnit_Framework_Assert::logicalNot
+     * @covers PHPUnit_Framework_TestFailure::exceptionToString
      */
     public function testConstraintNotLessThan2()
     {
@@ -1593,14 +1769,14 @@ EOF
         );
 
         try {
-            $constraint->fail(1, 'custom message', TRUE);
+            $constraint->evaluate(0, 'custom message');
         }
 
         catch (PHPUnit_Framework_ExpectationFailedException $e) {
             $this->assertEquals(
               <<<EOF
 custom message
-Failed asserting that <integer:1> is not less than <integer:1>.
+Failed asserting that <integer:0> is not less than <integer:1>.
 
 EOF
               ,
@@ -1618,24 +1794,25 @@ EOF
      * @covers PHPUnit_Framework_Constraint_LessThan
      * @covers PHPUnit_Framework_Constraint_Or
      * @covers PHPUnit_Framework_Assert::lessThanOrEqual
+     * @covers PHPUnit_Framework_TestFailure::exceptionToString
      */
     public function testConstraintLessThanOrEqual()
     {
         $constraint = PHPUnit_Framework_Assert::lessThanOrEqual(1);
 
-        $this->assertTrue($constraint->evaluate(0));
-        $this->assertFalse($constraint->evaluate(2));
+        $this->assertTrue($constraint->evaluate(1, '', TRUE));
+        $this->assertFalse($constraint->evaluate(2, '', TRUE));
         $this->assertEquals('is equal to <integer:1> or is less than <integer:1>', $constraint->toString());
         $this->assertEquals(2, count($constraint));
 
         try {
-            $constraint->fail(0, '');
+            $constraint->evaluate(2);
         }
 
         catch (PHPUnit_Framework_ExpectationFailedException $e) {
             $this->assertEquals(
               <<<EOF
-Failed asserting that <integer:0> is equal to <integer:1> or is less than <integer:1>.
+Failed asserting that <integer:2> is equal to <integer:1> or is less than <integer:1>.
 
 EOF
               ,
@@ -1653,20 +1830,21 @@ EOF
      * @covers PHPUnit_Framework_Constraint_LessThan
      * @covers PHPUnit_Framework_Constraint_Or
      * @covers PHPUnit_Framework_Assert::lessThanOrEqual
+     * @covers PHPUnit_Framework_TestFailure::exceptionToString
      */
     public function testConstraintLessThanOrEqual2()
     {
         $constraint = PHPUnit_Framework_Assert::lessThanOrEqual(1);
 
         try {
-            $constraint->fail(0, 'custom message');
+            $constraint->evaluate(2, 'custom message');
         }
 
         catch (PHPUnit_Framework_ExpectationFailedException $e) {
             $this->assertEquals(
               <<<EOF
 custom message
-Failed asserting that <integer:0> is equal to <integer:1> or is less than <integer:1>.
+Failed asserting that <integer:2> is equal to <integer:1> or is less than <integer:1>.
 
 EOF
               ,
@@ -1686,6 +1864,7 @@ EOF
      * @covers PHPUnit_Framework_Constraint_Not
      * @covers PHPUnit_Framework_Assert::lessThanOrEqual
      * @covers PHPUnit_Framework_Assert::logicalNot
+     * @covers PHPUnit_Framework_TestFailure::exceptionToString
      */
     public function testConstraintNotLessThanOrEqual()
     {
@@ -1693,18 +1872,19 @@ EOF
           PHPUnit_Framework_Assert::lessThanOrEqual(1)
         );
 
-        $this->assertTrue($constraint->evaluate(2));
+        $this->assertTrue($constraint->evaluate(2, '', TRUE));
+        $this->assertFalse($constraint->evaluate(1, '', TRUE));
         $this->assertEquals('not( is equal to <integer:1> or is less than <integer:1> )', $constraint->toString());
         $this->assertEquals(2, count($constraint));
 
         try {
-            $constraint->fail(1, '', TRUE);
+            $constraint->evaluate(1);
         }
 
         catch (PHPUnit_Framework_ExpectationFailedException $e) {
             $this->assertEquals(
               <<<EOF
-Failed asserting that <integer:1> not( is equal to <integer:1> or is less than <integer:1> ).
+Failed asserting that not( <integer:1> is equal to <integer:1> or is less than <integer:1> ).
 
 EOF
               ,
@@ -1724,6 +1904,7 @@ EOF
      * @covers PHPUnit_Framework_Constraint_Not
      * @covers PHPUnit_Framework_Assert::lessThanOrEqual
      * @covers PHPUnit_Framework_Assert::logicalNot
+     * @covers PHPUnit_Framework_TestFailure::exceptionToString
      */
     public function testConstraintNotLessThanOrEqual2()
     {
@@ -1732,14 +1913,14 @@ EOF
         );
 
         try {
-            $constraint->fail(1, 'custom message', TRUE);
+            $constraint->evaluate(1, 'custom message');
         }
 
         catch (PHPUnit_Framework_ExpectationFailedException $e) {
             $this->assertEquals(
               <<<EOF
 custom message
-Failed asserting that <integer:1> not( is equal to <integer:1> or is less than <integer:1> ).
+Failed asserting that not( <integer:1> is equal to <integer:1> or is less than <integer:1> ).
 
 EOF
               ,
@@ -1756,23 +1937,25 @@ EOF
      * @covers PHPUnit_Framework_Constraint_ClassHasAttribute
      * @covers PHPUnit_Framework_Assert::classHasAttribute
      * @covers PHPUnit_Framework_Constraint::count
+     * @covers PHPUnit_Framework_TestFailure::exceptionToString
      */
     public function testConstraintClassHasAttribute()
     {
-        $constraint = PHPUnit_Framework_Assert::classHasAttribute('foo');
+        $constraint = PHPUnit_Framework_Assert::classHasAttribute('privateAttribute');
 
-        $this->assertFalse($constraint->evaluate('stdClass'));
-        $this->assertEquals('has attribute "foo"', $constraint->toString());
+        $this->assertTrue($constraint->evaluate('ClassWithNonPublicAttributes', '', TRUE));
+        $this->assertFalse($constraint->evaluate('stdClass', '', TRUE));
+        $this->assertEquals('has attribute "privateAttribute"', $constraint->toString());
         $this->assertEquals(1, count($constraint));
 
         try {
-            $constraint->fail('stdClass', '');
+            $constraint->evaluate('stdClass');
         }
 
         catch (PHPUnit_Framework_ExpectationFailedException $e) {
             $this->assertEquals(
               <<<EOF
-Failed asserting that class "stdClass" has attribute "foo".
+Failed asserting that class "stdClass" has attribute "privateAttribute".
 
 EOF
               ,
@@ -1788,19 +1971,20 @@ EOF
     /**
      * @covers PHPUnit_Framework_Constraint_ClassHasAttribute
      * @covers PHPUnit_Framework_Assert::classHasAttribute
+     * @covers PHPUnit_Framework_TestFailure::exceptionToString
      */
     public function testConstraintClassHasAttribute2()
     {
-        $constraint = PHPUnit_Framework_Assert::classHasAttribute('foo');
+        $constraint = PHPUnit_Framework_Assert::classHasAttribute('privateAttribute');
 
         try {
-            $constraint->fail('stdClass', 'custom message');
+            $constraint->evaluate('stdClass', 'custom message');
         }
 
         catch (PHPUnit_Framework_ExpectationFailedException $e) {
             $this->assertEquals(<<<EOF
 custom message
-Failed asserting that class "stdClass" has attribute "foo".
+Failed asserting that class "stdClass" has attribute "privateAttribute".
 
 EOF
               ,
@@ -1818,25 +2002,27 @@ EOF
      * @covers PHPUnit_Framework_Constraint_Not
      * @covers PHPUnit_Framework_Assert::classHasAttribute
      * @covers PHPUnit_Framework_Assert::logicalNot
+     * @covers PHPUnit_Framework_TestFailure::exceptionToString
      */
     public function testConstraintClassNotHasAttribute()
     {
         $constraint = PHPUnit_Framework_Assert::logicalNot(
-          PHPUnit_Framework_Assert::classHasAttribute('notExistingAttribute')
+          PHPUnit_Framework_Assert::classHasAttribute('privateAttribute')
         );
 
-        $this->assertTrue($constraint->evaluate('ClassWithNonPublicAttributes'));
-        $this->assertEquals('does not have attribute "notExistingAttribute"', $constraint->toString());
+        $this->assertTrue($constraint->evaluate('stdClass', '', TRUE));
+        $this->assertFalse($constraint->evaluate('ClassWithNonPublicAttributes', '', TRUE));
+        $this->assertEquals('does not have attribute "privateAttribute"', $constraint->toString());
         $this->assertEquals(1, count($constraint));
 
         try {
-            $constraint->fail('ClassWithNonPublicAttributes', '', TRUE);
+            $constraint->evaluate('ClassWithNonPublicAttributes');
         }
 
         catch (PHPUnit_Framework_ExpectationFailedException $e) {
             $this->assertEquals(
               <<<EOF
-Failed asserting that class "ClassWithNonPublicAttributes" does not have attribute "notExistingAttribute".
+Failed asserting that class "ClassWithNonPublicAttributes" does not have attribute "privateAttribute".
 
 EOF
               ,
@@ -1854,21 +2040,22 @@ EOF
      * @covers PHPUnit_Framework_Constraint_Not
      * @covers PHPUnit_Framework_Assert::classHasAttribute
      * @covers PHPUnit_Framework_Assert::logicalNot
+     * @covers PHPUnit_Framework_TestFailure::exceptionToString
      */
     public function testConstraintClassNotHasAttribute2()
     {
         $constraint = PHPUnit_Framework_Assert::logicalNot(
-          PHPUnit_Framework_Assert::classHasAttribute('notExistingAttribute')
+          PHPUnit_Framework_Assert::classHasAttribute('privateAttribute')
         );
 
         try {
-            $constraint->fail('ClassWithNonPublicAttributes', 'custom message', TRUE);
+            $constraint->evaluate('ClassWithNonPublicAttributes', 'custom message');
         }
 
         catch (PHPUnit_Framework_ExpectationFailedException $e) {
             $this->assertEquals(<<<EOF
 custom message
-Failed asserting that class "ClassWithNonPublicAttributes" does not have attribute "notExistingAttribute".
+Failed asserting that class "ClassWithNonPublicAttributes" does not have attribute "privateAttribute".
 
 EOF
               ,
@@ -1885,23 +2072,25 @@ EOF
      * @covers PHPUnit_Framework_Constraint_ClassHasStaticAttribute
      * @covers PHPUnit_Framework_Assert::classHasStaticAttribute
      * @covers PHPUnit_Framework_Constraint::count
+     * @covers PHPUnit_Framework_TestFailure::exceptionToString
      */
     public function testConstraintClassHasStaticAttribute()
     {
-        $constraint = PHPUnit_Framework_Assert::classHasStaticAttribute('foo');
+        $constraint = PHPUnit_Framework_Assert::classHasStaticAttribute('privateStaticAttribute');
 
-        $this->assertFalse($constraint->evaluate('stdClass'));
-        $this->assertEquals('has static attribute "foo"', $constraint->toString());
+        $this->assertTrue($constraint->evaluate('ClassWithNonPublicAttributes', '', TRUE));
+        $this->assertFalse($constraint->evaluate('stdClass', '', TRUE));
+        $this->assertEquals('has static attribute "privateStaticAttribute"', $constraint->toString());
         $this->assertEquals(1, count($constraint));
 
         try {
-            $constraint->fail('stdClass', '');
+            $constraint->evaluate('stdClass');
         }
 
         catch (PHPUnit_Framework_ExpectationFailedException $e) {
             $this->assertEquals(
               <<<EOF
-Failed asserting that class "stdClass" has static attribute "foo".
+Failed asserting that class "stdClass" has static attribute "privateStaticAttribute".
 
 EOF
               ,
@@ -1917,13 +2106,14 @@ EOF
     /**
      * @covers PHPUnit_Framework_Constraint_ClassHasStaticAttribute
      * @covers PHPUnit_Framework_Assert::classHasStaticAttribute
+     * @covers PHPUnit_Framework_TestFailure::exceptionToString
      */
     public function testConstraintClassHasStaticAttribute2()
     {
         $constraint = PHPUnit_Framework_Assert::classHasStaticAttribute('foo');
 
         try {
-            $constraint->fail('stdClass', 'custom message');
+            $constraint->evaluate('stdClass', 'custom message');
         }
 
         catch (PHPUnit_Framework_ExpectationFailedException $e) {
@@ -1947,25 +2137,27 @@ EOF
      * @covers PHPUnit_Framework_Constraint_Not
      * @covers PHPUnit_Framework_Assert::classHasStaticAttribute
      * @covers PHPUnit_Framework_Assert::logicalNot
+     * @covers PHPUnit_Framework_TestFailure::exceptionToString
      */
     public function testConstraintClassNotHasStaticAttribute()
     {
         $constraint = PHPUnit_Framework_Assert::logicalNot(
-          PHPUnit_Framework_Assert::classHasStaticAttribute('notExistingAttribute')
+          PHPUnit_Framework_Assert::classHasStaticAttribute('privateStaticAttribute')
         );
 
-        $this->assertTrue($constraint->evaluate('ClassWithNonPublicAttributes'));
-        $this->assertEquals('does not have static attribute "notExistingAttribute"', $constraint->toString());
+        $this->assertTrue($constraint->evaluate('stdClass', '', TRUE));
+        $this->assertFalse($constraint->evaluate('ClassWithNonPublicAttributes', '', TRUE));
+        $this->assertEquals('does not have static attribute "privateStaticAttribute"', $constraint->toString());
         $this->assertEquals(1, count($constraint));
 
         try {
-            $constraint->fail('ClassWithNonPublicAttributes', '', TRUE);
+            $constraint->evaluate('ClassWithNonPublicAttributes');
         }
 
         catch (PHPUnit_Framework_ExpectationFailedException $e) {
             $this->assertEquals(
               <<<EOF
-Failed asserting that class "ClassWithNonPublicAttributes" does not have static attribute "notExistingAttribute".
+Failed asserting that class "ClassWithNonPublicAttributes" does not have static attribute "privateStaticAttribute".
 
 EOF
               ,
@@ -1983,21 +2175,22 @@ EOF
      * @covers PHPUnit_Framework_Constraint_Not
      * @covers PHPUnit_Framework_Assert::classHasStaticAttribute
      * @covers PHPUnit_Framework_Assert::logicalNot
+     * @covers PHPUnit_Framework_TestFailure::exceptionToString
      */
     public function testConstraintClassNotHasStaticAttribute2()
     {
         $constraint = PHPUnit_Framework_Assert::logicalNot(
-          PHPUnit_Framework_Assert::classHasStaticAttribute('notExistingAttribute')
+          PHPUnit_Framework_Assert::classHasStaticAttribute('privateStaticAttribute')
         );
 
         try {
-            $constraint->fail('ClassWithNonPublicAttributes', 'custom message', TRUE);
+            $constraint->evaluate('ClassWithNonPublicAttributes', 'custom message');
         }
 
         catch (PHPUnit_Framework_ExpectationFailedException $e) {
             $this->assertEquals(<<<EOF
 custom message
-Failed asserting that class "ClassWithNonPublicAttributes" does not have static attribute "notExistingAttribute".
+Failed asserting that class "ClassWithNonPublicAttributes" does not have static attribute "privateStaticAttribute".
 
 EOF
               ,
@@ -2014,23 +2207,25 @@ EOF
      * @covers PHPUnit_Framework_Constraint_ObjectHasAttribute
      * @covers PHPUnit_Framework_Assert::objectHasAttribute
      * @covers PHPUnit_Framework_Constraint::count
+     * @covers PHPUnit_Framework_TestFailure::exceptionToString
      */
     public function testConstraintObjectHasAttribute()
     {
-        $constraint = PHPUnit_Framework_Assert::objectHasAttribute('foo');
+        $constraint = PHPUnit_Framework_Assert::objectHasAttribute('privateAttribute');
 
-        $this->assertFalse($constraint->evaluate(new stdClass));
-        $this->assertEquals('has attribute "foo"', $constraint->toString());
+        $this->assertTrue($constraint->evaluate(new ClassWithNonPublicAttributes, '', TRUE));
+        $this->assertFalse($constraint->evaluate(new stdClass, '', TRUE));
+        $this->assertEquals('has attribute "privateAttribute"', $constraint->toString());
         $this->assertEquals(1, count($constraint));
 
         try {
-            $constraint->fail(new stdClass, '');
+            $constraint->evaluate(new stdClass);
         }
 
         catch (PHPUnit_Framework_ExpectationFailedException $e) {
             $this->assertEquals(
               <<<EOF
-Failed asserting that object of class "stdClass" has attribute "foo".
+Failed asserting that object of class "stdClass" has attribute "privateAttribute".
 
 EOF
               ,
@@ -2046,19 +2241,20 @@ EOF
     /**
      * @covers PHPUnit_Framework_Constraint_ObjectHasAttribute
      * @covers PHPUnit_Framework_Assert::objectHasAttribute
+     * @covers PHPUnit_Framework_TestFailure::exceptionToString
      */
     public function testConstraintObjectHasAttribute2()
     {
-        $constraint = PHPUnit_Framework_Assert::objectHasAttribute('foo');
+        $constraint = PHPUnit_Framework_Assert::objectHasAttribute('privateAttribute');
 
         try {
-            $constraint->fail(new stdClass, 'custom message');
+            $constraint->evaluate(new stdClass, 'custom message');
         }
 
         catch (PHPUnit_Framework_ExpectationFailedException $e) {
             $this->assertEquals(<<<EOF
 custom message
-Failed asserting that object of class "stdClass" has attribute "foo".
+Failed asserting that object of class "stdClass" has attribute "privateAttribute".
 
 EOF
               ,
@@ -2076,28 +2272,27 @@ EOF
      * @covers PHPUnit_Framework_Constraint_Not
      * @covers PHPUnit_Framework_Assert::objectHasAttribute
      * @covers PHPUnit_Framework_Assert::logicalNot
+     * @covers PHPUnit_Framework_TestFailure::exceptionToString
      */
     public function testConstraintObjectNotHasAttribute()
     {
         $constraint = PHPUnit_Framework_Assert::logicalNot(
-          PHPUnit_Framework_Assert::objectHasAttribute('foo')
+          PHPUnit_Framework_Assert::objectHasAttribute('privateAttribute')
         );
 
-        $this->assertTrue($constraint->evaluate(new stdClass));
-        $this->assertEquals('does not have attribute "foo"', $constraint->toString());
+        $this->assertTrue($constraint->evaluate(new stdClass, '', TRUE));
+        $this->assertFalse($constraint->evaluate(new ClassWithNonPublicAttributes, '', TRUE));
+        $this->assertEquals('does not have attribute "privateAttribute"', $constraint->toString());
         $this->assertEquals(1, count($constraint));
 
-        $o = new stdClass;
-        $o->foo = 'bar';
-
         try {
-            $constraint->fail($o, '', TRUE);
+            $constraint->evaluate(new ClassWithNonPublicAttributes);
         }
 
         catch (PHPUnit_Framework_ExpectationFailedException $e) {
             $this->assertEquals(
               <<<EOF
-Failed asserting that object of class "stdClass" does not have attribute "foo".
+Failed asserting that object of class "ClassWithNonPublicAttributes" does not have attribute "privateAttribute".
 
 EOF
               ,
@@ -2115,24 +2310,22 @@ EOF
      * @covers PHPUnit_Framework_Constraint_Not
      * @covers PHPUnit_Framework_Assert::objectHasAttribute
      * @covers PHPUnit_Framework_Assert::logicalNot
+     * @covers PHPUnit_Framework_TestFailure::exceptionToString
      */
     public function testConstraintObjectNotHasAttribute2()
     {
         $constraint = PHPUnit_Framework_Assert::logicalNot(
-          PHPUnit_Framework_Assert::objectHasAttribute('foo')
+          PHPUnit_Framework_Assert::objectHasAttribute('privateAttribute')
         );
 
-        $o = new stdClass;
-        $o->foo = 'bar';
-
         try {
-            $constraint->fail($o, 'custom message', TRUE);
+            $constraint->evaluate(new ClassWithNonPublicAttributes, 'custom message');
         }
 
         catch (PHPUnit_Framework_ExpectationFailedException $e) {
             $this->assertEquals(<<<EOF
 custom message
-Failed asserting that object of class "stdClass" does not have attribute "foo".
+Failed asserting that object of class "ClassWithNonPublicAttributes" does not have attribute "privateAttribute".
 
 EOF
               ,
@@ -2149,18 +2342,19 @@ EOF
      * @covers PHPUnit_Framework_Constraint_PCREMatch
      * @covers PHPUnit_Framework_Assert::matchesRegularExpression
      * @covers PHPUnit_Framework_Constraint::count
+     * @covers PHPUnit_Framework_TestFailure::exceptionToString
      */
     public function testConstraintPCREMatch()
     {
         $constraint = PHPUnit_Framework_Assert::matchesRegularExpression('/foo/');
 
-        $this->assertFalse($constraint->evaluate('barbazbar'));
-        $this->assertTrue($constraint->evaluate('barfoobar'));
+        $this->assertFalse($constraint->evaluate('barbazbar', '', TRUE));
+        $this->assertTrue($constraint->evaluate('barfoobar', '', TRUE));
         $this->assertEquals('matches PCRE pattern "/foo/"', $constraint->toString());
         $this->assertEquals(1, count($constraint));
 
         try {
-            $constraint->fail('barbazbar', '');
+            $constraint->evaluate('barbazbar');
         }
 
         catch (PHPUnit_Framework_ExpectationFailedException $e) {
@@ -2182,13 +2376,14 @@ EOF
     /**
      * @covers PHPUnit_Framework_Constraint_PCREMatch
      * @covers PHPUnit_Framework_Assert::matchesRegularExpression
+     * @covers PHPUnit_Framework_TestFailure::exceptionToString
      */
     public function testConstraintPCREMatch2()
     {
         $constraint = PHPUnit_Framework_Assert::matchesRegularExpression('/foo/');
 
         try {
-            $constraint->fail('barbazbar', 'custom message');
+            $constraint->evaluate('barbazbar', 'custom message');
         }
 
         catch (PHPUnit_Framework_ExpectationFailedException $e) {
@@ -2212,6 +2407,7 @@ EOF
      * @covers PHPUnit_Framework_Constraint_Not
      * @covers PHPUnit_Framework_Assert::matchesRegularExpression
      * @covers PHPUnit_Framework_Assert::logicalNot
+     * @covers PHPUnit_Framework_TestFailure::exceptionToString
      */
     public function testConstraintPCRENotMatch()
     {
@@ -2219,13 +2415,13 @@ EOF
           PHPUnit_Framework_Assert::matchesRegularExpression('/foo/')
         );
 
-        $this->assertTrue($constraint->evaluate('barbazbar'));
-        $this->assertFalse($constraint->evaluate('barfoobar'));
+        $this->assertTrue($constraint->evaluate('barbazbar', '', TRUE));
+        $this->assertFalse($constraint->evaluate('barfoobar', '', TRUE));
         $this->assertEquals('does not match PCRE pattern "/foo/"', $constraint->toString());
         $this->assertEquals(1, count($constraint));
 
         try {
-            $constraint->fail('barfoobar', '', TRUE);
+            $constraint->evaluate('barfoobar');
         }
 
         catch (PHPUnit_Framework_ExpectationFailedException $e) {
@@ -2249,6 +2445,7 @@ EOF
      * @covers PHPUnit_Framework_Constraint_Not
      * @covers PHPUnit_Framework_Assert::matchesRegularExpression
      * @covers PHPUnit_Framework_Assert::logicalNot
+     * @covers PHPUnit_Framework_TestFailure::exceptionToString
      */
     public function testConstraintPCRENotMatch2()
     {
@@ -2257,7 +2454,7 @@ EOF
         );
 
         try {
-            $constraint->fail('barfoobar', 'custom message', TRUE);
+            $constraint->evaluate('barfoobar', 'custom message');
         }
 
         catch (PHPUnit_Framework_ExpectationFailedException $e) {
@@ -2284,8 +2481,8 @@ EOF
     public function testConstraintStringMatches()
     {
         $constraint = PHPUnit_Framework_Assert::matches('*%c*');
-        $this->assertFalse($constraint->evaluate('**'));
-        $this->assertTrue($constraint->evaluate('***'));
+        $this->assertFalse($constraint->evaluate('**', '', TRUE));
+        $this->assertTrue($constraint->evaluate('***', '', TRUE));
         $this->assertEquals('matches PCRE pattern "/^\*.\*$/s"', $constraint->toString());
         $this->assertEquals(1, count($constraint));
     }
@@ -2298,8 +2495,8 @@ EOF
     public function testConstraintStringMatches2()
     {
         $constraint = PHPUnit_Framework_Assert::matches('*%s*');
-        $this->assertFalse($constraint->evaluate('**'));
-        $this->assertTrue($constraint->evaluate('***'));
+        $this->assertFalse($constraint->evaluate('**', '', TRUE));
+        $this->assertTrue($constraint->evaluate('***', '', TRUE));
         $this->assertEquals('matches PCRE pattern "/^\*[^\r\n]+\*$/s"', $constraint->toString());
         $this->assertEquals(1, count($constraint));
     }
@@ -2312,8 +2509,8 @@ EOF
     public function testConstraintStringMatches3()
     {
         $constraint = PHPUnit_Framework_Assert::matches('*%i*');
-        $this->assertFalse($constraint->evaluate('**'));
-        $this->assertTrue($constraint->evaluate('*0*'));
+        $this->assertFalse($constraint->evaluate('**', '', TRUE));
+        $this->assertTrue($constraint->evaluate('*0*', '', TRUE));
         $this->assertEquals('matches PCRE pattern "/^\*[+-]?\d+\*$/s"', $constraint->toString());
         $this->assertEquals(1, count($constraint));
     }
@@ -2326,8 +2523,8 @@ EOF
     public function testConstraintStringMatches4()
     {
         $constraint = PHPUnit_Framework_Assert::matches('*%d*');
-        $this->assertFalse($constraint->evaluate('**'));
-        $this->assertTrue($constraint->evaluate('*0*'));
+        $this->assertFalse($constraint->evaluate('**', '', TRUE));
+        $this->assertTrue($constraint->evaluate('*0*', '', TRUE));
         $this->assertEquals('matches PCRE pattern "/^\*\d+\*$/s"', $constraint->toString());
         $this->assertEquals(1, count($constraint));
     }
@@ -2340,8 +2537,8 @@ EOF
     public function testConstraintStringMatches5()
     {
         $constraint = PHPUnit_Framework_Assert::matches('*%x*');
-        $this->assertFalse($constraint->evaluate('**'));
-        $this->assertTrue($constraint->evaluate('*0f0f0f*'));
+        $this->assertFalse($constraint->evaluate('**', '', TRUE));
+        $this->assertTrue($constraint->evaluate('*0f0f0f*', '', TRUE));
         $this->assertEquals('matches PCRE pattern "/^\*[0-9a-fA-F]+\*$/s"', $constraint->toString());
         $this->assertEquals(1, count($constraint));
     }
@@ -2354,8 +2551,8 @@ EOF
     public function testConstraintStringMatches6()
     {
         $constraint = PHPUnit_Framework_Assert::matches('*%f*');
-        $this->assertFalse($constraint->evaluate('**'));
-        $this->assertTrue($constraint->evaluate('*1.0*'));
+        $this->assertFalse($constraint->evaluate('**', '', TRUE));
+        $this->assertTrue($constraint->evaluate('*1.0*', '', TRUE));
         $this->assertEquals('matches PCRE pattern "/^\*[+-]?\.?\d+\.?\d*(?:[Ee][+-]?\d+)?\*$/s"', $constraint->toString());
         $this->assertEquals(1, count($constraint));
     }
@@ -2364,18 +2561,19 @@ EOF
      * @covers PHPUnit_Framework_Constraint_StringStartsWith
      * @covers PHPUnit_Framework_Assert::stringStartsWith
      * @covers PHPUnit_Framework_Constraint::count
+     * @covers PHPUnit_Framework_TestFailure::exceptionToString
      */
     public function testConstraintStringStartsWith()
     {
         $constraint = PHPUnit_Framework_Assert::stringStartsWith('prefix');
 
-        $this->assertFalse($constraint->evaluate('foo'));
-        $this->assertTrue($constraint->evaluate('prefixfoo'));
+        $this->assertFalse($constraint->evaluate('foo', '', TRUE));
+        $this->assertTrue($constraint->evaluate('prefixfoo', '', TRUE));
         $this->assertEquals('starts with "prefix"', $constraint->toString());
         $this->assertEquals(1, count($constraint));
 
         try {
-            $constraint->fail('foo', '');
+            $constraint->evaluate('foo');
         }
 
         catch (PHPUnit_Framework_ExpectationFailedException $e) {
@@ -2397,13 +2595,14 @@ EOF
     /**
      * @covers PHPUnit_Framework_Constraint_StringStartsWith
      * @covers PHPUnit_Framework_Assert::stringStartsWith
+     * @covers PHPUnit_Framework_TestFailure::exceptionToString
      */
     public function testConstraintStringStartsWith2()
     {
         $constraint = PHPUnit_Framework_Assert::stringStartsWith('prefix');
 
         try {
-            $constraint->fail('foo', 'custom message');
+            $constraint->evaluate('foo', 'custom message');
         }
 
         catch (PHPUnit_Framework_ExpectationFailedException $e) {
@@ -2427,6 +2626,7 @@ EOF
      * @covers PHPUnit_Framework_Constraint_Not
      * @covers PHPUnit_Framework_Assert::stringStartsWith
      * @covers PHPUnit_Framework_Assert::logicalNot
+     * @covers PHPUnit_Framework_TestFailure::exceptionToString
      */
     public function testConstraintStringStartsNotWith()
     {
@@ -2434,13 +2634,13 @@ EOF
           PHPUnit_Framework_Assert::stringStartsWith('prefix')
         );
 
-        $this->assertTrue($constraint->evaluate('foo'));
-        $this->assertFalse($constraint->evaluate('prefixfoo'));
+        $this->assertTrue($constraint->evaluate('foo', '', TRUE));
+        $this->assertFalse($constraint->evaluate('prefixfoo', '', TRUE));
         $this->assertEquals('starts not with "prefix"', $constraint->toString());
         $this->assertEquals(1, count($constraint));
 
         try {
-            $constraint->fail('prefixfoo', '', TRUE);
+            $constraint->evaluate('prefixfoo');
         }
 
         catch (PHPUnit_Framework_ExpectationFailedException $e) {
@@ -2462,6 +2662,7 @@ EOF
     /**
      * @covers PHPUnit_Framework_Constraint_StringStartsWith
      * @covers PHPUnit_Framework_Assert::stringStartsWith
+     * @covers PHPUnit_Framework_TestFailure::exceptionToString
      */
     public function testConstraintStringStartsNotWith2()
     {
@@ -2470,7 +2671,7 @@ EOF
         );
 
         try {
-            $constraint->fail('prefixfoo', 'custom message', TRUE);
+            $constraint->evaluate('prefixfoo', 'custom message');
         }
 
         catch (PHPUnit_Framework_ExpectationFailedException $e) {
@@ -2494,18 +2695,19 @@ EOF
      * @covers PHPUnit_Framework_Constraint_StringContains
      * @covers PHPUnit_Framework_Assert::stringContains
      * @covers PHPUnit_Framework_Constraint::count
+     * @covers PHPUnit_Framework_TestFailure::exceptionToString
      */
     public function testConstraintStringContains()
     {
         $constraint = PHPUnit_Framework_Assert::stringContains('foo');
 
-        $this->assertFalse($constraint->evaluate('barbazbar'));
-        $this->assertTrue($constraint->evaluate('barfoobar'));
+        $this->assertFalse($constraint->evaluate('barbazbar', '', TRUE));
+        $this->assertTrue($constraint->evaluate('barfoobar', '', TRUE));
         $this->assertEquals('contains "foo"', $constraint->toString());
         $this->assertEquals(1, count($constraint));
 
         try {
-            $constraint->fail('barbazbar', '');
+            $constraint->evaluate('barbazbar');
         }
 
         catch (PHPUnit_Framework_ExpectationFailedException $e) {
@@ -2527,13 +2729,14 @@ EOF
     /**
      * @covers PHPUnit_Framework_Constraint_StringContains
      * @covers PHPUnit_Framework_Assert::stringContains
+     * @covers PHPUnit_Framework_TestFailure::exceptionToString
      */
     public function testConstraintStringContains2()
     {
         $constraint = PHPUnit_Framework_Assert::stringContains('foo');
 
         try {
-            $constraint->fail('barbazbar', 'custom message');
+            $constraint->evaluate('barbazbar', 'custom message');
         }
 
         catch (PHPUnit_Framework_ExpectationFailedException $e) {
@@ -2558,6 +2761,7 @@ EOF
      * @covers PHPUnit_Framework_Constraint_Not
      * @covers PHPUnit_Framework_Assert::stringContains
      * @covers PHPUnit_Framework_Assert::logicalNot
+     * @covers PHPUnit_Framework_TestFailure::exceptionToString
      */
     public function testConstraintStringNotContains()
     {
@@ -2565,13 +2769,13 @@ EOF
           PHPUnit_Framework_Assert::stringContains('foo')
         );
 
-        $this->assertTrue($constraint->evaluate('barbazbar'));
-        $this->assertFalse($constraint->evaluate('barfoobar'));
+        $this->assertTrue($constraint->evaluate('barbazbar', '', TRUE));
+        $this->assertFalse($constraint->evaluate('barfoobar', '', TRUE));
         $this->assertEquals('does not contain "foo"', $constraint->toString());
         $this->assertEquals(1, count($constraint));
 
         try {
-            $constraint->fail('barfoobar', '', TRUE);
+            $constraint->evaluate('barfoobar');
         }
 
         catch (PHPUnit_Framework_ExpectationFailedException $e) {
@@ -2595,6 +2799,7 @@ EOF
      * @covers PHPUnit_Framework_Constraint_Not
      * @covers PHPUnit_Framework_Assert::stringContains
      * @covers PHPUnit_Framework_Assert::logicalNot
+     * @covers PHPUnit_Framework_TestFailure::exceptionToString
      */
     public function testConstraintStringNotContains2()
     {
@@ -2603,7 +2808,7 @@ EOF
         );
 
         try {
-            $constraint->fail('barfoobar', 'custom message', TRUE);
+            $constraint->evaluate('barfoobar', 'custom message');
         }
 
         catch (PHPUnit_Framework_ExpectationFailedException $e) {
@@ -2627,18 +2832,19 @@ EOF
      * @covers PHPUnit_Framework_Constraint_StringEndsWith
      * @covers PHPUnit_Framework_Assert::stringEndsWith
      * @covers PHPUnit_Framework_Constraint::count
+     * @covers PHPUnit_Framework_TestFailure::exceptionToString
      */
     public function testConstraintStringEndsWith()
     {
         $constraint = PHPUnit_Framework_Assert::stringEndsWith('suffix');
 
-        $this->assertFalse($constraint->evaluate('foo'));
-        $this->assertTrue($constraint->evaluate('foosuffix'));
+        $this->assertFalse($constraint->evaluate('foo', '', TRUE));
+        $this->assertTrue($constraint->evaluate('foosuffix', '', TRUE));
         $this->assertEquals('ends with "suffix"', $constraint->toString());
         $this->assertEquals(1, count($constraint));
 
         try {
-            $constraint->fail('foo', '');
+            $constraint->evaluate('foo');
         }
 
         catch (PHPUnit_Framework_ExpectationFailedException $e) {
@@ -2660,13 +2866,14 @@ EOF
     /**
      * @covers PHPUnit_Framework_Constraint_StringEndsWith
      * @covers PHPUnit_Framework_Assert::stringEndsWith
+     * @covers PHPUnit_Framework_TestFailure::exceptionToString
      */
     public function testConstraintStringEndsWith2()
     {
         $constraint = PHPUnit_Framework_Assert::stringEndsWith('suffix');
 
         try {
-            $constraint->fail('foo', 'custom message');
+            $constraint->evaluate('foo', 'custom message');
         }
 
         catch (PHPUnit_Framework_ExpectationFailedException $e) {
@@ -2691,6 +2898,7 @@ EOF
      * @covers PHPUnit_Framework_Constraint_Not
      * @covers PHPUnit_Framework_Assert::stringEndsWith
      * @covers PHPUnit_Framework_Assert::logicalNot
+     * @covers PHPUnit_Framework_TestFailure::exceptionToString
      */
     public function testConstraintStringEndsNotWith()
     {
@@ -2698,13 +2906,13 @@ EOF
           PHPUnit_Framework_Assert::stringEndsWith('suffix')
         );
 
-        $this->assertTrue($constraint->evaluate('foo'));
-        $this->assertFalse($constraint->evaluate('foosuffix'));
+        $this->assertTrue($constraint->evaluate('foo', '', TRUE));
+        $this->assertFalse($constraint->evaluate('foosuffix', '', TRUE));
         $this->assertEquals('ends not with "suffix"', $constraint->toString());
         $this->assertEquals(1, count($constraint));
 
         try {
-            $constraint->fail('foosuffix', '', TRUE);
+            $constraint->evaluate('foosuffix');
         }
 
         catch (PHPUnit_Framework_ExpectationFailedException $e) {
@@ -2726,6 +2934,7 @@ EOF
     /**
      * @covers PHPUnit_Framework_Constraint_StringEndsWith
      * @covers PHPUnit_Framework_Assert::stringEndsWith
+     * @covers PHPUnit_Framework_TestFailure::exceptionToString
      */
     public function testConstraintStringEndsNotWith2()
     {
@@ -2734,7 +2943,7 @@ EOF
         );
 
         try {
-            $constraint->fail('foosuffix', 'custom message', TRUE);
+            $constraint->evaluate('foosuffix', 'custom message');
         }
 
         catch (PHPUnit_Framework_ExpectationFailedException $e) {
@@ -2757,18 +2966,19 @@ EOF
     /**
      * @covers PHPUnit_Framework_Constraint_TraversableContains
      * @covers PHPUnit_Framework_Constraint::count
+     * @covers PHPUnit_Framework_TestFailure::exceptionToString
      */
     public function testConstraintArrayContains()
     {
         $constraint = new PHPUnit_Framework_Constraint_TraversableContains('foo');
 
-        $this->assertFalse($constraint->evaluate(array('bar')));
-        $this->assertTrue($constraint->evaluate(array('foo')));
+        $this->assertFalse($constraint->evaluate(array('bar'), '', TRUE));
+        $this->assertTrue($constraint->evaluate(array('foo'), '', TRUE));
         $this->assertEquals('contains <string:foo>', $constraint->toString());
         $this->assertEquals(1, count($constraint));
 
         try {
-            $constraint->fail(array('bar'), '');
+            $constraint->evaluate(array('bar'));
         }
 
         catch (PHPUnit_Framework_ExpectationFailedException $e) {
@@ -2789,13 +2999,14 @@ EOF
 
     /**
      * @covers PHPUnit_Framework_Constraint_TraversableContains
+     * @covers PHPUnit_Framework_TestFailure::exceptionToString
      */
     public function testConstraintArrayContains2()
     {
         $constraint = new PHPUnit_Framework_Constraint_TraversableContains('foo');
 
         try {
-            $constraint->fail(array('bar'), 'custom message');
+            $constraint->evaluate(array('bar'), 'custom message');
         }
 
         catch (PHPUnit_Framework_ExpectationFailedException $e) {
@@ -2819,6 +3030,7 @@ EOF
      * @covers PHPUnit_Framework_Constraint_TraversableContains
      * @covers PHPUnit_Framework_Constraint_Not
      * @covers PHPUnit_Framework_Assert::logicalNot
+     * @covers PHPUnit_Framework_TestFailure::exceptionToString
      */
     public function testConstraintArrayNotContains()
     {
@@ -2826,13 +3038,13 @@ EOF
           new PHPUnit_Framework_Constraint_TraversableContains('foo')
         );
 
-        $this->assertTrue($constraint->evaluate(array('bar')));
-        $this->assertFalse($constraint->evaluate(array('foo')));
+        $this->assertTrue($constraint->evaluate(array('bar'), '', TRUE));
+        $this->assertFalse($constraint->evaluate(array('foo'), '', TRUE));
         $this->assertEquals('does not contain <string:foo>', $constraint->toString());
         $this->assertEquals(1, count($constraint));
 
         try {
-            $constraint->fail(array('foo'), '', TRUE);
+            $constraint->evaluate(array('foo'));
         }
 
         catch (PHPUnit_Framework_ExpectationFailedException $e) {
@@ -2855,6 +3067,7 @@ EOF
      * @covers PHPUnit_Framework_Constraint_TraversableContains
      * @covers PHPUnit_Framework_Constraint_Not
      * @covers PHPUnit_Framework_Assert::logicalNot
+     * @covers PHPUnit_Framework_TestFailure::exceptionToString
      */
     public function testConstraintArrayNotContains2()
     {
@@ -2863,7 +3076,7 @@ EOF
         );
 
         try {
-            $constraint->fail(array('foo'), 'custom message', TRUE);
+            $constraint->evaluate(array('foo'), 'custom message');
         }
 
         catch (PHPUnit_Framework_ExpectationFailedException $e) {
@@ -2886,6 +3099,7 @@ EOF
     /**
      * @covers PHPUnit_Framework_Constraint_TraversableContains
      * @covers PHPUnit_Framework_Constraint::count
+     * @covers PHPUnit_Framework_TestFailure::exceptionToString
      */
     public function testConstraintSplObjectStorageContains()
     {
@@ -2894,19 +3108,23 @@ EOF
         $this->assertEquals("contains \nstdClass Object\n(\n)\n", $constraint->toString());
 
         $storage = new SplObjectStorage;
-        $this->assertFalse($constraint->evaluate($storage));
+        $this->assertFalse($constraint->evaluate($storage, '', TRUE));
 
         $storage->attach($object);
-        $this->assertTrue($constraint->evaluate($storage));
+        $this->assertTrue($constraint->evaluate($storage, '', TRUE));
 
         try {
-            $constraint->fail(new SplObjectStorage, '');
+            $constraint->evaluate(new SplObjectStorage);
         }
 
         catch (PHPUnit_Framework_ExpectationFailedException $e) {
             $this->assertEquals(
               <<<EOF
-Failed asserting that an iterator contains \nstdClass Object\n(\n)\n.
+Failed asserting that an iterator contains
+stdClass Object
+(
+)
+.
 
 EOF
               ,
@@ -2921,6 +3139,7 @@ EOF
 
     /**
      * @covers PHPUnit_Framework_Constraint_TraversableContains
+     * @covers PHPUnit_Framework_TestFailure::exceptionToString
      */
     public function testConstraintSplObjectStorageContains2()
     {
@@ -2928,13 +3147,18 @@ EOF
         $constraint = new PHPUnit_Framework_Constraint_TraversableContains($object);
 
         try {
-            $constraint->fail(new SplObjectStorage, 'custom message');
+            $constraint->evaluate(new SplObjectStorage, 'custom message');
         }
 
         catch (PHPUnit_Framework_ExpectationFailedException $e) {
             $this->assertEquals(
               <<<EOF
-custom message\nFailed asserting that an iterator contains \nstdClass Object\n(\n)\n.
+custom message
+Failed asserting that an iterator contains
+stdClass Object
+(
+)
+.
 
 EOF
               ,
@@ -2950,20 +3174,23 @@ EOF
     /**
      * @covers PHPUnit_Framework_Assert::attributeEqualTo
      * @covers PHPUnit_Framework_Constraint_Attribute
+     * @covers PHPUnit_Framework_TestFailure::exceptionToString
      */
     public function testAttributeEqualTo()
     {
         $object     = new ClassWithNonPublicAttributes;
         $constraint = PHPUnit_Framework_Assert::attributeEqualTo('foo', 1);
 
-        $this->assertTrue($constraint->evaluate($object));
+        $this->assertTrue($constraint->evaluate($object, '', TRUE));
         $this->assertEquals('attribute "foo" is equal to <integer:1>', $constraint->toString());
         $this->assertEquals(1, count($constraint));
 
         $constraint = PHPUnit_Framework_Assert::attributeEqualTo('foo', 2);
 
+        $this->assertFalse($constraint->evaluate($object, '', TRUE));
+
         try {
-            $constraint->fail($object, '');
+            $constraint->evaluate($object);
         }
 
         catch (PHPUnit_Framework_ExpectationFailedException $e) {
@@ -2985,6 +3212,7 @@ EOF
     /**
      * @covers PHPUnit_Framework_Assert::attributeEqualTo
      * @covers PHPUnit_Framework_Constraint_Attribute
+     * @covers PHPUnit_Framework_TestFailure::exceptionToString
      */
     public function testAttributeEqualTo2()
     {
@@ -2992,7 +3220,7 @@ EOF
         $constraint = PHPUnit_Framework_Assert::attributeEqualTo('foo', 2);
 
         try {
-            $constraint->fail($object, 'custom message');
+            $constraint->evaluate($object, 'custom message');
         }
 
         catch (PHPUnit_Framework_ExpectationFailedException $e) {
@@ -3016,6 +3244,7 @@ EOF
      * @covers PHPUnit_Framework_Assert::logicalNot
      * @covers PHPUnit_Framework_Constraint_Attribute
      * @covers PHPUnit_Framework_Constraint_Not
+     * @covers PHPUnit_Framework_TestFailure::exceptionToString
      */
     public function testAttributeNotEqualTo()
     {
@@ -3024,7 +3253,7 @@ EOF
           PHPUnit_Framework_Assert::attributeEqualTo('foo', 2)
         );
 
-        $this->assertTrue($constraint->evaluate($object));
+        $this->assertTrue($constraint->evaluate($object, '', TRUE));
         $this->assertEquals('attribute "foo" is not equal to <integer:2>', $constraint->toString());
         $this->assertEquals(1, count($constraint));
 
@@ -3032,8 +3261,10 @@ EOF
           PHPUnit_Framework_Assert::attributeEqualTo('foo', 1)
         );
 
+        $this->assertFalse($constraint->evaluate($object, '', TRUE));
+
         try {
-            $constraint->fail($object, '', TRUE);
+            $constraint->evaluate($object);
         }
 
         catch (PHPUnit_Framework_ExpectationFailedException $e) {
@@ -3057,6 +3288,7 @@ EOF
      * @covers PHPUnit_Framework_Assert::logicalNot
      * @covers PHPUnit_Framework_Constraint_Attribute
      * @covers PHPUnit_Framework_Constraint_Not
+     * @covers PHPUnit_Framework_TestFailure::exceptionToString
      */
     public function testAttributeNotEqualTo2()
     {
@@ -3066,7 +3298,7 @@ EOF
         );
 
         try {
-            $constraint->fail($object, 'custom message', TRUE);
+            $constraint->evaluate($object, 'custom message');
         }
 
         catch (PHPUnit_Framework_ExpectationFailedException $e) {
@@ -3088,18 +3320,19 @@ EOF
     /**
      * @covers PHPUnit_Framework_Constraint_IsEmpty
      * @covers PHPUnit_Framework_Constraint::count
+     * @covers PHPUnit_Framework_TestFailure::exceptionToString
      */
     public function testConstraintIsEmpty()
     {
         $constraint = new PHPUnit_Framework_Constraint_IsEmpty;
 
-        $this->assertFalse($constraint->evaluate(array('foo')));
-        $this->assertTrue($constraint->evaluate(array()));
+        $this->assertFalse($constraint->evaluate(array('foo'), '', TRUE));
+        $this->assertTrue($constraint->evaluate(array(), '', TRUE));
         $this->assertEquals('is empty', $constraint->toString());
         $this->assertEquals(1, count($constraint));
 
         try {
-            $constraint->fail(array('foo'), '');
+            $constraint->evaluate(array('foo'));
         }
 
         catch (PHPUnit_Framework_ExpectationFailedException $e) {
@@ -3120,13 +3353,14 @@ EOF
 
     /**
      * @covers PHPUnit_Framework_Constraint_IsEmpty
+     * @covers PHPUnit_Framework_TestFailure::exceptionToString
      */
     public function testConstraintIsEmpty2()
     {
         $constraint = new PHPUnit_Framework_Constraint_IsEmpty;
 
         try {
-            $constraint->fail(array('foo'), 'custom message');
+            $constraint->evaluate(array('foo'), 'custom message');
         }
 
         catch (PHPUnit_Framework_ExpectationFailedException $e) {
@@ -3152,8 +3386,8 @@ EOF
     {
         $constraint = new PHPUnit_Framework_Constraint_Count(5);
 
-        $this->assertTrue($constraint->evaluate(array(1,2,3,4,5)));
-        $this->assertFalse($constraint->evaluate(array(1,2,3,4)));
+        $this->assertTrue($constraint->evaluate(array(1,2,3,4,5), '', TRUE));
+        $this->assertFalse($constraint->evaluate(array(1,2,3,4), '', TRUE));
     }
 
     /**
@@ -3163,8 +3397,8 @@ EOF
     {
         $constraint = new PHPUnit_Framework_Constraint_Count(5);
 
-        $this->assertTrue($constraint->evaluate(new TestIterator(array(1,2,3,4,5))));
-        $this->assertFalse($constraint->evaluate(new TestIterator(array(1,2,3,4))));
+        $this->assertTrue($constraint->evaluate(new TestIterator(array(1,2,3,4,5)), '', TRUE));
+        $this->assertFalse($constraint->evaluate(new TestIterator(array(1,2,3,4)), '', TRUE));
     }
 
     /**
@@ -3174,25 +3408,58 @@ EOF
     {
         $constraint = new PHPUnit_Framework_Constraint_Count(5);
 
-        $this->assertTrue($constraint->evaluate(new ArrayObject(array(1,2,3,4,5))));
-        $this->assertFalse($constraint->evaluate(new ArrayObject(array(1,2,3,4))));
+        $this->assertTrue($constraint->evaluate(new ArrayObject(array(1,2,3,4,5)), '', TRUE));
+        $this->assertFalse($constraint->evaluate(new ArrayObject(array(1,2,3,4)), '', TRUE));
     }
 
     /**
      * @covers PHPUnit_Framework_Constraint_Count
+     * @covers PHPUnit_Framework_TestFailure::exceptionToString
      */
     public function testConstraintCountFailing()
     {
         $constraint = new PHPUnit_Framework_Constraint_Count(5);
 
         try {
-            $constraint->fail(array(1,2), '');
+            $constraint->evaluate(array(1,2));
         }
 
         catch (PHPUnit_Framework_ExpectationFailedException $e) {
             $this->assertEquals(
               <<<EOF
-Actual size 2 does not match expected size 5.
+Failed asserting that actual size 2 matches expected size 5.
+
+EOF
+              ,
+              PHPUnit_Framework_TestFailure::exceptionToString($e)
+            );
+
+            return;
+        }
+
+        $this->fail();
+    }
+
+    /**
+     * @covers PHPUnit_Framework_Constraint_Count
+     * @covers PHPUnit_Framework_Constraint_Not
+     * @covers PHPUnit_Framework_Assert::logicalNot
+     * @covers PHPUnit_Framework_TestFailure::exceptionToString
+     */
+    public function testConstraintNotCountFailing()
+    {
+        $constraint = PHPUnit_Framework_Assert::logicalNot(
+          new PHPUnit_Framework_Constraint_Count(2)
+        );
+
+        try {
+            $constraint->evaluate(array(1,2));
+        }
+
+        catch (PHPUnit_Framework_ExpectationFailedException $e) {
+            $this->assertEquals(
+              <<<EOF
+Failed asserting that actual size 2 does not match expected size 2.
 
 EOF
               ,

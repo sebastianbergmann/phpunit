@@ -37,6 +37,7 @@
  * @package    PHPUnit
  * @subpackage Framework_Constraint
  * @author     Sebastian Bergmann <sebastian@phpunit.de>
+ * @author     Bernhard Schussek <bschussek@2bepublished.at>
  * @copyright  2002-2011 Sebastian Bergmann <sebastian@phpunit.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @link       http://www.phpunit.de/
@@ -49,6 +50,7 @@
  * @package    PHPUnit
  * @subpackage Framework_Constraint
  * @author     Sebastian Bergmann <sebastian@phpunit.de>
+ * @author     Bernhard Schussek <bschussek@2bepublished.at>
  * @copyright  2002-2011 Sebastian Bergmann <sebastian@phpunit.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    Release: @package_version@
@@ -64,7 +66,7 @@ class PHPUnit_Framework_Constraint_IsEmpty extends PHPUnit_Framework_Constraint
      * @param mixed $other Value or object to evaluate.
      * @return bool
      */
-    public function evaluate($other)
+    protected function matches($other)
     {
         return empty($other);
     }
@@ -81,22 +83,17 @@ class PHPUnit_Framework_Constraint_IsEmpty extends PHPUnit_Framework_Constraint
 
     /**
      * @param mixed   $other
-     * @param string  $description
-     * @param boolean $not
      */
-    protected function customFailureDescription($other, $description, $not)
+    protected function failureDescription($other)
     {
         $type = gettype($other);
 
-        if ($type[0] == 'a' || $type[0] == 'o') {
-            $type = 'an ' . $type;
-        } else {
-            $type = 'a ' . $type;
-        }
-
         return sprintf(
-          'Failed asserting that %s is empty.',
-          $type
+          '%s %s %s',
+
+          $type[0] == 'a' || $type[0] == 'o' ? 'an' : 'a',
+          $type,
+          $this->toString()
         );
     }
 }

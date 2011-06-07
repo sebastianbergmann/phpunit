@@ -36,7 +36,7 @@
  *
  * @package    PHPUnit
  * @subpackage Framework
- * @author     Bernhard Schussek <bschussek@gmail.com>
+ * @author     Bernhard Schussek <bschussek@2bepublished.at>
  * @copyright  2002-2011 Sebastian Bergmann <sebastian@phpunit.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @link       http://www.phpunit.de/
@@ -48,7 +48,7 @@
  *
  * @package    PHPUnit
  * @subpackage Framework_Comparator
- * @author     Bernhard Schussek <bschussek@gmail.com>
+ * @author     Bernhard Schussek <bschussek@2bepublished.at>
  * @copyright  2002-2011 Sebastian Bergmann <sebastian@phpunit.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    Release: @package_version@
@@ -104,7 +104,31 @@ class PHPUnit_Framework_Comparator_Scalar extends PHPUnit_Framework_Comparator
         }
 
         if ($a != $b) {
-            throw new PHPUnit_Framework_ComparisonFailure($a, $b);
+            if (is_string($a) && is_string($b)) {
+                throw new PHPUnit_Framework_ComparisonFailure(
+                  $a,
+                  $b,
+                  print_r($a, true),
+                  print_r($b, true),
+                  FALSE,
+                  'Failed asserting that two strings are equal.'
+                );
+            }
+
+            throw new PHPUnit_Framework_ComparisonFailure(
+              $a,
+              $b,
+              // no diff is required
+              '',
+              '',
+              FALSE,
+              sprintf(
+                'Failed asserting that %s matches expected %s.',
+
+                PHPUnit_Util_Type::toString($b),
+                PHPUnit_Util_Type::toString($a)
+              )
+            );
         }
     }
 }
