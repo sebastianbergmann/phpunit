@@ -87,6 +87,10 @@ class PHPUnit_Framework_Constraint_IsIdentical extends PHPUnit_Framework_Constra
      */
     public function evaluate($other)
     {
+        if (is_float($this->value) && is_float($other)) {
+            return abs($this->value - $other) < self::EPSILON;
+        }
+
         return $this->value === $other;
     }
 

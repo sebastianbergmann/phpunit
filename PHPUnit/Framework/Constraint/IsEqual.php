@@ -301,7 +301,9 @@ class PHPUnit_Framework_Constraint_IsEqual extends PHPUnit_Framework_Constraint
             (!is_array($b) && !is_object($b))) {
             if (is_numeric($a) && is_numeric($b)) {
                 // Optionally apply delta on numeric values.
-                return $this->numericComparison($a, $b);
+		    	$delta = $this->delta == 0 ? self::EPSILON : $this->delta;
+
+		        return (abs($a - $b) <= $delta);
             }
 
             if (is_string($a) && is_string($b)) {
@@ -361,22 +363,6 @@ class PHPUnit_Framework_Constraint_IsEqual extends PHPUnit_Framework_Constraint
         }
 
         return TRUE;
-    }
-
-    /**
-     * Compares two numeric values - use delta if applicable.
-     *
-     * @param mixed $a
-     * @param mixed $b
-     * @return bool
-     */
-    protected function numericComparison($a, $b)
-    {
-        if ($this->delta === FALSE) {
-            return ($a == $b);
-        } else {
-            return (abs($a - $b) <= $this->delta);
-        }
     }
 
     /**
