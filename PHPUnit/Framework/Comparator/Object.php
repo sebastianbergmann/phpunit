@@ -36,7 +36,7 @@
  *
  * @package    PHPUnit
  * @subpackage Framework
- * @author     Bernhard Schussek <bschussek@gmail.com>
+ * @author     Bernhard Schussek <bschussek@2bepublished.at>
  * @copyright  2002-2011 Sebastian Bergmann <sebastian@phpunit.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @link       http://www.phpunit.de/
@@ -48,7 +48,7 @@
  *
  * @package    PHPUnit
  * @subpackage Framework_Comparator
- * @author     Bernhard Schussek <bschussek@gmail.com>
+ * @author     Bernhard Schussek <bschussek@2bepublished.at>
  * @copyright  2002-2011 Sebastian Bergmann <sebastian@phpunit.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    Release: @package_version@
@@ -89,7 +89,19 @@ class PHPUnit_Framework_Comparator_Object extends PHPUnit_Framework_Comparator_A
     public function assertEquals($a, $b, $delta = 0, $canonicalize = FALSE, $ignoreCase = FALSE, array &$processed = array())
     {
         if (get_class($b) !== get_class($a)) {
-            throw new PHPUnit_Framework_ComparisonFailure($a, $b);
+            throw new PHPUnit_Framework_ComparisonFailure(
+              $a,
+              $b,
+              print_r($a, true),
+              print_r($b, true),
+              FALSE,
+              sprintf(
+                '%s is not instance of expected class "%s".',
+
+                PHPUnit_Util_Type::toString($b),
+                get_class($a)
+              )
+            );
         }
 
         // don't compare twice to allow for cyclic dependencies
@@ -103,7 +115,21 @@ class PHPUnit_Framework_Comparator_Object extends PHPUnit_Framework_Comparator_A
         // this helps to avoid the error "maximum function nesting level reached"
         // CAUTION: this conditional clause is not tested
         if ($b !== $a) {
-            parent::assertEquals($this->toArray($a), $this->toArray($b), $delta, $canonicalize, $ignoreCase, $processed);
+            try {
+                parent::assertEquals($this->toArray($a), $this->toArray($b), $delta, $canonicalize, $ignoreCase, $processed);
+            }
+
+            catch (PHPUnit_Framework_ComparisonFailure $e) {
+                throw new PHPUnit_Framework_ComparisonFailure(
+                  $a,
+                  $b,
+                  // replace "Array" with "MyClass object"
+                  substr_replace($e->getExpectedAsString(), get_class($a).' Object', 0, 5),
+                  substr_replace($e->getActualAsString(), get_class($b).' Object', 0, 5),
+                  FALSE,
+                  'Failed asserting that two objects are equal.'
+                );
+            }
         }
     }
 

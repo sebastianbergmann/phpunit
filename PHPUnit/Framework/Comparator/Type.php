@@ -36,7 +36,7 @@
  *
  * @package    PHPUnit
  * @subpackage Framework
- * @author     Bernhard Schussek <bschussek@gmail.com>
+ * @author     Bernhard Schussek <bschussek@2bepublished.at>
  * @copyright  2002-2011 Sebastian Bergmann <sebastian@phpunit.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @link       http://www.phpunit.de/
@@ -48,7 +48,7 @@
  *
  * @package    PHPUnit
  * @subpackage Framework_Comparator
- * @author     Bernhard Schussek <bschussek@gmail.com>
+ * @author     Bernhard Schussek <bschussek@2bepublished.at>
  * @copyright  2002-2011 Sebastian Bergmann <sebastian@phpunit.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    Release: @package_version@
@@ -89,7 +89,20 @@ class PHPUnit_Framework_Comparator_Type extends PHPUnit_Framework_Comparator
     public function assertEquals($a, $b, $delta = 0, $canonicalize = FALSE, $ignoreCase = FALSE)
     {
         if (gettype($a) != gettype($b)) {
-            throw new PHPUnit_Framework_ComparisonFailure($a, $b);
+            throw new PHPUnit_Framework_ComparisonFailure(
+              $a,
+              $b,
+              // we don't need a diff
+              '',
+              '',
+              FALSE,
+              sprintf(
+                '%s does not match expected type "%s".',
+
+                PHPUnit_Util_Type::shortenedExport($b),
+                gettype($a)
+              )
+            );
         }
     }
 }

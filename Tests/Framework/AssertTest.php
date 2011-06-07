@@ -55,7 +55,7 @@ require_once dirname(dirname(__FILE__)) . DIRECTORY_SEPARATOR . '_files' . DIREC
  *
  * @package    PHPUnit
  * @author     Sebastian Bergmann <sebastian@phpunit.de>
- * @author     Bernhard Schussek <bschussek@gmail.com>
+ * @author     Bernhard Schussek <bschussek@2bepublished.at>
  * @copyright  2002-2011 Sebastian Bergmann <sebastian@phpunit.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    Release: @package_version@
@@ -497,7 +497,6 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
         return $document;
     }
 
-
     protected function sameValues()
     {
         $object = new SampleClass(4, 8, 15);
@@ -508,7 +507,7 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
 
         return array(
             // NULL
-            array(null, null),
+            array(NULL, NULL),
             // strings
             array('a', 'a'),
             // integers
@@ -520,6 +519,7 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
             // arrays
             array(array(), array()),
             array(array(0 => 1), array(0 => 1)),
+            array(array(0 => NULL), array(0 => NULL)),
             array(array('a', 'b' => array(1, 2)), array('a', 'b' => array(1, 2))),
             // objects
             array($object, $object),
@@ -572,6 +572,7 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
             // arrays
             array(array(), array(0 => 1)),
             array(array(0 => 1), array()),
+            array(array(0 => NULL), array()),
             array(array(0 => 1, 1 => 2), array(0 => 1, 1 => 3)),
             array(array('a', 'b' => array(1, 2)), array('a', 'b' => array(2, 1))),
             // objects
@@ -3872,8 +3873,6 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
         }
 
         catch (PHPUnit_Framework_AssertionFailedError $e) {
-            $this->assertEquals('Actual size 3 does not match expected size 2.', $e->getMessage());
-
             return;
         }
 

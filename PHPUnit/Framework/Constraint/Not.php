@@ -37,6 +37,7 @@
  * @package    PHPUnit
  * @subpackage Framework_Constraint
  * @author     Sebastian Bergmann <sebastian@phpunit.de>
+ * @author     Bernhard Schussek <bschussek@2bepublished.at>
  * @copyright  2002-2011 Sebastian Bergmann <sebastian@phpunit.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @link       http://www.phpunit.de/
@@ -49,6 +50,7 @@
  * @package    PHPUnit
  * @subpackage Framework_Constraint
  * @author     Sebastian Bergmann <sebastian@phpunit.de>
+ * @author     Bernhard Schussek <bschussek@2bepublished.at>
  * @copyright  2002-2011 Sebastian Bergmann <sebastian@phpunit.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    Release: @package_version@
@@ -76,32 +78,75 @@ class PHPUnit_Framework_Constraint_Not extends PHPUnit_Framework_Constraint
     }
 
     /**
+     * @param  string $string
+     * @return string
+     */
+    public static function negate($string)
+    {
+        return str_replace(
+          array(
+            'contains ',
+            'exists',
+            'has ',
+            'is ',
+            'are ',
+            'matches ',
+            'starts with ',
+            'ends with ',
+            'reference ',
+            'not not '
+          ),
+          array(
+            'does not contain ',
+            'does not exist',
+            'does not have ',
+            'is not ',
+            'are not ',
+            'does not match ',
+            'starts not with ',
+            'ends not with ',
+            'don\'t reference ',
+            'not '
+          ),
+          $string
+        );
+    }
+
+    /**
      * Evaluates the constraint for parameter $other. Returns TRUE if the
      * constraint is met, FALSE otherwise.
      *
      * @param mixed $other Value or object to evaluate.
      * @return bool
      */
-    public function evaluate($other)
+    public function evaluate($other, $description = '', $returnResult = FALSE)
     {
-        return !$this->constraint->evaluate($other);
+        $success = !$this->constraint->evaluate($other, $description, TRUE);
+
+        if ($returnResult) {
+            return $success;
+        }
+
+        if (!$success) {
+            $this->fail($other, $description);
+        }
     }
 
-    /**
-     * @param   mixed   $other The value passed to evaluate() which failed the
-     *                         constraint check.
-     * @param   string  $description A string with extra description of what was
-     *                               going on while the evaluation failed.
-     * @param   boolean $not Flag to indicate negation.
-     * @throws  PHPUnit_Framework_ExpectationFailedException
-     */
-    public function fail($other, $description, $not = FALSE)
+    protected function failureDescription($other)
     {
-        if (count($this->constraint) == 1 ||
-            $this->constraint instanceof PHPUnit_Framework_Constraint_Attribute) {
-            $this->constraint->fail($other, $description, TRUE);
-        } else {
-            parent::fail($other, $description, !$not);
+        switch (get_class($this->constraint)) {
+            case 'PHPUnit_Framework_Constraint_And':
+            case 'PHPUnit_Framework_Constraint_Not':
+            case 'PHPUnit_Framework_Constraint_Or': {
+                return 'not( ' . $this->constraint->failureDescription($other) . ' )';
+            }
+            break;
+
+            default: {
+                return self::negate(
+                  $this->constraint->failureDescription($other)
+                );
+            }
         }
     }
 
@@ -121,7 +166,7 @@ class PHPUnit_Framework_Constraint_Not extends PHPUnit_Framework_Constraint
             break;
 
             default: {
-                return PHPUnit_Framework_Constraint::negate(
+                return self::negate(
                   $this->constraint->toString()
                 );
             }

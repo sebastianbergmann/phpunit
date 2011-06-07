@@ -94,6 +94,7 @@ function phpunit_autoload($class = NULL) {
           'phpunit_framework_constraint_attribute' => '/Framework/Constraint/Attribute.php',
           'phpunit_framework_constraint_classhasattribute' => '/Framework/Constraint/ClassHasAttribute.php',
           'phpunit_framework_constraint_classhasstaticattribute' => '/Framework/Constraint/ClassHasStaticAttribute.php',
+          'phpunit_framework_constraint_composite' => '/Framework/Constraint/Composite.php',
           'phpunit_framework_constraint_count' => '/Framework/Constraint/Count.php',
           'phpunit_framework_constraint_fileexists' => '/Framework/Constraint/FileExists.php',
           'phpunit_framework_constraint_greaterthan' => '/Framework/Constraint/GreaterThan.php',

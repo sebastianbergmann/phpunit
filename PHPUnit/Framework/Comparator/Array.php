@@ -36,7 +36,7 @@
  *
  * @package    PHPUnit
  * @subpackage Framework
- * @author     Bernhard Schussek <bschussek@gmail.com>
+ * @author     Bernhard Schussek <bschussek@2bepublished.at>
  * @copyright  2002-2011 Sebastian Bergmann <sebastian@phpunit.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @link       http://www.phpunit.de/
@@ -48,7 +48,7 @@
  *
  * @package    PHPUnit
  * @subpackage Framework_Comparator
- * @author     Bernhard Schussek <bschussek@gmail.com>
+ * @author     Bernhard Schussek <bschussek@2bepublished.at>
  * @copyright  2002-2011 Sebastian Bergmann <sebastian@phpunit.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    Release: @package_version@
@@ -88,87 +88,110 @@ class PHPUnit_Framework_Comparator_Array extends PHPUnit_Framework_Comparator
      */
     public function assertEquals($a, $b, $delta = 0, $canonicalize = FALSE, $ignoreCase = FALSE, array &$processed = array())
     {
-        $remaining = $b;
-
         if ($canonicalize) {
             sort($a);
             sort($b);
         }
 
+        $remaining = $b;
+        $aString = $bString = "Array\n(\n";
+        $equal = TRUE;
+
         foreach ($a as $key => $value) {
-            if (!isset($b[$key])) {
-                throw new PHPUnit_Framework_ComparisonFailure($a/*->dumpExcerpt($key, $comparator)*/, $b);
+            unset($remaining[$key]);
+
+            if (!array_key_exists($key, $b)) {
+                $aString .= sprintf(
+                  "    [%s] => %s\n",
+
+                  print_r($key, true),
+                  $this->shortenedExport($value)
+                );
+                $equal = FALSE;
+                continue;
             }
 
             try {
                 self::getInstance($value, $b[$key])->assertEquals($value, $b[$key], $delta, $canonicalize, $ignoreCase, $processed);
+                $aString .= sprintf(
+                  "    [%s] => %s\n",
+
+                  print_r($key, true),
+                  $this->shortenedExport($value)
+                );
+                $bString .= sprintf(
+                  "    [%s] => %s\n",
+
+                  print_r($key, true),
+                  $this->shortenedExport($b[$key])
+                );
             }
 
             catch (PHPUnit_Framework_ComparisonFailure $e) {
-                throw new PHPUnit_Framework_ComparisonFailure($a/*->dumpExcerpt($key, $e->getExpected())*/, $b/*->dumpExcerpt($key, $e->getActual())*/);
-            }
+                $aString .= sprintf(
+                  "    [%s] => %s\n",
 
-            unset($remaining[$key]);
+                  print_r($key, true),
+                  $e->getExpectedAsString()
+                    ? $this->indent($e->getExpectedAsString())
+                    : print_r($e->getExpected(), true)
+                );
+                $bString .= sprintf(
+                  "    [%s] => %s\n",
+
+                  print_r($key, true),
+                  $e->getActualAsString()
+                    ? $this->indent($e->getActualAsString())
+                    : print_r($e->getActual(), true)
+                );
+                $equal = FALSE;
+            }
         }
 
         foreach ($remaining as $key => $value) {
-            throw new PHPUnit_Framework_ComparisonFailure($a, $b/*->dumpExcerpt($key, $value)*/);
-        }
-    }
+            $bString .= sprintf(
+              "    [%s] => %s\n",
 
-    protected function dumpAll()
-    {
-        $result = $this->getType().' (';
-
-        if (!empty($this->value)) {
-            $result .= "\n";
-
-            foreach ($this->value as $k => $v) {
-                $result .= sprintf("  %s => %s,\n", var_export($k, true), $this->indent($v));
-            }
+              print_r($key, true),
+              $this->shortenedExport($value)
+            );
+            $equal = FALSE;
         }
 
-        $result .= ')';
+        $aString .= ')';
+        $bString .= ')';
 
-        return $result;
-    }
-
-    protected function dumpExcerpt($key = null, $value = null)
-    {
-        $result = $this->getType().' (';
-
-        if (!empty($this->value)) {
-            $truncated = false;
-            $result .= "\n";
-
-            foreach ($this->value as $k => $v) {
-                if ((is_null($key) || $key !== $k) && !$truncated) {
-                    $result .= "  ...\n";
-                    $truncated = true;
-                }
-                else if ($k === $key) {
-                    $value = null === $value
-                    ? $v
-                    : ($value instanceof PHPUnit_Framework_SelfDescribing ? $value->toString() : $value);
-                    $result .= sprintf("  %s => %s,\n", var_export($k, true), $this->indent($value));
-                    $truncated = false;
-                }
-            }
+        if (!$equal) {
+            throw new PHPUnit_Framework_ComparisonFailure(
+              $a,
+              $b,
+              $aString,
+              $bString,
+              FALSE,
+             'Failed asserting that two arrays are equal.'
+            );
         }
-
-        $result .= ')';
-
-        return $result;
     }
 
     protected function indent($lines)
     {
-        $lines = explode("\n", $lines);
+        return trim(str_replace("\n", "\n        ", $lines));
+    }
 
-        foreach ($lines as $key => $line) {
-            $lines[$key] = '  '.$line;
+    protected function shortenedExport($value)
+    {
+        if (is_array($value)) {
+            if (count($value) > 0) {
+                return 'Array (...)';
+            }
+
+            return 'Array';
         }
 
-        return trim(implode("\n", $lines));
+        if (is_object($value)) {
+            return get_class($value) . ' Object (...)';
+        }
+
+        return print_r($value, true);
     }
 }

@@ -36,7 +36,7 @@
  *
  * @package    PHPUnit
  * @subpackage Framework
- * @author     Bernhard Schussek <bschussek@gmail.com>
+ * @author     Bernhard Schussek <bschussek@2bepublished.at>
  * @copyright  2002-2011 Sebastian Bergmann <sebastian@phpunit.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @link       http://www.phpunit.de/
@@ -48,7 +48,7 @@
  *
  * @package    PHPUnit
  * @subpackage Framework_Comparator
- * @author     Bernhard Schussek <bschussek@gmail.com>
+ * @author     Bernhard Schussek <bschussek@2bepublished.at>
  * @copyright  2002-2011 Sebastian Bergmann <sebastian@phpunit.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    Release: @package_version@
@@ -89,7 +89,29 @@ class PHPUnit_Framework_Comparator_DOMDocument extends PHPUnit_Framework_Compara
     public function assertEquals($a, $b, $delta = 0, $canonicalize = FALSE, $ignoreCase = FALSE)
     {
         if ($a->C14N() !== $b->C14N()) {
-            throw new PHPUnit_Framework_ComparisonFailure($a, $b);
+            throw new PHPUnit_Framework_ComparisonFailure(
+              $a,
+              $b,
+              $this->domToText($a),
+              $this->domToText($b),
+              FALSE,
+              'Failed asserting that two DOM documents are equal.'
+            );
         }
+    }
+
+    /**
+     * Returns the normalized, whitespace-cleaned, and indented textual
+     * representation of a DOMDocument.
+     *
+     * @param DOMDocument $document
+     * @return string
+     */
+    protected function domToText(DOMDocument $document)
+    {
+        $document->formatOutput = TRUE;
+        $document->normalizeDocument();
+
+        return $document->saveXML();
     }
 }
