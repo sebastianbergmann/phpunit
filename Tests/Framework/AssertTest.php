@@ -48,6 +48,7 @@ require_once dirname(dirname(__FILE__)) . DIRECTORY_SEPARATOR . '_files' . DIREC
 require_once dirname(dirname(__FILE__)) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'TestIterator.php';
 require_once dirname(dirname(__FILE__)) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'Author.php';
 require_once dirname(dirname(__FILE__)) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'Book.php';
+require_once dirname(dirname(__FILE__)) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'ClassWithToString.php';
 
 /**
  *
@@ -606,13 +607,13 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
             // Exception
             //array(new Exception('Exception 1'), new Exception('Exception 2')),
             // different types
-            array(new SampleClass(4, 8, 15), false),
-            array(false, new SampleClass(4, 8, 15)),
-            array(array(0 => 1, 1 => 2), false),
-            array(false, array(0 => 1, 1 => 2)),
+            array(new SampleClass(4, 8, 15), FALSE),
+            array(FALSE, new SampleClass(4, 8, 15)),
+            array(array(0 => 1, 1 => 2), FALSE),
+            array(FALSE, array(0 => 1, 1 => 2)),
             array(array(), new stdClass),
             array(new stdClass, array()),
-            // PHP: 0 == 'Foobar' => true!
+            // PHP: 0 == 'Foobar' => TRUE!
             // We want these values to differ
             array(0, 'Foobar'),
             array('Foobar', 0),
@@ -637,10 +638,12 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
         $storage2->attach($object1);
 
         return array(
+            // strings
+            array('a', 'A', 0, FALSE, TRUE), // ignore case
             // arrays
             array(array('a' => 1, 'b' => 2), array('b' => 2, 'a' => 1)),
             array(array(1), array('1')),
-            array(array(3, 2, 1), array(2, 3, 1), 0, true), // canonicalized comparison
+            array(array(3, 2, 1), array(2, 3, 1), 0, TRUE), // canonicalized comparison
             // floats
             array(2.3, 2.5, 0.5),
             array(array(2.3), array(2.5), 0.5),
@@ -676,6 +679,10 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
             array('0', 0),
             array(2.3, '2.3'),
             array('2.3', 2.3),
+            array((string)(1/3), 1 - 2/3),
+            array(1/3, (string)(1 - 2/3)),
+            array('string representation', new ClassWithToString),
+            array(new ClassWithToString, 'string representation'),
         );
     }
 
@@ -706,19 +713,19 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
      * @covers PHPUnit_Framework_Assert::assertEquals
      * @dataProvider equalProvider
      */
-    public function testAssertEqualsSucceeds($a, $b, $delta = 0, $canonicalize = FALSE)
+    public function testAssertEqualsSucceeds($a, $b, $delta = 0, $canonicalize = FALSE, $ignoreCase = FALSE)
     {
-        $this->assertEquals($a, $b, '', $delta, 10, $canonicalize);
+        $this->assertEquals($a, $b, '', $delta, 10, $canonicalize, $ignoreCase);
     }
 
     /**
      * @covers PHPUnit_Framework_Assert::assertEquals
      * @dataProvider notEqualProvider
      */
-    public function testAssertEqualsFails($a, $b, $delta = 0, $canonicalize = FALSE)
+    public function testAssertEqualsFails($a, $b, $delta = 0, $canonicalize = FALSE, $ignoreCase = FALSE)
     {
         try {
-            $this->assertEquals($a, $b, '', $delta, 10, $canonicalize);
+            $this->assertEquals($a, $b, '', $delta, 10, $canonicalize, $ignoreCase);
         }
 
         catch (PHPUnit_Framework_AssertionFailedError $e) {
@@ -732,19 +739,19 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
      * @covers PHPUnit_Framework_Assert::assertNotEquals
      * @dataProvider notEqualProvider
      */
-    public function testAssertNotEqualsSucceeds($a, $b, $delta = 0, $canonicalize = FALSE)
+    public function testAssertNotEqualsSucceeds($a, $b, $delta = 0, $canonicalize = FALSE, $ignoreCase = FALSE)
     {
-        $this->assertNotEquals($a, $b, '', $delta, 10, $canonicalize);
+        $this->assertNotEquals($a, $b, '', $delta, 10, $canonicalize, $ignoreCase);
     }
 
     /**
      * @covers PHPUnit_Framework_Assert::assertNotEquals
      * @dataProvider equalProvider
      */
-    public function testAssertNotEqualsFails($a, $b, $delta = 0, $canonicalize = FALSE)
+    public function testAssertNotEqualsFails($a, $b, $delta = 0, $canonicalize = FALSE, $ignoreCase = FALSE)
     {
         try {
-            $this->assertNotEquals($a, $b, '', $delta, 10, $canonicalize);
+            $this->assertNotEquals($a, $b, '', $delta, 10, $canonicalize, $ignoreCase);
         }
 
         catch (PHPUnit_Framework_AssertionFailedError $e) {

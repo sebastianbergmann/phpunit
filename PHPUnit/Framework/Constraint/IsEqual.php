@@ -131,7 +131,16 @@ class PHPUnit_Framework_Constraint_IsEqual extends PHPUnit_Framework_Constraint
      */
     public function evaluate($other)
     {
-        return $this->recursiveComparison($this->value, $other);
+        try {
+            $comparator = PHPUnit_Framework_Comparator::getInstance($other, $this->value);
+            $comparator->assertEquals($other, $this->value, $this->delta, $this->canonicalize, $this->ignoreCase);
+
+            return TRUE;
+        }
+
+        catch (PHPUnit_Framework_ComparisonFailure $f) {
+            return FALSE;
+        }
     }
 
     /**
@@ -209,160 +218,6 @@ class PHPUnit_Framework_Constraint_IsEqual extends PHPUnit_Framework_Constraint
               $delta
             );
         }
-    }
-
-    /**
-     * Perform the actual recursive comparison of two values
-     *
-     * @param mixed $a First value
-     * @param mixed $b Second value
-     * @param int $depth Depth
-     * @return bool
-     */
-    protected function recursiveComparison($a, $b, $depth = 0)
-    {
-        if ($a === $b) {
-            return TRUE;
-        }
-
-        if ($depth >= $this->maxDepth) {
-            return TRUE;
-        }
-
-        if (is_numeric($a) XOR is_numeric($b)) {
-            return FALSE;
-        }
-
-        if (is_array($a) XOR is_array($b)) {
-            return FALSE;
-        }
-
-        if (is_string($b) &&
-            is_object($a) && method_exists($a, '__toString')) {
-            $a = (string)$a;
-        }
-
-        else if (is_string($a) &&
-            is_object($b) && method_exists($b, '__toString')) {
-            $b = (string)$b;
-        }
-
-        if (is_object($a) XOR is_object($b)) {
-            return FALSE;
-        }
-
-        if ($a instanceof SplObjectStorage XOR $b instanceof SplObjectStorage) {
-            return FALSE;
-        }
-
-        if ($a instanceof SplObjectStorage) {
-            foreach ($a as $object) {
-                if (!$b->contains($object)) {
-                    return FALSE;
-                }
-            }
-
-            foreach ($b as $object) {
-                if (!$a->contains($object)) {
-                    return FALSE;
-                }
-            }
-
-            return TRUE;
-        }
-
-        if ($a instanceof DOMDocument || $b instanceof DOMDocument) {
-            if (!$a instanceof DOMDocument) {
-                $_a = new DOMDocument;
-                $_a->preserveWhiteSpace = FALSE;
-                $_a->loadXML($a);
-                $a = $_a;
-                unset($_a);
-            }
-
-            if (!$b instanceof DOMDocument) {
-                $_b = new DOMDocument;
-                $_b->preserveWhiteSpace = FALSE;
-                $_b->loadXML($b);
-                $b = $_b;
-                unset($_b);
-            }
-
-            return $a->C14N() == $b->C14N();
-        }
-
-        if (is_object($a) && is_object($b) &&
-           (get_class($a) !== get_class($b))) {
-            return FALSE;
-        }
-
-        // Normal comparison for scalar values.
-        if ((!is_array($a) && !is_object($a)) ||
-            (!is_array($b) && !is_object($b))) {
-            if (is_numeric($a) && is_numeric($b)) {
-                // Optionally apply delta on numeric values.
-		    	$delta = $this->delta == 0 ? self::EPSILON : $this->delta;
-
-		        return (abs($a - $b) <= $delta);
-            }
-
-            if (is_string($a) && is_string($b)) {
-                if ($this->canonicalize && PHP_EOL != "\n") {
-                    $a = str_replace(PHP_EOL, "\n", $a);
-                    $b = str_replace(PHP_EOL, "\n", $b);
-                }
-
-                if ($this->ignoreCase) {
-                    $a = strtolower($a);
-                    $b = strtolower($b);
-                }
-            }
-
-            return ($a == $b);
-        }
-
-        if (is_object($a)) {
-            $isMock = $a instanceof PHPUnit_Framework_MockObject_MockObject;
-            $a      = (array)$a;
-            $b      = (array)$b;
-
-            if ($isMock) {
-                unset($a["\0*\0invocationMocker"]);
-
-                if (isset($b["\0*\0invocationMocker"])) {
-                    unset($b["\0*\0invocationMocker"]);
-                }
-            }
-        }
-
-        if ($this->canonicalize) {
-            sort($a);
-            sort($b);
-        }
-
-        $keysInB = array_flip(array_keys($b));
-
-        foreach ($a as $key => $v) {
-            if (!isset($keysInB[$key])) {
-                // Abort on missing key in $b.
-                return FALSE;
-            }
-
-            if (!$this->recursiveComparison($a[$key], $b[$key], $depth + 1)) {
-                // FALSE, if child comparison fails.
-                return FALSE;
-            }
-
-            // Unset key to check whether all keys of b are compared.
-            unset($b[$key]);
-        }
-
-        if (count($b)) {
-            // There is something in $b, that is missing in $a.
-            return FALSE;
-        }
-
-        return TRUE;
     }
 
     /**

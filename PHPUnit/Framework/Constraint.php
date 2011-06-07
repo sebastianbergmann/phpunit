@@ -57,11 +57,6 @@
  */
 abstract class PHPUnit_Framework_Constraint implements Countable, PHPUnit_Framework_SelfDescribing
 {
-	/**
-	 * @var float
-	 */
-    const EPSILON = 0.0000000001;
-
     /**
      * Counts the number of constraint elements.
      *

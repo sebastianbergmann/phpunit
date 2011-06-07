@@ -66,6 +66,11 @@
 class PHPUnit_Framework_Constraint_IsIdentical extends PHPUnit_Framework_Constraint
 {
     /**
+     * @var double
+     */
+    const EPSILON = 0.0000000001;
+
+    /**
      * @var mixed
      */
     protected $value;
@@ -87,7 +92,7 @@ class PHPUnit_Framework_Constraint_IsIdentical extends PHPUnit_Framework_Constra
      */
     public function evaluate($other)
     {
-        if (is_float($this->value) && is_float($other)) {
+        if (is_double($this->value) && is_double($other)) {
             return abs($this->value - $other) < self::EPSILON;
         }
 

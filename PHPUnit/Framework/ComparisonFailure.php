@@ -55,7 +55,7 @@
  * @link       http://www.phpunit.de/
  * @since      Class available since Release 2.0.0
  */
-abstract class PHPUnit_Framework_ComparisonFailure extends PHPUnit_Framework_AssertionFailedError
+class PHPUnit_Framework_ComparisonFailure extends PHPUnit_Framework_AssertionFailedError
 {
     /**
      * Expected value of the retrieval which does not match $actual.
