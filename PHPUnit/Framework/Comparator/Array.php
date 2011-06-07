@@ -60,21 +60,21 @@ class PHPUnit_Framework_Comparator_Array extends PHPUnit_Framework_Comparator
     /**
      * Returns whether the comparator can compare two values.
      *
-     * @param  mixed $a The first value to compare
-     * @param  mixed $b The second value to compare
+     * @param  mixed $expected The first value to compare
+     * @param  mixed $actual The second value to compare
      * @return boolean
      * @since  Method available since Release 3.6.0
      */
-    public function accepts($a, $b)
+    public function accepts($expected, $actual)
     {
-        return is_array($a) && is_array($b);
+        return is_array($expected) && is_array($actual);
     }
 
     /**
      * Asserts that two values are equal.
      *
-     * @param  mixed $a The first value to compare
-     * @param  mixed $b The second value to compare
+     * @param  mixed $expected The first value to compare
+     * @param  mixed $actual The second value to compare
      * @param  float $delta The allowed numerical distance between two values to
      *                      consider them equal
      * @param  bool  $canonicalize If set to TRUE, arrays are sorted before
@@ -86,22 +86,22 @@ class PHPUnit_Framework_Comparator_Array extends PHPUnit_Framework_Comparator
      *                           specific errors that lead to the failure.
      * @since  Method available since Release 3.6.0
      */
-    public function assertEquals($a, $b, $delta = 0, $canonicalize = FALSE, $ignoreCase = FALSE, array &$processed = array())
+    public function assertEquals($expected, $actual, $delta = 0, $canonicalize = FALSE, $ignoreCase = FALSE, array &$processed = array())
     {
         if ($canonicalize) {
-            sort($a);
-            sort($b);
+            sort($expected);
+            sort($actual);
         }
 
-        $remaining = $b;
-        $aString = $bString = "Array\n(\n";
+        $remaining = $actual;
+        $expString = $actString = "Array\n(\n";
         $equal = TRUE;
 
-        foreach ($a as $key => $value) {
+        foreach ($expected as $key => $value) {
             unset($remaining[$key]);
 
-            if (!array_key_exists($key, $b)) {
-                $aString .= sprintf(
+            if (!array_key_exists($key, $actual)) {
+                $expString .= sprintf(
                   "    [%s] => %s\n",
 
                   print_r($key, true),
@@ -112,23 +112,23 @@ class PHPUnit_Framework_Comparator_Array extends PHPUnit_Framework_Comparator
             }
 
             try {
-                self::getInstance($value, $b[$key])->assertEquals($value, $b[$key], $delta, $canonicalize, $ignoreCase, $processed);
-                $aString .= sprintf(
+                self::getInstance($value, $actual[$key])->assertEquals($value, $actual[$key], $delta, $canonicalize, $ignoreCase, $processed);
+                $expString .= sprintf(
                   "    [%s] => %s\n",
 
                   print_r($key, true),
                   $this->shortenedExport($value)
                 );
-                $bString .= sprintf(
+                $actString .= sprintf(
                   "    [%s] => %s\n",
 
                   print_r($key, true),
-                  $this->shortenedExport($b[$key])
+                  $this->shortenedExport($actual[$key])
                 );
             }
 
             catch (PHPUnit_Framework_ComparisonFailure $e) {
-                $aString .= sprintf(
+                $expString .= sprintf(
                   "    [%s] => %s\n",
 
                   print_r($key, true),
@@ -136,7 +136,7 @@ class PHPUnit_Framework_Comparator_Array extends PHPUnit_Framework_Comparator
                     ? $this->indent($e->getExpectedAsString())
                     : print_r($e->getExpected(), true)
                 );
-                $bString .= sprintf(
+                $actString .= sprintf(
                   "    [%s] => %s\n",
 
                   print_r($key, true),
@@ -149,7 +149,7 @@ class PHPUnit_Framework_Comparator_Array extends PHPUnit_Framework_Comparator
         }
 
         foreach ($remaining as $key => $value) {
-            $bString .= sprintf(
+            $actString .= sprintf(
               "    [%s] => %s\n",
 
               print_r($key, true),
@@ -158,15 +158,15 @@ class PHPUnit_Framework_Comparator_Array extends PHPUnit_Framework_Comparator
             $equal = FALSE;
         }
 
-        $aString .= ')';
-        $bString .= ')';
+        $expString .= ')';
+        $actString .= ')';
 
         if (!$equal) {
             throw new PHPUnit_Framework_ComparisonFailure(
-              $a,
-              $b,
-              $aString,
-              $bString,
+              $expected,
+              $actual,
+              $expString,
+              $actString,
               FALSE,
              'Failed asserting that two arrays are equal.'
             );

@@ -60,21 +60,21 @@ class PHPUnit_Framework_Comparator_Resource extends PHPUnit_Framework_Comparator
     /**
      * Returns whether the comparator can compare two values.
      *
-     * @param  mixed $a The first value to compare
-     * @param  mixed $b The second value to compare
+     * @param  mixed $expected The first value to compare
+     * @param  mixed $actual The second value to compare
      * @return boolean
      * @since  Method available since Release 3.6.0
      */
-    public function accepts($a, $b)
+    public function accepts($expected, $actual)
     {
-        return is_resource($a) && is_resource($b);
+        return is_resource($expected) && is_resource($actual);
     }
 
     /**
      * Asserts that two values are equal.
      *
-     * @param  mixed $a The first value to compare
-     * @param  mixed $b The second value to compare
+     * @param  mixed $expected The first value to compare
+     * @param  mixed $actual The second value to compare
      * @param  float $delta The allowed numerical distance between two values to
      *                      consider them equal
      * @param  bool  $canonicalize If set to TRUE, arrays are sorted before
@@ -86,14 +86,14 @@ class PHPUnit_Framework_Comparator_Resource extends PHPUnit_Framework_Comparator
      *                           specific errors that lead to the failure.
      * @since  Method available since Release 3.6.0
      */
-    public function assertEquals($a, $b, $delta = 0, $canonicalize = FALSE, $ignoreCase = FALSE)
+    public function assertEquals($expected, $actual, $delta = 0, $canonicalize = FALSE, $ignoreCase = FALSE)
     {
-        if ($b != $a) {
+        if ($actual != $expected) {
             throw new PHPUnit_Framework_ComparisonFailure(
-              $a,
-              $b,
-              print_r($a, true),
-              print_r($b, true)
+              $expected,
+              $actual,
+              print_r($expected, true),
+              print_r($actual, true)
             );
         }
     }

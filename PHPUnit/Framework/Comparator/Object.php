@@ -60,21 +60,21 @@ class PHPUnit_Framework_Comparator_Object extends PHPUnit_Framework_Comparator_A
     /**
      * Returns whether the comparator can compare two values.
      *
-     * @param  mixed $a The first value to compare
-     * @param  mixed $b The second value to compare
+     * @param  mixed $expected The first value to compare
+     * @param  mixed $actual The second value to compare
      * @return boolean
      * @since  Method available since Release 3.6.0
      */
-    public function accepts($a, $b)
+    public function accepts($expected, $actual)
     {
-        return is_object($a) && is_object($b);
+        return is_object($expected) && is_object($actual);
     }
 
     /**
      * Asserts that two values are equal.
      *
-     * @param  mixed $a The first value to compare
-     * @param  mixed $b The second value to compare
+     * @param  mixed $expected The first value to compare
+     * @param  mixed $actual The second value to compare
      * @param  float $delta The allowed numerical distance between two values to
      *                      consider them equal
      * @param  bool  $canonicalize If set to TRUE, arrays are sorted before
@@ -86,46 +86,46 @@ class PHPUnit_Framework_Comparator_Object extends PHPUnit_Framework_Comparator_A
      *                           specific errors that lead to the failure.
      * @since  Method available since Release 3.6.0
      */
-    public function assertEquals($a, $b, $delta = 0, $canonicalize = FALSE, $ignoreCase = FALSE, array &$processed = array())
+    public function assertEquals($expected, $actual, $delta = 0, $canonicalize = FALSE, $ignoreCase = FALSE, array &$processed = array())
     {
-        if (get_class($b) !== get_class($a)) {
+        if (get_class($actual) !== get_class($expected)) {
             throw new PHPUnit_Framework_ComparisonFailure(
-              $a,
-              $b,
-              print_r($a, true),
-              print_r($b, true),
+              $expected,
+              $actual,
+              print_r($expected, true),
+              print_r($actual, true),
               FALSE,
               sprintf(
                 '%s is not instance of expected class "%s".',
 
-                PHPUnit_Util_Type::toString($b),
-                get_class($a)
+                PHPUnit_Util_Type::toString($actual),
+                get_class($expected)
               )
             );
         }
 
         // don't compare twice to allow for cyclic dependencies
-        if (in_array(array($b, $a), $processed, true) || in_array(array($a, $b), $processed, true)) {
+        if (in_array(array($actual, $expected), $processed, true) || in_array(array($expected, $actual), $processed, true)) {
             return;
         }
 
-        $processed[] = array($b, $a);
+        $processed[] = array($actual, $expected);
 
         // don't compare objects if they are identical
         // this helps to avoid the error "maximum function nesting level reached"
         // CAUTION: this conditional clause is not tested
-        if ($b !== $a) {
+        if ($actual !== $expected) {
             try {
-                parent::assertEquals($this->toArray($a), $this->toArray($b), $delta, $canonicalize, $ignoreCase, $processed);
+                parent::assertEquals($this->toArray($expected), $this->toArray($actual), $delta, $canonicalize, $ignoreCase, $processed);
             }
 
             catch (PHPUnit_Framework_ComparisonFailure $e) {
                 throw new PHPUnit_Framework_ComparisonFailure(
-                  $a,
-                  $b,
+                  $expected,
+                  $actual,
                   // replace "Array" with "MyClass object"
-                  substr_replace($e->getExpectedAsString(), get_class($a).' Object', 0, 5),
-                  substr_replace($e->getActualAsString(), get_class($b).' Object', 0, 5),
+                  substr_replace($e->getExpectedAsString(), get_class($expected).' Object', 0, 5),
+                  substr_replace($e->getActualAsString(), get_class($actual).' Object', 0, 5),
                   FALSE,
                   'Failed asserting that two objects are equal.'
                 );

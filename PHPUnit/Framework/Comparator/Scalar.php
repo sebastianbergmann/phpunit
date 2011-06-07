@@ -60,24 +60,24 @@ class PHPUnit_Framework_Comparator_Scalar extends PHPUnit_Framework_Comparator
     /**
      * Returns whether the comparator can compare two values.
      *
-     * @param  mixed $a The first value to compare
-     * @param  mixed $b The second value to compare
+     * @param  mixed $expected The first value to compare
+     * @param  mixed $actual The second value to compare
      * @return boolean
      * @since  Method available since Release 3.6.0
      */
-    public function accepts($a, $b)
+    public function accepts($expected, $actual)
     {
-        return ((is_scalar($a) XOR null === $a) && (is_scalar($b) XOR null === $b))
+        return ((is_scalar($expected) XOR null === $expected) && (is_scalar($actual) XOR null === $actual))
           // allow comparison between strings and objects featuring __toString()
-          || (is_string($a) && is_object($b) && method_exists($b, '__toString'))
-          || (is_object($a) && method_exists($a, '__toString') && is_string($b));
+          || (is_string($expected) && is_object($actual) && method_exists($actual, '__toString'))
+          || (is_object($expected) && method_exists($expected, '__toString') && is_string($actual));
     }
 
     /**
      * Asserts that two values are equal.
      *
-     * @param  mixed $a The first value to compare
-     * @param  mixed $b The second value to compare
+     * @param  mixed $expected The first value to compare
+     * @param  mixed $actual The second value to compare
      * @param  float $delta The allowed numerical distance between two values to
      *                      consider them equal
      * @param  bool  $canonicalize If set to TRUE, arrays are sorted before
@@ -89,35 +89,35 @@ class PHPUnit_Framework_Comparator_Scalar extends PHPUnit_Framework_Comparator
      *                           specific errors that lead to the failure.
      * @since  Method available since Release 3.6.0
      */
-    public function assertEquals($a, $b, $delta = 0, $canonicalize = FALSE, $ignoreCase = FALSE)
+    public function assertEquals($expected, $actual, $delta = 0, $canonicalize = FALSE, $ignoreCase = FALSE)
     {
         // always compare as strings to avoid strange behaviour
         // otherwise 0 == 'Foobar'
-        if (is_string($a) || is_string($b)) {
-            $a = (string)$a;
-            $b = (string)$b;
+        if (is_string($expected) || is_string($actual)) {
+            $expected = (string)$expected;
+            $actual = (string)$actual;
 
             if ($ignoreCase) {
-                $a = strtolower($a);
-                $b = strtolower($b);
+                $expected = strtolower($expected);
+                $actual = strtolower($actual);
             }
         }
 
-        if ($a != $b) {
-            if (is_string($a) && is_string($b)) {
+        if ($expected != $actual) {
+            if (is_string($expected) && is_string($actual)) {
                 throw new PHPUnit_Framework_ComparisonFailure(
-                  $a,
-                  $b,
-                  print_r($a, true),
-                  print_r($b, true),
+                  $expected,
+                  $actual,
+                  print_r($expected, true),
+                  print_r($actual, true),
                   FALSE,
                   'Failed asserting that two strings are equal.'
                 );
             }
 
             throw new PHPUnit_Framework_ComparisonFailure(
-              $a,
-              $b,
+              $expected,
+              $actual,
               // no diff is required
               '',
               '',
@@ -125,8 +125,8 @@ class PHPUnit_Framework_Comparator_Scalar extends PHPUnit_Framework_Comparator
               sprintf(
                 'Failed asserting that %s matches expected %s.',
 
-                PHPUnit_Util_Type::toString($b),
-                PHPUnit_Util_Type::toString($a)
+                PHPUnit_Util_Type::toString($actual),
+                PHPUnit_Util_Type::toString($expected)
               )
             );
         }
