@@ -212,7 +212,7 @@ class PHPUnit_Framework_Constraint_IsEqual extends PHPUnit_Framework_Constraint
     }
 
     /**
-     * Perform the actual recursive comparision of two values
+     * Perform the actual recursive comparison of two values
      *
      * @param mixed $a First value
      * @param mixed $b Second value
@@ -286,7 +286,7 @@ class PHPUnit_Framework_Constraint_IsEqual extends PHPUnit_Framework_Constraint
             return FALSE;
         }
 
-        // Normal comparision for scalar values.
+        // Normal comparison for scalar values.
         if ((!is_array($a) && !is_object($a)) ||
             (!is_array($b) && !is_object($b))) {
             if (is_numeric($a) && is_numeric($b)) {
@@ -337,7 +337,7 @@ class PHPUnit_Framework_Constraint_IsEqual extends PHPUnit_Framework_Constraint
             }
 
             if (!$this->recursiveComparison($a[$key], $b[$key], $depth + 1)) {
-                // FALSE, if child comparision fails.
+                // FALSE, if child comparison fails.
                 return FALSE;
             }
 
