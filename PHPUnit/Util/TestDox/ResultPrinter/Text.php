@@ -75,13 +75,7 @@ class PHPUnit_Util_TestDox_ResultPrinter_Text extends PHPUnit_Util_TestDox_Resul
      */
     protected function onTest($name, $success = TRUE)
     {
-        if ($success) {
-            $this->write(' [x] ');
-        } else {
-            $this->write(' [ ] ');
-        }
-
-        $this->write($name . "\n");
+        $this->write(" [{$this->tests[$name]['status']}] {$name}\n");
 
         foreach ($this->tests[$name]['errors'] as $error) {
             $this->write("     +-> {$error->getMessage()}\n");
