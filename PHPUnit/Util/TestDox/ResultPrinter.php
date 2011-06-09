@@ -117,6 +117,17 @@ abstract class PHPUnit_Util_TestDox_ResultPrinter extends PHPUnit_Util_Printer i
     protected $currentTestMethodPrettified;
 
     /**
+     * @var array A lookup map to convert test status into a single character.
+     */
+    protected $testStatusIndicatorCharMap = array(
+            PHPUnit_Runner_BaseTestRunner::STATUS_PASSED     => 'X',
+            PHPUnit_Runner_BaseTestRunner::STATUS_SKIPPED    => 'S',
+            PHPUnit_Runner_BaseTestRunner::STATUS_INCOMPLETE => 'I',
+            PHPUnit_Runner_BaseTestRunner::STATUS_FAILURE    => 'F',
+            PHPUnit_Runner_BaseTestRunner::STATUS_ERROR      => 'E',
+            PHPUnit_Runner_BaseTestRunner::SUITE_METHODNAME  => '-'
+        );
+    /**
      * Constructor.
      *
      * @param  resource  $out
@@ -296,22 +307,19 @@ abstract class PHPUnit_Util_TestDox_ResultPrinter extends PHPUnit_Util_Printer i
     {
         if ($test instanceof $this->testTypeOfInterest) {
             if (!isset($this->tests[$this->currentTestMethodPrettified])) {
-                if ($this->testStatus == PHPUnit_Runner_BaseTestRunner::STATUS_PASSED) {
-                    $this->tests[$this->currentTestMethodPrettified]['success'] = 1;
-                    $this->tests[$this->currentTestMethodPrettified]['failure'] = 0;
-                    $this->tests[$this->currentTestMethodPrettified]['errors'] = array();
-                } else {
-                    $this->tests[$this->currentTestMethodPrettified]['success'] = 0;
-                    $this->tests[$this->currentTestMethodPrettified]['failure'] = 1;
-                    $this->tests[$this->currentTestMethodPrettified]['errors'] = array($this->testError);
-                }
+                $this->tests[$this->currentTestMethodPrettified] = array('success' => 0, 'failure' => 0, 'errors' => array());
+            }
+
+            $this->tests[$this->currentTestMethodPrettified]['status'] = $this->testStatusIndicatorCharMap[$this->testStatus];
+            if ($this->testStatus == PHPUnit_Runner_BaseTestRunner::STATUS_PASSED) {
+                $this->tests[$this->currentTestMethodPrettified]['success']++;
             } else {
-                if ($this->testStatus == PHPUnit_Runner_BaseTestRunner::STATUS_PASSED) {
-                    $this->tests[$this->currentTestMethodPrettified]['success']++;
-                } else {
-                    $this->tests[$this->currentTestMethodPrettified]['failure']++;
-                    $this->tests[$this->currentTestMethodPrettified]['errors'][] = $this->testError;
-                }
+                $this->tests[$this->currentTestMethodPrettified]['failure']++;
+            }
+
+            if ($this->testError)
+            {
+                $this->tests[$this->currentTestMethodPrettified]['errors'][] = $this->testError;
             }
 
             $this->currentTestClassPrettified  = NULL;
