@@ -1714,38 +1714,38 @@ abstract class PHPUnit_Framework_Assert
     }
 
     /**
-     * Asserts that a hierarchy of DOMNodes matches.
+     * Asserts that a hierarchy of DOMElements matches.
      *
-     * @param DOMNode $expectedNode
-     * @param DOMNode $actualNode
+     * @param DOMElement $expectedElement
+     * @param DOMElement $actualElement
      * @param boolean $checkAttributes
      * @param string  $message
      * @author Mattis Stordalen Flister <mattis@xait.no>
      * @since  Method available since Release 3.3.0
      */
-    public static function assertEqualXMLStructure(DOMNode $expectedNode, DOMNode $actualNode, $checkAttributes = FALSE, $message = '')
+    public static function assertEqualXMLStructure(DOMElement $expectedElement, DOMElement $actualElement, $checkAttributes = FALSE, $message = '')
     {
         self::assertEquals(
-          $expectedNode->tagName,
-          $actualNode->tagName,
+          $expectedElement->tagName,
+          $actualElement->tagName,
           $message
         );
 
         if ($checkAttributes) {
             self::assertEquals(
-              $expectedNode->attributes->length,
-              $actualNode->attributes->length,
+              $expectedElement->attributes->length,
+              $actualElement->attributes->length,
               sprintf(
                 '%s%sNumber of attributes on node "%s" does not match',
                 $message,
                 !empty($message) ? "\n" : '',
-                $expectedNode->tagName
+                $expectedElement->tagName
               )
             );
 
-            for ($i = 0 ; $i < $expectedNode->attributes->length; $i++) {
-                $expectedAttribute = $expectedNode->attributes->item($i);
-                $actualAttribute   = $actualNode->attributes->getNamedItem(
+            for ($i = 0 ; $i < $expectedElement->attributes->length; $i++) {
+                $expectedAttribute = $expectedElement->attributes->item($i);
+                $actualAttribute   = $actualElement->attributes->getNamedItem(
                   $expectedAttribute->name
                 );
 
@@ -1756,31 +1756,31 @@ abstract class PHPUnit_Framework_Assert
                         $message,
                         !empty($message) ? "\n" : '',
                         $expectedAttribute->name,
-                        $expectedNode->tagName
+                        $expectedElement->tagName
                       )
                     );
                 }
             }
         }
 
-        PHPUnit_Util_XML::removeCharacterDataNodes($expectedNode);
-        PHPUnit_Util_XML::removeCharacterDataNodes($actualNode);
+        PHPUnit_Util_XML::removeCharacterDataNodes($expectedElement);
+        PHPUnit_Util_XML::removeCharacterDataNodes($actualElement);
 
         self::assertEquals(
-          $expectedNode->childNodes->length,
-          $actualNode->childNodes->length,
+          $expectedElement->childNodes->length,
+          $actualElement->childNodes->length,
           sprintf(
             '%s%sNumber of child nodes of "%s" differs',
             $message,
             !empty($message) ? "\n" : '',
-            $expectedNode->tagName
+            $expectedElement->tagName
           )
         );
 
-        for ($i = 0; $i < $expectedNode->childNodes->length; $i++) {
+        for ($i = 0; $i < $expectedElement->childNodes->length; $i++) {
             self::assertEqualXMLStructure(
-              $expectedNode->childNodes->item($i),
-              $actualNode->childNodes->item($i),
+              $expectedElement->childNodes->item($i),
+              $actualElement->childNodes->item($i),
               $checkAttributes,
               $message
             );
