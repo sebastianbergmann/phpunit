@@ -517,10 +517,6 @@
     <channel>pear.symfony-project.com</channel>
     <min>1.0.2</min>
    </package>
-   <package>
-    <name>XML_RPC2</name>
-    <channel>pear.php.net</channel>
-   </package>
    <extension>
     <name>dom</name>
    </extension>
@@ -539,6 +535,10 @@
     <name>PHP_Invoker</name>
     <channel>pear.phpunit.de</channel>
     <min>1.0.0</min>
+   </package>
+   <package>
+    <name>XML_RPC2</name>
+    <channel>pear.php.net</channel>
    </package>
    <extension>
     <name>curl</name>
