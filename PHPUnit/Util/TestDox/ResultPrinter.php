@@ -117,6 +117,11 @@ abstract class PHPUnit_Util_TestDox_ResultPrinter extends PHPUnit_Util_Printer i
     protected $currentTestMethodPrettified;
 
     /**
+     * @var boolean Verbose
+     */
+    protected $verbose;
+
+    /**
      * @var array A lookup map to convert test status into a single character.
      */
     protected $testStatusIndicatorCharMap = array(
@@ -132,9 +137,11 @@ abstract class PHPUnit_Util_TestDox_ResultPrinter extends PHPUnit_Util_Printer i
      *
      * @param  resource  $out
      */
-    public function __construct($out = NULL)
+    public function __construct($out = NULL, $verbose = false)
     {
         parent::__construct($out);
+
+        $this->verbose = $verbose;
 
         $this->prettifier = new PHPUnit_Util_TestDox_NamePrettifier;
         $this->startRun();
@@ -266,31 +273,29 @@ abstract class PHPUnit_Util_TestDox_ResultPrinter extends PHPUnit_Util_Printer i
                 $annotations = $test->getAnnotations();
 
                 if (isset($annotations['method']['testdox'][0])) {
-                    $prettyTestName = $annotations['method']['testdox'][0];
-                    $iterationTestName = NULL;
-                    if (isset($annotations['method']['dataProviderTestdoxArgument'][0]))
-                    {
-                        $dataProviderTestNameArgIndex = (int) $annotations['method']['dataProviderTestdoxArgument'][0];
-                        $iterationArgs = $test->getData();
-                        if (isset($iterationArgs[$dataProviderTestNameArgIndex]))
-                        {
-                            $iterationTestName =  ' ' . $iterationArgs[$dataProviderTestNameArgIndex];
-                        }
-                    }
-                    if (!$iterationTestName)
-                    {
-                        $iterationTestName = $test->getDataSetAsString(FALSE);
-                    }
-                    $prettyTestName .= $iterationTestName;
-                    $prettyTestName = trim($prettyTestName);
-
-                    $this->currentTestMethodPrettified = $prettyTestName;
+                    $this->currentTestMethodPrettified = $annotations['method']['testdox'][0];
                     $prettified                        = TRUE;
                 }
             }
 
             if (!$prettified) {
                 $this->currentTestMethodPrettified = $this->prettifier->prettifyTestMethod($test->getName(FALSE));
+            }
+
+            if (isset($annotations['method']['dataProviderTestdoxArgument'][0])) {
+                $iterationTestName = NULL;
+                $dataProviderTestNameArgIndex = (int) $annotations['method']['dataProviderTestdoxArgument'][0];
+                $iterationArgs = $test->getData();
+                if (isset($iterationArgs[$dataProviderTestNameArgIndex]))
+                {
+                    $iterationTestName =  ' ' . $iterationArgs[$dataProviderTestNameArgIndex];
+                }
+                else
+                {
+                    $iterationTestName = $test->getDataSetAsString(FALSE);
+                }
+                $iterationTestName = trim($iterationTestName);
+                $this->currentTestMethodPrettified .= ": {$iterationTestName}";
             }
 
             $this->testStatus = PHPUnit_Runner_BaseTestRunner::STATUS_PASSED;
