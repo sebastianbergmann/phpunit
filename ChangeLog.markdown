@@ -3,6 +3,11 @@ PHPUnit 3.5
 
 This is the list of changes for the PHPUnit 3.5 release series.
 
+PHPUnit 3.5.15
+--------------
+
+* XML_RPC2, which is only used by the Trac ticket listener, is now correctly marked as an optional dependency.
+
 PHPUnit 3.5.14
 --------------
 
