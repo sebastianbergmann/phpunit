@@ -283,19 +283,23 @@ abstract class PHPUnit_Util_TestDox_ResultPrinter extends PHPUnit_Util_Printer i
                 $this->currentTestMethodPrettified = $this->prettifier->prettifyTestMethod($test->getName(FALSE));
             }
 
-            if (isset($annotations['method']['dataProviderTestdoxArgument'][0])) {
-                $iterationTestName = NULL;
-                $dataProviderTestNameArgIndex = (int) $annotations['method']['dataProviderTestdoxArgument'][0];
-                $iterationArgs = $test->getData();
-                if (isset($iterationArgs[$dataProviderTestNameArgIndex]))
+            if (isset($annotations['method']['dataProviderTestdox'][0])) {
+                $tdArgumentSpec = $annotations['method']['dataProviderTestdox'][0];
+
+                // generate sprintf format string
+                $formatStr = NULL;
+                if (is_numeric($tdArgumentSpec))
                 {
-                    $iterationTestName =  ' ' . $iterationArgs[$dataProviderTestNameArgIndex];
+                    $formatStr = "%{$tdArgumentSpec}\$s";
                 }
                 else
                 {
-                    $iterationTestName = $test->getDataSetAsString(FALSE);
+                    $formatStr = $tdArgumentSpec;
                 }
-                $iterationTestName = trim($iterationTestName);
+
+                // generate pretty test name
+                $iterationArgs = $test->getData();
+                $iterationTestName = trim(vsprintf($formatStr, $iterationArgs));
                 $this->currentTestMethodPrettified .= ": {$iterationTestName}";
             }
 
