@@ -35,89 +35,83 @@
  * POSSIBILITY OF SUCH DAMAGE.
  *
  * @package    PHPUnit
- * @subpackage Framework_Constraint
- * @author     Sebastian Bergmann <sebastian@phpunit.de>
+ * @subpackage Framework
  * @author     Bernhard Schussek <bschussek@2bepublished.at>
  * @copyright  2002-2011 Sebastian Bergmann <sebastian@phpunit.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @link       http://www.phpunit.de/
- * @since      File available since Release 3.0.0
+ * @since      File available since Release 3.6.0
  */
 
 /**
- * Constraint that asserts that the string it is evaluated for contains
- * a given string.
- *
- * Uses strpos() to find the position of the string in the input, if not found
- * the evaluaton fails.
- *
- * The sub-string is passed in the constructor.
+ * Compares DOMDocument instances for equality.
  *
  * @package    PHPUnit
- * @subpackage Framework_Constraint
- * @author     Sebastian Bergmann <sebastian@phpunit.de>
+ * @subpackage Framework_Comparator
  * @author     Bernhard Schussek <bschussek@2bepublished.at>
  * @copyright  2002-2011 Sebastian Bergmann <sebastian@phpunit.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    Release: @package_version@
  * @link       http://www.phpunit.de/
- * @since      Class available since Release 3.0.0
+ * @since      Class available since Release 3.6.0
  */
-class PHPUnit_Framework_Constraint_StringContains extends PHPUnit_Framework_Constraint
+class PHPUnit_Framework_Comparator_DOMDocument extends PHPUnit_Framework_Comparator_Object
 {
     /**
-     * @var string
+     * Returns whether the comparator can compare two values.
+     *
+     * @param  mixed $expected The first value to compare
+     * @param  mixed $actual The second value to compare
+     * @return boolean
+     * @since  Method available since Release 3.6.0
      */
-    protected $string;
-
-    /**
-     * @var boolean
-     */
-    protected $ignoreCase;
-
-    /**
-     * @param string  $string
-     * @param boolean $ignoreCase
-     */
-    public function __construct($string, $ignoreCase = FALSE)
+    public function accepts($expected, $actual)
     {
-        $this->string     = $string;
-        $this->ignoreCase = $ignoreCase;
+        return $expected instanceof DOMDocument && $actual instanceof DOMDocument;
     }
 
     /**
-     * Evaluates the constraint for parameter $other. Returns TRUE if the
-     * constraint is met, FALSE otherwise.
+     * Asserts that two values are equal.
      *
-     * @param mixed $other Value or object to evaluate.
-     * @return bool
+     * @param  mixed $expected The first value to compare
+     * @param  mixed $actual The second value to compare
+     * @param  float $delta The allowed numerical distance between two values to
+     *                      consider them equal
+     * @param  bool  $canonicalize If set to TRUE, arrays are sorted before
+     *                             comparison
+     * @param  bool  $ignoreCase If set to TRUE, upper- and lowercasing is
+     *                           ignored when comparing string values
+     * @throws PHPUnit_Framework_ComparisonFailure Thrown when the comparison
+     *                           fails. Contains information about the
+     *                           specific errors that lead to the failure.
+     * @since  Method available since Release 3.6.0
      */
-    protected function matches($other)
+    public function assertEquals($expected, $actual, $delta = 0, $canonicalize = FALSE, $ignoreCase = FALSE)
     {
-        if ($this->ignoreCase) {
-            return stripos($other, $this->string) !== FALSE;
-        } else {
-            return strpos($other, $this->string) !== FALSE;
+        if ($expected->C14N() !== $actual->C14N()) {
+            throw new PHPUnit_Framework_ComparisonFailure(
+              $expected,
+              $actual,
+              $this->domToText($expected),
+              $this->domToText($actual),
+              FALSE,
+              'Failed asserting that two DOM documents are equal.'
+            );
         }
     }
 
     /**
-     * Returns a string representation of the constraint.
+     * Returns the normalized, whitespace-cleaned, and indented textual
+     * representation of a DOMDocument.
      *
+     * @param DOMDocument $document
      * @return string
      */
-    public function toString()
+    protected function domToText(DOMDocument $document)
     {
-        if ($this->ignoreCase) {
-            $string = strtolower($this->string);
-        } else {
-            $string = $this->string;
-        }
+        $document->formatOutput = TRUE;
+        $document->normalizeDocument();
 
-        return sprintf(
-          'contains "%s"',
-
-          $string
-        );
+        return $document->saveXML();
     }
 }

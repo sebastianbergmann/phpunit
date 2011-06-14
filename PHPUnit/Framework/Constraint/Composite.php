@@ -35,39 +35,82 @@
  * POSSIBILITY OF SUCH DAMAGE.
  *
  * @package    PHPUnit
- * @subpackage Framework_ComparisonFailure
- * @author     Sebastian Bergmann <sebastian@phpunit.de>
+ * @subpackage Framework_Constraint
+ * @author     Bernhard Schussek <bschussek@2bepublished.at>
  * @copyright  2002-2011 Sebastian Bergmann <sebastian@phpunit.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @link       http://www.phpunit.de/
- * @since      File available since Release 3.0.0
+ * @since      File available since Release 3.6.0
  */
 
 /**
- * Thrown when an assertion for type equality failed.
+ *
  *
  * @package    PHPUnit
- * @subpackage Framework_ComparisonFailure
- * @author     Sebastian Bergmann <sebastian@phpunit.de>
+ * @subpackage Framework_Constraint
+ * @author     Bernhard Schussek <bschussek@2bepublished.at>
  * @copyright  2002-2011 Sebastian Bergmann <sebastian@phpunit.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    Release: @package_version@
  * @link       http://www.phpunit.de/
- * @since      Class available since Release 3.0.0
+ * @since      Class available since Release 3.6.0
  */
-class PHPUnit_Framework_ComparisonFailure_Type extends PHPUnit_Framework_ComparisonFailure
+
+abstract class PHPUnit_Framework_Constraint_Composite extends PHPUnit_Framework_Constraint
 {
     /**
-     * Returns a string describing the type difference between the expected
-     * and the actual value.
+     * @var PHPUnit_Framework_Constraint
      */
-    public function toString()
-    {
-        return sprintf(
-          '%s does not match expected type "%s".',
+    protected $innerConstraint;
 
-          PHPUnit_Util_Type::toString($this->actual),
-          gettype($this->expected)
-        );
+    /**
+     * @param PHPUnit_Framework_Constraint $innerConstraint
+     * @param string                       $attributeName
+     */
+    public function __construct(PHPUnit_Framework_Constraint $innerConstraint)
+    {
+        $this->innerConstraint = $innerConstraint;
+    }
+
+    /**
+     * Evaluates the constraint for parameter $other
+     *
+     * If $returnResult is set to FALSE (the default), an exception is thrown
+     * in case of a failure. NULL is returned otherwise.
+     *
+     * If $returnResult is TRUE, the result of the evaluation is returned as
+     * a boolean value instead: TRUE in case of success, FALSE in case of a
+     * failure.
+     *
+     * @param  mixed $other Value or object to evaluate.
+     * @param  string $description Additional information about the test
+     * @param  bool $returnResult Whether to return a result or throw an exception
+     * @return mixed
+     * @throws PHPUnit_Framework_ExpectationFailedException
+     */
+    public function evaluate($other, $description = '', $returnResult = FALSE)
+    {
+        try {
+            return $this->innerConstraint->evaluate(
+              $other,
+              $description,
+              $returnResult
+            );
+        }
+
+        catch (PHPUnit_Framework_ExpectationFailedException $e) {
+            $this->fail($other, $description);
+        }
+    }
+
+    /**
+     * Counts the number of constraint elements.
+     *
+     * @return integer
+     * @since  Method available since Release 3.4.0
+     */
+    public function count()
+    {
+        return count($this->innerConstraint);
     }
 }

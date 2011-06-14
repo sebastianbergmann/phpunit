@@ -39,7 +39,7 @@
  * @copyright  2002-2011 Sebastian Bergmann <sebastian@phpunit.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @link       http://www.phpunit.de/
- * @since      File available since Release 2.0.0
+ * @since      File available since Release 3.6.0
  */
 
 /**
@@ -51,111 +51,95 @@
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    Release: @package_version@
  * @link       http://www.phpunit.de/
- * @since      Class available since Release 2.0.0
+ * @since      Class available since Release 3.6.0
  */
-class Framework_ComparisonFailureTest extends PHPUnit_Framework_TestCase
+class Util_DiffTest extends PHPUnit_Framework_TestCase
 {
     /**
-     * @covers PHPUnit_Framework_ComparisonFailure::diffEqual
+     * @covers PHPUnit_Util_Diff::diff
      */
     public function testComparisonErrorMessage()
     {
-        $failure = PHPUnit_Framework_ComparisonFailure::diffEqual('a', 'b', 'c');
-
         $this->assertEquals(
-          "c\n--- Expected\n+++ Actual\n@@ @@\n-a\n+b",
-          $failure->toString()
+          "--- Expected\n+++ Actual\n@@ @@\n-a\n+b\n",
+          PHPUnit_Util_Diff::diff('a', 'b')
         );
     }
 
     /**
-     * @covers PHPUnit_Framework_ComparisonFailure::diffEqual
+     * @covers PHPUnit_Util_Diff::diff
      */
     public function testComparisonErrorStartSame()
     {
-        $failure = PHPUnit_Framework_ComparisonFailure::diffEqual('ba', 'bc');
-
         $this->assertEquals(
-          "--- Expected\n+++ Actual\n@@ @@\n-ba\n+bc",
-          $failure->toString()
+          "--- Expected\n+++ Actual\n@@ @@\n-ba\n+bc\n",
+          PHPUnit_Util_Diff::diff('ba', 'bc')
         );
     }
 
     /**
-     * @covers PHPUnit_Framework_ComparisonFailure::diffEqual
+     * @covers PHPUnit_Util_Diff::diff
      */
     public function testComparisonErrorEndSame()
     {
-        $failure = PHPUnit_Framework_ComparisonFailure::diffEqual('ab', 'cb');
-
         $this->assertEquals(
-          "--- Expected\n+++ Actual\n@@ @@\n-ab\n+cb",
-          $failure->toString()
+          "--- Expected\n+++ Actual\n@@ @@\n-ab\n+cb\n",
+          PHPUnit_Util_Diff::diff('ab', 'cb')
         );
     }
 
     /**
-     * @covers PHPUnit_Framework_ComparisonFailure::diffEqual
+     * @covers PHPUnit_Util_Diff::diff
      */
     public function testComparisonErrorStartAndEndSame()
     {
-        $failure = PHPUnit_Framework_ComparisonFailure::diffEqual('abc', 'adc');
-
         $this->assertEquals(
-          "--- Expected\n+++ Actual\n@@ @@\n-abc\n+adc",
-          $failure->toString()
+          "--- Expected\n+++ Actual\n@@ @@\n-abc\n+adc\n",
+          PHPUnit_Util_Diff::diff('abc', 'adc')
         );
     }
 
     /**
-     * @covers PHPUnit_Framework_ComparisonFailure::diffEqual
+     * @covers PHPUnit_Util_Diff::diff
      */
     public function testComparisonErrorStartSameComplete()
     {
-        $failure = PHPUnit_Framework_ComparisonFailure::diffEqual('ab', 'abc');
-
         $this->assertEquals(
-          "--- Expected\n+++ Actual\n@@ @@\n-ab\n+abc",
-          $failure->toString()
+          "--- Expected\n+++ Actual\n@@ @@\n-ab\n+abc\n",
+          PHPUnit_Util_Diff::diff('ab', 'abc')
         );
     }
 
     /**
-     * @covers PHPUnit_Framework_ComparisonFailure::diffEqual
+     * @covers PHPUnit_Util_Diff::diff
      */
     public function testComparisonErrorEndSameComplete()
     {
-        $failure = PHPUnit_Framework_ComparisonFailure::diffEqual('bc', 'abc');
-
         $this->assertEquals(
-          "--- Expected\n+++ Actual\n@@ @@\n-bc\n+abc",
-          $failure->toString()
+          "--- Expected\n+++ Actual\n@@ @@\n-bc\n+abc\n",
+          PHPUnit_Util_Diff::diff('bc', 'abc')
         );
     }
 
     /**
-     * @covers PHPUnit_Framework_ComparisonFailure::diffEqual
+     * @covers PHPUnit_Util_Diff::diff
      */
     public function testComparisonErrorOverlapingMatches()
     {
-        $failure = PHPUnit_Framework_ComparisonFailure::diffEqual('abc', 'abbc');
-
         $this->assertEquals(
-          "--- Expected\n+++ Actual\n@@ @@\n-abc\n+abbc",
-          $failure->toString()
+          "--- Expected\n+++ Actual\n@@ @@\n-abc\n+abbc\n",
+          PHPUnit_Util_Diff::diff('abc', 'abbc')
         );
     }
 
     /**
-     * @covers PHPUnit_Framework_ComparisonFailure::diffEqual
+     * @covers PHPUnit_Util_Diff::diff
      */
     public function testComparisonErrorOverlapingMatches2()
     {
-        $failure = PHPUnit_Framework_ComparisonFailure::diffEqual('abcdde', 'abcde');
-
         $this->assertEquals(
-          "--- Expected\n+++ Actual\n@@ @@\n-abcdde\n+abcde",
-          $failure->toString()
+          "--- Expected\n+++ Actual\n@@ @@\n-abcdde\n+abcde\n",
+          PHPUnit_Util_Diff::diff('abcdde', 'abcde')
         );
     }
 }
