@@ -94,7 +94,7 @@ class PHPUnit_Framework_Comparator_Array extends PHPUnit_Framework_Comparator
         }
 
         $remaining = $actual;
-        $expString = $actString = "Array\n(\n";
+        $expString = $actString = "Array (\n";
         $equal = TRUE;
 
         foreach ($expected as $key => $value) {
@@ -102,10 +102,10 @@ class PHPUnit_Framework_Comparator_Array extends PHPUnit_Framework_Comparator
 
             if (!array_key_exists($key, $actual)) {
                 $expString .= sprintf(
-                  "    [%s] => %s\n",
+                  "    %s => %s\n",
 
-                  print_r($key, true),
-                  $this->shortenedExport($value)
+                  PHPUnit_Util_Type::export($key),
+                  PHPUnit_Util_Type::shortenedExport($value)
                 );
                 $equal = FALSE;
                 continue;
@@ -114,35 +114,35 @@ class PHPUnit_Framework_Comparator_Array extends PHPUnit_Framework_Comparator
             try {
                 self::getInstance($value, $actual[$key])->assertEquals($value, $actual[$key], $delta, $canonicalize, $ignoreCase, $processed);
                 $expString .= sprintf(
-                  "    [%s] => %s\n",
+                  "    %s => %s\n",
 
-                  print_r($key, true),
-                  $this->shortenedExport($value)
+                  PHPUnit_Util_Type::export($key),
+                  PHPUnit_Util_Type::shortenedExport($value)
                 );
                 $actString .= sprintf(
-                  "    [%s] => %s\n",
+                  "    %s => %s\n",
 
-                  print_r($key, true),
-                  $this->shortenedExport($actual[$key])
+                  PHPUnit_Util_Type::export($key),
+                  PHPUnit_Util_Type::shortenedExport($actual[$key])
                 );
             }
 
             catch (PHPUnit_Framework_ComparisonFailure $e) {
                 $expString .= sprintf(
-                  "    [%s] => %s\n",
+                  "    %s => %s\n",
 
-                  print_r($key, true),
+                  PHPUnit_Util_Type::export($key),
                   $e->getExpectedAsString()
                     ? $this->indent($e->getExpectedAsString())
-                    : print_r($e->getExpected(), true)
+                    : PHPUnit_Util_Type::shortenedExport($e->getExpected())
                 );
                 $actString .= sprintf(
-                  "    [%s] => %s\n",
+                  "    %s => %s\n",
 
-                  print_r($key, true),
+                  PHPUnit_Util_Type::export($key),
                   $e->getActualAsString()
                     ? $this->indent($e->getActualAsString())
-                    : print_r($e->getActual(), true)
+                    : PHPUnit_Util_Type::shortenedExport($e->getActual())
                 );
                 $equal = FALSE;
             }
@@ -150,10 +150,10 @@ class PHPUnit_Framework_Comparator_Array extends PHPUnit_Framework_Comparator
 
         foreach ($remaining as $key => $value) {
             $actString .= sprintf(
-              "    [%s] => %s\n",
+              "    %s => %s\n",
 
-              print_r($key, true),
-              $this->shortenedExport($value)
+              PHPUnit_Util_Type::export($key),
+              PHPUnit_Util_Type::shortenedExport($value)
             );
             $equal = FALSE;
         }
@@ -175,23 +175,6 @@ class PHPUnit_Framework_Comparator_Array extends PHPUnit_Framework_Comparator
 
     protected function indent($lines)
     {
-        return trim(str_replace("\n", "\n        ", $lines));
-    }
-
-    protected function shortenedExport($value)
-    {
-        if (is_array($value)) {
-            if (count($value) > 0) {
-                return 'Array (...)';
-            }
-
-            return 'Array';
-        }
-
-        if (is_object($value)) {
-            return get_class($value) . ' Object (...)';
-        }
-
-        return print_r($value, true);
+        return trim(str_replace("\n", "\n    ", $lines));
     }
 }

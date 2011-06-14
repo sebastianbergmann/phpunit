@@ -128,7 +128,7 @@ abstract class PHPUnit_Framework_Constraint implements Countable, PHPUnit_Framew
             $failureDescription = sprintf(
               'Failed asserting that %s %s.',
 
-               PHPUnit_Util_Type::toString($other),
+               PHPUnit_Util_Type::export($other),
                $this->toString()
             );
         }
@@ -168,6 +168,6 @@ abstract class PHPUnit_Framework_Constraint implements Countable, PHPUnit_Framew
      */
     protected function failureDescription($other)
     {
-        return PHPUnit_Util_Type::toString($other) . ' ' . $this->toString();
+        return PHPUnit_Util_Type::export($other) . ' ' . $this->toString();
     }
 }

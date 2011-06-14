@@ -66,8 +66,8 @@ class PHPUnit_Framework_ComparisonFailure_Object extends PHPUnit_Framework_Compa
     public function toString()
     {
         $diff = PHPUnit_Util_Diff::diff(
-          print_r($this->expected, TRUE),
-          print_r($this->actual, TRUE)
+          PHPUnit_Util_Type::export($this->expected),
+          PHPUnit_Util_Type::export($this->actual)
         );
 
         if ($diff !== FALSE) {

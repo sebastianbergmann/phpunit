@@ -82,7 +82,7 @@ class Framework_ConstraintTest extends PHPUnit_Framework_TestCase
         $constraint = PHPUnit_Framework_Assert::arrayHasKey(0);
 
         $this->assertFalse($constraint->evaluate(array(), '', TRUE));
-        $this->assertEquals('has the key <integer:0>', $constraint->toString());
+        $this->assertEquals('has the key 0', $constraint->toString());
         $this->assertEquals(1, count($constraint));
 
         try {
@@ -91,7 +91,7 @@ class Framework_ConstraintTest extends PHPUnit_Framework_TestCase
 
         catch (PHPUnit_Framework_ExpectationFailedException $e) {
             $this->assertEquals(<<<EOF
-Failed asserting that an array has the key <integer:0>.
+Failed asserting that an array has the key 0.
 
 EOF
               ,
@@ -120,7 +120,7 @@ EOF
         catch (PHPUnit_Framework_ExpectationFailedException $e) {
             $this->assertEquals(
               <<<EOF
-custom message\nFailed asserting that an array has the key <integer:0>.
+custom message\nFailed asserting that an array has the key 0.
 
 EOF
               ,
@@ -147,7 +147,7 @@ EOF
         );
 
         $this->assertFalse($constraint->evaluate(array(0 => 1), '', TRUE));
-        $this->assertEquals('does not have the key <integer:0>', $constraint->toString());
+        $this->assertEquals('does not have the key 0', $constraint->toString());
         $this->assertEquals(1, count($constraint));
 
         try {
@@ -157,7 +157,7 @@ EOF
         catch (PHPUnit_Framework_ExpectationFailedException $e) {
             $this->assertEquals(
               <<<EOF
-Failed asserting that an array does not have the key <integer:0>.
+Failed asserting that an array does not have the key 0.
 
 EOF
               ,
@@ -191,7 +191,7 @@ EOF
             $this->assertEquals(
               <<<EOF
 custom message
-Failed asserting that an array does not have the key <integer:0>.
+Failed asserting that an array does not have the key 0.
 
 EOF
               ,
@@ -353,7 +353,7 @@ EOF
 
         $this->assertFalse($constraint->evaluate(0, '', TRUE));
         $this->assertTrue($constraint->evaluate(2, '', TRUE));
-        $this->assertEquals('is greater than <integer:1>', $constraint->toString());
+        $this->assertEquals('is greater than 1', $constraint->toString());
         $this->assertEquals(1, count($constraint));
 
         try {
@@ -363,7 +363,7 @@ EOF
         catch (PHPUnit_Framework_ExpectationFailedException $e) {
             $this->assertEquals(
               <<<EOF
-Failed asserting that <integer:0> is greater than <integer:1>.
+Failed asserting that 0 is greater than 1.
 
 EOF
               ,
@@ -393,7 +393,7 @@ EOF
             $this->assertEquals(
               <<<EOF
 custom message
-Failed asserting that <integer:0> is greater than <integer:1>.
+Failed asserting that 0 is greater than 1.
 
 EOF
               ,
@@ -420,7 +420,7 @@ EOF
         );
 
         $this->assertTrue($constraint->evaluate(1, '', TRUE));
-        $this->assertEquals('is not greater than <integer:1>', $constraint->toString());
+        $this->assertEquals('is not greater than 1', $constraint->toString());
         $this->assertEquals(1, count($constraint));
 
         try {
@@ -430,7 +430,7 @@ EOF
         catch (PHPUnit_Framework_ExpectationFailedException $e) {
             $this->assertEquals(
               <<<EOF
-Failed asserting that <integer:2> is not greater than <integer:1>.
+Failed asserting that 2 is not greater than 1.
 
 EOF
               ,
@@ -464,7 +464,7 @@ EOF
             $this->assertEquals(
               <<<EOF
 custom message
-Failed asserting that <integer:2> is not greater than <integer:1>.
+Failed asserting that 2 is not greater than 1.
 
 EOF
               ,
@@ -490,7 +490,7 @@ EOF
 
         $this->assertTrue($constraint->evaluate(1, '', TRUE));
         $this->assertFalse($constraint->evaluate(0, '', TRUE));
-        $this->assertEquals('is equal to <integer:1> or is greater than <integer:1>', $constraint->toString());
+        $this->assertEquals('is equal to 1 or is greater than 1', $constraint->toString());
         $this->assertEquals(2, count($constraint));
 
         try {
@@ -500,7 +500,7 @@ EOF
         catch (PHPUnit_Framework_ExpectationFailedException $e) {
             $this->assertEquals(
               <<<EOF
-Failed asserting that <integer:0> is equal to <integer:1> or is greater than <integer:1>.
+Failed asserting that 0 is equal to 1 or is greater than 1.
 
 EOF
               ,
@@ -532,7 +532,7 @@ EOF
             $this->assertEquals(
               <<<EOF
 custom message
-Failed asserting that <integer:0> is equal to <integer:1> or is greater than <integer:1>.
+Failed asserting that 0 is equal to 1 or is greater than 1.
 
 EOF
               ,
@@ -561,7 +561,7 @@ EOF
         );
 
         $this->assertFalse($constraint->evaluate(1, '', TRUE));
-        $this->assertEquals('not( is equal to <integer:1> or is greater than <integer:1> )', $constraint->toString());
+        $this->assertEquals('not( is equal to 1 or is greater than 1 )', $constraint->toString());
         $this->assertEquals(2, count($constraint));
 
         try {
@@ -571,7 +571,7 @@ EOF
         catch (PHPUnit_Framework_ExpectationFailedException $e) {
             $this->assertEquals(
               <<<EOF
-Failed asserting that not( <integer:1> is equal to <integer:1> or is greater than <integer:1> ).
+Failed asserting that not( 1 is equal to 1 or is greater than 1 ).
 
 EOF
               ,
@@ -607,7 +607,7 @@ EOF
             $this->assertEquals(
               <<<EOF
 custom message
-Failed asserting that not( <integer:1> is equal to <integer:1> or is greater than <integer:1> ).
+Failed asserting that not( 1 is equal to 1 or is greater than 1 ).
 
 EOF
               ,
@@ -660,7 +660,7 @@ EOF
         catch (PHPUnit_Framework_ExpectationFailedException $e) {
             $this->assertEquals(
               <<<EOF
-Failed asserting that <null> is not anything.
+Failed asserting that null is not anything.
 
 EOF
               ,
@@ -685,7 +685,7 @@ EOF
 
         $this->assertTrue($constraint->evaluate(1, '', TRUE));
         $this->assertFalse($constraint->evaluate(0, '', TRUE));
-        $this->assertEquals('is equal to <integer:1>', $constraint->toString());
+        $this->assertEquals('is equal to 1', $constraint->toString());
         $this->assertEquals(1, count($constraint));
 
         try {
@@ -695,7 +695,7 @@ EOF
         catch (PHPUnit_Framework_ExpectationFailedException $e) {
             $this->assertEquals(
               <<<EOF
-Failed asserting that <integer:0> matches expected <integer:1>.
+Failed asserting that 0 matches expected 1.
 
 EOF
               ,
@@ -748,12 +748,12 @@ EOF
 
         return array(
             array(1, 0, <<<EOF
-Failed asserting that <integer:0> matches expected <integer:1>.
+Failed asserting that 0 matches expected 1.
 
 EOF
             ),
             array(1.1, 0, <<<EOF
-Failed asserting that <integer:0> matches expected <double:1.1>.
+Failed asserting that 0 matches expected 1.1.
 
 EOF
             ),
@@ -762,8 +762,8 @@ Failed asserting that two strings are equal.
 --- Expected
 +++ Actual
 @@ @@
--a
-+b
+-'a'
++'b'
 
 EOF
             ),
@@ -772,7 +772,7 @@ Failed asserting that two strings are equal.
 --- Expected
 +++ Actual
 @@ @@
- a
+ 'a
 -b
 +p
 
@@ -780,17 +780,17 @@ Failed asserting that two strings are equal.
  i
 -j
 +w
- k
+ k'
 
 EOF
             ),
             array(1, array(0), <<<EOF
-array( <integer:0> => <integer:0> ) does not match expected type "integer".
+Array (...) does not match expected type "integer".
 
 EOF
             ),
             array(array(0), 1, <<<EOF
-<integer:1> does not match expected type "array".
+1 does not match expected type "array".
 
 EOF
             ),
@@ -799,10 +799,21 @@ Failed asserting that two arrays are equal.
 --- Expected
 +++ Actual
 @@ @@
- Array
- (
--    [0] => 0
-+    [0] => 1
+ Array (
+-    0 => 0
++    0 => 1
+ )
+
+EOF
+            ),
+            array(array(true), array('true'), <<<EOF
+Failed asserting that two arrays are equal.
+--- Expected
++++ Actual
+@@ @@
+ Array (
+-    0 => true
++    0 => 'true'
  )
 
 EOF
@@ -812,27 +823,25 @@ Failed asserting that two arrays are equal.
 --- Expected
 +++ Actual
 @@ @@
- Array
- (
-     [0] => 0
-     [1] => Array
-         (
--            [0] => 1
-+            [0] => 4
-         )
-     [2] => Array (...)
-     [3] => 3
+ Array (
+     0 => 0
+     1 => Array (
+-        0 => 1
++        0 => 4
+     )
+     2 => Array (...)
+     3 => 3
  )
 
 EOF
             ),
             array($a, array(0), <<<EOF
-array( <integer:0> => <integer:0> ) does not match expected type "object".
+Array (...) does not match expected type "object".
 
 EOF
             ),
             array(array(0), $a, <<<EOF
-stdClass(...) does not match expected type "array".
+stdClass Object (...) does not match expected type "array".
 
 EOF
             ),
@@ -841,9 +850,8 @@ Failed asserting that two objects are equal.
 --- Expected
 +++ Actual
 @@ @@
- stdClass Object
- (
--    [foo] => bar
+ stdClass Object (
+-    'foo' => 'bar'
  )
 
 EOF
@@ -853,32 +861,29 @@ Failed asserting that two objects are equal.
 --- Expected
 +++ Actual
 @@ @@
- stdClass Object
- (
-     [foo] => bar
--    [int] => 1
-+    [int] => 2
-     [array] => Array
-         (
-             [0] => 0
-             [1] => Array
-                 (
--                    [0] => 1
-+                    [0] => 4
+ stdClass Object (
+     'foo' => 'bar'
+-    'int' => 1
++    'int' => 2
+     'array' => Array (
+         0 => 0
+         1 => Array (
+-            0 => 1
++            0 => 4
 
 @@ @@
-             [foo] => a
--                b
-+                p
+         'foo' => 'a
+-        b
++        p
 
 @@ @@
-                 i
--                j
-+                w
-                 k
-         )
-     [self] => stdClass Object (...)
-     [c] => stdClass Object (...)
+         i
+-        j
++        w
+         k'
+     )
+     'self' => stdClass Object (...)
+     'c' => stdClass Object (...)
  )
 
 EOF
@@ -888,31 +893,17 @@ Failed asserting that two objects are equal.
 --- Expected
 +++ Actual
 @@ @@
- SplObjectStorage Object
- (
-     [storage:SplObjectStorage:private] => Array
-         (
--            [$ahash] => Array
--                (
--                    [obj] => stdClass Object
--                        (
--                            [foo] => bar
--                        )
--
--                    [inf] =>
--                )
--
-             [$bhash] => Array
-                 (
-                     [obj] => stdClass Object
-                         (
-                         )
-
-                     [inf] =>
-                 )
-
-         )
-
+ SplObjectStorage Object (
+-    '$ahash' => Array (
+-        'obj' => stdClass Object (
+-            'foo' => 'bar'
+-        )
+-        'inf' => null
+-    )
+     '$bhash' => Array (
+         'obj' => stdClass Object ()
+         'inf' => null
+     )
  )
 
 EOF
@@ -974,7 +965,7 @@ EOF
 
         $this->assertTrue($constraint->evaluate(0, '', TRUE));
         $this->assertFalse($constraint->evaluate(1, '', TRUE));
-        $this->assertEquals('is not equal to <integer:1>', $constraint->toString());
+        $this->assertEquals('is not equal to 1', $constraint->toString());
         $this->assertEquals(1, count($constraint));
 
         try {
@@ -984,7 +975,7 @@ EOF
         catch (PHPUnit_Framework_ExpectationFailedException $e) {
             $this->assertEquals(
               <<<EOF
-Failed asserting that <integer:1> is not equal to <integer:1>.
+Failed asserting that 1 is not equal to 1.
 
 EOF
               ,
@@ -1018,7 +1009,7 @@ EOF
             $this->assertEquals(
               <<<EOF
 custom message
-Failed asserting that <integer:1> is not equal to <integer:1>.
+Failed asserting that 1 is not equal to 1.
 
 EOF
               ,
@@ -1264,7 +1255,7 @@ EOF
         catch (PHPUnit_Framework_ExpectationFailedException $e) {
             $this->assertEquals(
               <<<EOF
-Failed asserting that <stdClass> is an instance of class "Exception".
+Failed asserting that stdClass Object () is an instance of class "Exception".
 
 EOF
               ,
@@ -1293,7 +1284,7 @@ EOF
         catch (PHPUnit_Framework_ExpectationFailedException $e) {
             $this->assertEquals(<<<EOF
 custom message
-Failed asserting that <stdClass> is an instance of class "Exception".
+Failed asserting that stdClass Object () is an instance of class "Exception".
 
 EOF
               ,
@@ -1331,7 +1322,7 @@ EOF
         catch (PHPUnit_Framework_ExpectationFailedException $e) {
             $this->assertEquals(
               <<<EOF
-Failed asserting that <stdClass> is not an instance of class "stdClass".
+Failed asserting that stdClass Object () is not an instance of class "stdClass".
 
 EOF
               ,
@@ -1364,7 +1355,7 @@ EOF
         catch (PHPUnit_Framework_ExpectationFailedException $e) {
             $this->assertEquals(<<<EOF
 custom message
-Failed asserting that <stdClass> is not an instance of class "stdClass".
+Failed asserting that stdClass Object () is not an instance of class "stdClass".
 
 EOF
               ,
@@ -1398,11 +1389,7 @@ EOF
 
         catch (PHPUnit_Framework_ExpectationFailedException $e) {
             $this->assertEquals(<<<EOF
-Failed asserting that
-stdClass Object
-(
-)
- is of type "string".
+Failed asserting that stdClass Object () is of type "string".
 
 EOF
               ,
@@ -1431,11 +1418,7 @@ EOF
         catch (PHPUnit_Framework_ExpectationFailedException $e) {
             $this->assertEquals(<<<EOF
 custom message
-Failed asserting that
-stdClass Object
-(
-)
- is of type "string".
+Failed asserting that stdClass Object () is of type "string".
 
 EOF
               ,
@@ -1473,7 +1456,7 @@ EOF
         catch (PHPUnit_Framework_ExpectationFailedException $e) {
             $this->assertEquals(
               <<<EOF
-Failed asserting that <string:> is not of type "string".
+Failed asserting that '' is not of type "string".
 
 EOF
               ,
@@ -1506,7 +1489,7 @@ EOF
         catch (PHPUnit_Framework_ExpectationFailedException $e) {
             $this->assertEquals(<<<EOF
 custom message
-Failed asserting that <string:> is not of type "string".
+Failed asserting that '' is not of type "string".
 
 EOF
               ,
@@ -1540,7 +1523,7 @@ EOF
 
         catch (PHPUnit_Framework_ExpectationFailedException $e) {
             $this->assertEquals(<<<EOF
-Failed asserting that <integer:0> is null.
+Failed asserting that 0 is null.
 
 EOF
               ,
@@ -1569,7 +1552,7 @@ EOF
         catch (PHPUnit_Framework_ExpectationFailedException $e) {
             $this->assertEquals(<<<EOF
 custom message
-Failed asserting that <integer:0> is null.
+Failed asserting that 0 is null.
 
 EOF
               ,
@@ -1607,7 +1590,7 @@ EOF
 
         catch (PHPUnit_Framework_ExpectationFailedException $e) {
             $this->assertEquals(<<<EOF
-Failed asserting that <null> is not null.
+Failed asserting that null is not null.
 
 EOF
               ,
@@ -1640,7 +1623,7 @@ EOF
         catch (PHPUnit_Framework_ExpectationFailedException $e) {
             $this->assertEquals(<<<EOF
 custom message
-Failed asserting that <null> is not null.
+Failed asserting that null is not null.
 
 EOF
               ,
@@ -1665,7 +1648,7 @@ EOF
 
         $this->assertTrue($constraint->evaluate(0, '', TRUE));
         $this->assertFalse($constraint->evaluate(1, '', TRUE));
-        $this->assertEquals('is less than <integer:1>', $constraint->toString());
+        $this->assertEquals('is less than 1', $constraint->toString());
         $this->assertEquals(1, count($constraint));
 
         try {
@@ -1675,7 +1658,7 @@ EOF
         catch (PHPUnit_Framework_ExpectationFailedException $e) {
             $this->assertEquals(
               <<<EOF
-Failed asserting that <integer:1> is less than <integer:1>.
+Failed asserting that 1 is less than 1.
 
 EOF
               ,
@@ -1705,7 +1688,7 @@ EOF
             $this->assertEquals(
               <<<EOF
 custom message
-Failed asserting that <integer:1> is less than <integer:1>.
+Failed asserting that 1 is less than 1.
 
 EOF
               ,
@@ -1733,7 +1716,7 @@ EOF
 
         $this->assertTrue($constraint->evaluate(1, '', TRUE));
         $this->assertFalse($constraint->evaluate(0, '', TRUE));
-        $this->assertEquals('is not less than <integer:1>', $constraint->toString());
+        $this->assertEquals('is not less than 1', $constraint->toString());
         $this->assertEquals(1, count($constraint));
 
         try {
@@ -1743,7 +1726,7 @@ EOF
         catch (PHPUnit_Framework_ExpectationFailedException $e) {
             $this->assertEquals(
               <<<EOF
-Failed asserting that <integer:0> is not less than <integer:1>.
+Failed asserting that 0 is not less than 1.
 
 EOF
               ,
@@ -1777,7 +1760,7 @@ EOF
             $this->assertEquals(
               <<<EOF
 custom message
-Failed asserting that <integer:0> is not less than <integer:1>.
+Failed asserting that 0 is not less than 1.
 
 EOF
               ,
@@ -1803,7 +1786,7 @@ EOF
 
         $this->assertTrue($constraint->evaluate(1, '', TRUE));
         $this->assertFalse($constraint->evaluate(2, '', TRUE));
-        $this->assertEquals('is equal to <integer:1> or is less than <integer:1>', $constraint->toString());
+        $this->assertEquals('is equal to 1 or is less than 1', $constraint->toString());
         $this->assertEquals(2, count($constraint));
 
         try {
@@ -1813,7 +1796,7 @@ EOF
         catch (PHPUnit_Framework_ExpectationFailedException $e) {
             $this->assertEquals(
               <<<EOF
-Failed asserting that <integer:2> is equal to <integer:1> or is less than <integer:1>.
+Failed asserting that 2 is equal to 1 or is less than 1.
 
 EOF
               ,
@@ -1845,7 +1828,7 @@ EOF
             $this->assertEquals(
               <<<EOF
 custom message
-Failed asserting that <integer:2> is equal to <integer:1> or is less than <integer:1>.
+Failed asserting that 2 is equal to 1 or is less than 1.
 
 EOF
               ,
@@ -1875,7 +1858,7 @@ EOF
 
         $this->assertTrue($constraint->evaluate(2, '', TRUE));
         $this->assertFalse($constraint->evaluate(1, '', TRUE));
-        $this->assertEquals('not( is equal to <integer:1> or is less than <integer:1> )', $constraint->toString());
+        $this->assertEquals('not( is equal to 1 or is less than 1 )', $constraint->toString());
         $this->assertEquals(2, count($constraint));
 
         try {
@@ -1885,7 +1868,7 @@ EOF
         catch (PHPUnit_Framework_ExpectationFailedException $e) {
             $this->assertEquals(
               <<<EOF
-Failed asserting that not( <integer:1> is equal to <integer:1> or is less than <integer:1> ).
+Failed asserting that not( 1 is equal to 1 or is less than 1 ).
 
 EOF
               ,
@@ -1921,7 +1904,7 @@ EOF
             $this->assertEquals(
               <<<EOF
 custom message
-Failed asserting that not( <integer:1> is equal to <integer:1> or is less than <integer:1> ).
+Failed asserting that not( 1 is equal to 1 or is less than 1 ).
 
 EOF
               ,
@@ -2361,7 +2344,7 @@ EOF
         catch (PHPUnit_Framework_ExpectationFailedException $e) {
             $this->assertEquals(
               <<<EOF
-Failed asserting that <string:barbazbar> matches PCRE pattern "/foo/".
+Failed asserting that 'barbazbar' matches PCRE pattern "/foo/".
 
 EOF
               ,
@@ -2390,7 +2373,7 @@ EOF
         catch (PHPUnit_Framework_ExpectationFailedException $e) {
             $this->assertEquals(<<<EOF
 custom message
-Failed asserting that <string:barbazbar> matches PCRE pattern "/foo/".
+Failed asserting that 'barbazbar' matches PCRE pattern "/foo/".
 
 EOF
               ,
@@ -2428,7 +2411,7 @@ EOF
         catch (PHPUnit_Framework_ExpectationFailedException $e) {
             $this->assertEquals(
               <<<EOF
-Failed asserting that <string:barfoobar> does not match PCRE pattern "/foo/".
+Failed asserting that 'barfoobar' does not match PCRE pattern "/foo/".
 
 EOF
               ,
@@ -2461,7 +2444,7 @@ EOF
         catch (PHPUnit_Framework_ExpectationFailedException $e) {
             $this->assertEquals(<<<EOF
 custom message
-Failed asserting that <string:barfoobar> does not match PCRE pattern "/foo/".
+Failed asserting that 'barfoobar' does not match PCRE pattern "/foo/".
 
 EOF
               ,
@@ -2580,7 +2563,7 @@ EOF
         catch (PHPUnit_Framework_ExpectationFailedException $e) {
             $this->assertEquals(
               <<<EOF
-Failed asserting that <string:foo> starts with "prefix".
+Failed asserting that 'foo' starts with "prefix".
 
 EOF
               ,
@@ -2609,7 +2592,7 @@ EOF
         catch (PHPUnit_Framework_ExpectationFailedException $e) {
             $this->assertEquals(
               <<<EOF
-custom message\nFailed asserting that <string:foo> starts with "prefix".
+custom message\nFailed asserting that 'foo' starts with "prefix".
 
 EOF
               ,
@@ -2647,7 +2630,7 @@ EOF
         catch (PHPUnit_Framework_ExpectationFailedException $e) {
             $this->assertEquals(
               <<<EOF
-Failed asserting that <string:prefixfoo> starts not with "prefix".
+Failed asserting that 'prefixfoo' starts not with "prefix".
 
 EOF
               ,
@@ -2679,7 +2662,7 @@ EOF
             $this->assertEquals(
               <<<EOF
 custom message
-Failed asserting that <string:prefixfoo> starts not with "prefix".
+Failed asserting that 'prefixfoo' starts not with "prefix".
 
 EOF
               ,
@@ -2714,7 +2697,7 @@ EOF
         catch (PHPUnit_Framework_ExpectationFailedException $e) {
             $this->assertEquals(
               <<<EOF
-Failed asserting that <string:barbazbar> contains "foo".
+Failed asserting that 'barbazbar' contains "foo".
 
 EOF
               ,
@@ -2744,7 +2727,7 @@ EOF
             $this->assertEquals(
               <<<EOF
 custom message
-Failed asserting that <string:barbazbar> contains "foo".
+Failed asserting that 'barbazbar' contains "foo".
 
 EOF
               ,
@@ -2782,7 +2765,7 @@ EOF
         catch (PHPUnit_Framework_ExpectationFailedException $e) {
             $this->assertEquals(
               <<<EOF
-Failed asserting that <string:barfoobar> does not contain "foo".
+Failed asserting that 'barfoobar' does not contain "foo".
 
 EOF
               ,
@@ -2816,7 +2799,7 @@ EOF
             $this->assertEquals(
               <<<EOF
 custom message
-Failed asserting that <string:barfoobar> does not contain "foo".
+Failed asserting that 'barfoobar' does not contain "foo".
 
 EOF
               ,
@@ -2851,7 +2834,7 @@ EOF
         catch (PHPUnit_Framework_ExpectationFailedException $e) {
             $this->assertEquals(
               <<<EOF
-Failed asserting that <string:foo> ends with "suffix".
+Failed asserting that 'foo' ends with "suffix".
 
 EOF
               ,
@@ -2881,7 +2864,7 @@ EOF
             $this->assertEquals(
               <<<EOF
 custom message
-Failed asserting that <string:foo> ends with "suffix".
+Failed asserting that 'foo' ends with "suffix".
 
 EOF
               ,
@@ -2919,7 +2902,7 @@ EOF
         catch (PHPUnit_Framework_ExpectationFailedException $e) {
             $this->assertEquals(
               <<<EOF
-Failed asserting that <string:foosuffix> ends not with "suffix".
+Failed asserting that 'foosuffix' ends not with "suffix".
 
 EOF
               ,
@@ -2951,7 +2934,7 @@ EOF
             $this->assertEquals(
               <<<EOF
 custom message
-Failed asserting that <string:foosuffix> ends not with "suffix".
+Failed asserting that 'foosuffix' ends not with "suffix".
 
 EOF
               ,
@@ -2975,7 +2958,7 @@ EOF
 
         $this->assertFalse($constraint->evaluate(array('bar'), '', TRUE));
         $this->assertTrue($constraint->evaluate(array('foo'), '', TRUE));
-        $this->assertEquals('contains <string:foo>', $constraint->toString());
+        $this->assertEquals("contains 'foo'", $constraint->toString());
         $this->assertEquals(1, count($constraint));
 
         try {
@@ -2985,7 +2968,7 @@ EOF
         catch (PHPUnit_Framework_ExpectationFailedException $e) {
             $this->assertEquals(
               <<<EOF
-Failed asserting that an array contains <string:foo>.
+Failed asserting that an array contains 'foo'.
 
 EOF
               ,
@@ -3014,7 +2997,7 @@ EOF
             $this->assertEquals(
               <<<EOF
 custom message
-Failed asserting that an array contains <string:foo>.
+Failed asserting that an array contains 'foo'.
 
 EOF
               ,
@@ -3041,7 +3024,7 @@ EOF
 
         $this->assertTrue($constraint->evaluate(array('bar'), '', TRUE));
         $this->assertFalse($constraint->evaluate(array('foo'), '', TRUE));
-        $this->assertEquals('does not contain <string:foo>', $constraint->toString());
+        $this->assertEquals("does not contain 'foo'", $constraint->toString());
         $this->assertEquals(1, count($constraint));
 
         try {
@@ -3051,7 +3034,7 @@ EOF
         catch (PHPUnit_Framework_ExpectationFailedException $e) {
             $this->assertEquals(
               <<<EOF
-Failed asserting that an array does not contain <string:foo>.
+Failed asserting that an array does not contain 'foo'.
 
 EOF
               ,
@@ -3084,7 +3067,7 @@ EOF
             $this->assertEquals(
               <<<EOF
 custom message
-Failed asserting that an array does not contain <string:foo>.
+Failed asserting that an array does not contain 'foo'.
 
 EOF
               ,
@@ -3106,7 +3089,7 @@ EOF
     {
         $object     = new StdClass;
         $constraint = new PHPUnit_Framework_Constraint_TraversableContains($object);
-        $this->assertEquals("contains \nstdClass Object\n(\n)\n", $constraint->toString());
+        $this->assertEquals("contains stdClass Object ()", $constraint->toString());
 
         $storage = new SplObjectStorage;
         $this->assertFalse($constraint->evaluate($storage, '', TRUE));
@@ -3121,11 +3104,7 @@ EOF
         catch (PHPUnit_Framework_ExpectationFailedException $e) {
             $this->assertEquals(
               <<<EOF
-Failed asserting that an iterator contains
-stdClass Object
-(
-)
-.
+Failed asserting that an iterator contains stdClass Object ().
 
 EOF
               ,
@@ -3155,11 +3134,7 @@ EOF
             $this->assertEquals(
               <<<EOF
 custom message
-Failed asserting that an iterator contains
-stdClass Object
-(
-)
-.
+Failed asserting that an iterator contains stdClass Object ().
 
 EOF
               ,
@@ -3183,7 +3158,7 @@ EOF
         $constraint = PHPUnit_Framework_Assert::attributeEqualTo('foo', 1);
 
         $this->assertTrue($constraint->evaluate($object, '', TRUE));
-        $this->assertEquals('attribute "foo" is equal to <integer:1>', $constraint->toString());
+        $this->assertEquals('attribute "foo" is equal to 1', $constraint->toString());
         $this->assertEquals(1, count($constraint));
 
         $constraint = PHPUnit_Framework_Assert::attributeEqualTo('foo', 2);
@@ -3197,7 +3172,7 @@ EOF
         catch (PHPUnit_Framework_ExpectationFailedException $e) {
             $this->assertEquals(
               <<<EOF
-Failed asserting that attribute "foo" is equal to <integer:2>.
+Failed asserting that attribute "foo" is equal to 2.
 
 EOF
               ,
@@ -3227,7 +3202,7 @@ EOF
         catch (PHPUnit_Framework_ExpectationFailedException $e) {
             $this->assertEquals(
               <<<EOF
-custom message\nFailed asserting that attribute "foo" is equal to <integer:2>.
+custom message\nFailed asserting that attribute "foo" is equal to 2.
 
 EOF
               ,
@@ -3255,7 +3230,7 @@ EOF
         );
 
         $this->assertTrue($constraint->evaluate($object, '', TRUE));
-        $this->assertEquals('attribute "foo" is not equal to <integer:2>', $constraint->toString());
+        $this->assertEquals('attribute "foo" is not equal to 2', $constraint->toString());
         $this->assertEquals(1, count($constraint));
 
         $constraint = PHPUnit_Framework_Assert::logicalNot(
@@ -3271,7 +3246,7 @@ EOF
         catch (PHPUnit_Framework_ExpectationFailedException $e) {
             $this->assertEquals(
               <<<EOF
-Failed asserting that attribute "foo" is not equal to <integer:1>.
+Failed asserting that attribute "foo" is not equal to 1.
 
 EOF
               ,
@@ -3305,7 +3280,7 @@ EOF
         catch (PHPUnit_Framework_ExpectationFailedException $e) {
             $this->assertEquals(
               <<<EOF
-custom message\nFailed asserting that attribute "foo" is not equal to <integer:1>.
+custom message\nFailed asserting that attribute "foo" is not equal to 1.
 
 EOF
               ,

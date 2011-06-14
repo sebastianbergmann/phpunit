@@ -70,7 +70,7 @@ class Util_TypeTest extends PHPUnit_Framework_TestCase
         return preg_replace('/[ ]*\n/', "\n", $string);
     }
 
-    public function toStringProvider()
+    public function exportProvider()
     {
         $obj2 = new stdClass;
         $obj2->foo = 'bar';
@@ -81,8 +81,9 @@ class Util_TypeTest extends PHPUnit_Framework_TestCase
         $obj->integer = 1;
         $obj->double = 1.2;
         $obj->string = '1';
-        $obj->text = "foo\nbar";
+        $obj->text = "this\nis\na\nvery\nvery\nvery\nvery\nvery\nvery\rlong\n\rtext";
         $obj->object = $obj2;
+        $obj->objectagain = $obj2;
         $obj->array = array('foo' => 'bar');
         $obj->self = $obj;
 
@@ -93,149 +94,133 @@ class Util_TypeTest extends PHPUnit_Framework_TestCase
             'integer' => 1,
             'double' => 1.2,
             'string' => '1',
-            'text' => "foo\nbar",
+            'text' => "this\nis\na\nvery\nvery\nvery\nvery\nvery\nvery\rlong\n\rtext",
             'object' => $obj2,
+            'objectagain' => $obj2,
             'array' => array('foo' => 'bar'),
         );
 
         $array['self'] = &$array;
 
         return array(
-            array(NULL, '<null>'),
-            array(TRUE, '<boolean:true>'),
-            array(1, '<integer:1>'),
-            array(1.2, '<double:1.2>'),
-            array('1', '<string:1>'),
-            array("foo\nbar", '<text>'),
-            array($obj,
+            array(NULL, 'null'),
+            array(TRUE, 'true'),
+            array(1, '1'),
+            array(1.0, '1.0'),
+            array(1.2, '1.2'),
+            array('1', "'1'"),
+            // \n\r and \r is converted to \n
+            array("this\nis\na\nvery\nvery\nvery\nvery\nvery\nvery\rlong\n\rtext",
 <<<EOF
-
-stdClass Object
-(
-    [null] =>
-    [boolean] => 1
-    [integer] => 1
-    [double] => 1.2
-    [string] => 1
-    [text] => foo
-bar
-    [object] => stdClass Object
-        (
-            [foo] => bar
-        )
-
-    [array] => Array
-        (
-            [foo] => bar
-        )
-
-    [self] => stdClass Object
- *RECURSION*
-)
-
+'this
+is
+a
+very
+very
+very
+very
+very
+very
+long
+text'
 EOF
             ),
+            array(new stdClass, 'stdClass Object ()'),
+            array($obj,
+<<<EOF
+stdClass Object (
+    'null' => null
+    'boolean' => true
+    'integer' => 1
+    'double' => 1.2
+    'string' => '1'
+    'text' => 'this
+is
+a
+very
+very
+very
+very
+very
+very
+long
+text'
+    'object' => stdClass Object (
+        'foo' => 'bar'
+    )
+    'objectagain' => stdClass Object (*RECURSION*)
+    'array' => Array (
+        'foo' => 'bar'
+    )
+    'self' => stdClass Object (*RECURSION*)
+)
+EOF
+            ),
+            array(array(), 'Array ()'),
             array($array,
 <<<EOF
-
-Array
-(
-    [0] => 0
-    [null] =>
-    [boolean] => 1
-    [integer] => 1
-    [double] => 1.2
-    [string] => 1
-    [text] => foo
-bar
-    [object] => stdClass Object
-        (
-            [foo] => bar
-        )
-
-    [array] => Array
-        (
-            [foo] => bar
-        )
-
-    [self] => Array
-        (
-            [0] => 0
-            [null] =>
-            [boolean] => 1
-            [integer] => 1
-            [double] => 1.2
-            [string] => 1
-            [text] => foo
-bar
-            [object] => stdClass Object
-                (
-                    [foo] => bar
-                )
-
-            [array] => Array
-                (
-                    [foo] => bar
-                )
-
-            [self] => Array
- *RECURSION*
-        )
-
+Array (
+    0 => 0
+    'null' => null
+    'boolean' => true
+    'integer' => 1
+    'double' => 1.2
+    'string' => '1'
+    'text' => 'this
+is
+a
+very
+very
+very
+very
+very
+very
+long
+text'
+    'object' => stdClass Object (
+        'foo' => 'bar'
+    )
+    'objectagain' => stdClass Object (*RECURSION*)
+    'array' => Array (
+        'foo' => 'bar'
+    )
+    'self' => Array (*RECURSION*)
 )
-
 EOF
             ),
         );
     }
 
     /**
-     * @dataProvider toStringProvider
+     * @dataProvider exportProvider
      */
-    public function testToString($value, $expected)
+    public function testExport($value, $expected)
     {
-        $this->assertSame($expected, self::trimnl(PHPUnit_Util_Type::toString($value)));
+        $this->assertSame($expected, self::trimnl(PHPUnit_Util_Type::export($value)));
     }
 
     public function shortenedExportProvider()
     {
-        $obj2 = new stdClass;
-        $obj2->foo = 'bar';
-
         $obj = new stdClass;
-        $obj->null = NULL;
-        $obj->boolean = TRUE;
-        $obj->integer = 1;
-        $obj->double = 1.2;
-        $obj->string = '1';
-        $obj->text = "foo\nbar";
-        $obj->object = $obj2;
-        $obj->array = array('foo' => 'bar');
-        $obj->self = $obj;
+        $obj->foo = 'bar';
 
         $array = array(
-            0 => 0,
-            'null' => NULL,
-            'boolean' => TRUE,
-            'integer' => 1,
-            'double' => 1.2,
-            'string' => '1',
-            'text' => "foo\nbar",
-            'object' => $obj2,
-            'array' => array('foo' => 'bar'),
+            'foo' => 'bar',
         );
 
-        $array['self'] = &$array;
-
         return array(
-            array(NULL, '<null>'),
-            array(TRUE, '<boolean:true>'),
-            array(1, '<integer:1>'),
-            array(1.2, '<double:1.2>'),
-            array('1', '<string:1>'),
-            array("foo\nbar", '<string:foo bar>'),
-            array($obj, 'stdClass(...)'),
-            array($array, 'array( <integer:0> => <integer:0>, ..., <string:self> => array(...) )'),
+            array(NULL, 'null'),
+            array(TRUE, 'true'),
+            array(1, '1'),
+            array(1.0, '1.0'),
+            array(1.2, '1.2'),
+            array('1', "'1'"),
+            // \n\r and \r is converted to \n
+            array("this\nis\na\nvery\nvery\nvery\nvery\nvery\nvery\rlong\n\rtext", "'this\\nis\\na\\nvery\\nvery\\nvery\\nvery...g\\ntext'"),
+            array(new stdClass, 'stdClass Object ()'),
+            array($obj, 'stdClass Object (...)'),
+            array(array(), 'Array ()'),
+            array($array, 'Array (...)'),
         );
     }
 

@@ -96,7 +96,7 @@ class PHPUnit_Framework_Constraint_IsInstanceOf extends PHPUnit_Framework_Constr
         return sprintf(
           '%s is an instance of class "%s"',
 
-          PHPUnit_Util_Type::toString($other, TRUE),
+          PHPUnit_Util_Type::shortenedExport($other),
           $this->className
         );
     }

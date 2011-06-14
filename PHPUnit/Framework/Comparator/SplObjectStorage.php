@@ -55,7 +55,7 @@
  * @link       http://www.phpunit.de/
  * @since      Class available since Release 3.6.0
  */
-class PHPUnit_Framework_Comparator_SplObjectStorage extends PHPUnit_Framework_Comparator_Object
+class PHPUnit_Framework_Comparator_SplObjectStorage extends PHPUnit_Framework_Comparator
 {
     /**
      * Returns whether the comparator can compare two values.
@@ -93,8 +93,8 @@ class PHPUnit_Framework_Comparator_SplObjectStorage extends PHPUnit_Framework_Co
                 throw new PHPUnit_Framework_ComparisonFailure(
                   $expected,
                   $actual,
-                  print_r($expected, true),
-                  print_r($actual, true),
+                  PHPUnit_Util_Type::export($expected),
+                  PHPUnit_Util_Type::export($actual),
                   FALSE,
                   'Failed asserting that two objects are equal.'
                 );
@@ -106,8 +106,8 @@ class PHPUnit_Framework_Comparator_SplObjectStorage extends PHPUnit_Framework_Co
                 throw new PHPUnit_Framework_ComparisonFailure(
                   $expected,
                   $actual,
-                  print_r($expected, true),
-                  print_r($actual, true),
+                  PHPUnit_Util_Type::export($expected),
+                  PHPUnit_Util_Type::export($actual),
                   FALSE,
                   'Failed asserting that two objects are equal.'
                 );

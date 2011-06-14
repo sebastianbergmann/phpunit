@@ -113,8 +113,8 @@ class PHPUnit_Framework_Comparator_Double extends PHPUnit_Framework_Comparator_S
               sprintf(
                 'Failed asserting that %s matches expected %s.',
 
-                PHPUnit_Util_Type::toString($actual),
-                PHPUnit_Util_Type::toString($expected)
+                PHPUnit_Util_Type::export($actual),
+                PHPUnit_Util_Type::export($expected)
               )
             );
         }

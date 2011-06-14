@@ -92,13 +92,13 @@ class PHPUnit_Framework_Comparator_Object extends PHPUnit_Framework_Comparator_A
             throw new PHPUnit_Framework_ComparisonFailure(
               $expected,
               $actual,
-              print_r($expected, true),
-              print_r($actual, true),
+              PHPUnit_Util_Type::export($expected),
+              PHPUnit_Util_Type::export($actual),
               FALSE,
               sprintf(
                 '%s is not instance of expected class "%s".',
 
-                PHPUnit_Util_Type::toString($actual),
+                PHPUnit_Util_Type::export($actual),
                 get_class($expected)
               )
             );
@@ -143,22 +143,6 @@ class PHPUnit_Framework_Comparator_Object extends PHPUnit_Framework_Comparator_A
      */
     protected function toArray($object)
     {
-        $array = array();
-
-        foreach ((array)$object as $key => $value) {
-            // properties are transformed to keys in the following way:
-
-            // private   $property => "\0Classname\0property"
-            // protected $property => "\0*\0property"
-            // public    $property => "property"
-
-            if (preg_match('/^\0.+\0(.+)$/', $key, $matches)) {
-                $key = $matches[1];
-            }
-
-            $array[$key] = $value;
-        }
-
-        return $array;
+        return PHPUnit_Util_Type::toArray($object);
     }
 }
