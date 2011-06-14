@@ -105,7 +105,8 @@ class PHPUnit_Framework_Comparator_Object extends PHPUnit_Framework_Comparator_A
         }
 
         // don't compare twice to allow for cyclic dependencies
-        if (in_array(array($actual, $expected), $processed, true) || in_array(array($expected, $actual), $processed, true)) {
+        if (in_array(array($actual, $expected), $processed, TRUE) ||
+            in_array(array($expected, $actual), $processed, TRUE)) {
             return;
         }
 

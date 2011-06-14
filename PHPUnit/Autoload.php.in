@@ -52,9 +52,10 @@ require_once 'PHPUnit/Extensions/SeleniumTestCase/Autoload.php';
 require_once 'PHPUnit/Extensions/Story/Autoload.php';
 require_once 'Text/Template/Autoload.php';
 
-function phpunit_autoload($class = NULL) {
+function phpunit_autoload($class = NULL)
+{
     static $classes = NULL;
-    static $path = NULL;
+    static $path    = NULL;
 
     if ($classes === NULL) {
         $classes = array(

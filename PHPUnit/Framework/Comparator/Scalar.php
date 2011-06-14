@@ -67,7 +67,8 @@ class PHPUnit_Framework_Comparator_Scalar extends PHPUnit_Framework_Comparator
      */
     public function accepts($expected, $actual)
     {
-        return ((is_scalar($expected) XOR null === $expected) && (is_scalar($actual) XOR null === $actual))
+        return ((is_scalar($expected) XOR NULL === $expected) &&
+                 (is_scalar($actual) XOR NULL === $actual))
           // allow comparison between strings and objects featuring __toString()
           || (is_string($expected) && is_object($actual) && method_exists($actual, '__toString'))
           || (is_object($expected) && method_exists($expected, '__toString') && is_string($actual));
