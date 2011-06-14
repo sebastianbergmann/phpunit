@@ -71,8 +71,16 @@ class PHPUnit_Framework_ComparisonFailure extends PHPUnit_Framework_AssertionFai
      */
     protected $actual;
 
+    /**
+     * The string representation of the expected value
+     * @var string
+     */
     protected $expectedAsString;
 
+    /**
+     * The string representation of the actual value
+     * @var string
+     */
     protected $actualAsString;
 
     /**
@@ -86,8 +94,6 @@ class PHPUnit_Framework_ComparisonFailure extends PHPUnit_Framework_AssertionFai
      * @var string
      */
     protected $message;
-
-    protected $diff;
 
     /**
      * Initialises with the expected value and the actual value.
@@ -123,22 +129,29 @@ class PHPUnit_Framework_ComparisonFailure extends PHPUnit_Framework_AssertionFai
         return $this->expected;
     }
 
+    /**
+     * @return string
+     */
     public function getActualAsString()
     {
         return $this->actualAsString;
     }
 
+    /**
+     * @return string
+     */
     public function getExpectedAsString()
     {
         return $this->expectedAsString;
     }
 
+    /**
+     * @return string
+     */
     public function getDiff()
     {
-        return PHPUnit_Framework_Constraint::trimnl(
-          $this->actualAsString || $this->expectedAsString
-            ? PHPUnit_Util_Diff::diff($this->expectedAsString, $this->actualAsString)
-            : ''
-        );
+        return $this->actualAsString || $this->expectedAsString
+          ? PHPUnit_Util_Diff::diff($this->expectedAsString, $this->actualAsString)
+          : '';
     }
 }

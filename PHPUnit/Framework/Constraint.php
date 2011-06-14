@@ -61,24 +61,20 @@ abstract class PHPUnit_Framework_Constraint implements Countable, PHPUnit_Framew
 {
 
     /**
-     * Removes spaces in front of and after newlines
+     * Evaluates the constraint for parameter $other
      *
-     * @param  string $string
-     * @return string
-     */
-    public static function trimnl($string)
-    {
-        return preg_replace('/[ ]*\n/', "\n", $string);
-    }
-
-    /**
-     * Evaluates the constraint for parameter $other. Returns TRUE if the
-     * constraint is met, FALSE otherwise.
+     * If $returnResult is set to FALSE (the default), an exception is thrown
+     * in case of a failure. NULL is returned otherwise.
      *
-     * @param mixed $other Value or object to evaluate.
-     * @param mixed $description
-     * @param mixed $returnResult
+     * If $returnResult is TRUE, the result of the evaluation is returned as
+     * a boolean value instead: TRUE in case of success, FALSE in case of a
+     * failure.
+     *
+     * @param  mixed $other Value or object to evaluate.
+     * @param  string $description Additional information about the test
+     * @param  bool $returnResult Whether to return a result or throw an exception
      * @return mixed
+     * @throws PHPUnit_Framework_ExpectationFailedException
      */
     public function evaluate($other, $description = '', $returnResult = FALSE)
     {
@@ -97,6 +93,15 @@ abstract class PHPUnit_Framework_Constraint implements Countable, PHPUnit_Framew
         }
     }
 
+    /**
+     * Evaluates the constraint for parameter $other. Returns TRUE if the
+     * constraint is met, FALSE otherwise.
+     *
+     * This method can be overridden to implement the evaluation algorithm.
+     *
+     * @param mixed $other Value or object to evaluate.
+     * @return bool
+     */
     protected function matches($other)
     {
         return FALSE;
@@ -114,43 +119,20 @@ abstract class PHPUnit_Framework_Constraint implements Countable, PHPUnit_Framew
     }
 
     /**
-     * @param mixed   $other
-     * @param string  $description
-     * @param boolean $not
+     * Throws an exception for the given compared value and test description
+     *
+     * @param  mixed $other Evaluated value or object.
+     * @param  string $description Additional information about the test
+     * @param  PHPUnit_Framework_ComparisonFailure $comparisonFailure
+     * @throws PHPUnit_Framework_ExpectationFailedException
      */
-    protected function __failureDescription($other, $description, $not)
-    {
-        $failureDescription = $this->customFailureDescription(
-          $other, $description, $not
-        );
-
-        if ($failureDescription === NULL) {
-            $failureDescription = sprintf(
-              'Failed asserting that %s %s.',
-
-               PHPUnit_Util_Type::export($other),
-               $this->toString()
-            );
-        }
-
-        if ($not) {
-            $failureDescription = self::negate($failureDescription);
-        }
-
-        if (!empty($description)) {
-            $failureDescription = $description . "\n" . $failureDescription;
-        }
-
-        return $failureDescription;
-    }
-
     protected function fail($other, $description, PHPUnit_Framework_ComparisonFailure $comparisonFailure = null)
     {
-        $failureDescription = self::trimnl(sprintf(
+        $failureDescription = sprintf(
           'Failed asserting that %s.',
 
           $this->failureDescription($other)
-        ));
+        );
 
         if (!empty($description)) {
             $failureDescription = $description . "\n" . $failureDescription;
@@ -163,8 +145,13 @@ abstract class PHPUnit_Framework_Constraint implements Countable, PHPUnit_Framew
     }
 
     /**
-     * @param mixed   $other
-     * @param string  $text
+     * Returns the description of the failure
+     *
+     * The beginning of failure messages is "Failed asserting that" in most
+     * cases. This method should return the second part of that sentence.
+     *
+     * @param  mixed $other Evaluated value or object.
+     * @return string
      */
     protected function failureDescription($other)
     {
