@@ -127,10 +127,10 @@ class PHPUnit_Framework_ComparatorFactory
      */
     public function unregister(PHPUnit_Framework_Comparator $comparator)
     {
-        $key = array_search($comparator, $this->comparators, TRUE);
-
-        if ($key) {
-            unset($this->comparators[$key]);
+        foreach ($this->comparators as $key => $_comparator) {
+            if ($comparator === $_comparator) {
+                unset($this->comparators[$key]);
+            }
         }
     }
 }
