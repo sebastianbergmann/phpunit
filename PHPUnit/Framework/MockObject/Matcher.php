@@ -43,7 +43,7 @@
  */
 
 /**
- * Main matcher which defines a full expectation using method, parameter and 
+ * Main matcher which defines a full expectation using method, parameter and
  * invocation matchers.
  * This matcher encapsulates all the other matchers and allows the builder to
  * set the specific matchers when the appropriate methods are called (once(),
@@ -183,7 +183,7 @@ class PHPUnit_Framework_MockObject_Matcher implements PHPUnit_Framework_MockObje
 
                 $this->methodNameMatcher->toString(),
                 $this->invocationMatcher->toString(),
-                $e->getDescription()
+                $e->getMessage()
               ),
               $e->getComparisonFailure()
             );
@@ -255,7 +255,7 @@ class PHPUnit_Framework_MockObject_Matcher implements PHPUnit_Framework_MockObje
 
                 $this->methodNameMatcher->toString(),
                 $this->invocationMatcher->toString(),
-                $e->getDescription()
+                $e->getMessage()
               ),
               $e->getComparisonFailure()
             );
@@ -295,7 +295,7 @@ class PHPUnit_Framework_MockObject_Matcher implements PHPUnit_Framework_MockObje
 
                 $this->methodNameMatcher->toString(),
                 $this->invocationMatcher->toString(),
-                $e->getDescription()
+                $e->getMessage()
               )
             );
         }
