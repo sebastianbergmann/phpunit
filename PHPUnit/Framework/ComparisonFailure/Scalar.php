@@ -66,9 +66,9 @@ class PHPUnit_Framework_ComparisonFailure_Scalar extends PHPUnit_Framework_Compa
         return str_replace(array("\n ", " \n"), array("\n", "\n"), sprintf(
           'Failed asserting that %s %s %s.',
 
-          PHPUnit_Util_Type::toString($this->actual),
+          PHPUnit_Util_Type::export($this->actual),
           $this->identical ? 'is identical to' : 'matches expected',
-          PHPUnit_Util_Type::toString($this->expected)
+          PHPUnit_Util_Type::export($this->expected)
         ));
     }
 }

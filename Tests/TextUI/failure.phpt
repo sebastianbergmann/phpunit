@@ -26,20 +26,17 @@ Failed asserting that two arrays are equal.
 --- Expected
 +++ Actual
 @@ @@
- Array
- (
--    [0] => 1
-+    [0] => 2
+ Array (
+-    0 => 1
++    0 => 2
  )
 
-%s:%i
 %s:%i
 
 2) FailureTest::testAssertIntegerEqualsInteger
 message
-Failed asserting that <integer:2> matches expected <integer:1>.
+Failed asserting that 2 matches expected 1.
 
-%s:%i
 %s:%i
 
 3) FailureTest::testAssertObjectEqualsObject
@@ -48,20 +45,17 @@ Failed asserting that two objects are equal.
 --- Expected
 +++ Actual
 @@ @@
- stdClass Object
- (
--    [foo] => bar
-+    [bar] => foo
+ stdClass Object (
+-    'foo' => 'bar'
++    'bar' => 'foo'
  )
 
-%s:%i
 %s:%i
 
 4) FailureTest::testAssertNullEqualsString
 message
-Failed asserting that <string:bar> matches expected <null>.
+Failed asserting that 'bar' matches expected null.
 
-%s:%i
 %s:%i
 
 5) FailureTest::testAssertStringEqualsString
@@ -70,10 +64,9 @@ Failed asserting that two strings are equal.
 --- Expected
 +++ Actual
 @@ @@
--foo
-+bar
+-'foo'
++'bar'
 
-%s:%i
 %s:%i
 
 6) FailureTest::testAssertTextEqualsText
@@ -82,34 +75,28 @@ Failed asserting that two strings are equal.
 --- Expected
 +++ Actual
 @@ @@
- foo
+ 'foo
 -bar
 +baz
+ '
 
-%s:%i
 %s:%i
 
 7) FailureTest::testAssertStringMatchesFormat
 message
-Failed asserting that two strings are equal.
---- Expected
-+++ Actual
-@@ @@
--*%s*
-+**
+Failed asserting that '**' matches PCRE pattern "/^\*[^\r\n]+\*$/s".
 
-%s:%i
 %s:%i
 
 8) FailureTest::testAssertNumericEqualsNumeric
 message
-Failed asserting that <integer:2> matches expected <integer:1>.
+Failed asserting that 2 matches expected 1.
 
-%s:%i
 %s:%i
 
 9) FailureTest::testAssertTextSameText
 message
+Failed asserting that two strings are identical.
 --- Expected
 +++ Actual
 @@ @@
@@ -117,27 +104,23 @@ message
 +bar
 
 %s:%i
-%s:%i
 
 10) FailureTest::testAssertObjectSameObject
 message
 Failed asserting that two variables reference the same object.
 
 %s:%i
-%s:%i
 
 11) FailureTest::testAssertObjectSameNull
 message
-<null> does not match expected type "object".
+Failed asserting that null is identical to an object of class "stdClass".
 
-%s:%i
 %s:%i
 
 12) FailureTest::testAssertFloatSameFloat
 message
-Failed asserting that <double:1.5> is identical to <double:1>.
+Failed asserting that 1.5 is identical to 1.0.
 
-%s:%i
 %s:%i
 
 FAILURES!

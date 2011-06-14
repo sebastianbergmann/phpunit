@@ -66,7 +66,7 @@ class PHPUnit_Framework_ComparisonFailure_Type extends PHPUnit_Framework_Compari
         return sprintf(
           '%s does not match expected type "%s".',
 
-          PHPUnit_Util_Type::toString($this->actual),
+          PHPUnit_Util_Type::export($this->actual),
           gettype($this->expected)
         );
     }

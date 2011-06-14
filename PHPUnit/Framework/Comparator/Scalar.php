@@ -91,25 +91,28 @@ class PHPUnit_Framework_Comparator_Scalar extends PHPUnit_Framework_Comparator
      */
     public function assertEquals($expected, $actual, $delta = 0, $canonicalize = FALSE, $ignoreCase = FALSE)
     {
+        $expectedToCompare = $expected;
+        $actualToCompare = $actual;
+
         // always compare as strings to avoid strange behaviour
         // otherwise 0 == 'Foobar'
         if (is_string($expected) || is_string($actual)) {
-            $expected = (string)$expected;
-            $actual = (string)$actual;
+            $expectedToCompare = (string)$expectedToCompare;
+            $actualToCompare = (string)$actualToCompare;
 
             if ($ignoreCase) {
-                $expected = strtolower($expected);
-                $actual = strtolower($actual);
+                $expectedToCompare = strtolower($expectedToCompare);
+                $actualToCompare = strtolower($actualToCompare);
             }
         }
 
-        if ($expected != $actual) {
+        if ($expectedToCompare != $actualToCompare) {
             if (is_string($expected) && is_string($actual)) {
                 throw new PHPUnit_Framework_ComparisonFailure(
                   $expected,
                   $actual,
-                  print_r($expected, true),
-                  print_r($actual, true),
+                  PHPUnit_Util_Type::export($expected),
+                  PHPUnit_Util_Type::export($actual),
                   FALSE,
                   'Failed asserting that two strings are equal.'
                 );
@@ -125,8 +128,8 @@ class PHPUnit_Framework_Comparator_Scalar extends PHPUnit_Framework_Comparator
               sprintf(
                 'Failed asserting that %s matches expected %s.',
 
-                PHPUnit_Util_Type::toString($actual),
-                PHPUnit_Util_Type::toString($expected)
+                PHPUnit_Util_Type::export($actual),
+                PHPUnit_Util_Type::export($expected)
               )
             );
         }

@@ -155,7 +155,7 @@ class PHPUnit_Framework_Constraint_IsIdentical extends PHPUnit_Framework_Constra
                    get_class($this->value) . '"';
         } else {
             return 'is identical to ' .
-                   PHPUnit_Util_Type::toString($this->value);
+                   PHPUnit_Util_Type::export($this->value);
         }
     }
 }

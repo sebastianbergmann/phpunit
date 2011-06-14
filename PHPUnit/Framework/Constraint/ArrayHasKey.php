@@ -96,7 +96,7 @@ class PHPUnit_Framework_Constraint_ArrayHasKey extends PHPUnit_Framework_Constra
      */
     public function toString()
     {
-        return 'has the key ' . PHPUnit_Util_Type::toString($this->key);
+        return 'has the key ' . PHPUnit_Util_Type::export($this->key);
     }
 
     /**

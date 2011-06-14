@@ -92,8 +92,8 @@ class PHPUnit_Framework_Comparator_Resource extends PHPUnit_Framework_Comparator
             throw new PHPUnit_Framework_ComparisonFailure(
               $expected,
               $actual,
-              print_r($expected, true),
-              print_r($actual, true)
+              PHPUnit_Util_Type::export($expected),
+              PHPUnit_Util_Type::export($actual)
             );
         }
     }
