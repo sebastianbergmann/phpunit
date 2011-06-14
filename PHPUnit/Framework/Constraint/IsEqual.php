@@ -147,9 +147,20 @@ class PHPUnit_Framework_Constraint_IsEqual extends PHPUnit_Framework_Constraint
      */
     public function evaluate($other, $description = '', $returnResult = FALSE)
     {
+        $comparatorFactory = new PHPUnit_Framework_ComparatorFactory;
+
         try {
-            $comparator = PHPUnit_Framework_Comparator::getInstance($other, $this->value);
-            $comparator->assertEquals($this->value, $other, $this->delta, $this->canonicalize, $this->ignoreCase);
+            $comparator = $comparatorFactory->getComparatorFor(
+              $other, $this->value
+            );
+
+            $comparator->assertEquals(
+              $this->value,
+              $other,
+              $this->delta,
+              $this->canonicalize,
+              $this->ignoreCase
+            );
         }
 
         catch (PHPUnit_Framework_ComparisonFailure $f) {

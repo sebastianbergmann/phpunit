@@ -44,7 +44,7 @@
  */
 
 /**
- * Abstract base class for comparators which compare values for equality.
+ * Factory for comparators which compare values for equality.
  *
  * @package    PHPUnit
  * @subpackage Framework
@@ -55,44 +55,82 @@
  * @link       http://www.phpunit.de/
  * @since      Class available since Release 3.6.0
  */
-abstract class PHPUnit_Framework_Comparator
+class PHPUnit_Framework_ComparatorFactory
 {
     /**
-     * @var PHPUnit_Framework_ComparatorFactory
+     * @var array
      */
-    protected $factory;
+    protected $comparators = array();
 
     /**
-     * @param PHPUnit_Framework_ComparatorFactory $factory
+     * Constructs a new factory.
      */
-    public function setFactory(PHPUnit_Framework_ComparatorFactory $factory)
+    public function __construct()
     {
-        $this->factory = $factory;
+        $this->register(new PHPUnit_Framework_Comparator_Type);
+        $this->register(new PHPUnit_Framework_Comparator_Scalar);
+        $this->register(new PHPUnit_Framework_Comparator_Double);
+        $this->register(new PHPUnit_Framework_Comparator_Array);
+        $this->register(new PHPUnit_Framework_Comparator_Resource);
+        $this->register(new PHPUnit_Framework_Comparator_Object);
+        $this->register(new PHPUnit_Framework_Comparator_Exception);
+        $this->register(new PHPUnit_Framework_Comparator_SplObjectStorage);
+        $this->register(new PHPUnit_Framework_Comparator_DOMDocument);
+        $this->register(new PHPUnit_Framework_Comparator_MockObject);
     }
 
     /**
-     * Returns whether the comparator can compare two values.
+     * Returns the correct comparator for comparing two values.
      *
      * @param  mixed $expected The first value to compare
      * @param  mixed $actual The second value to compare
-     * @return boolean
+     * @return PHPUnit_Framework_Comparator
      */
-    abstract public function accepts($expected, $actual);
+    public function getComparatorFor($expected, $actual)
+    {
+        foreach ($this->comparators as $comparator) {
+            if ($comparator->accepts($expected, $actual)) {
+                return $comparator;
+            }
+        }
+
+        throw new InvalidArgumentException(
+          sprintf(
+            'No comparator is registered for comparing the types "%s" and "%s"',
+            gettype($expected), gettype($actual)
+          )
+        );
+    }
 
     /**
-     * Asserts that two values are equal.
+     * Registers a new comparator.
      *
-     * @param  mixed $expected The first value to compare
-     * @param  mixed $actual The second value to compare
-     * @param  float $delta The allowed numerical distance between two values to
-     *                      consider them equal
-     * @param  bool  $canonicalize If set to TRUE, arrays are sorted before
-     *                             comparison
-     * @param  bool  $ignoreCase If set to TRUE, upper- and lowercasing is
-     *                           ignored when comparing string values
-     * @throws PHPUnit_Framework_ComparisonFailure Thrown when the comparison
-     *                           fails. Contains information about the
-     *                           specific errors that lead to the failure.
+     * This comparator will be returned by getInstance() if its accept() method
+     * returns TRUE for the compared values. It has higher priority than the
+     * existing comparators, meaning that its accept() method will be tested
+     * before those of the other comparators.
+     *
+     * @param  PHPUnit_Framework_Comparator $comparator The registered comparator
      */
-    abstract public function assertEquals($expected, $actual, $delta = 0, $canonicalize = FALSE, $ignoreCase = FALSE);
+    public function register(PHPUnit_Framework_Comparator $comparator)
+    {
+        array_unshift($this->comparators, $comparator);
+        $comparator->setFactory($this);
+    }
+
+    /**
+     * Unregisters a comparator.
+     *
+     * This comparator will no longer be returned by getInstance().
+     *
+     * @param  PHPUnit_Framework_Comparator $comparator The unregistered comparator
+     */
+    public function unregister(PHPUnit_Framework_Comparator $comparator)
+    {
+        $key = array_search($comparator, $this->comparators, TRUE);
+
+        if ($key) {
+            unset($this->comparators[$key]);
+        }
+    }
 }

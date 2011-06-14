@@ -83,6 +83,7 @@ function phpunit_autoload($class = NULL) {
           'phpunit_framework_comparator_scalar' => '/Framework/Comparator/Scalar.php',
           'phpunit_framework_comparator_splobjectstorage' => '/Framework/Comparator/SplObjectStorage.php',
           'phpunit_framework_comparator_type' => '/Framework/Comparator/Type.php',
+          'phpunit_framework_comparatorfactory' => '/Framework/ComparatorFactory.php',
           'phpunit_framework_comparisonfailure' => '/Framework/ComparisonFailure.php',
           'phpunit_framework_constraint' => '/Framework/Constraint.php',
           'phpunit_framework_constraint_and' => '/Framework/Constraint/And.php',

@@ -112,7 +112,7 @@ class PHPUnit_Framework_Comparator_Array extends PHPUnit_Framework_Comparator
             }
 
             try {
-                self::getInstance($value, $actual[$key])->assertEquals($value, $actual[$key], $delta, $canonicalize, $ignoreCase, $processed);
+                $this->factory->getComparatorFor($value, $actual[$key])->assertEquals($value, $actual[$key], $delta, $canonicalize, $ignoreCase, $processed);
                 $expString .= sprintf(
                   "    %s => %s\n",
 
