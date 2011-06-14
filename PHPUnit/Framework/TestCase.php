@@ -598,6 +598,7 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
             PHPUnit_Framework_Comparator::register(new PHPUnit_Framework_Comparator_Exception);
             PHPUnit_Framework_Comparator::register(new PHPUnit_Framework_Comparator_SplObjectStorage);
             PHPUnit_Framework_Comparator::register(new PHPUnit_Framework_Comparator_DOMDocument);
+            PHPUnit_Framework_Comparator::register(new PHPUnit_Framework_Comparator_MockObject);
         }
 
         if ($result === NULL) {
