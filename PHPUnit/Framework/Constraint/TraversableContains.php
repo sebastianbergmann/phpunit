@@ -37,6 +37,7 @@
  * @package    PHPUnit
  * @subpackage Framework_Constraint
  * @author     Sebastian Bergmann <sebastian@phpunit.de>
+ * @author     Bernhard Schussek <bschussek@2bepublished.at>
  * @copyright  2002-2011 Sebastian Bergmann <sebastian@phpunit.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @link       http://www.phpunit.de/
@@ -50,6 +51,7 @@
  * @package    PHPUnit
  * @subpackage Framework_Constraint
  * @author     Sebastian Bergmann <sebastian@phpunit.de>
+ * @author     Bernhard Schussek <bschussek@2bepublished.at>
  * @copyright  2002-2011 Sebastian Bergmann <sebastian@phpunit.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    Release: @package_version@
@@ -90,7 +92,7 @@ class PHPUnit_Framework_Constraint_TraversableContains extends PHPUnit_Framework
      * @param mixed $other Value or object to evaluate.
      * @return bool
      */
-    public function evaluate($other)
+    protected function matches($other)
     {
         if ($other instanceof SplObjectStorage) {
             return $other->contains($this->value);
@@ -126,14 +128,23 @@ class PHPUnit_Framework_Constraint_TraversableContains extends PHPUnit_Framework
         if (is_string($this->value) && strpos($this->value, "\n") !== FALSE) {
             return 'contains "' . $this->value . '"';
         } else {
-            return 'contains ' . PHPUnit_Util_Type::toString($this->value);
+            return 'contains ' . PHPUnit_Util_Type::export($this->value);
         }
     }
 
-    protected function customFailureDescription($other, $description, $not)
+    /**
+     * Returns the description of the failure
+     *
+     * The beginning of failure messages is "Failed asserting that" in most
+     * cases. This method should return the second part of that sentence.
+     *
+     * @param  mixed $other Evaluated value or object.
+     * @return string
+     */
+    protected function failureDescription($other)
     {
         return sprintf(
-          'Failed asserting that an %s %s.',
+          'an %s %s',
 
            is_array($other) ? 'array' : 'iterator',
            $this->toString()

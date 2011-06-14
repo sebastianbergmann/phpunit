@@ -37,6 +37,7 @@
  * @package    PHPUnit
  * @subpackage Framework_Constraint
  * @author     Sebastian Bergmann <sebastian@phpunit.de>
+ * @author     Bernhard Schussek <bschussek@2bepublished.at>
  * @copyright  2002-2011 Sebastian Bergmann <sebastian@phpunit.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @link       http://www.phpunit.de/
@@ -52,6 +53,7 @@
  * @package    PHPUnit
  * @subpackage Framework_Constraint
  * @author     Sebastian Bergmann <sebastian@phpunit.de>
+ * @author     Bernhard Schussek <bschussek@2bepublished.at>
  * @copyright  2002-2011 Sebastian Bergmann <sebastian@phpunit.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    Release: @package_version@
@@ -80,35 +82,27 @@ class PHPUnit_Framework_Constraint_IsInstanceOf extends PHPUnit_Framework_Constr
      * @param mixed $other Value or object to evaluate.
      * @return bool
      */
-    public function evaluate($other)
+    protected function matches($other)
     {
         return ($other instanceof $this->className);
     }
 
     /**
-     * Creates the appropriate exception for the constraint which can be caught
-     * by the unit test system. This can be called if a call to evaluate()
-     * fails.
+     * Returns the description of the failure
      *
-     * @param   mixed   $other The value passed to evaluate() which failed the
-     *                         constraint check.
-     * @param   string  $description A string with extra description of what was
-     *                               going on while the evaluation failed.
-     * @param   boolean $not Flag to indicate negation.
-     * @throws  PHPUnit_Framework_ExpectationFailedException
+     * The beginning of failure messages is "Failed asserting that" in most
+     * cases. This method should return the second part of that sentence.
+     *
+     * @param  mixed $other Evaluated value or object.
+     * @return string
      */
-    public function fail($other, $description, $not = FALSE)
+    protected function failureDescription($other)
     {
-        throw new PHPUnit_Framework_ExpectationFailedException(
-          sprintf(
-            '%sFailed asserting that %s is %san instance of class "%s".',
+        return sprintf(
+          '%s is an instance of class "%s"',
 
-            !empty($description) ? $description . "\n" : '',
-            PHPUnit_Util_Type::toString($other, TRUE),
-            $not ? 'not ' : '',
-            $this->className
-          ),
-          NULL
+          PHPUnit_Util_Type::shortenedExport($other),
+          $this->className
         );
     }
 

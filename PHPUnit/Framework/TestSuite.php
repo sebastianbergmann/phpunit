@@ -645,7 +645,7 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
                 }
             }
         }
-        
+
         if ($doSetup) {
             try {
                 $this->setUp();
@@ -755,7 +755,7 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
 
             $this->tearDown();
         }
-        
+
         $result->endTestSuite($this);
 
         return $result;

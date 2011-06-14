@@ -35,8 +35,7 @@
  * POSSIBILITY OF SUCH DAMAGE.
  *
  * @package    PHPUnit
- * @subpackage Framework_Constraint
- * @author     Sebastian Bergmann <sebastian@phpunit.de>
+ * @subpackage Framework
  * @author     Bernhard Schussek <bschussek@2bepublished.at>
  * @copyright  2002-2011 Sebastian Bergmann <sebastian@phpunit.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
@@ -45,11 +44,10 @@
  */
 
 /**
- *
+ * Compares SplObjectStorage instances for equality.
  *
  * @package    PHPUnit
- * @subpackage Framework_Constraint
- * @author     Sebastian Bergmann <sebastian@phpunit.de>
+ * @subpackage Framework_Comparator
  * @author     Bernhard Schussek <bschussek@2bepublished.at>
  * @copyright  2002-2011 Sebastian Bergmann <sebastian@phpunit.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
@@ -57,73 +55,63 @@
  * @link       http://www.phpunit.de/
  * @since      Class available since Release 3.6.0
  */
-class PHPUnit_Framework_Constraint_Count extends PHPUnit_Framework_Constraint
+class PHPUnit_Framework_Comparator_SplObjectStorage extends PHPUnit_Framework_Comparator
 {
     /**
-     * @var integer
-     */
-    protected $expectedCount = 0;
-
-    /**
-     * @param integer $expected
-     */
-    public function __construct($expected)
-    {
-        $this->expectedCount = $expected;
-    }
-
-    /**
-     * Evaluates the constraint for parameter $other. Returns TRUE if the
-     * constraint is met, FALSE otherwise.
+     * Returns whether the comparator can compare two values.
      *
-     * @param mixed $other
+     * @param  mixed $expected The first value to compare
+     * @param  mixed $actual The second value to compare
      * @return boolean
+     * @since  Method available since Release 3.6.0
      */
-    protected function matches($other)
+    public function accepts($expected, $actual)
     {
-        return $this->expectedCount === $this->getCountOf($other);
+        return $expected instanceof SplObjectStorage && $actual instanceof SplObjectStorage;
     }
 
     /**
-     * @param mixed $other
-     * @return boolean
+     * Asserts that two values are equal.
+     *
+     * @param  mixed $expected The first value to compare
+     * @param  mixed $actual The second value to compare
+     * @param  float $delta The allowed numerical distance between two values to
+     *                      consider them equal
+     * @param  bool  $canonicalize If set to TRUE, arrays are sorted before
+     *                             comparison
+     * @param  bool  $ignoreCase If set to TRUE, upper- and lowercasing is
+     *                           ignored when comparing string values
+     * @throws PHPUnit_Framework_ComparisonFailure Thrown when the comparison
+     *                           fails. Contains information about the
+     *                           specific errors that lead to the failure.
+     * @since  Method available since Release 3.6.0
      */
-    protected function getCountOf($other)
+    public function assertEquals($expected, $actual, $delta = 0, $canonicalize = FALSE, $ignoreCase = FALSE)
     {
-        if ($other instanceof Countable || is_array($other)) {
-            return count($other);
+        foreach ($actual as $object) {
+            if (!$expected->contains($object)) {
+                throw new PHPUnit_Framework_ComparisonFailure(
+                  $expected,
+                  $actual,
+                  PHPUnit_Util_Type::export($expected),
+                  PHPUnit_Util_Type::export($actual),
+                  FALSE,
+                  'Failed asserting that two objects are equal.'
+                );
+            }
         }
 
-        else if ($other instanceof Iterator) {
-            return iterator_count($other);
+        foreach ($expected as $object) {
+            if (!$actual->contains($object)) {
+                throw new PHPUnit_Framework_ComparisonFailure(
+                  $expected,
+                  $actual,
+                  PHPUnit_Util_Type::export($expected),
+                  PHPUnit_Util_Type::export($actual),
+                  FALSE,
+                  'Failed asserting that two objects are equal.'
+                );
+            }
         }
-    }
-
-
-    /**
-     * Returns the description of the failure
-     *
-     * The beginning of failure messages is "Failed asserting that" in most
-     * cases. This method should return the second part of that sentence.
-     *
-     * @param  mixed $other Evaluated value or object.
-     * @return string
-     */
-    protected function failureDescription($other)
-    {
-        return sprintf(
-          'actual size %d matches expected size %d',
-
-          $this->getCountOf($other),
-          $this->expectedCount
-        );
-    }
-
-    /**
-     * @return string
-     */
-    public function toString()
-    {
-        return 'count matches ';
     }
 }

@@ -35,40 +35,33 @@
  * POSSIBILITY OF SUCH DAMAGE.
  *
  * @package    PHPUnit
- * @subpackage Framework_ComparisonFailure
- * @author     Sebastian Bergmann <sebastian@phpunit.de>
+ * @author     Bernhard Schussek <bschussek@2bepublished.at>
  * @copyright  2002-2011 Sebastian Bergmann <sebastian@phpunit.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @link       http://www.phpunit.de/
- * @since      File available since Release 3.0.0
+ * @since      File available since Release 3.6.0
  */
 
 /**
- * Thrown when an assertion for scalar equality failed.
+ * An author.
  *
  * @package    PHPUnit
- * @subpackage Framework_ComparisonFailure
- * @author     Sebastian Bergmann <sebastian@phpunit.de>
+ * @author     Bernhard Schussek <bschussek@2bepublished.at>
  * @copyright  2002-2011 Sebastian Bergmann <sebastian@phpunit.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    Release: @package_version@
  * @link       http://www.phpunit.de/
- * @since      Class available since Release 3.0.0
+ * @since      Class available since Release 3.6.0
  */
-class PHPUnit_Framework_ComparisonFailure_Scalar extends PHPUnit_Framework_ComparisonFailure
+class Author
 {
-    /**
-     * Returns a string describing the difference between the expected and the
-     * actual scalar value.
-     */
-    public function toString()
-    {
-        return sprintf(
-          'Failed asserting that %s %s %s.',
+    // the order of properties is important for testing the cycle!
+    public $books = array();
 
-          PHPUnit_Util_Type::toString($this->actual),
-          $this->identical ? 'is identical to' : 'matches expected',
-          PHPUnit_Util_Type::toString($this->expected)
-        );
+    private $name = '';
+
+    public function __construct($name)
+    {
+        $this->name = $name;
     }
 }
