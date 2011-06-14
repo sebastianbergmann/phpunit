@@ -117,7 +117,7 @@ class PHPUnit_Framework_MockObject_Matcher_Parameters extends PHPUnit_Framework_
 
     /**
      * Checks if the invocation $invocation matches the current rules. If it
-     * does the matcher will get the invoked() method called which should check 
+     * does the matcher will get the invoked() method called which should check
      * if an expectation is met.
      *
      * @param  PHPUnit_Framework_MockObject_Invocation $invocation
@@ -145,18 +145,16 @@ class PHPUnit_Framework_MockObject_Matcher_Parameters extends PHPUnit_Framework_
         }
 
         foreach ($this->parameters as $i => $parameter) {
-            if (!$parameter->evaluate($this->invocation->parameters[$i])) {
-                $parameter->fail(
-                  $this->invocation->parameters[$i],
-                  sprintf(
-                    'Parameter %s for invocation %s does not match expected ' .
-                    'value.',
+            $parameter->evaluate(
+              $this->invocation->parameters[$i],
+              sprintf(
+                'Parameter %s for invocation %s does not match expected ' .
+                'value.',
 
-                    $i,
-                    $this->invocation->toString()
-                  )
-                );
-            }
+                $i,
+                $this->invocation->toString()
+              )
+            );
         }
     }
 }
