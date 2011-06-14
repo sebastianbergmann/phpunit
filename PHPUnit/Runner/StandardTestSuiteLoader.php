@@ -76,7 +76,7 @@ class PHPUnit_Runner_StandardTestSuiteLoader implements PHPUnit_Runner_TestSuite
 
         if (!class_exists($suiteClassName, FALSE)) {
             PHPUnit_Util_Class::collectStart();
-            PHPUnit_Util_Fileloader::checkAndLoad($suiteClassFile, $syntaxCheck);
+            $filename = PHPUnit_Util_Fileloader::checkAndLoad($suiteClassFile, $syntaxCheck);
             $loadedClasses = PHPUnit_Util_Class::collectEnd();
         }
 
@@ -84,7 +84,9 @@ class PHPUnit_Runner_StandardTestSuiteLoader implements PHPUnit_Runner_TestSuite
             $offset = 0 - strlen($suiteClassName);
 
             foreach ($loadedClasses as $loadedClass) {
-                if (substr($loadedClass, $offset) === $suiteClassName) {
+                $class = new ReflectionClass($loadedClass);
+                if (substr($loadedClass, $offset) === $suiteClassName &&
+                    $class->getFileName() == $filename) {
                     $suiteClassName = $loadedClass;
                     break;
                 }
