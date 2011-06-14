@@ -126,7 +126,7 @@ abstract class PHPUnit_Framework_Constraint implements Countable, PHPUnit_Framew
      * @param  PHPUnit_Framework_ComparisonFailure $comparisonFailure
      * @throws PHPUnit_Framework_ExpectationFailedException
      */
-    protected function fail($other, $description, PHPUnit_Framework_ComparisonFailure $comparisonFailure = null)
+    protected function fail($other, $description, PHPUnit_Framework_ComparisonFailure $comparisonFailure = NULL)
     {
         $failureDescription = sprintf(
           'Failed asserting that %s.',

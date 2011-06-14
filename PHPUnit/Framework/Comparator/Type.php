@@ -67,7 +67,7 @@ class PHPUnit_Framework_Comparator_Type extends PHPUnit_Framework_Comparator
      */
     public function accepts($expected, $actual)
     {
-        return true;
+        return TRUE;
     }
 
     /**

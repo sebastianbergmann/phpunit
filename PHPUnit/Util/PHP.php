@@ -275,7 +275,8 @@ abstract class PHPUnit_Util_PHP
      * @since Method available since Release 3.6.0
      * @see   https://github.com/sebastianbergmann/phpunit/issues/74
      */
-    protected function getException(PHPUnit_Framework_TestFailure $error) {
+    protected function getException(PHPUnit_Framework_TestFailure $error)
+    {
         $exception = $error->thrownException();
 
         if ($exception instanceof __PHP_Incomplete_Class) {

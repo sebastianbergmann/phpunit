@@ -659,14 +659,14 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
 
                 return $result;
             }
-            
+
             catch (Exception $e) {
                 $numTests = count($this);
-                
+
                 for ($i = 0; $i < $numTests; $i++) {
                     $result->addError($this, $e, 0);
                 }
-                
+
                 return $result;
             }
         }
