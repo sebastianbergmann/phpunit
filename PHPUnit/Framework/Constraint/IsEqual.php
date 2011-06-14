@@ -130,11 +130,20 @@ class PHPUnit_Framework_Constraint_IsEqual extends PHPUnit_Framework_Constraint
     }
 
     /**
-     * Evaluates the constraint for parameter $other. Returns TRUE if the
-     * constraint is met, FALSE otherwise.
+     * Evaluates the constraint for parameter $other
      *
-     * @param mixed $other Value or object to evaluate.
-     * @return bool
+     * If $returnResult is set to FALSE (the default), an exception is thrown
+     * in case of a failure. NULL is returned otherwise.
+     *
+     * If $returnResult is TRUE, the result of the evaluation is returned as
+     * a boolean value instead: TRUE in case of success, FALSE in case of a
+     * failure.
+     *
+     * @param  mixed $other Value or object to evaluate.
+     * @param  string $description Additional information about the test
+     * @param  bool $returnResult Whether to return a result or throw an exception
+     * @return mixed
+     * @throws PHPUnit_Framework_ExpectationFailedException
      */
     public function evaluate($other, $description = '', $returnResult = FALSE)
     {
