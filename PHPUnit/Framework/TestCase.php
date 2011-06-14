@@ -1502,8 +1502,26 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
     {
         $result = array();
 
-        foreach ($data as $_data) {
-            if (is_array($_data)) {
+        // There seems to be no other way to check arrays for recursion
+        // http://www.php.net/manual/en/language.types.array.php#73936
+        preg_match_all('/\n            \[(\w+)\] => Array\s+\*RECURSION\*/', print_r($data, TRUE), $matches);
+        $recursiveKeys = array_unique($matches[1]);
+
+        // Convert to valid array keys
+        // Numeric integer strings are automatically converted to integers
+        // by PHP
+        foreach ($recursiveKeys as $key => $recursiveKey) {
+            if ((string)(integer)$recursiveKey === $recursiveKey) {
+                $recursiveKeys[$key] = (integer)$recursiveKey;
+            }
+        }
+
+        foreach ($data as $key => $_data) {
+            if (in_array($key, $recursiveKeys, TRUE)) {
+                $result[] = '*RECURSION*';
+            }
+
+            else if (is_array($_data)) {
                 $result[] = 'array(' . $this->dataToString($_data) . ')';
             }
 
