@@ -63,6 +63,11 @@ class PHPUnit_Framework_ComparatorFactory
     protected $comparators = array();
 
     /**
+     * @var PHPUnit_Framework_ComparatorFactory
+     */
+    private static $defaultInstance = NULL;
+
+    /**
      * Constructs a new factory.
      */
     public function __construct()
@@ -77,6 +82,20 @@ class PHPUnit_Framework_ComparatorFactory
         $this->register(new PHPUnit_Framework_Comparator_SplObjectStorage);
         $this->register(new PHPUnit_Framework_Comparator_DOMDocument);
         $this->register(new PHPUnit_Framework_Comparator_MockObject);
+    }
+
+    /**
+     * Returns the default instance.
+     *
+     * @return PHPUnit_Framework_ComparatorFactory
+     */
+    public static function getDefaultInstance()
+    {
+        if (self::$defaultInstance === NULL) {
+            self::$defaultInstance = new PHPUnit_Framework_ComparatorFactory;
+        }
+
+        return self::$defaultInstance;
     }
 
     /**
