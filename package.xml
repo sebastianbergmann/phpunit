@@ -79,17 +79,32 @@
        <tasks:replace from="@package_version@" to="version" type="package-info" />
       </file>
      </dir>
-     <dir name="ComparisonFailure">
+     <dir name="Comparator">
       <file baseinstalldir="/" name="Array.php" role="php">
+       <tasks:replace from="@package_version@" to="version" type="package-info" />
+      </file>
+      <file baseinstalldir="/" name="DOMDocument.php" role="php">
+       <tasks:replace from="@package_version@" to="version" type="package-info" />
+      </file>
+      <file baseinstalldir="/" name="Double.php" role="php">
+       <tasks:replace from="@package_version@" to="version" type="package-info" />
+      </file>
+      <file baseinstalldir="/" name="Exception.php" role="php">
+       <tasks:replace from="@package_version@" to="version" type="package-info" />
+      </file>
+      <file baseinstalldir="/" name="MockObject.php" role="php">
        <tasks:replace from="@package_version@" to="version" type="package-info" />
       </file>
       <file baseinstalldir="/" name="Object.php" role="php">
        <tasks:replace from="@package_version@" to="version" type="package-info" />
       </file>
+      <file baseinstalldir="/" name="Resource.php" role="php">
+       <tasks:replace from="@package_version@" to="version" type="package-info" />
+      </file>
       <file baseinstalldir="/" name="Scalar.php" role="php">
        <tasks:replace from="@package_version@" to="version" type="package-info" />
       </file>
-      <file baseinstalldir="/" name="String.php" role="php">
+      <file baseinstalldir="/" name="SplObjectStorage.php" role="php">
        <tasks:replace from="@package_version@" to="version" type="package-info" />
       </file>
       <file baseinstalldir="/" name="Type.php" role="php">
@@ -110,6 +125,9 @@
        <tasks:replace from="@package_version@" to="version" type="package-info" />
       </file>
       <file baseinstalldir="/" name="ClassHasStaticAttribute.php" role="php">
+       <tasks:replace from="@package_version@" to="version" type="package-info" />
+      </file>
+      <file baseinstalldir="/" name="Composite.php" role="php">
        <tasks:replace from="@package_version@" to="version" type="package-info" />
       </file>
       <file baseinstalldir="/" name="Count.php" role="php">
@@ -189,6 +207,9 @@
       </file>
      </dir>
      <dir name="Error">
+      <file baseinstalldir="/" name="Deprecated.php" role="php">
+       <tasks:replace from="@package_version@" to="version" type="package-info" />
+      </file>
       <file baseinstalldir="/" name="Notice.php" role="php">
        <tasks:replace from="@package_version@" to="version" type="package-info" />
       </file>
@@ -210,6 +231,12 @@
       <tasks:replace from="@package_version@" to="version" type="package-info" />
      </file>
      <file baseinstalldir="/" name="Assert.php" role="php">
+      <tasks:replace from="@package_version@" to="version" type="package-info" />
+     </file>
+     <file baseinstalldir="/" name="ComparatorFactory.php" role="php">
+      <tasks:replace from="@package_version@" to="version" type="package-info" />
+     </file>
+     <file baseinstalldir="/" name="Comparator.php" role="php">
       <tasks:replace from="@package_version@" to="version" type="package-info" />
      </file>
      <file baseinstalldir="/" name="ComparisonFailure.php" role="php">
