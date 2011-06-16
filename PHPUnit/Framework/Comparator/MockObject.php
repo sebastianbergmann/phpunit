@@ -63,7 +63,6 @@ class PHPUnit_Framework_Comparator_MockObject extends PHPUnit_Framework_Comparat
      * @param  mixed $expected The first value to compare
      * @param  mixed $actual The second value to compare
      * @return boolean
-     * @since  Method available since Release 3.6.0
      */
     public function accepts($expected, $actual)
     {
@@ -76,7 +75,6 @@ class PHPUnit_Framework_Comparator_MockObject extends PHPUnit_Framework_Comparat
      *
      * @param  object $object
      * @return array
-     * @since  Method available since Release 3.6.0
      */
     protected function toArray($object)
     {

@@ -107,7 +107,6 @@ abstract class PHPUnit_Framework_Constraint_Composite extends PHPUnit_Framework_
      * Counts the number of constraint elements.
      *
      * @return integer
-     * @since  Method available since Release 3.4.0
      */
     public function count()
     {

@@ -88,7 +88,6 @@ class PHPUnit_Framework_Comparator_Scalar extends PHPUnit_Framework_Comparator
      * @throws PHPUnit_Framework_ComparisonFailure Thrown when the comparison
      *                           fails. Contains information about the
      *                           specific errors that lead to the failure.
-     * @since  Method available since Release 3.6.0
      */
     public function assertEquals($expected, $actual, $delta = 0, $canonicalize = FALSE, $ignoreCase = FALSE)
     {

@@ -63,7 +63,6 @@ class PHPUnit_Framework_Comparator_SplObjectStorage extends PHPUnit_Framework_Co
      * @param  mixed $expected The first value to compare
      * @param  mixed $actual The second value to compare
      * @return boolean
-     * @since  Method available since Release 3.6.0
      */
     public function accepts($expected, $actual)
     {
@@ -84,7 +83,6 @@ class PHPUnit_Framework_Comparator_SplObjectStorage extends PHPUnit_Framework_Co
      * @throws PHPUnit_Framework_ComparisonFailure Thrown when the comparison
      *                           fails. Contains information about the
      *                           specific errors that lead to the failure.
-     * @since  Method available since Release 3.6.0
      */
     public function assertEquals($expected, $actual, $delta = 0, $canonicalize = FALSE, $ignoreCase = FALSE)
     {
