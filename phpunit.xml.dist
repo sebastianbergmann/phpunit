@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<phpunit backupGlobals="false">
+<phpunit backupGlobals="false" bootstrap="mockCoverageShutdown.php">
   <php>
     <const name="PHPUNIT_TESTSUITE" value="true"/>
   </php>
@@ -9,6 +9,7 @@
     <testsuite name="PHPUnit Mock Objects">
       <directory suffix=".phpt">Tests/MockObject</directory>
       <file>Tests/MockObjectTest.php</file>
+      <file>Tests/GeneratorTest.php</file>
     </testsuite>
   </testsuites>
 
