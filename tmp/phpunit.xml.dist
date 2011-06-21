@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<phpunit backupGlobals="false" bootstrap="mockCoverageShutdown.php">
+<phpunit backupGlobals="false">
   <php>
     <const name="PHPUNIT_TESTSUITE" value="true"/>
   </php>
