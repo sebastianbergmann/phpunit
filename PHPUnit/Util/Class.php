@@ -147,6 +147,7 @@ class PHPUnit_Util_Class
             }
 
             $default  = '';
+            $reference = '';
             $typeHint = '';
 
             if (!$forCall) {
@@ -170,19 +171,16 @@ class PHPUnit_Util_Class
                     $value   = $parameter->getDefaultValue();
                     $default = ' = ' . var_export($value, TRUE);
                 }
-
                 else if ($parameter->isOptional()) {
                     $default = ' = null';
                 }
+
+                if ($parameter->isPassedByReference()) {
+                    $reference = '&';
+                }
             }
 
-            $ref = '';
-
-            if ($parameter->isPassedByReference()) {
-                $ref = '&';
-            }
-
-            $parameters[] = $typeHint . $ref . $name . $default;
+            $parameters[] = $typeHint . $reference . $name . $default;
         }
 
         return join(', ', $parameters);
