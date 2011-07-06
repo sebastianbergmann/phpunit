@@ -48,6 +48,11 @@ The [#phpunit channel on the Freenode IRC network](irc://freenode.net/phpunit) i
 Using PHPUnit From a Git Checkout
 ---------------------------------
 
+First you'll need eZ Components' ConsoleTools:
+
+    pear channel-discover components.ez.no
+    pear install ezc/ConsoleTools
+
 The following commands can be used to perform the initial checkout of PHPUnit and its dependencies from Git:
 
     mkdir phpunit && cd phpunit
