@@ -44,7 +44,6 @@
 
 require_once 'File/Iterator/Autoload.php';
 require_once 'PHP/CodeCoverage/Autoload.php';
-require_once 'PHP/Invoker/Autoload.php';
 require_once 'PHP/Timer/Autoload.php';
 require_once 'PHPUnit/Framework/MockObject/Autoload.php';
 require_once 'PHPUnit/Extensions/Database/Autoload.php';
@@ -204,6 +203,10 @@ function phpunit_autoload($class = NULL)
 }
 
 spl_autoload_register('phpunit_autoload');
+
+if (PHPUnit_Util_Filesystem::fileExistsInIncludePath('PHP/Invoker/Autoload.php')) {
+    require_once 'PHP/Invoker/Autoload.php';
+}
 
 if (PHPUnit_Util_Filesystem::fileExistsInIncludePath('PHPUnit/Extensions/SeleniumTestCase/Autoload.php')) {
     require_once 'PHPUnit/Extensions/SeleniumTestCase/Autoload.php';
