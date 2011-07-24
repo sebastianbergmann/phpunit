@@ -37,20 +37,6 @@
        <tasks:replace from="@package_version@" to="version" type="package-info" />
       </file>
      </dir>
-     <dir name="TicketListener">
-      <file baseinstalldir="/" name="Fogbugz.php" role="php">
-       <tasks:replace from="@package_version@" to="version" type="package-info" />
-      </file>
-      <file baseinstalldir="/" name="GitHub.php" role="php">
-       <tasks:replace from="@package_version@" to="version" type="package-info" />
-      </file>
-      <file baseinstalldir="/" name="GoogleCode.php" role="php">
-       <tasks:replace from="@package_version@" to="version" type="package-info" />
-      </file>
-      <file baseinstalldir="/" name="Trac.php" role="php">
-       <tasks:replace from="@package_version@" to="version" type="package-info" />
-      </file>
-     </dir>
      <file baseinstalldir="/" name="GroupTestSuite.php" role="php">
       <tasks:replace from="@package_version@" to="version" type="package-info" />
      </file>
@@ -497,7 +483,7 @@
     <min>5.2.7</min>
    </php>
    <pearinstaller>
-    <min>1.9.2</min>
+    <min>1.9.3</min>
    </pearinstaller>
    <package>
     <name>DbUnit</name>
@@ -534,10 +520,6 @@
     <channel>pear.symfony-project.com</channel>
     <min>1.0.2</min>
    </package>
-   <package>
-    <name>XML_RPC2</name>
-    <channel>pear.php.net</channel>
-   </package>
    <extension>
     <name>dom</name>
    </extension>
@@ -557,9 +539,6 @@
     <channel>pear.phpunit.de</channel>
     <min>1.0.0</min>
    </package>
-   <extension>
-    <name>curl</name>
-   </extension>
    <extension>
     <name>dbus</name>
    </extension>
