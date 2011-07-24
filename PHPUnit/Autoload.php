@@ -48,8 +48,6 @@ require_once 'PHP/Invoker/Autoload.php';
 require_once 'PHP/Timer/Autoload.php';
 require_once 'PHPUnit/Framework/MockObject/Autoload.php';
 require_once 'PHPUnit/Extensions/Database/Autoload.php';
-require_once 'PHPUnit/Extensions/SeleniumTestCase/Autoload.php';
-require_once 'PHPUnit/Extensions/Story/Autoload.php';
 require_once 'Text/Template/Autoload.php';
 
 function phpunit_autoload($class = NULL)
@@ -67,10 +65,6 @@ function phpunit_autoload($class = NULL)
           'phpunit_extensions_repeatedtest' => '/Extensions/RepeatedTest.php',
           'phpunit_extensions_testdecorator' => '/Extensions/TestDecorator.php',
           'phpunit_extensions_ticketlistener' => '/Extensions/TicketListener.php',
-          'phpunit_extensions_ticketlistener_fogbugz' => '/Extensions/TicketListener/Fogbugz.php',
-          'phpunit_extensions_ticketlistener_github' => '/Extensions/TicketListener/GitHub.php',
-          'phpunit_extensions_ticketlistener_googlecode' => '/Extensions/TicketListener/GoogleCode.php',
-          'phpunit_extensions_ticketlistener_trac' => '/Extensions/TicketListener/Trac.php',
           'phpunit_framework_assert' => '/Framework/Assert.php',
           'phpunit_framework_assertionfailederror' => '/Framework/AssertionFailedError.php',
           'phpunit_framework_comparator' => '/Framework/Comparator.php',
@@ -208,3 +202,11 @@ function phpunit_autoload($class = NULL)
 }
 
 spl_autoload_register('phpunit_autoload');
+
+if (PHPUnit_Util_Filesystem::fileExistsInIncludePath('PHPUnit/Extensions/SeleniumTestCase/Autoload.php')) {
+    require_once 'PHPUnit/Extensions/SeleniumTestCase/Autoload.php';
+}
+
+if (PHPUnit_Util_Filesystem::fileExistsInIncludePath('PHPUnit/Extensions/Story/Autoload.php')) {
+    require_once 'PHPUnit/Extensions/Story/Autoload.php';
+}
