@@ -109,7 +109,7 @@ abstract class PHPUnit_Util_PHP
             if (!is_readable(self::$phpBinary)) {
                 self::$phpBinary = 'php';
             } else {
-                self::$phpBinary = escapeshellarg(self::$phpBinary);
+                self::$phpBinary = escapeshellcmd(self::$phpBinary);
             }
         }
 

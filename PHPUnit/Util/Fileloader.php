@@ -127,7 +127,7 @@ class PHPUnit_Util_Fileloader
         $command = PHPUnit_Util_PHP::getPhpBinary();
 
         if (DIRECTORY_SEPARATOR == '\\') {
-            $command = escapeshellarg($command);
+            $command = escapeshellcmd($command);
         }
 
         $command .= ' -l ' . escapeshellarg($filename);
