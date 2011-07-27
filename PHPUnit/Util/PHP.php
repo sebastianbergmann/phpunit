@@ -107,7 +107,7 @@ abstract class PHPUnit_Util_PHP
             if (!is_readable($this->phpBinary)) {
                 $this->phpBinary = 'php';
             } else {
-                $this->phpBinary = escapeshellarg($this->phpBinary);
+                $this->phpBinary = escapeshellcmd($this->phpBinary);
             }
         }
 
