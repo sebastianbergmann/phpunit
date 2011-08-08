@@ -133,6 +133,57 @@ EOF
         $this->fail();
     }
 
+    public function testConstraintArrayHasKeyWithConstraint_dataProvider() {
+        return array(
+            array(
+                'StringEndsWith',
+                'foobar',
+                array(uniqid() . 'foobar' => 'something', 'something' => 'else'),
+                'has a key that ends with "foobar"'
+            ),
+            array(
+                'GreaterThan',
+                10,
+                array(9 => 'something', 11 => 'else'),
+                'has a key that is greater than 10'
+            )
+        );
+    }
+
+    /**
+     * @dataProvider testConstraintArrayHasKeyWithConstraint_dataProvider
+     * @covers PHPUnit_Framework_Constraint_ArrayHasKey
+     */
+    public function testConstraintArrayHasKeyWithConstraint($constraintClass, $constraintValue, $testTrueArray, $expectedError)
+    {
+        $constraintClass = 'PHPUnit_Framework_Constraint_' . $constraintClass;
+        $constraint = PHPUnit_Framework_Assert::arrayHasKey(new $constraintClass($constraintValue));
+
+        $this->assertTrue($constraint->evaluate($testTrueArray, '', TRUE));
+        $this->assertFalse($constraint->evaluate(array(), '', TRUE));
+        $this->assertEquals($expectedError, $constraint->toString());
+        $this->assertEquals(1, count($constraint));
+
+        try {
+            $constraint->evaluate(array(), '');
+        }
+
+        catch (PHPUnit_Framework_ExpectationFailedException $e) {
+            $this->assertEquals(
+              <<<EOF
+Failed asserting that an array $expectedError.
+
+EOF
+              ,
+              PHPUnit_Framework_TestFailure::exceptionToString($e)
+            );
+
+            return;
+        }
+
+        $this->fail();
+    }
+
     /**
      * @covers PHPUnit_Framework_Constraint_ArrayHasKey
      * @covers PHPUnit_Framework_Constraint_Not

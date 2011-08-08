@@ -65,7 +65,7 @@
 class PHPUnit_Framework_Constraint_ArrayHasKey extends PHPUnit_Framework_Constraint
 {
     /**
-     * @var integer|string
+     * @var integer|string|PHPUnit_Framework_Constraint
      */
     protected $key;
 
@@ -86,7 +86,18 @@ class PHPUnit_Framework_Constraint_ArrayHasKey extends PHPUnit_Framework_Constra
      */
     protected function matches($other)
     {
-        return array_key_exists($this->key, $other);
+        if (is_object($this->key)) {
+            if (is_a($this->key, 'PHPUnit_Framework_Constraint')) {
+                foreach (array_keys($other) as $arKey) {
+                    if ($this->key->evaluate($arKey, '', TRUE) == TRUE) {
+                        return TRUE;
+                    }
+                }
+                return FALSE;
+            }
+        } else {
+            return array_key_exists($this->key, $other);
+        }
     }
 
     /**
@@ -96,7 +107,11 @@ class PHPUnit_Framework_Constraint_ArrayHasKey extends PHPUnit_Framework_Constra
      */
     public function toString()
     {
-        return 'has the key ' . PHPUnit_Util_Type::export($this->key);
+        if (is_object($this->key)) {
+            return 'has a key that ' . $this->key->toString();
+        } else {
+            return 'has the key ' . PHPUnit_Util_Type::export($this->key);
+        }
     }
 
     /**

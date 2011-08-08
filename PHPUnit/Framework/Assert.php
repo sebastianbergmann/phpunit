@@ -74,7 +74,12 @@ abstract class PHPUnit_Framework_Assert
      */
     public static function assertArrayHasKey($key, array $array, $message = '')
     {
-        if (!(is_integer($key) || is_string($key))) {
+        if (!(
+            (is_object($key)
+              && !(is_subclass_of($key, 'PHPUnit_Framework_StringConstraint') || is_subclass_of($key, 'PHPUnit_Framework_IntegerConstraint'))
+            )
+            || is_integer($key) || is_string($key)
+          )) {
             throw PHPUnit_Util_InvalidArgumentHelper::factory(
               1, 'integer or string'
             );

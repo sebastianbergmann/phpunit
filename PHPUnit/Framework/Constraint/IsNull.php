@@ -57,7 +57,7 @@
  * @link       http://www.phpunit.de/
  * @since      Class available since Release 3.3.0
  */
-class PHPUnit_Framework_Constraint_IsNull extends PHPUnit_Framework_Constraint
+class PHPUnit_Framework_Constraint_IsNull extends PHPUnit_Framework_Constraint implements PHPUnit_Framework_NumericConstraint
 {
     /**
      * Evaluates the constraint for parameter $other. Returns TRUE if the

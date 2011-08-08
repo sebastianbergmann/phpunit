@@ -58,7 +58,7 @@
  * @link       http://www.phpunit.de/
  * @since      Class available since Release 3.0.0
  */
-class PHPUnit_Framework_Constraint_GreaterThan extends PHPUnit_Framework_Constraint
+class PHPUnit_Framework_Constraint_GreaterThan extends PHPUnit_Framework_Constraint implements PHPUnit_Framework_NumericConstraint
 {
     /**
      * @var numeric

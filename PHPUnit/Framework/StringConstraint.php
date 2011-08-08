@@ -35,9 +35,8 @@
  * POSSIBILITY OF SUCH DAMAGE.
  *
  * @package    PHPUnit
- * @subpackage Framework_Constraint
+ * @subpackage Framework
  * @author     Sebastian Bergmann <sebastian@phpunit.de>
- * @author     Bernhard Schussek <bschussek@2bepublished.at>
  * @copyright  2002-2011 Sebastian Bergmann <sebastian@phpunit.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @link       http://www.phpunit.de/
@@ -45,79 +44,17 @@
  */
 
 /**
- * Constraint that asserts that the string it is evaluated for contains
- * a given string.
- *
- * Uses strpos() to find the position of the string in the input, if not found
- * the evaluaton fails.
- *
- * The sub-string is passed in the constructor.
+ * Interface for constraints related to strings
  *
  * @package    PHPUnit
- * @subpackage Framework_Constraint
- * @author     Sebastian Bergmann <sebastian@phpunit.de>
- * @author     Bernhard Schussek <bschussek@2bepublished.at>
- * @copyright  2002-2011 Sebastian Bergmann <sebastian@phpunit.de>
+ * @subpackage Framework
+ * @author     Andreas Wolf <andreas.wolf@ikt-werk.de>
+ * @copyright  2011 Andreas Wolf <andreas.wolf@ikt-werk.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    Release: @package_version@
  * @link       http://www.phpunit.de/
- * @since      Class available since Release 3.0.0
+ * @since      Interface available since Release 3.6.0
  */
-class PHPUnit_Framework_Constraint_StringContains extends PHPUnit_Framework_Constraint implements PHPUnit_Framework_StringConstraint
+interface PHPUnit_Framework_StringConstraint 
 {
-    /**
-     * @var string
-     */
-    protected $string;
-
-    /**
-     * @var boolean
-     */
-    protected $ignoreCase;
-
-    /**
-     * @param string  $string
-     * @param boolean $ignoreCase
-     */
-    public function __construct($string, $ignoreCase = FALSE)
-    {
-        $this->string     = $string;
-        $this->ignoreCase = $ignoreCase;
-    }
-
-    /**
-     * Evaluates the constraint for parameter $other. Returns TRUE if the
-     * constraint is met, FALSE otherwise.
-     *
-     * @param mixed $other Value or object to evaluate.
-     * @return bool
-     */
-    protected function matches($other)
-    {
-        if ($this->ignoreCase) {
-            return stripos($other, $this->string) !== FALSE;
-        } else {
-            return strpos($other, $this->string) !== FALSE;
-        }
-    }
-
-    /**
-     * Returns a string representation of the constraint.
-     *
-     * @return string
-     */
-    public function toString()
-    {
-        if ($this->ignoreCase) {
-            $string = strtolower($this->string);
-        } else {
-            $string = $this->string;
-        }
-
-        return sprintf(
-          'contains "%s"',
-
-          $string
-        );
-    }
 }
