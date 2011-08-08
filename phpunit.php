@@ -43,8 +43,4 @@ if (strpos('@php_bin@', '@php_bin') === 0) {
 
 require 'PHPUnit/Autoload.php';
 
-if (extension_loaded('xdebug')) {
-    xdebug_disable();
-}
-
 PHPUnit_TextUI_Command::main();
