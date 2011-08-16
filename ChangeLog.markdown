@@ -8,6 +8,7 @@ PHPUnit 3.5.15
 
 * Fixed GH-260: `assertEqualXmlStructure()` emits PHP notice.
 * XML_RPC2, which is only used by the Trac ticket listener, is now correctly marked as an optional dependency.
+* The PHPUnit test runner no longer calls `xdebug_disable()`.
 
 PHPUnit 3.5.14
 --------------
