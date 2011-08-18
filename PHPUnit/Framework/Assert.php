@@ -2050,6 +2050,35 @@ abstract class PHPUnit_Framework_Assert
     }
 
     /**
+     * Check than exception with optional message trown during execution of $runnable closure
+     * Message
+     *
+     * @return void
+     * @param Closure $runnable
+     * @param string $exceptionClass
+     * @param string|null $exceptionMessage
+     * @param string|null $message
+     */
+    public static function assertException(Closure $runnable, $exceptionClass, $exceptionMessage = null, $message = null)
+    {
+        $constraint = new PHPUnit_Framework_Constraint_Exception($exceptionClass, $exceptionMessage);
+        self::assertThat($runnable, $constraint, $message);
+    }
+
+    /**
+     * Check than no exception trown during execution of $runnable closure
+     *
+     * @return void
+     * @param Closure $runnable
+     * @param string|null $message
+     */
+    public static function assertNotException(Closure $runnable, $message = null)
+    {
+        $constraint = new PHPUnit_Framework_Constraint_NotException();
+        self::assertThat($runnable, $constraint, $message);
+    }
+
+    /**
      * Evaluates a PHPUnit_Framework_Constraint matcher object.
      *
      * @param  mixed                        $value
