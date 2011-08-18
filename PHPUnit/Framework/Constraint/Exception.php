@@ -65,7 +65,7 @@ class PHPUnit_Framework_Constraint_Exception extends PHPUnit_Framework_Constrain
 	 * @param  mixed $other Evaluated value or object.
 	 */
 	protected function failureDescription($other) {
-		return $this->toString() . ' should throw' . (null === $this->description ? '' : ' (' . $this->description . ')');
+		return $this->toString() . ' should throw' . (null === $this->description ? '' : '(' . $this->description . ')');
 	}
 
 }
