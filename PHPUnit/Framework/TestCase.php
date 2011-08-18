@@ -291,6 +291,31 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
     private $outputBufferingActive = FALSE;
 
     /**
+     * @var string
+     */
+    private $output = '';
+
+    /**
+     * @var string
+     */
+    private $outputExpectedRegex = NULL;
+
+    /**
+     * @var string
+     */
+    private $outputExpectedString = NULL;
+
+    /**
+     * @var mixed
+     */
+    private $outputCallback = FALSE;
+
+    /**
+     * @var boolean
+     */
+    private $outputBufferingActive = FALSE;
+
+    /**
      * Constructs a test case with the given name.
      *
      * @param  string $name
