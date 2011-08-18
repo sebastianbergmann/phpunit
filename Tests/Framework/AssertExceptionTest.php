@@ -70,14 +70,14 @@ class Framework_AssertExceptionsTest extends PHPUnit_Framework_TestCase
     {
         $exception = null;
         try {
-            self::assertException(self::$closure, 'RuntimeException');
+            self::assertException(self::$closure, 'PHPUnit_Framework_Error');
         } catch (Exception $e) {
             $exception = $e;
         }
 
         self::assertInstanceOf('PHPUnit_Framework_AssertionFailedError', $exception);
         self::assertContains('exception class not matches', $exception->getMessage());
-        self::assertContains('exception <RuntimeException> should throw', $exception->getMessage());
+        self::assertContains('exception <PHPUnit_Framework_Error> should throw', $exception->getMessage());
     }
 
     public function testAssertNotExceptionShouldPassWhenNoExceptionThrown()
