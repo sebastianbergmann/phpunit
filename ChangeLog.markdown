@@ -7,8 +7,10 @@ PHPUnit 3.5.15
 --------------
 
 * Fixed GH-260: `assertEqualXmlStructure()` emits PHP notice.
+* Fixed class name detection when extending from another test suite.
 * XML_RPC2, which is only used by the Trac ticket listener, is now correctly marked as an optional dependency.
 * The PHPUnit test runner no longer calls `xdebug_disable()`.
+* `PHPUnit_Util_Fileloader` and `PHPUnit_Util_PHP` now use `escapeshellcmd()` instead of `escapeshellarg()` for PHP binary.
 
 PHPUnit 3.5.14
 --------------
