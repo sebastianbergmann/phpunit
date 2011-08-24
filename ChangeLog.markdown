@@ -8,8 +8,9 @@ PHPUnit 3.6.0
 
 * Added `assertCount()` and `assertNotCount()` to assert the number of elements in an array (or `Countable` or `Iterator` objects).
 * Added `assertSameSize()` and `assertNotSameSize()` to assert that the size of two arrays (or `Countable` or `Iterator` objects) is the same.
-* Added `returnSelf()` to ease the mocking and stubbing of fluent interfaces.
+* Added `returnSelf()` to ease the stubbing and mocking of fluent interfaces.
 * Added an option to disable the check for object identity in `assertContains()` and related methods.
+* Implemented comparator framework (used by `assertEquals()`, for instance) and improved test failure output.
 * Implemented GH-63: Invalid `@covers` annotations should produce a test error instead of aborting PHPUnit.
 * Implemented GH-82: Test Skeleton Generator should create `@covers` annotations.
 * Implemented GH-83: Test errors and failures as well as incomplete and skipped tests now get coloured letters in the test progress.
