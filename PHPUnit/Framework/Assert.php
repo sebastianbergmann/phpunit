@@ -1925,7 +1925,7 @@ abstract class PHPUnit_Framework_Assert
      *
      * // Matcher that asserts that there is a "span" tag with content matching
      * // the regular expression pattern.
-     * $matcher = array('tag' => 'span', 'content' => '/Try P(HP|ython)/');
+     * $matcher = array('tag' => 'span', 'content' => 'regexp:/Try P(HP|ython)/');
      *
      * // Matcher that asserts that there is a "span" with an "list" class
      * // attribute.
