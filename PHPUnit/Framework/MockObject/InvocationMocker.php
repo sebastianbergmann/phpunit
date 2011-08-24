@@ -82,7 +82,17 @@ class PHPUnit_Framework_MockObject_InvocationMocker implements PHPUnit_Framework
      */
     public function hasMatchers()
     {
-        return !empty($this->matchers);
+        if (empty($this->matchers)) {
+            return FALSE;
+        }
+
+        foreach ($this->matchers as $matcher) {
+            if (!$matcher instanceof PHPUnit_Framework_MockObject_Matcher_AnyInvokedCount) {
+                return TRUE;
+            }
+        }
+
+        return FALSE;
     }
 
     /**
