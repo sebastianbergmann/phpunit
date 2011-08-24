@@ -9,6 +9,7 @@
     <testsuite name="PHPUnit Mock Objects">
       <directory suffix=".phpt">Tests/MockObject</directory>
       <file>Tests/MockObjectTest.php</file>
+      <file>Tests/GeneratorTest.php</file>
     </testsuite>
   </testsuites>
 

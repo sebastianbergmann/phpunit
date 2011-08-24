@@ -162,6 +162,16 @@ class PHPUnit_Framework_MockObject_Generator
         if (!is_array($methods) && !is_null($methods)) {
             throw new InvalidArgumentException;
         }
+        foreach($methods as $method) {
+            if(!preg_match('~[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*~', $method)) {
+                throw new PHPUnit_Framework_Exception(
+                  sprintf(
+                    'Mock function "%s" can not be created. Not a not valid function name',
+                    $method
+                  )
+                );
+            }
+        }
 
         if ($mockClassName != '' && class_exists($mockClassName, FALSE)) {
             throw new PHPUnit_Framework_Exception(
