@@ -1,12 +1,9 @@
 <?php
-
-class Framework_GeneratorTest extends PHPUnit_Framework_TestCase 
+class Framework_MockObject_GeneratorTest extends PHPUnit_Framework_TestCase
 {
-
     /**
      * @covers PHPUnit_Framework_MockObject_Generator::getMock
      * @expectedException PHPUnit_Framework_Exception
-     * @expectedExceptionMessage function "0"
      */
     public function testGetMockFailsWhenInvalidFunctionNameIsPassedInAsAFunctionToMock()
     {
@@ -17,5 +14,4 @@ class Framework_GeneratorTest extends PHPUnit_Framework_TestCase
         $mock = PHPUnit_Framework_MockObject_Generator::getMock('stdClass', array('testFunction'));
         $this->assertTrue(method_exists($mock, 'testFunction'));
     }
-
 }
