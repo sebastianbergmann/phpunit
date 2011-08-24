@@ -111,7 +111,8 @@ class PHPUnit_Util_GlobalState
         foreach (array_keys($GLOBALS) as $key) {
             if ($key != 'GLOBALS' &&
                 !in_array($key, $superGlobalArrays) &&
-                !in_array($key, $blacklist)) {
+                !in_array($key, $blacklist) &&
+                !is_callable($GLOBALS[$key])) {
                 self::$globals['GLOBALS'][$key] = serialize($GLOBALS[$key]);
             }
         }
@@ -230,6 +231,10 @@ class PHPUnit_Util_GlobalState
             if (isset($GLOBALS[$superGlobalArray]) &&
                 is_array($GLOBALS[$superGlobalArray])) {
                 foreach (array_keys($GLOBALS[$superGlobalArray]) as $key) {
+                    if (is_callable($GLOBALS[$superGlobalArray][$key])) {
+                        continue;
+                    }
+
                     $result .= sprintf(
                       '$GLOBALS[\'%s\'][\'%s\'] = %s;' . "\n",
                       $superGlobalArray,
@@ -245,7 +250,7 @@ class PHPUnit_Util_GlobalState
         $blacklist[] = '_PEAR_Config_instance';
 
         foreach (array_keys($GLOBALS) as $key) {
-            if (!in_array($key, $blacklist)) {
+            if (!in_array($key, $blacklist) && !is_callable($GLOBALS[$key])) {
                 $result .= sprintf(
                   '$GLOBALS[\'%s\'] = %s;' . "\n",
                   $key,
@@ -299,7 +304,11 @@ class PHPUnit_Util_GlobalState
                         if (!isset($blacklist[$declaredClasses[$i]]) ||
                            !in_array($name, $blacklist[$declaredClasses[$i]])) {
                             $attribute->setAccessible(TRUE);
-                            $backup[$name] = serialize($attribute->getValue());
+                            $value = $attribute->getValue();
+
+                            if (!is_callable($value)) {
+                                $backup[$name] = serialize($value);
+                            }
                         }
                     }
                 }
