@@ -912,7 +912,10 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
     protected function verifyMockObjects()
     {
         foreach ($this->mockObjects as $mockObject) {
-            $this->numAssertions++;
+            if ($mockObject->__phpunit_hasMatchers()) {
+                $this->numAssertions++;
+            }
+
             $mockObject->__phpunit_verify();
             $mockObject->__phpunit_cleanup();
         }
