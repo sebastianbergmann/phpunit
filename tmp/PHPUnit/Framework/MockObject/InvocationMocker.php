@@ -78,6 +78,14 @@ class PHPUnit_Framework_MockObject_InvocationMocker implements PHPUnit_Framework
     }
 
     /**
+     * @since Method available since Release 1.1.0
+     */
+    public function hasMatchers()
+    {
+        return !empty($this->matchers);
+    }
+
+    /**
      * @param  mixed $id
      * @return boolean|null
      */

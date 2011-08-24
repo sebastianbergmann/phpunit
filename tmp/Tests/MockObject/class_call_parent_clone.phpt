@@ -60,6 +60,12 @@ class MockFoo extends Foo implements PHPUnit_Framework_MockObject_MockObject
         return self::$staticInvocationMocker;
     }
 
+    public function __phpunit_hasMatchers()
+    {
+        return self::__phpunit_getStaticInvocationMocker()->hasMatchers() ||
+               $this->__phpunit_getInvocationMocker()->hasMatchers();
+    }
+
     public function __phpunit_verify()
     {
         self::__phpunit_getStaticInvocationMocker()->verify();
