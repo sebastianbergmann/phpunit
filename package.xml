@@ -9,8 +9,8 @@
                       http://pear.php.net/dtd/package-2.0.xsd">
  <name>PHPUnit</name>
  <channel>pear.phpunit.de</channel>
- <summary>Regression testing framework for unit tests.</summary>
- <description>PHPUnit is a regression testing framework used by the developer who implements unit tests in PHP. This is the version to be used with PHP 5.</description>
+ <summary>The PHP Unit Testing framework.</summary>
+ <description>The PHP Unit Testing framework.</description>
  <lead>
   <name>Sebastian Bergmann</name>
   <user>sb</user>
