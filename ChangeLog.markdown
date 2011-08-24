@@ -3,6 +3,11 @@ PHPUnit 3.5
 
 This is the list of changes for the PHPUnit 3.5 release series.
 
+PHPUnit 3.5.16
+--------------
+
+* `PHPUnit_Util_GlobalState` no longer tries to `serialize()` anonymous functions.
+
 PHPUnit 3.5.15
 --------------
 
