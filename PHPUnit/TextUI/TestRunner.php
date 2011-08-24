@@ -118,24 +118,6 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
     }
 
     /**
-     * Runs a single test and waits until the user types RETURN.
-     *
-     * @param  PHPUnit_Framework_Test $suite
-     */
-    public static function runAndWait(PHPUnit_Framework_Test $suite)
-    {
-        $aTestRunner = new PHPUnit_TextUI_TestRunner;
-
-        $aTestRunner->doRun(
-          $suite,
-          array(
-            'wait' => TRUE
-          )
-        );
-
-    }
-
-    /**
      * @return PHPUnit_Framework_TestResult
      */
     protected function createTestResult()
@@ -363,25 +345,7 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
             }
         }
 
-        $this->pause($arguments['wait']);
-
         return $result;
-    }
-
-    /**
-     * @param  boolean $wait
-     */
-    protected function pause($wait)
-    {
-        if (!$wait) {
-            return;
-        }
-
-        if ($this->printer instanceof PHPUnit_TextUI_ResultPrinter) {
-            $this->printer->printWaitPrompt();
-        }
-
-        fgets(STDIN);
     }
 
     /**
@@ -469,7 +433,6 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
         $arguments['debug']     = isset($arguments['debug'])     ? $arguments['debug']     : FALSE;
         $arguments['filter']    = isset($arguments['filter'])    ? $arguments['filter']    : FALSE;
         $arguments['listeners'] = isset($arguments['listeners']) ? $arguments['listeners'] : array();
-        $arguments['wait']      = isset($arguments['wait'])      ? $arguments['wait']      : FALSE;
 
         if (isset($arguments['configuration'])) {
             $arguments['configuration']->handlePHPConfiguration();

@@ -113,8 +113,7 @@ class PHPUnit_TextUI_Command
       'printer=' => NULL,
       'static-backup' => NULL,
       'verbose' => NULL,
-      'version' => NULL,
-      'wait' => NULL
+      'version' => NULL
     );
 
     /**
@@ -486,11 +485,6 @@ class PHPUnit_TextUI_Command
                 case '--version': {
                     PHPUnit_TextUI_TestRunner::printVersionString();
                     exit(PHPUnit_TextUI_TestRunner::SUCCESS_EXIT);
-                }
-                break;
-
-                case '--wait': {
-                    $this->arguments['wait'] = TRUE;
                 }
                 break;
 
@@ -921,7 +915,6 @@ Usage: phpunit [switches] UnitTest [UnitTest.php]
   --stop-on-incomplete      Stop execution upon first incomplete test.
   --strict                  Mark a test as incomplete if no assertions are made.
   -v|--verbose              Output more verbose information.
-  --wait                    Waits for a keystroke after each test.
 
   --skeleton-class          Generate Unit class for UnitTest in UnitTest.php.
   --skeleton-test           Generate UnitTest class for Unit in Unit.php.
