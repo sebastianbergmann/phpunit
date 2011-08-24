@@ -3,6 +3,11 @@ PHPUnit_MockObject 1.0
 
 This is the list of changes for the PHPUnit_MockObject 1.0 release series.
 
+PHPUnit_MockObject 1.0.10
+-------------------------
+
+* Fixed GH-62: Generation of invalid PHP code when `getMock()` is called with invalid arguments.
+
 PHPUnit_MockObject 1.0.9
 ------------------------
 
