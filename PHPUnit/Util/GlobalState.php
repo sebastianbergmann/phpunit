@@ -106,7 +106,8 @@ class PHPUnit_Util_GlobalState
         foreach (array_keys($GLOBALS) as $key) {
             if ($key != 'GLOBALS' &&
                 !in_array($key, $superGlobalArrays) &&
-                !in_array($key, $blacklist)) {
+                !in_array($key, $blacklist) &&
+                gettype($GLOBALS[$key]) !== 'object') {
                 self::$globals['GLOBALS'][$key] = serialize($GLOBALS[$key]);
             }
         }
