@@ -1149,6 +1149,34 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
     }
 
     /**
+     * Returns a fake object for the specified class to be used as stub.
+     *
+     * @param  string  $originalClassName
+     * @param  array   $methods
+     * @param  array   $arguments
+     * @param  string  $mockClassName
+     * @param  boolean $callOriginalConstructor
+     * @param  boolean $callOriginalClone
+     * @param  boolean $callAutoload
+     * @return PHPUnit_Framework_MockObject_MockObject
+     * @throws InvalidArgumentException
+     */
+    public function getStub($originalClassName, $methods = array(), array $arguments = array(), $mockClassName = '', $callOriginalConstructor = TRUE, $callOriginalClone = TRUE, $callAutoload = TRUE)
+    {
+        $mockObject = PHPUnit_Framework_MockObject_Generator::getMock(
+          $originalClassName,
+          $methods,
+          $arguments,
+          $mockClassName,
+          $callOriginalConstructor,
+          $callOriginalClone,
+          $callAutoload
+        );
+
+        return $mockObject;
+    }
+
+    /**
      * Returns a mock object for the specified class.
      *
      * @param  string  $originalClassName
