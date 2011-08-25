@@ -146,9 +146,9 @@ class PHPUnit_Util_Class
                 $name .= 'arg' . $i;
             }
 
-            $default  = '';
+            $default   = '';
             $reference = '';
-            $typeHint = '';
+            $typeHint  = '';
 
             if (!$forCall) {
                 if ($parameter->isArray()) {
