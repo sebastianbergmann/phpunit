@@ -7,6 +7,7 @@ PHPUnit 3.5.16
 --------------
 
 * `PHPUnit_Util_GlobalState` no longer tries to `serialize()` anonymous functions.
+* `PHPUnit_Util_Class::getMethodParameters()` no longer generates method calls with call-time pass-by-reference.
 
 PHPUnit 3.5.15
 --------------
