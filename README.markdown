@@ -74,13 +74,3 @@ The following commands can be used to check out the appropriate branches for PHP
     cd php-token-stream && git checkout 1.0 && cd ..
     cd phpunit-mock-objects && git checkout 1.0 && cd ..
     cd phpunit-selenium && git checkout 1.0 && cd ..
-
-The following commands can be used to check out the appropriate branches for PHPUnit 3.6:
-
-    cd phpunit && git checkout master && cd ..
-    cd dbunit && git checkout master && cd ..
-    cd php-file-iterator && git checkout master && cd ..
-    cd php-code-coverage && git checkout master && cd ..
-    cd php-token-stream && git checkout master && cd ..
-    cd phpunit-mock-objects && git checkout master && cd ..
-    cd phpunit-selenium && git checkout master && cd ..
