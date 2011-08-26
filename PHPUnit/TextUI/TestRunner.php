@@ -325,15 +325,13 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
                 }
 
                 $writer = new PHP_CodeCoverage_Report_HTML(
-                  array(
-                    'title'          => $title,
-                    'charset'        => $arguments['reportCharset'],
-                    'yui'            => $arguments['reportYUI'],
-                    'highlight'      => $arguments['reportHighlight'],
-                    'lowUpperBound'  => $arguments['reportLowUpperBound'],
-                    'highLowerBound' => $arguments['reportHighLowerBound'],
-                    'generator'      => ' and PHPUnit ' . PHPUnit_Runner_Version::id()
-                  )
+                  $title,
+                  $arguments['reportCharset'],
+                  $arguments['reportYUI'],
+                  $arguments['reportHighlight'],
+                  $arguments['reportLowUpperBound'],
+                  $arguments['reportHighLowerBound'],
+                  ' and PHPUnit ' . PHPUnit_Runner_Version::id()
                 );
 
                 $writer->process(
@@ -648,6 +646,12 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
                 $this->codeCoverage->setProcessUncoveredFilesFromWhitelist(
                   $filterConfiguration['whitelist']['addUncoveredFilesFromWhitelist']
                 );
+
+                if (isset($arguments['cacheTokens'])) {
+                    $this->codeCoverage->setCacheTokens(
+                      $arguments['cacheTokens']
+                    );
+                }
 
                 if (isset($arguments['forceCoversAnnotation'])) {
                     $this->codeCoverage->setForceCoversAnnotation(
