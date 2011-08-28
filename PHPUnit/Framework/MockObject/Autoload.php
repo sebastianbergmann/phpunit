@@ -90,7 +90,7 @@ function phpunit_mockobject_autoload($class = NULL) {
     }
 
     if ($class === NULL) {
-        $result = array();
+        $result = array(__FILE__);
 
         foreach ($classes as $file) {
             $result[] = $path . $file;
