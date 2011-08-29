@@ -202,6 +202,7 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
      * @var    string
      */
     private $requiredPhp = '';
+
     /**
      * The required version of PHPUnit.
      *
