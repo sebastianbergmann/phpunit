@@ -16,6 +16,7 @@ PHPUnit 3.6.0
 * Implemented GH-83: Test errors and failures as well as incomplete and skipped tests now get coloured letters in the test progress.
 * Implemented GH-88: `@expectedException` (and `setExpectedException()`) no longer accept `Exception` as the expected exception class.
 * Implemented GH-126: Show used configuration file.
+* Implemented GH-189: Add `@requires` annotation to specify the version of PHP and/or PHPUnit required to run a test.
 * `assertEquals()` now looks for (and invokes) a `__toString()` method when an object and string are compared.
 * `setUpBeforeClass()` and `tearDownAfterClass()` are no longer invoked when all tests of the class are skipped.
 * Using the `@small` (alias for `@group small`), `@medium` (alias for `@group medium`), and `@large` (alias for `@group large`) annotations, a test can now be marked to be of a certain size. By default, a test is "small".
