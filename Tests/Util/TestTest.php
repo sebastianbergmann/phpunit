@@ -43,6 +43,7 @@
  */
 
 require_once dirname(dirname(__FILE__)) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'ExceptionTest.php';
+require_once dirname(dirname(__FILE__)) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'RequirementsTest.php';
 
 /**
  *
@@ -87,6 +88,29 @@ class Util_TestTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(
           array('class' => 'Class', 'code' => 1234, 'message' => 'Message'),
           PHPUnit_Util_Test::getExpectedException('ExceptionTest', 'testSix')
+        );
+    }
+
+    public function testGetRequirements()
+    {
+        $this->assertEquals(
+          array(),
+          PHPUnit_Util_Test::getRequirements('RequirementsTest', 'testOne')
+        );
+
+        $this->assertEquals(
+          array('PHPUnit' => '1.0'),
+          PHPUnit_Util_Test::getRequirements('RequirementsTest', 'testTwo')
+        );
+
+        $this->assertEquals(
+          array('PHP' => '2.0'),
+          PHPUnit_Util_Test::getRequirements('RequirementsTest', 'testThree')
+        );
+
+        $this->assertEquals(
+          array('PHPUnit'=>'2.0', 'PHP' => '1.0'),
+          PHPUnit_Util_Test::getRequirements('RequirementsTest', 'testFour')
         );
     }
 
