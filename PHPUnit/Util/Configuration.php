@@ -375,7 +375,11 @@ class PHPUnit_Util_Configuration
 
         foreach ($this->xpath->query('logging/log') as $log) {
             $type   = (string)$log->getAttribute('type');
-            $target = $this->toAbsolutePath((string)$log->getAttribute('target'));
+            if($type == 'coverage-cli') {
+                $target = $log->getAttribute('verbosity');
+            } else {
+                $target = $this->toAbsolutePath((string)$log->getAttribute('target'));
+            }
 
             if ($type == 'coverage-html') {
                 if ($log->hasAttribute('title')) {
@@ -420,7 +424,6 @@ class PHPUnit_Util_Configuration
 
             $result[$type] = $target;
         }
-
         return $result;
     }
 

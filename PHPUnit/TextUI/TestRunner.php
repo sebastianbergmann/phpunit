@@ -341,6 +341,22 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
                 $this->printer->write("\n");
                 unset($writer);
             }
+            
+            if (isset($arguments['coverageCli'])) {
+                $this->printer->write(
+                  "\nGenerating cli code coverage report, this may take a moment."
+                );
+                $writer = new PHP_CodeCoverage_Report_Cli(
+                  $this->printer,
+                  $title,
+                  $arguments['reportLowUpperBound'],
+                  $arguments['reportHighLowerBound']
+                );
+                $writer->process(
+                  $this->codeCoverage, $arguments['coverageCli']
+                );
+                $this->printer->write("\n");
+            }
         }
 
         return $result;
@@ -578,6 +594,11 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
             if (isset($loggingConfiguration['coverage-clover']) &&
                 !isset($arguments['coverageClover'])) {
                 $arguments['coverageClover'] = $loggingConfiguration['coverage-clover'];
+            }
+
+            if (isset($loggingConfiguration['coverage-cli']) &&
+                !isset($arguments['coverageCli'])) {
+                $arguments['coverageCli'] = $loggingConfiguration['coverage-cli'];
             }
 
             if (isset($loggingConfiguration['json']) &&
