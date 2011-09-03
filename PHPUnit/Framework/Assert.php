@@ -338,7 +338,7 @@ abstract class PHPUnit_Framework_Assert
      * @param mixed   $haystack
      * @param string  $message
      */
-    public function assertCount($expectedCount, $haystack, $message = '')
+    public static function assertCount($expectedCount, $haystack, $message = '')
     {
         if (!is_int($expectedCount)) {
             throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'integer');
@@ -364,7 +364,7 @@ abstract class PHPUnit_Framework_Assert
      * @param mixed   $haystack
      * @param string  $message
      */
-    public function assertNotCount($expectedCount, $haystack, $message = '')
+    public static function assertNotCount($expectedCount, $haystack, $message = '')
     {
         if (!is_int($expectedCount)) {
             throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'integer');
