@@ -138,6 +138,21 @@ function assertAttributeContainsOnly($type, $haystackAttributeName, $haystackCla
 }
 
 /**
+ * Asserts the number of elements of an array, Countable or Iterator
+ * that is stored in an attribute.
+ *
+ * @param integer $expectedCount
+ * @param string  $haystackAttributeName
+ * @param mixed   $haystackClassOrObject
+ * @param string  $message
+ * @since Method available since Release 3.6.0
+ */
+function assertAttributeCount($expectedCount, $haystackAttributeName, $haystackClassOrObject, $message = '')
+{
+    return PHPUnit_Framework_Assert::assertAttributeCount($expectedCount, $haystackAttributeName, $haystackClassOrObject, $message);
+}
+
+/**
  * Asserts that a static attribute of a class or an attribute of an object
  * is empty.
  *
@@ -284,6 +299,21 @@ function assertAttributeNotContains($needle, $haystackAttributeName, $haystackCl
 function assertAttributeNotContainsOnly($type, $haystackAttributeName, $haystackClassOrObject, $isNativeType = NULL, $message = '')
 {
     return PHPUnit_Framework_Assert::assertAttributeNotContainsOnly($type, $haystackAttributeName, $haystackClassOrObject, $isNativeType, $message);
+}
+
+/**
+ * Asserts the number of elements of an array, Countable or Iterator
+ * that is stored in an attribute.
+ *
+ * @param integer $expectedCount
+ * @param string  $haystackAttributeName
+ * @param mixed   $haystackClassOrObject
+ * @param string  $message
+ * @since Method available since Release 3.6.0
+ */
+function assertAttributeNotCount($expectedCount, $haystackAttributeName, $haystackClassOrObject, $message = '')
+{
+    return PHPUnit_Framework_Assert::assertAttributeNotCount($expectedCount, $haystackAttributeName, $haystackClassOrObject, $message);
 }
 
 /**
@@ -1145,7 +1175,7 @@ function assertStringStartsWith($prefix, $string, $message = '')
  *
  * // Matcher that asserts that there is a "span" tag with content matching
  * // the regular expression pattern.
- * $matcher = array('tag' => 'span', 'content' => '/Try P(HP|ython)/');
+ * $matcher = array('tag' => 'span', 'content' => 'regexp:/Try P(HP|ython)/');
  *
  * // Matcher that asserts that there is a "span" with an "list" class
  * // attribute.
