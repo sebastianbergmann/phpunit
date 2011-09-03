@@ -6,7 +6,7 @@ This is the list of changes for the PHPUnit 3.6 release series.
 PHPUnit 3.6.0
 -------------
 
-* Added `assertCount()` and `assertNotCount()` to assert the number of elements in an array (or `Countable` or `Iterator` objects).
+* Added `assertCount()` and `assertAttributeCount()` as well as `assertNotCount()` and `assertAttributeNotCount()` to assert the number of elements in an array (or `Countable` or `Iterator` objects).
 * Added `assertSameSize()` and `assertNotSameSize()` to assert that the size of two arrays (or `Countable` or `Iterator` objects) is the same.
 * Added `returnSelf()` to ease the stubbing and mocking of fluent interfaces.
 * Added an option to disable the check for object identity in `assertContains()` and related methods.

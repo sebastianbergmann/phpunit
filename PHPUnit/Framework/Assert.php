@@ -358,6 +358,25 @@ abstract class PHPUnit_Framework_Assert
     }
 
     /**
+     * Asserts the number of elements of an array, Countable or Iterator
+     * that is stored in an attribute.
+     *
+     * @param integer $expectedCount
+     * @param string  $haystackAttributeName
+     * @param mixed   $haystackClassOrObject
+     * @param string  $message
+     * @since Method available since Release 3.6.0
+     */
+    public static function assertAttributeCount($expectedCount, $haystackAttributeName, $haystackClassOrObject, $message = '')
+    {
+        self::assertCount(
+          $expectedCount,
+          self::readAttribute($haystackClassOrObject, $haystackAttributeName),
+          $message
+        );
+    }
+
+    /**
      * Asserts the number of elements of an array, Countable or Iterator.
      *
      * @param integer $expectedCount
@@ -381,6 +400,25 @@ abstract class PHPUnit_Framework_Assert
         );
 
         self::assertThat($haystack, $constraint, $message);
+    }
+
+    /**
+     * Asserts the number of elements of an array, Countable or Iterator
+     * that is stored in an attribute.
+     *
+     * @param integer $expectedCount
+     * @param string  $haystackAttributeName
+     * @param mixed   $haystackClassOrObject
+     * @param string  $message
+     * @since Method available since Release 3.6.0
+     */
+    public static function assertAttributeNotCount($expectedCount, $haystackAttributeName, $haystackClassOrObject, $message = '')
+    {
+        self::assertNotCount(
+          $expectedCount,
+          self::readAttribute($haystackClassOrObject, $haystackAttributeName),
+          $message
+        );
     }
 
     /**
