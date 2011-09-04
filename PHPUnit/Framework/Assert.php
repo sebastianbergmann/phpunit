@@ -1376,7 +1376,7 @@ abstract class PHPUnit_Framework_Assert
      * @param mixed   $actual
      * @param string  $message
      */
-    public function assertNotSameSize($expectedCount, $haystack, $message = '')
+    public function assertNotSameSize($expected, $actual, $message = '')
     {
         if (!$expected instanceof Countable &&
             !$expected instanceof Iterator &&
