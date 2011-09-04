@@ -375,8 +375,8 @@ class PHPUnit_Util_Configuration
 
         foreach ($this->xpath->query('logging/log') as $log) {
             $type   = (string)$log->getAttribute('type');
-            if($type == 'coverage-cli') {
-                $target = $log->getAttribute('verbosity');
+            if($type == 'coverage-text' && $log->getAttribute('target') == "cli") {
+                $target = "cli";
             } else {
                 $target = $this->toAbsolutePath((string)$log->getAttribute('target'));
             }
@@ -419,6 +419,15 @@ class PHPUnit_Util_Configuration
                       (string)$log->getAttribute('logIncompleteSkipped'),
                       FALSE
                     );
+                }
+            } else if ($type == 'coverage-text') {
+                if($log->hasAttribute('showUncoveredFiles')) {
+                    $result['coverageTextShowUncoveredFiles'] = $this->getBoolean(
+                      (string)$log->getAttribute('showUncoveredFiles'),
+                      FALSE
+                    );
+                } else {
+                    $result['coverageTextShowUncoveredFiles'] = false;
                 }
             }
 

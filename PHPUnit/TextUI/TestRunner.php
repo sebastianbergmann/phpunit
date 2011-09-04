@@ -342,19 +342,23 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
                 unset($writer);
             }
             
-            if (isset($arguments['coverageCli'])) {
+            if (isset($arguments['coverageText'])) {
                 $this->printer->write(
-                  "\nGenerating cli code coverage report, this may take a moment."
+                  "\nGenerating textual code coverage report, this may take a moment."
                 );
+                if($arguments['coverageText'] == "cli") {
+                    $outputStream = $this->printer;
+                } else {
+                    $outputStream = new PHPUnit_Util_Printer($arguments['coverageText']);
+                }
                 $writer = new PHP_CodeCoverage_Report_Cli(
-                  $this->printer,
+                  $outputStream,
                   $title,
                   $arguments['reportLowUpperBound'],
-                  $arguments['reportHighLowerBound']
+                  $arguments['reportHighLowerBound'],
+                  $arguments['coverageTextShowUncoveredFiles']
                 );
-                $writer->process(
-                  $this->codeCoverage, $arguments['coverageCli']
-                );
+                $writer->process($this->codeCoverage);
                 $this->printer->write("\n");
             }
         }
@@ -596,9 +600,9 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
                 $arguments['coverageClover'] = $loggingConfiguration['coverage-clover'];
             }
 
-            if (isset($loggingConfiguration['coverage-cli']) &&
-                !isset($arguments['coverageCli'])) {
-                $arguments['coverageCli'] = $loggingConfiguration['coverage-cli'];
+            if (isset($loggingConfiguration['coverage-text']) &&
+                !isset($arguments['coverageText'])) {
+                $arguments['coverageText'] = $loggingConfiguration['coverage-text'];
             }
 
             if (isset($loggingConfiguration['json']) &&
