@@ -356,7 +356,7 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
                 if (!isset($arguments['coverageTextShowUncoveredFiles'])) {
                     $arguments['coverageTextShowUncoveredFiles'] = false;
                 }
-                $writer = new PHP_CodeCoverage_Report_Cli(
+                $writer = new PHP_CodeCoverage_Report_Text(
                   $outputStream,
                   $title,
                   $arguments['reportLowUpperBound'],
