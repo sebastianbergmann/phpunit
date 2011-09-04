@@ -76,7 +76,7 @@ abstract class PHPUnit_Framework_Assert
     {
         if (!(
             (is_object($key)
-              && !(is_subclass_of($key, 'PHPUnit_Framework_StringConstraint') || is_subclass_of($key, 'PHPUnit_Framework_IntegerConstraint'))
+              && !($key instanceof PHPUnit_Framework_StringConstraint || $key instanceof PHPUnit_Framework_NumericConstraint)
             )
             || is_integer($key) || is_string($key)
           )) {

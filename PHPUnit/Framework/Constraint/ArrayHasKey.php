@@ -86,15 +86,13 @@ class PHPUnit_Framework_Constraint_ArrayHasKey extends PHPUnit_Framework_Constra
      */
     protected function matches($other)
     {
-        if (is_object($this->key)) {
-            if (is_a($this->key, 'PHPUnit_Framework_Constraint')) {
-                foreach (array_keys($other) as $arKey) {
-                    if ($this->key->evaluate($arKey, '', TRUE) == TRUE) {
-                        return TRUE;
-                    }
+        if (is_object($this->key) && $this->key instanceof PHPUnit_Framework_Constraint) {
+            foreach (array_keys($other) as $arKey) {
+                if ($this->key->evaluate($arKey, '', TRUE) == TRUE) {
+                    return TRUE;
                 }
-                return FALSE;
             }
+            return FALSE;
         } else {
             return array_key_exists($this->key, $other);
         }
