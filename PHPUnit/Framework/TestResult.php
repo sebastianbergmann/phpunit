@@ -605,6 +605,19 @@ class PHPUnit_Framework_TestResult implements Countable
                      !$test instanceof PHPUnit_Framework_Warning;
 
         if ($useXdebug) {
+            // We need to blacklist test source files when no whitelist is used.
+            if (!$this->codeCoverage->filter()->hasWhitelist()) {
+                $classes = PHPUnit_Util_Class::getHierarchy(
+                  get_class($test), TRUE
+                );
+
+                foreach ($classes as $class) {
+                    $this->codeCoverage->filter()->addFileToBlacklist(
+                      $class->getFileName()
+                    );
+                }
+            }
+
             $this->codeCoverage->start($test);
         }
 
