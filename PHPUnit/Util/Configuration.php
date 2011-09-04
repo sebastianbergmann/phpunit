@@ -420,14 +420,14 @@ class PHPUnit_Util_Configuration
                       FALSE
                     );
                 }
-            } else if ($type == 'coverage-text') {
-                if($log->hasAttribute('showUncoveredFiles')) {
+            } 
+            
+            else if ($type == 'coverage-text') {
+                if ($log->hasAttribute('showUncoveredFiles')) {
                     $result['coverageTextShowUncoveredFiles'] = $this->getBoolean(
                       (string)$log->getAttribute('showUncoveredFiles'),
                       FALSE
                     );
-                } else {
-                    $result['coverageTextShowUncoveredFiles'] = false;
                 }
             }
 

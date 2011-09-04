@@ -348,8 +348,13 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
                 );
                 if($arguments['coverageText'] == "cli") {
                     $outputStream = $this->printer;
+                    $colors = (bool)$arguments['colors'];
                 } else {
                     $outputStream = new PHPUnit_Util_Printer($arguments['coverageText']);
+                    $colors = false;
+                }
+                if (!isset($arguments['coverageTextShowUncoveredFiles'])) {
+                    $arguments['coverageTextShowUncoveredFiles'] = false;
                 }
                 $writer = new PHP_CodeCoverage_Report_Cli(
                   $outputStream,
@@ -358,7 +363,9 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
                   $arguments['reportHighLowerBound'],
                   $arguments['coverageTextShowUncoveredFiles']
                 );
-                $writer->process($this->codeCoverage);
+                $writer->process(
+                    $this->codeCoverage, $colors
+                );
                 $this->printer->write("\n");
             }
         }
