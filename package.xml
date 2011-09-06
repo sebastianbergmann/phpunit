@@ -318,9 +318,6 @@
       </file>
      </dir>
      <dir name="Log">
-      <file baseinstalldir="/" name="DBUS.php" role="php">
-       <tasks:replace from="@package_version@" to="version" type="package-info" />
-      </file>
       <file baseinstalldir="/" name="JSON.php" role="php">
        <tasks:replace from="@package_version@" to="version" type="package-info" />
       </file>
@@ -328,9 +325,6 @@
        <tasks:replace from="@package_version@" to="version" type="package-info" />
       </file>
       <file baseinstalldir="/" name="TAP.php" role="php">
-       <tasks:replace from="@package_version@" to="version" type="package-info" />
-      </file>
-      <file baseinstalldir="/" name="XHProf.php" role="php">
        <tasks:replace from="@package_version@" to="version" type="package-info" />
       </file>
      </dir>
@@ -534,9 +528,6 @@
     <channel>pear.phpunit.de</channel>
     <min>1.0.0</min>
    </package>
-   <extension>
-    <name>dbus</name>
-   </extension>
    <extension>
     <name>json</name>
    </extension>

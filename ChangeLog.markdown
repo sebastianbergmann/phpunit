@@ -29,11 +29,12 @@ PHPUnit 3.6.0
 * `@ticket` is now an alias for `@group`.
 * Added `--printer` to specify a class (that extends `PHPUnit_Util_Printer` and implements `PHPUnit_Framework_TestListener`) to print test runner output.
 * Added `-h` as alias for `--help` and `-c` as alias for `--configuration`.
-* The XHProf test listener now prints the test name as well as the run so it is easier to understand the data being generated.
 * Added an option to disable the caching of `PHP_Token_Stream` objects during code coverage report generation to reduce the memory usage.
 * `assertType()` and `assertNotType()` as well as `assertAttributeType()` and `assertAttributeNotType()` have been removed. `assertInternalType()` should be used for asserting internal types such as `integer` or `string` whereas `assertInstanceOf()` should be used for asserting that an object is an instance of a specified class or interface.
 * The `PHPUnit_Extensions_OutputTestCase` functionality has been merged into `PHPUnit_Framework_TestCase`.
-* The `PHPUnit_Extensions_Story_TestCase` functionality has been moved to a separate package.
+* The `PHPUnit_Extensions_Story_TestCase` functionality has been moved to a separate package (`PHPUnit_Story`).
+* The `PHPUnit_Util_Log_DBUS` functionality has been moved to a separate package (`PHPUnit_TestListener_DBUS`).
+* The `PHPUnit_Util_Log_XHProf` functionality has been moved to a separate package (`PHPUnit_TestListener_XHProf`).
 * The `--wait` functionality has been removed.
 * The syntax check functionality has been removed.
 * The XML configuration file is now the only way to configure the blacklist and whitelist for code coverage reporting.
