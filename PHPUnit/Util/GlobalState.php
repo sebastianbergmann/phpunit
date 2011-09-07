@@ -373,21 +373,41 @@ class PHPUnit_Util_GlobalState
     public static function phpunitFiles()
     {
         if (self::$phpunitFiles === NULL) {
-            self::$phpunitFiles = array_flip(
-              array_merge(
-                phpunit_autoload(),
-                phpunit_dbunit_autoload(),
-                phpunit_mockobject_autoload(),
-                phpunit_selenium_autoload(),
-                phpunit_story_autoload(),
-                file_iterator_autoload(),
-                php_codecoverage_autoload(),
-                php_invoker_autoload(),
-                php_timer_autoload(),
-                php_tokenstream_autoload(),
-                text_template_autoload()
-              )
+            self::$phpunitFiles = array_merge(
+              phpunit_autoload(),
+              phpunit_mockobject_autoload(),
+              file_iterator_autoload(),
+              php_codecoverage_autoload(),
+              php_timer_autoload(),
+              php_tokenstream_autoload(),
+              text_template_autoload()
             );
+
+            if (function_exists('phpunit_dbunit_autoload')) {
+                self::$phpunitFiles = array_merge(
+                  self::$phpunitFiles, phpunit_dbunit_autoload()
+                );
+            }
+
+            if (function_exists('phpunit_selenium_autoload')) {
+                self::$phpunitFiles = array_merge(
+                  self::$phpunitFiles, phpunit_selenium_autoload()
+                );
+            }
+
+            if (function_exists('phpunit_story_autoload')) {
+                self::$phpunitFiles = array_merge(
+                  self::$phpunitFiles, phpunit_story_autoload()
+                );
+            }
+
+            if (function_exists('php_invoker_autoload')) {
+                self::$phpunitFiles = array_merge(
+                  self::$phpunitFiles, php_invoker_autoload()
+                );
+            }
+
+            self::$phpunitFiles = array_flip(self::$phpunitFiles);
         }
 
         return self::$phpunitFiles;
