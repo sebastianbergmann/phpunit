@@ -92,6 +92,10 @@ if (PHPUnit_Util_Filesystem::fileExistsInIncludePath('PHP/Invoker/Autoload.php')
     require_once 'PHP/Invoker/Autoload.php';
 }
 
+if (PHPUnit_Util_Filesystem::fileExistsInIncludePath('PHPUnit/Extensions/Database/Autoload.php')) {
+    require_once 'PHPUnit/Extensions/Database/Autoload.php';
+}
+
 if (PHPUnit_Util_Filesystem::fileExistsInIncludePath('PHPUnit/Extensions/SeleniumTestCase/Autoload.php')) {
     require_once 'PHPUnit/Extensions/SeleniumTestCase/Autoload.php';
 }
