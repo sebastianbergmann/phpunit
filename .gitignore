@@ -3,6 +3,11 @@ build/code-browser
 build/coverage
 build/logs
 build/pdepend
+Tests/TextUI/*.diff
+Tests/TextUI/*.exp
+Tests/TextUI/*.log
+Tests/TextUI/*.out
+Tests/TextUI/*.php
 phpunit.xml
 phpunit.phar
 build.png
