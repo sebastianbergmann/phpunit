@@ -446,7 +446,7 @@ class PHPUnit_Util_Configuration
           'request'      => array()
         );
 
-        foreach($this->xpath->query('php/includePath') as $includePath) {
+        foreach ($this->xpath->query('php/includePath') as $includePath) {
             $path = (string)$includePath->nodeValue;
 
             $result['include_path'][] = $this->toAbsolutePath($path);
@@ -755,6 +755,7 @@ class PHPUnit_Util_Configuration
         }
 
         $exclude = array();
+
         foreach ($testSuiteNode->getElementsByTagName('exclude') as $excludeNode) {
             $exclude[] = (string)$excludeNode->nodeValue;
         }
