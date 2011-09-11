@@ -228,16 +228,6 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
     private $dependencyInput = array();
 
     /**
-     * @var    string
-     */
-    private $exceptionMessage = NULL;
-
-    /**
-     * @var    integer
-     */
-    private $exceptionCode = 0;
-
-    /**
      * @var    Array
      */
     private $iniSettings = array();
