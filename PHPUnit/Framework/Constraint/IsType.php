@@ -72,7 +72,7 @@ class PHPUnit_Framework_Constraint_IsType extends PHPUnit_Framework_Constraint
     const TYPE_RESOURCE = 'resource';
     const TYPE_STRING   = 'string';
     const TYPE_SCALAR   = 'scalar';
-	const TYPE_CALLABLE = 'callable';
+    const TYPE_CALLABLE = 'callable';
 
     /**
      * @var array
