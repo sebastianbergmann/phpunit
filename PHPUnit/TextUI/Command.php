@@ -518,7 +518,9 @@ class PHPUnit_TextUI_Command
                 $this->arguments['testFile'] = '';
             }
 
-            if (isset($this->arguments['test']) && is_file($this->arguments['test'])) {
+            if (isset($this->arguments['test']) &&
+                is_file($this->arguments['test']) &&
+                substr($this->arguments['test'], -5, 5) != '.phpt') {
                 $this->arguments['testFile'] = realpath($this->arguments['test']);
                 $this->arguments['test']     = substr($this->arguments['test'], 0, strrpos($this->arguments['test'], '.'));
             }
