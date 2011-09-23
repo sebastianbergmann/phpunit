@@ -593,6 +593,10 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
             $this->numAssertions += $test->getNumAssertions();
         }
 
+        else if ($test instanceof PHPUnit_Extensions_PhptTestCase) {
+            $this->numAssertions++;
+        }
+
         $this->lastTestFailed = FALSE;
     }
 
