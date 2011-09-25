@@ -96,6 +96,7 @@ function phpunit_autoload($class = NULL)
           'phpunit_framework_constraint_isidentical' => '/Framework/Constraint/IsIdentical.php',
           'phpunit_framework_constraint_isinstanceof' => '/Framework/Constraint/IsInstanceOf.php',
           'phpunit_framework_constraint_isnull' => '/Framework/Constraint/IsNull.php',
+          'phpunit_framework_constraint_issubset' => '/Framework/Constraint/IsSubset.php',
           'phpunit_framework_constraint_istrue' => '/Framework/Constraint/IsTrue.php',
           'phpunit_framework_constraint_istype' => '/Framework/Constraint/IsType.php',
           'phpunit_framework_constraint_lessthan' => '/Framework/Constraint/LessThan.php',

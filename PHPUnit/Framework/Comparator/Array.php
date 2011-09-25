@@ -171,6 +171,129 @@ class PHPUnit_Framework_Comparator_Array extends PHPUnit_Framework_Comparator
         }
     }
 
+    /**
+     * Asserts that two values are equal.
+     *
+     * @param  mixed $expected The first value to compare
+     * @param  mixed $actual The second value to compare
+     * @param  float $delta The allowed numerical distance between two values to
+     *                      consider them equal
+     * @param  bool  $canonicalize If set to TRUE, arrays are sorted before
+     *                             comparison
+     * @param  bool  $ignoreCase If set to TRUE, upper- and lowercasing is
+     *                           ignored when comparing string values
+     * @throws PHPUnit_Framework_ComparisonFailure Thrown when the comparison
+     *                           fails. Contains information about the
+     *                           specific errors that lead to the failure.
+     */
+    public function assertIsSubset($expected, $actual, $delta = 0, $canonicalize = FALSE, $ignoreCase = FALSE, array &$processed = array())
+    {
+        $expString = $actString = "Array (\n";
+        $isSubset = TRUE;
+
+        foreach ($expected as $key => $value) {
+            if (!array_key_exists($key, $actual)) {
+                $expString .= sprintf(
+                  "    %s => %s\n",
+
+                  PHPUnit_Util_Type::export($key),
+                  PHPUnit_Util_Type::shortenedExport($value)
+                );
+                $isSubset = FALSE;
+                continue;
+            }
+
+            try {
+                if (is_scalar($value)) {
+                    if ($canonicalize) {
+                        if (!in_array($value, $actual)) {
+                            $isSubset = FALSE;
+                            continue;
+                        }
+                    } else {
+                        $this->factory->getComparatorFor($value, $actual[$key])->assertEquals($value, $actual[$key], $delta, $canonicalize, $ignoreCase, $processed);
+                        $expString .= sprintf(
+                          "    %s => %s\n",
+
+                          PHPUnit_Util_Type::export($key),
+                          PHPUnit_Util_Type::shortenedExport($value)
+                        );
+                        $actString .= sprintf(
+                          "    %s => %s\n",
+
+                          PHPUnit_Util_Type::export($key),
+                          PHPUnit_Util_Type::shortenedExport($actual[$key])
+                        );
+                    }
+                } else {
+                    $this->factory->getComparatorFor($value, $actual[$key])->assertIsSubset($value, $actual[$key], $delta, $canonicalize, $ignoreCase, $processed);
+                    $expString .= sprintf(
+                      "    %s => %s\n",
+
+                      PHPUnit_Util_Type::export($key),
+                      PHPUnit_Util_Type::shortenedExport($value)
+                    );
+                    $actString .= sprintf(
+                      "    %s => %s\n",
+
+                      PHPUnit_Util_Type::export($key),
+                      PHPUnit_Util_Type::shortenedExport($actual[$key])
+                    );
+                }
+            }
+
+            catch (PHPUnit_Framework_ComparisonFailure $e) {
+                $expString .= sprintf(
+                  "    %s => %s\n",
+
+                  PHPUnit_Util_Type::export($key),
+                  $e->getExpectedAsString()
+                    ? $this->indent($e->getExpectedAsString())
+                    : PHPUnit_Util_Type::shortenedExport($e->getExpected())
+                );
+                $actString .= sprintf(
+                  "    %s => %s\n",
+
+                  PHPUnit_Util_Type::export($key),
+                  $e->getActualAsString()
+                    ? $this->indent($e->getActualAsString())
+                    : PHPUnit_Util_Type::shortenedExport($e->getActual())
+                );
+                $isSubset = FALSE;
+            }
+
+            /*
+            if (is_numeric($key) && !is_array($value)) {
+                // basic mode - for when $expected is a list of elements we expect to find in $actual
+                $this->assertTrue(in_array($value, $actual), "Expected element [$selector.$value] is missing");
+            } else {
+                $this->assertTrue(array_key_exists($key,$actual), "Expected key [$selector.$key] is missing");
+
+                if (is_array($value)) {
+                    $this->assertTrue(is_array($actual[$key]), "Expecting array for key [$selector.$key]");
+                    $this->assertIsSubset($value, $actual[$key], $selector.'.'.$key);
+                } else {
+                    $this->assertEquals($value, $actual[$key], "Expected [$value] for key [$selector.$key] not equals to [{$actual[$key]}]");
+                }
+            }
+            */
+        }
+
+        $expString .= ')';
+        $actString .= ')';
+
+        if (!$isSubset) {
+            throw new PHPUnit_Framework_ComparisonFailure(
+              $expected,
+              $actual,
+              $expString,
+              $actString,
+              FALSE,
+             'Failed asserting that expected array is a subset of the actual.'
+            );
+        }
+    }
+
     protected function indent($lines)
     {
         return trim(str_replace("\n", "\n    ", $lines));

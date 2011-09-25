@@ -442,6 +442,26 @@ abstract class PHPUnit_Framework_Assert
     }
 
     /**
+     * Asserts that two variables are equal.
+     *
+     * @param  mixed   $expected
+     * @param  mixed   $actual
+     * @param  string  $message
+     * @param  float   $delta
+     * @param  integer $maxDepth
+     * @param  boolean $canonicalize
+     * @param  boolean $ignoreCase
+     */
+    public static function assertIsSubset($expected, $actual, $message = '', $delta = 0, $maxDepth = 10, $canonicalize = FALSE, $ignoreCase = FALSE)
+    {
+        $constraint = new PHPUnit_Framework_Constraint_IsSubset(
+          $expected, $delta, $maxDepth, $canonicalize, $ignoreCase
+        );
+
+        self::assertThat($actual, $constraint, $message);
+    }
+
+    /**
      * Asserts that a variable is equal to an attribute of an object.
      *
      * @param  mixed   $expected
