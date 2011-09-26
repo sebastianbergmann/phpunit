@@ -97,11 +97,17 @@ class PHPUnit_Framework_Comparator_Double extends PHPUnit_Framework_Comparator_S
             return;
         }
 
+        if (is_nan($actual) && is_nan($expected)) {
+            return;
+        }
+
         if ($delta == 0) {
             $delta = self::EPSILON;
         }
 
-        if (abs($actual - $expected) >= $delta) {
+        if ((is_infinite($actual) XOR is_infinite($expected)) ||
+            (is_nan($actual) XOR is_nan($expected)) ||
+            abs($actual - $expected) >= $delta) {
             throw new PHPUnit_Framework_ComparisonFailure(
               $expected,
               $actual,

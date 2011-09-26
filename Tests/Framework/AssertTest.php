@@ -619,6 +619,8 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
             // We want these values to differ
             array(0, 'Foobar'),
             array('Foobar', 0),
+            array(3, acos(8)),
+            array(acos(8), 3)
         );
     }
 
