@@ -132,6 +132,24 @@ class PHPUnit_Framework_Comparator_Object extends PHPUnit_Framework_Comparator_A
         }
     }
 
+    public function assertIsSubset($expected, $actual, $delta = 0, $canonicalize = FALSE, $ignoreCase = FALSE, array &$processed = array())
+    {
+        if ($expected->C14N() !== $actual->C14N()) {
+            throw new PHPUnit_Framework_ComparisonFailure(
+              $actual,
+              $expected,
+              '',
+              '',
+              FALSE,
+              sprintf(
+                'assertIsSubset does not support "%s" type.',
+
+                gettype($expected)
+              )
+            );
+        }
+    }
+
     /**
      * Converts an object to an array containing all of its private, protected
      * and public properties.
