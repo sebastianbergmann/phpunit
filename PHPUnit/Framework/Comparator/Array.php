@@ -192,7 +192,8 @@ class PHPUnit_Framework_Comparator_Array extends PHPUnit_Framework_Comparator
         $isSubset = TRUE;
 
         foreach ($expected as $key => $value) {
-            if (!array_key_exists($key, $actual)) {
+            if (!array_key_exists($key, $actual)
+              && (!$canonicalize && is_scalar($value))) {
                 $expString .= sprintf(
                   "    %s => %s\n",
 
@@ -206,8 +207,14 @@ class PHPUnit_Framework_Comparator_Array extends PHPUnit_Framework_Comparator
             try {
                 if (is_scalar($value)) {
                     if ($canonicalize) {
-                        if (!in_array($value, $actual)) {
+                        if (!$this->scalarInArray($value, $actual, FALSE, $ignoreCase)) {
                             $isSubset = FALSE;
+                            $expString .= sprintf(
+                              "    %s => %s\n",
+
+                              PHPUnit_Util_Type::export($key),
+                              PHPUnit_Util_Type::shortenedExport($value)
+                            );
                             continue;
                         }
                     } else {
@@ -297,5 +304,43 @@ class PHPUnit_Framework_Comparator_Array extends PHPUnit_Framework_Comparator
     protected function indent($lines)
     {
         return trim(str_replace("\n", "\n    ", $lines));
+    }
+
+    protected function scalarInArray($needle, $haystack, $strict = false, $ignoreCase = false)
+    {
+        if (!is_scalar($needle)) {
+            return FALSE;
+        }
+
+        if (!$ignoreCase) {
+            return in_array($needle, $haystack, $strict);
+        } else {
+            $needle = strtolower($needle);
+
+            if ($strict) {
+                foreach ($haystack as & $value) {
+                	if (!is_scalar($value)) {
+                		continue;
+                	}
+
+                    if ($needle === $value) {
+                        return TRUE;
+                    }
+                }
+            } else {
+                foreach ($haystack as & $value) {
+                	if (!is_scalar($value)) {
+                		continue;
+                	}
+
+                    if (is_scalar($value)) {
+                        if ($needle === strtolower($value)) {
+                            return TRUE;
+                        }
+                    }
+                }
+            }
+        }
+        return FALSE;
     }
 }

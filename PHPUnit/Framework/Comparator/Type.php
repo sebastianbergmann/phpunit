@@ -103,4 +103,24 @@ class PHPUnit_Framework_Comparator_Type extends PHPUnit_Framework_Comparator
             );
         }
     }
+
+    public function assertIsSubset($expected, $actual, $delta = 0, $canonicalize = FALSE, $ignoreCase = FALSE)
+    {
+        if (gettype($expected) != gettype($actual)) {
+            throw new PHPUnit_Framework_ComparisonFailure(
+              $expected,
+              $actual,
+              // we don't need a diff
+              '',
+              '',
+              FALSE,
+              sprintf(
+                '%s does not match expected type "%s".',
+
+                PHPUnit_Util_Type::shortenedExport($actual),
+                gettype($expected)
+              )
+            );
+        }
+    }
 }
