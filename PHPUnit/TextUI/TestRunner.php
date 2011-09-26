@@ -63,9 +63,9 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
     const EXCEPTION_EXIT = 2;
 
     /**
-     * @var PHP_CodeCoverage
+     * @var PHP_CodeCoverage_Filter
      */
-    protected $codeCoverage;
+    protected $codeCoverageFilter;
 
     /**
      * @var PHPUnit_Runner_TestSuiteLoader
@@ -88,8 +88,8 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
      */
     public function __construct(PHPUnit_Runner_TestSuiteLoader $loader = NULL)
     {
-        $this->codeCoverage = new PHP_CodeCoverage;
-        $this->loader       = $loader;
+        $this->codeCoverageFilter = new PHP_CodeCoverage_Filter;
+        $this->loader             = $loader;
     }
 
     /**
@@ -246,7 +246,31 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
         if ((isset($arguments['coverageClover']) ||
              isset($arguments['reportDirectory'])) &&
              extension_loaded('xdebug')) {
-            $result->setCodeCoverage($this->codeCoverage);
+            $codeCoverage = new PHP_CodeCoverage(
+              NULL, $this->codeCoverageFilter
+            );
+
+            $codeCoverage->setProcessUncoveredFilesFromWhitelist(
+              $arguments['addUncoveredFilesFromWhitelist']
+            );
+
+            if (isset($arguments['cacheTokens'])) {
+                $codeCoverage->setCacheTokens($arguments['cacheTokens']);
+            }
+
+            if (isset($arguments['forceCoversAnnotation'])) {
+                $codeCoverage->setForceCoversAnnotation(
+                  $arguments['forceCoversAnnotation']
+                );
+            }
+
+            if (isset($arguments['mapTestClassNameToCoveredClassName'])) {
+                $codeCoverage->setMapTestClassNameToCoveredClassName(
+                  $arguments['mapTestClassNameToCoveredClassName']
+                );
+            }
+
+            $result->setCodeCoverage($codeCoverage);
         }
 
         if (isset($arguments['jsonLogfile'])) {
@@ -288,7 +312,7 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
             $this->printer->printResult($result);
         }
 
-        if (extension_loaded('tokenizer') && extension_loaded('xdebug')) {
+        if (isset($codeCoverage)) {
             if (isset($arguments['coverageClover'])) {
                 $this->printer->write(
                   "\nWriting code coverage data to XML file, this may take " .
@@ -296,10 +320,7 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
                 );
 
                 $writer = new PHP_CodeCoverage_Report_Clover;
-
-                $writer->process(
-                  $this->codeCoverage, $arguments['coverageClover']
-                );
+                $writer->process($codeCoverage, $arguments['coverageClover']);
 
                 $this->printer->write("\n");
                 unset($writer);
@@ -330,9 +351,7 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
                   ' and PHPUnit ' . PHPUnit_Runner_Version::id()
                 );
 
-                $writer->process(
-                  $this->codeCoverage, $arguments['reportDirectory']
-                );
+                $writer->process($codeCoverage, $arguments['reportDirectory']);
 
                 $this->printer->write("\n");
                 unset($writer);
@@ -614,71 +633,49 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
 
             $filterConfiguration = $arguments['configuration']->getFilterConfiguration();
 
-            $filter = $this->codeCoverage->filter();
-
             foreach ($filterConfiguration['blacklist']['include']['directory'] as $dir) {
-                $filter->addDirectoryToBlacklist(
+                $this->codeCoverageFilter->addDirectoryToBlacklist(
                   $dir['path'], $dir['suffix'], $dir['prefix'], $dir['group']
                 );
             }
 
             foreach ($filterConfiguration['blacklist']['include']['file'] as $file) {
-                $filter->addFileToBlacklist($file);
+                $this->codeCoverageFilter->addFileToBlacklist($file);
             }
 
             foreach ($filterConfiguration['blacklist']['exclude']['directory'] as $dir) {
-                $filter->removeDirectoryFromBlacklist(
+                $this->codeCoverageFilter->removeDirectoryFromBlacklist(
                   $dir['path'], $dir['suffix'], $dir['prefix'], $dir['group']
                 );
             }
 
             foreach ($filterConfiguration['blacklist']['exclude']['file'] as $file) {
-                $filter->removeFileFromBlacklist($file);
+                $this->codeCoverageFilter->removeFileFromBlacklist($file);
             }
 
             if ((isset($arguments['coverageClover']) ||
                 isset($arguments['reportDirectory'])) &&
                 extension_loaded('xdebug')) {
-                $this->codeCoverage->setProcessUncoveredFilesFromWhitelist(
-                  $filterConfiguration['whitelist']['addUncoveredFilesFromWhitelist']
-                );
-
-                if (isset($arguments['cacheTokens'])) {
-                    $this->codeCoverage->setCacheTokens(
-                      $arguments['cacheTokens']
-                    );
-                }
-
-                if (isset($arguments['forceCoversAnnotation'])) {
-                    $this->codeCoverage->setForceCoversAnnotation(
-                      $arguments['forceCoversAnnotation']
-                    );
-                }
-
-                if (isset($arguments['mapTestClassNameToCoveredClassName'])) {
-                    $this->codeCoverage->setMapTestClassNameToCoveredClassName(
-                      $arguments['mapTestClassNameToCoveredClassName']
-                    );
-                }
+                $arguments['addUncoveredFilesFromWhitelist'] = $filterConfiguration['whitelist']['addUncoveredFilesFromWhitelist'];
 
                 foreach ($filterConfiguration['whitelist']['include']['directory'] as $dir) {
-                    $filter->addDirectoryToWhitelist(
+                    $this->codeCoverageFilter->addDirectoryToWhitelist(
                       $dir['path'], $dir['suffix'], $dir['prefix']
                     );
                 }
 
                 foreach ($filterConfiguration['whitelist']['include']['file'] as $file) {
-                    $filter->addFileToWhitelist($file);
+                    $this->codeCoverageFilter->addFileToWhitelist($file);
                 }
 
                 foreach ($filterConfiguration['whitelist']['exclude']['directory'] as $dir) {
-                    $filter->removeDirectoryFromWhitelist(
+                    $this->codeCoverageFilter->removeDirectoryFromWhitelist(
                       $dir['path'], $dir['suffix'], $dir['prefix']
                     );
                 }
 
                 foreach ($filterConfiguration['whitelist']['exclude']['file'] as $file) {
-                    $filter->removeFileFromWhitelist($file);
+                    $this->codeCoverageFilter->removeFileFromWhitelist($file);
                 }
             }
         }
@@ -706,8 +703,6 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
         $arguments['stopOnSkipped']               = isset($arguments['stopOnSkipped'])               ? $arguments['stopOnSkipped']               : FALSE;
         $arguments['strict']                      = isset($arguments['strict'])                      ? $arguments['strict']                      : FALSE;
         $arguments['verbose']                     = isset($arguments['verbose'])                     ? $arguments['verbose']                     : FALSE;
-
-        $this->codeCoverage->setCacheTokens($arguments['cacheTokens']);
 
         if ($arguments['filter'] !== FALSE &&
             preg_match('/^[a-zA-Z0-9_]/', $arguments['filter'])) {
