@@ -112,7 +112,7 @@ class PHPUnit_Util_GlobalState
             if ($key != 'GLOBALS' &&
                 !in_array($key, $superGlobalArrays) &&
                 !in_array($key, $blacklist) &&
-                !is_callable($GLOBALS[$key])) {
+                !(is_object($GLOBALS[$key]) && $GLOBALS[$key] instanceof Closure)) {
                 self::$globals['GLOBALS'][$key] = serialize($GLOBALS[$key]);
             }
         }
@@ -231,7 +231,7 @@ class PHPUnit_Util_GlobalState
             if (isset($GLOBALS[$superGlobalArray]) &&
                 is_array($GLOBALS[$superGlobalArray])) {
                 foreach (array_keys($GLOBALS[$superGlobalArray]) as $key) {
-                    if (is_callable($GLOBALS[$superGlobalArray][$key])) {
+                    if (is_object($GLOBALS[$superGlobalArray][$key]) && $GLOBALS[$superGlobalArray][$key] instanceof Closure) {
                         continue;
                     }
 
@@ -250,7 +250,7 @@ class PHPUnit_Util_GlobalState
         $blacklist[] = '_PEAR_Config_instance';
 
         foreach (array_keys($GLOBALS) as $key) {
-            if (!in_array($key, $blacklist) && !is_callable($GLOBALS[$key])) {
+            if (!in_array($key, $blacklist) && !(is_object($GLOBALS[$key]) && $GLOBALS[$key] instanceof Closure)) {
                 $result .= sprintf(
                   '$GLOBALS[\'%s\'] = %s;' . "\n",
                   $key,
@@ -306,7 +306,7 @@ class PHPUnit_Util_GlobalState
                             $attribute->setAccessible(TRUE);
                             $value = $attribute->getValue();
 
-                            if (!is_callable($value)) {
+                            if (!(is_object($value) && $value instanceof Closure)) {
                                 $backup[$name] = serialize($value);
                             }
                         }
