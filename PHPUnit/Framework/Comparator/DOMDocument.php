@@ -99,6 +99,61 @@ class PHPUnit_Framework_Comparator_DOMDocument extends PHPUnit_Framework_Compara
     }
 
     /**
+     * Naive check if expected XML is subset of actual XML
+     *
+     * @param  mixed $expected The first value to compare
+     * @param  mixed $actual The second value to compare
+     * @param  float $delta The allowed numerical distance between two values to
+     *                      consider them equal
+     * @param  bool  $canonicalize If set to TRUE, arrays are sorted before
+     *                             comparison
+     * @param  bool  $ignoreCase If set to TRUE, upper- and lowercasing is
+     *                           ignored when comparing string values
+     * @throws PHPUnit_Framework_ComparisonFailure Thrown when the comparison
+     *                           fails. Contains information about the
+     *                           specific errors that lead to the failure.
+     */
+    public function assertIsSubset($expected, $actual, $delta = 0, $canonicalize = FALSE, $ignoreCase = FALSE)
+    {
+        $isSubset = FALSE;
+
+        $expectedRootNode = $expected->documentElement->tagName;
+        $expectedXML = str_replace('</'.$expectedRootNode.'>', '',
+          str_replace('<'.$expectedRootNode.'>', '', $expected->C14N())
+        );
+
+        $actualRootNode = $actual->documentElement->tagName;
+        $actualXML = str_replace('</'.$actualRootNode.'>', '',
+          str_replace('<'.$actualRootNode.'>', '', $actual->C14N())
+        );
+
+        if (empty($actualXML) && empty($expectedXML)) {
+            return;
+        }
+
+        if ($ignoreCase) {
+            if (false !== stripos($actualXML, $expectedXML)) {
+                $isSubset = TRUE;
+            }
+        } else {
+            if (false !== strpos($actualXML, $expectedXML)) {
+                $isSubset = TRUE;
+            }
+        }
+
+        if (!$isSubset) {
+            throw new PHPUnit_Framework_ComparisonFailure(
+              $actual,
+              $expected,
+              $this->domToText($expected),
+              $this->domToText($actual),
+              FALSE,
+              'Failed asserting that expected XML is subset of actual'
+            );
+        }
+    }
+
+    /**
      * Returns the normalized, whitespace-cleaned, and indented textual
      * representation of a DOMDocument.
      *
@@ -111,31 +166,5 @@ class PHPUnit_Framework_Comparator_DOMDocument extends PHPUnit_Framework_Compara
         $document->normalizeDocument();
 
         return $document->saveXML();
-    }
-
-    public function assertIsSubset($expected, $actual, $delta = 0, $canonicalize = FALSE, $ignoreCase = FALSE)
-    {
-        $isSubset = FALSE;
-
-        if ($ignoreCase) {
-            if (false !== stripos($actual->C14N(), $expected->C14N())) {
-                $isSubset = TRUE;
-            }
-        } else {
-            if (false !== strpos($actual->C14N(), $expected->C14N())) {
-                $isSubset = TRUE;
-            }
-        }
-
-        if (!$isSubset) {
-            throw new PHPUnit_Framework_ComparisonFailure(
-              $actual,
-              $expected,
-              '',
-              '',
-              FALSE,
-              'Failed asserting that expected XML is subset of actual'
-            );
-        }
     }
 }

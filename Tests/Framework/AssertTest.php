@@ -690,13 +690,13 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
 
     protected function subsetValues()
     {
-        $return = $this->equalValues();
-        foreach ($return as $index => & $args) {
+    	$return = $this->equalValues();
+    	foreach ($return as $index => & $args) {
             if (is_array($args[0])) {
-                continue;
+            	continue;
             }
             if (is_object($args[0])) {
-                continue;
+            	continue;
             }
 
             unset($return[$index]);
@@ -741,9 +741,9 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
 
     protected function notSubsetValues()
     {
-        return array(
-            array(array(NULL), array()),
-        );
+    	return array(
+    		array(array(NULL), array()),
+    	);
     }
 
     public function equalProvider()
