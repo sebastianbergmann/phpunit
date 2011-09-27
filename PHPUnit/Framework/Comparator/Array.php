@@ -192,20 +192,33 @@ class PHPUnit_Framework_Comparator_Array extends PHPUnit_Framework_Comparator
         $isSubset = TRUE;
 
         foreach ($expected as $key => $value) {
-            if (!array_key_exists($key, $actual)
-              && (!$canonicalize && is_scalar($value))) {
-                $expString .= sprintf(
-                  "    %s => %s\n",
-
-                  PHPUnit_Util_Type::export($key),
-                  PHPUnit_Util_Type::shortenedExport($value)
-                );
-                $isSubset = FALSE;
-                continue;
-            }
-
             try {
-                if (!is_array($value)) {
+                if (is_array($value) || is_object($value)) {
+                    if (!array_key_exists($key, $actual)) {
+                        $expString .= sprintf(
+                          "    %s => %s\n",
+
+                          PHPUnit_Util_Type::export($key),
+                          PHPUnit_Util_Type::shortenedExport($value)
+                        );
+                        $isSubset = FALSE;
+                        continue;
+                    }
+
+                    $this->factory->getComparatorFor($value, $actual[$key])->assertIsSubset($value, $actual[$key], $delta, $canonicalize, $ignoreCase, $processed);
+                    $expString .= sprintf(
+                      "    %s => %s\n",
+
+                      PHPUnit_Util_Type::export($key),
+                      PHPUnit_Util_Type::shortenedExport($value)
+                    );
+                    $actString .= sprintf(
+                      "    %s => %s\n",
+
+                      PHPUnit_Util_Type::export($key),
+                      PHPUnit_Util_Type::shortenedExport($actual[$key])
+                    );
+                } else {
                     if ($canonicalize) {
                         if (!$this->scalarInArray($value, $actual, FALSE, $ignoreCase)) {
                             $isSubset = FALSE;
@@ -232,20 +245,6 @@ class PHPUnit_Framework_Comparator_Array extends PHPUnit_Framework_Comparator
                           PHPUnit_Util_Type::shortenedExport($actual[$key])
                         );
                     }
-                } else {
-                    $this->factory->getComparatorFor($value, $actual[$key])->assertIsSubset($value, $actual[$key], $delta, $canonicalize, $ignoreCase, $processed);
-                    $expString .= sprintf(
-                      "    %s => %s\n",
-
-                      PHPUnit_Util_Type::export($key),
-                      PHPUnit_Util_Type::shortenedExport($value)
-                    );
-                    $actString .= sprintf(
-                      "    %s => %s\n",
-
-                      PHPUnit_Util_Type::export($key),
-                      PHPUnit_Util_Type::shortenedExport($actual[$key])
-                    );
                 }
             }
 
@@ -319,9 +318,9 @@ class PHPUnit_Framework_Comparator_Array extends PHPUnit_Framework_Comparator
 
             if ($strict) {
                 foreach ($haystack as & $value) {
-                	if (!is_scalar($value)) {
-                		continue;
-                	}
+                    if (!is_scalar($value)) {
+                        continue;
+                    }
 
                     if ($needle === $value) {
                         return TRUE;
@@ -329,9 +328,9 @@ class PHPUnit_Framework_Comparator_Array extends PHPUnit_Framework_Comparator
                 }
             } else {
                 foreach ($haystack as & $value) {
-                	if (!is_scalar($value)) {
-                		continue;
-                	}
+                    if (!is_scalar($value)) {
+                        continue;
+                    }
 
                     if (is_scalar($value)) {
                         if ($needle === strtolower($value)) {

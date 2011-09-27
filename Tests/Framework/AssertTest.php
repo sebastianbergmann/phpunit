@@ -690,16 +690,16 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
 
     protected function subsetValues()
     {
-    	$return = $this->equalValues();
-    	foreach ($return as $index => & $args) {
-            if (is_array($args[0])) {
-            	continue;
+        $equalValues = $this->equalValues();
+        foreach ($equalValues as $index => & $args) {
+            if (is_array($args[0]) && is_array($args[1])) {
+                continue;
             }
-            if (is_object($args[0])) {
-            	continue;
+            if (is_object($args[0]) && is_object($args[1])) {
+                continue;
             }
 
-            unset($return[$index]);
+            unset($equalValues[$index]);
         }
         unset($args);
 
@@ -718,7 +718,7 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
         $storage2 = new SplObjectStorage;
         $storage2->attach($object1);
 
-        return array_merge($return, array(
+        return array_merge($equalValues, array(
             // empty array
             array(array(), array()),
             array(array(), array(NULL)),
@@ -741,9 +741,9 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
 
     protected function notSubsetValues()
     {
-    	return array(
-    		array(array(NULL), array()),
-    	);
+        return array(
+            array(array(NULL), array()),
+        );
     }
 
     public function equalProvider()
@@ -855,6 +855,15 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
         }
 
         $this->fail();
+    }
+
+    /**
+     * @covers            PHPUnit_Framework_Assert::assertIsSubset
+     * @expectedException InvalidArgumentException
+     */
+    public function testAssertIsSubsetThrowsInvalidArgumentException()
+    {
+        $this->assertIsSubset(NULL, NULL);
     }
 
     /**

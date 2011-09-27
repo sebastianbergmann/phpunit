@@ -454,6 +454,19 @@ abstract class PHPUnit_Framework_Assert
      */
     public static function assertIsSubset($expected, $actual, $message = '', $delta = 0, $maxDepth = 10, $canonicalize = FALSE, $ignoreCase = FALSE)
     {
+        if (!(is_array($expected) && is_array($actual)) &&
+            !(is_object($expected) && is_object($actual))) {
+            $stack = debug_backtrace(FALSE);
+
+            throw new InvalidArgumentException(
+              sprintf(
+                'Argument #1 and #2 of %s::%s() must be a array or object',
+                $stack[1]['class'],
+                $stack[1]['function']
+              )
+            );
+        }
+
         $constraint = new PHPUnit_Framework_Constraint_IsSubset(
           $expected, $delta, $maxDepth, $canonicalize, $ignoreCase
         );
