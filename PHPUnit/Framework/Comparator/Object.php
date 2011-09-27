@@ -134,19 +134,22 @@ class PHPUnit_Framework_Comparator_Object extends PHPUnit_Framework_Comparator_A
 
     public function assertIsSubset($expected, $actual, $delta = 0, $canonicalize = FALSE, $ignoreCase = FALSE, array &$processed = array())
     {
-        if ($expected->C14N() !== $actual->C14N()) {
-            throw new PHPUnit_Framework_ComparisonFailure(
-              $actual,
-              $expected,
-              '',
-              '',
-              FALSE,
-              sprintf(
-                'assertIsSubset does not support "%s" type.',
+        if ($actual !== $expected) {
+            try {
+                parent::assertEquals($this->toArray($expected), $this->toArray($actual), $delta, $canonicalize, $ignoreCase, $processed);
+            }
 
-                gettype($expected)
-              )
-            );
+            catch (PHPUnit_Framework_ComparisonFailure $e) {
+                throw new PHPUnit_Framework_ComparisonFailure(
+                  $expected,
+                  $actual,
+                  // replace "Array" with "MyClass object"
+                  substr_replace($e->getExpectedAsString(), get_class($expected).' Object', 0, 5),
+                  substr_replace($e->getActualAsString(), get_class($actual).' Object', 0, 5),
+                  FALSE,
+                  'Failed asserting that expected object is subset of actual.'
+                );
+            }
         }
     }
 

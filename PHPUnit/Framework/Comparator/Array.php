@@ -205,7 +205,7 @@ class PHPUnit_Framework_Comparator_Array extends PHPUnit_Framework_Comparator
             }
 
             try {
-                if (is_scalar($value)) {
+                if (!is_array($value)) {
                     if ($canonicalize) {
                         if (!$this->scalarInArray($value, $actual, FALSE, $ignoreCase)) {
                             $isSubset = FALSE;

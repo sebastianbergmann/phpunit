@@ -115,18 +115,26 @@ class PHPUnit_Framework_Comparator_DOMDocument extends PHPUnit_Framework_Compara
 
     public function assertIsSubset($expected, $actual, $delta = 0, $canonicalize = FALSE, $ignoreCase = FALSE)
     {
-        if ($expected->C14N() !== $actual->C14N()) {
+        $isSubset = FALSE;
+
+        if ($ignoreCase) {
+            if (false !== stripos($actual->C14N(), $expected->C14N())) {
+                $isSubset = TRUE;
+            }
+        } else {
+            if (false !== strpos($actual->C14N(), $expected->C14N())) {
+                $isSubset = TRUE;
+            }
+        }
+
+        if (!$isSubset) {
             throw new PHPUnit_Framework_ComparisonFailure(
               $actual,
               $expected,
               '',
               '',
               FALSE,
-              sprintf(
-                'assertIsSubset does not support "%s" type.',
-
-                gettype($expected)
-              )
+              'Failed asserting that expected XML is subset of actual'
             );
         }
     }

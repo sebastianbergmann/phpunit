@@ -120,19 +120,17 @@ class PHPUnit_Framework_Comparator_Double extends PHPUnit_Framework_Comparator_S
 
     public function assertIsSubset($expected, $actual, $delta = 0, $canonicalize = FALSE, $ignoreCase = FALSE)
     {
-        if ($expected->C14N() !== $actual->C14N()) {
-            throw new PHPUnit_Framework_ComparisonFailure(
-              $actual,
-              $expected,
-              '',
-              '',
-              FALSE,
-              sprintf(
-                'assertIsSubset does not support "%s" type.',
+        throw new PHPUnit_Framework_ComparisonFailure(
+          $actual,
+          $expected,
+          '',
+          '',
+          FALSE,
+          sprintf(
+            'assertIsSubset does not support "%s" type.',
 
-                gettype($expected)
-              )
-            );
-        }
+            gettype($expected)
+          )
+        );
     }
 }

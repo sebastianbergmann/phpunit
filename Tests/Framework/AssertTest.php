@@ -688,6 +688,64 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
         );
     }
 
+    protected function subsetValues()
+    {
+        $return = $this->equalValues();
+        foreach ($return as $index => & $args) {
+            if (is_array($args[0])) {
+                continue;
+            }
+            if (is_object($args[0])) {
+                continue;
+            }
+
+            unset($return[$index]);
+        }
+        unset($args);
+
+        // cyclic dependencies
+        $book1 = new Book;
+        $book1->author = new Author('Terry Pratchett');
+        $book1->author->books[] = $book1;
+        $book2 = new Book;
+        $book2->author = new Author('Terry Pratchett');
+        $book2->author->books[] = $book2;
+
+        $object1 = new SampleClass(4, 8, 15);
+        $object2 = new SampleClass(4, 8, 15);
+        $storage1 = new SplObjectStorage;
+        $storage1->attach($object1);
+        $storage2 = new SplObjectStorage;
+        $storage2->attach($object1);
+
+        return array_merge($return, array(
+            // empty array
+            array(array(), array()),
+            array(array(), array(NULL)),
+            array(array(), array('a', $book1)),
+            // strings - one level array
+            array(array('a'), array('a', 'b', 'c')),
+            array(array('a'), array('A', 'B', 'C'), 0, FALSE, TRUE), // ignore case
+            array(array('a'), array('b', 'a', 'c'), 0, TRUE), // ignore keys
+            array(array('a'), array('B', 'A', 'C'), 0, TRUE, TRUE), // ignore keys and case
+            array(
+                $this->createDOMDocument('<root><foo attr="bar"></foo></root>'),
+                $this->createDOMDocument('<root><foo attr="bar"/></root>'),
+            ),
+            array(
+                $this->createDOMDocument('<root><foo attr="bar"></foo></root>'),
+                $this->createDOMDocument('<root><foo attr="bar"/><bar /></root>'),
+            ),
+        ));
+    }
+
+    protected function notSubsetValues()
+    {
+        return array(
+            array(array(NULL), array()),
+        );
+    }
+
     public function equalProvider()
     {
         // same |= equal
@@ -697,6 +755,16 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
     public function notEqualProvider()
     {
         return $this->notEqualValues();
+    }
+
+    public function subsetProvider()
+    {
+        return $this->subsetValues();
+    }
+
+    public function notSubsetProvider()
+    {
+        return $this->notSubsetValues();
     }
 
     public function sameProvider()
@@ -754,6 +822,32 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
     {
         try {
             $this->assertNotEquals($a, $b, '', $delta, 10, $canonicalize, $ignoreCase);
+        }
+
+        catch (PHPUnit_Framework_AssertionFailedError $e) {
+            return;
+        }
+
+        $this->fail();
+    }
+
+    /**
+     * @covers PHPUnit_Framework_Assert::assertIsSubset
+     * @dataProvider subsetProvider
+     */
+    public function testAssertIsSubsetSucceeds($a, $b, $delta = 0, $canonicalize = FALSE, $ignoreCase = FALSE)
+    {
+        $this->assertIsSubset($a, $b, '', $delta, 10, $canonicalize, $ignoreCase);
+    }
+
+    /**
+     * @covers PHPUnit_Framework_Assert::assertIsSubset
+     * @dataProvider notSubsetProvider
+     */
+    public function testAssertIsSubsetFails($a, $b, $delta = 0, $canonicalize = FALSE, $ignoreCase = FALSE)
+    {
+        try {
+            $this->assertIsSubset($a, $b, '', $delta, 10, $canonicalize, $ignoreCase);
         }
 
         catch (PHPUnit_Framework_AssertionFailedError $e) {
