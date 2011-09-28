@@ -121,7 +121,7 @@ class PHPUnit_TextUI_Command
     public static function main($exit = TRUE)
     {
         $command = new PHPUnit_TextUI_Command;
-        $command->run($_SERVER['argv'], $exit);
+        return $command->run($_SERVER['argv'], $exit);
     }
 
     /**
@@ -172,7 +172,11 @@ class PHPUnit_TextUI_Command
                 print " - $group\n";
             }
 
-            exit(PHPUnit_TextUI_TestRunner::SUCCESS_EXIT);
+            if ($exit) {
+                exit(PHPUnit_TextUI_TestRunner::SUCCESS_EXIT);
+            } else {
+                return PHPUnit_TextUI_TestRunner::SUCCESS_EXIT;
+            }
         }
 
         unset($this->arguments['test']);
@@ -186,18 +190,20 @@ class PHPUnit_TextUI_Command
             print $e->getMessage() . "\n";
         }
 
+        $ret = PHPUnit_TextUI_TestRunner::FAILURE_EXIT;
+
+        if (isset($result) && $result->wasSuccessful()) {
+            $ret = PHPUnit_TextUI_TestRunner::SUCCESS_EXIT;
+        }
+
+        else if (!isset($result) || $result->errorCount() > 0) {
+            $ret = PHPUnit_TextUI_TestRunner::EXCEPTION_EXIT;
+        }
+
         if ($exit) {
-            if (isset($result) && $result->wasSuccessful()) {
-                exit(PHPUnit_TextUI_TestRunner::SUCCESS_EXIT);
-            }
-
-            else if (!isset($result) || $result->errorCount() > 0) {
-                exit(PHPUnit_TextUI_TestRunner::EXCEPTION_EXIT);
-            }
-
-            else {
-                exit(PHPUnit_TextUI_TestRunner::FAILURE_EXIT);
-            }
+            exit($ret);
+        } else {
+            return $ret;
         }
     }
 
