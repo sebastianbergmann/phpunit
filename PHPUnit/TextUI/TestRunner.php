@@ -356,18 +356,20 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
                 $this->printer->write("\n");
                 unset($writer);
             }
-            
+
             if (isset($arguments['coverageText'])) {
                 $this->printer->write(
                   "\nGenerating textual code coverage report, this may take a moment."
                 );
-                if($arguments['coverageText'] == "cli") {
+
+                if ($arguments['coverageText'] == 'php://stdout') {
                     $outputStream = $this->printer;
-                    $colors = (bool)$arguments['colors'];
+                    $colors       = (bool)$arguments['colors'];
                 } else {
                     $outputStream = new PHPUnit_Util_Printer($arguments['coverageText']);
-                    $colors = false;
+                    $colors       = FALSE;
                 }
+
                 $writer = new PHP_CodeCoverage_Report_Text(
                   $outputStream,
                   $title,
@@ -375,9 +377,9 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
                   $arguments['reportHighLowerBound'],
                   $arguments['coverageTextShowUncoveredFiles']
                 );
-                $writer->process(
-                    $this->codeCoverage, $colors
-                );
+
+                $writer->process($codeCoverage, $colors);
+
                 $this->printer->write("\n");
             }
         }

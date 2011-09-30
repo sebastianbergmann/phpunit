@@ -345,7 +345,8 @@ class PHPUnit_Util_Configuration
                 $listener->childNodes->item(1)->tagName == 'arguments') {
                 foreach ($listener->childNodes->item(1)->childNodes as $argument) {
                     if ($argument instanceof DOMElement) {
-                        if($argument->tagName == 'file' || $argument->tagName == 'directory') {
+                        if ($argument->tagName == 'file' ||
+                            $argument->tagName == 'directory') {
                             $arguments[] = $this->toAbsolutePath((string)$argument->nodeValue);
                         } else {
                             $arguments[] = PHPUnit_Util_XML::xmlToVariable($argument);
@@ -374,9 +375,11 @@ class PHPUnit_Util_Configuration
         $result = array();
 
         foreach ($this->xpath->query('logging/log') as $log) {
-            $type   = (string)$log->getAttribute('type');
-            if($type == 'coverage-text' && $log->getAttribute('target') == "cli") {
-                $target = "cli";
+            $type = (string)$log->getAttribute('type');
+
+            if ($type == 'coverage-text' &&
+                $log->getAttribute('target') == 'php://stdout') {
+                $target = 'php://stdout';
             } else {
                 $target = $this->toAbsolutePath((string)$log->getAttribute('target'));
             }
@@ -420,8 +423,8 @@ class PHPUnit_Util_Configuration
                       FALSE
                     );
                 }
-            } 
-            
+            }
+
             else if ($type == 'coverage-text') {
                 if ($log->hasAttribute('showUncoveredFiles')) {
                     $result['coverageTextShowUncoveredFiles'] = $this->getBoolean(

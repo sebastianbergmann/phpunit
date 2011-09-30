@@ -20,8 +20,9 @@ Usage: phpunit [switches] UnitTest [UnitTest.php]
   --log-tap <file>          Log test execution in TAP format to file.
   --log-json <file>         Log test execution in JSON format.
 
+  --coverage-clover <file>  Generate code coverage report in Clover XML format.
   --coverage-html <dir>     Generate code coverage report in HTML format.
-  --coverage-clover <file>  Write code coverage data in Clover XML format.
+  --coverage-text <file>    Generate code coverage report in text format.
 
   --testdox-html <file>     Write agile documentation in HTML format to file.
   --testdox-text <file>     Write agile documentation in Text format to file.
