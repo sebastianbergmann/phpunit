@@ -81,6 +81,7 @@ class PHPUnit_TextUI_Command
       'configuration=' => NULL,
       'coverage-html=' => NULL,
       'coverage-clover=' => NULL,
+      'coverage-text=' => NULL,
       'debug' => NULL,
       'exclude-group=' => NULL,
       'filter=' => NULL,
@@ -278,38 +279,26 @@ class PHPUnit_TextUI_Command
                 }
                 break;
 
-                case '--coverage-clover': {
-                    if (extension_loaded('tokenizer') &&
-                        extension_loaded('xdebug')) {
-                        $this->arguments['coverageClover'] = $option[1];
-                    } else {
-                        if (!extension_loaded('tokenizer')) {
-                            $this->showExtensionNotLoadedMessage(
-                              'tokenizer', 'No code coverage will be generated.'
-                            );
+                case '--coverage-clover': 
+                case '--coverage-html': 
+                case '--coverage-text': {
+                    if (extension_loaded('tokenizer') && extension_loaded('xdebug')) {
+                        if($option[0] == '--coverage-clover') {
+                            $this->arguments['coverageClover'] = $option[1];
+                        } else if($option[0] == 'coverage--html') {
+                            $this->arguments['reportDirectory'] = $option[1];
                         } else {
-                            $this->showExtensionNotLoadedMessage(
-                              'Xdebug', 'No code coverage will be generated.'
-                            );
+                            $this->arguments['coverageText'] = $option[1];
+                            $this->arguments['coverageTextShowUncoveredFiles'] = false;
                         }
-                    }
-                }
-                break;
-
-                case '--coverage-html': {
-                    if (extension_loaded('tokenizer') &&
-                        extension_loaded('xdebug')) {
-                        $this->arguments['reportDirectory'] = $option[1];
+                    } else if (!extension_loaded('tokenizer')) {
+                        $this->showExtensionNotLoadedMessage(
+                            'tokenizer', 'No code coverage will be generated.'
+                        );
                     } else {
-                        if (!extension_loaded('tokenizer')) {
-                            $this->showExtensionNotLoadedMessage(
-                              'tokenizer', 'No code coverage will be generated.'
-                            );
-                        } else {
-                            $this->showExtensionNotLoadedMessage(
-                              'Xdebug', 'No code coverage will be generated.'
-                            );
-                        }
+                        $this->showExtensionNotLoadedMessage(
+                            'Xdebug', 'No code coverage will be generated.'
+                        );
                     }
                 }
                 break;
@@ -621,21 +610,7 @@ class PHPUnit_TextUI_Command
 
             $logging = $configuration->getLoggingConfiguration();
 
-            if (isset($logging['coverage-html'])) {
-                if (!extension_loaded('tokenizer')) {
-                    $this->showExtensionNotLoadedMessage(
-                      'tokenizer', 'No code coverage will be generated.'
-                    );
-                }
-
-                else if (!extension_loaded('Xdebug')) {
-                    $this->showExtensionNotLoadedMessage(
-                      'Xdebug', 'No code coverage will be generated.'
-                    );
-               }
-            }
-
-            if (isset($logging['coverage-clover'])) {
+            if (isset($logging['coverage-html']) || isset($logging['coverage-clover']) || isset($logging['coverage-text']) ) {
                 if (!extension_loaded('tokenizer')) {
                     $this->showExtensionNotLoadedMessage(
                       'tokenizer', 'No code coverage will be generated.'
@@ -892,6 +867,7 @@ Usage: phpunit [switches] UnitTest [UnitTest.php]
 
   --coverage-html <dir>     Generate code coverage report in HTML format.
   --coverage-clover <file>  Write code coverage data in Clover XML format.
+  --coverage-text <file>   Write code coverage to file or output it directly (=cli).
 
   --testdox-html <file>     Write agile documentation in HTML format to file.
   --testdox-text <file>     Write agile documentation in Text format to file.

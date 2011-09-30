@@ -356,6 +356,30 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
                 $this->printer->write("\n");
                 unset($writer);
             }
+            
+            if (isset($arguments['coverageText'])) {
+                $this->printer->write(
+                  "\nGenerating textual code coverage report, this may take a moment."
+                );
+                if($arguments['coverageText'] == "cli") {
+                    $outputStream = $this->printer;
+                    $colors = (bool)$arguments['colors'];
+                } else {
+                    $outputStream = new PHPUnit_Util_Printer($arguments['coverageText']);
+                    $colors = false;
+                }
+                $writer = new PHP_CodeCoverage_Report_Text(
+                  $outputStream,
+                  $title,
+                  $arguments['reportLowUpperBound'],
+                  $arguments['reportHighLowerBound'],
+                  $arguments['coverageTextShowUncoveredFiles']
+                );
+                $writer->process(
+                    $this->codeCoverage, $colors
+                );
+                $this->printer->write("\n");
+            }
         }
 
         return $result;
@@ -593,6 +617,14 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
             if (isset($loggingConfiguration['coverage-clover']) &&
                 !isset($arguments['coverageClover'])) {
                 $arguments['coverageClover'] = $loggingConfiguration['coverage-clover'];
+            }
+
+            if (isset($loggingConfiguration['coverage-text']) &&
+                !isset($arguments['coverageText'])) {
+                $arguments['coverageText'] = $loggingConfiguration['coverage-text'];
+            }
+            if (isset($loggingConfiguration['coverageTextShowUncoveredFiles'])) {
+                $arguments['coverageTextShowUncoveredFiles'] = $loggingConfiguration['coverageTextShowUncoveredFiles'];
             }
 
             if (isset($loggingConfiguration['json']) &&
