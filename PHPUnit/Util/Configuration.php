@@ -375,7 +375,11 @@ class PHPUnit_Util_Configuration
 
         foreach ($this->xpath->query('logging/log') as $log) {
             $type   = (string)$log->getAttribute('type');
-            $target = $this->toAbsolutePath((string)$log->getAttribute('target'));
+            if($type == 'coverage-text' && $log->getAttribute('target') == "cli") {
+                $target = "cli";
+            } else {
+                $target = $this->toAbsolutePath((string)$log->getAttribute('target'));
+            }
 
             if ($type == 'coverage-html') {
                 if ($log->hasAttribute('title')) {
@@ -416,11 +420,19 @@ class PHPUnit_Util_Configuration
                       FALSE
                     );
                 }
+            } 
+            
+            else if ($type == 'coverage-text') {
+                if ($log->hasAttribute('showUncoveredFiles')) {
+                    $result['coverageTextShowUncoveredFiles'] = $this->getBoolean(
+                      (string)$log->getAttribute('showUncoveredFiles'),
+                      FALSE
+                  );
+                }
             }
 
             $result[$type] = $target;
         }
-
         return $result;
     }
 

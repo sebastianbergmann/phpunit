@@ -55,7 +55,7 @@
  * @link       http://www.phpunit.de/
  * @since      Class available since Release 2.0.0
  */
-abstract class PHPUnit_Util_Printer
+class PHPUnit_Util_Printer
 {
     /**
      * If TRUE, flush output after every write.
