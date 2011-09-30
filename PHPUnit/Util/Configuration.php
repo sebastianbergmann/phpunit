@@ -427,7 +427,7 @@ class PHPUnit_Util_Configuration
                     $result['coverageTextShowUncoveredFiles'] = $this->getBoolean(
                       (string)$log->getAttribute('showUncoveredFiles'),
                       FALSE
-                    );
+                  );
                 }
             }
 

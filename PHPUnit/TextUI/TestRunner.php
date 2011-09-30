@@ -353,9 +353,6 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
                     $outputStream = new PHPUnit_Util_Printer($arguments['coverageText']);
                     $colors = false;
                 }
-                if (!isset($arguments['coverageTextShowUncoveredFiles'])) {
-                    $arguments['coverageTextShowUncoveredFiles'] = false;
-                }
                 $writer = new PHP_CodeCoverage_Report_Text(
                   $outputStream,
                   $title,
@@ -610,6 +607,9 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
             if (isset($loggingConfiguration['coverage-text']) &&
                 !isset($arguments['coverageText'])) {
                 $arguments['coverageText'] = $loggingConfiguration['coverage-text'];
+            }
+            if (isset($loggingConfiguration['coverageTextShowUncoveredFiles'])) {
+                $arguments['coverageTextShowUncoveredFiles'] = $loggingConfiguration['coverageTextShowUncoveredFiles'];
             }
 
             if (isset($loggingConfiguration['json']) &&
