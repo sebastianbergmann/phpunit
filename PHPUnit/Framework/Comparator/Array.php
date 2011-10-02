@@ -231,6 +231,17 @@ class PHPUnit_Framework_Comparator_Array extends PHPUnit_Framework_Comparator
                             continue;
                         }
                     } else {
+                        if (!array_key_exists($key, $actual)) {
+                            $expString .= sprintf(
+                              "    %s => %s\n",
+
+                              PHPUnit_Util_Type::export($key),
+                              PHPUnit_Util_Type::shortenedExport($value)
+                            );
+                            $isSubset = FALSE;
+                            continue;
+                        }
+
                         $this->factory->getComparatorFor($value, $actual[$key])->assertEquals($value, $actual[$key], $delta, $canonicalize, $ignoreCase, $processed);
                         $expString .= sprintf(
                           "    %s => %s\n",
@@ -267,22 +278,6 @@ class PHPUnit_Framework_Comparator_Array extends PHPUnit_Framework_Comparator
                 );
                 $isSubset = FALSE;
             }
-
-            /*
-            if (is_numeric($key) && !is_array($value)) {
-                // basic mode - for when $expected is a list of elements we expect to find in $actual
-                $this->assertTrue(in_array($value, $actual), "Expected element [$selector.$value] is missing");
-            } else {
-                $this->assertTrue(array_key_exists($key,$actual), "Expected key [$selector.$key] is missing");
-
-                if (is_array($value)) {
-                    $this->assertTrue(is_array($actual[$key]), "Expecting array for key [$selector.$key]");
-                    $this->assertIsSubset($value, $actual[$key], $selector.'.'.$key);
-                } else {
-                    $this->assertEquals($value, $actual[$key], "Expected [$value] for key [$selector.$key] not equals to [{$actual[$key]}]");
-                }
-            }
-            */
         }
 
         $expString .= ')';

@@ -713,10 +713,15 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
 
         $object1 = new SampleClass(4, 8, 15);
         $object2 = new SampleClass(4, 8, 15);
+        $object2->d = 5;
+
         $storage1 = new SplObjectStorage;
         $storage1->attach($object1);
         $storage2 = new SplObjectStorage;
         $storage2->attach($object1);
+
+        $array1 = array('a' => 'item1', 'b' => array('a' => 'item2'));
+        $array2 = array('z', 'a' => 'item1', 'b' => array('x', 'a' => 'item2'));
 
         return array_merge($equalValues, array(
             // empty array
@@ -728,6 +733,12 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
             array(array('a'), array('A', 'B', 'C'), 0, FALSE, TRUE), // ignore case
             array(array('a'), array('b', 'a', 'c'), 0, TRUE), // ignore keys
             array(array('a'), array('B', 'A', 'C'), 0, TRUE, TRUE), // ignore keys and case
+            // string - multiple levels
+            array($array1, $array2),
+            // objects
+            array(array($book1), array($book2)),
+            array(array($object1), array($object2, 'a')),
+            // basic XML
             array(
                 $this->createDOMDocument('<root><foo attr="bar"></foo></root>'),
                 $this->createDOMDocument('<root><foo attr="bar"/></root>'),
@@ -735,6 +746,37 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
             array(
                 $this->createDOMDocument('<root><foo attr="bar"></foo></root>'),
                 $this->createDOMDocument('<root><foo attr="bar"/><bar /></root>'),
+            ),
+
+            array(
+                array('a' => 'lorem', 'b' => array('a' => 'ipsum')),
+                array('a' => 'lorem', 'c' => 'sit', 'b' => array('c' => 'dolo', 'a' => 'ipsum')),
+            ),
+            array(
+                array('lorem', 'ipsum', 'dolor'),
+                array('Dolor', 'lorem', 'ipsum'),
+                0,
+                true,
+                true
+            ),
+            array(
+                array('lorem', 'ipsum', 'dolor'),
+                array('dolor', 'lorem', 'ipsum'),
+                0,
+                true
+            ),
+            array(
+                array('lorem', 'ipsum', 'dolor', 'array' => array('a', 'b', 'c')),
+                array('Dolor', 'lorem', 'array' => array('A', 'b', 'C'), 'ipsum'),
+                0,
+                true,
+                true
+            ),
+            array(
+                array('lorem', 'ipsum', 'dolor', 'array' => array('a', 'b', 'c')),
+                array('dolor', 'lorem', 'ipsum', 'array' => array('a', 'b', 'c')),
+                0,
+                true
             ),
         ));
     }
