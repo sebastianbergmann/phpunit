@@ -377,12 +377,9 @@ class PHPUnit_Util_Configuration
         foreach ($this->xpath->query('logging/log') as $log) {
             $type = (string)$log->getAttribute('type');
 
-            if ($type == 'coverage-text' &&
-                $log->getAttribute('target') == 'php://stdout') {
-                $target = 'php://stdout';
-            } else {
-                $target = $this->toAbsolutePath((string)$log->getAttribute('target'));
-            }
+            $target = $this->toAbsolutePath(
+              (string)$log->getAttribute('target')
+            );
 
             if ($type == 'coverage-html') {
                 if ($log->hasAttribute('title')) {
@@ -932,10 +929,15 @@ class PHPUnit_Util_Configuration
      */
     protected function toAbsolutePath($path, $useIncludePath = FALSE)
     {
-        // is the path already an absolute path?
+        // Check whether the path is already absolute.
         if ($path[0] === '/' || $path[0] === '\\' ||
             (strlen($path) > 3 && ctype_alpha($path[0]) &&
              $path[1] === ':' && ($path[2] === '\\' || $path[2] === '/'))) {
+            return $path;
+        }
+
+        // Check whether a stream is used.
+        if (strpos($path, '://') !== FALSE) {
             return $path;
         }
 
