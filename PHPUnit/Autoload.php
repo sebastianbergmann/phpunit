@@ -162,6 +162,7 @@ function phpunit_autoload($class = NULL)
           'phpunit_util_skeleton' => '/Util/Skeleton.php',
           'phpunit_util_skeleton_class' => '/Util/Skeleton/Class.php',
           'phpunit_util_skeleton_test' => '/Util/Skeleton/Test.php',
+          'phpunit_util_string' => '/Util/String.php',
           'phpunit_util_test' => '/Util/Test.php',
           'phpunit_util_testdox_nameprettifier' => '/Util/TestDox/NamePrettifier.php',
           'phpunit_util_testdox_resultprinter' => '/Util/TestDox/ResultPrinter.php',
