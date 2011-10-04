@@ -161,14 +161,16 @@ class PHPUnit_Framework_MockObject_Generator
             throw new InvalidArgumentException;
         }
 
-        foreach ($methods as $method) {
-            if (!preg_match('~[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*~', $method)) {
-                throw new PHPUnit_Framework_Exception(
-                  sprintf(
-                    'Cannot stub or mock method with invalid name "%s"',
-                    $method
-                  )
-                );
+        if (NULL !== $methods) {
+            foreach ($methods as $method) {
+                if (!preg_match('~[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*~', $method)) {
+                    throw new PHPUnit_Framework_Exception(
+                      sprintf(
+                        'Cannot stub or mock method with invalid name "%s"',
+                        $method
+                      )
+                    );
+                }
             }
         }
 
