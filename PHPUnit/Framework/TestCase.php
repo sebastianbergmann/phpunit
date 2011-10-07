@@ -103,12 +103,12 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
      * Overwrite this attribute in a child class of TestCase.
      * Setting this attribute in setUp() has no effect!
      *
-     * @var    boolean
+     * @var boolean
      */
     protected $backupGlobals = NULL;
 
     /**
-     * @var    array
+     * @var array
      */
     protected $backupGlobalsBlacklist = array();
 
@@ -117,19 +117,19 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
      * Overwrite this attribute in a child class of TestCase.
      * Setting this attribute in setUp() has no effect!
      *
-     * @var    boolean
+     * @var boolean
      */
     protected $backupStaticAttributes = NULL;
 
     /**
-     * @var    array
+     * @var array
      */
     protected $backupStaticAttributesBlacklist = array();
 
     /**
      * Whether or not this test is to be run in a separate PHP process.
      *
-     * @var    boolean
+     * @var boolean
      */
     protected $runTestInSeparateProcess = NULL;
 
@@ -137,123 +137,123 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
      * Whether or not this test should preserve the global state when
      * running in a separate PHP process.
      *
-     * @var    boolean
+     * @var boolean
      */
     protected $preserveGlobalState = TRUE;
 
     /**
      * Whether or not this test is running in a separate PHP process.
      *
-     * @var    boolean
+     * @var boolean
      */
     private $inIsolation = FALSE;
 
     /**
-     * @var    array
+     * @var array
      */
     private $data = array();
 
     /**
-     * @var    string
+     * @var string
      */
     private $dataName = '';
 
     /**
-     * @var    boolean
+     * @var boolean
      */
     private $useErrorHandler = NULL;
 
     /**
-     * @var    boolean
+     * @var boolean
      */
     private $useOutputBuffering = NULL;
 
     /**
      * The name of the expected Exception.
      *
-     * @var    mixed
+     * @var mixed
      */
     private $expectedException = NULL;
 
     /**
      * The message of the expected Exception.
      *
-     * @var    string
+     * @var string
      */
     private $expectedExceptionMessage = '';
 
     /**
      * The code of the expected Exception.
      *
-     * @var    integer
+     * @var integer
      */
     private $expectedExceptionCode;
 
     /**
      * The stack trace to where the expected exception was set.
      *
-     * @var    array
+     * @var array
      */
     private $expectedExceptionTrace = array();
 
     /**
      * The required version of PHP.
      *
-     * @var    string
+     * @var string
      */
     private $requiredPhp = '';
 
     /**
      * The required version of PHPUnit.
      *
-     * @var    string
+     * @var string
      */
     private $requiredPhpUnit = '';
 
     /**
      * The name of the test case.
      *
-     * @var    string
+     * @var string
      */
     private $name = NULL;
 
     /**
-     * @var    array
+     * @var array
      */
     private $dependencies = array();
 
     /**
-     * @var    array
+     * @var array
      */
     private $dependencyInput = array();
 
     /**
-     * @var    Array
+     * @var array
      */
     private $iniSettings = array();
 
     /**
-     * @var    Array
+     * @var array
      */
     private $locale = array();
 
     /**
-     * @var    Array
+     * @var array
      */
     private $mockObjects = array();
 
     /**
-     * @var    integer
+     * @var integer
      */
     private $status;
 
     /**
-     * @var    string
+     * @var string
      */
     private $statusMessage = '';
 
     /**
-     * @var    integer
+     * @var integer
      */
     private $numAssertions = 0;
 
