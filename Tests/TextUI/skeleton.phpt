@@ -12,6 +12,7 @@ require_once dirname(dirname(dirname(__FILE__))) . '/PHPUnit/Autoload.php';
 PHPUnit_TextUI_Command::main();
 ?>
 --EXPECTF--
+%s
 PHPUnit %s by Sebastian Bergmann.
 
 ....
