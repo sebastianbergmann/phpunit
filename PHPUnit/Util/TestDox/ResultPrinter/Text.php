@@ -75,13 +75,41 @@ class PHPUnit_Util_TestDox_ResultPrinter_Text extends PHPUnit_Util_TestDox_Resul
      */
     protected function onTest($name, $success = TRUE)
     {
-        if ($success) {
-            $this->write(' [x] ');
-        } else {
-            $this->write(' [ ] ');
-        }
+        $this->write(" [{$this->tests[$name]['status']}] {$name}\n");
 
-        $this->write($name . "\n");
+        if ($this->verbose)
+        {
+            foreach ($this->tests[$name]['errors'] as $error) {
+                $this->write("     +-> {$error->getMessage()}\n");
+                $trace = NULL;
+                $stepNum = 1;
+                $lineNum = $error->getLine();
+                $file = $error->getFile();
+                foreach ($error->getTrace() as $traceStep) {
+                    $line = str_pad('', 8 + $stepNum);
+                    $line .= ($stepNum == 1 ? '@' : ' ') . " ";
+                    if (isset($traceStep['class']))
+                    {
+                        $line .= "{$traceStep['class']}::";
+                    }
+                    $line .= "{$traceStep['function']}()";
+                    if ($lineNum)
+                    {
+                        $line .= ":{$lineNum}";
+                    }
+
+                    $line = str_pad($line, 75, " ", STR_PAD_RIGHT);
+                    $line .= "{$file} ";
+                    $this->write("{$line}\n");
+
+                    // the trace step's file & line are the CALLER, not the current
+                    $file = (isset($traceStep['file']) ? $traceStep['file'] : '<unknown>');
+                    $lineNum = (isset($traceStep['line']) ? $traceStep['line'] : NULL);
+
+                    $stepNum++;
+                }
+            }
+        }
     }
 
     /**
