@@ -357,6 +357,18 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
                 unset($writer);
             }
 
+            if (isset($arguments['coveragePHP'])) {
+                $this->printer->write(
+                  "\nSerializing PHP_CodeCoverage object to file, this may take a moment."
+                );
+
+                $writer = new PHP_CodeCoverage_Report_PHP;
+                $writer->process($codeCoverage, $arguments['coveragePHP']);
+
+                $this->printer->write("\n");
+                unset($writer);
+            }
+
             if (isset($arguments['coverageText'])) {
                 $this->printer->write(
                   "\nGenerating textual code coverage report, this may take a moment."

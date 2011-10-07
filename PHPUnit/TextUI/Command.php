@@ -81,6 +81,7 @@ class PHPUnit_TextUI_Command
       'configuration=' => NULL,
       'coverage-html=' => NULL,
       'coverage-clover=' => NULL,
+      'coverage-php=' => NULL,
       'coverage-text=' => NULL,
       'debug' => NULL,
       'exclude-group=' => NULL,
@@ -281,6 +282,7 @@ class PHPUnit_TextUI_Command
 
                 case '--coverage-clover':
                 case '--coverage-html':
+                case '--coverage-php':
                 case '--coverage-text': {
                     if (!extension_loaded('tokenizer')) {
                         $this->showExtensionNotLoadedMessage(
@@ -306,6 +308,11 @@ class PHPUnit_TextUI_Command
 
                         case '--coverage-html': {
                             $this->arguments['reportDirectory'] = $option[1];
+                        }
+                        break;
+
+                        case '--coverage-php': {
+                            $this->arguments['coveragePHP'] = $option[1];
                         }
                         break;
 
@@ -882,6 +889,7 @@ Usage: phpunit [switches] UnitTest [UnitTest.php]
 
   --coverage-clover <file>  Generate code coverage report in Clover XML format.
   --coverage-html <dir>     Generate code coverage report in HTML format.
+  --coverage-php <file>     Serialize PHP_CodeCoverage object to file.
   --coverage-text <file>    Generate code coverage report in text format.
 
   --testdox-html <file>     Write agile documentation in HTML format to file.

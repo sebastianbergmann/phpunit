@@ -21,6 +21,7 @@ Usage: phpunit [switches] UnitTest [UnitTest.php]
 
   --coverage-clover <file>  Generate code coverage report in Clover XML format.
   --coverage-html <dir>     Generate code coverage report in HTML format.
+  --coverage-php <file>     Serialize PHP_CodeCoverage object to file.
   --coverage-text <file>    Generate code coverage report in text format.
 
   --testdox-html <file>     Write agile documentation in HTML format to file.
