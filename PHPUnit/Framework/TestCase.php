@@ -642,8 +642,7 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
             $result = $this->createResult();
         }
 
-        $this->result = $result;
-
+        $this->setTestResultObject($result);
         $this->setExpectedExceptionFromAnnotation();
         $this->setUseErrorHandlerFromAnnotation();
         $this->setUseOutputBufferingFromAnnotation();
@@ -1119,6 +1118,15 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
     public function getTestResultObject()
     {
         return $this->result;
+    }
+
+    /**
+     * @param PHPUnit_Framework_TestResult $result
+     * @since Method available since Release 3.6.0
+     */
+    public function setTestResultObject(PHPUnit_Framework_TestResult $result)
+    {
+        $this->result = $result;
     }
 
     /**
