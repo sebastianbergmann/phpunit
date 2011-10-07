@@ -282,23 +282,38 @@ class PHPUnit_TextUI_Command
                 case '--coverage-clover':
                 case '--coverage-html':
                 case '--coverage-text': {
-                    if (extension_loaded('tokenizer') && extension_loaded('xdebug')) {
-                        if($option[0] == '--coverage-clover') {
+                    if (!extension_loaded('tokenizer')) {
+                        $this->showExtensionNotLoadedMessage(
+                          'tokenizer', 'No code coverage will be generated.'
+                        );
+
+                        continue;
+                    }
+
+                    if (!extension_loaded('xdebug')) {
+                        $this->showExtensionNotLoadedMessage(
+                          'Xdebug', 'No code coverage will be generated.'
+                        );
+
+                        continue;
+                    }
+
+                    switch ($option[0]) {
+                        case '--coverage-clover': {
                             $this->arguments['coverageClover'] = $option[1];
-                        } else if($option[0] == 'coverage--html') {
-                            $this->arguments['reportDirectory'] = $option[1];
-                        } else {
-                            $this->arguments['coverageText'] = $option[1];
-                            $this->arguments['coverageTextShowUncoveredFiles'] = false;
                         }
-                    } else if (!extension_loaded('tokenizer')) {
-                        $this->showExtensionNotLoadedMessage(
-                            'tokenizer', 'No code coverage will be generated.'
-                        );
-                    } else {
-                        $this->showExtensionNotLoadedMessage(
-                            'Xdebug', 'No code coverage will be generated.'
-                        );
+                        break;
+
+                        case '--coverage-html': {
+                            $this->arguments['reportDirectory'] = $option[1];
+                        }
+                        break;
+
+                        case '--coverage-text': {
+                            $this->arguments['coverageText'] = $option[1];
+                            $this->arguments['coverageTextShowUncoveredFiles'] = FALSE;
+                        }
+                        break;
                     }
                 }
                 break;
