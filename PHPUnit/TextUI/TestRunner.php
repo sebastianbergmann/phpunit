@@ -295,6 +295,18 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
 
         if ($arguments['strict']) {
             $result->strictMode(TRUE);
+
+            $result->setTimeoutForSmallTests(
+              $arguments['timeoutForSmallTests']
+            );
+
+            $result->setTimeoutForMediumTests(
+              $arguments['timeoutForMediumTests']
+            );
+
+            $result->setTimeoutForLargeTests(
+              $arguments['timeoutForLargeTests']
+            );
         }
 
         $suite->run(
@@ -540,6 +552,21 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
                 $arguments['stopOnFailure'] = $phpunitConfiguration['stopOnFailure'];
             }
 
+            if (isset($phpunitConfiguration['timeoutForSmallTests']) &&
+                !isset($arguments['timeoutForSmallTests'])) {
+                $arguments['timeoutForSmallTests'] = $phpunitConfiguration['timeoutForSmallTests'];
+            }
+
+            if (isset($phpunitConfiguration['timeoutForMediumTests']) &&
+                !isset($arguments['timeoutForMediumTests'])) {
+                $arguments['timeoutForMediumTests'] = $phpunitConfiguration['timeoutForMediumTests'];
+            }
+
+            if (isset($phpunitConfiguration['timeoutForLargeTests']) &&
+                !isset($arguments['timeoutForLargeTests'])) {
+                $arguments['timeoutForLargeTests'] = $phpunitConfiguration['timeoutForLargeTests'];
+            }
+
             if (isset($phpunitConfiguration['strict']) &&
                 !isset($arguments['strict'])) {
                 $arguments['strict'] = $phpunitConfiguration['strict'];
@@ -747,6 +774,9 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
         $arguments['stopOnFailure']               = isset($arguments['stopOnFailure'])               ? $arguments['stopOnFailure']               : FALSE;
         $arguments['stopOnIncomplete']            = isset($arguments['stopOnIncomplete'])            ? $arguments['stopOnIncomplete']            : FALSE;
         $arguments['stopOnSkipped']               = isset($arguments['stopOnSkipped'])               ? $arguments['stopOnSkipped']               : FALSE;
+        $arguments['timeoutForSmallTests']        = isset($arguments['timeoutForSmallTests'])        ? $arguments['timeoutForSmallTests']        : 1;
+        $arguments['timeoutForMediumTests']       = isset($arguments['timeoutForMediumTests'])       ? $arguments['timeoutForMediumTests']       : 10;
+        $arguments['timeoutForLargeTests']        = isset($arguments['timeoutForLargeTests'])        ? $arguments['timeoutForLargeTests']        : 60;
         $arguments['strict']                      = isset($arguments['strict'])                      ? $arguments['strict']                      : FALSE;
         $arguments['verbose']                     = isset($arguments['verbose'])                     ? $arguments['verbose']                     : FALSE;
 

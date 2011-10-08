@@ -13,6 +13,9 @@
          printerClass="PHPUnit_TextUI_ResultPrinter"
          stopOnFailure="false"
          testSuiteLoaderClass="PHPUnit_Runner_StandardTestSuiteLoader"
+         timeoutForSmallTests="1"
+         timeoutForMediumTests="10"
+         timeoutForLargeTests="60"
          strict="false"
          verbose="false">
   <testsuites>

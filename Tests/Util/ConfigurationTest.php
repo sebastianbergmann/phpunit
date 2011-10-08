@@ -300,7 +300,10 @@ class Util_ConfigurationTest extends PHPUnit_Framework_TestCase
             'stopOnFailure' => FALSE,
             'strict' => FALSE,
             'testSuiteLoaderClass' => 'PHPUnit_Runner_StandardTestSuiteLoader',
-            'verbose' => FALSE
+            'verbose' => FALSE,
+            'timeoutForSmallTests' => 1,
+            'timeoutForMediumTests' => 10,
+            'timeoutForLargeTests' => 60
           ),
           $this->configuration->getPHPUnitConfiguration()
         );

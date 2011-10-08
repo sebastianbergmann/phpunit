@@ -67,6 +67,9 @@
  *          stopOnIncomplete="false"
  *          stopOnSkipped="false"
  *          testSuiteLoaderClass="PHPUnit_Runner_StandardTestSuiteLoader"
+ *          timeoutForSmallTests="1"
+ *          timeoutForMediumTests="10"
+ *          timeoutForLargeTests="60"
  *          strict="false"
  *          verbose="false">
  *   <testsuites>
@@ -661,6 +664,24 @@ class PHPUnit_Util_Configuration
             );
         }
 
+        if ($root->hasAttribute('timeoutForSmallTests')) {
+            $result['timeoutForSmallTests'] = $this->getInteger(
+              (string)$root->getAttribute('timeoutForSmallTests'), 1
+            );
+        }
+
+        if ($root->hasAttribute('timeoutForMediumTests')) {
+            $result['timeoutForMediumTests'] = $this->getInteger(
+              (string)$root->getAttribute('timeoutForMediumTests'), 10
+            );
+        }
+
+        if ($root->hasAttribute('timeoutForLargeTests')) {
+            $result['timeoutForLargeTests'] = $this->getInteger(
+              (string)$root->getAttribute('timeoutForLargeTests'), 60
+            );
+        }
+
         if ($root->hasAttribute('strict')) {
             $result['strict'] = $this->getBoolean(
               (string)$root->getAttribute('strict'), FALSE
@@ -861,6 +882,21 @@ class PHPUnit_Util_Configuration
 
         else if (strtolower($value) == 'true') {
             return TRUE;
+        }
+
+        return $default;
+    }
+
+    /**
+     * @param  string  $value
+     * @param  boolean $default
+     * @return boolean
+     * @since  Method available since Release 3.6.0
+     */
+    protected function getInteger($value, $default)
+    {
+        if (is_numeric($value)) {
+            return (int)$value;
         }
 
         return $default;
