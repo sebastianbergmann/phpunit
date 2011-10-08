@@ -718,13 +718,17 @@ class PHPUnit_Util_Configuration
             }
 
             if ($config->hasAttribute('port')) {
-                $port = (int)$config->getAttribute('port');
+                $port = $this->getInteger(
+                  (string)$config->getAttribute('port'), 4444
+                );
             } else {
                 $port = 4444;
             }
 
             if ($config->hasAttribute('timeout')) {
-                $timeout = (int)$config->getAttribute('timeout');
+                $timeout = $this->getInteger(
+                  (string)$config->getAttribute('timeout'), 30000
+                );
             } else {
                 $timeout = 30000;
             }
