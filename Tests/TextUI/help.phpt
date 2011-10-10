@@ -48,6 +48,10 @@ Usage: phpunit [switches] UnitTest [UnitTest.php]
   --strict                  Run tests in strict mode.
   -v|--verbose              Output more verbose information.
 
+  --parallelism <count>     Runs the test(s) at the same time in separate processes.
+                            (default 5)
+  --processes <count>       Synonym for --parallelism
+
   --skeleton-class          Generate Unit class for UnitTest in UnitTest.php.
   --skeleton-test           Generate UnitTest class for Unit in Unit.php.
 
