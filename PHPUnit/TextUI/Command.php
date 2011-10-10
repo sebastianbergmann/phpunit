@@ -75,7 +75,7 @@ class PHPUnit_TextUI_Command
     /**
      * @var array
      */
-    protected $longOptions = array(
+    public static $stdLongOptions = array(
       'colors' => NULL,
       'bootstrap=' => NULL,
       'configuration=' => NULL,
@@ -94,7 +94,9 @@ class PHPUnit_TextUI_Command
       'log-json=' => NULL,
       'log-junit=' => NULL,
       'log-tap=' => NULL,
+      'parallelism=' => NULL,
       'process-isolation' => NULL,
+      'processes=' => NULL,
       'repeat=' => NULL,
       'skeleton-class' => NULL,
       'skeleton-test' => NULL,
@@ -118,6 +120,12 @@ class PHPUnit_TextUI_Command
     );
 
     /**
+     * @var array
+     */
+    protected $longOptions = array();
+    
+    
+    /**
      * @param boolean $exit
      */
     public static function main($exit = TRUE)
@@ -126,6 +134,11 @@ class PHPUnit_TextUI_Command
         return $command->run($_SERVER['argv'], $exit);
     }
 
+    public function __construct()
+    {
+        $this->longOptions = self::$stdLongOptions;
+    }
+    
     /**
      * @param array   $argv
      * @param boolean $exit
@@ -233,6 +246,7 @@ class PHPUnit_TextUI_Command
      * {
      *     public function __construct()
      *     {
+     *         parent::__construct();
      *         $this->longOptions['--my-switch'] = 'myHandler';
      *     }
      *
@@ -403,6 +417,13 @@ class PHPUnit_TextUI_Command
 
                 case '--log-tap': {
                     $this->arguments['tapLogfile'] = $option[1];
+                }
+                break;
+
+                case '--parallelism': 
+                case '--processes': 
+                {
+                    $this->arguments['parallelism'] = (int)$option[1];
                 }
                 break;
 
@@ -919,6 +940,10 @@ Usage: phpunit [switches] UnitTest [UnitTest.php]
   --stop-on-incomplete      Stop execution upon first incomplete test.
   --strict                  Run tests in strict mode.
   -v|--verbose              Output more verbose information.
+
+  --parallelism <count>     Runs the test(s) at the same time in separate processes.
+                            (default 5)
+  --processes <count>       Synonym for --parallelism
 
   --skeleton-class          Generate Unit class for UnitTest in UnitTest.php.
   --skeleton-test           Generate UnitTest class for Unit in Unit.php.
