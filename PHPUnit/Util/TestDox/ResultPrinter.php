@@ -279,7 +279,7 @@ abstract class PHPUnit_Util_TestDox_ResultPrinter extends PHPUnit_Util_Printer i
             }
 
             if (!$prettified) {
-                $this->currentTestMethodPrettified = $this->prettifier->prettifyTestMethod($test->getName(FALSE));
+                $this->currentTestMethodPrettified = $this->prettifier->prettifyTestMethod($test->getName(false));
             }
 
             if (isset($annotations['method']['dataProviderTestdox'][0])) {
@@ -303,6 +303,18 @@ abstract class PHPUnit_Util_TestDox_ResultPrinter extends PHPUnit_Util_Printer i
             }
 
             $this->testStatus = PHPUnit_Runner_BaseTestRunner::STATUS_PASSED;
+
+
+            // ensure name uniqueness
+            if (isset($this->tests[$this->currentTestMethodPrettified]))
+            {
+                // try to append data set info
+                $this->currentTestMethodPrettified .= $test->getDataSetAsString(FALSE);
+            }
+            if (isset($this->tests[$this->currentTestMethodPrettified])) throw new Exception("Test name already exists: {$this->currentTestMethodPrettified}");
+
+            // initialize data set for this test+iteration
+            $this->tests[$this->currentTestMethodPrettified] = array('success' => 0, 'failure' => 0, 'errors' => array());
         }
     }
 
@@ -315,10 +327,6 @@ abstract class PHPUnit_Util_TestDox_ResultPrinter extends PHPUnit_Util_Printer i
     public function endTest(PHPUnit_Framework_Test $test, $time)
     {
         if ($test instanceof $this->testTypeOfInterest) {
-            if (!isset($this->tests[$this->currentTestMethodPrettified])) {
-                $this->tests[$this->currentTestMethodPrettified] = array('success' => 0, 'failure' => 0, 'errors' => array());
-            }
-
             $this->tests[$this->currentTestMethodPrettified]['status'] = $this->testStatusIndicatorCharMap[$this->testStatus];
             if ($this->testStatus == PHPUnit_Runner_BaseTestRunner::STATUS_PASSED) {
                 $this->tests[$this->currentTestMethodPrettified]['success']++;
