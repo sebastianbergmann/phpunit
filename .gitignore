@@ -9,5 +9,5 @@ Tests/TextUI/*.log
 Tests/TextUI/*.out
 Tests/TextUI/*.php
 phpunit.xml
-phpunit.phar
+.phar
 build.png
