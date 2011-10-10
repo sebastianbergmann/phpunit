@@ -617,6 +617,54 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
     }
 
     /**
+     * Prepares the a set of tests and test suites for running
+     * Defaults to preparing this suite's list of tests
+     *
+     * @param  array $tests
+     * @param  array $excludeGroups
+     * @return array
+     */
+    public function prepareTests($excludeGroups, $processIsolation, $tests = NULL)
+    {
+        if(is_null($tests)) {
+            $tests = $this->tests;
+        }
+        $result = array();
+        foreach ($tests as $test) {
+            $include = TRUE;
+            if (!empty($excludeGroups)) {
+                foreach ($this->groups as $_group => $_tests) {
+                    if (in_array($_group, $excludeGroups)) {
+                        foreach ($_tests as $_test) {
+                            if ($test === $_test) {
+                                $include = FALSE;
+                                break 2;
+                            }
+                        }
+                    }
+                }
+            }
+            if($include) {
+                if ($test instanceof PHPUnit_Framework_TestSuite) {
+                    $result = array_merge($result, $test->prepareTests($excludeGroups, $processIsolation));
+                } else {
+                    $result[] = $test;
+                }
+            }
+        }
+        foreach($result as $test) {
+            if ($test instanceof PHPUnit_Framework_TestCase) {
+                $test->setBackupGlobals($this->backupGlobals);
+                $test->setBackupStaticAttributes($this->backupStaticAttributes);
+                $test->setRunTestInSeparateProcess($processIsolation);
+            }
+        }
+        return $result;
+    }
+
+
+    
+    /**
      * Runs the tests and collects their result in a TestResult.
      *
      * @param  PHPUnit_Framework_TestResult $result
@@ -678,17 +726,18 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
         }
 
         if (empty($groups)) {
-            $tests = $this->tests;
+            $tests = $this->prepareTests($excludeGroups, $processIsolation);
         } else {
-            $tests = new SplObjectStorage;
+            $group_tests = new SplObjectStorage;
 
             foreach ($groups as $group) {
                 if (isset($this->groups[$group])) {
                     foreach ($this->groups[$group] as $test) {
-                        $tests->attach($test);
+                        $group_tests->attach($test);
                     }
                 }
             }
+            $tests = $this->prepareTests($excludeGroups, $processIsolation, $group_tests);
         }
 
         foreach ($tests as $test) {
@@ -696,54 +745,24 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
                 break;
             }
 
-            if ($test instanceof PHPUnit_Framework_TestSuite) {
-                $test->setBackupGlobals($this->backupGlobals);
-                $test->setBackupStaticAttributes($this->backupStaticAttributes);
+            $runTest = TRUE;
 
-                $test->run(
-                  $result, $filter, $groups, $excludeGroups, $processIsolation
-                );
-            } else {
-                $runTest = TRUE;
+            if ($filter !== FALSE ) {
+                $tmp = PHPUnit_Util_Test::describe($test, FALSE);
 
-                if ($filter !== FALSE ) {
-                    $tmp = PHPUnit_Util_Test::describe($test, FALSE);
-
-                    if ($tmp[0] != '') {
-                        $name = join('::', $tmp);
-                    } else {
-                        $name = $tmp[1];
-                    }
-
-                    if (preg_match($filter, $name) == 0) {
-                        $runTest = FALSE;
-                    }
+                if ($tmp[0] != '') {
+                    $name = join('::', $tmp);
+                } else {
+                    $name = $tmp[1];
                 }
 
-                if ($runTest && !empty($excludeGroups)) {
-                    foreach ($this->groups as $_group => $_tests) {
-                        if (in_array($_group, $excludeGroups)) {
-                            foreach ($_tests as $_test) {
-                                if ($test === $_test) {
-                                    $runTest = FALSE;
-                                    break 2;
-                                }
-                            }
-                        }
-                    }
+                if (preg_match($filter, $name) == 0) {
+                    $runTest = FALSE;
                 }
+            }
 
-                if ($runTest) {
-                    if ($test instanceof PHPUnit_Framework_TestCase) {
-                        $test->setBackupGlobals($this->backupGlobals);
-                        $test->setBackupStaticAttributes(
-                          $this->backupStaticAttributes
-                        );
-                        $test->setRunTestInSeparateProcess($processIsolation);
-                    }
-
-                    $this->runTest($test, $result);
-                }
+            if ($runTest) {
+                $this->runTest($test, $result);
             }
         }
 
