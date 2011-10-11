@@ -436,6 +436,7 @@ class PHPUnit_Util_Configuration
 
             $result[$type] = $target;
         }
+
         return $result;
     }
 
