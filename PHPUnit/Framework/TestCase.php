@@ -696,7 +696,8 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
      * @param  boolean $is_strict
      * @return Text_Template
      */
-    public function getTemplate($collect_code_coverage_information, $is_strict) {
+    public function getTemplate($collect_code_coverage_information, $is_strict)
+    {
         $class = new ReflectionClass($this);
 
         $template = new Text_Template(
@@ -764,7 +765,8 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
      * @param  PHPUnit_Framework_TestResult $result
      * @return PHPUnit_Framework_TestResult
      */
-    public function runInAnotherProcess(PHPUnit_Framework_TestResult $result) {
+    public function runInAnotherProcess(PHPUnit_Framework_TestResult $result)
+    {
         $php = PHPUnit_Util_PHP::factory();
         $pid = $this->startInAnotherProcess($result, $php);
         $php->finishJob($pid);
@@ -775,9 +777,11 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
      * Starts the test case in another process.
      *
      * @param  PHPUnit_Framework_TestResult $result
+     * @param  PHPUnit_Util_PHP             $php
      * @return pid
      */
-    public function startInAnotherProcess(PHPUnit_Framework_TestResult $result, PHPUnit_Util_PHP $php) {
+    public function startInAnotherProcess(PHPUnit_Framework_TestResult $result, PHPUnit_Util_PHP $php)
+    {
         $template = $this->getTemplate($result->getCollectCodeCoverageInformation(), $result->isStrict());
         $this->prepareTemplate($template);
         return $php->startJob($template->render(), $this, $result);

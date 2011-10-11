@@ -144,7 +144,8 @@ abstract class PHPUnit_Util_PHP
      * @return int
      * @throws PHPUnit_Framework_Exception
      */
-    public function startJob($job, PHPUnit_Framework_Test $test = NULL, PHPUnit_Framework_TestResult $result = NULL) {
+    public function startJob($job, PHPUnit_Framework_Test $test = NULL, PHPUnit_Framework_TestResult $result = NULL)
+    {
         $process = proc_open(
           $this->getPhpBinary(),
           array(
@@ -154,7 +155,8 @@ abstract class PHPUnit_Util_PHP
           ),
           $pipes
         );
-        $pid = $process['pid'];
+        $status = proc_get_status($process);
+        $pid = $status['pid'];
 
         if (!is_resource($process)) {
             throw new PHPUnit_Framework_Exception(
@@ -176,13 +178,11 @@ abstract class PHPUnit_Util_PHP
      * Closes out the process that was used to run a job(test).
      * If the process isn't finished, block until it is
      *
-     * @param  resource                     $process
-     * @param  array                        $pipes
-     * @param  PHPUnit_Framework_Test       $test
-     * @param  PHPUnit_Framework_TestResult $result
+     * @param  int $pid
      * @return array|null
      */
-    public function finishJob($pid) {
+    public function finishJob($pid)
+    {
         $stdout = stream_get_contents($this->jobs[$pid]['stdout']);
         fclose($this->jobs[$pid]['stdout']);
 
@@ -215,6 +215,18 @@ abstract class PHPUnit_Util_PHP
     {
         $pid = $this->startJob($job, $test, $result);
         return $this->finishJob($pid);
+    }
+
+    /**
+     * Says whether a subprocess (from a job) is finished
+     *
+     * @param  int $pid
+     * @return bool
+     */
+    public function isJobFinished($pid)
+    {
+        $status = proc_get_status($this->jobs[$pid]['process']);
+        return !$status['running'];
     }
 
     /**

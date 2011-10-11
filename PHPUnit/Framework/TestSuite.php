@@ -771,7 +771,8 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
      * @param  string                        $filter
      * @return boolean
      */
-    public function isTestFilteredOut($test, $filter) {
+    public function isTestFilteredOut($test, $filter)
+    {
         if ($filter !== FALSE ) {
             $tmp = PHPUnit_Util_Test::describe($test, FALSE);
 
@@ -782,10 +783,10 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
             }
 
             if (preg_match($filter, $name) == 0) {
-                return FALSE;
+                return TRUE;
             }
         }
-        return TRUE;
+        return FALSE;
     }
     
     /**
@@ -795,13 +796,14 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
      * @param  PHPUnit_Framework_TestResult  $testResult
      * @param  string                        $filter
      */
-    public function runTestsSerial($tests, $result, $filter) {
+    public function runTestsSerial($tests, $result, $filter)
+    {
         foreach ($tests as $test) {
             if ($result->shouldStop()) {
                 break;
             }
 
-            if ($this->isTestFilteredOut($test, $filter)) {
+            if (!$this->isTestFilteredOut($test, $filter)) {
                 $this->runTest($test, $result);
             }
         }
@@ -815,14 +817,31 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
      * @param  string                        $filter
      * @param  int                           $parallelism
      */
-    public function runTestsParallel($tests, $result, $filter, $parallelism) {
-        foreach ($tests as $test) {
-            if ($result->shouldStop()) {
-                break;
+    public function runTestsParallel($tests, $result, $filter, $parallelism)
+    {
+        $php = PHPUnit_Util_PHP::factory();
+        $running_processes = array();
+        while(!empty($tests)) {
+            while(count($running_processes) < $parallelism && !empty($tests)) {
+                $test = array_shift($tests);
+                
+                if (!$this->isTestFilteredOut($test, $filter)) {
+                    $running_processes[] = $test->startInAnotherProcess($result, $php);
+                }
             }
-
-            if ($this->isTestFilteredOut($test, $filter)) {
-                $this->runTest($test, $result);
+            while(count($running_processes) == $parallelism || 
+                    (empty($tests) && !empty($running_processes))) {
+                $finished_processes = array();
+                foreach($running_processes as $pid) {
+                    if ($php->isJobFinished($pid)) {
+                        $finished_processes[] = $pid;
+                    }
+                }
+                $running_processes = array_diff($running_processes, $finished_processes);
+                foreach($finished_processes as $pid) {
+                    $php->finishJob($pid);
+                }
+                usleep(10000);
             }
         }
     }
