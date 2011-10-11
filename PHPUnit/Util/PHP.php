@@ -63,6 +63,13 @@ abstract class PHPUnit_Util_PHP
     protected $phpBinary;
 
     /**
+     * Array of metadata about currently running jobs.
+     *
+     * @var    array $jobs
+     */
+    protected $jobs = array();
+
+    /**
      * Returns the path to a PHP interpreter.
      *
      * PHPUnit_Util_PHP::$phpBinary contains the path to the PHP
@@ -129,11 +136,12 @@ abstract class PHPUnit_Util_PHP
 
     /**
      * Starts the separate process to run a single job(test).
+     * Returns process id of new proces
      *
      * @param  string                       $job
      * @param  PHPUnit_Framework_Test       $test
      * @param  PHPUnit_Framework_TestResult $result
-     * @return array
+     * @return int
      * @throws PHPUnit_Framework_Exception
      */
     public function startJob($job, PHPUnit_Framework_Test $test = NULL, PHPUnit_Framework_TestResult $result = NULL) {
@@ -146,6 +154,7 @@ abstract class PHPUnit_Util_PHP
           ),
           $pipes
         );
+        $pid = $process['pid'];
 
         if (!is_resource($process)) {
             throw new PHPUnit_Framework_Exception(
@@ -159,39 +168,33 @@ abstract class PHPUnit_Util_PHP
 
         $this->process($pipes[0], $job);
         fclose($pipes[0]);
-        return array($process, $pipes);
-    }
-
-    /**
-     * Waits for a job in another process to be complete.
-     * Returns stdout and stderr from the process/job
-     *
-     * @param  array                        $pipes
-     * @return array
-     */
-    public function waitForJobDone($pipes) {
-        $stdout = stream_get_contents($pipes[1]);
-        fclose($pipes[1]);
-
-        $stderr = stream_get_contents($pipes[2]);
-        fclose($pipes[2]);
-        return array($stdout, $stderr);
+        $this->jobs[$pid] = array('process' => $process, 'stdout' => $pipes[1], 'stderr' => $pipes[2], 'test' => $test, 'result' => $result);
+        return $pid;
     }
 
     /**
      * Closes out the process that was used to run a job(test).
+     * If the process isn't finished, block until it is
      *
-     * @param  int                          $process
+     * @param  resource                     $process
+     * @param  array                        $pipes
      * @param  PHPUnit_Framework_Test       $test
      * @param  PHPUnit_Framework_TestResult $result
-     * @param  string                       $stdout
-     * @param  string                       $stderr
      * @return array|null
      */
-    public function finishJob($process, PHPUnit_Framework_Test $test, PHPUnit_Framework_TestResult $result, $stdout, $stderr) {
-        proc_close($process);
+    public function finishJob($pid) {
+        $stdout = stream_get_contents($this->jobs[$pid]['stdout']);
+        fclose($this->jobs[$pid]['stdout']);
+
+        $stderr = stream_get_contents($this->jobs[$pid]['stderr']);
+        fclose($this->jobs[$pid]['stderr']);
+        
+        proc_close($this->jobs[$pid]['process']);
         $this->cleanup();
 
+        $result = $this->jobs[$pid]['result'];
+        $test = $this->jobs[$pid]['test'];
+        unset($this->jobs[$pid]);
         if ($result !== NULL) {
             $this->processChildResult($test, $result, $stdout, $stderr);
         } else {
@@ -210,11 +213,8 @@ abstract class PHPUnit_Util_PHP
      */
     public function runJob($job, PHPUnit_Framework_Test $test = NULL, PHPUnit_Framework_TestResult $result = NULL)
     {
-        list($process, $pipes) = $this->startJob($job, $test, $result);
-        
-        list($stdout, $stderr) = $this->waitForJobDone($pipes);
-        
-        return $this->finishJob($process, $test, $result, $stdout, $stderr);
+        $pid = $this->startJob($job, $test, $result);
+        return $this->finishJob($pid);
     }
 
     /**
