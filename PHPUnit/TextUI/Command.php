@@ -82,7 +82,7 @@ class PHPUnit_TextUI_Command
       'coverage-html=' => NULL,
       'coverage-clover=' => NULL,
       'coverage-php=' => NULL,
-      'coverage-text=' => NULL,
+      'coverage-text==' => NULL,
       'debug' => NULL,
       'exclude-group=' => NULL,
       'filter=' => NULL,
@@ -317,6 +317,9 @@ class PHPUnit_TextUI_Command
                         break;
 
                         case '--coverage-text': {
+                            if($option[1] === NULL) {
+                                $option[1] = 'php://stdout';
+                            }
                             $this->arguments['coverageText'] = $option[1];
                             $this->arguments['coverageTextShowUncoveredFiles'] = FALSE;
                         }
