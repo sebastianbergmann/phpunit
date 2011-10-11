@@ -314,7 +314,8 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
           $arguments['filter'],
           $arguments['groups'],
           $arguments['excludeGroups'],
-          $arguments['processIsolation']
+          $arguments['processIsolation'],
+          $arguments['parallelism']
         );
 
         unset($suite);
@@ -763,6 +764,7 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
         $arguments['excludeGroups']               = isset($arguments['excludeGroups'])               ? $arguments['excludeGroups']               : array();
         $arguments['groups']                      = isset($arguments['groups'])                      ? $arguments['groups']                      : array();
         $arguments['logIncompleteSkipped']        = isset($arguments['logIncompleteSkipped'])        ? $arguments['logIncompleteSkipped']        : FALSE;
+        $arguments['parallelism']                 = isset($arguments['parallelism'])                 ? $arguments['parallelism']                 : 1;
         $arguments['processIsolation']            = isset($arguments['processIsolation'])            ? $arguments['processIsolation']            : FALSE;
         $arguments['repeat']                      = isset($arguments['repeat'])                      ? $arguments['repeat']                      : FALSE;
         $arguments['reportCharset']               = isset($arguments['reportCharset'])               ? $arguments['reportCharset']               : 'UTF-8';

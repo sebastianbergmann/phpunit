@@ -662,68 +662,7 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
             $this->inIsolation !== TRUE &&
             !$this instanceof PHPUnit_Extensions_SeleniumTestCase &&
             !$this instanceof PHPUnit_Extensions_PhptTestCase) {
-            $class = new ReflectionClass($this);
-
-            $template = new Text_Template(
-              sprintf(
-                '%s%sProcess%sTestCaseMethod.tpl',
-
-                dirname(__FILE__),
-                DIRECTORY_SEPARATOR,
-                DIRECTORY_SEPARATOR,
-                DIRECTORY_SEPARATOR
-              )
-            );
-
-            if ($this->preserveGlobalState) {
-                $constants     = PHPUnit_Util_GlobalState::getConstantsAsString();
-                $globals       = PHPUnit_Util_GlobalState::getGlobalsAsString();
-                $includedFiles = PHPUnit_Util_GlobalState::getIncludedFilesAsString();
-            } else {
-                $constants     = '';
-                $globals       = '';
-                $includedFiles = '';
-            }
-
-            if ($result->getCollectCodeCoverageInformation()) {
-                $coverage = 'TRUE';
-            } else {
-                $coverage = 'FALSE';
-            }
-
-            if ($result->isStrict()) {
-                $strict = 'TRUE';
-            } else {
-                $strict = 'FALSE';
-            }
-
-            $data            = addcslashes(serialize($this->data), "'");
-            $dependencyInput = addcslashes(
-              serialize($this->dependencyInput), "'"
-            );
-            $includePath     = addslashes(get_include_path());
-
-            $template->setVar(
-              array(
-                'filename'                       => $class->getFileName(),
-                'className'                      => $class->getName(),
-                'methodName'                     => $this->name,
-                'collectCodeCoverageInformation' => $coverage,
-                'data'                           => $data,
-                'dataName'                       => $this->dataName,
-                'dependencyInput'                => $dependencyInput,
-                'constants'                      => $constants,
-                'globals'                        => $globals,
-                'include_path'                   => $includePath,
-                'included_files'                 => $includedFiles,
-                'strict'                         => $strict
-              )
-            );
-
-            $this->prepareTemplate($template);
-
-            $php = PHPUnit_Util_PHP::factory();
-            $php->runJob($template->render(), $this, $result);
+            $this->runInAnotherProcess($result);
         } else {
             $result->run($this);
         }
@@ -737,6 +676,93 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
         return $result;
     }
 
+    /**
+     * Runs the test case in another process.
+     *
+     * @param  boolean $collect_code_coverage_information
+     * @param  boolean $is_strict
+     * @return Text_Template
+     */
+    public function getTemplate($collect_code_coverage_information, $is_strict) {
+        $class = new ReflectionClass($this);
+
+        $template = new Text_Template(
+          sprintf(
+            '%s%sProcess%sTestCaseMethod.tpl',
+
+            dirname(__FILE__),
+            DIRECTORY_SEPARATOR,
+            DIRECTORY_SEPARATOR,
+            DIRECTORY_SEPARATOR
+          )
+        );
+
+        if ($this->preserveGlobalState) {
+            $constants     = PHPUnit_Util_GlobalState::getConstantsAsString();
+            $globals       = PHPUnit_Util_GlobalState::getGlobalsAsString();
+            $includedFiles = PHPUnit_Util_GlobalState::getIncludedFilesAsString();
+        } else {
+            $constants     = '';
+            $globals       = '';
+            $includedFiles = '';
+        }
+
+        if ($collect_code_coverage_information) {
+            $coverage = 'TRUE';
+        } else {
+            $coverage = 'FALSE';
+        }
+
+        if ($is_strict) {
+            $strict = 'TRUE';
+        } else {
+            $strict = 'FALSE';
+        }
+
+        $data            = addcslashes(serialize($this->data), "'");
+        $dependencyInput = addcslashes(
+          serialize($this->dependencyInput), "'"
+        );
+        $includePath     = addslashes(get_include_path());
+
+        $template->setVar(
+          array(
+            'filename'                       => $class->getFileName(),
+            'className'                      => $class->getName(),
+            'methodName'                     => $this->name,
+            'collectCodeCoverageInformation' => $coverage,
+            'data'                           => $data,
+            'dataName'                       => $this->dataName,
+            'dependencyInput'                => $dependencyInput,
+            'constants'                      => $constants,
+            'globals'                        => $globals,
+            'include_path'                   => $includePath,
+            'included_files'                 => $includedFiles,
+            'strict'                         => $strict
+          )
+        );
+        
+        return $template;
+    }
+        
+    /**
+     * Runs the test case in another process.
+     *
+     * @param  PHPUnit_Framework_TestResult $result
+     * @return PHPUnit_Framework_TestResult
+     */
+    public function runInAnotherProcess(PHPUnit_Framework_TestResult $result) {
+
+
+        $template = $this->getTemplate($result->getCollectCodeCoverageInformation(), $result->isStrict());
+        $this->prepareTemplate($template);
+
+        $php = PHPUnit_Util_PHP::factory();
+        $php->runJob($template->render(), $this, $result);
+    }
+
+    
+    
     /**
      * Runs the bare test sequence.
      */

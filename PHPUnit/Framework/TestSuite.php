@@ -620,8 +620,9 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
      * Prepares the a set of tests and test suites for running
      * Defaults to preparing this suite's list of tests
      *
-     * @param  array $tests
      * @param  array $excludeGroups
+     * @param  bool  $processIsolation
+     * @param  array $tests
      * @return array
      */
     public function prepareTests($excludeGroups, $processIsolation, $tests = NULL)
@@ -672,10 +673,11 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
      * @param  array                        $groups
      * @param  array                        $excludeGroups
      * @param  boolean                      $processIsolation
+     * @param  int                          $parallelism
      * @return PHPUnit_Framework_TestResult
      * @throws InvalidArgumentException
      */
-    public function run(PHPUnit_Framework_TestResult $result = NULL, $filter = FALSE, array $groups = array(), array $excludeGroups = array(), $processIsolation = FALSE)
+    public function run(PHPUnit_Framework_TestResult $result = NULL, $filter = FALSE, array $groups = array(), array $excludeGroups = array(), $processIsolation = FALSE, $parallelism = 1)
     {
         if ($result === NULL) {
             $result = $this->createResult();
@@ -740,6 +742,35 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
             $tests = $this->prepareTests($excludeGroups, $processIsolation, $group_tests);
         }
 
+        if($parallelism == 1) {
+            $this->runTestsSerial($tests, $result, $filter);
+        } else {
+            $this->runTestsParallel($tests, $result, $filter, $parallelism);
+        }
+
+
+        if ($doSetup) {
+            if ($this->testCase &&
+                method_exists($this->name, 'tearDownAfterClass')) {
+                call_user_func(array($this->name, 'tearDownAfterClass'));
+            }
+
+            $this->tearDown();
+        }
+
+        $result->endTestSuite($this);
+
+        return $result;
+    }
+
+    /**
+     * Runs a list of tests in serial.
+     *
+     * @param  array                         $tests
+     * @param  PHPUnit_Framework_TestResult  $testResult
+     * @param  string                        $filter
+     */
+    public function runTestsSerial($tests, $result, $filter) {
         foreach ($tests as $test) {
             if ($result->shouldStop()) {
                 break;
@@ -765,21 +796,45 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
                 $this->runTest($test, $result);
             }
         }
-
-        if ($doSetup) {
-            if ($this->testCase &&
-                method_exists($this->name, 'tearDownAfterClass')) {
-                call_user_func(array($this->name, 'tearDownAfterClass'));
-            }
-
-            $this->tearDown();
-        }
-
-        $result->endTestSuite($this);
-
-        return $result;
     }
 
+    /**
+     * Runs a list of tests in parallel.
+     *
+     * @param  array                         $tests
+     * @param  PHPUnit_Framework_TestResult  $testResult
+     * @param  string                        $filter
+     * @param  int                           $parallelism
+     */
+    public function runTestsParallel($tests, $result, $filter, $parallelism) {
+        foreach ($tests as $test) {
+            if ($result->shouldStop()) {
+                break;
+            }
+
+            $runTest = TRUE;
+
+            if ($filter !== FALSE ) {
+                $tmp = PHPUnit_Util_Test::describe($test, FALSE);
+
+                if ($tmp[0] != '') {
+                    $name = join('::', $tmp);
+                } else {
+                    $name = $tmp[1];
+                }
+
+                if (preg_match($filter, $name) == 0) {
+                    $runTest = FALSE;
+                }
+            }
+
+            if ($runTest) {
+                $this->runTest($test, $result);
+            }
+        }
+    }
+    
+    
     /**
      * Runs a test.
      *
