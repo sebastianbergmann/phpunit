@@ -128,16 +128,15 @@ abstract class PHPUnit_Util_PHP
     }
 
     /**
-     * Runs a single job (PHP code) using a separate PHP process.
+     * Starts the separate process to run a single job(test).
      *
      * @param  string                       $job
-     * @param  PHPUnit_Framework_TestCase   $test
+     * @param  PHPUnit_Framework_Test       $test
      * @param  PHPUnit_Framework_TestResult $result
-     * @return array|null
+     * @return array
      * @throws PHPUnit_Framework_Exception
      */
-    public function runJob($job, PHPUnit_Framework_Test $test = NULL, PHPUnit_Framework_TestResult $result = NULL)
-    {
+    public function startJob($job, PHPUnit_Framework_Test $test = NULL, PHPUnit_Framework_TestResult $result = NULL) {
         $process = proc_open(
           $this->getPhpBinary(),
           array(
@@ -160,13 +159,36 @@ abstract class PHPUnit_Util_PHP
 
         $this->process($pipes[0], $job);
         fclose($pipes[0]);
+        return array($process, $pipes);
+    }
 
+    /**
+     * Waits for a job in another process to be complete.
+     * Returns stdout and stderr from the process/job
+     *
+     * @param  array                        $pipes
+     * @return array
+     */
+    public function waitForJobDone($pipes) {
         $stdout = stream_get_contents($pipes[1]);
         fclose($pipes[1]);
 
         $stderr = stream_get_contents($pipes[2]);
         fclose($pipes[2]);
+        return array($stdout, $stderr);
+    }
 
+    /**
+     * Closes out the process that was used to run a job(test).
+     *
+     * @param  int                          $process
+     * @param  PHPUnit_Framework_Test       $test
+     * @param  PHPUnit_Framework_TestResult $result
+     * @param  string                       $stdout
+     * @param  string                       $stderr
+     * @return array|null
+     */
+    public function finishJob($process, PHPUnit_Framework_Test $test, PHPUnit_Framework_TestResult $result, $stdout, $stderr) {
         proc_close($process);
         $this->cleanup();
 
@@ -175,6 +197,24 @@ abstract class PHPUnit_Util_PHP
         } else {
             return array('stdout' => $stdout, 'stderr' => $stderr);
         }
+    }
+
+    /**
+     * Runs a single job (PHP code) using a separate PHP process.
+     *
+     * @param  string                       $job
+     * @param  PHPUnit_Framework_Test       $test
+     * @param  PHPUnit_Framework_TestResult $result
+     * @return array|null
+     * @throws PHPUnit_Framework_Exception
+     */
+    public function runJob($job, PHPUnit_Framework_Test $test = NULL, PHPUnit_Framework_TestResult $result = NULL)
+    {
+        list($process, $pipes) = $this->startJob($job, $test, $result);
+        
+        list($stdout, $stderr) = $this->waitForJobDone($pipes);
+        
+        return $this->finishJob($process, $test, $result, $stdout, $stderr);
     }
 
     /**

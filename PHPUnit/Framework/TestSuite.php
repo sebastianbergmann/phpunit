@@ -764,6 +764,31 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
     }
 
     /**
+     * Given a test and a text filter, says whether the filter
+     * should block the test from being run
+     *
+     * @param  PHPUnit_Framework_Test        $test
+     * @param  string                        $filter
+     * @return boolean
+     */
+    public function isTestFilteredOut($test, $filter) {
+        if ($filter !== FALSE ) {
+            $tmp = PHPUnit_Util_Test::describe($test, FALSE);
+
+            if ($tmp[0] != '') {
+                $name = join('::', $tmp);
+            } else {
+                $name = $tmp[1];
+            }
+
+            if (preg_match($filter, $name) == 0) {
+                return FALSE;
+            }
+        }
+        return TRUE;
+    }
+    
+    /**
      * Runs a list of tests in serial.
      *
      * @param  array                         $tests
@@ -776,23 +801,7 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
                 break;
             }
 
-            $runTest = TRUE;
-
-            if ($filter !== FALSE ) {
-                $tmp = PHPUnit_Util_Test::describe($test, FALSE);
-
-                if ($tmp[0] != '') {
-                    $name = join('::', $tmp);
-                } else {
-                    $name = $tmp[1];
-                }
-
-                if (preg_match($filter, $name) == 0) {
-                    $runTest = FALSE;
-                }
-            }
-
-            if ($runTest) {
+            if ($this->isTestFilteredOut($test, $filter)) {
                 $this->runTest($test, $result);
             }
         }
@@ -812,23 +821,7 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
                 break;
             }
 
-            $runTest = TRUE;
-
-            if ($filter !== FALSE ) {
-                $tmp = PHPUnit_Util_Test::describe($test, FALSE);
-
-                if ($tmp[0] != '') {
-                    $name = join('::', $tmp);
-                } else {
-                    $name = $tmp[1];
-                }
-
-                if (preg_match($filter, $name) == 0) {
-                    $runTest = FALSE;
-                }
-            }
-
-            if ($runTest) {
+            if ($this->isTestFilteredOut($test, $filter)) {
                 $this->runTest($test, $result);
             }
         }
