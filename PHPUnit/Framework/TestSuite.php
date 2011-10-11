@@ -627,7 +627,7 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
      */
     public function prepareTests($excludeGroups, $processIsolation, $tests = NULL)
     {
-        if(is_null($tests)) {
+        if (is_null($tests)) {
             $tests = $this->tests;
         }
         $all_tests = array();
@@ -645,7 +645,7 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
                     }
                 }
             }
-            if($include) {
+            if ($include) {
                 if ($test instanceof PHPUnit_Framework_TestSuite) {
                     $all_tests = array_merge($all_tests, $test->prepareTests($excludeGroups, $processIsolation));
                 } else {
@@ -683,6 +683,7 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
             $result = $this->createResult();
         }
 
+        echo "result: ".get_class($result)."\n";
         $result->startTestSuite($this);
 
         $doSetup = TRUE;
@@ -742,7 +743,7 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
             $tests = $this->prepareTests($excludeGroups, $processIsolation, $group_tests);
         }
 
-        if($parallelism == 1) {
+        if ($parallelism == 1) {
             $this->runTestsSerial($tests, $result, $filter);
         } else {
             $this->runTestsParallel($tests, $result, $filter, $parallelism);
