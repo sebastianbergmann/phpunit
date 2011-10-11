@@ -765,17 +765,24 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
      * @return PHPUnit_Framework_TestResult
      */
     public function runInAnotherProcess(PHPUnit_Framework_TestResult $result) {
-
-
-        $template = $this->getTemplate($result->getCollectCodeCoverageInformation(), $result->isStrict());
-        $this->prepareTemplate($template);
-
         $php = PHPUnit_Util_PHP::factory();
-        $php->runJob($template->render(), $this, $result);
+        $pid = $this->startInAnotherProcess($result, $php);
+        $php->finishJob($pid);
+        return $result;
     }
 
-    
-    
+    /**
+     * Starts the test case in another process.
+     *
+     * @param  PHPUnit_Framework_TestResult $result
+     * @return pid
+     */
+    public function startInAnotherProcess(PHPUnit_Framework_TestResult $result, PHPUnit_Util_PHP $php) {
+        $template = $this->getTemplate($result->getCollectCodeCoverageInformation(), $result->isStrict());
+        $this->prepareTemplate($template);
+        return $php->startJob($template->render(), $this, $result);
+    }
+        
     /**
      * Runs the bare test sequence.
      */
