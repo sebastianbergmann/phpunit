@@ -630,7 +630,7 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
         if(is_null($tests)) {
             $tests = $this->tests;
         }
-        $result = array();
+        $all_tests = array();
         foreach ($tests as $test) {
             $include = TRUE;
             if (!empty($excludeGroups)) {
@@ -647,20 +647,20 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
             }
             if($include) {
                 if ($test instanceof PHPUnit_Framework_TestSuite) {
-                    $result = array_merge($result, $test->prepareTests($excludeGroups, $processIsolation));
+                    $all_tests = array_merge($all_tests, $test->prepareTests($excludeGroups, $processIsolation));
                 } else {
-                    $result[] = $test;
+                    $all_tests[] = $test;
                 }
             }
         }
-        foreach($result as $test) {
+        foreach($all_tests as $test) {
             if ($test instanceof PHPUnit_Framework_TestCase) {
                 $test->setBackupGlobals($this->backupGlobals);
                 $test->setBackupStaticAttributes($this->backupStaticAttributes);
                 $test->setRunTestInSeparateProcess($processIsolation);
             }
         }
-        return $result;
+        return $all_tests;
     }
 
 
