@@ -317,9 +317,10 @@ class PHPUnit_TextUI_Command
                         break;
 
                         case '--coverage-text': {
-                            if($option[1] === NULL) {
+                            if ($option[1] === NULL) {
                                 $option[1] = 'php://stdout';
                             }
+
                             $this->arguments['coverageText'] = $option[1];
                             $this->arguments['coverageTextShowUncoveredFiles'] = FALSE;
                         }
