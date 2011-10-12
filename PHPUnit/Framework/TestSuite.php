@@ -620,17 +620,20 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
      * Prepares the a set of tests and test suites for running
      * Defaults to preparing this suite's list of tests
      *
-     * @param  array $excludeGroups
-     * @param  bool  $processIsolation
-     * @param  array $tests
+     * @param  array   $excludeGroups
+     * @param  bool    $processIsolation
+     * @param  string  $filter
+     * @param  boolean $backupGlobals
+     * @param  boolean $backupStaticAttributes
+     * @param  array   $tests
      * @return array
      */
-    public function prepareTests($excludeGroups, $processIsolation, $tests = NULL)
+    public function prepareTests($excludeGroups, $processIsolation, $filter, $backupGlobals, $backupStaticAttributes, $tests = NULL)
     {
         if (is_null($tests)) {
             $tests = $this->tests;
         }
-        $all_tests = array();
+        $all_tests = array('tests' => array(), 'subsuites' => array());
         foreach ($tests as $test) {
             $include = TRUE;
             if (!empty($excludeGroups)) {
@@ -645,21 +648,21 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
                     }
                 }
             }
-            if ($include) {
+            if ($include && !$this->isTestFilteredOut($test, $filter)) {
                 if ($test instanceof PHPUnit_Framework_TestSuite) {
-                    $all_tests = array_merge($all_tests, $test->prepareTests($excludeGroups, $processIsolation));
+                    $all_tests['subsuites'][] = $test->prepareTests($excludeGroups, $processIsolation, $filter, $backupGlobals, $backupStaticAttributes);
                 } else {
-                    $all_tests[] = $test;
+                    if ($test instanceof PHPUnit_Framework_TestCase) {
+                        $test->setBackupGlobals($backupGlobals);
+                        $test->setBackupStaticAttributes($backupStaticAttributes);
+                        $test->setRunTestInSeparateProcess($processIsolation);
+                    }
+                    $all_tests['tests'][] = $test;
                 }
             }
         }
-        foreach($all_tests as $test) {
-            if ($test instanceof PHPUnit_Framework_TestCase) {
-                $test->setBackupGlobals($this->backupGlobals);
-                $test->setBackupStaticAttributes($this->backupStaticAttributes);
-                $test->setRunTestInSeparateProcess($processIsolation);
-            }
-        }
+        $all_tests['suite'] = $this;
+        $all_tests['complete'] = FALSE;
         return $all_tests;
     }
 
@@ -683,7 +686,6 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
             $result = $this->createResult();
         }
 
-        echo "result: ".get_class($result)."\n";
         $result->startTestSuite($this);
 
         $doSetup = TRUE;
@@ -729,7 +731,7 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
         }
 
         if (empty($groups)) {
-            $tests = $this->prepareTests($excludeGroups, $processIsolation);
+            $tests = $this->prepareTests($excludeGroups, $processIsolation, $filter, $this->backupGlobals, $this->backupStaticAttributes);
         } else {
             $group_tests = new SplObjectStorage;
 
@@ -740,13 +742,13 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
                     }
                 }
             }
-            $tests = $this->prepareTests($excludeGroups, $processIsolation, $group_tests);
+            $tests = $this->prepareTests($excludeGroups, $processIsolation, $filter, $this->backupGlobals, $this->backupStaticAttributes, $group_tests);
         }
 
         if ($parallelism == 1) {
-            $this->runTestsSerial($tests, $result, $filter);
+            $this->runTestsSerial($tests, $result);
         } else {
-            $this->runTestsParallel($tests, $result, $filter, $parallelism);
+            $this->runTestsParallel($tests, $result, $parallelism);
         }
 
 
@@ -793,20 +795,22 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
     /**
      * Runs a list of tests in serial.
      *
-     * @param  array                         $tests
-     * @param  PHPUnit_Framework_TestResult  $testResult
-     * @param  string                        $filter
+     * @param  array                        $tests
+     * @param  PHPUnit_Framework_TestResult $testResult
      */
-    public function runTestsSerial($tests, $result, $filter)
+    public function runTestsSerial(array $tests, PHPUnit_Framework_TestResult $result)
     {
-        foreach ($tests as $test) {
+        foreach ($tests['subsuites'] as $subsuite) {
+            $suite = $subsuite['suite'];
+            $result->startTestSuite($suite);
+            $this->runTestsSerial($subsuite, $result);
+            $result->endTestSuite($suite);
+        }
+        foreach ($tests['tests'] as $test) {
             if ($result->shouldStop()) {
                 break;
             }
-
-            if (!$this->isTestFilteredOut($test, $filter)) {
-                $this->runTest($test, $result);
-            }
+            $this->runTest($test, $result);
         }
     }
 
@@ -815,20 +819,16 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
      *
      * @param  array                         $tests
      * @param  PHPUnit_Framework_TestResult  $testResult
-     * @param  string                        $filter
      * @param  int                           $parallelism
      */
-    public function runTestsParallel($tests, $result, $filter, $parallelism)
+    public function runTestsParallel($tests, $result, $parallelism)
     {
         $php = PHPUnit_Util_PHP::factory();
         $running_processes = array();
         while(!empty($tests)) {
             while(count($running_processes) < $parallelism && !empty($tests)) {
                 $test = array_shift($tests);
-                
-                if (!$this->isTestFilteredOut($test, $filter)) {
-                    $running_processes[] = $test->startInAnotherProcess($result, $php);
-                }
+                $running_processes[] = $test->startInAnotherProcess($result, $php);
             }
             while(count($running_processes) == $parallelism || 
                     (empty($tests) && !empty($running_processes))) {
