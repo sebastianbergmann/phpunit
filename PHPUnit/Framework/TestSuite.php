@@ -716,12 +716,30 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
         if ($parallelism == 1) {
             $result = $this->runTestsSerial($result);
         } else {
-            $this->runTestsParallel($tests, $result, $parallelism);
+            $this->runTestsParallel($result, $parallelism);
         }
 
         return $result;
     }
 
+    /**
+     * Given a test (not necessarily a Phpunit_Framework_TestCase),
+     * decide what its name is (like, suitename::casename)
+     *
+     * @param  PHPUnit_Framework_Test        $test
+     * @return string
+     */
+    public function getTestName($test) {
+        $tmp = PHPUnit_Util_Test::describe($test, FALSE);
+
+        if ($tmp[0] != '') {
+            return join('::', $tmp);
+        } else {
+            return $tmp[1];
+        }
+    }
+    
+    
     /**
      * Given a test and a text filter, says whether the filter
      * should block the test from being run
@@ -733,13 +751,7 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
     public function isTestFilteredOut($test, $filter)
     {
         if ($filter !== FALSE ) {
-            $tmp = PHPUnit_Util_Test::describe($test, FALSE);
-
-            if ($tmp[0] != '') {
-                $name = join('::', $tmp);
-            } else {
-                $name = $tmp[1];
-            }
+            $name = $this->getTestName($test);
 
             if (preg_match($filter, $name) == 0) {
                 return TRUE;
@@ -798,13 +810,6 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
             if ($result->shouldStop()) {
                 break;
             }
-            $tmp = PHPUnit_Util_Test::describe($test, FALSE);
-
-            if ($tmp[0] != '') {
-                $name = join('::', $tmp);
-            } else {
-                $name = $tmp[1];
-            }
             $this->runTest($test, $result);
         }
 
@@ -822,31 +827,76 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
     }
 
     /**
-     * Runs a list of tests in parallel.
+     * Grab the next test I have prepared. Can get tests from subsuites
+     * @return PHPUnit_Framework_Test|NULL
+     */
+    public function getNextPreparedTest()
+    {
+        $test = NULL;
+        if (count($this->preparedSubsuites) > 0) {
+            while (is_null($test)) {
+                $suite = array_shift($this->preparedSubsuites);
+                $test = $suite->getNextPreparedTest();
+                if ($suite->hasTestsPrepared()) {
+                    array_unshift($this->preparedSubsuites, $suite);
+                }
+            }
+        }
+        if (is_null($test)) {
+            $test = array_shift($this->preparedTests);
+        }
+        return $test;
+    }
+
+    /**
+     * Tells whether I have any tests prepared to run
+     * @return boolean
+     */
+    public function hasTestsPrepared()
+    {
+        if (count($this->preparedTests) > 0) {
+            return TRUE;
+        }
+        if (count($this->preparedSubsuites) == 0) {
+            return FALSE;
+        }
+        foreach ($this->preparedSubsuites as $suite) {
+            if ($suite->hasTestsPrepared()) {
+                return TRUE;
+            }
+        }
+        return FALSE;
+    }
+    
+    /**
+     * Runs my prepared tests in parallel.
      *
-     * @param  array                         $tests
      * @param  PHPUnit_Framework_TestResult  $testResult
      * @param  int                           $parallelism
      */
-    public function runTestsParallel($tests, $result, $parallelism)
+    public function runTestsParallel($result, $parallelism)
     {
         $php = PHPUnit_Util_PHP::factory();
         $running_processes = array();
-        while(count($tests['tests']) > 0 && count($tests['subsuites']) > 0) {
-            $active_subsuite = $tests;
-            while(count($running_processes) < $parallelism && False/*stuff left to start*/) {
+        while ($this->hasTestsPrepared() || count($running_processes) > 0) {
+            while(count($running_processes) < $parallelism && $this->hasTestsPrepared()) {
+                $test = $this->getNextPreparedTest();
+                $pid = $test->startInAnotherProcess($result, $php);
+                $running_processes[$pid] = $test;
             }
             while(count($running_processes) == $parallelism || 
-                    (False/*no stuff left to start*/ && count($running_processes) > 0)) {
+                    (!$this->hasTestsPrepared() && count($running_processes) > 0)) {
+                foreach ($running_processes as $pid => $test) {
+                    if ($php->isJobFinished($pid)) {
+                        $php->finishJob($pid);
+                        unset($running_processes[$pid]);
+                    }
+                }
                 usleep(10000);
             }
         }
         return $result;
     }
-    
-//                $running_processes[] = $test->startInAnotherProcess($result, $php);
-//                    if ($php->isJobFinishezd($pid)) {
-//                    $php->finishJob($pid);
     
     /**
      * Runs a test.
