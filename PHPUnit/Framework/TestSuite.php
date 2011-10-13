@@ -118,11 +118,27 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
     protected $tests = array();
 
     /**
-     * The tests in the test that are ready to run.
+     * The tests in the suite that are ready to run.
      *
      * @var    array
      */
     protected $preparedTests = array();
+
+    /**
+     * The tests in the suite that are running.
+     * Only used during parallelism.
+     *
+     * @var    array
+     */
+    protected $runningTests = array();
+
+    /**
+     * The tests in the suite that have finished running.
+     * Only used during parallelism.
+     *
+     * @var    array
+     */
+    protected $finishedTests = array();
 
     /**
      * The subsuites in the test suite that are ready to run.
@@ -130,6 +146,22 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
      * @var    array
      */
     protected $preparedSubsuites = array();
+
+    /**
+     * The subsuites in the test suite that have started running tests.
+     * Only used during parallelism.
+     *
+     * @var    array
+     */
+    protected $runningSubsuites = array();
+
+    /**
+     * The subsuites in the suite that have finished running tests.
+     * Only used during parallelism.
+     *
+     * @var    array
+     */
+    protected $finishedSubsuites = array();
 
     /**
      * The number of tests in the test suite.
@@ -729,7 +761,7 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
      * @param  PHPUnit_Framework_Test        $test
      * @return string
      */
-    public function getTestName($test) {
+    public static function guessTestName($test) {
         $tmp = PHPUnit_Util_Test::describe($test, FALSE);
 
         if ($tmp[0] != '') {
@@ -751,7 +783,7 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
     public function isTestFilteredOut($test, $filter)
     {
         if ($filter !== FALSE ) {
-            $name = $this->getTestName($test);
+            $name = PHPUnit_Framework_TestSuite::guessTestName($test);
 
             if (preg_match($filter, $name) == 0) {
                 return TRUE;
@@ -827,25 +859,102 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
     }
 
     /**
-     * Grab the next test I have prepared. Can get tests from subsuites
-     * @return PHPUnit_Framework_Test|NULL
+     * Grab the next test from an array of PHPUnit_Framework_TestSuite.
+     * Returns the suite the test came from and the test itself
+     * Assumes the test will begin running, so removes it from preparedTests
+     * and adds it to runningTests. Moves any suites that now have running
+     * tests into runningSubsuites, and any suites that now have no running
+     * or prepared tests into finishedSubsuites.
+     * suites, return array(NULL, NULL)
+     * @param  array                        $subSuiteList
+     * @param  PHPUnit_Framework_TestResult $result
+     * @param  PHPUnit_Util_PHP             $php
+     * @return array
      */
-    public function getNextPreparedTest()
+    public function startNextPreparedTestFrom(array &$subsuiteList, PHPUnit_Framework_TestResult $result, PHPUnit_Util_PHP $php)
     {
         $test = NULL;
-        if (count($this->preparedSubsuites) > 0) {
-            while (is_null($test)) {
-                $suite = array_shift($this->preparedSubsuites);
-                $test = $suite->getNextPreparedTest();
-                if ($suite->hasTestsPrepared()) {
-                    array_unshift($this->preparedSubsuites, $suite);
+        $tests_suite = NULL;
+        foreach ($subsuiteList as $i => $suite) {
+            if ($suite->hasTestsPrepared()) {
+                list($tests_suite, $test) = $suite->startNextPreparedTest($result, $php);
+            }
+            if ($suite->countRunning() > 0) {
+                $this->runningSubsuites[] = $suite;
+            } else {
+                $this->finishedSubsuites[] = $suite;
+            }
+        }
+        return array($tests_suite, $test);
+    }
+
+    /**
+     * Starts the next test I have prepared. Can get tests from subsuites.
+     * Returns the suite the test came from, along with the test, and the pid.
+     * @param  PHPUnit_Framework_TestResult $result
+     * @param  PHPUnit_Util_PHP             $php
+     * @return array
+     */
+    public function startNextPreparedTest(PHPUnit_Framework_TestResult $result, PHPUnit_Util_PHP $php)
+    {
+        $test = NULL;
+        $tests_suite = NULL;
+        foreach ($this->runningSubsuites as $i => $suite) {
+            if ($suite->hasTestsPrepared()) {
+                list($tests_suite, $test) = $suite->startNextPreparedTest($result, $php);
+                break;
+            }
+        }
+        if (is_null($test) && !empty($this->preparedSubsuites)) {
+            $suite = array_shift($this->preparedSubsuites);
+            if ($suite->hasTestsPrepared()) {
+                list($tests_suite, $test) = $suite->startNextPreparedTest($result, $php);
+                $this->runningSubsuites[] = $suite;
+            } else {
+                $this->finishedSubsuites[] = $suite;
+            }
+        }
+        if (is_null($test) && !empty($this->preparedTests)) {
+            $test = array_shift($this->preparedTests);
+            $tests_suite = $this;
+            $pid = $test->startInAnotherProcess($result, $php);
+            $name = PHPUnit_Framework_TestSuite::guessTestName($test);
+            $this->runningTests[$pid] = $test;
+        }
+        return array($tests_suite, $test);
+    }
+
+    /**
+     * Finishes any running test that has completed, checking in the order in which
+     * they were started. Return whether a test was completed.
+     * @param  PHPUnit_Framework_TestResult $result
+     * @param  PHPUnit_Util_PHP             $php
+     * @return boolean
+     */
+    public function tryToFinishARunningTest(PHPUnit_Framework_TestResult $result, PHPUnit_Util_PHP $php)
+    {
+        foreach ($this->runningSubsuites as $i => $suite) {
+            $finished = $suite->tryToFinishARunningTest($result, $php);
+            if ($finished) {
+                if ($suite->countRunning() == 0 && !$suite->hasTestsPrepared()) {
+                    unset($this->runningSubsuites[$i]);
+                    $this->finishedSubsuites[] = $suite;
+                }
+                break;
+            }
+        }
+        if (!$finished) {
+            foreach ($this->runningTests as $pid => $test) {
+                if ($php->isJobFinished($pid)) {
+                    $php->finishJob($pid);
+                    unset($this->runningTests[$pid]);
+                    $this->finishedTests[] = $test;
+                    $finished = TRUE;
+                    break;
                 }
             }
         }
-        if (is_null($test)) {
-            $test = array_shift($this->preparedTests);
-        }
-        return $test;
+        return $finished;
     }
 
     /**
@@ -854,10 +963,10 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
      */
     public function hasTestsPrepared()
     {
-        if (count($this->preparedTests) > 0) {
+        if (!empty($this->preparedTests)) {
             return TRUE;
         }
-        if (count($this->preparedSubsuites) == 0) {
+        if (empty($this->preparedSubsuites) && empty($this->runningSubsuites)) {
             return FALSE;
         }
         foreach ($this->preparedSubsuites as $suite) {
@@ -865,36 +974,50 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
                 return TRUE;
             }
         }
+        foreach ($this->runningSubsuites as $suite) {
+            if ($suite->hasTestsPrepared()) {
+                return TRUE;
+            }
+        }
         return FALSE;
     }
     
+
+
+    /**
+     * Recursively says how many tests are running under this suite
+     * @return int
+     */
+    public function countRunning()
+    {
+        $count = count($this->runningTests);
+        foreach ($this->runningSubsuites as $suite) {
+            $count += $suite->countRunning();
+        }
+        return $count;
+    }
+
     /**
      * Runs my prepared tests in parallel.
      *
      * @param  PHPUnit_Framework_TestResult  $testResult
      * @param  int                           $parallelism
      */
-    public function runTestsParallel($result, $parallelism)
+    public function runTestsParallel(PHPUnit_Framework_TestResult $result, $parallelism)
     {
         $php = PHPUnit_Util_PHP::factory();
-        $running_processes = array();
-        while ($this->hasTestsPrepared() || count($running_processes) > 0) {
-            while(count($running_processes) < $parallelism && $this->hasTestsPrepared()) {
-                $test = $this->getNextPreparedTest();
-                $pid = $test->startInAnotherProcess($result, $php);
-                $running_processes[$pid] = $test;
+        $result->startTestSuite($this);
+        while ($this->hasTestsPrepared() || $this->countRunning() > 0) {
+            while($this->countRunning() < $parallelism && $this->hasTestsPrepared()) {
+                $this->startNextPreparedTest($result, $php);
             }
-            while(count($running_processes) == $parallelism || 
-                    (!$this->hasTestsPrepared() && count($running_processes) > 0)) {
-                foreach ($running_processes as $pid => $test) {
-                    if ($php->isJobFinished($pid)) {
-                        $php->finishJob($pid);
-                        unset($running_processes[$pid]);
-                    }
-                }
+            while($this->countRunning() == $parallelism || 
+                    (!$this->hasTestsPrepared() && $this->countRunning() > 0)) {
+                $this->tryToFinishARunningTest($result, $php);
                 usleep(10000);
             }
         }
+        $result->endTestSuite($this);
         return $result;
     }
     
