@@ -146,7 +146,7 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
      *
      * @var    array
      */
-    protected $reportOrderTestPids = array();
+    protected $reportOrderTests = array();
 
     /**
      * The subsuites in the test suite that are ready to run.
@@ -710,7 +710,7 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
         $this->preparedTests = array();
         $this->runningTests = array();
         $this->finishedTestPids = array();
-        $this->reportOrderTestPids = array();
+        $this->reportOrderTests = array();
         $this->preparedSubsuites = array();
         $this->runningSubsuites = array();
         $this->reportOrderSubsuites = array();
@@ -897,6 +897,8 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
     /**
      * Starts the next test I have prepared. Can get tests from subsuites.
      * Returns the suite the test came from, along with the test, and the pid.
+     * If the test can't be run in parallel, set it aside and we'll run it
+     * when it would be time to report it finishing.
      * @param  PHPUnit_Framework_TestResult $result
      * @return array
      */
@@ -922,9 +924,13 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
         if (is_null($test) && !empty($this->preparedTests)) {
             $test = array_shift($this->preparedTests);
             $tests_suite = $this;
-            $pid = $test->startInAnotherProcess($result, $this->php);
-            $this->reportOrderTestPids[] = $pid;
-            $this->runningTests[$pid] = $test;
+            if(method_exists($test, startInAnotherProcess)) {
+                $pid = $test->startInAnotherProcess($result, $this->php);
+                $this->reportOrderTests[] = $pid;
+                $this->runningTests[$pid] = $test;
+            } else {
+                $this->reportOrderTests[] = $test;
+            }
         }
         return array($tests_suite, $test);
     }
@@ -1023,6 +1029,7 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
                 }
                 usleep(10000);
             }
+            $this->report($result);
         }
     }
     
@@ -1051,14 +1058,19 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
                 return FALSE;
             }
         }
-        while (!empty($this->reportOrderTestPids)) {
-            $pid = array_shift($this->reportOrderTestPids);
-            if (in_array($pid, $this->finishedTestPids)) {
-                $this->php->reportJobStarted($pid);
-                $this->php->reportJobFinished($pid);
+        while (!empty($this->reportOrderTests)) {
+            $test = array_shift($this->reportOrderTests);
+            if ($test instanceof PHPUnit_Framework_Test) {
+                $test->run($result);
             } else {
-                array_unshift($this->reportOrderTestPids, $pid);
-                return FALSE;
+                $pid = $test;
+                if (in_array($pid, $this->finishedTestPids)) {
+                    $this->php->reportJobStarted($pid);
+                    $this->php->reportJobFinished($pid);
+                } else {
+                    array_unshift($this->reportOrderTests, $pid);
+                    return FALSE;
+                }
             }
         }
                 

@@ -690,7 +690,7 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
     }
 
     /**
-     * Runs the test case in another process.
+     * Helps run the test case in another process.
      *
      * @param  boolean $collect_code_coverage_information
      * @param  boolean $is_strict
