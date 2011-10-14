@@ -1006,7 +1006,7 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
      */
     public function runTestsParallel(PHPUnit_Framework_TestResult $result, $parallelism)
     {
-        $php = PHPUnit_Util_PHP::factory();
+        $php = PHPUnit_Util_PHP::factory($result);
         while ($this->hasTestsPrepared() || $this->countRunning() > 0) {
             while ($this->countRunning() < $parallelism && $this->hasTestsPrepared()) {
                 $this->startNextPreparedTest($result, $php);

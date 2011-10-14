@@ -70,6 +70,11 @@ abstract class PHPUnit_Util_PHP
     protected $jobs = array();
 
     /**
+     * @var  PHPUnit_Framework_TestResult $result
+     */
+    protected $result;
+
+    /**
      * Returns the path to a PHP interpreter.
      *
      * PHPUnit_Util_PHP::$phpBinary contains the path to the PHP
@@ -122,16 +127,19 @@ abstract class PHPUnit_Util_PHP
     }
 
     /**
+     * @param  PHPUnit_Framework_TestResult $result
      * @return PHPUnit_Util_PHP
      * @since  Method available since Release 3.5.12
      */
-    public static function factory()
+    public static function factory(PHPUnit_Framework_TestResult $result)
     {
         if (DIRECTORY_SEPARATOR == '\\') {
-            return new PHPUnit_Util_PHP_Windows;
+            $php = new PHPUnit_Util_PHP_Windows;
+        } else {
+            $php = new PHPUnit_Util_PHP_Default;
         }
-
-        return new PHPUnit_Util_PHP_Default;
+        $php->result = $result;
+        return $php;
     }
 
     /**
@@ -140,11 +148,10 @@ abstract class PHPUnit_Util_PHP
      *
      * @param  string                       $job
      * @param  PHPUnit_Framework_Test       $test
-     * @param  PHPUnit_Framework_TestResult $result
      * @return int
      * @throws PHPUnit_Framework_Exception
      */
-    public function startJob($job, PHPUnit_Framework_Test $test = NULL, PHPUnit_Framework_TestResult $result = NULL)
+    public function startJob($job, PHPUnit_Framework_Test $test = NULL)
     {
         $process = proc_open(
           $this->getPhpBinary(),
@@ -166,7 +173,7 @@ abstract class PHPUnit_Util_PHP
 
         $this->process($pipes[0], $job);
         fclose($pipes[0]);
-        $this->jobs[$pid] = array('process' => $process, 'stdout' => $pipes[1], 'stderr' => $pipes[2], 'test' => $test, 'result' => $result);
+        $this->jobs[$pid] = array('process' => $process, 'stdout' => $pipes[1], 'stderr' => $pipes[2], 'test' => $test);
         return $pid;
     }
 
@@ -196,10 +203,7 @@ abstract class PHPUnit_Util_PHP
      */
     public function reportJobStarted($pid)
     {
-        $result = $this->jobs[$pid]['result'];
-        if ($result !== NULL) {
-            $result->startTest($this->jobs[$pid]['test']);
-        }
+        $this->result->startTest($this->jobs[$pid]['test']);
     }
 
     /**
@@ -207,20 +211,15 @@ abstract class PHPUnit_Util_PHP
      * Forgets that the job existed.
      *
      * @param  int $pid
-     * @return array|null
+     * @return array
      */
     public function reportJobFinished($pid)
     {
-                $result = $this->jobs[$pid]['result'];
         $test = $this->jobs[$pid]['test'];
         $stdout = $this->jobs[$pid]['final_stdout'];
         $stderr = $this->jobs[$pid]['final_stderr'];
         unset($this->jobs[$pid]);
-        if ($result !== NULL) {
-            $this->processChildResult($test, $result, $stdout, $stderr);
-        } else {
-            return array('stdout' => $stdout, 'stderr' => $stderr);
-        }
+        $this->processChildResult($test, $stdout, $stderr);
     }
 
     /**
@@ -253,16 +252,15 @@ abstract class PHPUnit_Util_PHP
      * Processes the TestResult object from an isolated process.
      *
      * @param PHPUnit_Framework_TestCase   $test
-     * @param PHPUnit_Framework_TestResult $result
      * @param string                       $stdout
      * @param string                       $stderr
      * @since Method available since Release 3.5.0
      */
-    protected function processChildResult(PHPUnit_Framework_Test $test, PHPUnit_Framework_TestResult $result, $stdout, $stderr)
+    protected function processChildResult(PHPUnit_Framework_Test $test, $stdout, $stderr)
     {
         if (!empty($stderr)) {
             $time = 0;
-            $result->addError(
+            $this->result->addError(
               $test,
               new RuntimeException(trim($stderr)), $time
             );
@@ -279,8 +277,8 @@ abstract class PHPUnit_Util_PHP
 
                 $childResult = $childResult['result'];
 
-                if ($result->getCollectCodeCoverageInformation()) {
-                    $result->getCodeCoverage()->merge(
+                if ($this->result->getCollectCodeCoverageInformation()) {
+                    $this->result->getCodeCoverage()->merge(
                       $childResult->getCodeCoverage()
                     );
                 }
@@ -292,38 +290,38 @@ abstract class PHPUnit_Util_PHP
                 $failures       = $childResult->failures();
 
                 if (!empty($notImplemented)) {
-                    $result->addError(
-                      $test, $this->getException($notImplemented[0]), $time
+                    $this->result->addError(
+                      $test, $notImplemented[0]->thrownException(), $time
                     );
                 }
 
                 else if (!empty($skipped)) {
-                    $result->addError(
+                    $this->result->addError(
                       $test, $this->getException($skipped[0]), $time
                     );
                 }
 
                 else if (!empty($errors)) {
-                    $result->addError(
+                    $this->result->addError(
                       $test, $this->getException($errors[0]), $time
                     );
                 }
 
                 else if (!empty($failures)) {
-                    $result->addFailure(
+                    $this->result->addFailure(
                       $test, $this->getException($failures[0]), $time
                     );
                 }
             } else {
                 $time = 0;
 
-                $result->addError(
+                $this->result->addError(
                   $test, new RuntimeException(trim($stdout)), $time
                 );
             }
         }
 
-        $result->endTest($test, $time);
+        $this->result->endTest($test, $time);
     }
 
     /**

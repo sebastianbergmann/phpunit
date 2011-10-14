@@ -767,7 +767,7 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
      */
     public function runInAnotherProcess(PHPUnit_Framework_TestResult $result)
     {
-        $php = PHPUnit_Util_PHP::factory();
+        $php = PHPUnit_Util_PHP::factory($result);
         $pid = $this->startInAnotherProcess($result, $php);
         $php->reportJobStarted($pid);
         $php->finishJob($pid);
@@ -786,7 +786,7 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
     {
         $template = $this->getTemplate($result->getCollectCodeCoverageInformation(), $result->isStrict());
         $this->prepareTemplate($template);
-        return $php->startJob($template->render(), $this, $result);
+        return $php->startJob($template->render(), $this);
     }
         
     /**
