@@ -188,6 +188,11 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
     protected $reportFinished = FALSE;
 
     /**
+     * @var    PHPUnit_Util_PHP
+     */
+    protected $php;
+
+    /**
      * The number of tests in the test suite.
      *
      * @var    integer
@@ -893,31 +898,31 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
      * Starts the next test I have prepared. Can get tests from subsuites.
      * Returns the suite the test came from, along with the test, and the pid.
      * @param  PHPUnit_Framework_TestResult $result
-     * @param  PHPUnit_Util_PHP             $php
      * @return array
      */
-    public function startNextPreparedTest(PHPUnit_Framework_TestResult $result, PHPUnit_Util_PHP $php)
+    public function startNextPreparedTest(PHPUnit_Framework_TestResult $result)
     {
         $test = NULL;
         $tests_suite = NULL;
         foreach ($this->runningSubsuites as $i => $suite) {
             if ($suite->hasTestsPrepared()) {
-                list($tests_suite, $test) = $suite->startNextPreparedTest($result, $php);
+                list($tests_suite, $test) = $suite->startNextPreparedTest($result);
                 break;
             }
         }
         if (is_null($test) && !empty($this->preparedSubsuites)) {
             $suite = array_shift($this->preparedSubsuites);
+            $suite->php = $this->php;
             $this->reportOrderSubsuites[] = $suite;
             if ($suite->hasTestsPrepared()) {
-                list($tests_suite, $test) = $suite->startNextPreparedTest($result, $php);
+                list($tests_suite, $test) = $suite->startNextPreparedTest($result);
                 $this->runningSubsuites[] = $suite;
             }
         }
         if (is_null($test) && !empty($this->preparedTests)) {
             $test = array_shift($this->preparedTests);
             $tests_suite = $this;
-            $pid = $test->startInAnotherProcess($result, $php);
+            $pid = $test->startInAnotherProcess($result, $this->php);
             $this->reportOrderTestPids[] = $pid;
             $this->runningTests[$pid] = $test;
         }
@@ -928,14 +933,13 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
      * Finishes any running test that has completed, checking in the order in which
      * they were started. Return pid of finished test, or -1 if no test finished.
      * @param  PHPUnit_Framework_TestResult $result
-     * @param  PHPUnit_Util_PHP             $php
      * @return int
      */
-    public function tryToFinishARunningTest(PHPUnit_Framework_TestResult $result, PHPUnit_Util_PHP $php)
+    public function tryToFinishARunningTest(PHPUnit_Framework_TestResult $result)
     {
         $finished_pid = -1;
         foreach ($this->runningSubsuites as $i => $suite) {
-            $finished_pid = $suite->tryToFinishARunningTest($result, $php);
+            $finished_pid = $suite->tryToFinishARunningTest($result);
             if ($finished_pid > 0) {
                 if ($suite->countRunning() == 0 && !$suite->hasTestsPrepared()) {
                     unset($this->runningSubsuites[$i]);
@@ -945,9 +949,9 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
         }
         if ($finished_pid < 0) {
             foreach ($this->runningTests as $pid => $test) {
-                if ($php->isJobFinished($pid)) {
+                if ($this->php->isJobFinished($pid)) {
                     $finished_pid = $pid;
-                    $php->finishJob($finished_pid);
+                    $this->php->finishJob($finished_pid);
                     
                     unset($this->runningTests[$finished_pid]);
                     $this->finishedTestPids[] = $finished_pid;
@@ -1006,16 +1010,16 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
      */
     public function runTestsParallel(PHPUnit_Framework_TestResult $result, $parallelism)
     {
-        $php = PHPUnit_Util_PHP::factory($result);
+        $this->php = PHPUnit_Util_PHP::factory($result);
         while ($this->hasTestsPrepared() || $this->countRunning() > 0) {
             while ($this->countRunning() < $parallelism && $this->hasTestsPrepared()) {
-                $this->startNextPreparedTest($result, $php);
+                $this->startNextPreparedTest($result);
             }
             while ($this->countRunning() == $parallelism || 
                     (!$this->hasTestsPrepared() && $this->countRunning() > 0)) {
-                $finished_pid = $this->tryToFinishARunningTest($result, $php);
+                $finished_pid = $this->tryToFinishARunningTest($result);
                 if ($finished_pid > 0) {
-                    $this->report($result, $php);
+                    $this->report($result);
                 }
                 usleep(10000);
             }
@@ -1031,10 +1035,9 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
      * Returns whether the suite is finished reporting.
      *
      * @param  PHPUnit_Framework_TestResult $result
-     * @param  PHPUnit_Util_PHP             $php
      * @return boolean
      */
-    public function report(PHPUnit_Framework_TestResult $result, PHPUnit_Util_PHP $php)
+    public function report(PHPUnit_Framework_TestResult $result)
     {
         if (!$this->reportStarted) {
             $this->reportStarted = TRUE;
@@ -1042,7 +1045,7 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
         }
         while (!empty($this->reportOrderSubsuites)) {
             $suite = array_shift($this->reportOrderSubsuites);
-            $done = $suite->report($result, $php);
+            $done = $suite->report($result);
             if (!$done) {
                 array_unshift($this->reportOrderSubsuites, $suite);
                 return FALSE;
@@ -1051,8 +1054,8 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
         while (!empty($this->reportOrderTestPids)) {
             $pid = array_shift($this->reportOrderTestPids);
             if (in_array($pid, $this->finishedTestPids)) {
-                $php->reportJobStarted($pid);
-                $php->reportJobFinished($pid);
+                $this->php->reportJobStarted($pid);
+                $this->php->reportJobFinished($pid);
             } else {
                 array_unshift($this->reportOrderTestPids, $pid);
                 return FALSE;
