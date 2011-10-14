@@ -164,10 +164,6 @@ abstract class PHPUnit_Util_PHP
             );
         }
 
-        if ($result !== NULL) {
-            $result->startTest($test);
-        }
-
         $this->process($pipes[0], $job);
         fclose($pipes[0]);
         $this->jobs[$pid] = array('process' => $process, 'stdout' => $pipes[1], 'stderr' => $pipes[2], 'test' => $test, 'result' => $result);
@@ -179,42 +175,52 @@ abstract class PHPUnit_Util_PHP
      * If the process isn't finished, block until it is
      *
      * @param  int $pid
-     * @return array|null
      */
     public function finishJob($pid)
     {
-        $stdout = stream_get_contents($this->jobs[$pid]['stdout']);
+        $this->jobs[$pid]['final_stdout'] = stream_get_contents($this->jobs[$pid]['stdout']);
         fclose($this->jobs[$pid]['stdout']);
 
-        $stderr = stream_get_contents($this->jobs[$pid]['stderr']);
+        $this->jobs[$pid]['final_stderr'] = stream_get_contents($this->jobs[$pid]['stderr']);
         fclose($this->jobs[$pid]['stderr']);
         
         proc_close($this->jobs[$pid]['process']);
         $this->cleanup();
+    }
 
+
+    /**
+     * Reports the beginning of a job(test) to a result object.
+     *
+     * @param  int $pid
+     */
+    public function reportJobStarted($pid)
+    {
         $result = $this->jobs[$pid]['result'];
+        if ($result !== NULL) {
+            $result->startTest($this->jobs[$pid]['test']);
+        }
+    }
+
+    /**
+     * Reports the completion of a job(test) to a result object.
+     * Forgets that the job existed.
+     *
+     * @param  int $pid
+     * @return array|null
+     */
+    public function reportJobFinished($pid)
+    {
+                $result = $this->jobs[$pid]['result'];
         $test = $this->jobs[$pid]['test'];
+        $stdout = $this->jobs[$pid]['final_stdout'];
+        $stderr = $this->jobs[$pid]['final_stderr'];
         unset($this->jobs[$pid]);
         if ($result !== NULL) {
             $this->processChildResult($test, $result, $stdout, $stderr);
         } else {
             return array('stdout' => $stdout, 'stderr' => $stderr);
         }
-    }
-
-    /**
-     * Runs a single job (PHP code) using a separate PHP process.
-     *
-     * @param  string                       $job
-     * @param  PHPUnit_Framework_Test       $test
-     * @param  PHPUnit_Framework_TestResult $result
-     * @return array|null
-     * @throws PHPUnit_Framework_Exception
-     */
-    public function runJob($job, PHPUnit_Framework_Test $test = NULL, PHPUnit_Framework_TestResult $result = NULL)
-    {
-        $pid = $this->startJob($job, $test, $result);
-        return $this->finishJob($pid);
     }
 
     /**
