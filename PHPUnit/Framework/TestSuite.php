@@ -692,7 +692,7 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
     }
 
     /**
-     * Prepares the a set of tests and test suites for running
+     * Prepares member tests and test suites for running
      * Defaults to preparing this suite's list of tests
      *
      * @param  array   $excludeGroups
