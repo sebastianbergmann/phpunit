@@ -703,7 +703,14 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
             $tests = $this->tests;
         }
         $this->preparedTests = array();
+        $this->runningTests = array();
+        $this->finishedTestPids = array();
+        $this->reportOrderTestPids = array();
         $this->preparedSubsuites = array();
+        $this->runningSubsuites = array();
+        $this->reportOrderSubsuites = array();
+        $this->reportStarted = FALSE;
+        $this->reportFinished = FALSE;
         foreach ($tests as $test) {
             $include = TRUE;
             if (!empty($excludeGroups)) {
