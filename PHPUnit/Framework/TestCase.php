@@ -319,24 +319,49 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
         $this->dataName = $dataName;
     }
 
-    public function isReadyToFinish()
+    /**
+     * Returns whether the test, running in another
+     * process, is done.
+     *
+     * @return boolean
+     */
+    public function isReadyToFinishProcess()
     {
         return $this->php->isJobFinished($this->pid);
     }
     
-    public function finish()
+    /**
+     * Collects the output and closes out the process
+     * of the test running in another process. If the
+     * test isn't finished, block until it is.
+     *
+     * @return boolean
+     */
+    public function finishProcess()
     {
         $this->php->finishJob($this->pid);
     }
-    
-    public function reportStarted()
+
+    /**
+     * Reports to the $result object that the test has
+     * started
+     *
+     * @return boolean
+     */
+    public function reportStartedProcess()
     {
-        $this->php->reportJobStarted($this->pid);
+        $this->result->startTest($this);
     }
 
-    public function reportFinished()
+    /**
+     * Reports to the $result object that the test has
+     * finished
+     *
+     * @return boolean
+     */
+    public function reportFinishedProcess()
     {
-        $this->php->reportJobFinished($this->pid, $this->useErrorHandler);
+        return $this->php->reportJobFinished($this->pid, $this->useErrorHandler);
     }
     
     /**
@@ -661,6 +686,22 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
     }
 
     /**
+     * Sets the member result to the passed-in result if it exists
+     * @param  PHPUnit_Framework_TestResult $result
+     */
+    protected function prepareResultObject(PHPUnit_Framework_TestResult $result = NULL)
+    {
+        if ($result === NULL) {
+            $result = $this->result;
+        }
+        if ($result === NULL)
+        {
+            $result = $this->createResult();
+        }
+        $this->setTestResultObject($result);
+    }
+    
+    /**
      * Runs the test case and collects the results in a TestResult object.
      * If no TestResult object is passed a new one will be created.
      *
@@ -670,11 +711,7 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
      */
     public function run(PHPUnit_Framework_TestResult $result = NULL)
     {
-        if ($result === NULL && $this->result === NULL) {
-            $result = $this->createResult();
-        }
-
-        $this->setTestResultObject($result);
+        $this->prepareResultObject($result);
         $this->setExpectedExceptionFromAnnotation();
         $this->setUseErrorHandlerFromAnnotation();
         $this->setUseOutputBufferingFromAnnotation();
@@ -775,26 +812,26 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
         
     /**
      * Runs the test case in another process.
-     *
+     * @return PHPUnit_Framework_TestResult
      */
     public function runInAnotherProcess()
     {
-        $pid = $this->startInAnotherProcess($this->result, $this->php);
-        $this->php->reportJobStarted($pid);
-        $this->php->finishJob($pid);
-        $this->php->reportJobFinished($pid, $this->useErrorHandler);
+        $this->startInAnotherProcess();
+        $this->reportStartedProcess();
+        $this->finishProcess();
+        $this->reportFinishedProcess();
     }
 
     /**
      * Starts the test case in another process.
-     *
-     * @return pid
+     * @param  PHPUnit_Framework_TestResult $result
      */
-    public function startInAnotherProcess()
+    public function startInAnotherProcess(PHPUnit_Framework_TestResult $result = NULL)
     {
+        $this->prepareResultObject($result);
         $template = $this->getTemplate($this->result->getCollectCodeCoverageInformation(), $this->result->isStrict());
         $this->prepareTemplate($template);
-        return $this->php->startJob($template->render(), $this);
+        $this->pid = $this->php->startJob($template->render(), $this);
     }
         
     /**

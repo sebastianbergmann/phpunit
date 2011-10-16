@@ -195,17 +195,6 @@ abstract class PHPUnit_Util_PHP
         $this->cleanup();
     }
 
-
-    /**
-     * Reports the beginning of a job(test) to a result object.
-     *
-     * @param  int $pid
-     */
-    public function reportJobStarted($pid)
-    {
-        $this->result->startTest($this->jobs[$pid]['test']);
-    }
-
     /**
      * Reports the completion of a job(test) to a result object.
      * Forgets that the job existed.

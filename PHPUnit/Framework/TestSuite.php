@@ -898,15 +898,16 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
      * Returns the suite the test came from, along with the test.
      * If the test can't be run in parallel, set it aside and we'll run it
      * when it would be time to report it finishing.
+     * @param  PHPUnit_Framework_TestResult $result
      * @return array
      */
-    public function startNextPreparedTest()
+    public function startNextPreparedTest(PHPUnit_Framework_TestResult $result)
     {
         $test = NULL;
         $tests_suite = NULL;
         foreach ($this->runningSubsuites as $i => $suite) {
             if ($suite->hasTestsPrepared()) {
-                list($tests_suite, $test) = $suite->startNextPreparedTest();
+                list($tests_suite, $test) = $suite->startNextPreparedTest($result);
                 break;
             }
         }
@@ -914,7 +915,7 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
             $suite = array_shift($this->preparedSubsuites);
             $this->reportOrderSubsuites[] = $suite;
             if ($suite->hasTestsPrepared()) {
-                list($tests_suite, $test) = $suite->startNextPreparedTest();
+                list($tests_suite, $test) = $suite->startNextPreparedTest($result);
                 $this->runningSubsuites[] = $suite;
             }
         }
@@ -922,7 +923,7 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
             $test = array_shift($this->preparedTests);
             $tests_suite = $this;
             if ($test instanceof PHPUnit_Framework_TestCase) {
-                $test->startInAnotherProcess();
+                $test->startInAnotherProcess($result);
                 $this->reportOrderTests[] = $test;
                 $this->runningTests[] = $test;
             } else {
@@ -1015,7 +1016,7 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
     {
         while ($this->hasTestsPrepared() || $this->countRunning() > 0) {
             while ($this->countRunning() < $parallelism && $this->hasTestsPrepared()) {
-                $this->startNextPreparedTest();
+                $this->startNextPreparedTest($result);
             }
             while ($this->countRunning() == $parallelism || 
                     (!$this->hasTestsPrepared() && $this->countRunning() > 0)) {
