@@ -248,7 +248,12 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
     private $status;
 
     /**
-     * @var string
+     * @var    integer
+     */
+    private $pid;
+
+    /**
+     * @var    string
      */
     private $statusMessage = '';
 
@@ -260,7 +265,12 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
     /**
      * @var PHPUnit_Framework_TestResult
      */
-    private $result;
+    private $result = NULL;
+
+    /**
+     * @var PHPUnit_Util_PHP
+     */
+    private $php;
 
     /**
      * @var mixed
@@ -309,6 +319,26 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
         $this->dataName = $dataName;
     }
 
+    public function isReadyToFinish()
+    {
+        return $this->php->isJobFinished($this->pid);
+    }
+    
+    public function finish()
+    {
+        $this->php->finishJob($this->pid);
+    }
+    
+    public function reportStarted()
+    {
+        $this->php->reportJobStarted($this->pid);
+    }
+
+    public function reportFinished()
+    {
+        $this->php->reportJobFinished($this->pid, $this->useErrorHandler);
+    }
+    
     /**
      * Returns a string representation of the test case.
      *
@@ -630,31 +660,6 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
                $status == PHPUnit_Runner_BaseTestRunner::STATUS_ERROR;
     }
 
-   /**
-     * Prepares the test case for a run.
-     * If no TestResult object is passed a new one will be created.
-     * 
-     * @param  PHPUnit_Framework_TestResult $result
-     * @return  PHPUnit_Framework_TestResult $result
-     */
-    public function prepareForRun(PHPUnit_Framework_TestResult $result = NULL)
-    {
-        if ($result === NULL) {
-            $result = $this->createResult();
-        }
-
-        $this->setTestResultObject($result);
-        $this->setExpectedExceptionFromAnnotation();
-        $this->setUseErrorHandlerFromAnnotation();
-        $this->setUseOutputBufferingFromAnnotation();
-
-        if ($this->useErrorHandler !== NULL) {
-            $oldErrorHandlerSetting = $result->getConvertErrorsToExceptions();
-            $result->convertErrorsToExceptions($this->useErrorHandler);
-        }
-        return $result;
-    }
-    
     /**
      * Runs the test case and collects the results in a TestResult object.
      * If no TestResult object is passed a new one will be created.
@@ -665,8 +670,19 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
      */
     public function run(PHPUnit_Framework_TestResult $result = NULL)
     {
-        $result = $this->prepareForRun($result);
-        $this->result = $result;
+        if ($result === NULL && $this->result === NULL) {
+            $result = $this->createResult();
+        }
+
+        $this->setTestResultObject($result);
+        $this->setExpectedExceptionFromAnnotation();
+        $this->setUseErrorHandlerFromAnnotation();
+        $this->setUseOutputBufferingFromAnnotation();
+
+        if ($this->useErrorHandler !== NULL) {
+            $oldErrorHandlerSetting = $this->result->getConvertErrorsToExceptions();
+            $this->result->convertErrorsToExceptions($this->useErrorHandler);
+        }
         if (!$this->handleDependencies()) {
             return;
         }
@@ -675,18 +691,16 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
             $this->inIsolation !== TRUE &&
             !$this instanceof PHPUnit_Extensions_SeleniumTestCase &&
             !$this instanceof PHPUnit_Extensions_PhptTestCase) {
-            $this->runInAnotherProcess($result);
+            $this->runInAnotherProcess();
         } else {
-            $result->run($this);
+            $this->result->run($this);
         }
 
         if ($this->useErrorHandler !== NULL) {
-            $result->convertErrorsToExceptions($oldErrorHandlerSetting);
+            $this->result->convertErrorsToExceptions($oldErrorHandlerSetting);
         }
 
-        $this->result = NULL;
-
-        return $result;
+        return $this->result;
     }
 
     /**
@@ -762,31 +776,25 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
     /**
      * Runs the test case in another process.
      *
-     * @param  PHPUnit_Framework_TestResult $result
-     * @return PHPUnit_Framework_TestResult
      */
-    public function runInAnotherProcess(PHPUnit_Framework_TestResult $result)
+    public function runInAnotherProcess()
     {
-        $php = PHPUnit_Util_PHP::factory($result);
-        $pid = $this->startInAnotherProcess($result, $php);
-        $php->reportJobStarted($pid);
-        $php->finishJob($pid);
-        $php->reportJobFinished($pid);
-        return $result;
+        $pid = $this->startInAnotherProcess($this->result, $this->php);
+        $this->php->reportJobStarted($pid);
+        $this->php->finishJob($pid);
+        $this->php->reportJobFinished($pid, $this->useErrorHandler);
     }
 
     /**
      * Starts the test case in another process.
      *
-     * @param  PHPUnit_Framework_TestResult $result
-     * @param  PHPUnit_Util_PHP             $php
      * @return pid
      */
-    public function startInAnotherProcess(PHPUnit_Framework_TestResult $result, PHPUnit_Util_PHP $php)
+    public function startInAnotherProcess()
     {
-        $template = $this->getTemplate($result->getCollectCodeCoverageInformation(), $result->isStrict());
+        $template = $this->getTemplate($this->result->getCollectCodeCoverageInformation(), $this->result->isStrict());
         $this->prepareTemplate($template);
-        return $php->startJob($template->render(), $this);
+        return $this->php->startJob($template->render(), $this);
     }
         
     /**
@@ -1166,6 +1174,14 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
     }
 
     /**
+     * @param  PHPUnit_Util_PHP $php
+     */
+    public function setPHP($php)
+    {
+        $this->php = $php;
+    }
+
+    /**
      * @return PHPUnit_Framework_TestResult
      * @since  Method available since Release 3.5.7
      */
@@ -1254,9 +1270,9 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
 
         $this->locale[$category] = setlocale($category, NULL);
 
-        $result = call_user_func_array( 'setlocale', $args );
+        $locale_supported = call_user_func_array( 'setlocale', $args );
 
-        if ($result === FALSE) {
+        if ($locale_supporte === FALSE) {
             throw new PHPUnit_Framework_Exception(
               'The locale functionality is not implemented on your platform, ' .
               'the specified locale does not exist or the category name is ' .

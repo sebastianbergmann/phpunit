@@ -210,14 +210,18 @@ abstract class PHPUnit_Util_PHP
      * Reports the completion of a job(test) to a result object.
      * Forgets that the job existed.
      *
-     * @param  int $pid
+     * @param  int     $pid
+     * @param  boolean $useErrorHandler
      * @return array
      */
-    public function reportJobFinished($pid)
+    public function reportJobFinished($pid, $useErrorHandler)
     {
         $test = $this->jobs[$pid]['test'];
         $stdout = $this->jobs[$pid]['final_stdout'];
         $stderr = $this->jobs[$pid]['final_stderr'];
+        if ($useErrorHandler !== NULL) {
+            $this->result->convertErrorsToExceptions($oldErrorHandlerSetting);
+        }
         unset($this->jobs[$pid]);
         $this->processChildResult($test, $stdout, $stderr);
     }
