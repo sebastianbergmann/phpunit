@@ -81,6 +81,11 @@ class PHPUnit_Extensions_RepeatedTest extends PHPUnit_Extensions_TestDecorator
     protected $timesRepeat = 1;
 
     /**
+     * @var integer
+     */
+    protected $parallelism = 1;
+
+    /**
      * Constructor.
      *
      * @param  PHPUnit_Framework_Test $test
@@ -89,9 +94,10 @@ class PHPUnit_Extensions_RepeatedTest extends PHPUnit_Extensions_TestDecorator
      * @param  array                  $groups
      * @param  array                  $excludeGroups
      * @param  boolean                $processIsolation
+     * @param  int                    $processIsolation
      * @throws InvalidArgumentException
      */
-    public function __construct(PHPUnit_Framework_Test $test, $timesRepeat = 1, $filter = FALSE, array $groups = array(), array $excludeGroups = array(), $processIsolation = FALSE)
+    public function __construct(PHPUnit_Framework_Test $test, $timesRepeat = 1, $filter = FALSE, array $groups = array(), array $excludeGroups = array(), $processIsolation = FALSE, $parallelism=1)
     {
         parent::__construct($test);
 
@@ -108,6 +114,7 @@ class PHPUnit_Extensions_RepeatedTest extends PHPUnit_Extensions_TestDecorator
         $this->groups           = $groups;
         $this->excludeGroups    = $excludeGroups;
         $this->processIsolation = $processIsolation;
+        $this->parallelism      = $parallelism;
     }
 
     /**
@@ -142,7 +149,8 @@ class PHPUnit_Extensions_RepeatedTest extends PHPUnit_Extensions_TestDecorator
                   $this->filter,
                   $this->groups,
                   $this->excludeGroups,
-                  $this->processIsolation
+                  $this->processIsolation,
+                  $this->parallelism
                 );
             } else {
                 $this->test->run($result);
