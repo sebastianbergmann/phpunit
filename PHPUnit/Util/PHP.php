@@ -174,7 +174,7 @@ abstract class PHPUnit_Util_PHP
         $this->process($pipes[0], $job);
         fclose($pipes[0]);
         $this->jobs[$pid] = array('process' => $process, 'stdout' => $pipes[1], 'stderr' => $pipes[2], 'test' => $test);
-        return $pid;
+        return array('pid' => $pid, 'process' => $process, 'stdout' => $pipes[1], 'stderr' => $pipes[2]);
     }
 
     /**

@@ -831,7 +831,7 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
         $this->prepareResultObject($result);
         $template = $this->getTemplate($this->result->getCollectCodeCoverageInformation(), $this->result->isStrict());
         $this->prepareTemplate($template);
-        $this->process_metadata['pid'] = $this->php->startJob($template->render(), $this);
+        $this->process_metadata = $this->php->startJob($template->render(), $this);
     }
         
     /**
