@@ -1042,7 +1042,6 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
      */
     public function report(PHPUnit_Framework_TestResult &$result)
     {
-        echo "report";
         if (!$this->reportStarted) {
             $this->reportStarted = TRUE;
             $result->startTestSuite($this);
@@ -1066,7 +1065,6 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
                     return FALSE;
                 }
             } else {
-                echo "nope\n";
                 $test->run($result);
             }
         }
