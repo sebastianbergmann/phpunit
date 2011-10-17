@@ -1058,7 +1058,7 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
         while (!empty($this->reportOrderTests)) {
             $test = array_shift($this->reportOrderTests);
             if (method_exists($test, "startInAnotherProcess")) {
-                if (in_array($test, $this->finishedTests)) {
+                if (in_array($test, $this->finishedTests, TRUE)) {
                     $test->reportStartedProcess();
                     $test->reportFinishedProcess();
                 } else {
