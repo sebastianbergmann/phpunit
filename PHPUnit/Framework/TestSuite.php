@@ -922,13 +922,11 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
         if (is_null($test) && !empty($this->preparedTests)) {
             $test = array_shift($this->preparedTests);
             $tests_suite = $this;
-            if ($test instanceof PHPUnit_Framework_TestCase) {
+            if (method_exists($test, "startInAnotherProcess")) {
                 $test->startInAnotherProcess($result);
-                $this->reportOrderTests[] = $test;
                 $this->runningTests[] = $test;
-            } else {
-                $this->reportOrderTests[] = $test;
             }
+            $this->reportOrderTests[] = $test;
         }
         return array($tests_suite, $test);
     }
@@ -1044,6 +1042,7 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
      */
     public function report(PHPUnit_Framework_TestResult &$result)
     {
+        echo "report";
         if (!$this->reportStarted) {
             $this->reportStarted = TRUE;
             $result->startTestSuite($this);
@@ -1058,16 +1057,17 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
         }
         while (!empty($this->reportOrderTests)) {
             $test = array_shift($this->reportOrderTests);
-            if (! $test instanceof $test instanceof PHPUnit_Framework_TestCase) {
-                $test->run($result);
-            } else {
+            if (method_exists($test, "startInAnotherProcess")) {
                 if (in_array($test, $this->finishedTests)) {
-                    $test->reportStarted();
-                    $test->reportFinished();
+                    $test->reportStartedProcess();
+                    $test->reportFinishedProcess();
                 } else {
                     array_unshift($this->reportOrderTests, $test);
                     return FALSE;
                 }
+            } else {
+                echo "nope\n";
+                $test->run($result);
             }
         }
 
