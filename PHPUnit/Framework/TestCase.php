@@ -247,10 +247,10 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
      */
     private $status;
 
-	/**
-     * @var    array
+    /**
+     * @var    integer
      */
-    private $process_metadata;
+    private $pid;
 
     /**
      * @var    string
@@ -327,7 +327,7 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
      */
     public function isReadyToFinishProcess()
     {
-        return $this->php->isJobFinished($this->process_metadata['pid']);
+        return $this->php->isJobFinished($this->pid);
     }
     
     /**
@@ -339,7 +339,7 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
      */
     public function finishProcess()
     {
-        $this->php->finishJob($this->process_metadata['pid']);
+        $this->php->finishJob($this->pid);
     }
 
     /**
@@ -361,7 +361,7 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
      */
     public function reportFinishedProcess()
     {
-        return $this->php->reportJobFinished($this->process_metadata['pid'], $this->useErrorHandler);
+        return $this->php->reportJobFinished($this->pid, $this->useErrorHandler);
     }
     
     /**
@@ -831,7 +831,7 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
         $this->prepareResultObject($result);
         $template = $this->getTemplate($this->result->getCollectCodeCoverageInformation(), $this->result->isStrict());
         $this->prepareTemplate($template);
-        $this->process_metadata['pid'] = $this->php->startJob($template->render(), $this);
+        $this->pid = $this->php->startJob($template->render(), $this);
     }
         
     /**
