@@ -951,13 +951,13 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
             }
         }
         if (!$finished) {
-            foreach ($this->runningTests as $test) {
-                if ($test->isReadyToFinish()) {
+            foreach ($this->runningTests as $i => $test) {
+                if ($test->isReadyToFinishProcess()) {
+                    $test->finishProcess();
                     $finished = TRUE;
-                    $test->finish();
                     
-                    unset($this->runningTests[$finished]);
-                    $this->finishedTest[] = $test;
+                    unset($this->runningTests[$i]);
+                    $this->finishedTests[] = $test;
                     break;
                 }
             }
@@ -1022,11 +1022,11 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
                     (!$this->hasTestsPrepared() && $this->countRunning() > 0)) {
                 $finished = $this->tryToFinishARunningTest();
                 if ($finished) {
-                    $this->report();
+                    $this->report(&$result);
                 }
                 usleep(10000);
             }
-            $result = $this->report($result);
+            $this->report(&$result);
         }
         return $result;
     }
@@ -1037,10 +1037,12 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
      * Safe to call any time during a parallel run. Will report
      * start/end events in the same order as if they'd been run in
      * serial, regardless of the order in which they finish.
+     * Takes the result object by references, so it can return
+     * whether it's done, which is necessary for it to recurse into subsuites
      * @param  PHPUnit_Framework_TestResult $result
-     * @return PHPUnit_Framework_TestResult
+     * @return boolean
      */
-    public function report(PHPUnit_Framework_TestResult $result)
+    public function report(PHPUnit_Framework_TestResult &$result)
     {
         if (!$this->reportStarted) {
             $this->reportStarted = TRUE;
@@ -1048,10 +1050,10 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
         }
         while (!empty($this->reportOrderSubsuites)) {
             $suite = array_shift($this->reportOrderSubsuites);
-            $done = $suite->report();
+            $done = $suite->report(&$result);
             if (!$done) {
                 array_unshift($this->reportOrderSubsuites, $suite);
-                return $result;
+                return FALSE;
             }
         }
         while (!empty($this->reportOrderTests)) {
@@ -1064,16 +1066,19 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
                     $test->reportFinished();
                 } else {
                     array_unshift($this->reportOrderTests, $test);
-                    return $result;
+                    return FALSE;
                 }
             }
         }
-                
-        if (!$this->reportFinished) {
-            $this->reportFinished = TRUE;
-            $result->endTestSuite($this);
+
+        if ($this->countRunning() == 0 && !$this->hasTestsPrepared()) {
+            if (!$this->reportFinished) {
+                $this->reportFinished = TRUE;
+                $result->endTestSuite($this);
+            }
+            return TRUE;
         }
-        return $result;
+        return FALSE;
     }
 
     /**
