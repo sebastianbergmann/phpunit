@@ -200,6 +200,11 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
     protected $testCase = FALSE;
 
     /**
+     * @var int
+     */
+    protected $parallelism = 1;
+
+    /**
      * Constructs a new TestSuite:
      *
      *   - PHPUnit_Framework_TestSuite() constructs an empty TestSuite.
@@ -298,6 +303,7 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
         }
 
         $this->testCase = TRUE;
+        $this->parallelism = PHPUnit_Util_Test::getParallelismSettings($theClass->getName());
     }
 
     /**
@@ -779,11 +785,7 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
             $this->prepareTests($excludeGroups, $processIsolation, $filter, $this->backupGlobals, $this->backupStaticAttributes, $php, $group_tests);
         }
 
-        if ($parallelism == 1) {
-            $result = $this->runTestsSerial($result);
-        } else {
-            $result = $this->runTestsParallel($result, $parallelism);
-        }
+        $result = $this->runTests($result, $parallelism);
 
         return $result;
     }
@@ -827,13 +829,18 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
     }
     
     /**
-     * Runs my prepared tests in serial, recursing through subsuites.
+     * Runs my prepared tests, recursing through subsuites.
      * 
      * @param  PHPUnit_Framework_TestResult $result
+     * @param  int                          $parallelism
      * @return PHPUnit_Framework_TestResult
      */
-    public function runTestsSerial(PHPUnit_Framework_TestResult $result)
+    public function runTests(PHPUnit_Framework_TestResult $result, $parallelism=1)
     {
+        $parallelism = max($parallelism, $this->parallelism);
+        if ($parallelism > 1) {
+            return $this->runTestsParallel($result, $parallelism);
+        }
         $result->startTestSuite($this);
 
         $doSetup = (!empty($this->preparedSubsuites) && !empty($this->preparedTests));

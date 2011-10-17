@@ -495,6 +495,25 @@ class PHPUnit_Util_Test
     }
 
     /**
+     * Returns the parallelism settings for a test.
+     *
+     * @param  string $className
+     * @return int
+     */
+    public static function getParallelismSettings($className)
+    {
+        $annotations = self::parseTestMethodAnnotations(
+          $className
+        );
+
+        if (isset($annotations['class']['runTestsInParallel'])) {
+            return $annotations['class']['runTestsInParallel'][0];
+        } else {
+            return 1;
+        }
+    }
+
+    /**
      * Returns the preserve global state settings for a test.
      *
      * @param  string $className

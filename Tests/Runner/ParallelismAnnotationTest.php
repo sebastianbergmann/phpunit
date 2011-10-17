@@ -1,5 +1,8 @@
 <?
-class ParallelismTest extends PHPUnit_Framework_TestCase
+/**
+ * @runTestsInParallel 2
+ */
+class ParallelismAnnotationTest extends PHPUnit_Framework_TestCase
 {
     function setUp() {
         $this->filename = __class__.'tempfile.tmp';
@@ -14,7 +17,7 @@ class ParallelismTest extends PHPUnit_Framework_TestCase
             }
         }
     }
-        
+    
     function test_simultest_one() {
         $time = time();
         while (!file_exists($this->filename)) {
