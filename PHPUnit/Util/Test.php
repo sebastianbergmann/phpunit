@@ -156,6 +156,21 @@ class PHPUnit_Util_Test
 
             if (isset($matches[3])) {
                 $code = (int)$matches[3];
+                if( $code == 0 && strpos( $annotations['method']['expectedExceptionCode'][0], '::' ) !== false ) {
+                    $arrTag = explode( '::', $annotations['method']['expectedExceptionCode'][0] ); 
+                    $sPossibleClass = $arrTag[0];
+                    $sPossibleConstant = $arrTag[1];
+
+                    try {
+                        $cls = new ReflectionClass( $sPossibleClass );
+                        if ( $cls->hasConstant( $sPossibleConstant ) ) {
+                            $code = (int) $cls->getConstant( $sPossibleConstant );
+                        }
+                    } catch ( Exception $e ) {
+                        //The class could probably not be found but we'll just let the test cases continue for now.
+                    }
+
+                }
             }
 
             else if (isset($annotations['method']['expectedExceptionCode'])) {
