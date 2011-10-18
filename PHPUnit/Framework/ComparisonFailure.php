@@ -106,11 +106,11 @@ class PHPUnit_Framework_ComparisonFailure extends PHPUnit_Framework_AssertionFai
      */
     public function __construct($expected, $actual, $expectedAsString, $actualAsString, $identical = FALSE, $message = '')
     {
-        $this->expected  = $expected;
-        $this->actual    = $actual;
+        $this->expected         = $expected;
+        $this->actual           = $actual;
         $this->expectedAsString = $expectedAsString;
-        $this->actualAsString = $actualAsString;
-        $this->message   = $message;
+        $this->actualAsString   = $actualAsString;
+        $this->message          = $message;
     }
 
     /**
