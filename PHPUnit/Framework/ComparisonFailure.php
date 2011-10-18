@@ -154,4 +154,12 @@ class PHPUnit_Framework_ComparisonFailure extends PHPUnit_Framework_AssertionFai
           ? PHPUnit_Util_Diff::diff($this->expectedAsString, $this->actualAsString)
           : '';
     }
+
+    /**
+     * @return string
+     */
+    public function toString()
+    {
+        return $this->message . $this->getDiff();
+    }
 }
