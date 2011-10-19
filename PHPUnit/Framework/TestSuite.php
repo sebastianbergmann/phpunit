@@ -878,7 +878,7 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
         $result->startTestSuite($this);
 
         foreach ($this->preparedSubsuites as $suite) {
-            $result = $suite->runTestsSerial($result);
+            $result = $suite->runTests($result);
         }
         foreach ($this->preparedTests as $test) {
             if ($result->shouldStop()) {
