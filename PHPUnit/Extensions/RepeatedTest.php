@@ -94,7 +94,7 @@ class PHPUnit_Extensions_RepeatedTest extends PHPUnit_Extensions_TestDecorator
      * @param  array                  $groups
      * @param  array                  $excludeGroups
      * @param  boolean                $processIsolation
-     * @param  int                    $processIsolation
+     * @param  int                    $parallelism
      * @throws InvalidArgumentException
      */
     public function __construct(PHPUnit_Framework_Test $test, $timesRepeat = 1, $filter = FALSE, array $groups = array(), array $excludeGroups = array(), $processIsolation = FALSE, $parallelism=1)
