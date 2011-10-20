@@ -75,7 +75,7 @@ class PHPUnit_TextUI_Command
     /**
      * @var array
      */
-    protected $longOptions = array(
+    public static $stdLongOptions = array(
       'colors' => NULL,
       'bootstrap=' => NULL,
       'configuration=' => NULL,
@@ -89,6 +89,7 @@ class PHPUnit_TextUI_Command
       'group=' => NULL,
       'help' => NULL,
       'include-path=' => NULL,
+      'jobs=' => NULL,
       'list-groups' => NULL,
       'loader=' => NULL,
       'log-json=' => NULL,
@@ -118,6 +119,12 @@ class PHPUnit_TextUI_Command
     );
 
     /**
+     * @var array
+     */
+    protected $longOptions = array();
+    
+    
+    /**
      * @param boolean $exit
      */
     public static function main($exit = TRUE)
@@ -126,6 +133,11 @@ class PHPUnit_TextUI_Command
         return $command->run($_SERVER['argv'], $exit);
     }
 
+    public function __construct()
+    {
+        $this->longOptions = self::$stdLongOptions;
+    }
+    
     /**
      * @param array   $argv
      * @param boolean $exit
@@ -233,6 +245,7 @@ class PHPUnit_TextUI_Command
      * {
      *     public function __construct()
      *     {
+     *         parent::__construct();
      *         $this->longOptions['--my-switch'] = 'myHandler';
      *     }
      *
@@ -250,7 +263,7 @@ class PHPUnit_TextUI_Command
         try {
             $this->options = PHPUnit_Util_Getopt::getopt(
               $argv,
-              'd:c:hv',
+              'd:c:j:hv',
               array_keys($this->longOptions)
             );
         }
@@ -373,6 +386,13 @@ class PHPUnit_TextUI_Command
 
                 case '--include-path': {
                     $includePath = $option[1];
+                }
+                break;
+
+                case 'j': 
+                case '--jobs': 
+                {
+                    $this->arguments['parallelism'] = (int)$option[1];
                 }
                 break;
 
@@ -919,6 +939,8 @@ Usage: phpunit [switches] UnitTest [UnitTest.php]
   --stop-on-incomplete      Stop execution upon first incomplete test.
   --strict                  Run tests in strict mode.
   -v|--verbose              Output more verbose information.
+
+  -j|--jobs <count>         Runs the test(s) at the same time in separate processes.
 
   --skeleton-class          Generate Unit class for UnitTest in UnitTest.php.
   --skeleton-test           Generate UnitTest class for Unit in Unit.php.

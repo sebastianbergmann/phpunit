@@ -154,7 +154,12 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
     private $data = array();
 
     /**
-     * @var string
+     * @var    array
+     */
+    private $moreArgs = array();
+
+    /**
+     * @var    string
      */
     private $dataName = '';
 
@@ -248,7 +253,12 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
     private $status;
 
     /**
-     * @var string
+     * @var    integer
+     */
+    private $pid;
+
+    /**
+     * @var    string
      */
     private $statusMessage = '';
 
@@ -260,7 +270,12 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
     /**
      * @var PHPUnit_Framework_TestResult
      */
-    private $result;
+    private $result = NULL;
+
+    /**
+     * @var PHPUnit_Util_PHP
+     */
+    private $php;
 
     /**
      * @var mixed
@@ -307,8 +322,54 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
 
         $this->data     = $data;
         $this->dataName = $dataName;
+        $this->moreArgs = array_slice(func_get_args(), 3);
     }
 
+    /**
+     * Returns whether the test, running in another
+     * process, is done.
+     *
+     * @return boolean
+     */
+    public function isReadyToFinishProcess()
+    {
+        return $this->php->isJobFinished($this->pid);
+    }
+    
+    /**
+     * Collects the output and closes out the process
+     * of the test running in another process. If the
+     * test isn't finished, block until it is.
+     *
+     * @return boolean
+     */
+    public function finishProcess()
+    {
+        $this->php->finishJob($this->pid);
+    }
+
+    /**
+     * Reports to the $result object that the test has
+     * started
+     *
+     * @return boolean
+     */
+    public function reportStartedProcess()
+    {
+        $this->result->startTest($this);
+    }
+
+    /**
+     * Reports to the $result object that the test has
+     * finished
+     *
+     * @return boolean
+     */
+    public function reportFinishedProcess()
+    {
+        return $this->php->reportJobFinished($this->pid, $this->useErrorHandler);
+    }
+    
     /**
      * Returns a string representation of the test case.
      *
@@ -631,6 +692,22 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
     }
 
     /**
+     * Sets the member result to the passed-in result if it exists
+     * @param  PHPUnit_Framework_TestResult $result
+     */
+    protected function prepareResultObject(PHPUnit_Framework_TestResult $result = NULL)
+    {
+        if ($result === NULL) {
+            $result = $this->result;
+        }
+        if ($result === NULL)
+        {
+            $result = $this->createResult();
+        }
+        $this->setTestResultObject($result);
+    }
+    
+    /**
      * Runs the test case and collects the results in a TestResult object.
      * If no TestResult object is passed a new one will be created.
      *
@@ -640,103 +717,134 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
      */
     public function run(PHPUnit_Framework_TestResult $result = NULL)
     {
-        if ($result === NULL) {
-            $result = $this->createResult();
-        }
-
-        $this->setTestResultObject($result);
+        $this->prepareResultObject($result);
         $this->setExpectedExceptionFromAnnotation();
         $this->setUseErrorHandlerFromAnnotation();
         $this->setUseOutputBufferingFromAnnotation();
 
         if ($this->useErrorHandler !== NULL) {
-            $oldErrorHandlerSetting = $result->getConvertErrorsToExceptions();
-            $result->convertErrorsToExceptions($this->useErrorHandler);
+            $oldErrorHandlerSetting = $this->result->getConvertErrorsToExceptions();
+            $this->result->convertErrorsToExceptions($this->useErrorHandler);
         }
-
         if (!$this->handleDependencies()) {
             return;
         }
-
+        
         if ($this->runTestInSeparateProcess === TRUE &&
             $this->inIsolation !== TRUE &&
             !$this instanceof PHPUnit_Extensions_SeleniumTestCase &&
             !$this instanceof PHPUnit_Extensions_PhptTestCase) {
-            $class = new ReflectionClass($this);
-
-            $template = new Text_Template(
-              sprintf(
-                '%s%sProcess%sTestCaseMethod.tpl',
-
-                dirname(__FILE__),
-                DIRECTORY_SEPARATOR,
-                DIRECTORY_SEPARATOR,
-                DIRECTORY_SEPARATOR
-              )
-            );
-
-            if ($this->preserveGlobalState) {
-                $constants     = PHPUnit_Util_GlobalState::getConstantsAsString();
-                $globals       = PHPUnit_Util_GlobalState::getGlobalsAsString();
-                $includedFiles = PHPUnit_Util_GlobalState::getIncludedFilesAsString();
-            } else {
-                $constants     = '';
-                $globals       = '';
-                $includedFiles = '';
-            }
-
-            if ($result->getCollectCodeCoverageInformation()) {
-                $coverage = 'TRUE';
-            } else {
-                $coverage = 'FALSE';
-            }
-
-            if ($result->isStrict()) {
-                $strict = 'TRUE';
-            } else {
-                $strict = 'FALSE';
-            }
-
-            $data            = addcslashes(serialize($this->data), "'");
-            $dependencyInput = addcslashes(
-              serialize($this->dependencyInput), "'"
-            );
-            $includePath     = addslashes(get_include_path());
-
-            $template->setVar(
-              array(
-                'filename'                       => $class->getFileName(),
-                'className'                      => $class->getName(),
-                'methodName'                     => $this->name,
-                'collectCodeCoverageInformation' => $coverage,
-                'data'                           => $data,
-                'dataName'                       => $this->dataName,
-                'dependencyInput'                => $dependencyInput,
-                'constants'                      => $constants,
-                'globals'                        => $globals,
-                'include_path'                   => $includePath,
-                'included_files'                 => $includedFiles,
-                'strict'                         => $strict
-              )
-            );
-
-            $this->prepareTemplate($template);
-
-            $php = PHPUnit_Util_PHP::factory();
-            $php->runJob($template->render(), $this, $result);
+            $this->runInAnotherProcess();
         } else {
-            $result->run($this);
+            $this->result->run($this);
         }
 
         if ($this->useErrorHandler !== NULL) {
-            $result->convertErrorsToExceptions($oldErrorHandlerSetting);
+            $this->result->convertErrorsToExceptions($oldErrorHandlerSetting);
         }
 
-        $this->result = NULL;
-
-        return $result;
+        return $this->result;
     }
 
+    /**
+     * Helps run the test case in another process.
+     *
+     * @param  boolean $collect_code_coverage_information
+     * @param  boolean $is_strict
+     * @return Text_Template
+     */
+    public function getTemplate($collect_code_coverage_information, $is_strict)
+    {
+        $class = new ReflectionClass($this);
+
+        $template = new Text_Template(
+          sprintf(
+            '%s%sProcess%sTestCaseMethod.tpl',
+
+            dirname(__FILE__),
+            DIRECTORY_SEPARATOR,
+            DIRECTORY_SEPARATOR,
+            DIRECTORY_SEPARATOR
+          )
+        );
+
+        if ($this->preserveGlobalState) {
+            $constants     = PHPUnit_Util_GlobalState::getConstantsAsString();
+            $globals       = PHPUnit_Util_GlobalState::getGlobalsAsString();
+            $includedFiles = PHPUnit_Util_GlobalState::getIncludedFilesAsString();
+        } else {
+            $constants     = '';
+            $globals       = '';
+            $includedFiles = '';
+        }
+
+        if ($collect_code_coverage_information) {
+            $coverage = 'TRUE';
+        } else {
+            $coverage = 'FALSE';
+        }
+
+        if ($is_strict) {
+            $strict = 'TRUE';
+        } else {
+            $strict = 'FALSE';
+        }
+
+        $data            = addcslashes(serialize($this->data), "'");
+        $dependencyInput = addcslashes(
+          serialize($this->dependencyInput), "'"
+        );
+        $includePath     = addslashes(get_include_path());
+
+        $moreArgs = "";
+        foreach ($this->moreArgs as $arg) {
+            $moreArgs .= ", ".var_export($arg, TRUE);
+        }
+        $template->setVar(
+          array(
+            'filename'                       => $class->getFileName(),
+            'className'                      => $class->getName(),
+            'methodName'                     => $this->name,
+            'collectCodeCoverageInformation' => $coverage,
+            'data'                           => $data,
+            'dataName'                       => $this->dataName,
+            'dependencyInput'                => $dependencyInput,
+            'constants'                      => $constants,
+            'globals'                        => $globals,
+            'include_path'                   => $includePath,
+            'included_files'                 => $includedFiles,
+            'strict'                         => $strict,
+            'moreArgs'                       => $moreArgs
+          )
+        );
+        
+        return $template;
+    }
+        
+    /**
+     * Runs the test case in another process.
+     * @return PHPUnit_Framework_TestResult
+     */
+    public function runInAnotherProcess()
+    {
+        $this->startInAnotherProcess();
+        $this->reportStartedProcess();
+        $this->finishProcess();
+        $this->reportFinishedProcess();
+    }
+
+    /**
+     * Starts the test case in another process.
+     * @param  PHPUnit_Framework_TestResult $result
+     */
+    public function startInAnotherProcess(PHPUnit_Framework_TestResult $result = NULL)
+    {
+        $this->prepareResultObject($result);
+        $template = $this->getTemplate($this->result->getCollectCodeCoverageInformation(), $this->result->isStrict());
+        $this->prepareTemplate($template);
+        $this->pid = $this->php->startJob($template->render(), $this);
+    }
+        
     /**
      * Runs the bare test sequence.
      */
@@ -1114,12 +1222,30 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
     }
 
     /**
+     * @param  PHPUnit_Util_PHP $php
+     */
+    public function setPHP($php)
+    {
+        $this->php = $php;
+    }
+
+    /**
      * @return PHPUnit_Framework_TestResult
      * @since  Method available since Release 3.5.7
      */
     public function getTestResultObject()
     {
         return $this->result;
+    }
+
+
+    /**
+     * @param PHPUnit_Framework_TestResult $result
+     * @since Method available since Release 3.6.0
+     */
+    public function setTestResultObject(PHPUnit_Framework_TestResult $result)
+    {
+        $this->result = $result;
     }
 
     /**
@@ -1202,9 +1328,9 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
 
         $this->locale[$category] = setlocale($category, NULL);
 
-        $result = call_user_func_array( 'setlocale', $args );
+        $locale_supported = call_user_func_array( 'setlocale', $args );
 
-        if ($result === FALSE) {
+        if ($locale_supporte === FALSE) {
             throw new PHPUnit_Framework_Exception(
               'The locale functionality is not implemented on your platform, ' .
               'the specified locale does not exist or the category name is ' .

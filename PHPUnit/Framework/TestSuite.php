@@ -118,6 +118,76 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
     protected $tests = array();
 
     /**
+     * The tests in the suite that are ready to run.
+     *
+     * @var    array
+     */
+    protected $preparedTests = array();
+
+    /**
+     * The tests in the suite that are running.
+     * Only used during parallelism.
+     *
+     * @var    array
+     */
+    protected $runningTests = array();
+
+    /**
+     * The tests in the suite that have finished running.
+     * Only used during parallelism.
+     *
+     * @var    array
+     */
+    protected $finishedTests = array();
+
+    /**
+     * The tests in the order in which they'll be reported
+     * Only used during parallelism.
+     *
+     * @var    array
+     */
+    protected $reportOrderTests = array();
+
+    /**
+     * The subsuites in the test suite that are ready to run.
+     *
+     * @var    array
+     */
+    protected $preparedSubsuites = array();
+
+    /**
+     * The subsuites in the test suite that have started running tests.
+     * Only used during parallelism.
+     *
+     * @var    array
+     */
+    protected $runningSubsuites = array();
+
+    /**
+     * The subsuites in the order in which they'll be reported
+     * Only used during parallelism.
+     *
+     * @var    array
+     */
+    protected $reportOrderSubsuites = array();
+
+    /**
+     * Whether this suite has begun reporting its results
+     * Only used during parallelism.
+     *
+     * @var    array
+     */
+    protected $reportStarted = FALSE;
+
+    /**
+     * Whether this suite has finished reporting its results
+     * Only used during parallelism.
+     *
+     * @var    array
+     */
+    protected $reportFinished = FALSE;
+
+    /**
      * The number of tests in the test suite.
      *
      * @var    integer
@@ -128,6 +198,11 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
      * @var boolean
      */
     protected $testCase = FALSE;
+
+    /**
+     * @var int
+     */
+    protected $parallelism = 1;
 
     /**
      * Constructs a new TestSuite:
@@ -228,6 +303,7 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
         }
 
         $this->testCase = TRUE;
+        $this->setParallelism(PHPUnit_Util_Test::getParallelismSettings($theClass->getName()));
     }
 
     /**
@@ -617,6 +693,65 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
     }
 
     /**
+     * Prepares member tests and test suites for running
+     * Defaults to preparing this suite's list of tests
+     *
+     * @param  array            $excludeGroups
+     * @param  bool             $processIsolation
+     * @param  string           $filter
+     * @param  boolean          $backupGlobals
+     * @param  boolean          $backupStaticAttributes
+     * @param  PHPUnit_Util_PHP $php
+     * @param  array            $tests
+     */
+    public function prepareTests($excludeGroups, $processIsolation, $filter, $backupGlobals, $backupStaticAttributes, PHPUnit_Util_PHP $php, $tests=NULL)
+    {
+        if (is_null($tests)) {
+            $tests = $this->tests;
+        }
+        $this->preparedTests = array();
+        $this->runningTests = array();
+        $this->finishedTests = array();
+        $this->reportOrderTests = array();
+        $this->preparedSubsuites = array();
+        $this->runningSubsuites = array();
+        $this->reportOrderSubsuites = array();
+        $this->reportStarted = FALSE;
+        $this->reportFinished = FALSE;
+        foreach ($tests as $test) {
+            $include = TRUE;
+            if (!empty($excludeGroups)) {
+                foreach ($this->groups as $_group => $_tests) {
+                    if (in_array($_group, $excludeGroups)) {
+                        foreach ($_tests as $_test) {
+                            if ($test === $_test) {
+                                $include = FALSE;
+                                break 2;
+                            }
+                        }
+                    }
+                }
+            }
+            if ($include && !$this->isTestFilteredOut($test, $filter)) {
+                if ($test instanceof PHPUnit_Framework_TestSuite) {
+                    $this->preparedSubsuites[] = $test;
+                    $test->prepareTests($excludeGroups, $processIsolation, $filter, $backupGlobals, $backupStaticAttributes, $php, NULL);
+                } else {
+                    if ($test instanceof PHPUnit_Framework_TestCase) {
+                        $test->setBackupGlobals($backupGlobals);
+                        $test->setBackupStaticAttributes($backupStaticAttributes);
+                        $test->setRunTestInSeparateProcess($processIsolation);
+                        $test->setPHP($php);
+                    }
+                    $this->preparedTests[] = $test;
+                }
+            }
+        }
+    }
+
+
+    
+    /**
      * Runs the tests and collects their result in a TestResult.
      *
      * @param  PHPUnit_Framework_TestResult $result
@@ -624,27 +759,91 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
      * @param  array                        $groups
      * @param  array                        $excludeGroups
      * @param  boolean                      $processIsolation
+     * @param  int                          $parallelism
      * @return PHPUnit_Framework_TestResult
      * @throws InvalidArgumentException
      */
-    public function run(PHPUnit_Framework_TestResult $result = NULL, $filter = FALSE, array $groups = array(), array $excludeGroups = array(), $processIsolation = FALSE)
+    public function run(PHPUnit_Framework_TestResult $result = NULL, $filter = FALSE, array $groups = array(), array $excludeGroups = array(), $processIsolation = FALSE, $parallelism = 1)
     {
         if ($result === NULL) {
             $result = $this->createResult();
         }
 
-        $result->startTestSuite($this);
+        $php = PHPUnit_Util_PHP::factory($result);
+        if (empty($groups)) {
+            $this->prepareTests($excludeGroups, $processIsolation, $filter, $this->backupGlobals, $this->backupStaticAttributes, $php);
+        } else {
+            $group_tests = new SplObjectStorage;
 
-        $doSetup = TRUE;
-
-        if (!empty($excludeGroups)) {
-            foreach ($this->groups as $_group => $_tests) {
-                if (in_array($_group, $excludeGroups) &&
-                    count($_tests) == count($this->tests)) {
-                    $doSetup = FALSE;
+            foreach ($groups as $group) {
+                if (isset($this->groups[$group])) {
+                    foreach ($this->groups[$group] as $test) {
+                        $group_tests->attach($test);
+                    }
                 }
             }
+            $this->prepareTests($excludeGroups, $processIsolation, $filter, $this->backupGlobals, $this->backupStaticAttributes, $php, $group_tests);
         }
+
+        $result = $this->runTests($result, $parallelism);
+
+        return $result;
+    }
+
+    /**
+     * Given a test (not necessarily a Phpunit_Framework_TestCase),
+     * decide what its name is (like, suitename::casename)
+     *
+     * @param  PHPUnit_Framework_Test        $test
+     * @return string
+     */
+    public static function guessTestName($test) {
+        $tmp = PHPUnit_Util_Test::describe($test, FALSE);
+
+        if ($tmp[0] != '') {
+            return join('::', $tmp);
+        } else {
+            return $tmp[1];
+        }
+    }
+    
+    
+    /**
+     * Given a test and a text filter, says whether the filter
+     * should block the test from being run
+     *
+     * @param  PHPUnit_Framework_Test        $test
+     * @param  string                        $filter
+     * @return boolean
+     */
+    public function isTestFilteredOut($test, $filter)
+    {
+        if ($filter !== FALSE ) {
+            $name = PHPUnit_Framework_TestSuite::guessTestName($test);
+
+            if (preg_match($filter, $name) == 0) {
+                return TRUE;
+            }
+        }
+        return FALSE;
+    }
+    
+    /**
+     * Runs my prepared tests, recursing through subsuites.
+     * 
+     * @param  PHPUnit_Framework_TestResult $result
+     * @param  int                          $parallelism
+     * @return PHPUnit_Framework_TestResult
+     */
+    public function runTests(PHPUnit_Framework_TestResult $result, $parallelism=1)
+    {
+        $parallelism = max($parallelism, $this->parallelism);
+        if ($parallelism > 1) {
+            return $this->runTestsParallel($result, $parallelism);
+        }
+        $result->startTestSuite($this);
+
+        $doSetup = (!empty($this->preparedSubsuites) && !empty($this->preparedTests));
 
         if ($doSetup) {
             try {
@@ -676,75 +875,16 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
                 return $result;
             }
         }
+        $result->startTestSuite($this);
 
-        if (empty($groups)) {
-            $tests = $this->tests;
-        } else {
-            $tests = new SplObjectStorage;
-
-            foreach ($groups as $group) {
-                if (isset($this->groups[$group])) {
-                    foreach ($this->groups[$group] as $test) {
-                        $tests->attach($test);
-                    }
-                }
-            }
+        foreach ($this->preparedSubsuites as $suite) {
+            $result = $suite->runTests($result);
         }
-
-        foreach ($tests as $test) {
+        foreach ($this->preparedTests as $test) {
             if ($result->shouldStop()) {
                 break;
             }
-
-            if ($test instanceof PHPUnit_Framework_TestSuite) {
-                $test->setBackupGlobals($this->backupGlobals);
-                $test->setBackupStaticAttributes($this->backupStaticAttributes);
-
-                $test->run(
-                  $result, $filter, $groups, $excludeGroups, $processIsolation
-                );
-            } else {
-                $runTest = TRUE;
-
-                if ($filter !== FALSE ) {
-                    $tmp = PHPUnit_Util_Test::describe($test, FALSE);
-
-                    if ($tmp[0] != '') {
-                        $name = join('::', $tmp);
-                    } else {
-                        $name = $tmp[1];
-                    }
-
-                    if (preg_match($filter, $name) == 0) {
-                        $runTest = FALSE;
-                    }
-                }
-
-                if ($runTest && !empty($excludeGroups)) {
-                    foreach ($this->groups as $_group => $_tests) {
-                        if (in_array($_group, $excludeGroups)) {
-                            foreach ($_tests as $_test) {
-                                if ($test === $_test) {
-                                    $runTest = FALSE;
-                                    break 2;
-                                }
-                            }
-                        }
-                    }
-                }
-
-                if ($runTest) {
-                    if ($test instanceof PHPUnit_Framework_TestCase) {
-                        $test->setBackupGlobals($this->backupGlobals);
-                        $test->setBackupStaticAttributes(
-                          $this->backupStaticAttributes
-                        );
-                        $test->setRunTestInSeparateProcess($processIsolation);
-                    }
-
-                    $this->runTest($test, $result);
-                }
-            }
+            $this->runTest($result, $test);
         }
 
         if ($doSetup) {
@@ -755,19 +895,203 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
 
             $this->tearDown();
         }
-
+        
         $result->endTestSuite($this);
-
         return $result;
     }
 
     /**
-     * Runs a test.
-     *
-     * @param  PHPUnit_Framework_Test        $test
-     * @param  PHPUnit_Framework_TestResult  $testResult
+     * Starts the next test I have prepared. Can get tests from subsuites.
+     * Returns the suite the test came from, along with the test.
+     * If the test can't be run in parallel, set it aside and we'll run it
+     * when it would be time to report it finishing.
+     * @param  PHPUnit_Framework_TestResult $result
+     * @return array
      */
-    public function runTest(PHPUnit_Framework_Test $test, PHPUnit_Framework_TestResult $result)
+    public function startNextPreparedTest(PHPUnit_Framework_TestResult $result)
+    {
+        $test = NULL;
+        $tests_suite = NULL;
+        foreach ($this->runningSubsuites as $i => $suite) {
+            if ($suite->hasTestsPrepared()) {
+                list($tests_suite, $test) = $suite->startNextPreparedTest($result);
+                break;
+            }
+        }
+        if (is_null($test) && !empty($this->preparedSubsuites)) {
+            $suite = array_shift($this->preparedSubsuites);
+            $this->reportOrderSubsuites[] = $suite;
+            if ($suite->hasTestsPrepared()) {
+                list($tests_suite, $test) = $suite->startNextPreparedTest($result);
+                $this->runningSubsuites[] = $suite;
+            }
+        }
+        if (is_null($test) && !empty($this->preparedTests)) {
+            $test = array_shift($this->preparedTests);
+            $tests_suite = $this;
+            if (method_exists($test, "startInAnotherProcess")) {
+                $test->startInAnotherProcess($result);
+                $this->runningTests[] = $test;
+            }
+            $this->reportOrderTests[] = $test;
+        }
+        return array($tests_suite, $test);
+    }
+
+    /**
+     * Finishes any running test that has completed, checking in the order in which
+     * they were started. Return whether a test finished.
+     * @return boolean
+     */
+    public function tryToFinishARunningTest()
+    {
+        $finished = FALSE;
+        foreach ($this->runningSubsuites as $i => $suite) {
+            $finished = $suite->tryToFinishARunningTest();
+            if ($finished) {
+                if ($suite->countRunning() == 0 && !$suite->hasTestsPrepared()) {
+                    unset($this->runningSubsuites[$i]);
+                }
+                break;
+            }
+        }
+        if (!$finished) {
+            foreach ($this->runningTests as $i => $test) {
+                if ($test->isReadyToFinishProcess()) {
+                    $test->finishProcess();
+                    $finished = TRUE;
+                    
+                    unset($this->runningTests[$i]);
+                    $this->finishedTests[] = $test;
+                    break;
+                }
+            }
+        }
+        return $finished;
+    }
+
+    /**
+     * Tells whether I have any tests prepared to run
+     * @return boolean
+     */
+    public function hasTestsPrepared()
+    {
+        if (!empty($this->preparedTests)) {
+            return TRUE;
+        }
+        if (empty($this->preparedSubsuites) && empty($this->runningSubsuites)) {
+            return FALSE;
+        }
+        foreach ($this->preparedSubsuites as $suite) {
+            if ($suite->hasTestsPrepared()) {
+                return TRUE;
+            }
+        }
+        foreach ($this->runningSubsuites as $suite) {
+            if ($suite->hasTestsPrepared()) {
+                return TRUE;
+            }
+        }
+        return FALSE;
+    }
+    
+
+
+    /**
+     * Recursively says how many tests are running under this suite
+     * @return int
+     */
+    public function countRunning()
+    {
+        $count = count($this->runningTests);
+        foreach ($this->runningSubsuites as $suite) {
+            $count += $suite->countRunning();
+        }
+        return $count;
+    }
+
+    /**
+     * Runs my prepared tests in parallel.
+     *
+     * @param  PHPUnit_Framework_TestResult $result
+     * @param  int                          $parallelism
+     * @return PHPUnit_Framework_TestResult
+     */
+    public function runTestsParallel(PHPUnit_Framework_TestResult $result, $parallelism)
+    {
+        while ($this->hasTestsPrepared() || $this->countRunning() > 0) {
+            while ($this->countRunning() < $parallelism && $this->hasTestsPrepared()) {
+                $this->startNextPreparedTest($result);
+            }
+            while ($this->countRunning() == $parallelism || 
+                    (!$this->hasTestsPrepared() && $this->countRunning() > 0)) {
+                $finished = $this->tryToFinishARunningTest();
+                if ($finished) {
+                    $this->report($result);
+                }
+                usleep(10000);
+            }
+            $this->report($result);
+        }
+        return $result;
+    }
+    
+
+    /**
+     * Reports any finished tests or suites to the $result.
+     * Safe to call any time during a parallel run. Will report
+     * start/end events in the same order as if they'd been run in
+     * serial, regardless of the order in which they finish.
+     * Takes the result object by references, so it can return
+     * whether it's done, which is necessary for it to recurse into subsuites
+     * @param  PHPUnit_Framework_TestResult $result
+     * @return boolean
+     */
+    public function report(PHPUnit_Framework_TestResult &$result)
+    {
+        if (!$this->reportStarted) {
+            $this->reportStarted = TRUE;
+            $result->startTestSuite($this);
+        }
+        while (!empty($this->reportOrderSubsuites)) {
+            $suite = array_shift($this->reportOrderSubsuites);
+            $done = $suite->report($result);
+            if (!$done) {
+                array_unshift($this->reportOrderSubsuites, $suite);
+                return FALSE;
+            }
+        }
+        while (!empty($this->reportOrderTests)) {
+            $test = array_shift($this->reportOrderTests);
+            if (method_exists($test, "startInAnotherProcess")) {
+                if (in_array($test, $this->finishedTests, TRUE)) {
+                    $test->reportStartedProcess();
+                    $test->reportFinishedProcess();
+                } else {
+                    array_unshift($this->reportOrderTests, $test);
+                    return FALSE;
+                }
+            } else {
+                $test->run($result);
+            }
+        }
+
+        if ($this->countRunning() == 0 && !$this->hasTestsPrepared()) {
+            if (!$this->reportFinished) {
+                $this->reportFinished = TRUE;
+                $result->endTestSuite($this);
+            }
+            return TRUE;
+        }
+        return FALSE;
+    }
+
+    /**
+     * Runs a test.
+     * @param  PHPUnit_Framework_TestResult $result
+     * @param  PHPUnit_Framework_Test        $test
+     */
+    public function runTest(PHPUnit_Framework_TestResult $result, PHPUnit_Framework_Test $test)
     {
         $test->run($result);
     }
@@ -780,6 +1104,16 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
     public function setName($name)
     {
         $this->name = $name;
+    }
+
+    /**
+     * Sets the parallelism of the suite.
+     *
+     * @param  int
+     */
+    public function setParallelism($parallelism)
+    {
+        $this->parallelism = $parallelism;
     }
 
     /**
