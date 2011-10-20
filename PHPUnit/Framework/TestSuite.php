@@ -1027,11 +1027,11 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
                     (!$this->hasTestsPrepared() && $this->countRunning() > 0)) {
                 $finished = $this->tryToFinishARunningTest();
                 if ($finished) {
-                    $this->report(&$result);
+                    $this->report($result);
                 }
                 usleep(10000);
             }
-            $this->report(&$result);
+            $this->report($result);
         }
         return $result;
     }
@@ -1055,7 +1055,7 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
         }
         while (!empty($this->reportOrderSubsuites)) {
             $suite = array_shift($this->reportOrderSubsuites);
-            $done = $suite->report(&$result);
+            $done = $suite->report($result);
             if (!$done) {
                 array_unshift($this->reportOrderSubsuites, $suite);
                 return FALSE;
