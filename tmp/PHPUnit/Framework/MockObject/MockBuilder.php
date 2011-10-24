@@ -144,10 +144,10 @@ class PHPUnit_Framework_MockObject_MockBuilder
     /**
      * Specifies the subset of methods to mock. Default is to mock all of them.
      *
-     * @param  array $methods
+     * @param  array|null $methods
      * @return PHPUnit_Framework_MockObject_MockBuilder
      */
-    public function setMethods(array $methods)
+    public function setMethods($methods)
     {
         $this->methods = $methods;
 
