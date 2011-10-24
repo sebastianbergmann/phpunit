@@ -662,7 +662,8 @@ class PHPUnit_TextUI_Command
 
             $browsers = $configuration->getSeleniumBrowserConfiguration();
 
-            if (!empty($browsers)) {
+            if (!empty($browsers) &&
+                class_exists('PHPUnit_Extensions_SeleniumTestCase')) {
                 PHPUnit_Extensions_SeleniumTestCase::$browsers = $browsers;
             }
 

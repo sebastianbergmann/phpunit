@@ -422,8 +422,10 @@ class PHPUnit_Util_Test
         $size   = self::SMALL;
         $class  = new ReflectionClass($className);
 
-        if ($class->isSubclassOf('PHPUnit_Extensions_Database_TestCase') ||
-            $class->isSubclassOf('PHPUnit_Extensions_SeleniumTestCase')) {
+        if ((class_exists('PHPUnit_Extensions_Database_TestCase') &&
+             $class->isSubclassOf('PHPUnit_Extensions_Database_TestCase')) ||
+            (class_exists('PHPUnit_Extensions_SeleniumTestCase') &&
+             $class->isSubclassOf('PHPUnit_Extensions_SeleniumTestCase'))) {
             $size = self::LARGE;
         }
 
