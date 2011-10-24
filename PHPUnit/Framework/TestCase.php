@@ -645,7 +645,6 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
         }
 
         $this->setTestResultObject($result);
-        $this->setExpectedExceptionFromAnnotation();
         $this->setUseErrorHandlerFromAnnotation();
         $this->setUseOutputBufferingFromAnnotation();
 
@@ -774,6 +773,7 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
                 $this->setUpBeforeClass();
             }
 
+            $this->setExpectedExceptionFromAnnotation();
             $this->setUp();
             $this->testRequirements();
             $this->assertPreConditions();
