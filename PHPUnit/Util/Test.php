@@ -155,11 +155,19 @@ class PHPUnit_Util_Test
             }
 
             if (isset($matches[3])) {
-                $code = (int)$matches[3];
+                $code = $matches[3];
             }
 
             else if (isset($annotations['method']['expectedExceptionCode'])) {
-                $code = (int)$annotations['method']['expectedExceptionCode'][0];
+                $code = $annotations['method']['expectedExceptionCode'][0];
+            }
+
+            if (isset($code)) {
+                if (is_numeric($code)) {
+                    $code = (int)$code;
+                } else {
+                    $code = (int)constant($code);
+                }
             }
 
             return array(
