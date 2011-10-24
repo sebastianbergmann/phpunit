@@ -451,7 +451,7 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
      */
     public function setExpectedException($exceptionName, $exceptionMessage = '', $exceptionCode = 0)
     {
-        if ($exceptionName == 'Exception') {
+        if ($exceptionName == 'Exception' || $exceptionName == '\\Exception') {
             throw new InvalidArgumentException(
               'You must not expect the generic exception class.'
             );
