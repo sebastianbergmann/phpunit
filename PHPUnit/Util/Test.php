@@ -162,12 +162,12 @@ class PHPUnit_Util_Test
                 $code = $annotations['method']['expectedExceptionCode'][0];
             }
 
-            if (isset($code)) {
-                if (is_numeric($code)) {
-                    $code = (int)$code;
-                } else {
-                    $code = (int)constant($code);
-                }
+            if (is_numeric($code)) {
+                $code = (int)$code;
+            }
+
+            else if (is_string($code) && defined($code)) {
+                $code = (int)constant($code);
             }
 
             return array(
