@@ -647,7 +647,7 @@ class PHPUnit_TextUI_Command
                     $this->showExtensionNotLoadedMessage(
                       'Xdebug', 'No code coverage will be generated.'
                     );
-               }
+                }
             }
 
             $configuration->handlePHPConfiguration();

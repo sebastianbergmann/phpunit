@@ -100,7 +100,7 @@ class PHPUnit_Util_Printer
                 } else {
                     if (strpos($out, 'php://') === FALSE &&
                         !is_dir(dirname($out))) {
-                      mkdir(dirname($out), 0777, TRUE);
+                        mkdir(dirname($out), 0777, TRUE);
                     }
 
                     $this->out = fopen($out, 'wt');

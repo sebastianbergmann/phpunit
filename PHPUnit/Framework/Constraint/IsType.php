@@ -169,9 +169,9 @@ class PHPUnit_Framework_Constraint_IsType extends PHPUnit_Framework_Constraint
                 return is_scalar($other);
             }
 
-           case 'callable': {
+            case 'callable': {
                 return is_callable($other);
-           }
+            }
         }
     }
 
