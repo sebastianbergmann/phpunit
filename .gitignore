@@ -8,6 +8,5 @@ Tests/TextUI/*.exp
 Tests/TextUI/*.log
 Tests/TextUI/*.out
 Tests/TextUI/*.php
-phpunit.xml
 phpunit.phar
-build.png
+phpunit.xml

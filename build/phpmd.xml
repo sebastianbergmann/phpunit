@@ -16,6 +16,7 @@
 
   <rule ref="rulesets/design.xml/EvalExpression" />
   <rule ref="rulesets/design.xml/ExitExpression" />
+  <rule ref="rulesets/design.xml/GotoStatement" />
 
   <rule ref="rulesets/naming.xml/ConstructorWithNameAsEnclosingClass" />
 
