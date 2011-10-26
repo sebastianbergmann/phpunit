@@ -136,9 +136,9 @@ abstract class PHPUnit_Util_Skeleton
             $file = $this->outSourceFile;
         }
 
-        if ($fp = @fopen($file, 'wt')) {
-            @fwrite($fp, $this->generate());
-            @fclose($fp);
+        if ($fp = fopen($file, 'wt')) {
+            fwrite($fp, $this->generate());
+            fclose($fp);
         }
     }
 
