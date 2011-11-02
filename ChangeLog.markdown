@@ -3,6 +3,11 @@ PHPUnit 3.6
 
 This is the list of changes for the PHPUnit 3.6 release series.
 
+PHPUnit 3.6.1
+-------------
+
+* Fixed `--coverage-php` and `--coverage-text`.
+
 PHPUnit 3.6.0
 -------------
 

@@ -244,7 +244,9 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
         }
 
         if ((isset($arguments['coverageClover']) ||
-             isset($arguments['reportDirectory'])) &&
+             isset($arguments['reportDirectory']) ||
+             isset($arguments['coveragePHP']) ||
+             isset($arguments['coverageText'])) &&
              extension_loaded('xdebug')) {
             $codeCoverage = new PHP_CodeCoverage(
               NULL, $this->codeCoverageFilter
@@ -325,6 +327,16 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
         }
 
         if (isset($codeCoverage)) {
+            $title = '';
+
+            if (isset($arguments['configuration'])) {
+                $loggingConfiguration = $arguments['configuration']->getLoggingConfiguration();
+
+                if (isset($loggingConfiguration['title'])) {
+                    $title = $loggingConfiguration['title'];
+                }
+            }
+
             if (isset($arguments['coverageClover'])) {
                 $this->printer->write(
                   "\nWriting code coverage data to XML file, this may take " .
@@ -342,16 +354,6 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
                 $this->printer->write(
                   "\nGenerating code coverage report, this may take a moment."
                 );
-
-                $title = '';
-
-                if (isset($arguments['configuration'])) {
-                    $loggingConfiguration = $arguments['configuration']->getLoggingConfiguration();
-
-                    if (isset($loggingConfiguration['title'])) {
-                        $title = $loggingConfiguration['title'];
-                    }
-                }
 
                 $writer = new PHP_CodeCoverage_Report_HTML(
                   $title,
@@ -727,7 +729,9 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
             }
 
             if ((isset($arguments['coverageClover']) ||
-                isset($arguments['reportDirectory'])) &&
+                isset($arguments['reportDirectory']) ||
+                isset($arguments['coveragePHP']) ||
+                isset($arguments['coverageText'])) &&
                 extension_loaded('xdebug')) {
                 $arguments['addUncoveredFilesFromWhitelist'] = $filterConfiguration['whitelist']['addUncoveredFilesFromWhitelist'];
 
