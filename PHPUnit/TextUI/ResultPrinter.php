@@ -598,6 +598,10 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
         }
 
         $this->lastTestFailed = FALSE;
+
+        if ($this->debug && $test instanceof PHPUnit_Framework_TestCase) {
+            $this->write($test->getActualOutput());
+        }
     }
 
     /**

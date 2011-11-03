@@ -6,6 +6,7 @@ This is the list of changes for the PHPUnit 3.6 release series.
 PHPUnit 3.6.1
 -------------
 
+* Implemented #395: `--debug` now prints the output of tests for debugging purposes.
 * Fixed `--coverage-php` and `--coverage-text`.
 
 PHPUnit 3.6.0
