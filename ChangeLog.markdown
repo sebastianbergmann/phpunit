@@ -7,6 +7,7 @@ PHPUnit 3.6.1
 -------------
 
 * Implemented #395: `--debug` now prints the output of tests for debugging purposes.
+* Fixed #394: Backwards compatibility break with regard to comparison of numeric values.
 * Fixed `--coverage-php` and `--coverage-text`.
 
 PHPUnit 3.6.0
