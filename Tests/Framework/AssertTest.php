@@ -654,6 +654,8 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
             array(array(array(2.3)), array(array(2.5)), 0.5),
             array(new Struct(2.3), new Struct(2.5), 0.5),
             array(array(new Struct(2.3)), array(new Struct(2.5)), 0.5),
+            // numeric with delta
+            array(1, 2, 1),
             // objects
             array($object1, $object2),
             array($book1, $book2),

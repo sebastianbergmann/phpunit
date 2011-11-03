@@ -74,6 +74,7 @@ class PHPUnit_Framework_ComparatorFactory
     {
         $this->register(new PHPUnit_Framework_Comparator_Type);
         $this->register(new PHPUnit_Framework_Comparator_Scalar);
+        $this->register(new PHPUnit_Framework_Comparator_Numeric);
         $this->register(new PHPUnit_Framework_Comparator_Double);
         $this->register(new PHPUnit_Framework_Comparator_Array);
         $this->register(new PHPUnit_Framework_Comparator_Resource);
