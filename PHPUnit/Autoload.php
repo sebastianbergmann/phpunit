@@ -71,6 +71,7 @@ function phpunit_autoload($class = NULL)
           'phpunit_framework_comparator_double' => '/Framework/Comparator/Double.php',
           'phpunit_framework_comparator_exception' => '/Framework/Comparator/Exception.php',
           'phpunit_framework_comparator_mockobject' => '/Framework/Comparator/MockObject.php',
+          'phpunit_framework_comparator_numeric' => '/Framework/Comparator/Numeric.php',
           'phpunit_framework_comparator_object' => '/Framework/Comparator/Object.php',
           'phpunit_framework_comparator_resource' => '/Framework/Comparator/Resource.php',
           'phpunit_framework_comparator_scalar' => '/Framework/Comparator/Scalar.php',
