@@ -44,26 +44,20 @@
  */
 
 /**
- * Compares doubles for equality.
+ * Compares numerical values for equality.
  *
  * @package    PHPUnit
  * @subpackage Framework_Comparator
  * @author     Bernhard Schussek <bschussek@2bepublished.at>
+ * @author     Alexander <iam.asm89@gmail.com>
  * @copyright  2002-2011 Sebastian Bergmann <sebastian@phpunit.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    Release: @package_version@
  * @link       http://www.phpunit.de/
  * @since      Class available since Release 3.6.0
  */
-class PHPUnit_Framework_Comparator_Double extends PHPUnit_Framework_Comparator_Numeric
+class PHPUnit_Framework_Comparator_Numeric extends PHPUnit_Framework_Comparator_Scalar
 {
-    /**
-     * Smallest value available in PHP.
-     *
-     * @var float
-     */
-    const EPSILON = 0.0000000001;
-
     /**
      * Returns whether the comparator can compare two values.
      *
@@ -73,7 +67,8 @@ class PHPUnit_Framework_Comparator_Double extends PHPUnit_Framework_Comparator_N
      */
     public function accepts($expected, $actual)
     {
-        return (is_double($expected) || is_double($actual)) && is_numeric($expected) && is_numeric($actual);
+        // all numerical values, but not if one of them is a double
+        return is_numeric($expected) && is_numeric($actual) && !(is_double($expected) || is_double($actual));
     }
 
     /**
@@ -93,10 +88,30 @@ class PHPUnit_Framework_Comparator_Double extends PHPUnit_Framework_Comparator_N
      */
     public function assertEquals($expected, $actual, $delta = 0, $canonicalize = FALSE, $ignoreCase = FALSE)
     {
-        if ($delta == 0) {
-            $delta = self::EPSILON;
+        if (is_infinite($actual) && is_infinite($expected)) {
+            return;
         }
 
-        parent::assertEquals($expected, $actual, $delta, $canonicalize, $ignoreCase);
+        if (is_nan($actual) && is_nan($expected)) {
+            return;
+        }
+
+        if ((is_infinite($actual) XOR is_infinite($expected)) ||
+            (is_nan($actual) XOR is_nan($expected)) ||
+            abs($actual - $expected) > $delta) {
+            throw new PHPUnit_Framework_ComparisonFailure(
+              $expected,
+              $actual,
+              '',
+              '',
+              FALSE,
+              sprintf(
+                'Failed asserting that %s matches expected %s.',
+
+                PHPUnit_Util_Type::export($actual),
+                PHPUnit_Util_Type::export($expected)
+              )
+            );
+        }
     }
 }
