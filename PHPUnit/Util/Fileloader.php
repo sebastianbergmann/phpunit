@@ -66,9 +66,24 @@ class PHPUnit_Util_Fileloader
      */
     public static function checkAndLoad($filename)
     {
-        $includePathFilename = PHPUnit_Util_Filesystem::fileExistsInIncludePath(
-          $filename
+        $pharFile = preg_match(
+            '/^phar:\/\/(?P<archive>.*\.phar)(?P<file>.*)$/i',
+            $filename,
+            $pharFileInfo
         );
+        if ($pharFile) {
+            $includePathFilename = PHPUnit_Util_Filesystem::fileExistsInIncludePath(
+                $pharFileInfo['archive']
+            );
+            $pharIncludePathFilename = 'phar://';
+            $pharIncludePathFilename .= $includePathFilename;
+            $pharIncludePathFilename .= $pharFileInfo['file'];
+            $includePathFilename = $pharIncludePathFilename;
+        } else {
+            $includePathFilename = PHPUnit_Util_Filesystem::fileExistsInIncludePath(
+                $filename
+            );
+        }
 
         if (!$includePathFilename || !is_readable($includePathFilename)) {
             throw new RuntimeException(
