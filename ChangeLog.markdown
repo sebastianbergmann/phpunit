@@ -3,6 +3,11 @@ PHPUnit 3.6
 
 This is the list of changes for the PHPUnit 3.6 release series.
 
+PHPUnit 3.6.2
+-------------
+
+* Fixed #391: Code Coverage does not work when no XML configuration file is used.
+
 PHPUnit 3.6.1
 -------------
 
