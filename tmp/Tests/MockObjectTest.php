@@ -53,6 +53,7 @@ require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPA
 
 if (version_compare(PHP_VERSION, '5.3.0', '>=')) {
     require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'StaticMockTestClass.php';
+
 }
 
 /**
@@ -318,5 +319,119 @@ class Framework_MockObjectTest extends PHPUnit_Framework_TestCase
         $mock = $this->getMock('AbstractMockTestClass');
         $mock->expects($this->never())
              ->method('doSomething');
+    }
+
+    public function testStaticMethodCallDontCloneObjectParametersByDefault()
+    {
+        if (!version_compare(PHP_VERSION, '5.3.0', '>=')) {
+            $this->markTestSkipped('PHP 5.3 (or later) is required.');
+        }
+
+        $expectedObject = new stdClass;
+
+        $this->getMockClass(
+          'StaticMockTestClass',
+          array('doSomething'),
+          array(),
+          'StaticMockTestClassMock3'
+        );
+
+        $actualArguments = array();
+
+        StaticMockTestClassMock3::staticExpects($this->any())
+          ->method('doSomething')
+          ->will($this->returnCallback(function() use (&$actualArguments) {
+                $actualArguments = func_get_args();
+          }));
+
+        StaticMockTestClassMock3::doSomething($expectedObject);
+
+        $this->assertEquals(1, count($actualArguments));
+        $this->assertSame($expectedObject, $actualArguments[0]);
+    }
+
+    public function testStaticMethodCallCloneObjectParametersIfCloneObjectSetTrue()
+    {
+        if (!version_compare(PHP_VERSION, '5.3.0', '>=')) {
+            $this->markTestSkipped('PHP 5.3 (or later) is required.');
+        }
+
+        $cloneObjects = TRUE;
+        $expectedObject = new stdClass;
+
+        $this->getMockClass(
+          'StaticMockTestClass',
+          array('doSomething'),
+          array(),
+          'StaticMockTestClassMock4',
+          FALSE,
+          TRUE,
+          TRUE,
+          $cloneObjects
+        );
+
+        $actualArguments = array();
+
+        StaticMockTestClassMock4::staticExpects($this->any())
+          ->method('doSomething')
+          ->will($this->returnCallback(function() use (&$actualArguments) {
+                $actualArguments = func_get_args();
+          }));
+
+        StaticMockTestClassMock4::doSomething($expectedObject);
+
+        $this->assertEquals(1, count($actualArguments));
+        $this->assertEquals($expectedObject, $actualArguments[0]);
+        $this->assertNotSame($expectedObject, $actualArguments[0]);
+    }
+
+    public function testObjectMethodCallDontCloneObjectParametersByDefault()
+    {
+        if (!version_compare(PHP_VERSION, '5.3.0', '>=')) {
+            $this->markTestSkipped('PHP 5.3 (or later) is required.');
+        }
+
+        $expectedObject = new stdClass;
+
+        $mock = $this->getMock('SomeClass', array('doSomethingElse'));
+
+        $actualArguments = array();
+
+        $mock->expects($this->any())
+          ->method('doSomethingElse')
+          ->will($this->returnCallback(function() use (&$actualArguments) {
+                $actualArguments = func_get_args();
+          }));
+
+        $mock->doSomethingElse($expectedObject);
+
+        $this->assertEquals(1, count($actualArguments));
+        $this->assertSame($expectedObject, $actualArguments[0]);
+    }
+
+    public function testObjectMethodCallCloneObjectParametersIfCloneObjectSetTrue()
+    {
+        if (!version_compare(PHP_VERSION, '5.3.0', '>=')) {
+            $this->markTestSkipped('PHP 5.3 (or later) is required.');
+        }
+
+        $cloneObjects = TRUE;
+        $expectedObject = new stdClass;
+
+        $mock = $this->getMock('SomeClass', array('doSomethingElse'), array(), '', TRUE, TRUE, TRUE, $cloneObjects);
+
+        $actualArguments = array();
+
+        $mock->expects($this->any())
+          ->method('doSomethingElse')
+          ->will($this->returnCallback(function() use (&$actualArguments) {
+                $actualArguments = func_get_args();
+          }));
+
+        $mock->doSomethingElse($expectedObject);
+
+        $this->assertEquals(1, count($actualArguments));
+        $this->assertEquals($expectedObject, $actualArguments[0]);
+        $this->assertNotSame($expectedObject, $actualArguments[0]);
     }
 }
