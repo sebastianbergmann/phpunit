@@ -7,6 +7,7 @@ if (!extension_loaded('soap')) echo 'skip: SOAP extension is required';
 --FILE--
 <?php
 require_once 'PHPUnit/Autoload.php';
+require_once 'Text/Template.php';
 
 print PHPUnit_Framework_MockObject_Generator::generateClassFromWsdl(
   dirname(dirname(__FILE__)) . '/_files/GoogleSearch.wsdl',

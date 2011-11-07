@@ -15,6 +15,7 @@ class Foo implements IFoo
 }
 
 require_once 'PHPUnit/Autoload.php';
+require_once 'Text/Template.php';
 
 $mock = PHPUnit_Framework_MockObject_Generator::generate(
   'Foo',

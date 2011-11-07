@@ -8,6 +8,7 @@ interface Foo
 }
 
 require_once 'PHPUnit/Autoload.php';
+require_once 'Text/Template.php';
 
 $mock = PHPUnit_Framework_MockObject_Generator::generate(
   'Foo',
@@ -45,7 +46,7 @@ class MockFoo implements PHPUnit_Framework_MockObject_MockObject, Foo
 
         $result = $this->__phpunit_getInvocationMocker()->invoke(
           new PHPUnit_Framework_MockObject_Invocation_Object(
-            'Foo', 'bar', $arguments, $this
+            'Foo', 'bar', $arguments, $this, false
           )
         );
 
