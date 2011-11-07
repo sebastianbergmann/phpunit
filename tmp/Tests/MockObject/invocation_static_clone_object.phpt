@@ -1,10 +1,14 @@
 --TEST--
-PHPUnit_Framework_MockObject_Generator::generate('Foo', array(), 'MockFoo', FALSE)
+PHPUnit_Framework_MockObject_Generator::generate('Foo', array(), 'MockFoo', TRUE, TRUE, TRUE)
 --FILE--
 <?php
 class Foo
 {
-    public function __clone()
+    public static function bar(Foo $foo)
+    {
+    }
+
+    public static function baz(Foo $foo)
     {
     }
 }
@@ -16,7 +20,9 @@ $mock = PHPUnit_Framework_MockObject_Generator::generate(
   'Foo',
   array(),
   'MockFoo',
-  FALSE
+  TRUE,
+  TRUE,
+  TRUE
 );
 
 print $mock['code'];
@@ -30,6 +36,50 @@ class MockFoo extends Foo implements PHPUnit_Framework_MockObject_MockObject
     public function __clone()
     {
         $this->invocationMocker = clone $this->__phpunit_getInvocationMocker();
+    }
+
+    public static function bar(Foo $foo)
+    {
+        $arguments = array($foo);
+        $count     = func_num_args();
+
+        if ($count > 1) {
+            $_arguments = func_get_args();
+
+            for ($i = 1; $i < $count; $i++) {
+                $arguments[] = $_arguments[$i];
+            }
+        }
+
+        $result = self::__phpunit_getStaticInvocationMocker()->invoke(
+          new PHPUnit_Framework_MockObject_Invocation_Static(
+            'Foo', 'bar', $arguments, true
+          )
+        );
+
+        return $result;
+    }
+
+    public static function baz(Foo $foo)
+    {
+        $arguments = array($foo);
+        $count     = func_num_args();
+
+        if ($count > 1) {
+            $_arguments = func_get_args();
+
+            for ($i = 1; $i < $count; $i++) {
+                $arguments[] = $_arguments[$i];
+            }
+        }
+
+        $result = self::__phpunit_getStaticInvocationMocker()->invoke(
+          new PHPUnit_Framework_MockObject_Invocation_Static(
+            'Foo', 'baz', $arguments, true
+          )
+        );
+
+        return $result;
     }
 
     public function expects(PHPUnit_Framework_MockObject_Matcher_Invocation $matcher)
@@ -78,4 +128,3 @@ class MockFoo extends Foo implements PHPUnit_Framework_MockObject_MockObject
         $this->invocationMocker       = NULL;
     }
 }
-
