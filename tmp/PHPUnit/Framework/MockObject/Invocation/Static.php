@@ -99,15 +99,16 @@ class PHPUnit_Framework_MockObject_Invocation_Static implements PHPUnit_Framewor
      * @param string $className
      * @param string $methodname
      * @param array  $parameters
+     * @param boolean $cloneObjects It's BC option. Added to support old versions since they always clone objects
      */
-    public function __construct($className, $methodName, array $parameters)
+    public function __construct($className, $methodName, array $parameters, $cloneObjects = false)
     {
         $this->className  = $className;
         $this->methodName = $methodName;
         $this->parameters = $parameters;
 
         foreach ($this->parameters as $key => $value) {
-            if (is_object($value)) {
+            if (is_object($value) && $cloneObjects) {
                 $this->parameters[$key] = $this->cloneObject($value);
             }
         }
