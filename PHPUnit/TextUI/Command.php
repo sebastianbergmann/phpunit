@@ -104,7 +104,6 @@ class PHPUnit_TextUI_Command
       'stop-on-incomplete' => NULL,
       'stop-on-skipped' => NULL,
       'strict' => NULL,
-      'syntax-check' => NULL,
       'tap' => NULL,
       'testdox' => NULL,
       'testdox-html=' => NULL,
@@ -923,7 +922,6 @@ Usage: phpunit [switches] UnitTest [UnitTest.php]
   --process-isolation       Run each test in a separate PHP process.
   --no-globals-backup       Do not backup and restore \$GLOBALS for each test.
   --static-backup           Backup and restore static attributes for each test.
-  --syntax-check            Try to check source files for syntax errors.
 
   --bootstrap <file>        A "bootstrap" PHP file that is run before the tests.
   -c|--configuration <file> Read configuration from XML file.
