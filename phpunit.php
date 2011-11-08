@@ -35,8 +35,6 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-define('PHPUnit_MAIN_METHOD', 'PHPUnit_TextUI_Command::main');
-
 if (strpos('@php_bin@', '@php_bin') === 0) {
     set_include_path(dirname(__FILE__) . PATH_SEPARATOR . get_include_path());
 }
