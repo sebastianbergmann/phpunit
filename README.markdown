@@ -6,8 +6,8 @@ PHPUnit is the de-facto standard for unit testing in PHP projects. It provides b
 Requirements
 ------------
 
-* PHPUnit 3.6 requires PHP 5.2.7 (or later) but PHP 5.3.8 (or later) is highly recommended.
-* [PHP_CodeCoverage](http://github.com/sebastianbergmann/php-code-coverage), the library that is used by PHPUnit 3.6 to collect and process code coverage information, depends on [Xdebug](http://xdebug.org/) 2.0.5 (or later) but Xdebug 2.1.2 (or later) is highly recommended.
+* PHPUnit 3.7 requires PHP 5.3.9 (or later) but PHP 5.4.0 (or later) is highly recommended.
+* [PHP_CodeCoverage](http://github.com/sebastianbergmann/php-code-coverage), the library that is used by PHPUnit 3.7 to collect and process code coverage information, depends on [Xdebug](http://xdebug.org/) 2.0.5 (or later) but Xdebug 2.1.2 (or later) is highly recommended.
 
 Installation
 ------------
@@ -28,14 +28,14 @@ Documentation
 
 The documentation for PHPUnit is available in different formats:
 
-* [English, multiple HTML files](http://www.phpunit.de/manual/3.6/en/index.html)
-* [English, single HTML file](http://www.phpunit.de/manual/3.6/en/phpunit-book.html)
-* [English, PDF](http://www.phpunit.de/manual/3.6/en/phpunit-book.pdf)
-* [English, ePub](http://www.phpunit.de/manual/3.6/en/phpunit-book.epub)
-* [Japanese, multiple HTML files](http://www.phpunit.de/manual/3.6/ja/index.html)
-* [Japanese, single HTML file](http://www.phpunit.de/manual/3.6/ja/phpunit-book.html)
-* [Japanese, PDF](http://www.phpunit.de/manual/3.6/ja/phpunit-book.pdf)
-* [Japanese, ePub](http://www.phpunit.de/manual/3.6/ja/phpunit-book.epub)
+* [English, multiple HTML files](http://www.phpunit.de/manual/3.7/en/index.html)
+* [English, single HTML file](http://www.phpunit.de/manual/3.7/en/phpunit-book.html)
+* [English, PDF](http://www.phpunit.de/manual/3.7/en/phpunit-book.pdf)
+* [English, ePub](http://www.phpunit.de/manual/3.7/en/phpunit-book.epub)
+* [Japanese, multiple HTML files](http://www.phpunit.de/manual/3.7/ja/index.html)
+* [Japanese, single HTML file](http://www.phpunit.de/manual/3.7/ja/phpunit-book.html)
+* [Japanese, PDF](http://www.phpunit.de/manual/3.7/ja/phpunit-book.pdf)
+* [Japanese, ePub](http://www.phpunit.de/manual/3.7/ja/phpunit-book.epub)
 
 Mailing Lists
 -------------
