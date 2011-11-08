@@ -3,6 +3,11 @@ PHPUnit 3.6
 
 This is the list of changes for the PHPUnit 3.6 release series.
 
+PHPUnit 3.6.3
+-------------
+
+* Fixed #386: `<php><env>` in XML configuration file does not call `putenv()`.
+
 PHPUnit 3.6.2
 -------------
 
