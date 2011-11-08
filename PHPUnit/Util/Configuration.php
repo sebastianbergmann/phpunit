@@ -985,9 +985,7 @@ class PHPUnit_Util_Configuration
         $file = dirname($this->filename) . DIRECTORY_SEPARATOR . $path;
 
         if ($useIncludePath && !file_exists($file)) {
-            $includePathFile = PHPUnit_Util_Filesystem::fileExistsInIncludePath(
-              $path
-            );
+            $includePathFile = stream_resolve_include_path($path);
 
             if ($includePathFile) {
                 $file = $includePathFile;

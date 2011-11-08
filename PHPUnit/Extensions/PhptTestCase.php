@@ -43,7 +43,7 @@
  * @since      File available since Release 3.1.4
  */
 
-if (PHPUnit_Util_Filesystem::fileExistsInIncludePath('PEAR/RunTest.php')) {
+if (stream_resolve_include_path('PEAR/RunTest.php')) {
     $currentErrorReporting = error_reporting(E_ERROR | E_WARNING | E_PARSE);
     require_once 'PEAR/RunTest.php';
     error_reporting($currentErrorReporting);

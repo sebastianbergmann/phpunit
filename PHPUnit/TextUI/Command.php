@@ -748,11 +748,9 @@ class PHPUnit_TextUI_Command
                 );
             }
 
-            $loaderFile = PHPUnit_Util_Filesystem::fileExistsInIncludePath(
-              $loaderFile
-            );
+            $loaderFile = stream_resolve_include_path($loaderFile);
 
-            if ($loaderFile !== FALSE) {
+            if ($loaderFile) {
                 require $loaderFile;
             }
         }
@@ -795,11 +793,9 @@ class PHPUnit_TextUI_Command
                 );
             }
 
-            $printerFile = PHPUnit_Util_Filesystem::fileExistsInIncludePath(
-              $printerFile
-            );
+            $printerFile = stream_resolve_include_path($printerFile);
 
-            if ($printerFile !== FALSE) {
+            if ($printerFile) {
                 require $printerFile;
             }
         }

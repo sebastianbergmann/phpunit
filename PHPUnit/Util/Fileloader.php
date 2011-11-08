@@ -66,9 +66,7 @@ class PHPUnit_Util_Fileloader
      */
     public static function checkAndLoad($filename)
     {
-        $includePathFilename = PHPUnit_Util_Filesystem::fileExistsInIncludePath(
-          $filename
-        );
+        $includePathFilename = stream_resolve_include_path($filename);
 
         if (!$includePathFilename || !is_readable($includePathFilename)) {
             throw new RuntimeException(
