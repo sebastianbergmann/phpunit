@@ -537,6 +537,10 @@ class PHPUnit_Util_Configuration
                 $target[$name] = $value;
             }
         }
+
+        foreach ($configuration['env'] as $name => $value) {
+            putenv("$name=$value");
+        }
     }
 
     /**
