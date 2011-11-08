@@ -305,19 +305,11 @@ class Framework_TestCaseTest extends PHPUnit_Framework_TestCase
      */
     public function testStaticAttributesBackupPre()
     {
-        if (!version_compare(PHP_VERSION, '5.3', '>')) {
-            $this->markTestSkipped('PHP 5.3 (or later) is required.');
-        }
-
         $GLOBALS['singleton'] = Singleton::getInstance();
     }
 
     public function testStaticAttributesBackupPost()
     {
-        if (!version_compare(PHP_VERSION, '5.3', '>')) {
-            $this->markTestSkipped('PHP 5.3 (or later) is required.');
-        }
-
         $this->assertNotSame($GLOBALS['singleton'], Singleton::getInstance());
     }
 
