@@ -100,8 +100,12 @@ abstract class PHPUnit_Util_PHP
             else if (PHP_SAPI == 'cli' && isset($_SERVER['_']) &&
                      strpos($_SERVER['_'], 'phpunit') !== FALSE) {
                 $file            = file($_SERVER['_']);
-                $tmp             = explode(' ', $file[0]);
-                $this->phpBinary = trim($tmp[1]);
+                if(strpos($file[0], ' ') !== FALSE) {
+                    $tmp = explode(' ', $file[0]);
+                    $this->phpBinary = trim($tmp[1]);
+                } else {
+                    $this->phpBinary = ltrim(trim($file[0]), '#!');
+                }
             }
 
             if (!is_readable($this->phpBinary)) {
