@@ -7,6 +7,8 @@ PHPUnit 3.6.3
 -------------
 
 * Fixed #386: `<php><env>` in XML configuration file does not call `putenv()`.
+* Fixed `--coverage-php` not working from the XML configuration.
+* Fixed `--coverage-text` producing a notice in some cases when used from the XML configurtation
 
 PHPUnit 3.6.2
 -------------
