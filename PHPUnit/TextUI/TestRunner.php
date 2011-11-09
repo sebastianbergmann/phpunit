@@ -666,7 +666,7 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
                 !isset($arguments['coverageClover'])) {
                 $arguments['coverageClover'] = $loggingConfiguration['coverage-clover'];
             }
-            
+
             if (isset($loggingConfiguration['coverage-php']) &&
                 !isset($arguments['coveragePHP'])) {
                 $arguments['coveragePHP'] = $loggingConfiguration['coverage-php'];
