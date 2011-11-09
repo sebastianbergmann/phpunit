@@ -2,7 +2,7 @@
 /**
  * PHPUnit
  *
- * Copyright (c) 2002-2010, Sebastian Bergmann <sebastian@phpunit.de>.
+ * Copyright (c) 2002-2011, Sebastian Bergmann <sebastian@phpunit.de>.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -37,7 +37,7 @@
  * @package    PHPUnit
  * @subpackage Util
  * @author     Sebastian Bergmann <sebastian@phpunit.de>
- * @copyright  2002-2010 Sebastian Bergmann <sebastian@phpunit.de>
+ * @copyright  2002-2011 Sebastian Bergmann <sebastian@phpunit.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @link       http://www.phpunit.de/
  * @since      File available since Release 3.4.0
@@ -49,7 +49,7 @@
  * @package    PHPUnit
  * @subpackage Util
  * @author     Sebastian Bergmann <sebastian@phpunit.de>
- * @copyright  2002-2010 Sebastian Bergmann <sebastian@phpunit.de>
+ * @copyright  2002-2011 Sebastian Bergmann <sebastian@phpunit.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    Release: @package_version@
  * @link       http://www.phpunit.de/
@@ -92,6 +92,11 @@ class PHPUnit_Util_GlobalState
       'HTTP_POST_FILES'
     );
 
+    /**
+     * @var array
+     */
+    protected static $phpunitFiles;
+
     public static function backupGlobals(array $blacklist)
     {
         self::$globals     = array();
@@ -106,7 +111,8 @@ class PHPUnit_Util_GlobalState
         foreach (array_keys($GLOBALS) as $key) {
             if ($key != 'GLOBALS' &&
                 !in_array($key, $superGlobalArrays) &&
-                !in_array($key, $blacklist)) {
+                !in_array($key, $blacklist) &&
+                !$GLOBALS[$key] instanceof Closure) {
                 self::$globals['GLOBALS'][$key] = serialize($GLOBALS[$key]);
             }
         }
@@ -184,8 +190,7 @@ class PHPUnit_Util_GlobalState
 
     public static function getIncludedFilesAsString()
     {
-        $blacklist = PHP_CodeCoverage::getInstance()->filter()->getBlacklist();
-        $blacklist = array_flip($blacklist['PHPUNIT']);
+        $blacklist = self::phpunitFiles();
         $files     = get_included_files();
         $result    = '';
 
@@ -226,6 +231,10 @@ class PHPUnit_Util_GlobalState
             if (isset($GLOBALS[$superGlobalArray]) &&
                 is_array($GLOBALS[$superGlobalArray])) {
                 foreach (array_keys($GLOBALS[$superGlobalArray]) as $key) {
+                    if ($GLOBALS[$superGlobalArray][$key] instanceof Closure) {
+                        continue;
+                    }
+
                     $result .= sprintf(
                       '$GLOBALS[\'%s\'][\'%s\'] = %s;' . "\n",
                       $superGlobalArray,
@@ -241,7 +250,7 @@ class PHPUnit_Util_GlobalState
         $blacklist[] = '_PEAR_Config_instance';
 
         foreach (array_keys($GLOBALS) as $key) {
-            if (!in_array($key, $blacklist)) {
+            if (!in_array($key, $blacklist) && !$GLOBALS[$key] instanceof Closure) {
                 $result .= sprintf(
                   '$GLOBALS[\'%s\'] = %s;' . "\n",
                   $key,
@@ -272,6 +281,13 @@ class PHPUnit_Util_GlobalState
 
         for ($i = $declaredClassesNum - 1; $i >= 0; $i--) {
             if (strpos($declaredClasses[$i], 'PHPUnit') !== 0 &&
+                strpos($declaredClasses[$i], 'File_Iterator') !== 0 &&
+                strpos($declaredClasses[$i], 'PHP_CodeCoverage') !== 0 &&
+                strpos($declaredClasses[$i], 'PHP_Invoker') !== 0 &&
+                strpos($declaredClasses[$i], 'PHP_Timer') !== 0 &&
+                strpos($declaredClasses[$i], 'PHP_TokenStream') !== 0 &&
+                strpos($declaredClasses[$i], 'sfYaml') !== 0 &&
+                strpos($declaredClasses[$i], 'Text_Template') !== 0 &&
                 !$declaredClasses[$i] instanceof PHPUnit_Framework_Test) {
                 $class = new ReflectionClass($declaredClasses[$i]);
 
@@ -288,7 +304,11 @@ class PHPUnit_Util_GlobalState
                         if (!isset($blacklist[$declaredClasses[$i]]) ||
                            !in_array($name, $blacklist[$declaredClasses[$i]])) {
                             $attribute->setAccessible(TRUE);
-                            $backup[$name] = serialize($attribute->getValue());
+                            $value = $attribute->getValue();
+
+                            if (!$value instanceof Closure) {
+                                $backup[$name] = serialize($value);
+                            }
                         }
                     }
                 }
@@ -344,5 +364,52 @@ class PHPUnit_Util_GlobalState
         }
 
         return $result;
+    }
+
+    /**
+     * @return array
+     * @since  Method available since Release 3.6.0
+     */
+    public static function phpunitFiles()
+    {
+        if (self::$phpunitFiles === NULL) {
+            self::$phpunitFiles = array_merge(
+              phpunit_autoload(),
+              phpunit_mockobject_autoload(),
+              file_iterator_autoload(),
+              php_codecoverage_autoload(),
+              php_timer_autoload(),
+              php_tokenstream_autoload(),
+              text_template_autoload()
+            );
+
+            if (function_exists('phpunit_dbunit_autoload')) {
+                self::$phpunitFiles = array_merge(
+                  self::$phpunitFiles, phpunit_dbunit_autoload()
+                );
+            }
+
+            if (function_exists('phpunit_selenium_autoload')) {
+                self::$phpunitFiles = array_merge(
+                  self::$phpunitFiles, phpunit_selenium_autoload()
+                );
+            }
+
+            if (function_exists('phpunit_story_autoload')) {
+                self::$phpunitFiles = array_merge(
+                  self::$phpunitFiles, phpunit_story_autoload()
+                );
+            }
+
+            if (function_exists('php_invoker_autoload')) {
+                self::$phpunitFiles = array_merge(
+                  self::$phpunitFiles, php_invoker_autoload()
+                );
+            }
+
+            self::$phpunitFiles = array_flip(self::$phpunitFiles);
+        }
+
+        return self::$phpunitFiles;
     }
 }

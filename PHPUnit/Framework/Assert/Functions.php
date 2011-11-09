@@ -2,7 +2,7 @@
 /**
  * PHPUnit
  *
- * Copyright (c) 2002-2010, Sebastian Bergmann <sebastian@phpunit.de>.
+ * Copyright (c) 2002-2011, Sebastian Bergmann <sebastian@phpunit.de>.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -37,7 +37,7 @@
  * @package    PHPUnit
  * @subpackage Framework
  * @author     Sebastian Bergmann <sebastian@phpunit.de>
- * @copyright  2002-2010 Sebastian Bergmann <sebastian@phpunit.de>
+ * @copyright  2002-2011 Sebastian Bergmann <sebastian@phpunit.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @link       http://www.phpunit.de/
  * @since      File available since Release 3.5.0
@@ -113,11 +113,12 @@ function assertArrayNotHasKey($key, array $array, $message = '')
  * @param  mixed   $haystackClassOrObject
  * @param  string  $message
  * @param  boolean $ignoreCase
+ * @param  boolean $checkForObjectIdentity
  * @since  Method available since Release 3.0.0
  */
-function assertAttributeContains($needle, $haystackAttributeName, $haystackClassOrObject, $message = '', $ignoreCase = FALSE)
+function assertAttributeContains($needle, $haystackAttributeName, $haystackClassOrObject, $message = '', $ignoreCase = FALSE, $checkForObjectIdentity = TRUE)
 {
-    return PHPUnit_Framework_Assert::assertAttributeContains($needle, $haystackAttributeName, $haystackClassOrObject, $message, $ignoreCase);
+    return PHPUnit_Framework_Assert::assertAttributeContains($needle, $haystackAttributeName, $haystackClassOrObject, $message, $ignoreCase, $checkForObjectIdentity);
 }
 
 /**
@@ -134,6 +135,21 @@ function assertAttributeContains($needle, $haystackAttributeName, $haystackClass
 function assertAttributeContainsOnly($type, $haystackAttributeName, $haystackClassOrObject, $isNativeType = NULL, $message = '')
 {
     return PHPUnit_Framework_Assert::assertAttributeContainsOnly($type, $haystackAttributeName, $haystackClassOrObject, $isNativeType, $message);
+}
+
+/**
+ * Asserts the number of elements of an array, Countable or Iterator
+ * that is stored in an attribute.
+ *
+ * @param integer $expectedCount
+ * @param string  $haystackAttributeName
+ * @param mixed   $haystackClassOrObject
+ * @param string  $message
+ * @since Method available since Release 3.6.0
+ */
+function assertAttributeCount($expectedCount, $haystackAttributeName, $haystackClassOrObject, $message = '')
+{
+    return PHPUnit_Framework_Assert::assertAttributeCount($expectedCount, $haystackAttributeName, $haystackClassOrObject, $message);
 }
 
 /**
@@ -260,11 +276,12 @@ function assertAttributeLessThanOrEqual($expected, $actualAttributeName, $actual
  * @param  mixed   $haystackClassOrObject
  * @param  string  $message
  * @param  boolean $ignoreCase
+ * @param  boolean $checkForObjectIdentity
  * @since  Method available since Release 3.0.0
  */
-function assertAttributeNotContains($needle, $haystackAttributeName, $haystackClassOrObject, $message = '', $ignoreCase = FALSE)
+function assertAttributeNotContains($needle, $haystackAttributeName, $haystackClassOrObject, $message = '', $ignoreCase = FALSE, $checkForObjectIdentity = TRUE)
 {
-    return PHPUnit_Framework_Assert::assertAttributeNotContains($needle, $haystackAttributeName, $haystackClassOrObject, $message, $ignoreCase);
+    return PHPUnit_Framework_Assert::assertAttributeNotContains($needle, $haystackAttributeName, $haystackClassOrObject, $message, $ignoreCase, $checkForObjectIdentity);
 }
 
 /**
@@ -282,6 +299,21 @@ function assertAttributeNotContains($needle, $haystackAttributeName, $haystackCl
 function assertAttributeNotContainsOnly($type, $haystackAttributeName, $haystackClassOrObject, $isNativeType = NULL, $message = '')
 {
     return PHPUnit_Framework_Assert::assertAttributeNotContainsOnly($type, $haystackAttributeName, $haystackClassOrObject, $isNativeType, $message);
+}
+
+/**
+ * Asserts the number of elements of an array, Countable or Iterator
+ * that is stored in an attribute.
+ *
+ * @param integer $expectedCount
+ * @param string  $haystackAttributeName
+ * @param mixed   $haystackClassOrObject
+ * @param string  $message
+ * @since Method available since Release 3.6.0
+ */
+function assertAttributeNotCount($expectedCount, $haystackAttributeName, $haystackClassOrObject, $message = '')
+{
+    return PHPUnit_Framework_Assert::assertAttributeNotCount($expectedCount, $haystackAttributeName, $haystackClassOrObject, $message);
 }
 
 /**
@@ -358,20 +390,6 @@ function assertAttributeNotSame($expected, $actualAttributeName, $actualClassOrO
 }
 
 /**
- * Asserts that an attribute is of a given type.
- *
- * @param  string  $expected
- * @param  string  $attributeName
- * @param  mixed   $classOrObject
- * @param  string  $message
- * @since  Method available since Release 3.4.0
- */
-function assertAttributeNotType($expected, $attributeName, $classOrObject, $message = '')
-{
-    return PHPUnit_Framework_Assert::assertAttributeNotType($expected, $attributeName, $classOrObject, $message);
-}
-
-/**
  * Asserts that a variable and an attribute of an object have the same type
  * and value.
  *
@@ -383,20 +401,6 @@ function assertAttributeNotType($expected, $attributeName, $classOrObject, $mess
 function assertAttributeSame($expected, $actualAttributeName, $actualClassOrObject, $message = '')
 {
     return PHPUnit_Framework_Assert::assertAttributeSame($expected, $actualAttributeName, $actualClassOrObject, $message);
-}
-
-/**
- * Asserts that an attribute is of a given type.
- *
- * @param  string  $expected
- * @param  string  $attributeName
- * @param  mixed   $classOrObject
- * @param  string  $message
- * @since  Method available since Release 3.4.0
- */
-function assertAttributeType($expected, $attributeName, $classOrObject, $message = '')
-{
-    return PHPUnit_Framework_Assert::assertAttributeType($expected, $attributeName, $classOrObject, $message);
 }
 
 /**
@@ -458,11 +462,12 @@ function assertClassNotHasStaticAttribute($attributeName, $className, $message =
  * @param  mixed   $haystack
  * @param  string  $message
  * @param  boolean $ignoreCase
+ * @param  boolean $checkForObjectIdentity
  * @since  Method available since Release 2.1.0
  */
-function assertContains($needle, $haystack, $message = '', $ignoreCase = FALSE)
+function assertContains($needle, $haystack, $message = '', $ignoreCase = FALSE, $checkForObjectIdentity = TRUE)
 {
-    return PHPUnit_Framework_Assert::assertContains($needle, $haystack, $message, $ignoreCase);
+    return PHPUnit_Framework_Assert::assertContains($needle, $haystack, $message, $ignoreCase, $checkForObjectIdentity);
 }
 
 /**
@@ -480,6 +485,18 @@ function assertContainsOnly($type, $haystack, $isNativeType = NULL, $message = '
 }
 
 /**
+ * Asserts the number of elements of an array, Countable or Iterator.
+ *
+ * @param integer $expectedCount
+ * @param mixed   $haystack
+ * @param string  $message
+ */
+function assertCount($expectedCount, $haystack, $message = '')
+{
+    return PHPUnit_Framework_Assert::assertCount($expectedCount, $haystack, $message);
+}
+
+/**
  * Asserts that a variable is empty.
  *
  * @param  mixed   $actual
@@ -492,18 +509,18 @@ function assertEmpty($actual, $message = '')
 }
 
 /**
- * Asserts that a hierarchy of DOMNodes matches.
+ * Asserts that a hierarchy of DOMElements matches.
  *
- * @param DOMNode $expectedNode
- * @param DOMNode $actualNode
+ * @param DOMElement $expectedElement
+ * @param DOMElement $actualElement
  * @param boolean $checkAttributes
  * @param string  $message
  * @author Mattis Stordalen Flister <mattis@xait.no>
  * @since  Method available since Release 3.3.0
  */
-function assertEqualXMLStructure(DOMNode $expectedNode, DOMNode $actualNode, $checkAttributes = FALSE, $message = '')
+function assertEqualXMLStructure(DOMElement $expectedElement, DOMElement $actualElement, $checkAttributes = FALSE, $message = '')
 {
-    return PHPUnit_Framework_Assert::assertEqualXMLStructure($expectedNode, $actualNode, $checkAttributes, $message);
+    return PHPUnit_Framework_Assert::assertEqualXMLStructure($expectedElement, $actualElement, $checkAttributes, $message);
 }
 
 /**
@@ -675,11 +692,12 @@ function assertLessThanOrEqual($expected, $actual, $message = '')
  * @param  mixed   $haystack
  * @param  string  $message
  * @param  boolean $ignoreCase
+ * @param  boolean $checkForObjectIdentity
  * @since  Method available since Release 2.1.0
  */
-function assertNotContains($needle, $haystack, $message = '', $ignoreCase = FALSE)
+function assertNotContains($needle, $haystack, $message = '', $ignoreCase = FALSE, $checkForObjectIdentity = TRUE)
 {
-    return PHPUnit_Framework_Assert::assertNotContains($needle, $haystack, $message, $ignoreCase);
+    return PHPUnit_Framework_Assert::assertNotContains($needle, $haystack, $message, $ignoreCase, $checkForObjectIdentity);
 }
 
 /**
@@ -694,6 +712,18 @@ function assertNotContains($needle, $haystack, $message = '', $ignoreCase = FALS
 function assertNotContainsOnly($type, $haystack, $isNativeType = NULL, $message = '')
 {
     return PHPUnit_Framework_Assert::assertNotContainsOnly($type, $haystack, $isNativeType, $message);
+}
+
+/**
+ * Asserts the number of elements of an array, Countable or Iterator.
+ *
+ * @param integer $expectedCount
+ * @param mixed   $haystack
+ * @param string  $message
+ */
+function assertNotCount($expectedCount, $haystack, $message = '')
+{
+    return PHPUnit_Framework_Assert::assertNotCount($expectedCount, $haystack, $message);
 }
 
 /**
@@ -790,6 +820,19 @@ function assertNotSame($expected, $actual, $message = '')
 }
 
 /**
+ * Assert that the size of two arrays (or `Countable` or `Iterator` objects)
+ * is not the same.
+ *
+ * @param integer $expected
+ * @param mixed   $actual
+ * @param string  $message
+ */
+function assertNotSameSize($expectedCount, $haystack, $message = '')
+{
+    return PHPUnit_Framework_Assert::assertNotSameSize($expectedCount, $haystack, $message);
+}
+
+/**
  * This assertion is the exact opposite of assertTag().
  *
  * Rather than asserting that $matcher results in a match, it asserts that
@@ -806,19 +849,6 @@ function assertNotSame($expected, $actual, $message = '')
 function assertNotTag($matcher, $actual, $message = '', $isHtml = TRUE)
 {
     return PHPUnit_Framework_Assert::assertNotTag($matcher, $actual, $message, $isHtml);
-}
-
-/**
- * Asserts that a variable is not of a given type.
- *
- * @param  string $expected
- * @param  mixed  $actual
- * @param  string $message
- * @since  Method available since Release 2.2.0
- */
-function assertNotType($expected, $actual, $message = '')
-{
-    return PHPUnit_Framework_Assert::assertNotType($expected, $actual, $message);
 }
 
 /**
@@ -882,6 +912,19 @@ function assertRegExp($pattern, $string, $message = '')
 function assertSame($expected, $actual, $message = '')
 {
     return PHPUnit_Framework_Assert::assertSame($expected, $actual, $message);
+}
+
+/**
+ * Assert that the size of two arrays (or `Countable` or `Iterator` objects)
+ * is the same.
+ *
+ * @param integer $expected
+ * @param mixed   $actual
+ * @param string  $message
+ */
+function assertSameSize($expected, $actual, $message = '')
+{
+    return PHPUnit_Framework_Assert::assertSameSize($expected, $actual, $message);
 }
 
 /**
@@ -1132,7 +1175,7 @@ function assertStringStartsWith($prefix, $string, $message = '')
  *
  * // Matcher that asserts that there is a "span" tag with content matching
  * // the regular expression pattern.
- * $matcher = array('tag' => 'span', 'content' => '/Try P(HP|ython)/');
+ * $matcher = array('tag' => 'span', 'content' => 'regexp:/Try P(HP|ython)/');
  *
  * // Matcher that asserts that there is a "span" with an "list" class
  * // attribute.
@@ -1252,18 +1295,6 @@ function assertThat($value, PHPUnit_Framework_Constraint $constraint, $message =
 function assertTrue($condition, $message = '')
 {
     return PHPUnit_Framework_Assert::assertTrue($condition, $message);
-}
-
-/**
- * Asserts that a variable is of a given type.
- *
- * @param  string $expected
- * @param  mixed  $actual
- * @param  string $message
- */
-function assertType($expected, $actual, $message = '')
-{
-    return PHPUnit_Framework_Assert::assertType($expected, $actual, $message);
 }
 
 /**
@@ -1430,13 +1461,14 @@ function classHasStaticAttribute($attributeName)
  * Returns a PHPUnit_Framework_Constraint_TraversableContains matcher
  * object.
  *
- * @param  mixed $value
+ * @param  mixed   $value
+ * @param  boolean $checkForObjectIdentity
  * @return PHPUnit_Framework_Constraint_TraversableContains
  * @since  Method available since Release 3.0.0
  */
-function contains($value)
+function contains($value, $checkForObjectIdentity = TRUE)
 {
-    return PHPUnit_Framework_Assert::contains($value);
+    return PHPUnit_Framework_Assert::contains($value, $checkForObjectIdentity);
 }
 
 /**
@@ -1788,6 +1820,18 @@ function returnSelf()
 function returnValue($value)
 {
     return PHPUnit_Framework_TestCase::returnValue($value);
+}
+
+/**
+ *
+ *
+ * @param  array $valueMap
+ * @return PHPUnit_Framework_MockObject_Stub_ReturnValueMap
+ * @since  Method available since Release 3.6.0
+ */
+function returnValueMap(array $valueMap)
+{
+    return PHPUnit_Framework_TestCase::returnValueMap($valueMap);
 }
 
 /**

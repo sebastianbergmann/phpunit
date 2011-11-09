@@ -2,7 +2,7 @@
 /**
  * PHPUnit
  *
- * Copyright (c) 2002-2010, Sebastian Bergmann <sebastian@phpunit.de>.
+ * Copyright (c) 2002-2011, Sebastian Bergmann <sebastian@phpunit.de>.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -37,13 +37,11 @@
  * @package    PHPUnit
  * @subpackage Util
  * @author     Sebastian Bergmann <sebastian@phpunit.de>
- * @copyright  2002-2010 Sebastian Bergmann <sebastian@phpunit.de>
+ * @copyright  2002-2011 Sebastian Bergmann <sebastian@phpunit.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @link       http://www.phpunit.de/
  * @since      File available since Release 3.2.0
  */
-
-require_once 'File/Iterator/Factory.php';
 
 /**
  * Wrapper for the PHPUnit XML configuration file.
@@ -55,24 +53,30 @@ require_once 'File/Iterator/Factory.php';
  * <phpunit backupGlobals="true"
  *          backupStaticAttributes="false"
  *          bootstrap="/path/to/bootstrap.php"
+ *          cacheTokens="true"
  *          colors="false"
  *          convertErrorsToExceptions="true"
  *          convertNoticesToExceptions="true"
  *          convertWarningsToExceptions="true"
  *          forceCoversAnnotation="false"
  *          mapTestClassNameToCoveredClassName="false"
+ *          printerClass="PHPUnit_TextUI_ResultPrinter"
  *          processIsolation="false"
  *          stopOnError="false"
  *          stopOnFailure="false"
  *          stopOnIncomplete="false"
  *          stopOnSkipped="false"
  *          testSuiteLoaderClass="PHPUnit_Runner_StandardTestSuiteLoader"
+ *          timeoutForSmallTests="1"
+ *          timeoutForMediumTests="10"
+ *          timeoutForLargeTests="60"
  *          strict="false"
  *          verbose="false">
  *   <testsuites>
  *     <testsuite name="My Test Suite">
- *       <directory suffix="Test.php">/path/to/files</directory>
- *       <file>/path/to/MyTest.php</file>
+ *       <directory suffix="Test.php" phpVersion="5.3.0" phpVersionOperator=">=">/path/to/files</directory>
+ *       <file phpVersion="5.3.0" phpVersionOperator=">=">/path/to/MyTest.php</file>
+ *       <exclude>/path/to/files/exclude</exclude>
  *     </testsuite>
  *   </testsuites>
  *
@@ -163,7 +167,7 @@ require_once 'File/Iterator/Factory.php';
  * @package    PHPUnit
  * @subpackage Util
  * @author     Sebastian Bergmann <sebastian@phpunit.de>
- * @copyright  2002-2010 Sebastian Bergmann <sebastian@phpunit.de>
+ * @copyright  2002-2011 Sebastian Bergmann <sebastian@phpunit.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    Release: @package_version@
  * @link       http://www.phpunit.de/
@@ -221,6 +225,17 @@ class PHPUnit_Util_Configuration
         }
 
         return self::$instances[$realpath];
+    }
+
+    /**
+     * Returns the realpath to the configuration file.
+     *
+     * @return string
+     * @since  Method available since Release 3.6.0
+     */
+    public function getFilename()
+    {
+        return $this->filename;
     }
 
     /**
@@ -324,14 +339,17 @@ class PHPUnit_Util_Configuration
             $arguments = array();
 
             if ($listener->hasAttribute('file')) {
-                $file = $this->toAbsolutePath((string)$listener->getAttribute('file'));
+                $file = $this->toAbsolutePath(
+                  (string)$listener->getAttribute('file'), TRUE
+                );
             }
 
             if ($listener->childNodes->item(1) instanceof DOMElement &&
                 $listener->childNodes->item(1)->tagName == 'arguments') {
                 foreach ($listener->childNodes->item(1)->childNodes as $argument) {
                     if ($argument instanceof DOMElement) {
-                        if($argument->tagName == 'file' || $argument->tagName == 'directory') {
+                        if ($argument->tagName == 'file' ||
+                            $argument->tagName == 'directory') {
                             $arguments[] = $this->toAbsolutePath((string)$argument->nodeValue);
                         } else {
                             $arguments[] = PHPUnit_Util_XML::xmlToVariable($argument);
@@ -360,8 +378,11 @@ class PHPUnit_Util_Configuration
         $result = array();
 
         foreach ($this->xpath->query('logging/log') as $log) {
-            $type   = (string)$log->getAttribute('type');
-            $target = $this->toAbsolutePath((string)$log->getAttribute('target'));
+            $type = (string)$log->getAttribute('type');
+
+            $target = $this->toAbsolutePath(
+              (string)$log->getAttribute('target')
+            );
 
             if ($type == 'coverage-html') {
                 if ($log->hasAttribute('title')) {
@@ -383,7 +404,7 @@ class PHPUnit_Util_Configuration
                 if ($log->hasAttribute('yui')) {
                     $result['yui'] = $this->getBoolean(
                       (string)$log->getAttribute('yui'),
-                      FALSE
+                      TRUE
                     );
                 }
 
@@ -404,6 +425,15 @@ class PHPUnit_Util_Configuration
                 }
             }
 
+            else if ($type == 'coverage-text') {
+                if ($log->hasAttribute('showUncoveredFiles')) {
+                    $result['coverageTextShowUncoveredFiles'] = $this->getBoolean(
+                      (string)$log->getAttribute('showUncoveredFiles'),
+                      FALSE
+                    );
+                }
+            }
+
             $result[$type] = $target;
         }
 
@@ -419,7 +449,7 @@ class PHPUnit_Util_Configuration
     public function getPHPConfiguration()
     {
         $result = array(
-          'include_path' => '',
+          'include_path' => array(),
           'ini'          => array(),
           'const'        => array(),
           'var'          => array(),
@@ -432,10 +462,10 @@ class PHPUnit_Util_Configuration
           'request'      => array()
         );
 
-        $nl = $this->xpath->query('php/includePath');
+        foreach ($this->xpath->query('php/includePath') as $includePath) {
+            $path = (string)$includePath->nodeValue;
 
-        if ($nl->length == 1) {
-            $result['include_path'] = $this->toAbsolutePath((string)$nl->item(0)->nodeValue);
+            $result['include_path'][] = $this->toAbsolutePath($path);
         }
 
         foreach ($this->xpath->query('php/ini') as $ini) {
@@ -473,10 +503,11 @@ class PHPUnit_Util_Configuration
     {
         $configuration = $this->getPHPConfiguration();
 
-        if ($configuration['include_path'] != '') {
+        if (! empty($configuration['include_path'])) {
             ini_set(
               'include_path',
-              $configuration['include_path'] . PATH_SEPARATOR .
+              implode(PATH_SEPARATOR, $configuration['include_path']) .
+              PATH_SEPARATOR .
               ini_get('include_path')
             );
         }
@@ -506,6 +537,10 @@ class PHPUnit_Util_Configuration
                 $target[$name] = $value;
             }
         }
+
+        foreach ($configuration['env'] as $name => $value) {
+            putenv("$name=$value");
+        }
     }
 
     /**
@@ -519,15 +554,15 @@ class PHPUnit_Util_Configuration
         $result = array();
         $root   = $this->document->documentElement;
 
-        if ($root->hasAttribute('colors')) {
-            $result['colors'] = $this->getBoolean(
-              (string)$root->getAttribute('colors'), FALSE
+        if ($root->hasAttribute('cacheTokens')) {
+            $result['cacheTokens'] = $this->getBoolean(
+              (string)$root->getAttribute('cacheTokens'), TRUE
             );
         }
 
-        else if ($root->hasAttribute('ansi')) {
+        if ($root->hasAttribute('colors')) {
             $result['colors'] = $this->getBoolean(
-              (string)$root->getAttribute('ansi'), FALSE
+              (string)$root->getAttribute('colors'), FALSE
             );
         }
 
@@ -622,6 +657,36 @@ class PHPUnit_Util_Configuration
             );
         }
 
+        if ($root->hasAttribute('printerClass')) {
+            $result['printerClass'] = (string)$root->getAttribute(
+              'printerClass'
+            );
+        }
+
+        if ($root->hasAttribute('printerFile')) {
+            $result['printerFile'] = (string)$root->getAttribute(
+              'printerFile'
+            );
+        }
+
+        if ($root->hasAttribute('timeoutForSmallTests')) {
+            $result['timeoutForSmallTests'] = $this->getInteger(
+              (string)$root->getAttribute('timeoutForSmallTests'), 1
+            );
+        }
+
+        if ($root->hasAttribute('timeoutForMediumTests')) {
+            $result['timeoutForMediumTests'] = $this->getInteger(
+              (string)$root->getAttribute('timeoutForMediumTests'), 10
+            );
+        }
+
+        if ($root->hasAttribute('timeoutForLargeTests')) {
+            $result['timeoutForLargeTests'] = $this->getInteger(
+              (string)$root->getAttribute('timeoutForLargeTests'), 60
+            );
+        }
+
         if ($root->hasAttribute('strict')) {
             $result['strict'] = $this->getBoolean(
               (string)$root->getAttribute('strict'), FALSE
@@ -658,13 +723,17 @@ class PHPUnit_Util_Configuration
             }
 
             if ($config->hasAttribute('port')) {
-                $port = (int)$config->getAttribute('port');
+                $port = $this->getInteger(
+                  (string)$config->getAttribute('port'), 4444
+                );
             } else {
                 $port = 4444;
             }
 
             if ($config->hasAttribute('timeout')) {
-                $timeout = (int)$config->getAttribute('timeout');
+                $timeout = $this->getInteger(
+                  (string)$config->getAttribute('timeout'), 30000
+                );
             } else {
                 $timeout = 30000;
             }
@@ -727,10 +796,32 @@ class PHPUnit_Util_Configuration
             $suite = new PHPUnit_Framework_TestSuite;
         }
 
+        $exclude = array();
+
+        foreach ($testSuiteNode->getElementsByTagName('exclude') as $excludeNode) {
+            $exclude[] = (string)$excludeNode->nodeValue;
+        }
+
         foreach ($testSuiteNode->getElementsByTagName('directory') as $directoryNode) {
             $directory = (string)$directoryNode->nodeValue;
 
             if (empty($directory)) {
+                continue;
+            }
+
+            if ($directoryNode->hasAttribute('phpVersion')) {
+                $phpVersion = (string)$directoryNode->getAttribute('phpVersion');
+            } else {
+                $phpVersion = PHP_VERSION;
+            }
+
+            if ($directoryNode->hasAttribute('phpVersionOperator')) {
+                $phpVersionOperator = (string)$directoryNode->getAttribute('phpVersionOperator');
+            } else {
+                $phpVersionOperator = '>=';
+            }
+
+            if (!version_compare(PHP_VERSION, $phpVersion, $phpVersionOperator)) {
                 continue;
             }
 
@@ -746,20 +837,37 @@ class PHPUnit_Util_Configuration
                 $suffix = 'Test.php';
             }
 
-            $suite->addTestFiles(
-              File_Iterator_Factory::getFilesAsArray(
-                $this->toAbsolutePath($directory),
-                $suffix,
-                $prefix,
-                array()
-              )
+            $facade = new File_Iterator_Facade;
+            $files  = $facade->getFilesAsArray(
+              $this->toAbsolutePath($directory),
+              $suffix,
+              $prefix,
+              $exclude
             );
+
+            $suite->addTestFiles($files);
         }
 
         foreach ($testSuiteNode->getElementsByTagName('file') as $fileNode) {
             $file = (string)$fileNode->nodeValue;
 
             if (empty($file)) {
+                continue;
+            }
+
+            if ($fileNode->hasAttribute('phpVersion')) {
+                $phpVersion = (string)$fileNode->getAttribute('phpVersion');
+            } else {
+                $phpVersion = PHP_VERSION;
+            }
+
+            if ($fileNode->hasAttribute('phpVersionOperator')) {
+                $phpVersionOperator = (string)$fileNode->getAttribute('phpVersionOperator');
+            } else {
+                $phpVersionOperator = '>=';
+            }
+
+            if (!version_compare(PHP_VERSION, $phpVersion, $phpVersionOperator)) {
                 continue;
             }
 
@@ -783,6 +891,21 @@ class PHPUnit_Util_Configuration
 
         else if (strtolower($value) == 'true') {
             return TRUE;
+        }
+
+        return $default;
+    }
+
+    /**
+     * @param  string  $value
+     * @param  boolean $default
+     * @return boolean
+     * @since  Method available since Release 3.6.0
+     */
+    protected function getInteger($value, $default)
+    {
+        if (is_numeric($value)) {
+            return (int)$value;
         }
 
         return $default;
@@ -844,19 +967,35 @@ class PHPUnit_Util_Configuration
     }
 
     /**
-     * @param  string $path
+     * @param  string  $path
+     * @param  boolean $useIncludePath
      * @return string
      * @since  Method available since Release 3.5.0
      */
-    protected function toAbsolutePath($path)
+    protected function toAbsolutePath($path, $useIncludePath = FALSE)
     {
-        // is the path already an absolute path?
+        // Check whether the path is already absolute.
         if ($path[0] === '/' || $path[0] === '\\' ||
             (strlen($path) > 3 && ctype_alpha($path[0]) &&
              $path[1] === ':' && ($path[2] === '\\' || $path[2] === '/'))) {
             return $path;
         }
 
-        return dirname($this->filename) . DIRECTORY_SEPARATOR . $path;
+        // Check whether a stream is used.
+        if (strpos($path, '://') !== FALSE) {
+            return $path;
+        }
+
+        $file = dirname($this->filename) . DIRECTORY_SEPARATOR . $path;
+
+        if ($useIncludePath && !file_exists($file)) {
+            $includePathFile = stream_resolve_include_path($path);
+
+            if ($includePathFile) {
+                $file = $includePathFile;
+            }
+        }
+
+        return $file;
     }
 }

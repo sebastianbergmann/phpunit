@@ -2,7 +2,7 @@
 /**
  * PHPUnit
  *
- * Copyright (c) 2002-2010, Sebastian Bergmann <sebastian@phpunit.de>.
+ * Copyright (c) 2002-2011, Sebastian Bergmann <sebastian@phpunit.de>.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -37,13 +37,11 @@
  * @package    PHPUnit
  * @subpackage TextUI
  * @author     Sebastian Bergmann <sebastian@phpunit.de>
- * @copyright  2002-2010 Sebastian Bergmann <sebastian@phpunit.de>
+ * @copyright  2002-2011 Sebastian Bergmann <sebastian@phpunit.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @link       http://www.phpunit.de/
  * @since      File available since Release 2.0.0
  */
-
-require_once 'PHP/Timer.php';
 
 /**
  * Prints the result of a TextUI TestRunner run.
@@ -51,7 +49,7 @@ require_once 'PHP/Timer.php';
  * @package    PHPUnit
  * @subpackage TextUI
  * @author     Sebastian Bergmann <sebastian@phpunit.de>
- * @copyright  2002-2010 Sebastian Bergmann <sebastian@phpunit.de>
+ * @copyright  2002-2011 Sebastian Bergmann <sebastian@phpunit.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    Release: @package_version@
  * @link       http://www.phpunit.de/
@@ -72,12 +70,7 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
     /**
      * @var integer
      */
-    protected $indent = 0;
-
-    /**
-     * @var integer
-     */
-    protected $lastEvent = -1;
+    protected $maxColumn;
 
     /**
      * @var boolean
@@ -172,6 +165,16 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
         }
 
         if ($this->verbose) {
+            if ($result->deprecatedFeaturesCount() > 0) {
+                if ($result->failureCount() > 0) {
+                    print "\n--\n\nDeprecated PHPUnit features are being used";
+                }
+
+                foreach ($result->deprecatedFeatures() as $deprecatedFeature) {
+                    $this->write($deprecatedFeature . "\n\n");
+                }
+            }
+
             if ($result->notImplementedCount() > 0) {
                 if ($result->failureCount() > 0) {
                     print "\n--\n\n";
@@ -268,8 +271,7 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
         $this->write(
           $defect->getExceptionAsString() . "\n" .
           PHPUnit_Util_Filter::getFilteredStacktrace(
-            $defect->thrownException(),
-            FALSE
+            $defect->thrownException()
           )
         );
     }
@@ -321,8 +323,7 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
 
     protected function printHeader()
     {
-        $this->write($this->verbose ? "\n" : "\n\n");
-        $this->write(PHP_Timer::resourceUsage() . "\n\n");
+        $this->write("\n\n" . PHP_Timer::resourceUsage() . "\n\n");
     }
 
     /**
@@ -354,7 +355,7 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
         }
 
         else if ((!$result->allCompletlyImplemented() ||
-                  !$result->noneSkipped())&&
+                  !$result->noneSkipped()) &&
                  $result->wasSuccessful()) {
             if ($this->colors) {
                 $this->write(
@@ -415,6 +416,22 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
                 $this->write("\x1b[0m\x1b[2K");
             }
         }
+
+        if (!$this->verbose &&
+            $result->deprecatedFeaturesCount() > 0) {
+            $message = sprintf(
+              "Warning: Deprecated PHPUnit features are being used %s times!\n".
+              "Use --verbose for more information.\n",
+              $result->deprecatedFeaturesCount()
+            );
+
+            if ($this->colors) {
+                $message = "\x1b[37;41m\x1b[2K" . $message .
+                           "\x1b[0m";
+            }
+
+            $this->write("\n" . $message);
+        }
     }
 
     /**
@@ -455,7 +472,12 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
      */
     public function addError(PHPUnit_Framework_Test $test, Exception $e, $time)
     {
-        $this->writeProgress('E');
+        if ($this->colors) {
+            $this->writeProgress("\x1b[31;1mE\x1b[0m");
+        } else {
+            $this->writeProgress('E');
+        }
+
         $this->lastTestFailed = TRUE;
     }
 
@@ -468,7 +490,12 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
      */
     public function addFailure(PHPUnit_Framework_Test $test, PHPUnit_Framework_AssertionFailedError $e, $time)
     {
-        $this->writeProgress('F');
+        if ($this->colors) {
+            $this->writeProgress("\x1b[41;37mF\x1b[0m");
+        } else {
+            $this->writeProgress('F');
+        }
+
         $this->lastTestFailed = TRUE;
     }
 
@@ -481,7 +508,12 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
      */
     public function addIncompleteTest(PHPUnit_Framework_Test $test, Exception $e, $time)
     {
-        $this->writeProgress('I');
+        if ($this->colors) {
+            $this->writeProgress("\x1b[33;1mI\x1b[0m");
+        } else {
+            $this->writeProgress('I');
+        }
+
         $this->lastTestFailed = TRUE;
     }
 
@@ -495,7 +527,12 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
      */
     public function addSkippedTest(PHPUnit_Framework_Test $test, Exception $e, $time)
     {
-        $this->writeProgress('S');
+        if ($this->colors) {
+            $this->writeProgress("\x1b[36;1mS\x1b[0m");
+        } else {
+            $this->writeProgress('S');
+        }
+
         $this->lastTestFailed = TRUE;
     }
 
@@ -510,36 +547,8 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
         if ($this->numTests == -1) {
             $this->numTests      = count($suite);
             $this->numTestsWidth = strlen((string)$this->numTests);
-        } else {
-            $this->indent++;
+            $this->maxColumn     = 69 - (2 * $this->numTestsWidth);
         }
-
-        if ($this->verbose) {
-            $name = $suite->getName();
-
-            if (empty($name)) {
-                $name = 'Test Suite';
-            } else {
-                $name = preg_replace( '(^.*::(.*?)$)', '\\1', $name );
-            }
-
-            $this->write(
-              sprintf(
-                "%s%s%s",
-
-                $this->lastEvent == self::EVENT_TESTSUITE_END ||
-                $suite instanceof PHPUnit_Framework_TestSuite_DataProvider ?
-                "\n" :
-                '',
-                str_repeat(' ', $this->indent),
-                $name
-              )
-            );
-
-            $this->writeNewLine();
-        }
-
-        $this->lastEvent = self::EVENT_TESTSUITE_START;
     }
 
     /**
@@ -550,15 +559,6 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
      */
     public function endTestSuite(PHPUnit_Framework_TestSuite $suite)
     {
-        $this->indent--;
-
-        if ($this->verbose) {
-            if ($this->lastEvent != self::EVENT_TESTSUITE_END) {
-                $this->writeNewLine();
-            }
-        }
-
-        $this->lastEvent = self::EVENT_TESTSUITE_END;
     }
 
     /**
@@ -568,8 +568,6 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
      */
     public function startTest(PHPUnit_Framework_Test $test)
     {
-        $this->lastEvent = self::EVENT_TEST_START;
-
         if ($this->debug) {
             $this->write(
               sprintf(
@@ -595,8 +593,15 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
             $this->numAssertions += $test->getNumAssertions();
         }
 
-        $this->lastEvent      = self::EVENT_TEST_END;
+        else if ($test instanceof PHPUnit_Extensions_PhptTestCase) {
+            $this->numAssertions++;
+        }
+
         $this->lastTestFailed = FALSE;
+
+        if ($this->debug && $test instanceof PHPUnit_Framework_TestCase) {
+            $this->write($test->getActualOutput());
+        }
     }
 
     /**
@@ -608,18 +613,17 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
         $this->column++;
         $this->numTestsRun++;
 
-        if ($this->column == 60) {
-            if (!$this->verbose) {
-                $this->write(
-                  sprintf(
-                    ' %' . $this->numTestsWidth . 'd / %' .
-                           $this->numTestsWidth . "d",
+        if ($this->column == $this->maxColumn) {
+            $this->write(
+              sprintf(
+                ' %' . $this->numTestsWidth . 'd / %' .
+                       $this->numTestsWidth . 'd (%3s%%)',
 
-                    $this->numTestsRun,
-                    $this->numTests
-                  )
-                );
-            }
+                $this->numTestsRun,
+                $this->numTests,
+                floor(($this->numTestsRun / $this->numTests) * 100)
+              )
+            );
 
             $this->writeNewLine();
         }
@@ -627,13 +631,7 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
 
     protected function writeNewLine()
     {
+        $this->column = 0;
         $this->write("\n");
-
-        if ($this->verbose) {
-            $this->column = $this->indent;
-            $this->write(str_repeat(' ', max(0, $this->indent)));
-        } else {
-            $this->column = 0;
-        }
     }
 }

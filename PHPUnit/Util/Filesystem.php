@@ -2,7 +2,7 @@
 /**
  * PHPUnit
  *
- * Copyright (c) 2002-2010, Sebastian Bergmann <sebastian@phpunit.de>.
+ * Copyright (c) 2002-2011, Sebastian Bergmann <sebastian@phpunit.de>.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -37,7 +37,7 @@
  * @package    PHPUnit
  * @subpackage Util
  * @author     Sebastian Bergmann <sebastian@phpunit.de>
- * @copyright  2002-2010 Sebastian Bergmann <sebastian@phpunit.de>
+ * @copyright  2002-2011 Sebastian Bergmann <sebastian@phpunit.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @link       http://www.phpunit.de/
  * @since      File available since Release 3.0.0
@@ -49,7 +49,7 @@
  * @package    PHPUnit
  * @subpackage Util
  * @author     Sebastian Bergmann <sebastian@phpunit.de>
- * @copyright  2002-2010 Sebastian Bergmann <sebastian@phpunit.de>
+ * @copyright  2002-2011 Sebastian Bergmann <sebastian@phpunit.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    Release: @package_version@
  * @link       http://www.phpunit.de/
@@ -78,72 +78,5 @@ class PHPUnit_Util_Filesystem
           DIRECTORY_SEPARATOR,
           $className
         ) . '.php';
-    }
-
-    /**
-     * Starts the collection of loaded files.
-     *
-     * @since  Method available since Release 3.3.0
-     */
-    public static function collectStart()
-    {
-        self::$buffer = get_included_files();
-    }
-
-    /**
-     * Stops the collection of loaded files and
-     * returns the names of the loaded files.
-     *
-     * @return array
-     * @since  Method available since Release 3.3.0
-     */
-    public static function collectEnd()
-    {
-        return array_values(
-          array_diff(get_included_files(), self::$buffer)
-        );
-    }
-
-    /**
-     * Stops the collection of loaded files and adds
-     * the names of the loaded files to the blacklist.
-     *
-     * @return array
-     * @since  Method available since Release 3.4.6
-     */
-    public static function collectEndAndAddToBlacklist()
-    {
-        foreach (self::collectEnd() as $blacklistedFile) {
-            PHP_CodeCoverage_Filter::getInstance()->addFileToBlacklist(
-              $blacklistedFile, 'PHPUNIT'
-            );
-        }
-    }
-
-    /**
-     * Wrapper for file_exists() that searches the include_path.
-     *
-     * @param  string $file
-     * @return mixed
-     * @author Mattis Stordalen Flister <mattis@xait.no>
-     * @since  Method available since Release 3.2.9
-     */
-    public static function fileExistsInIncludePath($file)
-    {
-        if (file_exists($file)) {
-            return realpath($file);
-        }
-
-        $paths = explode(PATH_SEPARATOR, get_include_path());
-
-        foreach ($paths as $path) {
-            $fullpath = $path . DIRECTORY_SEPARATOR . $file;
-
-            if (file_exists($fullpath)) {
-                return realpath($fullpath);
-            }
-        }
-
-        return FALSE;
     }
 }

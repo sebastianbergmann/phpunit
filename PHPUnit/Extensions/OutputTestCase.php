@@ -2,7 +2,7 @@
 /**
  * PHPUnit
  *
- * Copyright (c) 2002-2010, Sebastian Bergmann <sebastian@phpunit.de>.
+ * Copyright (c) 2002-2011, Sebastian Bergmann <sebastian@phpunit.de>.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -37,7 +37,7 @@
  * @package    PHPUnit
  * @subpackage Extensions
  * @author     Sebastian Bergmann <sebastian@phpunit.de>
- * @copyright  2002-2010 Sebastian Bergmann <sebastian@phpunit.de>
+ * @copyright  2002-2011 Sebastian Bergmann <sebastian@phpunit.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @link       http://www.phpunit.de/
  * @since      File available since Release 3.0.0
@@ -49,154 +49,28 @@
  * @package    PHPUnit
  * @subpackage Extensions
  * @author     Sebastian Bergmann <sebastian@phpunit.de>
- * @copyright  2002-2010 Sebastian Bergmann <sebastian@phpunit.de>
+ * @copyright  2002-2011 Sebastian Bergmann <sebastian@phpunit.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    Release: @package_version@
  * @link       http://www.phpunit.de/
  * @since      Class available since Release 3.0.0
+ * @deprecated
  */
 abstract class PHPUnit_Extensions_OutputTestCase extends PHPUnit_Framework_TestCase
 {
-    /**
-     * @var    string
-     */
-    protected $expectedRegex = NULL;
-
-    /**
-     * @var    string
-     */
-    protected $expectedString = NULL;
-
-    /**
-     * @var    string
-     */
-    protected $output = '';
-
-    /**
-     * @var    boolean
-     */
-    protected $obActive = FALSE;
-
-    /**
-     * @var    mixed
-     */
-    protected $outputCallback = FALSE;
-
-    /**
-     * @return bool
-     */
-    public function setOutputCallback($callback)
-    {
-        if (is_callable($callback)) {
-            $this->outputCallback = $callback;
-            return TRUE;
-        }
-
-        return FALSE;
-    }
-
-    /**
-     * @return string
-     */
-    public function normalizeOutput($buffer)
-    {
-        return str_replace("\r", '', $buffer);
-    }
-
-    /**
-     * @return string
-     */
-    public function getActualOutput()
-    {
-        if (!$this->obActive) {
-            return $this->output;
-        } else {
-            return ob_get_contents();
-        }
-    }
-
-    /**
-     * @return string
-     */
-    public function expectedRegex()
-    {
-        return $this->expectedRegex;
-    }
-
-    /**
-     * @param  string  $expectedRegex
-     */
-    public function expectOutputRegex($expectedRegex)
-    {
-        if ($this->expectedString !== NULL) {
-            throw new PHPUnit_Framework_Exception;
-        }
-
-        if (is_string($expectedRegex) || is_null($expectedRegex)) {
-            $this->expectedRegex = $expectedRegex;
-        }
-    }
-
-    /**
-     * @return string
-     */
-    public function expectedString()
-    {
-        return $this->expectedString;
-    }
-
-    /**
-     * @param  string  $expectedString
-     */
-    public function expectOutputString($expectedString)
-    {
-        if ($this->expectedRegex !== NULL) {
-            throw new PHPUnit_Framework_Exception;
-        }
-
-        if (is_string($expectedString) || is_null($expectedString)) {
-            $this->expectedString = $expectedString;
-        }
-    }
-
     /**
      * @return mixed
      * @throws RuntimeException
      */
     protected function runTest()
     {
-        ob_start();
-        $this->obActive = TRUE;
+        PHPUnit_Util_DeprecatedFeature_Logger::log(
+          'The functionality of PHPUnit_Extensions_OutputTestCase has been ' .
+          'merged into PHPUnit_Framework_TestCase. Please update your test ' .
+          'by extending PHPUnit_Framework_TestCase instead of ' .
+          'PHPUnit_Extensions_OutputTestCase.'
+        );
 
-        try {
-            $testResult = parent::runTest();
-        }
-
-        catch (Exception $e) {
-            ob_end_clean();
-            $this->obActive = FALSE;
-            throw $e;
-        }
-
-        if ($this->outputCallback === FALSE) {
-            $this->output = ob_get_contents();
-        } else {
-            $this->output = call_user_func_array($this->outputCallback, array(ob_get_contents()));
-        }
-
-        ob_end_clean();
-        $this->obActive = FALSE;
-
-        if ($this->expectedRegex !== NULL) {
-            $this->assertRegExp($this->expectedRegex, $this->output);
-            $this->expectedRegex = NULL;
-        }
-
-        else if ($this->expectedString !== NULL) {
-            $this->assertEquals($this->expectedString, $this->output);
-            $this->expectedString = NULL;
-        }
-
-        return $testResult;
+        parent::runTest();
     }
 }

@@ -2,7 +2,7 @@
 /**
  * PHPUnit
  *
- * Copyright (c) 2002-2010, Sebastian Bergmann <sebastian@phpunit.de>.
+ * Copyright (c) 2002-2011, Sebastian Bergmann <sebastian@phpunit.de>.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -37,7 +37,8 @@
  * @package    PHPUnit
  * @subpackage Framework_Constraint
  * @author     Sebastian Bergmann <sebastian@phpunit.de>
- * @copyright  2002-2010 Sebastian Bergmann <sebastian@phpunit.de>
+ * @author     Bernhard Schussek <bschussek@2bepublished.at>
+ * @copyright  2002-2011 Sebastian Bergmann <sebastian@phpunit.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @link       http://www.phpunit.de/
  * @since      File available since Release 3.0.0
@@ -52,7 +53,8 @@
  * @package    PHPUnit
  * @subpackage Framework_Constraint
  * @author     Sebastian Bergmann <sebastian@phpunit.de>
- * @copyright  2002-2010 Sebastian Bergmann <sebastian@phpunit.de>
+ * @author     Bernhard Schussek <bschussek@2bepublished.at>
+ * @copyright  2002-2011 Sebastian Bergmann <sebastian@phpunit.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    Release: @package_version@
  * @link       http://www.phpunit.de/
@@ -70,6 +72,7 @@ class PHPUnit_Framework_Constraint_IsType extends PHPUnit_Framework_Constraint
     const TYPE_RESOURCE = 'resource';
     const TYPE_STRING   = 'string';
     const TYPE_SCALAR   = 'scalar';
+    const TYPE_CALLABLE = 'callable';
 
     /**
      * @var array
@@ -86,7 +89,8 @@ class PHPUnit_Framework_Constraint_IsType extends PHPUnit_Framework_Constraint
       'object' => TRUE,
       'resource' => TRUE,
       'string' => TRUE,
-      'scalar' => TRUE
+      'scalar' => TRUE,
+      'callable' => TRUE
     );
 
     /**
@@ -120,7 +124,7 @@ class PHPUnit_Framework_Constraint_IsType extends PHPUnit_Framework_Constraint
      * @param mixed $other Value or object to evaluate.
      * @return bool
      */
-    public function evaluate($other)
+    protected function matches($other)
     {
         switch ($this->type) {
             case 'numeric': {
@@ -163,6 +167,10 @@ class PHPUnit_Framework_Constraint_IsType extends PHPUnit_Framework_Constraint
 
             case 'scalar': {
                 return is_scalar($other);
+            }
+
+            case 'callable': {
+                return is_callable($other);
             }
         }
     }

@@ -2,7 +2,7 @@
 /**
  * PHPUnit
  *
- * Copyright (c) 2002-2010, Sebastian Bergmann <sebastian@phpunit.de>.
+ * Copyright (c) 2002-2011, Sebastian Bergmann <sebastian@phpunit.de>.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -36,22 +36,21 @@
  *
  * @package    PHPUnit
  * @author     Sebastian Bergmann <sebastian@phpunit.de>
- * @copyright  2002-2010 Sebastian Bergmann <sebastian@phpunit.de>
+ * @copyright  2002-2011 Sebastian Bergmann <sebastian@phpunit.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @link       http://www.phpunit.de/
  * @since      File available since Release 3.3.6
  */
 
-require_once 'PHPUnit/Framework/TestCase.php';
-
 require_once dirname(dirname(__FILE__)) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'ExceptionTest.php';
+require_once dirname(dirname(__FILE__)) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'RequirementsTest.php';
 
 /**
  *
  *
  * @package    PHPUnit
  * @author     Sebastian Bergmann <sebastian@phpunit.de>
- * @copyright  2002-2010 Sebastian Bergmann <sebastian@phpunit.de>
+ * @copyright  2002-2011 Sebastian Bergmann <sebastian@phpunit.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    Release: @package_version@
  * @link       http://www.phpunit.de/
@@ -89,6 +88,29 @@ class Util_TestTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(
           array('class' => 'Class', 'code' => 1234, 'message' => 'Message'),
           PHPUnit_Util_Test::getExpectedException('ExceptionTest', 'testSix')
+        );
+    }
+
+    public function testGetRequirements()
+    {
+        $this->assertEquals(
+          array(),
+          PHPUnit_Util_Test::getRequirements('RequirementsTest', 'testOne')
+        );
+
+        $this->assertEquals(
+          array('PHPUnit' => '1.0'),
+          PHPUnit_Util_Test::getRequirements('RequirementsTest', 'testTwo')
+        );
+
+        $this->assertEquals(
+          array('PHP' => '2.0'),
+          PHPUnit_Util_Test::getRequirements('RequirementsTest', 'testThree')
+        );
+
+        $this->assertEquals(
+          array('PHPUnit'=>'2.0', 'PHP' => '1.0'),
+          PHPUnit_Util_Test::getRequirements('RequirementsTest', 'testFour')
         );
     }
 

@@ -2,7 +2,7 @@
 /**
  * PHPUnit
  *
- * Copyright (c) 2002-2010, Sebastian Bergmann <sebastian@phpunit.de>.
+ * Copyright (c) 2002-2011, Sebastian Bergmann <sebastian@phpunit.de>.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -36,13 +36,11 @@
  *
  * @package    PHPUnit
  * @author     Sebastian Bergmann <sebastian@phpunit.de>
- * @copyright  2002-2010 Sebastian Bergmann <sebastian@phpunit.de>
+ * @copyright  2002-2011 Sebastian Bergmann <sebastian@phpunit.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @link       http://www.phpunit.de/
  * @since      File available since Release 2.0.0
  */
-
-require_once 'PHPUnit/Framework/TestCase.php';
 
 require_once dirname(dirname(__FILE__)) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'Error.php';
 require_once dirname(dirname(__FILE__)) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'ExceptionInAssertPostConditionsTest.php';
@@ -52,6 +50,8 @@ require_once dirname(dirname(__FILE__)) . DIRECTORY_SEPARATOR . '_files' . DIREC
 require_once dirname(dirname(__FILE__)) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'ExceptionInTest.php';
 require_once dirname(dirname(__FILE__)) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'Failure.php';
 require_once dirname(dirname(__FILE__)) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'NoArgTestCaseTest.php';
+require_once dirname(dirname(__FILE__)) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'OutputTestCase.php';
+require_once dirname(dirname(__FILE__)) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'RequirementsTest.php';
 require_once dirname(dirname(__FILE__)) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'Singleton.php';
 require_once dirname(dirname(__FILE__)) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'Success.php';
 require_once dirname(dirname(__FILE__)) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'ThrowExceptionTestCase.php';
@@ -73,7 +73,7 @@ $GLOBALS['i']  = 'i';
  *
  * @package    PHPUnit
  * @author     Sebastian Bergmann <sebastian@phpunit.de>
- * @copyright  2002-2010 Sebastian Bergmann <sebastian@phpunit.de>
+ * @copyright  2002-2011 Sebastian Bergmann <sebastian@phpunit.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    Release: @package_version@
  * @link       http://www.phpunit.de/
@@ -204,7 +204,7 @@ class Framework_TestCaseTest extends PHPUnit_Framework_TestCase
     public function testException()
     {
         $test = new ThrowExceptionTestCase('test');
-        $test->setExpectedException('Exception');
+        $test->setExpectedException('RuntimeException');
 
         $result = $test->run();
 
@@ -215,7 +215,7 @@ class Framework_TestCaseTest extends PHPUnit_Framework_TestCase
     public function testNoException()
     {
         $test = new ThrowNoExceptionTestCase('test');
-        $test->setExpectedException('Exception');
+        $test->setExpectedException('RuntimeException');
 
         $result = $test->run();
 
@@ -226,7 +226,7 @@ class Framework_TestCaseTest extends PHPUnit_Framework_TestCase
     public function testWrongException()
     {
         $test = new ThrowExceptionTestCase('test');
-        $test->setExpectedException('RuntimeException');
+        $test->setExpectedException('InvalidArgumentException');
 
         $result = $test->run();
 
@@ -305,19 +305,71 @@ class Framework_TestCaseTest extends PHPUnit_Framework_TestCase
      */
     public function testStaticAttributesBackupPre()
     {
-        if (!version_compare(PHP_VERSION, '5.3', '>')) {
-            $this->markTestSkipped('PHP 5.3 (or later) is required.');
-        }
-
         $GLOBALS['singleton'] = Singleton::getInstance();
     }
 
     public function testStaticAttributesBackupPost()
     {
-        if (!version_compare(PHP_VERSION, '5.3', '>')) {
-            $this->markTestSkipped('PHP 5.3 (or later) is required.');
-        }
-
         $this->assertNotSame($GLOBALS['singleton'], Singleton::getInstance());
+    }
+
+    public function testExpectOutputStringFooActualFoo()
+    {
+        $test   = new OutputTestCase('testExpectOutputStringFooActualFoo');
+        $result = $test->run();
+
+        $this->assertEquals(1, count($result));
+        $this->assertTrue($result->wasSuccessful());
+    }
+
+    public function testExpectOutputStringFooActualBar()
+    {
+        $test   = new OutputTestCase('testExpectOutputStringFooActualBar');
+        $result = $test->run();
+
+        $this->assertEquals(1, count($result));
+        $this->assertFalse($result->wasSuccessful());
+    }
+
+    public function testExpectOutputRegexFooActualFoo()
+    {
+        $test   = new OutputTestCase('testExpectOutputRegexFooActualFoo');
+        $result = $test->run();
+
+        $this->assertEquals(1, count($result));
+        $this->assertTrue($result->wasSuccessful());
+    }
+
+    public function testExpectOutputRegexFooActualBar()
+    {
+        $test   = new OutputTestCase('testExpectOutputRegexFooActualBar');
+        $result = $test->run();
+
+        $this->assertEquals(1, count($result));
+        $this->assertFalse($result->wasSuccessful());
+    }
+
+    public function testSkipsIfRequiresHigherVersionOfPHPUnit()
+    {
+        $test   = new RequirementsTest('testAlwaysSkip');
+        $result = $test->run();
+
+        $this->assertEquals(1, $result->skippedCount());
+        $this->assertEquals(
+          'PHPUnit 1111111 (or later) is required.',
+          $test->getStatusMessage()
+        );
+    }
+
+    public function testSkipsIfRequiresHigherVersionOfPHP()
+    {
+        $test   = new RequirementsTest('testAlwaysSkip2');
+        $result = $test->run();
+
+        $this->assertEquals(1, $result->skippedCount());
+        $this->assertEquals(
+          'PHP 9999999 (or later) is required.',
+          $test->getStatusMessage()
+        );
     }
 }

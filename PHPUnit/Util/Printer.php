@@ -2,7 +2,7 @@
 /**
  * PHPUnit
  *
- * Copyright (c) 2002-2010, Sebastian Bergmann <sebastian@phpunit.de>.
+ * Copyright (c) 2002-2011, Sebastian Bergmann <sebastian@phpunit.de>.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -37,7 +37,7 @@
  * @package    PHPUnit
  * @subpackage Util
  * @author     Sebastian Bergmann <sebastian@phpunit.de>
- * @copyright  2002-2010 Sebastian Bergmann <sebastian@phpunit.de>
+ * @copyright  2002-2011 Sebastian Bergmann <sebastian@phpunit.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @link       http://www.phpunit.de/
  * @since      File available since Release 2.0.0
@@ -49,13 +49,13 @@
  * @package    PHPUnit
  * @subpackage Util
  * @author     Sebastian Bergmann <sebastian@phpunit.de>
- * @copyright  2002-2010 Sebastian Bergmann <sebastian@phpunit.de>
+ * @copyright  2002-2011 Sebastian Bergmann <sebastian@phpunit.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    Release: @package_version@
  * @link       http://www.phpunit.de/
  * @since      Class available since Release 2.0.0
  */
-abstract class PHPUnit_Util_Printer
+class PHPUnit_Util_Printer
 {
     /**
      * If TRUE, flush output after every write.
@@ -98,6 +98,11 @@ abstract class PHPUnit_Util_Printer
 
                     $this->out = fsockopen($out[0], $out[1]);
                 } else {
+                    if (strpos($out, 'php://') === FALSE &&
+                        !is_dir(dirname($out))) {
+                        mkdir(dirname($out), 0777, TRUE);
+                    }
+
                     $this->out = fopen($out, 'wt');
                 }
 
@@ -113,11 +118,12 @@ abstract class PHPUnit_Util_Printer
      */
     public function flush()
     {
-        if ($this->out !== NULL && $this->outTarget !== 'php://stderr') {
+        if ($this->out && $this->outTarget !== 'php://stderr') {
             fclose($this->out);
         }
 
-        if ($this->printsHTML === TRUE && $this->outTarget !== NULL &&
+        if ($this->printsHTML === TRUE &&
+            $this->outTarget !== NULL &&
             strpos($this->outTarget, 'php://') !== 0 &&
             strpos($this->outTarget, 'socket://') !== 0 &&
             extension_loaded('tidy')) {
@@ -141,7 +147,7 @@ abstract class PHPUnit_Util_Printer
      */
     public function incrementalFlush()
     {
-        if ($this->out !== NULL) {
+        if ($this->out) {
             fflush($this->out);
         } else {
             flush();
@@ -153,7 +159,7 @@ abstract class PHPUnit_Util_Printer
      */
     public function write($buffer)
     {
-        if ($this->out !== NULL) {
+        if ($this->out) {
             fwrite($this->out, $buffer);
 
             if ($this->autoFlush) {

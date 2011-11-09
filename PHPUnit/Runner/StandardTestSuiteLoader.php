@@ -2,7 +2,7 @@
 /**
  * PHPUnit
  *
- * Copyright (c) 2002-2010, Sebastian Bergmann <sebastian@phpunit.de>.
+ * Copyright (c) 2002-2011, Sebastian Bergmann <sebastian@phpunit.de>.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -37,7 +37,7 @@
  * @package    PHPUnit
  * @subpackage Runner
  * @author     Sebastian Bergmann <sebastian@phpunit.de>
- * @copyright  2002-2010 Sebastian Bergmann <sebastian@phpunit.de>
+ * @copyright  2002-2011 Sebastian Bergmann <sebastian@phpunit.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @link       http://www.phpunit.de/
  * @since      File available since Release 2.0.0
@@ -49,7 +49,7 @@
  * @package    PHPUnit
  * @subpackage Runner
  * @author     Sebastian Bergmann <sebastian@phpunit.de>
- * @copyright  2002-2010 Sebastian Bergmann <sebastian@phpunit.de>
+ * @copyright  2002-2011 Sebastian Bergmann <sebastian@phpunit.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    Release: @package_version@
  * @link       http://www.phpunit.de/
@@ -74,22 +74,8 @@ class PHPUnit_Runner_StandardTestSuiteLoader implements PHPUnit_Runner_TestSuite
         }
 
         if (!class_exists($suiteClassName, FALSE)) {
-            if (!file_exists($suiteClassFile)) {
-                $includePaths = explode(PATH_SEPARATOR, get_include_path());
-
-                foreach ($includePaths as $includePath) {
-                    $file = $includePath . DIRECTORY_SEPARATOR .
-                            $suiteClassFile;
-
-                    if (file_exists($file)) {
-                        $suiteClassFile = $file;
-                        break;
-                    }
-                }
-            }
-
             PHPUnit_Util_Class::collectStart();
-            PHPUnit_Util_Fileloader::checkAndLoad($suiteClassFile);
+            $filename = PHPUnit_Util_Fileloader::checkAndLoad($suiteClassFile);
             $loadedClasses = PHPUnit_Util_Class::collectEnd();
         }
 
@@ -97,7 +83,9 @@ class PHPUnit_Runner_StandardTestSuiteLoader implements PHPUnit_Runner_TestSuite
             $offset = 0 - strlen($suiteClassName);
 
             foreach ($loadedClasses as $loadedClass) {
-                if (substr($loadedClass, $offset) === $suiteClassName) {
+                $class = new ReflectionClass($loadedClass);
+                if (substr($loadedClass, $offset) === $suiteClassName &&
+                    $class->getFileName() == $filename) {
                     $suiteClassName = $loadedClass;
                     break;
                 }
