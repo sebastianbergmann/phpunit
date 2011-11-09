@@ -670,9 +670,11 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
             if (isset($loggingConfiguration['coverage-text']) &&
                 !isset($arguments['coverageText'])) {
                 $arguments['coverageText'] = $loggingConfiguration['coverage-text'];
-            }
-            if (isset($loggingConfiguration['coverageTextShowUncoveredFiles'])) {
-                $arguments['coverageTextShowUncoveredFiles'] = $loggingConfiguration['coverageTextShowUncoveredFiles'];
+                if (isset($loggingConfiguration['coverageTextShowUncoveredFiles'])) {
+                    $arguments['coverageTextShowUncoveredFiles'] = $loggingConfiguration['coverageTextShowUncoveredFiles'];
+                } else {
+                    $arguments['coverageTextShowUncoveredFiles'] = FALSE;
+                }
             }
 
             if (isset($loggingConfiguration['json']) &&
