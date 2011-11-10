@@ -120,7 +120,12 @@ class PHPUnit_Util_Log_JSON extends PHPUnit_Util_Printer implements PHPUnit_Fram
      */
     public function addIncompleteTest(PHPUnit_Framework_Test $test, Exception $e, $time)
     {
-        $this->writeCase('error', $time, array(), 'Incomplete Test');
+        $this->writeCase(
+          'error',
+          $time,
+          PHPUnit_Util_Filter::getFilteredStacktrace($e, FALSE),
+          'Incomplete Test: ' . $e->getMessage()
+        );
 
         $this->currentTestPass = FALSE;
     }
@@ -134,7 +139,12 @@ class PHPUnit_Util_Log_JSON extends PHPUnit_Util_Printer implements PHPUnit_Fram
      */
     public function addSkippedTest(PHPUnit_Framework_Test $test, Exception $e, $time)
     {
-        $this->writeCase('error', $time, array(), 'Skipped Test');
+        $this->writeCase(
+          'error',
+          $time,
+          PHPUnit_Util_Filter::getFilteredStacktrace($e, FALSE),
+          'Skipped Test: ' . $e->getMessage()
+        );
 
         $this->currentTestPass = FALSE;
     }
