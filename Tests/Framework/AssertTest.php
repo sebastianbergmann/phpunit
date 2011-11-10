@@ -90,7 +90,7 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
             return;
         }
 
-       throw new PHPUnit_Framework_AssertionFailedError('Fail did not throw fail exception');
+        throw new PHPUnit_Framework_AssertionFailedError('Fail did not throw fail exception');
     }
 
     /**
