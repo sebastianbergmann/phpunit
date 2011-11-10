@@ -6,6 +6,7 @@ This is the list of changes for the PHPUnit 3.6 release series.
 PHPUnit 3.6.4
 
 * Fixed #328: Parsing of one line annotations didn't work
+* Fixed #306: Assertions with Binary Data Causes Problems. Strings with non printable chars will be shown in hexadecimal representation
 
 PHPUnit 3.6.3
 -------------

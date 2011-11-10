@@ -127,6 +127,9 @@ class PHPUnit_Util_Type
         }
 
         if (is_string($value)) {
+            if(preg_match('~[^[:print:][:space:]]~', $value)) {
+                return 'Binary String: 0x'.bin2hex($value);
+            }
             return "'" . str_replace(array("\n\r", "\r"), array("\n", "\n"), $value) . "'";
         }
 
