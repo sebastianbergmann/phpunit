@@ -3,11 +3,6 @@ PHPUnit 3.6
 
 This is the list of changes for the PHPUnit 3.6 release series.
 
-PHPUnit 3.6.4
--------------
-
-* Implemented #377: Show messages and stracktraces in JSON output for skipped and incomplete tests
-
 PHPUnit 3.6.3
 -------------
 
