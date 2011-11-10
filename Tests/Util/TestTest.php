@@ -150,4 +150,15 @@ class Util_TestTest extends PHPUnit_Framework_TestCase
      * @depends ほげ
      */
     public function methodForTestParseAnnotation() {}
+
+    public function testParseAnnotationThatIsOnlyOneLine() {
+        $this->assertEquals(
+          array('Bar'),
+          PHPUnit_Util_Test::getDependencies(get_class($this), 'methodForTestParseAnnotationThatIsOnlyOneLine')
+        );
+    }
+
+    /** @depends Bar */
+    public function methodForTestParseAnnotationThatIsOnlyOneLine() {}
+
 }
