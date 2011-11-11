@@ -22,7 +22,7 @@ class Issue244Test extends PHPUnit_Framework_TestCase {
      * @expectedException Issue244Exception
      * @expectedExceptionCode 123
      */
-    public function testFailsTooIfExpectionIsANumber() {
+    public function testFailsTooIfExpectationIsANumber() {
         throw new Issue244Exception;
     }
 
