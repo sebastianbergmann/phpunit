@@ -89,7 +89,12 @@ class Util_TestTest extends PHPUnit_Framework_TestCase
           array('class' => 'Class', 'code' => 1234, 'message' => 'Message'),
           PHPUnit_Util_Test::getExpectedException('ExceptionTest', 'testSix')
         );
-    }
+ 
+        $this->assertEquals(
+          array('class' => 'Class', 'code' => 'ExceptionCode', 'message' => 'Message'),
+          PHPUnit_Util_Test::getExpectedException('ExceptionTest', 'testSeven')
+        );
+   }
 
     public function testGetRequirements()
     {
@@ -150,4 +155,15 @@ class Util_TestTest extends PHPUnit_Framework_TestCase
      * @depends ほげ
      */
     public function methodForTestParseAnnotation() {}
+
+    public function testParseAnnotationThatIsOnlyOneLine() {
+        $this->assertEquals(
+          array('Bar'),
+          PHPUnit_Util_Test::getDependencies(get_class($this), 'methodForTestParseAnnotationThatIsOnlyOneLine')
+        );
+    }
+
+    /** @depends Bar */
+    public function methodForTestParseAnnotationThatIsOnlyOneLine() {}
+
 }

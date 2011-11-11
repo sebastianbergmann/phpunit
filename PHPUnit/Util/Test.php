@@ -279,6 +279,8 @@ class PHPUnit_Util_Test
     private static function parseAnnotations($docblock)
     {
         $annotations = array();
+        // Strip away the docblock header and footer to ease parsing of one line annotations
+        $docblock = substr($docblock, 3, -2);
 
         if (preg_match_all('/@(?P<name>[A-Za-z_-]+)(?:[ \t]+(?P<value>.*?))?[ \t]*\r?$/m', $docblock, $matches)) {
             $numMatches = count($matches[0]);

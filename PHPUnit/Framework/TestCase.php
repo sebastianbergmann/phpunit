@@ -931,8 +931,7 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
                     );
                 }
 
-                if (is_int($this->expectedExceptionCode) &&
-                    $this->expectedExceptionCode !== 0) {
+                if ($this->expectedExceptionCode) {
                     $this->assertEquals(
                       $this->expectedExceptionCode, $e->getCode()
                     );
