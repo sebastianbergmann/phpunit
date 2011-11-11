@@ -184,7 +184,6 @@ class PHPUnit_Util_Diff
             }
 
             if ($newChunk) {
-                // TODO: Implement chunk range information.
                 $buffer  .= "@@ @@\n";
                 $newChunk = FALSE;
             }
