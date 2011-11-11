@@ -135,7 +135,9 @@ class PHPUnit_Extensions_RepeatedTest extends PHPUnit_Extensions_TestDecorator
             $result = $this->createResult();
         }
 
+        //@codingStandardsIgnoreStart
         for ($i = 0; $i < $this->timesRepeat && !$result->shouldStop(); $i++) {
+            //@codingStandardsIgnoreEnd
             if ($this->test instanceof PHPUnit_Framework_TestSuite) {
                 $this->test->run(
                   $result,
