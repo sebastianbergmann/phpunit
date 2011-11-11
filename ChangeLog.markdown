@@ -8,6 +8,7 @@ PHPUnit 3.6.4
 * Fixed #328: Parsing of one line annotations didn't work
 * Fixed #306: Assertions with Binary Data Causes Problems. Strings with non printable chars will be shown in hexadecimal representation
 * Fixed #244: @expectedExceptionCode may now be a string
+* Fixed #264: XML test suite configuration using <file> tags failed when phpunit was run from another folder
 
 PHPUnit 3.6.3
 -------------
