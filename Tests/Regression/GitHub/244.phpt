@@ -31,7 +31,7 @@ Failed asserting that two strings are equal.
 
 %s:%i
 
-2) Issue244Test::testFailsTooIfExpectionIsANumber
+2) Issue244Test::testFailsTooIfExpectationIsANumber
 Failed asserting that '123StringCode' matches expected 123.
 
 %s:%i
