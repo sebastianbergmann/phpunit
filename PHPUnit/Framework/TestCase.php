@@ -767,6 +767,9 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
         // Clean up stat cache.
         clearstatcache();
 
+        // Backup the cwd
+        $currentWorkingDirectory = getcwd();
+
         try {
             if ($this->inIsolation) {
                 $this->setUpBeforeClass();
@@ -834,6 +837,11 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
 
         // Clean up stat cache.
         clearstatcache();
+
+        // Restore the cwd if it was changed by the test
+        if($currentWorkingDirectory != getcwd()) {
+            chdir($currentWorkingDirectory);
+        }
 
         // Restore the $GLOBALS array and static attributes.
         if ($this->runTestInSeparateProcess !== TRUE &&

@@ -57,6 +57,7 @@ require_once dirname(dirname(__FILE__)) . DIRECTORY_SEPARATOR . '_files' . DIREC
 require_once dirname(dirname(__FILE__)) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'ThrowExceptionTestCase.php';
 require_once dirname(dirname(__FILE__)) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'ThrowNoExceptionTestCase.php';
 require_once dirname(dirname(__FILE__)) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'WasRun.php';
+require_once dirname(dirname(__FILE__)) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'ChangeCurrentWorkingDirectoryTest.php';
 
 $GLOBALS['a']  = 'a';
 $_ENV['b']     = 'b';
@@ -372,4 +373,15 @@ class Framework_TestCaseTest extends PHPUnit_Framework_TestCase
           $test->getStatusMessage()
         );
     }
+
+    public function testCurrentWorkingDirectoryIsRestored()
+    {
+        $expectedCwd = getcwd();
+
+        $test = new ChangeCurrentWorkingDirectoryTest('testSomethingThatChangesTheCwd');
+        $test->run();
+
+        $this->assertSame($expectedCwd, getcwd());
+    }
+
 }
