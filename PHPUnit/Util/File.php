@@ -276,8 +276,7 @@ class PHPUnit_Util_File
                                 $done = TRUE;
                             }
                         }
-                    }
-                    while (!$done);
+                    } while (!$done);
 
                     if (isset($tokens[$i+2][1])) {
                         $functionName = $tokens[$i+2][1];
