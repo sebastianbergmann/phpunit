@@ -802,6 +802,8 @@ class PHPUnit_Util_Configuration
             $exclude[] = (string)$excludeNode->nodeValue;
         }
 
+        $fileIteratorFacade = new File_Iterator_Facade;
+
         foreach ($testSuiteNode->getElementsByTagName('directory') as $directoryNode) {
             $directory = (string)$directoryNode->nodeValue;
 
@@ -837,14 +839,12 @@ class PHPUnit_Util_Configuration
                 $suffix = 'Test.php';
             }
 
-            $facade = new File_Iterator_Facade;
-            $files  = $facade->getFilesAsArray(
+            $files = $fileIteratorFacade->getFilesAsArray(
               $this->toAbsolutePath($directory),
               $suffix,
               $prefix,
               $exclude
             );
-
             $suite->addTestFiles($files);
         }
 
@@ -854,6 +854,10 @@ class PHPUnit_Util_Configuration
             if (empty($file)) {
                 continue;
             }
+
+            // Get the absolute path to the file
+            $file = $fileIteratorFacade->getFilesAsArray($file);
+            $file = $file[0];
 
             if ($fileNode->hasAttribute('phpVersion')) {
                 $phpVersion = (string)$fileNode->getAttribute('phpVersion');
