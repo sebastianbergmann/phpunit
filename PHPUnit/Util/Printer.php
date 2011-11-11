@@ -114,11 +114,11 @@ class PHPUnit_Util_Printer
     }
 
     /**
-     * Flush buffer, optionally tidy up HTML, and close output.
+     * Flush buffer, optionally tidy up HTML, and close output if it's not to a php stream
      */
     public function flush()
     {
-        if ($this->out && $this->outTarget !== 'php://stderr') {
+        if ($this->out && strncmp($this->outTarget, 'php://', 6) !== 0) {
             fclose($this->out);
         }
 
