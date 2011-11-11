@@ -76,7 +76,7 @@ class PHPUnit_Framework_Constraint_And extends PHPUnit_Framework_Constraint
     {
         $this->constraints = array();
 
-        foreach($constraints as $key => $constraint) {
+        foreach ($constraints as $key => $constraint) {
             if (!($constraint instanceof PHPUnit_Framework_Constraint)) {
                 throw new InvalidArgumentException(
                   'All parameters to ' . __CLASS__ .
@@ -109,7 +109,7 @@ class PHPUnit_Framework_Constraint_And extends PHPUnit_Framework_Constraint
         $success = TRUE;
         $constraint = NULL;
 
-        foreach($this->constraints as $constraint) {
+        foreach ($this->constraints as $constraint) {
             if (!$constraint->evaluate($other, $description, TRUE)) {
                 $success = FALSE;
                 break;
@@ -134,7 +134,7 @@ class PHPUnit_Framework_Constraint_And extends PHPUnit_Framework_Constraint
     {
         $text = '';
 
-        foreach($this->constraints as $key => $constraint) {
+        foreach ($this->constraints as $key => $constraint) {
             if ($key > 0) {
                 $text .= ' and ';
             }

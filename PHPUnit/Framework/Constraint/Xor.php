@@ -71,7 +71,7 @@ class PHPUnit_Framework_Constraint_Xor extends PHPUnit_Framework_Constraint
     {
         $this->constraints = array();
 
-        foreach($constraints as $key => $constraint) {
+        foreach ($constraints as $key => $constraint) {
             if (!($constraint instanceof PHPUnit_Framework_Constraint)) {
                 $constraint = new PHPUnit_Framework_Constraint_IsEqual(
                   $constraint
@@ -104,7 +104,7 @@ class PHPUnit_Framework_Constraint_Xor extends PHPUnit_Framework_Constraint
         $lastResult = NULL;
         $constraint = NULL;
 
-        foreach($this->constraints as $constraint) {
+        foreach ($this->constraints as $constraint) {
             $result = $constraint->evaluate($other, $description, TRUE);
 
             if ($result === $lastResult) {
@@ -133,7 +133,7 @@ class PHPUnit_Framework_Constraint_Xor extends PHPUnit_Framework_Constraint
     {
         $text = '';
 
-        foreach($this->constraints as $key => $constraint) {
+        foreach ($this->constraints as $key => $constraint) {
             if ($key > 0) {
                 $text .= ' xor ';
             }
