@@ -15,11 +15,11 @@ PHPUnit_TextUI_Command::main();
 --EXPECTF--
 PHPUnit %s by Sebastian Bergmann.
 
-.F
+.FFF
 
 Time: %i %s, Memory: %sMb
 
-There was 1 failure:
+There were 3 failures:
 
 1) Issue244Test::testFails
 Failed asserting that two strings are equal.
@@ -31,5 +31,15 @@ Failed asserting that two strings are equal.
 
 %s:%i
 
+2) Issue244Test::testFailsTooIfExpectionIsANumber
+Failed asserting that '123StringCode' matches expected 123.
+
+%s:%i
+
+3) Issue244Test::testFailsTooIfExceptionCodeIsANumber
+Failed asserting that 123 matches expected '123String'.
+
+%s:%i
+
 FAILURES!
-Tests: 2, Assertions: 3, Failures: 1.
+Tests: 4, Assertions: 5, Failures: 3.
