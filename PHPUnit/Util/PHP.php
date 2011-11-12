@@ -93,18 +93,15 @@ abstract class PHPUnit_Util_PHP
     protected function getPhpBinary()
     {
         if ($this->phpBinary === NULL) {
-            if (PHP_SAPI == 'cli' && isset($_SERVER['_'])) {
-                if(strpos($_SERVER['_'], 'phpunit') !== FALSE) {
-                    $file = file($_SERVER['_']);
+            if (PHP_SAPI == 'cli' && isset($_SERVER['_']) &&
+                     strpos($_SERVER['_'], 'phpunit') !== FALSE) {
+                $file = file($_SERVER['_']);
 
-                    if (strpos($file[0], ' ') !== FALSE) {
-                        $tmp = explode(' ', $file[0]);
-                        $this->phpBinary = trim($tmp[1]);
-                    } else {
-                        $this->phpBinary = ltrim(trim($file[0]), '#!');
-                    }
+                if (strpos($file[0], ' ') !== FALSE) {
+                    $tmp = explode(' ', $file[0]);
+                    $this->phpBinary = trim($tmp[1]);
                 } else {
-                    $this->phpBinary = $_SERVER['_'];
+                    $this->phpBinary = ltrim(trim($file[0]), '#!');
                 }
             } else if (is_readable('@php_bin@')) {
                 $this->phpBinary = '@php_bin@';
