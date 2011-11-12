@@ -94,7 +94,7 @@ abstract class PHPUnit_Util_PHP
     {
         if ($this->phpBinary === NULL) {
             if (PHP_SAPI == 'cli' && isset($_SERVER['_'])) {
-                if(strpos($_SERVER['_'], 'phpunit') !== FALSE) {
+                if (strpos($_SERVER['_'], 'phpunit') !== FALSE) {
                     $file = file($_SERVER['_']);
 
                     if (strpos($file[0], ' ') !== FALSE) {
