@@ -5,10 +5,10 @@ This is the list of changes for the PHPUnit 3.6 release series.
 
 PHPUnit 3.6.4
 
-* Fixed #328: Parsing of one line annotations didn't work
-* Fixed #306: Assertions with Binary Data Causes Problems. Strings with non printable chars will be shown in hexadecimal representation
-* Fixed #244: @expectedExceptionCode may now be a string
-* Fixed #264: XML test suite configuration using <file> tags failed when phpunit was run from another folder
+* Fixed #244: `@expectedExceptionCode` may now be a string.
+* Fixed #264: XML test suite configuration using `<file>` tags failed when PHPUnit was run from another directory.
+* Fixed #306: Assertions with binary data caused problems. Strings with non-printable characters will now be shown in hexadecimal representation.
+* Fixed #328: Parsing of one line annotations did not work.
 
 PHPUnit 3.6.3
 -------------
@@ -37,12 +37,12 @@ PHPUnit 3.6.0
 * Added `returnSelf()` to ease the stubbing and mocking of fluent interfaces.
 * Added an option to disable the check for object identity in `assertContains()` and related methods.
 * Implemented comparator framework (used by `assertEquals()`, for instance) and improved test failure output.
-* Implemented GH-63: Invalid `@covers` annotations should produce a test error instead of aborting PHPUnit.
-* Implemented GH-82: Test Skeleton Generator should create `@covers` annotations.
-* Implemented GH-83: Test errors and failures as well as incomplete and skipped tests now get coloured letters in the test progress.
-* Implemented GH-88: `@expectedException` (and `setExpectedException()`) no longer accept `Exception` as the expected exception class.
-* Implemented GH-126: Show used configuration file.
-* Implemented GH-189: Add `@requires` annotation to specify the version of PHP and/or PHPUnit required to run a test.
+* Implemented #63: Invalid `@covers` annotations should produce a test error instead of aborting PHPUnit.
+* Implemented #82: Test Skeleton Generator should create `@covers` annotations.
+* Implemented #83: Test errors and failures as well as incomplete and skipped tests now get coloured letters in the test progress.
+* Implemented #88: `@expectedException` (and `setExpectedException()`) no longer accept `Exception` as the expected exception class.
+* Implemented #126: Show used configuration file.
+* Implemented #189: Add `@requires` annotation to specify the version of PHP and/or PHPUnit required to run a test.
 * `assertEquals()` now looks for (and invokes) a `__toString()` method when an object and string are compared.
 * `setUpBeforeClass()` and `tearDownAfterClass()` are no longer invoked when all tests of the class are skipped.
 * Using the `@small` (alias for `@group small`), `@medium` (alias for `@group medium`), and `@large` (alias for `@group large`) annotations, a test can now be marked to be of a certain size. By default, a test is "small".
