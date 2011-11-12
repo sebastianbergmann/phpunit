@@ -4,6 +4,7 @@ PHPUnit 3.6
 This is the list of changes for the PHPUnit 3.6 release series.
 
 PHPUnit 3.6.4
+-------------
 
 * Fixed #244: `@expectedExceptionCode` may now be a string.
 * Fixed #264: XML test suite configuration using `<file>` tags failed when PHPUnit was run from another directory.
