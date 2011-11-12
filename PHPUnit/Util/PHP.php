@@ -70,20 +70,20 @@ abstract class PHPUnit_Util_PHP
      *
      * When not set, the following assumptions will be made:
      *
-     *   1. When the PHP CLI/CGI binary configured with the PEAR Installer
-     *      (php_bin configuration value) is readable, it will be used.
-     *
-     *   2. When PHPUnit is run using the CLI SAPI and the $_SERVER['_']
+     *   1. When PHPUnit is run using the CLI SAPI and the $_SERVER['_']
      *      variable does not contain the string "PHPUnit", $_SERVER['_']
      *      is assumed to contain the path to the current PHP interpreter
      *      and that will be used.
      *
-     *   3. When PHPUnit is run using the CLI SAPI and the $_SERVER['_']
+     *   2. When PHPUnit is run using the CLI SAPI and the $_SERVER['_']
      *      variable contains the string "PHPUnit", the file that $_SERVER['_']
      *      points to is assumed to be the PHPUnit TextUI CLI wrapper script
      *      "phpunit" and the binary set up using #! on that file's first
      *      line of code is assumed to contain the path to the current PHP
      *      interpreter and that will be used.
+     *
+     *   3. When the PHP CLI/CGI binary configured with the PEAR Installer
+     *      (php_bin configuration value) is readable, it will be used.
      *
      *   4. The current PHP interpreter is assumed to be in the $PATH and
      *      to be invokable through "php".
@@ -93,20 +93,21 @@ abstract class PHPUnit_Util_PHP
     protected function getPhpBinary()
     {
         if ($this->phpBinary === NULL) {
-            if (is_readable('@php_bin@')) {
-                $this->phpBinary = '@php_bin@';
-            }
+            if (PHP_SAPI == 'cli' && isset($_SERVER['_'])) {
+                if(strpos($_SERVER['_'], 'phpunit') !== FALSE) {
+                    $file = file($_SERVER['_']);
 
-            else if (PHP_SAPI == 'cli' && isset($_SERVER['_']) &&
-                     strpos($_SERVER['_'], 'phpunit') !== FALSE) {
-                $file = file($_SERVER['_']);
-
-                if (strpos($file[0], ' ') !== FALSE) {
-                    $tmp = explode(' ', $file[0]);
-                    $this->phpBinary = trim($tmp[1]);
+                    if (strpos($file[0], ' ') !== FALSE) {
+                        $tmp = explode(' ', $file[0]);
+                        $this->phpBinary = trim($tmp[1]);
+                    } else {
+                        $this->phpBinary = ltrim(trim($file[0]), '#!');
+                    }
                 } else {
-                    $this->phpBinary = ltrim(trim($file[0]), '#!');
+                    $this->phpBinary = $_SERVER['_'];
                 }
+            } else if (is_readable('@php_bin@')) {
+                $this->phpBinary = '@php_bin@';
             }
 
             if (!is_readable($this->phpBinary)) {
