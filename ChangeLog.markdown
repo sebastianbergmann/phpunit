@@ -9,6 +9,7 @@ PHPUnit 3.6.4
 * Fixed #264: XML test suite configuration using `<file>` tags failed when PHPUnit was run from another directory.
 * Fixed #306: Assertions with binary data caused problems. Strings with non-printable characters will now be shown in hexadecimal representation.
 * Fixed #328: Parsing of one line annotations did not work.
+* Fixed #407: `$_SERVER['_']` wasn't working as a way to specify the php interpreter
 
 PHPUnit 3.6.3
 -------------
