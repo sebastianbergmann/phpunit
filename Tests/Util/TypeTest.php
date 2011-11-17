@@ -189,7 +189,7 @@ text'
 EOF
             ),
             array(
-                chr(0) . chr(1) . chr(2) . chr(3) . chr(4) . chr(5), 
+                chr(0) . chr(1) . chr(2) . chr(3) . chr(4) . chr(5),
                 'Binary String: 0x000102030405'
             ),
         );

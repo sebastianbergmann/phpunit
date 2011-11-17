@@ -50,7 +50,7 @@ class ExceptionTest extends PHPUnit_Framework_TestCase
      * @expectedExceptionMessage Message
      * @expectedExceptionCode ExceptionCode
      */
-    public function testSeven() 
+    public function testSeven()
     {
     }
 }
