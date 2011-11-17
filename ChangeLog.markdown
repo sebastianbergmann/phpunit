@@ -11,6 +11,7 @@ PHPUnit 3.6.4
 * Fixed #306: Assertions with binary data caused problems. Strings with non-printable characters will now be shown in hexadecimal representation.
 * Fixed #328: Parsing of one line annotations did not work.
 * Fixed #407: `$_SERVER['_']` was not utilized properly to specify the PHP interpreter used for process isolation.
+* Fixed #411: Do not swallow output printed from test(ed) code by default.
 
 PHPUnit 3.6.3
 -------------
