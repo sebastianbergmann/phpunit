@@ -398,9 +398,16 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
      */
     public function hasOutput()
     {
-        return !empty($this->output) &&
-               $this->outputExpectedString !== NULL &&
-               $this->outputExpectedRegex  !== NULL;
+        if (empty($this->output)) {
+            return FALSE;
+        }
+
+        if ($this->outputExpectedString !== NULL ||
+            $this->outputExpectedRegex  !== NULL) {
+            return FALSE;
+        }
+
+        return TRUE;
     }
 
     /**
