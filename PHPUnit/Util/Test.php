@@ -261,8 +261,13 @@ class PHPUnit_Util_Test
         }
 
         if (!empty($methodName) && !isset(self::$annotationCache[$className . '::' . $methodName])) {
-            $method = new ReflectionMethod($className, $methodName);
-            self::$annotationCache[$className . '::' . $methodName] = self::parseAnnotations($method->getDocComment());
+            try {
+                $method = new ReflectionMethod($className, $methodName);
+                $annotations = self::parseAnnotations($method->getDocComment());
+            } catch (ReflectionException $e) {
+                $annotations = array();
+            }
+            self::$annotationCache[$className . '::' . $methodName] = $annotations;
         }
 
         return array(
