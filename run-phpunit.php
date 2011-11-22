@@ -44,6 +44,9 @@ __DIR__ . '/phpunit-mock-objects/',
 __DIR__ . '/php-token-stream/',
 __DIR__ . '/dbunit/',
 __DIR__ . '/phpunit-selenium/',
+__DIR__ . '/phpunit-story/',
+__DIR__ . '/php-timer/',
+__DIR__ . '/php-invoker/',
 get_include_path()
 )));
 require 'phpunit.php';

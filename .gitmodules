@@ -19,3 +19,12 @@
 [submodule "phpunit-mock-objects"]
 	path = phpunit-mock-objects
 	url = git://github.com/sebastianbergmann/phpunit-mock-objects
+[submodule "php-invoker"]
+	path = php-invoker
+	url = https://github.com/sebastianbergmann/php-invoker.git
+[submodule "php-timer"]
+	path = php-timer
+	url = https://github.com/sebastianbergmann/php-timer.git
+[submodule "phpunit-story"]
+	path = phpunit-story
+	url = https://github.com/sebastianbergmann/phpunit-story.git
