@@ -1,0 +1,21 @@
+[submodule "php-code-coverage"]
+	path = php-code-coverage
+	url = git://github.com/sebastianbergmann/php-code-coverage
+[submodule "php-file-iterator"]
+	path = php-file-iterator
+	url = git://github.com/sebastianbergmann/php-file-iterator
+[submodule "php-text-template"]
+	path = php-text-template
+	url = git://github.com/sebastianbergmann/php-text-template
+[submodule "php-token-stream"]
+	path = php-token-stream
+	url = git://github.com/sebastianbergmann/php-token-stream
+[submodule "dbunit"]
+	path = dbunit
+	url = git://github.com/sebastianbergmann/dbunit
+[submodule "phpunit-selenium"]
+	path = phpunit-selenium
+	url = git://github.com/sebastianbergmann/phpunit-selenium
+[submodule "phpunit-mock-objects"]
+	path = phpunit-mock-objects
+	url = git://github.com/sebastianbergmann/phpunit-mock-objects
