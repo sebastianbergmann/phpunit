@@ -295,12 +295,9 @@ class PHPUnit_Framework_MockObject_Generator
     /**
      * Determines if an abstract class exists.
      *
-     * Since PHP version 5.0.2 class_exists() returns false in case the name of
-     * an interface definition was given.
-     *
      * @param string $className
      * @param boolean $callAutoload
-     * @return boolean true, in case the abstract class is available, else false.
+     * @return boolean true, in case the abstract class / interface is available, else false.
      */
     protected static function abstractClassExists($className, $callAutoload = true)
     {
