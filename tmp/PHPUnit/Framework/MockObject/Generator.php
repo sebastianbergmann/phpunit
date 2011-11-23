@@ -304,11 +304,10 @@ class PHPUnit_Framework_MockObject_Generator
      */
     protected static function abstractClassExists($className, $callAutoload = true)
     {
-        $doExist = class_exists($className, $callAutoload);
-        if (false === $doExist && version_compare(phpversion(), '5.0.2', '>=')) {
-            $doExist = interface_exists($className, $callAutoload);
+        if (false === class_exists($className, $callAutoload)) {
+            return interface_exists($className, $callAutoload);
         }
-        return $doExist;
+        return true;
     }
 
     /**
