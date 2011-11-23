@@ -30,6 +30,16 @@ class Framework_MockObject_GeneratorTest extends PHPUnit_Framework_TestCase
     }
 
     /**
+     * @covers PHPUnit_Framework_MockObject_Generator::getMockForAbstractClass
+     * @covers PHPUnit_Framework_MockObject_Generator::abstractClassExists
+     */
+    public function testGetMockForAbstractClassStubbingAbstractClass()
+    {
+        $mock = PHPUnit_Framework_MockObject_Generator::getMockForAbstractClass('AbstractMockTestClass');
+        $this->assertTrue(method_exists($mock, 'doSomething'));
+    }
+
+    /**
      * @dataProvider getMockForAbstractClassExpectsInvalidArgumentExceptionDataprovider
      * @covers PHPUnit_Framework_MockObject_Generator::getMockForAbstractClass
      * @expectedException InvalidArgumentException
@@ -49,10 +59,9 @@ class Framework_MockObject_GeneratorTest extends PHPUnit_Framework_TestCase
         $mock = PHPUnit_Framework_MockObject_Generator::getMockForAbstractClass('Tux');
     }
 
-    /*************************************************************************/
-    /* Dataprovider / Callbacks                                              */
-    /*************************************************************************/
-
+    /**
+     * Dataprovider for test "testGetMockForAbstractClassExpectingInvalidArgumentException"
+     */
     public static function getMockForAbstractClassExpectsInvalidArgumentExceptionDataprovider()
     {
         return array(
