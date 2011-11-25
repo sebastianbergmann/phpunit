@@ -21,7 +21,6 @@ class Framework_MockObject_GeneratorTest extends PHPUnit_Framework_TestCase
 
     /**
      * @covers PHPUnit_Framework_MockObject_Generator::getMockForAbstractClass
-     * @covers PHPUnit_Framework_MockObject_Generator::abstractClassExists
      */
     public function testGetMockForAbstractClassDoesNotFailWhenFakingInterfaces()
     {
@@ -31,7 +30,6 @@ class Framework_MockObject_GeneratorTest extends PHPUnit_Framework_TestCase
 
     /**
      * @covers PHPUnit_Framework_MockObject_Generator::getMockForAbstractClass
-     * @covers PHPUnit_Framework_MockObject_Generator::abstractClassExists
      */
     public function testGetMockForAbstractClassStubbingAbstractClass()
     {
@@ -51,7 +49,6 @@ class Framework_MockObject_GeneratorTest extends PHPUnit_Framework_TestCase
 
     /**
      * @covers PHPUnit_Framework_MockObject_Generator::getMockForAbstractClass
-     * @covers PHPUnit_Framework_MockObject_Generator::abstractClassExists
      * @expectedException PHPUnit_Framework_Exception
      */
     public function testGetMockForAbstractClassAnstractClassDoesNotExist()
