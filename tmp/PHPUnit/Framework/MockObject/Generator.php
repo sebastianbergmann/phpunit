@@ -259,7 +259,8 @@ class PHPUnit_Framework_MockObject_Generator
             throw PHPUnit_Util_InvalidArgumentHelper::factory(3, 'string');
         }
 
-        if (self::abstractClassExists($originalClassName, $callAutoload)) {
+        if (class_exists($originalClassName, $callAutoload) ||
+            interface_exists($originalClassName, $callAutoload)) {
             $methods   = array();
             $reflector = new ReflectionClass($originalClassName);
 
@@ -290,21 +291,6 @@ class PHPUnit_Framework_MockObject_Generator
               )
             );
         }
-    }
-
-    /**
-     * Determines if an abstract class exists.
-     *
-     * @param string $className
-     * @param boolean $callAutoload
-     * @return boolean true, in case the abstract class / interface is available, else false.
-     */
-    protected static function abstractClassExists($className, $callAutoload = true)
-    {
-        if (false === class_exists($className, $callAutoload)) {
-            return interface_exists($className, $callAutoload);
-        }
-        return true;
     }
 
     /**
