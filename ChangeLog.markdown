@@ -12,6 +12,7 @@ PHPUnit 3.6.4
 * Fixed #328: Parsing of one line annotations did not work.
 * Fixed #407: `$_SERVER['_']` was not utilized properly to specify the PHP interpreter used for process isolation.
 * Fixed #411: Do not swallow output printed from test(ed) code by default.
+* Fixed #413: phpt test failures display double diffs
 
 PHPUnit 3.6.3
 -------------
