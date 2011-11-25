@@ -117,16 +117,12 @@ class PHPUnit_Framework_TestFailure
         if ($e instanceof PHPUnit_Framework_SelfDescribing) {
             $buffer = $e->toString();
 
-            if ($e instanceof PHPUnit_Framework_ComparisonFailure) {
-                $buffer = trim($buffer . "\n" . $e->getDiff());
-            }
-
             if ($e instanceof PHPUnit_Framework_ExpectationFailedException && $e->getComparisonFailure()) {
-                $buffer = trim($buffer . "\n" . $e->getComparisonFailure()->getDiff());
+                $buffer = $buffer . "\n" . $e->getComparisonFailure()->getDiff();
             }
 
             if (!empty($buffer)) {
-                $buffer .= "\n";
+                $buffer = trim($buffer) . "\n";
             }
         }
 
