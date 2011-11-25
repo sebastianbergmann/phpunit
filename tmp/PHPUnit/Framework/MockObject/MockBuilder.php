@@ -190,7 +190,7 @@ class PHPUnit_Framework_MockObject_MockBuilder
         $this->originalConstructor = FALSE;
 
         return $this;
-    } 
+    }
 
     /**
      * Suppresses the invocation of the original clone constructor.
@@ -202,7 +202,7 @@ class PHPUnit_Framework_MockObject_MockBuilder
         $this->originalClone = FALSE;
 
         return $this;
-    } 
+    }
 
     /**
      * Suppresses the use of class autoloading while creating the mock object.
