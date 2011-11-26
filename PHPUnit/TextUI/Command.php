@@ -609,6 +609,12 @@ class PHPUnit_TextUI_Command
 
             $phpunit = $configuration->getPHPUnitConfiguration();
 
+            $configuration->handlePHPConfiguration();
+
+            if (!isset($this->arguments['bootstrap']) && isset($phpunit['bootstrap'])) {
+              $this->handleBootstrap($phpunit['bootstrap']);
+            }
+
             if (isset($phpunit['printerClass'])) {
                 if (isset($phpunit['printerFile'])) {
                     $file = $phpunit['printerFile'];
@@ -646,16 +652,6 @@ class PHPUnit_TextUI_Command
                     $this->showExtensionNotLoadedMessage(
                       'Xdebug', 'No code coverage will be generated.'
                     );
-                }
-            }
-
-            $configuration->handlePHPConfiguration();
-
-            if (!isset($this->arguments['bootstrap'])) {
-                $phpunitConfiguration = $configuration->getPHPUnitConfiguration();
-
-                if (isset($phpunitConfiguration['bootstrap'])) {
-                    $this->handleBootstrap($phpunitConfiguration['bootstrap']);
                 }
             }
 
