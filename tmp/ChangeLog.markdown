@@ -3,6 +3,11 @@ PHPUnit_MockObject 1.1
 
 This is the list of changes for the PHPUnit_MockObject 1.1 release series.
 
+PHPUnit_MockObject 1.1.1
+------------------------
+
+* `getMockForAbstractClass()` now supports the stubbing and mocking of interfaces.
+
 PHPUnit_MockObject 1.1.0
 ------------------------
 
