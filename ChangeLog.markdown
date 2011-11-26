@@ -6,7 +6,8 @@ This is the list of changes for the PHPUnit 3.6 release series.
 PHPUnit 3.6.5
 -------------
 
-* Fixed #413: phpt test failures display double diffs
+* Fixed #204: Bootstrap script should be loaded before trying to load `testSuiteLoaderClass`.
+* Fixed #413: PHPT test failures display double diffs.
 
 PHPUnit 3.6.4
 -------------
