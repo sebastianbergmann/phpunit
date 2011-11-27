@@ -2,7 +2,7 @@
 /**
  * PHPUnit
  *
- * Copyright (c) 2002-2011, Sebastian Bergmann <sebastian@phpunit.de>.
+ * Copyright (c) 2002-2011, Sebastian Bergmann <sb@sebastian-bergmann.de>.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -35,93 +35,56 @@
  * POSSIBILITY OF SUCH DAMAGE.
  *
  * @package    PHPUnit
- * @subpackage Framework_Constraint
  * @author     Bastian Feder <php@bastian-feder.de>
- * @copyright  2002-2011 Sebastian Bergmann <sebastian@phpunit.de>
+ * @copyright  2002-2011 Sebastian Bergmann <sb@sebastian-bergmann.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @link       http://www.phpunit.de/
  * @since      File available since Release 3.7.0
  */
 
 /**
- * Asserts whether or not two JSON objects are equal.
- *
  * @package    PHPUnit
- * @subpackage Framework_Constraint
  * @author     Bastian Feder <php@bastian-feder.de>
  * @copyright  2011 Bastian Feder <php@bastian-feder.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
- * @version    Release: @package_version@
  * @link       http://www.phpunit.de/
- * @since      Class available since Release 3.7.0
+ * @since      File available since Release 3.7.0
  */
-class PHPUnit_Framework_Constraint_JsonMatches extends PHPUnit_Framework_Constraint
+class Framework_Constraint_JsonMatchesTest extends PHPUnit_Framework_TestCase
 {
-    /**
-     * @var string
-     */
-    protected $value;
 
     /**
-     * Creates a new constraint.
-     *
-     * @param string $value
+     * @dataProvider evaluateDataprovider
+     * @covers PHPUnit_Framework_Constraint_JsonMatches::evaluate
+     * @covers PHPUnit_Framework_Constraint_JsonMatches::matches
+     * @covers PHPUnit_Framework_Constraint_JsonMatches::__construct
+     * @covers PHPUnit_Framework_Constraint_JsonMatches::getJsonError
      */
-    public function __construct($value)
+    public function testEvaluate($expected, $jsonOther, $jsonValue)
     {
-        $this->value = $value;
+        $constraint = new PHPUnit_Framework_Constraint_JsonMatches($jsonValue);
+        $this->assertEquals($expected, $constraint->evaluate($jsonOther, '', true));
     }
 
     /**
-     * Evaluates the constraint for parameter $other. Returns TRUE if the
-     * constraint is met, FALSE otherwise.
-     *
-     * This method can be overridden to implement the evaluation algorithm.
-     *
-     * @param mixed $other Value or object to evaluate.
-     * @return bool
+     * @covers PHPUnit_Framework_Constraint_JsonMatches::toString
      */
-    protected function matches($other)
+    public function testToString()
     {
-        $decodedOther = json_decode($other);
-        if (!is_object($decodedOther)) {
-            $this->failure_reason = $this->getJsonError();
-            return FALSE;
-        }
+        $jsonValue = json_encode(array('Mascott' => 'Tux'));
+        $constraint = new PHPUnit_Framework_Constraint_JsonMatches($jsonValue);
 
-        $decodedValue = json_decode($this->value);
-        if (!is_object($decodedValue)) {
-            $this->failure_reason = $this->getJsonError();
-            return FALSE;
-        }
-
-        return $decodedOther == $decodedValue;
+        $this->assertEquals('matches JSON string "' . $jsonValue . '"', $constraint->toString());
     }
 
-    /**
-     * Finds the last occurd JSON error.
-     *
-     * @param string $messagePrefix
-     * @return string The last JSON error prefixed with $messagePrefix.
-     */
-    protected function getJsonError($messagePrefix = 'Json error!')
-    {
-        return PHPUnit_Framework_Constraint_JsonMatches_ErrorMessageProvider::determineJsonError(
-            json_last_error(),
-            $messagePrefix
-        );
-    }
 
-    /**
-     * Returns a string representation of the object.
-     *
-     * @return string
-     */
-    public function toString()
+    public static function evaluateDataprovider()
     {
-        return sprintf(
-            'matches JSON string "%s"',
-            $this->value
+        return array(
+            'valid JSON' => array(true, json_encode(array('Mascott' => 'Tux')), json_encode(array('Mascott' => 'Tux'))),
+            'error syntax' => array(false, '{"Mascott"::}', json_encode(array('Mascott' => 'Tux'))),
+            'error UTF-8' => array(false, json_encode('\xB1\x31'), json_encode(array('Mascott' => 'Tux'))),
+            'invalid JSON in class instantiation' => array(false, json_encode(array('Mascott' => 'Tux')), '{"Mascott"::}'),
         );
     }
 }

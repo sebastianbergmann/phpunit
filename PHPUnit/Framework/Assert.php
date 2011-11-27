@@ -2112,18 +2112,18 @@ abstract class PHPUnit_Framework_Assert
         $expected = json_decode($expectedJson);
         if ($jsonError = json_last_error()) {
             $message .=
-                PHPUnit_Framework_Constraint_JsonMatchesErrorMessageProvider::determineJsonError(
+                PHPUnit_Framework_Constraint_JsonMatches_ErrorMessageProvider::determineJsonError(
                     $jsonError,
-                    PHPUnit_Framework_Constraint_JsonMatchesErrorMessageProvider::translateTypeToPrefix('expected')
+                    PHPUnit_Framework_Constraint_JsonMatches_ErrorMessageProvider::translateTypeToPrefix('expected')
                 );
         }
 
         $actual   = json_decode($actualJson);
         if ($jsonError = json_last_error()) {
             $message .=
-                PHPUnit_Framework_Constraint_JsonMatchesErrorMessageProvider::determineJsonError(
+                PHPUnit_Framework_Constraint_JsonMatches_ErrorMessageProvider::determineJsonError(
                     $jsonError,
-                    PHPUnit_Framework_Constraint_JsonMatchesErrorMessageProvider::translateTypeToPrefix('actual')
+                    PHPUnit_Framework_Constraint_JsonMatches_ErrorMessageProvider::translateTypeToPrefix('actual')
                 );
         }
         return self::assertEquals($expected, $actual, $message);
@@ -2141,18 +2141,18 @@ abstract class PHPUnit_Framework_Assert
         $expected = json_decode($expectedJson);
         if ($jsonError = json_last_error()) {
             $message .=
-                PHPUnit_Framework_Constraint_JsonMatchesErrorMessageProvider::determineJsonError(
+                PHPUnit_Framework_Constraint_JsonMatches_ErrorMessageProvider::determineJsonError(
                     $jsonError,
-                    PHPUnit_Framework_Constraint_JsonMatchesErrorMessageProvider::translateTypeToPrefix('expected')
+                    PHPUnit_Framework_Constraint_JsonMatches_ErrorMessageProvider::translateTypeToPrefix('expected')
                 );
         }
 
         $actual   = json_decode($actualJson);
         if ($jsonError = json_last_error()) {
             $message .=
-                PHPUnit_Framework_Constraint_JsonMatchesErrorMessageProvider::determineJsonError(
+                PHPUnit_Framework_Constraint_JsonMatches_ErrorMessageProvider::determineJsonError(
                     $jsonError,
-                    PHPUnit_Framework_Constraint_JsonMatchesErrorMessageProvider::translateTypeToPrefix('actual')
+                    PHPUnit_Framework_Constraint_JsonMatches_ErrorMessageProvider::translateTypeToPrefix('actual')
                 );
         }
 
