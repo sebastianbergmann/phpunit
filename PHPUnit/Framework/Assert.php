@@ -2101,6 +2101,163 @@ abstract class PHPUnit_Framework_Assert
     }
 
     /**
+     * Asserts that two given JSON encoded objects or arrays are equal.
+     *
+     * @param string $expectedJson
+     * @param string $actualJson
+     * @param string $message
+     */
+    public static function assertJsonStringEqualsJsonString($expectedJson, $actualJson, $message = '')
+    {
+        $expected = json_decode($expectedJson);
+        if ($jsonError = json_last_error()) {
+            $message .=
+                PHPUnit_Framework_Constraint_JsonMatchesErrorMessageProvider::determineJsonError(
+                    $jsonError,
+                    PHPUnit_Framework_Constraint_JsonMatchesErrorMessageProvider::translateTypeToPrefix('expected')
+                );
+        }
+
+        $actual   = json_decode($actualJson);
+        if ($jsonError = json_last_error()) {
+            $message .=
+                PHPUnit_Framework_Constraint_JsonMatchesErrorMessageProvider::determineJsonError(
+                    $jsonError,
+                    PHPUnit_Framework_Constraint_JsonMatchesErrorMessageProvider::translateTypeToPrefix('actual')
+                );
+        }
+        return self::assertEquals($expected, $actual, $message);
+    }
+
+    /**
+     * Asserts that two given JSON encoded objects or arrays are not equal.
+     *
+     * @param string $expectedJson
+     * @param string $actualJson
+     * @param string $message
+     */
+    public static function assertJsonStringNotEqualsJsonString($expectedJson, $actualJson, $message = '')
+    {
+        $expected = json_decode($expectedJson);
+        if ($jsonError = json_last_error()) {
+            $message .=
+                PHPUnit_Framework_Constraint_JsonMatchesErrorMessageProvider::determineJsonError(
+                    $jsonError,
+                    PHPUnit_Framework_Constraint_JsonMatchesErrorMessageProvider::translateTypeToPrefix('expected')
+                );
+        }
+
+        $actual   = json_decode($actualJson);
+        if ($jsonError = json_last_error()) {
+            $message .=
+                PHPUnit_Framework_Constraint_JsonMatchesErrorMessageProvider::determineJsonError(
+                    $jsonError,
+                    PHPUnit_Framework_Constraint_JsonMatchesErrorMessageProvider::translateTypeToPrefix('actual')
+                );
+        }
+
+        self::assertNotEquals($expected, $actual, $message);
+    }
+
+    /**
+     * Asserts that the generated JSON encoded object and the content of the given file are equal.
+     *
+     * @param string $expectedFile
+     * @param string $actualJson
+     * @param string $message
+     */
+    public static function assertJsonStringEqualsJsonFile($expectedFile, $actualJson, $message = '')
+    {
+        self::assertFileExists($expectedFile, $message);
+
+        if (!is_string($actualJson)) {
+            throw PHPUnit_Util_InvalidArgumentHelper::factory(2, 'string');
+        }
+
+        // call constraint
+        $constraint = new PHPUnit_Framework_Constraint_JsonMatches(
+            file_get_contents($expectedFile)
+        );
+
+        self::assertThat($actualJson, $constraint, $message);
+    }
+
+    /**
+     * Asserts that the generated JSON encoded object and the content of the given file are not equal.
+     *
+     * @param string $expectedFile
+     * @param string $actualJson
+     * @param string $message
+     */
+    public static function assertJsonStringNotEqualsJsonFile($expectedFile, $actualJson, $message = '')
+    {
+        self::assertFileExists($expectedFile, $message);
+
+        if (!is_string($actualJson)) {
+            throw PHPUnit_Util_InvalidArgumentHelper::factory(2, 'string');
+        }
+
+        // call constraint
+        $constraint = new PHPUnit_Framework_Constraint_JsonMatches(
+            file_get_contents($expectedFile)
+        );
+
+        self::assertThat($actualJson, new PHPUnit_Framework_Constraint_Not($constraint), $message);
+    }
+
+    /**
+     * Asserts that two JSON files are not equal.
+     *
+     * @param  string $expectedFile
+     * @param  string $actualFile
+     * @param  string $message
+     */
+    public static function assertJsonFileNotEqualsJsonFile($expectedFile, $actualFile, $message = '')
+    {
+        self::assertFileExists($expectedFile, $message);
+        self::assertFileExists($actualFile, $message);
+
+        $actualJson = file_get_contents($actualFile);
+        $expectedJson = file_get_contents($expectedFile);
+
+        // call constraint
+        $constraintExpected = new PHPUnit_Framework_Constraint_JsonMatches(
+            file_get_contents($expectedFile)
+        );
+
+        $constraintActual = new PHPUnit_Framework_Constraint_JsonMatches($actualJson);
+
+        self::assertThat($expectedJson, new PHPUnit_Framework_Constraint_Not($constraintActual), $message);
+        self::assertThat($actualJson, new PHPUnit_Framework_Constraint_Not($constraintExpected), $message);
+    }
+
+    /**
+     * Asserts that two JSON files are equal.
+     *
+     * @param  string $expectedFile
+     * @param  string $actualFile
+     * @param  string $message
+     */
+    public static function assertJsonFileEqualsJsonFile($expectedFile, $actualFile, $message = '')
+    {
+        self::assertFileExists($expectedFile, $message);
+        self::assertFileExists($actualFile, $message);
+
+        $actualJson = file_get_contents($actualFile);
+        $expectedJson = file_get_contents($expectedFile);
+
+        // call constraint
+        $constraintExpected = new PHPUnit_Framework_Constraint_JsonMatches(
+            file_get_contents($expectedFile)
+        );
+
+        $constraintActual = new PHPUnit_Framework_Constraint_JsonMatches($actualJson);
+
+        self::assertThat($expectedJson, $constraintActual, $message);
+        self::assertThat($actualJson, $constraintExpected, $message);
+    }
+
+    /**
      * Returns a PHPUnit_Framework_Constraint_And matcher object.
      *
      * @return PHPUnit_Framework_Constraint_And
