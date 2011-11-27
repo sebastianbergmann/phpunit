@@ -40,22 +40,22 @@
  * @copyright  2002-2011 Sebastian Bergmann <sebastian@phpunit.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @link       http://www.phpunit.de/
- * @since      File available since Release 3.6.0
+ * @since      File available since Release 3.7.0
  */
 
 /**
  * Provides human readable messages for each JSON error.
  *
- * @package    WsUnit
+ * @package    PHPUnit
  * @subpackage Framework_Constraint
  * @author     Bastian Feder <php@bastian-feder.de>
  * @copyright  2011 Bastian Feder <php@bastian-feder.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    Release: @package_version@
  * @link       http://www.phpunit.de/
- * @since      Class available since Release 3.6.0
+ * @since      Class available since Release 3.7.0
  */
-class PHPUnit_Framework_Constraint_JsonMatchesErrorMessageProvider
+class PHPUnit_Framework_Constraint_JsonMatches_ErrorMessageProvider
 {
     /**
      * Translatets accourd JSON error to a human readable string.
