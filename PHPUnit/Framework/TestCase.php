@@ -674,7 +674,7 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
               sprintf(
                 '%s%sProcess%sTestCaseMethod.tpl',
 
-                dirname(__FILE__),
+                __DIR__,
                 DIRECTORY_SEPARATOR,
                 DIRECTORY_SEPARATOR,
                 DIRECTORY_SEPARATOR

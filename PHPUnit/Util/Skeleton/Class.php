@@ -110,7 +110,7 @@ class PHPUnit_Util_Skeleton_Class extends PHPUnit_Util_Skeleton
               sprintf(
                 '%s%sTemplate%sMethod.tpl',
 
-                dirname(__FILE__),
+                __DIR__,
                 DIRECTORY_SEPARATOR,
                 DIRECTORY_SEPARATOR
               )
@@ -129,7 +129,7 @@ class PHPUnit_Util_Skeleton_Class extends PHPUnit_Util_Skeleton
           sprintf(
             '%s%sTemplate%sClass.tpl',
 
-            dirname(__FILE__),
+            __DIR__,
             DIRECTORY_SEPARATOR,
             DIRECTORY_SEPARATOR
           )
