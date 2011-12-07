@@ -26,6 +26,7 @@
   <delete dir="${basedir}/build/coverage"/>
   <delete dir="${basedir}/build/logs"/>
   <delete dir="${basedir}/build/pdepend"/>
+  <delete dir="${basedir}/build/phar"/>
  </target>
 
  <target name="prepare" depends="clean,phpab"
@@ -35,6 +36,7 @@
   <mkdir dir="${basedir}/build/coverage"/>
   <mkdir dir="${basedir}/build/logs"/>
   <mkdir dir="${basedir}/build/pdepend"/>
+  <mkdir dir="${basedir}/build/phar"/>
  </target>
 
  <target name="phpab" description="Generate autoloader scripts">
@@ -145,6 +147,50 @@
    <arg path="${basedir}/PHPUnit" />
    <arg value="--output" />
    <arg path="${basedir}/build/code-browser" />
+  </exec>
+ </target>
+
+ <target name="phar"
+         description="Create PHAR archive of PHPUnit and all its dependencies"
+         depends="clean,prepare">
+  <exec executable="pear">
+   <arg value="install" />
+   <arg value="--force" />
+   <arg value="--alldeps" />
+   <arg value="--installroot" />
+   <arg path="${basedir}/build/phar" />
+   <arg value="pear.phpunit.de/PHPUnit" />
+   <arg value="pear.phpunit.de/PHPUnit_Selenium" />
+   <arg value="pear.phpunit.de/DbUnit" />
+  </exec>
+
+  <delete dir="${basedir}/build/phar/tmp"/>
+
+  <move todir="${basedir}/build/phar/File">
+   <fileset dir="${basedir}/build/phar/usr/local/php-5.4/lib/php/File"/>
+  </move>
+
+  <move todir="${basedir}/build/phar/PHP">
+   <fileset dir="${basedir}/build/phar/usr/local/php-5.4/lib/php/PHP"/>
+  </move>
+
+  <move todir="${basedir}/build/phar/PHPUnit">
+   <fileset dir="${basedir}/build/phar/usr/local/php-5.4/lib/php/PHPUnit"/>
+  </move>
+
+  <move todir="${basedir}/build/phar/SymfonyComponents">
+   <fileset dir="${basedir}/build/phar/usr/local/php-5.4/lib/php/SymfonyComponents"/>
+  </move>
+
+  <move todir="${basedir}/build/phar/Text">
+   <fileset dir="${basedir}/build/phar/usr/local/php-5.4/lib/php/Text"/>
+  </move>
+
+  <delete dir="${basedir}/build/phar/usr"/>
+
+  <exec executable="build/create-phar.php">
+   <arg path="${basedir}/build/phpunit.phar" />
+   <arg path="${basedir}/build/phar" />
   </exec>
  </target>
 </project>
