@@ -7,6 +7,7 @@ PHPUnit 3.6.5
 -------------
 
 * Fixed #413: phpt test failures display double diffs
+* Fixed #430: OutputTestCase didn't work with @depends. Please note that this way of output testing is still deprecated
 
 PHPUnit 3.6.4
 -------------
