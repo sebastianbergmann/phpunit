@@ -71,6 +71,6 @@ abstract class PHPUnit_Extensions_OutputTestCase extends PHPUnit_Framework_TestC
           'PHPUnit_Extensions_OutputTestCase.'
         );
 
-        parent::runTest();
+        return parent::runTest();
     }
 }
