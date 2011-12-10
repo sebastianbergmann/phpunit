@@ -59,6 +59,9 @@ require_once 'PHPUnit/Util/Type.php';
  */
 class Util_TypeTest extends PHPUnit_Framework_TestCase
 {
+    const BINARY_STRING = true;
+    const NOT_BINARY_STRING = false;
+
     /**
      * Removes spaces in front newlines
      *
@@ -239,20 +242,26 @@ EOF
     public function stringExportProvider()
     {
         return array(
-            array(implode('', array_map('chr', range(0x00, 0x08))), '/^Binary String: 0x000102030405060708$/'),
-            array(implode('', array_map('chr', range(0x09, 0x0d))), "/^'.+'\$/s"),
-            array(implode('', array_map('chr', range(0x20, 0x7e))), "/^'.+'\$/s"),
-            array(chr(0x7f), '/^Binary String: 0x7f$/'),
-            array(implode('', array_map('chr', range(0x80, 0xff))), "/^'.+'\$/s"),
-            array(chr(0x7f) . chr(0x80), '/^Binary String: 0x7f80$/'),
-            array('', "/^''\$/s"),
+            array(implode('', array_map('chr', range(0x00, 0x08))), self::BINARY_STRING),
+            array(implode('', array_map('chr', range(0x0e, 0x1f))), self::BINARY_STRING),
+            array(chr(0x00) . chr(0x09), self::BINARY_STRING),
+            array(implode('', array_map('chr', range(0x09, 0x0d))), self::NOT_BINARY_STRING),
+            array(implode('', array_map('chr', range(0x20, 0x7f))), self::NOT_BINARY_STRING),
+            array(implode('', array_map('chr', range(0x80, 0xff))), self::NOT_BINARY_STRING),
+            array('', self::NOT_BINARY_STRING),
         );
     }
+
 
     /**
      * @dataProvider stringExportProvider
      */
-    public function testStringExport($value, $expected) {
-        $this->assertRegExp($expected, PHPUnit_Util_Type::export($value));
+    public function testStringExport($value, $expected)
+    {
+        if ($expected == self::BINARY_STRING) {
+            $this->assertRegExp('/^Binary String:/', PHPUnit_Util_Type::export($value));
+        } elseif ($expected == self::NOT_BINARY_STRING) {
+            $this->assertRegExp("/^'.*'\$/s", PHPUnit_Util_Type::export($value));
+        }
     }
 }
