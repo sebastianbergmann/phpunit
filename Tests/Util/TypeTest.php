@@ -235,4 +235,24 @@ EOF
     {
         $this->assertSame($expected, self::trimnl(PHPUnit_Util_Type::shortenedExport($value)));
     }
+
+    public function stringExportProvider()
+    {
+        return array(
+            array(implode('', array_map('chr', range(0x00, 0x08))), '/^Binary String: 0x000102030405060708$/'),
+            array(implode('', array_map('chr', range(0x09, 0x0d))), "/^'.+'\$/s"),
+            array(implode('', array_map('chr', range(0x20, 0x7e))), "/^'.+'\$/s"),
+            array(chr(0x7f), '/^Binary String: 0x7f$/'),
+            array(implode('', array_map('chr', range(0x80, 0xff))), "/^'.+'\$/s"),
+            array(chr(0x7f) . chr(0x80), '/^Binary String: 0x7f80$/'),
+            array('', "/^''\$/s"),
+        );
+    }
+
+    /**
+     * @dataProvider stringExportProvider
+     */
+    public function testStringExport($value, $expected) {
+        $this->assertRegExp($expected, PHPUnit_Util_Type::export($value));
+    }
 }
