@@ -59,9 +59,6 @@ require_once 'PHPUnit/Util/Type.php';
  */
 class Util_TypeTest extends PHPUnit_Framework_TestCase
 {
-    const BINARY_STRING = true;
-    const NOT_BINARY_STRING = false;
-
     /**
      * Removes spaces in front newlines
      *
@@ -195,6 +192,18 @@ EOF
                 chr(0) . chr(1) . chr(2) . chr(3) . chr(4) . chr(5),
                 'Binary String: 0x000102030405'
             ),
+            array(
+                implode('', array_map('chr', range(0x0e, 0x1f))),
+                'Binary String: 0x0e0f101112131415161718191a1b1c1d1e1f'
+            ),
+            array(
+                chr(0x00) . chr(0x09),
+                'Binary String: 0x0009'
+            ),
+            array(
+                '',
+                "''"
+            ),
         );
     }
 
@@ -239,29 +248,21 @@ EOF
         $this->assertSame($expected, self::trimnl(PHPUnit_Util_Type::shortenedExport($value)));
     }
 
-    public function stringExportProvider()
+    public function provideNonBinaryMultibyteStrings()
     {
         return array(
-            array(implode('', array_map('chr', range(0x00, 0x08))), self::BINARY_STRING),
-            array(implode('', array_map('chr', range(0x0e, 0x1f))), self::BINARY_STRING),
-            array(chr(0x00) . chr(0x09), self::BINARY_STRING),
-            array(implode('', array_map('chr', range(0x09, 0x0d))), self::NOT_BINARY_STRING),
-            array(implode('', array_map('chr', range(0x20, 0x7f))), self::NOT_BINARY_STRING),
-            array(implode('', array_map('chr', range(0x80, 0xff))), self::NOT_BINARY_STRING),
-            array('', self::NOT_BINARY_STRING),
+            array(implode('', array_map('chr', range(0x09, 0x0d))), 5),
+            array(implode('', array_map('chr', range(0x20, 0x7f))), 96),
+            array(implode('', array_map('chr', range(0x80, 0xff))), 128),
         );
     }
 
 
     /**
-     * @dataProvider stringExportProvider
+     * @dataProvider provideNonBinaryMultibyteStrings
      */
-    public function testStringExport($value, $expected)
+    public function testNonBinaryStringExport($value, $expectedLength)
     {
-        if ($expected == self::BINARY_STRING) {
-            $this->assertRegExp('/^Binary String:/', PHPUnit_Util_Type::export($value));
-        } elseif ($expected == self::NOT_BINARY_STRING) {
-            $this->assertRegExp("/^'.*'\$/s", PHPUnit_Util_Type::export($value));
-        }
+        $this->assertRegExp("~'.{{$expectedLength}}'\$~s", PHPUnit_Util_Type::export($value));
     }
 }
