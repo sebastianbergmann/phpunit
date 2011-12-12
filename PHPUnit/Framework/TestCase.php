@@ -283,6 +283,11 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
     private $outputExpectedString = NULL;
 
     /**
+     * @var bool
+     */
+    private $hasPerformedExpectationsOnOutput = FALSE;
+
+    /**
      * @var mixed
      */
     private $outputCallback = FALSE;
@@ -438,6 +443,14 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
         if (is_string($expectedString) || is_null($expectedString)) {
             $this->outputExpectedString = $expectedString;
         }
+    }
+
+    /**
+     * @return bool
+     * @since Method available since Release 3.6.5
+     */
+    public function hasPerformedExpectationsOnOutput() {
+        return $this->hasPerformedExpectationsOnOutput;
     }
 
     /**
@@ -877,11 +890,13 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
                 if ($this->outputExpectedRegex !== NULL) {
                     $this->assertRegExp($this->outputExpectedRegex, $this->output);
                     $this->outputExpectedRegex = NULL;
+                    $this->hasPerformedExpectationsOnOutput = TRUE;
                 }
 
                 else if ($this->outputExpectedString !== NULL) {
                     $this->assertEquals($this->outputExpectedString, $this->output);
                     $this->outputExpectedString = NULL;
+                    $this->hasPerformedExpectationsOnOutput = TRUE;
                 }
             }
 
