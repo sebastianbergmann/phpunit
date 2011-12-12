@@ -105,19 +105,19 @@ abstract class PHPUnit_Util_PHP
                     } else {
                         $this->phpBinary = ltrim(trim($file[0]), '#!');
                     }
-                } else if(strpos(basename($_SERVER['_']), 'php') !== false)  {
+                } else if (strpos(basename($_SERVER['_']), 'php') !== FALSE) {
                     $this->phpBinary = $_SERVER['_'];
                 }
             }
 
-            if($this->phpBinary === NULL) {
+            if ($this->phpBinary === NULL) {
                 $possibleBinaryLocations = array(
                     PHP_BINDIR . '/php',
                     PHP_BINDIR . '/php-cli.exe',
                     PHP_BINDIR . '/php.exe',
                     '@php_bin@',
                 );
-                foreach($possibleBinaryLocations as $binary) {
+                foreach ($possibleBinaryLocations as $binary) {
                     if (is_readable($binary)) {
                         $this->phpBinary = $binary;
                         break;

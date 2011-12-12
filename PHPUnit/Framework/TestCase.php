@@ -449,7 +449,8 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
      * @return bool
      * @since Method available since Release 3.6.5
      */
-    public function hasPerformedExpectationsOnOutput() {
+    public function hasPerformedExpectationsOnOutput()
+    {
         return $this->hasPerformedExpectationsOnOutput;
     }
 
