@@ -127,7 +127,8 @@ class PHPUnit_Util_Type
         }
 
         if (is_string($value)) {
-            if (preg_match('~[^[:print:][:space:]]~', $value)) {
+            // Match for most non printable chars somewhat taking multibyte chars into account
+            if (preg_match('/[^\x09-\x0d\x20-\xff]/', $value)) {
                 return 'Binary String: 0x'.bin2hex($value);
             }
 

@@ -612,7 +612,7 @@ class PHPUnit_TextUI_Command
             $configuration->handlePHPConfiguration();
 
             if (!isset($this->arguments['bootstrap']) && isset($phpunit['bootstrap'])) {
-              $this->handleBootstrap($phpunit['bootstrap']);
+                $this->handleBootstrap($phpunit['bootstrap']);
             }
 
             if (isset($phpunit['printerClass'])) {

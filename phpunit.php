@@ -36,11 +36,9 @@
  */
 
 if (strpos('@php_bin@', '@php_bin') === 0) {
-    set_include_path(dirname(__FILE__) . PATH_SEPARATOR . get_include_path());
+    require dirname(__FILE__) . DIRECTORY_SEPARATOR . 'PHPUnit/Autoload.php';
 } else {
-    set_include_path('@php_dir@' . PATH_SEPARATOR . get_include_path());
+    require '@php_dir@' . DIRECTORY_SEPARATOR . 'PHPUnit/Autoload.php';
 }
-
-require 'PHPUnit/Autoload.php';
 
 PHPUnit_TextUI_Command::main();

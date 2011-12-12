@@ -718,7 +718,6 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
                 $arguments['testdoxTextFile'] = $loggingConfiguration['testdox-text'];
             }
 
-
             if ((isset($arguments['coverageClover']) ||
                 isset($arguments['reportDirectory']) ||
                 isset($arguments['coveragePHP']) ||
