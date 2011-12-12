@@ -9,6 +9,7 @@ PHPUnit 3.6.5
 * Fixed #204: Bootstrap script should be loaded before trying to load `testSuiteLoaderClass`.
 * Fixed #413: PHPT test failures display double diffs.
 * Fixed #430: OutputTestCase didn't work with @depends. Please note that this way of output testing is still deprecated.
+* Fixed #432: Process isolation didn't work when invoked through ant or phing due to php binary detection issues.
 
 PHPUnit 3.6.4
 -------------
