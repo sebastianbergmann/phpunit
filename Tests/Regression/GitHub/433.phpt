@@ -13,8 +13,22 @@ PHPUnit_TextUI_Command::main();
 --EXPECTF--
 PHPUnit %s by Sebastian Bergmann.
 
-..
+..F
 
 Time: %i %s, Memory: %sMb
 
-OK (2 tests, 2 assertions)
+There was 1 failure:
+
+1) Issue433Test::testNotMatchingOutput
+Failed asserting that two strings are equal.
+--- Expected
++++ Actual
+@@ @@
+-'foo'
++'bar'
+
+%s:%i
+
+FAILURES!
+Tests: 3, Assertions: 3, Failures: 1.
+

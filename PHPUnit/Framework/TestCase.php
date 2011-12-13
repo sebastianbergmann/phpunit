@@ -889,15 +889,15 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
         if (!isset($e)) {
             try {
                 if ($this->outputExpectedRegex !== NULL) {
+                    $this->hasPerformedExpectationsOnOutput = TRUE;
                     $this->assertRegExp($this->outputExpectedRegex, $this->output);
                     $this->outputExpectedRegex = NULL;
-                    $this->hasPerformedExpectationsOnOutput = TRUE;
                 }
 
                 else if ($this->outputExpectedString !== NULL) {
+                    $this->hasPerformedExpectationsOnOutput = TRUE;
                     $this->assertEquals($this->outputExpectedString, $this->output);
                     $this->outputExpectedString = NULL;
-                    $this->hasPerformedExpectationsOnOutput = TRUE;
                 }
             }
 
