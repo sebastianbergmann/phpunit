@@ -104,12 +104,12 @@ class PHPUnit_Framework_Constraint_StringMatches extends PHPUnit_Framework_Const
         $this->string  = $string;
     }
 
-    protected function failureDescription($other) 
+    protected function failureDescription($other)
     {
         return "format description matches text";
     }
 
-    protected function additionalFailureDescription($other) 
+    protected function additionalFailureDescription($other)
     {
         return PHPUnit_Util_Diff::diff($this->string, $other);
     }
