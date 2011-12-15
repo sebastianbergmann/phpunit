@@ -15,11 +15,11 @@ PHPUnit_TextUI_Command::main();
 --EXPECTF--
 PHPUnit %s by Sebastian Bergmann.
 
-FFFFFFFFFFFF
+FFFFFFFFFFFFF
 
 Time: %i %s, Memory: %sMb
 
-There were 12 failures:
+There were 13 failures:
 
 1) FailureTest::testAssertArrayEqualsArray
 message
@@ -85,7 +85,12 @@ Failed asserting that two strings are equal.
 
 7) FailureTest::testAssertStringMatchesFormat
 message
-Failed asserting that '**' matches PCRE pattern "/^\*[^\r\n]+\*$/s".
+Failed asserting that format description matches text.
+--- Expected
++++ Actual
+@@ @@
+-*%s*
++**
 
 %s:%i
 
@@ -124,5 +129,16 @@ Failed asserting that 1.5 is identical to 1.0.
 
 %s:%i
 
+13) FailureTest::testAssertStringMatchesFormatFile
+Failed asserting that format description matches text.
+--- Expected
++++ Actual
+@@ @@
+-FOO
+-
++...BAR...
+
+%s:%i
+
 FAILURES!
-Tests: 12, Assertions: 12, Failures: 12.
+Tests: 13, Assertions: 14, Failures: 13.
