@@ -130,9 +130,13 @@ abstract class PHPUnit_Framework_Constraint implements Countable, PHPUnit_Framew
     {
         $failureDescription = sprintf(
           'Failed asserting that %s.',
-
           $this->failureDescription($other)
         );
+
+        $additionalFailureDescription = $this->additionalFailureDescription($other);
+        if ($additionalFailureDescription) {
+            $failureDescription .= "\n" . $additionalFailureDescription;
+        }
 
         if (!empty($description)) {
             $failureDescription = $description . "\n" . $failureDescription;
@@ -145,10 +149,27 @@ abstract class PHPUnit_Framework_Constraint implements Countable, PHPUnit_Framew
     }
 
     /**
+     * Return additional failure description where needed
+     *
+     * The function can be overritten to provide additional failure 
+     * information like a diff
+     *
+     * @param  mixed $other Evaluated value or object.
+     * @return string
+     */
+    protected function additionalFailureDescription($other)
+    {
+        return "";
+    }
+
+    /**
      * Returns the description of the failure
      *
      * The beginning of failure messages is "Failed asserting that" in most
      * cases. This method should return the second part of that sentence.
+     *
+     * To provide additional failure information additionalFailureDescription
+     * can be used.
      *
      * @param  mixed $other Evaluated value or object.
      * @return string

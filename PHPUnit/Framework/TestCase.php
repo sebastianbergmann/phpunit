@@ -843,14 +843,12 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
         }
 
         // Stop output buffering.
-        if ($this->useOutputBuffering !== TRUE) {
-            if ($this->outputCallback === FALSE) {
-                $this->output = ob_get_contents();
-            } else {
-                $this->output = call_user_func_array(
-                  $this->outputCallback, array(ob_get_contents())
-                );
-            }
+        if ($this->outputCallback === FALSE) {
+            $this->output = ob_get_contents();
+        } else {
+            $this->output = call_user_func_array(
+              $this->outputCallback, array(ob_get_contents())
+            );
         }
 
         ob_end_clean();
