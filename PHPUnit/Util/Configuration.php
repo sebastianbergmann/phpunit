@@ -753,11 +753,17 @@ class PHPUnit_Util_Configuration
     /**
      * Returns the test suite configuration.
      *
+     * @param  PHPUnit_Runner_TestSuiteLoader $loader
+     *
      * @return PHPUnit_Framework_TestSuite
      * @since  Method available since Release 3.2.1
      */
-    public function getTestSuiteConfiguration()
+    public function getTestSuiteConfiguration($loader = NULL)
     {
+        if ($loader === NULL) {
+            $loader = new PHPUnit_Runner_StandardTestSuiteLoader;
+        }
+
         $testSuiteNodes = $this->xpath->query('testsuites/testsuite');
 
         if ($testSuiteNodes->length == 0) {
@@ -765,7 +771,7 @@ class PHPUnit_Util_Configuration
         }
 
         if ($testSuiteNodes->length == 1) {
-            return $this->getTestSuite($testSuiteNodes->item(0));
+            return $this->getTestSuite($testSuiteNodes->item(0), $loader);
         }
 
         if ($testSuiteNodes->length > 1) {
@@ -773,7 +779,7 @@ class PHPUnit_Util_Configuration
 
             foreach ($testSuiteNodes as $testSuiteNode) {
                 $suite->addTestSuite(
-                  $this->getTestSuite($testSuiteNode)
+                  $this->getTestSuite($testSuiteNode, $loader)
                 );
             }
 
@@ -783,17 +789,24 @@ class PHPUnit_Util_Configuration
 
     /**
      * @param  DOMElement $testSuiteNode
+     * @param  PHPUnit_Runner_TestSuiteLoader $loader
      * @return PHPUnit_Framework_TestSuite
      * @since  Method available since Release 3.4.0
      */
-    protected function getTestSuite(DOMElement $testSuiteNode)
+    protected function getTestSuite(DOMElement $testSuiteNode, $loader)
     {
+        $class = "PHPUnit_Framework_TestSuite";
+        if ($testSuiteNode->hasAttribute('class')) {
+            $class = (string)$testSuiteNode->getAttribute('class');
+            $loader->load($class);
+        }
+
         if ($testSuiteNode->hasAttribute('name')) {
-            $suite = new PHPUnit_Framework_TestSuite(
+            $suite = new $class(
               (string)$testSuiteNode->getAttribute('name')
             );
         } else {
-            $suite = new PHPUnit_Framework_TestSuite;
+            $suite = new $class();
         }
 
         $exclude = array();
