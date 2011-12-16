@@ -531,12 +531,12 @@ class PHPUnit_TextUI_Command
             if (count($this->options[1]) > 2) {
                 $this->showMessage(
                     'More than two positional arguments provided.',
-                    false
+                    FALSE
                 );
                 $this->showHelp();
                 exit(PHPUnit_TextUI_TestRunner::FAILURE_EXIT);
             }
-        
+
             if (isset($this->options[1][0])) {
                 $this->arguments['test'] = $this->options[1][0];
             }

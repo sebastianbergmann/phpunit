@@ -77,7 +77,7 @@ class PHPUnit_Util_PHP_Windows extends PHPUnit_Util_PHP
 
         fwrite(
           $pipe,
-          "<?php require_once " . var_export($this->tempFile, true) .  "; ?>"
+          "<?php require_once " . var_export($this->tempFile, TRUE) .  "; ?>"
         );
     }
 
