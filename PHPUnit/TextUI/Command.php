@@ -912,6 +912,7 @@ Usage: phpunit [switches] UnitTest [UnitTest.php]
   --stop-on-incomplete      Stop execution upon first incomplete test.
   --strict                  Run tests in strict mode.
   -v|--verbose              Output more verbose information.
+  --debug                   Display debbuging information during test execution.
 
   --skeleton-class          Generate Unit class for UnitTest in UnitTest.php.
   --skeleton-test           Generate UnitTest class for Unit in Unit.php.
