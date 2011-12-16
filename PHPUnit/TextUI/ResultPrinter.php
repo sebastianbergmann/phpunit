@@ -600,7 +600,9 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
         $this->lastTestFailed = FALSE;
 
         if ($test instanceof PHPUnit_Framework_TestCase) {
-            $this->write($test->getActualOutput());
+            if (!$test->hasPerformedExpectationsOnOutput()) {
+                $this->write($test->getActualOutput());
+            }
         }
     }
 

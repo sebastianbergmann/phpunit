@@ -56,10 +56,12 @@
 
    <fileset dir="${basedir}/PHPUnit">
     <include name="**/*.php" />
+    <modified />
    </fileset>
 
    <fileset dir="${basedir}/Tests">
     <include name="**/*.php" />
+    <modified />
    </fileset>
   </apply>
  </target>

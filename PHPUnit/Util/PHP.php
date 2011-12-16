@@ -93,7 +93,9 @@ abstract class PHPUnit_Util_PHP
     protected function getPhpBinary()
     {
         if ($this->phpBinary === NULL) {
-            if (PHP_SAPI == 'cli' && isset($_SERVER['_'])) {
+            if (defined("PHP_BINARY")) {
+                $this->phpBinary = PHP_BINARY;
+            } else if (PHP_SAPI == 'cli' && isset($_SERVER['_'])) {
                 if (strpos($_SERVER['_'], 'phpunit') !== FALSE) {
                     $file = file($_SERVER['_']);
 
@@ -103,11 +105,24 @@ abstract class PHPUnit_Util_PHP
                     } else {
                         $this->phpBinary = ltrim(trim($file[0]), '#!');
                     }
-                } else {
+                } else if (strpos(basename($_SERVER['_']), 'php') !== FALSE) {
                     $this->phpBinary = $_SERVER['_'];
                 }
-            } else if (is_readable('@php_bin@')) {
-                $this->phpBinary = '@php_bin@';
+            }
+
+            if ($this->phpBinary === NULL) {
+                $possibleBinaryLocations = array(
+                    PHP_BINDIR . '/php',
+                    PHP_BINDIR . '/php-cli.exe',
+                    PHP_BINDIR . '/php.exe',
+                    '@php_bin@',
+                );
+                foreach ($possibleBinaryLocations as $binary) {
+                    if (is_readable($binary)) {
+                        $this->phpBinary = $binary;
+                        break;
+                    }
+                }
             }
 
             if (!is_readable($this->phpBinary)) {

@@ -283,6 +283,11 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
     private $outputExpectedString = NULL;
 
     /**
+     * @var bool
+     */
+    private $hasPerformedExpectationsOnOutput = FALSE;
+
+    /**
      * @var mixed
      */
     private $outputCallback = FALSE;
@@ -438,6 +443,15 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
         if (is_string($expectedString) || is_null($expectedString)) {
             $this->outputExpectedString = $expectedString;
         }
+    }
+
+    /**
+     * @return bool
+     * @since Method available since Release 3.6.5
+     */
+    public function hasPerformedExpectationsOnOutput()
+    {
+        return $this->hasPerformedExpectationsOnOutput;
     }
 
     /**
@@ -827,14 +841,12 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
         }
 
         // Stop output buffering.
-        if ($this->useOutputBuffering !== TRUE) {
-            if ($this->outputCallback === FALSE) {
-                $this->output = ob_get_contents();
-            } else {
-                $this->output = call_user_func_array(
-                  $this->outputCallback, array(ob_get_contents())
-                );
-            }
+        if ($this->outputCallback === FALSE) {
+            $this->output = ob_get_contents();
+        } else {
+            $this->output = call_user_func_array(
+              $this->outputCallback, array(ob_get_contents())
+            );
         }
 
         ob_end_clean();
@@ -875,11 +887,13 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
         if (!isset($e)) {
             try {
                 if ($this->outputExpectedRegex !== NULL) {
+                    $this->hasPerformedExpectationsOnOutput = TRUE;
                     $this->assertRegExp($this->outputExpectedRegex, $this->output);
                     $this->outputExpectedRegex = NULL;
                 }
 
                 else if ($this->outputExpectedString !== NULL) {
+                    $this->hasPerformedExpectationsOnOutput = TRUE;
                     $this->assertEquals($this->outputExpectedString, $this->output);
                     $this->outputExpectedString = NULL;
                 }
