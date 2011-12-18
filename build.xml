@@ -194,5 +194,7 @@
    <arg path="${basedir}/build/phpunit.phar" />
    <arg path="${basedir}/build/phar" />
   </exec>
+
+  <chmod file="${basedir}/build/phpunit.phar" perm="ugo+rx"/>
  </target>
 </project>
