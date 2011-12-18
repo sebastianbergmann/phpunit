@@ -1,5 +1,5 @@
 --TEST--
-GH-433: expectOutputString not completely working as expected 
+GH-433: expectOutputString not completely working as expected
 --FILE--
 <?php
 
