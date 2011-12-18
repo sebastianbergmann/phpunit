@@ -151,7 +151,7 @@ abstract class PHPUnit_Framework_Constraint implements Countable, PHPUnit_Framew
     /**
      * Return additional failure description where needed
      *
-     * The function can be overritten to provide additional failure 
+     * The function can be overritten to provide additional failure
      * information like a diff
      *
      * @param  mixed $other Evaluated value or object.
