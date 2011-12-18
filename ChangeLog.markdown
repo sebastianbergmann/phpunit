@@ -6,13 +6,13 @@ This is the list of changes for the PHPUnit 3.6 release series.
 PHPUnit 3.6.5
 -------------
 
+* Implemented #406: Improved the failure description for `assertStringMatchesFormat*()`.
 * Fixed #204: Bootstrap script should be loaded before trying to load `testSuiteLoaderClass`.
-* Implemented #406: Improved the failure description for assertStringMatchesFormat*().
 * Fixed #413: PHPT test failures display double diffs.
-* Fixed #420: Using the "@outputBuffering enabled" annotation lead to failing tests when an output string was expected.
-* Fixed #430: OutputTestCase didn't work with @depends. Please note that this way of output testing is still deprecated.
-* Fixed #432: Process isolation didn't work when invoked through ant or phing due to php binary detection issues.
-* Fixed #433: Testing output always also printed the output during test execution.
+* Fixed #420: Using the `@outputBuffering enabled` annotation leads to failing tests when an output string was expected.
+* Fixed #430: `OutputTestCase` did not work with `@depends`. Please note that this way of output testing is still deprecated.
+* Fixed #432: Process Isolation did not work when PHPUnit is invoked through Apache Ant, for instance, due to PHP binary detection issues.
+* Fixed #433: Testing output always printed the output during test execution.
 
 PHPUnit 3.6.4
 -------------
