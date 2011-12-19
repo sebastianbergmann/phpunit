@@ -156,6 +156,12 @@
          description="Create PHAR archive of PHPUnit and all its dependencies"
          depends="clean,prepare">
   <exec executable="pear">
+   <arg value="config-set" />
+   <arg value="auto_discover" />
+   <arg value="1" />
+  </exec>
+
+  <exec executable="pear">
    <arg value="install" />
    <arg value="--force" />
    <arg value="--alldeps" />
@@ -190,8 +196,20 @@
 
   <delete dir="${basedir}/build/phar/usr"/>
 
-  <exec executable="build/create-phar.php">
+  <delete>
+   <fileset dir="${basedir}/build/phar">
+    <include name="**/Autoload.php" />
+   </fileset>
+  </delete>
+
+  <exec executable="phpab">
+   <arg value="--phar" />
+   <arg value="--output" />
    <arg path="${basedir}/build/phpunit.phar" />
+   <arg value="--template" />
+   <arg path="${basedir}/build/phar-autoload.php.in" />
+   <arg value="--indent" />
+   <arg value="          " />
    <arg path="${basedir}/build/phar" />
   </exec>
 

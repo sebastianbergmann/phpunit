@@ -373,15 +373,43 @@ class PHPUnit_Util_GlobalState
     public static function phpunitFiles()
     {
         if (self::$phpunitFiles === NULL) {
-            self::$phpunitFiles = array_merge(
-              phpunit_autoload(),
-              phpunit_mockobject_autoload(),
-              file_iterator_autoload(),
-              php_codecoverage_autoload(),
-              php_timer_autoload(),
-              php_tokenstream_autoload(),
-              text_template_autoload()
-            );
+            self::$phpunitFiles = phpunit_autoload();
+
+            if (function_exists('phpunit_mockobject_autoload')) {
+                self::$phpunitFiles = array_merge(
+                  self::$phpunitFiles, phpunit_mockobject_autoload()
+                );
+            }
+
+            if (function_exists('file_iterator_autoload')) {
+                self::$phpunitFiles = array_merge(
+                  self::$phpunitFiles, file_iterator_autoload()
+                );
+            }
+
+            if (function_exists('php_codecoverage_autoload')) {
+                self::$phpunitFiles = array_merge(
+                  self::$phpunitFiles, php_codecoverage_autoload()
+                );
+            }
+
+            if (function_exists('php_timer_autoload')) {
+                self::$phpunitFiles = array_merge(
+                  self::$phpunitFiles, php_timer_autoload()
+                );
+            }
+
+            if (function_exists('php_tokenstream_autoload')) {
+                self::$phpunitFiles = array_merge(
+                  self::$phpunitFiles, php_tokenstream_autoload()
+                );
+            }
+
+            if (function_exists('text_template_autoload')) {
+                self::$phpunitFiles = array_merge(
+                  self::$phpunitFiles, text_template_autoload()
+                );
+            }
 
             if (function_exists('phpunit_dbunit_autoload')) {
                 self::$phpunitFiles = array_merge(
