@@ -224,9 +224,9 @@ class PHPUnit_Util_Log_JSON extends PHPUnit_Util_Printer implements PHPUnit_Fram
     protected function writeCase($status, $time, array $trace = array(), $message = '', $test = NULL)
     {
         $output = '';
-        if($test !== NULL && $test->hasOutput()) {
+        if ($test !== NULL && $test->hasOutput()) {
             $output = $test->getActualOutput();
-        } 
+        }
         $this->write(
           array(
             'event'   => 'test',
