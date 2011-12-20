@@ -470,7 +470,7 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
      * @throws InvalidArgumentException
      * @since  Method available since Release 3.2.0
      */
-    public function setExpectedException($exceptionName, $exceptionMessage = '', $exceptionCode = 0)
+    public function setExpectedException($exceptionName, $exceptionMessage = '', $exceptionCode = NULL)
     {
         if ($exceptionName == 'Exception' || $exceptionName == '\\Exception') {
             throw new InvalidArgumentException(
@@ -952,7 +952,7 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
                     );
                 }
 
-                if ($this->expectedExceptionCode) {
+                if ($this->expectedExceptionCode !== NULL) {
                     $this->assertEquals(
                       $this->expectedExceptionCode, $e->getCode()
                     );
