@@ -3,6 +3,12 @@ PHPUnit 3.6
 
 This is the list of changes for the PHPUnit 3.6 release series.
 
+PHPUnit 3.6.6
+-------------
+
+* Improved exception message in `PHPUnit_Framework_TestSuite::__construct()`.
+* `@expectedExceptionCode` may now be 0.
+
 PHPUnit 3.6.5
 -------------
 
