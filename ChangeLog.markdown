@@ -8,6 +8,7 @@ PHPUnit 3.6.6
 
 * Improved exception message in `PHPUnit_Framework_TestSuite::__construct()`.
 * `@expectedExceptionCode` may now be 0.
+* Test output now is included as on 'output' element in the JSON log
 
 PHPUnit 3.6.5
 -------------

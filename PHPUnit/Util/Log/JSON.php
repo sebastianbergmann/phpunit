@@ -86,7 +86,8 @@ class PHPUnit_Util_Log_JSON extends PHPUnit_Util_Printer implements PHPUnit_Fram
           'error',
           $time,
           PHPUnit_Util_Filter::getFilteredStacktrace($e, FALSE),
-          $e->getMessage()
+          $e->getMessage(),
+          $test
         );
 
         $this->currentTestPass = FALSE;
@@ -105,7 +106,8 @@ class PHPUnit_Util_Log_JSON extends PHPUnit_Util_Printer implements PHPUnit_Fram
           'fail',
           $time,
           PHPUnit_Util_Filter::getFilteredStacktrace($e, FALSE),
-          $e->getMessage()
+          $e->getMessage(),
+          $test
         );
 
         $this->currentTestPass = FALSE;
@@ -120,7 +122,7 @@ class PHPUnit_Util_Log_JSON extends PHPUnit_Util_Printer implements PHPUnit_Fram
      */
     public function addIncompleteTest(PHPUnit_Framework_Test $test, Exception $e, $time)
     {
-        $this->writeCase('error', $time, array(), 'Incomplete Test');
+        $this->writeCase('error', $time, array(), 'Incomplete Test', $test);
 
         $this->currentTestPass = FALSE;
     }
@@ -134,7 +136,7 @@ class PHPUnit_Util_Log_JSON extends PHPUnit_Util_Printer implements PHPUnit_Fram
      */
     public function addSkippedTest(PHPUnit_Framework_Test $test, Exception $e, $time)
     {
-        $this->writeCase('error', $time, array(), 'Skipped Test');
+        $this->writeCase('error', $time, array(), 'Skipped Test', $test);
 
         $this->currentTestPass = FALSE;
     }
@@ -197,7 +199,7 @@ class PHPUnit_Util_Log_JSON extends PHPUnit_Util_Printer implements PHPUnit_Fram
     public function endTest(PHPUnit_Framework_Test $test, $time)
     {
         if ($this->currentTestPass) {
-            $this->writeCase('pass', $time);
+            $this->writeCase('pass', $time, array(), '', $test);
         }
     }
 
@@ -207,8 +209,12 @@ class PHPUnit_Util_Log_JSON extends PHPUnit_Util_Printer implements PHPUnit_Fram
      * @param array  $trace
      * @param string $message
      */
-    protected function writeCase($status, $time, array $trace = array(), $message = '')
+    protected function writeCase($status, $time, array $trace = array(), $message = '', $test = NULL)
     {
+        $output = '';
+        if($test !== NULL && $test->hasOutput()) {
+            $output = $test->getActualOutput();
+        } 
         $this->write(
           array(
             'event'   => 'test',
@@ -217,7 +223,8 @@ class PHPUnit_Util_Log_JSON extends PHPUnit_Util_Printer implements PHPUnit_Fram
             'status'  => $status,
             'time'    => $time,
             'trace'   => $trace,
-            'message' => PHPUnit_Util_String::convertToUtf8($message)
+            'message' => PHPUnit_Util_String::convertToUtf8($message),
+            'output'  => $output,
           )
         );
     }
