@@ -961,18 +961,13 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
                     );
                 }
 
-                if ($this->expectedExceptionCode !== NULL &&
-                    $this->expectedExceptionCode != $e->getCode()) {
+                if ($this->expectedExceptionCode !== NULL) {
+                    $this->assertEquals(
+                      $this->expectedExceptionCode, $e->getCode()
+                    );
                 }
 
                 $this->numAssertions++;
-
-                $this->syntheticFail(
-                  'Expected exception code ' . $this->expectedExceptionCode,
-                  '',
-                  0,
-                  $this->expectedExceptionTrace
-                );
 
                 return;
             } else {
