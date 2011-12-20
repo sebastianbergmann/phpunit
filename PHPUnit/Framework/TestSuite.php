@@ -182,7 +182,7 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
 
         if (!$theClass->isSubclassOf('PHPUnit_Framework_TestCase')) {
             throw new InvalidArgumentException(
-              'Class does not extend PHPUnit_Framework_TestCase.'
+              'Class "'.$theClass->name.'" does not extend PHPUnit_Framework_TestCase.'
             );
         }
 
