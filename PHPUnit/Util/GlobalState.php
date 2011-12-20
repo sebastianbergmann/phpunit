@@ -407,6 +407,9 @@ class PHPUnit_Util_GlobalState
                 );
             }
 
+            foreach(self::$phpunitFiles as $key => $value) {
+                self::$phpunitFiles[$key] = str_replace('/', DIRECTORY_SEPARATOR, $value);
+            }
             self::$phpunitFiles = array_flip(self::$phpunitFiles);
         }
 

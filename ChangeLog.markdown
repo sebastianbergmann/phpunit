@@ -10,6 +10,7 @@ PHPUnit 3.6.6
 * `@expectedExceptionCode` may now be 0.
 * Test output now is included as on 'output' element in the JSON log
 * Fixed #445: Expected output assertions didn't work in strict mode
+* Fixed stacktraces on windows wrongly showing the PHPUnit files
 
 PHPUnit 3.6.5
 -------------
