@@ -420,7 +420,7 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
         if (!$this->verbose &&
             $result->deprecatedFeaturesCount() > 0) {
             $message = sprintf(
-              "Warning: Deprecated PHPUnit features are being used %s times!\n".
+              "Warning: Deprecated PHPUnit features are being used %s times!\n" .
               "Use --verbose for more information.\n",
               $result->deprecatedFeaturesCount()
             );

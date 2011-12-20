@@ -129,7 +129,7 @@ class PHPUnit_Util_Type
         if (is_string($value)) {
             // Match for most non printable chars somewhat taking multibyte chars into account
             if (preg_match('/[^\x09-\x0d\x20-\xff]/', $value)) {
-                return 'Binary String: 0x'.bin2hex($value);
+                return 'Binary String: 0x' . bin2hex($value);
             }
 
             return "'" .
@@ -198,7 +198,7 @@ class PHPUnit_Util_Type
         }
 
         if (is_double($value) && (double)(integer)$value === $value) {
-            return $value.'.0';
+            return $value . '.0';
         }
 
         return (string)$value;
