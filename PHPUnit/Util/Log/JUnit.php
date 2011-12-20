@@ -205,7 +205,7 @@ class PHPUnit_Util_Log_JUnit extends PHPUnit_Util_Printer implements PHPUnit_Fra
                     $buffer = '';
                 }
 
-                $buffer .= PHPUnit_Framework_TestFailure::exceptionToString($e).
+                $buffer .= PHPUnit_Framework_TestFailure::exceptionToString($e) .
                            "\n" .
                            PHPUnit_Util_Filter::getFilteredStacktrace($e);
 

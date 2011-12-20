@@ -123,8 +123,8 @@ class PHPUnit_Framework_Comparator_Object extends PHPUnit_Framework_Comparator_A
                   $expected,
                   $actual,
                   // replace "Array" with "MyClass object"
-                  substr_replace($e->getExpectedAsString(), get_class($expected).' Object', 0, 5),
-                  substr_replace($e->getActualAsString(), get_class($actual).' Object', 0, 5),
+                  substr_replace($e->getExpectedAsString(), get_class($expected) . ' Object', 0, 5),
+                  substr_replace($e->getActualAsString(), get_class($actual) . ' Object', 0, 5),
                   FALSE,
                   'Failed asserting that two objects are equal.'
                 );
