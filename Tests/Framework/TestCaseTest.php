@@ -231,7 +231,7 @@ class Framework_TestCaseTest extends PHPUnit_Framework_TestCase
 
         $result = $test->run();
 
-        $this->assertEquals(1, $result->errorCount());
+        $this->assertEquals(1, $result->failureCount());
         $this->assertEquals(1, count($result));
     }
 
