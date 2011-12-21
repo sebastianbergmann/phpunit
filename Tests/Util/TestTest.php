@@ -60,39 +60,44 @@ class Util_TestTest extends PHPUnit_Framework_TestCase
 {
     public function testGetExpectedException()
     {
-        $this->assertEquals(
-          array('class' => 'FooBarBaz', 'code' => 0, 'message' => ''),
+        $this->assertSame(
+          array('class' => 'FooBarBaz', 'code' => NULL, 'message' => ''),
           PHPUnit_Util_Test::getExpectedException('ExceptionTest', 'testOne')
         );
 
-        $this->assertEquals(
-          array('class' => 'Foo_Bar_Baz', 'code' => 0, 'message' => ''),
+        $this->assertSame(
+          array('class' => 'Foo_Bar_Baz', 'code' => NULL, 'message' => ''),
           PHPUnit_Util_Test::getExpectedException('ExceptionTest', 'testTwo')
         );
 
-        $this->assertEquals(
-          array('class' => 'Foo\Bar\Baz', 'code' => 0, 'message' => ''),
+        $this->assertSame(
+          array('class' => 'Foo\Bar\Baz', 'code' => NULL, 'message' => ''),
           PHPUnit_Util_Test::getExpectedException('ExceptionTest', 'testThree')
         );
 
-        $this->assertEquals(
-          array('class' => 'ほげ', 'code' => 0, 'message' => ''),
+        $this->assertSame(
+          array('class' => 'ほげ', 'code' => NULL, 'message' => ''),
           PHPUnit_Util_Test::getExpectedException('ExceptionTest', 'testFour')
         );
 
-        $this->assertEquals(
+        $this->assertSame(
           array('class' => 'Class', 'code' => 1234, 'message' => 'Message'),
           PHPUnit_Util_Test::getExpectedException('ExceptionTest', 'testFive')
         );
 
-        $this->assertEquals(
+        $this->assertSame(
           array('class' => 'Class', 'code' => 1234, 'message' => 'Message'),
           PHPUnit_Util_Test::getExpectedException('ExceptionTest', 'testSix')
         );
 
-        $this->assertEquals(
+        $this->assertSame(
           array('class' => 'Class', 'code' => 'ExceptionCode', 'message' => 'Message'),
           PHPUnit_Util_Test::getExpectedException('ExceptionTest', 'testSeven')
+        );
+
+        $this->assertSame(
+          array('class' => 'Class', 'code' => 0, 'message' => 'Message'),
+          PHPUnit_Util_Test::getExpectedException('ExceptionTest', 'testEight')
         );
    }
 
