@@ -22,17 +22,17 @@ Time: %i %s, Memory: %sMb
 There were 3 failures:
 
 1) Issue244Test::testFails
-Failed asserting that exception code is 0.
+Failed asserting that expected exception code 'OtherString' is equal to '123StringCode'.
 
 %s:%i
 
 2) Issue244Test::testFailsTooIfExpectationIsANumber
-Failed asserting that exception code is 123.
+Failed asserting that expected exception code 123 is equal to '123StringCode'.
 
 %s:%i
 
 3) Issue244Test::testFailsTooIfExceptionCodeIsANumber
-Failed asserting that exception code is 123.
+Failed asserting that expected exception code '123String' is equal to 123.
 
 %s:%i
 
