@@ -22,24 +22,19 @@ Time: %i %s, Memory: %sMb
 There were 3 failures:
 
 1) Issue244Test::testFails
-Failed asserting that two strings are equal.
---- Expected
-+++ Actual
-@@ @@
--'OtherString'
-+'123StringCode'
+Failed asserting that exception code is 0.
 
 %s:%i
 
 2) Issue244Test::testFailsTooIfExpectationIsANumber
-Failed asserting that '123StringCode' matches expected 123.
+Failed asserting that exception code is 123.
 
 %s:%i
 
 3) Issue244Test::testFailsTooIfExceptionCodeIsANumber
-Failed asserting that 123 matches expected '123String'.
+Failed asserting that exception code is 123.
 
 %s:%i
 
 FAILURES!
-Tests: 4, Assertions: 5, Failures: 3.
+Tests: 4, Assertions: 8, Failures: 3.
