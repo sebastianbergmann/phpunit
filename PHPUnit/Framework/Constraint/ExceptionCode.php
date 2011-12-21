@@ -79,7 +79,7 @@ class PHPUnit_Framework_Constraint_ExceptionCode extends PHPUnit_Framework_Const
      */
     protected function matches($other)
     {
-        return $other->getCode() == $this->expectedCode;
+        return (string)$other->getCode() == (string)$this->expectedCode;
     }
 
     /**
