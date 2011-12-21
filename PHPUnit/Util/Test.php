@@ -143,7 +143,7 @@ class PHPUnit_Util_Test
             );
 
             $class   = $matches[1];
-            $code    = 0;
+            $code    = NULL;
             $message = '';
 
             if (isset($matches[2])) {
