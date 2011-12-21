@@ -7,10 +7,11 @@ PHPUnit 3.6.6
 -------------
 
 * Improved exception message in `PHPUnit_Framework_TestSuite::__construct()`.
+* Improved failure messages for exception expectations.
 * `@expectedExceptionCode` may now be 0.
-* Test output now is included as on 'output' element in the JSON log
-* Fixed #445: Expected output assertions didn't work in strict mode
-* Fixed stacktraces on windows wrongly showing the PHPUnit files
+* Test output now is included as an `output` element in the JSON logfile.
+* Fixed #445: Assertions on output did not work in strict mode.
+* Fixed stacktraces on Windows wrongly showing the PHPUnit files.
 
 PHPUnit 3.6.5
 -------------

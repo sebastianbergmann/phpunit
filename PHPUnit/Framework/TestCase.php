@@ -943,23 +943,32 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
         catch (Exception $e) {
             if (!$e instanceof PHPUnit_Framework_IncompleteTest &&
                 !$e instanceof PHPUnit_Framework_SkippedTest &&
-                is_string($this->expectedException) &&
-                $e instanceof $this->expectedException) {
+                is_string($this->expectedException)) {
+                $this->assertThat(
+                  $e,
+                  new PHPUnit_Framework_Constraint_Exception(
+                    $this->expectedException
+                  )
+                );
+
                 if (is_string($this->expectedExceptionMessage) &&
                     !empty($this->expectedExceptionMessage)) {
-                    $this->assertContains(
-                      $this->expectedExceptionMessage,
-                      $e->getMessage()
+                    $this->assertThat(
+                      $e,
+                      new PHPUnit_Framework_Constraint_ExceptionMessage(
+                        $this->expectedExceptionMessage
+                      )
                     );
                 }
 
                 if ($this->expectedExceptionCode !== NULL) {
-                    $this->assertEquals(
-                      $this->expectedExceptionCode, $e->getCode()
+                    $this->assertThat(
+                      $e,
+                      new PHPUnit_Framework_Constraint_ExceptionCode(
+                        $this->expectedExceptionCode
+                      )
                     );
                 }
-
-                $this->numAssertions++;
 
                 return;
             } else {
