@@ -94,8 +94,9 @@ class PHPUnit_Framework_Constraint_ExceptionCode extends PHPUnit_Framework_Const
     protected function failureDescription($other)
     {
         return sprintf(
-          'exception code is %d',
-          $this->expectedCode
+          '%s is equal to expected exception code %s',
+          PHPUnit_Util_Type::export($other->getCode()),
+          PHPUnit_Util_Type::export($this->expectedCode)
         );
     }
 
