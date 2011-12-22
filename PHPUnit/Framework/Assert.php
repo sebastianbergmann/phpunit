@@ -2531,20 +2531,6 @@ abstract class PHPUnit_Framework_Assert
     }
 
     /**
-     * Fails a test with a synthetic error.
-     *
-     * @param  string  $message
-     * @param  string  $file
-     * @param  integer $line
-     * @param  array   $trace
-     * @throws PHPUnit_Framework_SyntheticError
-     */
-    public static function syntheticFail($message = '', $file = '', $line = 0, $trace = array())
-    {
-        throw new PHPUnit_Framework_SyntheticError($message, 0, $file, $line, $trace);
-    }
-
-    /**
      * Returns the value of an attribute of a class or an object.
      * This also works for attributes that are declared protected or private.
      *
