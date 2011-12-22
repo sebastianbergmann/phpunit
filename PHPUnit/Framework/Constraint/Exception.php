@@ -55,8 +55,37 @@
  * @link       http://www.phpunit.de/
  * @since      Class available since Release 3.6.6
  */
-class PHPUnit_Framework_Constraint_Exception extends PHPUnit_Framework_Constraint_IsInstanceOf
+class PHPUnit_Framework_Constraint_Exception extends PHPUnit_Framework_Constraint
 {
+    /**
+     * @var string
+     */
+    protected $className;
+
+    /**
+     * @param string $className
+     */
+    public function __construct($className)
+    {
+        $this->className = $className;
+    }
+
+    /**
+     * Evaluates the constraint for parameter $other. Returns TRUE if the
+     * constraint is met, FALSE otherwise.
+     *
+     * @param mixed $other Value or object to evaluate.
+     * @return bool
+     */
+    protected function matches($other)
+    {
+        if ($other !== NULL) {
+            return $other instanceof $this->className;
+        }
+
+        return $other instanceof $this->className;
+    }
+
     /**
      * Returns the description of the failure
      *
@@ -68,10 +97,18 @@ class PHPUnit_Framework_Constraint_Exception extends PHPUnit_Framework_Constrain
      */
     protected function failureDescription($other)
     {
-        return sprintf(
-          'exception of type "%s" matches expected exception "%s"',
+        if ($other !== NULL) {
+            return sprintf(
+              'exception of type "%s" matches expected exception "%s"',
 
-          get_class($other),
+              get_class($other),
+              $this->className
+            );
+        }
+
+        return sprintf(
+          'exception of type "%s" is thrown',
+
           $this->className
         );
     }
