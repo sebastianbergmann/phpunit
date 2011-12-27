@@ -190,13 +190,6 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
     private $expectedExceptionCode;
 
     /**
-     * The stack trace to where the expected exception was set.
-     *
-     * @var array
-     */
-    private $expectedExceptionTrace = array();
-
-    /**
      * The required version of PHP.
      *
      * @var string
@@ -475,7 +468,6 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
         $this->expectedException        = $exceptionName;
         $this->expectedExceptionMessage = $exceptionMessage;
         $this->expectedExceptionCode    = $exceptionCode;
-        $this->expectedExceptionTrace   = debug_backtrace();
     }
 
     /**
