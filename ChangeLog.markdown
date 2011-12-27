@@ -6,10 +6,10 @@ This is the list of changes for the PHPUnit 3.7 release series.
 PHPUnit 3.7.0
 -------------
 
-* Implemented #207: Restore current working directory if is changed by a test case
-* Implemented #333: Improved reporting when there are unused CLI arguments to avoid misconceptions
-* Implemented #377: Show messages and stracktraces in JSON output for skipped and incomplete tests
-* Fixed #440: Possible crash when using --process-isolation with PHP 5.3 and dectect_unicode=on.
+* Implemented #207: Restore current working directory if is changed by a test case.
+* Implemented #333: Improved reporting when there are unused CLI arguments to avoid misconceptions.
+* Implemented #377: Show messages and stracktraces in JSON output for skipped and incomplete tests.
+* Fixed #440: Possible crash when using `--process-isolation` with PHP 5.3 and `dectect_unicode=on`.
 * It is possible again to expect the generic `Exception` class.
 * Removed deprecated `PHPUnit_Extensions_OutputTestCase` class.
 * PHPUnit 3.7 is only supported on PHP 5.3.9 (or later) and PHP 5.4.0 (or later) is highly recommended.
