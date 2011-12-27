@@ -227,7 +227,7 @@ abstract class PHPUnit_Util_PHP
             $time = 0;
             $result->addError(
               $test,
-              new RuntimeException(trim($stderr)), $time
+              new PHPUnit_Framework_Exception(trim($stderr)), $time
             );
         } else {
             $childResult = @unserialize($stdout);
@@ -281,7 +281,7 @@ abstract class PHPUnit_Util_PHP
                 $time = 0;
 
                 $result->addError(
-                  $test, new RuntimeException(trim($stdout)), $time
+                  $test, new PHPUnit_Framework_Exception(trim($stdout)), $time
                 );
             }
         }

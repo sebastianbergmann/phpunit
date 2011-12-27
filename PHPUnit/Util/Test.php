@@ -233,7 +233,7 @@ class PHPUnit_Util_Test
         if ($data !== NULL) {
             foreach ($data as $key => $value) {
                 if (!is_array($value)) {
-                    throw new InvalidArgumentException(
+                    throw new PHPUnit_Framework_Exception(
                       sprintf(
                         'Data set %s is invalid.',
                         is_int($key) ? '#' . $key : '"' . $key . '"'

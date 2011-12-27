@@ -119,7 +119,7 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
      * @param  boolean $verbose
      * @param  boolean $colors
      * @param  boolean $debug
-     * @throws InvalidArgumentException
+     * @throws PHPUnit_Framework_Exception
      * @since  Method available since Release 3.0.0
      */
     public function __construct($out = NULL, $verbose = FALSE, $colors = FALSE, $debug = FALSE)

@@ -235,7 +235,7 @@ class PHPUnit_Util_Class
      * @param  string  $className
      * @param  string  $attributeName
      * @return mixed
-     * @throws InvalidArgumentException
+     * @throws PHPUnit_Framework_Exception
      * @since  Method available since Release 3.4.0
      */
     public static function getStaticAttribute($className, $attributeName)
@@ -280,7 +280,7 @@ class PHPUnit_Util_Class
      * @param  object  $object
      * @param  string  $attributeName
      * @return mixed
-     * @throws InvalidArgumentException
+     * @throws PHPUnit_Framework_Exception
      * @since  Method available since Release 3.4.0
      */
     public static function getObjectAttribute($object, $attributeName)

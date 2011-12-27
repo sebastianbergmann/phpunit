@@ -254,7 +254,7 @@ class PHPUnit_TextUI_Command
             );
         }
 
-        catch (RuntimeException $e) {
+        catch (PHPUnit_Framework_Exception $e) {
             PHPUnit_TextUI_TestRunner::showError($e->getMessage());
         }
 
@@ -838,7 +838,7 @@ class PHPUnit_TextUI_Command
             PHPUnit_Util_Fileloader::checkAndLoad($filename);
         }
 
-        catch (RuntimeException $e) {
+        catch (PHPUnit_Framework_Exception $e) {
             PHPUnit_TextUI_TestRunner::showError($e->getMessage());
         }
     }

@@ -100,7 +100,7 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
     /**
      * @param  mixed $test
      * @param  array $arguments
-     * @throws InvalidArgumentException
+     * @throws PHPUnit_Framework_Exception
      */
     public static function run($test, array $arguments = array())
     {
@@ -116,7 +116,7 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
               $arguments
             );
         } else {
-            throw new InvalidArgumentException(
+            throw new PHPUnit_Framework_Exception(
               'No test case or test suite found.'
             );
         }

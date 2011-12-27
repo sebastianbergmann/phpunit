@@ -123,7 +123,7 @@ class Framework_SuiteTest extends PHPUnit_Framework_TestCase {
     }
 
     /**
-     * @expectedException InvalidArgumentException
+     * @expectedException PHPUnit_Framework_Exception
      */
     public function testNoTestCaseClass()
     {

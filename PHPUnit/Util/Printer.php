@@ -83,7 +83,7 @@ class PHPUnit_Util_Printer
      * Constructor.
      *
      * @param  mixed $out
-     * @throws InvalidArgumentException
+     * @throws PHPUnit_Framework_Exception
      */
     public function __construct($out = NULL)
     {
@@ -93,7 +93,7 @@ class PHPUnit_Util_Printer
                     $out = explode(':', str_replace('socket://', '', $out));
 
                     if (sizeof($out) != 2) {
-                        throw new InvalidArgumentException;
+                        throw new PHPUnit_Framework_Exception;
                     }
 
                     $this->out = fsockopen($out[0], $out[1]);

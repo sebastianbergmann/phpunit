@@ -69,7 +69,7 @@ class PHPUnit_Util_Skeleton_Test extends PHPUnit_Util_Skeleton
      * @param string $inSourceFile
      * @param string $outClassName
      * @param string $outSourceFile
-     * @throws RuntimeException
+     * @throws PHPUnit_Framework_Exception
      */
     public function __construct($inClassName, $inSourceFile = '', $outClassName = '', $outSourceFile = '')
     {

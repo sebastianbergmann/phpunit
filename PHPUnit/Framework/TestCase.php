@@ -468,13 +468,13 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
      * @param  mixed   $exceptionName
      * @param  string  $exceptionMessage
      * @param  integer $exceptionCode
-     * @throws InvalidArgumentException
+     * @throws PHPUnit_Framework_Exception
      * @since  Method available since Release 3.2.0
      */
     public function setExpectedException($exceptionName, $exceptionMessage = '', $exceptionCode = NULL)
     {
         if ($exceptionName == 'Exception' || $exceptionName == '\\Exception') {
-            throw new InvalidArgumentException(
+            throw new PHPUnit_Framework_Exception(
               'You must not expect the generic exception class.'
             );
         }
@@ -658,7 +658,7 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
      *
      * @param  PHPUnit_Framework_TestResult $result
      * @return PHPUnit_Framework_TestResult
-     * @throws InvalidArgumentException
+     * @throws PHPUnit_Framework_Exception
      */
     public function run(PHPUnit_Framework_TestResult $result = NULL)
     {
@@ -924,7 +924,7 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
      * Override to run the test and assert its state.
      *
      * @return mixed
-     * @throws RuntimeException
+     * @throws PHPUnit_Framework_Exception
      */
     protected function runTest()
     {
@@ -1077,7 +1077,7 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
 
     /**
      * @param  boolean $runTestInSeparateProcess
-     * @throws InvalidArgumentException
+     * @throws PHPUnit_Framework_Exception
      * @since  Method available since Release 3.4.0
      */
     public function setRunTestInSeparateProcess($runTestInSeparateProcess)
@@ -1093,7 +1093,7 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
 
     /**
      * @param  boolean $preserveGlobalState
-     * @throws InvalidArgumentException
+     * @throws PHPUnit_Framework_Exception
      * @since  Method available since Release 3.4.0
      */
     public function setPreserveGlobalState($preserveGlobalState)
@@ -1107,7 +1107,7 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
 
     /**
      * @param  boolean $inIsolation
-     * @throws InvalidArgumentException
+     * @throws PHPUnit_Framework_Exception
      * @since  Method available since Release 3.4.0
      */
     public function setInIsolation($inIsolation)
@@ -1138,7 +1138,8 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
     }
 
     /**
-     * @param callable $callback
+     * @param  callable $callback
+     * @throws PHPUnit_Framework_Exception
      * @since Method available since Release 3.6.0
      */
     public function setOutputCallback($callback)
@@ -1175,8 +1176,7 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
      *
      * @param  string  $varName
      * @param  string  $newValue
-     * @throws InvalidArgumentException
-     * @throws RuntimeException
+     * @throws PHPUnit_Framework_Exception
      * @since  Method available since Release 3.0.0
      */
     protected function iniSet($varName, $newValue)
@@ -1206,8 +1206,7 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
      *
      * @param  integer $category
      * @param  string  $locale
-     * @throws InvalidArgumentException
-     * @throws RuntimeException
+     * @throws PHPUnit_Framework_Exception
      * @since  Method available since Release 3.1.0
      */
     protected function setLocale()
@@ -1215,7 +1214,7 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
         $args = func_get_args();
 
         if (count($args) < 2) {
-            throw new InvalidArgumentException;
+            throw new PHPUnit_Framework_Exception;
         }
 
         $category = $args[0];
@@ -1230,11 +1229,11 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
         }
 
         if (!in_array($category, $categories)) {
-            throw new InvalidArgumentException;
+            throw new PHPUnit_Framework_Exception;
         }
 
         if (!is_array($locale) && !is_string($locale)) {
-            throw new InvalidArgumentException;
+            throw new PHPUnit_Framework_Exception;
         }
 
         $this->locale[$category] = setlocale($category, NULL);
@@ -1261,7 +1260,7 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
      * @param  boolean $callOriginalClone
      * @param  boolean $callAutoload
      * @return PHPUnit_Framework_MockObject_MockObject
-     * @throws InvalidArgumentException
+     * @throws PHPUnit_Framework_Exception
      * @since  Method available since Release 3.0.0
      */
     public function getMock($originalClassName, $methods = array(), array $arguments = array(), $mockClassName = '', $callOriginalConstructor = TRUE, $callOriginalClone = TRUE, $callAutoload = TRUE)
@@ -1306,7 +1305,7 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
      * @param  boolean $callOriginalClone
      * @param  boolean $callAutoload
      * @return string
-     * @throws InvalidArgumentException
+     * @throws PHPUnit_Framework_Exception
      * @since  Method available since Release 3.5.0
      */
     protected function getMockClass($originalClassName, $methods = array(), array $arguments = array(), $mockClassName = '', $callOriginalConstructor = FALSE, $callOriginalClone = TRUE, $callAutoload = TRUE)
@@ -1338,7 +1337,7 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
      * @param  array   $mockedMethods
      * @return PHPUnit_Framework_MockObject_MockObject
      * @since  Method available since Release 3.4.0
-     * @throws InvalidArgumentException
+     * @throws PHPUnit_Framework_Exception
      */
     public function getMockForAbstractClass($originalClassName, array $arguments = array(), $mockClassName = '', $callOriginalConstructor = TRUE, $callOriginalClone = TRUE, $callAutoload = TRUE, $mockedMethods = array())
     {
@@ -1404,7 +1403,7 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
      * @param  boolean $callAutoload
      * @return object
      * @since  Method available since Release 3.6.0
-     * @throws InvalidArgumentException
+     * @throws PHPUnit_Framework_Exception
      */
     protected function getObjectForTrait($traitName, array $arguments = array(), $traitClassName = '', $callOriginalConstructor = TRUE, $callOriginalClone = TRUE, $callAutoload = TRUE)
     {

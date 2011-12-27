@@ -192,7 +192,7 @@ class PHPUnit_Extensions_PhptTestCase implements PHPUnit_Framework_Test, PHPUnit
         if (is_object($buffer) && $buffer instanceof PEAR_Error) {
             $result->addError(
               $this,
-              new RuntimeException($buffer->getMessage()),
+              new PHPUnit_Framework_Exception($buffer->getMessage()),
               $time
             );
         }

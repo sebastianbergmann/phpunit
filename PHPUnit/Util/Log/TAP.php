@@ -81,7 +81,7 @@ class PHPUnit_Util_Log_TAP extends PHPUnit_Util_Printer implements PHPUnit_Frame
      * Constructor.
      *
      * @param  mixed $out
-     * @throws InvalidArgumentException
+     * @throws PHPUnit_Framework_Exception
      * @since  Method available since Release 3.3.4
      */
     public function __construct($out = NULL)
