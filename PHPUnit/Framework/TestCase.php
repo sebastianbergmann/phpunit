@@ -468,17 +468,10 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
      * @param  mixed   $exceptionName
      * @param  string  $exceptionMessage
      * @param  integer $exceptionCode
-     * @throws PHPUnit_Framework_Exception
      * @since  Method available since Release 3.2.0
      */
     public function setExpectedException($exceptionName, $exceptionMessage = '', $exceptionCode = NULL)
     {
-        if ($exceptionName == 'Exception' || $exceptionName == '\\Exception') {
-            throw new PHPUnit_Framework_Exception(
-              'You must not expect the generic exception class.'
-            );
-        }
-
         $this->expectedException        = $exceptionName;
         $this->expectedExceptionMessage = $exceptionMessage;
         $this->expectedExceptionCode    = $exceptionCode;
@@ -950,9 +943,24 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
         }
 
         catch (Exception $e) {
-            if (!$e instanceof PHPUnit_Framework_IncompleteTest &&
-                !$e instanceof PHPUnit_Framework_SkippedTest &&
-                is_string($this->expectedException)) {
+            $checkException = FALSE;
+
+            if (is_string($this->expectedException)) {
+                $checkException = TRUE;
+
+                if ($e instanceof PHPUnit_Framework_Exception) {
+                    $checkException = FALSE;
+                }
+
+                $reflector = new ReflectionClass($this->expectedException);
+
+                if ($this->expectedException == 'PHPUnit_Framework_Exception' ||
+                    $reflector->isSubclassOf('PHPUnit_Framework_Exception')) {
+                    $checkException = TRUE;
+                }
+            }
+
+            if ($checkException) {
                 $this->assertThat(
                   $e,
                   new PHPUnit_Framework_Constraint_Exception(

@@ -11,3 +11,4 @@ PHPUnit 3.7.0
 * Implemented #377: Show messages and stracktraces in JSON output for skipped and incomplete tests
 * Fixed #440: Possible crash when using --process-isolation with PHP 5.3 and dectect_unicode=on.
 * Removed deprecated `PHPUnit_Extensions_OutputTestCase` class.
+* It is possible again to expect the generic `Exception` class.
