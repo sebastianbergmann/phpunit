@@ -4,6 +4,7 @@ build/coverage
 build/logs
 build/pdepend
 build/phar
+build/phpdox
 build/phpunit.phar
 Tests/TextUI/*.diff
 Tests/TextUI/*.exp
