@@ -79,10 +79,6 @@ class PHPUnit_Framework_Constraint_Exception extends PHPUnit_Framework_Constrain
      */
     protected function matches($other)
     {
-        if ($other === NULL) {
-            return FALSE;
-        }
-
         return $other instanceof $this->className;
     }
 
