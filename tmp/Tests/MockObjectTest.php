@@ -77,6 +77,14 @@ class Framework_MockObjectTest extends PHPUnit_Framework_TestCase
              ->method('doSomething');
     }
 
+    public function testMockedMethodIsNotCalledWhenExpectsAnyWithParameter()
+    {
+        $mock = $this->getMock('SomeClass');
+        $mock->expects($this->any())
+             ->method('doSomethingElse')
+             ->with('someArg');
+    }
+
     public function testMockedMethodIsCalledAtLeastOnce()
     {
         $mock = $this->getMock('AnInterface');
