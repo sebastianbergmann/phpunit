@@ -213,6 +213,11 @@ class PHPUnit_Util_Skeleton_Test extends PHPUnit_Util_Skeleton
                                     $assertion = 'exception';
                                 }
                                 break;
+								
+								case 'instanceof': {
+									$assertion = 'instance';
+								}
+								break;
 
                                 default: {
                                     throw new PHPUnit_Framework_Exception(
@@ -227,6 +232,10 @@ class PHPUnit_Util_Skeleton_Test extends PHPUnit_Util_Skeleton
                             if ($assertion == 'exception') {
                                 $template = 'TestMethodException';
                             }
+							
+							else if ($assertion == 'instance') {
+								$template = 'TestMethodInstance';
+							}
 
                             else if ($assertion == 'Equals' &&
                                      strtolower($matches[3]) == 'true') {

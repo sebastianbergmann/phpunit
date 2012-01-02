@@ -1,0 +1,8 @@
+
+    /**
+     * Generated from @assert {annotation}.
+     */
+    public function test{methodName}()
+    {
+        $this->assertInstanceOf('{expected}', $this->object->{origMethodName}({arguments}));
+    }
