@@ -1,5 +1,10 @@
 --TEST--
 phpunit --log-json php://stdout BankAccountTest ../_files/BankAccountTest.php
+--SKIPIF--
+<?php
+if (!defined("JSON_PRETTY_PRINT")) {
+    echo "Skip: Test requires JSON_PRETTY_PRINT / PHP >= 5.4";
+}
 --FILE--
 <?php
 define('PHPUNIT_TESTSUITE', TRUE);
