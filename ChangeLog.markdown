@@ -3,6 +3,11 @@ PHPUnit 3.6
 
 This is the list of changes for the PHPUnit 3.6 release series.
 
+PHPUnit 3.6.7
+-------------
+
+* Fixed #452: Regression when using (deprecated) `AllTests.php` approach to organize test suites.
+
 PHPUnit 3.6.6
 -------------
 
