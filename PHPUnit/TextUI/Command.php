@@ -96,8 +96,6 @@ class PHPUnit_TextUI_Command
       'log-tap=' => NULL,
       'process-isolation' => NULL,
       'repeat=' => NULL,
-      'skeleton-class' => NULL,
-      'skeleton-test' => NULL,
       'stderr' => NULL,
       'stop-on-error' => NULL,
       'stop-on-failure' => NULL,
@@ -143,22 +141,6 @@ class PHPUnit_TextUI_Command
               $this->arguments['test'],
               $this->arguments['testFile']
             );
-        }
-
-        if (count($suite) == 0) {
-            $skeleton = new PHPUnit_Util_Skeleton_Test(
-              $suite->getName(),
-              $this->arguments['testFile']
-            );
-
-            $result = $skeleton->generate(TRUE);
-
-            if (!$result['incomplete']) {
-                eval(str_replace(array('<?php', '?>'), '', $result['code']));
-                $suite = new PHPUnit_Framework_TestSuite(
-                  $this->arguments['test'] . 'Test'
-                );
-            }
         }
 
         if ($this->arguments['listGroups']) {
@@ -257,9 +239,6 @@ class PHPUnit_TextUI_Command
         catch (PHPUnit_Framework_Exception $e) {
             PHPUnit_TextUI_TestRunner::showError($e->getMessage());
         }
-
-        $skeletonClass = FALSE;
-        $skeletonTest  = FALSE;
 
         foreach ($this->options[0] as $option) {
             switch ($option[0]) {
@@ -440,18 +419,6 @@ class PHPUnit_TextUI_Command
 
                 case '--stop-on-skipped': {
                     $this->arguments['stopOnSkipped'] = TRUE;
-                }
-                break;
-
-                case '--skeleton-test': {
-                    $skeletonTest  = TRUE;
-                    $skeletonClass = FALSE;
-                }
-                break;
-
-                case '--skeleton-class': {
-                    $skeletonClass = TRUE;
-                    $skeletonTest  = FALSE;
                 }
                 break;
 
@@ -692,48 +659,6 @@ class PHPUnit_TextUI_Command
             $this->showHelp();
             exit(PHPUnit_TextUI_TestRunner::EXCEPTION_EXIT);
         }
-
-        if ($skeletonClass || $skeletonTest) {
-            if (isset($this->arguments['test']) && $this->arguments['test'] !== FALSE) {
-                PHPUnit_TextUI_TestRunner::printVersionString();
-
-                if ($skeletonClass) {
-                    $class = 'PHPUnit_Util_Skeleton_Class';
-                } else {
-                    $class = 'PHPUnit_Util_Skeleton_Test';
-                }
-
-                try {
-                    $args      = array();
-                    $reflector = new ReflectionClass($class);
-
-                    for ($i = 0; $i <= 3; $i++) {
-                        if (isset($this->options[1][$i])) {
-                            $args[] = $this->options[1][$i];
-                        }
-                    }
-
-                    $skeleton = $reflector->newInstanceArgs($args);
-                    $skeleton->write();
-                }
-
-                catch (Exception $e) {
-                    print $e->getMessage() . "\n";
-                    exit(PHPUnit_TextUI_TestRunner::FAILURE_EXIT);
-                }
-
-                printf(
-                  'Wrote skeleton for "%s" to "%s".' . "\n",
-                  $skeleton->getOutClassName(),
-                  $skeleton->getOutSourceFile()
-                );
-
-                exit(PHPUnit_TextUI_TestRunner::SUCCESS_EXIT);
-            } else {
-                $this->showHelp();
-                exit(PHPUnit_TextUI_TestRunner::EXCEPTION_EXIT);
-            }
-        }
     }
 
     /**
@@ -922,9 +847,6 @@ Usage: phpunit [switches] UnitTest [UnitTest.php]
   --strict                  Run tests in strict mode.
   -v|--verbose              Output more verbose information.
   --debug                   Display debbuging information during test execution.
-
-  --skeleton-class          Generate Unit class for UnitTest in UnitTest.php.
-  --skeleton-test           Generate UnitTest class for Unit in Unit.php.
 
   --process-isolation       Run each test in a separate PHP process.
   --no-globals-backup       Do not backup and restore \$GLOBALS for each test.

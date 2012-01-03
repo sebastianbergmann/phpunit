@@ -345,46 +345,6 @@
        <tasks:replace from="@package_version@" to="version" type="package-info" />
       </file>
      </dir>
-     <dir name="Skeleton">
-      <dir name="Template">
-       <file baseinstalldir="/" name="Class.tpl.dist" role="php">
-        <tasks:replace from="@package_version@" to="version" type="package-info" />
-       </file>
-       <file baseinstalldir="/" name="IncompleteTestMethod.tpl.dist" role="php">
-        <tasks:replace from="@package_version@" to="version" type="package-info" />
-       </file>
-       <file baseinstalldir="/" name="Method.tpl.dist" role="php">
-        <tasks:replace from="@package_version@" to="version" type="package-info" />
-       </file>
-       <file baseinstalldir="/" name="TestClass.tpl.dist" role="php">
-        <tasks:replace from="@package_version@" to="version" type="package-info" />
-       </file>
-       <file baseinstalldir="/" name="TestMethod.tpl.dist" role="php">
-        <tasks:replace from="@package_version@" to="version" type="package-info" />
-       </file>
-       <file baseinstalldir="/" name="TestMethodStatic.tpl.dist" role="php">
-        <tasks:replace from="@package_version@" to="version" type="package-info" />
-       </file>
-       <file baseinstalldir="/" name="TestMethodBool.tpl.dist" role="php">
-        <tasks:replace from="@package_version@" to="version" type="package-info" />
-       </file>
-       <file baseinstalldir="/" name="TestMethodBoolStatic.tpl.dist" role="php">
-        <tasks:replace from="@package_version@" to="version" type="package-info" />
-       </file>
-       <file baseinstalldir="/" name="TestMethodException.tpl.dist" role="php">
-        <tasks:replace from="@package_version@" to="version" type="package-info" />
-       </file>
-       <file baseinstalldir="/" name="TestMethodExceptionStatic.tpl.dist" role="php">
-        <tasks:replace from="@package_version@" to="version" type="package-info" />
-       </file>
-      </dir>
-      <file baseinstalldir="/" name="Class.php" role="php">
-       <tasks:replace from="@package_version@" to="version" type="package-info" />
-      </file>
-      <file baseinstalldir="/" name="Test.php" role="php">
-       <tasks:replace from="@package_version@" to="version" type="package-info" />
-      </file>
-     </dir>
      <dir name="TestDox">
       <dir name="ResultPrinter">
        <file baseinstalldir="/" name="HTML.php" role="php">
@@ -420,9 +380,6 @@
       <tasks:replace from="@package_version@" to="version" type="package-info" />
       <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
      </file>
-     <file baseinstalldir="/" name="File.php" role="php">
-      <tasks:replace from="@package_version@" to="version" type="package-info" />
-     </file>
      <file baseinstalldir="/" name="Filesystem.php" role="php">
       <tasks:replace from="@package_version@" to="version" type="package-info" />
      </file>
@@ -443,9 +400,6 @@
       <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
      </file>
      <file baseinstalldir="/" name="Printer.php" role="php">
-      <tasks:replace from="@package_version@" to="version" type="package-info" />
-     </file>
-     <file baseinstalldir="/" name="Skeleton.php" role="php">
       <tasks:replace from="@package_version@" to="version" type="package-info" />
      </file>
      <file baseinstalldir="/" name="String.php" role="php">

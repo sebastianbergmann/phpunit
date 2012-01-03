@@ -50,9 +50,6 @@ Usage: phpunit [switches] UnitTest [UnitTest.php]
   -v|--verbose              Output more verbose information.
   --debug                   Display debbuging information during test execution.
 
-  --skeleton-class          Generate Unit class for UnitTest in UnitTest.php.
-  --skeleton-test           Generate UnitTest class for Unit in Unit.php.
-
   --process-isolation       Run each test in a separate PHP process.
   --no-globals-backup       Do not backup and restore $GLOBALS for each test.
   --static-backup           Backup and restore static attributes for each test.
