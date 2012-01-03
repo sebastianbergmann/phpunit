@@ -28,6 +28,7 @@
   <delete dir="${basedir}/build/pdepend"/>
   <delete dir="${basedir}/build/phar"/>
   <delete dir="${basedir}/build/phpdox"/>
+  <delete file="${basedir}/build/phpunit.phar"/>
  </target>
 
  <target name="prepare" depends="clean,phpab"
