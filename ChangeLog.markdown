@@ -13,4 +13,4 @@ PHPUnit 3.7.0
 * It is possible again to expect the generic `Exception` class.
 * Removed deprecated `--skeleton-class` and `--skeleton-test` switches. The functionality is now provided by the `phpunit-skel` command of the `PHPUnit_SkeletonGenerator` package.
 * Removed deprecated `PHPUnit_Extensions_OutputTestCase` class.
-* PHPUnit 3.7 is only supported on PHP 5.3.9 (or later) and PHP 5.4.0 (or later) is highly recommended.
+* PHPUnit 3.7 is only supported on PHP 5.3.3 (or later) and PHP 5.4.0 (or later) is highly recommended.

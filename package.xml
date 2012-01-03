@@ -441,7 +441,7 @@
  <dependencies>
   <required>
    <php>
-    <min>5.3.9</min>
+    <min>5.3.3</min>
    </php>
    <pearinstaller>
     <min>1.9.4</min>
