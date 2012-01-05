@@ -316,7 +316,9 @@ class PHPUnit_Util_Skeleton_Test extends PHPUnit_Util_Skeleton
 
                     $methodTemplate->setVar(
                       array(
-                        'methodName' => ucfirst($method->getName())
+                        'className'      => $this->inClassName['fullyQualifiedClassName'],
+                        'methodName'     => ucfirst($method->getName()),
+                        'origMethodName' => $method->getName()
                       )
                     );
 

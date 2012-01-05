@@ -3,6 +3,11 @@ PHPUnit 3.6
 
 This is the list of changes for the PHPUnit 3.6 release series.
 
+PHPUnit 3.6.8
+-------------
+
+* Fixed rendering of `@covers` annotations in test skeleton generator.
+
 PHPUnit 3.6.7
 -------------
 
