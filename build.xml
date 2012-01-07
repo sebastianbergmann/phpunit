@@ -114,6 +114,7 @@
    <arg value="--extensions=php" />
    <arg value="--ignore=Autoload.php" />
    <arg path="${basedir}/PHPUnit" />
+   <arg path="${basedir}/Tests" />
   </exec>
  </target>
 
@@ -126,6 +127,7 @@
    <arg value="--extensions=php" />
    <arg value="--ignore=Autoload.php" />
    <arg path="${basedir}/PHPUnit" />
+   <arg path="${basedir}/Tests" />
   </exec>
  </target>
 
