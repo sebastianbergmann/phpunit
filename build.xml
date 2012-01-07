@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <project name="PHPUnit" default="build">
+ <property name="php" value="php"/>
+
  <target name="build"
    depends="prepare,lint,phploc,pdepend,phpmd-ci,phpcs-ci,phpcpd,phpunit,phpcb"/>
 
@@ -55,7 +57,7 @@
  </target>
 
  <target name="lint">
-  <apply executable="php" failonerror="true">
+  <apply executable="${php}" failonerror="true">
    <arg value="-l" />
 
    <fileset dir="${basedir}/PHPUnit">
@@ -139,7 +141,9 @@
  </target>
 
  <target name="phpunit" description="Run unit tests with PHPUnit">
-  <exec executable="./phpunit.php" failonerror="true"/>
+  <exec executable="${php}" failonerror="true">
+   <arg path="${basedir}/phpunit.php" />
+  </exec>
  </target>
 
  <target name="phpcb"
