@@ -361,7 +361,7 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
                 );
                 
                 if (isset($arguments['reportMemoryLimit'])) {
-                    $defaultMemoryLimit = ini_get('memory_limit');
+					//ini_set return the old value
                     $defaultMemoryLimit = ini_set('memory_limit', $arguments['reportMemoryLimit']);
                 }
 
