@@ -71,7 +71,6 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
     {
         $this->filesDirectory = dirname(dirname(__FILE__)) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR;
 
-        if (isset($this->html)) { return; }
         $this->html = file_get_contents(
             $this->filesDirectory . 'SelectorAssertionsFixture.html'
         );
@@ -3203,35 +3202,36 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
     /**
      * @covers PHPUnit_Framework_Assert::assertSelectCount
      */
-     public function testAssertSelectCountPresentTrue()
-     {
-         $selector = 'div#test_id';
-         $count    = TRUE;
-         $this->assertSelectCount($selector, $count, $this->html);
-     }
+    public function testAssertSelectCountPresentTrue()
+    {
+        $selector = 'div#test_id';
+        $count    = TRUE;
+
+        $this->assertSelectCount($selector, $count, $this->html);
+    }
 
     /**
      * @covers            PHPUnit_Framework_Assert::assertSelectCount
      * @expectedException PHPUnit_Framework_AssertionFailedError
      */
-     public function testAssertSelectCountPresentFalse()
-     {
-         $selector = 'div#non_existent';
-         $count    = TRUE;
+    public function testAssertSelectCountPresentFalse()
+    {
+        $selector = 'div#non_existent';
+        $count    = TRUE;
 
         $this->assertSelectCount($selector, $count, $this->html);
-     }
+    }
 
     /**
      * @covers PHPUnit_Framework_Assert::assertSelectCount
      */
-     public function testAssertSelectCountNotPresentTrue()
-     {
-         $selector = 'div#non_existent';
-         $count    = FALSE;
+    public function testAssertSelectCountNotPresentTrue()
+    {
+        $selector = 'div#non_existent';
+        $count    = FALSE;
 
-         $this->assertSelectCount($selector, $count, $this->html);
-     }
+        $this->assertSelectCount($selector, $count, $this->html);
+    }
 
     /**
      * @covers            PHPUnit_Framework_Assert::assertSelectCount

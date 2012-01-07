@@ -806,7 +806,7 @@ Failed asserting that two arrays are equal.
 
 EOF
             ),
-            array(array(true), array('true'), <<<EOF
+            array(array(TRUE), array('true'), <<<EOF
 Failed asserting that two arrays are equal.
 --- Expected
 +++ Actual

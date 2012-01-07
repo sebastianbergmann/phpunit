@@ -270,8 +270,8 @@ class Util_ConfigurationTest extends PHPUnit_Framework_TestCase
 
         $path = dirname(dirname(__FILE__)) . '/_files/.' . PATH_SEPARATOR . '/path/to/lib';
         $this->assertStringStartsWith($path, ini_get('include_path'));
-        $this->assertEquals(FALSE, foo);
-        $this->assertEquals(TRUE, bar);
+        $this->assertEquals(FALSE, FOO);
+        $this->assertEquals(TRUE, BAR);
         $this->assertEquals(FALSE, $GLOBALS['foo']);
         $this->assertEquals(TRUE, $_ENV['foo']);
         $this->assertEquals(TRUE, getenv('foo'));
