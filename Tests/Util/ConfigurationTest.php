@@ -247,7 +247,7 @@ class Util_ConfigurationTest extends PHPUnit_Framework_TestCase
               '/path/to/lib'
             ),
             'ini'=> array('foo' => 'bar'),
-            'const'=> array('foo' => FALSE, 'bar' => TRUE),
+            'const'=> array('FOO' => FALSE, 'BAR' => TRUE),
             'var'=> array('foo' => FALSE),
             'env'=> array('foo' => TRUE),
             'post'=> array('foo' => 'bar'),
