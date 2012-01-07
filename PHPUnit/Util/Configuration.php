@@ -130,7 +130,7 @@
  *   <logging>
  *     <log type="coverage-html" target="/tmp/report" title="My Project"
             charset="UTF-8" yui="true" highlight="false"
- *          lowUpperBound="35" highLowerBound="70"/>
+ *          lowUpperBound="35" highLowerBound="70" memoryLimit="256M"/>
  *     <log type="coverage-clover" target="/tmp/clover.xml"/>
  *     <log type="json" target="/tmp/logfile.json"/>
  *     <log type="plain" target="/tmp/logfile.txt"/>
@@ -413,6 +413,10 @@ class PHPUnit_Util_Configuration
                       (string)$log->getAttribute('highlight'),
                       FALSE
                     );
+                }
+
+                if ($log->hasAttribute('memoryLimit')) {
+                    $result['memoryLimit'] = (string)$log->getAttribute('memoryLimit');
                 }
             }
 
