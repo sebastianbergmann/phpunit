@@ -232,6 +232,7 @@ class Util_ConfigurationTest extends PHPUnit_Framework_TestCase
             'junit' => '/tmp/logfile.xml',
             'testdox-html' => '/tmp/testdox.html',
             'testdox-text' => '/tmp/testdox.txt',
+            'memoryLimit' => '256M',
           ),
           $this->configuration->getLoggingConfiguration()
         );

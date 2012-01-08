@@ -359,6 +359,11 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
                 $this->printer->write(
                   "\nGenerating code coverage report, this may take a moment."
                 );
+                
+                if (isset($arguments['reportMemoryLimit'])) {
+                    //ini_set return the old value
+                    $defaultMemoryLimit = ini_set('memory_limit', $arguments['reportMemoryLimit']);
+                }
 
                 $writer = new PHP_CodeCoverage_Report_HTML(
                   $title,
@@ -374,6 +379,11 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
 
                 $this->printer->write("\n");
                 unset($writer);
+
+                if (isset($arguments['reportMemoryLimit'])) {
+                    //Restore the default memory limit
+                    ini_set('memory_limit', $defaultMemoryLimit);
+                }
             }
 
             if (isset($arguments['coveragePHP'])) {
@@ -659,6 +669,11 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
                     $arguments['reportHighLowerBound'] = $loggingConfiguration['highLowerBound'];
                 }
 
+                if (isset($loggingConfiguration['memoryLimit']) &&
+                    !isset($arguments['reportMemoryLimit'])) {
+                    $arguments['reportMemoryLimit'] = $loggingConfiguration['memoryLimit'];
+                }
+
                 $arguments['reportDirectory'] = $loggingConfiguration['coverage-html'];
             }
 
@@ -786,6 +801,7 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
         $arguments['reportHighlight']                = isset($arguments['reportHighlight'])                ? $arguments['reportHighlight']                : FALSE;
         $arguments['reportHighLowerBound']           = isset($arguments['reportHighLowerBound'])           ? $arguments['reportHighLowerBound']           : 70;
         $arguments['reportLowUpperBound']            = isset($arguments['reportLowUpperBound'])            ? $arguments['reportLowUpperBound']            : 35;
+        $arguments['reportMemoryLimit']              = isset($arguments['reportMemoryLimit'])              ? $arguments['reportMemoryLimit']              : NULL;
         $arguments['reportYUI']                      = isset($arguments['reportYUI'])                      ? $arguments['reportYUI']                      : TRUE;
         $arguments['stopOnError']                    = isset($arguments['stopOnError'])                    ? $arguments['stopOnError']                    : FALSE;
         $arguments['stopOnFailure']                  = isset($arguments['stopOnFailure'])                  ? $arguments['stopOnFailure']                  : FALSE;
