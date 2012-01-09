@@ -688,6 +688,35 @@ class PHPUnit_TextUI_Command
             if (isset($this->arguments['test']) && $this->arguments['test'] !== FALSE) {
                 PHPUnit_TextUI_TestRunner::printVersionString();
 
+                print <<<EOT
+The functionality of
+
+  phpunit --skeleton-class
+
+and
+
+  phpunit --skeleton-test
+
+will be removed in PHPUnit 3.7.
+
+Please
+
+  pear install phpunit/PHPUnit_SkeletonGenerator
+
+and use
+
+  phpunit-skelgen --class
+
+and
+
+  phpunit-skelgen --test
+
+instead.
+
+Sorry for any inconvenience caused by this change.
+
+
+EOT;
                 if ($skeletonClass) {
                     $class = 'PHPUnit_Util_Skeleton_Class';
                 } else {
@@ -917,9 +946,6 @@ Usage: phpunit [switches] UnitTest [UnitTest.php]
   --strict                  Run tests in strict mode.
   -v|--verbose              Output more verbose information.
   --debug                   Display debbuging information during test execution.
-
-  --skeleton-class          Generate Unit class for UnitTest in UnitTest.php.
-  --skeleton-test           Generate UnitTest class for Unit in Unit.php.
 
   --process-isolation       Run each test in a separate PHP process.
   --no-globals-backup       Do not backup and restore \$GLOBALS for each test.
