@@ -258,7 +258,7 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
             );
 
             $codeCoverage->setProcessUncoveredFilesFromWhitelist(
-              $arguments['addUncoveredFilesFromWhitelist']
+              $arguments['processUncoveredFilesFromWhitelist']
             );
 
             if (isset($arguments['cacheTokens'])) {
@@ -725,7 +725,7 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
                 extension_loaded('xdebug')) {
 
                 $filterConfiguration = $arguments['configuration']->getFilterConfiguration();
-                $arguments['addUncoveredFilesFromWhitelist'] = $filterConfiguration['whitelist']['addUncoveredFilesFromWhitelist'];
+                $arguments['processUncoveredFilesFromWhitelist'] = $filterConfiguration['whitelist']['processUncoveredFilesFromWhitelist'];
 
                 foreach ($filterConfiguration['blacklist']['include']['directory'] as $dir) {
                     $this->codeCoverageFilter->addDirectoryToBlacklist(
@@ -769,33 +769,33 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
             }
         }
 
-        $arguments['addUncoveredFilesFromWhitelist'] = isset($arguments['addUncoveredFilesFromWhitelist']) ? $arguments['addUncoveredFilesFromWhitelist'] : TRUE;
-        $arguments['backupGlobals']                  = isset($arguments['backupGlobals'])                  ? $arguments['backupGlobals']                  : NULL;
-        $arguments['backupStaticAttributes']         = isset($arguments['backupStaticAttributes'])         ? $arguments['backupStaticAttributes']         : NULL;
-        $arguments['cacheTokens']                    = isset($arguments['cacheTokens'])                    ? $arguments['cacheTokens']                    : TRUE;
-        $arguments['colors']                         = isset($arguments['colors'])                         ? $arguments['colors']                         : FALSE;
-        $arguments['convertErrorsToExceptions']      = isset($arguments['convertErrorsToExceptions'])      ? $arguments['convertErrorsToExceptions']      : TRUE;
-        $arguments['convertNoticesToExceptions']     = isset($arguments['convertNoticesToExceptions'])     ? $arguments['convertNoticesToExceptions']     : TRUE;
-        $arguments['convertWarningsToExceptions']    = isset($arguments['convertWarningsToExceptions'])    ? $arguments['convertWarningsToExceptions']    : TRUE;
-        $arguments['excludeGroups']                  = isset($arguments['excludeGroups'])                  ? $arguments['excludeGroups']                  : array();
-        $arguments['groups']                         = isset($arguments['groups'])                         ? $arguments['groups']                         : array();
-        $arguments['logIncompleteSkipped']           = isset($arguments['logIncompleteSkipped'])           ? $arguments['logIncompleteSkipped']           : FALSE;
-        $arguments['processIsolation']               = isset($arguments['processIsolation'])               ? $arguments['processIsolation']               : FALSE;
-        $arguments['repeat']                         = isset($arguments['repeat'])                         ? $arguments['repeat']                         : FALSE;
-        $arguments['reportCharset']                  = isset($arguments['reportCharset'])                  ? $arguments['reportCharset']                  : 'UTF-8';
-        $arguments['reportHighlight']                = isset($arguments['reportHighlight'])                ? $arguments['reportHighlight']                : FALSE;
-        $arguments['reportHighLowerBound']           = isset($arguments['reportHighLowerBound'])           ? $arguments['reportHighLowerBound']           : 70;
-        $arguments['reportLowUpperBound']            = isset($arguments['reportLowUpperBound'])            ? $arguments['reportLowUpperBound']            : 35;
-        $arguments['reportYUI']                      = isset($arguments['reportYUI'])                      ? $arguments['reportYUI']                      : TRUE;
-        $arguments['stopOnError']                    = isset($arguments['stopOnError'])                    ? $arguments['stopOnError']                    : FALSE;
-        $arguments['stopOnFailure']                  = isset($arguments['stopOnFailure'])                  ? $arguments['stopOnFailure']                  : FALSE;
-        $arguments['stopOnIncomplete']               = isset($arguments['stopOnIncomplete'])               ? $arguments['stopOnIncomplete']               : FALSE;
-        $arguments['stopOnSkipped']                  = isset($arguments['stopOnSkipped'])                  ? $arguments['stopOnSkipped']                  : FALSE;
-        $arguments['timeoutForSmallTests']           = isset($arguments['timeoutForSmallTests'])           ? $arguments['timeoutForSmallTests']           : 1;
-        $arguments['timeoutForMediumTests']          = isset($arguments['timeoutForMediumTests'])          ? $arguments['timeoutForMediumTests']          : 10;
-        $arguments['timeoutForLargeTests']           = isset($arguments['timeoutForLargeTests'])           ? $arguments['timeoutForLargeTests']           : 60;
-        $arguments['strict']                         = isset($arguments['strict'])                         ? $arguments['strict']                         : FALSE;
-        $arguments['verbose']                        = isset($arguments['verbose'])                        ? $arguments['verbose']                        : FALSE;
+        $arguments['processUncoveredFilesFromWhitelist'] = isset($arguments['processUncoveredFilesFromWhitelist']) ? $arguments['processUncoveredFilesFromWhitelist'] : FALSE;
+        $arguments['backupGlobals']                      = isset($arguments['backupGlobals'])                      ? $arguments['backupGlobals']                      : NULL;
+        $arguments['backupStaticAttributes']             = isset($arguments['backupStaticAttributes'])             ? $arguments['backupStaticAttributes']             : NULL;
+        $arguments['cacheTokens']                        = isset($arguments['cacheTokens'])                        ? $arguments['cacheTokens']                        : TRUE;
+        $arguments['colors']                             = isset($arguments['colors'])                             ? $arguments['colors']                             : FALSE;
+        $arguments['convertErrorsToExceptions']          = isset($arguments['convertErrorsToExceptions'])          ? $arguments['convertErrorsToExceptions']          : TRUE;
+        $arguments['convertNoticesToExceptions']         = isset($arguments['convertNoticesToExceptions'])         ? $arguments['convertNoticesToExceptions']         : TRUE;
+        $arguments['convertWarningsToExceptions']        = isset($arguments['convertWarningsToExceptions'])        ? $arguments['convertWarningsToExceptions']        : TRUE;
+        $arguments['excludeGroups']                      = isset($arguments['excludeGroups'])                      ? $arguments['excludeGroups']                      : array();
+        $arguments['groups']                             = isset($arguments['groups'])                             ? $arguments['groups']                             : array();
+        $arguments['logIncompleteSkipped']               = isset($arguments['logIncompleteSkipped'])               ? $arguments['logIncompleteSkipped']               : FALSE;
+        $arguments['processIsolation']                   = isset($arguments['processIsolation'])                   ? $arguments['processIsolation']                   : FALSE;
+        $arguments['repeat']                             = isset($arguments['repeat'])                             ? $arguments['repeat']                             : FALSE;
+        $arguments['reportCharset']                      = isset($arguments['reportCharset'])                      ? $arguments['reportCharset']                      : 'UTF-8';
+        $arguments['reportHighlight']                    = isset($arguments['reportHighlight'])                    ? $arguments['reportHighlight']                    : FALSE;
+        $arguments['reportHighLowerBound']               = isset($arguments['reportHighLowerBound'])               ? $arguments['reportHighLowerBound']               : 70;
+        $arguments['reportLowUpperBound']                = isset($arguments['reportLowUpperBound'])                ? $arguments['reportLowUpperBound']                : 35;
+        $arguments['reportYUI']                          = isset($arguments['reportYUI'])                          ? $arguments['reportYUI']                          : TRUE;
+        $arguments['stopOnError']                        = isset($arguments['stopOnError'])                        ? $arguments['stopOnError']                        : FALSE;
+        $arguments['stopOnFailure']                      = isset($arguments['stopOnFailure'])                      ? $arguments['stopOnFailure']                      : FALSE;
+        $arguments['stopOnIncomplete']                   = isset($arguments['stopOnIncomplete'])                   ? $arguments['stopOnIncomplete']                   : FALSE;
+        $arguments['stopOnSkipped']                      = isset($arguments['stopOnSkipped'])                      ? $arguments['stopOnSkipped']                      : FALSE;
+        $arguments['timeoutForSmallTests']               = isset($arguments['timeoutForSmallTests'])               ? $arguments['timeoutForSmallTests']               : 1;
+        $arguments['timeoutForMediumTests']              = isset($arguments['timeoutForMediumTests'])              ? $arguments['timeoutForMediumTests']              : 10;
+        $arguments['timeoutForLargeTests']               = isset($arguments['timeoutForLargeTests'])               ? $arguments['timeoutForLargeTests']               : 60;
+        $arguments['strict']                             = isset($arguments['strict'])                             ? $arguments['strict']                             : FALSE;
+        $arguments['verbose']                            = isset($arguments['verbose'])                            ? $arguments['verbose']                            : FALSE;
 
         if ($arguments['filter'] !== FALSE &&
             preg_match('/^[a-zA-Z0-9_]/', $arguments['filter'])) {
