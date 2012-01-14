@@ -326,4 +326,38 @@ class Util_ConfigurationTest extends PHPUnit_Framework_TestCase
           $this->configuration->getSeleniumBrowserConfiguration()
         );
     }
+
+    /**
+     * @expectedException PHPUnit_Util_Configuration_Exception
+     */
+    public function testGetAutoloaderConfigurationThrowsWhenConfigurationIsBroken() {
+        $path =
+            dirname(__DIR__) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'brokenConfiguration.xml';
+
+        $configuration = PHPUnit_Util_Configuration::getInstance($path);
+        $configuration->getAutoloaderConfiguration();
+    }
+
+    public function testAutoloaderConfigurationIsReadCorrectly()
+    {
+        $this->assertEquals(
+          array(
+            'namespaces' =>
+            array(
+              'PHPUnit' =>
+              array(
+                dirname(__DIR__) . '/_files/./../../PHPUnit',
+              ),
+            ),
+            'prefixes' =>
+            array(
+              'PHPUnit' =>
+              array(
+                dirname(__DIR__) . '/_files/./../../PHPUnit',
+              ),
+            ),
+          ),
+          $this->configuration->getAutoloaderConfiguration()
+        );
+    }
 }
