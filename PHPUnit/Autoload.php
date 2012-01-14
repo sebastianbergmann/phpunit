@@ -146,6 +146,7 @@ function phpunit_autoload($class = NULL)
           'phpunit_util_autoloader_exception' => '/Util/Autoloader/Exception.php',
           'phpunit_util_class' => '/Util/Class.php',
           'phpunit_util_configuration' => '/Util/Configuration.php',
+          'phpunit_util_configuration_exception' => '/Util/Configuration/Exception.php',
           'phpunit_util_deprecatedfeature' => '/Util/DeprecatedFeature.php',
           'phpunit_util_deprecatedfeature_logger' => '/Util/DeprecatedFeature/Logger.php',
           'phpunit_util_diff' => '/Util/Diff.php',
