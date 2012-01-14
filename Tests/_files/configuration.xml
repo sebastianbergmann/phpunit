@@ -109,5 +109,13 @@
              port="4444"
              timeout="30000"/>
   </selenium>
-</phpunit>
 
+  <autoloader>
+    <namespace name="PHPUnit">
+      <directory>./../../PHPUnit</directory>
+    </namespace>
+    <prefix name="PHPUnit">
+      <directory>./../../PHPUnit</directory>
+    </prefix>
+  </autoloader>
+</phpunit>

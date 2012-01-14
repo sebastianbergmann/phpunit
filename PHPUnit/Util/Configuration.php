@@ -161,6 +161,15 @@
  *              port="4444"
  *              timeout="30000"/>
  *   </selenium>
+ *
+ *   <autoloader>
+ *     <prefix name="PHPUnit">
+ *       <directory>/path/to/phpunit</directory>
+ *     </prefix>
+ *     <namespace name="Symfony\Component">
+ *       <directory>/path/to/symfony/component</directory>
+ *     </namespace>
+ *   </autoloader>
  * </phpunit>
  * </code>
  *
@@ -175,6 +184,9 @@
  */
 class PHPUnit_Util_Configuration
 {
+    const AUTOLOADER_CONFIGURATION_NAMESPACES = 'namespaces';
+    const AUTOLOADER_CONFIGURATION_PREFIXES   = 'prefixes';
+
     private static $instances = array();
 
     protected $document;
@@ -782,6 +794,48 @@ class PHPUnit_Util_Configuration
     }
 
     /**
+     * Returns the autoloader namespace and prefix configuration.
+     *
+     * @return array
+     * @since  Method available since Release
+     */
+    public function getAutoloaderConfiguration() {
+        $xPathQueries = array(
+            self::AUTOLOADER_CONFIGURATION_NAMESPACES => 'autoloader/namespace',
+            self::AUTOLOADER_CONFIGURATION_PREFIXES   => 'autoloader/prefix',
+        );
+        $configuration = array();
+
+        foreach ($xPathQueries as $key => $query) {
+            $nodes = $this->xpath->query($query);
+
+            foreach ($nodes as $node) {
+                if ( ! isset($configuration[$key])) {
+                    $configuration[$key] = array();
+                }
+
+                if ( ! $node->hasAttribute('name') || ! $node->getAttribute('name')) {
+                    $type = $key == self::AUTOLOADER_CONFIGURATION_NAMESPACES
+                        ? 'namespace'
+                        : 'prefix';
+
+                    throw new PHPUnit_Util_Configuration_Exception("You cannot configure an autoloader {$type} with no name.");
+                }
+
+                $name = $node->getAttribute('name');
+
+                $directories = $this->readFiles($node->getElementsByTagName('directory'));
+
+                if ($directories) {
+                    $configuration[$key][$name] = $directories;
+                }
+            }
+        }
+
+        return $configuration;
+    }
+
+    /**
      * @param  DOMElement $testSuiteNode
      * @return PHPUnit_Framework_TestSuite
      * @since  Method available since Release 3.4.0
@@ -955,19 +1009,33 @@ class PHPUnit_Util_Configuration
     }
 
     /**
+     * An extraction from
+     * <code>PHPUnit_Util_Configuration#readFilterFiles</code> that reads the
+     * elements in a DOMNodeList into an array of absolute file paths.
+     *
+     * @param  DOMNodeList $nodes Typically, the result of an XPath query
+     * @return array
+     * @since  Method available since Release
+     */
+    protected function readFiles(DOMNodeList $nodes)
+    {
+        $files = array();
+
+        foreach ($nodes as $file) {
+            $files[] = $this->toAbsolutePath((string)$file->nodeValue);
+        }
+
+        return $files;
+    }
+
+    /**
      * @param  string $query
      * @return array
      * @since  Method available since Release 3.2.3
      */
     protected function readFilterFiles($query)
     {
-        $files = array();
-
-        foreach ($this->xpath->query($query) as $file) {
-            $files[] = $this->toAbsolutePath((string)$file->nodeValue);
-        }
-
-        return $files;
+        return $this->readFiles($this->xpath->query($query));
     }
 
     /**

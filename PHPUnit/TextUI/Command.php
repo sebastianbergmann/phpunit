@@ -645,6 +645,39 @@ class PHPUnit_TextUI_Command
                     $this->arguments['test'] = $testSuite;
                 }
             }
+
+            try {
+                $autoloaderConfiguration = $configuration->getAutoloaderConfiguration();
+
+                if ($autoloaderConfiguration) {
+                    // There's no point in registering an autoloader if one
+                    // hasn't been requested
+                    $autoloader = new PHPUnit_Util_Autoloader();
+
+                    if (isset($autoloaderConfiguration[PHPUnit_Util_Configuration::AUTOLOADER_CONFIGURATION_NAMESPACES])) {
+                        $configuration = $autoloaderConfiguration[PHPUnit_Util_Configuration::AUTOLOADER_CONFIGURATION_NAMESPACES];
+
+                        foreach ($configuration as $name => $directories) {
+                            $autoloader->addNamespace($name, $directories);
+                        }
+                    }
+
+                    if (isset($autoloaderConfiguration[PHPUnit_Util_Configuration::AUTOLOADER_CONFIGURATION_PREFIXES])) {
+                        $configuration = $autoloaderConfiguration[PHPUnit_Util_Configuration::AUTOLOADER_CONFIGURATION_PREFIXES];
+
+                        foreach ($configuration as $name => $directories) {
+                            $autoloader->addPrefix($name, $directories);
+                        }
+                    }
+
+                    $autoloader->register();
+                }
+            }
+            catch (Exception $e) {
+                print $e->getMessage() . "\n";
+
+                exit(PHPUnit_TextUI_TestRunner::FAILURE_EXIT);
+            }
         }
 
         if (isset($this->arguments['test']) && is_string($this->arguments['test']) && substr($this->arguments['test'], -5, 5) == '.phpt') {
