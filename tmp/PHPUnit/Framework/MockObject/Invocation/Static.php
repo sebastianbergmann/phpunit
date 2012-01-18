@@ -142,19 +142,11 @@ class PHPUnit_Framework_MockObject_Invocation_Static implements PHPUnit_Framewor
         $cloneable = NULL;
         $object    = new ReflectionObject($original);
 
-        if (method_exists($object, 'isCloneable')) {
-            $cloneable = $object->isCloneable();
-        }
-
-        if ($cloneable === NULL &&
-            $object->isInternal() &&
+        // Check the blacklist before asking PHP Reflection to work around: 
+        // https://bugs.php.net/bug.php?id=53967
+        if ($object->isInternal() &&
             isset(self::$uncloneableExtensions[$object->getExtensionName()])) {
             $cloneable = FALSE;
-        }
-
-        if ($cloneable === NULL && $object->hasMethod('__clone')) {
-            $method    = $object->getMethod('__clone');
-            $cloneable = $method->isPublic();
         }
 
         if ($cloneable === NULL) {
@@ -164,6 +156,15 @@ class PHPUnit_Framework_MockObject_Invocation_Static implements PHPUnit_Framewor
                     break;
                 }
             }
+        }
+
+        if ($cloneable === NULL && method_exists($object, 'isCloneable')) {
+            $cloneable = $object->isCloneable();
+        }
+
+        if ($cloneable === NULL && $object->hasMethod('__clone')) {
+            $method    = $object->getMethod('__clone');
+            $cloneable = $method->isPublic();
         }
 
         if ($cloneable === NULL) {
