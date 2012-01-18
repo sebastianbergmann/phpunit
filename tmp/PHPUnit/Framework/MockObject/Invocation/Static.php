@@ -142,7 +142,7 @@ class PHPUnit_Framework_MockObject_Invocation_Static implements PHPUnit_Framewor
         $cloneable = NULL;
         $object    = new ReflectionObject($original);
 
-        // Check the blacklist before asking PHP Reflection to work around: 
+        // Check the blacklist before asking PHP Reflection to work around:
         // https://bugs.php.net/bug.php?id=53967
         if ($object->isInternal() &&
             isset(self::$uncloneableExtensions[$object->getExtensionName()])) {
