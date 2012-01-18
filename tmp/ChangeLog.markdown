@@ -3,15 +3,12 @@ PHPUnit_MockObject 1.1
 
 This is the list of changes for the PHPUnit_MockObject 1.1 release series.
 
-PHPUnit_MockObject 1.1.2
-------------------------
-
-* Fixed #46 `$this->any()` can now be used with parameterMatchers
-
 PHPUnit_MockObject 1.1.1
 ------------------------
 
 * `getMockForAbstractClass()` now supports the stubbing and mocking of interfaces.
+* Fixed an issue with `ReflectionClass::isCloneable()` not working correctly for internal classes in PHP 5.4.
+* Fixed #46 `$this->any()` can now be used with parameter matchers.
 
 PHPUnit_MockObject 1.1.0
 ------------------------
