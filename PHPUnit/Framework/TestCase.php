@@ -575,7 +575,7 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
     /**
      * @since Method available since Release 3.6.0
      */
-    protected function testRequirements()
+    protected function checkRequirements()
     {
         $this->setRequirementsFromAnnotation();
 
@@ -789,7 +789,7 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
 
             $this->setExpectedExceptionFromAnnotation();
             $this->setUp();
-            $this->testRequirements();
+            $this->checkRequirements();
             $this->assertPreConditions();
             $this->testResult = $this->runTest();
             $this->verifyMockObjects();
