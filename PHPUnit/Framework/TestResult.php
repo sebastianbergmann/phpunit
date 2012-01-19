@@ -624,7 +624,8 @@ class PHPUnit_Framework_TestResult implements Countable
         PHP_Timer::start();
 
         try {
-            if ($this->strictMode &&
+            if (!$test instanceof PHPUnit_Framework_Warning &&
+                $this->strictMode &&
                 extension_loaded('pcntl') && class_exists('PHP_Invoker')) {
                 switch ($test->getSize()) {
                     case PHPUnit_Util_Test::SMALL: {
