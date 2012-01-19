@@ -6,6 +6,7 @@ This is the list of changes for the PHPUnit 3.6 release series.
 PHPUnit 3.6.8
 -------------
 
+* Fixed reflection errors when `PHPUnit_Framework_Warning` is used.
 * Marked `--skeleton-class` and `--skeleton-test` as deprecated. Please use the `phpunit-skelgen` tool that is provided by the `PHPUnit_SkeletonGenerator` package instead.
 
 PHPUnit 3.6.7

@@ -666,9 +666,11 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
             $result = $this->createResult();
         }
 
-        $this->setTestResultObject($result);
-        $this->setUseErrorHandlerFromAnnotation();
-        $this->setUseOutputBufferingFromAnnotation();
+        if (!$this instanceof PHPUnit_Framework_Warning) {
+            $this->setTestResultObject($result);
+            $this->setUseErrorHandlerFromAnnotation();
+            $this->setUseOutputBufferingFromAnnotation();
+        }
 
         if ($this->useErrorHandler !== NULL) {
             $oldErrorHandlerSetting = $result->getConvertErrorsToExceptions();
