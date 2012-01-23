@@ -857,10 +857,6 @@ class PHPUnit_Util_Configuration
 
             // Get the absolute path to the file
             $file = $fileIteratorFacade->getFilesAsArray($this->toAbsolutePath($file));
-            if (!isset($file[0])) {
-                // If the file does not exist skip adding it to the test suite
-                continue;
-            }
             $file = $file[0];
 
             if ($fileNode->hasAttribute('phpVersion')) {
