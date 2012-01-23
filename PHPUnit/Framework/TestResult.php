@@ -575,7 +575,6 @@ class PHPUnit_Framework_TestResult implements Countable
         $failure    = FALSE;
         $incomplete = FALSE;
         $skipped    = FALSE;
-        $timeout    = FALSE;
 
         $this->startTest($test);
 
@@ -663,10 +662,6 @@ class PHPUnit_Framework_TestResult implements Countable
             }
         }
 
-        catch (PHP_Invoker_TimeoutException $e) {
-            $timeout = TRUE;
-        }
-
         catch (Exception $e) {
             $error = TRUE;
         }
@@ -702,19 +697,6 @@ class PHPUnit_Framework_TestResult implements Countable
 
         else if ($failure === TRUE) {
             $this->addFailure($test, $e, $time);
-        }
-
-        else if ($timeout === TRUE) {
-            $this->addFailure(
-              $test,
-              new PHPUnit_Framework_IncompleteTestError(
-                sprintf(
-                  'Test execution was aborted after %s',
-                  PHP_Timer::secondsToTimeString($_timeout)
-                )
-              ),
-              $time
-            );
         }
 
         else if ($this->strictMode && $test->getNumAssertions() == 0) {

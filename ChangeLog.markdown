@@ -3,6 +3,11 @@ PHPUnit 3.6
 
 This is the list of changes for the PHPUnit 3.6 release series.
 
+PHPUnit 3.6.10
+--------------
+
+* Tests for which the execution is aborted due to a timeout are no longer shown as incomplete but as an error instead.
+
 PHPUnit 3.6.9
 -------------
 
