@@ -3,6 +3,11 @@ PHPUnit 3.6
 
 This is the list of changes for the PHPUnit 3.6 release series.
 
+PHPUnit 3.6.9
+-------------
+
+* Fixed #466: Undefined offset in `Configuration.php`.
+
 PHPUnit 3.6.8
 -------------
 
