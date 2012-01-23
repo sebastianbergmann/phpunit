@@ -856,7 +856,7 @@ class PHPUnit_Util_Configuration
             }
 
             // Get the absolute path to the file
-            $file = $fileIteratorFacade->getFilesAsArray($this->toAbsolutePath($file));
+            $file = $fileIteratorFacade->getFilesAsArray($file);
             $file = $file[0];
 
             if ($fileNode->hasAttribute('phpVersion')) {
