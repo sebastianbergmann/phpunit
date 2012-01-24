@@ -115,6 +115,11 @@ class PHPUnit_TextUI_Command
     );
 
     /**
+     * @var array
+     */
+    protected $missingExtensions = array();
+
+    /**
      * @param boolean $exit
      */
     public static function main($exit = TRUE)
@@ -774,6 +779,10 @@ class PHPUnit_TextUI_Command
      */
     protected function showExtensionNotLoadedMessage($extension, $message = '')
     {
+        if (isset($this->missingExtensions[$extension])) {
+            return;
+        }
+
         if (!empty($message)) {
             $message = ' ' . $message;
         }
@@ -782,6 +791,8 @@ class PHPUnit_TextUI_Command
           'The ' . $extension . ' extension is not loaded.' . $message . "\n",
           FALSE
         );
+
+        $this->missingExtensions[$extension] = TRUE;
     }
 
     /**
