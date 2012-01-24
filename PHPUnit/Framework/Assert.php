@@ -2,7 +2,7 @@
 /**
  * PHPUnit
  *
- * Copyright (c) 2002-2011, Sebastian Bergmann <sebastian@phpunit.de>.
+ * Copyright (c) 2001-2012, Sebastian Bergmann <sebastian@phpunit.de>.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -37,7 +37,7 @@
  * @package    PHPUnit
  * @subpackage Framework
  * @author     Sebastian Bergmann <sebastian@phpunit.de>
- * @copyright  2002-2011 Sebastian Bergmann <sebastian@phpunit.de>
+ * @copyright  2001-2012 Sebastian Bergmann <sebastian@phpunit.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @link       http://www.phpunit.de/
  * @since      File available since Release 2.0.0
@@ -49,7 +49,7 @@
  * @package    PHPUnit
  * @subpackage Framework
  * @author     Sebastian Bergmann <sebastian@phpunit.de>
- * @copyright  2002-2011 Sebastian Bergmann <sebastian@phpunit.de>
+ * @copyright  2001-2012 Sebastian Bergmann <sebastian@phpunit.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    Release: @package_version@
  * @link       http://www.phpunit.de/
@@ -1912,7 +1912,7 @@ abstract class PHPUnit_Framework_Assert
                 self::assertTrue($counted <= $count['<='], $message);
             }
         } else {
-            throw new InvalidArgumentException();
+            throw new PHPUnit_Framework_Exception;
         }
     }
 
@@ -2531,27 +2531,13 @@ abstract class PHPUnit_Framework_Assert
     }
 
     /**
-     * Fails a test with a synthetic error.
-     *
-     * @param  string  $message
-     * @param  string  $file
-     * @param  integer $line
-     * @param  array   $trace
-     * @throws PHPUnit_Framework_SyntheticError
-     */
-    public static function syntheticFail($message = '', $file = '', $line = 0, $trace = array())
-    {
-        throw new PHPUnit_Framework_SyntheticError($message, 0, $file, $line, $trace);
-    }
-
-    /**
      * Returns the value of an attribute of a class or an object.
      * This also works for attributes that are declared protected or private.
      *
      * @param  mixed   $classOrObject
      * @param  string  $attributeName
      * @return mixed
-     * @throws InvalidArgumentException
+     * @throws PHPUnit_Framework_Exception
      */
     public static function readAttribute($classOrObject, $attributeName)
     {

@@ -2,7 +2,7 @@
 /**
  * PHPUnit
  *
- * Copyright (c) 2002-2011, Sebastian Bergmann <sebastian@phpunit.de>.
+ * Copyright (c) 2001-2012, Sebastian Bergmann <sebastian@phpunit.de>.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -37,7 +37,7 @@
  * @package    PHPUnit
  * @subpackage Util
  * @author     Sebastian Bergmann <sebastian@phpunit.de>
- * @copyright  2002-2011 Sebastian Bergmann <sebastian@phpunit.de>
+ * @copyright  2001-2012 Sebastian Bergmann <sebastian@phpunit.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @link       http://www.phpunit.de/
  * @since      File available since Release 3.2.0
@@ -98,7 +98,7 @@
  *         <file>/path/to/file</file>
  *       </exclude>
  *     </blacklist>
- *     <whitelist addUncoveredFilesFromWhitelist="true">
+ *     <whitelist processUncoveredFilesFromWhitelist="false">
  *       <directory suffix=".php">/path/to/files</directory>
  *       <file>/path/to/file</file>
  *       <exclude>
@@ -167,7 +167,7 @@
  * @package    PHPUnit
  * @subpackage Util
  * @author     Sebastian Bergmann <sebastian@phpunit.de>
- * @copyright  2002-2011 Sebastian Bergmann <sebastian@phpunit.de>
+ * @copyright  2001-2012 Sebastian Bergmann <sebastian@phpunit.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    Release: @package_version@
  * @link       http://www.phpunit.de/
@@ -246,15 +246,17 @@ class PHPUnit_Util_Configuration
      */
     public function getFilterConfiguration()
     {
-        $addUncoveredFilesFromWhitelist = TRUE;
+        $processUncoveredFilesFromWhitelist = FALSE;
 
         $tmp = $this->xpath->query('filter/whitelist');
 
         if ($tmp->length == 1 &&
-            $tmp->item(0)->hasAttribute('addUncoveredFilesFromWhitelist')) {
-            $addUncoveredFilesFromWhitelist = $this->getBoolean(
-              (string)$tmp->item(0)->getAttribute('addUncoveredFilesFromWhitelist'),
-              TRUE
+            $tmp->item(0)->hasAttribute('processUncoveredFilesFromWhitelist')) {
+            $processUncoveredFilesFromWhitelist = $this->getBoolean(
+              (string)$tmp->item(0)->getAttribute(
+                'processUncoveredFilesFromWhitelist'
+              ),
+              FALSE
             );
         }
 
@@ -278,7 +280,7 @@ class PHPUnit_Util_Configuration
             )
           ),
           'whitelist' => array(
-            'addUncoveredFilesFromWhitelist' => $addUncoveredFilesFromWhitelist,
+            'processUncoveredFilesFromWhitelist' => $processUncoveredFilesFromWhitelist,
             'include' => array(
               'directory' => $this->readFilterDirectories(
                 'filter/whitelist/directory'
@@ -802,6 +804,8 @@ class PHPUnit_Util_Configuration
             $exclude[] = (string)$excludeNode->nodeValue;
         }
 
+        $fileIteratorFacade = new File_Iterator_Facade;
+
         foreach ($testSuiteNode->getElementsByTagName('directory') as $directoryNode) {
             $directory = (string)$directoryNode->nodeValue;
 
@@ -837,14 +841,12 @@ class PHPUnit_Util_Configuration
                 $suffix = 'Test.php';
             }
 
-            $facade = new File_Iterator_Facade;
-            $files  = $facade->getFilesAsArray(
+            $files = $fileIteratorFacade->getFilesAsArray(
               $this->toAbsolutePath($directory),
               $suffix,
               $prefix,
               $exclude
             );
-
             $suite->addTestFiles($files);
         }
 
@@ -854,6 +856,10 @@ class PHPUnit_Util_Configuration
             if (empty($file)) {
                 continue;
             }
+
+            // Get the absolute path to the file
+            $file = $fileIteratorFacade->getFilesAsArray($file);
+            $file = $file[0];
 
             if ($fileNode->hasAttribute('phpVersion')) {
                 $phpVersion = (string)$fileNode->getAttribute('phpVersion');

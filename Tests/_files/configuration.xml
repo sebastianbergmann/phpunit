@@ -43,7 +43,7 @@
         <file>/path/to/file</file>
       </exclude>
     </blacklist>
-    <whitelist addUncoveredFilesFromWhitelist="true">
+    <whitelist processUncoveredFilesFromWhitelist="false">
       <directory suffix=".php">/path/to/files</directory>
       <file>/path/to/file</file>
       <exclude>
@@ -90,8 +90,8 @@
     <includePath>.</includePath>
     <includePath>/path/to/lib</includePath>
     <ini name="foo" value="bar"/>
-    <const name="foo" value="false"/>
-    <const name="bar" value="true"/>
+    <const name="FOO" value="false"/>
+    <const name="BAR" value="true"/>
     <var name="foo" value="false"/>
     <env name="foo" value="true"/>
     <post name="foo" value="bar"/>

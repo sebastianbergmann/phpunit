@@ -2,7 +2,7 @@
 /**
  * PHPUnit
  *
- * Copyright (c) 2002-2011, Sebastian Bergmann <sebastian@phpunit.de>.
+ * Copyright (c) 2001-2012, Sebastian Bergmann <sebastian@phpunit.de>.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -36,21 +36,21 @@
  *
  * @package    PHPUnit
  * @author     Sebastian Bergmann <sebastian@phpunit.de>
- * @copyright  2002-2011 Sebastian Bergmann <sebastian@phpunit.de>
+ * @copyright  2001-2012 Sebastian Bergmann <sebastian@phpunit.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @link       http://www.phpunit.de/
  * @since      File available since Release 3.3.6
  */
 
-require_once dirname(dirname(__FILE__)) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'ExceptionTest.php';
-require_once dirname(dirname(__FILE__)) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'RequirementsTest.php';
+require_once dirname(__DIR__) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'ExceptionTest.php';
+require_once dirname(__DIR__) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'RequirementsTest.php';
 
 /**
  *
  *
  * @package    PHPUnit
  * @author     Sebastian Bergmann <sebastian@phpunit.de>
- * @copyright  2002-2011 Sebastian Bergmann <sebastian@phpunit.de>
+ * @copyright  2001-2012 Sebastian Bergmann <sebastian@phpunit.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    Release: @package_version@
  * @link       http://www.phpunit.de/
@@ -60,36 +60,46 @@ class Util_TestTest extends PHPUnit_Framework_TestCase
 {
     public function testGetExpectedException()
     {
-        $this->assertEquals(
-          array('class' => 'FooBarBaz', 'code' => 0, 'message' => ''),
+        $this->assertSame(
+          array('class' => 'FooBarBaz', 'code' => NULL, 'message' => ''),
           PHPUnit_Util_Test::getExpectedException('ExceptionTest', 'testOne')
         );
 
-        $this->assertEquals(
-          array('class' => 'Foo_Bar_Baz', 'code' => 0, 'message' => ''),
+        $this->assertSame(
+          array('class' => 'Foo_Bar_Baz', 'code' => NULL, 'message' => ''),
           PHPUnit_Util_Test::getExpectedException('ExceptionTest', 'testTwo')
         );
 
-        $this->assertEquals(
-          array('class' => 'Foo\Bar\Baz', 'code' => 0, 'message' => ''),
+        $this->assertSame(
+          array('class' => 'Foo\Bar\Baz', 'code' => NULL, 'message' => ''),
           PHPUnit_Util_Test::getExpectedException('ExceptionTest', 'testThree')
         );
 
-        $this->assertEquals(
-          array('class' => 'ほげ', 'code' => 0, 'message' => ''),
+        $this->assertSame(
+          array('class' => 'ほげ', 'code' => NULL, 'message' => ''),
           PHPUnit_Util_Test::getExpectedException('ExceptionTest', 'testFour')
         );
 
-        $this->assertEquals(
+        $this->assertSame(
           array('class' => 'Class', 'code' => 1234, 'message' => 'Message'),
           PHPUnit_Util_Test::getExpectedException('ExceptionTest', 'testFive')
         );
 
-        $this->assertEquals(
+        $this->assertSame(
           array('class' => 'Class', 'code' => 1234, 'message' => 'Message'),
           PHPUnit_Util_Test::getExpectedException('ExceptionTest', 'testSix')
         );
-    }
+
+        $this->assertSame(
+          array('class' => 'Class', 'code' => 'ExceptionCode', 'message' => 'Message'),
+          PHPUnit_Util_Test::getExpectedException('ExceptionTest', 'testSeven')
+        );
+
+        $this->assertSame(
+          array('class' => 'Class', 'code' => 0, 'message' => 'Message'),
+          PHPUnit_Util_Test::getExpectedException('ExceptionTest', 'testEight')
+        );
+   }
 
     public function testGetRequirements()
     {
@@ -149,5 +159,20 @@ class Util_TestTest extends PHPUnit_Framework_TestCase
      * @depends Foo
      * @depends ほげ
      */
-    public function methodForTestParseAnnotation() {}
+    public function methodForTestParseAnnotation()
+    {
+    }
+
+    public function testParseAnnotationThatIsOnlyOneLine()
+    {
+        $this->assertEquals(
+          array('Bar'),
+          PHPUnit_Util_Test::getDependencies(get_class($this), 'methodForTestParseAnnotationThatIsOnlyOneLine')
+        );
+    }
+
+    /** @depends Bar */
+    public function methodForTestParseAnnotationThatIsOnlyOneLine()
+    {
+    }
 }

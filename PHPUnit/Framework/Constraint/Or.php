@@ -2,7 +2,7 @@
 /**
  * PHPUnit
  *
- * Copyright (c) 2002-2011, Sebastian Bergmann <sebastian@phpunit.de>.
+ * Copyright (c) 2001-2012, Sebastian Bergmann <sebastian@phpunit.de>.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -38,7 +38,7 @@
  * @subpackage Framework_Constraint
  * @author     Sebastian Bergmann <sebastian@phpunit.de>
  * @author     Bernhard Schussek <bschussek@2bepublished.at>
- * @copyright  2002-2011 Sebastian Bergmann <sebastian@phpunit.de>
+ * @copyright  2001-2012 Sebastian Bergmann <sebastian@phpunit.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @link       http://www.phpunit.de/
  * @since      File available since Release 3.0.0
@@ -51,7 +51,7 @@
  * @subpackage Framework_Constraint
  * @author     Sebastian Bergmann <sebastian@phpunit.de>
  * @author     Bernhard Schussek <bschussek@2bepublished.at>
- * @copyright  2002-2011 Sebastian Bergmann <sebastian@phpunit.de>
+ * @copyright  2001-2012 Sebastian Bergmann <sebastian@phpunit.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    Release: @package_version@
  * @link       http://www.phpunit.de/
@@ -71,7 +71,7 @@ class PHPUnit_Framework_Constraint_Or extends PHPUnit_Framework_Constraint
     {
         $this->constraints = array();
 
-        foreach($constraints as $key => $constraint) {
+        foreach ($constraints as $key => $constraint) {
             if (!($constraint instanceof PHPUnit_Framework_Constraint)) {
                 $constraint = new PHPUnit_Framework_Constraint_IsEqual(
                   $constraint
@@ -103,7 +103,7 @@ class PHPUnit_Framework_Constraint_Or extends PHPUnit_Framework_Constraint
         $success = FALSE;
         $constraint = NULL;
 
-        foreach($this->constraints as $constraint) {
+        foreach ($this->constraints as $constraint) {
             if ($constraint->evaluate($other, $description, TRUE)) {
                 $success = TRUE;
                 break;
@@ -128,7 +128,7 @@ class PHPUnit_Framework_Constraint_Or extends PHPUnit_Framework_Constraint
     {
         $text = '';
 
-        foreach($this->constraints as $key => $constraint) {
+        foreach ($this->constraints as $key => $constraint) {
             if ($key > 0) {
                 $text .= ' or ';
             }

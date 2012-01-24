@@ -2,7 +2,7 @@
 /**
  * PHPUnit
  *
- * Copyright (c) 2002-2011, Sebastian Bergmann <sebastian@phpunit.de>.
+ * Copyright (c) 2001-2012, Sebastian Bergmann <sebastian@phpunit.de>.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -36,7 +36,7 @@
  *
  * @package    PHPUnit
  * @author     Sebastian Bergmann <sebastian@phpunit.de>
- * @copyright  2002-2011 Sebastian Bergmann <sebastian@phpunit.de>
+ * @copyright  2001-2012 Sebastian Bergmann <sebastian@phpunit.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @link       http://www.phpunit.de/
  * @since      File available since Release 3.3.0
@@ -47,7 +47,7 @@
  *
  * @package    PHPUnit
  * @author     Sebastian Bergmann <sebastian@phpunit.de>
- * @copyright  2002-2011 Sebastian Bergmann <sebastian@phpunit.de>
+ * @copyright  2001-2012 Sebastian Bergmann <sebastian@phpunit.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    Release: @package_version@
  * @link       http://www.phpunit.de/
@@ -60,7 +60,7 @@ class Util_ConfigurationTest extends PHPUnit_Framework_TestCase
     protected function setUp()
     {
         $this->configuration = PHPUnit_Util_Configuration::getInstance(
-          dirname(dirname(__FILE__)) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'configuration.xml'
+          dirname(__DIR__) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'configuration.xml'
         );
     }
 
@@ -115,7 +115,7 @@ class Util_ConfigurationTest extends PHPUnit_Framework_TestCase
             ),
             'whitelist' =>
             array(
-              'addUncoveredFilesFromWhitelist' => TRUE,
+              'processUncoveredFilesFromWhitelist' => FALSE,
               'include' =>
               array(
                 'directory' =>
@@ -175,7 +175,7 @@ class Util_ConfigurationTest extends PHPUnit_Framework_TestCase
 
     public function testListenerConfigurationIsReadCorrectly()
     {
-        $dir = dirname(__FILE__);
+        $dir = __DIR__;
         $includePath = ini_get('include_path');
 
         ini_set('include_path', $dir . PATH_SEPARATOR . $includePath);
@@ -197,8 +197,8 @@ class Util_ConfigurationTest extends PHPUnit_Framework_TestCase
                 3 => 19.78,
                 4 => NULL,
                 5 => new stdClass,
-                6 => dirname(dirname(__FILE__)) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'MyTestFile.php',
-                7 => dirname(dirname(__FILE__)) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'MyRelativePath',
+                6 => dirname(__DIR__) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'MyTestFile.php',
+                7 => dirname(__DIR__) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'MyRelativePath',
               ),
             ),
             array(
@@ -243,11 +243,11 @@ class Util_ConfigurationTest extends PHPUnit_Framework_TestCase
           array(
             'include_path' =>
             array(
-              dirname(dirname(__FILE__)) . '/_files/.',
+              dirname(__DIR__) . '/_files/.',
               '/path/to/lib'
             ),
             'ini'=> array('foo' => 'bar'),
-            'const'=> array('foo' => FALSE, 'bar' => TRUE),
+            'const'=> array('FOO' => FALSE, 'BAR' => TRUE),
             'var'=> array('foo' => FALSE),
             'env'=> array('foo' => TRUE),
             'post'=> array('foo' => 'bar'),
@@ -268,10 +268,10 @@ class Util_ConfigurationTest extends PHPUnit_Framework_TestCase
     {
         $this->configuration->handlePHPConfiguration();
 
-        $path = dirname(dirname(__FILE__)) . '/_files/.' . PATH_SEPARATOR . '/path/to/lib';
+        $path = dirname(__DIR__) . '/_files/.' . PATH_SEPARATOR . '/path/to/lib';
         $this->assertStringStartsWith($path, ini_get('include_path'));
-        $this->assertEquals(FALSE, foo);
-        $this->assertEquals(TRUE, bar);
+        $this->assertEquals(FALSE, FOO);
+        $this->assertEquals(TRUE, BAR);
         $this->assertEquals(FALSE, $GLOBALS['foo']);
         $this->assertEquals(TRUE, $_ENV['foo']);
         $this->assertEquals(TRUE, getenv('foo'));

@@ -2,7 +2,7 @@
 /**
  * PHPUnit
  *
- * Copyright (c) 2002-2011, Sebastian Bergmann <sebastian@phpunit.de>.
+ * Copyright (c) 2001-2012, Sebastian Bergmann <sebastian@phpunit.de>.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -38,7 +38,7 @@
  * @subpackage Framework
  * @author     Sebastian Bergmann <sebastian@phpunit.de>
  * @author     Bernhard Schussek <bschussek@2bepublished.at>
- * @copyright  2002-2011 Sebastian Bergmann <sebastian@phpunit.de>
+ * @copyright  2001-2012 Sebastian Bergmann <sebastian@phpunit.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @link       http://www.phpunit.de/
  * @since      File available since Release 3.0.0
@@ -51,7 +51,7 @@
  * @subpackage Framework
  * @author     Sebastian Bergmann <sebastian@phpunit.de>
  * @author     Bernhard Schussek <bschussek@2bepublished.at>
- * @copyright  2002-2011 Sebastian Bergmann <sebastian@phpunit.de>
+ * @copyright  2001-2012 Sebastian Bergmann <sebastian@phpunit.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    Release: @package_version@
  * @link       http://www.phpunit.de/
@@ -130,9 +130,13 @@ abstract class PHPUnit_Framework_Constraint implements Countable, PHPUnit_Framew
     {
         $failureDescription = sprintf(
           'Failed asserting that %s.',
-
           $this->failureDescription($other)
         );
+
+        $additionalFailureDescription = $this->additionalFailureDescription($other);
+        if ($additionalFailureDescription) {
+            $failureDescription .= "\n" . $additionalFailureDescription;
+        }
 
         if (!empty($description)) {
             $failureDescription = $description . "\n" . $failureDescription;
@@ -145,10 +149,27 @@ abstract class PHPUnit_Framework_Constraint implements Countable, PHPUnit_Framew
     }
 
     /**
+     * Return additional failure description where needed
+     *
+     * The function can be overritten to provide additional failure
+     * information like a diff
+     *
+     * @param  mixed $other Evaluated value or object.
+     * @return string
+     */
+    protected function additionalFailureDescription($other)
+    {
+        return "";
+    }
+
+    /**
      * Returns the description of the failure
      *
      * The beginning of failure messages is "Failed asserting that" in most
      * cases. This method should return the second part of that sentence.
+     *
+     * To provide additional failure information additionalFailureDescription
+     * can be used.
      *
      * @param  mixed $other Evaluated value or object.
      * @return string

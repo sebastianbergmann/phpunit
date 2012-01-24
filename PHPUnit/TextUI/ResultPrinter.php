@@ -2,7 +2,7 @@
 /**
  * PHPUnit
  *
- * Copyright (c) 2002-2011, Sebastian Bergmann <sebastian@phpunit.de>.
+ * Copyright (c) 2001-2012, Sebastian Bergmann <sebastian@phpunit.de>.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -37,7 +37,7 @@
  * @package    PHPUnit
  * @subpackage TextUI
  * @author     Sebastian Bergmann <sebastian@phpunit.de>
- * @copyright  2002-2011 Sebastian Bergmann <sebastian@phpunit.de>
+ * @copyright  2001-2012 Sebastian Bergmann <sebastian@phpunit.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @link       http://www.phpunit.de/
  * @since      File available since Release 2.0.0
@@ -49,7 +49,7 @@
  * @package    PHPUnit
  * @subpackage TextUI
  * @author     Sebastian Bergmann <sebastian@phpunit.de>
- * @copyright  2002-2011 Sebastian Bergmann <sebastian@phpunit.de>
+ * @copyright  2001-2012 Sebastian Bergmann <sebastian@phpunit.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    Release: @package_version@
  * @link       http://www.phpunit.de/
@@ -119,7 +119,7 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
      * @param  boolean $verbose
      * @param  boolean $colors
      * @param  boolean $debug
-     * @throws InvalidArgumentException
+     * @throws PHPUnit_Framework_Exception
      * @since  Method available since Release 3.0.0
      */
     public function __construct($out = NULL, $verbose = FALSE, $colors = FALSE, $debug = FALSE)
@@ -420,7 +420,7 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
         if (!$this->verbose &&
             $result->deprecatedFeaturesCount() > 0) {
             $message = sprintf(
-              "Warning: Deprecated PHPUnit features are being used %s times!\n".
+              "Warning: Deprecated PHPUnit features are being used %s times!\n" .
               "Use --verbose for more information.\n",
               $result->deprecatedFeaturesCount()
             );
@@ -599,8 +599,10 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
 
         $this->lastTestFailed = FALSE;
 
-        if ($this->debug && $test instanceof PHPUnit_Framework_TestCase) {
-            $this->write($test->getActualOutput());
+        if ($test instanceof PHPUnit_Framework_TestCase) {
+            if (!$test->hasPerformedExpectationsOnOutput()) {
+                $this->write($test->getActualOutput());
+            }
         }
     }
 

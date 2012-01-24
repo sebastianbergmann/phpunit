@@ -2,7 +2,7 @@
 /**
  * PHPUnit
  *
- * Copyright (c) 2002-2011, Sebastian Bergmann <sebastian@phpunit.de>.
+ * Copyright (c) 2001-2012, Sebastian Bergmann <sebastian@phpunit.de>.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -37,7 +37,7 @@
  * @package    PHPUnit
  * @subpackage Framework
  * @author     Bernhard Schussek <bschussek@2bepublished.at>
- * @copyright  2002-2011 Sebastian Bergmann <sebastian@phpunit.de>
+ * @copyright  2001-2012 Sebastian Bergmann <sebastian@phpunit.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @link       http://www.phpunit.de/
  * @since      File available since Release 3.6.0
@@ -49,7 +49,7 @@
  * @package    PHPUnit
  * @subpackage Framework_Comparator
  * @author     Bernhard Schussek <bschussek@2bepublished.at>
- * @copyright  2002-2011 Sebastian Bergmann <sebastian@phpunit.de>
+ * @copyright  2001-2012 Sebastian Bergmann <sebastian@phpunit.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    Release: @package_version@
  * @link       http://www.phpunit.de/
@@ -123,8 +123,8 @@ class PHPUnit_Framework_Comparator_Object extends PHPUnit_Framework_Comparator_A
                   $expected,
                   $actual,
                   // replace "Array" with "MyClass object"
-                  substr_replace($e->getExpectedAsString(), get_class($expected).' Object', 0, 5),
-                  substr_replace($e->getActualAsString(), get_class($actual).' Object', 0, 5),
+                  substr_replace($e->getExpectedAsString(), get_class($expected) . ' Object', 0, 5),
+                  substr_replace($e->getActualAsString(), get_class($actual) . ' Object', 0, 5),
                   FALSE,
                   'Failed asserting that two objects are equal.'
                 );

@@ -6,7 +6,7 @@ PHPUnit is the de-facto standard for unit testing in PHP projects. It provides b
 Requirements
 ------------
 
-* PHPUnit 3.7 requires PHP 5.3.9 (or later) but PHP 5.4.0 (or later) is highly recommended.
+* PHPUnit 3.7 requires PHP 5.3.3 (or later) but PHP 5.4.0 (or later) is highly recommended.
 * [PHP_CodeCoverage](http://github.com/sebastianbergmann/php-code-coverage), the library that is used by PHPUnit 3.7 to collect and process code coverage information, depends on [Xdebug](http://xdebug.org/) 2.0.5 (or later) but Xdebug 2.1.2 (or later) is highly recommended.
 
 Installation
@@ -36,12 +36,6 @@ The documentation for PHPUnit is available in different formats:
 * [Japanese, single HTML file](http://www.phpunit.de/manual/3.7/ja/phpunit-book.html)
 * [Japanese, PDF](http://www.phpunit.de/manual/3.7/ja/phpunit-book.pdf)
 * [Japanese, ePub](http://www.phpunit.de/manual/3.7/ja/phpunit-book.epub)
-
-Mailing Lists
--------------
-
-* Send an email to `user-subscribe@phpunit.de` to subscribe to the `phpunit-user` mailing list. This is a medium volume list for general PHPUnit support; ask PHPUnit questions here.
-* Send an email to `dev-subscribe@phpunit.de` to subscribe to the `phpunit-dev` mailing list. This is a low volume list for those who want to help out with the development of PHPUnit.
 
 IRC
 ---

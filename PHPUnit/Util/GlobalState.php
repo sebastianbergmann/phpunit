@@ -2,7 +2,7 @@
 /**
  * PHPUnit
  *
- * Copyright (c) 2002-2011, Sebastian Bergmann <sebastian@phpunit.de>.
+ * Copyright (c) 2001-2012, Sebastian Bergmann <sebastian@phpunit.de>.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -37,7 +37,7 @@
  * @package    PHPUnit
  * @subpackage Util
  * @author     Sebastian Bergmann <sebastian@phpunit.de>
- * @copyright  2002-2011 Sebastian Bergmann <sebastian@phpunit.de>
+ * @copyright  2001-2012 Sebastian Bergmann <sebastian@phpunit.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @link       http://www.phpunit.de/
  * @since      File available since Release 3.4.0
@@ -49,7 +49,7 @@
  * @package    PHPUnit
  * @subpackage Util
  * @author     Sebastian Bergmann <sebastian@phpunit.de>
- * @copyright  2002-2011 Sebastian Bergmann <sebastian@phpunit.de>
+ * @copyright  2001-2012 Sebastian Bergmann <sebastian@phpunit.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    Release: @package_version@
  * @link       http://www.phpunit.de/
@@ -373,15 +373,43 @@ class PHPUnit_Util_GlobalState
     public static function phpunitFiles()
     {
         if (self::$phpunitFiles === NULL) {
-            self::$phpunitFiles = array_merge(
-              phpunit_autoload(),
-              phpunit_mockobject_autoload(),
-              file_iterator_autoload(),
-              php_codecoverage_autoload(),
-              php_timer_autoload(),
-              php_tokenstream_autoload(),
-              text_template_autoload()
-            );
+            self::$phpunitFiles = phpunit_autoload();
+
+            if (function_exists('phpunit_mockobject_autoload')) {
+                self::$phpunitFiles = array_merge(
+                  self::$phpunitFiles, phpunit_mockobject_autoload()
+                );
+            }
+
+            if (function_exists('file_iterator_autoload')) {
+                self::$phpunitFiles = array_merge(
+                  self::$phpunitFiles, file_iterator_autoload()
+                );
+            }
+
+            if (function_exists('php_codecoverage_autoload')) {
+                self::$phpunitFiles = array_merge(
+                  self::$phpunitFiles, php_codecoverage_autoload()
+                );
+            }
+
+            if (function_exists('php_timer_autoload')) {
+                self::$phpunitFiles = array_merge(
+                  self::$phpunitFiles, php_timer_autoload()
+                );
+            }
+
+            if (function_exists('php_tokenstream_autoload')) {
+                self::$phpunitFiles = array_merge(
+                  self::$phpunitFiles, php_tokenstream_autoload()
+                );
+            }
+
+            if (function_exists('text_template_autoload')) {
+                self::$phpunitFiles = array_merge(
+                  self::$phpunitFiles, text_template_autoload()
+                );
+            }
 
             if (function_exists('phpunit_dbunit_autoload')) {
                 self::$phpunitFiles = array_merge(
@@ -404,6 +432,12 @@ class PHPUnit_Util_GlobalState
             if (function_exists('php_invoker_autoload')) {
                 self::$phpunitFiles = array_merge(
                   self::$phpunitFiles, php_invoker_autoload()
+                );
+            }
+
+            foreach (self::$phpunitFiles as $key => $value) {
+                self::$phpunitFiles[$key] = str_replace(
+                  '/', DIRECTORY_SEPARATOR, $value
                 );
             }
 

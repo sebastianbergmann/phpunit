@@ -2,7 +2,7 @@
 /**
  * PHPUnit
  *
- * Copyright (c) 2002-2011, Sebastian Bergmann <sebastian@phpunit.de>.
+ * Copyright (c) 2001-2012, Sebastian Bergmann <sebastian@phpunit.de>.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -35,112 +35,76 @@
  * POSSIBILITY OF SUCH DAMAGE.
  *
  * @package    PHPUnit
- * @subpackage Util
+ * @subpackage Framework_Constraint
  * @author     Sebastian Bergmann <sebastian@phpunit.de>
- * @copyright  2002-2011 Sebastian Bergmann <sebastian@phpunit.de>
+ * @copyright  2001-2012 Sebastian Bergmann <sebastian@phpunit.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @link       http://www.phpunit.de/
- * @since      File available since Release 2.1.0
+ * @since      File available since Release 3.6.6
  */
 
 /**
- * Generator for skeletons.
+ *
  *
  * @package    PHPUnit
- * @subpackage Util
+ * @subpackage Framework_Constraint
  * @author     Sebastian Bergmann <sebastian@phpunit.de>
- * @copyright  2002-2011 Sebastian Bergmann <sebastian@phpunit.de>
+ * @copyright  2001-2012 Sebastian Bergmann <sebastian@phpunit.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    Release: @package_version@
  * @link       http://www.phpunit.de/
- * @since      Class available since Release 2.1.0
+ * @since      Class available since Release 3.6.6
  */
-abstract class PHPUnit_Util_Skeleton
+class PHPUnit_Framework_Constraint_ExceptionCode extends PHPUnit_Framework_Constraint
 {
     /**
-     * @var array
+     * @var integer
      */
-    protected $inClassName;
+    protected $expectedCode;
 
     /**
-     * @var string
+     * @param integer $expected
      */
-    protected $inSourceFile;
-
-    /**
-     * @var array
-     */
-    protected $outClassName;
-
-    /**
-     * @var string
-     */
-    protected $outSourceFile;
-
-    /**
-     * Constructor.
-     *
-     * @param string $inClassName
-     * @param string $inSourceFile
-     * @param string $outClassName
-     * @param string $outSourceFile
-     * @since Method available since Release 3.4.0
-     */
-    public function __construct($inClassName, $inSourceFile = '', $outClassName = '', $outSourceFile = '')
+    public function __construct($expected)
     {
-        $this->inClassName = PHPUnit_Util_Class::parseFullyQualifiedClassName(
-          $inClassName
-        );
+        $this->expectedCode = $expected;
+    }
 
-        $this->outClassName = PHPUnit_Util_Class::parseFullyQualifiedClassName(
-          $outClassName
-        );
+    /**
+     * Evaluates the constraint for parameter $other. Returns TRUE if the
+     * constraint is met, FALSE otherwise.
+     *
+     * @param  Exception $other
+     * @return boolean
+     */
+    protected function matches($other)
+    {
+        return (string)$other->getCode() == (string)$this->expectedCode;
+    }
 
-        $this->inSourceFile = str_replace(
-          $this->inClassName['fullyQualifiedClassName'],
-          $this->inClassName['className'],
-          $inSourceFile
-        );
-
-        $this->outSourceFile = str_replace(
-          $this->outClassName['fullyQualifiedClassName'],
-          $this->outClassName['className'],
-          $outSourceFile
+    /**
+     * Returns the description of the failure
+     *
+     * The beginning of failure messages is "Failed asserting that" in most
+     * cases. This method should return the second part of that sentence.
+     *
+     * @param  mixed $other Evaluated value or object.
+     * @return string
+     */
+    protected function failureDescription($other)
+    {
+        return sprintf(
+          '%s is equal to expected exception code %s',
+          PHPUnit_Util_Type::export($other->getCode()),
+          PHPUnit_Util_Type::export($this->expectedCode)
         );
     }
 
     /**
      * @return string
      */
-    public function getOutClassName()
+    public function toString()
     {
-        return $this->outClassName['fullyQualifiedClassName'];
+        return 'exception code is ';
     }
-
-    /**
-     * @return string
-     */
-    public function getOutSourceFile()
-    {
-        return $this->outSourceFile;
-    }
-
-    /**
-     * Generates the code and writes it to a source file.
-     *
-     * @param  string  $file
-     */
-    public function write($file = '')
-    {
-        if ($file == '') {
-            $file = $this->outSourceFile;
-        }
-
-        if ($fp = fopen($file, 'wt')) {
-            fwrite($fp, $this->generate());
-            fclose($fp);
-        }
-    }
-
-    abstract public function generate();
 }

@@ -2,7 +2,7 @@
 /**
  * PHPUnit
  *
- * Copyright (c) 2002-2011, Sebastian Bergmann <sebastian@phpunit.de>.
+ * Copyright (c) 2001-2012, Sebastian Bergmann <sebastian@phpunit.de>.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -37,7 +37,7 @@
  * @package    PHPUnit
  * @subpackage Util
  * @author     Sebastian Bergmann <sebastian@phpunit.de>
- * @copyright  2002-2011 Sebastian Bergmann <sebastian@phpunit.de>
+ * @copyright  2001-2012 Sebastian Bergmann <sebastian@phpunit.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @link       http://www.phpunit.de/
  * @since      File available since Release 3.0.0
@@ -49,7 +49,7 @@
  * @package    PHPUnit
  * @subpackage Util
  * @author     Sebastian Bergmann <sebastian@phpunit.de>
- * @copyright  2002-2011 Sebastian Bergmann <sebastian@phpunit.de>
+ * @copyright  2001-2012 Sebastian Bergmann <sebastian@phpunit.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    Release: @package_version@
  * @link       http://www.phpunit.de/
@@ -143,7 +143,7 @@ class PHPUnit_Util_Test
             );
 
             $class   = $matches[1];
-            $code    = 0;
+            $code    = NULL;
             $message = '';
 
             if (isset($matches[2])) {
@@ -233,7 +233,7 @@ class PHPUnit_Util_Test
         if ($data !== NULL) {
             foreach ($data as $key => $value) {
                 if (!is_array($value)) {
-                    throw new InvalidArgumentException(
+                    throw new PHPUnit_Framework_Exception(
                       sprintf(
                         'Data set %s is invalid.',
                         is_int($key) ? '#' . $key : '"' . $key . '"'
@@ -279,6 +279,8 @@ class PHPUnit_Util_Test
     private static function parseAnnotations($docblock)
     {
         $annotations = array();
+        // Strip away the docblock header and footer to ease parsing of one line annotations
+        $docblock = substr($docblock, 3, -2);
 
         if (preg_match_all('/@(?P<name>[A-Za-z_-]+)(?:[ \t]+(?P<value>.*?))?[ \t]*\r?$/m', $docblock, $matches)) {
             $numMatches = count($matches[0]);
@@ -422,9 +424,9 @@ class PHPUnit_Util_Test
         $size   = self::SMALL;
         $class  = new ReflectionClass($className);
 
-        if ((class_exists('PHPUnit_Extensions_Database_TestCase') &&
+        if ((class_exists('PHPUnit_Extensions_Database_TestCase', FALSE) &&
              $class->isSubclassOf('PHPUnit_Extensions_Database_TestCase')) ||
-            (class_exists('PHPUnit_Extensions_SeleniumTestCase') &&
+            (class_exists('PHPUnit_Extensions_SeleniumTestCase', FALSE) &&
              $class->isSubclassOf('PHPUnit_Extensions_SeleniumTestCase'))) {
             $size = self::LARGE;
         }

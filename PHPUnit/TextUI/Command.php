@@ -2,7 +2,7 @@
 /**
  * PHPUnit
  *
- * Copyright (c) 2002-2011, Sebastian Bergmann <sebastian@phpunit.de>.
+ * Copyright (c) 2001-2012, Sebastian Bergmann <sebastian@phpunit.de>.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -37,7 +37,7 @@
  * @package    PHPUnit
  * @subpackage TextUI
  * @author     Sebastian Bergmann <sebastian@phpunit.de>
- * @copyright  2002-2011 Sebastian Bergmann <sebastian@phpunit.de>
+ * @copyright  2001-2012 Sebastian Bergmann <sebastian@phpunit.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @link       http://www.phpunit.de/
  * @since      File available since Release 3.0.0
@@ -50,7 +50,7 @@
  * @package    PHPUnit
  * @subpackage TextUI
  * @author     Sebastian Bergmann <sebastian@phpunit.de>
- * @copyright  2002-2011 Sebastian Bergmann <sebastian@phpunit.de>
+ * @copyright  2001-2012 Sebastian Bergmann <sebastian@phpunit.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    Release: @package_version@
  * @link       http://www.phpunit.de/
@@ -96,8 +96,6 @@ class PHPUnit_TextUI_Command
       'log-tap=' => NULL,
       'process-isolation' => NULL,
       'repeat=' => NULL,
-      'skeleton-class' => NULL,
-      'skeleton-test' => NULL,
       'stderr' => NULL,
       'stop-on-error' => NULL,
       'stop-on-failure' => NULL,
@@ -115,6 +113,11 @@ class PHPUnit_TextUI_Command
       'verbose' => NULL,
       'version' => NULL
     );
+
+    /**
+     * @var array
+     */
+    protected $missingExtensions = array();
 
     /**
      * @param boolean $exit
@@ -143,22 +146,6 @@ class PHPUnit_TextUI_Command
               $this->arguments['test'],
               $this->arguments['testFile']
             );
-        }
-
-        if (count($suite) == 0) {
-            $skeleton = new PHPUnit_Util_Skeleton_Test(
-              $suite->getName(),
-              $this->arguments['testFile']
-            );
-
-            $result = $skeleton->generate(TRUE);
-
-            if (!$result['incomplete']) {
-                eval(str_replace(array('<?php', '?>'), '', $result['code']));
-                $suite = new PHPUnit_Framework_TestSuite(
-                  $this->arguments['test'] . 'Test'
-                );
-            }
         }
 
         if ($this->arguments['listGroups']) {
@@ -254,12 +241,9 @@ class PHPUnit_TextUI_Command
             );
         }
 
-        catch (RuntimeException $e) {
+        catch (PHPUnit_Framework_Exception $e) {
             PHPUnit_TextUI_TestRunner::showError($e->getMessage());
         }
-
-        $skeletonClass = FALSE;
-        $skeletonTest  = FALSE;
 
         foreach ($this->options[0] as $option) {
             switch ($option[0]) {
@@ -443,18 +427,6 @@ class PHPUnit_TextUI_Command
                 }
                 break;
 
-                case '--skeleton-test': {
-                    $skeletonTest  = TRUE;
-                    $skeletonClass = FALSE;
-                }
-                break;
-
-                case '--skeleton-class': {
-                    $skeletonClass = TRUE;
-                    $skeletonTest  = FALSE;
-                }
-                break;
-
                 case '--tap': {
                     $this->arguments['printer'] = new PHPUnit_Util_Log_TAP;
                 }
@@ -528,6 +500,15 @@ class PHPUnit_TextUI_Command
         $this->handleCustomTestSuite();
 
         if (!isset($this->arguments['test'])) {
+            if (count($this->options[1]) > 2) {
+                $this->showMessage(
+                    'More than two positional arguments provided.',
+                    FALSE
+                );
+                $this->showHelp();
+                exit(PHPUnit_TextUI_TestRunner::FAILURE_EXIT);
+            }
+
             if (isset($this->options[1][0])) {
                 $this->arguments['test'] = $this->options[1][0];
             }
@@ -609,6 +590,12 @@ class PHPUnit_TextUI_Command
 
             $phpunit = $configuration->getPHPUnitConfiguration();
 
+            $configuration->handlePHPConfiguration();
+
+            if (!isset($this->arguments['bootstrap']) && isset($phpunit['bootstrap'])) {
+                $this->handleBootstrap($phpunit['bootstrap']);
+            }
+
             if (isset($phpunit['printerClass'])) {
                 if (isset($phpunit['printerFile'])) {
                     $file = $phpunit['printerFile'];
@@ -649,16 +636,6 @@ class PHPUnit_TextUI_Command
                 }
             }
 
-            $configuration->handlePHPConfiguration();
-
-            if (!isset($this->arguments['bootstrap'])) {
-                $phpunitConfiguration = $configuration->getPHPUnitConfiguration();
-
-                if (isset($phpunitConfiguration['bootstrap'])) {
-                    $this->handleBootstrap($phpunitConfiguration['bootstrap']);
-                }
-            }
-
             $browsers = $configuration->getSeleniumBrowserConfiguration();
 
             if (!empty($browsers) &&
@@ -686,48 +663,6 @@ class PHPUnit_TextUI_Command
             (isset($this->arguments['testDatabaseLogRevision']) && !isset($this->arguments['testDatabaseDSN']))) {
             $this->showHelp();
             exit(PHPUnit_TextUI_TestRunner::EXCEPTION_EXIT);
-        }
-
-        if ($skeletonClass || $skeletonTest) {
-            if (isset($this->arguments['test']) && $this->arguments['test'] !== FALSE) {
-                PHPUnit_TextUI_TestRunner::printVersionString();
-
-                if ($skeletonClass) {
-                    $class = 'PHPUnit_Util_Skeleton_Class';
-                } else {
-                    $class = 'PHPUnit_Util_Skeleton_Test';
-                }
-
-                try {
-                    $args      = array();
-                    $reflector = new ReflectionClass($class);
-
-                    for ($i = 0; $i <= 3; $i++) {
-                        if (isset($this->options[1][$i])) {
-                            $args[] = $this->options[1][$i];
-                        }
-                    }
-
-                    $skeleton = $reflector->newInstanceArgs($args);
-                    $skeleton->write();
-                }
-
-                catch (Exception $e) {
-                    print $e->getMessage() . "\n";
-                    exit(PHPUnit_TextUI_TestRunner::FAILURE_EXIT);
-                }
-
-                printf(
-                  'Wrote skeleton for "%s" to "%s".' . "\n",
-                  $skeleton->getOutClassName(),
-                  $skeleton->getOutSourceFile()
-                );
-
-                exit(PHPUnit_TextUI_TestRunner::SUCCESS_EXIT);
-            } else {
-                $this->showHelp();
-                exit(PHPUnit_TextUI_TestRunner::EXCEPTION_EXIT);
-            }
         }
     }
 
@@ -833,7 +768,7 @@ class PHPUnit_TextUI_Command
             PHPUnit_Util_Fileloader::checkAndLoad($filename);
         }
 
-        catch (RuntimeException $e) {
+        catch (PHPUnit_Framework_Exception $e) {
             PHPUnit_TextUI_TestRunner::showError($e->getMessage());
         }
     }
@@ -844,6 +779,10 @@ class PHPUnit_TextUI_Command
      */
     protected function showExtensionNotLoadedMessage($extension, $message = '')
     {
+        if (isset($this->missingExtensions[$extension])) {
+            return;
+        }
+
         if (!empty($message)) {
             $message = ' ' . $message;
         }
@@ -852,6 +791,8 @@ class PHPUnit_TextUI_Command
           'The ' . $extension . ' extension is not loaded.' . $message . "\n",
           FALSE
         );
+
+        $this->missingExtensions[$extension] = TRUE;
     }
 
     /**
@@ -890,7 +831,8 @@ Usage: phpunit [switches] UnitTest [UnitTest.php]
   --coverage-clover <file>  Generate code coverage report in Clover XML format.
   --coverage-html <dir>     Generate code coverage report in HTML format.
   --coverage-php <file>     Serialize PHP_CodeCoverage object to file.
-  --coverage-text <file>    Generate code coverage report in text format.
+  --coverage-text=<file>    Generate code coverage report in text format.
+                            Default to writing to the standard output.
 
   --testdox-html <file>     Write agile documentation in HTML format to file.
   --testdox-text <file>     Write agile documentation in Text format to file.
@@ -915,9 +857,7 @@ Usage: phpunit [switches] UnitTest [UnitTest.php]
   --stop-on-incomplete      Stop execution upon first incomplete test.
   --strict                  Run tests in strict mode.
   -v|--verbose              Output more verbose information.
-
-  --skeleton-class          Generate Unit class for UnitTest in UnitTest.php.
-  --skeleton-test           Generate UnitTest class for Unit in Unit.php.
+  --debug                   Display debbuging information during test execution.
 
   --process-isolation       Run each test in a separate PHP process.
   --no-globals-backup       Do not backup and restore \$GLOBALS for each test.

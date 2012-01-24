@@ -2,7 +2,7 @@
 /**
  * PHPUnit
  *
- * Copyright (c) 2002-2011, Sebastian Bergmann <sebastian@phpunit.de>.
+ * Copyright (c) 2001-2012, Sebastian Bergmann <sebastian@phpunit.de>.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -36,7 +36,7 @@
  *
  * @package    PHPUnit
  * @author     Bernhard Schussek <bschussek@2bepublished.at>
- * @copyright  2002-2011 Sebastian Bergmann <sebastian@phpunit.de>
+ * @copyright  2001-2012 Sebastian Bergmann <sebastian@phpunit.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @link       http://www.phpunit.de/
  * @since      File available since Release 3.6.0
@@ -51,7 +51,7 @@ require_once 'PHPUnit/Util/Type.php';
  *
  * @package    PHPUnit
  * @author     Bernhard Schussek <bschussek@2bepublished.at>
- * @copyright  2002-2011 Sebastian Bergmann <sebastian@phpunit.de>
+ * @copyright  2001-2012 Sebastian Bergmann <sebastian@phpunit.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    Release: @package_version@
  * @link       http://www.phpunit.de/
@@ -76,7 +76,9 @@ class Util_TypeTest extends PHPUnit_Framework_TestCase
         $obj2->foo = 'bar';
 
         $obj = new stdClass;
+        //@codingStandardsIgnoreStart 
         $obj->null = NULL;
+        //@codingStandardsIgnoreEnd 
         $obj->boolean = TRUE;
         $obj->integer = 1;
         $obj->double = 1.2;
@@ -188,6 +190,22 @@ text'
 )
 EOF
             ),
+            array(
+                chr(0) . chr(1) . chr(2) . chr(3) . chr(4) . chr(5),
+                'Binary String: 0x000102030405'
+            ),
+            array(
+                implode('', array_map('chr', range(0x0e, 0x1f))),
+                'Binary String: 0x0e0f101112131415161718191a1b1c1d1e1f'
+            ),
+            array(
+                chr(0x00) . chr(0x09),
+                'Binary String: 0x0009'
+            ),
+            array(
+                '',
+                "''"
+            ),
         );
     }
 
@@ -230,5 +248,23 @@ EOF
     public function testShortenedExport($value, $expected)
     {
         $this->assertSame($expected, self::trimnl(PHPUnit_Util_Type::shortenedExport($value)));
+    }
+
+    public function provideNonBinaryMultibyteStrings()
+    {
+        return array(
+            array(implode('', array_map('chr', range(0x09, 0x0d))), 5),
+            array(implode('', array_map('chr', range(0x20, 0x7f))), 96),
+            array(implode('', array_map('chr', range(0x80, 0xff))), 128),
+        );
+    }
+
+
+    /**
+     * @dataProvider provideNonBinaryMultibyteStrings
+     */
+    public function testNonBinaryStringExport($value, $expectedLength)
+    {
+        $this->assertRegExp("~'.{{$expectedLength}}'\$~s", PHPUnit_Util_Type::export($value));
     }
 }
