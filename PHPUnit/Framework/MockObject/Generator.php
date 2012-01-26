@@ -391,16 +391,17 @@ class PHPUnit_Framework_MockObject_Generator
      * @param  string $wsdlFile
      * @param  string $originalClassName
      * @param  array  $methods
+     * @param  array  $options
      * @return array
      */
-    public static function generateClassFromWsdl($wsdlFile, $originalClassName, array $methods = array())
+    public static function generateClassFromWsdl($wsdlFile, $originalClassName, array $methods = array(), array $options = array())
     {
         if (self::$soapLoaded === NULL) {
             self::$soapLoaded = extension_loaded('soap');
         }
 
         if (self::$soapLoaded) {
-            $client   = new SOAPClient($wsdlFile);
+            $client   = new SOAPClient($wsdlFile, $options);
             $_methods = array_unique($client->__getFunctions());
             unset($client);
 
@@ -441,6 +442,11 @@ class PHPUnit_Framework_MockObject_Generator
                     $methodsBuffer .= $methodTemplate->render();
                 }
             }
+            $optionsBuffer = 'array(';
+            foreach ($options as $key => $value) {
+                $optionsBuffer .= $key . ' => ' . $value;
+            }
+            $optionsBuffer .= ')';
 
             $classTemplate = new Text_Template(
               $templateDir . 'wsdl_class.tpl'
@@ -450,6 +456,7 @@ class PHPUnit_Framework_MockObject_Generator
               array(
                 'class_name' => $originalClassName,
                 'wsdl'       => $wsdlFile,
+                'options'    => $optionsBuffer,
                 'methods'    => $methodsBuffer
               )
             );
