@@ -19,7 +19,7 @@ class GoogleSearch extends SOAPClient
 {
     public function __construct($wsdl, array $options)
     {
-        parent::__construct('%s/GoogleSearch.wsdl');
+        parent::__construct('%s/GoogleSearch.wsdl', $options);
     }
 
     public function doGoogleSearch($key, $q, $start, $maxResults, $filter, $restrict, $safeSearch, $lr, $ie, $oe)
