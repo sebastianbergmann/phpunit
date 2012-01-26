@@ -18,7 +18,7 @@ class GoogleSearch extends SOAPClient
 {
     public function __construct($wsdl, array $options)
     {
-        parent::__construct('%s/GoogleSearch.wsdl');
+        parent::__construct('%s/GoogleSearch.wsdl', $options);
     }
 
     public function doGetCachedPage($key, $url)
