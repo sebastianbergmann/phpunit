@@ -442,10 +442,12 @@ class PHPUnit_Framework_MockObject_Generator
                     $methodsBuffer .= $methodTemplate->render();
                 }
             }
+
             $optionsBuffer = 'array(';
             foreach ($options as $key => $value) {
                 $optionsBuffer .= $key . ' => ' . $value;
             }
+
             $optionsBuffer .= ')';
 
             $classTemplate = new Text_Template(
