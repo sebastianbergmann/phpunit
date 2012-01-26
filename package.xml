@@ -469,7 +469,7 @@
    <package>
     <name>PHPUnit_MockObject</name>
     <channel>pear.phpunit.de</channel>
-    <min>1.1.0</min>
+    <min>1.2.0</min>
    </package>
    <package>
     <name>YAML</name>
