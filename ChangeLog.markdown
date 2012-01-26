@@ -3,6 +3,11 @@ PHPUnit_MockObject 1.1
 
 This is the list of changes for the PHPUnit_MockObject 1.1 release series.
 
+PHPUnit_MockObject 1.1.2
+------------------------
+
+* Fixed #74: `PHPUnit_Framework_MockObject_MockBuilder::getMockForAbstractClass()` needs to pass `$this->methods`.
+
 PHPUnit_MockObject 1.1.1
 ------------------------
 
