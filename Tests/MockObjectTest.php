@@ -253,12 +253,10 @@ class Framework_MockObjectTest extends PHPUnit_Framework_TestCase
         $this->assertNotEquals(get_class($mock4), get_class($mock5));
     }
 
-    /**
-     * @expectedException PHPUnit_Framework_Exception
-     */
     public function testMockClassStoreOverruleSameClassNameThrowsException()
     {
         $mock1 = $this->getMock('PartialMockTestClass', array(), array(), __FUNCTION__);
+        $this->setExpectedException('RuntimeException');
         $mock2 = $this->getMock('PartialMockTestClass', array(), array(), __FUNCTION__);
     }
 
