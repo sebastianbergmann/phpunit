@@ -180,7 +180,7 @@ class PHPUnit_Framework_MockObject_InvocationMocker implements PHPUnit_Framework
      */
     public function matches(PHPUnit_Framework_MockObject_Invocation $invocation)
     {
-        foreach($this->matchers as $matcher) {
+        foreach ($this->matchers as $matcher) {
             if (!$matcher->matches($invocation)) {
                 return FALSE;
             }
@@ -194,7 +194,7 @@ class PHPUnit_Framework_MockObject_InvocationMocker implements PHPUnit_Framework
      */
     public function verify()
     {
-        foreach($this->matchers as $matcher) {
+        foreach ($this->matchers as $matcher) {
             $matcher->verify();
         }
     }

@@ -74,7 +74,7 @@ class PHPUnit_Framework_MockObject_Matcher_Parameters extends PHPUnit_Framework_
      */
     public function __construct(array $parameters)
     {
-        foreach($parameters as $parameter) {
+        foreach ($parameters as $parameter) {
             if (!($parameter instanceof PHPUnit_Framework_Constraint)) {
                 $parameter = new PHPUnit_Framework_Constraint_IsEqual(
                   $parameter
@@ -92,7 +92,7 @@ class PHPUnit_Framework_MockObject_Matcher_Parameters extends PHPUnit_Framework_
     {
         $text = 'with parameter';
 
-        foreach($this->parameters as $index => $parameter) {
+        foreach ($this->parameters as $index => $parameter) {
             if ($index > 0) {
                 $text .= ' and';
             }
