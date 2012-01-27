@@ -7,6 +7,7 @@ PHPUnit 3.6.10
 --------------
 
 * Tests for which the execution is aborted due to a timeout are no longer shown as incomplete but as an error instead.
+* Fixed the fix for #466.
 
 PHPUnit 3.6.9
 -------------
