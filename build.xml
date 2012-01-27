@@ -211,6 +211,7 @@
   </delete>
 
   <exec executable="phpab">
+   <arg value="--all" />
    <arg value="--phar" />
    <arg value="--output" />
    <arg path="${basedir}/build/phpunit.phar" />
