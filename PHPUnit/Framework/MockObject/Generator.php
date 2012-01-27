@@ -267,7 +267,7 @@ class PHPUnit_Framework_MockObject_Generator
             $reflector = new ReflectionClass($originalClassName);
 
             foreach ($reflector->getMethods() as $method) {
-                if ($method->isAbstract() || in_array($method->getName(), $mockedMethods)) {
+                if ($method->isAbstract() || in_array($method->getName(), $mockedMethods) || $mockedMethods === array()) {
                     $methods[] = $method->getName();
                 }
             }
