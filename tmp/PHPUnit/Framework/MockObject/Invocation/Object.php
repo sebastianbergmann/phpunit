@@ -66,9 +66,9 @@ class PHPUnit_Framework_MockObject_Invocation_Object extends PHPUnit_Framework_M
      * @param array  $parameters
      * @param object $object
      */
-    public function __construct($className, $methodName, array $parameters, $object)
+    public function __construct($className, $methodName, array $parameters, $object, $cloneObjects = false)
     {
-        parent::__construct($className, $methodName, $parameters);
+        parent::__construct($className, $methodName, $parameters, $cloneObjects);
         $this->object = $object;
     }
 }

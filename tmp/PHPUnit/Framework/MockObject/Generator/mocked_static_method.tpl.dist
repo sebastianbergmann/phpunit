@@ -14,7 +14,7 @@
 
         $result = self::__phpunit_getStaticInvocationMocker()->invoke(
           new PHPUnit_Framework_MockObject_Invocation_Static(
-            '{class_name}', '{method_name}', $arguments
+            '{class_name}', '{method_name}', $arguments, {clone_objects}
           )
         );
 
