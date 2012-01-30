@@ -54,7 +54,7 @@ class MockFoo extends NS\Foo implements PHPUnit_Framework_MockObject_MockObject
 
         $result = $this->__phpunit_getInvocationMocker()->invoke(
           new PHPUnit_Framework_MockObject_Invocation_Object(
-            'NS\Foo', 'bar', $arguments, $this, false
+            'NS\Foo', 'bar', $arguments, $this, TRUE
           )
         );
 

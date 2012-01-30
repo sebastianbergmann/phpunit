@@ -14,7 +14,7 @@
 
         $result = $this->__phpunit_getInvocationMocker()->invoke(
           new PHPUnit_Framework_MockObject_Invocation_Object(
-            '{class_name}', '{method_name}', $arguments, $this, {clone_objects}
+            '{class_name}', '{method_name}', $arguments, $this, {clone_arguments}
           )
         );
 
