@@ -7,7 +7,7 @@ class Framework_MockObject_GeneratorTest extends PHPUnit_Framework_TestCase
      */
     public function testGetMockFailsWhenInvalidFunctionNameIsPassedInAsAFunctionToMock()
     {
-        PHPUnit_Framework_MockObject_Generator::getMock('stdClass', array(0));
+        PHPUnit_Framework_MockObject_Generator::getMock('StdClass', array(0));
     }
 
     /**
@@ -15,7 +15,7 @@ class Framework_MockObject_GeneratorTest extends PHPUnit_Framework_TestCase
      */
     public function testGetMockCanCreateNonExistingFunctions()
     {
-        $mock = PHPUnit_Framework_MockObject_Generator::getMock('stdClass', array('testFunction'));
+        $mock = PHPUnit_Framework_MockObject_Generator::getMock('StdClass', array('testFunction'));
         $this->assertTrue(method_exists($mock, 'testFunction'));
     }
 
@@ -63,7 +63,7 @@ class Framework_MockObject_GeneratorTest extends PHPUnit_Framework_TestCase
     {
         return array(
             'className not a string' => array(array(), ''),
-            'mockClassName not a string' => array('Countable', new stdClass()),
+            'mockClassName not a string' => array('Countable', new StdClass),
         );
     }
 }

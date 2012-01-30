@@ -321,7 +321,7 @@ class Framework_MockObjectTest extends PHPUnit_Framework_TestCase
 
     public function testStaticMethodCallDontCloneObjectParametersByDefault()
     {
-        $expectedObject = new stdClass;
+        $expectedObject = new StdClass;
 
         $this->getMockClass(
           'StaticMockTestClass',
@@ -333,10 +333,10 @@ class Framework_MockObjectTest extends PHPUnit_Framework_TestCase
         $actualArguments = array();
 
         StaticMockTestClassMock3::staticExpects($this->any())
-          ->method('doSomething')
-          ->will($this->returnCallback(function() use (&$actualArguments) {
-                $actualArguments = func_get_args();
-          }));
+        ->method('doSomething')
+        ->will($this->returnCallback(function() use (&$actualArguments) {
+            $actualArguments = func_get_args();
+        }));
 
         StaticMockTestClassMock3::doSomething($expectedObject);
 
@@ -347,7 +347,7 @@ class Framework_MockObjectTest extends PHPUnit_Framework_TestCase
     public function testStaticMethodCallCloneObjectParametersIfCloneObjectSetTrue()
     {
         $cloneObjects = TRUE;
-        $expectedObject = new stdClass;
+        $expectedObject = new StdClass;
 
         $this->getMockClass(
           'StaticMockTestClass',
@@ -363,10 +363,10 @@ class Framework_MockObjectTest extends PHPUnit_Framework_TestCase
         $actualArguments = array();
 
         StaticMockTestClassMock4::staticExpects($this->any())
-          ->method('doSomething')
-          ->will($this->returnCallback(function() use (&$actualArguments) {
-                $actualArguments = func_get_args();
-          }));
+        ->method('doSomething')
+        ->will($this->returnCallback(function() use (&$actualArguments) {
+            $actualArguments = func_get_args();
+        }));
 
         StaticMockTestClassMock4::doSomething($expectedObject);
 
@@ -377,17 +377,17 @@ class Framework_MockObjectTest extends PHPUnit_Framework_TestCase
 
     public function testObjectMethodCallDontCloneObjectParametersByDefault()
     {
-        $expectedObject = new stdClass;
+        $expectedObject = new StdClass;
 
         $mock = $this->getMock('SomeClass', array('doSomethingElse'));
 
         $actualArguments = array();
 
         $mock->expects($this->any())
-          ->method('doSomethingElse')
-          ->will($this->returnCallback(function() use (&$actualArguments) {
-                $actualArguments = func_get_args();
-          }));
+        ->method('doSomethingElse')
+        ->will($this->returnCallback(function() use (&$actualArguments) {
+            $actualArguments = func_get_args();
+        }));
 
         $mock->doSomethingElse($expectedObject);
 
@@ -398,17 +398,17 @@ class Framework_MockObjectTest extends PHPUnit_Framework_TestCase
     public function testObjectMethodCallCloneObjectParametersIfCloneObjectSetTrue()
     {
         $cloneObjects = TRUE;
-        $expectedObject = new stdClass;
+        $expectedObject = new StdClass;
 
         $mock = $this->getMock('SomeClass', array('doSomethingElse'), array(), '', TRUE, TRUE, TRUE, $cloneObjects);
 
         $actualArguments = array();
 
         $mock->expects($this->any())
-          ->method('doSomethingElse')
-          ->will($this->returnCallback(function() use (&$actualArguments) {
-                $actualArguments = func_get_args();
-          }));
+        ->method('doSomethingElse')
+        ->will($this->returnCallback(function() use (&$actualArguments) {
+            $actualArguments = func_get_args();
+        }));
 
         $mock->doSomethingElse($expectedObject);
 
