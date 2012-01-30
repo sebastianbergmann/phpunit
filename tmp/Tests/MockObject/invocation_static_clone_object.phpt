@@ -53,7 +53,7 @@ class MockFoo extends Foo implements PHPUnit_Framework_MockObject_MockObject
 
         $result = self::__phpunit_getStaticInvocationMocker()->invoke(
           new PHPUnit_Framework_MockObject_Invocation_Static(
-            'Foo', 'bar', $arguments, true
+            'Foo', 'bar', $arguments, TRUE
           )
         );
 
@@ -75,7 +75,7 @@ class MockFoo extends Foo implements PHPUnit_Framework_MockObject_MockObject
 
         $result = self::__phpunit_getStaticInvocationMocker()->invoke(
           new PHPUnit_Framework_MockObject_Invocation_Static(
-            'Foo', 'baz', $arguments, true
+            'Foo', 'baz', $arguments, TRUE
           )
         );
 
