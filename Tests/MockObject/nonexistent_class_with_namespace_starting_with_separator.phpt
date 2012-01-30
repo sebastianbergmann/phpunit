@@ -1,9 +1,5 @@
 --TEST--
 PHPUnit_Framework_MockObject_Generator::generate('Foo', array(), 'MockFoo', TRUE, TRUE)
---SKIPIF--
-<?php
-if (!version_compare(PHP_VERSION, '5.3.0', '>=')) echo 'skip: PHP 5.3 only';
-?>
 --FILE--
 <?php
 require_once 'PHPUnit/Autoload.php';

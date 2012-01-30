@@ -50,11 +50,7 @@ require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPA
 require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'MethodCallback.php';
 require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'PartialMockTestClass.php';
 require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'SomeClass.php';
-
-if (version_compare(PHP_VERSION, '5.3.0', '>=')) {
-    require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'StaticMockTestClass.php';
-
-}
+require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'StaticMockTestClass.php';
 
 /**
  *
@@ -282,10 +278,6 @@ class Framework_MockObjectTest extends PHPUnit_Framework_TestCase
 
     public function testStubbedReturnValueForStaticMethod()
     {
-        if (!version_compare(PHP_VERSION, '5.3.0', '>=')) {
-            $this->markTestSkipped('PHP 5.3 (or later) is required.');
-        }
-
         $this->getMockClass(
           'StaticMockTestClass',
           array('doSomething'),
@@ -304,10 +296,6 @@ class Framework_MockObjectTest extends PHPUnit_Framework_TestCase
 
     public function testStubbedReturnValueForStaticMethod2()
     {
-        if (!version_compare(PHP_VERSION, '5.3.0', '>=')) {
-            $this->markTestSkipped('PHP 5.3 (or later) is required.');
-        }
-
         $this->getMockClass(
           'StaticMockTestClass',
           array('doSomething'),
@@ -333,10 +321,6 @@ class Framework_MockObjectTest extends PHPUnit_Framework_TestCase
 
     public function testStaticMethodCallDontCloneObjectParametersByDefault()
     {
-        if (!version_compare(PHP_VERSION, '5.3.0', '>=')) {
-            $this->markTestSkipped('PHP 5.3 (or later) is required.');
-        }
-
         $expectedObject = new stdClass;
 
         $this->getMockClass(
@@ -362,10 +346,6 @@ class Framework_MockObjectTest extends PHPUnit_Framework_TestCase
 
     public function testStaticMethodCallCloneObjectParametersIfCloneObjectSetTrue()
     {
-        if (!version_compare(PHP_VERSION, '5.3.0', '>=')) {
-            $this->markTestSkipped('PHP 5.3 (or later) is required.');
-        }
-
         $cloneObjects = TRUE;
         $expectedObject = new stdClass;
 
@@ -397,10 +377,6 @@ class Framework_MockObjectTest extends PHPUnit_Framework_TestCase
 
     public function testObjectMethodCallDontCloneObjectParametersByDefault()
     {
-        if (!version_compare(PHP_VERSION, '5.3.0', '>=')) {
-            $this->markTestSkipped('PHP 5.3 (or later) is required.');
-        }
-
         $expectedObject = new stdClass;
 
         $mock = $this->getMock('SomeClass', array('doSomethingElse'));
@@ -421,10 +397,6 @@ class Framework_MockObjectTest extends PHPUnit_Framework_TestCase
 
     public function testObjectMethodCallCloneObjectParametersIfCloneObjectSetTrue()
     {
-        if (!version_compare(PHP_VERSION, '5.3.0', '>=')) {
-            $this->markTestSkipped('PHP 5.3 (or later) is required.');
-        }
-
         $cloneObjects = TRUE;
         $expectedObject = new stdClass;
 
