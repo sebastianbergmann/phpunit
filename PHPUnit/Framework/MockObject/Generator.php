@@ -720,7 +720,7 @@ class PHPUnit_Framework_MockObject_Generator
      * @param  string  $methodName
      * @param  boolean $cloneObjects
      * @param  string  $modifier
-     cd * @param  string  $arguments_decl
+     * @param  string  $arguments_decl
      * @param  string  $arguments_call
      * @param  string  $reference
      * @param  boolean $static
