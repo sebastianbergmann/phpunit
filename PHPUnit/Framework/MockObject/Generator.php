@@ -483,7 +483,7 @@ class PHPUnit_Framework_MockObject_Generator
      * @param  boolean    $callAutoload
      * @return array
      */
-    protected static function generateMock($originalClassName, $methods, $mockClassName, $callOriginalClone, $callAutoload, $cloneObjects = false)
+    protected static function generateMock($originalClassName, $methods, $mockClassName, $callOriginalClone, $callAutoload, $cloneObjects = FALSE)
     {
         $templateDir   = dirname(__FILE__) . DIRECTORY_SEPARATOR . 'Generator' .
                          DIRECTORY_SEPARATOR;
@@ -687,7 +687,7 @@ class PHPUnit_Framework_MockObject_Generator
      * @param  boolean          $cloneObjects
      * @return string
      */
-    protected static function generateMockedMethodDefinitionFromExisting($templateDir, ReflectionMethod $method, $cloneObjects = false)
+    protected static function generateMockedMethodDefinitionFromExisting($templateDir, ReflectionMethod $method, $cloneObjects = FALSE)
     {
         if ($method->isPrivate()) {
             $modifier = 'private';
