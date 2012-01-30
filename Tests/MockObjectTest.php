@@ -319,7 +319,7 @@ class Framework_MockObjectTest extends PHPUnit_Framework_TestCase
              ->method('doSomething');
     }
 
-    public function testStaticMethodCallDontCloneObjectParametersByDefault()
+    public function testStaticMethodCallCloneObjectParametersByDefault()
     {
         $expectedObject = new StdClass;
 
@@ -341,7 +341,7 @@ class Framework_MockObjectTest extends PHPUnit_Framework_TestCase
         StaticMockTestClassMock3::doSomething($expectedObject);
 
         $this->assertEquals(1, count($actualArguments));
-        $this->assertSame($expectedObject, $actualArguments[0]);
+        $this->assertNotSame($expectedObject, $actualArguments[0]);
     }
 
     public function testStaticMethodCallCloneObjectParametersIfCloneObjectSetTrue()
@@ -375,7 +375,7 @@ class Framework_MockObjectTest extends PHPUnit_Framework_TestCase
         $this->assertNotSame($expectedObject, $actualArguments[0]);
     }
 
-    public function testObjectMethodCallDontCloneObjectParametersByDefault()
+    public function testObjectMethodCallCloneObjectParametersByDefault()
     {
         $expectedObject = new StdClass;
 
@@ -392,7 +392,7 @@ class Framework_MockObjectTest extends PHPUnit_Framework_TestCase
         $mock->doSomethingElse($expectedObject);
 
         $this->assertEquals(1, count($actualArguments));
-        $this->assertSame($expectedObject, $actualArguments[0]);
+        $this->assertNotSame($expectedObject, $actualArguments[0]);
     }
 
     public function testObjectMethodCallCloneObjectParametersIfCloneObjectSetTrue()
