@@ -1,8 +1,5 @@
 <?php
 
-require_once 'PHPUnit/Framework/TestCase.php';
-
-
 class Framework_MockObject_Invocation_ObjectTest extends PHPUnit_Framework_TestCase
 {
     public function testConstructorRequiresClassAndMethodAndParametersAndObject()
