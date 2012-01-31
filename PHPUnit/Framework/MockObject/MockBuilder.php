@@ -97,6 +97,11 @@ class PHPUnit_Framework_MockObject_MockBuilder
     protected $autoload = TRUE;
 
     /**
+     * @var boolean
+     */
+    protected $cloneArguments = TRUE;
+
+    /**
      * @param PHPUnit_Framework_TestCase
      * @param string
      */
@@ -120,7 +125,8 @@ class PHPUnit_Framework_MockObject_MockBuilder
           $this->mockClassName,
           $this->originalConstructor,
           $this->originalClone,
-          $this->autoload
+          $this->autoload,
+          $this->cloneArguments
         );
     }
 
@@ -138,7 +144,8 @@ class PHPUnit_Framework_MockObject_MockBuilder
           $this->originalConstructor,
           $this->originalClone,
           $this->autoload,
-          $this->methods
+          $this->methods,
+          $this->cloneArguments
         );
     }
 
@@ -213,6 +220,19 @@ class PHPUnit_Framework_MockObject_MockBuilder
     public function disableAutoload()
     {
         $this->autoload = FALSE;
+
+        return $this;
+    }
+
+    /**
+     * Suppresses the cloning of arguments passed to mocked methods.
+     *
+     * @return PHPUnit_Framework_MockObject_MockBuilder
+     * @since  Method available since Release 1.2.0
+     */
+    public function disableArgumentCloning()
+    {
+        $this->cloneArguments = FALSE;
 
         return $this;
     }
