@@ -249,11 +249,12 @@ class PHPUnit_Framework_MockObject_Generator
      * @param  boolean $callOriginalClone
      * @param  boolean $callAutoload
      * @param  array   $mockedMethods
+     * @param  boolean $cloneArguments
      * @return object
      * @since  Method available since Release 1.0.0
      * @throws InvalidArgumentException
      */
-    public static function getMockForAbstractClass($originalClassName, array $arguments = array(), $mockClassName = '', $callOriginalConstructor = TRUE, $callOriginalClone = TRUE, $callAutoload = TRUE, $mockedMethods = array())
+    public static function getMockForAbstractClass($originalClassName, array $arguments = array(), $mockClassName = '', $callOriginalConstructor = TRUE, $callOriginalClone = TRUE, $callAutoload = TRUE, $mockedMethods = array(), $cloneArguments = TRUE)
     {
         if (!is_string($originalClassName)) {
             throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'string');
@@ -285,7 +286,8 @@ class PHPUnit_Framework_MockObject_Generator
               $mockClassName,
               $callOriginalConstructor,
               $callOriginalClone,
-              $callAutoload
+              $callAutoload,
+              $cloneArguments
             );
         } else {
             throw new PHPUnit_Framework_Exception(
