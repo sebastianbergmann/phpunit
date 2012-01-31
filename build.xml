@@ -29,7 +29,6 @@
   <delete dir="${basedir}/build/logs"/>
   <delete dir="${basedir}/build/pdepend"/>
   <delete dir="${basedir}/build/phar"/>
-  <delete dir="${basedir}/build/phpdox"/>
   <delete file="${basedir}/build/phpunit.phar"/>
  </target>
 
@@ -41,6 +40,7 @@
   <mkdir dir="${basedir}/build/logs"/>
   <mkdir dir="${basedir}/build/pdepend"/>
   <mkdir dir="${basedir}/build/phar"/>
+  <mkdir dir="${basedir}/build/phpdox"/>
  </target>
 
  <target name="phpab" description="Generate autoloader scripts">
