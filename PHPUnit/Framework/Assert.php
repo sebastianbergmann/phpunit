@@ -989,6 +989,56 @@ abstract class PHPUnit_Framework_Assert
 
         self::assertThat($className, $constraint, $message);
     }
+    
+    /**
+     * Asserts that a class does not have a defined constant.
+     *
+     * @param  string $constantName
+     * @param  string $className
+     * @param  string $message
+     */
+    public static function assertClassHasConstant($constantName, $className, $message = '')
+    {
+        if (!is_string($constantName)) {
+            throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'string');
+        }
+
+           if (!is_string($className) || !class_exists($className, FALSE)) {
+            throw PHPUnit_Util_InvalidArgumentHelper::factory(2, 'class name');
+        }
+
+        $constraint = new PHPUnit_Framework_Constraint_ClassHasConstant(
+          $constantName
+        );
+
+        self::assertThat($className, $constraint, $message);
+    }
+
+    /**
+     * Asserts that a class has a defined constant.
+     *
+     * @param  string $constantName
+     * @param  string $className
+     * @param  string $message
+     */
+    public static function assertClassNotHasConstant($constantName, $className, $message = '')
+    {
+        if (!is_string($constantName)) {
+            throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'string');
+        }
+
+           if (!is_string($className) || !class_exists($className, FALSE)) {
+            throw PHPUnit_Util_InvalidArgumentHelper::factory(2, 'class name');
+        }
+
+        $constraint = new PHPUnit_Framework_Constraint_Not(
+          new PHPUnit_Framework_Constraint_ClassHasConstant(
+            $constantName
+          )
+        );
+
+        self::assertThat($className, $constraint, $message);
+    }
 
     /**
      * Asserts that an object has a specified attribute.
