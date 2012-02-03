@@ -44,7 +44,8 @@
  */
 
 /**
- * Factory for InvalidArgumentException objects.
+ * Factory for PHPUnit_Framework_Exception objects that are used to describe
+ * invalid arguments passed to a function or method.
  *
  * @package    PHPUnit
  * @subpackage Util
@@ -66,7 +67,7 @@ class PHPUnit_Util_InvalidArgumentHelper
     {
         $stack = debug_backtrace(FALSE);
 
-        return new InvalidArgumentException(
+        return new PHPUnit_Framework_Exception(
           sprintf(
             'Argument #%d%sof %s::%s() must be a %s',
             $argument,

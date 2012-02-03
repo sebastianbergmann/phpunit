@@ -97,7 +97,7 @@ class PHPUnit_Framework_Warning extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @throws RuntimeException
+     * @throws PHPUnit_Framework_Exception
      */
     protected function runTest()
     {

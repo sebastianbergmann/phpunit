@@ -42,7 +42,7 @@
  * @since      File available since Release 3.6.0
  */
 
-require_once dirname(dirname(__FILE__)) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'ClassWithToString.php';
+require_once dirname(__DIR__) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'ClassWithToString.php';
 
 class TestClass {}
 class TestClassComparator extends PHPUnit_Framework_Comparator_Object {}

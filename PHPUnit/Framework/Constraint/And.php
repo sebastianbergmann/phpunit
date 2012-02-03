@@ -70,7 +70,8 @@ class PHPUnit_Framework_Constraint_And extends PHPUnit_Framework_Constraint
     protected $lastConstraint = NULL;
 
     /**
-     * @param PHPUnit_Framework_Constraint[] $constraints
+     * @param  PHPUnit_Framework_Constraint[] $constraints
+     * @throws PHPUnit_Framework_Exception
      */
     public function setConstraints(array $constraints)
     {
@@ -78,7 +79,7 @@ class PHPUnit_Framework_Constraint_And extends PHPUnit_Framework_Constraint
 
         foreach ($constraints as $key => $constraint) {
             if (!($constraint instanceof PHPUnit_Framework_Constraint)) {
-                throw new InvalidArgumentException(
+                throw new PHPUnit_Framework_Exception(
                   'All parameters to ' . __CLASS__ .
                   ' must be a constraint object.'
                 );

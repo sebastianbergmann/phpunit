@@ -98,7 +98,7 @@
  *         <file>/path/to/file</file>
  *       </exclude>
  *     </blacklist>
- *     <whitelist addUncoveredFilesFromWhitelist="true">
+ *     <whitelist processUncoveredFilesFromWhitelist="false">
  *       <directory suffix=".php">/path/to/files</directory>
  *       <file>/path/to/file</file>
  *       <exclude>
@@ -246,15 +246,17 @@ class PHPUnit_Util_Configuration
      */
     public function getFilterConfiguration()
     {
-        $addUncoveredFilesFromWhitelist = TRUE;
+        $processUncoveredFilesFromWhitelist = FALSE;
 
         $tmp = $this->xpath->query('filter/whitelist');
 
         if ($tmp->length == 1 &&
-            $tmp->item(0)->hasAttribute('addUncoveredFilesFromWhitelist')) {
-            $addUncoveredFilesFromWhitelist = $this->getBoolean(
-              (string)$tmp->item(0)->getAttribute('addUncoveredFilesFromWhitelist'),
-              TRUE
+            $tmp->item(0)->hasAttribute('processUncoveredFilesFromWhitelist')) {
+            $processUncoveredFilesFromWhitelist = $this->getBoolean(
+              (string)$tmp->item(0)->getAttribute(
+                'processUncoveredFilesFromWhitelist'
+              ),
+              FALSE
             );
         }
 
@@ -278,7 +280,7 @@ class PHPUnit_Util_Configuration
             )
           ),
           'whitelist' => array(
-            'addUncoveredFilesFromWhitelist' => $addUncoveredFilesFromWhitelist,
+            'processUncoveredFilesFromWhitelist' => $processUncoveredFilesFromWhitelist,
             'include' => array(
               'directory' => $this->readFilterDirectories(
                 'filter/whitelist/directory'
@@ -998,9 +1000,7 @@ class PHPUnit_Util_Configuration
         $file = dirname($this->filename) . DIRECTORY_SEPARATOR . $path;
 
         if ($useIncludePath && !file_exists($file)) {
-            $includePathFile = PHPUnit_Util_Filesystem::fileExistsInIncludePath(
-              $path
-            );
+            $includePathFile = stream_resolve_include_path($path);
 
             if ($includePathFile) {
                 $file = $includePathFile;
