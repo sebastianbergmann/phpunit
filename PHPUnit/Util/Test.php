@@ -59,7 +59,7 @@ class PHPUnit_Util_Test
 {
     const REGEX_DATA_PROVIDER      = '/@dataProvider\s+([a-zA-Z0-9._:-\\\\x7f-\xff]+)/';
     const REGEX_EXPECTED_EXCEPTION = '(@expectedException\s+([:.\w\\\\x7f-\xff]+)(?:[\t ]+(\S*))?(?:[\t ]+(\S*))?\s*$)m';
-    const REGEX_REQUIRES           = '/@requires\s+(?P<name>PHP(?:Unit)?)\s+(?P<value>[\d\.]+)[ \t]*\r?$/m';
+    const REGEX_REQUIRES           = '/@requires\s+(?P<name>PHP(?:Unit)?)\s+(?P<value>[\d\.-]+(dev|(RC|alpha|beta)[\d\.])?)[ \t]*\r?$/m';
 
     const SMALL  = 0;
     const MEDIUM = 1;
@@ -152,6 +152,11 @@ class PHPUnit_Util_Test
 
             else if (isset($annotations['method']['expectedExceptionMessage'])) {
                 $message = $annotations['method']['expectedExceptionMessage'][0];
+                if ('<?php' == substr($message, 0, 5)) {
+                    ob_start();
+                    eval('?>' . $annotations['method']['expectedExceptionMessage'][0]);
+                    $message = ob_get_clean();
+                }
             }
 
             if (isset($matches[3])) {
