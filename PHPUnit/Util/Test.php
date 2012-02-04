@@ -152,6 +152,11 @@ class PHPUnit_Util_Test
 
             else if (isset($annotations['method']['expectedExceptionMessage'])) {
                 $message = $annotations['method']['expectedExceptionMessage'][0];
+                if ('<?php' == substr($message, 0, 5)) {
+                    ob_start();
+                    eval('?>' . $annotations['method']['expectedExceptionMessage'][0]);
+                    $message = ob_get_clean();
+                }
             }
 
             if (isset($matches[3])) {
