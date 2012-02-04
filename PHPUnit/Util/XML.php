@@ -274,7 +274,7 @@ class PHPUnit_Util_XML
      * @param  array $hash
      * @param  array $validKeys
      * @return array
-     * @throws InvalidArgumentException
+     * @throws PHPUnit_Framework_Exception
      * @since  Method available since Release 3.3.0
      * @author Mike Naberezny <mike@maintainable.com>
      * @author Derek DeVries <derek@maintainable.com>
@@ -299,7 +299,7 @@ class PHPUnit_Util_XML
         }
 
         if (!empty($unknown)) {
-            throw new InvalidArgumentException(
+            throw new PHPUnit_Framework_Exception(
               'Unknown key(s): ' . implode(', ', $unknown)
             );
         }

@@ -76,7 +76,9 @@ class Util_TypeTest extends PHPUnit_Framework_TestCase
         $obj2->foo = 'bar';
 
         $obj = new stdClass;
+        //@codingStandardsIgnoreStart 
         $obj->null = NULL;
+        //@codingStandardsIgnoreEnd 
         $obj->boolean = TRUE;
         $obj->integer = 1;
         $obj->double = 1.2;

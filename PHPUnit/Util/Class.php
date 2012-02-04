@@ -43,10 +43,6 @@
  * @since      File available since Release 3.1.0
  */
 
-if (!defined('T_NAMESPACE')) {
-    define('T_NAMESPACE', 377);
-}
-
 /**
  * Class helpers.
  *
@@ -239,7 +235,7 @@ class PHPUnit_Util_Class
      * @param  string  $className
      * @param  string  $attributeName
      * @return mixed
-     * @throws InvalidArgumentException
+     * @throws PHPUnit_Framework_Exception
      * @since  Method available since Release 3.4.0
      */
     public static function getStaticAttribute($className, $attributeName)
@@ -284,7 +280,7 @@ class PHPUnit_Util_Class
      * @param  object  $object
      * @param  string  $attributeName
      * @return mixed
-     * @throws InvalidArgumentException
+     * @throws PHPUnit_Framework_Exception
      * @since  Method available since Release 3.4.0
      */
     public static function getObjectAttribute($object, $attributeName)
@@ -350,30 +346,6 @@ class PHPUnit_Util_Class
             $attributeName
           )
         );
-    }
-
-    /**
-     *
-     *
-     * @param  string $className
-     * @return array
-     * @since  Method available since Release 3.4.0
-     */
-    public static function parseFullyQualifiedClassName($className)
-    {
-        $result = array(
-          'namespace'               => '',
-          'className'               => $className,
-          'fullyQualifiedClassName' => $className
-        );
-
-        if (strpos($className, '\\') !== FALSE) {
-            $tmp                 = explode('\\', $className);
-            $result['className'] = $tmp[count($tmp)-1];
-            $result['namespace'] = self::arrayToName($tmp);
-        }
-
-        return $result;
     }
 
     /**

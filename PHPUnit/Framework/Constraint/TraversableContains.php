@@ -73,7 +73,7 @@ class PHPUnit_Framework_Constraint_TraversableContains extends PHPUnit_Framework
     /**
      * @param  boolean $value
      * @param  mixed   $checkForObjectIdentity
-     * @throws InvalidArgumentException
+     * @throws PHPUnit_Framework_Exception
      */
     public function __construct($value, $checkForObjectIdentity = TRUE)
     {

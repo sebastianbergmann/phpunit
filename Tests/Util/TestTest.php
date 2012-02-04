@@ -42,8 +42,8 @@
  * @since      File available since Release 3.3.6
  */
 
-require_once dirname(dirname(__FILE__)) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'ExceptionTest.php';
-require_once dirname(dirname(__FILE__)) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'RequirementsTest.php';
+require_once dirname(__DIR__) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'ExceptionTest.php';
+require_once dirname(__DIR__) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'RequirementsTest.php';
 
 /**
  *
@@ -98,6 +98,11 @@ class Util_TestTest extends PHPUnit_Framework_TestCase
         $this->assertSame(
           array('class' => 'Class', 'code' => 0, 'message' => 'Message'),
           PHPUnit_Util_Test::getExpectedException('ExceptionTest', 'testEight')
+        );
+
+        $this->assertSame(
+           array('class' => 'Class', 'code' => 0, 'message' => PHPUnit_Util_Test::REGEX_DATA_PROVIDER),
+           PHPUnit_Util_Test::getExpectedException('ExceptionTest', 'testNine')
         );
    }
 

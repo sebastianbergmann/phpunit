@@ -100,12 +100,12 @@ class PHPUnit_Framework_Constraint_IsType extends PHPUnit_Framework_Constraint
 
     /**
      * @param  string $type
-     * @throws InvalidArgumentException
+     * @throws PHPUnit_Framework_Exception
      */
     public function __construct($type)
     {
         if (!isset($this->types[$type])) {
-            throw new InvalidArgumentException(
+            throw new PHPUnit_Framework_Exception(
               sprintf(
                 'Type specified for PHPUnit_Framework_Constraint_IsType <%s> ' .
                 'is not a valid type.',

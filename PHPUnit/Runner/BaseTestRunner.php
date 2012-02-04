@@ -142,7 +142,7 @@ abstract class PHPUnit_Runner_BaseTestRunner
                 $test = new PHPUnit_Framework_TestSuite($testClass);
             }
 
-            catch (InvalidArgumentException $e) {
+            catch (PHPUnit_Framework_Exception $e) {
                 $test = new PHPUnit_Framework_TestSuite;
                 $test->setName($suiteClassName);
             }

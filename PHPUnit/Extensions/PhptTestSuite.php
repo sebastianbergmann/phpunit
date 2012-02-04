@@ -63,7 +63,7 @@ class PHPUnit_Extensions_PhptTestSuite extends PHPUnit_Framework_TestSuite
      * @param  string $directory
      * @param  array  $options Array with ini settings for the php instance run,
      *                         key being the name if the setting, value the ini value.
-     * @throws InvalidArgumentException
+     * @throws PHPUnit_Framework_Exception
      */
     public function __construct($directory, array $options = array())
     {
