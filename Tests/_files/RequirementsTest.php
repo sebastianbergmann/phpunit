@@ -28,6 +28,35 @@ class RequirementsTest extends PHPUnit_Framework_TestCase
     }
 
     /**
+     * @requires PHP 5.4.0RC6
+     */
+    public function testFive()
+    {
+    }
+
+    /**
+     * @requires PHP 5.4.0-alpha1
+     */
+    public function testSix()
+    {
+    }
+
+    /**
+     * @requires PHP 5.4.0beta2
+     */
+    public function testSeven()
+    {
+    }
+
+    /**
+     * @requires PHP 5.4-dev
+     */
+    public function testEight()
+    {
+    }
+
+
+    /**
      * @requires PHPUnit 1111111
      */
     public function testAlwaysSkip()

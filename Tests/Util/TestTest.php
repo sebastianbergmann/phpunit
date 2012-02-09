@@ -122,6 +122,26 @@ class Util_TestTest extends PHPUnit_Framework_TestCase
           array('PHPUnit'=>'2.0', 'PHP' => '1.0'),
           PHPUnit_Util_Test::getRequirements('RequirementsTest', 'testFour')
         );
+
+        $this->assertEquals(
+          array('PHP' => '5.4.0RC6'),
+          PHPUnit_Util_Test::getRequirements('RequirementsTest', 'testFive')
+        );
+
+        $this->assertEquals(
+          array('PHP' => '5.4.0-alpha1'),
+          PHPUnit_Util_Test::getRequirements('RequirementsTest', 'testSix')
+        );
+
+        $this->assertEquals(
+          array('PHP' => '5.4.0beta2'),
+          PHPUnit_Util_Test::getRequirements('RequirementsTest', 'testSeven')
+        );
+
+        $this->assertEquals(
+          array('PHP' => '5.4-dev'),
+          PHPUnit_Util_Test::getRequirements('RequirementsTest', 'testEight')
+        );
     }
 
     public function testGetProvidedDataRegEx()
