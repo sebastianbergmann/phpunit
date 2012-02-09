@@ -67,6 +67,21 @@ class Util_DiffTest extends PHPUnit_Framework_TestCase
     }
 
     /**
+     * @covers PHPUnit_Util_Diff::diffToArray
+     */
+    public function testComparisonErrorMessage_toArray()
+    {
+        $diff = array();
+        $diff[] = array('a', PHPUnit_Util_DIFF::REMOVED);
+        $diff[] = array('b', PHPUnit_Util_DIFF::ADDED);
+        
+        $this->assertEquals(
+          $diff,
+          PHPUnit_Util_Diff::diffToArray('a', 'b')
+        );
+    }
+
+    /**
      * @covers PHPUnit_Util_Diff::diff
      */
     public function testComparisonErrorStartSame()
@@ -74,6 +89,21 @@ class Util_DiffTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(
           "--- Expected\n+++ Actual\n@@ @@\n-ba\n+bc\n",
           PHPUnit_Util_Diff::diff('ba', 'bc')
+        );
+    }
+
+    /**
+     * @covers PHPUnit_Util_Diff::diffToArray
+     */
+    public function testComparisonErrorStartSame_toArray()
+    {
+        $diff = array();
+        $diff[] = array('ba', PHPUnit_Util_DIFF::REMOVED);
+        $diff[] = array('bc', PHPUnit_Util_DIFF::ADDED);
+        
+        $this->assertEquals(
+          $diff,
+          PHPUnit_Util_Diff::diffToArray('ba', 'bc')
         );
     }
 
@@ -89,6 +119,21 @@ class Util_DiffTest extends PHPUnit_Framework_TestCase
     }
 
     /**
+     * @covers PHPUnit_Util_Diff::diffToArray
+     */
+    public function testComparisonErrorEndSame_toArray()
+    {
+        $diff = array();
+        $diff[] = array('ab', PHPUnit_Util_DIFF::REMOVED);
+        $diff[] = array('cb', PHPUnit_Util_DIFF::ADDED);
+        
+        $this->assertEquals(
+          $diff,
+          PHPUnit_Util_Diff::diffToArray('ab', 'cb')
+        );
+    }
+
+    /**
      * @covers PHPUnit_Util_Diff::diff
      */
     public function testComparisonErrorStartAndEndSame()
@@ -96,6 +141,21 @@ class Util_DiffTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(
           "--- Expected\n+++ Actual\n@@ @@\n-abc\n+adc\n",
           PHPUnit_Util_Diff::diff('abc', 'adc')
+        );
+    }
+
+    /**
+     * @covers PHPUnit_Util_Diff::diffToArray
+     */
+    public function testComparisonErrorStartAndEndSame_toArray()
+    {
+        $diff = array();
+        $diff[] = array('abc', PHPUnit_Util_DIFF::REMOVED);
+        $diff[] = array('adc', PHPUnit_Util_DIFF::ADDED);
+        
+        $this->assertEquals(
+          $diff,
+          PHPUnit_Util_Diff::diffToArray('abc', 'adc')
         );
     }
 
@@ -111,6 +171,21 @@ class Util_DiffTest extends PHPUnit_Framework_TestCase
     }
 
     /**
+     * @covers PHPUnit_Util_Diff::diffToArray
+     */
+    public function testComparisonErrorStartSameComplete_toArray()
+    {
+        $diff = array();
+        $diff[] = array('ab', PHPUnit_Util_DIFF::REMOVED);
+        $diff[] = array('abc', PHPUnit_Util_DIFF::ADDED);
+      
+        $this->assertEquals(
+          $diff,
+          PHPUnit_Util_Diff::diffToArray('ab', 'abc')
+        );
+    }
+
+    /**
      * @covers PHPUnit_Util_Diff::diff
      */
     public function testComparisonErrorEndSameComplete()
@@ -118,6 +193,21 @@ class Util_DiffTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(
           "--- Expected\n+++ Actual\n@@ @@\n-bc\n+abc\n",
           PHPUnit_Util_Diff::diff('bc', 'abc')
+        );
+    }
+
+    /**
+     * @covers PHPUnit_Util_Diff::diffToArray
+     */
+    public function testComparisonErrorEndSameComplete_toArray()
+    {
+        $diff = array();
+        $diff[] = array('bc', PHPUnit_Util_DIFF::REMOVED);
+        $diff[] = array('abc', PHPUnit_Util_DIFF::ADDED);
+        
+        $this->assertEquals(
+          $diff,
+          PHPUnit_Util_Diff::diffToArray('bc', 'abc')
         );
     }
 
@@ -133,6 +223,21 @@ class Util_DiffTest extends PHPUnit_Framework_TestCase
     }
 
     /**
+     * @covers PHPUnit_Util_Diff::diffToArray
+     */
+    public function testComparisonErrorOverlapingMatches_toArray()
+    {
+        $diff = array();
+        $diff[] = array('abc', PHPUnit_Util_DIFF::REMOVED);
+        $diff[] = array('abbc', PHPUnit_Util_DIFF::ADDED);
+
+        $this->assertEquals(
+          $diff,
+          PHPUnit_Util_Diff::diffToArray('abc', 'abbc')
+        );
+    }
+
+    /**
      * @covers PHPUnit_Util_Diff::diff
      */
     public function testComparisonErrorOverlapingMatches2()
@@ -140,6 +245,21 @@ class Util_DiffTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(
           "--- Expected\n+++ Actual\n@@ @@\n-abcdde\n+abcde\n",
           PHPUnit_Util_Diff::diff('abcdde', 'abcde')
+        );
+    }
+
+    /**
+     * @covers PHPUnit_Util_Diff::diffToArray
+     */
+    public function testComparisonErrorOverlapingMatches2_toArray()
+    {
+        $diff = array();
+        $diff[] = array('abcdde', PHPUnit_Util_DIFF::REMOVED);
+        $diff[] = array('abcde', PHPUnit_Util_DIFF::ADDED);
+
+        $this->assertEquals(
+          $diff,
+          PHPUnit_Util_Diff::diffToArray('abcdde', 'abcde')
         );
     }
 }

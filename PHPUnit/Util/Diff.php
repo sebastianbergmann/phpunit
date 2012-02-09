@@ -59,8 +59,13 @@
  */
 class PHPUnit_Util_Diff
 {
+  
+    const REMOVED = 2;
+    const ADDED = 1;
+    const OLD = 0;
+    
     /**
-     * Returns the diff between two arrays or strings.
+     * Returns the diff between two arrays or strings as string.
      *
      * @param  array|string $from
      * @param  array|string $to
@@ -68,88 +73,15 @@ class PHPUnit_Util_Diff
      */
     public static function diff($from, $to)
     {
-        if (is_string($from)) {
-            $from = preg_split('(\r\n|\r|\n)', $from);
-        }
-
-        if (is_string($to)) {
-            $to = preg_split('(\r\n|\r|\n)', $to);
-        }
-
-        $buffer     = "--- Expected\n+++ Actual\n";
-        $start      = array();
-        $end        = array();
-        $fromLength = count($from);
-        $toLength   = count($to);
-        $length     = min($fromLength, $toLength);
-
-        for ($i = 0; $i < $length; ++$i) {
-            if ($from[$i] === $to[$i]) {
-                $start[] = $from[$i];
-                unset($from[$i], $to[$i]);
-            } else {
-                break;
-            }
-        }
-
-        $length -= $i;
-
-        for ($i = 1; $i < $length; ++$i) {
-            if ($from[$fromLength - $i] === $to[$toLength - $i]) {
-                array_unshift($end, $from[$fromLength - $i]);
-                unset($from[$fromLength - $i], $to[$toLength - $i]);
-            } else {
-                break;
-            }
-        }
-
-        $common = self::longestCommonSubsequence(
-          array_values($from), array_values($to)
-        );
-
-        $diff = array();
-        $line = 0;
-
-        foreach ($start as $token) {
-            $diff[] = array($token, 0 /* OLD */);
-        }
-
-        reset($from);
-        reset($to);
-
-        foreach ($common as $token) {
-            while ((($fromToken = reset($from)) !== $token)) {
-                $diff[] = array(array_shift($from), 2 /* REMOVED */);
-            }
-
-            while ((($toToken = reset($to)) !== $token)) {
-                $diff[] = array(array_shift($to), 1 /* ADDED */);
-            }
-
-            $diff[] = array($token, 0 /* OLD */);
-
-            array_shift($from);
-            array_shift($to);
-        }
-
-        while (($token = array_shift($from)) !== NULL) {
-            $diff[] = array($token, 2 /* REMOVED */);
-        }
-
-        while (($token = array_shift($to)) !== NULL) {
-            $diff[] = array($token, 1 /* ADDED */);
-        }
-
-        foreach ($end as $token) {
-            $diff[] = array($token, 0 /* OLD */);
-        }
+        $buffer= "--- Expected\n+++ Actual\n";
+        $diff  = self::diffToArray($from,$to);
 
         $inOld = FALSE;
         $i     = 0;
         $old   = array();
 
         foreach ($diff as $line) {
-            if ($line[1] === 0 /* OLD */) {
+            if ($line[1] === self::OLD) {
                 if ($inOld === FALSE) {
                     $inOld = $i;
                 }
@@ -188,11 +120,11 @@ class PHPUnit_Util_Diff
                 $newChunk = FALSE;
             }
 
-            if ($diff[$i][1] === 1 /* ADDED */) {
+            if ($diff[$i][1] === self::ADDED) {
                 $buffer .= '+' . $diff[$i][0] . "\n";
             }
 
-            else if ($diff[$i][1] === 2 /* REMOVED */) {
+            else if ($diff[$i][1] === self::REMOVED) {
                 $buffer .= '-' . $diff[$i][0] . "\n";
             }
 
@@ -202,6 +134,101 @@ class PHPUnit_Util_Diff
         }
 
         return $buffer;
+    }
+    
+    /**
+     * Returns the diff between two arrays or strings as array.
+     *
+     * every array-entry containts two elements:
+     *   - [0] => string $token
+     *   - [1] => self::ADDED|self::REMOVED|self::OLD
+     * 
+     * - ADDED: $token was added to $from
+     * - REMOVED: $token was removed from $from
+     * - OLD: $token is not changed in $to
+     * 
+     * @param  array|string $from
+     * @param  array|string $to
+     * @return array
+     */
+    public static function diffToArray($from, $to) {
+        if (is_string($from)) {
+            $from = preg_split('(\r\n|\r|\n)', $from);
+        }
+
+        if (is_string($to)) {
+            $to = preg_split('(\r\n|\r|\n)', $to);
+        }
+
+        
+        $start      = array();
+        $end        = array();
+        $fromLength = count($from);
+        $toLength   = count($to);
+        $length     = min($fromLength, $toLength);
+
+        for ($i = 0; $i < $length; ++$i) {
+            if ($from[$i] === $to[$i]) {
+                $start[] = $from[$i];
+                unset($from[$i], $to[$i]);
+            } else {
+                break;
+            }
+        }
+
+        $length -= $i;
+
+        for ($i = 1; $i < $length; ++$i) {
+            if ($from[$fromLength - $i] === $to[$toLength - $i]) {
+                array_unshift($end, $from[$fromLength - $i]);
+                unset($from[$fromLength - $i], $to[$toLength - $i]);
+            } else {
+                break;
+            }
+        }
+
+        $common = self::longestCommonSubsequence(
+          array_values($from), array_values($to)
+        );
+
+        $diff = array();
+        $line = 0;
+
+        foreach ($start as $token) {
+            $diff[] = array($token, self::OLD);
+        }
+
+        reset($from);
+        reset($to);
+
+        foreach ($common as $token) {
+            while ((($fromToken = reset($from)) !== $token)) {
+                $diff[] = array(array_shift($from), self::REMOVED);
+            }
+
+            while ((($toToken = reset($to)) !== $token)) {
+                $diff[] = array(array_shift($to), self::ADDED);
+            }
+
+            $diff[] = array($token, self::OLD);
+
+            array_shift($from);
+            array_shift($to);
+        }
+
+        while (($token = array_shift($from)) !== NULL) {
+            $diff[] = array($token, self::REMOVED);
+        }
+
+        while (($token = array_shift($to)) !== NULL) {
+            $diff[] = array($token, self::ADDED);
+        }
+
+        foreach ($end as $token) {
+            $diff[] = array($token, self::OLD);
+        }
+        
+        return $diff;
     }
 
     /**
