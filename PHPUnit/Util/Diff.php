@@ -59,11 +59,6 @@
  */
 class PHPUnit_Util_Diff
 {
-  
-    const REMOVED = 2;
-    const ADDED = 1;
-    const OLD = 0;
-    
     /**
      * Returns the diff between two arrays or strings as string.
      *
@@ -81,7 +76,7 @@ class PHPUnit_Util_Diff
         $old   = array();
 
         foreach ($diff as $line) {
-            if ($line[1] === self::OLD) {
+            if ($line[1] === 0 /* OLD */) {
                 if ($inOld === FALSE) {
                     $inOld = $i;
                 }
@@ -120,11 +115,11 @@ class PHPUnit_Util_Diff
                 $newChunk = FALSE;
             }
 
-            if ($diff[$i][1] === self::ADDED) {
+            if ($diff[$i][1] === 1 /* ADDED */) {
                 $buffer .= '+' . $diff[$i][0] . "\n";
             }
 
-            else if ($diff[$i][1] === self::REMOVED) {
+            else if ($diff[$i][1] === 2 /* REMOVED */) {
                 $buffer .= '-' . $diff[$i][0] . "\n";
             }
 
@@ -195,7 +190,7 @@ class PHPUnit_Util_Diff
         $line = 0;
 
         foreach ($start as $token) {
-            $diff[] = array($token, self::OLD);
+            $diff[] = array($token, 0 /* OLD */);
         }
 
         reset($from);
@@ -203,29 +198,29 @@ class PHPUnit_Util_Diff
 
         foreach ($common as $token) {
             while ((($fromToken = reset($from)) !== $token)) {
-                $diff[] = array(array_shift($from), self::REMOVED);
+                $diff[] = array(array_shift($from), 2 /* REMOVED */);
             }
 
             while ((($toToken = reset($to)) !== $token)) {
-                $diff[] = array(array_shift($to), self::ADDED);
+                $diff[] = array(array_shift($to), 1 /* ADDED */);
             }
 
-            $diff[] = array($token, self::OLD);
+            $diff[] = array($token, 0 /* OLD */);
 
             array_shift($from);
             array_shift($to);
         }
 
         while (($token = array_shift($from)) !== NULL) {
-            $diff[] = array($token, self::REMOVED);
+            $diff[] = array($token, 2 /* REMOVED */);
         }
 
         while (($token = array_shift($to)) !== NULL) {
-            $diff[] = array($token, self::ADDED);
+            $diff[] = array($token, 1 /* ADDED */);
         }
 
         foreach ($end as $token) {
-            $diff[] = array($token, self::OLD);
+            $diff[] = array($token, 0 /* OLD */);
         }
         
         return $diff;

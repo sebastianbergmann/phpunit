@@ -55,6 +55,11 @@
  */
 class Util_DiffTest extends PHPUnit_Framework_TestCase
 {
+  
+   const REMOVED = 2;
+   const ADDED = 1;
+   const OLD = 0;
+   
     /**
      * @covers PHPUnit_Util_Diff::diff
      */
@@ -72,8 +77,8 @@ class Util_DiffTest extends PHPUnit_Framework_TestCase
     public function testComparisonErrorMessage_toArray()
     {
         $diff = array();
-        $diff[] = array('a', PHPUnit_Util_DIFF::REMOVED);
-        $diff[] = array('b', PHPUnit_Util_DIFF::ADDED);
+        $diff[] = array('a', self::REMOVED);
+        $diff[] = array('b', self::ADDED);
         
         $this->assertEquals(
           $diff,
@@ -98,8 +103,8 @@ class Util_DiffTest extends PHPUnit_Framework_TestCase
     public function testComparisonErrorStartSame_toArray()
     {
         $diff = array();
-        $diff[] = array('ba', PHPUnit_Util_DIFF::REMOVED);
-        $diff[] = array('bc', PHPUnit_Util_DIFF::ADDED);
+        $diff[] = array('ba', self::REMOVED);
+        $diff[] = array('bc', self::ADDED);
         
         $this->assertEquals(
           $diff,
@@ -124,8 +129,8 @@ class Util_DiffTest extends PHPUnit_Framework_TestCase
     public function testComparisonErrorEndSame_toArray()
     {
         $diff = array();
-        $diff[] = array('ab', PHPUnit_Util_DIFF::REMOVED);
-        $diff[] = array('cb', PHPUnit_Util_DIFF::ADDED);
+        $diff[] = array('ab', self::REMOVED);
+        $diff[] = array('cb', self::ADDED);
         
         $this->assertEquals(
           $diff,
@@ -150,8 +155,8 @@ class Util_DiffTest extends PHPUnit_Framework_TestCase
     public function testComparisonErrorStartAndEndSame_toArray()
     {
         $diff = array();
-        $diff[] = array('abc', PHPUnit_Util_DIFF::REMOVED);
-        $diff[] = array('adc', PHPUnit_Util_DIFF::ADDED);
+        $diff[] = array('abc', self::REMOVED);
+        $diff[] = array('adc', self::ADDED);
         
         $this->assertEquals(
           $diff,
@@ -176,8 +181,8 @@ class Util_DiffTest extends PHPUnit_Framework_TestCase
     public function testComparisonErrorStartSameComplete_toArray()
     {
         $diff = array();
-        $diff[] = array('ab', PHPUnit_Util_DIFF::REMOVED);
-        $diff[] = array('abc', PHPUnit_Util_DIFF::ADDED);
+        $diff[] = array('ab', self::REMOVED);
+        $diff[] = array('abc', self::ADDED);
       
         $this->assertEquals(
           $diff,
@@ -202,8 +207,8 @@ class Util_DiffTest extends PHPUnit_Framework_TestCase
     public function testComparisonErrorEndSameComplete_toArray()
     {
         $diff = array();
-        $diff[] = array('bc', PHPUnit_Util_DIFF::REMOVED);
-        $diff[] = array('abc', PHPUnit_Util_DIFF::ADDED);
+        $diff[] = array('bc', self::REMOVED);
+        $diff[] = array('abc', self::ADDED);
         
         $this->assertEquals(
           $diff,
@@ -228,8 +233,8 @@ class Util_DiffTest extends PHPUnit_Framework_TestCase
     public function testComparisonErrorOverlapingMatches_toArray()
     {
         $diff = array();
-        $diff[] = array('abc', PHPUnit_Util_DIFF::REMOVED);
-        $diff[] = array('abbc', PHPUnit_Util_DIFF::ADDED);
+        $diff[] = array('abc', self::REMOVED);
+        $diff[] = array('abbc', self::ADDED);
 
         $this->assertEquals(
           $diff,
@@ -254,8 +259,8 @@ class Util_DiffTest extends PHPUnit_Framework_TestCase
     public function testComparisonErrorOverlapingMatches2_toArray()
     {
         $diff = array();
-        $diff[] = array('abcdde', PHPUnit_Util_DIFF::REMOVED);
-        $diff[] = array('abcde', PHPUnit_Util_DIFF::ADDED);
+        $diff[] = array('abcdde', self::REMOVED);
+        $diff[] = array('abcde', self::ADDED);
 
         $this->assertEquals(
           $diff,
