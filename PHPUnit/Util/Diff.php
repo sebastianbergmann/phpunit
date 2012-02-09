@@ -76,7 +76,7 @@ class PHPUnit_Util_Diff
         $old   = array();
 
         foreach ($diff as $line) {
-            if ($line[1] === 0 /* OLD */) {
+            if ($line[1] ===  0 /* OLD */) {
                 if ($inOld === FALSE) {
                     $inOld = $i;
                 }
@@ -136,11 +136,11 @@ class PHPUnit_Util_Diff
      *
      * every array-entry containts two elements:
      *   - [0] => string $token
-     *   - [1] => self::ADDED|self::REMOVED|self::OLD
-     * 
-     * - ADDED: $token was added to $from
-     * - REMOVED: $token was removed from $from
-     * - OLD: $token is not changed in $to
+     *   - [1] => 2|1|0
+     *
+     * - 2: REMOVED: $token was removed from $from
+     * - 1: ADDED: $token was added to $from
+     * - 0: OLD: $token is not changed in $to
      * 
      * @param  array|string $from
      * @param  array|string $to
