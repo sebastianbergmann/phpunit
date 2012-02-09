@@ -60,7 +60,7 @@
 class PHPUnit_Util_Diff
 {
     /**
-     * Returns the diff between two arrays or strings.
+     * Returns the diff between two arrays or strings as string.
      *
      * @param  array|string $from
      * @param  array|string $to
@@ -68,6 +68,85 @@ class PHPUnit_Util_Diff
      */
     public static function diff($from, $to)
     {
+        $buffer= "--- Expected\n+++ Actual\n";
+        $diff  = self::diffToArray($from,$to);
+
+        $inOld = FALSE;
+        $i     = 0;
+        $old   = array();
+
+        foreach ($diff as $line) {
+            if ($line[1] ===  0 /* OLD */) {
+                if ($inOld === FALSE) {
+                    $inOld = $i;
+                }
+            }
+
+            else if ($inOld !== FALSE) {
+                if (($i - $inOld) > 5) {
+                    $old[$inOld] = $i - 1;
+                }
+
+                $inOld = FALSE;
+            }
+
+            ++$i;
+        }
+
+        $start = isset($old[0]) ? $old[0] : 0;
+        $end   = count($diff);
+        $i     = 0;
+
+        if ($tmp = array_search($end, $old)) {
+            $end = $tmp;
+        }
+
+        $newChunk = TRUE;
+
+        for ($i = $start; $i < $end; $i++) {
+            if (isset($old[$i])) {
+                $buffer  .= "\n";
+                $newChunk = TRUE;
+                $i        = $old[$i];
+            }
+
+            if ($newChunk) {
+                $buffer  .= "@@ @@\n";
+                $newChunk = FALSE;
+            }
+
+            if ($diff[$i][1] === 1 /* ADDED */) {
+                $buffer .= '+' . $diff[$i][0] . "\n";
+            }
+
+            else if ($diff[$i][1] === 2 /* REMOVED */) {
+                $buffer .= '-' . $diff[$i][0] . "\n";
+            }
+
+            else {
+                $buffer .= ' ' . $diff[$i][0] . "\n";
+            }
+        }
+
+        return $buffer;
+    }
+    
+    /**
+     * Returns the diff between two arrays or strings as array.
+     *
+     * every array-entry containts two elements:
+     *   - [0] => string $token
+     *   - [1] => 2|1|0
+     *
+     * - 2: REMOVED: $token was removed from $from
+     * - 1: ADDED: $token was added to $from
+     * - 0: OLD: $token is not changed in $to
+     * 
+     * @param  array|string $from
+     * @param  array|string $to
+     * @return array
+     */
+    public static function diffToArray($from, $to) {
         if (is_string($from)) {
             $from = preg_split('(\r\n|\r|\n)', $from);
         }
@@ -76,7 +155,7 @@ class PHPUnit_Util_Diff
             $to = preg_split('(\r\n|\r|\n)', $to);
         }
 
-        $buffer     = "--- Expected\n+++ Actual\n";
+        
         $start      = array();
         $end        = array();
         $fromLength = count($from);
@@ -143,65 +222,8 @@ class PHPUnit_Util_Diff
         foreach ($end as $token) {
             $diff[] = array($token, 0 /* OLD */);
         }
-
-        $inOld = FALSE;
-        $i     = 0;
-        $old   = array();
-
-        foreach ($diff as $line) {
-            if ($line[1] === 0 /* OLD */) {
-                if ($inOld === FALSE) {
-                    $inOld = $i;
-                }
-            }
-
-            else if ($inOld !== FALSE) {
-                if (($i - $inOld) > 5) {
-                    $old[$inOld] = $i - 1;
-                }
-
-                $inOld = FALSE;
-            }
-
-            ++$i;
-        }
-
-        $start = isset($old[0]) ? $old[0] : 0;
-        $end   = count($diff);
-        $i     = 0;
-
-        if ($tmp = array_search($end, $old)) {
-            $end = $tmp;
-        }
-
-        $newChunk = TRUE;
-
-        for ($i = $start; $i < $end; $i++) {
-            if (isset($old[$i])) {
-                $buffer  .= "\n";
-                $newChunk = TRUE;
-                $i        = $old[$i];
-            }
-
-            if ($newChunk) {
-                $buffer  .= "@@ @@\n";
-                $newChunk = FALSE;
-            }
-
-            if ($diff[$i][1] === 1 /* ADDED */) {
-                $buffer .= '+' . $diff[$i][0] . "\n";
-            }
-
-            else if ($diff[$i][1] === 2 /* REMOVED */) {
-                $buffer .= '-' . $diff[$i][0] . "\n";
-            }
-
-            else {
-                $buffer .= ' ' . $diff[$i][0] . "\n";
-            }
-        }
-
-        return $buffer;
+        
+        return $diff;
     }
 
     /**
