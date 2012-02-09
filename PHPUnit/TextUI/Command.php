@@ -86,6 +86,7 @@ class PHPUnit_TextUI_Command
       'debug' => NULL,
       'exclude-group=' => NULL,
       'filter=' => NULL,
+      'testsuite=' => NULL,
       'group=' => NULL,
       'help' => NULL,
       'include-path=' => NULL,
@@ -360,6 +361,11 @@ class PHPUnit_TextUI_Command
 
                 case '--filter': {
                     $this->arguments['filter'] = $option[1];
+                }
+                break;
+
+                case '--testsuite': {
+                    $this->arguments['testsuite'] = $option[1];
                 }
                 break;
 
@@ -668,7 +674,7 @@ class PHPUnit_TextUI_Command
             }
 
             if (!isset($this->arguments['test'])) {
-                $testSuite = $configuration->getTestSuiteConfiguration();
+                $testSuite = $configuration->getTestSuiteConfiguration(isset($this->arguments['testsuite']) ? $this->arguments['testsuite'] : null);
 
                 if ($testSuite !== NULL) {
                     $this->arguments['test'] = $testSuite;
