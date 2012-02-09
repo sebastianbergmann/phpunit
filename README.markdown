@@ -62,4 +62,9 @@ The following commands can be used to perform the initial checkout of PHPUnit an
 
 The `dbunit`, `php-code-coverage`, `php-file-iterator`, `php-text-template`, `php-timer`, `php-token-stream`, `phpunit`, `phpunit-mock-objects`, `phpunit-selenium`, `phpunit-story`, and `php-invoker` directories need to be added to the `include_path`.
 
+You'll need Symfony's YAML to run PHPUnit's own tests:
+
+    pear channel-discover pear.symfony-project.com
+    pear install symfony/YAML
+
 The `phpunit/phpunit.php` script can be used to invoke the PHPUnit test runner.
