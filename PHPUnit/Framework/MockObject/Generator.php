@@ -175,6 +175,14 @@ class PHPUnit_Framework_MockObject_Generator
                     );
                 }
             }
+            if ($methods != array_unique($methods)) {
+                throw new PHPUnit_Framework_Exception(
+                  sprintf(
+                    'Cannot stub or mock using a method list that contains duplicates: "%s"',
+                    implode(', ', $methods)
+                  )
+                );
+            }
         }
 
         if ($mockClassName != '' && class_exists($mockClassName, FALSE)) {
