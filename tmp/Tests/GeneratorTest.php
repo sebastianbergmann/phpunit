@@ -20,6 +20,16 @@ class Framework_MockObject_GeneratorTest extends PHPUnit_Framework_TestCase
     }
 
     /**
+     * @covers PHPUnit_Framework_MockObject_Generator::getMock
+     * @expectedException PHPUnit_Framework_Exception
+     * @expectedExceptionMessage duplicates: "foo, foo"
+     */
+    public function testGetMockGeneratorFails()
+    {
+        $mock = PHPUnit_Framework_MockObject_Generator::getMock('StdClass', array('foo', 'foo'));
+    }
+
+    /**
      * @covers PHPUnit_Framework_MockObject_Generator::getMockForAbstractClass
      */
     public function testGetMockForAbstractClassDoesNotFailWhenFakingInterfaces()
