@@ -43,8 +43,8 @@
  * @since      File available since Release 3.0.0
  */
 
-if (!class_exists('sfYamlDumper', FALSE)) {
-    require_once 'SymfonyComponents/YAML/sfYamlDumper.php';
+if (!class_exists('Symfony\\Component\\Yaml\\Dumper', FALSE)) {
+    require_once 'Symfony/Component/Yaml/Dumper.php';
 }
 
 /**
@@ -133,7 +133,7 @@ class PHPUnit_Util_Log_TAP extends PHPUnit_Util_Printer implements PHPUnit_Frame
             }
         }
 
-        $yaml = new sfYamlDumper();
+        $yaml = new Symfony\Component\Yaml\Dumper;
 
         $this->write(
           sprintf(
