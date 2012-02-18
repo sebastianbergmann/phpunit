@@ -374,6 +374,59 @@ class Framework_TestCaseTest extends PHPUnit_Framework_TestCase
         );
     }
 
+    public function testSkipsIfRequiresNonExistingFunction()
+    {
+        $test   = new RequirementsTest('testNine');
+        $result = $test->run();
+
+        $this->assertEquals(1, $result->skippedCount());
+        $this->assertEquals(
+          'Function testFunc is required.',
+          $test->getStatusMessage()
+        );
+    }
+
+    public function testSkipsIfRequiresNonExistingExtension()
+    {
+        $test   = new RequirementsTest('testTen');
+        $result = $test->run();
+
+        $this->assertEquals(
+          'Extension testExt is required.',
+          $test->getStatusMessage()
+        );
+    }
+
+    public function testSkipsProvidesMessagesForAllSkippingReasons()
+    {
+        $test   = new RequirementsTest('testAllPossibleRequirements');
+        $result = $test->run();
+
+        $this->assertEquals(
+          'PHP 99-dev (or later) is required.' . PHP_EOL .
+          'PHPUnit 9-dev (or later) is required.' . PHP_EOL .
+          'Function testFuncOne is required.' . PHP_EOL .
+          'Function testFuncTwo is required.' . PHP_EOL .
+          'Extension testExtOne is required.' . PHP_EOL .
+          'Extension testExtTwo is required.',
+          $test->getStatusMessage()
+        );
+    }
+
+    public function testRequiringAnExistingFunctionDoesNotSkip()
+    {
+        $test   = new RequirementsTest('testExistingFunction');
+        $result = $test->run();
+        $this->assertEquals(0, $result->skippedCount());
+    }
+
+    public function testRequiringAnExistingExtensionDoesNotSkip()
+    {
+        $test   = new RequirementsTest('testExistingExtension');
+        $result = $test->run();
+        $this->assertEquals(0, $result->skippedCount());
+    }
+
     public function testCurrentWorkingDirectoryIsRestored()
     {
         $expectedCwd = getcwd();

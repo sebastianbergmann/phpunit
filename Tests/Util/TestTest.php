@@ -99,48 +99,48 @@ class Util_TestTest extends PHPUnit_Framework_TestCase
           array('class' => 'Class', 'code' => 0, 'message' => 'Message'),
           PHPUnit_Util_Test::getExpectedException('ExceptionTest', 'testEight')
         );
-   }
+    }
 
-    public function testGetRequirements()
+
+    public function provideRequirements()
+    {
+        return array(
+            array('testOne',   array()),
+            array('testTwo',   array('PHPUnit' => '1.0')),
+            array('testThree', array('PHP' => '2.0')),
+            array('testFour',  array('PHPUnit'=>'2.0', 'PHP' => '1.0')),
+            array('testFive',  array('PHP' => '5.4.0RC6')),
+            array('testSix',   array('PHP' => '5.4.0-alpha1')),
+            array('testSeven', array('PHP' => '5.4.0beta2')),
+            array('testEight', array('PHP' => '5.4-dev')),
+            array('testNine',  array('functions' => array('testFunc'))),
+            array('testTen',   array('extensions' => array('testExt'))),
+            array(
+                'testAllPossibleRequirements',
+                array(
+                    'PHP' => '99-dev',
+                    'PHPUnit' => '9-dev',
+                    'functions' => array(
+                        'testFuncOne',
+                        'testFuncTwo',
+                    ),
+                    'extensions' => array(
+                        'testExtOne',
+                        'testExtTwo',
+                    )
+                )
+            )
+        );
+    }
+
+    /**
+     * @dataProvider provideRequirements
+     */
+    public function testGetRequirements($test, $result)
     {
         $this->assertEquals(
-          array(),
-          PHPUnit_Util_Test::getRequirements('RequirementsTest', 'testOne')
-        );
-
-        $this->assertEquals(
-          array('PHPUnit' => '1.0'),
-          PHPUnit_Util_Test::getRequirements('RequirementsTest', 'testTwo')
-        );
-
-        $this->assertEquals(
-          array('PHP' => '2.0'),
-          PHPUnit_Util_Test::getRequirements('RequirementsTest', 'testThree')
-        );
-
-        $this->assertEquals(
-          array('PHPUnit'=>'2.0', 'PHP' => '1.0'),
-          PHPUnit_Util_Test::getRequirements('RequirementsTest', 'testFour')
-        );
-
-        $this->assertEquals(
-          array('PHP' => '5.4.0RC6'),
-          PHPUnit_Util_Test::getRequirements('RequirementsTest', 'testFive')
-        );
-
-        $this->assertEquals(
-          array('PHP' => '5.4.0-alpha1'),
-          PHPUnit_Util_Test::getRequirements('RequirementsTest', 'testSix')
-        );
-
-        $this->assertEquals(
-          array('PHP' => '5.4.0beta2'),
-          PHPUnit_Util_Test::getRequirements('RequirementsTest', 'testSeven')
-        );
-
-        $this->assertEquals(
-          array('PHP' => '5.4-dev'),
-          PHPUnit_Util_Test::getRequirements('RequirementsTest', 'testEight')
+          $result,
+          PHPUnit_Util_Test::getRequirements('RequirementsTest', $test)
         );
     }
 

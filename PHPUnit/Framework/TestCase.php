@@ -190,18 +190,16 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
     private $expectedExceptionCode;
 
     /**
-     * The required version of PHP.
+     * The required preconditions for a test.
      *
-     * @var string
+     * @var array
      */
-    private $requiredPhp = '';
-
-    /**
-     * The required version of PHPUnit.
-     *
-     * @var string
-     */
-    private $requiredPhpUnit = '';
+    private $required = array(
+        'PHP' => NULL,
+        'PHPUnit' => NULL,
+        'functions' => array(),
+        'extensions' => array()
+    );
 
     /**
      * The name of the test case.
@@ -560,11 +558,19 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
             );
 
             if (isset($requirements['PHP'])) {
-                $this->requiredPhp = $requirements['PHP'];
+                $this->required['PHP'] = $requirements['PHP'];
             }
 
             if (isset($requirements['PHPUnit'])) {
-                $this->requiredPhpUnit = $requirements['PHPUnit'];
+                $this->required['PHPUnit'] = $requirements['PHPUnit'];
+            }
+
+            if (isset($requirements['extensions'])) {
+                $this->required['extensions'] = $requirements['extensions'];
+            }
+
+            if (isset($requirements['functions'])) {
+                $this->required['functions'] = $requirements['functions'];
             }
         }
 
@@ -579,23 +585,48 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
     {
         $this->setRequirementsFromAnnotation();
 
-        if ($this->requiredPhp &&
-            version_compare(PHP_VERSION, $this->requiredPhp, '<')) {
-            $this->markTestSkipped(
-              sprintf(
-                'PHP %s (or later) is required.',
-                $this->requiredPhp
-              )
+        $missingRequirements = array();
+
+        if ($this->required['PHP'] &&
+            version_compare(PHP_VERSION, $this->required['PHP'], '<')) {
+            $missingRequirements[] = sprintf(
+              'PHP %s (or later) is required.',
+              $this->required['PHP']
             );
         }
 
         $phpunitVersion = PHPUnit_Runner_Version::id();
-        if ($this->requiredPhpUnit &&
-            version_compare($phpunitVersion, $this->requiredPhpUnit, '<')) {
+        if ($this->required['PHPUnit'] &&
+            version_compare($phpunitVersion, $this->required['PHPUnit'], '<')) {
+            $missingRequirements[] = sprintf(
+              'PHPUnit %s (or later) is required.',
+              $this->required['PHPUnit']
+            );
+        }
+
+        foreach ($this->required['functions'] as $requiredFunction) {
+            if (!function_exists($requiredFunction)) {
+                $missingRequirements[] = sprintf(
+                  'Function %s is required.',
+                  $requiredFunction
+                );
+            }
+        }
+
+        foreach ($this->required['extensions'] as $requiredExtension) {
+            if (!extension_loaded($requiredExtension)) {
+                $missingRequirements[] = sprintf(
+                  'Extension %s is required.',
+                  $requiredExtension
+                );
+            }
+        }
+
+        if ($missingRequirements) {
             $this->markTestSkipped(
-              sprintf(
-                'PHPUnit %s (or later) is required.',
-                $this->requiredPhpUnit
+              implode(
+                PHP_EOL,
+                $missingRequirements
               )
             );
         }

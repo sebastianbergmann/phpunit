@@ -9,6 +9,7 @@ PHPUnit 3.7.0
 * Implemented #207: Restore current working directory if is changed by a test case.
 * Implemented #333: Improved reporting when there are unused CLI arguments to avoid misconceptions.
 * Implemented #377: Show messages and stracktraces in JSON output for skipped and incomplete tests.
+* Implemented #504: Expanded the `@requires` annotation to allow for checking the existance of functions and extensions using multiple `@requires function name` statements.
 * Added `processUncoveredFilesFromWhitelist` configuration setting. When enabled, uncovered whitelisted files are processed to properly calculate the number of executable lines.
 * Fixed #440: Possible crash when using `--process-isolation` with PHP 5.3 and `detect_unicode=on`.
 * It is possible again to expect the generic `Exception` class.

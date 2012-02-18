@@ -57,6 +57,46 @@ class RequirementsTest extends PHPUnit_Framework_TestCase
 
 
     /**
+     * @requires function testFunc
+     */
+    public function testNine()
+    {
+    }
+
+    /**
+     * @requires extension testExt
+     */
+    public function testTen()
+    {
+    }
+
+    /**
+     * @requires PHP 99-dev
+     * @requires PHPUnit 9-dev
+     * @requires function testFuncOne
+     * @requires function testFuncTwo
+     * @requires extension testExtOne
+     * @requires extension testExtTwo
+     */
+    public function testAllPossibleRequirements()
+    {
+    }
+
+    /**
+     * @requires function array_merge
+     */
+    public function testExistingFunction()
+    {
+    }
+
+    /**
+     * @requires extension spl
+     */
+    public function testExistingExtension()
+    {
+    }
+
+    /**
      * @requires PHPUnit 1111111
      */
     public function testAlwaysSkip()
