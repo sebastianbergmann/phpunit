@@ -3,6 +3,11 @@ PHPUnit 3.6
 
 This is the list of changes for the PHPUnit 3.6 release series.
 
+PHPUnit 3.6.11
+--------------
+
+* Fixed phpunit-selenium #72: Allow Selenium to have tests that have no concrete test methods.
+
 PHPUnit 3.6.10
 --------------
 
