@@ -146,7 +146,8 @@ class PHPUnit_Util_Diff
      * @param  array|string $to
      * @return array
      */
-    public static function diffToArray($from, $to) {
+    public static function diffToArray($from, $to)
+    {
         if (is_string($from)) {
             $from = preg_split('(\r\n|\r|\n)', $from);
         }
@@ -154,7 +155,6 @@ class PHPUnit_Util_Diff
         if (is_string($to)) {
             $to = preg_split('(\r\n|\r|\n)', $to);
         }
-
 
         $start      = array();
         $end        = array();

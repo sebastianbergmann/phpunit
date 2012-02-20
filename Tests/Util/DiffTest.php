@@ -55,10 +55,9 @@
  */
 class Util_DiffTest extends PHPUnit_Framework_TestCase
 {
-
-   const REMOVED = 2;
-   const ADDED = 1;
-   const OLD = 0;
+    const REMOVED = 2;
+    const ADDED = 1;
+    const OLD = 0;
 
     /**
      * @covers PHPUnit_Util_Diff::diff
