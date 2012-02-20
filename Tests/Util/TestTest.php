@@ -44,6 +44,7 @@
 
 require_once dirname(__DIR__) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'ExceptionTest.php';
 require_once dirname(__DIR__) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'RequirementsTest.php';
+require_once dirname(__DIR__) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'RequirementsClassDocBlockTest.php';
 
 /**
  *
@@ -141,6 +142,27 @@ class Util_TestTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(
           $result,
           PHPUnit_Util_Test::getRequirements('RequirementsTest', $test)
+        );
+    }
+
+    public function testGetRequirementsMergesClassAndMethodDocBlocks()
+    {
+        $expectedAnnotations = array(
+            'PHP' => '5.4',
+            'PHPUnit' => '3.7',
+            'functions' => array(
+                'testFuncClass',
+                'testFuncMethod',
+            ),
+            'extensions' => array(
+                'testExtClass',
+                'testExtMethod',
+            )
+        );
+
+        $this->assertEquals(
+          $expectedAnnotations,
+          PHPUnit_Util_Test::getRequirements('RequirementsClassDocBlockTest', 'testMethod')
         );
     }
 

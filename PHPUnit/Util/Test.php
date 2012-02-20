@@ -112,8 +112,10 @@ class PHPUnit_Util_Test
      */
     public static function getRequirements($className, $methodName)
     {
-        $reflector  = new ReflectionMethod($className, $methodName);
+        $reflector  = new ReflectionClass($className);
         $docComment = $reflector->getDocComment();
+        $reflector  = new ReflectionMethod($className, $methodName);
+        $docComment .= "\n" . $reflector->getDocComment();
         $requires   = array();
 
         if ($count = preg_match_all(self::REGEX_REQUIRES_VERSION, $docComment, $matches)) {
