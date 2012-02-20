@@ -83,7 +83,11 @@ class PHPUnit_Util_Filter
             $eFile  = $e->getSyntheticFile();
             $eLine  = $e->getSyntheticLine();
         } else {
-            $eTrace = $e->getTrace();
+            if ($e->getPrevious()) {
+                $eTrace = $e->getPrevious()->getTrace();
+            } else {
+                $eTrace = $e->getTrace();
+            }
             $eFile  = $e->getFile();
             $eLine  = $e->getLine();
         }
