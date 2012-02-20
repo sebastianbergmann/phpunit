@@ -130,7 +130,7 @@ class PHPUnit_Util_Diff
 
         return $buffer;
     }
-    
+
     /**
      * Returns the diff between two arrays or strings as array.
      *
@@ -141,7 +141,7 @@ class PHPUnit_Util_Diff
      * - 2: REMOVED: $token was removed from $from
      * - 1: ADDED: $token was added to $from
      * - 0: OLD: $token is not changed in $to
-     * 
+     *
      * @param  array|string $from
      * @param  array|string $to
      * @return array
@@ -155,7 +155,7 @@ class PHPUnit_Util_Diff
             $to = preg_split('(\r\n|\r|\n)', $to);
         }
 
-        
+
         $start      = array();
         $end        = array();
         $fromLength = count($from);
@@ -222,7 +222,7 @@ class PHPUnit_Util_Diff
         foreach ($end as $token) {
             $diff[] = array($token, 0 /* OLD */);
         }
-        
+
         return $diff;
     }
 
