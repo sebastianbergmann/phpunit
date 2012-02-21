@@ -65,8 +65,8 @@ class ExceptionTest extends PHPUnit_Framework_TestCase
 
     /**
      * @expectedException Class
-     * @expectedExceptionMessage <?php echo PHPUnit_Util_Test::REGEX_DATA_PROVIDER ?>
-     * @expectedExceptionCode 0
+     * @expectedExceptionMessage @PHPUnit_Util_Test::REGEX_DATA_PROVIDER
+     * @expectedExceptionCode @PHPUnit_Util_Test::ERROR_CODE
      */
     public function testNine()
     {
