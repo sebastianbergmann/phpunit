@@ -79,36 +79,4 @@ class PHPUnit_Util_Filesystem
           $className
         ) . '.php';
     }
-
-    /**
-     * Implementation of stream_resolve_include_path() in PHP
-     * for version before PHP 5.3.2.
-     *
-     * @param  string $file
-     * @return mixed
-     * @author Mattis Stordalen Flister <mattis@xait.no>
-     * @since  Method available since Release 3.2.9
-     */
-    public static function fileExistsInIncludePath($file)
-    {
-        if (function_exists('stream_resolve_include_path')) {
-            return stream_resolve_include_path($file);
-        }
-
-        if (file_exists($file)) {
-            return realpath($file);
-        }
-
-        $paths = explode(PATH_SEPARATOR, get_include_path());
-
-        foreach ($paths as $path) {
-            $fullpath = $path . DIRECTORY_SEPARATOR . $file;
-
-            if (file_exists($fullpath)) {
-                return realpath($fullpath);
-            }
-        }
-
-        return FALSE;
-    }
 }

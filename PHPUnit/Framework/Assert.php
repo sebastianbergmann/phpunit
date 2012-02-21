@@ -1912,7 +1912,7 @@ abstract class PHPUnit_Framework_Assert
                 self::assertTrue($counted <= $count['<='], $message);
             }
         } else {
-            throw new InvalidArgumentException();
+            throw new PHPUnit_Framework_Exception;
         }
     }
 
@@ -2537,7 +2537,7 @@ abstract class PHPUnit_Framework_Assert
      * @param  mixed   $classOrObject
      * @param  string  $attributeName
      * @return mixed
-     * @throws InvalidArgumentException
+     * @throws PHPUnit_Framework_Exception
      */
     public static function readAttribute($classOrObject, $attributeName)
     {

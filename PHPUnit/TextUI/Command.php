@@ -96,8 +96,6 @@ class PHPUnit_TextUI_Command
       'log-tap=' => NULL,
       'process-isolation' => NULL,
       'repeat=' => NULL,
-      'skeleton-class' => NULL,
-      'skeleton-test' => NULL,
       'stderr' => NULL,
       'stop-on-error' => NULL,
       'stop-on-failure' => NULL,
@@ -148,22 +146,6 @@ class PHPUnit_TextUI_Command
               $this->arguments['test'],
               $this->arguments['testFile']
             );
-        }
-
-        if (count($suite) == 0) {
-            $skeleton = new PHPUnit_Util_Skeleton_Test(
-              $suite->getName(),
-              $this->arguments['testFile']
-            );
-
-            $result = $skeleton->generate(TRUE);
-
-            if (!$result['incomplete']) {
-                eval(str_replace(array('<?php', '?>'), '', $result['code']));
-                $suite = new PHPUnit_Framework_TestSuite(
-                  $this->arguments['test'] . 'Test'
-                );
-            }
         }
 
         if ($this->arguments['listGroups']) {
@@ -259,12 +241,9 @@ class PHPUnit_TextUI_Command
             );
         }
 
-        catch (RuntimeException $e) {
+        catch (PHPUnit_Framework_Exception $e) {
             PHPUnit_TextUI_TestRunner::showError($e->getMessage());
         }
-
-        $skeletonClass = FALSE;
-        $skeletonTest  = FALSE;
 
         foreach ($this->options[0] as $option) {
             switch ($option[0]) {
@@ -448,18 +427,6 @@ class PHPUnit_TextUI_Command
                 }
                 break;
 
-                case '--skeleton-test': {
-                    $skeletonTest  = TRUE;
-                    $skeletonClass = FALSE;
-                }
-                break;
-
-                case '--skeleton-class': {
-                    $skeletonClass = TRUE;
-                    $skeletonTest  = FALSE;
-                }
-                break;
-
                 case '--tap': {
                     $this->arguments['printer'] = new PHPUnit_Util_Log_TAP;
                 }
@@ -533,6 +500,15 @@ class PHPUnit_TextUI_Command
         $this->handleCustomTestSuite();
 
         if (!isset($this->arguments['test'])) {
+            if (count($this->options[1]) > 2) {
+                $this->showMessage(
+                    'More than two positional arguments provided.',
+                    FALSE
+                );
+                $this->showHelp();
+                exit(PHPUnit_TextUI_TestRunner::FAILURE_EXIT);
+            }
+
             if (isset($this->options[1][0])) {
                 $this->arguments['test'] = $this->options[1][0];
             }
@@ -688,77 +664,6 @@ class PHPUnit_TextUI_Command
             $this->showHelp();
             exit(PHPUnit_TextUI_TestRunner::EXCEPTION_EXIT);
         }
-
-        if ($skeletonClass || $skeletonTest) {
-            if (isset($this->arguments['test']) && $this->arguments['test'] !== FALSE) {
-                PHPUnit_TextUI_TestRunner::printVersionString();
-
-                print <<<EOT
-The functionality of
-
-  phpunit --skeleton-class
-
-and
-
-  phpunit --skeleton-test
-
-will be removed in PHPUnit 3.7.
-
-Please
-
-  pear install phpunit/PHPUnit_SkeletonGenerator
-
-and use
-
-  phpunit-skelgen --class
-
-and
-
-  phpunit-skelgen --test
-
-instead.
-
-Sorry for any inconvenience caused by this change.
-
-
-EOT;
-                if ($skeletonClass) {
-                    $class = 'PHPUnit_Util_Skeleton_Class';
-                } else {
-                    $class = 'PHPUnit_Util_Skeleton_Test';
-                }
-
-                try {
-                    $args      = array();
-                    $reflector = new ReflectionClass($class);
-
-                    for ($i = 0; $i <= 3; $i++) {
-                        if (isset($this->options[1][$i])) {
-                            $args[] = $this->options[1][$i];
-                        }
-                    }
-
-                    $skeleton = $reflector->newInstanceArgs($args);
-                    $skeleton->write();
-                }
-
-                catch (Exception $e) {
-                    print $e->getMessage() . "\n";
-                    exit(PHPUnit_TextUI_TestRunner::FAILURE_EXIT);
-                }
-
-                printf(
-                  'Wrote skeleton for "%s" to "%s".' . "\n",
-                  $skeleton->getOutClassName(),
-                  $skeleton->getOutSourceFile()
-                );
-
-                exit(PHPUnit_TextUI_TestRunner::SUCCESS_EXIT);
-            } else {
-                $this->showHelp();
-                exit(PHPUnit_TextUI_TestRunner::EXCEPTION_EXIT);
-            }
-        }
     }
 
     /**
@@ -777,11 +682,9 @@ EOT;
                 );
             }
 
-            $loaderFile = PHPUnit_Util_Filesystem::fileExistsInIncludePath(
-              $loaderFile
-            );
+            $loaderFile = stream_resolve_include_path($loaderFile);
 
-            if ($loaderFile !== FALSE) {
+            if ($loaderFile) {
                 require $loaderFile;
             }
         }
@@ -824,11 +727,9 @@ EOT;
                 );
             }
 
-            $printerFile = PHPUnit_Util_Filesystem::fileExistsInIncludePath(
-              $printerFile
-            );
+            $printerFile = stream_resolve_include_path($printerFile);
 
-            if ($printerFile !== FALSE) {
+            if ($printerFile) {
                 require $printerFile;
             }
         }
@@ -867,7 +768,7 @@ EOT;
             PHPUnit_Util_Fileloader::checkAndLoad($filename);
         }
 
-        catch (RuntimeException $e) {
+        catch (PHPUnit_Framework_Exception $e) {
             PHPUnit_TextUI_TestRunner::showError($e->getMessage());
         }
     }

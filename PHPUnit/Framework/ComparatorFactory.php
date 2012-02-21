@@ -105,6 +105,7 @@ class PHPUnit_Framework_ComparatorFactory
      * @param  mixed $expected The first value to compare
      * @param  mixed $actual The second value to compare
      * @return PHPUnit_Framework_Comparator
+     * @throws PHPUnit_Framework_Exception
      */
     public function getComparatorFor($expected, $actual)
     {
@@ -114,7 +115,7 @@ class PHPUnit_Framework_ComparatorFactory
             }
         }
 
-        throw new InvalidArgumentException(
+        throw new PHPUnit_Framework_Exception(
           sprintf(
             'No comparator is registered for comparing the types "%s" and "%s"',
             gettype($expected), gettype($actual)

@@ -109,7 +109,7 @@ class Util_XMLTest extends PHPUnit_Framework_TestCase
             $this->fail();
         }
 
-        catch (InvalidArgumentException $e) {
+        catch (PHPUnit_Framework_Exception $e) {
             $this->assertEquals('Unknown key(s): testD', $e->getMessage());
         }
     }
@@ -124,7 +124,7 @@ class Util_XMLTest extends PHPUnit_Framework_TestCase
             $this->fail();
         }
 
-        catch (InvalidArgumentException $e) {
+        catch (PHPUnit_Framework_Exception $e) {
             $this->assertEquals('Unknown key(s): testD, testE', $e->getMessage());
         }
     }

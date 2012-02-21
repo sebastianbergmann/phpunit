@@ -61,7 +61,7 @@ class PHPUnit_Runner_StandardTestSuiteLoader implements PHPUnit_Runner_TestSuite
      * @param  string  $suiteClassName
      * @param  string  $suiteClassFile
      * @return ReflectionClass
-     * @throws RuntimeException
+     * @throws PHPUnit_Framework_Exception
      */
     public function load($suiteClassName, $suiteClassFile = '')
     {
