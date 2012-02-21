@@ -1,6 +1,20 @@
 <?php
 class ExceptionTest extends PHPUnit_Framework_TestCase
 {
+	/**
+	 * Error code
+	 * 
+	 * @var integer
+	 */
+	const ERROR_CODE = 500;
+
+	/**
+	 * Exception error message
+	 * 
+	 * @var string
+	 */
+	const ERROR_MESSAGE = 'Exception message';
+
     /**
      * @expectedException FooBarBaz
      */
@@ -65,8 +79,8 @@ class ExceptionTest extends PHPUnit_Framework_TestCase
 
     /**
      * @expectedException Class
-     * @expectedExceptionMessage @PHPUnit_Util_Test::REGEX_DATA_PROVIDER
-     * @expectedExceptionCode @PHPUnit_Util_Test::ERROR_CODE
+     * @expectedExceptionMessage @ExceptionTest::ERROR_MESSAGE
+     * @expectedExceptionCode @ExceptionTest::ERROR_CODE
      */
     public function testNine()
     {

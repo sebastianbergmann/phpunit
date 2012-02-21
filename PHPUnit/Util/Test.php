@@ -65,8 +65,6 @@ class PHPUnit_Util_Test
     const MEDIUM = 1;
     const LARGE  = 2;
 
-    const ERROR_CODE = 500;
-
     private static $annotationCache = array();
 
     protected static $templateMethods = array(

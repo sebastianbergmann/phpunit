@@ -101,7 +101,7 @@ class Util_TestTest extends PHPUnit_Framework_TestCase
         );
 
         $this->assertSame(
-           array('class' => 'Class', 'code' => PHPUnit_Util_Test::ERROR_CODE, 'message' => PHPUnit_Util_Test::REGEX_DATA_PROVIDER),
+           array('class' => 'Class', 'code' => ExceptionTest::ERROR_CODE, 'message' => ExceptionTest::ERROR_MESSAGE),
            PHPUnit_Util_Test::getExpectedException('ExceptionTest', 'testNine')
         );
    }
