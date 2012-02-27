@@ -6,6 +6,7 @@ This is the list of changes for the PHPUnit 3.6 release series.
 PHPUnit 3.6.11
 --------------
 
+* Fixed #510: PHP 5.4 `callable` type hint raises `E_NOTICE` when object is mocked.
 * Fixed phpunit-selenium #72: Allow Selenium to have tests that have no concrete test methods.
 
 PHPUnit 3.6.10
