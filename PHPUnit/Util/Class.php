@@ -153,7 +153,14 @@ class PHPUnit_Util_Class
             if (!$forCall) {
                 if ($parameter->isArray()) {
                     $typeHint = 'array ';
-                } else {
+                }
+
+                else if (version_compare(PHP_VERSION, '5.4', '>') &&
+                         $parameter->isCallable()) {
+                    $typeHint = 'callable ';
+                }
+
+                else {
                     try {
                         $class = $parameter->getClass();
                     }
