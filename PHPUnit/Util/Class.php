@@ -171,6 +171,7 @@ class PHPUnit_Util_Class
                     $value   = $parameter->getDefaultValue();
                     $default = ' = ' . var_export($value, TRUE);
                 }
+
                 else if ($parameter->isOptional()) {
                     $default = ' = null';
                 }
