@@ -6,7 +6,7 @@ PHPUnit is the de-facto standard for unit testing in PHP projects. It provides b
 Requirements
 ------------
 
-* PHPUnit 3.6 requires PHP 5.2.7 (or later) but PHP 5.3.9 (or later) is highly recommended.
+* PHPUnit 3.6 requires PHP 5.2.7 (or later) but PHP 5.4.0 (or later) is highly recommended.
 * [PHP_CodeCoverage](http://github.com/sebastianbergmann/php-code-coverage), the library that is used by PHPUnit to collect and process code coverage information, depends on [Xdebug](http://xdebug.org/) 2.0.5 (or later) but Xdebug 2.1.3 (or later) is highly recommended.
 
 Installation
