@@ -136,6 +136,11 @@ class PHPUnit_Framework_MockObject_Generator
     protected static $soapLoaded = NULL;
 
     /**
+     * @var integer
+     */
+    protected static $mockObjectId = 0;
+
+    /**
      * Returns a mock object for the specified class.
      *
      * @param  string  $originalClassName
@@ -231,18 +236,24 @@ class PHPUnit_Framework_MockObject_Generator
         if ($callOriginalConstructor &&
             !interface_exists($originalClassName, $callAutoload)) {
             if (count($arguments) == 0) {
-                return new $className;
+                $object = new $className;
             } else {
                 $class = new ReflectionClass($className);
-                return $class->newInstanceArgs($arguments);
+                $object = $class->newInstanceArgs($arguments);
             }
         } else {
             // Use a trick to create a new object of a class
             // without invoking its constructor.
-            return unserialize(
+            $object = unserialize(
               sprintf('O:%d:"%s":0:{}', strlen($className), $className)
             );
         }
+
+        if (!isset($object->__phpunit_mockObjectId)) {
+            $object->__phpunit_mockObjectId = self::$mockObjectId++;
+        }
+
+        return $object;
     }
 
     /**
