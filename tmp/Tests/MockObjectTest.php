@@ -416,4 +416,95 @@ class Framework_MockObjectTest extends PHPUnit_Framework_TestCase
         $this->assertEquals($expectedObject, $actualArguments[0]);
         $this->assertNotSame($expectedObject, $actualArguments[0]);
     }
+
+    public function testVerificationOfMethodNameFailsWithoutParameters()
+    {
+        $mock = $this->getMock('SomeClass', array('right', 'wrong'), array(), '', TRUE, TRUE, TRUE);
+        $mock->expects($this->once())
+             ->method('right');
+
+        $mock->wrong();
+        try {
+            $mock->__phpunit_verify();
+            $this->fail('Expected exception');
+        } catch (PHPUnit_Framework_ExpectationFailedException $e) {
+            $this->assertSame(
+                "Expectation failed for method name is equal to <string:right> when invoked 1 time(s).\n"
+                . 'Method was expected to be called 1 times, actually called 0 times.',
+                $e->getMessage()
+            );
+        }
+
+        $this->resetMockObjects();
+    }
+
+    public function testVerificationOfMethodNameFailsWithParameters()
+    {
+        $mock = $this->getMock('SomeClass', array('right', 'wrong'), array(), '', TRUE, TRUE, TRUE);
+        $mock->expects($this->once())
+             ->method('right');
+
+        $mock->wrong();
+        try {
+            $mock->__phpunit_verify();
+            $this->fail('Expected exception');
+        } catch (PHPUnit_Framework_ExpectationFailedException $e) {
+            $this->assertSame(
+                "Expectation failed for method name is equal to <string:right> when invoked 1 time(s).\n"
+                . 'Method was expected to be called 1 times, actually called 0 times.',
+                $e->getMessage()
+            );
+        }
+
+        $this->resetMockObjects();
+    }
+
+    public function testVerificationOfNeverFailsWithEmptyParameters()
+    {
+        $mock = $this->getMock('SomeClass', array('right', 'wrong'), array(), '', TRUE, TRUE, TRUE);
+        $mock->expects($this->never())
+             ->method('right')
+             ->with();
+
+        try {
+            $mock->right();
+            $this->fail('Expected exception');
+        } catch (PHPUnit_Framework_ExpectationFailedException $e) {
+            $this->assertSame(
+                'SomeClass::right() was not expected to be called.',
+                $e->getMessage()
+            );
+        }
+
+        $this->resetMockObjects();
+    }
+
+    public function testVerificationOfNeverFailsWithAnyParameters()
+    {
+        $mock = $this->getMock('SomeClass', array('right', 'wrong'), array(), '', TRUE, TRUE, TRUE);
+        $mock->expects($this->never())
+             ->method('right')
+             ->withAnyParameters();
+
+        try {
+            $mock->right();
+            $this->fail('Expected exception');
+        } catch (PHPUnit_Framework_ExpectationFailedException $e) {
+            $this->assertSame(
+                'SomeClass::right() was not expected to be called.',
+                $e->getMessage()
+            );
+        }
+
+        $this->resetMockObjects();
+    }
+
+    private function resetMockObjects()
+    {
+        $refl = new ReflectionObject($this);
+        $refl = $refl->getParentClass();
+        $prop = $refl->getProperty('mockObjects');
+        $prop->setAccessible(true);
+        $prop->setValue($this, array());
+    }
 }
