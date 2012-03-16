@@ -64,6 +64,7 @@ The `dbunit`, `php-code-coverage`, `php-file-iterator`, `php-text-template`, `ph
 
 In addition to the checkouts listed above, the YAML component that is provided by the Symfony project is required:
 
+    pear channel-discover pear.symfony-project.com
     pear install pear.symfony-project.com/YAML
 
 The `phpunit/phpunit.php` script can be used to invoke the PHPUnit test runner.
