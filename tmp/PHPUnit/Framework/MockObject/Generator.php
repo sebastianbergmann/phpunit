@@ -479,8 +479,16 @@ class PHPUnit_Framework_MockObject_Generator
               $templateDir . 'wsdl_class.tpl'
             );
 
+            $namespace = '';
+            if(strpos($originalClassName, '\\') !== FALSE) {
+                $parts = explode('\\', $originalClassName);
+                $originalClassName = array_pop($parts);
+                $namespace = 'namespace ' . join('\\', $parts) . ';';
+            }
+
             $classTemplate->setVar(
               array(
+                'namespace'  => $namespace,
                 'class_name' => $originalClassName,
                 'wsdl'       => $wsdlFile,
                 'options'    => $optionsBuffer,
