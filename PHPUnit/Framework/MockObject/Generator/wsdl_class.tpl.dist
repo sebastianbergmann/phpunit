@@ -1,4 +1,6 @@
-class {class_name} extends SOAPClient
+{namespace}
+
+class {class_name} extends \SOAPClient
 {
     public function __construct($wsdl, array $options)
     {
