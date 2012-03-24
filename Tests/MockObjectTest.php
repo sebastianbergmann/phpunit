@@ -517,6 +517,12 @@ class Framework_MockObjectTest extends PHPUnit_Framework_TestCase
         );
     }
 
+    public function testCreateTwoMocksOfOneWsdlFile()
+    {
+        $mock = $this->getMockFromWsdl(__DIR__ . '/_files/GoogleSearch.wsdl');
+        $mock = $this->getMockFromWsdl(__DIR__ . '/_files/GoogleSearch.wsdl');
+    }
+
     private function resetMockObjects()
     {
         $refl = new ReflectionObject($this);
