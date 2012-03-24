@@ -2238,13 +2238,24 @@ abstract class PHPUnit_Framework_Assert
      * object.
      *
      * @param  string $type
-     * @param  boolean $isNativeType
      * @return PHPUnit_Framework_Constraint_TraversableContainsOnly
      * @since  Method available since Release 3.1.4
      */
-    public static function containsOnly($type, $isNativeType = TRUE)
+    public static function containsOnly($type)
     {
-        return new PHPUnit_Framework_Constraint_TraversableContainsOnly($type, $isNativeType);
+        return new PHPUnit_Framework_Constraint_TraversableContainsOnly($type);
+    }
+    
+    /**
+     * Returns a PHPUnit_Framework_Constraint_TraversableContainsOnly matcher
+     * object.
+     *
+     * @param string $classname
+     * @return PHPUnit_Framework_Constraint_TraversableContainsOnly
+     */
+    public static function containsOnlyInstancesOf($classname)
+    {
+        return new PHPUnit_Framework_Constraint_TraversableContainsOnly($classname, FALSE);
     }
 
     /**

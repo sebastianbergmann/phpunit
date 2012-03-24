@@ -2535,11 +2535,11 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
     }
     /**
      * @covers PHPUnit_Framework_Assert::assertThat
-     * @covers PHPUnit_Framework_Assert::containsOnly
+     * @covers PHPUnit_Framework_Assert::containsOnlyInstancesOf
      */
-    public function testAssertThatContainsOnlyWithNonNativeType()
+    public function testAssertThatContainsOnlyInstancesOf()
     {
-        $this->assertThat(array(new Book), $this->containsOnly('Book', false));
+        $this->assertThat(array(new Book), $this->containsOnlyInstancesOf('Book'));
     }
 
     /**
