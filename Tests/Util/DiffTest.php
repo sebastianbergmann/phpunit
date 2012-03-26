@@ -55,11 +55,10 @@
  */
 class Util_DiffTest extends PHPUnit_Framework_TestCase
 {
-  
-   const REMOVED = 2;
-   const ADDED = 1;
-   const OLD = 0;
-   
+    const REMOVED = 2;
+    const ADDED = 1;
+    const OLD = 0;
+
     /**
      * @covers PHPUnit_Util_Diff::diff
      */
@@ -79,7 +78,7 @@ class Util_DiffTest extends PHPUnit_Framework_TestCase
         $diff = array();
         $diff[] = array('a', self::REMOVED);
         $diff[] = array('b', self::ADDED);
-        
+
         $this->assertEquals(
           $diff,
           PHPUnit_Util_Diff::diffToArray('a', 'b')
@@ -105,7 +104,7 @@ class Util_DiffTest extends PHPUnit_Framework_TestCase
         $diff = array();
         $diff[] = array('ba', self::REMOVED);
         $diff[] = array('bc', self::ADDED);
-        
+
         $this->assertEquals(
           $diff,
           PHPUnit_Util_Diff::diffToArray('ba', 'bc')
@@ -131,7 +130,7 @@ class Util_DiffTest extends PHPUnit_Framework_TestCase
         $diff = array();
         $diff[] = array('ab', self::REMOVED);
         $diff[] = array('cb', self::ADDED);
-        
+
         $this->assertEquals(
           $diff,
           PHPUnit_Util_Diff::diffToArray('ab', 'cb')
@@ -157,7 +156,7 @@ class Util_DiffTest extends PHPUnit_Framework_TestCase
         $diff = array();
         $diff[] = array('abc', self::REMOVED);
         $diff[] = array('adc', self::ADDED);
-        
+
         $this->assertEquals(
           $diff,
           PHPUnit_Util_Diff::diffToArray('abc', 'adc')
@@ -183,7 +182,7 @@ class Util_DiffTest extends PHPUnit_Framework_TestCase
         $diff = array();
         $diff[] = array('ab', self::REMOVED);
         $diff[] = array('abc', self::ADDED);
-      
+
         $this->assertEquals(
           $diff,
           PHPUnit_Util_Diff::diffToArray('ab', 'abc')
@@ -209,7 +208,7 @@ class Util_DiffTest extends PHPUnit_Framework_TestCase
         $diff = array();
         $diff[] = array('bc', self::REMOVED);
         $diff[] = array('abc', self::ADDED);
-        
+
         $this->assertEquals(
           $diff,
           PHPUnit_Util_Diff::diffToArray('bc', 'abc')

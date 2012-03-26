@@ -622,6 +622,13 @@ class PHPUnit_Util_XML
                     }
                 }
 
+                // match empty string
+                else if ($options['content'] === '') {
+                    if (self::getNodeText($node) !== '') {
+                        $invalid = TRUE;
+                    }
+                }
+
                 // match by exact string
                 else if (strstr(self::getNodeText($node), $options['content']) === FALSE) {
                     $invalid = TRUE;
