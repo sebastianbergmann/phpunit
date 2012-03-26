@@ -9,6 +9,7 @@ PHPUnit 3.6.11
 * Fixed #510: PHP 5.4 `callable` type hint raises `E_NOTICE` when object is mocked.
 * Fixed phpunit-selenium #72: Allow Selenium to have tests that have no concrete test methods.
 * Fixed phpunit-mock-object #83: `getMockFromWsdl()` didn't work twice with the same wsdl file.
+* Fixed #503: Improved the error message if compared strings only differ in line ending style.
 
 PHPUnit 3.6.10
 --------------
