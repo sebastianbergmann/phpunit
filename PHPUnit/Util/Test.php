@@ -163,7 +163,9 @@ class PHPUnit_Util_Test
             }
 
             else if (isset($annotations['method']['expectedExceptionMessage'])) {
-                $message = $annotations['method']['expectedExceptionMessage'][0];
+                $message = self::_parseAnnotationContent(
+                    $annotations['method']['expectedExceptionMessage'][0]
+                );
             }
 
             if (isset($matches[3])) {
@@ -171,7 +173,9 @@ class PHPUnit_Util_Test
             }
 
             else if (isset($annotations['method']['expectedExceptionCode'])) {
-                $code = $annotations['method']['expectedExceptionCode'][0];
+                $code = self::_parseAnnotationContent(
+                    $annotations['method']['expectedExceptionCode'][0]
+                );
             }
 
             if (is_numeric($code)) {
@@ -188,6 +192,20 @@ class PHPUnit_Util_Test
         }
 
         return FALSE;
+    }
+    
+    /**	
+     * Parse annotation content to use constant/class constant values
+     * 
+     * @param  string $message
+     * @return string
+     */
+    protected static function _parseAnnotationContent($message)
+    {
+        if ('@' !== $message{0}) {
+            return $message;
+        }
+        return constant(substr($message, 1));
     }
 
     /**

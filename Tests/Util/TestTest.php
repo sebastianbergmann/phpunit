@@ -100,8 +100,11 @@ class Util_TestTest extends PHPUnit_Framework_TestCase
           array('class' => 'Class', 'code' => 0, 'message' => 'Message'),
           PHPUnit_Util_Test::getExpectedException('ExceptionTest', 'testEight')
         );
+        $this->assertSame(
+          array('class' => 'Class', 'code' => ExceptionTest::ERROR_CODE, 'message' => ExceptionTest::ERROR_MESSAGE),
+          PHPUnit_Util_Test::getExpectedException('ExceptionTest', 'testNine')
+        );
     }
-
 
     public function provideRequirements()
     {
