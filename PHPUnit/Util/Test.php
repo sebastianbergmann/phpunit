@@ -206,10 +206,9 @@ class PHPUnit_Util_Test
      */
     protected static function _parseAnnotationContent($message)
     {
-        if ($message[0] === '@') {
-            $constant = substr($message, 1);
-            if (defined($constant)) {
-               $message = constant($constant);
+        if (strpos($message, '::') !== false && count(explode('::', $message) == 2)) {
+            if (defined($message)) {
+               $message = constant($message);
             }
         }
         return $message;

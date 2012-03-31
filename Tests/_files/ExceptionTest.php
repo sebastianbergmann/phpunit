@@ -79,8 +79,8 @@ class ExceptionTest extends PHPUnit_Framework_TestCase
 
     /**
      * @expectedException Class
-     * @expectedExceptionMessage @ExceptionTest::ERROR_MESSAGE
-     * @expectedExceptionCode @ExceptionTest::ERROR_CODE
+     * @expectedExceptionMessage ExceptionTest::ERROR_MESSAGE
+     * @expectedExceptionCode ExceptionTest::ERROR_CODE
      */
     public function testNine()
     {
@@ -88,8 +88,8 @@ class ExceptionTest extends PHPUnit_Framework_TestCase
 
     /**
      * @expectedException Class
-     * @expectedExceptionCode @ExceptionTest::UNKNOWN_CODE_CONSTANT
-     * @expectedExceptionMessage @ExceptionTest::UNKNOWN_MESSAGE_CONSTANT
+     * @expectedExceptionCode ExceptionTest::UNKNOWN_CODE_CONSTANT
+     * @expectedExceptionMessage ExceptionTest::UNKNOWN_MESSAGE_CONSTANT
      */
     public function testUnknownConstants()
     {
