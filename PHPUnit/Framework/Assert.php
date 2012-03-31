@@ -79,7 +79,7 @@ abstract class PHPUnit_Framework_Assert
         }
         if (!(is_array($array) || $array instanceof ArrayAccess)) {
             throw PHPUnit_Util_InvalidArgumentHelper::factory(
-              1, 'array or ArrayObject'
+              1, 'array or ArrayAccess'
             );
         }
 
@@ -105,7 +105,7 @@ abstract class PHPUnit_Framework_Assert
         }
         if (!(is_array($array) || $array instanceof ArrayAccess)) {
             throw PHPUnit_Util_InvalidArgumentHelper::factory(
-              1, 'array or ArrayObject'
+              1, 'array or ArrayAccess'
             );
         }
 

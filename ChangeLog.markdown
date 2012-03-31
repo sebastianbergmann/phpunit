@@ -7,6 +7,7 @@ PHPUnit 3.7.0
 -------------
 
 * Implemented #207: Restore current working directory if is changed by a test case.
+* Implemented #295: `assertArrayHasKey()` and `assertArrayNotHasKey()` now work with objects that implement ArrayAccess.
 * Implemented #333: Improved reporting when there are unused CLI arguments to avoid misconceptions.
 * Implemented #377: Show messages and stracktraces in JSON output for skipped and incomplete tests.
 * Implemented #504: Expanded the `@requires` annotation to allow for checking the existence of functions and extensions using multiple `@requires function name` statements.

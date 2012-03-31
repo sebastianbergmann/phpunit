@@ -244,26 +244,46 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
         $this->fail();
     }
 
+    /**
+     * @covers PHPUnit_Framework_Assert::assertArrayHasKey
+     */
     public function testAssertArrayHasKeyAcceptsArrayAccessValue()
     {
-        try {
-            $array = new ArrayObject();
-            $array['foo'] = 'bar';
-            $this->assertArrayHasKey('foo', $array);
-        } catch (PHPUnit_Framework_Error $e) {
-            $this->fail($e);
-        }
+        $array = new ArrayObject();
+        $array['foo'] = 'bar';
+        $this->assertArrayHasKey('foo', $array);
     }
 
+    /**
+     * @covers PHPUnit_Framework_Assert::assertArrayHasKey
+     * @expectedException PHPUnit_Framework_AssertionFailedError
+     */
+    public function testAssertArrayHasKeyProperlyFailsWithArrayAccessValue()
+    {
+        $array = new ArrayObject();
+        $array['bar'] = 'bar';
+        $this->assertArrayHasKey('foo', $array);
+    }
+
+    /**
+     * @covers PHPUnit_Framework_Assert::assertArrayNotHasKey
+     */
     public function testAssertArrayNotHasKeyAcceptsArrayAccessValue()
     {
-        try {
-            $array = new ArrayObject();
-            $array['foo'] = 'bar';
-            $this->assertArrayNotHasKey('bar', $array);
-        } catch (PHPUnit_Framework_Error $e) {
-            $this->fail($e);
-        }
+        $array = new ArrayObject();
+        $array['foo'] = 'bar';
+        $this->assertArrayNotHasKey('bar', $array);
+    }
+
+    /**
+     * @covers PHPUnit_Framework_Assert::assertArrayNotHasKey
+     * @expectedException PHPUnit_Framework_AssertionFailedError
+     */
+    public function testAssertArrayNotHasKeyPropertlyFailsWithArrayAccessValue()
+    {
+        $array = new ArrayObject();
+        $array['bar'] = 'bar';
+        $this->assertArrayNotHasKey('bar', $array);
     }
 
     /**
