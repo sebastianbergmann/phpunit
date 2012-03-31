@@ -12,6 +12,7 @@ PHPUnit 3.7.0
 * Implemented #504: Expanded the `@requires` annotation to allow for checking the existence of functions and extensions using multiple `@requires function name` statements.
 * The `@requires` annotation can now be used on the class DocBlock. Required versions can be overridden in the methods annotation, required functions and extensions will be merged.
 * Implemented #508: `@expectedExceptionCode` and `@expectedExceptionMessage` can now use paramters like `@Classname::CONST` as their values.
+* Implemented #512: Test listeners now trigger one autoload call instead of being silently ignored when the class was not loaded.
 * Added `processUncoveredFilesFromWhitelist` configuration setting. When enabled, uncovered whitelisted files are processed to properly calculate the number of executable lines.
 * Fixed #440: Possible crash when using `--process-isolation` with PHP 5.3 and `detect_unicode=on`.
 * It is possible again to expect the generic `Exception` class.
