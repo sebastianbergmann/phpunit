@@ -146,15 +146,7 @@ class PHPUnit_TextUI_Command
             $suite = $runner->getTest(
               $this->arguments['test'],
               $this->arguments['testFile'],
-              $this->arguments['syntaxCheck'],
               $this->arguments['testSuffixes']
-            );
-        }
-
-        if (count($suite) == 0) {
-            $skeleton = new PHPUnit_Util_Skeleton_Test(
-              $suite->getName(),
-              $this->arguments['testFile']
             );
         }
 
