@@ -81,15 +81,16 @@ abstract class PHPUnit_Runner_BaseTestRunner
      *
      * @param  string  $suiteClassName
      * @param  string  $suiteClassFile
+     * @param  mixed   $suffixes
      * @return PHPUnit_Framework_Test
      */
-    public function getTest($suiteClassName, $suiteClassFile = '')
+    public function getTest($suiteClassName, $suiteClassFile = '', $suffixes = '')
     {
         if (is_dir($suiteClassName) &&
             !is_file($suiteClassName . '.php') && empty($suiteClassFile)) {
             $facade = new File_Iterator_Facade;
             $files  = $facade->getFilesAsArray(
-              $suiteClassName, array('Test.php', '.phpt')
+              $suiteClassName, $suffixes
             );
 
             $suite = new PHPUnit_Framework_TestSuite($suiteClassName);
