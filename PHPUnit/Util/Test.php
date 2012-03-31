@@ -196,16 +196,23 @@ class PHPUnit_Util_Test
     
     /**	
      * Parse annotation content to use constant/class constant values
+     *
+     * Constants are specified using a starting '@'. For example: @ClassName::CONST_NAME
+     *
+     * If the constant is not found the string is used as is to ensure maximum BC.
      * 
      * @param  string $message
      * @return string
      */
     protected static function _parseAnnotationContent($message)
     {
-        if ('@' !== $message{0}) {
-            return $message;
+        if ($message[0] === '@') {
+            $constant = substr($message, 1);
+            if (defined($constant)) {
+               $message = constant($constant);
+            }
         }
-        return constant(substr($message, 1));
+        return $message;
     }
 
     /**

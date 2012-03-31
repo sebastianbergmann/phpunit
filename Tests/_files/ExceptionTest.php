@@ -85,4 +85,13 @@ class ExceptionTest extends PHPUnit_Framework_TestCase
     public function testNine()
     {
     }
+
+    /**
+     * @expectedException Class
+     * @expectedExceptionCode @ExceptionTest::UNKNOWN_CODE_CONSTANT
+     * @expectedExceptionMessage @ExceptionTest::UNKNOWN_MESSAGE_CONSTANT
+     */
+    public function testUnknownConstants()
+    {
+    }
 }

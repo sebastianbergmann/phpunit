@@ -104,6 +104,11 @@ class Util_TestTest extends PHPUnit_Framework_TestCase
           array('class' => 'Class', 'code' => ExceptionTest::ERROR_CODE, 'message' => ExceptionTest::ERROR_MESSAGE),
           PHPUnit_Util_Test::getExpectedException('ExceptionTest', 'testNine')
         );
+        // Ensure the @Class::CONST expression is only evaluated when the constant really exists
+        $this->assertSame(
+          array('class' => 'Class', 'code' => '@ExceptionTest::UNKNOWN_CODE_CONSTANT', 'message' => '@ExceptionTest::UNKNOWN_MESSAGE_CONSTANT'),
+          PHPUnit_Util_Test::getExpectedException('ExceptionTest', 'testUnknownConstants')
+        );
     }
 
     public function provideRequirements()
