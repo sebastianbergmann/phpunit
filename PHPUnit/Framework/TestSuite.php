@@ -210,9 +210,7 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
         }
 
         foreach ($theClass->getMethods() as $method) {
-            if (strpos($method->getDeclaringClass()->getName(), 'PHPUnit_') !== 0) {
-                $this->addTestMethod($theClass, $method);
-            }
+            $this->addTestMethod($theClass, $method);
         }
 
         if (empty($this->tests)) {
