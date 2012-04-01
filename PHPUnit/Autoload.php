@@ -82,6 +82,7 @@ function phpunit_autoload($class = NULL)
           'phpunit_framework_constraint_and' => '/Framework/Constraint/And.php',
           'phpunit_framework_constraint_arrayhaskey' => '/Framework/Constraint/ArrayHasKey.php',
           'phpunit_framework_constraint_attribute' => '/Framework/Constraint/Attribute.php',
+          'phpunit_framework_constraint_callback' => '/Framework/Constraint/Callback.php',
           'phpunit_framework_constraint_classhasattribute' => '/Framework/Constraint/ClassHasAttribute.php',
           'phpunit_framework_constraint_classhasstaticattribute' => '/Framework/Constraint/ClassHasStaticAttribute.php',
           'phpunit_framework_constraint_composite' => '/Framework/Constraint/Composite.php',

@@ -219,7 +219,7 @@ class PHPUnit_Util_Test
      *
      * @param  string $className
      * @param  string $methodName
-     * @param  string $docComment
+     * @param  string $docCommentnt
      * @return mixed  array|Iterator when a data provider is specified and exists
      *                false          when a data provider is specified and does not exist
      *                null           when no data provider is specified

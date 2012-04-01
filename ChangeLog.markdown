@@ -6,6 +6,7 @@ This is the list of changes for the PHPUnit 3.7 release series.
 PHPUnit 3.7.0
 -------------
 
+* Implemented #206: Added a `callback` constraint that is useful for making complex assertions.
 * Implemented #207: Restore current working directory if is changed by a test case.
 * Implemented #208: Added --test-suffix that allows specifying which filename suffixes are recognised by PHPUnit.
 * Implemented #295: `assertArrayHasKey()` and `assertArrayNotHasKey()` now work with objects that implement ArrayAccess.
