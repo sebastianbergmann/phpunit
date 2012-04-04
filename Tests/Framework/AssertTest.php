@@ -153,6 +153,49 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
 
         $this->fail();
     }
+    /**
+     * @covers PHPUnit_Framework_Assert::assertContainsOnlyInstancesOf
+     */
+    public function testAssertContainsOnlyInstancesOf()
+    {
+        $test = array(
+        	new Book(),
+        	new Book
+        );
+        $this->assertContainsOnlyInstancesOf('Book', $test);
+        $this->assertContainsOnlyInstancesOf('stdClass', array(new stdClass()));
+        
+        $test2 = array(
+        	new Author('Test')
+        );
+        try {
+        	$this->assertContainsOnlyInstancesOf('Book', $test2);
+        } catch (PHPUnit_Framework_AssertionFailedError $e) {
+            return;
+        }
+        $this->fail();
+    }
+    /**
+     * @covers PHPUnit_Framework_Assert::assertNotContainsOnlyInstancesOf
+     */
+    public function testAssertNotContainsOnlyInstancesOf()
+    {
+        $test = array(
+        	new Book(),
+        	new Author('Test')
+        );
+        $this->assertNotContainsOnlyInstancesOf('Book', $test);
+        $this->assertNotContainsOnlyInstancesOf('PDO', array(new stdClass()));
+        $test2 = array(
+        	new Author('Test')
+        );
+        try {
+        	$this->assertNotContainsOnlyInstancesOf('Author', $test2);
+        } catch (PHPUnit_Framework_AssertionFailedError $e) {
+            return;
+        }
+        $this->fail();
+    }
 
     /**
      * @covers            PHPUnit_Framework_Assert::assertArrayHasKey
@@ -448,6 +491,15 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
     {
         $this->assertContainsOnly(NULL, NULL);
     }
+    
+    /**
+     * @covers            PHPUnit_Framework_Assert::assertContainsOnlyInstancesOf
+     * @expectedException PHPUnit_Framework_Exception
+     */
+    public function testAssertContainsOnlyInstancesOfThrowsException()
+    {
+        $this->assertContainsOnlyInstancesOf(NULL, NULL);
+    }
 
     /**
      * @covers PHPUnit_Framework_Assert::assertContainsOnly
@@ -474,6 +526,15 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
     public function testAssertNotContainsOnlyThrowsException()
     {
         $this->assertNotContainsOnly(NULL, NULL);
+    }
+    
+    /**
+     * @covers            PHPUnit_Framework_Assert::assertNotContainsOnlyInstancesOf
+     * @expectedException PHPUnit_Framework_Exception
+     */
+    public function testAssertNotContainsOnlyInstancesOfThrowsException()
+    {
+        $this->assertNotContainsOnlyInstancesOf(NULL, NULL);
     }
 
     /**
