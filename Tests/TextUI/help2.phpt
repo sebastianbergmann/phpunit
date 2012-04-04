@@ -33,6 +33,8 @@ Usage: phpunit [switches] UnitTest [UnitTest.php]
   --group ...               Only runs tests from the specified group(s).
   --exclude-group ...       Exclude tests from the specified group(s).
   --list-groups             List available test groups.
+  --test-suffix ...         Only search for test in files with specified
+                            suffix(es). Default: Test.php,.phpt
 
   --loader <loader>         TestSuiteLoader implementation to use.
   --printer <printer>       TestSuiteListener implementation to use.

@@ -2,7 +2,7 @@
 /**
  * PHPUnit
  *
- * Copyright (c) 2001-2012, Sebastian Bergmann <sebastian@phpunit.de>.
+ * Copyright (c) 2002-2011, Sebastian Bergmann <sebastian@phpunit.de>.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -35,42 +35,83 @@
  * POSSIBILITY OF SUCH DAMAGE.
  *
  * @package    PHPUnit
- * @subpackage Framework
+ * @subpackage Framework_Constraint
  * @author     Sebastian Bergmann <sebastian@phpunit.de>
- * @copyright  2001-2012 Sebastian Bergmann <sebastian@phpunit.de>
+ * @copyright  2002-2011 Sebastian Bergmann <sebastian@phpunit.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @link       http://www.phpunit.de/
- * @since      File available since Release 2.2.0
  */
 
 /**
- * Wrapper for PHP errors.
+ * Constraint that evaluates against a specified closure.
  *
  * @package    PHPUnit
- * @subpackage Framework
+ * @subpackage Framework_Constraint
  * @author     Sebastian Bergmann <sebastian@phpunit.de>
- * @copyright  2001-2012 Sebastian Bergmann <sebastian@phpunit.de>
+ * @author     Timon Rapp <timon@zaeda.net>
+ * @copyright  2002-2011 Sebastian Bergmann <sebastian@phpunit.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    Release: @package_version@
  * @link       http://www.phpunit.de/
- * @since      Class available since Release 2.2.0
  */
-class PHPUnit_Framework_Error extends Exception
+class PHPUnit_Framework_Constraint_Callback extends PHPUnit_Framework_Constraint
 {
-    /**
-     * Constructor.
-     *
-     * @param  string     $message
-     * @param  integer    $code
-     * @param  string     $file
-     * @param  integer    $line
-     * @param  Exception  $previous
-     */
-    public function __construct($message, $code, $file, $line, Exception $previous = NULL)
-    {
-        parent::__construct($message, $code, $previous);
+    private $callback;
 
-        $this->file  = $file;
-        $this->line  = $line;
+    /**
+     * @param callable $value
+     * @throws InvalidArgumentException
+     */
+    public function __construct($callback)
+    {
+        if (!is_callable($callback)) {
+            throw new InvalidArgumentException(
+              sprintf(
+                'Specified callback <%s> is not callable.',
+                $this->callbackToString($callback)
+              )
+            );
+        }
+        $this->callback = $callback;
     }
+
+    /**
+     * Evaluates the constraint for parameter $value. Returns TRUE if the
+     * constraint is met, FALSE otherwise.
+     *
+     * @param mixed $value Value or object to evaluate.
+     * @return bool
+     */
+    protected function matches($other)
+    {
+        return call_user_func($this->callback, $other);
+    }
+
+    /**
+     * Returns a string representation of the constraint.
+     *
+     * @return string
+     */
+    public function toString()
+    {
+        return 'is accepted by specified callback';
+    }
+
+    private function callbackToString($callback)
+    {
+        if(!is_array($callback)) {
+            return $callback;
+        }
+        if(empty($callback)) {
+            return "empty array";
+        }
+        if(!isset($callback[0]) || !isset($callback[1])) {
+            return "array without indexes 0 and 1 set";
+        }
+        if(is_object($callback[0])) {
+            $callback[0] = get_class($callback[0]);
+        }
+        return $callback[0] . '::' . $callback[1];
+    }
+
 }

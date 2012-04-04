@@ -612,7 +612,7 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
                     require_once $listener['file'];
                 }
 
-                if (class_exists($listener['class'], FALSE)) {
+                if (class_exists($listener['class'])) {
                     if (count($listener['arguments']) == 0) {
                         $listener = new $listener['class'];
                     } else {

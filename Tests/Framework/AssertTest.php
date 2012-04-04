@@ -245,6 +245,48 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
     }
 
     /**
+     * @covers PHPUnit_Framework_Assert::assertArrayHasKey
+     */
+    public function testAssertArrayHasKeyAcceptsArrayAccessValue()
+    {
+        $array = new ArrayObject();
+        $array['foo'] = 'bar';
+        $this->assertArrayHasKey('foo', $array);
+    }
+
+    /**
+     * @covers PHPUnit_Framework_Assert::assertArrayHasKey
+     * @expectedException PHPUnit_Framework_AssertionFailedError
+     */
+    public function testAssertArrayHasKeyProperlyFailsWithArrayAccessValue()
+    {
+        $array = new ArrayObject();
+        $array['bar'] = 'bar';
+        $this->assertArrayHasKey('foo', $array);
+    }
+
+    /**
+     * @covers PHPUnit_Framework_Assert::assertArrayNotHasKey
+     */
+    public function testAssertArrayNotHasKeyAcceptsArrayAccessValue()
+    {
+        $array = new ArrayObject();
+        $array['foo'] = 'bar';
+        $this->assertArrayNotHasKey('bar', $array);
+    }
+
+    /**
+     * @covers PHPUnit_Framework_Assert::assertArrayNotHasKey
+     * @expectedException PHPUnit_Framework_AssertionFailedError
+     */
+    public function testAssertArrayNotHasKeyPropertlyFailsWithArrayAccessValue()
+    {
+        $array = new ArrayObject();
+        $array['bar'] = 'bar';
+        $this->assertArrayNotHasKey('bar', $array);
+    }
+
+    /**
      * @covers            PHPUnit_Framework_Assert::assertContains
      * @expectedException PHPUnit_Framework_Exception
      */

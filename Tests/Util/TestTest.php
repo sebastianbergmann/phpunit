@@ -43,7 +43,9 @@
  */
 
 require_once dirname(__DIR__) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'ExceptionTest.php';
+require_once dirname(__DIR__) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'ExceptionNamespaceTest.php';
 require_once dirname(__DIR__) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'RequirementsTest.php';
+require_once dirname(__DIR__) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'RequirementsClassDocBlockTest.php';
 
 /**
  *
@@ -99,8 +101,24 @@ class Util_TestTest extends PHPUnit_Framework_TestCase
           array('class' => 'Class', 'code' => 0, 'message' => 'Message'),
           PHPUnit_Util_Test::getExpectedException('ExceptionTest', 'testEight')
         );
+        $this->assertSame(
+          array('class' => 'Class', 'code' => ExceptionTest::ERROR_CODE, 'message' => ExceptionTest::ERROR_MESSAGE),
+          PHPUnit_Util_Test::getExpectedException('ExceptionTest', 'testNine')
+        );
+        $this->assertSame(
+            array('class' => 'Class', 'code' => My\Space\ExceptionNamespaceTest::ERROR_CODE, 'message' => My\Space\ExceptionNamespaceTest::ERROR_MESSAGE),
+            PHPUnit_Util_Test::getExpectedException('My\Space\ExceptionNamespaceTest', 'testConstants')
+        );
+        // Ensure the Class::CONST expression is only evaluated when the constant really exists
+        $this->assertSame(
+            array('class' => 'Class', 'code' => 'ExceptionTest::UNKNOWN_CODE_CONSTANT', 'message' => 'ExceptionTest::UNKNOWN_MESSAGE_CONSTANT'),
+            PHPUnit_Util_Test::getExpectedException('ExceptionTest', 'testUnknownConstants')
+        );
+        $this->assertSame(
+            array('class' => 'Class', 'code' => 'My\Space\ExceptionNamespaceTest::UNKNOWN_CODE_CONSTANT', 'message' => 'My\Space\ExceptionNamespaceTest::UNKNOWN_MESSAGE_CONSTANT'),
+            PHPUnit_Util_Test::getExpectedException('My\Space\ExceptionNamespaceTest', 'testUnknownConstants')
+        );
     }
-
 
     public function provideRequirements()
     {
@@ -141,6 +159,27 @@ class Util_TestTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(
           $result,
           PHPUnit_Util_Test::getRequirements('RequirementsTest', $test)
+        );
+    }
+
+    public function testGetRequirementsMergesClassAndMethodDocBlocks()
+    {
+        $expectedAnnotations = array(
+            'PHP' => '5.4',
+            'PHPUnit' => '3.7',
+            'functions' => array(
+                'testFuncClass',
+                'testFuncMethod',
+            ),
+            'extensions' => array(
+                'testExtClass',
+                'testExtMethod',
+            )
+        );
+
+        $this->assertEquals(
+          $expectedAnnotations,
+          PHPUnit_Util_Test::getRequirements('RequirementsClassDocBlockTest', 'testMethod')
         );
     }
 

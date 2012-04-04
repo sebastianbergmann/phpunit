@@ -112,8 +112,10 @@ class PHPUnit_Util_Test
      */
     public static function getRequirements($className, $methodName)
     {
-        $reflector  = new ReflectionMethod($className, $methodName);
+        $reflector  = new ReflectionClass($className);
         $docComment = $reflector->getDocComment();
+        $reflector  = new ReflectionMethod($className, $methodName);
+        $docComment .= "\n" . $reflector->getDocComment();
         $requires   = array();
 
         if ($count = preg_match_all(self::REGEX_REQUIRES_VERSION, $docComment, $matches)) {
@@ -161,7 +163,9 @@ class PHPUnit_Util_Test
             }
 
             else if (isset($annotations['method']['expectedExceptionMessage'])) {
-                $message = $annotations['method']['expectedExceptionMessage'][0];
+                $message = self::_parseAnnotationContent(
+                    $annotations['method']['expectedExceptionMessage'][0]
+                );
             }
 
             if (isset($matches[3])) {
@@ -169,7 +173,9 @@ class PHPUnit_Util_Test
             }
 
             else if (isset($annotations['method']['expectedExceptionCode'])) {
-                $code = $annotations['method']['expectedExceptionCode'][0];
+                $code = self::_parseAnnotationContent(
+                    $annotations['method']['expectedExceptionCode'][0]
+                );
             }
 
             if (is_numeric($code)) {
@@ -186,6 +192,26 @@ class PHPUnit_Util_Test
         }
 
         return FALSE;
+    }
+    
+    /**	
+     * Parse annotation content to use constant/class constant values
+     *
+     * Constants are specified using a starting '@'. For example: @ClassName::CONST_NAME
+     *
+     * If the constant is not found the string is used as is to ensure maximum BC.
+     * 
+     * @param  string $message
+     * @return string
+     */
+    protected static function _parseAnnotationContent($message)
+    {
+        if (strpos($message, '::') !== false && count(explode('::', $message) == 2)) {
+            if (defined($message)) {
+               $message = constant($message);
+            }
+        }
+        return $message;
     }
 
     /**

@@ -66,15 +66,20 @@ abstract class PHPUnit_Framework_Assert
      * Asserts that an array has a specified key.
      *
      * @param  mixed  $key
-     * @param  array  $array
+     * @param  array|ArrayAccess  $array
      * @param  string $message
      * @since  Method available since Release 3.0.0
      */
-    public static function assertArrayHasKey($key, array $array, $message = '')
+    public static function assertArrayHasKey($key, $array, $message = '')
     {
         if (!(is_integer($key) || is_string($key))) {
             throw PHPUnit_Util_InvalidArgumentHelper::factory(
               1, 'integer or string'
+            );
+        }
+        if (!(is_array($array) || $array instanceof ArrayAccess)) {
+            throw PHPUnit_Util_InvalidArgumentHelper::factory(
+              1, 'array or ArrayAccess'
             );
         }
 
@@ -87,15 +92,20 @@ abstract class PHPUnit_Framework_Assert
      * Asserts that an array does not have a specified key.
      *
      * @param  mixed  $key
-     * @param  array  $array
+     * @param  array|ArrayAccess  $array
      * @param  string $message
      * @since  Method available since Release 3.0.0
      */
-    public static function assertArrayNotHasKey($key, array $array, $message = '')
+    public static function assertArrayNotHasKey($key, $array, $message = '')
     {
         if (!(is_integer($key) || is_string($key))) {
             throw PHPUnit_Util_InvalidArgumentHelper::factory(
               1, 'integer or string'
+            );
+        }
+        if (!(is_array($array) || $array instanceof ArrayAccess)) {
+            throw PHPUnit_Util_InvalidArgumentHelper::factory(
+              1, 'array or ArrayAccess'
             );
         }
 
@@ -2180,6 +2190,16 @@ abstract class PHPUnit_Framework_Assert
     public static function isTrue()
     {
         return new PHPUnit_Framework_Constraint_IsTrue;
+    }
+    
+    /**
+     * Returns a PHPUnit_Framework_Constraint_Callback matcher object.
+     *
+     * @return PHPUnit_Framework_Constraint_Callback
+     */
+    public static function callback($callback)
+    {
+        return new PHPUnit_Framework_Constraint_Callback($callback);
     }
 
     /**
