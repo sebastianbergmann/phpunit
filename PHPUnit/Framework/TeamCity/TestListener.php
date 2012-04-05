@@ -1,6 +1,6 @@
 <?php
 /**
-    * @author Alexander Ilyin
+ * @author Alexander Ilyin
  * @url    http://confluence.jetbrains.net/display/TCD7/Build+Script+Interaction+with+TeamCity#BuildScriptInteractionwithTeamCity-ReportingTests
  */
 class PHPUnit_Framework_TeamCity_TestListener extends PHPUnit_Util_Printer implements PHPUnit_Framework_TestListener
