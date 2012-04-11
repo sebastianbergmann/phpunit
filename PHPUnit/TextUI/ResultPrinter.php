@@ -370,7 +370,7 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
               sprintf(
                 "Tests: %d, Assertions: %d%s%s.\n",
 
-                count($result),
+                count($result) + $result->excludedCount(),
                 $this->numAssertions,
                 $this->getCountString(
                   $result->notImplementedCount(), 'Incomplete'
@@ -534,6 +534,20 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
         }
 
         $this->lastTestFailed = TRUE;
+    }
+
+    /**
+     * Excluded test.
+     *
+     * @param  PHPUnit_Framework_Test $test
+     */
+    public function addExcludedTest(PHPUnit_Framework_Test $test)
+    {
+        if ($this->colors) {
+            $this->writeProgress("_");
+        } else {
+            $this->writeProgress('_');
+        }
     }
 
     /**

@@ -44,91 +44,56 @@
  */
 
 /**
- * A Listener for test progress.
+ * A TestExclude collects an exclude test.
  *
  * @package    PHPUnit
  * @subpackage Framework
  * @author     Sebastian Bergmann <sebastian@phpunit.de>
  * @copyright  2001-2012 Sebastian Bergmann <sebastian@phpunit.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
- * @version    Release: @package_version@
+ * @version    Release: 3.6.10
  * @link       http://www.phpunit.de/
- * @since      Interface available since Release 2.0.0
+ * @since      Class available since Release 2.0.0
  */
-interface PHPUnit_Framework_TestListener
+class PHPUnit_Framework_TestExclude
 {
     /**
-     * An error occurred.
-     *
-     * @param  PHPUnit_Framework_Test $test
-     * @param  Exception              $e
-     * @param  float                  $time
+     * @var    PHPUnit_Framework_Test
      */
-    public function addError(PHPUnit_Framework_Test $test, Exception $e, $time);
+    protected $excludedTest;
 
     /**
-     * A failure occurred.
+     * Constructs a TestExclude with the given test and exception.
      *
-     * @param  PHPUnit_Framework_Test                 $test
-     * @param  PHPUnit_Framework_AssertionFailedError $e
-     * @param  float                                  $time
+     * @param  PHPUnit_Framework_Test $excludedTest
+     * @param  Exception               $thrownException
      */
-    public function addFailure(PHPUnit_Framework_Test $test, PHPUnit_Framework_AssertionFailedError $e, $time);
+    public function __construct(PHPUnit_Framework_Test $excludedTest)
+    {
+        $this->excludedTest    = $excludedTest;
+    }
 
     /**
-     * Incomplete test.
+     * Returns a short description of the exclude.
      *
-     * @param  PHPUnit_Framework_Test $test
-     * @param  Exception              $e
-     * @param  float                  $time
+     * @return string
      */
-    public function addIncompleteTest(PHPUnit_Framework_Test $test, Exception $e, $time);
+    public function toString()
+    {
+        return sprintf(
+          '%s',
+
+          $this->failedTest
+        );
+    }
 
     /**
-     * Skipped test.
+     * Gets the excluded test.
      *
-     * @param  PHPUnit_Framework_Test $test
-     * @param  Exception              $e
-     * @param  float                  $time
-     * @since  Method available since Release 3.0.0
+     * @return Test
      */
-    public function addSkippedTest(PHPUnit_Framework_Test $test, Exception $e, $time);
-
-    /**
-     * Excluded test.
-     *
-     * @param  PHPUnit_Framework_Test $test
-     */
-    public function addExcludedTest(PHPUnit_Framework_Test $test);
-
-    /**
-     * A test suite started.
-     *
-     * @param  PHPUnit_Framework_TestSuite $suite
-     * @since  Method available since Release 2.2.0
-     */
-    public function startTestSuite(PHPUnit_Framework_TestSuite $suite);
-
-    /**
-     * A test suite ended.
-     *
-     * @param  PHPUnit_Framework_TestSuite $suite
-     * @since  Method available since Release 2.2.0
-     */
-    public function endTestSuite(PHPUnit_Framework_TestSuite $suite);
-
-    /**
-     * A test started.
-     *
-     * @param  PHPUnit_Framework_Test $test
-     */
-    public function startTest(PHPUnit_Framework_Test $test);
-
-    /**
-     * A test ended.
-     *
-     * @param  PHPUnit_Framework_Test $test
-     * @param  float                  $time
-     */
-    public function endTest(PHPUnit_Framework_Test $test, $time);
+    public function excludedTest()
+    {
+        return $this->excludedTest;
+    }
 }
