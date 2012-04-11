@@ -62,6 +62,7 @@ abstract class PHPUnit_Runner_BaseTestRunner
     const STATUS_INCOMPLETE = 2;
     const STATUS_FAILURE    = 3;
     const STATUS_ERROR      = 4;
+    const STATUS_EXCLUDED   = 5;
     const SUITE_METHODNAME  = 'suite';
 
     /**

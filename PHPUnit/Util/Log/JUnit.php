@@ -280,6 +280,15 @@ class PHPUnit_Util_Log_JUnit extends PHPUnit_Util_Printer implements PHPUnit_Fra
     }
 
     /**
+     * Excluded test.
+     *
+     * @param  PHPUnit_Framework_Test $test
+     */
+    public function addExcludedTest(PHPUnit_Framework_Test $test)
+    {
+    }
+
+    /**
      * A testsuite started.
      *
      * @param  PHPUnit_Framework_TestSuite $suite

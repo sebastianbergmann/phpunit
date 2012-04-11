@@ -95,6 +95,11 @@ abstract class PHPUnit_Util_TestDox_ResultPrinter extends PHPUnit_Util_Printer i
     /**
      * @var integer
      */
+    protected $excluded = 0;
+
+    /**
+     * @var integer
+     */
     protected $incomplete = 0;
 
     /**
@@ -195,6 +200,19 @@ abstract class PHPUnit_Util_TestDox_ResultPrinter extends PHPUnit_Util_Printer i
         if ($test instanceof $this->testTypeOfInterest) {
             $this->testStatus = PHPUnit_Runner_BaseTestRunner::STATUS_SKIPPED;
             $this->skipped++;
+        }
+    }
+
+    /**
+     * Excluded test.
+     *
+     * @param  PHPUnit_Framework_Test $test
+     */
+    public function addExcludedTest(PHPUnit_Framework_Test $test)
+    {
+        if ($test instanceof $this->testTypeOfInterest) {
+            $this->testStatus = PHPUnit_Runner_BaseTestRunner::STATUS_EXCLUDED;
+            $this->excluded++;
         }
     }
 
