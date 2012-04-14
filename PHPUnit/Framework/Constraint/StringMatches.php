@@ -69,8 +69,37 @@ class PHPUnit_Framework_Constraint_StringMatches extends PHPUnit_Framework_Const
      */
     public function __construct($string)
     {
-        $this->pattern = preg_quote(preg_replace('/\r\n/', "\n", $string), '/');
-        $this->pattern = str_replace(
+        $this->pattern = $this->createPatternFromFormat(
+            preg_replace('/\r\n/', "\n", $string)
+        );
+        $this->string  = $string;
+    }
+
+    protected function failureDescription($other)
+    {
+        return "format description matches text";
+    }
+
+    protected function additionalFailureDescription($other)
+    {
+        $from = preg_split('(\r\n|\r|\n)', $this->string);
+        $to = preg_split('(\r\n|\r|\n)', $other);
+        foreach($from as $index => $line) {
+            if(isset($to[$index]) && $line !== $to[$index]) {
+                $line = $this->createPatternFromFormat($line);
+                if(preg_match($line, $to[$index]) > 0) {
+                    $from[$index] = $to[$index];
+                }
+            }
+        }
+        $this->string = join("\n", $from);
+        $other = join("\n", $to);
+        return PHPUnit_Util_Diff::diff($this->string, $other);
+    }
+
+    protected function createPatternFromFormat($string)
+    {
+        $string = str_replace(
           array(
             '%e',
             '%s',
@@ -97,21 +126,9 @@ class PHPUnit_Framework_Constraint_StringMatches extends PHPUnit_Framework_Const
             '[+-]?\.?\d+\.?\d*(?:[Ee][+-]?\d+)?',
             '.'
           ),
-          $this->pattern
+          preg_quote($string, '/')
         );
-
-        $this->pattern = '/^' . $this->pattern . '$/s';
-        $this->string  = $string;
-    }
-
-    protected function failureDescription($other)
-    {
-        return "format description matches text";
-    }
-
-    protected function additionalFailureDescription($other)
-    {
-        return PHPUnit_Util_Diff::diff($this->string, $other);
+        return '/^' . $string . '$/s';
     }
 
 }

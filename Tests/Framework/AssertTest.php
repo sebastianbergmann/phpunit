@@ -3762,16 +3762,15 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
     public function testAssertStringMatchesFormat()
     {
         $this->assertStringMatchesFormat('*%s*', '***');
+    }
 
-        try {
-            $this->assertStringMatchesFormat('*%s*', '**');
-        }
-
-        catch (PHPUnit_Framework_AssertionFailedError $e) {
-            return;
-        }
-
-        $this->fail();
+    /**
+     * @covers PHPUnit_Framework_Assert::assertStringMatchesFormat
+     * @expectedException PHPUnit_Framework_AssertionFailedError
+     */
+    public function testAssertStringMatchesFormatFailure()
+    {
+        $this->assertStringMatchesFormat('*%s*', '**');
     }
 
     /**
