@@ -499,6 +499,9 @@ class Framework_MockObjectTest extends PHPUnit_Framework_TestCase
         $this->resetMockObjects();
     }
 
+    /**
+     * @requires extension soap
+     */
     public function testCreateMockFromWsdl()
     {
         $mock = $this->getMockFromWsdl(__DIR__ . '/_files/GoogleSearch.wsdl', 'WsdlMock');
@@ -508,6 +511,9 @@ class Framework_MockObjectTest extends PHPUnit_Framework_TestCase
         );
     }
 
+    /**
+     * @requires extension soap
+     */
     public function testCreateNamespacedMockFromWsdl()
     {
         $mock = $this->getMockFromWsdl(__DIR__ . '/_files/GoogleSearch.wsdl', 'My\\Space\\WsdlMock');
@@ -517,6 +523,9 @@ class Framework_MockObjectTest extends PHPUnit_Framework_TestCase
         );
     }
 
+    /**
+     * @requires extension soap
+     */
     public function testCreateTwoMocksOfOneWsdlFile()
     {
         $mock = $this->getMockFromWsdl(__DIR__ . '/_files/GoogleSearch.wsdl');
