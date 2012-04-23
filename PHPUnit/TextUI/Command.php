@@ -82,7 +82,7 @@ class PHPUnit_TextUI_Command
       'coverage-html=' => NULL,
       'coverage-clover=' => NULL,
       'coverage-php=' => NULL,
-      'coverage-text==' => NULL,
+      'coverage-text=' => NULL,
       'debug' => NULL,
       'exclude-group=' => NULL,
       'filter=' => NULL,
