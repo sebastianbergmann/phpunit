@@ -589,6 +589,14 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
             $this->writeProgress('.');
         }
 
+        if ($this->debug) {
+            $this->write(
+                sprintf(
+                    "\nTest execution time '%s seconds'.\n", $time
+                )
+            );
+        }
+
         if ($test instanceof PHPUnit_Framework_TestCase) {
             $this->numAssertions += $test->getNumAssertions();
         }
