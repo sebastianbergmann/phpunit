@@ -26,7 +26,7 @@
   <release>devel</release>
   <api>devel</api>
  </stability>
- <license>BSD License</license>
+ <license>The BSD 3-Clause License</license>
  <notes>http://github.com/sebastianbergmann/phpunit/blob/master/README.markdown</notes>
  <contents>
   <dir name="/">
