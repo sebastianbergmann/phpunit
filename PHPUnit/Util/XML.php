@@ -1,4 +1,4 @@
-<?php
+l695<?php
 /**
  * PHPUnit
  *
@@ -699,7 +699,7 @@ class PHPUnit_Util_XML
             foreach ($nodes as $node) {
                 $parent = $node->parentNode;
 
-                while ($parent->nodeType != XML_HTML_DOCUMENT_NODE) {
+                while ($parent && $parent->nodeType != XML_HTML_DOCUMENT_NODE) {
                     if ($parent === $ancestorNode) {
                         $filtered[] = $node;
                     }
