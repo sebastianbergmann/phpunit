@@ -4095,7 +4095,7 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
     {
         $file = __DIR__ . '/../_files/JsonData/simpleObject.js';
         try {
-            $this->assertJsonStringEqualsJsonFile($file, null);
+            $this->assertJsonStringEqualsJsonFile($file, NULL);
         } catch (InvalidArgumentException $e) {
             return;
         }
@@ -4120,7 +4120,7 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
     {
         $file = __DIR__ . '/../_files/JsonData/simpleObject.js';
         try {
-            $this->assertJsonStringNotEqualsJsonFile($file, null);
+            $this->assertJsonStringNotEqualsJsonFile($file, NULL);
         } catch (InvalidArgumentException $e) {
             return;
         }
@@ -4151,8 +4151,8 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
     public static function validInvalidJsonDataprovider()
     {
         return array(
-            'error syntax in expected JSON'  => array('{"Mascott"::}', '{"Mascott" : "Tux"}'),
-            'error UTF-8 in actual JSON'     => array('{"Mascott" : "Tux"}', '{"Mascott" : :}'),
+            'error syntax in expected JSON' => array('{"Mascott"::}', '{"Mascott" : "Tux"}'),
+            'error UTF-8 in actual JSON'    => array('{"Mascott" : "Tux"}', '{"Mascott" : :}'),
         );
     }
 
