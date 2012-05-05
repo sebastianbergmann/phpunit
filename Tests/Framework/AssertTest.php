@@ -2947,8 +2947,13 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
     */
     public function testAssertTagMultiplePossibleChildren()
     {
-        $matcher = array('tag' => 'li',
-			 'parent' => array('tag' => 'ul', 'id' => 'another_ul'));
+        $matcher = array(
+            'tag' => 'li',
+            'parent' => array(
+                'tag' => 'ul',
+                'id' => 'another_ul'
+            )
+        );
         $this->assertTag($matcher, $this->html);
     }
 
