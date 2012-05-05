@@ -343,33 +343,6 @@ abstract class PHPUnit_Framework_Assert
           $message
         );
     }
-    
-    /**
-     * Asserts that a haystack does not contain only instances of a given classname.
-     *
-     * @param string $classname
-     * @param array|Traversable $haystack
-     * @param string $message
-     */
-    public static function assertNotContainsOnlyInstancesOf($classname, $haystack, $message = '')
-    {
-        if (!(is_array($haystack) ||
-            is_object($haystack) && $haystack instanceof Traversable)) {
-            throw PHPUnit_Util_InvalidArgumentHelper::factory(
-              2, 'array or iterator'
-            );
-        }
-        
-        self::assertThat(
-        	$haystack,
-        	new PHPUnit_Framework_Constraint_Not(
-        		new PHPUnit_Framework_Constraint_TraversableContainsOnly(
-        			$classname, false
-        		)
-        	),
-        	$message
-        );
-    }
 
     /**
      * Asserts that a haystack that is stored in a static attribute of a class
