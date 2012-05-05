@@ -4008,4 +4008,152 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
 
         $this->fail();
     }
+
+    /**
+     * @covers PHPUnit_Framework_Assert::assertJsonStringEqualsJsonString
+     */
+    public function testAssertJsonStringEqualsJsonString()
+    {
+        $expected = '{"Mascott" : "Tux"}';
+        $actual   = '{"Mascott" : "Tux"}';
+        $message  = 'Given Json strings do not match';
+
+        $this->assertJsonStringEqualsJsonString($expected, $actual, $message);
+    }
+
+    /**
+     * @dataProvider validInvalidJsonDataprovider
+     * @covers PHPUnit_Framework_Assert::assertJsonStringEqualsJsonString
+     */
+    public function testAssertJsonStringEqualsJsonStringErrorRaised($expected, $actual)
+    {
+        try {
+            $this->assertJsonStringEqualsJsonString($expected, $actual);
+        } catch (PHPUnit_Framework_ExpectationFailedException $e) {
+            return;
+        }
+        $this->fail('Expected exception not found');
+    }
+
+    /**
+     * @covers PHPUnit_Framework_Assert::assertJsonStringNotEqualsJsonString
+     */
+    public function testAssertJsonStringNotEqualsJsonString()
+    {
+        $expected = '{"Mascott" : "Beastie"}';
+        $actual   = '{"Mascott" : "Tux"}';
+        $message  = 'Given Json strings do match';
+
+        $this->assertJsonStringNotEqualsJsonString($expected, $actual, $message);
+    }
+
+    /**
+     * @dataProvider validInvalidJsonDataprovider
+     * @covers PHPUnit_Framework_Assert::assertJsonStringNotEqualsJsonString
+     */
+    public function testAssertJsonStringNotEqualsJsonStringErrorRaised($expected, $actual)
+    {
+        $this->assertJsonStringNotEqualsJsonString($expected, $actual);
+    }
+
+    /**
+     * @covers PHPUnit_Framework_Assert::assertJsonStringEqualsJsonFile
+     */
+    public function testAssertJsonStringEqualsJsonFile()
+    {
+        $file = __DIR__ . '/../_files/JsonData/simpleObject.js';
+        $actual = json_encode(array("Mascott" => "Tux"));
+        $message = '';
+        $this->assertJsonStringEqualsJsonFile($file, $actual, $message);
+    }
+
+    /**
+     * @covers PHPUnit_Framework_Assert::assertJsonStringEqualsJsonFile
+     */
+    public function testAssertJsonStringEqualsJsonFileExpectingExpectationFailedException()
+    {
+        $file = __DIR__ . '/../_files/JsonData/simpleObject.js';
+        $actual = json_encode(array("Mascott" => "Beastie"));
+        $message = '';
+        try {
+            $this->assertJsonStringEqualsJsonFile($file, $actual, $message);
+        } catch (PHPUnit_Framework_ExpectationFailedException $e) {
+            $this->assertEquals(
+                'Failed asserting that \'{"Mascott":"Beastie"}\' matches JSON string "{"Mascott":"Tux"}".',
+                $e->getMessage()
+            );
+            return;
+        }
+
+        $this->fail('Expected Exception not thrown.');
+    }
+
+    /**
+     * @covers PHPUnit_Framework_Assert::assertJsonStringEqualsJsonFile
+     */
+    public function testAssertJsonStringEqualsJsonFileExpectingInvalidArgumentException()
+    {
+        $file = __DIR__ . '/../_files/JsonData/simpleObject.js';
+        try {
+            $this->assertJsonStringEqualsJsonFile($file, null);
+        } catch (InvalidArgumentException $e) {
+            return;
+        }
+        $this->fail('Expected Exception not thrown.');
+    }
+
+    /**
+     * @covers PHPUnit_Framework_Assert::assertJsonStringNotEqualsJsonFile
+     */
+    public function testAssertJsonStringNotEqualsJsonFile()
+    {
+        $file = __DIR__ . '/../_files/JsonData/simpleObject.js';
+        $actual = json_encode(array("Mascott" => "Beastie"));
+        $message = '';
+        $this->assertJsonStringNotEqualsJsonFile($file, $actual, $message);
+    }
+
+    /**
+     * @covers PHPUnit_Framework_Assert::assertJsonStringNotEqualsJsonFile
+     */
+    public function testAssertJsonStringNotEqualsJsonFileExpectingInvalidArgumentException()
+    {
+        $file = __DIR__ . '/../_files/JsonData/simpleObject.js';
+        try {
+            $this->assertJsonStringNotEqualsJsonFile($file, null);
+        } catch (InvalidArgumentException $e) {
+            return;
+        }
+        $this->fail('Expected exception not found.');
+    }
+
+    /**
+     * @covers PHPUnit_Framework_Assert::assertJsonFileNotEqualsJsonFile
+     */
+    public function testAssertJsonFileNotEqualsJsonFile()
+    {
+        $fileExpected = __DIR__ . '/../_files/JsonData/simpleObject.js';
+        $fileActual   = __DIR__ . '/../_files/JsonData/arrayObject.js';
+        $message = '';
+        $this->assertJsonFileNotEqualsJsonFile($fileExpected, $fileActual, $message);
+    }
+
+    /**
+     * @covers PHPUnit_Framework_Assert::assertJsonFileEqualsJsonFile
+     */
+    public function testAssertJsonFileEqualsJsonFile()
+    {
+        $file = __DIR__ . '/../_files/JsonData/simpleObject.js';
+        $message = '';
+        $this->assertJsonFileEqualsJsonFile($file, $file, $message);
+    }
+
+    public static function validInvalidJsonDataprovider()
+    {
+        return array(
+            'error syntax in expected JSON'  => array('{"Mascott"::}', '{"Mascott" : "Tux"}'),
+            'error UTF-8 in actual JSON'     => array('{"Mascott" : "Tux"}', '{"Mascott" : :}'),
+        );
+    }
+
 }

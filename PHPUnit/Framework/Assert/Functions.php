@@ -660,6 +660,84 @@ function assertInternalType($expected, $actual, $message = '')
 }
 
 /**
+ * Asserts that two given JSON encoded objects or arrays are equal.
+ *
+ * @param string $expectedJson
+ * @param string $actualJson
+ * @param string $message
+ * @since Method available since Release 3.7.0
+ */
+function assertJsonStringEqualsJsonString($expectedJson, $actualJson, $message = '')
+{
+    return PHPUnit_Framework_Assert::assertJsonStringEqualsJsonString($expectedJson, $actualJson, $message = '');
+}
+
+/**
+ * Asserts that two given JSON encoded objects or arrays are not equal.
+ *
+ * @param string $expectedJson
+ * @param string $actualJson
+ * @param string $message
+ * @since Method available since Release 3.7.0
+ */
+function assertJsonStringNotEqualsJsonString($expectedJson, $actualJson, $message = '')
+{
+    return PHPUnit_Framework_Assert::assertJsonStringNotEqualsJsonString($expectedJson, $actualJson, $message = '');
+}
+
+/**
+ * Asserts that the generated JSON encoded object and the content of the given file are equal.
+ *
+ * @param string $expectedFile
+ * @param string $actualJson
+ * @param string $message
+ * @since Method available since Release 3.7.0
+ */
+function assertJsonStringEqualsJsonFile($expectedFile, $actualJson, $message = '')
+{
+    return PHPUnit_Framework_Assert::assertJsonStringEqualsJsonFile($expectedFile, $actualJson, $message = '');
+}
+
+/**
+ * Asserts that the generated JSON encoded object and the content of the given file are not equal.
+ *
+ * @param string $expectedFile
+ * @param string $actualJson
+ * @param string $message
+ * @since Method available since Release 3.7.0
+ */
+function assertJsonStringNotEqualsJsonFile($expectedFile, $actualJson, $message = '')
+{
+    return PHPUnit_Framework_Assert::assertJsonStringNotEqualsJsonFile($expectedFile, $actualJson, $message = '');
+}
+
+/**
+ * Asserts that two JSON files are not equal.
+ *
+ * @param  string $expectedFile
+ * @param  string $actualFile
+ * @param  string $message
+ * @since Method available since Release 3.7.0
+ */
+function assertJsonFileNotEqualsJsonFile($expectedFile, $actualFile, $message = '')
+{
+    return PHPUnit_Framework_Assert::assertJsonFileNotEqualsJsonFile($expectedFile, $actualFile, $message = '');
+}
+
+/**
+ * Asserts that two JSON files are equal.
+ *
+ * @param  string $expectedFile
+ * @param  string $actualFile
+ * @param  string $message
+ * @since Method available since Release 3.7.0
+ */
+function assertJsonFileEqualsJsonFile($expectedFile, $actualFile, $message = '')
+{
+    return PHPUnit_Framework_Assert::assertJsonFileEqualsJsonFile($expectedFile, $actualFile, $message = '');
+}
+
+/**
  * Asserts that a value is smaller than another value.
  *
  * @param  mixed   $expected
