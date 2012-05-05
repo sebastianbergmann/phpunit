@@ -4,19 +4,19 @@ namespace My\Space;
 
 class ExceptionNamespaceTest extends \PHPUnit_Framework_TestCase
 {
-	/**
-	 * Exception message
-	 * 
-	 * @var string
-	 */
-	const ERROR_MESSAGE = 'Exception namespace message';
+    /**
+     * Exception message
+     *
+     * @var string
+     */
+    const ERROR_MESSAGE = 'Exception namespace message';
 
-	/**
-	 * Exception code
-	 * 
-	 * @var integer
-	 */
-	const ERROR_CODE = 200;
+    /**
+     * Exception code
+     *
+     * @var integer
+     */
+    const ERROR_CODE = 200;
 
     /**
      * @expectedException Class

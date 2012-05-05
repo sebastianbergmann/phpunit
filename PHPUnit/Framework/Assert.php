@@ -264,7 +264,7 @@ abstract class PHPUnit_Framework_Assert
           $message
         );
     }
-    
+
     /**
      * Asserts that a haystack contains only instances of a given classname
      *
@@ -280,13 +280,13 @@ abstract class PHPUnit_Framework_Assert
               2, 'array or iterator'
             );
         }
-        
+
         self::assertThat(
-        	$haystack,
-        	new PHPUnit_Framework_Constraint_TraversableContainsOnly(
-        		$classname, false
-        	),
-        	$message
+            $haystack,
+            new PHPUnit_Framework_Constraint_TraversableContainsOnly(
+                $classname, FALSE
+            ),
+            $message
         );
     }
 
@@ -2373,7 +2373,7 @@ abstract class PHPUnit_Framework_Assert
     {
         return new PHPUnit_Framework_Constraint_IsTrue;
     }
-    
+
     /**
      * Returns a PHPUnit_Framework_Constraint_Callback matcher object.
      *
@@ -2447,7 +2447,7 @@ abstract class PHPUnit_Framework_Assert
     {
         return new PHPUnit_Framework_Constraint_TraversableContainsOnly($type);
     }
-    
+
     /**
      * Returns a PHPUnit_Framework_Constraint_TraversableContainsOnly matcher
      * object.

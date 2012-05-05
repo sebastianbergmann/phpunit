@@ -121,7 +121,7 @@ class BankAccountWithCustomExtensionTest extends PHPUnit_Framework_TestCase
      * @covers BankAccount::withdrawMoney
      * @group balanceCannotBecomeNegative
      */
-/*
+    /*
     public function testDepositingAndWithdrawingMoneyWorks()
     {
         $this->assertEquals(0, $this->ba->getBalance());
@@ -130,5 +130,5 @@ class BankAccountWithCustomExtensionTest extends PHPUnit_Framework_TestCase
         $this->ba->withdrawMoney(1);
         $this->assertEquals(0, $this->ba->getBalance());
     }
-*/
+    */
 }

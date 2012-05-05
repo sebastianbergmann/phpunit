@@ -1819,23 +1819,23 @@ EOF
         };
 
         $closureWithoutParameter = function() {
-            return true;
+            return TRUE;
         };
 
         $constraint = PHPUnit_Framework_Assert::callback($closureWithoutParameter);
-        $this->assertTrue($constraint->evaluate('', '', true));
+        $this->assertTrue($constraint->evaluate('', '', TRUE));
 
         $constraint = PHPUnit_Framework_Assert::callback($closureReflect);
-        $this->assertTrue($constraint->evaluate(true, '', true));
-        $this->assertFalse($constraint->evaluate(false, '', true));
+        $this->assertTrue($constraint->evaluate(TRUE, '', TRUE));
+        $this->assertFalse($constraint->evaluate(FALSE, '', TRUE));
 
         $callback = array($this, 'callbackReturningTrue');
         $constraint = PHPUnit_Framework_Assert::callback($callback);
-        $this->assertTrue($constraint->evaluate(false,  '', true));
+        $this->assertTrue($constraint->evaluate(FALSE,  '', TRUE));
 
         $callback = array('Framework_ConstraintTest', 'staticCallbackReturningTrue');
         $constraint = PHPUnit_Framework_Assert::callback($callback);
-        $this->assertTrue($constraint->evaluate(null, '', true));
+        $this->assertTrue($constraint->evaluate(NULL, '', TRUE));
 
         $this->assertEquals('is accepted by specified callback', $constraint->toString());
     }
@@ -1847,20 +1847,20 @@ EOF
      */
     public function testConstraintCallbackFailure()
     {
-         $constraint = PHPUnit_Framework_Assert::callback(function() {
-             return false;
-         });
-         $constraint->evaluate('This fails');
+        $constraint = PHPUnit_Framework_Assert::callback(function() {
+            return FALSE;
+        });
+        $constraint->evaluate('This fails');
     }
 
     public function callbackReturningTrue()
     {
-        return true;
+        return TRUE;
     }
 
     public function staticCallbackReturningTrue()
     {
-        return true;
+        return TRUE;
     }
 
     /**
