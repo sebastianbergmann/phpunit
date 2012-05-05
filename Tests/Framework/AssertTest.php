@@ -4091,12 +4091,12 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
     /**
      * @covers PHPUnit_Framework_Assert::assertJsonStringEqualsJsonFile
      */
-    public function testAssertJsonStringEqualsJsonFileExpectingInvalidArgumentException()
+    public function testAssertJsonStringEqualsJsonFileExpectingException()
     {
         $file = __DIR__ . '/../_files/JsonData/simpleObject.js';
         try {
             $this->assertJsonStringEqualsJsonFile($file, NULL);
-        } catch (InvalidArgumentException $e) {
+        } catch (PHPUnit_Framework_Exception $e) {
             return;
         }
         $this->fail('Expected Exception not thrown.');
@@ -4116,12 +4116,12 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
     /**
      * @covers PHPUnit_Framework_Assert::assertJsonStringNotEqualsJsonFile
      */
-    public function testAssertJsonStringNotEqualsJsonFileExpectingInvalidArgumentException()
+    public function testAssertJsonStringNotEqualsJsonFileExpectingException()
     {
         $file = __DIR__ . '/../_files/JsonData/simpleObject.js';
         try {
             $this->assertJsonStringNotEqualsJsonFile($file, NULL);
-        } catch (InvalidArgumentException $e) {
+        } catch (PHPUnit_Framework_Exception $e) {
             return;
         }
         $this->fail('Expected exception not found.');
