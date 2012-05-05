@@ -13,6 +13,7 @@ PHPUnit 3.7.0
 * Implemented #295: `assertArrayHasKey()` and `assertArrayNotHasKey()` now work with objects that implement ArrayAccess.
 * Implemented #333: Improved reporting when there are unused CLI arguments to avoid misconceptions.
 * Implemented #377: Show messages and stracktraces in JSON output for skipped and incomplete tests.
+* Implemented #424: Added `assertJson*` functions that work like the existing `assertXml*` functions.
 * Implemented #504: Expanded the `@requires` annotation to allow for checking the existence of functions and extensions using multiple `@requires function name` statements.
 * Implemented #514: Failed `assertStringMatchesFormat()` calls now produce a better readable diff by only marking lines as different that don't match the format specifiers.
 * Implemented #515: Added `assertContainsOnlyInstancesOf()` to help checking Collection objects and arrays with a descriptive assertion.
