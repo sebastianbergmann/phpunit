@@ -320,37 +320,19 @@ class PHPUnit_Util_Class
         }
 
         if (isset($attribute)) {
-            if ($attribute == NULL || $attribute->isPublic()) {
+            if (!$attribute || $attribute->isPublic()) {
                 return $object->$attributeName;
-            } else {
-                $array         = (array)$object;
-                $protectedName = "\0*\0" . $attributeName;
-
-                if (array_key_exists($protectedName, $array)) {
-                    return $array[$protectedName];
-                } else {
-                    $classes = self::getHierarchy(get_class($object));
-
-                    foreach ($classes as $class) {
-                        $privateName = sprintf(
-                          "\0%s\0%s",
-
-                          $class,
-                          $attributeName
-                        );
-
-                        if (array_key_exists($privateName, $array)) {
-                            return $array[$privateName];
-                        }
-                    }
-                }
             }
+            $attribute->setAccessible(true);
+            $value = $attribute->getValue($object);
+            $attribute->setAccessible(false);
+
+            return $value;
         }
 
         throw new PHPUnit_Framework_Exception(
           sprintf(
             'Attribute "%s" not found in object.',
-
             $attributeName
           )
         );

@@ -22,6 +22,7 @@ PHPUnit 3.7.0
 * The `@requires` annotation can now be used on the class DocBlock. Required versions can be overridden in the methods annotation, required functions and extensions will be merged.
 * Added `processUncoveredFilesFromWhitelist` configuration setting. When enabled, uncovered whitelisted files are processed to properly calculate the number of executable lines.
 * Fixed #440: Possible crash when using `--process-isolation` with PHP 5.3 and `detect_unicode=on`.
+* Fixed #523: `assertAttributeEquals()` now works with classes extending internal classes like `ArrayIterator`.
 * It is possible again to expect the generic `Exception` class.
 * Removed `addUncoveredFilesFromWhitelist` configuration setting.
 * Removed deprecated `--skeleton-class` and `--skeleton-test` switches. The functionality is now provided by the `phpunit-skel` command of the `PHPUnit_SkeletonGenerator` package.
