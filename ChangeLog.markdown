@@ -15,11 +15,11 @@ PHPUnit 3.7.0
 * Implemented #377: Show messages and stracktraces in JSON output for skipped and incomplete tests.
 * Implemented #424: Added `assertJson*` functions that work like the existing `assertXml*` functions.
 * Implemented #504: Expanded the `@requires` annotation to allow for checking the existence of functions and extensions using multiple `@requires function name` statements.
+* Implemented #508 #86: `@expectedExceptionCode` and `@expectedExceptionMessage` can now use constants like `Classname::CONST` as their parameters. They will get evaluated if the class constant exists and used for comparison so test authors can avoid duplication.
+* Implemented #512: Test listeners now trigger one autoload call instead of being silently ignored when the class was not loaded.
 * Implemented #514: Failed `assertStringMatchesFormat()` calls now produce a better readable diff by only marking lines as different that don't match the format specifiers.
 * Implemented #515: Added `assertContainsOnlyInstancesOf()` to help checking Collection objects and arrays with a descriptive assertion.
 * The `@requires` annotation can now be used on the class DocBlock. Required versions can be overridden in the methods annotation, required functions and extensions will be merged.
-* Implemented #86 #508: `@expectedExceptionCode` and `@expectedExceptionMessage` can now use constants like `Classname::CONST` as their parameters. They will get evaluated if the class constant exists and used for comparison so test authors can avoid duplication.
-* Implemented #512: Test listeners now trigger one autoload call instead of being silently ignored when the class was not loaded.
 * Added `processUncoveredFilesFromWhitelist` configuration setting. When enabled, uncovered whitelisted files are processed to properly calculate the number of executable lines.
 * Fixed #440: Possible crash when using `--process-isolation` with PHP 5.3 and `detect_unicode=on`.
 * It is possible again to expect the generic `Exception` class.
