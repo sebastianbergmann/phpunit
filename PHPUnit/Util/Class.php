@@ -323,9 +323,9 @@ class PHPUnit_Util_Class
             if (!$attribute || $attribute->isPublic()) {
                 return $object->$attributeName;
             }
-            $attribute->setAccessible(true);
+            $attribute->setAccessible(TRUE);
             $value = $attribute->getValue($object);
-            $attribute->setAccessible(false);
+            $attribute->setAccessible(FALSE);
 
             return $value;
         }
