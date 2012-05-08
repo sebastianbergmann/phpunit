@@ -133,7 +133,7 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
         }
 
         if (is_bool($colors)) {
-            $this->colors = $colors;
+            $this->colors = $colors && (!function_exists('posix_isatty') || posix_isatty(STDOUT));
         } else {
             throw PHPUnit_Util_InvalidArgumentHelper::factory(3, 'boolean');
         }
