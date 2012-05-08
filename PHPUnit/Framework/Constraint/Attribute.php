@@ -37,6 +37,7 @@
  * @package    PHPUnit
  * @subpackage Framework_Constraint
  * @author     Sebastian Bergmann <sebastian@phpunit.de>
+ * @author     Bernhard Schussek <bschussek@2bepublished.at>
  * @copyright  2002-2011 Sebastian Bergmann <sebastian@phpunit.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @link       http://www.phpunit.de/
@@ -49,6 +50,7 @@
  * @package    PHPUnit
  * @subpackage Framework_Constraint
  * @author     Sebastian Bergmann <sebastian@phpunit.de>
+ * @author     Bernhard Schussek <bschussek@2bepublished.at>
  * @copyright  2002-2011 Sebastian Bergmann <sebastian@phpunit.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    Release: @package_version@
@@ -56,7 +58,7 @@
  * @since      Class available since Release 3.1.0
  */
 
-class PHPUnit_Framework_Constraint_Attribute extends PHPUnit_Framework_Constraint
+class PHPUnit_Framework_Constraint_Attribute extends PHPUnit_Framework_Constraint_Composite
 {
     /**
      * @var string
@@ -64,52 +66,40 @@ class PHPUnit_Framework_Constraint_Attribute extends PHPUnit_Framework_Constrain
     protected $attributeName;
 
     /**
-     * @var PHPUnit_Framework_Constraint
-     */
-    protected $constraint;
-
-    /**
      * @param PHPUnit_Framework_Constraint $constraint
      * @param string                       $attributeName
      */
     public function __construct(PHPUnit_Framework_Constraint $constraint, $attributeName)
     {
+        parent::__construct($constraint);
+
         $this->attributeName = $attributeName;
-        $this->constraint    = $constraint;
     }
 
     /**
-     * Evaluates the constraint for parameter $other. Returns TRUE if the
-     * constraint is met, FALSE otherwise.
+     * Evaluates the constraint for parameter $other
      *
-     * @param mixed $other Value or object to evaluate.
-     * @return bool
+     * If $returnResult is set to FALSE (the default), an exception is thrown
+     * in case of a failure. NULL is returned otherwise.
+     *
+     * If $returnResult is TRUE, the result of the evaluation is returned as
+     * a boolean value instead: TRUE in case of success, FALSE in case of a
+     * failure.
+     *
+     * @param  mixed $other Value or object to evaluate.
+     * @param  string $description Additional information about the test
+     * @param  bool $returnResult Whether to return a result or throw an exception
+     * @return mixed
+     * @throws PHPUnit_Framework_ExpectationFailedException
      */
-    public function evaluate($other)
+    public function evaluate($other, $description = '', $returnResult = FALSE)
     {
-        return $this->constraint->evaluate(
-          PHPUnit_Framework_Assert::readAttribute(
-            $other, $this->attributeName
-          )
-        );
-    }
-
-    /**
-     * @param   mixed   $other The value passed to evaluate() which failed the
-     *                         constraint check.
-     * @param   string  $description A string with extra description of what was
-     *                               going on while the evaluation failed.
-     * @param   boolean $not Flag to indicate negation.
-     * @throws  PHPUnit_Framework_ExpectationFailedException
-     */
-    public function fail($other, $description, $not = FALSE)
-    {
-        parent::fail(
+        return parent::evaluate(
           PHPUnit_Framework_Assert::readAttribute(
             $other, $this->attributeName
           ),
           $description,
-          $not
+          $returnResult
         );
     }
 
@@ -121,29 +111,20 @@ class PHPUnit_Framework_Constraint_Attribute extends PHPUnit_Framework_Constrain
     public function toString()
     {
         return 'attribute "' . $this->attributeName . '" ' .
-               $this->constraint->toString();
+               $this->innerConstraint->toString();
     }
 
     /**
-     * Counts the number of constraint elements.
+     * Returns the description of the failure
      *
-     * @return integer
-     * @since  Method available since Release 3.4.0
+     * The beginning of failure messages is "Failed asserting that" in most
+     * cases. This method should return the second part of that sentence.
+     *
+     * @param  mixed $other Evaluated value or object.
+     * @return string
      */
-    public function count()
+    protected function failureDescription($other)
     {
-        return count($this->constraint);
-    }
-
-    /**
-     * @since Method available since Release 3.4.0
-     */
-    protected function customFailureDescription($other, $description, $not)
-    {
-        return sprintf(
-          'Failed asserting that %s.',
-
-           $this->toString()
-        );
+        return $this->toString();
     }
 }

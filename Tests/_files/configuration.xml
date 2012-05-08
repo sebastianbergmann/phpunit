@@ -3,21 +3,22 @@
 <phpunit backupGlobals="true"
          backupStaticAttributes="false"
          bootstrap="/path/to/bootstrap.php"
+         cacheTokens="true"
          colors="false"
          convertErrorsToExceptions="true"
          convertNoticesToExceptions="true"
          convertWarningsToExceptions="true"
          forceCoversAnnotation="false"
          mapTestClassNameToCoveredClassName="false"
+         printerClass="PHPUnit_TextUI_ResultPrinter"
          stopOnFailure="false"
-         syntaxCheck="false"
          testSuiteLoaderClass="PHPUnit_Runner_StandardTestSuiteLoader"
          strict="false"
          verbose="false">
   <testsuites>
     <testsuite name="My Test Suite">
-      <directory suffix="Test.php">/path/to/files</directory>
-      <file>/path/to/MyTest.php</file>
+      <directory suffix="Test.php" phpVersion="5.3.0" phpVersionOperator=">=">/path/to/files</directory>
+      <file phpVersion="5.3.0" phpVersionOperator=">=">/path/to/MyTest.php</file>
     </testsuite>
   </testsuites>
 
@@ -66,6 +67,7 @@
         <directory>MyRelativePath</directory>
       </arguments>
     </listener>
+    <listener class="IncludePathListener" file="ConfigurationTest.php" />
   </listeners>
 
   <logging>
@@ -77,14 +79,13 @@
     <log type="plain" target="/tmp/logfile.txt"/>
     <log type="tap" target="/tmp/logfile.tap"/>
     <log type="junit" target="/tmp/logfile.xml" logIncompleteSkipped="false"/>
-    <log type="story-html" target="/tmp/story.html"/>
-    <log type="story-text" target="/tmp/story.txt"/>
     <log type="testdox-html" target="/tmp/testdox.html"/>
     <log type="testdox-text" target="/tmp/testdox.txt"/>
   </logging>
 
   <php>
     <includePath>.</includePath>
+    <includePath>/path/to/lib</includePath>
     <ini name="foo" value="bar"/>
     <const name="foo" value="false"/>
     <const name="bar" value="true"/>

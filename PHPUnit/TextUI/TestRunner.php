@@ -63,27 +63,33 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
     const EXCEPTION_EXIT = 2;
 
     /**
-     * @var    PHPUnit_Runner_TestSuiteLoader
+     * @var PHP_CodeCoverage
+     */
+    protected $codeCoverage;
+
+    /**
+     * @var PHPUnit_Runner_TestSuiteLoader
      */
     protected $loader = NULL;
 
     /**
-     * @var    PHPUnit_TextUI_ResultPrinter
+     * @var PHPUnit_TextUI_ResultPrinter
      */
     protected $printer = NULL;
 
     /**
-     * @var    boolean
+     * @var boolean
      */
     protected static $versionStringPrinted = FALSE;
 
     /**
-     * @param  PHPUnit_Runner_TestSuiteLoader $loader
-     * @since  Method available since Release 3.4.0
+     * @param PHPUnit_Runner_TestSuiteLoader $loader
+     * @since Method available since Release 3.4.0
      */
     public function __construct(PHPUnit_Runner_TestSuiteLoader $loader = NULL)
     {
-        $this->loader = $loader;
+        $this->codeCoverage = new PHP_CodeCoverage;
+        $this->loader       = $loader;
     }
 
     /**
@@ -109,24 +115,6 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
               'No test case or test suite found.'
             );
         }
-    }
-
-    /**
-     * Runs a single test and waits until the user types RETURN.
-     *
-     * @param  PHPUnit_Framework_Test $suite
-     */
-    public static function runAndWait(PHPUnit_Framework_Test $suite)
-    {
-        $aTestRunner = new PHPUnit_TextUI_TestRunner;
-
-        $aTestRunner->doRun(
-          $suite,
-          array(
-            'wait' => TRUE
-          )
-        );
-
     }
 
     /**
@@ -218,6 +206,15 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
             $this->printer->write(
               PHPUnit_Runner_Version::getVersionString() . "\n\n"
             );
+
+            if (isset($arguments['configuration'])) {
+                $this->printer->write(
+                  sprintf(
+                    "Configuration read from %s\n\n",
+                    $arguments['configuration']->getFilename()
+                  )
+                );
+            }
         }
 
         foreach ($arguments['listeners'] as $listener) {
@@ -228,22 +225,6 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
 
         if ($this->printer instanceof PHPUnit_TextUI_ResultPrinter) {
             $result->addListener(new PHPUnit_Util_DeprecatedFeature_Logger);
-        }
-
-        if (isset($arguments['storyHTMLFile'])) {
-            $result->addListener(
-              new PHPUnit_Extensions_Story_ResultPrinter_HTML(
-                $arguments['storyHTMLFile']
-              )
-            );
-        }
-
-        if (isset($arguments['storyTextFile'])) {
-            $result->addListener(
-              new PHPUnit_Extensions_Story_ResultPrinter_Text(
-                $arguments['storyTextFile']
-              )
-            );
         }
 
         if (isset($arguments['testdoxHTMLFile'])) {
@@ -265,7 +246,7 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
         if ((isset($arguments['coverageClover']) ||
              isset($arguments['reportDirectory'])) &&
              extension_loaded('xdebug')) {
-            $result->collectCodeCoverageInformation(TRUE);
+            $result->setCodeCoverage($this->codeCoverage);
         }
 
         if (isset($arguments['logDbus'])) {
@@ -318,11 +299,10 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
                   'a moment.'
                 );
 
-                require_once 'PHP/CodeCoverage/Report/Clover.php';
-
                 $writer = new PHP_CodeCoverage_Report_Clover;
+
                 $writer->process(
-                  $result->getCodeCoverage(), $arguments['coverageClover']
+                  $this->codeCoverage, $arguments['coverageClover']
                 );
 
                 $this->printer->write("\n");
@@ -344,22 +324,18 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
                     }
                 }
 
-                require_once 'PHP/CodeCoverage/Report/HTML.php';
-
                 $writer = new PHP_CodeCoverage_Report_HTML(
-                  array(
-                    'title'          => $title,
-                    'charset'        => $arguments['reportCharset'],
-                    'yui'            => $arguments['reportYUI'],
-                    'highlight'      => $arguments['reportHighlight'],
-                    'lowUpperBound'  => $arguments['reportLowUpperBound'],
-                    'highLowerBound' => $arguments['reportHighLowerBound'],
-                    'generator'      => ' and PHPUnit ' . PHPUnit_Runner_Version::id()
-                  )
+                  $title,
+                  $arguments['reportCharset'],
+                  $arguments['reportYUI'],
+                  $arguments['reportHighlight'],
+                  $arguments['reportLowUpperBound'],
+                  $arguments['reportHighLowerBound'],
+                  ' and PHPUnit ' . PHPUnit_Runner_Version::id()
                 );
 
                 $writer->process(
-                  $result->getCodeCoverage(), $arguments['reportDirectory']
+                  $this->codeCoverage, $arguments['reportDirectory']
                 );
 
                 $this->printer->write("\n");
@@ -367,25 +343,7 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
             }
         }
 
-        $this->pause($arguments['wait']);
-
         return $result;
-    }
-
-    /**
-     * @param  boolean $wait
-     */
-    protected function pause($wait)
-    {
-        if (!$wait) {
-            return;
-        }
-
-        if ($this->printer instanceof PHPUnit_TextUI_ResultPrinter) {
-            $this->printer->printWaitPrompt();
-        }
-
-        fgets(STDIN);
     }
 
     /**
@@ -473,7 +431,6 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
         $arguments['debug']     = isset($arguments['debug'])     ? $arguments['debug']     : FALSE;
         $arguments['filter']    = isset($arguments['filter'])    ? $arguments['filter']    : FALSE;
         $arguments['listeners'] = isset($arguments['listeners']) ? $arguments['listeners'] : array();
-        $arguments['wait']      = isset($arguments['wait'])      ? $arguments['wait']      : FALSE;
 
         if (isset($arguments['configuration'])) {
             $arguments['configuration']->handlePHPConfiguration();
@@ -493,6 +450,11 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
             if (isset($phpunitConfiguration['bootstrap']) &&
                 !isset($arguments['bootstrap'])) {
                 $arguments['bootstrap'] = $phpunitConfiguration['bootstrap'];
+            }
+
+            if (isset($phpunitConfiguration['cacheTokens']) &&
+                !isset($arguments['cacheTokens'])) {
+                $arguments['cacheTokens'] = $phpunitConfiguration['cacheTokens'];
             }
 
             if (isset($phpunitConfiguration['colors']) &&
@@ -560,13 +522,7 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
             foreach ($arguments['configuration']->getListenerConfiguration() as $listener) {
                 if (!class_exists($listener['class'], FALSE) &&
                     $listener['file'] !== '') {
-                    $file = PHPUnit_Util_Filesystem::fileExistsInIncludePath(
-                      $listener['file']
-                    );
-
-                    if ($file !== FALSE) {
-                        require $file;
-                    }
+                    require_once $listener['file'];
                 }
 
                 if (class_exists($listener['class'], FALSE)) {
@@ -650,16 +606,6 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
                 }
             }
 
-            if (isset($loggingConfiguration['story-html']) &&
-                !isset($arguments['storyHTMLFile'])) {
-                $arguments['storyHTMLFile'] = $loggingConfiguration['story-html'];
-            }
-
-            if (isset($loggingConfiguration['story-text']) &&
-                !isset($arguments['storyTextFile'])) {
-                $arguments['storsTextFile'] = $loggingConfiguration['story-text'];
-            }
-
             if (isset($loggingConfiguration['testdox-html']) &&
                 !isset($arguments['testdoxHTMLFile'])) {
                 $arguments['testdoxHTMLFile'] = $loggingConfiguration['testdox-html'];
@@ -669,12 +615,10 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
                 !isset($arguments['testdoxTextFile'])) {
                 $arguments['testdoxTextFile'] = $loggingConfiguration['testdox-text'];
             }
-        }
 
-        if (isset($arguments['configuration'])) {
             $filterConfiguration = $arguments['configuration']->getFilterConfiguration();
 
-            $filter = PHP_CodeCoverage_Filter::getInstance();
+            $filter = $this->codeCoverage->filter();
 
             foreach ($filterConfiguration['blacklist']['include']['directory'] as $dir) {
                 $filter->addDirectoryToBlacklist(
@@ -699,20 +643,24 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
             if ((isset($arguments['coverageClover']) ||
                 isset($arguments['reportDirectory'])) &&
                 extension_loaded('xdebug')) {
-                $coverage = PHP_CodeCoverage::getInstance();
-
-                $coverage->setProcessUncoveredFilesFromWhitelist(
+                $this->codeCoverage->setProcessUncoveredFilesFromWhitelist(
                   $filterConfiguration['whitelist']['addUncoveredFilesFromWhitelist']
                 );
 
+                if (isset($arguments['cacheTokens'])) {
+                    $this->codeCoverage->setCacheTokens(
+                      $arguments['cacheTokens']
+                    );
+                }
+
                 if (isset($arguments['forceCoversAnnotation'])) {
-                    $coverage->setForceCoversAnnotation(
+                    $this->codeCoverage->setForceCoversAnnotation(
                       $arguments['forceCoversAnnotation']
                     );
                 }
 
                 if (isset($arguments['mapTestClassNameToCoveredClassName'])) {
-                    $coverage->setMapTestClassNameToCoveredClassName(
+                    $this->codeCoverage->setMapTestClassNameToCoveredClassName(
                       $arguments['mapTestClassNameToCoveredClassName']
                     );
                 }
@@ -741,6 +689,7 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
 
         $arguments['backupGlobals']               = isset($arguments['backupGlobals'])               ? $arguments['backupGlobals']               : NULL;
         $arguments['backupStaticAttributes']      = isset($arguments['backupStaticAttributes'])      ? $arguments['backupStaticAttributes']      : NULL;
+        $arguments['cacheTokens']                 = isset($arguments['cacheTokens'])                 ? $arguments['cacheTokens']                 : TRUE;
         $arguments['colors']                      = isset($arguments['colors'])                      ? $arguments['colors']                      : FALSE;
         $arguments['convertErrorsToExceptions']   = isset($arguments['convertErrorsToExceptions'])   ? $arguments['convertErrorsToExceptions']   : TRUE;
         $arguments['convertNoticesToExceptions']  = isset($arguments['convertNoticesToExceptions'])  ? $arguments['convertNoticesToExceptions']  : TRUE;
@@ -761,6 +710,8 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
         $arguments['stopOnSkipped']               = isset($arguments['stopOnSkipped'])               ? $arguments['stopOnSkipped']               : FALSE;
         $arguments['strict']                      = isset($arguments['strict'])                      ? $arguments['strict']                      : FALSE;
         $arguments['verbose']                     = isset($arguments['verbose'])                     ? $arguments['verbose']                     : FALSE;
+
+        $this->codeCoverage->setCacheTokens($arguments['cacheTokens']);
 
         if ($arguments['filter'] !== FALSE &&
             preg_match('/^[a-zA-Z0-9_]/', $arguments['filter'])) {

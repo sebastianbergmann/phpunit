@@ -6,8 +6,8 @@ PHPUnit is the de-facto standard for unit testing in PHP projects. It provides b
 Requirements
 ------------
 
-* PHPUnit 3.5 requires PHP 5.2.7 (or later) but PHP 5.3.8 (or later) is highly recommended.
-* [PHP_CodeCoverage](http://github.com/sebastianbergmann/php-code-coverage), the library that is used by PHPUnit 3.5 to collect and process code coverage information, depends on [Xdebug](http://xdebug.org/) 2.0.5 (or later) but Xdebug 2.1.2 (or later) is highly recommended.
+* PHPUnit 3.6 requires PHP 5.2.7 (or later) but PHP 5.3.8 (or later) is highly recommended.
+* [PHP_CodeCoverage](http://github.com/sebastianbergmann/php-code-coverage), the library that is used by PHPUnit 3.6 to collect and process code coverage information, depends on [Xdebug](http://xdebug.org/) 2.0.5 (or later) but Xdebug 2.1.2 (or later) is highly recommended.
 
 Installation
 ------------
@@ -28,14 +28,14 @@ Documentation
 
 The documentation for PHPUnit is available in different formats:
 
-* [English, multiple HTML files](http://www.phpunit.de/manual/3.5/en/index.html)
-* [English, single HTML file](http://www.phpunit.de/manual/3.5/en/phpunit-book.html)
-* [English, PDF](http://www.phpunit.de/manual/3.5/en/phpunit-book.pdf)
-* [English, ePub](http://www.phpunit.de/manual/3.5/en/phpunit-book.epub)
-* [Japanese, multiple HTML files](http://www.phpunit.de/manual/3.5/ja/index.html)
-* [Japanese, single HTML file](http://www.phpunit.de/manual/3.5/ja/phpunit-book.html)
-* [Japanese, PDF](http://www.phpunit.de/manual/3.5/ja/phpunit-book.pdf)
-* [Japanese, ePub](http://www.phpunit.de/manual/3.5/ja/phpunit-book.epub)
+* [English, multiple HTML files](http://www.phpunit.de/manual/3.6/en/index.html)
+* [English, single HTML file](http://www.phpunit.de/manual/3.6/en/phpunit-book.html)
+* [English, PDF](http://www.phpunit.de/manual/3.6/en/phpunit-book.pdf)
+* [English, ePub](http://www.phpunit.de/manual/3.6/en/phpunit-book.epub)
+* [Japanese, multiple HTML files](http://www.phpunit.de/manual/3.6/ja/index.html)
+* [Japanese, single HTML file](http://www.phpunit.de/manual/3.6/ja/phpunit-book.html)
+* [Japanese, PDF](http://www.phpunit.de/manual/3.6/ja/phpunit-book.pdf)
+* [Japanese, ePub](http://www.phpunit.de/manual/3.6/ja/phpunit-book.epub)
 
 Mailing Lists
 -------------
@@ -63,17 +63,9 @@ The following commands can be used to perform the initial checkout of PHPUnit an
     git clone git://github.com/sebastianbergmann/php-timer.git
     git clone git://github.com/sebastianbergmann/phpunit-mock-objects.git
     git clone git://github.com/sebastianbergmann/phpunit-selenium.git
+    git clone git://github.com/sebastianbergmann/phpunit-story.git
+    git clone git://github.com/sebastianbergmann/php-invoker.git
 
-The `dbunit`, `php-code-coverage`, `php-file-iterator`, `php-text-template`, `php-timer`, `php-token-stream`, `phpunit`, `phpunit-mock-objects`, and `phpunit-selenium` directories need to be added to the `include_path`.
+The `dbunit`, `php-code-coverage`, `php-file-iterator`, `php-text-template`, `php-timer`, `php-token-stream`, `phpunit`, `phpunit-mock-objects`, `phpunit-selenium`, `phpunit-story`, and `php-invoker` directories need to be added to the `include_path`.
 
 The `phpunit/phpunit.php` script can be used to invoke the PHPUnit test runner.
-
-The following commands can be used to check out the appropriate branches for PHPUnit 3.5:
-
-    cd phpunit && git checkout 3.5 && cd ..
-    cd dbunit && git checkout 1.0 && cd ..
-    cd php-file-iterator && git checkout 1.2 && cd ..
-    cd php-code-coverage && git checkout 1.0 && cd ..
-    cd php-token-stream && git checkout 1.0 && cd ..
-    cd phpunit-mock-objects && git checkout 1.0 && cd ..
-    cd phpunit-selenium && git checkout 1.0 && cd ..

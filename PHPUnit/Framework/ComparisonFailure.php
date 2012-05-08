@@ -37,6 +37,7 @@
  * @package    PHPUnit
  * @subpackage Framework
  * @author     Sebastian Bergmann <sebastian@phpunit.de>
+ * @author     Bernhard Schussek <bschussek@2bepublished.at>
  * @copyright  2002-2011 Sebastian Bergmann <sebastian@phpunit.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @link       http://www.phpunit.de/
@@ -49,13 +50,14 @@
  * @package    PHPUnit
  * @subpackage Framework
  * @author     Sebastian Bergmann <sebastian@phpunit.de>
+ * @author     Bernhard Schussek <bschussek@2bepublished.at>
  * @copyright  2002-2011 Sebastian Bergmann <sebastian@phpunit.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    Release: @package_version@
  * @link       http://www.phpunit.de/
  * @since      Class available since Release 2.0.0
  */
-abstract class PHPUnit_Framework_ComparisonFailure extends PHPUnit_Framework_AssertionFailedError
+class PHPUnit_Framework_ComparisonFailure extends PHPUnit_Framework_AssertionFailedError
 {
     /**
      * Expected value of the retrieval which does not match $actual.
@@ -68,6 +70,18 @@ abstract class PHPUnit_Framework_ComparisonFailure extends PHPUnit_Framework_Ass
      * @var mixed
      */
     protected $actual;
+
+    /**
+     * The string representation of the expected value
+     * @var string
+     */
+    protected $expectedAsString;
+
+    /**
+     * The string representation of the actual value
+     * @var string
+     */
+    protected $actualAsString;
 
     /**
      * @var boolean
@@ -90,11 +104,12 @@ abstract class PHPUnit_Framework_ComparisonFailure extends PHPUnit_Framework_Ass
      * @param string $message A string which is prefixed on all returned lines
      *                        in the difference output.
      */
-    public function __construct($expected, $actual, $identical = FALSE, $message = '')
+    public function __construct($expected, $actual, $expectedAsString, $actualAsString, $identical = FALSE, $message = '')
     {
         $this->expected  = $expected;
         $this->actual    = $actual;
-        $this->identical = $identical;
+        $this->expectedAsString = $expectedAsString;
+        $this->actualAsString = $actualAsString;
         $this->message   = $message;
     }
 
@@ -115,94 +130,28 @@ abstract class PHPUnit_Framework_ComparisonFailure extends PHPUnit_Framework_Ass
     }
 
     /**
-     * @return boolean
+     * @return string
      */
-    public function identical()
+    public function getActualAsString()
     {
-        return $this->identical;
+        return $this->actualAsString;
     }
 
     /**
-     * Figures out which diff class to use for the input types then
-     * instantiates that class and returns the object.
-     * @note The diff is type sensitive, if the type differs only the types
-     *       are shown.
-     *
-     * @param mixed $expected Expected value retrieved.
-     * @param mixed $actual Actual value retrieved.
-     * @param string $message A string which is prefixed on all returned lines
-     *                        in the difference output.
-     * @return PHPUnit_Framework_ComparisonFailure
+     * @return string
      */
-    public static function diffIdentical($expected, $actual, $message = '')
+    public function getExpectedAsString()
     {
-        if (gettype($expected) !== gettype($actual)) {
-            return new PHPUnit_Framework_ComparisonFailure_Type(
-              $expected, $actual, TRUE, $message
-            );
-        }
-
-        else if (is_array($expected) && is_array($actual)) {
-            return new PHPUnit_Framework_ComparisonFailure_Array(
-              $expected, $actual, TRUE, $message
-            );
-        }
-
-        else if (is_object($expected) && is_object($actual)) {
-            return new PHPUnit_Framework_ComparisonFailure_Object(
-              $expected, $actual, TRUE, $message
-            );
-        }
-
-        else if (is_string($expected) && !is_object($actual)) {
-            return new PHPUnit_Framework_ComparisonFailure_String(
-              $expected, $actual, TRUE, $message
-            );
-        }
-
-        else if (is_null($expected) || is_scalar($expected)) {
-            return new PHPUnit_Framework_ComparisonFailure_Scalar(
-              $expected, $actual, TRUE, $message
-            );
-        }
+        return $this->expectedAsString;
     }
 
     /**
-     * Figures out which diff class to use for the input types then
-     * instantiates that class and returns the object.
-     * @note The diff is not type sensitive, if the type differs the $actual
-     *       value will be converted to the same type as the $expected.
-     *
-     * @param mixed $expected Expected value retrieved.
-     * @param mixed $actual Actual value retrieved.
-     * @param string $message A string which is prefixed on all returned lines
-     *                        in the difference output.
-     * @return PHPUnit_Framework_ComparisonFailure
+     * @return string
      */
-    public static function diffEqual($expected, $actual, $message = '')
+    public function getDiff()
     {
-        if (is_array($expected) && is_array($actual)) {
-            return new PHPUnit_Framework_ComparisonFailure_Array(
-              $expected, $actual, FALSE, $message
-            );
-        }
-
-        else if (is_object($expected) && is_object($actual)) {
-            return new PHPUnit_Framework_ComparisonFailure_Object(
-              $expected, $actual, FALSE, $message
-            );
-        }
-
-        else if (is_string($expected) && !is_object($actual)) {
-            return new PHPUnit_Framework_ComparisonFailure_String(
-              $expected, $actual, FALSE, $message
-            );
-        }
-
-        else if (is_null($expected) || is_scalar($expected)) {
-            return new PHPUnit_Framework_ComparisonFailure_Scalar(
-              $expected, $actual, FALSE, $message
-            );
-        }
+        return $this->actualAsString || $this->expectedAsString
+          ? PHPUnit_Util_Diff::diff($this->expectedAsString, $this->actualAsString)
+          : '';
     }
 }

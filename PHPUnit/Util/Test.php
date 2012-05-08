@@ -59,6 +59,11 @@ class PHPUnit_Util_Test
 {
     const REGEX_DATA_PROVIDER      = '/@dataProvider\s+([a-zA-Z0-9._:-\\\\x7f-\xff]+)/';
     const REGEX_EXPECTED_EXCEPTION = '(@expectedException\s+([:.\w\\\\x7f-\xff]+)(?:[\t ]+(\S*))?(?:[\t ]+(\S*))?\s*$)m';
+    const REGEX_REQUIRES           = '/@requires\s+(?P<name>PHP(?:Unit)?)\s+(?P<value>[\d\.]+)[ \t]*\r?$/m';
+
+    const SMALL  = 0;
+    const MEDIUM = 1;
+    const LARGE  = 2;
 
     private static $annotationCache = array();
 
@@ -94,6 +99,29 @@ class PHPUnit_Util_Test
                 return array('', get_class($test));
             }
         }
+    }
+
+    /**
+     * Returns the requirements for a test.
+     *
+     * @param  string $className
+     * @param  string $methodName
+     * @return array
+     * @since  Method available since Release 3.6.0
+     */
+    public static function getRequirements($className, $methodName)
+    {
+        $reflector  = new ReflectionMethod($className, $methodName);
+        $docComment = $reflector->getDocComment();
+        $requires   = array();
+
+        if ($count = preg_match_all(self::REGEX_REQUIRES, $docComment, $matches)) {
+            for ($i = 0; $i < $count; $i++) {
+                $requires[$matches['name'][$i]] = $matches['value'][$i];
+            }
+        }
+
+        return $requires;
     }
 
     /**
@@ -351,7 +379,55 @@ class PHPUnit_Util_Test
             $groups = array_merge($groups, $annotations['method']['group']);
         }
 
+        if (isset($annotations['class']['ticket'])) {
+            $groups = array_merge($groups, $annotations['class']['ticket']);
+        }
+
+        if (isset($annotations['method']['ticket'])) {
+            $groups = array_merge($groups, $annotations['method']['ticket']);
+        }
+
+        foreach (array('small', 'medium', 'large') as $size) {
+            if (isset($annotations['method'][$size])) {
+                $groups[] = $size;
+            }
+
+            else if (isset($annotations['class'][$size])) {
+                $groups[] = $size;
+            }
+        }
+
         return array_unique($groups);
+    }
+
+    /**
+     * Returns the size of the test.
+     *
+     * @param  string $className
+     * @param  string $methodName
+     * @return integer
+     * @since  Method available since Release 3.6.0
+     */
+    public static function getSize($className, $methodName)
+    {
+        $groups = array_flip(self::getGroups($className, $methodName));
+        $size   = self::SMALL;
+        $class  = new ReflectionClass($className);
+
+        if ($class->isSubclassOf('PHPUnit_Extensions_Database_TestCase') ||
+            $class->isSubclassOf('PHPUnit_Extensions_SeleniumTestCase')) {
+            $size = self::LARGE;
+        }
+
+        else if (isset($groups['medium'])) {
+            $size = self::MEDIUM;
+        }
+
+        else if (isset($groups['large'])) {
+            $size = self::LARGE;
+        }
+
+        return $size;
     }
 
     /**

@@ -43,8 +43,6 @@
  * @since      File available since Release 2.0.0
  */
 
-require_once 'PHP/Timer.php';
-
 /**
  * Prints the result of a TextUI TestRunner run.
  *
@@ -273,8 +271,7 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
         $this->write(
           $defect->getExceptionAsString() . "\n" .
           PHPUnit_Util_Filter::getFilteredStacktrace(
-            $defect->thrownException(),
-            FALSE
+            $defect->thrownException()
           )
         );
     }
@@ -475,7 +472,12 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
      */
     public function addError(PHPUnit_Framework_Test $test, Exception $e, $time)
     {
-        $this->writeProgress('E');
+        if ($this->colors) {
+            $this->writeProgress("\x1b[31;1mE\x1b[0m");
+        } else {
+            $this->writeProgress('E');
+        }
+
         $this->lastTestFailed = TRUE;
     }
 
@@ -488,7 +490,12 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
      */
     public function addFailure(PHPUnit_Framework_Test $test, PHPUnit_Framework_AssertionFailedError $e, $time)
     {
-        $this->writeProgress('F');
+        if ($this->colors) {
+            $this->writeProgress("\x1b[41;37mF\x1b[0m");
+        } else {
+            $this->writeProgress('F');
+        }
+
         $this->lastTestFailed = TRUE;
     }
 
@@ -501,7 +508,12 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
      */
     public function addIncompleteTest(PHPUnit_Framework_Test $test, Exception $e, $time)
     {
-        $this->writeProgress('I');
+        if ($this->colors) {
+            $this->writeProgress("\x1b[33;1mI\x1b[0m");
+        } else {
+            $this->writeProgress('I');
+        }
+
         $this->lastTestFailed = TRUE;
     }
 
@@ -515,7 +527,12 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
      */
     public function addSkippedTest(PHPUnit_Framework_Test $test, Exception $e, $time)
     {
-        $this->writeProgress('S');
+        if ($this->colors) {
+            $this->writeProgress("\x1b[36;1mS\x1b[0m");
+        } else {
+            $this->writeProgress('S');
+        }
+
         $this->lastTestFailed = TRUE;
     }
 

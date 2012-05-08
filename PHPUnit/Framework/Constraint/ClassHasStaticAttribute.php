@@ -37,6 +37,7 @@
  * @package    PHPUnit
  * @subpackage Framework_Constraint
  * @author     Sebastian Bergmann <sebastian@phpunit.de>
+ * @author     Bernhard Schussek <bschussek@2bepublished.at>
  * @copyright  2002-2011 Sebastian Bergmann <sebastian@phpunit.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @link       http://www.phpunit.de/
@@ -52,6 +53,7 @@
  * @package    PHPUnit
  * @subpackage Framework_Constraint
  * @author     Sebastian Bergmann <sebastian@phpunit.de>
+ * @author     Bernhard Schussek <bschussek@2bepublished.at>
  * @copyright  2002-2011 Sebastian Bergmann <sebastian@phpunit.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    Release: @package_version@
@@ -67,7 +69,7 @@ class PHPUnit_Framework_Constraint_ClassHasStaticAttribute extends PHPUnit_Frame
      * @param mixed $other Value or object to evaluate.
      * @return bool
      */
-    public function evaluate($other)
+    protected function matches($other)
     {
         $class = new ReflectionClass($other);
 

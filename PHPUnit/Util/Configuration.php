@@ -53,25 +53,27 @@
  * <phpunit backupGlobals="true"
  *          backupStaticAttributes="false"
  *          bootstrap="/path/to/bootstrap.php"
+ *          cacheTokens="true"
  *          colors="false"
  *          convertErrorsToExceptions="true"
  *          convertNoticesToExceptions="true"
  *          convertWarningsToExceptions="true"
  *          forceCoversAnnotation="false"
  *          mapTestClassNameToCoveredClassName="false"
+ *          printerClass="PHPUnit_TextUI_ResultPrinter"
  *          processIsolation="false"
  *          stopOnError="false"
  *          stopOnFailure="false"
  *          stopOnIncomplete="false"
  *          stopOnSkipped="false"
- *          syntaxCheck="false"
  *          testSuiteLoaderClass="PHPUnit_Runner_StandardTestSuiteLoader"
  *          strict="false"
  *          verbose="false">
  *   <testsuites>
  *     <testsuite name="My Test Suite">
- *       <directory suffix="Test.php">/path/to/files</directory>
- *       <file>/path/to/MyTest.php</file>
+ *       <directory suffix="Test.php" phpVersion="5.3.0" phpVersionOperator=">=">/path/to/files</directory>
+ *       <file phpVersion="5.3.0" phpVersionOperator=">=">/path/to/MyTest.php</file>
+ *       <exclude>/path/to/files/exclude</exclude>
  *     </testsuite>
  *   </testsuites>
  *
@@ -131,8 +133,6 @@
  *     <log type="plain" target="/tmp/logfile.txt"/>
  *     <log type="tap" target="/tmp/logfile.tap"/>
  *     <log type="junit" target="/tmp/logfile.xml" logIncompleteSkipped="false"/>
- *     <log type="story-html" target="/tmp/story.html"/>
- *     <log type="story-text" target="/tmp/story.txt"/>
  *     <log type="testdox-html" target="/tmp/testdox.html"/>
  *     <log type="testdox-text" target="/tmp/testdox.txt"/>
  *   </logging>
@@ -222,6 +222,17 @@ class PHPUnit_Util_Configuration
         }
 
         return self::$instances[$realpath];
+    }
+
+    /**
+     * Returns the realpath to the configuration file.
+     *
+     * @return string
+     * @since  Method available since Release 3.6.0
+     */
+    public function getFilename()
+    {
+        return $this->filename;
     }
 
     /**
@@ -325,7 +336,9 @@ class PHPUnit_Util_Configuration
             $arguments = array();
 
             if ($listener->hasAttribute('file')) {
-                $file = $this->toAbsolutePath((string)$listener->getAttribute('file'));
+                $file = $this->toAbsolutePath(
+                  (string)$listener->getAttribute('file'), TRUE
+                );
             }
 
             if ($listener->childNodes->item(1) instanceof DOMElement &&
@@ -384,7 +397,7 @@ class PHPUnit_Util_Configuration
                 if ($log->hasAttribute('yui')) {
                     $result['yui'] = $this->getBoolean(
                       (string)$log->getAttribute('yui'),
-                      FALSE
+                      TRUE
                     );
                 }
 
@@ -420,7 +433,7 @@ class PHPUnit_Util_Configuration
     public function getPHPConfiguration()
     {
         $result = array(
-          'include_path' => '',
+          'include_path' => array(),
           'ini'          => array(),
           'const'        => array(),
           'var'          => array(),
@@ -433,10 +446,10 @@ class PHPUnit_Util_Configuration
           'request'      => array()
         );
 
-        $nl = $this->xpath->query('php/includePath');
+        foreach($this->xpath->query('php/includePath') as $includePath) {
+            $path = (string)$includePath->nodeValue;
 
-        if ($nl->length == 1) {
-            $result['include_path'] = $this->toAbsolutePath((string)$nl->item(0)->nodeValue);
+            $result['include_path'][] = $this->toAbsolutePath($path);
         }
 
         foreach ($this->xpath->query('php/ini') as $ini) {
@@ -474,10 +487,11 @@ class PHPUnit_Util_Configuration
     {
         $configuration = $this->getPHPConfiguration();
 
-        if ($configuration['include_path'] != '') {
+        if (! empty($configuration['include_path'])) {
             ini_set(
               'include_path',
-              $configuration['include_path'] . PATH_SEPARATOR .
+              implode(PATH_SEPARATOR, $configuration['include_path']) .
+              PATH_SEPARATOR .
               ini_get('include_path')
             );
         }
@@ -519,6 +533,12 @@ class PHPUnit_Util_Configuration
     {
         $result = array();
         $root   = $this->document->documentElement;
+
+        if ($root->hasAttribute('cacheTokens')) {
+            $result['cacheTokens'] = $this->getBoolean(
+              (string)$root->getAttribute('cacheTokens'), TRUE
+            );
+        }
 
         if ($root->hasAttribute('colors')) {
             $result['colors'] = $this->getBoolean(
@@ -605,12 +625,6 @@ class PHPUnit_Util_Configuration
             );
         }
 
-        if ($root->hasAttribute('syntaxCheck')) {
-            $result['syntaxCheck'] = $this->getBoolean(
-              (string)$root->getAttribute('syntaxCheck'), FALSE
-            );
-        }
-
         if ($root->hasAttribute('testSuiteLoaderClass')) {
             $result['testSuiteLoaderClass'] = (string)$root->getAttribute(
               'testSuiteLoaderClass'
@@ -620,6 +634,18 @@ class PHPUnit_Util_Configuration
         if ($root->hasAttribute('testSuiteLoaderFile')) {
             $result['testSuiteLoaderFile'] = (string)$root->getAttribute(
               'testSuiteLoaderFile'
+            );
+        }
+
+        if ($root->hasAttribute('printerClass')) {
+            $result['printerClass'] = (string)$root->getAttribute(
+              'printerClass'
+            );
+        }
+
+        if ($root->hasAttribute('printerFile')) {
+            $result['printerFile'] = (string)$root->getAttribute(
+              'printerFile'
             );
         }
 
@@ -685,11 +711,10 @@ class PHPUnit_Util_Configuration
     /**
      * Returns the test suite configuration.
      *
-     * @param  boolean $syntaxCheck
      * @return PHPUnit_Framework_TestSuite
      * @since  Method available since Release 3.2.1
      */
-    public function getTestSuiteConfiguration($syntaxCheck = FALSE)
+    public function getTestSuiteConfiguration()
     {
         $testSuiteNodes = $this->xpath->query('testsuites/testsuite');
 
@@ -698,7 +723,7 @@ class PHPUnit_Util_Configuration
         }
 
         if ($testSuiteNodes->length == 1) {
-            return $this->getTestSuite($testSuiteNodes->item(0), $syntaxCheck);
+            return $this->getTestSuite($testSuiteNodes->item(0));
         }
 
         if ($testSuiteNodes->length > 1) {
@@ -706,7 +731,7 @@ class PHPUnit_Util_Configuration
 
             foreach ($testSuiteNodes as $testSuiteNode) {
                 $suite->addTestSuite(
-                  $this->getTestSuite($testSuiteNode, $syntaxCheck)
+                  $this->getTestSuite($testSuiteNode)
                 );
             }
 
@@ -716,11 +741,10 @@ class PHPUnit_Util_Configuration
 
     /**
      * @param  DOMElement $testSuiteNode
-     * @param  boolean    $syntaxCheck
      * @return PHPUnit_Framework_TestSuite
      * @since  Method available since Release 3.4.0
      */
-    protected function getTestSuite(DOMElement $testSuiteNode, $syntaxCheck)
+    protected function getTestSuite(DOMElement $testSuiteNode)
     {
         if ($testSuiteNode->hasAttribute('name')) {
             $suite = new PHPUnit_Framework_TestSuite(
@@ -730,10 +754,31 @@ class PHPUnit_Util_Configuration
             $suite = new PHPUnit_Framework_TestSuite;
         }
 
+        $exclude = array();
+        foreach ($testSuiteNode->getElementsByTagName('exclude') as $excludeNode) {
+            $exclude[] = (string)$excludeNode->nodeValue;
+        }
+
         foreach ($testSuiteNode->getElementsByTagName('directory') as $directoryNode) {
             $directory = (string)$directoryNode->nodeValue;
 
             if (empty($directory)) {
+                continue;
+            }
+
+            if ($directoryNode->hasAttribute('phpVersion')) {
+                $phpVersion = (string)$directoryNode->getAttribute('phpVersion');
+            } else {
+                $phpVersion = PHP_VERSION;
+            }
+
+            if ($directoryNode->hasAttribute('phpVersionOperator')) {
+                $phpVersionOperator = (string)$directoryNode->getAttribute('phpVersionOperator');
+            } else {
+                $phpVersionOperator = '>=';
+            }
+
+            if (!version_compare(PHP_VERSION, $phpVersion, $phpVersionOperator)) {
                 continue;
             }
 
@@ -749,11 +794,15 @@ class PHPUnit_Util_Configuration
                 $suffix = 'Test.php';
             }
 
-            $testCollector = new PHPUnit_Runner_IncludePathTestCollector(
-              array($this->toAbsolutePath($directory)), $suffix, $prefix
+            $facade = new File_Iterator_Facade;
+            $files  = $facade->getFilesAsArray(
+              $this->toAbsolutePath($directory),
+              $suffix,
+              $prefix,
+              $exclude
             );
 
-            $suite->addTestFiles($testCollector->collectTests(), $syntaxCheck);
+            $suite->addTestFiles($files);
         }
 
         foreach ($testSuiteNode->getElementsByTagName('file') as $fileNode) {
@@ -763,7 +812,23 @@ class PHPUnit_Util_Configuration
                 continue;
             }
 
-            $suite->addTestFile($file, $syntaxCheck);
+            if ($fileNode->hasAttribute('phpVersion')) {
+                $phpVersion = (string)$fileNode->getAttribute('phpVersion');
+            } else {
+                $phpVersion = PHP_VERSION;
+            }
+
+            if ($fileNode->hasAttribute('phpVersionOperator')) {
+                $phpVersionOperator = (string)$fileNode->getAttribute('phpVersionOperator');
+            } else {
+                $phpVersionOperator = '>=';
+            }
+
+            if (!version_compare(PHP_VERSION, $phpVersion, $phpVersionOperator)) {
+                continue;
+            }
+
+            $suite->addTestFile($file);
         }
 
         return $suite;
@@ -844,11 +909,12 @@ class PHPUnit_Util_Configuration
     }
 
     /**
-     * @param  string $path
+     * @param  string  $path
+     * @param  boolean $useIncludePath
      * @return string
      * @since  Method available since Release 3.5.0
      */
-    protected function toAbsolutePath($path)
+    protected function toAbsolutePath($path, $useIncludePath = FALSE)
     {
         // is the path already an absolute path?
         if ($path[0] === '/' || $path[0] === '\\' ||
@@ -857,6 +923,18 @@ class PHPUnit_Util_Configuration
             return $path;
         }
 
-        return dirname($this->filename) . DIRECTORY_SEPARATOR . $path;
+        $file = dirname($this->filename) . DIRECTORY_SEPARATOR . $path;
+
+        if ($useIncludePath && !file_exists($file)) {
+            $includePathFile = PHPUnit_Util_Filesystem::fileExistsInIncludePath(
+              $path
+            );
+
+            if ($includePathFile) {
+                $file = $includePathFile;
+            }
+        }
+
+        return $file;
     }
 }

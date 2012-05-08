@@ -37,6 +37,7 @@
  * @package    PHPUnit
  * @subpackage Framework_Constraint
  * @author     Sebastian Bergmann <sebastian@phpunit.de>
+ * @author     Bernhard Schussek <bschussek@2bepublished.at>
  * @copyright  2002-2011 Sebastian Bergmann <sebastian@phpunit.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @link       http://www.phpunit.de/
@@ -51,6 +52,7 @@
  * @package    PHPUnit
  * @subpackage Framework_Constraint
  * @author     Sebastian Bergmann <sebastian@phpunit.de>
+ * @author     Bernhard Schussek <bschussek@2bepublished.at>
  * @copyright  2002-2011 Sebastian Bergmann <sebastian@phpunit.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    Release: @package_version@
@@ -66,37 +68,26 @@ class PHPUnit_Framework_Constraint_FileExists extends PHPUnit_Framework_Constrai
      * @param mixed $other Value or object to evaluate.
      * @return bool
      */
-    public function evaluate($other)
+    protected function matches($other)
     {
         return file_exists($other);
     }
 
     /**
-     * @param   mixed   $other The value passed to evaluate() which failed the
-     *                         constraint check.
-     * @param   string  $description A string with extra description of what was
-     *                               going on while the evaluation failed.
-     * @param   boolean $not Flag to indicate negation.
-     * @throws  PHPUnit_Framework_ExpectationFailedException
+     * Returns the description of the failure
+     *
+     * The beginning of failure messages is "Failed asserting that" in most
+     * cases. This method should return the second part of that sentence.
+     *
+     * @param  mixed $other Evaluated value or object.
+     * @return string
      */
-    public function fail($other, $description, $not = FALSE)
+    protected function failureDescription($other)
     {
-        $failureDescription = sprintf(
-          'Failed asserting that file "%s" exists.',
+        return sprintf(
+          'file "%s" exists',
 
-           $other
-        );
-
-        if ($not) {
-            $failureDescription = self::negate($failureDescription);
-        }
-
-        if (!empty($description)) {
-            $failureDescription = $description . "\n" . $failureDescription;
-        }
-
-        throw new PHPUnit_Framework_ExpectationFailedException(
-          $failureDescription
+          $other
         );
     }
 

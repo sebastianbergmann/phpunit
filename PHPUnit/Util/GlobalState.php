@@ -92,6 +92,11 @@ class PHPUnit_Util_GlobalState
       'HTTP_POST_FILES'
     );
 
+    /**
+     * @var array
+     */
+    protected static $phpunitFiles;
+
     public static function backupGlobals(array $blacklist)
     {
         self::$globals     = array();
@@ -185,8 +190,7 @@ class PHPUnit_Util_GlobalState
 
     public static function getIncludedFilesAsString()
     {
-        $blacklist = PHP_CodeCoverage::getInstance()->filter()->getBlacklist();
-        $blacklist = array_flip($blacklist['PHPUNIT']);
+        $blacklist = self::phpunitFiles();
         $files     = get_included_files();
         $result    = '';
 
@@ -279,6 +283,7 @@ class PHPUnit_Util_GlobalState
             if (strpos($declaredClasses[$i], 'PHPUnit') !== 0 &&
                 strpos($declaredClasses[$i], 'File_Iterator') !== 0 &&
                 strpos($declaredClasses[$i], 'PHP_CodeCoverage') !== 0 &&
+                strpos($declaredClasses[$i], 'PHP_Invoker') !== 0 &&
                 strpos($declaredClasses[$i], 'PHP_Timer') !== 0 &&
                 strpos($declaredClasses[$i], 'PHP_TokenStream') !== 0 &&
                 strpos($declaredClasses[$i], 'sfYaml') !== 0 &&
@@ -359,5 +364,32 @@ class PHPUnit_Util_GlobalState
         }
 
         return $result;
+    }
+
+    /**
+     * @return array
+     * @since  Method available since Release 3.6.0
+     */
+    public static function phpunitFiles()
+    {
+        if (self::$phpunitFiles === NULL) {
+            self::$phpunitFiles = array_flip(
+              array_merge(
+                phpunit_autoload(),
+                phpunit_dbunit_autoload(),
+                phpunit_mockobject_autoload(),
+                phpunit_selenium_autoload(),
+                phpunit_story_autoload(),
+                file_iterator_autoload(),
+                php_codecoverage_autoload(),
+                php_invoker_autoload(),
+                php_timer_autoload(),
+                php_tokenstream_autoload(),
+                text_template_autoload()
+              )
+            );
+        }
+
+        return self::$phpunitFiles;
     }
 }

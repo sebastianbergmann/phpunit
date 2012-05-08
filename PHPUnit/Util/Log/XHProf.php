@@ -216,8 +216,8 @@ class PHPUnit_Util_Log_XHProf implements PHPUnit_Framework_TestListener
         $data         = xhprof_disable();
         $runs         = new XHProfRuns_Default;
         $run          = $runs->save_run($data, $this->options['appNamespace']);
-        $this->runs[] = $this->options['xhprofWeb'] . '?run=' . $run .
-                        '&source=' . $this->options['appNamespace'];
+        $this->runs[$test->getName()] = $this->options['xhprofWeb'] . '?run=' . $run .
+                                        '&source=' . $this->options['appNamespace'];
     }
 
     /**
@@ -242,8 +242,8 @@ class PHPUnit_Util_Log_XHProf implements PHPUnit_Framework_TestListener
         if ($this->suites == 0) {
             print "\n\nXHProf runs: " . count($this->runs) . "\n";
 
-            foreach ($this->runs as $run) {
-                print ' * ' . $run . "\n";
+            foreach ($this->runs as $test => $run) {
+                print ' * ' . $test . "\n   " . $run . "\n\n";
             }
 
             print "\n";

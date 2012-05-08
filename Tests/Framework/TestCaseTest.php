@@ -42,8 +42,6 @@
  * @since      File available since Release 2.0.0
  */
 
-require_once 'PHPUnit/Framework/TestCase.php';
-
 require_once dirname(dirname(__FILE__)) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'Error.php';
 require_once dirname(dirname(__FILE__)) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'ExceptionInAssertPostConditionsTest.php';
 require_once dirname(dirname(__FILE__)) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'ExceptionInAssertPreConditionsTest.php';
@@ -52,6 +50,8 @@ require_once dirname(dirname(__FILE__)) . DIRECTORY_SEPARATOR . '_files' . DIREC
 require_once dirname(dirname(__FILE__)) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'ExceptionInTest.php';
 require_once dirname(dirname(__FILE__)) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'Failure.php';
 require_once dirname(dirname(__FILE__)) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'NoArgTestCaseTest.php';
+require_once dirname(dirname(__FILE__)) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'OutputTestCase.php';
+require_once dirname(dirname(__FILE__)) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'RequirementsTest.php';
 require_once dirname(dirname(__FILE__)) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'Singleton.php';
 require_once dirname(dirname(__FILE__)) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'Success.php';
 require_once dirname(dirname(__FILE__)) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'ThrowExceptionTestCase.php';
@@ -204,7 +204,7 @@ class Framework_TestCaseTest extends PHPUnit_Framework_TestCase
     public function testException()
     {
         $test = new ThrowExceptionTestCase('test');
-        $test->setExpectedException('Exception');
+        $test->setExpectedException('RuntimeException');
 
         $result = $test->run();
 
@@ -215,7 +215,7 @@ class Framework_TestCaseTest extends PHPUnit_Framework_TestCase
     public function testNoException()
     {
         $test = new ThrowNoExceptionTestCase('test');
-        $test->setExpectedException('Exception');
+        $test->setExpectedException('RuntimeException');
 
         $result = $test->run();
 
@@ -226,7 +226,7 @@ class Framework_TestCaseTest extends PHPUnit_Framework_TestCase
     public function testWrongException()
     {
         $test = new ThrowExceptionTestCase('test');
-        $test->setExpectedException('RuntimeException');
+        $test->setExpectedException('InvalidArgumentException');
 
         $result = $test->run();
 
@@ -319,5 +319,65 @@ class Framework_TestCaseTest extends PHPUnit_Framework_TestCase
         }
 
         $this->assertNotSame($GLOBALS['singleton'], Singleton::getInstance());
+    }
+
+    public function testExpectOutputStringFooActualFoo()
+    {
+        $test   = new OutputTestCase('testExpectOutputStringFooActualFoo');
+        $result = $test->run();
+
+        $this->assertEquals(1, count($result));
+        $this->assertTrue($result->wasSuccessful());
+    }
+
+    public function testExpectOutputStringFooActualBar()
+    {
+        $test   = new OutputTestCase('testExpectOutputStringFooActualBar');
+        $result = $test->run();
+
+        $this->assertEquals(1, count($result));
+        $this->assertFalse($result->wasSuccessful());
+    }
+
+    public function testExpectOutputRegexFooActualFoo()
+    {
+        $test   = new OutputTestCase('testExpectOutputRegexFooActualFoo');
+        $result = $test->run();
+
+        $this->assertEquals(1, count($result));
+        $this->assertTrue($result->wasSuccessful());
+    }
+
+    public function testExpectOutputRegexFooActualBar()
+    {
+        $test   = new OutputTestCase('testExpectOutputRegexFooActualBar');
+        $result = $test->run();
+
+        $this->assertEquals(1, count($result));
+        $this->assertFalse($result->wasSuccessful());
+    }
+
+    public function testSkipsIfRequiresHigherVersionOfPHPUnit()
+    {
+        $test   = new RequirementsTest('testAlwaysSkip');
+        $result = $test->run();
+
+        $this->assertEquals(1, $result->skippedCount());
+        $this->assertEquals(
+          'PHPUnit 1111111 (or later) is required.',
+          $test->getStatusMessage()
+        );
+    }
+
+    public function testSkipsIfRequiresHigherVersionOfPHP()
+    {
+        $test   = new RequirementsTest('testAlwaysSkip2');
+        $result = $test->run();
+
+        $this->assertEquals(1, $result->skippedCount());
+        $this->assertEquals(
+          'PHP 9999999 (or later) is required.',
+          $test->getStatusMessage()
+        );
     }
 }

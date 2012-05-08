@@ -2,6 +2,8 @@
 phpunit BankAccountTest ../_files/BankAccountTest.php
 --FILE--
 <?php
+define('PHPUNIT_TESTSUITE', TRUE);
+
 $_SERVER['argv'][1] = '--no-configuration';
 $_SERVER['argv'][2] = 'BankAccountTest';
 $_SERVER['argv'][3] = dirname(__FILE__).'/../_files/BankAccountTest.php';

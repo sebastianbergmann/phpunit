@@ -1,2 +1,8 @@
-build
+build/api
+build/code-browser
+build/coverage
+build/logs
+build/pdepend
 phpunit.xml
+phpunit.phar
+build.png

@@ -43,9 +43,6 @@
  * @since      File available since Release 2.0.0
  */
 
-require_once 'PHP/CodeCoverage.php';
-require_once 'PHP/Timer.php';
-
 /**
  * A TestResult collects the results of executing a test case.
  *
@@ -123,24 +120,9 @@ class PHPUnit_Framework_TestResult implements Countable
     /**
      * Code Coverage information.
      *
-     * @var array
+     * @var PHP_CodeCoverage
      */
     protected $codeCoverage;
-
-    /**
-     * @var boolean
-     */
-    protected $collectCodeCoverageInformation = FALSE;
-
-    /**
-     * @var boolean
-     */
-    protected $collectRawCodeCoverageInformation = FALSE;
-
-    /**
-     * @var array
-     */
-    protected $rawCodeCoverageInformation = array();
 
     /**
      * @var boolean
@@ -183,16 +165,19 @@ class PHPUnit_Framework_TestResult implements Countable
     protected $lastTestFailed = FALSE;
 
     /**
-     * @param PHP_CodeCoverage $codeCoverage
+     * @var integer
      */
-    public function __construct(PHP_CodeCoverage $codeCoverage = NULL)
-    {
-        if ($codeCoverage === NULL) {
-            $codeCoverage = PHP_CodeCoverage::getInstance();
-        }
+    protected $timeoutForSmallTests = 1;
 
-        $this->codeCoverage = $codeCoverage;
-    }
+    /**
+     * @var integer
+     */
+    protected $timeoutForMediumTests = 10;
+
+    /**
+     * @var integer
+     */
+    protected $timeoutForLargeTests = 60;
 
     /**
      * Registers a TestListener.
@@ -395,8 +380,17 @@ class PHPUnit_Framework_TestResult implements Countable
         }
 
         if (!$this->lastTestFailed && $test instanceof PHPUnit_Framework_TestCase) {
-            $this->passed[get_class($test) . '::' . $test->getName()] = $test->getResult();
-            $this->time                                              += $time;
+            $class  = get_class($test);
+            $key    =  $class . '::' . $test->getName();
+
+            $this->passed[$key] = array(
+              'result' => $test->getResult(),
+              'size'   => PHPUnit_Util_Test::getSize(
+                            $class, $test->getName(FALSE)
+                          )
+            );
+
+            $this->time += $time;
         }
     }
 
@@ -548,42 +542,6 @@ class PHPUnit_Framework_TestResult implements Countable
     }
 
     /**
-     * Enables or disables the collection of Code Coverage information.
-     *
-     * @param  boolean $flag
-     * @throws InvalidArgumentException
-     * @since  Method available since Release 2.3.0
-     */
-    public function collectCodeCoverageInformation($flag)
-    {
-        if (is_bool($flag)) {
-            $this->collectCodeCoverageInformation = $flag;
-        } else {
-            throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'boolean');
-        }
-    }
-
-    /**
-     * Enables or disables the collection of raw Code Coverage information.
-     *
-     * @param  boolean $flag
-     * @throws InvalidArgumentException
-     * @since  Method available since Release 3.4.0
-     */
-    public function collectRawCodeCoverageInformation($flag)
-    {
-        if (is_bool($flag)) {
-            $this->collectRawCodeCoverageInformation = $flag;
-
-            if ($flag === TRUE) {
-                $this->collectCodeCoverageInformation = $flag;
-            }
-        } else {
-            throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'boolean');
-        }
-    }
-
-    /**
      * Returns whether code coverage information should be collected.
      *
      * @return boolean If code coverage should be collected
@@ -591,18 +549,7 @@ class PHPUnit_Framework_TestResult implements Countable
      */
     public function getCollectCodeCoverageInformation()
     {
-        return $this->collectCodeCoverageInformation;
-    }
-
-    /**
-     * Returns the raw Code Coverage information.
-     *
-     * @return array
-     * @since  Method available since Release 3.4.0
-     */
-    public function getRawCodeCoverageInformation()
-    {
-        return $this->rawCodeCoverageInformation;
+        return $this->codeCoverage !== NULL;
     }
 
     /**
@@ -628,6 +575,7 @@ class PHPUnit_Framework_TestResult implements Countable
         $failure    = FALSE;
         $incomplete = FALSE;
         $skipped    = FALSE;
+        $timeout    = FALSE;
 
         $this->startTest($test);
 
@@ -652,18 +600,54 @@ class PHPUnit_Framework_TestResult implements Countable
         }
 
         $useXdebug = self::$useXdebug &&
-                     $this->collectCodeCoverageInformation &&
+                     $this->codeCoverage !== NULL &&
                      !$test instanceof PHPUnit_Extensions_SeleniumTestCase &&
                      !$test instanceof PHPUnit_Framework_Warning;
 
         if ($useXdebug) {
+            // We need to blacklist test source files when no whitelist is used.
+            if (!$this->codeCoverage->filter()->hasWhitelist()) {
+                $classes = PHPUnit_Util_Class::getHierarchy(
+                  get_class($test), TRUE
+                );
+
+                foreach ($classes as $class) {
+                    $this->codeCoverage->filter()->addFileToBlacklist(
+                      $class->getFileName()
+                    );
+                }
+            }
+
             $this->codeCoverage->start($test);
         }
 
         PHP_Timer::start();
 
         try {
-            $test->runBare();
+            if ($this->strictMode &&
+                extension_loaded('pcntl') && class_exists('PHP_Invoker')) {
+                switch ($test->getSize()) {
+                    case PHPUnit_Util_Test::SMALL: {
+                        $_timeout = $this->timeoutForSmallTests;
+                    }
+                    break;
+
+                    case PHPUnit_Util_Test::MEDIUM: {
+                        $_timeout = $this->timeoutForMediumTests;
+                    }
+                    break;
+
+                    case PHPUnit_Util_Test::LARGE: {
+                        $_timeout = $this->timeoutForLargeTests;
+                    }
+                    break;
+                }
+
+                $invoker = new PHP_Invoker;
+                $invoker->invoke(array($test, 'runBare'), array(), $_timeout);
+            } else {
+                $test->runBare();
+            }
         }
 
         catch (PHPUnit_Framework_AssertionFailedError $e) {
@@ -678,6 +662,10 @@ class PHPUnit_Framework_TestResult implements Countable
             }
         }
 
+        catch (PHP_Invoker_TimeoutException $e) {
+            $timeout = TRUE;
+        }
+
         catch (Exception $e) {
             $error = TRUE;
         }
@@ -690,23 +678,17 @@ class PHPUnit_Framework_TestResult implements Countable
         }
 
         if ($useXdebug) {
-            $data = $this->codeCoverage->stop(FALSE);
-
-            if (!$incomplete && !$skipped) {
-                if ($this->collectRawCodeCoverageInformation) {
-                    $this->rawCodeCoverageInformation[] = $data;
-                } else {
-                    $filterGroups = array('DEFAULT', 'TESTS');
-
-                    if (!defined('PHPUNIT_TESTSUITE')) {
-                        $filterGroups[] = 'PHPUNIT';
-                    }
-
-                    $this->codeCoverage->append($data, $test, $filterGroups);
-                }
+            try {
+                $this->codeCoverage->stop(!$incomplete && !$skipped);
             }
 
-            unset($data);
+            catch (PHP_CodeCoverage_Exception $cce) {
+                $error = TRUE;
+
+                if (!isset($e)) {
+                    $e = $cce;
+                }
+            }
         }
 
         if ($errorHandlerSet === TRUE) {
@@ -721,11 +703,37 @@ class PHPUnit_Framework_TestResult implements Countable
             $this->addFailure($test, $e, $time);
         }
 
+        else if ($timeout === TRUE) {
+            $this->addFailure(
+              $test,
+              new PHPUnit_Framework_IncompleteTestError(
+                sprintf(
+                  'Test execution was aborted after %s',
+                  PHP_Timer::secondsToTimeString($_timeout)
+                )
+              ),
+              $time
+            );
+        }
+
         else if ($this->strictMode && $test->getNumAssertions() == 0) {
             $this->addFailure(
               $test,
               new PHPUnit_Framework_IncompleteTestError(
                 'This test did not perform any assertions'
+              ),
+              $time
+            );
+        }
+
+        else if ($this->strictMode && $test->hasOutput()) {
+            $this->addFailure(
+              $test,
+              new PHPUnit_Framework_OutputError(
+                sprintf(
+                  'This test printed output: %s',
+                  $test->getActualOutput()
+                )
               ),
               $time
             );
@@ -772,6 +780,17 @@ class PHPUnit_Framework_TestResult implements Countable
     public function getCodeCoverage()
     {
         return $this->codeCoverage;
+    }
+
+    /**
+     * Returns the PHP_CodeCoverage object.
+     *
+     * @return PHP_CodeCoverage
+     * @since  Method available since Release 3.6.0
+     */
+    public function setCodeCoverage(PHP_CodeCoverage $codeCoverage)
+    {
+        $this->codeCoverage = $codeCoverage;
     }
 
     /**
@@ -903,5 +922,53 @@ class PHPUnit_Framework_TestResult implements Countable
     public function wasSuccessful()
     {
         return empty($this->errors) && empty($this->failures);
+    }
+
+    /**
+     * Sets the timeout for small tests.
+     *
+     * @param  integer $timeout
+     * @throws InvalidArgumentException
+     * @since  Method available since Release 3.6.0
+     */
+    public function setTimeoutForSmallTests($timeout)
+    {
+        if (is_integer($timeout)) {
+            $this->timeoutForSmallTests = $timeout;
+        } else {
+            throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'integer');
+        }
+    }
+
+    /**
+     * Sets the timeout for medium tests.
+     *
+     * @param  integer $timeout
+     * @throws InvalidArgumentException
+     * @since  Method available since Release 3.6.0
+     */
+    public function setTimeoutForMediumTests($timeout)
+    {
+        if (is_integer($timeout)) {
+            $this->timeoutForMediumTests = $timeout;
+        } else {
+            throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'integer');
+        }
+    }
+
+    /**
+     * Sets the timeout for large tests.
+     *
+     * @param  integer $timeout
+     * @throws InvalidArgumentException
+     * @since  Method available since Release 3.6.0
+     */
+    public function setTimeoutForLargeTests($timeout)
+    {
+        if (is_integer($timeout)) {
+            $this->timeoutForLargeTests = $timeout;
+        } else {
+            throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'integer');
+        }
     }
 }

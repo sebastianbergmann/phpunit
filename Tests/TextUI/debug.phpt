@@ -2,6 +2,8 @@
 phpunit --debug BankAccountTest ../_files/BankAccountTest.php
 --FILE--
 <?php
+define('PHPUNIT_TESTSUITE', TRUE);
+
 $_SERVER['argv'][1] = '--no-configuration';
 $_SERVER['argv'][2] = '--debug';
 $_SERVER['argv'][3] = 'BankAccountTest';

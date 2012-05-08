@@ -60,11 +60,10 @@ class PHPUnit_Runner_StandardTestSuiteLoader implements PHPUnit_Runner_TestSuite
     /**
      * @param  string  $suiteClassName
      * @param  string  $suiteClassFile
-     * @param  boolean $syntaxCheck
      * @return ReflectionClass
      * @throws RuntimeException
      */
-    public function load($suiteClassName, $suiteClassFile = '', $syntaxCheck = FALSE)
+    public function load($suiteClassName, $suiteClassFile = '')
     {
         $suiteClassName = str_replace('.php', '', $suiteClassName);
 
@@ -76,7 +75,7 @@ class PHPUnit_Runner_StandardTestSuiteLoader implements PHPUnit_Runner_TestSuite
 
         if (!class_exists($suiteClassName, FALSE)) {
             PHPUnit_Util_Class::collectStart();
-            $filename = PHPUnit_Util_Fileloader::checkAndLoad($suiteClassFile, $syntaxCheck);
+            $filename = PHPUnit_Util_Fileloader::checkAndLoad($suiteClassFile);
             $loadedClasses = PHPUnit_Util_Class::collectEnd();
         }
 

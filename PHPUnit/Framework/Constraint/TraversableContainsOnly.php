@@ -37,6 +37,7 @@
  * @package    PHPUnit
  * @subpackage Framework_Constraint
  * @author     Sebastian Bergmann <sebastian@phpunit.de>
+ * @author     Bernhard Schussek <bschussek@2bepublished.at>
  * @copyright  2002-2011 Sebastian Bergmann <sebastian@phpunit.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @link       http://www.phpunit.de/
@@ -50,6 +51,7 @@
  * @package    PHPUnit
  * @subpackage Framework_Constraint
  * @author     Sebastian Bergmann <sebastian@phpunit.de>
+ * @author     Bernhard Schussek <bschussek@2bepublished.at>
  * @copyright  2002-2011 Sebastian Bergmann <sebastian@phpunit.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    Release: @package_version@
@@ -86,21 +88,40 @@ class PHPUnit_Framework_Constraint_TraversableContainsOnly extends PHPUnit_Frame
     }
 
     /**
-     * Evaluates the constraint for parameter $other. Returns TRUE if the
-     * constraint is met, FALSE otherwise.
+     * Evaluates the constraint for parameter $other
      *
-     * @param mixed $other Value or object to evaluate.
-     * @return bool
+     * If $returnResult is set to FALSE (the default), an exception is thrown
+     * in case of a failure. NULL is returned otherwise.
+     *
+     * If $returnResult is TRUE, the result of the evaluation is returned as
+     * a boolean value instead: TRUE in case of success, FALSE in case of a
+     * failure.
+     *
+     * @param  mixed $other Value or object to evaluate.
+     * @param  string $description Additional information about the test
+     * @param  bool $returnResult Whether to return a result or throw an exception
+     * @return mixed
+     * @throws PHPUnit_Framework_ExpectationFailedException
      */
-    public function evaluate($other)
+    public function evaluate($other, $description = '', $returnResult = FALSE)
     {
+        $success = TRUE;
+        $constraint = NULL;
+
         foreach ($other as $item) {
-            if (!$this->constraint->evaluate($item)) {
-                return FALSE;
+            if (!$this->constraint->evaluate($item, '', TRUE)) {
+                $success = FALSE;
+                break;
             }
         }
 
-        return TRUE;
+        if ($returnResult) {
+            return $success;
+        }
+
+        if (!$success) {
+            $this->fail($other, $description);
+        }
     }
 
     /**
