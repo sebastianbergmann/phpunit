@@ -1605,6 +1605,20 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
     }
 
     /**
+     *
+     *
+     * @param  array $valueMap  a multidimensional array, which keys are the
+     *                          expected paremeters
+     * @return PHPUnit_Framework_MockObject_Stub_ReturnValueMap
+     * @since  Method available since Release 3.6.0
+     */
+    public static function returnValueMap($map = array())
+    {
+        return new PHPUnit_Framework_MockObject_Stub_ReturnValueMap($map);
+    }
+
+
+    /**
      * Returns the current object.
      *
      * This method is useful when mocking a fluent interface.
