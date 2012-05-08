@@ -1,0 +1,208 @@
+<?php
+/**
+ * PHPUnit
+ *
+ * Copyright (c) 2002-2011, Sebastian Bergmann <sebastian@phpunit.de>.
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions
+ * are met:
+ *
+ *   * Redistributions of source code must retain the above copyright
+ *     notice, this list of conditions and the following disclaimer.
+ *
+ *   * Redistributions in binary form must reproduce the above copyright
+ *     notice, this list of conditions and the following disclaimer in
+ *     the documentation and/or other materials provided with the
+ *     distribution.
+ *
+ *   * Neither the name of Sebastian Bergmann nor the names of his
+ *     contributors may be used to endorse or promote products derived
+ *     from this software without specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+ * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+ * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS
+ * FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
+ * COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,
+ * INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING,
+ * BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+ * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+ * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
+ * LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN
+ * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+ * POSSIBILITY OF SUCH DAMAGE.
+ *
+ * @package    PHPUnit
+ * @subpackage Framework_Constraint
+ * @author     Sebastian Bergmann <sebastian@phpunit.de>
+ * @author     Bernhard Schussek <bschussek@2bepublished.at>
+ * @copyright  2002-2011 Sebastian Bergmann <sebastian@phpunit.de>
+ * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
+ * @link       http://www.phpunit.de/
+ * @since      File available since Release 3.5.0
+ */
+
+/**
+ * Constraint that checks whether a one array is a subset of the other.
+ *
+ * @package    PHPUnit
+ * @subpackage Framework_Constraint
+ * @author     Wojciech Oledzki <wojtek@hoborglabs.com>
+ * @copyright  2011 Wojciech Oledzki <wojtek@hoborglabs.com>
+ * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
+ * @version    Release: @package_version@
+ * @link       http://www.phpunit.de/
+ * @since      Class available since Release 3.6.0
+ */
+class PHPUnit_Framework_Constraint_IsSubset extends PHPUnit_Framework_Constraint
+{
+    /**
+     * @var mixed
+     */
+    protected $value;
+
+    /**
+     * @var float
+     */
+    protected $delta = 0;
+
+    /**
+     * @var integer
+     */
+    protected $maxDepth = 10;
+
+    /**
+     * @var boolean
+     */
+    protected $canonicalize = FALSE;
+
+    /**
+     * @var boolean
+     */
+    protected $ignoreCase = FALSE;
+
+    /**
+     * @var PHPUnit_Framework_ComparisonFailure
+     */
+    protected $lastFailure;
+
+    /**
+     * @param unknown_type $value
+     * @param unknown_type $delta
+     * @param unknown_type $maxDepth
+     * @param unknown_type $canonicalize
+     * @param unknown_type $ignoreCase
+     */
+    public function __construct($value, $delta = 0, $maxDepth = 10, $canonicalize = FALSE, $ignoreCase = FALSE)
+    {
+        if (!is_numeric($delta)) {
+            throw PHPUnit_Util_InvalidArgumentHelper::factory(2, 'numeric');
+        }
+
+        if (!is_int($maxDepth)) {
+            throw PHPUnit_Util_InvalidArgumentHelper::factory(3, 'integer');
+        }
+
+        if (!is_bool($canonicalize)) {
+            throw PHPUnit_Util_InvalidArgumentHelper::factory(4, 'boolean');
+        }
+
+        if (!is_bool($ignoreCase)) {
+            throw PHPUnit_Util_InvalidArgumentHelper::factory(5, 'boolean');
+        }
+
+        $this->value        = $value;
+        $this->delta        = $delta;
+        $this->maxDepth     = $maxDepth;
+        $this->canonicalize = $canonicalize;
+        $this->ignoreCase   = $ignoreCase;
+    }
+
+
+    /**
+     * Evaluates the constraint for parameter $other
+     *
+     * If $returnResult is set to FALSE (the default), an exception is thrown
+     * in case of a failure. NULL is returned otherwise.
+     *
+     * If $returnResult is TRUE, the result of the evaluation is returned as
+     * a boolean value instead: TRUE in case of success, FALSE in case of a
+     * failure.
+     *
+     * @param  mixed $other Value or object to evaluate.
+     * @param  string $description Additional information about the test
+     * @param  bool $returnResult Whether to return a result or throw an exception
+     * @return mixed
+     * @throws PHPUnit_Framework_ExpectationFailedException
+     */
+    public function evaluate($other, $description = '', $returnResult = FALSE)
+    {
+        $comparatorFactory = PHPUnit_Framework_ComparatorFactory::getDefaultInstance();
+
+        try {
+            $comparator = $comparatorFactory->getComparatorFor(
+              $other, $this->value
+            );
+
+            $comparator->assertIsSubset(
+              $this->value,
+              $other,
+              $this->delta,
+              $this->canonicalize,
+              $this->ignoreCase
+            );
+        }
+
+        catch (PHPUnit_Framework_ComparisonFailure $f) {
+            if ($returnResult) {
+                return FALSE;
+            }
+
+            throw new PHPUnit_Framework_ExpectationFailedException(
+              trim($description."\n".$f->getMessage()),
+              $f
+            );
+        }
+
+        return TRUE;
+    }
+
+    /**
+     * Returns a string representation of the constraint.
+     *
+     * @return string
+     */
+    public function toString()
+    {
+        $delta = '';
+
+        if (is_string($this->value)) {
+            if (strpos($this->value, "\n") !== FALSE) {
+                return 'is equal to <text>';
+            } else {
+                return sprintf(
+                  'is equal to <string:%s>',
+
+                  $this->value
+                );
+            }
+        } else {
+            if ($this->delta != 0) {
+                $delta = sprintf(
+                  ' with delta <%F>',
+
+                  $this->delta
+                );
+            }
+
+            return sprintf(
+              'is equal to %s%s',
+
+              PHPUnit_Util_Type::export($this->value),
+              $delta
+            );
+        }
+    }
+}

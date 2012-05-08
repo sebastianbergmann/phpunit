@@ -132,6 +132,35 @@ class PHPUnit_Framework_Comparator_Object extends PHPUnit_Framework_Comparator_A
         }
     }
 
+    public function assertIsSubset($expected, $actual, $delta = 0, $canonicalize = FALSE, $ignoreCase = FALSE, array &$processed = array())
+    {
+        // don't compare twice to allow for cyclic dependencies
+        if (in_array(array($actual, $expected), $processed, TRUE) ||
+            in_array(array($expected, $actual), $processed, TRUE)) {
+            return;
+        }
+
+        $processed[] = array($actual, $expected);
+
+        if ($actual !== $expected) {
+            try {
+                parent::assertIsSubset($this->toArray($expected), $this->toArray($actual), $delta, $canonicalize, $ignoreCase, $processed);
+            }
+
+            catch (PHPUnit_Framework_ComparisonFailure $e) {
+                throw new PHPUnit_Framework_ComparisonFailure(
+                  $expected,
+                  $actual,
+                  // replace "Array" with "MyClass object"
+                  substr_replace($e->getExpectedAsString(), get_class($expected).' Object', 0, 5),
+                  substr_replace($e->getActualAsString(), get_class($actual).' Object', 0, 5),
+                  FALSE,
+                  'Failed asserting that expected object is subset of actual.'
+                );
+            }
+        }
+    }
+
     /**
      * Converts an object to an array containing all of its private, protected
      * and public properties.

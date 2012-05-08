@@ -134,4 +134,9 @@ class PHPUnit_Framework_Comparator_Scalar extends PHPUnit_Framework_Comparator
             );
         }
     }
+
+    public function assertIsSubset($expected, $actual, $delta = 0, $canonicalize = FALSE, $ignoreCase = FALSE)
+    {
+        $this->assertEquals($expected, $actual, $delta, $canonicalize, $ignoreCase);
+    }
 }

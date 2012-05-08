@@ -112,4 +112,8 @@ class PHPUnit_Framework_Comparator_SplObjectStorage extends PHPUnit_Framework_Co
             }
         }
     }
+
+    public function assertIsSubset($expected, $actual, $delta = 0, $canonicalize = FALSE, $ignoreCase = FALSE)
+    {
+    }
 }
