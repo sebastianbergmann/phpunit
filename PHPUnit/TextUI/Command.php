@@ -657,7 +657,7 @@ class PHPUnit_TextUI_Command
             }
 
             if (!isset($this->arguments['test'])) {
-                $testSuite = $configuration->getTestSuiteConfiguration();
+                $testSuite = $configuration->getTestSuiteConfiguration(isset($this->arguments['loader']) ? $this->arguments['loader'] : NULL);
 
                 if ($testSuite !== NULL) {
                     $this->arguments['test'] = $testSuite;
