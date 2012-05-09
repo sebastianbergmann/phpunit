@@ -758,7 +758,7 @@ class PHPUnit_Util_Configuration
      * @return PHPUnit_Framework_TestSuite
      * @since  Method available since Release 3.2.1
      */
-    public function getTestSuiteConfiguration()
+    public function getTestSuiteConfiguration($testSuiteFilter=null)
     {
         $testSuiteNodes = $this->xpath->query('testsuites/testsuite');
 
@@ -767,7 +767,7 @@ class PHPUnit_Util_Configuration
         }
 
         if ($testSuiteNodes->length == 1) {
-            return $this->getTestSuite($testSuiteNodes->item(0));
+            return $this->getTestSuite($testSuiteNodes->item(0), $testSuiteFilter);
         }
 
         if ($testSuiteNodes->length > 1) {
@@ -775,7 +775,7 @@ class PHPUnit_Util_Configuration
 
             foreach ($testSuiteNodes as $testSuiteNode) {
                 $suite->addTestSuite(
-                  $this->getTestSuite($testSuiteNode)
+                  $this->getTestSuite($testSuiteNode, $testSuiteFilter)
                 );
             }
 
@@ -788,7 +788,7 @@ class PHPUnit_Util_Configuration
      * @return PHPUnit_Framework_TestSuite
      * @since  Method available since Release 3.4.0
      */
-    protected function getTestSuite(DOMElement $testSuiteNode)
+    protected function getTestSuite(DOMElement $testSuiteNode, $testSuiteFilter=null)
     {
         if ($testSuiteNode->hasAttribute('name')) {
             $suite = new PHPUnit_Framework_TestSuite(
@@ -807,6 +807,10 @@ class PHPUnit_Util_Configuration
         $fileIteratorFacade = new File_Iterator_Facade;
 
         foreach ($testSuiteNode->getElementsByTagName('directory') as $directoryNode) {
+            if ($testSuiteFilter && $directoryNode->parentNode->getAttribute('name') != $testSuiteFilter) {
+                continue;
+            }
+            
             $directory = (string)$directoryNode->nodeValue;
 
             if (empty($directory)) {
@@ -851,6 +855,10 @@ class PHPUnit_Util_Configuration
         }
 
         foreach ($testSuiteNode->getElementsByTagName('file') as $fileNode) {
+            if ($testSuiteFilter && $fileNode->parentNode->getAttribute('name') != $testSuiteFilter) {
+                continue;
+            }
+            
             $file = (string)$fileNode->nodeValue;
 
             if (empty($file)) {
