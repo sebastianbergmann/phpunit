@@ -2,8 +2,8 @@
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
   <xs:annotation>
     <xs:documentation source="http://www.phpunit.de/manual/3.7/en/appendixes.configuration.html">
-            This Schema file defines the rules by which the XML configuration file of PHPUnit 3.7 may be structured.
-        </xs:documentation>
+      This Schema file defines the rules by which the XML configuration file of PHPUnit 3.7 may be structured.
+    </xs:documentation>
     <xs:appinfo source="http://www.phpunit.de/manual/current/en/appendixes.configuration.html"/>
   </xs:annotation>
   <xs:element name="phpunit" type="phpUnitType">
