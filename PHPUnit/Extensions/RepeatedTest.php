@@ -81,6 +81,11 @@ class PHPUnit_Extensions_RepeatedTest extends PHPUnit_Extensions_TestDecorator
     protected $timesRepeat = 1;
 
     /**
+     * @var mixed
+     */
+    protected $filterTestsuite = FALSE;
+
+    /**
      * Constructor.
      *
      * @param  PHPUnit_Framework_Test $test
@@ -144,7 +149,8 @@ class PHPUnit_Extensions_RepeatedTest extends PHPUnit_Extensions_TestDecorator
                   $this->filter,
                   $this->groups,
                   $this->excludeGroups,
-                  $this->processIsolation
+                  $this->processIsolation,
+                  $this->filterTestsuite
                 );
             } else {
                 $this->test->run($result);
@@ -152,5 +158,28 @@ class PHPUnit_Extensions_RepeatedTest extends PHPUnit_Extensions_TestDecorator
         }
 
         return $result;
+    }
+
+    /**
+     * getter for $filterTestsuite
+     * @return  mixed
+     */
+    public function getFilterTestsuite() {
+        return $this->filterTestsuite;
+    }
+
+    /**
+     * setter for $filterTestsuite
+     * @param   mixed   $value
+     * @return  null
+     */
+    public function setFilterTestsuite($value) {
+        // check it's valid regex. if FALSE it means it did not set
+        if ($value!==FALSE && (!is_string($value) || preg_match($value, 'a')===FALSE)) {
+            throw PHPUnit_Util_InvalidArgumentHelper::factory(
+              1, 'regex string'
+            );
+        }
+        $this->filterTestsuite = $value;
     }
 }

@@ -30,6 +30,8 @@ Usage: phpunit [switches] UnitTest [UnitTest.php]
   --testdox-text <file>     Write agile documentation in Text format to file.
 
   --filter <pattern>        Filter which tests to run.
+  --testsuite <pattern>     Filter which test suite to run. Child test suites
+                            could be separated by "::". E.g.: "ParentSuite::ChildSuite".
   --group ...               Only runs tests from the specified group(s).
   --exclude-group ...       Exclude tests from the specified group(s).
   --list-groups             List available test groups.

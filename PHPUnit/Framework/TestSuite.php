@@ -130,6 +130,13 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
     protected $testCase = FALSE;
 
     /**
+     * Parent testsuite
+     *
+     * @var PHPUnit_Framework_TestSuite
+     */
+    public $parent = NULL;
+
+    /**
      * Constructs a new TestSuite:
      *
      *   - PHPUnit_Framework_TestSuite() constructs an empty TestSuite.
@@ -250,6 +257,7 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
 
         if (!$class->isAbstract()) {
             $this->tests[]  = $test;
+            $test->parent = $this;
             $this->numTests = -1;
 
             if ($test instanceof PHPUnit_Framework_TestSuite &&
@@ -622,10 +630,11 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
      * @param  array                        $groups
      * @param  array                        $excludeGroups
      * @param  boolean                      $processIsolation
+     * @param  mixed                        $filterTestsuite
      * @return PHPUnit_Framework_TestResult
      * @throws PHPUnit_Framework_Exception
      */
-    public function run(PHPUnit_Framework_TestResult $result = NULL, $filter = FALSE, array $groups = array(), array $excludeGroups = array(), $processIsolation = FALSE)
+    public function run(PHPUnit_Framework_TestResult $result = NULL, $filter = FALSE, array $groups = array(), array $excludeGroups = array(), $processIsolation = FALSE, $filterTestsuite = FALSE)
     {
         if ($result === NULL) {
             $result = $this->createResult();
@@ -699,7 +708,7 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
                 $test->setBackupStaticAttributes($this->backupStaticAttributes);
 
                 $test->run(
-                  $result, $filter, $groups, $excludeGroups, $processIsolation
+                  $result, $filter, $groups, $excludeGroups, $processIsolation, $filterTestsuite
                 );
             } else {
                 $runTest = TRUE;
@@ -714,6 +723,25 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
                     }
 
                     if (preg_match($filter, $name) == 0) {
+                        $runTest = FALSE;
+                    }
+                }
+
+                if ($filterTestsuite !== FALSE) {
+                    $testsuiteName = $this->getName();
+                    
+                    // get parent's suites hierarchy separated by "::" symbols
+                    $parentTestSuite = $this->parent;
+                    while ($parentTestSuite !== NULL) {
+                        $testsuiteName = $parentTestSuite->getName() . '::' . $testsuiteName;
+                        if (isset($parentTestSuite->parent)) {
+                            $parentTestSuite = $parentTestSuite->parent;
+                        } else {
+                            $parentTestSuite = NULL;
+                        }
+                    }
+
+                    if (preg_match($filterTestsuite, $testsuiteName) == 0) {
                         $runTest = FALSE;
                     }
                 }

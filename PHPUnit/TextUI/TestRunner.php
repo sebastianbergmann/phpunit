@@ -160,6 +160,7 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
               $arguments['excludeGroups'],
               $arguments['processIsolation']
             );
+            $suite->setFilterTestsuite($arguments['testsuite']);
         }
 
         $result = $this->createTestResult();
@@ -321,7 +322,8 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
           $arguments['filter'],
           $arguments['groups'],
           $arguments['excludeGroups'],
-          $arguments['processIsolation']
+          $arguments['processIsolation'],
+          $arguments['testsuite']
         );
 
         unset($suite);
@@ -502,6 +504,7 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
 
         $arguments['debug']     = isset($arguments['debug'])     ? $arguments['debug']     : FALSE;
         $arguments['filter']    = isset($arguments['filter'])    ? $arguments['filter']    : FALSE;
+        $arguments['testsuite'] = isset($arguments['testsuite']) ? $arguments['testsuite'] : FALSE;
         $arguments['listeners'] = isset($arguments['listeners']) ? $arguments['listeners'] : array();
 
         if (isset($arguments['configuration'])) {
@@ -797,13 +800,16 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
         $arguments['strict']                             = isset($arguments['strict'])                             ? $arguments['strict']                             : FALSE;
         $arguments['verbose']                            = isset($arguments['verbose'])                            ? $arguments['verbose']                            : FALSE;
 
-        if ($arguments['filter'] !== FALSE &&
-            preg_match('/^[a-zA-Z0-9_]/', $arguments['filter'])) {
-            // Escape delimiters in regular expression. Do NOT use preg_quote,
-            // to keep magic characters.
-            $arguments['filter'] = '/' . str_replace(
-              '/', '\\/', $arguments['filter']
-            ) . '/';
+        // escape regex arguments
+        foreach (array('filter', 'testsuite') as $argToEscape) {
+            if ($arguments[$argToEscape] !== FALSE &&
+                preg_match('/^[a-zA-Z0-9_]/', $arguments[$argToEscape])) {
+                // Escape delimiters in regular expression. Do NOT use preg_quote,
+                // to keep magic characters.
+                $arguments[$argToEscape] = '/' . str_replace(
+                  '/', '\\/', $arguments[$argToEscape]
+                ) . '/';
+            }
         }
     }
 }
