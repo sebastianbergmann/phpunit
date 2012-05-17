@@ -849,7 +849,7 @@ class PHPUnit_Util_Configuration
               $this->toAbsolutePath($directory),
               $suffix,
               $prefix,
-              $exclude
+              array_map(array($this, 'toAbsolutePath'), $exclude)
             );
             $suite->addTestFiles($files);
         }
