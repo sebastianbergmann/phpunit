@@ -191,12 +191,15 @@ class PHPUnit_Framework_MockObject_Generator
         }
 
         if ($mockClassName != '' && class_exists($mockClassName, FALSE)) {
-            throw new PHPUnit_Framework_Exception(
-              sprintf(
-                'Class "%s" already exists.',
-                $mockClassName
-              )
-            );
+            $reflect = new ReflectionClass($mockClassName);
+            if (!$reflect->implementsInterface("PHPUnit_Framework_MockObject_MockObject")) {
+                throw new PHPUnit_Framework_Exception(
+                  sprintf(
+                    'Class "%s" already exists.',
+                    $mockClassName
+                  )
+                );
+            }
         }
 
         $mock = self::generate(
