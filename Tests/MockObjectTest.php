@@ -251,12 +251,13 @@ class Framework_MockObjectTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException PHPUnit_Framework_Exception
+     * @covers PHPUnit_Framework_MockObject_Generator::getMock
      */
-    public function testMockClassStoreOverruleSameClassNameThrowsException()
+    public function testGetMockWithFixedClassNameCanProduceTheSameMockTwice()
     {
-        $mock1 = $this->getMock('PartialMockTestClass', array(), array(), __FUNCTION__);
-        $mock2 = $this->getMock('PartialMockTestClass', array(), array(), __FUNCTION__);
+        $mock = $this->getMockBuilder('StdClass')->setMockClassName('FixedName')->getMock();
+        $mock = $this->getMockBuilder('StdClass')->setMockClassName('FixedName')->getMock();
+        $this->assertInstanceOf('StdClass', $mock);
     }
 
     public function testOriginalConstructorSettingConsidered()
