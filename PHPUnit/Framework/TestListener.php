@@ -95,6 +95,13 @@ interface PHPUnit_Framework_TestListener
     public function addSkippedTest(PHPUnit_Framework_Test $test, Exception $e, $time);
 
     /**
+     * Excluded test.
+     *
+     * @param  PHPUnit_Framework_Test $test
+     */
+    public function addExcludedTest(PHPUnit_Framework_Test $test);
+
+    /**
      * A test suite started.
      *
      * @param  PHPUnit_Framework_TestSuite $suite
