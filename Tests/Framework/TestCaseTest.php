@@ -79,6 +79,7 @@ $GLOBALS['i']  = 'i';
  * @version    Release: @package_version@
  * @link       http://www.phpunit.de/
  * @since      Class available since Release 2.0.0
+ * @group foo
  */
 class Framework_TestCaseTest extends PHPUnit_Framework_TestCase
 {

@@ -64,6 +64,7 @@ class Framework_TestListenerTest extends PHPUnit_Framework_TestCase implements P
     protected $failureCount;
     protected $notImplementedCount;
     protected $skippedCount;
+    protected $excludedCount;
     protected $result;
     protected $startCount;
 
@@ -85,6 +86,11 @@ class Framework_TestListenerTest extends PHPUnit_Framework_TestCase implements P
     public function addSkippedTest(PHPUnit_Framework_Test $test, Exception $e, $time)
     {
         $this->skippedCount++;
+    }
+
+    public function addExcludedTest(PHPUnit_Framework_Test $test)
+    {
+        $this->excludedCount++;
     }
 
     public function startTestSuite(PHPUnit_Framework_TestSuite $suite)
