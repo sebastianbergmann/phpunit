@@ -132,7 +132,6 @@ function phpunit_autoload($class = NULL)
           'phpunit_framework_syntheticerror' => '/Framework/SyntheticError.php',
           'phpunit_framework_test' => '/Framework/Test.php',
           'phpunit_framework_testcase' => '/Framework/TestCase.php',
-          'phpunit_framework_testexclude' => '/Framework/TestExclude.php',
           'phpunit_framework_testfailure' => '/Framework/TestFailure.php',
           'phpunit_framework_testlistener' => '/Framework/TestListener.php',
           'phpunit_framework_testresult' => '/Framework/TestResult.php',
