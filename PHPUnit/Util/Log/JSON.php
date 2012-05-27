@@ -154,15 +154,6 @@ class PHPUnit_Util_Log_JSON extends PHPUnit_Util_Printer implements PHPUnit_Fram
     }
 
     /**
-     * Excluded test.
-     *
-     * @param  PHPUnit_Framework_Test $test
-     */
-    public function addExcludedTest(PHPUnit_Framework_Test $test)
-    {
-    }
-
-    /**
      * A testsuite started.
      *
      * @param  PHPUnit_Framework_TestSuite $suite

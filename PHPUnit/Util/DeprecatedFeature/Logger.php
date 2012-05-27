@@ -160,15 +160,6 @@ class PHPUnit_Util_DeprecatedFeature_Logger implements PHPUnit_Framework_TestLis
     }
 
     /**
-     * Excluded test.
-     *
-     * @param  PHPUnit_Framework_Test $test
-     */
-    public function addExcludedTest(PHPUnit_Framework_Test $test)
-    {
-    }
-
-    /**
      * A test suite started.
      *
      * @param  PHPUnit_Framework_TestSuite $suite

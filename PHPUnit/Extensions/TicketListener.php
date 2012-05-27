@@ -116,15 +116,6 @@ abstract class PHPUnit_Extensions_TicketListener implements PHPUnit_Framework_Te
     }
 
     /**
-     * Excluded test.
-     *
-     * @param  PHPUnit_Framework_Test $test
-     */
-    public function addExcludedTest(PHPUnit_Framework_Test $test)
-    {
-    }
-
-    /**
      * A test suite started.
      *
      * @param  PHPUnit_Framework_TestSuite $suite

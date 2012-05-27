@@ -741,8 +741,6 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
                     }
 
                     $this->runTest($test, $result);
-                } else {
-                    $result->addExclude($test);
                 }
             }
         }

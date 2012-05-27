@@ -100,11 +100,6 @@ class PHPUnit_Framework_TestResult implements Countable
     /**
      * @var array
      */
-    protected $excluded = array();
-
-    /**
-     * @var array
-     */
     protected $listeners = array();
 
     /**
@@ -318,21 +313,6 @@ class PHPUnit_Framework_TestResult implements Countable
     }
 
     /**
-     * Adds an exclude to the list of excludes.
-     *
-     * @param  PHPUnit_Framework_Test                 $test
-     */
-    public function addExclude(PHPUnit_Framework_Test $test)
-    {
-        $this->excluded[] = new PHPUnit_Framework_TestExclude($test);
-        $notifyMethod     = 'addExcludedTest';
-
-        foreach ($this->listeners as $listener) {
-            $listener->$notifyMethod($test);
-        }
-    }
-
-    /**
      * Adds a deprecated feature notice to the list of deprecated features used during run
      *
      * @param PHPUnit_Util_DeprecatedFeature $deprecatedFeature
@@ -467,16 +447,6 @@ class PHPUnit_Framework_TestResult implements Countable
     }
 
     /**
-     * Gets the number of excluded tests.
-     *
-     * @return integer
-     */
-    public function excludedCount()
-    {
-        return count($this->excluded);
-    }
-
-    /**
      * Returns an Enumeration for the skipped tests.
      *
      * @return array
@@ -485,16 +455,6 @@ class PHPUnit_Framework_TestResult implements Countable
     public function skipped()
     {
         return $this->skipped;
-    }
-
-    /**
-     * Returns an Enumeration for the excluded tests.
-     *
-     * @return array
-     */
-    public function excluded()
-    {
-        return $this->excluded;
     }
 
     /**
