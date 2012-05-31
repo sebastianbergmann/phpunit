@@ -344,20 +344,19 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
 
             if (isset($arguments['coverageClover'])) {
                 $this->printer->write(
-                  "\nWriting code coverage data to XML file, this may take " .
-                  'a moment.'
+                  "\nGenerating code coverage report in Clover XML format ..."
                 );
 
                 $writer = new PHP_CodeCoverage_Report_Clover;
                 $writer->process($codeCoverage, $arguments['coverageClover']);
 
-                $this->printer->write("\n");
+                $this->printer->write(" done\n");
                 unset($writer);
             }
 
             if (isset($arguments['reportDirectory'])) {
                 $this->printer->write(
-                  "\nGenerating code coverage report, this may take a moment."
+                  "\nGenerating code coverage report in HTML format ..."
                 );
 
                 $writer = new PHP_CodeCoverage_Report_HTML(
@@ -372,25 +371,25 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
 
                 $writer->process($codeCoverage, $arguments['reportDirectory']);
 
-                $this->printer->write("\n");
+                $this->printer->write(" done\n");
                 unset($writer);
             }
 
             if (isset($arguments['coveragePHP'])) {
                 $this->printer->write(
-                  "\nSerializing PHP_CodeCoverage object to file, this may take a moment."
+                  "\nGenerating code coverage report in PHP format ..."
                 );
 
                 $writer = new PHP_CodeCoverage_Report_PHP;
                 $writer->process($codeCoverage, $arguments['coveragePHP']);
 
-                $this->printer->write("\n");
+                $this->printer->write(" done\n");
                 unset($writer);
             }
 
             if (isset($arguments['coverageText'])) {
                 $this->printer->write(
-                  "\nGenerating textual code coverage report, this may take a moment."
+                  "\nGenerating code coverage report in text format ..."
                 );
 
                 if ($arguments['coverageText'] == 'php://stdout') {
@@ -411,7 +410,7 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
 
                 $writer->process($codeCoverage, $colors);
 
-                $this->printer->write("\n");
+                $this->printer->write(" done\n");
             }
         }
 

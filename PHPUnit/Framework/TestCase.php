@@ -1414,11 +1414,13 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
             );
         }
 
-        eval(
-          PHPUnit_Framework_MockObject_Generator::generateClassFromWsdl(
-            $wsdlFile, $originalClassName, $methods
-          )
-        );
+        if (!class_exists($originalClassName)) {
+          eval(
+            PHPUnit_Framework_MockObject_Generator::generateClassFromWsdl(
+              $wsdlFile, $originalClassName, $methods
+            )
+          );
+        }
 
         return $this->getMock(
           $originalClassName,

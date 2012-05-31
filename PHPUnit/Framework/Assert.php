@@ -1378,9 +1378,9 @@ abstract class PHPUnit_Framework_Assert
      * Assert that the size of two arrays (or `Countable` or `Iterator` objects)
      * is the same.
      *
-     * @param integer $expected
-     * @param mixed   $actual
-     * @param string  $message
+     * @param array|Countable|Iterator $expected
+     * @param array|Countable|Iterator $actual
+     * @param string $message
      */
     public function assertSameSize($expected, $actual, $message = '')
     {
@@ -1407,9 +1407,9 @@ abstract class PHPUnit_Framework_Assert
      * Assert that the size of two arrays (or `Countable` or `Iterator` objects)
      * is not the same.
      *
-     * @param integer $expected
-     * @param mixed   $actual
-     * @param string  $message
+     * @param array|Countable|Iterator $expected
+     * @param array|Countable|Iterator $actual
+     * @param string $message
      */
     public function assertNotSameSize($expected, $actual, $message = '')
     {

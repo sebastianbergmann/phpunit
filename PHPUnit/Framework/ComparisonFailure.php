@@ -100,6 +100,8 @@ class PHPUnit_Framework_ComparisonFailure extends PHPUnit_Framework_AssertionFai
      *
      * @param mixed $expected Expected value retrieved.
      * @param mixed $actual Actual value retrieved.
+     * @param string $expectedAsString
+     * @param string $actualAsString
      * @param boolean $identical
      * @param string $message A string which is prefixed on all returned lines
      *                        in the difference output.
