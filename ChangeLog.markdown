@@ -6,10 +6,10 @@ This is the list of changes for the PHPUnit 3.6 release series.
 PHPUnit 3.6.11
 --------------
 
-* Fixed #510: PHP 5.4 `callable` type hint raises `E_NOTICE` when object is mocked.
-* Fixed phpunit-selenium #72: Allow Selenium to have tests that have no concrete test methods.
-* Fixed phpunit-mock-object #83: `getMockFromWsdl()` didn't work twice with the same wsdl file.
-* Fixed #503: Improved the error message if compared strings only differ in line ending style.
+* Fixed #503: Improved the error message for situation when compared strings only differ in line ending style.
+* Fixed #510: `callable` type hint raises `E_NOTICE` when object is mocked.
+* Fixed `phpunit-mock-object` #83: `getMockFromWsdl()` does not work twice for the same WSDL file.
+* Fixed `phpunit-selenium` #72: Allow Selenium to have tests that have no concrete test methods.
 
 PHPUnit 3.6.10
 --------------
