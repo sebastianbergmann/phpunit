@@ -1858,7 +1858,7 @@ EOF
         return TRUE;
     }
 
-    public function staticCallbackReturningTrue()
+    public static function staticCallbackReturningTrue()
     {
         return TRUE;
     }
