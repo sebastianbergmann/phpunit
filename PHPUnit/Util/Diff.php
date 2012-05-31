@@ -192,12 +192,12 @@ class PHPUnit_Util_Diff
         $diff = array();
         $line = 0;
 
-        if(isset($fromMatches[0]) 
-            && $toMatches[0] 
-            && count($fromMatches[0]) === count($toMatches[0]) 
-            && $fromMatches[0] !== $toMatches[0]
-        ) {
-            $diff[] = array('#Warning: Strings contain different line endings!', 0);
+        if (isset($fromMatches[0]) && $toMatches[0] &&
+            count($fromMatches[0]) === count($toMatches[0]) &&
+            $fromMatches[0] !== $toMatches[0]) {
+            $diff[] = array(
+              '#Warning: Strings contain different line endings!', 0
+            );
         }
 
         foreach ($start as $token) {
