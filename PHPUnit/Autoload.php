@@ -214,7 +214,9 @@ if (PHPUnit_Util_Filesystem::fileExistsInIncludePath('PHPUnit/Extensions/Databas
     require_once 'PHPUnit/Extensions/Database/Autoload.php';
 }
 
-if (PHPUnit_Util_Filesystem::fileExistsInIncludePath('PHPUnit/Extensions/SeleniumTestCase/Autoload.php')) {
+if (PHPUnit_Util_Filesystem::fileExistsInIncludePath('PHPUnit/Extensions/SeleniumCommon/Autoload.php')) {
+    require_once 'PHPUnit/Extensions/SeleniumCommon/Autoload.php';
+} else if (PHPUnit_Util_Filesystem::fileExistsInIncludePath('PHPUnit/Extensions/SeleniumTestCase/Autoload.php')) {
     require_once 'PHPUnit/Extensions/SeleniumTestCase/Autoload.php';
 }
 
