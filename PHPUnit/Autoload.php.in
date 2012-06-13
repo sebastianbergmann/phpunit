@@ -95,7 +95,11 @@ if (stream_resolve_include_path('PHPUnit/Extensions/Database/Autoload.php')) {
     require_once 'PHPUnit/Extensions/Database/Autoload.php';
 }
 
-if (stream_resolve_include_path('PHPUnit/Extensions/SeleniumTestCase/Autoload.php')) {
+if (stream_resolve_include_path('PHPUnit/Extensions/SeleniumCommon/Autoload.php')) {
+    require_once 'PHPUnit/Extensions/SeleniumCommon/Autoload.php';
+}
+
+else if (stream_resolve_include_path('PHPUnit/Extensions/SeleniumTestCase/Autoload.php')) {
     require_once 'PHPUnit/Extensions/SeleniumTestCase/Autoload.php';
 }
 
