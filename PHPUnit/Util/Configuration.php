@@ -423,6 +423,20 @@ class PHPUnit_Util_Configuration
                       FALSE
                     );
                 }
+                
+                if ($log->hasAttribute('logIncompleteAsSkipped')) {
+                    $result['logIncompleteAsSkipped'] = $this->getBoolean(
+                      (string)$log->getAttribute('logIncompleteAsSkipped'),
+                      FALSE
+                    );
+                }
+                
+                if ($log->hasAttribute('logSkippedAsSkipped')) {
+                    $result['logSkippedAsSkipped'] = $this->getBoolean(
+                      (string)$log->getAttribute('logSkippedAsSkipped'),
+                      FALSE
+                    );
+                }
             }
 
             else if ($type == 'coverage-text') {
