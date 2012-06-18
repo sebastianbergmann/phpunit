@@ -73,7 +73,17 @@ class PHPUnit_Util_Log_JUnit extends PHPUnit_Util_Printer implements PHPUnit_Fra
      * @var    boolean
      */
     protected $logIncompleteSkipped = FALSE;
-
+    
+    /**
+     * @var    boolean
+     */
+    protected $logSkippedAsSkipped = FALSE;
+	
+	/**
+     * @var    boolean
+     */
+    protected $logIncompleteAsSkipped = FALSE;
+    
     /**
      * @var    boolean
      */
@@ -130,7 +140,7 @@ class PHPUnit_Util_Log_JUnit extends PHPUnit_Util_Printer implements PHPUnit_Fra
      * @param  mixed   $out
      * @param  boolean $logIncompleteSkipped
      */
-    public function __construct($out = NULL, $logIncompleteSkipped = FALSE)
+    public function __construct($out = NULL, $logIncompleteSkipped = FALSE, $logSkippedAsSkipped = FALSE, $logIncompleteAsSkipped = FALSE)
     {
         $this->document = new DOMDocument('1.0', 'UTF-8');
         $this->document->formatOutput = TRUE;
@@ -141,6 +151,8 @@ class PHPUnit_Util_Log_JUnit extends PHPUnit_Util_Printer implements PHPUnit_Fra
         parent::__construct($out);
 
         $this->logIncompleteSkipped = $logIncompleteSkipped;
+    	$this->logSkippedAsSkipped = $logSkippedAsSkipped;
+		$this->logIncompleteAsSkipped = $logIncompleteAsSkipped;
     }
 
     /**
@@ -232,6 +244,11 @@ class PHPUnit_Util_Log_JUnit extends PHPUnit_Util_Printer implements PHPUnit_Fra
     public function addIncompleteTest(PHPUnit_Framework_Test $test, Exception $e, $time)
     {
         if ($this->logIncompleteSkipped && $this->currentTestCase !== NULL) {
+            if($this->logIncompleteAsSkipped) {
+				$skipped = $this->document->createElement('skipped');
+				$this->currentTestCase->appendChild($skipped);
+			}
+            
             $error = $this->document->createElement(
               'error',
               PHPUnit_Util_XML::prepareString(
@@ -261,6 +278,11 @@ class PHPUnit_Util_Log_JUnit extends PHPUnit_Util_Printer implements PHPUnit_Fra
     public function addSkippedTest(PHPUnit_Framework_Test $test, Exception $e, $time)
     {
         if ($this->logIncompleteSkipped && $this->currentTestCase !== NULL) {
+            if($this->logSkippedAsSkipped) {
+				$skipped = $this->document->createElement('skipped');
+				$this->currentTestCase->appendChild($skipped);
+			}
+            
             $error = $this->document->createElement(
               'error',
               PHPUnit_Util_XML::prepareString(
