@@ -189,9 +189,6 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
             $suite = new PHPUnit_Extensions_RepeatedTest(
               $suite,
               $arguments['repeat'],
-              $arguments['filter'],
-              $arguments['groups'],
-              $arguments['excludeGroups'],
               $arguments['processIsolation']
             );
         }
@@ -350,13 +347,8 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
             );
         }
 
-        $suite->run(
-          $result,
-          $arguments['filter'],
-          $arguments['groups'],
-          $arguments['excludeGroups'],
-          $arguments['processIsolation']
-        );
+        $suite->setRunTestInSeparateProcess($arguments['processIsolation']);
+        $suite->run($result);
 
         unset($suite);
         $result->flushListeners();
