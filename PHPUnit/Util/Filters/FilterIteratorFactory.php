@@ -6,7 +6,7 @@ class PHPUnit_Util_Filters_FilterIteratorFactory
     private $filters = array();
 
     public function addFilter(ReflectionClass $filter, $args) {
-        if (!$filter->isSubclassOf('FilterIterator')) {
+        if (!$filter->isSubclassOf('RecursiveFilterIterator')) {
             throw new InvalidArgumentException(
                 'Class "' . $filter->name . '" does not extend FilterIterator.'
             );

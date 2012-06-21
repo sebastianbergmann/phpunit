@@ -1,6 +1,6 @@
 <?php
 
-abstract class PHPUnit_Util_Filters_GroupFilterIterator extends FilterIterator
+abstract class PHPUnit_Util_Filters_GroupFilterIterator extends RecursiveFilterIterator
 {
 
     /**

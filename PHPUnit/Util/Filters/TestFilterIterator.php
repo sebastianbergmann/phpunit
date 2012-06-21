@@ -1,6 +1,6 @@
 <?php
 
-class PHPUnit_Util_Filters_TestFilterIterator extends FilterIterator
+class PHPUnit_Util_Filters_TestFilterIterator extends RecursiveFilterIterator
 {
 
     protected $filter = NULL;
