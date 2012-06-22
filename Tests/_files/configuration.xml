@@ -71,6 +71,7 @@
       </arguments>
     </listener>
     <listener class="IncludePathListener" file="ConfigurationTest.php" />
+    <listener class="CompactArgumentsListener" file="/CompactArgumentsListener.php"><arguments><integer>42</integer></arguments></listener>
   </listeners>
 
   <logging>
