@@ -106,6 +106,12 @@ class PHPUnit_Util_ErrorHandler
             }
 
             $exception = 'PHPUnit_Framework_Error_Notice';
+            $prefix = ($errno === E_STRICT)
+                ? 'Strict Standards: '
+                : 'Notice: '
+            ;
+
+            $errstr = $prefix . $errstr;
         }
 
         else if ($errno == E_WARNING || $errno == E_USER_WARNING) {
@@ -114,6 +120,7 @@ class PHPUnit_Util_ErrorHandler
             }
 
             $exception = 'PHPUnit_Framework_Error_Warning';
+            $errstr = 'Warning: ' . $errstr;
         }
 
         else if (version_compare(PHP_VERSION, '5.3', '>=') && ($errno == E_DEPRECATED || $errno == E_USER_DEPRECATED)) {
@@ -122,10 +129,12 @@ class PHPUnit_Util_ErrorHandler
             }
 
             $exception = 'PHPUnit_Framework_Error_Deprecated';
+            $errstr = 'Deprecated: ' . $errstr;
         }
 
         else {
             $exception = 'PHPUnit_Framework_Error';
+            $errstr = 'PHP Error: ' . $errstr;
         }
 
         throw new $exception($errstr, $errno, $errfile, $errline, $trace);
