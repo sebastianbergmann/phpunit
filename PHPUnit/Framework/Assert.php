@@ -291,6 +291,64 @@ abstract class PHPUnit_Framework_Assert
     }
 
     /**
+     * Asserts that a haystack contains at least one instance of a given
+     * classname
+     *
+     * @param string $classname
+     * @param array|Traversable $haystack
+     * @param int $number
+     * @param bool $number
+     * @param string $message
+     */
+    public static function assertContainsInstanceOf($classname, $haystack, $number = 1, $exact = false, $message = '')
+    {
+        if (!(is_array($haystack) ||
+            is_object($haystack) && $haystack instanceof Traversable)) {
+            throw PHPUnit_Util_InvalidArgumentHelper::factory(
+              2, 'array or iterator'
+            );
+        }
+
+        self::assertThat(
+            $haystack,
+            new PHPUnit_Framework_Constraint_TraversableContainsInstanceOf(
+                $classname,
+                $number,
+                $exact
+            ),
+            $message
+        );
+    }
+
+    /**
+     * Asserts that a haystack doesn't contain any instances of a given
+     * classname
+     *
+     * @param string $classname
+     * @param array|Traversable $haystack
+     * @param string $message
+     */
+    public static function assertNotContainsInstanceOf($classname, $haystack, $message = '')
+    {
+        if (!(is_array($haystack) ||
+            is_object($haystack) && $haystack instanceof Traversable)) {
+            throw PHPUnit_Util_InvalidArgumentHelper::factory(
+              2, 'array or iterator'
+            );
+        }
+
+        self::assertThat(
+            $haystack,
+            new PHPUnit_Framework_Constraint_Not(
+                new PHPUnit_Framework_Constraint_TraversableContainsInstanceOf(
+                    $classname
+                )
+            ),
+            $message
+        );
+    }
+
+    /**
      * Asserts that a haystack that is stored in a static attribute of a class
      * or an attribute of an object contains only values of a given type.
      *
@@ -2328,6 +2386,20 @@ abstract class PHPUnit_Framework_Assert
     public static function containsOnlyInstancesOf($classname)
     {
         return new PHPUnit_Framework_Constraint_TraversableContainsOnly($classname, FALSE);
+    }
+
+    /**
+     * Returns a PHPUnit_Framework_Constraint_TraversableContainsInstanceOf matcher
+     * object.
+     *
+     * @param string $classname
+     * @param int    $number
+     * @param bool   $exact
+     * @return PHPUnit_Framework_Constraint_TraversableContainsInstanceOf
+     */
+    public static function containsInstanceOf($classname, $number = 1, $exact = false)
+    {
+        return new PHPUnit_Framework_Constraint_TraversableContainsInstanceOf($classname, $number, $exact);
     }
 
     /**

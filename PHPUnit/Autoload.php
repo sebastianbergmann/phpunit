@@ -113,6 +113,7 @@ function phpunit_autoload($class = NULL)
           'phpunit_framework_constraint_stringstartswith' => '/Framework/Constraint/StringStartsWith.php',
           'phpunit_framework_constraint_traversablecontains' => '/Framework/Constraint/TraversableContains.php',
           'phpunit_framework_constraint_traversablecontainsonly' => '/Framework/Constraint/TraversableContainsOnly.php',
+          'phpunit_framework_constraint_traversablecontainsinstanceof' => '/Framework/Constraint/TraversableContainsInstanceOf.php',
           'phpunit_framework_constraint_xor' => '/Framework/Constraint/Xor.php',
           'phpunit_framework_error' => '/Framework/Error.php',
           'phpunit_framework_error_deprecated' => '/Framework/Error/Deprecated.php',

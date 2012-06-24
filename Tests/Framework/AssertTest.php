@@ -196,7 +196,83 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
         }
         $this->fail();
     }
-
+    /**
+     * @covers PHPUnit_Framework_Assert::assertContainsInstanceOf
+     */
+    public function testAssertContainsInstanceOf()
+    {
+        $test = array(
+            new Book,
+            'Book',
+            1
+        );
+        $this->assertContainsInstanceOf('Book', $test);
+        try {
+            $this->assertContainsInstanceOf('stdClass', $test);
+        } catch (PHPUnit_Framework_AssertionFailedError $e) {
+            return;
+        }
+        $this->fail();
+    }
+    /**
+     * @covers PHPUnit_Framework_Assert::assertNotContainsInstanceOf
+     */
+    public function testAssertNotContainsInstanceOf()
+    {
+        $test = array(
+            new Book,
+            'Book',
+            1
+        );
+        $this->assertNotContainsInstanceOf('stdClass', $test);
+        try {
+            $this->assertNotContainsInstanceOf('Book', $test);
+        } catch (PHPUnit_Framework_AssertionFailedError $e) {
+            return;
+        }
+        $this->fail();
+    }
+    /**
+     * @covers PHPUnit_Framework_Assert::assertContainsInstanceOf
+     * @depends testAssertContainsInstanceOf
+     */
+    public function testAssertContainsInstanceOfWithNonExactCount()
+    {
+        $test = array(
+            new Book,
+            new Book,
+            'Book',
+            1
+        );
+        $this->assertContainsInstanceOf('Book', $test, 1);
+        $this->assertContainsInstanceOf('Book', $test, 2);
+        try {
+            $this->assertContainsInstanceOf('Book', $test, 3);
+        } catch (PHPUnit_Framework_AssertionFailedError $e) {
+            return;
+        }
+        $this->fail();
+    }
+    /**
+     * @covers PHPUnit_Framework_Assert::assertContainsInstanceOf
+     * @depends testAssertContainsInstanceOfWithNonExactCount
+     */
+    public function testAssertContainsInstanceOfWithExactCount()
+    {
+        $test = array(
+            new Book,
+            new Book,
+            'Book',
+            1
+        );
+        $this->assertContainsInstanceOf('Book', $test, 2, TRUE);
+        try {
+            $this->assertContainsInstanceOf('Book', $test, 1, TRUE);
+        } catch (PHPUnit_Framework_AssertionFailedError $e) {
+            return;
+        }
+        $this->fail();
+    }
     /**
      * @covers            PHPUnit_Framework_Assert::assertArrayHasKey
      * @expectedException PHPUnit_Framework_Exception
