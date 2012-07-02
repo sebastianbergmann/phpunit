@@ -251,7 +251,7 @@ class Util_ConfigurationTest extends PHPUnit_Framework_TestCase
           array(
             'include_path' =>
             array(
-              dirname(dirname(__FILE__)) . '/_files/.',
+              dirname(dirname(__FILE__)) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . '.',
               '/path/to/lib'
             ),
             'ini'=> array('foo' => 'bar'),
