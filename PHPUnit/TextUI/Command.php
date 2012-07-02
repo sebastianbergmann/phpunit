@@ -894,8 +894,6 @@ Usage: phpunit [switches] UnitTest [UnitTest.php]
   -h|--help                 Prints this usage information.
   --version                 Prints the version and exits.
 
-  --debug                   Output debugging information.
-
 EOT;
     }
 

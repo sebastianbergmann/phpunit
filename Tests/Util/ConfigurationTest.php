@@ -205,7 +205,15 @@ class Util_ConfigurationTest extends PHPUnit_Framework_TestCase
               'class' => 'IncludePathListener',
               'file' => __FILE__,
               'arguments' => array()
-            )
+            ),
+            array(
+              'class' => 'CompactArgumentsListener',
+              'file' => '/CompactArgumentsListener.php',
+              'arguments' =>
+              array(
+                0 => 42
+              ),
+            ),
           ),
           $this->configuration->getListenerConfiguration()
         );

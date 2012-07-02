@@ -346,9 +346,9 @@ class PHPUnit_Util_Configuration
                 );
             }
 
-            if ($listener->childNodes->item(1) instanceof DOMElement &&
-                $listener->childNodes->item(1)->tagName == 'arguments') {
-                foreach ($listener->childNodes->item(1)->childNodes as $argument) {
+            foreach ($listener->childNodes as $node) {
+              if ($node instanceof DOMElement && $node->tagName == 'arguments') {
+                foreach ($node->childNodes as $argument) {
                     if ($argument instanceof DOMElement) {
                         if ($argument->tagName == 'file' ||
                             $argument->tagName == 'directory') {
@@ -358,6 +358,7 @@ class PHPUnit_Util_Configuration
                         }
                     }
                 }
+              }
             }
 
             $result[] = array(
