@@ -37,7 +37,7 @@
  * @package    PHPUnit
  * @author     Sebastian Bergmann <sebastian@phpunit.de>
  * @copyright  2001-2012 Sebastian Bergmann <sebastian@phpunit.de>
- * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
+ * @license    http://www.opensource.org/licenses/BSD-3-Clause  The BSD 3-Clause License
  * @link       http://www.phpunit.de/
  * @since      File available since Release 3.3.0
  */
@@ -48,7 +48,7 @@
  * @package    PHPUnit
  * @author     Sebastian Bergmann <sebastian@phpunit.de>
  * @copyright  2001-2012 Sebastian Bergmann <sebastian@phpunit.de>
- * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
+ * @license    http://www.opensource.org/licenses/BSD-3-Clause  The BSD 3-Clause License
  * @version    Release: @package_version@
  * @link       http://www.phpunit.de/
  * @since      Class available since Release 3.3.0
@@ -205,7 +205,15 @@ class Util_ConfigurationTest extends PHPUnit_Framework_TestCase
               'class' => 'IncludePathListener',
               'file' => __FILE__,
               'arguments' => array()
-            )
+            ),
+            array(
+              'class' => 'CompactArgumentsListener',
+              'file' => '/CompactArgumentsListener.php',
+              'arguments' =>
+              array(
+                0 => 42
+              ),
+            ),
           ),
           $this->configuration->getListenerConfiguration()
         );
@@ -243,7 +251,7 @@ class Util_ConfigurationTest extends PHPUnit_Framework_TestCase
           array(
             'include_path' =>
             array(
-              dirname(__DIR__) . '/_files/.',
+              dirname(__DIR__) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . '.',
               '/path/to/lib'
             ),
             'ini'=> array('foo' => 'bar'),
@@ -268,7 +276,7 @@ class Util_ConfigurationTest extends PHPUnit_Framework_TestCase
     {
         $this->configuration->handlePHPConfiguration();
 
-        $path = dirname(__DIR__) . '/_files/.' . PATH_SEPARATOR . '/path/to/lib';
+        $path = dirname(__DIR__) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . '.' . PATH_SEPARATOR . '/path/to/lib';
         $this->assertStringStartsWith($path, ini_get('include_path'));
         $this->assertEquals(FALSE, FOO);
         $this->assertEquals(TRUE, BAR);

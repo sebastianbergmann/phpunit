@@ -38,7 +38,7 @@
  * @subpackage Framework
  * @author     Sebastian Bergmann <sebastian@phpunit.de>
  * @copyright  2001-2012 Sebastian Bergmann <sebastian@phpunit.de>
- * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
+ * @license    http://www.opensource.org/licenses/BSD-3-Clause  The BSD 3-Clause License
  * @link       http://www.phpunit.de/
  * @since      File available since Release 2.0.0
  */
@@ -75,7 +75,7 @@
  * @subpackage Framework
  * @author     Sebastian Bergmann <sebastian@phpunit.de>
  * @copyright  2001-2012 Sebastian Bergmann <sebastian@phpunit.de>
- * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
+ * @license    http://www.opensource.org/licenses/BSD-3-Clause  The BSD 3-Clause License
  * @version    Release: @package_version@
  * @link       http://www.phpunit.de/
  * @since      Class available since Release 2.0.0
@@ -763,7 +763,7 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
      * Runs a test.
      *
      * @param  PHPUnit_Framework_Test        $test
-     * @param  PHPUnit_Framework_TestResult  $testResult
+     * @param  PHPUnit_Framework_TestResult  $result
      */
     public function runTest(PHPUnit_Framework_Test $test, PHPUnit_Framework_TestResult $result)
     {

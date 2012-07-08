@@ -39,7 +39,7 @@
  * @author     Sebastian Bergmann <sebastian@phpunit.de>
  * @author     Bernhard Schussek <bschussek@2bepublished.at>
  * @copyright  2001-2012 Sebastian Bergmann <sebastian@phpunit.de>
- * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
+ * @license    http://www.opensource.org/licenses/BSD-3-Clause  The BSD 3-Clause License
  * @link       http://www.phpunit.de/
  * @since      File available since Release 3.5.0
  */
@@ -52,7 +52,7 @@
  * @author     Sebastian Bergmann <sebastian@phpunit.de>
  * @author     Bernhard Schussek <bschussek@2bepublished.at>
  * @copyright  2001-2012 Sebastian Bergmann <sebastian@phpunit.de>
- * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
+ * @license    http://www.opensource.org/licenses/BSD-3-Clause  The BSD 3-Clause License
  * @version    Release: @package_version@
  * @link       http://www.phpunit.de/
  * @since      Class available since Release 3.5.0
@@ -84,10 +84,10 @@ class PHPUnit_Framework_Constraint_StringMatches extends PHPUnit_Framework_Const
     {
         $from = preg_split('(\r\n|\r|\n)', $this->string);
         $to = preg_split('(\r\n|\r|\n)', $other);
-        foreach($from as $index => $line) {
-            if(isset($to[$index]) && $line !== $to[$index]) {
+        foreach ($from as $index => $line) {
+            if (isset($to[$index]) && $line !== $to[$index]) {
                 $line = $this->createPatternFromFormat($line);
-                if(preg_match($line, $to[$index]) > 0) {
+                if (preg_match($line, $to[$index]) > 0) {
                     $from[$index] = $to[$index];
                 }
             }

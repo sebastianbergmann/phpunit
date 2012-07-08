@@ -38,7 +38,7 @@
  * @subpackage Util
  * @author     Sebastian Bergmann <sebastian@phpunit.de>
  * @copyright  2001-2012 Sebastian Bergmann <sebastian@phpunit.de>
- * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
+ * @license    http://www.opensource.org/licenses/BSD-3-Clause  The BSD 3-Clause License
  * @link       http://www.phpunit.de/
  * @since      File available since Release 3.0.0
  */
@@ -50,7 +50,7 @@
  * @subpackage Util
  * @author     Sebastian Bergmann <sebastian@phpunit.de>
  * @copyright  2001-2012 Sebastian Bergmann <sebastian@phpunit.de>
- * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
+ * @license    http://www.opensource.org/licenses/BSD-3-Clause  The BSD 3-Clause License
  * @version    Release: @package_version@
  * @link       http://www.phpunit.de/
  * @since      Class available since Release 3.0.0
@@ -193,22 +193,22 @@ class PHPUnit_Util_Test
 
         return FALSE;
     }
-    
-    /**	
+
+    /**
      * Parse annotation content to use constant/class constant values
      *
      * Constants are specified using a starting '@'. For example: @ClassName::CONST_NAME
      *
      * If the constant is not found the string is used as is to ensure maximum BC.
-     * 
+     *
      * @param  string $message
      * @return string
      */
     protected static function _parseAnnotationContent($message)
     {
-        if (strpos($message, '::') !== false && count(explode('::', $message) == 2)) {
+        if (strpos($message, '::') !== FALSE && count(explode('::', $message) == 2)) {
             if (defined($message)) {
-               $message = constant($message);
+                $message = constant($message);
             }
         }
         return $message;

@@ -38,7 +38,7 @@
  * @subpackage Framework_Constraint
  * @author     Sebastian Bergmann <sebastian@phpunit.de>
  * @copyright  2002-2011 Sebastian Bergmann <sebastian@phpunit.de>
- * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
+ * @license    http://www.opensource.org/licenses/BSD-3-Clause  The BSD 3-Clause License
  * @link       http://www.phpunit.de/
  */
 
@@ -50,7 +50,7 @@
  * @author     Sebastian Bergmann <sebastian@phpunit.de>
  * @author     Timon Rapp <timon@zaeda.net>
  * @copyright  2002-2011 Sebastian Bergmann <sebastian@phpunit.de>
- * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
+ * @license    http://www.opensource.org/licenses/BSD-3-Clause  The BSD 3-Clause License
  * @version    Release: @package_version@
  * @link       http://www.phpunit.de/
  */
@@ -99,16 +99,16 @@ class PHPUnit_Framework_Constraint_Callback extends PHPUnit_Framework_Constraint
 
     private function callbackToString($callback)
     {
-        if(!is_array($callback)) {
+        if (!is_array($callback)) {
             return $callback;
         }
-        if(empty($callback)) {
+        if (empty($callback)) {
             return "empty array";
         }
-        if(!isset($callback[0]) || !isset($callback[1])) {
+        if (!isset($callback[0]) || !isset($callback[1])) {
             return "array without indexes 0 and 1 set";
         }
-        if(is_object($callback[0])) {
+        if (is_object($callback[0])) {
             $callback[0] = get_class($callback[0]);
         }
         return $callback[0] . '::' . $callback[1];

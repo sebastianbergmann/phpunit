@@ -38,7 +38,7 @@
  * @subpackage TextUI
  * @author     Sebastian Bergmann <sebastian@phpunit.de>
  * @copyright  2001-2012 Sebastian Bergmann <sebastian@phpunit.de>
- * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
+ * @license    http://www.opensource.org/licenses/BSD-3-Clause  The BSD 3-Clause License
  * @link       http://www.phpunit.de/
  * @since      File available since Release 3.0.0
  */
@@ -51,7 +51,7 @@
  * @subpackage TextUI
  * @author     Sebastian Bergmann <sebastian@phpunit.de>
  * @copyright  2001-2012 Sebastian Bergmann <sebastian@phpunit.de>
- * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
+ * @license    http://www.opensource.org/licenses/BSD-3-Clause  The BSD 3-Clause License
  * @version    Release: @package_version@
  * @link       http://www.phpunit.de/
  * @since      Class available since Release 3.0.0
@@ -86,6 +86,7 @@ class PHPUnit_TextUI_Command
       'debug' => NULL,
       'exclude-group=' => NULL,
       'filter=' => NULL,
+      'testsuite=' => NULL,
       'group=' => NULL,
       'help' => NULL,
       'include-path=' => NULL,
@@ -341,6 +342,11 @@ class PHPUnit_TextUI_Command
 
                 case '--filter': {
                     $this->arguments['filter'] = $option[1];
+                }
+                break;
+
+                case '--testsuite': {
+                    $this->arguments['testsuite'] = $option[1];
                 }
                 break;
 
@@ -657,7 +663,7 @@ class PHPUnit_TextUI_Command
             }
 
             if (!isset($this->arguments['test'])) {
-                $testSuite = $configuration->getTestSuiteConfiguration();
+                $testSuite = $configuration->getTestSuiteConfiguration(isset($this->arguments['testsuite']) ? $this->arguments['testsuite'] : null);
 
                 if ($testSuite !== NULL) {
                     $this->arguments['test'] = $testSuite;
@@ -851,6 +857,7 @@ Usage: phpunit [switches] UnitTest [UnitTest.php]
   --testdox-text <file>     Write agile documentation in Text format to file.
 
   --filter <pattern>        Filter which tests to run.
+  --testsuite <pattern>     Filter which testsuite to run.
   --group ...               Only runs tests from the specified group(s).
   --exclude-group ...       Exclude tests from the specified group(s).
   --list-groups             List available test groups.
@@ -872,7 +879,7 @@ Usage: phpunit [switches] UnitTest [UnitTest.php]
   --stop-on-incomplete      Stop execution upon first incomplete test.
   --strict                  Run tests in strict mode.
   -v|--verbose              Output more verbose information.
-  --debug                   Display debbuging information during test execution.
+  --debug                   Display debugging information during test execution.
 
   --process-isolation       Run each test in a separate PHP process.
   --no-globals-backup       Do not backup and restore \$GLOBALS for each test.
@@ -886,8 +893,6 @@ Usage: phpunit [switches] UnitTest [UnitTest.php]
 
   -h|--help                 Prints this usage information.
   --version                 Prints the version and exits.
-
-  --debug                   Output debugging information.
 
 EOT;
     }

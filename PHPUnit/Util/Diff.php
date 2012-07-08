@@ -39,7 +39,7 @@
  * @author     Sebastian Bergmann <sebastian@phpunit.de>
  * @author     Kore Nordmann <mail@kore-nordmann.de>
  * @copyright  2001-2012 Sebastian Bergmann <sebastian@phpunit.de>
- * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
+ * @license    http://www.opensource.org/licenses/BSD-3-Clause  The BSD 3-Clause License
  * @link       http://www.phpunit.de/
  * @since      File available since Release 3.4.0
  */
@@ -52,7 +52,7 @@
  * @author     Sebastian Bergmann <sebastian@phpunit.de>
  * @author     Kore Nordmann <mail@kore-nordmann.de>
  * @copyright  2001-2012 Sebastian Bergmann <sebastian@phpunit.de>
- * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
+ * @license    http://www.opensource.org/licenses/BSD-3-Clause  The BSD 3-Clause License
  * @version    Release: @package_version@
  * @link       http://www.phpunit.de/
  * @since      Class available since Release 3.4.0
@@ -148,6 +148,9 @@ class PHPUnit_Util_Diff
      */
     public static function diffToArray($from, $to)
     {
+        preg_match_all('(\r\n|\r|\n)', $from, $fromMatches);
+        preg_match_all('(\r\n|\r|\n)', $to, $toMatches);
+
         if (is_string($from)) {
             $from = preg_split('(\r\n|\r|\n)', $from);
         }
@@ -188,6 +191,14 @@ class PHPUnit_Util_Diff
 
         $diff = array();
         $line = 0;
+
+        if (isset($fromMatches[0]) && $toMatches[0] &&
+            count($fromMatches[0]) === count($toMatches[0]) &&
+            $fromMatches[0] !== $toMatches[0]) {
+            $diff[] = array(
+              '#Warning: Strings contain different line endings!', 0
+            );
+        }
 
         foreach ($start as $token) {
             $diff[] = array($token, 0 /* OLD */);

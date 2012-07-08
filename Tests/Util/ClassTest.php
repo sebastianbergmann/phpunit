@@ -38,7 +38,7 @@
  * @author     Sebastian Bergmann <sebastian@phpunit.de>
  * @author     Ben Selby <benmatselby@gmail.com>
  * @copyright  2001-2012 Sebastian Bergmann <sebastian@phpunit.de>
- * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
+ * @license    http://www.opensource.org/licenses/BSD-3-Clause  The BSD 3-Clause License
  * @link       http://www.phpunit.de/
  * @since      File available since Release 3.5.6
  */
@@ -54,7 +54,7 @@ require_once 'PHPUnit/Util/Class.php';
  * @author     Sebastian Bergmann <sebastian@phpunit.de>
  * @author     Ben Selby <benmatselby@gmail.com>
  * @copyright  2001-2012 Sebastian Bergmann <sebastian@phpunit.de>
- * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
+ * @license    http://www.opensource.org/licenses/BSD-3-Clause  The BSD 3-Clause License
  * @version    Release: @package_version@
  * @link       http://www.phpunit.de/
  * @since      Class available since Release 3.5.6

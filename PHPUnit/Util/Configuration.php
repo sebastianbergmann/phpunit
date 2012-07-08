@@ -38,7 +38,7 @@
  * @subpackage Util
  * @author     Sebastian Bergmann <sebastian@phpunit.de>
  * @copyright  2001-2012 Sebastian Bergmann <sebastian@phpunit.de>
- * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
+ * @license    http://www.opensource.org/licenses/BSD-3-Clause  The BSD 3-Clause License
  * @link       http://www.phpunit.de/
  * @since      File available since Release 3.2.0
  */
@@ -168,7 +168,7 @@
  * @subpackage Util
  * @author     Sebastian Bergmann <sebastian@phpunit.de>
  * @copyright  2001-2012 Sebastian Bergmann <sebastian@phpunit.de>
- * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
+ * @license    http://www.opensource.org/licenses/BSD-3-Clause  The BSD 3-Clause License
  * @version    Release: @package_version@
  * @link       http://www.phpunit.de/
  * @since      Class available since Release 3.2.0
@@ -346,9 +346,9 @@ class PHPUnit_Util_Configuration
                 );
             }
 
-            if ($listener->childNodes->item(1) instanceof DOMElement &&
-                $listener->childNodes->item(1)->tagName == 'arguments') {
-                foreach ($listener->childNodes->item(1)->childNodes as $argument) {
+            foreach ($listener->childNodes as $node) {
+              if ($node instanceof DOMElement && $node->tagName == 'arguments') {
+                foreach ($node->childNodes as $argument) {
                     if ($argument instanceof DOMElement) {
                         if ($argument->tagName == 'file' ||
                             $argument->tagName == 'directory') {
@@ -358,6 +358,7 @@ class PHPUnit_Util_Configuration
                         }
                     }
                 }
+              }
             }
 
             $result[] = array(
@@ -758,7 +759,7 @@ class PHPUnit_Util_Configuration
      * @return PHPUnit_Framework_TestSuite
      * @since  Method available since Release 3.2.1
      */
-    public function getTestSuiteConfiguration()
+    public function getTestSuiteConfiguration($testSuiteFilter=null)
     {
         $testSuiteNodes = $this->xpath->query('testsuites/testsuite');
 
@@ -767,7 +768,7 @@ class PHPUnit_Util_Configuration
         }
 
         if ($testSuiteNodes->length == 1) {
-            return $this->getTestSuite($testSuiteNodes->item(0));
+            return $this->getTestSuite($testSuiteNodes->item(0), $testSuiteFilter);
         }
 
         if ($testSuiteNodes->length > 1) {
@@ -775,7 +776,7 @@ class PHPUnit_Util_Configuration
 
             foreach ($testSuiteNodes as $testSuiteNode) {
                 $suite->addTestSuite(
-                  $this->getTestSuite($testSuiteNode)
+                  $this->getTestSuite($testSuiteNode, $testSuiteFilter)
                 );
             }
 
@@ -788,7 +789,7 @@ class PHPUnit_Util_Configuration
      * @return PHPUnit_Framework_TestSuite
      * @since  Method available since Release 3.4.0
      */
-    protected function getTestSuite(DOMElement $testSuiteNode)
+    protected function getTestSuite(DOMElement $testSuiteNode, $testSuiteFilter=null)
     {
         if ($testSuiteNode->hasAttribute('name')) {
             $suite = new PHPUnit_Framework_TestSuite(
@@ -807,6 +808,10 @@ class PHPUnit_Util_Configuration
         $fileIteratorFacade = new File_Iterator_Facade;
 
         foreach ($testSuiteNode->getElementsByTagName('directory') as $directoryNode) {
+            if ($testSuiteFilter && $directoryNode->parentNode->getAttribute('name') != $testSuiteFilter) {
+                continue;
+            }
+            
             $directory = (string)$directoryNode->nodeValue;
 
             if (empty($directory)) {
@@ -851,6 +856,10 @@ class PHPUnit_Util_Configuration
         }
 
         foreach ($testSuiteNode->getElementsByTagName('file') as $fileNode) {
+            if ($testSuiteFilter && $fileNode->parentNode->getAttribute('name') != $testSuiteFilter) {
+                continue;
+            }
+            
             $file = (string)$fileNode->nodeValue;
 
             if (empty($file)) {

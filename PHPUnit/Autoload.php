@@ -37,7 +37,7 @@
  * @package    PHPUnit
  * @author     Sebastian Bergmann <sebastian@phpunit.de>
  * @copyright  2001-2012 Sebastian Bergmann <sebastian@phpunit.de>
- * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
+ * @license    http://www.opensource.org/licenses/BSD-3-Clause  The BSD 3-Clause License
  * @link       http://www.phpunit.de/
  * @since      File available since Release 3.5.0
  */
@@ -101,6 +101,8 @@ function phpunit_autoload($class = NULL)
           'phpunit_framework_constraint_isnull' => '/Framework/Constraint/IsNull.php',
           'phpunit_framework_constraint_istrue' => '/Framework/Constraint/IsTrue.php',
           'phpunit_framework_constraint_istype' => '/Framework/Constraint/IsType.php',
+          'phpunit_framework_constraint_jsonmatches' => '/Framework/Constraint/JsonMatches.php',
+          'phpunit_framework_constraint_jsonmatches_errormessageprovider' => '/Framework/Constraint/JsonMatches/ErrorMessageProvider.php',
           'phpunit_framework_constraint_lessthan' => '/Framework/Constraint/LessThan.php',
           'phpunit_framework_constraint_not' => '/Framework/Constraint/Not.php',
           'phpunit_framework_constraint_objecthasattribute' => '/Framework/Constraint/ObjectHasAttribute.php',
@@ -211,7 +213,11 @@ if (stream_resolve_include_path('PHPUnit/Extensions/Database/Autoload.php')) {
     require_once 'PHPUnit/Extensions/Database/Autoload.php';
 }
 
-if (stream_resolve_include_path('PHPUnit/Extensions/SeleniumTestCase/Autoload.php')) {
+if (stream_resolve_include_path('PHPUnit/Extensions/SeleniumCommon/Autoload.php')) {
+    require_once 'PHPUnit/Extensions/SeleniumCommon/Autoload.php';
+}
+
+else if (stream_resolve_include_path('PHPUnit/Extensions/SeleniumTestCase/Autoload.php')) {
     require_once 'PHPUnit/Extensions/SeleniumTestCase/Autoload.php';
 }
 
