@@ -188,6 +188,16 @@ text'
 )
 EOF
             ),
+            array(new Exception('Error message'),
+"Exception Object (
+    'message' => 'Error message'
+    'string' => ''
+    'code' => 0
+    'file' => '" . __FILE__ . "'
+    'line' => " . (__LINE__ - 6) . "
+    'previous' => null
+)"
+            ),
             array(
                 chr(0) . chr(1) . chr(2) . chr(3) . chr(4) . chr(5),
                 'Binary String: 0x000102030405'

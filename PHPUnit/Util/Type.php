@@ -299,6 +299,14 @@ class PHPUnit_Util_Type
             }
         }
 
+        // Exception trace can contain some recursive variables that cause
+        // infinite loop in print_r(). It always happens when using TestCase.
+        // To avoid the issue, simply removing the stack trace from the
+        // exception
+        if ($object instanceof Exception) {
+            unset($array['trace']);
+        }
+
         return $array;
     }
 }
