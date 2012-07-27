@@ -593,6 +593,11 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
                 $arguments['mapTestClassNameToCoveredClassName'] = $phpunitConfiguration['mapTestClassNameToCoveredClassName'];
             }
 
+            $groupCliArgs = array();
+            if (!empty($arguments['groups'])) {
+                $groupCliArgs = $arguments['groups'];
+            }
+
             $groupConfiguration = $arguments['configuration']->getGroupConfiguration();
 
             if (!empty($groupConfiguration['include']) &&
@@ -602,7 +607,7 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
 
             if (!empty($groupConfiguration['exclude']) &&
                 !isset($arguments['excludeGroups'])) {
-                $arguments['excludeGroups'] = $groupConfiguration['exclude'];
+                $arguments['excludeGroups'] = array_diff($groupConfiguration['exclude'], $groupCliArgs);
             }
 
             foreach ($arguments['configuration']->getListenerConfiguration() as $listener) {
