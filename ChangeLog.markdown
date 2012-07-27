@@ -24,6 +24,7 @@ PHPUnit 3.7.0
 * Implemented #586: Improved reporting of exceptions by printing out the previous exception names, messages and traces.
 * The `@requires` annotation can now be used on the class DocBlock. Required versions can be overridden in the methods annotation, required functions and extensions will be merged.
 * Added `processUncoveredFilesFromWhitelist` configuration setting. When enabled, uncovered whitelisted files are processed to properly calculate the number of executable lines.
+* Fixed #322 #320 thanks to #607: Commandline option now override group/exclude settings in phpunit.xml
 * Fixed #440: Possible crash when using `--process-isolation` with PHP 5.3 and `detect_unicode=on`.
 * Fixed #523: `assertAttributeEquals()` now works with classes extending internal classes like `ArrayIterator`.
 * It is possible again to expect the generic `Exception` class.
