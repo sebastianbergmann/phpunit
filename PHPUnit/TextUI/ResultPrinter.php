@@ -279,6 +279,7 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
         while ($e) {
             $this->write(
                 "\nCaused by\n" .
+                PHPUnit_Framework_TestFailure::exceptionToString($e). "\n" .
                 PHPUnit_Util_Filter::getFilteredStacktrace($e)
             );
             $e = $e->getPrevious();

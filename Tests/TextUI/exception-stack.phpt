@@ -2,8 +2,6 @@
 phpunit ExceptionStackTest ../_files/ExceptionStack.php
 --FILE--
 <?php
-define('PHPUNIT_TESTSUITE', TRUE);
-
 $_SERVER['argv'][1] = '--no-configuration';
 $_SERVER['argv'][2] = 'ExceptionStackTest';
 $_SERVER['argv'][3] = dirname(dirname(__FILE__)) . '/_files/ExceptionStack.php';
@@ -14,13 +12,13 @@ PHPUnit_TextUI_Command::main();
 --EXPECTF--
 PHPUnit %s by Sebastian Bergmann.
 
-E
+EE
 
 Time: %i %s, Memory: %sMb
 
-There was 1 error:
+There were 2 errors:
 
-1) ExceptionStackTest::testAssertArrayEqualsArray
+1) ExceptionStackTest::testPrintingChildException
 ExceptionStackTestException: Child exception
 message
 Failed asserting that two arrays are equal.
@@ -37,6 +35,21 @@ Failed asserting that two arrays are equal.
 Caused by
 %s:%i
 
+2) ExceptionStackTest::testNestedExceptions
+Exception: One
+
+%s:%i
+
+Caused by
+InvalidArgumentException: Two
+
+%s:%i
+
+Caused by
+Exception: Three
+
+%s:%i
+
 FAILURES!
-Tests: 1, Assertions: 1, Errors: 1.
+Tests: 2, Assertions: 1, Errors: 2.
 
