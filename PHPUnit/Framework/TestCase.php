@@ -720,7 +720,7 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
                 $strict = 'FALSE';
             }
 
-            $data            = addcslashes(serialize($this->data), "'");
+            $data            = addcslashes(serialize($this->data), "'\\");
             $dependencyInput = addcslashes(
               serialize($this->dependencyInput), "'"
             );
