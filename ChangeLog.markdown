@@ -3,6 +3,11 @@ PHPUnit 3.6
 
 This is the list of changes for the PHPUnit 3.6 release series.
 
+PHPUnit 3.6.12
+--------------
+
+* Fixed #614: Serialization problem when using test isolation.
+
 PHPUnit 3.6.11
 --------------
 
