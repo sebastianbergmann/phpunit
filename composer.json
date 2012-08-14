@@ -18,7 +18,7 @@
     "require": {
         "php": ">=5.3.3",
         "symfony/yaml": ">=2.0",
-        "phpunit/dbunit": "1.1.3-dev",
+        "phpunit/dbunit": "1.1.*",
         "phpunit/php-code-coverage": "1.2.0-dev",
         "phpunit/php-file-iterator": "1.3.2-dev",
         "phpunit/php-invoker": "1.3.2-dev",
