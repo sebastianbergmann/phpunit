@@ -1,0 +1,26 @@
+{
+    "name": "phpunit/phpunit",
+    "description": "The PHP Unit Testing framework. (composer fork)",
+    "type": "library",
+    "require": {
+        "php": ">=5.3.3"
+    },
+    "authors": [
+        {
+            "name": "Sebastian Bergmann",
+            "email": "sebastian@phpunit.de",
+            "homepage": "http://www.phpunit.de/"
+        }
+    ],
+    "repositories": [
+        { "type": "git", "url": "http://github.com/sebastianbergmann/phpunit.git" }
+    ],
+    "config": {
+        "bin-dir": "bin"
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "3.7.0-dev"
+        }
+    }
+}
