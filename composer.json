@@ -18,16 +18,16 @@
     "require": {
         "php": ">=5.3.3",
         "symfony/yaml": ">=2.0",
-        "phpunit/dbunit": "dev-master",
-        "phpunit/php-code-coverage": "dev-master",
-        "phpunit/php-file-iterator": "dev-master",
-        "phpunit/php-invoker": "dev-master",
-        "phpunit/php-text-template": "dev-master",
-        "phpunit/php-timer": "dev-master",
-        "phpunit/php-token-stream": "dev-master",
-        "phpunit/phpunit-mock-objects": "dev-master",
-        "phpunit/phpunit-selenium": "dev-master",
-        "phpunit/phpunit-story": "dev-master"
+        "phpunit/dbunit": "1.1.3-dev",
+        "phpunit/php-code-coverage": "1.2.0-dev",
+        "phpunit/php-file-iterator": "1.3.2-dev",
+        "phpunit/php-invoker": "1.3.2-dev",
+        "phpunit/php-text-template": "1.1.2-dev",
+        "phpunit/php-timer": "1.0.3-dev",
+        "phpunit/php-token-stream": "1.1.4-dev",
+        "phpunit/phpunit-mock-objects": "1.2.0-dev",
+        "phpunit/phpunit-selenium": "1.2.9-dev",
+        "phpunit/phpunit-story": "1.0.1-dev"
     },
     "require-dev": {
         "ext-xdebug": ">=2.2.1"
