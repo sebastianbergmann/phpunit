@@ -38,6 +38,10 @@
     "config": {
         "bin-dir": "bin"
     },
+    "bin": [
+        "phpunit.php",
+        "phpunit.bat"
+    ],
     "autoload": {
         "classmap": ["PHPUnit/"]
     },
