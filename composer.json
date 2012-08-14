@@ -30,9 +30,7 @@
         "bin-dir": "bin"
     },
     "autoload": {
-        "psr-0": {
-            "PHPUnit_*": "phpunit"
-        }
+        "classmap": ["PHPUnit/"]
     },
     "minimum-stability": "dev",
     "extra": {
