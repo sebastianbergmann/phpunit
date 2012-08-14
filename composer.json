@@ -1,10 +1,12 @@
 {
     "name": "phpunit/phpunit",
-    "description": "The PHP Unit Testing framework. (composer fork)",
+    "description": "The PHP Unit Testing framework.",
     "type": "library",
-    "require": {
-        "php": ">=5.3.3"
-    },
+    "keywords": [
+        "testing",
+        "xunit"
+    ],
+    "homepage": "http://www.phpunit.de/",
     "authors": [
         {
             "name": "Sebastian Bergmann",
@@ -12,12 +14,48 @@
             "homepage": "http://www.phpunit.de/"
         }
     ],
+    "license": "BSD-3-Clause",
+    "require": {
+        "php": ">=5.3.3",
+        "symfony/yaml": ">=2.0",
+        "phpunit/dbunit": "dev-master",
+        "phpunit/php-code-coverage": "dev-master",
+        "phpunit/php-file-iterator": "dev-master",
+        "phpunit/php-invoker": "dev-master",
+        "phpunit/php-text-template": "dev-master",
+        "phpunit/php-timer": "dev-master",
+        "phpunit/php-token-stream": "dev-master",
+        "phpunit/phpunit-mock-objects": "dev-master",
+        "phpunit/phpunit-selenium": "dev-master",
+        "phpunit/phpunit-story": "dev-master"
+    },
+    "require-dev": {
+        "ext-xdebug": ">=2.2.1"
+    },
+    "suggest": {
+        "ext-xdebug": "ext/Xdebug for code coverage features"
+    },
     "config": {
         "bin-dir": "bin"
     },
+    "minimum-stability": "dev",
     "extra": {
         "branch-alias": {
             "dev-master": "3.7.0-dev"
         }
-    }
+    },
+
+    "repositories": [
+        { "type": "git", "url": "http://github.com/claylo/dbunit.git" },
+        { "type": "git", "url": "http://github.com/claylo/php-code-coverage.git" },
+        { "type": "git", "url": "http://github.com/claylo/php-file-iterator.git" },
+        { "type": "git", "url": "http://github.com/claylo/php-invoker.git" },
+        { "type": "git", "url": "http://github.com/claylo/php-text-template.git" },
+        { "type": "git", "url": "http://github.com/claylo/php-timer.git" },
+        { "type": "git", "url": "http://github.com/claylo/php-token-stream.git" },
+        { "type": "git", "url": "http://github.com/claylo/phpunit-mock-objects.git" },
+        { "type": "git", "url": "http://github.com/claylo/phpunit-selenium.git" },
+        { "type": "git", "url": "http://github.com/claylo/phpunit-story.git" },
+        { "type": "git", "url": "http://github.com/symfony/Yaml.git" }
+    ]
 }
