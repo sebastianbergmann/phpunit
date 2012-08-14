@@ -1,0 +1,39 @@
+{
+    "name": "phpunit/phpunit-mock-objects",
+    "description": "Mock Object library for PHPUnit",
+    "type": "library",
+    "keywords": [
+        "mocks",
+        "phpunit",
+        "xunit",
+        "testing"
+    ],
+    "homepage": "http://www.phpunit.de/",
+    "authors": [
+        {
+            "name": "Sebastian Bergmann",
+            "email": "sebastian@phpunit.de",
+            "homepage": "http://www.phpunit.de/"
+        }
+    ],
+    "license": "BSD-3-Clause",
+    "require": {
+        "php": ">=5.3.3",
+        "ext-reflection": "*",
+        "ext-spl": "*",
+        "phpunit/php-text-template": ">=1.1.1"
+    },
+    "suggest": {
+        "ext-soap": "ext/SOAP"
+    },
+    "config": {
+        "bin-dir": "bin"
+    },
+    "minimum-stability": "dev",
+    "extra": {
+        "branch-alias": {
+            "dev-master": "1.2.0-dev"
+        }
+    }
+
+}
