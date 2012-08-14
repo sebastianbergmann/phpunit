@@ -19,15 +19,15 @@
         "php": ">=5.3.3",
         "symfony/yaml": ">=2.0",
         "phpunit/dbunit": "1.1.*",
-        "phpunit/php-code-coverage": "1.2.0-dev",
-        "phpunit/php-file-iterator": "1.3.2-dev",
-        "phpunit/php-invoker": "1.3.2-dev",
-        "phpunit/php-text-template": "1.1.2-dev",
-        "phpunit/php-timer": "1.0.3-dev",
-        "phpunit/php-token-stream": "1.1.4-dev",
-        "phpunit/phpunit-mock-objects": "1.2.0-dev",
-        "phpunit/phpunit-selenium": "1.2.9-dev",
-        "phpunit/phpunit-story": "1.0.1-dev"
+        "phpunit/php-code-coverage": "1.2.*",
+        "phpunit/php-file-iterator": "1.3.*",
+        "phpunit/php-invoker": "1.3.*",
+        "phpunit/php-text-template": "1.1.*",
+        "phpunit/php-timer": "1.0.*",
+        "phpunit/php-token-stream": "1.1.*",
+        "phpunit/phpunit-mock-objects": "1.2.*",
+        "phpunit/phpunit-selenium": "1.2.*",
+        "phpunit/phpunit-story": "1.0.*"
     },
     "require-dev": {
         "ext-xdebug": ">=2.2.1"
