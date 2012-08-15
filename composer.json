@@ -59,7 +59,8 @@
         "../php-token-stream/",
         "../phpunit-mock-objects/",
         "../phpunit-selenium/",
-        "../phpunit-story/"
+        "../phpunit-story/",
+        "../../symfony/symfony/src/"
     ],
     "minimum-stability": "dev",
     "extra": {
