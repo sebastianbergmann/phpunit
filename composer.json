@@ -51,6 +51,7 @@
         ]
     },
     "include-path": [
+        "",
         "../php-code-coverage/",
         "../php-file-iterator/",
         "../php-invoker/",
