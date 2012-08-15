@@ -40,7 +40,7 @@
     },
     "bin": [
         "composer/bin/phpunit",
-        "composer/bin/phpunit.bat"
+        "phpunit.bat"
     ],
     "autoload": {
         "psr-0": {
