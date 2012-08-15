@@ -50,6 +50,17 @@
             "PHPUnit/Autoload.php"
         ]
     },
+    "include-path": [
+        "../php-code-coverage/",
+        "../php-file-iterator/",
+        "../php-invoker/",
+        "../php-text-template/",
+        "../php-timer/",
+        "../php-token-stream/",
+        "../phpunit-mock-objects/",
+        "../phpunit-selenium/",
+        "../phpunit-story/"
+    ],
     "minimum-stability": "dev",
     "extra": {
         "branch-alias": {
