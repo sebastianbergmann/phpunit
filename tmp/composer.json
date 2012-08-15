@@ -30,7 +30,10 @@
         "bin-dir": "bin"
     },
     "autoload": {
-        "classmap": ["PHPUnit/"]
+        "psr-0": {
+            "PHPUnit_Framework_MockObject_": ""
+        },
+        "files": ["PHPUnit/Framework/MockObject/Autoload.php"]
     },
     "minimum-stability": "dev",
     "extra": {
