@@ -47,7 +47,7 @@
             "PHPUnit_": ""
         },
         "files": [
-            "PHPUnit/Autoload.php",
+            "PHPUnit/Autoload.php"
         ]
     },
     "minimum-stability": "dev",
