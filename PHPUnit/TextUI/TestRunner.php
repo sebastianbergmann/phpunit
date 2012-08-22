@@ -388,10 +388,6 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
             }
 
             if (isset($arguments['coverageText'])) {
-                $this->printer->write(
-                  "\nGenerating code coverage report in text format ..."
-                );
-
                 if ($arguments['coverageText'] == 'php://stdout') {
                     $outputStream = $this->printer;
                     $colors       = (bool)$arguments['colors'];
@@ -409,8 +405,6 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
                 );
 
                 $writer->process($codeCoverage, $colors);
-
-                $this->printer->write(" done\n");
             }
         }
 
