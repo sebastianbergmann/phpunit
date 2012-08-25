@@ -282,7 +282,9 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
 
         if (isset($arguments['jsonLogfile'])) {
             $result->addListener(
-              new PHPUnit_Util_Log_JSON($arguments['jsonLogfile'])
+              PHPUnit_Util_Log_JUnit::JSONFormat(
+                $arguments['jsonLogfile'], $arguments['logIncompleteSkipped']
+              )
             );
         }
 
@@ -294,7 +296,7 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
 
         if (isset($arguments['junitLogfile'])) {
             $result->addListener(
-              new PHPUnit_Util_Log_JUnit(
+              PHPUnit_Util_Log_JUnit::XMLFormat(
                 $arguments['junitLogfile'], $arguments['logIncompleteSkipped']
               )
             );

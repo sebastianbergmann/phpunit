@@ -15,9 +15,7 @@
  *   * Redistributions in binary form must reproduce the above copyright
  *     notice, this list of conditions and the following disclaimer in
  *     the documentation and/or other materials provided with the
- *     distribution.
- *
- *   * Neither the name of Sebastian Bergmann nor the names of his
+ *     distribution.  * *   * Neither the name of Sebastian Bergmann nor the names of his
  *     contributors may be used to endorse or promote products derived
  *     from this software without specific prior written permission.
  *
@@ -123,6 +121,21 @@ class PHPUnit_Util_Log_JUnit extends PHPUnit_Util_Printer implements PHPUnit_Fra
      * @var    boolean
      */
     protected $attachCurrentTestCase = TRUE;
+    protected $dataType = "";
+    const XML_FORMAT  = "DOMDocument";
+    const JSON_FORMAT = "PHPUnit_Util_JSONDocument";
+ 
+    static public function XMLFormat($out = NULL, $logIncompleteSkipped = FALSE) {
+        
+        $document = new DOMDocument('1.0', 'UTF-8');
+        $document->formatOutput = TRUE;
+        return new self( $out, $logIncompleteSkipped , $document);
+    }
+
+    static public function JSONFormat($out = NULL, $logIncompleteSkipped = FALSE) {
+        $document = new PHPUnit_Util_JSONDocument();
+        return new self( $out, $logIncompleteSkipped , $document);
+    }
 
     /**
      * Constructor.
@@ -130,17 +143,16 @@ class PHPUnit_Util_Log_JUnit extends PHPUnit_Util_Printer implements PHPUnit_Fra
      * @param  mixed   $out
      * @param  boolean $logIncompleteSkipped
      */
-    public function __construct($out = NULL, $logIncompleteSkipped = FALSE)
+    public function __construct($out = NULL, $logIncompleteSkipped = FALSE, $document)
     {
-        $this->document = new DOMDocument('1.0', 'UTF-8');
-        $this->document->formatOutput = TRUE;
-
+        $this->document = $document;
         $this->root = $this->document->createElement('testsuites');
         $this->document->appendChild($this->root);
 
         parent::__construct($out);
 
         $this->logIncompleteSkipped = $logIncompleteSkipped;
+        $this->dataType = get_class( $document ); 
     }
 
     /**
@@ -150,7 +162,7 @@ class PHPUnit_Util_Log_JUnit extends PHPUnit_Util_Printer implements PHPUnit_Fra
     public function flush()
     {
         if ($this->writeDocument === TRUE) {
-            $this->write($this->getXML());
+            $this->write($this->getTestReport());
         }
 
         parent::flush();
@@ -459,9 +471,16 @@ class PHPUnit_Util_Log_JUnit extends PHPUnit_Util_Printer implements PHPUnit_Fra
      * @return string
      * @since  Method available since Release 2.2.0
      */
-    public function getXML()
+    public function getTestReport()
     {
-        return $this->document->saveXML();
+        if( $this->dataType === self::JSON_FORMAT )
+        {
+            return $this->document->saveJSON();
+        }
+        else
+        {
+            return $this->document->saveXML();
+        }
     }
 
     /**
