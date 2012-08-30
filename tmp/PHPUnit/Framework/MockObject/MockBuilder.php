@@ -189,7 +189,7 @@ class PHPUnit_Framework_MockObject_MockBuilder
     }
 
     /**
-     * Suppresses the invocation of the original constructor.
+     * Disables the invocation of the original constructor.
      *
      * @return PHPUnit_Framework_MockObject_MockBuilder
      */
@@ -201,7 +201,20 @@ class PHPUnit_Framework_MockObject_MockBuilder
     }
 
     /**
-     * Suppresses the invocation of the original clone constructor.
+     * Enables the invocation of the original constructor.
+     *
+     * @return PHPUnit_Framework_MockObject_MockBuilder
+     * @since  Method available since Release 1.2.0
+     */
+    public function enableOriginalConstructor()
+    {
+        $this->originalConstructor = TRUE;
+
+        return $this;
+    }
+
+    /**
+     * Disables the invocation of the original clone constructor.
      *
      * @return PHPUnit_Framework_MockObject_MockBuilder
      */
@@ -213,7 +226,20 @@ class PHPUnit_Framework_MockObject_MockBuilder
     }
 
     /**
-     * Suppresses the use of class autoloading while creating the mock object.
+     * Enables the invocation of the original clone constructor.
+     *
+     * @return PHPUnit_Framework_MockObject_MockBuilder
+     * @since  Method available since Release 1.2.0
+     */
+    public function enableOriginalClone()
+    {
+        $this->originalClone = TRUE;
+
+        return $this;
+    }
+
+    /**
+     * Disables the use of class autoloading while creating the mock object.
      *
      * @return PHPUnit_Framework_MockObject_MockBuilder
      */
@@ -225,7 +251,20 @@ class PHPUnit_Framework_MockObject_MockBuilder
     }
 
     /**
-     * Suppresses the cloning of arguments passed to mocked methods.
+     * Enables the use of class autoloading while creating the mock object.
+     *
+     * @return PHPUnit_Framework_MockObject_MockBuilder
+     * @since  Method available since Release 1.2.0
+     */
+    public function enableAutoload()
+    {
+        $this->autoload = TRUE;
+
+        return $this;
+    }
+
+    /**
+     * Disables the cloning of arguments passed to mocked methods.
      *
      * @return PHPUnit_Framework_MockObject_MockBuilder
      * @since  Method available since Release 1.2.0
@@ -233,6 +272,19 @@ class PHPUnit_Framework_MockObject_MockBuilder
     public function disableArgumentCloning()
     {
         $this->cloneArguments = FALSE;
+
+        return $this;
+    }
+
+    /**
+     * Enables the cloning of arguments passed to mocked methods.
+     *
+     * @return PHPUnit_Framework_MockObject_MockBuilder
+     * @since  Method available since Release 1.2.0
+     */
+    public function enableArgumentCloning()
+    {
+        $this->cloneArguments = TRUE;
 
         return $this;
     }
