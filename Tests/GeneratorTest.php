@@ -35,9 +35,7 @@ class Framework_MockObject_GeneratorTest extends PHPUnit_Framework_TestCase
     public function testMockObjectHasUniqueIdSoThatTwoMockObjectsOfTheSameClassAreNotEqual()
     {
         $mock1 = PHPUnit_Framework_MockObject_Generator::getMock('stdClass');
-        $this->assertSame(0, $mock1->__phpunit_mockObjectId);
         $mock2 = PHPUnit_Framework_MockObject_Generator::getMock('stdClass');
-        $this->assertSame(1, $mock2->__phpunit_mockObjectId);
         $this->assertNotEquals($mock1, $mock2);
     }
 
