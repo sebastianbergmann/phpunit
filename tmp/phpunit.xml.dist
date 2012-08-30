@@ -23,6 +23,9 @@
   <filter>
     <whitelist addUncoveredFilesFromWhitelist="true">
       <directory suffix=".php">PHPUnit</directory>
+      <exclude>
+       <file>PHPUnit/Framework/MockObject/Autoload.php</file>
+      </exclude>
     </whitelist>
   </filter>
 </phpunit>
