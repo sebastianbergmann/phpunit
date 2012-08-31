@@ -1,5 +1,6 @@
     public function __clone()
     {
         $this->invocationMocker = clone $this->__phpunit_getInvocationMocker();
+        $this->__phpunit_setId();
         parent::__clone();
     }

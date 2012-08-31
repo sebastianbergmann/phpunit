@@ -3,6 +3,7 @@
     protected static $staticInvocationMocker;
     protected $invocationMocker;
     protected $id;
+    protected static $nextId = 0;
 
 {clone}{mocked_methods}
     public function expects(PHPUnit_Framework_MockObject_Matcher_Invocation $matcher)
@@ -52,8 +53,8 @@
         $this->id                     = NULL;
     }
 
-    public function __phpunit_setId($id)
+    public function __phpunit_setId()
     {
-        $this->id = $id;
+        $this->id = sprintf('%s#%s', get_class($this), self::$nextId++);
     }
 }{epilogue}
