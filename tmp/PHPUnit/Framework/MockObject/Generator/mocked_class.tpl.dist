@@ -2,6 +2,7 @@
 {
     protected static $staticInvocationMocker;
     protected $invocationMocker;
+    protected $id;
 
 {clone}{mocked_methods}
     public function expects(PHPUnit_Framework_MockObject_Matcher_Invocation $matcher)
@@ -48,5 +49,11 @@
     {
         self::$staticInvocationMocker = NULL;
         $this->invocationMocker       = NULL;
+        $this->id                     = NULL;
+    }
+
+    public function __phpunit_setId($id)
+    {
+        $this->id = $id;
     }
 }{epilogue}

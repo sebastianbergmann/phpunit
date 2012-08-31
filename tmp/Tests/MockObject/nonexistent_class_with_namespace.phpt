@@ -30,6 +30,7 @@ class MockFoo extends NS\Foo implements PHPUnit_Framework_MockObject_MockObject
 {
     protected static $staticInvocationMocker;
     protected $invocationMocker;
+    protected $id;
 
     public function __clone()
     {
@@ -80,6 +81,12 @@ class MockFoo extends NS\Foo implements PHPUnit_Framework_MockObject_MockObject
     {
         self::$staticInvocationMocker = NULL;
         $this->invocationMocker       = NULL;
+        $this->id                     = NULL;
+    }
+
+    public function __phpunit_setId($id)
+    {
+        $this->id = $id;
     }
 }
 
