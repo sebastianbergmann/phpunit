@@ -252,9 +252,7 @@ class PHPUnit_Framework_MockObject_Generator
             );
         }
 
-        if (!isset($object->__phpunit_mockObjectId)) {
-            $object->__phpunit_mockObjectId = self::$mockObjectId++;
-        }
+        $object->__phpunit_setId(self::$mockObjectId++);
 
         return $object;
     }
