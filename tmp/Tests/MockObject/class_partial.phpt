@@ -29,10 +29,10 @@ print $mock['code'];
 --EXPECTF--
 class MockFoo extends Foo implements PHPUnit_Framework_MockObject_MockObject
 {
-    protected static $staticInvocationMocker;
-    protected $invocationMocker;
-    protected $id;
-    protected static $nextId = 0;
+    private static $staticInvocationMocker;
+    private $invocationMocker;
+    private $id;
+    private static $nextId = 0;
 
     public function __clone()
     {
