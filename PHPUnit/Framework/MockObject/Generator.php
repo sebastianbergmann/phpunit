@@ -247,7 +247,9 @@ class PHPUnit_Framework_MockObject_Generator
             );
         }
 
-        $object->__phpunit_setId();
+        if ($object instanceof PHPUnit_Framework_MockObject_MockObject) {
+            $object->__phpunit_setId();
+        }
 
         return $object;
     }
