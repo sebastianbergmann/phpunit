@@ -347,11 +347,15 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
                   "\nGenerating code coverage report in Clover XML format ..."
                 );
 
-                $writer = new PHP_CodeCoverage_Report_Clover;
-                $writer->process($codeCoverage, $arguments['coverageClover']);
+                if ($arguments['coverageClover'] != "none") {
+                    $writer = new PHP_CodeCoverage_Report_Clover;
+                    $writer->process($codeCoverage, $arguments['coverageClover']);
 
-                $this->printer->write(" done\n");
-                unset($writer);
+                    $this->printer->write(" done\n");
+                    unset($writer);
+                } else {
+                    $this->printer->write(" skipped\n");
+                }
             }
 
             if (isset($arguments['reportDirectory'])) {
@@ -359,20 +363,24 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
                   "\nGenerating code coverage report in HTML format ..."
                 );
 
-                $writer = new PHP_CodeCoverage_Report_HTML(
-                  $title,
-                  $arguments['reportCharset'],
-                  $arguments['reportYUI'],
-                  $arguments['reportHighlight'],
-                  $arguments['reportLowUpperBound'],
-                  $arguments['reportHighLowerBound'],
-                  ' and PHPUnit ' . PHPUnit_Runner_Version::id()
-                );
+                if ($arguments['reportDirectory'] != "none") {
+                    $writer = new PHP_CodeCoverage_Report_HTML(
+                      $title,
+                      $arguments['reportCharset'],
+                      $arguments['reportYUI'],
+                      $arguments['reportHighlight'],
+                      $arguments['reportLowUpperBound'],
+                      $arguments['reportHighLowerBound'],
+                      ' and PHPUnit ' . PHPUnit_Runner_Version::id()
+                    );
 
-                $writer->process($codeCoverage, $arguments['reportDirectory']);
+                    $writer->process($codeCoverage, $arguments['reportDirectory']);
 
-                $this->printer->write(" done\n");
-                unset($writer);
+                    $this->printer->write(" done\n");
+                    unset($writer);
+                } else {
+                    $this->printer->write(" skipped\n");
+                }
             }
 
             if (isset($arguments['coveragePHP'])) {
@@ -380,11 +388,15 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
                   "\nGenerating code coverage report in PHP format ..."
                 );
 
-                $writer = new PHP_CodeCoverage_Report_PHP;
-                $writer->process($codeCoverage, $arguments['coveragePHP']);
+                if ($arguments['coveragePHP'] != "none") {
+                    $writer = new PHP_CodeCoverage_Report_PHP;
+                    $writer->process($codeCoverage, $arguments['coveragePHP']);
 
-                $this->printer->write(" done\n");
-                unset($writer);
+                    $this->printer->write(" done\n");
+                    unset($writer);
+                } else {
+                    $this->printer->write(" skipped\n");
+                }
             }
 
             if (isset($arguments['coverageText'])) {
@@ -392,25 +404,29 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
                   "\nGenerating code coverage report in text format ..."
                 );
 
-                if ($arguments['coverageText'] == 'php://stdout') {
-                    $outputStream = $this->printer;
-                    $colors       = (bool)$arguments['colors'];
+                if ($arguments['coverageText'] != "none") {
+                    if ($arguments['coverageText'] == 'php://stdout') {
+                        $outputStream = $this->printer;
+                        $colors       = (bool)$arguments['colors'];
+                    } else {
+                        $outputStream = new PHPUnit_Util_Printer($arguments['coverageText']);
+                        $colors       = FALSE;
+                    }
+
+                    $writer = new PHP_CodeCoverage_Report_Text(
+                      $outputStream,
+                      $title,
+                      $arguments['reportLowUpperBound'],
+                      $arguments['reportHighLowerBound'],
+                      $arguments['coverageTextShowUncoveredFiles']
+                    );
+
+                    $writer->process($codeCoverage, $colors);
+
+                    $this->printer->write(" done\n");
                 } else {
-                    $outputStream = new PHPUnit_Util_Printer($arguments['coverageText']);
-                    $colors       = FALSE;
+                    $this->printer->write(" skipped\n");
                 }
-
-                $writer = new PHP_CodeCoverage_Report_Text(
-                  $outputStream,
-                  $title,
-                  $arguments['reportLowUpperBound'],
-                  $arguments['reportHighLowerBound'],
-                  $arguments['coverageTextShowUncoveredFiles']
-                );
-
-                $writer->process($codeCoverage, $colors);
-
-                $this->printer->write(" done\n");
             }
         }
 
