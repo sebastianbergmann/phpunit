@@ -366,7 +366,10 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
                   $arguments['reportHighlight'],
                   $arguments['reportLowUpperBound'],
                   $arguments['reportHighLowerBound'],
-                  ' and PHPUnit ' . PHPUnit_Runner_Version::id()
+                  sprintf(
+                    ' and <a href="http://phpunit.de/">PHPUnit %s</a>',
+                    PHPUnit_Runner_Version::id()
+                  )
                 );
 
                 $writer->process($codeCoverage, $arguments['reportDirectory']);
