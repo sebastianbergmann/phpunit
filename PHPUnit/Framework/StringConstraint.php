@@ -2,7 +2,7 @@
 /**
  * PHPUnit
  *
- * Copyright (c) 2001-2012, Sebastian Bergmann <sebastian@phpunit.de>.
+ * Copyright (c) 2002-2011, Sebastian Bergmann <sebastian@phpunit.de>.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -35,63 +35,26 @@
  * POSSIBILITY OF SUCH DAMAGE.
  *
  * @package    PHPUnit
- * @subpackage Framework_Constraint
+ * @subpackage Framework
  * @author     Sebastian Bergmann <sebastian@phpunit.de>
- * @author     Bernhard Schussek <bschussek@2bepublished.at>
- * @copyright  2001-2012 Sebastian Bergmann <sebastian@phpunit.de>
- * @license    http://www.opensource.org/licenses/BSD-3-Clause  The BSD 3-Clause License
+ * @copyright  2002-2011 Sebastian Bergmann <sebastian@phpunit.de>
+ * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @link       http://www.phpunit.de/
- * @since      File available since Release 3.4.0
+ * @since      File available since Release 3.6.0
  */
 
 /**
- * Constraint that asserts that the string it is evaluated for ends with a given
- * suffix.
+ * Interface for constraints related to strings
  *
  * @package    PHPUnit
- * @subpackage Framework_Constraint
- * @author     Sebastian Bergmann <sebastian@phpunit.de>
- * @author     Bernhard Schussek <bschussek@2bepublished.at>
- * @copyright  2001-2012 Sebastian Bergmann <sebastian@phpunit.de>
- * @license    http://www.opensource.org/licenses/BSD-3-Clause  The BSD 3-Clause License
+ * @subpackage Framework
+ * @author     Andreas Wolf <andreas.wolf@ikt-werk.de>
+ * @copyright  2011 Andreas Wolf <andreas.wolf@ikt-werk.de>
+ * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    Release: @package_version@
  * @link       http://www.phpunit.de/
- * @since      Class available since Release 3.4.0
+ * @since      Interface available since Release 3.6.0
  */
-class PHPUnit_Framework_Constraint_StringEndsWith extends PHPUnit_Framework_Constraint implements PHPUnit_Framework_StringConstraint
+interface PHPUnit_Framework_StringConstraint 
 {
-    /**
-     * @var string
-     */
-    protected $suffix;
-
-    /**
-     * @param string $suffix
-     */
-    public function __construct($suffix)
-    {
-        $this->suffix = $suffix;
-    }
-
-    /**
-     * Evaluates the constraint for parameter $other. Returns TRUE if the
-     * constraint is met, FALSE otherwise.
-     *
-     * @param mixed $other Value or object to evaluate.
-     * @return bool
-     */
-    protected function matches($other)
-    {
-        return substr($other, 0 - strlen($this->suffix)) == $this->suffix;
-    }
-
-    /**
-     * Returns a string representation of the constraint.
-     *
-     * @return string
-     */
-    public function toString()
-    {
-        return 'ends with "' . $this->suffix . '"';
-    }
 }

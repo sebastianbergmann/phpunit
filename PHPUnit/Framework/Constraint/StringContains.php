@@ -63,7 +63,7 @@
  * @link       http://www.phpunit.de/
  * @since      Class available since Release 3.0.0
  */
-class PHPUnit_Framework_Constraint_StringContains extends PHPUnit_Framework_Constraint
+class PHPUnit_Framework_Constraint_StringContains extends PHPUnit_Framework_Constraint implements PHPUnit_Framework_StringConstraint
 {
     /**
      * @var string
