@@ -28,6 +28,7 @@ PHPUnit 3.7.0
 * Fixed #322 #320 thanks to #607: Commandline option now override group/exclude settings in phpunit.xml
 * Fixed #440: Possible crash when using `--process-isolation` with PHP 5.3 and `detect_unicode=on`.
 * Fixed #523: `assertAttributeEquals()` now works with classes extending internal classes like `ArrayIterator`.
+* Fixed #581: Generating a diffs could add extra newlines in Windows.
 * It is possible again to expect the generic `Exception` class.
 * Removed `addUncoveredFilesFromWhitelist` configuration setting.
 * Removed deprecated `--skeleton-class` and `--skeleton-test` switches. The functionality is now provided by the `phpunit-skel` command of the `PHPUnit_SkeletonGenerator` package.
