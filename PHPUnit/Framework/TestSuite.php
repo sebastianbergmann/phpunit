@@ -649,6 +649,7 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
                 $this->setUp();
 
                 if ($this->testCase &&
+                    class_exists($this->name, false) &&
                     method_exists($this->name, 'setUpBeforeClass')) {
                     call_user_func(array($this->name, 'setUpBeforeClass'));
                 }
@@ -747,6 +748,7 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
 
         if ($doSetup) {
             if ($this->testCase &&
+                class_exists($this->name, false) &&
                 method_exists($this->name, 'tearDownAfterClass')) {
                 call_user_func(array($this->name, 'tearDownAfterClass'));
             }
