@@ -1382,7 +1382,7 @@ abstract class PHPUnit_Framework_Assert
      * @param array|Countable|Iterator $actual
      * @param string $message
      */
-    public function assertSameSize($expected, $actual, $message = '')
+    public static function assertSameSize($expected, $actual, $message = '')
     {
         if (!$expected instanceof Countable &&
             !$expected instanceof Iterator &&
@@ -1411,7 +1411,7 @@ abstract class PHPUnit_Framework_Assert
      * @param array|Countable|Iterator $actual
      * @param string $message
      */
-    public function assertNotSameSize($expected, $actual, $message = '')
+    public static function assertNotSameSize($expected, $actual, $message = '')
     {
         if (!$expected instanceof Countable &&
             !$expected instanceof Iterator &&
