@@ -99,7 +99,7 @@ class PHPUnit_Framework_MockObject_MockBuilder
     /**
      * @var boolean
      */
-    protected $cloneArguments = TRUE;
+    protected $cloneArguments = FALSE;
 
     /**
      * @param PHPUnit_Framework_TestCase
