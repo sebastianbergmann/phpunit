@@ -30,6 +30,7 @@ PHPUnit 3.7.0
 * Fixed #523: `assertAttributeEquals()` now works with classes extending internal classes like `ArrayIterator`.
 * Fixed #581: Generating a diffs could add extra newlines in Windows.
 * Fixed #636, #631: Using selenium in combination with autoloaders that die()d or produced errors when a class could't be found caused led to broken tests.
+* If no tests where executed, for example because of a `--filter`, PHPUnit now prints a "No tests executed" warning instead of "OK (0 tests...)".
 * It is possible again to expect the generic `Exception` class.
 * Removed `addUncoveredFilesFromWhitelist` configuration setting.
 * Removed deprecated `--skeleton-class` and `--skeleton-test` switches. The functionality is now provided by the `phpunit-skel` command of the `PHPUnit_SkeletonGenerator` package.

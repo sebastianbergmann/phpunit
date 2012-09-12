@@ -343,7 +343,21 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
      */
     protected function printFooter(PHPUnit_Framework_TestResult $result)
     {
-        if ($result->wasSuccessful() &&
+        if (count($result) === 0) {
+            if ($this->colors) {
+                $this->write("\x1b[30;43m\x1b[2K");
+            }
+
+            $this->write(
+              "No tests executed!\n"
+            );
+
+            if ($this->colors) {
+                $this->write("\x1b[0m\x1b[2K");
+            }
+        }
+
+        else if ($result->wasSuccessful() &&
             $result->allCompletlyImplemented() &&
             $result->noneSkipped()) {
             if ($this->colors) {
