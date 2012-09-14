@@ -604,8 +604,6 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
 
     /**
      * Initializes Thresholds from Annotations
-     * 
-     * @since Method available since Release 3.7.0
      */
     protected function setThresholdsFromAnnotation()
     {
@@ -621,8 +619,6 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
 
     /**
      * Starts Timers for Thresholds
-     * 
-     * @since  Method available since Release 3.6.0
      */
     protected function setUpThresholds() 
     {
@@ -634,8 +630,6 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
 
     /**
      * Asserts if Thresholds have exceeded
-     * 
-     * @since Method available since Release 3.6.1
      */
     protected function assertThresholds() 
     {

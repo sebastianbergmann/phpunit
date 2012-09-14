@@ -360,7 +360,6 @@ class PHPUnit_Util_Test
      * @param  string $className
      * @param  string $methodName
      * @return array
-     * @since  Method available since Release 3.7.0
      */
     public static function getThresholds($className, $methodName)
     {
