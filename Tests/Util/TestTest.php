@@ -57,6 +57,7 @@ require_once dirname(__DIR__) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPAR
  * @version    Release: @package_version@
  * @link       http://www.phpunit.de/
  * @since      Class available since Release 3.3.6
+ * @threshold  42
  */
 class Util_TestTest extends PHPUnit_Framework_TestCase
 {
@@ -214,9 +215,18 @@ class Util_TestTest extends PHPUnit_Framework_TestCase
         );
     }
 
+    public function testParseThreshold()
+    {
+        $this->assertEquals(
+          array('class' => 42, 'method' => 15),
+          PHPUnit_Util_Test::getThresholds(get_class($this), 'methodForTestParseAnnotation')
+        );
+    }
+
     /**
      * @depends Foo
      * @depends ほげ
+     * @threshold 15
      */
     public function methodForTestParseAnnotation()
     {

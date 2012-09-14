@@ -58,6 +58,8 @@ require_once dirname(__DIR__) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPAR
 require_once dirname(__DIR__) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'ThrowNoExceptionTestCase.php';
 require_once dirname(__DIR__) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'WasRun.php';
 require_once dirname(__DIR__) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'ChangeCurrentWorkingDirectoryTest.php';
+require_once dirname(__DIR__) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'ThresholdClassTestCase.php';
+require_once dirname(__DIR__) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'ThresholdMethodTestCase.php';
 
 $GLOBALS['a']  = 'a';
 $_ENV['b']     = 'b';
@@ -233,6 +235,28 @@ class Framework_TestCaseTest extends PHPUnit_Framework_TestCase
 
         $this->assertEquals(1, $result->failureCount());
         $this->assertEquals(1, count($result));
+    }
+
+    public function testMethodThreshold()
+    {
+        $test = new ThresholdMethodTestCase('test');
+        $result = $test->run();
+        
+        $this->assertEquals(1, count($result->failures()));
+        $failure = reset($result->failures());
+
+        $this->assertRegExp('/Method Time Threshold Exceeded\nFailed asserting that [\d.]+ is less than 0\.0001\./', $failure->exceptionMessage());
+    }
+
+    public function testClassThreshold()
+    {
+        $test = new ThresholdClassTestCase('test');
+        $result = $test->run();
+        
+        $this->assertEquals(1, count($result->failures()));
+        $failure = reset($result->failures());
+
+        $this->assertRegExp('/Class Time Threshold Exceeded\nFailed asserting that [\d.]+ is less than 0\.0001\./', $failure->exceptionMessage());
     }
 
     /**
