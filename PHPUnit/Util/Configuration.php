@@ -129,7 +129,7 @@
  *
  *   <logging>
  *     <log type="coverage-html" target="/tmp/report" title="My Project"
-            charset="UTF-8" yui="true" highlight="false"
+            charset="UTF-8" highlight="false"
  *          lowUpperBound="35" highLowerBound="70"/>
  *     <log type="coverage-clover" target="/tmp/clover.xml"/>
  *     <log type="json" target="/tmp/logfile.json"/>
@@ -402,13 +402,6 @@ class PHPUnit_Util_Configuration
 
                 if ($log->hasAttribute('highLowerBound')) {
                     $result['highLowerBound'] = (string)$log->getAttribute('highLowerBound');
-                }
-
-                if ($log->hasAttribute('yui')) {
-                    $result['yui'] = $this->getBoolean(
-                      (string)$log->getAttribute('yui'),
-                      TRUE
-                    );
                 }
 
                 if ($log->hasAttribute('highlight')) {
