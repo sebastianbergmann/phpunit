@@ -59,4 +59,4 @@ A very special thanks to everyone who has contributed to the documentation and h
 
 - [PHPUnit Documentation](https://github.com/sebastianbergmann/phpunit-documentation/graphs/contributors)
 
-Please refer to [CONTRIBUTING.md](https://github.com/sebastianbergmann/phpunit/blob/master/CONTRIBUTING.markdown) for information on how to contribute to PHPUnit and its related projects.
+Please refer to [CONTRIBUTING.md](https://github.com/sebastianbergmann/phpunit/blob/master/CONTRIBUTING.md) for information on how to contribute to PHPUnit and its related projects.
