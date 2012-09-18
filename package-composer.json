@@ -22,7 +22,6 @@
         ""
     ],
     "bin": [
-        "composer/bin/phpunit",
-        "phpunit.bat"
+        "composer/bin/phpunit"
     ]
 }
