@@ -362,11 +362,13 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
                 $writer = new PHP_CodeCoverage_Report_HTML(
                   $title,
                   $arguments['reportCharset'],
-                  $arguments['reportYUI'],
                   $arguments['reportHighlight'],
                   $arguments['reportLowUpperBound'],
                   $arguments['reportHighLowerBound'],
-                  ' and PHPUnit ' . PHPUnit_Runner_Version::id()
+                  sprintf(
+                    ' and <a href="http://phpunit.de/">PHPUnit %s</a>',
+                    PHPUnit_Runner_Version::id()
+                  )
                 );
 
                 $writer->process($codeCoverage, $arguments['reportDirectory']);
@@ -388,10 +390,6 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
             }
 
             if (isset($arguments['coverageText'])) {
-                $this->printer->write(
-                  "\nGenerating code coverage report in text format ..."
-                );
-
                 if ($arguments['coverageText'] == 'php://stdout') {
                     $outputStream = $this->printer;
                     $colors       = (bool)$arguments['colors'];
@@ -409,8 +407,6 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
                 );
 
                 $writer->process($codeCoverage, $colors);
-
-                $this->printer->write(" done\n");
             }
         }
 
@@ -643,11 +639,6 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
                     $arguments['reportCharset'] = $loggingConfiguration['charset'];
                 }
 
-                if (isset($loggingConfiguration['yui']) &&
-                    !isset($arguments['reportYUI'])) {
-                    $arguments['reportYUI'] = $loggingConfiguration['yui'];
-                }
-
                 if (isset($loggingConfiguration['highlight']) &&
                     !isset($arguments['reportHighlight'])) {
                     $arguments['reportHighlight'] = $loggingConfiguration['highlight'];
@@ -790,7 +781,6 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
         $arguments['reportHighlight']                    = isset($arguments['reportHighlight'])                    ? $arguments['reportHighlight']                    : FALSE;
         $arguments['reportHighLowerBound']               = isset($arguments['reportHighLowerBound'])               ? $arguments['reportHighLowerBound']               : 70;
         $arguments['reportLowUpperBound']                = isset($arguments['reportLowUpperBound'])                ? $arguments['reportLowUpperBound']                : 35;
-        $arguments['reportYUI']                          = isset($arguments['reportYUI'])                          ? $arguments['reportYUI']                          : TRUE;
         $arguments['stopOnError']                        = isset($arguments['stopOnError'])                        ? $arguments['stopOnError']                        : FALSE;
         $arguments['stopOnFailure']                      = isset($arguments['stopOnFailure'])                      ? $arguments['stopOnFailure']                      : FALSE;
         $arguments['stopOnIncomplete']                   = isset($arguments['stopOnIncomplete'])                   ? $arguments['stopOnIncomplete']                   : FALSE;

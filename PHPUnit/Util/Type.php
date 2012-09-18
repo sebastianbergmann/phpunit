@@ -133,7 +133,7 @@ class PHPUnit_Util_Type
             }
 
             return "'" .
-                   str_replace(array("\n\r", "\r"), array("\n", "\n"), $value) .
+                   str_replace(array("\r\n", "\n\r", "\r"), array("\n", "\n", "\n"), $value) .
                    "'";
         }
 

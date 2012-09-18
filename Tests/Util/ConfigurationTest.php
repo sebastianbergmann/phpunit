@@ -229,7 +229,6 @@ class Util_ConfigurationTest extends PHPUnit_Framework_TestCase
             'charset' => 'UTF-8',
             'lowUpperBound' => '35',
             'highLowerBound' => '70',
-            'yui' => TRUE,
             'highlight' => FALSE,
             'coverage-html' => '/tmp/report',
             'coverage-clover' => '/tmp/clover.xml',

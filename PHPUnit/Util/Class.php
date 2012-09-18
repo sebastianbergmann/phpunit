@@ -138,8 +138,11 @@ class PHPUnit_Util_Class
         foreach ($method->getParameters() as $i => $parameter) {
             $name = '$' . $parameter->getName();
 
-            if ($name === '$') {
-                $name .= 'arg' . $i;
+            /* Note: PHP extensions may use empty names for reference arguments
+             * or "..." for methods taking a variable number of arguments.
+             */
+            if ($name === '$' || $name === '$...') {
+                $name = '$arg' . $i;
             }
 
             $default   = '';
