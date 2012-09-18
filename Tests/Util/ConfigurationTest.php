@@ -225,7 +225,6 @@ class Util_ConfigurationTest extends PHPUnit_Framework_TestCase
     {
         $this->assertEquals(
           array(
-            'title' => 'My Project',
             'charset' => 'UTF-8',
             'lowUpperBound' => '35',
             'highLowerBound' => '70',
