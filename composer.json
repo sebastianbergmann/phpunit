@@ -42,8 +42,7 @@
         "ext-tokenizer": "*"
     },
     "bin": [
-        "composer/bin/phpunit",
-        "phpunit.bat"
+        "composer/bin/phpunit"
     ],
     "config": {
         "bin-dir": "bin"
