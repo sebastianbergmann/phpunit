@@ -3,43 +3,39 @@
     "description": "Mock Object library for PHPUnit",
     "type": "library",
     "keywords": [
-        "mocks",
-        "phpunit",
         "xunit",
-        "testing"
+        "mock"
     ],
     "homepage": "http://www.phpunit.de/",
+    "license": "BSD-3-Clause",
     "authors": [
         {
             "name": "Sebastian Bergmann",
-            "email": "sebastian@phpunit.de",
-            "homepage": "http://www.phpunit.de/"
+            "email": "sb@sebastian-bergmann.de",
+            "role": "lead"
         }
     ],
-    "license": "BSD-3-Clause",
+    "version": "1.2.0RC5",
+    "time": "2012-09-10",
+    "support": {
+        "issues": "https://github.com/sebastianbergmann/phpunit-mock-objects/issues",
+        "irc": "irc://irc.freenode.net/phpunit"
+    },
     "require": {
         "php": ">=5.3.3",
+        "phpunit/php-text-template": ">=1.1.1",
         "ext-reflection": "*",
-        "ext-spl": "*",
-        "phpunit/php-text-template": ">=1.1.1"
+        "ext-spl": "*"
     },
     "suggest": {
-        "ext-soap": "ext/SOAP"
-    },
-    "config": {
-        "bin-dir": "bin"
+        "ext-soap": "*"
     },
     "autoload": {
-        "psr-0": {
-            "PHPUnit_Framework_MockObject_": ""
-        },
-        "files": ["PHPUnit/Framework/MockObject/Autoload.php"]
+        "files": [
+            "PHPUnit/Framework/MockObject/Autoload.php"
+        ]
     },
-    "minimum-stability": "dev",
-    "extra": {
-        "branch-alias": {
-            "dev-master": "1.2.x-dev"
-        }
-    }
-
+    "include-path": [
+        ""
+    ]
 }
