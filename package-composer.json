@@ -1,0 +1,28 @@
+{
+    "keywords": [ "phpunit", "xunit", "testing" ],
+    "license": "BSD-3-Clause",
+    "homepage": "http://www.phpunit.de/",
+    "dependency_map": {
+        "pear.phpunit.de/File_Iterator":      "phpunit/php-file-iterator",
+        "pear.phpunit.de/Text_Template":      "phpunit/php-text-template",
+        "pear.phpunit.de/PHP_CodeCoverage":   "phpunit/php-code-coverage",
+        "pear.phpunit.de/PHP_Timer":          "phpunit/php-timer",
+        "pear.phpunit.de/PHPUnit_MockObject": "phpunit/phpunit-mock-objects",
+        "pear.phpunit.de/PHP_Invoker":        "phpunit/php-invoker",
+        "pear.symfony.com/Yaml":              "symfony/yaml"
+    },
+    "support": {
+        "issues": "https://github.com/sebastianbergmann/phpunit/issues",
+        "irc": "irc://irc.freenode.net/phpunit"
+    },
+    "autoload": {
+        "files": [ "PHPUnit/Autoload.php" ]
+    },
+    "include_path": [
+        ""
+    ],
+    "bin": [
+        "composer/bin/phpunit",
+        "phpunit.bat"
+    ]
+}

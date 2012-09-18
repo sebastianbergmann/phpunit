@@ -3,84 +3,57 @@
     "description": "The PHP Unit Testing framework.",
     "type": "library",
     "keywords": [
-        "testing",
-        "xunit"
+        "phpunit",
+        "xunit",
+        "testing"
     ],
     "homepage": "http://www.phpunit.de/",
+    "license": "BSD-3-Clause",
     "authors": [
         {
             "name": "Sebastian Bergmann",
             "email": "sebastian@phpunit.de",
-            "homepage": "http://www.phpunit.de/"
+            "role": "lead"
         }
     ],
-    "license": "BSD-3-Clause",
+    "version": "3.7.0RC5",
+    "time": "2012-09-17",
+    "support": {
+        "issues": "https://github.com/sebastianbergmann/phpunit/issues",
+        "irc": "irc://irc.freenode.net/phpunit"
+    },
     "require": {
         "php": ">=5.3.3",
-        "symfony/yaml": ">=2.0",
-        "phpunit/dbunit": "1.1.*",
-        "phpunit/php-code-coverage": "1.2.*",
-        "phpunit/php-file-iterator": "1.3.*",
-        "phpunit/php-invoker": "1.3.*",
-        "phpunit/php-text-template": "1.1.*",
-        "phpunit/php-timer": "1.0.*",
-        "phpunit/php-token-stream": "1.1.*",
-        "phpunit/phpunit-mock-objects": "1.2.*",
-        "phpunit/phpunit-selenium": "1.2.*",
-        "phpunit/phpunit-story": "1.0.*"
-    },
-    "require-dev": {
-        "ext-xdebug": ">=2.2.1"
+        "phpunit/php-file-iterator": ">=1.3.1",
+        "phpunit/php-text-template": ">=1.1.1",
+        "phpunit/php-code-coverage": ">=1.2.0RC1",
+        "phpunit/php-timer": ">=1.0.2",
+        "phpunit/phpunit-mock-objects": ">=1.2.0RC1",
+        "symfony/yaml": ">=2.1.0RC1",
+        "ext-dom": "*",
+        "ext-pcre": "*",
+        "ext-reflection": "*",
+        "ext-spl": "*"
     },
     "suggest": {
-        "ext-xdebug": "ext/Xdebug for code coverage features"
-    },
-    "config": {
-        "bin-dir": "bin"
+        "phpunit/php-invoker": ">=1.1.0",
+        "ext-json": "*",
+        "ext-simplexml": "*",
+        "ext-tokenizer": "*"
     },
     "bin": [
         "composer/bin/phpunit",
         "phpunit.bat"
     ],
+    "config": {
+        "bin-dir": "bin"
+    },
     "autoload": {
-        "psr-0": {
-            "PHPUnit_": ""
-        },
         "files": [
             "PHPUnit/Autoload.php"
         ]
     },
     "include-path": [
-        "",
-        "../php-code-coverage/",
-        "../php-file-iterator/",
-        "../php-invoker/",
-        "../php-text-template/",
-        "../php-timer/",
-        "../php-token-stream/",
-        "../phpunit-mock-objects/",
-        "../phpunit-selenium/",
-        "../phpunit-story/",
-        "../../symfony/symfony/src/"
-    ],
-    "minimum-stability": "dev",
-    "extra": {
-        "branch-alias": {
-            "dev-master": "3.7.x-dev"
-        }
-    },
-
-    "repositories": [
-        { "type": "git", "url": "http://github.com/claylo/dbunit.git" },
-        { "type": "git", "url": "http://github.com/claylo/php-code-coverage.git" },
-        { "type": "git", "url": "http://github.com/claylo/php-file-iterator.git" },
-        { "type": "git", "url": "http://github.com/claylo/php-invoker.git" },
-        { "type": "git", "url": "http://github.com/claylo/php-text-template.git" },
-        { "type": "git", "url": "http://github.com/claylo/php-timer.git" },
-        { "type": "git", "url": "http://github.com/claylo/php-token-stream.git" },
-        { "type": "git", "url": "http://github.com/claylo/phpunit-mock-objects.git" },
-        { "type": "git", "url": "http://github.com/claylo/phpunit-selenium.git" },
-        { "type": "git", "url": "http://github.com/claylo/phpunit-story.git" },
-        { "type": "git", "url": "http://github.com/symfony/Yaml.git" }
+        ""
     ]
 }
