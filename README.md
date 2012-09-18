@@ -44,7 +44,7 @@ The documentation for PHPUnit is available in different formats:
 IRC
 ---
 
-The [#phpunit channel on the Freenode IRC network](irc://freenode.net/phpunit) is a place to chat about PHPUnit.
+The [#phpunit channel on the Freenode IRC network](irc://irc.freenode.net/phpunit) is a place to chat about PHPUnit.
 
 List of Contributors
 --------------------
