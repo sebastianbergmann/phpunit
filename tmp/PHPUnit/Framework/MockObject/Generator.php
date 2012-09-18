@@ -136,11 +136,6 @@ class PHPUnit_Framework_MockObject_Generator
     protected static $soapLoaded = NULL;
 
     /**
-     * @var integer
-     */
-    protected static $mockObjectId = 0;
-
-    /**
      * Returns a mock object for the specified class.
      *
      * @param  string  $originalClassName
@@ -252,8 +247,8 @@ class PHPUnit_Framework_MockObject_Generator
             );
         }
 
-        if (!isset($object->__phpunit_mockObjectId)) {
-            $object->__phpunit_mockObjectId = self::$mockObjectId++;
+        if ($object instanceof PHPUnit_Framework_MockObject_MockObject) {
+            $object->__phpunit_setId();
         }
 
         return $object;
