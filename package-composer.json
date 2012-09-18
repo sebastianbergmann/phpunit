@@ -19,10 +19,15 @@
         "files": [ "PHPUnit/Autoload.php" ]
     },
     "include_path": [
-        ""
+        "",
+        "../../symfony/yaml/"
     ],
     "bin": [
-        "composer/bin/phpunit",
-        "phpunit.bat"
-    ]
+        "composer/bin/phpunit"
+    ],
+    "branch-alias": {
+        "dev-master": "3.7.x-dev"
+    },
+    "version": false,
+    "time": false
 }
