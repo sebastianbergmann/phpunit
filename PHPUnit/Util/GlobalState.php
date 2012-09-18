@@ -373,6 +373,29 @@ class PHPUnit_Util_GlobalState
     public static function phpunitFiles()
     {
         if (self::$phpunitFiles === NULL) {
+            if (file_exists(dirname(__FILE__).'/../../../../autoload.php')) {
+                self::$phpunitFiles = array();
+                $prefixes = array(
+                    'PHPUnit_',
+                    'File_Iterator',
+                    'PHP_CodeCoverage',
+                    'PHP_Text',
+                    'PHP_Timer',
+                    'PHP_Token',
+                );
+
+                foreach (get_declared_classes() as $class) {
+                    foreach ($prefixes as $prefix) {
+                        if (0 === strpos($class, $prefix)) {
+                            $reflClass = new ReflectionClass($class);
+                            self::$phpunitFiles[] = $reflClass->getFileName();
+                        }
+                    }
+                }
+
+                return self::$phpunitFiles;
+            }
+
             self::$phpunitFiles = phpunit_autoload();
 
             if (function_exists('phpunit_mockobject_autoload')) {
