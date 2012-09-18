@@ -16,8 +16,6 @@
             "role": "lead"
         }
     ],
-    "version": "3.7.0RC5",
-    "time": "2012-09-17",
     "support": {
         "issues": "https://github.com/sebastianbergmann/phpunit/issues",
         "irc": "irc://irc.freenode.net/phpunit"
