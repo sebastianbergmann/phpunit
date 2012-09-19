@@ -57,6 +57,9 @@
  */
 class PHPUnit_Runner_Version
 {
+    const VERSION = '@package_version@';
+    protected static $version;
+
     /**
      * Returns the current version of PHPUnit.
      *
@@ -64,7 +67,22 @@ class PHPUnit_Runner_Version
      */
     public static function id()
     {
-        return '@package_version@';
+        if (self::$version === NULL) {
+            if (strpos(self::VERSION, '@package_version') === 0) {
+                $dir = getcwd();
+                chdir(__DIR__);
+                $version = exec('git describe --tags');
+                chdir($dir);
+
+                if ($version) {
+                    self::$version = $version;
+                }
+            } else {
+                self::$version = self::VERSION;
+            }
+        }
+
+        return self::$version;
     }
 
     /**
@@ -72,6 +90,6 @@ class PHPUnit_Runner_Version
      */
     public static function getVersionString()
     {
-        return 'PHPUnit @package_version@ by Sebastian Bergmann.';
+        return 'PHPUnit ' . self::id() . ' by Sebastian Bergmann.';
     }
 }

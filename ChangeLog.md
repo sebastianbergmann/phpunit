@@ -3,6 +3,11 @@ PHPUnit 3.7
 
 This is the list of changes for the PHPUnit 3.7 release series.
 
+PHPUnit 3.7.1
+-------------
+
+* The version number is now displayed when using PHPUnit from a Composer install or Git checkout.
+
 PHPUnit 3.7.0
 -------------
 
