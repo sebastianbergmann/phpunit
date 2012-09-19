@@ -57,6 +57,8 @@
  */
 class PHPUnit_Runner_Version
 {
+    const VERSION = '@package_version@';
+    
     /**
      * Returns the current version of PHPUnit.
      *
@@ -64,7 +66,7 @@ class PHPUnit_Runner_Version
      */
     public static function id()
     {
-        return '@package_version@';
+        return self::resolveVersionString();
     }
 
     /**
@@ -72,6 +74,35 @@ class PHPUnit_Runner_Version
      */
     public static function getVersionString()
     {
-        return 'PHPUnit @package_version@ by Sebastian Bergmann.';
+        return 'PHPUnit ' . self::resolveVersionString() . ' by Sebastian Bergmann.';
+    }
+    
+    /**
+     * Determine if version string has been set, or should be pulled from 
+     * git information.
+     * 
+     * @return string
+     */
+    public static function resolveVersionString()
+    {
+        if (self::VERSION != '@package_version@') {
+            // PEAR-installed
+            return self::VERSION;
+        }
+        
+        if (! is_dir(__DIR__ . '/../../.git')) {
+            // probably manually installed
+            return self::VERSION;
+        }
+        
+        $git = exec('which git');
+        if (empty($git)) {
+            // someone else's git repo left lying around
+            return self::VERSION;
+        }
+        
+        $cmd = escapeshellcmd("$git describe --tags");
+        $gitversion = exec($cmd);
+        return $gitversion;
     }
 }
