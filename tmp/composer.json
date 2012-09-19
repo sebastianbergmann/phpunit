@@ -15,15 +15,15 @@
             "role": "lead"
         }
     ],
-    "version": "1.2.0RC5",
-    "time": "2012-09-10",
+    "version": "1.2.0",
+    "time": "2012-09-19",
     "support": {
         "issues": "https://github.com/sebastianbergmann/phpunit-mock-objects/issues",
         "irc": "irc://irc.freenode.net/phpunit"
     },
     "require": {
         "php": ">=5.3.3",
-        "phpunit/php-text-template": ">=1.1.1",
+        "phpunit/php-text-template": ">=1.1.1@stable",
         "ext-reflection": "*",
         "ext-spl": "*"
     },
