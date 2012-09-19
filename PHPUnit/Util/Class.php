@@ -154,8 +154,7 @@ class PHPUnit_Util_Class
                     $typeHint = 'array ';
                 }
 
-                else if (version_compare(PHP_VERSION, '5.4', '>') &&
-                         $parameter->isCallable()) {
+                else if ($parameter->isCallable()) {
                     $typeHint = 'callable ';
                 }
 

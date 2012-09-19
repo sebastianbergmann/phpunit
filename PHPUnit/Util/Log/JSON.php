@@ -246,10 +246,6 @@ class PHPUnit_Util_Log_JSON extends PHPUnit_Util_Printer implements PHPUnit_Fram
      */
     public function write($buffer)
     {
-        if (defined('JSON_PRETTY_PRINT')) {
-            parent::write(json_encode($buffer, JSON_PRETTY_PRINT));
-        } else {
-            parent::write(json_encode($buffer));
-        }
+        parent::write(json_encode($buffer, JSON_PRETTY_PRINT));
     }
 }
