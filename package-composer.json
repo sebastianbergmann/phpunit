@@ -15,5 +15,8 @@
     },
     "include_path": [
         ""
-    ]
+    ],
+    "branch-alias": {
+        "dev-master": "1.3.x-dev"
+    }
 }
