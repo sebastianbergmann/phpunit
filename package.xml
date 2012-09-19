@@ -17,17 +17,17 @@
   <email>sebastian@phpunit.de</email>
   <active>yes</active>
  </lead>
- <date>2012-09-17</date>
+ <date>2012-09-19</date>
  <version>
-  <release>3.7.0RC5</release>
+  <release>3.7.0</release>
   <api>3.7.0</api>
  </version>
  <stability>
-  <release>beta</release>
-  <api>beta</api>
+  <release>stable</release>
+  <api>stable</api>
  </stability>
  <license>The BSD 3-Clause License</license>
- <notes>http://github.com/sebastianbergmann/phpunit/blob/master/README.markdown</notes>
+ <notes>http://github.com/sebastianbergmann/phpunit/blob/master/README.md</notes>
  <contents>
   <dir name="/">
    <dir name="PHPUnit">
@@ -422,9 +422,10 @@
      <tasks:replace from="@package_version@" to="version" type="package-info" />
     </file>
    </dir>
-   <file baseinstalldir="/" name="ChangeLog.markdown" role="doc"/>
+   <file baseinstalldir="/" name="ChangeLog.md" role="doc"/>
+   <file baseinstalldir="/" name="CONTRIBUTING.md" role="doc"/>
    <file baseinstalldir="/" name="LICENSE" role="doc"/>
-   <file baseinstalldir="/" name="README.markdown" role="doc"/>
+   <file baseinstalldir="/" name="README.md" role="doc"/>
    <file baseinstalldir="/" name="phpunit.php" role="script">
     <tasks:replace from="/usr/bin/env php" to="php_bin" type="pear-config"/>
     <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
@@ -459,7 +460,7 @@
    <package>
     <name>PHP_CodeCoverage</name>
     <channel>pear.phpunit.de</channel>
-    <min>1.2.0RC1</min>
+    <min>1.2.0</min>
    </package>
    <package>
     <name>PHP_Timer</name>
@@ -469,12 +470,12 @@
    <package>
     <name>PHPUnit_MockObject</name>
     <channel>pear.phpunit.de</channel>
-    <min>1.2.0RC1</min>
+    <min>1.2.0</min>
    </package>
    <package>
     <name>Yaml</name>
     <channel>pear.symfony.com</channel>
-    <min>2.1.0RC1</min>
+    <min>2.1.0</min>
    </package>
    <extension>
     <name>dom</name>
