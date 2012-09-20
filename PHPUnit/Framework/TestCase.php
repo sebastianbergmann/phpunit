@@ -848,6 +848,9 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
             $this->statusMessage = $e->getMessage();
         }
 
+        // Clean up the mock objects.
+        $this->mockObjects = array();
+
         // Tear down the fixture. An exception raised in tearDown() will be
         // caught and passed on when no exception was raised before.
         try {
@@ -1045,8 +1048,6 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
             $mockObject->__phpunit_verify();
             $mockObject->__phpunit_cleanup();
         }
-
-        $this->mockObjects = array();
     }
 
     /**

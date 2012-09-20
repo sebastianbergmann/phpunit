@@ -3,6 +3,11 @@ PHPUnit 3.7
 
 This is the list of changes for the PHPUnit 3.7 release series.
 
+PHPUnit 3.7.2
+-------------
+
+* Implemented #656: Always clean up mock objects (and free up memory).
+
 PHPUnit 3.7.1
 -------------
 
