@@ -81,7 +81,6 @@ class PHPUnit_Framework_Comparator_MockObject extends PHPUnit_Framework_Comparat
         $array = parent::toArray($object);
 
         unset($array['__phpunit_invocationMocker']);
-        unset($array['__phpunit_id']);
 
         return $array;
     }
