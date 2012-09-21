@@ -30,6 +30,16 @@ class Framework_MockObject_GeneratorTest extends PHPUnit_Framework_TestCase
     }
 
     /**
+     * @covers PHPUnit_Framework_MockObject_Generator::getObject
+     */
+    public function testMockObjectHasUniqueIdSoThatTwoMockObjectsOfTheSameClassAreNotEqual()
+    {
+        $mock1 = PHPUnit_Framework_MockObject_Generator::getMock('stdClass');
+        $mock2 = PHPUnit_Framework_MockObject_Generator::getMock('stdClass');
+        $this->assertNotEquals($mock1, $mock2);
+    }
+
+    /**
      * @covers PHPUnit_Framework_MockObject_Generator::getMockForAbstractClass
      */
     public function testGetMockForAbstractClassDoesNotFailWhenFakingInterfaces()
