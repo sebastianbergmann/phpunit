@@ -68,7 +68,10 @@ class PHPUnit_Runner_Version
     public static function id()
     {
         if (self::$version === NULL) {
-            if (strpos(self::VERSION, '@package_version') === 0) {
+            self::$version = self::VERSION;
+
+            if (strpos(self::VERSION, '@package_version') === 0 &&
+                is_dir(dirname(dirname(__DIR__)) . '/.git')) {
                 $dir = getcwd();
                 chdir(__DIR__);
                 $version = exec('git describe --tags');
@@ -77,8 +80,6 @@ class PHPUnit_Runner_Version
                 if ($version) {
                     self::$version = $version;
                 }
-            } else {
-                self::$version = self::VERSION;
             }
         }
 
