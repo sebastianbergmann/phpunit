@@ -70,15 +70,36 @@ class PHPUnit_Runner_Version
         if (self::$version === NULL) {
             self::$version = self::VERSION;
 
-            if (strpos(self::VERSION, '@package_version') === 0 &&
-                is_dir(dirname(dirname(__DIR__)) . '/.git')) {
-                $dir = getcwd();
-                chdir(__DIR__);
-                $version = exec('git describe --tags');
-                chdir($dir);
+            if (strpos(self::VERSION, '@package_version') === 0) {
+                $json = array(
+                  __DIR__ . '/../../../../composer/installed.json',
+                  __DIR__ . '/../../../../composer/installed_dev.json'
+                );
 
-                if ($version) {
-                    self::$version = $version;
+                if (is_dir(dirname(dirname(__DIR__)) . '/.git')) {
+                    $dir = getcwd();
+                    chdir(__DIR__);
+                    $version = exec('git describe --tags');
+                    chdir($dir);
+
+                    if ($version) {
+                        self::$version = $version;
+                    }
+                }
+
+                else {
+                    foreach ($json as $file) {
+                        if (is_file($file)) {
+                            $packages = json_decode(file_get_contents($file));
+
+                            foreach ($packages as $package) {
+                                if ($package->name == 'phpunit/phpunit') {
+                                    self::$version = $package->version;
+                                    break;
+                                }
+                            }
+                        }
+                    }
                 }
             }
         }
