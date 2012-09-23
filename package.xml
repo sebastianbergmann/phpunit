@@ -525,6 +525,8 @@
     <name>PHP_CodeCoverage</name>
     <channel>pear.phpunit.de</channel>
     <min>1.0.2</min>
+    <max>1.1.0</max>
+    <exclude>1.1.0</exclude>
    </package>
    <package>
     <name>PHP_Timer</name>
