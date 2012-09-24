@@ -51,13 +51,12 @@
  * @author     Sebastian Bergmann <sebastian@phpunit.de>
  * @copyright  2001-2012 Sebastian Bergmann <sebastian@phpunit.de>
  * @license    http://www.opensource.org/licenses/BSD-3-Clause  The BSD 3-Clause License
- * @version    Release: @package_version@
  * @link       http://www.phpunit.de/
  * @since      Class available since Release 2.0.0
  */
 class PHPUnit_Runner_Version
 {
-    const VERSION = '@package_version@';
+    const VERSION = '3.7.1';
     protected static $version;
 
     /**
@@ -70,36 +69,14 @@ class PHPUnit_Runner_Version
         if (self::$version === NULL) {
             self::$version = self::VERSION;
 
-            if (strpos(self::VERSION, '@package_version') === 0) {
-                $json = array(
-                  __DIR__ . '/../../../../composer/installed.json',
-                  __DIR__ . '/../../../../composer/installed_dev.json'
-                );
+            if (is_dir(dirname(dirname(__DIR__)) . '/.git')) {
+                $dir = getcwd();
+                chdir(__DIR__);
+                $version = exec('git describe --tags');
+                chdir($dir);
 
-                if (is_dir(dirname(dirname(__DIR__)) . '/.git')) {
-                    $dir = getcwd();
-                    chdir(__DIR__);
-                    $version = exec('git describe --tags');
-                    chdir($dir);
-
-                    if ($version) {
-                        self::$version = $version;
-                    }
-                }
-
-                else {
-                    foreach ($json as $file) {
-                        if (is_file($file)) {
-                            $packages = json_decode(file_get_contents($file));
-
-                            foreach ($packages as $package) {
-                                if ($package->name == 'phpunit/phpunit') {
-                                    self::$version = $package->version;
-                                    break;
-                                }
-                            }
-                        }
-                    }
+                if ($version) {
+                    self::$version = $version;
                 }
             }
         }
