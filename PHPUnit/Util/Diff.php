@@ -53,7 +53,6 @@
  * @author     Kore Nordmann <mail@kore-nordmann.de>
  * @copyright  2001-2012 Sebastian Bergmann <sebastian@phpunit.de>
  * @license    http://www.opensource.org/licenses/BSD-3-Clause  The BSD 3-Clause License
- * @version    Release: @package_version@
  * @link       http://www.phpunit.de/
  * @since      Class available since Release 3.4.0
  */
