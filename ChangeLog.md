@@ -7,6 +7,7 @@ PHPUnit 3.7.2
 -------------
 
 * Implemented #656: Always clean up mock objects (and free up memory).
+* Fixed #655: Reverted 'More than two positional arguments provided' check as it turned out to be a BC issue.
 
 PHPUnit 3.7.1
 -------------
