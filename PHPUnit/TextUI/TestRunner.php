@@ -417,7 +417,7 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
     protected function runFailed($message)
     {
         self::printVersionString();
-        self::write($message);
+        self::write($message . PHP_EOL);
         exit(self::FAILURE_EXIT);
     }
 
