@@ -7,6 +7,7 @@ PHPUnit 3.7.2
 -------------
 
 * Implemented #656: Always clean up mock objects (and free up memory).
+* Disable token caching (in PHP_TokenStream, used by PHP_CodeCoverage) by default (to reduce memory footprint).
 
 PHPUnit 3.7.1
 -------------

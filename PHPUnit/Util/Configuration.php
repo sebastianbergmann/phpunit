@@ -53,7 +53,7 @@
  * <phpunit backupGlobals="true"
  *          backupStaticAttributes="false"
  *          bootstrap="/path/to/bootstrap.php"
- *          cacheTokens="true"
+ *          cacheTokens="false"
  *          colors="false"
  *          convertErrorsToExceptions="true"
  *          convertNoticesToExceptions="true"
@@ -551,7 +551,7 @@ class PHPUnit_Util_Configuration
 
         if ($root->hasAttribute('cacheTokens')) {
             $result['cacheTokens'] = $this->getBoolean(
-              (string)$root->getAttribute('cacheTokens'), TRUE
+              (string)$root->getAttribute('cacheTokens'), FALSE
             );
         }
 
