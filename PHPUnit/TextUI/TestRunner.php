@@ -754,7 +754,7 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
         $arguments['processUncoveredFilesFromWhitelist'] = isset($arguments['processUncoveredFilesFromWhitelist']) ? $arguments['processUncoveredFilesFromWhitelist'] : FALSE;
         $arguments['backupGlobals']                      = isset($arguments['backupGlobals'])                      ? $arguments['backupGlobals']                      : NULL;
         $arguments['backupStaticAttributes']             = isset($arguments['backupStaticAttributes'])             ? $arguments['backupStaticAttributes']             : NULL;
-        $arguments['cacheTokens']                        = isset($arguments['cacheTokens'])                        ? $arguments['cacheTokens']                        : TRUE;
+        $arguments['cacheTokens']                        = isset($arguments['cacheTokens'])                        ? $arguments['cacheTokens']                        : FALSE;
         $arguments['colors']                             = isset($arguments['colors'])                             ? $arguments['colors']                             : FALSE;
         $arguments['convertErrorsToExceptions']          = isset($arguments['convertErrorsToExceptions'])          ? $arguments['convertErrorsToExceptions']          : TRUE;
         $arguments['convertNoticesToExceptions']         = isset($arguments['convertNoticesToExceptions'])         ? $arguments['convertNoticesToExceptions']         : TRUE;
