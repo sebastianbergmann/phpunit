@@ -43,7 +43,8 @@
         <file>/path/to/file</file>
       </exclude>
     </blacklist>
-    <whitelist processUncoveredFilesFromWhitelist="false">
+    <whitelist addUncoveredFilesFromWhitelist="true"
+               processUncoveredFilesFromWhitelist="false">
       <directory suffix=".php">/path/to/files</directory>
       <file>/path/to/file</file>
       <exclude>
