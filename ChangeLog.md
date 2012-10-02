@@ -8,6 +8,7 @@ PHPUnit 3.7.2
 
 * Implemented #656: Always clean up mock objects (and free up memory).
 * Added the `addUncoveredFilesFromWhitelist` configuration setting back in.
+* Fixed #655: Reverted 'More than two positional arguments provided' check as it turned out to be a BC issue.
 * Disable token caching (in PHP_TokenStream, used by PHP_CodeCoverage) by default (to reduce memory footprint).
 
 PHPUnit 3.7.1
@@ -45,6 +46,6 @@ PHPUnit 3.7.0
 * If no tests where executed, for example because of a `--filter`, PHPUnit now prints a "No tests executed" warning instead of "OK (0 tests...)".
 * It is possible again to expect the generic `Exception` class.
 * Removed `addUncoveredFilesFromWhitelist` configuration setting.
-* Removed deprecated `--skeleton-class` and `--skeleton-test` switches. The functionality is now provided by the `phpunit-skel` command of the `PHPUnit_SkeletonGenerator` package.
+* Removed deprecated `--skeleton-class` and `--skeleton-test` switches. The functionality is now provided by the `phpunit-skelgen` command of the `PHPUnit_SkeletonGenerator` package.
 * Removed deprecated `PHPUnit_Extensions_OutputTestCase` class.
 
