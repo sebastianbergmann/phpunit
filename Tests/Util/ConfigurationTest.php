@@ -114,6 +114,7 @@ class Util_ConfigurationTest extends PHPUnit_Framework_TestCase
             ),
             'whitelist' =>
             array(
+              'addUncoveredFilesFromWhitelist' => TRUE,
               'processUncoveredFilesFromWhitelist' => FALSE,
               'include' =>
               array(
