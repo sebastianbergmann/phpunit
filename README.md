@@ -28,18 +28,18 @@ Documentation
 
 The documentation for PHPUnit is available in different formats:
 
-* [English, multiple HTML files](http://www.phpunit.de/manual/3.8/en/index.html)
-* [English, single HTML file](http://www.phpunit.de/manual/3.8/en/phpunit-book.html)
-* [English, PDF](http://www.phpunit.de/manual/3.8/en/phpunit-book.pdf)
-* [English, ePub](http://www.phpunit.de/manual/3.8/en/phpunit-book.epub)
-* [French, multiple HTML files](http://www.phpunit.de/manual/3.8/fr/index.html)
-* [French, single HTML file](http://www.phpunit.de/manual/3.8/fr/phpunit-book.html)
-* [French, PDF](http://www.phpunit.de/manual/3.8/fr/phpunit-book.pdf)
-* [French, ePub](http://www.phpunit.de/manual/3.8/fr/phpunit-book.epub)
-* [Japanese, multiple HTML files](http://www.phpunit.de/manual/3.8/ja/index.html)
-* [Japanese, single HTML file](http://www.phpunit.de/manual/3.8/ja/phpunit-book.html)
-* [Japanese, PDF](http://www.phpunit.de/manual/3.8/ja/phpunit-book.pdf)
-* [Japanese, ePub](http://www.phpunit.de/manual/3.8/ja/phpunit-book.epub)
+* [English, multiple HTML files](http://www.phpunit.de/manual/current/en/index.html)
+* [English, single HTML file](http://www.phpunit.de/manual/current/en/phpunit-book.html)
+* [English, PDF](http://www.phpunit.de/manual/current/en/phpunit-book.pdf)
+* [English, ePub](http://www.phpunit.de/manual/current/en/phpunit-book.epub)
+* [French, multiple HTML files](http://www.phpunit.de/manual/current/fr/index.html)
+* [French, single HTML file](http://www.phpunit.de/manual/current/fr/phpunit-book.html)
+* [French, PDF](http://www.phpunit.de/manual/current/fr/phpunit-book.pdf)
+* [French, ePub](http://www.phpunit.de/manual/current/fr/phpunit-book.epub)
+* [Japanese, multiple HTML files](http://www.phpunit.de/manual/current/ja/index.html)
+* [Japanese, single HTML file](http://www.phpunit.de/manual/current/ja/phpunit-book.html)
+* [Japanese, PDF](http://www.phpunit.de/manual/current/ja/phpunit-book.pdf)
+* [Japanese, ePub](http://www.phpunit.de/manual/current/ja/phpunit-book.epub)
 
 IRC
 ---
