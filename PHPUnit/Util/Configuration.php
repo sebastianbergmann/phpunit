@@ -53,7 +53,7 @@
  * <phpunit backupGlobals="true"
  *          backupStaticAttributes="false"
  *          bootstrap="/path/to/bootstrap.php"
- *          cacheTokens="true"
+ *          cacheTokens="false"
  *          colors="false"
  *          convertErrorsToExceptions="true"
  *          convertNoticesToExceptions="true"
@@ -98,7 +98,8 @@
  *         <file>/path/to/file</file>
  *       </exclude>
  *     </blacklist>
- *     <whitelist processUncoveredFilesFromWhitelist="false">
+ *     <whitelist addUncoveredFilesFromWhitelist="true"
+ *                processUncoveredFilesFromWhitelist="false">
  *       <directory suffix=".php">/path/to/files</directory>
  *       <file>/path/to/file</file>
  *       <exclude>
@@ -245,18 +246,29 @@ class PHPUnit_Util_Configuration
      */
     public function getFilterConfiguration()
     {
+        $addUncoveredFilesFromWhitelist     = TRUE;
         $processUncoveredFilesFromWhitelist = FALSE;
 
         $tmp = $this->xpath->query('filter/whitelist');
 
-        if ($tmp->length == 1 &&
-            $tmp->item(0)->hasAttribute('processUncoveredFilesFromWhitelist')) {
-            $processUncoveredFilesFromWhitelist = $this->getBoolean(
-              (string)$tmp->item(0)->getAttribute(
-                'processUncoveredFilesFromWhitelist'
-              ),
-              FALSE
-            );
+        if ($tmp->length == 1) {
+            if ($tmp->item(0)->hasAttribute('addUncoveredFilesFromWhitelist')) {
+                $addUncoveredFilesFromWhitelist = $this->getBoolean(
+                  (string)$tmp->item(0)->getAttribute(
+                    'addUncoveredFilesFromWhitelist'
+                  ),
+                  TRUE
+                );
+            }
+
+            if ($tmp->item(0)->hasAttribute('processUncoveredFilesFromWhitelist')) {
+                $processUncoveredFilesFromWhitelist = $this->getBoolean(
+                  (string)$tmp->item(0)->getAttribute(
+                    'processUncoveredFilesFromWhitelist'
+                  ),
+                  FALSE
+                );
+            }
         }
 
         return array(
@@ -279,6 +291,7 @@ class PHPUnit_Util_Configuration
             )
           ),
           'whitelist' => array(
+            'addUncoveredFilesFromWhitelist' => $addUncoveredFilesFromWhitelist,
             'processUncoveredFilesFromWhitelist' => $processUncoveredFilesFromWhitelist,
             'include' => array(
               'directory' => $this->readFilterDirectories(
@@ -551,7 +564,7 @@ class PHPUnit_Util_Configuration
 
         if ($root->hasAttribute('cacheTokens')) {
             $result['cacheTokens'] = $this->getBoolean(
-              (string)$root->getAttribute('cacheTokens'), TRUE
+              (string)$root->getAttribute('cacheTokens'), FALSE
             );
         }
 

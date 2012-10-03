@@ -256,6 +256,10 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
               NULL, $this->codeCoverageFilter
             );
 
+            $codeCoverage->setAddUncoveredFilesFromWhitelist(
+              $arguments['addUncoveredFilesFromWhitelist']
+            );
+
             $codeCoverage->setProcessUncoveredFilesFromWhitelist(
               $arguments['processUncoveredFilesFromWhitelist']
             );
@@ -417,7 +421,7 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
     protected function runFailed($message)
     {
         self::printVersionString();
-        self::write($message);
+        self::write($message . PHP_EOL);
         exit(self::FAILURE_EXIT);
     }
 
@@ -707,6 +711,7 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
                 extension_loaded('xdebug')) {
 
                 $filterConfiguration = $arguments['configuration']->getFilterConfiguration();
+                $arguments['addUncoveredFilesFromWhitelist'] = $filterConfiguration['whitelist']['addUncoveredFilesFromWhitelist'];
                 $arguments['processUncoveredFilesFromWhitelist'] = $filterConfiguration['whitelist']['processUncoveredFilesFromWhitelist'];
 
                 foreach ($filterConfiguration['blacklist']['include']['directory'] as $dir) {
@@ -751,10 +756,11 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
             }
         }
 
+        $arguments['addUncoveredFilesFromWhitelist']     = isset($arguments['addUncoveredFilesFromWhitelist'])     ? $arguments['addUncoveredFilesFromWhitelist']     : TRUE;
         $arguments['processUncoveredFilesFromWhitelist'] = isset($arguments['processUncoveredFilesFromWhitelist']) ? $arguments['processUncoveredFilesFromWhitelist'] : FALSE;
         $arguments['backupGlobals']                      = isset($arguments['backupGlobals'])                      ? $arguments['backupGlobals']                      : NULL;
         $arguments['backupStaticAttributes']             = isset($arguments['backupStaticAttributes'])             ? $arguments['backupStaticAttributes']             : NULL;
-        $arguments['cacheTokens']                        = isset($arguments['cacheTokens'])                        ? $arguments['cacheTokens']                        : TRUE;
+        $arguments['cacheTokens']                        = isset($arguments['cacheTokens'])                        ? $arguments['cacheTokens']                        : FALSE;
         $arguments['colors']                             = isset($arguments['colors'])                             ? $arguments['colors']                             : FALSE;
         $arguments['convertErrorsToExceptions']          = isset($arguments['convertErrorsToExceptions'])          ? $arguments['convertErrorsToExceptions']          : TRUE;
         $arguments['convertNoticesToExceptions']         = isset($arguments['convertNoticesToExceptions'])         ? $arguments['convertNoticesToExceptions']         : TRUE;

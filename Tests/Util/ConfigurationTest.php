@@ -114,6 +114,7 @@ class Util_ConfigurationTest extends PHPUnit_Framework_TestCase
             ),
             'whitelist' =>
             array(
+              'addUncoveredFilesFromWhitelist' => TRUE,
               'processUncoveredFilesFromWhitelist' => FALSE,
               'include' =>
               array(
@@ -295,7 +296,7 @@ class Util_ConfigurationTest extends PHPUnit_Framework_TestCase
             'backupGlobals' => TRUE,
             'backupStaticAttributes' => FALSE,
             'bootstrap' => '/path/to/bootstrap.php',
-            'cacheTokens' => TRUE,
+            'cacheTokens' => FALSE,
             'colors' => FALSE,
             'convertErrorsToExceptions' => TRUE,
             'convertNoticesToExceptions' => TRUE,

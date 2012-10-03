@@ -48,44 +48,27 @@ require_once 'PHP/Timer/Autoload.php';
 require_once 'PHPUnit/Framework/MockObject/Autoload.php';
 require_once 'Text/Template/Autoload.php';
 
-function phpunit_autoload($class = NULL)
-{
-    static $classes = NULL;
-    static $path    = NULL;
+spl_autoload_register(
+  function ($class)
+  {
+      static $classes = NULL;
+      static $path    = NULL;
 
-    if ($classes === NULL) {
-        $classes = array(
-          ___CLASSLIST___
-        );
+      if ($classes === NULL) {
+          $classes = array(
+            ___CLASSLIST___
+          );
 
-        $path = dirname(__FILE__);
-    }
+          $path = dirname(__FILE__);
+      }
 
-    if ($class === NULL) {
-        $result = array(__FILE__);
+      $cn = strtolower($class);
 
-        if (isset($_SERVER['_']) &&
-            strpos($_SERVER['_'], 'phpunit') !== FALSE) {
-            $result[] = $_SERVER['_'];
-        }
-
-        foreach ($classes as $file) {
-            $result[] = $path . $file;
-        }
-
-        return $result;
-    }
-
-    $cn = strtolower($class);
-
-    if (isset($classes[$cn])) {
-        $file = $path . $classes[$cn];
-
-        require $file;
-    }
-}
-
-spl_autoload_register('phpunit_autoload');
+      if (isset($classes[$cn])) {
+          require $path . $classes[$cn];
+      }
+  }
+);
 
 if (stream_resolve_include_path('PHP/Invoker/Autoload.php')) {
     require_once 'PHP/Invoker/Autoload.php';

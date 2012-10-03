@@ -3,7 +3,7 @@
 <phpunit backupGlobals="true"
          backupStaticAttributes="false"
          bootstrap="/path/to/bootstrap.php"
-         cacheTokens="true"
+         cacheTokens="false"
          colors="false"
          convertErrorsToExceptions="true"
          convertNoticesToExceptions="true"
@@ -43,7 +43,8 @@
         <file>/path/to/file</file>
       </exclude>
     </blacklist>
-    <whitelist processUncoveredFilesFromWhitelist="false">
+    <whitelist addUncoveredFilesFromWhitelist="true"
+               processUncoveredFilesFromWhitelist="false">
       <directory suffix=".php">/path/to/files</directory>
       <file>/path/to/file</file>
       <exclude>
