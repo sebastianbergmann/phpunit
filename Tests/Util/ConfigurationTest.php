@@ -332,4 +332,59 @@ class Util_ConfigurationTest extends PHPUnit_Framework_TestCase
           $this->configuration->getSeleniumBrowserConfiguration()
         );
     }
+
+    public function testXincludeInConfiguration()
+    {
+        $configurationWithXinclude = PHPUnit_Util_Configuration::getInstance(
+          dirname(__DIR__) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'configuration_xinclude.xml'
+        );
+
+        $this->assertConfigurationEquals(
+            $this->configuration,
+            $configurationWithXinclude
+        );
+    }
+
+    /**
+     * Asserts that the values in $actualConfiguration equal $expectedConfiguration.
+     *
+     * @param PHPUnit_Util_Configuration $expectedConfiguration
+     * @param PHPUnit_Util_Configuration $actualConfiguration
+     * @return void
+     */
+    protected function assertConfigurationEquals( PHPUnit_Util_Configuration $expectedConfiguration, PHPUnit_Util_Configuration $actualConfiguration )
+    {
+        $this->assertEquals(
+            $expectedConfiguration->getFilterConfiguration(),
+            $actualConfiguration->getFilterConfiguration()
+        );
+        $this->assertEquals(
+            $expectedConfiguration->getGroupConfiguration(),
+            $actualConfiguration->getGroupConfiguration()
+        );
+        $this->assertEquals(
+            $expectedConfiguration->getListenerConfiguration(),
+            $actualConfiguration->getListenerConfiguration()
+        );
+        $this->assertEquals(
+            $expectedConfiguration->getLoggingConfiguration(),
+            $actualConfiguration->getLoggingConfiguration()
+        );
+        $this->assertEquals(
+            $expectedConfiguration->getPHPConfiguration(),
+            $actualConfiguration->getPHPConfiguration()
+        );
+        $this->assertEquals(
+            $expectedConfiguration->getPHPUnitConfiguration(),
+            $actualConfiguration->getPHPUnitConfiguration()
+        );
+        $this->assertEquals(
+            $expectedConfiguration->getSeleniumBrowserConfiguration(),
+            $actualConfiguration->getSeleniumBrowserConfiguration()
+        );
+        $this->assertEquals(
+            $expectedConfiguration->getTestSuiteConfiguration(),
+            $actualConfiguration->getTestSuiteConfiguration()
+        );
+    }
 }
