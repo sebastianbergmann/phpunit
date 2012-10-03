@@ -7,6 +7,7 @@ PHPUnit 3.7.2
 -------------
 
 * Implemented #656: Always clean up mock objects (and free up memory).
+* Implemented #664: Do not rely on autoloader class map to populate blacklist.
 * Added the `addUncoveredFilesFromWhitelist` configuration setting back in.
 * Fixed #655: Reverted 'More than two positional arguments provided' check as it turned out to be a BC issue.
 * Disable token caching (in PHP_TokenStream, used by PHP_CodeCoverage) by default (to reduce memory footprint).
