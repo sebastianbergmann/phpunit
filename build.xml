@@ -44,11 +44,10 @@
   <exec executable="phpab">
    <arg value="--output" />
    <arg path="PHPUnit/Framework/MockObject/Autoload.php" />
-   <arg value="--compat" />
    <arg value="--template" />
    <arg path="PHPUnit/Framework/MockObject/Autoload.php.in" />
    <arg value="--indent" />
-   <arg value="          " />
+   <arg value="            " />
    <arg path="PHPUnit" />
   </exec>
  </target>
