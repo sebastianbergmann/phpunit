@@ -509,6 +509,7 @@
     <name>PHP_CodeCoverage</name>
     <channel>pear.phpunit.de</channel>
     <min>1.1.0</min>
+    <max>1.1.99</max>
    </package>
    <package>
     <name>PHP_Timer</name>
@@ -519,6 +520,7 @@
     <name>PHPUnit_MockObject</name>
     <channel>pear.phpunit.de</channel>
     <min>1.1.0</min>
+    <max>1.1.99</max>
    </package>
    <package>
     <name>YAML</name>
