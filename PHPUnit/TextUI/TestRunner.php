@@ -247,11 +247,27 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
             );
         }
 
-        if ((isset($arguments['coverageClover']) ||
-             isset($arguments['reportDirectory']) ||
-             isset($arguments['coveragePHP']) ||
-             isset($arguments['coverageText'])) &&
-             extension_loaded('xdebug')) {
+        $codeCoverageReports = 0;
+
+        if (extension_loaded('xdebug')) {
+            if (isset($arguments['coverageClover'])) {
+                $codeCoverageReports++;
+            }
+
+            if (isset($arguments['reportDirectory'])) {
+                $codeCoverageReports++;
+            }
+
+            if (isset($arguments['coveragePHP'])) {
+                $codeCoverageReports++;
+            }
+
+            if (isset($arguments['coverageText'])) {
+                $codeCoverageReports++;
+            }
+        }
+
+        if ($codeCoverageReports > 0) {
             $codeCoverage = new PHP_CodeCoverage(
               NULL, $this->codeCoverageFilter
             );
@@ -263,10 +279,6 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
             $codeCoverage->setProcessUncoveredFilesFromWhitelist(
               $arguments['processUncoveredFilesFromWhitelist']
             );
-
-            if (isset($arguments['cacheTokens'])) {
-                $codeCoverage->setCacheTokens($arguments['cacheTokens']);
-            }
 
             if (isset($arguments['forceCoversAnnotation'])) {
                 $codeCoverage->setForceCoversAnnotation(
@@ -281,6 +293,12 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
             }
 
             $result->setCodeCoverage($codeCoverage);
+        }
+
+        if ($codeCoverageReports > 1) {
+            if (isset($arguments['cacheTokens'])) {
+                $codeCoverage->setCacheTokens($arguments['cacheTokens']);
+            }
         }
 
         if (isset($arguments['jsonLogfile'])) {
