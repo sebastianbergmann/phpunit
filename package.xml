@@ -176,9 +176,7 @@
      <file baseinstalldir="/" name="Getopt.php" role="php" />
      <file baseinstalldir="/" name="GlobalState.php" role="php" />
      <file baseinstalldir="/" name="InvalidArgumentHelper.php" role="php" />
-     <file baseinstalldir="/" name="PHP.php" role="php">
-      <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
-     </file>
+     <file baseinstalldir="/" name="PHP.php" role="php" />
      <file baseinstalldir="/" name="Printer.php" role="php" />
      <file baseinstalldir="/" name="String.php" role="php" />
      <file baseinstalldir="/" name="Test.php" role="php" />
