@@ -378,6 +378,10 @@ class PHPUnit_Util_GlobalState
             self::addDirectoryContainingClassToPHPUnitFilesList('PHP_Timer');
             self::addDirectoryContainingClassToPHPUnitFilesList('PHP_Token');
             self::addDirectoryContainingClassToPHPUnitFilesList('PHPUnit_Framework_TestCase', 2);
+            self::addDirectoryContainingClassToPHPUnitFilesList('PHPUnit_Extensions_Database_TestCase', 2);
+            self::addDirectoryContainingClassToPHPUnitFilesList('PHPUnit_Framework_MockObject_Generator', 2);
+            self::addDirectoryContainingClassToPHPUnitFilesList('PHPUnit_Extensions_SeleniumTestCase', 2);
+            self::addDirectoryContainingClassToPHPUnitFilesList('PHPUnit_Extensions_Story_TestCase', 2);
             self::addDirectoryContainingClassToPHPUnitFilesList('Text_Template');
         }
 
