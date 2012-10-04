@@ -131,7 +131,8 @@ class PHPUnit_Framework_TestFailure
 
         else if ($e instanceof TException) {
             $vars   = get_object_vars($e);
-            $buffer = '';
+            $buffer = sprintf('%s: ', get_class($e)) . PHP_EOL;
+
             foreach ($vars as $varName => $varValue) {
 
                 if (empty($varValue)) {
@@ -147,7 +148,12 @@ class PHPUnit_Framework_TestFailure
 
                     $varName,
                     $varValue
-                );
+                ) . "\n";
+            }
+
+            $msg = $e->getMessage();
+            if (!empty($msg)) {
+                $buffer .= sprintf('Message: %s', $msg) . "\n";
             }
         }
 
