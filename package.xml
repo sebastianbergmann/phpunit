@@ -168,9 +168,7 @@
      <file baseinstalldir="/" name="DeprecatedFeature.php" role="php" />
      <file baseinstalldir="/" name="Diff.php" role="php" />
      <file baseinstalldir="/" name="ErrorHandler.php" role="php" />
-     <file baseinstalldir="/" name="Fileloader.php" role="php">
-      <tasks:replace from="@php_bin@" to="php_bin" type="pear-config" />
-     </file>
+     <file baseinstalldir="/" name="Fileloader.php" role="php" />
      <file baseinstalldir="/" name="Filesystem.php" role="php" />
      <file baseinstalldir="/" name="Filter.php" role="php" />
      <file baseinstalldir="/" name="Getopt.php" role="php" />
