@@ -129,6 +129,28 @@ class PHPUnit_Framework_TestFailure
             $buffer = $e->getMessage() . "\n";
         }
 
+        else if ($e instanceof TException) {
+            $vars   = get_object_vars($e);
+            $buffer = '';
+            foreach ($vars as $varName => $varValue) {
+
+                if (empty($varValue)) {
+                    continue;
+                }
+
+                if (!is_string($varValue) && !is_numeric($varValue)) {
+                    $v = var_export($varValue, true);
+                }
+
+                $buffer .= sprintf(
+                    '%s: %s',
+
+                    $varName,
+                    $varValue
+                );
+            }
+        }
+
         else {
             $buffer = get_class($e) . ': ' . $e->getMessage() . "\n";
         }
