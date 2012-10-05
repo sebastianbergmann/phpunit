@@ -45,6 +45,11 @@
     "config": {
         "bin-dir": "bin"
     },
+    "autoload": {
+        "classmap": [
+            "PHPUnit/"
+        ]
+    },
     "extra": {
         "branch-alias": {
             "dev-master": "3.7.x-dev"
