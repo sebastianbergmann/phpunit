@@ -3,6 +3,11 @@ PHPUnit 3.7
 
 This is the list of changes for the PHPUnit 3.7 release series.
 
+PHPUnit 3.7.3
+-------------
+
+* Improvements to running PHPUnit from a PHAR.
+
 PHPUnit 3.7.2
 -------------
 
