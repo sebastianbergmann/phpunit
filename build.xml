@@ -161,7 +161,26 @@
 
  <target name="phar"
          description="Create PHAR archive of PHPUnit and all its dependencies"
-         depends="clean,prepare">
+         depends="clean,prepare,phar-download,phar-build">
+ </target>
+
+ <target name="phar-build">
+  <exec executable="phpab">
+   <arg value="--all" />
+   <arg value="--phar" />
+   <arg value="--output" />
+   <arg path="${basedir}/build/phpunit.phar" />
+   <arg value="--template" />
+   <arg path="${basedir}/build/phar-autoload.php.in" />
+   <arg value="--indent" />
+   <arg value="          " />
+   <arg path="${basedir}/build/phar" />
+  </exec>
+
+  <chmod file="${basedir}/build/phpunit.phar" perm="ugo+rx"/>
+ </target>
+
+ <target name="phar-download">
   <exec executable="pear">
    <arg value="config-set" />
    <arg value="auto_discover" />
@@ -208,19 +227,5 @@
     <include name="**/Autoload.php" />
    </fileset>
   </delete>
-
-  <exec executable="phpab">
-   <arg value="--all" />
-   <arg value="--phar" />
-   <arg value="--output" />
-   <arg path="${basedir}/build/phpunit.phar" />
-   <arg value="--template" />
-   <arg path="${basedir}/build/phar-autoload.php.in" />
-   <arg value="--indent" />
-   <arg value="          " />
-   <arg path="${basedir}/build/phar" />
-  </exec>
-
-  <chmod file="${basedir}/build/phpunit.phar" perm="ugo+rx"/>
  </target>
 </project>
