@@ -31,8 +31,8 @@
         "ext-soap": "*"
     },
     "autoload": {
-        "files": [
-            "PHPUnit/Framework/MockObject/Autoload.php"
+        "classmap": [
+            "PHPUnit/"
         ]
     },
     "include-path": [

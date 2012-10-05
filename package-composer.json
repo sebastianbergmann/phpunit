@@ -11,7 +11,7 @@
         "irc": "irc://irc.freenode.net/phpunit"
     },
     "autoload": {
-        "files": [ "PHPUnit/Framework/MockObject/Autoload.php" ]
+        "classmap": [ "PHPUnit/" ]
     },
     "include_path": [
         ""
