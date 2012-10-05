@@ -15,8 +15,6 @@
             "role": "lead"
         }
     ],
-    "version": "1.3.0",
-    "time": "2012-MM-DD",
     "support": {
         "issues": "https://github.com/sebastianbergmann/phpunit-mock-objects/issues",
         "irc": "irc://irc.freenode.net/phpunit"
@@ -31,8 +29,8 @@
         "ext-soap": "*"
     },
     "autoload": {
-        "files": [
-            "PHPUnit/Framework/MockObject/Autoload.php"
+        "classmap": [
+            "PHPUnit/"
         ]
     },
     "extra": {
