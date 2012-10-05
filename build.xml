@@ -193,8 +193,8 @@
    <fileset dir="${basedir}/build/phar/usr/local/php-5.4/lib/php/PHPUnit"/>
   </move>
 
-  <move todir="${basedir}/build/phar/SymfonyComponents">
-   <fileset dir="${basedir}/build/phar/usr/local/php-5.4/lib/php/SymfonyComponents"/>
+  <move todir="${basedir}/build/phar/Symfony">
+   <fileset dir="${basedir}/build/phar/usr/local/php-5.4/lib/php/Symfony"/>
   </move>
 
   <move todir="${basedir}/build/phar/Text">
