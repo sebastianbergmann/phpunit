@@ -15,8 +15,8 @@
         "issues": "https://github.com/sebastianbergmann/phpunit/issues",
         "irc": "irc://irc.freenode.net/phpunit"
     },
-    "classmap": {
-        "files": [ "PHPUnit/" ]
+    "autoload": {
+        "classmap": ["PHPUnit/"]
     },
     "include_path": [
         "",
