@@ -65,6 +65,12 @@ class PHPUnit_Util_Filter
      */
     public static function getFilteredStacktrace(Exception $e, $asString = TRUE)
     {
+        $prefix = FALSE;
+
+        if (substr($GLOBALS['_SERVER']['_'], -5) == '.phar') {
+            $prefix = 'phar://' . $GLOBALS['_SERVER']['_'] . '/';
+        }
+
         if (!defined('PHPUNIT_TESTSUITE')) {
             $blacklist = PHPUnit_Util_GlobalState::phpunitFiles();
         } else {
@@ -99,7 +105,8 @@ class PHPUnit_Util_Filter
 
         foreach ($eTrace as $frame) {
             if (isset($frame['file']) && is_file($frame['file']) &&
-                !isset($blacklist[$frame['file']])) {
+                !isset($blacklist[$frame['file']]) &&
+                strpos($frame['file'], $prefix) !== 0) {
                 if ($asString === TRUE) {
                     $filteredStacktrace .= sprintf(
                       "%s:%s\n",
