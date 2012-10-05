@@ -191,11 +191,22 @@ class PHPUnit_Util_GlobalState
     {
         $blacklist = self::phpunitFiles();
         $files     = get_included_files();
+        $prefix    = FALSE;
         $result    = '';
 
+        if (substr($GLOBALS['_SERVER']['_'], -5) == '.phar') {
+            $prefix = 'phar://' . $GLOBALS['_SERVER']['_'] . '/';
+        }
+
         for ($i = count($files) - 1; $i > 0; $i--) {
-            if (!isset($blacklist[$files[$i]]) && is_file($files[$i])) {
-                $result = 'require_once \'' . $files[$i] . "';\n" . $result;
+            $file = $files[$i];
+
+            if ($prefix !== FALSE) {
+                $file = str_replace($prefix, '', $file);
+            }
+
+            if (!isset($blacklist[$file]) && is_file($file)) {
+                $result = 'require_once \'' . $file . "';\n" . $result;
             }
         }
 
