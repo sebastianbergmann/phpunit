@@ -173,7 +173,7 @@
    <arg value="--template" />
    <arg path="${basedir}/build/phar-autoload.php.in" />
    <arg value="--indent" />
-   <arg value="          " />
+   <arg value="            " />
    <arg path="${basedir}/build/phar" />
   </exec>
 
