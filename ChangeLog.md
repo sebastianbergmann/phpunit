@@ -3,6 +3,11 @@ PHPUnit 3.7
 
 This is the list of changes for the PHPUnit 3.7 release series.
 
+PHPUnit 3.7.6
+-------------
+
+* Fixed #682: `phpunit` script appears in stacktrace (when PHPUnit is installed through Composer).
+
 PHPUnit 3.7.5
 -------------
 
