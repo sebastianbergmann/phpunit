@@ -67,8 +67,8 @@ class PHPUnit_Util_Filter
     {
         $prefix = FALSE;
 
-        if (substr($GLOBALS['_SERVER']['_'], -5) == '.phar') {
-            $prefix = 'phar://' . $GLOBALS['_SERVER']['_'] . '/';
+        if (substr($GLOBALS['_SERVER']['SCRIPT_NAME'], -5) == '.phar') {
+            $prefix = 'phar://' . $GLOBALS['_SERVER']['SCRIPT_NAME'] . '/';
         }
 
         if (!defined('PHPUNIT_TESTSUITE')) {
@@ -107,7 +107,7 @@ class PHPUnit_Util_Filter
             if (isset($frame['file']) && is_file($frame['file']) &&
                 !isset($blacklist[$frame['file']]) &&
                 strpos($frame['file'], $prefix) !== 0 &&
-                $frame['file'] !== $GLOBALS['_SERVER']['_']) {
+                $frame['file'] !== $GLOBALS['_SERVER']['SCRIPT_NAME']) {
                 if ($asString === TRUE) {
                     $filteredStacktrace .= sprintf(
                       "%s:%s\n",

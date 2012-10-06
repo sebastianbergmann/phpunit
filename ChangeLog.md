@@ -3,6 +3,11 @@ PHPUnit 3.7
 
 This is the list of changes for the PHPUnit 3.7 release series.
 
+PHPUnit 3.7.5
+-------------
+
+* PHPUnit now uses `$_SERVER['SCRIPT_NAME']` instead of `$_SERVER['_']` to filter the `phpunit` script (as the latter is not set when PHPUnit is invoked from Apache Ant's `<exec>` task, for instance).
+
 PHPUnit 3.7.4
 -------------
 

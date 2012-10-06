@@ -194,8 +194,8 @@ class PHPUnit_Util_GlobalState
         $prefix    = FALSE;
         $result    = '';
 
-        if (substr($GLOBALS['_SERVER']['_'], -5) == '.phar') {
-            $prefix = 'phar://' . $GLOBALS['_SERVER']['_'] . '/';
+        if (substr($GLOBALS['_SERVER']['SCRIPT_NAME'], -5) == '.phar') {
+            $prefix = 'phar://' . $GLOBALS['_SERVER']['SCRIPT_NAME'] . '/';
         }
 
         for ($i = count($files) - 1; $i > 0; $i--) {
