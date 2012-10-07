@@ -66,9 +66,10 @@ class PHPUnit_Util_Filter
     public static function getFilteredStacktrace(Exception $e, $asString = TRUE)
     {
         $prefix = FALSE;
+        $script = realpath($GLOBALS['_SERVER']['SCRIPT_NAME']);
 
-        if (substr($GLOBALS['_SERVER']['_'], -5) == '.phar') {
-            $prefix = 'phar://' . $GLOBALS['_SERVER']['_'] . '/';
+        if (substr($script, -5) == '.phar') {
+            $prefix = 'phar://' . $script . '/';
         }
 
         if (!defined('PHPUNIT_TESTSUITE')) {
@@ -107,7 +108,7 @@ class PHPUnit_Util_Filter
             if (isset($frame['file']) && is_file($frame['file']) &&
                 !isset($blacklist[$frame['file']]) &&
                 strpos($frame['file'], $prefix) !== 0 &&
-                $frame['file'] !== $GLOBALS['_SERVER']['_']) {
+                $frame['file'] !== $script) {
                 if ($asString === TRUE) {
                     $filteredStacktrace .= sprintf(
                       "%s:%s\n",

@@ -193,9 +193,10 @@ class PHPUnit_Util_GlobalState
         $files     = get_included_files();
         $prefix    = FALSE;
         $result    = '';
+        $script    = realpath($GLOBALS['_SERVER']['SCRIPT_NAME']);
 
-        if (substr($GLOBALS['_SERVER']['_'], -5) == '.phar') {
-            $prefix = 'phar://' . $GLOBALS['_SERVER']['_'] . '/';
+        if (substr($script, -5) == '.phar') {
+            $prefix = 'phar://' . $script . '/';
         }
 
         for ($i = count($files) - 1; $i > 0; $i--) {
