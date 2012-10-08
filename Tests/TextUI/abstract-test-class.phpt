@@ -22,7 +22,7 @@ There was 1 failure:
 
 1) Warning
 Cannot instantiate class "AbstractTest".
-%s/abstract-test-class.php:%i
+
 
 FAILURES!
 Tests: 1, Assertions: 0, Failures: 1.
