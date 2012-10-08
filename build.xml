@@ -39,7 +39,6 @@
   <mkdir dir="${basedir}/build/coverage"/>
   <mkdir dir="${basedir}/build/logs"/>
   <mkdir dir="${basedir}/build/pdepend"/>
-  <mkdir dir="${basedir}/build/phar"/>
   <mkdir dir="${basedir}/build/phpdox"/>
  </target>
 
@@ -161,37 +160,14 @@
 
  <target name="phar"
          description="Create PHAR archive of PHPUnit and all its dependencies"
-         depends="clean,prepare,phar-download,phar-build">
- </target>
+         depends="clean">
+  <mkdir dir="${basedir}/build/phar"/>
 
- <target name="phar-build">
-  <exec executable="phpab">
-   <arg value="--all" />
-   <arg value="--phar" />
-   <arg value="--output" />
-   <arg path="${basedir}/build/phpunit.phar" />
-   <arg value="--template" />
-   <arg path="${basedir}/build/phar-autoload.php.in" />
-   <arg value="--indent" />
-   <arg value="            " />
-   <arg path="${basedir}/build/phar" />
-  </exec>
-
-  <chmod file="${basedir}/build/phpunit.phar" perm="ugo+rx"/>
-
-  <copy file="${basedir}/build/phpunit.phar" tofile="${basedir}/build/phpunit-compressed.phar"/>
-  <chmod file="${basedir}/build/phpunit-compressed.phar" perm="ugo+rx"/>
-
-  <exec executable="phar">
-   <arg value="compress" />
-   <arg value="-f" />
-   <arg path="${basedir}/build/phpunit-compressed.phar" />
+  <exec executable="bash" outputproperty="version">
    <arg value="-c" />
-   <arg value="bzip2" />
+   <arg value="pear remote-info pear.phpunit.de/phpunit|grep Latest|sed 's/Latest      //g'" />
   </exec>
- </target>
 
- <target name="phar-download">
   <exec executable="pear">
    <arg value="config-set" />
    <arg value="auto_discover" />
@@ -238,5 +214,33 @@
     <include name="**/Autoload.php" />
    </fileset>
   </delete>
+
+  <exec executable="phpab">
+   <arg value="--all" />
+   <arg value="--phar" />
+   <arg value="--output" />
+   <arg path="${basedir}/build/phpunit.phar" />
+   <arg value="--template" />
+   <arg path="${basedir}/build/phar-autoload.php.in" />
+   <arg value="--indent" />
+   <arg value="            " />
+   <arg path="${basedir}/build/phar" />
+  </exec>
+
+  <chmod file="${basedir}/build/phpunit.phar" perm="ugo+rx"/>
+
+  <copy file="${basedir}/build/phpunit.phar" tofile="${basedir}/build/phpunit-compressed.phar"/>
+  <chmod file="${basedir}/build/phpunit-compressed.phar" perm="ugo+rx"/>
+
+  <exec executable="phar">
+   <arg value="compress" />
+   <arg value="-f" />
+   <arg path="${basedir}/build/phpunit-compressed.phar" />
+   <arg value="-c" />
+   <arg value="bzip2" />
+  </exec>
+
+  <move file="${basedir}/build/phpunit.phar" tofile="${basedir}/build/phpunit-${version}.phar"/>
+  <move file="${basedir}/build/phpunit-compressed.phar" tofile="${basedir}/build/phpunit-${version}-compressed.phar"/>
  </target>
 </project>
