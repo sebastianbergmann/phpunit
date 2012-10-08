@@ -20,18 +20,18 @@ There were 3 errors:
 
 1) Issue578Test::testNoticesDoublePrintStackTrace
 Invalid error type specified
+
 %s/Issue578Test.php:%i
-%s/578.php:%i
 
 2) Issue578Test::testWarningsDoublePrintStackTrace
 Invalid error type specified
+
 %s/Issue578Test.php:%i
-%s/578.php:%i
 
 3) Issue578Test::testUnexpectedExceptionsPrintsCorrectly
 Exception: Double printed exception
+
 %s/Issue578Test.php:%i
-%s/578.php:%i
 
 FAILURES!
 Tests: 3, Assertions: 0, Errors: 3.
