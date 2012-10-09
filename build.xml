@@ -224,7 +224,7 @@
    <arg value="--all" />
    <arg value="--phar" />
    <arg value="--output" />
-   <arg path="${basedir}/build/phpunit.phar" />
+   <arg path="${basedir}/build/phpunit-${version}.phar" />
    <arg value="--template" />
    <arg path="${basedir}/build/phar-autoload.php.in" />
    <arg value="--indent" />
@@ -232,20 +232,16 @@
    <arg path="${basedir}/build/phar" />
   </exec>
 
-  <chmod file="${basedir}/build/phpunit.phar" perm="ugo+rx"/>
-
-  <copy file="${basedir}/build/phpunit.phar" tofile="${basedir}/build/phpunit-compressed.phar"/>
-  <chmod file="${basedir}/build/phpunit-compressed.phar" perm="ugo+rx"/>
+  <chmod file="${basedir}/build/phpunit-${version}.phar" perm="ugo+rx"/>
+  <copy file="${basedir}/build/phpunit-${version}.phar" tofile="${basedir}/build/phpunit-${version}-compressed.phar"/>
+  <chmod file="${basedir}/build/phpunit-${version}-compressed.phar" perm="ugo+rx"/>
 
   <exec executable="phar">
    <arg value="compress" />
    <arg value="-f" />
-   <arg path="${basedir}/build/phpunit-compressed.phar" />
+   <arg path="${basedir}/build/phpunit-${version}-compressed.phar" />
    <arg value="-c" />
    <arg value="bzip2" />
   </exec>
-
-  <move file="${basedir}/build/phpunit.phar" tofile="${basedir}/build/phpunit-${version}.phar"/>
-  <move file="${basedir}/build/phpunit-compressed.phar" tofile="${basedir}/build/phpunit-${version}-compressed.phar"/>
  </target>
 </project>
