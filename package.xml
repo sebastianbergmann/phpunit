@@ -63,6 +63,7 @@
       <file baseinstalldir="/" name="And.php" role="php" />
       <file baseinstalldir="/" name="ArrayHasKey.php" role="php" />
       <file baseinstalldir="/" name="Attribute.php" role="php" />
+      <file baseinstalldir="/" name="Callback.php" role="php" />
       <file baseinstalldir="/" name="ClassHasAttribute.php" role="php" />
       <file baseinstalldir="/" name="ClassHasStaticAttribute.php" role="php" />
       <file baseinstalldir="/" name="Composite.php" role="php" />
