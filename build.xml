@@ -29,7 +29,12 @@
   <delete dir="${basedir}/build/logs"/>
   <delete dir="${basedir}/build/pdepend"/>
   <delete dir="${basedir}/build/phar"/>
-  <delete file="${basedir}/build/phpunit.phar"/>
+
+  <delete>
+   <fileset dir="${basedir}/build">
+    <include name="**/*.phar" />
+   </fileset>
+  </delete>
  </target>
 
  <target name="prepare" depends="clean,phpab"
