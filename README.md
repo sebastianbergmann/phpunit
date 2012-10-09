@@ -32,8 +32,6 @@ To add PHPUnit as a local, per-project dependency to your project, simply add a 
 
 ### PHP Archive (PHAR)
 
-You can also download a PHP Archive (PHAR) of PHPUnit that has all required (as well as some optional) dependencies of PHPUnit bundled in a single file:
-
     wget http://pear.phpunit.de/get/phpunit.phar
     chmod +x phpunit.phar
 
