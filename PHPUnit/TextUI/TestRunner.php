@@ -247,6 +247,7 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
             );
         }
 
+//<<<<<<< Updated upstream
         $codeCoverageReports = 0;
 
         if (extension_loaded('xdebug')) {
@@ -268,37 +269,41 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
         }
 
         if ($codeCoverageReports > 0) {
-            $codeCoverage = new PHP_CodeCoverage(
-              NULL, $this->codeCoverageFilter
-            );
-
-            $codeCoverage->setAddUncoveredFilesFromWhitelist(
-              $arguments['addUncoveredFilesFromWhitelist']
-            );
-
-            $codeCoverage->setProcessUncoveredFilesFromWhitelist(
-              $arguments['processUncoveredFilesFromWhitelist']
-            );
-
-            if (isset($arguments['forceCoversAnnotation'])) {
-                $codeCoverage->setForceCoversAnnotation(
-                  $arguments['forceCoversAnnotation']
+            $codeCoverages = array();
+            foreach ($this->codeCoverageFilter as $team => $codeCoverageFilter) {
+                $codeCoverage = new PHP_CodeCoverage(
+                    NULL, $codeCoverageFilter
                 );
-            }
 
-            if (isset($arguments['mapTestClassNameToCoveredClassName'])) {
-                $codeCoverage->setMapTestClassNameToCoveredClassName(
-                  $arguments['mapTestClassNameToCoveredClassName']
+                $codeCoverage->setAddUncoveredFilesFromWhitelist(
+                    $arguments['addUncoveredFilesFromWhitelist']
                 );
+
+                $codeCoverage->setProcessUncoveredFilesFromWhitelist(
+                    $arguments['processUncoveredFilesFromWhitelist']
+                );
+
+                if (isset($arguments['forceCoversAnnotation'])) {
+                    $codeCoverage->setForceCoversAnnotation(
+                        $arguments['forceCoversAnnotation']
+                    );
+                }
+
+                if (isset($arguments['mapTestClassNameToCoveredClassName'])) {
+                    $codeCoverage->setMapTestClassNameToCoveredClassName(
+                        $arguments['mapTestClassNameToCoveredClassName']
+                    );
+                }
+
+                if ($codeCoverageReports > 1) {
+                    if (isset($arguments['cacheTokens'])) {
+                        $codeCoverage->setCacheTokens($arguments['cacheTokens']);
+                    }
+                }
+                $codeCoverages[$team] = $codeCoverage;
             }
 
-            $result->setCodeCoverage($codeCoverage);
-        }
-
-        if ($codeCoverageReports > 1) {
-            if (isset($arguments['cacheTokens'])) {
-                $codeCoverage->setCacheTokens($arguments['cacheTokens']);
-            }
+            $result->setCodeCoverage($codeCoverages);
         }
 
         if (isset($arguments['jsonLogfile'])) {
@@ -352,70 +357,72 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
             $this->printer->printResult($result);
         }
 
-        if (isset($codeCoverage)) {
-            if (isset($arguments['coverageClover'])) {
-                $this->printer->write(
-                  "\nGenerating code coverage report in Clover XML format ..."
-                );
+        if (isset($codeCoverages)) {
+            foreach ($codeCoverages as $team => $codeCoverage) {
+                if (isset($arguments['coverageClover'])) {
+                    $this->printer->write(
+                        "\nGenerating code coverage report in Clover XML format ..."
+                    );
 
-                $writer = new PHP_CodeCoverage_Report_Clover;
-                $writer->process($codeCoverage, $arguments['coverageClover']);
+                    $writer = new PHP_CodeCoverage_Report_Clover;
+                    $writer->process($codeCoverage, $arguments['coverageClover']);
 
-                $this->printer->write(" done\n");
-                unset($writer);
-            }
-
-            if (isset($arguments['reportDirectory'])) {
-                $this->printer->write(
-                  "\nGenerating code coverage report in HTML format ..."
-                );
-
-                $writer = new PHP_CodeCoverage_Report_HTML(
-                  $arguments['reportCharset'],
-                  $arguments['reportHighlight'],
-                  $arguments['reportLowUpperBound'],
-                  $arguments['reportHighLowerBound'],
-                  sprintf(
-                    ' and <a href="http://phpunit.de/">PHPUnit %s</a>',
-                    PHPUnit_Runner_Version::id()
-                  )
-                );
-
-                $writer->process($codeCoverage, $arguments['reportDirectory']);
-
-                $this->printer->write(" done\n");
-                unset($writer);
-            }
-
-            if (isset($arguments['coveragePHP'])) {
-                $this->printer->write(
-                  "\nGenerating code coverage report in PHP format ..."
-                );
-
-                $writer = new PHP_CodeCoverage_Report_PHP;
-                $writer->process($codeCoverage, $arguments['coveragePHP']);
-
-                $this->printer->write(" done\n");
-                unset($writer);
-            }
-
-            if (isset($arguments['coverageText'])) {
-                if ($arguments['coverageText'] == 'php://stdout') {
-                    $outputStream = $this->printer;
-                    $colors       = (bool)$arguments['colors'];
-                } else {
-                    $outputStream = new PHPUnit_Util_Printer($arguments['coverageText']);
-                    $colors       = FALSE;
+                    $this->printer->write(" done\n");
+                    unset($writer);
                 }
 
-                $writer = new PHP_CodeCoverage_Report_Text(
-                  $outputStream,
-                  $arguments['reportLowUpperBound'],
-                  $arguments['reportHighLowerBound'],
-                  $arguments['coverageTextShowUncoveredFiles']
-                );
+                if (isset($arguments['reportDirectory'])) {
+                    $this->printer->write(
+                        "\nGenerating code coverage report in HTML format ..."
+                    );
 
-                $writer->process($codeCoverage, $colors);
+                    $writer = new PHP_CodeCoverage_Report_HTML(
+                        $arguments['reportCharset'],
+                        $arguments['reportHighlight'],
+                        $arguments['reportLowUpperBound'],
+                        $arguments['reportHighLowerBound'],
+                        sprintf(
+                            ' and <a href="http://phpunit.de/">PHPUnit %s</a>',
+                            PHPUnit_Runner_Version::id()
+                        )
+                    );
+
+                    $writer->process($codeCoverage, $arguments['reportDirectory'] . DIRECTORY_SEPARATOR . $team);
+
+                    $this->printer->write(" done\n");
+                    unset($writer);
+                }
+
+                if (isset($arguments['coveragePHP'])) {
+                    $this->printer->write(
+                        "\nGenerating code coverage report in PHP format ..."
+                    );
+
+                    $writer = new PHP_CodeCoverage_Report_PHP;
+                    $writer->process($codeCoverage, $arguments['coveragePHP']);
+
+                    $this->printer->write(" done\n");
+                    unset($writer);
+                }
+
+                if (isset($arguments['coverageText'])) {
+                    if ($arguments['coverageText'] == 'php://stdout') {
+                        $outputStream = $this->printer;
+                        $colors       = (bool)$arguments['colors'];
+                    } else {
+                        $outputStream = new PHPUnit_Util_Printer($arguments['coverageText']);
+                        $colors       = FALSE;
+                    }
+
+                    $writer = new PHP_CodeCoverage_Report_Text(
+                        $outputStream,
+                        $arguments['reportLowUpperBound'],
+                        $arguments['reportHighLowerBound'],
+                        $arguments['coverageTextShowUncoveredFiles']
+                    );
+
+                    $writer->process($codeCoverage, $colors);
+                }
             }
         }
 
@@ -728,48 +735,57 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
                 isset($arguments['coverageText'])) &&
                 extension_loaded('xdebug')) {
 
-                $filterConfiguration = $arguments['configuration']->getFilterConfiguration();
-                $arguments['addUncoveredFilesFromWhitelist'] = $filterConfiguration['whitelist']['addUncoveredFilesFromWhitelist'];
-                $arguments['processUncoveredFilesFromWhitelist'] = $filterConfiguration['whitelist']['processUncoveredFilesFromWhitelist'];
+                $this->codeCoverageFilterSource = clone $this->codeCoverageFilter;
+                $this->codeCoverageFilter = array();
 
-                foreach ($filterConfiguration['blacklist']['include']['directory'] as $dir) {
-                    $this->codeCoverageFilter->addDirectoryToBlacklist(
-                      $dir['path'], $dir['suffix'], $dir['prefix'], $dir['group']
-                    );
-                }
+                $filterConfigurations = $arguments['configuration']->getFilterConfiguration();
+                foreach ($filterConfigurations as $filterConfiguration) {
+                    $arguments['addUncoveredFilesFromWhitelist'] = $filterConfiguration['whitelist']['addUncoveredFilesFromWhitelist']; // TODO Set in getFilterConfiguration()
+                    $arguments['processUncoveredFilesFromWhitelist'] = $filterConfiguration['whitelist']['processUncoveredFilesFromWhitelist'];
 
-                foreach ($filterConfiguration['blacklist']['include']['file'] as $file) {
-                    $this->codeCoverageFilter->addFileToBlacklist($file);
-                }
+                    $codeCoverageFilter = clone $this->codeCoverageFilterSource;
 
-                foreach ($filterConfiguration['blacklist']['exclude']['directory'] as $dir) {
-                    $this->codeCoverageFilter->removeDirectoryFromBlacklist(
-                      $dir['path'], $dir['suffix'], $dir['prefix'], $dir['group']
-                    );
-                }
+                    foreach ($filterConfiguration['blacklist']['include']['directory'] as $dir) {
+                        $codeCoverageFilter->addDirectoryToBlacklist(
+                            $dir['path'], $dir['suffix'], $dir['prefix'], $dir['group']
+                        );
+                    }
 
-                foreach ($filterConfiguration['blacklist']['exclude']['file'] as $file) {
-                    $this->codeCoverageFilter->removeFileFromBlacklist($file);
-                }
+                    foreach ($filterConfiguration['blacklist']['include']['file'] as $file) {
+                        $codeCoverageFilter->addFileToBlacklist($file);
+                    }
 
-                foreach ($filterConfiguration['whitelist']['include']['directory'] as $dir) {
-                    $this->codeCoverageFilter->addDirectoryToWhitelist(
-                      $dir['path'], $dir['suffix'], $dir['prefix']
-                    );
-                }
+                    foreach ($filterConfiguration['blacklist']['exclude']['directory'] as $dir) {
+                        $codeCoverageFilter->removeDirectoryFromBlacklist(
+                            $dir['path'], $dir['suffix'], $dir['prefix'], $dir['group']
+                        );
+                    }
 
-                foreach ($filterConfiguration['whitelist']['include']['file'] as $file) {
-                    $this->codeCoverageFilter->addFileToWhitelist($file);
-                }
+                    foreach ($filterConfiguration['blacklist']['exclude']['file'] as $file) {
+                        $this->codeCoverageFilter->removeFileFromBlacklist($file);
+                    }
 
-                foreach ($filterConfiguration['whitelist']['exclude']['directory'] as $dir) {
-                    $this->codeCoverageFilter->removeDirectoryFromWhitelist(
-                      $dir['path'], $dir['suffix'], $dir['prefix']
-                    );
-                }
+                    foreach ($filterConfiguration['whitelist']['include']['directory'] as $dir) {
+                        $codeCoverageFilter->addDirectoryToWhitelist(
+                            $dir['path'], $dir['suffix'], $dir['prefix']
+                        );
+                    }
 
-                foreach ($filterConfiguration['whitelist']['exclude']['file'] as $file) {
-                    $this->codeCoverageFilter->removeFileFromWhitelist($file);
+                    foreach ($filterConfiguration['whitelist']['include']['file'] as $file) {
+                        $codeCoverageFilter->addFileToWhitelist($file);
+                    }
+
+                    foreach ($filterConfiguration['whitelist']['exclude']['directory'] as $dir) {
+                        $codeCoverageFilter->removeDirectoryFromWhitelist(
+                            $dir['path'], $dir['suffix'], $dir['prefix']
+                        );
+                    }
+
+                    foreach ($filterConfiguration['whitelist']['exclude']['file'] as $file) {
+                        $codeCoverageFilter->removeFileFromWhitelist($file);
+                    }
+
+                    $this->codeCoverageFilter[$filterConfiguration['team']] = $codeCoverageFilter;
                 }
             }
         }

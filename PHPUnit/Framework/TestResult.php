@@ -548,7 +548,7 @@ class PHPUnit_Framework_TestResult implements Countable
      */
     public function getCollectCodeCoverageInformation()
     {
-        return $this->codeCoverage !== NULL;
+        return $this->codeCoverage !== NULL || $this->codeCoverage != array();
     }
 
     /**
@@ -597,26 +597,28 @@ class PHPUnit_Framework_TestResult implements Countable
             self::$useXdebug    = self::$xdebugLoaded;
         }
 
-        $useXdebug = self::$useXdebug &&
-                     $this->codeCoverage !== NULL &&
-                     !$test instanceof PHPUnit_Extensions_SeleniumTestCase &&
-                     !$test instanceof PHPUnit_Framework_Warning;
+        foreach ((array) $this->codeCoverage as $codeCoverage) {
+            $useXdebug = self::$useXdebug &&
+                $codeCoverage !== NULL &&
+                !$test instanceof PHPUnit_Extensions_SeleniumTestCase &&
+                !$test instanceof PHPUnit_Framework_Warning;
 
-        if ($useXdebug) {
-            // We need to blacklist test source files when no whitelist is used.
-            if (!$this->codeCoverage->filter()->hasWhitelist()) {
-                $classes = PHPUnit_Util_Class::getHierarchy(
-                  get_class($test), TRUE
-                );
-
-                foreach ($classes as $class) {
-                    $this->codeCoverage->filter()->addFileToBlacklist(
-                      $class->getFileName()
+            if ($useXdebug) {
+                // We need to blacklist test source files when no whitelist is used.
+                if (!$codeCoverage->filter()->hasWhitelist()) {
+                    $classes = PHPUnit_Util_Class::getHierarchy(
+                        get_class($test), TRUE
                     );
-                }
-            }
 
-            $this->codeCoverage->start($test);
+                    foreach ($classes as $class) {
+                        $codeCoverage->filter()->addFileToBlacklist(
+                            $class->getFileName()
+                        );
+                    }
+                }
+
+                $codeCoverage->start($test);
+            }
         }
 
         PHP_Timer::start();
@@ -672,16 +674,18 @@ class PHPUnit_Framework_TestResult implements Countable
             $incomplete = TRUE;
         }
 
-        if ($useXdebug) {
-            try {
-                $this->codeCoverage->stop(!$incomplete && !$skipped);
-            }
+        if (!empty($useXdebug)) {
+            foreach ($this->codeCoverage as $codeCoverage) {
+                try {
+                    $codeCoverage->stop(!$incomplete && !$skipped);
+                }
 
-            catch (PHP_CodeCoverage_Exception $cce) {
-                $error = TRUE;
+                catch (PHP_CodeCoverage_Exception $cce) {
+                    $error = TRUE;
 
-                if (!isset($e)) {
-                    $e = $cce;
+                    if (!isset($e)) {
+                        $e = $cce;
+                    }
                 }
             }
         }
@@ -756,7 +760,7 @@ class PHPUnit_Framework_TestResult implements Countable
     /**
      * Returns the PHP_CodeCoverage object.
      *
-     * @return PHP_CodeCoverage
+     * @return array
      * @since  Method available since Release 3.5.0
      */
     public function getCodeCoverage()
@@ -767,10 +771,9 @@ class PHPUnit_Framework_TestResult implements Countable
     /**
      * Returns the PHP_CodeCoverage object.
      *
-     * @return PHP_CodeCoverage
      * @since  Method available since Release 3.6.0
      */
-    public function setCodeCoverage(PHP_CodeCoverage $codeCoverage)
+    public function setCodeCoverage(array $codeCoverage)
     {
         $this->codeCoverage = $codeCoverage;
     }

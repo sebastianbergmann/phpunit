@@ -36,6 +36,15 @@
     </whitelist>
   </filter>
 
+  <filter team="default" email="email@example.com">
+    <whitelist processUncoveredFilesFromWhitelist="true">
+      <directory suffix=".php">PHPUnit</directory>
+      <exclude>
+       <file>PHPUnit/Autoload.php</file>
+       <file>PHPUnit/Framework/Assert/Functions.php</file>
+      </exclude>
+    </whitelist>
+  </filter>
   <php>
     <const name="PHPUNIT_TESTSUITE" value="true"/>
   </php>

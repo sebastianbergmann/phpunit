@@ -246,71 +246,92 @@ class PHPUnit_Util_Configuration
      */
     public function getFilterConfiguration()
     {
-        $addUncoveredFilesFromWhitelist     = TRUE;
-        $processUncoveredFilesFromWhitelist = FALSE;
-
-        $tmp = $this->xpath->query('filter/whitelist');
-
-        if ($tmp->length == 1) {
-            if ($tmp->item(0)->hasAttribute('addUncoveredFilesFromWhitelist')) {
-                $addUncoveredFilesFromWhitelist = $this->getBoolean(
-                  (string)$tmp->item(0)->getAttribute(
-                    'addUncoveredFilesFromWhitelist'
-                  ),
-                  TRUE
-                );
+        $return = array();
+        $DOMNodeList = $this->xpath->query('filter');
+        foreach ($DOMNodeList as $i => $node)
+        {
+            $addUncoveredFilesFromWhitelist     = TRUE;
+            $processUncoveredFilesFromWhitelist = FALSE;
+            /** @var $node DOMElement */
+            if($node->hasAttribute('team')){
+                $team = $node->getAttribute('team');
+            } else {
+                $team = "default{$i}";
             }
 
-            if ($tmp->item(0)->hasAttribute('processUncoveredFilesFromWhitelist')) {
-                $processUncoveredFilesFromWhitelist = $this->getBoolean(
-                  (string)$tmp->item(0)->getAttribute(
-                    'processUncoveredFilesFromWhitelist'
-                  ),
-                  FALSE
-                );
+            if($node->hasAttribute('email')){
+                $email = $node->getAttribute('email');
+            } else {
+                $email = "default{$i}@example.com";
             }
+
+            $tmp = $this->xpath->query('whitelist', $node);
+
+            if ($tmp->length == 1) {
+                if ($tmp->item(0)->hasAttribute('addUncoveredFilesFromWhitelist')) {
+                    $addUncoveredFilesFromWhitelist = $this->getBoolean(
+                        (string)$tmp->item(0)->getAttribute(
+                            'addUncoveredFilesFromWhitelist'
+                        ),
+                        TRUE
+                    );
+                }
+
+                if ($tmp->item(0)->hasAttribute('processUncoveredFilesFromWhitelist')) {
+                    $processUncoveredFilesFromWhitelist = $this->getBoolean(
+                        (string)$tmp->item(0)->getAttribute(
+                            'processUncoveredFilesFromWhitelist'
+                        ),
+                        FALSE
+                    );
+                }
+            }
+
+            $return[] = array(
+                'team' => $team,
+                'email' => $email,
+                'blacklist' => array(
+                    'include' => array(
+                        'directory' => $this->readFilterDirectories(
+                            'blacklist/directory', $node
+                        ),
+                        'file' => $this->readFilterFiles(
+                            'blacklist/file', $node
+                        )
+                    ),
+                    'exclude' => array(
+                        'directory' => $this->readFilterDirectories(
+                            'blacklist/exclude/directory', $node
+                        ),
+                        'file' => $this->readFilterFiles(
+                            'blacklist/exclude/file', $node
+                        )
+                    )
+                ),
+                'whitelist' => array(
+                    'addUncoveredFilesFromWhitelist' => $addUncoveredFilesFromWhitelist,
+                    'processUncoveredFilesFromWhitelist' => $processUncoveredFilesFromWhitelist,
+                    'include' => array(
+                        'directory' => $this->readFilterDirectories(
+                            'whitelist/directory', $node
+                        ),
+                        'file' => $this->readFilterFiles(
+                            'whitelist/file', $node
+                        )
+                    ),
+                    'exclude' => array(
+                        'directory' => $this->readFilterDirectories(
+                            'whitelist/exclude/directory', $node
+                        ),
+                        'file' => $this->readFilterFiles(
+                            'whitelist/exclude/file', $node
+                        )
+                    )
+                )
+            );
         }
+        return $return;
 
-        return array(
-          'blacklist' => array(
-            'include' => array(
-              'directory' => $this->readFilterDirectories(
-                'filter/blacklist/directory'
-              ),
-              'file' => $this->readFilterFiles(
-                'filter/blacklist/file'
-              )
-            ),
-            'exclude' => array(
-              'directory' => $this->readFilterDirectories(
-                'filter/blacklist/exclude/directory'
-               ),
-              'file' => $this->readFilterFiles(
-                'filter/blacklist/exclude/file'
-              )
-            )
-          ),
-          'whitelist' => array(
-            'addUncoveredFilesFromWhitelist' => $addUncoveredFilesFromWhitelist,
-            'processUncoveredFilesFromWhitelist' => $processUncoveredFilesFromWhitelist,
-            'include' => array(
-              'directory' => $this->readFilterDirectories(
-                'filter/whitelist/directory'
-              ),
-              'file' => $this->readFilterFiles(
-                'filter/whitelist/file'
-              )
-            ),
-            'exclude' => array(
-              'directory' => $this->readFilterDirectories(
-                'filter/whitelist/exclude/directory'
-              ),
-              'file' => $this->readFilterFiles(
-                'filter/whitelist/exclude/file'
-              )
-            )
-          )
-        );
     }
 
     /**
@@ -938,14 +959,15 @@ class PHPUnit_Util_Configuration
 
     /**
      * @param  string $query
+     * @param  DOMNode $contextNode
      * @return array
      * @since  Method available since Release 3.2.3
      */
-    protected function readFilterDirectories($query)
+    protected function readFilterDirectories($query, $contextNode = null)
     {
         $directories = array();
 
-        foreach ($this->xpath->query($query) as $directory) {
+        foreach ($this->xpath->query($query, $contextNode) as $directory) {
             if ($directory->hasAttribute('prefix')) {
                 $prefix = (string)$directory->getAttribute('prefix');
             } else {
@@ -977,14 +999,15 @@ class PHPUnit_Util_Configuration
 
     /**
      * @param  string $query
+     * @param  DOMNode $contextNode
      * @return array
      * @since  Method available since Release 3.2.3
      */
-    protected function readFilterFiles($query)
+    protected function readFilterFiles($query, $contextNode = null)
     {
         $files = array();
 
-        foreach ($this->xpath->query($query) as $file) {
+        foreach ($this->xpath->query($query, $contextNode) as $file) {
             $files[] = $this->toAbsolutePath((string)$file->nodeValue);
         }
 
