@@ -170,53 +170,26 @@
 
   <exec executable="bash" outputproperty="version">
    <arg value="-c" />
-   <arg value="pear remote-info pear.phpunit.de/phpunit|grep Latest|sed 's/Latest      //g'" />
+   <arg value="${basedir}/phpunit.php --version | awk 'BEGIN { ORS = &quot;&quot;; } {print $2}'" />
   </exec>
 
-  <exec executable="pear">
-   <arg value="config-set" />
-   <arg value="auto_discover" />
-   <arg value="1" />
-  </exec>
+  <untar dest="${basedir}/build/phar" compression="gzip">
+   <fileset dir="${basedir}/build/dependencies">
+    <include name="**/*.tgz"/>
+   </fileset>
+  </untar>
 
-  <exec executable="pear">
-   <arg value="install" />
-   <arg value="--force" />
-   <arg value="--alldeps" />
-   <arg value="--installroot" />
-   <arg path="${basedir}/build/phar" />
-   <arg value="pear.phpunit.de/PHPUnit" />
-   <arg value="pear.phpunit.de/PHPUnit_Selenium" />
-   <arg value="pear.phpunit.de/DbUnit" />
-  </exec>
-
-  <delete dir="${basedir}/build/phar/tmp"/>
-
-  <move todir="${basedir}/build/phar/File">
-   <fileset dir="${basedir}/build/phar/usr/local/php-5.4/lib/php/File"/>
-  </move>
-
-  <move todir="${basedir}/build/phar/PHP">
-   <fileset dir="${basedir}/build/phar/usr/local/php-5.4/lib/php/PHP"/>
-  </move>
-
-  <move todir="${basedir}/build/phar/PHPUnit">
-   <fileset dir="${basedir}/build/phar/usr/local/php-5.4/lib/php/PHPUnit"/>
-  </move>
-
-  <move todir="${basedir}/build/phar/Symfony">
-   <fileset dir="${basedir}/build/phar/usr/local/php-5.4/lib/php/Symfony"/>
-  </move>
-
-  <move todir="${basedir}/build/phar/Text">
-   <fileset dir="${basedir}/build/phar/usr/local/php-5.4/lib/php/Text"/>
-  </move>
-
-  <delete dir="${basedir}/build/phar/usr"/>
+  <copy todir="${basedir}/build/phar/PHPUnit">
+   <fileset dir="${basedir}/PHPUnit"/>
+  </copy>
 
   <delete>
    <fileset dir="${basedir}/build/phar">
+    <include name="**/autoload.php" />
     <include name="**/Autoload.php" />
+    <include name="**/Autoload.php.in" />
+    <include name="**/package.sig" />
+    <include name="**/package.xml" />
    </fileset>
   </delete>
 
