@@ -3,6 +3,11 @@ PHPUnit 3.7
 
 This is the list of changes for the PHPUnit 3.7 release series.
 
+PHPUnit 3.7.8
+-------------
+
+* Fixed #688: Invoke autoloader when checking for `Symfony\Component\Yaml\Dumper`.
+
 PHPUnit 3.7.7
 -------------
 
