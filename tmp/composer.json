@@ -6,7 +6,7 @@
         "xunit",
         "mock"
     ],
-    "homepage": "http://www.phpunit.de/",
+    "homepage": "https://github.com/sebastianbergmann/phpunit-mock-objects/",
     "license": "BSD-3-Clause",
     "authors": [
         {
@@ -15,17 +15,13 @@
             "role": "lead"
         }
     ],
-    "version": "1.2.1",
-    "time": "2012-10-05",
     "support": {
         "issues": "https://github.com/sebastianbergmann/phpunit-mock-objects/issues",
         "irc": "irc://irc.freenode.net/phpunit"
     },
     "require": {
         "php": ">=5.3.3",
-        "phpunit/php-text-template": ">=1.1.1@stable",
-        "ext-reflection": "*",
-        "ext-spl": "*"
+        "phpunit/php-text-template": ">=1.1.1@stable"
     },
     "suggest": {
         "ext-soap": "*"
