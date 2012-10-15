@@ -6,7 +6,7 @@
         "xunit",
         "mock"
     ],
-    "homepage": "http://www.phpunit.de/",
+    "homepage": "https://github.com/sebastianbergmann/phpunit-mock-objects/",
     "license": "BSD-3-Clause",
     "authors": [
         {
@@ -21,9 +21,7 @@
     },
     "require": {
         "php": ">=5.4.7",
-        "phpunit/php-text-template": ">=1.1.1",
-        "ext-reflection": "*",
-        "ext-spl": "*"
+        "phpunit/php-text-template": ">=1.1.1"
     },
     "suggest": {
         "ext-soap": "*"
