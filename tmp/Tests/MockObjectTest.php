@@ -320,6 +320,20 @@ class Framework_MockObjectTest extends PHPUnit_Framework_TestCase
              ->method('doSomething');
     }
 
+    public function testClonedMockObjectShouldStillEqualTheOriginal()
+    {
+        $a = $this->getMock('stdClass');
+        $b = clone $a;
+        $this->assertEquals($a, $b);
+    }
+
+    public function testMockObjectsConstructedIndepentantlyShouldNotEqual()
+    {
+        $a = $this->getMock('stdClass');
+        $b = $this->getMock('stdClass');
+        $this->assertNotEquals($a,$b);
+    }
+
     public function testStaticMethodCallWithArgumentCloningEnabled()
     {
         $expectedObject = new StdClass;
