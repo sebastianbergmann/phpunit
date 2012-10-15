@@ -182,12 +182,6 @@
     <channel>pear.phpunit.de</channel>
     <min>1.1.1</min>
    </package>
-   <extension>
-    <name>reflection</name>
-   </extension>
-   <extension>
-    <name>spl</name>
-   </extension>
   </required>
   <optional>
    <extension>
