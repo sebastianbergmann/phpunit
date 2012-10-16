@@ -79,6 +79,7 @@ class PHPUnit_TextUI_Command
       'bootstrap=' => NULL,
       'configuration=' => NULL,
       'coverage-html=' => NULL,
+      'coverage-csv=' => NULL,
       'coverage-clover=' => NULL,
       'coverage-php=' => NULL,
       'coverage-text==' => NULL,
@@ -265,6 +266,7 @@ class PHPUnit_TextUI_Command
                 }
                 break;
 
+                case '--coverage-csv':
                 case '--coverage-clover':
                 case '--coverage-html':
                 case '--coverage-php':
@@ -288,6 +290,11 @@ class PHPUnit_TextUI_Command
                     switch ($option[0]) {
                         case '--coverage-clover': {
                             $this->arguments['coverageClover'] = $option[1];
+                        }
+                        break;
+
+                        case '--coverage-csv': {
+                            $this->arguments['coverageCSV'] = $option[1];
                         }
                         break;
 
@@ -632,7 +639,7 @@ class PHPUnit_TextUI_Command
 
             $logging = $configuration->getLoggingConfiguration();
 
-            if (isset($logging['coverage-html']) || isset($logging['coverage-clover']) || isset($logging['coverage-text']) ) {
+            if (isset($logging['coverage-csv']) || isset($logging['coverage-html']) || isset($logging['coverage-clover']) || isset($logging['coverage-text']) ) {
                 if (!extension_loaded('tokenizer')) {
                     $this->showExtensionNotLoadedMessage(
                       'tokenizer', 'No code coverage will be generated.'
@@ -838,6 +845,7 @@ Usage: phpunit [switches] UnitTest [UnitTest.php]
   --log-tap <file>          Log test execution in TAP format to file.
   --log-json <file>         Log test execution in JSON format.
 
+  --coverage-csv <file>     Generate code coverage report in CSV format.
   --coverage-clover <file>  Generate code coverage report in Clover XML format.
   --coverage-html <dir>     Generate code coverage report in HTML format.
   --coverage-php <file>     Serialize PHP_CodeCoverage object to file.
