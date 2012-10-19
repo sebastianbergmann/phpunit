@@ -107,7 +107,7 @@ class PHPUnit_Framework_Constraint_IsIdentical extends PHPUnit_Framework_Constra
             $success = abs($this->value - $other) < self::EPSILON;
         }
 
-        elseif (version_compare(phpversion(), '5.2.0', '>=') && is_object($this->value) && is_object($other)) {
+        elseif (is_object($this->value) && is_object($other)) {
             $success = spl_object_hash($this->value) === spl_object_hash($other);
         }
 
