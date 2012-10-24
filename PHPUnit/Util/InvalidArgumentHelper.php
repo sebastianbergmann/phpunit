@@ -70,7 +70,7 @@ class PHPUnit_Util_InvalidArgumentHelper
           sprintf(
             'Argument #%d%sof %s::%s() must be a %s',
             $argument,
-            $value !== NULL ? ' (' . $value . ')' : ' ',
+            $value !== NULL ? ' (' . gettype($value) . '#' . $value . ')' : ' (No Value) ',
             $stack[1]['class'],
             $stack[1]['function'],
             $type
