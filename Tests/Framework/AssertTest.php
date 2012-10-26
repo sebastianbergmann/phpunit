@@ -630,8 +630,8 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
             array(2.3, 4.2, 0.5),
             array(array(2.3), array(4.2), 0.5),
             array(array(array(2.3)), array(array(4.2)), 0.5),
-            array(new Struct(2.3), new Struct(4.2), 0.5),
-            array(array(new Struct(2.3)), array(new Struct(4.2)), 0.5),
+            array(new PHPUnitStruct(2.3), new PHPUnitStruct(4.2), 0.5),
+            array(array(new PHPUnitStruct(2.3)), array(new PHPUnitStruct(4.2)), 0.5),
             // arrays
             array(array(), array(0 => 1)),
             array(array(0 => 1), array()),
@@ -714,8 +714,8 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
             array(2.3, 2.5, 0.5),
             array(array(2.3), array(2.5), 0.5),
             array(array(array(2.3)), array(array(2.5)), 0.5),
-            array(new Struct(2.3), new Struct(2.5), 0.5),
-            array(array(new Struct(2.3)), array(new Struct(2.5)), 0.5),
+            array(new PHPUnitStruct(2.3), new PHPUnitStruct(2.5), 0.5),
+            array(array(new PHPUnitStruct(2.3)), array(new PHPUnitStruct(2.5)), 0.5),
             // numeric with delta
             array(1, 2, 1),
             // objects
