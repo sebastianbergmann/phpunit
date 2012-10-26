@@ -1,5 +1,5 @@
 <?php
-class Struct
+class PHPUnitStruct
 {
     public $var;
 
