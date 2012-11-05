@@ -3,6 +3,11 @@ PHPUnit_MockObject 1.2
 
 This is the list of changes for the PHPUnit_MockObject 1.2 release series.
 
+PHPUnit_MockObject 1.2.2
+------------------------
+
+* Fixed #100: Removed the unique mock object ID introduced in version 1.2.
+
 PHPUnit_MockObject 1.2.1
 ------------------------
 
