@@ -27,8 +27,6 @@ class MockFoo implements PHPUnit_Framework_MockObject_MockObject, NS\Foo
 {
     private static $__phpunit_staticInvocationMocker;
     private $__phpunit_invocationMocker;
-    private $__phpunit_id;
-    private static $__phpunit_nextId = 0;
 
     public function __clone()
     {
@@ -101,11 +99,5 @@ class MockFoo implements PHPUnit_Framework_MockObject_MockObject, NS\Foo
     {
         self::$__phpunit_staticInvocationMocker = NULL;
         $this->__phpunit_invocationMocker       = NULL;
-        $this->__phpunit_id                     = NULL;
-    }
-
-    public function __phpunit_setId()
-    {
-        $this->__phpunit_id = sprintf('%s#%s', get_class($this), self::$__phpunit_nextId++);
     }
 }
