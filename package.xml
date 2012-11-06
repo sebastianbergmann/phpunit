@@ -60,7 +60,7 @@
       <file baseinstalldir="/" name="Type.php" role="php" />
      </dir>
      <dir name="Constraint">
-      <dir name="Constraint">
+      <dir name="JsonMatches">
        <file baseinstalldir="/" name="ErrorMessageProvider.php" role="php" />
       </dir>
       <file baseinstalldir="/" name="And.php" role="php" />
