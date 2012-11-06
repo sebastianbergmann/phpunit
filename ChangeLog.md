@@ -3,6 +3,11 @@ PHPUnit 3.7
 
 This is the list of changes for the PHPUnit 3.7 release series.
 
+PHPUnit 3.7.9
+-------------
+
+* Fixed #708: JSON matcher source files missing from `package.xml`.
+
 PHPUnit 3.7.8
 -------------
 
