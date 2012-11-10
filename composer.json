@@ -42,9 +42,6 @@
     "bin": [
         "composer/bin/phpunit"
     ],
-    "config": {
-        "bin-dir": "bin"
-    },
     "autoload": {
         "classmap": [
             "PHPUnit/"
@@ -54,9 +51,5 @@
         "branch-alias": {
             "dev-master": "3.8.x-dev"
         }
-    },
-    "include-path": [
-        "",
-        "../../symfony/yaml/"
-    ]
+    }
 }
