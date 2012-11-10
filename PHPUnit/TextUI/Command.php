@@ -308,6 +308,7 @@ class PHPUnit_TextUI_Command
 
                             $this->arguments['coverageText'] = $option[1];
                             $this->arguments['coverageTextShowUncoveredFiles'] = FALSE;
+                            $this->arguments['coverageTextShowOnlySummary'] = FALSE;
                         }
                         break;
                     }
