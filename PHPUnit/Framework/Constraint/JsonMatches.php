@@ -83,13 +83,13 @@ class PHPUnit_Framework_Constraint_JsonMatches extends PHPUnit_Framework_Constra
     protected function matches($other)
     {
         $decodedOther = json_decode($other);
-        if (!is_object($decodedOther)) {
+        if (json_last_error()) {
             $this->failure_reason = $this->getJsonError();
             return FALSE;
         }
 
         $decodedValue = json_decode($this->value);
-        if (!is_object($decodedValue)) {
+        if (json_last_error()) {
             $this->failure_reason = $this->getJsonError();
             return FALSE;
         }

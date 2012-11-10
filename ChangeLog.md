@@ -3,6 +3,8 @@ PHPUnit 3.7
 
 This is the list of changes for the PHPUnit 3.7 release series.
 
+* Fixed #709: `assertJsonStringEqualsJsonFile` didn't work with json arrays.
+
 PHPUnit 3.7.9
 -------------
 
