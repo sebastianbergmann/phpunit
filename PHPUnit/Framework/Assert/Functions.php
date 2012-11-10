@@ -1699,11 +1699,12 @@ function isTrue()
 /**
  * Returns a PHPUnit_Framework_Constraint_Callback matcher object.
  *
+ * @param callable $callback
  * @return PHPUnit_Framework_Constraint_Callback
  */
-function callback()
+function callback($callback)
 {
-    return PHPUnit_Framework_Assert::callback();
+    return PHPUnit_Framework_Assert::callback($callback);
 }
 
 /**

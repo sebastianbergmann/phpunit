@@ -2376,6 +2376,7 @@ abstract class PHPUnit_Framework_Assert
     /**
      * Returns a PHPUnit_Framework_Constraint_Callback matcher object.
      *
+     * @param callable $callback
      * @return PHPUnit_Framework_Constraint_Callback
      */
     public static function callback($callback)
