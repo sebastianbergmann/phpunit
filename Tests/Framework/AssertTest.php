@@ -3980,7 +3980,7 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
         }
 
         catch (PHPUnit_Framework_Exception $e) {
-            $this->assertEquals('Argument #1 of PHPUnit_Framework_Assert::assertCount() must be a integer', $e->getMessage());
+            $this->assertEquals('Argument #1 (No Value) of PHPUnit_Framework_Assert::assertCount() must be a integer', $e->getMessage());
 
             return;
         }
@@ -4000,7 +4000,7 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
         }
 
         catch (PHPUnit_Framework_Exception $e) {
-            $this->assertEquals('Argument #2 of PHPUnit_Framework_Assert::assertCount() must be a countable', $e->getMessage());
+            $this->assertEquals('Argument #2 (No Value) of PHPUnit_Framework_Assert::assertCount() must be a countable', $e->getMessage());
 
             return;
         }
