@@ -1165,7 +1165,7 @@ abstract class PHPUnit_Framework_Assert
     public static function assertInstanceOf($expected, $actual, $message = '')
     {
         if (is_string($expected)) {
-            if (class_exists($expected) || interface_exists($expected)) {
+            if (class_exists($expected, FALSE) || interface_exists($expected, FALSE)) {
                 $constraint = new PHPUnit_Framework_Constraint_IsInstanceOf(
                   $expected
                 );
