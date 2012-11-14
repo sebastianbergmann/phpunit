@@ -812,12 +812,12 @@ class PHPUnit_Framework_MockObject_Generator
     /**
      * Returns the parameters of a function or method.
      *
-     * @param  ReflectionFunction|ReflectionMethod $method
-     * @param  boolean                             $forCall
+     * @param  ReflectionMethod $method
+     * @param  boolean          $forCall
      * @return string
      * @since  Method available since Release 1.3.0
      */
-    protected function getMethodParameters($method, $forCall = FALSE)
+    protected function getMethodParameters(ReflectionMethod $method, $forCall = FALSE)
     {
         $parameters = array();
 
@@ -850,10 +850,19 @@ class PHPUnit_Framework_MockObject_Generator
                     }
 
                     catch (ReflectionException $e) {
-                        $class = FALSE;
+                        throw new PHPUnit_Framework_MockObject_Exception(
+                          sprintf(
+                            'Cannot mock %s::%s() because a class or ' .
+                            'interface used in the signature is not loaded',
+                            $method->getDeclaringClass()->getName(),
+                            $method->getName()
+                          ),
+                          0,
+                          $e
+                        );
                     }
 
-                    if ($class) {
+                    if ($class !== NULL) {
                         $typeHint = $class->getName() . ' ';
                     }
                 }
