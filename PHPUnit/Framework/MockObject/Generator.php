@@ -744,8 +744,8 @@ class PHPUnit_Framework_MockObject_Generator
           $method->getName(),
           $cloneArguments,
           $modifier,
-          PHPUnit_Util_Class::getMethodParameters($method),
-          PHPUnit_Util_Class::getMethodParameters($method, TRUE),
+          self::getMethodParameters($method),
+          self::getMethodParameters($method, TRUE),
           $reference,
           $static
         );
@@ -803,5 +803,74 @@ class PHPUnit_Framework_MockObject_Generator
         }
 
         return TRUE;
+    }
+
+    /**
+     * Returns the parameters of a function or method.
+     *
+     * @param  ReflectionFunction|ReflectionMethod $method
+     * @param  boolean                             $forCall
+     * @return string
+     * @since  Method available since Release 1.3.0
+     */
+    protected static function getMethodParameters($method, $forCall = FALSE)
+    {
+        $parameters = array();
+
+        foreach ($method->getParameters() as $i => $parameter) {
+            $name = '$' . $parameter->getName();
+
+            /* Note: PHP extensions may use empty names for reference arguments
+             * or "..." for methods taking a variable number of arguments.
+             */
+            if ($name === '$' || $name === '$...') {
+                $name = '$arg' . $i;
+            }
+
+            $default   = '';
+            $reference = '';
+            $typeHint  = '';
+
+            if (!$forCall) {
+                if ($parameter->isArray()) {
+                    $typeHint = 'array ';
+                }
+
+                else if ($parameter->isCallable()) {
+                    $typeHint = 'callable ';
+                }
+
+                else {
+                    try {
+                        $class = $parameter->getClass();
+                    }
+
+                    catch (ReflectionException $e) {
+                        $class = FALSE;
+                    }
+
+                    if ($class) {
+                        $typeHint = $class->getName() . ' ';
+                    }
+                }
+
+                if ($parameter->isDefaultValueAvailable()) {
+                    $value   = $parameter->getDefaultValue();
+                    $default = ' = ' . var_export($value, TRUE);
+                }
+
+                else if ($parameter->isOptional()) {
+                    $default = ' = null';
+                }
+
+                if ($parameter->isPassedByReference()) {
+                    $reference = '&';
+                }
+            }
+
+            $parameters[] = $typeHint . $reference . $name . $default;
+        }
+
+        return join(', ', $parameters);
     }
 }
