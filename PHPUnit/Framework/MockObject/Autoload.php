@@ -57,6 +57,7 @@ spl_autoload_register(
             'phpunit_framework_mockobject_builder_namespace' => '/Framework/MockObject/Builder/Namespace.php',
             'phpunit_framework_mockobject_builder_parametersmatch' => '/Framework/MockObject/Builder/ParametersMatch.php',
             'phpunit_framework_mockobject_builder_stub' => '/Framework/MockObject/Builder/Stub.php',
+            'phpunit_framework_mockobject_exception' => '/Framework/MockObject/Exception.php',
             'phpunit_framework_mockobject_generator' => '/Framework/MockObject/Generator.php',
             'phpunit_framework_mockobject_invocation' => '/Framework/MockObject/Invocation.php',
             'phpunit_framework_mockobject_invocation_object' => '/Framework/MockObject/Invocation/Object.php',
