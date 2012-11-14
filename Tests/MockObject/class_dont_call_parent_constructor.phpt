@@ -12,7 +12,9 @@ class Foo
 require_once 'PHPUnit/Autoload.php';
 require_once 'Text/Template.php';
 
-$mock = PHPUnit_Framework_MockObject_Generator::generate(
+$generator = new PHPUnit_Framework_MockObject_Generator;
+
+$mock = $generator->generate(
   'Foo',
   array(),
   'MockFoo',

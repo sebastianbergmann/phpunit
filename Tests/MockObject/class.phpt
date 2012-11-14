@@ -15,7 +15,9 @@ class Foo
 
 require_once 'PHPUnit/Autoload.php';
 
-$mock = PHPUnit_Framework_MockObject_Generator::generate(
+$generator = new PHPUnit_Framework_MockObject_Generator;
+
+$mock = $generator->generate(
   'Foo',
   array(),
   'MockFoo',
