@@ -605,9 +605,7 @@ class PHPUnit_Framework_TestResult implements Countable
         if ($useXdebug) {
             // We need to blacklist test source files when no whitelist is used.
             if (!$this->codeCoverage->filter()->hasWhitelist()) {
-                $classes = PHPUnit_Util_Class::getHierarchy(
-                  get_class($test), TRUE
-                );
+                $classes = $this->getHierarchy(get_class($test), TRUE);
 
                 foreach ($classes as $class) {
                     $this->codeCoverage->filter()->addFileToBlacklist(
@@ -952,5 +950,47 @@ class PHPUnit_Framework_TestResult implements Countable
         } else {
             throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'integer');
         }
+    }
+
+    /**
+     * Returns the class hierarchy for a given class.
+     *
+     * @param  string  $className
+     * @param  boolean $asReflectionObjects
+     * @return array
+     */
+    protected function getHierarchy($className, $asReflectionObjects = FALSE)
+    {
+        if ($asReflectionObjects) {
+            $classes = array(new ReflectionClass($className));
+        } else {
+            $classes = array($className);
+        }
+
+        $done = FALSE;
+
+        while (!$done) {
+            if ($asReflectionObjects) {
+                $class = new ReflectionClass(
+                  $classes[count($classes)-1]->getName()
+                );
+            } else {
+                $class = new ReflectionClass($classes[count($classes)-1]);
+            }
+
+            $parent = $class->getParentClass();
+
+            if ($parent !== FALSE) {
+                if ($asReflectionObjects) {
+                    $classes[] = $parent;
+                } else {
+                    $classes[] = $parent->getName();
+                }
+            } else {
+                $done = TRUE;
+            }
+        }
+
+        return $classes;
     }
 }

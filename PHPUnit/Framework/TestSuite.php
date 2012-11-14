@@ -351,9 +351,9 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
             return;
         }
 
-        PHPUnit_Util_Class::collectStart();
+        $classes    = get_declared_classes();
         $filename   = PHPUnit_Util_Fileloader::checkAndLoad($filename);
-        $newClasses = PHPUnit_Util_Class::collectEnd();
+        $newClasses = array_values(array_diff(get_declared_classes(), $classes));
         $baseName   = str_replace('.php', '', basename($filename));
 
         foreach ($newClasses as $className) {
