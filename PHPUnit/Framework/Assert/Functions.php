@@ -404,6 +404,17 @@ function assertAttributeSame($expected, $actualAttributeName, $actualClassOrObje
 }
 
 /**
+ * Asserts that a class exists in given scope
+ *
+ * @param string $className
+ * @param string $message
+ */
+function assertClassExists($className, $message = '')
+{
+    return PHPUnit_Framework_Assert::assertClassExists($className, $message);
+}
+
+/**
  * Asserts that a class has a specified attribute.
  *
  * @param  string $attributeName

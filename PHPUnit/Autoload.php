@@ -84,6 +84,7 @@ spl_autoload_register(
             'phpunit_framework_constraint_arrayhaskey' => '/Framework/Constraint/ArrayHasKey.php',
             'phpunit_framework_constraint_attribute' => '/Framework/Constraint/Attribute.php',
             'phpunit_framework_constraint_callback' => '/Framework/Constraint/Callback.php',
+            'phpunit_framework_constraint_classexists' => '/Framework/Constraint/ClassExists.php',
             'phpunit_framework_constraint_classhasattribute' => '/Framework/Constraint/ClassHasAttribute.php',
             'phpunit_framework_constraint_classhasstaticattribute' => '/Framework/Constraint/ClassHasStaticAttribute.php',
             'phpunit_framework_constraint_composite' => '/Framework/Constraint/Composite.php',

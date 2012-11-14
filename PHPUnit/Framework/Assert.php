@@ -923,6 +923,23 @@ abstract class PHPUnit_Framework_Assert
     }
 
     /**
+     * Asserts that a class exists in current scope
+     *
+     * @param  string $className
+     * @param  string $message
+     */
+    public static function assertClassExists($className, $message = '')
+    {
+        if (!is_string($className)) {
+            throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'string');
+        }
+
+        $constraint = new PHPUnit_Framework_Constraint_ClassExists();
+
+        self::assertThat($className, $constraint, $message);
+    }
+
+    /**
      * Asserts that a class has a specified attribute.
      *
      * @param  string $attributeName
@@ -2561,6 +2578,16 @@ abstract class PHPUnit_Framework_Assert
           new PHPUnit_Framework_Constraint_IsEqual($value),
           new PHPUnit_Framework_Constraint_GreaterThan($value)
         );
+    }
+
+    /**
+     * Returns a PHPUnit_Framework_Constraint_ClassExists matcher object.
+     *
+     * @return PHPUnit_Framework_Constraint_ClassExists
+     */
+    public static function classExists()
+    {
+        return new PHPUnit_Framework_Constraint_ClassExists();
     }
 
     /**

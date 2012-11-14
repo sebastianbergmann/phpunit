@@ -2022,6 +2022,64 @@ EOF
     }
 
     /**
+     * @covers PHPUnit_Framework_Constraint_ClassExists
+     * @covers PHPUnit_Framework_Assert::classExists
+     * @covers PHPUnit_Framework_Constraint::count
+     * @covers PHPUnit_Framework_TestFailure::exceptionToString
+     */
+    public function testConstraintClassExists()
+    {
+        $constraint = PHPUnit_Framework_Assert::classExists();
+
+        $this->assertTrue($constraint->evaluate('stdClass', '', TRUE));
+        $this->assertFalse($constraint->evaluate('foo', '', TRUE));
+        $this->assertEquals('is a registered class in current scope', $constraint->toString());
+        $this->assertEquals(1, count($constraint));
+
+        try {
+            $constraint->evaluate('foo');
+        }
+
+        catch (PHPUnit_Framework_ExpectationFailedException $e) {
+            $this->assertEquals(
+              <<<EOF
+Failed asserting that 'foo' is a registered class in current scope.
+
+EOF
+              ,
+              PHPUnit_Framework_TestFailure::exceptionToString($e)
+            );
+        }
+    }
+
+    /**
+     * @covers PHPUnit_Framework_Constraint_ClassExists
+     * @covers PHPUnit_Framework_Assert::classExists
+     * @covers PHPUnit_Framework_Constraint::count
+     * @covers PHPUnit_Framework_TestFailure::exceptionToString
+     */
+    public function testConstraintClassExists2()
+    {
+        $constraint = PHPUnit_Framework_Assert::classExists();
+
+        try {
+            $constraint->evaluate('foo', 'custom message');
+        }
+
+        catch (PHPUnit_Framework_ExpectationFailedException $e) {
+            $this->assertEquals(
+              <<<EOF
+custom message
+Failed asserting that 'foo' is a registered class in current scope.
+
+EOF
+              ,
+              PHPUnit_Framework_TestFailure::exceptionToString($e)
+            );
+        }
+    }
+
+    /**
      * @covers PHPUnit_Framework_Constraint_ClassHasAttribute
      * @covers PHPUnit_Framework_Assert::classHasAttribute
      * @covers PHPUnit_Framework_Constraint::count
