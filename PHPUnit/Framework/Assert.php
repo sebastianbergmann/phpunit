@@ -78,7 +78,7 @@ abstract class PHPUnit_Framework_Assert
         }
         if (!(is_array($array) || $array instanceof ArrayAccess)) {
             throw PHPUnit_Util_InvalidArgumentHelper::factory(
-              1, 'array or ArrayAccess'
+              2, 'array or ArrayAccess'
             );
         }
 
@@ -104,7 +104,7 @@ abstract class PHPUnit_Framework_Assert
         }
         if (!(is_array($array) || $array instanceof ArrayAccess)) {
             throw PHPUnit_Util_InvalidArgumentHelper::factory(
-              1, 'array or ArrayAccess'
+              2, 'array or ArrayAccess'
             );
         }
 
@@ -2376,6 +2376,7 @@ abstract class PHPUnit_Framework_Assert
     /**
      * Returns a PHPUnit_Framework_Constraint_Callback matcher object.
      *
+     * @param callable $callback
      * @return PHPUnit_Framework_Constraint_Callback
      */
     public static function callback($callback)

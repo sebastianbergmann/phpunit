@@ -58,7 +58,7 @@ class PHPUnit_Framework_Constraint_Callback extends PHPUnit_Framework_Constraint
     private $callback;
 
     /**
-     * @param callable $value
+     * @param callable $callback
      * @throws InvalidArgumentException
      */
     public function __construct($callback)
