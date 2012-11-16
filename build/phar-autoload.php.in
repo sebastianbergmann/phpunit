@@ -1,5 +1,7 @@
 #!/usr/bin/env php
 <?php
+define('__PHPUNIT_PHAR__', realpath($GLOBALS['_SERVER']['SCRIPT_NAME']));
+
 spl_autoload_register(
   function ($class)
   {
