@@ -675,6 +675,16 @@ class PHPUnit_Framework_TestResult implements Countable
                 $this->codeCoverage->stop(!$incomplete && !$skipped);
             }
 
+            catch (PHP_CodeCoverage_Exception_UnintentionallyCoveredCode $e) {
+                $this->addFailure(
+                  $test,
+                  new PHPUnit_Framework_UnintentionallyCoveredCodeError(
+                    'This test executed code that is not listed as code to be covered'
+                  ),
+                  $time
+                );
+            }
+
             catch (PHP_CodeCoverage_Exception $cce) {
                 $error = TRUE;
 

@@ -134,6 +134,7 @@
      <file baseinstalldir="/" name="Test.php" role="php" />
      <file baseinstalldir="/" name="TestResult.php" role="php" />
      <file baseinstalldir="/" name="TestSuite.php" role="php" />
+     <file baseinstalldir="/" name="UnintentionallyCoveredCodeError.php" role="php" />
      <file baseinstalldir="/" name="Warning.php" role="php" />
     </dir>
     <dir name="Runner">

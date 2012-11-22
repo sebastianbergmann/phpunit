@@ -138,6 +138,7 @@ spl_autoload_register(
             'phpunit_framework_testresult' => '/Framework/TestResult.php',
             'phpunit_framework_testsuite' => '/Framework/TestSuite.php',
             'phpunit_framework_testsuite_dataprovider' => '/Framework/TestSuite/DataProvider.php',
+            'phpunit_framework_unintentionallycoveredcodeerror' => '/Framework/UnintentionallyCoveredCodeError.php',
             'phpunit_framework_warning' => '/Framework/Warning.php',
             'phpunit_runner_basetestrunner' => '/Runner/BaseTestRunner.php',
             'phpunit_runner_standardtestsuiteloader' => '/Runner/StandardTestSuiteLoader.php',
