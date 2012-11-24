@@ -415,11 +415,7 @@ class PHPUnit_TextUI_Command
                 break;
 
                 case '--stderr': {
-                    $this->arguments['printer'] = new PHPUnit_TextUI_ResultPrinter(
-                      'php://stderr',
-                      isset($this->arguments['verbose']) ? $this->arguments['verbose'] : FALSE
-                    );
-                }
+                    $this->arguments['stderr'] = true;                }
                 break;
 
                 case '--stop-on-error': {
@@ -510,6 +506,15 @@ class PHPUnit_TextUI_Command
                     }
                 }
             }
+        }
+
+        if (isset($this->arguments['stderr'])) {
+            $this->arguments['printer'] = new PHPUnit_TextUI_ResultPrinter(
+              'php://stderr',
+              isset($this->arguments['verbose']) ?: FALSE,
+              isset($this->arguments['colors']) ?: FALSE,
+              isset($this->arguments['debug']) ?: FALSE
+            );
         }
 
         $this->handleCustomTestSuite();
