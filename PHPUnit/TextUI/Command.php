@@ -415,7 +415,8 @@ class PHPUnit_TextUI_Command
                 break;
 
                 case '--stderr': {
-                    $this->arguments['stderr'] = true;                }
+                    $this->arguments['stderr'] = TRUE;
+                }
                 break;
 
                 case '--stop-on-error': {
