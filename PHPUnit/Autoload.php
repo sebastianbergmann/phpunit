@@ -125,6 +125,7 @@ spl_autoload_register(
             'phpunit_framework_expectationfailedexception' => '/Framework/ExpectationFailedException.php',
             'phpunit_framework_incompletetest' => '/Framework/IncompleteTest.php',
             'phpunit_framework_incompletetesterror' => '/Framework/IncompleteTestError.php',
+            'phpunit_framework_invalidcoverstargeterror' => '/Framework/InvalidCoversTargetError.php',
             'phpunit_framework_outputerror' => '/Framework/OutputError.php',
             'phpunit_framework_selfdescribing' => '/Framework/SelfDescribing.php',
             'phpunit_framework_skippedtest' => '/Framework/SkippedTest.php',

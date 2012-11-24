@@ -122,6 +122,7 @@
      <file baseinstalldir="/" name="ExpectationFailedException.php" role="php" />
      <file baseinstalldir="/" name="IncompleteTestError.php" role="php" />
      <file baseinstalldir="/" name="IncompleteTest.php" role="php" />
+     <file baseinstalldir="/" name="InvalidCoversTargetError.php" role="php" />
      <file baseinstalldir="/" name="OutputError.php" role="php" />
      <file baseinstalldir="/" name="SelfDescribing.php" role="php" />
      <file baseinstalldir="/" name="SkippedTestError.php" role="php" />

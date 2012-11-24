@@ -685,6 +685,16 @@ class PHPUnit_Framework_TestResult implements Countable
                 );
             }
 
+            catch (PHP_CodeCoverage_Exception_InvalidCoversTarget $e) {
+                $this->addFailure(
+                  $test,
+                  new PHPUnit_Framework_InvalidCoversTargetError(
+                    $e->getMessage()
+                  ),
+                  $time
+                );
+            }
+
             catch (PHP_CodeCoverage_Exception $cce) {
                 $error = TRUE;
 
