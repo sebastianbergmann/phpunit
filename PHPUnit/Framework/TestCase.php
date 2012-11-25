@@ -293,6 +293,13 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
     private $outputBufferingActive = FALSE;
 
     /**
+     * @var array
+     */
+    protected static $templateMethods = array(
+      'setUp', 'assertPreConditions', 'assertPostConditions', 'tearDown'
+    );
+
+    /**
      * Constructs a test case with the given name.
      *
      * @param  string $name
@@ -349,6 +356,38 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
     {
         return PHPUnit_Util_Test::parseTestMethodAnnotations(
           get_class($this), $this->name
+        );
+    }
+
+    /**
+     * Adds the element in the same form that @covers accepts.
+     *
+     * @param string $coveredElement
+     * @since Method available since Release 3.5.0
+     */
+    public function addCoveredElement($coveredElement) {
+        $this->coveredElements[] = $coveredElement;
+    }
+
+    /**
+     * Returns the combination of covered elements added programmatically
+     * and those specified in @covers annotations.
+     *
+     * @return array
+     * @since Method available since Release 3.5.0
+     */
+    public function getCoveredElements()
+    {
+        $methods   = self::$templateMethods;
+        $methods[] = $this->getName(FALSE);
+
+        return array_unique(
+          array_merge(
+            $this->coveredElements,
+            PHP_CodeCoverage_Util::getCoversAnnotations(
+              get_class($this), $methods
+            )
+          )
         );
     }
 
