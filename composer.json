@@ -42,9 +42,6 @@
     "bin": [
         "composer/bin/phpunit"
     ],
-    "config": {
-        "bin-dir": "bin"
-    },
     "autoload": {
         "classmap": [
             "PHPUnit/"
