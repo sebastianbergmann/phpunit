@@ -354,6 +354,36 @@ class PHPUnit_Util_Test
     }
 
     /**
+     * Returns the thresholds for a test class and method.
+     *
+     * @param  string $className
+     * @param  string $methodName
+     * @return array
+     */
+    public static function getThresholds($className, $methodName)
+    {
+        $annotations = self::parseTestMethodAnnotations(
+          $className, $methodName
+        );
+
+        $thresholds = array(
+            'class' => 0,
+            'method' => 0
+        );
+        
+        // @note By using array_sum, we convert any non-numeric numbers into 0
+        if (isset($annotations['class']['threshold'])) {
+            $thresholds['class'] = array_sum($annotations['class']['threshold']);
+        }
+
+        if (isset($annotations['method']['threshold'])) {
+            $thresholds['method'] = array_sum($annotations['method']['threshold']);
+        }
+
+        return $thresholds;
+    }
+
+    /**
      * Returns the dependencies for a test class or method.
      *
      * @param  string $className

@@ -201,6 +201,16 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
     );
 
     /**
+     * The time thresholds for a test.
+     *
+     * @var array
+     */
+    private $threshold = array(
+        'class' => 0,
+        'method' => 0
+    );
+
+    /**
      * The name of the test case.
      *
      * @var string
@@ -291,6 +301,20 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
      * @var boolean
      */
     private $outputBufferingActive = FALSE;
+
+    /**
+     * Time method test started
+     * 
+     * @var float
+     */
+    private $startTimeMethod;
+
+    /**
+     * Time class test started
+     *
+     * @var float
+     */
+    private static $startTimeClass;
 
     /**
      * Constructs a test case with the given name.
@@ -584,6 +608,53 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
     }
 
     /**
+     * Initializes Thresholds from Annotations
+     */
+    protected function setThresholdsFromAnnotation()
+    {
+        try {
+            $this->thresholds = PHPUnit_Util_Test::getThresholds(
+              get_class($this), $this->name
+            );
+        }
+
+        catch (ReflectionException $e) {
+        }
+    }
+
+    /**
+     * Starts Timers for Thresholds
+     */
+    protected function setUpThresholds() 
+    {
+        if (!isset(self::$startTimeClass)) {
+            self::$startTimeClass = microtime(true);
+        }
+        $this->startTimeMethod = microtime(true);
+    }
+
+    /**
+     * Asserts if Thresholds have exceeded
+     */
+    protected function assertThresholds() 
+    {
+        $this->setThresholdsFromAnnotation();
+        
+        $endTime = microtime(true);
+     
+        $elapsedTimeMethod = $endTime - $this->startTimeMethod;
+        $elapsedTimeClass = $endTime - self::$startTimeClass;
+        
+        if ($this->thresholds['class'] > 0) {
+            $this->assertLessThan($this->thresholds['class'], $elapsedTimeClass, 'Class Time Threshold Exceeded');
+        }
+
+        if ($this->thresholds['method'] > 0) {
+            $this->assertLessThan($this->thresholds['method'], $elapsedTimeMethod, 'Method Time Threshold Exceeded');
+        }
+    }
+
+    /**
      * @since Method available since Release 3.6.0
      */
     protected function checkRequirements()
@@ -827,7 +898,9 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
             $this->setUp();
             $this->checkRequirements();
             $this->assertPreConditions();
+            $this->setUpThresholds();
             $this->testResult = $this->runTest();
+            $this->assertThresholds();
             $this->verifyMockObjects();
             $this->assertPostConditions();
             $this->status = PHPUnit_Runner_BaseTestRunner::STATUS_PASSED;
