@@ -2137,6 +2137,24 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
     }
 
     /**
+     * @covers            PHPUnit_Framework_Assert::assertClassExists
+     * @expectedException PHPUnit_Framework_Exception
+     */
+    public function testAssertClassExistsThrowsException()
+    {
+        $this->assertClassExists(NULL);
+    }
+
+    /**
+     * @covers            PHPUnit_Framework_Assert::assertClassExists
+     * @expectedException PHPUnit_Framework_Exception
+     */
+    public function testAssertClassExistsThrowsException2()
+    {
+        $this->assertClassExists('foo');
+    }
+
+    /**
      * @covers            PHPUnit_Framework_Assert::assertClassHasAttribute
      * @expectedException PHPUnit_Framework_Exception
      */
@@ -2242,6 +2260,24 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
     public function testAssertObjectNotHasAttributeThrowsException2()
     {
         $this->assertObjectNotHasAttribute('foo', NULL);
+    }
+
+    /**
+     * @covers PHPUnit_Framework_Assert::assertClassExists
+     */
+    public function testClassExists()
+    {
+        $this->assertClassExists('stdClass');
+
+        try {
+            $this->assertClassExists('foo');
+        }
+
+        catch (PHPUnit_Framework_AssertionFailedError $e) {
+            return;
+        }
+
+        $this->fail();
     }
 
     /**
