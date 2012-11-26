@@ -242,11 +242,8 @@ class PHPUnit_Framework_MockObject_Generator
                 $object = $class->newInstanceArgs($arguments);
             }
         } else {
-            // Use a trick to create a new object of a class
-            // without invoking its constructor.
-            $object = unserialize(
-              sprintf('O:%d:"%s":0:{}', strlen($className), $className)
-            );
+                $class = new ReflectionClass($className);
+                $object = $class->newInstanceWithoutConstructor();
         }
 
         return $object;
