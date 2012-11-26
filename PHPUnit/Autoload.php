@@ -175,6 +175,7 @@ spl_autoload_register(
             'phpunit_util_testdox_resultprinter_text' => '/Util/TestDox/ResultPrinter/Text.php',
             'phpunit_util_testsuiteiterator' => '/Util/TestSuiteIterator.php',
             'phpunit_util_type' => '/Util/Type.php',
+            'phpunit_util_type_exportcontext' => '/Util/Type/ExportContext.php',
             'phpunit_util_xml' => '/Util/XML.php'
           );
 
