@@ -68,8 +68,8 @@ class PHPUnit_Util_Filter
         $prefix = FALSE;
         $script = realpath($GLOBALS['_SERVER']['SCRIPT_NAME']);
 
-        if (substr($script, -5) == '.phar') {
-            $prefix = 'phar://' . $script . '/';
+        if (defined('__PHPUNIT_PHAR__')) {
+            $prefix = 'phar://' . __PHPUNIT_PHAR__ . '/';
         }
 
         if (!defined('PHPUNIT_TESTSUITE')) {
