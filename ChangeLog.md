@@ -8,6 +8,7 @@ This is the list of changes for the PHPUnit 3.7 release series.
 PHPUnit 3.7.10
 --------------
 
+* Fixed #734: `phpunit.phar` cannot be executed if it is renamed.
 * Fixed error message when `assertArrayHasKey()` and `assertArrayNotHasKey()` are invoked with wrong arguments.
 
 PHPUnit 3.7.9
