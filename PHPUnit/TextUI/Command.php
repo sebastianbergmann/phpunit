@@ -76,6 +76,7 @@ class PHPUnit_TextUI_Command
      */
     protected $longOptions = array(
       'colors' => NULL,
+      'no-colors' => NULL,
       'bootstrap=' => NULL,
       'configuration=' => NULL,
       'coverage-html=' => NULL,
@@ -251,6 +252,11 @@ class PHPUnit_TextUI_Command
             switch ($option[0]) {
                 case '--colors': {
                     $this->arguments['colors'] = TRUE;
+                }
+                break;
+                
+                case '--no-colors': {
+                    $this->arguments['colors'] = FALSE;
                 }
                 break;
 
@@ -863,6 +869,7 @@ Usage: phpunit [switches] UnitTest [UnitTest.php]
   --testdox                 Report test execution progress in TestDox format.
 
   --colors                  Use colors in output.
+  --no-colors               Do not use colors in output.
   --stderr                  Write to STDERR instead of STDOUT.
   --stop-on-error           Stop execution upon first error.
   --stop-on-failure         Stop execution upon first error or failure.
