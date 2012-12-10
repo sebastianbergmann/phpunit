@@ -164,25 +164,10 @@ class PHPUnit_Util_Type
                 return "$class Object &$hash";
             }
 
-            $refl = new ReflectionObject($value);
-
             $hash = $processed->add($value);
             $output = "\n$whitespace$class Object &$hash\n$whitespace(\n";
-            foreach ($refl->getProperties() as $prop) {
-                $prop->setAccessible(true);
-                $key = $prop->getName();
-                if ($prop->isProtected()) {
-                    $key .= ':protected';
-                } elseif ($prop->isPrivate()) {
-                    $key .= ':private';
-                }
-
-                $propValue = $prop->getValue($value);
-                $output .= "$whitespace    [$key] => ".self::recursiveExport($propValue, $indentation + 1, $processed)."\n";
-
-                if (!$prop->isPublic()) {
-                    $prop->setAccessible(false);
-                }
+            foreach (self::toArray($value) as $k => $v) {
+                $output .= "$whitespace    [$k] => ".self::recursiveExport($v, $indentation + 1, $processed)."\n";
             }
 
             return "$output$whitespace)\n";
