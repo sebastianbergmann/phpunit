@@ -64,9 +64,12 @@ class PHPUnit_Util_XML
      */
     public static function prepareString($string)
     {
-        return preg_replace(
-          '([\\x00-\\x04\\x0b\\x0c\\x0e-\\x1f\\x7f])e',
-          'sprintf( "&#x%02x;", ord( "\\1" ) )',
+        return preg_replace_callback(
+          '([\\x00-\\x04\\x0b\\x0c\\x0e-\\x1f\\x7f])',
+          function ($matches)
+          {
+              return sprintf('&#x%02x;', ord($matches[1]));
+          },
           htmlspecialchars(
             PHPUnit_Util_String::convertToUtf8($string), ENT_COMPAT, 'UTF-8'
           )
