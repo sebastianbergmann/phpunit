@@ -65,16 +65,22 @@ class PHPUnit_Framework_Constraint_TraversableContains extends PHPUnit_Framework
     protected $checkForObjectIdentity;
 
     /**
+     * @var boolean
+     */
+    protected $checkForNonObjectIdentity;
+
+    /**
      * @var mixed
      */
     protected $value;
 
     /**
-     * @param  boolean $value
-     * @param  mixed   $checkForObjectIdentity
+     * @param  mixed $value
+     * @param  boolean $checkForObjectIdentity
+     * @param  boolean $checkForNonObjectIdentity
      * @throws PHPUnit_Framework_Exception
      */
-    public function __construct($value, $checkForObjectIdentity = TRUE)
+    public function __construct($value, $checkForObjectIdentity = TRUE, $checkForNonObjectIdentity = FALSE)
     {
         parent::__construct();
 
@@ -82,8 +88,13 @@ class PHPUnit_Framework_Constraint_TraversableContains extends PHPUnit_Framework
             throw PHPUnit_Util_InvalidArgumentHelper::factory(2, 'boolean');
         }
 
-        $this->checkForObjectIdentity = $checkForObjectIdentity;
-        $this->value                  = $value;
+        if (!is_bool($checkForNonObjectIdentity)) {
+            throw PHPUnit_Util_InvalidArgumentHelper::factory(3, 'boolean');
+        }
+
+        $this->checkForObjectIdentity    = $checkForObjectIdentity;
+        $this->checkForNonObjectIdentity = $checkForNonObjectIdentity;
+        $this->value                     = $value;
     }
 
     /**
@@ -110,7 +121,10 @@ class PHPUnit_Framework_Constraint_TraversableContains extends PHPUnit_Framework
             }
         } else {
             foreach ($other as $element) {
-                if ($element == $this->value) {
+                if (($this->checkForNonObjectIdentity &&
+                     $element === $this->value) ||
+                    (!$this->checkForNonObjectIdentity &&
+                     $element == $this->value)) {
                     return TRUE;
                 }
             }

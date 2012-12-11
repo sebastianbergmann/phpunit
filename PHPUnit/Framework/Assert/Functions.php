@@ -1541,12 +1541,13 @@ function classHasStaticAttribute($attributeName)
  *
  * @param  mixed   $value
  * @param  boolean $checkForObjectIdentity
+ * @param  boolean $checkForNonObjectIdentity
  * @return PHPUnit_Framework_Constraint_TraversableContains
  * @since  Method available since Release 3.0.0
  */
-function contains($value, $checkForObjectIdentity = TRUE)
+function contains($value, $checkForObjectIdentity = TRUE, $checkForNonObjectIdentity = FALSE)
 {
-    return PHPUnit_Framework_Assert::contains($value, $checkForObjectIdentity);
+    return PHPUnit_Framework_Assert::contains($value, $checkForObjectIdentity, $checkForNonObjectIdentity);
 }
 
 /**
