@@ -73,6 +73,7 @@ PHPUnit 3.7.0
 * Implemented #377: Show messages and stracktraces in JSON output for skipped and incomplete tests.
 * Implemented #424: Added `assertJson*` functions that work like the existing `assertXml*` functions.
 * Implemented #492: PHPUnit now provides a `configuration.xsd` schema file at [http://schema.phpunit.de/configuration.xsd]() that can be used to validate your `phpunit.xml` and `phpunit.xml.dist` configuration files.
+* Implemented #495: Added `--testsuite` argument, allowing to filter files/directory by parent testsuite name attribute.
 * Implemented #504: Expanded the `@requires` annotation to allow for checking the existence of functions and extensions using multiple `@requires function name` statements.
 * Implemented #508 #86: `@expectedExceptionCode` and `@expectedExceptionMessage` can now use constants like `Classname::CONST` as their parameters. They will get evaluated if the class constant exists and used for comparison so test authors can avoid duplication.
 * Implemented #512: Test listeners now trigger one autoload call instead of being silently ignored when the class was not loaded.
