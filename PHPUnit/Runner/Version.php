@@ -69,7 +69,7 @@ class PHPUnit_Runner_Version
         if (self::$version === NULL) {
             self::$version = self::VERSION;
 
-            if (is_dir(dirname(dirname(__DIR__)) . '/.git')) {
+            if (is_dir(dirname(dirname(__DIR__)) . '/.git') && function_exists('exec')) {
                 $dir = getcwd();
                 chdir(__DIR__);
                 $version = exec('git describe --tags');
