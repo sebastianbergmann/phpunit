@@ -9,7 +9,7 @@ PHPUnit is the de-facto standard for unit testing in PHP projects. It provides b
 
 ## Installation
 
-There a three supported ways of installing PHPUnit.
+There are three supported ways of installing PHPUnit.
 
 You can use the [PEAR Installer](http://pear.php.net/manual/en/guide.users.commandline.cli.php) or [Composer](http://getcomposer.org/) to download and install PHPUnit as well as its dependencies. You can also download a [PHP Archive (PHAR)](http://php.net/phar) of PHPUnit that has all required (as well as some optional) dependencies of PHPUnit bundled in a single file.
 
