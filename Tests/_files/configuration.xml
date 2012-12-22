@@ -5,6 +5,7 @@
          bootstrap="/path/to/bootstrap.php"
          cacheTokens="false"
          colors="false"
+         stderr="false"
          convertErrorsToExceptions="true"
          convertNoticesToExceptions="true"
          convertWarningsToExceptions="true"

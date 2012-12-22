@@ -604,6 +604,16 @@ class PHPUnit_TextUI_Command
                 $this->handleBootstrap($phpunit['bootstrap']);
             }
 
+            /**
+             * Issue #657
+             */
+            if (isset($phpunit['stderr']) && $phpunit['stderr'] == true) {
+                $this->arguments['printer'] = new PHPUnit_TextUI_ResultPrinter(
+                  'php://stderr',
+                  isset($this->arguments['verbose']) ? $this->arguments['verbose'] : FALSE
+                );
+            }
+
             if (isset($phpunit['printerClass'])) {
                 if (isset($phpunit['printerFile'])) {
                     $file = $phpunit['printerFile'];
