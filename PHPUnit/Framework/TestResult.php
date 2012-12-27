@@ -398,7 +398,7 @@ class PHPUnit_Framework_TestResult implements Countable
      *
      * @return boolean
      */
-    public function allCompletlyImplemented()
+    public function allCompletelyImplemented()
     {
         return $this->notImplementedCount() == 0;
     }

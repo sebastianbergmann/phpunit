@@ -357,7 +357,7 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
         }
 
         else if ($result->wasSuccessful() &&
-            $result->allCompletlyImplemented() &&
+            $result->allCompletelyImplemented() &&
             $result->noneSkipped()) {
             if ($this->colors) {
                 $this->write("\x1b[30;42m\x1b[2K");
@@ -379,7 +379,7 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
             }
         }
 
-        else if ((!$result->allCompletlyImplemented() ||
+        else if ((!$result->allCompletelyImplemented() ||
                   !$result->noneSkipped()) &&
                  $result->wasSuccessful()) {
             if ($this->colors) {
