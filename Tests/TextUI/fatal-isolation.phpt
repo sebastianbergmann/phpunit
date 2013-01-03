@@ -23,12 +23,12 @@ There was 1 error:
 1) FatalTest::testFatalError
 PHPUnit_Framework_Exception: Fatal error: Call to undefined function non_existing_function() in %s
 
-%s:%i
+%s
+
 
 Caused by
 ErrorException: unserialize(): Error at offset %i of %i bytes
 
-%s:%i
 
 FAILURES!
 Tests: 1, Assertions: 0, Errors: 1.
