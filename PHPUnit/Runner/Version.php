@@ -72,10 +72,10 @@ class PHPUnit_Runner_Version
             if (is_dir(dirname(dirname(__DIR__)) . '/.git')) {
                 $dir = getcwd();
                 chdir(__DIR__);
-                $version = exec('git describe --tags');
+                $version = exec('git describe --tags 2>&1', $output, $returnCode);
                 chdir($dir);
 
-                if ($version) {
+                if ($version && $returnCode === 0) {
                     if (count(explode('.', self::VERSION)) == 3) {
                         self::$version = $version;
                     } else {
@@ -83,6 +83,8 @@ class PHPUnit_Runner_Version
 
                         self::$version = self::VERSION . '-' . $version[2];
                     }
+                } else {
+                    self::$version = self::VERSION . '-dev';
                 }
             }
         }
