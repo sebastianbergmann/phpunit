@@ -12,5 +12,6 @@ before_script:
     - composer install --prefer-source
     - git clone --branch=master --depth=100 --quiet git://github.com/pear/pear-core.git vendor/pear-core
     - git clone --branch=trunk  --depth=100 --quiet git://github.com/pear/Console_Getopt.git vendor/console-getopt
+    - touch dummy.php
 
-script: php -d include_path=".:vendor/pear-core:vendor/console-getopt/" ./composer/bin/phpunit --coverage-text --colors
+script: php -d include_path=".:vendor/pear-core:vendor/console-getopt/" ./composer/bin/phpunit --coverage-text --colors --bootstrap dummy.php
