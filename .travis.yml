@@ -15,3 +15,7 @@ before_script:
     - touch dummy.php
 
 script: php -d include_path=".:vendor/pear-core:vendor/console-getopt/" ./composer/bin/phpunit --coverage-text --colors --bootstrap dummy.php
+
+notifications:
+  email: false
+  irc: "irc.freenode.org#phpunit"
