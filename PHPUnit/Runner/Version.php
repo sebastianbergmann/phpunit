@@ -56,7 +56,8 @@
  */
 class PHPUnit_Runner_Version
 {
-    private static $version;
+    const VERSION = '3.8';
+    protected static $version;
 
     /**
      * Returns the current version of PHPUnit.
@@ -66,10 +67,29 @@ class PHPUnit_Runner_Version
     public static function id()
     {
         if (self::$version === NULL) {
-            self::$version = new SebastianBergmann\Version;
+            self::$version = self::VERSION;
+
+            if (is_dir(dirname(dirname(__DIR__)) . '/.git')) {
+                $dir = getcwd();
+                chdir(__DIR__);
+                $version = exec('git describe --tags 2>&1', $output, $returnCode);
+                chdir($dir);
+
+                if ($version && $returnCode === 0) {
+                    if (count(explode('.', self::VERSION)) == 3) {
+                        self::$version = $version;
+                    } else {
+                        $version = explode('-', $version);
+
+                        self::$version = self::VERSION . '-' . $version[2];
+                    }
+                } else {
+                    self::$version = self::VERSION . '-dev';
+                }
+            }
         }
 
-        return self::$version->getVersion('3.8', __DIR__);
+        return self::$version;
     }
 
     /**
