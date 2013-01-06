@@ -245,6 +245,11 @@
     <channel>pear.symfony.com</channel>
     <min>2.1.0</min>
    </package>
+   <package>
+    <name>Version</name>
+    <channel>pear.phpunit.de</channel>
+    <min>1.0.0</min>
+   </package>
    <extension>
     <name>dom</name>
    </extension>
