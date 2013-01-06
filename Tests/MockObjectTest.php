@@ -334,6 +334,13 @@ class Framework_MockObjectTest extends PHPUnit_Framework_TestCase
         $this->assertEquals($a, $b);
     }
 
+    public function testMockObjectsConstructedIndepentantlyShouldNotBeTheSame()
+    {
+        $a = $this->getMock('stdClass');
+        $b = $this->getMock('stdClass');
+        $this->assertNotSame($a, $b);
+    }
+
     public function testClonedMockObjectCanBeUsedInPlaceOfOriginalOne()
     {
         $x = $this->getMock('stdClass');
