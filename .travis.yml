@@ -13,8 +13,8 @@ before_script:
     - git clone --branch=master --depth=100 --quiet git://github.com/sebastianbergmann/php-text-template.git vendor/php-text-template
     - git clone --branch=master --depth=100 --quiet git://github.com/sebastianbergmann/php-token-stream.git vendor/php-token-stream
     - git clone --branch=master --depth=100 --quiet git://github.com/sebastianbergmann/php-file-iterator.git vendor/php-file-iterator
-    - git clone --branch=master --depth=100 --quiet git://github.com/sebastianbergmann/php-code-coverage.git vendor/php-code-coverage
-    - git clone --branch=master --depth=100 --quiet git://github.com/sebastianbergmann/phpunit-mock-objects.git vendor/phpunit-mock-objects
+    - git clone --branch=1.2 --depth=100 --quiet git://github.com/sebastianbergmann/php-code-coverage.git vendor/php-code-coverage
+    - git clone --branch=1.2 --depth=100 --quiet git://github.com/sebastianbergmann/phpunit-mock-objects.git vendor/phpunit-mock-objects
     - git clone --branch=master --depth=100 --quiet git://github.com/sebastianbergmann/php-timer.git vendor/php-timer
     - git clone --branch=master --depth=100 --quiet git://github.com/pear/pear-core.git vendor/pear-core
     - git clone --branch=trunk --depth=100 --quiet git://github.com/pear/Console_Getopt.git vendor/console-getopt
