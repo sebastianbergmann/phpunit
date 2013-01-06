@@ -8,7 +8,7 @@ env:
     - INSTALL_PHP_INVOKER=1
 
 before_script:
-    - mkdir vendor
+    - mkdir -p vendor/SebastianBergmann
     - git clone --branch=master --depth=100 --quiet git://github.com/sebastianbergmann/php-text-template.git vendor/php-text-template
     - git clone --branch=master --depth=100 --quiet git://github.com/sebastianbergmann/php-token-stream.git vendor/php-token-stream
     - git clone --branch=master --depth=100 --quiet git://github.com/sebastianbergmann/php-file-iterator.git vendor/php-file-iterator
@@ -16,11 +16,12 @@ before_script:
     - git clone --branch=master --depth=100 --quiet git://github.com/sebastianbergmann/phpunit-mock-objects.git vendor/phpunit-mock-objects
     - git clone --branch=master --depth=100 --quiet git://github.com/sebastianbergmann/php-timer.git vendor/php-timer
     - git clone --branch=master --depth=100 --quiet git://github.com/sebastianbergmann/version.git vendor/version
+    - ln -s vendor/version/src vendor/SebastianBergmann/Version
     - git clone --branch=master --depth=100 --quiet git://github.com/pear/pear-core.git vendor/pear-core
     - git clone --branch=trunk --depth=100 --quiet git://github.com/pear/Console_Getopt.git vendor/console-getopt
     - sh -c "if [ '$INSTALL_PHP_INVOKER' = '1' ]; then git clone --branch=master --depth=100 --quiet git://github.com/sebastianbergmann/php-invoker.git vendor/php-invoker; fi"
 
-script: php -d include_path=vendor/php-text-template:vendor/php-token-stream:vendor/php-file-iterator:vendor/php-code-coverage:vendor/phpunit-mock-objects:vendor/php-timer:vendor/version:vendor/php-invoker:vendor/pear-core:vendor/console-getopt:. ./phpunit.php --configuration ./build/travis-ci.xml
+script: php -d include_path=vendor/php-text-template:vendor/php-token-stream:vendor/php-file-iterator:vendor/php-code-coverage:vendor/phpunit-mock-objects:vendor/php-timer:vendor/php-invoker:vendor/pear-core:vendor/console-getopt:vendor:. ./phpunit.php --configuration ./build/travis-ci.xml
 
 notifications:
   email: false
