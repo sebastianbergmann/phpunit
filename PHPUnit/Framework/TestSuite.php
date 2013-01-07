@@ -512,13 +512,13 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
                         );
                     }
 
+                    $groups = PHPUnit_Util_Test::getGroups($className, $name);
+
                     if ($data instanceof PHPUnit_Framework_Warning) {
-                        $test->addTest($data);
+                        $test->addTest($data, $groups);
                     }
 
                     else {
-                        $groups = PHPUnit_Util_Test::getGroups($className, $name);
-
                         foreach ($data as $_dataName => $_data) {
                             $_test = new $className($name, $_data, $_dataName);
 
