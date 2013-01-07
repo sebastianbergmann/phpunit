@@ -260,7 +260,7 @@
     <name>reflection</name>
    </extension>
    <extension>
-    <name>spl</name>
+    <name>SPL</name>
    </extension>
   </required>
   <optional>
