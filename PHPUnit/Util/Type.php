@@ -171,7 +171,7 @@ class PHPUnit_Util_Type
             $hash = $processed->add($value);
             $output = "$class Object &$hash (\n";
             foreach (self::toArray($value) as $k => $v) {
-                $output .= "$whitespace    [$k] => ".self::recursiveExport($v, $indentation + 1, $processed)."\n";
+                $output .= "$whitespace    '$k' => ".self::recursiveExport($v, $indentation + 1, $processed)."\n";
             }
 
             return "$output$whitespace)";
