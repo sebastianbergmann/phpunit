@@ -154,12 +154,18 @@ class PHPUnit_Util_Type
             }
 
             $key = $processed->add($value);
-            $output = "Array &$key (\n";
-            foreach ($value as $k => $v) {
-                $k = self::export($k);
-                $output .= "$whitespace    $k => ".self::recursiveExport($v, $indentation + 1, $processed)."\n";
+            if (count($value) > 0) {
+                $output = "Array &$key (\n";
+
+                foreach ($value as $k => $v) {
+                    $k = self::export($k);
+                    $output .= "$whitespace    $k => ".self::recursiveExport($v, $indentation + 1, $processed)."\n";
+                }
+
+                return "$output$whitespace)";
+            } else {
+                return "Array &$key ()";
             }
-            return "$output$whitespace)";
         }
 
         if (is_object($value)) {
@@ -170,13 +176,20 @@ class PHPUnit_Util_Type
             }
 
             $hash = $processed->add($value);
-            $output = "$class Object &$hash (\n";
-            foreach (self::toArray($value) as $k => $v) {
-                $k = self::export($k);
-                $output .= "$whitespace    $k => ".self::recursiveExport($v, $indentation + 1, $processed)."\n";
+            $array = self::toArray($value);
+            if (count($array) > 0) {
+                $output = "$class Object &$hash (\n";
+
+                foreach ($array as $k => $v) {
+                    $k = self::export($k);
+                    $output .= "$whitespace    $k => ".self::recursiveExport($v, $indentation + 1, $processed)."\n";
+                }
+
+                return "$output$whitespace)";
+            } else {
+                return "$class Object &$hash ()";
             }
 
-            return "$output$whitespace)";
         }
 
         return var_export($value, true);
