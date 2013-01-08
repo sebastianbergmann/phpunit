@@ -96,6 +96,8 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
      */
     protected $backupStaticAttributes = NULL;
 
+    protected $runTestInSeparateProcess = FALSE;
+
     /**
      * The name of the test suite.
      *
@@ -128,6 +130,11 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
      * @var boolean
      */
     protected $testCase = FALSE;
+
+    /**
+     * @var PHPUnit_Util_Filters_FilterIteratorFactory
+     */
+    private $iteratorFilter = NULL;
 
     /**
      * Constructs a new TestSuite:
@@ -427,17 +434,13 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
      */
     public function count()
     {
-        if ($this->numTests > -1) {
-            return $this->numTests;
+        $numTests = 0;
+
+        foreach ($this as $test) {
+            $numTests += count($test);
         }
 
-        $this->numTests = 0;
-
-        foreach ($this->tests as $test) {
-            $this->numTests += count($test);
-        }
-
-        return $this->numTests;
+        return $numTests;
     }
 
     /**
@@ -616,6 +619,10 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
         return array_keys($this->groups);
     }
 
+    public function getGroupDetails() {
+        return $this->groups;
+    }
+
     /**
      * Runs the tests and collects their result in a TestResult.
      *
@@ -627,134 +634,69 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
      * @return PHPUnit_Framework_TestResult
      * @throws InvalidArgumentException
      */
-    public function run(PHPUnit_Framework_TestResult $result = NULL, $filter = FALSE, array $groups = array(), array $excludeGroups = array(), $processIsolation = FALSE)
+    public function run(PHPUnit_Framework_TestResult $result = NULL)
     {
         if ($result === NULL) {
             $result = $this->createResult();
         }
 
+        if (count($this) == 0) {
+            return $result;
+        }
+
         $result->startTestSuite($this);
 
-        $doSetup = TRUE;
+        try {
+            $this->setUp();
 
-        if (!empty($excludeGroups)) {
-            foreach ($this->groups as $_group => $_tests) {
-                if (in_array($_group, $excludeGroups) &&
-                    count($_tests) == count($this->tests)) {
-                    $doSetup = FALSE;
-                }
+            if ($this->testCase &&
+                method_exists($this->name, 'setUpBeforeClass')) {
+                call_user_func(array($this->name, 'setUpBeforeClass'));
             }
         }
 
-        if ($doSetup) {
-            try {
-                $this->setUp();
+        catch (PHPUnit_Framework_SkippedTestSuiteError $e) {
+            $numTests = count($this);
 
-                if ($this->testCase &&
-                    method_exists($this->name, 'setUpBeforeClass')) {
-                    call_user_func(array($this->name, 'setUpBeforeClass'));
-                }
+            for ($i = 0; $i < $numTests; $i++) {
+                $result->addFailure($this, $e, 0);
             }
 
-            catch (PHPUnit_Framework_SkippedTestSuiteError $e) {
-                $numTests = count($this);
-
-                for ($i = 0; $i < $numTests; $i++) {
-                    $result->addFailure($this, $e, 0);
-                }
-
-                return $result;
-            }
-
-            catch (Exception $e) {
-                $numTests = count($this);
-
-                for ($i = 0; $i < $numTests; $i++) {
-                    $result->addError($this, $e, 0);
-                }
-
-                return $result;
-            }
+            return $result;
         }
 
-        if (empty($groups)) {
-            $tests = $this->tests;
-        } else {
-            $tests = new SplObjectStorage;
+        catch (Exception $e) {
+            $numTests = count($this);
 
-            foreach ($groups as $group) {
-                if (isset($this->groups[$group])) {
-                    foreach ($this->groups[$group] as $test) {
-                        $tests->attach($test);
-                    }
-                }
+            for ($i = 0; $i < $numTests; $i++) {
+                $result->addError($this, $e, 0);
             }
+
+            return $result;
         }
 
-        foreach ($tests as $test) {
+        foreach ($this as $test) {
             if ($result->shouldStop()) {
                 break;
             }
 
-            if ($test instanceof PHPUnit_Framework_TestSuite) {
+            if ($test instanceof PHPUnit_Framework_TestCase ||
+                $test instanceof PHPUnit_Framework_TestSuite) {
                 $test->setBackupGlobals($this->backupGlobals);
                 $test->setBackupStaticAttributes($this->backupStaticAttributes);
-
-                $test->run(
-                  $result, $filter, $groups, $excludeGroups, $processIsolation
-                );
-            } else {
-                $runTest = TRUE;
-
-                if ($filter !== FALSE ) {
-                    $tmp = PHPUnit_Util_Test::describe($test, FALSE);
-
-                    if ($tmp[0] != '') {
-                        $name = join('::', $tmp);
-                    } else {
-                        $name = $tmp[1];
-                    }
-
-                    if (preg_match($filter, $name) == 0) {
-                        $runTest = FALSE;
-                    }
-                }
-
-                if ($runTest && !empty($excludeGroups)) {
-                    foreach ($this->groups as $_group => $_tests) {
-                        if (in_array($_group, $excludeGroups)) {
-                            foreach ($_tests as $_test) {
-                                if ($test === $_test) {
-                                    $runTest = FALSE;
-                                    break 2;
-                                }
-                            }
-                        }
-                    }
-                }
-
-                if ($runTest) {
-                    if ($test instanceof PHPUnit_Framework_TestCase) {
-                        $test->setBackupGlobals($this->backupGlobals);
-                        $test->setBackupStaticAttributes(
-                          $this->backupStaticAttributes
-                        );
-                        $test->setRunTestInSeparateProcess($processIsolation);
-                    }
-
-                    $this->runTest($test, $result);
-                }
-            }
-        }
-
-        if ($doSetup) {
-            if ($this->testCase &&
-                method_exists($this->name, 'tearDownAfterClass')) {
-                call_user_func(array($this->name, 'tearDownAfterClass'));
+                $test->setRunTestInSeparateProcess($this->runTestInSeparateProcess);
             }
 
-            $this->tearDown();
+
+            $test->run($result);
         }
+
+        if ($this->testCase &&
+            method_exists($this->name, 'tearDownAfterClass')) {
+            call_user_func(array($this->name, 'tearDownAfterClass'));
+        }
+
+        $this->tearDown();
 
         $result->endTestSuite($this);
 
@@ -762,8 +704,23 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
     }
 
     /**
+     * @param  boolean $runTestInSeparateProcess
+     * @throws InvalidArgumentException
+     * @since  Method available since Release 3.7.0
+     */
+    public function setRunTestInSeparateProcess($runTestInSeparateProcess)
+    {
+        if (is_bool($runTestInSeparateProcess)) {
+            $this->runTestInSeparateProcess = $runTestInSeparateProcess;
+        } else {
+            throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'boolean');
+        }
+    }
+
+    /**
      * Runs a test.
      *
+     * @deprecated
      * @param  PHPUnit_Framework_Test        $test
      * @param  PHPUnit_Framework_TestResult  $result
      */
@@ -920,9 +877,22 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
      */
     public function getIterator()
     {
-        return new RecursiveIteratorIterator(
-          new PHPUnit_Util_TestSuiteIterator($this)
-        );
+        $iterator = new PHPUnit_Util_TestSuiteIterator($this);
+
+        if ($this->iteratorFilter !== NULL) {
+            $iterator = $this->iteratorFilter->factory($iterator, $this);
+        }
+
+        return $iterator;
+    }
+
+    public function injectFilter(PHPUnit_Util_Filters_FilterIteratorFactory $filter) {
+        $this->iteratorFilter = $filter;
+        foreach ($this as $test) {
+            if ($test instanceof PHPUnit_Framework_TestSuite) {
+                $test->injectFilter($filter);
+            }
+        }
     }
 
     /**

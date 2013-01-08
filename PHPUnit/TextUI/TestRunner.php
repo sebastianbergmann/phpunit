@@ -130,6 +130,38 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
         return new PHPUnit_Framework_TestResult;
     }
 
+    private function processSuiteFilters(PHPUnit_Framework_TestSuite $suite, array $arguments) {
+        if (!$arguments['filter'] &&
+            empty($arguments['groups']) &&
+            empty($arguments['excludeGroups'])) {
+            return;
+        }
+
+        $filterFactory = new PHPUnit_Util_Filters_FilterIteratorFactory();
+
+        if(!empty($arguments['excludeGroups'])) {
+            $filterFactory->addFilter(
+                new ReflectionClass('PHPUnit_Util_Filters_ExcludeGroupFilterIterator'),
+                $arguments['excludeGroups']
+            );
+        }
+
+        if(!empty($arguments['groups'])) {
+            $filterFactory->addFilter(
+                new ReflectionClass('PHPUnit_Util_Filters_IncludeGroupFilterIterator'),
+                $arguments['groups']
+            );
+        }
+
+        if($arguments['filter']) {
+            $filterFactory->addFilter(
+                new ReflectionClass('PHPUnit_Util_Filters_TestFilterIterator'),
+                $arguments['filter']
+            );
+        }
+        $suite->injectFilter($filterFactory);
+    }
+
     /**
      * @param  PHPUnit_Framework_Test $suite
      * @param  array                  $arguments
@@ -138,6 +170,8 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
     public function doRun(PHPUnit_Framework_Test $suite, array $arguments = array())
     {
         $this->handleConfiguration($arguments);
+
+        $this->processSuiteFilters($suite, $arguments);
 
         if (isset($arguments['bootstrap'])) {
             $GLOBALS['__PHPUNIT_BOOTSTRAP'] = $arguments['bootstrap'];
@@ -155,9 +189,6 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
             $suite = new PHPUnit_Extensions_RepeatedTest(
               $suite,
               $arguments['repeat'],
-              $arguments['filter'],
-              $arguments['groups'],
-              $arguments['excludeGroups'],
               $arguments['processIsolation']
             );
         }
@@ -316,13 +347,8 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
             );
         }
 
-        $suite->run(
-          $result,
-          $arguments['filter'],
-          $arguments['groups'],
-          $arguments['excludeGroups'],
-          $arguments['processIsolation']
-        );
+        $suite->setRunTestInSeparateProcess($arguments['processIsolation']);
+        $suite->run($result);
 
         unset($suite);
         $result->flushListeners();
