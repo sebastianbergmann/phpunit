@@ -150,9 +150,9 @@ class PHPUnit_Util_Type
             }
 
             $key = $processed->add($value);
-            $output = "\n{$whitespace}Array &$key\n$whitespace(\n";
+            $output = "Array &$key (\n";
             foreach ($value as $k => $v) {
-                $output .= "$whitespace    [$k] => ".self::recursiveExport($v, $indentation + 1, $processed)."\n";
+                $output .= "$whitespace    '$k' => ".self::recursiveExport($v, $indentation + 1, $processed)."\n";
             }
             return "$output$whitespace)\n";
         }
@@ -165,7 +165,7 @@ class PHPUnit_Util_Type
             }
 
             $hash = $processed->add($value);
-            $output = "\n$whitespace$class Object &$hash\n$whitespace(\n";
+            $output = "$class Object &$hash (\n";
             foreach (self::toArray($value) as $k => $v) {
                 $output .= "$whitespace    [$k] => ".self::recursiveExport($v, $indentation + 1, $processed)."\n";
             }
