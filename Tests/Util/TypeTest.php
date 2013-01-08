@@ -126,10 +126,10 @@ long
 text'
 EOF
             ),
-            array(new stdClass, 'stdClass Object ()'),
+            array(new stdClass, 'stdClass Object &%x ()'),
             array($obj,
 <<<EOF
-stdClass Object (
+stdClass Object &%x (
     'null' => null
     'boolean' => true
     'integer' => 1
@@ -146,21 +146,21 @@ very
 very
 long
 text'
-    'object' => stdClass Object (
+    'object' => stdClass Object &%x (
         'foo' => 'bar'
     )
-    'objectagain' => stdClass Object (*RECURSION*)
-    'array' => Array (
+    'objectagain' => stdClass Object &%x
+    'array' => Array &%d (
         'foo' => 'bar'
     )
-    'self' => stdClass Object (*RECURSION*)
+    'self' => stdClass Object &%x
 )
 EOF
             ),
-            array(array(), 'Array ()'),
+            array(array(), 'Array &%d ()'),
             array($array,
 <<<EOF
-Array (
+Array &%d (
     0 => 0
     'null' => null
     'boolean' => true
@@ -178,14 +178,14 @@ very
 very
 long
 text'
-    'object' => stdClass Object (
+    'object' => stdClass Object &%x (
         'foo' => 'bar'
     )
-    'objectagain' => stdClass Object (*RECURSION*)
-    'array' => Array (
+    'objectagain' => stdClass Object &%x
+    'array' => Array &%d (
         'foo' => 'bar'
     )
-    'self' => Array (*RECURSION*)
+    'self' => Array &%d
 )
 EOF
             ),
@@ -213,7 +213,7 @@ EOF
      */
     public function testExport($value, $expected)
     {
-        $this->assertSame($expected, self::trimnl(PHPUnit_Util_Type::export($value)));
+        $this->assertStringMatchesFormat($expected, self::trimnl(PHPUnit_Util_Type::export($value)));
     }
 
     public function shortenedExportProvider()
