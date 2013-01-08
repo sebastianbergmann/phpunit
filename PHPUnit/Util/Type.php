@@ -158,7 +158,7 @@ class PHPUnit_Util_Type
             foreach ($value as $k => $v) {
                 $output .= "$whitespace    '$k' => ".self::recursiveExport($v, $indentation + 1, $processed)."\n";
             }
-            return "$output$whitespace)\n";
+            return "$output$whitespace)";
         }
 
         if (is_object($value)) {
@@ -174,7 +174,7 @@ class PHPUnit_Util_Type
                 $output .= "$whitespace    [$k] => ".self::recursiveExport($v, $indentation + 1, $processed)."\n";
             }
 
-            return "$output$whitespace)\n";
+            return "$output$whitespace)";
         }
 
         return var_export($value, true);
