@@ -381,7 +381,8 @@ class PHPUnit_Framework_MockObject_Generator
             $key = md5(
               $originalClassName .
               serialize($methods) .
-              serialize($callOriginalClone)
+              serialize($callOriginalClone) .
+              serialize($cloneArguments)
             );
 
             if (isset($this->cache[$key])) {

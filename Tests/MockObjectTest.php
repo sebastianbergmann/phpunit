@@ -464,7 +464,22 @@ class Framework_MockObjectTest extends PHPUnit_Framework_TestCase
         $mock->doSomethingElse($expectedObject);
 
         $this->assertEquals(1, count($actualArguments));
-        $this->assertNotSame($expectedObject, $actualArguments[0]);
+        $this->assertSame($expectedObject, $actualArguments[0]);
+    }
+
+    public function testArgumentCloningOptionGeneratesUniqueMock()
+    {
+        $mockWithCloning = $this->getMockBuilder('SomeClass')
+                                ->setMethods(array('doSomethingElse'))
+                                ->enableArgumentCloning()
+                                ->getMock();
+
+        $mockWithoutCloning = $this->getMockBuilder('SomeClass')
+                                   ->setMethods(array('doSomethingElse'))
+                                   ->disableArgumentCloning()
+                                   ->getMock();
+
+        $this->assertNotEquals($mockWithCloning, $mockWithoutCloning);
     }
 
     public function testVerificationOfMethodNameFailsWithoutParameters()
