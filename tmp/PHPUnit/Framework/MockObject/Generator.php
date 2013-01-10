@@ -229,9 +229,7 @@ class PHPUnit_Framework_MockObject_Generator
      */
     protected function getObject($code, $className, $originalClassName = '', $callOriginalConstructor = FALSE, $callAutoload = FALSE, array $arguments = array())
     {
-        if (!class_exists($className, FALSE)) {
-            eval($code);
-        }
+        $this->evalClass($code, $className);
 
         if ($callOriginalConstructor &&
             !interface_exists($originalClassName, $callAutoload)) {
@@ -247,6 +245,17 @@ class PHPUnit_Framework_MockObject_Generator
         }
 
         return $object;
+    }
+
+    /**
+     * @param  string $code
+     * @param  string $className
+     */
+    protected function evalClass($code, $className)
+    {
+        if (!class_exists($className, FALSE)) {
+            eval($code);
+        }
     }
 
     /**
@@ -312,6 +321,68 @@ class PHPUnit_Framework_MockObject_Generator
     }
 
     /**
+     * Returns a mock object for the specified trait with all abstract methods
+     * of the trait mocked. Concrete methods to mock can be specified with the
+     * `$mockedMethods` parameter.
+     *
+     * @param  string  $traitName
+     * @param  array   $arguments
+     * @param  string  $mockClassName
+     * @param  boolean $callOriginalConstructor
+     * @param  boolean $callOriginalClone
+     * @param  boolean $callAutoload
+     * @param  array   $mockedMethods
+     * @param  boolean $cloneArguments
+     * @return object
+     * @since  Method available since Release 1.2.3
+     * @throws InvalidArgumentException
+     */
+    public function getMockForTrait($traitName, array $arguments = array(), $mockClassName = '', $callOriginalConstructor = TRUE, $callOriginalClone = TRUE, $callAutoload = TRUE, $mockedMethods = array(), $cloneArguments = TRUE)
+    {
+        if (!is_string($traitName)) {
+            throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'string');
+        }
+
+        if (!is_string($mockClassName)) {
+            throw PHPUnit_Util_InvalidArgumentHelper::factory(3, 'string');
+        }
+
+        if (!trait_exists($traitName, $callAutoload)) {
+            throw new PHPUnit_Framework_Exception(
+              sprintf(
+                'Trait "%s" does not exist.',
+                $traitName
+              )
+            );
+        }
+
+        $className = $this->generateClassName(
+          $traitName, '', 'Trait_'
+        );
+
+        $templateDir   = dirname(__FILE__) . DIRECTORY_SEPARATOR . 'Generator' .
+                         DIRECTORY_SEPARATOR;
+        $classTemplate = new Text_Template(
+                           $templateDir . 'trait_class.tpl'
+                         );
+
+        $classTemplate->setVar(
+          array(
+            'prologue'   => 'abstract ',
+            'class_name' => $className['className'],
+            'trait_name' => $traitName
+          )
+        );
+
+        $this->evalClass(
+          $classTemplate->render(),
+          $className['className']
+        );
+
+        return $this->getMockForAbstractClass($className['className'], $arguments, $mockClassName, $callOriginalConstructor, $callOriginalClone, $callAutoload, $mockedMethods, $cloneArguments);
+    }
+
+    /**
      * Returns an object for the specified trait.
      *
      * @param  string  $traitName
@@ -355,6 +426,7 @@ class PHPUnit_Framework_MockObject_Generator
 
         $classTemplate->setVar(
           array(
+            'prologue'   => '',
             'class_name' => $className['className'],
             'trait_name' => $traitName
           )

@@ -45,6 +45,7 @@
 require_once 'PHPUnit/Framework/TestCase.php';
 
 require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'AbstractMockTestClass.php';
+require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'AbstractTrait.php';
 require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'AnInterface.php';
 require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'FunctionCallback.php';
 require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'MethodCallback.php';
@@ -318,6 +319,17 @@ class Framework_MockObjectTest extends PHPUnit_Framework_TestCase
         $mock = $this->getMock('AbstractMockTestClass');
         $mock->expects($this->never())
              ->method('doSomething');
+    }
+
+    public function testGetMockForTrait()
+    {
+        $mock = $this->getMockForTrait('AbstractTrait');
+        $mock->expects($this->never())->method('doSomething');
+
+        $parent = get_parent_class($mock);
+        $traits = class_uses($parent, FALSE);
+
+        $this->assertContains('AbstractTrait', $traits);
     }
 
     public function testClonedMockObjectShouldStillEqualTheOriginal()
