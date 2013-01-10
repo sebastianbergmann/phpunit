@@ -83,4 +83,35 @@ class Framework_MockObject_GeneratorTest extends PHPUnit_Framework_TestCase
             'mockClassName not a string' => array('Countable', new StdClass),
         );
     }
+
+    /**
+     * @dataProvider getMockForTraitExpectsInvalidArgumentExceptionDataprovider
+     * @covers PHPUnit_Framework_MockObject_Generator::getMockForTrait
+     * @expectedException PHPUnit_Framework_Exception
+     */
+    public function testGetMockForTraitExpectingInvalidArgumentException($traitName, $mockClassName)
+    {
+        $mock = $this->generator->getMockForTrait($traitName, array(), $mockClassName);
+    }
+
+    /**
+     * @covers PHPUnit_Framework_MockObject_Generator::getMockForTrait
+     */
+    public function testGetMockForTraitStubbingAbstractMethod()
+    {
+        $mock = $this->generator->getMockForTrait('AbstractTrait');
+        $this->assertTrue(method_exists($mock, 'doSomething'));
+    }
+
+    /**
+     * Dataprovider for test "testGetMockForTraitExpectingInvalidArgumentException"
+     */
+    public static function getMockForTraitExpectsInvalidArgumentExceptionDataprovider()
+    {
+        return array(
+            'traitName not a string' => array(array(), ''),
+            'mockClassName not a string' => array('AbstractTrait', new StdClass),
+            'trait does not exist' => array('AbstractTraitDoesNotExist', 'TraitTest')
+        );
+    }
 }

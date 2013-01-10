@@ -150,6 +150,25 @@ class PHPUnit_Framework_MockObject_MockBuilder
     }
 
     /**
+     * Creates a mock object for a trait using a fluent interface.
+     *
+     * @return PHPUnit_Framework_MockObject_MockObject
+     */
+    public function getMockForTrait()
+    {
+        return $this->testCase->getMockForTrait(
+          $this->className,
+          $this->constructorArgs,
+          $this->mockClassName,
+          $this->originalConstructor,
+          $this->originalClone,
+          $this->autoload,
+          $this->methods,
+          $this->cloneArguments
+        );
+    }
+
+    /**
      * Specifies the subset of methods to mock. Default is to mock all of them.
      *
      * @param  array|null $methods
