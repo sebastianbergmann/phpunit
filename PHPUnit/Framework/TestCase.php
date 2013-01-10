@@ -1440,6 +1440,41 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
     }
 
     /**
+     * Returns a mock object for the specified trait with all abstract methods
+     * of the trait mocked. Concrete methods to mock can be specified with the
+     * `$mockedMethods` parameter.
+     *
+     * @param  string  $traitName
+     * @param  array   $arguments
+     * @param  string  $mockClassName
+     * @param  boolean $callOriginalConstructor
+     * @param  boolean $callOriginalClone
+     * @param  boolean $callAutoload
+     * @param  array   $mockedMethods
+     * @param  boolean $cloneArguments
+     * @return PHPUnit_Framework_MockObject_MockObject
+     * @since  Method available since Release 3.8.1
+     * @throws PHPUnit_Framework_Exception
+     */
+    public function getMockForTrait($traitName, array $arguments = array(), $mockClassName = '', $callOriginalConstructor = TRUE, $callOriginalClone = TRUE, $callAutoload = TRUE, $mockedMethods = array(), $cloneArguments = FALSE)
+    {
+        $mockObject = $this->mockObjectGenerator->getMockForTrait(
+          $traitName,
+          $arguments,
+          $mockClassName,
+          $callOriginalConstructor,
+          $callOriginalClone,
+          $callAutoload,
+          $mockedMethods,
+          $cloneArguments
+        );
+
+        $this->mockObjects[] = $mockObject;
+
+        return $mockObject;
+    }
+
+    /**
      * Returns an object for the specified trait.
      *
      * @param  string  $traitName
