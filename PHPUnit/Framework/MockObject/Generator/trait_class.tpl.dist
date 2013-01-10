@@ -1,4 +1,4 @@
-class {class_name}
+{prologue}class {class_name}
 {
     use {trait_name};
 }
