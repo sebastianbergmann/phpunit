@@ -180,10 +180,10 @@ class PHPUnit_Util_Class
                 else if ($parameter->isOptional()) {
                     $default = ' = null';
                 }
+            }
 
-                if ($parameter->isPassedByReference()) {
-                    $reference = '&';
-                }
+            if ($parameter->isPassedByReference()) {
+                $reference = '&';
             }
 
             $parameters[] = $typeHint . $reference . $name . $default;
