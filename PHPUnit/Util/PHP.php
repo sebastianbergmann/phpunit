@@ -144,8 +144,9 @@ abstract class PHPUnit_Util_PHP
      */
     protected function processChildResult(PHPUnit_Framework_Test $test, PHPUnit_Framework_TestResult $result, $stdout, $stderr)
     {
+        $time = 0;
+
         if (!empty($stderr)) {
-            $time = 0;
             $result->addError(
               $test,
               new PHPUnit_Framework_Exception(trim($stderr)), $time
@@ -161,7 +162,6 @@ abstract class PHPUnit_Util_PHP
                 restore_error_handler();
                 $childResult = FALSE;
 
-                $time = 0;
                 $result->addError(
                   $test, new PHPUnit_Framework_Exception(trim($stdout), 0, $e), $time
                 );
