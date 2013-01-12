@@ -565,7 +565,7 @@ class Framework_MockObjectTest extends PHPUnit_Framework_TestCase
         $this->resetMockObjects();
     }
 
-    public function testCallback() {
+    public function testMockArgumentsPassedByReference() {
         $foo = $this->getMockBuilder('MethodCallbackByReference')
                     ->setMethods(array('bar'))
                     ->disableOriginalConstructor()
