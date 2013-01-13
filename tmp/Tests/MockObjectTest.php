@@ -49,6 +49,7 @@ require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPA
 require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'AnInterface.php';
 require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'FunctionCallback.php';
 require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'MethodCallback.php';
+require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'MethodCallbackByReference.php';
 require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'PartialMockTestClass.php';
 require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'SomeClass.php';
 require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'StaticMockTestClass.php';
@@ -615,6 +616,45 @@ class Framework_MockObjectTest extends PHPUnit_Framework_TestCase
         }
 
         $this->resetMockObjects();
+    }
+
+    public function testMockArgumentsPassedByReference() {
+        $foo = $this->getMockBuilder('MethodCallbackByReference')
+                    ->setMethods(array('bar'))
+                    ->disableOriginalConstructor()
+                    ->disableArgumentCloning()
+                    ->getMock();
+
+        $foo->expects($this->any())
+            ->method('bar')
+            ->will($this->returnCallback(array($foo, 'callback')));
+
+        $a = $b = $c = 0;
+
+        $foo->bar($a, $b, $c);
+
+        $this->assertEquals(1, $b);
+    }
+
+    public function testMockArgumentsPassedByReference2() {
+        $foo = $this->getMockBuilder('MethodCallbackByReference')
+                    ->disableOriginalConstructor()
+                    ->disableArgumentCloning()
+                    ->getMock();
+
+        $foo->expects($this->any())
+            ->method('bar')
+            ->will($this->returnCallback(
+            function ($a, &$b, $c) {
+                $b = 1;
+            }
+            ));
+
+        $a = $b = $c = 0;
+
+        $foo->bar($a, $b, $c);
+
+        $this->assertEquals(1, $b);
     }
 
     /**
