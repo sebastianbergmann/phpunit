@@ -370,9 +370,15 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
             }
 
             if (isset($arguments['reportDirectory'])) {
-                $this->printer->write(
-                  "\nGenerating code coverage report in HTML format ..."
-                );
+                if (isset($arguments['coverageText'])) {
+                    $this->printer->write(
+                      "\nGenerating code coverage report in Text format ..."
+                    );
+                } else {
+                    $this->printer->write(
+                      "\nGenerating code coverage report in HTML format ..."
+                    );
+                }
 
                 $writer = new PHP_CodeCoverage_Report_HTML(
                   $arguments['reportCharset'],
