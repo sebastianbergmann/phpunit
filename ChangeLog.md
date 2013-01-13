@@ -3,6 +3,13 @@ PHPUnit 3.7
 
 This is the list of changes for the PHPUnit 3.7 release series.
 
+PHPUnit 3.7.13
+--------------
+
+* Fixed #710: Ensure isolation tests display errors so they can be handled by the test runner.
+* Fixed sebastianbergmann/phpunit-mock-objects#81.
+* Fixed an issue where PHP complained about an undeclared `$time` variable when running tests in strict mode.
+
 PHPUnit 3.7.12
 --------------
 
