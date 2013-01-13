@@ -3,6 +3,11 @@ PHPUnit_MockObject 1.2
 
 This is the list of changes for the PHPUnit_MockObject 1.2 release series.
 
+PHPUnit_MockObject 1.2.3
+------------------------
+
+* Fixed a bug where getting two mocks with different argument cloning options returned the same mock.
+
 PHPUnit_MockObject 1.2.2
 ------------------------
 
