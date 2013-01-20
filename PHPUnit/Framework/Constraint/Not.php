@@ -82,33 +82,35 @@ class PHPUnit_Framework_Constraint_Not extends PHPUnit_Framework_Constraint
      */
     public static function negate($string)
     {
-        return str_replace(
-          array(
-            'contains ',
-            'exists',
-            'has ',
-            'is ',
-            'are ',
-            'matches ',
-            'starts with ',
-            'ends with ',
-            'reference ',
-            'not not '
-          ),
-          array(
-            'does not contain ',
-            'does not exist',
-            'does not have ',
-            'is not ',
-            'are not ',
-            'does not match ',
-            'starts not with ',
-            'ends not with ',
-            'don\'t reference ',
-            'not '
-          ),
-          $string
-        );
+	    $parts = explode('"', $string);
+	    $parts[0] = str_replace(
+		    array(
+			    'contains ',
+			    'exists',
+			    'has ',
+			    'is ',
+			    'are ',
+			    'matches ',
+			    'starts with ',
+			    'ends with ',
+			    'reference ',
+			    'not not '
+		    ),
+		    array(
+			    'does not contain ',
+			    'does not exist',
+			    'does not have ',
+			    'is not ',
+			    'are not ',
+			    'does not match ',
+			    'starts not with ',
+			    'ends not with ',
+			    'don\'t reference ',
+			    'not '
+		    ),
+		    $parts[0]
+	    );
+        return implode('"', $parts);
     }
 
     /**
@@ -160,9 +162,7 @@ class PHPUnit_Framework_Constraint_Not extends PHPUnit_Framework_Constraint
             break;
 
             default: {
-                return self::negate(
-                  $this->constraint->failureDescription($other)
-                );
+                return str_replace($this->constraint->toString(), $this->toString(), $this->constraint->failureDescription($other));
             }
         }
     }
