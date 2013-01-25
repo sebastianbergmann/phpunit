@@ -723,10 +723,12 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
                 $constants     = PHPUnit_Util_GlobalState::getConstantsAsString();
                 $globals       = PHPUnit_Util_GlobalState::getGlobalsAsString();
                 $includedFiles = PHPUnit_Util_GlobalState::getIncludedFilesAsString();
+                $iniSettings   = PHPUnit_Util_GlobalState::getIniSettingsAsString();
             } else {
                 $constants     = '';
                 $globals       = '';
                 $includedFiles = '';
+                $iniSettings   = '';
             }
 
             if ($result->getCollectCodeCoverageInformation()) {
@@ -763,6 +765,7 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
                 'globals'                        => $globals,
                 'include_path'                   => $includePath,
                 'included_files'                 => $includedFiles,
+                'iniSettings'                    => $iniSettings,
                 'strict'                         => $strict
               )
             );
