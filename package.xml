@@ -139,6 +139,15 @@
      <file baseinstalldir="/" name="Warning.php" role="php" />
     </dir>
     <dir name="Runner">
+     <dir name="Filter">
+      <dir name="Group">
+       <file baseinstalldir="/" name="Exclude.php" role="php" />
+       <file baseinstalldir="/" name="Include.php" role="php" />
+      </dir>
+      <file baseinstalldir="/" name="Factory.php" role="php" />
+      <file baseinstalldir="/" name="Group.php" role="php" />
+      <file baseinstalldir="/" name="Test.php" role="php" />
+     </dir>
      <file baseinstalldir="/" name="BaseTestRunner.php" role="php" />
      <file baseinstalldir="/" name="StandardTestSuiteLoader.php" role="php" />
      <file baseinstalldir="/" name="TestSuiteLoader.php" role="php" />

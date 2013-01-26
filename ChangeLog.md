@@ -10,5 +10,7 @@ PHPUnit 3.8.0
 * Implemented #719: The `--stderr` flag now respects `--colors` and `--debug`.
 * Implemented #773: Recursive and repeated arrays are more gracefully when comparison differences are exported.
 * A test will now fail in strict mode when it uses the `@covers` annotation and code that is not expected to be covered is executed.
+* Fixed #261: `setUp()` and `setUpBeforeClass()` are run before filters are applied.
+* Fixed #541: Excluded groups are counted towards total number of tests being executed.
 * Fixed: `phpt` test cases now use the correct php binary when executed through wrapper scripts.
 * PHPUnit 3.8 is only supported on PHP 5.4.7 (or later).

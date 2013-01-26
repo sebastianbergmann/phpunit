@@ -131,7 +131,7 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
     protected $testCase = FALSE;
 
     /**
-     * @var PHPUnit_Util_Filters_FilterIteratorFactory
+     * @var PHPUnit_Runner_Filter_Factory
      */
     private $iteratorFilter = NULL;
 
@@ -889,7 +889,7 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
         return $iterator;
     }
 
-    public function injectFilter(PHPUnit_Util_Filters_FilterIteratorFactory $filter) {
+    public function injectFilter(PHPUnit_Runner_Filter_Factory $filter) {
         $this->iteratorFilter = $filter;
         foreach ($this as $test) {
             if ($test instanceof PHPUnit_Framework_TestSuite) {

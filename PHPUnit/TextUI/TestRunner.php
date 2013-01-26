@@ -136,25 +136,25 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
             return;
         }
 
-        $filterFactory = new PHPUnit_Util_Filters_FilterIteratorFactory();
+        $filterFactory = new PHPUnit_Runner_Filter_Factory();
 
         if(!empty($arguments['excludeGroups'])) {
             $filterFactory->addFilter(
-                new ReflectionClass('PHPUnit_Util_Filters_ExcludeGroupFilterIterator'),
+                new ReflectionClass('PHPUnit_Runner_Filter_Group_Exclude'),
                 $arguments['excludeGroups']
             );
         }
 
         if(!empty($arguments['groups'])) {
             $filterFactory->addFilter(
-                new ReflectionClass('PHPUnit_Util_Filters_IncludeGroupFilterIterator'),
+                new ReflectionClass('PHPUnit_Runner_Filter_Group_Include'),
                 $arguments['groups']
             );
         }
 
         if($arguments['filter']) {
             $filterFactory->addFilter(
-                new ReflectionClass('PHPUnit_Util_Filters_TestFilterIterator'),
+                new ReflectionClass('PHPUnit_Runner_Filter_Test'),
                 $arguments['filter']
             );
         }
