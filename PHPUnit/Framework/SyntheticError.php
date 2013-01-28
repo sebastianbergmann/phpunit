@@ -9,17 +9,17 @@
  * modification, are permitted provided that the following conditions
  * are met:
  *
- *   * Redistributions of source code must retain the above copyright
- *     notice, this list of conditions and the following disclaimer.
+ *	 * Redistributions of source code must retain the above copyright
+ *		 notice, this list of conditions and the following disclaimer.
  *
- *   * Redistributions in binary form must reproduce the above copyright
- *     notice, this list of conditions and the following disclaimer in
- *     the documentation and/or other materials provided with the
- *     distribution.
+ *	 * Redistributions in binary form must reproduce the above copyright
+ *		 notice, this list of conditions and the following disclaimer in
+ *		 the documentation and/or other materials provided with the
+ *		 distribution.
  *
- *   * Neither the name of Sebastian Bergmann nor the names of his
- *     contributors may be used to endorse or promote products derived
- *     from this software without specific prior written permission.
+ *	 * Neither the name of Sebastian Bergmann nor the names of his
+ *		 contributors may be used to endorse or promote products derived
+ *		 from this software without specific prior written permission.
  *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -34,88 +34,88 @@
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  *
- * @package    PHPUnit
+ * @package		PHPUnit
  * @subpackage Framework
- * @author     Sebastian Bergmann <sebastian@phpunit.de>
- * @copyright  2001-2013 Sebastian Bergmann <sebastian@phpunit.de>
- * @license    http://www.opensource.org/licenses/BSD-3-Clause  The BSD 3-Clause License
- * @link       http://www.phpunit.de/
- * @since      File available since Release 3.5.0
+ * @author		 Sebastian Bergmann <sebastian@phpunit.de>
+ * @copyright	2001-2013 Sebastian Bergmann <sebastian@phpunit.de>
+ * @license		http://www.opensource.org/licenses/BSD-3-Clause	The BSD 3-Clause License
+ * @link			 http://www.phpunit.de/
+ * @since			File available since Release 3.5.0
  */
 
 /**
  * Creates a synthetic failed assertion.
  *
- * @package    PHPUnit
+ * @package		PHPUnit
  * @subpackage Framework
- * @author     Sebastian Bergmann <sebastian@phpunit.de>
- * @copyright  2001-2013 Sebastian Bergmann <sebastian@phpunit.de>
- * @license    http://www.opensource.org/licenses/BSD-3-Clause  The BSD 3-Clause License
- * @link       http://www.phpunit.de/
- * @since      Class available since Release 3.5.0
+ * @author		 Sebastian Bergmann <sebastian@phpunit.de>
+ * @copyright	2001-2013 Sebastian Bergmann <sebastian@phpunit.de>
+ * @license		http://www.opensource.org/licenses/BSD-3-Clause	The BSD 3-Clause License
+ * @link			 http://www.phpunit.de/
+ * @since			Class available since Release 3.5.0
  */
 class PHPUnit_Framework_SyntheticError extends PHPUnit_Framework_AssertionFailedError
 {
-    /**
-     * The synthetic file.
-     *
-     * @var string
-     */
-    protected $syntheticFile = '';
+		/**
+		 * The synthetic file.
+		 *
+		 * @var string
+		 */
+		protected $syntheticFile = '';
 
-    /**
-     * The synthetic line number.
-     *
-     * @var integer
-     */
-    protected $syntheticLine = 0;
+		/**
+		 * The synthetic line number.
+		 *
+		 * @var integer
+		 */
+		protected $syntheticLine = 0;
 
-    /**
-     * The synthetic trace.
-     *
-     * @var array
-     */
-    protected $syntheticTrace = array();
+		/**
+		 * The synthetic trace.
+		 *
+		 * @var array
+		 */
+		protected $syntheticTrace = array();
 
-    /**
-     * Constructor.
-     *
-     * @param string  $message
-     * @param integer $code
-     * @param string  $file
-     * @param integer $line
-     * @param array   $trace
-     */
-    public function __construct($message, $code, $file, $line, $trace)
-    {
-        parent::__construct($message, $code);
+		/**
+		 * Constructor.
+		 *
+		 * @param string	$message
+		 * @param integer $code
+		 * @param string	$file
+		 * @param integer $line
+		 * @param array	 $trace
+		 */
+		public function __construct($message, $code, $file, $line, $trace)
+		{
+				parent::__construct($message, $code);
 
-        $this->syntheticFile  = $file;
-        $this->syntheticLine  = $line;
-        $this->syntheticTrace = $trace;
-    }
+				$this->syntheticFile	= $file;
+				$this->syntheticLine	= $line;
+				$this->syntheticTrace = $trace;
+		}
 
-    /**
-     * @return string
-     */
-    public function getSyntheticFile()
-    {
-        return $this->syntheticFile;
-    }
+		/**
+		 * @return string
+		 */
+		public function getSyntheticFile()
+		{
+				return $this->syntheticFile;
+		}
 
-    /**
-     * @return integer
-     */
-    public function getSyntheticLine()
-    {
-        return $this->syntheticLine;
-    }
+		/**
+		 * @return integer
+		 */
+		public function getSyntheticLine()
+		{
+				return $this->syntheticLine;
+		}
 
-    /**
-     * @return array
-     */
-    public function getSyntheticTrace()
-    {
-        return $this->syntheticTrace;
-    }
+		/**
+		 * @return array
+		 */
+		public function getSyntheticTrace()
+		{
+				return $this->syntheticTrace;
+		}
 }

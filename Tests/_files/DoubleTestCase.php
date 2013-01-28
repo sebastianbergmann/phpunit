@@ -1,25 +1,25 @@
 <?php
 class DoubleTestCase implements PHPUnit_Framework_Test
 {
-    protected $testCase;
+		protected $testCase;
 
-    public function __construct(PHPUnit_Framework_TestCase $testCase)
-    {
-        $this->testCase = $testCase;
-    }
+		public function __construct(PHPUnit_Framework_TestCase $testCase)
+		{
+				$this->testCase = $testCase;
+		}
 
-    public function count()
-    {
-        return 2;
-    }
+		public function count()
+		{
+				return 2;
+		}
 
-    public function run(PHPUnit_Framework_TestResult $result = NULL)
-    {
-        $result->startTest($this);
+		public function run(PHPUnit_Framework_TestResult $result = NULL)
+		{
+				$result->startTest($this);
 
-        $this->testCase->runBare();
-        $this->testCase->runBare();
+				$this->testCase->runBare();
+				$this->testCase->runBare();
 
-        $result->endTest($this, 0);
-    }
+				$result->endTest($this, 0);
+		}
 }

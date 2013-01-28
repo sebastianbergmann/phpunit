@@ -1,11 +1,11 @@
 <phpunit>
-  <testsuite name="My Test Suite">
-    <file>Test.php</file>
-  </testsuite>
+	<testsuite name="My Test Suite">
+		<file>Test.php</file>
+	</testsuite>
 
-  <groups>
-    <exclude>
-      <group>one</group>
-    </exclude>
-  </groups>
+	<groups>
+		<exclude>
+			<group>one</group>
+		</exclude>
+	</groups>
 </phpunit>

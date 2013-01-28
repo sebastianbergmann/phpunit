@@ -2,13 +2,13 @@
 
 <phpdox xmlns="http://phpdox.de/config">
  <project name="PHPUnit" source="PHPUnit" workdir="build/phpdox">
-  <collector publiconly="false">
-   <include mask="*.php" />
-   <exclude mask="*Autoload.php" />
-  </collector>
+	<collector publiconly="false">
+	 <include mask="*.php" />
+	 <exclude mask="*Autoload.php" />
+	</collector>
 
-  <generator output="build">
-   <build engine="html" enabled="true" output="api"/>
-  </generator>
+	<generator output="build">
+	 <build engine="html" enabled="true" output="api"/>
+	</generator>
  </project>
 </phpdox>
