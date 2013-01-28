@@ -9,17 +9,17 @@
  * modification, are permitted provided that the following conditions
  * are met:
  *
- *   * Redistributions of source code must retain the above copyright
- *     notice, this list of conditions and the following disclaimer.
+ *	 * Redistributions of source code must retain the above copyright
+ *		 notice, this list of conditions and the following disclaimer.
  *
- *   * Redistributions in binary form must reproduce the above copyright
- *     notice, this list of conditions and the following disclaimer in
- *     the documentation and/or other materials provided with the
- *     distribution.
+ *	 * Redistributions in binary form must reproduce the above copyright
+ *		 notice, this list of conditions and the following disclaimer in
+ *		 the documentation and/or other materials provided with the
+ *		 distribution.
  *
- *   * Neither the name of Sebastian Bergmann nor the names of his
- *     contributors may be used to endorse or promote products derived
- *     from this software without specific prior written permission.
+ *	 * Neither the name of Sebastian Bergmann nor the names of his
+ *		 contributors may be used to endorse or promote products derived
+ *		 from this software without specific prior written permission.
  *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -34,85 +34,85 @@
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  *
- * @package    PHPUnit
+ * @package		PHPUnit
  * @subpackage Util
- * @author     Sebastian Bergmann <sebastian@phpunit.de>
- * @copyright  2001-2013 Sebastian Bergmann <sebastian@phpunit.de>
- * @license    http://www.opensource.org/licenses/BSD-3-Clause  The BSD 3-Clause License
- * @link       http://www.phpunit.de/
- * @since      File available since Release 3.6.0
+ * @author		 Sebastian Bergmann <sebastian@phpunit.de>
+ * @copyright	2001-2013 Sebastian Bergmann <sebastian@phpunit.de>
+ * @license		http://www.opensource.org/licenses/BSD-3-Clause	The BSD 3-Clause License
+ * @link			 http://www.phpunit.de/
+ * @since			File available since Release 3.6.0
  */
 
 /**
  * String helpers.
  *
- * @package    PHPUnit
+ * @package		PHPUnit
  * @subpackage Util
- * @author     Sebastian Bergmann <sebastian@phpunit.de>
- * @copyright  2001-2013 Sebastian Bergmann <sebastian@phpunit.de>
- * @license    http://www.opensource.org/licenses/BSD-3-Clause  The BSD 3-Clause License
- * @link       http://www.phpunit.de/
- * @since      Class available since Release 3.6.0
+ * @author		 Sebastian Bergmann <sebastian@phpunit.de>
+ * @copyright	2001-2013 Sebastian Bergmann <sebastian@phpunit.de>
+ * @license		http://www.opensource.org/licenses/BSD-3-Clause	The BSD 3-Clause License
+ * @link			 http://www.phpunit.de/
+ * @since			Class available since Release 3.6.0
  */
 class PHPUnit_Util_String
 {
-    /**
-     * Converts a string to UTF-8 encoding.
-     *
-     * @param  string $string
-     * @return string
-     */
-    public static function convertToUtf8($string)
-    {
-        if (!self::isUtf8($string)) {
-            if (function_exists('mb_convert_encoding')) {
-                $string = mb_convert_encoding($string, 'UTF-8');
-            } else {
-                $string = utf8_encode($string);
-            }
-        }
+		/**
+		 * Converts a string to UTF-8 encoding.
+		 *
+		 * @param	string $string
+		 * @return string
+		 */
+		public static function convertToUtf8($string)
+		{
+				if (!self::isUtf8($string)) {
+						if (function_exists('mb_convert_encoding')) {
+								$string = mb_convert_encoding($string, 'UTF-8');
+						} else {
+								$string = utf8_encode($string);
+						}
+				}
 
-        return $string;
-    }
+				return $string;
+		}
 
-    /**
-     * Checks a string for UTF-8 encoding.
-     *
-     * @param  string $string
-     * @return boolean
-     */
-    protected static function isUtf8($string)
-    {
-        $length = strlen($string);
+		/**
+		 * Checks a string for UTF-8 encoding.
+		 *
+		 * @param	string $string
+		 * @return boolean
+		 */
+		protected static function isUtf8($string)
+		{
+				$length = strlen($string);
 
-        for ($i = 0; $i < $length; $i++) {
-            if (ord($string[$i]) < 0x80) {
-                $n = 0;
-            }
+				for ($i = 0; $i < $length; $i++) {
+						if (ord($string[$i]) < 0x80) {
+								$n = 0;
+						}
 
-            else if ((ord($string[$i]) & 0xE0) == 0xC0) {
-                $n = 1;
-            }
+						else if ((ord($string[$i]) & 0xE0) == 0xC0) {
+								$n = 1;
+						}
 
-            else if ((ord($string[$i]) & 0xF0) == 0xE0) {
-                $n = 2;
-            }
+						else if ((ord($string[$i]) & 0xF0) == 0xE0) {
+								$n = 2;
+						}
 
-            else if ((ord($string[$i]) & 0xF0) == 0xF0) {
-                $n = 3;
-            }
+						else if ((ord($string[$i]) & 0xF0) == 0xF0) {
+								$n = 3;
+						}
 
-            else {
-                return FALSE;
-            }
+						else {
+								return FALSE;
+						}
 
-            for ($j = 0; $j < $n; $j++) {
-                if ((++$i == $length) || ((ord($string[$i]) & 0xC0) != 0x80)) {
-                    return FALSE;
-                }
-            }
-        }
+						for ($j = 0; $j < $n; $j++) {
+								if ((++$i == $length) || ((ord($string[$i]) & 0xC0) != 0x80)) {
+										return FALSE;
+								}
+						}
+				}
 
-        return TRUE;
-    }
+				return TRUE;
+		}
 }

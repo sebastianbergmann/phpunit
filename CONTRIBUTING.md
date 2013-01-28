@@ -14,24 +14,24 @@ Using PHPUnit From a Git Checkout
 
 The following commands can be used to perform the initial checkout of PHPUnit and its dependencies from Git:
 
-    mkdir phpunit && cd phpunit
-    git clone git://github.com/sebastianbergmann/phpunit.git
-    git clone git://github.com/sebastianbergmann/dbunit.git
-    git clone git://github.com/sebastianbergmann/php-file-iterator.git
-    git clone git://github.com/sebastianbergmann/php-text-template.git
-    git clone git://github.com/sebastianbergmann/php-code-coverage.git
-    git clone git://github.com/sebastianbergmann/php-token-stream.git
-    git clone git://github.com/sebastianbergmann/php-timer.git
-    git clone git://github.com/sebastianbergmann/phpunit-mock-objects.git
-    git clone git://github.com/sebastianbergmann/phpunit-selenium.git
-    git clone git://github.com/sebastianbergmann/phpunit-story.git
-    git clone git://github.com/sebastianbergmann/php-invoker.git
+		mkdir phpunit && cd phpunit
+		git clone git://github.com/sebastianbergmann/phpunit.git
+		git clone git://github.com/sebastianbergmann/dbunit.git
+		git clone git://github.com/sebastianbergmann/php-file-iterator.git
+		git clone git://github.com/sebastianbergmann/php-text-template.git
+		git clone git://github.com/sebastianbergmann/php-code-coverage.git
+		git clone git://github.com/sebastianbergmann/php-token-stream.git
+		git clone git://github.com/sebastianbergmann/php-timer.git
+		git clone git://github.com/sebastianbergmann/phpunit-mock-objects.git
+		git clone git://github.com/sebastianbergmann/phpunit-selenium.git
+		git clone git://github.com/sebastianbergmann/phpunit-story.git
+		git clone git://github.com/sebastianbergmann/php-invoker.git
 
 The `dbunit`, `php-code-coverage`, `php-file-iterator`, `php-text-template`, `php-timer`, `php-token-stream`, `phpunit`, `phpunit-mock-objects`, `phpunit-selenium`, `phpunit-story`, and `php-invoker` directories need to be added to the `include_path`.
 
 In addition to the checkouts listed above, the YAML component that is provided by the Symfony project is required:
 
-    pear install pear.symfony.com/Yaml
+		pear install pear.symfony.com/Yaml
 
 The `phpunit/phpunit.php` script can be used to invoke the PHPUnit test runner.
 
@@ -46,10 +46,10 @@ Note that you might have to change the path to your PEAR installation here point
 
 ### Linux / MacOS X
 
-    #!/bin/bash
-    php -d include_path='.:../phpunit/:../dbunit/:../php-code-coverage/:../php-file-iterator/:../php-invoker/:../php-text-template/:../php-timer:../php-token-stream:../phpunit-mock-objects/:../phpunit-selenium/:../phpunit-story/:/usr/local/lib/php' ../phpunit/phpunit.php $*
+		#!/bin/bash
+		php -d include_path='.:../phpunit/:../dbunit/:../php-code-coverage/:../php-file-iterator/:../php-invoker/:../php-text-template/:../php-timer:../php-token-stream:../phpunit-mock-objects/:../phpunit-selenium/:../phpunit-story/:/usr/local/lib/php' ../phpunit/phpunit.php $*
 
 ### Windows
 
-    @echo off
-    php -d include_path='.;../phpunit/;../dbunit/;../php-code-coverage/;../php-file-iterator/;../php-invoker/;../php-text-template/;../php-timer;../php-token-stream;../phpunit-mock-objects/;../phpunit-selenium/;../phpunit-story/;C:/Program Files/PHP/pear' ../phpunit/phpunit.php %*
+		@echo off
+		php -d include_path='.;../phpunit/;../dbunit/;../php-code-coverage/;../php-file-iterator/;../php-invoker/;../php-text-template/;../php-timer;../php-token-stream;../phpunit-mock-objects/;../phpunit-selenium/;../phpunit-story/;C:/Program Files/PHP/pear' ../phpunit/phpunit.php %*

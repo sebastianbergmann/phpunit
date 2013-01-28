@@ -9,17 +9,17 @@
  * modification, are permitted provided that the following conditions
  * are met:
  *
- *   * Redistributions of source code must retain the above copyright
- *     notice, this list of conditions and the following disclaimer.
+ *	 * Redistributions of source code must retain the above copyright
+ *		 notice, this list of conditions and the following disclaimer.
  *
- *   * Redistributions in binary form must reproduce the above copyright
- *     notice, this list of conditions and the following disclaimer in
- *     the documentation and/or other materials provided with the
- *     distribution.
+ *	 * Redistributions in binary form must reproduce the above copyright
+ *		 notice, this list of conditions and the following disclaimer in
+ *		 the documentation and/or other materials provided with the
+ *		 distribution.
  *
- *   * Neither the name of Sebastian Bergmann nor the names of his
- *     contributors may be used to endorse or promote products derived
- *     from this software without specific prior written permission.
+ *	 * Neither the name of Sebastian Bergmann nor the names of his
+ *		 contributors may be used to endorse or promote products derived
+ *		 from this software without specific prior written permission.
  *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -34,13 +34,13 @@
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  *
- * @package    PHPUnit
+ * @package		PHPUnit
  * @subpackage Util
- * @author     Sebastian Bergmann <sebastian@phpunit.de>
- * @copyright  2001-2013 Sebastian Bergmann <sebastian@phpunit.de>
- * @license    http://www.opensource.org/licenses/BSD-3-Clause  The BSD 3-Clause License
- * @link       http://www.phpunit.de/
- * @since      File available since Release 2.3.0
+ * @author		 Sebastian Bergmann <sebastian@phpunit.de>
+ * @copyright	2001-2013 Sebastian Bergmann <sebastian@phpunit.de>
+ * @license		http://www.opensource.org/licenses/BSD-3-Clause	The BSD 3-Clause License
+ * @link			 http://www.phpunit.de/
+ * @since			File available since Release 2.3.0
  */
 
 // Workaround for http://bugs.php.net/bug.php?id=47987,
@@ -53,80 +53,80 @@ require_once 'PHPUnit/Framework/Error/Deprecated.php';
 /**
  * Error handler that converts PHP errors and warnings to exceptions.
  *
- * @package    PHPUnit
+ * @package		PHPUnit
  * @subpackage Util
- * @author     Sebastian Bergmann <sebastian@phpunit.de>
- * @copyright  2001-2013 Sebastian Bergmann <sebastian@phpunit.de>
- * @license    http://www.opensource.org/licenses/BSD-3-Clause  The BSD 3-Clause License
- * @link       http://www.phpunit.de/
- * @since      Class available since Release 3.3.0
+ * @author		 Sebastian Bergmann <sebastian@phpunit.de>
+ * @copyright	2001-2013 Sebastian Bergmann <sebastian@phpunit.de>
+ * @license		http://www.opensource.org/licenses/BSD-3-Clause	The BSD 3-Clause License
+ * @link			 http://www.phpunit.de/
+ * @since			Class available since Release 3.3.0
  */
 class PHPUnit_Util_ErrorHandler
 {
-    protected static $errorStack = array();
+		protected static $errorStack = array();
 
-    /**
-     * Returns the error stack.
-     *
-     * @return array
-     */
-    public static function getErrorStack()
-    {
-        return self::$errorStack;
-    }
+		/**
+		 * Returns the error stack.
+		 *
+		 * @return array
+		 */
+		public static function getErrorStack()
+		{
+				return self::$errorStack;
+		}
 
-    /**
-     * @param  integer $errno
-     * @param  string  $errstr
-     * @param  string  $errfile
-     * @param  integer $errline
-     * @throws PHPUnit_Framework_Error
-     */
-    public static function handleError($errno, $errstr, $errfile, $errline)
-    {
-        if (!($errno & error_reporting())) {
-            return FALSE;
-        }
+		/**
+		 * @param	integer $errno
+		 * @param	string	$errstr
+		 * @param	string	$errfile
+		 * @param	integer $errline
+		 * @throws PHPUnit_Framework_Error
+		 */
+		public static function handleError($errno, $errstr, $errfile, $errline)
+		{
+				if (!($errno & error_reporting())) {
+						return FALSE;
+				}
 
-        self::$errorStack[] = array($errno, $errstr, $errfile, $errline);
+				self::$errorStack[] = array($errno, $errstr, $errfile, $errline);
 
-        $trace = debug_backtrace(FALSE);
-        array_shift($trace);
+				$trace = debug_backtrace(FALSE);
+				array_shift($trace);
 
-        foreach ($trace as $frame) {
-            if ($frame['function'] == '__toString') {
-                return FALSE;
-            }
-        }
+				foreach ($trace as $frame) {
+						if ($frame['function'] == '__toString') {
+								return FALSE;
+						}
+				}
 
-        if ($errno == E_NOTICE || $errno == E_USER_NOTICE || $errno == E_STRICT) {
-            if (PHPUnit_Framework_Error_Notice::$enabled !== TRUE) {
-                return FALSE;
-            }
+				if ($errno == E_NOTICE || $errno == E_USER_NOTICE || $errno == E_STRICT) {
+						if (PHPUnit_Framework_Error_Notice::$enabled !== TRUE) {
+								return FALSE;
+						}
 
-            $exception = 'PHPUnit_Framework_Error_Notice';
-        }
+						$exception = 'PHPUnit_Framework_Error_Notice';
+				}
 
-        else if ($errno == E_WARNING || $errno == E_USER_WARNING) {
-            if (PHPUnit_Framework_Error_Warning::$enabled !== TRUE) {
-                return FALSE;
-            }
+				else if ($errno == E_WARNING || $errno == E_USER_WARNING) {
+						if (PHPUnit_Framework_Error_Warning::$enabled !== TRUE) {
+								return FALSE;
+						}
 
-            $exception = 'PHPUnit_Framework_Error_Warning';
-        }
+						$exception = 'PHPUnit_Framework_Error_Warning';
+				}
 
-        else if ($errno == E_DEPRECATED || $errno == E_USER_DEPRECATED) {
-            if (PHPUnit_Framework_Error_Deprecated::$enabled !== TRUE) {
-                return FALSE;
-            }
+				else if ($errno == E_DEPRECATED || $errno == E_USER_DEPRECATED) {
+						if (PHPUnit_Framework_Error_Deprecated::$enabled !== TRUE) {
+								return FALSE;
+						}
 
-            $exception = 'PHPUnit_Framework_Error_Deprecated';
-        }
+						$exception = 'PHPUnit_Framework_Error_Deprecated';
+				}
 
-        else {
-            $exception = 'PHPUnit_Framework_Error';
-        }
+				else {
+						$exception = 'PHPUnit_Framework_Error';
+				}
 
-        throw new $exception($errstr, $errno, $errfile, $errline);
-    }
+				throw new $exception($errstr, $errno, $errfile, $errline);
+		}
 }

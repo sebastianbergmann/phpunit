@@ -9,17 +9,17 @@
  * modification, are permitted provided that the following conditions
  * are met:
  *
- *   * Redistributions of source code must retain the above copyright
- *     notice, this list of conditions and the following disclaimer.
+ *	 * Redistributions of source code must retain the above copyright
+ *		 notice, this list of conditions and the following disclaimer.
  *
- *   * Redistributions in binary form must reproduce the above copyright
- *     notice, this list of conditions and the following disclaimer in
- *     the documentation and/or other materials provided with the
- *     distribution.
+ *	 * Redistributions in binary form must reproduce the above copyright
+ *		 notice, this list of conditions and the following disclaimer in
+ *		 the documentation and/or other materials provided with the
+ *		 distribution.
  *
- *   * Neither the name of Sebastian Bergmann nor the names of his
- *     contributors may be used to endorse or promote products derived
- *     from this software without specific prior written permission.
+ *	 * Neither the name of Sebastian Bergmann nor the names of his
+ *		 contributors may be used to endorse or promote products derived
+ *		 from this software without specific prior written permission.
  *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -34,113 +34,113 @@
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  *
- * @package    PHPUnit
+ * @package		PHPUnit
  * @subpackage Util
- * @author     Sebastian Bergmann <sebastian@phpunit.de>
- * @copyright  2001-2013 Sebastian Bergmann <sebastian@phpunit.de>
- * @license    http://www.opensource.org/licenses/BSD-3-Clause  The BSD 3-Clause License
- * @link       http://www.phpunit.de/
- * @since      File available since Release 2.0.0
+ * @author		 Sebastian Bergmann <sebastian@phpunit.de>
+ * @copyright	2001-2013 Sebastian Bergmann <sebastian@phpunit.de>
+ * @license		http://www.opensource.org/licenses/BSD-3-Clause	The BSD 3-Clause License
+ * @link			 http://www.phpunit.de/
+ * @since			File available since Release 2.0.0
  */
 
 /**
  * Utility class for code filtering.
  *
- * @package    PHPUnit
+ * @package		PHPUnit
  * @subpackage Util
- * @author     Sebastian Bergmann <sebastian@phpunit.de>
- * @copyright  2001-2013 Sebastian Bergmann <sebastian@phpunit.de>
- * @license    http://www.opensource.org/licenses/BSD-3-Clause  The BSD 3-Clause License
- * @link       http://www.phpunit.de/
- * @since      Class available since Release 2.0.0
+ * @author		 Sebastian Bergmann <sebastian@phpunit.de>
+ * @copyright	2001-2013 Sebastian Bergmann <sebastian@phpunit.de>
+ * @license		http://www.opensource.org/licenses/BSD-3-Clause	The BSD 3-Clause License
+ * @link			 http://www.phpunit.de/
+ * @since			Class available since Release 2.0.0
  */
 class PHPUnit_Util_Filter
 {
-    /**
-     * Filters stack frames from PHPUnit classes.
-     *
-     * @param  Exception $e
-     * @param  boolean   $asString
-     * @return string
-     */
-    public static function getFilteredStacktrace(Exception $e, $asString = TRUE)
-    {
-        $prefix = FALSE;
-        $script = realpath($GLOBALS['_SERVER']['SCRIPT_NAME']);
+		/**
+		 * Filters stack frames from PHPUnit classes.
+		 *
+		 * @param	Exception $e
+		 * @param	boolean	 $asString
+		 * @return string
+		 */
+		public static function getFilteredStacktrace(Exception $e, $asString = TRUE)
+		{
+				$prefix = FALSE;
+				$script = realpath($GLOBALS['_SERVER']['SCRIPT_NAME']);
 
-        if (defined('__PHPUNIT_PHAR__')) {
-            $prefix = 'phar://' . __PHPUNIT_PHAR__ . '/';
-        }
+				if (defined('__PHPUNIT_PHAR__')) {
+						$prefix = 'phar://' . __PHPUNIT_PHAR__ . '/';
+				}
 
-        if (!defined('PHPUNIT_TESTSUITE')) {
-            $blacklist = PHPUnit_Util_GlobalState::phpunitFiles();
-        } else {
-            $blacklist = array();
-        }
+				if (!defined('PHPUNIT_TESTSUITE')) {
+						$blacklist = PHPUnit_Util_GlobalState::phpunitFiles();
+				} else {
+						$blacklist = array();
+				}
 
-        if ($asString === TRUE) {
-            $filteredStacktrace = '';
-        } else {
-            $filteredStacktrace = array();
-        }
+				if ($asString === TRUE) {
+						$filteredStacktrace = '';
+				} else {
+						$filteredStacktrace = array();
+				}
 
-        if ($e instanceof PHPUnit_Framework_SyntheticError) {
-            $eTrace = $e->getSyntheticTrace();
-            $eFile  = $e->getSyntheticFile();
-            $eLine  = $e->getSyntheticLine();
-        } else {
-            if ($e->getPrevious()) {
-                $eTrace = $e->getPrevious()->getTrace();
-            } else {
-                $eTrace = $e->getTrace();
-            }
-            $eFile  = $e->getFile();
-            $eLine  = $e->getLine();
-        }
+				if ($e instanceof PHPUnit_Framework_SyntheticError) {
+						$eTrace = $e->getSyntheticTrace();
+						$eFile	= $e->getSyntheticFile();
+						$eLine	= $e->getSyntheticLine();
+				} else {
+						if ($e->getPrevious()) {
+								$eTrace = $e->getPrevious()->getTrace();
+						} else {
+								$eTrace = $e->getTrace();
+						}
+						$eFile	= $e->getFile();
+						$eLine	= $e->getLine();
+				}
 
-        if (!self::frameExists($eTrace, $eFile, $eLine)) {
-            array_unshift(
-              $eTrace, array('file' => $eFile, 'line' => $eLine)
-            );
-        }
+				if (!self::frameExists($eTrace, $eFile, $eLine)) {
+						array_unshift(
+							$eTrace, array('file' => $eFile, 'line' => $eLine)
+						);
+				}
 
-        foreach ($eTrace as $frame) {
-            if (isset($frame['file']) && is_file($frame['file']) &&
-                !isset($blacklist[$frame['file']]) &&
-                strpos($frame['file'], $prefix) !== 0 &&
-                $frame['file'] !== $script) {
-                if ($asString === TRUE) {
-                    $filteredStacktrace .= sprintf(
-                      "%s:%s\n",
+				foreach ($eTrace as $frame) {
+						if (isset($frame['file']) && is_file($frame['file']) &&
+								!isset($blacklist[$frame['file']]) &&
+								strpos($frame['file'], $prefix) !== 0 &&
+								$frame['file'] !== $script) {
+								if ($asString === TRUE) {
+										$filteredStacktrace .= sprintf(
+											"%s:%s\n",
 
-                      $frame['file'],
-                      isset($frame['line']) ? $frame['line'] : '?'
-                    );
-                } else {
-                    $filteredStacktrace[] = $frame;
-                }
-            }
-        }
+											$frame['file'],
+											isset($frame['line']) ? $frame['line'] : '?'
+										);
+								} else {
+										$filteredStacktrace[] = $frame;
+								}
+						}
+				}
 
-        return $filteredStacktrace;
-    }
+				return $filteredStacktrace;
+		}
 
-    /**
-     * @param  array  $trace
-     * @param  string $file
-     * @param  int    $line
-     * @return boolean
-     * @since  Method available since Release 3.3.2
-     */
-    public static function frameExists(array $trace, $file, $line)
-    {
-        foreach ($trace as $frame) {
-            if (isset($frame['file']) && $frame['file'] == $file &&
-                isset($frame['line']) && $frame['line'] == $line) {
-                return TRUE;
-            }
-        }
+		/**
+		 * @param	array	$trace
+		 * @param	string $file
+		 * @param	int		$line
+		 * @return boolean
+		 * @since	Method available since Release 3.3.2
+		 */
+		public static function frameExists(array $trace, $file, $line)
+		{
+				foreach ($trace as $frame) {
+						if (isset($frame['file']) && $frame['file'] == $file &&
+								isset($frame['line']) && $frame['line'] == $line) {
+								return TRUE;
+						}
+				}
 
-        return FALSE;
-    }
+				return FALSE;
+		}
 }

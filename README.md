@@ -17,23 +17,23 @@ You can use the [PEAR Installer](http://pear.php.net/manual/en/guide.users.comma
 
 The following two commands (which you may have to run as `root`) are all that is required to install PHPUnit using the PEAR Installer:
 
-    pear config-set auto_discover 1
-    pear install pear.phpunit.de/PHPUnit
+		pear config-set auto_discover 1
+		pear install pear.phpunit.de/PHPUnit
 
 ### Composer
 
 To add PHPUnit as a local, per-project dependency to your project, simply add a dependency on `phpunit/phpunit` to your project's `composer.json` file. Here is a minimal example of a `composer.json` file that just defines a development-time dependency on PHPUnit 3.7:
 
-    {
-        "require-dev": {
-            "phpunit/phpunit": "3.7.*"
-        }
-    }
+		{
+				"require-dev": {
+						"phpunit/phpunit": "3.7.*"
+				}
+		}
 
 ### PHP Archive (PHAR)
 
-    wget http://pear.phpunit.de/get/phpunit.phar
-    chmod +x phpunit.phar
+		wget http://pear.phpunit.de/get/phpunit.phar
+		chmod +x phpunit.phar
 
 ## Documentation
 

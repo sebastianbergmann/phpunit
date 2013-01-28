@@ -9,17 +9,17 @@
  * modification, are permitted provided that the following conditions
  * are met:
  *
- *   * Redistributions of source code must retain the above copyright
- *     notice, this list of conditions and the following disclaimer.
+ *	 * Redistributions of source code must retain the above copyright
+ *		 notice, this list of conditions and the following disclaimer.
  *
- *   * Redistributions in binary form must reproduce the above copyright
- *     notice, this list of conditions and the following disclaimer in
- *     the documentation and/or other materials provided with the
- *     distribution.
+ *	 * Redistributions in binary form must reproduce the above copyright
+ *		 notice, this list of conditions and the following disclaimer in
+ *		 the documentation and/or other materials provided with the
+ *		 distribution.
  *
- *   * Neither the name of Sebastian Bergmann nor the names of his
- *     contributors may be used to endorse or promote products derived
- *     from this software without specific prior written permission.
+ *	 * Neither the name of Sebastian Bergmann nor the names of his
+ *		 contributors may be used to endorse or promote products derived
+ *		 from this software without specific prior written permission.
  *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -34,144 +34,144 @@
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  *
- * @package    PHPUnit
+ * @package		PHPUnit
  * @subpackage Util_TestDox
- * @author     Sebastian Bergmann <sebastian@phpunit.de>
- * @copyright  2001-2013 Sebastian Bergmann <sebastian@phpunit.de>
- * @license    http://www.opensource.org/licenses/BSD-3-Clause  The BSD 3-Clause License
- * @link       http://www.phpunit.de/
- * @since      File available since Release 2.3.0
+ * @author		 Sebastian Bergmann <sebastian@phpunit.de>
+ * @copyright	2001-2013 Sebastian Bergmann <sebastian@phpunit.de>
+ * @license		http://www.opensource.org/licenses/BSD-3-Clause	The BSD 3-Clause License
+ * @link			 http://www.phpunit.de/
+ * @since			File available since Release 2.3.0
  */
 
 /**
  * Prettifies class and method names for use in TestDox documentation.
  *
- * @package    PHPUnit
+ * @package		PHPUnit
  * @subpackage Util_TestDox
- * @author     Sebastian Bergmann <sebastian@phpunit.de>
- * @copyright  2001-2013 Sebastian Bergmann <sebastian@phpunit.de>
- * @license    http://www.opensource.org/licenses/BSD-3-Clause  The BSD 3-Clause License
- * @link       http://www.phpunit.de/
- * @since      Class available since Release 2.1.0
+ * @author		 Sebastian Bergmann <sebastian@phpunit.de>
+ * @copyright	2001-2013 Sebastian Bergmann <sebastian@phpunit.de>
+ * @license		http://www.opensource.org/licenses/BSD-3-Clause	The BSD 3-Clause License
+ * @link			 http://www.phpunit.de/
+ * @since			Class available since Release 2.1.0
  */
 class PHPUnit_Util_TestDox_NamePrettifier
 {
-    /**
-     * @var    string
-     */
-    protected $prefix = 'Test';
+		/**
+		 * @var		string
+		 */
+		protected $prefix = 'Test';
 
-    /**
-     * @var    string
-     */
-    protected $suffix = 'Test';
+		/**
+		 * @var		string
+		 */
+		protected $suffix = 'Test';
 
-    /**
-     * @var    array
-     */
-    protected $strings = array();
+		/**
+		 * @var		array
+		 */
+		protected $strings = array();
 
-    /**
-     * Prettifies the name of a test class.
-     *
-     * @param  string  $name
-     * @return string
-     */
-    public function prettifyTestClass($name)
-    {
-        $title = $name;
+		/**
+		 * Prettifies the name of a test class.
+		 *
+		 * @param	string	$name
+		 * @return string
+		 */
+		public function prettifyTestClass($name)
+		{
+				$title = $name;
 
-        if ($this->suffix !== NULL &&
-            $this->suffix == substr($name, -1 * strlen($this->suffix))) {
-            $title = substr($title, 0, strripos($title, $this->suffix));
-        }
+				if ($this->suffix !== NULL &&
+						$this->suffix == substr($name, -1 * strlen($this->suffix))) {
+						$title = substr($title, 0, strripos($title, $this->suffix));
+				}
 
-        if ($this->prefix !== NULL &&
-            $this->prefix == substr($name, 0, strlen($this->prefix))) {
-            $title = substr($title, strlen($this->prefix));
-        }
+				if ($this->prefix !== NULL &&
+						$this->prefix == substr($name, 0, strlen($this->prefix))) {
+						$title = substr($title, strlen($this->prefix));
+				}
 
-        return $title;
-    }
+				return $title;
+		}
 
-    /**
-     * Prettifies the name of a test method.
-     *
-     * @param  string  $name
-     * @return string
-     */
-    public function prettifyTestMethod($name)
-    {
-        $buffer = '';
+		/**
+		 * Prettifies the name of a test method.
+		 *
+		 * @param	string	$name
+		 * @return string
+		 */
+		public function prettifyTestMethod($name)
+		{
+				$buffer = '';
 
-        if (!is_string($name) || strlen($name) == 0) {
-            return $buffer;
-        }
+				if (!is_string($name) || strlen($name) == 0) {
+						return $buffer;
+				}
 
-        $string = preg_replace('#\d+$#', '', $name, -1, $count);
+				$string = preg_replace('#\d+$#', '', $name, -1, $count);
 
-        if (in_array($string, $this->strings)) {
-            $name = $string;
-        } else if ($count == 0) {
-            $this->strings[] = $string;
-        }
+				if (in_array($string, $this->strings)) {
+						$name = $string;
+				} else if ($count == 0) {
+						$this->strings[] = $string;
+				}
 
-        if (strpos($name, '_') !== FALSE) {
-            return str_replace('_', ' ', $name);
-        }
+				if (strpos($name, '_') !== FALSE) {
+						return str_replace('_', ' ', $name);
+				}
 
-        $max = strlen($name);
+				$max = strlen($name);
 
-        if (substr($name, 0, 4) == 'test') {
-            $offset = 4;
-        } else {
-            $offset  = 0;
-            $name[0] = strtoupper($name[0]);
-        }
+				if (substr($name, 0, 4) == 'test') {
+						$offset = 4;
+				} else {
+						$offset	= 0;
+						$name[0] = strtoupper($name[0]);
+				}
 
-        $wasNumeric = FALSE;
+				$wasNumeric = FALSE;
 
-        for ($i = $offset; $i < $max; $i++) {
-            if ($i > $offset &&
-                ord($name[$i]) >= 65 &&
-                ord($name[$i]) <= 90) {
-                $buffer .= ' ' . strtolower($name[$i]);
-            } else {
-                $isNumeric = is_numeric($name[$i]);
+				for ($i = $offset; $i < $max; $i++) {
+						if ($i > $offset &&
+								ord($name[$i]) >= 65 &&
+								ord($name[$i]) <= 90) {
+								$buffer .= ' ' . strtolower($name[$i]);
+						} else {
+								$isNumeric = is_numeric($name[$i]);
 
-                if (!$wasNumeric && $isNumeric) {
-                    $buffer    .= ' ';
-                    $wasNumeric = TRUE;
-                }
+								if (!$wasNumeric && $isNumeric) {
+										$buffer		.= ' ';
+										$wasNumeric = TRUE;
+								}
 
-                if ($wasNumeric && !$isNumeric) {
-                    $wasNumeric = FALSE;
-                }
+								if ($wasNumeric && !$isNumeric) {
+										$wasNumeric = FALSE;
+								}
 
-                $buffer .= $name[$i];
-            }
-        }
+								$buffer .= $name[$i];
+						}
+				}
 
-        return $buffer;
-    }
+				return $buffer;
+		}
 
-    /**
-     * Sets the prefix of test names.
-     *
-     * @param  string  $prefix
-     */
-    public function setPrefix($prefix)
-    {
-        $this->prefix = $prefix;
-    }
+		/**
+		 * Sets the prefix of test names.
+		 *
+		 * @param	string	$prefix
+		 */
+		public function setPrefix($prefix)
+		{
+				$this->prefix = $prefix;
+		}
 
-    /**
-     * Sets the suffix of test names.
-     *
-     * @param  string  $prefix
-     */
-    public function setSuffix($suffix)
-    {
-        $this->suffix = $suffix;
-    }
+		/**
+		 * Sets the suffix of test names.
+		 *
+		 * @param	string	$prefix
+		 */
+		public function setSuffix($suffix)
+		{
+				$this->suffix = $suffix;
+		}
 }

@@ -9,17 +9,17 @@
  * modification, are permitted provided that the following conditions
  * are met:
  *
- *   * Redistributions of source code must retain the above copyright
- *     notice, this list of conditions and the following disclaimer.
+ *	 * Redistributions of source code must retain the above copyright
+ *		 notice, this list of conditions and the following disclaimer.
  *
- *   * Redistributions in binary form must reproduce the above copyright
- *     notice, this list of conditions and the following disclaimer in
- *     the documentation and/or other materials provided with the
- *     distribution.
+ *	 * Redistributions in binary form must reproduce the above copyright
+ *		 notice, this list of conditions and the following disclaimer in
+ *		 the documentation and/or other materials provided with the
+ *		 distribution.
  *
- *   * Neither the name of Sebastian Bergmann nor the names of his
- *     contributors may be used to endorse or promote products derived
- *     from this software without specific prior written permission.
+ *	 * Neither the name of Sebastian Bergmann nor the names of his
+ *		 contributors may be used to endorse or promote products derived
+ *		 from this software without specific prior written permission.
  *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -34,93 +34,93 @@
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  *
- * @package    PHPUnit
+ * @package		PHPUnit
  * @subpackage Framework_Constraint
- * @author     Bastian Feder <php@bastian-feder.de>
- * @copyright  2002-2013 Sebastian Bergmann <sebastian@phpunit.de>
- * @license    http://www.opensource.org/licenses/BSD-3-Clause  The BSD 3-Clause
- * @link       http://www.phpunit.de/
- * @since      File available since Release 3.7.0
+ * @author		 Bastian Feder <php@bastian-feder.de>
+ * @copyright	2002-2013 Sebastian Bergmann <sebastian@phpunit.de>
+ * @license		http://www.opensource.org/licenses/BSD-3-Clause	The BSD 3-Clause
+ * @link			 http://www.phpunit.de/
+ * @since			File available since Release 3.7.0
  */
 
 /**
  * Asserts whether or not two JSON objects are equal.
  *
- * @package    PHPUnit
+ * @package		PHPUnit
  * @subpackage Framework_Constraint
- * @author     Bastian Feder <php@bastian-feder.de>
- * @copyright  2011 Bastian Feder <php@bastian-feder.de>
- * @license    http://www.opensource.org/licenses/BSD-3-Clause  The BSD 3-Clause
- * @link       http://www.phpunit.de/
- * @since      Class available since Release 3.7.0
+ * @author		 Bastian Feder <php@bastian-feder.de>
+ * @copyright	2011 Bastian Feder <php@bastian-feder.de>
+ * @license		http://www.opensource.org/licenses/BSD-3-Clause	The BSD 3-Clause
+ * @link			 http://www.phpunit.de/
+ * @since			Class available since Release 3.7.0
  */
 class PHPUnit_Framework_Constraint_JsonMatches extends PHPUnit_Framework_Constraint
 {
-    /**
-     * @var string
-     */
-    protected $value;
+		/**
+		 * @var string
+		 */
+		protected $value;
 
-    /**
-     * Creates a new constraint.
-     *
-     * @param string $value
-     */
-    public function __construct($value)
-    {
-        $this->value = $value;
-    }
+		/**
+		 * Creates a new constraint.
+		 *
+		 * @param string $value
+		 */
+		public function __construct($value)
+		{
+				$this->value = $value;
+		}
 
-    /**
-     * Evaluates the constraint for parameter $other. Returns TRUE if the
-     * constraint is met, FALSE otherwise.
-     *
-     * This method can be overridden to implement the evaluation algorithm.
-     *
-     * @param mixed $other Value or object to evaluate.
-     * @return bool
-     */
-    protected function matches($other)
-    {
-        $decodedOther = json_decode($other);
-        if (json_last_error()) {
-            $this->failure_reason = $this->getJsonError();
-            return FALSE;
-        }
+		/**
+		 * Evaluates the constraint for parameter $other. Returns TRUE if the
+		 * constraint is met, FALSE otherwise.
+		 *
+		 * This method can be overridden to implement the evaluation algorithm.
+		 *
+		 * @param mixed $other Value or object to evaluate.
+		 * @return bool
+		 */
+		protected function matches($other)
+		{
+				$decodedOther = json_decode($other);
+				if (json_last_error()) {
+						$this->failure_reason = $this->getJsonError();
+						return FALSE;
+				}
 
-        $decodedValue = json_decode($this->value);
-        if (json_last_error()) {
-            $this->failure_reason = $this->getJsonError();
-            return FALSE;
-        }
+				$decodedValue = json_decode($this->value);
+				if (json_last_error()) {
+						$this->failure_reason = $this->getJsonError();
+						return FALSE;
+				}
 
-        return $decodedOther == $decodedValue;
-    }
+				return $decodedOther == $decodedValue;
+		}
 
-    /**
-     * Finds the last occurd JSON error.
-     *
-     * @param string $messagePrefix
-     * @return string The last JSON error prefixed with $messagePrefix.
-     */
-    protected function getJsonError($messagePrefix = 'Json error!')
-    {
-        return PHPUnit_Framework_Constraint_JsonMatches_ErrorMessageProvider::determineJsonError(
-            json_last_error(),
-            $messagePrefix
-        );
-    }
+		/**
+		 * Finds the last occurd JSON error.
+		 *
+		 * @param string $messagePrefix
+		 * @return string The last JSON error prefixed with $messagePrefix.
+		 */
+		protected function getJsonError($messagePrefix = 'Json error!')
+		{
+				return PHPUnit_Framework_Constraint_JsonMatches_ErrorMessageProvider::determineJsonError(
+						json_last_error(),
+						$messagePrefix
+				);
+		}
 
-    /**
-     * Returns a string representation of the object.
-     *
-     * @return string
-     */
-    public function toString()
-    {
-        return sprintf(
-            'matches JSON string "%s"',
-            $this->value
-        );
-    }
+		/**
+		 * Returns a string representation of the object.
+		 *
+		 * @return string
+		 */
+		public function toString()
+		{
+				return sprintf(
+						'matches JSON string "%s"',
+						$this->value
+				);
+		}
 }

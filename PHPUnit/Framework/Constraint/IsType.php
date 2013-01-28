@@ -9,17 +9,17 @@
  * modification, are permitted provided that the following conditions
  * are met:
  *
- *   * Redistributions of source code must retain the above copyright
- *     notice, this list of conditions and the following disclaimer.
+ *	 * Redistributions of source code must retain the above copyright
+ *		 notice, this list of conditions and the following disclaimer.
  *
- *   * Redistributions in binary form must reproduce the above copyright
- *     notice, this list of conditions and the following disclaimer in
- *     the documentation and/or other materials provided with the
- *     distribution.
+ *	 * Redistributions in binary form must reproduce the above copyright
+ *		 notice, this list of conditions and the following disclaimer in
+ *		 the documentation and/or other materials provided with the
+ *		 distribution.
  *
- *   * Neither the name of Sebastian Bergmann nor the names of his
- *     contributors may be used to endorse or promote products derived
- *     from this software without specific prior written permission.
+ *	 * Neither the name of Sebastian Bergmann nor the names of his
+ *		 contributors may be used to endorse or promote products derived
+ *		 from this software without specific prior written permission.
  *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -34,14 +34,14 @@
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  *
- * @package    PHPUnit
+ * @package		PHPUnit
  * @subpackage Framework_Constraint
- * @author     Sebastian Bergmann <sebastian@phpunit.de>
- * @author     Bernhard Schussek <bschussek@2bepublished.at>
- * @copyright  2001-2013 Sebastian Bergmann <sebastian@phpunit.de>
- * @license    http://www.opensource.org/licenses/BSD-3-Clause  The BSD 3-Clause License
- * @link       http://www.phpunit.de/
- * @since      File available since Release 3.0.0
+ * @author		 Sebastian Bergmann <sebastian@phpunit.de>
+ * @author		 Bernhard Schussek <bschussek@2bepublished.at>
+ * @copyright	2001-2013 Sebastian Bergmann <sebastian@phpunit.de>
+ * @license		http://www.opensource.org/licenses/BSD-3-Clause	The BSD 3-Clause License
+ * @link			 http://www.phpunit.de/
+ * @since			File available since Release 3.0.0
  */
 
 /**
@@ -50,141 +50,141 @@
  *
  * The expected value is passed in the constructor.
  *
- * @package    PHPUnit
+ * @package		PHPUnit
  * @subpackage Framework_Constraint
- * @author     Sebastian Bergmann <sebastian@phpunit.de>
- * @author     Bernhard Schussek <bschussek@2bepublished.at>
- * @copyright  2001-2013 Sebastian Bergmann <sebastian@phpunit.de>
- * @license    http://www.opensource.org/licenses/BSD-3-Clause  The BSD 3-Clause License
- * @link       http://www.phpunit.de/
- * @since      Class available since Release 3.0.0
+ * @author		 Sebastian Bergmann <sebastian@phpunit.de>
+ * @author		 Bernhard Schussek <bschussek@2bepublished.at>
+ * @copyright	2001-2013 Sebastian Bergmann <sebastian@phpunit.de>
+ * @license		http://www.opensource.org/licenses/BSD-3-Clause	The BSD 3-Clause License
+ * @link			 http://www.phpunit.de/
+ * @since			Class available since Release 3.0.0
  */
 class PHPUnit_Framework_Constraint_IsType extends PHPUnit_Framework_Constraint
 {
-    const TYPE_ARRAY    = 'array';
-    const TYPE_BOOL     = 'bool';
-    const TYPE_FLOAT    = 'float';
-    const TYPE_INT      = 'int';
-    const TYPE_NULL     = 'null';
-    const TYPE_NUMERIC  = 'numeric';
-    const TYPE_OBJECT   = 'object';
-    const TYPE_RESOURCE = 'resource';
-    const TYPE_STRING   = 'string';
-    const TYPE_SCALAR   = 'scalar';
-    const TYPE_CALLABLE = 'callable';
+		const TYPE_ARRAY		= 'array';
+		const TYPE_BOOL		 = 'bool';
+		const TYPE_FLOAT		= 'float';
+		const TYPE_INT			= 'int';
+		const TYPE_NULL		 = 'null';
+		const TYPE_NUMERIC	= 'numeric';
+		const TYPE_OBJECT	 = 'object';
+		const TYPE_RESOURCE = 'resource';
+		const TYPE_STRING	 = 'string';
+		const TYPE_SCALAR	 = 'scalar';
+		const TYPE_CALLABLE = 'callable';
 
-    /**
-     * @var array
-     */
-    protected $types = array(
-      'array' => TRUE,
-      'boolean' => TRUE,
-      'bool' => TRUE,
-      'float' => TRUE,
-      'integer' => TRUE,
-      'int' => TRUE,
-      'null' => TRUE,
-      'numeric' => TRUE,
-      'object' => TRUE,
-      'resource' => TRUE,
-      'string' => TRUE,
-      'scalar' => TRUE,
-      'callable' => TRUE
-    );
+		/**
+		 * @var array
+		 */
+		protected $types = array(
+			'array' => TRUE,
+			'boolean' => TRUE,
+			'bool' => TRUE,
+			'float' => TRUE,
+			'integer' => TRUE,
+			'int' => TRUE,
+			'null' => TRUE,
+			'numeric' => TRUE,
+			'object' => TRUE,
+			'resource' => TRUE,
+			'string' => TRUE,
+			'scalar' => TRUE,
+			'callable' => TRUE
+		);
 
-    /**
-     * @var string
-     */
-    protected $type;
+		/**
+		 * @var string
+		 */
+		protected $type;
 
-    /**
-     * @param  string $type
-     * @throws PHPUnit_Framework_Exception
-     */
-    public function __construct($type)
-    {
-        if (!isset($this->types[$type])) {
-            throw new PHPUnit_Framework_Exception(
-              sprintf(
-                'Type specified for PHPUnit_Framework_Constraint_IsType <%s> ' .
-                'is not a valid type.',
-                $type
-              )
-            );
-        }
+		/**
+		 * @param	string $type
+		 * @throws PHPUnit_Framework_Exception
+		 */
+		public function __construct($type)
+		{
+				if (!isset($this->types[$type])) {
+						throw new PHPUnit_Framework_Exception(
+							sprintf(
+								'Type specified for PHPUnit_Framework_Constraint_IsType <%s> ' .
+								'is not a valid type.',
+								$type
+							)
+						);
+				}
 
-        $this->type = $type;
-    }
+				$this->type = $type;
+		}
 
-    /**
-     * Evaluates the constraint for parameter $other. Returns TRUE if the
-     * constraint is met, FALSE otherwise.
-     *
-     * @param mixed $other Value or object to evaluate.
-     * @return bool
-     */
-    protected function matches($other)
-    {
-        switch ($this->type) {
-            case 'numeric': {
-                return is_numeric($other);
-            }
+		/**
+		 * Evaluates the constraint for parameter $other. Returns TRUE if the
+		 * constraint is met, FALSE otherwise.
+		 *
+		 * @param mixed $other Value or object to evaluate.
+		 * @return bool
+		 */
+		protected function matches($other)
+		{
+				switch ($this->type) {
+						case 'numeric': {
+								return is_numeric($other);
+						}
 
-            case 'integer':
-            case 'int': {
-                return is_integer($other);
-            }
+						case 'integer':
+						case 'int': {
+								return is_integer($other);
+						}
 
-            case 'float': {
-                return is_float($other);
-            }
+						case 'float': {
+								return is_float($other);
+						}
 
-            case 'string': {
-                return is_string($other);
-            }
+						case 'string': {
+								return is_string($other);
+						}
 
-            case 'boolean':
-            case 'bool': {
-                return is_bool($other);
-            }
+						case 'boolean':
+						case 'bool': {
+								return is_bool($other);
+						}
 
-            case 'null': {
-                return is_null($other);
-            }
+						case 'null': {
+								return is_null($other);
+						}
 
-            case 'array': {
-                return is_array($other);
-            }
+						case 'array': {
+								return is_array($other);
+						}
 
-            case 'object': {
-                return is_object($other);
-            }
+						case 'object': {
+								return is_object($other);
+						}
 
-            case 'resource': {
-                return is_resource($other);
-            }
+						case 'resource': {
+								return is_resource($other);
+						}
 
-            case 'scalar': {
-                return is_scalar($other);
-            }
+						case 'scalar': {
+								return is_scalar($other);
+						}
 
-            case 'callable': {
-                return is_callable($other);
-            }
-        }
-    }
+						case 'callable': {
+								return is_callable($other);
+						}
+				}
+		}
 
-    /**
-     * Returns a string representation of the constraint.
-     *
-     * @return string
-     */
-    public function toString()
-    {
-        return sprintf(
-          'is of type "%s"',
+		/**
+		 * Returns a string representation of the constraint.
+		 *
+		 * @return string
+		 */
+		public function toString()
+		{
+				return sprintf(
+					'is of type "%s"',
 
-          $this->type
-        );
-    }
+					$this->type
+				);
+		}
 }

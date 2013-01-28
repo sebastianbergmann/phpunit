@@ -9,17 +9,17 @@
  * modification, are permitted provided that the following conditions
  * are met:
  *
- *   * Redistributions of source code must retain the above copyright
- *     notice, this list of conditions and the following disclaimer.
+ *	 * Redistributions of source code must retain the above copyright
+ *		 notice, this list of conditions and the following disclaimer.
  *
- *   * Redistributions in binary form must reproduce the above copyright
- *     notice, this list of conditions and the following disclaimer in
- *     the documentation and/or other materials provided with the
- *     distribution.
+ *	 * Redistributions in binary form must reproduce the above copyright
+ *		 notice, this list of conditions and the following disclaimer in
+ *		 the documentation and/or other materials provided with the
+ *		 distribution.
  *
- *   * Neither the name of Sebastian Bergmann nor the names of his
- *     contributors may be used to endorse or promote products derived
- *     from this software without specific prior written permission.
+ *	 * Neither the name of Sebastian Bergmann nor the names of his
+ *		 contributors may be used to endorse or promote products derived
+ *		 from this software without specific prior written permission.
  *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -34,12 +34,12 @@
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  *
- * @package    PHPUnit
- * @author     Sebastian Bergmann <sebastian@phpunit.de>
- * @copyright  2001-2013 Sebastian Bergmann <sebastian@phpunit.de>
- * @license    http://www.opensource.org/licenses/BSD-3-Clause  The BSD 3-Clause License
- * @link       http://www.phpunit.de/
- * @since      File available since Release 3.5.0
+ * @package		PHPUnit
+ * @author		 Sebastian Bergmann <sebastian@phpunit.de>
+ * @copyright	2001-2013 Sebastian Bergmann <sebastian@phpunit.de>
+ * @license		http://www.opensource.org/licenses/BSD-3-Clause	The BSD 3-Clause License
+ * @link			 http://www.phpunit.de/
+ * @since			File available since Release 3.5.0
  */
 
 require_once 'File/Iterator/Autoload.php';
@@ -50,43 +50,43 @@ require_once 'Text/Template/Autoload.php';
 require_once 'SebastianBergmann/Version/autoload.php';
 
 spl_autoload_register(
-  function ($class)
-  {
-      static $classes = NULL;
-      static $path    = NULL;
+	function ($class)
+	{
+			static $classes = NULL;
+			static $path		= NULL;
 
-      if ($classes === NULL) {
-          $classes = array(
-            ___CLASSLIST___
-          );
+			if ($classes === NULL) {
+					$classes = array(
+						___CLASSLIST___
+					);
 
-          $path = dirname(__FILE__);
-      }
+					$path = dirname(__FILE__);
+			}
 
-      $cn = strtolower($class);
+			$cn = strtolower($class);
 
-      if (isset($classes[$cn])) {
-          require $path . $classes[$cn];
-      }
-  }
+			if (isset($classes[$cn])) {
+					require $path . $classes[$cn];
+			}
+	}
 );
 
 if (stream_resolve_include_path('PHP/Invoker/Autoload.php')) {
-    require_once 'PHP/Invoker/Autoload.php';
+		require_once 'PHP/Invoker/Autoload.php';
 }
 
 if (stream_resolve_include_path('PHPUnit/Extensions/Database/Autoload.php')) {
-    require_once 'PHPUnit/Extensions/Database/Autoload.php';
+		require_once 'PHPUnit/Extensions/Database/Autoload.php';
 }
 
 if (stream_resolve_include_path('PHPUnit/Extensions/SeleniumCommon/Autoload.php')) {
-    require_once 'PHPUnit/Extensions/SeleniumCommon/Autoload.php';
+		require_once 'PHPUnit/Extensions/SeleniumCommon/Autoload.php';
 }
 
 else if (stream_resolve_include_path('PHPUnit/Extensions/SeleniumTestCase/Autoload.php')) {
-    require_once 'PHPUnit/Extensions/SeleniumTestCase/Autoload.php';
+		require_once 'PHPUnit/Extensions/SeleniumTestCase/Autoload.php';
 }
 
 if (stream_resolve_include_path('PHPUnit/Extensions/Story/Autoload.php')) {
-    require_once 'PHPUnit/Extensions/Story/Autoload.php';
+		require_once 'PHPUnit/Extensions/Story/Autoload.php';
 }

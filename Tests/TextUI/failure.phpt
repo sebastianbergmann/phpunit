@@ -27,8 +27,8 @@ Failed asserting that two arrays are equal.
 +++ Actual
 @@ @@
  Array (
--    0 => 1
-+    0 => 2
+-		0 => 1
++		0 => 2
  )
 
 %s:%i
@@ -46,8 +46,8 @@ Failed asserting that two objects are equal.
 +++ Actual
 @@ @@
  stdClass Object (
--    'foo' => 'bar'
-+    'bar' => 'foo'
+-		'foo' => 'bar'
++		'bar' => 'foo'
  )
 
 %s:%i

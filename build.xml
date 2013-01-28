@@ -4,217 +4,217 @@
  <property name="php" value="php"/>
 
  <target name="build"
-   depends="prepare,lint,phploc,pdepend,phpmd-ci,phpcs-ci,phpcpd,phpunit,phpcb"/>
+	 depends="prepare,lint,phploc,pdepend,phpmd-ci,phpcs-ci,phpcpd,phpunit,phpcb"/>
 
  <target name="build-parallel"
-   depends="prepare,lint,tools-parallel,phpunit,phpcb"/>
+	 depends="prepare,lint,tools-parallel,phpunit,phpcb"/>
 
  <target name="tools-parallel"
-         description="Run tools in parallel">
-  <parallel threadCount="2">
-   <sequential>
-    <antcall target="pdepend"/>
-    <antcall target="phpmd-ci"/>
-   </sequential>
-   <antcall target="phpcpd"/>
-   <antcall target="phpcs-ci"/>
-   <antcall target="phploc"/>
-  </parallel>
+				 description="Run tools in parallel">
+	<parallel threadCount="2">
+	 <sequential>
+		<antcall target="pdepend"/>
+		<antcall target="phpmd-ci"/>
+	 </sequential>
+	 <antcall target="phpcpd"/>
+	 <antcall target="phpcs-ci"/>
+	 <antcall target="phploc"/>
+	</parallel>
  </target>
 
  <target name="clean" description="Cleanup build artifacts">
-  <delete dir="${basedir}/build/api"/>
-  <delete dir="${basedir}/build/code-browser"/>
-  <delete dir="${basedir}/build/coverage"/>
-  <delete dir="${basedir}/build/logs"/>
-  <delete dir="${basedir}/build/pdepend"/>
-  <delete dir="${basedir}/build/phar"/>
+	<delete dir="${basedir}/build/api"/>
+	<delete dir="${basedir}/build/code-browser"/>
+	<delete dir="${basedir}/build/coverage"/>
+	<delete dir="${basedir}/build/logs"/>
+	<delete dir="${basedir}/build/pdepend"/>
+	<delete dir="${basedir}/build/phar"/>
 
-  <delete>
-   <fileset dir="${basedir}/build">
-    <include name="**/*.phar" />
-   </fileset>
-  </delete>
+	<delete>
+	 <fileset dir="${basedir}/build">
+		<include name="**/*.phar" />
+	 </fileset>
+	</delete>
  </target>
 
  <target name="prepare" depends="clean,phpab"
-         description="Prepare for build">
-  <mkdir dir="${basedir}/build/api"/>
-  <mkdir dir="${basedir}/build/code-browser"/>
-  <mkdir dir="${basedir}/build/coverage"/>
-  <mkdir dir="${basedir}/build/logs"/>
-  <mkdir dir="${basedir}/build/pdepend"/>
-  <mkdir dir="${basedir}/build/phpdox"/>
+				 description="Prepare for build">
+	<mkdir dir="${basedir}/build/api"/>
+	<mkdir dir="${basedir}/build/code-browser"/>
+	<mkdir dir="${basedir}/build/coverage"/>
+	<mkdir dir="${basedir}/build/logs"/>
+	<mkdir dir="${basedir}/build/pdepend"/>
+	<mkdir dir="${basedir}/build/phpdox"/>
  </target>
 
  <target name="phpab" description="Generate autoloader scripts">
-  <exec executable="phpab">
-   <arg value="--output" />
-   <arg path="PHPUnit/Autoload.php" />
-   <arg value="--template" />
-   <arg path="PHPUnit/Autoload.php.in" />
-   <arg value="--indent" />
-   <arg value="            " />
-   <arg path="PHPUnit" />
-  </exec>
+	<exec executable="phpab">
+	 <arg value="--output" />
+	 <arg path="PHPUnit/Autoload.php" />
+	 <arg value="--template" />
+	 <arg path="PHPUnit/Autoload.php.in" />
+	 <arg value="--indent" />
+	 <arg value="						" />
+	 <arg path="PHPUnit" />
+	</exec>
  </target>
 
  <target name="lint">
-  <apply executable="${php}" failonerror="true">
-   <arg value="-l" />
+	<apply executable="${php}" failonerror="true">
+	 <arg value="-l" />
 
-   <fileset dir="${basedir}/PHPUnit">
-    <include name="**/*.php" />
-    <modified />
-   </fileset>
+	 <fileset dir="${basedir}/PHPUnit">
+		<include name="**/*.php" />
+		<modified />
+	 </fileset>
 
-   <fileset dir="${basedir}/Tests">
-    <include name="**/*.php" />
-    <modified />
-   </fileset>
-  </apply>
+	 <fileset dir="${basedir}/Tests">
+		<include name="**/*.php" />
+		<modified />
+	 </fileset>
+	</apply>
  </target>
 
  <target name="phploc" description="Measure project size using PHPLOC">
-  <exec executable="phploc">
-   <arg value="--log-csv" />
-   <arg value="${basedir}/build/logs/phploc.csv" />
-   <arg path="${basedir}/PHPUnit" />
-  </exec>
+	<exec executable="phploc">
+	 <arg value="--log-csv" />
+	 <arg value="${basedir}/build/logs/phploc.csv" />
+	 <arg path="${basedir}/PHPUnit" />
+	</exec>
  </target>
 
  <target name="pdepend"
-         description="Calculate software metrics using PHP_Depend">
-  <exec executable="pdepend">
-   <arg value="--jdepend-xml=${basedir}/build/logs/jdepend.xml" />
-   <arg value="--jdepend-chart=${basedir}/build/pdepend/dependencies.svg" />
-   <arg value="--overview-pyramid=${basedir}/build/pdepend/overview-pyramid.svg" />
-   <arg path="${basedir}/PHPUnit" />
-  </exec>
+				 description="Calculate software metrics using PHP_Depend">
+	<exec executable="pdepend">
+	 <arg value="--jdepend-xml=${basedir}/build/logs/jdepend.xml" />
+	 <arg value="--jdepend-chart=${basedir}/build/pdepend/dependencies.svg" />
+	 <arg value="--overview-pyramid=${basedir}/build/pdepend/overview-pyramid.svg" />
+	 <arg path="${basedir}/PHPUnit" />
+	</exec>
  </target>
 
  <target name="phpmd"
-         description="Perform project mess detection using PHPMD">
-  <exec executable="phpmd">
-   <arg path="${basedir}/PHPUnit" />
-   <arg value="text" />
-   <arg value="${basedir}/build/phpmd.xml" />
-  </exec>
+				 description="Perform project mess detection using PHPMD">
+	<exec executable="phpmd">
+	 <arg path="${basedir}/PHPUnit" />
+	 <arg value="text" />
+	 <arg value="${basedir}/build/phpmd.xml" />
+	</exec>
  </target>
 
  <target name="phpmd-ci"
-         description="Perform project mess detection using PHPMD">
-  <exec executable="phpmd">
-   <arg path="${basedir}/PHPUnit" />
-   <arg value="xml" />
-   <arg value="${basedir}/build/phpmd.xml" />
-   <arg value="--reportfile" />
-   <arg value="${basedir}/build/logs/pmd.xml" />
-  </exec>
+				 description="Perform project mess detection using PHPMD">
+	<exec executable="phpmd">
+	 <arg path="${basedir}/PHPUnit" />
+	 <arg value="xml" />
+	 <arg value="${basedir}/build/phpmd.xml" />
+	 <arg value="--reportfile" />
+	 <arg value="${basedir}/build/logs/pmd.xml" />
+	</exec>
  </target>
 
  <target name="phpcs"
-         description="Find coding standard violations using PHP_CodeSniffer">
-  <exec executable="phpcs">
-   <arg value="--standard=${basedir}/build/PHPCS" />
-   <arg value="--extensions=php" />
-   <arg value="--ignore=Autoload.php" />
-   <arg path="${basedir}/PHPUnit" />
-   <arg path="${basedir}/Tests" />
-  </exec>
+				 description="Find coding standard violations using PHP_CodeSniffer">
+	<exec executable="phpcs">
+	 <arg value="--standard=${basedir}/build/PHPCS" />
+	 <arg value="--extensions=php" />
+	 <arg value="--ignore=Autoload.php" />
+	 <arg path="${basedir}/PHPUnit" />
+	 <arg path="${basedir}/Tests" />
+	</exec>
  </target>
 
  <target name="phpcs-ci"
-         description="Find coding standard violations using PHP_CodeSniffer">
-  <exec executable="phpcs" output="/dev/null">
-   <arg value="--report=checkstyle" />
-   <arg value="--report-file=${basedir}/build/logs/checkstyle.xml" />
-   <arg value="--standard=${basedir}/build/PHPCS" />
-   <arg value="--extensions=php" />
-   <arg value="--ignore=Autoload.php" />
-   <arg path="${basedir}/PHPUnit" />
-   <arg path="${basedir}/Tests" />
-  </exec>
+				 description="Find coding standard violations using PHP_CodeSniffer">
+	<exec executable="phpcs" output="/dev/null">
+	 <arg value="--report=checkstyle" />
+	 <arg value="--report-file=${basedir}/build/logs/checkstyle.xml" />
+	 <arg value="--standard=${basedir}/build/PHPCS" />
+	 <arg value="--extensions=php" />
+	 <arg value="--ignore=Autoload.php" />
+	 <arg path="${basedir}/PHPUnit" />
+	 <arg path="${basedir}/Tests" />
+	</exec>
  </target>
 
  <target name="phpcpd" description="Find duplicate code using PHPCPD">
-  <exec executable="phpcpd">
-   <arg value="--log-pmd" />
-   <arg value="${basedir}/build/logs/pmd-cpd.xml" />
-   <arg path="${basedir}/PHPUnit" />
-  </exec>
+	<exec executable="phpcpd">
+	 <arg value="--log-pmd" />
+	 <arg value="${basedir}/build/logs/pmd-cpd.xml" />
+	 <arg path="${basedir}/PHPUnit" />
+	</exec>
  </target>
 
  <target name="phpunit" description="Run unit tests with PHPUnit">
-  <exec executable="${php}" failonerror="true">
-   <arg path="${basedir}/phpunit.php" />
-  </exec>
+	<exec executable="${php}" failonerror="true">
+	 <arg path="${basedir}/phpunit.php" />
+	</exec>
  </target>
 
  <target name="phpcb"
-         description="Aggregate tool output with PHP_CodeBrowser">
-  <exec executable="phpcb">
-   <arg value="--log" />
-   <arg path="${basedir}/build/logs" />
-   <arg value="--source" />
-   <arg path="${basedir}/PHPUnit" />
-   <arg value="--output" />
-   <arg path="${basedir}/build/code-browser" />
-  </exec>
+				 description="Aggregate tool output with PHP_CodeBrowser">
+	<exec executable="phpcb">
+	 <arg value="--log" />
+	 <arg path="${basedir}/build/logs" />
+	 <arg value="--source" />
+	 <arg path="${basedir}/PHPUnit" />
+	 <arg value="--output" />
+	 <arg path="${basedir}/build/code-browser" />
+	</exec>
  </target>
 
  <target name="phar"
-         description="Create PHAR archive of PHPUnit and all its dependencies"
-         depends="clean">
-  <mkdir dir="${basedir}/build/phar"/>
+				 description="Create PHAR archive of PHPUnit and all its dependencies"
+				 depends="clean">
+	<mkdir dir="${basedir}/build/phar"/>
 
-  <exec executable="bash" outputproperty="version">
-   <arg value="-c" />
-   <arg value="${basedir}/phpunit.php --version | awk 'BEGIN { ORS = &quot;&quot;; } {print $2}'" />
-  </exec>
+	<exec executable="bash" outputproperty="version">
+	 <arg value="-c" />
+	 <arg value="${basedir}/phpunit.php --version | awk 'BEGIN { ORS = &quot;&quot;; } {print $2}'" />
+	</exec>
 
-  <untar dest="${basedir}/build/phar" compression="gzip">
-   <fileset dir="${basedir}/build/dependencies">
-    <include name="**/*.tgz"/>
-   </fileset>
-  </untar>
+	<untar dest="${basedir}/build/phar" compression="gzip">
+	 <fileset dir="${basedir}/build/dependencies">
+		<include name="**/*.tgz"/>
+	 </fileset>
+	</untar>
 
-  <copy todir="${basedir}/build/phar/PHPUnit">
-   <fileset dir="${basedir}/PHPUnit"/>
-  </copy>
+	<copy todir="${basedir}/build/phar/PHPUnit">
+	 <fileset dir="${basedir}/PHPUnit"/>
+	</copy>
 
-  <delete>
-   <fileset dir="${basedir}/build/phar">
-    <include name="**/autoload.php" />
-    <include name="**/Autoload.php" />
-    <include name="**/Autoload.php.in" />
-    <include name="**/package.sig" />
-    <include name="**/package.xml" />
-   </fileset>
-  </delete>
+	<delete>
+	 <fileset dir="${basedir}/build/phar">
+		<include name="**/autoload.php" />
+		<include name="**/Autoload.php" />
+		<include name="**/Autoload.php.in" />
+		<include name="**/package.sig" />
+		<include name="**/package.xml" />
+	 </fileset>
+	</delete>
 
-  <exec executable="phpab">
-   <arg value="--all" />
-   <arg value="--phar" />
-   <arg value="--output" />
-   <arg path="${basedir}/build/phpunit-${version}.phar" />
-   <arg value="--template" />
-   <arg path="${basedir}/build/phar-autoload.php.in" />
-   <arg value="--indent" />
-   <arg value="            " />
-   <arg path="${basedir}/build/phar" />
-  </exec>
+	<exec executable="phpab">
+	 <arg value="--all" />
+	 <arg value="--phar" />
+	 <arg value="--output" />
+	 <arg path="${basedir}/build/phpunit-${version}.phar" />
+	 <arg value="--template" />
+	 <arg path="${basedir}/build/phar-autoload.php.in" />
+	 <arg value="--indent" />
+	 <arg value="						" />
+	 <arg path="${basedir}/build/phar" />
+	</exec>
 
-  <chmod file="${basedir}/build/phpunit-${version}.phar" perm="ugo+rx"/>
-  <copy file="${basedir}/build/phpunit-${version}.phar" tofile="${basedir}/build/phpunit-${version}-compressed.phar"/>
-  <chmod file="${basedir}/build/phpunit-${version}-compressed.phar" perm="ugo+rx"/>
+	<chmod file="${basedir}/build/phpunit-${version}.phar" perm="ugo+rx"/>
+	<copy file="${basedir}/build/phpunit-${version}.phar" tofile="${basedir}/build/phpunit-${version}-compressed.phar"/>
+	<chmod file="${basedir}/build/phpunit-${version}-compressed.phar" perm="ugo+rx"/>
 
-  <exec executable="phar">
-   <arg value="compress" />
-   <arg value="-f" />
-   <arg path="${basedir}/build/phpunit-${version}-compressed.phar" />
-   <arg value="-c" />
-   <arg value="bzip2" />
-  </exec>
+	<exec executable="phar">
+	 <arg value="compress" />
+	 <arg value="-f" />
+	 <arg path="${basedir}/build/phpunit-${version}-compressed.phar" />
+	 <arg value="-c" />
+	 <arg value="bzip2" />
+	</exec>
  </target>
 </project>

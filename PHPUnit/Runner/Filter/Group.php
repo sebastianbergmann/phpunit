@@ -9,17 +9,17 @@
  * modification, are permitted provided that the following conditions
  * are met:
  *
- *   * Redistributions of source code must retain the above copyright
- *     notice, this list of conditions and the following disclaimer.
+ *	 * Redistributions of source code must retain the above copyright
+ *		 notice, this list of conditions and the following disclaimer.
  *
- *   * Redistributions in binary form must reproduce the above copyright
- *     notice, this list of conditions and the following disclaimer in
- *     the documentation and/or other materials provided with the
- *     distribution.
+ *	 * Redistributions in binary form must reproduce the above copyright
+ *		 notice, this list of conditions and the following disclaimer in
+ *		 the documentation and/or other materials provided with the
+ *		 distribution.
  *
- *   * Neither the name of Sebastian Bergmann nor the names of his
- *     contributors may be used to endorse or promote products derived
- *     from this software without specific prior written permission.
+ *	 * Neither the name of Sebastian Bergmann nor the names of his
+ *		 contributors may be used to endorse or promote products derived
+ *		 from this software without specific prior written permission.
  *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -34,65 +34,65 @@
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  *
- * @package    PHPUnit
+ * @package		PHPUnit
  * @subpackage Runner
- * @author     Sebastian Bergmann <sebastian@phpunit.de>
- * @copyright  2001-2013 Sebastian Bergmann <sebastian@phpunit.de>
- * @license    http://www.opensource.org/licenses/BSD-3-Clause  The BSD 3-Clause License
- * @link       http://www.phpunit.de/
- * @since      File available since Release 3.8.0
+ * @author		 Sebastian Bergmann <sebastian@phpunit.de>
+ * @copyright	2001-2013 Sebastian Bergmann <sebastian@phpunit.de>
+ * @license		http://www.opensource.org/licenses/BSD-3-Clause	The BSD 3-Clause License
+ * @link			 http://www.phpunit.de/
+ * @since			File available since Release 3.8.0
  */
 
 /**
- * @package    PHPUnit
+ * @package		PHPUnit
  * @subpackage Runner
- * @author     Sebastian Bergmann <sebastian@phpunit.de>
- * @copyright  2001-2013 Sebastian Bergmann <sebastian@phpunit.de>
- * @license    http://www.opensource.org/licenses/BSD-3-Clause  The BSD 3-Clause License
- * @link       http://www.phpunit.de/
- * @since      Class available since Release 3.8.0
+ * @author		 Sebastian Bergmann <sebastian@phpunit.de>
+ * @copyright	2001-2013 Sebastian Bergmann <sebastian@phpunit.de>
+ * @license		http://www.opensource.org/licenses/BSD-3-Clause	The BSD 3-Clause License
+ * @link			 http://www.phpunit.de/
+ * @since			Class available since Release 3.8.0
  */
 abstract class PHPUnit_Runner_Filter_GroupFilterIterator extends RecursiveFilterIterator
 {
-    /**
-     * @var array
-     */
-    protected $groupTests = array();
+		/**
+		 * @var array
+		 */
+		protected $groupTests = array();
 
-    /**
-     * @param Iterator                    $iterator
-     * @param array                       $groups
-     * @param PHPUnit_Framework_TestSuite $suite
-     */
-    public function __construct(Iterator $iterator, array $groups, PHPUnit_Framework_TestSuite $suite)
-    {
-        parent::__construct($iterator);
+		/**
+		 * @param Iterator										$iterator
+		 * @param array											 $groups
+		 * @param PHPUnit_Framework_TestSuite $suite
+		 */
+		public function __construct(Iterator $iterator, array $groups, PHPUnit_Framework_TestSuite $suite)
+		{
+				parent::__construct($iterator);
 
-        foreach ($suite->getGroupDetails() as $group => $tests) {
-            if (in_array($group, $groups)) {
-                $testHashes = array_map(
-                  function($test) { return spl_object_hash($test); },
-                  $tests
-                );
+				foreach ($suite->getGroupDetails() as $group => $tests) {
+						if (in_array($group, $groups)) {
+								$testHashes = array_map(
+									function($test) { return spl_object_hash($test); },
+									$tests
+								);
 
-                $this->groupTests = array_merge($this->groupTests, $testHashes);
-            }
-        }
-    }
+								$this->groupTests = array_merge($this->groupTests, $testHashes);
+						}
+				}
+		}
 
-    /**
-     * @return boolean
-     */
-    public function accept()
-    {
-        $test = $this->getInnerIterator()->current();
+		/**
+		 * @return boolean
+		 */
+		public function accept()
+		{
+				$test = $this->getInnerIterator()->current();
 
-        if ($test instanceof PHPUnit_Framework_TestSuite) {
-            return TRUE;
-        }
+				if ($test instanceof PHPUnit_Framework_TestSuite) {
+						return TRUE;
+				}
 
-        return $this->doAccept(spl_object_hash($test));
-    }
+				return $this->doAccept(spl_object_hash($test));
+		}
 
-    abstract protected function doAccept($hash);
+		abstract protected function doAccept($hash);
 }

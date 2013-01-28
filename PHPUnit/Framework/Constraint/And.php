@@ -9,17 +9,17 @@
  * modification, are permitted provided that the following conditions
  * are met:
  *
- *   * Redistributions of source code must retain the above copyright
- *     notice, this list of conditions and the following disclaimer.
+ *	 * Redistributions of source code must retain the above copyright
+ *		 notice, this list of conditions and the following disclaimer.
  *
- *   * Redistributions in binary form must reproduce the above copyright
- *     notice, this list of conditions and the following disclaimer in
- *     the documentation and/or other materials provided with the
- *     distribution.
+ *	 * Redistributions in binary form must reproduce the above copyright
+ *		 notice, this list of conditions and the following disclaimer in
+ *		 the documentation and/or other materials provided with the
+ *		 distribution.
  *
- *   * Neither the name of Sebastian Bergmann nor the names of his
- *     contributors may be used to endorse or promote products derived
- *     from this software without specific prior written permission.
+ *	 * Neither the name of Sebastian Bergmann nor the names of his
+ *		 contributors may be used to endorse or promote products derived
+ *		 from this software without specific prior written permission.
  *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -34,131 +34,131 @@
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  *
- * @package    PHPUnit
+ * @package		PHPUnit
  * @subpackage Framework_Constraint
- * @author     Sebastian Bergmann <sebastian@phpunit.de>
- * @author     Bernhard Schussek <bschussek@2bepublished.at>
- * @copyright  2001-2013 Sebastian Bergmann <sebastian@phpunit.de>
- * @license    http://www.opensource.org/licenses/BSD-3-Clause  The BSD 3-Clause License
- * @link       http://www.phpunit.de/
- * @since      File available since Release 3.0.0
+ * @author		 Sebastian Bergmann <sebastian@phpunit.de>
+ * @author		 Bernhard Schussek <bschussek@2bepublished.at>
+ * @copyright	2001-2013 Sebastian Bergmann <sebastian@phpunit.de>
+ * @license		http://www.opensource.org/licenses/BSD-3-Clause	The BSD 3-Clause License
+ * @link			 http://www.phpunit.de/
+ * @since			File available since Release 3.0.0
  */
 
 /**
  * Logical AND.
  *
- * @package    PHPUnit
+ * @package		PHPUnit
  * @subpackage Framework_Constraint
- * @author     Sebastian Bergmann <sebastian@phpunit.de>
- * @author     Bernhard Schussek <bschussek@2bepublished.at>
- * @copyright  2001-2013 Sebastian Bergmann <sebastian@phpunit.de>
- * @license    http://www.opensource.org/licenses/BSD-3-Clause  The BSD 3-Clause License
- * @link       http://www.phpunit.de/
- * @since      Class available since Release 3.0.0
+ * @author		 Sebastian Bergmann <sebastian@phpunit.de>
+ * @author		 Bernhard Schussek <bschussek@2bepublished.at>
+ * @copyright	2001-2013 Sebastian Bergmann <sebastian@phpunit.de>
+ * @license		http://www.opensource.org/licenses/BSD-3-Clause	The BSD 3-Clause License
+ * @link			 http://www.phpunit.de/
+ * @since			Class available since Release 3.0.0
  */
 class PHPUnit_Framework_Constraint_And extends PHPUnit_Framework_Constraint
 {
-    /**
-     * @var PHPUnit_Framework_Constraint[]
-     */
-    protected $constraints = array();
+		/**
+		 * @var PHPUnit_Framework_Constraint[]
+		 */
+		protected $constraints = array();
 
-    /**
-     * @var PHPUnit_Framework_Constraint
-     */
-    protected $lastConstraint = NULL;
+		/**
+		 * @var PHPUnit_Framework_Constraint
+		 */
+		protected $lastConstraint = NULL;
 
-    /**
-     * @param  PHPUnit_Framework_Constraint[] $constraints
-     * @throws PHPUnit_Framework_Exception
-     */
-    public function setConstraints(array $constraints)
-    {
-        $this->constraints = array();
+		/**
+		 * @param	PHPUnit_Framework_Constraint[] $constraints
+		 * @throws PHPUnit_Framework_Exception
+		 */
+		public function setConstraints(array $constraints)
+		{
+				$this->constraints = array();
 
-        foreach ($constraints as $key => $constraint) {
-            if (!($constraint instanceof PHPUnit_Framework_Constraint)) {
-                throw new PHPUnit_Framework_Exception(
-                  'All parameters to ' . __CLASS__ .
-                  ' must be a constraint object.'
-                );
-            }
+				foreach ($constraints as $key => $constraint) {
+						if (!($constraint instanceof PHPUnit_Framework_Constraint)) {
+								throw new PHPUnit_Framework_Exception(
+									'All parameters to ' . __CLASS__ .
+									' must be a constraint object.'
+								);
+						}
 
-            $this->constraints[] = $constraint;
-        }
-    }
+						$this->constraints[] = $constraint;
+				}
+		}
 
-    /**
-     * Evaluates the constraint for parameter $other
-     *
-     * If $returnResult is set to FALSE (the default), an exception is thrown
-     * in case of a failure. NULL is returned otherwise.
-     *
-     * If $returnResult is TRUE, the result of the evaluation is returned as
-     * a boolean value instead: TRUE in case of success, FALSE in case of a
-     * failure.
-     *
-     * @param  mixed $other Value or object to evaluate.
-     * @param  string $description Additional information about the test
-     * @param  bool $returnResult Whether to return a result or throw an exception
-     * @return mixed
-     * @throws PHPUnit_Framework_ExpectationFailedException
-     */
-    public function evaluate($other, $description = '', $returnResult = FALSE)
-    {
-        $success = TRUE;
-        $constraint = NULL;
+		/**
+		 * Evaluates the constraint for parameter $other
+		 *
+		 * If $returnResult is set to FALSE (the default), an exception is thrown
+		 * in case of a failure. NULL is returned otherwise.
+		 *
+		 * If $returnResult is TRUE, the result of the evaluation is returned as
+		 * a boolean value instead: TRUE in case of success, FALSE in case of a
+		 * failure.
+		 *
+		 * @param	mixed $other Value or object to evaluate.
+		 * @param	string $description Additional information about the test
+		 * @param	bool $returnResult Whether to return a result or throw an exception
+		 * @return mixed
+		 * @throws PHPUnit_Framework_ExpectationFailedException
+		 */
+		public function evaluate($other, $description = '', $returnResult = FALSE)
+		{
+				$success = TRUE;
+				$constraint = NULL;
 
-        foreach ($this->constraints as $constraint) {
-            if (!$constraint->evaluate($other, $description, TRUE)) {
-                $success = FALSE;
-                break;
-            }
-        }
+				foreach ($this->constraints as $constraint) {
+						if (!$constraint->evaluate($other, $description, TRUE)) {
+								$success = FALSE;
+								break;
+						}
+				}
 
-        if ($returnResult) {
-            return $success;
-        }
+				if ($returnResult) {
+						return $success;
+				}
 
-        if (!$success) {
-            $this->fail($other, $description);
-        }
-    }
+				if (!$success) {
+						$this->fail($other, $description);
+				}
+		}
 
-    /**
-     * Returns a string representation of the constraint.
-     *
-     * @return string
-     */
-    public function toString()
-    {
-        $text = '';
+		/**
+		 * Returns a string representation of the constraint.
+		 *
+		 * @return string
+		 */
+		public function toString()
+		{
+				$text = '';
 
-        foreach ($this->constraints as $key => $constraint) {
-            if ($key > 0) {
-                $text .= ' and ';
-            }
+				foreach ($this->constraints as $key => $constraint) {
+						if ($key > 0) {
+								$text .= ' and ';
+						}
 
-            $text .= $constraint->toString();
-        }
+						$text .= $constraint->toString();
+				}
 
-        return $text;
-    }
+				return $text;
+		}
 
-    /**
-     * Counts the number of constraint elements.
-     *
-     * @return integer
-     * @since  Method available since Release 3.4.0
-     */
-    public function count()
-    {
-        $count = 0;
+		/**
+		 * Counts the number of constraint elements.
+		 *
+		 * @return integer
+		 * @since	Method available since Release 3.4.0
+		 */
+		public function count()
+		{
+				$count = 0;
 
-        foreach ($this->constraints as $constraint) {
-            $count += count($constraint);
-        }
+				foreach ($this->constraints as $constraint) {
+						$count += count($constraint);
+				}
 
-        return $count;
-    }
+				return $count;
+		}
 }
