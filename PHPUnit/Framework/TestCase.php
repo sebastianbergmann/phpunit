@@ -148,6 +148,18 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
     private $inIsolation = FALSE;
 
     /**
+     * Whether or not the test running in a separate process should include the
+     * bootstrap registered in the PHPUnit configuration/command line switches.
+     *
+     * We are explicitly setting this value to false to preserve BC with test
+     * cases that are expecting old functionality of the bootstrap not being
+     * included if preserving global state is turned off.
+     *
+     * @var boolean
+     */
+    protected $includeBootstrap = FALSE;
+
+    /**
      * @var array
      */
     private $data = array();
@@ -744,6 +756,12 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
                 $iniSettings   = '';
             }
 
+            if ($this->includeBootstrap) {
+                $bootstrapPath = PHPUnit_Util_GlobalState::getPhpUnitBootstrap();
+            } else {
+                $bootstrapPath = '';
+            }
+
             if ($result->getCollectCodeCoverageInformation()) {
                 $coverage = 'TRUE';
             } else {
@@ -786,7 +804,8 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
                 'include_path'                   => $includePath,
                 'included_files'                 => $includedFiles,
                 'iniSettings'                    => $iniSettings,
-                'strict'                         => $strict
+                'strict'                         => $strict,
+                'bootstrapPath'                  => $bootstrapPath
               )
             );
 
@@ -1176,6 +1195,14 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
     {
         if (is_bool($inIsolation)) {
             $this->inIsolation = $inIsolation;
+        } else {
+            throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'boolean');
+        }
+    }
+
+    public function setIncludeBootstrap($includeBootstrap) {
+        if (is_bool($includeBootstrap)) {
+            $this->includeBootstrap = $includeBootstrap;
         } else {
             throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'boolean');
         }

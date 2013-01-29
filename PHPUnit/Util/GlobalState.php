@@ -442,4 +442,17 @@ class PHPUnit_Util_GlobalState
             self::$phpunitFiles[$file] = TRUE;
         }
     }
+
+    /**
+     * Returns $GLOBALS['__PHPUNIT_BOOTSTRAP'] or empty string if not set
+     *
+     * @return string
+     */
+    public static function getPhpUnitBootstrap() {
+        $bootstrap = '';
+        if (isset($GLOBALS['__PHPUNIT_BOOTSTRAP'])) {
+            $bootstrap = $GLOBALS['__PHPUNIT_BOOTSTRAP'];
+        }
+        return $bootstrap;
+    }
 }
