@@ -1249,6 +1249,11 @@ EOF
         $this->assertEquals('is instance of class "Exception"', $constraint->toString());
         $this->assertEquals(1, count($constraint));
 
+        $interfaceConstraint = PHPUnit_Framework_Assert::isInstanceOf('Countable');
+        $this->assertFalse($interfaceConstraint->evaluate(new stdClass, '', TRUE));
+        $this->assertTrue($interfaceConstraint->evaluate(new ArrayObject, '', TRUE));
+        $this->assertEquals('is instance of interface "Countable"', $interfaceConstraint->toString());
+
         try {
             $constraint->evaluate(new stdClass);
         }

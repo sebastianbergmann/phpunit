@@ -97,10 +97,11 @@ class PHPUnit_Framework_Constraint_IsInstanceOf extends PHPUnit_Framework_Constr
      */
     protected function failureDescription($other)
     {
+        $reflection = new ReflectionClass($this->className);
         return sprintf(
-          '%s is an instance of class "%s"',
-
+          '%s is an instance of %s "%s"',
           PHPUnit_Util_Type::shortenedExport($other),
+          $this->getType(),
           $this->className
         );
     }
@@ -113,9 +114,20 @@ class PHPUnit_Framework_Constraint_IsInstanceOf extends PHPUnit_Framework_Constr
     public function toString()
     {
         return sprintf(
-          'is instance of class "%s"',
-
+          'is instance of %s "%s"',
+          $this->getType(),
           $this->className
         );
+    }
+
+    private function getType() {
+        try {
+            $reflection = new ReflectionClass($this->className);
+            if ($reflection->isInterface()) {
+                return 'interface';
+            }
+        } catch (ReflectionException $e) {
+        }
+        return 'class';
     }
 }
