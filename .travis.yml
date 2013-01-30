@@ -8,7 +8,7 @@ env:
     - INSTALL_PHP_INVOKER=1
 
 before_script:
-    - mkdir -p ~/builds/sebastianbergmann/phpunit/vendor/SebastianBergmann/
+    - mkdir -p vendor/SebastianBergmann/
     - git clone --branch=master --depth=100 --quiet git://github.com/sebastianbergmann/php-text-template.git vendor/php-text-template
     - git clone --branch=master --depth=100 --quiet git://github.com/sebastianbergmann/php-token-stream.git vendor/php-token-stream
     - git clone --branch=master --depth=100 --quiet git://github.com/sebastianbergmann/php-file-iterator.git vendor/php-file-iterator
@@ -16,7 +16,7 @@ before_script:
     - git clone --branch=master --depth=100 --quiet git://github.com/sebastianbergmann/phpunit-mock-objects.git vendor/phpunit-mock-objects
     - git clone --branch=master --depth=100 --quiet git://github.com/sebastianbergmann/php-timer.git vendor/php-timer
     - git clone --branch=master --depth=100 --quiet git://github.com/sebastianbergmann/version.git vendor/version
-    - ln -s ~/builds/sebastianbergmann/phpunit/vendor/version/src ~/builds/sebastianbergmann/phpunit/vendor/SebastianBergmann/Version
+    - ln -s ~/build/sebastianbergmann/phpunit/vendor/version/src ~/build/sebastianbergmann/phpunit/vendor/SebastianBergmann/Version
     - git clone --branch=master --depth=100 --quiet git://github.com/pear/pear-core.git vendor/pear-core
     - git clone --branch=trunk --depth=100 --quiet git://github.com/pear/Console_Getopt.git vendor/console-getopt
     - sh -c "if [ '$INSTALL_PHP_INVOKER' = '1' ]; then git clone --branch=master --depth=100 --quiet git://github.com/sebastianbergmann/php-invoker.git vendor/php-invoker; fi"
