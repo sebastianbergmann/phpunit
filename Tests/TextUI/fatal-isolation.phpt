@@ -24,10 +24,6 @@ There was 1 error:
 PHPUnit_Framework_Exception: %s error: Call to undefined function non_existing_function() in %s
 
 
-Caused by
-ErrorException: unserialize(): Error at offset %i of %i bytes
-
-
 FAILURES!
 Tests: 1, Assertions: 0, Errors: 1.
 
