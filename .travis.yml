@@ -8,7 +8,7 @@ env:
     - INSTALL_PHP_INVOKER=1
 
 before_script:
-    - mkdir -p vendor/SebastianBergmann
+    - mkdir -p ~/builds/sebastianbergmann/phpunit/vendor/SebastianBergmann/
     - git clone --branch=master --depth=100 --quiet git://github.com/sebastianbergmann/php-text-template.git vendor/php-text-template
     - git clone --branch=master --depth=100 --quiet git://github.com/sebastianbergmann/php-token-stream.git vendor/php-token-stream
     - git clone --branch=master --depth=100 --quiet git://github.com/sebastianbergmann/php-file-iterator.git vendor/php-file-iterator
