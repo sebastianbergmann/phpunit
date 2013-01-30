@@ -1,6 +1,6 @@
 <?php
 {iniSettings}
-ini_set('display_errors', 1);
+ini_set('display_errors', 'stderr');
 set_include_path('{include_path}');
 require 'PHPUnit/Autoload.php';
 ob_start();

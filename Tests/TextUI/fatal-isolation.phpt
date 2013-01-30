@@ -1,11 +1,5 @@
 --TEST--
 phpunit FatalTest ../_files/FatalTest.php
---SKIPIF--
-<?php
-if (strpos(__DIR__, 'travis/build')) {
-    echo "Skip this on travis until someone has time to fix it";
-}
-?>
 --FILE--
 <?php
 
