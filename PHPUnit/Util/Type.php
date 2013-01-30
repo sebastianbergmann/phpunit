@@ -224,17 +224,17 @@ class PHPUnit_Util_Type
             return self::shortenedString($value);
         }
 
-        $origValue = $value;
-
-        if (is_object($value)) {
-            $value = self::toArray($value);
+        if(is_object($value)) {
+            return sprintf(
+              "%s Object (%s)",
+              get_class($value),
+              count(self::toArray($value)) > 0 ? '...' : ''
+            );
         }
 
         if (is_array($value)) {
             return sprintf(
-              "%s (%s)",
-
-              is_object($origValue) ? get_class($origValue) . ' Object' : 'Array',
+              "Array (%s)",
               count($value) > 0 ? '...' : ''
             );
         }
