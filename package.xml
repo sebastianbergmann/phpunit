@@ -234,6 +234,7 @@
     <name>PHP_Timer</name>
     <channel>pear.phpunit.de</channel>
     <min>1.0.2</min>
+    <max>1.0.99</max>
    </package>
    <package>
     <name>PHPUnit_MockObject</name>
@@ -259,6 +260,7 @@
     <name>PHP_Invoker</name>
     <channel>pear.phpunit.de</channel>
     <min>1.1.0</min>
+    <max>1.1.99</max>
    </package>
    <extension>
     <name>json</name>
