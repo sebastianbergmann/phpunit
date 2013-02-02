@@ -527,7 +527,7 @@ class PHPUnit_TextUI_Command
             }
 
             if (isset($this->options[1][1])) {
-                $this->arguments['testFile'] = $this->options[1][1];
+                $this->arguments['testFile'] = realpath($this->options[1][1]);
             } else {
                 $this->arguments['testFile'] = '';
             }
