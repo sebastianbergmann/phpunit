@@ -112,6 +112,11 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
     protected $verbose = FALSE;
 
     /**
+     * @var PHP_Timer
+     */
+    private $timer;
+
+    /**
      * Constructor.
      *
      * @param  mixed   $out
@@ -142,6 +147,8 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
         } else {
             throw PHPUnit_Util_InvalidArgumentHelper::factory(4, 'boolean');
         }
+
+        $this->timer = new PHP_Timer();
     }
 
     /**
@@ -334,7 +341,7 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
 
     protected function printHeader()
     {
-        $this->write("\n\n" . PHP_Timer::resourceUsage() . "\n\n");
+        $this->write("\n\n" . $this->timer->resourceUsage() . "\n\n");
     }
 
     /**
