@@ -60,10 +60,10 @@ class PHPUnit_Runner_Filter_Test extends RecursiveFilterIterator
     protected $filter = NULL;
 
     /**
-     * @param Iterator $iterator
-     * @param string   $filter
+     * @param RecursiveIterator $iterator
+     * @param string            $filter
      */
-    public function __construct(Iterator $iterator, $filter)
+    public function __construct(RecursiveIterator $iterator, $filter)
     {
         parent::__construct($iterator);
         $this->filter = $filter;

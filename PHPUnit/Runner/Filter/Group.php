@@ -60,11 +60,11 @@ abstract class PHPUnit_Runner_Filter_GroupFilterIterator extends RecursiveFilter
     protected $groupTests = array();
 
     /**
-     * @param Iterator                    $iterator
+     * @param RecursiveIterator           $iterator
      * @param array                       $groups
      * @param PHPUnit_Framework_TestSuite $suite
      */
-    public function __construct(Iterator $iterator, array $groups, PHPUnit_Framework_TestSuite $suite)
+    public function __construct(RecursiveIterator $iterator, array $groups, PHPUnit_Framework_TestSuite $suite)
     {
         parent::__construct($iterator);
 
