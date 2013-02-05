@@ -565,6 +565,9 @@ class Framework_MockObjectTest extends PHPUnit_Framework_TestCase
         $this->resetMockObjects();
     }
 
+    /**
+     * See https://github.com/sebastianbergmann/phpunit-mock-objects/issues/81
+     */
     public function testMockArgumentsPassedByReference() {
         $foo = $this->getMockBuilder('MethodCallbackByReference')
                     ->setMethods(array('bar'))
@@ -583,6 +586,9 @@ class Framework_MockObjectTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(1, $b);
     }
 
+    /**
+     * See https://github.com/sebastianbergmann/phpunit-mock-objects/issues/81
+     */
     public function testMockArgumentsPassedByReference2() {
         $foo = $this->getMockBuilder('MethodCallbackByReference')
                     ->disableOriginalConstructor()
@@ -592,7 +598,7 @@ class Framework_MockObjectTest extends PHPUnit_Framework_TestCase
         $foo->expects($this->any())
             ->method('bar')
             ->will($this->returnCallback(
-            function ($a, &$b, $c) {
+            function (&$a, &$b, $c) {
                 $b = 1;
             }
             ));
@@ -602,6 +608,48 @@ class Framework_MockObjectTest extends PHPUnit_Framework_TestCase
         $foo->bar($a, $b, $c);
 
         $this->assertEquals(1, $b);
+    }
+
+    /**
+     * https://github.com/sebastianbergmann/phpunit-mock-objects/issues/116
+     */
+    public function testMockArgumentsPassedByReference3() {
+        $foo = $this->getMockBuilder('MethodCallbackByReference')
+                    ->setMethods(array('bar'))
+                    ->disableOriginalConstructor()
+                    ->disableArgumentCloning()
+                    ->getMock();
+
+        $a = new stdClass();
+        $b = $c = 0;
+
+        $foo->expects($this->any())
+            ->method('bar')
+            ->with($a, $b, $c)
+            ->will($this->returnCallback(array($foo, 'callback')));
+
+        $foo->bar($a, $b, $c);
+    }
+
+    /**
+     * https://github.com/sebastianbergmann/phpunit/issues/796
+     */
+    public function testMockArgumentsPassedByReference4() {
+        $foo = $this->getMockBuilder('MethodCallbackByReference')
+                    ->setMethods(array('bar'))
+                    ->disableOriginalConstructor()
+                    ->disableArgumentCloning()
+                    ->getMock();
+
+        $a = new stdClass();
+        $b = $c = 0;
+
+        $foo->expects($this->any())
+            ->method('bar')
+            ->with($this->isInstanceOf("stdClass"), $b, $c)
+            ->will($this->returnCallback(array($foo, 'callback')));
+
+        $foo->bar($a, $b, $c);
     }
 
     /**
