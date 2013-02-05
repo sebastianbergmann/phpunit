@@ -158,7 +158,7 @@ abstract class PHPUnit_Framework_Constraint implements Countable, PHPUnit_Framew
      */
     protected function additionalFailureDescription($other)
     {
-        return "";
+        return '';
     }
 
     /**
