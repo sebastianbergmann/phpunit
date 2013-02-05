@@ -92,8 +92,8 @@ class PHPUnit_Util_TestDox_ResultPrinter_HTML extends PHPUnit_Util_TestDox_Resul
     protected function onTest($name, $success = TRUE)
     {
         if (!$success) {
-            $strikeOpen  = '<strike>';
-            $strikeClose = '</strike>';
+            $strikeOpen  = '<span style="text-decoration:line-through;">';
+            $strikeClose = '</span>';
         } else {
             $strikeOpen  = '';
             $strikeClose = '';
