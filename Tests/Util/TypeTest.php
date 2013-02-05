@@ -109,6 +109,7 @@ class Util_TypeTest extends PHPUnit_Framework_TestCase
             array(1, '1'),
             array(1.0, '1.0'),
             array(1.2, '1.2'),
+            array(fopen('php://memory', 'r'), 'resource(%d) of type (stream)'),
             array('1', "'1'"),
             // \n\r and \r is converted to \n
             array("this\nis\na\nvery\nvery\nvery\nvery\nvery\nvery\rlong\n\rtext",
