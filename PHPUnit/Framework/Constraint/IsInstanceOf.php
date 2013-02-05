@@ -97,7 +97,6 @@ class PHPUnit_Framework_Constraint_IsInstanceOf extends PHPUnit_Framework_Constr
      */
     protected function failureDescription($other)
     {
-        $reflection = new ReflectionClass($this->className);
         return sprintf(
           '%s is an instance of %s "%s"',
           PHPUnit_Util_Type::shortenedExport($other),

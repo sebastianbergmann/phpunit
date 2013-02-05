@@ -290,7 +290,7 @@ class PHPUnit_Util_Type
         // above (fast) mechanism nor with reflection
         // Format the output similarly to print_r() in this case
         if ($object instanceof SplObjectStorage) {
-            foreach ($object as $key => $value) {
+            foreach ($object as $value) {
                 $array[spl_object_hash($value)] = array(
                     'obj' => $value,
                     'inf' => $object->getInfo(),

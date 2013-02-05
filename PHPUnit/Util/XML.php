@@ -831,8 +831,7 @@ class PHPUnit_Util_XML
                 }
             }
 
-            $nodes    = $filtered;
-            $filtered = array();
+            $nodes = $filtered;
 
             if (empty($nodes)) {
                 return;

@@ -94,7 +94,6 @@ class PHPUnit_Util_Diff
 
         $start = isset($old[0]) ? $old[0] : 0;
         $end   = count($diff);
-        $i     = 0;
 
         if ($tmp = array_search($end, $old)) {
             $end = $tmp;
@@ -189,7 +188,6 @@ class PHPUnit_Util_Diff
         );
 
         $diff = array();
-        $line = 0;
 
         if (isset($fromMatches[0]) && $toMatches[0] &&
             count($fromMatches[0]) === count($toMatches[0]) &&

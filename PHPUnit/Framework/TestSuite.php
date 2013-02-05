@@ -374,8 +374,6 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
             }
         }
 
-        $testsFound = FALSE;
-
         foreach ($newClasses as $className) {
             $class = new ReflectionClass($className);
 
@@ -387,15 +385,11 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
 
                     if ($method->isStatic()) {
                         $this->addTest($method->invoke(NULL, $className));
-
-                        $testsFound = TRUE;
                     }
                 }
 
                 else if ($class->implementsInterface('PHPUnit_Framework_Test')) {
                     $this->addTestSuite($class);
-
-                    $testsFound = TRUE;
                 }
             }
         }
