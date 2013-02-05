@@ -67,7 +67,7 @@
 class PHPUnit_Framework_Constraint_IsIdentical extends PHPUnit_Framework_Constraint
 {
     /**
-     * @var double
+     * @var float
      */
     const EPSILON = 0.0000000001;
 

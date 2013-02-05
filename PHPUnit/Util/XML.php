@@ -472,7 +472,7 @@ class PHPUnit_Util_XML
      * @param  string  $content
      * @param  mixed   $actual
      * @param  boolean $isHtml
-     * @return false|array
+     * @return boolean|array
      * @since  Method available since Release 3.3.0
      * @author Mike Naberezny <mike@maintainable.com>
      * @author Derek DeVries <derek@maintainable.com>
