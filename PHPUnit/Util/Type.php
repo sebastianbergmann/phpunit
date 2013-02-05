@@ -158,8 +158,8 @@ class PHPUnit_Util_Type
                 $output = "Array &$key (\n";
 
                 foreach ($value as $k => $v) {
-                    $k = self::export($k);
-                    $output .= "$whitespace    $k => ".self::recursiveExport($v, $indentation + 1, $processed)."\n";
+                    $ek = self::export($k);
+                    $output .= "$whitespace    $ek => ".self::recursiveExport($value[$k], $indentation + 1, $processed)."\n";
                 }
 
                 return "$output$whitespace)";

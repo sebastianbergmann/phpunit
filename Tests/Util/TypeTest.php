@@ -75,9 +75,9 @@ class Util_TypeTest extends PHPUnit_Framework_TestCase
         $obj2->foo = 'bar';
 
         $obj = new stdClass;
-        //@codingStandardsIgnoreStart 
+        //@codingStandardsIgnoreStart
         $obj->null = NULL;
-        //@codingStandardsIgnoreEnd 
+        //@codingStandardsIgnoreEnd
         $obj->boolean = TRUE;
         $obj->integer = 1;
         $obj->double = 1.2;
@@ -110,6 +110,22 @@ class Util_TypeTest extends PHPUnit_Framework_TestCase
             array(1.0, '1.0'),
             array(1.2, '1.2'),
             array('1', "'1'"),
+            array(array(array(1,2,3), array(3,4,5)),
+<<<EOF
+Array &0 (
+    0 => Array &1 (
+        0 => 1
+        1 => 2
+        2 => 3
+    )
+    1 => Array &2 (
+        0 => 3
+        1 => 4
+        2 => 5
+    )
+)
+EOF
+            ),
             // \n\r and \r is converted to \n
             array("this\nis\na\nvery\nvery\nvery\nvery\nvery\nvery\rlong\n\rtext",
 <<<EOF
@@ -185,7 +201,31 @@ text'
     'array' => Array &%d (
         'foo' => 'bar'
     )
-    'self' => Array &%d
+    'self' => Array &%d (
+        0 => 0
+        'null' => null
+        'boolean' => true
+        'integer' => 1
+        'double' => 1.2
+        'string' => '1'
+        'text' => 'this
+is
+a
+very
+very
+very
+very
+very
+very
+long
+text'
+        'object' => stdClass Object &%x
+        'objectagain' => stdClass Object &%x
+        'array' => Array &%d (
+            'foo' => 'bar'
+        )
+        'self' => Array &%d
+    )
 )
 EOF
             ),
