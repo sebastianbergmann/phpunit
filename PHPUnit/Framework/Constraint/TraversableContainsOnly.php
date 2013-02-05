@@ -105,7 +105,6 @@ class PHPUnit_Framework_Constraint_TraversableContainsOnly extends PHPUnit_Frame
     public function evaluate($other, $description = '', $returnResult = FALSE)
     {
         $success = TRUE;
-        $constraint = NULL;
 
         foreach ($other as $item) {
             if (!$this->constraint->evaluate($item, '', TRUE)) {
