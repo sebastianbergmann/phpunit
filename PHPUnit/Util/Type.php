@@ -131,6 +131,14 @@ class PHPUnit_Util_Type
             return "$value.0";
         }
 
+        if (is_resource($value)) {
+            return sprintf(
+              'resource(%d) of type (%s)',
+              $value,
+              get_resource_type($value)
+            );
+        }
+
         if (is_string($value)) {
             // Match for most non printable chars somewhat taking multibyte chars into account
             if (preg_match('/[^\x09-\x0d\x20-\xff]/', $value)) {
