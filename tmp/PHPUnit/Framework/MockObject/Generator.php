@@ -945,10 +945,10 @@ class PHPUnit_Framework_MockObject_Generator
                 else if ($parameter->isOptional()) {
                     $default = ' = null';
                 }
+            }
 
-                if ($parameter->isPassedByReference()) {
-                    $reference = '&';
-                }
+            if ($parameter->isPassedByReference()) {
+                $reference = '&';
             }
 
             $parameters[] = $typeHint . $reference . $name . $default;
