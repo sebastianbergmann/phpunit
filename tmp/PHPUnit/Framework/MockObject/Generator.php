@@ -589,6 +589,8 @@ class PHPUnit_Framework_MockObject_Generator
         $classTemplate = new Text_Template(
                            $templateDir . 'mocked_class.tpl'
                          );
+
+        $additionalInterfaces = array();
         $cloneTemplate = '';
         $isClass       = FALSE;
         $isInterface   = FALSE;
@@ -669,6 +671,15 @@ class PHPUnit_Framework_MockObject_Generator
         $mockedMethods = '';
 
         if (isset($class)) {
+
+            // https://github.com/sebastianbergmann/phpunit-mock-objects/issues/103
+            if ($isInterface && $class->implementsInterface('Traversable') &&
+                !$class->implementsInterface('Iterator') &&
+                !$class->implementsInterface('IteratorAggregate')) {
+                $additionalInterfaces[] = 'Iterator';
+                $methods = array_merge($methods, get_class_methods('Iterator'));
+            }
+
             foreach ($methods as $methodName) {
                 try {
                     $method = $class->getMethod($methodName);
@@ -699,7 +710,9 @@ class PHPUnit_Framework_MockObject_Generator
             'prologue'          => isset($prologue) ? $prologue : '',
             'epilogue'          => isset($epilogue) ? $epilogue : '',
             'class_declaration' => $this->generateMockClassDeclaration(
-                                     $mockClassName, $isInterface
+                                     $mockClassName,
+                                     $isInterface,
+                                     $additionalInterfaces
                                    ),
             'clone'             => $cloneTemplate,
             'mock_class_name'   => $mockClassName['className'],
@@ -755,25 +768,31 @@ class PHPUnit_Framework_MockObject_Generator
     /**
      * @param  array   $mockClassName
      * @param  boolean $isInterface
+     * @param  array   $additionalInterfaces
      * @return array
      */
-    protected function generateMockClassDeclaration(array $mockClassName, $isInterface)
+    protected function generateMockClassDeclaration(array $mockClassName, $isInterface, array $additionalInterfaces = array())
     {
         $buffer = 'class ';
 
+        $additionalInterfaces[] = 'PHPUnit_Framework_MockObject_MockObject';
+        $interfaces = implode(', ', $additionalInterfaces);
+
         if ($isInterface) {
             $buffer .= sprintf(
-              "%s implements PHPUnit_Framework_MockObject_MockObject, %s%s",
+              "%s implements %s, %s%s",
               $mockClassName['className'],
+              $interfaces,
               !empty($mockClassName['namespaceName']) ? $mockClassName['namespaceName'] . '\\' : '',
               $mockClassName['originalClassName']
             );
         } else {
             $buffer .= sprintf(
-              "%s extends %s%s implements PHPUnit_Framework_MockObject_MockObject",
+              "%s extends %s%s implements %s",
               $mockClassName['className'],
               !empty($mockClassName['namespaceName']) ? $mockClassName['namespaceName'] . '\\' : '',
-              $mockClassName['originalClassName']
+              $mockClassName['originalClassName'],
+              $interfaces
             );
         }
 
