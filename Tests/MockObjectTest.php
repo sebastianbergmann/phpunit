@@ -53,6 +53,7 @@ require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPA
 require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'PartialMockTestClass.php';
 require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'SomeClass.php';
 require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'StaticMockTestClass.php';
+require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'TraversableMockTestInterface.php';
 
 /**
  *
@@ -320,6 +321,12 @@ class Framework_MockObjectTest extends PHPUnit_Framework_TestCase
         $mock = $this->getMock('AbstractMockTestClass');
         $mock->expects($this->never())
              ->method('doSomething');
+    }
+
+    public function testGetMockForTraversableInterface()
+    {
+        $mock = $this->getMock('TraversableMockTestInterface');
+        $this->assertInstanceOf('Traversable', $mock);
     }
 
     public function testGetMockForTrait()
