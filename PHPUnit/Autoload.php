@@ -203,6 +203,10 @@ else if (stream_resolve_include_path('PHPUnit/Extensions/SeleniumTestCase/Autolo
     require_once 'PHPUnit/Extensions/SeleniumTestCase/Autoload.php';
 }
 
+if (stream_resolve_include_path('Symfony/Component/Yaml/Tests/bootstrap.php')) {
+    require_once 'Symfony/Component/Yaml/Tests/bootstrap.php';
+}
+
 if (stream_resolve_include_path('PHPUnit/Extensions/Story/Autoload.php')) {
     require_once 'PHPUnit/Extensions/Story/Autoload.php';
 }
