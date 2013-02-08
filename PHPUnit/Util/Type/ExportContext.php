@@ -61,7 +61,7 @@ class PHPUnit_Util_Type_ExportContext {
      *
      * @var array[] $arrays
      */
-    protected $arrays;
+    protected $arrays = array();
 
     /**
      * Previously seen objects.
@@ -73,7 +73,7 @@ class PHPUnit_Util_Type_ExportContext {
     /** Initialises the context. */
     public function __construct()
     {
-        $this->arrays = [];
+        $this->arrays = array();
         $this->objects = new SplObjectStorage;
     }
 
@@ -89,11 +89,15 @@ class PHPUnit_Util_Type_ExportContext {
     {
         if (is_array($value)) {
             return $this->addArray($value);
-        } elseif (is_object($value)) {
+        }
+
+        else if (is_object($value)) {
             return $this->addObject($value);
         }
 
-        throw new PHPUnit_Framework_Exception('Only arrays and objects are supported');
+        throw new PHPUnit_Framework_Exception(
+          'Only arrays and objects are supported'
+        );
     }
 
     /**
@@ -110,11 +114,15 @@ class PHPUnit_Util_Type_ExportContext {
     {
         if (is_array($value)) {
             return $this->containsArray($value);
-        } elseif (is_object($value)) {
+        }
+
+        else if (is_object($value)) {
             return $this->containsObject($value);
         }
 
-        throw new PHPUnit_Framework_Exception('Only arrays and objects are supported');
+        throw new PHPUnit_Framework_Exception(
+          'Only arrays and objects are supported'
+        );
     }
 
     /**
@@ -130,6 +138,7 @@ class PHPUnit_Util_Type_ExportContext {
         }
 
         $this->arrays[] = &$value;
+
         return count($this->arrays) - 1;
     }
 
@@ -158,17 +167,20 @@ class PHPUnit_Util_Type_ExportContext {
     protected function containsArray(array &$value)
     {
         $keys = array_keys($this->arrays, $value, true);
-        $gen = '_PHPUnit_Test_Key_'.hash('sha512', microtime(true));
+        $gen  = '_PHPUnit_Test_Key_' . hash('sha512', microtime(TRUE));
+
         foreach ($keys as $key) {
             $this->arrays[$key][$gen] = $gen;
+
             if (isset($value[$gen]) && $value[$gen] === $gen) {
                 unset($this->arrays[$key][$gen]);
                 return $key;
             }
+
             unset($this->arrays[$key][$gen]);
         }
 
-        return false;
+        return FALSE;
     }
 
     /**
@@ -184,6 +196,6 @@ class PHPUnit_Util_Type_ExportContext {
             return spl_object_hash($value);
         }
 
-        return false;
+        return FALSE;
     }
 }
