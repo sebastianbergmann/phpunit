@@ -3,6 +3,12 @@ PHPUnit 3.7
 
 This is the list of changes for the PHPUnit 3.7 release series.
 
+PHPUnit 3.7.14
+--------------
+
+* Fixed #751: NaN is not equal to NaN now to match PHPs behavior
+* Fixed #796 in #799: Mocking a method with a reference to an object made argument matches fail.
+
 PHPUnit 3.7.13
 --------------
 
