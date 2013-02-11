@@ -103,7 +103,8 @@ class PHPUnit_Framework_Constraint_IsIdentical extends PHPUnit_Framework_Constra
     public function evaluate($other, $description = '', $returnResult = FALSE)
     {
         if (is_double($this->value) && is_double($other) &&
-            !is_infinite($this->value) && !is_infinite($other)) {
+            !is_infinite($this->value) && !is_infinite($other) &&
+            !is_nan($this->value) && !is_nan($other)) {
             $success = abs($this->value - $other) < self::EPSILON;
         }
 
