@@ -2119,11 +2119,11 @@ abstract class PHPUnit_Framework_Assert
         self::assertFalse($matched, $message);
     }
 
-	public static function assertThrowsException($exceptionName, $code)
-	{
-		$constraint = new PHPUnit_Framework_Constraint_ExceptionThrown($exceptionName);
-		self::assertThat($code, $constraint);
-	}
+    public static function assertThrowsException($exceptionName, $code)
+    {
+        $constraint = new PHPUnit_Framework_Constraint_ExceptionThrown($exceptionName);
+        self::assertThat($code, $constraint);
+    }
 
     /**
      * Evaluates a PHPUnit_Framework_Constraint matcher object.
