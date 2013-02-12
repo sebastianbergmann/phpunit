@@ -4167,4 +4167,24 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
         );
     }
 
+    /**
+     * @covers PHPUnit_Framework_Assert::assertThrowsException
+     */
+    public function testAssertThrowsException()
+    {
+		$code = function() {
+			throw new InvalidArgumentException('test');
+		};
+
+		$this->assertThrowsException('InvalidArgumentException', $code);
+
+        try {
+			$this->assertThrowsException('MyMadeUpException', $code);
+        }
+	    catch (PHPUnit_Framework_AssertionFailedError $e) {
+            return;
+        }
+
+        $this->fail();
+    }
 }

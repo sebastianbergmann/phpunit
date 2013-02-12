@@ -92,6 +92,7 @@ spl_autoload_register(
             'phpunit_framework_constraint_exception' => '/Framework/Constraint/Exception.php',
             'phpunit_framework_constraint_exceptioncode' => '/Framework/Constraint/ExceptionCode.php',
             'phpunit_framework_constraint_exceptionmessage' => '/Framework/Constraint/ExceptionMessage.php',
+            'phpunit_framework_constraint_exceptionthrown' => '/Framework/Constraint/ExceptionThrown.php',
             'phpunit_framework_constraint_fileexists' => '/Framework/Constraint/FileExists.php',
             'phpunit_framework_constraint_greaterthan' => '/Framework/Constraint/GreaterThan.php',
             'phpunit_framework_constraint_isanything' => '/Framework/Constraint/IsAnything.php',
