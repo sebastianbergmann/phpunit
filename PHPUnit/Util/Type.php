@@ -224,9 +224,9 @@ class PHPUnit_Util_Type
             return self::shortenedString($value);
         }
 
-        if(is_object($value)) {
+        if (is_object($value)) {
             return sprintf(
-              "%s Object (%s)",
+              '%s Object (%s)',
               get_class($value),
               count(self::toArray($value)) > 0 ? '...' : ''
             );
@@ -234,7 +234,7 @@ class PHPUnit_Util_Type
 
         if (is_array($value)) {
             return sprintf(
-              "Array (%s)",
+              'Array (%s)',
               count($value) > 0 ? '...' : ''
             );
         }
