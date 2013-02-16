@@ -184,7 +184,6 @@
      </dir>
      <file baseinstalldir="/" name="Configuration.php" role="php" />
      <file baseinstalldir="/" name="DeprecatedFeature.php" role="php" />
-     <file baseinstalldir="/" name="Diff.php" role="php" />
      <file baseinstalldir="/" name="ErrorHandler.php" role="php" />
      <file baseinstalldir="/" name="Fileloader.php" role="php" />
      <file baseinstalldir="/" name="Filesystem.php" role="php" />
@@ -225,6 +224,11 @@
    <pearinstaller>
     <min>1.9.4</min>
    </pearinstaller>
+   <package>
+    <name>Diff</name>
+    <channel>pear.phpunit.de</channel>
+    <min>1.0.0</min>
+   </package>
    <package>
     <name>File_Iterator</name>
     <channel>pear.phpunit.de</channel>

@@ -47,6 +47,7 @@ require_once 'PHP/CodeCoverage/Autoload.php';
 require_once 'PHP/Timer/Autoload.php';
 require_once 'PHPUnit/Framework/MockObject/Autoload.php';
 require_once 'Text/Template/Autoload.php';
+require_once 'SebastianBergmann/Diff/autoload.php';
 require_once 'SebastianBergmann/Version/autoload.php';
 
 spl_autoload_register(
@@ -157,7 +158,6 @@ spl_autoload_register(
             'phpunit_util_configuration' => '/Util/Configuration.php',
             'phpunit_util_deprecatedfeature' => '/Util/DeprecatedFeature.php',
             'phpunit_util_deprecatedfeature_logger' => '/Util/DeprecatedFeature/Logger.php',
-            'phpunit_util_diff' => '/Util/Diff.php',
             'phpunit_util_errorhandler' => '/Util/ErrorHandler.php',
             'phpunit_util_fileloader' => '/Util/Fileloader.php',
             'phpunit_util_filesystem' => '/Util/Filesystem.php',
