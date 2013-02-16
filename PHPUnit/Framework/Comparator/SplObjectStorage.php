@@ -90,8 +90,8 @@ class PHPUnit_Framework_Comparator_SplObjectStorage extends PHPUnit_Framework_Co
                 throw new PHPUnit_Framework_ComparisonFailure(
                   $expected,
                   $actual,
-                  PHPUnit_Util_Type::export($expected),
-                  PHPUnit_Util_Type::export($actual),
+                  $this->exporter->export($expected),
+                  $this->exporter->export($actual),
                   FALSE,
                   'Failed asserting that two objects are equal.'
                 );
@@ -103,8 +103,8 @@ class PHPUnit_Framework_Comparator_SplObjectStorage extends PHPUnit_Framework_Co
                 throw new PHPUnit_Framework_ComparisonFailure(
                   $expected,
                   $actual,
-                  PHPUnit_Util_Type::export($expected),
-                  PHPUnit_Util_Type::export($actual),
+                  $this->exporter->export($expected),
+                  $this->exporter->export($actual),
                   FALSE,
                   'Failed asserting that two objects are equal.'
                 );

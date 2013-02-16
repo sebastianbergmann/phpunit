@@ -69,6 +69,8 @@ class PHPUnit_Framework_Constraint_Not extends PHPUnit_Framework_Constraint
      */
     public function __construct($constraint)
     {
+        parent::__construct();
+
         if (!($constraint instanceof PHPUnit_Framework_Constraint)) {
             $constraint = new PHPUnit_Framework_Constraint_IsEqual($constraint);
         }

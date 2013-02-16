@@ -89,13 +89,13 @@ class PHPUnit_Framework_Comparator_Object extends PHPUnit_Framework_Comparator_A
             throw new PHPUnit_Framework_ComparisonFailure(
               $expected,
               $actual,
-              PHPUnit_Util_Type::export($expected),
-              PHPUnit_Util_Type::export($actual),
+              $this->exporter->export($expected),
+              $this->exporter->export($actual),
               FALSE,
               sprintf(
                 '%s is not instance of expected class "%s".',
 
-                PHPUnit_Util_Type::export($actual),
+                $this->exporter->export($actual),
                 get_class($expected)
               )
             );
@@ -114,7 +114,14 @@ class PHPUnit_Framework_Comparator_Object extends PHPUnit_Framework_Comparator_A
         // CAUTION: this conditional clause is not tested
         if ($actual !== $expected) {
             try {
-                parent::assertEquals($this->toArray($expected), $this->toArray($actual), $delta, $canonicalize, $ignoreCase, $processed);
+                parent::assertEquals(
+                  $this->exporter->toArray($expected),
+                  $this->exporter->toArray($actual),
+                  $delta,
+                  $canonicalize,
+                  $ignoreCase,
+                  $processed
+                );
             }
 
             catch (PHPUnit_Framework_ComparisonFailure $e) {
@@ -129,17 +136,5 @@ class PHPUnit_Framework_Comparator_Object extends PHPUnit_Framework_Comparator_A
                 );
             }
         }
-    }
-
-    /**
-     * Converts an object to an array containing all of its private, protected
-     * and public properties.
-     *
-     * @param  object $object
-     * @return array
-     */
-    protected function toArray($object)
-    {
-        return PHPUnit_Util_Type::toArray($object);
     }
 }

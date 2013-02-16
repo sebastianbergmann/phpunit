@@ -48,6 +48,7 @@ require_once 'PHP/Timer/Autoload.php';
 require_once 'PHPUnit/Framework/MockObject/Autoload.php';
 require_once 'Text/Template/Autoload.php';
 require_once 'SebastianBergmann/Diff/autoload.php';
+require_once 'SebastianBergmann/Exporter/autoload.php';
 require_once 'SebastianBergmann/Version/autoload.php';
 
 spl_autoload_register(

@@ -179,9 +179,6 @@
       <file baseinstalldir="/" name="NamePrettifier.php" role="php" />
       <file baseinstalldir="/" name="ResultPrinter.php" role="php" />
      </dir>
-     <dir name="Type">
-      <file baseinstalldir="/" name="ExportContext.php" role="php" />
-     </dir>
      <file baseinstalldir="/" name="Configuration.php" role="php" />
      <file baseinstalldir="/" name="DeprecatedFeature.php" role="php" />
      <file baseinstalldir="/" name="ErrorHandler.php" role="php" />

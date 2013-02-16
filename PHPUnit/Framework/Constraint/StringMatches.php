@@ -70,10 +70,13 @@ class PHPUnit_Framework_Constraint_StringMatches extends PHPUnit_Framework_Const
      */
     public function __construct($string)
     {
+        parent::__construct($string);
+
         $this->pattern = $this->createPatternFromFormat(
             preg_replace('/\r\n/', "\n", $string)
         );
-        $this->string  = $string;
+
+        $this->string = $string;
     }
 
     protected function failureDescription($other)

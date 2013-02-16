@@ -16,8 +16,10 @@ before_script:
     - git clone --branch=master --depth=100 --quiet git://github.com/sebastianbergmann/phpunit-mock-objects.git vendor/phpunit-mock-objects
     - git clone --branch=master --depth=100 --quiet git://github.com/sebastianbergmann/php-timer.git vendor/php-timer
     - git clone --branch=master --depth=100 --quiet git://github.com/sebastianbergmann/diff.git vendor/diff
+    - git clone --branch=master --depth=100 --quiet git://github.com/sebastianbergmann/exporter.git vendor/exporter
     - git clone --branch=master --depth=100 --quiet git://github.com/sebastianbergmann/version.git vendor/version
     - ln -s ~/build/sebastianbergmann/phpunit/vendor/diff/src ~/build/sebastianbergmann/phpunit/vendor/SebastianBergmann/Diff
+    - ln -s ~/build/sebastianbergmann/phpunit/vendor/diff/src ~/build/sebastianbergmann/phpunit/vendor/SebastianBergmann/Exporter
     - ln -s ~/build/sebastianbergmann/phpunit/vendor/version/src ~/build/sebastianbergmann/phpunit/vendor/SebastianBergmann/Version
     - git clone --branch=master --depth=100 --quiet git://github.com/pear/pear-core.git vendor/pear-core
     - git clone --branch=trunk --depth=100 --quiet git://github.com/pear/Console_Getopt.git vendor/console-getopt

@@ -103,6 +103,8 @@ class PHPUnit_Framework_Constraint_IsType extends PHPUnit_Framework_Constraint
      */
     public function __construct($type)
     {
+        parent::__construct();
+
         if (!isset($this->types[$type])) {
             throw new PHPUnit_Framework_Exception(
               sprintf(

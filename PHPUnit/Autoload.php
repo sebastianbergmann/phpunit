@@ -48,6 +48,7 @@ require_once 'PHP/Timer/Autoload.php';
 require_once 'PHPUnit/Framework/MockObject/Autoload.php';
 require_once 'Text/Template/Autoload.php';
 require_once 'SebastianBergmann/Diff/autoload.php';
+require_once 'SebastianBergmann/Exporter/autoload.php';
 require_once 'SebastianBergmann/Version/autoload.php';
 
 spl_autoload_register(
@@ -180,7 +181,6 @@ spl_autoload_register(
             'phpunit_util_testdox_resultprinter_text' => '/Util/TestDox/ResultPrinter/Text.php',
             'phpunit_util_testsuiteiterator' => '/Util/TestSuiteIterator.php',
             'phpunit_util_type' => '/Util/Type.php',
-            'phpunit_util_type_exportcontext' => '/Util/Type/ExportContext.php',
             'phpunit_util_xml' => '/Util/XML.php'
           );
 

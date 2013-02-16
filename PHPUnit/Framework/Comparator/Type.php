@@ -96,7 +96,7 @@ class PHPUnit_Framework_Comparator_Type extends PHPUnit_Framework_Comparator
               sprintf(
                 '%s does not match expected type "%s".',
 
-                PHPUnit_Util_Type::shortenedExport($actual),
+                $this->exporter->shortenedExport($actual),
                 gettype($expected)
               )
             );

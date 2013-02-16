@@ -29,6 +29,7 @@
         "phpunit/phpunit-mock-objects": "1.3.*@dev",
         "symfony/yaml": ">=2.1.0,<2.2.0",
         "sebastian/diff": ">=1.0.0",
+        "sebastian/exporter": ">=1.0.0",
         "sebastian/version": ">=1.0.0",
         "ext-dom": "*",
         "ext-pcre": "*",

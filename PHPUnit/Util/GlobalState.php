@@ -411,6 +411,7 @@ class PHPUnit_Util_GlobalState
             self::addDirectoryContainingClassToPHPUnitFilesList('PHPUnit_Extensions_Story_TestCase', 2);
             self::addDirectoryContainingClassToPHPUnitFilesList('Text_Template');
             self::addDirectoryContainingClassToPHPUnitFilesList('SebastianBergmann\Diff');
+            self::addDirectoryContainingClassToPHPUnitFilesList('SebastianBergmann\Exporter\Exporter');
             self::addDirectoryContainingClassToPHPUnitFilesList('SebastianBergmann\Version');
         }
 
