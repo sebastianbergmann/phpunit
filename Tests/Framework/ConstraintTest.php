@@ -1876,57 +1876,6 @@ EOF
     }
 
     /**
-     * @covers PHPUnit_Framework_Constraint_Callback
-     * @expectedException InvalidArgumentException
-     * @expectedExceptionMessage Specified callback <invalid callback> is not callable.
-     */
-    public function testConstraintCallbackInvalidFunctionArgument()
-    {
-        PHPUnit_Framework_Assert::callback('invalid callback');
-    }
-
-    /**
-     * @covers PHPUnit_Framework_Constraint_Callback
-     * @expectedException InvalidArgumentException
-     * @expectedExceptionMessage Specified callback <empty array> is not callable.
-     */
-    public function testConstraintCallbackInvalidArrayArgumentWithEmptyArray()
-    {
-        PHPUnit_Framework_Assert::callback(array());
-    }
-
-    /**
-     * @covers PHPUnit_Framework_Constraint_Callback
-     * @expectedException InvalidArgumentException
-     * @expectedExceptionMessage Specified callback <array without indexes 0 and 1 set> is not callable.
-     */
-    public function testConstraintCallbackInvalidArrayArgumentWithBadArray()
-    {
-        PHPUnit_Framework_Assert::callback(array(3 => 'foo'));
-    }
-
-
-    /**
-     * @covers PHPUnit_Framework_Constraint_Callback
-     * @expectedException InvalidArgumentException
-     * @expectedExceptionMessage Specified callback <Framework_ConstraintTest::invalid callback> is not callable.
-     */
-    public function testConstraintCallbackInvalidArrayArgumentWithObject()
-    {
-        PHPUnit_Framework_Assert::callback(array($this, 'invalid callback'));
-    }
-
-    /**
-     * @covers PHPUnit_Framework_Constraint_Callback
-     * @expectedException InvalidArgumentException
-     * @expectedExceptionMessage Specified callback <Framework_ConstraintTest::invalid callback> is not callable.
-     */
-    public function testConstraintCallbackInvalidArrayArgumentWithClassname()
-    {
-        PHPUnit_Framework_Assert::callback(array('Framework_ConstraintTest', 'invalid callback'));
-    }
-
-    /**
      * @covers PHPUnit_Framework_Constraint_IsEqual
      * @covers PHPUnit_Framework_Constraint_LessThan
      * @covers PHPUnit_Framework_Constraint_Or

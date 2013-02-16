@@ -61,16 +61,8 @@ class PHPUnit_Framework_Constraint_Callback extends PHPUnit_Framework_Constraint
      * @param callable $callback
      * @throws InvalidArgumentException
      */
-    public function __construct($callback)
+    public function __construct(callable $callback)
     {
-        if (!is_callable($callback)) {
-            throw new InvalidArgumentException(
-              sprintf(
-                'Specified callback <%s> is not callable.',
-                $this->callbackToString($callback)
-              )
-            );
-        }
         $this->callback = $callback;
     }
 
