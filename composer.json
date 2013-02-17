@@ -37,6 +37,15 @@
         "ext-reflection": "*",
         "ext-spl": "*"
     },
+    "require-dev": {
+        "pear-pear/pear": "1.9.4"
+    },
+    "repositories": [
+        {
+            "type": "pear",
+            "url": "http://pear.php.net"
+        }
+    ],
     "suggest": {
         "phpunit/php-invoker": ">=1.2.0",
         "ext-json": "*",
