@@ -2,7 +2,6 @@ language: php
 
 php:
     - 5.4
-    - 5.5
 
 env:
     - INSTALL_PHP_INVOKER=0
