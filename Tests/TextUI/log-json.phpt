@@ -67,6 +67,6 @@ PHPUnit %s by Sebastian Bergmann.
     "output": ""
 }
 
-Time: %i %s, Memory: %sMb
+Time: %s, Memory: %sMb
 
 OK (3 tests, 3 assertions)
