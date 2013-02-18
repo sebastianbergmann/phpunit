@@ -81,7 +81,7 @@ abstract class PHPUnit_Util_PHP
     public function runJob($job, PHPUnit_Framework_Test $test = NULL, PHPUnit_Framework_TestResult $result = NULL)
     {
         $process = proc_open(
-          PHP_BINARY,
+          escapeshellarg(PHP_BINARY),
           array(
             0 => array('pipe', 'r'),
             1 => array('pipe', 'w'),
