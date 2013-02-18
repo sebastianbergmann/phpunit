@@ -163,7 +163,7 @@ class PHPUnit_Extensions_PhptTestCase implements PHPUnit_Framework_Test, PHPUnit
         $timer = new PHP_Timer;
         $timer->start();
 
-        $runner->_php = PHP_BINARY;
+        $runner->_php = escapeshellarg(PHP_BINARY);
         $buffer = $runner->run($this->filename, $options);
         $time   = $timer->stop();
 
