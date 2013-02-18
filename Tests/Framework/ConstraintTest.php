@@ -933,12 +933,6 @@ EOF
      */
     public function testConstraintIsEqual2($expected, $actual, $message)
     {
-        if ($expected instanceof SplObjectStorage) {
-            $this->markTestSkipped(
-              'generates different output on different platforms'
-            );
-        }
-
         $constraint = PHPUnit_Framework_Assert::equalTo($expected);
 
         try {
