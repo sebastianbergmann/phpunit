@@ -8,10 +8,9 @@ env:
     - INSTALL_PHP_INVOKER=1
 
 before_script:
-    - composer install --dev --prefer-source
-    - sh -c "if [ '$INSTALL_PHP_INVOKER' = '1' ]; then git clone --branch=master --depth=100 --quiet git://github.com/sebastianbergmann/php-invoker.git vendor/php-invoker; fi"
+    - sh -c "if [ '$INSTALL_PHP_INVOKER' = '1' ]; then composer require --dev --prefer-source phpunit/php-invoker:\>=1.2.0; else composer install --dev --prefer-source; fi"
 
-script: php -d include_path=vendor/php-invoker ./phpunit.php --configuration ./build/travis-ci.xml
+script: ./phpunit.php --configuration ./build/travis-ci.xml
 
 notifications:
   email: false
