@@ -16,4 +16,7 @@ script: php -d include_path=vendor:vendor/php-invoker -d auto_prepend_file=vendo
 
 notifications:
   email: false
-  irc: "irc.freenode.org#phpunit"
+  irc: 
+    channels: 
+      - "irc.freenode.org#phpunit"
+    use_notice: true
