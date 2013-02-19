@@ -17,11 +17,11 @@ The following commands can be used to perform the initial checkout of PHPUnit:
     git clone git://github.com/sebastianbergmann/phpunit.git
     cd phpunit
 
-To retrieve PHPUnit's dependencies, you'll need [composer](http://getcomposer.org/download/). If you don't have composer installed, you can download the latest phar with the following command:
+To retrieve PHPUnit's dependencies, you can use [Composer](http://getcomposer.org/download/). If you do not have Composer installed, you can download the latest PHARr with the following command:
 
     curl -O http://getcomposer.org/composer.phar
     
-Once composer is installed, you can fetch PHPUnit's dependencies with the following command:
+Once Composer is installed, you can fetch PHPUnit's dependencies with the following command:
 
     php composer.phar install --dev
 
