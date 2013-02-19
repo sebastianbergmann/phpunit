@@ -320,4 +320,9 @@ class Util_XMLTest extends PHPUnit_Framework_TestCase
 
         $this->assertEquals($tag, $converted);
     }
+
+    public function testPrepareStringEscapesChars()
+    {
+        $this->assertEquals('&#x1b;', PHPUnit_Util_XML::prepareString("\033"));
+    }
 }
