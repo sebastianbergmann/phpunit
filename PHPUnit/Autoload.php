@@ -42,6 +42,12 @@
  * @since      File available since Release 3.5.0
  */
 
+if (is_dir(dirname(dirname(__FILE__)) . '/vendor/composer') &&
+    is_file(dirname(dirname(__FILE__)) . '/vendor/autoload.php')) {
+    require_once dirname(dirname(__FILE__)) . '/vendor/autoload.php';
+    return;
+}
+
 require_once 'File/Iterator/Autoload.php';
 require_once 'PHP/CodeCoverage/Autoload.php';
 require_once 'PHP/Timer/Autoload.php';
