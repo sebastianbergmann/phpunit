@@ -295,7 +295,7 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
         if (isset($arguments['junitLogfile'])) {
             $result->addListener(
               new PHPUnit_Util_Log_JUnit(
-                $arguments['junitLogfile'], $arguments['logIncompleteSkipped']
+                $arguments['junitLogfile'], $arguments['logIncompleteSkipped'], $arguments['logIncompleteAsSkipped'], $arguments['logSkippedAsSkipped']
               )
             );
         }
@@ -705,6 +705,16 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
                     !isset($arguments['logIncompleteSkipped'])) {
                     $arguments['logIncompleteSkipped'] = $loggingConfiguration['logIncompleteSkipped'];
                 }
+                
+                if (isset($loggingConfiguration['logIncompleteAsSkipped']) &&
+                    !isset($arguments['logIncompleteAsSkipped'])) {
+                    $arguments['logIncompleteAsSkipped'] = $loggingConfiguration['logIncompleteAsSkipped'];
+                }
+                
+    			if (isset($loggingConfiguration['logSkippedAsSkipped']) &&
+                    !isset($arguments['logSkippedAsSkipped'])) {
+                    $arguments['logSkippedAsSkipped'] = $loggingConfiguration['logSkippedAsSkipped'];
+                }
             }
 
             if (isset($loggingConfiguration['testdox-html']) &&
@@ -779,6 +789,8 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
         $arguments['excludeGroups']                  = isset($arguments['excludeGroups'])                  ? $arguments['excludeGroups']                  : array();
         $arguments['groups']                         = isset($arguments['groups'])                         ? $arguments['groups']                         : array();
         $arguments['logIncompleteSkipped']           = isset($arguments['logIncompleteSkipped'])           ? $arguments['logIncompleteSkipped']           : FALSE;
+        $arguments['logIncompleteAsSkipped']         = isset($arguments['logIncompleteAsSkipped'])         ? $arguments['logIncompleteAsSkipped']         : FALSE;
+        $arguments['logSkippedAsSkipped']            = isset($arguments['logSkippedAsSkipped'])            ? $arguments['logSkippedAsSkipped']            : FALSE;
         $arguments['processIsolation']               = isset($arguments['processIsolation'])               ? $arguments['processIsolation']               : FALSE;
         $arguments['repeat']                         = isset($arguments['repeat'])                         ? $arguments['repeat']                         : FALSE;
         $arguments['reportCharset']                  = isset($arguments['reportCharset'])                  ? $arguments['reportCharset']                  : 'UTF-8';

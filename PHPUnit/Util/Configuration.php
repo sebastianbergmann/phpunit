@@ -135,7 +135,7 @@
  *     <log type="json" target="/tmp/logfile.json"/>
  *     <log type="plain" target="/tmp/logfile.txt"/>
  *     <log type="tap" target="/tmp/logfile.tap"/>
- *     <log type="junit" target="/tmp/logfile.xml" logIncompleteSkipped="false"/>
+ *     <log type="junit" target="/tmp/logfile.xml" logIncompleteSkipped="false" logIncompleteAsSkipped="false" logSkippedAsSkipped="false"/>
  *     <log type="testdox-html" target="/tmp/testdox.html"/>
  *     <log type="testdox-text" target="/tmp/testdox.txt"/>
  *   </logging>
@@ -421,6 +421,20 @@ class PHPUnit_Util_Configuration
                 if ($log->hasAttribute('logIncompleteSkipped')) {
                     $result['logIncompleteSkipped'] = $this->getBoolean(
                       (string)$log->getAttribute('logIncompleteSkipped'),
+                      FALSE
+                    );
+                }
+                
+                if ($log->hasAttribute('logIncompleteAsSkipped')) {
+                    $result['logIncompleteAsSkipped'] = $this->getBoolean(
+                      (string)$log->getAttribute('logIncompleteAsSkipped'),
+                      FALSE
+                    );
+                }
+                
+                if ($log->hasAttribute('logSkippedAsSkipped')) {
+                    $result['logSkippedAsSkipped'] = $this->getBoolean(
+                      (string)$log->getAttribute('logSkippedAsSkipped'),
                       FALSE
                     );
                 }
