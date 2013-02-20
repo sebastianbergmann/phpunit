@@ -14,4 +14,7 @@ script: ./phpunit.php --configuration ./build/travis-ci.xml
 
 notifications:
   email: false
-  irc: "irc.freenode.org#phpunit"
+  irc: 
+    channels: 
+      - "irc.freenode.org#phpunit"
+    use_notice: true
