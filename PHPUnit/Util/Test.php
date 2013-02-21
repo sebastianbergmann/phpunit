@@ -59,6 +59,7 @@ class PHPUnit_Util_Test
     const REGEX_DATA_PROVIDER      = '/@dataProvider\s+([a-zA-Z0-9._:-\\\\x7f-\xff]+)/';
     const REGEX_EXPECTED_EXCEPTION = '(@expectedException\s+([:.\w\\\\x7f-\xff]+)(?:[\t ]+(\S*))?(?:[\t ]+(\S*))?\s*$)m';
     const REGEX_REQUIRES_VERSION   = '/@requires\s+(?P<name>PHP(?:Unit)?)\s+(?P<value>[\d\.-]+(dev|(RC|alpha|beta)[\d\.])?)[ \t]*\r?$/m';
+    const REGEX_REQUIRES_OS        = '/@requires\s+OS\s+(?P<value>.+)\r?$/m';
     const REGEX_REQUIRES           = '/@requires\s+(?P<name>function|extension)\s(?P<value>([^ ]+))\r?$/m';
 
     const SMALL  = 0;
@@ -117,6 +118,12 @@ class PHPUnit_Util_Test
         $docComment .= "\n" . $reflector->getDocComment();
         $requires   = array();
 
+        if ($count = preg_match_all(self::REGEX_REQUIRES_OS, $docComment, $matches)) {
+            $requires['OS'] = sprintf(
+              '/%s/i',
+              addcslashes($matches['value'][$count - 1], '/')
+            );
+        }
         if ($count = preg_match_all(self::REGEX_REQUIRES_VERSION, $docComment, $matches)) {
             for ($i = 0; $i < $count; $i++) {
                 $requires[$matches['name'][$i]] = $matches['value'][$i];

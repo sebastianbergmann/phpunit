@@ -71,8 +71,16 @@ class RequirementsTest extends PHPUnit_Framework_TestCase
     }
 
     /**
+     * @requires OS Linux
+     */
+    public function testEleven()
+    {
+    }
+
+    /**
      * @requires PHP 99-dev
      * @requires PHPUnit 9-dev
+     * @requires OS DOESNOTEXIST
      * @requires function testFuncOne
      * @requires function testFuncTwo
      * @requires extension testExtOne
@@ -97,6 +105,13 @@ class RequirementsTest extends PHPUnit_Framework_TestCase
     }
 
     /**
+     * @requires OS .*
+     */
+    public function testExistingOs()
+    {
+    }
+
+    /**
      * @requires PHPUnit 1111111
      */
     public function testAlwaysSkip()
@@ -107,6 +122,13 @@ class RequirementsTest extends PHPUnit_Framework_TestCase
      * @requires PHP 9999999
      */
     public function testAlwaysSkip2()
+    {
+    }
+
+    /**
+     * @requires OS DOESNOTEXIST
+     */
+    public function testAlwaysSkip3()
     {
     }
 }

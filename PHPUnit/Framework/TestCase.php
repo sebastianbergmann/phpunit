@@ -196,6 +196,7 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
     private $required = array(
         'PHP' => NULL,
         'PHPUnit' => NULL,
+        'OS' => NULL,
         'functions' => array(),
         'extensions' => array()
     );
@@ -570,6 +571,10 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
                 $this->required['PHPUnit'] = $requirements['PHPUnit'];
             }
 
+            if (isset($requirements['OS'])) {
+                $this->required['OS'] = $requirements['OS'];
+            }
+
             if (isset($requirements['extensions'])) {
                 $this->required['extensions'] = $requirements['extensions'];
             }
@@ -606,6 +611,14 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
             $missingRequirements[] = sprintf(
               'PHPUnit %s (or later) is required.',
               $this->required['PHPUnit']
+            );
+        }
+
+        if ($this->required['OS'] &&
+            !preg_match($this->required['OS'], PHP_OS)) {
+            $missingRequirements[] = sprintf(
+              'Operating system matching %s is required.',
+              $this->required['OS']
             );
         }
 

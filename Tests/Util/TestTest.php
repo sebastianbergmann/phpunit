@@ -122,21 +122,23 @@ class Util_TestTest extends PHPUnit_Framework_TestCase
     public function provideRequirements()
     {
         return array(
-            array('testOne',   array()),
-            array('testTwo',   array('PHPUnit' => '1.0')),
-            array('testThree', array('PHP' => '2.0')),
-            array('testFour',  array('PHPUnit'=>'2.0', 'PHP' => '1.0')),
-            array('testFive',  array('PHP' => '5.4.0RC6')),
-            array('testSix',   array('PHP' => '5.4.0-alpha1')),
-            array('testSeven', array('PHP' => '5.4.0beta2')),
-            array('testEight', array('PHP' => '5.4-dev')),
-            array('testNine',  array('functions' => array('testFunc'))),
-            array('testTen',   array('extensions' => array('testExt'))),
+            array('testOne',    array()),
+            array('testTwo',    array('PHPUnit' => '1.0')),
+            array('testThree',  array('PHP' => '2.0')),
+            array('testFour',   array('PHPUnit'=>'2.0', 'PHP' => '1.0')),
+            array('testFive',   array('PHP' => '5.4.0RC6')),
+            array('testSix',    array('PHP' => '5.4.0-alpha1')),
+            array('testSeven',  array('PHP' => '5.4.0beta2')),
+            array('testEight',  array('PHP' => '5.4-dev')),
+            array('testNine',   array('functions' => array('testFunc'))),
+            array('testTen',    array('extensions' => array('testExt'))),
+            array('testEleven', array('OS' => '/Linux/i')),
             array(
                 'testAllPossibleRequirements',
                 array(
                     'PHP' => '99-dev',
                     'PHPUnit' => '9-dev',
+                    'OS' => '/DOESNOTEXIST/i',
                     'functions' => array(
                         'testFuncOne',
                         'testFuncTwo',
@@ -166,6 +168,7 @@ class Util_TestTest extends PHPUnit_Framework_TestCase
         $expectedAnnotations = array(
             'PHP' => '5.4',
             'PHPUnit' => '3.7',
+            'OS' => '/WINNT/i',
             'functions' => array(
                 'testFuncClass',
                 'testFuncMethod',

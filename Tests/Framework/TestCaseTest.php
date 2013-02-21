@@ -373,6 +373,18 @@ class Framework_TestCaseTest extends PHPUnit_Framework_TestCase
         );
     }
 
+    public function testSkipsIfRequiresNonExistingOs()
+    {
+        $test   = new RequirementsTest('testAlwaysSkip3');
+        $result = $test->run();
+
+        $this->assertEquals(1, $result->skippedCount());
+        $this->assertEquals(
+          'Operating system matching /DOESNOTEXIST/i is required.',
+          $test->getStatusMessage()
+        );
+    }
+
     public function testSkipsIfRequiresNonExistingFunction()
     {
         $test   = new RequirementsTest('testNine');
@@ -404,6 +416,7 @@ class Framework_TestCaseTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(
           'PHP 99-dev (or later) is required.' . PHP_EOL .
           'PHPUnit 9-dev (or later) is required.' . PHP_EOL .
+          'Operating system matching /DOESNOTEXIST/i is required.' . PHP_EOL .
           'Function testFuncOne is required.' . PHP_EOL .
           'Function testFuncTwo is required.' . PHP_EOL .
           'Extension testExtOne is required.' . PHP_EOL .
@@ -422,6 +435,13 @@ class Framework_TestCaseTest extends PHPUnit_Framework_TestCase
     public function testRequiringAnExistingExtensionDoesNotSkip()
     {
         $test   = new RequirementsTest('testExistingExtension');
+        $result = $test->run();
+        $this->assertEquals(0, $result->skippedCount());
+    }
+
+    public function testRequiringAnExistingOsDoesNotSkip()
+    {
+        $test   = new RequirementsTest('testExistingOs');
         $result = $test->run();
         $this->assertEquals(0, $result->skippedCount());
     }

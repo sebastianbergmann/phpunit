@@ -6,6 +6,7 @@ This is the list of changes for the PHPUnit 3.8 release series.
 PHPUnit 3.8.0
 -------------
 
+* Implemented #834: Added the `@requires OS` annotation.
 * Implemented #711: `coverage-text` now has an XML `showOnlySummary` option.
 * Implemented #719: The `--stderr` flag now respects `--colors` and `--debug`.
 * Implemented #773: Recursive and repeated arrays are more gracefully when comparison differences are exported.
