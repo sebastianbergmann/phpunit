@@ -1715,6 +1715,7 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
                 }
 
                 if (!isset($passedKeys[$dependency])) {
+                    $this->result->startTest($this);
                     $this->result->addError(
                       $this,
                       new PHPUnit_Framework_SkippedTestError(
@@ -1724,6 +1725,7 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
                       ),
                       0
                     );
+                    $this->result->endTest($this, 0);
 
                     return FALSE;
                 }
