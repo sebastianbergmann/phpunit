@@ -1,2 +1,2 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<phpunit printerFile="tests/_files/CustomPrinter.php" printerClass="CustomPrinter" />
+<phpunit printerFile="Tests/_files/CustomPrinter.php" printerClass="CustomPrinter" />
