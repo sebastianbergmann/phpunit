@@ -509,15 +509,6 @@ class PHPUnit_TextUI_Command
             }
         }
 
-        if (isset($this->arguments['stderr'])) {
-            $this->arguments['printer'] = new PHPUnit_TextUI_ResultPrinter(
-              'php://stderr',
-              isset($this->arguments['verbose']) ?: FALSE,
-              isset($this->arguments['colors']) ?: FALSE,
-              isset($this->arguments['debug']) ?: FALSE
-            );
-        }
-
         $this->handleCustomTestSuite();
 
         if (!isset($this->arguments['test'])) {
@@ -757,6 +748,10 @@ class PHPUnit_TextUI_Command
             if ($class->implementsInterface('PHPUnit_Framework_TestListener') &&
                 $class->isSubclassOf('PHPUnit_Util_Printer') &&
                 $class->isInstantiable()) {
+                if ($class->isSubclassOf('PHPUnit_TextUI_ResultPrinter')) {
+                    return $printerClass;
+                }
+
                 $printer = $class->newInstance();
             }
         }

@@ -6,6 +6,7 @@ This is the list of changes for the PHPUnit 3.8 release series.
 PHPUnit 3.8.0
 -------------
 
+* Implemented #835: Printers that extend `PHPUnit_TextUI_ResultPrinter` should have similar construction
 * Implemented #834: Added the `@requires OS` annotation.
 * Implemented #711: `coverage-text` now has an XML `showOnlySummary` option.
 * Implemented #719: The `--stderr` flag now respects `--colors` and `--debug`.

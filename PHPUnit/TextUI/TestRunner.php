@@ -227,8 +227,19 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
                 $arguments['printer'] instanceof PHPUnit_Util_Printer) {
                 $this->printer = $arguments['printer'];
             } else {
-                $this->printer = new PHPUnit_TextUI_ResultPrinter(
-                  NULL,
+                $printerClass = 'PHPUnit_TextUI_ResultPrinter';
+                if (isset($arguments['printer']) &&
+                    is_string($arguments['printer']) &&
+                    class_exists($arguments['printer'], FALSE)) {
+                    $class = new ReflectionClass($arguments['printer']);
+
+                    if ($class->isSubclassOf('PHPUnit_TextUI_ResultPrinter')) {
+                        $printerClass = $arguments['printer'];
+                    }
+                }
+
+                $this->printer = new $printerClass(
+                  isset($arguments['stderr']) ? 'php://stderr' : NULL,
                   $arguments['verbose'],
                   $arguments['colors'],
                   $arguments['debug']
