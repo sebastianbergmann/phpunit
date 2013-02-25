@@ -42,6 +42,8 @@
  * @since      File available since Release 1.0.0
  */
 
+use SebastianBergmann\Exporter\Exporter;
+
 /**
  * Represents a static invocation.
  *
@@ -123,6 +125,8 @@ class PHPUnit_Framework_MockObject_Invocation_Static implements PHPUnit_Framewor
      */
     public function toString()
     {
+        $exporter = new Exporter;
+
         return sprintf(
           "%s::%s(%s)",
 
@@ -131,7 +135,7 @@ class PHPUnit_Framework_MockObject_Invocation_Static implements PHPUnit_Framewor
           join(
             ', ',
             array_map(
-              array('PHPUnit_Util_Type', 'shortenedExport'),
+              array($exporter, 'shortenedExport'),
               $this->parameters
             )
           )
