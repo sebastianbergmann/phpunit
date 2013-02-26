@@ -12,6 +12,7 @@ PHPUnit 3.8.0
 * Implemented #719: The `--stderr` flag now respects `--colors` and `--debug`.
 * Implemented #773: Recursive and repeated arrays are more gracefully when comparison differences are exported.
 * A test will now fail in strict mode when it uses the `@covers` annotation and code that is not expected to be covered is executed.
+* Fixed #240: XML strings are escaped by removing invalid characters.
 * Fixed #261: `setUp()` and `setUpBeforeClass()` are run before filters are applied.
 * Fixed #541: Excluded groups are counted towards total number of tests being executed.
 * Fixed #789: PHP INI settings would not be passed to child processes.
