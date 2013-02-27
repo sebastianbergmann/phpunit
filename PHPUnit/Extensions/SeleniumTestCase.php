@@ -147,6 +147,17 @@ abstract class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_Tes
      */
     protected $wait = 5;
 
+    protected function do_post_request($url, $data)
+    {
+        $params = array('http' => array(
+                  'method' => 'POST',
+                  'content' => $data
+                ));
+        $ctx = stream_context_create($params);
+        $fp = @fopen($url, 'rb', false, $ctx);
+        return $fp;
+    }
+
     /**
      * @param  string $name
      * @param  array  $browser
@@ -1514,25 +1525,26 @@ abstract class PHPUnit_Extensions_SeleniumTestCase extends PHPUnit_Framework_Tes
      * @author Bjoern Schotte <schotte@mayflower.de>
      * @since  Method available since Release 3.1.0
      */
-    protected function doCommand($command, array $arguments = array())
+  protected function doCommand($command, array $arguments = array())
     {
         $url = sprintf(
-          'http://%s:%s/selenium-server/driver/?cmd=%s',
-          $this->host,
-          $this->port,
-          urlencode($command)
+            'http://%s:%s/selenium-server/driver/',
+            $this->host,
+            $this->port
         );
 
+        $data = sprintf('cmd=%s', urlencode($command));
         for ($i = 0; $i < count($arguments); $i++) {
             $argNum = strval($i + 1);
-            $url .= sprintf('&%s=%s', $argNum, urlencode(trim($arguments[$i])));
+            $data .= sprintf('&%s=%s', $argNum, urlencode(trim($arguments[$i])));
         }
 
         if (isset(self::$sessionId[$this->host][$this->port][$this->browser])) {
-            $url .= sprintf('&%s=%s', 'sessionId', self::$sessionId[$this->host][$this->port][$this->browser]);
+            $data .= sprintf('&%s=%s', 'sessionId', self::$sessionId[$this->host][$this->port][$this->browser]);
         }
 
-        if (!$handle = @fopen($url, 'r')) {
+
+        if (!$handle = $this->do_post_request($url, $data)) {
             throw new RuntimeException(
               'Could not connect to the Selenium RC server.'
             );
