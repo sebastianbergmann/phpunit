@@ -47,6 +47,7 @@ require_once 'PHP/CodeCoverage/Autoload.php';
 require_once 'PHP/Timer/Autoload.php';
 require_once 'PHPUnit/Framework/MockObject/Autoload.php';
 require_once 'Text/Template/Autoload.php';
+require_once 'Symfony/Component/Yaml/autoloader.php';
 
 spl_autoload_register(
   function ($class)
