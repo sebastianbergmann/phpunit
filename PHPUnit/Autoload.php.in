@@ -56,6 +56,7 @@ require_once 'Text/Template/Autoload.php';
 require_once 'SebastianBergmann/Diff/autoload.php';
 require_once 'SebastianBergmann/Exporter/autoload.php';
 require_once 'SebastianBergmann/Version/autoload.php';
+require_once 'Symfony/Component/Yaml/autoloader.php';
 
 spl_autoload_register(
   function ($class)
