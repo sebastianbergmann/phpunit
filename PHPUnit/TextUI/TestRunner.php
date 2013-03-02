@@ -383,7 +383,10 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
             );
         }
 
-        $suite->setRunTestInSeparateProcess($arguments['processIsolation']);
+        if ($suite instanceof PHPUnit_Framework_TestSuite) {
+            $suite->setRunTestInSeparateProcess($arguments['processIsolation']);
+        }
+
         $suite->run($result);
 
         unset($suite);
