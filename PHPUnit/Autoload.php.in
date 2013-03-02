@@ -42,6 +42,10 @@
  * @since      File available since Release 3.5.0
  */
 
+if (defined('PHPUNIT_COMPOSER_INSTALL')) {
+    return;
+}
+
 require_once 'File/Iterator/Autoload.php';
 require_once 'PHP/CodeCoverage/Autoload.php';
 require_once 'PHP/Timer/Autoload.php';
