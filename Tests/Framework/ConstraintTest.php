@@ -45,6 +45,7 @@
 
 require_once dirname(__DIR__) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'ClassWithNonPublicAttributes.php';
 require_once dirname(__DIR__) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'TestIterator.php';
+require_once dirname(__DIR__) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'DummyException.php';
 
 /**
  *
@@ -3500,6 +3501,37 @@ Failed asserting that actual size 2 does not match expected size 2.
 EOF
               ,
               PHPUnit_Framework_TestFailure::exceptionToString($e)
+            );
+
+            return;
+        }
+
+        $this->fail();
+    }
+
+    /**
+     * @covers PHPUnit_Framework_Constraint_Exception
+     * @covers PHPUnit_Framework_TestFailure::exceptionToString
+     */
+    public function testConstraintException()
+    {
+        $constraint = new PHPUnit_Framework_Constraint_Exception('FoobarException');
+        $exception = new DummyException('Test');
+        $stackTrace = $exception->getTraceAsString();
+
+        try {
+            $constraint->evaluate($exception);
+        }
+
+        catch (PHPUnit_Framework_ExpectationFailedException $e) {
+            $this->assertEquals(
+              <<<EOF
+Failed asserting that exception of type "DummyException" matches expected exception "FoobarException". Message was: "Test" at
+$stackTrace.
+
+EOF
+                ,
+                PHPUnit_Framework_TestFailure::exceptionToString($e)
             );
 
             return;
