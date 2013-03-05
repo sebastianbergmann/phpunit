@@ -46,7 +46,7 @@ foreach ($files as $file) {
     if (file_exists($file)) {
         require $file;
 
-        define('PHPUNIT_COMPOSER_INSTALL', TRUE);
+        define('PHPUNIT_COMPOSER_INSTALL', $file);
 
         break;
     }

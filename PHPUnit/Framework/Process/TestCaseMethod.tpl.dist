@@ -1,7 +1,7 @@
 <?php
 ini_set('display_errors', 'stderr');
 set_include_path('{include_path}');
-require 'PHPUnit/Autoload.php';
+require {autoload};
 ob_start();
 
 function __phpunit_run_isolated_test()
