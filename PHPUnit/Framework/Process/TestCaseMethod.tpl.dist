@@ -1,7 +1,14 @@
 <?php
 ini_set('display_errors', 'stderr');
 set_include_path('{include_path}');
-require {autoload};
+
+if ({composerAutoload}) {
+    require_once {composerAutoload};
+    define('PHPUNIT_COMPOSER_INSTALL', {composerAutoload});
+} else {
+    require 'PHPUnit/Autoload.php';
+}
+
 ob_start();
 
 function __phpunit_run_isolated_test()
