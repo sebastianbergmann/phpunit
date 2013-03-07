@@ -56,7 +56,7 @@
  */
 class PHPUnit_Runner_Version
 {
-    const VERSION = '3.7.16';
+    const VERSION = '3.7.17';
     protected static $version;
 
     /**
