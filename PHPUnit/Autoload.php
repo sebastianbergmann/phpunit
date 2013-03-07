@@ -46,10 +46,20 @@ if (defined('PHPUNIT_COMPOSER_INSTALL')) {
     return;
 }
 
-if (is_dir(dirname(dirname(__FILE__)) . '/vendor/composer') &&
-    is_file(dirname(dirname(__FILE__)) . '/vendor/autoload.php')) {
-    require_once dirname(dirname(__FILE__)) . '/vendor/autoload.php';
-    return;
+$paths = array(
+  '/..',
+  '/../../../..'
+);
+
+foreach ($paths as $path) {
+    $vendor = __DIR__ . $path . '/vendor';
+    if (is_dir($vendor . '/composer') &&
+        is_file($vendor . '/autoload.php')) {
+        require_once $vendor . '/autoload.php';
+        define('PHPUNIT_COMPOSER_INSTALL', $vendor . '/autoload.php');
+
+        return;
+    }
 }
 
 require_once 'File/Iterator/Autoload.php';
