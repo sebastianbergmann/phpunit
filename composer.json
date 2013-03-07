@@ -19,9 +19,13 @@
         "issues": "https://github.com/sebastianbergmann/phpunit-mock-objects/issues",
         "irc": "irc://irc.freenode.net/phpunit"
     },
+    "minimum-stability": "dev",
     "require": {
         "php": ">=5.4.7",
         "phpunit/php-text-template": ">=1.1.1"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "dev-master"
     },
     "suggest": {
         "ext-soap": "*"
