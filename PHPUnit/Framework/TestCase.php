@@ -1432,10 +1432,11 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
      * @param  string  $mockClassName
      * @param  array   $methods
      * @param  boolean $callOriginalConstructor
+     * @param  array   $options An array of options passed to SOAPClient::_construct
      * @return PHPUnit_Framework_MockObject_MockObject
      * @since  Method available since Release 3.4.0
      */
-    protected function getMockFromWsdl($wsdlFile, $originalClassName = '', $mockClassName = '', array $methods = array(), $callOriginalConstructor = TRUE)
+    protected function getMockFromWsdl($wsdlFile, $originalClassName = '', $mockClassName = '', array $methods = array(), $callOriginalConstructor = TRUE, array $options = array())
     {
         if ($originalClassName === '') {
             $originalClassName = str_replace(
@@ -1446,7 +1447,7 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
         if (!class_exists($originalClassName)) {
           eval(
             $this->mockObjectGenerator->generateClassFromWsdl(
-              $wsdlFile, $originalClassName, $methods
+              $wsdlFile, $originalClassName, $methods, $options
             )
           );
         }
@@ -1454,7 +1455,7 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
         return $this->getMock(
           $originalClassName,
           $methods,
-          array('', array()),
+          array('', $options),
           $mockClassName,
           $callOriginalConstructor,
           FALSE,
