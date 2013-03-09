@@ -416,6 +416,7 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
     /**
      * @param string $expectedRegex
      * @since Method available since Release 3.6.0
+     * @throws PHPUnit_Framework_Exception
      */
     public function expectOutputRegex($expectedRegex)
     {
@@ -973,6 +974,7 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
      * Override to run the test and assert its state.
      *
      * @return mixed
+     * @throws Exception|PHPUnit_Framework_Exception
      * @throws PHPUnit_Framework_Exception
      */
     protected function runTest()
@@ -1697,8 +1699,6 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
     }
 
     /**
-     *
-     *
      * @param  mixed $value, ...
      * @return PHPUnit_Framework_MockObject_Stub_ConsecutiveCalls
      * @since  Method available since Release 3.0.0
@@ -1927,6 +1927,7 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
      *
      * @param Exception $e
      * @since Method available since Release 3.4.0
+     * @throws Exception
      */
     protected function onNotSuccessfulTest(Exception $e)
     {
