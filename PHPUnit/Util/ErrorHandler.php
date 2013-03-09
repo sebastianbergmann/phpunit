@@ -64,6 +64,8 @@ require_once 'PHPUnit/Framework/Error/Deprecated.php';
 class PHPUnit_Util_ErrorHandler
 {
     protected static $errorStack = array();
+    protected static $exceptionStack = array();
+    protected static $deferred = FALSE;
 
     /**
      * Returns the error stack.
@@ -73,6 +75,36 @@ class PHPUnit_Util_ErrorHandler
     public static function getErrorStack()
     {
         return self::$errorStack;
+    }
+
+    /**
+     * Returns the exception stack
+     *
+     * @return array
+     */
+    public static function getExceptionStack()
+    {
+        return self::$exceptionStack;
+    }
+
+    /**
+     * Frees the exception stack
+     *
+     * @return array
+     */
+    public static function freeExceptionStack()
+    {
+        self::$exceptionStack = array();
+    }
+
+    /**
+     * Defers throwing resulting exceptions
+     *
+     * @param bool $deferred
+     */
+    public static function setDeferred($deferred = TRUE)
+    {
+        self::$deferred = $deferred;
     }
 
     /**
@@ -127,6 +159,14 @@ class PHPUnit_Util_ErrorHandler
             $exception = 'PHPUnit_Framework_Error';
         }
 
-        throw new $exception($errstr, $errno, $errfile, $errline);
+        $Exception = new $exception($errstr, $errno, $errfile, $errline);
+        if (self::$deferred) {
+            self::$exceptionStack[] = $Exception;
+            return TRUE;
+        }
+
+        else {
+            throw $Exception;
+        }
     }
 }

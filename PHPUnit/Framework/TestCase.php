@@ -476,6 +476,17 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
     }
 
     /**
+     * @param  mixed   $exceptionName
+     * @param  string  $exceptionMessage
+     * @param  integer $exceptionCode
+     */
+    public function setExpectedExceptionDeferred($exceptionName, $exceptionMessage = '', $exceptionCode = NULL)
+    {
+        $this->setExpectedException($exceptionName, $exceptionMessage, $exceptionCode);
+        PHPUnit_Util_ErrorHandler::setDeferred();
+    }
+
+    /**
      * @since  Method available since Release 3.4.0
      */
     protected function setExpectedExceptionFromAnnotation()
@@ -994,6 +1005,7 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
             $this->fail($e->getMessage());
         }
 
+        $e = null;
         try {
             $testResult = $method->invokeArgs(
               $this, array_merge($this->data, $this->dependencyInput)
@@ -1001,6 +1013,14 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
         }
 
         catch (Exception $e) {
+        }
+        if (!$e) {
+            $exceptionStack = PHPUnit_Util_ErrorHandler::getExceptionStack();
+            $e = reset($exceptionStack);
+        }
+        PHPUnit_Util_ErrorHandler::freeExceptionStack();
+        PHPUnit_Util_ErrorHandler::setDeferred(false);
+        if ($e) {
             $checkException = FALSE;
 
             if (is_string($this->expectedException)) {
