@@ -43,6 +43,7 @@
  */
 
 require_once dirname(__DIR__) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'Success.php';
+require_once dirname(__DIR__) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'BaseTestListenerSample.php';
 
 /**
  *
@@ -59,21 +60,11 @@ class Framework_BaseTestListenerTest extends PHPUnit_Framework_TestCase
     public function testEndEventsAreCounted()
     {
         $this->result = new PHPUnit_Framework_TestResult;
-        $listener = new Tests_Framework_BaseTestListenerSample();
+        $listener = new BaseTestListenerSample();
         $this->result->addListener($listener);
         $test = new Success;
         $test->run($this->result);
 
         $this->assertEquals(1, $listener->endCount);
-    }
-}
-
-class Tests_Framework_BaseTestListenerSample extends PHPUnit_Framework_BaseTestListener
-{
-    public $endCount = 0;
-
-    public function endTest(PHPUnit_Framework_Test $test, $time)
-    {
-        $this->endCount++;
     }
 }
