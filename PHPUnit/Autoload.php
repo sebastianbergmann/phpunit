@@ -88,6 +88,7 @@ spl_autoload_register(
             'phpunit_extensions_ticketlistener' => '/Extensions/TicketListener.php',
             'phpunit_framework_assert' => '/Framework/Assert.php',
             'phpunit_framework_assertionfailederror' => '/Framework/AssertionFailedError.php',
+            'phpunit_framework_basetestlistener' => '/Framework/BaseTestListener.php',
             'phpunit_framework_comparator' => '/Framework/Comparator.php',
             'phpunit_framework_comparator_array' => '/Framework/Comparator/Array.php',
             'phpunit_framework_comparator_domdocument' => '/Framework/Comparator/DOMDocument.php',
