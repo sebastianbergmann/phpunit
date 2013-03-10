@@ -48,7 +48,7 @@
  </target>
 
  <target name="phpab" description="Generate autoloader scripts">
-  <exec executable="phpab" passthru="true">
+  <exec executable="phpab">
    <arg value="--output" />
    <arg path="PHPUnit/Autoload.php" />
    <arg value="--template" />
