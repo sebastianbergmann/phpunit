@@ -56,7 +56,7 @@
  * @link       http://www.phpunit.de/
  * @since      Class available since Release 3.8.0
  */
-class PHPUnit_Framework_BaseTestListener implements PHPUnit_Framework_TestListener
+abstract class PHPUnit_Framework_BaseTestListener implements PHPUnit_Framework_TestListener
 {
     public function addError(PHPUnit_Framework_Test $test, Exception $e, $time) {}
 
