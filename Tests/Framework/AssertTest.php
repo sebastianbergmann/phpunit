@@ -2848,6 +2848,29 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
     /**
      * @covers PHPUnit_Framework_Assert::assertTag
      */
+    public function testAssertTagCdataContentTrue()
+    {
+        $matcher = array('tag' => 'script',
+                         'content' => 'alert(\'Hello, world!\');');
+        $this->assertTag($matcher, $this->html);
+    }
+
+    /**
+     * @covers            PHPUnit_Framework_Assert::assertTag
+     * @expectedException PHPUnit_Framework_AssertionFailedError
+     */
+    public function testAssertTagCdataontentFalse()
+    {
+        $matcher = array('tag' => 'script',
+                         'content' => 'asdf');
+        $this->assertTag($matcher, $this->html);
+    }
+
+
+
+    /**
+     * @covers PHPUnit_Framework_Assert::assertTag
+     */
     public function testAssertTagAttributesTrueA()
     {
         $matcher = array('tag' => 'span',
