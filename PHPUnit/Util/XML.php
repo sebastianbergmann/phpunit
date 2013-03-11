@@ -908,7 +908,8 @@ class PHPUnit_Util_XML
         $result = '';
 
         foreach ($node->childNodes as $childNode) {
-            if ($childNode->nodeType === XML_TEXT_NODE) {
+            if ($childNode->nodeType === XML_TEXT_NODE ||
+                $childNode->nodeType === XML_CDATA_SECTION_NODE) {
                 $result .= trim($childNode->data) . ' ';
             } else {
                 $result .= self::getNodeText($childNode);
