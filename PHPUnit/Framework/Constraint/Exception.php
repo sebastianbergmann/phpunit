@@ -66,6 +66,7 @@ class PHPUnit_Framework_Constraint_Exception extends PHPUnit_Framework_Constrain
      */
     public function __construct($className)
     {
+        parent::__construct();
         $this->className = $className;
     }
 
@@ -94,8 +95,9 @@ class PHPUnit_Framework_Constraint_Exception extends PHPUnit_Framework_Constrain
     {
         if ($other !== NULL) {
             $message = '';
-            if ($other instanceof Exception && $other->getMessage()) {
-                $message = '. Message was: "' . $other->getMessage() . '"';
+            if ($other instanceof Exception) {
+                $message = '. Message was: "' . $other->getMessage() . '" at'
+                        . "\n" . $other->getTraceAsString();
             }
             return sprintf(
               'exception of type "%s" matches expected exception "%s"%s',

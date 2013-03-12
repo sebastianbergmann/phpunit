@@ -18,6 +18,6 @@ PHPUnit %s by Sebastian Bergmann.
 
 <html><body><h2 id="BankAccountTest">BankAccount</h2><ul>...<li>Balance is initially zero</li><li>Balance cannot become negative</li></ul></body></html>
 
-Time: %i %s, Memory: %sMb
+Time: %s, Memory: %sMb
 
 OK (3 tests, 3 assertions)

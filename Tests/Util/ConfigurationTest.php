@@ -298,6 +298,7 @@ class Util_ConfigurationTest extends PHPUnit_Framework_TestCase
             'bootstrap' => '/path/to/bootstrap.php',
             'cacheTokens' => FALSE,
             'colors' => FALSE,
+            'stderr' => FALSE,
             'convertErrorsToExceptions' => TRUE,
             'convertNoticesToExceptions' => TRUE,
             'convertWarningsToExceptions' => TRUE,

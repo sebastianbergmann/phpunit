@@ -55,6 +55,7 @@
  *          bootstrap="/path/to/bootstrap.php"
  *          cacheTokens="false"
  *          colors="false"
+ *          stderr="false"
  *          convertErrorsToExceptions="true"
  *          convertNoticesToExceptions="true"
  *          convertWarningsToExceptions="true"
@@ -440,6 +441,12 @@ class PHPUnit_Util_Configuration
                       FALSE
                     );
                 }
+                if ($log->hasAttribute('showOnlySummary')) {
+                    $result['coverageTextShowOnlySummary'] = $this->getBoolean(
+                      (string)$log->getAttribute('showOnlySummary'),
+                      FALSE
+                    );
+                }
             }
 
             $result[$type] = $target;
@@ -571,6 +578,15 @@ class PHPUnit_Util_Configuration
         if ($root->hasAttribute('colors')) {
             $result['colors'] = $this->getBoolean(
               (string)$root->getAttribute('colors'), FALSE
+            );
+        }
+
+        /**
+         * Issue #657
+         */
+        if ($root->hasAttribute('stderr')) {
+            $result['stderr'] = $this->getBoolean(
+              (string)$root->getAttribute('stderr'), FALSE
             );
         }
 
@@ -816,7 +832,7 @@ class PHPUnit_Util_Configuration
             if ($testSuiteFilter && $directoryNode->parentNode->getAttribute('name') != $testSuiteFilter) {
                 continue;
             }
-            
+
             $directory = (string)$directoryNode->nodeValue;
 
             if (empty($directory)) {
@@ -864,7 +880,7 @@ class PHPUnit_Util_Configuration
             if ($testSuiteFilter && $fileNode->parentNode->getAttribute('name') != $testSuiteFilter) {
                 continue;
             }
-            
+
             $file = (string)$fileNode->nodeValue;
 
             if (empty($file)) {

@@ -57,6 +57,11 @@
 class PHPUnit_Util_XML
 {
     /**
+     * Escapes a string for the use in XML documents
+     * Any Unicode character is allowed, excluding the surrogate blocks, FFFE,
+     * and FFFF (not even as character reference).
+     * See http://www.w3.org/TR/xml/#charsets
+     *
      * @param  string $string
      * @return string
      * @author Kore Nordmann <mail@kore-nordmann.de>
@@ -64,14 +69,11 @@ class PHPUnit_Util_XML
      */
     public static function prepareString($string)
     {
-        return preg_replace_callback(
-          '/[\\x00-\\x04\\x0b\\x0c\\x0e-\\x1f\\x7f]/',
-          function ($matches)
-          {
-              return sprintf('&#x%02x;', ord($matches[0]));
-          },
+        return preg_replace(
+          '/[\\x00-\\x08\\x0b\\x0c\\x0e-\\x1f\\x7f]/',
+          '',
           htmlspecialchars(
-            PHPUnit_Util_String::convertToUtf8($string), ENT_COMPAT, 'UTF-8'
+            PHPUnit_Util_String::convertToUtf8($string), ENT_QUOTES, 'UTF-8'
           )
         );
     }
@@ -472,7 +474,7 @@ class PHPUnit_Util_XML
      * @param  string  $content
      * @param  mixed   $actual
      * @param  boolean $isHtml
-     * @return false|array
+     * @return boolean|array
      * @since  Method available since Release 3.3.0
      * @author Mike Naberezny <mike@maintainable.com>
      * @author Derek DeVries <derek@maintainable.com>
@@ -831,8 +833,7 @@ class PHPUnit_Util_XML
                 }
             }
 
-            $nodes    = $filtered;
-            $filtered = array();
+            $nodes = $filtered;
 
             if (empty($nodes)) {
                 return;

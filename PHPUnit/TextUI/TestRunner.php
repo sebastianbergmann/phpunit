@@ -129,6 +129,38 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
         return new PHPUnit_Framework_TestResult;
     }
 
+    private function processSuiteFilters(PHPUnit_Framework_TestSuite $suite, array $arguments) {
+        if (!$arguments['filter'] &&
+            empty($arguments['groups']) &&
+            empty($arguments['excludeGroups'])) {
+            return;
+        }
+
+        $filterFactory = new PHPUnit_Runner_Filter_Factory();
+
+        if(!empty($arguments['excludeGroups'])) {
+            $filterFactory->addFilter(
+                new ReflectionClass('PHPUnit_Runner_Filter_Group_Exclude'),
+                $arguments['excludeGroups']
+            );
+        }
+
+        if(!empty($arguments['groups'])) {
+            $filterFactory->addFilter(
+                new ReflectionClass('PHPUnit_Runner_Filter_Group_Include'),
+                $arguments['groups']
+            );
+        }
+
+        if($arguments['filter']) {
+            $filterFactory->addFilter(
+                new ReflectionClass('PHPUnit_Runner_Filter_Test'),
+                $arguments['filter']
+            );
+        }
+        $suite->injectFilter($filterFactory);
+    }
+
     /**
      * @param  PHPUnit_Framework_Test $suite
      * @param  array                  $arguments
@@ -137,6 +169,8 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
     public function doRun(PHPUnit_Framework_Test $suite, array $arguments = array())
     {
         $this->handleConfiguration($arguments);
+
+        $this->processSuiteFilters($suite, $arguments);
 
         if (isset($arguments['bootstrap'])) {
             $GLOBALS['__PHPUNIT_BOOTSTRAP'] = $arguments['bootstrap'];
@@ -154,9 +188,6 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
             $suite = new PHPUnit_Extensions_RepeatedTest(
               $suite,
               $arguments['repeat'],
-              $arguments['filter'],
-              $arguments['groups'],
-              $arguments['excludeGroups'],
               $arguments['processIsolation']
             );
         }
@@ -196,8 +227,19 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
                 $arguments['printer'] instanceof PHPUnit_Util_Printer) {
                 $this->printer = $arguments['printer'];
             } else {
-                $this->printer = new PHPUnit_TextUI_ResultPrinter(
-                  NULL,
+                $printerClass = 'PHPUnit_TextUI_ResultPrinter';
+                if (isset($arguments['printer']) &&
+                    is_string($arguments['printer']) &&
+                    class_exists($arguments['printer'], FALSE)) {
+                    $class = new ReflectionClass($arguments['printer']);
+
+                    if ($class->isSubclassOf('PHPUnit_TextUI_ResultPrinter')) {
+                        $printerClass = $arguments['printer'];
+                    }
+                }
+
+                $this->printer = new $printerClass(
+                  isset($arguments['stderr']) ? 'php://stderr' : NULL,
                   $arguments['verbose'],
                   $arguments['colors'],
                   $arguments['debug']
@@ -276,6 +318,10 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
               $arguments['addUncoveredFilesFromWhitelist']
             );
 
+            $codeCoverage->setCheckForUnintentionallyCoveredCode(
+              $arguments['strict']
+            );
+
             $codeCoverage->setProcessUncoveredFilesFromWhitelist(
               $arguments['processUncoveredFilesFromWhitelist']
             );
@@ -337,13 +383,11 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
             );
         }
 
-        $suite->run(
-          $result,
-          $arguments['filter'],
-          $arguments['groups'],
-          $arguments['excludeGroups'],
-          $arguments['processIsolation']
-        );
+        if ($suite instanceof PHPUnit_Framework_TestSuite) {
+            $suite->setRunTestInSeparateProcess($arguments['processIsolation']);
+        }
+
+        $suite->run($result);
 
         unset($suite);
         $result->flushListeners();
@@ -412,7 +456,8 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
                   $outputStream,
                   $arguments['reportLowUpperBound'],
                   $arguments['reportHighLowerBound'],
-                  $arguments['coverageTextShowUncoveredFiles']
+                  $arguments['coverageTextShowUncoveredFiles'],
+                  $arguments['coverageTextShowOnlySummary']
                 );
 
                 $writer->process($codeCoverage, $colors);
@@ -683,6 +728,11 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
                     $arguments['coverageTextShowUncoveredFiles'] = $loggingConfiguration['coverageTextShowUncoveredFiles'];
                 } else {
                     $arguments['coverageTextShowUncoveredFiles'] = FALSE;
+                }
+                if (isset($loggingConfiguration['coverageTextShowOnlySummary'])) {
+                    $arguments['coverageTextShowOnlySummary'] = $loggingConfiguration['coverageTextShowOnlySummary'];
+                } else {
+                    $arguments['coverageTextShowOnlySummary'] = FALSE;
                 }
             }
 

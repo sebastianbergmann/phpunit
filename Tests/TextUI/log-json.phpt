@@ -1,10 +1,5 @@
 --TEST--
 phpunit --log-json php://stdout BankAccountTest ../_files/BankAccountTest.php
---SKIPIF--
-<?php
-if (!defined("JSON_PRETTY_PRINT")) {
-    echo "Skip: Test requires JSON_PRETTY_PRINT / PHP >= 5.4";
-}
 --FILE--
 <?php
 define('PHPUNIT_TESTSUITE', TRUE);
@@ -72,6 +67,6 @@ PHPUnit %s by Sebastian Bergmann.
     "output": ""
 }
 
-Time: %i %s, Memory: %sMb
+Time: %s, Memory: %sMb
 
 OK (3 tests, 3 assertions)

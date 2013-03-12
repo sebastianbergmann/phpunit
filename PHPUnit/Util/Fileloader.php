@@ -61,6 +61,7 @@ class PHPUnit_Util_Fileloader
      * The sourcefile is loaded through the load() method.
      *
      * @param  string $filename
+     * @return string
      * @throws PHPUnit_Framework_Exception
      */
     public static function checkAndLoad($filename)

@@ -68,6 +68,7 @@ abstract class PHPUnit_Framework_Constraint_Composite extends PHPUnit_Framework_
      */
     public function __construct(PHPUnit_Framework_Constraint $innerConstraint)
     {
+        parent::__construct();
         $this->innerConstraint = $innerConstraint;
     }
 

@@ -273,7 +273,7 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
             $defect->thrownException()
           )
         );
-        
+
         $e = $defect->thrownException()->getPrevious();
 
         while ($e) {
@@ -334,7 +334,9 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
 
     protected function printHeader()
     {
-        $this->write("\n\n" . PHP_Timer::resourceUsage() . "\n\n");
+        $timer = new PHP_Timer;
+
+        $this->write("\n\n" . $timer->resourceUsage() . "\n\n");
     }
 
     /**

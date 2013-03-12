@@ -669,7 +669,7 @@ function assertInternalType($expected, $actual, $message = '')
  */
 function assertJsonStringEqualsJsonString($expectedJson, $actualJson, $message = '')
 {
-    return PHPUnit_Framework_Assert::assertJsonStringEqualsJsonString($expectedJson, $actualJson, $message = '');
+    return PHPUnit_Framework_Assert::assertJsonStringEqualsJsonString($expectedJson, $actualJson, $message);
 }
 
 /**
@@ -682,7 +682,7 @@ function assertJsonStringEqualsJsonString($expectedJson, $actualJson, $message =
  */
 function assertJsonStringNotEqualsJsonString($expectedJson, $actualJson, $message = '')
 {
-    return PHPUnit_Framework_Assert::assertJsonStringNotEqualsJsonString($expectedJson, $actualJson, $message = '');
+    return PHPUnit_Framework_Assert::assertJsonStringNotEqualsJsonString($expectedJson, $actualJson, $message);
 }
 
 /**
@@ -695,7 +695,7 @@ function assertJsonStringNotEqualsJsonString($expectedJson, $actualJson, $messag
  */
 function assertJsonStringEqualsJsonFile($expectedFile, $actualJson, $message = '')
 {
-    return PHPUnit_Framework_Assert::assertJsonStringEqualsJsonFile($expectedFile, $actualJson, $message = '');
+    return PHPUnit_Framework_Assert::assertJsonStringEqualsJsonFile($expectedFile, $actualJson, $message);
 }
 
 /**
@@ -708,7 +708,7 @@ function assertJsonStringEqualsJsonFile($expectedFile, $actualJson, $message = '
  */
 function assertJsonStringNotEqualsJsonFile($expectedFile, $actualJson, $message = '')
 {
-    return PHPUnit_Framework_Assert::assertJsonStringNotEqualsJsonFile($expectedFile, $actualJson, $message = '');
+    return PHPUnit_Framework_Assert::assertJsonStringNotEqualsJsonFile($expectedFile, $actualJson, $message);
 }
 
 /**
@@ -721,7 +721,7 @@ function assertJsonStringNotEqualsJsonFile($expectedFile, $actualJson, $message 
  */
 function assertJsonFileNotEqualsJsonFile($expectedFile, $actualFile, $message = '')
 {
-    return PHPUnit_Framework_Assert::assertJsonFileNotEqualsJsonFile($expectedFile, $actualFile, $message = '');
+    return PHPUnit_Framework_Assert::assertJsonFileNotEqualsJsonFile($expectedFile, $actualFile, $message);
 }
 
 /**
@@ -734,7 +734,7 @@ function assertJsonFileNotEqualsJsonFile($expectedFile, $actualFile, $message = 
  */
 function assertJsonFileEqualsJsonFile($expectedFile, $actualFile, $message = '')
 {
-    return PHPUnit_Framework_Assert::assertJsonFileEqualsJsonFile($expectedFile, $actualFile, $message = '');
+    return PHPUnit_Framework_Assert::assertJsonFileEqualsJsonFile($expectedFile, $actualFile, $message);
 }
 
 /**

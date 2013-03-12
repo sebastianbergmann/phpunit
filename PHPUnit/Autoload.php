@@ -66,6 +66,9 @@ require_once 'PHP/CodeCoverage/Autoload.php';
 require_once 'PHP/Timer/Autoload.php';
 require_once 'PHPUnit/Framework/MockObject/Autoload.php';
 require_once 'Text/Template/Autoload.php';
+require_once 'SebastianBergmann/Diff/autoload.php';
+require_once 'SebastianBergmann/Exporter/autoload.php';
+require_once 'SebastianBergmann/Version/autoload.php';
 require_once 'Symfony/Component/Yaml/autoloader.php';
 
 spl_autoload_register(
@@ -85,6 +88,7 @@ spl_autoload_register(
             'phpunit_extensions_ticketlistener' => '/Extensions/TicketListener.php',
             'phpunit_framework_assert' => '/Framework/Assert.php',
             'phpunit_framework_assertionfailederror' => '/Framework/AssertionFailedError.php',
+            'phpunit_framework_basetestlistener' => '/Framework/BaseTestListener.php',
             'phpunit_framework_comparator' => '/Framework/Comparator.php',
             'phpunit_framework_comparator_array' => '/Framework/Comparator/Array.php',
             'phpunit_framework_comparator_domdocument' => '/Framework/Comparator/DOMDocument.php',
@@ -145,6 +149,7 @@ spl_autoload_register(
             'phpunit_framework_expectationfailedexception' => '/Framework/ExpectationFailedException.php',
             'phpunit_framework_incompletetest' => '/Framework/IncompleteTest.php',
             'phpunit_framework_incompletetesterror' => '/Framework/IncompleteTestError.php',
+            'phpunit_framework_invalidcoverstargeterror' => '/Framework/InvalidCoversTargetError.php',
             'phpunit_framework_outputerror' => '/Framework/OutputError.php',
             'phpunit_framework_selfdescribing' => '/Framework/SelfDescribing.php',
             'phpunit_framework_skippedtest' => '/Framework/SkippedTest.php',
@@ -158,19 +163,23 @@ spl_autoload_register(
             'phpunit_framework_testresult' => '/Framework/TestResult.php',
             'phpunit_framework_testsuite' => '/Framework/TestSuite.php',
             'phpunit_framework_testsuite_dataprovider' => '/Framework/TestSuite/DataProvider.php',
+            'phpunit_framework_unintentionallycoveredcodeerror' => '/Framework/UnintentionallyCoveredCodeError.php',
             'phpunit_framework_warning' => '/Framework/Warning.php',
             'phpunit_runner_basetestrunner' => '/Runner/BaseTestRunner.php',
+            'phpunit_runner_filter_factory' => '/Runner/Filter/Factory.php',
+            'phpunit_runner_filter_group_exclude' => '/Runner/Filter/Group/Exclude.php',
+            'phpunit_runner_filter_group_include' => '/Runner/Filter/Group/Include.php',
+            'phpunit_runner_filter_groupfilteriterator' => '/Runner/Filter/Group.php',
+            'phpunit_runner_filter_test' => '/Runner/Filter/Test.php',
             'phpunit_runner_standardtestsuiteloader' => '/Runner/StandardTestSuiteLoader.php',
             'phpunit_runner_testsuiteloader' => '/Runner/TestSuiteLoader.php',
             'phpunit_runner_version' => '/Runner/Version.php',
             'phpunit_textui_command' => '/TextUI/Command.php',
             'phpunit_textui_resultprinter' => '/TextUI/ResultPrinter.php',
             'phpunit_textui_testrunner' => '/TextUI/TestRunner.php',
-            'phpunit_util_class' => '/Util/Class.php',
             'phpunit_util_configuration' => '/Util/Configuration.php',
             'phpunit_util_deprecatedfeature' => '/Util/DeprecatedFeature.php',
             'phpunit_util_deprecatedfeature_logger' => '/Util/DeprecatedFeature/Logger.php',
-            'phpunit_util_diff' => '/Util/Diff.php',
             'phpunit_util_errorhandler' => '/Util/ErrorHandler.php',
             'phpunit_util_fileloader' => '/Util/Fileloader.php',
             'phpunit_util_filesystem' => '/Util/Filesystem.php',

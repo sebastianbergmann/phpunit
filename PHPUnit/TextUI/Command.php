@@ -308,6 +308,7 @@ class PHPUnit_TextUI_Command
 
                             $this->arguments['coverageText'] = $option[1];
                             $this->arguments['coverageTextShowUncoveredFiles'] = FALSE;
+                            $this->arguments['coverageTextShowOnlySummary'] = FALSE;
                         }
                         break;
                     }
@@ -414,10 +415,7 @@ class PHPUnit_TextUI_Command
                 break;
 
                 case '--stderr': {
-                    $this->arguments['printer'] = new PHPUnit_TextUI_ResultPrinter(
-                      'php://stderr',
-                      isset($this->arguments['verbose']) ? $this->arguments['verbose'] : FALSE
-                    );
+                    $this->arguments['stderr'] = TRUE;
                 }
                 break;
 
@@ -520,7 +518,7 @@ class PHPUnit_TextUI_Command
             }
 
             if (isset($this->options[1][1])) {
-                $this->arguments['testFile'] = $this->options[1][1];
+                $this->arguments['testFile'] = realpath($this->options[1][1]);
             } else {
                 $this->arguments['testFile'] = '';
             }
@@ -604,6 +602,16 @@ class PHPUnit_TextUI_Command
 
             if (!isset($this->arguments['bootstrap']) && isset($phpunit['bootstrap'])) {
                 $this->handleBootstrap($phpunit['bootstrap']);
+            }
+
+            /**
+             * Issue #657
+             */
+            if (isset($phpunit['stderr']) && $phpunit['stderr'] == true) {
+                $this->arguments['printer'] = new PHPUnit_TextUI_ResultPrinter(
+                  'php://stderr',
+                  isset($this->arguments['verbose']) ? $this->arguments['verbose'] : FALSE
+                );
             }
 
             if (isset($phpunit['printerClass'])) {
@@ -750,6 +758,10 @@ class PHPUnit_TextUI_Command
             if ($class->implementsInterface('PHPUnit_Framework_TestListener') &&
                 $class->isSubclassOf('PHPUnit_Util_Printer') &&
                 $class->isInstantiable()) {
+                if ($class->isSubclassOf('PHPUnit_TextUI_ResultPrinter')) {
+                    return $printerClass;
+                }
+
                 $printer = $class->newInstance();
             }
         }

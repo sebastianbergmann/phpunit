@@ -43,6 +43,8 @@
  * @since      File available since Release 3.6.0
  */
 
+use SebastianBergmann\Exporter\Exporter;
+
 /**
  * Abstract base class for comparators which compare values for equality.
  *
@@ -60,6 +62,13 @@ abstract class PHPUnit_Framework_Comparator
      * @var PHPUnit_Framework_ComparatorFactory
      */
     protected $factory;
+
+    protected $exporter;
+
+    public function __construct()
+    {
+        $this->exporter = new Exporter;
+    }
 
     /**
      * @param PHPUnit_Framework_ComparatorFactory $factory

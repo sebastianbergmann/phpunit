@@ -18,7 +18,7 @@ PHPUnit %s by Sebastian Bergmann.
 
 I
 
-Time: %i %s, Memory: %sMb
+Time: %s, Memory: %sMb
 
 OK, but incomplete or skipped tests!
 Tests: 1, Assertions: 0, Incomplete: 1.

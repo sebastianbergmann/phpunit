@@ -23,6 +23,6 @@ Configuration read from %s
 Starting test 'Issue322Test::testOne'.
 .
 
-Time: %i %s, Memory: %sMb
+Time: %s, Memory: %sMb
 
 OK (1 test, 0 assertions)

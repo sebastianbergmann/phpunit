@@ -18,6 +18,6 @@ PHPUnit %s by Sebastian Bergmann.
 
 
 
-Time: %i %s, Memory: %sMb
+Time: %s, Memory: %sMb
 
 No tests executed!

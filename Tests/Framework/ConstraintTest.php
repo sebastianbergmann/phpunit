@@ -45,6 +45,7 @@
 
 require_once dirname(__DIR__) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'ClassWithNonPublicAttributes.php';
 require_once dirname(__DIR__) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'TestIterator.php';
+require_once dirname(__DIR__) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'DummyException.php';
 
 /**
  *
@@ -737,6 +738,8 @@ EOF
         $storage1->attach($b);
         $storage2 = new SplObjectStorage;
         $storage2->attach($b);
+        $storage1hash = spl_object_hash($storage1);
+        $storage2hash = spl_object_hash($storage2);
 
         $dom1 = new DOMDocument;
         $dom1->preserveWhiteSpace = FALSE;
@@ -892,17 +895,17 @@ Failed asserting that two objects are equal.
 --- Expected
 +++ Actual
 @@ @@
- SplObjectStorage Object (
--    '$ahash' => Array (
--        'obj' => stdClass Object (
+-SplObjectStorage Object &$storage1hash (
+-    '$ahash' => Array &0 (
+-        'obj' => stdClass Object &$ahash (
 -            'foo' => 'bar'
 -        )
--        'inf' => null
--    )
-     '$bhash' => Array (
-         'obj' => stdClass Object ()
++SplObjectStorage Object &$storage2hash (
++    '$bhash' => Array &0 (
++        'obj' => stdClass Object &$bhash ()
          'inf' => null
      )
+-    '$bhash' => Array &0
  )
 
 EOF
@@ -1247,6 +1250,11 @@ EOF
         $this->assertEquals('is instance of class "Exception"', $constraint->toString());
         $this->assertEquals(1, count($constraint));
 
+        $interfaceConstraint = PHPUnit_Framework_Assert::isInstanceOf('Countable');
+        $this->assertFalse($interfaceConstraint->evaluate(new stdClass, '', TRUE));
+        $this->assertTrue($interfaceConstraint->evaluate(new ArrayObject, '', TRUE));
+        $this->assertEquals('is instance of interface "Countable"', $interfaceConstraint->toString());
+
         try {
             $constraint->evaluate(new stdClass);
         }
@@ -1387,8 +1395,8 @@ EOF
         }
 
         catch (PHPUnit_Framework_ExpectationFailedException $e) {
-            $this->assertEquals(<<<EOF
-Failed asserting that stdClass Object () is of type "string".
+            $this->assertStringMatchesFormat(<<<EOF
+Failed asserting that stdClass Object &%x () is of type "string".
 
 EOF
               ,
@@ -1415,9 +1423,9 @@ EOF
         }
 
         catch (PHPUnit_Framework_ExpectationFailedException $e) {
-            $this->assertEquals(<<<EOF
+            $this->assertStringMatchesFormat(<<<EOF
 custom message
-Failed asserting that stdClass Object () is of type "string".
+Failed asserting that stdClass Object &%x () is of type "string".
 
 EOF
               ,
@@ -1860,57 +1868,6 @@ EOF
     public static function staticCallbackReturningTrue()
     {
         return TRUE;
-    }
-
-    /**
-     * @covers PHPUnit_Framework_Constraint_Callback
-     * @expectedException InvalidArgumentException
-     * @expectedExceptionMessage Specified callback <invalid callback> is not callable.
-     */
-    public function testConstraintCallbackInvalidFunctionArgument()
-    {
-        PHPUnit_Framework_Assert::callback('invalid callback');
-    }
-
-    /**
-     * @covers PHPUnit_Framework_Constraint_Callback
-     * @expectedException InvalidArgumentException
-     * @expectedExceptionMessage Specified callback <empty array> is not callable.
-     */
-    public function testConstraintCallbackInvalidArrayArgumentWithEmptyArray()
-    {
-        PHPUnit_Framework_Assert::callback(array());
-    }
-
-    /**
-     * @covers PHPUnit_Framework_Constraint_Callback
-     * @expectedException InvalidArgumentException
-     * @expectedExceptionMessage Specified callback <array without indexes 0 and 1 set> is not callable.
-     */
-    public function testConstraintCallbackInvalidArrayArgumentWithBadArray()
-    {
-        PHPUnit_Framework_Assert::callback(array(3 => 'foo'));
-    }
-
-
-    /**
-     * @covers PHPUnit_Framework_Constraint_Callback
-     * @expectedException InvalidArgumentException
-     * @expectedExceptionMessage Specified callback <Framework_ConstraintTest::invalid callback> is not callable.
-     */
-    public function testConstraintCallbackInvalidArrayArgumentWithObject()
-    {
-        PHPUnit_Framework_Assert::callback(array($this, 'invalid callback'));
-    }
-
-    /**
-     * @covers PHPUnit_Framework_Constraint_Callback
-     * @expectedException InvalidArgumentException
-     * @expectedExceptionMessage Specified callback <Framework_ConstraintTest::invalid callback> is not callable.
-     */
-    public function testConstraintCallbackInvalidArrayArgumentWithClassname()
-    {
-        PHPUnit_Framework_Assert::callback(array('Framework_ConstraintTest', 'invalid callback'));
     }
 
     /**
@@ -3193,7 +3150,7 @@ EOF
     {
         $object     = new StdClass;
         $constraint = new PHPUnit_Framework_Constraint_TraversableContains($object);
-        $this->assertEquals("contains stdClass Object ()", $constraint->toString());
+        $this->assertStringMatchesFormat("contains stdClass Object &%s ()", $constraint->toString());
 
         $storage = new SplObjectStorage;
         $this->assertFalse($constraint->evaluate($storage, '', TRUE));
@@ -3206,9 +3163,9 @@ EOF
         }
 
         catch (PHPUnit_Framework_ExpectationFailedException $e) {
-            $this->assertEquals(
+            $this->assertStringMatchesFormat(
               <<<EOF
-Failed asserting that an iterator contains stdClass Object ().
+Failed asserting that an iterator contains stdClass Object &%x ().
 
 EOF
               ,
@@ -3235,10 +3192,10 @@ EOF
         }
 
         catch (PHPUnit_Framework_ExpectationFailedException $e) {
-            $this->assertEquals(
+            $this->assertStringMatchesFormat(
               <<<EOF
 custom message
-Failed asserting that an iterator contains stdClass Object ().
+Failed asserting that an iterator contains stdClass Object &%x ().
 
 EOF
               ,
@@ -3544,6 +3501,37 @@ Failed asserting that actual size 2 does not match expected size 2.
 EOF
               ,
               PHPUnit_Framework_TestFailure::exceptionToString($e)
+            );
+
+            return;
+        }
+
+        $this->fail();
+    }
+
+    /**
+     * @covers PHPUnit_Framework_Constraint_Exception
+     * @covers PHPUnit_Framework_TestFailure::exceptionToString
+     */
+    public function testConstraintException()
+    {
+        $constraint = new PHPUnit_Framework_Constraint_Exception('FoobarException');
+        $exception = new DummyException('Test');
+        $stackTrace = $exception->getTraceAsString();
+
+        try {
+            $constraint->evaluate($exception);
+        }
+
+        catch (PHPUnit_Framework_ExpectationFailedException $e) {
+            $this->assertEquals(
+              <<<EOF
+Failed asserting that exception of type "DummyException" matches expected exception "FoobarException". Message was: "Test" at
+$stackTrace.
+
+EOF
+                ,
+                PHPUnit_Framework_TestFailure::exceptionToString($e)
             );
 
             return;

@@ -76,7 +76,7 @@ class PHPUnit_Framework_Constraint_And extends PHPUnit_Framework_Constraint
     {
         $this->constraints = array();
 
-        foreach ($constraints as $key => $constraint) {
+        foreach ($constraints as $constraint) {
             if (!($constraint instanceof PHPUnit_Framework_Constraint)) {
                 throw new PHPUnit_Framework_Exception(
                   'All parameters to ' . __CLASS__ .

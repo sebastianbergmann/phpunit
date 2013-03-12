@@ -69,6 +69,7 @@ class PHPUnit_Framework_Constraint_GreaterThan extends PHPUnit_Framework_Constra
      */
     public function __construct($value)
     {
+        parent::__construct();
         $this->value = $value;
     }
 
@@ -91,6 +92,6 @@ class PHPUnit_Framework_Constraint_GreaterThan extends PHPUnit_Framework_Constra
      */
     public function toString()
     {
-        return 'is greater than ' . PHPUnit_Util_Type::export($this->value);
+        return 'is greater than ' . $this->exporter->export($this->value);
     }
 }

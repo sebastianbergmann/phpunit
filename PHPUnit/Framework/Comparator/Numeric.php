@@ -103,8 +103,8 @@ class PHPUnit_Framework_Comparator_Numeric extends PHPUnit_Framework_Comparator_
               sprintf(
                 'Failed asserting that %s matches expected %s.',
 
-                PHPUnit_Util_Type::export($actual),
-                PHPUnit_Util_Type::export($expected)
+                $this->exporter->export($actual),
+                $this->exporter->export($expected)
               )
             );
         }

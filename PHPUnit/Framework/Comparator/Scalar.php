@@ -110,8 +110,8 @@ class PHPUnit_Framework_Comparator_Scalar extends PHPUnit_Framework_Comparator
                 throw new PHPUnit_Framework_ComparisonFailure(
                   $expected,
                   $actual,
-                  PHPUnit_Util_Type::export($expected),
-                  PHPUnit_Util_Type::export($actual),
+                  $this->exporter->export($expected),
+                  $this->exporter->export($actual),
                   FALSE,
                   'Failed asserting that two strings are equal.'
                 );
@@ -127,8 +127,8 @@ class PHPUnit_Framework_Comparator_Scalar extends PHPUnit_Framework_Comparator
               sprintf(
                 'Failed asserting that %s matches expected %s.',
 
-                PHPUnit_Util_Type::export($actual),
-                PHPUnit_Util_Type::export($expected)
+                $this->exporter->export($actual),
+                $this->exporter->export($expected)
               )
             );
         }

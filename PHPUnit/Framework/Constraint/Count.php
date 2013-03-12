@@ -68,6 +68,7 @@ class PHPUnit_Framework_Constraint_Count extends PHPUnit_Framework_Constraint
      */
     public function __construct($expected)
     {
+        parent::__construct();
         $this->expectedCount = $expected;
     }
 
