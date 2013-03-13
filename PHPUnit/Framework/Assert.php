@@ -935,6 +935,10 @@ abstract class PHPUnit_Framework_Assert
         if (!is_string($attributeName)) {
             throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'string');
         }
+        
+        if(!preg_match('/[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*/', $attributeName)) {
+            throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'a valid name of attribute');
+        }
 
         if (!is_string($className) || !class_exists($className, FALSE)) {
             throw PHPUnit_Util_InvalidArgumentHelper::factory(2, 'class name');
@@ -959,6 +963,10 @@ abstract class PHPUnit_Framework_Assert
     {
         if (!is_string($attributeName)) {
             throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'string');
+        }
+        
+        if(!preg_match('/[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*/', $attributeName)) {
+            throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'a valid name of attribute');
         }
 
         if (!is_string($className) || !class_exists($className, FALSE)) {
@@ -985,6 +993,10 @@ abstract class PHPUnit_Framework_Assert
         if (!is_string($attributeName)) {
             throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'string');
         }
+        
+        if(!preg_match('/[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*/', $attributeName)) {
+            throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'a valid name of attribute');
+        }
 
         if (!is_string($className) || !class_exists($className, FALSE)) {
             throw PHPUnit_Util_InvalidArgumentHelper::factory(2, 'class name');
@@ -1009,6 +1021,10 @@ abstract class PHPUnit_Framework_Assert
     {
         if (!is_string($attributeName)) {
             throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'string');
+        }
+        
+        if(!preg_match('/[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*/', $attributeName)) {
+            throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'a valid name of attribute');
         }
 
         if (!is_string($className) || !class_exists($className, FALSE)) {
@@ -1037,6 +1053,10 @@ abstract class PHPUnit_Framework_Assert
         if (!is_string($attributeName)) {
             throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'string');
         }
+        
+        if(!preg_match('/[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*/', $attributeName)) {
+            throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'a valid name of attribute');
+        }
 
         if (!is_object($object)) {
             throw PHPUnit_Util_InvalidArgumentHelper::factory(2, 'object');
@@ -1061,6 +1081,10 @@ abstract class PHPUnit_Framework_Assert
     {
         if (!is_string($attributeName)) {
             throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'string');
+        }
+        
+        if(!preg_match('/[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*/', $attributeName)) {
+            throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'a valid name of attribute');
         }
 
         if (!is_object($object)) {
@@ -2758,6 +2782,10 @@ abstract class PHPUnit_Framework_Assert
         if (!is_string($attributeName)) {
             throw PHPUnit_Util_InvalidArgumentHelper::factory(2, 'string');
         }
+        
+        if(!preg_match('/[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*/', $attributeName)) {
+            throw PHPUnit_Util_InvalidArgumentHelper::factory(2, 'a valid name of attribute');
+        }
 
         if (is_string($classOrObject)) {
             if (!class_exists($classOrObject)) {
@@ -2854,6 +2882,10 @@ abstract class PHPUnit_Framework_Assert
         if (!is_string($attributeName)) {
             throw PHPUnit_Util_InvalidArgumentHelper::factory(2, 'string');
         }
+        
+        if(!preg_match('/[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*/', $attributeName)) {
+            throw PHPUnit_Util_InvalidArgumentHelper::factory(2, 'a valid name of attribute');
+        }
 
         $class = new ReflectionClass($className);
 
@@ -2894,6 +2926,10 @@ abstract class PHPUnit_Framework_Assert
 
         if (!is_string($attributeName)) {
             throw PHPUnit_Util_InvalidArgumentHelper::factory(2, 'string');
+        }
+        
+        if(!preg_match('/[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*/', $attributeName)) {
+            throw PHPUnit_Util_InvalidArgumentHelper::factory(2, 'a valid name of attribute');
         }
 
         try {
