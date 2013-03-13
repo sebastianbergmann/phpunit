@@ -56,6 +56,7 @@
  */
 class PHPUnit_Runner_Version
 {
+
     private static $version;
 
     /**

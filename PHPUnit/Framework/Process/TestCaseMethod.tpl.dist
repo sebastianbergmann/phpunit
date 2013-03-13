@@ -51,9 +51,9 @@ function __phpunit_run_isolated_test()
 {included_files}
 {globals}
 
-if (isset($GLOBALS['__PHPUNIT_BOOTSTRAP'])) {
-    require_once $GLOBALS['__PHPUNIT_BOOTSTRAP'];
-    unset($GLOBALS['__PHPUNIT_BOOTSTRAP']);
+$bootstrap = '{bootstrapPath}';
+if (!empty($bootstrap)) {
+    require_once $bootstrap;
 }
 
 __phpunit_run_isolated_test();

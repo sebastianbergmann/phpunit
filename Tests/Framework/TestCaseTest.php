@@ -58,6 +58,8 @@ require_once dirname(__DIR__) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPAR
 require_once dirname(__DIR__) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'ThrowNoExceptionTestCase.php';
 require_once dirname(__DIR__) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'WasRun.php';
 require_once dirname(__DIR__) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'ChangeCurrentWorkingDirectoryTest.php';
+require_once dirname(__DIR__) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'PreserveGlobalStateTestCase.php';
+require_once dirname(__DIR__) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'DoNotPreserveGlobalStateTestCase.php';
 
 $GLOBALS['a']  = 'a';
 $_ENV['b']     = 'b';
@@ -454,6 +456,40 @@ class Framework_TestCaseTest extends PHPUnit_Framework_TestCase
         $test->run();
 
         $this->assertSame($expectedCwd, getcwd());
+    }
+
+    public function testPreservingGlobalStateTemplateHasBootstrapPathWhenConfigured()
+    {
+        $test = new PreserveGlobalStateTestCase();
+
+        $GLOBALS['__PHPUNIT_BOOTSTRAP'] = 'known_path/preserving_globals';
+        $test->setIncludeBootstrap(TRUE);
+        $test->run();
+
+        $template = $test->getTemplate();
+        $this->assertInstanceOf('Text_Template', $template);
+        $values = self::getObjectAttribute($template, 'values');
+        $this->assertArrayHasKey('bootstrapPath', $values);
+        $path = $values['bootstrapPath'];
+        $expected = 'known_path/preserving_globals';
+        $this->assertSame($expected, $path);
+    }
+
+    public function testNotPreservingGlobalStateTemplateHasBootstrapPathWhenConfigured()
+    {
+        $test = new DoNotPreserveGlobalStateTestCase();
+
+        $GLOBALS['__PHPUNIT_BOOTSTRAP'] = 'known_path/not_preserving_globals';
+        $test->setIncludeBootstrap(TRUE);
+        $test->run();
+
+        $template = $test->getTemplate();
+        $this->assertInstanceOf('Text_Template', $template);
+        $values = self::getObjectAttribute($template, 'values');
+        $this->assertArrayHasKey('bootstrapPath', $values);
+        $path = $values['bootstrapPath'];
+        $expected = 'known_path/not_preserving_globals';
+        $this->assertSame($expected, $path);
     }
 
 }
