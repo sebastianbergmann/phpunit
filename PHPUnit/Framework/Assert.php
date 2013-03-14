@@ -123,14 +123,15 @@ abstract class PHPUnit_Framework_Assert
      * @param  string  $message
      * @param  boolean $ignoreCase
      * @param  boolean $checkForObjectIdentity
+     * @param  boolean $checkForNonObjectIdentity
      * @since  Method available since Release 2.1.0
      */
-    public static function assertContains($needle, $haystack, $message = '', $ignoreCase = FALSE, $checkForObjectIdentity = TRUE)
+    public static function assertContains($needle, $haystack, $message = '', $ignoreCase = FALSE, $checkForObjectIdentity = TRUE, $checkForNonObjectIdentity = FALSE)
     {
         if (is_array($haystack) ||
             is_object($haystack) && $haystack instanceof Traversable) {
             $constraint = new PHPUnit_Framework_Constraint_TraversableContains(
-              $needle, $checkForObjectIdentity
+              $needle, $checkForObjectIdentity, $checkForNonObjectIdentity
             );
         }
 
@@ -159,16 +160,18 @@ abstract class PHPUnit_Framework_Assert
      * @param  string  $message
      * @param  boolean $ignoreCase
      * @param  boolean $checkForObjectIdentity
+     * @param  boolean $checkForNonObjectIdentity
      * @since  Method available since Release 3.0.0
      */
-    public static function assertAttributeContains($needle, $haystackAttributeName, $haystackClassOrObject, $message = '', $ignoreCase = FALSE, $checkForObjectIdentity = TRUE)
+    public static function assertAttributeContains($needle, $haystackAttributeName, $haystackClassOrObject, $message = '', $ignoreCase = FALSE, $checkForObjectIdentity = TRUE, $checkForNonObjectIdentity = FALSE)
     {
         self::assertContains(
           $needle,
           self::readAttribute($haystackClassOrObject, $haystackAttributeName),
           $message,
           $ignoreCase,
-          $checkForObjectIdentity
+          $checkForObjectIdentity,
+          $checkForNonObjectIdentity
         );
     }
 
@@ -180,15 +183,16 @@ abstract class PHPUnit_Framework_Assert
      * @param  string  $message
      * @param  boolean $ignoreCase
      * @param  boolean $checkForObjectIdentity
+     * @param  boolean $checkForNonObjectIdentity
      * @since  Method available since Release 2.1.0
      */
-    public static function assertNotContains($needle, $haystack, $message = '', $ignoreCase = FALSE, $checkForObjectIdentity = TRUE)
+    public static function assertNotContains($needle, $haystack, $message = '', $ignoreCase = FALSE, $checkForObjectIdentity = TRUE, $checkForNonObjectIdentity = FALSE)
     {
         if (is_array($haystack) ||
             is_object($haystack) && $haystack instanceof Traversable) {
             $constraint = new PHPUnit_Framework_Constraint_Not(
               new PHPUnit_Framework_Constraint_TraversableContains(
-                $needle, $checkForObjectIdentity
+                $needle, $checkForObjectIdentity, $checkForNonObjectIdentity
               )
             );
         }
@@ -220,16 +224,18 @@ abstract class PHPUnit_Framework_Assert
      * @param  string  $message
      * @param  boolean $ignoreCase
      * @param  boolean $checkForObjectIdentity
+     * @param  boolean $checkForNonObjectIdentity
      * @since  Method available since Release 3.0.0
      */
-    public static function assertAttributeNotContains($needle, $haystackAttributeName, $haystackClassOrObject, $message = '', $ignoreCase = FALSE, $checkForObjectIdentity = TRUE)
+    public static function assertAttributeNotContains($needle, $haystackAttributeName, $haystackClassOrObject, $message = '', $ignoreCase = FALSE, $checkForObjectIdentity = TRUE, $checkForNonObjectIdentity = FALSE)
     {
         self::assertNotContains(
           $needle,
           self::readAttribute($haystackClassOrObject, $haystackAttributeName),
           $message,
           $ignoreCase,
-          $checkForObjectIdentity
+          $checkForObjectIdentity,
+          $checkForNonObjectIdentity
         );
     }
 
@@ -2451,12 +2457,13 @@ abstract class PHPUnit_Framework_Assert
      *
      * @param  mixed   $value
      * @param  boolean $checkForObjectIdentity
+     * @param  boolean $checkForNonObjectIdentity
      * @return PHPUnit_Framework_Constraint_TraversableContains
      * @since  Method available since Release 3.0.0
      */
-    public static function contains($value, $checkForObjectIdentity = TRUE)
+    public static function contains($value, $checkForObjectIdentity = TRUE, $checkForNonObjectIdentity = FALSE)
     {
-        return new PHPUnit_Framework_Constraint_TraversableContains($value, $checkForObjectIdentity);
+        return new PHPUnit_Framework_Constraint_TraversableContains($value, $checkForObjectIdentity, $checkForNonObjectIdentity);
     }
 
     /**

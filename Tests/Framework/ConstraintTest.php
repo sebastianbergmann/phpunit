@@ -3073,6 +3073,24 @@ EOF
 
     /**
      * @covers PHPUnit_Framework_Constraint_TraversableContains
+     */
+    public function testConstraintArrayContainsCheckForObjectIdentity()
+    {
+        // Check for primitive type.
+        $constraint = new PHPUnit_Framework_Constraint_TraversableContains('foo', TRUE, TRUE);
+
+        $this->assertFalse($constraint->evaluate(array(0), '', TRUE));
+        $this->assertFalse($constraint->evaluate(array(TRUE), '', TRUE));
+
+        // Default case.
+        $constraint = new PHPUnit_Framework_Constraint_TraversableContains('foo');
+
+        $this->assertTrue($constraint->evaluate(array(0), '', TRUE));
+        $this->assertTrue($constraint->evaluate(array(TRUE), '', TRUE));
+    }
+
+    /**
+     * @covers PHPUnit_Framework_Constraint_TraversableContains
      * @covers PHPUnit_Framework_Constraint_Not
      * @covers PHPUnit_Framework_Assert::logicalNot
      * @covers PHPUnit_Framework_TestFailure::exceptionToString
