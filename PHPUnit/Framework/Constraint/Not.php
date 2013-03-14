@@ -117,7 +117,7 @@ class PHPUnit_Framework_Constraint_Not extends PHPUnit_Framework_Constraint
        
        return $string;
     }
-    
+     
     
     /**
      * Replace stuff that is outside of single and double quotes only
@@ -126,6 +126,7 @@ class PHPUnit_Framework_Constraint_Not extends PHPUnit_Framework_Constraint
      * @param string $replace
      * @param string $subject
      * @return string
+     * @since Available since Release 3.8.0
      */
     public static function str_replace_outside_single_and_double_quotes($search,$replace,$subject)
     {
