@@ -160,16 +160,18 @@ abstract class PHPUnit_Framework_Assert
      * @param  string  $message
      * @param  boolean $ignoreCase
      * @param  boolean $checkForObjectIdentity
+     * @param  boolean $checkForNonObjectIdentity
      * @since  Method available since Release 3.0.0
      */
-    public static function assertAttributeContains($needle, $haystackAttributeName, $haystackClassOrObject, $message = '', $ignoreCase = FALSE, $checkForObjectIdentity = TRUE)
+    public static function assertAttributeContains($needle, $haystackAttributeName, $haystackClassOrObject, $message = '', $ignoreCase = FALSE, $checkForObjectIdentity = TRUE, $checkForNonObjectIdentity = FALSE)
     {
         self::assertContains(
           $needle,
           self::readAttribute($haystackClassOrObject, $haystackAttributeName),
           $message,
           $ignoreCase,
-          $checkForObjectIdentity
+          $checkForObjectIdentity,
+          $checkForNonObjectIdentity
         );
     }
 
@@ -222,16 +224,18 @@ abstract class PHPUnit_Framework_Assert
      * @param  string  $message
      * @param  boolean $ignoreCase
      * @param  boolean $checkForObjectIdentity
+     * @param  boolean $checkForNonObjectIdentity
      * @since  Method available since Release 3.0.0
      */
-    public static function assertAttributeNotContains($needle, $haystackAttributeName, $haystackClassOrObject, $message = '', $ignoreCase = FALSE, $checkForObjectIdentity = TRUE)
+    public static function assertAttributeNotContains($needle, $haystackAttributeName, $haystackClassOrObject, $message = '', $ignoreCase = FALSE, $checkForObjectIdentity = TRUE, $checkForNonObjectIdentity = FALSE)
     {
         self::assertNotContains(
           $needle,
           self::readAttribute($haystackClassOrObject, $haystackAttributeName),
           $message,
           $ignoreCase,
-          $checkForObjectIdentity
+          $checkForObjectIdentity,
+          $checkForNonObjectIdentity
         );
     }
 
