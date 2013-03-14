@@ -4254,5 +4254,50 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
             'error UTF-8 in actual JSON'    => array('{"Mascott" : "Tux"}', '{"Mascott" : :}'),
         );
     }
+    
+    /**
+     * @covers PHPUnit_Framework_Constraint_Not::negate()
+     * @covers PHPUnit_Framework_Constraint_Not::str_replace_outside_single_and_double_quotes()
+     * @dataProvider negateDataProvider()
+     */
+    public function testNotConstraintNegateMethod($needle, $haystack)
+    {
+        try {
+            $this->assertNotContains($needle, $haystack);
+        }
+        catch (PHPUnit_Framework_ExpectationFailedException $e) {
+            $this->assertEquals(<<<EOF
+Failed asserting that '{$haystack}' does not contain "{$needle}".
+
+EOF
+              ,
+              PHPUnit_Framework_TestFailure::exceptionToString($e)
+            );
+
+            return;
+        }
+
+        $this->fail();
+    }
+    
+    /**
+     * DataProvider method for testing testNotConstraintNegateMethod()
+     * @return multitype:multitype:string
+     */
+    public function negateDataProvider()
+    {
+        return array(
+                array('required', 'username is required'),
+                array('required', 'username contains required'), 
+                array('required', 'username exists required'),
+                array('required', 'username has required'),
+                array('required', 'username are required'),
+                array('required', 'username matches required'),
+                array('required', 'username starts with required'),
+                array('required', 'username ends with required'),
+                array('required', 'username reference required'),
+                array('required', 'username not not required'),
+        );
+    }
 
 }

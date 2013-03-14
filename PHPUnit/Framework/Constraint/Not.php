@@ -84,8 +84,7 @@ class PHPUnit_Framework_Constraint_Not extends PHPUnit_Framework_Constraint
      */
     public static function negate($string)
     {
-        return str_replace(
-          array(
+       $possitives =  array(
             'contains ',
             'exists',
             'has ',
@@ -96,8 +95,9 @@ class PHPUnit_Framework_Constraint_Not extends PHPUnit_Framework_Constraint
             'ends with ',
             'reference ',
             'not not '
-          ),
-          array(
+          );
+       
+       $negatives = array(
             'does not contain ',
             'does not exist',
             'does not have ',
@@ -108,9 +108,37 @@ class PHPUnit_Framework_Constraint_Not extends PHPUnit_Framework_Constraint
             'ends not with ',
             'don\'t reference ',
             'not '
-          ),
-          $string
         );
+        
+       // Apply str_replace_outside_single_and_double_quotes() for each entry
+       for($i=0; $i<count($possitives); $i++) {
+           $string = self::str_replace_outside_single_and_double_quotes($possitives[$i], $negatives[$i], $string);
+       }
+       
+       return $string;
+    }
+    
+    
+    /**
+     * Replace stuff that is outside of single and double quotes only
+     *  
+     * @param string $search
+     * @param string $replace
+     * @param string $subject
+     * @return string
+     */
+    public static function str_replace_outside_single_and_double_quotes($search,$replace,$subject)
+    {
+        $buffer = "";
+        // Split by quoted text
+        $subjectToArray = preg_split('/("[^"]*"|\'[^\']*\')/',$subject,-1,PREG_SPLIT_DELIM_CAPTURE);
+        
+        while (!empty($subjectToArray)) {
+            // buffer = replaceable + notreplaceable
+            $buffer .= str_replace($search,$replace,array_shift($subjectToArray)) . array_shift($subjectToArray);
+        }
+        
+        return $buffer;
     }
 
     /**
