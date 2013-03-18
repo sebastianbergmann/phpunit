@@ -185,11 +185,14 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
         }
 
         if (is_integer($arguments['repeat'])) {
-            $suite = new PHPUnit_Extensions_RepeatedTest(
+            $test = new PHPUnit_Extensions_RepeatedTest(
               $suite,
               $arguments['repeat'],
               $arguments['processIsolation']
             );
+
+            $suite = new PHPUnit_Framework_TestSuite();
+            $suite->addTest($test);
         }
 
         $result = $this->createTestResult();
