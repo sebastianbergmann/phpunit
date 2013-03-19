@@ -215,28 +215,25 @@ spl_autoload_register(
   }
 );
 
-if (stream_resolve_include_path('Symfony/Component/Yaml/autoloader.php')) {
-    require_once 'Symfony/Component/Yaml/autoloader.php';
-} else {
-    spl_autoload_register(
-      function ($class) {
-          if (0 === strpos(ltrim($class, '/'), 'Symfony\Component\Yaml')) {
-              $file = sprintf(
-                'Symfony/Component/Yaml%s.php',
+// Symfony Yaml autoloader
+spl_autoload_register(
+  function ($class) {
+      if (0 === strpos(ltrim($class, '/'), 'Symfony\Component\Yaml')) {
+          $file = sprintf(
+            'Symfony/Component/Yaml%s.php',
 
-                substr(
-                  str_replace('\\', '/', $class),
-                  strlen('Symfony\Component\Yaml')
-                )
-              );
+            substr(
+              str_replace('\\', '/', $class),
+              strlen('Symfony\Component\Yaml')
+            )
+          );
 
-              if (stream_resolve_include_path($file)) {
-                  require_once $file;
-              }
+          if (stream_resolve_include_path($file)) {
+              require_once $file;
           }
       }
-    );
-}
+  }
+);
 
 if (stream_resolve_include_path('PHP/Invoker/Autoload.php')) {
     require_once 'PHP/Invoker/Autoload.php';
