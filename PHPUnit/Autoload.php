@@ -69,7 +69,6 @@ require_once 'Text/Template/Autoload.php';
 require_once 'SebastianBergmann/Diff/autoload.php';
 require_once 'SebastianBergmann/Exporter/autoload.php';
 require_once 'SebastianBergmann/Version/autoload.php';
-require_once 'Symfony/Component/Yaml/autoloader.php';
 
 spl_autoload_register(
   function ($class)
@@ -215,6 +214,29 @@ spl_autoload_register(
       }
   }
 );
+
+if (stream_resolve_include_path('Symfony/Component/Yaml/autoloader.php')) {
+    require_once 'Symfony/Component/Yaml/autoloader.php';
+} else {
+    spl_autoload_register(
+      function ($class) {
+          if (0 === strpos(ltrim($class, '/'), 'Symfony\Component\Yaml')) {
+              $file = sprintf(
+                'Symfony/Component/Yaml%s.php',
+
+                substr(
+                  str_replace('\\', '/', $class),
+                  strlen('Symfony\Component\Yaml')
+                )
+              );
+
+              if (stream_resolve_include_path($file)) {
+                  require_once $file;
+              }
+          }
+      }
+    );
+}
 
 if (stream_resolve_include_path('PHP/Invoker/Autoload.php')) {
     require_once 'PHP/Invoker/Autoload.php';
