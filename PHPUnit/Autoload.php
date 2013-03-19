@@ -66,7 +66,6 @@ require_once 'PHP/CodeCoverage/Autoload.php';
 require_once 'PHP/Timer/Autoload.php';
 require_once 'PHPUnit/Framework/MockObject/Autoload.php';
 require_once 'Text/Template/Autoload.php';
-require_once 'Symfony/Component/Yaml/autoloader.php';
 
 spl_autoload_register(
   function ($class)
@@ -203,6 +202,26 @@ spl_autoload_register(
 
       if (isset($classes[$cn])) {
           require $path . $classes[$cn];
+      }
+  }
+);
+
+// Symfony Yaml autoloader
+spl_autoload_register(
+  function ($class) {
+      if (0 === strpos(ltrim($class, '/'), 'Symfony\Component\Yaml')) {
+          $file = sprintf(
+            'Symfony/Component/Yaml%s.php',
+
+            substr(
+              str_replace('\\', '/', $class),
+              strlen('Symfony\Component\Yaml')
+            )
+          );
+
+          if (stream_resolve_include_path($file)) {
+              require_once $file;
+          }
       }
   }
 );
