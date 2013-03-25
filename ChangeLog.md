@@ -6,7 +6,9 @@ This is the list of changes for the PHPUnit 3.7 release series.
 PHPUnit 3.7.19
 --------------
 
-* Fixed #863: Number of tests to run calculated incorrectly when --repeat is used
+* Fixed #763: `assertTag()` fails to match content in CDATA sections.
+* Fixed #860: Version requirement for `symfony/yaml` is too restrictive.
+* Fixed #863: Number of tests to run calculated incorrectly when `--repeat` is used.
 
 PHPUnit 3.7.18
 --------------
