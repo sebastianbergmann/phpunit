@@ -552,7 +552,13 @@ class PHPUnit_Util_XML
               'option', 'p', 'param', 'pre', 'q', 'samp', 'script', 'select',
               'small', 'span', 'strong', 'style', 'sub', 'sup', 'table',
               'tbody', 'td', 'textarea', 'tfoot', 'th', 'thead', 'title',
-              'tr', 'tt', 'ul', 'var'
+              'tr', 'tt', 'ul', 'var',
+              // HTML5
+              'article', 'aside', 'audio', 'bdi', 'canvas', 'command',
+              'datalist', 'details', 'dialog', 'embed', 'figure', 'figcaption',
+              'footer', 'header', 'hgroup', 'keygen', 'mark', 'meter', 'nav',
+              'output', 'progress', 'ruby', 'rt', 'rp', 'track', 'section',
+              'source', 'summary', 'time', 'video', 'wbr'
             );
 
             foreach ($tags as $tag) {
