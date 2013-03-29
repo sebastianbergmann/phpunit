@@ -48,6 +48,7 @@
      </dir>
      <dir name="Comparator">
       <file baseinstalldir="/" name="Array.php" role="php" />
+      <file baseinstalldir="/" name="DateTime.php" role="php" />
       <file baseinstalldir="/" name="DOMDocument.php" role="php" />
       <file baseinstalldir="/" name="Double.php" role="php" />
       <file baseinstalldir="/" name="Exception.php" role="php" />

@@ -707,6 +707,30 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
                 $this->createDOMDocument('<foo> bar </foo>'),
                 $this->createDOMDocument('<foo> bir </foo>'),
             ),
+            array(
+                new DateTime('2013-03-29 04:13:35', new DateTimeZone('America/New_York')),
+                new DateTime('2013-03-29 03:13:35', new DateTimeZone('America/New_York')),
+            ),
+            array(
+                new DateTime('2013-03-29', new DateTimeZone('America/New_York')),
+                new DateTime('2013-03-30', new DateTimeZone('America/New_York')),
+            ),
+            array(
+                new DateTime('2013-03-29 04:13:35', new DateTimeZone('America/New_York')),
+                new DateTime('2013-03-29 04:13:35', new DateTimeZone('America/Chicago')),
+            ),
+            array(
+                new DateTime('2013-03-30', new DateTimeZone('America/New_York')),
+                new DateTime('2013-03-30', new DateTimeZone('America/Chicago')),
+            ),
+            array(
+                new DateTime('2013-03-29T05:13:35-0600'),
+                new DateTime('2013-03-29T04:13:35-0600'),
+            ),
+            array(
+                new DateTime('2013-03-29T05:13:35-0600'),
+                new DateTime('2013-03-29T05:13:35-0500'),
+            ),
             // Exception
             //array(new Exception('Exception 1'), new Exception('Exception 2')),
             // different types
@@ -778,6 +802,30 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
             array(
                 $this->createDOMDocument("<root>\n  <child/>\n</root>"),
                 $this->createDOMDocument('<root><child/></root>'),
+            ),
+            array(
+                new DateTime('2013-03-29 04:13:35', new DateTimeZone('America/New_York')),
+                new DateTime('2013-03-29 04:13:35', new DateTimeZone('America/New_York')),
+            ),
+            array(
+                new DateTime('2013-03-29', new DateTimeZone('America/New_York')),
+                new DateTime('2013-03-29', new DateTimeZone('America/New_York')),
+            ),
+            array(
+                new DateTime('2013-03-29 04:13:35', new DateTimeZone('America/New_York')),
+                new DateTime('2013-03-29 03:13:35', new DateTimeZone('America/Chicago')),
+            ),
+            array(
+                new DateTime('2013-03-30', new DateTimeZone('America/New_York')),
+                new DateTime('2013-03-29 23:00:00', new DateTimeZone('America/Chicago')),
+            ),
+            array(
+                new DateTime('@1364616000'),
+                new DateTime('2013-03-29 23:00:00', new DateTimeZone('America/Chicago')),
+            ),
+            array(
+                new DateTime('2013-03-29T05:13:35-0500'),
+                new DateTime('2013-03-29T04:13:35-0600'),
             ),
             // Exception
             //array(new Exception('Exception 1'), new Exception('Exception 1')),
@@ -1746,7 +1794,7 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
     {
         $this->readAttribute(NULL, 'foo');
     }
-    
+
     /**
      * @covers            PHPUnit_Framework_Assert::readAttribute
      * @covers            PHPUnit_Framework_Assert::getStaticAttribute
@@ -2243,7 +2291,7 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
     {
         $this->assertClassHasAttribute('foo', NULL);
     }
-    
+
     /**
      * @covers            PHPUnit_Framework_Assert::assertClassHasAttribute
      * @expectedException PHPUnit_Framework_Exception
@@ -2270,7 +2318,7 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
     {
         $this->assertClassNotHasAttribute('foo', NULL);
     }
-    
+
     /**
      * @covers            PHPUnit_Framework_Assert::assertClassNotHasAttribute
      * @expectedException PHPUnit_Framework_Exception
@@ -2297,7 +2345,7 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
     {
         $this->assertClassHasStaticAttribute('foo', NULL);
     }
-    
+
     /**
      * @covers            PHPUnit_Framework_Assert::assertClassHasStaticAttribute
      * @expectedException PHPUnit_Framework_Exception
@@ -2324,7 +2372,7 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
     {
         $this->assertClassNotHasStaticAttribute('foo', NULL);
     }
-    
+
     /**
      * @covers            PHPUnit_Framework_Assert::assertClassNotHasStaticAttribute
      * @expectedException PHPUnit_Framework_Exception
@@ -2351,7 +2399,7 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
     {
         $this->assertObjectHasAttribute('foo', NULL);
     }
-    
+
     /**
      * @covers            PHPUnit_Framework_Assert::assertObjectHasAttribute
      * @expectedException PHPUnit_Framework_Exception
@@ -2378,7 +2426,7 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
     {
         $this->assertObjectNotHasAttribute('foo', NULL);
     }
-    
+
     /**
      * @covers            PHPUnit_Framework_Assert::assertObjectNotHasAttribute
      * @expectedException PHPUnit_Framework_Exception
