@@ -927,7 +927,7 @@ EOF
               new DateTime('2013-03-29 04:13:35', new DateTimeZone('America/New_York')),
               new DateTime('2013-03-29 04:13:35', new DateTimeZone('America/Chicago')),
               <<<EOF
-Failed asserting that two DateTimes are equal.
+Failed asserting that two DateTime objects are equal.
 --- Expected
 +++ Actual
 @@ @@

@@ -92,21 +92,23 @@ class PHPUnit_Framework_Comparator_DateTime extends PHPUnit_Framework_Comparator
               $this->dateTimeToString($expected),
               $this->dateTimeToString($actual),
               FALSE,
-              'Failed asserting that two DateTimes are equal.'
+              'Failed asserting that two DateTime objects are equal.'
             );
         }
     }
 
     /**
      * Returns an ISO 8601 formatted string representation of a datetime or
-     * 'Invalid DateTime' if the provided DateTime was not properly initialized.
+     * 'Invalid DateTime object' if the provided DateTime was not properly
+     * initialized.
      *
-     * @param DateTime $datetime  The DateTime to get the string representation for
+     * @param DateTime $datetime
      * @return string
      */
     protected function dateTimeToString(DateTime $datetime)
     {
         $string = $datetime->format(DateTime::ISO8601);
-        return $string ? $string : 'Invalid DateTime';
+
+        return $string ? $string : 'Invalid DateTime object';
     }
 }
