@@ -17,6 +17,7 @@ PHPUnit 3.8.0
 * Implemented #838: Added a base test listener.
 * Implemented #859: Added PHP label validation to attribute assertions.
 * Implemented #871: Add Comparator for DateTime objects.
+* Implemented #877: Added new HTML5 tags to `PHPUnit_Util_XML::findNodes()`.
 * A test will now fail in strict mode when it uses the `@covers` annotation and code that is not expected to be covered is executed.
 * Fixed #240: XML strings are escaped by removing invalid characters.
 * Fixed #261: `setUp()` and `setUpBeforeClass()` are run before filters are applied.
