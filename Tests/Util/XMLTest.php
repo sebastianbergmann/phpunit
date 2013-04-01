@@ -130,7 +130,7 @@ class Util_XMLTest extends PHPUnit_Framework_TestCase
 
     public function testConvertAssertSelect()
     {
-        $selector  = 'div#folder.open a[href="http://www.xerox.com"][title="xerox"].selected.big > span';
+        $selector  = 'div#folder.open a[href="http://www.xerox.com"][title="xerox"].selected.big > span + h1';
         $converted = PHPUnit_Util_XML::convertSelectToTag($selector);
         $tag       = array('tag'   => 'div',
                            'id'    => 'folder',
@@ -139,7 +139,8 @@ class Util_XMLTest extends PHPUnit_Framework_TestCase
                                                  'class'      => 'selected big',
                                                  'attributes' => array('href'  => 'http://www.xerox.com',
                                                                        'title' => 'xerox'),
-                                                 'child'      => array('tag' => 'span')));
+                                                 'child'      => array('tag' => 'span',
+                                                                       'adjacent-sibling' => array('tag' => 'h1'))));
          $this->assertEquals($tag, $converted);
     }
 
@@ -258,6 +259,15 @@ class Util_XMLTest extends PHPUnit_Framework_TestCase
         $selector  = 'div > a';
         $converted = PHPUnit_Util_XML::convertSelectToTag($selector);
         $tag       = array('tag' => 'div', 'child' => array('tag' => 'a'));
+
+        $this->assertEquals($tag, $converted);
+    }
+
+    public function testConvertAssertSelectEltAdjacentSibling()
+    {
+        $selector  = 'div + a';
+        $converted = PHPUnit_Util_XML::convertSelectToTag($selector);
+        $tag       = array('tag' => 'div', 'adjacent-sibling' => array('tag' => 'a'));
 
         $this->assertEquals($tag, $converted);
     }

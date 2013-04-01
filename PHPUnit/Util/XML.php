@@ -372,6 +372,12 @@ class PHPUnit_Util_XML
                 continue;
             }
 
+            // adjacent-sibling selector
+            if ($element == '+') {
+                $previousTag = array('adjacent-sibling' => $previousTag['descendant']);
+                continue;
+            }
+
             $tag = array();
 
             // match element tag
@@ -452,6 +458,11 @@ class PHPUnit_Util_XML
                 $tag['child'] = $previousTag['child'];
             }
 
+            else if (!empty($previousTag['adjacent-sibling'])) {
+                $tag['adjacent-sibling'] = $previousTag['adjacent-sibling'];
+                unset($tag['content']);
+            }
+
             $previousTag = array('descendant' => $tag);
         }
 
@@ -505,7 +516,7 @@ class PHPUnit_Util_XML
     {
         $valid = array(
           'id', 'class', 'tag', 'content', 'attributes', 'parent',
-          'child', 'ancestor', 'descendant', 'children'
+          'child', 'ancestor', 'descendant', 'children', 'adjacent-sibling'
         );
 
         $filtered = array();
@@ -705,6 +716,38 @@ class PHPUnit_Util_XML
                             $filtered[] = $node;
                         }
                     }
+                }
+            }
+
+            $nodes    = $filtered;
+            $filtered = array();
+
+            if (empty($nodes)) {
+                return FALSE;
+            }
+        }
+
+        // filter by adjacent-sibling
+        if ($options['adjacent-sibling']) {
+            $adjacentSiblingNodes = self::findNodes($dom, $options['adjacent-sibling'], $isHtml);
+            $adjacentSiblingNodes = !empty($adjacentSiblingNodes) ? $adjacentSiblingNodes : array();
+
+            foreach ($nodes as $node) {
+                $sibling = $node;
+
+                while ($sibling = $sibling->nextSibling) {
+                    if ($sibling->nodeType !== XML_ELEMENT_NODE) {
+                        continue;
+                    }
+
+                    foreach ($adjacentSiblingNodes as $adjacentSiblingNode) {
+                        if ($sibling === $adjacentSiblingNode) {
+                            $filtered[] = $node;
+                            break;
+                        }
+                    }
+
+                    break;
                 }
             }
 

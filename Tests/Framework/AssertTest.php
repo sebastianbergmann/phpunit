@@ -3235,6 +3235,28 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
     /**
      * @covers PHPUnit_Framework_Assert::assertTag
      */
+    public function testAssertTagAdjacentSiblingTrue()
+    {
+        $matcher = array('tag' => 'img',
+                         'adjacent-sibling' => array('tag' => 'input'));
+        $this->assertTag($matcher, $this->html);
+    }
+
+    /**
+     * @covers            PHPUnit_Framework_Assert::assertTag
+     * @expectedException PHPUnit_Framework_AssertionFailedError
+     */
+    public function testAssertTagAdjacentSiblingFalse()
+    {
+        $matcher = array('tag' => 'img',
+                         'adjacent-sibling' => array('tag' => 'div'));
+        $this->assertTag($matcher, $this->html);
+    }
+
+
+    /**
+     * @covers PHPUnit_Framework_Assert::assertTag
+     */
     public function testAssertTagAncestorTrue()
     {
         $matcher = array('tag' => 'div',
@@ -3437,11 +3459,36 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
     /**
      * @covers PHPUnit_Framework_Assert::assertTag
      */
+    public function testAssertAdjacentSiblingContentAttributes()
+    {
+        $matcher = array('tag'              => 'div',
+                         'content'          => 'Test Id Text',
+                         'attributes'       => array('id'    => 'test_id',
+                                                     'class' => 'my_test_class'),
+                         'adjacent-sibling' => array('tag'        => 'div',
+                                                     'attributes' => array('id' => 'test_children')));
+        $this->assertTag($matcher, $this->html);
+    }
+
+    /**
+     * @covers PHPUnit_Framework_Assert::assertTag
+     */
     public function testAssertChildSubChildren()
     {
         $matcher = array('id' => 'test_id',
                          'child' => array('id' => 'test_child_id',
                                           'child' => array('id' => 'test_subchild_id')));
+        $this->assertTag($matcher, $this->html);
+    }
+
+    /**
+     * @covers PHPUnit_Framework_Assert::assertTag
+     */
+    public function testAssertAdjacentSiblingSubAdjacentSibling()
+    {
+        $matcher = array('id' => 'test_id',
+                         'adjacent-sibling' => array('id' => 'test_children',
+                                                     'adjacent-sibling' => array('class' => 'test_class')));
         $this->assertTag($matcher, $this->html);
     }
 
@@ -3575,6 +3622,29 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
     {
         $selector = '#my_ul > li';
         $count    = 4;
+
+        $this->assertSelectCount($selector, $count, $this->html);
+    }
+
+    /**
+     * @covers PHPUnit_Framework_Assert::assertSelectCount
+     */
+    public function testAssertSelectCountAdjacentSiblingTrue()
+    {
+        $selector = 'div + div + div';
+        $count    = 2;
+
+        $this->assertSelectCount($selector, $count, $this->html);
+    }
+
+    /**
+     * @covers            PHPUnit_Framework_Assert::assertSelectCount
+     * @expectedException PHPUnit_Framework_AssertionFailedError
+     */
+    public function testAssertSelectCountAdjacentSiblingFalse()
+    {
+        $selector = '#test_children + div';
+        $count    = 1;
 
         $this->assertSelectCount($selector, $count, $this->html);
     }

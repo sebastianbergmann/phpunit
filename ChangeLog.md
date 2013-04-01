@@ -16,6 +16,7 @@ PHPUnit 3.8.0
 * Implemented #835: Printers that extend `PHPUnit_TextUI_ResultPrinter` should have similar construction
 * Implemented #838: Added a base test listener.
 * Implemented #859: Added PHP label validation to attribute assertions.
+* Implemented #869: Added support for the adjacent sibling selector (+) to `PHPUnit_Util_XML::findNodes()`.
 * Implemented #871: Add Comparator for DateTime objects.
 * Implemented #877: Added new HTML5 tags to `PHPUnit_Util_XML::findNodes()`.
 * A test will now fail in strict mode when it uses the `@covers` annotation and code that is not expected to be covered is executed.
