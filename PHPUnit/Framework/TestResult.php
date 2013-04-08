@@ -394,7 +394,7 @@ class PHPUnit_Framework_TestResult implements Countable
     }
 
     /**
-     * Returns TRUE if no incomplete test occured.
+     * Returns TRUE if no incomplete test occurred.
      *
      * @return boolean
      */
