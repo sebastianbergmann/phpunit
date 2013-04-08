@@ -37,6 +37,7 @@
  * @package    PHPUnit
  * @subpackage Framework
  * @author     Sebastian Bergmann <sebastian@phpunit.de>
+ * @author     Kuzuha SHINODA <kuzuha01@hotmail.com>
  * @copyright  2001-2013 Sebastian Bergmann <sebastian@phpunit.de>
  * @license    http://www.opensource.org/licenses/BSD-3-Clause  The BSD 3-Clause License
  * @link       http://www.phpunit.de/
@@ -1758,7 +1759,8 @@ function lessThanOrEqual($value)
  */
 function logicalAnd()
 {
-    return PHPUnit_Framework_Assert::logicalAnd();
+    $args = func_get_args();
+    return call_user_func_array('PHPUnit_Framework_Assert::logicalAnd', $args);
 }
 
 /**
@@ -1781,7 +1783,8 @@ function logicalNot(PHPUnit_Framework_Constraint $constraint)
  */
 function logicalOr()
 {
-    return PHPUnit_Framework_Assert::logicalOr();
+    $args = func_get_args();
+    return call_user_func_array('PHPUnit_Framework_Assert::logicalOr', $args);
 }
 
 /**
@@ -1792,7 +1795,8 @@ function logicalOr()
  */
 function logicalXor()
 {
-    return PHPUnit_Framework_Assert::logicalXor();
+    $args = func_get_args();
+    return call_user_func_array('PHPUnit_Framework_Assert::logicalXor', $args);
 }
 
 /**
