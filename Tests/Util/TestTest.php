@@ -105,6 +105,10 @@ class Util_TestTest extends PHPUnit_Framework_TestCase
           PHPUnit_Util_Test::getExpectedException('ExceptionTest', 'testNine')
         );
         $this->assertSame(
+          array('class' => 'Class', 'code' => NULL, 'message' => ''),
+          PHPUnit_Util_Test::getExpectedException('ExceptionTest', 'testSingleLine')
+        );
+        $this->assertSame(
             array('class' => 'Class', 'code' => My\Space\ExceptionNamespaceTest::ERROR_CODE, 'message' => My\Space\ExceptionNamespaceTest::ERROR_MESSAGE),
             PHPUnit_Util_Test::getExpectedException('My\Space\ExceptionNamespaceTest', 'testConstants')
         );
