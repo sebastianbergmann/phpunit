@@ -3,6 +3,11 @@ PHPUnit 3.7
 
 This is the list of changes for the PHPUnit 3.7 release series.
 
+PHPUnit 3.7.20
+--------------
+
+* Fixed #890: Correctly parse single-line @expectedException annotations.
+
 PHPUnit 3.7.19
 --------------
 
