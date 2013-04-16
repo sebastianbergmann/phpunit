@@ -6,6 +6,7 @@ This is the list of changes for the PHPUnit 3.7 release series.
 PHPUnit 3.7.20
 --------------
 
+* Fixed #883: Stand-alone functions `logicalAnd()`, `logicalOr()`, and `logicalXor()` did not work.
 * Fixed #890: Correctly parse single-line @expectedException annotations.
 
 PHPUnit 3.7.19
