@@ -88,7 +88,7 @@ class PHPUnit_Framework_TestFailure
         return sprintf(
           '%s: %s',
 
-          $this->failedTest,
+          $this->failedTest->toString(),
           $this->thrownException->getMessage()
         );
     }
