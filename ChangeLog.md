@@ -8,6 +8,7 @@ PHPUnit 3.7.20
 
 * Fixed #883: Stand-alone functions `logicalAnd()`, `logicalOr()`, and `logicalXor()` did not work.
 * Fixed #890: Correctly parse single-line @expectedException annotations.
+* Fixed #896: Use the proper `toString()` method inside `PHPUnit_Framework_TestFailure::toString()`.
 
 PHPUnit 3.7.19
 --------------
