@@ -1,15 +1,21 @@
 <?php
 class BeforeAndAfterTest extends PHPUnit_Framework_TestCase
 {
-    public $beforeWasRun;
-    public $afterWasRun;
+    public static $beforeWasRun;
+    public static $afterWasRun;
+
+    public static function resetProperties()
+    {
+        self::$beforeWasRun = 0;
+        self::$afterWasRun = 0;
+    }
 
     /**
      * @before
      */
     public function initialSetup()
     {
-        $this->beforeWasRun = TRUE;
+        self::$beforeWasRun++;
     }
 
     /**
@@ -17,8 +23,9 @@ class BeforeAndAfterTest extends PHPUnit_Framework_TestCase
      */
     public function finalTeardown()
     {
-        $this->afterWasRun = TRUE;
+        self::$afterWasRun++;
     }
 
-    public function testEmpty() {}
+    public function test1() {}
+    public function test2() {}
 }

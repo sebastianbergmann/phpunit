@@ -4,10 +4,16 @@ class BeforeClassAndAfterClassTest extends PHPUnit_Framework_TestCase
     public static $beforeClassWasRun = 0;
     public static $afterClassWasRun = 0;
 
+    public static function resetProperties()
+    {
+        self::$beforeClassWasRun = 0;
+        self::$afterClassWasRun = 0;
+    }
+
     /**
      * @beforeClass
      */
-    public function initialSetup()
+    public function initialClassSetup()
     {
         self::$beforeClassWasRun++;
     }
@@ -15,7 +21,7 @@ class BeforeClassAndAfterClassTest extends PHPUnit_Framework_TestCase
     /**
      * @afterClass
      */
-    public static function finalTeardown()
+    public static function finalClassTeardown()
     {
         self::$afterClassWasRun++;
     }

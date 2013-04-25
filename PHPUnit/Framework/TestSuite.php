@@ -143,7 +143,17 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
     /**
      * @var array
      */
+    private $beforeMethods = array();
+
+    /**
+     * @var array
+     */
     private $afterClassMethods = array();
+
+    /**
+     * @var array
+     */
+    private $afterMethods = array();
 
     /**
      * Constructs a new TestSuite:
@@ -227,8 +237,23 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
 
         foreach ($theClass->getMethods() as $method) {
             $this->addBeforeClassMethod($theClass, $method);
+            $this->addBeforeMethod($theClass, $method);
             $this->addTestMethod($theClass, $method);
+            $this->addAfterMethod($theClass, $method);
             $this->addAfterClassMethod($theClass, $method);
+        }
+
+        foreach ($this->tests as $test) {
+            foreach ($this->beforeMethods as $method) {
+                if (method_exists($test, 'hookBeforeMethod')) {
+                    $test->hookBeforeMethod($method);
+                }
+            }
+            foreach ($this->afterMethods as $method) {
+                if (method_exists($test, 'hookAfterMethod')) {
+                    $test->hookAfterMethod($method);
+                }
+            }
         }
 
         if (empty($this->tests)) {
@@ -852,6 +877,19 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
      * @param ReflectionClass  $class
      * @param ReflectionMethod $method
      */
+    protected function addBeforeMethod(ReflectionClass $class, ReflectionMethod $method)
+    {
+        $name = $method->getName();
+
+        if ($this->isBeforeMethod($method)) {
+            $this->beforeMethods[] = $name;
+        }
+    }
+
+    /**
+     * @param ReflectionClass  $class
+     * @param ReflectionMethod $method
+     */
     protected function addAfterClassMethod(ReflectionClass $class, ReflectionMethod $method)
     {
         $name = $method->getName();
@@ -860,6 +898,20 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
             $this->afterClassMethods[] = $name;
         }
     }
+
+    /**
+     * @param ReflectionClass  $class
+     * @param ReflectionMethod $method
+     */
+    protected function addAfterMethod(ReflectionClass $class, ReflectionMethod $method)
+    {
+        $name = $method->getName();
+
+        if ($this->isAfterMethod($method)) {
+            $this->afterMethods[] = $name;
+        }
+    }
+
 
     /**
      * @param  ReflectionMethod $method
@@ -899,9 +951,27 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
      * @param  ReflectionMethod $method
      * @return boolean
      */
+    public static function isBeforeMethod(ReflectionMethod $method)
+    {
+        return preg_match('/\@before[^A-Za-z]+/', $method->getDocComment());
+    }
+
+    /**
+     * @param  ReflectionMethod $method
+     * @return boolean
+     */
     public static function isAfterClassMethod(ReflectionMethod $method)
     {
         return strpos($method->getDocComment(), '@afterClass') !== FALSE;
+    }
+
+    /**
+     * @param  ReflectionMethod $method
+     * @return boolean
+     */
+    public static function isAfterMethod(ReflectionMethod $method)
+    {
+        return preg_match('/\@after[^A-Za-z]+/', $method->getDocComment());
     }
 
     /**

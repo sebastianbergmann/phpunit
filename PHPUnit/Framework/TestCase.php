@@ -294,6 +294,16 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
     private $outputBufferingActive = FALSE;
 
     /**
+     * @var array
+     */
+    private $beforeMethods = array();
+
+    /**
+     * @var array
+     */
+    private $afterMethods = array();
+
+    /**
      * Constructs a test case with the given name.
      *
      * @param  string $name
@@ -849,8 +859,8 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
 
             $this->setExpectedExceptionFromAnnotation();
             $this->setUp();
-            if (method_Exists($this, 'initialSetup')) {
-                $this->initialSetup();
+            foreach ($this->beforeMethods as $method) {
+                $this->$method();
             }
             $this->checkRequirements();
             $this->assertPreConditions();
@@ -887,6 +897,9 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
         // caught and passed on when no exception was raised before.
         try {
             $this->tearDown();
+            foreach ($this->afterMethods as $method) {
+                $this->$method();
+            }
 
             if ($this->inIsolation) {
                 $this->tearDownAfterClass();
@@ -1945,5 +1958,23 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
      */
     protected function prepareTemplate(Text_Template $template)
     {
+    }
+
+    /**
+     * @internal
+     * @param string
+     */
+    public function hookBeforeMethod($name)
+    {
+        $this->beforeMethods[] = $name;
+    }
+
+    /**
+     * @internal
+     * @param string
+     */
+    public function hookAfterMethod($name)
+    {
+        $this->afterMethods[] = $name;
     }
 }
