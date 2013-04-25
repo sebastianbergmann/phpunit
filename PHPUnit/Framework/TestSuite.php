@@ -953,7 +953,7 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
      */
     public static function isBeforeMethod(ReflectionMethod $method)
     {
-        return preg_match('/\@before[^A-Za-z]+/', $method->getDocComment());
+        return preg_match('/\@before\b/', $method->getDocComment());
     }
 
     /**
@@ -971,7 +971,7 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
      */
     public static function isAfterMethod(ReflectionMethod $method)
     {
-        return preg_match('/\@after[^A-Za-z]+/', $method->getDocComment());
+        return preg_match('/\@after\b/', $method->getDocComment());
     }
 
     /**
