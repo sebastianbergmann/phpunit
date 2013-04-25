@@ -296,12 +296,12 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
     /**
      * @var array
      */
-    private $beforeMethods = array();
+    private $beforeMethods = array('setUp');
 
     /**
      * @var array
      */
-    private $afterMethods = array();
+    private $afterMethods = array('tearDown');
 
     /**
      * Constructs a test case with the given name.
@@ -858,7 +858,6 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
             }
 
             $this->setExpectedExceptionFromAnnotation();
-            $this->setUp();
             foreach ($this->beforeMethods as $method) {
                 $this->$method();
             }
@@ -896,7 +895,6 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
         // Tear down the fixture. An exception raised in tearDown() will be
         // caught and passed on when no exception was raised before.
         try {
-            $this->tearDown();
             foreach ($this->afterMethods as $method) {
                 $this->$method();
             }
