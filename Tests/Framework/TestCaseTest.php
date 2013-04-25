@@ -42,6 +42,7 @@
  * @since      File available since Release 2.0.0
  */
 
+require_once dirname(__DIR__) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'BeforeAndAfterTest.php';
 require_once dirname(__DIR__) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'Error.php';
 require_once dirname(__DIR__) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'ExceptionInAssertPostConditionsTest.php';
 require_once dirname(__DIR__) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'ExceptionInAssertPreConditionsTest.php';
@@ -131,6 +132,15 @@ class Framework_TestCaseTest extends PHPUnit_Framework_TestCase
         $this->assertFalse($test->testSomething);
         $this->assertFalse($test->assertPostConditions);
         $this->assertTrue($test->tearDown);
+    }
+
+    public function testBeforeAnnotation()
+    {
+        $test   = new BeforeAndAfterTest('testSomething');
+        $result = $test->run();
+
+        $this->assertTrue($test->beforeWasRun);
+        //$this->assertTrue($test->afterWasRun);
     }
 
     public function testExceptionInAssertPreConditions()

@@ -849,6 +849,9 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
 
             $this->setExpectedExceptionFromAnnotation();
             $this->setUp();
+            if (method_Exists($this, 'initialSetup')) {
+                $this->initialSetup();
+            }
             $this->checkRequirements();
             $this->assertPreConditions();
             $this->testResult = $this->runTest();
