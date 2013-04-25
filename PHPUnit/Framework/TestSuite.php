@@ -216,7 +216,9 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
         }
 
         foreach ($theClass->getMethods() as $method) {
+            $this->addBeforeMethod($theClass, $method);
             $this->addTestMethod($theClass, $method);
+            $this->addAfterMethod($theClass, $method);
         }
 
         if (empty($this->tests)) {
@@ -810,6 +812,32 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
     }
 
     /**
+     * @param ReflectionClass  $class
+     * @param ReflectionMethod $method
+     */
+    protected function addBeforeMethod(ReflectionClass $class, ReflectionMethod $method)
+    {
+        $name = $method->getName();
+
+        if ($this->isBeforeMethod($method)) {
+            $this->before = $name;
+        }
+    }
+
+    /**
+     * @param ReflectionClass  $class
+     * @param ReflectionMethod $method
+     */
+    protected function addAfterMethod(ReflectionClass $class, ReflectionMethod $method)
+    {
+        $name = $method->getName();
+
+        if ($this->isAfterMethod($method)) {
+            $this->after = $name;
+        }
+    }
+
+    /**
      * @param  ReflectionMethod $method
      * @return boolean
      */
@@ -832,6 +860,24 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
         // @test     on TestCase::testMethod()
         return strpos($method->getDocComment(), '@test')     !== FALSE ||
                strpos($method->getDocComment(), '@scenario') !== FALSE;
+    }
+
+    /**
+     * @param  ReflectionMethod $method
+     * @return boolean
+     */
+    public static function isBeforeMethod(ReflectionMethod $method)
+    {
+        return strpos($method->getDocComment(), '@before') !== FALSE;
+    }
+
+    /**
+     * @param  ReflectionMethod $method
+     * @return boolean
+     */
+    public static function isAfterMethod(ReflectionMethod $method)
+    {
+        return strpos($method->getDocComment(), '@after') !== FALSE;
     }
 
     /**
