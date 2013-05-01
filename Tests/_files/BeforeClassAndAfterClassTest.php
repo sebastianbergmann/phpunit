@@ -13,7 +13,7 @@ class BeforeClassAndAfterClassTest extends PHPUnit_Framework_TestCase
     /**
      * @beforeClass
      */
-    public function initialClassSetup()
+    public static function initialClassSetup()
     {
         self::$beforeClassWasRun++;
     }

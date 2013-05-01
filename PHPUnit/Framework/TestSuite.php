@@ -869,6 +869,7 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
         $name = $method->getName();
 
         if ($this->isBeforeClassMethod($method)) {
+            $this->ensureIsStatic($method);
             $this->beforeClassMethods[] = $name;
         }
     }
@@ -895,6 +896,7 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
         $name = $method->getName();
 
         if ($this->isAfterClassMethod($method)) {
+            $this->ensureIsStatic($method);
             $this->afterClassMethods[] = $name;
         }
     }
@@ -912,6 +914,12 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
         }
     }
 
+    private function ensureIsStatic(ReflectionMethod $method)
+    {
+        if (!$method->isStatic()) {
+            throw new PHPUnit_Framework_Exception("The hook method {$method->getDeclaringClass()->getName()}::{$method->getName()}() is supposed to be static, but it's not.");
+        }
+    }
 
     /**
      * @param  ReflectionMethod $method
