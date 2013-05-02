@@ -11,6 +11,7 @@ Tests/TextUI/*.exp
 Tests/TextUI/*.log
 Tests/TextUI/*.out
 Tests/TextUI/*.php
+/vendor
 phpunit.xml
 cache.properties
 .idea
