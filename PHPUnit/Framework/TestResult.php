@@ -676,7 +676,7 @@ class PHPUnit_Framework_TestResult implements Countable
                 $this->codeCoverage->stop(!$incomplete && !$skipped);
             }
 
-            catch (PHP_CodeCoverage_Exception_UnintentionallyCoveredCode $e) {
+            catch (PHP_CodeCoverage_Exception_UnintentionallyCoveredCode $cce) {
                 $this->addFailure(
                   $test,
                   new PHPUnit_Framework_UnintentionallyCoveredCodeError(
@@ -686,11 +686,11 @@ class PHPUnit_Framework_TestResult implements Countable
                 );
             }
 
-            catch (PHP_CodeCoverage_Exception_InvalidCoversTarget $e) {
+            catch (PHP_CodeCoverage_Exception_InvalidCoversTarget $cce) {
                 $this->addFailure(
                   $test,
                   new PHPUnit_Framework_InvalidCoversTargetError(
-                    $e->getMessage()
+                    $cce->getMessage()
                   ),
                   $time
                 );
