@@ -12,6 +12,7 @@ Tests/TextUI/*.log
 Tests/TextUI/*.out
 Tests/TextUI/*.php
 /vendor
+/composer.lock
 phpunit.xml
 cache.properties
 .idea
