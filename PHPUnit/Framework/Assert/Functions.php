@@ -807,6 +807,21 @@ function assertInternalType($expected, $actual, $message = '')
 }
 
 /**
+ * Asserts that a string is a valid JSON string.
+ *
+ * @param  string $filename
+ * @param  string $message
+ * @since  Method available since Release 3.7.20
+ */
+function assertJson($expectedJson, $message = '')
+{
+    return call_user_func_array(
+      'PHPUnit_Framework_Assert::assertJson',
+      func_get_args()
+    );
+}
+
+/**
  * Asserts that two JSON files are equal.
  *
  * @param  string $expectedFile
@@ -2035,6 +2050,20 @@ function isInstanceOf($className)
 {
     return call_user_func_array(
       'PHPUnit_Framework_Assert::isInstanceOf',
+      func_get_args()
+    );
+}
+
+/**
+ * Returns a PHPUnit_Framework_Constraint_IsJson matcher object.
+ *
+ * @return PHPUnit_Framework_Constraint_IsJson
+ * @since  Method available since Release 3.7.20
+ */
+function isJson()
+{
+    return call_user_func_array(
+      'PHPUnit_Framework_Assert::isJson',
       func_get_args()
     );
 }

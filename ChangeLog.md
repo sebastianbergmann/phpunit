@@ -8,6 +8,7 @@ PHPUnit 3.7.20
 
 * Fixed #883: Stand-alone functions `logicalAnd()`, `logicalOr()`, and `logicalXor()` did not work.
 * Fixed #890: Correctly parse single-line @expectedException annotations.
+* Fixed #891: Better messages when JSON-related assertions receive invalid JSON.
 * Fixed #896: Use the proper `toString()` method inside `PHPUnit_Framework_TestFailure::toString()`.
 * Fixed #902: Allow symfony/yaml >=2.0,<3.0
 

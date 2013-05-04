@@ -82,6 +82,7 @@
       <file baseinstalldir="/" name="IsFalse.php" role="php" />
       <file baseinstalldir="/" name="IsIdentical.php" role="php" />
       <file baseinstalldir="/" name="IsInstanceOf.php" role="php" />
+      <file baseinstalldir="/" name="IsJson.php" role="php" />
       <file baseinstalldir="/" name="IsNull.php" role="php" />
       <file baseinstalldir="/" name="IsTrue.php" role="php" />
       <file baseinstalldir="/" name="IsType.php" role="php" />

@@ -4053,7 +4053,7 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
     {
         try {
             $this->assertJsonStringEqualsJsonString($expected, $actual);
-        } catch (PHPUnit_Framework_ExpectationFailedException $e) {
+        } catch (PHPUnit_Framework_AssertionFailedError $e) {
             return;
         }
         $this->fail('Expected exception not found');
@@ -4077,7 +4077,12 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
      */
     public function testAssertJsonStringNotEqualsJsonStringErrorRaised($expected, $actual)
     {
-        $this->assertJsonStringNotEqualsJsonString($expected, $actual);
+        try {
+            $this->assertJsonStringNotEqualsJsonString($expected, $actual);
+        } catch (PHPUnit_Framework_AssertionFailedError $e) {
+            return;
+        }
+        $this->fail('Expected exception not found');
     }
 
     /**
