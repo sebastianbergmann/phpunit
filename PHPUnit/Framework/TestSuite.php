@@ -680,12 +680,12 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
             if ($this->testCase &&
                 // Some extensions use test names that are not classes;
                 // The method_exists() triggers an autoload call that causes issues with die()ing autoloaders.
-                class_exists($this->name, false) &&
+                class_exists($this->name, FALSE) &&
                 method_exists($this->name, 'setUpBeforeClass')) {
                 call_user_func(array($this->name, 'setUpBeforeClass'));
             }
 
-            if (class_exists($this->name, false)) {
+            if (class_exists($this->name, FALSE)) {
                 $class = $this->name;
                 foreach ($this->beforeClassMethods as $method) {
                     $class::$method();
@@ -732,12 +732,12 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
         if ($this->testCase &&
             // Some extensions use test names that are not classes;
             // The method_exists() triggers an autoload call that causes issues with die()ing autoloaders.
-            class_exists($this->name, false) &&
+            class_exists($this->name, FALSE) &&
             method_exists($this->name, 'tearDownAfterClass')) {
             call_user_func(array($this->name, 'tearDownAfterClass'));
         }
 
-        if (class_exists($this->name, false)) {
+        if (class_exists($this->name, FALSE)) {
             $class = $this->name;
             foreach ($this->afterClassMethods as $method) {
                 $class::$method();
@@ -917,7 +917,12 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
     private function ensureIsStatic(ReflectionMethod $method)
     {
         if (!$method->isStatic()) {
-            throw new PHPUnit_Framework_Exception("The hook method {$method->getDeclaringClass()->getName()}::{$method->getName()}() is supposed to be static, but it's not.");
+            throw new PHPUnit_Framework_Exception(sprintf(
+              '%s::%s() must be static.',
+
+              $method->getDeclaringClass()->getName(),
+              $method->getName()
+            ));
         }
     }
 
@@ -961,7 +966,7 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
      */
     public static function isBeforeMethod(ReflectionMethod $method)
     {
-        return preg_match('/\@before\b/', $method->getDocComment());
+        return preg_match('/@before\b/', $method->getDocComment());
     }
 
     /**
@@ -979,7 +984,7 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
      */
     public static function isAfterMethod(ReflectionMethod $method)
     {
-        return preg_match('/\@after\b/', $method->getDocComment());
+        return preg_match('/@after\b/', $method->getDocComment());
     }
 
     /**
