@@ -294,6 +294,16 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
     private $outputBufferingActive = FALSE;
 
     /**
+     * @var array
+     */
+    private $beforeMethods = array('setUp');
+
+    /**
+     * @var array
+     */
+    private $afterMethods = array('tearDown');
+
+    /**
      * Constructs a test case with the given name.
      *
      * @param  string $name
@@ -848,7 +858,9 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
             }
 
             $this->setExpectedExceptionFromAnnotation();
-            $this->setUp();
+            foreach ($this->beforeMethods as $method) {
+                $this->$method();
+            }
             $this->checkRequirements();
             $this->assertPreConditions();
             $this->testResult = $this->runTest();
@@ -883,7 +895,9 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
         // Tear down the fixture. An exception raised in tearDown() will be
         // caught and passed on when no exception was raised before.
         try {
-            $this->tearDown();
+            foreach ($this->afterMethods as $method) {
+                $this->$method();
+            }
 
             if ($this->inIsolation) {
                 $this->tearDownAfterClass();
@@ -1942,5 +1956,23 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
      */
     protected function prepareTemplate(Text_Template $template)
     {
+    }
+
+    /**
+     * @internal
+     * @param string
+     */
+    public function hookBeforeMethod($name)
+    {
+        $this->beforeMethods[] = $name;
+    }
+
+    /**
+     * @internal
+     * @param string
+     */
+    public function hookAfterMethod($name)
+    {
+        $this->afterMethods[] = $name;
     }
 }
