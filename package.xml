@@ -259,7 +259,7 @@
     <name>Yaml</name>
     <channel>pear.symfony.com</channel>
     <min>2.0.0</min>
-    <max>2.2.99</max>
+    <max>2.99.99</max>
    </package>
    <package>
     <name>Version</name>
