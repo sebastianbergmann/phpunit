@@ -52,8 +52,8 @@ $paths = array(
 );
 
 foreach ($paths as $path) {
-    if (is_dir($path . '/composer') &&
-        is_file($path . '/autoload.php')) {
+    if (@is_dir($path . '/composer') &&
+        @is_file($path . '/autoload.php')) {
         require_once $path . '/autoload.php';
         define('PHPUNIT_COMPOSER_INSTALL', $path . '/autoload.php');
 

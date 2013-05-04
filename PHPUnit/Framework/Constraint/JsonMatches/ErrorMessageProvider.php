@@ -57,25 +57,25 @@
 class PHPUnit_Framework_Constraint_JsonMatches_ErrorMessageProvider
 {
     /**
-     * Translatets accourd JSON error to a human readable string.
+     * Translates JSON error to a human readable string.
      *
      * @param string $error
      * @return string
      */
     public static function determineJsonError($error, $prefix = '')
     {
-        switch (strtoupper($error)) {
-            case 'JSON_ERROR_NONE':
+        switch ($error) {
+            case JSON_ERROR_NONE:
                 return;
-            case 'JSON_ERROR_DEPTH':
+            case JSON_ERROR_DEPTH:
                 return $prefix . 'Maximum stack depth exceeded';
-            case 'JSON_ERROR_STATE_MISMATCH':
+            case JSON_ERROR_STATE_MISMATCH:
                 return $prefix . 'Underflow or the modes mismatch';
-            case 'JSON_ERROR_CTRL_CHAR':
+            case JSON_ERROR_CTRL_CHAR:
                 return $prefix . 'Unexpected control character found';
-            case 'JSON_ERROR_SYNTAX':
+            case JSON_ERROR_SYNTAX:
                 return $prefix . 'Syntax error, malformed JSON';
-            case 'JSON_ERROR_UTF8':
+            case JSON_ERROR_UTF8:
                 return $prefix . 'Malformed UTF-8 characters, possibly incorrectly encoded';
             default:
                 return $prefix . 'Unknown error';

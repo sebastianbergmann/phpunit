@@ -2,7 +2,7 @@
 /**
  * PHPUnit
  *
- * Copyright (c) 2002-2013, Sebastian Bergmann <sebastian@phpunit.de>.
+ * Copyright (c) 2001-2013, Sebastian Bergmann <sebastian@phpunit.de>.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -36,76 +36,76 @@
  *
  * @package    PHPUnit
  * @subpackage Framework_Constraint
- * @author     Bastian Feder <php@bastian-feder.de>
- * @copyright  2002-2013 Sebastian Bergmann <sebastian@phpunit.de>
- * @license    http://www.opensource.org/licenses/BSD-3-Clause  The BSD 3-Clause
+ * @author     Sebastian Bergmann <sebastian@phpunit.de>
+ * @author     Bernhard Schussek <bschussek@2bepublished.at>
+ * @copyright  2001-2013 Sebastian Bergmann <sebastian@phpunit.de>
+ * @license    http://www.opensource.org/licenses/BSD-3-Clause  The BSD 3-Clause License
  * @link       http://www.phpunit.de/
- * @since      File available since Release 3.7.0
+ * @since      File available since Release 3.0.0
  */
 
 /**
- * Asserts whether or not two JSON objects are equal.
+ * Constraint that asserts that a string is valid JSON.
  *
  * @package    PHPUnit
  * @subpackage Framework_Constraint
- * @author     Bastian Feder <php@bastian-feder.de>
- * @copyright  2011 Bastian Feder <php@bastian-feder.de>
- * @license    http://www.opensource.org/licenses/BSD-3-Clause  The BSD 3-Clause
+ * @author     Sebastian Bergmann <sebastian@phpunit.de>
+ * @author     Bernhard Schussek <bschussek@2bepublished.at>
+ * @copyright  2001-2013 Sebastian Bergmann <sebastian@phpunit.de>
+ * @license    http://www.opensource.org/licenses/BSD-3-Clause  The BSD 3-Clause License
  * @link       http://www.phpunit.de/
- * @since      Class available since Release 3.7.0
+ * @since      Class available since Release 3.0.0
  */
-class PHPUnit_Framework_Constraint_JsonMatches extends PHPUnit_Framework_Constraint
+class PHPUnit_Framework_Constraint_IsJson extends PHPUnit_Framework_Constraint
 {
-    /**
-     * @var string
-     */
-    protected $value;
-
-    /**
-     * Creates a new constraint.
-     *
-     * @param string $value
-     */
-    public function __construct($value)
-    {
-        parent::__construct();
-        $this->value = $value;
-    }
-
     /**
      * Evaluates the constraint for parameter $other. Returns TRUE if the
      * constraint is met, FALSE otherwise.
-     *
-     * This method can be overridden to implement the evaluation algorithm.
      *
      * @param mixed $other Value or object to evaluate.
      * @return bool
      */
     protected function matches($other)
     {
-        $decodedOther = json_decode($other);
+        json_decode($other);
         if (json_last_error()) {
             return FALSE;
         }
 
-        $decodedValue = json_decode($this->value);
-        if (json_last_error()) {
-            return FALSE;
-        }
-
-        return $decodedOther == $decodedValue;
+        return TRUE;
     }
 
     /**
-     * Returns a string representation of the object.
+     * Returns the description of the failure
+     *
+     * The beginning of failure messages is "Failed asserting that" in most
+     * cases. This method should return the second part of that sentence.
+     *
+     * @param  mixed $other Evaluated value or object.
+     * @return string
+     */
+    protected function failureDescription($other)
+    {
+        json_decode($other);
+        $error = PHPUnit_Framework_Constraint_JsonMatches_ErrorMessageProvider::determineJsonError(
+          json_last_error()
+        );
+
+        return sprintf(
+          '%s is valid JSON (%s)',
+
+          $this->exporter->shortenedExport($other),
+          $error
+        );
+    }
+
+    /**
+     * Returns a string representation of the constraint.
      *
      * @return string
      */
     public function toString()
     {
-        return sprintf(
-            'matches JSON string "%s"',
-            $this->value
-        );
+        return 'is valid JSON';
     }
 }
