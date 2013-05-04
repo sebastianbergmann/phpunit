@@ -12,6 +12,7 @@ PHPUnit 3.8.0
 * Implemented #746: Allow identity checking for non-object types in all asserts that depend on `TraversableContains`.
 * Implemented #758: Show a proper stack trace when @expectedException fails due to a unexpected exception being thrown.
 * Implemented #773: Recursive and repeated arrays are more gracefully when comparison differences are exported.
+* Implemented #813: Added `@before`, `@after`, `@beforeClass` and `@afterClass` annotations.
 * Implemented #834: Added the `@requires OS` annotation.
 * Implemented #835: Printers that extend `PHPUnit_TextUI_ResultPrinter` should have similar construction
 * Implemented #838: Added a base test listener.
