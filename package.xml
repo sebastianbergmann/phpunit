@@ -228,7 +228,7 @@
    <package>
     <name>PHP_CodeCoverage</name>
     <channel>pear.phpunit.de</channel>
-    <min>1.2.1</min>
+    <min>1.2.10</min>
     <max>1.2.99</max>
    </package>
    <package>
