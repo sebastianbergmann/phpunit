@@ -305,4 +305,17 @@ class PHPUnit_Framework_MockObject_Matcher implements PHPUnit_Framework_MockObje
             );
         }
     }
+
+    /**
+     * @since Method available since Release 1.2.4
+     */
+    public function hasMatchers()
+    {
+        if ($this->invocationMatcher !== NULL &&
+            !$this->invocationMatcher instanceof PHPUnit_Framework_MockObject_Matcher_AnyInvokedCount) {
+            return TRUE;
+        }
+
+        return FALSE;
+    }
 }
