@@ -11,7 +11,7 @@ before_script:
     - git clone --branch=master --depth=100 --quiet git://github.com/sebastianbergmann/php-text-template.git vendor/php-text-template
     - git clone --branch=master --depth=100 --quiet git://github.com/sebastianbergmann/php-token-stream.git vendor/php-token-stream
     - git clone --branch=master --depth=100 --quiet git://github.com/sebastianbergmann/php-file-iterator.git vendor/php-file-iterator
-    - git clone --branch=master --depth=100 --quiet git://github.com/sebastianbergmann/php-timer.git vendor/php-timer
+    - git clone --branch=1.0 --depth=100 --quiet git://github.com/sebastianbergmann/php-timer.git vendor/php-timer
     - git clone --branch=master --depth=100 --quiet git://github.com/pear/pear-core.git vendor/pear-core
     - git clone --branch=trunk --depth=100 --quiet git://github.com/pear/Console_Getopt.git vendor/console-getopt
 
