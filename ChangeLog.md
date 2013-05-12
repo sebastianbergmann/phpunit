@@ -12,6 +12,7 @@ PHPUnit 3.7.20
 * Fixed #891: Better messages when JSON-related assertions receive invalid JSON.
 * Fixed #896: Use the proper `toString()` method inside `PHPUnit_Framework_TestFailure::toString()`.
 * Fixed #902: Allow symfony/yaml >=2.0,<3.0
+* Fixed #908: Don't rely on composer to set up the `include_path` for `ErrorHandler.php`.
 
 PHPUnit 3.7.19
 --------------
