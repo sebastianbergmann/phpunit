@@ -2565,6 +2565,7 @@ abstract class PHPUnit_Framework_Assert
     {
         return new PHPUnit_Framework_Constraint_IsEmpty;
     }
+
     /**
      * Returns a PHPUnit_Framework_Constraint_FileExists matcher object.
      *
