@@ -45,7 +45,6 @@
 
 require_once dirname(__DIR__) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'ClassWithNonPublicAttributes.php';
 require_once dirname(__DIR__) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'TestIterator.php';
-require_once dirname(__DIR__) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'DummyException.php';
 
 /**
  *
@@ -738,8 +737,6 @@ EOF
         $storage1->attach($b);
         $storage2 = new SplObjectStorage;
         $storage2->attach($b);
-        $storage1hash = spl_object_hash($storage1);
-        $storage2hash = spl_object_hash($storage2);
 
         $dom1 = new DOMDocument;
         $dom1->preserveWhiteSpace = FALSE;
@@ -895,17 +892,17 @@ Failed asserting that two objects are equal.
 --- Expected
 +++ Actual
 @@ @@
--SplObjectStorage Object &$storage1hash (
--    '$ahash' => Array &0 (
--        'obj' => stdClass Object &$ahash (
+ SplObjectStorage Object (
+-    '$ahash' => Array (
+-        'obj' => stdClass Object (
 -            'foo' => 'bar'
 -        )
-+SplObjectStorage Object &$storage2hash (
-+    '$bhash' => Array &0 (
-+        'obj' => stdClass Object &$bhash ()
+-        'inf' => null
+-    )
+     '$bhash' => Array (
+         'obj' => stdClass Object ()
          'inf' => null
      )
--    '$bhash' => Array &0
  )
 
 EOF
@@ -920,19 +917,6 @@ Failed asserting that two DOM documents are equal.
 +<root>
 +  <foo/>
 +</root>
-
-EOF
-            ),
-            array(
-              new DateTime('2013-03-29 04:13:35', new DateTimeZone('America/New_York')),
-              new DateTime('2013-03-29 04:13:35', new DateTimeZone('America/Chicago')),
-              <<<EOF
-Failed asserting that two DateTime objects are equal.
---- Expected
-+++ Actual
-@@ @@
--2013-03-29T04:13:35-0400
-+2013-03-29T04:13:35-0500
 
 EOF
             ),
@@ -1263,11 +1247,6 @@ EOF
         $this->assertEquals('is instance of class "Exception"', $constraint->toString());
         $this->assertEquals(1, count($constraint));
 
-        $interfaceConstraint = PHPUnit_Framework_Assert::isInstanceOf('Countable');
-        $this->assertFalse($interfaceConstraint->evaluate(new stdClass, '', TRUE));
-        $this->assertTrue($interfaceConstraint->evaluate(new ArrayObject, '', TRUE));
-        $this->assertEquals('is instance of interface "Countable"', $interfaceConstraint->toString());
-
         try {
             $constraint->evaluate(new stdClass);
         }
@@ -1408,8 +1387,8 @@ EOF
         }
 
         catch (PHPUnit_Framework_ExpectationFailedException $e) {
-            $this->assertStringMatchesFormat(<<<EOF
-Failed asserting that stdClass Object &%x () is of type "string".
+            $this->assertEquals(<<<EOF
+Failed asserting that stdClass Object () is of type "string".
 
 EOF
               ,
@@ -1436,9 +1415,9 @@ EOF
         }
 
         catch (PHPUnit_Framework_ExpectationFailedException $e) {
-            $this->assertStringMatchesFormat(<<<EOF
+            $this->assertEquals(<<<EOF
 custom message
-Failed asserting that stdClass Object &%x () is of type "string".
+Failed asserting that stdClass Object () is of type "string".
 
 EOF
               ,
@@ -1881,6 +1860,57 @@ EOF
     public static function staticCallbackReturningTrue()
     {
         return TRUE;
+    }
+
+    /**
+     * @covers PHPUnit_Framework_Constraint_Callback
+     * @expectedException InvalidArgumentException
+     * @expectedExceptionMessage Specified callback <invalid callback> is not callable.
+     */
+    public function testConstraintCallbackInvalidFunctionArgument()
+    {
+        PHPUnit_Framework_Assert::callback('invalid callback');
+    }
+
+    /**
+     * @covers PHPUnit_Framework_Constraint_Callback
+     * @expectedException InvalidArgumentException
+     * @expectedExceptionMessage Specified callback <empty array> is not callable.
+     */
+    public function testConstraintCallbackInvalidArrayArgumentWithEmptyArray()
+    {
+        PHPUnit_Framework_Assert::callback(array());
+    }
+
+    /**
+     * @covers PHPUnit_Framework_Constraint_Callback
+     * @expectedException InvalidArgumentException
+     * @expectedExceptionMessage Specified callback <array without indexes 0 and 1 set> is not callable.
+     */
+    public function testConstraintCallbackInvalidArrayArgumentWithBadArray()
+    {
+        PHPUnit_Framework_Assert::callback(array(3 => 'foo'));
+    }
+
+
+    /**
+     * @covers PHPUnit_Framework_Constraint_Callback
+     * @expectedException InvalidArgumentException
+     * @expectedExceptionMessage Specified callback <Framework_ConstraintTest::invalid callback> is not callable.
+     */
+    public function testConstraintCallbackInvalidArrayArgumentWithObject()
+    {
+        PHPUnit_Framework_Assert::callback(array($this, 'invalid callback'));
+    }
+
+    /**
+     * @covers PHPUnit_Framework_Constraint_Callback
+     * @expectedException InvalidArgumentException
+     * @expectedExceptionMessage Specified callback <Framework_ConstraintTest::invalid callback> is not callable.
+     */
+    public function testConstraintCallbackInvalidArrayArgumentWithClassname()
+    {
+        PHPUnit_Framework_Assert::callback(array('Framework_ConstraintTest', 'invalid callback'));
     }
 
     /**
@@ -3086,24 +3116,6 @@ EOF
 
     /**
      * @covers PHPUnit_Framework_Constraint_TraversableContains
-     */
-    public function testConstraintArrayContainsCheckForObjectIdentity()
-    {
-        // Check for primitive type.
-        $constraint = new PHPUnit_Framework_Constraint_TraversableContains('foo', TRUE, TRUE);
-
-        $this->assertFalse($constraint->evaluate(array(0), '', TRUE));
-        $this->assertFalse($constraint->evaluate(array(TRUE), '', TRUE));
-
-        // Default case.
-        $constraint = new PHPUnit_Framework_Constraint_TraversableContains('foo');
-
-        $this->assertTrue($constraint->evaluate(array(0), '', TRUE));
-        $this->assertTrue($constraint->evaluate(array(TRUE), '', TRUE));
-    }
-
-    /**
-     * @covers PHPUnit_Framework_Constraint_TraversableContains
      * @covers PHPUnit_Framework_Constraint_Not
      * @covers PHPUnit_Framework_Assert::logicalNot
      * @covers PHPUnit_Framework_TestFailure::exceptionToString
@@ -3181,7 +3193,7 @@ EOF
     {
         $object     = new StdClass;
         $constraint = new PHPUnit_Framework_Constraint_TraversableContains($object);
-        $this->assertStringMatchesFormat("contains stdClass Object &%s ()", $constraint->toString());
+        $this->assertEquals("contains stdClass Object ()", $constraint->toString());
 
         $storage = new SplObjectStorage;
         $this->assertFalse($constraint->evaluate($storage, '', TRUE));
@@ -3194,9 +3206,9 @@ EOF
         }
 
         catch (PHPUnit_Framework_ExpectationFailedException $e) {
-            $this->assertStringMatchesFormat(
+            $this->assertEquals(
               <<<EOF
-Failed asserting that an iterator contains stdClass Object &%x ().
+Failed asserting that an iterator contains stdClass Object ().
 
 EOF
               ,
@@ -3223,10 +3235,10 @@ EOF
         }
 
         catch (PHPUnit_Framework_ExpectationFailedException $e) {
-            $this->assertStringMatchesFormat(
+            $this->assertEquals(
               <<<EOF
 custom message
-Failed asserting that an iterator contains stdClass Object &%x ().
+Failed asserting that an iterator contains stdClass Object ().
 
 EOF
               ,
@@ -3541,28 +3553,90 @@ EOF
     }
 
     /**
-     * @covers PHPUnit_Framework_Constraint_Exception
+     * @covers PHPUnit_Framework_Constraint_SameSize
+     */
+    public function testConstraintSameSizeWithAnArray()
+    {
+        $constraint = new PHPUnit_Framework_Constraint_SameSize(array(1,2,3,4,5));
+
+        $this->assertTrue($constraint->evaluate(array(6,7,8,9,10), '', TRUE));
+        $this->assertFalse($constraint->evaluate(array(1,2,3,4), '', TRUE));
+    }
+
+    /**
+     * @covers PHPUnit_Framework_Constraint_SameSize
+     */
+    public function testConstraintSameSizeWithAnIteratorWhichDoesNotImplementCountable()
+    {
+        $constraint = new PHPUnit_Framework_Constraint_SameSize(new TestIterator(array(1,2,3,4,5)));
+
+        $this->assertTrue($constraint->evaluate(new TestIterator(array(6,7,8,9,10)), '', TRUE));
+        $this->assertFalse($constraint->evaluate(new TestIterator(array(1,2,3,4)), '', TRUE));
+    }
+
+    /**
+     * @covers PHPUnit_Framework_Constraint_SameSize
+     */
+    public function testConstraintSameSizeWithAnObjectImplementingCountable()
+    {
+        $constraint = new PHPUnit_Framework_Constraint_SameSize(new ArrayObject(array(1,2,3,4,5)));
+
+        $this->assertTrue($constraint->evaluate(new ArrayObject(array(6,7,8,9,10)), '', TRUE));
+        $this->assertFalse($constraint->evaluate(new ArrayObject(array(1,2,3,4)), '', TRUE));
+    }
+
+    /**
+     * @covers PHPUnit_Framework_Constraint_SameSize
      * @covers PHPUnit_Framework_TestFailure::exceptionToString
      */
-    public function testConstraintException()
+    public function testConstraintSameSizeFailing()
     {
-        $constraint = new PHPUnit_Framework_Constraint_Exception('FoobarException');
-        $exception = new DummyException('Test');
-        $stackTrace = $exception->getTraceAsString();
+        $constraint = new PHPUnit_Framework_Constraint_SameSize(array(1,2,3,4,5));
 
         try {
-            $constraint->evaluate($exception);
+            $constraint->evaluate(array(1,2));
         }
 
         catch (PHPUnit_Framework_ExpectationFailedException $e) {
             $this->assertEquals(
               <<<EOF
-Failed asserting that exception of type "DummyException" matches expected exception "FoobarException". Message was: "Test" at
-$stackTrace.
+Failed asserting that actual size 2 matches expected size 5.
 
 EOF
-                ,
-                PHPUnit_Framework_TestFailure::exceptionToString($e)
+              ,
+              PHPUnit_Framework_TestFailure::exceptionToString($e)
+            );
+
+            return;
+        }
+
+        $this->fail();
+    }
+
+    /**
+     * @covers PHPUnit_Framework_Constraint_SameSize
+     * @covers PHPUnit_Framework_Constraint_Not
+     * @covers PHPUnit_Framework_Assert::logicalNot
+     * @covers PHPUnit_Framework_TestFailure::exceptionToString
+     */
+    public function testConstraintNotSameSizeFailing()
+    {
+        $constraint = PHPUnit_Framework_Assert::logicalNot(
+          new PHPUnit_Framework_Constraint_SameSize(array(1,2))
+        );
+
+        try {
+            $constraint->evaluate(array(3,4));
+        }
+
+        catch (PHPUnit_Framework_ExpectationFailedException $e) {
+            $this->assertEquals(
+              <<<EOF
+Failed asserting that actual size 2 does not match expected size 2.
+
+EOF
+              ,
+              PHPUnit_Framework_TestFailure::exceptionToString($e)
             );
 
             return;
