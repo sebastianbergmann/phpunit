@@ -2781,7 +2781,7 @@ abstract class PHPUnit_Framework_Assert
      * @param int $count
      * @return PHPUnit_Framework_Constraint_Count
      */
-    public static function arrayCount($count)
+    public static function countOf($count)
     {
         return new PHPUnit_Framework_Constraint_Count($count);
     }
