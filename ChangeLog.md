@@ -3,6 +3,11 @@ PHPUnit 3.7
 
 This is the list of changes for the PHPUnit 3.7 release series.
 
+PHPUnit 3.7.21
+--------------
+
+* Fixed #277: Account for `auto-globals-jit` when setting `$_ENV` and `$_SERVER` variables in the xml config.
+
 PHPUnit 3.7.20
 --------------
 

@@ -535,10 +535,23 @@ class PHPUnit_Util_Configuration
         }
 
         foreach (array('var', 'env', 'post', 'get', 'cookie', 'server', 'files', 'request') as $array) {
-            if ($array == 'var') {
-                $target = &$GLOBALS;
-            } else {
-                $target = &$GLOBALS['_' . strtoupper($array)];
+            // See https://github.com/sebastianbergmann/phpunit/issues/277
+            switch ($array) {
+                case 'var':
+                    $target = &$GLOBALS;
+                    break;
+
+                case 'env':
+                    $target = &$_ENV;
+                    break;
+
+                case 'server':
+                    $target = &$_SERVER;
+                    break;
+
+                default:
+                    $target = &$GLOBALS['_' . strtoupper($array)];
+                    break;
             }
 
             foreach ($configuration[$array] as $name => $value) {
@@ -816,7 +829,7 @@ class PHPUnit_Util_Configuration
             if ($testSuiteFilter && $directoryNode->parentNode->getAttribute('name') != $testSuiteFilter) {
                 continue;
             }
-            
+
             $directory = (string)$directoryNode->nodeValue;
 
             if (empty($directory)) {
@@ -864,7 +877,7 @@ class PHPUnit_Util_Configuration
             if ($testSuiteFilter && $fileNode->parentNode->getAttribute('name') != $testSuiteFilter) {
                 continue;
             }
-            
+
             $file = (string)$fileNode->nodeValue;
 
             if (empty($file)) {
