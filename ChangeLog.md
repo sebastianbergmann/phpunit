@@ -7,6 +7,7 @@ PHPUnit 3.8.0
 -------------
 
 * Implemented #382: Added the `$options` parameter to `PHPUnit_Framework_TestCase::getMockFromWsdl()` for configuring the `SoapClient`.
+* Implemented #628: Added `PHPUnit_Framework_Assert::countOf(), a shortcut to get a `PHPUnit_Framework_Constraint_Count` instance.
 * Implemented #711: `coverage-text` now has an XML `showOnlySummary` option.
 * Implemented #719: The `--stderr` flag now respects `--colors` and `--debug`.
 * Implemented #746: Allow identity checking for non-object types in all asserts that depend on `TraversableContains`.
