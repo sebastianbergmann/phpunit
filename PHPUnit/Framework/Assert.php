@@ -2776,6 +2776,16 @@ abstract class PHPUnit_Framework_Assert
     }
 
     /**
+     * Returns a PHPUnit_Framework_Constraint_Count matcher object.
+     *
+     * @param int $count
+     * @return PHPUnit_Framework_Constraint_Count
+     */
+    public static function arrayCount($count)
+    {
+        return new PHPUnit_Framework_Constraint_Count($count);
+    }
+    /**
      * Fails a test with the given message.
      *
      * @param  string $message
