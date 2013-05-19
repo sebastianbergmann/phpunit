@@ -56,6 +56,10 @@ The documentation for PHPUnit is available in different formats:
 * [Japanese, PDF](http://www.phpunit.de/manual/current/ja/phpunit-book.pdf)
 * [Japanese, ePub](http://www.phpunit.de/manual/current/ja/phpunit-book.epub)
 
+## API Documentation
+
+The [API documentation](http://apidoc.phpunit.de/) is generated using [phpDox](http://phpdox.de/).
+
 ## IRC
 
 The [#phpunit channel on the Freenode IRC network](irc://irc.freenode.net/phpunit) is a place to chat about PHPUnit.
