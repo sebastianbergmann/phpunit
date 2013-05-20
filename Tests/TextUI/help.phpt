@@ -24,6 +24,7 @@ Usage: phpunit [switches] UnitTest [UnitTest.php]
   --coverage-php <file>     Serialize PHP_CodeCoverage object to file.
   --coverage-text=<file>    Generate code coverage report in text format.
                             Default to writing to the standard output.
+  --coverage-crap4j <file>  Generate code coverage report in Crap4J XML format.
 
   --testdox-html <file>     Write agile documentation in HTML format to file.
   --testdox-text <file>     Write agile documentation in Text format to file.
