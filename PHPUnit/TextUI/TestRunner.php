@@ -310,6 +310,10 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
             if (isset($arguments['coverageText'])) {
                 $codeCoverageReports++;
             }
+
+            if (isset($arguments['coverageCrap4J'])) {
+                $codeCoverageReports++;
+            }
         }
 
         if ($codeCoverageReports > 0) {
@@ -407,6 +411,18 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
 
                 $writer = new PHP_CodeCoverage_Report_Clover;
                 $writer->process($codeCoverage, $arguments['coverageClover']);
+
+                $this->printer->write(" done\n");
+                unset($writer);
+            }
+
+            if (isset($arguments['coverageCrap4J'])) {
+                $this->printer->write(
+                  "\nGenerating Crap4J report XML file ..."
+                );
+
+                $writer = new PHP_CodeCoverage_Report_Crap4j;
+                $writer->process($codeCoverage, $arguments['coverageCrap4J']);
 
                 $this->printer->write(" done\n");
                 unset($writer);
@@ -740,6 +756,11 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
                 }
             }
 
+            if (isset($loggingConfiguration['coverage-crap4j']) &&
+                !isset($arguments['coverageCrap4J'])) {
+                $arguments['coverageCrap4J'] = $loggingConfiguration['coverage-crap4j'];
+            }
+
             if (isset($loggingConfiguration['json']) &&
                 !isset($arguments['jsonLogfile'])) {
                 $arguments['jsonLogfile'] = $loggingConfiguration['json'];
@@ -779,7 +800,8 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
             if ((isset($arguments['coverageClover']) ||
                 isset($arguments['reportDirectory']) ||
                 isset($arguments['coveragePHP']) ||
-                isset($arguments['coverageText'])) &&
+                isset($arguments['coverageText'])) ||
+                isset($arguments['coverageCrap4J']) &&
                 extension_loaded('xdebug')) {
 
                 $filterConfiguration = $arguments['configuration']->getFilterConfiguration();
