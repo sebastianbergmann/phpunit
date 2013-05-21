@@ -421,8 +421,6 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
                   "\nGenerating Crap4J report XML file ..."
                 );
 
-                require_once 'PHP/CodeCoverage/Report/Crap4j.php';
-
                 $writer = new PHP_CodeCoverage_Report_Crap4j;
                 $writer->process($codeCoverage, $arguments['coverageCrap4J']);
 
