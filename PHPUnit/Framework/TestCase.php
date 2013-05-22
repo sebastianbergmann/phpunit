@@ -393,7 +393,7 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
      */
     public function hasOutput()
     {
-        if (empty($this->output)) {
+        if (strlen($this->output) === 0) {
             return FALSE;
         }
 
