@@ -7,6 +7,7 @@ PHPUnit 3.7.21
 --------------
 
 * Fixed #277: Account for `auto-globals-jit` when setting `$_ENV` and `$_SERVER` variables in the xml config.
+* Fixed #924: PHPUnit depends on packages that broke backwards compatability.
 
 PHPUnit 3.7.20
 --------------
