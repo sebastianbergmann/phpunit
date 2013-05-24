@@ -20,6 +20,7 @@ Usage: phpunit [switches] UnitTest [UnitTest.php]
   --log-json <file>         Log test execution in JSON format.
 
   --coverage-clover <file>  Generate code coverage report in Clover XML format.
+  --coverage-crap4j <file>  Generate code coverage report in Crap4J XML format.
   --coverage-html <dir>     Generate code coverage report in HTML format.
   --coverage-php <file>     Serialize PHP_CodeCoverage object to file.
   --coverage-text=<file>    Generate code coverage report in text format.

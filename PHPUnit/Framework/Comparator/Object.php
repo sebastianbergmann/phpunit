@@ -115,8 +115,8 @@ class PHPUnit_Framework_Comparator_Object extends PHPUnit_Framework_Comparator_A
         if ($actual !== $expected) {
             try {
                 parent::assertEquals(
-                  $this->exporter->toArray($expected),
-                  $this->exporter->toArray($actual),
+                  $this->toArray($expected),
+                  $this->toArray($actual),
                   $delta,
                   $canonicalize,
                   $ignoreCase,
@@ -136,5 +136,17 @@ class PHPUnit_Framework_Comparator_Object extends PHPUnit_Framework_Comparator_A
                 );
             }
         }
+    }
+
+    /**
+     * Converts an object to an array containing all of its private, protected
+     * and public properties.
+     *
+     * @param  object $object
+     * @return array
+     */
+    protected function toArray($object)
+    {
+        return $this->exporter->toArray($object);
     }
 }

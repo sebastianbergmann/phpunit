@@ -82,6 +82,7 @@ class PHPUnit_TextUI_Command
       'coverage-clover=' => NULL,
       'coverage-php=' => NULL,
       'coverage-text==' => NULL,
+      'coverage-crap4j=' => NULL,
       'debug' => NULL,
       'exclude-group=' => NULL,
       'filter=' => NULL,
@@ -268,7 +269,8 @@ class PHPUnit_TextUI_Command
                 case '--coverage-clover':
                 case '--coverage-html':
                 case '--coverage-php':
-                case '--coverage-text': {
+                case '--coverage-text':
+                case '--coverage-crap4j': {
                     if (!extension_loaded('tokenizer')) {
                         $this->showExtensionNotLoadedMessage(
                           'tokenizer', 'No code coverage will be generated.'
@@ -309,6 +311,11 @@ class PHPUnit_TextUI_Command
                             $this->arguments['coverageText'] = $option[1];
                             $this->arguments['coverageTextShowUncoveredFiles'] = FALSE;
                             $this->arguments['coverageTextShowOnlySummary'] = FALSE;
+                        }
+                        break;
+
+                        case '--coverage-crap4j': {
+                            $this->arguments['coverageCrap4J'] = $option[1];
                         }
                         break;
                     }
@@ -841,6 +848,7 @@ Usage: phpunit [switches] UnitTest [UnitTest.php]
   --log-json <file>         Log test execution in JSON format.
 
   --coverage-clover <file>  Generate code coverage report in Clover XML format.
+  --coverage-crap4j <file>  Generate code coverage report in Crap4J XML format.
   --coverage-html <dir>     Generate code coverage report in HTML format.
   --coverage-php <file>     Serialize PHP_CodeCoverage object to file.
   --coverage-text=<file>    Generate code coverage report in text format.

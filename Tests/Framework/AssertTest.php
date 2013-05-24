@@ -4304,6 +4304,63 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
     }
 
     /**
+     * @covers PHPUnit_Framework_Assert::assertSameSize
+     */
+    public function testAssertSameSize()
+    {
+        $this->assertSameSize(array(1,2), array(3,4));
+
+        try {
+            $this->assertSameSize(array(1,2), array(1,2,3));
+        }
+
+        catch (PHPUnit_Framework_AssertionFailedError $e) {
+            return;
+        }
+
+        $this->fail();
+    }
+
+    /**
+     * @covers PHPUnit_Framework_Assert::assertSameSize
+     */
+    public function testAssertSameSizeThrowsExceptionIfExpectedIsNotCoutable()
+    {
+
+        try {
+            $this->assertSameSize('a', array());
+        }
+
+        catch (PHPUnit_Framework_Exception $e) {
+            $this->assertEquals('Argument #1 (No Value) of PHPUnit_Framework_Assert::assertSameSize() must be a countable', $e->getMessage());
+
+            return;
+        }
+
+        $this->fail();
+    }
+
+
+    /**
+     * @covers PHPUnit_Framework_Assert::assertSameSize
+     */
+    public function testAssertSameSizeThrowsExceptionIfActualIsNotCountable()
+    {
+
+        try {
+            $this->assertSameSize(array(), '');
+        }
+
+        catch (PHPUnit_Framework_Exception $e) {
+            $this->assertEquals('Argument #2 (No Value) of PHPUnit_Framework_Assert::assertSameSize() must be a countable', $e->getMessage());
+
+            return;
+        }
+
+        $this->fail();
+    }
+
+    /**
      * @covers PHPUnit_Framework_Assert::assertJsonStringEqualsJsonString
      */
     public function testAssertJsonStringEqualsJsonString()

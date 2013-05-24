@@ -2565,6 +2565,7 @@ abstract class PHPUnit_Framework_Assert
     {
         return new PHPUnit_Framework_Constraint_IsEmpty;
     }
+
     /**
      * Returns a PHPUnit_Framework_Constraint_FileExists matcher object.
      *
@@ -2774,6 +2775,16 @@ abstract class PHPUnit_Framework_Assert
         return new PHPUnit_Framework_Constraint_StringEndsWith($suffix);
     }
 
+    /**
+     * Returns a PHPUnit_Framework_Constraint_Count matcher object.
+     *
+     * @param int $count
+     * @return PHPUnit_Framework_Constraint_Count
+     */
+    public static function countOf($count)
+    {
+        return new PHPUnit_Framework_Constraint_Count($count);
+    }
     /**
      * Fails a test with the given message.
      *

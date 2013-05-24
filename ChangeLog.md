@@ -7,8 +7,9 @@ PHPUnit 3.8.0
 -------------
 
 * Implemented #382: Added the `$options` parameter to `PHPUnit_Framework_TestCase::getMockFromWsdl()` for configuring the `SoapClient`.
+* Implemented #628: Added `PHPUnit_Framework_Assert::countOf(), a shortcut to get a `PHPUnit_Framework_Constraint_Count` instance.
 * Implemented #711: `coverage-text` now has an XML `showOnlySummary` option.
-* Implemented #719: The `--stderr` flag now respects `--colors` and `--debug`.
+* Implemented #719: The `--stderr` switch now respects `--colors` and `--debug`.
 * Implemented #746: Allow identity checking for non-object types in all asserts that depend on `TraversableContains`.
 * Implemented #758: Show a proper stack trace when @expectedException fails due to a unexpected exception being thrown.
 * Implemented #773: Recursive and repeated arrays are more gracefully when comparison differences are exported.
@@ -20,6 +21,7 @@ PHPUnit 3.8.0
 * Implemented #869: Added support for the adjacent sibling selector (+) to `PHPUnit_Util_XML::findNodes()`.
 * Implemented #871: Add Comparator for DateTime objects.
 * Implemented #877: Added new HTML5 tags to `PHPUnit_Util_XML::findNodes()`.
+* Added `--coverage-crap4j` switch to generate code coverage report in Crap4J XML format.
 * A test will now fail in strict mode when it uses the `@covers` annotation and code that is not expected to be covered is executed.
 * Fixed #240: XML strings are escaped by removing invalid characters.
 * Fixed #261: `setUp()` and `setUpBeforeClass()` are run before filters are applied.
