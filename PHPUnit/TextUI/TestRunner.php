@@ -471,15 +471,16 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
                     $colors       = FALSE;
                 }
 
-                $writer = new PHP_CodeCoverage_Report_Text(
-                  $outputStream,
+                $processor = new PHP_CodeCoverage_Report_Text(
                   $arguments['reportLowUpperBound'],
                   $arguments['reportHighLowerBound'],
                   $arguments['coverageTextShowUncoveredFiles'],
                   $arguments['coverageTextShowOnlySummary']
                 );
 
-                $writer->process($codeCoverage, $colors);
+                $outputStream->write(
+                  $processor->process($codeCoverage, $colors)
+                );
             }
         }
 
