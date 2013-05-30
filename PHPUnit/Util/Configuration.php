@@ -680,8 +680,8 @@ class PHPUnit_Util_Configuration
         }
 
         if ($root->hasAttribute('testSuiteLoaderFile')) {
-            $result['testSuiteLoaderFile'] = (string)$root->getAttribute(
-              'testSuiteLoaderFile'
+            $result['testSuiteLoaderFile'] = $this->toAbsolutePath(
+              (string)$root->getAttribute('testSuiteLoaderFile')
             );
         }
 
@@ -692,8 +692,8 @@ class PHPUnit_Util_Configuration
         }
 
         if ($root->hasAttribute('printerFile')) {
-            $result['printerFile'] = (string)$root->getAttribute(
-              'printerFile'
+            $result['printerFile'] = $this->toAbsolutePath(
+              (string)$root->getAttribute('printerFile')
             );
         }
 
@@ -827,7 +827,9 @@ class PHPUnit_Util_Configuration
         $exclude = array();
 
         foreach ($testSuiteNode->getElementsByTagName('exclude') as $excludeNode) {
-            $exclude[] = (string)$excludeNode->nodeValue;
+            $exclude[] = $this->toAbsolutePath(
+              (string)$excludeNode->nodeValue
+            );
         }
 
         $fileIteratorFacade = new File_Iterator_Facade;
@@ -892,7 +894,9 @@ class PHPUnit_Util_Configuration
             }
 
             // Get the absolute path to the file
-            $file = $fileIteratorFacade->getFilesAsArray($file);
+            $file = $fileIteratorFacade->getFilesAsArray(
+              $this->toAbsolutePath($file)
+            );
 
             if (!isset($file[0])) {
                 continue;
