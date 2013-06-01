@@ -22,6 +22,7 @@ PHPUnit 3.8.0
 * Implemented #871: Add Comparator for DateTime objects.
 * Implemented #877: Added new HTML5 tags to `PHPUnit_Util_XML::findNodes()`.
 * Added `--coverage-crap4j` switch to generate code coverage report in Crap4J XML format.
+* `assertCount()`, `assertNotCount()`, `assertSameSize()`, and `assertNotSameSize()` now support all objects that implement the `Traversable` interface.
 * A test will now fail in strict mode when it uses the `@covers` annotation and code that is not expected to be covered is executed.
 * All relative paths in a configuration file are now resolved relative to that configuration file. When upgrading, you may need to update relative paths for the following configurations: `testSuiteLoaderFile`, `printerFile`, `testsuites/file`, `testsuites/exclude`.
 * Fixed #240: XML strings are escaped by removing invalid characters.

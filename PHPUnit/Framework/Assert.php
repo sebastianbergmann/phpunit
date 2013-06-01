@@ -143,7 +143,7 @@ abstract class PHPUnit_Framework_Assert
 
         else {
             throw PHPUnit_Util_InvalidArgumentHelper::factory(
-              2, 'array, iterator or string'
+              2, 'array, traversable or string'
             );
         }
 
@@ -207,7 +207,7 @@ abstract class PHPUnit_Framework_Assert
 
         else {
             throw PHPUnit_Util_InvalidArgumentHelper::factory(
-              2, 'array, iterator or string'
+              2, 'array, traversable or string'
             );
         }
 
@@ -253,7 +253,7 @@ abstract class PHPUnit_Framework_Assert
         if (!(is_array($haystack) ||
             is_object($haystack) && $haystack instanceof Traversable)) {
             throw PHPUnit_Util_InvalidArgumentHelper::factory(
-              2, 'array or iterator'
+              2, 'array or traversable'
             );
         }
 
@@ -282,7 +282,7 @@ abstract class PHPUnit_Framework_Assert
         if (!(is_array($haystack) ||
             is_object($haystack) && $haystack instanceof Traversable)) {
             throw PHPUnit_Util_InvalidArgumentHelper::factory(
-              2, 'array or iterator'
+              2, 'array or traversable'
             );
         }
 
@@ -330,7 +330,7 @@ abstract class PHPUnit_Framework_Assert
         if (!(is_array($haystack) ||
             is_object($haystack) && $haystack instanceof Traversable)) {
             throw PHPUnit_Util_InvalidArgumentHelper::factory(
-              2, 'array or iterator'
+              2, 'array or traversable'
             );
         }
 
@@ -372,7 +372,7 @@ abstract class PHPUnit_Framework_Assert
     }
 
     /**
-     * Asserts the number of elements of an array, Countable or Iterator.
+     * Asserts the number of elements of an array, Countable or Traversable.
      *
      * @param integer $expectedCount
      * @param mixed   $haystack
@@ -385,9 +385,9 @@ abstract class PHPUnit_Framework_Assert
         }
 
         if (!$haystack instanceof Countable &&
-            !$haystack instanceof Iterator &&
+            !$haystack instanceof Traversable &&
             !is_array($haystack)) {
-            throw PHPUnit_Util_InvalidArgumentHelper::factory(2, 'countable');
+            throw PHPUnit_Util_InvalidArgumentHelper::factory(2, 'countable or traversable');
         }
 
         self::assertThat(
@@ -398,7 +398,7 @@ abstract class PHPUnit_Framework_Assert
     }
 
     /**
-     * Asserts the number of elements of an array, Countable or Iterator
+     * Asserts the number of elements of an array, Countable or Traversable
      * that is stored in an attribute.
      *
      * @param integer $expectedCount
@@ -417,7 +417,7 @@ abstract class PHPUnit_Framework_Assert
     }
 
     /**
-     * Asserts the number of elements of an array, Countable or Iterator.
+     * Asserts the number of elements of an array, Countable or Traversable.
      *
      * @param integer $expectedCount
      * @param mixed   $haystack
@@ -430,9 +430,9 @@ abstract class PHPUnit_Framework_Assert
         }
 
         if (!$haystack instanceof Countable &&
-            !$haystack instanceof Iterator &&
+            !$haystack instanceof Traversable &&
             !is_array($haystack)) {
-            throw PHPUnit_Util_InvalidArgumentHelper::factory(2, 'countable');
+            throw PHPUnit_Util_InvalidArgumentHelper::factory(2, 'countable or traversable');
         }
 
         $constraint = new PHPUnit_Framework_Constraint_Not(
@@ -443,7 +443,7 @@ abstract class PHPUnit_Framework_Assert
     }
 
     /**
-     * Asserts the number of elements of an array, Countable or Iterator
+     * Asserts the number of elements of an array, Countable or Traversable
      * that is stored in an attribute.
      *
      * @param integer $expectedCount
@@ -941,7 +941,7 @@ abstract class PHPUnit_Framework_Assert
         if (!is_string($attributeName)) {
             throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'string');
         }
-        
+
         if(!preg_match('/[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*/', $attributeName)) {
             throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'valid attribute name');
         }
@@ -970,7 +970,7 @@ abstract class PHPUnit_Framework_Assert
         if (!is_string($attributeName)) {
             throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'string');
         }
-        
+
         if(!preg_match('/[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*/', $attributeName)) {
             throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'valid attribute name');
         }
@@ -999,7 +999,7 @@ abstract class PHPUnit_Framework_Assert
         if (!is_string($attributeName)) {
             throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'string');
         }
-        
+
         if(!preg_match('/[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*/', $attributeName)) {
             throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'valid attribute name');
         }
@@ -1028,7 +1028,7 @@ abstract class PHPUnit_Framework_Assert
         if (!is_string($attributeName)) {
             throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'string');
         }
-        
+
         if(!preg_match('/[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*/', $attributeName)) {
             throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'valid attribute name');
         }
@@ -1059,7 +1059,7 @@ abstract class PHPUnit_Framework_Assert
         if (!is_string($attributeName)) {
             throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'string');
         }
-        
+
         if(!preg_match('/[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*/', $attributeName)) {
             throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'valid attribute name');
         }
@@ -1088,7 +1088,7 @@ abstract class PHPUnit_Framework_Assert
         if (!is_string($attributeName)) {
             throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'string');
         }
-        
+
         if(!preg_match('/[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*/', $attributeName)) {
             throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'valid attribute name');
         }
@@ -1404,25 +1404,25 @@ abstract class PHPUnit_Framework_Assert
     }
 
     /**
-     * Assert that the size of two arrays (or `Countable` or `Iterator` objects)
+     * Assert that the size of two arrays (or `Countable` or `Traversable` objects)
      * is the same.
      *
-     * @param array|Countable|Iterator $expected
-     * @param array|Countable|Iterator $actual
+     * @param array|Countable|Traversable $expected
+     * @param array|Countable|Traversable $actual
      * @param string $message
      */
     public static function assertSameSize($expected, $actual, $message = '')
     {
         if (!$expected instanceof Countable &&
-            !$expected instanceof Iterator &&
+            !$expected instanceof Traversable &&
             !is_array($expected)) {
-            throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'countable');
+            throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'countable or traversable');
         }
 
         if (!$actual instanceof Countable &&
-            !$actual instanceof Iterator &&
+            !$actual instanceof Traversable &&
             !is_array($actual)) {
-            throw PHPUnit_Util_InvalidArgumentHelper::factory(2, 'countable');
+            throw PHPUnit_Util_InvalidArgumentHelper::factory(2, 'countable or traversable');
         }
 
         self::assertThat(
@@ -1433,25 +1433,25 @@ abstract class PHPUnit_Framework_Assert
     }
 
     /**
-     * Assert that the size of two arrays (or `Countable` or `Iterator` objects)
+     * Assert that the size of two arrays (or `Countable` or `Traversable` objects)
      * is not the same.
      *
-     * @param array|Countable|Iterator $expected
-     * @param array|Countable|Iterator $actual
+     * @param array|Countable|Traversable $expected
+     * @param array|Countable|Traversable $actual
      * @param string $message
      */
     public static function assertNotSameSize($expected, $actual, $message = '')
     {
         if (!$expected instanceof Countable &&
-            !$expected instanceof Iterator &&
+            !$expected instanceof Traversable &&
             !is_array($expected)) {
-            throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'countable');
+            throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'countable or traversable');
         }
 
         if (!$actual instanceof Countable &&
-            !$actual instanceof Iterator &&
+            !$actual instanceof Traversable &&
             !is_array($actual)) {
-            throw PHPUnit_Util_InvalidArgumentHelper::factory(2, 'countable');
+            throw PHPUnit_Util_InvalidArgumentHelper::factory(2, 'countable or traversable');
         }
 
         $constraint = new PHPUnit_Framework_Constraint_Not(
@@ -2810,7 +2810,7 @@ abstract class PHPUnit_Framework_Assert
         if (!is_string($attributeName)) {
             throw PHPUnit_Util_InvalidArgumentHelper::factory(2, 'string');
         }
-        
+
         if(!preg_match('/[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*/', $attributeName)) {
             throw PHPUnit_Util_InvalidArgumentHelper::factory(2, 'valid attribute name');
         }
@@ -2910,7 +2910,7 @@ abstract class PHPUnit_Framework_Assert
         if (!is_string($attributeName)) {
             throw PHPUnit_Util_InvalidArgumentHelper::factory(2, 'string');
         }
-        
+
         if(!preg_match('/[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*/', $attributeName)) {
             throw PHPUnit_Util_InvalidArgumentHelper::factory(2, 'valid attribute name');
         }
@@ -2955,7 +2955,7 @@ abstract class PHPUnit_Framework_Assert
         if (!is_string($attributeName)) {
             throw PHPUnit_Util_InvalidArgumentHelper::factory(2, 'string');
         }
-        
+
         if(!preg_match('/[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*/', $attributeName)) {
             throw PHPUnit_Util_InvalidArgumentHelper::factory(2, 'valid attribute name');
         }

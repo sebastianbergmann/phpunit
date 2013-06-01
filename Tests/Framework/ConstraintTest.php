@@ -3196,7 +3196,7 @@ EOF
         catch (PHPUnit_Framework_ExpectationFailedException $e) {
             $this->assertStringMatchesFormat(
               <<<EOF
-Failed asserting that an iterator contains stdClass Object &%x ().
+Failed asserting that a traversable contains stdClass Object &%x ().
 
 EOF
               ,
@@ -3226,7 +3226,7 @@ EOF
             $this->assertStringMatchesFormat(
               <<<EOF
 custom message
-Failed asserting that an iterator contains stdClass Object &%x ().
+Failed asserting that a traversable contains stdClass Object &%x ().
 
 EOF
               ,

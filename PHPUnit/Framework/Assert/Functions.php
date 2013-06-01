@@ -160,7 +160,7 @@ function assertAttributeContainsOnly($type, $haystackAttributeName, $haystackCla
 }
 
 /**
- * Asserts the number of elements of an array, Countable or Iterator
+ * Asserts the number of elements of an array, Countable or Traversable
  * that is stored in an attribute.
  *
  * @param integer $expectedCount
@@ -358,7 +358,7 @@ function assertAttributeNotContainsOnly($type, $haystackAttributeName, $haystack
 }
 
 /**
- * Asserts the number of elements of an array, Countable or Iterator
+ * Asserts the number of elements of an array, Countable or Traversable
  * that is stored in an attribute.
  *
  * @param integer $expectedCount
@@ -596,7 +596,7 @@ function assertContainsOnlyInstancesOf($classname, $haystack, $message = '')
 }
 
 /**
- * Asserts the number of elements of an array, Countable or Iterator.
+ * Asserts the number of elements of an array, Countable or Traversable.
  *
  * @param integer $expectedCount
  * @param mixed   $haystack
@@ -983,7 +983,7 @@ function assertNotContainsOnly($type, $haystack, $isNativeType = NULL, $message 
 }
 
 /**
- * Asserts the number of elements of an array, Countable or Iterator.
+ * Asserts the number of elements of an array, Countable or Traversable.
  *
  * @param integer $expectedCount
  * @param mixed   $haystack
@@ -1112,11 +1112,11 @@ function assertNotSame($expected, $actual, $message = '')
 }
 
 /**
- * Assert that the size of two arrays (or `Countable` or `Iterator` objects)
+ * Assert that the size of two arrays (or `Countable` or `Traversable` objects)
  * is not the same.
  *
- * @param array|Countable|Iterator $expected
- * @param array|Countable|Iterator $actual
+ * @param array|Countable|Traversable $expected
+ * @param array|Countable|Traversable $actual
  * @param string $message
  */
 function assertNotSameSize($expected, $actual, $message = '')
@@ -1228,11 +1228,11 @@ function assertSame($expected, $actual, $message = '')
 }
 
 /**
- * Assert that the size of two arrays (or `Countable` or `Iterator` objects)
+ * Assert that the size of two arrays (or `Countable` or `Traversable` objects)
  * is the same.
  *
- * @param array|Countable|Iterator $expected
- * @param array|Countable|Iterator $actual
+ * @param array|Countable|Traversable $expected
+ * @param array|Countable|Traversable $actual
  * @param string $message
  */
 function assertSameSize($expected, $actual, $message = '')
