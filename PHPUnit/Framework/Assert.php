@@ -2165,7 +2165,7 @@ abstract class PHPUnit_Framework_Assert
         $expected = json_decode($expectedJson);
         $actual   = json_decode($actualJson);
 
-        return self::assertEquals($expected, $actual, $message);
+        self::assertEquals($expected, $actual, $message);
     }
 
     /**
