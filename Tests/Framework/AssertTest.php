@@ -4295,7 +4295,7 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
         }
 
         catch (PHPUnit_Framework_Exception $e) {
-            $this->assertEquals('Argument #2 (No Value) of PHPUnit_Framework_Assert::assertCount() must be a countable', $e->getMessage());
+            $this->assertEquals('Argument #2 (No Value) of PHPUnit_Framework_Assert::assertCount() must be a countable or traversable', $e->getMessage());
 
             return;
         }
@@ -4332,7 +4332,7 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
         }
 
         catch (PHPUnit_Framework_Exception $e) {
-            $this->assertEquals('Argument #1 (No Value) of PHPUnit_Framework_Assert::assertSameSize() must be a countable', $e->getMessage());
+            $this->assertEquals('Argument #1 (No Value) of PHPUnit_Framework_Assert::assertSameSize() must be a countable or traversable', $e->getMessage());
 
             return;
         }
@@ -4352,7 +4352,7 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
         }
 
         catch (PHPUnit_Framework_Exception $e) {
-            $this->assertEquals('Argument #2 (No Value) of PHPUnit_Framework_Assert::assertSameSize() must be a countable', $e->getMessage());
+            $this->assertEquals('Argument #2 (No Value) of PHPUnit_Framework_Assert::assertSameSize() must be a countable or traversable', $e->getMessage());
 
             return;
         }
