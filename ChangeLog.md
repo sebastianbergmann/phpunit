@@ -3,6 +3,11 @@ PHPUnit 3.7
 
 This is the list of changes for the PHPUnit 3.7 release series.
 
+PHPUnit 3.7.22
+--------------
+
+* Files in testsuites were not loaded when PHPUnit was called from a directory different from the XML definition. Directories were not affected.
+
 PHPUnit 3.7.21
 --------------
 
