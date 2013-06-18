@@ -122,6 +122,10 @@ class PHPUnit_Util_Test
                 $requires[$matches['name'][$i]] = $matches['value'][$i];
             }
         }
+
+        // https://bugs.php.net/bug.php?id=63055
+        $matches = array();
+
         if ($count = preg_match_all(self::REGEX_REQUIRES, $docComment, $matches)) {
             for ($i = 0; $i < $count; $i++) {
                 $name = $matches['name'][$i] . 's';
