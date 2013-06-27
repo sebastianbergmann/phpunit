@@ -220,7 +220,7 @@ class PHPUnit_Util_GlobalState
 
         foreach ($iniSettings as $key => $value) {
             $result .= sprintf(
-              'ini_set(%s, %s);' . "\n",
+              '@ini_set(%s, %s);' . "\n",
               self::exportVariable($key),
               self::exportVariable($value)
             );
