@@ -245,6 +245,12 @@ class PHPUnit_Util_Log_JSON extends PHPUnit_Util_Printer implements PHPUnit_Fram
      */
     public function write($buffer)
     {
+        array_walk_recursive($buffer, function(&$input) {
+            if (is_string($input)) {
+                $input = PHPUnit_Util_String::convertToUtf8($input);
+            }
+        });
+
         parent::write(json_encode($buffer, JSON_PRETTY_PRINT));
     }
 }
