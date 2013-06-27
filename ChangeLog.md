@@ -3,11 +3,16 @@ PHPUnit 3.7
 
 This is the list of changes for the PHPUnit 3.7 release series.
 
+PHPUnit 3.7.22
+--------------
+
+* Fixed #948: Do not die on binary output with JSON logging.
+
 PHPUnit 3.7.21
 --------------
 
 * Fixed #277: Account for `auto-globals-jit` when setting `$_ENV` and `$_SERVER` variables in the xml config.
-* Fixed #924: PHPUnit depends on packages that broke backwards compatability.
+* Fixed #924: PHPUnit depends on packages that broke backwards compatibility.
 
 PHPUnit 3.7.20
 --------------
