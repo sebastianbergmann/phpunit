@@ -78,6 +78,7 @@ spl_autoload_register(
 
       if ($classes === NULL) {
           $classes = array(
+            'phpunit_exception' => '/Exception.php',
             'phpunit_extensions_grouptestsuite' => '/Extensions/GroupTestSuite.php',
             'phpunit_extensions_phpttestcase' => '/Extensions/PhptTestCase.php',
             'phpunit_extensions_phpttestcase_logger' => '/Extensions/PhptTestCase/Logger.php',
@@ -167,6 +168,7 @@ spl_autoload_register(
             'phpunit_framework_unintentionallycoveredcodeerror' => '/Framework/UnintentionallyCoveredCodeError.php',
             'phpunit_framework_warning' => '/Framework/Warning.php',
             'phpunit_runner_basetestrunner' => '/Runner/BaseTestRunner.php',
+            'phpunit_runner_exception' => '/Runner/Exception.php',
             'phpunit_runner_filter_factory' => '/Runner/Filter/Factory.php',
             'phpunit_runner_filter_group_exclude' => '/Runner/Filter/Group/Exclude.php',
             'phpunit_runner_filter_group_include' => '/Runner/Filter/Group/Include.php',

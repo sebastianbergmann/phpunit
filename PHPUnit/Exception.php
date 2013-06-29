@@ -40,18 +40,20 @@
  * @copyright  2001-2013 Sebastian Bergmann <sebastian@phpunit.de>
  * @license    http://www.opensource.org/licenses/BSD-3-Clause  The BSD 3-Clause License
  * @link       http://www.phpunit.de/
- * @since      File available since Release 3.4.0
+ * @since      File available since Release 3.8.0
  */
 
 /**
+ * Marker interface for PHPUnit exceptions.
+ *
  * @package    PHPUnit
  * @subpackage Framework
  * @author     Sebastian Bergmann <sebastian@phpunit.de>
  * @copyright  2001-2013 Sebastian Bergmann <sebastian@phpunit.de>
  * @license    http://www.opensource.org/licenses/BSD-3-Clause  The BSD 3-Clause License
  * @link       http://www.phpunit.de/
- * @since      Class available since Release 3.4.0
+ * @since      Interface available since Release 3.8.0
  */
-class PHPUnit_Framework_Exception extends RuntimeException implements PHPUnit_Exception
+interface PHPUnit_Exception
 {
 }
