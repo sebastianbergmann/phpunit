@@ -1608,7 +1608,7 @@ abstract class PHPUnit_Framework_Assert
     }
 
     /**
-     * Asserts that a string ends with a given prefix.
+     * Asserts that a string ends with a given suffix.
      *
      * @param  string $suffix
      * @param  string $string
@@ -1631,7 +1631,7 @@ abstract class PHPUnit_Framework_Assert
     }
 
     /**
-     * Asserts that a string ends not with a given prefix.
+     * Asserts that a string ends not with a given suffix.
      *
      * @param  string $suffix
      * @param  string $string
