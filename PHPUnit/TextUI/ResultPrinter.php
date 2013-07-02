@@ -62,6 +62,21 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
     const EVENT_TESTSUITE_END   = 3;
 
     /**
+     * @var array
+     */
+    private static $ansiCodes = array(
+      'bold'       => 1,
+      'fg-black'   => 30,
+      'fg-red'     => 31,
+      'fg-yellow'  => 33,
+      'fg-cyan'    => 36,
+      'fg-white'   => 37,
+      'bg-red'     => 41,
+      'bg-green'   => 42,
+      'bg-yellow'  => 43
+    );
+
+    /**
      * @var integer
      */
     protected $column = 0;
@@ -345,29 +360,20 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
     protected function printFooter(PHPUnit_Framework_TestResult $result)
     {
         if (count($result) === 0) {
-            if ($this->colors) {
-                $this->write("\x1b[30;43m\x1b[2K");
-            }
-
-            $this->write(
-              "No tests executed!\n"
+            $this->writeWithColor(
+              'fg-black, bg-yellow',
+              'No tests executed!'
             );
-
-            if ($this->colors) {
-                $this->write("\x1b[0m\x1b[2K");
-            }
         }
 
         else if ($result->wasSuccessful() &&
             $result->allCompletelyImplemented() &&
             $result->noneSkipped()) {
-            if ($this->colors) {
-                $this->write("\x1b[30;42m\x1b[2K");
-            }
 
-            $this->write(
+            $this->writeWithColor(
+              'fg-black, bg-green',
               sprintf(
-                "OK (%d test%s, %d assertion%s)\n",
+                'OK (%d test%s, %d assertion%s)',
 
                 count($result),
                 (count($result) == 1) ? '' : 's',
@@ -375,27 +381,20 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
                 ($this->numAssertions == 1) ? '' : 's'
               )
             );
-
-            if ($this->colors) {
-                $this->write("\x1b[0m\x1b[2K");
-            }
         }
 
         else if ((!$result->allCompletelyImplemented() ||
                   !$result->noneSkipped()) &&
                  $result->wasSuccessful()) {
-            if ($this->colors) {
-                $this->write(
-                  "\x1b[30;43m\x1b[2KOK, but incomplete or skipped tests!\n" .
-                  "\x1b[0m\x1b[30;43m\x1b[2K"
-                );
-            } else {
-                $this->write("OK, but incomplete or skipped tests!\n");
+            if($this->verbose) {
+                $this->write("\n");
             }
 
-            $this->write(
+            $this->writeWithColor(
+              'fg-black, bg-yellow',
               sprintf(
-                "Tests: %d, Assertions: %d%s%s.\n",
+                "OK, but incomplete or skipped tests!\n" .
+                'Tests: %d, Assertions: %d%s%s.',
 
                 count($result),
                 $this->numAssertions,
@@ -407,26 +406,16 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
                 )
               )
             );
-
-            if ($this->colors) {
-                $this->write("\x1b[0m\x1b[2K");
-            }
         }
 
         else {
             $this->write("\n");
 
-            if ($this->colors) {
-                $this->write(
-                  "\x1b[37;41m\x1b[2KFAILURES!\n\x1b[0m\x1b[37;41m\x1b[2K"
-                );
-            } else {
-                $this->write("FAILURES!\n");
-            }
-
-            $this->write(
+            $this->writeWithColor(
+              'fg-white, bg-red',
               sprintf(
-                "Tests: %d, Assertions: %s%s%s%s%s.\n",
+                "FAILURES!\n" .
+                'Tests: %d, Assertions: %s%s%s%s%s.',
 
                 count($result),
                 $this->numAssertions,
@@ -438,26 +427,21 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
                 $this->getCountString($result->skippedCount(), 'Skipped')
               )
             );
-
-            if ($this->colors) {
-                $this->write("\x1b[0m\x1b[2K");
-            }
         }
 
         if (!$this->verbose &&
             $result->deprecatedFeaturesCount() > 0) {
-            $message = sprintf(
-              "Warning: Deprecated PHPUnit features are being used %s times!\n" .
-              "Use --verbose for more information.\n",
-              $result->deprecatedFeaturesCount()
+            $this->write("\n");
+
+            $this->writeWithColor(
+              'fg-white, bg-red',
+              sprintf(
+                "Warning: Deprecated PHPUnit features are being used %s times!\n" .
+                'Use --verbose for more information.',
+
+                $result->deprecatedFeaturesCount()
+              )
             );
-
-            if ($this->colors) {
-                $message = "\x1b[37;41m\x1b[2K" . $message .
-                           "\x1b[0m";
-            }
-
-            $this->write("\n" . $message);
         }
     }
 
@@ -499,12 +483,7 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
      */
     public function addError(PHPUnit_Framework_Test $test, Exception $e, $time)
     {
-        if ($this->colors) {
-            $this->writeProgress("\x1b[31;1mE\x1b[0m");
-        } else {
-            $this->writeProgress('E');
-        }
-
+        $this->writeProgressWithColor('fg-red, bold', 'E');
         $this->lastTestFailed = TRUE;
     }
 
@@ -517,12 +496,7 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
      */
     public function addFailure(PHPUnit_Framework_Test $test, PHPUnit_Framework_AssertionFailedError $e, $time)
     {
-        if ($this->colors) {
-            $this->writeProgress("\x1b[41;37mF\x1b[0m");
-        } else {
-            $this->writeProgress('F');
-        }
-
+        $this->writeProgressWithColor('bg-red, fg-white', 'F');
         $this->lastTestFailed = TRUE;
     }
 
@@ -535,12 +509,7 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
      */
     public function addIncompleteTest(PHPUnit_Framework_Test $test, Exception $e, $time)
     {
-        if ($this->colors) {
-            $this->writeProgress("\x1b[33;1mI\x1b[0m");
-        } else {
-            $this->writeProgress('I');
-        }
-
+        $this->writeProgressWithColor('fg-yellow, bold', 'I');
         $this->lastTestFailed = TRUE;
     }
 
@@ -554,12 +523,7 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
      */
     public function addSkippedTest(PHPUnit_Framework_Test $test, Exception $e, $time)
     {
-        if ($this->colors) {
-            $this->writeProgress("\x1b[36;1mS\x1b[0m");
-        } else {
-            $this->writeProgress('S');
-        }
-
+        $this->writeProgressWithColor('fg-cyan, bold', 'S');
         $this->lastTestFailed = TRUE;
     }
 
@@ -662,5 +626,64 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
     {
         $this->column = 0;
         $this->write("\n");
+    }
+
+    /**
+     * Formats a buffer with a specified ANSI color sequence if colors are
+     * enabled.
+     *
+     * @param  string $color
+     * @param  string $buffer
+     * @return string
+     * @since  Method available since Release 3.8.0
+     */
+    protected function formatWithColor($color, $buffer)
+    {
+        if (!$this->colors) {
+            return $buffer;
+        }
+
+        $codes = array_map('trim', explode(',', $color));
+        $lines = explode("\n", $buffer);
+        $padding = max(array_map('strlen', $lines));
+
+        $styles = array();
+        foreach ($codes as $code) {
+            $styles[] = self::$ansiCodes[$code];
+        }
+        $style = sprintf("\x1b[%sm", implode(';', $styles));
+
+        $styledLines = array();
+        foreach ($lines as $line) {
+            $styledLines[] = $style . str_pad($line, $padding) . "\x1b[0m";
+        }
+
+        return implode("\n", $styledLines);
+    }
+
+    /**
+     * Writes a buffer out with a color sequence if colors are enabled.
+     *
+     * @param  string $color
+     * @param  string $buffer
+     * @since  Method available since Release 3.8.0
+     */
+    protected function writeWithColor($color, $buffer)
+    {
+        $buffer = $this->formatWithColor($color, $buffer);
+        $this->write($buffer . "\n");
+    }
+
+    /**
+     * Writes progress with a color sequence if colors are enabled.
+     *
+     * @param  string $color
+     * @param  string $buffer
+     * @since  Method available since Release 3.8.0
+     */
+    protected function writeProgressWithColor($color, $buffer)
+    {
+        $buffer = $this->formatWithColor($color, $buffer);
+        $this->writeProgress($buffer);
     }
 }
