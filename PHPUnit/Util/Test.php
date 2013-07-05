@@ -271,6 +271,10 @@ class PHPUnit_Util_Test
         }
 
         if ($data !== NULL) {
+            if (is_object($data)) {
+                $data = iterator_to_array($data);
+            }
+
             foreach ($data as $key => $value) {
                 if (!is_array($value)) {
                     throw new PHPUnit_Framework_Exception(
