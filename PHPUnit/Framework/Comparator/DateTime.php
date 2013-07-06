@@ -85,7 +85,13 @@ class PHPUnit_Framework_Comparator_DateTime extends PHPUnit_Framework_Comparator
      */
     public function assertEquals($expected, $actual, $delta = 0, $canonicalize = FALSE, $ignoreCase = FALSE)
     {
-        if ($expected != $actual) {
+        $delta = new DateInterval(sprintf('PT%sS', abs($delta)));
+
+        $expectedLower = clone $expected;
+        $expectedUpper = clone $expected;
+
+        if ($actual < $expectedLower->sub($delta) ||
+            $actual > $expectedUpper->add($delta)) {
             throw new PHPUnit_Framework_ComparisonFailure(
               $expected,
               $actual,
