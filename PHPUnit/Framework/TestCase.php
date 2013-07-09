@@ -1090,7 +1090,6 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
             }
 
             $mockObject->__phpunit_verify();
-            $mockObject->__phpunit_cleanup();
         }
     }
 
