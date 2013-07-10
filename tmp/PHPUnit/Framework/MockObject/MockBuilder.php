@@ -102,6 +102,11 @@ class PHPUnit_Framework_MockObject_MockBuilder
     protected $cloneArguments = FALSE;
 
     /**
+     * @var boolean
+     */
+    protected $callOriginalMethods = FALSE;
+
+    /**
      * @param PHPUnit_Framework_TestCase
      * @param string
      */
@@ -126,7 +131,8 @@ class PHPUnit_Framework_MockObject_MockBuilder
           $this->originalConstructor,
           $this->originalClone,
           $this->autoload,
-          $this->cloneArguments
+          $this->cloneArguments,
+          $this->callOriginalMethods
         );
     }
 
@@ -304,6 +310,32 @@ class PHPUnit_Framework_MockObject_MockBuilder
     public function enableArgumentCloning()
     {
         $this->cloneArguments = TRUE;
+
+        return $this;
+    }
+
+    /**
+     * Enables the invocation of the original methods.
+     *
+     * @return PHPUnit_Framework_MockObject_MockBuilder
+     * @since  Method available since Release 1.3.0
+     */
+    public function enableProxyingToOriginalMethods()
+    {
+        $this->callOriginalMethods = TRUE;
+
+        return $this;
+    }
+
+    /**
+     * Disables the invocation of the original methods.
+     *
+     * @return PHPUnit_Framework_MockObject_MockBuilder
+     * @since  Method available since Release 1.3.0
+     */
+    public function disableProxyingToOriginalMethods()
+    {
+        $this->callOriginalMethods = FALSE;
 
         return $this;
     }

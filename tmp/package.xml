@@ -61,6 +61,8 @@
        <file baseinstalldir="/" name="mocked_clone.tpl.dist" role="php" />
        <file baseinstalldir="/" name="mocked_object_method.tpl.dist" role="php" />
        <file baseinstalldir="/" name="mocked_static_method.tpl.dist" role="php" />
+       <file baseinstalldir="/" name="proxied_object_method.tpl.dist" role="php" />
+       <file baseinstalldir="/" name="proxied_static_method.tpl.dist" role="php" />
        <file baseinstalldir="/" name="trait_class.tpl.dist" role="php" />
        <file baseinstalldir="/" name="unmocked_clone.tpl.dist" role="php" />
        <file baseinstalldir="/" name="wsdl_class.tpl.dist" role="php" />
