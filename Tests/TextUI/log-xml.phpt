@@ -10,7 +10,7 @@ $_SERVER['argv'][3] = 'php://stdout';
 $_SERVER['argv'][4] = 'BankAccountTest';
 $_SERVER['argv'][5] = dirname(__FILE__).'/../_files/BankAccountTest.php';
 
-require_once dirname(dirname(dirname(__FILE__))) . '/PHPUnit/Autoload.php';
+require __DIR__ . '/../bootstrap.php';
 PHPUnit_TextUI_Command::main();
 ?>
 --EXPECTF--
@@ -19,9 +19,9 @@ PHPUnit %s by Sebastian Bergmann.
 ...<?xml version="1.0" encoding="UTF-8"?>
 <testsuites>
   <testsuite name="BankAccountTest" file="%sBankAccountTest.php" tests="3" assertions="3" failures="0" errors="0" time="%f">
-    <testcase name="testBalanceIsInitiallyZero" class="BankAccountTest" file="%sBankAccountTest.php" line="72" assertions="1" time="%f"/>
-    <testcase name="testBalanceCannotBecomeNegative" class="BankAccountTest" file="%sBankAccountTest.php" line="82" assertions="1" time="%f"/>
-    <testcase name="testBalanceCannotBecomeNegative2" class="BankAccountTest" file="%sBankAccountTest.php" line="102" assertions="1" time="%f"/>
+    <testcase name="testBalanceIsInitiallyZero" class="BankAccountTest" file="%sBankAccountTest.php" line="69" assertions="1" time="%f"/>
+    <testcase name="testBalanceCannotBecomeNegative" class="BankAccountTest" file="%sBankAccountTest.php" line="79" assertions="1" time="%f"/>
+    <testcase name="testBalanceCannotBecomeNegative2" class="BankAccountTest" file="%sBankAccountTest.php" line="99" assertions="1" time="%f"/>
   </testsuite>
 </testsuites>
 

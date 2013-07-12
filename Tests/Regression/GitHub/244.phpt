@@ -9,7 +9,7 @@ $_SERVER['argv'][2] = '--process-isolation';
 $_SERVER['argv'][3] = 'Issue244Test';
 $_SERVER['argv'][4] = dirname(__FILE__).'/244/Issue244Test.php';
 
-require_once dirname(dirname(dirname(dirname(__FILE__)))) . '/PHPUnit/Autoload.php';
+require __DIR__ . '/../../bootstrap.php';
 PHPUnit_TextUI_Command::main();
 ?>
 --EXPECTF--

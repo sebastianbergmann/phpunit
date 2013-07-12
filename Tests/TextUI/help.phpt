@@ -6,7 +6,7 @@ define('PHPUNIT_TESTSUITE', TRUE);
 
 $_SERVER['argv'][1] = '--no-configuration';
 
-require_once dirname(dirname(dirname(__FILE__))) . '/PHPUnit/Autoload.php';
+require __DIR__ . '/../bootstrap.php';
 PHPUnit_TextUI_Command::main();
 ?>
 --EXPECTF--

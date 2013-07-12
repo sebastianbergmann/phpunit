@@ -42,8 +42,6 @@
  * @since      File available since Release 2.0.0
  */
 
-require_once dirname(__DIR__) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'Success.php';
-
 /**
  *
  *

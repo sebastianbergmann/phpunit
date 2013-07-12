@@ -42,9 +42,6 @@
  * @since      File available since Release 3.8.0
  */
 
-require_once dirname(__DIR__) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'Success.php';
-require_once dirname(__DIR__) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'BaseTestListenerSample.php';
-
 /**
  *
  *

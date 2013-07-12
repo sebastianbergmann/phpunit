@@ -57,6 +57,12 @@
    <arg value="            " />
    <arg path="PHPUnit" />
   </exec>
+
+  <exec executable="phpab">
+   <arg value="--output" />
+   <arg path="Tests/autoload.php" />
+   <arg path="Tests" />
+  </exec>
  </target>
 
  <target name="lint">
