@@ -672,8 +672,17 @@ class PHPUnit_Framework_TestResult implements Countable
         }
 
         if ($useXdebug) {
+            $append           = !$incomplete && !$skipped;
+            $linesToBeCovered = array();
+
+            if ($append && $test instanceof PHPUnit_Framework_TestCase) {
+                $linesToBeCovered = PHPUnit_Util_Test::getLinesToBeCovered(
+                  get_class($test), $test->getName()
+                );
+            }
+
             try {
-                $this->codeCoverage->stop(!$incomplete && !$skipped);
+                $this->codeCoverage->stop($append, $linesToBeCovered);
             }
 
             catch (PHP_CodeCoverage_Exception_UnintentionallyCoveredCode $cce) {
@@ -686,7 +695,7 @@ class PHPUnit_Framework_TestResult implements Countable
                 );
             }
 
-            catch (PHP_CodeCoverage_Exception_InvalidCoversTarget $cce) {
+            catch (PHPUnit_Framework_InvalidCoversTargetException $cce) {
                 $this->addFailure(
                   $test,
                   new PHPUnit_Framework_InvalidCoversTargetError(

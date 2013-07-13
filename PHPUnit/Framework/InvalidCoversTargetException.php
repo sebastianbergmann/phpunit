@@ -35,7 +35,7 @@
  * POSSIBILITY OF SUCH DAMAGE.
  *
  * @package    PHPUnit
- * @subpackage Runner
+ * @subpackage Framework
  * @author     Sebastian Bergmann <sebastian@phpunit.de>
  * @copyright  2001-2013 Sebastian Bergmann <sebastian@phpunit.de>
  * @license    http://www.opensource.org/licenses/BSD-3-Clause  The BSD 3-Clause License
@@ -45,13 +45,13 @@
 
 /**
  * @package    PHPUnit
- * @subpackage Runner
+ * @subpackage Framework
  * @author     Sebastian Bergmann <sebastian@phpunit.de>
  * @copyright  2001-2013 Sebastian Bergmann <sebastian@phpunit.de>
  * @license    http://www.opensource.org/licenses/BSD-3-Clause  The BSD 3-Clause License
  * @link       http://www.phpunit.de/
  * @since      Class available since Release 3.8.0
  */
-class PHPUnit_Runner_Exception extends RuntimeException implements PHPUnit_Exception
+class PHPUnit_Framework_InvalidCoversTargetException extends PHPUnit_Framework_CodeCoverageException
 {
 }

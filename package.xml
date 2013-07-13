@@ -116,6 +116,7 @@
      <file baseinstalldir="/" name="AssertionFailedError.php" role="php" />
      <file baseinstalldir="/" name="Assert.php" role="php" />
      <file baseinstalldir="/" name="BaseTestListener.php" role="php" />
+     <file baseinstalldir="/" name="CodeCoverageException.php" role="php" />
      <file baseinstalldir="/" name="ComparatorFactory.php" role="php" />
      <file baseinstalldir="/" name="Comparator.php" role="php" />
      <file baseinstalldir="/" name="ComparisonFailure.php" role="php" />
@@ -126,6 +127,7 @@
      <file baseinstalldir="/" name="IncompleteTestError.php" role="php" />
      <file baseinstalldir="/" name="IncompleteTest.php" role="php" />
      <file baseinstalldir="/" name="InvalidCoversTargetError.php" role="php" />
+     <file baseinstalldir="/" name="InvalidCoversTargetException.php" role="php" />
      <file baseinstalldir="/" name="OutputError.php" role="php" />
      <file baseinstalldir="/" name="SelfDescribing.php" role="php" />
      <file baseinstalldir="/" name="SkippedTestError.php" role="php" />
