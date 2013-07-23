@@ -161,6 +161,7 @@ class PHPUnit_Framework_MockObject_Generator
      * @param  boolean $callOriginalMethods
      * @return object
      * @throws InvalidArgumentException
+     * @throws PHPUnit_Framework_Exception
      * @since  Method available since Release 1.0.0
      */
     public function getMock($originalClassName, $methods = array(), array $arguments = array(), $mockClassName = '', $callOriginalConstructor = TRUE, $callOriginalClone = TRUE, $callAutoload = TRUE, $cloneArguments = TRUE, $callOriginalMethods = FALSE)
@@ -288,6 +289,7 @@ class PHPUnit_Framework_MockObject_Generator
      * @return object
      * @since  Method available since Release 1.0.0
      * @throws InvalidArgumentException
+     * @throws PHPUnit_Framework_Exception
      */
     public function getMockForAbstractClass($originalClassName, array $arguments = array(), $mockClassName = '', $callOriginalConstructor = TRUE, $callOriginalClone = TRUE, $callAutoload = TRUE, $mockedMethods = array(), $cloneArguments = TRUE)
     {
@@ -408,6 +410,7 @@ class PHPUnit_Framework_MockObject_Generator
      * @return object
      * @since  Method available since Release 1.1.0
      * @throws InvalidArgumentException
+     * @throws PHPUnit_Framework_Exception
      */
     public function getObjectForTrait($traitName, array $arguments = array(), $traitClassName = '', $callOriginalConstructor = TRUE, $callOriginalClone = TRUE, $callAutoload = TRUE)
     {
@@ -500,7 +503,8 @@ class PHPUnit_Framework_MockObject_Generator
      * @param  string $originalClassName
      * @param  array  $methods
      * @param  array  $options
-     * @return array
+     * @return string
+     * @throws PHPUnit_Framework_Exception
      */
     public function generateClassFromWsdl($wsdlFile, $originalClassName, array $methods = array(), array $options = array())
     {
@@ -600,6 +604,7 @@ class PHPUnit_Framework_MockObject_Generator
      * @param  boolean    $cloneArguments
      * @param  boolean    $callOriginalMethods
      * @return array
+     * @throws PHPUnit_Framework_Exception
      */
     protected function generateMock($originalClassName, $methods, $mockClassName, $callOriginalClone, $callAutoload, $cloneArguments, $callOriginalMethods)
     {
