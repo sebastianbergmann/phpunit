@@ -679,17 +679,23 @@ class PHPUnit_Framework_TestResult implements Countable
                 $linesToBeCovered = PHPUnit_Util_Test::getLinesToBeCovered(
                   get_class($test), $test->getName()
                 );
+
+                $linesToBeUsed = PHPUnit_Util_Test::getLinesToBeUsed(
+                  get_class($test), $test->getName()
+                );
             }
 
             try {
-                $this->codeCoverage->stop($append, $linesToBeCovered);
+                $this->codeCoverage->stop(
+                  $append, $linesToBeCovered, $linesToBeUsed
+                );
             }
 
             catch (PHP_CodeCoverage_Exception_UnintentionallyCoveredCode $cce) {
                 $this->addFailure(
                   $test,
                   new PHPUnit_Framework_UnintentionallyCoveredCodeError(
-                    'This test executed code that is not listed as code to be covered'
+                    'This test executed code that is not listed as code to be covered or used'
                   ),
                   $time
                 );

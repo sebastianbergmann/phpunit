@@ -246,7 +246,7 @@ class Util_TestTest extends PHPUnit_Framework_TestCase
 
     /**
      * @covers       PHPUnit_Util_Test::getLinesToBeCovered
-     * @covers       PHPUnit_Util_Test::resolveCoversToReflectionObjects
+     * @covers       PHPUnit_Util_Test::resolveElementToReflectionObjects
      * @dataProvider getLinesToBeCoveredProvider
      */
     public function testGetLinesToBeCovered($test, $lines)
@@ -285,7 +285,7 @@ class Util_TestTest extends PHPUnit_Framework_TestCase
 
     /**
      * @covers            PHPUnit_Util_Test::getLinesToBeCovered
-     * @covers            PHPUnit_Util_Test::resolveCoversToReflectionObjects
+     * @covers            PHPUnit_Util_Test::resolveElementToReflectionObjects
      * @expectedException PHPUnit_Framework_CodeCoverageException
      */
     public function testGetLinesToBeCovered2()
@@ -297,7 +297,7 @@ class Util_TestTest extends PHPUnit_Framework_TestCase
 
     /**
      * @covers            PHPUnit_Util_Test::getLinesToBeCovered
-     * @covers            PHPUnit_Util_Test::resolveCoversToReflectionObjects
+     * @covers            PHPUnit_Util_Test::resolveElementToReflectionObjects
      * @expectedException PHPUnit_Framework_CodeCoverageException
      */
     public function testGetLinesToBeCovered3()
@@ -309,7 +309,7 @@ class Util_TestTest extends PHPUnit_Framework_TestCase
 
     /**
      * @covers            PHPUnit_Util_Test::getLinesToBeCovered
-     * @covers            PHPUnit_Util_Test::resolveCoversToReflectionObjects
+     * @covers            PHPUnit_Util_Test::resolveElementToReflectionObjects
      * @expectedException PHPUnit_Framework_CodeCoverageException
      */
     public function testGetLinesToBeCovered4()
