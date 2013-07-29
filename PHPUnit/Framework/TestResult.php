@@ -690,6 +690,7 @@ class PHPUnit_Framework_TestResult implements Countable
         if ($useXdebug) {
             $append           = !$incomplete && !$skipped;
             $linesToBeCovered = array();
+            $linesToBeUsed    = array();
 
             if ($append && $test instanceof PHPUnit_Framework_TestCase) {
                 $linesToBeCovered = PHPUnit_Util_Test::getLinesToBeCovered(
