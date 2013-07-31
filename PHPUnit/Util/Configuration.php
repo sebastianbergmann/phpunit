@@ -1025,7 +1025,7 @@ class PHPUnit_Util_Configuration
     {
         // Check whether the path is already absolute.
         if ($path[0] === '/' || $path[0] === '\\' ||
-            (strlen($path) > 3 && ctype_alpha($path[0]) &&
+            (strlen($path) > 3 && preg_match('/[a-zA-Z]/', $path[0]) &&
              $path[1] === ':' && ($path[2] === '\\' || $path[2] === '/'))) {
             return $path;
         }
