@@ -250,7 +250,7 @@
    <package>
     <name>PHP_Timer</name>
     <channel>pear.phpunit.de</channel>
-    <min>1.1.0</min>
+    <min>1.0.2</min>
    </package>
    <package>
     <name>PHPUnit_MockObject</name>
@@ -280,7 +280,7 @@
    <package>
     <name>PHP_Invoker</name>
     <channel>pear.phpunit.de</channel>
-    <min>1.2.0</min>
+    <min>1.1.0</min>
    </package>
    <extension>
     <name>json</name>

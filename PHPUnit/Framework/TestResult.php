@@ -632,8 +632,7 @@ class PHPUnit_Framework_TestResult implements Countable
             $this->codeCoverage->start($test);
         }
 
-        $timer = new PHP_Timer;
-        $timer->start();
+        PHP_Timer::start();
 
         try {
             if (!$test instanceof PHPUnit_Framework_Warning &&
@@ -679,7 +678,7 @@ class PHPUnit_Framework_TestResult implements Countable
             $error = TRUE;
         }
 
-        $time = $timer->stop();
+        $time = PHP_Timer::stop();
         $test->addToAssertionCount(PHPUnit_Framework_Assert::getCount());
 
         if ($this->beStrictAboutTestsThatDoNotTestAnything &&

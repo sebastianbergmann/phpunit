@@ -160,12 +160,11 @@ class PHPUnit_Extensions_PhptTestCase implements PHPUnit_Framework_Test, PHPUnit
 
         $result->startTest($this);
 
-        $timer = new PHP_Timer;
-        $timer->start();
+        PHP_Timer::start();
 
         $runner->_php = escapeshellarg(PHP_BINARY);
         $buffer = $runner->run($this->filename, $options);
-        $time   = $timer->stop();
+        $time   = PHP_Timer::stop();
 
         error_reporting($currentErrorReporting);
 
