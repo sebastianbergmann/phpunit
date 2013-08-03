@@ -229,7 +229,7 @@
    <package>
     <name>Diff</name>
     <channel>pear.phpunit.de</channel>
-    <min>1.0.0</min>
+    <min>1.1.0</min>
    </package>
    <package>
     <name>File_Iterator</name>

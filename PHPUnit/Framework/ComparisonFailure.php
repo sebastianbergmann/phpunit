@@ -44,7 +44,7 @@
  * @since      File available since Release 2.0.0
  */
 
-use SebastianBergmann\Diff;
+use SebastianBergmann\Diff\Differ;
 
 /**
  * Thrown when an assertion for string equality failed.
@@ -157,9 +157,9 @@ class PHPUnit_Framework_ComparisonFailure extends PHPUnit_Framework_AssertionFai
             return '';
         }
 
-        $diff = new Diff("--- Expected\n+++ Actual\n");
+        $differ = new Differ("--- Expected\n+++ Actual\n");
 
-        return $diff->diff($this->expectedAsString, $this->actualAsString);
+        return $differ->diff($this->expectedAsString, $this->actualAsString);
     }
 
     /**

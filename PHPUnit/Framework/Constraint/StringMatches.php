@@ -44,7 +44,7 @@
  * @since      File available since Release 3.5.0
  */
 
-use SebastianBergmann\Diff;
+use SebastianBergmann\Diff\Differ;
 
 /**
  * ...
@@ -102,9 +102,9 @@ class PHPUnit_Framework_Constraint_StringMatches extends PHPUnit_Framework_Const
         $this->string = join("\n", $from);
         $other        = join("\n", $to);
 
-        $diff = new Diff("--- Expected\n+++ Actual\n");
+        $differ = new Differ("--- Expected\n+++ Actual\n");
 
-        return $diff->diff($this->string, $other);
+        return $differ->diff($this->string, $other);
     }
 
     protected function createPatternFromFormat($string)
