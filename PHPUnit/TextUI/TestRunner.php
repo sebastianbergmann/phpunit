@@ -316,6 +316,10 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
             if (isset($arguments['coverageText'])) {
                 $codeCoverageReports++;
             }
+
+            if (isset($arguments['coverageXml'])) {
+                $codeCoverageReports++;
+            }
         } else {
             if (!extension_loaded('tokenizer')) {
                 $this->showExtensionNotLoadedMessage(
