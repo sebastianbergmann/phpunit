@@ -83,6 +83,7 @@ class PHPUnit_TextUI_Command
       'coverage-html=' => NULL,
       'coverage-php=' => NULL,
       'coverage-text==' => NULL,
+      'coverage-xml=' => NULL,
       'debug' => NULL,
       'exclude-group=' => NULL,
       'filter=' => NULL,
@@ -289,6 +290,11 @@ class PHPUnit_TextUI_Command
                     $this->arguments['coverageText'] = $option[1];
                     $this->arguments['coverageTextShowUncoveredFiles'] = FALSE;
                     $this->arguments['coverageTextShowOnlySummary'] = FALSE;
+                }
+                break;
+
+                case '--coverage-xml': {
+                    $this->arguments['coverageXml'] = $option[1];
                 }
                 break;
 
@@ -767,6 +773,7 @@ Usage: phpunit [switches] UnitTest [UnitTest.php]
   --coverage-php <file>     Serialize PHP_CodeCoverage object to file.
   --coverage-text=<file>    Generate code coverage report in text format.
                             Default: Standard output.
+  --coverage-xml <dir>      Generate code coverage report in PHPUnit XML format.
 
   --testdox-html <file>     Write agile documentation in HTML format to file.
   --testdox-text <file>     Write agile documentation in Text format to file.

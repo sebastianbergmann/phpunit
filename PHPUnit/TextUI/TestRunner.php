@@ -496,6 +496,18 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
                   $processor->process($codeCoverage, $colors)
                 );
             }
+
+            if (isset($arguments['coverageXml'])) {
+                $this->printer->write(
+                  "\nGenerating code coverage report in PHPUnit XML format ..."
+                );
+
+                $writer = new PHP_CodeCoverage_Report_XML;
+                $writer->process($codeCoverage, $arguments['coverageXml']);
+
+                $this->printer->write(" done\n");
+                unset($writer);
+            }
         }
 
         return $result;
@@ -773,6 +785,11 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
                 } else {
                     $arguments['coverageTextShowOnlySummary'] = FALSE;
                 }
+            }
+
+            if (isset($loggingConfiguration['coverage-xml']) &&
+                !isset($arguments['coverageXml'])) {
+                $arguments['coverageXml'] = $loggingConfiguration['coverage-xml'];
             }
 
             if (isset($loggingConfiguration['json']) &&
