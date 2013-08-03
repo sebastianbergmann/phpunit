@@ -873,7 +873,7 @@ class PHPUnit_Util_XML
                             }
 
                             if (!$matched) {
-                                break(2);
+                                break 2;
                             }
                         }
                     }
