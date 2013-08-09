@@ -1,6 +1,11 @@
 #!/usr/bin/env php
 <?php
-define('__PHPUNIT_PHAR__', realpath($GLOBALS['_SERVER']['SCRIPT_NAME']));
+if ($GLOBALS['_SERVER']['SCRIPT_NAME'] != '-') {
+    define('__PHPUNIT_PHAR__', realpath($GLOBALS['_SERVER']['SCRIPT_NAME']));
+} else {
+    $files = get_included_files();
+    define('__PHPUNIT_PHAR__', $files[0]);
+}
 
 spl_autoload_register(
   function ($class)
@@ -22,6 +27,9 @@ spl_autoload_register(
 );
 
 Phar::mapPhar('___PHAR___');
-PHPUnit_TextUI_Command::main();
+
+if ($GLOBALS['_SERVER']['SCRIPT_NAME'] != '-') {
+    PHPUnit_TextUI_Command::main();
+}
 
 __HALT_COMPILER();
