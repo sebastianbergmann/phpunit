@@ -234,7 +234,11 @@ abstract class PHPUnit_Util_PHP
                 throw new ErrorException($errstr, $errno, $errno, $errfile, $errline);
             });
             try {
-                $childResult = unserialize($stdout);
+                if (strpos($stdout, "#!/usr/bin/env php\n") === 0) {
+                    $stdout = substr($stdout, 19);
+                }
+
+                $childResult = unserialize(str_replace("#!/usr/bin/env php\n", '', $stdout));
                 restore_error_handler();
             } catch (ErrorException $e) {
                 restore_error_handler();

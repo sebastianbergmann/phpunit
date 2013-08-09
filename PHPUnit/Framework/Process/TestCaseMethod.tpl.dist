@@ -2,9 +2,14 @@
 ini_set('display_errors', 'stderr');
 set_include_path('{include_path}');
 
-if ({composerAutoload}) {
-    require_once {composerAutoload};
-    define('PHPUNIT_COMPOSER_INSTALL', {composerAutoload});
+$composerAutoload = {composerAutoload};
+$phar             = {phar};
+
+if ($composerAutoload) {
+    require_once $composerAutoload;
+    define('PHPUNIT_COMPOSER_INSTALL', $composerAutoload);
+} else if ($phar) {
+    require $phar;
 } else {
     require 'PHPUnit/Autoload.php';
 }
