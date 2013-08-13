@@ -16,7 +16,7 @@ PHPUnit %s by Sebastian Bergmann.
 
 E
 
-Time: %i %s, Memory: %sMb
+Time: %s, Memory: %sMb
 
 There was 1 error:
 
