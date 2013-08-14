@@ -66,7 +66,7 @@ class PHPUnit_Framework_MockObject_Matcher_InvokedCount extends PHPUnit_Framewor
     protected $expectedCount;
 
     /**
-     * @param interger $expectedCount
+     * @param integer $expectedCount
      */
     public function __construct($expectedCount)
     {
