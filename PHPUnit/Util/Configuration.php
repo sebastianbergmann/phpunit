@@ -131,7 +131,7 @@
  *   <logging>
  *     <log type="coverage-html" target="/tmp/report"
             charset="UTF-8" highlight="false"
- *          lowUpperBound="35" highLowerBound="70"/>
+ *          lowUpperBound="50" highLowerBound="90"/>
  *     <log type="coverage-clover" target="/tmp/clover.xml"/>
  *     <log type="json" target="/tmp/logfile.json"/>
  *     <log type="plain" target="/tmp/logfile.txt"/>

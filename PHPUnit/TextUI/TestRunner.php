@@ -901,8 +901,8 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
         $arguments['repeat']                             = isset($arguments['repeat'])                             ? $arguments['repeat']                             : FALSE;
         $arguments['reportCharset']                      = isset($arguments['reportCharset'])                      ? $arguments['reportCharset']                      : 'UTF-8';
         $arguments['reportHighlight']                    = isset($arguments['reportHighlight'])                    ? $arguments['reportHighlight']                    : FALSE;
-        $arguments['reportHighLowerBound']               = isset($arguments['reportHighLowerBound'])               ? $arguments['reportHighLowerBound']               : 70;
-        $arguments['reportLowUpperBound']                = isset($arguments['reportLowUpperBound'])                ? $arguments['reportLowUpperBound']                : 35;
+        $arguments['reportHighLowerBound']               = isset($arguments['reportHighLowerBound'])               ? $arguments['reportHighLowerBound']               : 90;
+        $arguments['reportLowUpperBound']                = isset($arguments['reportLowUpperBound'])                ? $arguments['reportLowUpperBound']                : 50;
         $arguments['stopOnError']                        = isset($arguments['stopOnError'])                        ? $arguments['stopOnError']                        : FALSE;
         $arguments['stopOnFailure']                      = isset($arguments['stopOnFailure'])                      ? $arguments['stopOnFailure']                      : FALSE;
         $arguments['stopOnIncomplete']                   = isset($arguments['stopOnIncomplete'])                   ? $arguments['stopOnIncomplete']                   : FALSE;
