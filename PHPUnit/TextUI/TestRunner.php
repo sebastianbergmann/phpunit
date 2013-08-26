@@ -313,6 +313,10 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
                 $codeCoverageReports++;
             }
 
+            if (isset($arguments['coveragePHPSmart'])) {
+                $codeCoverageReports++;
+            }
+
             if (isset($arguments['coverageText'])) {
                 $codeCoverageReports++;
             }
@@ -475,6 +479,18 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
 
                 $writer = new PHP_CodeCoverage_Report_PHP;
                 $writer->process($codeCoverage, $arguments['coveragePHP']);
+
+                $this->printer->write(" done\n");
+                unset($writer);
+            }
+
+            if (isset($arguments['coveragePHPSmart'])) {
+                $this->printer->write(
+                  "\nGenerating code coverage report in PHPSmart format ..."
+                );
+
+                $writer = new PHP_CodeCoverage_Report_PHPSmart;
+                $writer->process($codeCoverage, $arguments['coveragePHPSmart']);
 
                 $this->printer->write(" done\n");
                 unset($writer);
@@ -776,6 +792,11 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
                 $arguments['coveragePHP'] = $loggingConfiguration['coverage-php'];
             }
 
+            if (isset($loggingConfiguration['coverage-phpsmart']) &&
+                !isset($arguments['coveragePHPSmart'])) {
+                $arguments['coveragePHPSmart'] = $loggingConfiguration['coverage-phpsmart'];
+            }
+
             if (isset($loggingConfiguration['coverage-text']) &&
                 !isset($arguments['coverageText'])) {
                 $arguments['coverageText'] = $loggingConfiguration['coverage-text'];
@@ -835,7 +856,8 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
             if ((isset($arguments['coverageClover']) ||
                 isset($arguments['coverageCrap4J']) ||
                 isset($arguments['coverageHtml']) ||
-                isset($arguments['coveragePHP'])) ||
+                isset($arguments['coveragePHP']) ||
+                isset($arguments['coveragePHPSmart'])) ||
                 isset($arguments['coverageText']) &&
                 extension_loaded('xdebug')) {
 
