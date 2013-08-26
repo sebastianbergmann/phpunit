@@ -232,6 +232,10 @@ class PHPUnit_TextUI_Command
      */
     protected function handleArguments(array $argv)
     {
+        if (defined('__PHPUNIT_PHAR__')) {
+            $this->longOptions['self-update'] = NULL;
+        }
+
         try {
             $this->options = PHPUnit_Util_Getopt::getopt(
               $argv,
@@ -471,6 +475,11 @@ class PHPUnit_TextUI_Command
 
                 case '--strict': {
                     $this->arguments['strict'] = TRUE;
+                }
+                break;
+
+                case '--self-update': {
+                    $this->handleSelfUpdate();
                 }
                 break;
 
@@ -753,6 +762,66 @@ class PHPUnit_TextUI_Command
     }
 
     /**
+     * @since Method available since Release 3.8.0
+     */
+    protected function handleSelfUpdate()
+    {
+        PHPUnit_TextUI_TestRunner::printVersionString();
+
+        if (!extension_loaded('openssl')) {
+            print "The OpenSSL extension is not loaded.\n";
+            exit(PHPUnit_TextUI_TestRunner::EXCEPTION_EXIT);
+        }
+
+        $remoteFilename = 'https://phar.phpunit.de/phpunit.phar';
+        $localFilename  = $_SERVER['argv'][0];
+        $tempFilename   = basename($localFilename, '.phar') . '-temp.phar';
+
+        // Workaround for https://bugs.php.net/bug.php?id=65538
+        $caFile = dirname($tempFilename) . '/ca.pem';
+        copy(__PHPUNIT_PHAR_ROOT__ . '/ca.pem', $caFile);
+
+        print 'Updating the PHPUnit PHAR ... ';
+
+        file_put_contents(
+          $tempFilename,
+          file_get_contents(
+            $remoteFilename,
+            FALSE,
+            stream_context_create(
+              array(
+                'ssl' => array(
+                  'CN_match' => 'phar.phpunit.de',
+                  'allow_self_signed' => FALSE,
+                  'cafile' => $caFile,
+                  'verify_peer' => TRUE
+                )
+              )
+            )
+          )
+        );
+
+        chmod($tempFilename, 0777 & ~umask());
+
+        try {
+            $phar = new Phar($tempFilename);
+            unset($phar);
+            rename($tempFilename, $localFilename);
+            unlink($caFile);
+        }
+
+        catch (Exception $e) {
+            unlink($caFile);
+            unlink($tempFilename);
+            print " done\n\n" . $e->getMessage() . "\n";
+            exit(PHPUnit_TextUI_TestRunner::EXCEPTION_EXIT);
+        }
+
+        print " done\n";
+        exit(PHPUnit_TextUI_TestRunner::SUCCESS_EXIT);
+    }
+
+    /**
      * Show the help message.
      */
     protected function showHelp()
@@ -817,6 +886,10 @@ Usage: phpunit [switches] UnitTest [UnitTest.php]
   --version                 Prints the version and exits.
 
 EOT;
+
+        if (defined('__PHPUNIT_PHAR__')) {
+            print "\n  --self-update             Update PHPUnit to the latest version.\n";
+        }
     }
 
     /**

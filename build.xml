@@ -185,6 +185,8 @@
    </fileset>
   </untar>
 
+  <copy todir="${basedir}/build/phar" file="${basedir}/build/ca.pem" />
+
   <copy todir="${basedir}/build/phar/PHPUnit">
    <fileset dir="${basedir}/PHPUnit"/>
   </copy>
