@@ -173,25 +173,120 @@
    <arg value="${basedir}/phpunit.php --version | awk 'BEGIN { ORS = &quot;&quot;; } {print $2}'" />
   </exec>
 
-  <untar dest="${basedir}/build/phar" compression="gzip">
-   <fileset dir="${basedir}/build/dependencies">
-    <include name="**/*.tgz"/>
-   </fileset>
-  </untar>
+  <get src="https://getcomposer.org/composer.phar" dest="${basedir}/composer.phar"/>
 
-  <copy todir="${basedir}/build/phar/PHPUnit">
-   <fileset dir="${basedir}/PHPUnit"/>
+  <exec executable="php">
+   <arg value="composer.phar"/>
+   <arg value="install"/>
+  </exec>
+
+  <copy file="${basedir}/composer.json" tofile="${basedir}/composer.json.bak"/>
+
+  <exec executable="php">
+   <arg value="composer.phar"/>
+   <arg value="require"/>
+   <arg value="phpunit/dbunit"/>
+   <arg value="1.2.*"/>
+  </exec>
+
+  <exec executable="php">
+   <arg value="composer.phar"/>
+   <arg value="require"/>
+   <arg value="phpunit/phpunit-selenium"/>
+   <arg value="1.3.*"/>
+  </exec>
+
+  <exec executable="php">
+   <arg value="composer.phar"/>
+   <arg value="require"/>
+   <arg value="phpunit/php-invoker"/>
+   <arg value="1.1.*"/>
+  </exec>
+
+  <move file="${basedir}/composer.json.bak" tofile="${basedir}/composer.json"/>
+
+  <copy todir="${basedir}/build/phar/phpunit">
+   <fileset dir="${basedir}/PHPUnit">
+    <include name="**/*.php" />
+    <exclude name="**/autoload.php" />
+   </fileset>
   </copy>
 
-  <delete>
-   <fileset dir="${basedir}/build/phar">
-    <include name="**/autoload.php" />
-    <include name="**/Autoload.php" />
-    <include name="**/Autoload.php.in" />
-    <include name="**/package.sig" />
-    <include name="**/package.xml" />
+  <copy todir="${basedir}/build/phar/php-code-coverage">
+   <fileset dir="${basedir}/vendor/phpunit/php-code-coverage/PHP">
+    <include name="**/*.php" />
+    <exclude name="**/autoload.php" />
    </fileset>
-  </delete>
+  </copy>
+
+  <copy todir="${basedir}/build/phar/php-file-iterator">
+   <fileset dir="${basedir}/vendor/phpunit/php-file-iterator/File">
+    <include name="**/*.php" />
+    <exclude name="**/autoload.php" />
+   </fileset>
+  </copy>
+
+  <copy todir="${basedir}/build/phar/php-text-template">
+   <fileset dir="${basedir}/vendor/phpunit/php-text-template/Text">
+    <include name="**/*.php" />
+    <exclude name="**/autoload.php" />
+   </fileset>
+  </copy>
+
+  <copy todir="${basedir}/build/phar/php-timer">
+   <fileset dir="${basedir}/vendor/phpunit/php-timer/PHP">
+    <include name="**/*.php" />
+    <exclude name="**/autoload.php" />
+   </fileset>
+  </copy>
+
+  <copy todir="${basedir}/build/phar/php-token-stream">
+   <fileset dir="${basedir}/vendor/phpunit/php-token-stream/PHP">
+    <include name="**/*.php" />
+    <exclude name="**/autoload.php" />
+   </fileset>
+  </copy>
+
+  <copy todir="${basedir}/build/phar/phpunit-mock-objects">
+   <fileset dir="${basedir}/vendor/phpunit/phpunit-mock-objects/PHPUnit">
+    <include name="**/*.php" />
+    <exclude name="**/autoload.php" />
+   </fileset>
+  </copy>
+
+  <copy todir="${basedir}/build/phar/symfony">
+   <fileset dir="${basedir}/vendor/symfony">
+    <include name="**/*.php" />
+    <exclude name="**/Tests/**" />
+   </fileset>
+  </copy>
+
+  <copy todir="${basedir}/build/phar/pear">
+   <fileset dir="${basedir}/vendor/pear-pear.php.net">
+    <include name="**/*.php" />
+   </fileset>
+  </copy>
+
+  <copy todir="${basedir}/build/phar/dbunit">
+   <fileset dir="${basedir}/vendor/phpunit/dbunit/PHPUnit">
+    <include name="**/*.php" />
+    <exclude name="**/autoload.php" />
+   </fileset>
+  </copy>
+
+  <copy todir="${basedir}/build/phar/php-invoker">
+   <fileset dir="${basedir}/vendor/phpunit/php-invoker/PHP">
+    <include name="**/*.php" />
+    <exclude name="**/autoload.php" />
+   </fileset>
+  </copy>
+
+  <copy todir="${basedir}/build/phar/phpunit-selenium">
+   <fileset dir="${basedir}/vendor/phpunit/phpunit-selenium/PHPUnit">
+    <include name="**/*.php" />
+    <exclude name="**/autoload.php" />
+   </fileset>
+  </copy>
 
   <exec executable="phpab">
    <arg value="--all" />
@@ -206,15 +301,10 @@
   </exec>
 
   <chmod file="${basedir}/build/phpunit-${version}.phar" perm="ugo+rx"/>
-  <copy file="${basedir}/build/phpunit-${version}.phar" tofile="${basedir}/build/phpunit-${version}-compressed.phar"/>
-  <chmod file="${basedir}/build/phpunit-${version}-compressed.phar" perm="ugo+rx"/>
 
-  <exec executable="phar">
-   <arg value="compress" />
-   <arg value="-f" />
-   <arg path="${basedir}/build/phpunit-${version}-compressed.phar" />
-   <arg value="-c" />
-   <arg value="bzip2" />
-  </exec>
+  <delete dir="${basedir}/build/phar"/>
+  <delete dir="${basedir}/vendor"/>
+  <delete file="${basedir}/composer.lock"/>
+  <delete file="${basedir}/composer.phar"/>
  </target>
 </project>
