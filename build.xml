@@ -265,6 +265,27 @@
    </fileset>
   </copy>
 
+  <copy todir="${basedir}/build/phar/sebastian-diff">
+   <fileset dir="${basedir}/vendor/sebastian/diff/src">
+    <include name="**/*.php" />
+    <exclude name="**/autoload.php" />
+   </fileset>
+  </copy>
+
+  <copy todir="${basedir}/build/phar/sebastian-exporter">
+   <fileset dir="${basedir}/vendor/sebastian/exporter/src">
+    <include name="**/*.php" />
+    <exclude name="**/autoload.php" />
+   </fileset>
+  </copy>
+
+  <copy todir="${basedir}/build/phar/sebastian-version">
+   <fileset dir="${basedir}/vendor/sebastian/version/src">
+    <include name="**/*.php" />
+    <exclude name="**/autoload.php" />
+   </fileset>
+  </copy>
+
   <copy todir="${basedir}/build/phar/symfony">
    <fileset dir="${basedir}/vendor/symfony">
     <include name="**/*.php" />
