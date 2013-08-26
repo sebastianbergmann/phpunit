@@ -306,6 +306,7 @@
   <chmod file="${basedir}/build/phpunit-${version}.phar" perm="ugo+rx"/>
 
   <delete dir="${basedir}/build/phar"/>
+  <delete dir="${basedir}/bin"/>
   <delete dir="${basedir}/vendor"/>
   <delete file="${basedir}/composer.lock"/>
   <delete file="${basedir}/composer.phar"/>
