@@ -838,9 +838,9 @@ class PHPUnit_TextUI_Command
 Usage: phpunit [switches] UnitTest [UnitTest.php]
        phpunit [switches] <directory>
 
-  --log-junit <file>        Log test execution in JUnit XML format to file.
-  --log-tap <file>          Log test execution in TAP format to file.
-  --log-json <file>         Log test execution in JSON format.
+  --log-junit <file>         Log test execution in JUnit XML format to file.
+  --log-tap <file>           Log test execution in TAP format to file.
+  --log-json <file>          Log test execution in JSON format.
 
   --coverage-clover <file>   Generate code coverage report in Clover XML format.
   --coverage-crap4j <file>   Generate code coverage report in Crap4J XML format.
