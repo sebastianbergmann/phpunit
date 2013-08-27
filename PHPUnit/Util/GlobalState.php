@@ -425,7 +425,7 @@ class PHPUnit_Util_GlobalState
      */
     protected static function addDirectoryContainingClassToPHPUnitFilesList($className, $parent = 1)
     {
-        if (!class_exists($className)) {
+        if (!class_exists($className, FALSE)) {
             return;
         }
 
