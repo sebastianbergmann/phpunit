@@ -637,7 +637,7 @@ class PHPUnit_Framework_TestResult implements Countable
         try {
             if (!$test instanceof PHPUnit_Framework_Warning &&
                 $this->beStrictAboutTestSize &&
-                extension_loaded('pcntl') && class_exists('PHP_Invoker')) {
+                extension_loaded('pcntl') && class_exists('PHP_Invoker', FALSE)) {
                 switch ($test->getSize()) {
                     case PHPUnit_Util_Test::SMALL: {
                         $_timeout = $this->timeoutForSmallTests;
