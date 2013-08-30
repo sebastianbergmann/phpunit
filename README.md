@@ -57,6 +57,10 @@ The documentation for PHPUnit is available in different formats:
 * [Japanese, single HTML file](http://www.phpunit.de/manual/3.7/ja/phpunit-book.html)
 * [Japanese, PDF](http://www.phpunit.de/manual/3.7/ja/phpunit-book.pdf)
 * [Japanese, ePub](http://www.phpunit.de/manual/3.7/ja/phpunit-book.epub)
+* [Simplified Chinese, multiple HTML files](http://www.phpunit.de/manual/3.7/zh_cn/index.html)
+* [Simplified Chinese, single HTML file](http://www.phpunit.de/manual/3.7/zh_cn/phpunit-book.html)
+* [Simplified Chinese, PDF](http://www.phpunit.de/manual/3.7/zh_cn/phpunit-book.pdf)
+* [Simplified Chinese, ePub](http://www.phpunit.de/manual/3.7/zh_cn/phpunit-book.epub)
 
 ## Mailinglists
 
