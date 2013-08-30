@@ -55,12 +55,16 @@ The documentation for PHPUnit is available in different formats:
 * [Japanese, single HTML file](http://www.phpunit.de/manual/current/ja/phpunit-book.html)
 * [Japanese, PDF](http://www.phpunit.de/manual/current/ja/phpunit-book.pdf)
 * [Japanese, ePub](http://www.phpunit.de/manual/current/ja/phpunit-book.epub)
+* [Simplified Chinese, multiple HTML files](http://www.phpunit.de/manual/current/zh_cn/index.html)
+* [Simplified Chinese, single HTML file](http://www.phpunit.de/manual/current/zh_cn/phpunit-book.html)
+* [Simplified Chinese, PDF](http://www.phpunit.de/manual/current/zh_cn/phpunit-book.pdf)
+* [Simplified Chinese, ePub](http://www.phpunit.de/manual/current/zh_cn/phpunit-book.epub)
 
 ## API Documentation
 
 The [API documentation](http://apidoc.phpunit.de/) is generated using [phpDox](http://phpdox.de/).
 
-## Mailinglists
+## Mailing Lists
 
 * [dev@phpunit.de](mailto:dev-subscribe@phpunit.de) is a list for those who want to help out with the development of PHPUnit
 * [user@phpunit.de](mailto:user-subscribe@phpunit.de) is a list for general PHPUnit support; ask PHPUnit questions here
