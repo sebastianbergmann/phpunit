@@ -60,6 +60,11 @@ The documentation for PHPUnit is available in different formats:
 
 The [API documentation](http://apidoc.phpunit.de/) is generated using [phpDox](http://phpdox.de/).
 
+## Mailinglists
+
+* [dev@phpunit.de](mailto:dev-subscribe@phpunit.de) is a list for those who want to help out with the development of PHPUnit
+* [user@phpunit.de](mailto:user-subscribe@phpunit.de) is a list for general PHPUnit support; ask PHPUnit questions here
+
 ## IRC
 
 The [#phpunit channel on the Freenode IRC network](irc://irc.freenode.net/phpunit) is a place to chat about PHPUnit.
