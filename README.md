@@ -62,7 +62,7 @@ The documentation for PHPUnit is available in different formats:
 * [Simplified Chinese, PDF](http://www.phpunit.de/manual/3.7/zh_cn/phpunit-book.pdf)
 * [Simplified Chinese, ePub](http://www.phpunit.de/manual/3.7/zh_cn/phpunit-book.epub)
 
-## Mailinglists
+## Mailing Lists
 
 * [dev@phpunit.de](mailto:dev-subscribe@phpunit.de) is a list for those who want to help out with the development of PHPUnit
 * [user@phpunit.de](mailto:user-subscribe@phpunit.de) is a list for general PHPUnit support; ask PHPUnit questions here
