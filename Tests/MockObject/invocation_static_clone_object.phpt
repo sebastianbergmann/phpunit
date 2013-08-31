@@ -91,6 +91,8 @@ class MockFoo extends Foo implements PHPUnit_Framework_MockObject_MockObject
 
     public static function staticExpects(PHPUnit_Framework_MockObject_Matcher_Invocation $matcher)
     {
+        PHPUnit_Util_DeprecatedFeature_Logger::log('The stubbing and mocking of static methods is deprecated and will be removed in PHPUnit 3.9.');
+
         return self::__phpunit_getStaticInvocationMocker()->expects($matcher);
     }
 
