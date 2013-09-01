@@ -83,14 +83,16 @@ class PHPUnit_Runner_Filter_Test extends RecursiveFilterIterator
      */
     protected function setFilter($filter)
     {
-        if (preg_match('/^[a-zA-Z0-9_]/', $filter)) {
+        if ($filter[0] != substr($filter, -1) ||
+            preg_match('/^[a-zA-Z0-9_]/', $filter)) {
+
             // Handles:
             //  * testAssertEqualsSucceeds#4
             //  * testAssertEqualsSucceeds#4-8
-            if (preg_match('/^(.+)#(\d+)(?:-(\d+))?$/', $filter, $matches)) {
+            if (preg_match('/^(.*?)#(\d+)(?:-(\d+))?$/', $filter, $matches)) {
                 if (isset($matches[3]) && $matches[2] < $matches[3]) {
                     $filter = sprintf(
-                      '%s with data set #(\d+)$',
+                      '%s.*with data set #(\d+)$',
                       $matches[1]
                     );
 
@@ -98,7 +100,7 @@ class PHPUnit_Runner_Filter_Test extends RecursiveFilterIterator
                     $this->filterMax = $matches[3];
                 } else {
                     $filter = sprintf(
-                      '%s with data set #%s$',
+                      '%s.*with data set #%s$',
                       $matches[1],
                       $matches[2]
                     );
@@ -108,9 +110,9 @@ class PHPUnit_Runner_Filter_Test extends RecursiveFilterIterator
             // Handles:
             //  * testDetermineJsonError@JSON_ERROR_NONE
             //  * testDetermineJsonError@JSON.*
-            elseif (preg_match('/^(.+?)@(.+)$/', $filter, $matches)) {
+            elseif (preg_match('/^(.*?)@(.+)$/', $filter, $matches)) {
                 $filter = sprintf(
-                  '%s with data set "%s"$',
+                  '%s.*with data set "%s"$',
                   $matches[1],
                   $matches[2]
                 );
