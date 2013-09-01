@@ -912,15 +912,6 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
         $arguments['timeoutForLargeTests']               = isset($arguments['timeoutForLargeTests'])               ? $arguments['timeoutForLargeTests']               : 60;
         $arguments['strict']                             = isset($arguments['strict'])                             ? $arguments['strict']                             : FALSE;
         $arguments['verbose']                            = isset($arguments['verbose'])                            ? $arguments['verbose']                            : FALSE;
-
-        if ($arguments['filter'] !== FALSE &&
-            preg_match('/^[a-zA-Z0-9_]/', $arguments['filter'])) {
-            // Escape delimiters in regular expression. Do NOT use preg_quote,
-            // to keep magic characters.
-            $arguments['filter'] = '/' . str_replace(
-              '/', '\\/', $arguments['filter']
-            ) . '/';
-        }
     }
 
     /**

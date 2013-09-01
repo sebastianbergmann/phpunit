@@ -60,12 +60,69 @@ class PHPUnit_Runner_Filter_Test extends RecursiveFilterIterator
     protected $filter = NULL;
 
     /**
+     * @var integer
+     */
+    protected $filterMin;
+    /**
+     * @var integer
+     */
+    protected $filterMax;
+
+    /**
      * @param RecursiveIterator $iterator
      * @param string            $filter
      */
     public function __construct(RecursiveIterator $iterator, $filter)
     {
         parent::__construct($iterator);
+        $this->setFilter($filter);
+    }
+
+    /**
+     * @param string $filter
+     */
+    protected function setFilter($filter)
+    {
+        if (preg_match('/^[a-zA-Z0-9_]/', $filter)) {
+            // Handles:
+            //  * testAssertEqualsSucceeds#4
+            //  * testAssertEqualsSucceeds#4-8
+            if (preg_match('/^(.+)#(\d+)(?:-(\d+))?$/', $filter, $matches)) {
+                if (isset($matches[3]) && $matches[2] < $matches[3]) {
+                    $filter = sprintf(
+                      '%s with data set #(\d+)$',
+                      $matches[1]
+                    );
+
+                    $this->filterMin = $matches[2];
+                    $this->filterMax = $matches[3];
+                } else {
+                    $filter = sprintf(
+                      '%s with data set #%s$',
+                      $matches[1],
+                      $matches[2]
+                    );
+                }
+            }
+
+            // Handles:
+            //  * testDetermineJsonError@JSON_ERROR_NONE
+            //  * testDetermineJsonError@JSON.*
+            elseif (preg_match('/^(.+?)@(.+)$/', $filter, $matches)) {
+                $filter = sprintf(
+                  '%s with data set "%s"$',
+                  $matches[1],
+                  $matches[2]
+                );
+            }
+
+            // Escape delimiters in regular expression. Do NOT use preg_quote,
+            // to keep magic characters.
+            $filter = sprintf('/%s/', str_replace(
+              '/', '\\/', $filter
+            ));
+        }
+
         $this->filter = $filter;
     }
 
@@ -88,6 +145,13 @@ class PHPUnit_Runner_Filter_Test extends RecursiveFilterIterator
             $name = $tmp[1];
         }
 
-        return preg_match($this->filter, $name);
+        $accepted = preg_match($this->filter, $name, $matches);
+
+        if ($accepted && isset($this->filterMax)) {
+            $set = end($matches);
+            $accepted = $set >= $this->filterMin && $set <= $this->filterMax;
+        }
+
+        return $accepted;
     }
 }
