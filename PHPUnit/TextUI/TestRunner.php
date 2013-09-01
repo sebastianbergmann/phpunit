@@ -915,6 +915,33 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
 
         if ($arguments['filter'] !== FALSE &&
             preg_match('/^[a-zA-Z0-9_]/', $arguments['filter'])) {
+
+            // Handles:
+            //  * testAssertEqualsSucceeds#4
+            //  * testAssertEqualsSucceeds#4-8
+            if (preg_match('/^(.+)#(\d+)(?:-(\d+))?$/', $arguments['filter'], $matches)) {
+                $arguments['filter'] = $matches[1] . ' with data set #';
+                if (isset($matches[3]) && $matches[2] < $matches[3]) {
+                    $arguments['filter'] .= sprintf(
+                      '(%s)',
+                      implode('|', range($matches[2], $matches[3]))
+                    );
+                } else {
+                    $arguments['filter'] .= $matches[2];
+                }
+            }
+
+            // Handles:
+            //  * testDetermineJsonError@JSON_ERROR_NONE
+            //  * testDetermineJsonError@JSON.*
+            elseif (preg_match('/^(.+?)@(.+)$/', $arguments['filter'], $matches)) {
+                $arguments['filter'] = sprintf(
+                  '%s with data set "%s"',
+                  $matches[1],
+                  $matches[2]
+                );
+            }
+
             // Escape delimiters in regular expression. Do NOT use preg_quote,
             // to keep magic characters.
             $arguments['filter'] = '/' . str_replace(
