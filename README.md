@@ -11,20 +11,22 @@ PHPUnit is the de-facto standard for unit testing in PHP projects. It provides b
 
 ## Installation
 
-There are three supported ways of installing PHPUnit.
+### PHP Archive (PHAR)
 
-You can use the [PEAR Installer](http://pear.php.net/manual/en/guide.users.commandline.cli.php) or [Composer](http://getcomposer.org/) to download and install PHPUnit as well as its dependencies. You can also download a [PHP Archive (PHAR)](http://php.net/phar) of PHPUnit that has all required (as well as some optional) dependencies of PHPUnit bundled in a single file.
+The easiest way to obtain PHPUnit is to download a [PHP Archive (PHAR)](http://php.net/phar) that has all required (as well as some optional) dependencies of PHPUnit bundled in a single file:
 
-### PEAR Installer
+    wget https://phar.phpunit.de/phpunit.phar
+    chmod +x phpunit.phar
+    mv phpunit.phar /usr/local/bin/phpunit
 
-The following two commands (which you may have to run as `root`) are all that is required to install PHPUnit using the PEAR Installer:
+You can also immediately use the PHAR after you have downloaded it, of course:
 
-    pear config-set auto_discover 1
-    pear install pear.phpunit.de/PHPUnit
+    wget https://phar.phpunit.de/phpunit.phar
+    php phpunit.phar
 
 ### Composer
 
-To add PHPUnit as a local, per-project dependency to your project, simply add a dependency on `phpunit/phpunit` to your project's `composer.json` file. Here is a minimal example of a `composer.json` file that just defines a development-time dependency on PHPUnit 3.7:
+Simply add a dependency on `phpunit/phpunit` to your project's `composer.json` file if you use [Composer](http://getcomposer.org/) to manage the dependencies of your project. Here is a minimal example of a `composer.json` file that just defines a development-time dependency on PHPUnit 3.7:
 
     {
         "require-dev": {
@@ -32,10 +34,18 @@ To add PHPUnit as a local, per-project dependency to your project, simply add a 
         }
     }
 
-### PHP Archive (PHAR)
+For a system-wide installation via Composer, you can run:
 
-    wget http://pear.phpunit.de/get/phpunit.phar
-    chmod +x phpunit.phar
+    composer global require 'phpunit/phpunit=3.7.*'
+
+Make sure you have `~/.composer/vendor/bin/` in your path.
+
+### PEAR Installer
+
+The following two commands (which you may have to run as `root`) are all that is required to install PHPUnit using the PEAR Installer:
+
+    pear config-set auto_discover 1
+    pear install pear.phpunit.de/PHPUnit
 
 ## Documentation
 
