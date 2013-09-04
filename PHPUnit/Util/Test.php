@@ -652,21 +652,6 @@ class PHPUnit_Util_Test
     }
 
     /**
-     * Returns the output buffering settings for a test.
-     *
-     * @param  string $className
-     * @param  string $methodName
-     * @return boolean
-     * @since  Method available since Release 3.4.0
-     */
-    public static function getOutputBufferingSettings($className, $methodName)
-    {
-        return self::getBooleanAnnotationSetting(
-          $className, $methodName, 'outputBuffering'
-        );
-    }
-
-    /**
      * Returns the process isolation settings for a test.
      *
      * @param  string $className

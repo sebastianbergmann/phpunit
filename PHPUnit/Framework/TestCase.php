@@ -163,11 +163,6 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
     private $useErrorHandler = NULL;
 
     /**
-     * @var boolean
-     */
-    private $useOutputBuffering = NULL;
-
-    /**
      * The name of the expected Exception.
      *
      * @var mixed
@@ -537,34 +532,6 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
     }
 
     /**
-     * @param boolean $useOutputBuffering
-     * @since Method available since Release 3.4.0
-     */
-    public function setUseOutputBuffering($useOutputBuffering)
-    {
-        $this->useOutputBuffering = $useOutputBuffering;
-    }
-
-    /**
-     * @since Method available since Release 3.4.0
-     */
-    protected function setUseOutputBufferingFromAnnotation()
-    {
-        try {
-            $useOutputBuffering = PHPUnit_Util_Test::getOutputBufferingSettings(
-              get_class($this), $this->name
-            );
-
-            if ($useOutputBuffering !== NULL) {
-                $this->setUseOutputBuffering($useOutputBuffering);
-            }
-        }
-
-        catch (ReflectionException $e) {
-        }
-    }
-
-    /**
      * @since Method available since Release 3.6.0
      */
     protected function setRequirementsFromAnnotation()
@@ -714,7 +681,6 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
         if (!$this instanceof PHPUnit_Framework_Warning) {
             $this->setTestResultObject($result);
             $this->setUseErrorHandlerFromAnnotation();
-            $this->setUseOutputBufferingFromAnnotation();
         }
 
         if ($this->useErrorHandler !== NULL) {
