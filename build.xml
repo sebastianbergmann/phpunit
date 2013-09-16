@@ -217,14 +217,14 @@
   <copy todir="${basedir}/build/phar/phpunit">
    <fileset dir="${basedir}/PHPUnit">
     <include name="**/*.php" />
-    <exclude name="**/autoload.php" />
+    <exclude name="**/Autoload.*" />
    </fileset>
   </copy>
 
   <copy todir="${basedir}/build/phar/php-code-coverage">
    <fileset dir="${basedir}/vendor/phpunit/php-code-coverage/PHP">
-    <include name="**/*.php" />
-    <exclude name="**/autoload.php" />
+    <include name="**/*" />
+    <exclude name="**/Autoload.*" />
    </fileset>
   </copy>
 
@@ -233,35 +233,35 @@
   <copy todir="${basedir}/build/phar/php-file-iterator">
    <fileset dir="${basedir}/vendor/phpunit/php-file-iterator/File">
     <include name="**/*.php" />
-    <exclude name="**/autoload.php" />
+    <exclude name="**/Autoload.*" />
    </fileset>
   </copy>
 
   <copy todir="${basedir}/build/phar/php-text-template">
    <fileset dir="${basedir}/vendor/phpunit/php-text-template/Text">
     <include name="**/*.php" />
-    <exclude name="**/autoload.php" />
+    <exclude name="**/Autoload.*" />
    </fileset>
   </copy>
 
   <copy todir="${basedir}/build/phar/php-timer">
    <fileset dir="${basedir}/vendor/phpunit/php-timer/PHP">
     <include name="**/*.php" />
-    <exclude name="**/autoload.php" />
+    <exclude name="**/Autoload.*" />
    </fileset>
   </copy>
 
   <copy todir="${basedir}/build/phar/php-token-stream">
    <fileset dir="${basedir}/vendor/phpunit/php-token-stream/PHP">
     <include name="**/*.php" />
-    <exclude name="**/autoload.php" />
+    <exclude name="**/Autoload.*" />
    </fileset>
   </copy>
 
   <copy todir="${basedir}/build/phar/phpunit-mock-objects">
    <fileset dir="${basedir}/vendor/phpunit/phpunit-mock-objects/PHPUnit">
-    <include name="**/*.php" />
-    <exclude name="**/autoload.php" />
+    <include name="**/*" />
+    <exclude name="**/Autoload.*" />
    </fileset>
   </copy>
 
@@ -302,21 +302,21 @@
   <copy todir="${basedir}/build/phar/dbunit">
    <fileset dir="${basedir}/vendor/phpunit/dbunit/PHPUnit">
     <include name="**/*.php" />
-    <exclude name="**/autoload.php" />
+    <exclude name="**/Autoload.*" />
    </fileset>
   </copy>
 
   <copy todir="${basedir}/build/phar/php-invoker">
    <fileset dir="${basedir}/vendor/phpunit/php-invoker/PHP">
     <include name="**/*.php" />
-    <exclude name="**/autoload.php" />
+    <exclude name="**/Autoload.*" />
    </fileset>
   </copy>
 
   <copy todir="${basedir}/build/phar/phpunit-selenium">
    <fileset dir="${basedir}/vendor/phpunit/phpunit-selenium/PHPUnit">
     <include name="**/*.php" />
-    <exclude name="**/autoload.php" />
+    <exclude name="**/Autoload.*" />
    </fileset>
   </copy>
 
