@@ -248,6 +248,9 @@
     <max>2.99.99</max>
    </package>
    <extension>
+    <name>ctype</name>
+   </extension>
+   <extension>
     <name>dom</name>
    </extension>
    <extension>
