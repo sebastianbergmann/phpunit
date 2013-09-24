@@ -28,6 +28,7 @@
         "phpunit/php-timer": ">=1.0.4",
         "phpunit/phpunit-mock-objects": "~1.2.0",
         "symfony/yaml": "~2.0",
+        "ext-ctype": "*",
         "ext-dom": "*",
         "ext-pcre": "*",
         "ext-reflection": "*",
