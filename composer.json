@@ -38,7 +38,8 @@
         "ext-spl": "*"
     },
     "require-dev": {
-        "pear-pear/pear": "1.9.4"
+        "pear-pear/pear": "1.9.4",
+        "ext-xdebug": "*"
     },
     "repositories": [
         {
