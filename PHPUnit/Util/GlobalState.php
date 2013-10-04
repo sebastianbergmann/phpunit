@@ -95,6 +95,7 @@ class PHPUnit_Util_GlobalState
      * @var array
      */
     protected static $phpunitFiles;
+    protected static $phpunitDirs;
 
     public static function backupGlobals(array $blacklist)
     {
@@ -416,6 +417,16 @@ class PHPUnit_Util_GlobalState
         for ($i = 0; $i < $parent; $i++) {
             $directory = dirname($directory);
         }
+
+        if (isset(self::$phpunitDirs)) {
+            if (isset(self::$phpunitDirs[$directory])) {
+                // already scanned this directory, ignore
+                return;
+            }
+        } else {
+            self::$phpunitDirs = array();
+        }
+        self::$phpunitDirs[$directory] = true;
 
         $facade = new File_Iterator_Facade;
 
