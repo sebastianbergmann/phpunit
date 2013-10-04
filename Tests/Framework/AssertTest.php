@@ -43,14 +43,6 @@
  * @since      File available since Release 2.0.0
  */
 
-require_once dirname(__DIR__) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'ClassWithNonPublicAttributes.php';
-require_once dirname(__DIR__) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'SampleClass.php';
-require_once dirname(__DIR__) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'Struct.php';
-require_once dirname(__DIR__) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'TestIterator.php';
-require_once dirname(__DIR__) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'Author.php';
-require_once dirname(__DIR__) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'Book.php';
-require_once dirname(__DIR__) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'ClassWithToString.php';
-
 /**
  *
  *
@@ -152,6 +144,25 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
 
         $this->fail();
     }
+
+    /**
+     * @covers PHPUnit_Framework_Assert::assertContains
+     */
+    public function testAssertArrayContainsNonObject()
+    {
+        $this->assertContains('foo', array(TRUE));
+
+        try {
+            $this->assertContains('foo', array(TRUE), '', FALSE, TRUE, TRUE);
+        }
+
+        catch (PHPUnit_Framework_AssertionFailedError $e) {
+            return;
+        }
+
+        $this->fail();
+    }
+
     /**
      * @covers PHPUnit_Framework_Assert::assertContainsOnlyInstancesOf
      */
@@ -446,6 +457,24 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
     /**
      * @covers PHPUnit_Framework_Assert::assertNotContains
      */
+    public function testAssertArrayNotContainsNonObject()
+    {
+        $this->assertNotContains('foo', array(TRUE), '', FALSE, TRUE, TRUE);
+
+        try {
+            $this->assertNotContains('foo', array(TRUE));
+        }
+
+        catch (PHPUnit_Framework_AssertionFailedError $e) {
+            return;
+        }
+
+        $this->fail();
+    }
+
+    /**
+     * @covers PHPUnit_Framework_Assert::assertNotContains
+     */
     public function testAssertStringNotContainsString()
     {
         $this->assertNotContains('foo', 'bar');
@@ -670,6 +699,50 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
                 $this->createDOMDocument('<foo> bar </foo>'),
                 $this->createDOMDocument('<foo> bir </foo>'),
             ),
+            array(
+                new DateTime('2013-03-29 04:13:35', new DateTimeZone('America/New_York')),
+                new DateTime('2013-03-29 03:13:35', new DateTimeZone('America/New_York')),
+            ),
+            array(
+                new DateTime('2013-03-29 04:13:35', new DateTimeZone('America/New_York')),
+                new DateTime('2013-03-29 03:13:35', new DateTimeZone('America/New_York')),
+                3500
+            ),
+            array(
+                new DateTime('2013-03-29 04:13:35', new DateTimeZone('America/New_York')),
+                new DateTime('2013-03-29 05:13:35', new DateTimeZone('America/New_York')),
+                3500
+            ),
+            array(
+                new DateTime('2013-03-29', new DateTimeZone('America/New_York')),
+                new DateTime('2013-03-30', new DateTimeZone('America/New_York')),
+            ),
+            array(
+                new DateTime('2013-03-29', new DateTimeZone('America/New_York')),
+                new DateTime('2013-03-30', new DateTimeZone('America/New_York')),
+                43200
+            ),
+            array(
+                new DateTime('2013-03-29 04:13:35', new DateTimeZone('America/New_York')),
+                new DateTime('2013-03-29 04:13:35', new DateTimeZone('America/Chicago')),
+            ),
+            array(
+                new DateTime('2013-03-29 04:13:35', new DateTimeZone('America/New_York')),
+                new DateTime('2013-03-29 04:13:35', new DateTimeZone('America/Chicago')),
+                3500
+            ),
+            array(
+                new DateTime('2013-03-30', new DateTimeZone('America/New_York')),
+                new DateTime('2013-03-30', new DateTimeZone('America/Chicago')),
+            ),
+            array(
+                new DateTime('2013-03-29T05:13:35-0600'),
+                new DateTime('2013-03-29T04:13:35-0600'),
+            ),
+            array(
+                new DateTime('2013-03-29T05:13:35-0600'),
+                new DateTime('2013-03-29T05:13:35-0500'),
+            ),
             // Exception
             //array(new Exception('Exception 1'), new Exception('Exception 2')),
             // different types
@@ -741,6 +814,50 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
             array(
                 $this->createDOMDocument("<root>\n  <child/>\n</root>"),
                 $this->createDOMDocument('<root><child/></root>'),
+            ),
+            array(
+                new DateTime('2013-03-29 04:13:35', new DateTimeZone('America/New_York')),
+                new DateTime('2013-03-29 04:13:35', new DateTimeZone('America/New_York')),
+            ),
+            array(
+                new DateTime('2013-03-29 04:13:35', new DateTimeZone('America/New_York')),
+                new DateTime('2013-03-29 04:13:25', new DateTimeZone('America/New_York')),
+                10
+            ),
+            array(
+                new DateTime('2013-03-29 04:13:35', new DateTimeZone('America/New_York')),
+                new DateTime('2013-03-29 04:14:40', new DateTimeZone('America/New_York')),
+                65
+            ),
+            array(
+                new DateTime('2013-03-29', new DateTimeZone('America/New_York')),
+                new DateTime('2013-03-29', new DateTimeZone('America/New_York')),
+            ),
+            array(
+                new DateTime('2013-03-29 04:13:35', new DateTimeZone('America/New_York')),
+                new DateTime('2013-03-29 03:13:35', new DateTimeZone('America/Chicago')),
+            ),
+            array(
+                new DateTime('2013-03-29 04:13:35', new DateTimeZone('America/New_York')),
+                new DateTime('2013-03-29 03:13:49', new DateTimeZone('America/Chicago')),
+                15
+            ),
+            array(
+                new DateTime('2013-03-30', new DateTimeZone('America/New_York')),
+                new DateTime('2013-03-29 23:00:00', new DateTimeZone('America/Chicago')),
+            ),
+            array(
+                new DateTime('2013-03-30', new DateTimeZone('America/New_York')),
+                new DateTime('2013-03-29 23:01:30', new DateTimeZone('America/Chicago')),
+                100
+            ),
+            array(
+                new DateTime('@1364616000'),
+                new DateTime('2013-03-29 23:00:00', new DateTimeZone('America/Chicago')),
+            ),
+            array(
+                new DateTime('2013-03-29T05:13:35-0500'),
+                new DateTime('2013-03-29T04:13:35-0600'),
             ),
             // Exception
             //array(new Exception('Exception 1'), new Exception('Exception 1')),
@@ -1649,6 +1766,8 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
 
     /**
      * @covers PHPUnit_Framework_Assert::readAttribute
+     * @covers PHPUnit_Framework_Assert::getStaticAttribute
+     * @covers PHPUnit_Framework_Assert::getObjectAttribute
      */
     public function testReadAttribute()
     {
@@ -1663,6 +1782,8 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
 
     /**
      * @covers PHPUnit_Framework_Assert::readAttribute
+     * @covers PHPUnit_Framework_Assert::getStaticAttribute
+     * @covers PHPUnit_Framework_Assert::getObjectAttribute
      */
     public function testReadAttribute2()
     {
@@ -1675,6 +1796,8 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
 
     /**
      * @covers            PHPUnit_Framework_Assert::readAttribute
+     * @covers            PHPUnit_Framework_Assert::getStaticAttribute
+     * @covers            PHPUnit_Framework_Assert::getObjectAttribute
      * @expectedException PHPUnit_Framework_Exception
      */
     public function testReadAttribute3()
@@ -1684,6 +1807,8 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
 
     /**
      * @covers            PHPUnit_Framework_Assert::readAttribute
+     * @covers            PHPUnit_Framework_Assert::getStaticAttribute
+     * @covers            PHPUnit_Framework_Assert::getObjectAttribute
      * @expectedException PHPUnit_Framework_Exception
      */
     public function testReadAttribute4()
@@ -1693,11 +1818,24 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
 
     /**
      * @covers            PHPUnit_Framework_Assert::readAttribute
+     * @covers            PHPUnit_Framework_Assert::getStaticAttribute
+     * @covers            PHPUnit_Framework_Assert::getObjectAttribute
      * @expectedException PHPUnit_Framework_Exception
      */
     public function testReadAttribute5()
     {
         $this->readAttribute(NULL, 'foo');
+    }
+
+    /**
+     * @covers            PHPUnit_Framework_Assert::readAttribute
+     * @covers            PHPUnit_Framework_Assert::getStaticAttribute
+     * @covers            PHPUnit_Framework_Assert::getObjectAttribute
+     * @expectedException PHPUnit_Framework_Exception
+     */
+    public function testReadAttributeIfAttributeNameIsNotValid()
+    {
+        $this->readAttribute('StdClass', '2');
     }
 
     /**
@@ -1851,6 +1989,46 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
 
         try {
             $this->assertAttributeNotContains('baz', 'privateArray', $obj);
+        }
+
+        catch (PHPUnit_Framework_AssertionFailedError $e) {
+            return;
+        }
+
+        $this->fail();
+    }
+
+    /**
+     * @covers PHPUnit_Framework_Assert::assertAttributeContains
+     */
+    public function testAssertAttributeContainsNonObject()
+    {
+        $obj = new ClassWithNonPublicAttributes;
+
+        $this->assertAttributeContains(TRUE, 'privateArray', $obj);
+
+        try {
+            $this->assertAttributeContains(TRUE, 'privateArray', $obj, '', FALSE, TRUE, TRUE);
+        }
+
+        catch (PHPUnit_Framework_AssertionFailedError $e) {
+            return;
+        }
+
+        $this->fail();
+    }
+
+    /**
+     * @covers PHPUnit_Framework_Assert::assertAttributeNotContains
+     */
+    public function testAssertAttributeNotContainsNonObject()
+    {
+        $obj = new ClassWithNonPublicAttributes;
+
+        $this->assertAttributeNotContains(TRUE, 'privateArray', $obj, '', FALSE, TRUE, TRUE);
+
+        try {
+            $this->assertAttributeNotContains(TRUE, 'privateArray', $obj);
         }
 
         catch (PHPUnit_Framework_AssertionFailedError $e) {
@@ -2147,6 +2325,15 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
     }
 
     /**
+     * @covers            PHPUnit_Framework_Assert::assertClassHasAttribute
+     * @expectedException PHPUnit_Framework_Exception
+     */
+    public function testAssertClassHasAttributeThrowsExceptionIfAttributeNameIsNotValid()
+    {
+        $this->assertClassHasAttribute('1', 'ClassWithNonPublicAttributes');
+    }
+
+    /**
      * @covers            PHPUnit_Framework_Assert::assertClassNotHasAttribute
      * @expectedException PHPUnit_Framework_Exception
      */
@@ -2162,6 +2349,15 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
     public function testAssertClassNotHasAttributeThrowsException2()
     {
         $this->assertClassNotHasAttribute('foo', NULL);
+    }
+
+    /**
+     * @covers            PHPUnit_Framework_Assert::assertClassNotHasAttribute
+     * @expectedException PHPUnit_Framework_Exception
+     */
+    public function testAssertClassNotHasAttributeThrowsExceptionIfAttributeNameIsNotValid()
+    {
+        $this->assertClassNotHasAttribute('1', 'ClassWithNonPublicAttributes');
     }
 
     /**
@@ -2183,6 +2379,15 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
     }
 
     /**
+     * @covers            PHPUnit_Framework_Assert::assertClassHasStaticAttribute
+     * @expectedException PHPUnit_Framework_Exception
+     */
+    public function testAssertClassHasStaticAttributeThrowsExceptionIfAttributeNameIsNotValid()
+    {
+        $this->assertClassHasStaticAttribute('1', 'ClassWithNonPublicAttributes');
+    }
+
+    /**
      * @covers            PHPUnit_Framework_Assert::assertClassNotHasStaticAttribute
      * @expectedException PHPUnit_Framework_Exception
      */
@@ -2198,6 +2403,15 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
     public function testAssertClassNotHasStaticAttributeThrowsException2()
     {
         $this->assertClassNotHasStaticAttribute('foo', NULL);
+    }
+
+    /**
+     * @covers            PHPUnit_Framework_Assert::assertClassNotHasStaticAttribute
+     * @expectedException PHPUnit_Framework_Exception
+     */
+    public function testAssertClassNotHasStaticAttributeThrowsExceptionIfAttributeNameIsNotValid()
+    {
+        $this->assertClassNotHasStaticAttribute('1', 'ClassWithNonPublicAttributes');
     }
 
     /**
@@ -2219,6 +2433,15 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
     }
 
     /**
+     * @covers            PHPUnit_Framework_Assert::assertObjectHasAttribute
+     * @expectedException PHPUnit_Framework_Exception
+     */
+    public function testAssertObjectHasAttributeThrowsExceptionIfAttributeNameIsNotValid()
+    {
+        $this->assertObjectHasAttribute('1', 'ClassWithNonPublicAttributes');
+    }
+
+    /**
      * @covers            PHPUnit_Framework_Assert::assertObjectNotHasAttribute
      * @expectedException PHPUnit_Framework_Exception
      */
@@ -2234,6 +2457,15 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
     public function testAssertObjectNotHasAttributeThrowsException2()
     {
         $this->assertObjectNotHasAttribute('foo', NULL);
+    }
+
+    /**
+     * @covers            PHPUnit_Framework_Assert::assertObjectNotHasAttribute
+     * @expectedException PHPUnit_Framework_Exception
+     */
+    public function testAssertObjectNotHasAttributeThrowsExceptionIfAttributeNameIsNotValid()
+    {
+        $this->assertObjectNotHasAttribute('1', 'ClassWithNonPublicAttributes');
     }
 
     /**
@@ -3035,6 +3267,28 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
     /**
      * @covers PHPUnit_Framework_Assert::assertTag
      */
+    public function testAssertTagAdjacentSiblingTrue()
+    {
+        $matcher = array('tag' => 'img',
+                         'adjacent-sibling' => array('tag' => 'input'));
+        $this->assertTag($matcher, $this->html);
+    }
+
+    /**
+     * @covers            PHPUnit_Framework_Assert::assertTag
+     * @expectedException PHPUnit_Framework_AssertionFailedError
+     */
+    public function testAssertTagAdjacentSiblingFalse()
+    {
+        $matcher = array('tag' => 'img',
+                         'adjacent-sibling' => array('tag' => 'div'));
+        $this->assertTag($matcher, $this->html);
+    }
+
+
+    /**
+     * @covers PHPUnit_Framework_Assert::assertTag
+     */
     public function testAssertTagAncestorTrue()
     {
         $matcher = array('tag' => 'div',
@@ -3237,11 +3491,36 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
     /**
      * @covers PHPUnit_Framework_Assert::assertTag
      */
+    public function testAssertAdjacentSiblingContentAttributes()
+    {
+        $matcher = array('tag'              => 'div',
+                         'content'          => 'Test Id Text',
+                         'attributes'       => array('id'    => 'test_id',
+                                                     'class' => 'my_test_class'),
+                         'adjacent-sibling' => array('tag'        => 'div',
+                                                     'attributes' => array('id' => 'test_children')));
+        $this->assertTag($matcher, $this->html);
+    }
+
+    /**
+     * @covers PHPUnit_Framework_Assert::assertTag
+     */
     public function testAssertChildSubChildren()
     {
         $matcher = array('id' => 'test_id',
                          'child' => array('id' => 'test_child_id',
                                           'child' => array('id' => 'test_subchild_id')));
+        $this->assertTag($matcher, $this->html);
+    }
+
+    /**
+     * @covers PHPUnit_Framework_Assert::assertTag
+     */
+    public function testAssertAdjacentSiblingSubAdjacentSibling()
+    {
+        $matcher = array('id' => 'test_id',
+                         'adjacent-sibling' => array('id' => 'test_children',
+                                                     'adjacent-sibling' => array('class' => 'test_class')));
         $this->assertTag($matcher, $this->html);
     }
 
@@ -3375,6 +3654,29 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
     {
         $selector = '#my_ul > li';
         $count    = 4;
+
+        $this->assertSelectCount($selector, $count, $this->html);
+    }
+
+    /**
+     * @covers PHPUnit_Framework_Assert::assertSelectCount
+     */
+    public function testAssertSelectCountAdjacentSiblingTrue()
+    {
+        $selector = 'div + div + div';
+        $count    = 2;
+
+        $this->assertSelectCount($selector, $count, $this->html);
+    }
+
+    /**
+     * @covers            PHPUnit_Framework_Assert::assertSelectCount
+     * @expectedException PHPUnit_Framework_AssertionFailedError
+     */
+    public function testAssertSelectCountAdjacentSiblingFalse()
+    {
+        $selector = '#test_children + div';
+        $count    = 1;
 
         $this->assertSelectCount($selector, $count, $this->html);
     }
@@ -4005,7 +4307,7 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
         }
 
         catch (PHPUnit_Framework_Exception $e) {
-            $this->assertEquals('Argument #1 of PHPUnit_Framework_Assert::assertCount() must be a integer', $e->getMessage());
+            $this->assertEquals('Argument #1 (No Value) of PHPUnit_Framework_Assert::assertCount() must be a integer', $e->getMessage());
 
             return;
         }
@@ -4025,7 +4327,7 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
         }
 
         catch (PHPUnit_Framework_Exception $e) {
-            $this->assertEquals('Argument #2 of PHPUnit_Framework_Assert::assertCount() must be a countable', $e->getMessage());
+            $this->assertEquals('Argument #2 (No Value) of PHPUnit_Framework_Assert::assertCount() must be a countable or traversable', $e->getMessage());
 
             return;
         }
@@ -4062,7 +4364,7 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
         }
 
         catch (PHPUnit_Framework_Exception $e) {
-            $this->assertEquals('Argument #1 of PHPUnit_Framework_Assert::assertSameSize() must be a countable', $e->getMessage());
+            $this->assertEquals('Argument #1 (No Value) of PHPUnit_Framework_Assert::assertSameSize() must be a countable or traversable', $e->getMessage());
 
             return;
         }
@@ -4082,7 +4384,7 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
         }
 
         catch (PHPUnit_Framework_Exception $e) {
-            $this->assertEquals('Argument #2 of PHPUnit_Framework_Assert::assertSameSize() must be a countable', $e->getMessage());
+            $this->assertEquals('Argument #2 (No Value) of PHPUnit_Framework_Assert::assertSameSize() must be a countable or traversable', $e->getMessage());
 
             return;
         }

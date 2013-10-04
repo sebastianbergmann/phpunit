@@ -101,8 +101,8 @@ class PHPUnit_Framework_Comparator_Array extends PHPUnit_Framework_Comparator
                 $expString .= sprintf(
                   "    %s => %s\n",
 
-                  PHPUnit_Util_Type::export($key),
-                  PHPUnit_Util_Type::shortenedExport($value)
+                  $this->exporter->export($key),
+                  $this->exporter->shortenedExport($value)
                 );
                 $equal = FALSE;
                 continue;
@@ -113,14 +113,14 @@ class PHPUnit_Framework_Comparator_Array extends PHPUnit_Framework_Comparator
                 $expString .= sprintf(
                   "    %s => %s\n",
 
-                  PHPUnit_Util_Type::export($key),
-                  PHPUnit_Util_Type::shortenedExport($value)
+                  $this->exporter->export($key),
+                  $this->exporter->shortenedExport($value)
                 );
                 $actString .= sprintf(
                   "    %s => %s\n",
 
-                  PHPUnit_Util_Type::export($key),
-                  PHPUnit_Util_Type::shortenedExport($actual[$key])
+                  $this->exporter->export($key),
+                  $this->exporter->shortenedExport($actual[$key])
                 );
             }
 
@@ -128,18 +128,18 @@ class PHPUnit_Framework_Comparator_Array extends PHPUnit_Framework_Comparator
                 $expString .= sprintf(
                   "    %s => %s\n",
 
-                  PHPUnit_Util_Type::export($key),
+                  $this->exporter->export($key),
                   $e->getExpectedAsString()
                     ? $this->indent($e->getExpectedAsString())
-                    : PHPUnit_Util_Type::shortenedExport($e->getExpected())
+                    : $this->exporter->shortenedExport($e->getExpected())
                 );
                 $actString .= sprintf(
                   "    %s => %s\n",
 
-                  PHPUnit_Util_Type::export($key),
+                  $this->exporter->export($key),
                   $e->getActualAsString()
                     ? $this->indent($e->getActualAsString())
-                    : PHPUnit_Util_Type::shortenedExport($e->getActual())
+                    : $this->exporter->shortenedExport($e->getActual())
                 );
                 $equal = FALSE;
             }
@@ -149,8 +149,8 @@ class PHPUnit_Framework_Comparator_Array extends PHPUnit_Framework_Comparator
             $actString .= sprintf(
               "    %s => %s\n",
 
-              PHPUnit_Util_Type::export($key),
-              PHPUnit_Util_Type::shortenedExport($value)
+              $this->exporter->export($key),
+              $this->exporter->shortenedExport($value)
             );
             $equal = FALSE;
         }

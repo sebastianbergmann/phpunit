@@ -78,10 +78,12 @@ class PHPUnit_TextUI_Command
       'colors' => NULL,
       'bootstrap=' => NULL,
       'configuration=' => NULL,
-      'coverage-html=' => NULL,
       'coverage-clover=' => NULL,
+      'coverage-crap4j=' => NULL,
+      'coverage-html=' => NULL,
       'coverage-php=' => NULL,
       'coverage-text==' => NULL,
+      'coverage-xml=' => NULL,
       'debug' => NULL,
       'exclude-group=' => NULL,
       'filter=' => NULL,
@@ -114,11 +116,6 @@ class PHPUnit_TextUI_Command
       'verbose' => NULL,
       'version' => NULL
     );
-
-    /**
-     * @var array
-     */
-    protected $missingExtensions = array();
 
     /**
      * @param boolean $exit
@@ -235,6 +232,10 @@ class PHPUnit_TextUI_Command
      */
     protected function handleArguments(array $argv)
     {
+        if (defined('__PHPUNIT_PHAR__')) {
+            $this->longOptions['self-update'] = NULL;
+        }
+
         try {
             $this->options = PHPUnit_Util_Getopt::getopt(
               $argv,
@@ -265,52 +266,39 @@ class PHPUnit_TextUI_Command
                 }
                 break;
 
-                case '--coverage-clover':
-                case '--coverage-html':
-                case '--coverage-php':
+                case '--coverage-clover': {
+                    $this->arguments['coverageClover'] = $option[1];
+                }
+                break;
+
+                case '--coverage-crap4j': {
+                    $this->arguments['coverageCrap4J'] = $option[1];
+                }
+                break;
+
+                case '--coverage-html': {
+                    $this->arguments['coverageHtml'] = $option[1];
+                }
+                break;
+
+                case '--coverage-php': {
+                    $this->arguments['coveragePHP'] = $option[1];
+                }
+                break;
+
                 case '--coverage-text': {
-                    if (!extension_loaded('tokenizer')) {
-                        $this->showExtensionNotLoadedMessage(
-                          'tokenizer', 'No code coverage will be generated.'
-                        );
-
-                        continue;
+                    if ($option[1] === NULL) {
+                        $option[1] = 'php://stdout';
                     }
 
-                    if (!extension_loaded('xdebug')) {
-                        $this->showExtensionNotLoadedMessage(
-                          'Xdebug', 'No code coverage will be generated.'
-                        );
+                    $this->arguments['coverageText'] = $option[1];
+                    $this->arguments['coverageTextShowUncoveredFiles'] = FALSE;
+                    $this->arguments['coverageTextShowOnlySummary'] = FALSE;
+                }
+                break;
 
-                        continue;
-                    }
-
-                    switch ($option[0]) {
-                        case '--coverage-clover': {
-                            $this->arguments['coverageClover'] = $option[1];
-                        }
-                        break;
-
-                        case '--coverage-html': {
-                            $this->arguments['reportDirectory'] = $option[1];
-                        }
-                        break;
-
-                        case '--coverage-php': {
-                            $this->arguments['coveragePHP'] = $option[1];
-                        }
-                        break;
-
-                        case '--coverage-text': {
-                            if ($option[1] === NULL) {
-                                $option[1] = 'php://stdout';
-                            }
-
-                            $this->arguments['coverageText'] = $option[1];
-                            $this->arguments['coverageTextShowUncoveredFiles'] = FALSE;
-                        }
-                        break;
-                    }
+                case '--coverage-xml': {
+                    $this->arguments['coverageXml'] = $option[1];
                 }
                 break;
 
@@ -414,10 +402,7 @@ class PHPUnit_TextUI_Command
                 break;
 
                 case '--stderr': {
-                    $this->arguments['printer'] = new PHPUnit_TextUI_ResultPrinter(
-                      'php://stderr',
-                      isset($this->arguments['verbose']) ? $this->arguments['verbose'] : FALSE
-                    );
+                    $this->arguments['stderr'] = TRUE;
                 }
                 break;
 
@@ -493,6 +478,11 @@ class PHPUnit_TextUI_Command
                 }
                 break;
 
+                case '--self-update': {
+                    $this->handleSelfUpdate();
+                }
+                break;
+
                 default: {
                     $optionName = str_replace('--', '', $option[0]);
 
@@ -520,7 +510,7 @@ class PHPUnit_TextUI_Command
             }
 
             if (isset($this->options[1][1])) {
-                $this->arguments['testFile'] = $this->options[1][1];
+                $this->arguments['testFile'] = realpath($this->options[1][1]);
             } else {
                 $this->arguments['testFile'] = '';
             }
@@ -630,22 +620,6 @@ class PHPUnit_TextUI_Command
                 );
             }
 
-            $logging = $configuration->getLoggingConfiguration();
-
-            if (isset($logging['coverage-html']) || isset($logging['coverage-clover']) || isset($logging['coverage-text']) ) {
-                if (!extension_loaded('tokenizer')) {
-                    $this->showExtensionNotLoadedMessage(
-                      'tokenizer', 'No code coverage will be generated.'
-                    );
-                }
-
-                else if (!extension_loaded('Xdebug')) {
-                    $this->showExtensionNotLoadedMessage(
-                      'Xdebug', 'No code coverage will be generated.'
-                    );
-                }
-            }
-
             $browsers = $configuration->getSeleniumBrowserConfiguration();
 
             if (!empty($browsers) &&
@@ -750,6 +724,10 @@ class PHPUnit_TextUI_Command
             if ($class->implementsInterface('PHPUnit_Framework_TestListener') &&
                 $class->isSubclassOf('PHPUnit_Util_Printer') &&
                 $class->isInstantiable()) {
+                if ($class->isSubclassOf('PHPUnit_TextUI_ResultPrinter')) {
+                    return $printerClass;
+                }
+
                 $printer = $class->newInstance();
             }
         }
@@ -784,43 +762,63 @@ class PHPUnit_TextUI_Command
     }
 
     /**
-     * @param string  $message
-     * @since Method available since Release 3.6.0
+     * @since Method available since Release 3.8.0
      */
-    protected function showExtensionNotLoadedMessage($extension, $message = '')
-    {
-        if (isset($this->missingExtensions[$extension])) {
-            return;
-        }
-
-        if (!empty($message)) {
-            $message = ' ' . $message;
-        }
-
-        $this->showMessage(
-          'The ' . $extension . ' extension is not loaded.' . $message . "\n",
-          FALSE
-        );
-
-        $this->missingExtensions[$extension] = TRUE;
-    }
-
-    /**
-     * Shows a message.
-     *
-     * @param string  $message
-     * @param boolean $exit
-     */
-    protected function showMessage($message, $exit = TRUE)
+    protected function handleSelfUpdate()
     {
         PHPUnit_TextUI_TestRunner::printVersionString();
-        print $message . "\n";
 
-        if ($exit) {
+        if (!extension_loaded('openssl')) {
+            print "The OpenSSL extension is not loaded.\n";
             exit(PHPUnit_TextUI_TestRunner::EXCEPTION_EXIT);
-        } else {
-            print "\n";
         }
+
+        $remoteFilename = 'https://phar.phpunit.de/phpunit.phar';
+        $localFilename  = $_SERVER['argv'][0];
+        $tempFilename   = basename($localFilename, '.phar') . '-temp.phar';
+
+        // Workaround for https://bugs.php.net/bug.php?id=65538
+        $caFile = dirname($tempFilename) . '/ca.pem';
+        copy(__PHPUNIT_PHAR_ROOT__ . '/ca.pem', $caFile);
+
+        print 'Updating the PHPUnit PHAR ... ';
+
+        file_put_contents(
+          $tempFilename,
+          file_get_contents(
+            $remoteFilename,
+            FALSE,
+            stream_context_create(
+              array(
+                'ssl' => array(
+                  'CN_match' => 'phar.phpunit.de',
+                  'allow_self_signed' => FALSE,
+                  'cafile' => $caFile,
+                  'verify_peer' => TRUE
+                )
+              )
+            )
+          )
+        );
+
+        chmod($tempFilename, 0777 & ~umask());
+
+        try {
+            $phar = new Phar($tempFilename);
+            unset($phar);
+            rename($tempFilename, $localFilename);
+            unlink($caFile);
+        }
+
+        catch (Exception $e) {
+            unlink($caFile);
+            unlink($tempFilename);
+            print " done\n\n" . $e->getMessage() . "\n";
+            exit(PHPUnit_TextUI_TestRunner::EXCEPTION_EXIT);
+        }
+
+        print " done\n";
+        exit(PHPUnit_TextUI_TestRunner::SUCCESS_EXIT);
     }
 
     /**
@@ -839,10 +837,12 @@ Usage: phpunit [switches] UnitTest [UnitTest.php]
   --log-json <file>         Log test execution in JSON format.
 
   --coverage-clover <file>  Generate code coverage report in Clover XML format.
+  --coverage-crap4j <file>  Generate code coverage report in Crap4J XML format.
   --coverage-html <dir>     Generate code coverage report in HTML format.
-  --coverage-php <file>     Serialize PHP_CodeCoverage object to file.
+  --coverage-php <file>     Export PHP_CodeCoverage object to file.
   --coverage-text=<file>    Generate code coverage report in text format.
-                            Default to writing to the standard output.
+                            Default: Standard output.
+  --coverage-xml <dir>      Generate code coverage report in PHPUnit XML format.
 
   --testdox-html <file>     Write agile documentation in HTML format to file.
   --testdox-text <file>     Write agile documentation in Text format to file.
@@ -886,6 +886,10 @@ Usage: phpunit [switches] UnitTest [UnitTest.php]
   --version                 Prints the version and exits.
 
 EOT;
+
+        if (defined('__PHPUNIT_PHAR__')) {
+            print "\n  --self-update             Update PHPUnit to the latest version.\n";
+        }
     }
 
     /**

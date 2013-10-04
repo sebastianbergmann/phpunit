@@ -10,7 +10,7 @@ $_SERVER['argv'][3] = '--verbose';
 $_SERVER['argv'][4] = 'DependencyTestSuite';
 $_SERVER['argv'][5] = dirname(dirname(__FILE__)) . '/_files/DependencyTestSuite.php';
 
-require_once dirname(dirname(dirname(__FILE__))) . '/PHPUnit/Autoload.php';
+require __DIR__ . '/../bootstrap.php';
 PHPUnit_TextUI_Command::main();
 ?>
 --EXPECTF--

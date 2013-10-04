@@ -123,14 +123,15 @@ abstract class PHPUnit_Framework_Assert
      * @param  string  $message
      * @param  boolean $ignoreCase
      * @param  boolean $checkForObjectIdentity
+     * @param  boolean $checkForNonObjectIdentity
      * @since  Method available since Release 2.1.0
      */
-    public static function assertContains($needle, $haystack, $message = '', $ignoreCase = FALSE, $checkForObjectIdentity = TRUE)
+    public static function assertContains($needle, $haystack, $message = '', $ignoreCase = FALSE, $checkForObjectIdentity = TRUE, $checkForNonObjectIdentity = FALSE)
     {
         if (is_array($haystack) ||
             is_object($haystack) && $haystack instanceof Traversable) {
             $constraint = new PHPUnit_Framework_Constraint_TraversableContains(
-              $needle, $checkForObjectIdentity
+              $needle, $checkForObjectIdentity, $checkForNonObjectIdentity
             );
         }
 
@@ -142,7 +143,7 @@ abstract class PHPUnit_Framework_Assert
 
         else {
             throw PHPUnit_Util_InvalidArgumentHelper::factory(
-              2, 'array, iterator or string'
+              2, 'array, traversable or string'
             );
         }
 
@@ -159,16 +160,18 @@ abstract class PHPUnit_Framework_Assert
      * @param  string  $message
      * @param  boolean $ignoreCase
      * @param  boolean $checkForObjectIdentity
+     * @param  boolean $checkForNonObjectIdentity
      * @since  Method available since Release 3.0.0
      */
-    public static function assertAttributeContains($needle, $haystackAttributeName, $haystackClassOrObject, $message = '', $ignoreCase = FALSE, $checkForObjectIdentity = TRUE)
+    public static function assertAttributeContains($needle, $haystackAttributeName, $haystackClassOrObject, $message = '', $ignoreCase = FALSE, $checkForObjectIdentity = TRUE, $checkForNonObjectIdentity = FALSE)
     {
         self::assertContains(
           $needle,
           self::readAttribute($haystackClassOrObject, $haystackAttributeName),
           $message,
           $ignoreCase,
-          $checkForObjectIdentity
+          $checkForObjectIdentity,
+          $checkForNonObjectIdentity
         );
     }
 
@@ -180,15 +183,16 @@ abstract class PHPUnit_Framework_Assert
      * @param  string  $message
      * @param  boolean $ignoreCase
      * @param  boolean $checkForObjectIdentity
+     * @param  boolean $checkForNonObjectIdentity
      * @since  Method available since Release 2.1.0
      */
-    public static function assertNotContains($needle, $haystack, $message = '', $ignoreCase = FALSE, $checkForObjectIdentity = TRUE)
+    public static function assertNotContains($needle, $haystack, $message = '', $ignoreCase = FALSE, $checkForObjectIdentity = TRUE, $checkForNonObjectIdentity = FALSE)
     {
         if (is_array($haystack) ||
             is_object($haystack) && $haystack instanceof Traversable) {
             $constraint = new PHPUnit_Framework_Constraint_Not(
               new PHPUnit_Framework_Constraint_TraversableContains(
-                $needle, $checkForObjectIdentity
+                $needle, $checkForObjectIdentity, $checkForNonObjectIdentity
               )
             );
         }
@@ -203,7 +207,7 @@ abstract class PHPUnit_Framework_Assert
 
         else {
             throw PHPUnit_Util_InvalidArgumentHelper::factory(
-              2, 'array, iterator or string'
+              2, 'array, traversable or string'
             );
         }
 
@@ -220,16 +224,18 @@ abstract class PHPUnit_Framework_Assert
      * @param  string  $message
      * @param  boolean $ignoreCase
      * @param  boolean $checkForObjectIdentity
+     * @param  boolean $checkForNonObjectIdentity
      * @since  Method available since Release 3.0.0
      */
-    public static function assertAttributeNotContains($needle, $haystackAttributeName, $haystackClassOrObject, $message = '', $ignoreCase = FALSE, $checkForObjectIdentity = TRUE)
+    public static function assertAttributeNotContains($needle, $haystackAttributeName, $haystackClassOrObject, $message = '', $ignoreCase = FALSE, $checkForObjectIdentity = TRUE, $checkForNonObjectIdentity = FALSE)
     {
         self::assertNotContains(
           $needle,
           self::readAttribute($haystackClassOrObject, $haystackAttributeName),
           $message,
           $ignoreCase,
-          $checkForObjectIdentity
+          $checkForObjectIdentity,
+          $checkForNonObjectIdentity
         );
     }
 
@@ -247,7 +253,7 @@ abstract class PHPUnit_Framework_Assert
         if (!(is_array($haystack) ||
             is_object($haystack) && $haystack instanceof Traversable)) {
             throw PHPUnit_Util_InvalidArgumentHelper::factory(
-              2, 'array or iterator'
+              2, 'array or traversable'
             );
         }
 
@@ -276,7 +282,7 @@ abstract class PHPUnit_Framework_Assert
         if (!(is_array($haystack) ||
             is_object($haystack) && $haystack instanceof Traversable)) {
             throw PHPUnit_Util_InvalidArgumentHelper::factory(
-              2, 'array or iterator'
+              2, 'array or traversable'
             );
         }
 
@@ -324,7 +330,7 @@ abstract class PHPUnit_Framework_Assert
         if (!(is_array($haystack) ||
             is_object($haystack) && $haystack instanceof Traversable)) {
             throw PHPUnit_Util_InvalidArgumentHelper::factory(
-              2, 'array or iterator'
+              2, 'array or traversable'
             );
         }
 
@@ -366,7 +372,7 @@ abstract class PHPUnit_Framework_Assert
     }
 
     /**
-     * Asserts the number of elements of an array, Countable or Iterator.
+     * Asserts the number of elements of an array, Countable or Traversable.
      *
      * @param integer $expectedCount
      * @param mixed   $haystack
@@ -379,9 +385,9 @@ abstract class PHPUnit_Framework_Assert
         }
 
         if (!$haystack instanceof Countable &&
-            !$haystack instanceof Iterator &&
+            !$haystack instanceof Traversable &&
             !is_array($haystack)) {
-            throw PHPUnit_Util_InvalidArgumentHelper::factory(2, 'countable');
+            throw PHPUnit_Util_InvalidArgumentHelper::factory(2, 'countable or traversable');
         }
 
         self::assertThat(
@@ -392,7 +398,7 @@ abstract class PHPUnit_Framework_Assert
     }
 
     /**
-     * Asserts the number of elements of an array, Countable or Iterator
+     * Asserts the number of elements of an array, Countable or Traversable
      * that is stored in an attribute.
      *
      * @param integer $expectedCount
@@ -411,7 +417,7 @@ abstract class PHPUnit_Framework_Assert
     }
 
     /**
-     * Asserts the number of elements of an array, Countable or Iterator.
+     * Asserts the number of elements of an array, Countable or Traversable.
      *
      * @param integer $expectedCount
      * @param mixed   $haystack
@@ -424,9 +430,9 @@ abstract class PHPUnit_Framework_Assert
         }
 
         if (!$haystack instanceof Countable &&
-            !$haystack instanceof Iterator &&
+            !$haystack instanceof Traversable &&
             !is_array($haystack)) {
-            throw PHPUnit_Util_InvalidArgumentHelper::factory(2, 'countable');
+            throw PHPUnit_Util_InvalidArgumentHelper::factory(2, 'countable or traversable');
         }
 
         $constraint = new PHPUnit_Framework_Constraint_Not(
@@ -437,7 +443,7 @@ abstract class PHPUnit_Framework_Assert
     }
 
     /**
-     * Asserts the number of elements of an array, Countable or Iterator
+     * Asserts the number of elements of an array, Countable or Traversable
      * that is stored in an attribute.
      *
      * @param integer $expectedCount
@@ -936,6 +942,10 @@ abstract class PHPUnit_Framework_Assert
             throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'string');
         }
 
+        if(!preg_match('/[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*/', $attributeName)) {
+            throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'valid attribute name');
+        }
+
         if (!is_string($className) || !class_exists($className, FALSE)) {
             throw PHPUnit_Util_InvalidArgumentHelper::factory(2, 'class name');
         }
@@ -959,6 +969,10 @@ abstract class PHPUnit_Framework_Assert
     {
         if (!is_string($attributeName)) {
             throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'string');
+        }
+
+        if(!preg_match('/[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*/', $attributeName)) {
+            throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'valid attribute name');
         }
 
         if (!is_string($className) || !class_exists($className, FALSE)) {
@@ -986,6 +1000,10 @@ abstract class PHPUnit_Framework_Assert
             throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'string');
         }
 
+        if(!preg_match('/[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*/', $attributeName)) {
+            throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'valid attribute name');
+        }
+
         if (!is_string($className) || !class_exists($className, FALSE)) {
             throw PHPUnit_Util_InvalidArgumentHelper::factory(2, 'class name');
         }
@@ -1009,6 +1027,10 @@ abstract class PHPUnit_Framework_Assert
     {
         if (!is_string($attributeName)) {
             throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'string');
+        }
+
+        if(!preg_match('/[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*/', $attributeName)) {
+            throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'valid attribute name');
         }
 
         if (!is_string($className) || !class_exists($className, FALSE)) {
@@ -1038,6 +1060,10 @@ abstract class PHPUnit_Framework_Assert
             throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'string');
         }
 
+        if(!preg_match('/[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*/', $attributeName)) {
+            throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'valid attribute name');
+        }
+
         if (!is_object($object)) {
             throw PHPUnit_Util_InvalidArgumentHelper::factory(2, 'object');
         }
@@ -1061,6 +1087,10 @@ abstract class PHPUnit_Framework_Assert
     {
         if (!is_string($attributeName)) {
             throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'string');
+        }
+
+        if(!preg_match('/[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*/', $attributeName)) {
+            throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'valid attribute name');
         }
 
         if (!is_object($object)) {
@@ -1374,25 +1404,25 @@ abstract class PHPUnit_Framework_Assert
     }
 
     /**
-     * Assert that the size of two arrays (or `Countable` or `Iterator` objects)
+     * Assert that the size of two arrays (or `Countable` or `Traversable` objects)
      * is the same.
      *
-     * @param array|Countable|Iterator $expected
-     * @param array|Countable|Iterator $actual
+     * @param array|Countable|Traversable $expected
+     * @param array|Countable|Traversable $actual
      * @param string $message
      */
     public static function assertSameSize($expected, $actual, $message = '')
     {
         if (!$expected instanceof Countable &&
-            !$expected instanceof Iterator &&
+            !$expected instanceof Traversable &&
             !is_array($expected)) {
-            throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'countable');
+            throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'countable or traversable');
         }
 
         if (!$actual instanceof Countable &&
-            !$actual instanceof Iterator &&
+            !$actual instanceof Traversable &&
             !is_array($actual)) {
-            throw PHPUnit_Util_InvalidArgumentHelper::factory(2, 'countable');
+            throw PHPUnit_Util_InvalidArgumentHelper::factory(2, 'countable or traversable');
         }
 
         self::assertThat(
@@ -1403,25 +1433,25 @@ abstract class PHPUnit_Framework_Assert
     }
 
     /**
-     * Assert that the size of two arrays (or `Countable` or `Iterator` objects)
+     * Assert that the size of two arrays (or `Countable` or `Traversable` objects)
      * is not the same.
      *
-     * @param array|Countable|Iterator $expected
-     * @param array|Countable|Iterator $actual
+     * @param array|Countable|Traversable $expected
+     * @param array|Countable|Traversable $actual
      * @param string $message
      */
     public static function assertNotSameSize($expected, $actual, $message = '')
     {
         if (!$expected instanceof Countable &&
-            !$expected instanceof Iterator &&
+            !$expected instanceof Traversable &&
             !is_array($expected)) {
-            throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'countable');
+            throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'countable or traversable');
         }
 
         if (!$actual instanceof Countable &&
-            !$actual instanceof Iterator &&
+            !$actual instanceof Traversable &&
             !is_array($actual)) {
-            throw PHPUnit_Util_InvalidArgumentHelper::factory(2, 'countable');
+            throw PHPUnit_Util_InvalidArgumentHelper::factory(2, 'countable or traversable');
         }
 
         $constraint = new PHPUnit_Framework_Constraint_Not(
@@ -2437,12 +2467,13 @@ abstract class PHPUnit_Framework_Assert
      *
      * @param  mixed   $value
      * @param  boolean $checkForObjectIdentity
+     * @param  boolean $checkForNonObjectIdentity
      * @return PHPUnit_Framework_Constraint_TraversableContains
      * @since  Method available since Release 3.0.0
      */
-    public static function contains($value, $checkForObjectIdentity = TRUE)
+    public static function contains($value, $checkForObjectIdentity = TRUE, $checkForNonObjectIdentity = FALSE)
     {
-        return new PHPUnit_Framework_Constraint_TraversableContains($value, $checkForObjectIdentity);
+        return new PHPUnit_Framework_Constraint_TraversableContains($value, $checkForObjectIdentity, $checkForNonObjectIdentity);
     }
 
     /**
@@ -2745,6 +2776,16 @@ abstract class PHPUnit_Framework_Assert
     }
 
     /**
+     * Returns a PHPUnit_Framework_Constraint_Count matcher object.
+     *
+     * @param int $count
+     * @return PHPUnit_Framework_Constraint_Count
+     */
+    public static function countOf($count)
+    {
+        return new PHPUnit_Framework_Constraint_Count($count);
+    }
+    /**
      * Fails a test with the given message.
      *
      * @param  string $message
@@ -2770,6 +2811,10 @@ abstract class PHPUnit_Framework_Assert
             throw PHPUnit_Util_InvalidArgumentHelper::factory(2, 'string');
         }
 
+        if(!preg_match('/[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*/', $attributeName)) {
+            throw PHPUnit_Util_InvalidArgumentHelper::factory(2, 'valid attribute name');
+        }
+
         if (is_string($classOrObject)) {
             if (!class_exists($classOrObject)) {
                 throw PHPUnit_Util_InvalidArgumentHelper::factory(
@@ -2777,14 +2822,14 @@ abstract class PHPUnit_Framework_Assert
                 );
             }
 
-            return PHPUnit_Util_Class::getStaticAttribute(
+            return self::getStaticAttribute(
               $classOrObject,
               $attributeName
             );
         }
 
         else if (is_object($classOrObject)) {
-            return PHPUnit_Util_Class::getObjectAttribute(
+            return self::getObjectAttribute(
               $classOrObject,
               $attributeName
             );
@@ -2840,5 +2885,116 @@ abstract class PHPUnit_Framework_Assert
     public static function resetCount()
     {
         self::$count = 0;
+    }
+
+    /**
+     * Returns the value of a static attribute.
+     * This also works for attributes that are declared protected or private.
+     *
+     * @param  string $className
+     * @param  string $attributeName
+     * @return mixed
+     * @throws PHPUnit_Framework_Exception
+     * @since  Method available since Release 3.8.0
+     */
+    protected static function getStaticAttribute($className, $attributeName)
+    {
+        if (!is_string($className)) {
+            throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'string');
+        }
+
+        if (!class_exists($className)) {
+            throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'class name');
+        }
+
+        if (!is_string($attributeName)) {
+            throw PHPUnit_Util_InvalidArgumentHelper::factory(2, 'string');
+        }
+
+        if(!preg_match('/[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*/', $attributeName)) {
+            throw PHPUnit_Util_InvalidArgumentHelper::factory(2, 'valid attribute name');
+        }
+
+        $class = new ReflectionClass($className);
+
+        while ($class) {
+            $attributes = $class->getStaticProperties();
+
+            if (array_key_exists($attributeName, $attributes)) {
+                return $attributes[$attributeName];
+            }
+
+            $class = $class->getParentClass();
+        }
+
+        throw new PHPUnit_Framework_Exception(
+          sprintf(
+            'Attribute "%s" not found in class.',
+
+            $attributeName
+          )
+        );
+    }
+
+    /**
+     * Returns the value of an object's attribute.
+     * This also works for attributes that are declared protected or private.
+     *
+     * @param  object $object
+     * @param  string $attributeName
+     * @return mixed
+     * @throws PHPUnit_Framework_Exception
+     * @since  Method available since Release 3.8.0
+     */
+    protected static function getObjectAttribute($object, $attributeName)
+    {
+        if (!is_object($object)) {
+            throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'object');
+        }
+
+        if (!is_string($attributeName)) {
+            throw PHPUnit_Util_InvalidArgumentHelper::factory(2, 'string');
+        }
+
+        if(!preg_match('/[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*/', $attributeName)) {
+            throw PHPUnit_Util_InvalidArgumentHelper::factory(2, 'valid attribute name');
+        }
+
+        try {
+            $attribute = new ReflectionProperty($object, $attributeName);
+        }
+
+        catch (ReflectionException $e) {
+            $reflector = new ReflectionObject($object);
+
+            while ($reflector = $reflector->getParentClass()) {
+                try {
+                    $attribute = $reflector->getProperty($attributeName);
+                    break;
+                }
+
+                catch(ReflectionException $e) {
+                }
+            }
+        }
+
+        if (isset($attribute)) {
+            if (!$attribute || $attribute->isPublic()) {
+                return $object->$attributeName;
+            }
+
+            $attribute->setAccessible(TRUE);
+            $value = $attribute->getValue($object);
+            $attribute->setAccessible(FALSE);
+
+            return $value;
+        }
+
+        throw new PHPUnit_Framework_Exception(
+          sprintf(
+            'Attribute "%s" not found in object.',
+            $attributeName
+          )
+        );
     }
 }

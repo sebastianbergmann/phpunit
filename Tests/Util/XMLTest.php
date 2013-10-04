@@ -130,7 +130,7 @@ class Util_XMLTest extends PHPUnit_Framework_TestCase
 
     public function testConvertAssertSelect()
     {
-        $selector  = 'div#folder.open a[href="http://www.xerox.com"][title="xerox"].selected.big > span';
+        $selector  = 'div#folder.open a[href="http://www.xerox.com"][title="xerox"].selected.big > span + h1';
         $converted = PHPUnit_Util_XML::convertSelectToTag($selector);
         $tag       = array('tag'   => 'div',
                            'id'    => 'folder',
@@ -139,7 +139,8 @@ class Util_XMLTest extends PHPUnit_Framework_TestCase
                                                  'class'      => 'selected big',
                                                  'attributes' => array('href'  => 'http://www.xerox.com',
                                                                        'title' => 'xerox'),
-                                                 'child'      => array('tag' => 'span')));
+                                                 'child'      => array('tag' => 'span',
+                                                                       'adjacent-sibling' => array('tag' => 'h1'))));
          $this->assertEquals($tag, $converted);
     }
 
@@ -262,6 +263,15 @@ class Util_XMLTest extends PHPUnit_Framework_TestCase
         $this->assertEquals($tag, $converted);
     }
 
+    public function testConvertAssertSelectEltAdjacentSibling()
+    {
+        $selector  = 'div + a';
+        $converted = PHPUnit_Util_XML::convertSelectToTag($selector);
+        $tag       = array('tag' => 'div', 'adjacent-sibling' => array('tag' => 'a'));
+
+        $this->assertEquals($tag, $converted);
+    }
+
     public function testConvertAssertSelectEltDescendant()
     {
         $selector  = 'div a';
@@ -321,8 +331,38 @@ class Util_XMLTest extends PHPUnit_Framework_TestCase
         $this->assertEquals($tag, $converted);
     }
 
-    public function testPrepareStringEscapesChars()
+    /**
+     * @dataProvider charProvider
+     */
+    public function testPrepareString($char)
     {
-        $this->assertEquals('&#x1b;', PHPUnit_Util_XML::prepareString("\033"));
+        $e = null;
+
+        $escapedString = PHPUnit_Util_XML::prepareString($char);
+        $xml = "<?xml version='1.0' encoding='UTF-8' ?><tag>$escapedString</tag>";
+        $dom = new DomDocument('1.0', 'UTF-8');
+
+        try {
+            $dom->loadXML($xml);
+        }
+
+        catch (Exception $e) {
+        }
+
+        $this->assertNull($e, sprintf(
+          'PHPUnit_Util_XML::prepareString("\x%02x") should not crash DomDocument',
+          ord($char)
+        ));
+    }
+
+    public function charProvider()
+    {
+        $data = array();
+
+        for ($i = 0; $i < 256; $i++) {
+            $data[] = array(chr($i));
+        }
+
+        return $data;
     }
 }

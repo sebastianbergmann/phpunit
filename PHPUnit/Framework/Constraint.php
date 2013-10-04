@@ -44,6 +44,8 @@
  * @since      File available since Release 3.0.0
  */
 
+use SebastianBergmann\Exporter\Exporter;
+
 /**
  * Abstract base class for constraints. which are placed upon any value.
  *
@@ -58,6 +60,12 @@
  */
 abstract class PHPUnit_Framework_Constraint implements Countable, PHPUnit_Framework_SelfDescribing
 {
+    protected $exporter;
+
+    public function __construct()
+    {
+        $this->exporter = new Exporter;
+    }
 
     /**
      * Evaluates the constraint for parameter $other
@@ -158,7 +166,7 @@ abstract class PHPUnit_Framework_Constraint implements Countable, PHPUnit_Framew
      */
     protected function additionalFailureDescription($other)
     {
-        return "";
+        return '';
     }
 
     /**
@@ -175,6 +183,6 @@ abstract class PHPUnit_Framework_Constraint implements Countable, PHPUnit_Framew
      */
     protected function failureDescription($other)
     {
-        return PHPUnit_Util_Type::export($other) . ' ' . $this->toString();
+        return $this->exporter->export($other) . ' ' . $this->toString();
     }
 }

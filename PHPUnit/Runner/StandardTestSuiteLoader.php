@@ -73,9 +73,13 @@ class PHPUnit_Runner_StandardTestSuiteLoader implements PHPUnit_Runner_TestSuite
         }
 
         if (!class_exists($suiteClassName, FALSE)) {
-            PHPUnit_Util_Class::collectStart();
+            $loadedClasses = get_declared_classes();
+
             $filename = PHPUnit_Util_Fileloader::checkAndLoad($suiteClassFile);
-            $loadedClasses = PHPUnit_Util_Class::collectEnd();
+
+            $loadedClasses = array_values(
+              array_diff(get_declared_classes(), $loadedClasses)
+            );
         }
 
         if (!class_exists($suiteClassName, FALSE) && !empty($loadedClasses)) {

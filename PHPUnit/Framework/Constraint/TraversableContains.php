@@ -65,23 +65,36 @@ class PHPUnit_Framework_Constraint_TraversableContains extends PHPUnit_Framework
     protected $checkForObjectIdentity;
 
     /**
+     * @var boolean
+     */
+    protected $checkForNonObjectIdentity;
+
+    /**
      * @var mixed
      */
     protected $value;
 
     /**
-     * @param  boolean $value
-     * @param  mixed   $checkForObjectIdentity
+     * @param  mixed $value
+     * @param  boolean $checkForObjectIdentity
+     * @param  boolean $checkForNonObjectIdentity
      * @throws PHPUnit_Framework_Exception
      */
-    public function __construct($value, $checkForObjectIdentity = TRUE)
+    public function __construct($value, $checkForObjectIdentity = TRUE, $checkForNonObjectIdentity = FALSE)
     {
+        parent::__construct();
+
         if (!is_bool($checkForObjectIdentity)) {
             throw PHPUnit_Util_InvalidArgumentHelper::factory(2, 'boolean');
         }
 
-        $this->checkForObjectIdentity = $checkForObjectIdentity;
-        $this->value                  = $value;
+        if (!is_bool($checkForNonObjectIdentity)) {
+            throw PHPUnit_Util_InvalidArgumentHelper::factory(3, 'boolean');
+        }
+
+        $this->checkForObjectIdentity    = $checkForObjectIdentity;
+        $this->checkForNonObjectIdentity = $checkForNonObjectIdentity;
+        $this->value                     = $value;
     }
 
     /**
@@ -108,7 +121,10 @@ class PHPUnit_Framework_Constraint_TraversableContains extends PHPUnit_Framework
             }
         } else {
             foreach ($other as $element) {
-                if ($element == $this->value) {
+                if (($this->checkForNonObjectIdentity &&
+                     $element === $this->value) ||
+                    (!$this->checkForNonObjectIdentity &&
+                     $element == $this->value)) {
                     return TRUE;
                 }
             }
@@ -127,7 +143,7 @@ class PHPUnit_Framework_Constraint_TraversableContains extends PHPUnit_Framework
         if (is_string($this->value) && strpos($this->value, "\n") !== FALSE) {
             return 'contains "' . $this->value . '"';
         } else {
-            return 'contains ' . PHPUnit_Util_Type::export($this->value);
+            return 'contains ' . $this->exporter->export($this->value);
         }
     }
 
@@ -143,9 +159,9 @@ class PHPUnit_Framework_Constraint_TraversableContains extends PHPUnit_Framework
     protected function failureDescription($other)
     {
         return sprintf(
-          'an %s %s',
+          '%s %s',
 
-           is_array($other) ? 'array' : 'iterator',
+           is_array($other) ? 'an array' : 'a traversable',
            $this->toString()
         );
     }

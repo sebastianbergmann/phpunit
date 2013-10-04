@@ -69,6 +69,7 @@ class PHPUnit_Framework_Constraint_LessThan extends PHPUnit_Framework_Constraint
      */
     public function __construct($value)
     {
+        parent::__construct();
         $this->value = $value;
     }
 
@@ -91,6 +92,6 @@ class PHPUnit_Framework_Constraint_LessThan extends PHPUnit_Framework_Constraint
      */
     public function toString()
     {
-        return 'is less than ' . PHPUnit_Util_Type::export($this->value);
+        return 'is less than ' . $this->exporter->export($this->value);
     }
 }

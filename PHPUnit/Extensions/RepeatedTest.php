@@ -90,7 +90,7 @@ class PHPUnit_Extensions_RepeatedTest extends PHPUnit_Extensions_TestDecorator
      * @param  boolean                $processIsolation
      * @throws PHPUnit_Framework_Exception
      */
-    public function __construct(PHPUnit_Framework_Test $test, $timesRepeat = 1, $filter = FALSE, array $groups = array(), array $excludeGroups = array(), $processIsolation = FALSE)
+    public function __construct(PHPUnit_Framework_Test $test, $timesRepeat = 1, $processIsolation = FALSE)
     {
         parent::__construct($test);
 
@@ -103,9 +103,6 @@ class PHPUnit_Extensions_RepeatedTest extends PHPUnit_Extensions_TestDecorator
             );
         }
 
-        $this->filter           = $filter;
-        $this->groups           = $groups;
-        $this->excludeGroups    = $excludeGroups;
         $this->processIsolation = $processIsolation;
     }
 
@@ -138,16 +135,9 @@ class PHPUnit_Extensions_RepeatedTest extends PHPUnit_Extensions_TestDecorator
         for ($i = 0; $i < $this->timesRepeat && !$result->shouldStop(); $i++) {
             //@codingStandardsIgnoreEnd
             if ($this->test instanceof PHPUnit_Framework_TestSuite) {
-                $this->test->run(
-                  $result,
-                  $this->filter,
-                  $this->groups,
-                  $this->excludeGroups,
-                  $this->processIsolation
-                );
-            } else {
-                $this->test->run($result);
+                $this->test->setRunTestInSeparateProcess($this->processIsolation);
             }
+            $this->test->run($result);
         }
 
         return $result;

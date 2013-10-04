@@ -82,11 +82,6 @@ class PHPUnit_Framework_Warning extends PHPUnit_Framework_TestCase
     protected $useErrorHandler = FALSE;
 
     /**
-     * @var boolean
-     */
-    protected $useOutputBuffering = FALSE;
-
-    /**
      * @param string $message
      */
     public function __construct($message = '')

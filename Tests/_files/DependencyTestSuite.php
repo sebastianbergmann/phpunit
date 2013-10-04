@@ -1,7 +1,4 @@
 <?php
-require_once 'DependencyFailureTest.php';
-require_once 'DependencySuccessTest.php';
-
 class DependencyTestSuite
 {
     public static function suite()

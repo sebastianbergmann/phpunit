@@ -42,10 +42,13 @@
  * @since      File available since Release 3.3.6
  */
 
-require_once dirname(__DIR__) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'ExceptionTest.php';
-require_once dirname(__DIR__) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'ExceptionNamespaceTest.php';
-require_once dirname(__DIR__) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'RequirementsTest.php';
-require_once dirname(__DIR__) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'RequirementsClassDocBlockTest.php';
+if (!defined('TEST_FILES_PATH')) {
+    define(
+      'TEST_FILES_PATH',
+      dirname(__DIR__) . DIRECTORY_SEPARATOR .
+      '_files' . DIRECTORY_SEPARATOR
+    );
+}
 
 /**
  *
@@ -126,21 +129,23 @@ class Util_TestTest extends PHPUnit_Framework_TestCase
     public function provideRequirements()
     {
         return array(
-            array('testOne',   array()),
-            array('testTwo',   array('PHPUnit' => '1.0')),
-            array('testThree', array('PHP' => '2.0')),
-            array('testFour',  array('PHPUnit'=>'2.0', 'PHP' => '1.0')),
-            array('testFive',  array('PHP' => '5.4.0RC6')),
-            array('testSix',   array('PHP' => '5.4.0-alpha1')),
-            array('testSeven', array('PHP' => '5.4.0beta2')),
-            array('testEight', array('PHP' => '5.4-dev')),
-            array('testNine',  array('functions' => array('testFunc'))),
-            array('testTen',   array('extensions' => array('testExt'))),
+            array('testOne',    array()),
+            array('testTwo',    array('PHPUnit' => '1.0')),
+            array('testThree',  array('PHP' => '2.0')),
+            array('testFour',   array('PHPUnit'=>'2.0', 'PHP' => '1.0')),
+            array('testFive',   array('PHP' => '5.4.0RC6')),
+            array('testSix',    array('PHP' => '5.4.0-alpha1')),
+            array('testSeven',  array('PHP' => '5.4.0beta2')),
+            array('testEight',  array('PHP' => '5.4-dev')),
+            array('testNine',   array('functions' => array('testFunc'))),
+            array('testTen',    array('extensions' => array('testExt'))),
+            array('testEleven', array('OS' => '/Linux/i')),
             array(
                 'testAllPossibleRequirements',
                 array(
                     'PHP' => '99-dev',
                     'PHPUnit' => '9-dev',
+                    'OS' => '/DOESNOTEXIST/i',
                     'functions' => array(
                         'testFuncOne',
                         'testFuncTwo',
@@ -170,6 +175,7 @@ class Util_TestTest extends PHPUnit_Framework_TestCase
         $expectedAnnotations = array(
             'PHP' => '5.4',
             'PHPUnit' => '3.7',
+            'OS' => '/WINNT/i',
             'functions' => array(
                 'testFuncClass',
                 'testFuncMethod',
@@ -236,5 +242,264 @@ class Util_TestTest extends PHPUnit_Framework_TestCase
     /** @depends Bar */
     public function methodForTestParseAnnotationThatIsOnlyOneLine()
     {
+    }
+
+    /**
+     * @covers       PHPUnit_Util_Test::getLinesToBeCovered
+     * @covers       PHPUnit_Util_Test::resolveElementToReflectionObjects
+     * @dataProvider getLinesToBeCoveredProvider
+     */
+    public function testGetLinesToBeCovered($test, $lines)
+    {
+        if (strpos($test, 'Namespace') === 0) {
+            $expected = array(
+              TEST_FILES_PATH . 'NamespaceCoveredClass.php' => $lines
+            );
+        }
+
+        else if ($test === 'CoverageNoneTest') {
+            $expected = array();
+        }
+
+        else if ($test === 'CoverageNothingTest') {
+            $expected = false;
+        }
+
+        else if ($test === 'CoverageFunctionTest') {
+            $expected = array(
+              TEST_FILES_PATH . 'CoveredFunction.php' => $lines
+            );
+        }
+
+        else {
+            $expected = array(TEST_FILES_PATH . 'CoveredClass.php' => $lines);
+        }
+
+        $this->assertEquals(
+          $expected,
+          PHPUnit_Util_Test::getLinesToBeCovered(
+            $test, 'testSomething'
+          )
+        );
+    }
+
+    /**
+     * @covers            PHPUnit_Util_Test::getLinesToBeCovered
+     * @covers            PHPUnit_Util_Test::resolveElementToReflectionObjects
+     * @expectedException PHPUnit_Framework_CodeCoverageException
+     */
+    public function testGetLinesToBeCovered2()
+    {
+        PHPUnit_Util_Test::getLinesToBeCovered(
+          'NotExistingCoveredElementTest', 'testOne'
+        );
+    }
+
+    /**
+     * @covers            PHPUnit_Util_Test::getLinesToBeCovered
+     * @covers            PHPUnit_Util_Test::resolveElementToReflectionObjects
+     * @expectedException PHPUnit_Framework_CodeCoverageException
+     */
+    public function testGetLinesToBeCovered3()
+    {
+        PHPUnit_Util_Test::getLinesToBeCovered(
+          'NotExistingCoveredElementTest', 'testTwo'
+        );
+    }
+
+    /**
+     * @covers            PHPUnit_Util_Test::getLinesToBeCovered
+     * @covers            PHPUnit_Util_Test::resolveElementToReflectionObjects
+     * @expectedException PHPUnit_Framework_CodeCoverageException
+     */
+    public function testGetLinesToBeCovered4()
+    {
+        PHPUnit_Util_Test::getLinesToBeCovered(
+          'NotExistingCoveredElementTest', 'testThree'
+        );
+    }
+
+    /**
+     * @covers PHPUnit_Util_Test::getLinesToBeCovered
+     */
+    public function testGetLinesToBeCoveredSkipsNonExistantMethods()
+    {
+        $this->assertSame(
+          array(),
+          PHPUnit_Util_Test::getLinesToBeCovered(
+            'NotExistingCoveredElementTest',
+            'methodDoesNotExist'
+          )
+        );
+    }
+
+    /**
+     * @covers PHPUnit_Util_Test::getLinesToBeCovered
+     * @expectedException PHPUnit_Framework_CodeCoverageException
+     */
+    public function testTwoCoversDefaultClassAnnoationsAreNotAllowed()
+    {
+        PHPUnit_Util_Test::getLinesToBeCovered(
+          'CoverageTwoDefaultClassAnnotations',
+          'testSomething'
+        );
+    }
+
+    /**
+     * @covers PHPUnit_Util_Test::getLinesToBeCovered
+     */
+    public function testFunctionParenthesesAreAllowed()
+    {
+        $this->assertSame(
+          array(TEST_FILES_PATH . 'CoveredFunction.php' => range(2, 4)),
+          PHPUnit_Util_Test::getLinesToBeCovered(
+            'CoverageFunctionParenthesesTest',
+            'testSomething'
+          )
+        );
+    }
+
+    /**
+     * @covers PHPUnit_Util_Test::getLinesToBeCovered
+     */
+    public function testFunctionParenthesesAreAllowedWithWhitespace()
+    {
+        $this->assertSame(
+          array(TEST_FILES_PATH . 'CoveredFunction.php' => range(2, 4)),
+          PHPUnit_Util_Test::getLinesToBeCovered(
+            'CoverageFunctionParenthesesWhitespaceTest',
+            'testSomething'
+          )
+        );
+    }
+
+    /**
+     * @covers PHPUnit_Util_Test::getLinesToBeCovered
+     */
+    public function testMethodParenthesesAreAllowed()
+    {
+        $this->assertSame(
+          array(TEST_FILES_PATH . 'CoveredClass.php' => range(31, 35)),
+          PHPUnit_Util_Test::getLinesToBeCovered(
+            'CoverageMethodParenthesesTest',
+            'testSomething'
+          )
+        );
+    }
+
+    /**
+     * @covers PHPUnit_Util_Test::getLinesToBeCovered
+     */
+    public function testMethodParenthesesAreAllowedWithWhitespace()
+    {
+        $this->assertSame(
+          array(TEST_FILES_PATH . 'CoveredClass.php' => range(31, 35)),
+          PHPUnit_Util_Test::getLinesToBeCovered(
+            'CoverageMethodParenthesesWhitespaceTest',
+            'testSomething'
+          )
+        );
+    }
+
+    public function getLinesToBeCoveredProvider()
+    {
+        return array(
+          array(
+            'CoverageNoneTest',
+            array()
+          ),
+          array(
+            'CoverageClassExtendedTest',
+            array_merge(range(19, 36), range(2, 17))
+          ),
+          array(
+            'CoverageClassTest',
+            range(19, 36)
+          ),
+          array(
+            'CoverageMethodTest',
+            range(31, 35)
+          ),
+          array(
+            'CoverageMethodOneLineAnnotationTest',
+            range(31, 35)
+          ),
+          array(
+            'CoverageNotPrivateTest',
+            array_merge(range(25, 29), range(31, 35))
+          ),
+          array(
+            'CoverageNotProtectedTest',
+            array_merge(range(21, 23), range(31, 35))
+          ),
+          array(
+            'CoverageNotPublicTest',
+            array_merge(range(21, 23), range(25, 29))
+          ),
+          array(
+            'CoveragePrivateTest',
+            range(21, 23)
+          ),
+          array(
+            'CoverageProtectedTest',
+            range(25, 29)
+          ),
+          array(
+            'CoveragePublicTest',
+            range(31, 35)
+          ),
+          array(
+            'CoverageFunctionTest',
+            range(2, 4)
+          ),
+          array(
+            'NamespaceCoverageClassExtendedTest',
+            array_merge(range(21, 38), range(4, 19))
+          ),
+          array(
+            'NamespaceCoverageClassTest',
+            range(21, 38)
+          ),
+          array(
+            'NamespaceCoverageMethodTest',
+            range(33, 37)
+          ),
+          array(
+            'NamespaceCoverageNotPrivateTest',
+            array_merge(range(27, 31), range(33, 37))
+          ),
+          array(
+            'NamespaceCoverageNotProtectedTest',
+            array_merge(range(23, 25), range(33, 37))
+          ),
+          array(
+            'NamespaceCoverageNotPublicTest',
+            array_merge(range(23, 25), range(27, 31))
+          ),
+          array(
+            'NamespaceCoveragePrivateTest',
+            range(23, 25)
+          ),
+          array(
+            'NamespaceCoverageProtectedTest',
+            range(27, 31)
+          ),
+          array(
+            'NamespaceCoveragePublicTest',
+            range(33, 37)
+          ),
+          array(
+            'NamespaceCoverageCoversClassTest',
+            array_merge(range(23, 25), range(27, 31), range(33, 37), range(6, 8), range(10, 13), range(15, 18))
+          ),
+          array(
+            'NamespaceCoverageCoversClassPublicTest',
+            range(33, 37)
+          ),
+          array(
+            'CoverageNothingTest',
+            false
+          )
+        );
     }
 }

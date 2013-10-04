@@ -42,8 +42,6 @@
  * @since      File available since Release 3.7.20
  */
 
-require_once dirname(dirname(dirname(__DIR__))) . '/PHPUnit/Framework/Assert/Functions.php';
-
 /**
  *
  *

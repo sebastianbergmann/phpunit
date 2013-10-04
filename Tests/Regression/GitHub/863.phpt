@@ -9,7 +9,7 @@ $_SERVER['argv'][3] = '50';
 $_SERVER['argv'][4] = 'BankAccountTest';
 $_SERVER['argv'][5] = dirname(dirname(dirname(__FILE__))) . '/_files/BankAccountTest.php';
 
-require_once dirname(dirname(dirname(dirname(__FILE__)))) . '/PHPUnit/Autoload.php';
+require __DIR__ . '/../../bootstrap.php';
 PHPUnit_TextUI_Command::main();
 ?>
 --EXPECTF--

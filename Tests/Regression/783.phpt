@@ -8,7 +8,7 @@ $_SERVER['argv'][3] = 'foo,bar';
 $_SERVER['argv'][4] = 'ParentSuite';
 $_SERVER['argv'][5] = dirname(__FILE__).'/783/ParentSuite.php';
 
-require_once dirname(dirname(dirname(__FILE__))) . '/PHPUnit/Autoload.php';
+require __DIR__ . '/../bootstrap.php';
 PHPUnit_TextUI_Command::main();
 ?>
 --EXPECTF--

@@ -44,8 +44,6 @@
  */
 
 /**
- * Exception for PHPUnit runtime errors.
- *
  * @package    PHPUnit
  * @subpackage Framework
  * @author     Sebastian Bergmann <sebastian@phpunit.de>
@@ -54,6 +52,6 @@
  * @link       http://www.phpunit.de/
  * @since      Class available since Release 3.4.0
  */
-class PHPUnit_Framework_Exception extends RuntimeException
+class PHPUnit_Framework_Exception extends RuntimeException implements PHPUnit_Exception
 {
 }

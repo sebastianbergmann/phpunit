@@ -42,8 +42,6 @@
  * @since      File available since Release 3.6.0
  */
 
-require_once dirname(__DIR__) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'ClassWithToString.php';
-
 class TestClass {}
 class TestClassComparator extends PHPUnit_Framework_Comparator_Object {}
 
@@ -85,6 +83,7 @@ class Framework_ComparatorTest extends PHPUnit_Framework_TestCase
             array(array(1), array(1), 'PHPUnit_Framework_Comparator_Array'),
             array($tmpfile, $tmpfile, 'PHPUnit_Framework_Comparator_Resource'),
             array(new stdClass, new stdClass, 'PHPUnit_Framework_Comparator_Object'),
+            array(new DateTime, new DateTime, 'PHPUnit_Framework_Comparator_DateTime'),
             array(new SplObjectStorage, new SplObjectStorage, 'PHPUnit_Framework_Comparator_SplObjectStorage'),
             array(new Exception, new Exception, 'PHPUnit_Framework_Comparator_Exception'),
             array(new DOMDocument, new DOMDocument, 'PHPUnit_Framework_Comparator_DOMDocument'),

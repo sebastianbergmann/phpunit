@@ -80,6 +80,8 @@ class PHPUnit_Framework_Constraint_StringContains extends PHPUnit_Framework_Cons
      */
     public function __construct($string, $ignoreCase = FALSE)
     {
+        parent::__construct();
+
         $this->string     = $string;
         $this->ignoreCase = $ignoreCase;
     }

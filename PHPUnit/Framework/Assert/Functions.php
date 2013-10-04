@@ -129,9 +129,10 @@ function assertArrayNotHasKey($key, $array, $message = '')
  * @param  string  $message
  * @param  boolean $ignoreCase
  * @param  boolean $checkForObjectIdentity
+ * @param  boolean $checkForNonObjectIdentity
  * @since  Method available since Release 3.0.0
  */
-function assertAttributeContains($needle, $haystackAttributeName, $haystackClassOrObject, $message = '', $ignoreCase = FALSE, $checkForObjectIdentity = TRUE)
+function assertAttributeContains($needle, $haystackAttributeName, $haystackClassOrObject, $message = '', $ignoreCase = FALSE, $checkForObjectIdentity = TRUE, $checkForNonObjectIdentity = FALSE)
 {
     return call_user_func_array(
       'PHPUnit_Framework_Assert::assertAttributeContains',
@@ -159,7 +160,7 @@ function assertAttributeContainsOnly($type, $haystackAttributeName, $haystackCla
 }
 
 /**
- * Asserts the number of elements of an array, Countable or Iterator
+ * Asserts the number of elements of an array, Countable or Traversable
  * that is stored in an attribute.
  *
  * @param integer $expectedCount
@@ -325,9 +326,10 @@ function assertAttributeLessThanOrEqual($expected, $actualAttributeName, $actual
  * @param  string  $message
  * @param  boolean $ignoreCase
  * @param  boolean $checkForObjectIdentity
+ * @param  boolean $checkForNonObjectIdentity
  * @since  Method available since Release 3.0.0
  */
-function assertAttributeNotContains($needle, $haystackAttributeName, $haystackClassOrObject, $message = '', $ignoreCase = FALSE, $checkForObjectIdentity = TRUE)
+function assertAttributeNotContains($needle, $haystackAttributeName, $haystackClassOrObject, $message = '', $ignoreCase = FALSE, $checkForObjectIdentity = TRUE, $checkForNonObjectIdentity = FALSE)
 {
     return call_user_func_array(
       'PHPUnit_Framework_Assert::assertAttributeNotContains',
@@ -356,7 +358,7 @@ function assertAttributeNotContainsOnly($type, $haystackAttributeName, $haystack
 }
 
 /**
- * Asserts the number of elements of an array, Countable or Iterator
+ * Asserts the number of elements of an array, Countable or Traversable
  * that is stored in an attribute.
  *
  * @param integer $expectedCount
@@ -550,9 +552,10 @@ function assertClassNotHasStaticAttribute($attributeName, $className, $message =
  * @param  string  $message
  * @param  boolean $ignoreCase
  * @param  boolean $checkForObjectIdentity
+ * @param  boolean $checkForNonObjectIdentity
  * @since  Method available since Release 2.1.0
  */
-function assertContains($needle, $haystack, $message = '', $ignoreCase = FALSE, $checkForObjectIdentity = TRUE)
+function assertContains($needle, $haystack, $message = '', $ignoreCase = FALSE, $checkForObjectIdentity = TRUE, $checkForNonObjectIdentity = FALSE)
 {
     return call_user_func_array(
       'PHPUnit_Framework_Assert::assertContains',
@@ -593,7 +596,7 @@ function assertContainsOnlyInstancesOf($classname, $haystack, $message = '')
 }
 
 /**
- * Asserts the number of elements of an array, Countable or Iterator.
+ * Asserts the number of elements of an array, Countable or Traversable.
  *
  * @param integer $expectedCount
  * @param mixed   $haystack
@@ -951,9 +954,10 @@ function assertLessThanOrEqual($expected, $actual, $message = '')
  * @param  string  $message
  * @param  boolean $ignoreCase
  * @param  boolean $checkForObjectIdentity
+ * @param  boolean $checkForNonObjectIdentity
  * @since  Method available since Release 2.1.0
  */
-function assertNotContains($needle, $haystack, $message = '', $ignoreCase = FALSE, $checkForObjectIdentity = TRUE)
+function assertNotContains($needle, $haystack, $message = '', $ignoreCase = FALSE, $checkForObjectIdentity = TRUE, $checkForNonObjectIdentity = FALSE)
 {
     return call_user_func_array(
       'PHPUnit_Framework_Assert::assertNotContains',
@@ -979,7 +983,7 @@ function assertNotContainsOnly($type, $haystack, $isNativeType = NULL, $message 
 }
 
 /**
- * Asserts the number of elements of an array, Countable or Iterator.
+ * Asserts the number of elements of an array, Countable or Traversable.
  *
  * @param integer $expectedCount
  * @param mixed   $haystack
@@ -1108,11 +1112,11 @@ function assertNotSame($expected, $actual, $message = '')
 }
 
 /**
- * Assert that the size of two arrays (or `Countable` or `Iterator` objects)
+ * Assert that the size of two arrays (or `Countable` or `Traversable` objects)
  * is not the same.
  *
- * @param array|Countable|Iterator $expected
- * @param array|Countable|Iterator $actual
+ * @param array|Countable|Traversable $expected
+ * @param array|Countable|Traversable $actual
  * @param string $message
  */
 function assertNotSameSize($expected, $actual, $message = '')
@@ -1224,11 +1228,11 @@ function assertSame($expected, $actual, $message = '')
 }
 
 /**
- * Assert that the size of two arrays (or `Countable` or `Iterator` objects)
+ * Assert that the size of two arrays (or `Countable` or `Traversable` objects)
  * is the same.
  *
- * @param array|Countable|Iterator $expected
- * @param array|Countable|Iterator $actual
+ * @param array|Countable|Traversable $expected
+ * @param array|Countable|Traversable $actual
  * @param string $message
  */
 function assertSameSize($expected, $actual, $message = '')
@@ -1873,10 +1877,11 @@ function classHasStaticAttribute($attributeName)
  *
  * @param  mixed   $value
  * @param  boolean $checkForObjectIdentity
+ * @param  boolean $checkForNonObjectIdentity
  * @return PHPUnit_Framework_Constraint_TraversableContains
  * @since  Method available since Release 3.0.0
  */
-function contains($value, $checkForObjectIdentity = TRUE)
+function contains($value, $checkForObjectIdentity = TRUE, $checkForNonObjectIdentity = FALSE)
 {
     return call_user_func_array(
       'PHPUnit_Framework_Assert::contains',
@@ -2261,8 +2266,6 @@ function objectHasAttribute($attributeName)
 }
 
 /**
- *
- *
  * @param  mixed $value, ...
  * @return PHPUnit_Framework_MockObject_Stub_ConsecutiveCalls
  * @since  Method available since Release 3.0.0

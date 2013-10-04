@@ -68,6 +68,7 @@ class PHPUnit_Framework_Constraint_JsonMatches extends PHPUnit_Framework_Constra
      */
     public function __construct($value)
     {
+        parent::__construct();
         $this->value = $value;
     }
 

@@ -6,7 +6,7 @@ $_SERVER['argv'][1] = '--no-configuration';
 $_SERVER['argv'][2] = 'Issue578Test';
 $_SERVER['argv'][3] = dirname(__FILE__).'/578/Issue578Test.php';
 
-require_once dirname(dirname(dirname(__FILE__))) . '/PHPUnit/Autoload.php';
+require __DIR__ . '/../bootstrap.php';
 PHPUnit_TextUI_Command::main();
 ?>
 --EXPECTF--

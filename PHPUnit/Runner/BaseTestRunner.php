@@ -104,7 +104,7 @@ abstract class PHPUnit_Runner_BaseTestRunner
             );
         }
 
-        catch (Exception $e) {
+        catch (PHPUnit_Framework_Exception $e) {
             $this->runFailed($e->getMessage());
             return NULL;
         }

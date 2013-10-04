@@ -213,6 +213,22 @@ class PHPUnit_Util_GlobalState
         return $result;
     }
 
+    public static function getIniSettingsAsString()
+    {
+        $result      = '';
+        $iniSettings = ini_get_all(null, FALSE);
+
+        foreach ($iniSettings as $key => $value) {
+            $result .= sprintf(
+              '@ini_set(%s, %s);' . "\n",
+              self::exportVariable($key),
+              self::exportVariable($value)
+            );
+        }
+
+        return $result;
+    }
+
     public static function getConstantsAsString()
     {
         $constants = get_defined_constants(TRUE);
@@ -394,6 +410,9 @@ class PHPUnit_Util_GlobalState
             self::addDirectoryContainingClassToPHPUnitFilesList('PHPUnit_Extensions_SeleniumTestCase', 2);
             self::addDirectoryContainingClassToPHPUnitFilesList('PHPUnit_Extensions_Story_TestCase', 2);
             self::addDirectoryContainingClassToPHPUnitFilesList('Text_Template');
+            self::addDirectoryContainingClassToPHPUnitFilesList('SebastianBergmann\Diff');
+            self::addDirectoryContainingClassToPHPUnitFilesList('SebastianBergmann\Exporter\Exporter');
+            self::addDirectoryContainingClassToPHPUnitFilesList('SebastianBergmann\Version');
         }
 
         return self::$phpunitFiles;

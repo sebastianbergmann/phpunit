@@ -6,7 +6,7 @@ define('PHPUNIT_TESTSUITE', TRUE);
 
 $_SERVER['argv'][1] = '--no-configuration';
 
-require_once dirname(dirname(dirname(__FILE__))) . '/PHPUnit/Autoload.php';
+require __DIR__ . '/../bootstrap.php';
 PHPUnit_TextUI_Command::main();
 ?>
 --EXPECTF--
@@ -20,10 +20,12 @@ Usage: phpunit [switches] UnitTest [UnitTest.php]
   --log-json <file>         Log test execution in JSON format.
 
   --coverage-clover <file>  Generate code coverage report in Clover XML format.
+  --coverage-crap4j <file>  Generate code coverage report in Crap4J XML format.
   --coverage-html <dir>     Generate code coverage report in HTML format.
-  --coverage-php <file>     Serialize PHP_CodeCoverage object to file.
+  --coverage-php <file>     Export PHP_CodeCoverage object to file.
   --coverage-text=<file>    Generate code coverage report in text format.
-                            Default to writing to the standard output.
+                            Default: Standard output.
+  --coverage-xml <dir>      Generate code coverage report in PHPUnit XML format.
 
   --testdox-html <file>     Write agile documentation in HTML format to file.
   --testdox-text <file>     Write agile documentation in Text format to file.

@@ -11,7 +11,7 @@ $_SERVER['argv'][5] = 'one';
 $_SERVER['argv'][6] = 'Issue322Test';
 $_SERVER['argv'][7] = dirname(__FILE__).'/322/Issue322Test.php';
 
-require_once dirname(dirname(dirname(dirname(__FILE__)))) . '/PHPUnit/Autoload.php';
+require __DIR__ . '/../../bootstrap.php';
 PHPUnit_TextUI_Command::main();
 ?>
 --EXPECTF--

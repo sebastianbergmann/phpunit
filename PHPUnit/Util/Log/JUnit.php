@@ -294,40 +294,6 @@ class PHPUnit_Util_Log_JUnit extends PHPUnit_Util_Printer implements PHPUnit_Fra
                 $class = new ReflectionClass($suite->getName());
 
                 $testSuite->setAttribute('file', $class->getFileName());
-
-                $packageInformation = PHPUnit_Util_Class::getPackageInformation(
-                  $suite->getName(), $class->getDocComment()
-                );
-
-                if (!empty($packageInformation['namespace'])) {
-                    $testSuite->setAttribute(
-                      'namespace', $packageInformation['namespace']
-                    );
-                }
-
-                if (!empty($packageInformation['fullPackage'])) {
-                    $testSuite->setAttribute(
-                      'fullPackage', $packageInformation['fullPackage']
-                    );
-                }
-
-                if (!empty($packageInformation['category'])) {
-                    $testSuite->setAttribute(
-                      'category', $packageInformation['category']
-                    );
-                }
-
-                if (!empty($packageInformation['package'])) {
-                    $testSuite->setAttribute(
-                      'package', $packageInformation['package']
-                    );
-                }
-
-                if (!empty($packageInformation['subpackage'])) {
-                    $testSuite->setAttribute(
-                      'subpackage', $packageInformation['subpackage']
-                    );
-                }
             }
 
             catch (ReflectionException $e) {

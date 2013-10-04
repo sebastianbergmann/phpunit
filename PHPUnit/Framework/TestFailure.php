@@ -139,7 +139,7 @@ class PHPUnit_Framework_TestFailure
     /**
      * Gets the failed test.
      *
-     * @return Test
+     * @return PHPUnit_Framework_Test
      */
     public function failedTest()
     {

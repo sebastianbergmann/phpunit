@@ -35,50 +35,23 @@
  * POSSIBILITY OF SUCH DAMAGE.
  *
  * @package    PHPUnit
+ * @subpackage Runner
  * @author     Sebastian Bergmann <sebastian@phpunit.de>
- * @author     Ben Selby <benmatselby@gmail.com>
  * @copyright  2001-2013 Sebastian Bergmann <sebastian@phpunit.de>
  * @license    http://www.opensource.org/licenses/BSD-3-Clause  The BSD 3-Clause License
  * @link       http://www.phpunit.de/
- * @since      File available since Release 3.5.6
+ * @since      File available since Release 3.8.0
  */
-
-require_once 'PHPUnit/Framework/TestCase.php';
-
-require_once 'PHPUnit/Util/Class.php';
 
 /**
- *
- *
  * @package    PHPUnit
+ * @subpackage Runner
  * @author     Sebastian Bergmann <sebastian@phpunit.de>
- * @author     Ben Selby <benmatselby@gmail.com>
  * @copyright  2001-2013 Sebastian Bergmann <sebastian@phpunit.de>
  * @license    http://www.opensource.org/licenses/BSD-3-Clause  The BSD 3-Clause License
  * @link       http://www.phpunit.de/
- * @since      Class available since Release 3.5.6
+ * @since      Class available since Release 3.8.0
  */
-class Util_ClassTest extends PHPUnit_Framework_TestCase
+class PHPUnit_Runner_Exception extends RuntimeException implements PHPUnit_Exception
 {
-    /**
-     * Test that if a dynamic variable is defined on a class then
-     * the $attribute variable will be NULL, but the variable defined
-     * will be a public one so we are safe to return it
-     *
-     * Currently $attribute is NULL but we try and call isPublic() on it.
-     * This breaks for php 5.2.10
-     *
-     * @covers PHPUnit_Util_Class::getObjectAttribute
-     *
-     * @return void
-     */
-    public function testGetObjectAttributeCanHandleDynamicVariables()
-    {
-        $attributeName = '_variable';
-        $object = new stdClass();
-        $object->$attributeName = 'Test';
-
-        $actual = PHPUnit_Util_Class::getObjectAttribute($object, $attributeName);
-        $this->assertEquals('Test', $actual);
-    }
 }

@@ -71,6 +71,7 @@ class PHPUnit_Framework_Constraint_ClassHasAttribute extends PHPUnit_Framework_C
      */
     public function __construct($attributeName)
     {
+        parent::__construct();
         $this->attributeName = $attributeName;
     }
 

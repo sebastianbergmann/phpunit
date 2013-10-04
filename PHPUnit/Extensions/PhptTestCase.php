@@ -162,6 +162,7 @@ class PHPUnit_Extensions_PhptTestCase implements PHPUnit_Framework_Test, PHPUnit
 
         PHP_Timer::start();
 
+        $runner->_php = escapeshellarg(PHP_BINARY);
         $buffer = $runner->run($this->filename, $options);
         $time   = PHP_Timer::stop();
 

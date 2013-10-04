@@ -226,8 +226,8 @@ class Util_ConfigurationTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(
           array(
             'charset' => 'UTF-8',
-            'lowUpperBound' => '35',
-            'highLowerBound' => '70',
+            'lowUpperBound' => '50',
+            'highLowerBound' => '90',
             'highlight' => FALSE,
             'coverage-html' => '/tmp/report',
             'coverage-clover' => '/tmp/clover.xml',

@@ -131,7 +131,7 @@
  *   <logging>
  *     <log type="coverage-html" target="/tmp/report"
             charset="UTF-8" highlight="false"
- *          lowUpperBound="35" highLowerBound="70"/>
+ *          lowUpperBound="50" highLowerBound="90"/>
  *     <log type="coverage-clover" target="/tmp/clover.xml"/>
  *     <log type="json" target="/tmp/logfile.json"/>
  *     <log type="plain" target="/tmp/logfile.txt"/>
@@ -139,6 +139,7 @@
  *     <log type="junit" target="/tmp/logfile.xml" logIncompleteSkipped="false"/>
  *     <log type="testdox-html" target="/tmp/testdox.html"/>
  *     <log type="testdox-text" target="/tmp/testdox.txt"/>
+ *     <log type="coverage-crap4j" target="/tmp/crap.xml"/>
  *   </logging>
  *
  *   <php>
@@ -440,6 +441,12 @@ class PHPUnit_Util_Configuration
                       FALSE
                     );
                 }
+                if ($log->hasAttribute('showOnlySummary')) {
+                    $result['coverageTextShowOnlySummary'] = $this->getBoolean(
+                      (string)$log->getAttribute('showOnlySummary'),
+                      FALSE
+                    );
+                }
             }
 
             $result[$type] = $target;
@@ -673,8 +680,8 @@ class PHPUnit_Util_Configuration
         }
 
         if ($root->hasAttribute('testSuiteLoaderFile')) {
-            $result['testSuiteLoaderFile'] = (string)$root->getAttribute(
-              'testSuiteLoaderFile'
+            $result['testSuiteLoaderFile'] = $this->toAbsolutePath(
+              (string)$root->getAttribute('testSuiteLoaderFile')
             );
         }
 
@@ -685,8 +692,8 @@ class PHPUnit_Util_Configuration
         }
 
         if ($root->hasAttribute('printerFile')) {
-            $result['printerFile'] = (string)$root->getAttribute(
-              'printerFile'
+            $result['printerFile'] = $this->toAbsolutePath(
+              (string)$root->getAttribute('printerFile')
             );
         }
 
@@ -820,7 +827,9 @@ class PHPUnit_Util_Configuration
         $exclude = array();
 
         foreach ($testSuiteNode->getElementsByTagName('exclude') as $excludeNode) {
-            $exclude[] = (string)$excludeNode->nodeValue;
+            $exclude[] = $this->toAbsolutePath(
+              (string)$excludeNode->nodeValue
+            );
         }
 
         $fileIteratorFacade = new File_Iterator_Facade;
@@ -885,7 +894,9 @@ class PHPUnit_Util_Configuration
             }
 
             // Get the absolute path to the file
-            $file = $fileIteratorFacade->getFilesAsArray($file);
+            $file = $fileIteratorFacade->getFilesAsArray(
+              $this->toAbsolutePath($file)
+            );
 
             if (!isset($file[0])) {
                 continue;

@@ -92,7 +92,7 @@ class PHPUnit_Framework_Constraint_IsJson extends PHPUnit_Framework_Constraint
         return sprintf(
           '%s is valid JSON (%s)',
 
-          PHPUnit_Util_Type::shortenedExport($other),
+          $this->exporter->shortenedExport($other),
           $error
         );
     }

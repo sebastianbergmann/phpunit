@@ -57,6 +57,11 @@
 class PHPUnit_Util_XML
 {
     /**
+     * Escapes a string for the use in XML documents
+     * Any Unicode character is allowed, excluding the surrogate blocks, FFFE,
+     * and FFFF (not even as character reference).
+     * See http://www.w3.org/TR/xml/#charsets
+     *
      * @param  string $string
      * @return string
      * @author Kore Nordmann <mail@kore-nordmann.de>
@@ -64,14 +69,11 @@ class PHPUnit_Util_XML
      */
     public static function prepareString($string)
     {
-        return preg_replace_callback(
-          '/[\\x00-\\x04\\x0b\\x0c\\x0e-\\x1f\\x7f]/',
-          function ($matches)
-          {
-              return sprintf('&#x%02x;', ord($matches[0]));
-          },
+        return preg_replace(
+          '/[\\x00-\\x08\\x0b\\x0c\\x0e-\\x1f\\x7f]/',
+          '',
           htmlspecialchars(
-            PHPUnit_Util_String::convertToUtf8($string), ENT_COMPAT, 'UTF-8'
+            PHPUnit_Util_String::convertToUtf8($string), ENT_QUOTES, 'UTF-8'
           )
         );
     }
@@ -370,6 +372,12 @@ class PHPUnit_Util_XML
                 continue;
             }
 
+            // adjacent-sibling selector
+            if ($element == '+') {
+                $previousTag = array('adjacent-sibling' => $previousTag['descendant']);
+                continue;
+            }
+
             $tag = array();
 
             // match element tag
@@ -450,6 +458,11 @@ class PHPUnit_Util_XML
                 $tag['child'] = $previousTag['child'];
             }
 
+            else if (!empty($previousTag['adjacent-sibling'])) {
+                $tag['adjacent-sibling'] = $previousTag['adjacent-sibling'];
+                unset($tag['content']);
+            }
+
             $previousTag = array('descendant' => $tag);
         }
 
@@ -472,7 +485,7 @@ class PHPUnit_Util_XML
      * @param  string  $content
      * @param  mixed   $actual
      * @param  boolean $isHtml
-     * @return false|array
+     * @return boolean|array
      * @since  Method available since Release 3.3.0
      * @author Mike Naberezny <mike@maintainable.com>
      * @author Derek DeVries <derek@maintainable.com>
@@ -503,7 +516,7 @@ class PHPUnit_Util_XML
     {
         $valid = array(
           'id', 'class', 'tag', 'content', 'attributes', 'parent',
-          'child', 'ancestor', 'descendant', 'children'
+          'child', 'ancestor', 'descendant', 'children', 'adjacent-sibling'
         );
 
         $filtered = array();
@@ -550,7 +563,13 @@ class PHPUnit_Util_XML
               'option', 'p', 'param', 'pre', 'q', 'samp', 'script', 'select',
               'small', 'span', 'strong', 'style', 'sub', 'sup', 'table',
               'tbody', 'td', 'textarea', 'tfoot', 'th', 'thead', 'title',
-              'tr', 'tt', 'ul', 'var'
+              'tr', 'tt', 'ul', 'var',
+              // HTML5
+              'article', 'aside', 'audio', 'bdi', 'canvas', 'command',
+              'datalist', 'details', 'dialog', 'embed', 'figure', 'figcaption',
+              'footer', 'header', 'hgroup', 'keygen', 'mark', 'meter', 'nav',
+              'output', 'progress', 'ruby', 'rt', 'rp', 'track', 'section',
+              'source', 'summary', 'time', 'video', 'wbr'
             );
 
             foreach ($tags as $tag) {
@@ -708,6 +727,38 @@ class PHPUnit_Util_XML
             }
         }
 
+        // filter by adjacent-sibling
+        if ($options['adjacent-sibling']) {
+            $adjacentSiblingNodes = self::findNodes($dom, $options['adjacent-sibling'], $isHtml);
+            $adjacentSiblingNodes = !empty($adjacentSiblingNodes) ? $adjacentSiblingNodes : array();
+
+            foreach ($nodes as $node) {
+                $sibling = $node;
+
+                while ($sibling = $sibling->nextSibling) {
+                    if ($sibling->nodeType !== XML_ELEMENT_NODE) {
+                        continue;
+                    }
+
+                    foreach ($adjacentSiblingNodes as $adjacentSiblingNode) {
+                        if ($sibling === $adjacentSiblingNode) {
+                            $filtered[] = $node;
+                            break;
+                        }
+                    }
+
+                    break;
+                }
+            }
+
+            $nodes    = $filtered;
+            $filtered = array();
+
+            if (empty($nodes)) {
+                return FALSE;
+            }
+        }
+
         // filter by ancestor
         if ($options['ancestor']) {
             $ancestorNodes = self::findNodes($dom, $options['ancestor'], $isHtml);
@@ -822,7 +873,7 @@ class PHPUnit_Util_XML
                             }
 
                             if (!$matched) {
-                                break(2);
+                                break 2;
                             }
                         }
                     }
@@ -831,8 +882,7 @@ class PHPUnit_Util_XML
                 }
             }
 
-            $nodes    = $filtered;
-            $filtered = array();
+            $nodes = $filtered;
 
             if (empty($nodes)) {
                 return;

@@ -2,12 +2,10 @@
 
 PHPUnit is the de-facto standard for unit testing in PHP projects. It provides both a framework that makes the writing of tests easy as well as the functionality to easily run the tests and analyse their results.
 
-[![Build Status](https://travis-ci.org/sebastianbergmann/phpunit.png?branch=3.7)](https://travis-ci.org/sebastianbergmann/phpunit)
-
 ## Requirements
 
-* PHPUnit 3.7 requires PHP 5.3.3 (or later) but PHP 5.4.6 (or later) is highly recommended.
-* [PHP_CodeCoverage](http://github.com/sebastianbergmann/php-code-coverage), the library that is used by PHPUnit to collect and process code coverage information, depends on [Xdebug](http://xdebug.org/) 2.0.5 (or later) but Xdebug 2.2.1 (or later) is highly recommended.
+* PHPUnit 3.8 requires PHP 5.4.7 (or later).
+* [PHP_CodeCoverage](http://github.com/sebastianbergmann/php-code-coverage), the library that is used by PHPUnit to collect and process code coverage information, depends on [Xdebug](http://xdebug.org/) 2.2.1 (or later).
 
 ## Installation
 
@@ -51,26 +49,30 @@ The following two commands (which you may have to run as `root`) are all that is
 
 The documentation for PHPUnit is available in different formats:
 
-* [English, multiple HTML files](http://www.phpunit.de/manual/3.7/en/index.html)
-* [English, single HTML file](http://www.phpunit.de/manual/3.7/en/phpunit-book.html)
-* [English, PDF](http://www.phpunit.de/manual/3.7/en/phpunit-book.pdf)
-* [English, ePub](http://www.phpunit.de/manual/3.7/en/phpunit-book.epub)
-* [Brazilian Portuguese, multiple HTML files](http://www.phpunit.de/manual/3.7/pt_br/index.html)
-* [Brazilian Portuguese, single HTML file](http://www.phpunit.de/manual/3.7/pt_br/phpunit-book.html)
-* [Brazilian Portuguese, PDF](http://www.phpunit.de/manual/3.7/pt_br/phpunit-book.pdf)
-* [Brazilian Portuguese, ePub](http://www.phpunit.de/manual/3.7/pt_br/phpunit-book.epub)
-* [French, multiple HTML files](http://www.phpunit.de/manual/3.7/fr/index.html)
-* [French, single HTML file](http://www.phpunit.de/manual/3.7/fr/phpunit-book.html)
-* [French, PDF](http://www.phpunit.de/manual/3.7/fr/phpunit-book.pdf)
-* [French, ePub](http://www.phpunit.de/manual/3.7/fr/phpunit-book.epub)
-* [Japanese, multiple HTML files](http://www.phpunit.de/manual/3.7/ja/index.html)
-* [Japanese, single HTML file](http://www.phpunit.de/manual/3.7/ja/phpunit-book.html)
-* [Japanese, PDF](http://www.phpunit.de/manual/3.7/ja/phpunit-book.pdf)
-* [Japanese, ePub](http://www.phpunit.de/manual/3.7/ja/phpunit-book.epub)
-* [Simplified Chinese, multiple HTML files](http://www.phpunit.de/manual/3.7/zh_cn/index.html)
-* [Simplified Chinese, single HTML file](http://www.phpunit.de/manual/3.7/zh_cn/phpunit-book.html)
-* [Simplified Chinese, PDF](http://www.phpunit.de/manual/3.7/zh_cn/phpunit-book.pdf)
-* [Simplified Chinese, ePub](http://www.phpunit.de/manual/3.7/zh_cn/phpunit-book.epub)
+* [English, multiple HTML files](http://www.phpunit.de/manual/current/en/index.html)
+* [English, single HTML file](http://www.phpunit.de/manual/current/en/phpunit-book.html)
+* [English, PDF](http://www.phpunit.de/manual/current/en/phpunit-book.pdf)
+* [English, ePub](http://www.phpunit.de/manual/current/en/phpunit-book.epub)
+* [Brazilian Portuguese, multiple HTML files](http://www.phpunit.de/manual/current/pt_br/index.html)
+* [Brazilian Portuguese, single HTML file](http://www.phpunit.de/manual/current/pt_br/phpunit-book.html)
+* [Brazilian Portuguese, PDF](http://www.phpunit.de/manual/current/pt_br/phpunit-book.pdf)
+* [Brazilian Portuguese, ePub](http://www.phpunit.de/manual/current/pt_br/phpunit-book.epub)
+* [French, multiple HTML files](http://www.phpunit.de/manual/current/fr/index.html)
+* [French, single HTML file](http://www.phpunit.de/manual/current/fr/phpunit-book.html)
+* [French, PDF](http://www.phpunit.de/manual/current/fr/phpunit-book.pdf)
+* [French, ePub](http://www.phpunit.de/manual/current/fr/phpunit-book.epub)
+* [Japanese, multiple HTML files](http://www.phpunit.de/manual/current/ja/index.html)
+* [Japanese, single HTML file](http://www.phpunit.de/manual/current/ja/phpunit-book.html)
+* [Japanese, PDF](http://www.phpunit.de/manual/current/ja/phpunit-book.pdf)
+* [Japanese, ePub](http://www.phpunit.de/manual/current/ja/phpunit-book.epub)
+* [Simplified Chinese, multiple HTML files](http://www.phpunit.de/manual/current/zh_cn/index.html)
+* [Simplified Chinese, single HTML file](http://www.phpunit.de/manual/current/zh_cn/phpunit-book.html)
+* [Simplified Chinese, PDF](http://www.phpunit.de/manual/current/zh_cn/phpunit-book.pdf)
+* [Simplified Chinese, ePub](http://www.phpunit.de/manual/current/zh_cn/phpunit-book.epub)
+
+## API Documentation
+
+The [API documentation](http://apidoc.phpunit.de/) is generated using [phpDox](http://phpdox.de/).
 
 ## Mailing Lists
 
