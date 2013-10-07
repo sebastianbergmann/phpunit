@@ -889,7 +889,7 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
             );
         }
 
-        ob_end_clean();
+        if (ob_get_contents()) ob_end_clean();
         $this->outputBufferingActive = FALSE;
 
         // Clean up stat cache.
