@@ -651,6 +651,8 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
             // strings
             array('a', 'b'),
             array('a', 'A'),
+            // https://github.com/sebastianbergmann/phpunit/issues/1023
+            array('9E6666666','9E7777777'),
             // integers
             array(1, 2),
             array(2, 1),

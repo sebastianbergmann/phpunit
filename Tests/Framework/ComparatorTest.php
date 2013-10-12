@@ -73,7 +73,7 @@ class Framework_ComparatorTest extends PHPUnit_Framework_TestCase
             array(TRUE, FALSE, 'PHPUnit_Framework_Comparator_Scalar'),
             array(FALSE, TRUE, 'PHPUnit_Framework_Comparator_Scalar'),
             array('', '', 'PHPUnit_Framework_Comparator_Scalar'),
-            array('0', '0', 'PHPUnit_Framework_Comparator_Numeric'),
+            array('0', '0', 'PHPUnit_Framework_Comparator_Scalar'),
             array('0', 0, 'PHPUnit_Framework_Comparator_Numeric'),
             array(0, '0', 'PHPUnit_Framework_Comparator_Numeric'),
             array(0, 0, 'PHPUnit_Framework_Comparator_Numeric'),
