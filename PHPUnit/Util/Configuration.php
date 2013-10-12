@@ -1023,19 +1023,26 @@ class PHPUnit_Util_Configuration
      */
     protected function toAbsolutePath($path, $useIncludePath = FALSE)
     {
-        // Check if this is a Windows path of either UNC or full path with
-        //   drive letter.
-        // No one should really be defining this except maybe in an odd-case
-        //   unit test that's not run on Windows.
-        // A / is allowed here like POSIX because it will get converted to \
-        //  internally.
-        if ($path[0] === '/') { // POSIX and Windows
+        if ($path[0] === '/') {
             return $path;
-        } else if (defined('PHP_WINDOWS_VERSION_BUILD') &&
-                   ($path[0] === '\\' || // UNC path, \\?\ path or \\.\d: type path
-                   (strlen($path) >= 3 && preg_match('#^[A-Z]\:[/\\\]#i', substr($path, 0, 3))))) {
+        }
+
+        // Matches the following on Windows:
+        //  - \\NetworkComputer\Path
+        //  - \\.\D:
+        //  - \\.\c:
+        //  - C:\Windows
+        //  - C:\windows
+        //  - C:/windows
+        //  - c:/windows
+        if (defined('PHP_WINDOWS_VERSION_BUILD') &&
+            ($path[0] === '\\' ||
+            (strlen($path) >= 3 && preg_match('#^[A-Z]\:[/\\\]#i', substr($path, 0, 3))))) {
             return $path;
-        } else if (strpos($path, '://') !== FALSE) { // Stream
+        }
+
+        // Stream
+        if (strpos($path, '://') !== FALSE) {
             return $path;
         }
 
