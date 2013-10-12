@@ -59,12 +59,12 @@ class PHPUnit_Framework_TestResult implements Countable
     /**
      * @var boolean
      */
-    protected static $xdebugLoaded = NULL;
+    protected static $isHHVM = NULL;
 
     /**
      * @var boolean
      */
-    protected static $useXdebug = NULL;
+    protected static $xdebugLoaded = NULL;
 
     /**
      * @var array
@@ -660,17 +660,21 @@ class PHPUnit_Framework_TestResult implements Countable
             }
         }
 
-        if (self::$xdebugLoaded === NULL) {
-            self::$xdebugLoaded = extension_loaded('xdebug');
-            self::$useXdebug    = self::$xdebugLoaded;
+        if (self::$isHHVM === NULL) {
+            self::$isHHVM = function_exists('fb_enable_code_coverage');
         }
 
-        $useXdebug = self::$useXdebug &&
-                     $this->codeCoverage !== NULL &&
-                     !$test instanceof PHPUnit_Extensions_SeleniumTestCase &&
-                     !$test instanceof PHPUnit_Framework_Warning;
+        if (self::$xdebugLoaded === NULL) {
+            self::$xdebugLoaded = extension_loaded('xdebug');
+        }
 
-        if ($useXdebug) {
+        $canCollectCodeCoverage = self::$isHHVM || self::$xdebugLoaded;
+        $collectCodeCoverage    = $canCollectCodeCoverage &&
+                                  $this->codeCoverage !== NULL &&
+                                  !$test instanceof PHPUnit_Extensions_SeleniumTestCase &&
+                                  !$test instanceof PHPUnit_Framework_Warning;
+
+        if ($collectCodeCoverage) {
             // We need to blacklist test source files when no whitelist is used.
             if (!$this->codeCoverage->filter()->hasWhitelist()) {
                 $classes = $this->getHierarchy(get_class($test), TRUE);
@@ -743,7 +747,7 @@ class PHPUnit_Framework_TestResult implements Countable
             $risky = TRUE;
         }
 
-        if ($useXdebug) {
+        if ($collectCodeCoverage) {
             $append           = !$risky && !$incomplete && !$skipped;
             $linesToBeCovered = array();
             $linesToBeUsed    = array();
