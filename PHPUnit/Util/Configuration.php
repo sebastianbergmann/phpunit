@@ -1016,20 +1016,15 @@ class PHPUnit_Util_Configuration
         //   drive letter.
         // No one should really be defining this except maybe in an odd-case
         //   unit test that's not run on Windows.
-        if (defined('PHP_WINDOWS_VERSION_BUILD')) {
-            if ($path[0] === '\\' || // UNC path or \\.\d: type path
-                (strlen($path) >= 3 && preg_match('#^[A-Z]\:[/\\\]#i', substr($path, 0, 3)))) {
-                return $path;
-            }
-        }
-
-        // Check whether the path is already absolute (POSIX).
-        if ($path[0] === '/') {
+        // A / is allowed here like POSIX because it will get converted to \
+        //  internally.
+        if ($path[0] === '/') { // POSIX and Windows
             return $path;
-        }
-
-        // Check whether a stream is used.
-        if (strpos($path, '://') !== FALSE) {
+        } else if (defined('PHP_WINDOWS_VERSION_BUILD') &&
+                   ($path[0] === '\\' || // UNC path, \\?\ path or \\.\d: type path
+                   (strlen($path) >= 3 && preg_match('#^[A-Z]\:[/\\\]#i', substr($path, 0, 3))))) {
+            return $path;
+        } else if (strpos($path, '://') !== FALSE) { // Stream
             return $path;
         }
 
