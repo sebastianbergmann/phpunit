@@ -201,8 +201,8 @@ class PHPUnit_Util_GlobalState
         for ($i = count($files) - 1; $i > 0; $i--) {
             $file = $files[$i];
 
-            if ($prefix !== FALSE) {
-                $file = str_replace($prefix, '', $file);
+            if ($prefix !== FALSE && strpos($file, $prefix) === 0) {
+                continue;
             }
 
             if (!isset($blacklist[$file]) && is_file($file)) {
@@ -383,6 +383,7 @@ class PHPUnit_Util_GlobalState
     public static function phpunitFiles()
     {
         if (self::$phpunitFiles === NULL) {
+            self::$phpunitFiles = array();
             self::addDirectoryContainingClassToPHPUnitFilesList('File_Iterator');
             self::addDirectoryContainingClassToPHPUnitFilesList('PHP_CodeCoverage');
             self::addDirectoryContainingClassToPHPUnitFilesList('PHP_Invoker');
