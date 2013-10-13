@@ -1,11 +1,13 @@
 #!/usr/bin/env php
 <?php
 if ($GLOBALS['_SERVER']['SCRIPT_NAME'] != '-') {
-    define('__PHPUNIT_PHAR__', realpath($GLOBALS['_SERVER']['SCRIPT_NAME']));
+    $phar = realpath($GLOBALS['_SERVER']['SCRIPT_NAME']);
 } else {
     $files = get_included_files();
-    define('__PHPUNIT_PHAR__', $files[0]);
+    $phar = $files[0];
 }
+
+define('__PHPUNIT_PHAR__', str_replace(DIRECTORY_SEPARATOR, '/', $phar));
 
 spl_autoload_register(
   function ($class)
