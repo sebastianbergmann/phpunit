@@ -87,6 +87,11 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
     private $missingExtensions = array();
 
     /**
+     * @var boolean
+     */
+    private $canCollectCodeCoverage;
+
+    /**
      * @param PHPUnit_Runner_TestSuiteLoader $loader
      * @param PHP_CodeCoverage_Filter        $filter
      * @since Method available since Release 3.4.0
@@ -99,6 +104,9 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
 
         $this->codeCoverageFilter = $filter;
         $this->loader             = $loader;
+
+        $this->canCollectCodeCoverage = function_exists('fb_enable_code_coverage') ||
+                                        extension_loaded('xdebug');
     }
 
     /**
@@ -300,7 +308,7 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
 
         $codeCoverageReports = 0;
 
-        if (extension_loaded('tokenizer') && extension_loaded('xdebug')) {
+        if (extension_loaded('tokenizer') && $this->canCollectCodeCoverage) {
             if (isset($arguments['coverageClover'])) {
                 $codeCoverageReports++;
             }
@@ -847,7 +855,7 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
                 isset($arguments['coverageHtml']) ||
                 isset($arguments['coveragePHP'])) ||
                 isset($arguments['coverageText']) &&
-                extension_loaded('xdebug')) {
+                $this->canCollectCodeCoverage) {
 
                 $filterConfiguration = $arguments['configuration']->getFilterConfiguration();
                 $arguments['addUncoveredFilesFromWhitelist'] = $filterConfiguration['whitelist']['addUncoveredFilesFromWhitelist'];
