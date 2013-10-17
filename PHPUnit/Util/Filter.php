@@ -107,7 +107,7 @@ class PHPUnit_Util_Filter
         foreach ($eTrace as $frame) {
             if (isset($frame['file']) && is_file($frame['file']) &&
                 !isset($blacklist[$frame['file']]) &&
-                strpos($frame['file'], $prefix) !== 0 &&
+                ($prefix === FALSE || strpos($frame['file'], $prefix) !== 0) &&
                 $frame['file'] !== $script) {
                 if ($asString === TRUE) {
                     $filteredStacktrace .= sprintf(
