@@ -378,9 +378,10 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
             $this->writeWithColor(
               'fg-black, bg-yellow',
               sprintf(
-                "OK, but incomplete or skipped tests!\n" .
+                "%sOK, but incomplete or skipped tests!\n" .
                 'Tests: %d, Assertions: %d%s%s.',
 
+                $this->verbose ? "\n" : '',
                 count($result),
                 $this->numAssertions,
                 $this->getCountString(
