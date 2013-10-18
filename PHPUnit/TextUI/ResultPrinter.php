@@ -166,44 +166,40 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
     {
         $this->printHeader();
 
-        if ($result->errorCount() > 0) {
-            $this->printErrors($result);
+        $this->printErrors($result);
+        $printSeparator = $result->errorCount() > 0;
+
+        if ($printSeparator && $result->failureCount() > 0) {
+            $this->write("\n--\n\n");
         }
 
-        if ($result->failureCount() > 0) {
-            if ($result->errorCount() > 0) {
-                print "\n--\n\n";
-            }
-
-            $this->printFailures($result);
-        }
+        $printSeparator = $printSeparator || $result->failureCount() > 0;
+        $this->printFailures($result);
 
         if ($this->verbose) {
-            if ($result->deprecatedFeaturesCount() > 0) {
-                if ($result->failureCount() > 0) {
-                    print "\n--\n\nDeprecated PHPUnit features are being used";
-                }
-
-                foreach ($result->deprecatedFeatures() as $deprecatedFeature) {
-                    $this->write($deprecatedFeature . "\n\n");
-                }
+            if ($printSeparator && $result->deprecatedFeaturesCount() > 0) {
+                $this->write("\n--\n\n");
             }
 
-            if ($result->notImplementedCount() > 0) {
-                if ($result->failureCount() > 0) {
-                    print "\n--\n\n";
-                }
+            $printSeparator = $printSeparator ||
+                              $result->deprecatedFeaturesCount() > 0;
 
-                $this->printIncompletes($result);
+            $this->printDeprecated($result);
+
+            if ($printSeparator && $result->notImplementedCount() > 0) {
+                $this->write("\n--\n\n");
             }
 
-            if ($result->skippedCount() > 0) {
-                if ($result->notImplementedCount() > 0) {
-                    print "\n--\n\n";
-                }
+            $printSeparator = $printSeparator ||
+                              $result->notImplementedCount() > 0;
 
-                $this->printSkipped($result);
+            $this->printIncompletes($result);
+
+            if ($printSeparator && $result->skippedCount() > 0) {
+                $this->write("\n--\n\n");
             }
+
+            $this->printSkipped($result);
         }
 
         $this->printFooter($result);
@@ -211,12 +207,11 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
 
     /**
      * @param  array   $defects
-     * @param  integer $count
      * @param  string  $type
      */
-    protected function printDefects(array $defects, $count, $type)
+    protected function printDefects(array $defects, $type)
     {
-        static $called = FALSE;
+        $count = count($defects);
 
         if ($count == 0) {
             return;
@@ -224,9 +219,8 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
 
         $this->write(
           sprintf(
-            "%sThere %s %d %s%s:\n",
+            "There %s %d %s%s:\n",
 
-            $called ? "\n" : '',
             ($count == 1) ? 'was' : 'were',
             $count,
             $type,
@@ -239,8 +233,6 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
         foreach ($defects as $defect) {
             $this->printDefect($defect, $i++);
         }
-
-        $called = TRUE;
     }
 
     /**
@@ -282,12 +274,15 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
      */
     protected function printDefectTrace(PHPUnit_Framework_TestFailure $defect)
     {
-        $this->write(
-          $defect->getExceptionAsString() . "\n" .
-          PHPUnit_Util_Filter::getFilteredStacktrace(
-            $defect->thrownException()
-          )
+        $this->write($defect->getExceptionAsString());
+
+        $trace = PHPUnit_Util_Filter::getFilteredStacktrace(
+          $defect->thrownException()
         );
+
+        if (!empty($trace)) {
+            $this->write("\n" . $trace);
+        }
 
         $e = $defect->thrownException()->getPrevious();
 
@@ -303,48 +298,44 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
     }
 
     /**
-     * @param  PHPUnit_Framework_TestResult  $result
+     * @param PHPUnit_Framework_TestResult $result
      */
     protected function printErrors(PHPUnit_Framework_TestResult $result)
     {
-        $this->printDefects($result->errors(), $result->errorCount(), 'error');
+        $this->printDefects($result->errors(), 'error');
     }
 
     /**
-     * @param  PHPUnit_Framework_TestResult  $result
+     * @param PHPUnit_Framework_TestResult $result
      */
     protected function printFailures(PHPUnit_Framework_TestResult $result)
     {
-        $this->printDefects(
-          $result->failures(),
-          $result->failureCount(),
-          'failure'
-        );
+        $this->printDefects($result->failures(), 'failure');
     }
 
     /**
-     * @param  PHPUnit_Framework_TestResult  $result
+     * @param PHPUnit_Framework_TestResult $result
      */
     protected function printIncompletes(PHPUnit_Framework_TestResult $result)
     {
-        $this->printDefects(
-          $result->notImplemented(),
-          $result->notImplementedCount(),
-          'incomplete test'
-        );
+        $this->printDefects($result->notImplemented(), 'incomplete test');
     }
 
     /**
-     * @param  PHPUnit_Framework_TestResult  $result
-     * @since  Method available since Release 3.0.0
+     * @param PHPUnit_Framework_TestResult $result
+     * @since Method available since Release 3.0.0
      */
     protected function printSkipped(PHPUnit_Framework_TestResult $result)
     {
-        $this->printDefects(
-          $result->skipped(),
-          $result->skippedCount(),
-          'skipped test'
-        );
+        $this->printDefects($result->skipped(), 'skipped test');
+    }
+
+    /**
+     * @param PHPUnit_Framework_TestResult $result
+     * @since Method available since Release 3.8.0
+     */
+    protected function printDeprecated(PHPUnit_Framework_TestResult $result)
+    {
     }
 
     protected function printHeader()
@@ -384,10 +375,6 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
         else if ((!$result->allCompletelyImplemented() ||
                   !$result->noneSkipped()) &&
                  $result->wasSuccessful()) {
-            if($this->verbose) {
-                $this->write("\n");
-            }
-
             $this->writeWithColor(
               'fg-black, bg-yellow',
               sprintf(
@@ -407,12 +394,10 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
         }
 
         else {
-            $this->write("\n");
-
             $this->writeWithColor(
               'fg-white, bg-red',
               sprintf(
-                "FAILURES!\n" .
+                "\nFAILURES!\n" .
                 'Tests: %d, Assertions: %s%s%s%s%s.',
 
                 count($result),

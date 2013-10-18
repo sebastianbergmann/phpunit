@@ -26,6 +26,8 @@ There was 1 failure:
 %s:%i
 %s:%i
 
+--
+
 There were 2 skipped tests:
 
 1) DependencyFailureTest::testTwo

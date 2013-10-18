@@ -28,7 +28,6 @@ Failed asserting that two strings are equal.
 -'foo'
 +'bar'
 
-
 FAILURES!
 Tests: 3, Assertions: 3, Failures: 1.
 

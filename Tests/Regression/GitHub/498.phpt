@@ -25,7 +25,6 @@ There was 1 failure:
 The data provider specified for Issue498Test::shouldBeFalse is invalid.
 Can't create the data
 
-
 FAILURES!
 Tests: 1, Assertions: 0, Failures: 1.
 
