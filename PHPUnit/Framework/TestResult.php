@@ -686,22 +686,59 @@ class PHPUnit_Framework_TestResult implements Countable
             return false;
         }
 
+        // See http://xdebug.org/docs/all_settings#trace_format
+        // Note : the Xdebug specs fail to mention that item 11 is the number of parameters and items 12 and beyond are the types of the parameters
+        // Note : classes are specified as 'class <classname>'
         while ($dataLine = fgetcsv($handle, null, "\t")) {
-            if (isset($dataLine[5]) && is_numeric($dataLine[0]) && $dataLine[5] == get_class($test) . '->' . $test->getName()) {
-                $minimumLevel = $dataLine[0] + 1; // The stack level we start from. We will continue until $minimumLevel + $this->checkParamTypeDepth()
+            // For convenience and readability
+            $tracedataLevel = $dataLine[0];
+            if (isset($dataLine[5])) {
+                $tracedataFunctionName = $dataLine[5];
+            }
+            if (isset($tracedataFunctionName) && is_numeric($tracedataLevel) && $tracedataFunctionName == get_class($test) . '->' . $test->getName()) {
+                $minimumLevel = $tracedataLevel + 1; // The stack level we start from. We will continue until $minimumLevel + $this->checkParamTypeDepth()
                 break;
             }
         }
 
         while ($dataLine = fgetcsv($handle, null, "\t")) {
-            if ($dataLine[0] < $minimumLevel) { // No need to process things that are below the required stack level at the end of a trace
+            // For convenience and readability
+            $tracedataLevel = $dataLine[0];
+            $tracedataIsReturn = $dataLine[2];
+            if (isset($dataLine[5])) {
+                $tracedataFunctionName = $dataLine[5];
+            } else {
+                $tracedataFunctionName = '';
+            }
+            if (isset($dataLine[6])) {
+                $tracedataUserDefined = $dataLine[6];
+            } else {
+                $tracedataUserDefined = '';
+            }
+            if (isset($dataLine[7])) {
+                $tracedataIncludeFilename = $dataLine[7];
+            } else {
+                $tracedataIncludeFilename = '';
+            }
+            if (isset($dataLine[8])) {
+                $tracedataFilename = $dataLine[8];
+            } else {
+                $tracedataFilename = '';
+            }
+            if (isset($dataLine[9])) {
+                $tracedataLinenumber = $dataLine[9];
+            } else {
+                $tracedataLinenumber = '';
+            }
+
+            if ($tracedataLevel < $minimumLevel) { // No need to process things that are below the required stack level at the end of a trace
                 break;
             }
 
-            if ($dataLine[0] == $minimumLevel) { // At this level, code is either a call to a testable function or a PHPUnit_Framework_Assert (which we won't test)
+            if ($tracedataLevel == $minimumLevel) { // At this level, code is either a call to a testable function or a PHPUnit_Framework_Assert (which we won't test)
                 if (
-                (isset($dataLine[5]) && preg_match('/^PHPUnit_Framework_Assert.*/', $dataLine[5]) == 0) ||
-                (!isset($dataLine[5]))
+                (isset($tracedataFunctionName) && preg_match('/^PHPUnit_Framework_Assert.*/', $tracedataFunctionName) == 0) ||
+                (!isset($tracedataFunctionName))
                 ) {
                     $isPHPUnitCode = false;
                 } else {
@@ -714,11 +751,11 @@ class PHPUnit_Framework_TestResult implements Countable
                 continue;
             }
 
-            if ($dataLine[0] < $minimumLevel + $this->checkParamTypeDepth) {
-                if ($dataLine[2] == 0) { // It's a function/method call
+            if ($tracedataLevel < $minimumLevel + $this->checkParamTypeDepth) {
+                if ($tracedataIsReturn == 0) { // It's a function/method call
                     preg_match(
                     '/(?P<classOrFunction>\w+){0,1}(?:\:\:|->){0,1}(?P<method>\w+){0,1}/',
-                    $dataLine[5],
+                    $tracedataFunctionName,
                     $functionCall
                     );
 
@@ -747,14 +784,14 @@ class PHPUnit_Framework_TestResult implements Countable
                                         $foundMatch = $this->compareTypes($dataLine[11 + $cntDocBlockTag], $docBlockVars[$cntDocBlockTag]['type']);
 
                                         if ($foundMatch === false) {
-                                            $this->addFailure($test, new PHPUnit_Framework_AssertionFailedError('Invalid type calling ' . $calledName . ' : parameter ' . ($cntDocBlockTag + 1)  . ' (' . $docBlockVars[$cntDocBlockTag]['paramName'] . ') should be of type ' . $docBlockVars[$cntDocBlockTag][2] . ' but got ' . $dataLine[11 + $cntDocBlockTag] . ' instead in ' . $dataLine[8]), 1);
+                                            $this->addFailure($test, new PHPUnit_Framework_AssertionFailedError('Invalid type calling ' . $calledName . ' : parameter ' . ($cntDocBlockTag + 1)  . ' (' . $docBlockVars[$cntDocBlockTag]['paramName'] . ') should be of type ' . $docBlockVars[$cntDocBlockTag][2] . ' but got ' . $dataLine[11 + $cntDocBlockTag] . ' instead in ' . $tracedataFilename), 1);
                                         }
                                     }
 
                                 } else { // Put the expected return type on the stack for later use
                                     $returnStack[] = array(
                                         'calledName'    => $calledName,
-                                        'calledFrom'    => $dataLine[8] . ':' . $dataLine[9],
+                                        'calledFrom'    => $tracedataFilename . ':' . $tracedataLinenumber,
                                         'type'          => $docBlockVars[$cntDocBlockTag]['type'],
                                         'noTypeCheck'   => 0
                                     );
@@ -766,7 +803,7 @@ class PHPUnit_Framework_TestResult implements Countable
                         if ($foundReturn === false) { // Put this function/method call on the stack
                             $returnStack[] = array(
                                 'calledName'    => $calledName,
-                                'calledFrom'    => $dataLine[8] . ':' . $dataLine[9],
+                                'calledFrom'    => $tracedataFilename . ':' . $tracedataLinenumber,
                                 'type'          => '',
                                 'noTypeCheck'   => count($noTypeCheck)
                             );
@@ -774,19 +811,20 @@ class PHPUnit_Framework_TestResult implements Countable
                     } else {
                         $returnStack[] = array(
                             'calledName'    => $calledName,
-                            'calledFrom'    => $dataLine[8] . ':' . $dataLine[9],
+                            'calledFrom'    => $tracedataFilename . ':' . $tracedataLinenumber,
                             'type'          => '',
                             'noTypeCheck'   => 1
                         );
                     }
 
                 } else { // It's a return
-                    if (isset($dataLine[5])) { // If this isn't set, we have a version of Xdebug that hasn't been patched for Xdebug bug #416
+                    if ($tracedataFunctionName != '') { // If this isn't set, we have a version of Xdebug that hasn't been patched for Xdebug bug #416
+
                         $returnPop = array_pop($returnStack);
 
                         if ($returnPop['noTypeCheck'] == 0 && $returnPop['type'] != '') {
-                            preg_match('/(?P<type>\w+)\s?(?P<class>\w+)?/', $dataLine[5], $returnTypes);
-                            if (preg_match('/^\'.*/', $dataLine[5]) > 0) { // Strings are not extracted with the above regular expression, but ALWAYS start with a quote in Xdebug trace output
+                            preg_match('/(?P<type>\w+)\s?(?P<class>\w+)?/', $tracedataFunctionName, $returnTypes);
+                            if (preg_match('/^\'.*/', $tracedataFunctionName) > 0) { // Strings are not extracted with the above regular expression, but ALWAYS start with a quote in Xdebug trace output
                                 $returnType = 'string';
                             } elseif ($returnTypes['type'] == 'NULL') {
                                 $returnType = 'null';

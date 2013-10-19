@@ -378,7 +378,7 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
             $result->checkParamTypes(
                 TRUE,
                 isset($arguments['checkParamTypeDepth']) ? $arguments['checkParamTypeDepth'] : null,
-                isset($arguments['checkParamTypeIgnoreNull']) ? true : false
+                isset($arguments['checkParamTypeIgnoreNull']) && $arguments['checkParamTypeIgnoreNull'] === TRUE ? true : false
             );
         }
 
