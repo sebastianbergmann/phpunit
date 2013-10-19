@@ -77,6 +77,9 @@ class PHPUnit_TextUI_Command
     protected $longOptions = array(
       'colors' => NULL,
       'bootstrap=' => NULL,
+      'check-param-types' => NULL,
+      'check-param-type-depth=' => NULL,
+      'check-param-type-ignore-null' => NULL,
       'configuration=' => NULL,
       'coverage-clover=' => NULL,
       'coverage-crap4j=' => NULL,
@@ -257,6 +260,21 @@ class PHPUnit_TextUI_Command
 
                 case '--bootstrap': {
                     $this->arguments['bootstrap'] = $option[1];
+                }
+                break;
+
+                case '--check-param-types': {
+                    $this->arguments['checkParamTypes'] = TRUE;
+                }
+                break;
+
+                case '--check-param-type-depth': {
+                    $this->arguments['checkParamTypeDepth'] = $option[1];
+                }
+                break;
+
+                case '--check-param-type-ignore-null': {
+                    $this->arguments['checkParamTypeIgnoreNull'] = TRUE;
                 }
                 break;
 
@@ -846,6 +864,12 @@ Usage: phpunit [switches] UnitTest [UnitTest.php]
 
   --testdox-html <file>     Write agile documentation in HTML format to file.
   --testdox-text <file>     Write agile documentation in Text format to file.
+
+  --check-param-types       Check parameter types on functions called
+  --check-param-type-depth  Sets depth of parameter type checks (default = 2)
+    <depth>
+  --check-param-type-ignore-null
+                            Ignore null values being passed as parameter
 
   --filter <pattern>        Filter which tests to run.
   --testsuite <pattern>     Filter which testsuite to run.

@@ -141,6 +141,12 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
     protected $preserveGlobalState = TRUE;
 
     /**
+     * The Xdebug tracefile name used for parameter type validation
+     * @var string
+     */
+    protected $tracefileName = '';
+
+    /**
      * Whether or not this test is running in a separate PHP process.
      *
      * @var boolean
@@ -836,6 +842,9 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
             }
             $this->checkRequirements();
             $this->assertPreConditions();
+            if ($this->tracefileName != '') {
+                xdebug_start_trace($this->tracefileName);
+            }
             $this->testResult = $this->runTest();
             $this->verifyMockObjects();
             $this->assertPostConditions();
@@ -861,6 +870,10 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
             $this->status        = PHPUnit_Runner_BaseTestRunner::STATUS_ERROR;
             $this->statusMessage = $e->getMessage();
         }
+        if ($this->tracefileName != '') {
+            xdebug_stop_trace();
+        }
+
 
         // Clean up the mock objects.
         $this->mockObjects = array();
@@ -1153,6 +1166,14 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
         } else {
             throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'boolean');
         }
+    }
+
+    /**
+     * @param string $tracefile
+     */
+    public function setTracefileName($tracefile)
+    {
+        $this->tracefileName = $tracefile;
     }
 
     /**
