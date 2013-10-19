@@ -818,7 +818,9 @@ class PHPUnit_Framework_TestResult implements Countable
                     }
 
                 } else { // It's a return
-                    if ($tracedataFunctionName != '') { // If this isn't set, we have a version of Xdebug that hasn't been patched for Xdebug bug #416
+                    // If this isn't set, we have a version of Xdebug that hasn't been patched for Xdebug bug #416
+                    // Requires Xdebug with code after https://github.com/xdebug/xdebug/pull/79
+                    if ($tracedataFunctionName != '') {
 
                         $returnPop = array_pop($returnStack);
 
