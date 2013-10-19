@@ -117,6 +117,27 @@ class PHPUnit_Framework_TestResult implements Countable
     protected $topTestSuite = NULL;
 
     /**
+     * Check parameter types on function/method calls using function traces from Xdebug
+     *
+     * @var boolean
+     */
+    protected $checkParamTypes = FALSE;
+
+    /**
+     * Parameter type verification depth
+     *
+     * @var int
+     */
+    protected $checkParamTypeDepth = 2;
+
+    /**
+     * Parameter type verification - ignore null values as parameters
+     *
+     * @var boolean
+     */
+    protected $checkParamTypeIgnoreNull = FALSE;
+
+    /**
      * Code Coverage information.
      *
      * @var PHP_CodeCoverage
@@ -556,6 +577,242 @@ class PHPUnit_Framework_TestResult implements Countable
     }
 
     /**
+     * Enables or disables parameter type checking and sets depth
+     *
+     * @param  boolean $flag
+     * @param  int $depth
+     * @param  boolean $ignoreNull
+     * @throws InvalidArgumentException
+     * @since  Method not released yet
+     */
+    public function checkParamTypes($flag, $depth, $ignoreNull)
+    {
+        if (is_bool($flag)) {
+            $this->checkParamTypes = $flag;
+        } else {
+            throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'boolean');
+        }
+        if (!is_null($depth)) {
+            if (is_numeric($depth)) {
+                $this->checkParamTypeDepth = $depth;
+            } else {
+                throw PHPUnit_Util_InvalidArgumentHelper::factory(2, 'integer');
+            }
+        }
+        $this->checkParamTypeIgnoreNull = $ignoreNull;
+    }
+
+    /**
+     * Compares 2 types, including classes
+     * First type is the actual type, retrieved from the Xdebug trace
+     * Second type is the type (or types) specified in the docblock of the function/method
+     *
+     * @param string $paramType Can be 'class ClassName' or just the type itself
+     * @param string $docblockType The type to compare to
+     * @return boolean True if matched, false if not
+     */
+    private function compareTypes($callType, $docblockType)
+    {
+        if (trim($callType) == '???') {
+            return true;
+        }
+
+        /**
+         * Main loop, comparing for all types specified in docblock
+         * Multiple types must be separated by a pipe (|)
+         */
+        $docblockTypes = explode('|', $docblockType);
+        foreach ($docblockTypes as $docblockType) {
+            if ($docblockType == 'mixed') {
+                return true;
+            }
+
+            preg_match_all('/\w+/', $callType, $callTypes); // Split up by words to get class names (if any)
+
+            if ($callTypes[0][0] == 'class') { // If it's a class, we will get its parent classes and interface, since they are allowed types as well
+                $className = $callTypes[0][1];
+                $implements = class_implements($className);
+                $parents = class_parents($className);
+                $callTypes = array_merge(array($className), $implements, $parents);
+            } else {
+                $callTypes = array($callTypes[0][0]);
+            }
+
+            $foundMatch = false;
+            foreach ($callTypes as $callType) {
+                switch ($callType) {
+                    case 'null':
+                        if ($this->checkParamTypeIgnoreNull === true) {
+                            return true;
+                        }
+                        break;
+                    case $docblockType:
+                        return true;
+                        break;
+                    case 'float':
+                        if ($docblockType == 'double' || $docblockType == 'number') {
+                            return true;
+                        }
+                        break;
+                    case 'int': // This may seem weird, but we consider that since there's no data loss when passing an int as a float, it's ok
+                    case 'long': // Long doesn't exist in PHP, but it seems Xdebug passes it as long in the trace file, which is why it's here
+                        if ($docblockType == 'int' || $docblockType == 'integer' || $docblockType == 'long' || $docblockType == 'number' || $docblockType == 'float') {
+                            return true;
+                        }
+                        break;
+                    case 'bool':
+                        if ($docblockType == 'boolean') {
+                            return true;
+                        }
+                        break;
+                }
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Process the function calls from the Xdebug trace file
+     *
+     * @param PHPUnit_Framework_Test $test
+     * @param string                 $traceFile
+     */
+    public function processFunctionCalls(PHPUnit_Framework_Test $test, $traceFile)
+    {
+        $isPHPUnitCode = false; // We won't test code that's part of the PHPUnit suite
+        $returnStack = array();
+
+        if (!file_exists($traceFile) || ($handle = fopen($traceFile, 'r')) === false) {
+            return false;
+        }
+
+        while ($dataLine = fgetcsv($handle, null, "\t")) {
+            if (isset($dataLine[5]) && is_numeric($dataLine[0]) && $dataLine[5] == get_class($test) . '->' . $test->getName()) {
+                $minimumLevel = $dataLine[0] + 1; // The stack level we start from. We will continue until $minimumLevel + $this->checkParamTypeDepth()
+                break;
+            }
+        }
+
+        while ($dataLine = fgetcsv($handle, null, "\t")) {
+            if ($dataLine[0] < $minimumLevel) { // No need to process things that are below the required stack level at the end of a trace
+                break;
+            }
+
+            if ($dataLine[0] == $minimumLevel) { // At this level, code is either a call to a testable function or a PHPUnit_Framework_Assert (which we won't test)
+                if (
+                (isset($dataLine[5]) && preg_match('/^PHPUnit_Framework_Assert.*/', $dataLine[5]) == 0) ||
+                (!isset($dataLine[5]))
+                ) {
+                    $isPHPUnitCode = false;
+                } else {
+                    $isPHPUnitCode = true;
+                    continue;
+                }
+            }
+
+            if ($isPHPUnitCode === true) { // If true, we're deeper than $minimumLevel and within PHPUnit_Framework_Assert
+                continue;
+            }
+
+            if ($dataLine[0] < $minimumLevel + $this->checkParamTypeDepth) {
+                if ($dataLine[2] == 0) { // It's a function/method call
+                    preg_match(
+                    '/(?P<classOrFunction>\w+){0,1}(?:\:\:|->){0,1}(?P<method>\w+){0,1}/',
+                    $dataLine[5],
+                    $functionCall
+                    );
+
+                    $docBlock = false; // getDocComment will return false if no docblock is present
+                    if (!isset($functionCall['method']) && function_exists($functionCall['classOrFunction'])) { // It's a function
+                        $calledName = $functionCall['classOrFunction'];
+                        $func = new ReflectionFunction($functionCall['classOrFunction']);
+                        $docBlock = $func->getDocComment();
+                    } elseif (isset($functionCall['method']) && method_exists($functionCall['classOrFunction'], $functionCall['method'])) { // It's a method
+                        $calledName = $functionCall['classOrFunction'] . '->' . $functionCall['method'];
+                        $method = new ReflectionMethod($functionCall['classOrFunction'], $functionCall['method']);
+                        $docBlock = $method->getDocComment();
+                    } // else it's an internal function
+
+                    if ($docBlock !== false) {
+                        $foundReturn = false;
+
+                        preg_match_all('/\s*\*\s*@(?P<tag>phpunit-no-type-check)/', $docBlock, $noTypeCheck, PREG_SET_ORDER); // Check if @phpunit-no-type-check was in docblock
+                        if (count($noTypeCheck) == 0) {
+
+                            // Main docblock parameter and return type loop
+                            preg_match_all('/\s*\*\s*@(?P<tag>param|return)\s+(?P<type>\S+)\s+(?P<paramName>\$?\w+)?/', $docBlock, $docBlockVars, PREG_SET_ORDER);
+                            for ($cntDocBlockTag = 0; $cntDocBlockTag < count($docBlockVars); $cntDocBlockTag++) {
+                                if ($docBlockVars[$cntDocBlockTag]['tag'] == "param") {
+                                    if (isset($dataLine[11 + $cntDocBlockTag])) { // Was the call made with this parameter ?
+                                        $foundMatch = $this->compareTypes($dataLine[11 + $cntDocBlockTag], $docBlockVars[$cntDocBlockTag]['type']);
+
+                                        if ($foundMatch === false) {
+                                            $this->addFailure($test, new PHPUnit_Framework_AssertionFailedError('Invalid type calling ' . $calledName . ' : parameter ' . ($cntDocBlockTag + 1)  . ' (' . $docBlockVars[$cntDocBlockTag]['paramName'] . ') should be of type ' . $docBlockVars[$cntDocBlockTag][2] . ' but got ' . $dataLine[11 + $cntDocBlockTag] . ' instead in ' . $dataLine[8]), 1);
+                                        }
+                                    }
+
+                                } else { // Put the expected return type on the stack for later use
+                                    $returnStack[] = array(
+                                        'calledName'    => $calledName,
+                                        'calledFrom'    => $dataLine[8] . ':' . $dataLine[9],
+                                        'type'          => $docBlockVars[$cntDocBlockTag]['type'],
+                                        'noTypeCheck'   => 0
+                                    );
+                                    $foundReturn = true;
+                                }
+                            }
+                        }
+
+                        if ($foundReturn === false) { // Put this function/method call on the stack
+                            $returnStack[] = array(
+                                'calledName'    => $calledName,
+                                'calledFrom'    => $dataLine[8] . ':' . $dataLine[9],
+                                'type'          => '',
+                                'noTypeCheck'   => count($noTypeCheck)
+                            );
+                        }
+                    } else {
+                        $returnStack[] = array(
+                            'calledName'    => $calledName,
+                            'calledFrom'    => $dataLine[8] . ':' . $dataLine[9],
+                            'type'          => '',
+                            'noTypeCheck'   => 1
+                        );
+                    }
+
+                } else { // It's a return
+                    if (isset($dataLine[5])) { // If this isn't set, we have a version of Xdebug that hasn't been patched for Xdebug bug #416
+                        $returnPop = array_pop($returnStack);
+
+                        if ($returnPop['noTypeCheck'] == 0 && $returnPop['type'] != '') {
+                            preg_match('/(?P<type>\w+)\s?(?P<class>\w+)?/', $dataLine[5], $returnTypes);
+                            if (preg_match('/^\'.*/', $dataLine[5]) > 0) { // Strings are not extracted with the above regular expression, but ALWAYS start with a quote in Xdebug trace output
+                                $returnType = 'string';
+                            } elseif ($returnTypes['type'] == 'NULL') {
+                                $returnType = 'null';
+                            } elseif ($returnTypes['type'] == 'class') {
+                                $returnType = 'class ' . $returnTypes['class'];
+                            } elseif ($returnTypes['type'] == 'TRUE' || $returnTypes['type'] == 'FALSE') {
+                                $returnType = 'bool';
+                            } elseif ($returnTypes['type'] == 'array') {
+                                $returnType = 'array';
+                            } elseif (is_numeric($returnTypes['type'])) {
+                                $returnType = 'int';
+                            } else {
+                                $returnType = 'unknown';
+                            }
+                            if (!$this->compareTypes($returnType, $returnPop['type'])) {
+                                $this->addFailure($test, new PHPUnit_Framework_AssertionFailedError('Invalid type returned from ' . $returnPop['calledName'] . ' : return should be of type ' . $returnPop['type'] . ' but got ' . $returnType . ' instead (called from ' . $returnPop['calledFrom'] . ')'), 1);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        fclose($handle);
+    }
+
+    /**
      * Returns whether code coverage information should be collected.
      *
      * @return boolean If code coverage should be collected
@@ -634,6 +891,21 @@ class PHPUnit_Framework_TestResult implements Countable
 
         PHP_Timer::start();
 
+        if ($this->checkParamTypes && extension_loaded('xdebug')) {
+            ini_set('xdebug.auto_trace', 1);
+            ini_set('xdebug.trace_format', 1);
+            ini_set('xdebug.collect_return', 1);
+            ini_set('xdebug.collect_params', 1);
+            ini_set('xdebug.trace_options', 0);
+            if (defined('PHPUNIT_TMPDIR')) {
+                $tmpDir = PHPUNIT_TMPDIR;
+            } else {
+                $tmpDir = sys_get_temp_dir();
+            }
+            $traceFile = tempnam($tmpDir, 'PHPUnit_ParamTypeCheck_');
+            $test->setTracefileName($traceFile);
+        }
+
         try {
             if (!$test instanceof PHPUnit_Framework_Warning &&
                 $this->beStrictAboutTestSize &&
@@ -679,6 +951,19 @@ class PHPUnit_Framework_TestResult implements Countable
         }
 
         $time = PHP_Timer::stop();
+
+        if ($this->checkParamTypes && extension_loaded('xdebug')) {
+            $this->processFunctionCalls(
+                $test, $traceFile . '.xt'
+            );
+            if (file_exists($traceFile)) {
+                unlink($traceFile);
+            }
+            if (file_exists($traceFile . '.xt')) {
+                unlink($traceFile . '.xt');
+            }
+        }
+
         $test->addToAssertionCount(PHPUnit_Framework_Assert::getCount());
 
         if ($this->beStrictAboutTestsThatDoNotTestAnything &&

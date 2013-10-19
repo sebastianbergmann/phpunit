@@ -372,6 +372,16 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
             }
         }
 
+        if (isset($arguments['checkParamTypes'])  &&
+        $arguments['checkParamTypes'] === TRUE &&
+        extension_loaded('xdebug')) {
+            $result->checkParamTypes(
+                TRUE,
+                isset($arguments['checkParamTypeDepth']) ? $arguments['checkParamTypeDepth'] : null,
+                isset($arguments['checkParamTypeIgnoreNull']) ? true : false
+            );
+        }
+
         if (isset($arguments['jsonLogfile'])) {
             $result->addListener(
               new PHPUnit_Util_Log_JSON($arguments['jsonLogfile'])
@@ -890,6 +900,9 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
         $arguments['backupGlobals']                      = isset($arguments['backupGlobals'])                      ? $arguments['backupGlobals']                      : NULL;
         $arguments['backupStaticAttributes']             = isset($arguments['backupStaticAttributes'])             ? $arguments['backupStaticAttributes']             : NULL;
         $arguments['cacheTokens']                        = isset($arguments['cacheTokens'])                        ? $arguments['cacheTokens']                        : FALSE;
+        $arguments['checkParamTypes']                    = isset($arguments['checkParamTypes'])                    ? $arguments['checkParamTypes']                    : FALSE;
+        $arguments['checkParamTypeDepth']                = isset($arguments['checkParamTypeDepth'])                ? $arguments['checkParamTypeDepth']                : 2;
+        $arguments['checkParamTypeIgnoreNull']           = isset($arguments['checkParamTypeIgnoreNull'])           ? $arguments['checkParamTypeIgnoreNull']           : FALSE;
         $arguments['colors']                             = isset($arguments['colors'])                             ? $arguments['colors']                             : FALSE;
         $arguments['convertErrorsToExceptions']          = isset($arguments['convertErrorsToExceptions'])          ? $arguments['convertErrorsToExceptions']          : TRUE;
         $arguments['convertNoticesToExceptions']         = isset($arguments['convertNoticesToExceptions'])         ? $arguments['convertNoticesToExceptions']         : TRUE;
