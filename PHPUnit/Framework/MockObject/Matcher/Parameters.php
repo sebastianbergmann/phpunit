@@ -112,7 +112,7 @@ class PHPUnit_Framework_MockObject_Matcher_Parameters extends PHPUnit_Framework_
         $this->invocation = $invocation;
         $this->verify();
 
-        return count($invocation->parameters) < count($this->parameters);
+        return true;
     }
 
     /**
