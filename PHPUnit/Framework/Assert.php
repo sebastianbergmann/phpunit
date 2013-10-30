@@ -2167,17 +2167,17 @@ abstract class PHPUnit_Framework_Assert
     /**
      * Asserts that a string is a valid JSON string.
      *
-     * @param  string $filename
+     * @param  string $actualJson
      * @param  string $message
      * @since  Method available since Release 3.7.20
      */
-    public static function assertJson($expectedJson, $message = '')
+    public static function assertJson($actualJson, $message = '')
     {
-        if (!is_string($expectedJson)) {
+        if (!is_string($actualJson)) {
             throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'string');
         }
 
-        self::assertThat($expectedJson, self::isJson(), $message);
+        self::assertThat($actualJson, self::isJson(), $message);
     }
 
     /**
