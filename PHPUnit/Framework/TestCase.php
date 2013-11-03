@@ -388,7 +388,7 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
     }
 
     /**
-     * @return string
+     * @return boolean
      * @since  Method available since Release 3.6.0
      */
     public function hasOutput()
