@@ -11,6 +11,7 @@ Tests/TextUI/*.exp
 Tests/TextUI/*.log
 Tests/TextUI/*.out
 Tests/TextUI/*.php
+/bin
 /vendor
 /composer.lock
 /composer.phar
