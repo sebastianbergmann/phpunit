@@ -86,7 +86,15 @@ class PHPUnit_Framework_Constraint_ArrayHasKey extends PHPUnit_Framework_Constra
      */
     protected function matches($other)
     {
-        return array_key_exists($this->key, $other);
+        if (is_array($other)) {
+            return array_key_exists($this->key, $other);
+        }
+
+        if ($other instanceof ArrayAccess) {
+            return $other->offsetExists($this->key);
+        }
+
+        return FALSE;
     }
 
     /**

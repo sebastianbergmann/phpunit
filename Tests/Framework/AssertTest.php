@@ -279,7 +279,7 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
     /**
      * @covers PHPUnit_Framework_Assert::assertArrayHasKey
      */
-    public function testAssertArrayHasKeyAcceptsArrayAccessValue()
+    public function testAssertArrayHasKeyAcceptsArrayObjectValue()
     {
         $array = new ArrayObject();
         $array['foo'] = 'bar';
@@ -290,9 +290,30 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
      * @covers PHPUnit_Framework_Assert::assertArrayHasKey
      * @expectedException PHPUnit_Framework_AssertionFailedError
      */
-    public function testAssertArrayHasKeyProperlyFailsWithArrayAccessValue()
+    public function testAssertArrayHasKeyProperlyFailsWithArrayObjectValue()
     {
         $array = new ArrayObject();
+        $array['bar'] = 'bar';
+        $this->assertArrayHasKey('foo', $array);
+    }
+
+    /**
+     * @covers PHPUnit_Framework_Assert::assertArrayHasKey
+     */
+    public function testAssertArrayHasKeyAcceptsArrayAccessValue()
+    {
+        $array = new SampleArrayAccess();
+        $array['foo'] = 'bar';
+        $this->assertArrayHasKey('foo', $array);
+    }
+
+    /**
+     * @covers PHPUnit_Framework_Assert::assertArrayHasKey
+     * @expectedException PHPUnit_Framework_AssertionFailedError
+     */
+    public function testAssertArrayHasKeyProperlyFailsWithArrayAccessValue()
+    {
+        $array = new SampleArrayAccess();
         $array['bar'] = 'bar';
         $this->assertArrayHasKey('foo', $array);
     }

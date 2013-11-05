@@ -131,6 +131,7 @@ spl_autoload_register(
                 'requirementsclassdocblocktest' => '/_files/RequirementsClassDocBlockTest.php',
                 'requirementstest' => '/_files/RequirementsTest.php',
                 'runner_basetestrunnertest' => '/Runner/BaseTestRunnerTest.php',
+                'samplearrayaccess' => '/_files/SampleArrayAccess.php',
                 'sampleclass' => '/_files/SampleClass.php',
                 'singleton' => '/_files/Singleton.php',
                 'stacktest' => '/_files/StackTest.php',
