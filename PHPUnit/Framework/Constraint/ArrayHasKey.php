@@ -87,9 +87,13 @@ class PHPUnit_Framework_Constraint_ArrayHasKey extends PHPUnit_Framework_Constra
     {
         if (is_array($other)) {
             return array_key_exists($this->key, $other);
-        } else {
+        }
+
+        if ($other instanceof ArrayAccess) {
             return $other->offsetExists($this->key);
         }
+
+        return FALSE;
     }
 
     /**
