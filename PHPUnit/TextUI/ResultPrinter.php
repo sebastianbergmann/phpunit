@@ -336,6 +336,32 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
      */
     protected function printDeprecated(PHPUnit_Framework_TestResult $result)
     {
+        $deprecatedFeatures = $result->deprecatedFeatures();
+        $count              = count($deprecatedFeatures);
+
+        $this->write(
+          sprintf(
+            "There %s %d tests that use%s deprecated features:\n",
+
+            ($count == 1) ? 'was' : 'were',
+            $count,
+            ($count != 1) ? '' : 's'
+          )
+        );
+
+        $i = 1;
+
+        foreach ($result->deprecatedFeatures() as $deprecatedFeature) {
+            $this->write(
+              sprintf(
+                "\n%d) %s\n\n%s\n",
+
+                $i++,
+                $deprecatedFeature->getMessage(),
+                $deprecatedFeature->getSource()
+              )
+            );
+        }
     }
 
     protected function printHeader()

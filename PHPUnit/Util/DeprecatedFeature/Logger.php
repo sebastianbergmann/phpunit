@@ -96,8 +96,7 @@ class PHPUnit_Util_DeprecatedFeature_Logger implements PHPUnit_Framework_TestLis
                 }
 
                 $method = $reflectionClass->getMethod($traceItem['function']);
-                $traceItem['line'] = '(between ' . $method->getStartLine() .
-                                     ' and ' . $method->getEndLine() . ')';
+                $traceItem['line'] = $method->getStartLine() . '-' . $method->getEndLine();
             }
         }
 

@@ -79,24 +79,30 @@ class PHPUnit_Util_DeprecatedFeature
     }
 
     /**
-     * Build a string representation of the deprecated feature that was raised
-     *
      * @return string
+     * @since  Method available since Release 3.8.0
      */
-    public function __toString()
+    public function getMessage()
     {
-        $string = '';
+        return $this->message;
+    }
+
+    /**
+     * @return string
+     * @since  Method available since Release 3.8.0
+     */
+    public function getSource()
+    {
+        $source = '';
 
         if (isset($this->traceInfo['file'])) {
-            $string .= $this->traceInfo['file'];
+            $source .= $this->traceInfo['file'];
 
             if (isset($this->traceInfo['line'])) {
-                $string .= ':' . $this->traceInfo['line'] . ' - ';
+                $source .= ':' . $this->traceInfo['line'];
             }
         }
 
-        $string .= $this->message;
-
-        return $string;
+        return $source;
     }
 }
