@@ -107,6 +107,11 @@ class PHPUnit_Framework_MockObject_MockBuilder
     protected $callOriginalMethods = FALSE;
 
     /**
+     * @var object
+     */
+    protected $proxyTarget = NULL;
+
+    /**
      * @param PHPUnit_Framework_TestCase
      * @param string
      */
@@ -132,7 +137,8 @@ class PHPUnit_Framework_MockObject_MockBuilder
           $this->originalClone,
           $this->autoload,
           $this->cloneArguments,
-          $this->callOriginalMethods
+          $this->callOriginalMethods,
+          $this->proxyTarget
         );
     }
 
@@ -336,6 +342,20 @@ class PHPUnit_Framework_MockObject_MockBuilder
     public function disableProxyingToOriginalMethods()
     {
         $this->callOriginalMethods = FALSE;
+        $this->proxyTarget         = NULL;
+
+        return $this;
+    }
+
+    /**
+     * Sets the proxy target.
+     *
+     * @return PHPUnit_Framework_MockObject_MockBuilder
+     * @since  Method available since Release 1.3.0
+     */
+    public function setProxyTarget($object)
+    {
+        $this->proxyTarget = $object;
 
         return $this;
     }

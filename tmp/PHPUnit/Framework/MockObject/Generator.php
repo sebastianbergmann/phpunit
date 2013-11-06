@@ -159,12 +159,13 @@ class PHPUnit_Framework_MockObject_Generator
      * @param  boolean $callAutoload
      * @param  boolean $cloneArguments
      * @param  boolean $callOriginalMethods
+     * @param  object  $proxyTarget
      * @return object
      * @throws InvalidArgumentException
      * @throws PHPUnit_Framework_Exception
      * @since  Method available since Release 1.0.0
      */
-    public function getMock($originalClassName, $methods = array(), array $arguments = array(), $mockClassName = '', $callOriginalConstructor = TRUE, $callOriginalClone = TRUE, $callAutoload = TRUE, $cloneArguments = TRUE, $callOriginalMethods = FALSE)
+    public function getMock($originalClassName, $methods = array(), array $arguments = array(), $mockClassName = '', $callOriginalConstructor = TRUE, $callOriginalClone = TRUE, $callAutoload = TRUE, $cloneArguments = TRUE, $callOriginalMethods = FALSE, $proxyTarget = NULL)
     {
         if (!is_string($originalClassName)) {
             throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'string');
@@ -229,20 +230,24 @@ class PHPUnit_Framework_MockObject_Generator
           $originalClassName,
           $callOriginalConstructor,
           $callAutoload,
-          $arguments
+          $arguments,
+          $callOriginalMethods,
+          $proxyTarget
         );
     }
 
     /**
-     * @param  string $code
-     * @param  string $className
-     * @param  string $originalClassName
-     * @param  string $callOriginalConstructor
-     * @param  string $callAutoload
-     * @param  array  $arguments
+     * @param  string  $code
+     * @param  string  $className
+     * @param  string  $originalClassName
+     * @param  boolean $callOriginalConstructor
+     * @param  boolean $callAutoload
+     * @param  array   $arguments
+     * @param  boolean $callOriginalMethods
+     * @param  object  $proxyTarget
      * @return object
      */
-    protected function getObject($code, $className, $originalClassName = '', $callOriginalConstructor = FALSE, $callAutoload = FALSE, array $arguments = array())
+    protected function getObject($code, $className, $originalClassName = '', $callOriginalConstructor = FALSE, $callAutoload = FALSE, array $arguments = array(), $callOriginalMethods = FALSE, $proxyTarget = NULL)
     {
         $this->evalClass($code, $className);
 
@@ -257,6 +262,19 @@ class PHPUnit_Framework_MockObject_Generator
         } else {
                 $class = new ReflectionClass($className);
                 $object = $class->newInstanceWithoutConstructor();
+        }
+
+        if ($callOriginalMethods) {
+            if (!is_object($proxyTarget)) {
+                if (count($arguments) == 0) {
+                    $proxyTarget = new $originalClassName;
+                } else {
+                    $class       = new ReflectionClass($originalClassName);
+                    $proxyTarget = $class->newInstanceArgs($arguments);
+                }
+            }
+
+            $object->__phpunit_setOriginalObject($proxyTarget);
         }
 
         return $object;
