@@ -27,6 +27,7 @@ class MockFoo implements PHPUnit_Framework_MockObject_MockObject, Foo
 {
     private static $__phpunit_staticInvocationMocker;
     private $__phpunit_invocationMocker;
+    private $__phpunit_originalObject;
 
     public function __clone()
     {
@@ -65,6 +66,11 @@ class MockFoo implements PHPUnit_Framework_MockObject_MockObject, Foo
         PHPUnit_Util_DeprecatedFeature_Logger::log('The stubbing and mocking of static methods is deprecated and will be removed in PHPUnit 3.9.');
 
         return self::__phpunit_getStaticInvocationMocker()->expects($matcher);
+    }
+
+    public function __phpunit_setOriginalObject($originalObject)
+    {
+        $this->__phpunit_originalObject = $originalObject;
     }
 
     public function __phpunit_getInvocationMocker()
