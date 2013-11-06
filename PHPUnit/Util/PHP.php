@@ -80,8 +80,13 @@ abstract class PHPUnit_Util_PHP
      */
     public function runJob($job, PHPUnit_Framework_Test $test = NULL, PHPUnit_Framework_TestResult $result = NULL)
     {
+        // HHVM support
+        if (($phpBinary = getenv("PHP_BINARY")) === false) {
+            $phpBinary = PHP_BINARY;
+        }
+
         $process = proc_open(
-          escapeshellarg(PHP_BINARY),
+          escapeshellarg($phpBinary),
           array(
             0 => array('pipe', 'r'),
             1 => array('pipe', 'w'),
