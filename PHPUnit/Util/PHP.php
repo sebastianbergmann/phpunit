@@ -92,7 +92,10 @@ abstract class PHPUnit_Util_PHP
     protected function getPhpBinary()
     {
         if ($this->phpBinary === NULL) {
-            if (defined("PHP_BINARY")) {
+            if (($e = getenv("PHP_BINARY")) !== false) {
+                $this->phpBinary = $e;
+            }
+            else if (defined("PHP_BINARY")) {
                 $this->phpBinary = PHP_BINARY;
             } else if (PHP_SAPI == 'cli' && isset($_SERVER['_'])) {
                 if (strpos($_SERVER['_'], 'phpunit') !== FALSE) {
