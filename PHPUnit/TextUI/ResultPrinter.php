@@ -339,6 +339,10 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
         $deprecatedFeatures = $result->deprecatedFeatures();
         $count              = count($deprecatedFeatures);
 
+        if ($count == 0) {
+            return;
+        }
+
         $this->write(
           sprintf(
             "There %s %d tests that use%s deprecated features:\n",
