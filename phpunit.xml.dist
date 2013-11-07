@@ -5,14 +5,16 @@
          backupGlobals="false"
          verbose="true">
   <testsuites>
-    <testsuite name="PHPUnit">
+    <testsuite name="small">
       <directory suffix="Test.php">Tests/Framework</directory>
-      <directory suffix=".phpt">Tests/Framework/MockObject</directory>
       <directory suffix="Test.php">Tests/Extensions</directory>
-      <directory suffix=".phpt">Tests/Regression</directory>
       <directory suffix="Test.php">Tests/Runner</directory>
-      <directory suffix=".phpt">Tests/TextUI</directory>
       <directory suffix="Test.php">Tests/Util</directory>
+    </testsuite>
+
+    <testsuite name="large">
+      <directory suffix=".phpt">Tests/TextUI</directory>
+      <directory suffix=".phpt">Tests/Regression</directory>
     </testsuite>
   </testsuites>
 
