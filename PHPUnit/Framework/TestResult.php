@@ -661,7 +661,7 @@ class PHPUnit_Framework_TestResult implements Countable
         }
 
         if (self::$isHHVM === NULL) {
-            self::$isHHVM = function_exists('fb_enable_code_coverage');
+            self::$isHHVM = defined('HPHP_VERSION');
         }
 
         if (self::$xdebugLoaded === NULL) {

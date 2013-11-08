@@ -105,7 +105,7 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
         $this->codeCoverageFilter = $filter;
         $this->loader             = $loader;
 
-        $this->canCollectCodeCoverage = function_exists('fb_enable_code_coverage') ||
+        $this->canCollectCodeCoverage = defined('HPHP_VERSION') ||
                                         extension_loaded('xdebug');
     }
 
