@@ -72,6 +72,11 @@ abstract class PHPUnit_Util_TestDox_ResultPrinter extends PHPUnit_Util_Printer i
     protected $testStatus = FALSE;
 
     /**
+     * @var string
+     */
+    protected $testError;
+
+    /**
      * @var array
      */
     protected $tests = array();
@@ -112,13 +117,31 @@ abstract class PHPUnit_Util_TestDox_ResultPrinter extends PHPUnit_Util_Printer i
     protected $currentTestMethodPrettified;
 
     /**
+     * @var boolean Verbose
+     */
+    protected $verbose;
+
+    /**
+     * @var array A lookup map to convert test status into a single character.
+     */
+    protected $testStatusIndicatorCharMap = array(
+            PHPUnit_Runner_BaseTestRunner::STATUS_PASSED     => 'X',
+            PHPUnit_Runner_BaseTestRunner::STATUS_SKIPPED    => 'S',
+            PHPUnit_Runner_BaseTestRunner::STATUS_INCOMPLETE => 'I',
+            PHPUnit_Runner_BaseTestRunner::STATUS_FAILURE    => 'F',
+            PHPUnit_Runner_BaseTestRunner::STATUS_ERROR      => 'E',
+            PHPUnit_Runner_BaseTestRunner::SUITE_METHODNAME  => '-'
+        );
+    /**
      * Constructor.
      *
      * @param  resource  $out
      */
-    public function __construct($out = NULL)
+    public function __construct($out = NULL, $verbose = false)
     {
         parent::__construct($out);
+
+        $this->verbose = $verbose;
 
         $this->prettifier = new PHPUnit_Util_TestDox_NamePrettifier;
         $this->startRun();
@@ -147,6 +170,7 @@ abstract class PHPUnit_Util_TestDox_ResultPrinter extends PHPUnit_Util_Printer i
     {
         if ($test instanceof $this->testTypeOfInterest) {
             $this->testStatus = PHPUnit_Runner_BaseTestRunner::STATUS_ERROR;
+            $this->testError = $e;
             $this->failed++;
         }
     }
@@ -162,6 +186,7 @@ abstract class PHPUnit_Util_TestDox_ResultPrinter extends PHPUnit_Util_Printer i
     {
         if ($test instanceof $this->testTypeOfInterest) {
             $this->testStatus = PHPUnit_Runner_BaseTestRunner::STATUS_FAILURE;
+            $this->testError = $e;
             $this->failed++;
         }
     }
@@ -224,6 +249,8 @@ abstract class PHPUnit_Util_TestDox_ResultPrinter extends PHPUnit_Util_Printer i
      */
     public function startTest(PHPUnit_Framework_Test $test)
     {
+        $this->testError = NULL;
+
         if ($test instanceof $this->testTypeOfInterest) {
             $class = get_class($test);
 
@@ -252,10 +279,42 @@ abstract class PHPUnit_Util_TestDox_ResultPrinter extends PHPUnit_Util_Printer i
             }
 
             if (!$prettified) {
-                $this->currentTestMethodPrettified = $this->prettifier->prettifyTestMethod($test->getName(FALSE));
+                $this->currentTestMethodPrettified = $this->prettifier->prettifyTestMethod($test->getName(false));
+            }
+
+            if (isset($annotations['method']['dataProviderTestdox'][0])) {
+                $tdArgumentSpec = $annotations['method']['dataProviderTestdox'][0];
+
+                // generate sprintf format string
+                $formatStr = NULL;
+                if (is_numeric($tdArgumentSpec))
+                {
+                    $formatStr = "%{$tdArgumentSpec}\$s";
+                }
+                else
+                {
+                    $formatStr = $tdArgumentSpec;
+                }
+
+                // generate pretty test name
+                $iterationArgs = $test->getData();
+                $iterationTestName = trim(vsprintf($formatStr, $iterationArgs));
+                $this->currentTestMethodPrettified .= ": {$iterationTestName}";
             }
 
             $this->testStatus = PHPUnit_Runner_BaseTestRunner::STATUS_PASSED;
+
+
+            // ensure name uniqueness
+            if (isset($this->tests[$this->currentTestMethodPrettified]))
+            {
+                // try to append data set info
+                $this->currentTestMethodPrettified .= $test->getDataSetAsString(FALSE);
+            }
+            if (isset($this->tests[$this->currentTestMethodPrettified])) throw new Exception("Test name already exists: {$this->currentTestMethodPrettified}");
+
+            // initialize data set for this test+iteration
+            $this->tests[$this->currentTestMethodPrettified] = array('success' => 0, 'failure' => 0, 'errors' => array());
         }
     }
 
@@ -268,20 +327,16 @@ abstract class PHPUnit_Util_TestDox_ResultPrinter extends PHPUnit_Util_Printer i
     public function endTest(PHPUnit_Framework_Test $test, $time)
     {
         if ($test instanceof $this->testTypeOfInterest) {
-            if (!isset($this->tests[$this->currentTestMethodPrettified])) {
-                if ($this->testStatus == PHPUnit_Runner_BaseTestRunner::STATUS_PASSED) {
-                    $this->tests[$this->currentTestMethodPrettified]['success'] = 1;
-                    $this->tests[$this->currentTestMethodPrettified]['failure'] = 0;
-                } else {
-                    $this->tests[$this->currentTestMethodPrettified]['success'] = 0;
-                    $this->tests[$this->currentTestMethodPrettified]['failure'] = 1;
-                }
+            $this->tests[$this->currentTestMethodPrettified]['status'] = $this->testStatusIndicatorCharMap[$this->testStatus];
+            if ($this->testStatus == PHPUnit_Runner_BaseTestRunner::STATUS_PASSED) {
+                $this->tests[$this->currentTestMethodPrettified]['success']++;
             } else {
-                if ($this->testStatus == PHPUnit_Runner_BaseTestRunner::STATUS_PASSED) {
-                    $this->tests[$this->currentTestMethodPrettified]['success']++;
-                } else {
-                    $this->tests[$this->currentTestMethodPrettified]['failure']++;
-                }
+                $this->tests[$this->currentTestMethodPrettified]['failure']++;
+            }
+
+            if ($this->testError)
+            {
+                $this->tests[$this->currentTestMethodPrettified]['errors'][] = $this->testError;
             }
 
             $this->currentTestClassPrettified  = NULL;
