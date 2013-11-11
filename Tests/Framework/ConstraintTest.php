@@ -3392,6 +3392,8 @@ EOF
 
         $this->assertFalse($constraint->evaluate(array('foo'), '', TRUE));
         $this->assertTrue($constraint->evaluate(array(), '', TRUE));
+        $this->assertFalse($constraint->evaluate(new ArrayObject(array('foo')), '', TRUE));
+        $this->assertTrue($constraint->evaluate(new ArrayObject(array()), '', TRUE));
         $this->assertEquals('is empty', $constraint->toString());
         $this->assertEquals(1, count($constraint));
 

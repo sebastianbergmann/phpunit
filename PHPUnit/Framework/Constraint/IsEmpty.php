@@ -67,6 +67,10 @@ class PHPUnit_Framework_Constraint_IsEmpty extends PHPUnit_Framework_Constraint
      */
     protected function matches($other)
     {
+        if ($other instanceof Countable) {
+            return count($other) === 0;
+        }
+
         return empty($other);
     }
 
