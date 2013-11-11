@@ -59,66 +59,66 @@ class PHPUnit_Framework_MockObject_MockBuilder
     /**
      * @var PHPUnit_Framework_TestCase
      */
-    protected $testCase;
+    private $testCase;
 
     /**
      * @var string
      */
-    protected $className;
+    private $type;
 
     /**
      * @var array
      */
-    protected $methods = array();
+    private $methods = array();
 
     /**
      * @var string
      */
-    protected $mockClassName = '';
+    private $mockClassName = '';
 
     /**
      * @var array
      */
-    protected $constructorArgs = array();
+    private $constructorArgs = array();
 
     /**
      * @var boolean
      */
-    protected $originalConstructor = TRUE;
+    private $originalConstructor = TRUE;
 
     /**
      * @var boolean
      */
-    protected $originalClone = TRUE;
+    private $originalClone = TRUE;
 
     /**
      * @var boolean
      */
-    protected $autoload = TRUE;
+    private $autoload = TRUE;
 
     /**
      * @var boolean
      */
-    protected $cloneArguments = FALSE;
+    private $cloneArguments = FALSE;
 
     /**
      * @var boolean
      */
-    protected $callOriginalMethods = FALSE;
+    private $callOriginalMethods = FALSE;
 
     /**
      * @var object
      */
-    protected $proxyTarget = NULL;
+    private $proxyTarget = NULL;
 
     /**
-     * @param PHPUnit_Framework_TestCase
-     * @param string
+     * @param PHPUnit_Framework_TestCase $testCase
+     * @param array|string               $type
      */
-    public function __construct(PHPUnit_Framework_TestCase $testCase, $className)
+    public function __construct(PHPUnit_Framework_TestCase $testCase, $type)
     {
-        $this->testCase  = $testCase;
-        $this->className = $className;
+        $this->testCase = $testCase;
+        $this->type     = $type;
     }
 
     /**
@@ -129,7 +129,7 @@ class PHPUnit_Framework_MockObject_MockBuilder
     public function getMock()
     {
         return $this->testCase->getMock(
-          $this->className,
+          $this->type,
           $this->methods,
           $this->constructorArgs,
           $this->mockClassName,
@@ -150,7 +150,7 @@ class PHPUnit_Framework_MockObject_MockBuilder
     public function getMockForAbstractClass()
     {
         return $this->testCase->getMockForAbstractClass(
-          $this->className,
+          $this->type,
           $this->constructorArgs,
           $this->mockClassName,
           $this->originalConstructor,
@@ -169,7 +169,7 @@ class PHPUnit_Framework_MockObject_MockBuilder
     public function getMockForTrait()
     {
         return $this->testCase->getMockForTrait(
-          $this->className,
+          $this->type,
           $this->constructorArgs,
           $this->mockClassName,
           $this->originalConstructor,
@@ -350,6 +350,7 @@ class PHPUnit_Framework_MockObject_MockBuilder
     /**
      * Sets the proxy target.
      *
+     * @param  object $object
      * @return PHPUnit_Framework_MockObject_MockBuilder
      * @since  Method available since Release 1.3.0
      */

@@ -47,6 +47,7 @@ require_once 'PHPUnit/Framework/TestCase.php';
 require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'AbstractMockTestClass.php';
 require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'AbstractTrait.php';
 require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'AnInterface.php';
+require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'AnotherInterface.php';
 require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'FunctionCallback.php';
 require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'MethodCallback.php';
 require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'MethodCallbackByReference.php';
@@ -327,6 +328,13 @@ class Framework_MockObjectTest extends PHPUnit_Framework_TestCase
     {
         $mock = $this->getMock('TraversableMockTestInterface');
         $this->assertInstanceOf('Traversable', $mock);
+    }
+
+    public function testMultipleInterfacesCanBeMockedInSingleObject()
+    {
+        $mock = $this->getMock(array('AnInterface', 'AnotherInterface'));
+        $this->assertInstanceOf('AnInterface', $mock);
+        $this->assertInstanceOf('AnotherInterface', $mock);
     }
 
     public function testGetMockForTrait()
