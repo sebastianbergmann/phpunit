@@ -76,6 +76,12 @@ interface PHPUnit_Framework_MockObject_MockObject /*extends PHPUnit_Framework_Mo
 
     /**
      * @return PHPUnit_Framework_MockObject_InvocationMocker
+     * @since  Method available since Release 1.3.0
+     */
+    public function __phpunit_setOriginalObject($originalObject);
+
+    /**
+     * @return PHPUnit_Framework_MockObject_InvocationMocker
      */
     public function __phpunit_getInvocationMocker();
 
