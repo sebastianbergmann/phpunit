@@ -122,7 +122,7 @@ class PHPUnit_TextUI_Command
      */
     public static function main($exit = TRUE)
     {
-        $command = new PHPUnit_TextUI_Command;
+        $command = new static;
         return $command->run($_SERVER['argv'], $exit);
     }
 
