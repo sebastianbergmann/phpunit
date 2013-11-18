@@ -718,7 +718,7 @@ class PHPUnit_TextUI_Command
             }
         }
 
-        if (class_exists($printerClass, FALSE)) {
+        if (class_exists($printerClass)) {
             $class = new ReflectionClass($printerClass);
 
             if ($class->implementsInterface('PHPUnit_Framework_TestListener') &&
