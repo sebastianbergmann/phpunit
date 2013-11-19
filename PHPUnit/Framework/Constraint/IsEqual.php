@@ -102,6 +102,7 @@ class PHPUnit_Framework_Constraint_IsEqual extends PHPUnit_Framework_Constraint
      * @param integer $maxDepth
      * @param boolean $canonicalize
      * @param boolean $ignoreCase
+     * @throws PHPUnit_Framework_Exception
      */
     public function __construct($value, $delta = 0, $maxDepth = 10, $canonicalize = FALSE, $ignoreCase = FALSE)
     {
