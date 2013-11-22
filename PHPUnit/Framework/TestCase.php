@@ -1837,7 +1837,11 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
                         return FALSE;
                     }
 
-                    $this->dependencyInput[] = $passed[$dependency]['result'];
+                    if (is_object($passed[$dependency]['result'])) {
+                        $this->dependencyInput[] = clone $passed[$dependency]['result'];
+                    } else {
+                        $this->dependencyInput[] = $passed[$dependency]['result'];
+                    }
                 } else {
                     $this->dependencyInput[] = NULL;
                 }
