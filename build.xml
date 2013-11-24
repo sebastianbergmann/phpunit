@@ -319,6 +319,10 @@
    <arg value="${basedir}/phpunit.php --version | awk 'BEGIN { ORS = &quot;&quot;; } {print $2}'" />
   </exec>
 
+  <exec executable="${basedir}/build/phar-version.php">
+   <arg value="${version}" />
+  </exec>
+
   <copy todir="${basedir}/build/phar/phpunit">
    <fileset dir="${basedir}/PHPUnit">
     <include name="**/*.php" />

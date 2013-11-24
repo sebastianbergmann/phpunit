@@ -56,6 +56,7 @@
  */
 class PHPUnit_Runner_Version
 {
+    private static $pharVersion;
     private static $version;
 
     /**
@@ -65,6 +66,10 @@ class PHPUnit_Runner_Version
      */
     public static function id()
     {
+        if (self::$pharVersion !== NULL) {
+            return self::$pharVersion;
+        }
+
         if (self::$version === NULL) {
             $version = new SebastianBergmann\Version('3.8', __DIR__);
             self::$version = $version->getVersion();
