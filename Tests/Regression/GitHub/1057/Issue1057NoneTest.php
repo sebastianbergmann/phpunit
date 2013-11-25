@@ -1,27 +1,20 @@
 <?php
 
-class SomeStack
-{
-    private $items = array();
+require_once 'SomeStack.php';
 
-    public function addItem($item)
-    {
-        $this->items[] = $item;
-    }
-
-    public function getItems()
-    {
-        return $this->items;
-    }
-}
-
-class Issue1075test extends PHPUnit_Framework_TestCase
+/**
+ * Class Issue1075test
+ * @dependsInjectionPolicy NONE
+ * @runInSeparateProcess
+ */
+class Issue1057NoneTest extends PHPUnit_Framework_TestCase
 {
     public function testStackInitiallyEmpty()
     {
         $stack = new SomeStack();
 
         $this->assertEmpty($stack->getItems());
+        $this->assertEquals(1, $stack::$ctr);
 
         return $stack;
     }
@@ -34,6 +27,7 @@ class Issue1075test extends PHPUnit_Framework_TestCase
         $stack->addItem('SomeItem');
 
         $this->assertNotEmpty($stack->getItems());
+        $this->assertEquals(1, $stack::$ctr);
     }
 
     /**
@@ -41,6 +35,7 @@ class Issue1075test extends PHPUnit_Framework_TestCase
      */
     public function testSomethingElseThatWantsAnEmptyStack($stack)
     {
-        $this->assertEmpty($stack->getItems()); // Fails
+        $this->assertNotEmpty($stack->getItems());
+        $this->assertEquals(1, $stack::$ctr);
     }
 }
