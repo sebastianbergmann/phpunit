@@ -840,6 +840,12 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
                 $test->setDependencies(
                   PHPUnit_Util_Test::getDependencies($class->getName(), $name)
                 );
+
+                if (!$test instanceof PHPUnit_Framework_TestSuite_DataProvider) {
+                    $test->setInjectionPolicy(
+                        PHPUnit_Util_Test::getInjectionPolicy($class->getName())
+                    );
+                }
             }
 
             $this->addTest($test, PHPUnit_Util_Test::getGroups(

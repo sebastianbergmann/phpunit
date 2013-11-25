@@ -214,6 +214,11 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
     private $dependencyInput = array();
 
     /**
+     * @var String
+     */
+    private $dependencyInjectionPolicy = 'NONE';
+
+    /**
      * @var array
      */
     private $iniSettings = array();
@@ -1099,6 +1104,44 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
     }
 
     /**
+     * @param String $input    Value to add as input
+     * @param String $testName Name of test that produced $input
+     * @return bool
+     */
+    public function addDependencyInput($input, $testName)
+    {
+        if (!is_object($input) || $this->dependencyInjectionPolicy == 'NONE') {
+            $this->dependencyInput[] = $input;
+            return TRUE;
+        }
+
+        if ($this->dependencyInjectionPolicy == 'CLONE') {
+            $reflection = new ReflectionObject($input);
+            if ($reflection->isCloneable()) {
+                $this->dependencyInput[] = clone $input;
+                return TRUE;
+            }
+
+            // TODO: How to handle cases where object is not CLONEABLE
+            return FALSE;
+        }
+
+        if ($this->dependencyInjectionPolicy == 'RERUN') {
+            // Not really sure how to implement this.
+        }
+
+        return FALSE;
+    }
+
+    /**
+     * @param String $policy
+     */
+    public function setInjectionPolicy($policy)
+    {
+        $this->dependencyInjectionPolicy = $policy;
+    }
+
+    /**
      * Calling this method in setUp() has no effect!
      *
      * @param  boolean $backupGlobals
@@ -1837,7 +1880,7 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
                         return FALSE;
                     }
 
-                    $this->dependencyInput[] = $passed[$dependency]['result'];
+                    $this->addDependencyInput($passed[$dependency]['result'], $dependency);
                 } else {
                     $this->dependencyInput[] = NULL;
                 }

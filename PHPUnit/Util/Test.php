@@ -674,6 +674,21 @@ class PHPUnit_Util_Test
     }
 
     /**
+     * @param string $className
+     * @return string
+     */
+    public static function getInjectionPolicy($className)
+    {
+        $annotations = self::parseTestMethodAnnotations($className);
+
+        if (empty($annotations['class']['dependsInjectionPolicy'][0])) {
+            return 'NONE';
+        }
+
+        return $annotations['class']['dependsInjectionPolicy'][0];
+    }
+
+    /**
      * Returns the preserve global state settings for a test.
      *
      * @param  string $className
