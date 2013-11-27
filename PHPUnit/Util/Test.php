@@ -133,11 +133,7 @@ class PHPUnit_Util_Test
         $docComment = substr($class->getDocComment(),  3, -2) . PHP_EOL .
                       substr($method->getDocComment(), 3, -2);
 
-        $templateMethods = array(
-          'setUp', 'assertPreConditions', 'assertPostConditions', 'tearDown'
-        );
-
-        foreach ($templateMethods as $templateMethod) {
+        foreach (self::$templateMethods as $templateMethod) {
             if ($class->hasMethod($templateMethod)) {
                 $reflector   = $class->getMethod($templateMethod);
                 $docComment .= PHP_EOL .
