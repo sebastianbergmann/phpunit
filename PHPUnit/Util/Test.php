@@ -114,12 +114,6 @@ class PHPUnit_Util_Test
     {
         $codeToCoverList = array();
 
-        // @codeCoverageIgnoreStart
-        if (($pos = strpos($methodName, ' ')) !== FALSE) {
-            $methodName = substr($methodName, 0, $pos);
-        }
-        // @codeCoverageIgnoreEnd
-
         $class = new ReflectionClass($className);
 
         try {
