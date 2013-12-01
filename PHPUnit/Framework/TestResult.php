@@ -711,7 +711,8 @@ class PHPUnit_Framework_TestResult implements Countable
                 $this->addFailure(
                   $test,
                   new PHPUnit_Framework_UnintentionallyCoveredCodeError(
-                    'This test executed code that is not listed as code to be covered or used'
+                    'This test executed code that is not listed as code to be covered or used:' .
+                    PHP_EOL . $cce->getMessage()
                   ),
                   $time
                 );
