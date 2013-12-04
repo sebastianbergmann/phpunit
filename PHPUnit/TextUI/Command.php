@@ -114,7 +114,8 @@ class PHPUnit_TextUI_Command
       'printer=' => NULL,
       'static-backup' => NULL,
       'verbose' => NULL,
-      'version' => NULL
+      'version' => NULL,
+      'version-check' => NULL
     );
 
     /**
@@ -473,6 +474,10 @@ class PHPUnit_TextUI_Command
                 }
                 break;
 
+                case '--version-check':
+                    $this->handleVersionCheck();
+                break;
+
                 case '--strict': {
                     $this->arguments['strict'] = TRUE;
                 }
@@ -762,6 +767,72 @@ class PHPUnit_TextUI_Command
     }
 
     /**
+     * Handles version check.
+     *
+     * @author Franck Cassedanne <franck@cassedanne.com>
+     */
+    protected function handleVersionCheck()
+    {
+        PHPUnit_TextUI_TestRunner::printVersionString();
+        print "Checking PHPUnit version ...";
+        
+        $currentVersion = PHPUnit_Runner_Version::id();
+
+        $jsonTags = $this->fileGetContent(
+            'https://api.github.com/repos/sebastianbergmann/phpunit/tags',
+            array(
+              'http' => array(
+                  'follow_location' => TRUE,
+                  'max_redirects' => 20,
+                  'timeout' => 60,
+                  'user_agent' => 'PHPUnit' . PHPUnit_Runner_Version::id()
+              )
+            )
+          );
+
+        $tags = array_map(
+            function ($tag) { return $tag['name']; },
+            json_decode($jsonTags, true)
+        );
+
+        $liveVersion = array_reduce($tags, function ($a, $b) {
+            return version_compare($a, $b, '>') ? $a : $b;
+        });
+
+        if (-1 != version_compare($currentVersion, $liveVersion, '>=')) {
+            print sprintf(" %s is available\n", $liveVersion);
+        } else {
+            print " up-to-date\n";
+        }
+
+        exit(PHPUnit_TextUI_TestRunner::SUCCESS_EXIT);
+    }
+
+    /**
+     * Retrieves the body-content from the provided URL.
+     *
+     * @author Franck Cassedanne <franck@cassedanne.com>
+     * @param  string $url
+     * @param  array  $options  An associative array.
+     * @return string
+     * @throw  Exception if status code is above 300
+     */
+    protected function fileGetContent($url, array $options)
+    {
+        $body = file_get_contents($url, FALSE, stream_context_create($options));
+
+        if (isset($http_response_header)) {
+          $code = substr($http_response_header[0], 9, 3);
+          if (floor($code/100)>3) {
+              print " failed\n\n" . $http_response_header[0] . "\n";
+              exit(PHPUnit_TextUI_TestRunner::EXCEPTION_EXIT);
+          }
+        } 
+
+        return $body;
+    }
+
+    /**
      * @since Method available since Release 3.8.0
      */
     protected function handleSelfUpdate()
@@ -884,6 +955,7 @@ Usage: phpunit [switches] UnitTest [UnitTest.php]
 
   -h|--help                 Prints this usage information.
   --version                 Prints the version and exits.
+  --check-version           Compares the local and live version of PHPUnit.
 
 EOT;
 
