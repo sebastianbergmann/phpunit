@@ -115,6 +115,92 @@ class PHPUnit_Framework_MockObject_Builder_InvocationMocker implements PHPUnit_F
     }
 
     /**
+     * @param  mixed $value
+     * @return PHPUnit_Framework_MockObject_Builder_InvocationMocker
+     */
+    public function willReturn($value)
+    {
+        $stub = new PHPUnit_Framework_MockObject_Stub_Return(
+          $value
+        );
+
+        return $this->will($stub);
+    }
+
+    /**
+     * @param  array $valueMap
+     * @return PHPUnit_Framework_MockObject_Builder_InvocationMocker
+     */
+    public function willReturnMap(array $valueMap)
+    {
+        $stub = new PHPUnit_Framework_MockObject_Stub_ReturnValueMap(
+          $valueMap
+        );
+
+        return $this->will($stub);
+    }
+
+    /**
+     * @param  mixed $argumentIndex
+     * @return PHPUnit_Framework_MockObject_Builder_InvocationMocker
+     */
+    public function willReturnArgument($argumentIndex)
+    {
+        $stub = new PHPUnit_Framework_MockObject_Stub_ReturnArgument(
+          $argumentIndex
+        );
+
+        return $this->will($stub);
+    }
+
+    /**
+     * @param  callable $callback
+     * @return PHPUnit_Framework_MockObject_Builder_InvocationMocker
+     */
+    public function willReturnCallback($callback)
+    {
+        $stub = new PHPUnit_Framework_MockObject_Stub_ReturnCallback(
+          $callback
+        );
+
+        return $this->will($stub);
+    }
+
+    /**
+     * @return PHPUnit_Framework_MockObject_Builder_InvocationMocker
+     */
+    public function willReturnSelf()
+    {
+        $stub = new PHPUnit_Framework_MockObject_Stub_ReturnSelf();
+
+        return $this->will($stub);
+    }
+
+    /**
+     * @param  mixed $value, ...
+     * @return PHPUnit_Framework_MockObject_Builder_InvocationMocker
+     */
+    public function willReturnOnConsecutiveCalls()
+    {
+        $args = func_get_args();
+
+        $stub = new PHPUnit_Framework_MockObject_Stub_ConsecutiveCalls($args);
+
+        return $this->will($stub);
+    }
+
+    /**
+     * @param  Exception $exception
+     * @return PHPUnit_Framework_MockObject_Builder_InvocationMocker
+     */
+    public function willThrowException(Exception $exception)
+    {
+        $stub = new PHPUnit_Framework_MockObject_Stub_Exception($exception);
+
+        return $this->will($stub);
+    }
+
+    /**
      * @param  mixed $id
      * @return PHPUnit_Framework_MockObject_Builder_InvocationMocker
      */
