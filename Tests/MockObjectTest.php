@@ -167,6 +167,13 @@ class Framework_MockObjectTest extends PHPUnit_Framework_TestCase
              ->will($this->returnValue('something'));
 
         $this->assertEquals('something', $mock->doSomething());
+
+        $mock = $this->getMock('AnInterface');
+        $mock->expects($this->any())
+             ->method('doSomething')
+             ->willReturn('something');
+
+        $this->assertEquals('something', $mock->doSomething());
     }
 
     public function testStubbedReturnValueMap()
@@ -184,6 +191,15 @@ class Framework_MockObjectTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('d', $mock->doSomething('a', 'b', 'c'));
         $this->assertEquals('h', $mock->doSomething('e', 'f', 'g'));
         $this->assertEquals(NULL, $mock->doSomething('foo', 'bar'));
+
+        $mock = $this->getMock('AnInterface');
+        $mock->expects($this->any())
+             ->method('doSomething')
+             ->willReturnMap($map);
+
+        $this->assertEquals('d', $mock->doSomething('a', 'b', 'c'));
+        $this->assertEquals('h', $mock->doSomething('e', 'f', 'g'));
+        $this->assertEquals(NULL, $mock->doSomething('foo', 'bar'));
     }
 
     public function testFunctionCallback()
@@ -192,6 +208,13 @@ class Framework_MockObjectTest extends PHPUnit_Framework_TestCase
         $mock->expects($this->once())
              ->method('doSomething')
              ->will($this->returnCallback('functionCallback'));
+
+        $this->assertEquals('pass', $mock->doSomething('foo', 'bar'));
+
+        $mock = $this->getMock('SomeClass', array('doSomething'), array(), '', FALSE);
+        $mock->expects($this->once())
+             ->method('doSomething')
+             ->willReturnCallback('functionCallback');
 
         $this->assertEquals('pass', $mock->doSomething('foo', 'bar'));
     }
@@ -304,6 +327,21 @@ class Framework_MockObjectTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(
           'something', StaticMockTestClassMock::doSomething()
         );
+
+        $this->getMockClass(
+          'StaticMockTestClass',
+          array('doSomething'),
+          array(),
+          'StaticMockTestClassMock'
+        );
+
+        StaticMockTestClassMock::staticExpects($this->any())
+          ->method('doSomething')
+          ->willReturn('something');
+
+        $this->assertEquals(
+          'something', StaticMockTestClassMock::doSomething()
+        );
     }
 
     public function testStubbedReturnValueForStaticMethod2()
@@ -318,6 +356,21 @@ class Framework_MockObjectTest extends PHPUnit_Framework_TestCase
         StaticMockTestClassMock2::staticExpects($this->any())
           ->method('doSomething')
           ->will($this->returnValue('something'));
+
+        $this->assertEquals(
+          'something', StaticMockTestClassMock2::doSomethingElse()
+        );
+
+        $this->getMockClass(
+          'StaticMockTestClass',
+          array('doSomething'),
+          array(),
+          'StaticMockTestClassMock2'
+        );
+
+        StaticMockTestClassMock2::staticExpects($this->any())
+          ->method('doSomething')
+          ->willReturn('something');
 
         $this->assertEquals(
           'something', StaticMockTestClassMock2::doSomethingElse()
