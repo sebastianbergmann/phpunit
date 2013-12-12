@@ -159,6 +159,24 @@ class Framework_MockObjectTest extends PHPUnit_Framework_TestCase
         $this->fail();
     }
 
+    public function testStubbedWillThrowException()
+    {
+        $mock = $this->getMock('AnInterface');
+        $mock->expects($this->any())
+             ->method('doSomething')
+             ->willThrowException(new Exception);
+
+        try {
+            $mock->doSomething();
+        }
+
+        catch (Exception $e) {
+            return;
+        }
+
+        $this->fail();
+    }
+
     public function testStubbedReturnValue()
     {
         $mock = $this->getMock('AnInterface');
@@ -202,6 +220,23 @@ class Framework_MockObjectTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(NULL, $mock->doSomething('foo', 'bar'));
     }
 
+    public function testStubbedReturnArgument()
+    {
+        $mock = $this->getMock('AnInterface');
+        $mock->expects($this->any())
+             ->method('doSomething')
+             ->will($this->returnArgument(1));
+
+        $this->assertEquals('b', $mock->doSomething('a', 'b'));
+
+        $mock = $this->getMock('AnInterface');
+        $mock->expects($this->any())
+             ->method('doSomething')
+             ->willReturnArgument(1);
+
+        $this->assertEquals('b', $mock->doSomething('a', 'b'));
+    }
+
     public function testFunctionCallback()
     {
         $mock = $this->getMock('SomeClass', array('doSomething'), array(), '', FALSE);
@@ -217,6 +252,44 @@ class Framework_MockObjectTest extends PHPUnit_Framework_TestCase
              ->willReturnCallback('functionCallback');
 
         $this->assertEquals('pass', $mock->doSomething('foo', 'bar'));
+    }
+
+    public function testStubbedReturnSelf()
+    {
+        $mock = $this->getMock('AnInterface');
+        $mock->expects($this->any())
+             ->method('doSomething')
+             ->will($this->returnSelf());
+
+        $this->assertEquals($mock, $mock->doSomething());
+
+        $mock = $this->getMock('AnInterface');
+        $mock->expects($this->any())
+             ->method('doSomething')
+             ->willReturnSelf();
+
+        $this->assertEquals($mock, $mock->doSomething());
+    }
+
+    public function testStubbedReturnOnConsecutiveCalls()
+    {
+        $mock = $this->getMock('AnInterface');
+        $mock->expects($this->any())
+             ->method('doSomething')
+             ->will($this->onConsecutiveCalls('a', 'b', 'c'));
+
+        $this->assertEquals('a', $mock->doSomething());
+        $this->assertEquals('b', $mock->doSomething());
+        $this->assertEquals('c', $mock->doSomething());
+
+        $mock = $this->getMock('AnInterface');
+        $mock->expects($this->any())
+             ->method('doSomething')
+             ->willReturnOnConsecutiveCalls('a', 'b', 'c');
+
+        $this->assertEquals('a', $mock->doSomething());
+        $this->assertEquals('b', $mock->doSomething());
+        $this->assertEquals('c', $mock->doSomething());
     }
 
     public function testStaticMethodCallback()
