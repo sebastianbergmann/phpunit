@@ -14,6 +14,10 @@ before_script:
 
 script: ./phpunit.php --configuration ./build/travis-ci.xml
 
+matrix:
+  allow_failures:
+    - php: hhvm
+
 notifications:
   email: false
   irc:
