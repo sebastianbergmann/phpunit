@@ -3,6 +3,7 @@ language: php
 php:
     - 5.3
     - 5.4
+    - hhvm
 
 env:
     - INSTALL_PHP_INVOKER=0
