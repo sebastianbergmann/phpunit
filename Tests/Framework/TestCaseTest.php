@@ -442,4 +442,12 @@ class Framework_TestCaseTest extends PHPUnit_Framework_TestCase
         $this->assertSame($expectedCwd, getcwd());
     }
 
+    public function testNoSetup()
+    {
+        $test   = new NoSetupTest('testSomething');
+        $result = $test->run();
+
+        $this->assertTrue($test->testSomething);
+        $this->assertFalse($test->setup);
+    }
 }
