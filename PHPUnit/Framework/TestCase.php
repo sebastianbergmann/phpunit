@@ -148,6 +148,13 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
     private $inIsolation = FALSE;
 
     /**
+     * Whether or not run before and after procedures for this test.
+     *
+     * @var boolean
+     */
+    private $runSetup = TRUE;
+
+    /**
      * @var array
      */
     private $data = array();
@@ -504,6 +511,16 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
     }
 
     /**
+     */
+    protected function setRunSetupFromAnnotation()
+    {
+        $annotations = $this->getAnnotations();
+        if (isset($annotations['method']['noSetup'][0])) {
+            $this->runSetup = FALSE;
+        }
+    }
+
+    /**
      * @param boolean $useErrorHandler
      * @since Method available since Release 3.4.0
      */
@@ -831,9 +848,13 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
             }
 
             $this->setExpectedExceptionFromAnnotation();
-            foreach ($this->beforeMethods as $method) {
-                $this->$method();
+
+            if ($this->runSetup) {
+                foreach ($this->beforeMethods as $method) {
+                    $this->$method();
+                }
             }
+
             $this->checkRequirements();
             $this->assertPreConditions();
             $this->testResult = $this->runTest();
@@ -868,8 +889,10 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
         // Tear down the fixture. An exception raised in tearDown() will be
         // caught and passed on when no exception was raised before.
         try {
-            foreach ($this->afterMethods as $method) {
-                $this->$method();
+            if ($this->runSetup) {
+                foreach ($this->afterMethods as $method) {
+                    $this->$method();
+                }
             }
 
             if ($this->inIsolation) {
