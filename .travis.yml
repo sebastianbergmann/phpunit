@@ -3,6 +3,7 @@ language: php
 php:
     - 5.4
     - 5.5
+    - hhvm
 
 env:
     - INSTALL_PHP_INVOKER=0
@@ -12,6 +13,10 @@ before_script:
     - sh -c "if [ '$INSTALL_PHP_INVOKER' = '1' ]; then composer require --dev --prefer-source phpunit/php-invoker:\>=1.2.0; else composer install --dev --prefer-source; fi"
 
 script: ./phpunit.php --configuration ./build/travis-ci.xml
+
+matrix:
+  allow_failures:
+    - php: hhvm
 
 notifications:
   email: false
