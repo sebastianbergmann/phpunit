@@ -694,10 +694,10 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
             array($storage1, $storage2),
             // SplDoublyLinkedList, SplStack, SplQueue
             array($dll1, $dll2),
-            array(clone $dll1, $dll3),
-            array(clone $dll1, $dll4),
-            array(clone $dll1, $dll5),
-            array(clone $dll1, $stack),
+            array($dll1, $dll3),
+            array($dll1, $dll4),
+            array($dll1, $dll5),
+            array($dll1, $stack),
             array($stack, $queue),
             // DOMDocument
             array(
@@ -755,30 +755,29 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
         $storage2 = new SplObjectStorage;
         $storage2->attach($object1);
 
-        $object3 = new SampleClass(16, 23, 42);
         $dll1 = new SplDoublyLinkedList();
-        $dll1->push($object1);
-        $dll1->push($object3);
+        $dll1->push('foo');
+        $dll1->push('bar');
 
         $dll2 = new SplDoublyLinkedList();
-        $dll2->push($object1);
-        $dll2->push($object3);
+        $dll2->push('foo');
+        $dll2->push('bar');
 
         $stack1 = new SplStack(); // dlls have diff iter mode from stacks by default
-        $stack1->push($object1);
-        $stack1->push($object3);
+        $stack1->push('foo');
+        $stack1->push('bar');
 
         $stack2 = new SplStack(); // dlls have diff iter mode from stacks by default
-        $stack2->push($object1);
-        $stack2->push($object3);
+        $stack2->push('foo');
+        $stack2->push('bar');
 
         $queue1 = new SplQueue();
-        $queue1->push($object1);
-        $queue1->push($object3);
+        $queue1->push('foo');
+        $queue1->push('bar');
 
         $queue2 = new SplQueue();
-        $queue2->push($object1);
-        $queue2->push($object3);
+        $queue2->push('foo');
+        $queue2->push('bar');
 
         return array(
             // strings
