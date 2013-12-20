@@ -75,8 +75,8 @@ class PHPUnit_Framework_Comparator_SplDoublyLinkedList extends PHPUnit_Framework
      * @param  mixed $actual The second value to compare
      * @param  float $delta The allowed numerical distance between two values to
      *                      consider them equal
-     * @param  bool  $canonicalize If set to TRUE, arrays are sorted before
-     *                             comparison
+     * @param  bool  $canonicalize Ignored; ordering must be checked as it is
+     *                             an inherent guarantee of the datastructure.
      * @param  bool  $ignoreCase If set to TRUE, upper- and lowercasing is
      *                           ignored when comparing string values
      * @throws PHPUnit_Framework_ComparisonFailure Thrown when the comparison
@@ -85,6 +85,11 @@ class PHPUnit_Framework_Comparator_SplDoublyLinkedList extends PHPUnit_Framework
      */
     public function assertEquals($expected, $actual, $delta = 0, $canonicalize = FALSE, $ignoreCase = FALSE)
     {
+        // Quick escape hatch if they are the same object.
+        if ($expected === $actual) {
+            return;
+        }
+
         // Because PHP implements queues and stacks as specializations of a
         // doubly linked list differentiated only by an iteration mode flag,
         // it is truer to compare the flag than the particular (sub)class in
@@ -123,9 +128,10 @@ class PHPUnit_Framework_Comparator_SplDoublyLinkedList extends PHPUnit_Framework
         }
 
         $expected->rewind();
-        foreach ($actual as $item) {
-            $expected->next();
-            if ($expected->current() != $item || !$expected->valid()) {
+        $actual->rewind();
+        while ($actual->valid()) {
+            list($a_item, $e_item) = array($actual->current(), $expected->current());
+            if ($e_item != $a_item) {
                 throw new PHPUnit_Framework_ComparisonFailure(
                   $expected,
                   $actual,
@@ -135,15 +141,13 @@ class PHPUnit_Framework_Comparator_SplDoublyLinkedList extends PHPUnit_Framework
                   'Failed asserting that two objects are equal.'
                 );
             }
+            $expected->next();
+            $actual->next();
         }
 
         if ($delete) {
             $actual->setIteratorMode($actual->getIteratorMode() | SplDoublyLinkedList::IT_MODE_DELETE);
             $expected->setIteratorMode($expected->getIteratorMode() | SplDoublyLinkedList::IT_MODE_DELETE);
         }
-    }
-
-    protected function toArray(SplDoublyLinkedList $list)
-    {
     }
 }
