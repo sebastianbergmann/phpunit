@@ -763,11 +763,11 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
         $dll2->push('foo');
         $dll2->push('bar');
 
-        $stack1 = new SplStack(); // dlls have diff iter mode from stacks by default
+        $stack1 = new SplStack();
         $stack1->push('foo');
         $stack1->push('bar');
 
-        $stack2 = new SplStack(); // dlls have diff iter mode from stacks by default
+        $stack2 = new SplStack();
         $stack2->push('foo');
         $stack2->push('bar');
 
@@ -803,7 +803,8 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
             array($dll1, $dll2),
             array($stack1, $stack2),
             array($queue1, $queue2),
-            array($dll1, $queue1),
+            array($dll1, $queue1), // dll and queue are same by default
+            array(new SplDoublyLinkedList(), new SplQueue()), // ensure empties work
             // DOMDocument
             array(
                 $this->createDOMDocument('<root></root>'),
