@@ -80,7 +80,7 @@ class PHPUnit_Framework_ComparatorFactory
         $this->register(new PHPUnit_Framework_Comparator_Object);
         $this->register(new PHPUnit_Framework_Comparator_Exception);
         $this->register(new PHPUnit_Framework_Comparator_SplObjectStorage);
-        $this->register(new PHPUnit_Framework_Comparator_DOMDocument);
+        $this->register(new PHPUnit_Framework_Comparator_DOMNode);
         $this->register(new PHPUnit_Framework_Comparator_MockObject);
         $this->register(new PHPUnit_Framework_Comparator_DateTime);
     }
