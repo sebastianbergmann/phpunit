@@ -54,7 +54,7 @@
  * @link       http://www.phpunit.de/
  * @since      Class available since Release 3.7.29
  */
-class PHPUnit_Framework_Comparator_SplDoublyLinkedList extends PHPUnit_Framework_Comparator_Array
+class PHPUnit_Framework_Comparator_SplDoublyLinkedList extends PHPUnit_Framework_Comparator
 {
     /**
      * Returns whether the comparator can compare two values.
