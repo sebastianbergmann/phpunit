@@ -44,17 +44,17 @@
  */
 
 /**
- * Compares DOMDocument instances for equality.
+ * Compares DOMNodes instances for equality.
  *
  * @package    PHPUnit
  * @subpackage Framework_Comparator
  * @author     Bernhard Schussek <bschussek@2bepublished.at>
+ * @author     Arne Blankerts <arne@blankerts.de>
  * @copyright  2001-2013 Sebastian Bergmann <sebastian@phpunit.de>
  * @license    http://www.opensource.org/licenses/BSD-3-Clause  The BSD 3-Clause License
  * @link       http://www.phpunit.de/
- * @since      Class available since Release 3.6.0
  */
-class PHPUnit_Framework_Comparator_DOMDocument extends PHPUnit_Framework_Comparator_Object
+class PHPUnit_Framework_Comparator_DOMNode extends PHPUnit_Framework_Comparator_Object
 {
     /**
      * Returns whether the comparator can compare two values.
@@ -65,7 +65,7 @@ class PHPUnit_Framework_Comparator_DOMDocument extends PHPUnit_Framework_Compara
      */
     public function accepts($expected, $actual)
     {
-        return $expected instanceof DOMDocument && $actual instanceof DOMDocument;
+        return $expected instanceof DOMNode && $actual instanceof DOMNode;
     }
 
     /**
@@ -85,30 +85,51 @@ class PHPUnit_Framework_Comparator_DOMDocument extends PHPUnit_Framework_Compara
      */
     public function assertEquals($expected, $actual, $delta = 0, $canonicalize = FALSE, $ignoreCase = FALSE)
     {
-        if ($expected->C14N() !== $actual->C14N()) {
+        $expectedXML = $expected->C14N();
+        $actualXML = $actual->C14N();
+        if ($ignoreCase === TRUE) {
+            $expectedXML = strtolower($expectedXML);
+            $actualXML = strtolower($actualXML);
+        }
+        if ($expectedXML !== $actualXML) {
+            if ($expected instanceof DOMDocument) {
+                $type = 'documents';
+            } else {
+                $type = 'nodes';
+            }
+
             throw new PHPUnit_Framework_ComparisonFailure(
               $expected,
               $actual,
               $this->domToText($expected),
               $this->domToText($actual),
               FALSE,
-              'Failed asserting that two DOM documents are equal.'
+              sprintf('Failed asserting that two DOM %s are equal.', $type)
             );
         }
     }
 
     /**
      * Returns the normalized, whitespace-cleaned, and indented textual
-     * representation of a DOMDocument.
+     * representation of a DOMNode.
      *
-     * @param DOMDocument $document
+     * @param DOMNode $node
      * @return string
      */
-    protected function domToText(DOMDocument $document)
+    protected function domToText(DOMNode $node)
     {
+        if ($node instanceof DOMDocument) {
+            $document = $node;
+        } else {
+            $document = $node->ownerDocument;
+        }
+
         $document->formatOutput = TRUE;
         $document->normalizeDocument();
 
-        return $document->saveXML();
+        if ($node instanceof DOMDocument) {
+            return $node->saveXML();
+        }
+        return $document->saveXML($node);
     }
 }

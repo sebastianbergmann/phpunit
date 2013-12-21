@@ -93,7 +93,7 @@ spl_autoload_register(
             'phpunit_framework_comparator' => '/Framework/Comparator.php',
             'phpunit_framework_comparator_array' => '/Framework/Comparator/Array.php',
             'phpunit_framework_comparator_datetime' => '/Framework/Comparator/DateTime.php',
-            'phpunit_framework_comparator_domdocument' => '/Framework/Comparator/DOMDocument.php',
+            'phpunit_framework_comparator_domnode' => '/Framework/Comparator/DOMNode.php',
             'phpunit_framework_comparator_double' => '/Framework/Comparator/Double.php',
             'phpunit_framework_comparator_exception' => '/Framework/Comparator/Exception.php',
             'phpunit_framework_comparator_mockobject' => '/Framework/Comparator/MockObject.php',

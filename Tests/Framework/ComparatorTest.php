@@ -86,7 +86,8 @@ class Framework_ComparatorTest extends PHPUnit_Framework_TestCase
             array(new DateTime, new DateTime, 'PHPUnit_Framework_Comparator_DateTime'),
             array(new SplObjectStorage, new SplObjectStorage, 'PHPUnit_Framework_Comparator_SplObjectStorage'),
             array(new Exception, new Exception, 'PHPUnit_Framework_Comparator_Exception'),
-            array(new DOMDocument, new DOMDocument, 'PHPUnit_Framework_Comparator_DOMDocument'),
+            array(new DOMDocument, new DOMDocument, 'PHPUnit_Framework_Comparator_DOMNode'),
+            array(new DOMNode, new DOMNode, 'PHPUnit_Framework_Comparator_DOMNode'),
             // mixed types
             array($tmpfile, array(1), 'PHPUnit_Framework_Comparator_Type'),
             array(array(1), $tmpfile, 'PHPUnit_Framework_Comparator_Type'),
