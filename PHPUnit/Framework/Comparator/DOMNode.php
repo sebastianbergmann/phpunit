@@ -126,6 +126,9 @@ class PHPUnit_Framework_Comparator_DOMNode extends PHPUnit_Framework_Comparator_
         $document->formatOutput = TRUE;
         $document->normalizeDocument();
 
+        if ($node instanceof DOMDocument) {
+            return $node->saveXML();
+        }
         return $document->saveXML($node);
     }
 }
