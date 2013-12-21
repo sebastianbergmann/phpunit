@@ -119,10 +119,11 @@ class PHPUnit_Framework_Comparator_DOMNode extends PHPUnit_Framework_Comparator_
     protected function domToText(DOMNode $node)
     {
         if ($node instanceof DOMDocument) {
-            $node = $node->documentElement;
+            $document = $node;
+        } else {
+            $document = $node->ownerDocument;
         }
 
-        $document = $node->ownerDocument;
         $document->formatOutput = TRUE;
         $document->normalizeDocument();
 
