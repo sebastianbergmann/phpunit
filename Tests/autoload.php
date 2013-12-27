@@ -45,6 +45,7 @@ spl_autoload_register(
                 'coveredclass' => '/_files/CoveredClass.php',
                 'coveredparentclass' => '/_files/CoveredClass.php',
                 'customprinter' => '/_files/CustomPrinter.php',
+                'dataproviderfiltertest' => '/_files/DataProviderFilterTest.php',
                 'dataprovidertest' => '/_files/DataProviderTest.php',
                 'dependencyfailuretest' => '/_files/DependencyFailureTest.php',
                 'dependencysuccesstest' => '/_files/DependencySuccessTest.php',

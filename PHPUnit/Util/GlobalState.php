@@ -91,11 +91,6 @@ class PHPUnit_Util_GlobalState
       'HTTP_POST_FILES'
     );
 
-    /**
-     * @var array
-     */
-    protected static $phpunitFiles;
-
     public static function backupGlobals(array $blacklist)
     {
         self::$globals     = array();
@@ -189,7 +184,7 @@ class PHPUnit_Util_GlobalState
 
     public static function getIncludedFilesAsString()
     {
-        $blacklist = self::phpunitFiles();
+        $blacklist = new PHPUnit_Util_Blacklist;
         $files     = get_included_files();
         $prefix    = FALSE;
         $result    = '';
@@ -205,7 +200,7 @@ class PHPUnit_Util_GlobalState
                 continue;
             }
 
-            if (!isset($blacklist[$file]) && is_file($file)) {
+            if (!$blacklist->isBlacklisted($file) && is_file($file)) {
                 $result = 'require_once \'' . $file . "';\n" . $result;
             }
         }
@@ -390,57 +385,5 @@ class PHPUnit_Util_GlobalState
         }
 
         return $result;
-    }
-
-    /**
-     * @return array
-     * @since  Method available since Release 3.6.0
-     */
-    public static function phpunitFiles()
-    {
-        if (self::$phpunitFiles === NULL) {
-            self::$phpunitFiles = array();
-            self::addDirectoryContainingClassToPHPUnitFilesList('File_Iterator');
-            self::addDirectoryContainingClassToPHPUnitFilesList('PHP_CodeCoverage');
-            self::addDirectoryContainingClassToPHPUnitFilesList('PHP_Invoker');
-            self::addDirectoryContainingClassToPHPUnitFilesList('PHP_Timer');
-            self::addDirectoryContainingClassToPHPUnitFilesList('PHP_Token');
-            self::addDirectoryContainingClassToPHPUnitFilesList('PHPUnit_Framework_TestCase', 2);
-            self::addDirectoryContainingClassToPHPUnitFilesList('PHPUnit_Extensions_Database_TestCase', 2);
-            self::addDirectoryContainingClassToPHPUnitFilesList('PHPUnit_Framework_MockObject_Generator', 2);
-            self::addDirectoryContainingClassToPHPUnitFilesList('PHPUnit_Extensions_SeleniumTestCase', 2);
-            self::addDirectoryContainingClassToPHPUnitFilesList('PHPUnit_Extensions_Story_TestCase', 2);
-            self::addDirectoryContainingClassToPHPUnitFilesList('Text_Template');
-            self::addDirectoryContainingClassToPHPUnitFilesList('SebastianBergmann\Diff');
-            self::addDirectoryContainingClassToPHPUnitFilesList('SebastianBergmann\Exporter\Exporter');
-            self::addDirectoryContainingClassToPHPUnitFilesList('SebastianBergmann\Version');
-        }
-
-        return self::$phpunitFiles;
-    }
-
-    /**
-     * @param string  $className
-     * @param integer $parent
-     * @since Method available since Release 3.7.2
-     */
-    protected static function addDirectoryContainingClassToPHPUnitFilesList($className, $parent = 1)
-    {
-        if (!class_exists($className)) {
-            return;
-        }
-
-        $reflector = new ReflectionClass($className);
-        $directory = $reflector->getFileName();
-
-        for ($i = 0; $i < $parent; $i++) {
-            $directory = dirname($directory);
-        }
-
-        $facade = new File_Iterator_Facade;
-
-        foreach ($facade->getFilesAsArray($directory, '.php') as $file) {
-            self::$phpunitFiles[$file] = TRUE;
-        }
     }
 }

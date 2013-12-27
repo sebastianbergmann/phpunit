@@ -182,6 +182,7 @@ spl_autoload_register(
             'phpunit_textui_command' => '/TextUI/Command.php',
             'phpunit_textui_resultprinter' => '/TextUI/ResultPrinter.php',
             'phpunit_textui_testrunner' => '/TextUI/TestRunner.php',
+            'phpunit_util_blacklist' => '/Util/Blacklist.php',
             'phpunit_util_configuration' => '/Util/Configuration.php',
             'phpunit_util_deprecatedfeature' => '/Util/DeprecatedFeature.php',
             'phpunit_util_deprecatedfeature_logger' => '/Util/DeprecatedFeature/Logger.php',

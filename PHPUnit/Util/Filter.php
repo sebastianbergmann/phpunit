@@ -72,12 +72,6 @@ class PHPUnit_Util_Filter
             $prefix = 'phar://' . __PHPUNIT_PHAR__ . '/';
         }
 
-        if (!defined('PHPUNIT_TESTSUITE')) {
-            $blacklist = PHPUnit_Util_GlobalState::phpunitFiles();
-        } else {
-            $blacklist = array();
-        }
-
         if ($asString === TRUE) {
             $filteredStacktrace = '';
         } else {
@@ -104,9 +98,11 @@ class PHPUnit_Util_Filter
             );
         }
 
+        $blacklist = new PHPUnit_Util_Blacklist;
+
         foreach ($eTrace as $frame) {
             if (isset($frame['file']) && is_file($frame['file']) &&
-                !isset($blacklist[$frame['file']]) &&
+                !$blacklist->isBlacklisted($frame['file']) &&
                 ($prefix === FALSE || strpos($frame['file'], $prefix) !== 0) &&
                 $frame['file'] !== $script) {
                 if ($asString === TRUE) {
@@ -132,7 +128,7 @@ class PHPUnit_Util_Filter
      * @return boolean
      * @since  Method available since Release 3.3.2
      */
-    public static function frameExists(array $trace, $file, $line)
+    private static function frameExists(array $trace, $file, $line)
     {
         foreach ($trace as $frame) {
             if (isset($frame['file']) && $frame['file'] == $file &&
