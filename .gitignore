@@ -18,3 +18,4 @@ Tests/TextUI/*.php
 phpunit.xml
 cache.properties
 .idea
+.ant_targets
