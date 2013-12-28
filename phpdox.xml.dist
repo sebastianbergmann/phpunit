@@ -7,6 +7,14 @@
   </collector>
 
   <generator output="build">
+   <enrich base="${basedir}/build/logs">
+    <source type="build" />
+    <source type="git" />
+    <source type="phploc" />
+    <source type="checkstyle" />
+    <source type="pmd" />
+   </enrich>
+
    <build engine="html" enabled="true" output="api">
     <file extension="html" />
    </build>
