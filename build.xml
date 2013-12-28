@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
 <project name="PHPUnit" default="build">
  <property name="php" value="php"/>
 
@@ -17,6 +16,7 @@
   <delete dir="${basedir}/build/logs"/>
   <delete dir="${basedir}/build/pdepend"/>
   <delete dir="${basedir}/build/phar"/>
+  <delete dir="${basedir}/build/phpdox"/>
 
   <delete>
    <fileset dir="${basedir}/build">
@@ -25,14 +25,22 @@
   </delete>
  </target>
 
- <target name="prepare" depends="clean,phpab"
-         description="Prepare for build">
+ <target name="prepare" description="Prepare for build">
   <mkdir dir="${basedir}/build/api"/>
   <mkdir dir="${basedir}/build/code-browser"/>
   <mkdir dir="${basedir}/build/coverage"/>
   <mkdir dir="${basedir}/build/logs"/>
   <mkdir dir="${basedir}/build/pdepend"/>
   <mkdir dir="${basedir}/build/phpdox"/>
+ </target>
+
+ <target name="composer" description="Install dependencies with Composer">
+  <get src="https://getcomposer.org/composer.phar" dest="${basedir}/composer.phar"/>
+
+  <exec executable="php">
+   <arg value="composer.phar"/>
+   <arg value="install"/>
+  </exec>
  </target>
 
  <target name="phpab" description="Generate autoloader scripts">
@@ -157,16 +165,8 @@
          depends="phar-prepare,phar-build">
  </target>
 
- <target name="phar-prepare" depends="clean">
+ <target name="phar-prepare" depends="clean,composer">
   <mkdir dir="${basedir}/build/phar"/>
-
-  <get src="https://getcomposer.org/composer.phar" dest="${basedir}/composer.phar"/>
-
-  <exec executable="php">
-   <arg value="composer.phar"/>
-   <arg value="install"/>
-  </exec>
-
   <copy file="${basedir}/composer.json" tofile="${basedir}/composer.json.bak"/>
 
   <exec executable="php">
