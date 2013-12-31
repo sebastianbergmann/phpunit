@@ -831,10 +831,12 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
             }
 
             $this->setExpectedExceptionFromAnnotation();
+            $this->checkRequirements();
+
             foreach ($this->beforeMethods as $method) {
                 $this->$method();
             }
-            $this->checkRequirements();
+
             $this->assertPreConditions();
             $this->testResult = $this->runTest();
             $this->verifyMockObjects();
