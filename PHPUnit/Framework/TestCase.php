@@ -826,12 +826,13 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
         $currentWorkingDirectory = getcwd();
 
         try {
+            $this->checkRequirements();
+
             if ($this->inIsolation) {
                 $this->setUpBeforeClass();
             }
 
             $this->setExpectedExceptionFromAnnotation();
-            $this->checkRequirements();
 
             foreach ($this->beforeMethods as $method) {
                 $this->$method();
