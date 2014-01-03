@@ -3562,6 +3562,42 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
     }
 
     /**
+     * @covers PHPUnit_Framework_Assert::assertNotSameSize
+     */
+    public function testAssertNotSameSize()
+    {
+        $this->assertNotSameSize(array(1,2), array(1,2,3));
+
+        try {
+            $this->assertNotSameSize(array(1,2), array(3,4));
+        }
+
+        catch (PHPUnit_Framework_AssertionFailedError $e) {
+            return;
+        }
+
+        $this->fail();
+    }
+
+    /**
+     * @covers PHPUnit_Framework_Assert::assertNotSameSize
+     * @expectedException PHPUnit_Framework_Exception
+     */
+    public function testAssertNotSameSizeThrowsExceptionIfExpectedIsNotCountable()
+    {
+        $this->assertNotSameSize('a', array());
+    }
+
+    /**
+     * @covers PHPUnit_Framework_Assert::assertNotSameSize
+     * @expectedException PHPUnit_Framework_Exception
+     */
+    public function testAssertNotSameSizeThrowsExceptionIfActualIsNotCountable()
+    {
+        $this->assertNotSameSize(array(), '');
+    }
+
+    /**
      * @covers PHPUnit_Framework_Assert::assertJsonStringEqualsJsonString
      */
     public function testAssertJsonStringEqualsJsonString()
