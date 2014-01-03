@@ -3762,6 +3762,60 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
         $this->assertNotInstanceOf(NULL, new stdClass);
     }
 
+    /**
+     * @covers PHPUnit_Framework_Assert::assertInternalType
+     */
+    public function testAssertInternalType()
+    {
+        $this->assertInternalType('integer', 1);
+
+        try {
+            $this->assertInternalType('string', 1);
+        }
+
+        catch (PHPUnit_Framework_AssertionFailedError $e) {
+            return;
+        }
+
+        $this->fail();
+    }
+
+    /**
+     * @covers PHPUnit_Framework_Assert::assertInternalType
+     * @expectedException PHPUnit_Framework_Exception
+     */
+    public function testAssertInternalTypeThrowsExceptionForInvalidArgument()
+    {
+        $this->assertInternalType(NULL, 1);
+    }
+
+    /**
+     * @covers PHPUnit_Framework_Assert::assertNotInternalType
+     */
+    public function testAssertNotInternalType()
+    {
+        $this->assertNotInternalType('string', 1);
+
+        try {
+            $this->assertNotInternalType('integer', 1);
+        }
+
+        catch (PHPUnit_Framework_AssertionFailedError $e) {
+            return;
+        }
+
+        $this->fail();
+    }
+
+    /**
+     * @covers PHPUnit_Framework_Assert::assertNotInternalType
+     * @expectedException PHPUnit_Framework_Exception
+     */
+    public function testAssertNotInternalTypeThrowsExceptionForInvalidArgument()
+    {
+        $this->assertNotInternalType(NULL, 1);
+    }
+
     public static function validInvalidJsonDataprovider()
     {
         return array(
