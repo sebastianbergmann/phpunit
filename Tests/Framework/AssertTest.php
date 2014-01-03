@@ -190,9 +190,18 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
      * @covers            PHPUnit_Framework_Assert::assertArrayHasKey
      * @expectedException PHPUnit_Framework_Exception
      */
-    public function testAssertArrayHasKeyThrowsException()
+    public function testAssertArrayHasKeyThrowsExceptionForInvalidFirstArgument()
     {
         $this->assertArrayHasKey(NULL, array());
+    }
+
+    /**
+     * @covers            PHPUnit_Framework_Assert::assertArrayHasKey
+     * @expectedException PHPUnit_Framework_Exception
+     */
+    public function testAssertArrayHasKeyThrowsExceptionForInvalidSecondArgument()
+    {
+        $this->assertArrayHasKey(0, NULL);
     }
 
     /**
@@ -217,9 +226,18 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
      * @covers            PHPUnit_Framework_Assert::assertArrayNotHasKey
      * @expectedException PHPUnit_Framework_Exception
      */
-    public function testAssertArrayNotHasKeyThrowsException()
+    public function testAssertArrayNotHasKeyThrowsExceptionForInvalidFirstArgument()
     {
         $this->assertArrayNotHasKey(NULL, array());
+    }
+
+    /**
+     * @covers            PHPUnit_Framework_Assert::assertArrayNotHasKey
+     * @expectedException PHPUnit_Framework_Exception
+     */
+    public function testAssertArrayNotHasKeyThrowsExceptionForInvalidSecondArgument()
+    {
+        $this->assertArrayNotHasKey(0, NULL);
     }
 
     /**
