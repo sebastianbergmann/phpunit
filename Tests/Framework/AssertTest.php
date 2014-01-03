@@ -3472,6 +3472,42 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
     }
 
     /**
+     * @covers PHPUnit_Framework_Assert::assertNotCount
+     */
+    public function testAssertNotCount()
+    {
+        $this->assertNotCount(2, array(1,2,3));
+
+        try {
+            $this->assertNotCount(2, array(1,2));
+        }
+
+        catch (PHPUnit_Framework_AssertionFailedError $e) {
+            return;
+        }
+
+        $this->fail();
+    }
+
+    /**
+     * @covers PHPUnit_Framework_Assert::assertNotCount
+     * @expectedException PHPUnit_Framework_Exception
+     */
+    public function testAssertNotCountThrowsExceptionIfExpectedCountIsNoInteger()
+    {
+        $this->assertNotCount('a', array());
+    }
+
+    /**
+     * @covers PHPUnit_Framework_Assert::assertNotCount
+     * @expectedException PHPUnit_Framework_Exception
+     */
+    public function testAssertNotCountThrowsExceptionIfElementIsNotCountable()
+    {
+        $this->assertNotCount(2, '');
+    }
+
+    /**
      * @covers PHPUnit_Framework_Assert::assertSameSize
      */
     public function testAssertSameSize()
