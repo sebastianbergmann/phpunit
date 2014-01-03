@@ -3530,7 +3530,6 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
      */
     public function testAssertSameSizeThrowsExceptionIfExpectedIsNotCoutable()
     {
-
         try {
             $this->assertSameSize('a', array());
         }
@@ -3544,13 +3543,11 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
         $this->fail();
     }
 
-
     /**
      * @covers PHPUnit_Framework_Assert::assertSameSize
      */
     public function testAssertSameSizeThrowsExceptionIfActualIsNotCountable()
     {
-
         try {
             $this->assertSameSize(array(), '');
         }
