@@ -3708,6 +3708,60 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
         $this->assertJsonFileEqualsJsonFile($file, $file, $message);
     }
 
+    /**
+     * @covers PHPUnit_Framework_Assert::assertInstanceOf
+     */
+    public function testAssertInstanceOf()
+    {
+        $this->assertInstanceOf('stdClass', new stdClass);
+
+        try {
+            $this->assertInstanceOf('Exception', new stdClass);
+        }
+
+        catch (PHPUnit_Framework_AssertionFailedError $e) {
+            return;
+        }
+
+        $this->fail();
+    }
+
+    /**
+     * @covers PHPUnit_Framework_Assert::assertInstanceOf
+     * @expectedException PHPUnit_Framework_Exception
+     */
+    public function testAssertInstanceOfThrowsExceptionForInvalidArgument()
+    {
+        $this->assertInstanceOf(NULL, new stdClass);
+    }
+
+    /**
+     * @covers PHPUnit_Framework_Assert::assertNotInstanceOf
+     */
+    public function testAssertNotInstanceOf()
+    {
+        $this->assertNotInstanceOf('Exception', new stdClass);
+
+        try {
+            $this->assertNotInstanceOf('stdClass', new stdClass);
+        }
+
+        catch (PHPUnit_Framework_AssertionFailedError $e) {
+            return;
+        }
+
+        $this->fail();
+    }
+
+    /**
+     * @covers PHPUnit_Framework_Assert::assertNotInstanceOf
+     * @expectedException PHPUnit_Framework_Exception
+     */
+    public function testAssertNotInstanceOfThrowsExceptionForInvalidArgument()
+    {
+        $this->assertNotInstanceOf(NULL, new stdClass);
+    }
+
     public static function validInvalidJsonDataprovider()
     {
         return array(
