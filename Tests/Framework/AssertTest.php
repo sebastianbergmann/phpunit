@@ -3528,7 +3528,7 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
     /**
      * @covers PHPUnit_Framework_Assert::assertSameSize
      */
-    public function testAssertSameSizeThrowsExceptionIfExpectedIsNotCoutable()
+    public function testAssertSameSizeThrowsExceptionIfExpectedIsNotCountable()
     {
         try {
             $this->assertSameSize('a', array());
