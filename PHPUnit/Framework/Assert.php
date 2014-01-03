@@ -1274,13 +1274,13 @@ abstract class PHPUnit_Framework_Assert
      */
     public static function assertInternalType($expected, $actual, $message = '')
     {
-        if (is_string($expected)) {
-            $constraint = new PHPUnit_Framework_Constraint_IsType(
-              $expected
-            );
-        } else {
+        if (!is_string($expected)) {
             throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'string');
         }
+
+        $constraint = new PHPUnit_Framework_Constraint_IsType(
+            $expected
+        );
 
         self::assertThat($actual, $constraint, $message);
     }
@@ -1313,13 +1313,13 @@ abstract class PHPUnit_Framework_Assert
      */
     public static function assertNotInternalType($expected, $actual, $message = '')
     {
-        if (is_string($expected)) {
-            $constraint = new PHPUnit_Framework_Constraint_Not(
-              new PHPUnit_Framework_Constraint_IsType($expected)
-            );
-        } else {
+        if (!is_string($expected)) {
             throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'string');
         }
+
+        $constraint = new PHPUnit_Framework_Constraint_Not(
+            new PHPUnit_Framework_Constraint_IsType($expected)
+        );
 
         self::assertThat($actual, $constraint, $message);
     }
