@@ -28,5 +28,5 @@ There was 1 incomplete test:
 Test incomplete
 
 %s
-OK, but incomplete or skipped tests!
+OK, but incomplete, skipped, or risky tests!
 Tests: 1, Assertions: 0, Incomplete: 1.

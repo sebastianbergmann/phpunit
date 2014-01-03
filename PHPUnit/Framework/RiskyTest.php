@@ -36,7 +36,7 @@
  *
  * @package    PHPUnit
  * @subpackage Framework
- * @author     Giorgio Sironi <info@giorgiosironi.com>
+ * @author     Sebastian Bergmann <sebastian@phpunit.de>
  * @copyright  2001-2013 Sebastian Bergmann <sebastian@phpunit.de>
  * @license    http://www.opensource.org/licenses/BSD-3-Clause  The BSD 3-Clause License
  * @link       http://www.phpunit.de/
@@ -44,35 +44,17 @@
  */
 
 /**
- * An empty Listener that can be extended to implement TestListener
- * with just a few lines of code.
- * @see PHPUnit_Framework_TestListener for documentation on the API methods.
+ * A marker interface for marking any exception/error as result of an unit
+ * test as risky.
  *
  * @package    PHPUnit
  * @subpackage Framework
- * @author     Giorgio Sironi<info@giorgiosironi.com>
+ * @author     Sebastian Bergmann <sebastian@phpunit.de>
  * @copyright  2001-2013 Sebastian Bergmann <sebastian@phpunit.de>
  * @license    http://www.opensource.org/licenses/BSD-3-Clause  The BSD 3-Clause License
  * @link       http://www.phpunit.de/
- * @since      Class available since Release 3.8.0
+ * @since      Interface available since Release 3.8.0
  */
-abstract class PHPUnit_Framework_BaseTestListener implements PHPUnit_Framework_TestListener
+interface PHPUnit_Framework_RiskyTest
 {
-    public function addError(PHPUnit_Framework_Test $test, Exception $e, $time) {}
-
-    public function addFailure(PHPUnit_Framework_Test $test, PHPUnit_Framework_AssertionFailedError $e, $time) {}
-
-    public function addIncompleteTest(PHPUnit_Framework_Test $test, Exception $e, $time) {}
-
-    public function addRiskyTest(PHPUnit_Framework_Test $test, Exception $e, $time) {}
-
-    public function addSkippedTest(PHPUnit_Framework_Test $test, Exception $e, $time) {}
-
-    public function startTestSuite(PHPUnit_Framework_TestSuite $suite) {}
-
-    public function endTestSuite(PHPUnit_Framework_TestSuite $suite) {}
-
-    public function startTest(PHPUnit_Framework_Test $test) {}
-
-    public function endTest(PHPUnit_Framework_Test $test, $time) {}
 }

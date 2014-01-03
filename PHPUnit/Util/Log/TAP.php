@@ -151,6 +151,28 @@ class PHPUnit_Util_Log_TAP extends PHPUnit_Util_Printer implements PHPUnit_Frame
     }
 
     /**
+     * Risky test.
+     *
+     * @param  PHPUnit_Framework_Test $test
+     * @param  Exception              $e
+     * @param  float                  $time
+     * @since  Method available since Release 3.8.0
+     */
+    public function addRiskyTest(PHPUnit_Framework_Test $test, Exception $e, $time)
+    {
+        $this->write(
+          sprintf(
+            "ok %d - # RISKY%s\n",
+
+            $this->testNumber,
+            $e->getMessage() != '' ? ' ' . $e->getMessage() : ''
+          )
+        );
+
+        $this->testSuccessful = FALSE;
+    }
+
+    /**
      * Skipped test.
      *
      * @param  PHPUnit_Framework_Test $test

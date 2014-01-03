@@ -201,6 +201,7 @@
     <xs:attribute name="stopOnError" type="xs:boolean" default="false"/>
     <xs:attribute name="stopOnFailure" type="xs:boolean" default="false"/>
     <xs:attribute name="stopOnIncomplete" type="xs:boolean" default="false"/>
+    <xs:attribute name="stopOnRisky" type="xs:boolean" default="false"/>
     <xs:attribute name="stopOnSkipped" type="xs:boolean" default="false"/>
     <xs:attribute name="strict" type="xs:boolean" default="false"/>
     <xs:attribute name="testSuiteLoaderClass" type="xs:string" default="PHPUnit_Runner_StandardTestSuiteLoader"/>

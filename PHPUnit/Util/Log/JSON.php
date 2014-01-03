@@ -133,6 +133,27 @@ class PHPUnit_Util_Log_JSON extends PHPUnit_Util_Printer implements PHPUnit_Fram
     }
 
     /**
+     * Risky test.
+     *
+     * @param  PHPUnit_Framework_Test $test
+     * @param  Exception              $e
+     * @param  float                  $time
+     * @since  Method available since Release 3.8.0
+     */
+    public function addRiskyTest(PHPUnit_Framework_Test $test, Exception $e, $time)
+    {
+        $this->writeCase(
+          'error',
+          $time,
+          PHPUnit_Util_Filter::getFilteredStacktrace($e, FALSE),
+          'Risky Test: ' . $e->getMessage(),
+          $test
+        );
+
+        $this->currentTestPass = FALSE;
+    }
+
+    /**
      * Skipped test.
      *
      * @param  PHPUnit_Framework_Test $test

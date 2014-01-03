@@ -19,5 +19,5 @@ I
 
 Time: %s, Memory: %sMb
 
-OK, but incomplete or skipped tests!
+OK, but incomplete, skipped, or risky tests!
 Tests: 1, Assertions: 0, Incomplete: 1.

@@ -89,6 +89,11 @@ abstract class PHPUnit_Util_TestDox_ResultPrinter extends PHPUnit_Util_Printer i
     /**
      * @var integer
      */
+    protected $risky = 0;
+
+    /**
+     * @var integer
+     */
     protected $skipped = 0;
 
     /**
@@ -178,6 +183,22 @@ abstract class PHPUnit_Util_TestDox_ResultPrinter extends PHPUnit_Util_Printer i
         if ($test instanceof $this->testTypeOfInterest) {
             $this->testStatus = PHPUnit_Runner_BaseTestRunner::STATUS_INCOMPLETE;
             $this->incomplete++;
+        }
+    }
+
+    /**
+     * Risky test.
+     *
+     * @param  PHPUnit_Framework_Test $test
+     * @param  Exception              $e
+     * @param  float                  $time
+     * @since  Method available since Release 3.8.0
+     */
+    public function addRiskyTest(PHPUnit_Framework_Test $test, Exception $e, $time)
+    {
+        if ($test instanceof $this->testTypeOfInterest) {
+            $this->testStatus = PHPUnit_Runner_BaseTestRunner::STATUS_RISKY;
+            $this->risky++;
         }
     }
 

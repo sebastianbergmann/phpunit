@@ -186,6 +186,15 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
 
             $this->printDeprecated($result);
 
+            if ($printSeparator && $result->riskyCount() > 0) {
+                $this->write("\n--\n\n");
+            }
+
+            $printSeparator = $printSeparator ||
+                              $result->riskyCount() > 0;
+
+            $this->printRisky($result);
+
             if ($printSeparator && $result->notImplementedCount() > 0) {
                 $this->write("\n--\n\n");
             }
@@ -322,8 +331,17 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
     }
 
     /**
-     * @param PHPUnit_Framework_TestResult $result
-     * @since Method available since Release 3.0.0
+     * @param  PHPUnit_Framework_TestResult  $result
+     * @since  Method available since Release 3.8.0
+     */
+    protected function printRisky(PHPUnit_Framework_TestResult $result)
+    {
+        $this->printDefects($result->risky(), 'risky test');
+    }
+
+    /**
+     * @param  PHPUnit_Framework_TestResult  $result
+     * @since  Method available since Release 3.0.0
      */
     protected function printSkipped(PHPUnit_Framework_TestResult $result)
     {
@@ -386,8 +404,9 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
         }
 
         else if ($result->wasSuccessful() &&
-            $result->allCompletelyImplemented() &&
-            $result->noneSkipped()) {
+                 $result->allHarmless() &&
+                 $result->allCompletelyImplemented() &&
+                 $result->noneSkipped()) {
 
             $this->writeWithColor(
               'fg-black, bg-green',
@@ -403,13 +422,14 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
         }
 
         else if ((!$result->allCompletelyImplemented() ||
+                  !$result->allHarmless() ||
                   !$result->noneSkipped()) &&
                  $result->wasSuccessful()) {
             $this->writeWithColor(
               'fg-black, bg-yellow',
               sprintf(
-                "%sOK, but incomplete or skipped tests!\n" .
-                'Tests: %d, Assertions: %d%s%s.',
+                "%sOK, but incomplete, skipped, or risky tests!\n" .
+                'Tests: %d, Assertions: %d%s%s%s.',
 
                 $this->verbose ? "\n" : '',
                 count($result),
@@ -419,6 +439,9 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
                 ),
                 $this->getCountString(
                   $result->skippedCount(), 'Skipped'
+                ),
+                $this->getCountString(
+                  $result->riskyCount(), 'Risky'
                 )
               )
             );
@@ -524,6 +547,20 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
     public function addIncompleteTest(PHPUnit_Framework_Test $test, Exception $e, $time)
     {
         $this->writeProgressWithColor('fg-yellow, bold', 'I');
+        $this->lastTestFailed = TRUE;
+    }
+
+    /**
+     * Risky test.
+     *
+     * @param  PHPUnit_Framework_Test $test
+     * @param  Exception              $e
+     * @param  float                  $time
+     * @since  Method available since Release 3.8.0
+     */
+    public function addRiskyTest(PHPUnit_Framework_Test $test, Exception $e, $time)
+    {
+        $this->writeProgressWithColor('fg-yellow, bold', 'R');
         $this->lastTestFailed = TRUE;
     }
 

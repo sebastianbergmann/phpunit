@@ -55,6 +55,6 @@
  * @link       http://www.phpunit.de/
  * @since      Class available since Release 3.8.0
  */
-class PHPUnit_Framework_UnintentionallyCoveredCodeError extends PHPUnit_Framework_AssertionFailedError
+class PHPUnit_Framework_UnintentionallyCoveredCodeError extends PHPUnit_Framework_RiskyTestError
 {
 }

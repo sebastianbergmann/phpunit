@@ -102,6 +102,7 @@ class PHPUnit_TextUI_Command
       'stop-on-error' => NULL,
       'stop-on-failure' => NULL,
       'stop-on-incomplete' => NULL,
+      'stop-on-risky' => NULL,
       'stop-on-skipped' => NULL,
       'strict' => NULL,
       'tap' => NULL,
@@ -418,6 +419,11 @@ class PHPUnit_TextUI_Command
 
                 case '--stop-on-incomplete': {
                     $this->arguments['stopOnIncomplete'] = TRUE;
+                }
+                break;
+
+                case '--stop-on-risky': {
+                    $this->arguments['stopOnRisky'] = TRUE;
                 }
                 break;
 
@@ -866,6 +872,7 @@ Usage: phpunit [switches] UnitTest [UnitTest.php]
   --stderr                  Write to STDERR instead of STDOUT.
   --stop-on-error           Stop execution upon first error.
   --stop-on-failure         Stop execution upon first error or failure.
+  --stop-on-risky           Stop execution upon first risky test.
   --stop-on-skipped         Stop execution upon first skipped test.
   --stop-on-incomplete      Stop execution upon first incomplete test.
   --strict                  Run tests in strict mode.

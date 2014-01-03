@@ -84,6 +84,16 @@ interface PHPUnit_Framework_TestListener
     public function addIncompleteTest(PHPUnit_Framework_Test $test, Exception $e, $time);
 
     /**
+     * Risky test.
+     *
+     * @param  PHPUnit_Framework_Test $test
+     * @param  Exception              $e
+     * @param  float                  $time
+     * @since  Method available since Release 3.8.0
+     */
+    public function addRiskyTest(PHPUnit_Framework_Test $test, Exception $e, $time);
+
+    /**
      * Skipped test.
      *
      * @param  PHPUnit_Framework_Test $test

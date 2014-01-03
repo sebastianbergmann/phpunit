@@ -129,6 +129,8 @@
      <file baseinstalldir="/" name="InvalidCoversTargetError.php" role="php" />
      <file baseinstalldir="/" name="InvalidCoversTargetException.php" role="php" />
      <file baseinstalldir="/" name="OutputError.php" role="php" />
+     <file baseinstalldir="/" name="RiskyTestError.php" role="php" />
+     <file baseinstalldir="/" name="RiskyTest.php" role="php" />
      <file baseinstalldir="/" name="SelfDescribing.php" role="php" />
      <file baseinstalldir="/" name="SkippedTestError.php" role="php" />
      <file baseinstalldir="/" name="SkippedTest.php" role="php" />

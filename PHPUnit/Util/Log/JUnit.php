@@ -250,6 +250,35 @@ class PHPUnit_Util_Log_JUnit extends PHPUnit_Util_Printer implements PHPUnit_Fra
     }
 
     /**
+     * Risky test.
+     *
+     * @param  PHPUnit_Framework_Test $test
+     * @param  Exception              $e
+     * @param  float                  $time
+     * @since  Method available since Release 3.8.0
+     */
+    public function addRiskyTest(PHPUnit_Framework_Test $test, Exception $e, $time)
+    {
+        if ($this->logIncompleteSkipped && $this->currentTestCase !== NULL) {
+            $error = $this->document->createElement(
+              'error',
+              PHPUnit_Util_XML::prepareString(
+                "Risky Test\n" .
+                PHPUnit_Util_Filter::getFilteredStacktrace($e)
+              )
+            );
+
+            $error->setAttribute('type', get_class($e));
+
+            $this->currentTestCase->appendChild($error);
+
+            $this->testSuiteErrors[$this->testSuiteLevel]++;
+        } else {
+            $this->attachCurrentTestCase = FALSE;
+        }
+    }
+
+    /**
      * Skipped test.
      *
      * @param  PHPUnit_Framework_Test $test

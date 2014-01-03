@@ -94,6 +94,11 @@ class PHPUnit_Framework_TestResult implements Countable
     /**
      * @var array
      */
+    protected $risky = array();
+
+    /**
+     * @var array
+     */
     protected $skipped = array();
 
     /**
@@ -162,6 +167,11 @@ class PHPUnit_Framework_TestResult implements Countable
      * @var boolean
      */
     protected $beStrictAboutTestSize = FALSE;
+
+    /**
+     * @var boolean
+     */
+    protected $stopOnRisky = FALSE;
 
     /**
      * @var boolean
@@ -240,7 +250,19 @@ class PHPUnit_Framework_TestResult implements Countable
      */
     public function addError(PHPUnit_Framework_Test $test, Exception $e, $time)
     {
-        if ($e instanceof PHPUnit_Framework_IncompleteTest) {
+        if ($e instanceof PHPUnit_Framework_RiskyTest) {
+            $this->risky[] = new PHPUnit_Framework_TestFailure(
+              $test, $e
+            );
+
+            $notifyMethod = 'addRiskyTest';
+
+            if ($this->stopOnRisky) {
+                $this->stop();
+            }
+        }
+
+        else if ($e instanceof PHPUnit_Framework_IncompleteTest) {
             $this->notImplemented[] = new PHPUnit_Framework_TestFailure(
               $test, $e
             );
@@ -288,7 +310,19 @@ class PHPUnit_Framework_TestResult implements Countable
      */
     public function addFailure(PHPUnit_Framework_Test $test, PHPUnit_Framework_AssertionFailedError $e, $time)
     {
-        if ($e instanceof PHPUnit_Framework_IncompleteTest) {
+        if ($e instanceof PHPUnit_Framework_RiskyTest) {
+            $this->risky[] = new PHPUnit_Framework_TestFailure(
+              $test, $e
+            );
+
+            $notifyMethod = 'addRiskyTest';
+
+            if ($this->stopOnRisky) {
+                $this->stop();
+            }
+        }
+
+        else if ($e instanceof PHPUnit_Framework_IncompleteTest) {
             $this->notImplemented[] = new PHPUnit_Framework_TestFailure(
               $test, $e
             );
@@ -409,6 +443,28 @@ class PHPUnit_Framework_TestResult implements Countable
     }
 
     /**
+     * Returns TRUE if no risky test occurred.
+     *
+     * @return boolean
+     * @since  Method available since Release 3.8.0
+     */
+    public function allHarmless()
+    {
+        return $this->riskyCount() == 0;
+    }
+
+    /**
+     * Gets the number of risky tests.
+     *
+     * @return integer
+     * @since  Method available since Release 3.8.0
+     */
+    public function riskyCount()
+    {
+        return count($this->risky);
+    }
+
+    /**
      * Returns TRUE if no incomplete test occurred.
      *
      * @return boolean
@@ -426,6 +482,17 @@ class PHPUnit_Framework_TestResult implements Countable
     public function notImplementedCount()
     {
         return count($this->notImplemented);
+    }
+
+    /**
+     * Returns an Enumeration for the risky tests.
+     *
+     * @return array
+     * @since  Method available since Release 3.8.0
+     */
+    public function risky()
+    {
+        return $this->risky;
     }
 
     /**
@@ -588,6 +655,7 @@ class PHPUnit_Framework_TestResult implements Countable
         $error      = FALSE;
         $failure    = FALSE;
         $incomplete = FALSE;
+        $risky      = FALSE;
         $skipped    = FALSE;
 
         $this->startTest($test);
@@ -665,7 +733,11 @@ class PHPUnit_Framework_TestResult implements Countable
         catch (PHPUnit_Framework_AssertionFailedError $e) {
             $failure = TRUE;
 
-            if ($e instanceof PHPUnit_Framework_IncompleteTestError) {
+            if ($e instanceof PHPUnit_Framework_RiskyTestError) {
+                $risky = TRUE;
+            }
+
+            else if ($e instanceof PHPUnit_Framework_IncompleteTestError) {
                 $incomplete = TRUE;
             }
 
@@ -683,11 +755,11 @@ class PHPUnit_Framework_TestResult implements Countable
 
         if ($this->beStrictAboutTestsThatDoNotTestAnything &&
             $test->getNumAssertions() == 0) {
-            $incomplete = TRUE;
+            $risky = TRUE;
         }
 
         if ($useXdebug) {
-            $append           = !$incomplete && !$skipped;
+            $append           = !$risky && !$incomplete && !$skipped;
             $linesToBeCovered = array();
             $linesToBeUsed    = array();
 
@@ -753,7 +825,7 @@ class PHPUnit_Framework_TestResult implements Countable
                  $test->getNumAssertions() == 0) {
             $this->addFailure(
               $test,
-              new PHPUnit_Framework_IncompleteTestError(
+              new PHPUnit_Framework_RiskyTestError(
                 'This test did not perform any assertions'
               ),
               $time
@@ -947,6 +1019,22 @@ class PHPUnit_Framework_TestResult implements Countable
     {
         if (is_bool($flag)) {
             $this->beStrictAboutTestSize = $flag;
+        } else {
+            throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'boolean');
+        }
+    }
+
+    /**
+     * Enables or disables the stopping for risky tests.
+     *
+     * @param  boolean $flag
+     * @throws PHPUnit_Framework_Exception
+     * @since  Method available since Release 3.8.0
+     */
+    public function stopOnRisky($flag)
+    {
+        if (is_bool($flag)) {
+            $this->stopOnRisky = $flag;
         } else {
             throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'boolean');
         }

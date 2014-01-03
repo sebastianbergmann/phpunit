@@ -155,6 +155,8 @@ spl_autoload_register(
             'phpunit_framework_invalidcoverstargeterror' => '/Framework/InvalidCoversTargetError.php',
             'phpunit_framework_invalidcoverstargetexception' => '/Framework/InvalidCoversTargetException.php',
             'phpunit_framework_outputerror' => '/Framework/OutputError.php',
+            'phpunit_framework_riskytest' => '/Framework/RiskyTest.php',
+            'phpunit_framework_riskytesterror' => '/Framework/RiskyTestError.php',
             'phpunit_framework_selfdescribing' => '/Framework/SelfDescribing.php',
             'phpunit_framework_skippedtest' => '/Framework/SkippedTest.php',
             'phpunit_framework_skippedtesterror' => '/Framework/SkippedTestError.php',

@@ -194,6 +194,7 @@ abstract class PHPUnit_Util_PHP
 
                 $time           = $childResult->time();
                 $notImplemented = $childResult->notImplemented();
+                $risky          = $childResult->risky();
                 $skipped        = $childResult->skipped();
                 $errors         = $childResult->errors();
                 $failures       = $childResult->failures();
@@ -201,6 +202,12 @@ abstract class PHPUnit_Util_PHP
                 if (!empty($notImplemented)) {
                     $result->addError(
                       $test, $this->getException($notImplemented[0]), $time
+                    );
+                }
+
+                else if (!empty($risky)) {
+                    $result->addError(
+                      $test, $this->getException($risky[0]), $time
                     );
                 }
 

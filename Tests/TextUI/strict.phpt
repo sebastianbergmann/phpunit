@@ -15,9 +15,9 @@ PHPUnit_TextUI_Command::main();
 --EXPECTF--
 PHPUnit %s by Sebastian Bergmann.
 
-I
+R
 
 Time: %s, Memory: %sMb
 
-OK, but incomplete or skipped tests!
-Tests: 1, Assertions: 0, Incomplete: 1.
+OK, but incomplete, skipped, or risky tests!
+Tests: 1, Assertions: 0, Risky: 1.

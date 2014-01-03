@@ -65,6 +65,7 @@
  *          stopOnError="false"
  *          stopOnFailure="false"
  *          stopOnIncomplete="false"
+ *          stopOnRisky="false"
  *          stopOnSkipped="false"
  *          testSuiteLoaderClass="PHPUnit_Runner_StandardTestSuiteLoader"
  *          timeoutForSmallTests="1"
@@ -664,6 +665,12 @@ class PHPUnit_Util_Configuration
         if ($root->hasAttribute('stopOnIncomplete')) {
             $result['stopOnIncomplete'] = $this->getBoolean(
               (string)$root->getAttribute('stopOnIncomplete'), FALSE
+            );
+        }
+
+        if ($root->hasAttribute('stopOnRisky')) {
+            $result['stopOnRisky'] = $this->getBoolean(
+              (string)$root->getAttribute('stopOnRisky'), FALSE
             );
         }
 
