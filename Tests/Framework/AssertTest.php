@@ -3715,5 +3715,4 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
             'error UTF-8 in actual JSON'    => array('{"Mascott" : "Tux"}', '{"Mascott" : :}'),
         );
     }
-
 }
