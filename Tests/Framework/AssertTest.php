@@ -539,6 +539,15 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
     }
 
     /**
+     * @covers            PHPUnit_Framework_Assert::assertNotContainsOnly
+     * @expectedException PHPUnit_Framework_Exception
+     */
+    public function testAssertNotContainsOnlyThrowsException()
+    {
+        $this->assertNotContainsOnly(NULL, NULL);
+    }
+
+    /**
      * @covers            PHPUnit_Framework_Assert::assertContainsOnlyInstancesOf
      * @expectedException PHPUnit_Framework_Exception
      */
