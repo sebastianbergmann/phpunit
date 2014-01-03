@@ -76,6 +76,7 @@ abstract class PHPUnit_Framework_Assert
               1, 'integer or string'
             );
         }
+
         if (!(is_array($array) || $array instanceof ArrayAccess)) {
             throw PHPUnit_Util_InvalidArgumentHelper::factory(
               2, 'array or ArrayAccess'
@@ -102,6 +103,7 @@ abstract class PHPUnit_Framework_Assert
               1, 'integer or string'
             );
         }
+
         if (!(is_array($array) || $array instanceof ArrayAccess)) {
             throw PHPUnit_Util_InvalidArgumentHelper::factory(
               2, 'array or ArrayAccess'
