@@ -1196,21 +1196,13 @@ abstract class PHPUnit_Framework_Assert
      */
     public static function assertInstanceOf($expected, $actual, $message = '')
     {
-        if (is_string($expected)) {
-            if (class_exists($expected) || interface_exists($expected)) {
-                $constraint = new PHPUnit_Framework_Constraint_IsInstanceOf(
-                  $expected
-                );
-            }
-
-            else {
-                throw PHPUnit_Util_InvalidArgumentHelper::factory(
-                  1, 'class or interface name'
-                );
-            }
-        } else {
-            throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'string');
+        if (!(is_string($expected) && (class_exists($expected) || interface_exists($expected)))) {
+            throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'class or interface name');
         }
+
+        $constraint = new PHPUnit_Framework_Constraint_IsInstanceOf(
+            $expected
+        );
 
         self::assertThat($actual, $constraint, $message);
     }
@@ -1243,21 +1235,13 @@ abstract class PHPUnit_Framework_Assert
      */
     public static function assertNotInstanceOf($expected, $actual, $message = '')
     {
-        if (is_string($expected)) {
-            if (class_exists($expected) || interface_exists($expected)) {
-                $constraint = new PHPUnit_Framework_Constraint_Not(
-                  new PHPUnit_Framework_Constraint_IsInstanceOf($expected)
-                );
-            }
-
-            else {
-                throw PHPUnit_Util_InvalidArgumentHelper::factory(
-                  1, 'class or interface name'
-                );
-            }
-        } else {
-            throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'string');
+        if (!(is_string($expected) && (class_exists($expected) || interface_exists($expected)))) {
+            throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'class or interface name');
         }
+
+        $constraint = new PHPUnit_Framework_Constraint_Not(
+            new PHPUnit_Framework_Constraint_IsInstanceOf($expected)
+        );
 
         self::assertThat($actual, $constraint, $message);
     }
