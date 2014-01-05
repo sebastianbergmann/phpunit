@@ -908,11 +908,11 @@ class PHPUnit_Framework_TestResult implements Countable
      */
     public function convertErrorsToExceptions($flag)
     {
-        if (is_bool($flag)) {
-            $this->convertErrorsToExceptions = $flag;
-        } else {
+        if (!is_bool($flag)) {
             throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'boolean');
         }
+
+        $this->convertErrorsToExceptions = $flag;
     }
 
     /**
@@ -935,11 +935,11 @@ class PHPUnit_Framework_TestResult implements Countable
      */
     public function stopOnError($flag)
     {
-        if (is_bool($flag)) {
-            $this->stopOnError = $flag;
-        } else {
+        if (!is_bool($flag)) {
             throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'boolean');
         }
+
+        $this->stopOnError = $flag;
     }
 
     /**
@@ -951,11 +951,11 @@ class PHPUnit_Framework_TestResult implements Countable
      */
     public function stopOnFailure($flag)
     {
-        if (is_bool($flag)) {
-            $this->stopOnFailure = $flag;
-        } else {
+        if (!is_bool($flag)) {
             throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'boolean');
         }
+
+        $this->stopOnFailure = $flag;
     }
 
     /**
@@ -971,15 +971,15 @@ class PHPUnit_Framework_TestResult implements Countable
      */
     public function strictMode($flag)
     {
-        if (is_bool($flag)) {
-            $this->strictMode = $flag;
-
-            $this->beStrictAboutTestsThatDoNotTestAnything($flag);
-            $this->beStrictAboutOutputDuringTests($flag);
-            $this->beStrictAboutTestSize($flag);
-        } else {
+        if (!is_bool($flag)) {
             throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'boolean');
         }
+
+        $this->strictMode = $flag;
+
+        $this->beStrictAboutTestsThatDoNotTestAnything($flag);
+        $this->beStrictAboutOutputDuringTests($flag);
+        $this->beStrictAboutTestSize($flag);
     }
 
     /**
@@ -989,11 +989,11 @@ class PHPUnit_Framework_TestResult implements Countable
      */
     public function beStrictAboutTestsThatDoNotTestAnything($flag)
     {
-        if (is_bool($flag)) {
-            $this->beStrictAboutTestsThatDoNotTestAnything = $flag;
-        } else {
+        if (!is_bool($flag)) {
             throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'boolean');
         }
+
+        $this->beStrictAboutTestsThatDoNotTestAnything = $flag;
     }
 
     /**
@@ -1003,11 +1003,11 @@ class PHPUnit_Framework_TestResult implements Countable
      */
     public function beStrictAboutOutputDuringTests($flag)
     {
-        if (is_bool($flag)) {
-            $this->beStrictAboutOutputDuringTests = $flag;
-        } else {
+        if (!is_bool($flag)) {
             throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'boolean');
         }
+
+        $this->beStrictAboutOutputDuringTests = $flag;
     }
 
     /**
@@ -1017,11 +1017,11 @@ class PHPUnit_Framework_TestResult implements Countable
      */
     public function beStrictAboutTestSize($flag)
     {
-        if (is_bool($flag)) {
-            $this->beStrictAboutTestSize = $flag;
-        } else {
+        if (!is_bool($flag)) {
             throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'boolean');
         }
+
+        $this->beStrictAboutTestSize = $flag;
     }
 
     /**
@@ -1033,11 +1033,11 @@ class PHPUnit_Framework_TestResult implements Countable
      */
     public function stopOnRisky($flag)
     {
-        if (is_bool($flag)) {
-            $this->stopOnRisky = $flag;
-        } else {
+        if (!is_bool($flag)) {
             throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'boolean');
         }
+
+        $this->stopOnRisky = $flag;
     }
 
     /**
@@ -1049,11 +1049,11 @@ class PHPUnit_Framework_TestResult implements Countable
      */
     public function stopOnIncomplete($flag)
     {
-        if (is_bool($flag)) {
-            $this->stopOnIncomplete = $flag;
-        } else {
+        if (!is_bool($flag)) {
             throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'boolean');
         }
+
+        $this->stopOnIncomplete = $flag;
     }
 
     /**
@@ -1065,11 +1065,11 @@ class PHPUnit_Framework_TestResult implements Countable
      */
     public function stopOnSkipped($flag)
     {
-        if (is_bool($flag)) {
-            $this->stopOnSkipped = $flag;
-        } else {
+        if (!is_bool($flag)) {
             throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'boolean');
         }
+
+        $this->stopOnSkipped = $flag;
     }
 
     /**
@@ -1101,11 +1101,11 @@ class PHPUnit_Framework_TestResult implements Countable
      */
     public function setTimeoutForSmallTests($timeout)
     {
-        if (is_integer($timeout)) {
-            $this->timeoutForSmallTests = $timeout;
-        } else {
+        if (!is_integer($timeout)) {
             throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'integer');
         }
+
+        $this->timeoutForSmallTests = $timeout;
     }
 
     /**
@@ -1117,11 +1117,11 @@ class PHPUnit_Framework_TestResult implements Countable
      */
     public function setTimeoutForMediumTests($timeout)
     {
-        if (is_integer($timeout)) {
-            $this->timeoutForMediumTests = $timeout;
-        } else {
+        if (!is_integer($timeout)) {
             throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'integer');
         }
+
+        $this->timeoutForMediumTests = $timeout;
     }
 
     /**
@@ -1133,11 +1133,11 @@ class PHPUnit_Framework_TestResult implements Countable
      */
     public function setTimeoutForLargeTests($timeout)
     {
-        if (is_integer($timeout)) {
-            $this->timeoutForLargeTests = $timeout;
-        } else {
+        if (!is_integer($timeout)) {
             throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'integer');
         }
+
+        $this->timeoutForLargeTests = $timeout;
     }
 
     /**
