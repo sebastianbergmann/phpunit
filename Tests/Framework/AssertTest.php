@@ -3033,6 +3033,15 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
     }
 
     /**
+     * @covers PHPUnit_Framework_Assert::assertThat
+     * @covers PHPUnit_Framework_Assert::callback
+     */
+    public function testAssertThatCallback()
+    {
+        $this->assertThat(NULL, $this->callback(function ($other) { return TRUE; }));
+    }
+
+    /**
      * @covers PHPUnit_Framework_Assert::assertFileEquals
      */
     public function testAssertFileEquals()
