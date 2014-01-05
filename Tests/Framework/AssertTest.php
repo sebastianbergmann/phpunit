@@ -3265,6 +3265,24 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
 
     /**
      * @covers PHPUnit_Framework_Assert::assertStringMatchesFormat
+     * @expectedException PHPUnit_Framework_Exception
+     */
+    public function testAssertStringMatchesFormatRaisesExceptionForInvalidFirstArgument()
+    {
+        $this->assertStringMatchesFormat(NULL, '');
+    }
+
+    /**
+     * @covers PHPUnit_Framework_Assert::assertStringMatchesFormat
+     * @expectedException PHPUnit_Framework_Exception
+     */
+    public function testAssertStringMatchesFormatRaisesExceptionForInvalidSecondArgument()
+    {
+        $this->assertStringMatchesFormat('', NULL);
+    }
+
+    /**
+     * @covers PHPUnit_Framework_Assert::assertStringMatchesFormat
      */
     public function testAssertStringMatchesFormat()
     {
@@ -3278,6 +3296,24 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
     public function testAssertStringMatchesFormatFailure()
     {
         $this->assertStringMatchesFormat('*%s*', '**');
+    }
+
+    /**
+     * @covers PHPUnit_Framework_Assert::assertStringNotMatchesFormat
+     * @expectedException PHPUnit_Framework_Exception
+     */
+    public function testAssertStringNotMatchesFormatRaisesExceptionForInvalidFirstArgument()
+    {
+        $this->assertStringNotMatchesFormat(NULL, '');
+    }
+
+    /**
+     * @covers PHPUnit_Framework_Assert::assertStringNotMatchesFormat
+     * @expectedException PHPUnit_Framework_Exception
+     */
+    public function testAssertStringNotMatchesFormatRaisesExceptionForInvalidSecondArgument()
+    {
+        $this->assertStringNotMatchesFormat('', NULL);
     }
 
     /**
