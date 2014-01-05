@@ -161,8 +161,32 @@
  </target>
 
  <target name="phar"
-         description="Create PHAR archive of PHPUnit and all its dependencies"
-         depends="phar-prepare,phar-build">
+         description="Create PHAR archive of PHPUnit and all its dependencies (release)"
+         depends="phar-prepare">
+  <exec executable="bash" outputproperty="version">
+   <arg value="-c" />
+   <arg value="${basedir}/phpunit.php --version | awk 'BEGIN { ORS = &quot;&quot;; } {print $2}'" />
+  </exec>
+
+  <antcall target="phar-build">
+   <param name="version" value="${version}"/>
+  </antcall>
+ </target>
+
+ <target name="phar-alpha"
+         description="Create PHAR archive of PHPUnit and all its dependencies (alpha)"
+         depends="phar-prepare">
+  <antcall target="phar-build">
+   <param name="version" value="alpha"/>
+  </antcall>
+ </target>
+
+ <target name="phar-beta"
+         description="Create PHAR archive of PHPUnit and all its dependencies (beta)"
+         depends="phar-prepare">
+  <antcall target="phar-build">
+   <param name="version" value="beta"/>
+  </antcall>
  </target>
 
  <target name="phar-prepare" depends="clean,composer">
@@ -293,11 +317,6 @@
  </target>
 
  <target name="phar-build">
-  <exec executable="bash" outputproperty="version">
-   <arg value="-c" />
-   <arg value="${basedir}/phpunit.php --version | awk 'BEGIN { ORS = &quot;&quot;; } {print $2}'" />
-  </exec>
-
   <copy todir="${basedir}/build/phar/phpunit">
    <fileset dir="${basedir}/PHPUnit">
     <include name="**/*.php" />
@@ -306,7 +325,7 @@
    </fileset>
   </copy>
 
-  <exec executable="${basedir}/build/phar-version.php">
+  <exec executable="${basedir}/build/phar-version.php" outputproperty="_version">
    <arg value="${version}" />
   </exec>
 
@@ -314,7 +333,7 @@
    <arg value="--all" />
    <arg value="--phar" />
    <arg value="--output" />
-   <arg path="${basedir}/build/phpunit-${version}.phar" />
+   <arg path="${basedir}/build/phpunit-${_version}.phar" />
    <arg value="--template" />
    <arg path="${basedir}/build/phar-autoload.php.in" />
    <arg value="--indent" />
@@ -322,6 +341,6 @@
    <arg path="${basedir}/build/phar" />
   </exec>
 
-  <chmod file="${basedir}/build/phpunit-${version}.phar" perm="ugo+rx"/>
+  <chmod file="${basedir}/build/phpunit-${_version}.phar" perm="ugo+rx"/>
  </target>
 </project>
