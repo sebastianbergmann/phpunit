@@ -2829,51 +2829,6 @@ abstract class PHPUnit_Framework_Assert
     }
 
     /**
-     * Mark the test as incomplete.
-     *
-     * @param  string  $message
-     * @throws PHPUnit_Framework_IncompleteTestError
-     * @since  Method available since Release 3.0.0
-     */
-    public static function markTestIncomplete($message = '')
-    {
-        throw new PHPUnit_Framework_IncompleteTestError($message);
-    }
-
-    /**
-     * Mark the test as skipped.
-     *
-     * @param  string  $message
-     * @throws PHPUnit_Framework_SkippedTestError
-     * @since  Method available since Release 3.0.0
-     */
-    public static function markTestSkipped($message = '')
-    {
-        throw new PHPUnit_Framework_SkippedTestError($message);
-    }
-
-    /**
-     * Return the current assertion count.
-     *
-     * @return integer
-     * @since  Method available since Release 3.3.3
-     */
-    public static function getCount()
-    {
-        return self::$count;
-    }
-
-    /**
-     * Reset the assertion counter.
-     *
-     * @since  Method available since Release 3.3.3
-     */
-    public static function resetCount()
-    {
-        self::$count = 0;
-    }
-
-    /**
      * Returns the value of a static attribute.
      * This also works for attributes that are declared protected or private.
      *
@@ -2883,7 +2838,7 @@ abstract class PHPUnit_Framework_Assert
      * @throws PHPUnit_Framework_Exception
      * @since  Method available since Release 3.8.0
      */
-    protected static function getStaticAttribute($className, $attributeName)
+    public static function getStaticAttribute($className, $attributeName)
     {
         if (!is_string($className)) {
             throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'string');
@@ -2914,11 +2869,11 @@ abstract class PHPUnit_Framework_Assert
         }
 
         throw new PHPUnit_Framework_Exception(
-          sprintf(
-            'Attribute "%s" not found in class.',
+            sprintf(
+                'Attribute "%s" not found in class.',
 
-            $attributeName
-          )
+                $attributeName
+            )
         );
     }
 
@@ -2932,7 +2887,7 @@ abstract class PHPUnit_Framework_Assert
      * @throws PHPUnit_Framework_Exception
      * @since  Method available since Release 3.8.0
      */
-    protected static function getObjectAttribute($object, $attributeName)
+    public static function getObjectAttribute($object, $attributeName)
     {
         if (!is_object($object)) {
             throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'object');
@@ -2977,10 +2932,55 @@ abstract class PHPUnit_Framework_Assert
         }
 
         throw new PHPUnit_Framework_Exception(
-          sprintf(
-            'Attribute "%s" not found in object.',
-            $attributeName
-          )
+            sprintf(
+                'Attribute "%s" not found in object.',
+                $attributeName
+            )
         );
+    }
+
+    /**
+     * Mark the test as incomplete.
+     *
+     * @param  string  $message
+     * @throws PHPUnit_Framework_IncompleteTestError
+     * @since  Method available since Release 3.0.0
+     */
+    public static function markTestIncomplete($message = '')
+    {
+        throw new PHPUnit_Framework_IncompleteTestError($message);
+    }
+
+    /**
+     * Mark the test as skipped.
+     *
+     * @param  string  $message
+     * @throws PHPUnit_Framework_SkippedTestError
+     * @since  Method available since Release 3.0.0
+     */
+    public static function markTestSkipped($message = '')
+    {
+        throw new PHPUnit_Framework_SkippedTestError($message);
+    }
+
+    /**
+     * Return the current assertion count.
+     *
+     * @return integer
+     * @since  Method available since Release 3.3.3
+     */
+    public static function getCount()
+    {
+        return self::$count;
+    }
+
+    /**
+     * Reset the assertion counter.
+     *
+     * @since  Method available since Release 3.3.3
+     */
+    public static function resetCount()
+    {
+        self::$count = 0;
     }
 }
