@@ -3042,6 +3042,15 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
     }
 
     /**
+     * @covers PHPUnit_Framework_Assert::assertThat
+     * @covers PHPUnit_Framework_Assert::countOf
+     */
+    public function testAssertThatCountOf()
+    {
+        $this->assertThat(array(1), $this->countOf(1));
+    }
+
+    /**
      * @covers PHPUnit_Framework_Assert::assertFileEquals
      */
     public function testAssertFileEquals()
