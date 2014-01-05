@@ -2971,6 +2971,15 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
 
     /**
      * @covers PHPUnit_Framework_Assert::assertThat
+     * @covers PHPUnit_Framework_Assert::isEmpty
+     */
+    public function testAssertThatIsEmpty()
+    {
+        $this->assertThat(array(), $this->isEmpty());
+    }
+
+    /**
+     * @covers PHPUnit_Framework_Assert::assertThat
      * @covers PHPUnit_Framework_Assert::fileExists
      */
     public function testAssertThatFileExists()
