@@ -2797,7 +2797,7 @@ abstract class PHPUnit_Framework_Assert
             throw PHPUnit_Util_InvalidArgumentHelper::factory(2, 'string');
         }
 
-        if(!preg_match('/[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*/', $attributeName)) {
+        if (!preg_match('/[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*/', $attributeName)) {
             throw PHPUnit_Util_InvalidArgumentHelper::factory(2, 'valid attribute name');
         }
 
@@ -2869,11 +2869,10 @@ abstract class PHPUnit_Framework_Assert
         }
 
         throw new PHPUnit_Framework_Exception(
-            sprintf(
-                'Attribute "%s" not found in class.',
-
-                $attributeName
-            )
+          sprintf(
+            'Attribute "%s" not found in class.',
+            $attributeName
+          )
         );
     }
 
@@ -2914,7 +2913,7 @@ abstract class PHPUnit_Framework_Assert
                     break;
                 }
 
-                catch(ReflectionException $e) {
+                catch (ReflectionException $e) {
                 }
             }
         }
@@ -2932,10 +2931,10 @@ abstract class PHPUnit_Framework_Assert
         }
 
         throw new PHPUnit_Framework_Exception(
-            sprintf(
-                'Attribute "%s" not found in object.',
-                $attributeName
-            )
+          sprintf(
+            'Attribute "%s" not found in object.',
+            $attributeName
+          )
         );
     }
 
