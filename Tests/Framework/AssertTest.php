@@ -3861,6 +3861,17 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
     }
 
     /**
+     * @covers PHPUnit_Framework_Assert::assertAttributeInstanceOf
+     */
+    public function testAssertAttributeInstanceOf()
+    {
+        $o    = new stdClass;
+        $o->a = new stdClass;
+
+        $this->assertAttributeInstanceOf('stdClass', 'a', $o);
+    }
+
+    /**
      * @covers PHPUnit_Framework_Assert::assertNotInstanceOf
      */
     public function testAssertNotInstanceOf()
@@ -3885,6 +3896,17 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
     public function testAssertNotInstanceOfThrowsExceptionForInvalidArgument()
     {
         $this->assertNotInstanceOf(NULL, new stdClass);
+    }
+
+    /**
+     * @covers PHPUnit_Framework_Assert::assertAttributeNotInstanceOf
+     */
+    public function testAssertAttributeNotInstanceOf()
+    {
+        $o    = new stdClass;
+        $o->a = new stdClass;
+
+        $this->assertAttributeNotInstanceOf('Exception', 'a', $o);
     }
 
     /**
