@@ -1885,6 +1885,98 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
     }
 
     /**
+     * @covers PHPUnit_Framework_Assert::getStaticAttribute
+     * @expectedException PHPUnit_Framework_Exception
+     */
+    public function testGetStaticAttributeRaisesExceptionForInvalidFirstArgument()
+    {
+        $this->getStaticAttribute(NULL, 'foo');
+    }
+
+    /**
+     * @covers PHPUnit_Framework_Assert::getStaticAttribute
+     * @expectedException PHPUnit_Framework_Exception
+     */
+    public function testGetStaticAttributeRaisesExceptionForInvalidFirstArgument2()
+    {
+        $this->getStaticAttribute('NotExistingClass', 'foo');
+    }
+
+    /**
+     * @covers PHPUnit_Framework_Assert::getStaticAttribute
+     * @expectedException PHPUnit_Framework_Exception
+     */
+    public function testGetStaticAttributeRaisesExceptionForInvalidSecondArgument()
+    {
+        $this->getStaticAttribute('stdClass', NULL);
+    }
+
+    /**
+     * @covers PHPUnit_Framework_Assert::getStaticAttribute
+     * @expectedException PHPUnit_Framework_Exception
+     */
+    public function testGetStaticAttributeRaisesExceptionForInvalidSecondArgument2()
+    {
+        $this->getStaticAttribute('stdClass', '0');
+    }
+
+    /**
+     * @covers PHPUnit_Framework_Assert::getStaticAttribute
+     * @expectedException PHPUnit_Framework_Exception
+     */
+    public function testGetStaticAttributeRaisesExceptionForInvalidSecondArgument3()
+    {
+        $this->getStaticAttribute('stdClass', 'foo');
+    }
+
+    /**
+     * @covers PHPUnit_Framework_Assert::getObjectAttribute
+     * @expectedException PHPUnit_Framework_Exception
+     */
+    public function testGetObjectAttributeRaisesExceptionForInvalidFirstArgument()
+    {
+        $this->getObjectAttribute(NULL, 'foo');
+    }
+
+    /**
+     * @covers PHPUnit_Framework_Assert::getObjectAttribute
+     * @expectedException PHPUnit_Framework_Exception
+     */
+    public function testGetObjectAttributeRaisesExceptionForInvalidSecondArgument()
+    {
+        $this->getObjectAttribute(new stdClass, NULL);
+    }
+
+    /**
+     * @covers PHPUnit_Framework_Assert::getObjectAttribute
+     * @expectedException PHPUnit_Framework_Exception
+     */
+    public function testGetObjectAttributeRaisesExceptionForInvalidSecondArgument2()
+    {
+        $this->getObjectAttribute(new stdClass, '0');
+    }
+
+    /**
+     * @covers PHPUnit_Framework_Assert::getObjectAttribute
+     * @expectedException PHPUnit_Framework_Exception
+     */
+    public function testGetObjectAttributeRaisesExceptionForInvalidSecondArgument3()
+    {
+        $this->getObjectAttribute(new stdClass, 'foo');
+    }
+
+    /**
+     * @covers PHPUnit_Framework_Assert::getObjectAttribute
+     */
+    public function testGetObjectAttributeWorksForInheritedAttributes()
+    {
+        $this->assertEquals(
+          'bar',
+          $this->getObjectAttribute(new ClassWithNonPublicAttributes, 'privateParentAttribute')
+        );
+    }
+
+    /**
      * @covers PHPUnit_Framework_Assert::assertAttributeContains
      */
     public function testAssertPublicAttributeContains()
