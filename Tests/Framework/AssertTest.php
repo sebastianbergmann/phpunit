@@ -3535,6 +3535,17 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
     }
 
     /**
+     * @covers PHPUnit_Framework_Assert::assertAttributeCount
+     */
+    public function testAssertAttributeCount()
+    {
+        $o    = new stdClass;
+        $o->a = array();
+
+        $this->assertAttributeCount(0, 'a', $o);
+    }
+
+    /**
      * @covers PHPUnit_Framework_Assert::assertNotCount
      */
     public function testAssertNotCount()
@@ -3568,6 +3579,17 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
     public function testAssertNotCountThrowsExceptionIfElementIsNotCountable()
     {
         $this->assertNotCount(2, '');
+    }
+
+    /**
+     * @covers PHPUnit_Framework_Assert::assertAttributeNotCount
+     */
+    public function testAssertAttributeNotCount()
+    {
+        $o    = new stdClass;
+        $o->a = array();
+
+        $this->assertAttributeNotCount(1, 'a', $o);
     }
 
     /**
