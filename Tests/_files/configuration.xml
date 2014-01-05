@@ -16,7 +16,10 @@
          timeoutForSmallTests="1"
          timeoutForMediumTests="10"
          timeoutForLargeTests="60"
-         strict="false"
+         beStrictAboutTestsThatDoNotTestAnything="false"
+         beStrictAboutOutputDuringTests="false"
+         beStrictAboutTestSize="false"
+         checkForUnintentionallyCoveredCode="false"
          verbose="false">
   <testsuites>
     <testsuite name="My Test Suite">

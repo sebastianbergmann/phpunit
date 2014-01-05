@@ -721,17 +721,11 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
                 $iniSettings   = '';
             }
 
-            if ($result->getCollectCodeCoverageInformation()) {
-                $coverage = 'TRUE';
-            } else {
-                $coverage = 'FALSE';
-            }
+            $coverage                                = $result->getCollectCodeCoverageInformation()       ? 'TRUE' : 'FALSE';
+            $isStrictAboutTestsThatDoNotTestAnything = $result->isStrictAboutTestsThatDoNotTestAnything() ? 'TRUE' : 'FALSE';
+            $isStrictAboutOutputDuringTests          = $result->isStrictAboutOutputDuringTests()          ? 'TRUE' : 'FALSE';
+            $isStrictAboutTestSize                   = $result->isStrictAboutTestSize()                   ? 'TRUE' : 'FALSE';
 
-            if ($result->isStrict()) {
-                $strict = 'TRUE';
-            } else {
-                $strict = 'FALSE';
-            }
 
             if (defined('PHPUNIT_COMPOSER_INSTALL')) {
                 $composerAutoload = var_export(PHPUNIT_COMPOSER_INSTALL, TRUE);
@@ -756,21 +750,23 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
 
             $template->setVar(
               array(
-                'composerAutoload'               => $composerAutoload,
-                'phar'                           => $phar,
-                'filename'                       => $class->getFileName(),
-                'className'                      => $class->getName(),
-                'methodName'                     => $this->name,
-                'collectCodeCoverageInformation' => $coverage,
-                'data'                           => $data,
-                'dataName'                       => $this->dataName,
-                'dependencyInput'                => $dependencyInput,
-                'constants'                      => $constants,
-                'globals'                        => $globals,
-                'include_path'                   => $includePath,
-                'included_files'                 => $includedFiles,
-                'iniSettings'                    => $iniSettings,
-                'strict'                         => $strict
+                'composerAutoload'                        => $composerAutoload,
+                'phar'                                    => $phar,
+                'filename'                                => $class->getFileName(),
+                'className'                               => $class->getName(),
+                'methodName'                              => $this->name,
+                'collectCodeCoverageInformation'          => $coverage,
+                'data'                                    => $data,
+                'dataName'                                => $this->dataName,
+                'dependencyInput'                         => $dependencyInput,
+                'constants'                               => $constants,
+                'globals'                                 => $globals,
+                'include_path'                            => $includePath,
+                'included_files'                          => $includedFiles,
+                'iniSettings'                             => $iniSettings,
+                'isStrictAboutTestsThatDoNotTestAnything' => $isStrictAboutTestsThatDoNotTestAnything,
+                'isStrictAboutOutputDuringTests'          => $isStrictAboutOutputDuringTests,
+                'isStrictAboutTestSize'                   => $isStrictAboutTestSize
               )
             );
 

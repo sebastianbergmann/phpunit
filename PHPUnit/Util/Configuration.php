@@ -71,7 +71,10 @@
  *          timeoutForSmallTests="1"
  *          timeoutForMediumTests="10"
  *          timeoutForLargeTests="60"
- *          strict="false"
+ *          beStrictAboutTestsThatDoNotTestAnything="false"
+ *          beStrictAboutOutputDuringTests="false"
+ *          beStrictAboutTestSize="false"
+ *          checkForUnintentionallyCoveredCode="false"
  *          verbose="false">
  *   <testsuites>
  *     <testsuite name="My Test Suite">
@@ -722,10 +725,39 @@ class PHPUnit_Util_Configuration
             );
         }
 
-        if ($root->hasAttribute('strict')) {
-            $result['strict'] = $this->getBoolean(
-              (string)$root->getAttribute('strict'), FALSE
+        if ($root->hasAttribute('beStrictAboutTestsThatDoNotTestAnything')) {
+            $result['reportUselessTests'] = $this->getBoolean(
+                (string)$root->getAttribute('beStrictAboutTestsThatDoNotTestAnything'), FALSE
             );
+        }
+
+        if ($root->hasAttribute('checkForUnintentionallyCoveredCode')) {
+            $result['strictCoverage'] = $this->getBoolean(
+                (string)$root->getAttribute('checkForUnintentionallyCoveredCode'), FALSE
+            );
+        }
+
+        if ($root->hasAttribute('beStrictAboutOutputDuringTests')) {
+            $result['disallowTestOutput'] = $this->getBoolean(
+                (string)$root->getAttribute('beStrictAboutOutputDuringTests'), FALSE
+            );
+        }
+
+        if ($root->hasAttribute('beStrictAboutTestSize')) {
+            $result['enforceTimeLimit'] = $this->getBoolean(
+                (string)$root->getAttribute('beStrictAboutTestSize'), FALSE
+            );
+        }
+
+        if ($root->hasAttribute('strict')) {
+            $flag = $this->getBoolean(
+                (string)$root->getAttribute('strict'), FALSE
+            );
+
+            $result['reportUselessTests'] = $flag;
+            $result['strictCoverage']     = $flag;
+            $result['disallowTestOutput'] = $flag;
+            $result['enforceTimeLimit']   = $flag;
         }
 
         if ($root->hasAttribute('verbose')) {

@@ -104,6 +104,10 @@ class PHPUnit_TextUI_Command
       'stop-on-incomplete' => NULL,
       'stop-on-risky' => NULL,
       'stop-on-skipped' => NULL,
+      'report-useless-tests' => NULL,
+      'strict-coverage' => NULL,
+      'disallow-test-output' => NULL,
+      'enforce-time-limit' => NULL,
       'strict' => NULL,
       'tap' => NULL,
       'testdox' => NULL,
@@ -479,8 +483,31 @@ class PHPUnit_TextUI_Command
                 }
                 break;
 
+                case 'report-useless-tests': {
+                    $this->arguments['reportUselessTests'] = TRUE;
+                }
+                break;
+
+                case 'strict-coverage': {
+                    $this->arguments['strictCoverage'] = TRUE;
+                }
+                break;
+
+                case 'disallow-test-output': {
+                    $this->arguments['disallowTestOutput'] = TRUE;
+                }
+                break;
+
+                case 'enforce-time-limit': {
+                    $this->arguments['enforceTimeLimit'] = TRUE;
+                }
+                break;
+
                 case '--strict': {
-                    $this->arguments['strict'] = TRUE;
+                    $this->arguments['reportUselessTests'] = TRUE;
+                    $this->arguments['strictCoverage']     = TRUE;
+                    $this->arguments['disallowTestOutput'] = TRUE;
+                    $this->arguments['enforceTimeLimit']   = TRUE;
                 }
                 break;
 
@@ -868,7 +895,12 @@ Test Selection Options:
 
 Test Execution Options:
 
-  --strict                  Run tests in strict mode.
+  --report-useless-tests    Be strict about tests that do not test anything.
+  --strict-coverage         Be strict about unintentionally covered code.
+  --disallow-test-output    Be strict about output during tests.
+  --enforce-time-limit      Enforce time limit based on test size.
+  --strict                  Run tests in strict mode (enables all of the above).
+
   --process-isolation       Run each test in a separate PHP process.
   --no-globals-backup       Do not backup and restore \$GLOBALS for each test.
   --static-backup           Backup and restore static attributes for each test.

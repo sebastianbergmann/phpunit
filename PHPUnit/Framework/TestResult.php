@@ -151,11 +151,6 @@ class PHPUnit_Framework_TestResult implements Countable
     /**
      * @var boolean
      */
-    protected $strictMode = FALSE;
-
-    /**
-     * @var boolean
-     */
     protected $beStrictAboutTestsThatDoNotTestAnything = FALSE;
 
     /**
@@ -634,16 +629,6 @@ class PHPUnit_Framework_TestResult implements Countable
     }
 
     /**
-     * Returns the strict mode configuration option
-     *
-     * @return boolean
-     */
-    public function isStrict()
-    {
-        return $this->strictMode;
-    }
-
-    /**
      * Runs a TestCase.
      *
      * @param  PHPUnit_Framework_Test $test
@@ -959,30 +944,6 @@ class PHPUnit_Framework_TestResult implements Countable
     }
 
     /**
-     * Enables or disables the strict mode.
-     *
-     * When active
-     *   * Tests that do not assert anything will be marked as incomplete.
-     *   * Tests that are incomplete or skipped yield no code coverage.
-     *
-     * @param  boolean $flag
-     * @throws PHPUnit_Framework_Exception
-     * @since  Method available since Release 3.5.2
-     */
-    public function strictMode($flag)
-    {
-        if (!is_bool($flag)) {
-            throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'boolean');
-        }
-
-        $this->strictMode = $flag;
-
-        $this->beStrictAboutTestsThatDoNotTestAnything($flag);
-        $this->beStrictAboutOutputDuringTests($flag);
-        $this->beStrictAboutTestSize($flag);
-    }
-
-    /**
      * @param  boolean $flag
      * @throws PHPUnit_Framework_Exception
      * @since  Method available since Release 3.8.0
@@ -994,6 +955,15 @@ class PHPUnit_Framework_TestResult implements Countable
         }
 
         $this->beStrictAboutTestsThatDoNotTestAnything = $flag;
+    }
+
+    /**
+     * @return boolean
+     * @since  Method available since Release 3.8.0
+     */
+    public function isStrictAboutTestsThatDoNotTestAnything()
+    {
+        return $this->beStrictAboutTestsThatDoNotTestAnything;
     }
 
     /**
@@ -1011,6 +981,15 @@ class PHPUnit_Framework_TestResult implements Countable
     }
 
     /**
+     * @return boolean
+     * @since  Method available since Release 3.8.0
+     */
+    public function isStrictAboutOutputDuringTests()
+    {
+        return $this->beStrictAboutOutputDuringTests;
+    }
+
+    /**
      * @param  boolean $flag
      * @throws PHPUnit_Framework_Exception
      * @since  Method available since Release 3.8.0
@@ -1022,6 +1001,15 @@ class PHPUnit_Framework_TestResult implements Countable
         }
 
         $this->beStrictAboutTestSize = $flag;
+    }
+
+    /**
+     * @return boolean
+     * @since  Method available since Release 3.8.0
+     */
+    public function isStrictAboutTestSize()
+    {
+        return $this->beStrictAboutTestSize;
     }
 
     /**

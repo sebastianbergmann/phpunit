@@ -46,7 +46,12 @@ Test Selection Options:
 
 Test Execution Options:
 
-  --strict                  Run tests in strict mode.
+  --report-useless-tests    Be strict about tests that do not test anything.
+  --strict-coverage         Be strict about unintentionally covered code.
+  --disallow-test-output    Be strict about output during tests.
+  --enforce-time-limit      Enforce time limit based on test size.
+  --strict                  Run tests in strict mode (enables all of the above).
+
   --process-isolation       Run each test in a separate PHP process.
   --no-globals-backup       Do not backup and restore $GLOBALS for each test.
   --static-backup           Backup and restore static attributes for each test.
