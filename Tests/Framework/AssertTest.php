@@ -3500,7 +3500,6 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
      */
     public function testAssertCountThrowsExceptionIfExpectedCountIsNoInteger()
     {
-
         try {
             $this->assertCount('a', array());
         }
@@ -3513,7 +3512,6 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
 
         $this->fail();
     }
-
 
     /**
      * @covers PHPUnit_Framework_Assert::assertCount
