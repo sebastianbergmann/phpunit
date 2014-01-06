@@ -3,6 +3,7 @@
 PHPUnit is the de-facto standard for unit testing in PHP projects. It provides both a framework that makes the writing of tests easy as well as the functionality to easily run the tests and analyse their results.
 
 [![Build Status](https://travis-ci.org/sebastianbergmann/phpunit.png?branch=3.7)](https://travis-ci.org/sebastianbergmann/phpunit)
+[![Dependency Status](https://www.versioneye.com/php/phpunit:phpunit/3.7.28/badge.png)](https://www.versioneye.com/php/phpunit:phpunit/3.7.28)
 
 ## Requirements
 
