@@ -830,35 +830,37 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
      */
     protected function addTestMethod(ReflectionClass $class, ReflectionMethod $method)
     {
+        if (!$this->isTestMethod($method))
+            return;
+
         $name = $method->getName();
 
-        if ($this->isPublicTestMethod($method)) {
-            $test = self::createTest($class, $name);
-
-            if ($test instanceof PHPUnit_Framework_TestCase ||
-                $test instanceof PHPUnit_Framework_TestSuite_DataProvider) {
-                $test->setDependencies(
-                  PHPUnit_Util_Test::getDependencies($class->getName(), $name)
-                );
-            }
-
-            $this->addTest($test, PHPUnit_Util_Test::getGroups(
-              $class->getName(), $name)
-            );
-        }
-
-        else if ($this->isTestMethod($method)) {
+        if (!$method->isPublic()) {
             $this->addTest(
-              self::warning(
-                sprintf(
-                  'Test method "%s" in test class "%s" is not public.',
-                  $name,
-                  $class->getName()
-                )
-              )
-            );
+                self::warning(
+                    sprintf(
+                        'Test method "%s" in test class "%s" is not public.',
+                        $name,
+                        $class->getName()
+                        )
+                    )
+                );
+            return;
         }
-    }
+
+        $test = self::createTest($class, $name);
+
+        if ($test instanceof PHPUnit_Framework_TestCase ||
+            $test instanceof PHPUnit_Framework_TestSuite_DataProvider) {
+            $test->setDependencies(
+                PHPUnit_Util_Test::getDependencies($class->getName(), $name)
+                );
+        }
+
+        $this->addTest($test, PHPUnit_Util_Test::getGroups(
+                       $class->getName(), $name)
+            );
+		}
 
     /**
      * @param ReflectionClass  $class
@@ -930,15 +932,6 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
      * @param  ReflectionMethod $method
      * @return boolean
      */
-    public static function isPublicTestMethod(ReflectionMethod $method)
-    {
-        return (self::isTestMethod($method) && $method->isPublic());
-    }
-
-    /**
-     * @param  ReflectionMethod $method
-     * @return boolean
-     */
     public static function isTestMethod(ReflectionMethod $method)
     {
         if (strpos($method->name, 'test') === 0) {
@@ -947,8 +940,9 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
 
         // @scenario on TestCase::testMethod()
         // @test     on TestCase::testMethod()
-        return strpos($method->getDocComment(), '@test')     !== FALSE ||
-               strpos($method->getDocComment(), '@scenario') !== FALSE;
+        $doc_comment = $method->getDocComment();
+        return strpos($doc_comment, '@test')     !== FALSE ||
+               strpos($doc_comment, '@scenario') !== FALSE;
     }
 
     /**
