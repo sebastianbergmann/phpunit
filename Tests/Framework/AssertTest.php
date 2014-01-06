@@ -1885,6 +1885,98 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
     }
 
     /**
+     * @covers PHPUnit_Framework_Assert::getStaticAttribute
+     * @expectedException PHPUnit_Framework_Exception
+     */
+    public function testGetStaticAttributeRaisesExceptionForInvalidFirstArgument()
+    {
+        $this->getStaticAttribute(NULL, 'foo');
+    }
+
+    /**
+     * @covers PHPUnit_Framework_Assert::getStaticAttribute
+     * @expectedException PHPUnit_Framework_Exception
+     */
+    public function testGetStaticAttributeRaisesExceptionForInvalidFirstArgument2()
+    {
+        $this->getStaticAttribute('NotExistingClass', 'foo');
+    }
+
+    /**
+     * @covers PHPUnit_Framework_Assert::getStaticAttribute
+     * @expectedException PHPUnit_Framework_Exception
+     */
+    public function testGetStaticAttributeRaisesExceptionForInvalidSecondArgument()
+    {
+        $this->getStaticAttribute('stdClass', NULL);
+    }
+
+    /**
+     * @covers PHPUnit_Framework_Assert::getStaticAttribute
+     * @expectedException PHPUnit_Framework_Exception
+     */
+    public function testGetStaticAttributeRaisesExceptionForInvalidSecondArgument2()
+    {
+        $this->getStaticAttribute('stdClass', '0');
+    }
+
+    /**
+     * @covers PHPUnit_Framework_Assert::getStaticAttribute
+     * @expectedException PHPUnit_Framework_Exception
+     */
+    public function testGetStaticAttributeRaisesExceptionForInvalidSecondArgument3()
+    {
+        $this->getStaticAttribute('stdClass', 'foo');
+    }
+
+    /**
+     * @covers PHPUnit_Framework_Assert::getObjectAttribute
+     * @expectedException PHPUnit_Framework_Exception
+     */
+    public function testGetObjectAttributeRaisesExceptionForInvalidFirstArgument()
+    {
+        $this->getObjectAttribute(NULL, 'foo');
+    }
+
+    /**
+     * @covers PHPUnit_Framework_Assert::getObjectAttribute
+     * @expectedException PHPUnit_Framework_Exception
+     */
+    public function testGetObjectAttributeRaisesExceptionForInvalidSecondArgument()
+    {
+        $this->getObjectAttribute(new stdClass, NULL);
+    }
+
+    /**
+     * @covers PHPUnit_Framework_Assert::getObjectAttribute
+     * @expectedException PHPUnit_Framework_Exception
+     */
+    public function testGetObjectAttributeRaisesExceptionForInvalidSecondArgument2()
+    {
+        $this->getObjectAttribute(new stdClass, '0');
+    }
+
+    /**
+     * @covers PHPUnit_Framework_Assert::getObjectAttribute
+     * @expectedException PHPUnit_Framework_Exception
+     */
+    public function testGetObjectAttributeRaisesExceptionForInvalidSecondArgument3()
+    {
+        $this->getObjectAttribute(new stdClass, 'foo');
+    }
+
+    /**
+     * @covers PHPUnit_Framework_Assert::getObjectAttribute
+     */
+    public function testGetObjectAttributeWorksForInheritedAttributes()
+    {
+        $this->assertEquals(
+          'bar',
+          $this->getObjectAttribute(new ClassWithNonPublicAttributes, 'privateParentAttribute')
+        );
+    }
+
+    /**
      * @covers PHPUnit_Framework_Assert::assertAttributeContains
      */
     public function testAssertPublicAttributeContains()
@@ -2971,6 +3063,15 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
 
     /**
      * @covers PHPUnit_Framework_Assert::assertThat
+     * @covers PHPUnit_Framework_Assert::isEmpty
+     */
+    public function testAssertThatIsEmpty()
+    {
+        $this->assertThat(array(), $this->isEmpty());
+    }
+
+    /**
+     * @covers PHPUnit_Framework_Assert::assertThat
      * @covers PHPUnit_Framework_Assert::fileExists
      */
     public function testAssertThatFileExists()
@@ -3021,6 +3122,24 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
     public function testAssertThatMatchesRegularExpression()
     {
         $this->assertThat('foobar', $this->matchesRegularExpression('/foo/'));
+    }
+
+    /**
+     * @covers PHPUnit_Framework_Assert::assertThat
+     * @covers PHPUnit_Framework_Assert::callback
+     */
+    public function testAssertThatCallback()
+    {
+        $this->assertThat(NULL, $this->callback(function ($other) { return TRUE; }));
+    }
+
+    /**
+     * @covers PHPUnit_Framework_Assert::assertThat
+     * @covers PHPUnit_Framework_Assert::countOf
+     */
+    public function testAssertThatCountOf()
+    {
+        $this->assertThat(array(1), $this->countOf(1));
     }
 
     /**
@@ -3265,6 +3384,24 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
 
     /**
      * @covers PHPUnit_Framework_Assert::assertStringMatchesFormat
+     * @expectedException PHPUnit_Framework_Exception
+     */
+    public function testAssertStringMatchesFormatRaisesExceptionForInvalidFirstArgument()
+    {
+        $this->assertStringMatchesFormat(NULL, '');
+    }
+
+    /**
+     * @covers PHPUnit_Framework_Assert::assertStringMatchesFormat
+     * @expectedException PHPUnit_Framework_Exception
+     */
+    public function testAssertStringMatchesFormatRaisesExceptionForInvalidSecondArgument()
+    {
+        $this->assertStringMatchesFormat('', NULL);
+    }
+
+    /**
+     * @covers PHPUnit_Framework_Assert::assertStringMatchesFormat
      */
     public function testAssertStringMatchesFormat()
     {
@@ -3278,6 +3415,24 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
     public function testAssertStringMatchesFormatFailure()
     {
         $this->assertStringMatchesFormat('*%s*', '**');
+    }
+
+    /**
+     * @covers PHPUnit_Framework_Assert::assertStringNotMatchesFormat
+     * @expectedException PHPUnit_Framework_Exception
+     */
+    public function testAssertStringNotMatchesFormatRaisesExceptionForInvalidFirstArgument()
+    {
+        $this->assertStringNotMatchesFormat(NULL, '');
+    }
+
+    /**
+     * @covers PHPUnit_Framework_Assert::assertStringNotMatchesFormat
+     * @expectedException PHPUnit_Framework_Exception
+     */
+    public function testAssertStringNotMatchesFormatRaisesExceptionForInvalidSecondArgument()
+    {
+        $this->assertStringNotMatchesFormat('', NULL);
     }
 
     /**
@@ -3437,7 +3592,6 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
      */
     public function testAssertCountThrowsExceptionIfExpectedCountIsNoInteger()
     {
-
         try {
             $this->assertCount('a', array());
         }
@@ -3450,7 +3604,6 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
 
         $this->fail();
     }
-
 
     /**
      * @covers PHPUnit_Framework_Assert::assertCount
@@ -3469,6 +3622,17 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
         }
 
         $this->fail();
+    }
+
+    /**
+     * @covers PHPUnit_Framework_Assert::assertAttributeCount
+     */
+    public function testAssertAttributeCount()
+    {
+        $o    = new stdClass;
+        $o->a = array();
+
+        $this->assertAttributeCount(0, 'a', $o);
     }
 
     /**
@@ -3505,6 +3669,17 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
     public function testAssertNotCountThrowsExceptionIfElementIsNotCountable()
     {
         $this->assertNotCount(2, '');
+    }
+
+    /**
+     * @covers PHPUnit_Framework_Assert::assertAttributeNotCount
+     */
+    public function testAssertAttributeNotCount()
+    {
+        $o    = new stdClass;
+        $o->a = array();
+
+        $this->assertAttributeNotCount(1, 'a', $o);
     }
 
     /**
@@ -3595,6 +3770,15 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
     public function testAssertNotSameSizeThrowsExceptionIfActualIsNotCountable()
     {
         $this->assertNotSameSize(array(), '');
+    }
+
+    /**
+     * @covers PHPUnit_Framework_Assert::assertJson
+     * @expectedException PHPUnit_Framework_Exception
+     */
+    public function testAssertJsonRaisesExceptionForInvalidArgument()
+    {
+        $this->assertJson(NULL);
     }
 
     /**
@@ -3769,6 +3953,17 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
     }
 
     /**
+     * @covers PHPUnit_Framework_Assert::assertAttributeInstanceOf
+     */
+    public function testAssertAttributeInstanceOf()
+    {
+        $o    = new stdClass;
+        $o->a = new stdClass;
+
+        $this->assertAttributeInstanceOf('stdClass', 'a', $o);
+    }
+
+    /**
      * @covers PHPUnit_Framework_Assert::assertNotInstanceOf
      */
     public function testAssertNotInstanceOf()
@@ -3793,6 +3988,17 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
     public function testAssertNotInstanceOfThrowsExceptionForInvalidArgument()
     {
         $this->assertNotInstanceOf(NULL, new stdClass);
+    }
+
+    /**
+     * @covers PHPUnit_Framework_Assert::assertAttributeNotInstanceOf
+     */
+    public function testAssertAttributeNotInstanceOf()
+    {
+        $o    = new stdClass;
+        $o->a = new stdClass;
+
+        $this->assertAttributeNotInstanceOf('Exception', 'a', $o);
     }
 
     /**
@@ -3823,6 +4029,17 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
     }
 
     /**
+     * @covers PHPUnit_Framework_Assert::assertAttributeInternalType
+     */
+    public function testAssertAttributeInternalType()
+    {
+        $o    = new stdClass;
+        $o->a = 1;
+
+        $this->assertAttributeInternalType('integer', 'a', $o);
+    }
+
+    /**
      * @covers PHPUnit_Framework_Assert::assertNotInternalType
      */
     public function testAssertNotInternalType()
@@ -3847,6 +4064,17 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
     public function testAssertNotInternalTypeThrowsExceptionForInvalidArgument()
     {
         $this->assertNotInternalType(NULL, 1);
+    }
+
+    /**
+     * @covers PHPUnit_Framework_Assert::assertAttributeNotInternalType
+     */
+    public function testAssertAttributeNotInternalType()
+    {
+        $o    = new stdClass;
+        $o->a = 1;
+
+        $this->assertAttributeNotInternalType('string', 'a', $o);
     }
 
     public static function validInvalidJsonDataprovider()

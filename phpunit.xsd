@@ -203,6 +203,10 @@
     <xs:attribute name="stopOnIncomplete" type="xs:boolean" default="false"/>
     <xs:attribute name="stopOnRisky" type="xs:boolean" default="false"/>
     <xs:attribute name="stopOnSkipped" type="xs:boolean" default="false"/>
+    <xs:attribute name="beStrictAboutTestsThatDoNotTestAnything" type="xs:boolean" default="false"/>
+    <xs:attribute name="beStrictAboutOutputDuringTests" type="xs:boolean" default="false"/>
+    <xs:attribute name="beStrictAboutTestSize" type="xs:boolean" default="false"/>
+    <xs:attribute name="checkForUnintentionallyCoveredCode" type="xs:boolean" default="false"/>
     <xs:attribute name="strict" type="xs:boolean" default="false"/>
     <xs:attribute name="testSuiteLoaderClass" type="xs:string" default="PHPUnit_Runner_StandardTestSuiteLoader"/>
     <xs:attribute name="testSuiteLoaderFile" type="xs:anyURI"/>

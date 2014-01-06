@@ -71,7 +71,7 @@ class PHPUnit_Runner_Version
         }
 
         if (self::$version === NULL) {
-            $version = new SebastianBergmann\Version('3.8', __DIR__);
+            $version = new SebastianBergmann\Version('4.0', __DIR__);
             self::$version = $version->getVersion();
         }
 
@@ -84,5 +84,22 @@ class PHPUnit_Runner_Version
     public static function getVersionString()
     {
         return 'PHPUnit ' . self::id() . ' by Sebastian Bergmann.';
+    }
+
+    /**
+     * @return string
+     * @since  Method available since Release 4.0.0
+     */
+    public static function getReleaseChannel()
+    {
+        if (strpos(self::$pharVersion, 'alpha') !== FALSE) {
+            return '-alpha';
+        }
+
+        if (strpos(self::$pharVersion, 'beta') !== FALSE) {
+            return '-beta';
+        }
+
+        return '';
     }
 }

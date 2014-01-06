@@ -348,7 +348,7 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
             );
 
             $codeCoverage->setCheckForUnintentionallyCoveredCode(
-              $arguments['strict']
+              $arguments['strictCoverage']
             );
 
             $codeCoverage->setProcessUncoveredFilesFromWhitelist(
@@ -396,21 +396,12 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
             );
         }
 
-        if ($arguments['strict']) {
-            $result->strictMode(TRUE);
-
-            $result->setTimeoutForSmallTests(
-              $arguments['timeoutForSmallTests']
-            );
-
-            $result->setTimeoutForMediumTests(
-              $arguments['timeoutForMediumTests']
-            );
-
-            $result->setTimeoutForLargeTests(
-              $arguments['timeoutForLargeTests']
-            );
-        }
+        $result->beStrictAboutTestsThatDoNotTestAnything($arguments['reportUselessTests']);
+        $result->beStrictAboutOutputDuringTests($arguments['disallowTestOutput']);
+        $result->beStrictAboutTestSize($arguments['enforceTimeLimit']);
+        $result->setTimeoutForSmallTests($arguments['timeoutForSmallTests']);
+        $result->setTimeoutForMediumTests($arguments['timeoutForMediumTests']);
+        $result->setTimeoutForLargeTests($arguments['timeoutForLargeTests']);
 
         if ($suite instanceof PHPUnit_Framework_TestSuite) {
             $suite->setRunTestInSeparateProcess($arguments['processIsolation']);
@@ -677,9 +668,24 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
                 $arguments['timeoutForLargeTests'] = $phpunitConfiguration['timeoutForLargeTests'];
             }
 
-            if (isset($phpunitConfiguration['strict']) &&
-                !isset($arguments['strict'])) {
-                $arguments['strict'] = $phpunitConfiguration['strict'];
+            if (isset($phpunitConfiguration['reportUselessTests']) &&
+                !isset($arguments['reportUselessTests'])) {
+                $arguments['reportUselessTests'] = $phpunitConfiguration['reportUselessTests'];
+            }
+
+            if (isset($phpunitConfiguration['strictCoverage']) &&
+                !isset($arguments['strictCoverage'])) {
+                $arguments['strictCoverage'] = $phpunitConfiguration['strictCoverage'];
+            }
+
+            if (isset($phpunitConfiguration['disallowTestOutput']) &&
+                !isset($arguments['disallowTestOutput'])) {
+                $arguments['disallowTestOutput'] = $phpunitConfiguration['disallowTestOutput'];
+            }
+
+            if (isset($phpunitConfiguration['enforceTimeLimit']) &&
+                !isset($arguments['enforceTimeLimit'])) {
+                $arguments['enforceTimeLimit'] = $phpunitConfiguration['enforceTimeLimit'];
             }
 
             if (isset($phpunitConfiguration['verbose']) &&
@@ -915,13 +921,16 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
         $arguments['timeoutForSmallTests']               = isset($arguments['timeoutForSmallTests'])               ? $arguments['timeoutForSmallTests']               : 1;
         $arguments['timeoutForMediumTests']              = isset($arguments['timeoutForMediumTests'])              ? $arguments['timeoutForMediumTests']              : 10;
         $arguments['timeoutForLargeTests']               = isset($arguments['timeoutForLargeTests'])               ? $arguments['timeoutForLargeTests']               : 60;
-        $arguments['strict']                             = isset($arguments['strict'])                             ? $arguments['strict']                             : FALSE;
+        $arguments['reportUselessTests']                 = isset($arguments['reportUselessTests'])                 ? $arguments['reportUselessTests']                 : FALSE;
+        $arguments['strictCoverage']                     = isset($arguments['strictCoverage'])                     ? $arguments['strictCoverage']                     : FALSE;
+        $arguments['disallowTestOutput']                 = isset($arguments['disallowTestOutput'])                 ? $arguments['disallowTestOutput']                 : FALSE;
+        $arguments['enforceTimeLimit']                   = isset($arguments['enforceTimeLimit'])                   ? $arguments['enforceTimeLimit']                   : FALSE;
         $arguments['verbose']                            = isset($arguments['verbose'])                            ? $arguments['verbose']                            : FALSE;
     }
 
     /**
      * @param string $message
-     * @since Method available since Release 3.8.0
+     * @since Method available since Release 4.0.0
      */
     private function showExtensionNotLoadedMessage($extension, $message = '')
     {
@@ -945,7 +954,7 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
      *
      * @param string  $message
      * @param boolean $exit
-     * @since Method available since Release 3.8.0
+     * @since Method available since Release 4.0.0
      */
     private function showMessage($message, $exit = FALSE)
     {

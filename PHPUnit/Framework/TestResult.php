@@ -151,11 +151,6 @@ class PHPUnit_Framework_TestResult implements Countable
     /**
      * @var boolean
      */
-    protected $strictMode = FALSE;
-
-    /**
-     * @var boolean
-     */
     protected $beStrictAboutTestsThatDoNotTestAnything = FALSE;
 
     /**
@@ -446,7 +441,7 @@ class PHPUnit_Framework_TestResult implements Countable
      * Returns TRUE if no risky test occurred.
      *
      * @return boolean
-     * @since  Method available since Release 3.8.0
+     * @since  Method available since Release 4.0.0
      */
     public function allHarmless()
     {
@@ -457,7 +452,7 @@ class PHPUnit_Framework_TestResult implements Countable
      * Gets the number of risky tests.
      *
      * @return integer
-     * @since  Method available since Release 3.8.0
+     * @since  Method available since Release 4.0.0
      */
     public function riskyCount()
     {
@@ -488,7 +483,7 @@ class PHPUnit_Framework_TestResult implements Countable
      * Returns an Enumeration for the risky tests.
      *
      * @return array
-     * @since  Method available since Release 3.8.0
+     * @since  Method available since Release 4.0.0
      */
     public function risky()
     {
@@ -631,16 +626,6 @@ class PHPUnit_Framework_TestResult implements Countable
     public function getCollectCodeCoverageInformation()
     {
         return $this->codeCoverage !== NULL;
-    }
-
-    /**
-     * Returns the strict mode configuration option
-     *
-     * @return boolean
-     */
-    public function isStrict()
-    {
-        return $this->strictMode;
     }
 
     /**
@@ -908,11 +893,11 @@ class PHPUnit_Framework_TestResult implements Countable
      */
     public function convertErrorsToExceptions($flag)
     {
-        if (is_bool($flag)) {
-            $this->convertErrorsToExceptions = $flag;
-        } else {
+        if (!is_bool($flag)) {
             throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'boolean');
         }
+
+        $this->convertErrorsToExceptions = $flag;
     }
 
     /**
@@ -935,11 +920,11 @@ class PHPUnit_Framework_TestResult implements Countable
      */
     public function stopOnError($flag)
     {
-        if (is_bool($flag)) {
-            $this->stopOnError = $flag;
-        } else {
+        if (!is_bool($flag)) {
             throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'boolean');
         }
+
+        $this->stopOnError = $flag;
     }
 
     /**
@@ -951,77 +936,80 @@ class PHPUnit_Framework_TestResult implements Countable
      */
     public function stopOnFailure($flag)
     {
-        if (is_bool($flag)) {
-            $this->stopOnFailure = $flag;
-        } else {
+        if (!is_bool($flag)) {
             throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'boolean');
         }
-    }
 
-    /**
-     * Enables or disables the strict mode.
-     *
-     * When active
-     *   * Tests that do not assert anything will be marked as incomplete.
-     *   * Tests that are incomplete or skipped yield no code coverage.
-     *
-     * @param  boolean $flag
-     * @throws PHPUnit_Framework_Exception
-     * @since  Method available since Release 3.5.2
-     */
-    public function strictMode($flag)
-    {
-        if (is_bool($flag)) {
-            $this->strictMode = $flag;
-
-            $this->beStrictAboutTestsThatDoNotTestAnything($flag);
-            $this->beStrictAboutOutputDuringTests($flag);
-            $this->beStrictAboutTestSize($flag);
-        } else {
-            throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'boolean');
-        }
+        $this->stopOnFailure = $flag;
     }
 
     /**
      * @param  boolean $flag
      * @throws PHPUnit_Framework_Exception
-     * @since  Method available since Release 3.8.0
+     * @since  Method available since Release 4.0.0
      */
     public function beStrictAboutTestsThatDoNotTestAnything($flag)
     {
-        if (is_bool($flag)) {
-            $this->beStrictAboutTestsThatDoNotTestAnything = $flag;
-        } else {
+        if (!is_bool($flag)) {
             throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'boolean');
         }
+
+        $this->beStrictAboutTestsThatDoNotTestAnything = $flag;
+    }
+
+    /**
+     * @return boolean
+     * @since  Method available since Release 4.0.0
+     */
+    public function isStrictAboutTestsThatDoNotTestAnything()
+    {
+        return $this->beStrictAboutTestsThatDoNotTestAnything;
     }
 
     /**
      * @param  boolean $flag
      * @throws PHPUnit_Framework_Exception
-     * @since  Method available since Release 3.8.0
+     * @since  Method available since Release 4.0.0
      */
     public function beStrictAboutOutputDuringTests($flag)
     {
-        if (is_bool($flag)) {
-            $this->beStrictAboutOutputDuringTests = $flag;
-        } else {
+        if (!is_bool($flag)) {
             throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'boolean');
         }
+
+        $this->beStrictAboutOutputDuringTests = $flag;
+    }
+
+    /**
+     * @return boolean
+     * @since  Method available since Release 4.0.0
+     */
+    public function isStrictAboutOutputDuringTests()
+    {
+        return $this->beStrictAboutOutputDuringTests;
     }
 
     /**
      * @param  boolean $flag
      * @throws PHPUnit_Framework_Exception
-     * @since  Method available since Release 3.8.0
+     * @since  Method available since Release 4.0.0
      */
     public function beStrictAboutTestSize($flag)
     {
-        if (is_bool($flag)) {
-            $this->beStrictAboutTestSize = $flag;
-        } else {
+        if (!is_bool($flag)) {
             throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'boolean');
         }
+
+        $this->beStrictAboutTestSize = $flag;
+    }
+
+    /**
+     * @return boolean
+     * @since  Method available since Release 4.0.0
+     */
+    public function isStrictAboutTestSize()
+    {
+        return $this->beStrictAboutTestSize;
     }
 
     /**
@@ -1029,15 +1017,15 @@ class PHPUnit_Framework_TestResult implements Countable
      *
      * @param  boolean $flag
      * @throws PHPUnit_Framework_Exception
-     * @since  Method available since Release 3.8.0
+     * @since  Method available since Release 4.0.0
      */
     public function stopOnRisky($flag)
     {
-        if (is_bool($flag)) {
-            $this->stopOnRisky = $flag;
-        } else {
+        if (!is_bool($flag)) {
             throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'boolean');
         }
+
+        $this->stopOnRisky = $flag;
     }
 
     /**
@@ -1049,11 +1037,11 @@ class PHPUnit_Framework_TestResult implements Countable
      */
     public function stopOnIncomplete($flag)
     {
-        if (is_bool($flag)) {
-            $this->stopOnIncomplete = $flag;
-        } else {
+        if (!is_bool($flag)) {
             throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'boolean');
         }
+
+        $this->stopOnIncomplete = $flag;
     }
 
     /**
@@ -1065,11 +1053,11 @@ class PHPUnit_Framework_TestResult implements Countable
      */
     public function stopOnSkipped($flag)
     {
-        if (is_bool($flag)) {
-            $this->stopOnSkipped = $flag;
-        } else {
+        if (!is_bool($flag)) {
             throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'boolean');
         }
+
+        $this->stopOnSkipped = $flag;
     }
 
     /**
@@ -1101,11 +1089,11 @@ class PHPUnit_Framework_TestResult implements Countable
      */
     public function setTimeoutForSmallTests($timeout)
     {
-        if (is_integer($timeout)) {
-            $this->timeoutForSmallTests = $timeout;
-        } else {
+        if (!is_integer($timeout)) {
             throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'integer');
         }
+
+        $this->timeoutForSmallTests = $timeout;
     }
 
     /**
@@ -1117,11 +1105,11 @@ class PHPUnit_Framework_TestResult implements Countable
      */
     public function setTimeoutForMediumTests($timeout)
     {
-        if (is_integer($timeout)) {
-            $this->timeoutForMediumTests = $timeout;
-        } else {
+        if (!is_integer($timeout)) {
             throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'integer');
         }
+
+        $this->timeoutForMediumTests = $timeout;
     }
 
     /**
@@ -1133,11 +1121,11 @@ class PHPUnit_Framework_TestResult implements Countable
      */
     public function setTimeoutForLargeTests($timeout)
     {
-        if (is_integer($timeout)) {
-            $this->timeoutForLargeTests = $timeout;
-        } else {
+        if (!is_integer($timeout)) {
             throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'integer');
         }
+
+        $this->timeoutForLargeTests = $timeout;
     }
 
     /**
