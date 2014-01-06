@@ -2836,7 +2836,7 @@ abstract class PHPUnit_Framework_Assert
      * @param  string $attributeName
      * @return mixed
      * @throws PHPUnit_Framework_Exception
-     * @since  Method available since Release 3.8.0
+     * @since  Method available since Release 4.0.0
      */
     public static function getStaticAttribute($className, $attributeName)
     {
@@ -2884,7 +2884,7 @@ abstract class PHPUnit_Framework_Assert
      * @param  string $attributeName
      * @return mixed
      * @throws PHPUnit_Framework_Exception
-     * @since  Method available since Release 3.8.0
+     * @since  Method available since Release 4.0.0
      */
     public static function getObjectAttribute($object, $attributeName)
     {
