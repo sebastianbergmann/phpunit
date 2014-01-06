@@ -806,9 +806,13 @@ class PHPUnit_TextUI_Command
             exit(PHPUnit_TextUI_TestRunner::EXCEPTION_EXIT);
         }
 
-        $remoteFilename = 'https://phar.phpunit.de/phpunit.phar';
-        $localFilename  = $_SERVER['argv'][0];
-        $tempFilename   = basename($localFilename, '.phar') . '-temp.phar';
+        $remoteFilename = sprintf(
+          'https://phar.phpunit.de/phpunit%s.phar',
+          PHPUnit_Runner_Version::getReleaseChannel()
+        );
+
+        $localFilename = $_SERVER['argv'][0];
+        $tempFilename  = basename($localFilename, '.phar') . '-temp.phar';
 
         // Workaround for https://bugs.php.net/bug.php?id=65538
         $caFile = dirname($tempFilename) . '/ca.pem';

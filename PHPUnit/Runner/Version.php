@@ -85,4 +85,21 @@ class PHPUnit_Runner_Version
     {
         return 'PHPUnit ' . self::id() . ' by Sebastian Bergmann.';
     }
+
+    /**
+     * @return string
+     * @since  Method available since Release 4.0.0
+     */
+    public static function getReleaseChannel()
+    {
+        if (strpos(self::$pharVersion, 'alpha') !== FALSE) {
+            return '-alpha';
+        }
+
+        if (strpos(self::$pharVersion, 'beta') !== FALSE) {
+            return '-beta';
+        }
+
+        return '';
+    }
 }
