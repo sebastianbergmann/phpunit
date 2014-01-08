@@ -65,7 +65,7 @@
     },
     "extra": {
         "branch-alias": {
-            "dev-master": "3.8.x-dev"
+            "dev-master": "3.9.x-dev"
         }
     },
     "include-path": [
