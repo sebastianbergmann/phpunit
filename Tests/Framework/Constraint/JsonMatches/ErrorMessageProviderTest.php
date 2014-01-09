@@ -2,7 +2,7 @@
 /**
  * PHPUnit
  *
- * Copyright (c) 2002-2014, Sebastian Bergmann <sebastian@phpunit.de>.
+ * Copyright (c) 2001-2014, Sebastian Bergmann <sebastian@phpunit.de>.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -36,7 +36,7 @@
  *
  * @package    PHPUnit
  * @author     Bastian Feder <php@bastian-feder.de>
- * @copyright  2002-2014 Sebastian Bergmann <sebastian@phpunit.de>
+ * @copyright  2001-2014 Sebastian Bergmann <sebastian@phpunit.de>
  * @license    http://www.opensource.org/licenses/BSD-3-Clause  The BSD 3-Clause
  * @link       http://www.phpunit.de/
  * @since      File available since Release 3.7.0
@@ -45,7 +45,7 @@
 /**
  * @package    PHPUnit
  * @author     Bastian Feder <php@bastian-feder.de>
- * @copyright  2011-2014 Bastian Feder <php@bastian-feder.de>
+ * @copyright  2001-2014 Sebastian Bergmann <sebastian@phpunit.de>
  * @license    http://www.opensource.org/licenses/BSD-3-Clause  The BSD 3-Clause
  * @link       http://www.phpunit.de/
  * @since      File available since Release 3.7.0
