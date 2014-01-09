@@ -36,7 +36,7 @@
  *
  * @package    PHPUnit
  * @author     Kuzuha SHINODA <kuzuha01@hotmail.com>
- * @copyright  2013-2014 Kuzuha SHINODA <kuzuha01@hotmail.com>
+ * @copyright  2001-2014 Sebastian Bergmann <sebastian@phpunit.de>
  * @license    http://www.opensource.org/licenses/BSD-3-Clause  The BSD 3-Clause License
  * @link       http://www.phpunit.de/
  * @since      File available since Release 3.7.20
@@ -47,7 +47,7 @@
  *
  * @package    PHPUnit
  * @author     Kuzuha SHINODA <kuzuha01@hotmail.com>
- * @copyright  2013-2014 Kuzuha SHINODA <kuzuha01@hotmail.com>
+ * @copyright  2001-2014 Sebastian Bergmann <sebastian@phpunit.de>
  * @license    http://www.opensource.org/licenses/BSD-3-Clause  The BSD 3-Clause License
  * @link       http://www.phpunit.de/
  * @since      File available since Release 3.7.20
