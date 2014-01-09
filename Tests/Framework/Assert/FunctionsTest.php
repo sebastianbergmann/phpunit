@@ -2,7 +2,7 @@
 /**
  * PHPUnit
  *
- * Copyright (c) 2001-2013, Sebastian Bergmann <sebastian@phpunit.de>.
+ * Copyright (c) 2001-2014, Sebastian Bergmann <sebastian@phpunit.de>.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -36,7 +36,7 @@
  *
  * @package    PHPUnit
  * @author     Kuzuha SHINODA <kuzuha01@hotmail.com>
- * @copyright  2013-2013 Kuzuha SHINODA <kuzuha01@hotmail.com>
+ * @copyright  2013-2014 Kuzuha SHINODA <kuzuha01@hotmail.com>
  * @license    http://www.opensource.org/licenses/BSD-3-Clause  The BSD 3-Clause License
  * @link       http://www.phpunit.de/
  * @since      File available since Release 3.7.20
@@ -49,7 +49,7 @@ require_once dirname(dirname(dirname(__DIR__))) . '/PHPUnit/Framework/Assert/Fun
  *
  * @package    PHPUnit
  * @author     Kuzuha SHINODA <kuzuha01@hotmail.com>
- * @copyright  2013-2013 Kuzuha SHINODA <kuzuha01@hotmail.com>
+ * @copyright  2013-2014 Kuzuha SHINODA <kuzuha01@hotmail.com>
  * @license    http://www.opensource.org/licenses/BSD-3-Clause  The BSD 3-Clause License
  * @link       http://www.phpunit.de/
  * @since      File available since Release 3.7.20
