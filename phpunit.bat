@@ -1,7 +1,7 @@
 @echo off
 REM PHPUnit
 REM
-REM Copyright (c) 2002-2010, Sebastian Bergmann <sebastian@phpunit.de>.
+REM Copyright (c) 2002-2014, Sebastian Bergmann <sebastian@phpunit.de>.
 REM All rights reserved.
 REM
 REM Redistribution and use in source and binary forms, with or without
