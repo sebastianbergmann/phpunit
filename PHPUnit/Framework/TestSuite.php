@@ -647,8 +647,20 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
         return array_keys($this->groups);
     }
 
-    public function getGroupDetails() {
+    public function getGroupDetails()
+    {
         return $this->groups;
+    }
+
+    /**
+     * Set tests groups of the test case
+     *
+     * @param array $groups
+     * @since Method available since Release 3.8.0
+     */
+    public function setGroupDetails(array $groups)
+    {
+        $this->groups = $groups;
     }
 
     /**
@@ -810,6 +822,17 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
     public function tests()
     {
         return $this->tests;
+    }
+
+    /**
+     * Set tests of the test suite
+     *
+     * @param array $tests
+     * @since Method available since Release 3.8.0
+     */
+    public function setTests(array $tests)
+    {
+        $this->tests = $tests;
     }
 
     /**

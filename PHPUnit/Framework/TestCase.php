@@ -1087,6 +1087,16 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
     }
 
     /**
+     * Returns true if the tests has dependencies
+     *
+     * @return boolean
+     */
+    public function hasDependencies()
+    {
+        return count($this->dependencies) > 0;
+    }
+
+    /**
      * Sets
      *
      * @param  array $dependencyInput
