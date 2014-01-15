@@ -19,7 +19,7 @@ print $generator->generateClassFromWsdl(
 --EXPECTF--
 namespace My\Space;
 
-class GoogleSearch extends \SOAPClient
+class GoogleSearch extends \SoapClient
 {
     public function __construct($wsdl, array $options)
     {

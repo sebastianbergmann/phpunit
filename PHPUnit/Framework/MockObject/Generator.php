@@ -534,7 +534,7 @@ class PHPUnit_Framework_MockObject_Generator
 
         if ($this->soapLoaded) {
             $options = array_merge($options, array('cache_wsdl'=>FALSE));
-            $client   = new SOAPClient($wsdlFile, $options);
+            $client   = new SoapClient($wsdlFile, $options);
             $_methods = array_unique($client->__getFunctions());
             unset($client);
 
