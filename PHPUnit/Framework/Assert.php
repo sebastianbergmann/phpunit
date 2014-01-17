@@ -908,7 +908,6 @@ abstract class PHPUnit_Framework_Assert
         self::assertThat($condition, self::logicalNot(self::isTrue()), $message);
     }
 
-
     /**
      * Asserts that a condition is false.
      *
