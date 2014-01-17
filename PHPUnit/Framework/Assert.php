@@ -897,6 +897,19 @@ abstract class PHPUnit_Framework_Assert
     }
 
     /**
+     * Asserts that a condition is not true.
+     *
+     * @param  boolean $condition
+     * @param  string  $message
+     * @throws PHPUnit_Framework_AssertionFailedError
+     */
+    public static function assertNotTrue($condition, $message = '')
+    {
+        self::assertThat($condition, self::logicalNot(self::isTrue()), $message);
+    }
+
+
+    /**
      * Asserts that a condition is false.
      *
      * @param  boolean  $condition
@@ -906,6 +919,18 @@ abstract class PHPUnit_Framework_Assert
     public static function assertFalse($condition, $message = '')
     {
         self::assertThat($condition, self::isFalse(), $message);
+    }
+
+    /**
+     * Asserts that a condition is not false.
+     *
+     * @param  boolean  $condition
+     * @param  string   $message
+     * @throws PHPUnit_Framework_AssertionFailedError
+     */
+    public static function assertNotFalse($condition, $message = '')
+    {
+        self::assertThat($condition, self::logicalNot(self::isFalse()), $message);
     }
 
     /**
