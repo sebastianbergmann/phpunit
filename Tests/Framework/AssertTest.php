@@ -1451,6 +1451,26 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
     }
 
     /**
+     * @covers PHPUnit_Framework_Assert::assertNotTrue
+     */
+    public function testAssertNotTrue()
+    {
+        $this->assertNotTrue(FALSE);
+        $this->assertNotTrue(1);
+        $this->assertNotTrue("true");
+
+        try {
+            $this->assertNotTrue(TRUE);
+        }
+
+        catch (PHPUnit_Framework_AssertionFailedError $e) {
+            return;
+        }
+
+        $this->fail();
+    }
+
+    /**
      * @covers PHPUnit_Framework_Assert::assertFalse
      */
     public function testAssertFalse()
@@ -1459,6 +1479,26 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
 
         try {
             $this->assertFalse(TRUE);
+        }
+
+        catch (PHPUnit_Framework_AssertionFailedError $e) {
+            return;
+        }
+
+        $this->fail();
+    }
+
+    /**
+     * @covers PHPUnit_Framework_Assert::assertNotTrue
+     */
+    public function testAssertNotFalse()
+    {
+        $this->assertNotFalse(TRUE);
+        $this->assertNotFalse(0);
+        $this->assertNotFalse("");
+
+        try {
+            $this->assertNotFalse(FALSE);
         }
 
         catch (PHPUnit_Framework_AssertionFailedError $e) {
