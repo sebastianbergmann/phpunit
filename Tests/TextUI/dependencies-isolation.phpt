@@ -2,8 +2,6 @@
 phpunit --process-isolation --verbose DependencyTestSuite ../_files/DependencyTestSuite.php
 --FILE--
 <?php
-define('PHPUNIT_TESTSUITE', TRUE);
-
 $_SERVER['argv'][1] = '--no-configuration';
 $_SERVER['argv'][2] = '--process-isolation';
 $_SERVER['argv'][3] = '--verbose';
@@ -33,12 +31,8 @@ There were 2 skipped tests:
 1) DependencyFailureTest::testTwo
 This test depends on "DependencyFailureTest::testOne" to pass.
 
-%s:%i
-
 2) DependencyFailureTest::testThree
 This test depends on "DependencyFailureTest::testTwo" to pass.
-
-%s:%i
 
 FAILURES!
 Tests: 4, Assertions: 0, Failures: 1, Skipped: 2.

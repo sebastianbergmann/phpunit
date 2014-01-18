@@ -2,8 +2,6 @@
 phpunit --process-isolation MultiDependencyTest ../_files/MultiDependencyTest.php
 --FILE--
 <?php
-define('PHPUNIT_TESTSUITE', TRUE);
-
 $_SERVER['argv'][1] = '--no-configuration';
 $_SERVER['argv'][2] = '--process-isolation';
 $_SERVER['argv'][3] = 'MultiDependencyTest';
@@ -20,4 +18,3 @@ PHPUnit %s by Sebastian Bergmann.
 Time: %s, Memory: %sMb
 
 OK (3 tests, 2 assertions)
-

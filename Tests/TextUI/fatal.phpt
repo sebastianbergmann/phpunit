@@ -2,7 +2,6 @@
 phpunit FatalTest ../_files/FatalTest.php
 --FILE--
 <?php
-
 $_SERVER['argv'][1] = '--no-configuration';
 $_SERVER['argv'][2] = 'FatalTest';
 $_SERVER['argv'][3] = dirname(dirname(__FILE__)) . '/_files/FatalTest.php';

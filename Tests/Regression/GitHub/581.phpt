@@ -40,4 +40,3 @@ Failed asserting that two objects are equal.
 
 FAILURES!
 Tests: 1, Assertions: 1, Failures: 1.
-

@@ -2,8 +2,6 @@
 phpunit --process-isolation --log-junit php://stdout DataProviderTest ../_files/DataProviderTest.php
 --FILE--
 <?php
-define('PHPUNIT_TESTSUITE', TRUE);
-
 $_SERVER['argv'][1] = '--no-configuration';
 $_SERVER['argv'][2] = '--process-isolation';
 $_SERVER['argv'][3] = '--log-junit';
@@ -42,8 +40,8 @@ There was 1 failure:
 
 1) DataProviderTest::testAdd with data set #2 (1, 1, 3)
 Failed asserting that 2 matches expected 3.
+
 %s:%i
 
 FAILURES!
 Tests: 4, Assertions: 4, Failures: 1.
-

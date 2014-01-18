@@ -2,8 +2,6 @@
 phpunit -c ../_files/configuration.custom-printer.xml --verbose IncompleteTest ../_files/IncompleteTest.php
 --FILE--
 <?php
-define('PHPUNIT_TESTSUITE', TRUE);
-
 $_SERVER['argv'][1] = '-c';
 $_SERVER['argv'][2] = dirname(__FILE__).'/../_files/configuration.custom-printer.xml';
 $_SERVER['argv'][3] = '--verbose';
@@ -28,5 +26,6 @@ There was 1 incomplete test:
 Test incomplete
 
 %s
+
 OK, but incomplete, skipped, or risky tests!
 Tests: 1, Assertions: 0, Incomplete: 1.

@@ -2,8 +2,6 @@
 phpunit --testdox-text php://stdout BankAccountTest ../_files/BankAccountTest.php
 --FILE--
 <?php
-define('PHPUNIT_TESTSUITE', TRUE);
-
 $_SERVER['argv'][1] = '--no-configuration';
 $_SERVER['argv'][2] = '--testdox-text';
 $_SERVER['argv'][3] = 'php://stdout';

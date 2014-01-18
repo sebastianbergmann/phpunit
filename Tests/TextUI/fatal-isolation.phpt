@@ -2,7 +2,6 @@
 phpunit FatalTest ../_files/FatalTest.php
 --FILE--
 <?php
-
 $_SERVER['argv'][1] = '--no-configuration';
 $_SERVER['argv'][2] = '--process-isolation';
 $_SERVER['argv'][3] = 'FatalTest';
@@ -25,4 +24,3 @@ PHPUnit_Framework_Exception: %s error: Call to undefined function non_existing_f
 
 FAILURES!
 Tests: 1, Assertions: 0, Errors: 1.
-

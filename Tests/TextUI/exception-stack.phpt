@@ -1,10 +1,10 @@
 --TEST--
-phpunit ExceptionStackTest ../_files/ExceptionStack.php
+phpunit ExceptionStackTest ../_files/ExceptionStackTest.php
 --FILE--
 <?php
 $_SERVER['argv'][1] = '--no-configuration';
 $_SERVER['argv'][2] = 'ExceptionStackTest';
-$_SERVER['argv'][3] = dirname(dirname(__FILE__)) . '/_files/ExceptionStack.php';
+$_SERVER['argv'][3] = dirname(dirname(__FILE__)) . '/_files/ExceptionStackTest.php';
 
 require __DIR__ . '/../bootstrap.php';
 PHPUnit_TextUI_Command::main();
@@ -30,9 +30,21 @@ Failed asserting that two arrays are equal.
 +    0 => 2
  )
 
+
+%s:%i
 %s:%i
 
 Caused by
+message
+Failed asserting that two arrays are equal.
+--- Expected
++++ Actual
+@@ @@
+ Array (
+-    0 => 1
++    0 => 2
+ )
+
 %s:%i
 
 2) ExceptionStackTest::testNestedExceptions
@@ -52,4 +64,3 @@ Exception: Three
 
 FAILURES!
 Tests: 2, Assertions: 1, Errors: 2.
-

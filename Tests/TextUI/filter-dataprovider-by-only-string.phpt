@@ -2,8 +2,6 @@
 phpunit --filter @false\ test DataProviderFilterTest ../_files/DataProviderFilterTest.php
 --FILE--
 <?php
-define('PHPUNIT_TESTSUITE', TRUE);
-
 $_SERVER['argv'][1] = '--no-configuration';
 $_SERVER['argv'][2] = '--filter';
 $_SERVER['argv'][3] = '@false test';

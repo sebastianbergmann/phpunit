@@ -2,8 +2,6 @@
 phpunit --exclude-group balanceIsInitiallyZero BankAccountTest ../_files/BankAccountTest.php
 --FILE--
 <?php
-define('PHPUNIT_TESTSUITE', TRUE);
-
 $_SERVER['argv'][1] = '--no-configuration';
 $_SERVER['argv'][2] = '--exclude-group';
 $_SERVER['argv'][3] = 'balanceIsInitiallyZero';

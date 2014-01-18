@@ -22,4 +22,3 @@ PHPUnit %s by Sebastian Bergmann.
 Time: %s, Memory: %sMb
 
 OK (150 tests, 150 assertions)
-

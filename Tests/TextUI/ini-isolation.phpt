@@ -2,8 +2,6 @@
 phpunit --process-isolation -d default_mimetype=application/x-test IniTest ../_files/IniTest.php
 --FILE--
 <?php
-define('PHPUNIT_TESTSUITE', TRUE);
-
 $_SERVER['argv'][1] = '--no-configuration';
 $_SERVER['argv'][2] = '--process-isolation';
 $_SERVER['argv'][3] = '-d';
@@ -22,4 +20,3 @@ PHPUnit %s by Sebastian Bergmann.
 Time: %s, Memory: %sMb
 
 OK (1 test, 1 assertion)
-

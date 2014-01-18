@@ -2,8 +2,6 @@
 phpunit AbstractTest ../_files/AbstractTest.php
 --FILE--
 <?php
-define('PHPUNIT_TESTSUITE', TRUE);
-
 $_SERVER['argv'][1] = '--no-configuration';
 $_SERVER['argv'][2] = 'AbstractTest';
 $_SERVER['argv'][3] = dirname(dirname(__FILE__)) . '/_files/AbstractTest.php';
@@ -23,8 +21,5 @@ There was 1 failure:
 1) Warning
 Cannot instantiate class "AbstractTest".
 
-%s:%i
-
 FAILURES!
 Tests: 1, Assertions: 0, Failures: 1.
-
