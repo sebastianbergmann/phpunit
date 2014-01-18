@@ -54,12 +54,12 @@
  * @link       http://www.phpunit.de/
  * @since      Class available since Release 3.5.12
  */
-class PHPUnit_Util_PHP_Windows extends PHPUnit_Util_PHP
+class PHPUnit_Util_PHP_Windows extends PHPUnit_Util_PHP_Default
 {
     /**
      * @var string
      */
-    protected $tempFile;
+    private $tempFile;
 
     /**
      * @param resource $pipe

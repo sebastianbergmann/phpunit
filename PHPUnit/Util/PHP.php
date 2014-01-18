@@ -70,72 +70,44 @@ abstract class PHPUnit_Util_PHP
     }
 
     /**
-     * Runs a single job (PHP code) using a separate PHP process.
+     * Runs a single test in a separate PHP process.
      *
      * @param  string                       $job
      * @param  PHPUnit_Framework_TestCase   $test
      * @param  PHPUnit_Framework_TestResult $result
-     * @return array|null
      * @throws PHPUnit_Framework_Exception
      */
-    public function runJob($job, PHPUnit_Framework_Test $test = NULL, PHPUnit_Framework_TestResult $result = NULL)
+    public function runTestJob($job, PHPUnit_Framework_Test $test, PHPUnit_Framework_TestResult $result)
     {
-        // HHVM support
-        if (($phpBinary = getenv("PHP_BINARY")) === false) {
-            $phpBinary = PHP_BINARY;
-        }
+        $result->startTest($test);
 
-        $process = proc_open(
-          escapeshellarg($phpBinary),
-          array(
-            0 => array('pipe', 'r'),
-            1 => array('pipe', 'w'),
-            2 => array('pipe', 'w')
-          ),
-          $pipes
+        $_result = $this->runJob($job);
+
+        $this->processChildResult(
+          $test, $result, $_result['stdout'], $_result['stderr']
         );
-
-        if (!is_resource($process)) {
-            throw new PHPUnit_Framework_Exception(
-              'Unable to create process for process isolation.'
-            );
-        }
-
-        if ($result !== NULL) {
-            $result->startTest($test);
-        }
-
-        $this->process($pipes[0], $job);
-        fclose($pipes[0]);
-
-        $stdout = stream_get_contents($pipes[1]);
-        fclose($pipes[1]);
-
-        $stderr = stream_get_contents($pipes[2]);
-        fclose($pipes[2]);
-
-        proc_close($process);
-        $this->cleanup();
-
-        if ($result !== NULL) {
-            $this->processChildResult($test, $result, $stdout, $stderr);
-        } else {
-            return array('stdout' => $stdout, 'stderr' => $stderr);
-        }
     }
 
     /**
-     * @param resource $pipe
-     * @param string   $job
-     * @since Method available since Release 3.5.12
+     * Runs a single job (PHP code) using a separate PHP process.
+     *
+     * @param  string $job
+     * @return array
+     * @throws PHPUnit_Framework_Exception
      */
-    abstract protected function process($pipe, $job);
+    abstract public function runJob($job);
 
     /**
-     * @since Method available since Release 3.5.12
+     * @return string
+     * @since  Method available since Release 3.9.0
      */
-    protected function cleanup()
+    protected function getBinary()
     {
+        if (($phpBinary = getenv('PHP_BINARY')) === FALSE) {
+            $phpBinary = PHP_BINARY;
+        }
+
+        return escapeshellarg($phpBinary);
     }
 
     /**
@@ -147,7 +119,7 @@ abstract class PHPUnit_Util_PHP
      * @param string                       $stderr
      * @since Method available since Release 3.5.0
      */
-    protected function processChildResult(PHPUnit_Framework_Test $test, PHPUnit_Framework_TestResult $result, $stdout, $stderr)
+    private function processChildResult(PHPUnit_Framework_Test $test, PHPUnit_Framework_TestResult $result, $stdout, $stderr)
     {
         $time = 0;
 
@@ -241,7 +213,7 @@ abstract class PHPUnit_Util_PHP
      * @since Method available since Release 3.6.0
      * @see   https://github.com/sebastianbergmann/phpunit/issues/74
      */
-    protected function getException(PHPUnit_Framework_TestFailure $error)
+    private function getException(PHPUnit_Framework_TestFailure $error)
     {
         $exception = $error->thrownException();
 
