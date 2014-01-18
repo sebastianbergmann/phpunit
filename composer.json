@@ -37,12 +37,6 @@
         "ext-reflection": "*",
         "ext-spl": "*"
     },
-    "repositories": [
-        {
-            "type": "pear",
-            "url": "http://pear.php.net"
-        }
-    ],
     "suggest": {
         "phpunit/php-invoker": ">=1.1.0",
         "ext-json": "*",
