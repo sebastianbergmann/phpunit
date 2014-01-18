@@ -2,8 +2,6 @@
 phpunit --process-isolation --filter testFalse@false.* DataProviderFilterTest ../_files/DataProviderFilterTest.php
 --FILE--
 <?php
-define('PHPUNIT_TESTSUITE', TRUE);
-
 $_SERVER['argv'][1] = '--no-configuration';
 $_SERVER['argv'][2] = '--process-isolation';
 $_SERVER['argv'][3] = '--filter';

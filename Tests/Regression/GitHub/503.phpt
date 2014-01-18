@@ -31,4 +31,3 @@ Failed asserting that two strings are identical.
 
 FAILURES!
 Tests: 1, Assertions: 1, Failures: 1.
-

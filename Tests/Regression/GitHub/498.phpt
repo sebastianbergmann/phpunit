@@ -27,4 +27,3 @@ Can't create the data
 
 FAILURES!
 Tests: 1, Assertions: 0, Failures: 1.
-

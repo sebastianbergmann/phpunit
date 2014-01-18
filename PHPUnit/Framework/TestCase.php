@@ -699,14 +699,7 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
             $class = new ReflectionClass($this);
 
             $template = new Text_Template(
-              sprintf(
-                '%s%sProcess%sTestCaseMethod.tpl',
-
-                __DIR__,
-                DIRECTORY_SEPARATOR,
-                DIRECTORY_SEPARATOR,
-                DIRECTORY_SEPARATOR
-              )
+              __DIR__ . '/../Util/PHP/Template/TestCaseMethod.tpl'
             );
 
             if ($this->preserveGlobalState) {
@@ -725,7 +718,6 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
             $isStrictAboutTestsThatDoNotTestAnything = $result->isStrictAboutTestsThatDoNotTestAnything() ? 'TRUE' : 'FALSE';
             $isStrictAboutOutputDuringTests          = $result->isStrictAboutOutputDuringTests()          ? 'TRUE' : 'FALSE';
             $isStrictAboutTestSize                   = $result->isStrictAboutTestSize()                   ? 'TRUE' : 'FALSE';
-
 
             if (defined('PHPUNIT_COMPOSER_INSTALL')) {
                 $composerAutoload = var_export(PHPUNIT_COMPOSER_INSTALL, TRUE);

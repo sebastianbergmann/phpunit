@@ -24,4 +24,3 @@ The data provider specified for Issue765Test::testDependent is invalid.
 
 FAILURES!
 Tests: 2, Assertions: 1, Failures: 1.
-

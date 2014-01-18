@@ -2,8 +2,6 @@
 phpunit
 --FILE--
 <?php
-define('PHPUNIT_TESTSUITE', TRUE);
-
 $_SERVER['argv'][1] = '--no-configuration';
 
 require __DIR__ . '/../bootstrap.php';
