@@ -43,17 +43,7 @@
   </exec>
  </target>
 
- <target name="phpab" description="Generate autoloader scripts">
-  <exec executable="phpab">
-   <arg value="--output" />
-   <arg path="PHPUnit/Autoload.php" />
-   <arg value="--template" />
-   <arg path="PHPUnit/Autoload.php.in" />
-   <arg value="--indent" />
-   <arg value="            " />
-   <arg path="PHPUnit" />
-  </exec>
-
+ <target name="phpab" description="Generate autoloader script">
   <exec executable="phpab">
    <arg value="--output" />
    <arg path="Tests/autoload.php" />
@@ -151,7 +141,7 @@
 
  <target name="phpunit" description="Run unit tests with PHPUnit">
   <exec executable="${php}" failonerror="true">
-   <arg path="${basedir}/phpunit.php" />
+   <arg path="${basedir}/phpunit" />
   </exec>
  </target>
 
@@ -165,7 +155,7 @@
   depends="phar">
   <exec executable="bash" outputproperty="version">
    <arg value="-c" />
-   <arg value="${basedir}/phpunit.php --version | awk 'BEGIN { ORS = &quot;&quot;; } {print $2}'" />
+   <arg value="${basedir}/phpunit --version | awk 'BEGIN { ORS = &quot;&quot;; } {print $2}'" />
   </exec>
 
   <copy file="${basedir}/build/phpunit-${version}.phar" tofile="${basedir}/phpunit.phar" />
@@ -182,7 +172,7 @@
          depends="phar-prepare">
   <exec executable="bash" outputproperty="version">
    <arg value="-c" />
-   <arg value="${basedir}/phpunit.php --version | awk 'BEGIN { ORS = &quot;&quot;; } {print $2}'" />
+   <arg value="${basedir}/phpunit --version | awk 'BEGIN { ORS = &quot;&quot;; } {print $2}'" />
   </exec>
 
   <antcall target="phar-build">
