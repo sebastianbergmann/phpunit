@@ -268,7 +268,6 @@ class PHPUnit_Util_GlobalState
 
         $blacklist   = $superGlobalArrays;
         $blacklist[] = 'GLOBALS';
-        $blacklist[] = '_PEAR_Config_instance';
 
         foreach (array_keys($GLOBALS) as $key) {
             if (!in_array($key, $blacklist) && !$GLOBALS[$key] instanceof Closure) {
