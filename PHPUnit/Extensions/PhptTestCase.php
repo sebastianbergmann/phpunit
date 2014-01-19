@@ -113,6 +113,21 @@ class PHPUnit_Extensions_PhptTestCase implements PHPUnit_Framework_Test, PHPUnit
         $php = PHPUnit_Util_PHP::factory();
 
         $result->startTest($this);
+
+        if (isset($sections['SKIPIF'])) {
+            $jobResult = $php->runJob($sections['SKIPIF']);
+
+            if (!strncasecmp('skip', ltrim($jobResult['stdout']), 4)) {
+                if (preg_match('/^\s*skip\s*(.+)\s*/i', $jobResult['stdout'], $message)) {
+                    $message = $message[1];
+                } else {
+                    $message = '';
+                }
+
+                $result->addFailure($this, new PHPUnit_Framework_SkippedTestError($message), 0);
+            }
+        }
+
         PHP_Timer::start();
         $jobResult = $php->runJob($code);
         $time = PHP_Timer::stop();
