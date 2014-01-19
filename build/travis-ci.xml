@@ -25,7 +25,6 @@
     <whitelist processUncoveredFilesFromWhitelist="true">
       <directory suffix=".php">../PHPUnit</directory>
       <exclude>
-       <file>../PHPUnit/Autoload.php</file>
        <file>../PHPUnit/Framework/Assert/Functions.php</file>
       </exclude>
     </whitelist>
