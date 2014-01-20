@@ -44,7 +44,7 @@
         "ext-tokenizer": "*"
     },
     "bin": [
-        "phpunit"
+        "bin/phpunit"
     ],
     "config": {
         "bin-dir": "bin"
