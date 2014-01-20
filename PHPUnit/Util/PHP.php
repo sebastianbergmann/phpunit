@@ -103,11 +103,13 @@ abstract class PHPUnit_Util_PHP
      */
     protected function getBinary()
     {
-        if (($phpBinary = getenv('PHP_BINARY')) === FALSE) {
-            $phpBinary = PHP_BINARY;
+        if (($binary = getenv('PHP_BINARY')) === FALSE) {
+            $binary = PHP_BINARY;
         }
 
-        return escapeshellarg($phpBinary);
+        $binary = escapeshellarg($binary);
+
+        return $binary;
     }
 
     /**
