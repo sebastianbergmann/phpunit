@@ -55,12 +55,12 @@
   <apply executable="${php}" failonerror="true">
    <arg value="-l" />
 
-   <fileset dir="${basedir}/PHPUnit">
+   <fileset dir="${basedir}/src">
     <include name="**/*.php" />
     <modified />
    </fileset>
 
-   <fileset dir="${basedir}/Tests">
+   <fileset dir="${basedir}/tests">
     <include name="**/*.php" />
     <modified />
    </fileset>
@@ -73,7 +73,7 @@
    <arg value="${basedir}/build/logs/phploc.csv" />
    <arg value="--log-xml" />
    <arg value="${basedir}/build/logs/phploc.xml" />
-   <arg path="${basedir}/PHPUnit" />
+   <arg path="${basedir}/src" />
   </exec>
  </target>
 
@@ -83,14 +83,14 @@
    <arg value="--jdepend-xml=${basedir}/build/logs/jdepend.xml" />
    <arg value="--jdepend-chart=${basedir}/build/pdepend/dependencies.svg" />
    <arg value="--overview-pyramid=${basedir}/build/pdepend/overview-pyramid.svg" />
-   <arg path="${basedir}/PHPUnit" />
+   <arg path="${basedir}/src" />
   </exec>
  </target>
 
  <target name="phpmd"
          description="Perform project mess detection using PHPMD">
   <exec executable="phpmd">
-   <arg path="${basedir}/PHPUnit" />
+   <arg path="${basedir}/src" />
    <arg value="text" />
    <arg value="${basedir}/build/phpmd.xml" />
   </exec>
@@ -99,7 +99,7 @@
  <target name="phpmd-ci"
          description="Perform project mess detection using PHPMD">
   <exec executable="phpmd">
-   <arg path="${basedir}/PHPUnit" />
+   <arg path="${basedir}/src" />
    <arg value="xml" />
    <arg value="${basedir}/build/phpmd.xml" />
    <arg value="--reportfile" />
@@ -113,8 +113,8 @@
    <arg value="--standard=${basedir}/build/PHPCS" />
    <arg value="--extensions=php" />
    <arg value="--ignore=Autoload.php" />
-   <arg path="${basedir}/PHPUnit" />
-   <arg path="${basedir}/Tests" />
+   <arg path="${basedir}/src" />
+   <arg path="${basedir}/tests" />
   </exec>
  </target>
 
@@ -126,8 +126,8 @@
    <arg value="--standard=${basedir}/build/PHPCS" />
    <arg value="--extensions=php" />
    <arg value="--ignore=Autoload.php" />
-   <arg path="${basedir}/PHPUnit" />
-   <arg path="${basedir}/Tests" />
+   <arg path="${basedir}/src" />
+   <arg path="${basedir}/tests" />
   </exec>
  </target>
 
@@ -135,13 +135,13 @@
   <exec executable="phpcpd">
    <arg value="--log-pmd" />
    <arg value="${basedir}/build/logs/pmd-cpd.xml" />
-   <arg path="${basedir}/PHPUnit" />
+   <arg path="${basedir}/src" />
   </exec>
  </target>
 
  <target name="phpunit" description="Run unit tests with PHPUnit">
   <exec executable="${php}" failonerror="true">
-   <arg path="${basedir}/phpunit" />
+   <arg path="${basedir}/src" />
   </exec>
  </target>
 
@@ -155,16 +155,16 @@
   depends="phar">
   <exec executable="bash" outputproperty="version">
    <arg value="-c" />
-   <arg value="${basedir}/phpunit --version | awk 'BEGIN { ORS = &quot;&quot;; } {print $2}'" />
+   <arg value="${basedir}/src --version | awk 'BEGIN { ORS = &quot;&quot;; } {print $2}'" />
   </exec>
 
-  <copy file="${basedir}/build/phpunit-${version}.phar" tofile="${basedir}/phpunit.phar" />
+  <copy file="${basedir}/build/phpunit-${version}.phar" tofile="${basedir}/src.phar" />
 
   <exec executable="pear">
    <arg value="package" />
   </exec>
 
-  <delete file="${basedir}/phpunit.phar"/>
+  <delete file="${basedir}/src.phar"/>
  </target>
 
  <target name="phar"
@@ -172,7 +172,7 @@
          depends="phar-prepare">
   <exec executable="bash" outputproperty="version">
    <arg value="-c" />
-   <arg value="${basedir}/phpunit --version | awk 'BEGIN { ORS = &quot;&quot;; } {print $2}'" />
+   <arg value="${basedir}/src --version | awk 'BEGIN { ORS = &quot;&quot;; } {print $2}'" />
   </exec>
 
   <antcall target="phar-build">
@@ -325,7 +325,7 @@
 
  <target name="phar-build">
   <copy todir="${basedir}/build/phar/phpunit">
-   <fileset dir="${basedir}/PHPUnit">
+   <fileset dir="${basedir}/src">
     <include name="**/*.php" />
     <include name="**/*.tpl*" />
     <exclude name="**/Autoload.*" />

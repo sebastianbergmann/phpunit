@@ -51,7 +51,7 @@
     },
     "autoload": {
         "classmap": [
-            "PHPUnit/"
+            "src/"
         ]
     },
     "extra": {

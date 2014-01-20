@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:noNamespaceSchemaLocation="http://schema.phpunit.de/3.8/phpunit.xsd"
-         bootstrap="Tests/bootstrap.php"
+         bootstrap="tests/bootstrap.php"
          backupGlobals="false"
          verbose="true">
   <testsuites>
     <testsuite name="small">
-      <directory suffix="Test.php">Tests/Framework</directory>
-      <directory suffix="Test.php">Tests/Extensions</directory>
-      <directory suffix="Test.php">Tests/Runner</directory>
-      <directory suffix="Test.php">Tests/Util</directory>
+      <directory suffix="Test.php">tests/Framework</directory>
+      <directory suffix="Test.php">tests/Extensions</directory>
+      <directory suffix="Test.php">tests/Runner</directory>
+      <directory suffix="Test.php">tests/Util</directory>
     </testsuite>
 
     <testsuite name="large">
@@ -27,9 +27,9 @@
 
   <filter>
     <whitelist processUncoveredFilesFromWhitelist="true">
-      <directory suffix=".php">PHPUnit</directory>
+      <directory suffix=".php">src</directory>
       <exclude>
-       <file>PHPUnit/Framework/Assert/Functions.php</file>
+       <file>src/Framework/Assert/Functions.php</file>
       </exclude>
     </whitelist>
   </filter>
@@ -38,4 +38,3 @@
     <const name="PHPUNIT_TESTSUITE" value="true"/>
   </php>
 </phpunit>
-
