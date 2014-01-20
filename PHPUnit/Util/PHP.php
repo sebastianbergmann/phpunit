@@ -109,6 +109,10 @@ abstract class PHPUnit_Util_PHP
 
         $binary = escapeshellarg($binary);
 
+        if (defined('HPHP_VERSION')) {
+            $binary .= ' --php';
+        }
+
         return $binary;
     }
 
