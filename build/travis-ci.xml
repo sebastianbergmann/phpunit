@@ -1,19 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:noNamespaceSchemaLocation="http://phpunit.de/phpunit.xsd"
-         bootstrap="../Tests/bootstrap-travis.php"
+         bootstrap="../tests/bootstrap-travis.php"
          backupGlobals="false"
          colors="true"
          verbose="true">
   <testsuites>
     <testsuite name="PHPUnit">
-      <directory suffix="Test.php">../Tests/Framework</directory>
-      <directory suffix=".phpt">../Tests/Framework/MockObject</directory>
-      <directory suffix="Test.php">../Tests/Extensions</directory>
-      <directory suffix=".phpt">../Tests/Regression</directory>
-      <directory suffix="Test.php">../Tests/Runner</directory>
-      <directory suffix=".phpt">../Tests/TextUI</directory>
-      <directory suffix="Test.php">../Tests/Util</directory>
+      <directory suffix="Test.php">../tests/Framework</directory>
+      <directory suffix="Test.php">../tests/Extensions</directory>
+      <directory suffix="Test.php">../tests/Runner</directory>
+      <directory suffix="Test.php">../tests/Util</directory>
+      <directory suffix=".phpt">../tests/TextUI</directory>
+      <directory suffix=".phpt">../tests/Regression</directory>
     </testsuite>
   </testsuites>
 
@@ -23,9 +22,9 @@
 
   <filter>
     <whitelist processUncoveredFilesFromWhitelist="true">
-      <directory suffix=".php">../PHPUnit</directory>
+      <directory suffix=".php">../src</directory>
       <exclude>
-       <file>../PHPUnit/Framework/Assert/Functions.php</file>
+       <file>../src/Framework/Assert/Functions.php</file>
       </exclude>
     </whitelist>
   </filter>
