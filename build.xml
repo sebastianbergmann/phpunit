@@ -155,16 +155,16 @@
   depends="phar">
   <exec executable="bash" outputproperty="version">
    <arg value="-c" />
-   <arg value="${basedir}/src --version | awk 'BEGIN { ORS = &quot;&quot;; } {print $2}'" />
+   <arg value="${basedir}/phpunit --version | awk 'BEGIN { ORS = &quot;&quot;; } {print $2}'" />
   </exec>
 
-  <copy file="${basedir}/build/phpunit-${version}.phar" tofile="${basedir}/src.phar" />
+  <copy file="${basedir}/build/phpunit-${version}.phar" tofile="${basedir}/phpunit.phar" />
 
   <exec executable="pear">
    <arg value="package" />
   </exec>
 
-  <delete file="${basedir}/src.phar"/>
+  <delete file="${basedir}/phpunit.phar"/>
  </target>
 
  <target name="phar"
@@ -172,7 +172,7 @@
          depends="phar-prepare">
   <exec executable="bash" outputproperty="version">
    <arg value="-c" />
-   <arg value="${basedir}/src --version | awk 'BEGIN { ORS = &quot;&quot;; } {print $2}'" />
+   <arg value="${basedir}/phpunit --version | awk 'BEGIN { ORS = &quot;&quot;; } {print $2}'" />
   </exec>
 
   <antcall target="phar-build">
@@ -295,12 +295,6 @@
    </fileset>
   </copy>
 
-  <copy todir="${basedir}/build/phar/pear">
-   <fileset dir="${basedir}/vendor/pear-pear.php.net">
-    <include name="**/*.php" />
-   </fileset>
-  </copy>
-
   <copy todir="${basedir}/build/phar/dbunit">
    <fileset dir="${basedir}/vendor/phpunit/dbunit/PHPUnit">
     <include name="**/*.php" />
@@ -328,7 +322,6 @@
    <fileset dir="${basedir}/src">
     <include name="**/*.php" />
     <include name="**/*.tpl*" />
-    <exclude name="**/Autoload.*" />
    </fileset>
   </copy>
 
@@ -351,3 +344,4 @@
   <chmod file="${basedir}/build/phpunit-${_version}.phar" perm="ugo+rx"/>
  </target>
 </project>
+
