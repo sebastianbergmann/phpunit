@@ -99,15 +99,15 @@ class PHPUnit_Framework_ComparisonFailure extends PHPUnit_Framework_AssertionFai
     /**
      * Initialises with the expected value and the actual value.
      *
-     * @param mixed $expected Expected value retrieved.
-     * @param mixed $actual Actual value retrieved.
-     * @param string $expectedAsString
-     * @param string $actualAsString
+     * @param mixed   $expected         Expected value retrieved.
+     * @param mixed   $actual           Actual value retrieved.
+     * @param string  $expectedAsString
+     * @param string  $actualAsString
      * @param boolean $identical
-     * @param string $message A string which is prefixed on all returned lines
-     *                        in the difference output.
+     * @param string  $message          A string which is prefixed on all returned lines
+     *                                  in the difference output.
      */
-    public function __construct($expected, $actual, $expectedAsString, $actualAsString, $identical = FALSE, $message = '')
+    public function __construct($expected, $actual, $expectedAsString, $actualAsString, $identical = false, $message = '')
     {
         $this->expected         = $expected;
         $this->actual           = $actual;

@@ -65,12 +65,12 @@ class PHPUnit_Extensions_TestDecorator extends PHPUnit_Framework_Assert implemen
      *
      * @var    object
      */
-    protected $test = NULL;
+    protected $test = null;
 
     /**
      * Constructor.
      *
-     * @param  PHPUnit_Framework_Test $test
+     * @param PHPUnit_Framework_Test $test
      */
     public function __construct(PHPUnit_Framework_Test $test)
     {
@@ -91,7 +91,7 @@ class PHPUnit_Extensions_TestDecorator extends PHPUnit_Framework_Assert implemen
      * Runs the test and collects the
      * result in a TestResult.
      *
-     * @param  PHPUnit_Framework_TestResult $result
+     * @param PHPUnit_Framework_TestResult $result
      */
     public function basicRun(PHPUnit_Framework_TestResult $result)
     {
@@ -136,9 +136,9 @@ class PHPUnit_Extensions_TestDecorator extends PHPUnit_Framework_Assert implemen
      * @param  PHPUnit_Framework_TestResult $result
      * @return PHPUnit_Framework_TestResult
      */
-    public function run(PHPUnit_Framework_TestResult $result = NULL)
+    public function run(PHPUnit_Framework_TestResult $result = null)
     {
-        if ($result === NULL) {
+        if ($result === null) {
             $result = $this->createResult();
         }
 

@@ -69,8 +69,8 @@ class PHPUnit_Framework_TestFailure
     /**
      * Constructs a TestFailure with the given test and exception.
      *
-     * @param  PHPUnit_Framework_Test $failedTest
-     * @param  Exception               $thrownException
+     * @param PHPUnit_Framework_Test $failedTest
+     * @param Exception              $thrownException
      */
     public function __construct(PHPUnit_Framework_Test $failedTest, Exception $thrownException)
     {
@@ -123,13 +123,9 @@ class PHPUnit_Framework_TestFailure
             if (!empty($buffer)) {
                 $buffer = trim($buffer) . "\n";
             }
-        }
-
-        else if ($e instanceof PHPUnit_Framework_Error) {
+        } elseif ($e instanceof PHPUnit_Framework_Error) {
             $buffer = $e->getMessage() . "\n";
-        }
-
-        else {
+        } else {
             $buffer = get_class($e) . ': ' . $e->getMessage() . "\n";
         }
 
@@ -167,7 +163,7 @@ class PHPUnit_Framework_TestFailure
     }
 
     /**
-     * Returns TRUE if the thrown exception
+     * Returns true if the thrown exception
      * is of type AssertionFailedError.
      *
      * @return boolean

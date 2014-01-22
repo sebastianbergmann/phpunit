@@ -65,22 +65,22 @@ class Util_TestTest extends PHPUnit_Framework_TestCase
     public function testGetExpectedException()
     {
         $this->assertSame(
-          array('class' => 'FooBarBaz', 'code' => NULL, 'message' => ''),
+          array('class' => 'FooBarBaz', 'code' => null, 'message' => ''),
           PHPUnit_Util_Test::getExpectedException('ExceptionTest', 'testOne')
         );
 
         $this->assertSame(
-          array('class' => 'Foo_Bar_Baz', 'code' => NULL, 'message' => ''),
+          array('class' => 'Foo_Bar_Baz', 'code' => null, 'message' => ''),
           PHPUnit_Util_Test::getExpectedException('ExceptionTest', 'testTwo')
         );
 
         $this->assertSame(
-          array('class' => 'Foo\Bar\Baz', 'code' => NULL, 'message' => ''),
+          array('class' => 'Foo\Bar\Baz', 'code' => null, 'message' => ''),
           PHPUnit_Util_Test::getExpectedException('ExceptionTest', 'testThree')
         );
 
         $this->assertSame(
-          array('class' => 'ほげ', 'code' => NULL, 'message' => ''),
+          array('class' => 'ほげ', 'code' => null, 'message' => ''),
           PHPUnit_Util_Test::getExpectedException('ExceptionTest', 'testFour')
         );
 
@@ -108,7 +108,7 @@ class Util_TestTest extends PHPUnit_Framework_TestCase
           PHPUnit_Util_Test::getExpectedException('ExceptionTest', 'testNine')
         );
         $this->assertSame(
-          array('class' => 'Class', 'code' => NULL, 'message' => ''),
+          array('class' => 'Class', 'code' => null, 'message' => ''),
           PHPUnit_Util_Test::getExpectedException('ExceptionTest', 'testSingleLine')
         );
         $this->assertSame(

@@ -69,17 +69,17 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
     /**
      * @var PHPUnit_Runner_TestSuiteLoader
      */
-    protected $loader = NULL;
+    protected $loader = null;
 
     /**
      * @var PHPUnit_TextUI_ResultPrinter
      */
-    protected $printer = NULL;
+    protected $printer = null;
 
     /**
      * @var boolean
      */
-    protected static $versionStringPrinted = FALSE;
+    protected static $versionStringPrinted = false;
 
     /**
      * @var array
@@ -96,9 +96,9 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
      * @param PHP_CodeCoverage_Filter        $filter
      * @since Method available since Release 3.4.0
      */
-    public function __construct(PHPUnit_Runner_TestSuiteLoader $loader = NULL, PHP_CodeCoverage_Filter $filter = NULL)
+    public function __construct(PHPUnit_Runner_TestSuiteLoader $loader = null, PHP_CodeCoverage_Filter $filter = null)
     {
-        if ($filter === NULL) {
+        if ($filter === null) {
             $filter = new PHP_CodeCoverage_Filter;
         }
 
@@ -110,8 +110,8 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
     }
 
     /**
-     * @param  mixed $test
-     * @param  array $arguments
+     * @param  mixed                       $test
+     * @param  array                       $arguments
      * @throws PHPUnit_Framework_Exception
      */
     public static function run($test, array $arguments = array())
@@ -142,7 +142,8 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
         return new PHPUnit_Framework_TestResult;
     }
 
-    private function processSuiteFilters(PHPUnit_Framework_TestSuite $suite, array $arguments) {
+    private function processSuiteFilters(PHPUnit_Framework_TestSuite $suite, array $arguments)
+    {
         if (!$arguments['filter'] &&
             empty($arguments['groups']) &&
             empty($arguments['excludeGroups'])) {
@@ -151,21 +152,21 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
 
         $filterFactory = new PHPUnit_Runner_Filter_Factory();
 
-        if(!empty($arguments['excludeGroups'])) {
+        if (!empty($arguments['excludeGroups'])) {
             $filterFactory->addFilter(
                 new ReflectionClass('PHPUnit_Runner_Filter_Group_Exclude'),
                 $arguments['excludeGroups']
             );
         }
 
-        if(!empty($arguments['groups'])) {
+        if (!empty($arguments['groups'])) {
             $filterFactory->addFilter(
                 new ReflectionClass('PHPUnit_Runner_Filter_Group_Include'),
                 $arguments['groups']
             );
         }
 
-        if($arguments['filter']) {
+        if ($arguments['filter']) {
             $filterFactory->addFilter(
                 new ReflectionClass('PHPUnit_Runner_Filter_Test'),
                 $arguments['filter']
@@ -175,8 +176,8 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
     }
 
     /**
-     * @param  PHPUnit_Framework_Test $suite
-     * @param  array                  $arguments
+     * @param  PHPUnit_Framework_Test       $suite
+     * @param  array                        $arguments
      * @return PHPUnit_Framework_TestResult
      */
     public function doRun(PHPUnit_Framework_Test $suite, array $arguments = array())
@@ -189,12 +190,12 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
             $GLOBALS['__PHPUNIT_BOOTSTRAP'] = $arguments['bootstrap'];
         }
 
-        if ($arguments['backupGlobals'] === FALSE) {
-            $suite->setBackupGlobals(FALSE);
+        if ($arguments['backupGlobals'] === false) {
+            $suite->setBackupGlobals(false);
         }
 
-        if ($arguments['backupStaticAttributes'] === TRUE) {
-            $suite->setBackupStaticAttributes(TRUE);
+        if ($arguments['backupStaticAttributes'] === true) {
+            $suite->setBackupStaticAttributes(true);
         }
 
         if (is_integer($arguments['repeat'])) {
@@ -211,38 +212,38 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
         $result = $this->createTestResult();
 
         if (!$arguments['convertErrorsToExceptions']) {
-            $result->convertErrorsToExceptions(FALSE);
+            $result->convertErrorsToExceptions(false);
         }
 
         if (!$arguments['convertNoticesToExceptions']) {
-            PHPUnit_Framework_Error_Notice::$enabled = FALSE;
+            PHPUnit_Framework_Error_Notice::$enabled = false;
         }
 
         if (!$arguments['convertWarningsToExceptions']) {
-            PHPUnit_Framework_Error_Warning::$enabled = FALSE;
+            PHPUnit_Framework_Error_Warning::$enabled = false;
         }
 
         if ($arguments['stopOnError']) {
-            $result->stopOnError(TRUE);
+            $result->stopOnError(true);
         }
 
         if ($arguments['stopOnFailure']) {
-            $result->stopOnFailure(TRUE);
+            $result->stopOnFailure(true);
         }
 
         if ($arguments['stopOnIncomplete']) {
-            $result->stopOnIncomplete(TRUE);
+            $result->stopOnIncomplete(true);
         }
 
         if ($arguments['stopOnRisky']) {
-            $result->stopOnRisky(TRUE);
+            $result->stopOnRisky(true);
         }
 
         if ($arguments['stopOnSkipped']) {
-            $result->stopOnSkipped(TRUE);
+            $result->stopOnSkipped(true);
         }
 
-        if ($this->printer === NULL) {
+        if ($this->printer === null) {
             if (isset($arguments['printer']) &&
                 $arguments['printer'] instanceof PHPUnit_Util_Printer) {
                 $this->printer = $arguments['printer'];
@@ -250,7 +251,7 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
                 $printerClass = 'PHPUnit_TextUI_ResultPrinter';
                 if (isset($arguments['printer']) &&
                     is_string($arguments['printer']) &&
-                    class_exists($arguments['printer'], FALSE)) {
+                    class_exists($arguments['printer'], false)) {
                     $class = new ReflectionClass($arguments['printer']);
 
                     if ($class->isSubclassOf('PHPUnit_TextUI_ResultPrinter')) {
@@ -259,7 +260,7 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
                 }
 
                 $this->printer = new $printerClass(
-                  isset($arguments['stderr']) ? 'php://stderr' : NULL,
+                  isset($arguments['stderr']) ? 'php://stderr' : null,
                   $arguments['verbose'],
                   $arguments['colors'],
                   $arguments['debug']
@@ -337,9 +338,7 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
                 $this->showExtensionNotLoadedMessage(
                   'tokenizer', 'No code coverage will be generated.'
                 );
-            }
-
-            else if (!extension_loaded('Xdebug')) {
+            } elseif (!extension_loaded('Xdebug')) {
                 $this->showExtensionNotLoadedMessage(
                   'Xdebug', 'No code coverage will be generated.'
                 );
@@ -348,7 +347,7 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
 
         if ($codeCoverageReports > 0) {
             $codeCoverage = new PHP_CodeCoverage(
-              NULL, $this->codeCoverageFilter
+              null, $this->codeCoverageFilter
             );
 
             $codeCoverage->setAddUncoveredFilesFromWhitelist(
@@ -486,10 +485,10 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
             if (isset($arguments['coverageText'])) {
                 if ($arguments['coverageText'] == 'php://stdout') {
                     $outputStream = $this->printer;
-                    $colors       = (bool)$arguments['colors'];
+                    $colors       = (bool) $arguments['colors'];
                 } else {
                     $outputStream = new PHPUnit_Util_Printer($arguments['coverageText']);
-                    $colors       = FALSE;
+                    $colors       = false;
                 }
 
                 $processor = new PHP_CodeCoverage_Report_Text(
@@ -521,7 +520,7 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
     }
 
     /**
-     * @param  PHPUnit_TextUI_ResultPrinter $resultPrinter
+     * @param PHPUnit_TextUI_ResultPrinter $resultPrinter
      */
     public function setPrinter(PHPUnit_TextUI_ResultPrinter $resultPrinter)
     {
@@ -532,7 +531,7 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
      * Override to define how to handle a failed loading of
      * a test suite.
      *
-     * @param  string  $message
+     * @param string $message
      */
     protected function runFailed($message)
     {
@@ -542,7 +541,7 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
     }
 
     /**
-     * @param  string $buffer
+     * @param string $buffer
      * @since  Method available since Release 3.1.0
      */
     protected static function write($buffer)
@@ -562,7 +561,7 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
      */
     public function getLoader()
     {
-        if ($this->loader === NULL) {
+        if ($this->loader === null) {
             $this->loader = new PHPUnit_Runner_StandardTestSuiteLoader;
         }
 
@@ -585,12 +584,12 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
     {
         if (!self::$versionStringPrinted) {
             self::write(PHPUnit_Runner_Version::getVersionString() . "\n\n");
-            self::$versionStringPrinted = TRUE;
+            self::$versionStringPrinted = true;
         }
     }
 
     /**
-     * @param  array $arguments
+     * @param array $arguments
      * @since  Method available since Release 3.2.1
      */
     protected function handleConfiguration(array &$arguments)
@@ -602,8 +601,8 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
             );
         }
 
-        $arguments['debug']     = isset($arguments['debug'])     ? $arguments['debug']     : FALSE;
-        $arguments['filter']    = isset($arguments['filter'])    ? $arguments['filter']    : FALSE;
+        $arguments['debug']     = isset($arguments['debug'])     ? $arguments['debug']     : false;
+        $arguments['filter']    = isset($arguments['filter'])    ? $arguments['filter']    : false;
         $arguments['listeners'] = isset($arguments['listeners']) ? $arguments['listeners'] : array();
 
         if (isset($arguments['configuration'])) {
@@ -729,7 +728,7 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
             }
 
             foreach ($arguments['configuration']->getListenerConfiguration() as $listener) {
-                if (!class_exists($listener['class'], FALSE) &&
+                if (!class_exists($listener['class'], false) &&
                     $listener['file'] !== '') {
                     require_once $listener['file'];
                 }
@@ -800,12 +799,12 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
                 if (isset($loggingConfiguration['coverageTextShowUncoveredFiles'])) {
                     $arguments['coverageTextShowUncoveredFiles'] = $loggingConfiguration['coverageTextShowUncoveredFiles'];
                 } else {
-                    $arguments['coverageTextShowUncoveredFiles'] = FALSE;
+                    $arguments['coverageTextShowUncoveredFiles'] = false;
                 }
                 if (isset($loggingConfiguration['coverageTextShowOnlySummary'])) {
                     $arguments['coverageTextShowOnlySummary'] = $loggingConfiguration['coverageTextShowOnlySummary'];
                 } else {
-                    $arguments['coverageTextShowOnlySummary'] = FALSE;
+                    $arguments['coverageTextShowOnlySummary'] = false;
                 }
             }
 
@@ -821,7 +820,7 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
 
             if (isset($loggingConfiguration['plain'])) {
                 $arguments['listeners'][] = new PHPUnit_TextUI_ResultPrinter(
-                  $loggingConfiguration['plain'], TRUE
+                  $loggingConfiguration['plain'], true
                 );
             }
 
@@ -903,37 +902,37 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
             }
         }
 
-        $arguments['addUncoveredFilesFromWhitelist']     = isset($arguments['addUncoveredFilesFromWhitelist'])     ? $arguments['addUncoveredFilesFromWhitelist']     : TRUE;
-        $arguments['processUncoveredFilesFromWhitelist'] = isset($arguments['processUncoveredFilesFromWhitelist']) ? $arguments['processUncoveredFilesFromWhitelist'] : FALSE;
-        $arguments['backupGlobals']                      = isset($arguments['backupGlobals'])                      ? $arguments['backupGlobals']                      : NULL;
-        $arguments['backupStaticAttributes']             = isset($arguments['backupStaticAttributes'])             ? $arguments['backupStaticAttributes']             : NULL;
-        $arguments['cacheTokens']                        = isset($arguments['cacheTokens'])                        ? $arguments['cacheTokens']                        : FALSE;
-        $arguments['colors']                             = isset($arguments['colors'])                             ? $arguments['colors']                             : FALSE;
-        $arguments['convertErrorsToExceptions']          = isset($arguments['convertErrorsToExceptions'])          ? $arguments['convertErrorsToExceptions']          : TRUE;
-        $arguments['convertNoticesToExceptions']         = isset($arguments['convertNoticesToExceptions'])         ? $arguments['convertNoticesToExceptions']         : TRUE;
-        $arguments['convertWarningsToExceptions']        = isset($arguments['convertWarningsToExceptions'])        ? $arguments['convertWarningsToExceptions']        : TRUE;
+        $arguments['addUncoveredFilesFromWhitelist']     = isset($arguments['addUncoveredFilesFromWhitelist'])     ? $arguments['addUncoveredFilesFromWhitelist']     : true;
+        $arguments['processUncoveredFilesFromWhitelist'] = isset($arguments['processUncoveredFilesFromWhitelist']) ? $arguments['processUncoveredFilesFromWhitelist'] : false;
+        $arguments['backupGlobals']                      = isset($arguments['backupGlobals'])                      ? $arguments['backupGlobals']                      : null;
+        $arguments['backupStaticAttributes']             = isset($arguments['backupStaticAttributes'])             ? $arguments['backupStaticAttributes']             : null;
+        $arguments['cacheTokens']                        = isset($arguments['cacheTokens'])                        ? $arguments['cacheTokens']                        : false;
+        $arguments['colors']                             = isset($arguments['colors'])                             ? $arguments['colors']                             : false;
+        $arguments['convertErrorsToExceptions']          = isset($arguments['convertErrorsToExceptions'])          ? $arguments['convertErrorsToExceptions']          : true;
+        $arguments['convertNoticesToExceptions']         = isset($arguments['convertNoticesToExceptions'])         ? $arguments['convertNoticesToExceptions']         : true;
+        $arguments['convertWarningsToExceptions']        = isset($arguments['convertWarningsToExceptions'])        ? $arguments['convertWarningsToExceptions']        : true;
         $arguments['excludeGroups']                      = isset($arguments['excludeGroups'])                      ? $arguments['excludeGroups']                      : array();
         $arguments['groups']                             = isset($arguments['groups'])                             ? $arguments['groups']                             : array();
-        $arguments['logIncompleteSkipped']               = isset($arguments['logIncompleteSkipped'])               ? $arguments['logIncompleteSkipped']               : FALSE;
-        $arguments['processIsolation']                   = isset($arguments['processIsolation'])                   ? $arguments['processIsolation']                   : FALSE;
-        $arguments['repeat']                             = isset($arguments['repeat'])                             ? $arguments['repeat']                             : FALSE;
+        $arguments['logIncompleteSkipped']               = isset($arguments['logIncompleteSkipped'])               ? $arguments['logIncompleteSkipped']               : false;
+        $arguments['processIsolation']                   = isset($arguments['processIsolation'])                   ? $arguments['processIsolation']                   : false;
+        $arguments['repeat']                             = isset($arguments['repeat'])                             ? $arguments['repeat']                             : false;
         $arguments['reportCharset']                      = isset($arguments['reportCharset'])                      ? $arguments['reportCharset']                      : 'UTF-8';
-        $arguments['reportHighlight']                    = isset($arguments['reportHighlight'])                    ? $arguments['reportHighlight']                    : FALSE;
+        $arguments['reportHighlight']                    = isset($arguments['reportHighlight'])                    ? $arguments['reportHighlight']                    : false;
         $arguments['reportHighLowerBound']               = isset($arguments['reportHighLowerBound'])               ? $arguments['reportHighLowerBound']               : 90;
         $arguments['reportLowUpperBound']                = isset($arguments['reportLowUpperBound'])                ? $arguments['reportLowUpperBound']                : 50;
-        $arguments['stopOnError']                        = isset($arguments['stopOnError'])                        ? $arguments['stopOnError']                        : FALSE;
-        $arguments['stopOnFailure']                      = isset($arguments['stopOnFailure'])                      ? $arguments['stopOnFailure']                      : FALSE;
-        $arguments['stopOnIncomplete']                   = isset($arguments['stopOnIncomplete'])                   ? $arguments['stopOnIncomplete']                   : FALSE;
-        $arguments['stopOnRisky']                        = isset($arguments['stopOnRisky'])                        ? $arguments['stopOnRisky']                        : FALSE;
-        $arguments['stopOnSkipped']                      = isset($arguments['stopOnSkipped'])                      ? $arguments['stopOnSkipped']                      : FALSE;
+        $arguments['stopOnError']                        = isset($arguments['stopOnError'])                        ? $arguments['stopOnError']                        : false;
+        $arguments['stopOnFailure']                      = isset($arguments['stopOnFailure'])                      ? $arguments['stopOnFailure']                      : false;
+        $arguments['stopOnIncomplete']                   = isset($arguments['stopOnIncomplete'])                   ? $arguments['stopOnIncomplete']                   : false;
+        $arguments['stopOnRisky']                        = isset($arguments['stopOnRisky'])                        ? $arguments['stopOnRisky']                        : false;
+        $arguments['stopOnSkipped']                      = isset($arguments['stopOnSkipped'])                      ? $arguments['stopOnSkipped']                      : false;
         $arguments['timeoutForSmallTests']               = isset($arguments['timeoutForSmallTests'])               ? $arguments['timeoutForSmallTests']               : 1;
         $arguments['timeoutForMediumTests']              = isset($arguments['timeoutForMediumTests'])              ? $arguments['timeoutForMediumTests']              : 10;
         $arguments['timeoutForLargeTests']               = isset($arguments['timeoutForLargeTests'])               ? $arguments['timeoutForLargeTests']               : 60;
-        $arguments['reportUselessTests']                 = isset($arguments['reportUselessTests'])                 ? $arguments['reportUselessTests']                 : FALSE;
-        $arguments['strictCoverage']                     = isset($arguments['strictCoverage'])                     ? $arguments['strictCoverage']                     : FALSE;
-        $arguments['disallowTestOutput']                 = isset($arguments['disallowTestOutput'])                 ? $arguments['disallowTestOutput']                 : FALSE;
-        $arguments['enforceTimeLimit']                   = isset($arguments['enforceTimeLimit'])                   ? $arguments['enforceTimeLimit']                   : FALSE;
-        $arguments['verbose']                            = isset($arguments['verbose'])                            ? $arguments['verbose']                            : FALSE;
+        $arguments['reportUselessTests']                 = isset($arguments['reportUselessTests'])                 ? $arguments['reportUselessTests']                 : false;
+        $arguments['strictCoverage']                     = isset($arguments['strictCoverage'])                     ? $arguments['strictCoverage']                     : false;
+        $arguments['disallowTestOutput']                 = isset($arguments['disallowTestOutput'])                 ? $arguments['disallowTestOutput']                 : false;
+        $arguments['enforceTimeLimit']                   = isset($arguments['enforceTimeLimit'])                   ? $arguments['enforceTimeLimit']                   : false;
+        $arguments['verbose']                            = isset($arguments['verbose'])                            ? $arguments['verbose']                            : false;
     }
 
     /**
@@ -954,7 +953,7 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
           'The ' . $extension . ' extension is not loaded.' . $message . "\n"
         );
 
-        $this->missingExtensions[$extension] = TRUE;
+        $this->missingExtensions[$extension] = true;
     }
 
     /**
@@ -964,7 +963,7 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
      * @param boolean $exit
      * @since Method available since Release 3.8.0
      */
-    private function showMessage($message, $exit = FALSE)
+    private function showMessage($message, $exit = false)
     {
         $this->printVersionString();
         $this->write($message . "\n");

@@ -77,7 +77,7 @@ class PHPUnit_Util_Test
      * @param  boolean                $asString
      * @return mixed
      */
-    public static function describe(PHPUnit_Framework_Test $test, $asString = TRUE)
+    public static function describe(PHPUnit_Framework_Test $test, $asString = true)
     {
         if ($asString) {
             if ($test instanceof PHPUnit_Framework_SelfDescribing) {
@@ -90,13 +90,9 @@ class PHPUnit_Util_Test
                 return array(
                   get_class($test), $test->getName()
                 );
-            }
-
-            else if ($test instanceof PHPUnit_Framework_SelfDescribing) {
+            } elseif ($test instanceof PHPUnit_Framework_SelfDescribing) {
                 return array('', $test->toString());
-            }
-
-            else {
+            } else {
                 return array('', get_class($test));
             }
         }
@@ -118,16 +114,14 @@ class PHPUnit_Util_Test
 
         try {
             $method = new ReflectionMethod($className, $methodName);
-        }
-
-        catch (ReflectionException $e) {
+        } catch (ReflectionException $e) {
             return array();
         }
 
         $docComment = self::getDocCommentsOfTestClassAndTestMethodAndTemplateMethods($class, $method);
 
-        if (strpos($docComment, '@coversNothing') !== FALSE) {
-            return FALSE;
+        if (strpos($docComment, '@coversNothing') !== false) {
+            return false;
         }
 
         $classShortcut = preg_match_all(
@@ -272,14 +266,12 @@ class PHPUnit_Util_Test
             );
 
             $class   = $matches[1];
-            $code    = NULL;
+            $code    = null;
             $message = '';
 
             if (isset($matches[2])) {
                 $message = trim($matches[2]);
-            }
-
-            else if (isset($annotations['method']['expectedExceptionMessage'])) {
+            } elseif (isset($annotations['method']['expectedExceptionMessage'])) {
                 $message = self::parseAnnotationContent(
                     $annotations['method']['expectedExceptionMessage'][0]
                 );
@@ -287,20 +279,16 @@ class PHPUnit_Util_Test
 
             if (isset($matches[3])) {
                 $code = $matches[3];
-            }
-
-            else if (isset($annotations['method']['expectedExceptionCode'])) {
+            } elseif (isset($annotations['method']['expectedExceptionCode'])) {
                 $code = self::parseAnnotationContent(
                     $annotations['method']['expectedExceptionCode'][0]
                 );
             }
 
             if (is_numeric($code)) {
-                $code = (int)$code;
-            }
-
-            else if (is_string($code) && defined($code)) {
-                $code = (int)constant($code);
+                $code = (int) $code;
+            } elseif (is_string($code) && defined($code)) {
+                $code = (int) constant($code);
             }
 
             return array(
@@ -308,7 +296,7 @@ class PHPUnit_Util_Test
             );
         }
 
-        return FALSE;
+        return false;
     }
 
     /**
@@ -323,11 +311,12 @@ class PHPUnit_Util_Test
      */
     private static function parseAnnotationContent($message)
     {
-        if (strpos($message, '::') !== FALSE && count(explode('::', $message) == 2)) {
+        if (strpos($message, '::') !== false && count(explode('::', $message) == 2)) {
             if (defined($message)) {
                 $message = constant($message);
             }
         }
+
         return $message;
     }
 
@@ -338,15 +327,15 @@ class PHPUnit_Util_Test
      * @param  string $methodName
      * @param  string $docComment
      * @return mixed  array|Iterator when a data provider is specified and exists
-     *                false          when a data provider is specified and does not exist
-     *                null           when no data provider is specified
+     *                           false          when a data provider is specified and does not exist
+     *                           null           when no data provider is specified
      * @since  Method available since Release 3.2.0
      */
     public static function getProvidedData($className, $methodName)
     {
         $reflector  = new ReflectionMethod($className, $methodName);
         $docComment = $reflector->getDocComment();
-        $data       = NULL;
+        $data       = null;
 
         if (preg_match(self::REGEX_DATA_PROVIDER, $docComment, $matches)) {
             $dataProviderMethodNameNamespace = explode('\\', $matches[1]);
@@ -371,7 +360,7 @@ class PHPUnit_Util_Test
             );
 
             if ($dataProviderMethod->isStatic()) {
-                $object = NULL;
+                $object = null;
             } else {
                 $object = $dataProviderClass->newInstance();
             }
@@ -383,7 +372,7 @@ class PHPUnit_Util_Test
             }
         }
 
-        if ($data !== NULL) {
+        if ($data !== null) {
             if (is_object($data)) {
                 $data = iterator_to_array($data);
             }
@@ -404,8 +393,8 @@ class PHPUnit_Util_Test
     }
 
     /**
-     * @param  string $className
-     * @param  string $methodName
+     * @param  string              $className
+     * @param  string              $methodName
      * @return array
      * @throws ReflectionException
      * @since  Method available since Release 3.4.0
@@ -507,8 +496,8 @@ class PHPUnit_Util_Test
     /**
      * Returns the error handler settings for a test.
      *
-     * @param  string $className
-     * @param  string $methodName
+     * @param  string  $className
+     * @param  string  $methodName
      * @return boolean
      * @since  Method available since Release 3.4.0
      */
@@ -537,9 +526,7 @@ class PHPUnit_Util_Test
 
         if (isset($annotations['method']['author'])) {
             $groups = $annotations['method']['author'];
-        }
-
-        else if (isset($annotations['class']['author'])) {
+        } elseif (isset($annotations['class']['author'])) {
             $groups = $annotations['class']['author'];
         }
 
@@ -562,9 +549,7 @@ class PHPUnit_Util_Test
         foreach (array('small', 'medium', 'large') as $size) {
             if (isset($annotations['method'][$size])) {
                 $groups[] = $size;
-            }
-
-            else if (isset($annotations['class'][$size])) {
+            } elseif (isset($annotations['class'][$size])) {
                 $groups[] = $size;
             }
         }
@@ -575,8 +560,8 @@ class PHPUnit_Util_Test
     /**
      * Returns the size of the test.
      *
-     * @param  string $className
-     * @param  string $methodName
+     * @param  string  $className
+     * @param  string  $methodName
      * @return integer
      * @since  Method available since Release 3.6.0
      */
@@ -586,18 +571,14 @@ class PHPUnit_Util_Test
         $size   = self::SMALL;
         $class  = new ReflectionClass($className);
 
-        if ((class_exists('PHPUnit_Extensions_Database_TestCase', FALSE) &&
+        if ((class_exists('PHPUnit_Extensions_Database_TestCase', false) &&
              $class->isSubclassOf('PHPUnit_Extensions_Database_TestCase')) ||
-            (class_exists('PHPUnit_Extensions_SeleniumTestCase', FALSE) &&
+            (class_exists('PHPUnit_Extensions_SeleniumTestCase', false) &&
              $class->isSubclassOf('PHPUnit_Extensions_SeleniumTestCase'))) {
             $size = self::LARGE;
-        }
-
-        else if (isset($groups['medium'])) {
+        } elseif (isset($groups['medium'])) {
             $size = self::MEDIUM;
-        }
-
-        else if (isset($groups['large'])) {
+        } elseif (isset($groups['large'])) {
             $size = self::LARGE;
         }
 
@@ -634,8 +615,8 @@ class PHPUnit_Util_Test
     /**
      * Returns the process isolation settings for a test.
      *
-     * @param  string $className
-     * @param  string $methodName
+     * @param  string  $className
+     * @param  string  $methodName
      * @return boolean
      * @since  Method available since Release 3.4.1
      */
@@ -647,17 +628,17 @@ class PHPUnit_Util_Test
 
         if (isset($annotations['class']['runTestsInSeparateProcesses']) ||
             isset($annotations['method']['runInSeparateProcess'])) {
-            return TRUE;
+            return true;
         } else {
-            return FALSE;
+            return false;
         }
     }
 
     /**
      * Returns the preserve global state settings for a test.
      *
-     * @param  string $className
-     * @param  string $methodName
+     * @param  string  $className
+     * @param  string  $methodName
      * @return boolean
      * @since  Method available since Release 3.4.0
      */
@@ -669,9 +650,9 @@ class PHPUnit_Util_Test
     }
 
     /**
-     * @param  string $className
-     * @param  string $methodName
-     * @param  string $settingName
+     * @param  string  $className
+     * @param  string  $methodName
+     * @param  string  $settingName
      * @return boolean
      * @since  Method available since Release 3.4.0
      */
@@ -681,25 +662,21 @@ class PHPUnit_Util_Test
           $className, $methodName
         );
 
-        $result = NULL;
+        $result = null;
 
         if (isset($annotations['class'][$settingName])) {
             if ($annotations['class'][$settingName][0] == 'enabled') {
-                $result = TRUE;
-            }
-
-            else if ($annotations['class'][$settingName][0] == 'disabled') {
-                $result = FALSE;
+                $result = true;
+            } elseif ($annotations['class'][$settingName][0] == 'disabled') {
+                $result = false;
             }
         }
 
         if (isset($annotations['method'][$settingName])) {
             if ($annotations['method'][$settingName][0] == 'enabled') {
-                $result = TRUE;
-            }
-
-            else if ($annotations['method'][$settingName][0] == 'disabled') {
-                $result = FALSE;
+                $result = true;
+            } elseif ($annotations['method'][$settingName][0] == 'disabled') {
+                $result = false;
             }
         }
 
@@ -715,7 +692,7 @@ class PHPUnit_Util_Test
     {
         $codeToCoverList = array();
 
-        if (strpos($element, '::') !== FALSE) {
+        if (strpos($element, '::') !== false) {
             list($className, $methodName) = explode('::', $element);
 
             if (isset($methodName[0]) && $methodName[0] == '<') {
@@ -739,22 +716,16 @@ class PHPUnit_Util_Test
 
                     if (strpos($methodName, 'protected')) {
                         $visibility = 'isProtected';
-                    }
-
-                    else if (strpos($methodName, 'private')) {
+                    } elseif (strpos($methodName, 'private')) {
                         $visibility = 'isPrivate';
-                    }
-
-                    else if (strpos($methodName, 'public')) {
+                    } elseif (strpos($methodName, 'public')) {
                         $visibility = 'isPublic';
                     }
 
                     foreach ($methods as $method) {
                         if ($inverse && !$method->$visibility()) {
                             $codeToCoverList[] = $method;
-                        }
-
-                        else if (!$inverse && $method->$visibility()) {
+                        } elseif (!$inverse && $method->$visibility()) {
                             $codeToCoverList[] = $method;
                         }
                     }
@@ -788,14 +759,14 @@ class PHPUnit_Util_Test
                 }
             }
         } else {
-            $extended = FALSE;
+            $extended = false;
 
-            if (strpos($element, '<extended>') !== FALSE) {
+            if (strpos($element, '<extended>') !== false) {
                 $element = str_replace(
                   '<extended>', '', $element
                 );
 
-                $extended = TRUE;
+                $extended = true;
             }
 
             $classes = array($element);

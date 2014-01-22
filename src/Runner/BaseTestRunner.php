@@ -79,9 +79,9 @@ abstract class PHPUnit_Runner_BaseTestRunner
      * This is a template method, subclasses override
      * the runFailed() and clearStatus() methods.
      *
-     * @param  string  $suiteClassName
-     * @param  string  $suiteClassFile
-     * @param  mixed   $suffixes
+     * @param  string                 $suiteClassName
+     * @param  string                 $suiteClassFile
+     * @param  mixed                  $suffixes
      * @return PHPUnit_Framework_Test
      */
     public function getTest($suiteClassName, $suiteClassFile = '', $suffixes = '')
@@ -103,11 +103,10 @@ abstract class PHPUnit_Runner_BaseTestRunner
             $testClass = $this->loadSuiteClass(
               $suiteClassName, $suiteClassFile
             );
-        }
-
-        catch (PHPUnit_Framework_Exception $e) {
+        } catch (PHPUnit_Framework_Exception $e) {
             $this->runFailed($e->getMessage());
-            return NULL;
+
+            return null;
         }
 
         try {
@@ -118,14 +117,12 @@ abstract class PHPUnit_Runner_BaseTestRunner
                   'suite() method must be static.'
                 );
 
-                return NULL;
+                return null;
             }
 
             try {
-                $test = $suiteMethod->invoke(NULL, $testClass->getName());
-            }
-
-            catch (ReflectionException $e) {
+                $test = $suiteMethod->invoke(null, $testClass->getName());
+            } catch (ReflectionException $e) {
                 $this->runFailed(
                   sprintf(
                     "Failed to invoke suite() method.\n%s",
@@ -134,16 +131,12 @@ abstract class PHPUnit_Runner_BaseTestRunner
                   )
                 );
 
-                return NULL;
+                return null;
             }
-        }
-
-        catch (ReflectionException $e) {
+        } catch (ReflectionException $e) {
             try {
                 $test = new PHPUnit_Framework_TestSuite($testClass);
-            }
-
-            catch (PHPUnit_Framework_Exception $e) {
+            } catch (PHPUnit_Framework_Exception $e) {
                 $test = new PHPUnit_Framework_TestSuite;
                 $test->setName($suiteClassName);
             }
@@ -157,8 +150,8 @@ abstract class PHPUnit_Runner_BaseTestRunner
     /**
      * Returns the loaded ReflectionClass for a suite name.
      *
-     * @param  string  $suiteClassName
-     * @param  string  $suiteClassFile
+     * @param  string          $suiteClassName
+     * @param  string          $suiteClassFile
      * @return ReflectionClass
      */
     protected function loadSuiteClass($suiteClassName, $suiteClassFile = '')
@@ -184,7 +177,7 @@ abstract class PHPUnit_Runner_BaseTestRunner
      * Override to define how to handle a failed loading of
      * a test suite.
      *
-     * @param  string  $message
+     * @param string $message
      */
     abstract protected function runFailed($message);
 }

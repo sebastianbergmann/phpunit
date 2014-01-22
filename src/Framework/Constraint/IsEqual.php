@@ -84,12 +84,12 @@ class PHPUnit_Framework_Constraint_IsEqual extends PHPUnit_Framework_Constraint
     /**
      * @var boolean
      */
-    protected $canonicalize = FALSE;
+    protected $canonicalize = false;
 
     /**
      * @var boolean
      */
-    protected $ignoreCase = FALSE;
+    protected $ignoreCase = false;
 
     /**
      * @var PHPUnit_Framework_ComparisonFailure
@@ -97,14 +97,14 @@ class PHPUnit_Framework_Constraint_IsEqual extends PHPUnit_Framework_Constraint
     protected $lastFailure;
 
     /**
-     * @param mixed   $value
-     * @param float   $delta
-     * @param integer $maxDepth
-     * @param boolean $canonicalize
-     * @param boolean $ignoreCase
+     * @param  mixed                       $value
+     * @param  float                       $delta
+     * @param  integer                     $maxDepth
+     * @param  boolean                     $canonicalize
+     * @param  boolean                     $ignoreCase
      * @throws PHPUnit_Framework_Exception
      */
-    public function __construct($value, $delta = 0, $maxDepth = 10, $canonicalize = FALSE, $ignoreCase = FALSE)
+    public function __construct($value, $delta = 0, $maxDepth = 10, $canonicalize = false, $ignoreCase = false)
     {
         parent::__construct();
 
@@ -134,20 +134,20 @@ class PHPUnit_Framework_Constraint_IsEqual extends PHPUnit_Framework_Constraint
     /**
      * Evaluates the constraint for parameter $other
      *
-     * If $returnResult is set to FALSE (the default), an exception is thrown
-     * in case of a failure. NULL is returned otherwise.
+     * If $returnResult is set to false (the default), an exception is thrown
+     * in case of a failure. null is returned otherwise.
      *
-     * If $returnResult is TRUE, the result of the evaluation is returned as
-     * a boolean value instead: TRUE in case of success, FALSE in case of a
+     * If $returnResult is true, the result of the evaluation is returned as
+     * a boolean value instead: true in case of success, false in case of a
      * failure.
      *
-     * @param  mixed $other Value or object to evaluate.
-     * @param  string $description Additional information about the test
-     * @param  bool $returnResult Whether to return a result or throw an exception
+     * @param  mixed                                        $other        Value or object to evaluate.
+     * @param  string                                       $description  Additional information about the test
+     * @param  bool                                         $returnResult Whether to return a result or throw an exception
      * @return mixed
      * @throws PHPUnit_Framework_ExpectationFailedException
      */
-    public function evaluate($other, $description = '', $returnResult = FALSE)
+    public function evaluate($other, $description = '', $returnResult = false)
     {
         $comparatorFactory = PHPUnit_Framework_ComparatorFactory::getDefaultInstance();
 
@@ -163,11 +163,9 @@ class PHPUnit_Framework_Constraint_IsEqual extends PHPUnit_Framework_Constraint
               $this->canonicalize,
               $this->ignoreCase
             );
-        }
-
-        catch (PHPUnit_Framework_ComparisonFailure $f) {
+        } catch (PHPUnit_Framework_ComparisonFailure $f) {
             if ($returnResult) {
-                return FALSE;
+                return false;
             }
 
             throw new PHPUnit_Framework_ExpectationFailedException(
@@ -176,7 +174,7 @@ class PHPUnit_Framework_Constraint_IsEqual extends PHPUnit_Framework_Constraint
             );
         }
 
-        return TRUE;
+        return true;
     }
 
     /**
@@ -189,7 +187,7 @@ class PHPUnit_Framework_Constraint_IsEqual extends PHPUnit_Framework_Constraint
         $delta = '';
 
         if (is_string($this->value)) {
-            if (strpos($this->value, "\n") !== FALSE) {
+            if (strpos($this->value, "\n") !== false) {
                 return 'is equal to <text>';
             } else {
                 return sprintf(

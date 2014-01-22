@@ -683,7 +683,7 @@ class Framework_SelectorAssertionsTest extends PHPUnit_Framework_TestCase
     public function testAssertSelectCountPresentTrue()
     {
         $selector = 'div#test_id';
-        $count    = TRUE;
+        $count    = true;
 
         $this->assertSelectCount($selector, $count, $this->html);
     }
@@ -695,7 +695,7 @@ class Framework_SelectorAssertionsTest extends PHPUnit_Framework_TestCase
     public function testAssertSelectCountPresentFalse()
     {
         $selector = 'div#non_existent';
-        $count    = TRUE;
+        $count    = true;
 
         $this->assertSelectCount($selector, $count, $this->html);
     }
@@ -706,7 +706,7 @@ class Framework_SelectorAssertionsTest extends PHPUnit_Framework_TestCase
     public function testAssertSelectCountNotPresentTrue()
     {
         $selector = 'div#non_existent';
-        $count    = FALSE;
+        $count    = false;
 
         $this->assertSelectCount($selector, $count, $this->html);
     }
@@ -718,7 +718,7 @@ class Framework_SelectorAssertionsTest extends PHPUnit_Framework_TestCase
     public function testAssertSelectNotPresentFalse()
     {
         $selector = 'div#test_id';
-        $count    = FALSE;
+        $count    = false;
 
         $this->assertSelectCount($selector, $count, $this->html);
     }
@@ -915,7 +915,7 @@ class Framework_SelectorAssertionsTest extends PHPUnit_Framework_TestCase
         $selector = 'span.test_class';
         $content  = 'Test Class Text';
 
-        $this->assertSelectEquals($selector, $content, TRUE, $this->html);
+        $this->assertSelectEquals($selector, $content, true, $this->html);
     }
 
     /**
@@ -927,7 +927,7 @@ class Framework_SelectorAssertionsTest extends PHPUnit_Framework_TestCase
         $selector = 'span.test_class';
         $content  = 'Test Nonexistent';
 
-        $this->assertSelectEquals($selector, $content, TRUE, $this->html);
+        $this->assertSelectEquals($selector, $content, true, $this->html);
     }
 
     /**
@@ -938,7 +938,7 @@ class Framework_SelectorAssertionsTest extends PHPUnit_Framework_TestCase
         $selector = 'span.test_class';
         $content  = 'Test Nonexistent';
 
-        $this->assertSelectEquals($selector, $content, FALSE, $this->html);
+        $this->assertSelectEquals($selector, $content, false, $this->html);
     }
 
     /**
@@ -950,7 +950,7 @@ class Framework_SelectorAssertionsTest extends PHPUnit_Framework_TestCase
         $selector = 'span.test_class';
         $content  = 'Test Class Text';
 
-        $this->assertSelectEquals($selector, $content, FALSE, $this->html);
+        $this->assertSelectEquals($selector, $content, false, $this->html);
     }
 
     /**
@@ -961,7 +961,7 @@ class Framework_SelectorAssertionsTest extends PHPUnit_Framework_TestCase
         $selector = 'span.test_class';
         $regexp   = '/Test.*Text/';
 
-        $this->assertSelectRegExp($selector, $regexp, TRUE, $this->html);
+        $this->assertSelectRegExp($selector, $regexp, true, $this->html);
     }
 
     /**
@@ -972,6 +972,6 @@ class Framework_SelectorAssertionsTest extends PHPUnit_Framework_TestCase
         $selector = 'span.test_class';
         $regexp   = '/Nonexistant/';
 
-        $this->assertSelectRegExp($selector, $regexp, FALSE, $this->html);
+        $this->assertSelectRegExp($selector, $regexp, false, $this->html);
     }
 }

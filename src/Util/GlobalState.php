@@ -186,7 +186,7 @@ class PHPUnit_Util_GlobalState
     {
         $blacklist = new PHPUnit_Util_Blacklist;
         $files     = get_included_files();
-        $prefix    = FALSE;
+        $prefix    = false;
         $result    = '';
 
         if (defined('__PHPUNIT_PHAR__')) {
@@ -196,7 +196,7 @@ class PHPUnit_Util_GlobalState
         for ($i = count($files) - 1; $i > 0; $i--) {
             $file = $files[$i];
 
-            if ($prefix !== FALSE && strpos($file, $prefix) === 0) {
+            if ($prefix !== false && strpos($file, $prefix) === 0) {
                 continue;
             }
 
@@ -211,7 +211,7 @@ class PHPUnit_Util_GlobalState
     public static function getIniSettingsAsString()
     {
         $result      = '';
-        $iniSettings = ini_get_all(null, FALSE);
+        $iniSettings = ini_get_all(null, false);
 
         foreach ($iniSettings as $key => $value) {
             $result .= sprintf(
@@ -226,7 +226,7 @@ class PHPUnit_Util_GlobalState
 
     public static function getConstantsAsString()
     {
-        $constants = get_defined_constants(TRUE);
+        $constants = get_defined_constants(true);
         $result    = '';
 
         if (isset($constants['user'])) {
@@ -323,7 +323,7 @@ class PHPUnit_Util_GlobalState
 
                         if (!isset($blacklist[$declaredClasses[$i]]) ||
                            !in_array($name, $blacklist[$declaredClasses[$i]])) {
-                            $attribute->setAccessible(TRUE);
+                            $attribute->setAccessible(true);
                             $value = $attribute->getValue();
 
                             if (!$value instanceof Closure) {
@@ -345,7 +345,7 @@ class PHPUnit_Util_GlobalState
         foreach (self::$staticAttributes as $className => $staticAttributes) {
             foreach ($staticAttributes as $name => $value) {
                 $reflector = new ReflectionProperty($className, $name);
-                $reflector->setAccessible(TRUE);
+                $reflector->setAccessible(true);
                 $reflector->setValue(unserialize($value));
             }
         }
@@ -357,7 +357,7 @@ class PHPUnit_Util_GlobalState
     {
         if (is_scalar($variable) || is_null($variable) ||
            (is_array($variable) && self::arrayOnlyContainsScalars($variable))) {
-            return var_export($variable, TRUE);
+            return var_export($variable, true);
         }
 
         return 'unserialize(\'' .
@@ -367,18 +367,16 @@ class PHPUnit_Util_GlobalState
 
     protected static function arrayOnlyContainsScalars(array $array)
     {
-        $result = TRUE;
+        $result = true;
 
         foreach ($array as $element) {
             if (is_array($element)) {
                 $result = self::arrayOnlyContainsScalars($element);
+            } elseif (!is_scalar($element) && !is_null($element)) {
+                $result = false;
             }
 
-            else if (!is_scalar($element) && !is_null($element)) {
-                $result = FALSE;
-            }
-
-            if ($result === FALSE) {
+            if ($result === false) {
                 break;
             }
         }

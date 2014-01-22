@@ -59,7 +59,7 @@ class PHPUnit_Util_TestDox_ResultPrinter_Text extends PHPUnit_Util_TestDox_Resul
     /**
      * Handler for 'start class' event.
      *
-     * @param  string $name
+     * @param string $name
      */
     protected function startClass($name)
     {
@@ -69,10 +69,10 @@ class PHPUnit_Util_TestDox_ResultPrinter_Text extends PHPUnit_Util_TestDox_Resul
     /**
      * Handler for 'on test' event.
      *
-     * @param  string  $name
-     * @param  boolean $success
+     * @param string  $name
+     * @param boolean $success
      */
-    protected function onTest($name, $success = TRUE)
+    protected function onTest($name, $success = true)
     {
         if ($success) {
             $this->write(' [x] ');
@@ -86,7 +86,7 @@ class PHPUnit_Util_TestDox_ResultPrinter_Text extends PHPUnit_Util_TestDox_Resul
     /**
      * Handler for 'end class' event.
      *
-     * @param  string $name
+     * @param string $name
      */
     protected function endClass($name)
     {

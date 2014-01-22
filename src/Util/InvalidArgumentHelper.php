@@ -58,20 +58,20 @@
 class PHPUnit_Util_InvalidArgumentHelper
 {
     /**
-     * @param integer $argument
-     * @param string  $type
-     * @param mixed   $value
+     * @param  integer                     $argument
+     * @param  string                      $type
+     * @param  mixed                       $value
      * @return PHPUnit_Framework_Exception
      */
-    public static function factory($argument, $type, $value = NULL)
+    public static function factory($argument, $type, $value = null)
     {
-        $stack = debug_backtrace(FALSE);
+        $stack = debug_backtrace(false);
 
         return new PHPUnit_Framework_Exception(
           sprintf(
             'Argument #%d%sof %s::%s() must be a %s',
             $argument,
-            $value !== NULL ? ' (' . gettype($value) . '#' . $value . ')' : ' (No Value) ',
+            $value !== null ? ' (' . gettype($value) . '#' . $value . ')' : ' (No Value) ',
             $stack[1]['class'],
             $stack[1]['function'],
             $type

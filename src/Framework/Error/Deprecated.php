@@ -48,7 +48,7 @@
  * You can disable deprecated-to-exception conversion by setting
  *
  * <code>
- * PHPUnit_Framework_Error_Deprecated::$enabled = FALSE;
+ * PHPUnit_Framework_Error_Deprecated::$enabled = false;
  * </code>
  *
  * @package    PHPUnit
@@ -61,5 +61,5 @@
  */
 class PHPUnit_Framework_Error_Deprecated extends PHPUnit_Framework_Error
 {
-    public static $enabled = TRUE;
+    public static $enabled = true;
 }

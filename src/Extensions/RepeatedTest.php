@@ -57,7 +57,7 @@ class PHPUnit_Extensions_RepeatedTest extends PHPUnit_Extensions_TestDecorator
     /**
      * @var mixed
      */
-    protected $filter = FALSE;
+    protected $filter = false;
 
     /**
      * @var array
@@ -72,7 +72,7 @@ class PHPUnit_Extensions_RepeatedTest extends PHPUnit_Extensions_TestDecorator
     /**
      * @var boolean
      */
-    protected $processIsolation = FALSE;
+    protected $processIsolation = false;
 
     /**
      * @var integer
@@ -82,15 +82,15 @@ class PHPUnit_Extensions_RepeatedTest extends PHPUnit_Extensions_TestDecorator
     /**
      * Constructor.
      *
-     * @param  PHPUnit_Framework_Test $test
-     * @param  integer                $timesRepeat
-     * @param  mixed                  $filter
-     * @param  array                  $groups
-     * @param  array                  $excludeGroups
-     * @param  boolean                $processIsolation
+     * @param  PHPUnit_Framework_Test      $test
+     * @param  integer                     $timesRepeat
+     * @param  mixed                       $filter
+     * @param  array                       $groups
+     * @param  array                       $excludeGroups
+     * @param  boolean                     $processIsolation
      * @throws PHPUnit_Framework_Exception
      */
-    public function __construct(PHPUnit_Framework_Test $test, $timesRepeat = 1, $processIsolation = FALSE)
+    public function __construct(PHPUnit_Framework_Test $test, $timesRepeat = 1, $processIsolation = false)
     {
         parent::__construct($test);
 
@@ -125,9 +125,9 @@ class PHPUnit_Extensions_RepeatedTest extends PHPUnit_Extensions_TestDecorator
      * @return PHPUnit_Framework_TestResult
      * @throws PHPUnit_Framework_Exception
      */
-    public function run(PHPUnit_Framework_TestResult $result = NULL)
+    public function run(PHPUnit_Framework_TestResult $result = null)
     {
-        if ($result === NULL) {
+        if ($result === null) {
             $result = $this->createResult();
         }
 

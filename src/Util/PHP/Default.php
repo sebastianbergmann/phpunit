@@ -59,7 +59,7 @@ class PHPUnit_Util_PHP_Default extends PHPUnit_Util_PHP
     /**
      * Runs a single job (PHP code) using a separate PHP process.
      *
-     * @param  string $job
+     * @param  string                      $job
      * @return array
      * @throws PHPUnit_Framework_Exception
      */

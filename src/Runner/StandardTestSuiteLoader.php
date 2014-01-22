@@ -57,8 +57,8 @@
 class PHPUnit_Runner_StandardTestSuiteLoader implements PHPUnit_Runner_TestSuiteLoader
 {
     /**
-     * @param  string  $suiteClassName
-     * @param  string  $suiteClassFile
+     * @param  string                      $suiteClassName
+     * @param  string                      $suiteClassFile
      * @return ReflectionClass
      * @throws PHPUnit_Framework_Exception
      */
@@ -72,7 +72,7 @@ class PHPUnit_Runner_StandardTestSuiteLoader implements PHPUnit_Runner_TestSuite
             );
         }
 
-        if (!class_exists($suiteClassName, FALSE)) {
+        if (!class_exists($suiteClassName, false)) {
             $loadedClasses = get_declared_classes();
 
             $filename = PHPUnit_Util_Fileloader::checkAndLoad($suiteClassFile);
@@ -82,7 +82,7 @@ class PHPUnit_Runner_StandardTestSuiteLoader implements PHPUnit_Runner_TestSuite
             );
         }
 
-        if (!class_exists($suiteClassName, FALSE) && !empty($loadedClasses)) {
+        if (!class_exists($suiteClassName, false) && !empty($loadedClasses)) {
             $offset = 0 - strlen($suiteClassName);
 
             foreach ($loadedClasses as $loadedClass) {
@@ -95,7 +95,7 @@ class PHPUnit_Runner_StandardTestSuiteLoader implements PHPUnit_Runner_TestSuite
             }
         }
 
-        if (!class_exists($suiteClassName, FALSE) && !empty($loadedClasses)) {
+        if (!class_exists($suiteClassName, false) && !empty($loadedClasses)) {
             $testCaseClass = 'PHPUnit_Framework_TestCase';
 
             foreach ($loadedClasses as $loadedClass) {
@@ -128,7 +128,7 @@ class PHPUnit_Runner_StandardTestSuiteLoader implements PHPUnit_Runner_TestSuite
             }
         }
 
-        if (class_exists($suiteClassName, FALSE)) {
+        if (class_exists($suiteClassName, false)) {
             $class = new ReflectionClass($suiteClassName);
 
             if ($class->getFileName() == realpath($suiteClassFile)) {
@@ -147,7 +147,7 @@ class PHPUnit_Runner_StandardTestSuiteLoader implements PHPUnit_Runner_TestSuite
     }
 
     /**
-     * @param  ReflectionClass  $aClass
+     * @param  ReflectionClass $aClass
      * @return ReflectionClass
      */
     public function reload(ReflectionClass $aClass)

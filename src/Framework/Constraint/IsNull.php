@@ -45,7 +45,7 @@
  */
 
 /**
- * Constraint that accepts NULL.
+ * Constraint that accepts null.
  *
  * @package    PHPUnit
  * @subpackage Framework_Constraint
@@ -59,15 +59,15 @@
 class PHPUnit_Framework_Constraint_IsNull extends PHPUnit_Framework_Constraint
 {
     /**
-     * Evaluates the constraint for parameter $other. Returns TRUE if the
-     * constraint is met, FALSE otherwise.
+     * Evaluates the constraint for parameter $other. Returns true if the
+     * constraint is met, false otherwise.
      *
-     * @param mixed $other Value or object to evaluate.
+     * @param  mixed $other Value or object to evaluate.
      * @return bool
      */
     protected function matches($other)
     {
-        return $other === NULL;
+        return $other === null;
     }
 
     /**

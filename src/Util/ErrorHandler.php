@@ -76,54 +76,48 @@ class PHPUnit_Util_ErrorHandler
     }
 
     /**
-     * @param  integer $errno
-     * @param  string  $errstr
-     * @param  string  $errfile
-     * @param  integer $errline
+     * @param  integer                 $errno
+     * @param  string                  $errstr
+     * @param  string                  $errfile
+     * @param  integer                 $errline
      * @throws PHPUnit_Framework_Error
      */
     public static function handleError($errno, $errstr, $errfile, $errline)
     {
         if (!($errno & error_reporting())) {
-            return FALSE;
+            return false;
         }
 
         self::$errorStack[] = array($errno, $errstr, $errfile, $errline);
 
-        $trace = debug_backtrace(FALSE);
+        $trace = debug_backtrace(false);
         array_shift($trace);
 
         foreach ($trace as $frame) {
             if ($frame['function'] == '__toString') {
-                return FALSE;
+                return false;
             }
         }
 
         if ($errno == E_NOTICE || $errno == E_USER_NOTICE || $errno == E_STRICT) {
-            if (PHPUnit_Framework_Error_Notice::$enabled !== TRUE) {
-                return FALSE;
+            if (PHPUnit_Framework_Error_Notice::$enabled !== true) {
+                return false;
             }
 
             $exception = 'PHPUnit_Framework_Error_Notice';
-        }
-
-        else if ($errno == E_WARNING || $errno == E_USER_WARNING) {
-            if (PHPUnit_Framework_Error_Warning::$enabled !== TRUE) {
-                return FALSE;
+        } elseif ($errno == E_WARNING || $errno == E_USER_WARNING) {
+            if (PHPUnit_Framework_Error_Warning::$enabled !== true) {
+                return false;
             }
 
             $exception = 'PHPUnit_Framework_Error_Warning';
-        }
-
-        else if ($errno == E_DEPRECATED || $errno == E_USER_DEPRECATED) {
-            if (PHPUnit_Framework_Error_Deprecated::$enabled !== TRUE) {
-                return FALSE;
+        } elseif ($errno == E_DEPRECATED || $errno == E_USER_DEPRECATED) {
+            if (PHPUnit_Framework_Error_Deprecated::$enabled !== true) {
+                return false;
             }
 
             $exception = 'PHPUnit_Framework_Error_Deprecated';
-        }
-
-        else {
+        } else {
             $exception = 'PHPUnit_Framework_Error';
         }
 

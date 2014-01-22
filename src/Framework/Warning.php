@@ -64,22 +64,22 @@ class PHPUnit_Framework_Warning extends PHPUnit_Framework_TestCase
     /**
      * @var boolean
      */
-    protected $backupGlobals = FALSE;
+    protected $backupGlobals = false;
 
     /**
      * @var boolean
      */
-    protected $backupStaticAttributes = FALSE;
+    protected $backupStaticAttributes = false;
 
     /**
      * @var boolean
      */
-    protected $runTestInSeparateProcess = FALSE;
+    protected $runTestInSeparateProcess = false;
 
     /**
      * @var boolean
      */
-    protected $useErrorHandler = FALSE;
+    protected $useErrorHandler = false;
 
     /**
      * @param string $message

@@ -64,7 +64,7 @@ class PHPUnit_Extensions_PhptTestCase implements PHPUnit_Framework_Test, PHPUnit
     /**
      * Constructs a test case with the given filename.
      *
-     * @param  string $filename
+     * @param  string                      $filename
      * @throws PHPUnit_Framework_Exception
      */
     public function __construct($filename)
@@ -101,12 +101,12 @@ class PHPUnit_Extensions_PhptTestCase implements PHPUnit_Framework_Test, PHPUnit
      * @param  PHPUnit_Framework_TestResult $result
      * @return PHPUnit_Framework_TestResult
      */
-    public function run(PHPUnit_Framework_TestResult $result = NULL)
+    public function run(PHPUnit_Framework_TestResult $result = null)
     {
         $sections = $this->parse();
         $code     = $this->render($sections['FILE']);
 
-        if ($result === NULL) {
+        if ($result === null) {
             $result = new PHPUnit_Framework_TestResult;
         }
 
@@ -142,13 +142,9 @@ class PHPUnit_Extensions_PhptTestCase implements PHPUnit_Framework_Test, PHPUnit
 
         try {
             PHPUnit_Framework_Assert::$assertion($expected, $jobResult['stdout']);
-        }
-
-        catch (PHPUnit_Framework_AssertionFailedError $e) {
+        } catch (PHPUnit_Framework_AssertionFailedError $e) {
             $result->addFailure($this, $e, $time);
-        }
-
-        catch (Exception $e) {
+        } catch (Exception $e) {
             $result->addError($this, $e, $time);
         }
 
@@ -191,9 +187,7 @@ class PHPUnit_Extensions_PhptTestCase implements PHPUnit_Framework_Test, PHPUnit
                 $section            = $result[1];
                 $sections[$section] = '';
                 continue;
-            }
-
-            elseif (empty($section)) {
+            } elseif (empty($section)) {
                 throw new PHPUnit_Framework_Exception('Invalid PHPT file');
             }
 

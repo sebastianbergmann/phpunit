@@ -65,13 +65,13 @@ class Framework_ComparatorTest extends PHPUnit_Framework_TestCase
         $tmpfile = tmpfile();
 
         return array(
-            array(NULL, NULL, 'PHPUnit_Framework_Comparator_Scalar'),
-            array(NULL, TRUE, 'PHPUnit_Framework_Comparator_Scalar'),
-            array(TRUE, NULL, 'PHPUnit_Framework_Comparator_Scalar'),
-            array(TRUE, TRUE, 'PHPUnit_Framework_Comparator_Scalar'),
-            array(FALSE, FALSE, 'PHPUnit_Framework_Comparator_Scalar'),
-            array(TRUE, FALSE, 'PHPUnit_Framework_Comparator_Scalar'),
-            array(FALSE, TRUE, 'PHPUnit_Framework_Comparator_Scalar'),
+            array(null, null, 'PHPUnit_Framework_Comparator_Scalar'),
+            array(null, true, 'PHPUnit_Framework_Comparator_Scalar'),
+            array(true, null, 'PHPUnit_Framework_Comparator_Scalar'),
+            array(true, true, 'PHPUnit_Framework_Comparator_Scalar'),
+            array(false, false, 'PHPUnit_Framework_Comparator_Scalar'),
+            array(true, false, 'PHPUnit_Framework_Comparator_Scalar'),
+            array(false, true, 'PHPUnit_Framework_Comparator_Scalar'),
             array('', '', 'PHPUnit_Framework_Comparator_Scalar'),
             array('0', '0', 'PHPUnit_Framework_Comparator_Scalar'),
             array('0', 0, 'PHPUnit_Framework_Comparator_Numeric'),

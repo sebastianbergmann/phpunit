@@ -73,24 +73,24 @@ class PHPUnit_Framework_Constraint_JsonMatches extends PHPUnit_Framework_Constra
     }
 
     /**
-     * Evaluates the constraint for parameter $other. Returns TRUE if the
-     * constraint is met, FALSE otherwise.
+     * Evaluates the constraint for parameter $other. Returns true if the
+     * constraint is met, false otherwise.
      *
      * This method can be overridden to implement the evaluation algorithm.
      *
-     * @param mixed $other Value or object to evaluate.
+     * @param  mixed $other Value or object to evaluate.
      * @return bool
      */
     protected function matches($other)
     {
         $decodedOther = json_decode($other);
         if (json_last_error()) {
-            return FALSE;
+            return false;
         }
 
         $decodedValue = json_decode($this->value);
         if (json_last_error()) {
-            return FALSE;
+            return false;
         }
 
         return $decodedOther == $decodedValue;

@@ -57,7 +57,7 @@ class PHPUnit_Runner_Filter_Test extends RecursiveFilterIterator
     /**
      * @var string
      */
-    protected $filter = NULL;
+    protected $filter = null;
 
     /**
      * @var integer
@@ -136,10 +136,10 @@ class PHPUnit_Runner_Filter_Test extends RecursiveFilterIterator
         $test = $this->getInnerIterator()->current();
 
         if ($test instanceof PHPUnit_Framework_TestSuite) {
-            return TRUE;
+            return true;
         }
 
-        $tmp = PHPUnit_Util_Test::describe($test, FALSE);
+        $tmp = PHPUnit_Util_Test::describe($test, false);
 
         if ($tmp[0] != '') {
             $name = join('::', $tmp);

@@ -63,16 +63,16 @@ class PHPUnit_Util_Filter
      * @param  boolean   $asString
      * @return string
      */
-    public static function getFilteredStacktrace(Exception $e, $asString = TRUE)
+    public static function getFilteredStacktrace(Exception $e, $asString = true)
     {
-        $prefix = FALSE;
+        $prefix = false;
         $script = realpath($GLOBALS['_SERVER']['SCRIPT_NAME']);
 
         if (defined('__PHPUNIT_PHAR__')) {
             $prefix = 'phar://' . __PHPUNIT_PHAR__ . '/';
         }
 
-        if ($asString === TRUE) {
+        if ($asString === true) {
             $filteredStacktrace = '';
         } else {
             $filteredStacktrace = array();
@@ -103,9 +103,9 @@ class PHPUnit_Util_Filter
         foreach ($eTrace as $frame) {
             if (isset($frame['file']) && is_file($frame['file']) &&
                 !$blacklist->isBlacklisted($frame['file']) &&
-                ($prefix === FALSE || strpos($frame['file'], $prefix) !== 0) &&
+                ($prefix === false || strpos($frame['file'], $prefix) !== 0) &&
                 $frame['file'] !== $script) {
-                if ($asString === TRUE) {
+                if ($asString === true) {
                     $filteredStacktrace .= sprintf(
                       "%s:%s\n",
 
@@ -122,9 +122,9 @@ class PHPUnit_Util_Filter
     }
 
     /**
-     * @param  array  $trace
-     * @param  string $file
-     * @param  int    $line
+     * @param  array   $trace
+     * @param  string  $file
+     * @param  int     $line
      * @return boolean
      * @since  Method available since Release 3.3.2
      */
@@ -133,10 +133,10 @@ class PHPUnit_Util_Filter
         foreach ($trace as $frame) {
             if (isset($frame['file']) && $frame['file'] == $file &&
                 isset($frame['line']) && $frame['line'] == $line) {
-                return TRUE;
+                return true;
             }
         }
 
-        return FALSE;
+        return false;
     }
 }

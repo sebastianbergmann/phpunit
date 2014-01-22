@@ -64,7 +64,7 @@ class PHPUnit_Framework_ComparatorFactory
     /**
      * @var PHPUnit_Framework_ComparatorFactory
      */
-    private static $defaultInstance = NULL;
+    private static $defaultInstance = null;
 
     /**
      * Constructs a new factory.
@@ -92,7 +92,7 @@ class PHPUnit_Framework_ComparatorFactory
      */
     public static function getDefaultInstance()
     {
-        if (self::$defaultInstance === NULL) {
+        if (self::$defaultInstance === null) {
             self::$defaultInstance = new PHPUnit_Framework_ComparatorFactory;
         }
 
@@ -102,8 +102,8 @@ class PHPUnit_Framework_ComparatorFactory
     /**
      * Returns the correct comparator for comparing two values.
      *
-     * @param  mixed $expected The first value to compare
-     * @param  mixed $actual The second value to compare
+     * @param  mixed                        $expected The first value to compare
+     * @param  mixed                        $actual   The second value to compare
      * @return PHPUnit_Framework_Comparator
      * @throws PHPUnit_Framework_Exception
      */
@@ -127,11 +127,11 @@ class PHPUnit_Framework_ComparatorFactory
      * Registers a new comparator.
      *
      * This comparator will be returned by getInstance() if its accept() method
-     * returns TRUE for the compared values. It has higher priority than the
+     * returns true for the compared values. It has higher priority than the
      * existing comparators, meaning that its accept() method will be tested
      * before those of the other comparators.
      *
-     * @param  PHPUnit_Framework_Comparator $comparator The registered comparator
+     * @param PHPUnit_Framework_Comparator $comparator The registered comparator
      */
     public function register(PHPUnit_Framework_Comparator $comparator)
     {
@@ -144,7 +144,7 @@ class PHPUnit_Framework_ComparatorFactory
      *
      * This comparator will no longer be returned by getInstance().
      *
-     * @param  PHPUnit_Framework_Comparator $comparator The unregistered comparator
+     * @param PHPUnit_Framework_Comparator $comparator The unregistered comparator
      */
     public function unregister(PHPUnit_Framework_Comparator $comparator)
     {

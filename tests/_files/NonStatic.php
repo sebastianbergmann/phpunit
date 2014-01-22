@@ -3,6 +3,6 @@ class NonStatic
 {
     public function suite()
     {
-        return NULL;
+        return null;
     }
 }

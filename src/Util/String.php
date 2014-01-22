@@ -78,7 +78,7 @@ class PHPUnit_Util_String
     /**
      * Checks a string for UTF-8 encoding.
      *
-     * @param  string $string
+     * @param  string  $string
      * @return boolean
      */
     protected static function isUtf8($string)
@@ -88,31 +88,23 @@ class PHPUnit_Util_String
         for ($i = 0; $i < $length; $i++) {
             if (ord($string[$i]) < 0x80) {
                 $n = 0;
-            }
-
-            else if ((ord($string[$i]) & 0xE0) == 0xC0) {
+            } elseif ((ord($string[$i]) & 0xE0) == 0xC0) {
                 $n = 1;
-            }
-
-            else if ((ord($string[$i]) & 0xF0) == 0xE0) {
+            } elseif ((ord($string[$i]) & 0xF0) == 0xE0) {
                 $n = 2;
-            }
-
-            else if ((ord($string[$i]) & 0xF0) == 0xF0) {
+            } elseif ((ord($string[$i]) & 0xF0) == 0xF0) {
                 $n = 3;
-            }
-
-            else {
-                return FALSE;
+            } else {
+                return false;
             }
 
             for ($j = 0; $j < $n; $j++) {
                 if ((++$i == $length) || ((ord($string[$i]) & 0xC0) != 0x80)) {
-                    return FALSE;
+                    return false;
                 }
             }
         }
 
-        return TRUE;
+        return true;
     }
 }

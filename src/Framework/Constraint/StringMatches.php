@@ -138,8 +138,8 @@ class PHPUnit_Framework_Constraint_StringMatches extends PHPUnit_Framework_Const
           ),
           preg_quote($string, '/')
         );
+
         return '/^' . $string . '$/s';
     }
 
 }
-

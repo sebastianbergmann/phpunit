@@ -48,7 +48,7 @@
  * You can disable notice-to-exception conversion by setting
  *
  * <code>
- * PHPUnit_Framework_Error_Notice::$enabled = FALSE;
+ * PHPUnit_Framework_Error_Notice::$enabled = false;
  * </code>
  *
  * @package    PHPUnit
@@ -61,5 +61,5 @@
  */
 class PHPUnit_Framework_Error_Notice extends PHPUnit_Framework_Error
 {
-    public static $enabled = TRUE;
+    public static $enabled = true;
 }
