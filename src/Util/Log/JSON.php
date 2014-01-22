@@ -70,74 +70,74 @@ class PHPUnit_Util_Log_JSON extends PHPUnit_Util_Printer implements PHPUnit_Fram
      * @var     boolean
      * @access  private
      */
-    protected $currentTestPass = TRUE;
+    protected $currentTestPass = true;
 
     /**
      * An error occurred.
      *
-     * @param  PHPUnit_Framework_Test $test
-     * @param  Exception              $e
-     * @param  float                  $time
+     * @param PHPUnit_Framework_Test $test
+     * @param Exception              $e
+     * @param float                  $time
      */
     public function addError(PHPUnit_Framework_Test $test, Exception $e, $time)
     {
         $this->writeCase(
           'error',
           $time,
-          PHPUnit_Util_Filter::getFilteredStacktrace($e, FALSE),
+          PHPUnit_Util_Filter::getFilteredStacktrace($e, false),
           $e->getMessage(),
           $test
         );
 
-        $this->currentTestPass = FALSE;
+        $this->currentTestPass = false;
     }
 
     /**
      * A failure occurred.
      *
-     * @param  PHPUnit_Framework_Test                 $test
-     * @param  PHPUnit_Framework_AssertionFailedError $e
-     * @param  float                                  $time
+     * @param PHPUnit_Framework_Test                 $test
+     * @param PHPUnit_Framework_AssertionFailedError $e
+     * @param float                                  $time
      */
     public function addFailure(PHPUnit_Framework_Test $test, PHPUnit_Framework_AssertionFailedError $e, $time)
     {
         $this->writeCase(
           'fail',
           $time,
-          PHPUnit_Util_Filter::getFilteredStacktrace($e, FALSE),
+          PHPUnit_Util_Filter::getFilteredStacktrace($e, false),
           $e->getMessage(),
           $test
         );
 
-        $this->currentTestPass = FALSE;
+        $this->currentTestPass = false;
     }
 
     /**
      * Incomplete test.
      *
-     * @param  PHPUnit_Framework_Test $test
-     * @param  Exception              $e
-     * @param  float                  $time
+     * @param PHPUnit_Framework_Test $test
+     * @param Exception              $e
+     * @param float                  $time
      */
     public function addIncompleteTest(PHPUnit_Framework_Test $test, Exception $e, $time)
     {
         $this->writeCase(
           'error',
           $time,
-          PHPUnit_Util_Filter::getFilteredStacktrace($e, FALSE),
+          PHPUnit_Util_Filter::getFilteredStacktrace($e, false),
           'Incomplete Test: ' . $e->getMessage(),
           $test
         );
 
-        $this->currentTestPass = FALSE;
+        $this->currentTestPass = false;
     }
 
     /**
      * Risky test.
      *
-     * @param  PHPUnit_Framework_Test $test
-     * @param  Exception              $e
-     * @param  float                  $time
+     * @param PHPUnit_Framework_Test $test
+     * @param Exception              $e
+     * @param float                  $time
      * @since  Method available since Release 3.8.0
      */
     public function addRiskyTest(PHPUnit_Framework_Test $test, Exception $e, $time)
@@ -145,38 +145,38 @@ class PHPUnit_Util_Log_JSON extends PHPUnit_Util_Printer implements PHPUnit_Fram
         $this->writeCase(
           'error',
           $time,
-          PHPUnit_Util_Filter::getFilteredStacktrace($e, FALSE),
+          PHPUnit_Util_Filter::getFilteredStacktrace($e, false),
           'Risky Test: ' . $e->getMessage(),
           $test
         );
 
-        $this->currentTestPass = FALSE;
+        $this->currentTestPass = false;
     }
 
     /**
      * Skipped test.
      *
-     * @param  PHPUnit_Framework_Test $test
-     * @param  Exception              $e
-     * @param  float                  $time
+     * @param PHPUnit_Framework_Test $test
+     * @param Exception              $e
+     * @param float                  $time
      */
     public function addSkippedTest(PHPUnit_Framework_Test $test, Exception $e, $time)
     {
         $this->writeCase(
           'error',
           $time,
-          PHPUnit_Util_Filter::getFilteredStacktrace($e, FALSE),
+          PHPUnit_Util_Filter::getFilteredStacktrace($e, false),
           'Skipped Test: ' . $e->getMessage(),
           $test
         );
 
-        $this->currentTestPass = FALSE;
+        $this->currentTestPass = false;
     }
 
     /**
      * A testsuite started.
      *
-     * @param  PHPUnit_Framework_TestSuite $suite
+     * @param PHPUnit_Framework_TestSuite $suite
      */
     public function startTestSuite(PHPUnit_Framework_TestSuite $suite)
     {
@@ -195,7 +195,7 @@ class PHPUnit_Util_Log_JSON extends PHPUnit_Util_Printer implements PHPUnit_Fram
     /**
      * A testsuite ended.
      *
-     * @param  PHPUnit_Framework_TestSuite $suite
+     * @param PHPUnit_Framework_TestSuite $suite
      */
     public function endTestSuite(PHPUnit_Framework_TestSuite $suite)
     {
@@ -206,12 +206,12 @@ class PHPUnit_Util_Log_JSON extends PHPUnit_Util_Printer implements PHPUnit_Fram
     /**
      * A test started.
      *
-     * @param  PHPUnit_Framework_Test $test
+     * @param PHPUnit_Framework_Test $test
      */
     public function startTest(PHPUnit_Framework_Test $test)
     {
         $this->currentTestName = PHPUnit_Util_Test::describe($test);
-        $this->currentTestPass = TRUE;
+        $this->currentTestPass = true;
 
         $this->write(
           array(
@@ -225,8 +225,8 @@ class PHPUnit_Util_Log_JSON extends PHPUnit_Util_Printer implements PHPUnit_Fram
     /**
      * A test ended.
      *
-     * @param  PHPUnit_Framework_Test $test
-     * @param  float                  $time
+     * @param PHPUnit_Framework_Test $test
+     * @param float                  $time
      */
     public function endTest(PHPUnit_Framework_Test $test, $time)
     {
@@ -241,11 +241,11 @@ class PHPUnit_Util_Log_JSON extends PHPUnit_Util_Printer implements PHPUnit_Fram
      * @param array  $trace
      * @param string $message
      */
-    protected function writeCase($status, $time, array $trace = array(), $message = '', $test = NULL)
+    protected function writeCase($status, $time, array $trace = array(), $message = '', $test = null)
     {
         $output = '';
         // take care of TestSuite producing error (e.g. by running into exception) as TestSuite doesn't have hasOutput
-        if ($test !== NULL && method_exists($test, 'hasOutput') && $test->hasOutput()) {
+        if ($test !== null && method_exists($test, 'hasOutput') && $test->hasOutput()) {
             $output = $test->getActualOutput();
         }
         $this->write(
@@ -267,7 +267,7 @@ class PHPUnit_Util_Log_JSON extends PHPUnit_Util_Printer implements PHPUnit_Fram
      */
     public function write($buffer)
     {
-        array_walk_recursive($buffer, function(&$input) {
+        array_walk_recursive($buffer, function (&$input) {
             if (is_string($input)) {
                 $input = PHPUnit_Util_String::convertToUtf8($input);
             }

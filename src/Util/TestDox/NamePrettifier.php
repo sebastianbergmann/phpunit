@@ -74,19 +74,19 @@ class PHPUnit_Util_TestDox_NamePrettifier
     /**
      * Prettifies the name of a test class.
      *
-     * @param  string  $name
+     * @param  string $name
      * @return string
      */
     public function prettifyTestClass($name)
     {
         $title = $name;
 
-        if ($this->suffix !== NULL &&
+        if ($this->suffix !== null &&
             $this->suffix == substr($name, -1 * strlen($this->suffix))) {
             $title = substr($title, 0, strripos($title, $this->suffix));
         }
 
-        if ($this->prefix !== NULL &&
+        if ($this->prefix !== null &&
             $this->prefix == substr($name, 0, strlen($this->prefix))) {
             $title = substr($title, strlen($this->prefix));
         }
@@ -97,7 +97,7 @@ class PHPUnit_Util_TestDox_NamePrettifier
     /**
      * Prettifies the name of a test method.
      *
-     * @param  string  $name
+     * @param  string $name
      * @return string
      */
     public function prettifyTestMethod($name)
@@ -112,11 +112,11 @@ class PHPUnit_Util_TestDox_NamePrettifier
 
         if (in_array($string, $this->strings)) {
             $name = $string;
-        } else if ($count == 0) {
+        } elseif ($count == 0) {
             $this->strings[] = $string;
         }
 
-        if (strpos($name, '_') !== FALSE) {
+        if (strpos($name, '_') !== false) {
             return str_replace('_', ' ', $name);
         }
 
@@ -129,7 +129,7 @@ class PHPUnit_Util_TestDox_NamePrettifier
             $name[0] = strtoupper($name[0]);
         }
 
-        $wasNumeric = FALSE;
+        $wasNumeric = false;
 
         for ($i = $offset; $i < $max; $i++) {
             if ($i > $offset &&
@@ -141,11 +141,11 @@ class PHPUnit_Util_TestDox_NamePrettifier
 
                 if (!$wasNumeric && $isNumeric) {
                     $buffer    .= ' ';
-                    $wasNumeric = TRUE;
+                    $wasNumeric = true;
                 }
 
                 if ($wasNumeric && !$isNumeric) {
-                    $wasNumeric = FALSE;
+                    $wasNumeric = false;
                 }
 
                 $buffer .= $name[$i];
@@ -158,7 +158,7 @@ class PHPUnit_Util_TestDox_NamePrettifier
     /**
      * Sets the prefix of test names.
      *
-     * @param  string  $prefix
+     * @param string $prefix
      */
     public function setPrefix($prefix)
     {
@@ -168,7 +168,7 @@ class PHPUnit_Util_TestDox_NamePrettifier
     /**
      * Sets the suffix of test names.
      *
-     * @param  string  $prefix
+     * @param string $prefix
      */
     public function setSuffix($suffix)
     {

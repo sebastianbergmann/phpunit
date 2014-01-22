@@ -132,7 +132,7 @@ function assertArrayNotHasKey($key, $array, $message = '')
  * @param  boolean $checkForNonObjectIdentity
  * @since  Method available since Release 3.0.0
  */
-function assertAttributeContains($needle, $haystackAttributeName, $haystackClassOrObject, $message = '', $ignoreCase = FALSE, $checkForObjectIdentity = TRUE, $checkForNonObjectIdentity = FALSE)
+function assertAttributeContains($needle, $haystackAttributeName, $haystackClassOrObject, $message = '', $ignoreCase = false, $checkForObjectIdentity = true, $checkForNonObjectIdentity = false)
 {
     return call_user_func_array(
       'PHPUnit_Framework_Assert::assertAttributeContains',
@@ -151,7 +151,7 @@ function assertAttributeContains($needle, $haystackAttributeName, $haystackClass
  * @param  string  $message
  * @since  Method available since Release 3.1.4
  */
-function assertAttributeContainsOnly($type, $haystackAttributeName, $haystackClassOrObject, $isNativeType = NULL, $message = '')
+function assertAttributeContainsOnly($type, $haystackAttributeName, $haystackClassOrObject, $isNativeType = null, $message = '')
 {
     return call_user_func_array(
       'PHPUnit_Framework_Assert::assertAttributeContainsOnly',
@@ -206,7 +206,7 @@ function assertAttributeEmpty($haystackAttributeName, $haystackClassOrObject, $m
  * @param  boolean $canonicalize
  * @param  boolean $ignoreCase
  */
-function assertAttributeEquals($expected, $actualAttributeName, $actualClassOrObject, $message = '', $delta = 0, $maxDepth = 10, $canonicalize = FALSE, $ignoreCase = FALSE)
+function assertAttributeEquals($expected, $actualAttributeName, $actualClassOrObject, $message = '', $delta = 0, $maxDepth = 10, $canonicalize = false, $ignoreCase = false)
 {
     return call_user_func_array(
       'PHPUnit_Framework_Assert::assertAttributeEquals',
@@ -329,7 +329,7 @@ function assertAttributeLessThanOrEqual($expected, $actualAttributeName, $actual
  * @param  boolean $checkForNonObjectIdentity
  * @since  Method available since Release 3.0.0
  */
-function assertAttributeNotContains($needle, $haystackAttributeName, $haystackClassOrObject, $message = '', $ignoreCase = FALSE, $checkForObjectIdentity = TRUE, $checkForNonObjectIdentity = FALSE)
+function assertAttributeNotContains($needle, $haystackAttributeName, $haystackClassOrObject, $message = '', $ignoreCase = false, $checkForObjectIdentity = true, $checkForNonObjectIdentity = false)
 {
     return call_user_func_array(
       'PHPUnit_Framework_Assert::assertAttributeNotContains',
@@ -349,7 +349,7 @@ function assertAttributeNotContains($needle, $haystackAttributeName, $haystackCl
  * @param  string  $message
  * @since  Method available since Release 3.1.4
  */
-function assertAttributeNotContainsOnly($type, $haystackAttributeName, $haystackClassOrObject, $isNativeType = NULL, $message = '')
+function assertAttributeNotContainsOnly($type, $haystackAttributeName, $haystackClassOrObject, $isNativeType = null, $message = '')
 {
     return call_user_func_array(
       'PHPUnit_Framework_Assert::assertAttributeNotContainsOnly',
@@ -404,7 +404,7 @@ function assertAttributeNotEmpty($haystackAttributeName, $haystackClassOrObject,
  * @param  boolean $canonicalize
  * @param  boolean $ignoreCase
  */
-function assertAttributeNotEquals($expected, $actualAttributeName, $actualClassOrObject, $message = '', $delta = 0, $maxDepth = 10, $canonicalize = FALSE, $ignoreCase = FALSE)
+function assertAttributeNotEquals($expected, $actualAttributeName, $actualClassOrObject, $message = '', $delta = 0, $maxDepth = 10, $canonicalize = false, $ignoreCase = false)
 {
     return call_user_func_array(
       'PHPUnit_Framework_Assert::assertAttributeNotEquals',
@@ -555,7 +555,7 @@ function assertClassNotHasStaticAttribute($attributeName, $className, $message =
  * @param  boolean $checkForNonObjectIdentity
  * @since  Method available since Release 2.1.0
  */
-function assertContains($needle, $haystack, $message = '', $ignoreCase = FALSE, $checkForObjectIdentity = TRUE, $checkForNonObjectIdentity = FALSE)
+function assertContains($needle, $haystack, $message = '', $ignoreCase = false, $checkForObjectIdentity = true, $checkForNonObjectIdentity = false)
 {
     return call_user_func_array(
       'PHPUnit_Framework_Assert::assertContains',
@@ -572,7 +572,7 @@ function assertContains($needle, $haystack, $message = '', $ignoreCase = FALSE, 
  * @param  string  $message
  * @since  Method available since Release 3.1.4
  */
-function assertContainsOnly($type, $haystack, $isNativeType = NULL, $message = '')
+function assertContainsOnly($type, $haystack, $isNativeType = null, $message = '')
 {
     return call_user_func_array(
       'PHPUnit_Framework_Assert::assertContainsOnly',
@@ -635,7 +635,7 @@ function assertEmpty($actual, $message = '')
  * @author Mattis Stordalen Flister <mattis@xait.no>
  * @since  Method available since Release 3.3.0
  */
-function assertEqualXMLStructure(DOMElement $expectedElement, DOMElement $actualElement, $checkAttributes = FALSE, $message = '')
+function assertEqualXMLStructure(DOMElement $expectedElement, DOMElement $actualElement, $checkAttributes = false, $message = '')
 {
     return call_user_func_array(
       'PHPUnit_Framework_Assert::assertEqualXMLStructure',
@@ -654,7 +654,7 @@ function assertEqualXMLStructure(DOMElement $expectedElement, DOMElement $actual
  * @param  boolean $canonicalize
  * @param  boolean $ignoreCase
  */
-function assertEquals($expected, $actual, $message = '', $delta = 0, $maxDepth = 10, $canonicalize = FALSE, $ignoreCase = FALSE)
+function assertEquals($expected, $actual, $message = '', $delta = 0, $maxDepth = 10, $canonicalize = false, $ignoreCase = false)
 {
     return call_user_func_array(
       'PHPUnit_Framework_Assert::assertEquals',
@@ -688,7 +688,7 @@ function assertFalse($condition, $message = '')
  * @param  boolean $ignoreCase
  * @since  Method available since Release 3.2.14
  */
-function assertFileEquals($expected, $actual, $message = '', $canonicalize = FALSE, $ignoreCase = FALSE)
+function assertFileEquals($expected, $actual, $message = '', $canonicalize = false, $ignoreCase = false)
 {
     return call_user_func_array(
       'PHPUnit_Framework_Assert::assertFileEquals',
@@ -722,7 +722,7 @@ function assertFileExists($filename, $message = '')
  * @param  boolean $ignoreCase
  * @since  Method available since Release 3.2.14
  */
-function assertFileNotEquals($expected, $actual, $message = '', $canonicalize = FALSE, $ignoreCase = FALSE)
+function assertFileNotEquals($expected, $actual, $message = '', $canonicalize = false, $ignoreCase = false)
 {
     return call_user_func_array(
       'PHPUnit_Framework_Assert::assertFileNotEquals',
@@ -957,7 +957,7 @@ function assertLessThanOrEqual($expected, $actual, $message = '')
  * @param  boolean $checkForNonObjectIdentity
  * @since  Method available since Release 2.1.0
  */
-function assertNotContains($needle, $haystack, $message = '', $ignoreCase = FALSE, $checkForObjectIdentity = TRUE, $checkForNonObjectIdentity = FALSE)
+function assertNotContains($needle, $haystack, $message = '', $ignoreCase = false, $checkForObjectIdentity = true, $checkForNonObjectIdentity = false)
 {
     return call_user_func_array(
       'PHPUnit_Framework_Assert::assertNotContains',
@@ -974,7 +974,7 @@ function assertNotContains($needle, $haystack, $message = '', $ignoreCase = FALS
  * @param  string  $message
  * @since  Method available since Release 3.1.4
  */
-function assertNotContainsOnly($type, $haystack, $isNativeType = NULL, $message = '')
+function assertNotContainsOnly($type, $haystack, $isNativeType = null, $message = '')
 {
     return call_user_func_array(
       'PHPUnit_Framework_Assert::assertNotContainsOnly',
@@ -1024,7 +1024,7 @@ function assertNotEmpty($actual, $message = '')
  * @param  boolean $ignoreCase
  * @since  Method available since Release 2.3.0
  */
-function assertNotEquals($expected, $actual, $message = '', $delta = 0, $maxDepth = 10, $canonicalize = FALSE, $ignoreCase = FALSE)
+function assertNotEquals($expected, $actual, $message = '', $delta = 0, $maxDepth = 10, $canonicalize = false, $ignoreCase = false)
 {
     return call_user_func_array(
       'PHPUnit_Framework_Assert::assertNotEquals',
@@ -1065,7 +1065,7 @@ function assertNotInternalType($expected, $actual, $message = '')
 }
 
 /**
- * Asserts that a variable is not NULL.
+ * Asserts that a variable is not null.
  *
  * @param  mixed  $actual
  * @param  string $message
@@ -1141,7 +1141,7 @@ function assertNotSameSize($expected, $actual, $message = '')
  * @author Mike Naberezny <mike@maintainable.com>
  * @author Derek DeVries <derek@maintainable.com>
  */
-function assertNotTag($matcher, $actual, $message = '', $isHtml = TRUE)
+function assertNotTag($matcher, $actual, $message = '', $isHtml = true)
 {
     return call_user_func_array(
       'PHPUnit_Framework_Assert::assertNotTag',
@@ -1150,7 +1150,7 @@ function assertNotTag($matcher, $actual, $message = '', $isHtml = TRUE)
 }
 
 /**
- * Asserts that a variable is NULL.
+ * Asserts that a variable is null.
  *
  * @param  mixed  $actual
  * @param  string $message
@@ -1252,7 +1252,7 @@ function assertSameSize($expected, $actual, $message = '')
  *
  * The second argument, $count, can be either boolean or numeric.
  * When boolean, it asserts for presence of elements matching the selector
- * (TRUE) or absence of elements (FALSE).
+ * (true) or absence of elements (false).
  * When numeric, it asserts the count of elements.
  *
  * assertSelectCount("#binder", true, $xml);  // any?
@@ -1267,7 +1267,7 @@ function assertSameSize($expected, $actual, $message = '')
  * @author Mike Naberezny <mike@maintainable.com>
  * @author Derek DeVries <derek@maintainable.com>
  */
-function assertSelectCount($selector, $count, $actual, $message = '', $isHtml = TRUE)
+function assertSelectCount($selector, $count, $actual, $message = '', $isHtml = true)
 {
     return call_user_func_array(
       'PHPUnit_Framework_Assert::assertSelectCount',
@@ -1289,7 +1289,7 @@ function assertSelectCount($selector, $count, $actual, $message = '', $isHtml = 
  * @author Mike Naberezny <mike@maintainable.com>
  * @author Derek DeVries <derek@maintainable.com>
  */
-function assertSelectEquals($selector, $content, $count, $actual, $message = '', $isHtml = TRUE)
+function assertSelectEquals($selector, $content, $count, $actual, $message = '', $isHtml = true)
 {
     return call_user_func_array(
       'PHPUnit_Framework_Assert::assertSelectEquals',
@@ -1311,7 +1311,7 @@ function assertSelectEquals($selector, $content, $count, $actual, $message = '',
  * @author Mike Naberezny <mike@maintainable.com>
  * @author Derek DeVries <derek@maintainable.com>
  */
-function assertSelectRegExp($selector, $pattern, $count, $actual, $message = '', $isHtml = TRUE)
+function assertSelectRegExp($selector, $pattern, $count, $actual, $message = '', $isHtml = true)
 {
     return call_user_func_array(
       'PHPUnit_Framework_Assert::assertSelectRegExp',
@@ -1362,7 +1362,7 @@ function assertStringEndsWith($suffix, $string, $message = '')
  * @param  boolean $ignoreCase
  * @since  Method available since Release 3.3.0
  */
-function assertStringEqualsFile($expectedFile, $actualString, $message = '', $canonicalize = FALSE, $ignoreCase = FALSE)
+function assertStringEqualsFile($expectedFile, $actualString, $message = '', $canonicalize = false, $ignoreCase = false)
 {
     return call_user_func_array(
       'PHPUnit_Framework_Assert::assertStringEqualsFile',
@@ -1413,7 +1413,7 @@ function assertStringMatchesFormatFile($formatFile, $string, $message = '')
  * @param  boolean $ignoreCase
  * @since  Method available since Release 3.3.0
  */
-function assertStringNotEqualsFile($expectedFile, $actualString, $message = '', $canonicalize = FALSE, $ignoreCase = FALSE)
+function assertStringNotEqualsFile($expectedFile, $actualString, $message = '', $canonicalize = false, $ignoreCase = false)
 {
     return call_user_func_array(
       'PHPUnit_Framework_Assert::assertStringNotEqualsFile',
@@ -1600,7 +1600,7 @@ function assertStringStartsWith($prefix, $string, $message = '')
  * $this->assertTag($matcher, $html);
  *
  * // Use assertTag() to apply a $matcher to a piece of $xml.
- * $this->assertTag($matcher, $xml, '', FALSE);
+ * $this->assertTag($matcher, $xml, '', false);
  * </code>
  *
  * The second argument ($actual) is a string containing either HTML or
@@ -1611,7 +1611,7 @@ function assertStringStartsWith($prefix, $string, $message = '')
  *
  * The fourth argument ($html) is an optional flag specifying whether
  * to load the $actual string into a DOMDocument using the HTML or
- * XML load strategy.  It is TRUE by default, which assumes the HTML
+ * XML load strategy.  It is true by default, which assumes the HTML
  * load strategy.  In many cases, this will be acceptable for XML as well.
  *
  * @param  array   $matcher
@@ -1622,7 +1622,7 @@ function assertStringStartsWith($prefix, $string, $message = '')
  * @author Mike Naberezny <mike@maintainable.com>
  * @author Derek DeVries <derek@maintainable.com>
  */
-function assertTag($matcher, $actual, $message = '', $isHtml = TRUE)
+function assertTag($matcher, $actual, $message = '', $isHtml = true)
 {
     return call_user_func_array(
       'PHPUnit_Framework_Assert::assertTag',
@@ -1818,7 +1818,7 @@ function attribute(PHPUnit_Framework_Constraint $constraint, $attributeName)
  * @return PHPUnit_Framework_Constraint_Attribute
  * @since  Method available since Release 3.1.0
  */
-function attributeEqualTo($attributeName, $value, $delta = 0, $maxDepth = 10, $canonicalize = FALSE, $ignoreCase = FALSE)
+function attributeEqualTo($attributeName, $value, $delta = 0, $maxDepth = 10, $canonicalize = false, $ignoreCase = false)
 {
     return call_user_func_array(
       'PHPUnit_Framework_Assert::attributeEqualTo',
@@ -1881,7 +1881,7 @@ function classHasStaticAttribute($attributeName)
  * @return PHPUnit_Framework_Constraint_TraversableContains
  * @since  Method available since Release 3.0.0
  */
-function contains($value, $checkForObjectIdentity = TRUE, $checkForNonObjectIdentity = FALSE)
+function contains($value, $checkForObjectIdentity = true, $checkForNonObjectIdentity = false)
 {
     return call_user_func_array(
       'PHPUnit_Framework_Assert::contains',
@@ -1931,7 +1931,7 @@ function containsOnlyInstancesOf($classname)
  * @return PHPUnit_Framework_Constraint_IsEqual
  * @since  Method available since Release 3.0.0
  */
-function equalTo($value, $delta = 0, $maxDepth = 10, $canonicalize = FALSE, $ignoreCase = FALSE)
+function equalTo($value, $delta = 0, $maxDepth = 10, $canonicalize = false, $ignoreCase = false)
 {
     return call_user_func_array(
       'PHPUnit_Framework_Assert::equalTo',
@@ -2377,7 +2377,7 @@ function returnValueMap(array $valueMap)
  * @return PHPUnit_Framework_Constraint_StringContains
  * @since  Method available since Release 3.0.0
  */
-function stringContains($string, $case = TRUE)
+function stringContains($string, $case = true)
 {
     return call_user_func_array(
       'PHPUnit_Framework_Assert::stringContains',

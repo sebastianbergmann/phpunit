@@ -78,7 +78,7 @@ abstract class PHPUnit_Util_PHP
      * @return array|null
      * @throws PHPUnit_Framework_Exception
      */
-    public function runJob($job, PHPUnit_Framework_Test $test = NULL, PHPUnit_Framework_TestResult $result = NULL)
+    public function runJob($job, PHPUnit_Framework_Test $test = null, PHPUnit_Framework_TestResult $result = null)
     {
         // HHVM support
         if (($phpBinary = getenv("PHP_BINARY")) === false) {
@@ -101,7 +101,7 @@ abstract class PHPUnit_Util_PHP
             );
         }
 
-        if ($result !== NULL) {
+        if ($result !== null) {
             $result->startTest($test);
         }
 
@@ -117,7 +117,7 @@ abstract class PHPUnit_Util_PHP
         proc_close($process);
         $this->cleanup();
 
-        if ($result !== NULL) {
+        if ($result !== null) {
             $this->processChildResult($test, $result, $stdout, $stderr);
         } else {
             return array('stdout' => $stdout, 'stderr' => $stderr);
@@ -157,7 +157,7 @@ abstract class PHPUnit_Util_PHP
               new PHPUnit_Framework_Exception(trim($stderr)), $time
             );
         } else {
-            set_error_handler(function($errno, $errstr, $errfile, $errline) {
+            set_error_handler(function ($errno, $errstr, $errfile, $errline) {
                 throw new ErrorException($errstr, $errno, $errno, $errfile, $errline);
             });
             try {
@@ -169,14 +169,14 @@ abstract class PHPUnit_Util_PHP
                 restore_error_handler();
             } catch (ErrorException $e) {
                 restore_error_handler();
-                $childResult = FALSE;
+                $childResult = false;
 
                 $result->addError(
                   $test, new PHPUnit_Framework_Exception(trim($stdout), 0, $e), $time
                 );
             }
 
-            if ($childResult !== FALSE) {
+            if ($childResult !== false) {
                 if (!empty($childResult['output'])) {
                     print $childResult['output'];
                 }
@@ -203,27 +203,19 @@ abstract class PHPUnit_Util_PHP
                     $result->addError(
                       $test, $this->getException($notImplemented[0]), $time
                     );
-                }
-
-                else if (!empty($risky)) {
+                } elseif (!empty($risky)) {
                     $result->addError(
                       $test, $this->getException($risky[0]), $time
                     );
-                }
-
-                else if (!empty($skipped)) {
+                } elseif (!empty($skipped)) {
                     $result->addError(
                       $test, $this->getException($skipped[0]), $time
                     );
-                }
-
-                else if (!empty($errors)) {
+                } elseif (!empty($errors)) {
                     $result->addError(
                       $test, $this->getException($errors[0]), $time
                     );
-                }
-
-                else if (!empty($failures)) {
+                } elseif (!empty($failures)) {
                     $result->addFailure(
                       $test, $this->getException($failures[0]), $time
                     );
@@ -247,7 +239,7 @@ abstract class PHPUnit_Util_PHP
 
         if ($exception instanceof __PHP_Incomplete_Class) {
             $exceptionArray = array();
-            foreach ((array)$exception as $key => $value) {
+            foreach ((array) $exception as $key => $value) {
                 $key = substr($key, strrpos($key, "\0") + 1);
                 $exceptionArray[$key] = $value;
             }

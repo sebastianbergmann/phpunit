@@ -66,11 +66,11 @@ class PHPUnit_Runner_Version
      */
     public static function id()
     {
-        if (self::$pharVersion !== NULL) {
+        if (self::$pharVersion !== null) {
             return self::$pharVersion;
         }
 
-        if (self::$version === NULL) {
+        if (self::$version === null) {
             $version = new SebastianBergmann\Version('3.8', __DIR__);
             self::$version = $version->getVersion();
         }
@@ -92,11 +92,11 @@ class PHPUnit_Runner_Version
      */
     public static function getReleaseChannel()
     {
-        if (strpos(self::$pharVersion, 'alpha') !== FALSE) {
+        if (strpos(self::$pharVersion, 'alpha') !== false) {
             return '-alpha';
         }
 
-        if (strpos(self::$pharVersion, 'beta') !== FALSE) {
+        if (strpos(self::$pharVersion, 'beta') !== false) {
             return '-beta';
         }
 

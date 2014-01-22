@@ -70,16 +70,16 @@ class PHPUnit_Util_Log_TAP extends PHPUnit_Util_Printer implements PHPUnit_Frame
     /**
      * @var    boolean
      */
-    protected $testSuccessful = TRUE;
+    protected $testSuccessful = true;
 
     /**
      * Constructor.
      *
-     * @param  mixed $out
+     * @param  mixed                       $out
      * @throws PHPUnit_Framework_Exception
      * @since  Method available since Release 3.3.4
      */
-    public function __construct($out = NULL)
+    public function __construct($out = null)
     {
         parent::__construct($out);
         $this->write("TAP version 13\n");
@@ -88,9 +88,9 @@ class PHPUnit_Util_Log_TAP extends PHPUnit_Util_Printer implements PHPUnit_Frame
     /**
      * An error occurred.
      *
-     * @param  PHPUnit_Framework_Test $test
-     * @param  Exception              $e
-     * @param  float                  $time
+     * @param PHPUnit_Framework_Test $test
+     * @param Exception              $e
+     * @param float                  $time
      */
     public function addError(PHPUnit_Framework_Test $test, Exception $e, $time)
     {
@@ -100,9 +100,9 @@ class PHPUnit_Util_Log_TAP extends PHPUnit_Util_Printer implements PHPUnit_Frame
     /**
      * A failure occurred.
      *
-     * @param  PHPUnit_Framework_Test                 $test
-     * @param  PHPUnit_Framework_AssertionFailedError $e
-     * @param  float                                  $time
+     * @param PHPUnit_Framework_Test                 $test
+     * @param PHPUnit_Framework_AssertionFailedError $e
+     * @param float                                  $time
      */
     public function addFailure(PHPUnit_Framework_Test $test, PHPUnit_Framework_AssertionFailedError $e, $time)
     {
@@ -120,7 +120,7 @@ class PHPUnit_Util_Log_TAP extends PHPUnit_Util_Printer implements PHPUnit_Frame
         if ($e instanceof PHPUnit_Framework_ExpectationFailedException) {
             $cf = $e->getComparisonFailure();
 
-            if ($cf !== NULL) {
+            if ($cf !== null) {
                 $diagnostic['data'] = array(
                   'got'      => $cf->getActual(),
                   'expected' => $cf->getExpected()
@@ -141,9 +141,9 @@ class PHPUnit_Util_Log_TAP extends PHPUnit_Util_Printer implements PHPUnit_Frame
     /**
      * Incomplete test.
      *
-     * @param  PHPUnit_Framework_Test $test
-     * @param  Exception              $e
-     * @param  float                  $time
+     * @param PHPUnit_Framework_Test $test
+     * @param Exception              $e
+     * @param float                  $time
      */
     public function addIncompleteTest(PHPUnit_Framework_Test $test, Exception $e, $time)
     {
@@ -153,9 +153,9 @@ class PHPUnit_Util_Log_TAP extends PHPUnit_Util_Printer implements PHPUnit_Frame
     /**
      * Risky test.
      *
-     * @param  PHPUnit_Framework_Test $test
-     * @param  Exception              $e
-     * @param  float                  $time
+     * @param PHPUnit_Framework_Test $test
+     * @param Exception              $e
+     * @param float                  $time
      * @since  Method available since Release 3.8.0
      */
     public function addRiskyTest(PHPUnit_Framework_Test $test, Exception $e, $time)
@@ -169,15 +169,15 @@ class PHPUnit_Util_Log_TAP extends PHPUnit_Util_Printer implements PHPUnit_Frame
           )
         );
 
-        $this->testSuccessful = FALSE;
+        $this->testSuccessful = false;
     }
 
     /**
      * Skipped test.
      *
-     * @param  PHPUnit_Framework_Test $test
-     * @param  Exception              $e
-     * @param  float                  $time
+     * @param PHPUnit_Framework_Test $test
+     * @param Exception              $e
+     * @param float                  $time
      * @since  Method available since Release 3.0.0
      */
     public function addSkippedTest(PHPUnit_Framework_Test $test, Exception $e, $time)
@@ -191,13 +191,13 @@ class PHPUnit_Util_Log_TAP extends PHPUnit_Util_Printer implements PHPUnit_Frame
           )
         );
 
-        $this->testSuccessful = FALSE;
+        $this->testSuccessful = false;
     }
 
     /**
      * A testsuite started.
      *
-     * @param  PHPUnit_Framework_TestSuite $suite
+     * @param PHPUnit_Framework_TestSuite $suite
      */
     public function startTestSuite(PHPUnit_Framework_TestSuite $suite)
     {
@@ -207,7 +207,7 @@ class PHPUnit_Util_Log_TAP extends PHPUnit_Util_Printer implements PHPUnit_Frame
     /**
      * A testsuite ended.
      *
-     * @param  PHPUnit_Framework_TestSuite $suite
+     * @param PHPUnit_Framework_TestSuite $suite
      */
     public function endTestSuite(PHPUnit_Framework_TestSuite $suite)
     {
@@ -221,23 +221,23 @@ class PHPUnit_Util_Log_TAP extends PHPUnit_Util_Printer implements PHPUnit_Frame
     /**
      * A test started.
      *
-     * @param  PHPUnit_Framework_Test $test
+     * @param PHPUnit_Framework_Test $test
      */
     public function startTest(PHPUnit_Framework_Test $test)
     {
         $this->testNumber++;
-        $this->testSuccessful = TRUE;
+        $this->testSuccessful = true;
     }
 
     /**
      * A test ended.
      *
-     * @param  PHPUnit_Framework_Test $test
-     * @param  float                  $time
+     * @param PHPUnit_Framework_Test $test
+     * @param float                  $time
      */
     public function endTest(PHPUnit_Framework_Test $test, $time)
     {
-        if ($this->testSuccessful === TRUE) {
+        if ($this->testSuccessful === true) {
             $this->write(
               sprintf(
                 "ok %d - %s\n",
@@ -250,9 +250,9 @@ class PHPUnit_Util_Log_TAP extends PHPUnit_Util_Printer implements PHPUnit_Frame
     }
 
     /**
-     * @param  PHPUnit_Framework_Test $test
-     * @param  string                 $prefix
-     * @param  string                 $directive
+     * @param PHPUnit_Framework_Test $test
+     * @param string                 $prefix
+     * @param string                 $directive
      */
     protected function writeNotOk(PHPUnit_Framework_Test $test, $prefix = '', $directive = '')
     {
@@ -267,6 +267,6 @@ class PHPUnit_Util_Log_TAP extends PHPUnit_Util_Printer implements PHPUnit_Frame
           )
         );
 
-        $this->testSuccessful = FALSE;
+        $this->testSuccessful = false;
     }
 }

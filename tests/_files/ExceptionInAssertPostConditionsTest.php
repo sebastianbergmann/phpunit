@@ -1,35 +1,35 @@
 <?php
 class ExceptionInAssertPostConditionsTest extends PHPUnit_Framework_TestCase
 {
-    public $setUp = FALSE;
-    public $assertPreConditions = FALSE;
-    public $assertPostConditions = FALSE;
-    public $tearDown = FALSE;
-    public $testSomething = FALSE;
+    public $setUp = false;
+    public $assertPreConditions = false;
+    public $assertPostConditions = false;
+    public $tearDown = false;
+    public $testSomething = false;
 
     protected function setUp()
     {
-        $this->setUp = TRUE;
+        $this->setUp = true;
     }
 
     protected function assertPreConditions()
     {
-        $this->assertPreConditions = TRUE;
+        $this->assertPreConditions = true;
     }
 
     public function testSomething()
     {
-        $this->testSomething = TRUE;
+        $this->testSomething = true;
     }
 
     protected function assertPostConditions()
     {
-        $this->assertPostConditions = TRUE;
+        $this->assertPostConditions = true;
         throw new Exception;
     }
 
     protected function tearDown()
     {
-        $this->tearDown = TRUE;
+        $this->tearDown = true;
     }
 }

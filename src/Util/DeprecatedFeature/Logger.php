@@ -61,7 +61,7 @@ class PHPUnit_Util_DeprecatedFeature_Logger implements PHPUnit_Framework_TestLis
     /**
      * @var PHPUnit_Framework_TestCase
      */
-    protected static $currentTest = NULL;
+    protected static $currentTest = null;
 
     /**
      * This is the publically accessible API for notifying the system that a
@@ -71,13 +71,13 @@ class PHPUnit_Util_DeprecatedFeature_Logger implements PHPUnit_Framework_TestLis
      * PHPUnit_Framework_TestCase, then this will inject the result into the
      * test runner for display, if not, it will throw the notice to STDERR.
      *
-     * @param string $message
+     * @param string   $message
      * @param int|bool $backtraceDepth
      */
     public static function log($message, $backtraceDepth = 2)
     {
-        if ($backtraceDepth !== FALSE) {
-            $trace = debug_backtrace(FALSE);
+        if ($backtraceDepth !== false) {
+            $trace = debug_backtrace(false);
 
             if (is_int($backtraceDepth)) {
                 $traceItem = $trace[$backtraceDepth];
@@ -115,9 +115,9 @@ class PHPUnit_Util_DeprecatedFeature_Logger implements PHPUnit_Framework_TestLis
     /**
      * An error occurred.
      *
-     * @param  PHPUnit_Framework_Test $test
-     * @param  Exception              $e
-     * @param  float                  $time
+     * @param PHPUnit_Framework_Test $test
+     * @param Exception              $e
+     * @param float                  $time
      */
     public function addError(PHPUnit_Framework_Test $test, Exception $e, $time)
     {
@@ -126,9 +126,9 @@ class PHPUnit_Util_DeprecatedFeature_Logger implements PHPUnit_Framework_TestLis
     /**
      * A failure occurred.
      *
-     * @param  PHPUnit_Framework_Test                 $test
-     * @param  PHPUnit_Framework_AssertionFailedError $e
-     * @param  float                                  $time
+     * @param PHPUnit_Framework_Test                 $test
+     * @param PHPUnit_Framework_AssertionFailedError $e
+     * @param float                                  $time
      */
     public function addFailure(PHPUnit_Framework_Test $test, PHPUnit_Framework_AssertionFailedError $e, $time)
     {
@@ -137,9 +137,9 @@ class PHPUnit_Util_DeprecatedFeature_Logger implements PHPUnit_Framework_TestLis
     /**
      * Incomplete test.
      *
-     * @param  PHPUnit_Framework_Test $test
-     * @param  Exception              $e
-     * @param  float                  $time
+     * @param PHPUnit_Framework_Test $test
+     * @param Exception              $e
+     * @param float                  $time
      */
     public function addIncompleteTest(PHPUnit_Framework_Test $test, Exception $e, $time)
     {
@@ -148,9 +148,9 @@ class PHPUnit_Util_DeprecatedFeature_Logger implements PHPUnit_Framework_TestLis
     /**
      * Risky test.
      *
-     * @param  PHPUnit_Framework_Test $test
-     * @param  Exception              $e
-     * @param  float                  $time
+     * @param PHPUnit_Framework_Test $test
+     * @param Exception              $e
+     * @param float                  $time
      * @since  Method available since Release 3.8.0
      */
     public function addRiskyTest(PHPUnit_Framework_Test $test, Exception $e, $time)
@@ -160,9 +160,9 @@ class PHPUnit_Util_DeprecatedFeature_Logger implements PHPUnit_Framework_TestLis
     /**
      * Skipped test.
      *
-     * @param  PHPUnit_Framework_Test $test
-     * @param  Exception              $e
-     * @param  float                  $time
+     * @param PHPUnit_Framework_Test $test
+     * @param Exception              $e
+     * @param float                  $time
      * @since  Method available since Release 3.0.0
      */
     public function addSkippedTest(PHPUnit_Framework_Test $test, Exception $e, $time)
@@ -172,7 +172,7 @@ class PHPUnit_Util_DeprecatedFeature_Logger implements PHPUnit_Framework_TestLis
     /**
      * A test suite started.
      *
-     * @param  PHPUnit_Framework_TestSuite $suite
+     * @param PHPUnit_Framework_TestSuite $suite
      * @since  Method available since Release 2.2.0
      */
     public function startTestSuite(PHPUnit_Framework_TestSuite $suite)
@@ -182,7 +182,7 @@ class PHPUnit_Util_DeprecatedFeature_Logger implements PHPUnit_Framework_TestLis
     /**
      * A test suite ended.
      *
-     * @param  PHPUnit_Framework_TestSuite $suite
+     * @param PHPUnit_Framework_TestSuite $suite
      * @since  Method available since Release 2.2.0
      */
     public function endTestSuite(PHPUnit_Framework_TestSuite $suite)
@@ -192,7 +192,7 @@ class PHPUnit_Util_DeprecatedFeature_Logger implements PHPUnit_Framework_TestLis
     /**
      * A test started.
      *
-     * @param  PHPUnit_Framework_Test $test
+     * @param PHPUnit_Framework_Test $test
      */
     public function startTest(PHPUnit_Framework_Test $test)
     {
@@ -202,11 +202,11 @@ class PHPUnit_Util_DeprecatedFeature_Logger implements PHPUnit_Framework_TestLis
     /**
      * A test ended.
      *
-     * @param  PHPUnit_Framework_Test $test
-     * @param  float                  $time
+     * @param PHPUnit_Framework_Test $test
+     * @param float                  $time
      */
     public function endTest(PHPUnit_Framework_Test $test, $time)
     {
-        self::$currentTest = NULL;
+        self::$currentTest = null;
     }
 }

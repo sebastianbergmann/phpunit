@@ -71,15 +71,15 @@ class PHPUnit_Framework_Constraint_ExceptionMessage extends PHPUnit_Framework_Co
     }
 
     /**
-     * Evaluates the constraint for parameter $other. Returns TRUE if the
-     * constraint is met, FALSE otherwise.
+     * Evaluates the constraint for parameter $other. Returns true if the
+     * constraint is met, false otherwise.
      *
      * @param  Exception $other
      * @return boolean
      */
     protected function matches($other)
     {
-        return strpos($other->getMessage(), $this->expectedMessage) !== FALSE;
+        return strpos($other->getMessage(), $this->expectedMessage) !== false;
     }
 
     /**
@@ -88,7 +88,7 @@ class PHPUnit_Framework_Constraint_ExceptionMessage extends PHPUnit_Framework_Co
      * The beginning of failure messages is "Failed asserting that" in most
      * cases. This method should return the second part of that sentence.
      *
-     * @param  mixed $other Evaluated value or object.
+     * @param  mixed  $other Evaluated value or object.
      * @return string
      */
     protected function failureDescription($other)

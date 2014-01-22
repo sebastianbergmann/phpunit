@@ -88,28 +88,26 @@ class PHPUnit_Framework_Constraint_IsIdentical extends PHPUnit_Framework_Constra
     /**
      * Evaluates the constraint for parameter $other
      *
-     * If $returnResult is set to FALSE (the default), an exception is thrown
-     * in case of a failure. NULL is returned otherwise.
+     * If $returnResult is set to false (the default), an exception is thrown
+     * in case of a failure. null is returned otherwise.
      *
-     * If $returnResult is TRUE, the result of the evaluation is returned as
-     * a boolean value instead: TRUE in case of success, FALSE in case of a
+     * If $returnResult is true, the result of the evaluation is returned as
+     * a boolean value instead: true in case of success, false in case of a
      * failure.
      *
-     * @param  mixed $other Value or object to evaluate.
-     * @param  string $description Additional information about the test
-     * @param  bool $returnResult Whether to return a result or throw an exception
+     * @param  mixed                                        $other        Value or object to evaluate.
+     * @param  string                                       $description  Additional information about the test
+     * @param  bool                                         $returnResult Whether to return a result or throw an exception
      * @return mixed
      * @throws PHPUnit_Framework_ExpectationFailedException
      */
-    public function evaluate($other, $description = '', $returnResult = FALSE)
+    public function evaluate($other, $description = '', $returnResult = false)
     {
         if (is_double($this->value) && is_double($other) &&
             !is_infinite($this->value) && !is_infinite($other) &&
             !is_nan($this->value) && !is_nan($other)) {
             $success = abs($this->value - $other) < self::EPSILON;
-        }
-
-        else {
+        } else {
             $success = $this->value === $other;
         }
 
@@ -118,7 +116,7 @@ class PHPUnit_Framework_Constraint_IsIdentical extends PHPUnit_Framework_Constra
         }
 
         if (!$success) {
-            $f = NULL;
+            $f = null;
 
             // if both values are strings, make sure a diff is generated
             if (is_string($this->value) && is_string($other)) {
@@ -140,7 +138,7 @@ class PHPUnit_Framework_Constraint_IsIdentical extends PHPUnit_Framework_Constra
      * The beginning of failure messages is "Failed asserting that" in most
      * cases. This method should return the second part of that sentence.
      *
-     * @param  mixed $other Evaluated value or object.
+     * @param  mixed  $other Evaluated value or object.
      * @return string
      */
     protected function failureDescription($other)

@@ -62,29 +62,29 @@ class PHPUnit_Util_Blacklist
     private static $directories;
 
     /**
-     * @param  string $file
+     * @param  string  $file
      * @return boolean
      */
     public function isBlacklisted($file)
     {
         if (defined('PHPUNIT_TESTSUITE')) {
-            return FALSE;
+            return false;
         }
 
         $this->initialize();
 
         foreach (self::$directories as $directory) {
             if (strpos($file, $directory) === 0) {
-                return TRUE;
+                return true;
             }
         }
 
-        return FALSE;
+        return false;
     }
 
     private function initialize()
     {
-        if (self::$directories === NULL) {
+        if (self::$directories === null) {
             self::$directories = array();
 
             $classes = array(

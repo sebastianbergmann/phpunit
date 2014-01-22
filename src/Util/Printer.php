@@ -57,11 +57,11 @@
 class PHPUnit_Util_Printer
 {
     /**
-     * If TRUE, flush output after every write.
+     * If true, flush output after every write.
      *
      * @var boolean
      */
-    protected $autoFlush = FALSE;
+    protected $autoFlush = false;
 
     /**
      * @var    resource
@@ -76,17 +76,17 @@ class PHPUnit_Util_Printer
     /**
      * @var    boolean
      */
-    protected $printsHTML = FALSE;
+    protected $printsHTML = false;
 
     /**
      * Constructor.
      *
-     * @param  mixed $out
+     * @param  mixed                       $out
      * @throws PHPUnit_Framework_Exception
      */
-    public function __construct($out = NULL)
+    public function __construct($out = null)
     {
-        if ($out !== NULL) {
+        if ($out !== null) {
             if (is_string($out)) {
                 if (strpos($out, 'socket://') === 0) {
                     $out = explode(':', str_replace('socket://', '', $out));
@@ -97,9 +97,9 @@ class PHPUnit_Util_Printer
 
                     $this->out = fsockopen($out[0], $out[1]);
                 } else {
-                    if (strpos($out, 'php://') === FALSE &&
+                    if (strpos($out, 'php://') === false &&
                         !is_dir(dirname($out))) {
-                        mkdir(dirname($out), 0777, TRUE);
+                        mkdir(dirname($out), 0777, true);
                     }
 
                     $this->out = fopen($out, 'wt');
@@ -121,15 +121,15 @@ class PHPUnit_Util_Printer
             fclose($this->out);
         }
 
-        if ($this->printsHTML === TRUE &&
-            $this->outTarget !== NULL &&
+        if ($this->printsHTML === true &&
+            $this->outTarget !== null &&
             strpos($this->outTarget, 'php://') !== 0 &&
             strpos($this->outTarget, 'socket://') !== 0 &&
             extension_loaded('tidy')) {
             file_put_contents(
               $this->outTarget,
               tidy_repair_file(
-                $this->outTarget, array('indent' => TRUE, 'wrap' => 0), 'utf8'
+                $this->outTarget, array('indent' => true, 'wrap' => 0), 'utf8'
               )
             );
         }
@@ -154,7 +154,7 @@ class PHPUnit_Util_Printer
     }
 
     /**
-     * @param  string $buffer
+     * @param string $buffer
      */
     public function write($buffer)
     {

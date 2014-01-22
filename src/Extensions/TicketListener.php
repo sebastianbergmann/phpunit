@@ -67,14 +67,14 @@ abstract class PHPUnit_Extensions_TicketListener implements PHPUnit_Framework_Te
     /**
      * @var boolean
      */
-    protected $ran = FALSE;
+    protected $ran = false;
 
     /**
      * An error occurred.
      *
-     * @param  PHPUnit_Framework_Test $test
-     * @param  Exception              $e
-     * @param  float                  $time
+     * @param PHPUnit_Framework_Test $test
+     * @param Exception              $e
+     * @param float                  $time
      */
     public function addError(PHPUnit_Framework_Test $test, Exception $e, $time)
     {
@@ -83,9 +83,9 @@ abstract class PHPUnit_Extensions_TicketListener implements PHPUnit_Framework_Te
     /**
      * A failure occurred.
      *
-     * @param  PHPUnit_Framework_Test                 $test
-     * @param  PHPUnit_Framework_AssertionFailedError $e
-     * @param  float                                  $time
+     * @param PHPUnit_Framework_Test                 $test
+     * @param PHPUnit_Framework_AssertionFailedError $e
+     * @param float                                  $time
      */
     public function addFailure(PHPUnit_Framework_Test $test, PHPUnit_Framework_AssertionFailedError $e, $time)
     {
@@ -94,9 +94,9 @@ abstract class PHPUnit_Extensions_TicketListener implements PHPUnit_Framework_Te
     /**
      * Incomplete test.
      *
-     * @param  PHPUnit_Framework_Test $test
-     * @param  Exception              $e
-     * @param  float                  $time
+     * @param PHPUnit_Framework_Test $test
+     * @param Exception              $e
+     * @param float                  $time
      */
     public function addIncompleteTest(PHPUnit_Framework_Test $test, Exception $e, $time)
     {
@@ -105,9 +105,9 @@ abstract class PHPUnit_Extensions_TicketListener implements PHPUnit_Framework_Te
     /**
      * Risky test.
      *
-     * @param  PHPUnit_Framework_Test $test
-     * @param  Exception              $e
-     * @param  float                  $time
+     * @param PHPUnit_Framework_Test $test
+     * @param Exception              $e
+     * @param float                  $time
      * @since  Method available since Release 3.8.0
      */
     public function addRiskyTest(PHPUnit_Framework_Test $test, Exception $e, $time)
@@ -117,9 +117,9 @@ abstract class PHPUnit_Extensions_TicketListener implements PHPUnit_Framework_Te
     /**
      * Skipped test.
      *
-     * @param  PHPUnit_Framework_Test $test
-     * @param  Exception              $e
-     * @param  float                  $time
+     * @param PHPUnit_Framework_Test $test
+     * @param Exception              $e
+     * @param float                  $time
      * @since  Method available since Release 3.0.0
      */
     public function addSkippedTest(PHPUnit_Framework_Test $test, Exception $e, $time)
@@ -129,7 +129,7 @@ abstract class PHPUnit_Extensions_TicketListener implements PHPUnit_Framework_Te
     /**
      * A test suite started.
      *
-     * @param  PHPUnit_Framework_TestSuite $suite
+     * @param PHPUnit_Framework_TestSuite $suite
      * @since  Method available since Release 2.2.0
      */
     public function startTestSuite(PHPUnit_Framework_TestSuite $suite)
@@ -139,7 +139,7 @@ abstract class PHPUnit_Extensions_TicketListener implements PHPUnit_Framework_Te
     /**
      * A test suite ended.
      *
-     * @param  PHPUnit_Framework_TestSuite $suite
+     * @param PHPUnit_Framework_TestSuite $suite
      * @since  Method available since Release 2.2.0
      */
     public function endTestSuite(PHPUnit_Framework_TestSuite $suite)
@@ -149,7 +149,7 @@ abstract class PHPUnit_Extensions_TicketListener implements PHPUnit_Framework_Te
     /**
      * A test started.
      *
-     * @param  PHPUnit_Framework_Test $test
+     * @param PHPUnit_Framework_Test $test
      */
     public function startTest(PHPUnit_Framework_Test $test)
     {
@@ -158,22 +158,22 @@ abstract class PHPUnit_Extensions_TicketListener implements PHPUnit_Framework_Te
                 return;
             }
 
-            $name    = $test->getName(FALSE);
+            $name    = $test->getName(false);
             $tickets = PHPUnit_Util_Test::getTickets(get_class($test), $name);
 
             foreach ($tickets as $ticket) {
                 $this->ticketCounts[$ticket][$name] = 1;
             }
 
-            $this->ran = TRUE;
+            $this->ran = true;
         }
     }
 
     /**
      * A test ended.
      *
-     * @param  PHPUnit_Framework_Test $test
-     * @param  float                  $time
+     * @param PHPUnit_Framework_Test $test
+     * @param float                  $time
      */
     public function endTest(PHPUnit_Framework_Test $test, $time)
     {
@@ -183,22 +183,18 @@ abstract class PHPUnit_Extensions_TicketListener implements PHPUnit_Framework_Te
                 $newStatus  = 'closed';
                 $message    = 'Automatically closed by PHPUnit (test passed).';
                 $resolution = 'fixed';
-                $cumulative = TRUE;
-            }
-
-            else if ($test->getStatus() == PHPUnit_Runner_BaseTestRunner::STATUS_FAILURE) {
+                $cumulative = true;
+            } elseif ($test->getStatus() == PHPUnit_Runner_BaseTestRunner::STATUS_FAILURE) {
                 $ifStatus   = array('closed');
                 $newStatus  = 'reopened';
                 $message    = 'Automatically reopened by PHPUnit (test failed).';
                 $resolution = '';
-                $cumulative = FALSE;
-            }
-
-            else {
+                $cumulative = false;
+            } else {
                 return;
             }
 
-            $name    = $test->getName(FALSE);
+            $name    = $test->getName(false);
             $tickets = PHPUnit_Util_Test::getTickets(get_class($test), $name);
 
             foreach ($tickets as $ticket) {
@@ -213,13 +209,13 @@ abstract class PHPUnit_Extensions_TicketListener implements PHPUnit_Framework_Te
                     // Determine number of to-pass tests:
                     if (count($this->ticketCounts[$ticket]) > 0) {
                         // There exist remaining test cases with this reference.
-                        $adjustTicket = FALSE;
+                        $adjustTicket = false;
                     } else {
                         // No remaining tickets, go ahead and adjust.
-                        $adjustTicket = TRUE;
+                        $adjustTicket = true;
                     }
                 } else {
-                    $adjustTicket = TRUE;
+                    $adjustTicket = true;
                 }
 
                 $ticketInfo = $this->getTicketInfo($ticket);
@@ -231,6 +227,6 @@ abstract class PHPUnit_Extensions_TicketListener implements PHPUnit_Framework_Te
         }
     }
 
-    abstract protected function getTicketInfo($ticketId = NULL);
+    abstract protected function getTicketInfo($ticketId = null);
     abstract protected function updateTicket($ticketId, $newStatus, $message, $resolution);
 }

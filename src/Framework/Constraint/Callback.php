@@ -58,7 +58,7 @@ class PHPUnit_Framework_Constraint_Callback extends PHPUnit_Framework_Constraint
     private $callback;
 
     /**
-     * @param callable $callback
+     * @param  callable                 $callback
      * @throws InvalidArgumentException
      */
     public function __construct(callable $callback)
@@ -69,10 +69,10 @@ class PHPUnit_Framework_Constraint_Callback extends PHPUnit_Framework_Constraint
     }
 
     /**
-     * Evaluates the constraint for parameter $value. Returns TRUE if the
-     * constraint is met, FALSE otherwise.
+     * Evaluates the constraint for parameter $value. Returns true if the
+     * constraint is met, false otherwise.
      *
-     * @param mixed $value Value or object to evaluate.
+     * @param  mixed $value Value or object to evaluate.
      * @return bool
      */
     protected function matches($other)
@@ -104,6 +104,7 @@ class PHPUnit_Framework_Constraint_Callback extends PHPUnit_Framework_Constraint
         if (is_object($callback[0])) {
             $callback[0] = get_class($callback[0]);
         }
+
         return $callback[0] . '::' . $callback[1];
     }
 

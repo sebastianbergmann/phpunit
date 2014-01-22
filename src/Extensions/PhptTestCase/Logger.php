@@ -56,7 +56,7 @@
  */
 class PHPUnit_Extensions_PhptTestCase_Logger
 {
-    public function log($level, $msg, $append_crlf = TRUE)
+    public function log($level, $msg, $append_crlf = true)
     {
     }
 }

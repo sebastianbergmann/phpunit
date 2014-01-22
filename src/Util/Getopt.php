@@ -57,7 +57,7 @@
  */
 class PHPUnit_Util_Getopt
 {
-    public static function getopt(array $args, $short_options, $long_options = NULL)
+    public static function getopt(array $args, $short_options, $long_options = null)
     {
         if (empty($args)) {
             return array(array(), array());
@@ -91,15 +91,11 @@ class PHPUnit_Util_Getopt
                 (strlen($arg) > 1 && $arg[1] == '-' && !$long_options)) {
                 $non_opts = array_merge($non_opts, array_slice($args, $i));
                 break;
-            }
-
-            elseif (strlen($arg) > 1 && $arg[1] == '-') {
+            } elseif (strlen($arg) > 1 && $arg[1] == '-') {
                 self::parseLongOption(
                   substr($arg, 2), $long_options, $opts, $args
                 );
-            }
-
-            else {
+            } else {
                 self::parseShortOption(
                   substr($arg, 1), $short_options, $opts, $args
                 );
@@ -115,9 +111,9 @@ class PHPUnit_Util_Getopt
 
         for ($i = 0; $i < $argLen; $i++) {
             $opt     = $arg[$i];
-            $opt_arg = NULL;
+            $opt_arg = null;
 
-            if (($spec = strstr($short_options, $opt)) === FALSE ||
+            if (($spec = strstr($short_options, $opt)) === false ||
                 $arg[$i] == ':') {
                 throw new PHPUnit_Framework_Exception(
                   "unrecognized option -- $opt"
@@ -134,12 +130,8 @@ class PHPUnit_Util_Getopt
                     if ($i + 1 < $argLen) {
                         $opts[] = array($opt, substr($arg, $i + 1));
                         break;
-                    }
-
-                    else if (list(, $opt_arg) = each($args)) {
-                    }
-
-                    else {
+                    } elseif (list(, $opt_arg) = each($args)) {
+                    } else {
                         throw new PHPUnit_Framework_Exception(
                           "option requires an argument -- $opt"
                         );
@@ -156,7 +148,7 @@ class PHPUnit_Util_Getopt
         $count   = count($long_options);
         $list    = explode('=', $arg);
         $opt     = $list[0];
-        $opt_arg = NULL;
+        $opt_arg = null;
 
         if (count($list) > 1) {
             $opt_arg = $list[1];
@@ -190,15 +182,14 @@ class PHPUnit_Util_Getopt
                         );
                     }
                 }
-            }
-
-            else if ($opt_arg) {
+            } elseif ($opt_arg) {
                 throw new PHPUnit_Framework_Exception(
                   "option --$opt doesn't allow an argument"
                 );
             }
 
             $opts[] = array('--' . $opt, $opt_arg);
+
             return;
         }
 

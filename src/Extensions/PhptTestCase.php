@@ -79,8 +79,8 @@ class PHPUnit_Extensions_PhptTestCase implements PHPUnit_Framework_Test, PHPUnit
     /**
      * Constructs a test case with the given filename.
      *
-     * @param  string $filename
-     * @param  array  $options
+     * @param string $filename
+     * @param array  $options
      */
     public function __construct($filename, array $options = array())
     {
@@ -118,9 +118,9 @@ class PHPUnit_Extensions_PhptTestCase implements PHPUnit_Framework_Test, PHPUnit
      * @param  array                        $options
      * @return PHPUnit_Framework_TestResult
      */
-    public function run(PHPUnit_Framework_TestResult $result = NULL, array $options = array())
+    public function run(PHPUnit_Framework_TestResult $result = null, array $options = array())
     {
-        if (!class_exists('PEAR_RunTest', FALSE)) {
+        if (!class_exists('PEAR_RunTest', false)) {
             throw new PHPUnit_Framework_Exception('Class PEAR_RunTest not found.');
         }
 
@@ -132,7 +132,7 @@ class PHPUnit_Extensions_PhptTestCase implements PHPUnit_Framework_Test, PHPUnit
             $pearDestructorObjectListCount = 0;
         }
 
-        if ($result === NULL) {
+        if ($result === null) {
             $result = new PHPUnit_Framework_TestResult;
         }
 
@@ -144,18 +144,18 @@ class PHPUnit_Extensions_PhptTestCase implements PHPUnit_Framework_Test, PHPUnit
         }
 
         if ($coverage) {
-            $options['coverage'] = TRUE;
+            $options['coverage'] = true;
         } else {
-            $options['coverage'] = FALSE;
+            $options['coverage'] = false;
         }
 
         $currentErrorReporting = error_reporting(E_ERROR | E_WARNING | E_PARSE);
         $runner                = new PEAR_RunTest(new PHPUnit_Extensions_PhptTestCase_Logger, $options);
 
         if ($coverage) {
-            $runner->xdebug_loaded = TRUE;
+            $runner->xdebug_loaded = true;
         } else {
-            $runner->xdebug_loaded = FALSE;
+            $runner->xdebug_loaded = false;
         }
 
         $result->startTest($this);
@@ -200,13 +200,9 @@ class PHPUnit_Extensions_PhptTestCase implements PHPUnit_Framework_Test, PHPUnit
               new PHPUnit_Framework_Exception($buffer->getMessage()),
               $time
             );
-        }
-
-        else if ($buffer == 'SKIPPED') {
+        } elseif ($buffer == 'SKIPPED') {
             $result->addFailure($this, new PHPUnit_Framework_SkippedTestError, 0);
-        }
-
-        else if ($buffer != 'PASSED') {
+        } elseif ($buffer != 'PASSED') {
             $expContent = file_get_contents($expFile);
             $outContent = file_get_contents($outFile);
 

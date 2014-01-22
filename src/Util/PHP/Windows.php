@@ -68,7 +68,7 @@ class PHPUnit_Util_PHP_Windows extends PHPUnit_Util_PHP
     protected function process($pipe, $job)
     {
         if (!($this->tempFile = tempnam(sys_get_temp_dir(), 'PHPUnit')) ||
-            file_put_contents($this->tempFile, $job) === FALSE) {
+            file_put_contents($this->tempFile, $job) === false) {
             throw new PHPUnit_Framework_Exception(
               'Unable to write temporary files for process isolation.'
             );
@@ -76,7 +76,7 @@ class PHPUnit_Util_PHP_Windows extends PHPUnit_Util_PHP
 
         fwrite(
           $pipe,
-          "<?php require_once " . var_export($this->tempFile, TRUE) .  "; ?>"
+          "<?php require_once " . var_export($this->tempFile, true) .  "; ?>"
         );
     }
 

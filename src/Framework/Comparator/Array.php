@@ -59,8 +59,8 @@ class PHPUnit_Framework_Comparator_Array extends PHPUnit_Framework_Comparator
     /**
      * Returns whether the comparator can compare two values.
      *
-     * @param  mixed $expected The first value to compare
-     * @param  mixed $actual The second value to compare
+     * @param  mixed   $expected The first value to compare
+     * @param  mixed   $actual   The second value to compare
      * @return boolean
      */
     public function accepts($expected, $actual)
@@ -71,19 +71,19 @@ class PHPUnit_Framework_Comparator_Array extends PHPUnit_Framework_Comparator
     /**
      * Asserts that two values are equal.
      *
-     * @param  mixed $expected The first value to compare
-     * @param  mixed $actual The second value to compare
-     * @param  float $delta The allowed numerical distance between two values to
-     *                      consider them equal
-     * @param  bool  $canonicalize If set to TRUE, arrays are sorted before
-     *                             comparison
-     * @param  bool  $ignoreCase If set to TRUE, upper- and lowercasing is
-     *                           ignored when comparing string values
+     * @param  mixed                               $expected     The first value to compare
+     * @param  mixed                               $actual       The second value to compare
+     * @param  float                               $delta        The allowed numerical distance between two values to
+     *                                                           consider them equal
+     * @param  bool                                $canonicalize If set to true, arrays are sorted before
+     *                                                           comparison
+     * @param  bool                                $ignoreCase   If set to true, upper- and lowercasing is
+     *                                                           ignored when comparing string values
      * @throws PHPUnit_Framework_ComparisonFailure Thrown when the comparison
-     *                           fails. Contains information about the
-     *                           specific errors that lead to the failure.
+     *                                                          fails. Contains information about the
+     *                                                          specific errors that lead to the failure.
      */
-    public function assertEquals($expected, $actual, $delta = 0, $canonicalize = FALSE, $ignoreCase = FALSE, array &$processed = array())
+    public function assertEquals($expected, $actual, $delta = 0, $canonicalize = false, $ignoreCase = false, array &$processed = array())
     {
         if ($canonicalize) {
             sort($expected);
@@ -92,7 +92,7 @@ class PHPUnit_Framework_Comparator_Array extends PHPUnit_Framework_Comparator
 
         $remaining = $actual;
         $expString = $actString = "Array (\n";
-        $equal = TRUE;
+        $equal = true;
 
         foreach ($expected as $key => $value) {
             unset($remaining[$key]);
@@ -104,7 +104,7 @@ class PHPUnit_Framework_Comparator_Array extends PHPUnit_Framework_Comparator
                   $this->exporter->export($key),
                   $this->exporter->shortenedExport($value)
                 );
-                $equal = FALSE;
+                $equal = false;
                 continue;
             }
 
@@ -122,9 +122,7 @@ class PHPUnit_Framework_Comparator_Array extends PHPUnit_Framework_Comparator
                   $this->exporter->export($key),
                   $this->exporter->shortenedExport($actual[$key])
                 );
-            }
-
-            catch (PHPUnit_Framework_ComparisonFailure $e) {
+            } catch (PHPUnit_Framework_ComparisonFailure $e) {
                 $expString .= sprintf(
                   "    %s => %s\n",
 
@@ -141,7 +139,7 @@ class PHPUnit_Framework_Comparator_Array extends PHPUnit_Framework_Comparator
                     ? $this->indent($e->getActualAsString())
                     : $this->exporter->shortenedExport($e->getActual())
                 );
-                $equal = FALSE;
+                $equal = false;
             }
         }
 
@@ -152,7 +150,7 @@ class PHPUnit_Framework_Comparator_Array extends PHPUnit_Framework_Comparator
               $this->exporter->export($key),
               $this->exporter->shortenedExport($value)
             );
-            $equal = FALSE;
+            $equal = false;
         }
 
         $expString .= ')';
@@ -164,7 +162,7 @@ class PHPUnit_Framework_Comparator_Array extends PHPUnit_Framework_Comparator
               $actual,
               $expString,
               $actString,
-              FALSE,
+              false,
              'Failed asserting that two arrays are equal.'
             );
         }

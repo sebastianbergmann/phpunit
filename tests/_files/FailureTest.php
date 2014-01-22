@@ -24,7 +24,7 @@ class FailureTest extends PHPUnit_Framework_TestCase
 
     public function testAssertNullEqualsString()
     {
-        $this->assertEquals(NULL, 'bar', 'message');
+        $this->assertEquals(null, 'bar', 'message');
     }
 
     public function testAssertStringEqualsString()
@@ -59,7 +59,7 @@ class FailureTest extends PHPUnit_Framework_TestCase
 
     public function testAssertObjectSameNull()
     {
-        $this->assertSame(new StdClass, NULL, 'message');
+        $this->assertSame(new StdClass, null, 'message');
     }
 
     public function testAssertFloatSameFloat()

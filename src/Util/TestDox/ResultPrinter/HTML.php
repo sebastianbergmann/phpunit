@@ -59,7 +59,7 @@ class PHPUnit_Util_TestDox_ResultPrinter_HTML extends PHPUnit_Util_TestDox_Resul
     /**
      * @var    boolean
      */
-    protected $printsHTML = TRUE;
+    protected $printsHTML = true;
 
     /**
      * Handler for 'start run' event.
@@ -73,7 +73,7 @@ class PHPUnit_Util_TestDox_ResultPrinter_HTML extends PHPUnit_Util_TestDox_Resul
     /**
      * Handler for 'start class' event.
      *
-     * @param  string $name
+     * @param string $name
      */
     protected function startClass($name)
     {
@@ -86,10 +86,10 @@ class PHPUnit_Util_TestDox_ResultPrinter_HTML extends PHPUnit_Util_TestDox_Resul
     /**
      * Handler for 'on test' event.
      *
-     * @param  string  $name
-     * @param  boolean $success
+     * @param string  $name
+     * @param boolean $success
      */
-    protected function onTest($name, $success = TRUE)
+    protected function onTest($name, $success = true)
     {
         if (!$success) {
             $strikeOpen  = '<span style="text-decoration:line-through;">';
@@ -105,7 +105,7 @@ class PHPUnit_Util_TestDox_ResultPrinter_HTML extends PHPUnit_Util_TestDox_Resul
     /**
      * Handler for 'end class' event.
      *
-     * @param  string $name
+     * @param string $name
      */
     protected function endClass($name)
     {

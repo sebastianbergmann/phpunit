@@ -66,11 +66,11 @@ class PHPUnit_Util_DeprecatedFeature
     /**
      * @var string
      */
-    protected $message = NULL;
+    protected $message = null;
 
     /**
-     * @param  string $message
-     * @param  array  $traceInfo
+     * @param string $message
+     * @param array  $traceInfo
      */
     public function __construct($message, array $traceInfo = array())
     {
