@@ -128,12 +128,12 @@ abstract class PHPUnit_Framework_Constraint implements Countable, PHPUnit_Framew
     /**
      * Throws an exception for the given compared value and test description
      *
-     * @param  mixed                                        $other             Evaluated value or object.
-     * @param  string                                       $description       Additional information about the test
-     * @param  PHPUnit_Framework_ComparisonFailure          $comparisonFailure
+     * @param  mixed $other Evaluated value or object.
+     * @param  string $description Additional information about the test
+     * @param  SebastianBergmann\Comparator\ComparisonFailure $comparisonFailure
      * @throws PHPUnit_Framework_ExpectationFailedException
      */
-    protected function fail($other, $description, PHPUnit_Framework_ComparisonFailure $comparisonFailure = null)
+    protected function fail($other, $description, SebastianBergmann\Comparator\ComparisonFailure $comparisonFailure = null)
     {
         $failureDescription = sprintf(
           'Failed asserting that %s.',
@@ -141,6 +141,7 @@ abstract class PHPUnit_Framework_Constraint implements Countable, PHPUnit_Framew
         );
 
         $additionalFailureDescription = $this->additionalFailureDescription($other);
+
         if ($additionalFailureDescription) {
             $failureDescription .= "\n" . $additionalFailureDescription;
         }

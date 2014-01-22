@@ -47,7 +47,7 @@
  * Exception for expectations which failed their check.
  *
  * The exception contains the error message and optionally a
- * PHPUnit_Framework_ComparisonFailure which is used to
+ * SebastianBergmann\Comparator\ComparisonFailure which is used to
  * generate diff output of the failed expectations.
  *
  * @package    PHPUnit
@@ -61,11 +61,11 @@
 class PHPUnit_Framework_ExpectationFailedException extends PHPUnit_Framework_AssertionFailedError
 {
     /**
-     * @var PHPUnit_Framework_ComparisonFailure
+     * @var SebastianBergmann\Comparator\ComparisonFailure
      */
     protected $comparisonFailure;
 
-    public function __construct($message, PHPUnit_Framework_ComparisonFailure $comparisonFailure = null, Exception $previous = null)
+    public function __construct($message, SebastianBergmann\Comparator\ComparisonFailure $comparisonFailure = null, Exception $previous = null)
     {
         $this->comparisonFailure = $comparisonFailure;
 
@@ -73,7 +73,7 @@ class PHPUnit_Framework_ExpectationFailedException extends PHPUnit_Framework_Ass
     }
 
     /**
-     * @return PHPUnit_Framework_ComparisonFailure
+     * @return SebastianBergmann\Comparator\ComparisonFailure
      */
     public function getComparisonFailure()
     {

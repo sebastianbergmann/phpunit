@@ -29,6 +29,7 @@
         "phpunit/php-timer": ">=1.0.2",
         "phpunit/phpunit-mock-objects": "1.4.*@dev",
         "symfony/yaml": "~2.0",
+        "sebastian/comparator": "dev-master",
         "sebastian/diff": ">=1.1.0",
         "sebastian/environment": ">=1.0.0",
         "sebastian/exporter": ">=1.0.0",
