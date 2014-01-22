@@ -46,8 +46,8 @@
  <target name="phpab" description="Generate autoloader script">
   <exec executable="phpab">
    <arg value="--output" />
-   <arg path="Tests/autoload.php" />
-   <arg path="Tests" />
+   <arg path="tests/autoload.php" />
+   <arg path="tests" />
   </exec>
  </target>
 
