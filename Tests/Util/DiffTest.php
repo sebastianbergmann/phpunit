@@ -217,7 +217,7 @@ class Util_DiffTest extends PHPUnit_Framework_TestCase
     /**
      * @covers PHPUnit_Util_Diff::diff
      */
-    public function testComparisonErrorOverlapingMatches()
+    public function testComparisonErrorOverlappingMatches()
     {
         $this->assertEquals(
           "--- Expected\n+++ Actual\n@@ @@\n-abc\n+abbc\n",
@@ -228,7 +228,7 @@ class Util_DiffTest extends PHPUnit_Framework_TestCase
     /**
      * @covers PHPUnit_Util_Diff::diffToArray
      */
-    public function testComparisonErrorOverlapingMatches_toArray()
+    public function testComparisonErrorOverlappingMatches_toArray()
     {
         $diff = array();
         $diff[] = array('abc', self::REMOVED);
@@ -243,7 +243,7 @@ class Util_DiffTest extends PHPUnit_Framework_TestCase
     /**
      * @covers PHPUnit_Util_Diff::diff
      */
-    public function testComparisonErrorOverlapingMatches2()
+    public function testComparisonErrorOverlappingMatches2()
     {
         $this->assertEquals(
           "--- Expected\n+++ Actual\n@@ @@\n-abcdde\n+abcde\n",
@@ -254,7 +254,7 @@ class Util_DiffTest extends PHPUnit_Framework_TestCase
     /**
      * @covers PHPUnit_Util_Diff::diffToArray
      */
-    public function testComparisonErrorOverlapingMatches2_toArray()
+    public function testComparisonErrorOverlappingMatches2_toArray()
     {
         $diff = array();
         $diff[] = array('abcdde', self::REMOVED);

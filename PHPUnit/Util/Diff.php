@@ -133,7 +133,7 @@ class PHPUnit_Util_Diff
     /**
      * Returns the diff between two arrays or strings as array.
      *
-     * every array-entry containts two elements:
+     * every array-entry contains two elements:
      *   - [0] => string $token
      *   - [1] => 2|1|0
      *
