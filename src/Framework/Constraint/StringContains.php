@@ -49,7 +49,7 @@
  * a given string.
  *
  * Uses strpos() to find the position of the string in the input, if not found
- * the evaluaton fails.
+ * the evaluation fails.
  *
  * The sub-string is passed in the constructor.
  *
