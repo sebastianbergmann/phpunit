@@ -64,7 +64,7 @@ class PHPUnit_Util_DeprecatedFeature_Logger implements PHPUnit_Framework_TestLis
     protected static $currentTest = NULL;
 
     /**
-     * This is the publically accessible API for notifying the system that a
+     * This is the publicly accessible API for notifying the system that a
      * deprecated feature has been used.
      *
      * If it is run via a TestRunner and the test extends
