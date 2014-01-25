@@ -24,15 +24,8 @@
         "phpunit/php-text-template": ">=1.1.1@stable"
     },
     "require-dev": {
-        "phpunit/phpunit": "3.7.*@dev",
-        "pear-pear/pear": "1.9.4"
+        "phpunit/phpunit": "3.7.*@dev"
     },
-    "repositories": [
-        {
-            "type": "pear",
-            "url": "http://pear.php.net"
-        }
-    ],
     "suggest": {
         "ext-soap": "*"
     },
