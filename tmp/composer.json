@@ -25,7 +25,7 @@
         "phpunit/php-text-template": ">=1.1.1"
     },
     "require-dev": {
-        "phpunit/phpunit": "dev-master",
+        "phpunit/phpunit": "3.8.*@dev",
         "pear-pear/pear": "1.9.4"
     },
     "repositories": [
