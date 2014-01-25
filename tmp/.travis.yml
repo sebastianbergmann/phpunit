@@ -3,6 +3,7 @@ language: php
 php:
     - 5.3
     - 5.4
+    - 5.5
 
 before_script:
     - COMPOSER_ROOT_VERSION=dev-master composer install --dev --prefer-source
