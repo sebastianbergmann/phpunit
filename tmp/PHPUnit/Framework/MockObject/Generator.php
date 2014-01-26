@@ -593,7 +593,7 @@ class PHPUnit_Framework_MockObject_Generator
             if (strpos($className, '\\') !== FALSE) {
                 $parts     = explode('\\', $className);
                 $className = array_pop($parts);
-                $namespace = 'namespace ' . join('\\', $parts) . ';';
+                $namespace = 'namespace ' . join('\\', $parts) . ';' . "\n\n";
             }
 
             $classTemplate->setVar(
