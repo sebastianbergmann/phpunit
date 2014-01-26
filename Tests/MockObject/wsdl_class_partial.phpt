@@ -6,8 +6,7 @@ if (!extension_loaded('soap')) echo 'skip: SOAP extension is required';
 ?>
 --FILE--
 <?php
-require_once 'PHPUnit/Autoload.php';
-require_once 'Text/Template.php';
+require __DIR__ . '/../../vendor/autoload.php';
 
 $generator = new PHPUnit_Framework_MockObject_Generator;
 
