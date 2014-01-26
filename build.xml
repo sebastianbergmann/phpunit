@@ -222,9 +222,8 @@
   <move file="${basedir}/composer.json.bak" tofile="${basedir}/composer.json"/>
 
   <copy todir="${basedir}/build/phar/php-code-coverage">
-   <fileset dir="${basedir}/vendor/phpunit/php-code-coverage/PHP">
+   <fileset dir="${basedir}/vendor/phpunit/php-code-coverage/src">
     <include name="**/*" />
-    <exclude name="**/Autoload.*" />
    </fileset>
   </copy>
 
