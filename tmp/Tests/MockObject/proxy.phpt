@@ -13,7 +13,7 @@ class Foo
     }
 }
 
-require_once 'PHPUnit/Autoload.php';
+require __DIR__ . '/../../vendor/autoload.php';
 
 $generator = new PHPUnit_Framework_MockObject_Generator;
 
