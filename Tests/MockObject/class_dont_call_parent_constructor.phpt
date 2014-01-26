@@ -88,4 +88,3 @@ class MockFoo extends Foo implements PHPUnit_Framework_MockObject_MockObject
         $this->__phpunit_getInvocationMocker()->verify();
     }
 }
-
