@@ -258,9 +258,8 @@
   </copy>
 
   <copy todir="${basedir}/build/phar/phpunit-mock-objects">
-   <fileset dir="${basedir}/vendor/phpunit/phpunit-mock-objects/PHPUnit">
+   <fileset dir="${basedir}/vendor/phpunit/phpunit-mock-objects/src">
     <include name="**/*" />
-    <exclude name="**/Autoload.*" />
    </fileset>
   </copy>
 
