@@ -1,14 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
-<phpunit backupGlobals="false">
-  <php>
-    <const name="PHPUNIT_TESTSUITE" value="true"/>
-  </php>
-
+<phpunit backupGlobals="false"
+         backupStaticAttributes="false"
+         bootstrap="vendor/autoload.php">
   <testsuites>
     <testsuite name="PHPUnit Mock Objects">
-      <directory suffix="Test.php">Tests</directory>
-      <directory suffix=".phpt">Tests</directory>
+      <directory suffix="Test.php">tests</directory>
+      <directory suffix=".phpt">tests</directory>
     </testsuite>
   </testsuites>
 
@@ -22,10 +19,8 @@
 
   <filter>
     <whitelist addUncoveredFilesFromWhitelist="true">
-      <directory suffix=".php">PHPUnit</directory>
-      <exclude>
-       <file>PHPUnit/Framework/MockObject/Autoload.php</file>
-      </exclude>
+      <directory suffix=".php">src</directory>
     </whitelist>
   </filter>
 </phpunit>
+
