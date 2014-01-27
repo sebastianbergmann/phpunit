@@ -130,7 +130,6 @@ class PHPUnit_Framework_MockObject_Generator
       'require_once' => TRUE,
       'return' => TRUE,
       'static' => TRUE,
-      'staticExpects' => TRUE,
       'switch' => TRUE,
       'throw' => TRUE,
       'trait' => TRUE,
@@ -889,12 +888,6 @@ class PHPUnit_Framework_MockObject_Generator
             $modifier = 'public';
         }
 
-        if ($method->isStatic()) {
-            $static = TRUE;
-        } else {
-            $static = FALSE;
-        }
-
         if ($method->returnsReference()) {
             $reference = '&';
         } else {
@@ -910,7 +903,6 @@ class PHPUnit_Framework_MockObject_Generator
           $this->getMethodParameters($method),
           $this->getMethodParameters($method, TRUE),
           $reference,
-          $static,
           $callOriginalMethods
         );
     }
@@ -924,16 +916,14 @@ class PHPUnit_Framework_MockObject_Generator
      * @param  string  $arguments_decl
      * @param  string  $arguments_call
      * @param  string  $reference
-     * @param  boolean $static
      * @param  boolean $callOriginalMethods
      * @return string
      */
-    protected function generateMockedMethodDefinition($templateDir, $className, $methodName, $cloneArguments = TRUE, $modifier = 'public', $arguments_decl = '', $arguments_call = '', $reference = '', $static = FALSE, $callOriginalMethods = FALSE)
+    protected function generateMockedMethodDefinition($templateDir, $className, $methodName, $cloneArguments = TRUE, $modifier = 'public', $arguments_decl = '', $arguments_call = '', $reference = '', $callOriginalMethods = FALSE)
     {
         $templateFile = sprintf(
-          '%s_%s_method.tpl',
-          $callOriginalMethods ? 'proxied' : 'mocked',
-          $static ? 'static' : 'object'
+          '%s_method.tpl',
+          $callOriginalMethods ? 'proxied' : 'mocked'
         );
 
         $template = new Text_Template($templateDir . $templateFile);
@@ -960,7 +950,9 @@ class PHPUnit_Framework_MockObject_Generator
      */
     protected function canMockMethod(ReflectionMethod $method)
     {
-        if ($method->isConstructor() || $method->isFinal() ||
+        if ($method->isConstructor() ||
+            $method->isFinal() ||
+            $method->isStatic() ||
             isset($this->blacklistedMethodNames[$method->getName()])) {
             return FALSE;
         }

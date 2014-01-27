@@ -378,72 +378,6 @@ class Framework_MockObjectTest extends PHPUnit_Framework_TestCase
         $this->assertNotEquals(get_class($mock1), get_class($mock2));
     }
 
-    public function testStubbedReturnValueForStaticMethod()
-    {
-        $this->getMockClass(
-          'StaticMockTestClass',
-          array('doSomething'),
-          array(),
-          'StaticMockTestClassMock'
-        );
-
-        StaticMockTestClassMock::staticExpects($this->any())
-          ->method('doSomething')
-          ->will($this->returnValue('something'));
-
-        $this->assertEquals(
-          'something', StaticMockTestClassMock::doSomething()
-        );
-
-        $this->getMockClass(
-          'StaticMockTestClass',
-          array('doSomething'),
-          array(),
-          'StaticMockTestClassMock'
-        );
-
-        StaticMockTestClassMock::staticExpects($this->any())
-          ->method('doSomething')
-          ->willReturn('something');
-
-        $this->assertEquals(
-          'something', StaticMockTestClassMock::doSomething()
-        );
-    }
-
-    public function testStubbedReturnValueForStaticMethod2()
-    {
-        $this->getMockClass(
-          'StaticMockTestClass',
-          array('doSomething'),
-          array(),
-          'StaticMockTestClassMock2'
-        );
-
-        StaticMockTestClassMock2::staticExpects($this->any())
-          ->method('doSomething')
-          ->will($this->returnValue('something'));
-
-        $this->assertEquals(
-          'something', StaticMockTestClassMock2::doSomethingElse()
-        );
-
-        $this->getMockClass(
-          'StaticMockTestClass',
-          array('doSomething'),
-          array(),
-          'StaticMockTestClassMock2'
-        );
-
-        StaticMockTestClassMock2::staticExpects($this->any())
-          ->method('doSomething')
-          ->willReturn('something');
-
-        $this->assertEquals(
-          'something', StaticMockTestClassMock2::doSomethingElse()
-        );
-    }
-
     public function testGetMockForAbstractClass()
     {
         $mock = $this->getMock('AbstractMockTestClass');
@@ -514,65 +448,6 @@ class Framework_MockObjectTest extends PHPUnit_Framework_TestCase
         $mock = $this->getMock('stdClass', array('foo'));
         $mock->expects($this->once())->method('foo')->with($this->logicalNot($this->identicalTo($x)));
         $mock->foo($y);
-    }
-
-    public function testStaticMethodCallWithArgumentCloningEnabled()
-    {
-        $expectedObject = new StdClass;
-
-        $this->getMockClass(
-          'StaticMockTestClass',
-          array('doSomething'),
-          array(),
-          'StaticMockTestClassMock3',
-          FALSE,
-          TRUE,
-          TRUE,
-          TRUE
-        );
-
-        $actualArguments = array();
-
-        StaticMockTestClassMock3::staticExpects($this->any())
-        ->method('doSomething')
-        ->will($this->returnCallback(function () use (&$actualArguments) {
-            $actualArguments = func_get_args();
-        }));
-
-        StaticMockTestClassMock3::doSomething($expectedObject);
-
-        $this->assertEquals(1, count($actualArguments));
-        $this->assertNotSame($expectedObject, $actualArguments[0]);
-    }
-
-    public function testStaticMethodCallWithArgumentCloningDisabled()
-    {
-        $expectedObject = new StdClass;
-
-        $this->getMockClass(
-          'StaticMockTestClass',
-          array('doSomething'),
-          array(),
-          'StaticMockTestClassMock4',
-          FALSE,
-          TRUE,
-          TRUE,
-          FALSE
-        );
-
-        $actualArguments = array();
-
-        StaticMockTestClassMock4::staticExpects($this->any())
-        ->method('doSomething')
-        ->will($this->returnCallback(function () use (&$actualArguments) {
-            $actualArguments = func_get_args();
-        }));
-
-        StaticMockTestClassMock4::doSomething($expectedObject);
-
-        $this->assertEquals(1, count($actualArguments));
-        $this->assertEquals($expectedObject, $actualArguments[0]);
-        $this->assertSame($expectedObject, $actualArguments[0]);
     }
 
     public function testObjectMethodCallWithArgumentCloningEnabled()
