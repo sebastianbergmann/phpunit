@@ -744,7 +744,7 @@ EOF
         $dom2->preserveWhiteSpace = false;
         $dom2->loadXML('<root><foo/></root>');
 
-        return array(
+        $data = array(
             array(1, 0, <<<EOF
 Failed asserting that 0 matches expected 1.
 
@@ -886,26 +886,6 @@ Failed asserting that two objects are equal.
 
 EOF
             ),
-            array($storage1, $storage2, <<<EOF
-Failed asserting that two objects are equal.
---- Expected
-+++ Actual
-@@ @@
--SplObjectStorage Object &$storage1hash (
--    '$ahash' => Array &0 (
--        'obj' => stdClass Object &$ahash (
--            'foo' => 'bar'
--        )
-+SplObjectStorage Object &$storage2hash (
-+    '$bhash' => Array &0 (
-+        'obj' => stdClass Object &$bhash ()
-         'inf' => null
-     )
--    '$bhash' => Array &0
- )
-
-EOF
-            ),
             array($dom1, $dom2, <<<EOF
 Failed asserting that two DOM documents are equal.
 --- Expected
@@ -933,6 +913,59 @@ Failed asserting that two DateTime objects are equal.
 EOF
             ),
         );
+
+        // HHVM has a different internal implementation of SplObjectStorage,
+        // and this is visible in the test output.
+        if (defined('HPHP_VERSION')) {
+            $data[] = array($storage1, $storage2, <<<EOF
+Failed asserting that two objects are equal.
+--- Expected
++++ Actual
+@@ @@
+-SplObjectStorage Object &$storage1hash (
++SplObjectStorage Object &$storage2hash (
+     'storage' => Array &0 (
+-        '$ahash' => Array &1 (
+-            'obj' => stdClass Object &$ahash (
+-                'foo' => 'bar'
+-            )
+-            'inf' => null
+-        )
+-        '$bhash' => Array &2 (
++        '$bhash' => Array &1 (
+             'obj' => stdClass Object &$bhash ()
+             'inf' => null
+         )
+     )
+-    '$ahash' => Array &0
+     '$bhash' => Array &0
+ )
+
+EOF
+            );
+        } else {
+            $data[] = array($storage1, $storage2, <<<EOF
+Failed asserting that two objects are equal.
+--- Expected
++++ Actual
+@@ @@
+-SplObjectStorage Object &$storage1hash (
+-    '$ahash' => Array &0 (
+-        'obj' => stdClass Object &$ahash (
+-            'foo' => 'bar'
+-        )
++SplObjectStorage Object &$storage2hash (
++    '$bhash' => Array &0 (
++        'obj' => stdClass Object &$bhash ()
+         'inf' => null
+     )
+-    '$bhash' => Array &0
+ )
+
+EOF
+            );
+        }
+        return $data;
     }
 
     /**
