@@ -42,6 +42,13 @@
  * @since      File available since Release 1.0.0
  */
 
+if (!function_exists('trait_exists')) {
+    function trait_exists($traitname, $autoload = true)
+    {
+        return false;
+    }
+}
+
 /**
  * Mock Object Code Generator
  *
@@ -261,8 +268,15 @@ class PHPUnit_Framework_MockObject_Generator
                 $object = $class->newInstanceArgs($arguments);
             }
         } else {
-                $class = new ReflectionClass($className);
-                $object = $class->newInstanceWithoutConstructor();
+                if (defined('HPHP_VERSION') ||
+                    version_compare(PHP_VERSION, '5.4.0', '>=')) {
+                    $class  = new ReflectionClass($className);
+                    $object = $class->newInstanceWithoutConstructor();
+                } else {
+                    $object = unserialize(
+                        sprintf('O:%d:"%s":0:{}', strlen($className), $className)
+                    );
+                }
         }
 
         if ($callOriginalMethods) {
@@ -997,7 +1011,8 @@ class PHPUnit_Framework_MockObject_Generator
             if (!$forCall) {
                 if ($parameter->isArray()) {
                     $typeHint = 'array ';
-                } elseif ($parameter->isCallable()) {
+                } elseif ((defined('HPHP_VERSION') || version_compare(PHP_VERSION, '5.4.0', '>='))
+                          && $parameter->isCallable()) {
                     $typeHint = 'callable ';
                 } else {
                     try {

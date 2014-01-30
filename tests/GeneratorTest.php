@@ -95,7 +95,8 @@ class Framework_MockObject_GeneratorTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers PHPUnit_Framework_MockObject_Generator::getMockForTrait
+     * @covers   PHPUnit_Framework_MockObject_Generator::getMockForTrait
+     * @requires PHP 5.4.0
      */
     public function testGetMockForTraitStubbingAbstractMethod()
     {
@@ -115,3 +116,4 @@ class Framework_MockObject_GeneratorTest extends PHPUnit_Framework_TestCase
         );
     }
 }
+
