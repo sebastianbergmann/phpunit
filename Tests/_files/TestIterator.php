@@ -2,7 +2,7 @@
 class TestIterator implements Iterator
 {
     protected $array;
-    protected $position;
+    protected $position = 0;
 
     public function __construct($array = array())
     {
