@@ -112,6 +112,7 @@ class PHPUnit_Extensions_PhptTestCase implements PHPUnit_Framework_Test, PHPUnit
 
         $php  = PHPUnit_Util_PHP::factory();
         $skip = false;
+        $time = 0;
 
         $result->startTest($this);
 
