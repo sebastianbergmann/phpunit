@@ -337,7 +337,33 @@ class PHPUnit_Util_Test
         $docComment = $reflector->getDocComment();
         $data       = null;
 
-        if (preg_match(self::REGEX_DATA_PROVIDER, $docComment, $matches)) {
+        $dataProvider = null;
+
+        if (method_exists($className, 'getDataProvider')) {
+            $dataProviderMethodName = call_user_func(array($className, 'getDataProvider'), $methodName);
+
+            if ($dataProviderMethodName != null) {
+                $dataProviderClass  = new ReflectionClass($className);
+                $dataProviderMethod = $dataProviderClass->getMethod(
+                    $dataProviderMethodName
+                );
+
+                if ($dataProviderMethod->isStatic()) {
+                    $object = NULL;
+                } else {
+                    $object = $dataProviderClass->newInstance();
+                }
+
+                if ($dataProviderMethod->getNumberOfParameters() == 0) {
+                    $data = $dataProviderMethod->invoke($object);
+                } else {
+                    $data = $dataProviderMethod->invoke($object, $methodName);
+                }
+            }
+        }
+
+
+        if ($data == null && preg_match(self::REGEX_DATA_PROVIDER, $docComment, $matches)) {
             $dataProviderMethodNameNamespace = explode('\\', $matches[1]);
             $leaf                            = explode('::', array_pop($dataProviderMethodNameNamespace));
             $dataProviderMethodName          = array_pop($leaf);
