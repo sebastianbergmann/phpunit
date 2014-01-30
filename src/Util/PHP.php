@@ -57,6 +57,11 @@
 abstract class PHPUnit_Util_PHP
 {
     /**
+     * @var string
+     */
+    private static $binary;
+
+    /**
      * @return PHPUnit_Util_PHP
      * @since  Method available since Release 3.5.12
      */
@@ -70,6 +75,66 @@ abstract class PHPUnit_Util_PHP
     }
 
     /**
+     * @return string
+     * @since  Method available since Release 3.8.0
+     */
+    public static function getBinary()
+    {
+        // HHVM
+        if (self::$binary === null && getenv('PHP_BINARY')) {
+            self::$binary = escapeshellarg(getenv('PHP_BINARY'));
+
+            if (defined('HPHP_VERSION')) {
+                self::$binary .= ' --php';
+            }
+        }
+
+        // PHP >= 5.4.0
+        if (self::$binary === null && defined('PHP_BINARY')) {
+            self::$binary = escapeshellarg(PHP_BINARY);
+        }
+
+        // PHP < 5.4.0
+        if (self::$binary === null) {
+            if (PHP_SAPI == 'cli' && isset($_SERVER['_'])) {
+                if (strpos($_SERVER['_'], 'phpunit') !== false) {
+                    $file = file($_SERVER['_']);
+
+                    if (strpos($file[0], ' ') !== false) {
+                        $tmp = explode(' ', $file[0]);
+                        self::$binary = escapeshellarg(trim($tmp[1]));
+                    } else {
+                        self::$binary = escapeshellarg(ltrim(trim($file[0]), '#!'));
+                    }
+                } else if (strpos(basename($_SERVER['_']), 'php') !== false) {
+                    self::$binary = escapeshellarg($_SERVER['_']);
+                }
+            }
+        }
+
+        if (self::$binary === null) {
+            $possibleBinaryLocations = array(
+                PHP_BINDIR . '/php',
+                PHP_BINDIR . '/php-cli.exe',
+                PHP_BINDIR . '/php.exe'
+            );
+
+            foreach ($possibleBinaryLocations as $binary) {
+                if (is_readable($binary)) {
+                    self::$binary = escapeshellarg($binary);
+                    break;
+                }
+            }
+        }
+
+        if (self::$binary === null) {
+            self::$binary = 'php';
+        }
+
+        return self::$binary;
+    }
+
+    /**
      * Runs a single job (PHP code) using a separate PHP process.
      *
      * @param  string                       $job
@@ -80,13 +145,8 @@ abstract class PHPUnit_Util_PHP
      */
     public function runJob($job, PHPUnit_Framework_Test $test = null, PHPUnit_Framework_TestResult $result = null)
     {
-        // HHVM support
-        if (($phpBinary = getenv("PHP_BINARY")) === false) {
-            $phpBinary = PHP_BINARY;
-        }
-
         $process = proc_open(
-          escapeshellarg($phpBinary),
+          $this->getBinary(),
           array(
             0 => array('pipe', 'r'),
             1 => array('pipe', 'w'),

@@ -1,5 +1,9 @@
 --TEST--
 phpunit --log-json php://stdout BankAccountTest ../_files/BankAccountTest.php
+--SKIPIF--
+<?php
+if (!defined('JSON_PRETTY_PRINT')) print 'skip: expected test data generated with JSON_PRETTY_PRINT';
+?>
 --FILE--
 <?php
 define('PHPUNIT_TESTSUITE', TRUE);

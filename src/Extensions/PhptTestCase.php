@@ -162,12 +162,7 @@ class PHPUnit_Extensions_PhptTestCase implements PHPUnit_Framework_Test, PHPUnit
 
         PHP_Timer::start();
 
-        // HHVM support
-        if (($phpBinary = getenv("PHP_BINARY")) === false) {
-            $phpBinary = PHP_BINARY;
-        }
-
-        $runner->_php = escapeshellarg($phpBinary);
+        $runner->_php = PHPUnit_Util_PHP::getBinary();
         $buffer = $runner->run($this->filename, $options);
         $time   = PHP_Timer::stop();
 
