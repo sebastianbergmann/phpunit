@@ -452,6 +452,9 @@ class Framework_MockObjectTest extends PHPUnit_Framework_TestCase
         $this->assertInstanceOf('AnotherInterface', $mock);
     }
 
+    /**
+     * @requires PHP 5.4.0
+     */
     public function testGetMockForTrait()
     {
         $mock = $this->getMockForTrait('AbstractTrait');

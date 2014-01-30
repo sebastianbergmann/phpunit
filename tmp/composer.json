@@ -21,7 +21,7 @@
     },
     "minimum-stability": "dev",
     "require": {
-        "php": ">=5.4.7",
+        "php": ">=5.3.3",
         "phpunit/php-text-template": ">=1.1.1"
     },
     "require-dev": {
