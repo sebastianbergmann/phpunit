@@ -57,6 +57,11 @@
 abstract class PHPUnit_Util_PHP
 {
     /**
+     * @var string
+     */
+    private static $binary;
+
+    /**
      * @return PHPUnit_Util_PHP
      * @since  Method available since Release 3.5.12
      */
@@ -103,17 +108,58 @@ abstract class PHPUnit_Util_PHP
      */
     protected function getBinary()
     {
-        if (($binary = getenv('PHP_BINARY')) === false) {
-            $binary = PHP_BINARY;
+        // HHVM
+        if (self::$binary === null && getenv('PHP_BINARY')) {
+            self::$binary = escapeshellarg(getenv('PHP_BINARY'));
+
+            if (defined('HPHP_VERSION')) {
+                self::$binary .= ' --php';
+            }
         }
 
-        $binary = escapeshellarg($binary);
-
-        if (defined('HPHP_VERSION')) {
-            $binary .= ' --php';
+        // PHP >= 5.4.0
+        if (self::$binary === null && defined('PHP_BINARY')) {
+            self::$binary = escapeshellarg(PHP_BINARY);
         }
 
-        return $binary;
+        // PHP < 5.4.0
+        if (self::$binary === null) {
+            if (PHP_SAPI == 'cli' && isset($_SERVER['_'])) {
+                if (strpos($_SERVER['_'], 'phpunit') !== false) {
+                    $file = file($_SERVER['_']);
+
+                    if (strpos($file[0], ' ') !== false) {
+                        $tmp = explode(' ', $file[0]);
+                        self::$binary = escapeshellarg(trim($tmp[1]));
+                    } else {
+                        self::$binary = escapeshellarg(ltrim(trim($file[0]), '#!'));
+                    }
+                } else if (strpos(basename($_SERVER['_']), 'php') !== false) {
+                    self::$binary = escapeshellarg($_SERVER['_']);
+                }
+            }
+        }
+
+        if (self::$binary === null) {
+            $possibleBinaryLocations = array(
+                PHP_BINDIR . '/php',
+                PHP_BINDIR . '/php-cli.exe',
+                PHP_BINDIR . '/php.exe'
+            );
+
+            foreach ($possibleBinaryLocations as $binary) {
+                if (is_readable($binary)) {
+                    self::$binary = escapeshellarg($binary);
+                    break;
+                }
+            }
+        }
+
+        if (self::$binary === null) {
+            self::$binary = 'php';
+        }
+
+        return self::$binary;
     }
 
     /**

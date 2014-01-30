@@ -43,6 +43,10 @@
  * @since      File available since Release 3.0.0
  */
 
+if (!defined('JSON_PRETTY_PRINT')) {
+    define('JSON_PRETTY_PRINT', 128);
+}
+
 /**
  * A TestListener that generates JSON messages.
  *
