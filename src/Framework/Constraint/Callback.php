@@ -72,7 +72,7 @@ class PHPUnit_Framework_Constraint_Callback extends PHPUnit_Framework_Constraint
      * Evaluates the constraint for parameter $value. Returns true if the
      * constraint is met, false otherwise.
      *
-     * @param  mixed $value Value or object to evaluate.
+     * @param  mixed $other Value or object to evaluate.
      * @return bool
      */
     protected function matches($other)
@@ -107,5 +107,4 @@ class PHPUnit_Framework_Constraint_Callback extends PHPUnit_Framework_Constraint
 
         return $callback[0] . '::' . $callback[1];
     }
-
 }
