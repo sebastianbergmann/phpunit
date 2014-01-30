@@ -94,8 +94,20 @@ class PHPUnit_Framework_Constraint_Count extends PHPUnit_Framework_Constraint
         }
 
         else if ($other instanceof Iterator) {
-            return iterator_count($other);
+            $key = $other->key();
+            $count = iterator_count($other);
+
+            // manually rewind $other to previous key, since iterator_count moves pointer
+            if ($key !== null) {
+                $other->rewind();
+                while ($key !== $other->key()) {
+                    $other->next();
+                }
+            }
+
+            return $count;
         }
+
     }
 
 
