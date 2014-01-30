@@ -43,6 +43,13 @@
  * @since      File available since Release 3.0.0
  */
 
+if (!function_exists('trait_exists')) {
+    function trait_exists($traitname, $autoload = true)
+    {
+        return false;
+    }
+}
+
 /**
  * Test helpers.
  *

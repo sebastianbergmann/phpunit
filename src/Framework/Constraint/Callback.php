@@ -58,11 +58,17 @@ class PHPUnit_Framework_Constraint_Callback extends PHPUnit_Framework_Constraint
     private $callback;
 
     /**
-     * @param  callable                 $callback
-     * @throws InvalidArgumentException
+     * @param  callable                    $callback
+     * @throws PHPUnit_Framework_Exception
      */
-    public function __construct(callable $callback)
+    public function __construct($callback)
     {
+        if (!is_callable($callback)) {
+            throw PHPUnit_Util_InvalidArgumentHelper::factory(
+                1, 'callable'
+            );
+        }
+
         parent::__construct();
 
         $this->callback = $callback;
