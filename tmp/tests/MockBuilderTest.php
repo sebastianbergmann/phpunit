@@ -43,8 +43,6 @@
  * @since      File available since Release 1.0.0
  */
 
-require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'Mockable.php';
-
 /**
  * @package    PHPUnit_MockObject
  * @author     Giorgio Sironi <piccoloprincipeazzurro@gmail.com>
