@@ -110,7 +110,8 @@ class PHPUnit_Extensions_PhptTestCase implements PHPUnit_Framework_Test, PHPUnit
             $result = new PHPUnit_Framework_TestResult;
         }
 
-        $php = PHPUnit_Util_PHP::factory();
+        $php  = PHPUnit_Util_PHP::factory();
+        $skip = false;
 
         $result->startTest($this);
 
@@ -125,27 +126,31 @@ class PHPUnit_Extensions_PhptTestCase implements PHPUnit_Framework_Test, PHPUnit
                 }
 
                 $result->addFailure($this, new PHPUnit_Framework_SkippedTestError($message), 0);
+
+                $skip = true;
             }
         }
 
-        PHP_Timer::start();
-        $jobResult = $php->runJob($code);
-        $time = PHP_Timer::stop();
+        if (!$skip) {
+            PHP_Timer::start();
+            $jobResult = $php->runJob($code);
+            $time = PHP_Timer::stop();
 
-        if (isset($sections['EXPECT'])) {
-            $assertion = 'assertEquals';
-            $expected  = $sections['EXPECT'];
-        } else {
-            $assertion = 'assertStringMatchesFormat';
-            $expected  = $sections['EXPECTF'];
-        }
+            if (isset($sections['EXPECT'])) {
+                $assertion = 'assertEquals';
+                $expected  = $sections['EXPECT'];
+            } else {
+                $assertion = 'assertStringMatchesFormat';
+                $expected  = $sections['EXPECTF'];
+            }
 
-        try {
-            PHPUnit_Framework_Assert::$assertion($expected, $jobResult['stdout']);
-        } catch (PHPUnit_Framework_AssertionFailedError $e) {
-            $result->addFailure($this, $e, $time);
-        } catch (Exception $e) {
-            $result->addError($this, $e, $time);
+            try {
+                PHPUnit_Framework_Assert::$assertion($expected, $jobResult['stdout']);
+            } catch (PHPUnit_Framework_AssertionFailedError $e) {
+                $result->addFailure($this, $e, $time);
+            } catch (Exception $e) {
+                $result->addError($this, $e, $time);
+            }
         }
 
         $result->endTest($this, $time);
