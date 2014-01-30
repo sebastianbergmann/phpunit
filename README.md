@@ -1,5 +1,5 @@
 [![Latest Stable Version](https://poser.pugx.org/phpunit/phpunit-mock-objects/v/stable.png)](https://packagist.org/packages/phpunit/phpunit-mock-objects)
-[![Build Status](https://travis-ci.org/sebastianbergmann/phpunit-mock-objects.png?branch=1.2)](https://travis-ci.org/sebastianbergmann/phpunit-mock-objects)
+[![Build Status](https://travis-ci.org/sebastianbergmann/phpunit-mock-objects.png?branch=1.3)](https://travis-ci.org/sebastianbergmann/phpunit-mock-objects)
 
 # PHPUnit_MockObject
 
@@ -11,11 +11,11 @@
 
 ## Installation
 
-To add PHPUnit_MockObject as a local, per-project dependency to your project, simply add a dependency on `phpunit/phpunit-mock-objects` to your project's `composer.json` file. Here is a minimal example of a `composer.json` file that just defines a dependency on PHPUnit_MockObject 1.2:
+To add PHPUnit_MockObject as a local, per-project dependency to your project, simply add a dependency on `phpunit/phpunit-mock-objects` to your project's `composer.json` file. Here is a minimal example of a `composer.json` file that just defines a dependency on PHPUnit_MockObject 1.3:
 
     {
         "require": {
-            "phpunit/phpunit-mock-objects": "1.2.*"
+            "phpunit/phpunit-mock-objects": "1.3.*"
         }
     }
 
