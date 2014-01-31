@@ -109,12 +109,12 @@ abstract class PHPUnit_Util_PHP
     protected function getBinary()
     {
         // HHVM
-        if (self::$binary === null && getenv('PHP_BINARY')) {
-            self::$binary = escapeshellarg(getenv('PHP_BINARY'));
-
-            if (defined('HPHP_VERSION')) {
-                self::$binary .= ' --php';
+        if (self::$binary === null && defined('HPHP_VERSION')) {
+            if ((self::$binary = getenv('PHP_BINARY')) === false) {
+                self::$binary = PHP_BINARY;
             }
+
+            self::$binary = escapeshellarg(self::$binary) . ' --php';
         }
 
         // PHP >= 5.4.0
