@@ -220,13 +220,33 @@ class PHPUnit_TextUI_Command
      * {
      *     public function __construct()
      *     {
-     *         $this->longOptions['--my-switch'] = 'myHandler';
+     *         // my-switch won't accept a value, it's an on/off
+     *         $this->longOptions['my-switch'] = 'myHandler';
+     *         // my-secondswitch will accept a value - note the equals sign
+     *         $this->longOptions['my-secondswitch='] = 'myOtherHandler';
      *     }
      *
-     *     // --my-switch foo -> myHandler('foo')
-     *     protected function myHandler($value)
+     *     // --my-switch  -> myHandler()
+     *     protected function myHandler()
      *     {
      *     }
+     *
+     *     // --my-secondswitch foo -> myOtherHandler('foo')
+     *     protected function myOtherHandler ($value)
+     *     {
+     *     }
+     *
+     *     // You will also need this - the static keyword in the
+     *     // PHPUnit_TextUI_Command will mean that it'll be
+     *     // PHPUnit_TextUI_Command that gets instantiated,
+     *     // not MyCommand
+     *     public static function main($exit = true)
+     *     {
+     *         $command = new static;
+     *
+     *         return $command->run($_SERVER['argv'], $exit);
+     *     }
+     *
      * }
      * </code>
      *
