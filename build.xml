@@ -156,13 +156,13 @@
    <arg value="${basedir}/phpunit --version | awk 'BEGIN { ORS = &quot;&quot;; } {print $2}'" />
   </exec>
 
-  <copy file="${basedir}/build/phpunit-${version}.phar" tofile="${basedir}/src.phar" />
+  <copy file="${basedir}/build/phpunit-${version}.phar" tofile="${basedir}/phpunit.phar" />
 
   <exec executable="pear">
    <arg value="package" />
   </exec>
 
-  <delete file="${basedir}/src.phar"/>
+  <delete file="${basedir}/phpunit.phar"/>
  </target>
 
  <target name="phar"
