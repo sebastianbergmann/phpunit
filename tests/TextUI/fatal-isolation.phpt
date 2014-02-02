@@ -20,7 +20,7 @@ Time: %s, Memory: %sMb
 There was 1 error:
 
 1) FatalTest::testFatalError
-PHPUnit_Framework_Exception: %s error: Call to undefined function non_existing_function() in %s
+%s
 
 FAILURES!
 Tests: 1, Assertions: 0, Errors: 1.
