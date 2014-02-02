@@ -19,3 +19,4 @@ phpunit.xml
 cache.properties
 .idea
 .ant_targets
+.DS_Store
