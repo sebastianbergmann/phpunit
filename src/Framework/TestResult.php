@@ -57,16 +57,6 @@
 class PHPUnit_Framework_TestResult implements Countable
 {
     /**
-     * @var boolean
-     */
-    protected static $isHHVM = null;
-
-    /**
-     * @var boolean
-     */
-    protected static $xdebugLoaded = null;
-
-    /**
      * @var array
      */
     protected $passed = array();
@@ -648,15 +638,8 @@ class PHPUnit_Framework_TestResult implements Countable
             }
         }
 
-        if (self::$isHHVM === null) {
-            self::$isHHVM = defined('HPHP_VERSION');
-        }
+        $canCollectCodeCoverage = PHPUnit_Framework_Environment::canCollectCodeCoverage();
 
-        if (self::$xdebugLoaded === null) {
-            self::$xdebugLoaded = extension_loaded('xdebug');
-        }
-
-        $canCollectCodeCoverage = self::$isHHVM || self::$xdebugLoaded;
         $collectCodeCoverage    = $canCollectCodeCoverage &&
                                   $this->codeCoverage !== null &&
                                   !$test instanceof PHPUnit_Extensions_SeleniumTestCase &&
@@ -682,7 +665,7 @@ class PHPUnit_Framework_TestResult implements Countable
         try {
             if (!$test instanceof PHPUnit_Framework_Warning &&
                 $this->beStrictAboutTestSize &&
-                extension_loaded('pcntl') && class_exists('PHP_Invoker')) {
+                PHPUnit_Framework_Environment::canInvokePHPSubprocess()) {
                 switch ($test->getSize()) {
                     case PHPUnit_Util_Test::SMALL: {
                         $_timeout = $this->timeoutForSmallTests;
