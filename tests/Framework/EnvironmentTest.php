@@ -44,11 +44,11 @@
 class Framework_EnvironmentTest extends PHPUnit_Framework_TestCase
 {
 
-	public function testEnvironmentReturnsNonNullValues() 
-	{
-		$this->assertTrue(is_bool(PHPUnit_Framework_Environment::isHHVM()));
-		$this->assertTrue(is_bool(PHPUnit_Framework_Environment::canInvokePHPSubprocess()));
-		$this->assertTrue(is_bool(PHPUnit_Framework_Environment::isXdebugLoaded()));
-		$this->assertTrue(is_bool(PHPUnit_Framework_Environment::canCollectCodeCoverage()));
-	}
+    public function testEnvironmentReturnsNonNullValues()
+    {
+        $this->assertTrue(is_bool(PHPUnit_Framework_Environment::isHHVM()));
+        $this->assertTrue(is_bool(PHPUnit_Framework_Environment::canInvokePHPSubprocess()));
+        $this->assertTrue(is_bool(PHPUnit_Framework_Environment::isXdebugLoaded()));
+        $this->assertTrue(is_bool(PHPUnit_Framework_Environment::canCollectCodeCoverage()));
+    }
 }

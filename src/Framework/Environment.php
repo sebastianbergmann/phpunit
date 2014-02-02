@@ -45,37 +45,39 @@
  */
 class PHPUnit_Framework_Environment
 {
-	private static $isHHVM;
-	private static $xdebugLoaded;
-	private static $canInvokePHPSubprocess;
+    private static $isHHVM;
+    private static $xdebugLoaded;
+    private static $canInvokePHPSubprocess;
 
-	public static function isHHVM() 
-	{
-		if (!isset(static::$isHHVM)) {
-			static::$isHHVM = defined("HPHP_VERSION");
-		}
-		return static::$isHHVM;
-	}
+    public static function isHHVM()
+    {
+        if (!isset(static::$isHHVM)) {
+            static::$isHHVM = defined("HPHP_VERSION");
+        }
 
-	public static function isXDebugLoaded() 
-	{
-		if (!isset(static::$xdebugLoaded)) {
-			static::$xdebugLoaded = extension_loaded('xdebug');	
-		}
-		return static::$xdebugLoaded;
-	}
+        return static::$isHHVM;
+    }
 
-	public static function canCollectCodeCoverage()
-	{
-		return static::isHHVM() || static::isXDebugLoaded();
-	}
+    public static function isXDebugLoaded()
+    {
+        if (!isset(static::$xdebugLoaded)) {
+            static::$xdebugLoaded = extension_loaded('xdebug');
+        }
 
-	public static function canInvokePHPSubprocess() 
-	{
-		if (!isset(static::$canInvokePHPSubprocess))
-		{
-			static::$canInvokePHPSubprocess = extension_loaded('pcntl') && class_exists('PHP_Invoker');
-		}
-		return static::$canInvokePHPSubprocess;
-	}
+        return static::$xdebugLoaded;
+    }
+
+    public static function canCollectCodeCoverage()
+    {
+        return static::isHHVM() || static::isXDebugLoaded();
+    }
+
+    public static function canInvokePHPSubprocess()
+    {
+        if (!isset(static::$canInvokePHPSubprocess)) {
+            static::$canInvokePHPSubprocess = extension_loaded('pcntl') && class_exists('PHP_Invoker');
+        }
+
+        return static::$canInvokePHPSubprocess;
+    }
 }
