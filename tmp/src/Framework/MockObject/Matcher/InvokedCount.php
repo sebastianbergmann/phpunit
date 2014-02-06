@@ -74,6 +74,14 @@ class PHPUnit_Framework_MockObject_Matcher_InvokedCount extends PHPUnit_Framewor
     }
 
     /**
+     * @return boolean
+     */
+    public function isNever()
+    {
+        return $this->expectedCount == 0;
+    }
+
+    /**
      * @return string
      */
     public function toString()
