@@ -66,6 +66,7 @@ class Util_TestDox_NamePrettifierTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('Foo', $this->namePrettifier->prettifyTestClass('FooTest'));
         $this->assertEquals('Foo', $this->namePrettifier->prettifyTestClass('TestFoo'));
         $this->assertEquals('Foo', $this->namePrettifier->prettifyTestClass('TestFooTest'));
+        $this->assertEquals('Foo', $this->namePrettifier->prettifyTestClass('Test\FooTest'));
     }
 
     public function testCaterForUserDefinedSuffix()
