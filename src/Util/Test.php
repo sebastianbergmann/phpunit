@@ -344,8 +344,22 @@ class PHPUnit_Util_Test
         $docComment = $reflector->getDocComment();
         $data       = null;
 
-        if (preg_match(self::REGEX_DATA_PROVIDER, $docComment, $matches)) {
+        $dataProviderMethodNameNamespace = null;
+
+        if (method_exists($className, 'getDataProvider')) {
+            $dataProviderMethodNameNamespace = call_user_func(array($className, 'getDataProvider'), $methodName);
+            if ($dataProviderMethodNameNamespace != null) {
+                //Data is required in array later
+                $dataProviderMethodNameNamespace = array($dataProviderMethodNameNamespace);
+            }
+        }
+
+
+        if ($dataProviderMethodNameNamespace == null && preg_match(self::REGEX_DATA_PROVIDER, $docComment, $matches)) {
             $dataProviderMethodNameNamespace = explode('\\', $matches[1]);
+        }
+        
+        if ($dataProviderMethodNameNamespace) { 
             $leaf                            = explode('::', array_pop($dataProviderMethodNameNamespace));
             $dataProviderMethodName          = array_pop($leaf);
 
