@@ -62,8 +62,10 @@ class PHPUnit_Util_PHP_Windows extends PHPUnit_Util_PHP_Default
     private $tempFile;
 
     /**
-     * @param resource $pipe
-     * @since Method available since Release 3.5.12
+     * @param  resource                    $pipe
+     * @param  string                      $job
+     * @throws PHPUnit_Framework_Exception
+     * @since  Method available since Release 3.5.12
      */
     protected function process($pipe, $job)
     {

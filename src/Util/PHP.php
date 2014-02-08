@@ -166,6 +166,7 @@ abstract class PHPUnit_Util_PHP
     /**
      * @param  array  $settings
      * @return string
+     * @since Method available since Release 3.9.0
      */
     protected function settingsToParameters(array $settings)
     {
@@ -181,7 +182,7 @@ abstract class PHPUnit_Util_PHP
     /**
      * Processes the TestResult object from an isolated process.
      *
-     * @param PHPUnit_Framework_TestCase   $test
+     * @param PHPUnit_Framework_Test       $test
      * @param PHPUnit_Framework_TestResult $result
      * @param string                       $stdout
      * @param string                       $stderr
@@ -269,9 +270,10 @@ abstract class PHPUnit_Util_PHP
     /**
      * Gets the thrown exception from a PHPUnit_Framework_TestFailure.
      *
-     * @param PHPUnit_Framework_TestFailure $error
-     * @since Method available since Release 3.6.0
-     * @see   https://github.com/sebastianbergmann/phpunit/issues/74
+     * @param  PHPUnit_Framework_TestFailure $error
+     * @return Exception
+     * @since  Method available since Release 3.6.0
+     * @see    https://github.com/sebastianbergmann/phpunit/issues/74
      */
     private function getException(PHPUnit_Framework_TestFailure $error)
     {
