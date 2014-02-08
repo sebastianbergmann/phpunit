@@ -62,6 +62,33 @@ class PHPUnit_Extensions_PhptTestCase implements PHPUnit_Framework_Test, PHPUnit
     private $filename;
 
     /**
+     * @var array
+     */
+    private $settings = array(
+        'allow_url_fopen=1',
+        'auto_append_file=',
+        'auto_prepend_file=',
+        'disable_functions=',
+        'display_errors=1',
+        'docref_root=',
+        'docref_ext=.html',
+        'error_append_string=',
+        'error_prepend_string=',
+        'error_reporting=-1',
+        'html_errors=0',
+        'log_errors=0',
+        'magic_quotes_runtime=0',
+        'output_handler=',
+        'open_basedir=',
+        'output_buffering=Off',
+        'report_memleaks=0',
+        'report_zend_debug=0',
+        'safe_mode=0',
+        'track_errors=1',
+        'xdebug.default_enable=0'
+    );
+
+    /**
      * Constructs a test case with the given filename.
      *
      * @param  string                      $filename
@@ -117,7 +144,7 @@ class PHPUnit_Extensions_PhptTestCase implements PHPUnit_Framework_Test, PHPUnit
         $result->startTest($this);
 
         if (isset($sections['SKIPIF'])) {
-            $jobResult = $php->runJob($sections['SKIPIF']);
+            $jobResult = $php->runJob($sections['SKIPIF'], $this->settings);
 
             if (!strncasecmp('skip', ltrim($jobResult['stdout']), 4)) {
                 if (preg_match('/^\s*skip\s*(.+)\s*/i', $jobResult['stdout'], $message)) {
@@ -134,7 +161,7 @@ class PHPUnit_Extensions_PhptTestCase implements PHPUnit_Framework_Test, PHPUnit
 
         if (!$skip) {
             PHP_Timer::start();
-            $jobResult = $php->runJob($code);
+            $jobResult = $php->runJob($code, $this->settings);
             $time = PHP_Timer::stop();
 
             if (isset($sections['EXPECT'])) {

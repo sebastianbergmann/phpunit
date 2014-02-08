@@ -60,13 +60,14 @@ class PHPUnit_Util_PHP_Default extends PHPUnit_Util_PHP
      * Runs a single job (PHP code) using a separate PHP process.
      *
      * @param  string                      $job
+     * @param  array                       $settings
      * @return array
      * @throws PHPUnit_Framework_Exception
      */
-    public function runJob($job)
+    public function runJob($job, array $settings = array())
     {
         $process = proc_open(
-          $this->getBinary(),
+          $this->getBinary() . $this->settingsToParameters($settings),
           array(
             0 => array('pipe', 'r'),
             1 => array('pipe', 'w'),

@@ -97,10 +97,11 @@ abstract class PHPUnit_Util_PHP
      * Runs a single job (PHP code) using a separate PHP process.
      *
      * @param  string                      $job
+     * @param  array                       $settings
      * @return array
      * @throws PHPUnit_Framework_Exception
      */
-    abstract public function runJob($job);
+    abstract public function runJob($job, array $settings = array());
 
     /**
      * @return string
@@ -160,6 +161,21 @@ abstract class PHPUnit_Util_PHP
         }
 
         return self::$binary;
+    }
+
+    /**
+     * @param  array  $settings
+     * @return string
+     */
+    protected function settingsToParameters(array $settings)
+    {
+        $buffer = '';
+
+        foreach ($settings as $setting) {
+            $buffer .= ' -d ' . $setting;
+        }
+
+        return $buffer;
     }
 
     /**
