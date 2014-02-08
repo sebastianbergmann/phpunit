@@ -39,3 +39,7 @@ A very special thanks to everyone who has contributed to the documentation and h
 
 * [PHPUnit Documentation](https://github.com/sebastianbergmann/phpunit-documentation/graphs/contributors)
 
+
+
+[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/sebastianbergmann/phpunit/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
+
