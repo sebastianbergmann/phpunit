@@ -235,18 +235,12 @@ class PHPUnit_Extensions_PhptTestCase implements PHPUnit_Framework_Test, PHPUnit
         return $sections;
     }
 
+    /**
+     * @param  string $code
+     * @return string
+     */
     private function render($code)
     {
-        $template = new Text_Template(
-          __DIR__ . '/../Util/PHP/Template/PHPT.tpl'
-        );
-
-        $template->setVar(
-          array(
-            'test' => $code
-          )
-        );
-
         return str_replace(
           array(
             '__DIR__',
@@ -256,7 +250,7 @@ class PHPUnit_Extensions_PhptTestCase implements PHPUnit_Framework_Test, PHPUnit
             "'" . dirname($this->filename) . "'",
             "'" . $this->filename . "'"
           ),
-          $template->render()
+          $code
         );
     }
 }
