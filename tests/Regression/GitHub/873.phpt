@@ -13,10 +13,4 @@ PHPUnit_TextUI_Command::main();
 
 Fatal error: Uncaught exception 'Exception' with message 'PHPUnit suppresses exceptions thrown outside of test case function' in %s:%i
 Stack trace:
-%s
-%s
-%s
-%s
-%s
-%s
-%s
+%a
