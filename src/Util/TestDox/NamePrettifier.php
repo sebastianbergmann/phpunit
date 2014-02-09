@@ -168,7 +168,7 @@ class PHPUnit_Util_TestDox_NamePrettifier
     /**
      * Sets the suffix of test names.
      *
-     * @param string $prefix
+     * @param string $suffix
      */
     public function setSuffix($suffix)
     {
