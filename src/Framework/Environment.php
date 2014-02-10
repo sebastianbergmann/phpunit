@@ -34,30 +34,50 @@
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  *
+ * Provides facilities to check the current environment for particular features. Will
+ * cache checks.
  * @package    PHPUnit
- * @author     Sebastian Bergmann <sebastian@phpunit.de>
+ * @author     Anthony Bishopric <phpunit@anthonybishopric.com>
  * @copyright  2001-2014 Sebastian Bergmann <sebastian@phpunit.de>
  * @license    http://www.opensource.org/licenses/BSD-3-Clause  The BSD 3-Clause License
  * @link       http://www.phpunit.de/
  * @since      File available since Release 2.0.0
  */
-
-/**
- *
- *
- * @package    PHPUnit
- * @author     Sebastian Bergmann <sebastian@phpunit.de>
- * @copyright  2001-2014 Sebastian Bergmann <sebastian@phpunit.de>
- * @license    http://www.opensource.org/licenses/BSD-3-Clause  The BSD 3-Clause License
- * @link       http://www.phpunit.de/
- * @since      Class available since Release 2.0.0
- */
-class Runner_BaseTestRunnerTest extends PHPUnit_Framework_TestCase
+class PHPUnit_Framework_Environment
 {
-    public function testInvokeNonStaticSuite()
+    private static $isHHVM;
+    private static $xdebugLoaded;
+    private static $canInvokePHPSubprocess;
+
+    public static function isHHVM()
     {
-        $runner = new MockRunner;
-        $runner->getTest('NonStatic');
+        if (!isset(static::$isHHVM)) {
+            static::$isHHVM = defined("HPHP_VERSION");
+        }
+
+        return static::$isHHVM;
     }
 
+    public static function isXDebugLoaded()
+    {
+        if (!isset(static::$xdebugLoaded)) {
+            static::$xdebugLoaded = extension_loaded('xdebug');
+        }
+
+        return static::$xdebugLoaded;
+    }
+
+    public static function canCollectCodeCoverage()
+    {
+        return static::isHHVM() || static::isXDebugLoaded();
+    }
+
+    public static function canInvokePHPSubprocess()
+    {
+        if (!isset(static::$canInvokePHPSubprocess)) {
+            static::$canInvokePHPSubprocess = extension_loaded('pcntl') && class_exists('PHP_Invoker');
+        }
+
+        return static::$canInvokePHPSubprocess;
+    }
 }
