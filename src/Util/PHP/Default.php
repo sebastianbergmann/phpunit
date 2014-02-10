@@ -43,6 +43,8 @@
  * @since      File available since Release 3.5.12
  */
 
+use SebastianBergmann\Environment\Environment;
+
 /**
  * Default utility for PHP sub-processes.
  *
@@ -66,8 +68,10 @@ class PHPUnit_Util_PHP_Default extends PHPUnit_Util_PHP
      */
     public function runJob($job, array $settings = array())
     {
+        $env = new Environment;
+
         $process = proc_open(
-          $this->getBinary() . $this->settingsToParameters($settings),
+          $env->getBinary() . $this->settingsToParameters($settings),
           array(
             0 => array('pipe', 'r'),
             1 => array('pipe', 'w'),

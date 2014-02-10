@@ -43,6 +43,8 @@
  * @since      File available since Release 2.0.0
  */
 
+use SebastianBergmann\Environment\Environment;
+
 /**
  * A TestRunner for the Command Line Interface (CLI)
  * PHP SAPI Module.
@@ -105,8 +107,8 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
         $this->codeCoverageFilter = $filter;
         $this->loader             = $loader;
 
-        $this->canCollectCodeCoverage = defined('HPHP_VERSION') ||
-                                        extension_loaded('xdebug');
+        $env = new Environment;
+        $this->canCollectCodeCoverage = $env->canCollectCodeCoverage();
     }
 
     /**

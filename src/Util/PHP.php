@@ -57,11 +57,6 @@
 abstract class PHPUnit_Util_PHP
 {
     /**
-     * @var string
-     */
-    private static $binary;
-
-    /**
      * @return PHPUnit_Util_PHP
      * @since  Method available since Release 3.5.12
      */
@@ -102,66 +97,6 @@ abstract class PHPUnit_Util_PHP
      * @throws PHPUnit_Framework_Exception
      */
     abstract public function runJob($job, array $settings = array());
-
-    /**
-     * @return string
-     * @since  Method available since Release 3.9.0
-     */
-    protected function getBinary()
-    {
-        // HHVM
-        if (self::$binary === null && defined('HPHP_VERSION')) {
-            if ((self::$binary = getenv('PHP_BINARY')) === false) {
-                self::$binary = PHP_BINARY;
-            }
-
-            self::$binary = escapeshellarg(self::$binary) . ' --php';
-        }
-
-        // PHP >= 5.4.0
-        if (self::$binary === null && defined('PHP_BINARY')) {
-            self::$binary = escapeshellarg(PHP_BINARY);
-        }
-
-        // PHP < 5.4.0
-        if (self::$binary === null) {
-            if (PHP_SAPI == 'cli' && isset($_SERVER['_'])) {
-                if (strpos($_SERVER['_'], 'phpunit') !== false) {
-                    $file = file($_SERVER['_']);
-
-                    if (strpos($file[0], ' ') !== false) {
-                        $tmp = explode(' ', $file[0]);
-                        self::$binary = escapeshellarg(trim($tmp[1]));
-                    } else {
-                        self::$binary = escapeshellarg(ltrim(trim($file[0]), '#!'));
-                    }
-                } else if (strpos(basename($_SERVER['_']), 'php') !== false) {
-                    self::$binary = escapeshellarg($_SERVER['_']);
-                }
-            }
-        }
-
-        if (self::$binary === null) {
-            $possibleBinaryLocations = array(
-                PHP_BINDIR . '/php',
-                PHP_BINDIR . '/php-cli.exe',
-                PHP_BINDIR . '/php.exe'
-            );
-
-            foreach ($possibleBinaryLocations as $binary) {
-                if (is_readable($binary)) {
-                    self::$binary = escapeshellarg($binary);
-                    break;
-                }
-            }
-        }
-
-        if (self::$binary === null) {
-            self::$binary = 'php';
-        }
-
-        return self::$binary;
-    }
 
     /**
      * @param  array  $settings

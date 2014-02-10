@@ -43,6 +43,8 @@
  * @since      File available since Release 2.0.0
  */
 
+use SebastianBergmann\Environment\Environment;
+
 /**
  * A TestResult collects the results of executing a test case.
  *
@@ -56,16 +58,6 @@
  */
 class PHPUnit_Framework_TestResult implements Countable
 {
-    /**
-     * @var boolean
-     */
-    protected static $isHHVM = null;
-
-    /**
-     * @var boolean
-     */
-    protected static $xdebugLoaded = null;
-
     /**
      * @var array
      */
@@ -648,15 +640,9 @@ class PHPUnit_Framework_TestResult implements Countable
             }
         }
 
-        if (self::$isHHVM === null) {
-            self::$isHHVM = defined('HPHP_VERSION');
-        }
+        $env = new Environment;
 
-        if (self::$xdebugLoaded === null) {
-            self::$xdebugLoaded = extension_loaded('xdebug');
-        }
-
-        $canCollectCodeCoverage = self::$isHHVM || self::$xdebugLoaded;
+        $canCollectCodeCoverage = $env->canCollectCodeCoverage();
         $collectCodeCoverage    = $canCollectCodeCoverage &&
                                   $this->codeCoverage !== null &&
                                   !$test instanceof PHPUnit_Extensions_SeleniumTestCase &&
