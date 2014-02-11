@@ -5,11 +5,16 @@ php:
     - 5.3
     - 5.4
     - 5.5
+    - hhvm
 
 before_script:
     - COMPOSER_ROOT_VERSION=dev-master composer install --dev --prefer-source
 
 script: vendor/bin/phpunit --configuration ./build/travis-ci.xml
+
+matrix:
+  allow_failures:
+    - php: hhvm
 
 notifications:
   email: false
