@@ -267,7 +267,7 @@ class PHPUnit_Framework_MockObject_Generator
                 $object = $class->newInstanceArgs($arguments);
             }
         } else {
-                if (defined('HPHP_VERSION') ||
+                if (defined('HHVM_VERSION') ||
                     version_compare(PHP_VERSION, '5.4.0', '>=')) {
                     $class  = new ReflectionClass($className);
                     $object = $class->newInstanceWithoutConstructor();
@@ -1003,7 +1003,7 @@ class PHPUnit_Framework_MockObject_Generator
             if (!$forCall) {
                 if ($parameter->isArray()) {
                     $typeHint = 'array ';
-                } elseif ((defined('HPHP_VERSION') || version_compare(PHP_VERSION, '5.4.0', '>='))
+                } elseif ((defined('HHVM_VERSION') || version_compare(PHP_VERSION, '5.4.0', '>='))
                           && $parameter->isCallable()) {
                     $typeHint = 'callable ';
                 } else {
