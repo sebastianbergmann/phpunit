@@ -81,7 +81,7 @@ abstract class PHPUnit_Util_PHP
     public static function getBinary()
     {
         // HHVM
-        if (self::$binary === null && defined('HPHP_VERSION')) {
+        if (self::$binary === null && defined('HHVM_VERSION')) {
             if ((self::$binary = getenv('PHP_BINARY')) === false) {
                 self::$binary = PHP_BINARY;
             }
