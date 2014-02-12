@@ -43,7 +43,7 @@
  * @since      File available since Release 2.0.0
  */
 
-use SebastianBergmann\Environment\Environment;
+use SebastianBergmann\Environment\Runtime;
 
 /**
  * A TestResult collects the results of executing a test case.
@@ -640,9 +640,9 @@ class PHPUnit_Framework_TestResult implements Countable
             }
         }
 
-        $env = new Environment;
+        $runtime = new Runtime;
 
-        $canCollectCodeCoverage = $env->canCollectCodeCoverage();
+        $canCollectCodeCoverage = $runtime->canCollectCodeCoverage();
         $collectCodeCoverage    = $canCollectCodeCoverage &&
                                   $this->codeCoverage !== null &&
                                   !$test instanceof PHPUnit_Extensions_SeleniumTestCase &&

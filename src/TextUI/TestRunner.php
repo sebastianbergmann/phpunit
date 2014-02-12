@@ -43,7 +43,7 @@
  * @since      File available since Release 2.0.0
  */
 
-use SebastianBergmann\Environment\Environment;
+use SebastianBergmann\Environment\Runtime;
 
 /**
  * A TestRunner for the Command Line Interface (CLI)
@@ -107,8 +107,8 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
         $this->codeCoverageFilter = $filter;
         $this->loader             = $loader;
 
-        $env = new Environment;
-        $this->canCollectCodeCoverage = $env->canCollectCodeCoverage();
+        $runtime = new Runtime;
+        $this->canCollectCodeCoverage = $runtime->canCollectCodeCoverage();
     }
 
     /**
