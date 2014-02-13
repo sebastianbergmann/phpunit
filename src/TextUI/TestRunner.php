@@ -456,7 +456,6 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
                 );
 
                 $writer = new PHP_CodeCoverage_Report_HTML(
-                  $arguments['reportCharset'],
                   $arguments['reportHighlight'],
                   $arguments['reportLowUpperBound'],
                   $arguments['reportHighLowerBound'],
@@ -767,11 +766,6 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
 
             if (isset($loggingConfiguration['coverage-html']) &&
                 !isset($arguments['coverageHtml'])) {
-                if (isset($loggingConfiguration['charset']) &&
-                    !isset($arguments['reportCharset'])) {
-                    $arguments['reportCharset'] = $loggingConfiguration['charset'];
-                }
-
                 if (isset($loggingConfiguration['highlight']) &&
                     !isset($arguments['reportHighlight'])) {
                     $arguments['reportHighlight'] = $loggingConfiguration['highlight'];
@@ -918,8 +912,7 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
         $arguments['logIncompleteSkipped']               = isset($arguments['logIncompleteSkipped'])               ? $arguments['logIncompleteSkipped']               : false;
         $arguments['processIsolation']                   = isset($arguments['processIsolation'])                   ? $arguments['processIsolation']                   : false;
         $arguments['repeat']                             = isset($arguments['repeat'])                             ? $arguments['repeat']                             : false;
-        $arguments['reportCharset']                      = isset($arguments['reportCharset'])                      ? $arguments['reportCharset']                      : 'UTF-8';
-        $arguments['reportHighlight']                    = isset($arguments['reportHighlight'])                    ? $arguments['reportHighlight']                    : false;
+        $arguments['reportHighlight']                    = isset($arguments['reportHighlight'])                    ? $arguments['reportHighlight']                    : true;
         $arguments['reportHighLowerBound']               = isset($arguments['reportHighLowerBound'])               ? $arguments['reportHighLowerBound']               : 90;
         $arguments['reportLowUpperBound']                = isset($arguments['reportLowUpperBound'])                ? $arguments['reportLowUpperBound']                : 50;
         $arguments['stopOnError']                        = isset($arguments['stopOnError'])                        ? $arguments['stopOnError']                        : false;

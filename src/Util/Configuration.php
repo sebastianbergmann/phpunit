@@ -134,8 +134,7 @@
  *
  *   <logging>
  *     <log type="coverage-html" target="/tmp/report"
-            charset="UTF-8" highlight="false"
- *          lowUpperBound="50" highLowerBound="90"/>
+            highlight="true" lowUpperBound="50" highLowerBound="90"/>
  *     <log type="coverage-clover" target="/tmp/clover.xml"/>
  *     <log type="json" target="/tmp/logfile.json"/>
  *     <log type="plain" target="/tmp/logfile.txt"/>
@@ -405,14 +404,6 @@ class PHPUnit_Util_Configuration
             );
 
             if ($type == 'coverage-html') {
-                if ($log->hasAttribute('title')) {
-                    $result['title'] = (string) $log->getAttribute('title');
-                }
-
-                if ($log->hasAttribute('charset')) {
-                    $result['charset'] = (string) $log->getAttribute('charset');
-                }
-
                 if ($log->hasAttribute('lowUpperBound')) {
                     $result['lowUpperBound'] = (string) $log->getAttribute('lowUpperBound');
                 }
@@ -424,7 +415,7 @@ class PHPUnit_Util_Configuration
                 if ($log->hasAttribute('highlight')) {
                     $result['highlight'] = $this->getBoolean(
                       (string) $log->getAttribute('highlight'),
-                      false
+                      true
                     );
                 }
             } elseif ($type == 'junit') {
