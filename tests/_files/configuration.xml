@@ -79,8 +79,7 @@
   </listeners>
 
   <logging>
-    <log type="coverage-html" target="/tmp/report"
-         highlight="false" lowUpperBound="50" highLowerBound="90"/>
+    <log type="coverage-html" target="/tmp/report" lowUpperBound="50" highLowerBound="90"/>
     <log type="coverage-clover" target="/tmp/clover.xml"/>
     <log type="json" target="/tmp/logfile.json"/>
     <log type="plain" target="/tmp/logfile.txt"/>
