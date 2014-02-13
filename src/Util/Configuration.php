@@ -404,10 +404,6 @@ class PHPUnit_Util_Configuration
             );
 
             if ($type == 'coverage-html') {
-                if ($log->hasAttribute('title')) {
-                    $result['title'] = (string) $log->getAttribute('title');
-                }
-
                 if ($log->hasAttribute('lowUpperBound')) {
                     $result['lowUpperBound'] = (string) $log->getAttribute('lowUpperBound');
                 }
