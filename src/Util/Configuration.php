@@ -419,7 +419,7 @@ class PHPUnit_Util_Configuration
                 if ($log->hasAttribute('highlight')) {
                     $result['highlight'] = $this->getBoolean(
                       (string) $log->getAttribute('highlight'),
-                      false
+                      true
                     );
                 }
             } elseif ($type == 'junit') {

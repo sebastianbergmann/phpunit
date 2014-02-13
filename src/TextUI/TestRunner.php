@@ -902,7 +902,7 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
         $arguments['logIncompleteSkipped']               = isset($arguments['logIncompleteSkipped'])               ? $arguments['logIncompleteSkipped']               : false;
         $arguments['processIsolation']                   = isset($arguments['processIsolation'])                   ? $arguments['processIsolation']                   : false;
         $arguments['repeat']                             = isset($arguments['repeat'])                             ? $arguments['repeat']                             : false;
-        $arguments['reportHighlight']                    = isset($arguments['reportHighlight'])                    ? $arguments['reportHighlight']                    : false;
+        $arguments['reportHighlight']                    = isset($arguments['reportHighlight'])                    ? $arguments['reportHighlight']                    : true;
         $arguments['reportHighLowerBound']               = isset($arguments['reportHighLowerBound'])               ? $arguments['reportHighLowerBound']               : 90;
         $arguments['reportLowUpperBound']                = isset($arguments['reportLowUpperBound'])                ? $arguments['reportLowUpperBound']                : 50;
         $arguments['stopOnError']                        = isset($arguments['stopOnError'])                        ? $arguments['stopOnError']                        : false;
