@@ -125,10 +125,7 @@
       </xs:simpleType>
     </xs:attribute>
     <xs:attribute name="target" type="xs:anyURI"/>
-    <xs:attribute name="title" type="xs:string"/>
-    <xs:attribute name="charset" type="xs:string" default="UTF-8"/>
-    <xs:attribute name="yui" type="xs:boolean" default="true"/>
-    <xs:attribute name="highlight" type="xs:boolean" default="false"/>
+    <xs:attribute name="highlight" type="xs:boolean" default="true"/>
     <xs:attribute name="lowUpperBound" type="xs:nonNegativeInteger" default="35"/>
     <xs:attribute name="highLowerBound" type="xs:nonNegativeInteger" default="70"/>
     <xs:attribute name="logIncompleteSkipped" type="xs:boolean" default="false"/>
