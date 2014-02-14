@@ -39,7 +39,7 @@
  * @copyright  2010-2014 Sebastian Bergmann <sebastian@phpunit.de>
  * @license    http://www.opensource.org/licenses/BSD-3-Clause  The BSD 3-Clause License
  * @link       http://www.phpunit.de/
- * @since      File available since Release 1.3.0
+ * @since      File available since Release 2.0.0
  */
 
 /**
@@ -49,7 +49,7 @@
  * @license    http://www.opensource.org/licenses/BSD-3-Clause  The BSD 3-Clause License
  * @version    Release: @package_version@
  * @link       http://www.phpunit.de/
- * @since      Class available since Release 1.3.0
+ * @since      Class available since Release 2.0.0
  */
 class Framework_ProxyObjectTest extends PHPUnit_Framework_TestCase
 {
