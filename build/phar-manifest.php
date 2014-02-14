@@ -11,6 +11,7 @@ $components = array(
     'phpunit/phpunit-mock-objects',
     'phpunit/phpunit-selenium',
     'sebastian/diff',
+    'sebastian/environment',
     'sebastian/exporter',
     'sebastian/version'
 );
