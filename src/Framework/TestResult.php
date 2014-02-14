@@ -429,7 +429,7 @@ class PHPUnit_Framework_TestResult implements Countable
      * Returns true if no risky test occurred.
      *
      * @return boolean
-     * @since  Method available since Release 3.8.0
+     * @since  Method available since Release 4.0.0
      */
     public function allHarmless()
     {
@@ -440,7 +440,7 @@ class PHPUnit_Framework_TestResult implements Countable
      * Gets the number of risky tests.
      *
      * @return integer
-     * @since  Method available since Release 3.8.0
+     * @since  Method available since Release 4.0.0
      */
     public function riskyCount()
     {
@@ -471,7 +471,7 @@ class PHPUnit_Framework_TestResult implements Countable
      * Returns an Enumeration for the risky tests.
      *
      * @return array
-     * @since  Method available since Release 3.8.0
+     * @since  Method available since Release 4.0.0
      */
     public function risky()
     {
@@ -914,7 +914,7 @@ class PHPUnit_Framework_TestResult implements Countable
     /**
      * @param  boolean                     $flag
      * @throws PHPUnit_Framework_Exception
-     * @since  Method available since Release 3.8.0
+     * @since  Method available since Release 4.0.0
      */
     public function beStrictAboutTestsThatDoNotTestAnything($flag)
     {
@@ -927,7 +927,7 @@ class PHPUnit_Framework_TestResult implements Countable
 
     /**
      * @return boolean
-     * @since  Method available since Release 3.8.0
+     * @since  Method available since Release 4.0.0
      */
     public function isStrictAboutTestsThatDoNotTestAnything()
     {
@@ -937,7 +937,7 @@ class PHPUnit_Framework_TestResult implements Countable
     /**
      * @param  boolean                     $flag
      * @throws PHPUnit_Framework_Exception
-     * @since  Method available since Release 3.8.0
+     * @since  Method available since Release 4.0.0
      */
     public function beStrictAboutOutputDuringTests($flag)
     {
@@ -950,7 +950,7 @@ class PHPUnit_Framework_TestResult implements Countable
 
     /**
      * @return boolean
-     * @since  Method available since Release 3.8.0
+     * @since  Method available since Release 4.0.0
      */
     public function isStrictAboutOutputDuringTests()
     {
@@ -960,7 +960,7 @@ class PHPUnit_Framework_TestResult implements Countable
     /**
      * @param  boolean                     $flag
      * @throws PHPUnit_Framework_Exception
-     * @since  Method available since Release 3.8.0
+     * @since  Method available since Release 4.0.0
      */
     public function beStrictAboutTestSize($flag)
     {
@@ -973,7 +973,7 @@ class PHPUnit_Framework_TestResult implements Countable
 
     /**
      * @return boolean
-     * @since  Method available since Release 3.8.0
+     * @since  Method available since Release 4.0.0
      */
     public function isStrictAboutTestSize()
     {
@@ -985,7 +985,7 @@ class PHPUnit_Framework_TestResult implements Countable
      *
      * @param  boolean                     $flag
      * @throws PHPUnit_Framework_Exception
-     * @since  Method available since Release 3.8.0
+     * @since  Method available since Release 4.0.0
      */
     public function stopOnRisky($flag)
     {

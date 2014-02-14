@@ -2,7 +2,7 @@
 
 /**
  * @requires PHP 5.3
- * @requires PHPUnit 3.8
+ * @requires PHPUnit 4.0
  * @requires OS Linux
  * @requires function testFuncClass
  * @requires extension testExtClass

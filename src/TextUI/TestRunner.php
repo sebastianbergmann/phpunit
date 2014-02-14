@@ -915,7 +915,7 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
 
     /**
      * @param string $message
-     * @since Method available since Release 3.8.0
+     * @since Method available since Release 4.0.0
      */
     private function showExtensionNotLoadedMessage($extension, $message = '')
     {
@@ -939,7 +939,7 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
      *
      * @param string  $message
      * @param boolean $exit
-     * @since Method available since Release 3.8.0
+     * @since Method available since Release 4.0.0
      */
     private function showMessage($message, $exit = false)
     {

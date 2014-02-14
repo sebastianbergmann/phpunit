@@ -76,7 +76,7 @@ abstract class PHPUnit_Util_PHP
 
     /**
      * @return string
-     * @since  Method available since Release 3.8.0
+     * @since  Method available since Release 4.0.0
      */
     public static function getBinary()
     {

@@ -332,7 +332,7 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
 
     /**
      * @param PHPUnit_Framework_TestResult $result
-     * @since  Method available since Release 3.8.0
+     * @since  Method available since Release 4.0.0
      */
     protected function printRisky(PHPUnit_Framework_TestResult $result)
     {
@@ -350,7 +350,7 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
 
     /**
      * @param PHPUnit_Framework_TestResult $result
-     * @since Method available since Release 3.8.0
+     * @since Method available since Release 4.0.0
      */
     protected function printDeprecated(PHPUnit_Framework_TestResult $result)
     {
@@ -550,7 +550,7 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
      * @param PHPUnit_Framework_Test $test
      * @param Exception              $e
      * @param float                  $time
-     * @since  Method available since Release 3.8.0
+     * @since  Method available since Release 4.0.0
      */
     public function addRiskyTest(PHPUnit_Framework_Test $test, Exception $e, $time)
     {
@@ -678,7 +678,7 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
      * @param  string $color
      * @param  string $buffer
      * @return string
-     * @since  Method available since Release 3.8.0
+     * @since  Method available since Release 4.0.0
      */
     protected function formatWithColor($color, $buffer)
     {
@@ -709,7 +709,7 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
      *
      * @param string $color
      * @param string $buffer
-     * @since  Method available since Release 3.8.0
+     * @since  Method available since Release 4.0.0
      */
     protected function writeWithColor($color, $buffer)
     {
@@ -722,7 +722,7 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
      *
      * @param string $color
      * @param string $buffer
-     * @since  Method available since Release 3.8.0
+     * @since  Method available since Release 4.0.0
      */
     protected function writeProgressWithColor($color, $buffer)
     {

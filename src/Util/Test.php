@@ -111,7 +111,7 @@ class PHPUnit_Util_Test
      * @param  string $className
      * @param  string $methodName
      * @return array
-     * @since  Method available since Release 3.8.0
+     * @since  Method available since Release 4.0.0
      */
     public static function getLinesToBeCovered($className, $methodName)
     {
@@ -178,7 +178,7 @@ class PHPUnit_Util_Test
      * @param  string $className
      * @param  string $methodName
      * @return array
-     * @since  Method available since Release 3.8.0
+     * @since  Method available since Release 4.0.0
      */
     public static function getLinesToBeUsed($className, $methodName)
     {
@@ -693,7 +693,7 @@ class PHPUnit_Util_Test
     /**
      * @param  string $element
      * @return array
-     * @since  Method available since Release 3.8.0
+     * @since  Method available since Release 4.0.0
      */
     private static function resolveElementToReflectionObjects($element)
     {
