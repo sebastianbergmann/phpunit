@@ -324,7 +324,7 @@ class PHPUnit_Framework_MockObject_MockBuilder
      * Enables the invocation of the original methods.
      *
      * @return PHPUnit_Framework_MockObject_MockBuilder
-     * @since  Method available since Release 1.3.0
+     * @since  Method available since Release 2.0.0
      */
     public function enableProxyingToOriginalMethods()
     {
@@ -337,7 +337,7 @@ class PHPUnit_Framework_MockObject_MockBuilder
      * Disables the invocation of the original methods.
      *
      * @return PHPUnit_Framework_MockObject_MockBuilder
-     * @since  Method available since Release 1.3.0
+     * @since  Method available since Release 2.0.0
      */
     public function disableProxyingToOriginalMethods()
     {
@@ -352,7 +352,7 @@ class PHPUnit_Framework_MockObject_MockBuilder
      *
      * @param  object                                   $object
      * @return PHPUnit_Framework_MockObject_MockBuilder
-     * @since  Method available since Release 1.3.0
+     * @since  Method available since Release 2.0.0
      */
     public function setProxyTarget($object)
     {

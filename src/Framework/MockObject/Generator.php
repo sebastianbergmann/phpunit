@@ -980,7 +980,7 @@ class PHPUnit_Framework_MockObject_Generator
      * @param  ReflectionMethod $method
      * @param  boolean          $forCall
      * @return string
-     * @since  Method available since Release 1.3.0
+     * @since  Method available since Release 2.0.0
      */
     protected function getMethodParameters(ReflectionMethod $method, $forCall = FALSE)
     {
