@@ -221,6 +221,8 @@
 
   <move file="${basedir}/composer.json.bak" tofile="${basedir}/composer.json"/>
 
+  <exec executable="${basedir}/build/phar-manifest.php" output="${basedir}/build/phar/manifest.txt"/>
+
   <copy todir="${basedir}/build/phar/php-code-coverage">
    <fileset dir="${basedir}/vendor/phpunit/php-code-coverage/src">
     <include name="**/*" />
