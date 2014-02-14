@@ -800,7 +800,7 @@ class PHPUnit_TextUI_Command
     }
 
     /**
-     * @since Method available since Release 3.8.0
+     * @since Method available since Release 4.0.0
      */
     protected function handleSelfUpdate()
     {

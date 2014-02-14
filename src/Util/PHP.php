@@ -101,7 +101,7 @@ abstract class PHPUnit_Util_PHP
     /**
      * @param  array  $settings
      * @return string
-     * @since Method available since Release 3.9.0
+     * @since Method available since Release 4.1.0
      */
     protected function settingsToParameters(array $settings)
     {

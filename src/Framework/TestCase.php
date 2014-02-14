@@ -1058,7 +1058,7 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
      * Returns true if the tests has dependencies
      *
      * @return boolean
-     * @since Method available since Release 3.8.0
+     * @since Method available since Release 4.0.0
      */
     public function hasDependencies()
     {
@@ -1448,7 +1448,7 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
      * @param  array                                   $mockedMethods
      * @param  boolean                                 $cloneArguments
      * @return PHPUnit_Framework_MockObject_MockObject
-     * @since  Method available since Release 3.8.1
+     * @since  Method available since Release 4.0.0
      * @throws PHPUnit_Framework_Exception
      */
     public function getMockForTrait($traitName, array $arguments = array(), $mockClassName = '', $callOriginalConstructor = true, $callOriginalClone = true, $callAutoload = true, $mockedMethods = array(), $cloneArguments = false)
