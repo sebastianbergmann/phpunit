@@ -9,7 +9,6 @@
   <delete dir="${basedir}/bin"/>
   <delete dir="${basedir}/vendor"/>
   <delete file="${basedir}/composer.lock"/>
-  <delete file="${basedir}/composer.phar"/>
   <delete dir="${basedir}/build/api"/>
   <delete dir="${basedir}/build/code-browser"/>
   <delete dir="${basedir}/build/coverage"/>
@@ -35,7 +34,7 @@
  </target>
 
  <target name="composer" description="Install dependencies with Composer">
-  <get src="https://getcomposer.org/composer.phar" dest="${basedir}/composer.phar"/>
+  <get src="https://getcomposer.org/composer.phar" dest="${basedir}/composer.phar" skipexisting="true"/>
 
   <exec executable="php">
    <arg value="composer.phar"/>
