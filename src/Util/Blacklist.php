@@ -101,7 +101,8 @@ class PHPUnit_Util_Blacklist
                 'Text_Template' => 1,
                 'SebastianBergmann\Diff' => 1,
                 'SebastianBergmann\Exporter\Exporter' => 1,
-                'SebastianBergmann\Version' => 1
+                'SebastianBergmann\Version' => 1,
+                'Composer\Autoload\ClassLoader' => 1
             );
 
             foreach ($classes as $className => $parent) {
