@@ -102,7 +102,8 @@ class PHPUnit_Util_Blacklist
                 'SebastianBergmann\Diff' => 1,
                 'SebastianBergmann\Environment\Runtime' => 1,
                 'SebastianBergmann\Exporter\Exporter' => 1,
-                'SebastianBergmann\Version' => 1
+                'SebastianBergmann\Version' => 1,
+                'Composer\Autoload\ClassLoader' => 1
             );
 
             foreach ($classes as $className => $parent) {
