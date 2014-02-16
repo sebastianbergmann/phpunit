@@ -3,7 +3,6 @@
  <target name="clean" description="Cleanup build artifacts">
   <delete dir="${basedir}/vendor"/>
   <delete file="${basedir}/composer.lock"/>
-  <delete file="${basedir}/composer.phar"/>
 
   <delete>
    <fileset dir="${basedir}/build">
@@ -13,7 +12,7 @@
  </target>
 
  <target name="composer" depends="clean" description="Install dependencies with Composer">
-  <get src="https://getcomposer.org/composer.phar" dest="${basedir}/composer.phar"/>
+  <get src="https://getcomposer.org/composer.phar" dest="${basedir}/composer.phar" skipexisting="true"/>
 
   <exec executable="php">
    <arg value="composer.phar"/>
