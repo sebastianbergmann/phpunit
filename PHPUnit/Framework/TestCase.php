@@ -862,6 +862,11 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
         }
 
         // Clean up the mock objects.
+        // Clean up mock objects' internal state saved in static members.
+        foreach ($this->mockObjects as $mockObject) {
+            $mockObject->__phpunit_cleanup();
+        }
+
         $this->mockObjects = array();
 
         // Tear down the fixture. An exception raised in tearDown() will be
