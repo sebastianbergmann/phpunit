@@ -267,15 +267,11 @@ class PHPUnit_Framework_MockObject_Generator
                 $object = $class->newInstanceArgs($arguments);
             }
         } else {
-                if (defined('HHVM_VERSION') ||
-                    version_compare(PHP_VERSION, '5.4.0', '>=')) {
-                    $class  = new ReflectionClass($className);
-                    $object = $class->newInstanceWithoutConstructor();
-                } else {
-                    $object = unserialize(
-                        sprintf('O:%d:"%s":0:{}', strlen($className), $className)
-                    );
-                }
+            // We have to use this dirty trick instead of ReflectionClass::newInstanceWithoutConstructor()
+            // because of https://github.com/sebastianbergmann/phpunit-mock-objects/issues/154
+            $object = unserialize(
+                sprintf('O:%d:"%s":0:{}', strlen($className), $className)
+            );
         }
 
         if ($callOriginalMethods) {
