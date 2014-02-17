@@ -331,11 +331,11 @@ class PHPUnit_Framework_MockObject_Generator
 
         if (class_exists($originalClassName, $callAutoload) ||
             interface_exists($originalClassName, $callAutoload)) {
-            $methods   = array();
             $reflector = new ReflectionClass($originalClassName);
+            $methods   = $mockedMethods;
 
             foreach ($reflector->getMethods() as $method) {
-                if ($method->isAbstract() || in_array($method->getName(), $mockedMethods)) {
+                if ($method->isAbstract() || !in_array($method->getName(), $methods)) {
                     $methods[] = $method->getName();
                 }
             }
