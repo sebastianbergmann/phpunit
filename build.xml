@@ -271,6 +271,12 @@
    </fileset>
   </copy>
 
+  <copy todir="${basedir}/build/phar/sebastian-environment">
+   <fileset dir="${basedir}/vendor/sebastian/environment/src">
+    <include name="**/*.php" />
+   </fileset>
+  </copy>
+
   <copy todir="${basedir}/build/phar/sebastian-exporter">
    <fileset dir="${basedir}/vendor/sebastian/exporter/src">
     <include name="**/*.php" />
