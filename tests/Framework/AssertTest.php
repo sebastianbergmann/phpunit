@@ -1402,6 +1402,38 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
     }
 
     /**
+     * @covers PHPUnit_Framework_Assert::assertDirectoryCount
+     */
+    public function testAssertDirectoryCount()
+    {
+        $count = iterator_count(
+            new \RecursiveDirectoryIterator(__DIR__, \RecursiveDirectoryIterator::SKIP_DOTS)
+        );
+
+        $this->assertDirectoryCount($count, __DIR__);
+    }
+
+    /**
+     * @covers PHPUnit_Framework_Assert::assertDirectoryEmpty
+     */
+    public function testAssertDirectoryEmpty()
+    {
+        $directory = sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'Test';
+
+        mkdir($directory);
+        $this->assertDirectoryEmpty($directory);
+        rmdir($directory);
+    }
+
+    /**
+     * @covers PHPUnit_Framework_Assert::assertDirectoryNotEmpty
+     */
+    public function testAssertDirectoryNotEmpty()
+    {
+        $this->assertDirectoryNotEmpty(__DIR__);
+    }
+
+    /**
      * @covers PHPUnit_Framework_Assert::assertObjectHasAttribute
      */
     public function testAssertObjectHasAttribute()

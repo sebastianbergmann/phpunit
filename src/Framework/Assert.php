@@ -913,6 +913,54 @@ abstract class PHPUnit_Framework_Assert
     }
 
     /**
+     * Asserts the number of items in a directory, minus "." and "..".
+     *
+     * @param int $expectedCount
+     * @param string $directory
+     * @param string $message
+     */
+    public static function assertDirectoryCount($expectedCount, $directory, $message = '')
+    {
+        self::assertDirectoryExists($directory, $message);
+        self::assertEquals(
+            $expectedCount,
+            iterator_count(
+                new \RecursiveDirectoryIterator($directory, \RecursiveDirectoryIterator::SKIP_DOTS)
+            ),
+            $message
+        );
+    }
+
+    /**
+     * Asserts that a directory is empty, other than "." and "..".
+     *
+     * @param string $directory
+     * @param string $message
+     */
+    public static function assertDirectoryEmpty($directory, $message = '')
+    {
+        self::assertDirectoryCount(0, $directory, $message);
+    }
+
+    /**
+     * Asserts that a directory is not empty, other than "." and "..".
+     *
+     * @param string $directory
+     * @param string $message
+     */
+    public static function assertDirectoryNotEmpty($directory, $message = '')
+    {
+        self::assertDirectoryExists($directory, $message);
+        self::assertNotEquals(
+            0,
+            iterator_count(
+                new \RecursiveDirectoryIterator($directory, \RecursiveDirectoryIterator::SKIP_DOTS)
+            ),
+            $message
+        );
+    }
+
+    /**
      * Asserts that a condition is true.
      *
      * @param  boolean                                $condition
