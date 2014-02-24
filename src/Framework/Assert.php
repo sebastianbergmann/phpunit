@@ -877,6 +877,42 @@ abstract class PHPUnit_Framework_Assert
     }
 
     /**
+     * Asserts that a directory exists.
+     *
+     * @param string $directory
+     * @param string $message
+     */
+    public static function assertDirectoryExists($directory, $message = '')
+    {
+        if (!is_string($directory)) {
+            throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'string');
+        }
+
+        $constraint = new PHPUnit_Framework_Constraint_DirectoryExists;
+
+        self::assertThat($directory, $constraint, $message);
+    }
+
+    /**
+     * Asserts that a directory does not exist.
+     *
+     * @param string $directory
+     * @param string $message
+     */
+    public static function assertDirectoryNotExists($directory, $message = '')
+    {
+        if (!is_string($directory)) {
+            throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'string');
+        }
+
+        $constraint = new PHPUnit_Framework_Constraint_Not(
+            new PHPUnit_Framework_Constraint_DirectoryExists
+        );
+
+        self::assertThat($directory, $constraint, $message);
+    }
+
+    /**
      * Asserts that a condition is true.
      *
      * @param  boolean                                $condition
@@ -2577,6 +2613,16 @@ abstract class PHPUnit_Framework_Assert
     public static function fileExists()
     {
         return new PHPUnit_Framework_Constraint_FileExists;
+    }
+
+    /**
+     * Returns a PHPUnit_Framework_Constraint_DirectoryExists matcher object.
+     *
+     * @return PHPUnit_Framework_Constraint_DirectoryExists
+     */
+    public static function directoryExists()
+    {
+        return new PHPUnit_Framework_Constraint_DirectoryExists;
     }
 
     /**

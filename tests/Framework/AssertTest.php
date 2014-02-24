@@ -1357,6 +1357,51 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
     }
 
     /**
+     * @covers PHPUnit_Framework_Assert::assertDirectoryExists
+     */
+    public function testAssertDirectoryExists()
+    {
+        $this->assertDirectoryExists(__DIR__);
+
+        try {
+            $this->assertDirectoryExists(__DIR__ . DIRECTORY_SEPARATOR . 'NotExisting');
+        }
+
+        catch (PHPUnit_Framework_AssertionFailedError $e) {
+            return;
+        }
+
+        $this->fail();
+    }
+
+    /**
+     * @covers            PHPUnit_Framework_Assert::assertDirectoryNotExists
+     * @expectedException PHPUnit_Framework_Exception
+     */
+    public function testAssertDirectoryNotExistsThrowsException()
+    {
+        $this->assertDirectoryNotExists(null);
+    }
+
+    /**
+     * @covers PHPUnit_Framework_Assert::assertDirectoryNotExists
+     */
+    public function testAssertDirectoryNotExists()
+    {
+        $this->assertDirectoryNotExists(__DIR__ . DIRECTORY_SEPARATOR . 'NotExisting');
+
+        try {
+            $this->assertDirectoryNotExists(__DIR__);
+        }
+
+        catch (PHPUnit_Framework_AssertionFailedError $e) {
+            return;
+        }
+
+        $this->fail();
+    }
+
+    /**
      * @covers PHPUnit_Framework_Assert::assertObjectHasAttribute
      */
     public function testAssertObjectHasAttribute()

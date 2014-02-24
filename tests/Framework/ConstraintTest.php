@@ -338,6 +338,143 @@ EOF
     }
 
     /**
+     * @covers PHPUnit_Framework_Constraint_DirectoryExists
+     * @covers PHPUnit_Framework_Assert::directoryExists
+     * @covers PHPUnit_Framework_Constraint::count
+     * @covers PHPUnit_Framework_TestFailure::exceptionToString
+     */
+    public function testConstraintDirectoryExists()
+    {
+        $constraint = PHPUnit_Framework_Assert::directoryExists();
+
+        $this->assertFalse($constraint->evaluate('foo', '', true));
+        $this->assertEquals('directory exists', $constraint->toString());
+        $this->assertEquals(1, count($constraint));
+
+        try {
+            $constraint->evaluate('foo');
+        }
+
+        catch (PHPUnit_Framework_ExpectationFailedException $e) {
+            $this->assertEquals(
+                <<<EOF
+Failed asserting that directory "foo" exists.
+
+EOF
+                ,
+                PHPUnit_Framework_TestFailure::exceptionToString($e)
+            );
+
+            return;
+        }
+
+        $this->fail();
+    }
+
+    /**
+     * @covers PHPUnit_Framework_Constraint_DirectoryExists
+     * @covers PHPUnit_Framework_Assert::directoryExists
+     * @covers PHPUnit_Framework_TestFailure::exceptionToString
+     */
+    public function testConstraintDirectoryExists2()
+    {
+        $constraint = PHPUnit_Framework_Assert::directoryExists();
+
+        try {
+            $constraint->evaluate('foo', 'custom message');
+        }
+
+        catch (PHPUnit_Framework_ExpectationFailedException $e) {
+            $this->assertEquals(<<<EOF
+custom message
+Failed asserting that directory "foo" exists.
+
+EOF
+                ,
+                PHPUnit_Framework_TestFailure::exceptionToString($e)
+            );
+
+            return;
+        }
+
+        $this->fail();
+    }
+
+    /**
+     * @covers PHPUnit_Framework_Constraint_DirectoryExists
+     * @covers PHPUnit_Framework_Constraint_Not
+     * @covers PHPUnit_Framework_Assert::logicalNot
+     * @covers PHPUnit_Framework_Assert::directoryExists
+     * @covers PHPUnit_Framework_TestFailure::exceptionToString
+     */
+    public function testConstraintDirectoryNotExists()
+    {
+        $directory = dirname(__DIR__) . DIRECTORY_SEPARATOR . '_files';
+
+        $constraint = PHPUnit_Framework_Assert::logicalNot(
+            PHPUnit_Framework_Assert::directoryExists()
+        );
+
+        $this->assertFalse($constraint->evaluate($directory, '', true));
+        $this->assertEquals('directory does not exist', $constraint->toString());
+        $this->assertEquals(1, count($constraint));
+
+        try {
+            $constraint->evaluate($directory);
+        }
+
+        catch (PHPUnit_Framework_ExpectationFailedException $e) {
+            $this->assertEquals(
+                <<<EOF
+Failed asserting that directory "$directory" does not exist.
+
+EOF
+                ,
+                PHPUnit_Framework_TestFailure::exceptionToString($e)
+            );
+
+            return;
+        }
+
+        $this->fail();
+    }
+
+    /**
+     * @covers PHPUnit_Framework_Constraint_DirectoryExists
+     * @covers PHPUnit_Framework_Constraint_Not
+     * @covers PHPUnit_Framework_Assert::logicalNot
+     * @covers PHPUnit_Framework_Assert::directoryExists
+     * @covers PHPUnit_Framework_TestFailure::exceptionToString
+     */
+    public function testConstraintDirectoryNotExists2()
+    {
+        $directory = dirname(__DIR__) . DIRECTORY_SEPARATOR . '_files';
+
+        $constraint = PHPUnit_Framework_Assert::logicalNot(
+            PHPUnit_Framework_Assert::directoryExists()
+        );
+
+        try {
+            $constraint->evaluate($directory, 'custom message');
+        }
+
+        catch (PHPUnit_Framework_ExpectationFailedException $e) {
+            $this->assertEquals(<<<EOF
+custom message
+Failed asserting that directory "$directory" does not exist.
+
+EOF
+                ,
+                PHPUnit_Framework_TestFailure::exceptionToString($e)
+            );
+
+            return;
+        }
+
+        $this->fail();
+    }
+
+    /**
      * @covers PHPUnit_Framework_Constraint_GreaterThan
      * @covers PHPUnit_Framework_Assert::greaterThan
      * @covers PHPUnit_Framework_Constraint::count
