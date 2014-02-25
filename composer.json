@@ -34,7 +34,7 @@
         "ext-spl": "*"
     },
     "require-dev": {
-        "pear-pear/pear": "1.9.4"
+        "pear-pear.php.net/pear": "1.9.4"
     },
     "repositories": [
         {
