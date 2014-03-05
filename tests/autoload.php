@@ -142,6 +142,7 @@ spl_autoload_register(
                 'testclass' => '/Framework/ComparatorTest.php',
                 'testclasscomparator' => '/Framework/ComparatorTest.php',
                 'testiterator' => '/_files/TestIterator.php',
+                'testiterator2' => '/_files/TestIterator2.php',
                 'throwexceptiontestcase' => '/_files/ThrowExceptionTestCase.php',
                 'thrownoexceptiontestcase' => '/_files/ThrowNoExceptionTestCase.php',
                 'twotest' => '/Regression/783/TwoTest.php',
