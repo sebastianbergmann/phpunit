@@ -44,45 +44,23 @@
  */
 
 require_once __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'TestIterator.php';
+require_once __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'TestIterator2.php';
 
-class TestIterator2 implements Iterator {
-
-    protected $data;
-
-    public function __construct(array $array)
+/**
+ *
+ *
+ * @package    PHPUnit
+ * @author     Sebastian Bergmann <sebastian@phpunit.de>
+ * @author     Jeroen Versteeg <jversteeg@gmail.com>
+ * @copyright  2001-2014 Sebastian Bergmann <sebastian@phpunit.de>
+ * @license    http://www.opensource.org/licenses/BSD-3-Clause  The BSD 3-Clause License
+ * @link       http://www.phpunit.de/
+ * @since      Class available since Release 3.7.30
+ */
+class CountTest extends PHPUnit_Framework_TestCase
+{
+    public function testCount()
     {
-        $this->data = $array;
-    }
-
-    public function current()
-    {
-        return current($this->data);
-    }
-
-    public function next()
-    {
-        next($this->data);
-    }
-
-    public function key()
-    {
-        return key($this->data);
-    }
-
-    public function valid()
-    {
-        return key($this->data) !== null;
-    }
-
-    public function rewind()
-    {
-        reset($this->data);
-    }
-}
-
-class CountTest extends PHPUnit_Framework_TestCase {
-
-    public function test_Count() {
         $countConstraint = new PHPUnit_Framework_Constraint_Count(3);
         $this->assertTrue($countConstraint->evaluate(array(1,2,3), '', true));
 
@@ -94,7 +72,7 @@ class CountTest extends PHPUnit_Framework_TestCase {
         $this->assertTrue($countConstraint->evaluate($it, '', true));
     }
 
-    public function test_CountDoesNotChangeIteratorKey ()
+    public function testCountDoesNotChangeIteratorKey()
     {
         $countConstraint = new PHPUnit_Framework_Constraint_Count(2);
 
