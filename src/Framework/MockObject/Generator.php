@@ -898,6 +898,10 @@ class PHPUnit_Framework_MockObject_Generator
             $modifier = 'public';
         }
 
+        if ($method->isStatic()) {
+            $modifier .= ' static';
+        }
+
         if ($method->returnsReference()) {
             $reference = '&';
         } else {
@@ -962,7 +966,6 @@ class PHPUnit_Framework_MockObject_Generator
     {
         if ($method->isConstructor() ||
             $method->isFinal() ||
-            $method->isStatic() ||
             isset($this->blacklistedMethodNames[$method->getName()])) {
             return FALSE;
         }

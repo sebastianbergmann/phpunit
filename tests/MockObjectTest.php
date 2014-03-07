@@ -758,6 +758,18 @@ class Framework_MockObjectTest extends PHPUnit_Framework_TestCase
         $mock = $this->getMockFromWsdl(__DIR__ . '/_files/GoogleSearch.wsdl');
     }
 
+    /**
+     * @see    https://github.com/sebastianbergmann/phpunit-mock-objects/issues/156
+     * @ticket 156
+     */
+    public function testInterfaceWithStaticMethodCanBeStubbed()
+    {
+        $this->assertInstanceOf(
+            'InterfaceWithStaticMethod',
+            $this->getMock('InterfaceWithStaticMethod')
+        );
+    }
+
     private function resetMockObjects()
     {
         $refl = new ReflectionObject($this);
