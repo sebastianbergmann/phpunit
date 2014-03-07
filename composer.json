@@ -31,7 +31,7 @@
         "sebastian/diff": "~1.1",
         "sebastian/environment": "~1.0",
         "sebastian/exporter": "~1.0.1",
-        "sebastian/version": "~1.0",
+        "sebastian/version": "~1.0.3",
         "ext-dom": "*",
         "ext-pcre": "*",
         "ext-reflection": "*",
