@@ -24,7 +24,7 @@
         "phpunit/php-text-template": "~1.2"
     },
     "require-dev": {
-        "phpunit/phpunit": ">=4.0.0,<4.1.0",
+        "phpunit/phpunit": ">=4.0.0,<4.1.0"
     },
     "suggest": {
         "ext-soap": "*"
