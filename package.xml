@@ -17,14 +17,14 @@
   <email>sebastian@phpunit.de</email>
   <active>yes</active>
  </lead>
- <date>2014-MM-DD</date>
+ <date>2014-03-07</date>
  <version>
   <release>4.0.0</release>
   <api>4.0.0</api>
  </version>
  <stability>
-  <release>beta</release>
-  <api>beta</api>
+  <release>stable</release>
+  <api>stable</api>
  </stability>
  <license>The BSD 3-Clause License</license>
  <notes>http://github.com/sebastianbergmann/phpunit/blob/master/README.md</notes>
