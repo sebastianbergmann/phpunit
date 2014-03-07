@@ -720,11 +720,11 @@ class PHPUnit_Framework_TestResult implements Countable
 
             if ($append && $test instanceof PHPUnit_Framework_TestCase) {
                 $linesToBeCovered = PHPUnit_Util_Test::getLinesToBeCovered(
-                  get_class($test), $test->getName()
+                  get_class($test), $test->getName(false)
                 );
 
                 $linesToBeUsed = PHPUnit_Util_Test::getLinesToBeUsed(
-                  get_class($test), $test->getName()
+                  get_class($test), $test->getName(false)
                 );
             }
 
