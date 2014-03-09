@@ -117,7 +117,7 @@ class PHPUnit_Framework_TestFailure
             $buffer = $e->toString();
 
             if ($e instanceof PHPUnit_Framework_ExpectationFailedException && $e->getComparisonFailure()) {
-                $buffer = $buffer . "\n" . $e->getComparisonFailure()->getDiff();
+                $buffer = $buffer . $e->getComparisonFailure()->getDiff();
             }
 
             if (!empty($buffer)) {
