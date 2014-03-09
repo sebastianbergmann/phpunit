@@ -43,7 +43,7 @@
  * @since      File available since Release 2.0.0
  */
 
-use SebastianBergmann\Environment\Environment;
+use SebastianBergmann\Environment\Runtime;
 
 /**
  * A TestRunner for the Command Line Interface (CLI)
@@ -107,8 +107,8 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
         $this->codeCoverageFilter = $filter;
         $this->loader             = $loader;
 
-        $env = new Environment;
-        $this->canCollectCodeCoverage = $env->canCollectCodeCoverage();
+        $runtime = new Runtime;
+        $this->canCollectCodeCoverage = $runtime->canCollectCodeCoverage();
     }
 
     /**
@@ -456,8 +456,6 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
                 );
 
                 $writer = new PHP_CodeCoverage_Report_HTML(
-                  $arguments['reportCharset'],
-                  $arguments['reportHighlight'],
                   $arguments['reportLowUpperBound'],
                   $arguments['reportHighLowerBound'],
                   sprintf(
@@ -767,16 +765,6 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
 
             if (isset($loggingConfiguration['coverage-html']) &&
                 !isset($arguments['coverageHtml'])) {
-                if (isset($loggingConfiguration['charset']) &&
-                    !isset($arguments['reportCharset'])) {
-                    $arguments['reportCharset'] = $loggingConfiguration['charset'];
-                }
-
-                if (isset($loggingConfiguration['highlight']) &&
-                    !isset($arguments['reportHighlight'])) {
-                    $arguments['reportHighlight'] = $loggingConfiguration['highlight'];
-                }
-
                 if (isset($loggingConfiguration['lowUpperBound']) &&
                     !isset($arguments['reportLowUpperBound'])) {
                     $arguments['reportLowUpperBound'] = $loggingConfiguration['lowUpperBound'];
@@ -918,8 +906,6 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
         $arguments['logIncompleteSkipped']               = isset($arguments['logIncompleteSkipped'])               ? $arguments['logIncompleteSkipped']               : false;
         $arguments['processIsolation']                   = isset($arguments['processIsolation'])                   ? $arguments['processIsolation']                   : false;
         $arguments['repeat']                             = isset($arguments['repeat'])                             ? $arguments['repeat']                             : false;
-        $arguments['reportCharset']                      = isset($arguments['reportCharset'])                      ? $arguments['reportCharset']                      : 'UTF-8';
-        $arguments['reportHighlight']                    = isset($arguments['reportHighlight'])                    ? $arguments['reportHighlight']                    : false;
         $arguments['reportHighLowerBound']               = isset($arguments['reportHighLowerBound'])               ? $arguments['reportHighLowerBound']               : 90;
         $arguments['reportLowUpperBound']                = isset($arguments['reportLowUpperBound'])                ? $arguments['reportLowUpperBound']                : 50;
         $arguments['stopOnError']                        = isset($arguments['stopOnError'])                        ? $arguments['stopOnError']                        : false;
@@ -939,7 +925,7 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
 
     /**
      * @param string $message
-     * @since Method available since Release 3.8.0
+     * @since Method available since Release 4.0.0
      */
     private function showExtensionNotLoadedMessage($extension, $message = '')
     {
@@ -963,7 +949,7 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
      *
      * @param string  $message
      * @param boolean $exit
-     * @since Method available since Release 3.8.0
+     * @since Method available since Release 4.0.0
      */
     private function showMessage($message, $exit = false)
     {

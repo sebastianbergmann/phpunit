@@ -31,6 +31,11 @@ spl_autoload_register(
 
 Phar::mapPhar('___PHAR___');
 
+if (isset($_SERVER['argv'][1]) && $_SERVER['argv'][1] == '--manifest') {
+    print file_get_contents(__PHPUNIT_PHAR_ROOT__ . '/manifest.txt');
+    exit;
+}
+
 if ($GLOBALS['_SERVER']['SCRIPT_NAME'] != '-') {
     PHPUnit_TextUI_Command::main();
 }

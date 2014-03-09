@@ -19,8 +19,8 @@
  </lead>
  <date>2014-MM-DD</date>
  <version>
-  <release>3.9.0</release>
-  <api>3.9.0</api>
+  <release>4.1.0</release>
+  <api>4.1.0</api>
  </version>
  <stability>
   <release>alpha</release>
@@ -42,7 +42,7 @@
  <dependencies>
   <required>
    <php>
-    <min>5.4.7</min>
+    <min>5.3.3</min>
    </php>
    <pearinstaller>
     <min>1.9.4</min>

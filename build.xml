@@ -9,7 +9,6 @@
   <delete dir="${basedir}/bin"/>
   <delete dir="${basedir}/vendor"/>
   <delete file="${basedir}/composer.lock"/>
-  <delete file="${basedir}/composer.phar"/>
   <delete dir="${basedir}/build/api"/>
   <delete dir="${basedir}/build/code-browser"/>
   <delete dir="${basedir}/build/coverage"/>
@@ -35,7 +34,7 @@
  </target>
 
  <target name="composer" description="Install dependencies with Composer">
-  <get src="https://getcomposer.org/composer.phar" dest="${basedir}/composer.phar"/>
+  <get src="https://getcomposer.org/composer.phar" dest="${basedir}/composer.phar" skipexisting="true"/>
 
   <exec executable="php">
    <arg value="composer.phar"/>
@@ -221,6 +220,8 @@
 
   <move file="${basedir}/composer.json.bak" tofile="${basedir}/composer.json"/>
 
+  <exec executable="${basedir}/build/phar-manifest.php" output="${basedir}/build/phar/manifest.txt"/>
+
   <copy todir="${basedir}/build/phar/php-code-coverage">
    <fileset dir="${basedir}/vendor/phpunit/php-code-coverage/src">
     <include name="**/*" />
@@ -267,6 +268,12 @@
    <fileset dir="${basedir}/vendor/sebastian/diff/src">
     <include name="**/*.php" />
     <exclude name="**/autoload.php" />
+   </fileset>
+  </copy>
+
+  <copy todir="${basedir}/build/phar/sebastian-environment">
+   <fileset dir="${basedir}/vendor/sebastian/environment/src">
+    <include name="**/*.php" />
    </fileset>
   </copy>
 

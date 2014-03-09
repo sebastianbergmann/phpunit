@@ -141,6 +141,13 @@ class Util_TestTest extends PHPUnit_Framework_TestCase
             array('testTen',    array('extensions' => array('testExt'))),
             array('testEleven', array('OS' => '/Linux/i')),
             array(
+                'testSpace',
+                array(
+                    'extensions' => array('spl'),
+                    'OS' => '/.*/i'
+                )
+            ),
+            array(
                 'testAllPossibleRequirements',
                 array(
                     'PHP' => '99-dev',

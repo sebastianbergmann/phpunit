@@ -35,58 +35,71 @@
  * POSSIBILITY OF SUCH DAMAGE.
  *
  * @package    PHPUnit
- * @subpackage Runner
  * @author     Sebastian Bergmann <sebastian@phpunit.de>
+ * @author     Jeroen Versteeg <jversteeg@gmail.com>
  * @copyright  2001-2014 Sebastian Bergmann <sebastian@phpunit.de>
  * @license    http://www.opensource.org/licenses/BSD-3-Clause  The BSD 3-Clause License
  * @link       http://www.phpunit.de/
- * @since      File available since Release 4.0.0
+ * @since      File available since Release 3.7.30
  */
 
 /**
+ *
+ *
  * @package    PHPUnit
- * @subpackage Runner
  * @author     Sebastian Bergmann <sebastian@phpunit.de>
+ * @author     Jeroen Versteeg <jversteeg@gmail.com>
  * @copyright  2001-2014 Sebastian Bergmann <sebastian@phpunit.de>
  * @license    http://www.opensource.org/licenses/BSD-3-Clause  The BSD 3-Clause License
  * @link       http://www.phpunit.de/
- * @since      Class available since Release 4.0.0
+ * @since      Class available since Release 3.7.30
  */
-class PHPUnit_Runner_Filter_Factory
+class CountTest extends PHPUnit_Framework_TestCase
 {
-    /**
-     * @var array
-     */
-    private $filters = array();
-
-    /**
-     * @param ReflectionClass $filter
-     * @param mixed           $args
-     */
-    public function addFilter(ReflectionClass $filter, $args)
+    public function testCount()
     {
-        if (!$filter->isSubclassOf('RecursiveFilterIterator')) {
-            throw new InvalidArgumentException(
-              sprintf(
-                'Class "%s" does not extend RecursiveFilterIterator',
-                $filter->name
-              )
-            );
-        }
+        $countConstraint = new PHPUnit_Framework_Constraint_Count(3);
+        $this->assertTrue($countConstraint->evaluate(array(1,2,3), '', true));
 
-        $this->filters[] = array($filter, $args);
+        $countConstraint = new PHPUnit_Framework_Constraint_Count(0);
+        $this->assertTrue($countConstraint->evaluate(array(), '', true));
+
+        $countConstraint = new PHPUnit_Framework_Constraint_Count(2);
+        $it = new TestIterator(array(1, 2));
+        $this->assertTrue($countConstraint->evaluate($it, '', true));
     }
 
-    /**
-     * @return FilterIterator
-     */
-    public function factory(Iterator $iterator, PHPUnit_Framework_TestSuite $suite)
+    public function testCountDoesNotChangeIteratorKey()
     {
-        foreach ($this->filters as $filter) {
-            list($class, $args) = $filter;
-            $iterator = $class->newInstance($iterator, $args, $suite);
-        }
+        $countConstraint = new PHPUnit_Framework_Constraint_Count(2);
 
-        return $iterator;
+        // test with 1st implementation of Iterator
+        $it = new TestIterator(array(1, 2));
+
+        $countConstraint->evaluate($it, '', true);
+        $this->assertEquals(1, $it->current());
+
+        $it->next();
+        $countConstraint->evaluate($it, '', true);
+        $this->assertEquals(2, $it->current());
+
+        $it->next();
+        $countConstraint->evaluate($it, '', true);
+        $this->assertFalse($it->valid());
+
+        // test with 2nd implementation of Iterator
+        $it = new TestIterator2(array(1, 2));
+
+        $countConstraint = new PHPUnit_Framework_Constraint_Count(2);
+        $countConstraint->evaluate($it, '', true);
+        $this->assertEquals(1, $it->current());
+
+        $it->next();
+        $countConstraint->evaluate($it, '', true);
+        $this->assertEquals(2, $it->current());
+
+        $it->next();
+        $countConstraint->evaluate($it, '', true);
+        $this->assertFalse($it->valid());
     }
 }

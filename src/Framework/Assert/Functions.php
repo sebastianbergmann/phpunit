@@ -663,6 +663,21 @@ function assertEquals($expected, $actual, $message = '', $delta = 0, $maxDepth =
 }
 
 /**
+ * Asserts that a condition is not true.
+ *
+ * @param  boolean  $condition
+ * @param  string   $message
+ * @throws PHPUnit_Framework_AssertionFailedError
+ */
+function assertNotTrue($condition, $message = '')
+{
+    return call_user_func_array(
+      'PHPUnit_Framework_Assert::assertNotTrue',
+      func_get_args()
+    );
+}
+
+/**
  * Asserts that a condition is false.
  *
  * @param  boolean  $condition
@@ -1060,6 +1075,21 @@ function assertNotInternalType($expected, $actual, $message = '')
 {
     return call_user_func_array(
       'PHPUnit_Framework_Assert::assertNotInternalType',
+      func_get_args()
+    );
+}
+
+/**
+ * Asserts that a condition is not false.
+ *
+ * @param  boolean  $condition
+ * @param  string   $message
+ * @throws PHPUnit_Framework_AssertionFailedError
+ */
+function assertNotFalse($condition, $message = '')
+{
+    return call_user_func_array(
+      'PHPUnit_Framework_Assert::assertNotFalse',
       func_get_args()
     );
 }

@@ -40,7 +40,7 @@
  * @copyright  2001-2014 Sebastian Bergmann <sebastian@phpunit.de>
  * @license    http://www.opensource.org/licenses/BSD-3-Clause  The BSD 3-Clause License
  * @link       http://www.phpunit.de/
- * @since      File available since Release 3.8.0
+ * @since      File available since Release 4.0.0
  */
 
 /**
@@ -52,7 +52,7 @@
  * @copyright  2001-2014 Sebastian Bergmann <sebastian@phpunit.de>
  * @license    http://www.opensource.org/licenses/BSD-3-Clause  The BSD 3-Clause License
  * @link       http://www.phpunit.de/
- * @since      Class available since Release 3.8.0
+ * @since      Class available since Release 4.0.0
  */
 class PHPUnit_Util_Blacklist
 {
@@ -100,8 +100,10 @@ class PHPUnit_Util_Blacklist
                 'PHPUnit_Extensions_Story_TestCase' => 2,
                 'Text_Template' => 1,
                 'SebastianBergmann\Diff' => 1,
+                'SebastianBergmann\Environment\Runtime' => 1,
                 'SebastianBergmann\Exporter\Exporter' => 1,
-                'SebastianBergmann\Version' => 1
+                'SebastianBergmann\Version' => 1,
+                'Composer\Autoload\ClassLoader' => 1
             );
 
             foreach ($classes as $className => $parent) {
