@@ -19,13 +19,12 @@
         "issues": "https://github.com/sebastianbergmann/phpunit-mock-objects/issues",
         "irc": "irc://irc.freenode.net/phpunit"
     },
-    "minimum-stability": "dev",
     "require": {
         "php": ">=5.3.3",
-        "phpunit/php-text-template": ">=1.1.1"
+        "phpunit/php-text-template": "~1.2"
     },
     "require-dev": {
-        "phpunit/phpunit": "4.1.*@dev"
+        "phpunit/phpunit": ">=4.0.0,<4.1.0"
     },
     "suggest": {
         "ext-soap": "*"
@@ -37,7 +36,7 @@
     },
     "extra": {
         "branch-alias": {
-            "dev-master": "2.1.x-dev"
+            "dev-master": "2.0.x-dev"
         }
     },
     "include-path": [
