@@ -126,6 +126,7 @@ class PHPUnit_Framework_MockObject_Generator
       'interface' => TRUE,
       'isset' => TRUE,
       'list' => TRUE,
+      'method' => TRUE,
       'namespace' => TRUE,
       'new' => TRUE,
       'or' => TRUE,
