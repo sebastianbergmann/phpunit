@@ -19,6 +19,7 @@ spl_autoload_register(
                 'framework_mockobject_invocation_statictest' => '/MockObject/Invocation/StaticTest.php',
                 'framework_mockobjecttest' => '/MockObjectTest.php',
                 'framework_proxyobjecttest' => '/ProxyObjectTest.php',
+                'interfacewithstaticmethod' => '/_files/InterfaceWithStaticMethod.php',
                 'methodcallback' => '/_files/MethodCallback.php',
                 'methodcallbackbyreference' => '/_files/MethodCallbackByReference.php',
                 'mockable' => '/_files/Mockable.php',
