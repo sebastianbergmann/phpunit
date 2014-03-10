@@ -112,6 +112,22 @@ class Framework_MockObject_GeneratorTest extends PHPUnit_Framework_TestCase
     }
 
     /**
+     * @covers PHPUnit_Framework_MockObject_Generator::getMockForTrait
+     */
+    public function testGetMockForTraitWithNonExistentMethodsAndNonAbstractMethods()
+    {
+        $mock = $this->generator->getMockForTrait(
+            'AbstractTrait', array(), '',  true,
+            true, true, array('nonexistentMethod')
+        );
+
+        $this->assertTrue(method_exists($mock, 'nonexistentMethod'));
+        $this->assertTrue(method_exists($mock, 'doSomething'));
+        $this->assertTrue($mock->mockableMethod());
+        $this->assertTrue($mock->anotherMockableMethod());
+    }
+
+    /**
      * @dataProvider getMockForTraitExpectsInvalidArgumentExceptionDataprovider
      * @covers PHPUnit_Framework_MockObject_Generator::getMockForTrait
      * @expectedException PHPUnit_Framework_Exception
