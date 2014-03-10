@@ -73,11 +73,13 @@ class Framework_MockObject_GeneratorTest extends PHPUnit_Framework_TestCase
      */
     public function testGetMockForAbstractClassShouldCreateStubsOnlyForAbstractMethodWhenNoMethodsWereInformed()
     {
-        $mock = $this->generator->getMockForAbstractClass(
-            'AbstractMockTestClass'
-        );
+        $mock = $this->generator->getMockForAbstractClass('AbstractMockTestClass');
 
-        $this->assertTrue(method_exists($mock, 'doSomething'));
+        $mock->expects($this->any())
+             ->method('doSomething')
+             ->willReturn('testing');
+
+        $this->assertEquals('testing', $mock->doSomething());
         $this->assertEquals(1, $mock->returnAnything());
     }
 
