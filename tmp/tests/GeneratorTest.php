@@ -57,7 +57,7 @@ class Framework_MockObject_GeneratorTest extends PHPUnit_Framework_TestCase
     /**
      * @covers PHPUnit_Framework_MockObject_Generator::getMockForAbstractClass
      */
-    public function testGetMockForAbstractClassWithNonexistentMethods()
+    public function testGetMockForAbstractClassWithNonExistentMethods()
     {
         $mock = $this->generator->getMockForAbstractClass(
             'AbstractMockTestClass', array(), '',  true,
