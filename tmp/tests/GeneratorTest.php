@@ -69,6 +69,19 @@ class Framework_MockObject_GeneratorTest extends PHPUnit_Framework_TestCase
     }
 
     /**
+     * @covers PHPUnit_Framework_MockObject_Generator::getMockForAbstractClass
+     */
+    public function testGetMockForAbstractClassShouldCreateStubsOnlyForAbstractMethodWhenNoMethodsWereInformed()
+    {
+        $mock = $this->generator->getMockForAbstractClass(
+            'AbstractMockTestClass'
+        );
+
+        $this->assertTrue(method_exists($mock, 'doSomething'));
+        $this->assertEquals(1, $mock->returnAnything());
+    }
+
+    /**
      * @dataProvider getMockForAbstractClassExpectsInvalidArgumentExceptionDataprovider
      * @covers PHPUnit_Framework_MockObject_Generator::getMockForAbstractClass
      * @expectedException PHPUnit_Framework_Exception
