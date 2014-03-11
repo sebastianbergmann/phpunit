@@ -58,23 +58,23 @@ class ArrayMatchValuesTest extends PHPUnit_Framework_TestCase
 {
     public function testItIsReflective()
     {
-        $a = new PHPUnit_Framework_Constraint_ArrayValuesMatch(['horse']);
-        $this->assertFalse($a->matches([]));
+        $a = new PHPUnit_Framework_Constraint_ArrayValuesMatch(array('horse'));
+        $this->assertFalse($a->matches(array()));
 
-        $a = new PHPUnit_Framework_Constraint_ArrayValuesMatch([]);
-        $this->assertFalse($a->matches(['horse']));
+        $a = new PHPUnit_Framework_Constraint_ArrayValuesMatch(array());
+        $this->assertFalse($a->matches(array('horse')));
     }
 
     public function testIgnoresKeys()
     {
-        $a = new PHPUnit_Framework_Constraint_ArrayValuesMatch(['lol' => 'horse']);
-        $this->assertTrue($a->matches(['horse']));
+        $a = new PHPUnit_Framework_Constraint_ArrayValuesMatch(array('lol' => 'horse'));
+        $this->assertTrue($a->matches(array('horse')));
     }
 
     public function testIgnoresOrdering()
     {
-        $a1 = ['horse', 'beaver', 'mole'];
-        $a2 = ['mole', 'beaver', 'horse' ];
+        $a1 = array('horse', 'beaver', 'mole');
+        $a2 = array('mole', 'beaver', 'horse' );
 
         $a = new PHPUnit_Framework_Constraint_ArrayValuesMatch($a1);
         $this->assertTrue($a->matches($a2));

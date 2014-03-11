@@ -164,7 +164,7 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
      */
     public function testAssertArrayValuesMatchIsCalled()
     {
-        $this->assertArrayValuesMatch([5, 7], [7, 5]);
+        $this->assertArrayValuesMatch(array(5, 7), array(7, 5));
     }
 
     /**
@@ -173,7 +173,7 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
      */
     public function testAssertArrayValuesMatchOnlyAcceptsArrayOnFirstArgument()
     {
-        $this->assertArrayValuesMatch(null, [7, 5]);
+        $this->assertArrayValuesMatch(null, array(7, 5));
     }
 
     /**
@@ -182,7 +182,7 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
      */
     public function testAssertArrayValuesMatchOnlyAcceptsArrayOnSecondArgument()
     {
-        $this->assertArrayValuesMatch([], null);
+        $this->assertArrayValuesMatch(array(), null);
     }
 
     /**
