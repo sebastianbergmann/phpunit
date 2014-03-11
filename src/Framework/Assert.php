@@ -118,6 +118,33 @@ abstract class PHPUnit_Framework_Assert
     }
 
     /**
+     * Asserts that an array contains exactly a set of values
+     *
+     * @param array             $key
+     * @param array             $array
+     * @param string            $message
+     * @since  Method available since Release 4.0.0
+     */
+    public static function assertArrayValuesMatch($expected, $array, $message = '')
+    {
+        if (!is_array($expected)) {
+            throw PHPUnit_Util_InvalidArgumentHelper::factory(
+              1, 'array'
+            );
+        }
+
+        if (!is_array($array)) {
+            throw PHPUnit_Util_InvalidArgumentHelper::factory(
+              2, 'array'
+            );
+        }
+
+        $constraint = new PHPUnit_Framework_Constraint_ArrayValuesMatch($expected);
+
+        self::assertThat($array, $constraint, $message);
+    }
+
+    /**
      * Asserts that a haystack contains a needle.
      *
      * @param mixed   $needle
