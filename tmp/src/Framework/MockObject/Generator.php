@@ -126,7 +126,6 @@ class PHPUnit_Framework_MockObject_Generator
       'interface' => TRUE,
       'isset' => TRUE,
       'list' => TRUE,
-      'method' => TRUE,
       'namespace' => TRUE,
       'new' => TRUE,
       'or' => TRUE,
@@ -785,6 +784,16 @@ class PHPUnit_Framework_MockObject_Generator
             }
         }
 
+        $method = '';
+
+        if (!in_array('method', $methods)) {
+            $methodTemplate = new Text_Template(
+                $templateDir . 'mocked_class_method.tpl'
+            );
+
+            $method = $methodTemplate->render();
+        }
+
         $classTemplate->setVar(
           array(
             'prologue'          => isset($prologue) ? $prologue : '',
@@ -796,7 +805,8 @@ class PHPUnit_Framework_MockObject_Generator
                                    ),
             'clone'             => $cloneTemplate,
             'mock_class_name'   => $mockClassName['className'],
-            'mocked_methods'    => $mockedMethods
+            'mocked_methods'    => $mockedMethods,
+            'method'            => $method
           )
         );
 
