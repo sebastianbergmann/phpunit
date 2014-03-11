@@ -35,7 +35,8 @@
         "ext-dom": "*",
         "ext-pcre": "*",
         "ext-reflection": "*",
-        "ext-spl": "*"
+        "ext-spl": "*",
+        "phpunit/dbunit": "1.3.*"
     },
     "suggest": {
         "phpunit/php-invoker": "~1.1",
