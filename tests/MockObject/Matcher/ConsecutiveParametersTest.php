@@ -8,8 +8,8 @@ class Framework_MockObject_Matcher_ConsecutiveParametersTest extends PHPUnit_Fra
             ->expects($this->any())
             ->method('foo')
             ->withConsecutive(
-                ['bar'],
-                [21, 42]
+                array('bar'),
+                array(21, 42)
             );
         $mock->foo('bar');
         $mock->foo(21, 42);
@@ -22,8 +22,8 @@ class Framework_MockObject_Matcher_ConsecutiveParametersTest extends PHPUnit_Fra
             ->expects($this->any())
             ->method('foo')
             ->withConsecutive(
-                ['bar'],
-                [21, 42]
+                array('bar'),
+                array(21, 42)
             );
         $mock->foo('bar');
         $this->setExpectedException('PHPUnit_Framework_ExpectationFailedException');
