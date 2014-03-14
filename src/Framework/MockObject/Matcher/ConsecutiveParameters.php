@@ -65,12 +65,12 @@ class PHPUnit_Framework_MockObject_Matcher_ConsecutiveParameters
   /**
    * @var array
    */
-  private $_parameterGroups = [];
+  private $_parameterGroups = array();
 
   /**
    * @var array
    */
-  private $_invocations = [];
+  private $_invocations = array();
 
   /**
    * @param array $parameterGroups
