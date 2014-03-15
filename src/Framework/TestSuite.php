@@ -848,13 +848,14 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
             $test instanceof PHPUnit_Framework_TestSuite_DataProvider) {
             $test->setDependencies(
                 PHPUnit_Util_Test::getDependencies($class->getName(), $name)
-                );
-        }
-
-        $this->addTest($test, PHPUnit_Util_Test::getGroups(
-                       $class->getName(), $name)
             );
         }
+
+        $this->addTest(
+            $test,
+            PHPUnit_Util_Test::getGroups($class->getName(), $name)
+        );
+    }
 
     /**
      * @param ReflectionMethod $method
