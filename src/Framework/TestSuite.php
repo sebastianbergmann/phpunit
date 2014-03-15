@@ -233,11 +233,11 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
         }
 
         foreach ($theClass->getMethods() as $method) {
-            $this->addBeforeClassMethod($theClass, $method);
-            $this->addBeforeMethod($theClass, $method);
+            $this->addBeforeClassMethod($method);
+            $this->addBeforeMethod($method);
             $this->addTestMethod($theClass, $method);
-            $this->addAfterMethod($theClass, $method);
-            $this->addAfterClassMethod($theClass, $method);
+            $this->addAfterMethod($method);
+            $this->addAfterClassMethod($method);
         }
 
         foreach ($this->tests as $test) {
@@ -863,10 +863,9 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
         }
 
     /**
-     * @param ReflectionClass  $class
      * @param ReflectionMethod $method
      */
-    protected function addBeforeClassMethod(ReflectionClass $class, ReflectionMethod $method)
+    protected function addBeforeClassMethod(ReflectionMethod $method)
     {
         $name = $method->getName();
 
@@ -877,10 +876,9 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
     }
 
     /**
-     * @param ReflectionClass  $class
      * @param ReflectionMethod $method
      */
-    protected function addBeforeMethod(ReflectionClass $class, ReflectionMethod $method)
+    protected function addBeforeMethod(ReflectionMethod $method)
     {
         $name = $method->getName();
 
@@ -890,10 +888,9 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
     }
 
     /**
-     * @param ReflectionClass  $class
      * @param ReflectionMethod $method
      */
-    protected function addAfterClassMethod(ReflectionClass $class, ReflectionMethod $method)
+    protected function addAfterClassMethod(ReflectionMethod $method)
     {
         $name = $method->getName();
 
@@ -904,10 +901,9 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
     }
 
     /**
-     * @param ReflectionClass  $class
      * @param ReflectionMethod $method
      */
-    protected function addAfterMethod(ReflectionClass $class, ReflectionMethod $method)
+    protected function addAfterMethod(ReflectionMethod $method)
     {
         $name = $method->getName();
 
