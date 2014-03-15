@@ -84,44 +84,47 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
     /**
      * Enable or disable the backup and restoration of the $GLOBALS array.
      *
-     * @var    boolean
+     * @var boolean
      */
     protected $backupGlobals = null;
 
     /**
      * Enable or disable the backup and restoration of static attributes.
      *
-     * @var    boolean
+     * @var boolean
      */
     protected $backupStaticAttributes = null;
 
+    /**
+     * @var boolean
+     */
     protected $runTestInSeparateProcess = false;
 
     /**
      * The name of the test suite.
      *
-     * @var    string
+     * @var string
      */
     protected $name = '';
 
     /**
      * The test groups of the test suite.
      *
-     * @var    array
+     * @var array
      */
     protected $groups = array();
 
     /**
      * The tests in the test suite.
      *
-     * @var    array
+     * @var array
      */
     protected $tests = array();
 
     /**
      * The number of tests in the test suite.
      *
-     * @var    integer
+     * @var integer
      */
     protected $numTests = -1;
 
@@ -134,26 +137,6 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
      * @var PHPUnit_Runner_Filter_Factory
      */
     private $iteratorFilter = null;
-
-    /**
-     * @var array
-     */
-    private $beforeClassMethods = array();
-
-    /**
-     * @var array
-     */
-    private $beforeMethods = array();
-
-    /**
-     * @var array
-     */
-    private $afterClassMethods = array();
-
-    /**
-     * @var array
-     */
-    private $afterMethods = array();
 
     /**
      * Constructs a new TestSuite:
@@ -233,24 +216,7 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
         }
 
         foreach ($theClass->getMethods() as $method) {
-            $this->addBeforeClassMethod($method);
-            $this->addBeforeMethod($method);
             $this->addTestMethod($theClass, $method);
-            $this->addAfterMethod($method);
-            $this->addAfterClassMethod($method);
-        }
-
-        foreach ($this->tests as $test) {
-            foreach ($this->beforeMethods as $method) {
-                if (method_exists($test, 'hookBeforeMethod')) {
-                    $test->hookBeforeMethod($method);
-                }
-            }
-            foreach ($this->afterMethods as $method) {
-                if (method_exists($test, 'hookAfterMethod')) {
-                    $test->hookAfterMethod($method);
-                }
-            }
         }
 
         if (empty($this->tests)) {
@@ -664,21 +630,21 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
             return $result;
         }
 
+        $hookMethods = PHPUnit_Util_Test::getHookMethods($this->name);
+
         $result->startTestSuite($this);
 
         try {
             $this->setUp();
 
-            if ($this->testCase &&
-                // Some extensions use test names that are not classes;
-                // The method_exists() triggers an autoload call that causes issues with die()ing autoloaders.
-                class_exists($this->name, false) &&
-                method_exists($this->name, 'setUpBeforeClass')) {
-                call_user_func(array($this->name, 'setUpBeforeClass'));
-            }
-
-            foreach ($this->beforeClassMethods as $method) {
-                $method->invoke(null);
+            // Some extensions use test names that are not classes;
+            // The method_exists() triggers an autoload call that causes issues with die()ing autoloaders.
+            if ($this->testCase && class_exists($this->name, false)) {
+                foreach ($hookMethods['beforeClass'] as $beforeClassMethod) {
+                    if (method_exists($this->name, $beforeClassMethod)) {
+                        call_user_func(array($this->name, $beforeClassMethod));
+                    }
+                }
             }
         } catch (PHPUnit_Framework_SkippedTestSuiteError $e) {
             $numTests = count($this);
@@ -710,20 +676,17 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
                 $test->setRunTestInSeparateProcess($this->runTestInSeparateProcess);
             }
 
-
             $test->run($result);
         }
 
-        if ($this->testCase &&
-            // Some extensions use test names that are not classes;
-            // The method_exists() triggers an autoload call that causes issues with die()ing autoloaders.
-            class_exists($this->name, false) &&
-            method_exists($this->name, 'tearDownAfterClass')) {
-            call_user_func(array($this->name, 'tearDownAfterClass'));
-        }
-
-        foreach ($this->afterClassMethods as $method) {
-            $method->invoke(null);
+        // Some extensions use test names that are not classes;
+        // The method_exists() triggers an autoload call that causes issues with die()ing autoloaders.
+        if ($this->testCase && class_exists($this->name, false)) {
+            foreach ($hookMethods['afterClass'] as $afterClassMethod) {
+                if (method_exists($this->name, $afterClassMethod)) {
+                    call_user_func(array($this->name, $afterClassMethod));
+                }
+            }
         }
 
         $this->tearDown();
@@ -848,70 +811,13 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
             $test instanceof PHPUnit_Framework_TestSuite_DataProvider) {
             $test->setDependencies(
                 PHPUnit_Util_Test::getDependencies($class->getName(), $name)
-                );
-        }
-
-        $this->addTest($test, PHPUnit_Util_Test::getGroups(
-                       $class->getName(), $name)
             );
         }
 
-    /**
-     * @param ReflectionMethod $method
-     */
-    protected function addBeforeClassMethod(ReflectionMethod $method)
-    {
-        if ($this->isBeforeClassMethod($method)) {
-            $this->ensureIsStatic($method);
-            $this->beforeClassMethods[] = $method;
-        }
-    }
-
-    /**
-     * @param ReflectionMethod $method
-     */
-    protected function addBeforeMethod(ReflectionMethod $method)
-    {
-        $name = $method->getName();
-
-        if ($this->isBeforeMethod($method)) {
-            $this->beforeMethods[] = $name;
-        }
-    }
-
-    /**
-     * @param ReflectionMethod $method
-     */
-    protected function addAfterClassMethod(ReflectionMethod $method)
-    {
-        if ($this->isAfterClassMethod($method)) {
-            $this->ensureIsStatic($method);
-            $this->afterClassMethods[] = $method;
-        }
-    }
-
-    /**
-     * @param ReflectionMethod $method
-     */
-    protected function addAfterMethod(ReflectionMethod $method)
-    {
-        $name = $method->getName();
-
-        if ($this->isAfterMethod($method)) {
-            $this->afterMethods[] = $name;
-        }
-    }
-
-    private function ensureIsStatic(ReflectionMethod $method)
-    {
-        if (!$method->isStatic()) {
-            throw new PHPUnit_Framework_Exception(sprintf(
-              '%s::%s() must be static.',
-
-              $method->getDeclaringClass()->getName(),
-              $method->getName()
-            ));
-        }
+        $this->addTest(
+            $test,
+            PHPUnit_Util_Test::getGroups($class->getName(), $name)
+        );
     }
 
     /**
@@ -930,42 +836,6 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
 
         return strpos($doc_comment, '@test')     !== false ||
                strpos($doc_comment, '@scenario') !== false;
-    }
-
-    /**
-     * @param  ReflectionMethod $method
-     * @return boolean
-     */
-    public static function isBeforeClassMethod(ReflectionMethod $method)
-    {
-        return strpos($method->getDocComment(), '@beforeClass') !== false;
-    }
-
-    /**
-     * @param  ReflectionMethod $method
-     * @return boolean
-     */
-    public static function isBeforeMethod(ReflectionMethod $method)
-    {
-        return preg_match('/@before\b/', $method->getDocComment());
-    }
-
-    /**
-     * @param  ReflectionMethod $method
-     * @return boolean
-     */
-    public static function isAfterClassMethod(ReflectionMethod $method)
-    {
-        return strpos($method->getDocComment(), '@afterClass') !== false;
-    }
-
-    /**
-     * @param  ReflectionMethod $method
-     * @return boolean
-     */
-    public static function isAfterMethod(ReflectionMethod $method)
-    {
-        return preg_match('/@after\b/', $method->getDocComment());
     }
 
     /**

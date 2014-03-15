@@ -79,6 +79,8 @@ class PHPUnit_Util_Test
       'setUp', 'assertPreConditions', 'assertPostConditions', 'tearDown'
     );
 
+    private static $hookMethods = array();
+
     /**
      * @param  PHPUnit_Framework_Test $test
      * @param  boolean                $asString
@@ -106,11 +108,10 @@ class PHPUnit_Util_Test
     }
 
     /**
-     * Returns the files and lines a test method wants to cover.
-     *
-     * @param  string $className
-     * @param  string $methodName
-     * @return array
+     * @param  string     $className
+     * @param  string     $methodName
+     * @return array|bool
+     * @throws PHPUnit_Framework_CodeCoverageException
      * @since  Method available since Release 4.0.0
      */
     public static function getLinesToBeCovered($className, $methodName)
@@ -330,12 +331,12 @@ class PHPUnit_Util_Test
     /**
      * Returns the provided data for a method.
      *
-     * @param  string $className
-     * @param  string $methodName
-     * @param  string $docComment
-     * @return mixed  array|Iterator when a data provider is specified and exists
-     *                           false          when a data provider is specified and does not exist
-     *                           null           when no data provider is specified
+     * @param  string           $className
+     * @param  string           $methodName
+     * @return array|Iterator when a data provider is specified and exists
+     *         false          when a data provider is specified but does not exist
+     *         null           when no data provider is specified
+     * @throws PHPUnit_Framework_Exception
      * @since  Method available since Release 3.2.0
      */
     public static function getProvidedData($className, $methodName)
@@ -657,6 +658,48 @@ class PHPUnit_Util_Test
     }
 
     /**
+     * @param  string $className
+     * @return array
+     * @since  Method available since Release 4.0.8
+     */
+    public static function getHookMethods($className)
+    {
+        if (!isset(self::$hookMethods[$className])) {
+            self::$hookMethods[$className] = array(
+                'beforeClass' => array('setUpBeforeClass'),
+                'before' => array('setUp'),
+                'after' => array('tearDown'),
+                'afterClass' => array('tearDownAfterClass')
+            );
+
+            try {
+                $class = new ReflectionClass($className);
+
+                foreach ($class->getMethods() as $method) {
+                    if (self::isBeforeClassMethod($method)) {
+                        self::$hookMethods[$className]['beforeClass'][] = $method->getName();
+                    }
+
+                    if (self::isBeforeMethod($method)) {
+                        self::$hookMethods[$className]['before'][] = $method->getName();
+                    }
+
+                    if (self::isAfterMethod($method)) {
+                        self::$hookMethods[$className]['after'][] = $method->getName();
+                    }
+
+                    if (self::isAfterClassMethod($method)) {
+                        self::$hookMethods[$className]['afterClass'][] = $method->getName();
+                    }
+                }
+            } catch (ReflectionException $e) {
+            }
+        }
+
+        return self::$hookMethods[$className];
+    }
+
+    /**
      * @param  string  $className
      * @param  string  $methodName
      * @param  string  $settingName
@@ -693,6 +736,7 @@ class PHPUnit_Util_Test
     /**
      * @param  string $element
      * @return array
+     * @throws PHPUnit_Framework_InvalidCoversTargetException
      * @since  Method available since Release 4.0.0
      */
     private static function resolveElementToReflectionObjects($element)
@@ -806,6 +850,10 @@ class PHPUnit_Util_Test
         return $codeToCoverList;
     }
 
+    /**
+     * @param  array $reflectors
+     * @return array
+     */
     private static function resolveReflectionObjectsToLines(array $reflectors)
     {
         $result = array();
@@ -830,6 +878,11 @@ class PHPUnit_Util_Test
         return $result;
     }
 
+    /**
+     * @param  ReflectionClass $class
+     * @param  ReflectionMethod $method
+     * @return string
+     */
     private static function getDocCommentsOfTestClassAndTestMethodAndTemplateMethods(ReflectionClass $class, ReflectionMethod $method)
     {
         $buffer = substr($class->getDocComment(),  3, -2) . PHP_EOL .
@@ -843,5 +896,45 @@ class PHPUnit_Util_Test
         }
 
         return $buffer;
+    }
+
+    /**
+     * @param  ReflectionMethod $method
+     * @return boolean
+     * @since  Method available since Release 4.0.8
+     */
+    private static function isBeforeClassMethod(ReflectionMethod $method)
+    {
+        return $method->isStatic() && strpos($method->getDocComment(), '@beforeClass') !== false;
+    }
+
+    /**
+     * @param  ReflectionMethod $method
+     * @return boolean
+     * @since  Method available since Release 4.0.8
+     */
+    private static function isBeforeMethod(ReflectionMethod $method)
+    {
+        return preg_match('/@before\b/', $method->getDocComment());
+    }
+
+    /**
+     * @param  ReflectionMethod $method
+     * @return boolean
+     * @since  Method available since Release 4.0.8
+     */
+    private static function isAfterClassMethod(ReflectionMethod $method)
+    {
+        return $method->isStatic() && strpos($method->getDocComment(), '@afterClass') !== false;
+    }
+
+    /**
+     * @param  ReflectionMethod $method
+     * @return boolean
+     * @since  Method available since Release 4.0.8
+     */
+    private static function isAfterMethod(ReflectionMethod $method)
+    {
+        return preg_match('/@after\b/', $method->getDocComment());
     }
 }

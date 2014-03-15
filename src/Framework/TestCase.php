@@ -289,16 +289,6 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
     private $outputBufferingActive = false;
 
     /**
-     * @var array
-     */
-    private $beforeMethods = array('setUp');
-
-    /**
-     * @var array
-     */
-    private $afterMethods = array('tearDown');
-
-    /**
      * Constructs a test case with the given name.
      *
      * @param string $name
@@ -806,16 +796,20 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
         // Backup the cwd
         $currentWorkingDirectory = getcwd();
 
+        $hookMethods = PHPUnit_Util_Test::getHookMethods(get_class($this));
+
         try {
             $this->checkRequirements();
 
             if ($this->inIsolation) {
-                $this->setUpBeforeClass();
+                foreach ($hookMethods['beforeClass'] as $method) {
+                    $this->$method();
+                }
             }
 
             $this->setExpectedExceptionFromAnnotation();
 
-            foreach ($this->beforeMethods as $method) {
+            foreach ($hookMethods['before'] as $method) {
                 $this->$method();
             }
 
@@ -844,12 +838,14 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
         // Tear down the fixture. An exception raised in tearDown() will be
         // caught and passed on when no exception was raised before.
         try {
-            foreach ($this->afterMethods as $method) {
+            foreach ($hookMethods['after'] as $method) {
                 $this->$method();
             }
 
             if ($this->inIsolation) {
-                $this->tearDownAfterClass();
+                foreach ($hookMethods['afterClass'] as $method) {
+                    $this->$method();
+                }
             }
         } catch (Exception $_e) {
             if (!isset($e)) {
@@ -1900,24 +1896,6 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
      */
     protected function prepareTemplate(Text_Template $template)
     {
-    }
-
-    /**
-     * @internal
-     * @param string
-     */
-    public function hookBeforeMethod($name)
-    {
-        $this->beforeMethods[] = $name;
-    }
-
-    /**
-     * @internal
-     * @param string
-     */
-    public function hookAfterMethod($name)
-    {
-        $this->afterMethods[] = $name;
     }
 
     /**
