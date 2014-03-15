@@ -106,11 +106,10 @@ class PHPUnit_Util_Test
     }
 
     /**
-     * Returns the files and lines a test method wants to cover.
-     *
-     * @param  string $className
-     * @param  string $methodName
-     * @return array
+     * @param  string     $className
+     * @param  string     $methodName
+     * @return array|bool
+     * @throws PHPUnit_Framework_CodeCoverageException
      * @since  Method available since Release 4.0.0
      */
     public static function getLinesToBeCovered($className, $methodName)
@@ -330,12 +329,12 @@ class PHPUnit_Util_Test
     /**
      * Returns the provided data for a method.
      *
-     * @param  string $className
-     * @param  string $methodName
-     * @param  string $docComment
-     * @return mixed  array|Iterator when a data provider is specified and exists
-     *                           false          when a data provider is specified and does not exist
-     *                           null           when no data provider is specified
+     * @param  string           $className
+     * @param  string           $methodName
+     * @return array|Iterator when a data provider is specified and exists
+     *         false          when a data provider is specified but does not exist
+     *         null           when no data provider is specified
+     * @throws PHPUnit_Framework_Exception
      * @since  Method available since Release 3.2.0
      */
     public static function getProvidedData($className, $methodName)
@@ -693,6 +692,7 @@ class PHPUnit_Util_Test
     /**
      * @param  string $element
      * @return array
+     * @throws PHPUnit_Framework_InvalidCoversTargetException
      * @since  Method available since Release 4.0.0
      */
     private static function resolveElementToReflectionObjects($element)
@@ -806,6 +806,10 @@ class PHPUnit_Util_Test
         return $codeToCoverList;
     }
 
+    /**
+     * @param  array $reflectors
+     * @return array
+     */
     private static function resolveReflectionObjectsToLines(array $reflectors)
     {
         $result = array();
@@ -830,6 +834,11 @@ class PHPUnit_Util_Test
         return $result;
     }
 
+    /**
+     * @param  ReflectionClass $class
+     * @param  ReflectionMethod $method
+     * @return string
+     */
     private static function getDocCommentsOfTestClassAndTestMethodAndTemplateMethods(ReflectionClass $class, ReflectionMethod $method)
     {
         $buffer = substr($class->getDocComment(),  3, -2) . PHP_EOL .
