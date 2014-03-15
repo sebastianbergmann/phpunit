@@ -677,11 +677,8 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
                 call_user_func(array($this->name, 'setUpBeforeClass'));
             }
 
-            if (class_exists($this->name, false)) {
-                $class = $this->name;
-                foreach ($this->beforeClassMethods as $method) {
-                    $class::$method();
-                }
+            foreach ($this->beforeClassMethods as $method) {
+                $method->invoke(null);
             }
         } catch (PHPUnit_Framework_SkippedTestSuiteError $e) {
             $numTests = count($this);
@@ -725,11 +722,8 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
             call_user_func(array($this->name, 'tearDownAfterClass'));
         }
 
-        if (class_exists($this->name, false)) {
-            $class = $this->name;
-            foreach ($this->afterClassMethods as $method) {
-                $class::$method();
-            }
+        foreach ($this->afterClassMethods as $method) {
+            $method->invoke(null);
         }
 
         $this->tearDown();
@@ -867,11 +861,9 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
      */
     protected function addBeforeClassMethod(ReflectionMethod $method)
     {
-        $name = $method->getName();
-
         if ($this->isBeforeClassMethod($method)) {
             $this->ensureIsStatic($method);
-            $this->beforeClassMethods[] = $name;
+            $this->beforeClassMethods[] = $method;
         }
     }
 
@@ -892,11 +884,9 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
      */
     protected function addAfterClassMethod(ReflectionMethod $method)
     {
-        $name = $method->getName();
-
         if ($this->isAfterClassMethod($method)) {
             $this->ensureIsStatic($method);
-            $this->afterClassMethods[] = $name;
+            $this->afterClassMethods[] = $method;
         }
     }
 
