@@ -84,14 +84,14 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
     /**
      * Enable or disable the backup and restoration of the $GLOBALS array.
      *
-     * @var    boolean
+     * @var boolean
      */
     protected $backupGlobals = null;
 
     /**
      * Enable or disable the backup and restoration of static attributes.
      *
-     * @var    boolean
+     * @var boolean
      */
     protected $backupStaticAttributes = null;
 
@@ -103,28 +103,28 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
     /**
      * The name of the test suite.
      *
-     * @var    string
+     * @var string
      */
     protected $name = '';
 
     /**
      * The test groups of the test suite.
      *
-     * @var    array
+     * @var array
      */
     protected $groups = array();
 
     /**
      * The tests in the test suite.
      *
-     * @var    array
+     * @var array
      */
     protected $tests = array();
 
     /**
      * The number of tests in the test suite.
      *
-     * @var    integer
+     * @var integer
      */
     protected $numTests = -1;
 
