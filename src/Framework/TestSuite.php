@@ -233,11 +233,11 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
         }
 
         foreach ($theClass->getMethods() as $method) {
-            $this->addBeforeClassMethod($theClass, $method);
-            $this->addBeforeMethod($theClass, $method);
+            $this->addBeforeClassMethod($method);
+            $this->addBeforeMethod($method);
             $this->addTestMethod($theClass, $method);
-            $this->addAfterMethod($theClass, $method);
-            $this->addAfterClassMethod($theClass, $method);
+            $this->addAfterMethod($method);
+            $this->addAfterClassMethod($method);
         }
 
         foreach ($this->tests as $test) {
@@ -651,13 +651,8 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
     /**
      * Runs the tests and collects their result in a TestResult.
      *
-     * @param  PHPUnit_Framework_TestResult $result
-     * @param  mixed                        $filter
-     * @param  array                        $groups
-     * @param  array                        $excludeGroups
-     * @param  boolean                      $processIsolation
+     * @param PHPUnit_Framework_TestResult $result
      * @return PHPUnit_Framework_TestResult
-     * @throws PHPUnit_Framework_Exception
      */
     public function run(PHPUnit_Framework_TestResult $result = null)
     {
@@ -682,11 +677,8 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
                 call_user_func(array($this->name, 'setUpBeforeClass'));
             }
 
-            if (class_exists($this->name, false)) {
-                $class = $this->name;
-                foreach ($this->beforeClassMethods as $method) {
-                    $class::$method();
-                }
+            foreach ($this->beforeClassMethods as $method) {
+                $method->invoke(null);
             }
         } catch (PHPUnit_Framework_SkippedTestSuiteError $e) {
             $numTests = count($this);
@@ -730,11 +722,8 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
             call_user_func(array($this->name, 'tearDownAfterClass'));
         }
 
-        if (class_exists($this->name, false)) {
-            $class = $this->name;
-            foreach ($this->afterClassMethods as $method) {
-                $class::$method();
-            }
+        foreach ($this->afterClassMethods as $method) {
+            $method->invoke(null);
         }
 
         $this->tearDown();
@@ -745,8 +734,8 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
     }
 
     /**
-     * @param  boolean                  $runTestInSeparateProcess
-     * @throws InvalidArgumentException
+     * @param  boolean                     $runTestInSeparateProcess
+     * @throws PHPUnit_Framework_Exception
      * @since  Method available since Release 3.7.0
      */
     public function setRunTestInSeparateProcess($runTestInSeparateProcess)
@@ -868,24 +857,20 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
         }
 
     /**
-     * @param ReflectionClass  $class
      * @param ReflectionMethod $method
      */
-    protected function addBeforeClassMethod(ReflectionClass $class, ReflectionMethod $method)
+    protected function addBeforeClassMethod(ReflectionMethod $method)
     {
-        $name = $method->getName();
-
         if ($this->isBeforeClassMethod($method)) {
             $this->ensureIsStatic($method);
-            $this->beforeClassMethods[] = $name;
+            $this->beforeClassMethods[] = $method;
         }
     }
 
     /**
-     * @param ReflectionClass  $class
      * @param ReflectionMethod $method
      */
-    protected function addBeforeMethod(ReflectionClass $class, ReflectionMethod $method)
+    protected function addBeforeMethod(ReflectionMethod $method)
     {
         $name = $method->getName();
 
@@ -895,24 +880,20 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
     }
 
     /**
-     * @param ReflectionClass  $class
      * @param ReflectionMethod $method
      */
-    protected function addAfterClassMethod(ReflectionClass $class, ReflectionMethod $method)
+    protected function addAfterClassMethod(ReflectionMethod $method)
     {
-        $name = $method->getName();
-
         if ($this->isAfterClassMethod($method)) {
             $this->ensureIsStatic($method);
-            $this->afterClassMethods[] = $name;
+            $this->afterClassMethods[] = $method;
         }
     }
 
     /**
-     * @param ReflectionClass  $class
      * @param ReflectionMethod $method
      */
-    protected function addAfterMethod(ReflectionClass $class, ReflectionMethod $method)
+    protected function addAfterMethod(ReflectionMethod $method)
     {
         $name = $method->getName();
 
