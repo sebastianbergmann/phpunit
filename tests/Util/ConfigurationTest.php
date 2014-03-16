@@ -287,6 +287,32 @@ class Util_ConfigurationTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('bar', $_REQUEST['foo']);
     }
 
+    /**
+     * @backupGlobals enabled
+     * @see https://github.com/sebastianbergmann/phpunit/issues/1181
+     */
+    public function testHandlePHPConfigurationDoesNotOverwrittenExistingEnvArrayVariables()
+    {
+        $_ENV['foo'] = false;
+        $this->configuration->handlePHPConfiguration();
+
+        $this->assertEquals(false, $_ENV['foo']);
+        $this->assertEquals(true, getenv('foo'));
+    }
+
+    /**
+     * @backupGlobals enabled
+     * @see https://github.com/sebastianbergmann/phpunit/issues/1181
+     */
+    public function testHandlePHPConfigurationDoesNotOverriteVariablesFromPutEnv()
+    {
+        putenv('foo=putenv');
+        $this->configuration->handlePHPConfiguration();
+
+        $this->assertEquals(true, $_ENV['foo']);
+        $this->assertEquals('putenv', getenv('foo'));
+    }
+
     public function testPHPUnitConfigurationIsReadCorrectly()
     {
         $this->assertEquals(
