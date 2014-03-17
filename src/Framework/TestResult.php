@@ -191,6 +191,20 @@ class PHPUnit_Framework_TestResult implements Countable
     protected $timeoutForLargeTests = 60;
 
     /**
+     * @var boolean
+     */
+    private $canCollectCodeCoverage = false;
+
+    /**
+     * @since Method available since Release 4.0.9
+     */
+    public function __construct()
+    {
+        $runtime = new Runtime;
+        $this->canCollectCodeCoverage = $runtime->canCollectCodeCoverage();
+    }
+
+    /**
      * Registers a TestListener.
      *
      * @param  PHPUnit_Framework_TestListener
@@ -640,13 +654,10 @@ class PHPUnit_Framework_TestResult implements Countable
             }
         }
 
-        $runtime = new Runtime;
-
-        $canCollectCodeCoverage = $runtime->canCollectCodeCoverage();
-        $collectCodeCoverage    = $canCollectCodeCoverage &&
-                                  $this->codeCoverage !== null &&
-                                  !$test instanceof PHPUnit_Extensions_SeleniumTestCase &&
-                                  !$test instanceof PHPUnit_Framework_Warning;
+        $collectCodeCoverage = $this->canCollectCodeCoverage &&
+                               $this->codeCoverage !== null &&
+                               !$test instanceof PHPUnit_Extensions_SeleniumTestCase &&
+                               !$test instanceof PHPUnit_Framework_Warning;
 
         if ($collectCodeCoverage) {
             // We need to blacklist test source files when no whitelist is used.
