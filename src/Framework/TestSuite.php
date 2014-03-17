@@ -630,25 +630,16 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
             return $result;
         }
 
-        // Get hookMethods only if this is a testcase
-        // Otherwise $this->name may look like UnitTest::testMethod (e.g. when using @dataProvider)
-        $hookMethods = array();
-        if ($this->testCase && class_exists($this->name, false)) {
-            $hookMethods = PHPUnit_Util_Test::getHookMethods($this->name);
-        }
+        $hookMethods = PHPUnit_Util_Test::getHookMethods($this->name);
 
         $result->startTestSuite($this);
 
         try {
             $this->setUp();
 
-            // Some extensions use test names that are not classes;
-            // The method_exists() triggers an autoload call that causes issues with die()ing autoloaders.
-            if ($this->testCase && class_exists($this->name, false)) {
-                foreach ($hookMethods['beforeClass'] as $beforeClassMethod) {
-                    if (method_exists($this->name, $beforeClassMethod)) {
-                        call_user_func(array($this->name, $beforeClassMethod));
-                    }
+            foreach ($hookMethods['beforeClass'] as $beforeClassMethod) {
+                if (method_exists($this->name, $beforeClassMethod)) {
+                    call_user_func(array($this->name, $beforeClassMethod));
                 }
             }
         } catch (PHPUnit_Framework_SkippedTestSuiteError $e) {
@@ -684,13 +675,9 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
             $test->run($result);
         }
 
-        // Some extensions use test names that are not classes;
-        // The method_exists() triggers an autoload call that causes issues with die()ing autoloaders.
-        if ($this->testCase && class_exists($this->name, false)) {
-            foreach ($hookMethods['afterClass'] as $afterClassMethod) {
-                if (method_exists($this->name, $afterClassMethod)) {
-                    call_user_func(array($this->name, $afterClassMethod));
-                }
+        foreach ($hookMethods['afterClass'] as $afterClassMethod) {
+            if (method_exists($this->name, $afterClassMethod)) {
+                call_user_func(array($this->name, $afterClassMethod));
             }
         }
 

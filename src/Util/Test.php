@@ -664,13 +664,12 @@ class PHPUnit_Util_Test
      */
     public static function getHookMethods($className)
     {
+        if (!class_exists($className, false)) {
+            return self::emptyHookMethodsArray();
+        }
+
         if (!isset(self::$hookMethods[$className])) {
-            self::$hookMethods[$className] = array(
-                'beforeClass' => array('setUpBeforeClass'),
-                'before' => array('setUp'),
-                'after' => array('tearDown'),
-                'afterClass' => array('tearDownAfterClass')
-            );
+            self::$hookMethods[$className] = self::emptyHookMethodsArray();
 
             try {
                 $class = new ReflectionClass($className);
@@ -701,6 +700,20 @@ class PHPUnit_Util_Test
         }
 
         return self::$hookMethods[$className];
+    }
+
+    /**
+     * @return array
+     * @since  Method available since Release 4.0.9
+     */
+    private static function emptyHookMethodsArray()
+    {
+        return array(
+            'beforeClass' => array('setUpBeforeClass'),
+            'before' => array('setUp'),
+            'after' => array('tearDown'),
+            'afterClass' => array('tearDownAfterClass')
+        );
     }
 
     /**
