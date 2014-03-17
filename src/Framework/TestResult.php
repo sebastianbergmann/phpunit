@@ -843,10 +843,10 @@ class PHPUnit_Framework_TestResult implements Countable
     }
 
     /**
-     * Returns the PHP_CodeCoverage object.
+     * Sets the PHP_CodeCoverage object.
      *
-     * @return PHP_CodeCoverage
-     * @since  Method available since Release 3.6.0
+     * @param PHP_CodeCoverage $codeCoverage
+     * @since Method available since Release 3.6.0
      */
     public function setCodeCoverage(PHP_CodeCoverage $codeCoverage)
     {
