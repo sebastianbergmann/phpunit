@@ -630,7 +630,12 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
             return $result;
         }
 
-        $hookMethods = PHPUnit_Util_Test::getHookMethods($this->name);
+        // Get hookMethods only if this is a testcase
+        // Otherwise $this->name may look like UnitTest::testMethod (e.g. when using @dataProvider)
+        $hookMethods = array();
+        if ($this->testCase && class_exists($this->name, false)) {
+            $hookMethods = PHPUnit_Util_Test::getHookMethods($this->name);
+        }
 
         $result->startTestSuite($this);
 
