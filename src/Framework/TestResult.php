@@ -43,8 +43,6 @@
  * @since      File available since Release 2.0.0
  */
 
-use SebastianBergmann\Environment\Runtime;
-
 /**
  * A TestResult collects the results of executing a test case.
  *
@@ -189,20 +187,6 @@ class PHPUnit_Framework_TestResult implements Countable
      * @var integer
      */
     protected $timeoutForLargeTests = 60;
-
-    /**
-     * @var boolean
-     */
-    private $canCollectCodeCoverage = false;
-
-    /**
-     * @since Method available since Release 4.0.9
-     */
-    public function __construct()
-    {
-        $runtime = new Runtime;
-        $this->canCollectCodeCoverage = $runtime->canCollectCodeCoverage();
-    }
 
     /**
      * Registers a TestListener.
@@ -654,8 +638,7 @@ class PHPUnit_Framework_TestResult implements Countable
             }
         }
 
-        $collectCodeCoverage = $this->canCollectCodeCoverage &&
-                               $this->codeCoverage !== null &&
+        $collectCodeCoverage = $this->codeCoverage !== null &&
                                !$test instanceof PHPUnit_Extensions_SeleniumTestCase &&
                                !$test instanceof PHPUnit_Framework_Warning;
 
