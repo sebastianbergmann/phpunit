@@ -43,8 +43,6 @@
  * @since      File available since Release 2.0.0
  */
 
-use SebastianBergmann\Environment\Runtime;
-
 /**
  * A TestResult collects the results of executing a test case.
  *
@@ -640,13 +638,9 @@ class PHPUnit_Framework_TestResult implements Countable
             }
         }
 
-        $runtime = new Runtime;
-
-        $canCollectCodeCoverage = $runtime->canCollectCodeCoverage();
-        $collectCodeCoverage    = $canCollectCodeCoverage &&
-                                  $this->codeCoverage !== null &&
-                                  !$test instanceof PHPUnit_Extensions_SeleniumTestCase &&
-                                  !$test instanceof PHPUnit_Framework_Warning;
+        $collectCodeCoverage = $this->codeCoverage !== null &&
+                               !$test instanceof PHPUnit_Extensions_SeleniumTestCase &&
+                               !$test instanceof PHPUnit_Framework_Warning;
 
         if ($collectCodeCoverage) {
             // We need to blacklist test source files when no whitelist is used.
@@ -832,10 +826,10 @@ class PHPUnit_Framework_TestResult implements Countable
     }
 
     /**
-     * Returns the PHP_CodeCoverage object.
+     * Sets the PHP_CodeCoverage object.
      *
-     * @return PHP_CodeCoverage
-     * @since  Method available since Release 3.6.0
+     * @param PHP_CodeCoverage $codeCoverage
+     * @since Method available since Release 3.6.0
      */
     public function setCodeCoverage(PHP_CodeCoverage $codeCoverage)
     {
