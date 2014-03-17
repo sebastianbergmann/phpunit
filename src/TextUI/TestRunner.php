@@ -311,40 +311,42 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
 
         $codeCoverageReports = 0;
 
-        if (extension_loaded('tokenizer') && $this->canCollectCodeCoverage) {
-            if (isset($arguments['coverageClover'])) {
-                $codeCoverageReports++;
-            }
+        if (isset($arguments['coverageClover'])) {
+            $codeCoverageReports++;
+        }
 
-            if (isset($arguments['coverageCrap4J'])) {
-                $codeCoverageReports++;
-            }
+        if (isset($arguments['coverageCrap4J'])) {
+            $codeCoverageReports++;
+        }
 
-            if (isset($arguments['coverageHtml'])) {
-                $codeCoverageReports++;
-            }
+        if (isset($arguments['coverageHtml'])) {
+            $codeCoverageReports++;
+        }
 
-            if (isset($arguments['coveragePHP'])) {
-                $codeCoverageReports++;
-            }
+        if (isset($arguments['coveragePHP'])) {
+            $codeCoverageReports++;
+        }
 
-            if (isset($arguments['coverageText'])) {
-                $codeCoverageReports++;
-            }
+        if (isset($arguments['coverageText'])) {
+            $codeCoverageReports++;
+        }
 
-            if (isset($arguments['coverageXml'])) {
-                $codeCoverageReports++;
-            }
-        } else {
+        if (isset($arguments['coverageXml'])) {
+            $codeCoverageReports++;
+        }
+
+        if ($codeCoverageReports > 0 && (!extension_loaded('tokenizer') || !$this->canCollectCodeCoverage)) {
             if (!extension_loaded('tokenizer')) {
                 $this->showExtensionNotLoadedMessage(
-                  'tokenizer', 'No code coverage will be generated.'
+                    'tokenizer', 'No code coverage will be generated.'
                 );
             } elseif (!extension_loaded('Xdebug')) {
                 $this->showExtensionNotLoadedMessage(
-                  'Xdebug', 'No code coverage will be generated.'
+                    'Xdebug', 'No code coverage will be generated.'
                 );
             }
+
+            $codeCoverageReports = 0;
         }
 
         if ($codeCoverageReports > 0) {
