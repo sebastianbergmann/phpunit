@@ -65,7 +65,7 @@ class PHPUnit_Framework_MockObject_Generator
     /**
      * @var array
      */
-    protected $cache = array();
+    private static $cache = array();
 
     /**
      * @var array
@@ -505,8 +505,8 @@ class PHPUnit_Framework_MockObject_Generator
               serialize($callOriginalMethods)
             );
 
-            if (isset($this->cache[$key])) {
-                return $this->cache[$key];
+            if (isset(self::$cache[$key])) {
+                return self::$cache[$key];
             }
         }
 
@@ -521,7 +521,7 @@ class PHPUnit_Framework_MockObject_Generator
         );
 
         if (isset($key)) {
-            $this->cache[$key] = $mock;
+            self::$cache[$key] = $mock;
         }
 
         return $mock;
