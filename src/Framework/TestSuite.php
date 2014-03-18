@@ -638,7 +638,7 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
             $this->setUp();
 
             foreach ($hookMethods['beforeClass'] as $beforeClassMethod) {
-                if (method_exists($this->name, $beforeClassMethod)) {
+                if ($this->testCase === true && class_exists($this->name, false) && method_exists($this->name, $beforeClassMethod)) {
                     call_user_func(array($this->name, $beforeClassMethod));
                 }
             }
@@ -676,7 +676,7 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
         }
 
         foreach ($hookMethods['afterClass'] as $afterClassMethod) {
-            if (method_exists($this->name, $afterClassMethod)) {
+            if ($this->testCase === true && class_exists($this->name, false) && method_exists($this->name, $afterClassMethod)) {
                 call_user_func(array($this->name, $afterClassMethod));
             }
         }
