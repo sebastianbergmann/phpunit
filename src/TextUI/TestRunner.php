@@ -853,6 +853,16 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
                 $arguments['addUncoveredFilesFromWhitelist'] = $filterConfiguration['whitelist']['addUncoveredFilesFromWhitelist'];
                 $arguments['processUncoveredFilesFromWhitelist'] = $filterConfiguration['whitelist']['processUncoveredFilesFromWhitelist'];
 
+                if (defined('__PHPUNIT_PHAR__')) {
+                    $this->codeCoverageFilter->addFileToBlacklist(__PHPUNIT_PHAR__);
+                }
+
+                $blacklist = new PHPUnit_Util_Blacklist;
+
+                foreach ($blacklist->getBlacklistedDirectories() as $directory) {
+                    $this->codeCoverageFilter->addDirectoryToBlacklist($directory);
+                }
+
                 foreach ($filterConfiguration['blacklist']['include']['directory'] as $dir) {
                     $this->codeCoverageFilter->addDirectoryToBlacklist(
                       $dir['path'], $dir['suffix'], $dir['prefix'], $dir['group']
