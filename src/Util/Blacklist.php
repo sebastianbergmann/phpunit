@@ -87,26 +87,7 @@ class PHPUnit_Util_Blacklist
         if (self::$directories === null) {
             self::$directories = array();
 
-            $classes = array(
-                'File_Iterator' => 1,
-                'PHP_CodeCoverage' => 1,
-                'PHP_Invoker' => 1,
-                'PHP_Timer' => 1,
-                'PHP_Token' => 1,
-                'PHPUnit_Framework_TestCase' => 2,
-                'PHPUnit_Extensions_Database_TestCase' => 2,
-                'PHPUnit_Framework_MockObject_Generator' => 2,
-                'PHPUnit_Extensions_SeleniumTestCase' => 2,
-                'PHPUnit_Extensions_Story_TestCase' => 2,
-                'Text_Template' => 1,
-                'SebastianBergmann\Diff' => 1,
-                'SebastianBergmann\Environment\Runtime' => 1,
-                'SebastianBergmann\Exporter\Exporter' => 1,
-                'SebastianBergmann\Version' => 1,
-                'Composer\Autoload\ClassLoader' => 1
-            );
-
-            foreach ($classes as $className => $parent) {
+            foreach (PHP_CodeCoverage_Filter::$blacklistClassNames as $className => $parent) {
                 if (!class_exists($className)) {
                     continue;
                 }
