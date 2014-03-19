@@ -112,8 +112,9 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
     }
 
     /**
-     * @param  mixed                       $test
-     * @param  array                       $arguments
+     * @param  PHPUnit_Framework_Test|ReflectionClass $test
+     * @param  array                               $arguments
+     * @return PHPUnit_Framework_TestResult
      * @throws PHPUnit_Framework_Exception
      */
     public static function run($test, array $arguments = array())
