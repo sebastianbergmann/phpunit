@@ -1687,12 +1687,8 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
             throw new ErrorException($errstr, $errno, $errno, $errfile, $errline);
         }, E_WARNING);
 
-        foreach ($data as $key => $_data) {
+        foreach ($data as $_data) {
             try {
-                // Detect array-recursions by using count
-                // http://php.net/manual/en/function.count.php
-                $iRecursiveCheck = count($_data, COUNT_RECURSIVE);
-
                 if (is_array($_data)) {
                     $result[] = 'array(' . $this->dataToString($_data) . ')';
                 } elseif (is_object($_data)) {
