@@ -55,6 +55,7 @@
  *          bootstrap="/path/to/bootstrap.php"
  *          cacheTokens="false"
  *          colors="false"
+ *          stderr="false"
  *          convertErrorsToExceptions="true"
  *          convertNoticesToExceptions="true"
  *          convertWarningsToExceptions="true"
@@ -574,6 +575,15 @@ class PHPUnit_Util_Configuration
         if ($root->hasAttribute('colors')) {
             $result['colors'] = $this->getBoolean(
               (string) $root->getAttribute('colors'), false
+            );
+        }
+
+        /**
+         * Issue #657
+         */
+        if ($root->hasAttribute('stderr')) {
+            $result['stderr'] = $this->getBoolean(
+              (string)$root->getAttribute('stderr'), FALSE
             );
         }
 
