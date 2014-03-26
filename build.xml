@@ -167,7 +167,7 @@
    <arg value="composer.phar"/>
    <arg value="require"/>
    <arg value="phpunit/dbunit"/>
-   <arg value="1.2.*"/>
+   <arg value="1.3.*"/>
   </exec>
 
   <exec executable="php">
