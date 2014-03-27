@@ -69,6 +69,11 @@ class Framework_TestCaseTest extends PHPUnit_Framework_TestCase
 {
     protected $backupGlobalsBlacklist = array('i', 'singleton');
 
+    /**
+     * Used be testStaticAttributesBackupPre
+     */
+    protected static $_testStatic = 0;
+
     public function testCaseToString()
     {
         $this->assertEquals(
@@ -292,11 +297,16 @@ class Framework_TestCaseTest extends PHPUnit_Framework_TestCase
     public function testStaticAttributesBackupPre()
     {
         $GLOBALS['singleton'] = Singleton::getInstance();
+        self::$_testStatic = 123;
     }
 
+    /**
+     * @depends testStaticAttributesBackupPre
+     */
     public function testStaticAttributesBackupPost()
     {
         $this->assertNotSame($GLOBALS['singleton'], Singleton::getInstance());
+        $this->assertSame(123, self::$_testStatic);
     }
 
     public function testExpectOutputStringFooActualFoo()
@@ -428,7 +438,7 @@ class Framework_TestCaseTest extends PHPUnit_Framework_TestCase
     public function testRequiringAnExistingOsDoesNotSkip()
     {
         $test   = new RequirementsTest('testExistingOs');
-        $result = $test->run();
+        $result = $test->run();testStaticAttributesBackupPre
         $this->assertEquals(0, $result->skippedCount());
     }
 
