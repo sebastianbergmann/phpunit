@@ -438,7 +438,7 @@ class Framework_TestCaseTest extends PHPUnit_Framework_TestCase
     public function testRequiringAnExistingOsDoesNotSkip()
     {
         $test   = new RequirementsTest('testExistingOs');
-        $result = $test->run();testStaticAttributesBackupPre
+        $result = $test->run();
         $this->assertEquals(0, $result->skippedCount());
     }
 
