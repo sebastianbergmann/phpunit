@@ -411,6 +411,19 @@ class PHPUnit_Util_Configuration
                 if ($log->hasAttribute('highLowerBound')) {
                     $result['highLowerBound'] = (string) $log->getAttribute('highLowerBound');
                 }
+
+                //Specify which prefix from the aboslute path of Nodes should be replaced
+                //by following project name in Code Coverage HTML report's breadcrumb.
+                // See PHP_CodeCoverage_Report_HTML_Renderer in Code Coverage module.
+                // Example: /home/gabriel/github/figdice/src / SomeFile.php
+                // replaced with: FigDice / SomeFile.php
+            	if ($log->hasAttribute('absoluteRoot')) {
+                    $result['absoluteRoot'] = (string) $log->getAttribute('absoluteRoot');
+                }
+                if ($log->hasAttribute('projectPrefix')) {
+                	$result['projectPrefix'] = (string) $log->getAttribute('projectPrefix');
+                }
+
             } elseif ($type == 'junit') {
                 if ($log->hasAttribute('logIncompleteSkipped')) {
                     $result['logIncompleteSkipped'] = $this->getBoolean(
