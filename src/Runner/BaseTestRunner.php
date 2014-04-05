@@ -158,11 +158,7 @@ abstract class PHPUnit_Runner_BaseTestRunner
     {
         $loader = $this->getLoader();
 
-        if ($loader instanceof PHPUnit_Runner_StandardTestSuiteLoader) {
-            return $loader->load($suiteClassName, $suiteClassFile);
-        } else {
-            return $loader->load($suiteClassName, $suiteClassFile);
-        }
+        return $loader->load($suiteClassName, $suiteClassFile);
     }
 
     /**
