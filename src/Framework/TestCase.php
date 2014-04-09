@@ -221,6 +221,11 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
     /**
      * @var array
      */
+    private $commandLineOptions = array();
+
+    /**
+     * @var array
+     */
     private $locale = array();
 
     /**
@@ -748,6 +753,7 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
             $this->prepareTemplate($template);
 
             $php = PHPUnit_Util_PHP::factory();
+            $php->setCommandLineOptions($this->commandLineOptions);
             $php->runTestJob($template->render(), $this, $result);
         } else {
             $result->run($this);
@@ -1100,15 +1106,17 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
 
     /**
      * @param  boolean                     $runTestInSeparateProcess
+     * @param  array $commandLineOptions
      * @throws PHPUnit_Framework_Exception
      * @since  Method available since Release 3.4.0
      */
-    public function setRunTestInSeparateProcess($runTestInSeparateProcess)
+    public function setRunTestInSeparateProcess($runTestInSeparateProcess, $commandLineOptions = array())
     {
         if (is_bool($runTestInSeparateProcess)) {
             if ($this->runTestInSeparateProcess === null) {
                 $this->runTestInSeparateProcess = $runTestInSeparateProcess;
             }
+            $this->commandLineOptions = $commandLineOptions;
         } else {
             throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'boolean');
         }

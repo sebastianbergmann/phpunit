@@ -318,6 +318,17 @@ class Util_ConfigurationTest extends PHPUnit_Framework_TestCase
         );
     }
 
+    public function testCommandLineOptionsAreReadCorrectly()
+    {
+        $this->assertEquals(
+            array(
+                'extensions'=> array('fooext' => 'zend_extension=/path/to/extension.so'),
+                'options'   => array('fooext.option'),
+            ),
+            $this->configuration->getCommandLineOptions()
+        );
+    }
+
     public function testSeleniumBrowserConfigurationIsReadCorrectly()
     {
         $this->assertEquals(

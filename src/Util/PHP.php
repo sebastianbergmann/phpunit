@@ -57,6 +57,11 @@
 abstract class PHPUnit_Util_PHP
 {
     /**
+     * @var array
+     */
+    protected $commandLineOptions = array();
+
+    /**
      * @return PHPUnit_Util_PHP
      * @since  Method available since Release 3.5.12
      */
@@ -81,7 +86,7 @@ abstract class PHPUnit_Util_PHP
     {
         $result->startTest($test);
 
-        $_result = $this->runJob($job);
+        $_result = $this->runJob($job, $this->commandLineOptions);
 
         $this->processChildResult(
           $test, $result, $_result['stdout'], $_result['stderr']
@@ -112,6 +117,31 @@ abstract class PHPUnit_Util_PHP
         }
 
         return $buffer;
+    }
+
+    /**
+     * @param array $options
+     * @since Method available since Release x.x
+     */
+    public function setCommandLineOptions(array $options)
+    {
+        $this->commandLineOptions = array();
+
+        if (isset($options['extensions'])) {
+            foreach ($options['extensions'] as $extensionName => $option) {
+                if (extension_loaded($extensionName)) {
+                    $this->commandLineOptions[] = $option;
+                }
+            }
+        }
+
+        if (isset($options['options'])) {
+            foreach ($options['options'] as $option) {
+                if (ini_get($option)) {
+                    $this->commandLineOptions[] = $option . '=' . ini_get($option);
+                }
+            }
+        }
     }
 
     /**
