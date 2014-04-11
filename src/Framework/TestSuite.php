@@ -139,6 +139,11 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
     private $iteratorFilter = null;
 
     /**
+     * @var array
+     */
+    private $commandLineOptions = array();
+
+    /**
      * Constructs a new TestSuite:
      *
      *   - PHPUnit_Framework_TestSuite() constructs an empty TestSuite.
@@ -669,7 +674,7 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
                 $test instanceof PHPUnit_Framework_TestSuite) {
                 $test->setBackupGlobals($this->backupGlobals);
                 $test->setBackupStaticAttributes($this->backupStaticAttributes);
-                $test->setRunTestInSeparateProcess($this->runTestInSeparateProcess);
+                $test->setRunTestInSeparateProcess($this->runTestInSeparateProcess, $this->commandLineOptions);
             }
 
             $test->run($result);
@@ -690,13 +695,15 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
 
     /**
      * @param  boolean                     $runTestInSeparateProcess
+     * @param  array                       $commandLineOptions
      * @throws PHPUnit_Framework_Exception
      * @since  Method available since Release 3.7.0
      */
-    public function setRunTestInSeparateProcess($runTestInSeparateProcess)
+    public function setRunTestInSeparateProcess($runTestInSeparateProcess, $commandLineOptions = array())
     {
         if (is_bool($runTestInSeparateProcess)) {
             $this->runTestInSeparateProcess = $runTestInSeparateProcess;
+            $this->commandLineOptions = $commandLineOptions;
         } else {
             throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'boolean');
         }

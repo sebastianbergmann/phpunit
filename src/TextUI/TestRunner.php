@@ -202,11 +202,20 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
         }
 
         if (is_integer($arguments['repeat'])) {
-            $test = new PHPUnit_Extensions_RepeatedTest(
-              $suite,
-              $arguments['repeat'],
-              $arguments['processIsolation']
-            );
+            if (isset($arguments['configuration'])) {
+                $test = new PHPUnit_Extensions_RepeatedTest(
+                    $suite,
+                    $arguments['repeat'],
+                    $arguments['processIsolation'],
+                    $arguments['configuration']->getCommandLineOptions()
+                );
+            } else {
+                $test = new PHPUnit_Extensions_RepeatedTest(
+                    $suite,
+                    $arguments['repeat'],
+                    $arguments['processIsolation']
+                );
+            }
 
             $suite = new PHPUnit_Framework_TestSuite();
             $suite->addTest($test);
@@ -416,7 +425,14 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
         $result->setTimeoutForLargeTests($arguments['timeoutForLargeTests']);
 
         if ($suite instanceof PHPUnit_Framework_TestSuite) {
-            $suite->setRunTestInSeparateProcess($arguments['processIsolation']);
+            if (isset($arguments['configuration'])) {
+                $suite->setRunTestInSeparateProcess(
+                    $arguments['processIsolation'],
+                    $arguments['configuration']->getCommandLineOptions()
+                );
+            } else {
+                $suite->setRunTestInSeparateProcess($arguments['processIsolation']);
+            }
         }
 
         $suite->run($result);

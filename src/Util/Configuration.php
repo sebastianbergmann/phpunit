@@ -159,6 +159,11 @@
  *     <request name="foo" value="bar"/>
  *   </php>
  *
+ *   <commandLineOptions>
+ *     <extension name="fooext" option="zend_extension=/path/to/extension.so"/>
+ *     <option name="fooext.option"/>
+ *   </commandLineOptions>
+ *
  *   <selenium>
  *     <browser name="Firefox on Linux"
  *              browser="*firefox /usr/lib/firefox/firefox-bin"
@@ -753,6 +758,35 @@ class PHPUnit_Util_Configuration
             $result['verbose'] = $this->getBoolean(
               (string) $root->getAttribute('verbose'), false
             );
+        }
+
+        return $result;
+    }
+
+    /**
+     * Returns the command line options that should be passed on to separate test processes.
+     *
+     * @return array
+     * @since  Method available since Release x.x
+     */
+    public function getCommandLineOptions()
+    {
+        $result = array(
+            'extensions' => array(),
+            'options'    => array(),
+        );
+
+        foreach ($this->xpath->query('commandLineOptions/extension') as $ini) {
+            $name  = (string) $ini->getAttribute('name');
+            $value = (string) $ini->getAttribute('option');
+
+            $result['extensions'][$name] = $value;
+        }
+
+        foreach ($this->xpath->query('commandLineOptions/option') as $ini) {
+            $name  = (string) $ini->getAttribute('name');
+
+            $result['options'][] = $name;
         }
 
         return $result;
