@@ -80,6 +80,11 @@ class PHPUnit_Extensions_RepeatedTest extends PHPUnit_Extensions_TestDecorator
     protected $timesRepeat = 1;
 
     /**
+     * @var array
+     */
+    protected $commandLineOptions = array();
+
+    /**
      * Constructor.
      *
      * @param  PHPUnit_Framework_Test      $test
@@ -88,9 +93,12 @@ class PHPUnit_Extensions_RepeatedTest extends PHPUnit_Extensions_TestDecorator
      * @param  array                       $groups
      * @param  array                       $excludeGroups
      * @param  boolean                     $processIsolation
+     * @param  array                       $commandLineOptions
      * @throws PHPUnit_Framework_Exception
      */
-    public function __construct(PHPUnit_Framework_Test $test, $timesRepeat = 1, $processIsolation = false)
+    public function __construct(
+        PHPUnit_Framework_Test $test, $timesRepeat = 1, $processIsolation = false, $commandLineOptions = array()
+    )
     {
         parent::__construct($test);
 
@@ -104,6 +112,7 @@ class PHPUnit_Extensions_RepeatedTest extends PHPUnit_Extensions_TestDecorator
         }
 
         $this->processIsolation = $processIsolation;
+        $this->commandLineOptions = $commandLineOptions;
     }
 
     /**
@@ -135,7 +144,7 @@ class PHPUnit_Extensions_RepeatedTest extends PHPUnit_Extensions_TestDecorator
         for ($i = 0; $i < $this->timesRepeat && !$result->shouldStop(); $i++) {
             //@codingStandardsIgnoreEnd
             if ($this->test instanceof PHPUnit_Framework_TestSuite) {
-                $this->test->setRunTestInSeparateProcess($this->processIsolation);
+                $this->test->setRunTestInSeparateProcess($this->processIsolation, $this->commandLineOptions);
             }
             $this->test->run($result);
         }
