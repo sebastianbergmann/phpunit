@@ -88,5 +88,6 @@ class MockFoo implements PHPUnit_Framework_MockObject_MockObject, Foo
     public function __phpunit_verify()
     {
         $this->__phpunit_getInvocationMocker()->verify();
+        $this->__phpunit_invocationMocker = NULL;
     }
 }

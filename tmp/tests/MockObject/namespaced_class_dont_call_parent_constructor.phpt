@@ -69,5 +69,6 @@ class MockFoo extends NS\Foo implements PHPUnit_Framework_MockObject_MockObject
     public function __phpunit_verify()
     {
         $this->__phpunit_getInvocationMocker()->verify();
+        $this->__phpunit_invocationMocker = NULL;
     }
 }
