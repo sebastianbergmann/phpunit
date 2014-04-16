@@ -31,5 +31,6 @@
     public function __phpunit_verify()
     {
         $this->__phpunit_getInvocationMocker()->verify();
+        $this->__phpunit_invocationMocker = NULL;
     }
 }{epilogue}
