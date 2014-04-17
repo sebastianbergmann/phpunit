@@ -1,6 +1,9 @@
 <?php
 class Framework_MockObject_GeneratorTest extends PHPUnit_Framework_TestCase
 {
+    /**
+     * @var PHPUnit_Framework_MockObject_Generator
+     */
     protected $generator;
 
     protected function setUp()
@@ -161,6 +164,18 @@ class Framework_MockObject_GeneratorTest extends PHPUnit_Framework_TestCase
             'mockClassName not a string' => array('AbstractTrait', new StdClass),
             'trait does not exist' => array('AbstractTraitDoesNotExist', 'TraitTest')
         );
+    }
+
+    /**
+     *
+     */
+    public function testGetMockForSingletonWithReflectionSuccess()
+    {
+        // Probably, this should be moved to tests/autoload.php
+        require_once __DIR__ . '/_fixture/SingletonClass.php';
+
+        $mock = $this->generator->getMock('SingletonClass', array('doSomething'), array(), '', false);
+        $this->assertInstanceOf('SingletonClass', $mock);
     }
 }
 
