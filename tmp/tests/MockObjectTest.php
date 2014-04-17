@@ -730,7 +730,7 @@ class Framework_MockObjectTest extends PHPUnit_Framework_TestCase
      */
     public function testCreateMockFromWsdl()
     {
-        $mock = $this->getMockFromWsdl(__DIR__ . '/_files/GoogleSearch.wsdl', 'WsdlMock');
+        $mock = $this->getMockFromWsdl(__DIR__ . '/_fixture/GoogleSearch.wsdl', 'WsdlMock');
         $this->assertStringStartsWith(
             'Mock_WsdlMock_',
             get_class($mock)
@@ -742,7 +742,7 @@ class Framework_MockObjectTest extends PHPUnit_Framework_TestCase
      */
     public function testCreateNamespacedMockFromWsdl()
     {
-        $mock = $this->getMockFromWsdl(__DIR__ . '/_files/GoogleSearch.wsdl', 'My\\Space\\WsdlMock');
+        $mock = $this->getMockFromWsdl(__DIR__ . '/_fixture/GoogleSearch.wsdl', 'My\\Space\\WsdlMock');
         $this->assertStringStartsWith(
             'Mock_WsdlMock_',
             get_class($mock)
@@ -754,8 +754,8 @@ class Framework_MockObjectTest extends PHPUnit_Framework_TestCase
      */
     public function testCreateTwoMocksOfOneWsdlFile()
     {
-        $mock = $this->getMockFromWsdl(__DIR__ . '/_files/GoogleSearch.wsdl');
-        $mock = $this->getMockFromWsdl(__DIR__ . '/_files/GoogleSearch.wsdl');
+        $mock = $this->getMockFromWsdl(__DIR__ . '/_fixture/GoogleSearch.wsdl');
+        $mock = $this->getMockFromWsdl(__DIR__ . '/_fixture/GoogleSearch.wsdl');
     }
 
     /**
