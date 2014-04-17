@@ -7,26 +7,26 @@ spl_autoload_register(
         static $classes = null;
         if ($classes === null) {
             $classes = array(
-                'abstractmocktestclass' => '/_files/AbstractMockTestClass.php',
-                'abstracttrait' => '/_files/AbstractTrait.php',
-                'aninterface' => '/_files/AnInterface.php',
-                'anotherinterface' => '/_files/AnotherInterface.php',
-                'bar' => '/_files/Bar.php',
-                'foo' => '/_files/Foo.php',
+                'abstractmocktestclass' => '/_fixture/AbstractMockTestClass.php',
+                'abstracttrait' => '/_fixture/AbstractTrait.php',
+                'aninterface' => '/_fixture/AnInterface.php',
+                'anotherinterface' => '/_fixture/AnotherInterface.php',
+                'bar' => '/_fixture/Bar.php',
+                'foo' => '/_fixture/Foo.php',
                 'framework_mockbuildertest' => '/MockBuilderTest.php',
                 'framework_mockobject_generatortest' => '/GeneratorTest.php',
                 'framework_mockobject_invocation_objecttest' => '/MockObject/Invocation/ObjectTest.php',
                 'framework_mockobject_invocation_statictest' => '/MockObject/Invocation/StaticTest.php',
                 'framework_mockobjecttest' => '/MockObjectTest.php',
                 'framework_proxyobjecttest' => '/ProxyObjectTest.php',
-                'interfacewithstaticmethod' => '/_files/InterfaceWithStaticMethod.php',
-                'methodcallback' => '/_files/MethodCallback.php',
-                'methodcallbackbyreference' => '/_files/MethodCallbackByReference.php',
-                'mockable' => '/_files/Mockable.php',
-                'partialmocktestclass' => '/_files/PartialMockTestClass.php',
-                'someclass' => '/_files/SomeClass.php',
-                'staticmocktestclass' => '/_files/StaticMockTestClass.php',
-                'traversablemocktestinterface' => '/_files/TraversableMockTestInterface.php'
+                'interfacewithstaticmethod' => '/_fixture/InterfaceWithStaticMethod.php',
+                'methodcallback' => '/_fixture/MethodCallback.php',
+                'methodcallbackbyreference' => '/_fixture/MethodCallbackByReference.php',
+                'mockable' => '/_fixture/Mockable.php',
+                'partialmocktestclass' => '/_fixture/PartialMockTestClass.php',
+                'someclass' => '/_fixture/SomeClass.php',
+                'staticmocktestclass' => '/_fixture/StaticMockTestClass.php',
+                'traversablemocktestinterface' => '/_fixture/TraversableMockTestInterface.php'
             );
         }
         $cn = strtolower($class);
