@@ -64,6 +64,7 @@ class Util_ConfigurationTest extends PHPUnit_Framework_TestCase
     }
 
     /**
+     * @covers PHPUnit_Util_Configuration::getInstance
      * @expectedException PHPUnit_Framework_Exception
      */
     public function testExceptionIsThrownForNotExistingConfigurationFile()
@@ -71,6 +72,9 @@ class Util_ConfigurationTest extends PHPUnit_Framework_TestCase
         PHPUnit_Util_Configuration::getInstance('not_existing_file.xml');
     }
 
+    /**
+     * @covers PHPUnit_Util_Configuration::getFilterConfiguration
+     */
     public function testFilterConfigurationIsReadCorrectly()
     {
         $this->assertEquals(
@@ -156,6 +160,9 @@ class Util_ConfigurationTest extends PHPUnit_Framework_TestCase
         );
     }
 
+    /**
+     * @covers PHPUnit_Util_Configuration::getGroupConfiguration
+     */
     public function testGroupConfigurationIsReadCorrectly()
     {
         $this->assertEquals(
@@ -173,6 +180,9 @@ class Util_ConfigurationTest extends PHPUnit_Framework_TestCase
         );
     }
 
+    /**
+     * @covers PHPUnit_Util_Configuration::getListenerConfiguration
+     */
     public function testListenerConfigurationIsReadCorrectly()
     {
         $dir = __DIR__;
@@ -221,6 +231,9 @@ class Util_ConfigurationTest extends PHPUnit_Framework_TestCase
         ini_set('include_path', $includePath);
     }
 
+    /**
+     * @covers PHPUnit_Util_Configuration::getLoggingConfiguration
+     */
     public function testLoggingConfigurationIsReadCorrectly()
     {
         $this->assertEquals(
@@ -241,6 +254,9 @@ class Util_ConfigurationTest extends PHPUnit_Framework_TestCase
         );
     }
 
+    /**
+     * @covers PHPUnit_Util_Configuration::getPHPConfiguration
+     */
     public function testPHPConfigurationIsReadCorrectly()
     {
         $this->assertEquals(
@@ -267,6 +283,7 @@ class Util_ConfigurationTest extends PHPUnit_Framework_TestCase
 
     /**
      * @backupGlobals enabled
+     * @covers PHPUnit_Util_Configuration::handlePHPConfiguration
      */
     public function testPHPConfigurationIsHandledCorrectly()
     {
@@ -287,6 +304,9 @@ class Util_ConfigurationTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('bar', $_REQUEST['foo']);
     }
 
+    /**
+     * @covers PHPUnit_Util_Configuration::getPHPUnitConfiguration
+     */
     public function testPHPUnitConfigurationIsReadCorrectly()
     {
         $this->assertEquals(
@@ -318,6 +338,9 @@ class Util_ConfigurationTest extends PHPUnit_Framework_TestCase
         );
     }
 
+    /**
+     * @covers PHPUnit_Util_Configuration::getSeleniumBrowserConfiguration
+     */
     public function testSeleniumBrowserConfigurationIsReadCorrectly()
     {
         $this->assertEquals(
@@ -335,6 +358,9 @@ class Util_ConfigurationTest extends PHPUnit_Framework_TestCase
         );
     }
 
+    /**
+     * @covers PHPUnit_Util_Configuration::getInstance
+     */
     public function testXincludeInConfiguration()
     {
         $configurationWithXinclude = PHPUnit_Util_Configuration::getInstance(
@@ -360,30 +386,37 @@ class Util_ConfigurationTest extends PHPUnit_Framework_TestCase
             $expectedConfiguration->getFilterConfiguration(),
             $actualConfiguration->getFilterConfiguration()
         );
+
         $this->assertEquals(
             $expectedConfiguration->getGroupConfiguration(),
             $actualConfiguration->getGroupConfiguration()
         );
+
         $this->assertEquals(
             $expectedConfiguration->getListenerConfiguration(),
             $actualConfiguration->getListenerConfiguration()
         );
+
         $this->assertEquals(
             $expectedConfiguration->getLoggingConfiguration(),
             $actualConfiguration->getLoggingConfiguration()
         );
+
         $this->assertEquals(
             $expectedConfiguration->getPHPConfiguration(),
             $actualConfiguration->getPHPConfiguration()
         );
+
         $this->assertEquals(
             $expectedConfiguration->getPHPUnitConfiguration(),
             $actualConfiguration->getPHPUnitConfiguration()
         );
+
         $this->assertEquals(
             $expectedConfiguration->getSeleniumBrowserConfiguration(),
             $actualConfiguration->getSeleniumBrowserConfiguration()
         );
+
         $this->assertEquals(
             $expectedConfiguration->getTestSuiteConfiguration(),
             $actualConfiguration->getTestSuiteConfiguration()

@@ -62,6 +62,10 @@ if (!defined('TEST_FILES_PATH')) {
  */
 class Util_TestTest extends PHPUnit_Framework_TestCase
 {
+    /**
+     * @covers PHPUnit_Util_Test::getExpectedException
+     * @todo   Split up in separate tests
+     */
     public function testGetExpectedException()
     {
         $this->assertSame(
@@ -103,30 +107,47 @@ class Util_TestTest extends PHPUnit_Framework_TestCase
           array('class' => 'Class', 'code' => 0, 'message' => 'Message'),
           PHPUnit_Util_Test::getExpectedException('ExceptionTest', 'testEight')
         );
+
         $this->assertSame(
           array('class' => 'Class', 'code' => ExceptionTest::ERROR_CODE, 'message' => ExceptionTest::ERROR_MESSAGE),
           PHPUnit_Util_Test::getExpectedException('ExceptionTest', 'testNine')
         );
+
         $this->assertSame(
           array('class' => 'Class', 'code' => null, 'message' => ''),
           PHPUnit_Util_Test::getExpectedException('ExceptionTest', 'testSingleLine')
         );
+
         $this->assertSame(
             array('class' => 'Class', 'code' => My\Space\ExceptionNamespaceTest::ERROR_CODE, 'message' => My\Space\ExceptionNamespaceTest::ERROR_MESSAGE),
             PHPUnit_Util_Test::getExpectedException('My\Space\ExceptionNamespaceTest', 'testConstants')
         );
+
         // Ensure the Class::CONST expression is only evaluated when the constant really exists
         $this->assertSame(
             array('class' => 'Class', 'code' => 'ExceptionTest::UNKNOWN_CODE_CONSTANT', 'message' => 'ExceptionTest::UNKNOWN_MESSAGE_CONSTANT'),
             PHPUnit_Util_Test::getExpectedException('ExceptionTest', 'testUnknownConstants')
         );
+
         $this->assertSame(
             array('class' => 'Class', 'code' => 'My\Space\ExceptionNamespaceTest::UNKNOWN_CODE_CONSTANT', 'message' => 'My\Space\ExceptionNamespaceTest::UNKNOWN_MESSAGE_CONSTANT'),
             PHPUnit_Util_Test::getExpectedException('My\Space\ExceptionNamespaceTest', 'testUnknownConstants')
         );
     }
 
-    public function provideRequirements()
+    /**
+     * @covers       PHPUnit_Util_Test::getRequirements
+     * @dataProvider requirementsProvider
+     */
+    public function testGetRequirements($test, $result)
+    {
+        $this->assertEquals(
+          $result,
+          PHPUnit_Util_Test::getRequirements('RequirementsTest', $test)
+        );
+    }
+
+    public function requirementsProvider()
     {
         return array(
             array('testOne',    array()),
@@ -167,16 +188,8 @@ class Util_TestTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @dataProvider provideRequirements
+     * @covers PHPUnit_Util_Test::getRequirements
      */
-    public function testGetRequirements($test, $result)
-    {
-        $this->assertEquals(
-          $result,
-          PHPUnit_Util_Test::getRequirements('RequirementsTest', $test)
-        );
-    }
-
     public function testGetRequirementsMergesClassAndMethodDocBlocks()
     {
         $expectedAnnotations = array(
@@ -199,6 +212,10 @@ class Util_TestTest extends PHPUnit_Framework_TestCase
         );
     }
 
+    /**
+     * @coversNothing
+     * @todo   This test does not really test functionality of PHPUnit_Util_Test
+     */
     public function testGetProvidedDataRegEx()
     {
         $result = preg_match(PHPUnit_Util_Test::REGEX_DATA_PROVIDER, '@dataProvider method', $matches);
@@ -222,6 +239,10 @@ class Util_TestTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('メソッド', $matches[1]);
     }
 
+    /**
+     * @covers PHPUnit_Util_Test::getDependencies
+     * @todo   Not sure what this test tests (name is misleading at least)
+     */
     public function testParseAnnotation()
     {
         $this->assertEquals(
@@ -233,11 +254,15 @@ class Util_TestTest extends PHPUnit_Framework_TestCase
     /**
      * @depends Foo
      * @depends ほげ
+     * @todo    Remove fixture from test class
      */
     public function methodForTestParseAnnotation()
     {
     }
 
+    /**
+     * @covers PHPUnit_Util_Test::getDependencies
+     */
     public function testParseAnnotationThatIsOnlyOneLine()
     {
         $this->assertEquals(
@@ -249,6 +274,7 @@ class Util_TestTest extends PHPUnit_Framework_TestCase
     /** @depends Bar */
     public function methodForTestParseAnnotationThatIsOnlyOneLine()
     {
+        // TODO Remove fixture from test class
     }
 
     /**
