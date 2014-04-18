@@ -2,7 +2,7 @@
 phpunit --log-json php://stdout BankAccountTest ../_files/BankAccountTest.php
 --SKIPIF--
 <?php
-if (!defined('JSON_PRETTY_PRINT')) print 'skip: expected test data generated with JSON_PRETTY_PRINT';
+if (!in_array(substr(PHP_VERSION, 0, 3), array('5.4', '5.5'))) print 'skip: PHP >= 5.4.0 && < 5.6.0 required';
 ?>
 --FILE--
 <?php
