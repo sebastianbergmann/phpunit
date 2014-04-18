@@ -158,14 +158,14 @@ class PHPUnit_Util_Test
         );
 
         if ($match) {
-            foreach ($matches['coveredElement'] as $coveredElement) {
-                if ($classShortcut && strncmp($coveredElement, '::', 2) === 0) {
-                    $coveredElement = $classShortcut . $coveredElement;
+            foreach ($matches['coveredElement'] as $element) {
+                if ($classShortcut && strncmp($element, '::', 2) === 0) {
+                    $element = $classShortcut . $element;
                 }
 
                 $codeToCoverList = array_merge(
                   $codeToCoverList,
-                  self::resolveElementToReflectionObjects($coveredElement)
+                  self::resolveElementToReflectionObjects($element)
                 );
             }
         }
