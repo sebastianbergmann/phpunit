@@ -57,17 +57,6 @@
 class Framework_ConstraintTest extends PHPUnit_Framework_TestCase
 {
     /**
-     * Removes spaces in front of newlines
-     *
-     * @param  string $string
-     * @return string
-     */
-    public static function trimnl($string)
-    {
-        return preg_replace('/[ ]*\n/', "\n", $string);
-    }
-
-    /**
      * @covers PHPUnit_Framework_Constraint_ArrayHasKey
      * @covers PHPUnit_Framework_Assert::arrayHasKey
      * @covers PHPUnit_Framework_Constraint::count
@@ -952,7 +941,7 @@ EOF
         catch (PHPUnit_Framework_ExpectationFailedException $e) {
             $this->assertEquals(
               "custom message\n$message",
-              self::trimnl(PHPUnit_Framework_TestFailure::exceptionToString($e))
+              $this->trimnl(PHPUnit_Framework_TestFailure::exceptionToString($e))
             );
 
             return;
@@ -1167,7 +1156,7 @@ Failed asserting that two variables don't reference the same object.
 
 EOF
               ,
-              self::trimnl(PHPUnit_Framework_TestFailure::exceptionToString($e))
+              $this->trimnl(PHPUnit_Framework_TestFailure::exceptionToString($e))
             );
 
             return;
@@ -1235,7 +1224,7 @@ Failed asserting that two strings are not identical.
 
 EOF
               ,
-              self::trimnl(PHPUnit_Framework_TestFailure::exceptionToString($e))
+              $this->trimnl(PHPUnit_Framework_TestFailure::exceptionToString($e))
             );
 
             return;
@@ -1409,7 +1398,7 @@ Failed asserting that stdClass Object &%x () is of type "string".
 
 EOF
               ,
-              self::trimnl(PHPUnit_Framework_TestFailure::exceptionToString($e))
+              $this->trimnl(PHPUnit_Framework_TestFailure::exceptionToString($e))
             );
 
             return;
@@ -1438,7 +1427,7 @@ Failed asserting that stdClass Object &%x () is of type "string".
 
 EOF
               ,
-              self::trimnl(PHPUnit_Framework_TestFailure::exceptionToString($e))
+              $this->trimnl(PHPUnit_Framework_TestFailure::exceptionToString($e))
             );
 
             return;
@@ -3660,5 +3649,16 @@ EOF
         }
 
         $this->fail();
+    }
+
+    /**
+     * Removes spaces in front of newlines
+     *
+     * @param  string $string
+     * @return string
+     */
+    private function trimnl($string)
+    {
+        return preg_replace('/[ ]*\n/', "\n", $string);
     }
 }

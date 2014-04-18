@@ -55,6 +55,7 @@
  * @license    http://www.opensource.org/licenses/BSD-3-Clause  The BSD 3-Clause License
  * @link       http://www.phpunit.de/
  * @since      Class available since Release 3.3.0
+ * @covers     PHPUnit_Util_XML
  */
 class Util_XMLTest extends PHPUnit_Framework_TestCase
 {
