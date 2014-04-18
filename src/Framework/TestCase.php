@@ -817,6 +817,13 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
             $this->testResult = $this->runTest();
             $this->verifyMockObjects();
             $this->assertPostConditions();
+
+            $annotations = $this->getAnnotations();
+
+            if (isset($annotations['method']['todo'])) {
+                throw new PHPUnit_Framework_RiskyTestError('Test method is annotated with @todo');
+            }
+
             $this->status = PHPUnit_Runner_BaseTestRunner::STATUS_PASSED;
         } catch (PHPUnit_Framework_IncompleteTest $e) {
             $this->status        = PHPUnit_Runner_BaseTestRunner::STATUS_INCOMPLETE;
