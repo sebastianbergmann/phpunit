@@ -197,7 +197,6 @@ class PHPUnit_Util_Test
             $uses = array_merge($uses, $annotations['method']['uses']);
         }
 
-        $uses          = array_unique($uses);
         $codeToUseList = array();
 
         foreach (array_unique($uses) as $element) {
