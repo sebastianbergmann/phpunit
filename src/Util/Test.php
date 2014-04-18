@@ -116,30 +116,27 @@ class PHPUnit_Util_Test
      */
     public static function getLinesToBeCovered($className, $methodName)
     {
-        $codeToCoverList = array();
+        $annotations = self::parseTestMethodAnnotations(
+          $className, $methodName
+        );
 
-        $class = new ReflectionClass($className);
+        $covers = array();
 
-        try {
-            $method = new ReflectionMethod($className, $methodName);
-        } catch (ReflectionException $e) {
-            return array();
+        if (isset($annotations['class']['covers'])) {
+            $covers = $annotations['class']['covers'];
         }
 
-        $docComment = self::getDocCommentsOfTestClassAndTestMethodAndTemplateMethods($class, $method);
+        if (isset($annotations['method']['covers'])) {
+            $covers = array_merge($covers, $annotations['method']['covers']);
+        }
 
-        if (strpos($docComment, '@coversNothing') !== false) {
+        if (isset($annotations['class']['coversNothing']) || isset($annotations['method']['coversNothing'])) {
             return false;
         }
 
-        $classShortcut = preg_match_all(
-          '(@coversDefaultClass\s+(?P<coveredClass>[^\s]++)\s*$)m',
-          $class->getDocComment(),
-          $matches
-        );
-
-        if ($classShortcut) {
-            if ($classShortcut > 1) {
+        $classShortcut = null;
+        if (!empty($annotations['class']['coversDefaultClass'])) {
+            if (count($annotations['class']['coversDefaultClass']) > 1) {
                 throw new PHPUnit_Framework_CodeCoverageException(
                   sprintf(
                     'More than one @coversClass annotation in class or interface "%s".',
@@ -148,26 +145,22 @@ class PHPUnit_Util_Test
                 );
             }
 
-            $classShortcut = $matches['coveredClass'][0];
+            $classShortcut = $annotations['class']['coversDefaultClass'][0];
         }
 
-        $match = preg_match_all(
-          '(@covers\s+(?P<coveredElement>[^\s()]++)[\s()]*$)m',
-          $docComment,
-          $matches
-        );
+        $codeToCoverList = array();
 
-        if ($match) {
-            foreach ($matches['coveredElement'] as $coveredElement) {
-                if ($classShortcut && strncmp($coveredElement, '::', 2) === 0) {
-                    $coveredElement = $classShortcut . $coveredElement;
-                }
-
-                $codeToCoverList = array_merge(
-                  $codeToCoverList,
-                  self::resolveElementToReflectionObjects($coveredElement)
-                );
+        foreach (array_unique($covers) as $element) {
+            if ($classShortcut && strncmp($element, '::', 2) === 0) {
+                $element = $classShortcut . $element;
             }
+
+            $element = preg_replace('/[\s()]+$/', '', $element);
+
+            $codeToCoverList = array_merge(
+              $codeToCoverList,
+              self::resolveElementToReflectionObjects($element)
+            );
         }
 
         return self::resolveReflectionObjectsToLines($codeToCoverList);
@@ -197,7 +190,6 @@ class PHPUnit_Util_Test
             $uses = array_merge($uses, $annotations['method']['uses']);
         }
 
-        $uses          = array_unique($uses);
         $codeToUseList = array();
 
         foreach (array_unique($uses) as $element) {
