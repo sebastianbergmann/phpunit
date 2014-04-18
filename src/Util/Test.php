@@ -120,50 +120,11 @@ class PHPUnit_Util_Test
           $className, $methodName
         );
 
-        $covers = array();
-
-        if (isset($annotations['class']['covers'])) {
-            $covers = $annotations['class']['covers'];
-        }
-
-        if (isset($annotations['method']['covers'])) {
-            $covers = array_merge($covers, $annotations['method']['covers']);
-        }
-
         if (isset($annotations['class']['coversNothing']) || isset($annotations['method']['coversNothing'])) {
             return false;
         }
 
-        $classShortcut = null;
-        if (!empty($annotations['class']['coversDefaultClass'])) {
-            if (count($annotations['class']['coversDefaultClass']) > 1) {
-                throw new PHPUnit_Framework_CodeCoverageException(
-                  sprintf(
-                    'More than one @coversClass annotation in class or interface "%s".',
-                    $className
-                  )
-                );
-            }
-
-            $classShortcut = $annotations['class']['coversDefaultClass'][0];
-        }
-
-        $codeToCoverList = array();
-
-        foreach (array_unique($covers) as $element) {
-            if ($classShortcut && strncmp($element, '::', 2) === 0) {
-                $element = $classShortcut . $element;
-            }
-
-            $element = preg_replace('/[\s()]+$/', '', $element);
-
-            $codeToCoverList = array_merge(
-              $codeToCoverList,
-              self::resolveElementToReflectionObjects($element)
-            );
-        }
-
-        return self::resolveReflectionObjectsToLines($codeToCoverList);
+        return self::getLinesToBeCoveredOrUsed($className, $methodName, 'covers');
     }
 
     /**
@@ -176,30 +137,65 @@ class PHPUnit_Util_Test
      */
     public static function getLinesToBeUsed($className, $methodName)
     {
+        return self::getLinesToBeCoveredOrUsed($className, $methodName, 'uses');
+    }
+
+    /**
+     * @param  string $className
+     * @param  string $methodName
+     * @param  string $mode
+     * @return array
+     * @throws PHPUnit_Framework_CodeCoverageException
+     * @since  Method available since Release 4.2.0
+     */
+    private static function getLinesToBeCoveredOrUsed($className, $methodName, $mode)
+    {
         $annotations = self::parseTestMethodAnnotations(
-          $className, $methodName
+            $className, $methodName
         );
 
-        $uses = array();
+        $classShortcut = null;
 
-        if (isset($annotations['class']['uses'])) {
-            $uses = $annotations['class']['uses'];
+        if (!empty($annotations['class'][$mode . 'DefaultClass'])) {
+            if (count($annotations['class'][$mode . 'DefaultClass']) > 1) {
+                throw new PHPUnit_Framework_CodeCoverageException(
+                    sprintf(
+                        'More than one @%sClass annotation in class or interface "%s".',
+                        $mode,
+                        $className
+                    )
+                );
+            }
+
+            $classShortcut = $annotations['class'][$mode . 'DefaultClass'][0];
         }
 
-        if (isset($annotations['method']['uses'])) {
-            $uses = array_merge($uses, $annotations['method']['uses']);
+        $list = array();
+
+        if (isset($annotations['class'][$mode])) {
+            $list = $annotations['class'][$mode];
         }
 
-        $codeToUseList = array();
+        if (isset($annotations['method'][$mode])) {
+            $list = array_merge($list, $annotations['method'][$mode]);
+        }
 
-        foreach (array_unique($uses) as $element) {
-            $codeToUseList = array_merge(
-              $codeToUseList,
-              self::resolveElementToReflectionObjects($element)
+        $codeList = array();
+
+        foreach (array_unique($list) as $element) {
+            if ($classShortcut && strncmp($element, '::', 2) === 0) {
+                $element = $classShortcut . $element;
+            }
+
+            $element = preg_replace('/[\s()]+$/', '', $element);
+
+            $codeList = array_merge(
+                $codeList,
+                self::resolveElementToReflectionObjects($element)
             );
         }
 
-        return self::resolveReflectionObjectsToLines($codeToUseList);
+        return self::resolveReflectionObjectsToLines($codeList);
     }
 
     /**
