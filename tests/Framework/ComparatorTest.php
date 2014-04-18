@@ -46,7 +46,8 @@ class TestClass {}
 class TestClassComparator extends PHPUnit_Framework_Comparator_Object {}
 
 /**
- *
+ * Don't use other test methods than ->fail() here, because the testers tested
+ * here are the foundation for the other test methods
  *
  * @package    PHPUnit
  * @author     Bernhard Schussek <bschussek@2bepublished.at>
@@ -57,8 +58,61 @@ class TestClassComparator extends PHPUnit_Framework_Comparator_Object {}
  */
 class Framework_ComparatorTest extends PHPUnit_Framework_TestCase
 {
-    // Don't use other test methods than ->fail() here, because the testers tested
-    // here are the foundation for the other test methods
+    /**
+     * @covers       PHPUnit_Framework_ComparatorFactory
+     * @dataProvider instanceProvider
+     */
+    public function testGetInstance($a, $b, $expected)
+    {
+        $factory = new PHPUnit_Framework_ComparatorFactory;
+
+        if (get_class($factory->getComparatorFor($a, $b)) != $expected) {
+            $this->fail();
+        }
+    }
+
+    /**
+     * @covers PHPUnit_Framework_ComparatorFactory
+     */
+    public function testRegister()
+    {
+        $comparator = new TestClassComparator;
+
+        $factory = new PHPUnit_Framework_ComparatorFactory;
+        $factory->register($comparator);
+
+        $a = new TestClass;
+        $b = new TestClass;
+        $expected = 'TestClassComparator';
+
+        if (get_class($factory->getComparatorFor($a, $b)) != $expected) {
+            $factory->unregister($comparator);
+            $this->fail();
+        }
+
+        $factory->unregister($comparator);
+    }
+
+    /**
+     * @covers PHPUnit_Framework_ComparatorFactory
+     */
+    public function testUnregister()
+    {
+        $comparator = new TestClassComparator;
+
+        $factory = new PHPUnit_Framework_ComparatorFactory;
+        $factory->register($comparator);
+        $factory->unregister($comparator);
+
+        $a = new TestClass;
+        $b = new TestClass;
+        $expected = 'PHPUnit_Framework_Comparator_Object';
+
+        if (get_class($factory->getComparatorFor($a, $b)) != $expected) {
+            var_dump(get_class($factory->getComparatorFor($a, $b)));
+            $this->fail();
+        }
+    }
 
     public function instanceProvider()
     {
@@ -106,54 +160,5 @@ class Framework_ComparatorTest extends PHPUnit_Framework_TestCase
             array(1.0, array(1), 'PHPUnit_Framework_Comparator_Type'),
             array(array(1), 1.0, 'PHPUnit_Framework_Comparator_Type'),
         );
-    }
-
-    /**
-     * @dataProvider instanceProvider
-     */
-    public function testGetInstance($a, $b, $expected)
-    {
-        $factory = new PHPUnit_Framework_ComparatorFactory;
-
-        if (get_class($factory->getComparatorFor($a, $b)) != $expected) {
-            $this->fail();
-        }
-    }
-
-    public function testRegister()
-    {
-        $comparator = new TestClassComparator;
-
-        $factory = new PHPUnit_Framework_ComparatorFactory;
-        $factory->register($comparator);
-
-        $a = new TestClass;
-        $b = new TestClass;
-        $expected = 'TestClassComparator';
-
-        if (get_class($factory->getComparatorFor($a, $b)) != $expected) {
-            $factory->unregister($comparator);
-            $this->fail();
-        }
-
-        $factory->unregister($comparator);
-    }
-
-    public function testUnregister()
-    {
-        $comparator = new TestClassComparator;
-
-        $factory = new PHPUnit_Framework_ComparatorFactory;
-        $factory->register($comparator);
-        $factory->unregister($comparator);
-
-        $a = new TestClass;
-        $b = new TestClass;
-        $expected = 'PHPUnit_Framework_Comparator_Object';
-
-        if (get_class($factory->getComparatorFor($a, $b)) != $expected) {
-            var_dump(get_class($factory->getComparatorFor($a, $b)));
-            $this->fail();
-        }
     }
 }
