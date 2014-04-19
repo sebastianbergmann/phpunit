@@ -831,8 +831,8 @@ class PHPUnit_TextUI_Command
         PHPUnit_TextUI_TestRunner::printVersionString();
 
         print <<<EOT
-Usage: phpunit [switches] UnitTest [UnitTest.php]
-       phpunit [switches] <directory>
+Usage: phpunit [options] UnitTest [UnitTest.php]
+       phpunit [options] <directory>
 
   --log-junit <file>        Log test execution in JUnit XML format to file.
   --log-tap <file>          Log test execution in TAP format to file.
