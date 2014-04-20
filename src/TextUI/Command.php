@@ -499,22 +499,22 @@ class PHPUnit_TextUI_Command
                 }
                 break;
 
-                case 'report-useless-tests': {
+                case '--report-useless-tests': {
                     $this->arguments['reportUselessTests'] = true;
                 }
                 break;
 
-                case 'strict-coverage': {
+                case '--strict-coverage': {
                     $this->arguments['strictCoverage'] = true;
                 }
                 break;
 
-                case 'disallow-test-output': {
+                case '--disallow-test-output': {
                     $this->arguments['disallowTestOutput'] = true;
                 }
                 break;
 
-                case 'enforce-time-limit': {
+                case '--enforce-time-limit': {
                     $this->arguments['enforceTimeLimit'] = true;
                 }
                 break;
