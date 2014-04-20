@@ -19,7 +19,7 @@ You can also immediately use the PHAR after you have downloaded it, of course:
     wget https://phar.phpunit.de/phpunit.phar
     php phpunit.phar
 
-Alternatively, you may use [Composer](http://getcomposer.org/) or the [PEAR Installer](http://pear.php.net/manual/en/guide.users.commandline.cli.php) to download and install PHPUnit as well as its dependencies. Please refer to the [documentation](http://phpunit.de/documentation.html) for details on how to do this.
+Alternatively, you may use [Composer](http://getcomposer.org/) to download and install PHPUnit as well as its dependencies. Please refer to the [documentation](http://phpunit.de/documentation.html) for details on how to do this.
 
 ## Contribute
 
