@@ -75,6 +75,7 @@
  *          beStrictAboutTestsThatDoNotTestAnything="false"
  *          beStrictAboutOutputDuringTests="false"
  *          beStrictAboutTestSize="false"
+ *          beStrictAboutTodoAnnotatedTests="false"
  *          checkForUnintentionallyCoveredCode="false"
  *          verbose="false">
  *   <testsuites>
@@ -738,15 +739,22 @@ class PHPUnit_Util_Configuration
             );
         }
 
+        if ($root->hasAttribute('beStrictAboutTodoAnnotatedTests')) {
+            $result['disallowTodoAnnotatedTests'] = $this->getBoolean(
+                (string) $root->getAttribute('beStrictAboutTodoAnnotatedTests'), false
+            );
+        }
+
         if ($root->hasAttribute('strict')) {
             $flag = $this->getBoolean(
                 (string) $root->getAttribute('strict'), false
             );
 
-            $result['reportUselessTests'] = $flag;
-            $result['strictCoverage']     = $flag;
-            $result['disallowTestOutput'] = $flag;
-            $result['enforceTimeLimit']   = $flag;
+            $result['reportUselessTests']         = $flag;
+            $result['strictCoverage']             = $flag;
+            $result['disallowTestOutput']         = $flag;
+            $result['enforceTimeLimit']           = $flag;
+            $result['disallowTodoAnnotatedTests'] = $flag;
         }
 
         if ($root->hasAttribute('verbose')) {

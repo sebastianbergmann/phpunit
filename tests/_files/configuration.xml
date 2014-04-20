@@ -20,6 +20,7 @@
          beStrictAboutTestsThatDoNotTestAnything="false"
          beStrictAboutOutputDuringTests="false"
          beStrictAboutTestSize="false"
+         beStrictAboutTodoAnnotatedTests="false"
          checkForUnintentionallyCoveredCode="false"
          verbose="false">
   <testsuites>

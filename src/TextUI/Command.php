@@ -108,6 +108,7 @@ class PHPUnit_TextUI_Command
       'strict-coverage' => null,
       'disallow-test-output' => null,
       'enforce-time-limit' => null,
+      'disallow-todo-tests' => null,
       'strict' => null,
       'tap' => null,
       'testdox' => null,
@@ -518,11 +519,17 @@ class PHPUnit_TextUI_Command
                 }
                 break;
 
+                case '--disallow-todo-tests': {
+                    $this->arguments['disallowTodoAnnotatedTests'] = true;
+                }
+                break;
+
                 case '--strict': {
-                    $this->arguments['reportUselessTests'] = true;
-                    $this->arguments['strictCoverage']     = true;
-                    $this->arguments['disallowTestOutput'] = true;
-                    $this->arguments['enforceTimeLimit']   = true;
+                    $this->arguments['reportUselessTests']         = true;
+                    $this->arguments['strictCoverage']             = true;
+                    $this->arguments['disallowTestOutput']         = true;
+                    $this->arguments['enforceTimeLimit']           = true;
+                    $this->arguments['disallowTodoAnnotatedTests'] = true;
                 }
                 break;
 
@@ -916,6 +923,7 @@ Test Execution Options:
   --strict-coverage         Be strict about unintentionally covered code.
   --disallow-test-output    Be strict about output during tests.
   --enforce-time-limit      Enforce time limit based on test size.
+  --disallow-todo-tests     Disallow @todo-annotated tests.
   --strict                  Run tests in strict mode (enables all of the above).
 
   --process-isolation       Run each test in a separate PHP process.

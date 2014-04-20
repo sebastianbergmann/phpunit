@@ -156,6 +156,11 @@ class PHPUnit_Framework_TestResult implements Countable
     /**
      * @var boolean
      */
+    protected $beStrictAboutTodoAnnotatedTests = false;
+
+    /**
+     * @var boolean
+     */
     protected $stopOnRisky = false;
 
     /**
@@ -756,6 +761,20 @@ class PHPUnit_Framework_TestResult implements Countable
             restore_error_handler();
         }
 
+        if ($this->beStrictAboutTodoAnnotatedTests && $test instanceof PHPUnit_Framework_TestCase) {
+            $annotations = $test->getAnnotations();
+
+            if (isset($annotations['method']['todo'])) {
+                $this->addFailure(
+                  $test,
+                  new PHPUnit_Framework_RiskyTestError(
+                    'Test method is annotated with @todo'
+                  ),
+                  $time
+                );
+            }
+        }
+
         if ($error === true) {
             $this->addError($test, $e, $time);
         } elseif ($failure === true) {
@@ -962,6 +981,29 @@ class PHPUnit_Framework_TestResult implements Countable
     public function isStrictAboutTestSize()
     {
         return $this->beStrictAboutTestSize;
+    }
+
+    /**
+     * @param  boolean                     $flag
+     * @throws PHPUnit_Framework_Exception
+     * @since  Method available since Release 4.2.0
+     */
+    public function beStrictAboutTodoAnnotatedTests($flag)
+    {
+        if (!is_bool($flag)) {
+            throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'boolean');
+        }
+
+        $this->beStrictAboutTodoAnnotatedTests = $flag;
+    }
+
+    /**
+     * @return boolean
+     * @since  Method available since Release 4.2.0
+     */
+    public function isStrictAboutTodoAnnotatedTests()
+    {
+        return $this->beStrictAboutTodoAnnotatedTests;
     }
 
     /**

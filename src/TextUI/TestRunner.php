@@ -410,6 +410,7 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
 
         $result->beStrictAboutTestsThatDoNotTestAnything($arguments['reportUselessTests']);
         $result->beStrictAboutOutputDuringTests($arguments['disallowTestOutput']);
+        $result->beStrictAboutTodoAnnotatedTests($arguments['disallowTodoAnnotatedTests']);
         $result->beStrictAboutTestSize($arguments['enforceTimeLimit']);
         $result->setTimeoutForSmallTests($arguments['timeoutForSmallTests']);
         $result->setTimeoutForMediumTests($arguments['timeoutForMediumTests']);
@@ -693,9 +694,14 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
                 $arguments['disallowTestOutput'] = $phpunitConfiguration['disallowTestOutput'];
             }
 
-            if (isset($phpunitConfiguration['enforceTimeLimit']) &&
-                !isset($arguments['enforceTimeLimit'])) {
-                $arguments['enforceTimeLimit'] = $phpunitConfiguration['enforceTimeLimit'];
+            if (isset($phpunitConfiguration['disallowTestOutput']) &&
+                !isset($arguments['disallowTestOutput'])) {
+                $arguments['disallowTestOutput'] = $phpunitConfiguration['disallowTestOutput'];
+            }
+
+            if (isset($phpunitConfiguration['disallowTodoAnnotatedTests']) &&
+                !isset($arguments['disallowTodoAnnotatedTests'])) {
+                $arguments['disallowTodoAnnotatedTests'] = $phpunitConfiguration['disallowTodoAnnotatedTests'];
             }
 
             if (isset($phpunitConfiguration['verbose']) &&
@@ -936,6 +942,7 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
         $arguments['strictCoverage']                     = isset($arguments['strictCoverage'])                     ? $arguments['strictCoverage']                     : false;
         $arguments['disallowTestOutput']                 = isset($arguments['disallowTestOutput'])                 ? $arguments['disallowTestOutput']                 : false;
         $arguments['enforceTimeLimit']                   = isset($arguments['enforceTimeLimit'])                   ? $arguments['enforceTimeLimit']                   : false;
+        $arguments['disallowTodoAnnotatedTests']         = isset($arguments['disallowTodoAnnotatedTests'])         ? $arguments['disallowTodoAnnotatedTests']         : false;
         $arguments['verbose']                            = isset($arguments['verbose'])                            ? $arguments['verbose']                            : false;
     }
 

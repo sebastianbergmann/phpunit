@@ -701,6 +701,7 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
             $isStrictAboutTestsThatDoNotTestAnything = $result->isStrictAboutTestsThatDoNotTestAnything() ? 'true' : 'false';
             $isStrictAboutOutputDuringTests          = $result->isStrictAboutOutputDuringTests()          ? 'true' : 'false';
             $isStrictAboutTestSize                   = $result->isStrictAboutTestSize()                   ? 'true' : 'false';
+            $isStrictAboutTodoAnnotatedTests         = $result->isStrictAboutTodoAnnotatedTests()         ? 'true' : 'false';
 
             if (defined('PHPUNIT_COMPOSER_INSTALL')) {
                 $composerAutoload = var_export(PHPUNIT_COMPOSER_INSTALL, true);
@@ -741,7 +742,8 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
                 'iniSettings'                             => $iniSettings,
                 'isStrictAboutTestsThatDoNotTestAnything' => $isStrictAboutTestsThatDoNotTestAnything,
                 'isStrictAboutOutputDuringTests'          => $isStrictAboutOutputDuringTests,
-                'isStrictAboutTestSize'                   => $isStrictAboutTestSize
+                'isStrictAboutTestSize'                   => $isStrictAboutTestSize,
+                'isStrictAboutTodoAnnotatedTests'         => $isStrictAboutTodoAnnotatedTests
               )
             );
 
@@ -817,12 +819,6 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
             $this->testResult = $this->runTest();
             $this->verifyMockObjects();
             $this->assertPostConditions();
-
-            $annotations = $this->getAnnotations();
-
-            if (isset($annotations['method']['todo'])) {
-                throw new PHPUnit_Framework_RiskyTestError('Test method is annotated with @todo');
-            }
 
             $this->status = PHPUnit_Runner_BaseTestRunner::STATUS_PASSED;
         } catch (PHPUnit_Framework_IncompleteTest $e) {

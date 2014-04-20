@@ -328,6 +328,7 @@ class Util_ConfigurationTest extends PHPUnit_Framework_TestCase
             'strictCoverage' => false,
             'disallowTestOutput' => false,
             'enforceTimeLimit' => false,
+            'disallowTodoAnnotatedTests' => false,
             'testSuiteLoaderClass' => 'PHPUnit_Runner_StandardTestSuiteLoader',
             'verbose' => false,
             'timeoutForSmallTests' => 1,

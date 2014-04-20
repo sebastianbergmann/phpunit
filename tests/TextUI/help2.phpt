@@ -48,6 +48,7 @@ Test Execution Options:
   --strict-coverage         Be strict about unintentionally covered code.
   --disallow-test-output    Be strict about output during tests.
   --enforce-time-limit      Enforce time limit based on test size.
+  --disallow-todo-tests     Disallow @todo-annotated tests.
   --strict                  Run tests in strict mode (enables all of the above).
 
   --process-isolation       Run each test in a separate PHP process.
