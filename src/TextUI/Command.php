@@ -826,7 +826,7 @@ class PHPUnit_TextUI_Command
           PHPUnit_Runner_Version::getReleaseChannel()
         );
 
-        $localFilename = $_SERVER['argv'][0];
+        $localFilename = realpath($_SERVER['argv'][0]);
         $tempFilename  = basename($localFilename, '.phar') . '-temp.phar';
 
         // Workaround for https://bugs.php.net/bug.php?id=65538
