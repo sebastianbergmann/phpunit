@@ -148,12 +148,19 @@
  </target>
 
  <target name="pear"
-  description="Create PEAR package of PHPUnit and all its dependencies (release)"
-  depends="phar">
+  description="Create PEAR package of PHPUnit and all its dependencies (release)">
   <exec executable="bash" outputproperty="version">
    <arg value="-c" />
    <arg value="${basedir}/phpunit --version | awk 'BEGIN { ORS = &quot;&quot;; } {print $2}'" />
   </exec>
+
+  <replace file="${basedir}/src/TextUI/TestRunner.php" token="@version@" value="${version}" />
+
+  <antcall target="phar-build">
+   <param name="version" value="${version}"/>
+  </antcall>
+
+  <replace file="${basedir}/src/TextUI/TestRunner.php" token="${version}" value="@version@" />
 
   <copy file="${basedir}/build/phpunit-${version}.phar" tofile="${basedir}/phpunit.phar" />
 
