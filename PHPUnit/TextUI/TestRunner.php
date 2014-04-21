@@ -208,11 +208,8 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
             }
         }
 
-        if (!$this->printer instanceof PHPUnit_Util_Log_TAP &&
-            !self::$versionStringPrinted) {
-            $this->printer->write(
-              PHPUnit_Runner_Version::getVersionString() . "\n\n"
-            );
+        if (!$this->printer instanceof PHPUnit_Util_Log_TAP) {
+            $this->printVersionString();
 
             if (isset($arguments['configuration'])) {
                 $this->printer->write(
@@ -490,6 +487,17 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
     {
         if (!self::$versionStringPrinted) {
             self::write(PHPUnit_Runner_Version::getVersionString() . "\n\n");
+
+            if (strpos('@version@', '@version') !== 0) {
+                self::write(
+                  "You have installed PHPUnit via PEAR. This installation method is no longer\n" .
+                  "supported and http://pear.phpunit.de/ will be shut down no later than\n" .
+                  "December, 31 2014.\n\n" .
+                  "Please read http://phpunit.de/manual/current/en/installation.html and\n" .
+                  "learn how to use PHPUnit from a PHAR or install it via Composer.\n\n"
+                );
+            }
+
             self::$versionStringPrinted = TRUE;
         }
     }

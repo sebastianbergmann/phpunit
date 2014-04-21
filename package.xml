@@ -146,7 +146,9 @@
     <dir name="TextUI">
      <file baseinstalldir="/" name="Command.php" role="php" />
      <file baseinstalldir="/" name="ResultPrinter.php" role="php" />
-     <file baseinstalldir="/" name="TestRunner.php" role="php" />
+     <file baseinstalldir="/" name="TestRunner.php" role="php">
+      <tasks:replace from="@version@" to="version" type="package-info" />
+     </file>
     </dir>
     <dir name="Util">
      <dir name="DeprecatedFeature">
