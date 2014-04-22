@@ -110,9 +110,7 @@ class PHPUnit_Framework_MockObject_Matcher_Parameters extends PHPUnit_Framework_
     public function matches(PHPUnit_Framework_MockObject_Invocation $invocation)
     {
         $this->invocation = $invocation;
-        $this->verify();
-
-        return count($invocation->parameters) < count($this->parameters);
+        return $this->verify();
     }
 
     /**
@@ -156,5 +154,7 @@ class PHPUnit_Framework_MockObject_Matcher_Parameters extends PHPUnit_Framework_
               )
             );
         }
+
+        return true;
     }
 }
