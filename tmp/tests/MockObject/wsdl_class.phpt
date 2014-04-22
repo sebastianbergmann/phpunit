@@ -23,15 +23,15 @@ class GoogleSearch extends \SoapClient
         parent::__construct('%s/GoogleSearch.wsdl', $options);
     }
 
+    public function doGoogleSearch($key, $q, $start, $maxResults, $filter, $restrict, $safeSearch, $lr, $ie, $oe)
+    {
+    }
+
     public function doGetCachedPage($key, $url)
     {
     }
 
     public function doSpellingSuggestion($key, $phrase)
-    {
-    }
-
-    public function doGoogleSearch($key, $q, $start, $maxResults, $filter, $restrict, $safeSearch, $lr, $ie, $oe)
     {
     }
 }

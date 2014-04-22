@@ -547,6 +547,8 @@ class PHPUnit_Framework_MockObject_Generator
             $_methods = array_unique($client->__getFunctions());
             unset($client);
 
+            sort($_methods);
+
             $templateDir    = dirname(__FILE__) . DIRECTORY_SEPARATOR .
                               'Generator' . DIRECTORY_SEPARATOR;
             $methodTemplate = new Text_Template(
