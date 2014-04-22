@@ -180,7 +180,7 @@ class Framework_MockObject_GeneratorTest extends PHPUnit_Framework_TestCase
 
     /**
      * Same as "testGetMockForSingletonWithReflectionSuccess", but we expect
-     * exception for PHP < 5.4.0 since PHPUnit will try to execute private __wakeup
+     * warning for PHP < 5.4.0 since PHPUnit will try to execute private __wakeup
      * on unserialize
      */
     public function testGetMockForSingletonWithUnserializeFail()
@@ -189,7 +189,7 @@ class Framework_MockObject_GeneratorTest extends PHPUnit_Framework_TestCase
             $this->markTestSkipped('Only for PHP < 5.4.0');
         }
 
-        $this->setExpectedException('PHPUnit_Framework_Exception');
+        $this->setExpectedException('PHPUnit_Framework_Error_Warning');
 
         // Probably, this should be moved to tests/autoload.php
         require_once __DIR__ . '/_fixture/SingletonClass.php';
