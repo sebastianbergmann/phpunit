@@ -106,6 +106,46 @@ class Framework_MockObjectTest extends PHPUnit_Framework_TestCase
         $mock->doSomething();
     }
 
+    public function testMockedMethodIsCalledAtLeastTwice()
+    {
+        $mock = $this->getMock('AnInterface');
+        $mock->expects($this->atLeast(2))
+             ->method('doSomething');
+
+        $mock->doSomething();
+        $mock->doSomething();
+    }
+
+    public function testMockedMethodIsCalledAtLeastTwice2()
+    {
+        $mock = $this->getMock('AnInterface');
+        $mock->expects($this->atLeast(2))
+             ->method('doSomething');
+
+        $mock->doSomething();
+        $mock->doSomething();
+        $mock->doSomething();
+    }
+
+    public function testMockedMethodIsCalledAtMostTwice()
+    {
+        $mock = $this->getMock('AnInterface');
+        $mock->expects($this->atMost(2))
+             ->method('doSomething');
+
+        $mock->doSomething();
+        $mock->doSomething();
+    }
+
+    public function testMockedMethodIsCalledAtMosttTwice2()
+    {
+        $mock = $this->getMock('AnInterface');
+        $mock->expects($this->atMost(2))
+             ->method('doSomething');
+
+        $mock->doSomething();
+    }
+
     public function testMockedMethodIsCalledOnce()
     {
         $mock = $this->getMock('AnInterface');
