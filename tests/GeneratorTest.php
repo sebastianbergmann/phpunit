@@ -167,7 +167,7 @@ class Framework_MockObject_GeneratorTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     *
+     * @requires PHP 5.4.0
      */
     public function testGetMockForSingletonWithReflectionSuccess()
     {
@@ -176,6 +176,25 @@ class Framework_MockObject_GeneratorTest extends PHPUnit_Framework_TestCase
 
         $mock = $this->generator->getMock('SingletonClass', array('doSomething'), array(), '', false);
         $this->assertInstanceOf('SingletonClass', $mock);
+    }
+
+    /**
+     * Same as "testGetMockForSingletonWithReflectionSuccess", but we expect
+     * exception for PHP < 5.4.0 since PHPUnit will try to execute private __wakeup
+     * on unserialize
+     */
+    public function testGetMockForSingletonWithUnserializeFail()
+    {
+        if (version_compare(PHP_VERSION, '5.4.0', '>=')) {
+            $this->markTestSkipped('Only for PHP < 5.4.0');
+        }
+
+        $this->setExpectedException('PHPUnit_Framework_Exception');
+
+        // Probably, this should be moved to tests/autoload.php
+        require_once __DIR__ . '/_fixture/SingletonClass.php';
+
+        $mock = $this->generator->getMock('SingletonClass', array('doSomething'), array(), '', false);
     }
 }
 
