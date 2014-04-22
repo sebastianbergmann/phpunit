@@ -18,5 +18,5 @@
           )
         );
 
-        return $this->__phpunit_originalObject->{method_name}({arguments_call});
+        return call_user_func_array(array($this->__phpunit_originalObject, "{method_name}"), $arguments);
     }
