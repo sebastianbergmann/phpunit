@@ -86,11 +86,13 @@ class PHPUnit_Framework_Comparator_DOMNode extends PHPUnit_Framework_Comparator_
     public function assertEquals($expected, $actual, $delta = 0.0, $canonicalize = false, $ignoreCase = false)
     {
         $expectedXML = $expected->C14N();
-        $actualXML = $actual->C14N();
+        $actualXML   = $actual->C14N();
+
         if ($ignoreCase === true) {
             $expectedXML = strtolower($expectedXML);
-            $actualXML = strtolower($actualXML);
+            $actualXML   = strtolower($actualXML);
         }
+
         if ($expectedXML !== $actualXML) {
             if ($expected instanceof DOMDocument) {
                 $type = 'documents';
