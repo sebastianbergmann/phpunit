@@ -787,21 +787,17 @@ class PHPUnit_TextUI_Command
                     return $printerClass;
                 }
 
-                $printer = $class->newInstance();
+                return $class->newInstance();
             }
         }
 
-        if (!isset($printer)) {
-            $this->showError(
-              sprintf(
-                'Could not use "%s" as printer.',
+        $this->showError(
+          sprintf(
+            'Could not use "%s" as printer.',
 
-                $printerClass
-              )
-            );
-        }
-
-        return $printer;
+            $printerClass
+          )
+        );
     }
 
     /**
