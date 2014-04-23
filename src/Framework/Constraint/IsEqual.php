@@ -74,7 +74,7 @@ class PHPUnit_Framework_Constraint_IsEqual extends PHPUnit_Framework_Constraint
     /**
      * @var float
      */
-    protected $delta = 0;
+    protected $delta = 0.0;
 
     /**
      * @var integer
@@ -104,7 +104,7 @@ class PHPUnit_Framework_Constraint_IsEqual extends PHPUnit_Framework_Constraint
      * @param  boolean                     $ignoreCase
      * @throws PHPUnit_Framework_Exception
      */
-    public function __construct($value, $delta = 0, $maxDepth = 10, $canonicalize = false, $ignoreCase = false)
+    public function __construct($value, $delta = 0.0, $maxDepth = 10, $canonicalize = false, $ignoreCase = false)
     {
         parent::__construct();
 
