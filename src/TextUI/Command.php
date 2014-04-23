@@ -124,6 +124,11 @@ class PHPUnit_TextUI_Command
     );
 
     /**
+     * @var boolean
+     */
+    private $versionStringPrinted = false;
+
+    /**
      * @param boolean $exit
      */
     public static function main($exit = true)
@@ -155,7 +160,7 @@ class PHPUnit_TextUI_Command
         }
 
         if ($this->arguments['listGroups']) {
-            PHPUnit_TextUI_TestRunner::printVersionString();
+            $this->printVersionString();
 
             print "Available test group(s):\n";
 
@@ -266,7 +271,7 @@ class PHPUnit_TextUI_Command
               array_keys($this->longOptions)
             );
         } catch (PHPUnit_Framework_Exception $e) {
-            PHPUnit_TextUI_TestRunner::showError($e->getMessage());
+            $this->showError($e->getMessage());
         }
 
         foreach ($this->options[0] as $option) {
@@ -494,7 +499,7 @@ class PHPUnit_TextUI_Command
                 break;
 
                 case '--version': {
-                    PHPUnit_TextUI_TestRunner::printVersionString();
+                    $this->printVersionString();
                     exit(PHPUnit_TextUI_TestRunner::SUCCESS_EXIT);
                 }
                 break;
@@ -740,7 +745,7 @@ class PHPUnit_TextUI_Command
         }
 
         if (!isset($loader)) {
-            PHPUnit_TextUI_TestRunner::showError(
+            $this->showError(
               sprintf(
                 'Could not use "%s" as loader.',
 
@@ -790,7 +795,7 @@ class PHPUnit_TextUI_Command
         }
 
         if (!isset($printer)) {
-            PHPUnit_TextUI_TestRunner::showError(
+            $this->showError(
               sprintf(
                 'Could not use "%s" as printer.',
 
@@ -812,7 +817,7 @@ class PHPUnit_TextUI_Command
         try {
             PHPUnit_Util_Fileloader::checkAndLoad($filename);
         } catch (PHPUnit_Framework_Exception $e) {
-            PHPUnit_TextUI_TestRunner::showError($e->getMessage());
+            $this->showError($e->getMessage());
         }
     }
 
@@ -821,7 +826,7 @@ class PHPUnit_TextUI_Command
      */
     protected function handleSelfUpdate()
     {
-        PHPUnit_TextUI_TestRunner::printVersionString();
+        $this->printVersionString();
 
         if (!extension_loaded('openssl')) {
             print "The OpenSSL extension is not loaded.\n";
@@ -883,7 +888,7 @@ class PHPUnit_TextUI_Command
      */
     protected function showHelp()
     {
-        PHPUnit_TextUI_TestRunner::printVersionString();
+        $this->printVersionString();
 
         print <<<EOT
 Usage: phpunit [options] UnitTest [UnitTest.php]
@@ -971,5 +976,27 @@ EOT;
      */
     protected function handleCustomTestSuite()
     {
+    }
+
+    private function printVersionString()
+    {
+        if ($this->versionStringPrinted) {
+            return;
+        }
+
+        print PHPUnit_Runner_Version::getVersionString() . "\n\n";
+
+        $this->versionStringPrinted = true;
+    }
+
+    /**
+     */
+    private function showError($message)
+    {
+        $this->printVersionString();
+
+        print $message . "\n";
+
+        exit(PHPUnit_TextUI_TestRunner::FAILURE_EXIT);
     }
 }

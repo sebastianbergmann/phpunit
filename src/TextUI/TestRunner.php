@@ -543,8 +543,7 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
      */
     protected function runFailed($message)
     {
-        self::printVersionString();
-        self::write($message . PHP_EOL);
+        $this->write($message . PHP_EOL);
         exit(self::FAILURE_EXIT);
     }
 
@@ -552,13 +551,17 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
      * @param string $buffer
      * @since  Method available since Release 3.1.0
      */
-    protected static function write($buffer)
+    protected function write($buffer)
     {
         if (PHP_SAPI != 'cli') {
             $buffer = htmlspecialchars($buffer);
         }
 
-        print $buffer;
+        if ($this->printer !== null) {
+            $this->printer->write($buffer);
+        } else {
+            print $buffer;
+        }
     }
 
     /**
@@ -574,26 +577,6 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
         }
 
         return $this->loader;
-    }
-
-    /**
-     */
-    public static function showError($message)
-    {
-        self::printVersionString();
-        self::write($message . "\n");
-
-        exit(self::FAILURE_EXIT);
-    }
-
-    /**
-     */
-    public static function printVersionString()
-    {
-        if (!self::$versionStringPrinted) {
-            self::write(PHPUnit_Runner_Version::getVersionString() . "\n\n");
-            self::$versionStringPrinted = true;
-        }
     }
 
     /**
@@ -980,7 +963,6 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
      */
     private function showMessage($message, $exit = false)
     {
-        $this->printVersionString();
         $this->write($message . "\n");
 
         if ($exit) {
