@@ -85,15 +85,15 @@ class PHPUnit_Framework_Comparator_DOMNode extends PHPUnit_Framework_Comparator_
      */
     public function assertEquals($expected, $actual, $delta = 0.0, $canonicalize = false, $ignoreCase = false)
     {
-        $expectedXML = $expected->C14N();
-        $actualXML   = $actual->C14N();
+        $expectedAsString = $this->domToText($expected);
+        $actualAsString   = $this->domToText($actual);
 
         if ($ignoreCase === true) {
-            $expectedXML = strtolower($expectedXML);
-            $actualXML   = strtolower($actualXML);
+            $expectedAsString = strtolower($expectedAsString);
+            $actualAsString   = strtolower($actualAsString);
         }
 
-        if ($expectedXML !== $actualXML) {
+        if ($expectedAsString !== $actualAsString) {
             if ($expected instanceof DOMDocument) {
                 $type = 'documents';
             } else {
@@ -103,8 +103,8 @@ class PHPUnit_Framework_Comparator_DOMNode extends PHPUnit_Framework_Comparator_
             throw new PHPUnit_Framework_ComparisonFailure(
               $expected,
               $actual,
-              $this->domToText($expected),
-              $this->domToText($actual),
+              $expectedAsString,
+              $actualAsString,
               false,
               sprintf('Failed asserting that two DOM %s are equal.', $type)
             );
