@@ -139,8 +139,9 @@ class PHPUnit_TextUI_Command
     }
 
     /**
-     * @param array   $argv
-     * @param boolean $exit
+     * @param  array $argv
+     * @param  boolean $exit
+     * @return integer
      */
     public function run(array $argv, $exit = true)
     {
