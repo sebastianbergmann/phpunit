@@ -934,6 +934,7 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
     }
 
     /**
+     * @param $extension
      * @param string $message
      * @since Method available since Release 4.0.0
      */
