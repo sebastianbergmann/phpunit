@@ -946,7 +946,7 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
      * @covers PHPUnit_Framework_Assert::assertEquals
      * @dataProvider equalProvider
      */
-    public function testAssertEqualsSucceeds($a, $b, $delta = 0, $canonicalize = false, $ignoreCase = false)
+    public function testAssertEqualsSucceeds($a, $b, $delta = 0.0, $canonicalize = false, $ignoreCase = false)
     {
         $this->assertEquals($a, $b, '', $delta, 10, $canonicalize, $ignoreCase);
     }
@@ -955,7 +955,7 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
      * @covers PHPUnit_Framework_Assert::assertEquals
      * @dataProvider notEqualProvider
      */
-    public function testAssertEqualsFails($a, $b, $delta = 0, $canonicalize = false, $ignoreCase = false)
+    public function testAssertEqualsFails($a, $b, $delta = 0.0, $canonicalize = false, $ignoreCase = false)
     {
         try {
             $this->assertEquals($a, $b, '', $delta, 10, $canonicalize, $ignoreCase);
@@ -972,7 +972,7 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
      * @covers PHPUnit_Framework_Assert::assertNotEquals
      * @dataProvider notEqualProvider
      */
-    public function testAssertNotEqualsSucceeds($a, $b, $delta = 0, $canonicalize = false, $ignoreCase = false)
+    public function testAssertNotEqualsSucceeds($a, $b, $delta = 0.0, $canonicalize = false, $ignoreCase = false)
     {
         $this->assertNotEquals($a, $b, '', $delta, 10, $canonicalize, $ignoreCase);
     }
@@ -981,7 +981,7 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
      * @covers PHPUnit_Framework_Assert::assertNotEquals
      * @dataProvider equalProvider
      */
-    public function testAssertNotEqualsFails($a, $b, $delta = 0, $canonicalize = false, $ignoreCase = false)
+    public function testAssertNotEqualsFails($a, $b, $delta = 0.0, $canonicalize = false, $ignoreCase = false)
     {
         try {
             $this->assertNotEquals($a, $b, '', $delta, 10, $canonicalize, $ignoreCase);

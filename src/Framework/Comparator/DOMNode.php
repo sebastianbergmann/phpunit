@@ -83,7 +83,7 @@ class PHPUnit_Framework_Comparator_DOMNode extends PHPUnit_Framework_Comparator_
      *                                                          fails. Contains information about the
      *                                                          specific errors that lead to the failure.
      */
-    public function assertEquals($expected, $actual, $delta = 0, $canonicalize = false, $ignoreCase = false)
+    public function assertEquals($expected, $actual, $delta = 0.0, $canonicalize = false, $ignoreCase = false)
     {
         $expectedXML = $expected->C14N();
         $actualXML = $actual->C14N();

@@ -83,7 +83,7 @@ class PHPUnit_Framework_Comparator_Object extends PHPUnit_Framework_Comparator_A
      *                                                          fails. Contains information about the
      *                                                          specific errors that lead to the failure.
      */
-    public function assertEquals($expected, $actual, $delta = 0, $canonicalize = false, $ignoreCase = false, array &$processed = array())
+    public function assertEquals($expected, $actual, $delta = 0.0, $canonicalize = false, $ignoreCase = false, array &$processed = array())
     {
         if (get_class($actual) !== get_class($expected)) {
             throw new PHPUnit_Framework_ComparisonFailure(

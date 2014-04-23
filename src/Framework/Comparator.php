@@ -102,5 +102,5 @@ abstract class PHPUnit_Framework_Comparator
      *                                                          fails. Contains information about the
      *                                                          specific errors that lead to the failure.
      */
-    abstract public function assertEquals($expected, $actual, $delta = 0, $canonicalize = false, $ignoreCase = false);
+    abstract public function assertEquals($expected, $actual, $delta = 0.0, $canonicalize = false, $ignoreCase = false);
 }

@@ -83,7 +83,7 @@ class PHPUnit_Framework_Comparator_Type extends PHPUnit_Framework_Comparator
      *                                                          fails. Contains information about the
      *                                                          specific errors that lead to the failure.
      */
-    public function assertEquals($expected, $actual, $delta = 0, $canonicalize = false, $ignoreCase = false)
+    public function assertEquals($expected, $actual, $delta = 0.0, $canonicalize = false, $ignoreCase = false)
     {
         if (gettype($expected) != gettype($actual)) {
             throw new PHPUnit_Framework_ComparisonFailure(

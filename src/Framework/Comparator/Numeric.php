@@ -88,7 +88,7 @@ class PHPUnit_Framework_Comparator_Numeric extends PHPUnit_Framework_Comparator_
      *                                                          fails. Contains information about the
      *                                                          specific errors that lead to the failure.
      */
-    public function assertEquals($expected, $actual, $delta = 0, $canonicalize = false, $ignoreCase = false)
+    public function assertEquals($expected, $actual, $delta = 0.0, $canonicalize = false, $ignoreCase = false)
     {
         if (is_infinite($actual) && is_infinite($expected)) {
             return;

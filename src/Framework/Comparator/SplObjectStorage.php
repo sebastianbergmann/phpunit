@@ -83,7 +83,7 @@ class PHPUnit_Framework_Comparator_SplObjectStorage extends PHPUnit_Framework_Co
      *                                                          fails. Contains information about the
      *                                                          specific errors that lead to the failure.
      */
-    public function assertEquals($expected, $actual, $delta = 0, $canonicalize = false, $ignoreCase = false)
+    public function assertEquals($expected, $actual, $delta = 0.0, $canonicalize = false, $ignoreCase = false)
     {
         foreach ($actual as $object) {
             if (!$expected->contains($object)) {

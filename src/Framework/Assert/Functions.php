@@ -206,7 +206,7 @@ function assertAttributeEmpty($haystackAttributeName, $haystackClassOrObject, $m
  * @param  boolean $canonicalize
  * @param  boolean $ignoreCase
  */
-function assertAttributeEquals($expected, $actualAttributeName, $actualClassOrObject, $message = '', $delta = 0, $maxDepth = 10, $canonicalize = false, $ignoreCase = false)
+function assertAttributeEquals($expected, $actualAttributeName, $actualClassOrObject, $message = '', $delta = 0.0, $maxDepth = 10, $canonicalize = false, $ignoreCase = false)
 {
     return call_user_func_array(
       'PHPUnit_Framework_Assert::assertAttributeEquals',
@@ -404,7 +404,7 @@ function assertAttributeNotEmpty($haystackAttributeName, $haystackClassOrObject,
  * @param  boolean $canonicalize
  * @param  boolean $ignoreCase
  */
-function assertAttributeNotEquals($expected, $actualAttributeName, $actualClassOrObject, $message = '', $delta = 0, $maxDepth = 10, $canonicalize = false, $ignoreCase = false)
+function assertAttributeNotEquals($expected, $actualAttributeName, $actualClassOrObject, $message = '', $delta = 0.0, $maxDepth = 10, $canonicalize = false, $ignoreCase = false)
 {
     return call_user_func_array(
       'PHPUnit_Framework_Assert::assertAttributeNotEquals',
@@ -654,7 +654,7 @@ function assertEqualXMLStructure(DOMElement $expectedElement, DOMElement $actual
  * @param  boolean $canonicalize
  * @param  boolean $ignoreCase
  */
-function assertEquals($expected, $actual, $message = '', $delta = 0, $maxDepth = 10, $canonicalize = false, $ignoreCase = false)
+function assertEquals($expected, $actual, $message = '', $delta = 0.0, $maxDepth = 10, $canonicalize = false, $ignoreCase = false)
 {
     return call_user_func_array(
       'PHPUnit_Framework_Assert::assertEquals',
@@ -1039,7 +1039,7 @@ function assertNotEmpty($actual, $message = '')
  * @param  boolean $ignoreCase
  * @since  Method available since Release 2.3.0
  */
-function assertNotEquals($expected, $actual, $message = '', $delta = 0, $maxDepth = 10, $canonicalize = false, $ignoreCase = false)
+function assertNotEquals($expected, $actual, $message = '', $delta = 0.0, $maxDepth = 10, $canonicalize = false, $ignoreCase = false)
 {
     return call_user_func_array(
       'PHPUnit_Framework_Assert::assertNotEquals',
@@ -1848,7 +1848,7 @@ function attribute(PHPUnit_Framework_Constraint $constraint, $attributeName)
  * @return PHPUnit_Framework_Constraint_Attribute
  * @since  Method available since Release 3.1.0
  */
-function attributeEqualTo($attributeName, $value, $delta = 0, $maxDepth = 10, $canonicalize = false, $ignoreCase = false)
+function attributeEqualTo($attributeName, $value, $delta = 0.0, $maxDepth = 10, $canonicalize = false, $ignoreCase = false)
 {
     return call_user_func_array(
       'PHPUnit_Framework_Assert::attributeEqualTo',
@@ -1961,7 +1961,7 @@ function containsOnlyInstancesOf($classname)
  * @return PHPUnit_Framework_Constraint_IsEqual
  * @since  Method available since Release 3.0.0
  */
-function equalTo($value, $delta = 0, $maxDepth = 10, $canonicalize = false, $ignoreCase = false)
+function equalTo($value, $delta = 0.0, $maxDepth = 10, $canonicalize = false, $ignoreCase = false)
 {
     return call_user_func_array(
       'PHPUnit_Framework_Assert::equalTo',
