@@ -466,7 +466,7 @@ abstract class PHPUnit_Framework_Assert
      * @param boolean $canonicalize
      * @param boolean $ignoreCase
      */
-    public static function assertEquals($expected, $actual, $message = '', $delta = 0, $maxDepth = 10, $canonicalize = false, $ignoreCase = false)
+    public static function assertEquals($expected, $actual, $message = '', $delta = 0.0, $maxDepth = 10, $canonicalize = false, $ignoreCase = false)
     {
         $constraint = new PHPUnit_Framework_Constraint_IsEqual(
           $expected, $delta, $maxDepth, $canonicalize, $ignoreCase
@@ -487,7 +487,7 @@ abstract class PHPUnit_Framework_Assert
      * @param boolean $canonicalize
      * @param boolean $ignoreCase
      */
-    public static function assertAttributeEquals($expected, $actualAttributeName, $actualClassOrObject, $message = '', $delta = 0, $maxDepth = 10, $canonicalize = false, $ignoreCase = false)
+    public static function assertAttributeEquals($expected, $actualAttributeName, $actualClassOrObject, $message = '', $delta = 0.0, $maxDepth = 10, $canonicalize = false, $ignoreCase = false)
     {
         self::assertEquals(
           $expected,
@@ -512,7 +512,7 @@ abstract class PHPUnit_Framework_Assert
      * @param boolean $ignoreCase
      * @since  Method available since Release 2.3.0
      */
-    public static function assertNotEquals($expected, $actual, $message = '', $delta = 0, $maxDepth = 10, $canonicalize = false, $ignoreCase = false)
+    public static function assertNotEquals($expected, $actual, $message = '', $delta = 0.0, $maxDepth = 10, $canonicalize = false, $ignoreCase = false)
     {
         $constraint = new PHPUnit_Framework_Constraint_Not(
           new PHPUnit_Framework_Constraint_IsEqual(
@@ -535,7 +535,7 @@ abstract class PHPUnit_Framework_Assert
      * @param boolean $canonicalize
      * @param boolean $ignoreCase
      */
-    public static function assertAttributeNotEquals($expected, $actualAttributeName, $actualClassOrObject, $message = '', $delta = 0, $maxDepth = 10, $canonicalize = false, $ignoreCase = false)
+    public static function assertAttributeNotEquals($expected, $actualAttributeName, $actualClassOrObject, $message = '', $delta = 0.0, $maxDepth = 10, $canonicalize = false, $ignoreCase = false)
     {
         self::assertNotEquals(
           $expected,
@@ -2526,7 +2526,7 @@ abstract class PHPUnit_Framework_Assert
      * @return PHPUnit_Framework_Constraint_IsEqual
      * @since  Method available since Release 3.0.0
      */
-    public static function equalTo($value, $delta = 0, $maxDepth = 10, $canonicalize = false, $ignoreCase = false)
+    public static function equalTo($value, $delta = 0.0, $maxDepth = 10, $canonicalize = false, $ignoreCase = false)
     {
         return new PHPUnit_Framework_Constraint_IsEqual(
           $value, $delta, $maxDepth, $canonicalize, $ignoreCase
@@ -2547,7 +2547,7 @@ abstract class PHPUnit_Framework_Assert
      * @return PHPUnit_Framework_Constraint_Attribute
      * @since  Method available since Release 3.1.0
      */
-    public static function attributeEqualTo($attributeName, $value, $delta = 0, $maxDepth = 10, $canonicalize = false, $ignoreCase = false)
+    public static function attributeEqualTo($attributeName, $value, $delta = 0.0, $maxDepth = 10, $canonicalize = false, $ignoreCase = false)
     {
         return self::attribute(
           self::equalTo(
