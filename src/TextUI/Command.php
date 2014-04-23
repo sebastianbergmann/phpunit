@@ -741,21 +741,17 @@ class PHPUnit_TextUI_Command
 
             if ($class->implementsInterface('PHPUnit_Runner_TestSuiteLoader') &&
                 $class->isInstantiable()) {
-                $loader = $class->newInstance();
+                return $class->newInstance();
             }
         }
 
-        if (!isset($loader)) {
-            $this->showError(
-              sprintf(
-                'Could not use "%s" as loader.',
+        $this->showError(
+          sprintf(
+            'Could not use "%s" as loader.',
 
-                $loaderClass
-              )
-            );
-        }
-
-        return $loader;
+            $loaderClass
+          )
+        );
     }
 
     /**
