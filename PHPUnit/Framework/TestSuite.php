@@ -663,6 +663,8 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
                     $result->addFailure($this, $e, 0);
                 }
 
+                $result->endTestSuite($this);
+
                 return $result;
             }
 
@@ -672,6 +674,8 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
                 for ($i = 0; $i < $numTests; $i++) {
                     $result->addError($this, $e, 0);
                 }
+
+                $result->endTestSuite($this);
 
                 return $result;
             }
