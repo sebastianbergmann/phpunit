@@ -273,7 +273,7 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
             $defect->thrownException()
           )
         );
-        
+
         $e = $defect->thrownException()->getPrevious();
 
         while ($e) {
