@@ -526,15 +526,11 @@ class PHPUnit_Util_Configuration
             }
         }
 
-        foreach (array('var', 'env', 'post', 'get', 'cookie', 'server', 'files', 'request') as $array) {
+        foreach (array('var', 'post', 'get', 'cookie', 'server', 'files', 'request') as $array) {
             // See https://github.com/sebastianbergmann/phpunit/issues/277
             switch ($array) {
                 case 'var':
                     $target = &$GLOBALS;
-                    break;
-
-                case 'env':
-                    $target = &$_ENV;
                     break;
 
                 case 'server':
@@ -552,7 +548,12 @@ class PHPUnit_Util_Configuration
         }
 
         foreach ($configuration['env'] as $name => $value) {
-            putenv("$name=$value");
+            if (false === getenv($name)) {
+                putenv("{$name}={$value}");
+            }
+            if (!isset($_ENV[$name])) {
+                $_ENV[$name] = $value;
+            }
         }
     }
 
