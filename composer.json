@@ -44,9 +44,7 @@
     ],
     "suggest": {
         "phpunit/php-invoker": "~1.1",
-        "ext-json": "*",
-        "ext-simplexml": "*",
-        "ext-tokenizer": "*"
+        "ext-json": "*"
     },
     "bin": [
         "composer/bin/phpunit"
