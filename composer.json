@@ -33,15 +33,13 @@
         "sebastian/exporter": "~1.0.1",
         "sebastian/version": "~1.0.3",
         "ext-dom": "*",
+        "ext-json": "*",
         "ext-pcre": "*",
         "ext-reflection": "*",
         "ext-spl": "*"
     },
     "suggest": {
-        "phpunit/php-invoker": "~1.1",
-        "ext-json": "*",
-        "ext-simplexml": "*",
-        "ext-tokenizer": "*"
+        "phpunit/php-invoker": "~1.1"
     },
     "bin": [
         "phpunit"
