@@ -30,6 +30,7 @@
         "symfony/yaml": "~2.0",
         "ext-ctype": "*",
         "ext-dom": "*",
+        "ext-json": "*",
         "ext-pcre": "*",
         "ext-reflection": "*",
         "ext-spl": "*"
@@ -44,8 +45,7 @@
         }
     ],
     "suggest": {
-        "phpunit/php-invoker": "~1.1",
-        "ext-json": "*"
+        "phpunit/php-invoker": "~1.1"
     },
     "bin": [
         "composer/bin/phpunit"
