@@ -247,6 +247,12 @@
    </fileset>
   </copy>
 
+  <copy todir="${basedir}/build/phar/sebastian-comparator">
+   <fileset dir="${basedir}/vendor/sebastian/comparator/src">
+    <include name="**/*.php" />
+   </fileset>
+  </copy>
+
   <copy todir="${basedir}/build/phar/sebastian-diff">
    <fileset dir="${basedir}/vendor/sebastian/diff/src">
     <include name="**/*.php" />
