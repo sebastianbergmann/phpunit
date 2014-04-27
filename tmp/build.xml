@@ -12,6 +12,16 @@
  </target>
 
  <target name="composer" depends="clean" description="Install dependencies with Composer">
+  <tstamp>
+   <format property="thirty.days.ago" pattern="MM/dd/yyyy hh:mm aa" offset="-30" unit="day"/>
+  </tstamp>
+  <delete>
+   <fileset dir="${basedir}">
+    <include name="composer.phar" />
+    <date datetime="${thirty.days.ago}" when="before"/>
+   </fileset>
+  </delete>
+
   <get src="https://getcomposer.org/composer.phar" dest="${basedir}/composer.phar" skipexisting="true"/>
 
   <exec executable="php">
