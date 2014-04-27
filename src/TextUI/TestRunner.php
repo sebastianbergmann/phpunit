@@ -469,7 +469,9 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
                   sprintf(
                     ' and <a href="http://phpunit.de/">PHPUnit %s</a>',
                     PHPUnit_Runner_Version::id()
-                  )
+                  ),
+                  isset($arguments['coverageAbsoluteRoot']) ? $arguments['coverageAbsoluteRoot'] : null,
+                  isset($arguments['coverageProjectPrefix']) ? $arguments['coverageProjectPrefix'] : null
                 );
 
                 $writer->process($codeCoverage, $arguments['coverageHtml']);
@@ -769,6 +771,16 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
                 if (isset($loggingConfiguration['highLowerBound']) &&
                     !isset($arguments['reportHighLowerBound'])) {
                     $arguments['reportHighLowerBound'] = $loggingConfiguration['highLowerBound'];
+                }
+
+                if (isset($loggingConfiguration['absoluteRoot']) &&
+                    !isset($arguments['coverageAbsoluteRoot'])) {
+                    $arguments['coverageAbsoluteRoot'] = $loggingConfiguration['absoluteRoot'];
+                }
+
+                if (isset($loggingConfiguration['projectPrefix']) &&
+                    !isset($arguments['coverageProjectPrefix'])) {
+                    $arguments['coverageProjectPrefix'] = $loggingConfiguration['projectPrefix'];
                 }
 
                 $arguments['coverageHtml'] = $loggingConfiguration['coverage-html'];
