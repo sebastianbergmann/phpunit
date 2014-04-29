@@ -244,6 +244,7 @@ class PHPUnit_Util_Log_JSON extends PHPUnit_Util_Printer implements PHPUnit_Fram
      * @param float  $time
      * @param array  $trace
      * @param string $message
+     * @param PHPUnit_Framework_TestCase|null $test
      */
     protected function writeCase($status, $time, array $trace = array(), $message = '', $test = null)
     {

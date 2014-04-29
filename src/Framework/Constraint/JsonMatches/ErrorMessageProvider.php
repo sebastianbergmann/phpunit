@@ -60,6 +60,7 @@ class PHPUnit_Framework_Constraint_JsonMatches_ErrorMessageProvider
      * Translates JSON error to a human readable string.
      *
      * @param  string $error
+     * @param  string $prefix
      * @return string
      */
     public static function determineJsonError($error, $prefix = '')

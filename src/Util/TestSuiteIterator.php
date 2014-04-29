@@ -67,9 +67,7 @@ class PHPUnit_Util_TestSuiteIterator implements RecursiveIterator
     protected $tests;
 
     /**
-     * Constructor.
-     *
-     * @param PHPUnit_Framework_TestSuite $suite
+     * @param PHPUnit_Framework_TestSuite $testSuite
      */
     public function __construct(PHPUnit_Framework_TestSuite $testSuite)
     {
