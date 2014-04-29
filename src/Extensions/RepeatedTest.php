@@ -80,13 +80,8 @@ class PHPUnit_Extensions_RepeatedTest extends PHPUnit_Extensions_TestDecorator
     protected $timesRepeat = 1;
 
     /**
-     * Constructor.
-     *
      * @param  PHPUnit_Framework_Test      $test
      * @param  integer                     $timesRepeat
-     * @param  mixed                       $filter
-     * @param  array                       $groups
-     * @param  array                       $excludeGroups
      * @param  boolean                     $processIsolation
      * @throws PHPUnit_Framework_Exception
      */

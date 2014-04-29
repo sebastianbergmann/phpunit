@@ -64,7 +64,6 @@ abstract class PHPUnit_Framework_Constraint_Composite extends PHPUnit_Framework_
 
     /**
      * @param PHPUnit_Framework_Constraint $innerConstraint
-     * @param string                       $attributeName
      */
     public function __construct(PHPUnit_Framework_Constraint $innerConstraint)
     {
