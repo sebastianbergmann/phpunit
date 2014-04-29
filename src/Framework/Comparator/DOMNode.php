@@ -85,8 +85,8 @@ class PHPUnit_Framework_Comparator_DOMNode extends PHPUnit_Framework_Comparator_
      */
     public function assertEquals($expected, $actual, $delta = 0.0, $canonicalize = false, $ignoreCase = false)
     {
-        $expectedAsString = $this->domToText($expected);
-        $actualAsString   = $this->domToText($actual);
+        $expectedAsString = $expected->C14N();
+        $actualAsString   = $actual->C14N();
 
         if ($ignoreCase === true) {
             $expectedAsString = strtolower($expectedAsString);
@@ -103,8 +103,8 @@ class PHPUnit_Framework_Comparator_DOMNode extends PHPUnit_Framework_Comparator_
             throw new PHPUnit_Framework_ComparisonFailure(
               $expected,
               $actual,
-              $expectedAsString,
-              $actualAsString,
+              $this->domToText($expected),
+              $this->domToText($actual),
               false,
               sprintf('Failed asserting that two DOM %s are equal.', $type)
             );
