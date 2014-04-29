@@ -884,26 +884,6 @@ class PHPUnit_Util_Test
     }
 
     /**
-     * @param  ReflectionClass $class
-     * @param  ReflectionMethod $method
-     * @return string
-     */
-    private static function getDocCommentsOfTestClassAndTestMethodAndTemplateMethods(ReflectionClass $class, ReflectionMethod $method)
-    {
-        $buffer = substr($class->getDocComment(),  3, -2) . PHP_EOL .
-                  substr($method->getDocComment(), 3, -2);
-
-        foreach (self::$templateMethods as $templateMethod) {
-            if ($class->hasMethod($templateMethod)) {
-                $_method = $class->getMethod($templateMethod);
-                $buffer .= PHP_EOL . substr($_method->getDocComment(), 3, -2);
-            }
-        }
-
-        return $buffer;
-    }
-
-    /**
      * @param  ReflectionMethod $method
      * @return boolean
      * @since  Method available since Release 4.0.8
