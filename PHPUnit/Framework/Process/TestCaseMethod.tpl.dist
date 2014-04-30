@@ -5,6 +5,8 @@ set_include_path('{include_path}');
 $composerAutoload = {composerAutoload};
 $phar             = {phar};
 
+ob_start();
+
 if ($composerAutoload) {
     require_once $composerAutoload;
     define('PHPUNIT_COMPOSER_INSTALL', $composerAutoload);
@@ -13,8 +15,6 @@ if ($composerAutoload) {
 } else {
     require 'PHPUnit/Autoload.php';
 }
-
-ob_start();
 
 function __phpunit_run_isolated_test()
 {
