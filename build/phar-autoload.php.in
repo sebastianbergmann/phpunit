@@ -1,10 +1,12 @@
 #!/usr/bin/env php
 <?php
-if ($GLOBALS['_SERVER']['SCRIPT_NAME'] != '-') {
-    $phar = realpath($GLOBALS['_SERVER']['SCRIPT_NAME']);
+if (__FILE__ == $GLOBALS['_SERVER']['SCRIPT_NAME']) {
+    $phar    = realpath($GLOBALS['_SERVER']['SCRIPT_NAME']);
+    $execute = true;
 } else {
-    $files = get_included_files();
-    $phar = $files[0];
+    $files   = get_included_files();
+    $phar    = $files[0];
+    $execute = false;
 }
 
 define('__PHPUNIT_PHAR__', str_replace(DIRECTORY_SEPARATOR, '/', $phar));
@@ -31,12 +33,12 @@ spl_autoload_register(
 
 Phar::mapPhar('___PHAR___');
 
-if (isset($_SERVER['argv'][1]) && $_SERVER['argv'][1] == '--manifest') {
-    print file_get_contents(__PHPUNIT_PHAR_ROOT__ . '/manifest.txt');
-    exit;
-}
+if ($execute) {
+    if (isset($_SERVER['argv'][1]) && $_SERVER['argv'][1] == '--manifest') {
+        print file_get_contents(__PHPUNIT_PHAR_ROOT__ . '/manifest.txt');
+        exit;
+    }
 
-if ($GLOBALS['_SERVER']['SCRIPT_NAME'] != '-') {
     PHPUnit_TextUI_Command::main();
 }
 
