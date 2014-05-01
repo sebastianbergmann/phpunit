@@ -1882,11 +1882,11 @@ abstract class PHPUnit_Framework_Assert
      * assertSelectCount("#binder", true, $xml);  // any?
      * assertSelectCount(".binder", 3, $xml);     // exactly 3?
      *
-     * @param array   $selector
-     * @param integer $count
-     * @param mixed   $actual
-     * @param string  $message
-     * @param boolean $isHtml
+     * @param array                 $selector
+     * @param integer|boolean|array $count
+     * @param mixed                 $actual
+     * @param string                $message
+     * @param boolean               $isHtml
      * @since  Method available since Release 3.3.0
      * @author Mike Naberezny <mike@maintainable.com>
      * @author Derek DeVries <derek@maintainable.com>
@@ -1902,12 +1902,12 @@ abstract class PHPUnit_Framework_Assert
      * assertSelectRegExp("#binder .name", "/Mike|Derek/", true, $xml); // any?
      * assertSelectRegExp("#binder .name", "/Mike|Derek/", 3, $xml);    // 3?
      *
-     * @param array   $selector
-     * @param string  $pattern
-     * @param integer $count
-     * @param mixed   $actual
-     * @param string  $message
-     * @param boolean $isHtml
+     * @param array                 $selector
+     * @param string                $pattern
+     * @param integer|boolean|array $count
+     * @param mixed                 $actual
+     * @param string                $message
+     * @param boolean               $isHtml
      * @since  Method available since Release 3.3.0
      * @author Mike Naberezny <mike@maintainable.com>
      * @author Derek DeVries <derek@maintainable.com>
@@ -1923,12 +1923,12 @@ abstract class PHPUnit_Framework_Assert
      * assertSelectEquals("#binder .name", "Chuck", true,  $xml);  // any?
      * assertSelectEquals("#binder .name", "Chuck", false, $xml);  // none?
      *
-     * @param array   $selector
-     * @param string  $content
-     * @param integer $count
-     * @param mixed   $actual
-     * @param string  $message
-     * @param boolean $isHtml
+     * @param array                 $selector
+     * @param string                $content
+     * @param integer|boolean|array $count
+     * @param mixed                 $actual
+     * @param string                $message
+     * @param boolean               $isHtml
      * @since  Method available since Release 3.3.0
      * @author Mike Naberezny <mike@maintainable.com>
      * @author Derek DeVries <derek@maintainable.com>
