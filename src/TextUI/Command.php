@@ -255,6 +255,7 @@ class PHPUnit_TextUI_Command
     protected function handleArguments(array $argv)
     {
         if (defined('__PHPUNIT_PHAR__')) {
+            $this->longOptions['selfupdate']  = null;
             $this->longOptions['self-update'] = null;
         }
 
@@ -526,6 +527,7 @@ class PHPUnit_TextUI_Command
                 }
                 break;
 
+                case '--selfupdate': {
                 case '--self-update': {
                     $this->handleSelfUpdate();
                 }
