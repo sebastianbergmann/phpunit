@@ -539,6 +539,11 @@ class PHPUnit_TextUI_Command
                 }
                 break;
 
+                case '--selfupdate': {
+                    $this->handleSelfUpdate();
+                }
+                break;
+
                 case '--self-update': {
                     $this->handleSelfUpdate();
                 }
