@@ -1360,8 +1360,8 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
 
     /**
      * Returns a mock object for the specified abstract class with all abstract
-     * methods of the class mocked. Concrete methods to mock can be specified with
-     * the last parameter
+     * methods of the class mocked. Concrete methods are not mocked by default.
+     * To mock concrete methods, use the 7th parameter ($mockedMethods).
      *
      * @param  string                                  $originalClassName
      * @param  array                                   $arguments
