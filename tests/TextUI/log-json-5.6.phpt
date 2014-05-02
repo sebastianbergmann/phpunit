@@ -2,7 +2,7 @@
 phpunit --log-json php://stdout BankAccountTest ../_files/BankAccountTest.php
 --SKIPIF--
 <?php
-if (!version_compare(PHP_VERSION, '5.6.0beta1', '>=')) print 'skip: PHP >= 5.6.0beta1 required';
+if (!version_compare(PHP_VERSION, '5.6.0beta2', '>=')) print 'skip: PHP >= 5.6.0beta2 required';
 ?>
 --FILE--
 <?php
