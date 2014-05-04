@@ -16,10 +16,6 @@ script: ./phpunit --configuration ./build/travis-ci.xml
 
 notifications:
   email: false
-  irc:
-    channels:
-      - "irc.freenode.org#phpunit"
-    use_notice: true
   webhooks:
     urls:
       - https://webhooks.gitter.im/e/6668f52f3dd4e3f81960
