@@ -19,10 +19,7 @@
   </testsuites>
 
   <logging>
-    <log type="coverage-html" target="build/coverage" title="PHPUnit" highlight="true"/>
-    <log type="coverage-clover" target="build/logs/clover.xml"/>
-    <!--<log type="coverage-xml" target="build/logs/coverage"/>-->
-    <log type="junit" target="build/logs/junit.xml" logIncompleteSkipped="false"/>
+    <log type="coverage-html" target="build/coverage"/>
   </logging>
 
   <filter>
@@ -38,3 +35,4 @@
     <const name="PHPUNIT_TESTSUITE" value="true"/>
   </php>
 </phpunit>
+
