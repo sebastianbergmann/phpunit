@@ -1,24 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<phpunit backupGlobals="false"
-         backupStaticAttributes="false"
-         bootstrap="tests/bootstrap.php">
-  <testsuites>
-    <testsuite name="PHPUnit Mock Objects">
-      <directory suffix="Test.php">tests</directory>
-      <directory suffix=".phpt">tests</directory>
-    </testsuite>
-  </testsuites>
+<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:noNamespaceSchemaLocation="http://schema.phpunit.de/4.2/phpunit.xsd"
+         bootstrap="tests/bootstrap.php"
+         backupGlobals="false"
+         verbose="true">
+  <testsuite name="PHPUnit Mock Objects">
+    <directory suffix="Test.php">tests</directory>
+    <directory suffix=".phpt">tests</directory>
+  </testsuite>
 
   <logging>
-    <log type="coverage-html" target="build/coverage" title="PHPUnit Mock Objects"
-         charset="UTF-8" yui="true" highlight="true"
-         lowUpperBound="35" highLowerBound="70"/>
-    <log type="coverage-clover" target="build/logs/clover.xml"/>
-    <log type="junit" target="build/logs/junit.xml" logIncompleteSkipped="false"/>
+    <log type="coverage-html" target="build/coverage"/>
   </logging>
 
   <filter>
-    <whitelist addUncoveredFilesFromWhitelist="true">
+    <whitelist processUncoveredFilesFromWhitelist="true">
       <directory suffix=".php">src</directory>
     </whitelist>
   </filter>

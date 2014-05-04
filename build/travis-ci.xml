@@ -1,22 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<phpunit backupGlobals="false"
+<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:noNamespaceSchemaLocation="http://schema.phpunit.de/4.2/phpunit.xsd"
          bootstrap="../tests/bootstrap.php"
-         colors="true">
-  <testsuites>
-    <testsuite name="PHPUnit Mock Objects">
-      <directory suffix="Test.php">../tests</directory>
-      <directory suffix=".phpt">../tests</directory>
-    </testsuite>
-  </testsuites>
-
-  <logging>
-    <log type="coverage-text" target="php://stdout"/>
-  </logging>
-
-  <filter>
-    <whitelist addUncoveredFilesFromWhitelist="true">
-      <directory suffix=".php">../src</directory>
-    </whitelist>
-  </filter>
+         backupGlobals="false"
+         verbose="true">
+  <testsuite name="PHPUnit Mock Objects">
+    <directory suffix="Test.php">../tests</directory>
+    <directory suffix=".phpt">../tests</directory>
+  </testsuite>
 </phpunit>
 
