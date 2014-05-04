@@ -1,35 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:noNamespaceSchemaLocation="http://phpunit.de/phpunit.xsd"
+         xsi:noNamespaceSchemaLocation="http://schema.phpunit.de/4.0/phpunit.xsd"
          bootstrap="../tests/bootstrap-travis.php"
          backupGlobals="false"
-         colors="true"
          verbose="true">
   <testsuites>
-    <testsuite name="PHPUnit">
+    <testsuite name="small">
       <directory suffix="Test.php">../tests/Framework</directory>
       <directory suffix="Test.php">../tests/Extensions</directory>
       <directory suffix="Test.php">../tests/Runner</directory>
       <directory suffix="Test.php">../tests/Util</directory>
+    </testsuite>
+
+    <testsuite name="large">
       <directory suffix=".phpt">../tests/TextUI</directory>
       <directory suffix=".phpt">../tests/Regression</directory>
     </testsuite>
   </testsuites>
 
-  <logging>
-    <log type="coverage-text" target="php://stdout"/>
-  </logging>
-
-  <filter>
-    <whitelist processUncoveredFilesFromWhitelist="true">
-      <directory suffix=".php">../src</directory>
-      <exclude>
-       <file>../src/Framework/Assert/Functions.php</file>
-      </exclude>
-    </whitelist>
-  </filter>
-
   <php>
     <const name="PHPUNIT_TESTSUITE" value="true"/>
   </php>
 </phpunit>
+
