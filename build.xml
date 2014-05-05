@@ -33,7 +33,7 @@
   <mkdir dir="${basedir}/build/phpdox"/>
  </target>
 
- <target name="composer" description="Install dependencies with Composer">
+ <target name="download-composer" description="Downloads composer.phar (when it does not exist or is older than 30 days)">
   <tstamp>
    <format property="thirty.days.ago" pattern="MM/dd/yyyy hh:mm aa" offset="-30" unit="day"/>
   </tstamp>
@@ -45,6 +45,9 @@
   </delete>
 
   <get src="https://getcomposer.org/composer.phar" dest="${basedir}/composer.phar" skipexisting="true"/>
+ </target>
+
+ <target name="composer" depends="download-composer" description="Install dependencies with Composer">
 
   <exec executable="php">
    <arg value="composer.phar"/>
@@ -186,29 +189,16 @@
   </antcall>
  </target>
 
- <target name="phar-prepare" depends="clean,composer">
+ <target name="phar-prepare" depends="clean,download-composer">
   <mkdir dir="${basedir}/build/phar"/>
   <copy file="${basedir}/composer.json" tofile="${basedir}/composer.json.bak"/>
 
   <exec executable="php">
    <arg value="composer.phar"/>
    <arg value="require"/>
-   <arg value="phpunit/dbunit"/>
-   <arg value="1.3.*"/>
-  </exec>
-
-  <exec executable="php">
-   <arg value="composer.phar"/>
-   <arg value="require"/>
-   <arg value="phpunit/phpunit-selenium"/>
-   <arg value="1.3.*"/>
-  </exec>
-
-  <exec executable="php">
-   <arg value="composer.phar"/>
-   <arg value="require"/>
-   <arg value="phpunit/php-invoker"/>
-   <arg value="1.1.*"/>
+   <arg value="phpunit/dbunit:1.3.*"/>
+   <arg value="phpunit/phpunit-selenium:1.3.*"/>
+   <arg value="phpunit/php-invoker:1.1.*"/>
   </exec>
 
   <move file="${basedir}/composer.json.bak" tofile="${basedir}/composer.json"/>
