@@ -31,7 +31,7 @@ class Framework_MockObject_GeneratorTest extends PHPUnit_Framework_TestCase
 
     /**
      * @covers PHPUnit_Framework_MockObject_Generator::getMock
-     * @expectedException PHPUnit_Framework_Exception
+     * @expectedException PHPUnit_Framework_MockObject_RuntimeException
      * @expectedExceptionMessage duplicates: "foo, foo"
      */
     public function testGetMockGeneratorFails()
@@ -98,7 +98,7 @@ class Framework_MockObject_GeneratorTest extends PHPUnit_Framework_TestCase
 
     /**
      * @covers PHPUnit_Framework_MockObject_Generator::getMockForAbstractClass
-     * @expectedException PHPUnit_Framework_Exception
+     * @expectedException PHPUnit_Framework_MockObject_RuntimeException
      */
     public function testGetMockForAbstractClassAnstractClassDoesNotExist()
     {
@@ -134,17 +134,6 @@ class Framework_MockObject_GeneratorTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @dataProvider getMockForTraitExpectsInvalidArgumentExceptionDataprovider
-     * @covers PHPUnit_Framework_MockObject_Generator::getMockForTrait
-     * @requires PHP 5.4.0
-     * @expectedException PHPUnit_Framework_Exception
-     */
-    public function testGetMockForTraitExpectingInvalidArgumentException($traitName, $mockClassName)
-    {
-        $mock = $this->generator->getMockForTrait($traitName, array(), $mockClassName);
-    }
-
-    /**
      * @covers   PHPUnit_Framework_MockObject_Generator::getMockForTrait
      * @requires PHP 5.4.0
      */
@@ -152,18 +141,6 @@ class Framework_MockObject_GeneratorTest extends PHPUnit_Framework_TestCase
     {
         $mock = $this->generator->getMockForTrait('AbstractTrait');
         $this->assertTrue(method_exists($mock, 'doSomething'));
-    }
-
-    /**
-     * Dataprovider for test "testGetMockForTraitExpectingInvalidArgumentException"
-     */
-    public static function getMockForTraitExpectsInvalidArgumentExceptionDataprovider()
-    {
-        return array(
-            'traitName not a string' => array(array(), ''),
-            'mockClassName not a string' => array('AbstractTrait', new StdClass),
-            'trait does not exist' => array('AbstractTraitDoesNotExist', 'TraitTest')
-        );
     }
 
     /**
@@ -197,4 +174,3 @@ class Framework_MockObject_GeneratorTest extends PHPUnit_Framework_TestCase
         $mock = $this->generator->getMock('SingletonClass', array('doSomething'), array(), '', false);
     }
 }
-

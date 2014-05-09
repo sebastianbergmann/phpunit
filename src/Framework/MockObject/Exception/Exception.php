@@ -2,7 +2,7 @@
 /**
  * PHPUnit
  *
- * Copyright (c) 2010-2012, Sebastian Bergmann <sebastian@phpunit.de>.
+ * Copyright (c) 2010-2014, Sebastian Bergmann <sebastian@phpunit.de>.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -36,22 +36,22 @@
  *
  * @package    PHPUnit_MockObject
  * @author     Sebastian Bergmann <sebastian@phpunit.de>
- * @copyright  2010-2012 Sebastian Bergmann <sebastian@phpunit.de>
+ * @copyright  2010-2014 Sebastian Bergmann <sebastian@phpunit.de>
  * @license    http://www.opensource.org/licenses/BSD-3-Clause  The BSD 3-Clause License
  * @link       http://github.com/sebastianbergmann/phpunit-mock-objects
  * @since      File available since Release 2.0.0
  */
 
 /**
- * Exception class uses by PHPUnit_MockObject.
+ * Interface for exceptions used by PHPUnit_MockObject.
  *
  * @package    PHPUnit_MockObject
  * @author     Sebastian Bergmann <sebastian@phpunit.de>
- * @copyright  2010-2012 Sebastian Bergmann <sebastian@phpunit.de>
+ * @copyright  2010-2014 Sebastian Bergmann <sebastian@phpunit.de>
  * @license    http://www.opensource.org/licenses/BSD-3-Clause  The BSD 3-Clause License
  * @link       http://github.com/sebastianbergmann/phpunit-mock-objects
- * @since      Interface available since Release 2.0.0
+ * @since      Interface available since Release 2.0.6
  */
-class PHPUnit_Framework_MockObject_Exception extends RuntimeException
+interface PHPUnit_Framework_MockObject_Exception
 {
 }
