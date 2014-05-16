@@ -3878,7 +3878,7 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
      */
     public function testAssertJsonStringEqualsJsonFile()
     {
-        $file = __DIR__ . '/../_files/JsonData/simpleObject.js';
+        $file = __DIR__ . '/../_files/JsonData/simpleObject.json';
         $actual = json_encode(array("Mascott" => "Tux"));
         $message = '';
         $this->assertJsonStringEqualsJsonFile($file, $actual, $message);
@@ -3889,7 +3889,7 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
      */
     public function testAssertJsonStringEqualsJsonFileExpectingExpectationFailedException()
     {
-        $file = __DIR__ . '/../_files/JsonData/simpleObject.js';
+        $file = __DIR__ . '/../_files/JsonData/simpleObject.json';
         $actual = json_encode(array("Mascott" => "Beastie"));
         $message = '';
         try {
@@ -3910,7 +3910,7 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
      */
     public function testAssertJsonStringEqualsJsonFileExpectingException()
     {
-        $file = __DIR__ . '/../_files/JsonData/simpleObject.js';
+        $file = __DIR__ . '/../_files/JsonData/simpleObject.json';
         try {
             $this->assertJsonStringEqualsJsonFile($file, null);
         } catch (PHPUnit_Framework_Exception $e) {
@@ -3924,7 +3924,7 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
      */
     public function testAssertJsonStringNotEqualsJsonFile()
     {
-        $file = __DIR__ . '/../_files/JsonData/simpleObject.js';
+        $file = __DIR__ . '/../_files/JsonData/simpleObject.json';
         $actual = json_encode(array("Mascott" => "Beastie"));
         $message = '';
         $this->assertJsonStringNotEqualsJsonFile($file, $actual, $message);
@@ -3935,7 +3935,7 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
      */
     public function testAssertJsonStringNotEqualsJsonFileExpectingException()
     {
-        $file = __DIR__ . '/../_files/JsonData/simpleObject.js';
+        $file = __DIR__ . '/../_files/JsonData/simpleObject.json';
         try {
             $this->assertJsonStringNotEqualsJsonFile($file, null);
         } catch (PHPUnit_Framework_Exception $e) {
@@ -3949,8 +3949,8 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
      */
     public function testAssertJsonFileNotEqualsJsonFile()
     {
-        $fileExpected = __DIR__ . '/../_files/JsonData/simpleObject.js';
-        $fileActual   = __DIR__ . '/../_files/JsonData/arrayObject.js';
+        $fileExpected = __DIR__ . '/../_files/JsonData/simpleObject.json';
+        $fileActual   = __DIR__ . '/../_files/JsonData/arrayObject.json';
         $message = '';
         $this->assertJsonFileNotEqualsJsonFile($fileExpected, $fileActual, $message);
     }
@@ -3960,7 +3960,7 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
      */
     public function testAssertJsonFileEqualsJsonFile()
     {
-        $file = __DIR__ . '/../_files/JsonData/simpleObject.js';
+        $file = __DIR__ . '/../_files/JsonData/simpleObject.json';
         $message = '';
         $this->assertJsonFileEqualsJsonFile($file, $file, $message);
     }
