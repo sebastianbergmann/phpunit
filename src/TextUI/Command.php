@@ -635,6 +635,9 @@ class PHPUnit_TextUI_Command
 
             $configuration->handlePHPConfiguration();
 
+            /**
+             * Issue #1216
+             */
             if (isset($this->arguments['bootstrap'])) {
                 $this->handleBootstrap($this->arguments['bootstrap']);
             }elseif (isset($phpunit['bootstrap'])) {
@@ -688,6 +691,13 @@ class PHPUnit_TextUI_Command
                 if ($testSuite !== null) {
                     $this->arguments['test'] = $testSuite;
                 }
+            }
+        }else{
+            /**
+             * Issue #1216
+             */
+            if (isset($this->arguments['bootstrap'])) {
+                $this->handleBootstrap($this->arguments['bootstrap']);
             }
         }
 
