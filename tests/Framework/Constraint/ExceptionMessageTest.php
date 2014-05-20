@@ -95,19 +95,19 @@ class ExceptionMessageTest extends PHPUnit_Framework_TestCase
 
     /**
      * @expectedException \Exception
-     * @expectedExceptionMessage /^A mutable \w+ message/
+     * @expectedExceptionMessage /^A polymorphic \w+ message/
      */
     public function testRegexMessage()
     {
-        throw new Exception("A mutable exception message");
+        throw new Exception("A polymorphic exception message");
     }
 
     /**
      * @expectedException \Exception
-     * @expectedExceptionMessage /^a mut[a-z]+ [a-zA-Z0-9_]+ me(s){2}age$/i
+     * @expectedExceptionMessage /^a poly[a-z]+ [a-zA-Z0-9_]+ me(s){2}age$/i
      */
     public function testRegexMessageExtreme()
     {
-        throw new Exception("A mutant exception message");
+        throw new Exception("A polymorphic exception message");
     }
 }
