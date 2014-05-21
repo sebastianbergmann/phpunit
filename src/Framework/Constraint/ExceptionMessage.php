@@ -84,15 +84,16 @@ class PHPUnit_Framework_Constraint_ExceptionMessage extends PHPUnit_Framework_Co
      */
     protected function matches($other)
     {
-        // checks possible regex on @expectedExceptionMessage discarding errors
-        $match = @preg_match($this->expectedMessage, $other->getMessage());
-        if (false !== $match) {
+        try {
+            $this->registerKamikazeErrorHandler(E_WARNING);
+            $match = preg_match($this->expectedMessage, $other->getMessage());
             $this->regexBased = true;
-
-            return (bool) $match;
+            restore_error_handler();
+        } catch (Exception $e) {
+            $match = strpos($other->getMessage(), $this->expectedMessage) !== false;
         }
 
-        return strpos($other->getMessage(), $this->expectedMessage) !== false;
+        return (bool) $match;
     }
 
     /**
@@ -127,5 +128,20 @@ class PHPUnit_Framework_Constraint_ExceptionMessage extends PHPUnit_Framework_Co
     protected function getVerb()
     {
         return ($this->regexBased) ? "matches" : "contains";
+    }
+
+    /**
+     * Registers a one time self-destructing error handler
+     *
+     * @throws Exception if event of specified severity is emitted
+     */
+    protected function registerKamikazeErrorHandler($severity = E_WARNING)
+    {
+        return set_error_handler(function ($code, $message) use ($severity) {
+            if ($code === $severity) {
+                restore_error_handler(); // bye
+                throw new Exception($message, $code);
+            }
+        });
     }
 }
