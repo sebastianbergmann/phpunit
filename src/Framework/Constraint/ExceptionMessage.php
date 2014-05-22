@@ -119,7 +119,7 @@ class PHPUnit_Framework_Constraint_ExceptionMessage extends PHPUnit_Framework_Co
      */
     public function toString()
     {
-        return 'exception message {$this->getVerb()} ';
+        return "exception message {$this->getVerb()} ";
     }
 
     /**
