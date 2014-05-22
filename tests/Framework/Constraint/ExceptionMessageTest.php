@@ -95,13 +95,12 @@ class ExceptionMessageTest extends PHPUnit_Framework_TestCase
 
     /**
      * @runInSeparateProcess
+     * @requires extension xdebug
      * @expectedException \Exception
      * @expectedExceptionMessage Screaming preg_match
      */
     public function testMessageWithXdebugScreamOn()
     {
-        if (!extension_loaded('xdebug'))
-            $this->markTestSkipped('Xdebug extension required');
         ini_set('xdebug.scream', '1');
         throw new Exception("Screaming preg_match");
     }
