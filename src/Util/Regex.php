@@ -35,93 +35,35 @@
  * POSSIBILITY OF SUCH DAMAGE.
  *
  * @package    PHPUnit
- * @subpackage Framework_Constraint
+ * @subpackage Util
  * @author     Sebastian Bergmann <sebastian@phpunit.de>
  * @copyright  2001-2014 Sebastian Bergmann <sebastian@phpunit.de>
  * @license    http://www.opensource.org/licenses/BSD-3-Clause  The BSD 3-Clause License
  * @link       http://www.phpunit.de/
- * @since      File available since Release 3.6.6
+ * @since      File available since Release 2.3.0
  */
 
 /**
- *
+ * Error handler that converts PHP errors and warnings to exceptions.
  *
  * @package    PHPUnit
- * @subpackage Framework_Constraint
- * @author     Sebastian Bergmann <sebastian@phpunit.de>
+ * @subpackage Util
+ * @author     Márcio Almada <marcio3w@gmail.com>
  * @copyright  2001-2014 Sebastian Bergmann <sebastian@phpunit.de>
  * @license    http://www.opensource.org/licenses/BSD-3-Clause  The BSD 3-Clause License
  * @link       http://www.phpunit.de/
- * @since      Class available since Release 3.6.6
+ * @since      Class available since Release 4.0.20
  */
-class PHPUnit_Framework_Constraint_ExceptionMessage extends PHPUnit_Framework_Constraint
+class PHPUnit_Util_Regex
 {
-    /**
-     * @var integer
-     */
-    protected $expectedMessage;
 
-    /**
-     * @var boolean
-     */
-    protected $regexBased = false;
-
-    /**
-     * @param string $expected
-     */
-    public function __construct($expected)
+    public static function pregMatchSafe($pattern , $subject, $matches = null, $flags = 0, $offset = 0)
     {
-        parent::__construct();
-        $this->expectedMessage = $expected;
+        $handler_terminator = PHPUnit_Util_ErrorHandler::handleErrorOnce(E_WARNING);
+        $match = preg_match($pattern, $subject, $matches, $flags, $offset);
+        $handler_terminator(); // cleaning
+
+        return $match;
     }
 
-    /**
-     * Evaluates the constraint for parameter $other. Returns true if the
-     * constraint is met, false otherwise.
-     *
-     * @param  Exception $other
-     * @return boolean
-     */
-    protected function matches($other)
-    {
-        $match = PHPUnit_Util_Regex::pregMatchSafe($this->expectedMessage, $other->getMessage());
-        if(false !== $match) $this->regexBased = true;
-        else $match = strpos($other->getMessage(), $this->expectedMessage) !== false;
-
-        return (bool) $match;
-    }
-
-    /**
-     * Returns the description of the failure
-     *
-     * The beginning of failure messages is "Failed asserting that" in most
-     * cases. This method should return the second part of that sentence.
-     *
-     * @param  mixed  $other Evaluated value or object.
-     * @return string
-     */
-    protected function failureDescription($other)
-    {
-        return sprintf(
-          "exception message '%s' {$this->getVerb()} '%s'",
-          $other->getMessage(),
-          $this->expectedMessage
-        );
-    }
-
-    /**
-     * @return string
-     */
-    public function toString()
-    {
-        return "exception message {$this->getVerb()} ";
-    }
-
-    /**
-     * @return string
-     */
-    protected function getVerb()
-    {
-        return ($this->regexBased) ? "matches" : "contains";
-    }
 }
