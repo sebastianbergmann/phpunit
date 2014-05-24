@@ -91,7 +91,11 @@ class PHPUnit_Util_TestDox_NamePrettifier
             $title = substr($title, strlen($this->prefix));
         }
 
-        return str_replace('\\', '', $title);
+        if (substr($title, 0, 1) == '\\') {
+            $title = substr($title, 1);
+        }
+
+        return $title;
     }
 
     /**
