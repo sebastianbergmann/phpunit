@@ -12,6 +12,7 @@ spl_autoload_register(
                 'aninterface' => '/_fixture/AnInterface.php',
                 'anotherinterface' => '/_fixture/AnotherInterface.php',
                 'bar' => '/_fixture/Bar.php',
+                'classthatimplementsserializable' => '/_files/ClassThatImplementsSerializable.php',
                 'classwithstaticmethod' => '/_files/ClassWithStaticMethod.php',
                 'foo' => '/_fixture/Foo.php',
                 'framework_mockbuildertest' => '/MockBuilderTest.php',
