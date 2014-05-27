@@ -148,6 +148,7 @@ spl_autoload_register(
                 'twotest' => '/Regression/783/TwoTest.php',
                 'util_configurationtest' => '/Util/ConfigurationTest.php',
                 'util_testdox_nameprettifiertest' => '/Util/TestDox/NamePrettifierTest.php',
+                'util_regextest' => '/Util/RegexTest.php',
                 'util_testtest' => '/Util/TestTest.php',
                 'util_xmltest' => '/Util/XMLTest.php',
                 'wasrun' => '/_files/WasRun.php'
