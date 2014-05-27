@@ -289,6 +289,11 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
     private $outputBufferingActive = false;
 
     /**
+     * @var integer
+     */
+    private $outputBufferingLevel;
+
+    /**
      * Constructs a test case with the given name.
      *
      * @param string $name
@@ -788,9 +793,7 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
             }
         }
 
-        // Start output buffering.
-        ob_start();
-        $this->outputBufferingActive = true;
+        $this->startOutputBuffering();
 
         // Clean up stat cache.
         clearstatcache();
@@ -856,17 +859,7 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
             }
         }
 
-        // Stop output buffering.
-        if ($this->outputCallback === false) {
-            $this->output = ob_get_contents();
-        } else {
-            $this->output = call_user_func_array(
-              $this->outputCallback, array(ob_get_contents())
-            );
-        }
-
-        ob_end_clean();
-        $this->outputBufferingActive = false;
+        $this->stopOutputBuffering();
 
         // Clean up stat cache.
         clearstatcache();
@@ -1943,5 +1936,51 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
         }
 
         return $this->mockObjectGenerator;
+    }
+
+    /**
+     * @since Method available since Release 4.2.0
+     */
+    private function startOutputBuffering()
+    {
+        while (!defined('PHPUNIT_TESTSUITE') && ob_get_level() > 0) {
+            ob_end_clean();
+        }
+
+        ob_start();
+
+        $this->outputBufferingActive = true;
+        $this->outputBufferingLevel  = ob_get_level();
+    }
+
+    /**
+     * @since Method available since Release 4.2.0
+     */
+    private function stopOutputBuffering()
+    {
+        if (ob_get_level() != $this->outputBufferingLevel) {
+            while (ob_get_level() > 0) {
+                ob_end_clean();
+            }
+
+            throw new PHPUnit_Framework_RiskyTestError(
+                'Test code or tested code did not (only) close its own output buffers'
+            );
+        }
+
+        $output = ob_get_contents();
+
+        if ($this->outputCallback === false) {
+            $this->output = $output;
+        } else {
+            $this->output = call_user_func_array(
+                $this->outputCallback, array($output)
+            );
+        }
+
+        ob_end_clean();
+
+        $this->outputBufferingActive = false;
+        $this->outputBufferingLevel  = ob_get_level();
     }
 }
