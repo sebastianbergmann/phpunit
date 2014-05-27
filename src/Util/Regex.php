@@ -35,91 +35,35 @@
  * POSSIBILITY OF SUCH DAMAGE.
  *
  * @package    PHPUnit
+ * @subpackage Util
  * @author     Sebastian Bergmann <sebastian@phpunit.de>
- * @author     Jeroen Versteeg <jversteeg@gmail.com>
  * @copyright  2001-2014 Sebastian Bergmann <sebastian@phpunit.de>
  * @license    http://www.opensource.org/licenses/BSD-3-Clause  The BSD 3-Clause License
  * @link       http://www.phpunit.de/
- * @since      File available since Release 3.7.30
+ * @since      File available since Release 2.3.0
  */
 
 /**
- *
+ * Error handler that converts PHP errors and warnings to exceptions.
  *
  * @package    PHPUnit
+ * @subpackage Util
  * @author     Márcio Almada <marcio3w@gmail.com>
  * @copyright  2001-2014 Sebastian Bergmann <sebastian@phpunit.de>
  * @license    http://www.opensource.org/licenses/BSD-3-Clause  The BSD 3-Clause License
  * @link       http://www.phpunit.de/
  * @since      Class available since Release 4.0.20
- * @covers     PHPUnit_Framework_Constraint_ExceptionMessage
  */
-class ExceptionMessageTest extends PHPUnit_Framework_TestCase
+class PHPUnit_Util_Regex
 {
 
-    /**
-     * @expectedException \Exception
-     * @expectedExceptionMessage A literal exception message
-     */
-    public function testLiteralMessage()
+    public static function pregMatchSafe($pattern , $subject, $matches = null, $flags = 0, $offset = 0)
     {
-        throw new Exception("A literal exception message");
+        $handler_terminator = PHPUnit_Util_ErrorHandler::handleErrorOnce(E_WARNING);
+        $match = preg_match($pattern, $subject, $matches, $flags, $offset);
+        $handler_terminator(); // cleaning
+
+        return $match;
     }
 
-    /**
-     * @expectedException \Exception
-     * @expectedExceptionMessage A partial
-     */
-    public function testPatialMessageBegin()
-    {
-        throw new Exception("A partial exception message");
-    }
-
-    /**
-     * @expectedException \Exception
-     * @expectedExceptionMessage partial exception
-     */
-    public function testPatialMessageMiddle()
-    {
-        throw new Exception("A partial exception message");
-    }
-
-    /**
-     * @expectedException \Exception
-     * @expectedExceptionMessage exception message
-     */
-    public function testPatialMessageEnd()
-    {
-        throw new Exception("A partial exception message");
-    }
-
-    /**
-     * @runInSeparateProcess
-     * @requires extension xdebug
-     * @expectedException \Exception
-     * @expectedExceptionMessage Screaming preg_match
-     */
-    public function testMessageWithXdebugScreamOn()
-    {
-        ini_set('xdebug.scream', '1');
-        throw new Exception("Screaming preg_match");
-    }
-
-    /**
-     * @expectedException \Exception
-     * @expectedExceptionMessage /^A polymorphic \w+ message/
-     */
-    public function testRegexMessage()
-    {
-        throw new Exception("A polymorphic exception message");
-    }
-
-    /**
-     * @expectedException \Exception
-     * @expectedExceptionMessage /^a poly[a-z]+ [a-zA-Z0-9_]+ me(s){2}age$/i
-     */
-    public function testRegexMessageExtreme()
-    {
-        throw new Exception("A polymorphic exception message");
-    }
 }

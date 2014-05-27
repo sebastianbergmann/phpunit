@@ -84,15 +84,11 @@ class PHPUnit_Framework_Constraint_ExceptionMessage extends PHPUnit_Framework_Co
      */
     protected function matches($other)
     {
-        // checks possible regex on @expectedExceptionMessage discarding errors
-        $match = @preg_match($this->expectedMessage, $other->getMessage());
-        if (false !== $match) {
-            $this->regexBased = true;
+        $match = PHPUnit_Util_Regex::pregMatchSafe($this->expectedMessage, $other->getMessage());
+        if(false !== $match) $this->regexBased = true;
+        else $match = strpos($other->getMessage(), $this->expectedMessage) !== false;
 
-            return (bool) $match;
-        }
-
-        return strpos($other->getMessage(), $this->expectedMessage) !== false;
+        return (bool) $match;
     }
 
     /**
@@ -118,7 +114,7 @@ class PHPUnit_Framework_Constraint_ExceptionMessage extends PHPUnit_Framework_Co
      */
     public function toString()
     {
-        return 'exception message {$this->getVerb()} ';
+        return "exception message {$this->getVerb()} ";
     }
 
     /**
