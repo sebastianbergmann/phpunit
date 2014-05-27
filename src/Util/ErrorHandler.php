@@ -134,7 +134,7 @@ class PHPUnit_Util_ErrorHandler
     {
         $terminator = function () {
             static $expired = false;
-            if (! $expired) {
+            if (!$expired) {
                 $expired = true;
                 // cleans temporary error handler
                 return restore_error_handler();
