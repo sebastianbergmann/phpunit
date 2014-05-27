@@ -204,6 +204,58 @@ class Framework_TestCaseTest extends PHPUnit_Framework_TestCase
         $this->assertTrue($result->wasSuccessful());
     }
 
+    public function testExceptionWithMessage()
+    {
+        $test = new ThrowExceptionTestCase('test');
+        $test->setExpectedException('RuntimeException', 'A runtime error occurred');
+
+        $result = $test->run();
+
+        $this->assertEquals(1, count($result));
+        $this->assertTrue($result->wasSuccessful());
+    }
+
+    public function testExceptionWithWrongMessage()
+    {
+        $test = new ThrowExceptionTestCase('test');
+        $test->setExpectedException('RuntimeException', 'A logic error occurred');
+
+        $result = $test->run();
+
+        $this->assertEquals(1, $result->failureCount());
+        $this->assertEquals(1, count($result));
+        $this->assertEquals(
+          "Failed asserting that exception message 'A runtime error occurred' contains 'A logic error occurred'.",
+          $test->getStatusMessage()
+        );
+    }
+
+    public function testExceptionWithRegexpMessage()
+    {
+        $test = new ThrowExceptionTestCase('test');
+        $test->setExpectedException('RuntimeException', '/runtime .*? occurred/');
+
+        $result = $test->run();
+
+        $this->assertEquals(1, count($result));
+        $this->assertTrue($result->wasSuccessful());
+    }
+
+    public function testExceptionWithWrongRegexpMessage()
+    {
+        $test = new ThrowExceptionTestCase('test');
+        $test->setExpectedException('RuntimeException', '/logic .*? occurred/');
+
+        $result = $test->run();
+
+        $this->assertEquals(1, $result->failureCount());
+        $this->assertEquals(1, count($result));
+        $this->assertEquals(
+          "Failed asserting that exception message 'A runtime error occurred' matches '/logic .*? occurred/'.",
+          $test->getStatusMessage()
+        );
+    }
+
     public function testNoException()
     {
         $test = new ThrowNoExceptionTestCase('test');
