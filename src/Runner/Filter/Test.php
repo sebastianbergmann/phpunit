@@ -79,13 +79,27 @@ class PHPUnit_Runner_Filter_Test extends RecursiveFilterIterator
     }
 
     /**
+     * Returns true if the filter is a valid regular expression enclosed in
+     * delimiters.
+     *
+     * @param string $filter
+     * @return bool
+     */
+    private function isFilterStringARegularExpression($filter)
+    {
+        $match = PHPUnit_Util_Regex::pregMatchSafe($filter, '');
+        // A false return value indicates an error.
+        // An error indicates that the filter string is not
+        // a valid regular expression.
+        return $match !== false;
+    }
+
+    /**
      * @param string $filter
      */
     protected function setFilter($filter)
     {
-        if ($filter[0] != substr($filter, -1) ||
-            preg_match('/^[a-zA-Z0-9_]/', $filter)) {
-
+        if (!$this->isFilterStringARegularExpression($filter)) {
             // Handles:
             //  * testAssertEqualsSucceeds#4
             //  * testAssertEqualsSucceeds#4-8
