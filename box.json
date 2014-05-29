@@ -1,0 +1,25 @@
+{
+    "chmod": "0755",
+    "directories": [
+        "src", "vendor/phpunit/php-code-coverage/src"
+    ],
+    "files": [
+        "LICENSE"
+    ],
+    "finder": [
+        {
+            "name": "*.php",
+            "exclude": [
+                "Tests",
+                "Test",
+                "tests",
+                "build",
+                "scripts"
+            ],
+            "in": "vendor"
+        }
+    ],
+    "main": "phpunit",
+    "output": "build/phpunit.phar",
+    "stub": true
+}
