@@ -1,5 +1,5 @@
 --TEST--
-phpunit --filter testBalanceIsInitiallyZero BankAccountTest ../_files/BankAccountTest.php
+phpunit --filter doesNotExist BankAccountTest ../_files/BankAccountTest.php
 --FILE--
 <?php
 $_SERVER['argv'][1] = '--no-configuration';
