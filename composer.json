@@ -53,6 +53,15 @@
             "src/"
         ]
     },
+    "autoload-dev": {
+        "classmap": [
+            "tests/"
+        ],
+        "files": [
+            "src/Framework/Assert/Functions.php",
+            "tests/_files/CoveredFunction.php"
+        ]
+    },
     "extra": {
         "branch-alias": {
             "dev-master": "4.1.x-dev"
