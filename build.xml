@@ -55,14 +55,6 @@
   </exec>
  </target>
 
- <target name="phpab" description="Generate autoloader script">
-  <exec executable="phpab">
-   <arg value="--output" />
-   <arg path="tests/autoload.php" />
-   <arg path="tests" />
-  </exec>
- </target>
-
  <target name="lint">
   <apply executable="${php}" failonerror="true">
    <arg value="-l" />
