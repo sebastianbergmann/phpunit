@@ -43,6 +43,8 @@
  * @since      File available since Release 2.0.0
  */
 
+use Eloquent\Cosmos\ClassName;
+
 /**
  * A TestCase defines the fixture to run multiple tests.
  *
@@ -485,14 +487,38 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
             );
 
             if ($expectedException !== false) {
+
+                $exceptionClass = $this->resolveFullQualifiedClassName($expectedException['class']);        
+
                 $this->setExpectedException(
-                  $expectedException['class'],
+                  $exceptionClass,
                   $expectedException['message'],
                   $expectedException['code']
                 );
             }
         } catch (ReflectionException $e) {
         }
+    }
+
+    protected function resolveFullQualifiedClassName($class)
+    {
+        $exceptionClass = ClassName::fromString($class);
+
+        if (! $exceptionClass->isAbsolute()){
+            
+            $namespace = $testClass = ClassName::fromString(get_called_class());
+            
+            if ($testClass->hasParent()) {
+                $namespace = $testClass->parent();
+            }
+            $resolvedClass = $namespace->join($exceptionClass)->toAbsolute();
+
+            if ($resolvedClass->exists()) {
+                $exceptionClass = $resolvedClass;
+            }
+        }
+
+        return $exceptionClass->string();  
     }
 
     /**
