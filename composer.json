@@ -38,7 +38,8 @@
         "ext-json": "*",
         "ext-pcre": "*",
         "ext-reflection": "*",
-        "ext-spl": "*"
+        "ext-spl": "*",
+        "eloquent/cosmos": "~2.3.1"
     },
     "suggest": {
         "phpunit/php-invoker": "~1.1"
