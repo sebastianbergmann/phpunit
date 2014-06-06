@@ -2,7 +2,11 @@
 phpunit --log-json php://stdout BankAccountTest ../_files/BankAccountTest.php
 --SKIPIF--
 <?php
-if (!in_array(substr(PHP_VERSION, 0, 3), array('5.4', '5.5'))) print 'skip: PHP >= 5.4.0 && < 5.6.0 required';
+if (!((version_compare(PHP_VERSION, '5.4', '>=') && version_compare(PHP_VERSION, '5.4.27', '<=')) ||
+    (version_compare(PHP_VERSION, '5.5', '>=') && version_compare(PHP_VERSION, '5.5.11', '<=')) ||
+    (version_compare(PHP_VERSION, '5.6', '>=') && version_compare(PHP_VERSION, '5.6.0beta1', '<=')) ||
+    defined('HHVM_VERSION')))
+    print "skip: PHP 5.4.(0-27) or PHP 5.5.(0-11) or PHP 5.6.(0alpha1-0beta1) or HHVM required";
 ?>
 --FILE--
 <?php
