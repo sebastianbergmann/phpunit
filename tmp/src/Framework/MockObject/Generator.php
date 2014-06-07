@@ -1104,7 +1104,8 @@ class PHPUnit_Framework_MockObject_Generator
      */
     private function unserializeHackIsSupported()
     {
-        if (PHP_VERSION == '5.4.29' || PHP_VERSION == '5.5.13') {
+        if (PHP_VERSION == '5.4.29' || PHP_VERSION == '5.5.13' ||
+            version_compare(PHP_VERSION, '5.6.0', '>=')) {
             return FALSE;
         }
 
