@@ -1104,19 +1104,7 @@ class PHPUnit_Framework_MockObject_Generator
      */
     private function unserializeHackIsSupported()
     {
-        if (PHP_MAJOR_VERSION == 5 && PHP_MINOR_VERSION == 4 && PHP_RELEASE_VERSION >= 29) {
-            return FALSE;
-        }
-
-        if (PHP_MAJOR_VERSION == 5 && PHP_MINOR_VERSION == 5 && PHP_RELEASE_VERSION >= 13) {
-            return FALSE;
-        }
-
-        if (PHP_MAJOR_VERSION == 5 && PHP_MINOR_VERSION >= 6) {
-            return FALSE;
-        }
-
-        if (PHP_MAJOR_VERSION >= 6) {
+        if (PHP_VERSION == '5.4.29' || PHP_VERSION == '5.5.13') {
             return FALSE;
         }
 
