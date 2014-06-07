@@ -296,24 +296,6 @@ class PHPUnit_Framework_MockObject_Generator
     }
 
     /**
-     * @param  ReflectionClass $class
-     * @return boolean
-     * @since  Method available since Release 2.0.8
-     */
-    private function isInternalClass(ReflectionClass $class)
-    {
-        while ($class) {
-            if ($class->isInternal()) {
-                return true;
-            }
-
-            $class = $class->getParentClass();
-        }
-
-        return false;
-    }
-
-    /**
      * @param string $code
      * @param string $className
      */
@@ -1086,5 +1068,23 @@ class PHPUnit_Framework_MockObject_Generator
         }
 
         return join(', ', $parameters);
+    }
+
+    /**
+     * @param  ReflectionClass $class
+     * @return boolean
+     * @since  Method available since Release 2.0.8
+     */
+    private function isInternalClass(ReflectionClass $class)
+    {
+        while ($class) {
+            if ($class->isInternal()) {
+                return true;
+            }
+
+            $class = $class->getParentClass();
+        }
+
+        return false;
     }
 }
