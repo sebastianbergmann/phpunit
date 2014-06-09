@@ -838,8 +838,9 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
             if ((isset($arguments['coverageClover']) ||
                 isset($arguments['coverageCrap4J']) ||
                 isset($arguments['coverageHtml']) ||
-                isset($arguments['coveragePHP'])) ||
-                isset($arguments['coverageText']) &&
+                isset($arguments['coveragePHP']) ||
+                isset($arguments['coverageText']) ||
+                isset($arguments['coverageXml'])) &&
                 $this->canCollectCodeCoverage) {
 
                 $filterConfiguration = $arguments['configuration']->getFilterConfiguration();
