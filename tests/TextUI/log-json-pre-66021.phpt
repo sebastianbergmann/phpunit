@@ -5,8 +5,8 @@ phpunit --log-json php://stdout BankAccountTest ../_files/BankAccountTest.php
 if (!((version_compare(PHP_VERSION, '5.4', '>=') && version_compare(PHP_VERSION, '5.4.27', '<=')) ||
     (version_compare(PHP_VERSION, '5.5', '>=') && version_compare(PHP_VERSION, '5.5.11', '<=')) ||
     (version_compare(PHP_VERSION, '5.6', '>=') && version_compare(PHP_VERSION, '5.6.0beta1', '<=')) ||
-    defined('HHVM_VERSION')))
-    print "skip: PHP 5.4.(0-27) or PHP 5.5.(0-11) or PHP 5.6.(0alpha1-0beta1) or HHVM required";
+    (defined('HHVM_VERSION') && version_compare(HHVM_VERSION, '3.2.0-dev', '<'))))
+    print "skip: PHP 5.4.(0-27) or PHP 5.5.(0-11) or PHP 5.6.(0alpha1-0beta1) or HHVM < 3.2 required";
 ?>
 --FILE--
 <?php
