@@ -638,7 +638,14 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
             $this->setUp();
 
             foreach ($hookMethods['beforeClass'] as $beforeClassMethod) {
-                if ($this->testCase === true && class_exists($this->name, false) && method_exists($this->name, $beforeClassMethod)) {
+                if ($this->testCase === true &&
+                    class_exists($this->name, false) &&
+                    method_exists($this->name, $beforeClassMethod)
+                ) {
+                    if ($missingRequirements = PHPUnit_Util_Test::getMissingRequirements($this->name, $beforeClassMethod)) {
+                        $this->markTestSuiteSkipped(implode(PHP_EOL, $missingRequirements));
+                    }
+
                     call_user_func(array($this->name, $beforeClassMethod));
                 }
             }

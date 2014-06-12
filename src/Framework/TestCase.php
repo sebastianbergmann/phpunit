@@ -184,19 +184,6 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
     private $expectedExceptionCode;
 
     /**
-     * The required preconditions for a test.
-     *
-     * @var array
-     */
-    private $required = array(
-        'PHP' => null,
-        'PHPUnit' => null,
-        'OS' => null,
-        'functions' => array(),
-        'extensions' => array()
-    );
-
-    /**
      * The name of the test case.
      *
      * @var string
@@ -522,6 +509,7 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
     }
 
     /**
+     * @deprecated
      * @since Method available since Release 3.6.0
      */
     protected function setRequirementsFromAnnotation()
@@ -559,60 +547,12 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
      */
     protected function checkRequirements()
     {
-        $this->setRequirementsFromAnnotation();
-
-        $missingRequirements = array();
-
-        if ($this->required['PHP'] &&
-            version_compare(PHP_VERSION, $this->required['PHP'], '<')) {
-            $missingRequirements[] = sprintf(
-              'PHP %s (or later) is required.',
-              $this->required['PHP']
-            );
-        }
-
-        $phpunitVersion = PHPUnit_Runner_Version::id();
-        if ($this->required['PHPUnit'] &&
-            version_compare($phpunitVersion, $this->required['PHPUnit'], '<')) {
-            $missingRequirements[] = sprintf(
-              'PHPUnit %s (or later) is required.',
-              $this->required['PHPUnit']
-            );
-        }
-
-        if ($this->required['OS'] &&
-            !preg_match($this->required['OS'], PHP_OS)) {
-            $missingRequirements[] = sprintf(
-              'Operating system matching %s is required.',
-              $this->required['OS']
-            );
-        }
-
-        foreach ($this->required['functions'] as $requiredFunction) {
-            if (!function_exists($requiredFunction)) {
-                $missingRequirements[] = sprintf(
-                  'Function %s is required.',
-                  $requiredFunction
-                );
-            }
-        }
-
-        foreach ($this->required['extensions'] as $requiredExtension) {
-            if (!extension_loaded($requiredExtension)) {
-                $missingRequirements[] = sprintf(
-                  'Extension %s is required.',
-                  $requiredExtension
-                );
-            }
-        }
+        $missingRequirements = PHPUnit_Util_Test::getMissingRequirements(
+            get_class($this), $this->name
+        );
 
         if ($missingRequirements) {
-            $this->markTestSkipped(
-              implode(
-                PHP_EOL,
-                $missingRequirements
-              )
-            );
+            $this->markTestSkipped(implode(PHP_EOL, $missingRequirements));
         }
     }
 
