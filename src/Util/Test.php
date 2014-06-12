@@ -252,13 +252,16 @@ class PHPUnit_Util_Test
      */
     public static function getMissingRequirements($className, $methodName)
     {
-        $required = static::getRequirements($className, $methodName) + array(
-                'PHP'           => null,
-                'PHPUnit'       => null,
-                'OS'            => null,
-                'functions'     => array(),
-                'extensions'    => array(),
-            );
+        try {
+            $required = static::getRequirements($className, $methodName) + array(
+                    'PHP'           => null,
+                    'PHPUnit'       => null,
+                    'OS'            => null,
+                    'functions'     => array(),
+                    'extensions'    => array(),
+                );
+        } catch (ReflectionException $e) {
+        }
 
         $missing = array();
 
