@@ -509,40 +509,6 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
     }
 
     /**
-     * @deprecated
-     * @since Method available since Release 3.6.0
-     */
-    protected function setRequirementsFromAnnotation()
-    {
-        try {
-            $requirements = PHPUnit_Util_Test::getRequirements(
-              get_class($this), $this->name
-            );
-
-            if (isset($requirements['PHP'])) {
-                $this->required['PHP'] = $requirements['PHP'];
-            }
-
-            if (isset($requirements['PHPUnit'])) {
-                $this->required['PHPUnit'] = $requirements['PHPUnit'];
-            }
-
-            if (isset($requirements['OS'])) {
-                $this->required['OS'] = $requirements['OS'];
-            }
-
-            if (isset($requirements['extensions'])) {
-                $this->required['extensions'] = $requirements['extensions'];
-            }
-
-            if (isset($requirements['functions'])) {
-                $this->required['functions'] = $requirements['functions'];
-            }
-        } catch (ReflectionException $e) {
-        }
-    }
-
-    /**
      * @since Method available since Release 3.6.0
      */
     protected function checkRequirements()
