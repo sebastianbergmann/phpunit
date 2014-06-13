@@ -253,42 +253,41 @@ class PHPUnit_Util_Test
     public static function getMissingRequirements($className, $methodName)
     {
         try {
-            $required = static::getRequirements($className, $methodName) + array(
-                    'PHP'           => null,
-                    'PHPUnit'       => null,
-                    'OS'            => null,
-                    'functions'     => array(),
-                    'extensions'    => array(),
-                );
+            $required = static::getRequirements($className, $methodName);
         } catch (ReflectionException $e) {
+            $required = array();
         }
 
         $missing = array();
 
-        if ($required['PHP'] && version_compare(PHP_VERSION, $required['PHP'], '<')) {
+        if (!empty($required['PHP']) && version_compare(PHP_VERSION, $required['PHP'], '<')) {
             $missing[] = sprintf('PHP %s (or later) is required.', $required['PHP']);
         }
 
-        if ($required['PHPUnit']) {
+        if (!empty($required['PHPUnit'])) {
             $phpunitVersion = PHPUnit_Runner_Version::id();
             if (version_compare($phpunitVersion, $required['PHPUnit'], '<')) {
                 $missing[] = sprintf('PHPUnit %s (or later) is required.', $required['PHPUnit']);
             }
         }
 
-        if ($required['OS'] && !preg_match($required['OS'], PHP_OS)) {
+        if (!empty($required['OS']) && !preg_match($required['OS'], PHP_OS)) {
             $missing[] = sprintf('Operating system matching %s is required.', $required['OS']);
         }
 
-        foreach ($required['functions'] as $requiredFunction) {
-            if (!function_exists($requiredFunction)) {
-                $missing[] = sprintf('Function %s is required.', $requiredFunction);
+        if (!empty($required['functions'])) {
+            foreach ($required['functions'] as $requiredFunction) {
+                if (!function_exists($requiredFunction)) {
+                    $missing[] = sprintf('Function %s is required.', $requiredFunction);
+                }
             }
         }
 
-        foreach ($required['extensions'] as $requiredExtension) {
-            if (!extension_loaded($requiredExtension)) {
-                $missing[] = sprintf('Extension %s is required.', $requiredExtension);
+        if (!empty($required['extensions'])) {
+            foreach ($required['extensions'] as $requiredExtension) {
+                if (!extension_loaded($requiredExtension)) {
+                    $missing[] = sprintf('Extension %s is required.', $requiredExtension);
+                }
             }
         }
 
