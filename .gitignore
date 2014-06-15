@@ -6,11 +6,11 @@ build/pdepend
 build/phar
 build/phpdox
 build/*.phar
-Tests/TextUI/*.diff
-Tests/TextUI/*.exp
-Tests/TextUI/*.log
-Tests/TextUI/*.out
-Tests/TextUI/*.php
+tests/TextUI/*.diff
+tests/TextUI/*.exp
+tests/TextUI/*.log
+tests/TextUI/*.out
+tests/TextUI/*.php
 /bin
 /vendor
 /composer.lock
