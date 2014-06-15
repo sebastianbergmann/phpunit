@@ -514,7 +514,7 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
     protected function checkRequirements()
     {
         $missingRequirements = PHPUnit_Util_Test::getMissingRequirements(
-            get_class($this), $this->name
+          get_class($this), $this->name
         );
 
         if ($missingRequirements) {

@@ -205,7 +205,7 @@ class Framework_SuiteTest extends PHPUnit_Framework_TestCase {
     public function testBeforeAnnotation()
     {
         $test = new PHPUnit_Framework_TestSuite(
-            'BeforeAndAfterTest'
+          'BeforeAndAfterTest'
         );
 
         BeforeAndAfterTest::resetProperties();
@@ -218,7 +218,7 @@ class Framework_SuiteTest extends PHPUnit_Framework_TestCase {
     public function testRequirementsBeforeClassHook()
     {
         $suite = new PHPUnit_Framework_TestSuite(
-            'RequirementsClassBeforeClassHookTest'
+          'RequirementsClassBeforeClassHookTest'
         );
 
         $suite->run($this->result);

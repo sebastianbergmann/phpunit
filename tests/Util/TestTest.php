@@ -219,8 +219,8 @@ class Util_TestTest extends PHPUnit_Framework_TestCase
     public function testGetMissingRequirements($test, $result)
     {
         $this->assertEquals(
-            $result,
-            PHPUnit_Util_Test::getMissingRequirements('RequirementsTest', $test)
+          $result,
+          PHPUnit_Util_Test::getMissingRequirements('RequirementsTest', $test)
         );
     }
 
@@ -235,13 +235,13 @@ class Util_TestTest extends PHPUnit_Framework_TestCase
             array('testAlwaysSkip2',    array('PHP 9999999 (or later) is required.')),
             array('testAlwaysSkip3',    array('Operating system matching /DOESNOTEXIST/i is required.')),
             array('testAllPossibleRequirements', array(
-                'PHP 99-dev (or later) is required.',
-                'PHPUnit 9-dev (or later) is required.',
-                'Operating system matching /DOESNOTEXIST/i is required.',
-                'Function testFuncOne is required.',
-                'Function testFuncTwo is required.',
-                'Extension testExtOne is required.',
-                'Extension testExtTwo is required.',
+              'PHP 99-dev (or later) is required.',
+              'PHPUnit 9-dev (or later) is required.',
+              'Operating system matching /DOESNOTEXIST/i is required.',
+              'Function testFuncOne is required.',
+              'Function testFuncTwo is required.',
+              'Extension testExtOne is required.',
+              'Extension testExtTwo is required.',
             )),
         );
     }
