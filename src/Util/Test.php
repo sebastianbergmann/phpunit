@@ -243,6 +243,58 @@ class PHPUnit_Util_Test
     }
 
     /**
+     * Returns the missing requirements for a test.
+     *
+     * @param  string $className
+     * @param  string $methodName
+     * @return array
+     * @since  Method available since Release 4.2.0
+     */
+    public static function getMissingRequirements($className, $methodName)
+    {
+        try {
+            $required = static::getRequirements($className, $methodName);
+        } catch (ReflectionException $e) {
+            $required = array();
+        }
+
+        $missing = array();
+
+        if (!empty($required['PHP']) && version_compare(PHP_VERSION, $required['PHP'], '<')) {
+            $missing[] = sprintf('PHP %s (or later) is required.', $required['PHP']);
+        }
+
+        if (!empty($required['PHPUnit'])) {
+            $phpunitVersion = PHPUnit_Runner_Version::id();
+            if (version_compare($phpunitVersion, $required['PHPUnit'], '<')) {
+                $missing[] = sprintf('PHPUnit %s (or later) is required.', $required['PHPUnit']);
+            }
+        }
+
+        if (!empty($required['OS']) && !preg_match($required['OS'], PHP_OS)) {
+            $missing[] = sprintf('Operating system matching %s is required.', $required['OS']);
+        }
+
+        if (!empty($required['functions'])) {
+            foreach ($required['functions'] as $requiredFunction) {
+                if (!function_exists($requiredFunction)) {
+                    $missing[] = sprintf('Function %s is required.', $requiredFunction);
+                }
+            }
+        }
+
+        if (!empty($required['extensions'])) {
+            foreach ($required['extensions'] as $requiredExtension) {
+                if (!extension_loaded($requiredExtension)) {
+                    $missing[] = sprintf('Extension %s is required.', $requiredExtension);
+                }
+            }
+        }
+
+        return $missing;
+    }
+
+    /**
      * Returns the expected exception for a test.
      *
      * @param  string $className

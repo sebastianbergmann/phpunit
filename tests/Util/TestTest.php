@@ -213,6 +213,40 @@ class Util_TestTest extends PHPUnit_Framework_TestCase
     }
 
     /**
+     * @covers       PHPUnit_Util_Test::getMissingRequirements
+     * @dataProvider missingRequirementsProvider
+     */
+    public function testGetMissingRequirements($test, $result)
+    {
+        $this->assertEquals(
+            $result,
+            PHPUnit_Util_Test::getMissingRequirements('RequirementsTest', $test)
+        );
+    }
+
+    public function missingRequirementsProvider()
+    {
+        return array(
+            array('testOne',            array()),
+            array('testNine',           array('Function testFunc is required.')),
+            array('testTen',            array('Extension testExt is required.')),
+            array('testAlwaysSkip',     array('PHPUnit 1111111 (or later) is required.')),
+            array('testAlwaysSkip',     array('PHPUnit 1111111 (or later) is required.')),
+            array('testAlwaysSkip2',    array('PHP 9999999 (or later) is required.')),
+            array('testAlwaysSkip3',    array('Operating system matching /DOESNOTEXIST/i is required.')),
+            array('testAllPossibleRequirements', array(
+                'PHP 99-dev (or later) is required.',
+                'PHPUnit 9-dev (or later) is required.',
+                'Operating system matching /DOESNOTEXIST/i is required.',
+                'Function testFuncOne is required.',
+                'Function testFuncTwo is required.',
+                'Extension testExtOne is required.',
+                'Extension testExtTwo is required.',
+            )),
+        );
+    }
+
+    /**
      * @coversNothing
      * @todo   This test does not really test functionality of PHPUnit_Util_Test
      */

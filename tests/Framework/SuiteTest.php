@@ -50,6 +50,7 @@ require_once dirname(__DIR__) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPAR
 require_once dirname(__DIR__) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'NotPublicTestCase.php';
 require_once dirname(__DIR__) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'NotVoidTestCase.php';
 require_once dirname(__DIR__) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'OverrideTestCase.php';
+require_once dirname(__DIR__) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'RequirementsClassBeforeClassHookTest.php';
 
 /**
  *
@@ -85,6 +86,7 @@ class Framework_SuiteTest extends PHPUnit_Framework_TestCase {
         $suite->addTest(new Framework_SuiteTest('testShadowedTests'));
         $suite->addTest(new Framework_SuiteTest('testBeforeClassAndAfterClassAnnotations'));
         $suite->addTest(new Framework_SuiteTest('testBeforeAnnotation'));
+        $suite->addTest(new Framework_SuiteTest('testRequirementsBeforeClassHook'));
 
         return $suite;
     }
@@ -213,4 +215,15 @@ class Framework_SuiteTest extends PHPUnit_Framework_TestCase {
         $this->assertEquals(2, BeforeAndAfterTest::$afterWasRun);
     }
 
+    public function testRequirementsBeforeClassHook()
+    {
+        $suite = new PHPUnit_Framework_TestSuite(
+            'RequirementsClassBeforeClassHookTest'
+        );
+
+        $suite->run($this->result);
+
+        $this->assertEquals(0, $this->result->errorCount());
+        $this->assertEquals(1, $this->result->skippedCount());
+    }
 }
