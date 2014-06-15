@@ -12,7 +12,9 @@ before_script:
   - composer self-update
   - composer install --no-interaction --prefer-source --dev
 
-script: ./phpunit --configuration ./build/travis-ci.xml
+script:
+  - ./phpunit --configuration ./build/travis-ci.xml
+  - ./phpunit --configuration ./build/travis-ci-fail.xml > /dev/null; if [ $? -eq 0 ]; then echo "SHOULD FAIL"; exit 1; else echo "fail checked"; fi;
 
 notifications:
   email: false
