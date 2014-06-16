@@ -1890,9 +1890,14 @@ abstract class PHPUnit_Framework_Assert
      * @since  Method available since Release 3.3.0
      * @author Mike Naberezny <mike@maintainable.com>
      * @author Derek DeVries <derek@maintainable.com>
+     * @deprecated
      */
     public static function assertSelectCount($selector, $count, $actual, $message = '', $isHtml = true)
     {
+        PHPUnit_Util_DeprecatedFeature_Logger::log(
+          'assertSelectCount() is deprecated'
+        );
+
         self::assertSelectEquals(
           $selector, true, $count, $actual, $message, $isHtml
         );
@@ -1911,9 +1916,14 @@ abstract class PHPUnit_Framework_Assert
      * @since  Method available since Release 3.3.0
      * @author Mike Naberezny <mike@maintainable.com>
      * @author Derek DeVries <derek@maintainable.com>
+     * @deprecated
      */
     public static function assertSelectRegExp($selector, $pattern, $count, $actual, $message = '', $isHtml = true)
     {
+        PHPUnit_Util_DeprecatedFeature_Logger::log(
+          'assertSelectRegExp() is deprecated'
+        );
+
         self::assertSelectEquals(
           $selector, "regexp:$pattern", $count, $actual, $message, $isHtml
         );
@@ -1932,9 +1942,14 @@ abstract class PHPUnit_Framework_Assert
      * @since  Method available since Release 3.3.0
      * @author Mike Naberezny <mike@maintainable.com>
      * @author Derek DeVries <derek@maintainable.com>
+     * @deprecated
      */
     public static function assertSelectEquals($selector, $content, $count, $actual, $message = '', $isHtml = true)
     {
+        PHPUnit_Util_DeprecatedFeature_Logger::log(
+          'assertSelectEquals() is deprecated'
+        );
+
         $tags = PHPUnit_Util_XML::cssSelect(
           $selector, $content, $actual, $isHtml
         );
@@ -2118,9 +2133,14 @@ abstract class PHPUnit_Framework_Assert
      * @since  Method available since Release 3.3.0
      * @author Mike Naberezny <mike@maintainable.com>
      * @author Derek DeVries <derek@maintainable.com>
+     * @deprecated
      */
     public static function assertTag($matcher, $actual, $message = '', $isHtml = true)
     {
+        PHPUnit_Util_DeprecatedFeature_Logger::log(
+          'assertTag() is deprecated'
+        );
+
         $dom     = PHPUnit_Util_XML::load($actual, $isHtml);
         $tags    = PHPUnit_Util_XML::findNodes($dom, $matcher, $isHtml);
         $matched = count($tags) > 0 && $tags[0] instanceof DOMNode;
@@ -2141,9 +2161,14 @@ abstract class PHPUnit_Framework_Assert
      * @since  Method available since Release 3.3.0
      * @author Mike Naberezny <mike@maintainable.com>
      * @author Derek DeVries <derek@maintainable.com>
+     * @deprecated
      */
     public static function assertNotTag($matcher, $actual, $message = '', $isHtml = true)
     {
+        PHPUnit_Util_DeprecatedFeature_Logger::log(
+          'assertNotTag() is deprecated'
+        );
+
         $dom     = PHPUnit_Util_XML::load($actual, $isHtml);
         $tags    = PHPUnit_Util_XML::findNodes($dom, $matcher, $isHtml);
         $matched = count($tags) > 0 && $tags[0] instanceof DOMNode;
