@@ -231,7 +231,6 @@ class Util_TestTest extends PHPUnit_Framework_TestCase
             array('testNine',           array('Function testFunc is required.')),
             array('testTen',            array('Extension testExt is required.')),
             array('testAlwaysSkip',     array('PHPUnit 1111111 (or later) is required.')),
-            array('testAlwaysSkip',     array('PHPUnit 1111111 (or later) is required.')),
             array('testAlwaysSkip2',    array('PHP 9999999 (or later) is required.')),
             array('testAlwaysSkip3',    array('Operating system matching /DOESNOTEXIST/i is required.')),
             array('testAllPossibleRequirements', array(
