@@ -648,7 +648,7 @@ class PHPUnit_TextUI_Command
              */
             if (isset($this->arguments['bootstrap'])) {
                 $this->handleBootstrap($this->arguments['bootstrap']);
-            }elseif (isset($phpunit['bootstrap'])) {
+            } elseif (isset($phpunit['bootstrap'])) {
                 $this->handleBootstrap($phpunit['bootstrap']);
             }
 
@@ -700,13 +700,8 @@ class PHPUnit_TextUI_Command
                     $this->arguments['test'] = $testSuite;
                 }
             }
-        }else{
-            /**
-             * Issue #1216
-             */
-            if (isset($this->arguments['bootstrap'])) {
-                $this->handleBootstrap($this->arguments['bootstrap']);
-            }
+        } elseif (isset($this->arguments['bootstrap'])) {
+          $this->handleBootstrap($this->arguments['bootstrap']);
         }
 
         if (isset($this->arguments['test']) && is_string($this->arguments['test']) && substr($this->arguments['test'], -5, 5) == '.phpt') {
