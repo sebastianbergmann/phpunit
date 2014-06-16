@@ -76,6 +76,10 @@ class PHPUnit_Util_DeprecatedFeature_Logger implements PHPUnit_Framework_TestLis
      */
     public static function log($message, $backtraceDepth = 2)
     {
+        if (defined('PHPUNIT_TESTSUITE')) {
+            return;
+        }
+
         if ($backtraceDepth !== false) {
             $trace = debug_backtrace(false);
 
