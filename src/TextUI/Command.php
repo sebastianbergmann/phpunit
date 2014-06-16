@@ -595,10 +595,6 @@ class PHPUnit_TextUI_Command
             );
         }
 
-        if (isset($this->arguments['bootstrap'])) {
-            $this->handleBootstrap($this->arguments['bootstrap']);
-        }
-
         if (isset($this->arguments['printer']) &&
             is_string($this->arguments['printer'])) {
             $this->arguments['printer'] = $this->handlePrinter($this->arguments['printer']);
@@ -647,7 +643,12 @@ class PHPUnit_TextUI_Command
 
             $configuration->handlePHPConfiguration();
 
-            if (!isset($this->arguments['bootstrap']) && isset($phpunit['bootstrap'])) {
+            /**
+             * Issue #1216
+             */
+            if (isset($this->arguments['bootstrap'])) {
+                $this->handleBootstrap($this->arguments['bootstrap']);
+            }elseif (isset($phpunit['bootstrap'])) {
                 $this->handleBootstrap($phpunit['bootstrap']);
             }
 
@@ -698,6 +699,13 @@ class PHPUnit_TextUI_Command
                 if ($testSuite !== null) {
                     $this->arguments['test'] = $testSuite;
                 }
+            }
+        }else{
+            /**
+             * Issue #1216
+             */
+            if (isset($this->arguments['bootstrap'])) {
+                $this->handleBootstrap($this->arguments['bootstrap']);
             }
         }
 
