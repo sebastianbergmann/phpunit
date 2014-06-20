@@ -1894,9 +1894,7 @@ abstract class PHPUnit_Framework_Assert
      */
     public static function assertSelectCount($selector, $count, $actual, $message = '', $isHtml = true)
     {
-        PHPUnit_Util_DeprecatedFeature_Logger::log(
-          'assertSelectCount() is deprecated'
-        );
+        trigger_error(__METHOD__ . ' is deprecated', E_USER_DEPRECATED);
 
         self::assertSelectEquals(
           $selector, true, $count, $actual, $message, $isHtml
@@ -1920,9 +1918,7 @@ abstract class PHPUnit_Framework_Assert
      */
     public static function assertSelectRegExp($selector, $pattern, $count, $actual, $message = '', $isHtml = true)
     {
-        PHPUnit_Util_DeprecatedFeature_Logger::log(
-          'assertSelectRegExp() is deprecated'
-        );
+        trigger_error(__METHOD__ . ' is deprecated', E_USER_DEPRECATED);
 
         self::assertSelectEquals(
           $selector, "regexp:$pattern", $count, $actual, $message, $isHtml
@@ -1946,9 +1942,7 @@ abstract class PHPUnit_Framework_Assert
      */
     public static function assertSelectEquals($selector, $content, $count, $actual, $message = '', $isHtml = true)
     {
-        PHPUnit_Util_DeprecatedFeature_Logger::log(
-          'assertSelectEquals() is deprecated'
-        );
+        trigger_error(__METHOD__ . ' is deprecated', E_USER_DEPRECATED);
 
         $tags = PHPUnit_Util_XML::cssSelect(
           $selector, $content, $actual, $isHtml
@@ -2137,9 +2131,7 @@ abstract class PHPUnit_Framework_Assert
      */
     public static function assertTag($matcher, $actual, $message = '', $isHtml = true)
     {
-        PHPUnit_Util_DeprecatedFeature_Logger::log(
-          'assertTag() is deprecated'
-        );
+        trigger_error(__METHOD__ . ' is deprecated', E_USER_DEPRECATED);
 
         $dom     = PHPUnit_Util_XML::load($actual, $isHtml);
         $tags    = PHPUnit_Util_XML::findNodes($dom, $matcher, $isHtml);
@@ -2165,9 +2157,7 @@ abstract class PHPUnit_Framework_Assert
      */
     public static function assertNotTag($matcher, $actual, $message = '', $isHtml = true)
     {
-        PHPUnit_Util_DeprecatedFeature_Logger::log(
-          'assertNotTag() is deprecated'
-        );
+        trigger_error(__METHOD__ . ' is deprecated', E_USER_DEPRECATED);
 
         $dom     = PHPUnit_Util_XML::load($actual, $isHtml);
         $tags    = PHPUnit_Util_XML::findNodes($dom, $matcher, $isHtml);

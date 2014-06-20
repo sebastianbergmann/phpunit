@@ -177,15 +177,6 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
         $this->printFailures($result);
 
         if ($this->verbose) {
-            if ($printSeparator && $result->deprecatedFeaturesCount() > 0) {
-                $this->write("\n--\n\n");
-            }
-
-            $printSeparator = $printSeparator ||
-                              $result->deprecatedFeaturesCount() > 0;
-
-            $this->printDeprecated($result);
-
             if ($printSeparator && $result->riskyCount() > 0) {
                 $this->write("\n--\n\n");
             }
@@ -348,44 +339,6 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
         $this->printDefects($result->skipped(), 'skipped test');
     }
 
-    /**
-     * @param PHPUnit_Framework_TestResult $result
-     * @since Method available since Release 4.0.0
-     */
-    protected function printDeprecated(PHPUnit_Framework_TestResult $result)
-    {
-        $deprecatedFeatures = $result->deprecatedFeatures();
-        $count              = count($deprecatedFeatures);
-
-        if ($count == 0) {
-            return;
-        }
-
-        $this->write(
-          sprintf(
-            "There %s %d tests that use%s deprecated features:\n",
-
-            ($count == 1) ? 'was' : 'were',
-            $count,
-            ($count != 1) ? '' : 's'
-          )
-        );
-
-        $i = 1;
-
-        foreach ($result->deprecatedFeatures() as $deprecatedFeature) {
-            $this->write(
-              sprintf(
-                "\n%d) %s\n\n%s\n",
-
-                $i++,
-                $deprecatedFeature->getMessage(),
-                $deprecatedFeature->getSource()
-              )
-            );
-        }
-    }
-
     protected function printHeader()
     {
         $this->write("\n\n" . PHP_Timer::resourceUsage() . "\n\n");
@@ -456,21 +409,6 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
                   $result->notImplementedCount(), 'Incomplete'
                 ),
                 $this->getCountString($result->skippedCount(), 'Skipped')
-              )
-            );
-        }
-
-        if (!$this->verbose &&
-            $result->deprecatedFeaturesCount() > 0) {
-            $this->write("\n");
-
-            $this->writeWithColor(
-              'fg-white, bg-red',
-              sprintf(
-                "Warning: Deprecated PHPUnit features are being used %s times!\n" .
-                'Use --verbose for more information.',
-
-                $result->deprecatedFeaturesCount()
               )
             );
         }
