@@ -986,6 +986,7 @@ EOT;
             return;
         }
 
+        print PHPUnit_Runner_Version::getLogo() . "\n\n";
         print PHPUnit_Runner_Version::getVersionString() . "\n\n";
 
         $this->versionStringPrinted = true;

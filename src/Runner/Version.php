@@ -88,6 +88,19 @@ class PHPUnit_Runner_Version
 
     /**
      * @return string
+     */
+    public static function getLogo()
+    {
+        return <<<HTXT
+   ___  __ _____  __  __     _ __
+  / _ \/ // / _ \/ / / /__  (_) /_
+ / ___/ _  / ___/ /_/ / _ \/ / __/
+/_/  /_//_/_/   \____/_//_/_/\__/
+HTXT;
+    }
+
+    /**
+     * @return string
      * @since  Method available since Release 4.0.0
      */
     public static function getReleaseChannel()
