@@ -42,6 +42,8 @@
  * @since      File available since Release 1.0.0
  */
 
+use Instantiator\Instantiator;
+
 if (!function_exists('trait_exists')) {
     function trait_exists($traitname, $autoload = true)
     {
@@ -268,23 +270,8 @@ class PHPUnit_Framework_MockObject_Generator
                 $object = $class->newInstanceArgs($arguments);
             }
         } else {
-            $class = new ReflectionClass('ReflectionClass');
-            $hasNewInstanceWithoutConstructor = $class->hasMethod('newInstanceWithoutConstructor');;
-
-            $class      = new ReflectionClass($className);
-            $isInternal = $this->isInternalClass($class);
-
-            if ($isInternal || !$hasNewInstanceWithoutConstructor) {
-                $object = unserialize(
-                    sprintf('%s:%d:"%s":0:{}',
-                        (version_compare(PHP_VERSION, '5.4', '>') && $class->implementsInterface("Serializable") ? "C" : "O"),
-                        strlen($className),
-                        $className
-                    )
-                );
-            } else {
-                $object = $class->newInstanceWithoutConstructor();
-            }
+            $instantiator = new Instantiator;
+            $object       = $instantiator->instantiate($className);
         }
 
         if ($callOriginalMethods) {
