@@ -29,6 +29,7 @@ if (!function_exists('trait_exists')) {
 class PHPUnit_Util_Test
 {
     const REGEX_DATA_PROVIDER      = '/@dataProvider\s+([a-zA-Z0-9._:-\\\\x7f-\xff]+)/';
+    const REGEX_TEST_WITH          = '/@testWith\s+/';
     const REGEX_EXPECTED_EXCEPTION = '(@expectedException\s+([:.\w\\\\x7f-\xff]+)(?:[\t ]+(\S*))?(?:[\t ]+(\S*))?\s*$)m';
     const REGEX_REQUIRES_VERSION   = '/@requires\s+(?P<name>PHP(?:Unit)?)\s+(?P<value>[\d\.-]+(dev|(RC|alpha|beta)[\d\.])?)[ \t]*\r?$/m';
     const REGEX_REQUIRES_OS        = '/@requires\s+OS\s+(?P<value>.+?)[ \t]*\r?$/m';
@@ -410,6 +411,67 @@ class PHPUnit_Util_Test
         }
 
         return $data;
+    }
+
+    /**
+     * @param string $docComment full docComment string
+     * @return array when @testWith annotation is defined
+     *         null  when @testWith annotation is omitted
+     * @throws PHPUnit_Framework_Exception when @testWith annotation is defined but cannot be parsed
+     */
+    public static function getDataFromTestWithAnnotation($docComment)
+    {
+        //removing initial '   * ' for docComment
+        $docComment = preg_replace('/\n\s*\*\s?/', "\n", $docComment);
+        if (preg_match(self::REGEX_TEST_WITH, $docComment, $matches, PREG_OFFSET_CAPTURE)) {
+            $offset = strlen($matches[0][0]) + $matches[0][1];
+            $nestLvl = 0;
+            $maxOffset = strlen($docComment);
+            $stringStop = false;
+            $outputStr = '';
+            $jsonEscape = array("\t" => '\t', "\n" => '\n', "\r" => '\r');
+            while ($offset < $maxOffset) {
+                $currentCharacter = substr($docComment, $offset, 1);
+                if ($stringStop) {
+                    if ($currentCharacter === $stringStop) {
+                        $stringStop = false;
+                        $outputStr .= '"';
+                    } elseif ($currentCharacter === '\\') {
+                        $outputStr .= $currentCharacter . $docComment[$offset + 1];
+                        $offset++;
+                    } elseif(isset($jsonEscape[$currentCharacter])) {
+                        $outputStr .= $jsonEscape[$currentCharacter];
+                    } else {
+                        $outputStr .= $currentCharacter;
+                    }
+                } else {
+                    if ($currentCharacter === '"' || $currentCharacter === "'") {
+                        $stringStop = $currentCharacter;
+                        $outputStr .= '"';
+                    } elseif ($currentCharacter === '(') {
+                        $outputStr .= ($outputStr ? ',' : '') . '[';
+                        $nestLvl++;
+                    } elseif ($currentCharacter === ')') {
+                        $outputStr .= ']';
+                        $nestLvl--;
+                    } elseif (!preg_match('/\s/', $currentCharacter) && $nestLvl === 0) {
+                        break;
+                    } else {
+                        $outputStr .= $currentCharacter;
+                    }
+                }
+                $offset++;
+            }
+
+            $data = json_decode('[' . $outputStr . ']', true);
+            if ($data === null) {
+                throw new PHPUnit_Framework_Exception('Data set in invalid');
+            }
+
+            return $data;
+        }
+
+        return null;
     }
 
     /**

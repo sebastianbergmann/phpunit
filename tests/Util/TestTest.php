@@ -260,6 +260,133 @@ class Util_TestTest extends PHPUnit_Framework_TestCase
     }
 
     /**
+     * @covers PHPUnit_Util_Test::getDataFromTestWithAnnotation
+     */
+    public function testTestWithEmptyAnnotation()
+    {
+        $result = PHPUnit_Util_Test::getDataFromTestWithAnnotation("/**\n * @anotherAnnotation\n */");
+        $this->assertNull($result);
+    }
+
+    /**
+     * @covers PHPUnit_Util_Test::getDataFromTestWithAnnotation
+     */
+    public function testTestWithSimpleCase()
+    {
+        $result = PHPUnit_Util_Test::getDataFromTestWithAnnotation("/**
+                                                                     * @testWith (1)
+                                                                     */");
+        $this->assertEquals(array(array(1)), $result);
+    }
+
+    /**
+     * @covers PHPUnit_Util_Test::getDataFromTestWithAnnotation
+     */
+    public function testTestWithMultiLineMultiParameterCase()
+    {
+        $result = PHPUnit_Util_Test::getDataFromTestWithAnnotation("/**
+                                                                     * @testWith (1, 2)
+                                                                     * (3, 4)
+                                                                     */");
+        $this->assertEquals(array(array(1, 2), array(3, 4)), $result);
+    }
+
+    /**
+     * @covers PHPUnit_Util_Test::getDataFromTestWithAnnotation
+     */
+    public function testTestWithMultiCaseInSingleLine()
+    {
+        $result = PHPUnit_Util_Test::getDataFromTestWithAnnotation("/**
+                                                                     * @testWith (1) (2) (3)
+                                                                     */");
+        $this->assertEquals(array(array(1), array(2), array(3)), $result);
+    }
+
+    /**
+     * @covers PHPUnit_Util_Test::getDataFromTestWithAnnotation
+     */
+    public function testTestWithVariousTypes()
+    {
+        $result = PHPUnit_Util_Test::getDataFromTestWithAnnotation('/**
+                                                                     * @testWith ("ab") (true) (null)
+                                                                     */');
+        $this->assertEquals(array(array("ab"), array(true), array(null)), $result);
+    }
+
+    /**
+     * @covers PHPUnit_Util_Test::getDataFromTestWithAnnotation
+     */
+    public function testTestWithAnnotationAfter()
+    {
+        $result = PHPUnit_Util_Test::getDataFromTestWithAnnotation("/**
+                                                                     * @testWith (1)
+                                                                     *           (2)
+                                                                     * @annotation
+                                                                     */");
+        $this->assertEquals(array(array(1), array(2)), $result);
+    }
+
+    /**
+     * @covers PHPUnit_Util_Test::getDataFromTestWithAnnotation
+     */
+    public function testTestWithSimpleTextAfter()
+    {
+        $result = PHPUnit_Util_Test::getDataFromTestWithAnnotation("/**
+                                                                     * @testWith (1)
+                                                                     *           (2)
+                                                                     * blah blah
+                                                                     */");
+        $this->assertEquals(array(array(1), array(2)), $result);
+    }
+
+    /**
+     * @covers PHPUnit_Util_Test::getDataFromTestWithAnnotation
+     */
+    public function testTestWithBraces()
+    {
+        $result = PHPUnit_Util_Test::getDataFromTestWithAnnotation('/**
+                                                                     * @testWith (")", "(")
+                                                                     *           ("(", ")")
+                                                                     */');
+        $this->assertEquals(array(array(")", "("), array("(", ")")), $result);
+    }
+
+    /**
+     * @covers PHPUnit_Util_Test::getDataFromTestWithAnnotation
+     */
+    public function testTestWithCharacterEscape()
+    {
+        $result = PHPUnit_Util_Test::getDataFromTestWithAnnotation('/**
+                                                                     * @testWith ("\"", "\"")
+                                                                     */');
+        $this->assertEquals(array(array('"', '"')), $result);
+    }
+
+    /**
+     * @covers PHPUnit_Util_Test::getDataFromTestWithAnnotation
+     */
+    public function testTestWithMultiLineText()
+    {
+        $result = PHPUnit_Util_Test::getDataFromTestWithAnnotation("/**
+                                                                     * @testWith ('a
+                                                                     *             bc')
+                                                                     */");
+
+        $this->assertEquals(array(array("a\n            bc")), $result);
+    }
+
+    /**
+     * @covers PHPUnit_Util_Test::getDataFromTestWithAnnotation
+     * @expectedException PHPUnit_Framework_Exception
+     */
+    public function testTestWithThrowsProperExceptionIfDatasetCannotBeParsed()
+    {
+        PHPUnit_Util_Test::getDataFromTestWithAnnotation("/**
+                                                           * @testWith (s)
+                                                           */");
+    }
+
+    /**
      * @covers PHPUnit_Util_Test::getDependencies
      * @todo   Not sure what this test tests (name is misleading at least)
      */
