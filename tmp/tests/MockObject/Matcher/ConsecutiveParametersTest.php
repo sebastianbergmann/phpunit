@@ -15,6 +15,19 @@ class Framework_MockObject_Matcher_ConsecutiveParametersTest extends PHPUnit_Fra
         $mock->foo(21, 42);
     }
 
+    public function testIntegrationWithLessAssertionsThenMethodCalls()
+    {
+        $mock = $this->getMock('stdClass', array('foo'));
+        $mock
+            ->expects($this->any())
+            ->method('foo')
+            ->withConsecutive(
+              array('bar')
+            );
+        $mock->foo('bar');
+        $mock->foo(21, 42);
+    }
+
     public function testIntegrationExpectingException()
     {
         $mock = $this->getMock('stdClass', array('foo'));
