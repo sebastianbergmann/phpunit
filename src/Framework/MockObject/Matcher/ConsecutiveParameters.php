@@ -129,6 +129,9 @@ class PHPUnit_Framework_MockObject_Matcher_ConsecutiveParameters
 
       if (isset($this->_parameterGroups[$callIndex])) {
           $parameters = $this->_parameterGroups[$callIndex];
+      } else {
+        // no parameter assertion for this call index
+        return;
       }
 
       if ($invocation === NULL) {
