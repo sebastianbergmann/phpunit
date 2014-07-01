@@ -35,6 +35,7 @@
         "sebastian/exporter": "~1.0",
         "sebastian/global-state": "1.0.*@dev",
         "sebastian/version": "~1.0",
+        "eloquent/cosmos": "dev-feature/pathogen-based",
         "ext-dom": "*",
         "ext-json": "*",
         "ext-pcre": "*",

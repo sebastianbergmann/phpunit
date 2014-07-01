@@ -119,7 +119,7 @@ class Util_TestTest extends PHPUnit_Framework_TestCase
         );
 
         $this->assertArraySubset(
-          array('class' => 'Class', 'code' => My\Space\ExceptionNamespaceTest::ERROR_CODE, 'message' => My\Space\ExceptionNamespaceTest::ERROR_MESSAGE),
+          array('class' => 'My\Space\Class', 'code' => My\Space\ExceptionNamespaceTest::ERROR_CODE, 'message' => My\Space\ExceptionNamespaceTest::ERROR_MESSAGE),
           PHPUnit_Util_Test::getExpectedException('My\Space\ExceptionNamespaceTest', 'testConstants')
         );
 
@@ -130,8 +130,22 @@ class Util_TestTest extends PHPUnit_Framework_TestCase
         );
 
         $this->assertArraySubset(
-          array('class' => 'Class', 'code' => 'My\Space\ExceptionNamespaceTest::UNKNOWN_CODE_CONSTANT', 'message' => 'My\Space\ExceptionNamespaceTest::UNKNOWN_MESSAGE_CONSTANT'),
+          array('class' => 'My\Space\Class', 'code' => 'ExceptionNamespaceTest::UNKNOWN_CODE_CONSTANT', 'message' => 'ExceptionNamespaceTest::UNKNOWN_MESSAGE_CONSTANT'),
           PHPUnit_Util_Test::getExpectedException('My\Space\ExceptionNamespaceTest', 'testUnknownConstants')
+        );
+
+        $this->assertArraySubset(
+          array(
+            'class' => 'My\Space\Class',
+            'code' => 'Code contains constant ExceptionNamespaceTest::UNKNOWN_CODE_CONSTANT (unlikely)',
+            'message' => 'Message contains constant ExceptionNamespaceTest::UNKNOWN_MESSAGE_CONSTANT'
+          ),
+          PHPUnit_Util_Test::getExpectedException('My\Space\ExceptionNamespaceTest', 'testConstantInsideValue')
+        );
+
+        $this->assertArraySubset(
+          array('class' => 'Class', 'code' => My\Space\ExceptionNamespaceTest::ERROR_CODE, 'message' => My\Space\ExceptionNamespaceTest::ERROR_MESSAGE),
+          PHPUnit_Util_Test::getExpectedException('My\Space\ExceptionNamespaceTest', 'testFullyQualified')
         );
     }
 
@@ -339,7 +353,7 @@ class Util_TestTest extends PHPUnit_Framework_TestCase
      */
     public function testGetLinesToBeCovered($test, $lines)
     {
-        if (strpos($test, 'Namespace') === 0) {
+        if (strpos($test, 'Namespace') !== false) {
             $expected = array(
               TEST_FILES_PATH . 'NamespaceCoveredClass.php' => $lines
             );
@@ -588,7 +602,23 @@ class Util_TestTest extends PHPUnit_Framework_TestCase
           array(
             'CoverageNothingTest',
             false
-          )
+          ),
+          array(
+            'Foo\NamespaceCoverageSameNamespaceTest',
+            range(21, 38)
+          ),
+          array(
+            'Bar\NamespaceCoverageDifferentNamespaceTest',
+            range(21, 38)
+          ),
+          array(
+            'Bar\NamespaceCoverageUseStatementTest',
+            range(21, 38)
+          ),
+          array(
+            'Bar\NamespaceCoverageCoversDefaultClassResolutionTest',
+            range(33, 37)
+          ),
         );
     }
 }
