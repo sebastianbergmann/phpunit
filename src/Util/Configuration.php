@@ -1058,7 +1058,8 @@ class PHPUnit_Util_Configuration
      */
     protected function toAbsolutePath($path, $useIncludePath = false)
     {
-        if ($path[0] === '/') {
+        // Fix for https://github.com/sebastianbergmann/phpunit/issues/1311
+        if ((strlen($path) > 0) && $path[0] === '/') {
             return $path;
         }
 
