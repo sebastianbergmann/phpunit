@@ -735,6 +735,10 @@ class PHPUnit_TextUI_Command
         }
 
         if (!isset($loader)) {
+            if ($loaderClass == 'PHPUnit_Runner_StandardTestSuiteLoader') {
+                return;
+            }
+
             PHPUnit_TextUI_TestRunner::showError(
               sprintf(
                 'Could not use "%s" as loader.',
