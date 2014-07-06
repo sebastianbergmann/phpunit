@@ -114,6 +114,7 @@
       <xs:simpleType>
         <xs:restriction base="xs:string">
           <xs:enumeration value="coverage-html"/>
+          <xs:enumeration value="coverage-text"/>
           <xs:enumeration value="coverage-clover"/>
           <xs:enumeration value="json"/>
           <xs:enumeration value="plain"/>
@@ -128,6 +129,7 @@
     <xs:attribute name="lowUpperBound" type="xs:nonNegativeInteger" default="35"/>
     <xs:attribute name="highLowerBound" type="xs:nonNegativeInteger" default="70"/>
     <xs:attribute name="logIncompleteSkipped" type="xs:boolean" default="false"/>
+    <xs:attribute name="showUncoveredFiles" type="xs:boolean" default="false"/>
   </xs:complexType>
   <xs:group name="pathGroup">
     <xs:sequence>
