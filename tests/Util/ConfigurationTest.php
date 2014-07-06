@@ -400,6 +400,46 @@ class Util_ConfigurationTest extends PHPUnit_Framework_TestCase
     }
 
     /**
+     * @ticket 1311
+     * @covers PHPUnit_Util_Configuration::getLoggingConfiguration
+     * @covers PHPUnit_Util_Configuration::getPHPConfiguration
+     * @covers PHPUnit_Util_Configuration::getPHPUnitConfiguration
+     * @covers PHPUnit_Util_Configuration::getTestSuiteConfiguration
+     * @covers PHPUnit_Util_Configuration::getFilterConfiguration
+     * @uses   PHPUnit_Util_Configuration::getInstance
+     */
+    public function testWithEmptyConfigurations()
+    {
+        $emptyConfiguration = PHPUnit_Util_Configuration::getInstance(
+          dirname(__DIR__) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'configuration_empty.xml'
+        );
+
+        $logging = $emptyConfiguration->getLoggingConfiguration();
+        $this->assertEmpty($logging);
+
+        $php = $emptyConfiguration->getPHPConfiguration();
+        $this->assertEmpty($php['include_path']);
+
+        $phpunit = $emptyConfiguration->getPHPUnitConfiguration();
+        $this->assertArrayNotHasKey('bootstrap', $phpunit);
+        $this->assertArrayNotHasKey('testSuiteLoaderFile', $phpunit);
+        $this->assertArrayNotHasKey('printerFile', $phpunit);
+
+        $suite = $emptyConfiguration->getTestSuiteConfiguration();
+        $this->assertEmpty($suite->getGroups());
+
+        $filter = $emptyConfiguration->getFilterConfiguration();
+        $this->assertEmpty($filter['blacklist']['include']['directory']);
+        $this->assertEmpty($filter['blacklist']['include']['file']);
+        $this->assertEmpty($filter['blacklist']['exclude']['directory']);
+        $this->assertEmpty($filter['blacklist']['exclude']['file']);
+        $this->assertEmpty($filter['whitelist']['include']['directory']);
+        $this->assertEmpty($filter['whitelist']['include']['file']);
+        $this->assertEmpty($filter['whitelist']['exclude']['directory']);
+        $this->assertEmpty($filter['whitelist']['exclude']['file']);
+    }
+
+    /**
      * Asserts that the values in $actualConfiguration equal $expectedConfiguration.
      *
      * @param PHPUnit_Util_Configuration $expectedConfiguration
