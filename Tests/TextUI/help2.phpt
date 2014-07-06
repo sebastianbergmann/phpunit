@@ -68,4 +68,4 @@ Usage: phpunit [switches] UnitTest [UnitTest.php]
 
   -h|--help                 Prints this usage information.
   --version                 Prints the version and exits.
-  --check-version           Compares the local and live version of PHPUnit.
+  --version-check           Compares the local and live version of PHPUnit.
