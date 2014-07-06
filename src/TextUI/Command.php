@@ -747,6 +747,10 @@ class PHPUnit_TextUI_Command
             }
         }
 
+        if ($loaderClass == 'PHPUnit_Runner_StandardTestSuiteLoader') {
+            return;
+        }
+
         $this->showError(
           sprintf(
             'Could not use "%s" as loader.',
