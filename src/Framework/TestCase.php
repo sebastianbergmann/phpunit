@@ -583,20 +583,25 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
             );
         }
 
-        foreach ($this->required['functions'] as $requiredFunction) {
-            if (!function_exists($requiredFunction)) {
-                $missingRequirements[] = sprintf(
-                  'Function %s is required.',
-                  $requiredFunction
-                );
+        foreach ($this->required['functions'] as $function) {
+            $pieces = explode('::', $function);
+            if (2 === count($pieces) && method_exists($pieces[0], $pieces[1])) {
+                continue;
             }
+            if (function_exists($function)) {
+                continue;
+            }
+            $missingRequirements[] = sprintf(
+              'Function %s is required.',
+              $function
+            );
         }
 
-        foreach ($this->required['extensions'] as $requiredExtension) {
-            if (!extension_loaded($requiredExtension)) {
+        foreach ($this->required['extensions'] as $extension) {
+            if (!extension_loaded($extension)) {
                 $missingRequirements[] = sprintf(
                   'Extension %s is required.',
-                  $requiredExtension
+                  $extension
                 );
             }
         }
