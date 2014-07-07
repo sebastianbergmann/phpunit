@@ -481,6 +481,13 @@ class Framework_TestCaseTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(0, $result->skippedCount());
     }
 
+    public function testRequiringAnExistingMethodDoesNotSkip()
+    {
+        $test   = new RequirementsTest('testExistingMethod');
+        $result = $test->run();
+        $this->assertEquals(0, $result->skippedCount());
+    }
+
     public function testRequiringAnExistingExtensionDoesNotSkip()
     {
         $test   = new RequirementsTest('testExistingExtension');

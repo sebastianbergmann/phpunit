@@ -271,17 +271,22 @@ class PHPUnit_Util_Test
         }
 
         if (!empty($required['functions'])) {
-            foreach ($required['functions'] as $requiredFunction) {
-                if (!function_exists($requiredFunction)) {
-                    $missing[] = sprintf('Function %s is required.', $requiredFunction);
+            foreach ($required['functions'] as $function) {
+                $pieces = explode('::', $function);
+                if (2 === count($pieces) && method_exists($pieces[0], $pieces[1])) {
+                    continue;
                 }
+                if (function_exists($function)) {
+                    continue;
+                }
+                $missing[] = sprintf('Function %s is required.', $function);
             }
         }
 
         if (!empty($required['extensions'])) {
-            foreach ($required['extensions'] as $requiredExtension) {
-                if (!extension_loaded($requiredExtension)) {
-                    $missing[] = sprintf('Extension %s is required.', $requiredExtension);
+            foreach ($required['extensions'] as $extension) {
+                if (!extension_loaded($extension)) {
+                    $missing[] = sprintf('Extension %s is required.', $extension);
                 }
             }
         }
