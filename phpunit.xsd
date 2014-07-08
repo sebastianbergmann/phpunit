@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
   <xs:annotation>
-    <xs:documentation source="http://www.phpunit.de/manual/3.7/en/appendixes.configuration.html">
-      This Schema file defines the rules by which the XML configuration file of PHPUnit 3.7 may be structured.
+    <xs:documentation source="http://www.phpunit.de/manual/4.1/en/appendixes.configuration.html">
+      This Schema file defines the rules by which the XML configuration file of PHPUnit 4.2 may be structured.
     </xs:documentation>
     <xs:appinfo source="http://www.phpunit.de/manual/current/en/appendixes.configuration.html"/>
   </xs:annotation>
@@ -114,6 +114,7 @@
       <xs:simpleType>
         <xs:restriction base="xs:string">
           <xs:enumeration value="coverage-html"/>
+          <xs:enumeration value="coverage-text"/>
           <xs:enumeration value="coverage-clover"/>
           <xs:enumeration value="json"/>
           <xs:enumeration value="plain"/>
@@ -125,13 +126,10 @@
       </xs:simpleType>
     </xs:attribute>
     <xs:attribute name="target" type="xs:anyURI"/>
-    <xs:attribute name="title" type="xs:string"/>
-    <xs:attribute name="charset" type="xs:string" default="UTF-8"/>
-    <xs:attribute name="yui" type="xs:boolean" default="true"/>
-    <xs:attribute name="highlight" type="xs:boolean" default="false"/>
     <xs:attribute name="lowUpperBound" type="xs:nonNegativeInteger" default="35"/>
     <xs:attribute name="highLowerBound" type="xs:nonNegativeInteger" default="70"/>
     <xs:attribute name="logIncompleteSkipped" type="xs:boolean" default="false"/>
+    <xs:attribute name="showUncoveredFiles" type="xs:boolean" default="false"/>
   </xs:complexType>
   <xs:group name="pathGroup">
     <xs:sequence>
@@ -201,7 +199,13 @@
     <xs:attribute name="stopOnError" type="xs:boolean" default="false"/>
     <xs:attribute name="stopOnFailure" type="xs:boolean" default="false"/>
     <xs:attribute name="stopOnIncomplete" type="xs:boolean" default="false"/>
+    <xs:attribute name="stopOnRisky" type="xs:boolean" default="false"/>
     <xs:attribute name="stopOnSkipped" type="xs:boolean" default="false"/>
+    <xs:attribute name="beStrictAboutTestsThatDoNotTestAnything" type="xs:boolean" default="false"/>
+    <xs:attribute name="beStrictAboutOutputDuringTests" type="xs:boolean" default="false"/>
+    <xs:attribute name="beStrictAboutTestSize" type="xs:boolean" default="false"/>
+    <xs:attribute name="beStrictAboutTodoAnnotatedTests" type="xs:boolean" default="false"/>
+    <xs:attribute name="checkForUnintentionallyCoveredCode" type="xs:boolean" default="false"/>
     <xs:attribute name="strict" type="xs:boolean" default="false"/>
     <xs:attribute name="testSuiteLoaderClass" type="xs:string" default="PHPUnit_Runner_StandardTestSuiteLoader"/>
     <xs:attribute name="testSuiteLoaderFile" type="xs:anyURI"/>
