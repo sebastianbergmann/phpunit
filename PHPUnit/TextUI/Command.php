@@ -791,7 +791,9 @@ class PHPUnit_TextUI_Command
           );
 
         $tags = array_map(
-            function ($tag) { return $tag['name']; },
+            function($tag) {
+                return $tag['name'];
+            },
             json_decode($jsonTags, true)
         );
 
@@ -813,7 +815,7 @@ class PHPUnit_TextUI_Command
      *
      * @author Franck Cassedanne <franck@cassedanne.com>
      * @param  string $url
-     * @param  array  $options  An associative array.
+     * @param  array  $options  Stream context options.
      * @return string
      * @throw  Exception if status code is above 300
      */
