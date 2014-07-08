@@ -817,7 +817,7 @@ class PHPUnit_TextUI_Command
      * @param  string $url
      * @param  array  $options  Stream context options.
      * @return string
-     * @throw  Exception if status code is above 300
+     * @throw  Exception if status code is not 200
      */
     protected function fileGetContent($url, array $options)
     {
@@ -825,7 +825,7 @@ class PHPUnit_TextUI_Command
 
         if (isset($http_response_header)) {
           $code = substr($http_response_header[0], 9, 3);
-          if (floor($code/100)>3) {
+          if ($code != 200) {
               print " failed\n\n" . $http_response_header[0] . "\n";
               exit(PHPUnit_TextUI_TestRunner::EXCEPTION_EXIT);
           }
