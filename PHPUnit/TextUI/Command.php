@@ -767,7 +767,7 @@ class PHPUnit_TextUI_Command
     }
 
     /**
-     * Handles version check.
+     * Checks whether the current local phpunit version is up to date.
      *
      * @author Franck Cassedanne <franck@cassedanne.com>
      */
