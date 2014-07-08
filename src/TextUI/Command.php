@@ -843,14 +843,14 @@ class PHPUnit_TextUI_Command
         $jsonTags = $this->fileGetContent(
             'https://api.github.com/repos/sebastianbergmann/phpunit/tags',
             array(
-              'http' => array(
-                  'follow_location' => TRUE,
-                  'max_redirects' => 20,
-                  'timeout' => 60,
-                  'user_agent' => 'PHPUnit' . PHPUnit_Runner_Version::id()
-              )
+                'http' => array(
+                    'follow_location' => TRUE,
+                    'max_redirects' => 20,
+                    'timeout' => 60,
+                    'user_agent' => 'PHPUnit' . PHPUnit_Runner_Version::id()
+                )
             )
-          );
+        );
 
         $tags = array_map(
             function($tag) {
