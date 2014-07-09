@@ -80,7 +80,6 @@ class PHPUnit_Runner_StandardTestSuiteLoader implements PHPUnit_Runner_TestSuite
             $loadedClasses = array_values(
               array_diff(get_declared_classes(), $loadedClasses)
             );
-
         }
 
         if (!class_exists($suiteClassName, false) && !empty($loadedClasses)) {
