@@ -137,7 +137,8 @@ class PHPUnit_Util_ErrorHandler
             if (!$expired) {
                 $expired = true;
                 // cleans temporary error handler
-                return restore_error_handler();
+                restore_error_handler();
+                throw new Exception();
             }
         };
 
