@@ -87,6 +87,7 @@ class Framework_SuiteTest extends PHPUnit_Framework_TestCase {
         $suite->addTest(new Framework_SuiteTest('testBeforeClassAndAfterClassAnnotations'));
         $suite->addTest(new Framework_SuiteTest('testBeforeAnnotation'));
         $suite->addTest(new Framework_SuiteTest('testRequirementsBeforeClassHook'));
+        $suite->addTest(new Framework_SuiteTest('testDontSkipInheritedClass'));
 
         return $suite;
     }
@@ -225,5 +226,20 @@ class Framework_SuiteTest extends PHPUnit_Framework_TestCase {
 
         $this->assertEquals(0, $this->result->errorCount());
         $this->assertEquals(1, $this->result->skippedCount());
+    }
+
+    public function testDontSkipInheritedClass()
+    {
+        $suite = new PHPUnit_Framework_TestSuite(
+          'DontSkipInheritedClass'
+        );
+
+        $dir = dirname(__DIR__) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'Inheritance' . DIRECTORY_SEPARATOR;
+
+        $suite->addTestFile($dir.'InheritanceA.php');
+        $suite->addTestFile($dir.'InheritanceB.php');
+        $result = $suite->run();
+        $this->assertEquals(2, count($result));
+
     }
 }
