@@ -6,6 +6,7 @@ build/pdepend
 build/phar
 build/phpdox
 build/*.phar
+build/*.phar.asc
 tests/TextUI/*.diff
 tests/TextUI/*.exp
 tests/TextUI/*.log
