@@ -365,9 +365,9 @@ class PHPUnit_Util_GlobalState
             return var_export($variable, true);
         }
 
-        return 'unserialize(\'' .
-                str_replace("'", "\'", serialize($variable)) .
-                '\')';
+        return 'unserialize(' .
+                var_export(serialize($variable), true) .
+                ')';
     }
 
     protected static function arrayOnlyContainsScalars(array $array)
