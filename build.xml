@@ -20,6 +20,7 @@
   <delete>
    <fileset dir="${basedir}/build">
     <include name="**/*.phar" />
+    <include name="**/*.phar.asc" />
    </fileset>
   </delete>
  </target>
@@ -150,6 +151,21 @@
  <target name="phpdox"
          description="Generate software project documentation using phpDox">
   <exec executable="phpdox" />
+ </target>
+
+ <target name="signed-phar"
+         description="Create signed PHAR archive of PHPUnit and all its dependencies (release)"
+         depends="phar">
+  <exec executable="bash" outputproperty="version">
+   <arg value="-c" />
+   <arg value="${basedir}/phpunit --version | awk 'BEGIN { ORS = &quot;&quot;; } {print $2}'" />
+  </exec>
+
+  <exec executable="gpg" failonerror="true">
+   <arg value="--armor" />
+   <arg value="--detach-sign" />
+   <arg path="${basedir}/build/phpunit-${version}.phar" />
+  </exec>
  </target>
 
  <target name="phar"
