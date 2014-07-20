@@ -188,7 +188,8 @@ class PHPUnit_Util_Getopt
                 );
             }
 
-            $opts[] = array('--' . $opt, $opt_arg);
+            $full_option = '--' . preg_replace('/={1,2}$/', '', $long_opt);
+            $opts[] = array($full_option, $opt_arg);
 
             return;
         }
