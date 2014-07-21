@@ -488,9 +488,9 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
                     }
                     else if ($e instanceof PHPUnit_Framework_SkippedTestError) {
                         $message = sprintf(
-                            'Test for %s::%s skipped by data provider',
-                            $className,
-                            $name
+                          'Test for %s::%s skipped by data provider',
+                          $className,
+                          $name
                         );
 
                         $_message = $e->getMessage();
@@ -503,9 +503,9 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
                     }
                     else if ($e instanceof PHPUnit_Framework_IncompleteTestError) {
                         $message = sprintf(
-                            'Test for %s::%s marked incomplete by data provider',
-                            $className,
-                            $name
+                          'Test for %s::%s marked incomplete by data provider',
+                          $className,
+                          $name
                         );
 
                         $_message = $e->getMessage();
@@ -535,9 +535,9 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
 
                     $groups = PHPUnit_Util_Test::getGroups($className, $name);
 
-                    if ($data instanceof PHPUnit_Framework_Warning
-                        || $data instanceof PHPUnit_Framework_SkippedTestCase
-                        || $data instanceof PHPUnit_Framework_IncompleteTestCase) {
+                    if ($data instanceof PHPUnit_Framework_Warning ||
+                        $data instanceof PHPUnit_Framework_SkippedTestCase ||
+                        $data instanceof PHPUnit_Framework_IncompleteTestCase) {
                         $test->addTest($data, $groups);
                     } else {
                         foreach ($data as $_dataName => $_data) {

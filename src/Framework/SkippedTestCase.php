@@ -40,7 +40,7 @@
  * @copyright  2001-2014 Sebastian Bergmann <sebastian@phpunit.de>
  * @license    http://www.opensource.org/licenses/BSD-3-Clause  The BSD 3-Clause License
  * @link       http://www.phpunit.de/
- * @since      File available since Release 2.0.0
+ * @since      File available since Release 4.3
  */
 
 /**
@@ -64,27 +64,27 @@ class PHPUnit_Framework_SkippedTestCase extends PHPUnit_Framework_TestCase
     /**
      * @var boolean
      */
-    protected $backupGlobals = FALSE;
+    protected $backupGlobals = false;
 
     /**
      * @var boolean
      */
-    protected $backupStaticAttributes = FALSE;
+    protected $backupStaticAttributes = false;
 
     /**
      * @var boolean
      */
-    protected $runTestInSeparateProcess = FALSE;
+    protected $runTestInSeparateProcess = false;
 
     /**
      * @var boolean
      */
-    protected $useErrorHandler = FALSE;
+    protected $useErrorHandler = false;
 
     /**
      * @var boolean
      */
-    protected $useOutputBuffering = FALSE;
+    protected $useOutputBuffering = false;
 
     /**
      * @param string $message
@@ -105,7 +105,6 @@ class PHPUnit_Framework_SkippedTestCase extends PHPUnit_Framework_TestCase
 
     /**
      * @return string
-     * @since  Method available since Release 3.0.0
      */
     public function getMessage()
     {
@@ -116,7 +115,6 @@ class PHPUnit_Framework_SkippedTestCase extends PHPUnit_Framework_TestCase
      * Returns a string representation of the test case.
      *
      * @return string
-     * @since  Method available since Release 3.4.0
      */
     public function toString()
     {
