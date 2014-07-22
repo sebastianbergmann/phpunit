@@ -154,7 +154,7 @@ abstract class PHPUnit_Util_PHP
 
             if ($childResult !== false) {
                 if (!empty($childResult['output'])) {
-                    print $childResult['output'];
+                    $output = $childResult['output'];
                 }
 
                 $test->setResult($childResult['testResult']);
@@ -200,6 +200,10 @@ abstract class PHPUnit_Util_PHP
         }
 
         $result->endTest($test, $time);
+
+        if (!empty($output)) {
+            print $output;
+        }
     }
 
     /**

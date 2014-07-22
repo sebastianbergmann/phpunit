@@ -36,9 +36,8 @@ function __phpunit_run_isolated_test()
     $test->setInIsolation(TRUE);
 
     ob_end_clean();
-    ob_start();
     $test->run($result);
-    $output = ob_get_clean();
+    $output = $test->getActualOutput();
 
     print serialize(
       array(
