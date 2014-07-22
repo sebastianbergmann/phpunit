@@ -726,11 +726,13 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
             }
 
             $data            = var_export(serialize($this->data), true);
+            $dataName        = var_export($this->dataName, true);
             $dependencyInput = var_export(serialize($this->dependencyInput), true);
             $includePath     = var_export(get_include_path(), true);
             // must do these fixes because TestCaseMethod.tpl has unserialize('{data}') in it, and we can't break BC
             // the lines above used to use addcslashes() rather than var_export(), which breaks null byte escape sequences
             $data            = "'." . $data . ".'";
+            $dataName        = "'.(" . $dataName . ").'";
             $dependencyInput = "'." . $dependencyInput . ".'";
             $includePath     = "'." . $includePath . ".'";
 
@@ -743,7 +745,7 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
                 'methodName'                              => $this->name,
                 'collectCodeCoverageInformation'          => $coverage,
                 'data'                                    => $data,
-                'dataName'                                => $this->dataName,
+                'dataName'                                => $dataName,
                 'dependencyInput'                         => $dependencyInput,
                 'constants'                               => $constants,
                 'globals'                                 => $globals,
