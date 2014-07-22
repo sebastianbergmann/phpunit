@@ -1,5 +1,5 @@
 --TEST--
-GH-1300: Data Provider with \ at the end of the name breaks with process isolation
+GH-1337: Data Provider with \ at the end of the name breaks with process isolation
 --FILE--
 <?php
 
