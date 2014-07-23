@@ -12,7 +12,7 @@ PHPUnit_TextUI_Command::main();
 ?>
 --EXPECTF--
 PHPUnit %s by Sebastian Bergmann.
-
+%A
 .E.EE
 
 Time: %s, Memory: %sMb
@@ -27,10 +27,7 @@ PHPUnit_Framework_Exception: shutdown: stderr:%d
 %A
 3) Issue1340Test::testFatalErrorDoesNotPass
 PHPUnit_Framework_Exception: Fatal error: Call to undefined function undefined_function() in %s on line %d
-
-Call Stack:
-%a
-
+%A
 shutdown: stderr:%d
 %A
 FAILURES!
