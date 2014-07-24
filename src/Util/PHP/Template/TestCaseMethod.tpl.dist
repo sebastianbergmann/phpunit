@@ -1,4 +1,9 @@
 <?php
+if (!defined('STDOUT')) {
+    define('STDOUT', fopen('php://stdout', 'wb'));
+    define('STDERR', fopen('php://stderr', 'wb'));
+}
+
 {iniSettings}
 ini_set('display_errors', 'stderr');
 set_include_path('{include_path}');
