@@ -310,6 +310,25 @@ class Framework_TestCaseTest extends PHPUnit_Framework_TestCase
         $this->assertSame(123, self::$_testStatic);
     }
 
+    public function testIsInIsolationReturnsFalse()
+    {
+        $test   = new IsolationTest('testIsInIsolationReturnsFalse');
+        $result = $test->run();
+
+        $this->assertEquals(1, count($result));
+        $this->assertTrue($result->wasSuccessful());
+    }
+
+    public function testIsInIsolationReturnsTrue()
+    {
+        $test   = new IsolationTest('testIsInIsolationReturnsTrue');
+        $test->setRunTestInSeparateProcess(true);
+        $result = $test->run();
+
+        $this->assertEquals(1, count($result));
+        $this->assertTrue($result->wasSuccessful());
+    }
+
     public function testExpectOutputStringFooActualFoo()
     {
         $test   = new OutputTestCase('testExpectOutputStringFooActualFoo');
