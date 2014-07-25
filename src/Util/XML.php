@@ -157,14 +157,14 @@ class PHPUnit_Util_XML
         }
 
         foreach (libxml_get_errors() as $error) {
-            $message .= $error->message;
+            $message .= "\n" . $error->message;
         }
 
         libxml_use_internal_errors($internal);
         error_reporting($reporting);
 
-        if ($loaded === false) {
-            if ($filename != '') {
+        if ($loaded === false || $message !== '') {
+            if ($filename !== '') {
                 throw new PHPUnit_Framework_Exception(
                   sprintf(
                     'Could not load "%s".%s',
