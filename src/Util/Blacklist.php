@@ -136,6 +136,13 @@ class PHPUnit_Util_Blacklist
 
                 self::$directories[] = $directory;
             }
+
+            // Process isolation workaround on Windows.
+            // @see PHPUnit_Util_PHP::factory()
+            // @see PHPUnit_Util_PHP_Windows::process()
+            if (DIRECTORY_SEPARATOR === '\\') {
+                self::$directories[] = sys_get_temp_dir();
+            }
        }
     }
 }
