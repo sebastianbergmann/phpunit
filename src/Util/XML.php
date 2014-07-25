@@ -135,11 +135,22 @@ class PHPUnit_Util_XML
             return $actual;
         }
 
+        // Required for XInclude on Windows.
+        if ($xinclude) {
+            $cwd = getcwd();
+            chdir(dirname($filename));
+        }
+
         $document  = new DOMDocument;
 
         $internal  = libxml_use_internal_errors(true);
         $message   = '';
         $reporting = error_reporting(0);
+
+        if ('' !== $filename) {
+            // Necessary for xinclude
+            $document->documentURI = $filename;
+        }
 
         if ($isHtml) {
             $loaded = $document->loadHTML($actual);
@@ -147,24 +158,23 @@ class PHPUnit_Util_XML
             $loaded = $document->loadXML($actual);
         }
 
-        if ('' !== $filename) {
-            // Necessary for xinclude
-            $document->documentURI = $filename;
-        }
-
         if (!$isHtml && $xinclude) {
             $document->xinclude();
         }
 
         foreach (libxml_get_errors() as $error) {
-            $message .= $error->message;
+            $message .= "\n" . $error->message;
         }
 
         libxml_use_internal_errors($internal);
         error_reporting($reporting);
 
-        if ($loaded === false) {
-            if ($filename != '') {
+        if ($xinclude) {
+            chdir($cwd);
+        }
+
+        if ($loaded === false || $message !== '') {
+            if ($filename !== '') {
                 throw new PHPUnit_Framework_Exception(
                   sprintf(
                     'Could not load "%s".%s',
