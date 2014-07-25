@@ -82,12 +82,15 @@ class PHPUnit_Util_Filter
             $eTrace = $e->getSyntheticTrace();
             $eFile  = $e->getSyntheticFile();
             $eLine  = $e->getSyntheticLine();
+        } elseif ($e instanceof PHPUnit_Framework_Exception) {
+            $eTrace = $e->getSerializableTrace();
+            $eFile  = $e->getFile();
+            $eLine  = $e->getLine();
         } else {
             if ($e->getPrevious()) {
-                $eTrace = $e->getPrevious()->getTrace();
-            } else {
-                $eTrace = $e->getTrace();
+                $e = $e->getPrevious();
             }
+            $eTrace = $e->getTrace();
             $eFile  = $e->getFile();
             $eLine  = $e->getLine();
         }

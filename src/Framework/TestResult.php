@@ -695,7 +695,10 @@ class PHPUnit_Framework_TestResult implements Countable
             } elseif ($e instanceof PHPUnit_Framework_SkippedTestError) {
                 $skipped = true;
             }
+        } catch (PHPUnit_Framework_Exception $e) {
+            $error = true;
         } catch (Exception $e) {
+            $e = new PHPUnit_Framework_ExceptionWrapper($e);
             $error = true;
         }
 
