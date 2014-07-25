@@ -135,21 +135,27 @@ class PHPUnit_Util_XML
             return $actual;
         }
 
+        // Required for XInclude on Windows.
+        if ($xinclude) {
+            $cwd = getcwd();
+            chdir(dirname($filename));
+        }
+
         $document  = new DOMDocument;
 
         $internal  = libxml_use_internal_errors(true);
         $message   = '';
         $reporting = error_reporting(0);
 
+        if ('' !== $filename) {
+            // Necessary for xinclude
+            $document->documentURI = $filename;
+        }
+
         if ($isHtml) {
             $loaded = $document->loadHTML($actual);
         } else {
             $loaded = $document->loadXML($actual);
-        }
-
-        if ('' !== $filename) {
-            // Necessary for xinclude
-            $document->documentURI = $filename;
         }
 
         if (!$isHtml && $xinclude) {
@@ -162,6 +168,10 @@ class PHPUnit_Util_XML
 
         libxml_use_internal_errors($internal);
         error_reporting($reporting);
+
+        if ($xinclude) {
+            chdir($cwd);
+        }
 
         if ($loaded === false || $message !== '') {
             if ($filename !== '') {
