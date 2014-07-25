@@ -17,7 +17,7 @@ PHPUnit %s by Sebastian Bergmann.
 
 ..F.<?xml version="1.0" encoding="UTF-8"?>
 <testsuites>
-  <testsuite name="DataProviderTest" file="%s/DataProviderTest.php" tests="4" assertions="4" failures="1" errors="0" time="%f">
+  <testsuite name="DataProviderTest" file="%sDataProviderTest.php" tests="4" assertions="4" failures="1" errors="0" time="%f">
     <testsuite name="DataProviderTest::testAdd" tests="4" assertions="4" failures="1" errors="0" time="%f">
       <testcase name="testAdd with data set #0" assertions="1" time="%f"/>
       <testcase name="testAdd with data set #1" assertions="1" time="%f"/>
