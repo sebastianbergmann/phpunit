@@ -14,17 +14,21 @@ PHPUnit_TextUI_Command::main();
 --EXPECTF--
 PHPUnit %s by Sebastian Bergmann.
 
-F.E.
+F.E.E
 
 Time: %s, Memory: %sMb
 
-There was 1 error:
+There were 2 errors:
 
 1) Issue1351Test::testExceptionPre
 RuntimeException: Expected rethrown exception.
 %A
 Caused by
 LogicException: Expected exception.
+%A
+
+2) Issue1351Test::testPhpCoreLanguageException
+PDOException: SQLSTATE[HY000]: General error: 1 no such table: php_wtf
 %A
 
 --
@@ -35,4 +39,4 @@ There was 1 failure:
 Expected failure.
 %A
 FAILURES!
-Tests: 4, Assertions: 5, Failures: 1, Errors: 1.
+Tests: 5, Assertions: 5, Failures: 1, Errors: 2.

@@ -74,7 +74,10 @@ class PHPUnit_Framework_ExceptionWrapper extends PHPUnit_Framework_Exception
 
     public function __construct(Exception $e)
     {
-        parent::__construct($e->getMessage(), $e->getCode());
+        // PDOException::getCode() is a string.
+        // @see http://php.net/manual/en/class.pdoexception.php#95812
+        parent::__construct($e->getMessage(), (int) $e->getCode());
+
         $this->classname = get_class($e);
         $this->file = $e->getFile();
         $this->line = $e->getLine();
