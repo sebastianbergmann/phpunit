@@ -177,6 +177,13 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
     private $expectedExceptionMessage = '';
 
     /**
+     * The regex pattern to validate the expected Exception message.
+     *
+     * @var string
+     */
+    private $expectedExceptionMessageRegExp = '';
+
+    /**
      * The code of the expected Exception.
      *
      * @var integer
@@ -459,6 +466,19 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
         $this->expectedException        = $exceptionName;
         $this->expectedExceptionMessage = $exceptionMessage;
         $this->expectedExceptionCode    = $exceptionCode;
+    }
+
+    /**
+     * @param mixed   $exceptionName
+     * @param string  $exceptionMessageRegExp
+     * @param integer $exceptionCode
+     * @since  Method available since Release 4.0.2
+     */
+    public function setExpectedExceptionRegExp($exceptionName, $exceptionMessageRegExp = '', $exceptionCode = null)
+    {
+        $this->expectedException              = $exceptionName;
+        $this->expectedExceptionMessageRegExp = $exceptionMessageRegExp;
+        $this->expectedExceptionCode          = $exceptionCode;
     }
 
     /**
