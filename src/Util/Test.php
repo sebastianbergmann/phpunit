@@ -316,12 +316,19 @@ class PHPUnit_Util_Test
             $class   = $matches[1];
             $code    = null;
             $message = '';
+            $messageRegExp = '';
 
             if (isset($matches[2])) {
                 $message = trim($matches[2]);
             } elseif (isset($annotations['method']['expectedExceptionMessage'])) {
                 $message = self::parseAnnotationContent(
                     $annotations['method']['expectedExceptionMessage'][0]
+                );
+            }
+
+            if (isset($annotations['method']['expectedExceptionMessageRegExp'])) {
+                $messageRegExp = self::parseAnnotationContent(
+                    $annotations['method']['expectedExceptionMessageRegExp'][0]
                 );
             }
 
@@ -340,7 +347,7 @@ class PHPUnit_Util_Test
             }
 
             return array(
-              'class' => $class, 'code' => $code, 'message' => $message
+              'class' => $class, 'code' => $code, 'message' => $message, 'message_regex' => $messageRegExp
             );
         }
 
