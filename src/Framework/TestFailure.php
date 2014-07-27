@@ -57,9 +57,9 @@
 class PHPUnit_Framework_TestFailure
 {
     /**
-     * @var    PHPUnit_Framework_Test
+     * @var string
      */
-    protected $failedTest;
+    private $testName;
 
     /**
      * @var    Exception
@@ -74,7 +74,11 @@ class PHPUnit_Framework_TestFailure
      */
     public function __construct(PHPUnit_Framework_Test $failedTest, Exception $thrownException)
     {
-        $this->failedTest      = $failedTest;
+        if ($failedTest instanceof PHPUnit_Framework_SelfDescribing) {
+            $this->testName = $failedTest->toString();
+        } else {
+            $this->testName = get_class($failedTest);
+        }
         $this->thrownException = $thrownException;
     }
 
@@ -87,8 +91,7 @@ class PHPUnit_Framework_TestFailure
     {
         return sprintf(
           '%s: %s',
-
-          $this->failedTest->toString(),
+          $this->testName,
           $this->thrownException->getMessage()
         );
     }
@@ -125,6 +128,8 @@ class PHPUnit_Framework_TestFailure
             }
         } elseif ($e instanceof PHPUnit_Framework_Error) {
             $buffer = $e->getMessage() . "\n";
+        } elseif ($e instanceof PHPUnit_Framework_ExceptionWrapper) {
+            $buffer = $e->getClassname() . ': ' . $e->getMessage() . "\n";
         } else {
             $buffer = get_class($e) . ': ' . $e->getMessage() . "\n";
         }
@@ -133,13 +138,13 @@ class PHPUnit_Framework_TestFailure
     }
 
     /**
-     * Gets the failed test.
+     * Returns the name of the failing test (including data set, if any).
      *
-     * @return PHPUnit_Framework_Test
+     * @return string
      */
-    public function failedTest()
+    public function getTestName()
     {
-        return $this->failedTest;
+        return $this->testName;
     }
 
     /**

@@ -40,62 +40,72 @@
  * @copyright  2001-2014 Sebastian Bergmann <sebastian@phpunit.de>
  * @license    http://www.opensource.org/licenses/BSD-3-Clause  The BSD 3-Clause License
  * @link       http://www.phpunit.de/
- * @since      File available since Release 3.4.0
+ * @since      File available since Release 4.1.5
  */
 
 /**
- * Base class for all PHPUnit Framework exceptions.
+ * Wraps Exceptions thrown by code under test.
  *
- * Ensures that exceptions thrown during a test run do not leave stray
- * references behind.
+ * Re-instantiates Exceptions thrown by user-space code to retain their original
+ * class names, properties, and stack traces (but without arguments).
  *
- * Every Exception contains a stack trace. Each stack frame contains the 'args'
- * of the called function. The function arguments can contain references to
- * instantiated objects. The references prevent the objects from being
- * destructed (until test results are eventually printed), so memory cannot be
- * freed up.
- *
- * With enabled process isolation, test results are serialized in the child
- * process and unserialized in the parent process. The stack trace of Exceptions
- * may contain objects that cannot be serialized or unserialized (e.g., PDO
- * connections). Unserializing user-space objects from the child process into
- * the parent would break the intended encapsulation of process isolation.
- *
- * @see http://fabien.potencier.org/article/9/php-serialization-stack-traces-and-exceptions
+ * Unlike PHPUnit_Framework_Exception, the complete stack of previous Exceptions
+ * is processed.
  *
  * @package    PHPUnit
  * @subpackage Framework
- * @author     Sebastian Bergmann <sebastian@phpunit.de>
+ * @author     Daniel F. Kudwien <sun@unleashedmind.com>
  * @copyright  2001-2014 Sebastian Bergmann <sebastian@phpunit.de>
  * @license    http://www.opensource.org/licenses/BSD-3-Clause  The BSD 3-Clause License
  * @link       http://www.phpunit.de/
- * @since      Class available since Release 3.4.0
+ * @since      Class available since Release 4.1.5
  */
-class PHPUnit_Framework_Exception extends RuntimeException implements PHPUnit_Exception
+class PHPUnit_Framework_ExceptionWrapper extends PHPUnit_Framework_Exception
 {
     /**
-     * @var array
+     * @var string
      */
-    protected $serializableTrace;
+    protected $classname;
 
-    public function __construct($message = '', $code = 0, Exception $previous = null)
+    /**
+     * @var PHPUnit_Framework_ExceptionWrapper|null
+     */
+    protected $previous;
+
+    public function __construct(Exception $e)
     {
-        parent::__construct($message, $code, $previous);
+        // PDOException::getCode() is a string.
+        // @see http://php.net/manual/en/class.pdoexception.php#95812
+        parent::__construct($e->getMessage(), (int) $e->getCode());
 
-        $this->serializableTrace = $this->getTrace();
+        $this->classname = get_class($e);
+        $this->file = $e->getFile();
+        $this->line = $e->getLine();
+
+        $this->serializableTrace = $e->getTrace();
         foreach ($this->serializableTrace as $i => $call) {
             unset($this->serializableTrace[$i]['args']);
+        }
+
+        if ($e->getPrevious()) {
+            $this->previous = new self($e->getPrevious());
         }
     }
 
     /**
-     * Returns the serializable trace (without 'args').
-     *
-     * @return array
+     * @return string
      */
-    public function getSerializableTrace()
+    public function getClassname()
     {
-        return $this->serializableTrace;
+        return $this->classname;
+    }
+
+    /**
+     * @return PHPUnit_Framework_ExceptionWrapper
+     */
+    public function getPreviousWrapped()
+    {
+        return $this->previous;
     }
 
     /**
@@ -109,11 +119,10 @@ class PHPUnit_Framework_Exception extends RuntimeException implements PHPUnit_Ex
             $string .= "\n" . $trace;
         }
 
-        return $string;
-    }
+        if ($this->previous) {
+            $string .= "\nCaused by\n" . $this->previous;
+        }
 
-    public function __sleep()
-    {
-        return array_keys(get_object_vars($this));
+        return $string;
     }
 }

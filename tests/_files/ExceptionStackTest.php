@@ -1,6 +1,4 @@
 <?php
-class ExceptionStackTestException extends Exception { }
-
 class ExceptionStackTest extends PHPUnit_Framework_TestCase
 {
     public function testPrintingChildException()
@@ -9,7 +7,7 @@ class ExceptionStackTest extends PHPUnit_Framework_TestCase
             $this->assertEquals(array(1), array(2), 'message');
         } catch (PHPUnit_Framework_ExpectationFailedException $e) {
             $message = $e->getMessage() . $e->getComparisonFailure()->getDiff();
-            throw new ExceptionStackTestException("Child exception\n$message", 101, $e);
+            throw new PHPUnit_Framework_Exception("Child exception\n$message", 101, $e);
         }
     }
 
