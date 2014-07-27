@@ -93,33 +93,4 @@ class ExceptionMessageTest extends PHPUnit_Framework_TestCase
         throw new Exception("A partial exception message");
     }
 
-    /**
-     * @runInSeparateProcess
-     * @requires extension xdebug
-     * @expectedException \Exception
-     * @expectedExceptionMessage Screaming preg_match
-     */
-    public function testMessageWithXdebugScreamOn()
-    {
-        ini_set('xdebug.scream', '1');
-        throw new Exception("Screaming preg_match");
-    }
-
-    /**
-     * @expectedException \Exception
-     * @expectedExceptionMessage /^A polymorphic \w+ message/
-     */
-    public function testRegexMessage()
-    {
-        throw new Exception("A polymorphic exception message");
-    }
-
-    /**
-     * @expectedException \Exception
-     * @expectedExceptionMessage /^a poly[a-z]+ [a-zA-Z0-9_]+ me(s){2}age$/i
-     */
-    public function testRegexMessageExtreme()
-    {
-        throw new Exception("A polymorphic exception message");
-    }
 }
