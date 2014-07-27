@@ -134,6 +134,11 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
     protected $testCase = false;
 
     /**
+     * @var array
+     */
+    protected $untestedClasses = array();
+    
+    /**
      * @var PHPUnit_Runner_Filter_Factory
      */
     private $iteratorFilter = null;
@@ -357,9 +362,10 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
         $classes    = get_declared_classes();
         $filename   = PHPUnit_Util_Fileloader::checkAndLoad($filename);
         $newClasses = array_values(array_diff(get_declared_classes(), $classes));
+        $this->untestedClasses = array_merge($this->untestedClasses, $newClasses);
         $baseName   = str_replace('.php', '', basename($filename));
 
-        foreach ($newClasses as $className) {
+        foreach ($this->untestedClasses as $className) {
             if (substr($className, 0 - strlen($baseName)) == $baseName) {
                 $class = new ReflectionClass($className);
 
