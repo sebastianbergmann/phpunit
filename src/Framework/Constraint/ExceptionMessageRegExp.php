@@ -40,7 +40,7 @@
  * @copyright  2001-2014 Sebastian Bergmann <sebastian@phpunit.de>
  * @license    http://www.opensource.org/licenses/BSD-3-Clause  The BSD 3-Clause License
  * @link       http://www.phpunit.de/
- * @since      File available since Release 3.6.6
+ * @since      File available since Release 4.3
  */
 
 /**
@@ -52,7 +52,7 @@
  * @copyright  2001-2014 Sebastian Bergmann <sebastian@phpunit.de>
  * @license    http://www.opensource.org/licenses/BSD-3-Clause  The BSD 3-Clause License
  * @link       http://www.phpunit.de/
- * @since      Class available since Release 4.0.20
+ * @since      Class available since Release 4.3
  */
 class PHPUnit_Framework_Constraint_ExceptionMessageRegExp extends PHPUnit_Framework_Constraint
 {
@@ -80,10 +80,10 @@ class PHPUnit_Framework_Constraint_ExceptionMessageRegExp extends PHPUnit_Framew
     protected function matches($other)
     {
         $match = PHPUnit_Util_Regex::pregMatchSafe($this->expectedMessageRegExp, $other->getMessage());
-        
+
         if(false === $match) {
             throw new PHPUnit_Framework_Exception (
-                "Invalid expected exception message regex given: '{$this->expectedMessageRegExp}'"
+              "Invalid expected exception message regex given: '{$this->expectedMessageRegExp}'"
             );
         }
 

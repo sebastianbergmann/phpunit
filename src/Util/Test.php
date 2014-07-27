@@ -151,7 +151,7 @@ class PHPUnit_Util_Test
     private static function getLinesToBeCoveredOrUsed($className, $methodName, $mode)
     {
         $annotations = self::parseTestMethodAnnotations(
-            $className, $methodName
+          $className, $methodName
         );
 
         $classShortcut = null;
@@ -159,11 +159,11 @@ class PHPUnit_Util_Test
         if (!empty($annotations['class'][$mode . 'DefaultClass'])) {
             if (count($annotations['class'][$mode . 'DefaultClass']) > 1) {
                 throw new PHPUnit_Framework_CodeCoverageException(
-                    sprintf(
-                        'More than one @%sClass annotation in class or interface "%s".',
-                        $mode,
-                        $className
-                    )
+                  sprintf(
+                    'More than one @%sClass annotation in class or interface "%s".',
+                    $mode,
+                    $className
+                  )
                 );
             }
 
@@ -190,8 +190,8 @@ class PHPUnit_Util_Test
             $element = preg_replace('/[\s()]+$/', '', $element);
 
             $codeList = array_merge(
-                $codeList,
-                self::resolveElementToReflectionObjects($element)
+              $codeList,
+              self::resolveElementToReflectionObjects($element)
             );
         }
 
@@ -322,13 +322,13 @@ class PHPUnit_Util_Test
                 $message = trim($matches[2]);
             } elseif (isset($annotations['method']['expectedExceptionMessage'])) {
                 $message = self::parseAnnotationContent(
-                    $annotations['method']['expectedExceptionMessage'][0]
+                  $annotations['method']['expectedExceptionMessage'][0]
                 );
             }
 
             if (isset($annotations['method']['expectedExceptionMessageRegExp'])) {
                 $messageRegExp = self::parseAnnotationContent(
-                    $annotations['method']['expectedExceptionMessageRegExp'][0]
+                  $annotations['method']['expectedExceptionMessageRegExp'][0]
                 );
             }
 
@@ -336,7 +336,7 @@ class PHPUnit_Util_Test
                 $code = $matches[3];
             } elseif (isset($annotations['method']['expectedExceptionCode'])) {
                 $code = self::parseAnnotationContent(
-                    $annotations['method']['expectedExceptionCode'][0]
+                  $annotations['method']['expectedExceptionCode'][0]
                 );
             }
 

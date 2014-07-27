@@ -498,7 +498,7 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
                   $expectedException['code']
                 );
 
-                if(isset($expectedException['message_regex']) && ! empty($expectedException['message_regex'])) {
+                if(!empty($expectedException['message_regex'])) {
                     $this->setExpectedExceptionRegExp(
                       $expectedException['class'],
                       $expectedException['message_regex'],

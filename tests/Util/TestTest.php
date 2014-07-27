@@ -119,34 +119,34 @@ class Util_TestTest extends PHPUnit_Framework_TestCase
         );
 
         $this->assertSame(
-            array('class' => 'Class', 'code' => My\Space\ExceptionNamespaceTest::ERROR_CODE, 'message' => My\Space\ExceptionNamespaceTest::ERROR_MESSAGE, 'message_regex' => ''),
-            PHPUnit_Util_Test::getExpectedException('My\Space\ExceptionNamespaceTest', 'testConstants')
+          array('class' => 'Class', 'code' => My\Space\ExceptionNamespaceTest::ERROR_CODE, 'message' => My\Space\ExceptionNamespaceTest::ERROR_MESSAGE, 'message_regex' => ''),
+          PHPUnit_Util_Test::getExpectedException('My\Space\ExceptionNamespaceTest', 'testConstants')
         );
 
         $this->assertSame(
-            array('class' => 'Class', 'code' => 1234, 'message' => 'Message', 'message_regex' => '#regex#'),
-            PHPUnit_Util_Test::getExpectedException('ExceptionTest', 'testWithRegexMessage')
+          array('class' => 'Class', 'code' => 1234, 'message' => 'Message', 'message_regex' => '#regex#'),
+          PHPUnit_Util_Test::getExpectedException('ExceptionTest', 'testWithRegexMessage')
         );
 
         $this->assertSame(
-            array('class' => 'Class', 'code' => 1234, 'message' => 'Message', 'message_regex' => '#regex#'),
-            PHPUnit_Util_Test::getExpectedException('ExceptionTest', 'testWithRegexMessageFromClassConstant')
-        );    
+          array('class' => 'Class', 'code' => 1234, 'message' => 'Message', 'message_regex' => '#regex#'),
+          PHPUnit_Util_Test::getExpectedException('ExceptionTest', 'testWithRegexMessageFromClassConstant')
+        );
 
         $this->assertSame(
-            array('class' => 'Class', 'code' => 1234, 'message' => 'Message', 'message_regex' => 'ExceptionTest::UNKNOWN_MESSAGE_REGEX_CONSTANT'),
-            PHPUnit_Util_Test::getExpectedException('ExceptionTest', 'testWithUnknowRegexMessageFromClassConstant')
-        );    
+          array('class' => 'Class', 'code' => 1234, 'message' => 'Message', 'message_regex' => 'ExceptionTest::UNKNOWN_MESSAGE_REGEX_CONSTANT'),
+          PHPUnit_Util_Test::getExpectedException('ExceptionTest', 'testWithUnknowRegexMessageFromClassConstant')
+        );
 
         // Ensure the Class::CONST expression is only evaluated when the constant really exists
         $this->assertSame(
-            array('class' => 'Class', 'code' => 'ExceptionTest::UNKNOWN_CODE_CONSTANT', 'message' => 'ExceptionTest::UNKNOWN_MESSAGE_CONSTANT', 'message_regex' => ''),
-            PHPUnit_Util_Test::getExpectedException('ExceptionTest', 'testUnknownConstants')
+          array('class' => 'Class', 'code' => 'ExceptionTest::UNKNOWN_CODE_CONSTANT', 'message' => 'ExceptionTest::UNKNOWN_MESSAGE_CONSTANT', 'message_regex' => ''),
+          PHPUnit_Util_Test::getExpectedException('ExceptionTest', 'testUnknownConstants')
         );
 
         $this->assertSame(
-            array('class' => 'Class', 'code' => 'My\Space\ExceptionNamespaceTest::UNKNOWN_CODE_CONSTANT', 'message' => 'My\Space\ExceptionNamespaceTest::UNKNOWN_MESSAGE_CONSTANT', 'message_regex' => ''),
-            PHPUnit_Util_Test::getExpectedException('My\Space\ExceptionNamespaceTest', 'testUnknownConstants')
+          array('class' => 'Class', 'code' => 'My\Space\ExceptionNamespaceTest::UNKNOWN_CODE_CONSTANT', 'message' => 'My\Space\ExceptionNamespaceTest::UNKNOWN_MESSAGE_CONSTANT', 'message_regex' => ''),
+          PHPUnit_Util_Test::getExpectedException('My\Space\ExceptionNamespaceTest', 'testUnknownConstants')
         );
     }
 
@@ -177,27 +177,27 @@ class Util_TestTest extends PHPUnit_Framework_TestCase
             array('testTen',    array('extensions' => array('testExt'))),
             array('testEleven', array('OS' => '/Linux/i')),
             array(
-                'testSpace',
-                array(
-                    'extensions' => array('spl'),
-                    'OS' => '/.*/i'
-                )
+              'testSpace',
+              array(
+                'extensions' => array('spl'),
+                'OS' => '/.*/i'
+              )
             ),
             array(
-                'testAllPossibleRequirements',
-                array(
-                    'PHP' => '99-dev',
-                    'PHPUnit' => '9-dev',
-                    'OS' => '/DOESNOTEXIST/i',
-                    'functions' => array(
-                        'testFuncOne',
-                        'testFuncTwo',
-                    ),
-                    'extensions' => array(
-                        'testExtOne',
-                        'testExtTwo',
-                    )
+              'testAllPossibleRequirements',
+              array(
+                'PHP' => '99-dev',
+                'PHPUnit' => '9-dev',
+                'OS' => '/DOESNOTEXIST/i',
+                'functions' => array(
+                  'testFuncOne',
+                  'testFuncTwo',
+                ),
+                'extensions' => array(
+                  'testExtOne',
+                  'testExtTwo',
                 )
+              )
             )
         );
     }
@@ -212,12 +212,12 @@ class Util_TestTest extends PHPUnit_Framework_TestCase
             'PHPUnit' => '3.7',
             'OS' => '/WINNT/i',
             'functions' => array(
-                'testFuncClass',
-                'testFuncMethod',
+              'testFuncClass',
+              'testFuncMethod',
             ),
             'extensions' => array(
-                'testExtClass',
-                'testExtMethod',
+              'testExtClass',
+              'testExtMethod',
             )
         );
 
