@@ -233,7 +233,7 @@ class Framework_TestCaseTest extends PHPUnit_Framework_TestCase
     public function testExceptionWithRegexpMessage()
     {
         $test = new ThrowExceptionTestCase('test');
-        $test->setExpectedException('RuntimeException', '/runtime .*? occurred/');
+        $test->setExpectedExceptionRegExp('RuntimeException', '/runtime .*? occurred/');
 
         $result = $test->run();
 
@@ -244,7 +244,7 @@ class Framework_TestCaseTest extends PHPUnit_Framework_TestCase
     public function testExceptionWithWrongRegexpMessage()
     {
         $test = new ThrowExceptionTestCase('test');
-        $test->setExpectedException('RuntimeException', '/logic .*? occurred/');
+        $test->setExpectedExceptionRegExp('RuntimeException', '/logic .*? occurred/');
 
         $result = $test->run();
 
@@ -252,6 +252,22 @@ class Framework_TestCaseTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(1, count($result));
         $this->assertEquals(
           "Failed asserting that exception message 'A runtime error occurred' matches '/logic .*? occurred/'.",
+          $test->getStatusMessage()
+        );
+    }
+
+    /**
+     * @covers PHPUnit_Framework_Constraint_ExceptionMessageRegExp
+     */
+    public function testExceptionWithInvalidRegexpMessage()
+    {
+        $test = new ThrowExceptionTestCase('test');
+        $test->setExpectedExceptionRegExp('RuntimeException', '#runtime .*? occurred/'); // wrong delimiter
+
+        $result = $test->run();
+
+        $this->assertEquals(
+          "Invalid expected exception message regex given: '#runtime .*? occurred/'",
           $test->getStatusMessage()
         );
     }

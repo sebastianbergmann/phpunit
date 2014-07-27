@@ -52,45 +52,49 @@
  * @license    http://www.opensource.org/licenses/BSD-3-Clause  The BSD 3-Clause License
  * @link       http://www.phpunit.de/
  * @since      Class available since Release 4.0.20
- * @covers     PHPUnit_Framework_Constraint_ExceptionMessage
+ * @covers     PHPUnit_Framework_Constraint_ExceptionMessageRegExp
  */
-class ExceptionMessageTest extends PHPUnit_Framework_TestCase
+class ExceptionMessageRegExpTest extends PHPUnit_Framework_TestCase
 {
 
     /**
      * @expectedException \Exception
-     * @expectedExceptionMessage A literal exception message
+     * @expectedExceptionMessageRegExp /^A polymorphic \w+ message/
      */
-    public function testLiteralMessage()
+    public function testRegexMessage()
     {
-        throw new Exception("A literal exception message");
+        throw new Exception("A polymorphic exception message");
     }
 
     /**
      * @expectedException \Exception
-     * @expectedExceptionMessage A partial
+     * @expectedExceptionMessageRegExp /^a poly[a-z]+ [a-zA-Z0-9_]+ me(s){2}age$/i
      */
-    public function testPatialMessageBegin()
+    public function testRegexMessageExtreme()
     {
-        throw new Exception("A partial exception message");
+        throw new Exception("A polymorphic exception message");
+    }
+
+     /**
+     * @runInSeparateProcess
+     * @requires extension xdebug
+     * @expectedException \Exception
+     * @expectedExceptionMessageRegExp #Screaming preg_match#
+     */
+    public function testMessageXdebugScreamCompatibility()
+    {
+        ini_set('xdebug.scream', '1');
+        throw new Exception("Screaming preg_match");
     }
 
     /**
-     * @expectedException \Exception
-     * @expectedExceptionMessage partial exception
+     * @coversNothing  
+     * @expectedException \Exception variadic
+     * @expectedExceptionMessageRegExp /^A variadic \w+ message/
      */
-    public function testPatialMessageMiddle()
+    public function testSimultaneousLiteralAndRegExpExceptionMessage()
     {
-        throw new Exception("A partial exception message");
-    }
-
-    /**
-     * @expectedException \Exception
-     * @expectedExceptionMessage exception message
-     */
-    public function testPatialMessageEnd()
-    {
-        throw new Exception("A partial exception message");
+        throw new Exception("A variadic exception message");
     }
 
 }

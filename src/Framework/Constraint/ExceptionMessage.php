@@ -62,11 +62,6 @@ class PHPUnit_Framework_Constraint_ExceptionMessage extends PHPUnit_Framework_Co
     protected $expectedMessage;
 
     /**
-     * @var boolean
-     */
-    protected $regexBased = false;
-
-    /**
      * @param string $expected
      */
     public function __construct($expected)
@@ -84,16 +79,7 @@ class PHPUnit_Framework_Constraint_ExceptionMessage extends PHPUnit_Framework_Co
      */
     protected function matches($other)
     {
-        $match = PHPUnit_Util_Regex::pregMatchSafe($this->expectedMessage, $other->getMessage());
-        if (false !== $match) {
-            $this->regexBased = true;
-        }
-
-        else {
-            $match = strpos($other->getMessage(), $this->expectedMessage) !== false;
-        }
-
-        return (bool) $match;
+        return strpos($other->getMessage(), $this->expectedMessage) !== false;
     }
 
     /**
@@ -108,7 +94,7 @@ class PHPUnit_Framework_Constraint_ExceptionMessage extends PHPUnit_Framework_Co
     protected function failureDescription($other)
     {
         return sprintf(
-          "exception message '%s' {$this->getVerb()} '%s'",
+          "exception message '%s' contains '%s'",
           $other->getMessage(),
           $this->expectedMessage
         );
@@ -119,14 +105,6 @@ class PHPUnit_Framework_Constraint_ExceptionMessage extends PHPUnit_Framework_Co
      */
     public function toString()
     {
-        return "exception message {$this->getVerb()} ";
-    }
-
-    /**
-     * @return string
-     */
-    protected function getVerb()
-    {
-        return ($this->regexBased) ? "matches" : "contains";
+        return 'exception message contains ';
     }
 }

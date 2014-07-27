@@ -35,62 +35,85 @@
  * POSSIBILITY OF SUCH DAMAGE.
  *
  * @package    PHPUnit
+ * @subpackage Framework_Constraint
  * @author     Sebastian Bergmann <sebastian@phpunit.de>
- * @author     Jeroen Versteeg <jversteeg@gmail.com>
  * @copyright  2001-2014 Sebastian Bergmann <sebastian@phpunit.de>
  * @license    http://www.opensource.org/licenses/BSD-3-Clause  The BSD 3-Clause License
  * @link       http://www.phpunit.de/
- * @since      File available since Release 3.7.30
+ * @since      File available since Release 3.6.6
  */
 
 /**
  *
  *
  * @package    PHPUnit
+ * @subpackage Framework_Constraint
  * @author     Márcio Almada <marcio3w@gmail.com>
  * @copyright  2001-2014 Sebastian Bergmann <sebastian@phpunit.de>
  * @license    http://www.opensource.org/licenses/BSD-3-Clause  The BSD 3-Clause License
  * @link       http://www.phpunit.de/
  * @since      Class available since Release 4.0.20
- * @covers     PHPUnit_Framework_Constraint_ExceptionMessage
  */
-class ExceptionMessageTest extends PHPUnit_Framework_TestCase
+class PHPUnit_Framework_Constraint_ExceptionMessageRegExp extends PHPUnit_Framework_Constraint
 {
+    /**
+     * @var integer
+     */
+    protected $expectedMessageRegExp;
 
     /**
-     * @expectedException \Exception
-     * @expectedExceptionMessage A literal exception message
+     * @param string $expected
      */
-    public function testLiteralMessage()
+    public function __construct($expected)
     {
-        throw new Exception("A literal exception message");
+        parent::__construct();
+        $this->expectedMessageRegExp = $expected;
     }
 
     /**
-     * @expectedException \Exception
-     * @expectedExceptionMessage A partial
+     * Evaluates the constraint for parameter $other. Returns true if the
+     * constraint is met, false otherwise.
+     *
+     * @param  Exception $other
+     * @return boolean
      */
-    public function testPatialMessageBegin()
+    protected function matches($other)
     {
-        throw new Exception("A partial exception message");
+        $match = PHPUnit_Util_Regex::pregMatchSafe($this->expectedMessageRegExp, $other->getMessage());
+        
+        if(false === $match) {
+            throw new PHPUnit_Framework_Exception (
+                "Invalid expected exception message regex given: '{$this->expectedMessageRegExp}'"
+            );
+        }
+
+        return 1 === $match;
     }
 
     /**
-     * @expectedException \Exception
-     * @expectedExceptionMessage partial exception
+     * Returns the description of the failure
+     *
+     * The beginning of failure messages is "Failed asserting that" in most
+     * cases. This method should return the second part of that sentence.
+     *
+     * @param  mixed  $other Evaluated value or object.
+     * @return string
      */
-    public function testPatialMessageMiddle()
+    protected function failureDescription($other)
     {
-        throw new Exception("A partial exception message");
+        return sprintf(
+          "exception message '%s' matches '%s'",
+          $other->getMessage(),
+          $this->expectedMessageRegExp
+        );
     }
 
     /**
-     * @expectedException \Exception
-     * @expectedExceptionMessage exception message
+     * @return string
      */
-    public function testPatialMessageEnd()
+    public function toString()
     {
-        throw new Exception("A partial exception message");
+        return "exception message matches ";
     }
 
 }
