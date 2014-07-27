@@ -256,6 +256,9 @@ class Framework_TestCaseTest extends PHPUnit_Framework_TestCase
         );
     }
 
+    /**
+     * @covers PHPUnit_Framework_Constraint_ExceptionMessageRegExp
+     */
     public function testExceptionWithInvalidRegexpMessage()
     {
         $test = new ThrowExceptionTestCase('test');
