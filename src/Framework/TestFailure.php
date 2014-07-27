@@ -62,6 +62,11 @@ class PHPUnit_Framework_TestFailure
     private $testName;
 
     /**
+     * @var PHPUnit_Framework_Test|null
+     */
+    protected $failedTest;
+
+    /**
      * @var    Exception
      */
     protected $thrownException;
@@ -78,6 +83,9 @@ class PHPUnit_Framework_TestFailure
             $this->testName = $failedTest->toString();
         } else {
             $this->testName = get_class($failedTest);
+        }
+        if (!$failedTest instanceof PHPUnit_Framework_TestCase || !$failedTest->isInIsolation()) {
+            $this->failedTest = $failedTest;
         }
         $this->thrownException = $thrownException;
     }
@@ -145,6 +153,21 @@ class PHPUnit_Framework_TestFailure
     public function getTestName()
     {
         return $this->testName;
+    }
+
+    /**
+     * Returns the failing test.
+     *
+     * Note: The test object is not set when the test is executed in process
+     * isolation.
+     *
+     * @see PHPUnit_Framework_Exception
+     *
+     * @return PHPUnit_Framework_Test|null
+     */
+    public function failedTest()
+    {
+        return $this->failedTest;
     }
 
     /**
