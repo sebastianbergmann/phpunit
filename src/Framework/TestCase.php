@@ -635,7 +635,12 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
                 $iniSettings   = PHPUnit_Util_GlobalState::getIniSettingsAsString();
             } else {
                 $constants     = '';
-                $globals       = '';
+                if (!empty($GLOBALS['__PHPUNIT_BOOTSTRAP'])) {
+                  $globals     = '$GLOBALS[\'__PHPUNIT_BOOTSTRAP\'] = ' . var_export($GLOBALS['__PHPUNIT_BOOTSTRAP'], true) . ";\n";
+                }
+                else {
+                  $globals     = '';
+                }
                 $includedFiles = '';
                 $iniSettings   = '';
             }
