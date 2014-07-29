@@ -134,6 +134,11 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
     protected $testCase = false;
 
     /**
+     * @var array
+     */
+    protected $foundClasses = array();
+
+    /**
      * @var PHPUnit_Runner_Filter_Factory
      */
     private $iteratorFilter = null;
@@ -356,18 +361,25 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
 
         $classes    = get_declared_classes();
         $filename   = PHPUnit_Util_Fileloader::checkAndLoad($filename);
-        $newClasses = array_values(array_diff(get_declared_classes(), $classes));
+        $newClasses = array_diff(get_declared_classes(), $classes);
+        foreach($newClasses as $className) {
+            $this->foundClasses[]= $className;
+        }
+
         $baseName   = str_replace('.php', '', basename($filename));
 
-        foreach ($newClasses as $className) {
+        end($this->foundClasses);
+        while($className = current($this->foundClasses)) {
             if (substr($className, 0 - strlen($baseName)) == $baseName) {
                 $class = new ReflectionClass($className);
 
                 if ($class->getFileName() == $filename) {
                     $newClasses = array($className);
+                    unset($this->foundClasses[key($this->foundClasses)]);
                     break;
                 }
             }
+            prev($this->foundClasses);
         }
 
         foreach ($newClasses as $className) {
