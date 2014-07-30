@@ -1,5 +1,10 @@
 --TEST--
 GH-1348: STDOUT/STDERR IO streams should exist in process isolation
+--SKIPIF--
+<?php
+if (defined('HHVM_VERSION'))
+    print "skip: PHP runtime required";
+?>
 --FILE--
 <?php
 
