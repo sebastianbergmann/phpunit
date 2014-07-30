@@ -355,31 +355,39 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
             $this->addTest(
               new PHPUnit_Extensions_PhptTestCase($filename, $phptOptions)
             );
-
             return;
         }
 
+        // The given file may contain further stub classes in addition to the
+        // test class itself. Figure out the actual test class.
         $classes    = get_declared_classes();
         $filename   = PHPUnit_Util_Fileloader::checkAndLoad($filename);
-        $newClasses = array_diff(get_declared_classes(), $classes);
-        foreach($newClasses as $className) {
-            $this->foundClasses[]= $className;
+        $newClasses = array_reverse(array_diff(get_declared_classes(), $classes));
+
+        // The diff is empty in case a parent class (with test methods) is added
+        // AFTER a child class that inherited from it. To account for that case,
+        // cumulate all discovered classes, so the parent class may be found in
+        // a later invocation.
+        foreach ($newClasses as $className) {
+            $this->foundClasses[] = $className;
         }
 
-        $baseName   = str_replace('.php', '', basename($filename));
+        $basename = basename($filename, '.php');
+        $basename_offset = -strlen($basename);
 
-        end($this->foundClasses);
-        while($className = current($this->foundClasses)) {
-            if (substr($className, 0 - strlen($baseName)) == $baseName) {
+        // On the assumption that the test class is defined first in the file,
+        // avoid unnecessary reflections by processing discovered classes in
+        // approximate LIFO order. (Each diff is reversed above.)
+        foreach (array_reverse($this->foundClasses, true) as $i => $className) {
+            if (substr($className, $basename_offset) === $basename) {
                 $class = new ReflectionClass($className);
 
                 if ($class->getFileName() == $filename) {
                     $newClasses = array($className);
-                    unset($this->foundClasses[key($this->foundClasses)]);
+                    unset($this->foundClasses[$i]);
                     break;
                 }
             }
-            prev($this->foundClasses);
         }
 
         foreach ($newClasses as $className) {
