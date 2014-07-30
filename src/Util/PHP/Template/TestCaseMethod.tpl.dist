@@ -60,8 +60,6 @@ function __phpunit_run_isolated_test()
         'output'        => $output
       )
     );
-
-    ob_start();
 }
 
 {constants}
@@ -74,4 +72,3 @@ if (isset($GLOBALS['__PHPUNIT_BOOTSTRAP'])) {
 }
 
 __phpunit_run_isolated_test();
-ob_end_clean();
