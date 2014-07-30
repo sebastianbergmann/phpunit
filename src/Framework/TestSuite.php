@@ -374,12 +374,17 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
             // avoid unnecessary reflection.
             $this->foundClasses = array_merge($newClasses, $this->foundClasses);
         }
+        $newClasses = array();
 
-        $basename = basename($filename, '.php');
-        $basename_offset = -strlen($basename);
+        // The test class's name must match the filename, either in full, or as
+        // a PEAR/PSR-0 prefixed shortname ('NameSpace_ShortName'), or as a
+        // PSR-1 local shortname ('NameSpace\ShortName'). The comparison must be
+        // anchored to prevent false-positive matches (e.g., 'OtherShortName').
+        $shortname = basename($filename, '.php');
+        $shortname_rx = '/(?:^|_|\\\\)' . preg_quote($shortname, '/') . '$/';
 
         foreach ($this->foundClasses as $i => $className) {
-            if (substr($className, $basename_offset) === $basename) {
+            if (preg_match($shortname_rx, $className)) {
                 $class = new ReflectionClass($className);
 
                 if ($class->getFileName() == $filename) {
