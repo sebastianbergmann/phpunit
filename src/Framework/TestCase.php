@@ -806,9 +806,9 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
         $hookMethods = PHPUnit_Util_Test::getHookMethods(get_class($this));
 
         try {
-            $hasRequirements = false;
+            $hasMetRequirements = false;
             $this->checkRequirements();
-            $hasRequirements = true;
+            $hasMetRequirements = true;
 
             if ($this->inIsolation) {
                 foreach ($hookMethods['beforeClass'] as $method) {
@@ -847,7 +847,7 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
         // Tear down the fixture. An exception raised in tearDown() will be
         // caught and passed on when no exception was raised before.
         try {
-            if ($hasRequirements) {
+            if ($hasMetRequirements) {
                 foreach ($hookMethods['after'] as $method) {
                     $this->$method();
                 }
