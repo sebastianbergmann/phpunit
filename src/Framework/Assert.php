@@ -100,6 +100,17 @@ abstract class PHPUnit_Framework_Assert
      */
     public static function assertArrayPart($partial, $array, $message = '')
     {
+        if(! is_array($partial)) {
+            throw PHPUnit_Util_InvalidArgumentHelper::factory(
+              1, 'array or ArrayAccess'
+            );
+        }
+
+        if(! is_array($array)) {
+            throw PHPUnit_Util_InvalidArgumentHelper::factory(
+              2, 'array or ArrayAccess'
+            );
+        }
 
         $constraint = new PHPUnit_Framework_Constraint_ArrayPart($partial);
 
