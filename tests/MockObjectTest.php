@@ -421,9 +421,24 @@ class Framework_MockObjectTest extends PHPUnit_Framework_TestCase
              ->method('doSomething');
     }
 
-    public function testGetMockForTraversableInterface()
+    public function traversableProvider()
     {
-        $mock = $this->getMock('TraversableMockTestInterface');
+        return array(
+          array('Traversable'),
+          array('\Traversable'),
+          array('TraversableMockTestInterface'),
+          array(array('Traversable')),
+          array(array('Iterator','Traversable')),
+          array(array('\Iterator','\Traversable'))
+        );
+    }
+
+    /**
+     * @dataProvider traversableProvider
+     */
+    public function testGetMockForTraversable($type)
+    {
+        $mock = $this->getMock($type);
         $this->assertInstanceOf('Traversable', $mock);
     }
 
