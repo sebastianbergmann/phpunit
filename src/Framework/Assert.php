@@ -67,7 +67,7 @@ abstract class PHPUnit_Framework_Assert
      * @param mixed             $key
      * @param array|ArrayAccess $array
      * @param string            $message
-     * @since  Method available since Release 3.0.0
+     * @since Method available since Release 3.0.0
      */
     public static function assertArrayHasKey($key, $array, $message = '')
     {
@@ -86,6 +86,22 @@ abstract class PHPUnit_Framework_Assert
         }
 
         $constraint = new PHPUnit_Framework_Constraint_ArrayHasKey($key);
+
+        self::assertThat($array, $constraint, $message);
+    }
+
+    /**
+     * Asserts that an array has a specified fragment.
+     *
+     * @param mixed             $partial
+     * @param array|ArrayAccess $array
+     * @param string            $message
+     * @since Method available since Release 3.0.0
+     */
+    public static function assertArrayPart($partial, $array, $message = '')
+    {
+
+        $constraint = new PHPUnit_Framework_Constraint_ArrayPart($partial);
 
         self::assertThat($array, $constraint, $message);
     }
