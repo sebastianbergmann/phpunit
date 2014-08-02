@@ -300,6 +300,25 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
     }
 
     /**
+     * @covers PHPUnit_Framework_Assert::assertArrayPart
+     * @expectedException PHPUnit_Framework_Exception
+     * @expectedExceptionMessage array or ArrayAccess
+     * @dataProvider assertArrayPartInvalidArgumentProvider
+     */
+    public function testAssertArrayPartRaisesExceptionForInvalidArguments($partial, $subject)
+    {
+        $this->assertArrayPart($partial, $subject);
+    }
+
+    public function assertArrayPartInvalidArgumentProvider()
+    {
+        return array(
+            array(false, array()),
+            array(array(), false),
+        );
+    }
+
+    /**
      * @covers            PHPUnit_Framework_Assert::assertArrayNotHasKey
      * @expectedException PHPUnit_Framework_Exception
      */
