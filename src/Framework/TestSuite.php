@@ -698,16 +698,26 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
             $numTests = count($this);
 
             for ($i = 0; $i < $numTests; $i++) {
+                $result->startTest($this);
                 $result->addFailure($this, $e, 0);
+                $result->endTest($this, 0);
             }
+
+            $this->tearDown();
+            $result->endTestSuite($this);
 
             return $result;
         } catch (Exception $e) {
             $numTests = count($this);
 
             for ($i = 0; $i < $numTests; $i++) {
+                $result->startTest($this);
                 $result->addError($this, $e, 0);
+                $result->endTest($this, 0);
             }
+
+            $this->tearDown();
+            $result->endTestSuite($this);
 
             return $result;
         }
