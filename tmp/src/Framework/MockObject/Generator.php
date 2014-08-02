@@ -188,6 +188,25 @@ class PHPUnit_Framework_MockObject_Generator
             throw new InvalidArgumentException;
         }
 
+        if ($type === 'Traversable' || $type === '\\Traversable') {
+            $type = 'Iterator';
+        }
+
+        if (is_array($type)) {
+            $type = array_unique(array_map(
+              function ($type) {
+                  if ($type === 'Traversable' ||
+                      $type === '\\Traversable' ||
+                      $type === '\\Iterator') {
+                      return 'Iterator';
+                  }
+
+                  return $type;
+              },
+              $type
+            ));
+        }
+
         if (NULL !== $methods) {
             foreach ($methods as $method) {
                 if (!preg_match('~[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*~', $method)) {
@@ -876,12 +895,20 @@ class PHPUnit_Framework_MockObject_Generator
 
         if ($isInterface) {
             $buffer .= sprintf(
-              "%s implements %s, %s%s",
+              "%s implements %s",
               $mockClassName['className'],
-              $interfaces,
-              !empty($mockClassName['namespaceName']) ? $mockClassName['namespaceName'] . '\\' : '',
-              $mockClassName['originalClassName']
+              $interfaces
             );
+
+            if (!in_array($mockClassName['originalClassName'], $additionalInterfaces)) {
+                $buffer .= ', ';
+
+                if (!empty($mockClassName['namespaceName'])) {
+                    $buffer .= $mockClassName['namespaceName'] . '\\';
+                }
+
+                $buffer .= $mockClassName['originalClassName'];
+            }
         } else {
             $buffer .= sprintf(
               "%s extends %s%s implements %s",
