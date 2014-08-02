@@ -219,6 +219,87 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
     }
 
     /**
+     * @covers PHPUnit_Framework_Assert::assertArrayPart
+     */
+    public function testAssertArrayPart()
+    {
+        $array = array(
+            'a' => 'item a',
+            'b' => 'item b',
+            'c' => array('a2' => 'item a2', 'b2' => 'item b2'),
+            'd' => array('a2' => array('a3' => 'item a3', 'b3' => 'item b3'))
+        );
+
+        $this->assertArrayPart(array('a' => 'item a', 'c' => array('a2' => 'item a2')), $array);
+        $this->assertArrayPart(array('a' => 'item a', 'd' => array('a2' => array('b3' => 'item b3'))), $array);
+
+        try {
+            $this->assertArrayPart(array('a' => 'bad value'), $array);
+        }
+        catch (PHPUnit_Framework_AssertionFailedError $e) {}
+
+        try {
+            $this->assertArrayPart(array('d' => array('a2' => array('bad index' => 'item b3'))), $array);
+        }
+        catch (PHPUnit_Framework_AssertionFailedError $e) {
+            return;
+        }
+
+        $this->fail();
+    }
+
+    /**
+     * @covers PHPUnit_Framework_Assert::assertArrayPart
+     */
+    public function testAssertArrayPartWithDeepNestedArrays()
+    {
+        $array = array(
+            'path' => array(
+                'to' => array(
+                    'the' => array(
+                        'cake' => 'is a lie'
+                    )
+                )
+            )
+        );
+
+        $this->assertArrayPart(array('path' => array()), $array);
+        $this->assertArrayPart(array('path' => array('to' => array())), $array);
+        $this->assertArrayPart(array('path' => array('to' => array('the' => array()))), $array);
+        $this->assertArrayPart(array('path' => array('to' => array('the' => array('cake' => 'is a lie')))), $array);
+        
+        try {
+            $this->assertArrayPart(array('path' => array('to' => array('the' => array('cake' => 'is not a lie')))), $array);
+        }
+        catch (PHPUnit_Framework_AssertionFailedError $e) {
+            return;
+        }
+
+        $this->fail();
+    }
+
+    /**
+     * @covers PHPUnit_Framework_Assert::assertArrayPart
+     */
+    public function testAssertArrayPartWithObjects()
+    {
+        $obj = new \stdClass;
+        $reference = &$obj;
+        $array = array('a' => $obj);
+        
+        $this->assertArrayPart(array('a' => $reference), $array);
+
+        try {
+            $this->assertArrayPart(array('a' => new \stdClass), $array);
+        }
+        catch (PHPUnit_Framework_AssertionFailedError $e) {
+            return;
+        }
+
+        $this->fail();
+    }
+
+    /**
      * @covers            PHPUnit_Framework_Assert::assertArrayNotHasKey
      * @expectedException PHPUnit_Framework_Exception
      */
