@@ -1,6 +1,6 @@
 #!/usr/bin/env php
 <?php
-if (__FILE__ == $GLOBALS['_SERVER']['SCRIPT_NAME']) {
+if (__FILE__ == realpath($GLOBALS['_SERVER']['SCRIPT_NAME'])) {
     $phar    = realpath($GLOBALS['_SERVER']['SCRIPT_NAME']);
     $execute = true;
 } else {
