@@ -104,14 +104,14 @@ function assertArrayHasKey($key, $array, $message = '')
 }
 
 /**
- * Asserts that an array has a specified key.
+ * Asserts that an array has a specified fragment.
  *
- * @param  mixed  $key
+ * @param  array|ArrayAccess  $partial
  * @param  array|ArrayAccess  $array
  * @param  string $message
- * @since  Method available since Release 3.0.0
+ * @since  Method available since Release 4.3.0
  */
-function assertArrayPart($fragment, $array, $message = '')
+function assertArrayPart($partial, $array, $message = '')
 {
     return call_user_func_array(
       'PHPUnit_Framework_Assert::assertArrayPart',

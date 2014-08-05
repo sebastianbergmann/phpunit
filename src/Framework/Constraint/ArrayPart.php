@@ -41,35 +41,32 @@
  * @copyright  2001-2014 Sebastian Bergmann <sebastian@phpunit.de>
  * @license    http://www.opensource.org/licenses/BSD-3-Clause  The BSD 3-Clause License
  * @link       http://www.phpunit.de/
- * @since      File available since Release 3.0.0
+ * @since      File available since Release 4.3.0
  */
 
 /**
- * Constraint that asserts that the array it is evaluated for has a given key.
+ * Constraint that asserts that the array it is evaluated for has a specified fragment.
  *
- * Uses array_key_exists() to check if the key is found in the input array, if
- * not found the evaluation fails.
- *
- * The array key is passed in the constructor.
+ * Uses array_replace_recursive() to check if a partial array scheme is part of the
+ * subject array.
  *
  * @package    PHPUnit
  * @subpackage Framework_Constraint
- * @author     Sebastian Bergmann <sebastian@phpunit.de>
- * @author     Bernhard Schussek <bschussek@2bepublished.at>
+ * @author     Márcio Almada <marcio3w@gmail.com>
  * @copyright  2001-2014 Sebastian Bergmann <sebastian@phpunit.de>
  * @license    http://www.opensource.org/licenses/BSD-3-Clause  The BSD 3-Clause License
  * @link       http://www.phpunit.de/
- * @since      Class available since Release 3.0.0
+ * @since      Class available since Release 4.3.0
  */
 class PHPUnit_Framework_Constraint_ArrayPart extends PHPUnit_Framework_Constraint
 {
     /**
-     * @var integer|string
+     * @var array|ArrayAccess
      */
     protected $partial;
 
     /**
-     * @param integer|string $key
+     * @param array|ArrayAccess $partial
      */
     public function __construct($partial)
     {
@@ -81,10 +78,11 @@ class PHPUnit_Framework_Constraint_ArrayPart extends PHPUnit_Framework_Constrain
      * Evaluates the constraint for parameter $other. Returns true if the
      * constraint is met, false otherwise.
      *
-     * @param  mixed $other Value or object to evaluate.
+     * @param  array|ArrayAccess $other  Array or ArrayAcess object to evaluate.
+     * @param  boolean           $strict Checks for object identity
      * @return bool
      */
-    protected function matches($other)
+    protected function matches($other, $strict = false)
     {
         return $other === array_replace_recursive($other, $this->partial);
     }
