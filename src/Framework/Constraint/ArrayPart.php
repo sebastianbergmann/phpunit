@@ -66,11 +66,18 @@ class PHPUnit_Framework_Constraint_ArrayPart extends PHPUnit_Framework_Constrain
     protected $partial;
 
     /**
-     * @param array|ArrayAccess $partial
+     * @var boolean
      */
-    public function __construct($partial)
+    protected $strict;
+
+    /**
+     * @param array|ArrayAccess $partial
+     * @param boolean           $strict Check for object identity
+     */
+    public function __construct($partial, $strict = false)
     {
         parent::__construct();
+        $this->strict  = $strict;
         $this->partial = $partial;
     }
 
@@ -79,12 +86,17 @@ class PHPUnit_Framework_Constraint_ArrayPart extends PHPUnit_Framework_Constrain
      * constraint is met, false otherwise.
      *
      * @param  array|ArrayAccess $other  Array or ArrayAcess object to evaluate.
-     * @param  boolean           $strict Checks for object identity
      * @return bool
      */
-    protected function matches($other, $strict = false)
+    protected function matches($other)
     {
-        return $other === array_replace_recursive($other, $this->partial);
+        $patched = array_replace_recursive($other, $this->partial);
+
+        if($this->strict) {
+            return $other === $patched;
+        } else {
+            return $other == $patched;
+        }
     }
 
     /**

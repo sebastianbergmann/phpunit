@@ -93,12 +93,13 @@ abstract class PHPUnit_Framework_Assert
     /**
      * Asserts that an array has a specified fragment.
      *
-     * @param array|ArrayAccess $partial
-     * @param array|ArrayAccess $array
+     * @param array|ArrayAccess $partial Array partial
+     * @param array|ArrayAccess $array   Subject array
+     * @param boolean           $strict  Check for object identity
      * @param string            $message
      * @since Method available since Release 4.3.0
      */
-    public static function assertArrayPart($partial, $array, $message = '')
+    public static function assertArrayPart($partial, $array, $strict = false, $message = '')
     {
         if(!is_array($partial)) {
             throw PHPUnit_Util_InvalidArgumentHelper::factory(
@@ -112,7 +113,7 @@ abstract class PHPUnit_Framework_Assert
             );
         }
 
-        $constraint = new PHPUnit_Framework_Constraint_ArrayPart($partial);
+        $constraint = new PHPUnit_Framework_Constraint_ArrayPart($partial, $strict);
 
         self::assertThat($array, $constraint, $message);
     }
