@@ -220,6 +220,7 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
 
     /**
      * @covers PHPUnit_Framework_Assert::assertArrayPart
+     * @covers PHPUnit_Framework_Constraint_ArrayPart
      */
     public function testAssertArrayPart()
     {
@@ -250,6 +251,7 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
 
     /**
      * @covers PHPUnit_Framework_Assert::assertArrayPart
+     * @covers PHPUnit_Framework_Constraint_ArrayPart
      */
     public function testAssertArrayPartWithDeepNestedArrays()
     {
@@ -280,27 +282,43 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
 
     /**
      * @covers PHPUnit_Framework_Assert::assertArrayPart
+     * @covers PHPUnit_Framework_Constraint_ArrayPart
      */
-    public function testAssertArrayPartWithObjects()
+    public function testAssertArrayPartWithNoStrictCheckAndObjects()
     {
         $obj = new \stdClass;
         $reference = &$obj;
         $array = array('a' => $obj);
         
         $this->assertArrayPart(array('a' => $reference), $array);
+        $this->assertArrayPart(array('a' => new \stdClass), $array);
+    }
+
+    /**
+     * @covers PHPUnit_Framework_Assert::assertArrayPart
+     * @covers PHPUnit_Framework_Constraint_ArrayPart
+     */
+    public function testAssertArrayPartWithStrictCheckAndObjects()
+    {
+        $obj = new \stdClass;
+        $reference = &$obj;
+        $array = array('a' => $obj);
+
+        $this->assertArrayPart(array('a' => $reference), $array, true);
 
         try {
-            $this->assertArrayPart(array('a' => new \stdClass), $array);
+            $this->assertArrayPart(array('a' => new \stdClass), $array, true);
         }
         catch (PHPUnit_Framework_AssertionFailedError $e) {
             return;
         }
 
-        $this->fail();
+        $this->fail('Strict recursive array check fail.');
     }
 
     /**
      * @covers PHPUnit_Framework_Assert::assertArrayPart
+     * @covers PHPUnit_Framework_Constraint_ArrayPart
      * @expectedException PHPUnit_Framework_Exception
      * @expectedExceptionMessage array or ArrayAccess
      * @dataProvider assertArrayPartInvalidArgumentProvider
