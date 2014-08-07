@@ -104,18 +104,18 @@ function assertArrayHasKey($key, $array, $message = '')
 }
 
 /**
- * Asserts that an array has a specified fragment.
+ * Asserts that an array has a specified subset.
  *
- * @param array|ArrayAccess  $partial
+ * @param array|ArrayAccess  $subset
  * @param array|ArrayAccess  $array
  * @param boolean            $strict  Check for object identity
- * @param string $message
- * @since Method available since Release 4.3.0
+ * @param string             $message
+ * @since Method available since Release 4.4.0
  */
-function assertArrayPart($partial, $array, $strict = false, $message = '')
+function assertArraySubset($subset, $array, $strict = false, $message = '')
 {
     return call_user_func_array(
-      'PHPUnit_Framework_Assert::assertArrayPart',
+      'PHPUnit_Framework_Assert::assertArraySubset',
       func_get_args()
     );
 }

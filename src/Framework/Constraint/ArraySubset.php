@@ -41,13 +41,13 @@
  * @copyright  2001-2014 Sebastian Bergmann <sebastian@phpunit.de>
  * @license    http://www.opensource.org/licenses/BSD-3-Clause  The BSD 3-Clause License
  * @link       http://www.phpunit.de/
- * @since      File available since Release 4.3.0
+ * @since      File available since Release 4.4.0
  */
 
 /**
- * Constraint that asserts that the array it is evaluated for has a specified fragment.
+ * Constraint that asserts that the array it is evaluated for has a specified subset.
  *
- * Uses array_replace_recursive() to check if a partial array scheme is part of the
+ * Uses array_replace_recursive() to check if a key value subset is part of the
  * subject array.
  *
  * @package    PHPUnit
@@ -56,14 +56,14 @@
  * @copyright  2001-2014 Sebastian Bergmann <sebastian@phpunit.de>
  * @license    http://www.opensource.org/licenses/BSD-3-Clause  The BSD 3-Clause License
  * @link       http://www.phpunit.de/
- * @since      Class available since Release 4.3.0
+ * @since      Class available since Release 4.4.0
  */
-class PHPUnit_Framework_Constraint_ArrayPart extends PHPUnit_Framework_Constraint
+class PHPUnit_Framework_Constraint_ArraySubset extends PHPUnit_Framework_Constraint
 {
     /**
      * @var array|ArrayAccess
      */
-    protected $partial;
+    protected $subset;
 
     /**
      * @var boolean
@@ -71,14 +71,14 @@ class PHPUnit_Framework_Constraint_ArrayPart extends PHPUnit_Framework_Constrain
     protected $strict;
 
     /**
-     * @param array|ArrayAccess $partial
+     * @param array|ArrayAccess $subset
      * @param boolean           $strict Check for object identity
      */
-    public function __construct($partial, $strict = false)
+    public function __construct($subset, $strict = false)
     {
         parent::__construct();
         $this->strict  = $strict;
-        $this->partial = $partial;
+        $this->subset = $subset;
     }
 
     /**
@@ -90,7 +90,7 @@ class PHPUnit_Framework_Constraint_ArrayPart extends PHPUnit_Framework_Constrain
      */
     protected function matches($other)
     {
-        $patched = array_replace_recursive($other, $this->partial);
+        $patched = array_replace_recursive($other, $this->subset);
 
         if($this->strict) {
             return $other === $patched;
@@ -106,7 +106,7 @@ class PHPUnit_Framework_Constraint_ArrayPart extends PHPUnit_Framework_Constrain
      */
     public function toString()
     {
-        return 'has the partial ' . $this->exporter->export($this->partial);
+        return 'has the subset ' . $this->exporter->export($this->subset);
     }
 
     /**

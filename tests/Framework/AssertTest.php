@@ -219,10 +219,10 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers PHPUnit_Framework_Assert::assertArrayPart
-     * @covers PHPUnit_Framework_Constraint_ArrayPart
+     * @covers PHPUnit_Framework_Assert::assertArraySubset
+     * @covers PHPUnit_Framework_Constraint_ArraySubset
      */
-    public function testAssertArrayPart()
+    public function testassertArraySubset()
     {
         $array = array(
             'a' => 'item a',
@@ -231,16 +231,16 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
             'd' => array('a2' => array('a3' => 'item a3', 'b3' => 'item b3'))
         );
 
-        $this->assertArrayPart(array('a' => 'item a', 'c' => array('a2' => 'item a2')), $array);
-        $this->assertArrayPart(array('a' => 'item a', 'd' => array('a2' => array('b3' => 'item b3'))), $array);
+        $this->assertArraySubset(array('a' => 'item a', 'c' => array('a2' => 'item a2')), $array);
+        $this->assertArraySubset(array('a' => 'item a', 'd' => array('a2' => array('b3' => 'item b3'))), $array);
 
         try {
-            $this->assertArrayPart(array('a' => 'bad value'), $array);
+            $this->assertArraySubset(array('a' => 'bad value'), $array);
         }
         catch (PHPUnit_Framework_AssertionFailedError $e) {}
 
         try {
-            $this->assertArrayPart(array('d' => array('a2' => array('bad index' => 'item b3'))), $array);
+            $this->assertArraySubset(array('d' => array('a2' => array('bad index' => 'item b3'))), $array);
         }
         catch (PHPUnit_Framework_AssertionFailedError $e) {
             return;
@@ -250,10 +250,10 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers PHPUnit_Framework_Assert::assertArrayPart
-     * @covers PHPUnit_Framework_Constraint_ArrayPart
+     * @covers PHPUnit_Framework_Assert::assertArraySubset
+     * @covers PHPUnit_Framework_Constraint_ArraySubset
      */
-    public function testAssertArrayPartWithDeepNestedArrays()
+    public function testassertArraySubsetWithDeepNestedArrays()
     {
         $array = array(
             'path' => array(
@@ -265,13 +265,13 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
             )
         );
 
-        $this->assertArrayPart(array('path' => array()), $array);
-        $this->assertArrayPart(array('path' => array('to' => array())), $array);
-        $this->assertArrayPart(array('path' => array('to' => array('the' => array()))), $array);
-        $this->assertArrayPart(array('path' => array('to' => array('the' => array('cake' => 'is a lie')))), $array);
+        $this->assertArraySubset(array('path' => array()), $array);
+        $this->assertArraySubset(array('path' => array('to' => array())), $array);
+        $this->assertArraySubset(array('path' => array('to' => array('the' => array()))), $array);
+        $this->assertArraySubset(array('path' => array('to' => array('the' => array('cake' => 'is a lie')))), $array);
         
         try {
-            $this->assertArrayPart(array('path' => array('to' => array('the' => array('cake' => 'is not a lie')))), $array);
+            $this->assertArraySubset(array('path' => array('to' => array('the' => array('cake' => 'is not a lie')))), $array);
         }
         catch (PHPUnit_Framework_AssertionFailedError $e) {
             return;
@@ -281,33 +281,33 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers PHPUnit_Framework_Assert::assertArrayPart
-     * @covers PHPUnit_Framework_Constraint_ArrayPart
+     * @covers PHPUnit_Framework_Assert::assertArraySubset
+     * @covers PHPUnit_Framework_Constraint_ArraySubset
      */
-    public function testAssertArrayPartWithNoStrictCheckAndObjects()
+    public function testassertArraySubsetWithNoStrictCheckAndObjects()
     {
         $obj = new \stdClass;
         $reference = &$obj;
         $array = array('a' => $obj);
         
-        $this->assertArrayPart(array('a' => $reference), $array);
-        $this->assertArrayPart(array('a' => new \stdClass), $array);
+        $this->assertArraySubset(array('a' => $reference), $array);
+        $this->assertArraySubset(array('a' => new \stdClass), $array);
     }
 
     /**
-     * @covers PHPUnit_Framework_Assert::assertArrayPart
-     * @covers PHPUnit_Framework_Constraint_ArrayPart
+     * @covers PHPUnit_Framework_Assert::assertArraySubset
+     * @covers PHPUnit_Framework_Constraint_ArraySubset
      */
-    public function testAssertArrayPartWithStrictCheckAndObjects()
+    public function testassertArraySubsetWithStrictCheckAndObjects()
     {
         $obj = new \stdClass;
         $reference = &$obj;
         $array = array('a' => $obj);
 
-        $this->assertArrayPart(array('a' => $reference), $array, true);
+        $this->assertArraySubset(array('a' => $reference), $array, true);
 
         try {
-            $this->assertArrayPart(array('a' => new \stdClass), $array, true);
+            $this->assertArraySubset(array('a' => new \stdClass), $array, true);
         }
         catch (PHPUnit_Framework_AssertionFailedError $e) {
             return;
@@ -317,18 +317,18 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers PHPUnit_Framework_Assert::assertArrayPart
-     * @covers PHPUnit_Framework_Constraint_ArrayPart
+     * @covers PHPUnit_Framework_Assert::assertArraySubset
+     * @covers PHPUnit_Framework_Constraint_ArraySubset
      * @expectedException PHPUnit_Framework_Exception
      * @expectedExceptionMessage array or ArrayAccess
-     * @dataProvider assertArrayPartInvalidArgumentProvider
+     * @dataProvider assertArraySubsetInvalidArgumentProvider
      */
-    public function testAssertArrayPartRaisesExceptionForInvalidArguments($partial, $subject)
+    public function testassertArraySubsetRaisesExceptionForInvalidArguments($partial, $subject)
     {
-        $this->assertArrayPart($partial, $subject);
+        $this->assertArraySubset($partial, $subject);
     }
 
-    public function assertArrayPartInvalidArgumentProvider()
+    public function assertArraySubsetInvalidArgumentProvider()
     {
         return array(
             array(false, array()),
