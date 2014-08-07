@@ -26,7 +26,7 @@
         "phpunit/php-text-template": "~1.2",
         "phpunit/php-code-coverage": "~2.0",
         "phpunit/php-timer": "~1.0.2",
-        "phpunit/phpunit-mock-objects": "~2.1",
+        "phpunit/phpunit-mock-objects": "2.1.5",
         "symfony/yaml": "~2.0",
         "sebastian/comparator": "~1.0",
         "sebastian/diff": "~1.1",
