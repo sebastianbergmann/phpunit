@@ -65,7 +65,7 @@
     },
     "extra": {
         "branch-alias": {
-            "dev-master": "4.3.x-dev"
+            "dev-master": "4.4.x-dev"
         }
     },
     "include-path": [
