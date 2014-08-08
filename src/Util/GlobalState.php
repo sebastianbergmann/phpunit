@@ -200,6 +200,14 @@ class PHPUnit_Util_GlobalState
                 continue;
             }
 
+            // Skip invalid protocols (like custom stream wrappers)
+            // This should not interfere with Windows drives
+            if (preg_match('/^([a-z0-9]+):/', $file, $matches)) {
+                if (!in_array($matches[1], array('phar', 'file', 'ftp'))) {
+                    continue;
+                }
+            }
+
             if (!$blacklist->isBlacklisted($file) && is_file($file)) {
                 $result = 'require_once \'' . $file . "';\n" . $result;
             }
