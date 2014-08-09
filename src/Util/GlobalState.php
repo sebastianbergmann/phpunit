@@ -202,7 +202,7 @@ class PHPUnit_Util_GlobalState
 
             // Skip invalid protocols (like custom stream wrappers)
             // This should not interfere with Windows drives
-            if (preg_match('/^([a-z0-9]+):/', $file, $matches)) {
+            if (preg_match('/^([a-z][a-z0-9.+-]+):/i', $file, $matches)) {
                 if (!in_array($matches[1], array('phar', 'file', 'ftp'))) {
                     continue;
                 }
