@@ -153,7 +153,8 @@ class PHPUnit_Framework_Constraint_IsEqual extends PHPUnit_Framework_Constraint
 
         try {
             $comparator = $comparatorFactory->getComparatorFor(
-                $this->value, $other
+                $this->value,
+                $other
             );
 
             $comparator->assertEquals(

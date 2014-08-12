@@ -294,7 +294,8 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
 
         if (!is_object($testClass)) {
             throw PHPUnit_Util_InvalidArgumentHelper::factory(
-                1, 'class name or object'
+                1,
+                'class name or object'
             );
         }
 
@@ -425,7 +426,8 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
         if (!(is_array($filenames) ||
              (is_object($filenames) && $filenames instanceof Iterator))) {
             throw PHPUnit_Util_InvalidArgumentHelper::factory(
-                1, 'array or iterator'
+                1,
+                'array or iterator'
             );
         }
 
@@ -466,14 +468,19 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
             );
         }
 
-        $backupSettings           = PHPUnit_Util_Test::getBackupSettings(
-            $className, $name
+        $backupSettings = PHPUnit_Util_Test::getBackupSettings(
+            $className,
+            $name
         );
-        $preserveGlobalState      = PHPUnit_Util_Test::getPreserveGlobalStateSettings(
-            $className, $name
+
+        $preserveGlobalState = PHPUnit_Util_Test::getPreserveGlobalStateSettings(
+            $className,
+            $name
         );
+
         $runTestInSeparateProcess = PHPUnit_Util_Test::getProcessIsolationSettings(
-            $className, $name
+            $className,
+            $name
         );
 
         $constructor = $theClass->getConstructor();
@@ -490,7 +497,8 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
             else {
                 try {
                     $data = PHPUnit_Util_Test::getProvidedData(
-                        $className, $name
+                        $className,
+                        $name
                     );
                 } catch (Exception $e) {
                     if (!($e instanceof PHPUnit_Framework_SkippedTestError || $e instanceof PHPUnit_Framework_IncompleteTestError)) {
