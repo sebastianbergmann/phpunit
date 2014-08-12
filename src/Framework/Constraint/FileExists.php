@@ -84,9 +84,8 @@ class PHPUnit_Framework_Constraint_FileExists extends PHPUnit_Framework_Constrai
     protected function failureDescription($other)
     {
         return sprintf(
-          'file "%s" exists',
-
-          $other
+            'file "%s" exists',
+            $other
         );
     }
 

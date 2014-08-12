@@ -99,10 +99,10 @@ class PHPUnit_Framework_Constraint_IsInstanceOf extends PHPUnit_Framework_Constr
     protected function failureDescription($other)
     {
         return sprintf(
-          '%s is an instance of %s "%s"',
-          $this->exporter->shortenedExport($other),
-          $this->getType(),
-          $this->className
+            '%s is an instance of %s "%s"',
+            $this->exporter->shortenedExport($other),
+            $this->getType(),
+            $this->className
         );
     }
 
@@ -114,9 +114,9 @@ class PHPUnit_Framework_Constraint_IsInstanceOf extends PHPUnit_Framework_Constr
     public function toString()
     {
         return sprintf(
-          'is instance of %s "%s"',
-          $this->getType(),
-          $this->className
+            'is instance of %s "%s"',
+            $this->getType(),
+            $this->className
         );
     }
 

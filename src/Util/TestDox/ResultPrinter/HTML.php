@@ -78,8 +78,8 @@ class PHPUnit_Util_TestDox_ResultPrinter_HTML extends PHPUnit_Util_TestDox_Resul
     protected function startClass($name)
     {
         $this->write(
-          '<h2 id="' . $name . '">' . $this->currentTestClassPrettified .
-          '</h2><ul>'
+            '<h2 id="' . $name . '">' . $this->currentTestClassPrettified .
+            '</h2><ul>'
         );
     }
 

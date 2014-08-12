@@ -67,10 +67,10 @@ class PHPUnit_Runner_Filter_Factory
     {
         if (!$filter->isSubclassOf('RecursiveFilterIterator')) {
             throw new InvalidArgumentException(
-              sprintf(
-                'Class "%s" does not extend RecursiveFilterIterator',
-                $filter->name
-              )
+                sprintf(
+                    'Class "%s" does not extend RecursiveFilterIterator',
+                    $filter->name
+                )
             );
         }
 

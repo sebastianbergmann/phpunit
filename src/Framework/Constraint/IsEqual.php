@@ -153,15 +153,15 @@ class PHPUnit_Framework_Constraint_IsEqual extends PHPUnit_Framework_Constraint
 
         try {
             $comparator = $comparatorFactory->getComparatorFor(
-              $this->value, $other
+                $this->value, $other
             );
 
             $comparator->assertEquals(
-              $this->value,
-              $other,
-              $this->delta,
-              $this->canonicalize,
-              $this->ignoreCase
+                $this->value,
+                $other,
+                $this->delta,
+                $this->canonicalize,
+                $this->ignoreCase
             );
         } catch (SebastianBergmann\Comparator\ComparisonFailure $f) {
             if ($returnResult) {
@@ -169,8 +169,8 @@ class PHPUnit_Framework_Constraint_IsEqual extends PHPUnit_Framework_Constraint
             }
 
             throw new PHPUnit_Framework_ExpectationFailedException(
-              trim($description . "\n" . $f->getMessage()),
-              $f
+                trim($description . "\n" . $f->getMessage()),
+                $f
             );
         }
 
@@ -191,25 +191,22 @@ class PHPUnit_Framework_Constraint_IsEqual extends PHPUnit_Framework_Constraint
                 return 'is equal to <text>';
             } else {
                 return sprintf(
-                  'is equal to <string:%s>',
-
-                  $this->value
+                    'is equal to <string:%s>',
+                    $this->value
                 );
             }
         } else {
             if ($this->delta != 0) {
                 $delta = sprintf(
-                  ' with delta <%F>',
-
-                  $this->delta
+                    ' with delta <%F>',
+                    $this->delta
                 );
             }
 
             return sprintf(
-              'is equal to %s%s',
-
-              $this->exporter->export($this->value),
-              $delta
+                'is equal to %s%s',
+                $this->exporter->export($this->value),
+                $delta
             );
         }
     }

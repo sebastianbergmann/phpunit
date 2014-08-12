@@ -9,7 +9,7 @@ class Issue1351Test extends PHPUnit_Framework_TestCase
     public function testFailurePre()
     {
         $this->instance = new ChildProcessClass1351();
-        $this->assertFalse(TRUE, 'Expected failure.');
+        $this->assertFalse(true, 'Expected failure.');
     }
 
     public function testFailurePost()

@@ -73,9 +73,9 @@ class PHPUnit_Util_Filesystem
     public static function classNameToFilename($className)
     {
         return str_replace(
-          array('_', '\\'),
-          DIRECTORY_SEPARATOR,
-          $className
+            array('_', '\\'),
+            DIRECTORY_SEPARATOR,
+            $className
         ) . '.php';
     }
 }

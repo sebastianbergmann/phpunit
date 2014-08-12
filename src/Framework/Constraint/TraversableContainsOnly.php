@@ -81,7 +81,7 @@ class PHPUnit_Framework_Constraint_TraversableContainsOnly extends PHPUnit_Frame
             $this->constraint = new PHPUnit_Framework_Constraint_IsType($type);
         } else {
             $this->constraint = new PHPUnit_Framework_Constraint_IsInstanceOf(
-              $type
+                $type
             );
         }
 

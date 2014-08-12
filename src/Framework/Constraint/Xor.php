@@ -73,7 +73,7 @@ class PHPUnit_Framework_Constraint_Xor extends PHPUnit_Framework_Constraint
         foreach ($constraints as $constraint) {
             if (!($constraint instanceof PHPUnit_Framework_Constraint)) {
                 $constraint = new PHPUnit_Framework_Constraint_IsEqual(
-                  $constraint
+                    $constraint
                 );
             }
 

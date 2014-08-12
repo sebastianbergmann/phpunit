@@ -83,7 +83,7 @@ class PHPUnit_Framework_Constraint_ExceptionMessageRegExp extends PHPUnit_Framew
 
         if(false === $match) {
             throw new PHPUnit_Framework_Exception (
-              "Invalid expected exception message regex given: '{$this->expectedMessageRegExp}'"
+                "Invalid expected exception message regex given: '{$this->expectedMessageRegExp}'"
             );
         }
 
@@ -102,9 +102,9 @@ class PHPUnit_Framework_Constraint_ExceptionMessageRegExp extends PHPUnit_Framew
     protected function failureDescription($other)
     {
         return sprintf(
-          "exception message '%s' matches '%s'",
-          $other->getMessage(),
-          $this->expectedMessageRegExp
+            "exception message '%s' matches '%s'",
+            $other->getMessage(),
+            $this->expectedMessageRegExp
         );
     }
 
@@ -115,5 +115,4 @@ class PHPUnit_Framework_Constraint_ExceptionMessageRegExp extends PHPUnit_Framew
     {
         return "exception message matches ";
     }
-
 }

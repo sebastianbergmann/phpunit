@@ -26,6 +26,10 @@ class BeforeClassAndAfterClassTest extends PHPUnit_Framework_TestCase
         self::$afterClassWasRun++;
     }
 
-    public function test1() {}
-    public function test2() {}
+    public function test1()
+    {
+    }
+    public function test2()
+    {
+    }
 }

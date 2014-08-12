@@ -97,9 +97,8 @@ class PHPUnit_Framework_Constraint_ClassHasAttribute extends PHPUnit_Framework_C
     public function toString()
     {
         return sprintf(
-          'has attribute "%s"',
-
-          $this->attributeName
+            'has attribute "%s"',
+            $this->attributeName
         );
     }
 
@@ -115,11 +114,10 @@ class PHPUnit_Framework_Constraint_ClassHasAttribute extends PHPUnit_Framework_C
     protected function failureDescription($other)
     {
         return sprintf(
-          '%sclass "%s" %s',
-
-          is_object($other) ? 'object of ' : '',
-          is_object($other) ? get_class($other) : $other,
-          $this->toString()
+            '%sclass "%s" %s',
+            is_object($other) ? 'object of ' : '',
+            is_object($other) ? get_class($other) : $other,
+            $this->toString()
         );
     }
 }

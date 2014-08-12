@@ -68,7 +68,7 @@ class PHPUnit_Runner_StandardTestSuiteLoader implements PHPUnit_Runner_TestSuite
 
         if (empty($suiteClassFile)) {
             $suiteClassFile = PHPUnit_Util_Filesystem::classNameToFilename(
-              $suiteClassName
+                $suiteClassName
             );
         }
 
@@ -78,7 +78,7 @@ class PHPUnit_Runner_StandardTestSuiteLoader implements PHPUnit_Runner_TestSuite
             $filename = PHPUnit_Util_Fileloader::checkAndLoad($suiteClassFile);
 
             $loadedClasses = array_values(
-              array_diff(get_declared_classes(), $loadedClasses)
+                array_diff(get_declared_classes(), $loadedClasses)
             );
         }
 
@@ -137,12 +137,11 @@ class PHPUnit_Runner_StandardTestSuiteLoader implements PHPUnit_Runner_TestSuite
         }
 
         throw new PHPUnit_Framework_Exception(
-          sprintf(
-            "Class '%s' could not be found in '%s'.",
-
-            $suiteClassName,
-            $suiteClassFile
-          )
+            sprintf(
+                "Class '%s' could not be found in '%s'.",
+                $suiteClassName,
+                $suiteClassFile
+            )
         );
     }
 

@@ -86,14 +86,13 @@ class PHPUnit_Framework_Constraint_IsJson extends PHPUnit_Framework_Constraint
     {
         json_decode($other);
         $error = PHPUnit_Framework_Constraint_JsonMatches_ErrorMessageProvider::determineJsonError(
-          json_last_error()
+            json_last_error()
         );
 
         return sprintf(
-          '%s is valid JSON (%s)',
-
-          $this->exporter->shortenedExport($other),
-          $error
+            '%s is valid JSON (%s)',
+            $this->exporter->shortenedExport($other),
+            $error
         );
     }
 

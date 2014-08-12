@@ -96,5 +96,4 @@ class ExceptionMessageRegExpTest extends PHPUnit_Framework_TestCase
     {
         throw new Exception("A variadic exception message");
     }
-
 }
