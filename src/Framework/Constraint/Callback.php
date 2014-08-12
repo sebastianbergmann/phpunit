@@ -65,7 +65,8 @@ class PHPUnit_Framework_Constraint_Callback extends PHPUnit_Framework_Constraint
     {
         if (!is_callable($callback)) {
             throw PHPUnit_Util_InvalidArgumentHelper::factory(
-                1, 'callable'
+                1,
+                'callable'
             );
         }
 

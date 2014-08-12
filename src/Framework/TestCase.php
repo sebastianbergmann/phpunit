@@ -341,7 +341,8 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
     public function getAnnotations()
     {
         return PHPUnit_Util_Test::parseTestMethodAnnotations(
-            get_class($this), $this->name
+            get_class($this),
+            $this->name
         );
     }
 
@@ -369,7 +370,8 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
     public function getSize()
     {
         return PHPUnit_Util_Test::getSize(
-            get_class($this), $this->getName(false)
+            get_class($this),
+            $this->getName(false)
         );
     }
 
@@ -487,7 +489,8 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
     {
         try {
             $expectedException = PHPUnit_Util_Test::getExpectedException(
-                get_class($this), $this->name
+                get_class($this),
+                $this->name
             );
 
             if ($expectedException !== false) {
@@ -525,7 +528,8 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
     {
         try {
             $useErrorHandler = PHPUnit_Util_Test::getErrorHandlerSettings(
-                get_class($this), $this->name
+                get_class($this),
+                $this->name
             );
 
             if ($useErrorHandler !== null) {
@@ -545,7 +549,8 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
         }
 
         $missingRequirements = PHPUnit_Util_Test::getMissingRequirements(
-            get_class($this), $this->name
+            get_class($this),
+            $this->name
         );
 
         if ($missingRequirements) {
@@ -891,7 +896,8 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
 
         try {
             $testResult = $method->invokeArgs(
-                $this, array_merge($this->data, $this->dependencyInput)
+                $this,
+                array_merge($this->data, $this->dependencyInput)
             );
         } catch (Exception $e) {
             $checkException = false;
@@ -1281,9 +1287,7 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
      */
     public function getMockBuilder($className)
     {
-        return new PHPUnit_Framework_MockObject_MockBuilder(
-            $this, $className
-        );
+        return new PHPUnit_Framework_MockObject_MockBuilder($this, $className);
     }
 
     /**
@@ -1367,15 +1371,16 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
     protected function getMockFromWsdl($wsdlFile, $originalClassName = '', $mockClassName = '', array $methods = array(), $callOriginalConstructor = true, array $options = array())
     {
         if ($originalClassName === '') {
-            $originalClassName = str_replace(
-                '.wsdl', '', basename($wsdlFile)
-            );
+            $originalClassName = str_replace('.wsdl', '', basename($wsdlFile));
         }
 
         if (!class_exists($originalClassName)) {
             eval(
             $this->getMockObjectGenerator()->generateClassFromWsdl(
-                $wsdlFile, $originalClassName, $methods, $options
+                $wsdlFile,
+                $originalClassName,
+                $methods,
+                $options
             )
             );
         }
@@ -1777,7 +1782,8 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
                         $this,
                         new PHPUnit_Framework_SkippedTestError(
                             sprintf(
-                                'This test depends on "%s" to pass.', $dependency
+                                'This test depends on "%s" to pass.',
+                                $dependency
                             )
                         ),
                         0
@@ -1940,7 +1946,8 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
             $this->output = $output;
         } else {
             $this->output = call_user_func_array(
-                $this->outputCallback, array($output)
+                $this->outputCallback,
+                array($output)
             );
         }
 

@@ -117,7 +117,8 @@ class PHPUnit_Util_Test
     public static function getLinesToBeCovered($className, $methodName)
     {
         $annotations = self::parseTestMethodAnnotations(
-            $className, $methodName
+            $className,
+            $methodName
         );
 
         if (isset($annotations['class']['coversNothing']) || isset($annotations['method']['coversNothing'])) {
@@ -151,7 +152,8 @@ class PHPUnit_Util_Test
     private static function getLinesToBeCoveredOrUsed($className, $methodName, $mode)
     {
         $annotations = self::parseTestMethodAnnotations(
-            $className, $methodName
+            $className,
+            $methodName
         );
 
         $classShortcut = null;
@@ -310,7 +312,8 @@ class PHPUnit_Util_Test
 
         if (preg_match(self::REGEX_EXPECTED_EXCEPTION, $docComment, $matches)) {
             $annotations = self::parseTestMethodAnnotations(
-                $className, $methodName
+                $className,
+                $methodName
             );
 
             $class   = $matches[1];
@@ -511,10 +514,14 @@ class PHPUnit_Util_Test
     {
         return array(
           'backupGlobals' => self::getBooleanAnnotationSetting(
-              $className, $methodName, 'backupGlobals'
+              $className,
+              $methodName,
+              'backupGlobals'
           ),
           'backupStaticAttributes' => self::getBooleanAnnotationSetting(
-              $className, $methodName, 'backupStaticAttributes'
+              $className,
+              $methodName,
+              'backupStaticAttributes'
           )
         );
     }
@@ -530,7 +537,8 @@ class PHPUnit_Util_Test
     public static function getDependencies($className, $methodName)
     {
         $annotations = self::parseTestMethodAnnotations(
-            $className, $methodName
+            $className,
+            $methodName
         );
 
         $dependencies = array();
@@ -541,7 +549,8 @@ class PHPUnit_Util_Test
 
         if (isset($annotations['method']['depends'])) {
             $dependencies = array_merge(
-                $dependencies, $annotations['method']['depends']
+                $dependencies,
+                $annotations['method']['depends']
             );
         }
 
@@ -559,7 +568,9 @@ class PHPUnit_Util_Test
     public static function getErrorHandlerSettings($className, $methodName)
     {
         return self::getBooleanAnnotationSetting(
-            $className, $methodName, 'errorHandler'
+            $className,
+            $methodName,
+            'errorHandler'
         );
     }
 
@@ -574,7 +585,8 @@ class PHPUnit_Util_Test
     public static function getGroups($className, $methodName = '')
     {
         $annotations = self::parseTestMethodAnnotations(
-            $className, $methodName
+            $className,
+            $methodName
         );
 
         $groups = array();
@@ -651,7 +663,8 @@ class PHPUnit_Util_Test
     public static function getTickets($className, $methodName)
     {
         $annotations = self::parseTestMethodAnnotations(
-            $className, $methodName
+            $className,
+            $methodName
         );
 
         $tickets = array();
@@ -678,7 +691,8 @@ class PHPUnit_Util_Test
     public static function getProcessIsolationSettings($className, $methodName)
     {
         $annotations = self::parseTestMethodAnnotations(
-            $className, $methodName
+            $className,
+            $methodName
         );
 
         if (isset($annotations['class']['runTestsInSeparateProcesses']) ||
@@ -700,7 +714,9 @@ class PHPUnit_Util_Test
     public static function getPreserveGlobalStateSettings($className, $methodName)
     {
         return self::getBooleanAnnotationSetting(
-            $className, $methodName, 'preserveGlobalState'
+            $className,
+            $methodName,
+            'preserveGlobalState'
         );
     }
 
@@ -773,7 +789,8 @@ class PHPUnit_Util_Test
     private static function getBooleanAnnotationSetting($className, $methodName, $settingName)
     {
         $annotations = self::parseTestMethodAnnotations(
-            $className, $methodName
+            $className,
+            $methodName
         );
 
         $result = null;
@@ -868,7 +885,8 @@ class PHPUnit_Util_Test
                         }
 
                         $codeToCoverList[] = new ReflectionMethod(
-                            $className, $methodName
+                            $className,
+                            $methodName
                         );
                     }
                 }
@@ -877,10 +895,7 @@ class PHPUnit_Util_Test
             $extended = false;
 
             if (strpos($element, '<extended>') !== false) {
-                $element = str_replace(
-                    '<extended>', '', $element
-                );
-
+                $element  = str_replace('<extended>', '', $element);
                 $extended = true;
             }
 
@@ -932,9 +947,7 @@ class PHPUnit_Util_Test
             $result[$filename] = array_unique(
                 array_merge(
                     $result[$filename],
-                    range(
-                        $reflector->getStartLine(), $reflector->getEndLine()
-                    )
+                    range($reflector->getStartLine(), $reflector->getEndLine())
                 )
             );
         }

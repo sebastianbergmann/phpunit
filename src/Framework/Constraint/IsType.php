@@ -65,7 +65,7 @@ class PHPUnit_Framework_Constraint_IsType extends PHPUnit_Framework_Constraint
     const TYPE_BOOL     = 'bool';
     const TYPE_FLOAT    = 'float';
     const TYPE_INT      = 'int';
-    const TYPE_null     = 'null';
+    const TYPE_NULL     = 'null';
     const TYPE_NUMERIC  = 'numeric';
     const TYPE_OBJECT   = 'object';
     const TYPE_RESOURCE = 'resource';
