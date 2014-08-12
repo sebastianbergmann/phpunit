@@ -202,10 +202,8 @@ class PHPUnit_Util_GlobalState
 
             // Skip invalid protocols (like custom stream wrappers)
             // This should not interfere with Windows drives
-            if (preg_match('/^([a-z][a-z0-9.+-]+):/i', $file, $matches)) {
-                if (!in_array($matches[1], array('phar', 'file', 'ftp'))) {
-                    continue;
-                }
+            if (preg_match('/^(?!file|phar)([a-z][a-z0-9.+-]+):/i', $file, $matches)) {
+                continue;
             }
 
             if (!$blacklist->isBlacklisted($file) && is_file($file)) {
