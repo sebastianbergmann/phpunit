@@ -12,9 +12,9 @@ php:
 before_script:
   - composer self-update
   - composer install --no-interaction --prefer-source --dev
-  - if [[ "$TRAVIS_PHP_VERSION" == hhvm* ]]; then export PHPUNIT_PREFIX='hhvm --config ./build/hhvm.ini'; fi
+  - if [[ "$TRAVIS_PHP_VERSION" == hhvm* ]]; then echo -e '\nhhvm.libxml.ext_entity_whitelist = "file"' | sudo tee -a /etc/hhvm/php.ini; fi
 
-script: $PHPUNIT_PREFIX ./phpunit --configuration ./build/travis-ci.xml
+script: ./phpunit --configuration ./build/travis-ci.xml
 
 notifications:
   email: false
