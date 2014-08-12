@@ -219,6 +219,124 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
     }
 
     /**
+     * @covers PHPUnit_Framework_Assert::assertArraySubset
+     * @covers PHPUnit_Framework_Constraint_ArraySubset
+     */
+    public function testassertArraySubset()
+    {
+        $array = array(
+            'a' => 'item a',
+            'b' => 'item b',
+            'c' => array('a2' => 'item a2', 'b2' => 'item b2'),
+            'd' => array('a2' => array('a3' => 'item a3', 'b3' => 'item b3'))
+        );
+
+        $this->assertArraySubset(array('a' => 'item a', 'c' => array('a2' => 'item a2')), $array);
+        $this->assertArraySubset(array('a' => 'item a', 'd' => array('a2' => array('b3' => 'item b3'))), $array);
+
+        try {
+            $this->assertArraySubset(array('a' => 'bad value'), $array);
+        }
+        catch (PHPUnit_Framework_AssertionFailedError $e) {}
+
+        try {
+            $this->assertArraySubset(array('d' => array('a2' => array('bad index' => 'item b3'))), $array);
+        }
+        catch (PHPUnit_Framework_AssertionFailedError $e) {
+            return;
+        }
+
+        $this->fail();
+    }
+
+    /**
+     * @covers PHPUnit_Framework_Assert::assertArraySubset
+     * @covers PHPUnit_Framework_Constraint_ArraySubset
+     */
+    public function testassertArraySubsetWithDeepNestedArrays()
+    {
+        $array = array(
+            'path' => array(
+                'to' => array(
+                    'the' => array(
+                        'cake' => 'is a lie'
+                    )
+                )
+            )
+        );
+
+        $this->assertArraySubset(array('path' => array()), $array);
+        $this->assertArraySubset(array('path' => array('to' => array())), $array);
+        $this->assertArraySubset(array('path' => array('to' => array('the' => array()))), $array);
+        $this->assertArraySubset(array('path' => array('to' => array('the' => array('cake' => 'is a lie')))), $array);
+        
+        try {
+            $this->assertArraySubset(array('path' => array('to' => array('the' => array('cake' => 'is not a lie')))), $array);
+        }
+        catch (PHPUnit_Framework_AssertionFailedError $e) {
+            return;
+        }
+
+        $this->fail();
+    }
+
+    /**
+     * @covers PHPUnit_Framework_Assert::assertArraySubset
+     * @covers PHPUnit_Framework_Constraint_ArraySubset
+     */
+    public function testassertArraySubsetWithNoStrictCheckAndObjects()
+    {
+        $obj = new \stdClass;
+        $reference = &$obj;
+        $array = array('a' => $obj);
+        
+        $this->assertArraySubset(array('a' => $reference), $array);
+        $this->assertArraySubset(array('a' => new \stdClass), $array);
+    }
+
+    /**
+     * @covers PHPUnit_Framework_Assert::assertArraySubset
+     * @covers PHPUnit_Framework_Constraint_ArraySubset
+     */
+    public function testassertArraySubsetWithStrictCheckAndObjects()
+    {
+        $obj = new \stdClass;
+        $reference = &$obj;
+        $array = array('a' => $obj);
+
+        $this->assertArraySubset(array('a' => $reference), $array, true);
+
+        try {
+            $this->assertArraySubset(array('a' => new \stdClass), $array, true);
+        }
+        catch (PHPUnit_Framework_AssertionFailedError $e) {
+            return;
+        }
+
+        $this->fail('Strict recursive array check fail.');
+    }
+
+    /**
+     * @covers PHPUnit_Framework_Assert::assertArraySubset
+     * @covers PHPUnit_Framework_Constraint_ArraySubset
+     * @expectedException PHPUnit_Framework_Exception
+     * @expectedExceptionMessage array or ArrayAccess
+     * @dataProvider assertArraySubsetInvalidArgumentProvider
+     */
+    public function testassertArraySubsetRaisesExceptionForInvalidArguments($partial, $subject)
+    {
+        $this->assertArraySubset($partial, $subject);
+    }
+
+    public function assertArraySubsetInvalidArgumentProvider()
+    {
+        return array(
+            array(false, array()),
+            array(array(), false),
+        );
+    }
+
+    /**
      * @covers            PHPUnit_Framework_Assert::assertArrayNotHasKey
      * @expectedException PHPUnit_Framework_Exception
      */

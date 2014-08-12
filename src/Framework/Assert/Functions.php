@@ -104,6 +104,23 @@ function assertArrayHasKey($key, $array, $message = '')
 }
 
 /**
+ * Asserts that an array has a specified subset.
+ *
+ * @param array|ArrayAccess  $subset
+ * @param array|ArrayAccess  $array
+ * @param boolean            $strict  Check for object identity
+ * @param string             $message
+ * @since Method available since Release 4.4.0
+ */
+function assertArraySubset($subset, $array, $strict = false, $message = '')
+{
+    return call_user_func_array(
+      'PHPUnit_Framework_Assert::assertArraySubset',
+      func_get_args()
+    );
+}
+
+/**
  * Asserts that an array does not have a specified key.
  *
  * @param  mixed  $key

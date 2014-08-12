@@ -67,7 +67,7 @@ abstract class PHPUnit_Framework_Assert
      * @param mixed             $key
      * @param array|ArrayAccess $array
      * @param string            $message
-     * @since  Method available since Release 3.0.0
+     * @since Method available since Release 3.0.0
      */
     public static function assertArrayHasKey($key, $array, $message = '')
     {
@@ -86,6 +86,34 @@ abstract class PHPUnit_Framework_Assert
         }
 
         $constraint = new PHPUnit_Framework_Constraint_ArrayHasKey($key);
+
+        self::assertThat($array, $constraint, $message);
+    }
+
+    /**
+     * Asserts that an array has a specified subset.
+     *
+     * @param array|ArrayAccess  $subset
+     * @param array|ArrayAccess  $array
+     * @param boolean            $strict  Check for object identity
+     * @param string             $message
+     * @since Method available since Release 4.4.0
+     */
+    public static function assertArraySubset($subset, $array, $strict = false, $message = '')
+    {
+        if(!is_array($subset)) {
+            throw PHPUnit_Util_InvalidArgumentHelper::factory(
+              1, 'array or ArrayAccess'
+            );
+        }
+
+        if(!is_array($array)) {
+            throw PHPUnit_Util_InvalidArgumentHelper::factory(
+              2, 'array or ArrayAccess'
+            );
+        }
+
+        $constraint = new PHPUnit_Framework_Constraint_ArraySubset($subset, $strict);
 
         self::assertThat($array, $constraint, $message);
     }
